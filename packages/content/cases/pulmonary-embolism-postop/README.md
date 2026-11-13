@@ -215,8 +215,13 @@ is a **critical** item, so the debrief names that miss first (see Fidelity limit
 within 3 weeks) in a normotensive patient fails the assessment's safety outcome (`safety.passed: false`) whatever the
 score, and every debrief and export shows it beside the score; the haemorrhage branch still plays out. Every
 lysis path above therefore fails safety, the managed-lysis path's 73 % included. The vasopressor and rescue
-reperfusion are `critical: false` (not indicated while she is stable; recoverable). Free-text orders of paracetamol
-are checked against its preset dose (1 g IV).
+reperfusion are `critical: false` (not indicated while she is stable; recoverable). Free-text orders are checked
+against the preset doses (`doseSpec`), through her 70 kg: the UFH bolus 70–80 units/kg IV (80 units/kg, or the
+fixed 5,000 units its text also gives — 71 units/kg at 70 kg), treatment enoxaparin 1–1.5 mg/kg SC (1 mg/kg twice
+daily, or 1.5 mg/kg once daily — the two regimens of ESC 2019), prophylactic enoxaparin 40 mg SC, morphine 2.5 mg IV
+and paracetamol 1 g IV. "IV heparin 80000 units bolus" (fourteen times the bolus) is not given: a critical dose
+error that fails the safety outcome. An order for the UFH infusion rate alone ("heparin 18 units/kg/h") is asked
+about — the preset is the bolus its text gives first; "80 units/kg bolus, then 18 units/kg/h" is given.
 
 ## Reference path (`solution`)
 
@@ -244,7 +249,7 @@ read after a further 15 min; risk class and escalation decisions; PERT; HDU tran
 | Haemoglobin / haematocrit | 112 g/L / 0.34 L/L | pre-op 126, POD1 114 g/L |
 | Echo | RV/LV 1.1, TAPSE 14 mm, TR Vmax 3.1 m/s, IVC 2.0 cm < 50 % collapse | PASP ≈ 4 × 3.1² + RAP 8 ≈ 46 mmHg; TAPSE abnormal by both the ASE 2010 (< 16 mm) and the case's 17 mm reference |
 | UFH (70 kg) | 5,600 U bolus, then 1,260 U/h | 80 U/kg; 18 U/kg/h; APTT 1.5–2.5 × control at 6 h |
-| Enoxaparin (treatment) | 70 mg SC q12h | 1 mg/kg; no renal adjustment |
+| Enoxaparin (treatment) | 70 mg SC q12h | 1 mg/kg; no renal adjustment (or 1.5 mg/kg = 105 mg once daily, ESC 2019) |
 
 The same numbers are machine-readable in `extensions.clinicalScores`.
 
@@ -460,8 +465,13 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
   this normotensive patient fails the safety outcome shown beside the score (`r-safety-no-lysis` was already
   critical). Scores are unchanged — e.g. alteplase straight after the UFH on the reference path: 14/22 (64 %),
   safety failed. `noradrenaline` and `rescue-reperfusion` are `critical: false` (`cases validate`).
-- **Preset dose (audit P0-2):** `doseSpec` on paracetamol 1 g IV. UFH (a bolus then an hourly rate per kg, the
-  first dose an order states) and the titrated morphine have none.
+- **Preset doses (audit P0-2):** `doseSpec` on the UFH bolus (70–80 units/kg IV: the dose text now also gives the
+  fixed 5,000-unit bolus of the Chinese 2018 guideline and CHEST, 71 units/kg at her 70 kg), treatment enoxaparin
+  (1–1.5 mg/kg SC: ESC 2019's twice-daily and once-daily regimens, which the dose text now names), prophylactic
+  enoxaparin 40 mg SC, morphine 2.5 mg IV (the dose its text gives) and paracetamol 1 g IV. The audit's
+  "IV heparin 80000 units" is a critical dose error, not given. The enoxaparin aliases "enoxaparin 40", "enoxaparin
+  70" (and 依诺肝素40, 依诺肝素70) now carry their unit ("40 mg"): typed as an order, a number without its unit is
+  asked about.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

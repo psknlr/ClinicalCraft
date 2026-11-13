@@ -411,9 +411,17 @@ DOI is given where none could be checked (3, 5–7, 9).
 
 ### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
 
-- **Preset doses (audit P0-2):** `doseSpec` on entecavir 0.5 mg, tenofovir alafenamide 25 mg and calcitriol
-  1 microgram (PO), the doses their texts state; a free-text order of another dose is not given and is kept as a dose
-  error for the debrief. No intervention here is high-risk or a critical safety failure.
+- **Critical safety failure (audit P0-3).** Stopping every nucleos(t)ide analogue (`stop-all-antivirals`) is
+  `critical: true`: withdrawal can bring a severe hepatitis B flare and liver failure (the boxed warning of the
+  adefovir label), so giving it fails the safety outcome shown beside the score; `r-safety-hbv` was already a
+  critical rubric item and names it. TDF (the pharmacist queries it) and the reduced adefovir schedule stay
+  non-critical: a nephrotoxin continued or chosen, recoverable once the order is changed. `stop-all-antivirals` is
+  moderate risk (it was low): a critical intervention's badge and confirmation say what it can do. Scores are
+  unchanged.
+- **Preset doses (audit P0-2):** `doseSpec` on entecavir 0.5 mg and tenofovir alafenamide 25 mg (PO), the doses
+  their texts state; a free-text order of another dose is not given and is kept as a dose error for the debrief.
+  Calcitriol has none: 1 microgram a day is the report's dose for this osteomalacia, and the usual starting doses
+  (0.25–0.5 microgram) would read as dose errors.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

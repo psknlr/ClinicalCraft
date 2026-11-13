@@ -155,11 +155,11 @@ GCS 15 at SBP ≥ 90, which takes the second dose. The other scripted events are
 * `sinus-in-ed`: the rhythm label changes to sinus once HR < 100 in the ED.
 * `asks-to-leave`: at 90 min she asks to go home. This is the disposition teaching prompt. The event
   sets `speaker: "patient"`, so she says it herself.
-* Silent scoring markers (no message): `reassessed-before-repeat` (a treated-phase reassessment
-  between the first and second IM dose), `adjunct-before-adrenaline` (antihistamine, steroid or
-  salbutamol before any adrenaline) and `moved-before-adrenaline` (transfer or walking before any
-  adrenaline). The condition DSL cannot ask "was X before Y", so these events record it when it
-  happens.
+* Silent scoring markers (no message): `reassessed-after-adrenaline` (the first airway, breathing or
+  circulation reassessment after an IM dose, in the garden or the ED: `{ "examined": …, "afterLast":
+  "adrenaline-im" }`), `adjunct-before-adrenaline` (antihistamine, steroid or salbutamol before any
+  adrenaline) and `moved-before-adrenaline` (transfer or walking before any adrenaline). These events
+  record when it happens.
 
 **Results by place.** Phases encode location. In the garden (`scene` / `collapsed` / `treated`): POC
 glucose and sample-based lab tests. Tryptase, FBC and U&E are available from first contact (a sample
@@ -237,11 +237,20 @@ cap the score.
 **Safety outcome.** Three interventions are `critical`: the **IV bolus**, **sitting her up or standing her
 while SBP < 90** and **walking her to the ED**. Giving one fails the assessment's safety outcome
 (`safety.passed: false`, listed in `safety.criticalFailures` with its harm) whatever the score, and every
-debrief and export shows that beside the score; the effects still play out. A free-text order's dose is checked
-against the presets (`doseSpec`): IM adrenaline 0.5 mg, salbutamol 5 mg nebulised, cetirizine 10 mg PO,
-chlorphenamine 10 mg IV, hydrocortisone 200 mg IV. "IM adrenaline 5 mg" (or "肌注肾上腺素 5 mg") is not given:
-a critical dose error (ten times the preset) that also fails the safety outcome; "500 micrograms IM" is the
-preset dose.
+debrief and export shows that beside the score; the effects still play out. A free-text order of IM adrenaline is
+checked against its preset dose (`doseSpec`: 0.3–0.5 mg IM — 0.5 mg from an ampoule, the adult dose of RCUK 2021,
+WAO and EAACI (0.01 mg/kg up to 0.5 mg); 0.3 mg from an adult auto-injector, which the item also stands for
+("EpiPen", "auto-injector") and which the case's own prescription text gives, "0.3 mg or 0.5 mg"). "IM adrenaline
+5 mg", "肌注肾上腺素 5 mg", "五毫克" or "five milligrams" is not given: a critical dose error (ten times the top of the range)
+that also fails the safety outcome; "500 micrograms IM", "零点五毫克", "EpiPen 0.3 mg IM" and a volume with its
+strength ("0.5 mL of 1:1000", "1 mg/mL 0.5 mL") are given. "1 mg IM" draws the nurse's read-back and is not given —
+a dose error to review (twice the top of the range), not a safety failure. A dose the nurse cannot check — a volume
+without its strength ("0.3 mL"), "1/2 mg", "0。5 mg", a range, a number without its unit — is asked about: not given,
+and no dose error. The adjuncts have no preset:
+their items stand for a class — the steroid item for dexamethasone or methylprednisolone, the antihistamines for
+fexofenadine or diphenhydramine, the salbutamol nebuliser for an inhaler in puffs — and the dose check compares
+amounts, not drugs, so another member's usual dose would read as a dose error (dexamethasone 8 mg as a twenty-fifth
+of 200 mg hydrocortisone, a critical one).
 
 ### Tempting wrong choices (all playable)
 
@@ -310,7 +319,7 @@ minute 114.5 (embodied autopilot: 115.0 / 114.5 in en / zh-CN).
 |---|---|---|
 | Arrival BP | 78/44 mmHg, MAP 55 | (78 + 2 × 44)/3 = 55.3 |
 | Severity | Brown grade **severe** | SpO₂ 92 % (≤ 92) and SBP 78 (< 90) (Brown 2004) |
-| IM adrenaline | **0.5 mg = 0.5 mL of 1 mg/mL** | adult / > 12 y dose (RCUK 2021); 62 kg × 0.01 mg/kg = 0.62 → capped at 0.5 mg |
+| IM adrenaline | **0.5 mg = 0.5 mL of 1 mg/mL** | adult / > 12 y dose (RCUK 2021); 62 kg × 0.01 mg/kg = 0.62 → capped at 0.5 mg; an adult auto-injector gives 0.3 mg (or 0.5 mg) |
 | Ten-fold error | 0.5 mL of 1:10 000 = **0.05 mg** | 0.1 mg/mL × 0.5 mL |
 | Paediatric IM doses (not this patient) | 6–12 y 0.3 mg · 6 months–6 y 0.15 mg · < 6 months 0.1–0.15 mg | RCUK 2021 |
 | Fluids · O₂ · salbutamol | 500–1000 mL crystalloid · 15 L/min NRB, then SpO₂ 94–98 % · 5 mg nebulised | RCUK 2021 |
@@ -409,7 +418,7 @@ minute 114.5 (embodied autopilot: 115.0 / 114.5 in en / zh-CN).
 | IV bolus or subcutaneous adrenaline | ectopics/ST depression then relapse; little effect SC; `r-safe-route` fails; the IV bolus is a critical safety failure |
 | Sitting her up, walking her | grey-out (GCS 13), collapse; `r-safe-posture` fails; a critical safety failure |
 | One dose and done | partial response: SBP stays in the 80s, she cannot reach the stabilised `ed` phase |
-| Repeat dose without reassessing, or too early | the dose is `neutral` until it is due (≥ 5 min after the last, after the reassessment, response still inadequate): `r-adr-repeat` fails; `r-adr-reassess` scores the reassessment |
+| Repeat dose without reassessing, or too early | the dose is `neutral` until it is due (≥ 5 min after the last, after a reassessment since it, response still inadequate): `r-adr-repeat` fails; `r-adr-reassess` scores the reassessment |
 | Discharge at 2 h, or without pens | the disposition distractors; `discharge-now` contraindicated |
 
 ## Embodied mode
@@ -457,10 +466,11 @@ nobody (she never gets there). Scores are unchanged.
   phase. For example, `ex-chest-treated` still describes wheeze after salbutamol. The salbutamol
   `response` narrates the improvement instead.
 * **The reassessment is not timed.** A repeat dose is `indicated` only ≥ 5 minutes after the last dose
-  (`elapsedSince`), after a reassessment (`reassessed-before-repeat`) and while SBP < 90, SpO₂ < 94 or
-  RR > 24; `r-adr-repeat` counts only doses given while indicated. The reassessment itself may come any
-  time after the first dose — an examination at minute 1 counts for a repeat at minute 5, when the
-  vitals still decide whether the repeat is due. The reference solution repeats at 6.5 minutes.
+  (`elapsedSince`), after an airway, breathing or circulation reassessment made since that dose (`{ "examined":
+  …, "afterLast": "adrenaline-im" }` — one made before the last dose does not count) and while SBP < 90,
+  SpO₂ < 94 or RR > 24; `r-adr-repeat` counts only doses given while indicated. The reassessment itself may
+  come any time after the last dose — an examination a minute after it counts for a repeat at minute 5, when
+  the vitals still decide whether the repeat is due. The reference solution repeats at 6.5 minutes.
 * **Phase entry is immediate.** `ed` starts when the second dose is given in the ED, so its "so much
   better" findings can be read a minute or two before SBP reaches 90. The disposition decision is
   additionally gated on SBP ≥ 90.
@@ -580,19 +590,31 @@ T/CADERM 3008—2019 have no DOI.
 
 * **The repeat dose is scored when it is due (audit P1-4).** In the audit's replay a second IM dose 1.5 minutes
   after the first, after an airway reassessment, was `indicated` and earned `r-adr-repeat`. The repeat's
-  `indicatedWhen` is now the case's own rule — at least 5 minutes after the last dose (`elapsedSince`), after the
-  treated-phase reassessment, while SBP < 90, SpO₂ < 94 or RR > 24 — and `r-adr-repeat` counts only doses given
-  while indicated (`{ "intervened": "adrenaline-im", "whenIndicated": true, "minCount": 2 }`): a repeat at
-  1.5 minutes, without a reassessment, or in a patient who has improved is `neutral` and earns nothing. The
-  reassessment is scored on its own by the new `r-adr-reassess` (examination, weight 1): deterministic total
-  18 → 19, the reference path 19/19 (embodied autopilot unchanged).
+  `indicatedWhen` is now the case's own rule — at least 5 minutes after the last dose (`elapsedSince`), after an
+  airway, breathing or circulation reassessment made since that dose (`{ "examined": …, "afterLast":
+  "adrenaline-im" }`, in the garden or the ED), while SBP < 90, SpO₂ < 94 or RR > 24 — and `r-adr-repeat` counts
+  only doses given while indicated (`{ "intervened": "adrenaline-im", "whenIndicated": true, "minCount": 2 }`): a
+  repeat at 1.5 minutes, without a reassessment since the last dose, or in a patient who has improved is
+  `neutral` and earns nothing. The reassessment is scored on its own by the new `r-adr-reassess` (examination,
+  weight 1; the silent `reassessed-after-adrenaline` marks the first reassessment after any dose): deterministic
+  total 18 → 19, the reference path 19/19 (embodied autopilot unchanged). The reassessment a repeat needs is the
+  one made since the last dose — doses at 0 and 1 minute, a reassessment at 2.5 and a third dose at 8.5: the
+  reassessment counts for the third dose, which is still `neutral` because the two early doses have lifted her
+  blood pressure and saturation by then (no repeat is due); `r-adr-reassess` is met, `r-adr-repeat` is not.
 * **Critical safety failures (audit P0-3).** `adrenaline-iv-bolus`, `position-sit-upright` (contraindicated while
   SBP < 90) and `walk-to-ed` are `critical: true`: giving one fails the safety outcome shown beside the score;
-  `r-safe-posture` is now a critical rubric item, beside `r-safe-route`.
-* **Preset doses (audit P0-2).** `doseSpec` on IM adrenaline 0.5 mg, nebulised salbutamol 5 mg, cetirizine 10 mg PO,
-  chlorphenamine 10 mg IV and hydrocortisone 200 mg IV, the doses their texts state: "IM adrenaline 5 mg" or
-  "肌注肾上腺素 5 mg" is not given (a critical dose error), "500 micrograms IM" is. An order written as a volume
-  ("0.5 mL of 1:1000") cannot be compared with a dose in mg and is not given either (a warning).
+  `r-safe-posture` is now a critical rubric item, beside `r-safe-route`. `position-sit-upright` is moderate risk
+  (it was low): a critical intervention's badge and confirmation say what it can do.
+* **Preset dose (audit P0-2).** `doseSpec` on IM adrenaline, 0.3–0.5 mg IM: 0.5 mg from an ampoule (the adult dose
+  its text states) and 0.3 mg from an adult auto-injector, which the item also stands for and which the case's own
+  prescription text gives (the dose text now says so). "IM adrenaline 5 mg", "肌注肾上腺素 5 mg", "肌注肾上腺素五毫克"
+  or "five milligrams" is not given (a critical dose error); "500 micrograms IM", "EpiPen 0.3 mg IM" and a volume with
+  its strength ("0.5 mL of 1:1000") are given. A volume without its strength ("0.3 mL"), a fraction, a range or a
+  number without its unit is asked about (not given, no dose error). The adjuncts
+  (salbutamol, cetirizine, chlorphenamine, hydrocortisone) have none: each item also answers for other drugs of its
+  class (dexamethasone, methylprednisolone, fexofenadine, diphenhydramine, an inhaler in puffs), whose usual doses
+  the amount-only check would read as dose errors — a critical one for dexamethasone 8 mg or 100 micrograms by
+  inhaler.
 * README: the rubric table, the score table (19 points, safety outcomes) and the fidelity limits now match.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)

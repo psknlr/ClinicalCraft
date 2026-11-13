@@ -6552,10 +6552,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "头孢曲松 2 g 静脉滴注，每24小时一次（无需按肾功能调整）",
-        "en": "Ceftriaxone 2 g IV every 24 h (no renal dose adjustment needed)"
+        "zh-CN": "头孢曲松 2 g 静脉滴注，每24小时一次（无需按肾功能调整；社区获得性肺炎指南为每日 1–2 g）",
+        "en": "Ceftriaxone 2 g IV every 24 h (no renal dose adjustment needed; CAP guidelines give 1–2 g daily)"
       },
-      "doseSpec": { "amount": 2, "unit": "g", "route": "IV" },
+      "doseSpec": { "amount": 1, "upTo": 2, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6655,7 +6655,6 @@
         "zh-CN": "莫西沙星 400 mg 静脉滴注，每24小时一次（无需按肾功能调整；注意QTc）",
         "en": "Moxifloxacin 400 mg IV every 24 h (no renal adjustment; watch the QTc)"
       },
-      "doseSpec": { "amount": 400, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6972,7 +6971,6 @@
         "zh-CN": "氢化可的松 50 mg 静脉注射，每6小时一次（200 mg/d）",
         "en": "Hydrocortisone 50 mg IV every 6 h (200 mg/day)"
       },
-      "doseSpec": { "amount": 50, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

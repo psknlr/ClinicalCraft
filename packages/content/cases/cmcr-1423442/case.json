@@ -3138,7 +3138,8 @@
       },
       "requires": [],
       "scope": "medical",
-      "risk": "low",
+      "risk": "moderate",
+      "critical": true,
       "effects": [],
       "setFlags": [],
       "maxDoses": 1,
@@ -3268,7 +3269,6 @@
         "zh-CN": "骨化三醇胶丸1 μg口服，每日1次（原报告剂量）；监测血钙，避免高钙血症。",
         "en": "Calcitriol capsules 1 μg orally once daily (the report's dose); monitor serum calcium to avoid hypercalcaemia."
       },
-      "doseSpec": { "amount": 1, "unit": "microgram", "route": "PO" },
       "requires": [
         "medications"
       ],

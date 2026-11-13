@@ -349,7 +349,10 @@ The NCI PDQ summary cited by 1.0.0 is dropped (a summary, not a guideline).
   24 hours (osmotic demyelination) and intensive AML induction for an unproven AML are `critical: true`; `rb-safety`
   was already a critical rubric item. The 3 % saline bolus (high risk) is `critical: false`: not indicated, but
   recoverable with sodium monitoring. Scores are unchanged.
-- **Preset dose (audit P0-2):** `doseSpec` on meropenem 1 g IV.
+- **No preset dose (audit P0-2).** Meropenem takes no `doseSpec`: the report records no dose (the 1 g in its text
+  is a usual adult dose, not the source's), and the item also answers for "empirical antibiotics", so the dose check
+  — it compares amounts, not drugs — would read another antibiotic's dose (piperacillin–tazobactam 4.5 g) as a dose
+  error.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

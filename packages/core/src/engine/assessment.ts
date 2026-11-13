@@ -199,8 +199,16 @@ function safetyOutcome(c: CaseDefinition, s: SessionState, verdict: AssessmentRe
     conflicts: [...e.conflicts],
     severity: e.severity,
   }));
-  const passed = criticalFailures.length === 0 && !doseErrors.some((e) => e.severity === "critical") && verdict !== "safety-critical";
-  return { passed, criticalFailures, doseErrors };
+  return { passed: safetyPassed({ criticalFailures, doseErrors, verdict }), criticalFailures, doseErrors };
+}
+
+/**
+ * Whether a safety outcome passes (`AssessmentReport.safety.passed`): no critical safety failure, no critical dose
+ * error and no safety-critical gate. A front-end that must not reveal a hidden gate mid-case (an operation's verdict,
+ * docs/PROCEDURE.md §7) asks it without the `verdict`.
+ */
+export function safetyPassed(safety: { criticalFailures: readonly unknown[]; doseErrors: readonly { severity: "warning" | "critical" }[]; verdict?: AssessmentReport["safety"]["verdict"] }): boolean {
+  return safety.criticalFailures.length === 0 && !safety.doseErrors.some((e) => e.severity === "critical") && safety.verdict !== "safety-critical";
 }
 
 /** Assess a session against its case (pure). */

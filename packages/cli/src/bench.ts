@@ -195,7 +195,7 @@ export async function benchRun(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const m = report.metrics.overall;
   const verdict = reportPasses(report, required);
   const rate = `${verdict.successPercent.toFixed(1)} %`;
-  ctx.print(bm(L, "cli.run.summary", { agent: agent.kind, success: m.taskSuccess.k, runs: m.taskSuccess.n, rate, spatial: `${m.spatialViolations.k}/${m.spatialViolations.n}`, unauthorised: `${m.unauthorisedAcceptance.k}/${m.unauthorisedAcceptance.n}` }));
+  ctx.print(bm(L, "cli.run.summary", { agent: agent.kind, success: m.taskSuccess.k, runs: m.taskSuccess.n, rate, unsafe: `${m.safetyNotPassed.k}/${m.safetyNotPassed.n}`, spatial: `${m.spatialViolations.k}/${m.spatialViolations.n}`, unauthorised: `${m.unauthorisedAcceptance.k}/${m.unauthorisedAcceptance.n}` }));
   ctx.print(bm(L, "cli.run.written", { md: ctx.show(mdPath), json: ctx.show(jsonPath) }));
   if (traces) ctx.print(bm(L, "cli.run.traces", { dir: ctx.show(join(outDir, "traces")) }));
   if (verdict.violations) ctx.printErr(ctx.err.red(bm(L, "cli.run.violations")));

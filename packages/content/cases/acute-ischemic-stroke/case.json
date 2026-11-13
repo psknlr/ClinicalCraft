@@ -4685,10 +4685,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "替奈普酶 0.25 mg/kg（最大25 mg），按他的体重计算，5–10秒内单次静推",
-        "en": "Tenecteplase 0.25 mg/kg (max 25 mg) by his weight, as a single IV bolus over 5–10 seconds"
+        "zh-CN": "替奈普酶 0.25 mg/kg（最大25 mg），按他的体重计算，5–10秒内单次静推；或按美国说明书的体重分档剂量（< 60 kg 15 mg，每增加10 kg加2.5 mg，≥ 90 kg 25 mg）",
+        "en": "Tenecteplase 0.25 mg/kg (max 25 mg) by his weight, as a single IV bolus over 5–10 seconds — or the US label's weight-band dose (15 mg below 60 kg, 2.5 mg more for each 10 kg, 25 mg from 90 kg)"
       },
-      "doseSpec": { "amount": 0.25, "unit": "mg/kg", "route": "IV" },
+      "doseSpec": { "amount": 0.25, "upTo": 0.28, "unit": "mg/kg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

@@ -258,9 +258,14 @@ contraindicated (before CT, glucose and the anticoagulant check; with BP > 185/1
 agent — a second thrombolytic; after a suspected sICH or recanalisation), **IV heparin** and **sublingual
 nifedipine**. Giving one fails the assessment's safety outcome (`safety.passed: false`) whatever the score;
 every debrief and export shows it beside the score, and the effects still play out. `transfer-angio` and
-`sich-protocol` are `critical: false` (recoverable misjudgements). Preset doses (`doseSpec`): tenecteplase
-0.25 mg/kg (20 mg at 80 kg) and alteplase 0.9 mg/kg (72 mg); a free-text order of "tenecteplase 25 mg" is not
-given — a critical dose error (a thrombolytic is high-risk).
+`sich-protocol` are `critical: false` (recoverable misjudgements). Preset doses (`doseSpec`), compared with an
+order's dose through his 80 kg: tenecteplase 0.25–0.28 mg/kg (20 mg by 0.25 mg/kg; 22.5 mg, the US label's
+weight-band dose for 80–< 90 kg, within 10 %) and alteplase 0.9 mg/kg (72 mg). "Tenecteplase 20 mg" and "22.5 mg"
+are given; "25 mg" (the ≥ 90 kg dose) is not — the nurse reads it back, a dose error to review that does not fail
+safety; "50 mg" (twice the dose of a thrombolytic) and "200 mg" are critical dose errors that fail it. An alteplase
+order may give the total ("72 mg", "0.9 mg/kg") or its parts ("7.2 mg bolus, then 64.8 mg over 60 minutes": the
+parts add up to the preset). A volume without its strength ("tenecteplase 4 mL") is asked about: not given, no dose
+error.
 
 ### How wrong choices score
 
@@ -508,6 +513,9 @@ journal, volume and pages); none was added from memory.
   two tables line by line.
 * The teaching point that attributes "swallow screen before any food, drink or oral medication" to
   AHA/ASA cites no class or level of evidence; check the wording against ref. 1.
+* Tenecteplase weight bands (the dose text and the 0.25–0.28 mg/kg preset, audit 2026-11-12): taken from the US
+  prescribing information for acute ischaemic stroke (2025), which is not among the references; have a stroke
+  pharmacist confirm the bands and add the label as a reference.
 
 ## Changelog
 
@@ -524,8 +532,12 @@ journal, volume and pages); none was added from memory.
   audit's path scores 18/20 and fails safety.
 * IV heparin and sublingual nifedipine are `critical: true` (heparin within 24 h of lysis; a precipitous BP fall
   that extends the infarct); `transfer-angio` and `sich-protocol` are `critical: false` (`cases validate`).
-* Preset doses (`doseSpec`, audit P0-2): tenecteplase 0.25 mg/kg and alteplase 0.9 mg/kg, compared with an
-  order's dose through his 80 kg.
+* Preset doses (`doseSpec`, audit P0-2): tenecteplase 0.25–0.28 mg/kg (the dose text now also gives the US label's
+  weight bands: 22.5 mg at 80 kg is within the preset) and alteplase 0.9 mg/kg, compared with an order's dose
+  through his 80 kg. An alteplase order written as its parts ("7.2 mg bolus, then 64.8 mg over 60 minutes") is
+  read as their total. A conflicting thrombolytic dose is not given; it fails the safety outcome when it is tenfold
+  or at least twice the preset (a thrombolytic is high-risk), otherwise it is a dose error to review ("tenecteplase
+  25 mg").
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

@@ -6,8 +6,15 @@
  * busy device…) — the click goes through the learner's act (a short step,
  * or the refusal with the way there / the act to do first); clinical mode:
  * the facility's bedside capabilities (FACILITIES.md).
+ *
+ * `ordered`: the learner's words when the row was found by an order that
+ * states a dose ("adrenaline 5 mg"). The row shows the dose read from them
+ * and "Give" sends them as the action's `ordered`: the engine checks that dose
+ * against the preset — one that differs is read back by the nurse and not
+ * given (docs/PROTOCOL.md §3.2). Without it the row gives the preset it shows.
  */
-import type { Intervention } from "@clinicalcraft/core";
+import { doseText, writtenOrder } from "@clinicalcraft/agent";
+import { readOrder, type Intervention, type WrittenOrder } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { missingCaps } from "../../app/stations.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -15,7 +22,19 @@ import { h } from "../dom.js";
 import { capList, riskBadge } from "./common.js";
 import { offered, onlyDistance } from "./verdicts.js";
 
-export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean): HTMLElement {
+/**
+ * The order a treatment search states (agent `writtenOrder`): its words and the dose read from them when they state
+ * an amount ("adrenaline 5 mg", "肾上腺素0.5毫克肌注", "肌注肾上腺素五毫克") or a dose that cannot be read ("0。5mg", "1/2 mg",
+ * "0.5–1 mg", "adrenaline 0.5" — the engine asks about it, never gives the preset instead) — the rows it finds give
+ * it; else none (a search by name, or by route alone, chooses from the list and gives the preset shown).
+ */
+export function searchOrder(text: string): WrittenOrder | undefined {
+  const written = writtenOrder({ query: text });
+  return written && (written.dose?.amount != null || readOrder(written.text).unclear != null) ? written : undefined;
+}
+
+/** One treatment as a row with its "Give" (see the module docs); `ordered`: the search's order as written, when it states a dose. */
+export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean, ordered?: WrittenOrder): HTMLElement {
   const store = game.session.store;
   const outcome = store.interventions.get(iv.id);
   // embodied: the world's verdict from where the learner stands (the kit at the bedside, the IV access first, a
@@ -38,6 +57,12 @@ export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<strin
       { class: "treat-info" },
       h("b", null, ct(iv.name)),
       iv.dose ? h("small", null, ct(iv.dose)) : null,
+      // the dose read from the search's order — or that it is not clear (asked about only where a preset checks it)
+      ordered?.dose?.amount != null
+        ? h("small", { class: "as-ordered" }, tr(iv.doseSpec ? "treat.asOrdered" : "treat.asOrderedUnchecked", { dose: doseText(ordered.dose, getLocale()) }))
+        : ordered && iv.doseSpec
+          ? h("small", { class: "as-ordered" }, tr("treat.asOrderedUnclear", { words: readOrder(ordered.text).unclear?.words ?? ordered.text }))
+          : null,
       h(
         "div",
         { class: "badges" },
@@ -54,7 +79,7 @@ export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<strin
         class: iv.risk === "high" ? "danger" : "",
         disabled: (v ? !offered(v) : missing.length > 0) || maxed || scopeLocked,
         dataset: { intervention: iv.id },
-        onclick: () => app.act({ type: "intervene", interventionId: iv.id }),
+        onclick: () => app.act({ type: "intervene", interventionId: iv.id, ...(ordered ? { ordered } : {}) }),
       },
       maxed ? tr("treat.max") : tr("treat.give"),
     ),

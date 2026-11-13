@@ -5,6 +5,7 @@
 import type { CaseDefinition } from "../schema/case.js";
 import { ClinicalActionSchema, type ClinicalAction, type DomainEvent } from "../schema/session.js";
 import { assess } from "./assessment.js";
+import { conditionRefs } from "./conditions.js";
 import { formatDose } from "./dose.js";
 import { ecgAttached, monitorAttachedAt } from "./monitor.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
@@ -38,7 +39,8 @@ function parseSolution(c: CaseDefinition): { actions: ClinicalAction[]; sourceIn
 /**
  * What a step of the reference path did against safety (`DomainEvent`s of one accepted action): an intervention given
  * while contraindicated — an error unless `errorRecovery` declares it (then a warning when it was a critical safety
- * failure) — and a dose error (always an error).
+ * failure) — and a dose error (always an error: an order whose dose conflicts is not given, so there is nothing to
+ * recover from, and `errorRecovery` cannot declare one).
  */
 function stepSafety(events: DomainEvent[], path: string, declared: ReadonlySet<string>, given: Set<string>): Issue[] {
   const issues: Issue[] = [];
@@ -60,6 +62,16 @@ function stepSafety(events: DomainEvent[], path: string, declared: ReadonlySet<s
 }
 
 /**
+ * Does a safety gate's condition rest on a declared error (`errorRecovery`): does it name one of the declared
+ * interventions, or a flag one of them sets (`setFlags`)? Only such a gate is the declared error's own consequence.
+ */
+function gateFromDeclared(c: CaseDefinition, when: CaseDefinition["safetyGates"][number]["when"], declared: ReadonlySet<string>): boolean {
+  if (!declared.size) return false;
+  const flags = new Set(c.interventions.filter((iv) => declared.has(iv.id)).flatMap((iv) => iv.setFlags));
+  return conditionRefs(when).some((r) => (r.kind === "intervention" && declared.has(r.id)) || (r.kind === "flag" && flags.has(r.id)));
+}
+
+/**
  * Replay `c.solution` from a fresh session (a leading `start` is added when
  * the solution has none). `ok` iff every action parses and is accepted,
  * every objective is done, every decision is decided, the session did
@@ -67,7 +79,8 @@ function stepSafety(events: DomainEvent[], path: string, declared: ReadonlySet<s
  * step gives an intervention while it is contraindicated (unless the case's
  * `errorRecovery` declares it), no order's dose conflicts with its preset
  * and the final state's safety outcome passes — a safety-critical gate
- * holding at the end fails it (a warning with `errorRecovery`). A
+ * holding at the end fails it (a warning when its `when` rests on a
+ * declared error: it names a declared intervention or a flag one sets). A
  * solution that never attaches the case's bedside monitor
  * (`physiology.monitor`), or never its ECG leads (`ecgWhen`), draws a
  * warning, as does an `errorRecovery` id the path never gives while
@@ -110,8 +123,11 @@ export function verifyCase(c: CaseDefinition): VerifyResult {
   const assessment = assess(c, state);
   for (const gate of assessment.safety.gates ?? []) {
     if (gate.verdict !== "safety-critical") continue;
-    const path = formatPath(["safetyGates", c.safetyGates.findIndex((g) => g.id === gate.id)]);
-    issues.push({ path, message: `the safety-critical gate "${gate.id}" holds at the end of the reference path`, severity: declared.size ? "warning" : "error" });
+    const index = c.safetyGates.findIndex((g) => g.id === gate.id);
+    const path = formatPath(["safetyGates", index]);
+    // a warning only for a gate the declared error itself sets off (its `when` names a declared intervention or a flag one sets)
+    const recovered = index >= 0 && gateFromDeclared(c, c.safetyGates[index]!.when, declared);
+    issues.push({ path, message: `the safety-critical gate "${gate.id}" holds at the end of the reference path${recovered ? ", set off by an error errorRecovery declares" : ""}`, severity: recovered ? "warning" : "error" });
   }
   return { ok: issues.every((i) => i.severity !== "error"), issues, finalState: state, assessment };
 }

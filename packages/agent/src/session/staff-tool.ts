@@ -18,7 +18,7 @@ export function staffTaskTool(k: SessionKernel, id: string, who: Colleague): Too
   return {
     name: "do_task",
     description:
-      "Do a task with your own hands — only when the learner asks you to in this conversation: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: the equipment), give_intervention (params.intervention: the treatment the learner named), transport_patient (target: a study device, a bed space or \"home\"), hold_traction (params.port: take the instrument in that port at the operating table and keep its traction), release_traction (let go and hand it back). You walk there and act; your role's scope of practice and the learner's approvals apply. Never say you did something unless this tool returned ok; if it refuses, say why in your own words.",
+      "Do a task with your own hands — only when the learner asks you to in this conversation: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: the equipment), give_intervention (params.intervention: the treatment the learner named; params.dose: the dose and route the learner said, if any — checked against the dose prepared, and read back when it differs), transport_patient (target: a study device, a bed space or \"home\"), hold_traction (params.port: take the instrument in that port at the operating table and keep its traction), release_traction (let go and hand it back). You walk there and act; your role's scope of practice and the learner's approvals apply. Never say you did something unless this tool returned ok; if it refuses, say why in your own words.",
     inputSchema: {
       type: "object",
       properties: {

@@ -3201,10 +3201,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "肾上腺素0.5 mg肌注（1 mg/mL [1:1000] 溶液0.5 mL），大腿中段前外侧；若无改善，5分钟后重复",
-        "en": "Adrenaline 0.5 mg IM (0.5 mL of 1 mg/mL [1:1000]) into the anterolateral mid-thigh; repeat after 5 min if no improvement"
+        "zh-CN": "肾上腺素0.5 mg肌注（1 mg/mL [1:1000] 溶液0.5 mL），大腿中段前外侧（成人自动注射笔为0.3 mg或0.5 mg）；若无改善，5分钟后重复",
+        "en": "Adrenaline 0.5 mg IM (0.5 mL of 1 mg/mL [1:1000]) into the anterolateral mid-thigh (an adult auto-injector gives 0.3 mg or 0.5 mg); repeat after 5 min if no improvement"
       },
-      "doseSpec": { "amount": 0.5, "unit": "mg", "route": "IM" },
+      "doseSpec": { "amount": 0.3, "upTo": 0.5, "unit": "mg", "route": "IM" },
       "requires": [],
       "risk": "moderate",
       "effects": [
@@ -3224,7 +3224,18 @@
           {
             "all": [
               { "elapsedSince": { "intervened": "adrenaline-im", "gte": 5 } },
-              { "flag": "reassessed-before-repeat" },
+              {
+                "any": [
+                  { "examined": "ex-airway-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-chest-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-circ-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-general-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-airway-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-chest-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-circ-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-general-ed", "afterLast": "adrenaline-im" }
+                ]
+              },
               {
                 "any": [
                   { "vital": "sbp", "op": "lt", "value": 90 },
@@ -3335,7 +3346,7 @@
         "en": ["sit up", "sit upright", "stand up", "sitherup", "upright", "help her stand", "propherup"]
       },
       "requires": [],
-      "risk": "low",
+      "risk": "moderate",
       "critical": true,
       "effects": [
         { "vital": "sbp", "delta": -14, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
@@ -3506,7 +3517,6 @@
         "zh-CN": "沙丁胺醇5 mg 氧气驱动雾化（6–8 L/min），必要时重复",
         "en": "Salbutamol 5 mg nebulised, oxygen-driven (6–8 L/min); repeat if needed"
       },
-      "doseSpec": { "amount": 5, "unit": "mg", "route": "INH" },
       "requires": [
         "nebulizer",
         "oxygen"
@@ -3538,7 +3548,6 @@
         "en": ["cetirizine", "antihistamine", "oral antihistamine", "non-sedating antihistamine", "loratadine", "zyrtec", "fexofenadine"]
       },
       "dose": { "zh-CN": "西替利嗪10 mg 口服（能安全吞咽后）", "en": "Cetirizine 10 mg orally (once she can swallow safely)" },
-      "doseSpec": { "amount": 10, "unit": "mg", "route": "PO" },
       "requires": [],
       "risk": "low",
       "maxDoses": 1,
@@ -3564,7 +3573,6 @@
         "en": ["chlorphenamine", "chlorpheniramine", "piriton", "iv antihistamine", "diphenhydramine", "benadryl"]
       },
       "dose": { "zh-CN": "氯苯那敏10 mg 缓慢静注（≥1分钟）", "en": "Chlorphenamine 10 mg slow IV (over at least 1 min)" },
-      "doseSpec": { "amount": 10, "unit": "mg", "route": "IV" },
       "requires": [
         "iv-access"
       ],
@@ -3590,7 +3598,6 @@
         "en": ["hydrocortisone", "steroid", "steroids", "corticosteroid", "methylprednisolone", "dexamethasone", "prednisolone", "solu-medrol", "iv steroids"]
       },
       "dose": { "zh-CN": "氢化可的松200 mg 缓慢静注", "en": "Hydrocortisone 200 mg slow IV" },
-      "doseSpec": { "amount": 200, "unit": "mg", "route": "IV" },
       "requires": [
         "iv-access"
       ],
@@ -3895,22 +3902,20 @@
         "message": { "zh-CN": "她重新睁开眼睛，能切题对答。", "en": "She opens her eyes and answers appropriately again." }
       },
       {
-        "id": "reassessed-before-repeat",
+        "id": "reassessed-after-adrenaline",
         "when": {
-          "all": [
-            { "intervened": "adrenaline-im" },
-            { "not": { "intervened": "adrenaline-im", "minCount": 2 } },
-            {
-              "any": [
-                { "examined": "ex-airway-treated" },
-                { "examined": "ex-chest-treated" },
-                { "examined": "ex-circ-treated" },
-                { "examined": "ex-general-treated" }
-              ]
-            }
+          "any": [
+            { "examined": "ex-airway-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-chest-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-circ-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-general-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-airway-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-chest-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-circ-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-general-ed", "afterLast": "adrenaline-im" }
           ]
         },
-        "setFlags": ["reassessed-before-repeat"],
+        "setFlags": ["reassessed-after-adrenaline"],
         "severity": "info"
       },
       {
@@ -4618,10 +4623,10 @@
       "domain": "examination",
       "weight": 1,
       "text": {
-        "zh-CN": "首剂后再评估气道、呼吸与循环，据此决定是否重复给药",
-        "en": "Reassessed airway, breathing and circulation after the first dose to decide on a repeat"
+        "zh-CN": "给药后再评估气道、呼吸与循环，据此决定是否重复给药",
+        "en": "Reassessed airway, breathing and circulation after a dose to decide on a repeat"
       },
-      "met": { "flag": "reassessed-before-repeat" }
+      "met": { "flag": "reassessed-after-adrenaline" }
     },
     {
       "id": "r-help-position",
@@ -5078,7 +5083,7 @@
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",
       "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). `collapsed` is entered when the peri-arrest event fires before any adrenaline: history is phase-locked except `status-collapsed` (she can only groan), and general/circulation/neurological findings switch to peri-arrest variants; the first IM dose leaves it for `treated` (or `ed-resus` after a deferred transfer). Symptom questions re-asked in `ed` are answered by the `now-*-ed` phase twins (`supersedes` the garden-time `hpi-*` items, which keep only `scene`/`treated`/`ed-resus` because their present-tense answers no longer hold), so the patient never describes resolved symptoms as current; asking a twin credits the `hpi-*` items it supersedes (required history included) without revealing their stale answers. ECG/imaging/blood gas exist only in the ED phases.",
-      "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-before-repeat` marks a treated-phase reassessment between the first and second IM dose (scored by r-adr-reassess). A repeat dose is 'indicated' only at least 5 minutes after the last dose (`elapsedSince`), after that reassessment, while SBP < 90, SpO₂ < 94 or RR > 24; r-adr-repeat counts only doses given while indicated (`whenIndicated`, `minCount: 2`), so a repeat at 1.5 minutes, or in a patient who has improved, earns nothing. Critical interventions (the safety outcome fails): the IV bolus, sitting her up while hypotensive, walking her."
+      "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-after-adrenaline` marks the first airway, breathing or circulation reassessment after an IM dose (scored by r-adr-reassess). A repeat dose is 'indicated' only at least 5 minutes after the last dose (`elapsedSince`), after a reassessment made since that dose (`{ examined, afterLast }`: one made before it does not count), while SBP < 90, SpO₂ < 94 or RR > 24; r-adr-repeat counts only doses given while indicated (`whenIndicated`, `minCount: 2`), so a repeat at 1.5 minutes, or in a patient who has improved, earns nothing. Critical interventions (the safety outcome fails): the IV bolus, sitting her up while hypotensive, walking her."
     }
   }
 }

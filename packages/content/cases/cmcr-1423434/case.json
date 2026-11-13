@@ -2324,7 +2324,6 @@
         "zh-CN": "胺碘酮 0.2 g口服，每日1次。",
         "en": "Amiodarone 0.2 g orally once daily."
       },
-      "doseSpec": { "amount": 0.2, "unit": "g", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -2410,7 +2409,7 @@
       "requires": [
         "medications"
       ],
-      "risk": "low",
+      "risk": "moderate",
       "critical": true,
       "contraindicatedWhen": {
         "any": [

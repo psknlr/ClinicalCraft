@@ -383,10 +383,14 @@ edition and URL were confirmed by the audit, its publication year was not.
 
 ### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
 
-- **Critical safety failure (audit P0-3).** External cephalic version with an abnormal CTG is `critical: true`
+- **Critical safety failures (audit P0-3).** External cephalic version with an abnormal CTG is `critical: true`
   (manipulating a baby who may already be anaemic and hypoxic; obstetric procedures are among the causes of
-  fetomaternal haemorrhage the report lists); `r-safety-delay` was already a critical rubric item. `emergency-cs`
-  before the CTG has been read is `critical: false` (a sequencing guard). Scores are unchanged.
+  fetomaternal haemorrhage the report lists), and so is sending her home with a repeat CTG in a week
+  (`reassure-home`): reduced movements at term with an abnormal CTG need prompt assessment and delivery (RCOG
+  GTG 57), and going home to wait risks a stillbirth. Giving either fails the safety outcome shown beside the score;
+  `r-safety-delay` was already a critical rubric item and names both. Induction stays non-critical (it delays the
+  birth, but she stays on the labour ward). `emergency-cs` before the CTG has been read is `critical: false` (a
+  sequencing guard). Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

@@ -16,7 +16,7 @@
  * latched — the engine's `monitorAttached` and the world's monitor state
  * `attached`.
  */
-import { narrateAction, traceJsonl, type ClinicalSession } from "@clinicalcraft/agent";
+import { narrateAction, safetyHeadline, traceJsonl, type ClinicalSession } from "@clinicalcraft/agent";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { assignPatientSlot, conditionRefs, evaluate, historyCredited, monitorAttached, t, type AssessmentReport, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
 import { DefaultSpatialPolicy, PRIMARY_ACTOR, type ClinicalIntent, type EpisodeTrace, type SpatialRequirement, type TraceSpan } from "@clinicalcraft/world";
@@ -59,7 +59,10 @@ export interface DemoStep {
 }
 
 export interface DemoResult {
-  /** Every step confirmed, the case finished, no spatial violation and no unauthorised act accepted. */
+  /**
+   * Every step confirmed, the case finished, no spatial violation and no unauthorised act accepted, and the final
+   * assessment's safety outcome not failed (docs/PROTOCOL.md §3.2).
+   */
   ok: boolean;
   unconfirmed: number;
   steps: DemoStep[];
@@ -171,15 +174,16 @@ export function confirmAction(session: ClinicalSession, action: ClinicalAction |
   }
 }
 
-/** The one-line verdict of a demonstration (localised). */
-export function demoVerdict(r: Pick<DemoResult, "ok" | "unconfirmed" | "audit" | "finished">, locale: string): string {
+/** The one-line verdict of a demonstration (localised); a failed safety outcome is named after it. */
+export function demoVerdict(r: Pick<DemoResult, "ok" | "unconfirmed" | "audit" | "finished"> & { report?: Pick<AssessmentReport, "safety"> | null }, locale: string): string {
   if (r.ok) return bm(locale, "demo.verdict.ok");
-  return bm(locale, "demo.verdict.fail", {
+  const verdict = bm(locale, "demo.verdict.fail", {
     n: r.unconfirmed,
     finished: bm(locale, r.finished ? "report.yes" : "report.no"),
     violations: r.audit.spatial.violations.length,
     unauthorised: r.audit.authorisation.unauthorised.length,
   });
+  return r.report?.safety.passed === false ? `${verdict} ${safetyHeadline(r.report.safety, locale)}` : verdict;
 }
 
 /** Run the demonstration (see the module docs). */
@@ -210,7 +214,8 @@ export async function runDemo(o: DemoOptions): Promise<DemoResult> {
     const audit = auditor.finish(base);
     const steps = buildSteps(session, base, recorder, approvalAt, o.locale);
     const unconfirmed = steps.filter((s) => !s.confirmed).length;
-    const ok = steps.length > 0 && unconfirmed === 0 && session.state.finished && audit.spatial.violations.length === 0 && audit.authorisation.unauthorised.length === 0;
+    // never PASSED when the final assessment's safety outcome did not pass (docs/PROTOCOL.md §3.2)
+    const ok = steps.length > 0 && unconfirmed === 0 && session.state.finished && audit.spatial.violations.length === 0 && audit.authorisation.unauthorised.length === 0 && report?.safety.passed !== false;
     const last = base.spans.at(-1);
     const assessment: TraceSpan = {
       id: "bench-assessment",
@@ -232,7 +237,14 @@ export async function runDemo(o: DemoOptions): Promise<DemoResult> {
         spatialAudit: { audited: audit.spatial.audited, violations: audit.spatial.violations.length },
         authorisationAudit: { audited: audit.authorisation.audited, unauthorised: audit.authorisation.unauthorised.length },
         approvals: recorder.approvals.length,
-        ...(report ? { score: report.score, objectives: { done: report.objectives.filter((x) => x.done).length, total: report.objectives.length }, contraindicated: report.safety.contraindicated.length } : {}),
+        ...(report
+          ? {
+              score: report.score,
+              safety: { passed: report.safety.passed, criticalFailures: report.safety.criticalFailures.length, doseErrors: report.safety.doseErrors.length },
+              objectives: { done: report.objectives.filter((x) => x.done).length, total: report.objectives.length },
+              contraindicated: report.safety.contraindicated.length,
+            }
+          : {}),
       },
     };
     const trace: EpisodeTrace = { ...base, spans: [...base.spans, assessment] };
@@ -330,7 +342,7 @@ function demoMarkdown(m: MarkdownInput): string {
   out.push(bm(L, "demo.meta", { caseId: c.id, facilityId: m.session.facility?.id ?? "—", locale: L, commit: commitLabel(m.environment, bm(L, "report.dirty")), date: m.date.toISOString() }), "");
   out.push(bm(L, "demo.intro"), "");
   out.push(`## ${bm(L, "demo.summary")}`, "");
-  out.push(`- ${demoVerdict({ ok: m.ok, unconfirmed: m.unconfirmed, audit: m.audit, finished: m.session.state.finished }, L)}`);
+  out.push(`- ${demoVerdict({ ok: m.ok, unconfirmed: m.unconfirmed, audit: m.audit, finished: m.session.state.finished, report: m.report }, L)}`);
   const actionSpans = m.trace.spans.filter((s) => (s.kind === "navigation" || s.kind === "interaction") && s.refs.actionId);
   out.push(`- ${bm(L, "demo.stats", { steps: m.steps.length, spans: m.trace.spans.length, actions: actionSpans.length, version: world?.version ?? 0, minutes: Math.round(m.session.state.clock * 100) / 100 })}`);
   out.push(`- ${bm(L, "demo.refused", { n: actionSpans.filter((s) => !s.ok).length })}`);
@@ -382,6 +394,7 @@ function demoMarkdown(m: MarkdownInput): string {
   if (m.report) {
     const r = m.report;
     out.push(`- ${bm(L, "demo.score", { earned: r.score.earned, possible: r.score.possible, percent: r.score.percent })}`);
+    out.push(`- ${safetyHeadline(r.safety, L)}`);
     out.push(`- ${bm(L, "demo.objectives", { done: r.objectives.filter((x) => x.done).length, total: r.objectives.length })}`);
     out.push(`- ${bm(L, "demo.decisions", { first: r.decisions.filter((d) => d.firstTryCorrect).length, total: r.decisions.length })}`);
     out.push(`- ${bm(L, "demo.safety", { n: r.safety.contraindicated.length })}`);

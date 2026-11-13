@@ -450,6 +450,42 @@ describe("verifyCase: the reference path gives nothing while contraindicated", (
     gated.safetyGates = [{ id: "no-airway-check", label: "Airway never assessed", when: { not: { examined: "chest" } }, verdict: "safety-critical" }];
     expect(verifyCase(gated).issues).toEqual([{ path: "safetyGates.0", message: 'the safety-critical gate "no-airway-check" holds at the end of the reference path', severity: "error" }]);
   });
+
+  it("errorRecovery is narrow: it excuses only the gate its own error sets off, never a dose error", () => {
+    const errorRecovery = { interventions: ["beta-blocker"], rationale: { en: "Recognise and reverse the beta-blocker's harm.", "zh-CN": "识别并纠正β受体阻滞剂的危害。" } };
+    const gates: CaseDefinition["safetyGates"] = [
+      // set off by the declared error: its `when` names the declared intervention
+      { id: "beta-given", label: "A beta-blocker in anaphylaxis", when: { intervened: "beta-blocker" }, verdict: "safety-critical" },
+      // unrelated to it
+      { id: "no-airway-check", label: "Airway never assessed", when: { not: { examined: "chest" } }, verdict: "safety-critical" },
+    ];
+    const r = verifyCase(withBeta((c) => ((c.errorRecovery = errorRecovery), (c.safetyGates = gates))));
+    expect(r.ok).toBe(false);
+    expect(r.issues).toEqual([
+      { path: "safetyGates.0", message: 'the safety-critical gate "beta-given" holds at the end of the reference path, set off by an error errorRecovery declares', severity: "warning" },
+      { path: "safetyGates.1", message: 'the safety-critical gate "no-airway-check" holds at the end of the reference path', severity: "error" },
+    ]);
+    // a gate on a flag the declared intervention sets is its consequence too
+    const flagged = verifyCase(
+      withBeta((c) => {
+        c.errorRecovery = errorRecovery;
+        c.interventions.find((i) => i.id === "beta-blocker")!.setFlags = ["beta-blocked"];
+        c.safetyGates = [{ id: "beta-flag", label: "Beta-blocked", when: { flag: "beta-blocked" }, verdict: "safety-critical" }];
+      }),
+    );
+    expect(flagged.issues).toEqual([{ path: "safetyGates.0", message: expect.stringContaining("set off by an error errorRecovery declares"), severity: "warning" }]);
+    expect(flagged.ok).toBe(true);
+    // a dose error is never excused, even of a declared intervention
+    const dosed = withBeta((c) => {
+      c.errorRecovery = errorRecovery;
+      const iv = c.interventions.find((i) => i.id === "beta-blocker")!;
+      iv.doseSpec = { amount: 5, unit: "mg", route: "IV" };
+      c.solution = [...c.solution.slice(0, -2), { type: "intervene", interventionId: "beta-blocker", ordered: { text: "metoprolol 50 mg IV" } }, { type: "finish" }];
+    });
+    const d = verifyCase(dosed);
+    expect(d.ok).toBe(false);
+    expect(d.issues.filter((i) => i.severity === "error").map((i) => i.message)).toEqual([expect.stringMatching(/^the dose ordered for "beta-blocker" \(50 mg IV\) conflicts with its preset \(5 mg IV\): it was not given — a critical dose error$/)]);
+  });
 });
 
 describe("checkCaseIntegrity: critical interventions, preset doses, elapsedSince, errorRecovery", () => {

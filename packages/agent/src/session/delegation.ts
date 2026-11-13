@@ -13,7 +13,10 @@
  * reset), `obtain_iv_access` (the case's IV-access procedure),
  * `fetch_equipment` (a cart, by id or capability, to the bedside),
  * `give_intervention` (`params.intervention`, fetching what must stand at
- * the bedside), `transport_patient` (the target or `params.destination` —
+ * the bedside; `params.order` — the order as said — and `params.dose` state
+ * the dose, checked against the dose prepared: a dose that differs is not
+ * given, the result's `doseError` says what was read back; one that is not
+ * clear is not given either, `doseQuery` says what was asked), `transport_patient` (the target or `params.destination` —
  * a device, a bed space or room, `home` — or `params.capability`: the staff
  * member walks to the patient and wheels them there; porters and nurses),
  * `hold_traction` (`params.port`: a doctor walks to the operating table and
@@ -27,6 +30,7 @@ import { monitorAttached, t, type CaseDefinition, type SessionState } from "@cli
 import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
+import type { DoseErrorEvent, doseQueryData } from "../tools/dose-order.js";
 import { checkTaskScope } from "../tools/scope.js";
 import { spatialCodeOf } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
@@ -86,6 +90,16 @@ export interface DelegationResult {
   letGo?: { port: string; instrument: string }[];
   /** `hold_traction`: the port taken and its instrument. */
   holding?: { port: string; instrument: string };
+  /**
+   * `give_intervention`: the order's dose differed from the dose prepared (core `dose.error`) — nothing given; the
+   * colleague reads the order back (docs/PROTOCOL.md §3.2).
+   */
+  doseError?: Omit<DoseErrorEvent, "type">;
+  /**
+   * `give_intervention`: the order's dose was not clear (core `dose-unclear`: it cannot be read or compared) — nothing
+   * given, no dose error; the colleague asks for the dose as a number with its unit.
+   */
+  doseQuery?: ReturnType<typeof doseQueryData>;
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -205,7 +219,9 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   const clinical = async (tool: string, toolArgs: Record<string, unknown>): Promise<boolean> => {
     for (let attempt = 0; attempt < 2; attempt++) {
       const call = await h.runTool(caller, tool, toolArgs, { actorId: staff });
-      const d = call.output.data as { hint?: { goal: NavGoal } | null; reason?: string; rejected?: { code?: string } } | undefined;
+      const d = call.output.data as { hint?: { goal: NavGoal } | null; reason?: string; rejected?: { code?: string }; doseError?: DelegationResult["doseError"]; doseQuery?: DelegationResult["doseQuery"] } | undefined;
+      if (d?.doseError) result.doseError = d.doseError;
+      if (d?.doseQuery) result.doseQuery = d.doseQuery;
       const code = spatialCodeOf(call.output) ?? d?.rejected?.code ?? (call.ok ? undefined : call.status.toUpperCase());
       result.steps.push({ operation: tool, target: String(Object.values(toolArgs)[0] ?? ""), status: call.ok ? "completed" : call.status === "cancelled" || call.status === "interrupted" ? "cancelled" : "failed", ...(code ? { code } : {}), message: call.output.output.split("\n")[0] ?? "" });
       if (call.ok) return true;
@@ -350,8 +366,13 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         const given = () => h.state().interventions.filter((x) => x.interventionId === id && !x.invalid).length;
         const before = given();
         if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
-        const ok = (await clinical("intervene", { intervention_id: id })) && given() > before;
+        // the order as said and its dose (checked against the dose prepared), when the request stated them
+        const order = strArg(params, "order");
+        const dose = strArg(params, "dose");
+        const ok = (await clinical("intervene", { intervention_id: id, ...(order ? { query: order } : {}), ...(dose ? { dose } : {}) })) && given() > before;
         verify(`intervened ${id}`, ok);
+        if (result.doseError) return finish("failed", "dose-error");
+        if (result.doseQuery) return finish("failed", "dose-unclear");
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
     }

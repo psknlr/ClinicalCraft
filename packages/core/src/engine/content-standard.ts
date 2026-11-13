@@ -24,13 +24,16 @@
  * | a test utterance is not one of its expected item's keywords | `extensions.testUtterances.<i>` |
  * | every specialty id is canonical (`CANONICAL_SPECIALTIES`); a synonym's warning names its replacement | `specialty.<i>` |
  * | a high-risk intervention with a `contraindicatedWhen` says whether giving it then is a critical safety failure (`critical: true` or `false`) | `interventions.<i>.critical` |
- * | a preset dose (`doseSpec`) states the dose its `dose` text states (the text's first dose and its route, where both can be compared) | `interventions.<i>.doseSpec` |
+ * | a critical intervention is not low- or no-risk (its badge and confirmation say what it can do) | `interventions.<i>.risk` |
+ * | a preset dose (`doseSpec`) states the dose its `dose` text states (the text's first dose, in a unit that can be compared, and its route), and a name or alias that states a dose, typed as an order, is given (the preset's dose, one dose with its unit) | `interventions.<i>.doseSpec` |
+ * | a high-alert medication (an insulin, potassium, a heparin, an opioid, a thrombolytic) whose `dose` text states exactly one dose (one amount or one range) has a preset dose (`doseSpec`), so an order's dose is checked — the warning names the preset to add | `interventions.<i>.doseSpec` |
  */
 import type { CaseDefinition, Decision, HistoryItem } from "../schema/case.js";
 import { PERSONAL_KIT, type Condition } from "../schema/common.js";
 import { hasLocale, t, tList, type LocalizedText } from "../i18n.js";
 import { canonicalSpecialty, isCanonicalSpecialty } from "../specialties.js";
-import { compareDose, doseMentions, doseRoute, formatDose } from "./dose.js";
+import { checkOrder, compareDose, formatDose } from "./dose.js";
+import { doseMentions, doseRoute } from "./dose-read.js";
 import { createSession } from "./reducer.js";
 import { historyVoice } from "./speech.js";
 import { compactText } from "./text.js";
@@ -528,9 +531,23 @@ function checkCriticalDecided(c: CaseDefinition): Issue[] {
 }
 
 /**
- * The preset dose and the `dose` text state the same dose: the text's first dose (an amount or a range) against
- * `[amount, upTo]` — where their units can be compared, through the patient's weight for a dose per kg — and its
- * route, when the text names exactly one.
+ * A critical intervention is the case's dangerous error: its risk is never `none` or `low` — the treatment list's badge
+ * and the confirmation (moderate and high risk ask) say what it can do.
+ */
+function checkCriticalRisk(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) =>
+    iv.critical === true && (iv.risk === "none" || iv.risk === "low")
+      ? [warn(`interventions.${i}.risk`, `critical intervention "${iv.id}" is ${iv.risk} risk: giving it while contraindicated is a critical safety failure — set its risk to moderate or high (the learner is asked to confirm it, and its badge says so)`)]
+      : [],
+  );
+}
+
+/**
+ * The preset dose and what the item states: the `dose` text's first dose against `[amount, upTo]` — a single dose lies
+ * within it (the preset may span the doses the cited guidelines allow around the dose the text gives: aspirin 300 mg,
+ * preset 150–325 mg), a range has the preset's ends; through the patient's weight for a dose per kg; a unit that cannot
+ * be compared is a mismatch too — and its route when the text names exactly one; and any dose its name or aliases
+ * state (as an order would read them: a learner who types one is checked against the preset).
  */
 function checkDoseSpecs(c: CaseDefinition): Issue[] {
   const issues: Issue[] = [];
@@ -544,20 +561,56 @@ function checkDoseSpecs(c: CaseDefinition): Issue[] {
       const text = t(iv.dose, l);
       const first = doseMentions(text)[0];
       const route = doseRoute(text);
-      const amountDiffers =
-        first != null &&
-        [compareDose({ amount: first.amount, unit: first.unit }, bottom, c.patient.weightKg), compareDose({ amount: first.upTo ?? first.amount, unit: first.unit }, top, c.patient.weightKg)].some((r) =>
-          r.conflicts.includes("amount"),
-        );
+      const ends = !first
+        ? []
+        : first.upTo == null
+          ? [compareDose({ amount: first.amount, unit: first.unit }, spec, c.patient.weightKg)]
+          : [compareDose({ amount: first.amount, unit: first.unit }, bottom, c.patient.weightKg), compareDose({ amount: first.upTo, unit: first.unit }, top, c.patient.weightKg)];
+      const amountDiffers = ends.some((r) => r.conflicts.includes("amount") || r.conflicts.includes("unit"));
       const said = [
-        ...(amountDiffers ? [formatDose({ amount: first.amount, upTo: first.upTo, unit: first.unit })] : []),
+        ...(amountDiffers && first ? [formatDose({ amount: first.amount, upTo: first.upTo, unit: first.unit })] : []),
         ...(route && spec.route && route !== spec.route ? [route] : []),
       ];
       return said.length ? [`${l}: ${said.join(", ")}`] : [];
     });
     if (differ.length) issues.push(warn(`interventions.${i}.doseSpec`, `the preset dose of "${iv.id}" (${formatDose(spec)}) is not what its dose text states (${differ.join("; ")}): make them say the same dose`));
+    // a name or an alias that states a dose: typed as an order, it must be given — the preset's dose, read clearly
+    const named = [...localesOf(c, iv.name).flatMap((l) => [t(iv.name, l), ...tList(iv.aliases, l)])].filter((words) => checkOrder({ text: words }, iv, c.patient.weightKg).outcome !== "given");
+    if (named.length) issues.push(warn(`interventions.${i}.doseSpec`, `"${iv.id}" is named with a dose that is not its preset (${formatDose(spec)}), or one that cannot be checked against it: ${named.map((x) => `"${x}"`).join(", ")} — typed as an order it would not be given; name the preset's dose (one dose, with its unit), or none`));
   });
   return issues;
+}
+
+/** High-alert medications (ISMP): insulins, potassium, heparins, opioids, thrombolytics — by the item's name. */
+const HIGH_ALERT =
+  /insulin|\bpotassium\b(?![\s-]*sparing)|\bkcl\b|heparin|enoxaparin|dalteparin|tinzaparin|\blmwh\b|\bufh\b|morphine|fentanyl|oxycodone|hydromorphone|pethidine|meperidine|diamorphine|methadone|opioid|alteplase|tenecteplase|reteplase|streptokinase|urokinase|thromboly|fibrinoly|胰岛素|氯化钾|磷酸钾|补钾|肝素|吗啡|芬太尼|羟考酮|氢吗啡酮|哌替啶|美沙酮|阿片|阿替普酶|替奈普酶|瑞替普酶|尿激酶|链激酶|溶栓/iu;
+
+/**
+ * A high-alert medication whose `dose` text states exactly one dose — one amount, or one range — has a preset
+ * (`doseSpec`), so that a free-text order's dose (a tenfold insulin rate, a heparin bolus in the tens of thousands) is
+ * checked, never given as written. A text that states several doses — a bolus then an infusion, a schedule,
+ * alternatives — is exempt: no single preset says it (split the item if each dose matters), and no author is pushed to
+ * invent one. One that is never given right (contraindicated always) is exempt too. The warning names the preset to
+ * add, as the text states it.
+ */
+function checkHighAlertDoseSpecs(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) => {
+    if (iv.kind !== "medication" || iv.doseSpec) return [];
+    const always = iv.contraindicatedWhen != null && "always" in iv.contraindicatedWhen && iv.contraindicatedWhen.always;
+    if (always || !localesOf(c, iv.name).some((l) => HIGH_ALERT.test(t(iv.name, l)))) return [];
+    const texts = localesOf(c, iv.dose).map((l) => t(iv.dose, l));
+    const each = texts.map((text) => ({ mentions: doseMentions(text), route: doseRoute(text) }));
+    if (!each.length || each.some((x) => x.mentions.length !== 1)) return [];
+    const { mentions, route } = each[0]!;
+    const m = mentions[0]!;
+    const spec = { amount: m.amount, ...(m.upTo != null ? { upTo: m.upTo } : {}), unit: m.unit, ...(route ? { route } : {}) };
+    return [
+      warn(
+        `interventions.${i}.doseSpec`,
+        `high-alert medication "${iv.id}" states one dose (${formatDose(spec)}) but has no preset dose: an order's dose is not checked — a tenfold one would be given; add "doseSpec": ${JSON.stringify(spec)}${route ? "" : ' (with its "route")'}, widened with "upTo" to every dose the case's cited guidance allows`,
+      ),
+    ];
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -586,6 +639,8 @@ export function checkContentStandard(c: CaseDefinition): Issue[] {
     ...checkKeywordUtterances(c),
     ...checkSpecialties(c),
     ...checkCriticalDecided(c),
+    ...checkCriticalRisk(c),
     ...checkDoseSpecs(c),
+    ...checkHighAlertDoseSpecs(c),
   ];
 }
