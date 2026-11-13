@@ -15,7 +15,7 @@ feedback and the debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653403` / `1.1.1` |
+| id / version | `cmcr-1653403` / `1.1.2` |
 | setting / facility | `outpatient` / `general-hospital` (antenatal clinic → operating theatre → ward) |
 | specialty | obstetrics, neonatology |
 | difficulty | 3 / 5 |
@@ -180,7 +180,9 @@ Replays of the reference path with changes (`paths.ts`, 2026-10-28):
 | every decision guessed wrong once | 13/23 (57 %) |
 
 Contraindicated: `reassure-home`, `ecv`, `induction` and `anti-d` (always);
-`emergency-cs` before the CTG has been read.
+`emergency-cs` before the CTG has been read. Since 1.1.2 `ecv` is `critical`: the version path above (19/23) also
+fails the assessment's safety outcome (`safety.passed: false`), which every debrief and export shows beside the
+score; the other contraindicated steps are recoverable.
 
 ## Reference path (`solution`)
 
@@ -378,6 +380,13 @@ edition and URL were confirmed by the audit, its publication year was not.
   guideline (ERC/AHA) is cited; a reviewer may add them.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** External cephalic version with an abnormal CTG is `critical: true`
+  (manipulating a baby who may already be anaemic and hypoxic; obstetric procedures are among the causes of
+  fetomaternal haemorrhage the report lists); `r-safety-delay` was already a critical rubric item. `emergency-cs`
+  before the CTG has been read is `critical: false` (a sequencing guard). Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

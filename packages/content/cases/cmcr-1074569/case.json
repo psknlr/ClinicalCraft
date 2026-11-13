@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1074569",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "体检发现肝多发占位 · 55岁女性",
     "en": "Multiple liver lesions found at a health check · 55-year-old woman"
@@ -2628,6 +2628,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2675,6 +2676,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 3,
       "indicatedWhen": {
         "any": [

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction, DomainEvent, SessionState } from "../schema/session.js";
-import { availableDecisions, createSession, currentWaypoint, evaluate, orderStatus, parseCase, progress, reduce, replay, resultFor, resultKey } from "./index.js";
+import { assess, availableDecisions, createSession, currentWaypoint, evaluate, orderStatus, parseCase, parseDose, progress, reduce, replay, resultFor, resultKey } from "./index.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
 
@@ -566,5 +566,129 @@ describe("intervened whenIndicated: an act counted only when given while indicat
     s = reduce(SIM, s, { type: "intervene", interventionId: "epi" }).state;
     expect(evaluate(SIM, s, inTime)).toBe(true);
     expect(evaluate(SIM, s, { ...inTime, minCount: 2 })).toBe(false);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The order as written: its dose against the preset (audit P0-2)      */
+/* ------------------------------------------------------------------ */
+
+describe("intervene with the order as written: its dose against the preset", () => {
+  /** The fixture with adrenaline's preset dose machine-readable: 0.5 mg IM. */
+  const withPreset = (() => {
+    const json = structuredClone(fixture("mini-anaphylaxis.case.json")) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    json.interventions.find((i: { id: string }) => i.id === "epi").doseSpec = { amount: 0.5, unit: "mg", route: "IM" };
+    return loadJson(json);
+  })();
+  const started = play(withPreset, [{ type: "start" }]).state;
+  const order = (text: string): ClinicalAction => ({ type: "intervene", interventionId: "epi", ordered: { text, ...(parseDose(text) ? { dose: parseDose(text)! } : {}) } });
+
+  it("gives an equivalent dose in other units, recorded with the order as written", () => {
+    const { state, events } = play(withPreset, [order("IM adrenaline 500 micrograms")], started);
+    expect(state.interventions).toEqual([
+      { interventionId: "epi", at: 0, appropriateness: "neutral", seq: 2, ordered: { text: "IM adrenaline 500 micrograms", dose: { amount: 500, unit: "microgram", route: "IM" } } },
+    ]);
+    expect(ofType(events, "dose.error")).toEqual([]);
+    expect(state.doseErrors).toBeUndefined();
+    expect(ofType(events, "intervention.applied")).toEqual([{ type: "intervention.applied", interventionId: "epi", appropriateness: "neutral" }]);
+  });
+
+  it("does not give a tenfold dose: a critical dose error, kept for the debrief (English and Chinese orders alike)", () => {
+    for (const text of ["IM adrenaline 5 mg", "肌注肾上腺素 5 mg"]) {
+      const r = reduce(withPreset, started, order(text));
+      expect(r.rejected).toBeUndefined();
+      expect(r.state.interventions).toEqual([]);
+      expect(r.state.clock).toBe(2); // the nurse's query took the time of the act
+      const error = { interventionId: "epi", text, ordered: { amount: 5, unit: "mg", route: "IM" }, preset: { amount: 0.5, unit: "mg", route: "IM" }, ratio: 10, conflicts: ["amount"], severity: "critical" };
+      expect(ofType(r.events, "dose.error")).toEqual([{ type: "dose.error", ...error }]);
+      expect(ofType(r.events, "intervention.applied")).toEqual([]);
+      expect(r.state.doseErrors).toEqual([{ ...error, at: 0, seq: 2 }]);
+      // nothing given: no effect, no flag, no dose used; the safety outcome fails, the score does not move
+      const report = assess(withPreset, r.state);
+      expect(report.safety).toMatchObject({ passed: false, criticalFailures: [], doseErrors: [{ ...error, at: 0 }] });
+      expect(evaluate(withPreset, r.state, { intervened: "epi" })).toBe(false);
+      const corrected = play(withPreset, [order("IM adrenaline 0.5 mg"), { type: "intervene", interventionId: "epi" }], r.state).state;
+      expect(corrected.interventions.map((x) => x.interventionId)).toEqual(["epi", "epi"]); // maxDoses 2: both still available
+    }
+  });
+
+  it("does not give another route; a dose error that is not critical leaves the safety outcome passed", () => {
+    const r = reduce(withPreset, started, order("IV adrenaline 0.5 mg"));
+    expect(ofType(r.events, "dose.error")).toMatchObject([{ ratio: 1, conflicts: ["route"], severity: "warning" }]);
+    expect(r.state.interventions).toEqual([]);
+    expect(assess(withPreset, r.state).safety).toMatchObject({ passed: true, doseErrors: [{ conflicts: ["route"], severity: "warning" }] });
+    // a volume cannot be checked against a mass: not given either
+    expect(ofType(reduce(withPreset, started, order("adrenaline 0.5 mL IM")).events, "dose.error")).toMatchObject([{ ratio: null, conflicts: ["unit"] }]);
+  });
+
+  it("an order without a dose, or an intervention without a preset, gives the preset as before", () => {
+    const { state } = play(withPreset, [order("give the adrenaline now")], started);
+    expect(state.interventions).toEqual([{ interventionId: "epi", at: 0, appropriateness: "neutral", seq: 2, ordered: { text: "give the adrenaline now" } }]);
+    // the fixture's own adrenaline has no doseSpec: the stated dose is kept, not checked
+    const unchecked = play(SIM, [{ type: "start" }, order("IM adrenaline 5 mg")]).state;
+    expect(unchecked.interventions.map((x) => [x.interventionId, x.ordered?.dose])).toEqual([["epi", { amount: 5, unit: "mg", route: "IM" }]]);
+    expect(unchecked.doseErrors).toBeUndefined();
+  });
+
+  it("rejects a malformed order (an amount without its unit)", () => {
+    expectRejected(withPreset, started, { type: "intervene", interventionId: "epi", ordered: { text: "adrenaline 5", dose: { amount: 5 } } } as unknown as ClinicalAction, "invalid");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Time since a dose (audit P1-4)                                      */
+/* ------------------------------------------------------------------ */
+
+describe("elapsedSince: minutes since an intervention was last given", () => {
+  const since = (gte?: number, lte?: number) => ({ elapsedSince: { intervened: "epi", ...(gte != null ? { gte } : {}), ...(lte != null ? { lte } : {}) } });
+
+  it("is false while never given, then measures from the last dose", () => {
+    let s = play(SIM, [{ type: "start" }]).state;
+    expect(evaluate(SIM, s, since(0))).toBe(false);
+    expect(evaluate(SIM, s, { not: since(0) })).toBe(true);
+    s = play(SIM, [{ type: "intervene", interventionId: "epi" }, { type: "advance-time", minutes: 2.9 }], s).state; // dose at 0, clock 4.9
+    expect(s.clock).toBe(4.9);
+    expect(evaluate(SIM, s, since(5))).toBe(false);
+    expect(evaluate(SIM, s, since(undefined, 5))).toBe(true);
+    s = play(SIM, [{ type: "advance-time", minutes: 0.1 }], s).state;
+    expect(evaluate(SIM, s, since(5))).toBe(true);
+    expect(evaluate(SIM, s, since(5, 5))).toBe(true);
+    s = play(SIM, [{ type: "intervene", interventionId: "epi" }], s).state; // second dose at 5: the clock restarts from it
+    expect(evaluate(SIM, s, since(5))).toBe(false);
+    expect(evaluate(SIM, s, since(2))).toBe(true);
+  });
+
+  it("opens a scenario event's window at its exact minute, after a fractional dose time", () => {
+    const json = structuredClone(fixture("mini-anaphylaxis.case.json")) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    json.clock.actionCosts.examine = 1.5;
+    json.physiology.events.push({ id: "reassess-due", when: since(5), setFlags: ["reassess-due"], severity: "info" });
+    const c = loadJson(json);
+    const { state } = play(c, [{ type: "start" }, { type: "examine", findingId: "airway" }, { type: "intervene", interventionId: "epi" }, { type: "advance-time", minutes: 10 }]);
+    expect(state.interventions.map((r) => r.at)).toEqual([1.5]);
+    expect(state.firedEvents["reassess-due"]).toBe(6.5);
+  });
+
+  it("with whenIndicated, counts a repeat dose 5 minutes after the last while still compromised — not at 1.5, not once improved", () => {
+    const json = structuredClone(fixture("mini-anaphylaxis.case.json")) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    Object.assign(json.clock.actionCosts, { intervene: 1, examine: 0.5 });
+    // the first dose; a repeat only ≥ 5 min after the last one, after a reassessment, while still compromised
+    json.interventions.find((i: { id: string }) => i.id === "epi").indicatedWhen = {
+      any: [{ not: { intervened: "epi" } }, { all: [since(5), { examined: "airway" }, { flag: "still-compromised" }] }],
+    };
+    const c = loadJson(json);
+    const repeatInTime = { intervened: "epi", whenIndicated: true, minCount: 2 } as const;
+    const first: ClinicalAction[] = [{ type: "start" }, { type: "flag", flag: "still-compromised" }, { type: "intervene", interventionId: "epi" }, { type: "examine", findingId: "airway" }];
+    // the audit's sequence: dose at 0, reassess, dose again at 1.5
+    const early = play(c, [...first, { type: "intervene", interventionId: "epi" }]).state;
+    expect(early.interventions.map((r) => [r.at, r.appropriateness])).toEqual([[0, "indicated"], [1.5, "neutral"]]);
+    expect(evaluate(c, early, repeatInTime)).toBe(false);
+    // at 5 minutes, still compromised
+    const onTime = play(c, [...first, { type: "advance-time", minutes: 3.5 }, { type: "intervene", interventionId: "epi" }]).state;
+    expect(onTime.interventions.map((r) => [r.at, r.appropriateness])).toEqual([[0, "indicated"], [5, "indicated"]]);
+    expect(evaluate(c, onTime, repeatInTime)).toBe(true);
+    // at 5 minutes, but the patient has improved
+    const improved = play(c, [...first, { type: "flag", flag: "still-compromised", value: false }, { type: "advance-time", minutes: 3.5 }, { type: "intervene", interventionId: "epi" }]).state;
+    expect(improved.interventions.map((r) => [r.at, r.appropriateness])).toEqual([[0, "indicated"], [5, "neutral"]]);
+    expect(evaluate(c, improved, repeatInTime)).toBe(false);
   });
 });

@@ -33,7 +33,7 @@ describe("assess", () => {
       exam: { performed: 0, required: 1, requiredPerformed: 0, missingRequired: ["abdomen"] },
       investigations: { ordered: 8, essentialMissing: ["marrow"], lowValue: [], harmful: [], unread: [] },
       decisions: ["diagnosis", "safety", "genetics", "response"].map((id) => ({ id, firstTryCorrect: true, attempts: 1, decided: true })),
-      safety: { contraindicated: [], criticalAlarms: 0 },
+      safety: { contraindicated: [], criticalAlarms: 0, passed: true, criticalFailures: [], doseErrors: [] },
       rubric: [
         { id: "r-history", domain: "history", weight: 2, met: true },
         { id: "r-biopsy", domain: "investigations", weight: 2, met: true },
@@ -76,7 +76,8 @@ describe("assess", () => {
         { id: "dx", firstTryCorrect: false, attempts: 2, decided: true },
         { id: "disposition", firstTryCorrect: false, attempts: 0, decided: false },
       ],
-      safety: { contraindicated: [{ interventionId: "beta-blocker", at: 0 }], criticalAlarms: 3 },
+      // contraindicated, but the fixture does not mark the beta-blocker critical: the safety outcome still passes
+      safety: { contraindicated: [{ interventionId: "beta-blocker", at: 0 }], criticalAlarms: 3, passed: true, criticalFailures: [], doseErrors: [] },
       score: { earned: 1, possible: 6, percent: 17 },
     });
     expect(report.objectives).toEqual([
@@ -102,6 +103,51 @@ describe("assess", () => {
     const s = reduce(SIM, createSession(SIM), { type: "start" }).state;
     expect(assess(SIM, s)).toEqual(assess(SIM, s));
     expect(assess(SIM, s).score).toEqual({ earned: 2, possible: 6, percent: 33 });
+  });
+});
+
+describe("the safety outcome beside the score", () => {
+  const raw = (name: string) => structuredClone(fixture(name)) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const loadJson = (json: unknown): CaseDefinition => {
+    const parsed = parseCase(json);
+    if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues, null, 2));
+    return parsed.value;
+  };
+  /** The fixture with the beta-blocker marked as its critical error (`critical: true`), or explicitly not. */
+  const marked = (critical: boolean) => {
+    const json = raw("mini-anaphylaxis.case.json");
+    json.interventions.find((i: { id: string }) => i.id === "beta-blocker").critical = critical;
+    return loadJson(json);
+  };
+  const withBeta: ClinicalAction[] = [...(SIM.solution as ClinicalAction[]).filter((a) => a.type !== "finish"), { type: "intervene", interventionId: "beta-blocker" }, { type: "finish" }];
+
+  it("a critical intervention given while contraindicated fails safety; the score stays as it was", () => {
+    const critical = marked(true);
+    const plain = assess(critical, replay(critical, critical.solution as ClinicalAction[]).state);
+    expect(plain.safety).toMatchObject({ passed: true, criticalFailures: [], doseErrors: [] });
+    const { state, events } = replay(critical, withBeta);
+    expect(events.filter((e) => e.type === "intervention.applied" && e.interventionId === "beta-blocker")).toEqual([
+      { type: "intervention.applied", interventionId: "beta-blocker", appropriateness: "contraindicated", critical: true },
+    ]);
+    const report = assess(critical, state);
+    expect(report.completed).toBe(true);
+    expect(report.safety.passed).toBe(false);
+    expect(report.safety.criticalFailures).toEqual([{ interventionId: "beta-blocker", at: state.interventions.at(-1)!.at, harm: { en: "Beta-blockade worsens anaphylaxis.", "zh-CN": "β受体阻滞剂会加重过敏反应。" } }]);
+    // the learner made the error and met its consequences; the numeric score is computed as before
+    const notCritical = marked(false);
+    const unmarked = assess(notCritical, replay(notCritical, withBeta).state);
+    expect(unmarked.safety).toMatchObject({ passed: true, criticalFailures: [], contraindicated: [{ interventionId: "beta-blocker" }] });
+    expect(report.score).toEqual(unmarked.score);
+    expect(report.score.percent).toBeLessThan(plain.score.percent); // the rubric's own "no beta-blocker" item
+  });
+
+  it("a safety-critical gate fails safety too; a complication does not", () => {
+    for (const [verdict, passed] of [["safety-critical", false], ["complication", true]] as const) {
+      const json = raw("mini-anaphylaxis.case.json");
+      json.safetyGates = [{ id: "beta", label: "Beta-blocker given", when: { intervened: "beta-blocker" }, verdict }];
+      const c = loadJson(json);
+      expect(assess(c, replay(c, withBeta).state).safety).toMatchObject({ verdict, passed, criticalFailures: [] });
+    }
   });
 });
 

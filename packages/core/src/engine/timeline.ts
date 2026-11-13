@@ -5,7 +5,8 @@
  * After an accepted action the reducer calls `settle` at the current clock
  * and, when the action consumed simulated time, `advanceClock`, which walks
  * every integer minute up to the target (plus the target itself and any
- * fractional `atMinute`/`readyAt` in between) and at each step:
+ * fractional `atMinute`/`readyAt`, or minute an `elapsedSince` window opens,
+ * in between) and at each step:
  *
  * 1. emits `result.ready` for orders whose `readyAt` was crossed;
  * 2. settles: fires due scenario events (`atMinute` reached or `when` true),
@@ -22,7 +23,7 @@
 import type { CaseDefinition } from "../schema/case.js";
 import type { VitalKey } from "../schema/common.js";
 import type { DomainEvent, SessionState } from "../schema/session.js";
-import { evaluate, resultFor } from "./conditions.js";
+import { elapsedSinceLeaves, evaluate, lastGiven, resultFor } from "./conditions.js";
 import { reachPhase } from "./records.js";
 import { alarmsAt, unmeasurableAt } from "./physiology.js";
 import type { AlarmLevel } from "./types.js";
@@ -213,10 +214,29 @@ function settleBound(c: CaseDefinition): number {
 }
 
 /**
+ * The minutes at which an `elapsedSince` lower bound of a condition a settle evaluates (phase entry, objectives,
+ * scenario events, trend stops, the monitor) is reached: the intervention's last dose + `gte`.
+ */
+function sinceThresholds(c: CaseDefinition, s: SessionState): number[] {
+  const conditions = [
+    ...c.phases.map((p) => p.enterWhen),
+    ...c.objectives.map((o) => o.completeWhen),
+    ...(c.physiology?.events ?? []).map((e) => e.when),
+    ...(c.physiology?.trends ?? []).map((tr) => tr.until),
+    c.physiology?.monitor?.attachedWhen,
+  ];
+  return conditions.flatMap(elapsedSinceLeaves).flatMap((leaf) => {
+    const at = leaf.gte != null ? lastGiven(s, leaf.intervened) : null;
+    return at != null ? [at + leaf.gte!] : [];
+  });
+}
+
+/**
  * Clock values to settle at when moving from `from` to `to`: every integer
  * minute strictly between them, plus the exact (possibly fractional) times
- * at which something is scheduled — scenario events' `atMinute` and orders'
- * `readyAt` — so they happen at their own minute, then `to` itself.
+ * at which something is scheduled — scenario events' `atMinute`, orders'
+ * `readyAt` and the minute an `elapsedSince` window opens — so they happen
+ * at their own minute, then `to` itself.
  */
 function steps(tl: Timeline, from: number, to: number): number[] {
   const points = new Set<number>();
@@ -224,6 +244,7 @@ function steps(tl: Timeline, from: number, to: number): number[] {
   const scheduled = [
     ...(tl.c.physiology?.events ?? []).map((e) => e.atMinute),
     ...(tl.c.clock.mode === "simulated" ? tl.s.orders.map((o) => o.readyAt) : []),
+    ...sinceThresholds(tl.c, tl.s),
   ];
   for (const at of scheduled) if (at != null && at > from && at < to) points.add(at);
   points.add(to);

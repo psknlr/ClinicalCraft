@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653403",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "孕晚期胎动减少 · 29岁女性",
     "en": "Reduced fetal movements late in pregnancy · 29-year-old woman"
@@ -2066,6 +2066,7 @@
         "setting": "operating-room"
       },
       "risk": "high",
+      "critical": false,
       "effects": [],
       "setFlags": [],
       "indicatedWhen": {
@@ -2152,6 +2153,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "effects": [],
       "setFlags": [],
       "contraindicatedWhen": {

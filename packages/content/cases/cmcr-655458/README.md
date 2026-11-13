@@ -176,6 +176,8 @@ because it orders the same electrolytes, urate and creatinine 4–6-hourly.
 Contraindicated acts are listed as safety events in every debrief. `exchange-transfusion` and `platelets` are
 neutral (no measured count or leukostasis is recorded); `antibiotics` is indicated in `course`.
 
+**Safety outcome.** `prednisolone-now` is `critical: true`: steroids before the diagnostic samples risk tumour lysis and an incomplete diagnosis, and giving them fails the assessment's safety outcome (`safety.passed: false`) whatever the score; every debrief and export shows it beside the score.
+
 ## Reference path (`solution`)
 
 80 steps: start → all 17 admission-time history questions (including the seven unrecorded ones, which teach
@@ -552,6 +554,7 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
 * **Corpus and schema.** 40 paraphrased utterances with negatives; extensions unified (`sourceDoi`,
   `doiVerifiedAt`, `sourceTextChecked: false`; `sourceDoiVerification` dropped as redundant).
 * **Media.** `fig01` kept (approved, unattached), retitled.
+* 2026-11-13: safety outcome (external audit of 2026-11-12): the high-risk interventions state `critical` (`prednisolone-now` true); no fact, score or reference path changed.
 
 ### 1.0.0
 
@@ -600,6 +603,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 并行计划、约好再谈（干扰项：宣布无效、等待自发缓解、只在家属拒绝治疗时才提姑息治疗）；⑤ 病情变化：血培养后1小时内静脉抗生素、
 查血常规凝血、床旁头颅超声、腰穿待安全（干扰项：肿瘤热、先活检、先腰穿）。关键项：最初几小时预防肿瘤溶解的处置——不含钾的
 水化、别嘌醇及肿瘤溶解化验（或每4–6小时复查）完成之前，确诊阶段不会开放——以及避免六种危险操作。
+
+**安全结果。** `prednisolone-now` 标为 `critical: true`：采集诊断标本之前使用糖皮质激素有肿瘤溶解和诊断不完整的风险，给予即判安全结果不通过（`safety.passed: false`），无论得分多少，所有复盘和导出都在分数旁显示。
 
 **复盘要点（PEARLS）。** 先谈感受；复述最初18小时和最初几小时的处置；分析：涂片为什么指向白血病、为什么确诊前就预防肿瘤溶解、
 哪些操作看似合理却危险、阴性遗传学结果能说明什么不能说明什么、怎样和家属谈治疗与姑息、发热和反应变差时先排除什么；告诉家属的

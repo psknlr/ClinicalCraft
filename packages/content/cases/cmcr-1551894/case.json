@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551894",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "反复下肢水肿与腹胀 · 35岁女性",
     "en": "Recurrent leg swelling and abdominal fullness · 35-year-old woman"
@@ -2648,6 +2648,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "posture": "lying",
       "setFlags": [
@@ -2921,6 +2922,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "posture": "lying",
       "contraindicatedWhen": {

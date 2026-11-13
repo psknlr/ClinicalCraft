@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "stemi-inferior-rv",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "胸痛 · 58岁男性",
     "en": "Chest pain · 58-year-old man"
@@ -3886,6 +3886,7 @@
         "zh-CN": "阿司匹林 300 mg 嚼服（非肠溶片）",
         "en": "Aspirin 300 mg chewed (non-enteric-coated)"
       },
+      "doseSpec": { "amount": 300, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -3924,6 +3925,7 @@
         "zh-CN": "替格瑞洛 180 mg 口服",
         "en": "Ticagrelor 180 mg PO"
       },
+      "doseSpec": { "amount": 180, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -3962,6 +3964,7 @@
         "zh-CN": "氯吡格雷 600 mg 口服",
         "en": "Clopidogrel 600 mg PO"
       },
+      "doseSpec": { "amount": 600, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -4022,6 +4025,7 @@
         "zh-CN": "普通肝素 70–100 U/kg 静脉推注，导管室内按ACT追加",
         "en": "UFH 70–100 U/kg IV bolus; further doses by ACT in the cath lab"
       },
+      "doseSpec": { "amount": 70, "upTo": 100, "unit": "unit/kg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -4071,6 +4075,7 @@
         "zh-CN": "依诺肝素 0.5 mg/kg 静脉推注",
         "en": "Enoxaparin 0.5 mg/kg IV bolus"
       },
+      "doseSpec": { "amount": 0.5, "unit": "mg/kg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -4157,6 +4162,7 @@
         "zh-CN": "阿托伐他汀 40–80 mg 口服",
         "en": "Atorvastatin 40–80 mg PO"
       },
+      "doseSpec": { "amount": 40, "upTo": 80, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -4200,6 +4206,7 @@
         "medications"
       ],
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 3,
       "effects": [
         {
@@ -4387,6 +4394,7 @@
         "zh-CN": "昂丹司琼 4 mg 静脉注射",
         "en": "Ondansetron 4 mg IV"
       },
+      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -4811,6 +4819,7 @@
         "iv-access"
       ],
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 3,
       "effects": [
         {
@@ -5013,6 +5022,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "setFlags": [
         "fibrinolysis-given"
       ],
@@ -5312,6 +5322,7 @@
         "defibrillator"
       ],
       "risk": "high",
+      "critical": true,
       "setFlags": [
         "shock-delivered"
       ],
@@ -5388,6 +5399,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "any": [
           {
@@ -6876,8 +6888,8 @@
       "id": "r-no-harmful-drugs",
       "domain": "safety",
       "text": {
-        "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β受体阻滞剂，也未选择保守收治",
-        "en": "No fibrinolysis, fondaparinux, diuretic or IV beta-blocker, and no conservative admission"
+        "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β受体阻滞剂，未选择保守收治，有脉搏时也未电击或推注心搏骤停剂量的肾上腺素",
+        "en": "No fibrinolysis, fondaparinux, diuretic or IV beta-blocker, no conservative admission, and no shock or arrest-dose adrenaline while he has a pulse"
       },
       "weight": 2,
       "met": {
@@ -6897,6 +6909,14 @@
             },
             {
               "intervened": "admit-ccu"
+            },
+            {
+              "intervened": "defibrillation",
+              "valid": false
+            },
+            {
+              "intervened": "adrenaline",
+              "valid": false
             }
           ]
         }
@@ -6923,9 +6943,16 @@
           },
           {
             "intervened": "admit-ccu"
+          },
+          {
+            "intervened": "defibrillation"
+          },
+          {
+            "intervened": "adrenaline"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-door-to-lab",

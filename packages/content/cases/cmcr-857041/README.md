@@ -195,6 +195,8 @@ English (the `reperfusion` key ties with `hold-after-rosc` at 216 characters); i
   stacked eight days after spinal surgery, and systemic thrombolysis or intubation on the ward before the arrest. Its
   `scoredWhen` lists every harmful act and the decisions that expose them, so doing nothing does not earn it.
 
+**Safety outcome.** `systemic-lysis` and `ventilation` are `critical: true`, contraindicated in the onset phase (8 days after the thoracic decompression, while she still has a pulse and is breathing and talking): giving either then fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
+
 ## Reference path (`solution`)
 
 66 steps, in the order of an ABCDE primary survey (help, oxygen, monitoring and access before the history): start → high-flow oxygen,
@@ -538,6 +540,7 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
 - **Governance.** `provenance.review` editorial (2026-10-30) with eight named guidelines and the §6 notes;
   `extensions` in the collection schema (`sourceDoi`, `doiVerifiedAt`, `sourceTextChecked: false`) instead of
   `sourceDoiVerification`.
+- 2026-11-13: safety outcome (external audit of 2026-11-12): the high-risk interventions state `critical` (`systemic-lysis` true, `ventilation` true); no fact, score or reference path changed.
 
 ### 1.0.0 — 2026-10-28
 
@@ -584,6 +587,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
   没有记录）；干扰项为循环恢复后暂缓、先送CT、放滤器停肝素、溶栓却不观察出血。
 - 第 4 项：术后新形成的小腿深静脉血栓支持静脉血栓栓塞，但单凭它不能确诊肺栓塞；术前阴性只代表当时。
 - 第 5 项：溶栓后 APTT 回落即不推注恢复肝素，观察下肢神经和伤口，稳定后改低分子肝素或口服药，手术诱发者抗凝 3 个月。
+
+**安全结果。** `systemic-lysis` 和 `ventilation` 标为 `critical: true`，在发病阶段禁忌（胸椎减压术后第 8 天，仍有脉搏、能呼吸和说话）：此时给予任一项，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示。
 
 **复盘要点。**
 

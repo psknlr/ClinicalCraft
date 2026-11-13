@@ -13,7 +13,7 @@
 
 | | |
 |---|---|
-| Case | `anaphylaxis-garden` · v1.1.2 |
+| Case | `anaphylaxis-garden` · v1.1.3 |
 | Setting | `community` — the hospital's healing garden (garden-bench patient slot), then the ED resus bay |
 | Facility | `general-hospital` (not playable embodied in `teaching-hospital`: no slot for a `community` patient) |
 | Difficulty | 3 / 5 |
@@ -23,7 +23,7 @@
 | Review status | Editorial review 2026-10-28 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; have an emergency or allergy clinician review it before teaching use |
 | Clock | `simulated`, `realtimeScale` 1; costs ask 0.5 · examine 0.5 · order 0.5 · read 0.5 · intervene 1 · answer 0 min (a fast-paced resuscitation) |
 | Phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising). Wrong path: `collapsed` (garden, peri-arrest before any adrenaline; left at the first IM dose) |
-| Content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms, phase twins of the 7 garden-time symptom items) · 25 exam findings · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful) · 21 interventions · 10 physiology trends · 19 scenario events (5 silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 113 test utterances |
+| Content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms, phase twins of the 7 garden-time symptom items) · 25 exam findings · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful) · 21 interventions · 10 physiology trends · 19 scenario events (5 silent markers) · 5 objectives · 3 decisions · 17 rubric items (14 deterministic, 3 examiner-judged) · 5 NPCs · 113 test utterances |
 
 ## Learning outcomes
 
@@ -96,8 +96,8 @@ tryptase is 27.4 µg/L.
   pulse oximeter and the automated cuff at once: from then on HR, BP, RR and SpO₂ are live and alarm,
   but there is **no rhythm** ("ECG leads not attached", a flat lead II) until the team's
   monitor-defibrillator (3-lead ECG) is there — `ecgWhen`: `call-help` (or the transfer to the ED).
-  Calling for help shows the rhythm at once, although the team takes 3–4 minutes (the engine has no
-  "minutes since X" condition); in the reference path the team was called 6.5 minutes before
+  Calling for help shows the rhythm at once, although the team takes 3–4 minutes (not modelled: the
+  case does not delay it); in the reference path the team was called 6.5 minutes before
   `monitoring`, so it is there by then. **No temperature** at any point (`measures` leaves out
   `temp`): neither the bag nor the monitor-defibrillator takes one, and the case records none. The
   IV-bolus scenario lines that read the ECG need the ECG, not just the oximeter (see below).
@@ -208,16 +208,17 @@ referral.
 * `r-dx` and `r-dispo` use `decidedFirstTry`, so cycling through options earns the objective but not
   the rubric point.
 
-### Rubric (13 deterministic items, 18 points, + 3 examiner-judged)
+### Rubric (14 deterministic items, 19 points, + 3 examiner-judged)
 
 | Domain | Item | Weight |
 |---|---|---|
 | Management | IM adrenaline 0.5 mg into the anterolateral thigh within 5 minutes (**critical**) | 3 |
 | Safety | IM route — never an IV bolus or subcutaneous (**critical**) | 2 |
-| Safety | Transferred lying flat; never sat up, stood or walked while hypotensive | 2 |
+| Safety | Transferred lying flat; never sat up, stood or walked while hypotensive (**critical**) | 2 |
 | Management | ≥ 12 h observation at the first attempt + two auto-injectors + allergy referral | 2 |
 | Safety | Adrenaline first: no antihistamine, steroid or salbutamol and no moving her before it | 1 |
-| Management | Reassessed after the first dose and repeated it because the response was inadequate | 1 |
+| Management | Repeated it when due: ≥ 5 min after the last dose, after a reassessment, response still inadequate (`whenIndicated`) | 1 |
+| Examination | Reassessed airway, breathing and circulation after the first dose | 1 |
 | Management | Called for help and laid her flat with legs raised | 1 |
 | Management | High-flow oxygen, crystalloid bolus, salbutamol for wheeze persisting after adrenaline | 1 |
 | History | Previous sting reactions | 1 |
@@ -233,34 +234,46 @@ The safety items require the safe action itself (IM route given; transfer lying 
 nothing does not earn them. A missed **critical** item (`critical: true`) is named first in the debrief; it does not
 cap the score.
 
+**Safety outcome.** Three interventions are `critical`: the **IV bolus**, **sitting her up or standing her
+while SBP < 90** and **walking her to the ED**. Giving one fails the assessment's safety outcome
+(`safety.passed: false`, listed in `safety.criticalFailures` with its harm) whatever the score, and every
+debrief and export shows that beside the score; the effects still play out. A free-text order's dose is checked
+against the presets (`doseSpec`): IM adrenaline 0.5 mg, salbutamol 5 mg nebulised, cetirizine 10 mg PO,
+chlorphenamine 10 mg IV, hydrocortisone 200 mg IV. "IM adrenaline 5 mg" (or "肌注肾上腺素 5 mg") is not given:
+a critical dose error (ten times the preset) that also fails the safety outcome; "500 micrograms IM" is the
+preset dose.
+
 ### Tempting wrong choices (all playable)
 
 | choice | appropriateness | why |
 |---|---|---|
-| Adrenaline 0.5 mg **IV bolus** | contraindicated (high risk) | Undiluted IV bolus of the IM dose causes hypertension, VT, ischaemia and pulmonary oedema. IV adrenaline is for arrest or an expert-titrated infusion. |
+| Adrenaline 0.5 mg **IV bolus** | contraindicated (high risk), **critical** | Undiluted IV bolus of the IM dose causes hypertension, VT, ischaemia and pulmonary oedema. IV adrenaline is for arrest or an expert-titrated infusion. |
 | Adrenaline **subcutaneous** | contraindicated | Slow, unreliable absorption in shock. Only a small, delayed effect, and the trends continue. |
 | **Antihistamine** (oral cetirizine or IV chlorphenamine) or **hydrocortisone** before adrenaline | contraindicated | Adjuncts that treat none of A/B/C. Delaying adrenaline is the avoidable factor. IV chlorphenamine is also flagged if SBP < 90. |
-| **Sit her upright / stand her** with SBP < 90 | contraindicated | "Empty ventricle": SBP −14 for 5 min, faint event and GCS 13 until adrenaline restores SBP ≥ 90. |
-| **Walk her (or wheelchair) to the ED** | contraindicated | Same mechanism. Transfer lying flat on a trolley after adrenaline. |
+| **Sit her upright / stand her** with SBP < 90 | contraindicated, **critical** | "Empty ventricle": SBP −14 for 5 min, faint event and GCS 13 until adrenaline restores SBP ≥ 90. |
+| **Walk her (or wheelchair) to the ED** | contraindicated, **critical** | Same mechanism. Transfer lying flat on a trolley after adrenaline. |
 | **Transfer before IM adrenaline** | contraindicated | Delays treatment. The phase stays `scene` until adrenaline is given, then goes to `ed-resus`. Sets `moved-before-adrenaline`, which fails `r-adr-first`. |
 | **Discharge now** | contraindicated | Shock and severe respiratory compromise (≥ 12 h), auto-injectors and training still needed, biphasic risk. The texts make no claim about how many doses were given, so they stay true on every path. |
 | **Salbutamol** before adrenaline | contraindicated | "Treating it as asthma": bronchospasm only, not laryngeal oedema or shock, and it delays adrenaline (same logic as antihistamine/steroid first). After adrenaline it is indicated. |
 | CTPA | `harmful` investigation | Contrast and leaving resus during an anaphylaxis observation period, with no indication. |
 | CXR, troponin, CRP, venom sIgE | `low-value` | None changes acute management. Venom sIgE may be falsely negative early; repeat at 4–6 weeks. |
 
-### Scoring and wrong-path behaviour (engine replay, 18 points)
+### Scoring and wrong-path behaviour (engine replay, 19 points)
 
 | path | outcome |
 |---|---|
-| reference solution | 5/5 objectives, 18/18, no contraindicated actions; SBP ≥ 100 from minute 15, ≈ 111/60 in the ED |
+| reference solution | 5/5 objectives, 19/19, no contraindicated actions, safety passed; SBP ≥ 100 from minute 15, ≈ 111/60 in the ED |
 | never gives adrenaline, late doses at 22 and 30 min | `collapsed` from minute 10 (history locked, peri-arrest findings), SBP ≈ 50, GCS 10 → 9; first dose → `treated`, GCS 14 at SBP ≥ 65; GCS 15 only after the second dose; `r-adr-early` fails |
-| salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; GCS 13 after sitting up, then `collapsed`; stuck in `ed-resus` with SBP ≈ 66–74; 2/18 (only the IM-route item) |
-| IV bolus, SC adrenaline, walks her, discharge | ST depression then collapse; 0/18 |
-| transfer before adrenaline, otherwise correct | completes, 17/18 (`r-adr-first` fails) |
+| salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; GCS 13 after sitting up, then `collapsed`; stuck in `ed-resus` with SBP ≈ 66–74; 2/19 (only the IM-route item); safety **failed** (sat up while hypotensive) |
+| IV bolus, SC adrenaline, walks her, discharge | ST depression then collapse; 0/19; safety **failed** (IV bolus, walked) |
+| transfer before adrenaline, otherwise correct | completes, 18/19 (`r-adr-first` fails); safety passed (a contraindicated step, not a critical one) |
 | adrenaline first, A–B–C examination afterwards | no `adrenaline-delayed`; `dx-criteria` unlocks from the `treated` findings; no "missed examination" in the debrief |
 | one dose only, then transfer | stays in `ed-resus`, SBP ≈ 83–86; cannot finish (needs the second dose); disposition locked |
 | sits her up once stable in the ED | `neutral`, SBP ≈ 95, GCS 15, no faint |
-| brute-forcing the evidence board, second dose without reassessment | cannot finish; `r-dx`, `r-dispo` and `r-adr-repeat` fail |
+| brute-forcing the evidence board, second dose without reassessment | cannot finish; `r-dx`, `r-dispo`, `r-adr-repeat` and `r-adr-reassess` fail |
+| first dose, airway reassessed, second dose at 1.5 min (audit 2026-11-12) | the second dose is `neutral` (not yet due): `r-adr-repeat` fails, `r-adr-reassess` is met |
+| first dose, reassessed, second dose at 5 min while SBP < 90 | the second dose is `indicated`: `r-adr-repeat` is met |
+| a repeat at ≥ 5 min in a patient who has improved (SBP ≥ 90, SpO₂ ≥ 94, RR ≤ 24) | `neutral`, earns nothing. With this case's physiology one dose leaves RR at 25 even with full supportive care, so the repeat stays due; the rule was checked with the respiratory trend removed |
 
 ## Reference path (`solution`)
 
@@ -288,7 +301,7 @@ cap the score.
 14. Prescribe two auto-injectors with training and a written action plan.
 15. Refer her to the allergy clinic for venom immunotherapy (VIT) assessment.
 
-It scores **18/18** on the deterministic rubric with no contraindicated action and ends at simulated
+It scores **19/19** on the deterministic rubric with no contraindicated action (safety passed) and ends at simulated
 minute 114.5 (embodied autopilot: 115.0 / 114.5 in en / zh-CN).
 
 ## Clinical numbers check
@@ -393,10 +406,10 @@ minute 114.5 (embodied autopilot: 115.0 / 114.5 in en / zh-CN).
 |---|---|
 | History and tests before adrenaline | nurse prompt at 5 min (`adrenaline-delayed` fails the weight-3 item); `collapsed` at 10 min |
 | Antihistamine, steroid or salbutamol first | contraindicated; `adjunct-before-adrenaline` fails `r-adr-first` |
-| IV bolus or subcutaneous adrenaline | ectopics/ST depression then relapse; little effect SC; `r-safe-route` fails |
-| Sitting her up, walking her | grey-out (GCS 13), collapse; `r-safe-posture` fails |
+| IV bolus or subcutaneous adrenaline | ectopics/ST depression then relapse; little effect SC; `r-safe-route` fails; the IV bolus is a critical safety failure |
+| Sitting her up, walking her | grey-out (GCS 13), collapse; `r-safe-posture` fails; a critical safety failure |
 | One dose and done | partial response: SBP stays in the 80s, she cannot reach the stabilised `ed` phase |
-| Repeat dose without reassessing | `r-adr-repeat` needs the treated-phase reassessment |
+| Repeat dose without reassessing, or too early | the dose is `neutral` until it is due (≥ 5 min after the last, after the reassessment, response still inadequate): `r-adr-repeat` fails; `r-adr-reassess` scores the reassessment |
 | Discharge at 2 h, or without pens | the disposition distractors; `discharge-now` contraindicated |
 
 ## Embodied mode
@@ -443,10 +456,11 @@ nobody (she never gets there). Scores are unchanged.
 * **Static text with dynamic vitals.** Exam text cannot react to individual interventions within a
   phase. For example, `ex-chest-treated` still describes wheeze after salbutamol. The salbutamol
   `response` narrates the improvement instead.
-* **The 5-minute repeat interval is not encoded.** The condition DSL has no "minutes since the last
-  dose". A repeat dose is `indicated` only after a reassessment (`reassessed-before-repeat`) while
-  SBP < 90, SpO₂ < 94 or RR > 24, and `r-adr-repeat` requires that marker. A learner can still
-  reassess and repeat within a minute. The reference solution repeats at 6.5 minutes.
+* **The reassessment is not timed.** A repeat dose is `indicated` only ≥ 5 minutes after the last dose
+  (`elapsedSince`), after a reassessment (`reassessed-before-repeat`) and while SBP < 90, SpO₂ < 94 or
+  RR > 24; `r-adr-repeat` counts only doses given while indicated. The reassessment itself may come any
+  time after the first dose — an examination at minute 1 counts for a repeat at minute 5, when the
+  vitals still decide whether the repeat is due. The reference solution repeats at 6.5 minutes.
 * **Phase entry is immediate.** `ed` starts when the second dose is given in the ED, so its "so much
   better" findings can be read a minute or two before SBP reaches 90. The disposition decision is
   additionally gated on SBP ≥ 90.
@@ -455,7 +469,7 @@ nobody (she never gets there). Scores are unchanged.
 * **Effect offset is instant.** By engine design, effects end abruptly, so SBP steps down about
   8 mmHg when each dose's transient component ends, 15 min after its ramp.
 * **The team's ECG arrives at once.** Calling for help shows the rhythm immediately although the team
-  takes 3–4 minutes (no "minutes since" condition).
+  takes 3–4 minutes (not modelled; `elapsedSince` could delay it in a later revision).
 * **Tryptase turnaround is 90 simulated minutes**; in real practice the assay is often batched (1–2
   days). The result note says so.
 * **Adult doses only**; the paediatric doses are quoted for teaching. The narrative distance to the ED
@@ -561,6 +575,25 @@ T/CADERM 3008—2019 have no DOI.
   wording follows RCUK 2021 and was not compared with the NG258 text.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **The repeat dose is scored when it is due (audit P1-4).** In the audit's replay a second IM dose 1.5 minutes
+  after the first, after an airway reassessment, was `indicated` and earned `r-adr-repeat`. The repeat's
+  `indicatedWhen` is now the case's own rule — at least 5 minutes after the last dose (`elapsedSince`), after the
+  treated-phase reassessment, while SBP < 90, SpO₂ < 94 or RR > 24 — and `r-adr-repeat` counts only doses given
+  while indicated (`{ "intervened": "adrenaline-im", "whenIndicated": true, "minCount": 2 }`): a repeat at
+  1.5 minutes, without a reassessment, or in a patient who has improved is `neutral` and earns nothing. The
+  reassessment is scored on its own by the new `r-adr-reassess` (examination, weight 1): deterministic total
+  18 → 19, the reference path 19/19 (embodied autopilot unchanged).
+* **Critical safety failures (audit P0-3).** `adrenaline-iv-bolus`, `position-sit-upright` (contraindicated while
+  SBP < 90) and `walk-to-ed` are `critical: true`: giving one fails the safety outcome shown beside the score;
+  `r-safe-posture` is now a critical rubric item, beside `r-safe-route`.
+* **Preset doses (audit P0-2).** `doseSpec` on IM adrenaline 0.5 mg, nebulised salbutamol 5 mg, cetirizine 10 mg PO,
+  chlorphenamine 10 mg IV and hydrocortisone 200 mg IV, the doses their texts state: "IM adrenaline 5 mg" or
+  "肌注肾上腺素 5 mg" is not given (a critical dose error), "500 micrograms IM" is. An order written as a volume
+  ("0.5 mL of 1:1000") cannot be compared with a dose in mg and is not given either (a warning).
+* README: the rubric table, the score table (19 points, safety outcomes) and the fidelity limits now match.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

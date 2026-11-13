@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| id / version | `cmcr-1074569` / `1.1.1` |
+| id / version | `cmcr-1074569` / `1.1.2` |
 | setting / facility | `outpatient` / `general-hospital` (consulting room; she sits throughout) |
 | specialty | oncology, colorectal surgery, hepatobiliary surgery |
 | difficulty | 4 / 5 |
@@ -337,6 +337,13 @@ White Rose repository; PubMed record 36252154 via a library catalogue and Guidel
   continuing cetuximab after resection.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical-failure decision (audit P0-3).** The one-stage resection of the primary and every metastasis, and
+  the hepatectomy referral before conversion therapy (both high risk), are `critical: false` (`cases validate`): MDT
+  sequencing misjudgements, scored by `rb-safety` and the decisions. No intervention here is critical; scores are
+  unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

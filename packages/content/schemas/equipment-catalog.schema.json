@@ -1367,6 +1367,35 @@
         {
           "type": "object",
           "properties": {
+            "elapsedSince": {
+              "type": "object",
+              "properties": {
+                "intervened": {
+                  "$ref": "#/definitions/Id"
+                },
+                "gte": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "lte": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "intervened"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsedSince"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "hints": {
               "type": "object",
               "properties": {

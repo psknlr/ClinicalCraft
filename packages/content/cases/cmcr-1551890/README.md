@@ -13,7 +13,7 @@ outcome are the report's; what the report does not record stays unknown.
 
 | | |
 |---|---|
-| id / version | `cmcr-1551890` / `1.1.1` |
+| id / version | `cmcr-1551890` / `1.1.2` |
 | setting / facility | `icu` / `general-hospital` (ICU bed 1) |
 | specialty | cardiology, critical care |
 | difficulty | 4 / 5 |
@@ -150,9 +150,10 @@ Every option has its own feedback (why it is right or wrong, with the guidance i
   and `neutral` afterwards; it is not in the reference path because the report does not say what the referring
   hospital offers (see the teaching point on cardiac-surgical centres).
 - `crrt` is `neutral`: the report started it without stating why.
-- **Pending framework fields** (S/pr3/fxc-annotations/cmcr-1551890.json, applied by the coordinator):
-  `rb-safety` gets `scoredWhen` (counts once the learner has attempted the support decision or given any support or
-  harmful item) and `critical: true`. Until then, as in every case, doing nothing earns `rb-safety` (3/19).
+- `rb-safety` counts once the learner has attempted the support decision, started vasoactive drugs, the IABP or
+  VA-ECMO, or given a harmful item (`scoredWhen`), so doing nothing earns nothing, and it is `critical`: a miss is named first in the debrief.
+- `repeat-lysis` is `critical` (since 1.1.2): giving it fails the assessment's safety outcome
+  (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
 
 ## Reference path (`solution`)
 
@@ -345,6 +346,14 @@ no DOI: its volume and pages appear only in citing articles.
   reperfusion windows were not accessed in this review, and no DOI could be confirmed.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-1, P0-3).** `repeat-lysis` — a second fibrinolytic dose given for failed
+  reperfusion with a mechanical complication — is `critical: true`: giving it fails the safety outcome shown beside the
+  score, whatever the score (`rb-safety` was already a critical rubric item). Scores are unchanged.
+- README: the "pending framework fields" note on `rb-safety` described its state before 1.1.0; it now says what
+  the case has (`scoredWhen`, `critical`).
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

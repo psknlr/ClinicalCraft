@@ -12,10 +12,12 @@ import {
   type ClinicalAction,
   type ClinicalActionType,
   type DomainEvent,
+  type DoseErrorRecord,
   type ReduceResult,
   type RejectionCode,
   type SessionState,
 } from "../schema/session.js";
+import type { Intervention } from "../schema/case.js";
 import { t } from "../i18n.js";
 import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
@@ -28,6 +30,7 @@ import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
+import { compareDose, doseErrorSeverity } from "./dose.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -280,6 +283,8 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
       `"${intervention.id}" is on hold — placed by ${hold.placedBy}: ${hold.reason}. It needs a recorded reassessment and release by ${hold.placedBy}.`,
     );
   }
+  // the order as written: a dose that conflicts with the preset is not given — a dose error, kept for the debrief
+  if (doseError(ctx, intervention, a)) return accepted(actionCost(c, "intervene"));
   const appropriateness =
     intervention.contraindicatedWhen && evaluate(c, before, intervention.contraindicatedWhen)
       ? "contraindicated"
@@ -287,8 +292,11 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
         ? "indicated"
         : "neutral";
   const invalid = intervention.checklist === true && appropriateness === "contraindicated";
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}) });
-  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}) });
+  // a critical intervention given while contraindicated: the critical safety failure (an invalid attempt gave nothing)
+  const critical = appropriateness === "contraindicated" && !invalid && intervention.critical === true;
+  const ordered = a.ordered ? { ordered: a.ordered } : {};
+  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}), ...ordered });
+  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}), ...(critical ? { critical: true as const } : {}) });
   if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {
     if (s.flags.includes(flag)) continue;
@@ -296,6 +304,28 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
     ctx.events.push({ type: "flag.changed", flag, value: true });
   }
   return accepted(actionCost(c, "intervene"));
+}
+
+/**
+ * An order whose stated dose conflicts with the intervention's preset (`doseSpec`, `compareDose` through the
+ * patient's weight): records the dose error and emits `dose.error` — nothing is given. False when there is nothing
+ * to check (no stated dose, no preset) or the dose is the preset's.
+ */
+function doseError(ctx: Ctx, intervention: Intervention, a: Action<"intervene">): boolean {
+  const { c, s } = ctx;
+  const stated = a.ordered?.dose;
+  const preset = intervention.doseSpec;
+  if (!a.ordered || !stated || !preset) return false;
+  const check = compareDose(stated, preset, c.patient.weightKg);
+  if (check.equivalent) return false;
+  const text = a.ordered.text;
+  const severity = doseErrorSeverity(check.ratio, intervention);
+  // the record and the event each get their own copies (records are immutable by convention, events go out)
+  const fields = () => ({ interventionId: intervention.id, text, ordered: { ...stated }, preset: { ...preset }, ratio: check.ratio, conflicts: [...check.conflicts], severity });
+  const record: DoseErrorRecord = { ...fields(), at: s.clock, seq: s.seq + 1 };
+  s.doseErrors = [...(s.doseErrors ?? []), record];
+  ctx.events.push({ type: "dose.error", ...fields() });
+  return true;
 }
 
 const sameHolder = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();

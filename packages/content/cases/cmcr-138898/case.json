@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-138898",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "乏力、纳差与皮肤瘀斑 · 57岁男性",
     "en": "Fatigue, poor appetite and bruising · 57-year-old man"
@@ -3184,6 +3184,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 2,
       "contraindicatedWhen": {
         "always": true
@@ -3230,6 +3231,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3278,6 +3280,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3443,6 +3446,7 @@
         "zh-CN": "美罗培南1 g静脉滴注，每8小时一次（原报告没有写剂量；此为肾功能正常成人的常用剂量）",
         "en": "Meropenem 1 g IV every 8 hours (the report gives no dose; this is a usual adult dose with normal renal function)"
       },
+      "doseSpec": { "amount": 1, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

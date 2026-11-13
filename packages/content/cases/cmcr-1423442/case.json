@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423442",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "胸背痛与渐进性无力 · 46岁男性",
     "en": "Chest and back pain with progressive weakness · 46-year-old man"
@@ -2971,6 +2971,7 @@
         "zh-CN": "恩替卡韦0.5 mg口服，每日1次，空腹（餐前或餐后至少2小时）；肌酐清除率< 50 mL/min时按说明书减量或延长间隔。",
         "en": "Entecavir 0.5 mg orally once daily on an empty stomach (at least 2 hours from food); reduce the dose or lengthen the interval as labelled if creatinine clearance is < 50 mL/min."
       },
+      "doseSpec": { "amount": 0.5, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -3029,6 +3030,7 @@
         "zh-CN": "丙酚替诺福韦25 mg口服，每日1次，随餐；治疗期间监测肾功能、血磷和尿蛋白、尿糖。",
         "en": "Tenofovir alafenamide 25 mg orally once daily with food; monitor kidney function, serum phosphate and urine protein and glucose during treatment."
       },
+      "doseSpec": { "amount": 25, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -3266,6 +3268,7 @@
         "zh-CN": "骨化三醇胶丸1 μg口服，每日1次（原报告剂量）；监测血钙，避免高钙血症。",
         "en": "Calcitriol capsules 1 μg orally once daily (the report's dose); monitor serum calcium to avoid hypercalcaemia."
       },
+      "doseSpec": { "amount": 1, "unit": "microgram", "route": "PO" },
       "requires": [
         "medications"
       ],

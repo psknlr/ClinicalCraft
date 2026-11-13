@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "new-onset-t2dm",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "乏力、口干 · 48岁男性",
     "en": "Tiredness and thirst · 48-year-old man"
@@ -5221,6 +5221,7 @@
         "zh-CN": "阿托伐他汀40 mg口服每日1次（每天固定时间）；4–12周复查血脂和ALT；如出现不明原因肌痛、乏力或茶色尿及时就诊。ALT<3倍正常上限不是禁忌。",
         "en": "Atorvastatin 40 mg orally once daily (same time each day); recheck lipids and ALT in 4–12 weeks; seek review for unexplained muscle pain, weakness or dark urine. ALT < 3 × the upper limit of normal is not a contraindication."
       },
+      "doseSpec": { "amount": 40, "unit": "mg", "route": "PO" },
       "requires": [],
       "risk": "low",
       "effects": [],
@@ -5283,6 +5284,7 @@
         "zh-CN": "培哚普利4 mg口服每日1次（若出现ACEI干咳可换用ARB，如厄贝沙坦150 mg每日1次）；1–2周后复查血钾和肌酐（肌酐升高<30%可接受）；目标血压<130/80 mmHg，逐步滴定至最大耐受剂量；避免常规服用NSAIDs；不与ARB联用。",
         "en": "Perindopril 4 mg orally once daily (if an ACE-inhibitor cough develops, switch to an ARB such as irbesartan 150 mg once daily); recheck potassium and creatinine in 1–2 weeks (a creatinine rise < 30% is acceptable); target BP < 130/80 mmHg, titrating to the maximum tolerated dose; avoid regular NSAIDs; never combine with an ARB."
       },
+      "doseSpec": { "amount": 4, "unit": "mg", "route": "PO" },
       "requires": [],
       "risk": "low",
       "effects": [],
@@ -5450,6 +5452,7 @@
         "zh-CN": "重组乙肝疫苗20 µg肌内注射，0、1、6个月共3剂；每年接种流感疫苗；按当地免疫规划评估肺炎球菌疫苗。",
         "en": "Recombinant hepatitis B vaccine 20 µg IM at 0, 1 and 6 months; annual influenza vaccine; assess pneumococcal vaccination according to the local schedule."
       },
+      "doseSpec": { "amount": 20, "unit": "microgram", "route": "IM" },
       "requires": [],
       "risk": "low",
       "effects": [],
@@ -5542,6 +5545,7 @@
         "zh-CN": "达格列净10 mg口服每日1次（KDIGO建议eGFR≥20即可起始）；保持外阴清洁，注意补充水分；病日规则：呕吐、腹泻、进食明显减少或急性疾病时暂停，择期大手术前3天停用；警惕正常血糖性酮症酸中毒（恶心、腹痛、气促即就诊）；起始后eGFR可一过性下降（<30%可接受），2–4周复查肾功能。",
         "en": "Dapagliflozin 10 mg orally once daily (KDIGO: may be started at eGFR ≥ 20); genital hygiene and adequate fluids; sick-day rules — pause during vomiting, diarrhoea, markedly reduced intake or acute illness, and stop 3 days before planned major surgery; be alert to euglycaemic ketoacidosis (seek care for nausea, abdominal pain or breathlessness); an initial eGFR dip (< 30%) is expected — recheck renal function in 2–4 weeks."
       },
+      "doseSpec": { "amount": 10, "unit": "mg", "route": "PO" },
       "requires": [],
       "risk": "low",
       "effects": [],
@@ -5603,6 +5607,7 @@
         "zh-CN": "司美格鲁肽0.25 mg每周1次皮下注射×4周，之后0.5 mg每周1次，必要时加至1 mg；常见恶心、腹胀，少食多餐可减轻；有甲状腺髓样癌或MEN2个人/家族史者禁用；用前评估费用和医保报销。",
         "en": "Semaglutide 0.25 mg subcutaneously once weekly for 4 weeks, then 0.5 mg weekly, increasing to 1 mg if needed; nausea and bloating are common and eased by smaller meals; contraindicated with a personal or family history of medullary thyroid carcinoma or MEN2; check cost and insurance coverage first."
       },
+      "doseSpec": { "amount": 0.25, "unit": "mg", "route": "SC" },
       "requires": [],
       "risk": "low",
       "effects": [],
@@ -5930,6 +5935,7 @@
         "zh-CN": "培哚普利8 mg口服每日1次（最大剂量）；1–2周后复查血钾和肌酐；注意体位性头晕。若同时开始SGLT2i，可错开1–2周以便解读肌酐变化。",
         "en": "Perindopril 8 mg orally once daily (maximum dose); recheck potassium and creatinine in 1–2 weeks; watch for postural dizziness. If an SGLT2 inhibitor is started at the same time, staggering them by 1–2 weeks makes creatinine changes easier to interpret."
       },
+      "doseSpec": { "amount": 8, "unit": "mg", "route": "PO" },
       "requires": [],
       "risk": "low",
       "effects": [],

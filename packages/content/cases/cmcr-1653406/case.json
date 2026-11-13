@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653406",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "足月妊娠待产 · 34岁女性",
     "en": "Term pregnancy awaiting delivery · 34-year-old woman"
@@ -2415,6 +2415,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "effects": [],
       "setFlags": [],
       "indicatedWhen": {

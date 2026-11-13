@@ -186,6 +186,8 @@ Contraindicated actions are named in the debrief but, as everywhere in the libra
 themselves; the harms that matter most are scored through `rb-no-harm` and, for the lumbar puncture, through the
 time window of `rb-workup-in-time`.
 
+**Safety outcome.** `diazepam-push`, `oral-morphine` and `stop-maternal-medicines` are `critical: false`: each is a harmful but recoverable misjudgement that shows its harm text and loses `rb-no-harm`'s weight, but does not on its own fail the assessment's safety outcome.
+
 ## Reference path (`solution`)
 
 72 steps: start → 22 admission-phase history items (7 of them unknown) → vital signs, tone and reflexes, fontanelle,
@@ -640,6 +642,7 @@ choice where local policy differs) and a perinatal psychiatrist decision 5.
   `rb-workup-in-time`; options `hie-cooling` → `channelopathy-switch`, `stop-to-breastfeed` → `stop-clozapine-now`,
   `breastfeed-reassure` → `breastfeed-monitored`, `child-protection` → `routine-referral`; new option
   `lp-before-antibiotics`.
+* 2026-11-13: safety outcome (external audit of 2026-11-12): the high-risk interventions state `critical` (`diazepam-push` false, `oral-morphine` false, `stop-maternal-medicines` false); no fact, score or reference path changed.
 
 ### 1.0.0 — 2026-10-28
 
@@ -681,6 +684,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 在没有脑电图和家族史时转向离子通道病；⑤ 母亲用药不骤停，服氯氮平期间一般不母乳喂养，不带污名地沟通并安排随访（“先停
 氯氮平”“边监测边哺乳”“常规儿童保护转介”为近似错误）。关键项：入院阶段完成血糖、血培养和取血培养后的抗生素，血小板回报
 后、脑脊液报告前完成腰穿（按时间窗计分）；未给地西泮推注、吗啡，未建议母亲停药或服药期间哺乳。
+
+**安全结果。** `diazepam-push`、`oral-morphine` 和 `stop-maternal-medicines` 标为 `critical: false`：均为有害但可挽回的误判，显示各自的伤害说明并失去 `rb-no-harm` 的分值，但单独不会使安全结果判为不通过。
 
 **复盘要点（PEARLS）。** 先谈感受；复述第一个小时做了什么；分析：为什么按惊厥处理、哪些病因必须一小时内排除、为什么抗生素
 不等腰穿而腰穿要等血小板、CRP正常为何不能停抗生素、苯巴比妥后为何更需要脑电图、胆红素的采样小时龄和水肿、没有血药浓度时

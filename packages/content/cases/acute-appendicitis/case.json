@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-appendicitis",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "腹痛 · 19岁男性",
     "en": "Abdominal pain · 19-year-old man"
@@ -5059,6 +5059,7 @@
         "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15 分钟），每 6 小时一次，24 小时不超过 4 g",
         "en": "Paracetamol 1 g IV over 15 min, 6-hourly; maximum 4 g in 24 h"
       },
+      "doseSpec": { "amount": 1, "unit": "g", "route": "IV" },
       "requires": [
         "iv-access"
       ],
@@ -5251,6 +5252,7 @@
         "zh-CN": "昂丹司琼 4 mg 缓慢静脉推注",
         "en": "Ondansetron 4 mg IV, slowly"
       },
+      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "iv-access"
       ],
@@ -5692,6 +5694,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "effects": [],
       "setFlags": [
         "appendectomy-booked"

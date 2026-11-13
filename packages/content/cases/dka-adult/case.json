@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "dka-adult",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "title": {
     "zh-CN": "呕吐、腹痛伴呼吸急促 · 24岁女性",
     "en": "Vomiting, abdominal pain and fast breathing · 24-year-old woman"
@@ -6122,6 +6122,7 @@
         "iv-access"
       ],
       "risk": "moderate",
+      "critical": true,
       "setFlags": [
         "insulin-running"
       ],
@@ -6242,6 +6243,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "phase": "resus"
@@ -6388,6 +6390,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": false,
       "setFlags": [
         "bicarbonate-given"
       ],
@@ -6441,6 +6444,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -6515,6 +6519,7 @@
         "zh-CN": "昂丹司琼4 mg缓慢静注",
         "en": "Ondansetron 4 mg slow IV"
       },
+      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6636,6 +6641,7 @@
         "zh-CN": "依诺肝素40 mg皮下注射，每日一次",
         "en": "Enoxaparin 40 mg SC once daily"
       },
+      "doseSpec": { "amount": 40, "unit": "mg", "route": "SC" },
       "requires": [
         "medications"
       ],
@@ -9091,7 +9097,8 @@
             "intervened": "pump-correction-bolus"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-transition",

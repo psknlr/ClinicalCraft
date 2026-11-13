@@ -3507,6 +3507,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3554,6 +3555,7 @@
         "setting": "operating-room"
       },
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "not": {
@@ -3727,6 +3729,7 @@
         "infusion-pump"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true

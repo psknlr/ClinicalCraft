@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1551893` · v1.1.1 |
+| Case | `cmcr-1551893` · v1.1.2 |
 | Source | 葉蔭霆, 陳泰業, 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學. 2025;25(1):66-67 (title names the diagnosis — facilitators only) |
 | Setting | Urology outpatient clinic (`outpatient`), then theatre and a post-operative clinic visit |
 | Facility | `general-hospital` (consult room 1; CT, MRI, theatre, pathology) |
@@ -320,6 +320,13 @@ PubMed record (PMID 22596100, verified by the PR #3 audit) and the journal's lis
 * Specialty labels `urology` and `pathology` have no zh/en labels in the framework (reported).
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical safety failure (audit P0-3).** Adjuvant chemotherapy without a malignant diagnosis is
+  `critical: true` (toxicity, fertility included, and no benefit); `r-safety` was already a critical rubric item.
+  Inguinal exploration and radical orchidectomy before the ultrasound and the markers (high risk) are
+  `critical: false` (sequencing guards). Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

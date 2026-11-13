@@ -2255,6 +2255,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true

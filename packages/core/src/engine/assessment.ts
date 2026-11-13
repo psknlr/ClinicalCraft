@@ -177,6 +177,32 @@ function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport[
   };
 }
 
+/**
+ * The safety outcome, beside the score (which it never changes): the critical safety failures — a `critical`
+ * intervention given while contraindicated (an invalid checklist attempt gave nothing) — with the intervention's
+ * `harm`, and every dose error. `passed` unless there is a critical failure, a critical dose error or a
+ * safety-critical gate.
+ */
+function safetyOutcome(c: CaseDefinition, s: SessionState, verdict: AssessmentReport["safety"]["verdict"]): Pick<AssessmentReport["safety"], "passed" | "criticalFailures" | "doseErrors"> {
+  const criticalFailures = s.interventions.flatMap((r) => {
+    const iv = c.interventions.find((i) => i.id === r.interventionId);
+    if (r.appropriateness !== "contraindicated" || r.invalid || iv?.critical !== true) return [];
+    return [{ interventionId: r.interventionId, at: r.at, ...(iv.harm != null ? { harm: iv.harm } : {}) }];
+  });
+  const doseErrors = (s.doseErrors ?? []).map((e) => ({
+    interventionId: e.interventionId,
+    at: e.at,
+    text: e.text,
+    ordered: { ...e.ordered },
+    preset: { ...e.preset },
+    ratio: e.ratio,
+    conflicts: [...e.conflicts],
+    severity: e.severity,
+  }));
+  const passed = criticalFailures.length === 0 && !doseErrors.some((e) => e.severity === "critical") && verdict !== "safety-critical";
+  return { passed, criticalFailures, doseErrors };
+}
+
 /** Assess a session against its case (pure). */
 export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const p = progress(c, s);
@@ -206,6 +232,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
       contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated").map((r) => ({ interventionId: r.interventionId, at: r.at })),
       criticalAlarms: countCriticalAlarms(c, s),
       ...(gates ? { gates: gates.gates, verdict: gates.verdict } : {}),
+      ...safetyOutcome(c, s, gates?.verdict),
     },
     ...(procedure ? { procedure } : {}),
     ...(count ? { count } : {}),

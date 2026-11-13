@@ -3020,6 +3020,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "indicatedWhen": {
         "phase": "icu"
@@ -3150,6 +3151,7 @@
         "ventilator"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "indicatedWhen": {
         "phase": "icu"

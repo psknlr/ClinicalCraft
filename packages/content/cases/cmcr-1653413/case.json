@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653413",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "长期咳喘突然加重 · 74岁男性",
     "en": "Acute worsening of longstanding breathlessness · 74-year-old man"
@@ -1762,6 +1762,7 @@
         "medications"
       ],
       "risk": "moderate",
+      "critical": true,
       "dose": {
         "zh-CN": "破格救心汤（含黑顺片 60 克等；黑顺片为附子的炮制品），大火急煎 150 mL，翻渣再煮 150 mL，分2次口服（原报告处方）。",
         "en": "The 破格救心汤 decoction (including 黑顺片 60 g; 黑顺片 is processed aconite), decocted fast to 150 mL, the residue re-decocted to 150 mL, taken in two oral doses (the report's prescription)."

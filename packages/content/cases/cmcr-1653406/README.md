@@ -15,7 +15,7 @@ feedback and the debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653406` / `1.1.1` |
+| id / version | `cmcr-1653406` / `1.1.2` |
 | setting / facility | `operating-room` / `general-hospital` (operating theatre → ICU → ward) |
 | specialty | obstetrics, anaesthesiology, critical care |
 | difficulty | 4 / 5 |
@@ -437,6 +437,12 @@ and Wanfang listings.
   listing and quotations.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical-failure decision (audit P0-3).** `category-1-cs` before the anaesthetic (high risk) is
+  `critical: false` (`cases validate`): a sequencing guard — the caesarean cannot start until the anaesthetic works.
+  No intervention here is critical; scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 
