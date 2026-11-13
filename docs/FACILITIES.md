@@ -49,7 +49,9 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   shut their eyes and open their mouths that far); `--case <case.json>` draws a case's
   patient standing, sitting and in bed, and their companion; `--posture lateral [--up right] [--cover blanket|drapes]
   [--flex 9] [--asleep 1]` lays whoever is drawn on their side on an operating table ("A body drawn with
-  equipment" below; `--view front|back|head|top`; `--breath` and `--rise` draw the chest that far out); `--sheet roles|positions|looks|patients` the
+  equipment" below; `--view front|back|head|top`; `--breath` and `--rise` draw the chest that far out); `--posture prone` or
+  `--posture lying --cover towels` lays them flat on a treatment couch, face down or on their back
+  (`--view front|back|side|top`); `--sheet roles|positions|looks|patients` the
   reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
   `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
   player's own hand and stethoscope as the camera sees them.
@@ -425,7 +427,8 @@ footprint box does). docs/BLENDER.md has the Blender workflow.
 ## A body drawn with equipment (`manikin`)
 
 A training station has a patient simulator on its table; a skills room has a manikin
-on a trolley. An equipment type's optional `manikin` is such a body, drawn by the web
+on a trolley; a treatment couch has a body to practise on. An equipment type's optional
+`manikin` is such a body, drawn by the web
 world with the equipment — by its own figure kit (`src/world/figure/`, placed by
 `manikin.ts`), so it is one of the same figures as the people of the world and stays
 one whatever that kit becomes. It is **nobody**: not an actor of the world model, no
@@ -435,27 +438,34 @@ never a manikin, and a manikin is never presented as a patient.
 
 | field | |
 |---|---|
-| `posture` | `standing`, `sitting`, `lying` (on its back, under the covers), or `lateral`: on its side as for an operation on the chest — the arm underneath out in front on its board with the palm up, the upper arm straight forward over it on a support at shoulder height (no further from the trunk than a right angle, the face and the airway free), the leg underneath bent at hip and knee, the upper leg nearly straight on the pillow between them |
+| `posture` | `standing`, `sitting`, `lying` (on its back), `lateral`: on its side as for an operation on the chest — the arm underneath out in front on its board with the palm up, the upper arm straight forward over it on a support at shoulder height (no further from the trunk than a right angle, the face and the airway free), the leg underneath bent at hip and knee, the upper leg nearly straight on the pillow between them — or `prone`: face down as on a treatment couch — the legs straight, the feet on their insteps, the arms along the trunk on the couch a hand's breadth clear of it with the palms up, the face down (into the couch's face hole, where the couch has one) |
 | `sideUp` | `lateral`: `left` (default) or `right` — the side operated on |
-| `cover` | `lateral`: what covers it. `clothes` (default): what its `appearance` says — its own clothes, or a hospital gown. `blanket`: undressed, a theatre cap over the hair, a blanket over the hips and the legs that hangs a hand's breadth over the sides — on the table before the field is prepared, and after. `drapes`: undressed and draped for an operation on the side of the chest that is up — the theatre cap, four towels round the field (bare skin from the costal margin to under the armpit), a sheet over the hips and the legs that hangs over the sides and the foot of the table |
+| `cover` | what covers it — each posture takes its own (`coversOf` in core). `clothes` (default, any posture): what its `appearance` says — its own clothes, or a hospital gown; `lying`, it is in bed under the covers; `prone`, it is in its clothes with bare feet. On its side (`lateral`) — `blanket`: undressed, a theatre cap over the hair, a blanket over the hips and the legs that hangs a hand's breadth over the sides — on the table before the field is prepared, and after; `drapes`: undressed and draped for an operation on the side of the chest that is up — the theatre cap, four towels round the field (bare skin from the costal margin to under the armpit), a sheet over the hips and the legs that hangs over the sides and the foot of the table. Lying flat (`lying`, `prone`) — `towels`: undressed for a treatment of the body's surface — bare skin on the trunk and the limbs, bare feet, a towel over the hips whose ends lie on the couch either side and, on its back, another over the chest; on its back the arms lie on the couch beside it with the palms up, not on the covers of a bed |
 | `draped` | the earlier spelling of `cover: "drapes"`, kept for catalogs written with it (with `cover` as well, the two must agree) |
 | `breathing` | whether its chest moves: `none` (default); `both` — it breathes, or is ventilated: in over a third of a five-second breath and out over the rest, on its side the chest wall that is up rising a millimetre; `one-lung` — on its side with only the lung underneath ventilated: half as deep, the side that is up all but still |
 | `flex` | `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees, 0–25): the trunk bends sideways over it and the head goes down with its end |
 | `asleep` | eyes shut |
-| `x`, `z` | where it is in the type's frame (m from the footprint centre, turned with the placement): the feet of one standing or sitting; the middle of what one lying on its back lies on; of one on its side, the middle of the table under the chest — where a flexed table breaks |
+| `x`, `z` | where it is in the type's frame (m from the footprint centre, turned with the placement): the feet of one standing or sitting; the middle of what one lying on its back or face down lies on; of one on its side, the middle of the table under the chest — where a flexed table breaks |
 | `y` | height above the placement's floor of what it stands on, of its seat, or of the surface it lies on |
-| `rot` | degrees about the vertical, as a placement's: at 0 one standing or sitting faces +Z and the head of one lying is towards −Z (on its side with the left up, the face is to −X) |
+| `rot` | degrees about the vertical, as a placement's: at 0 one standing or sitting faces +Z and the head of one lying is towards −Z (on its side with the left up, the face is to −X; on its back its left is to +X, face down to −X) |
 | `appearance` | its looks, as a person's (`presentation: "neutral"` for a body that is neither a woman's nor a man's) |
 
-`sideUp`, `cover` (`draped`), `flex` and `breathing: "one-lung"` are refused on any
-posture but `lateral`. What lies on the chest (the towels) breathes with it; the cloth
-over the hips and the legs lies on the legs and does not. A state of the type's device
-may change the cover, the breathing and the rest ("A look for each state" below).
+`sideUp`, `draped`, `flex` and `breathing: "one-lung"` are refused on any posture but
+`lateral`, and a `cover` on a posture that does not take it. What lies on the chest (the
+towels) breathes with it; the cloth over the hips and the legs lies on the legs and does
+not. A state of the type's device may change the cover, the breathing and the rest ("A
+look for each state" below).
 Someone on their side lies with the back near the edge of the table, so that the bent knee stays
 on it: the kit takes a table 0.58 m wide with its mattress, its middle 7 cm in front
 of the middle of the body, breaking under the lower end of the breastbone, its foot
 8 cm past the soles (`LATERAL` in `figure/anatomy.ts`); the surface is 19.6 cm below
 the middle of the body, the shoulder underneath a little sunk into it.
+Someone lying flat lies along the middle of the couch, the head towards −Z: `y` is the
+surface under the back of one on its back, under the chest of one face down (either
+sinks 12 mm into it). An adult reaches from 0.8 m towards −Z of `z` (the crown) to
+0.95 m towards +Z (the soles; the toes of one face down, on their insteps, to 1.07 m),
+and with the arms beside the body one of average build is 0.64 m wide (slim 0.6 m,
+heavy 0.75 m).
 
 The type's model and voxel parts are everything but the body — the table, the
 supports, what stands on the skin — and are built round it: `placedPoint(rig, p)` and
@@ -477,7 +487,7 @@ its states a `look` — what the web world draws of it in that state:
 |---|---|
 | `layers` | the layers of the type's model drawn in this state: nodes of the GLB named `layer:<id>` (lower-case letters, digits, `_` and `-`; docs/BLENDER.md "Layers"). Every other layer is hidden; what is in no layer is always drawn. Omitted: no layer |
 | `screen` | what the parts named `screen` show: a picture drawn once (`xray`, `ct`, `pacs`, `lab`, `text`, `logo`, `thoracoscopy`) or `none` — dark. Omitted: the type's `screen`. A patient's own live screen (`vitals`, `ecg`) is never a look's to change |
-| `manikin` | what the state changes of the type's `manikin`: `cover`, `breathing`, `asleep` — or `posture`, `sideUp`, `flex`, though a model built round the body fits one body in one position. What it leaves out stays as the type says; a body turned off its side loses what only a body on its side has |
+| `manikin` | what the state changes of the type's `manikin`: `cover`, `breathing`, `asleep` — or `posture`, `sideUp`, `flex`, though a model built round the body fits one body in one position. What it leaves out stays as the type says; a body turned off its side loses what only a body on its side has, and a body turned to a posture that does not take its cover is in its clothes |
 
 A state without a look, a state the type does not have, a device without a behaviour:
 the type as it is, none of its model's layers (`lookOf` in core resolves a look).
@@ -504,8 +514,9 @@ shown is a draw call more, and the triangles that count are the ones shown at on
 
 **Checks.** `checkCatalogs`: layers on a type without a model, a layer named twice, a
 picture with no `screen` part to show it (warnings); a look that changes a patient's
-live screen, changes a manikin the type does not have, or gives a body that is not on
-its side what only one on its side has (errors). `clinicalcraft assets inspect --type
+live screen, changes a manikin the type does not have, gives a body that is not on
+its side what only one on its side has, or gives a body a cover its posture in that
+state does not take (errors). `clinicalcraft assets inspect --type
 <id>`: every layer a look shows must be in the model (error), and a layer no look shows
 is never drawn (warning). The models previewer draws a type in the states asked for —
 `--states all` is the storyboard of its states.

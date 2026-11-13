@@ -1,12 +1,12 @@
 /**
  * A body drawn with equipment (`EquipmentType.manikin`, docs/FACILITIES.md): the patient simulator of a training
- * station, a manikin on a trolley. It is one of the world's own figures (`npc.ts` — the people of the world are
+ * station, a manikin on a trolley, a body on a treatment couch. It is one of the world's own figures (`npc.ts` — the people of the world are
  * drawn the same way) put where the type says, and it is nobody: no name tag, no aim target of its own (the aim
  * finds the equipment), no part in the world model. What it is like may follow the equipment's state (a state's
  * `look`: covered differently, its chest moving or still) — `live.ts` rebuilds or animates it.
  */
 import { Vector3 } from "three";
-import { manikinCover, type DrawnManikin, type EquipmentManikin } from "@clinicalcraft/core";
+import { coversOf, manikinCover, type DrawnManikin, type EquipmentManikin } from "@clinicalcraft/core";
 import { bendPoint } from "./figure/bend.js";
 import { DEG, rotateXZ } from "./geometry.js";
 import { buildPerson, PLAIN_WEAR, type AppearanceLike, type PersonOptions, type PersonRig } from "./npc.js";
@@ -18,17 +18,19 @@ import { buildPerson, PLAIN_WEAR, type AppearanceLike, type PersonOptions, type 
  */
 export function manikinFigure(m: DrawnManikin | EquipmentManikin, seed: string): { appearance: AppearanceLike; options: PersonOptions } {
   const lateral = m.posture === "lateral";
-  const cover = lateral ? manikinCover(m as EquipmentManikin) : "clothes";
+  const said = manikinCover(m as EquipmentManikin);
+  // (a cover its posture does not take is its own clothes)
+  const cover = coversOf(m.posture).includes(said) ? said : "clothes";
   return {
     appearance: { ...(m.appearance ?? {}) },
     options: {
       posture: m.posture,
       surfaceY: m.posture === "standing" ? undefined : (m.y ?? 0),
-      // undressed on the table, under a blanket or the drapes: nothing on but a theatre cap
-      wear: cover !== "clothes" ? { ...PLAIN_WEAR, cap: true } : PLAIN_WEAR,
+      // undressed on the operating table, under a blanket or the drapes: nothing on but a theatre cap
+      wear: lateral && cover !== "clothes" ? { ...PLAIN_WEAR, cap: true } : PLAIN_WEAR,
       seed: `manikin:${seed}`,
       asleep: !!m.asleep,
-      ...(lateral ? { up: m.sideUp ?? "left", cover, flex: m.flex ?? 0 } : {}),
+      ...(lateral ? { up: m.sideUp ?? "left", cover, flex: m.flex ?? 0 } : cover !== "clothes" ? { cover } : {}),
     },
   };
 }

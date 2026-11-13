@@ -8,7 +8,7 @@
 import type { CaseDefinition, Investigation } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
-import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
+import { coversOf, DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
 import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, Room, VoxelPart, WorldPredicate } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
 import type { Issue, PatientSlot, WaypointLocation } from "./types.js";
@@ -823,8 +823,8 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
 
 /**
  * A state's look against its type: layers need a model to have them, a screen picture a part named "screen" and
- * a type whose screen is not the patient's own, a manikin change a manikin — and one that is still on its side
- * to say what only a body on its side has.
+ * a type whose screen is not the patient's own, a manikin change a manikin — one that is still on its side to say
+ * what only a body on its side has, and a cover its posture in that state takes (`coversOf`).
  */
 function checkLooks(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] {
   const issues: Issue[] = [];
@@ -844,8 +844,11 @@ function checkLooks(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] 
       if (!e.manikin) issues.push(err(`${at}.manikin`, `"${e.id}" has no manikin for a look to change`));
       else {
         const posture = look.manikin.posture ?? e.manikin.posture;
-        const sideOnly = [look.manikin.sideUp !== undefined && "sideUp", look.manikin.cover !== undefined && "cover", (look.manikin.flex ?? 0) > 0 && "flex", look.manikin.breathing === "one-lung" && 'breathing "one-lung"'].filter((x): x is string => !!x);
-        if (posture !== "lateral" && sideOnly.length) issues.push(err(`${at}.manikin`, `${sideOnly.join(", ")}: only a manikin on its side has it (posture "${posture}" in this state)`));
+        const sideOnly = [look.manikin.sideUp !== undefined && "sideUp", (look.manikin.flex ?? 0) > 0 && "flex", look.manikin.breathing === "one-lung" && 'breathing "one-lung"'].filter((x): x is string => !!x);
+        const wrong: string[] = [];
+        if (posture !== "lateral" && sideOnly.length) wrong.push(`${sideOnly.join(", ")}: only a manikin on its side has it`);
+        if (look.manikin.cover !== undefined && !coversOf(posture).includes(look.manikin.cover)) wrong.push(`cover "${look.manikin.cover}": its posture takes ${coversOf(posture).map((c) => `"${c}"`).join(", ")}`);
+        if (wrong.length) issues.push(err(`${at}.manikin`, `${wrong.join("; ")} (posture "${posture}" in this state)`));
       }
     }
   }
