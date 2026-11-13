@@ -1607,8 +1607,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "便血期间（两次检测的具体时间未记录）",
-            "en": "During the bleeding (when the two values were taken is not recorded)"
+            "zh-CN": "时间未记录（较早和之后各一次）",
+            "en": "Timing not recorded (an earlier and a later value)"
           },
           "text": {
             "zh-CN": "血红蛋白由129 g/L降至93 g/L。本病例没有记录白细胞、血小板和红细胞指数。",
@@ -1684,8 +1684,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "便血期间（具体时间未记录）",
-            "en": "During the bleeding (exact timing not recorded)"
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
           },
           "text": {
             "zh-CN": "CRP 95.8 mg/L。",
@@ -3089,6 +3089,18 @@
           "calf pumps"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "肝素",
+          "依诺"
+        ],
+        "en": [
+          "heparin",
+          "enoxaparin",
+          "lmwh",
+          "clexane"
+        ]
+      },
       "dose": {
         "zh-CN": "双下肢气压套筒，在暂停抗凝预防期间使用，或与之联用。",
         "en": "Sleeves on both legs, used while anticoagulant prophylaxis is withheld, or alongside it."
@@ -3447,6 +3459,18 @@
           "polyethylene glycol"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "肝素",
+          "抗凝"
+        ],
+        "en": [
+          "heparin",
+          "anticoag",
+          "enoxaparin",
+          "lmwh"
+        ]
+      },
       "dose": {
         "zh-CN": "前一晚口服聚乙二醇电解质散行肠道准备，次日全结肠镜检查至回盲部。",
         "en": "Polyethylene glycol bowel preparation by mouth the evening before, then colonoscopy to the caecum."
@@ -3614,6 +3638,16 @@
           {
             "not": {
               "intervened": "neurology-review"
+            }
+          },
+          {
+            "not": {
+              "ordered": "igra"
+            }
+          },
+          {
+            "not": {
+              "ordered": "viral-serology"
             }
           }
         ]
@@ -5014,8 +5048,9 @@
     "references": [
       "朱祖懿, 杨红, 姚尧, 李晓青, 钱家鸣. 记忆力下降–消化道出血. 中华全科医师杂志. 2014;13(2):91-93. doi:10.3760/cma.j.issn.1671-7368.2014.02.005. Available from: https://rs.yiigle.com/cmaid/598475",
       "Moran GW, Gordon M, Sinopolou V, et al. British Society of Gastroenterology guidelines on inflammatory bowel disease in adults: 2025. Gut. 2025;74(Suppl 2):s1-s101. doi:10.1136/gutjnl-2024-334395",
+      "Lamb CA, Kennedy NA, Raine T, et al. British Society of Gastroenterology consensus guidelines on the management of inflammatory bowel disease in adults. Gut. 2019;68(Suppl 3):s1-s106. doi:10.1136/gutjnl-2019-318484",
       "Rubin DT, Ananthakrishnan AN, Siegel CA, Barnes EL, Long MD. ACG Clinical Guideline Update: Ulcerative Colitis in Adults. Am J Gastroenterol. 2025;120(6):1187-1224.",
-      "Cohen-Mekelburg S, et al. AGA Clinical Practice Update on Inpatient Management of Adults with Inflammatory Bowel Disease: Expert Review. Gastroenterology. 2026;170:408-417. doi:10.1053/j.gastro.2025.08.039",
+      "Cohen-Mekelburg S, Hashash JG, Loftus EV Jr, Rubin DT. AGA Clinical Practice Update on Inpatient Management of Adults with Inflammatory Bowel Disease: Expert Review. Gastroenterology. 2026;170:408-417. doi:10.1053/j.gastro.2025.08.039",
       "中华医学会消化病学分会炎症性肠病学组, 中国炎症性肠病诊疗质量控制评估中心. 中国溃疡性结肠炎诊治指南(2023年·西安). 中华炎性肠病杂志. 2024;8(1):33-58. doi:10.3760/cma.j.cn101480-20240123-00017",
       "Nguyen GC, Bernstein CN, Bitton A, Chan AK, Griffiths AM, Leontiadis GI, et al. Consensus statements on the risk, prevention, and treatment of venous thromboembolism in inflammatory bowel disease: Canadian Association of Gastroenterology. Gastroenterology. 2014;146(3):835-848. doi:10.1053/j.gastro.2014.01.042",
       "Relling MV, Schwab M, Whirl-Carrillo M, et al. Clinical Pharmacogenetics Implementation Consortium guideline for thiopurine dosing based on TPMT and NUDT15 genotypes: 2018 update. Clin Pharmacol Ther. 2019;105(5):1095-1105. doi:10.1002/cpt.1304",

@@ -1,3 +1,814 @@
+diff --git a/packages/agent/src/agents/offline.ts b/packages/agent/src/agents/offline.ts
+index 2ccb12b..94be607 100644
+--- a/packages/agent/src/agents/offline.ts
++++ b/packages/agent/src/agents/offline.ts
+@@ -34,7 +34,7 @@ import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from ".
+ import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
+ import { sentence } from "../session/i18n-checklist.js";
+ import { obtainedResultsText } from "../tools/npc.js";
+-import { resultStatus } from "../tools/clinical-resolve.js";
++import { modalityText, resultStatus } from "../tools/clinical-resolve.js";
+ import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
+ import { decisionRefFor } from "../tools/decision-refs.js";
+ import { optionLabelsFor } from "../tools/option-labels.js";
+@@ -74,10 +74,13 @@ export function nurseResultsLine(ctx: OfflineContext): string {
+   // the clinician's own status for each (`resultStatus`): "no record" is never "back"
+   const ready = orders.filter((o) => resultStatus(c, o) === "ready").map(label);
+   const pending = orders.filter((o) => resultStatus(c, o) === "pending").map(label);
++  // ordered, not done: the patient must go to the device first (docs/EMBODIED.md §8.5)
++  const notDone = orders.filter((o) => resultStatus(c, o) === "not-acquired").map((o) => `${label(o)} — ${modalityText(o.order, L)}`);
+   const none = orders.filter((o) => resultStatus(c, o) === "no-record").map(label);
+   const parts: string[] = [];
+   if (ready.length > 0) parts.push(rt(L, "nurse.offline.ready", { list: joinList(L, ready) }));
+   if (pending.length > 0) parts.push(rt(L, "nurse.offline.pending", { list: joinList(L, pending) }));
++  if (notDone.length > 0) parts.push(rt(L, "nurse.offline.atModality", { list: joinList(L, notDone) }));
+   if (none.length > 0) parts.push(rt(L, "nurse.offline.noRecord", { list: joinList(L, none) }));
+   if (parts.length === 0) {
+     const read = obtainedResultsText({ ...ctx, agent: "nurse" }, null);
+@@ -358,6 +361,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
+     case "note":
+     case "count":
+     case "study":
++    case "acquire":
+     case "anaesthesia":
+     case "alarm-response":
+     case "procedure-supply":
+@@ -410,6 +414,7 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
+     case "release-hold":
+     case "count":
+     case "study":
++    case "acquire":
+     case "anaesthesia":
+     case "alarm-response":
+     case "procedure-supply":
+@@ -504,6 +509,9 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
+       return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
+     case "study":
+       return a.study.op === "order" ? (state.studies?.orders.some((o) => o.key === (a.study as { key: string }).key) ?? false) : false;
++    case "acquire":
++      // the hospital's record (the patient at the device), never a step of the walkthrough
++      return state.orders.some((o) => o.key === resultKey(a.investigationId, a.phase ?? state.phase) && !!o.acquired);
+     case "anaesthesia":
+     case "alarm-response":
+     case "procedure-supply":
+@@ -518,12 +526,14 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
+ /**
+  * Minutes until the order behind a `read` step is ready (simulated clock;
+  * 0 when ready, not ordered, or the clock is static) — a learner who ordered
+- * later than the reference run did would otherwise read too early.
++ * later than the reference run did would otherwise read too early. A study still
++ * waiting for the patient at its device has no release minute: 0 (waiting would
++ * not bring it; the patient must go there first).
+  */
+ export function minutesUntilReadable(c: CaseDefinition, state: SessionState, action: ClinicalAction): number {
+   if (action.type !== "read" || c.clock.mode === "static") return 0;
+   const order = state.orders.find((o) => o.key === resultKey(action.investigationId, action.phase ?? state.phase));
+-  return order ? Math.max(0, order.readyAt - state.clock) : 0;
++  return order?.readyAt != null ? Math.max(0, order.readyAt - state.clock) : 0;
+ }
+ 
+ /** PROTOCOL §2 name for the offline clinician plan (see `offlineClinicianTurn` in session/autopilot.ts for execution). */
+diff --git a/packages/agent/src/commands-world.ts b/packages/agent/src/commands-world.ts
+index 504b6b6..958a444 100644
+--- a/packages/agent/src/commands-world.ts
++++ b/packages/agent/src/commands-world.ts
+@@ -23,7 +23,7 @@ const NAMES = [
+   ["map", ""],
+   ["skill", "[id] [key=value…]"],
+   ["delegate", "<role> <task> [target]"],
+-  ["transport", "<destination|home>"],
++  ["transport", "<destination|home> [monitor]"],
+ ] as const;
+ 
+ /** Names of the embodied slash commands. */
+@@ -124,7 +124,9 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
+       return true;
+     }
+     case "transport":
+-      if (!args) usage(host, name, "<destination|home>");
++      // `monitor`: the portable monitor at the bedside goes along (EMBODIED §8.5)
++      if (!args) usage(host, name, "<destination|home> [monitor]");
++      else if (tokens.length === 2 && tokens[1] === "monitor") await run("transport_patient", { destination: tokens[0], monitor: true });
+       else await run("transport_patient", { destination: args });
+       return true;
+     case "delegate": {
+diff --git a/packages/agent/src/commands.ts b/packages/agent/src/commands.ts
+index e72b80e..1b1b581 100644
+--- a/packages/agent/src/commands.ts
++++ b/packages/agent/src/commands.ts
+@@ -334,7 +334,7 @@ function resultsCommand(host: CommandHost): void {
+     rows.push([investigationName(c, o.order.investigationId, L), o.order.investigationId, `${phaseLabel(c, o.order.phase, L)} (${o.order.phase})`, orderStatusText(c, o, L)]);
+   }
+   host.output(table(rows, { header: true }), {
+-    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
++    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, acquired: o.acquired, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
+   });
+ }
+ 
+diff --git a/packages/agent/src/permissions.ts b/packages/agent/src/permissions.ts
+index 8ae0f82..1cd29ce 100644
+--- a/packages/agent/src/permissions.ts
++++ b/packages/agent/src/permissions.ts
+@@ -344,6 +344,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
+   count: null,
+   // a learner orders a study with order_study; its acquisition, report and review are the hospital's
+   study: "order_study",
++  // an in-world study is acquired when the world has the patient on its device (the session records it), never by hand
++  acquire: null,
+   anaesthesia: null,
+   "alarm-response": null,
+   "procedure-supply": null,
+diff --git a/packages/agent/src/session/action-input.ts b/packages/agent/src/session/action-input.ts
+index 5edb10b..07b7506 100644
+--- a/packages/agent/src/session/action-input.ts
++++ b/packages/agent/src/session/action-input.ts
+@@ -70,6 +70,7 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
+       return {};
+     case "study":
+       return action.study.op === "order" ? { code: action.study.code, ...(action.study.indication ? { indication: action.study.indication } : {}) } : {};
++    case "acquire":
+     case "anaesthesia":
+     case "alarm-response":
+     case "procedure-supply":
+@@ -206,6 +207,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
+     case "note":
+     case "count":
+     case "study":
++    case "acquire":
+     case "anaesthesia":
+     case "alarm-response":
+     case "procedure-supply":
+diff --git a/packages/agent/src/session/delegation.ts b/packages/agent/src/session/delegation.ts
+index e1f9962..ea30892 100644
+--- a/packages/agent/src/session/delegation.ts
++++ b/packages/agent/src/session/delegation.ts
+@@ -125,9 +125,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
+ function transportParameters(h: Pick<DelegationHost, "resolve">, staff: ActorId, params: Record<string, unknown>, target: string): Record<string, unknown> | null {
+   const destination = strArg(params, "destination") || target;
+   const capability = strArg(params, "capability");
+-  if (destination === "home" || destination === "back") return { destination: "home" };
+-  if (destination) return { destination: h.resolve(destination, staff) ?? destination };
+-  return capability ? { capability } : null;
++  // the portable monitor at the bedside goes along (EMBODIED §8.5): `true`, or the device named
++  const monitor = params.monitor === true ? { monitor: true } : strArg(params, "monitor") ? { monitor: h.resolve(strArg(params, "monitor"), staff) ?? strArg(params, "monitor") } : {};
++  if (destination === "home" || destination === "back") return { destination: "home", ...monitor };
++  if (destination) return { destination: h.resolve(destination, staff) ?? destination, ...monitor };
++  return capability ? { capability, ...monitor } : null;
+ }
+ 
+ /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
+diff --git a/packages/agent/src/session/embodied-autopilot.ts b/packages/agent/src/session/embodied-autopilot.ts
+index e2b1c8e..6dbdc90 100644
+--- a/packages/agent/src/session/embodied-autopilot.ts
++++ b/packages/agent/src/session/embodied-autopilot.ts
+@@ -14,7 +14,11 @@
+  *   connect → record → reset, the patient's monitor `attach`, a
+  *   workstation's `order` / `read`, a device's `use`), else the clinical
+  *   tool itself → verify the postcondition in engine state
+- *   (asked / examined / ordered / read / intervened / decided…).
++ *   (asked / examined / ordered / read / intervened / decided…). A study done
++ *   on the patient at a device is ordered where the clinician is; then the
++ *   patient is taken to the device for it (EMBODIED §8.5) — with the portable
++ *   monitor at the bedside when they are on a monitor — and the session
++ *   records the acquisition on arrival.
+  *
+  * Every step records a `plan` span whose children are the observation, the
+  * walks (`navigation`), the device operations (`interaction` →
+@@ -27,8 +31,8 @@
+  * before `operate close` on a count that is not settled, the closing count is made at the count board in the
+  * patient's room (docs/TEAM.md §4.3) — the autopilot never closes on a count it did not take.
+  */
+-import { countSettled, countStatus, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+-import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
++import { awaitingAcquisition, countSettled, countStatus, monitorAttached, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
++import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type ClinicalIntent, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+ import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
+ import type { ToolCallStatus } from "../loop.js";
+ import { actionIntent } from "../tools/spatial.js";
+@@ -141,7 +145,7 @@ function needsPatientAtProvider(r: SpatialRequirement): boolean {
+ async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, then: NonNullable<ActionHint["then"]>, turnId: string, signal?: AbortSignal): Promise<boolean> {
+   const world = e.world();
+   const L = host.locale;
+-  const parameters = { ...(then.parameters ?? {}) };
++  const parameters: Record<string, unknown> = { ...(then.parameters ?? {}), ...(monitorTravels(host, world) ? { monitor: true } : {}) };
+   const destination = typeof parameters.destination === "string" ? parameters.destination : "";
+   const target = destination === "home" ? rt(L, "world.transport.home") : destination ? nameOf(world, destination, L) : String(parameters.capability ?? "—");
+   if (world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
+@@ -155,9 +159,59 @@ async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, t
+   return (await e.act({ operation: "transport_patient", targetId: then.targetId, parameters }, turnId, signal)).status === "completed";
+ }
+ 
++/**
++ * A patient on a monitor travels with one (EMBODIED §8.5): when their monitor is attached and a portable device providing
++ * cardiac monitoring stands at the bedside (a defibrillator's monitor), it goes with them.
++ */
++function monitorTravels(host: AutopilotHost, world: WorldRuntime): boolean {
++  if (!monitorAttached(host.caseDef, host.state())) return false;
++  return world.bedsideProviders("cardiac-monitor").some((id) => !!world.entity(id)?.portable);
++}
++
++/** The acquisition intent of an ordered study (`acquire`, EMBODIED §8.5). */
++function acquireIntent(investigationId: string): ClinicalIntent {
++  return { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId };
++}
++
++/**
++ * Studies ordered that wait for the patient at their device (EMBODIED §8.5): the patient is taken there (`hint.then`),
++ * and the session records the acquisition on arrival — each in its own plan span, verified in the engine state.
++ */
++async function acquirePending(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, signal?: AbortSignal): Promise<void> {
++  const tried = new Set<string>();
++  for (;;) {
++    const order = host.state().orders.find((o) => awaitingAcquisition(o) && !tried.has(o.key));
++    if (!order || signal?.aborted) return;
++    tried.add(order.key);
++    const world = e.world();
++    const check = world.checkSpatial(PRIMARY_ACTOR, acquireIntent(order.investigationId));
++    const then = !check.ok ? check.hint?.then : undefined;
++    if (check.ok || then?.operation !== "transport_patient") continue;
++    const plan = e.trace.start("plan", `transport_patient ${String(then.parameters?.destination ?? "")}`.trim(), { actorId: PRIMARY_ACTOR, refs: { entities: [then.targetId] }, data: { tool: "transport_patient", args: then.parameters ?? {}, acquire: order.key } });
++    let ok = false;
++    try {
++      ok = await e.trace.within(plan.id, async () => {
++        await transportPatient(host, e, then, turnId, signal);
++        const done = !awaitingAcquisition(host.state().orders.find((o) => o.key === order.key) ?? order);
++        e.trace.start("verification", "acquired", { actorId: PRIMARY_ACTOR }).end({ ok: done, worldVersion: world.version, data: { order: order.key } });
++        return done;
++      });
++    } finally {
++      plan.end({ ok, worldVersion: world.version });
++    }
++  }
++}
++
++/** Does the step need the patient at a device — to act (a test the patient performs at a station), or for the study it orders? */
++function stepNeedsDevice(world: WorldRuntime, step: OfflineClinicianStep, intent: ClinicalIntent): boolean {
++  if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return true;
++  return step.action.type === "order" && needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, acquireIntent(step.action.investigationId)).requirement);
++}
++
+ /**
+  * After a step, a patient who was taken to a device for a study goes back to their bed space — unless the next
+- * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there).
++ * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there), or a study
++ * ordered still waits for them at one.
+  */
+ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, steps: readonly OfflineClinicianStep[], turnId: string, signal?: AbortSignal): Promise<void> {
+   const world = e.world();
+@@ -165,13 +219,13 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
+   const patient = e.patientId();
+   if (!place || !patient || signal?.aborted) return;
+   const home = place.home.slot ? place.slot === place.home.slot : !place.slot && place.provider === place.home.provider;
+-  if (home) return;
++  if (home || host.state().orders.some((o) => awaitingAcquisition(o))) return;
+   for (let i = host.cursor.value; i < steps.length; i++) {
+     const step = steps[i]!;
+     if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
+     const intent = actionIntent(step.action as ClinicalAction);
+     if (!intent) continue;
+-    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
++    if (stepNeedsDevice(world, step, intent)) return;
+     break;
+   }
+   // its own plan span: the walk (or the porter's task) and the verification that the patient is home
+@@ -418,6 +472,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
+     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+     if (run === step && !outcome.ok) host.cursor.missed.push(step);
+     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
++    // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.5)
++    await acquirePending(host, e, turnId, signal);
+     // a study done at a device: the patient goes back to their bed space (unless the next step needs a device too)
+     await returnPatient(host, e, steps, turnId, signal);
+     // the care team's turn (its assigned scenario runs alongside: a hold, a search, a request)
+diff --git a/packages/agent/src/session/embodied.ts b/packages/agent/src/session/embodied.ts
+index b8d5962..f5621a6 100644
+--- a/packages/agent/src/session/embodied.ts
++++ b/packages/agent/src/session/embodied.ts
+@@ -25,8 +25,9 @@
+  */
+ import type { ClinicalActionFeedback } from "./action-ids.js";
+ import { COUNT_TOOL, SurgicalCount } from "./count.js";
+-import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
++import { assignPatientSlot, awaitingAcquisition, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+ import {
++  acquisitionStaff,
+   behaviorOf,
+   createWorldRuntime,
+   operationName,
+@@ -470,6 +471,8 @@ export class EmbodiedSession {
+       }
+       // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
+       this.count.afterAct(request, result);
++      // the patient brought to the device a study waits for: it is done there now (EMBODIED §8.5)
++      this.acquirePending();
+       this.traceEngineChanges(actionId, actorId);
+       this.host.emit({ type: "world_action_result", result }, caller.submission);
+       if (inner.version !== before) this.record();
+@@ -643,6 +646,8 @@ export class EmbodiedSession {
+       return;
+     }
+     this.record();
++    // a transfer that brought the patient to the device a study waits for: it is done there now (EMBODIED §8.5)
++    if (r.ok) this.acquirePending();
+     for (const lines of this.noteCaptures) lines.push(r.message);
+     this.host.emit({ type: "notification", level: r.ok ? "info" : "warning", title: rt(this.host.locale(), "world.relocated"), body: r.message });
+   }
+@@ -651,6 +656,34 @@ export class EmbodiedSession {
+     for (const destination of this.deferred.splice(0)) this.relocate(destination);
+   }
+ 
++  /**
++   * The device a study is done on the patient at, by its capabilities — the world's rule (the acquisition's
++   * requirement, EMBODIED §8.5); null when the study is acquired at the order. The kernel records an in-world order
++   * with it (`order.modality`).
++   */
++  modalityOf(investigationId: string): string[] | null {
++    const r = this.inner.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId }).requirement;
++    return r.kind === "patient-at-provider" ? [...r.capabilities] : null;
++  }
++
++  /**
++   * Studies waiting for the patient at their device (EMBODIED §8.5): each one the world has the patient on the device
++   * for now is acquired there — by the department's staff (`acquisitionStaff`), at that device — through the engine
++   * (`acquire`, by the system): its result's clock starts now. Called after every world action, a transfer, and an
++   * in-world order.
++   */
++  acquirePending(): void {
++    const s = this.host.state();
++    if (!s.started || s.finished) return;
++    for (const o of s.orders) {
++      if (!awaitingAcquisition(o)) continue;
++      const check = this.inner.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: o.investigationId, itemId: o.investigationId });
++      if (!check.ok) continue;
++      const where = check.satisfiedBy[0];
++      this.host.dispatch({ type: "acquire", investigationId: o.investigationId, phase: o.phase, collector: acquisitionStaff(o.modality ?? []), ...(where ? { where } : {}), by: "system" });
++    }
++  }
++
+   /** A tool whose call may relocate the patient: the relocation's line is appended to its output. */
+   private withNotes<A extends Record<string, unknown>>(tool: ToolDefinition<A>): ToolDefinition<A> {
+     return {
+diff --git a/packages/agent/src/session/i18n-imaging.ts b/packages/agent/src/session/i18n-imaging.ts
+new file mode 100644
+index 0000000..051b6dd
+--- /dev/null
++++ b/packages/agent/src/session/i18n-imaging.ts
+@@ -0,0 +1,29 @@
++/**
++ * Runtime strings of a study done on the patient at a device in the world (docs/EMBODIED.md §8.5, audit 2026-11-12
++ * P1-7): an order that waits for the patient there ("ordered — the patient must go to CT" / "已开单——患者需要去CT"),
++ * the acquisition, a read refused before it. Merged into `./i18n.ts`. Words follow docs/GLOSSARY.md.
++ */
++
++export const IMAGING_EN = {
++  "label.atModality": "ordered — the patient must go to {modality}",
++  "tool.ordered.atModality": "Not done yet — the patient must go to {modality}: the study is done there, and its result comes {minutes} min after it.",
++  "tool.ordered.atModalityNow": "{patient} is at {modality}: the study is done now; result expected at {time} (now {now}).",
++  "tool.read.notAcquired": "{name} has been ordered but not done: the patient must go to {modality} for it. Its result comes {minutes} min after the study.",
++  "tool.results.atModality": "{name} ({phase}) has been ordered but not done: the patient must go to {modality}.",
++  "notify.acquired.title": "Study done",
++  "notify.acquired.body": "{name}: the study has been done; the report is due at {time}.",
++  "nurse.offline.atModality": "Ordered, not done yet — the patient has to go for them: {list}.",
++  "acquire.handEntry": "A study done on the patient at a device is recorded as done when the patient is there, not entered by hand: take the patient to it.",
++} as const;
++
++export const IMAGING_ZH: Record<keyof typeof IMAGING_EN, string> = {
++  "label.atModality": "已开单——患者需要去{modality}",
++  "tool.ordered.atModality": "尚未完成——患者需要去{modality}：检查在那里完成，结果在检查后{minutes}分钟出来。",
++  "tool.ordered.atModalityNow": "{patient}已在{modality}：检查现在完成；预计{time}出结果（现在{now}）。",
++  "tool.read.notAcquired": "{name}已开单但尚未完成：患者需要去{modality}做这项检查。结果在检查完成后{minutes}分钟出来。",
++  "tool.results.atModality": "{name}（{phase}）已开单但尚未完成：患者需要去{modality}。",
++  "notify.acquired.title": "检查已完成",
++  "notify.acquired.body": "{name}：检查已完成；报告预计{time}发出。",
++  "nurse.offline.atModality": "已开单、尚未做——要把患者送过去：{list}。",
++  "acquire.handEntry": "在设备上为患者完成的检查，由医院在患者到达设备时记录完成，不能手工录入：请把患者送过去。",
++};
+diff --git a/packages/agent/src/session/i18n.ts b/packages/agent/src/session/i18n.ts
+index 7c14ac8..f70e44c 100644
+--- a/packages/agent/src/session/i18n.ts
++++ b/packages/agent/src/session/i18n.ts
+@@ -14,6 +14,7 @@ import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
+ import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
+ import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
+ import { SAFETY_EN, SAFETY_ZH } from "./i18n-safety.js";
++import { IMAGING_EN, IMAGING_ZH } from "./i18n-imaging.js";
+ 
+ /** Runtime languages shipped with ClinicalCraft. */
+ export type RuntimeLang = "zh-CN" | "en";
+@@ -496,6 +497,7 @@ const EN = {
+   ...COUNT_EN,
+   ...STUDIES_EN,
+   ...SAFETY_EN,
++  ...IMAGING_EN,
+ } as const;
+ 
+ export type RuntimeKey = keyof typeof EN;
+@@ -944,6 +946,7 @@ const ZH: Record<RuntimeKey, string> = {
+   ...COUNT_ZH,
+   ...STUDIES_ZH,
+   ...SAFETY_ZH,
++  ...IMAGING_ZH,
+ };
+ 
+ const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };
+diff --git a/packages/agent/src/session/kernel.ts b/packages/agent/src/session/kernel.ts
+index f8f6180..4536673 100644
+--- a/packages/agent/src/session/kernel.ts
++++ b/packages/agent/src/session/kernel.ts
+@@ -370,6 +370,12 @@ export class SessionKernel {
+   dispatch(action: ClinicalAction, id: string): ReduceResult {
+     // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
+     if (action.type === "operate") syncProcedureSupply(this, id);
++    // in-world, a study done on the patient at a device is acquired there, not at the order (docs/EMBODIED.md §8.5):
++    // the world's rule names the device, and the order is recorded with it (a replay reads it from the record)
++    if (action.type === "order" && !action.modality && this.embodied) {
++      const modality = this.embodied.modalityOf(action.investigationId);
++      if (modality) action = { ...action, modality };
++    }
+     const result = reduce(this.caseDef, this.state, action);
+     const accepted = !result.rejected;
+     // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end
+@@ -388,6 +394,8 @@ export class SessionKernel {
+     }
+     // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
+     if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");
++    // in-world: ordered with the patient already on its device, the study is done now
++    if (accepted && action.type === "order" && action.modality) this.embodied?.acquirePending();
+     if (accepted) {
+       this.emitSnapshot(id);
+       if (action.type === "note") {
+diff --git a/packages/agent/src/session/learner.ts b/packages/agent/src/session/learner.ts
+index 50a923b..1d2e022 100644
+--- a/packages/agent/src/session/learner.ts
++++ b/packages/agent/src/session/learner.ts
+@@ -258,6 +258,11 @@ export class LearnerPath {
+       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
+       return null;
+     }
++    // a study done on the patient at a device is done when the world has them there (docs/EMBODIED.md §8.5), never typed in
++    if (requested.type === "acquire") {
++      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "acquire.handEntry") }), code: "permission_denied" });
++      return null;
++    }
+     // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
+     // entered in their name
+     // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it
+diff --git a/packages/agent/src/session/notifications.ts b/packages/agent/src/session/notifications.ts
+index f89e323..52d896b 100644
+--- a/packages/agent/src/session/notifications.ts
++++ b/packages/agent/src/session/notifications.ts
+@@ -4,7 +4,7 @@
+  * announcements). Results are never quoted — the learner must read them.
+  */
+ import { t, type CaseDefinition, type DomainEvent, type VitalKey } from "@clinicalcraft/core";
+-import { interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
++import { clockTime, interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
+ import { rt, type RuntimeKey } from "./i18n.js";
+ import { sentence } from "./i18n-checklist.js";
+ 
+@@ -218,6 +218,9 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
+     }
+     case "objective.completed":
+       return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
++    // an in-world study done with the patient at its device: the result's clock started (docs/EMBODIED.md §8.5)
++    case "order.acquired":
++      return [{ notification: { level: "info", title: rt(L, "notify.acquired.title"), body: rt(L, "notify.acquired.body", { name: investigationName(c, event.investigationId, L), time: clockTime(c, event.readyAt, L, "ceil") }) } }];
+     case "hold.placed":
+       return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
+     case "hold.released":
+diff --git a/packages/agent/src/session/transport.test.ts b/packages/agent/src/session/transport.test.ts
+index f4dc650..fa84f7e 100644
+--- a/packages/agent/src/session/transport.test.ts
++++ b/packages/agent/src/session/transport.test.ts
+@@ -49,35 +49,69 @@ describe("transport_patient: a learner tool", () => {
+ });
+ 
+ describe("a CTPA: the patient taken to the scanner and back (PE, general hospital)", () => {
+-  it("refused in the ward with the way (and the tool) to bring the patient; wheeled there (travel charged once), ordered at the scanner, wheeled back", async () => {
++  it("ordered at the bedside — not done until she is on the scanner (audit P1-7); wheeled there (travel charged once): done on arrival; wheeled back", async () => {
+     const transcript = new MemoryTranscript();
+     const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", transcript, settingsPatch: { approvalMode: "bypass" } });
+     await t.session.run({ type: "clinical_action", action: { type: "start" } });
+     const w = t.session.world()!;
+-    const refused = await command(t, "order", "ctpa");
+-    expect(refused.ok).toBe(false);
+-    // the learner sentence has no tool id; the model line says what to call there
+-    expect(refused.text).toMatch(/take the patient there/i);
+-    expect(refused.text).toMatch(/transport_patient \{"destination":"eq:ct-scanner"\}/);
+     // away from the patient: refused with the way to them
+     const away = await command(t, "transport", "eq:ct-scanner");
+     expect(away.ok).toBe(false);
+     expect(w.patientPlace()).toMatchObject({ slot: "ward-1" });
+     expect((await walk(t, { kind: "interact", id: "patient:ward-1" })).status).toBe("completed");
++    // ordered from the ward: recorded with its device, not done — the learner sentence has no tool id, the model line
++    // says what to call there
++    const ordered = await command(t, "order", "ctpa");
++    expect(ordered.ok, ordered.text).toBe(true);
++    expect(ordered.text.split("\n")[0]).toMatch(/Not done yet — the patient must go to a CT scanner/);
++    expect(ordered.text.split("\n")[0]).not.toMatch(/transport_patient|eq:/);
++    expect(ordered.text).toMatch(/transport_patient \{"destination":"eq:ct-scanner"\}/);
++    const order = () => t.session.state.orders.find((o) => o.investigationId === "ctpa")!;
++    expect(order()).toMatchObject({ modality: ["ct"], by: "learner" });
++    expect(order().acquired).toBeUndefined();
++    const listed = await command(t, "results");
++    expect(listed.text).toMatch(/ordered — the patient must go to a CT scanner/);
+     const before = travel(transcript).length;
+     const there = await command(t, "transport", "eq:ct-scanner");
+     expect(there.ok, there.text).toBe(true);
+     expect(there.text).toMatch(/CT/);
+     expect(travel(transcript).length).toBe(before + 1);
+     expect(w.patientPlace()).toMatchObject({ provider: "eq:ct-scanner", posture: "lying", trolley: "eq:ward-bed-1" });
+-    const ordered = await command(t, "order", "ctpa");
+-    expect(ordered.ok, ordered.text).toBe(true);
++    // done on arrival, by the department, at the scanner: the result's clock starts there
++    expect(order().acquired).toMatchObject({ at: t.session.state.clock, collector: "radiographer", where: "eq:ct-scanner" });
++    expect(order().readyAt).toBe(order().acquired!.at + t.session.caseDef.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
++    const acquire = transcript.ofType("action").map((i) => i.payload.action).find((a) => a.type === "acquire");
++    expect(acquire).toMatchObject({ type: "acquire", investigationId: "ctpa", by: "system" });
+     const back = await command(t, "transport", "home");
+     expect(back.ok, back.text).toBe(true);
+     expect(w.patientPlace()).toMatchObject({ slot: "ward-1", provider: null });
+     // the patient's monitor follows the patient
+     expect(w.patientMonitor()).toBe("eq:ward-monitor-1");
++    // a learner never enters an acquisition
++    const typed = await t.session.run({ type: "clinical_action", action: { type: "acquire", investigationId: "ctpa" } });
++    expect(msgsOf(typed, "error")[0]).toMatchObject({ code: "permission_denied" });
++    await t.session.close();
++  });
++
++  it("ordered with the patient already on the scanner: done at once; text mode keeps the acquisition implied at the order", async () => {
++    const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", settingsPatch: { approvalMode: "bypass" } });
++    await t.session.run({ type: "clinical_action", action: { type: "start" } });
++    await walk(t, { kind: "interact", id: "patient:ward-1" });
++    expect((await command(t, "transport", "eq:ct-scanner")).ok).toBe(true);
++    const ordered = await command(t, "order", "ctpa");
++    expect(ordered.ok, ordered.text).toBe(true);
++    // done as soon as the order is placed (its own minute spent): she is on the table
++    const o = t.session.state.orders.find((x) => x.investigationId === "ctpa")!;
++    expect(o.acquired).toMatchObject({ at: t.session.state.clock, where: "eq:ct-scanner" });
++    expect(o.acquired!.at - o.orderedAt).toBeCloseTo(t.session.caseDef.clock.actionCosts.order ?? 0, 6);
+     await t.session.close();
++    const text = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", clinical: true, settingsPatch: { approvalMode: "bypass" } });
++    await text.session.run({ type: "clinical_action", action: { type: "start" } });
++    expect((await command(text, "order", "ctpa")).ok).toBe(true);
++    const implied = text.session.state.orders.find((x) => x.investigationId === "ctpa")!;
++    expect(implied.modality).toBeUndefined();
++    expect(implied.acquired).toMatchObject({ implied: true, at: implied.orderedAt });
++    await text.session.close();
+   });
+ 
+   it("zh-CN: the same flow in Chinese — no raw ids in the learner sentences", async () => {
+diff --git a/packages/agent/src/tools/clinical-resolve.ts b/packages/agent/src/tools/clinical-resolve.ts
+index 37d4380..3654cdd 100644
+--- a/packages/agent/src/tools/clinical-resolve.ts
++++ b/packages/agent/src/tools/clinical-resolve.ts
+@@ -27,6 +27,7 @@ import {
+   type MatchHit,
+   type orderStatus,
+   type ReduceResult,
++  type OrderRecord,
+   type RejectionCode,
+   type SessionState,
+ } from "@clinicalcraft/core";
+@@ -93,19 +94,27 @@ export function readPhase(s: SessionState, investigationId: string, phaseArg?: s
+ }
+ 
+ /** The one status of an ordered result, for every role (access to its content is decided separately). */
+-export type ResultStatus = "read" | "no-record" | "ready" | "pending";
++export type ResultStatus = "read" | "no-record" | "not-acquired" | "ready" | "pending";
+ 
+ /**
+  * The status of an order's result, the same for the clinician, the nurse and every consultant: read; "no record"
+- * (the case has no result for it in that phase — it will never come back); ready (back, not yet reviewed); or
+- * pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read results only).
++ * (the case has no result for it in that phase — it will never come back); not acquired (in-world: ordered, the
++ * patient not yet at the device the study is done at, docs/EMBODIED.md §8.5 — no result exists); ready (back, not yet
++ * reviewed); or pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read
++ * results only).
+  */
+ export function resultStatus(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number]): ResultStatus {
+   if (o.read) return "read";
+   if (resultFor(c, o.order.investigationId, o.order.phase) === null) return "no-record";
++  if (!o.acquired) return "not-acquired";
+   return o.ready ? "ready" : "pending";
+ }
+ 
++/** The device an order's study is done at, in words ("a CT scanner" / "CT扫描"): its `modality` capabilities. */
++export function modalityText(order: Pick<OrderRecord, "modality">, locale: string): string {
++  return joinList(locale, capabilityLabels(order.modality ?? [], locale));
++}
++
+ /** Learner-facing status of an order (`resultStatus` in words). */
+ export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number], locale: string): string {
+   switch (resultStatus(c, o)) {
+@@ -113,10 +122,12 @@ export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderSta
+       return rt(locale, "label.read");
+     case "no-record":
+       return rt(locale, "label.noRecord");
++    case "not-acquired":
++      return rt(locale, "label.atModality", { modality: modalityText(o.order, locale) });
+     case "ready":
+       return rt(locale, "label.ready");
+     case "pending":
+-      return rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
++      return rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt ?? o.order.orderedAt, locale, "ceil") });
+   }
+ }
+ 
+diff --git a/packages/agent/src/tools/clinical.ts b/packages/agent/src/tools/clinical.ts
+index 9dfc454..1b94bc0 100644
+--- a/packages/agent/src/tools/clinical.ts
++++ b/packages/agent/src/tools/clinical.ts
+@@ -15,6 +15,7 @@
+  */
+ import {
+   activeHolds,
++  awaitingAcquisition,
+   datumStatus,
+   availableDecisions,
+   currentObjective,
+@@ -44,6 +45,7 @@ import {
+   actorFor,
+   capabilityRefusal,
+   maxDosesRefusal,
++  modalityText,
+   orderStatusText,
+   readPhase,
+   rejectedOutput,
+@@ -67,6 +69,7 @@ export {
+   RESOLVE_THRESHOLD,
+   actorFor,
+   missingCapabilities,
++  modalityText,
+   orderStatusText,
+   readPhase,
+   rejectedOutput,
+@@ -383,17 +386,31 @@ const orderTest: ToolDefinition<ToolArgs> = {
+     if (duplicate) return { ok: true, output: rt(L, "tool.orderDuplicate", { name, phase: phaseLabel(c, duplicate.phase, L) }), data: { investigationId: r.id, duplicate: true, phase: duplicate.phase } };
+     const placed = eventsOf(result, "order.placed")[0];
+     const phase = placed?.phase ?? s.phase;
+-    const readyAt = placed?.readyAt ?? s.clock;
++    const order = s.orders.find((o) => o.key === placed?.key);
++    // in-world, a study done on the patient at a device: ordered here, done once the patient is there (EMBODIED §8.5)
++    const atModality = !!order?.modality?.length;
++    const waiting = !!order && awaitingAcquisition(order);
++    const readyAt = order?.readyAt ?? placed?.readyAt ?? s.clock;
+     const hasRecord = resultFor(c, r.id, phase) != null;
++    const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
++    const modality = order ? modalityText(order, L) : "";
+     const ready = !hasRecord
+       ? rt(L, "tool.ordered.noRecord", { phase: phaseLabel(c, phase, L) })
+-      : readyAt <= s.clock
+-        ? rt(L, "tool.ordered.readyNow")
+-        : readyAtText(c, readyAt, s.clock, L);
++      : waiting
++        ? rt(L, "tool.ordered.atModality", { modality, minutes: turnaround })
++        : atModality
++          ? rt(L, "tool.ordered.atModalityNow", { patient: t(c.patient.displayName, L), modality, time: clockTime(c, readyAt, L, "ceil"), now: clockTime(c, s.clock, L) })
++          : readyAt <= s.clock
++            ? rt(L, "tool.ordered.readyNow")
++            : readyAtText(c, readyAt, s.clock, L);
+     const lines = [rt(L, "tool.ordered", { name, phase: phaseLabel(c, phase, L), ready })];
+     const query = strArg(args, "query");
+     if (query) for (const w of orderWarnings(c, query, r.id, L, before)) lines.push(rt(L, "tool.orderWarning", { text: w }));
+-    return { ok: true, output: lines.join("\n"), data: { investigationId: r.id, phase, readyAt, ready: hasRecord && readyAt <= s.clock, hasRecord } };
++    return {
++      ok: true,
++      output: lines.join("\n"),
++      data: { investigationId: r.id, phase, ...(waiting ? { acquired: false, modality: order!.modality } : { readyAt }), ready: hasRecord && !waiting && readyAt <= s.clock, hasRecord },
++    };
+   },
+ };
+ 
+@@ -435,7 +452,12 @@ const readResult: ToolDefinition<ToolArgs> = {
+     if (result.rejected) {
+       if (result.rejected.code === "not-ready") {
+         const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
+-        return rejectedOutput(L, result, order ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
++        // ordered, not done: the patient was never at the device — no result exists to wait for
++        if (order && awaitingAcquisition(order)) {
++          const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
++          return rejectedOutput(L, result, rt(L, "tool.read.notAcquired", { name: investigationName(c, r.id, L), modality: modalityText(order, L), minutes: turnaround }));
++        }
++        return rejectedOutput(L, result, order?.readyAt != null ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
+       }
+       if (result.rejected.code === "not-ordered") {
+         // Name the phase(s) it was ordered in, with the exact command (/results shows labels).
+@@ -1026,7 +1048,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
+       currentObjective: objective?.id ?? null,
+       // the next steps of the current objective, each with whether the engine would run it now and what blocks it
+       recommendations: recommendations(c, s, L),
+-      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
++      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, acquired: o.acquired, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
+       decisions: decisions.map((d) => ({ number: decisionNumber(c, d.decision.id), unlocked: d.unlocked, decided: d.decided })),
+       holds: (s.holds ?? []).filter((h) => !h.released),
+       hints: s.hints,
+diff --git a/packages/agent/src/tools/npc.ts b/packages/agent/src/tools/npc.ts
+index 1188c23..0839294 100644
+--- a/packages/agent/src/tools/npc.ts
++++ b/packages/agent/src/tools/npc.ts
+@@ -24,7 +24,7 @@ import {
+ } from "@clinicalcraft/core";
+ import { isZh, joinList, rt } from "../session/i18n.js";
+ import { actorFor, lockedDecisionLabel, rejectedOutput, resolveIntervention, strArg, type ToolArgs } from "./clinical.js";
+-import { resultStatus } from "./clinical-resolve.js";
++import { modalityText, resultStatus } from "./clinical-resolve.js";
+ import { sentence } from "../session/i18n-checklist.js";
+ import { holdLines, objectiveRequirementLines } from "./requirements.js";
+ import { clockTime, formatResult, interventionLabel, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
+@@ -153,9 +153,11 @@ export function obtainedResultsText(ctx: Pick<ToolContext, "caseDef" | "locale"
+       lines.push(
+         status === "no-record"
+           ? rt(L, "tool.results.noRecord", { name, phase })
+-          : status === "ready"
+-            ? rt(L, "tool.results.ready", { name, phase })
+-            : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt, L, "ceil") }),
++          : status === "not-acquired"
++            ? rt(L, "tool.results.atModality", { name, phase, modality: modalityText(o.order, L) })
++            : status === "ready"
++              ? rt(L, "tool.results.ready", { name, phase })
++              : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt ?? o.order.orderedAt, L, "ceil") }),
+       );
+       data.push({ investigationId: id, phase: o.order.phase, ready: status === "ready", read: false, status });
+     }
+diff --git a/packages/agent/src/tools/spatial.ts b/packages/agent/src/tools/spatial.ts
+index e15687e..cded130 100644
+--- a/packages/agent/src/tools/spatial.ts
++++ b/packages/agent/src/tools/spatial.ts
+@@ -21,7 +21,7 @@
+  * (decisions, phases, waiting, the plan, status, finishing) and `consult`
+  * (phone/pager) are not gated.
+  */
+-import type { ClinicalAction } from "@clinicalcraft/core";
++import { awaitingAcquisition, type ClinicalAction } from "@clinicalcraft/core";
+ import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
+ import { rt } from "../session/i18n.js";
+ import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
+@@ -151,6 +151,18 @@ export function vitalsGated<A extends Record<string, unknown>>(tool: ToolDefinit
+ 
+ const roleLabel = (role: string, locale: string) => roleName(role, locale);
+ 
++/**
++ * An in-world study ordered and waiting for the patient at its device (EMBODIED §8.5): the order's output gains the way
++ * to take them there — the world's hint for the acquisition (go to the patient, then `transport_patient`), as a
++ * refusal's hint reads.
++ */
++function acquisitionWay(out: ToolOutput, gate: SpatialGate, actor: ActorId, ctx: ToolContext, investigationId: string | undefined): ToolOutput {
++  if (!investigationId || !ctx.state().orders.some((o) => o.investigationId === investigationId && awaitingAcquisition(o))) return out;
++  const check = gate.check(actor, { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId }, false);
++  if (check.ok || !check.hint) return out;
++  return { ...out, output: [out.output, ...hintLines(check.hint, ctx.locale)].join("\n") };
++}
++
+ /** Thrown inside a gated run when the re-check fails: nothing was committed. */
+ class SpatialAbort extends Error {
+   constructor(readonly check: Extract<SpatialCheck, { ok: false }>) {
+@@ -214,7 +226,8 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
+       };
+       const run = async (): Promise<ToolOutput> => {
+         try {
+-          return await tool.run(args, gated);
++          const out = await tool.run(args, gated);
++          return intent.kind === "order" && out.ok ? acquisitionWay(out, gate, actor, ctx, intent.investigationId) : out;
+         } catch (err) {
+           if (err instanceof SpatialAbort) return spatialRefusal(err.check, ctx.locale);
+           throw err;
+diff --git a/packages/agent/src/tools/world.ts b/packages/agent/src/tools/world.ts
+index 6ded05c..5a6080a 100644
+--- a/packages/agent/src/tools/world.ts
++++ b/packages/agent/src/tools/world.ts
+@@ -173,11 +173,12 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
+   {
+     name: "transport_patient",
+     description:
+-      'Take the patient somewhere on their bed or trolley (or walk a patient who can walk): you must be at the patient\'s side, and you wheel them there. destination: a device a study is done at (e.g. "eq:ct-scanner", the cath-lab C-arm, a peak-flow station), a bed space or room id, or "home" (back to their own bed space). A refusal\'s hint names it (then: transport_patient). Travel takes simulated time. A porter or a nurse can do it for you: delegate_task task transport_patient.',
++      'Take the patient somewhere on their bed or trolley (or walk a patient who can walk): you must be at the patient\'s side, and you wheel them there. destination: a device a study is done at (e.g. "eq:ct-scanner", the cath-lab C-arm, a peak-flow station — a study ordered there is done once the patient arrives), a bed space or room id, or "home" (back to their own bed space). monitor: true takes the portable monitor at the bedside along (a patient who needs monitoring on the way: wheel one to the bedside first). A refusal\'s hint names it (then: transport_patient). Travel takes simulated time. A porter or a nurse can do it for you: delegate_task task transport_patient.',
+     inputSchema: obj(
+       {
+         destination: { type: "string", minLength: 1, maxLength: 120, description: 'Equipment id or alias, bed space or room id, or "home".' },
+         capability: { type: "string", maxLength: 60, description: "Instead of a destination: the nearest device providing this capability (e.g. ct)." },
++        monitor: { type: "boolean", description: "Take the portable monitor at the patient's bedside along (a defibrillator's monitor): it travels with them and stays beside them." },
+       },
+       [],
+     ),
+@@ -187,7 +188,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
+   {
+     name: "delegate_task",
+     description:
+-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
++      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there; params.monitor: true takes the portable monitor at the bedside along), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+     inputSchema: obj(
+       {
+         role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
+@@ -642,7 +643,7 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
+         if (!destination && !capability) return failedOutput(ctx, "world.transport.needDestination");
+         // an alias resolves as the world resolves it ("ct-scanner" → eq:ct-scanner); home, bed spaces and rooms as given
+         const resolved = destination && destination !== "home" && destination !== "back" ? (host.resolve(destination, actorId) ?? destination) : destination;
+-        const parameters: Record<string, unknown> = resolved ? { destination: resolved } : { capability };
++        const parameters: Record<string, unknown> = { ...(resolved ? { destination: resolved } : { capability }), ...(args.monitor === true ? { monitor: true } : {}) };
+         return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters }), L(ctx));
+       },
+       {
 diff --git a/packages/core/src/engine/acquisition.test.ts b/packages/core/src/engine/acquisition.test.ts
 new file mode 100644
 index 0000000..3f7594f
@@ -649,6 +1460,29 @@ index 2da080f..9ae65cc 100644
    itemId?: string;
    findingId?: string;
    investigationId?: string;
+diff --git a/packages/world/src/escort.test.ts b/packages/world/src/escort.test.ts
+index 7020ddc..0eebe64 100644
+--- a/packages/world/src/escort.test.ts
++++ b/packages/world/src/escort.test.ts
+@@ -66,7 +66,8 @@ describe("follow me (escort_patient)", () => {
+     expect((await follow(w)).status).toBe("completed");
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:ct-scanner" } });
+     const ct = w.caseDef.investigations.find((i) => i.requires?.includes("ct"))!;
+-    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: ct.id });
++    // the scan (its acquisition, EMBODIED §8.5) needs the patient on the scanner — walking beside it is not that
++    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: ct.id });
+     expect(!check.ok && check.reason).toBe("patient-not-at-provider");
+     if (check.ok || !check.hint?.then) return;
+     const seen = events(w);
+@@ -75,7 +76,7 @@ describe("follow me (escort_patient)", () => {
+     expect(place(w)).toMatchObject({ provider: "eq:ct-scanner", posture: "lying" });
+     expect(place(w).escort).toBeUndefined();
+     expect(seen.find((e) => e.type === "patient.escort")).toMatchObject({ escort: null, actorId: null });
+-    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: ct.id }).ok).toBe(true);
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: ct.id }).ok).toBe(true);
+   });
+ 
+   it("back to their own bed space afterwards: they walk home and are there again", async () => {
 diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
 index 38c4411..5eac506 100644
 --- a/packages/world/src/i18n.ts
@@ -679,6 +1513,54 @@ index 38c4411..5eac506 100644
    "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
    "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
    "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+diff --git a/packages/world/src/policy.test.ts b/packages/world/src/policy.test.ts
+index 2bb978e..7ad0467 100644
+--- a/packages/world/src/policy.test.ts
++++ b/packages/world/src/policy.test.ts
+@@ -8,6 +8,7 @@ import { caseIds, catalogs, loadCase, makeWorld, type TestWorld } from "./__fixt
+ const A = PRIMARY_ACTOR;
+ const order = (investigationId: string): ClinicalIntent => ({ tool: "order_test", kind: "order", investigationId });
+ const read = (investigationId: string): ClinicalIntent => ({ tool: "read_result", kind: "read", investigationId });
++const acquire = (investigationId: string): ClinicalIntent => ({ tool: "order_test", kind: "acquire", investigationId });
+ const intervene = (interventionId: string): ClinicalIntent => ({ tool: "intervene", kind: "intervene", interventionId });
+ const examine = (findingId: string): ClinicalIntent => ({ tool: "examine", kind: "examine", findingId });
+ const ASK: ClinicalIntent = { tool: "ask_patient", kind: "ask" };
+@@ -84,18 +85,28 @@ describe("DefaultSpatialPolicy: the requirement of each clinical action (EMBODIE
+     for (const cap of ["ecg-12lead", "point-of-care", "ultrasound", "peak-flow", "scale", "eeg", "fetal-monitor"]) expect(BEDSIDE_CAPABILITIES).toContain(cap);
+   });
+ 
+-  it("studies on the patient at a fixed device: the patient brought there, then ordered at the device or its console; the report read anywhere it is shown (G8)", () => {
+-    // CT, fluoroscopy: the patient at the scanner / on the cath-lab table, ordered there or at the console
+-    expect(req(order("ct-aortogram"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["ct"] }, { kind: "at-provider", capabilities: ["ct"] }] });
+-    expect(req(order("coronary-angiography"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["fluoroscopy"] }, { kind: "at-provider", capabilities: ["fluoroscopy"] }] });
++  it("studies on the patient at a fixed device: ordered wherever a clinician orders, acquired with the patient on the device; the report read anywhere it is shown (G8, audit P1-7)", () => {
++    // CT, fluoroscopy: ordered at the patient (the ward), an order-entry terminal, the device or its console
++    const anywhereOrdered = (caps: string[]) => ({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: caps }] });
++    expect(req(order("ct-aortogram"))).toEqual(anywhereOrdered(["ct"]));
++    expect(req(order("coronary-angiography"))).toEqual(anywhereOrdered(["fluoroscopy"]));
++    // the acquisition (EMBODIED §8.5): the patient on the scanner / on the cath-lab table
++    expect(req(acquire("ct-aortogram"))).toEqual({ kind: "patient-at-provider", capabilities: ["ct"] });
++    expect(req(acquire("coronary-angiography"))).toEqual({ kind: "patient-at-provider", capabilities: ["fluoroscopy"] });
+     expect(req(read("ct-aortogram"))).toEqual({ kind: "at-provider", capabilities: ["ct"] }); // the report: never the patient
+-    // a portable film (performedAt "bedside") moves nobody
++    // a portable film (performedAt "bedside") moves nobody: acquired at the order
+     expect(req(order("cxr-portable"))).toEqual({ kind: "at-provider", capabilities: ["xray"] });
++    expect(req(acquire("cxr-portable"))).toEqual({ kind: "anywhere" });
++    // anything not done on the patient at a device is acquired at the order
++    expect(req(acquire("hs-troponin"))).toEqual({ kind: "anywhere" });
++    expect(req(acquire("ecg-12lead"))).toEqual({ kind: "anywhere" });
+     // a patient-performed test: the patient at the station, ordered with them or at the station
+     const asthma = of("pediatric-asthma");
+     expect(req(order("pef"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["peak-flow"] }, { kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, { kind: "at-provider", capabilities: ["peak-flow"] }] }] });
+-    // a fixed X-ray machine without the portable flag: the patient goes to X-ray
+-    expect(req(order("cxr"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["xray"] }, { kind: "at-provider", capabilities: ["xray"] }] });
++    expect(req(acquire("pef"), asthma)).toEqual({ kind: "anywhere" }); // performed with the patient there: acquired at the order
++    // a fixed X-ray machine without the portable flag: the patient goes to X-ray for the film, not for the order
++    expect(req(order("cxr"), asthma)).toEqual({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: ["xray"] }] });
++    expect(req(acquire("cxr"), asthma)).toEqual({ kind: "patient-at-provider", capabilities: ["xray"] });
+     expect(PATIENT_AT_PROVIDER_CAPABILITIES).toEqual(["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"]);
+     expect(PATIENT_PERFORMED_CAPABILITIES).toEqual(["peak-flow", "scale"]);
+   });
 diff --git a/packages/world/src/policy.ts b/packages/world/src/policy.ts
 index 75278a5..98fd2cf 100644
 --- a/packages/world/src/policy.ts
@@ -757,8 +1639,108 @@ index 75278a5..98fd2cf 100644
          }
          if (caps.every((r) => this.bedside.has(r))) {
            if (intent.kind === "read") return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps, fixedOnly: true, providerKinds: ["workstation"] }] };
+diff --git a/packages/world/src/transport.test.ts b/packages/world/src/transport.test.ts
+index b2034c5..9fd1ca1 100644
+--- a/packages/world/src/transport.test.ts
++++ b/packages/world/src/transport.test.ts
+@@ -463,11 +463,17 @@ describe("the patient's posture and body follow clinical state", () => {
+   });
+ });
+ 
+-describe("the policy: a study done on the patient at a fixed device needs the patient there (G8)", () => {
+-  it("a CT is refused at the console while the patient is in the ward: the hint takes the patient there", async () => {
++describe("the policy: a study done on the patient at a fixed device needs the patient there for the scan (G8, audit P1-7)", () => {
++  const ORDER = { tool: "order_test", kind: "order", investigationId: "ctpa" } as const;
++  const ACQUIRE = { tool: "order_test", kind: "acquire", investigationId: "ctpa" } as const;
++
++  it("a CT is ordered from the ward or at the console while the patient is in the ward; the scan waits for them on the scanner, and its hint takes them there", async () => {
+     const w = makeWorld("pulmonary-embolism-postop");
++    await toPatient(w);
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER)).toMatchObject({ ok: true, satisfiedBy: [w.patientId] });
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
+-    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER)).toMatchObject({ ok: true, satisfiedBy: ["eq:radiology-console"] });
++    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE);
+     expect(check.ok).toBe(false);
+     if (check.ok) return;
+     expect(check.reason).toBe("patient-not-at-provider");
+@@ -476,29 +482,64 @@ describe("the policy: a study done on the patient at a fixed device needs the pa
+     expect(check.message).not.toMatch(/transport_patient|move_to/);
+   });
+ 
+-  it("with the patient on the scanner: ordered at the scanner or at the console; the report is read without the patient", async () => {
++  it("with the patient on the scanner: the scan can be done there (the scanner), the order placed anywhere; the report is read without the patient", async () => {
+     const w = makeWorld("pulmonary-embolism-postop");
+     await toPatient(w);
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+-    const atScanner = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
+-    expect(atScanner.ok && atScanner.satisfiedBy.includes("eq:ct-scanner")).toBe(true);
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE)).toMatchObject({ ok: true, satisfiedBy: ["eq:ct-scanner"] });
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER).ok).toBe(true);
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
+-    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" }).ok).toBe(true);
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER).ok).toBe(true);
++    // the acquisition is about the patient, not where the clinician stands
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE).ok).toBe(true);
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: w.patientId } });
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home" } });
++    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE).ok).toBe(false);
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
+     expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "read_result", kind: "read", investigationId: "ctpa" }).ok).toBe(true);
+   });
+ 
+-  it("satisfiedBy names first what the clinician acts through where they stand, then the device the patient is at", async () => {
++  it("each journey is recorded: who took the patient, from where to where, departure and arrival, no monitor unless one travelled", async () => {
+     const w = makeWorld("pulmonary-embolism-postop");
+     await toPatient(w);
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+-    await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
+-    const atConsole = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
+-    // a consumer operating the first device (the offline autopilot, the bench reference) orders at the console it
+-    // stands at instead of walking on to the scanner
+-    expect(atConsole).toMatchObject({ ok: true, satisfiedBy: ["eq:radiology-console", "eq:ct-scanner"] });
++    await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home" } });
++    const legs = w.runtime.snapshot().entities[w.patientId]?.patient?.legs ?? [];
++    expect(legs).toHaveLength(2);
++    expect(legs[0]).toMatchObject({ by: PRIMARY_ACTOR, role: "clinician", from: { slot: "ward-1", room: "ward" }, to: { slot: null, provider: "eq:ct-scanner", room: "rad-ct" }, monitor: null, status: "arrived" });
++    expect(legs[1]).toMatchObject({ by: PRIMARY_ACTOR, from: { provider: "eq:ct-scanner" }, to: { slot: "ward-1", room: "ward" }, monitor: null, status: "arrived" });
++    for (const leg of legs) expect(leg.arrivedAt).toBeGreaterThanOrEqual(leg.departedAt);
++    // a transfer by the team: nobody named, no time of its own
++    w.runtime.relocatePatient({ slot: "icu-1" });
++    const transfer = w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1);
++    expect(transfer).toMatchObject({ by: null, role: null, to: { slot: "icu-1" }, monitor: null });
++    expect(transfer!.arrivedAt).toBe(transfer!.departedAt);
++  });
++
++  it("a monitor travels with the patient when asked: the portable one at the bedside goes along and waits beside them; none at the bedside — the transport does not set off", async () => {
++    const w = makeWorld("pulmonary-embolism-postop");
++    await toPatient(w);
++    // the ward's defibrillator (its monitor) stands at the bedside: it goes on the bed for the journey
++    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
++    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
++    expect(r.status, r.message).toBe("completed");
++    expect(r.message).toMatch(/monitoring/);
++    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner" });
++    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
++    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: "eq:ward-defibrillator", to: { provider: "eq:ct-scanner" } });
++    // and back with it, named
++    const back = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: "eq:ward-defibrillator" } });
++    expect(back.status, back.message).toBe("completed");
++    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
++    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: "eq:ward-defibrillator", to: { slot: "ward-1" } });
++    // to the CT without it: at the scanner no portable monitor stands by, so a monitored journey back cannot set off
++    expect((await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } })).status).toBe("completed");
++    const refused = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: true } });
++    expect(refused).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
++    expect(refused.message).toMatch(/portable monitor/);
++    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner" });
++    const named = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: "eq:ward-defibrillator" } });
++    expect(named).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+   });
+ 
+   it("a peak flow is no longer done at the triage station with the child left in the resus bay", async () => {
 diff --git a/packages/world/src/transport.ts b/packages/world/src/transport.ts
-index 8de6023..e052810 100644
+index 8de6023..dd5020a 100644
 --- a/packages/world/src/transport.ts
 +++ b/packages/world/src/transport.ts
 @@ -16,7 +16,7 @@
@@ -873,16 +1855,17 @@ index 8de6023..e052810 100644
    /** Trolley moves: a position, or undefined (back where it is kept). */
    const moves: { id: EntityId; position: { x: number; y: number; z: number; level: string; rot: number } | undefined }[] = [];
    if (target.slot) {
-@@ -204,6 +284,8 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+@@ -204,6 +284,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
    const newBody = body.body();
    if (newBody) touched.push(newBody);
    for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
 +  // the monitor that travelled with them waits beside them where they are now (back where it is kept if no room)
-+  if (departure.monitor && newBody) placeBeside(host, departure.monitor, newBody);
++  const now = body.place();
++  if (departure.monitor && now) placeBeside(host, departure.monitor, { level: now.level, area: footprintArea({ position: { x: now.x, z: now.z }, footprint: { w: now.footprint.w, d: now.footprint.d } }) });
    host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
    const to = body.place()!;
    const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
-@@ -247,10 +329,16 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -247,10 +330,16 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${why}`, { hint: null });
    }
    if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
@@ -899,7 +1882,7 @@ index 8de6023..e052810 100644
    // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
    host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
    host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
-@@ -277,6 +365,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -277,6 +366,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      host.transitStop = null;
      host.busy.delete(patientId);
      if (trolley) host.busy.delete(trolley);
@@ -907,7 +1890,7 @@ index 8de6023..e052810 100644
    }
    const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
    if (collapsed) {
-@@ -286,18 +375,20 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -286,18 +376,20 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      const stop = stopTarget(host, now.pose, null);
      // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
      const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
@@ -932,7 +1915,7 @@ index 8de6023..e052810 100644
  }
  
  /** `WorldRuntime.relocatePatient` (see the module docs). */
-@@ -323,7 +414,8 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination):
+@@ -323,7 +415,8 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination):
    const p = body.place()!;
    const from: Pose = { x: p.x, y: p.y, z: p.z, yaw: 0, pitch: 0, level: p.level };
    const plan = backend.plan({ actorId: id, from, goal: target.stand, role: "nurse", accessibleOnly: true, ignoreObstacles: true });
@@ -942,3 +1925,30 @@ index 8de6023..e052810 100644
    return { ok: true, moved: true, place: body.place()!, name: target.name, message: worldMessage("relocate.done", L, { patient: name, place: target.name }) };
  }
  
+diff --git a/packages/world/src/zz-repro-p18.test.ts b/packages/world/src/zz-repro-p18.test.ts
+new file mode 100644
+index 0000000..081b9e7
+--- /dev/null
++++ b/packages/world/src/zz-repro-p18.test.ts
+@@ -0,0 +1,21 @@
++import { describe, expect, it } from "vitest";
++import { PRIMARY_ACTOR } from "./contracts.js";
++import { makeWorld } from "./__fixtures__/world.js";
++
++const A = PRIMARY_ACTOR;
++const NURSE = "staff:ed-nurse";
++const ECG = "eq:resus1-ecg";
++
++describe("repro P1-8", () => {
++  it("approach by id goes to ground truth", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
++    expect((await w.act({ actorId: NURSE, operation: "approach", targetId: ECG })).status).toBe("completed");
++    const moved = await w.act({ actorId: NURSE, operation: "move_to", targetId: ECG, goal: { kind: "room", id: "ed-cubicle-1" } });
++    console.log("moved", moved.status, w.runtime.inspect(NURSE, ECG)!.room);
++    const believed = w.runtime.find(A, { capabilities: ["ecg-12lead"] }).find((e) => e.id === ECG)!;
++    console.log("believed", believed.room, believed.lastKnown);
++    const r = await w.act({ actorId: A, operation: "approach", targetId: ECG });
++    console.log("approach", r.status, r.errorCode, r.message, w.runtime.actor(A)!.room);
++  });
++});

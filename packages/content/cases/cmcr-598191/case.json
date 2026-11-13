@@ -155,8 +155,8 @@
       },
       "concerns": [
         {
-          "zh-CN": "这到底是什么病？会不会传染给家里人？",
-          "en": "What is this — could I pass it on to my family?"
+          "zh-CN": "这到底是什么病？会不会传染给别人？",
+          "en": "What is this — could I pass it on to other people?"
         },
         {
           "zh-CN": "我的肝还能好吗？",
@@ -1177,8 +1177,8 @@
         "en": "What's worrying you most at the moment?"
       },
       "answer": {
-        "zh-CN": "我就怕是传染病，会传给家里人；还有我的肝，还能好吗？",
-        "en": "I'm scared it's something catching that I'll pass on at home — and my liver, will it get better?"
+        "zh-CN": "我就怕是传染病，会传给别人；还有我的肝，还能好吗？",
+        "en": "I'm scared it's something catching that I'll pass on to other people — and my liver, will it get better?"
       },
       "keywords": {
         "zh-CN": [
@@ -4900,8 +4900,8 @@
         "en": "Explained to her, using the Calgary–Cambridge guide, the drug reaction, the risk to her liver, a possible relapse and how to avoid meeting the drug again"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评价谈话。开始：自我介绍，确保私密，先问她今天最想知道什么（她担心会不会传染给家人、肝能不能好）。收集信息：了解她对一年前那次皮疹知道多少、当时吃的是什么药、为什么后来又吃了布洛芬——不带责备。解释：分块说明并核对理解——这是对药物（最可能是治膝痛的布洛芬）的迟发型过敏反应，不会传染；它同时伤了皮肤和肝脏，皮疹会先好、肝脏可能更慢；为什么要用激素并慢慢减量，以及几周后可能再次发热。计划：共同商定——过敏记录和警示卡，看清复方感冒药、止痛药的成分表，就医、买药、看牙时都要说明，在过敏专科评估前不用任何非甾体抗炎药，膝痛的止痛方案另行商定；出院后的复查。结束：总结，请她复述关键内容，交代出现发热、皮疹、眼黄、意识改变或出血时立即就医。本病例没有记录与她的这次谈话。",
-        "en": "Judge the conversation by the Calgary–Cambridge guide. Initiating: introduce yourself, ensure privacy and ask what she most wants to know today (she fears passing it on to her family and wonders whether her liver will recover). Gathering: find out what she knew about last year's rash, what the product was and how ibuprofen came to be taken again — without blame. Explaining: in chunks, checking as you go — this is a delayed allergic-type reaction to a medicine, most likely the ibuprofen she took for her knee; it is not catching; it has hurt both her skin and her liver, and the rash may settle before the liver does; why steroids are used and tapered slowly, and that the fever may return weeks later. Planning, shared: the allergy record and an alert card, reading the ingredients of cold and pain combinations, telling every doctor, pharmacist and dentist, no NSAID until an allergist has advised, a separate plan for her knee pain, and the follow-up tests. Closing: summarise, ask her to explain the key points back, and safety-net — come back at once with fever, rash, yellow eyes, confusion or bleeding. The case does not record this conversation."
+        "zh-CN": "按Calgary–Cambridge评价谈话。开始：自我介绍，确保私密，先问她今天最想知道什么（她担心会不会传染给别人、肝能不能好）。收集信息：了解她对一年前那次皮疹知道多少、当时吃的是什么药、为什么后来又吃了布洛芬——不带责备。解释：分块说明并核对理解——这是对药物（最可能是治膝痛的布洛芬）的迟发型过敏反应，不会传染；它同时伤了皮肤和肝脏，皮疹会先好、肝脏可能更慢；为什么要用激素并慢慢减量，以及几周后可能再次发热。计划：共同商定——过敏记录和警示卡，看清复方感冒药、止痛药的成分表，就医、买药、看牙时都要说明，在过敏专科评估前不用任何非甾体抗炎药，膝痛的止痛方案另行商定；出院后的复查。结束：总结，请她复述关键内容，交代出现发热、皮疹、眼黄、意识改变或出血时立即就医。本病例没有记录与她的这次谈话。",
+        "en": "Judge the conversation by the Calgary–Cambridge guide. Initiating: introduce yourself, ensure privacy and ask what she most wants to know today (she fears passing it on to other people and wonders whether her liver will recover). Gathering: find out what she knew about last year's rash, what the product was and how ibuprofen came to be taken again — without blame. Explaining: in chunks, checking as you go — this is a delayed allergic-type reaction to a medicine, most likely the ibuprofen she took for her knee; it is not catching; it has hurt both her skin and her liver, and the rash may settle before the liver does; why steroids are used and tapered slowly, and that the fever may return weeks later. Planning, shared: the allergy record and an alert card, reading the ingredients of cold and pain combinations, telling every doctor, pharmacist and dentist, no NSAID until an allergist has advised, a separate plan for her knee pain, and the follow-up tests. Closing: summarise, ask her to explain the key points back, and safety-net — come back at once with fever, rash, yellow eyes, confusion or bleeding. The case does not record this conversation."
       }
     }
   ],
@@ -5002,7 +5002,7 @@
     },
     "conclusion": {
       "zh-CN": "29岁女性因膝痛自入院前39天起连续服用缓释布洛芬；一年前曾服含布洛芬药物后出现全身斑丘疹。入院前7天发热（最高41 ℃），伴明显咽痛；次日起出现迅速扩展融合的瘙痒性红斑，伴眼睑肿，随后黄疸；出疹后用过青霉素2天，随后两药停用，又治疗4天仍高热，皮损和黄疸加重。入院时体温39.2 ℃、血压96/60，面部水肿性红斑伴鳞屑、躯干剥脱、口腔溃疡、唇部血痂、颌下淋巴结肿痛；白细胞11.62×10⁹/L，嗜酸性粒细胞6.7%（约0.78×10⁹/L），总胆红素133.6 μmol/L，ALT 585 U/L，凝血酶原活动度64%。五天后热退疹减，胆红素却升至255.9 μmol/L、凝血酶原活动度降至37%并出现腹水，报告称为肝衰竭；经糖皮质激素和多种支持药物治疗好转，第25天再次发热、黄疸，约第38天肝功能恢复正常，停药后一年无复发。按现行指南：尽早识别DRESS，不用非甾体抗炎药和非必需的新药，全身激素并缓慢减量（重症3–6个月），皮疹好转而肝脏恶化时按肝衰竭风险处理并联系肝移植中心，终身记录并避免致敏药。",
-      "en": "A 29-year-old woman took slow-release ibuprofen continuously for knee pain from 39 days before admission; a year earlier an ibuprofen-containing product had caused a widespread rash. Fever to 41 °C with a marked sore throat began 7 days before admission, then a rapidly spreading itchy erythema with swollen eyelids, and jaundice; penicillin was given for two days after the rash began, both drugs were then stopped, and four days of treatment later she was still febrile, with the rash and jaundice worse. On admission: 39.2 °C, BP 96/60, oedematous facial erythema, truncal peeling, oral ulcers, tender submandibular nodes; white cells 11.62×10⁹/L with 6.7% eosinophils (≈0.78×10⁹/L), bilirubin 133.6 μmol/L, ALT 585 U/L, prothrombin activity 64%. Five days later the rash and fever settled but bilirubin reached 255.9 μmol/L and prothrombin activity fell to 37%, with new ascites — reported as liver failure. On glucocorticoids and supportive drugs she improved; fever and jaundice returned on day 25, liver tests were normal around day 38, and there was no recurrence in the year after the medicines were stopped. Today: name DRESS early, avoid NSAIDs and needless drugs, give systemic steroids with a slow taper, treat a worsening liver under a settling rash as threatened liver failure with a transplant centre, and record the culprit for life."
+      "en": "A 29-year-old woman took slow-release ibuprofen continuously for knee pain from 39 days before admission; a year earlier an ibuprofen-containing product had caused a widespread rash. Fever to 41 °C with a marked sore throat began 7 days before admission, then a rapidly spreading itchy erythema with swollen eyelids, and jaundice; penicillin was given for two days after the rash began, both drugs were then stopped, and four days of treatment later she was still febrile, with the rash and jaundice worse. On admission: 39.2 °C, BP 96/60, oedematous facial erythema with scaling, truncal peeling, oral ulcers, blood-crusted lips, tender submandibular nodes; white cells 11.62×10⁹/L with 6.7% eosinophils (≈0.78×10⁹/L), bilirubin 133.6 μmol/L, ALT 585 U/L, prothrombin activity 64%. Five days later the rash and fever settled but bilirubin reached 255.9 μmol/L and prothrombin activity fell to 37%, with new ascites — reported as liver failure. On glucocorticoids and supportive drugs she improved; fever and jaundice returned on day 25, liver tests were normal around day 38, and there was no recurrence in the year after the medicines were stopped. Today: name DRESS early, avoid NSAIDs and needless drugs, give systemic steroids with a slow taper (3–6 months in severe disease), treat a worsening liver under a settling rash as threatened liver failure with a transplant centre, and record the culprit for life."
     },
     "keyReasoning": [
       {

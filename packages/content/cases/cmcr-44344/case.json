@@ -2839,8 +2839,8 @@
         ]
       },
       "response": {
-        "zh-CN": "第一份红细胞开始缓慢输注。本病例记录他在手术前先纠正了贫血，但没有记录纠正的方法（是否输血、用了哪种血制品、量和速度）；不模拟其效果。",
-        "en": "The first aliquot of red cells is running slowly. This case records that his anaemia was corrected before the operation but not how (whether by transfusion, which product, how much or how fast); it does not simulate the effect."
+        "zh-CN": "第一份红细胞开始缓慢输注。本病例没有记录他的贫血是怎样纠正的（是否输血、用了哪种血制品、量和速度）；不模拟其效果。",
+        "en": "The first aliquot of red cells is running slowly. This case does not record how his anaemia was corrected (whether by transfusion, which product, how much or how fast); it does not simulate the effect."
       }
     },
     {
@@ -3038,8 +3038,8 @@
       "risk": "low",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "已开出。本病例没有记录这次住院是否用过抑酸药；不模拟其效果。他以前间断口服奥美拉唑效果不佳；抑酸药针对的是胃十二指肠的消化性病变，而多次胃镜都没有找到出血原因。",
-        "en": "Prescribed. This case does not record whether acid suppression was given this admission and does not simulate its effect. Intermittent omeprazole had already helped little; acid suppression treats peptic lesions of the stomach and duodenum, and repeated gastroscopy had found no cause there."
+        "zh-CN": "已开出。本病例没有记录这次住院是否用过抑酸药；不模拟其效果。他以前间断口服奥美拉唑效果不佳；抑酸药针对的是胃十二指肠的消化性病变，而外院的胃镜没有找到出血原因。",
+        "en": "Prescribed. This case does not record whether acid suppression was given this admission and does not simulate its effect. Intermittent omeprazole had already helped little; acid suppression treats peptic lesions of the stomach and duodenum, and gastroscopy at other hospitals had found no cause there."
       }
     },
     {
@@ -3287,8 +3287,8 @@
         }
       },
       "harm": {
-        "zh-CN": "先纠正贫血再手术：血红蛋白 28 g/L 时，麻醉和手术期间的氧供储备极小，术中再失血就没有余地。他目前代偿、没有记录活动性大出血，没有理由在纠正贫血之前手术。",
-        "en": "Correct the anaemia first: at a haemoglobin of 28 g/L there is almost no oxygen-delivery reserve for anaesthesia, and none for blood lost in theatre. He is compensated and no active major bleeding is recorded, so nothing justifies operating before the anaemia is corrected."
+        "zh-CN": "先纠正贫血再手术：血红蛋白 28 g/L 时，麻醉和手术期间的氧供储备极小，术中再失血就没有余地。没有记录活动性大出血，没有理由在纠正贫血之前手术。",
+        "en": "Correct the anaemia first: at a haemoglobin of 28 g/L there is almost no oxygen-delivery reserve for anaesthesia, and none for blood lost in theatre. No active major bleeding is recorded, so nothing justifies operating before the anaemia is corrected."
       },
       "response": {
         "zh-CN": "手术已预约。本病例不模拟手术过程；术后可在病历中调阅治疗记录和病理报告。",
@@ -3370,8 +3370,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "不要：普萘洛尔是需要治疗的婴儿血管瘤（婴儿期增殖的血管肿瘤）的一线全身用药（AAP 2019）；他 12 岁，肠道里的病变不是婴儿血管瘤。血红蛋白只有 28 g/L 时，他靠加快心率维持供氧，β 受体阻滞剂还会削弱这种代偿。",
-        "en": "No: propranolol is the first-line systemic treatment for infantile haemangiomas that need treatment — vascular tumours that grow in infancy (AAP 2019); at 12 years, the lesion in his bowel is not one. With a haemoglobin of 28 g/L he relies on his heart rate to deliver oxygen, and beta-blockade blunts that response."
+        "zh-CN": "不要：病历中没有任何门静脉高压的证据；在儿童，普萘洛尔作为一线全身用药治疗的是需要治疗的婴儿血管瘤（婴儿期增殖的血管肿瘤，AAP 2019），12 岁的他不属于这种情况。血红蛋白只有 28 g/L 时，他靠加快心率维持供氧，β 受体阻滞剂还会削弱这种代偿。",
+        "en": "No: nothing recorded points to portal hypertension, and in children propranolol is the first-line systemic treatment for infantile haemangiomas that need treatment — vascular tumours that grow in infancy (AAP 2019), which a 12-year-old does not have. With a haemoglobin of 28 g/L he relies on his heart rate to deliver oxygen, and beta-blockade blunts that response."
       },
       "response": {
         "zh-CN": "本病例没有记录使用普萘洛尔，不模拟其效果。",
@@ -3807,8 +3807,8 @@
             "en": "Crossmatch and transfuse red cells slowly in weight-based aliquots, checking for circulatory overload after each, then start iron"
           },
           "feedback": {
-            "en": "Right. At a haemoglobin of 28 g/L, still losing blood (faecal occult blood ++) and facing a search and probably an operation, he has almost no reserve and needs red cells now; but anaemia that developed slowly comes with an expanded plasma volume, so small weight-based aliquots, run slowly and reassessed after each, are the safe way (NICE NG24, 2015; BSH 2016 paediatric transfusion guideline). Iron then refills the stores; on its own it works too slowly.",
-            "zh-CN": "对。血红蛋白 28 g/L、仍在失血（粪便隐血 ++），接下来还要做检查、很可能还要手术，他几乎没有储备，需要现在就输红细胞；但慢慢形成的贫血伴有代偿性扩张的血容量，安全的做法是按体重小量分次、缓慢输注，每次输后复评（NICE NG24，2015；BSH 2016 儿童输血指南）。铁剂随后补足储备，单靠铁剂起效太慢。"
+            "en": "Right. At a haemoglobin of 28 g/L, still losing blood (faecal occult blood ++) and facing a search and perhaps an invasive procedure, he has almost no reserve and needs red cells now; but anaemia that developed slowly comes with an expanded plasma volume, so small weight-based aliquots, run slowly and reassessed after each, are the safe way (NICE NG24, 2015; BSH 2016 paediatric transfusion guideline). Iron then refills the stores; on its own it works too slowly.",
+            "zh-CN": "对。血红蛋白 28 g/L、仍在失血（粪便隐血 ++），接下来还要做检查、可能还要做有创操作，他几乎没有储备，需要现在就输红细胞；但慢慢形成的贫血伴有代偿性扩张的血容量，安全的做法是按体重小量分次、缓慢输注，每次输后复评（NICE NG24，2015；BSH 2016 儿童输血指南）。铁剂随后补足储备，单靠铁剂起效太慢。"
           }
         },
         {
@@ -3855,8 +3855,8 @@
             "en": "Take him to theatre today for an exploratory laparotomy to find the bleeding point, transfusing during the operation rather than waiting for localising tests"
           },
           "feedback": {
-            "zh-CN": "不对。现在还不知道出血在哪里——胃镜、结肠镜和 CT 都是阴性——而在血红蛋白 28 g/L 时手术，麻醉和术中失血都没有储备。先纠正贫血、再定位来源；记录中的团队也是先纠正贫血再手术。",
-            "en": "No. Nothing yet shows where he bleeds — gastroscopy, colonoscopy and CT were negative — and operating at a haemoglobin of 28 g/L leaves no reserve for anaesthesia or blood lost in theatre. Correct the anaemia, then localise the source; the recorded team also corrected his anaemia before operating."
+            "zh-CN": "不对。现在还不知道出血在哪里——外院的胃镜、结肠镜和 CT 都没找到原因——而在血红蛋白 28 g/L 时手术，麻醉和术中失血都没有储备。先纠正贫血、再定位来源，任何手术都不应在这样的血红蛋白水平开始。",
+            "en": "No. Nothing yet shows where he bleeds — gastroscopy, colonoscopy and CT elsewhere found no cause — and operating at a haemoglobin of 28 g/L leaves no reserve for anaesthesia or blood lost in theatre. Correct the anaemia, then localise the source; no operation should start at this haemoglobin."
           }
         }
       ]
@@ -3913,8 +3913,8 @@
             "en": "Contrast-enhanced CT of the small bowel (CT enterography), which also shows a mass or a narrowing"
           },
           "feedback": {
-            "en": "Include. Contrast-enhanced small-bowel imaging shows the wall, masses and vascular lesions and, done before a capsule, a narrowing that could hold it; ACG 2015 uses CT enterography when a narrowing is suspected or after a negative capsule. In a child, MR enterography is an alternative without radiation where it is available. A negative routine abdominal CT elsewhere does not make a dedicated small-bowel study negative.",
-            "zh-CN": "应选。小肠增强成像能显示肠壁、肿块和血管性病变，放在胶囊内镜之前做还能发现可能让胶囊滞留的狭窄；ACG 2015 在怀疑狭窄或胶囊内镜阴性时使用 CT 小肠成像。儿童有条件时也可改用无辐射的 MR 小肠成像。外院普通腹部 CT 阴性，不等于专门的小肠检查也会阴性。"
+            "en": "Include. Contrast-enhanced small-bowel imaging shows the wall, masses and vascular lesions and, done before a capsule, a narrowing that could hold it; ACG 2015 uses CT enterography when a narrowing is suspected or after a negative capsule. In a child, MR enterography is an alternative without radiation where it is available. An abdominal CT elsewhere that found no cause does not make a dedicated small-bowel study negative.",
+            "zh-CN": "应选。小肠增强成像能显示肠壁、肿块和血管性病变，放在胶囊内镜之前做还能发现可能让胶囊滞留的狭窄；ACG 2015 在怀疑狭窄或胶囊内镜阴性时使用 CT 小肠成像。儿童有条件时也可改用无辐射的 MR 小肠成像。外院腹部 CT 没找到原因，不等于专门的小肠检查也会阴性。"
           }
         },
         {
@@ -4683,8 +4683,8 @@
     ],
     "teachingPoints": [
       {
-        "en": "Black stools with a negative gastroscopy and colonoscopy are suspected small-bowel bleeding; ACG 2015 keeps 'obscure' for bleeding whose source is not found even after the small bowel has been examined. ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test — ideally within 48 hours of an overt bleed — and device-assisted enteroscopy to confirm and treat what it finds; in a child, add a scan for ectopic gastric mucosa. Then and now: before this admission, gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause; this admission localised the source with nuclear scans and contrast CT, and no capsule or enteroscopy is recorded.",
-        "zh-CN": "黑便而胃镜、结肠镜阴性，应按“疑似小肠出血”处理；ACG 2015 只把连小肠也检查过仍找不到出血来源的情况称为“不明原因消化道出血”。ESGE 2022 指南推荐小肠胶囊内镜作为一线检查，显性出血后最好 48 小时内完成，并用器械辅助小肠镜确认和治疗胶囊发现的病变；儿童还要考虑异位胃黏膜显像。记录与现行做法：入院前多家医院的胃镜、结肠镜和腹部 CT 未找到原因，这次靠核素显像和增强 CT 定位，记录中没有胶囊内镜或小肠镜。"
+        "en": "Black stools with a negative gastroscopy and colonoscopy are suspected small-bowel bleeding; ACG 2015 keeps 'obscure' for bleeding whose source is not found even after the small bowel has been examined. ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test — ideally within 48 hours of an overt bleed — and device-assisted enteroscopy to confirm and treat what it finds; in a child, add a scan for ectopic gastric mucosa. Then and now: before this admission, gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause; this admission's work-up used two nuclear scans and a contrast CT, and the CT showed the jejunal mass; no capsule or enteroscopy is recorded.",
+        "zh-CN": "黑便而胃镜、结肠镜阴性，应按“疑似小肠出血”处理；ACG 2015 只把连小肠也检查过仍找不到出血来源的情况称为“不明原因消化道出血”。ESGE 2022 指南推荐小肠胶囊内镜作为一线检查，显性出血后最好 48 小时内完成，并用器械辅助小肠镜确认和治疗胶囊发现的病变；儿童还要考虑异位胃黏膜显像。记录与现行做法：入院前多家医院的胃镜、结肠镜和腹部 CT 未找到原因，这次住院做了两项核素显像和增强 CT，由 CT 显示空肠肿块；记录中没有胶囊内镜或小肠镜。"
       },
       {
         "zh-CN": "慢性重度贫血要输血，但要慢。缺铁的骨髓、八年反复出血和这一个月的再发，提示贫血是慢慢形成的，血容量已代偿性扩张；快速大量输血可引起输血相关循环超负荷。NICE NG24（2015）对没有活动性出血的患者建议每次一个单位（儿童按体重折算等量）、输后复评；BSH 2016 儿童输血指南按体重计算输注量。记录与现行做法：报告写明手术前先纠正了贫血，但没有记录用的什么方法。",

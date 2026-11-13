@@ -21,7 +21,7 @@
 | Specialty | Dermatology, hepatology, internal medicine |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students, residents in internal medicine, dermatology and hepatology, clinical pharmacists |
-| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a dermatologist, a hepatologist and an allergist review it before teaching use |
+| Review status | Editorial review 2026-10-30 and independent editorial review 2026-11-13 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a dermatologist, a hepatologist and an allergist review it before teaching use |
 | Content | 21 history items (7 not recorded, 10 required) · 11 exam findings · 17 investigations (3 record reviews, 7 without any recorded result) · 20 interventions (6 contraindicated in every phase, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 2 critical) · 5 staff characters · 6 learning outcomes · 6 teaching points · 37 test utterances |
 
 ## Learning outcomes
@@ -364,74 +364,6 @@ time only. **Figures.** The only figure extracted from the report (`fig01.png`, 
 in the media review because faces remain recognisable despite eye bars; its content is not used, and no decision
 depends on an image.
 
-### To verify
-
-Details to look for in the full article (the source check is pending):
-* The ibuprofen: product, formulation, dose and the day it was stopped; the "ibuprofen-containing product" of a year
-  earlier — its name and other ingredients, the time from taking it to the rash, and whether the reaction was recorded.
-* The penicillin (which drug, route, dose, dates) and the four days of treatment after both drugs were stopped (where —
-  before or after admission — and which drugs: any antipyretic, NSAID, antibiotic or steroid).
-* The unit of BP 96/60 (shown without one; the teaching comparisons read it as mmHg) and any other admission vital signs (heart rate, breathing rate, saturation), and
-  her weight.
-* The full blood count (platelets, lymphocytes, atypical lymphocytes, absolute eosinophils), a blood film, renal
-  function, urinalysis, ALP, GGT, the reference ranges, and any INR or prothrombin time in seconds.
-* Which hepatitis viruses and markers were tested; any HHV-6, CMV or EBV DNA testing; blood cultures, ANA or other
-  exclusions; whether the authors scored RegiSCAR or used the Japanese DIHS criteria.
-* The skin: blisters, epidermal detachment and its extent, Nikolsky's sign, target lesions, eye and genital mucosa,
-  and any skin biopsy.
-* The chest X-ray and abdominal ultrasound reports, their timing, and any later imaging (1.0.0 says "起初基本正常",
-  essentially normal *at first*; how the ascites was found).
-* The reference day of "five days later", "day 25" and "about day 38", and which medicines "停药后一年无复发" refers to.
-* The glucocorticoid (drug, dose, route, start date — before or after the day-5 deterioration — and taper), the
-  supportive drugs (names and number; 1.0.0 mentions a liver-protective combination only in its feedback), and any
-  IVIG, plasma exchange, artificial liver support or transplant-centre contact.
-* The day-5 picture: any encephalopathy assessment, INR, ALT/AST, and the wording and criteria behind "liver failure".
-* What was done at the day-25 recurrence and what was found (infection, viral reactivation, the steroid dose then).
-* Follow-up: thyroid function, glucose, allergy testing, allergy documentation and advice.
-
-Guidance details to confirm in the full texts (checked 2026-11-12 and 2026-11-13 by web search against abstracts,
-indexing records and secondary summaries; PMC and the publishers' and societies' sites could not be opened from this
-environment):
-* 2024 international Delphi consensus (JAMA Dermatol): confirmed at summary level — severity graded by liver, kidney and
-  blood involvement; high-potency topical steroids for mild DRESS, systemic glucocorticoids for every severe case (and as
-  needed in moderate disease), tapered over 6 weeks to 3 months; EBV, CMV and HHV-6 viral loads in suspected DRESS;
-  ganciclovir or valganciclovir for a high CMV load; ciclosporin, anti-IL-5 antibodies or IVIG for corticosteroid-
-  refractory disease. To confirm: the exact wording, the liver thresholds of its severity grades, any dose statement, and
-  its statements on new drugs and on the allergy work-up (timing of patch tests).
-* French PNDS "DRESS de l'adulte et de l'enfant" (2024; TOXIBUL reference centre with FISARD and the French Society of
-  Dermatology toxidermies group; HAS page online November 2024): read from search extracts of the PDF — severe DRESS
-  1 mg/kg/day prednisone equivalent, oral or IV, for about a month; no pulses; moderate DRESS 0.5 mg/kg/day; severe
-  hepatic involvement defined by transaminases > 15 × the upper limit and/or factor V < 50%; steroids withdrawn over
-  3–6 months (secondary summary). Confirm section 3.5 in the full text. Whether she meets the PNDS hepatic criteria
-  cannot be judged from the case (no reference ranges, no factor V); the case keys 1 mg/kg/day on jaundice with a
-  falling prothrombin activity and says so in the decision-2 feedback.
-* NICE CG183 (2014): DRESS onset usually 2–6 weeks after the first exposure or within 3 days of a second (NICE QS97 page
-  and a CG183-based hospital guideline); check the CG183 table wording, the documentation items and the referral
-  recommendation.
-* ACG 2021: confirmed from the abstract — DILI with progressive jaundice, with or without coagulopathy, to a tertiary
-  care centre for specialised care including consideration of liver transplantation; a strong recommendation against
-  re-exposure to the likely culprit, especially after jaundice or a marked aminotransferase rise; NAC considered in early
-  acute liver failure (from summaries). Check its corticosteroid statement.
-* EASL 2019 DILI: considering transplantation in drug-induced ALF and early NAC (coma grade I–II) — from secondary
-  summaries. EASL 2017 ALF: the definition by coagulopathy and encephalopathy — from the abstract.
-* Surviving Sepsis Campaign 2021: possible sepsis without shock — rapid assessment for infectious and non-infectious
-  causes, antimicrobials within 3 hours if concern for infection persists, deferral with close monitoring when infection
-  is unlikely (weak recommendations; from summaries of the guideline).
-* 2023 Chinese DILI guideline: its severity grading thresholds, and its recommendations on anti-inflammatory
-  hepatoprotective drugs (magnesium isoglycyrrhizinate) and on combining them — not quoted in the case; a single named
-  agent is deliberately not matched to the `liver-protective-combination` trap.
-* 2024 Chinese liver-failure guideline (临床肝胆病杂志 2024;40(12):2371-2387): its definitions of acute and subacute liver
-  failure, and whether the report's "liver failure" fits them (the case quotes no threshold).
-* EAACI 2013 NSAID classification: the wording on single-NSAID delayed reactions and chemical groups (confirmed only at
-  bibliographic level).
-* RegiSCAR item values were taken from secondary tables; sources differ on the points for the 15-day item.
-* "Amoxicillin-triggered flares in DRESS" rests on a case series of seven patients and reviews, not on a guideline.
-* Kano 2015: title, patient number (145) and DOI confirmed; volume and pages (42(3):276-282) to confirm.
-* Author lists beyond those given (Kano 2015; Creamer 2016; Kowalski 2013; Yamaguchi 1992) were not confirmed and are
-  cited with "et al.".
-* Clinician input: a dermatologist and a hepatologist should review decisions 2–4 (steroid dose and taper, the
-  transplant-centre threshold), and an allergist decision 5 (the NSAID advice and the penicillin label).
-
 ## Matcher notes
 
 * 37 `extensions.testUtterances` (20 zh-CN, 17 en; 2 look-alike negatives), none equal to a canonical question or a
@@ -463,35 +395,37 @@ environment):
 2. Brüggen MC, Walsh S, Ameri MM, Anasiewicz N, Maverakis E, French LE, et al. Management of adult patients with drug
    reaction with eosinophilia and systemic symptoms: a Delphi-based international consensus. JAMA Dermatol.
    2024;160(1):37-44. doi:10.1001/jamadermatol.2023.4450
-3. Kardaun SH, Sidoroff A, Valeyrie-Allanore L, Halevy S, Davidovici BB, Mockenhaupt M, et al. Variability in the
+3. Centre de référence des dermatoses bulleuses toxiques et toxidermies graves (TOXIBUL), FISARD, Groupe Toxidermies de
+   la Société Française de Dermatologie. Protocole national de diagnostic et de soins (PNDS) : DRESS de l'adulte et de
+   l'enfant. Saint-Denis: Haute Autorité de Santé; 2024. Available from:
+   https://www.has-sante.fr/jcms/p_3557694/fr/dress-de-l-adulte-et-de-l-enfant
+4. Kardaun SH, Sidoroff A, Valeyrie-Allanore L, Halevy S, Davidovici BB, Mockenhaupt M, et al. Variability in the
    clinical pattern of cutaneous side-effects of drugs with systemic symptoms: does a DRESS syndrome really exist?
    Br J Dermatol. 2007;156(3):609-611. doi:10.1111/j.1365-2133.2006.07704.x
-4. Kardaun SH, Sekula P, Valeyrie-Allanore L, et al. Drug reaction with eosinophilia and systemic symptoms (DRESS): an
+5. Kardaun SH, Sekula P, Valeyrie-Allanore L, et al. Drug reaction with eosinophilia and systemic symptoms (DRESS): an
    original multisystem adverse drug reaction. Results from the prospective RegiSCAR study. Br J Dermatol.
    2013;169(5):1071-1080. doi:10.1111/bjd.12501
-5. Chalasani NP, Maddur H, Russo MW, Wong RJ, Reddy KR; Practice Parameters Committee of the American College of
+6. Chalasani NP, Maddur H, Russo MW, Wong RJ, Reddy KR; Practice Parameters Committee of the American College of
    Gastroenterology. ACG clinical guideline: diagnosis and management of idiosyncratic drug-induced liver injury. Am J
    Gastroenterol. 2021;116(5):878-898. doi:10.14309/ajg.0000000000001259
-6. European Association for the Study of the Liver. EASL Clinical Practice Guidelines: drug-induced liver injury.
+7. European Association for the Study of the Liver. EASL Clinical Practice Guidelines: drug-induced liver injury.
    J Hepatol. 2019;70(6):1222-1261. doi:10.1016/j.jhep.2019.02.014
-7. 中国医药生物技术协会药物性肝损伤防治技术专业委员会, 中华医学会肝病学分会药物性肝病学组. 中国药物性肝损伤诊治指南(2023年版).
+8. 中国医药生物技术协会药物性肝损伤防治技术专业委员会, 中华医学会肝病学分会药物性肝病学组. 中国药物性肝损伤诊治指南(2023年版).
    中华肝脏病杂志. 2023;31(4):355-384. doi:10.3760/cma.j.cn501113-20230419-00176
-8. National Institute for Health and Care Excellence. Drug allergy: diagnosis and management. Clinical guideline CG183.
+9. National Institute for Health and Care Excellence. Drug allergy: diagnosis and management. Clinical guideline CG183.
    London: NICE; 2014.
-9. Kano Y, Tohyama M, et al. Sequelae in 145 patients with drug-induced hypersensitivity syndrome/drug reaction with
+10. Kano Y, Tohyama M, et al. Sequelae in 145 patients with drug-induced hypersensitivity syndrome/drug reaction with
    eosinophilia and systemic symptoms: survey conducted by the Asian Research Committee on Severe Cutaneous Adverse
    Reactions (ASCAR). J Dermatol. 2015;42(3):276-282. doi:10.1111/1346-8138.12770
 
-These nine strings are `debrief.references`. Also named in the case's feedback, staff knowledge and guideline list,
+These ten strings are `debrief.references`. Also named in the case's feedback, staff knowledge and guideline list,
 and checked the same way: Wendon J, Cordoba J, Dhawan A, et al. EASL Clinical Practical Guidelines on the management of
 acute (fulminant) liver failure. J Hepatol. 2017;66(5):1047-1081. doi:10.1016/j.jhep.2016.12.003 · Creamer D, et al.
 U.K. guidelines for the management of Stevens-Johnson syndrome/toxic epidermal necrolysis in adults 2016. Br J
 Dermatol. 2016;174(6):1194-1227. doi:10.1111/bjd.14530 · Kowalski ML, et al. Classification and practical approach to
 the diagnosis and management of hypersensitivity to nonsteroidal anti-inflammatory drugs. Allergy.
 2013;68(10):1219-1232. doi:10.1111/all.12260 · 中华医学会感染病学分会肝衰竭与人工肝学组, 中华医学会肝病学分会重型肝病与人工肝
-学组. 肝衰竭诊治指南(2024年版). 临床肝胆病杂志. 2024;40(12):2371-2387. doi:10.12449/JCH241206 · Protocole national de
-diagnostic et de soins (PNDS) : DRESS de l'adulte et de l'enfant. Centre de référence TOXIBUL, FISARD and the
-toxidermies group of the French Society of Dermatology; 2024 (HAS; sfdermato.org) · Evans L, Rhodes A, Alhazzani W,
+学组. 肝衰竭诊治指南(2024年版). 临床肝胆病杂志. 2024;40(12):2371-2387. doi:10.12449/JCH241206 · Evans L, Rhodes A, Alhazzani W,
 et al. Surviving sepsis campaign: international guidelines for management of sepsis and septic shock 2021. Intensive
 Care Med. 2021;47(11):1181-1247. doi:10.1007/s00134-021-06506-y · Centers for Disease Control and Prevention. Toxic shock syndrome (other
 than streptococcal): 2011 case definition · Yamaguchi M, et al. Preliminary criteria for classification of adult
@@ -499,9 +433,9 @@ Still's disease. J Rheumatol. 1992;19(3):424-430.
 
 **How they were checked (2026-11-12).** doi.org, PMC and the publishers' and societies' sites were not reachable from
 this environment, so each guideline, its issuing body, year, journal details and DOI were confirmed by web search
-against indexing records that print them: ref. 2 (PubMed 37966824; JAMA Network record), ref. 3 (Oxford Academic and
-repository records), ref. 4 (PubMed 23855313; Wiley record), ref. 5 (PubMed 33929376), ref. 6 (PubMed 30926241), ref. 7
-(Wanfang and BVS records), ref. 8 (NICE pages), ref. 9 (DOI record), EASL 2017 (PubMed 28417882), BAD 2016 (repository
+against indexing records that print them: ref. 2 (PubMed 37966824; JAMA Network record), ref. 4 (Oxford Academic and
+repository records), ref. 5 (PubMed 23855313; Wiley record), ref. 6 (PubMed 33929376), ref. 7 (PubMed 30926241), ref. 8
+(Wanfang and BVS records), ref. 9 (NICE pages), ref. 10 (DOI record), EASL 2017 (PubMed 28417882), BAD 2016 (repository
 records), EAACI 2013 (Wiley and repository records), the 2024 Chinese liver-failure guideline (journal pages), the
 PNDS (sfdermato.org listing), CDC 2011 (NNDSS page) and Yamaguchi 1992 (secondary tables). The source article's DOI is
 the one verified in `scripts/cmcr-105-sources.json` (publisher check 2026-10-29). A 2018 Chinese DIHS consensus could
@@ -510,12 +444,117 @@ extracts of the protocol and the HAS page), the Delphi treatment statements (abs
 and re-exposure statements (abstract), and the Surviving Sepsis Campaign 2021 citation, DOI and possible-sepsis
 recommendations (publisher and summary records), now cited in the decision-2 feedback and the β-lactam harm text.
 
+**Independent review (2026-11-13).** Read directly: the Delphi consensus in full (PMC10652220), the PNDS in full (ref. 3,
+the PDF on sfdermato.org), the 2023 Chinese DILI guideline (PMC12814733) and the ACG 2021 abstract (Europe PMC); the
+2024 Chinese liver-failure guideline's citation was confirmed on the journal's pages.
+
+### To verify
+
+Details to look for in the full article (the source check is pending):
+* The ibuprofen: product, formulation, dose and the day it was stopped; the "ibuprofen-containing product" of a year
+  earlier — its name and other ingredients, the time from taking it to the rash, and whether the reaction was recorded.
+* The penicillin (which drug, route, dose, dates) and the four days of treatment after both drugs were stopped (where —
+  before or after admission — and which drugs: any antipyretic, NSAID, antibiotic or steroid).
+* The unit of BP 96/60 (shown without one; the teaching comparisons read it as mmHg) and any other admission vital signs (heart rate, breathing rate, saturation), and
+  her weight.
+* The full blood count (platelets, lymphocytes, atypical lymphocytes, absolute eosinophils), a blood film, renal
+  function, urinalysis, ALP, GGT, the reference ranges, and any INR or prothrombin time in seconds.
+* Which hepatitis viruses and markers were tested; any HHV-6, CMV or EBV DNA testing; blood cultures, ANA or other
+  exclusions; whether the authors scored RegiSCAR or used the Japanese DIHS criteria.
+* The skin: blisters, epidermal detachment and its extent, Nikolsky's sign, target lesions, eye and genital mucosa,
+  and any skin biopsy.
+* The chest X-ray and abdominal ultrasound reports, their timing, and any later imaging (1.0.0 says "起初基本正常",
+  essentially normal *at first*; how the ascites was found).
+* The reference day of "five days later", "day 25" and "about day 38", and which medicines "停药后一年无复发" refers to.
+* The glucocorticoid (drug, dose, route, start date — before or after the day-5 deterioration — and taper), the
+  supportive drugs (names and number; 1.0.0 mentions a liver-protective combination only in its feedback), and any
+  IVIG, plasma exchange, artificial liver support or transplant-centre contact.
+* The day-5 picture: any encephalopathy assessment, INR, ALT/AST, and the wording and criteria behind "liver failure".
+* What was done at the day-25 recurrence and what was found (infection, viral reactivation, the steroid dose then).
+* Follow-up: thyroid function, glucose, allergy testing, allergy documentation and advice.
+
+Guidance details to confirm in the full texts (checked 2026-11-12 and 2026-11-13 by web search against abstracts,
+indexing records and secondary summaries; in the independent review of 2026-11-13 the Delphi consensus (PMC full text),
+the PNDS (full PDF), the 2023 Chinese DILI guideline (PMC copy) and the ACG 2021 abstract were read directly):
+* 2024 international Delphi consensus (JAMA Dermatol): read in the full text (PMC10652220) — very high-potency topical
+  steroids for mild DRESS, tapered over 6 weeks to 3 months; systemic glucocorticoids considered in moderate DRESS (same
+  taper) and started in every severe case, **tapered over 3 to 6 months**; no dose statement and no statement on pulses
+  or on relapse dosing; EBV, CMV and HHV-6 viral loads in all suspected DRESS; ganciclovir or valganciclovir for a high
+  CMV load; ciclosporin, IL-5-axis antibodies or IVIG for corticosteroid-refractory disease (toxic effects reported with
+  IVIG alone); patch tests an option, their timing not stated; thyroid and autoantibody screening in convalescence. Its
+  numeric severity thresholds are in a figure (an image), read here through the PNDS Annexe 4 that reproduces it —
+  confirm them in the figure.
+* French PNDS "DRESS de l'adulte et de l'enfant" (2024; TOXIBUL reference centre with FISARD and the French Society of
+  Dermatology toxidermies group; HAS page online November 2024): read in the full PDF — §3.5: severe DRESS 1 mg/kg/day
+  prednisone equivalent, oral or IV, for about a month, then a very gradual decrease over 3–6 months; pulses not
+  recommended (more viral reactivation, persisting symptoms, higher mortality); moderate DRESS 0.5 mg/kg/day for about a
+  month, decreasing over 3 months; §3.4: paracetamol contraindicated in marked cytolysis, new drugs limited to the
+  essential (polysensitisation); §3.6.2: IVIG never alone; §4.4: the relapse triggers (a hidden reintroduction of the drug
+  or a chemically close one, co-sensitisation to a drug added in the acute phase, a too-rapid taper, HHV-6, EBV or CMV
+  replication) and no relapse dose; §2.3.2, §2.8 and Annexe 4: severe liver involvement = enzymes > 15 × N and/or
+  ALP ≥ 5 × N and/or factor V < 50%; fulminant hepatitis = prothrombin activity < 50% with encephalopathy; Annexe 3: the
+  RegiSCAR table the case scores with. Strictly, whether she meets the hepatic criterion cannot be judged (no reference
+  ranges, no factor V); the case reads AST 878 U/L as above 15 × any usual upper limit and says so.
+* NICE CG183 (2014): DRESS onset usually 2–6 weeks after the first exposure or within 3 days of a second (NICE table
+  text as indexed, QS97 page and a CG183-based hospital guideline; NICE's own pages refuse automated access); check the
+  CG183 table wording, the documentation items and the referral recommendation.
+* ACG 2021: abstract re-read 2026-11-13 — progressive jaundice, with or without coagulopathy, referred to a tertiary
+  care centre where liver transplantation may be considered; corticosteroids controversial in DILI (used when autoimmune
+  hepatitis cannot be excluded); a strong recommendation against re-exposure to the likely culprit, especially after
+  jaundice or a marked aminotransferase rise, and NAC in adults with early-stage acute liver failure (from summaries).
+* EASL 2019 DILI: considering transplantation in drug-induced ALF and early NAC (coma grade I–II) — from secondary
+  summaries. EASL 2017 ALF: the definition by coagulopathy and encephalopathy — from the abstract.
+* Surviving Sepsis Campaign 2021: possible sepsis without shock — rapid assessment for infectious and non-infectious
+  causes, antimicrobials within 3 hours if concern for infection persists, deferral with close monitoring when infection
+  is unlikely (weak recommendations; from summaries of the guideline).
+* 2023 Chinese DILI guideline: recommendation 44 (magnesium isoglycyrrhizinate or bicyclol for acute hepatocellular or
+  mixed DILI with a markedly raised ALT) and recommendation 45 (combining two or more mainly ALT-lowering drugs not
+  recommended) read in the PMC copy (PMC12814733) and now quoted in the trap's harm text, the decision-3 feedback, teaching
+  point 3 and the hepatologist's brief; a single named agent is deliberately not matched to the
+  `liver-protective-combination` trap. Confirm the grades and the guideline's severity grading thresholds.
+* 2024 Chinese liver-failure guideline (临床肝胆病杂志 2024;40(12):2371-2387): its definitions of acute and subacute liver
+  failure, and whether the report's "liver failure" fits them (the case quotes no threshold).
+* EAACI 2013 NSAID classification: the wording on single-NSAID delayed reactions and chemical groups (confirmed only at
+  bibliographic level).
+* RegiSCAR item values: checked against the RegiSCAR table in the PNDS (Annexe 3, citing Kardaun 2007), including −1 for
+  a resolution in ≥ 15 days that is not (yet) recorded; confirm against Kardaun 2007 itself.
+* "Amoxicillin-triggered flares in DRESS" rests on a case series of seven patients and reviews, not on a guideline.
+* Kano 2015: title, patient number (145) and DOI confirmed; volume and pages (42(3):276-282) to confirm.
+* Author lists beyond those given (Kano 2015; Creamer 2016; Kowalski 2013; Yamaguchi 1992) were not confirmed and are
+  cited with "et al.".
+* Clinician input: a dermatologist and a hepatologist should review decisions 2–4 (steroid dose and taper, the
+  transplant-centre threshold, and the relapse dose — the case raises the steroid again to the dose that last
+  controlled the illness, at most the starting dose, which no cited guidance states), and an allergist decision 5 (the
+  NSAID advice and the penicillin, given during the acute phase).
+
 ## Changelog
 
-### 1.1.0 — 2026-10-30
+### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
 
-1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked
-against the full source article.
+* **Independent review (2026-11-13, same version).** No patient fact was found added or changed against 1.0.0; the
+  fixes are to the guidance and the teaching. *Steroid taper (critical):* the case attributed a 6-week-to-3-month taper
+  in **severe** DRESS to the 2024 Delphi consensus, in the key feedback, the corticosteroid order, a harm text,
+  distractor feedback, teaching point 3, learning outcome 3 and the dermatologist's brief; the consensus (read in full)
+  tapers severe DRESS over 3 to 6 months (6 weeks to 3 months is its mild/moderate taper), as does the PNDS (prednisone
+  1 mg/kg/day for about a month, then 3–6 months) — corrected everywhere. *Relapse (major):* learning outcome 5 credited
+  the relapse plan to the Delphi consensus, which has no relapse statement; it now cites the PNDS's relapse triggers, and
+  the keyed "back to the starting dose" became "raise it again to the dose that last controlled the illness, at most the
+  starting dose" (no cited guidance states a relapse dose; listed to verify). *Severity (major):* the decision-2 key
+  rested "severe" on jaundice with a prothrombin activity of 64%, which is not a criterion of the grading it cites; the
+  feedback, prompt and key reasoning now name AST 878 U/L, above 15 × any usual upper limit (an inference: no reference
+  range is recorded). *Guidance now cited where it holds the statement:* the 2023 Chinese DILI guideline against
+  combining two or more ALT-lowering drugs (the liver-protective trap, decision-3 feedback, teaching point 3); the PNDS
+  on pulses, paracetamol in marked cytolysis (a missed error in the "sepsis" distractor), IVIG never alone, the
+  culprit's chemical family, new drugs and co-sensitisation, fulminant hepatitis and at least a year of follow-up; the
+  PNDS added to the references. *Facts and wording:* key reasoning 2 no longer calls the injury "hepatocellular" (no ALP:
+  the pattern cannot be set); "relapsed on day 25" and "normal by about day 38" now read as 1.0.0 has them ("fever and
+  jaundice again on day 25", "around day 38"); the English conclusion now carries the facts its Chinese text gives (the
+  sore throat, the eyelids, the penicillin and the four days of treatment, no recurrence in a year), and the Chinese no
+  longer says the penicillin "failed to stop" the illness; her worry about passing it on now names "other people", not
+  "my family" or "at home" (no household is recorded). *Assessment:* the decision-5 key is no longer its longest
+  option (no key is now the uniquely longest anywhere); the decision-5 prompt no longer opens with "once the relapse is
+  controlled she will go home". *Form:* the attending debriefs with PEARLS; "To verify" moved under References; the
+  validation commands name `scripts/case-check.ts`.
 
 * **Safety and validity (survey template and critic findings; the survey has no case-specific audit of this case).**
   The only critical item was a multiple-choice answer (`decidedFirstTry: management`) opened by the five-days-later
@@ -564,14 +603,17 @@ against the full source article.
 
 ### 1.0.0
 
-* Initial template version (PR #5).
+* Initial template version (PR #5): generated from the collection template — four phases, three decisions of three
+  options with `yes` as the key's id, no interventions, 15 history slots (8 of them "the source case does not provide
+  that information" answers), five bundled record reviews, and a single critical item scored on a multiple-choice
+  answer after the revealing record.
 
 ## Validation
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-598191/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-598191 --lang en        # 90 steps · objectives 6/6 · decisions 5/5 · utterances 37/37 · rubric 30/30
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-598191                   # PASS (depth floor, do nothing 0, wrong-first < reference)
+npx tsx --conditions=source scripts/case-check.ts cmcr-598191                   # PASS (depth floor, do nothing 0, wrong-first < reference)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-598191:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-598191:"  # demonstration, en + zh-CN
 ```
@@ -593,10 +635,10 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 1. 在开始用药后2–6周出现发热、迅速扩展的皮疹伴面部水肿和肝损伤时识别DRESS（NICE CG183，2014），算出嗜酸性粒细胞绝对值，
    按已有资料计算RegiSCAR评分（Kardaun 2007）。
 2. 按时间顺序判断可疑致敏药——起病前4–5周开始的布洛芬，而不是出疹后加用的青霉素——并排查SJS/TEN重叠（英国皮肤科医师协会2016）。
-3. 肝脏严重受累的DRESS：保持致敏药停用，不用非甾体抗炎药和非必需新药，全身糖皮质激素（重症DRESS泼尼松1 mg/kg/d，法国PNDS 2024），
-   6周至3个月内缓慢减量（2024年国际Delphi共识）。
+3. 肝脏严重受累的DRESS：保持致敏药停用，不用非甾体抗炎药和非必需新药，全身糖皮质激素（重症DRESS泼尼松1 mg/kg/d约1个月，不用冲击；
+   法国PNDS 2024），再在3–6个月内缓慢减量（PNDS 2024；2024年国际Delphi共识）。
 4. 皮疹好转而胆红素上升、凝血酶原活动度下降时识别肝衰竭风险，监测意识状态和血糖，联系肝移植中心（ACG 2021；EASL 2019）。
-5. 数周后再次发热、黄疸时，先排查感染、病毒再激活和新加药物，再恢复激素剂量并放慢减量。
+5. 数周后再次发热、黄疸时，先排查感染和复发诱因（隐匿的再接触或新加药物、减量过快、病毒再激活；法国PNDS 2024），再重新加大激素剂量并放慢减量。
 6. 防止再接触：登记严重迟发型反应并发警示卡，专科评估前避免非甾体抗炎药，绝不再激发，转诊药物过敏专科，随访迟发性自身免疫并发症
    （NICE CG183，2014；Kano 2015）。
 
@@ -606,7 +648,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
    （干扰项：单用外用激素、按脓毒症先上头孢、激素冲击3天后骤停）。
 3. 五天后：按肝衰竭风险处理——查意识状态、扑翼样震颤、血糖和INR，当天联系肝移植中心，激素不骤停（干扰项：停激素改多种保肝药
    〔接近报告当年的支持治疗〕、减激素出院、先处理腹水）。
-4. 第25天：先按DRESS复发处理——核对新加药物、血培养、HHV-6和CMV DNA、肝功能，激素恢复起始剂量后更慢地减量。
+4. 第25天：先按DRESS复发处理——核对新加药物、血培养、HHV-6和CMV DNA、肝功能，激素重新加量后更慢地减量（干扰项：骤停激素加β-内酰胺类、
+   改为单用静脉免疫球蛋白且不做检查、等一周并加保肝药）。
 5. 出院：登记布洛芬并发警示卡，专科评估前避免所有非甾体抗炎药（含复方制剂），注明青霉素为出疹后加用，转诊过敏专科，随访甲功、
    血糖和肝功能（干扰项：布洛芬激发试验、改用萘普生、青霉素类终身标为过敏且不转诊）。
 
@@ -614,5 +657,5 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **复盘要点。** 用药时间线决定嫌疑药物；嗜酸性粒细胞要看绝对值；口腔、唇部和躯干表现要求排查SJS/TEN；治疗强度跟着肝脏走；
 皮肤好转不等于肝脏好转，胆红素上升、凝血酶原活动度下降时要找肝性脑病、查INR、联系肝移植中心；第三周以后的复发先找诱因；
-终身记录并避免致敏药，过敏专科评估代替再激发。两项关键行为：登记过敏且不再接触非甾体抗炎药，以及在复发阶段之前完成肝衰竭
+终身记录并避免致敏药，过敏专科评估代替再激发。重症DRESS的全身激素约1个月后在3–6个月内缓慢减量（2024年国际Delphi共识；法国PNDS 2024）。两项关键行为：登记过敏且不再接触非甾体抗炎药，以及在复发阶段之前完成肝衰竭
 监测和肝移植中心联系。尚待核实的细节见上文“To verify”。本稿尚未经执业医师审核。

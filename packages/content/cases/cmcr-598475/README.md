@@ -21,8 +21,8 @@
 | Specialty | Gastroenterology, neurology |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; gastroenterology, neurology, acute medicine and general practice trainees |
-| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a gastroenterologist (IBD) and a neurologist review it before teaching use |
-| Content | 24 history items (13 not recorded, 8 required) · 3 exam findings · 18 investigations (9 record reviews, 8 without any recorded result) · 20 interventions (8 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 2 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 40 test utterances |
+| Review status | Editorial review 2026-10-30 and independent review 2026-11-13 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a gastroenterologist (IBD) and a neurologist review it before teaching use |
+| Content | 24 history items (13 not recorded, 8 required) · 3 exam findings · 19 investigations (9 record reviews, 9 without any recorded result) · 20 interventions (8 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 3 critical) · 1 critical intervention · 4 staff characters · 6 learning outcomes · 6 teaching points · 40 test utterances |
 
 ## Learning outcomes
 
@@ -32,7 +32,8 @@ By the end of the case the learner can:
    stools a day plus a systemic sign such as Hb < 105 g/L), without downgrading it for missing observations, and
    admit for intravenous treatment (BSG 2025; AGA 2026).
 2. Start IV methylprednisolone 60 mg/24 h (or hydrocortisone 100 mg 6-hourly) once stool samples are sent, give
-   LMWH thromboprophylaxis despite non-severe bleeding (CAG 2014), and withhold antidiarrhoeals, opioids and NSAIDs.
+   LMWH thromboprophylaxis although she is bleeding (BSG 2025; CAG 2014), and withhold antidiarrhoeals, opioids and
+   NSAIDs.
 3. Plan the day-3 review by stool frequency and CRP (Travis 1996) and the rescue options — infliximab, ciclosporin
    or colectomy — with the colorectal surgeon, weighing anti-TNF risk while white-matter lesions are unexplained.
 4. Combine negative stool tests with the CT, endoscopy and biopsy findings to diagnose inflammatory bowel disease of
@@ -51,14 +52,14 @@ GLOSSARY §4). The six HUD `objectives` below are the in-game task list.
 ## Clinical summary (spoilers)
 
 A 38-year-old woman has had, for two years, recurrent loose ("mushy") bloody stools with urgency, in bouts lasting
-weeks that settle and relapse; she put them down to stress and takes no regular medicines. One morning she had a
+weeks that settle and relapse; she put them down to stress, and no unusual medication use is recorded. One morning she had a
 memory disturbance that came on suddenly within a day — she cannot recall that morning — and she was alert again by
 the afternoon. That night heavy rectal bleeding began, with right lower abdominal pain and fever but no rigors,
 nausea or vomiting; later she passed blood more than ten times a day (the Chinese text adds that the amount clearly
 increased). After recovery of awareness the neurological examination showed no definite focal abnormality; the
 abdomen showed right lower abdominal pain with a possibly palpable mass. Haemoglobin fell from 129 to 93 g/L and CRP
 was 95.8 mg/L. CT showed wall thickening of the ascending colon and the rectum. Colonoscopy found an irregular
-circumferential raised lesion at about 30 cm with diffuse shallow ulcers, erosions and erythema (充血) distal to it;
+circumferential raised lesion at about 30 cm and, distally, diffuse shallow ulcers, erosions and erythema (充血);
 mucosal biopsies showed severe acute and chronic inflammation without definite crypt abscesses or tumour cells, and
 immunohistochemistry did not support lymphoma. Repeated stool pathogen tests and C. difficile toxin were negative,
 as were several other infection tests. Brain MRI showed multifocal punctate white-matter abnormalities; the CSF
@@ -81,7 +82,7 @@ one-way (`learnerSwitchable: false`).
 
 | Phase | When | Entered when | What is there |
 |---|---|---|---|
-| `admission` (initial) | on the ward after the bleeding has escalated | start | her own history (alert, answers for herself), three examination findings, blood count (Hb 129 → 93 g/L) and CRP 95.8 mg/L ("during the bleeding, timing not recorded"), the CT (shown from admission, timing not recorded); orders with no recorded result (biochemistry, group and save, abdominal film, venous imaging, EEG, viral serology, TPMT/NUDT15); stool samples sent (result in the next phase); decisions 1–3; the treatments and the traps |
+| `admission` (initial) | on the ward after the bleeding has escalated | start | her own history (alert, answers for herself), three examination findings, blood count (Hb 129 → 93 g/L) and CRP 95.8 mg/L ("timing not recorded"), the CT (shown from admission, timing not recorded); orders with no recorded result (biochemistry, group and save, abdominal film, venous imaging, EEG, viral serology, TB blood test (IGRA), TPMT/NUDT15); stool samples sent (result in the next phase); decisions 1–3; the treatments and the traps |
 | `workup` | after treatment has started; the reports of the admission's tests are back | objectives 1–3 done (history, examination and first results, **IV corticosteroid and thromboprophylaxis given**, surgical review) and decisions 1–3 right | stool tests (negative), other infection tests (negative), endoscopy, biopsy histology, brain MRI, CSF (all dated "timing not recorded"); CMV in the biopsies, venous imaging and EEG with no recorded result; decisions 4–5 |
 | `followup` | to follow-up | all five decisions right and objectives 1–5 done (incl. neurology review, venous imaging sought, genotype and viral serology sent) | the report's treatment and follow-up record, with the two approved figures |
 
@@ -114,11 +115,11 @@ Hints are Socratic questions; none contains a key's text (`cases validate` check
 
 | # | id | opens after | key | distractors (why they tempt) |
 |---|---|---|---|---|
-| 1 | `flare-severity` | bleeding onset, frequency, the bowel history and fever asked; abdomen examined; blood count and CRP read | acute severe colitis by Truelove and Witts (> 6 bloody stools a day with Hb < 105 g/L) — inpatient IV treatment | moderate flare because pulse and temperature are missing (oral prednisolone, clinic review); infective colitis first, steroids after negative cultures (1.0.0's "food poisoning" distractor, updated); a focal bleeding point for CT angiography |
+| 1 | `flare-severity` | bleeding onset, frequency, the bowel history and fever asked; abdomen examined; blood count and CRP read | acute severe colitis by Truelove and Witts (≥ 6 bloody stools a day with Hb < 105 g/L) — inpatient IV treatment | moderate flare because pulse and temperature are missing (oral prednisolone, clinic review); infective colitis first, steroids after negative cultures (1.0.0's "food poisoning" distractor, updated); a focal bleeding point for CT angiography |
 | 2 | `neuro-workup` | memory gap, recovery, bleeding and fever asked; conscious level and nervous system examined | brain MRI with diffusion imaging plus MR venography; CSF if infection or inflammation stays possible; EEG if a seizure is suspected | transient global amnesia — reassure, no tests; plain CT and "stress"; presumed venous thrombosis with full-dose anticoagulation before imaging |
 | 3 | `first-line` | decision 1; stool samples sent **in the admission phase**; CT read | IV methylprednisolone 60 mg/day, LMWH prophylaxis unless the bleeding is severe (then compression), no antidiarrhoeals, opioids or NSAIDs, an unprepared sigmoidoscopy with biopsies, a day-3 surgical review | oral prednisone with azathioprine at once, heparin withheld, loperamide (**the drugs this case records**, with today's errors); antibiotics and steroids held for cultures; infliximab first-line; IV steroids **without any heparin** (near-miss) |
 | 4 | `colitis-cause` | decision 3; stool tests, other infection tests, endoscopy and biopsy read in the work-up phase | chronic IBD of the colon, type unclassified; no infection, tumour or lymphoma found | missed amoebic or tuberculous infection (stop steroids); primary colonic lymphoma (chemotherapy); carcinoma at 30 cm (resection); ischaemic colitis |
-| 5 | `maintenance-safety` | decision 4; MRI and CSF read | azathioprine dosed by TPMT and NUDT15 genotype after hepatitis B, C and HIV screening, with monitoring (AGA 2024 suggests a thiopurine to maintain a corticosteroid-induced remission) | full dose at once with a first count at three months; TPMT alone ("explains toxicity in every population"); infliximab maintenance without a neurology view of the MRI; long-term prednisone |
+| 5 | `maintenance-safety` | decision 4; MRI and CSF read | azathioprine dosed by TPMT and NUDT15 genotype after hepatitis B, C and HIV screening, with monitoring (BSG 2025 GPS 43: a purine analogue or an advanced therapy after a response to IV steroids; AGA 2024: a thiopurine to maintain a corticosteroid-induced remission) | full dose at once with a first count at three months; TPMT alone ("explains toxicity in every population"); infliximab maintenance without a neurology view of the MRI; long-term prednisone |
 
 All decisions are single best answer with option-specific feedback naming the guidance. Options were balanced for
 length: the key is the uniquely longest option in no decision in either language (`cases validate` checks it).
@@ -135,35 +136,49 @@ Option ids name the content (`iv-steroids-lmwh`, `steroids-no-heparin`), never t
 | `rb-first-line-plan` | Management | decision 3 first time, colorectal surgery review, stool chart | 3 |
 | `rb-iv-steroids` | Management · **critical** | IV methylprednisolone or hydrocortisone given **in the admission phase** (`whenIndicated`) — the missed life-saving act | 4 |
 | `rb-vte-prophylaxis` | Safety · **critical** | LMWH, or pneumatic compression if heparin is withheld, given **in the admission phase** — the commonest dangerous omission | 3 |
-| `rb-avoided-harm` | Safety | no loperamide, opioid, NSAID, anticholinergic antispasmodic, bowel preparation for a full colonoscopy or full-dose anticoagulation; `scoredWhen` decision 3 attempted or any of the six given | 3 |
+| `rb-avoided-harm` | Safety · **critical** | no loperamide, opioid, NSAID, anticholinergic antispasmodic, bowel preparation for a full colonoscopy or full-dose anticoagulation; `scoredWhen` decision 3 attempted or any of the six given | 3 |
 | `rb-neuro-workup` | Investigations | decision 2 first time, venous imaging sought, neurology review, MRI and CSF read | 2 |
 | `rb-colitis-cause` | Diagnosis | decision 4 first time | 3 |
 | `rb-thiopurine-safety` | Safety | decision 5 first time, TPMT/NUDT15 test and hepatitis B, C and HIV serology sent | 2 |
 | `rb-communication` | Communication (examiner) | Calgary–Cambridge conversation: severity, treatment and its safety measures, the uncertain bowel–brain link, her fears | 1 |
 
-### How wrong choices score (measured with the core engine, 2026-11-12)
+### How wrong choices score (measured with the core engine, 2026-11-13)
 
-| Path | Score | Critical items missed | Flagged in the debrief |
+| Path | Score | Critical items missed | Safety outcome · flagged in the debrief |
 |---|---|---|---|
-| Reference `solution` | 30/30 (100 %) | none | none |
-| Start and do nothing | 0/27 (0 %) | `rb-iv-steroids`, `rb-vte-prophylaxis` | — (`rb-avoided-harm` not scored) |
-| History and examination only | 5/27 (19 %) | both | — |
-| Wrong first answer at every decision, then the key | 17/30 (57 %) | none | none |
-| Wrong first at decision 1, 3 or 4 only | 27/30 (90 %) | none | none |
-| Wrong first at decision 2 or 5 only | 28/30 (93 %) | none | none |
-| Reference plus loperamide, or full-dose anticoagulation, or bowel preparation | 27/30 (90 %) | none | the drug or step (contraindicated) |
-| Reference plus morphine and ibuprofen | 27/30 (90 %) | none | both (contraindicated) |
-| Reference plus azathioprine at once (the report's drug, no genotype) | 30/30 (100 %) | none | azathioprine (contraindicated) |
-| Reference plus infliximab before any IV steroid | 30/30 (100 %) | none | infliximab (contraindicated) |
-| Pneumatic compression instead of LMWH; hydrocortisone instead of methylprednisolone | 30/30 (100 %) | none | none |
-| No VTE prophylaxis | 20/30 (67 %), stuck in the admission phase (objective 3 open) | `rb-vte-prophylaxis` | — |
-| Oral prednisone instead of an IV steroid (the report's drug) | 19/30 (63 %), stuck in the admission phase | `rb-iv-steroids` | — |
+| Reference `solution` | 30/30 (100 %) | none | passed · none |
+| Start and do nothing | 0/27 (0 %), cannot finish | `rb-iv-steroids`, `rb-vte-prophylaxis` | passed · — (`rb-avoided-harm` not scored) |
+| History and examination only | 5/27 (19 %), cannot finish | both | passed · — |
+| Wrong first answer at every decision, then the key | 17/30 (57 %) | none | passed · none |
+| Wrong first at decision 1, 3 or 4 only | 27/30 (90 %) | none | passed · none |
+| Wrong first at decision 2 or 5 only | 28/30 (93 %) | none | passed · none |
+| Reference plus full-dose anticoagulation | 27/30 (90 %) | `rb-avoided-harm` | **fails** (`therapeutic-anticoagulation`, critical) · contraindicated |
+| Reference plus loperamide, hyoscine butylbromide or bowel preparation | 27/30 (90 %) | `rb-avoided-harm` | passed · the drug or step (contraindicated) |
+| Reference plus morphine and ibuprofen | 27/30 (90 %) | `rb-avoided-harm` | passed · both (contraindicated) |
+| Reference plus azathioprine at once (the report's drug, no genotype), or plus oral prednisone and azathioprine | 30/30 (100 %) | none | passed · azathioprine (contraindicated) |
+| Reference plus infliximab before any IV steroid | 30/30 (100 %) | none | passed · infliximab (contraindicated) |
+| Pneumatic compression instead of LMWH; hydrocortisone instead of methylprednisolone | 30/30 (100 %) | none | passed · none |
+| No VTE prophylaxis | 20/30 (67 %), stuck in the admission phase (objective 3 open) | `rb-vte-prophylaxis` | passed · — |
+| Oral prednisone instead of an IV steroid (the report's drug) | 19/30 (63 %), stuck in the admission phase | `rb-iv-steroids` | passed · — |
 
-Ordering cannot be scored by the condition language (CMCR_CASES "Known limits"): starting azathioprine before any
-genotype result and infliximab before IV steroids are flagged as contraindicated safety events in the debrief but
-cost no marks. The two critical items are acts, timed by `indicatedWhen: { "phase": "admission" }`; because the
-work-up phase also waits for them, a learner who omits them cannot reach the work-up results until they act — the
-critical item then records that the act was late or missing.
+Azathioprine started now and infliximab before an IV steroid, a neurology review or the TB and hepatitis B screening are flagged as contraindicated
+in every debrief but cost no marks and do not fail the safety outcome: they are moderate-risk, recoverable
+misjudgements, and they stay out of `rb-avoided-harm` because each becomes right at a moment the case cannot stage
+(azathioprine once a genotype is back, infliximab as day-3 rescue after a neurology review); decisions 3 and 5 carry
+the marks for them. The critical items `rb-iv-steroids` and `rb-vte-prophylaxis` are acts, timed by
+`indicatedWhen: { "phase": "admission" }`; because the work-up phase also waits for them, a learner who omits them
+cannot reach the work-up results until they act — the critical item then records that the act was late or missing.
+`rb-avoided-harm` is the critical avoided-harm item: it is scored once decision 3 is attempted or a listed step is
+taken, and loses its weight when any of the six is given.
+
+**Safety outcome.** `therapeutic-anticoagulation` is `critical: true` (its only `risk: "high"` intervention):
+treatment-dose enoxaparin for a thrombosis no imaging has shown, in a woman passing large amounts of blood, risks
+major haemorrhage, so giving it fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and
+every debrief and export shows it beside the score. The other contraindicated steps (loperamide, morphine, ibuprofen,
+hyoscine butylbromide, bowel preparation, azathioprine without a genotype, infliximab before IV steroids, a neurology
+review or TB and hepatitis B screening) are `risk: "moderate"` and not critical: each is flagged as a safety event, and the first five cost
+the critical avoided-harm item. LMWH prophylaxis has a preset dose (`doseSpec` 40 mg SC), so an order for another
+dose is read back by the nurse and not given.
 
 ## Reference path (`solution`)
 
@@ -195,7 +210,7 @@ Extraction map (1.0.0 field → 1.1.0 field):
 | No unusual medication history | `history.medications` | `history.medications`, nurse handover |
 | After recovery of awareness, no definite focal neurological abnormality | `exam.exam-1` | `exam.neuro-exam` (and `exam.conscious-level`: alert) |
 | Right lower abdominal pain; a mass possibly palpable on examination | `exam.exam-2` | `exam.abdomen` |
-| Hb 129 → 93 g/L; CRP 95.8 mg/L | `investigations.infection` | `fbc`, `crp` (admission; "during the bleeding, timing not recorded") |
+| Hb 129 → 93 g/L; CRP 95.8 mg/L | `investigations.infection` | `fbc`, `crp` (admission; "timing not recorded") |
 | Repeated stool pathogen tests and C. difficile toxin negative; several infection studies negative | `investigations.infection` | `stool-microbiology` (work-up), `other-infection-tests` (work-up) |
 | CT: thickened ascending colon and rectum | `investigations.gut` | `ct-abdomen` (admission and work-up; timing not recorded) |
 | Colonoscopy: irregular circumferential elevation at ~30 cm; distal diffuse shallow ulcers, erosions, erythema (充血) | `investigations.gut` | `endoscopy` (work-up) |
@@ -213,7 +228,7 @@ and no day-3 values are recorded. CSF 85 mmH₂O ≈ 8.5 cmH₂O ≈ 6.3 mmHg. N
 those two Truelove and Witts items cannot be scored.
 
 Doses in the case are guideline formulas, not the report's (no weight is recorded, so no dose is computed):
-methylprednisolone 60 mg/24 h or hydrocortisone 100 mg 6-hourly IV; enoxaparin 40 mg SC daily (prophylaxis) or
+methylprednisolone 60 mg/24 h or hydrocortisone 100 mg 6-hourly IV; enoxaparin 40 mg SC daily (prophylaxis; the preset `doseSpec`) or
 1 mg/kg 12-hourly (the treatment-dose trap); azathioprine target 2–2.5 mg/kg/day adjusted to TPMT/NUDT15 genotype;
 infliximab 5 mg/kg IV; paracetamol 1 g up to four times a day (maximum 4 g/24 h); the traps' doses (loperamide 4 mg
 then 2 mg, maximum 16 mg/day; morphine 2.5–5 mg; ibuprofen 400 mg 8-hourly; hyoscine butylbromide 20 mg;
@@ -230,7 +245,7 @@ and azathioprine doses are not recorded.
    you start before any result was back?"
 3. **Analysis**
    * "Her pulse and temperature are not recorded. Could you still grade the flare — on what?"
-   * "Two years of bloody stools put down to stress: what does that history change about last night?"
+   * "Two years of bloody stools put down to stress: what does that history change about the bleeding that began that night?"
    * "She is bleeding heavily. Why did she still need heparin — and when would you hold it?"
    * "Which drugs for pain, cramps and diarrhoea did you avoid, and why do they matter in a severe flare?"
    * "Why an unprepared flexible sigmoidoscopy rather than a full colonoscopy?"
@@ -253,10 +268,10 @@ and azathioprine doses are not recorded.
 | Withholding heparin because she is bleeding | decision 3 near-miss distractor; the work-up phase waits for prophylaxis (LMWH or compression) | `rb-first-line-plan`, `rb-vte-prophylaxis` (critical) |
 | Loperamide, opioids, NSAIDs or antispasmodics for comfort | each contraindicated in every phase | `rb-avoided-harm` |
 | Bowel preparation for a full colonoscopy in a severe flare | `bowel-preparation` contraindicated | `rb-avoided-harm` |
-| Infliximab first, or without a neurology view of the MRI | decision 3 and 5 distractors; `infliximab` contraindicated before IV steroids or neurology review | flagged |
+| Infliximab first, or without a neurology view of the MRI | decision 3 and 5 distractors; `infliximab` contraindicated before IV steroids, a neurology review, or TB (IGRA) and hepatitis B screening sent | flagged |
 | Treating the circumferential lesion as lymphoma or cancer | decision 4 distractors | `rb-colitis-cause` |
 | Reassuring the neurological episode as transient global amnesia, or a plain CT and "stress" | decision 2 distractors | `rb-neuro-workup` |
-| Anticoagulating a presumed venous thrombosis before imaging | decision 2 distractor; `therapeutic-anticoagulation` contraindicated | `rb-neuro-workup`, `rb-avoided-harm` |
+| Anticoagulating a presumed venous thrombosis before imaging | decision 2 distractor; `therapeutic-anticoagulation` contraindicated and critical (the safety outcome fails) | `rb-neuro-workup`, `rb-avoided-harm` (critical) |
 | Azathioprine at full dose, or after TPMT alone, in an East Asian patient | decision 5 distractors | `rb-thiopurine-safety` |
 | Over-stating the bowel–brain link ("IBD caused the lesions") | examiner item; teaching point 5 | `rb-communication` |
 | Inventing the unrecorded (vital signs, the witness account, doses) | unknown items, no-result records, `examNotRecorded` | — |
@@ -272,7 +287,7 @@ and azathioprine doses are not recorded.
 * **Kit.** IV access is a procedure (`iv-access`, the treatment cart); bloods and stool samples are taken at the
   patient; the IV steroid and the infliximab trap need IV access (infliximab also the infusion pump); LMWH and the
   oral drugs need only the medicines; red cells need the blood bank. The TPMT/NUDT15 test needs the molecular
-  capability (pathology and genetics workstation); the viral serology is a laboratory test.
+  capability (pathology and genetics workstation); the viral serology and the TB blood test (IGRA) are laboratory tests (serology).
 * **Who speaks.** She is alert throughout and answers for herself; there is no companion and no `nonVerbalWhen`.
   Thirteen history items are unrecorded and she says "I'm not sure, doctor." / “这个我说不上来，医生。”
 * **Scope of practice.** Drugs and blood follow their kinds (nursing administration); pneumatic compression and the
@@ -304,8 +319,14 @@ after recovery of awareness" into a conscious-level finding and a neurological e
   awareness"; 意识). The case keeps both words: a disturbance of memory and awareness.
 * The bleeding frequency: the Chinese text says more than ten times a day *and* clearly more blood; the English text
   gives only the frequency. The case uses the Chinese reading (the source language) in both languages.
-* Colonoscopy findings stop at about 30 cm (the lesion and the mucosa distal to it), while the CT records thickening
+* Colonoscopy findings stop at about 30 cm (the lesion, and diffuse ulceration recorded as 远端 / "distal" — distal to
+  the lesion or the distal colon, not specified; the case keeps "distally"), while the CT records thickening
   of the ascending colon; how far the scope passed is not recorded. 1.0.0 translates 充血 as "erythema"; kept.
+* The biopsy reads 未见明确隐窝脓肿或肿瘤细胞 / "without definite crypt abscesses or tumour cells": whether "definite"
+  also qualifies the tumour cells is not settled, so every restatement keeps the hedge ("no definite tumour cells").
+* 1.0.0's Chinese places the memory gap in the 早上 (morning), its English in "that morning"; the case uses 早上 and
+  "that morning" throughout. When she was admitted relative to the night the bleeding began is not recorded: no text
+  calls it "last night".
 
 **Not recorded and kept unknown** (`unknowns`, unknown history items, no-result records, `examNotRecorded`): every
 vital sign; the morning's events, any witness, duration, seizure features and earlier episodes; the rest of the blood
@@ -335,7 +356,8 @@ Details to look for in the full article (the source check is pending):
   memory *decline* as the title says; who described the morning, its duration, any seizure features or earlier
   episodes; whether consciousness, not only memory, was impaired.
 * Her admission vital signs (pulse, temperature value, blood pressure) and weight; when she was admitted relative to
-  the night the bleeding began.
+  the night the bleeding began; whether the amount of blood rose as well as the frequency (1.0.0's Chinese says so,
+  its English gives only "more than ten a day"; the case follows the Chinese).
 * The full blood panel (white cells, platelets, ESR, albumin, electrolytes and magnesium, renal and liver tests,
   clotting) and when Hb 129 and 93 g/L were measured; any transfusion.
 * The stool tests (pathogens, number of samples) and which "several infection studies" were done (CMV, hepatitis B
@@ -353,22 +375,31 @@ Details to look for in the full article (the source check is pending):
 
 Guidance details to confirm in the full texts (taken from abstracts and secondary summaries; the guideline sites were
 not reachable for full text from this environment):
-* BSG 2025 (Moran et al.): the acute severe UC definition (Truelove and Witts with CRP > 30 mg/L in place of the ESR),
-  the steroid regimen, thromboprophylaxis, flexible sigmoidoscopy rather than colonoscopy, drug avoidance, day-3
-  assessment and the rescue wording (the case cites BSG 2025 for infliximab as rescue and steroid-free remission).
-* BSG 2019 IBD consensus and NICE CG166 (2013): the advice to withhold antidiarrhoeal, anticholinergic, opioid and
-  NSAID drugs and to avoid full colonoscopy in acute severe colitis — confirmed only through reviews; whether
-  NG130 (2019) or BSG 2025 restate it.
+* BSG 2025 (Moran et al.) and BSG 2019 (Lamb et al.) — **read in full on 2026-11-13** (repository PDFs): BSG 2025
+  GPS 40–43 (Truelove and Witts admission; FBC, CRP, U&E, LFTs with albumin, stool culture, C. difficile, imaging and
+  flexible sigmoidoscopy; methylprednisolone 30 mg 12-hourly or hydrocortisone 100 mg 6-hourly, no advantage from
+  higher doses; prophylactic anticoagulation that "does not precipitate or exacerbate colonic bleeding"; a purine
+  analogue or an advanced therapy after a response to IV steroids; response assessed after 3–5 days). BSG 2019
+  statements 15–18, figure 2 (≥ 6 bloody stools; LMWH; sigmoidoscopy within 24 h with CMV; day-3 Travis rule; TB,
+  hepatitis B and C, HIV and VZV screening before second-line therapy), 5.6.1 (bowel preparation can be avoided in
+  acute severe colitis; colonoscopy "can be performed safely" per recent data), 5.10.2 (opioids and toxic megacolon)
+  and statement 123 (NSAIDs in active disease). Neither BSG text states the withdrawal of antidiarrhoeal and
+  anticholinergic drugs in acute severe colitis, so the case cites the loperamide and hyoscine butylbromide labelling
+  (UK SmPCs) for those two, and no longer cites NICE CG166 (2013; replaced by NG130), whose text was not found to
+  say it.
 * ACG 2025: the IV steroid statement (methylprednisolone 60 mg/day or hydrocortisone 100 mg three to four times
   daily, from a secondary summary) and its DOI (one secondary source gives 10.14309/ajg.0000000000003463; not
   confirmed, so the case cites it without a DOI).
-* AGA 2026 clinical practice update (Cohen-Mekelburg et al.): methylprednisolone 60 mg with no gain from higher
-  doses, stool culture with two-step C. difficile testing and cross-sectional imaging for all hospitalised IBD
-  patients, early surgical consultation, and prophylactic anticoagulation for all — from secondary summaries; the
-  full author list.
+* AGA 2026 clinical practice update (Cohen-Mekelburg S, Hashash JG, Loftus EV Jr, Rubin DT): methylprednisolone
+  60 mg with no gain from higher doses, stool culture with two-step C. difficile testing and cross-sectional imaging
+  for all hospitalised IBD patients, a surgical consultation when colectomy may be needed, avoiding opioids where
+  possible, caution with NSAIDs and prophylactic anticoagulation for all — from the AGA's own news and patient pages
+  and clinician summaries (2026-11-13), not the full text.
 * CAG 2014: the recommendation (no active bleeding) and suggestion (non-severe bleeding) wording is confirmed at
-  abstract level; mechanical prophylaxis when bleeding is severe rests on general VTE practice (ACCP), not confirmed
-  in the CAG text.
+  abstract level; how the full text defines severe bleeding, and mechanical prophylaxis when bleeding is severe
+  (general VTE practice, not confirmed in the CAG text). Her recorded bleeding is "heavy" with a 36 g/L fall in Hb
+  and no vital signs, so the case does not label it non-severe: it teaches that colitic bleeding is not by itself a
+  reason to withhold LMWH (BSG 2019, 2025).
 * Truelove and Witts 1955 (one record gives doi:10.1136/bmj.2.4947.1041) and Travis 1996 (doi:10.1136/gut.38.6.905
   is likely) — both cited without DOI until confirmed; the Travis day-3 thresholds and the 85 % figure are confirmed
   by secondary sources.
@@ -402,7 +433,10 @@ not reachable for full text from this environment):
   `someonewithyou`, `whyithappens`, `offyourfood`).
 * Interventions: "heparin prophylaxis/预防" reaches LMWH, "full anticoagulation/治疗剂量" the treatment-dose trap
   (each excludes the other's words); "prednisone/泼尼松" reaches the oral drug and "methylprednisolone/甲泼尼龙" the IV
-  one; "colonoscopy" as an order finds the endoscopy record, as an intervention the bowel-preparation trap.
+  one; "colonoscopy" as an order finds the endoscopy record, as an intervention the bowel-preparation trap. Heparin
+  words are excluded from the bowel-preparation and compression items, so "full dose heparin" or "低分子肝素预防血栓"
+  reaches only the anticoagulant meant. "T-SPOT", "IGRA", "TB blood test" and "查结核" order the TB blood test, apart
+  from the other infection tests ("infection screen", "感染筛查").
 
 ## References
 
@@ -410,35 +444,36 @@ not reachable for full text from this environment):
    doi:10.3760/cma.j.issn.1671-7368.2014.02.005. Available from: https://rs.yiigle.com/cmaid/598475
 2. Moran GW, Gordon M, Sinopolou V, et al. British Society of Gastroenterology guidelines on inflammatory bowel
    disease in adults: 2025. Gut. 2025;74(Suppl 2):s1-s101. doi:10.1136/gutjnl-2024-334395
-3. Rubin DT, Ananthakrishnan AN, Siegel CA, Barnes EL, Long MD. ACG Clinical Guideline Update: Ulcerative Colitis in
+3. Lamb CA, Kennedy NA, Raine T, et al. British Society of Gastroenterology consensus guidelines on the management of
+   inflammatory bowel disease in adults. Gut. 2019;68(Suppl 3):s1-s106. doi:10.1136/gutjnl-2019-318484
+4. Rubin DT, Ananthakrishnan AN, Siegel CA, Barnes EL, Long MD. ACG Clinical Guideline Update: Ulcerative Colitis in
    Adults. Am J Gastroenterol. 2025;120(6):1187-1224.
-4. Cohen-Mekelburg S, et al. AGA Clinical Practice Update on Inpatient Management of Adults with Inflammatory Bowel
+5. Cohen-Mekelburg S, Hashash JG, Loftus EV Jr, Rubin DT. AGA Clinical Practice Update on Inpatient Management of Adults with Inflammatory Bowel
    Disease: Expert Review. Gastroenterology. 2026;170:408-417. doi:10.1053/j.gastro.2025.08.039
-5. 中华医学会消化病学分会炎症性肠病学组, 中国炎症性肠病诊疗质量控制评估中心. 中国溃疡性结肠炎诊治指南(2023年·西安).
+6. 中华医学会消化病学分会炎症性肠病学组, 中国炎症性肠病诊疗质量控制评估中心. 中国溃疡性结肠炎诊治指南(2023年·西安).
    中华炎性肠病杂志. 2024;8(1):33-58. doi:10.3760/cma.j.cn101480-20240123-00017
-6. Nguyen GC, Bernstein CN, Bitton A, Chan AK, Griffiths AM, Leontiadis GI, et al. Consensus statements on the risk,
+7. Nguyen GC, Bernstein CN, Bitton A, Chan AK, Griffiths AM, Leontiadis GI, et al. Consensus statements on the risk,
    prevention, and treatment of venous thromboembolism in inflammatory bowel disease: Canadian Association of
    Gastroenterology. Gastroenterology. 2014;146(3):835-848. doi:10.1053/j.gastro.2014.01.042
-7. Relling MV, Schwab M, Whirl-Carrillo M, et al. Clinical Pharmacogenetics Implementation Consortium guideline for
+8. Relling MV, Schwab M, Whirl-Carrillo M, et al. Clinical Pharmacogenetics Implementation Consortium guideline for
    thiopurine dosing based on TPMT and NUDT15 genotypes: 2018 update. Clin Pharmacol Ther. 2019;105(5):1095-1105.
    doi:10.1002/cpt.1304
-8. Saposnik G, Bushnell C, Coutinho JM, et al. Diagnosis and management of cerebral venous thrombosis: a scientific
+9. Saposnik G, Bushnell C, Coutinho JM, et al. Diagnosis and management of cerebral venous thrombosis: a scientific
    statement from the American Heart Association. Stroke. 2024;55(3):e77-e90. doi:10.1161/STR.0000000000000456
-9. Travis SP, Farrant JM, Ricketts C, et al. Predicting outcome in severe ulcerative colitis. Gut.
+10. Travis SP, Farrant JM, Ricketts C, et al. Predicting outcome in severe ulcerative colitis. Gut.
    1996;38(6):905-910.
 
-These nine strings are `debrief.references`. Also named in the case's feedback, checked the same way: Truelove SC,
+These ten strings are `debrief.references`. Also named in the case's feedback, checked the same way: Truelove SC,
 Witts LJ. Cortisone in ulcerative colitis; final report on a therapeutic trial. Br Med J. 1955;2(4947):1041-1048 ·
 Singh S, Loftus EV Jr, Limketkai BN, et al. AGA Living Clinical Practice Guideline on Pharmacological Management of
-Moderate-to-Severe Ulcerative Colitis. Gastroenterology. 2024;167(7):1307-1343 · Lamb CA, Kennedy NA, Raine T, et al.
-British Society of Gastroenterology consensus guidelines on the management of inflammatory bowel disease in adults. Gut. 2019;68(Suppl 3):s1-s106. doi:10.1136/gutjnl-2019-318484 · Oakland K,
+Moderate-to-Severe Ulcerative Colitis. Gastroenterology. 2024;167(7):1307-1343 · Oakland K,
 Chadwick G, East JE, et al. Diagnosis and management of acute lower gastrointestinal bleeding: guidelines from the
 British Society of Gastroenterology. Gut. 2019;68(5):776-789 · Kucharzik T, Ellul P, Greuter T, et al. ECCO
 Guidelines on the Prevention, Diagnosis, and Management of Infections in Inflammatory Bowel Disease. J Crohns
 Colitis. 2021;15(6):879-913. doi:10.1093/ecco-jcc/jjab052 · Gordon H, Burisch J, Ellul P, et al. ECCO Guidelines on
 Extraintestinal Manifestations in Inflammatory Bowel Disease. J Crohns Colitis. 2024;18(1):1-37.
-doi:10.1093/ecco-jcc/jjad108 · NICE CG166 (2013), ulcerative colitis (replaced by NG130, 2019) · infliximab
-prescribing information (warnings: demyelinating disease).
+doi:10.1093/ecco-jcc/jjad108 · infliximab prescribing information (warnings: demyelinating disease) · loperamide
+and hyoscine butylbromide injection (Buscopan) UK SmPCs, electronic medicines compendium (contraindications).
 
 **How they were checked (2026-11-12).** doi.org, Crossref and the publishers' sites are not reachable from this
 environment, so each DOI was confirmed by web search against indexing or repository records that print it: BSG
@@ -449,14 +484,15 @@ a clinician summary with the DOI), the Chinese UC guideline (an indexing record 
 records), AGA 2024 (summaries and its PMC record; its thiopurine-maintenance suggestion is from secondary summaries).
 ACG 2025, AGA 2024, Travis 1996, Truelove and Witts 1955 and BSG 2019 lower GI bleeding are cited without DOI (see
 To verify). The source article's DOI is the one verified in `scripts/cmcr-105-sources.json` (publisher check
-2026-10-29).
+2026-10-29). **Independent review (2026-11-13):** the full texts of BSG 2019 and BSG 2025 were read from repository
+PDFs (see To verify for the statements used); AGA 2026's volume and pages (Gastroenterology 2026;170:408-417) are
+printed on an AGA patient page and its DOI in clinician summaries; the CAG 2014 abstract, the AGA 2024 thiopurine
+suggestion (secondary summaries), the ACG 2025 standards of care (an ACG summary) and the UK SmPCs were checked by
+web search.
 
 ## Changelog
 
-### 1.1.0 — 2026-10-30
-
-1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked
-against the full source article.
+### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
 
 * **Safety and validity (template defects, survey and critic).** The case now has a management decision that names
   the act — IV methylprednisolone 60 mg/day with LMWH prophylaxis and the drugs to avoid — instead of 1.0.0's
@@ -492,25 +528,47 @@ against the full source article.
   `first-line`, `colitis-cause`, `maintenance-safety`.
 * **Contract wording.** The English review note ends "The case is not yet reviewed by a licensed clinician." (the
   collection test matches the lower-case phrase); otherwise it is the standard's §6 text.
+* **Independent review (2026-11-13).** Facts: "last night" (an admission timing 1.0.0 does not record) → "the
+  bleeding that began that night"; the biopsy's "no definite crypt abscesses; no tumour cells" → "without definite
+  crypt abscesses or tumour cells" as recorded, in every restatement; the endoscopy's 远端 kept as "distally" (not
+  narrowed to "distal to it"); the nurse's "no regular medicines" → 1.0.0's "nothing unusual in her medicines"; the
+  English conclusion now states, as the Chinese does, that the IBD type and the brain mechanism stayed unestablished;
+  上午 → 1.0.0's 早上; the blood count and CRP are dated "timing not recorded", not "during the bleeding". Teaching: her heavy bleeding is no longer labelled "non-severe" (a category the record cannot
+  establish) — LMWH is taught as safe in colitic bleeding (BSG 2019, 2025); the harms of loperamide, morphine,
+  ibuprofen, hyoscine butylbromide and bowel preparation now cite what BSG 2019, BSG 2025, AGA 2026 and the UK SmPCs
+  say (NICE CG166 and the unsupported BSG 2019 wording removed; BSG 2019 says bowel preparation can be avoided, not
+  that colonoscopy is unsafe); the steroid regimen cited to BSG 2025; BSG 2025 GPS 43 added for thiopurine
+  maintenance; AGA 2026's surgical advice worded as published; the first-line key's feedback names its
+  precondition (samples sent, the CT read for a complication); the attending debriefs with PEARLS. Safety outcome:
+  `therapeutic-anticoagulation` `critical: true`, `rb-avoided-harm` critical, LMWH `doseSpec` 40 mg SC (the strict
+  validator's two warnings). A TB blood test (IGRA, no recorded result) added, since the case teaches TB screening
+  before anti-TNF drugs and intestinal tuberculosis as a mimic; infliximab is now also contraindicated until the TB
+  and hepatitis B tests have been sent, as its harm text already said. Scores re-measured; no score of the reference path
+  changed.
 
 ### 1.0.0
 
-* Initial template version (PR #5).
+* Initial template version (PR #5): three decisions of three options with role-named ids (`supported`,
+  `alternative-N`), no interventions, 15 generic history slots (seven answered "the source notes do not provide that
+  information"), two "review presentation examination" items, five bundled record reviews, and a critical item
+  scored in hindsight (`decidedFirstTry: safety`, opened by the outcome record).
 
 ## Validation
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-598475/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-598475 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-598475                  # PASS (depth floor, do nothing 0, wrong-first < reference)
+npx tsx --conditions=source scripts/case-check.ts cmcr-598475                                  # PASS (depth floor, do nothing 0, wrong-first < reference)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-598475:"         # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-598475:"  # demonstration, en + zh-CN
 ```
 
+Measured on 2026-11-13, after the independent review: all five pass.
+
 ## 中文摘要
 
 **病例概要。** 38岁女性，两年来反复糊状血便伴便意频繁，每次发作数周后缓解又复发，自认为与精神压力有关，无特殊用药史。
-某日上午突然出现记忆异常（1天内），那天上午的事回忆不起来，下午神志清楚；当天夜里开始大量便血，伴右下腹痛和发热，无寒
+某日早上突然出现记忆异常（1天内），那天早上的事回忆不起来，下午神志清楚；当天夜里开始大量便血，伴右下腹痛和发热，无寒
 战、恶心、呕吐，之后每天便血十余次、量明显增多。意识恢复后神经系统查体无明确定位体征；右下腹疼痛，疑似可触及包块。血红
 蛋白由129降至93 g/L，CRP 95.8 mg/L。CT示升结肠和直肠壁增厚；肠镜约30 cm处不规则环周隆起，远端弥漫浅溃疡、糜烂、充血；
 黏膜活检为严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞，免疫组化不支持淋巴瘤；粪便病原学反复及艰难梭菌毒素阴性，其他多项
@@ -520,7 +578,7 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **学习目标。**
 1. 用Truelove–Witts标准判定急性重症结肠炎（每天血便≥6次加一项全身表现），缺少部分生命体征也不降级，并收住院静脉治疗（BSG 2025；AGA 2026）。
-2. 送检粪便后开始静脉甲泼尼龙60 mg/24 h（或氢化可的松100 mg每6小时），非重度出血时仍用低分子肝素预防血栓（CAG 2014），停用止泻药、阿片类和非甾体抗炎药。
+2. 送检粪便后开始静脉甲泼尼龙60 mg/24 h（或氢化可的松100 mg每6小时），虽在便血仍用低分子肝素预防血栓（BSG 2025；CAG 2014），停用止泻药、阿片类和非甾体抗炎药。
 3. 按排便次数和CRP安排第3天评估（Travis 1996），与结直肠外科规划挽救方案，并在白质病变原因未明时权衡抗TNF治疗风险。
 4. 综合粪便检查、CT、内镜和活检诊断未定型炎症性肠病，并以病理和随访排除感染、淋巴瘤和癌。
 5. 对炎症性肠病活动期的一过性记忆和意识障碍，按指征安排MRI、脑静脉成像（AHA 2024）、脑脊液和脑电图，并如实说明肠–脑关系“可能相关、尚未证实”。
@@ -530,8 +588,10 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 像，必要时脑脊液和脑电图（非“短暂性全面遗忘不需检查”、头颅CT平扫或未经影像即足量抗凝）。决策 3：静脉甲泼尼龙60 mg/d，除非出血严重均加
 低分子肝素预防血栓（出血严重时改用间歇充气加压），不用止泻药、阿片类和非甾体抗炎药，不清肠乙状结肠镜活检，第3天与外科评估（干扰项包括原报告的口服泼尼松加硫唑
 嘌呤、等培养结果、英夫利西单抗一线、完全不用肝素）。决策 4：未定型的炎症性肠病，感染、淋巴瘤和癌均无支持。决策 5：按TPMT和
-NUDT15基因型给药的硫唑嘌呤，先筛查乙肝、丙肝和HIV。关键项为入院阶段的静脉激素和血栓预防两项行为。
+NUDT15基因型给药的硫唑嘌呤，先筛查乙肝、丙肝和HIV。关键项为入院阶段的静脉激素和血栓预防两项行为，以及避免危害项（不用止泻药、阿片类、非甾体抗炎药、抗胆碱能药、清肠和足量抗凝）。
 
-**复盘要点。** 长病史改变急性表现的解读；严重程度按已有记录判定，缺少读数不等于病情轻；出血不严重时照样预防血栓，抑制结肠的
+**复盘要点。** 长病史改变急性表现的解读；严重程度按已有记录判定，缺少读数不等于病情轻；虽在便血也照样预防血栓（结肠炎出血本身不是停用理由，BSG 2019、2025），抑制结肠的
 药物一律不用；环周病变靠病理而不是印象；炎症发作期的神经系统事件先排除血栓，肠–脑关系只说“可能”；东亚患者用硫嘌呤前查NUDT15，
 白质病变未明时慎用抗TNF。原报告的泼尼松加硫唑嘌呤是历史记录，今天的答案是静脉激素、血栓预防和基因型指导下的维持治疗。
+
+**安全结果。** `therapeutic-anticoagulation`（足量抗凝）标为 `critical: true`：影像未证实血栓、患者正在大量便血时给予治疗剂量依诺肝素，有大出血风险，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示；其余禁忌步骤（止泻药、阿片类、非甾体抗炎药、解痉药、清肠、未查基因型即用硫唑嘌呤、过早用英夫利西单抗）为中等风险，只作为安全事件标出。

@@ -78,7 +78,7 @@ immunohistochemistry is recorded) — with severe iron-deficiency anaemia.
 **Today's answer.** Correct the anaemia safely — slow, weight-based red-cell aliquots with reassessment for
 circulatory overload (NICE NG24, 2015; BSH 2016), then iron; treat the bleeding as suspected small-bowel bleeding and
 search the small bowel (capsule endoscopy first-line when no narrowing is suspected, cross-sectional enterography, a
-pertechnetate scan in a child; ESGE 2022, ACG 2015); resect a solitary lesion once the anaemia is corrected, examining
+pertechnetate scan in a child; ESGE 2022, ACG 2015); resect a lesion seen as a single mass once the anaemia is corrected, examining
 the whole small bowel; name the lesion in ISSVA terms and follow up for iron repletion, recurrence and multifocal
 disease. The recorded course — anaemia corrected first, then resection — matches today's order; the localisation used
 nuclear scans and CT, and no capsule endoscopy or enteroscopy is recorded.
@@ -677,7 +677,13 @@ ileocolonoscopy) could not be shown to cover capsule endoscopy, which the draft 
   chief-complaint questions reached nothing and six natural questions tied or hit the wrong item (see Matcher notes);
   six test utterances added. (5) **Teaching text** — "solitary" and "cured" no longer said of his lesion (one mass is
   recorded; other lesions and the follow-up are not); "he is compensated" restated as "no sign of heart failure is
-  recorded"; the en text of `operate-first` given the zh's "without waiting for localising tests"; the staff, the
+  recorded"; decision 1's feedback no longer tells the learner, in the admission phase, that the recorded team operated
+  (the `operate-first` feedback quoted it) or that "probably an operation" lies ahead, and calls the earlier tests
+  "found no cause" (1.0.0) rather than "negative"; teaching point 1 no longer says the nuclear scans localised the
+  source (the red-cell focus has no recorded site; the CT showed the mass); the slow transfusion's response no longer
+  says the anaemia was corrected "before the operation", the propranolol harm text no longer names "the lesion in his
+  bowel" (it can be ordered from the first minute, e.g. for presumed portal hypertension), the PPI response says
+  "gastroscopy at other hospitals" (1.0.0) rather than "repeated gastroscopy"; the en text of `operate-first` given the zh's "without waiting for localising tests"; the staff, the
   relative and the guidance no longer anticipate "theatre" or "surgery" before decision 4. (6) **References** — ref. 7
   authors, ref. 8 DOI, ref. 9 volume and pages; the README's validation commands corrected; a clinician checklist
   added under To verify.

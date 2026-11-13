@@ -1,0 +1,8 @@
+- cmcr-33555: Fever and a seizure, then hard to rouse · 8-day-old boy (5 decisions, 18 interventions;
+  review: 2 critical, 7 major, 10 minor findings)
+- cmcr-44344: Recurrent black stools and pallor · 12-year-old boy (5 decisions, 14 interventions;
+  review: 1 critical, 5 major, 11 minor findings)
+- cmcr-598191: Fever, widespread rash and jaundice · 29-year-old woman (5 decisions, 20 interventions;
+  review: 1 critical, 3 major, 11 minor findings)
+- cmcr-598475: Transient memory disturbance, then heavy rectal bleeding · 38-year-old woman (5 decisions, 20 interventions;
+  review: 2 critical, 6 major, 11 minor findings)
