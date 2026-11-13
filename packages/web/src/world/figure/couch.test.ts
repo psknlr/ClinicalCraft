@@ -180,6 +180,17 @@ describe("laid down by their rig (npc.ts) and drawn with equipment (manikin.ts)"
     const [depth, rise] = breathOf(m, 800);
     expect(depth).toBeGreaterThan(0);
     expect(rise).toBe(0);
+    // what a model stands on the skin that is up — a mark, a needle — does not move with it: that skin rises by a
+    // millimetre at most, face down (the back) and on the back under towels (the front); in bed a chest moves freely
+    const deepest = (posture: "prone" | "lying", cover?: "towels") => {
+      const body = drawnManikin(EquipmentManikinSchema.parse({ posture, cover, breathing: "both" }))!;
+      return Math.max(...Array.from({ length: 50 }, (_, i) => breathOf(body, i * 100)[0]));
+    };
+    const [, front, back] = trunkAt(1.3, F);
+    expect(deepest("prone") * back).toBeLessThanOrEqual(0.0011);
+    expect(deepest("prone") * back).toBeGreaterThan(0.0005);
+    expect(deepest("lying", "towels") * front).toBeLessThanOrEqual(0.0012);
+    expect(deepest("lying") * front).toBeGreaterThan(0.002);
     const rig = buildManikin(m, { x: 3, y: 0, z: -2, rot: 90 }, "couch-1");
     expect(rig.root.name).toBe("manikin");
     expect(rig.root.position.x).toBeCloseTo(3, 6);

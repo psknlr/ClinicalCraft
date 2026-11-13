@@ -53,19 +53,25 @@ export function buildManikin(m: DrawnManikin | EquipmentManikin, at: { x: number
 const BREATH_MS = 5000;
 const INSPIRATION = 1 / 3;
 
+/** How deep a body flat on a treatment couch breathes: the skin that is up — some 10 cm from the middle of the body — rises a millimetre. */
+const COUCH_BREATH = 0.01;
+
 /**
  * How far a manikin's chest is out at time `now` (ms): [depth, rise] for `setBreath` — nothing for one that does
  * not breathe; in and out with both lungs; and with one lung, on its side, the chest wall that is up all but
  * still (the lung under it is down) while the rest moves a little. The wall that is up rises by a millimetre at
  * most: what a model puts on that skin — marks, ports, dressings — does not move with it, and must not sink in.
+ * The same holds for a body flat on a treatment couch — face down, or on its back under towels — whose skin is
+ * what is treated: its back, or its front, rises by a millimetre.
  */
-export function breathOf(m: Pick<EquipmentManikin, "breathing" | "posture">, now: number, phase = 0): [number, number] {
+export function breathOf(m: Pick<EquipmentManikin, "breathing" | "posture" | "cover">, now: number, phase = 0): [number, number] {
   if (!m.breathing || m.breathing === "none") return [0, 0];
   const t = (((now / BREATH_MS + phase) % 1) + 1) % 1;
   // in over a third of the breath, out — quickly at first — over the rest
   const filled = t < INSPIRATION ? 0.5 - 0.5 * Math.cos((Math.PI * t) / INSPIRATION) : Math.exp(-4.2 * ((t - INSPIRATION) / (1 - INSPIRATION))) * (1 - (t - INSPIRATION) / (1 - INSPIRATION) * 0.02);
   const lateral = m.posture === "lateral";
   if (m.breathing === "one-lung") return [0.012 * filled, lateral ? 0.0015 * filled : 0];
+  if (m.posture === "prone" || (m.posture === "lying" && m.cover === "towels")) return [COUCH_BREATH * filled, 0];
   return [0.024 * filled, lateral ? 0.006 * filled : 0];
 }
 
