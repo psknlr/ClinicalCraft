@@ -441,7 +441,7 @@ const EN = {
   "consultant.kind.pathologist": "pathology",
   "attending.offline.hint": "Let's think it through. {hint} What would you do next, and why?",
   "attending.offline.nudge":
-    "We're working on: {objective}. What have you found so far, and what is the most important thing you still need to know? If you're stuck, ask me for a hint (or type /hint) — hints count in the score.",
+    "We're working on: {objective}. What have you found so far, and what is the most important thing you still need to know? If you're stuck, type /hint for a hint — hints count in the score.",
   "attending.offline.done": "You've completed every objective. Before you finish, let's debrief: how did that go for you? Then summarise the key events and your reasoning, and tell me what remains uncertain.",
   "examiner.offline.narrative": "Teaching-script assessment (not a validated competency score): {percent}% of deterministic rubric points ({earned}/{possible}). Objectives {done}/{total}. Required history {hAsked}/{hRequired}, required examination {eDone}/{eRequired}. {missing}{judged}",
   "examiner.offline.missing": "Missed required history: {list}. ",
@@ -884,7 +884,7 @@ const ZH: Record<RuntimeKey, string> = {
   "consultant.kind.radiologist": "影像",
   "consultant.kind.pathologist": "病理",
   "attending.offline.hint": "我们一起想一想。{hint}你下一步打算怎么做？为什么？",
-  "attending.offline.nudge": "我们现在的目标是：{objective}。到目前为止你发现了什么？还最需要了解什么？如果卡住了，可以向我要提示（或输入 /hint）——提示会计入评分。",
+  "attending.offline.nudge": "我们现在的目标是：{objective}。到目前为止你发现了什么？还最需要了解什么？如果卡住了，可以输入 /hint 获取提示——提示会计入评分。",
   "attending.offline.done": "所有目标都已完成。结束之前我们先复盘一下：你感觉这次接诊怎么样？然后总结一下关键经过和你的推理，并说说还有哪些不确定的地方。",
   "examiner.offline.narrative": "教学脚本评估（并非经过验证的能力评分）：确定性评分项得分 {percent}%（{earned}/{possible}）。目标完成 {done}/{total}。必问病史 {hAsked}/{hRequired}，必查体格检查 {eDone}/{eRequired}。{missing}{judged}",
   "examiner.offline.missing": "遗漏的必问病史：{list}。",
@@ -933,9 +933,13 @@ const ZH: Record<RuntimeKey, string> = {
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };
 
-/** Resolve a runtime string and substitute `{name}` placeholders (missing params stay visible). */
+/**
+ * Resolve a runtime string and substitute `{name}` placeholders (missing params stay visible). A key built at run
+ * time (`datum.name.${id}`) that neither table has resolves to "" — callers fall back with `||` — never a throw.
+ */
 export function rt(locale: string | null | undefined, key: RuntimeKey, params: Record<string, string | number> = {}): string {
-  const template = TABLES[runtimeLang(locale)][key] ?? EN[key];
+  const template: string | undefined = TABLES[runtimeLang(locale)][key] ?? EN[key];
+  if (template === undefined) return "";
   return template.replace(/\{(\w+)\}/g, (match, name: string) => (name in params ? String(params[name]) : match));
 }
 

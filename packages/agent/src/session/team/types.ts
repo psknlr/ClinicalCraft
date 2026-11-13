@@ -116,6 +116,8 @@ export interface CountCheck {
   unexpected?: string[];
   /** Items not in the count the circulating nurse took off the field (documented). */
   setAside?: string[];
+  /** Search places and items the world would not let her get to: skipped, never counted as searched or set aside. */
+  unreachable?: string[];
 }
 
 export interface TeamTask {

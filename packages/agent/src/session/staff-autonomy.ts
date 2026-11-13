@@ -216,9 +216,9 @@ export class StaffAutonomy {
       const orders = (s.studies?.orders ?? []).filter((o) => o.assignee === sid && !o.accessions.length);
       for (const o of orders) responsibility.push(o.id);
       const reservations = Object.entries(snapshot).flatMap(([eid, st]) => (st.reservedBy === a.id ? [eid] : []));
-      // the care team's work of theirs (a member is a staff id): requests not yet answered, tasks not yet done
-      const pending = (team?.state.messages ?? []).filter((m) => m.to === sid && m.kind === "request" && !(team?.state.messages ?? []).some((r) => r.thread === m.thread && r.from === sid)).map((m) => m.id);
-      const tasks = (team?.state.tasks ?? []).filter((x) => x.owner === sid && !DONE.has(x.status));
+      // the care team's work of theirs (a member is their body, `staff:<id>`): requests not yet answered, tasks not yet done
+      const pending = (team?.state.messages ?? []).filter((m) => m.to === a.id && m.kind === "request" && !(team?.state.messages ?? []).some((r) => r.thread === m.thread && r.from === a.id)).map((m) => m.id);
+      const tasks = (team?.state.tasks ?? []).filter((x) => x.owner === a.id && !DONE.has(x.status));
       for (const x of tasks) responsibility.push(`task ${x.id}`);
       const port = s.procedure?.ports.find((p) => p.holder === sid)?.site;
       const goal = anaesthetist === sid ? rt(L, "staff.goal.anaesthesia") : port ? rt(L, "staff.goal.traction", { port }) : orders[0] ? rt(L, "staff.goal.study", { order: orders[0].id }) : tasks[0] ? tasks[0].need : null;

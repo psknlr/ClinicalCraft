@@ -580,6 +580,27 @@ describe("toAnthropicMessages tool pairing", () => {
 });
 
 describe("toAnthropicMessages", () => {
+  it("replays thinking blocks for the current turn's tool loop only, never an earlier turn's", () => {
+    const raw = (sig: string, extra: Record<string, unknown>[]) => ({ type: "provider_raw" as const, provider: "anthropic-messages" as const, data: [{ type: "thinking", thinking: "", signature: sig }, { type: "redacted_thinking", data: `r-${sig}` }, ...extra] });
+    const history: ChatMessage[] = [
+      { role: "user", content: [{ type: "text", text: "Order labs." }] },
+      { role: "assistant", content: [{ type: "tool_call", id: "t1", name: "order_test", args: { query: "cbc" } }, raw("sig-1", [{ type: "tool_use", id: "t1", name: "order_test", input: { query: "cbc" } }])] },
+      { role: "user", content: [{ type: "tool_result", callId: "t1", content: "ordered" }] },
+      { role: "assistant", content: [{ type: "text", text: "Ordered." }, raw("sig-2", [{ type: "text", text: "Ordered." }])] },
+      // the next turn: the system prompt (live case state) has changed since sig-1/sig-2 were produced
+      { role: "user", content: [{ type: "text", text: "And the ECG?" }] },
+      { role: "assistant", content: [{ type: "tool_call", id: "t2", name: "order_test", args: { query: "ecg" } }, raw("sig-3", [{ type: "tool_use", id: "t2", name: "order_test", input: { query: "ecg" } }])] },
+      { role: "user", content: [{ type: "tool_result", callId: "t2", content: "ordered" }] },
+    ];
+    const out = toAnthropicMessages(history);
+    const types = out.filter((m) => m.role === "assistant").map((m) => (m.content as { type: string }[]).map((b) => b.type));
+    expect(types).toEqual([["tool_use"], ["text"], ["thinking", "redacted_thinking", "tool_use"]]);
+    expect(JSON.stringify(out)).not.toMatch(/sig-1|sig-2/);
+    expect(JSON.stringify(out)).toContain('"signature":"sig-3"');
+    // a turn ended by tool results only (no new learner message yet) keeps its own blocks
+    expect(JSON.stringify(toAnthropicMessages(history.slice(0, 3)))).toContain('"signature":"sig-1"');
+  });
+
   it("builds blocks from parts, images as base64, tool results first, leading assistant guarded", () => {
     const out = toAnthropicMessages([
       { role: "assistant", content: [{ type: "text", text: "Hello, I'm Mr Li." }] },

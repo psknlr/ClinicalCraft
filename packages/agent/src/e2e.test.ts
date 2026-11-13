@@ -1076,6 +1076,28 @@ describe("(c) hooks ordering and coverage", () => {
     assertInvariants(loadMiniCase(), d, d.session.state, "en");
   });
 
+  it("PreToolUse updatedInput the engine cannot read is refused, never the original action run instead (operate, order_study)", async () => {
+    const b = await build({ caseDef: loadMiniCase(), settingsPatch: { permissions: { deny: ["operate(divide)", "order_study(ct-chest)"] } } });
+    const d = b.driver;
+    b.session.hooks.on("PreToolUse", (input) => {
+      if (input.hook_event_name !== "PreToolUse" || input.agent !== "learner") return;
+      // passes the operate tool's inputSchema (only `op` is required), not the engine's step (retract needs port, structure, direction)
+      if (input.tool_name === "operate") return { updatedInput: { op: "retract" } };
+      // a query instead of the code the gate would judge
+      if (input.tool_name === "order_study") return { updatedInput: { query: "chest CT" } };
+    });
+    await d.run({ type: "clinical_action", action: { type: "start" } });
+    const operate = await d.run({ type: "clinical_action", action: { type: "operate", op: { op: "divide", port: "C", handle: "T1" } } });
+    expect(msgsOf(operate, "error")[0]).toMatchObject({ code: "invalid_action" });
+    const study = await d.run({ type: "clinical_action", action: { type: "study", study: { op: "order", code: "ct-chest", key: "k1", priority: "routine", requester: "learner" } } });
+    expect(msgsOf(study, "error")[0]).toMatchObject({ code: "invalid_action" });
+    // the denied step and study never reached the engine
+    expect(b.transcript.ofType("action").map((a) => a.payload.action.type)).toEqual(["start"]);
+
+    await d.shutdown();
+    assertInvariants(loadMiniCase(), d, d.session.state, "en");
+  });
+
   it("SessionEnd is the last hook: queued ClinicalEvent/Notification hooks finish first", async () => {
     const b = await build({ caseDef: loadMiniCase() });
     const d = b.driver;

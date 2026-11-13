@@ -2,6 +2,7 @@ import { createSession as createEngineState, presentedOptions, reduce, RHYTHMS, 
 import { describe, expect, it } from "vitest";
 import { loadMiniCase } from "../__fixtures__/harness.js";
 import type { PlanItem } from "../protocol.js";
+import { caseStatusText, safetyDataLines } from "./clinical.js";
 import { clockTime, rhythmLabel } from "./format.js";
 import { ToolRegistry, isHiddenByDeny } from "./index.js";
 import type { ToolContext } from "./types.js";
@@ -384,5 +385,50 @@ describe("per-locale result values and reference texts (J3)", () => {
         expect(out).not.toContain("normal");
       }
     }
+  });
+});
+
+describe("case_status wording", () => {
+  const play = (c: ReturnType<typeof loadMiniCase>, actions: ClinicalAction[]): SessionState => {
+    let s = createEngineState(c);
+    for (const a of actions) {
+      const r = reduce(c, s, { ...a, by: "learner" } as ClinicalAction);
+      if (r.rejected) throw new Error(`${a.type} rejected: ${r.rejected.code}`);
+      s = r.state;
+    }
+    return s;
+  };
+
+  it("names an unlocked decision by its prompt, never as not yet available", () => {
+    const c = loadMiniCase();
+    const before = caseStatusText({ caseDef: c, locale: "en", state: () => play(c, [{ type: "start" }] as ClinicalAction[]) }).text;
+    expect(before).not.toContain("Most likely diagnosis?");
+    const s = play(c, [
+      { type: "start" },
+      { type: "ask", itemId: "onset" },
+      { type: "ask", itemId: "character" },
+      { type: "order", investigationId: "ecg" },
+      { type: "advance-time", minutes: 5 },
+      { type: "read", investigationId: "ecg" },
+    ] as ClinicalAction[]);
+    const { text } = caseStatusText({ caseDef: c, locale: "en", state: () => s });
+    expect(text).toContain("Most likely diagnosis? (open)");
+    expect(text).not.toMatch(/Decision 1 \(not yet available\)/);
+  });
+
+  it("names a safety datum outside the built-in ones instead of throwing", () => {
+    const c = loadMiniCase((input: CaseInput) => {
+      input.history.push({
+        id: "lmp",
+        topic: "obstetric",
+        question: { "zh-CN": "末次月经是什么时候？", en: "When was your last period?" },
+        answer: { "zh-CN": "记不清了。", en: "I can't remember." },
+        keywords: { "zh-CN": ["月经"], en: ["period"] },
+        disclosure: "unknown",
+        safety: { datum: "pregnancy" },
+      } as never);
+    });
+    const lines = safetyDataLines(c, createEngineState(c), ["pregnancy"], "en");
+    expect(lines.join(" ")).toContain("pregnancy");
   });
 });

@@ -583,7 +583,7 @@ const consult: ToolDefinition<ToolArgs> = {
   name: "consult",
   description:
     "Ask a team member a question: the nurse (handover, vitals, logistics), radiologist or pathologist (interpretation of results you already obtained), " +
-    "or the attending (Socratic teaching; asking for help costs a hint). To ask one named colleague — the anaesthetist, the receptionist, Nurse Aisyah — " +
+    "or the attending (Socratic teaching; only a hint you explicitly ask for counts against the score). To ask one named colleague — the anaesthetist, the receptionist, Nurse Aisyah — " +
     "pass staff (their name, title or staff id) instead of role; the result names who answered.",
   inputSchema: {
     type: "object",
@@ -605,6 +605,13 @@ const consult: ToolDefinition<ToolArgs> = {
     return rt(ctx.locale, "sum.consult", { role: to.ok ? to.label : strArg(args, "staff") || strArg(args, "role"), question: strArg(args, "question") });
   },
   specifier: (args) => strArg(args, "staff") || strArg(args, "role"),
+  // Rules match whom the call reaches (PROTOCOL §6): the staff member (`ed-nurse`, `staff:ed-nurse`), their role and
+  // the agent answering for them — `deny: ["consult(nurse)"]` also stops `consult {staff: "ed-nurse"}` —, then the spelling.
+  specifiers: (args, ctx) => {
+    const to = consultRecipient(args, ctx);
+    const reached = to.ok ? [...(to.voice ? [to.voice.staffId, `staff:${to.voice.staffId}`, to.voice.role] : []), to.agent] : [];
+    return [[...new Set([...reached, strArg(args, "staff") || strArg(args, "role")])]];
+  },
   async run(args, ctx) {
     const to = consultRecipient(args, ctx);
     if (!to.ok) return { ok: false, output: to.output };
@@ -964,12 +971,12 @@ export const walkToTool: ToolDefinition<ToolArgs> = {
 
 /** Every clinical tool of PROTOCOL §3 except the dynamic `walk_to`. */
 /**
- * The teaching hint, asked for explicitly (the engineering recommendations, P1-8): the one tool that records a scored
- * hint — a consultation of a colleague never does.
+ * The teaching hint, asked for explicitly (the engineering recommendations, P1-8): the learner's tool that records a
+ * scored hint. A consultation records none unless the learner asks the attending for one (`give_hint`).
  */
 const requestHint: ToolDefinition<ToolArgs> = {
   name: "request_hint",
-  description: "Ask for a teaching hint on the current objective. It is recorded and counts against the score — consulting a colleague (consult) never does.",
+  description: "Ask for a teaching hint on the current objective. It is recorded and counts against the score — consulting a colleague (consult) does not, unless you ask the attending for a hint.",
   inputSchema: { type: "object", properties: {}, additionalProperties: false },
   readOnly: false,
   sideEffect: "record",

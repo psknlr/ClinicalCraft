@@ -35,7 +35,7 @@ import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i
 import { sentence } from "../session/i18n-checklist.js";
 import { obtainedResultsText } from "../tools/npc.js";
 import { resultStatus } from "../tools/clinical-resolve.js";
-import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
+import { bedsideReadings, formatVitals, interventionLabel, investigationName, noReading, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 
 /** What an offline responder may look at. */
 export interface OfflineContext {
@@ -239,7 +239,15 @@ export function specialistOffline(ctx: OfflineContext, voice: { staffId: string;
   const v = vitalsAt(c, s);
   if (!v.baselineOnly && v.monitorAttached !== false) {
     const x = v.vitals;
-    const bits = [x.hr != null ? `HR ${Math.round(x.hr)}` : "", x.sbp != null && x.dbp != null ? `BP ${Math.round(x.sbp)}/${Math.round(x.dbp)}` : "", x.spo2 != null ? `SpO₂ ${Math.round(x.spo2)}` : "", x.etco2 != null ? `EtCO₂ ${Math.round(x.etco2)}` : ""].filter(Boolean);
+    // in an arrest the monitor reads nothing for these (`unmeasurable`): their placeholder 0 is no measurement
+    const unread = new Set(v.unmeasurable ?? []);
+    const nr = noReading(L);
+    const bits = [
+      x.hr != null ? `HR ${unread.has("hr") ? nr : Math.round(x.hr)}` : "",
+      x.sbp != null && x.dbp != null ? `BP ${unread.has("sbp") ? nr : `${Math.round(x.sbp)}/${Math.round(x.dbp)}`}` : "",
+      x.spo2 != null ? `SpO₂ ${unread.has("spo2") ? nr : Math.round(x.spo2)}` : "",
+      x.etco2 != null ? `EtCO₂ ${unread.has("etco2") ? nr : Math.round(x.etco2)}` : "",
+    ].filter(Boolean);
     if (bits.length) parts.push(rt(L, "specialist.anaesthesia.vitals", { vitals: bits.join(", ") }));
   } else parts.push(rt(L, "specialist.anaesthesia.noMonitor"));
   const data = caseData(c).flatMap((d) => {

@@ -246,6 +246,31 @@ describe("connectWorldBridge (fake server)", () => {
     }
   });
 
+  it("answers a command delivered again from its stored result only when it is the same call; the same id for another call runs", async () => {
+    const { server, session, bridge } = start();
+    const answers = (id: string) => server.results.filter((r) => r.correlationId === id && r.kind === "result").length;
+    const call = (tool: string, args: Record<string, unknown>) => server.command({ type: "call", correlationId: "c-1", tool, args, deadline: server.now() + 10_000 });
+    try {
+      await bridge.ready;
+      call("navigate_to", { target: "patient", range: 1 });
+      await until(() => answers("c-1") === 1);
+      // delivered again after a reconnect (arguments in another key order): answered from the store, not run twice
+      call("navigate_to", { range: 1, target: "patient" });
+      await until(() => answers("c-1") === 2);
+      expect(session.runs.map((r) => r.tool)).toEqual(["navigate_to"]);
+      // the same id for another tool (the server's result store expired: a new call) runs
+      call("observe_world", {});
+      await until(() => answers("c-1") === 3);
+      expect(session.runs.map((r) => r.tool)).toEqual(["navigate_to", "observe_world"]);
+      // … and is the call stored from now on
+      call("observe_world", {});
+      await until(() => answers("c-1") === 4);
+      expect(session.runs).toHaveLength(2);
+    } finally {
+      await bridge.dispose();
+    }
+  });
+
   it("a call whose cancel arrived first is never run when it is delivered afterwards", async () => {
     const { server, session, bridge } = start();
     try {

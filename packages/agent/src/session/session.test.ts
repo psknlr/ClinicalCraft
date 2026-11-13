@@ -36,6 +36,20 @@ describe("session start-up", () => {
     for (;;) if ((await it.next()).done) break;
   });
 
+  it("an events() iterator first opened from a listener gets the event being delivered once (from the backlog)", async () => {
+    const t = await makeSession();
+    let iterator: AsyncIterator<AgentEvent> | null = null;
+    t.session.subscribe((e) => {
+      if (!iterator && e.msg.type === "clinical_event") iterator = t.session.events()[Symbol.asyncIterator]();
+    });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t.session.close();
+    const seqs: number[] = [];
+    for (let r = await iterator!.next(); !r.done; r = await iterator!.next()) seqs.push(r.value.seq);
+    expect(seqs.length).toBeGreaterThan(0);
+    expect(new Set(seqs).size).toBe(seqs.length);
+  });
+
   it("lists agents (no companion without one) and built-in + custom commands", async () => {
     const t = await makeSession({ commands: [{ name: "sbar", description: "SBAR handover", source: "project", template: "Give an SBAR for $ARGUMENTS", agent: "nurse" }] });
     expect(t.session.availableAgents()).toEqual(["patient", "nurse", "radiologist", "pathologist", "attending", "examiner", "clinician"]);
@@ -85,6 +99,42 @@ describe("learner clinical actions", () => {
     const t = await makeSession();
     const events = await t.session.run({ type: "clinical_action", action: { type: "order" } as never });
     expect(msgsOf(events, "error")[0]).toMatchObject({ code: "invalid_action" });
+  });
+
+  /** A session whose PreToolUse hook waits until `release()`; `entered` once it runs. */
+  async function slowPreToolUse() {
+    const t = await makeSession();
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    let release!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const hook = { entered: false };
+    t.session.hooks.on("PreToolUse", async () => {
+      hook.entered = true;
+      await held;
+      return {};
+    });
+    return { t, release, hook };
+  }
+
+  it("an interrupt while a clinical_action's PreToolUse hook runs cancels it: nothing is committed", async () => {
+    const { t, release, hook } = await slowPreToolUse();
+    const pending = t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ecg" } });
+    await waitFor(() => hook.entered);
+    t.session.submit({ type: "interrupt" });
+    release();
+    const events = await pending;
+    expect(t.session.state.orders).toEqual([]);
+    expect(msgsOf(events, "warning").map((w) => w.message)).toContain("Action cancelled.");
+  });
+
+  it("an interrupt while a slash command's PreToolUse hook runs cancels its tool: nothing is committed", async () => {
+    const { t, release, hook } = await slowPreToolUse();
+    const pending = t.session.run({ type: "slash_command", name: "order", args: "ecg" });
+    await waitFor(() => hook.entered);
+    t.session.submit({ type: "interrupt" });
+    release();
+    await pending;
+    expect(t.session.state.orders).toEqual([]);
   });
 });
 
@@ -829,6 +879,18 @@ describe("configure, compact, dynamic tools, shutdown", () => {
     expect(JSON.stringify(lastRequest.messages[0])).toContain("conversation_summary");
   });
 
+  it("counts the auto-compaction summary call in token_usage", async () => {
+    // the summary request reads the whole older conversation: its input tokens are the agent's too
+    const summary = textScript("## Summary\nnone recorded").map((e) => (e.type === "finish" ? { ...e, usage: { inputTokens: 1000, outputTokens: 20 } } : e));
+    const t = await makeSession({
+      scripts: [textScript("r1"), textScript("r2"), textScript("r3"), textScript("r4"), summary, textScript("r5")],
+      settingsPatch: { autoCompact: { enabled: true, thresholdTokens: 10 } },
+    });
+    for (const q of ["q1", "q2", "q3", "q4", "q5"]) await t.session.run({ type: "user_message", text: `@nurse ${q}` });
+    expect(t.msgs("compacted")).toHaveLength(1);
+    expect(t.msgs("token_usage").at(-1)!.total.inputTokens).toBeGreaterThanOrEqual(1000);
+  });
+
 
   it("configure changes runtime settings and validates them", async () => {
     const t = await makeSession();
@@ -840,6 +902,17 @@ describe("configure, compact, dynamic tools, shutdown", () => {
     expect(reply.text).toContain("血压");
     const bad = await t.session.run({ type: "configure", patch: { approvalMode: "yolo" as never } });
     expect(msgsOf(bad, "error")[0]).toMatchObject({ code: "invalid_config" });
+  });
+
+  it("config_changed echoes only what was applied, so a resume continues with the session's real settings", async () => {
+    const sink = new MemoryTranscript();
+    const t = await makeSession({ transcript: sink });
+    await t.session.run({ type: "configure", patch: { approvalMode: "strict", practiceScope: "history-only", interlocutor: "@Nurse" } });
+    const bad = await t.session.run({ type: "configure", patch: { approvalMode: "yolo" as never, practiceScope: "everything" as never, interlocutor: "nobody", model: "m2" } });
+    expect(msgsOf(bad, "error")[0]).toMatchObject({ code: "invalid_config" });
+    expect(msgsOf(bad, "config_changed")[0]!.patch).toEqual({ model: "m2" });
+    expect(t.session.settings).toMatchObject({ approvalMode: "strict", practiceScope: "history-only" });
+    expect(resumedRuntimeConfig(sink.items)).toMatchObject({ approvalMode: "strict", practiceScope: "history-only", interlocutor: "nurse", model: "m2" });
   });
 
   it("compact summarises a long conversation (PreCompact hook, compacted event, transcript item)", async () => {
@@ -858,6 +931,46 @@ describe("configure, compact, dynamic tools, shutdown", () => {
     expect(sink.ofType("compacted")).toHaveLength(1);
     const replayed = replayTranscript(sink.items);
     expect(replayed.messages.nurse!.length).toBeGreaterThan(0);
+  });
+
+  const texts = (messages: readonly { content: readonly { type: string; text?: string }[] }[]) => messages.flatMap((m) => m.content.flatMap((p) => (p.type === "text" && p.text ? [p.text] : [])));
+
+  it("a staff line said while a compaction waits for its summary is kept, live and after a resume", async () => {
+    const base = loadMiniCase();
+    const sink = new MemoryTranscript();
+    const t = await makeSession({
+      caseDef: { ...base, clock: { ...base.clock, realtimeScale: 1 } },
+      transcript: sink,
+      delayMs: 5,
+      scripts: [textScript("r1"), textScript("r2"), textScript("r3"), textScript("r4"), textScript("## Summary\nThe learner asked four questions.")],
+    });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ecg" } });
+    for (const q of ["q1", "q2", "q3", "q4"]) await t.session.run({ type: "user_message", text: `@nurse ${q}` });
+    const compacting = t.session.run({ type: "compact", agent: "nurse" });
+    // the summary is streaming: the web's clock ticks meanwhile (5 simulated minutes: the critical ECG is called through)
+    await waitFor(() => t.provider!.requests.length === 5);
+    t.session.advanceRealTime(5 * 60_000);
+    const call = t.msgs("agent_message").at(-1)!;
+    expect(call.agent).toBe("nurse");
+    expect(msgsOf(await compacting, "compacted")).toHaveLength(1);
+    expect(texts(t.session.conversationOf("nurse")).at(-1)).toBe(call.text);
+    expect(texts(t.session.conversationOf("nurse"))[0]).toContain("The learner asked four questions.");
+    expect(texts(replayTranscript(sink.items).messages.nurse ?? []).at(-1)).toBe(call.text);
+  });
+
+  it("an interrupt while the summary streams leaves the conversation as it was", async () => {
+    const t = await makeSession({
+      delayMs: 5,
+      scripts: [textScript("r1"), textScript("r2"), textScript("r3"), textScript("r4"), textScript("## Summary\nThe learner asked four questions, one by one.", { chunk: 4 })],
+    });
+    for (const q of ["q1", "q2", "q3", "q4"]) await t.session.run({ type: "user_message", text: `@nurse ${q}` });
+    const before = t.session.conversationOf("nurse");
+    const compacting = t.session.run({ type: "compact", agent: "nurse" });
+    await waitFor(() => t.provider!.requests.length === 5);
+    t.session.submit({ type: "interrupt" });
+    expect(msgsOf(await compacting, "compacted")).toEqual([]);
+    expect(t.session.conversationOf("nurse")).toEqual(before);
   });
 
   it("walk_to round-trips through dynamic_tool_call / dynamic_tool_response", async () => {
@@ -887,6 +1000,20 @@ describe("configure, compact, dynamic tools, shutdown", () => {
     expect(collected.at(-1)).toBe("shutdown_complete");
     const after = await t.session.run({ type: "user_message", text: "hello?" });
     expect(msgsOf(after, "error")[0]).toMatchObject({ code: "closed" });
+  });
+
+  it("shutdown_complete is the last event, also for an op that arrives while the transcript flushes", async () => {
+    let release!: () => void;
+    const flushed = new Promise<void>((r) => (release = r));
+    const sink = new MemoryTranscript();
+    sink.flush = () => flushed;
+    const t = await makeSession({ transcript: sink });
+    const closing = t.session.close();
+    await waitFor(() => t.msgs("shutdown_complete").length === 1);
+    t.session.submit({ type: "interrupt" });
+    release();
+    await closing;
+    expect(t.events.at(-1)!.msg.type).toBe("shutdown_complete");
   });
 });
 

@@ -2,6 +2,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
+import { makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { createCommandHookExecutor } from "../node/hooks.js";
 import type { HooksConfig } from "../settings/schema.js";
 import { HOOK_CONTEXT_MAX_CHARS, HookRunner, matchesHookMatcher } from "./runner.js";
@@ -61,6 +62,35 @@ describe("HookRunner in-process handlers", () => {
     const r2 = await runner.runHooks("PreToolUse", pre("order_test"));
     expect(r2).toMatchObject({ blocked: true, approved: false, reason: "not in OSCE" });
     expect(r2.updatedInput).toEqual({ query: "cbc" });
+  });
+
+  it("an abort abandons a handler that never settles with a warning (zh-CN + en), never a hang", async () => {
+    const runner = new HookRunner();
+    const later: string[] = [];
+    runner.on("PreToolUse", () => new Promise(() => undefined));
+    runner.on("PreToolUse", () => void later.push("next handler"));
+    for (const [locale, text] of [
+      ["en", /handler #1 did not finish: the turn was interrupted/],
+      ["zh-CN", /钩子处理函数 #1 未完成/],
+    ] as const) {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 20);
+      const r = await runner.runHooks("PreToolUse", { ...pre("examine"), locale }, { signal: controller.signal });
+      expect(r).toMatchObject({ blocked: false, approved: false });
+      expect(r.warnings).toEqual([expect.stringMatching(text)]);
+    }
+    expect(later).toEqual([]); // nothing after the abandoned handler runs
+  });
+
+  it("an interrupt frees a session turn waiting on an in-process PreToolUse handler", async () => {
+    const t = await makeSession();
+    t.session.hooks.on("PreToolUse", () => new Promise(() => undefined));
+    const running = t.session.run({ type: "user_message", text: "/exam heart" });
+    await new Promise((r) => setTimeout(r, 50));
+    t.session.submit({ type: "interrupt" });
+    const outcome = await Promise.race([running.then((events) => events), new Promise<null>((r) => setTimeout(() => r(null), 2000))]);
+    expect(outcome, "the turn still waits on the handler").not.toBeNull();
+    expect(msgsOf(outcome!, "warning").map((w) => w.message)).toEqual(expect.arrayContaining([expect.stringMatching(/PreToolUse hook handler #1 did not finish/)]));
   });
 
   it("only PreToolUse may replace input; context is escaped", async () => {

@@ -8,9 +8,13 @@
  *
  * Lexical and conservative, English and Chinese:
  *
- * * Only yes/no questions are read ("Do you…?", "Any…?", "有没有…", "…吗？"),
- *   not choices ("sharp or dull?", "…还是…") or questions for information
- *   ("When did it start?", "以前有什么病？").
+ * * Only yes/no questions are read ("Do you…?", "Any…?", "有没有…", "…吗？",
+ *   "…吧？"), not choices ("sharp or dull?", "…还是…") or questions for
+ *   information ("When did it start?", "以前有什么病？").
+ * * A question that puts its topic negatively ("You don't smoke, do you?",
+ *   "你不抽烟吧？") is answered by what the reply says about the topic ("That's
+ *   right, I don't smoke" is a no); with nothing about the topic, an
+ *   agreement word ("Correct", "是的", "对") agrees with the negation — a no.
  * * An answer's polarity is its lead word ("yes", "no", "never", "有",
  *   "没有", "不疼") or else that of the first clause naming the question's
  *   topic, negated or not ("过敏……没有" is a no). A fact that does neither
@@ -67,9 +71,15 @@ const LIMITING = /^(?:only|just|merely|(?:就|只)(?!是的))/;
 
 const EN_YES = /^(?:yes|yeah|yep|yup|aye|uh[\s-]?huh|mm[\s-]?hmm|correct|definitely|absolutely|indeed|of\s+course|sure|i\s+think\s+so|i\s+believe\s+so|that\s*'?s\s+right)\b/;
 const EN_NO = /^(?:no|nope|nah|never|none|nothing|nobody|no\s+one|neither|not)\b/;
+/** Words that agree with the question as put, so answer a negated question with "no" ("You don't smoke, do you?" — "Correct"). */
+const EN_AGREE = /^(?:correct|right|exactly|true|indeed|that\s*'?s\s+(?:right|correct|true)|i\s+think\s+so|i\s+believe\s+so)\b/;
 /** A delimiter after a Chinese lead word ("有，", "是的。"); "有点…" is not a yes. */
 const ZH_LEAD_END = "(?=$|[,.!?;:、。…~～\\s—-])";
 const ZH_YES = new RegExp(`^(?:是的|是啊|是呀|对的|对啊|对呀|嗯嗯|嗯|有的|有啊|有呀|有过|会的|会啊|没错|当然|肯定|是|对|有|会)${ZH_LEAD_END}`);
+/** Chinese agreement with the question as put ("你不抽烟吧？" — "是的" / "对" / "嗯": he does not). */
+const ZH_AGREE = new RegExp(`^(?:是的|是啊|是呀|对的|对啊|对呀|嗯嗯|嗯|没错|是|对)${ZH_LEAD_END}`);
+/** Chinese disagreement ("不是", "不对", "不"): whether it denies the topic or the question's negation is unclear. */
+const ZH_DISAGREE = new RegExp(`^(?:不是|不对|不)${ZH_LEAD_END}`);
 
 /** English negators (after `normalize`); inability ("cannot", "could not", "unable") is removed first. */
 const EN_NEGATOR = /\b(?:no|not|never|nothing|none|nobody|neither|nor|without)\b/;
@@ -109,7 +119,7 @@ const EN_FILLER: ReadonlySet<string> = new Set(
 /** Chinese characters that carry no topic in a question ("有没有", "你", "吗", "以前", "最近" …). */
 const ZH_SCAFFOLD = new Set([..."你您他她它们的了过吗呢吧啊呀么什怎哪谁几多少有没是不会能要可以最近平时现在以前之前这那些个一下还都也就又再曾经请问说讲想感觉得到好点"]);
 /** Feelings and requests answered from the persona ("好点了吗", "害怕吗", "听得见吗"): no topic. */
-const ZH_AFFECT = /舒服|好些|好多了|难受|害怕|紧张|担心|放心|准备好|明白|懂|听见|听到|听得|听清/g;
+const ZH_AFFECT = /舒服|好些|好多了|难受|害怕|紧张|担心|放心|准备好|明白|懂|听见|听到|听得|听清|没事|还好|还行/g;
 
 /* ------------------------------------------------------------------ */
 /* Questions                                                           */
@@ -123,7 +133,9 @@ const EN_EITHER = /\b(?:any|anything|anyone|ever|either|or\s+not|or\s+anything|o
 const EN_REQUEST = /^(?:can|could|will|would|shall|may|might)\s+(?:i|we|you)\b/;
 const ZH_POLAR = /有没有|是不是|会不会|能不能|要不要|可不可以|是否|(\p{Script=Han})[不没]\1/u;
 const ZH_ENDS_MA = /(?:吗|(?<![什怎这那多])么|嘛)[?？]?\s*$/;
-const ZH_REQUEST = /可以吗|好吗|行吗|行不行|可不可以|好不好|让我|我帮你|我给你|我来|方便吗|介意吗|听得见|听得到|听见了吗|听清|明白吗|明白了吗|懂了吗|懂吗|知道了吗/;
+/** A confirmation question: "…吧？", "…对吧", "…是吧" (a suggestion ending in 吧 without a question mark is not one). */
+const ZH_ENDS_BA = /(?:(?:对|是)吧[?？]?|吧[?？])\s*$/;
+const ZH_REQUEST = /可以吗|好吗|行吗|行不行|可不可以|好不好|让我|我帮你|我给你|我来|方便吗|介意吗|听得见|听得到|听见了吗|听清|明白吗|明白了吗|懂了吗|懂吗|知道了吗|(?:我们|咱们)[^,，。]*吧/;
 
 /** The question a reply answers: the last sentence of the utterance ending with "?", else the whole utterance. */
 function lastQuestion(utterance: string): string {
@@ -140,10 +152,26 @@ function lastQuestion(utterance: string): string {
 export function isPolarQuestion(utterance: string): boolean {
   const q = lastQuestion(utterance);
   if (!q) return false;
-  if (HAN.test(q)) return ZH_ENDS_MA.test(q) || (ZH_POLAR.test(q) && !q.includes("还是"));
+  if (HAN.test(q)) return ZH_ENDS_MA.test(q) || ZH_ENDS_BA.test(q) || (ZH_POLAR.test(q) && !q.includes("还是"));
   if (EN_WH_START.test(q)) return false;
   if (/\bor\b/.test(q) && !EN_EITHER.test(q)) return false;
   return EN_POLAR_START.test(q) || q.endsWith("?");
+}
+
+/** A negative interrogative's own "not" ("Don't you smoke?", "Isn't it sore?" — after `normalize`): it does not negate what is asked. */
+const EN_NEGATIVE_INTERROGATIVE = /^(?:do|does|did|is|are|was|were|have|has|had|will|would|should|could|can|am)\s+not\s+(?=(?:you|he|she|they|it|we|i|there)\b)/;
+/** A tag at the end of an English question ("…, do you?", "…, don't you?", "…, right?"). */
+const EN_TAG = /,?\s*(?:(?:do|does|did|is|are|was|were|have|has|had|will|would|should|could|can|am)(?:\s+not)?\s+(?:you|he|she|they|it|we|i|there)|right|correct|yes|no|ok|okay|eh)\s*\?*\s*$/;
+/** A Chinese question's ending and its A-not-A forms ("有没有", "是不是", "疼不疼"): none negates what is asked. */
+const ZH_QUESTION_END = /(?:对吧|是吧|对不对|是不是|吧|吗|么|嘛)?[?？]?\s*$/;
+const ZH_A_NOT_A = /(\p{Script=Han})[不没]\1|有没有|是不是|对不对/gu;
+
+/** True when the question puts its topic negatively: "You don't smoke, do you?", "No chest pain?", "你不抽烟吧？", "你是不是没有过敏？". */
+function negatedQuestion(utterance: string): boolean {
+  const q = lastQuestion(utterance);
+  if (HAN.test(q)) return ZH_NEGATION.test(q.replace(ZH_QUESTION_END, "").replace(ZH_A_NOT_A, ""));
+  const core = q.replace(EN_TAG, "").replace(EN_NEGATIVE_INTERROGATIVE, "");
+  return !/\bor\s+not\b/.test(core) && EN_NEGATOR.test(core.replace(EN_NOT_A_NEGATION, " "));
 }
 
 /**
@@ -217,22 +245,41 @@ function answerBody(text: string): string {
   return body;
 }
 
-/** Polarity of an answer to a yes/no question about `topics` (see the module comment and `answerPolarity`). */
-function polarityOf(text: string, topics: Topics, asFact: boolean): Polarity | null {
+/**
+ * Polarity of an answer to a yes/no question about `topics` (see the module comment and `answerPolarity`).
+ * `negatedQuestion`: the question put its topic negatively — what the reply says about the topic decides, else an
+ * agreement word is a no and a Chinese disagreement word says neither.
+ */
+function polarityOf(text: string, topics: Topics, asFact: boolean, negatedQuestion = false): Polarity | null {
   const body = answerBody(text);
   if (!body) return null;
   const firstSentence = body.split(/[.!?。！？]/)[0] ?? body;
   if (UNSURE.test(firstSentence) || LIMITING.test(body)) return null;
-  if (EN_YES.test(body) || ZH_YES.test(body)) return "yes";
-  if (EN_NO.test(body) || ZH_NO.test(body)) return "no";
   const clauses = clausesOf(body);
   const read = (i: number): Polarity => {
     const next = clauses[i + 1] ?? "";
     return negated(clauses[i]!) || BARE_NO.test(next) || (onlyTopic(clauses[i]!, topics) && opensNegated(next)) ? "no" : "yes";
   };
   const topical = clauses.findIndex((c) => namesTopic(c, topics));
+  if (negatedQuestion) {
+    if (topical >= 0) return read(topical);
+    if (EN_AGREE.test(body) || ZH_AGREE.test(body)) return "no";
+    if (ZH_DISAGREE.test(body)) return null;
+  }
+  if (EN_YES.test(body) || ZH_YES.test(body)) return "yes";
+  if (EN_NO.test(body) || ZH_NO.test(body)) return "no";
   if (topical >= 0) return read(topical);
   return asFact && clauses.length > 0 ? read(0) : null;
+}
+
+/**
+ * True when `text` (a fact's answer, or the question it answers) names the topic of the yes/no question
+ * `question`: a fact about something else ("Have you used cocaine?" — "No, never.") does not answer "Do you have
+ * diabetes?" whatever the reply cites.
+ */
+export function namesQuestionTopic(text: string, question: string): boolean {
+  const topics = questionTopics(question);
+  return clausesOf(answerBody(text)).some((c) => namesTopic(c, topics));
 }
 
 /** Content units of a text: English canonical tokens of ≥ 4 letters, Chinese bigrams of two content characters. */
@@ -273,7 +320,7 @@ export const POLARITY_SUPPORT_MIN = 2;
 export function polarityViolation(say: string, question: string, answered: readonly string[]): string | null {
   if (!isPolarQuestion(question)) return null;
   const topics = questionTopics(question);
-  const reply = polarityOf(say, topics, false);
+  const reply = polarityOf(say, topics, false, negatedQuestion(question));
   if (!reply) return null;
   if (answered.length === 0) return asksForFact(question, topics) ? `polarity "${reply}" (no fact used)` : null;
   const facts = answered.map((a) => polarityOf(a, topics, true)).filter((p): p is Polarity => p !== null);
@@ -359,5 +406,5 @@ export function deniedDetailViolation(say: string, answered: readonly string[], 
  * an authored fact, read as its first clause when nothing else decides.
  */
 export function answerPolarity(text: string, question: string, asFact = false): Polarity | null {
-  return isPolarQuestion(question) ? polarityOf(text, questionTopics(question), asFact) : null;
+  return isPolarQuestion(question) ? polarityOf(text, questionTopics(question), asFact, !asFact && negatedQuestion(question)) : null;
 }

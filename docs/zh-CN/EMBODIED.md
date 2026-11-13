@@ -175,7 +175,9 @@
   重新绘制，≤ 768 px 的 JPEG，附带相机位姿与模拟时钟；同一时间只有一次截取，
   每秒最多一次。
 * **输入设备**：化身的位姿以 `world_pose` 发给世界（移动时约 10 Hz，走带外通道），
-  每次提交和启动示范接诊前再发一次；Mover 驱动时从不发送。
+  每次提交和启动示范接诊前再发一次；Mover 驱动时从不发送。`world_pose` 与
+  `world_action` 只驱动学员自己的身体（`actor:clinician`）：其他 `actorId` 会被拒绝
+  （`invalid_op`）——同事的身体只能通过委托移动。
 * **同一条动作路径**：面板上的设备按钮都是 `world_action` 操作（监护仪的连接 /
   无创血压 / 读屏——读屏只在屏幕可读时提供——，心电图车的准备 / 连接 / 记录 /
   复位，水槽的 `wash_hands`，把推车 `move_to` 到床旁，手持物品的 `pick_up` /
@@ -829,7 +831,7 @@ CASE_AUTHORING）会覆盖 kind 的默认值（用药、补液、吸氧、监护
 | 方式 | 移动什么 | 时间 | 由谁 |
 |---|---|---|---|
 | **转移**：带有作者标注 `destination` 的处置（转科：STEMI 的 `transfer-cath-lab` → `{capability: "fluoroscopy"}`，PE 的 `transfer-hdu` 与哮喘的 `admit-picu` → `{setting: "icu"}`）或带 `location` 的阶段（STEMI 的 `cath` / `post-pci`、卒中的 `angio` → fluoroscopy；严重过敏反应的 `ed-resus` / `ed` → `{setting: "emergency"}`），由会话在引擎报告 `intervention.applied` / `phase.changed` 时执行（若有转运正在进行，则等其结束） | 患者被送到本场馆中解析出的目的地：setting 或房间类型 → 该类第一个患者床位（已经在那里也算）；能力 → 提供该能力的设备处的患者位置（设备旁的床——导管室中 C 形臂旁的检查床——，CT、MRI、PET-CT 和 X 线机则用其自带的检查床，否则为其够及范围内的空闲位置）；患者所躺的平车随行；该处成为其 `home` | 无（计入临床操作自身的耗时） | 团队（`patient.moved`，`by: null`，附团队的无障碍路线——床边的推车和人被挪开，`NavRequest.ignoreObstacles`——供记录和浏览器使用）；本场馆没有这样的地方：患者留在原处，结果中会说明（"This hospital has no ICU/HDU bed: … stays in …"） |
-| **`transport_patient {destination}`**（学员 / 模型的工具、`/transport`、对患者执行 `interact_object`，或 `delegate_task porter\|nurse transport_patient`） | 行动者在患者身边，推着患者所躺的床（或陪能走的患者步行——孩子去呼气峰流速测定站）到某个提供者（`eq:<id>`）、床位或房间，或 `home`；只走无障碍路线（床要乘电梯）；期间患者和平车都处于占用状态；行走被打断时，患者留在平车停下的地方 | 行走时间，只计一次（`travel`） | 推车的人（`patient.moved`，`by` 为该行动者） |
+| **`transport_patient {destination}`**（学员 / 模型的工具、`/transport`、对患者执行 `interact_object`，或 `delegate_task porter\|nurse transport_patient`） | 行动者在患者身边，推着患者所躺的床（或陪能走的患者步行——孩子去呼气峰流速测定站）到某个提供者（`eq:<id>`）、床位或房间，或 `home`；只走无障碍路线（床要乘电梯）；期间患者和平车都处于占用状态；行走被打断时，患者留在平车停下的地方 | 行走时间，只计一次（`travel`） | 推车的人（`patient.moved`，`by` 为该行动者）；权限规则按患者被送往之处的每个名称匹配——所请求的名称，以及世界实际送往之处（`WorldRuntime.transportTarget`）：拒绝 `eq:ct-scanner` 同样拒绝 `{capability: "ct"}` |
 
 **转运途中存档。** 行走的位置在行走结束时才提交，所以在有人推着患者走的时候拍下的快照，两人都还在出发的位置，
 另外记下这次行程本身（`WorldStateSnapshot.journey`：推车的人、患者、动作 id、`transport_patient` 参数）。
@@ -1056,7 +1058,8 @@ JSON）以同样方式校验——是数据，从不是代码；无效的项目�
   向执行身体**显示**的内容求值（没有显示：false）；`flag` 与 `decidedFirstTry`
   会被拒绝。报告的后置条件从不回显步骤输出。
 * 人或钩子的拒绝（直接拒绝或在世界操作内部被拒）以及取消都是最终的：从不重试或
-  恢复，`retry.on` / `recovery.on` 也不得列出它们。
+  恢复，`retry.on` / `recovery.on` 也不得列出它们。恢复策略自己的行走或推车移动也是
+  如此：被拒绝后，其他策略或后续轮次都不再请求；被取消时，技能停止。
 * `alternate-provider` 为技能的剩余部分（步骤、`when`、后置条件）重新绑定设备，并从
   第一个以该设备为目标的步骤重新开始；`perform_ecg` 优先选择空闲、在用的推车，即使
   `record` 被拒绝也会复位推车（`onError: continue`）；未成功的技能不会留下它占用的
@@ -1209,7 +1212,7 @@ PROTOCOL §13。
   执行每次调用——op `external_tool_call`，在一个独立的临床医生回合中（允许列表、
   执业范围设置、拒绝规则、钩子、空间闸门、审批闸门：审批提示交给学员，桥接上的任何
   东西都无法应答）；取消为 `external_tool_cancel`。它确认收到、提交结果、从不重复执行
-  重投递的调用、按定时器和服务器 ping 发送心跳、断线重连、在服务器遗忘它时重新注册
+  重投递的调用（已存结果只回答工具与参数相同的调用；同一 id 的另一调用照常执行）、按定时器和服务器 ping 发送心跳、断线重连、在服务器遗忘它时重新注册
   （取消丢失的注册中的调用）、在会话处于 `bypass` 模式时拒绝调用，并在 `dispose()`
   或会话关闭时注销。
 * **网页接入**（`packages/web/src/app/external.ts`，PROTOCOL §13.6）：在由

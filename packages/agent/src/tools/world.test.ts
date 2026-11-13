@@ -51,6 +51,29 @@ describe("world tool specs", () => {
     await t.session.close();
   });
 
+  it("transport rules name where the patient is taken by every name: a deny on the CT scanner also refuses a transport by capability", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { permissions: { deny: ["transport_patient(eq:ct-scanner)"] } } });
+    const s = t.session;
+    const ctx = { caseDef: s.caseDef, facility: s.facility, catalogs: s.catalogs, locale: "en", agent: "learner", state: () => s.state } as never;
+    // as asked, and the provider the world would take the patient to now (prefixed and bare)
+    expect(s.tool("transport_patient")!.specifiers!({ capability: "ct" }, ctx)).toEqual([["ct", "eq:ct-scanner", "ct-scanner"]]);
+    expect(s.tool("transport_patient")!.specifiers!({ destination: "ct-scanner" }, ctx)).toEqual([["eq:ct-scanner", "ct-scanner"]]);
+    expect(s.tool("transport_patient")!.specifiers!({ destination: "home" }, ctx)).toEqual([["home", "resus-1"]]);
+    expect(s.tool("delegate_task")!.specifiers!({ role: "porter", task: "transport_patient", params: { capability: "ct" } }, ctx)).toEqual([["transport_patient ct", "transport_patient eq:ct-scanner", "transport_patient ct-scanner"]]);
+    expect(s.tool("delegate_task")!.specifiers!({ role: "nurse", task: "give_intervention", target: "aspirin" }, ctx)).toEqual([["give_intervention aspirin"]]);
+    await s.run({ type: "world_action", request: { actionId: "to-patient", actorId: "actor:clinician", operation: "navigate", goal: { kind: "interact", id: "patient:resus-1" } } });
+    const transport = async (callId: string, args: Record<string, unknown>) => {
+      const events = await s.run({ type: "external_tool_call", callId, tool: "transport_patient", args });
+      return events.flatMap((e) => (e.msg.type === "tool_call_end" ? [e.msg] : []))[0]!;
+    };
+    expect((await transport("by-id", { destination: "eq:ct-scanner" })).ok).toBe(false);
+    const byCapability = await transport("by-capability", { capability: "ct" });
+    expect(byCapability.ok).toBe(false);
+    expect(byCapability.output).toMatch(/transport_patient\(eq:ct-scanner\)/);
+    expect(s.world()!.patientPlace()?.provider).toBeNull();
+    await s.close();
+  });
+
   it("find_objects {room}: only what is in that room — \"here\" is the room the actor is in", async () => {
     const t = await makeEmbodiedSession();
     const s = t.session;

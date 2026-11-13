@@ -33,6 +33,28 @@ const TITLE_ALIASES: readonly (readonly [RegExp, string[]])[] = [
   [/scrub|洗手护士/i, ["scrub", "洗手"]],
 ];
 
+/** Words around a title that still only ask for the person ("the", "on call", "nurse", "医生", "值班"…). */
+const TITLE_FILLER_EN = new Set(["the", "our", "a", "an", "on", "call", "duty", "nurse", "doctor", "dr", "team", "desk", "staff"]);
+const TITLE_FILLER_ZH = /^(?:医生|医师|护士|师|科|值班|人员|处)*$/u;
+
+/**
+ * The title words of a request that is a title and nothing more ("anaesthetist", "the anesthesiologist", "scrub nurse",
+ * "麻醉医生") — anchored to the whole request, so a title opening a longer request ("anaesthetist please give 2 mg
+ * midazolam", "麻醉医生请给…") is not a name (an `@` mention keeps the request's words as the message). Null: none.
+ */
+function askedTitle(asked: string): string[] | null {
+  const s = asked.trim().toLowerCase().replace(/^staff:/u, "").replace(/^[@＠]/u, "");
+  for (const [re, words] of TITLE_ALIASES) {
+    const m = re.exec(s);
+    if (!m) continue;
+    // the rest of the word the title is part of ("anaesthet" + "ist", "circulat" + "ing")
+    const after = /^[a-z]/u.test(m[0].at(-1) ?? "") ? s.slice(m.index + m[0].length).replace(/^[a-z]+/u, "") : s.slice(m.index + m[0].length);
+    const filler = (text: string) => text.split(/[\s,，]+/u).filter(Boolean).every((w) => TITLE_FILLER_EN.has(w) || TITLE_FILLER_ZH.test(w));
+    if (filler(s.slice(0, m.index)) && filler(after)) return words;
+  }
+  return null;
+}
+
 const norm = (s: string) => s.toLowerCase().replace(/^staff:/, "").replace(/^[@＠]/u, "").replace(/\b(dr|doctor|nurse|mr|mrs|ms)\.?\s+/g, "").replace(/\s+/g, " ").trim();
 /** A name without what it says about the role ("Dr Tanaka (anaesthesia)" → "tanaka"; "林护士（洗手）" → "林护士"). */
 const core = (s: string) => norm(s.replace(/\s*[（(][^）)]*[）)]\s*/gu, " "));
@@ -63,7 +85,7 @@ export function lookupStaff(facility: FacilityDefinition | null | undefined, ask
   if (!q || !staff.length) return { kind: "none" };
   const byId = staff.find((s) => norm(s.id) === q);
   if (byId) return { kind: "one", staff: byId };
-  const title = TITLE_ALIASES.find(([re]) => re.test(asked))?.[1];
+  const title = askedTitle(asked);
   const tiers: ((s: Staff) => boolean)[] = [
     // a room's own id for the post (`or-7.anaesthetist` asked as "anaesthetist")
     (s) => norm(s.id).endsWith(`.${q}`),

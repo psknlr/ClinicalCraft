@@ -11,7 +11,7 @@ import type { ClinicalAction } from "@clinicalcraft/core";
 import type { WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
-import { canonicalLocale, type Embodiment } from "./settings/schema.js";
+import { ApprovalModeSchema, canonicalLocale, PracticeScopeSchema, type Embodiment } from "./settings/schema.js";
 import { validTeamCheckpoint } from "./session/team/checkpoint.js";
 import type { TeamCheckpoint } from "./session/team/types.js";
 import type { DialogueEntry, TranscriptItem, TranscriptSink } from "./session/types.js";
@@ -218,9 +218,12 @@ export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedR
       if (p.model === undefined) out.model = null;
     }
     if (p.model !== undefined) out.model = p.model || null;
-    if (p.approvalMode) out.approvalMode = p.approvalMode;
-    if (p.practiceScope) out.practiceScope = p.practiceScope;
-    if (p.interlocutor) out.interlocutor = p.interlocutor;
+    // only values a session accepts (a recording made before refused values were left out of the echo may hold one)
+    const mode = ApprovalModeSchema.safeParse(p.approvalMode);
+    if (mode.success) out.approvalMode = mode.data;
+    const scope = PracticeScopeSchema.safeParse(p.practiceScope);
+    if (scope.success) out.practiceScope = scope.data;
+    if (typeof p.interlocutor === "string" && p.interlocutor.trim()) out.interlocutor = p.interlocutor;
   }
   return out;
 }
@@ -272,7 +275,10 @@ export function redactSecrets(text: string, secrets: readonly string[] = []): st
 /**
  * Deep copy of `value` with every string passed through `redactSecrets`.
  * `provider_raw` parts are kept byte-exact: they are echoed back to the
- * provider on resume and carry signed blocks (thinking signatures).
+ * provider on resume and carry signed blocks (thinking signatures). Image
+ * payloads (`{mediaType, data}`: an `image` part, a tool result's camera
+ * frame) are base64, never text: a key-like run inside one is not a secret,
+ * and rewriting it would corrupt the image a resume sends back.
  */
 export function redactValue<T>(value: T, secrets: readonly string[] = []): T {
   const walk = (v: unknown): unknown => {
@@ -280,6 +286,8 @@ export function redactValue<T>(value: T, secrets: readonly string[] = []): T {
     if (Array.isArray(v)) return v.map(walk);
     if (v && typeof v === "object") {
       if ((v as { type?: unknown }).type === "provider_raw") return v;
+      const media = v as { mediaType?: unknown; data?: unknown };
+      if (typeof media.mediaType === "string" && typeof media.data === "string") return { ...v, mediaType: redactSecrets(media.mediaType, secrets) };
       if (typeof (v as { toJSON?: unknown }).toJSON === "function") return v;
       return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
     }

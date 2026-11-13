@@ -139,6 +139,25 @@ export function newAttachKey(): string {
   return `ak_${btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")}`;
 }
 
+/**
+ * The identity of a call beyond its correlation id: its tool and its arguments as canonical JSON (object keys
+ * sorted). A command delivered again is answered from a stored result only when it is the same call (§13.4).
+ */
+export function bridgeCallFingerprint(tool: string, args: unknown): string {
+  const canonical = (value: unknown): string => {
+    if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
+    if (value && typeof value === "object") {
+      const record = value as Record<string, unknown>;
+      return `{${Object.keys(record)
+        .sort()
+        .map((k) => `${JSON.stringify(k)}:${canonical(record[k])}`)
+        .join(",")}}`;
+    }
+    return JSON.stringify(value) ?? "null";
+  };
+  return canonical({ tool, args: args ?? {} });
+}
+
 /** A correlation id (chosen by the attach client; dedupe key of a call). */
 export function isCorrelationId(value: unknown): value is string {
   return typeof value === "string" && CORRELATION_ID.test(value);

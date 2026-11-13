@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { StaffPositionSchema, type CaseDefinition, type FacilityDefinition, type TeamDuty } from "@clinicalcraft/core";
 import { ScriptedProvider, textScript } from "../providers/scripted.js";
 import type { ChatRequest } from "../providers/types.js";
-import type { ColleagueView, MemberView } from "../session/team/policy.js";
+import { propose, type ColleagueView, type MemberView } from "../session/team/policy.js";
 import type { MemberState, Proposal, TeamMessage, TeamTask } from "../session/team/types.js";
 import { positionOf, ROLE_CARDS, roleSection, SHARED_PROTOCOL } from "./roles.js";
 import { lineProblem, ModelTeamMind, type MindHost } from "./team-mind.js";
@@ -181,9 +181,53 @@ describe("a model-driven team member", () => {
     expect(told).toBeNull(); // nothing to do and nothing heard: quiet, no model call
     const notice = await mind.decide(me, view(me, { inbox: [message({ from: SCRUB, to: CIRC, kind: "report" })] }), null, new AbortController().signal);
     expect(notice).toMatchObject({ kind: "say", to: SCRUB, message: { kind: "notice", text: { en: "Lim, I'm getting the needle holder from the Mayo stand." } } });
-    const stuck = await mind.decide(me, view(me, { tasks: [task({ status: "waiting" })] }), request, new AbortController().signal);
+    const stuck = await mind.decide(me, view(me, { tasks: [task({ status: "waiting" })], inRoom: () => false }), request, new AbortController().signal);
     expect(stuck).toMatchObject({ kind: "say", to: SURGEON, message: { kind: "escalate" } });
     expect(stuck!.patch).toContainEqual({ id: "task-1", set: expect.objectContaining({ status: "escalated" }) });
+  });
+
+  it("waits at most once on noticing a need, though each round draws a fresh thread for it", async () => {
+    const reqs: ChatRequest[] = [];
+    const wait = (r: ChatRequest) => (reqs.push(r), decision({ option: "wait", line: "", why: "later" }));
+    const { mind } = harness([wait, wait]);
+    const me = member(CIRC, ["circulate"]);
+    let seq = 0; // the scheduler's one counter for the whole team
+    const need = { need: { id: "n1", item: "needle-holder", for: "surgeon" }, forId: SURGEON, noticedBy: CIRC };
+    for (const round of [5, 6]) {
+      const v = view(me, { round, needs: [need], newId: (p) => `${p}-${++seq}` });
+      await mind.decide(me, v, propose(v), new AbortController().signal);
+    }
+    expect(offered(reqs[0]!)).toContain("wait");
+    expect(offered(reqs[1]!)).not.toContain("wait");
+  });
+
+  it("a delivery stuck waiting goes back to the colleague who asked, as the protocol's decline — never past them", async () => {
+    const { mind } = harness([() => decision({ option: "escalate", line: "The surgeon's away from the table — I can't pass the needle holder.", why: "stuck" })]);
+    const scrub = member(SCRUB, ["instruments"]);
+    const waiting = task({ id: "task-2", kind: "deliver", itemId: "eq:nh-1", owner: SCRUB, initiator: CIRC, status: "waiting" });
+    const other = task({ id: "task-3", kind: "deliver", owner: SCRUB, initiator: CIRC, thread: "thread-3", status: "accepted" });
+    const act: Proposal = { kind: "act", task: "task-3", operation: "approach", targetId: "eq:nh-2" };
+    const p = await mind.decide(scrub, view(scrub, { tasks: [waiting, other], inRoom: (who) => who !== SURGEON }), act, new AbortController().signal);
+    expect(p).toMatchObject({ kind: "say", to: CIRC, message: { kind: "decline", about: { reason: "recipient-absent" }, text: { en: "The surgeon's away from the table — I can't pass the needle holder.", "zh-CN": "the surgeon不在手术床旁，持针器没法递过去。" } } });
+    expect(p!.patch).toContainEqual({ release: "eq:nh-1" });
+    // the person back at the table: nothing is stuck, nothing to raise
+    const back = harness([(r) => decision({ option: offered(r).includes("escalate") ? "escalate" : "act", line: "", why: "-" })]);
+    expect(await back.mind.decide(scrub, view(scrub, { tasks: [waiting, other] }), act, new AbortController().signal)).toEqual(act);
+  });
+
+  it("in a zh-CN session a model's escalation and remark keep the team's template in English", async () => {
+    const { mind } = harness(
+      [
+        () => decision({ option: "escalate", line: "术者不在台旁，持针器递不过去。", why: "stuck" }),
+        () => decision({ option: "notice", to: SCRUB, line: "林护士，我去拿持针器。", why: "tell her" }),
+      ],
+      { locale: "zh-CN" },
+    );
+    const me = member(CIRC, ["circulate"]);
+    const own = await mind.decide(me, view(me, { tasks: [task({ status: "waiting" })], inRoom: () => false }), request, new AbortController().signal);
+    expect(own).toMatchObject({ kind: "say", to: SURGEON, message: { kind: "escalate", text: { en: "The needle holder for the surgeon hasn't arrived — the surgeon isn't at the table.", "zh-CN": "给the surgeon的持针器还没送到——术者不在台旁，持针器递不过去。" } } });
+    const told = await mind.decide(me, view(me, { inbox: [message({ from: SCRUB, to: CIRC, kind: "report" })] }), null, new AbortController().signal);
+    expect(told).toMatchObject({ kind: "say", to: SCRUB, message: { kind: "notice", text: { en: "A word to Nurse Lim.", "zh-CN": "林护士，我去拿持针器。" } } });
   });
 });
 

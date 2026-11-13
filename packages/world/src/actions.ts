@@ -47,7 +47,7 @@ import { escortPatient } from "./escort.js";
 import type { PatientBody } from "./patient.js";
 import { repositionPatient } from "./posture.js";
 import { handOver } from "./hand.js";
-import { refreshPatient, relocatePatient, transportPatient, type TransportHost } from "./transport.js";
+import { refreshPatient, relocatePatient, transportPatient, transportTarget, type TransportHost } from "./transport.js";
 import type {
   ActionHint,
   ActorId,
@@ -405,6 +405,11 @@ export class ActionBus implements EffectsHost, TransportHost {
   /** Move the patient at once (a transfer, a phase with a location): see `transport.ts`. */
   relocatePatient(destination: PatientDestination): PatientRelocation {
     return relocatePatient(this, destination);
+  }
+
+  /** Where a transport with these parameters would take the patient now (read only; see `transport.ts`). */
+  transportTarget(parameters: Record<string, unknown>): { provider: EntityId | null; slot: string | null } | null {
+    return transportTarget(this, parameters);
   }
 
   /** The clinical posture may have changed the patient's body: re-stamp the grids (see `transport.ts`). */

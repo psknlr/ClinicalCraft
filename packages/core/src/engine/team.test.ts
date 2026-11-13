@@ -80,6 +80,13 @@ describe("care team · consistency", () => {
     );
   });
 
+  it("a team that keeps a count has a member who counts (else the count is never taken)", () => {
+    const count = { item: "forceps", when: { phase: "observation" }, searchPlaces: ["forceps-1"] };
+    expect(checkTeamDefinition(withTeam({ ...TEAM, count })).map((i) => `${i.path}: ${i.message}`)).toContain('team.members: the team keeps a count but no member counts (the duty "count")');
+    const counted = { ...TEAM, count, members: [{ staff: "nurse-1", duties: ["circulate", "count"] }, ...TEAM.members.slice(1)] };
+    expect(checkTeamDefinition(withTeam(counted))).toEqual([]);
+  });
+
   it("the solution's start names a scenario the team has", () => {
     const c = withTeam(TEAM, { solution: [{ type: "start", team: "nope" }, ...fixture("mini-anaphylaxis.case.json").solution.slice(1)] });
     expect(checkTeamDefinition(c).map((i) => i.message)).toContain('unknown team scenario "nope"');

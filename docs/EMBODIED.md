@@ -217,6 +217,9 @@ the world model; the browser supplies its sensors and actuators
 * **Input device**: the avatar's pose goes to the world as `world_pose`
   (~10 Hz while it moves, out of band) and again right before every
   submission and autopilot start, never while the Mover drives it.
+  `world_pose` and `world_action` move only the learner's own body
+  (`actor:clinician`): another `actorId` is refused (`invalid_op`) — a
+  colleague's body moves by a delegation.
 * **Same action path**: the panels' equipment buttons are `world_action` ops
   (monitor attach / NIBP / read — the read is offered only while the screen
   is readable —, ECG cart prepare / connect / record / reset, a sink's
@@ -1063,7 +1066,7 @@ patient's monitor all follow it.
 | how | what moves | time | who |
 |---|---|---|---|
 | a **relocation**: an intervention with an authored `destination` (a transfer: STEMI `transfer-cath-lab` → `{capability: "fluoroscopy"}`, PE `transfer-hdu` and asthma `admit-picu` → `{setting: "icu"}`) or a phase with a `location` (STEMI `cath` / `post-pci`, stroke `angio` → fluoroscopy; anaphylaxis `ed-resus` / `ed` → `{setting: "emergency"}`), applied by the session when the engine reports `intervention.applied` / `phase.changed` (deferred until a transport in flight ends) | the patient to the destination resolved in this facility: a setting or room kind → the first patient slot of it (where they are already counts); a capability → the patient position at the providing device (a bed beside it — the cath-lab table by the C-arm —, its own table for CT, MRI, PET-CT and X-ray, else a free spot in its reach); the trolley they lie on comes along; it becomes their `home` | none (the clinical act's own) | the team (`patient.moved`, `by: null`, with the team's accessible route — carts and people by the bed set aside, `NavRequest.ignoreObstacles` — for the record and the browser); no such place in the facility: the patient stays and the result says so ("This hospital has no ICU/HDU bed: … stays in …") |
-| **`transport_patient {destination}`** (the learner's / a model's tool, `/transport`, `interact_object` on the patient, or `delegate_task porter\|nurse transport_patient`) | from the patient's side, the body wheels the bed the patient lies on (or walks a patient who can walk — a child to the peak-flow station) to a provider (`eq:<id>`), a bed space or room, or `home`; accessible routes only (beds take the lift); the patient and the trolley are busy meanwhile; an interrupted walk leaves the patient on the trolley where it stopped | the walk, charged once (`travel`) | the walker (`patient.moved`, `by` the actor) |
+| **`transport_patient {destination}`** (the learner's / a model's tool, `/transport`, `interact_object` on the patient, or `delegate_task porter\|nurse transport_patient`) | from the patient's side, the body wheels the bed the patient lies on (or walks a patient who can walk — a child to the peak-flow station) to a provider (`eq:<id>`), a bed space or room, or `home`; accessible routes only (beds take the lift); the patient and the trolley are busy meanwhile; an interrupted walk leaves the patient on the trolley where it stopped | the walk, charged once (`travel`) | the walker (`patient.moved`, `by` the actor); permission rules name where the patient is taken by every name — as asked and where the world takes them (`WorldRuntime.transportTarget`): a deny on `eq:ct-scanner` refuses `{capability: "ct"}` too |
 
 **Saved in the middle of a journey.** A walk's poses are committed when it ends, so a snapshot taken while a
 body wheels the patient holds both where the journey started, plus the journey itself
@@ -1369,7 +1372,9 @@ Review hardening (S2, S8, G1, C3, C8–C10):
   outputs.
 * A refusal by a person or a hook (directly or inside a world operation) and
   a cancellation are final: never retried or recovered, and `retry.on` /
-  `recovery.on` may not list them.
+  `recovery.on` may not list them. So is a recovery's own walk or cart move:
+  refused, no other strategy or later round asks for it again; cancelled,
+  the skill stops.
 * `alternate-provider` rebinds the device for the rest of the skill (steps,
   `when`, postconditions), restarting from the first step that targeted it;
   `perform_ecg` prefers a free, in-service cart and resets the cart even
@@ -1558,7 +1563,8 @@ client acts in an encounter the learner is playing in the browser, through
   deny rules, hooks, the spatial gate, the approval gate: an approval prompt
   goes to the learner and nothing on the bridge can answer it); cancellation
   is `external_tool_cancel`. It acknowledges, posts results, never runs a
-  re-delivered call twice, heartbeats on a timer and on server pings,
+  re-delivered call twice (a stored result answers only the same tool and
+  arguments; the same id for another call runs), heartbeats on a timer and on server pings,
   reconnects, re-registers when the server forgot it (cancelling the calls
   of the lost registration), refuses calls while the session is in `bypass`
   mode, and unregisters on `dispose()` or session shutdown.

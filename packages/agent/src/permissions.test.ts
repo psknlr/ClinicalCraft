@@ -13,6 +13,13 @@ import {
   PermissionState,
   scopeRank,
 } from "./permissions.js";
+import { loadMiniCase } from "./__fixtures__/mini-case.js";
+import { loadContent } from "./node/content.js";
+import { resolveStudy } from "./session/studies.js";
+import { clinicalTools } from "./tools/clinical.js";
+import { npcTools } from "./tools/npc.js";
+import { studyTools } from "./tools/studies.js";
+import type { ToolArgs } from "./tools/clinical-resolve.js";
 import type { ToolContext, ToolDefinition } from "./tools/types.js";
 
 const ctx = {} as ToolContext;
@@ -98,8 +105,9 @@ describe("checkPermission ladder", () => {
     expect(check(t, "bypass")).toMatchObject({ decision: "allow", ruleId: "mode.bypass" });
   });
 
-  it("6 rule.ask asks even in bypass / auto", () => {
-    expect(check(tool({ riskLevel: "low" }), "bypass", "full", { ask: ["intervene"] })).toMatchObject({ decision: "ask", ruleId: "rule.ask", allowSession: true });
+  it("6 rule.ask asks even in bypass / auto, and never offers approval for the session (an ask rule always asks)", () => {
+    expect(check(tool({ riskLevel: "low" }), "bypass", "full", { ask: ["intervene"] })).toMatchObject({ decision: "ask", ruleId: "rule.ask", allowSession: false });
+    expect(check(tool({ riskLevel: "low" }), "default", "full", { ask: ["intervene"] }, ["intervene(alteplase)"])).toMatchObject({ decision: "ask", ruleId: "rule.ask", allowSession: false });
     expect(check(tool({ riskLevel: "high" }), "auto", "full", { ask: ["intervene(alt*)"] })).toMatchObject({ decision: "ask", ruleId: "rule.ask", allowSession: false });
   });
 
@@ -220,5 +228,45 @@ describe("learner action mapping", () => {
     expect(actionToolName({ type: "note", text: "x" } as ClinicalAction)).toBeNull();
     expect(actionToolName({ type: "advance-time", minutes: 5 } as ClinicalAction)).toBe("wait");
     expect(actionSpecifier({ type: "set-phase", phase: "day-3" } as ClinicalAction)).toBe("day-3");
+  });
+});
+
+describe("rules match what a call resolves to, not the caller's spelling", () => {
+  const caseDef = loadMiniCase();
+  const toolCtx = (extra: Record<string, unknown> = {}) => ({ caseDef, locale: "en", agent: "clinician", catalogs: [], state: () => ({ phase: "ed" }), ...extra }) as unknown as ToolContext;
+  const decide = (t: ToolDefinition<ToolArgs>, args: ToolArgs, c: ToolContext, rules: { allow?: string[]; deny?: string[] }) => checkPermission(t, args, c, "default", "full", rules).decision;
+
+  it("consult: deny consult(nurse) also stops a consult that names a nurse on the staff", async () => {
+    const content = await loadContent({ cases: false });
+    const facility = content.facilities.get("general-hospital")?.def;
+    expect(facility).toBeDefined();
+    const consult = clinicalTools().find((x) => x.name === "consult")!;
+    let reached: string | null = null;
+    const c = toolCtx({ facility, ask: async (agent: string) => ((reached = agent), { text: "ok" }) });
+    const args = { staff: "ed-nurse", question: "What are the vitals?" };
+    await consult.run(args, c);
+    expect(reached).toBe("nurse");
+    expect(decide(consult, args, c, { deny: ["consult(nurse)"] })).toBe("deny");
+    expect(decide(consult, args, c, { deny: ["consult(staff:ed-nurse)"] })).toBe("deny");
+    expect(decide(consult, { role: "attending", question: "Next step?" }, c, { deny: ["consult(nurse)"] })).toBe("allow");
+  });
+
+  it("order_study: deny order_study(<code>) also stops the study ordered by an alias", () => {
+    const profile = { code: "cbc-new", name: { en: "Blood count", "zh-CN": "血常规" }, aliases: { en: ["FBC", "CBC"], "zh-CN": ["血常规"] } };
+    expect(resolveStudy([profile] as never, "FBC")?.code).toBe("cbc-new");
+    const orderStudy = studyTools().find((x) => x.name === "order_study")!;
+    const c = { caseDef: { ...caseDef, studies: [profile] }, locale: "en" } as unknown as ToolContext;
+    expect(decide(orderStudy, { query: "FBC" }, c, { deny: ["order_study(cbc-new)"] })).toBe("deny");
+    expect(decide(orderStudy, { query: "血常规" }, c, { deny: ["order_study(cbc-new)"] })).toBe("deny");
+    expect(decide(orderStudy, { query: "chest film" }, c, { deny: ["order_study(cbc-new)"] })).toBe("allow");
+  });
+
+  it("place_hold / release_hold: a deny rule on the intervention id also stops a hold named by free text", () => {
+    for (const name of ["place_hold", "release_hold"]) {
+      const hold = npcTools().find((x) => x.name === name)!;
+      const args = { query: "tenecteplase", [name === "place_hold" ? "reason" : "reassessment"]: "Pending CT." };
+      expect(decide(hold, args, toolCtx(), { deny: [`${name}(lysis)`] }), name).toBe("deny");
+      expect(decide(hold, args, toolCtx(), { deny: [`${name}(aspirin)`] }), name).toBe("allow");
+    }
   });
 });

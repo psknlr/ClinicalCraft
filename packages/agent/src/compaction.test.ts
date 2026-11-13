@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { compactConversation, compactionSplitIndex, compactionSystemPrompt, deterministicSummary, estimateTokens, IMAGE_TOKEN_ESTIMATE } from "./compaction.js";
+import {
+  compactConversation,
+  compactionSplitIndex,
+  compactionSystemPrompt,
+  deterministicSummary,
+  estimateTokens,
+  IMAGE_TOKEN_ESTIMATE,
+  SUMMARY_MAX_TOKENS,
+  SUMMARY_REASONING_MAX_TOKENS,
+} from "./compaction.js";
 import { ScriptedProvider, textScript } from "./providers/scripted.js";
-import type { ChatMessage } from "./providers/types.js";
+import type { ChatMessage, StreamEvent } from "./providers/types.js";
 
 const user = (text: string): ChatMessage => ({ role: "user", content: [{ type: "text", text }] });
 const assistant = (text: string): ChatMessage => ({ role: "assistant", content: [{ type: "text", text }] });
@@ -22,6 +31,11 @@ describe("estimateTokens", () => {
     const msgs: ChatMessage[] = [user("abcd"), { role: "user", content: [{ type: "image", mediaType: "image/png", data: "x" }] }];
     expect(estimateTokens(msgs)).toBe(4 + 1 + 4 + IMAGE_TOKEN_ESTIMATE);
     expect(estimateTokens(user("abcd"))).toBe(5);
+  });
+
+  it("counts the camera frames carried inside tool results (the auto-compaction threshold sees them)", () => {
+    const frame: ChatMessage = { role: "user", content: [{ type: "tool_result", callId: "c1", content: "abcd", images: [{ mediaType: "image/jpeg", data: "A".repeat(80_000) }, { mediaType: "image/jpeg", data: "B" }] }] };
+    expect(estimateTokens(frame)).toBe(4 + 1 + 8 + 2 * IMAGE_TOKEN_ESTIMATE);
   });
 });
 
@@ -107,6 +121,45 @@ describe("compactConversation", () => {
     expect(r.messages).toEqual(history.slice(0, 2));
     expect(r.summary).toBe("");
     expect(r.compactedCount).toBe(0);
+  });
+
+  it("reports the summary request's token usage (zero without a model)", async () => {
+    const summary: StreamEvent[] = [
+      { type: "start", model: "m" },
+      { type: "text_delta", text: "## Pending\nnone recorded" },
+      { type: "finish", stopReason: "end_turn", usage: { inputTokens: 1000, outputTokens: 50, cacheReadTokens: 7 } },
+    ];
+    const r = await compactConversation({ provider: new ScriptedProvider([summary]), messages: history, keepRecent: 4 });
+    expect(r.deterministic).toBe(false);
+    expect(r.usage).toEqual({ inputTokens: 1000, outputTokens: 50, cacheReadTokens: 7, cacheWriteTokens: 0 });
+    expect((await compactConversation({ provider: null, messages: history, keepRecent: 4 })).usage).toMatchObject({ inputTokens: 0, outputTokens: 0 });
+  });
+
+  it("falls back to the digest when the summary is cut off by max_tokens (its usage still counts)", async () => {
+    const provider = new ScriptedProvider([
+      [
+        { type: "start", model: "m" },
+        { type: "text_delta", text: "## Presenting complaint & history elicited\nChest pain for 3" },
+        { type: "finish", stopReason: "max_tokens", usage: { inputTokens: 100, outputTokens: 2000 } },
+      ],
+    ]);
+    const r = await compactConversation({ provider, messages: history, keepRecent: 4, locale: "en" });
+    expect(r.compactedCount).toBeGreaterThan(0);
+    expect(r.deterministic).toBe(true);
+    expect(r.summary).not.toContain("Chest pain for 3");
+    expect(r.usage).toMatchObject({ inputTokens: 100, outputTokens: 2000 });
+  });
+
+  it("sizes the summary budget for reasoning models, whose thinking counts against it", async () => {
+    const plain = new ScriptedProvider([textScript("## Pending\nnone recorded")]);
+    await compactConversation({ provider: plain, messages: history, keepRecent: 4 });
+    expect(plain.requests[0]!.maxTokens).toBe(SUMMARY_MAX_TOKENS);
+    const reasoning = new ScriptedProvider([textScript("## Pending\nnone recorded")], { capabilities: { reasoning: "anthropic-effort" } });
+    await compactConversation({ provider: reasoning, messages: history, keepRecent: 4 });
+    expect(reasoning.requests[0]!.maxTokens).toBe(SUMMARY_REASONING_MAX_TOKENS);
+    const explicit = new ScriptedProvider([textScript("## Pending\nnone recorded")], { capabilities: { reasoning: "anthropic-effort" } });
+    await compactConversation({ provider: explicit, messages: history, keepRecent: 4, maxSummaryTokens: 1234 });
+    expect(explicit.requests[0]!.maxTokens).toBe(1234);
   });
 
   it("localises prompts and digests", () => {

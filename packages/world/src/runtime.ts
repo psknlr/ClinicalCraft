@@ -209,6 +209,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     },
     relocatePatient: (destination) => actions.relocatePatient(destination),
     refreshPatient: () => actions.refreshPatient(),
+    transportTarget: (parameters) => actions.transportTarget(parameters),
 
     execute: (request, signal) => actions.execute(request, signal),
     feedback: (actionId) => actions.feedback(actionId),

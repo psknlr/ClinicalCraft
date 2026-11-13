@@ -340,7 +340,7 @@ export class TeamScheduler {
     this.observe(member, "receipt", receipt.id, `${receipt.operation} ${receipt.outcome}`);
     this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
     // the member inspects the receipt at once: a hand-over done is reported; a refusal they cannot fix is said
-    const follow = afterAct(this.view(member), task, { status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message, operation: p.operation, ...(r.hint?.goal ? { hint: r.hint.goal } : {}) });
+    const follow = afterAct(this.view(member), task, { status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message, operation: p.operation, ...(r.hint?.goal ? { hint: r.hint.goal } : {}), ...(p.targetId ? { target: p.targetId } : {}) });
     if (follow && follow.kind === "say") {
       this.apply(member, follow.patch ?? []);
       this.send(member, follow);
@@ -433,7 +433,9 @@ export class TeamScheduler {
     const named = item?.trim() || (text ? this.itemNamedIn(text) : null);
     if (named) about.item = named;
     this.send(surgeon, { kind: "say", to: to.from, message: { thread: to.thread, kind, text: said, about, evidence: [], replyTo: to.id } });
+    // taken in, as a member takes a message in: answered once (the simulated surgeon of observer mode never answers it again)
     to.read = true;
+    surgeon.inbox = surgeon.inbox.filter((x) => x !== to.id);
     return { message: this.state.messages.at(-1)! };
   }
 

@@ -18,8 +18,10 @@
  *   - server-side refusal fallbacks (`fallbacks: "default"` + beta
  *     `server-side-fallback-2026-07-01`) for the models that support them on
  *     the first-party API only;
- *   - history is append-only: assistant turns are echoed verbatim from
- *     `provider_raw` (minus pre-fallback-boundary model-internal blocks);
+ *   - history is append-only within a turn: assistant turns are echoed
+ *     verbatim from `provider_raw` (minus pre-fallback-boundary model-internal
+ *     blocks); earlier turns' thinking blocks are not replayed (the system
+ *     prompt carries the live case state, so they would no longer match);
  *     tool pairing is repaired deterministically (synthetic error results for
  *     unanswered tool_use, orphan results dropped);
  *   - effort is clamped per model; `retry-after` hints ride on errors.
@@ -186,18 +188,44 @@ function userBlocks(message: ChatMessage): { results: BetaToolResultBlockParam[]
   return { results, other };
 }
 
+/** Model-internal reasoning blocks (bound to the conversation prefix that produced them). */
+const THINKING_TYPES: ReadonlySet<string> = new Set(["thinking", "redacted_thinking"]);
+
+/**
+ * Index of the message that starts the current turn: the latest user message
+ * that is not only tool results (the learner's message, a Stop-hook nudge);
+ * -1 when there is none (a turn continued without one).
+ */
+export function currentTurnStart(messages: readonly ChatMessage[]): number {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i]!;
+    if (m.role === "user" && m.content.some((p) => p.type === "image" || (p.type === "text" && p.text.trim() !== ""))) return i;
+  }
+  return -1;
+}
+
 /**
  * Convert provider-neutral history to Messages API params. Consecutive user
  * messages are merged so that every tool_result of a turn travels in ONE user
  * message (tool_results first, as the API requires). Empty messages are
  * dropped; tool pairing is repaired (see `repairToolPairing`); a leading
  * assistant message gets a minimal user turn before it.
+ *
+ * Thinking blocks are replayed for the current turn only (its tool loop, which
+ * runs under one system prompt and tool set): a thinking block is bound to the
+ * system prompt, tools and messages that preceded it, and the system prompt
+ * carries the live case state, so an earlier turn's block would no longer
+ * match ("preserved thinking": a 400 on enforced accounts). Dropping every
+ * earlier block is a leading run, oldest first, which keeps the current
+ * turn's blocks valid.
  */
 export function toAnthropicMessages(messages: readonly ChatMessage[], options: EchoOptions = {}): BetaMessageParam[] {
   const out: BetaMessageParam[] = [];
-  for (const message of messages) {
+  const turnStart = currentTurnStart(messages);
+  for (const [i, message] of messages.entries()) {
     if (message.role === "assistant") {
-      const blocks = assistantBlocks(message, options);
+      const echoed = assistantBlocks(message, options);
+      const blocks = i < turnStart ? echoed.filter((b) => !THINKING_TYPES.has(b.type)) : echoed;
       if (blocks.length === 0) continue;
       const prev = out[out.length - 1];
       if (prev && prev.role === "assistant" && Array.isArray(prev.content)) {

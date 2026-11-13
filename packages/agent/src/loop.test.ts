@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import { makeSession, msgsOf, waitFor } from "./__fixtures__/harness.js";
 import { parseJsonObject, runAgentTurn, type LoopHost } from "./loop.js";
 import type { ApprovalDecision, EventMsg } from "./protocol.js";
+import { buildAnthropicRequest } from "./providers/anthropic.js";
 import { ScriptedProvider, textScript, toolCallScript } from "./providers/scripted.js";
-import type { StreamEvent } from "./providers/types.js";
+import type { StreamEvent, SystemSection } from "./providers/types.js";
+import type { ToolDefinition } from "./tools/types.js";
 
 const call = (id: string, name: string, args: unknown) => ({ id, name, args });
 
@@ -269,5 +271,82 @@ describe("runAgentTurn (direct)", () => {
     expect(parseJsonObject('Sure! {"a": {"b": "}"}} trailing')).toEqual({ a: { b: "}" } });
     expect(parseJsonObject("```json\n{\"x\":1}\n```")).toEqual({ x: 1 });
     expect(parseJsonObject("no json")).toBeNull();
+  });
+});
+
+describe("thinking blocks and the request prefix", () => {
+  const stateHost = (): LoopHost => ({
+    toolContext: () =>
+      ({
+        caseDef: undefined as never,
+        facility: null,
+        catalogs: [],
+        locale: "en",
+        agent: "clinician",
+        state: () => ({ seq: 0 }) as never,
+        dispatch: () => undefined as never,
+        ask: async () => ({ text: "", grounded: [] }),
+        updatePlan: () => undefined,
+      }) as never,
+    authorize: async () => ({ kind: "allow" }),
+  });
+  const probe = (run: () => void): ToolDefinition => ({
+    name: "probe",
+    description: "probe",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    readOnly: true,
+    sideEffect: "none",
+    scope: "history-only",
+    risk: () => "none",
+    summarize: () => "probe",
+    run: async () => {
+      run();
+      return { ok: true, output: "probe ok" };
+    },
+  });
+
+  it("keeps the system sections and tools of every request of a turn identical (its thinking is bound to them)", async () => {
+    const system: SystemSection[] = [{ id: "clock", text: "Clock: 09:00", cache: "dynamic" }];
+    const tools = [
+      probe(() => {
+        // a caller's arrays changing while the turn runs (the live state moved on)
+        system[0] = { id: "clock", text: "Clock: 09:05", cache: "dynamic" };
+        system.push({ id: "late", text: "late section", cache: "dynamic" });
+      }),
+    ];
+    const provider = new ScriptedProvider([toolCallScript([call("c1", "probe", {})]), textScript("done")]);
+    const r = await runAgentTurn({ host: stateHost(), agent: { name: "clinician" }, provider, system, history: [], userParts: [{ type: "text", text: "go" }], tools, maxToolRounds: 3, turnId: "t", emit: () => undefined, retry: false });
+    expect(r.stopReason).toBe("end_turn");
+    expect(provider.requests).toHaveLength(2);
+    expect(provider.requests[0]!.system).toEqual([{ id: "clock", text: "Clock: 09:00", cache: "dynamic" }]);
+    expect(provider.requests[1]!.system).toEqual(provider.requests[0]!.system);
+    expect(provider.requests[1]!.tools).toEqual(provider.requests[0]!.tools);
+  });
+
+  it("never replays an earlier turn's Claude thinking block under the next turn's (changed) system prompt", async () => {
+    const claude = (text: string, sig: string): StreamEvent[] => [
+      { type: "start", model: "claude-opus-5-5" },
+      { type: "text_delta", text },
+      { type: "finish", stopReason: "end_turn", usage: { inputTokens: 1, outputTokens: 1 }, raw: [{ type: "thinking", thinking: "", signature: sig }, { type: "text", text }] },
+    ];
+    const provider = new ScriptedProvider([claude("First look.", "sig-1"), claude("Aspirin is in.", "sig-2")], { wire: "anthropic-messages", model: "claude-opus-5-5" });
+    const t = await makeSession({
+      settingsPatch: { provider: "anthropic" },
+      resolveProvider: (id: string) => ({ id, wire: "anthropic-messages", model: "claude-opus-5-5", apiKey: "test-key" }),
+      providerFactory: () => provider,
+    });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t.session.run({ type: "user_message", text: "What do you see?", to: "clinician" });
+    await t.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "aspirin" } });
+    await t.session.run({ type: "user_message", text: "And now?", to: "clinician" });
+    expect(provider.requests).toHaveLength(2);
+    const cfg = { id: "anthropic", model: "claude-opus-5-5" };
+    const first = buildAnthropicRequest(cfg, provider.requests[0]!);
+    const second = buildAnthropicRequest(cfg, provider.requests[1]!);
+    // the system prompt carries the live state (clock, case status): it changed between the turns …
+    expect(JSON.stringify(second.system)).not.toBe(JSON.stringify(first.system));
+    // … so the first turn's block (bound to the old prefix: a 400 on enforced accounts) is not replayed; its text is
+    expect(JSON.stringify(second.messages)).not.toContain("sig-1");
+    expect(JSON.stringify(second.messages)).toContain("First look.");
   });
 });
