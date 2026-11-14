@@ -82,7 +82,6 @@
         "CIRSE Standards of Practice on Bronchial Artery Embolisation (2022)",
         "AAAAI/ACAAI Practice parameter for the diagnosis and management of primary immunodeficiency (2015)",
         "Woellner et al. Mutations in STAT3 and diagnostic guidelines for hyper-IgE syndrome (2010)",
-        "IUIS Human Inborn Errors of Immunity: 2022 Update on the Classification",
         "ACMG/AMP Standards and guidelines for the interpretation of sequence variants (2015)",
         "WHO Guideline on haemoglobin cutoffs to define anaemia in individuals and populations (2024)"
       ],
@@ -121,7 +120,7 @@
     "persona": {
       "personality": {
         "zh-CN": "12岁男孩，这一年咳了5次血；问到自己的感受时自己回答，小时候的事由家长补充。",
-        "en": "A 12-year-old boy who has coughed up blood five times this year; he answers questions about how he feels himself, and his parent fills in his early childhood."
+        "en": "A 12-year-old boy who has coughed up blood five times in the past year; he answers questions about how he feels himself, and his parent fills in his early childhood."
       },
       "speechStyle": {
         "zh-CN": "孩子说话简短直白；家长用日常语言讲经过，不用医学术语。",
@@ -131,7 +130,7 @@
       "affect": "calm",
       "openingLine": {
         "zh-CN": "医生好。我这一年咳了五次血。",
-        "en": "Hello, doctor. I've coughed up blood five times this year."
+        "en": "Hello, doctor. I've coughed up blood five times in the past year."
       },
       "fallbackUnknown": {
         "zh-CN": "这个我说不上来，医生。",
@@ -351,7 +350,11 @@
           "colour",
           "family",
           "weigh",
-          "nose"
+          "nose",
+          "how much",
+          "how many",
+          "amount",
+          "volume"
         ]
       },
       "disclosure": "volunteer",
@@ -388,6 +391,8 @@
           "每次多少",
           "每回",
           "咯了多少",
+          "咳多少",
+          "咯多少",
           "次数",
           "出血量",
           "毫升",
@@ -560,6 +565,21 @@
           "last bleed",
           "recent episode",
           "last one"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "住院",
+          "查出",
+          "原因"
+        ],
+        "en": [
+          "hospital",
+          "admission",
+          "admitted",
+          "find",
+          "found",
+          "cause"
         ]
       },
       "disclosure": "unknown",
@@ -844,14 +864,17 @@
           "其他手术",
           "还做过",
           "疖子",
-          "脓包"
+          "脓包",
+          "皮肤感染",
+          "长疮"
         ],
         "en": [
           "other operation",
           "any other",
           "apart from",
           "boil",
-          "boils"
+          "boils",
+          "skin infection"
         ]
       },
       "required": true,
@@ -891,6 +914,15 @@
           "abscesses",
           "skin infection",
           "skin infections"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "脖子",
+          "颈"
+        ],
+        "en": [
+          "neck"
         ]
       },
       "disclosure": "unknown",
@@ -993,8 +1025,8 @@
         "en": "Has he grown and developed like other children his age?"
       },
       "answer": {
-        "zh-CN": "跟同龄孩子一样，个子和智力发育都正常。",
-        "en": "Yes — his growth and his learning are just like other children his age."
+        "zh-CN": "跟同龄孩子一样，身体和智力发育都正常。",
+        "en": "Yes — in body and in mind he's developed just like other children his age."
       },
       "keywords": {
         "zh-CN": [
@@ -1282,7 +1314,7 @@
       },
       "answer": {
         "zh-CN": "这个我不清楚，医生。",
-        "en": "I'm not aware of anything, doctor — I'm not sure."
+        "en": "I really don't know, doctor."
       },
       "keywords": {
         "zh-CN": [
@@ -1516,9 +1548,7 @@
       "abnormal": false,
       "required": true,
       "phases": [
-        "admission",
-        "workup",
-        "confirmation"
+        "admission"
       ],
       "source": {
         "zh-CN": "病例报告·体格检查（据1.0.0版提取）",
@@ -1556,9 +1586,7 @@
       "abnormal": false,
       "required": true,
       "phases": [
-        "admission",
-        "workup",
-        "confirmation"
+        "admission"
       ],
       "source": {
         "zh-CN": "病例报告·体格检查（据1.0.0版提取）",
@@ -1843,7 +1871,7 @@
           },
           "text": {
             "zh-CN": "增强CT及血管重建：右肺结节内见强化血管，部分有肺动静脉伴行；提示血管发育畸形，肺动静脉瘘可能。",
-            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, accompanied at least in part by pulmonary arteries and veins. Impression: a vascular malformation, described as developmental; a pulmonary arteriovenous fistula is possible."
+            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins. Impression: a developmental vascular malformation; a pulmonary arteriovenous fistula is possible."
           },
           "note": {
             "zh-CN": "未记录：结节的数目和大小、供血血管直径、增强时相，以及是否评估了支气管动脉。",
@@ -1862,7 +1890,7 @@
           },
           "text": {
             "zh-CN": "增强CT及血管重建：右肺结节内见强化血管，部分有肺动静脉伴行；提示血管发育畸形，肺动静脉瘘可能。",
-            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, accompanied at least in part by pulmonary arteries and veins. Impression: a vascular malformation, described as developmental; a pulmonary arteriovenous fistula is possible."
+            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins. Impression: a developmental vascular malformation; a pulmonary arteriovenous fistula is possible."
           },
           "note": {
             "zh-CN": "未记录：结节的数目和大小、供血血管直径、增强时相，以及是否评估了支气管动脉。",
@@ -1881,7 +1909,7 @@
           },
           "text": {
             "zh-CN": "增强CT及血管重建：右肺结节内见强化血管，部分有肺动静脉伴行；提示血管发育畸形，肺动静脉瘘可能。",
-            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, accompanied at least in part by pulmonary arteries and veins. Impression: a vascular malformation, described as developmental; a pulmonary arteriovenous fistula is possible."
+            "en": "Contrast CT with vascular reconstruction: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins. Impression: a developmental vascular malformation; a pulmonary arteriovenous fistula is possible."
           },
           "note": {
             "zh-CN": "未记录：结节的数目和大小、供血血管直径、增强时相，以及是否评估了支气管动脉。",
@@ -2249,8 +2277,8 @@
     {
       "id": "gene",
       "name": {
-        "zh-CN": "STAT3基因检测（患儿及父母）",
-        "en": "STAT3 gene test (patient and parents)"
+        "zh-CN": "家系基因检测（患儿及父母）",
+        "en": "Family genetic test (patient and parents)"
       },
       "category": "record",
       "aliases": {
@@ -2353,11 +2381,11 @@
         "outcome": {
           "available": true,
           "date": {
-            "zh-CN": "出院后半年",
-            "en": "Six months after discharge"
+            "zh-CN": "随访半年时",
+            "en": "At the six-month follow-up"
           },
           "text": {
-            "zh-CN": "半年后电话随访：未再咯血。因经济困难未手术。血管瘘的类型没有经手术证实，是肺动静脉瘘还是支气管动静脉瘘没有区分清楚。",
+            "zh-CN": "半年时电话随访：未再咯血。因经济困难未手术。血管瘘的类型没有经手术证实，是肺动静脉瘘还是支气管动静脉瘘没有区分清楚。",
             "en": "Telephone follow-up at six months: no further coughing up of blood. No operation was performed because of financial difficulty. The type of the vascular fistula was not confirmed surgically, and whether it is a pulmonary or a bronchial arteriovenous fistula was not resolved."
           },
           "figures": [
@@ -2414,8 +2442,8 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "该次住院没有测SpO₂，这里无法给出数值。",
-            "en": "SpO₂ was not measured during the reported admission, so no value can be given here."
+            "zh-CN": "这次住院期间没有测SpO₂，没有数值。",
+            "en": "SpO₂ was not measured during this admission, so there is no value."
           },
           "source": {
             "zh-CN": "未记录：保持未知，不补写",
@@ -2429,8 +2457,8 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "该次住院没有测SpO₂，这里无法给出数值。",
-            "en": "SpO₂ was not measured during the reported admission, so no value can be given here."
+            "zh-CN": "这次住院期间没有测SpO₂，没有数值。",
+            "en": "SpO₂ was not measured during this admission, so there is no value."
           },
           "source": {
             "zh-CN": "未记录：保持未知，不补写",
@@ -2444,8 +2472,8 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "该次住院没有测SpO₂，这里无法给出数值。",
-            "en": "SpO₂ was not measured during the reported admission, so no value can be given here."
+            "zh-CN": "这次住院期间没有测SpO₂，没有数值。",
+            "en": "SpO₂ was not measured during this admission, so there is no value."
           },
           "source": {
             "zh-CN": "未记录：保持未知，不补写",
@@ -3056,8 +3084,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "申请肺动脉和支气管（体循环）动脉造影，明确供血血管并同期栓塞；术前查血小板计数、预防性使用抗生素。",
-        "en": "Request angiography of the pulmonary and the bronchial (systemic) arteries to define the feeding vessels and embolise them in the same session; platelet count and antibiotic cover first."
+        "zh-CN": "申请肺动脉和支气管（体循环）动脉造影，明确供血血管并同期栓塞；术前先查血小板计数（凝血已记录为未见异常），并为操作预防性使用抗生素。",
+        "en": "Request angiography of the pulmonary and the bronchial (systemic) arteries to define the feeding vessels and embolise them in the same session; check the platelet count first (clotting is reported as showing no abnormality) and give antibiotic cover for the procedure."
       },
       "risk": "low",
       "maxDoses": 2,
@@ -3540,8 +3568,8 @@
     {
       "id": "obj-results",
       "title": {
-        "zh-CN": "解读检查结果",
-        "en": "Make sense of the results"
+        "zh-CN": "看懂住院期间的结果",
+        "en": "Weigh what the admission results show"
       },
       "short": {
         "zh-CN": "结果",
@@ -3635,8 +3663,8 @@
         "en": "Once every decision is made, the six-month follow-up opens; compare it with your plan."
       },
       "guidance": {
-        "zh-CN": "出院后半年。",
-        "en": "Six months after discharge."
+        "zh-CN": "随访半年时。",
+        "en": "At the six-month follow-up."
       },
       "completeWhen": {
         "read": "followup",
@@ -3655,7 +3683,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "他一年来咯血5次，每次约50–100 mL，之前住院未查明原因；现在呼吸平稳，未见口唇青紫。入院后的首要安排是什么？",
-        "en": "He has coughed up blood five times this year, about 50–100 mL each time, and an earlier admission found no cause. He is breathing steadily and his lips are not blue. What is the right plan for his admission?"
+        "en": "He has coughed up blood five times in the past year, about 50–100 mL each time, and an earlier admission found no cause. He is breathing steadily and his lips are not blue. What is the right plan for his admission?"
       },
       "requires": {
         "all": [
@@ -3687,7 +3715,7 @@
           "correct": true,
           "feedback": {
             "zh-CN": "正确。一年5次、每次50–100 mL的咯血，上次住院未查明原因，必须找到出血来源；咯血的危险在于气道。口唇不紫不能代表血氧正常：发绀是晚期、不敏感的体征，贫血时出现得更晚，所以要测SpO₂。CT能找到大多数患者的出血原因和部位（CIRSE支气管动脉栓塞实践标准，2022），增强扫描加血管重建还能显示相关血管。在结核常见的地区，痰病原学检查不可少。",
-            "en": "Right. Five bleeds of 50–100 mL in a year, unexplained after an earlier admission, need a source, and the danger in haemoptysis is the airway. Pink lips are not a saturation: cyanosis is a late, insensitive sign and appears later still with anaemia, so measure SpO₂. CT identifies the cause and site of bleeding in most patients (CIRSE standards of practice on bronchial artery embolisation, 2022), and contrast with vascular reconstruction shows the vessels involved. Where TB is common, sputum microbiology belongs in the work-up."
+            "en": "Right. Five bleeds of 50–100 mL in a year, unexplained after an earlier admission, need a source, and the danger in haemoptysis is the airway. Lips that are not blue are not a saturation: cyanosis is a late, insensitive sign and appears later still with anaemia, so measure SpO₂. CT identifies the cause and site of bleeding in most patients (CIRSE standards of practice on bronchial artery embolisation, 2022), and contrast with vascular reconstruction shows the vessels involved. Where TB is common, sputum microbiology belongs in the work-up."
           }
         },
         {
@@ -3717,13 +3745,13 @@
         {
           "id": "xray-discharge",
           "text": {
-            "zh-CN": "他现在不出血、口唇红润，说明血氧正常：今天拍胸片，若正常就出院、门诊随访，不必测血氧饱和度",
-            "en": "He is not bleeding and his pink lips show his oxygen is normal: a chest X-ray today, and if it is clear, discharge him to outpatient review without checking his saturation"
+            "zh-CN": "他现在不出血、口唇也不紫，说明血氧正常：今天拍胸片，若正常就出院、门诊随访，不必测血氧饱和度",
+            "en": "He is not bleeding and his lips are not blue, so his oxygen is normal: a chest X-ray today, and if it is clear, discharge him to outpatient review without checking his saturation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "口唇红润不能说明血氧正常：发绀出现得晚，贫血时更晚。胸片正常也不能排除血管畸形，即使血氧饱和度正常（BTS肺动静脉畸形临床声明，2017，针对成人）。一年5次、每次最多100 mL的不明原因咯血，出院前必须查明原因。",
-            "en": "Pink lips do not show a normal SpO₂ — cyanosis appears late, later still with anaemia — and a normal chest X-ray does not exclude a vascular malformation even with normal saturations (BTS clinical statement on pulmonary AVMs, 2017, adults). Five unexplained bleeds of up to 100 mL need a diagnosis before discharge."
+            "zh-CN": "口唇不紫不能说明血氧正常：发绀出现得晚，贫血时更晚。胸片正常也不能排除血管畸形，即使血氧饱和度正常（BTS肺动静脉畸形临床声明，2017，针对成人）。一年5次、每次最多100 mL的不明原因咯血，出院前必须查明原因。",
+            "en": "Lips that are not blue do not show a normal SpO₂ — cyanosis appears late, later still with anaemia — and a normal chest X-ray does not exclude a vascular malformation even with normal saturations (BTS clinical statement on pulmonary AVMs, 2017, adults). Five unexplained bleeds of up to 100 mL need a diagnosis before discharge."
           }
         }
       ]
@@ -3965,7 +3993,7 @@
         {
           "id": "shared-plan",
           "text": {
-            "zh-CN": "免疫科随访，抗葡萄球菌预防用药加皮肤护理；安排栓塞；牙科操作前用抗生素；再咯血时怎么办；遗传咨询；帮助解决费用",
+            "zh-CN": "免疫科随访，抗葡萄球菌预防加皮肤护理；安排栓塞；牙科操作前用抗生素；书面再咯血预案；遗传咨询；帮助解决费用",
             "en": "Immunology follow-up with anti-staphylococcal prophylaxis and skin care; embolisation planned; antibiotic cover before dental work; a bleeding plan; genetic counselling; help with costs"
           },
           "correct": true,
@@ -3977,8 +4005,8 @@
         {
           "id": "stop-if-dry",
           "text": {
-            "zh-CN": "如果今后几个月不再咯血，就视为肺部病变已经愈合，结束呼吸科和介入科的随访，只继续湿疹的皮肤护理",
-            "en": "If he has no more bleeding over the coming months, regard the lung lesion as healed, close respiratory and interventional follow-up and keep only the skin care for his eczema"
+            "zh-CN": "如果今后几个月不再咯血，就视为肺部病变已经愈合，结束呼吸科和介入科的随访，只在免疫科门诊继续湿疹的皮肤护理",
+            "en": "If he has no more bleeding over the coming months, regard the lung lesion as healed, close respiratory and interventional follow-up, and keep only the skin care for his eczema in the immunology clinic"
           },
           "correct": false,
           "feedback": {
@@ -4093,7 +4121,7 @@
       "critical": true,
       "text": {
         "zh-CN": "入院时就测SpO₂，没有凭口唇不紫认定血氧正常",
-        "en": "Measured SpO₂ on admission rather than taking pink lips as proof of normal oxygenation"
+        "en": "Measured SpO₂ on admission instead of reading normal oxygenation from lips that are not blue"
       },
       "met": {
         "ordered": "spo2",
@@ -4313,7 +4341,7 @@
       },
       "judgeGuidance": {
         "zh-CN": "按Calgary–Cambridge评估：问候孩子和家长；咯血的经过让孩子自己说，婴幼儿期、颈部手术和乳牙由家长补充；解释正在查咯血原因，以及为什么即使口唇不紫也要测血氧。基因结果回来时用SPIKES告知坏消息：这是一种终身但可以管理的免疫病；变异是他身上新发生的，不是父母遗传的（不要让父母自责）；他将来的每个孩子有50%的机会遗传。说明肺部病变仍需造影、很可能需要栓塞，牙科操作前要用抗生素，再咯血时怎么办；坦诚地询问费用顾虑，介绍社工和医保。用回授法确认理解。不要承诺不会再咯血，也不要把病变类型说成已经确定。原报告没有记录和家属的沟通。",
-        "en": "Calgary–Cambridge: greet the boy and his parent; let the boy describe the bleeding in his own words and the parent fill in infancy, the neck operation and the teeth; explain that the cause of the bleeding is being looked for and why his oxygen will be measured even though his lips look pink. When the STAT3 result is back, break the news with SPIKES: a lifelong but manageable immune condition; the variant arose in him and was not passed on by his parents (no blame); each of his future children has a 50 % chance of inheriting it. Explain that the lung lesion still needs angiography and probably embolisation, that dental work needs antibiotic cover, and what to do if he coughs up blood again; ask openly about cost and offer the social worker and insurance help. Check understanding by teach-back. Do not promise that the bleeding will not come back, and do not present the lesion's type as settled. The report records no conversation with the family."
+        "en": "Calgary–Cambridge: greet the boy and his parent; let the boy describe the bleeding in his own words and the parent fill in infancy, the neck operation and the teeth; explain that the cause of the bleeding is being looked for and why his oxygen will be measured even though his lips are not blue. When the STAT3 result is back, break the news with SPIKES: a lifelong but manageable immune condition; the variant arose in him and was not passed on by his parents (no blame); each of his future children has a 50 % chance of inheriting it. Explain that the lung lesion still needs angiography and probably embolisation, that dental work needs antibiotic cover, and what to do if he coughs up blood again; ask openly about cost and offer the social worker and insurance help. Check understanding by teach-back. Do not promise that the bleeding will not come back, and do not present the lesion's type as settled. The report records no conversation with the family."
       }
     }
   ],
@@ -4326,7 +4354,7 @@
       },
       "knowledge": {
         "zh-CN": "这是一份按时间推进的历史病例：入院时的咯血病史和床旁评估、住院检查结果、基因结果与出院计划，最后是半年随访。用苏格拉底式提问引导：口唇不紫能说明血氧吗？为什么不能给强化如血管的结节穿刺？肺动静脉瘘和支气管动静脉瘘怎么区分，哪项检查能回答？新发的显性变异对他和他将来的孩子意味着什么？只用记录的事实：SpO₂没有测；血小板和白细胞计数、体重、生命体征、结节数目和大小都没有记录——不要替它们补数。不提前透露随访结果。复盘用PEARLS。",
-        "en": "A historical teaching case that moves through one admission: the bleeding history and bedside assessment, the admission results, the genetic result and the discharge plan, then the six-month follow-up. Ask Socratic questions: what do pink lips tell you about oxygen? Why not needle a nodule that enhances like a vessel? What separates a pulmonary from a bronchial arteriovenous fistula, and which test answers it? What does a new dominant variant mean for him and for his future children? Use recorded facts only: SpO₂ was not measured, and the platelet and white counts, his weight, his vital signs and the number and size of the nodules are not recorded — do not supply them. Do not reveal the follow-up early. Debrief with PEARLS."
+        "en": "A historical teaching case that moves through one admission: the bleeding history and bedside assessment, the admission results, the genetic result and the discharge plan, then the six-month follow-up. Ask Socratic questions: what do lips that are not blue tell you about his oxygen? Why not needle a nodule that enhances like a vessel? What separates a pulmonary from a bronchial arteriovenous fistula, and which test answers it? What does a new dominant variant mean for him and for his future children? Use recorded facts only: SpO₂ was not measured, and the platelet and white counts, his weight, his vital signs and the number and size of the nodules are not recorded — do not supply them. Do not reveal the follow-up early. Debrief with PEARLS."
       },
       "interprets": [
         "immune",
@@ -4359,8 +4387,8 @@
         "en": "Radiologist"
       },
       "knowledge": {
-        "zh-CN": "能解释CT报告：右肺结节内见强化血管，部分有肺动静脉伴行，提示血管发育畸形，肺动静脉瘘可能。说明CT不一定能区分肺动静脉畸形和支气管（体循环）动脉—肺血管瘘，肺动脉和支气管动脉的导管造影可以区分并可同期栓塞；报告里没有结节数目、大小和血管直径。不主张对强化如血管的病变穿刺。",
-        "en": "Can explain the CT report: enhancing vessels within nodules in the right lung, accompanied in part by pulmonary arteries and veins, suggesting a vascular malformation described as developmental, possibly a pulmonary arteriovenous fistula. Explains that CT cannot always tell a pulmonary AVM from a bronchial (systemic) artery–to–pulmonary fistula, that catheter angiography of the pulmonary and bronchial arteries can, and can embolise in the same session; the report gives no number, size or vessel diameter. Advises against needling a lesion that enhances like a vessel."
+        "zh-CN": "能解释CT报告：右肺结节内见强化血管，部分有肺动静脉伴行，提示血管发育畸形，肺动静脉瘘可能。说明CT不一定能区分肺动静脉畸形和支气管（体循环）动脉—肺血管瘘，肺动脉和支气管动脉的导管造影能显示两套循环；报告里没有结节数目、大小和血管直径。被问到穿刺活检时，说明对强化如血管的病变穿刺有出血风险。",
+        "en": "Can explain the CT report: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins, suggesting a developmental vascular malformation, possibly a pulmonary arteriovenous fistula. Explains that CT cannot always tell a pulmonary AVM from a bronchial (systemic) artery–to–pulmonary fistula and that catheter angiography of the pulmonary and bronchial arteries shows both circulations; the report gives no number, size or vessel diameter. If asked about a biopsy, explains the bleeding risk of needling a lesion that enhances like a vessel."
       },
       "interprets": [
         "ct"
@@ -4392,7 +4420,7 @@
     },
     "conclusion": {
       "zh-CN": "12岁男孩间断咯血1年，一年5次、每次约50–100 mL，之前住院未查明原因。病史里藏着第二个诊断：出生后就反复长湿疹，累及躯干、四肢和面颈部；1岁时因左颈化脓性淋巴结炎手术；3年前因乳牙不脱落拔除乳牙；体格和智力发育与同龄儿相同，家族史未见特殊。查体见散在色素脱失、面部瘢痕、小片脱发和杵状指；呼吸平稳，未见口唇青紫，但没有测SpO₂。IgE >3.0×10⁶ IU/L（参考值<1.0×10⁵），其他免疫球蛋白正常，嗜酸性粒细胞0.086，血红蛋白111 g/L；ANA、dsDNA、ANCA阴性，凝血、心脏超声和CD系列（淋巴细胞亚群）未见异常。增强CT及血管重建示右肺结节内强化血管，部分有肺动静脉伴行，提示血管发育畸形、肺动静脉瘘可能。STAT3基因c.1909G>A（p.V637M）杂合变异，父母未检出，报告认为具有致病意义：STAT3相关高IgE综合征合并疑似肺血管畸形，血管类型未定。因经济困难未手术；半年电话随访未再咯血，肺动静脉瘘与支气管动静脉瘘的区分未完成。",
-      "en": "A 12-year-old boy had a year of intermittent haemoptysis — five episodes of about 50–100 mL — that an earlier admission had not explained. His history held a second diagnosis: recurrent eczema of the trunk, limbs, face and neck since soon after birth, an operation at one year for left cervical suppurative lymphadenitis, and primary teeth extracted three years earlier because they had not shed; his growth and development matched his peers and the family history was unremarkable. He had scattered depigmentation, facial scars, small patches of hair loss and finger clubbing; his breathing was steady and no cyanosis of the lips was seen, but SpO₂ was not measured. IgE was > 3.0×10⁶ IU/L (reference < 1.0×10⁵) with the other immunoglobulins normal, eosinophils 0.086 and haemoglobin 111 g/L; ANA, dsDNA and ANCA were negative, and coagulation, echocardiography and the CD series (lymphocyte subsets) showed no abnormality. Contrast CT with vascular reconstruction showed enhancing vessels within right-lung nodules, accompanied at least in part by pulmonary arteries and veins, suggesting a vascular malformation, described as developmental — possibly a pulmonary arteriovenous fistula. STAT3 testing found a heterozygous c.1909G>A (p.V637M) variant, not detected in his parents, which the report considered pathogenic: STAT3-related hyper-IgE syndrome with a suspected pulmonary vascular malformation of uncertain type. No operation was performed because of financial difficulty; at the six-month telephone follow-up he had not coughed up blood again, and whether the lesion was a pulmonary or a bronchial arteriovenous fistula remained unresolved."
+      "en": "A 12-year-old boy had a year of intermittent haemoptysis — five episodes of about 50–100 mL — that an earlier admission had not explained. His history held a second diagnosis: recurrent eczema of the trunk, limbs, face and neck since soon after birth, an operation at one year for left cervical suppurative lymphadenitis, and primary teeth extracted three years earlier because they had not shed; his physical and intellectual development matched his peers' and the family history was unremarkable. He had scattered depigmentation, facial scars, small patches of hair loss and finger clubbing; his breathing was steady and no cyanosis of the lips was seen, but SpO₂ was not measured. IgE was > 3.0×10⁶ IU/L (reference < 1.0×10⁵) with the other immunoglobulins normal, eosinophils 0.086 and haemoglobin 111 g/L; ANA, dsDNA and ANCA were negative, and coagulation, echocardiography and the CD series (lymphocyte subsets) showed no abnormality. Contrast CT with vascular reconstruction showed enhancing vessels within right-lung nodules, partly accompanied by pulmonary arteries/veins, suggesting a developmental vascular malformation — possibly a pulmonary arteriovenous fistula. STAT3 testing found a heterozygous c.1909G>A (p.V637M) variant, not detected in his parents, which the report considered pathogenic: STAT3-related hyper-IgE syndrome with a suspected pulmonary vascular malformation of uncertain type. No operation was performed because of financial difficulty; at the six-month telephone follow-up he had not coughed up blood again, and whether the lesion was a pulmonary or a bronchial arteriovenous fistula remained unresolved."
     },
     "keyReasoning": [
       {
@@ -4401,7 +4429,7 @@
       },
       {
         "zh-CN": "杵状指、没测SpO₂、血红蛋白111 g/L：口唇不紫代替不了测量。",
-        "en": "Clubbing, no SpO₂ and a haemoglobin of 111 g/L: pink lips cannot stand in for a measurement."
+        "en": "Clubbing, no SpO₂ and a haemoglobin of 111 g/L: lips that are not blue cannot stand in for a measurement."
       },
       {
         "zh-CN": "出生后湿疹 + 需手术的化脓性感染 + 乳牙不脱落 + IgE >3.0×10⁶ IU/L → STAT3高IgE综合征；DOCK8缺陷没有牙齿和骨骼表现。",
@@ -4452,16 +4480,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "血氧要测，不能看出来。发绀要等去氧血红蛋白相当多时才出现，血红蛋白低时出现得更晚——他的血红蛋白111 g/L，低于WHO《血红蛋白贫血切点指南》（2024）中12–14岁儿童的贫血切点120 g/L。原报告没有测SpO₂；今天，有杵状指、可能存在右向左分流的孩子入院时就应测SpO₂。",
-        "en": "Oxygen is measured, not seen. Cyanosis needs a large amount of deoxygenated haemoglobin and appears later still when haemoglobin is low — his 111 g/L is below the anaemia cut-off of 120 g/L for children aged 12–14 in the WHO guideline on haemoglobin cut-offs (2024). The report did not measure SpO₂; today a child with clubbing and a possible right-to-left shunt has it measured on admission."
+        "zh-CN": "血氧要测，不能看出来。发绀要等去氧血红蛋白相当多时才出现，血红蛋白低时出现得更晚——他的血红蛋白111 g/L，低于WHO《血红蛋白贫血切点指南》（2024）中12–14岁儿童的贫血切点120 g/L。BTS肺动静脉畸形临床声明（2017）也指出，肺动静脉畸形引起的低氧血症通常没有症状。原报告没有测SpO₂；今天，有杵状指、可能存在右向左分流的孩子入院时就应测SpO₂。",
+        "en": "Oxygen is measured, not seen. Cyanosis needs a large amount of deoxygenated haemoglobin and appears later still when haemoglobin is low — his 111 g/L is below the anaemia cut-off of 120 g/L for children aged 12–14 in the WHO guideline on haemoglobin cut-offs (2024) — and the BTS clinical statement on pulmonary AVMs (2017) notes that the hypoxaemia they cause is usually asymptomatic. The report did not measure SpO₂; today a child with clubbing and a possible right-to-left shunt has it measured on admission."
       },
       {
-        "zh-CN": "肺动静脉畸形是右向左分流。BTS肺动静脉畸形临床声明（Shovlin等，2017；因儿童资料不足，针对16岁以上成人）：技术可行时所有影像可见的肺动静脉畸形都转介栓塞，没有“3 mm规则”；牙科、内镜和外科操作前预防性使用抗生素；胸片正常、即使血氧正常也不能排除；CT阳性即可诊断。原报告做了CT和基因检测，但没有记录血管造影；因经济困难未手术。",
-        "en": "A PAVM is a right-to-left shunt. The BTS clinical statement on pulmonary AVMs (Shovlin et al., 2017; written for adults over 16 because data in children are sparse) refers every radiologically visible PAVM for embolisation if technically feasible, with no '3 mm rule'; gives antibiotic cover before dental, endoscopic and surgical procedures; holds that a normal chest X-ray, even with normal saturations, does not exclude one; and treats a positive CT as diagnostic. The report reached CT and genetics, but no angiography was recorded and no operation was performed because of financial difficulty."
+        "zh-CN": "肺动静脉畸形是右向左分流。BTS肺动静脉畸形临床声明（Shovlin等，2017；因儿童资料不足，针对16岁以上成人）：技术可行时所有影像可见的肺动静脉畸形都转介栓塞，即使没有症状，也没有“3 mm规则”；牙科、内镜、外科和栓塞等操作前预防性使用抗生素；胸片正常、即使血氧正常也不能排除；CT阳性即可诊断；每个肺动静脉畸形患者都要考虑遗传性出血性毛细血管扩张症（本例鼻出血和毛细血管扩张都没有记录）。原报告做了CT和基因检测，没有记录血管造影；因经济困难未手术。",
+        "en": "A PAVM is a right-to-left shunt. The BTS clinical statement on pulmonary AVMs (Shovlin et al., 2017; written for adults over 16 because data in children are sparse) refers every radiologically visible PAVM for embolisation if technically feasible, even without symptoms and with no '3 mm rule'; gives antibiotic cover before dental, endoscopic, surgical and embolisation procedures; holds that a normal chest X-ray, even with normal saturations, does not exclude one; treats a positive CT as diagnostic; and asks for hereditary haemorrhagic telangiectasia to be considered in every patient with PAVMs (nosebleeds and telangiectasia are not recorded here). The report reached CT and genetics; no angiography was recorded, and no operation was performed because of financial difficulty."
       },
       {
-        "zh-CN": "支气管动脉还是肺动脉？CIRSE支气管动脉栓塞实践标准（2022）：反复或危及生命的咯血、见到病理性动脉时行栓塞；危及生命的咯血先做CT血管成像；未见支气管动脉异常时要排除肺动脉瘤、肺动静脉畸形和瘘；开胸手术留给破坏性肺病或栓塞失败。本例“肺动静脉瘘还是支气管动静脉瘘”的问题，正是两套循环的血管造影要回答的。",
-        "en": "Bronchial or pulmonary? The CIRSE standards of practice on bronchial artery embolisation (2022) embolise pathological arteries in recurrent or life-threatening haemoptysis, put CT angiography first in life-threatening bleeding, look for pulmonary artery aneurysms, PAVMs and fistulas when the bronchial arteries are normal, and keep open surgery for destructive lung disease or failed embolisation. This boy's open question — pulmonary or bronchial arteriovenous fistula — is exactly what angiography of both circulations answers."
+        "zh-CN": "支气管动脉还是肺动脉？CIRSE支气管动脉栓塞实践标准（2022）：反复或危及生命的咯血、见到病理性动脉时行栓塞；危及生命的咯血先做CT血管成像；未见支气管动脉异常时要排除肺动脉瘤、肺动静脉畸形和瘘；开胸手术留给破坏性肺病或栓塞失败。STAT3高IgE综合征本身也有血管病变：胸内动脉假性动脉瘤可引起大咯血，需要血管内治疗（Tsilifis等，2021）——本例病变与该综合征是否相关并不确定。“肺动静脉瘘还是支气管动静脉瘘”的问题，正是两套循环的血管造影要回答的。",
+        "en": "Bronchial or pulmonary? The CIRSE standards of practice on bronchial artery embolisation (2022) embolise pathological arteries in recurrent or life-threatening haemoptysis, put CT angiography first in life-threatening bleeding, look for pulmonary artery aneurysms, PAVMs and fistulas when the bronchial arteries are normal, and keep open surgery for destructive lung disease or failed embolisation. The syndrome has vascular disease of its own: in STAT3 hyper-IgE syndrome intrathoracic arterial pseudoaneurysms can cause massive haemoptysis that needs endovascular treatment (Tsilifis et al., 2021) — whether this boy's lesion is related to the syndrome is not established. His open question, a pulmonary or a bronchial arteriovenous fistula, is exactly what angiography of both circulations answers."
       },
       {
         "zh-CN": "诊断STAT3高IgE综合征。IgE达数千并不特异，重度特应性皮炎更常见（AAAAI/ACAAI原发性免疫缺陷实践参数，2015）。Woellner诊断指南（2010）：IgE >1000 IU/mL加加权评分>30为“可能”，Th17缺如或家族史为“很可能”，显性负性STAT3杂合变异为“确诊”。他的c.1909G>A（p.V637M）位于SH2结构域，在该研究队列中见于10例患者。",
@@ -4483,7 +4511,6 @@
       "Bonilla FA, Khan DA, Ballas ZK, et al. Practice parameter for the diagnosis and management of primary immunodeficiency. J Allergy Clin Immunol. 2015;136(5):1186-1205.e78. doi:10.1016/j.jaci.2015.04.049",
       "Woellner C, Gertz EM, Schäffer AA, et al. Mutations in STAT3 and diagnostic guidelines for hyper-IgE syndrome. J Allergy Clin Immunol. 2010;125(2):424-432.e8. doi:10.1016/j.jaci.2009.10.059",
       "Tsilifis C, Freeman AF, Gennery AR. STAT3 Hyper-IgE Syndrome—an Update and Unanswered Questions. J Clin Immunol. 2021;41(5):864-880. doi:10.1007/s10875-021-01051-1",
-      "Tangye SG, Al-Herz W, Bousfiha A, et al. Human Inborn Errors of Immunity: 2022 Update on the Classification from the International Union of Immunological Societies Expert Committee. J Clin Immunol. 2022;42(7):1473-1507. doi:10.1007/s10875-022-01289-3",
       "Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30",
       "World Health Organization. Guideline on haemoglobin cutoffs to define anaemia in individuals and populations. Geneva: World Health Organization; 2024."
     ],
@@ -4667,6 +4694,15 @@
     },
     {
       "type": "order",
+      "investigationId": "platelets"
+    },
+    {
+      "type": "read",
+      "investigationId": "platelets",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
       "investigationId": "sputum"
     },
     {
@@ -4753,15 +4789,6 @@
     {
       "type": "read",
       "investigationId": "lymphocyte-subsets",
-      "phase": "workup"
-    },
-    {
-      "type": "order",
-      "investigationId": "platelets"
-    },
-    {
-      "type": "read",
-      "investigationId": "platelets",
       "phase": "workup"
     },
     {
@@ -5192,6 +5219,41 @@
         "locale": "zh-CN",
         "expect": [
           "worries"
+        ]
+      },
+      {
+        "text": "How much blood does he bring up each time?",
+        "locale": "en",
+        "expect": [
+          "bleed-pattern"
+        ]
+      },
+      {
+        "text": "每次咳多少血？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleed-pattern"
+        ]
+      },
+      {
+        "text": "What did they find when he was in hospital last time?",
+        "locale": "en",
+        "expect": [
+          "prior-admission"
+        ]
+      },
+      {
+        "text": "Has he had an abscess in his neck?",
+        "locale": "en",
+        "expect": [
+          "neck-infection"
+        ]
+      },
+      {
+        "text": "身上长过脓肿吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin-abscesses"
         ]
       },
       {

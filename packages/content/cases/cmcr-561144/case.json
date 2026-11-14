@@ -351,7 +351,8 @@
           "howlong",
           "whendiditstart",
           "whendidthisstart",
-          "bothering"
+          "bothering",
+          "line coming out today"
         ]
       },
       "excludeKeywords": {
@@ -373,7 +374,14 @@
           "晕倒",
           "糖尿病",
           "放了多久",
-          "什么时候放"
+          "什么时候放",
+          "你的手",
+          "手怎么",
+          "双手",
+          "两只手",
+          "手指",
+          "手冷",
+          "变色"
         ],
         "en": [
           "which operation",
@@ -392,7 +400,18 @@
           "fits",
           "diabetes",
           "put in",
-          "been in"
+          "been in",
+          "worr",
+          "nervous",
+          "afraid",
+          "scared",
+          "concern",
+          "question",
+          "hadtheline",
+          "hadthatline",
+          "hadthisline",
+          "hadthedrip",
+          "hadthatdrip"
         ]
       },
       "disclosure": "volunteer",
@@ -430,7 +449,11 @@
           "为什么来看病",
           "雷诺",
           "变颜色",
-          "遇到冷"
+          "遇到冷",
+          "你的手",
+          "手怎么",
+          "手冷",
+          "变色"
         ],
         "en": [
           "hands",
@@ -610,7 +633,13 @@
           "cvc",
           "jugular",
           "tube in your neck",
-          "put in"
+          "put in",
+          "drip in your neck",
+          "hadtheline",
+          "hadthatline",
+          "hadthisline",
+          "hadthedrip",
+          "hadthatdrip"
         ]
       },
       "excludeKeywords": {
@@ -711,7 +740,9 @@
           "吃药",
           "药物",
           "胰岛素",
-          "降糖药"
+          "降糖药",
+          "哪些药",
+          "什么药"
         ],
         "en": [
           "medicines",
@@ -887,7 +918,7 @@
       "topic": "ice",
       "question": {
         "zh-CN": "今天拔管，你有什么担心或者想问的吗？",
-        "en": "Is anything worrying you about the line coming out today?"
+        "en": "Is there anything you're worried about, or want to ask, before it comes out?"
       },
       "answer": {
         "zh-CN": "拔的时候疼不疼啊？拔了是不是就能早点出院了？",
@@ -908,7 +939,8 @@
           "worries",
           "concerns",
           "nervous",
-          "afraid"
+          "afraid",
+          "questions"
         ]
       },
       "disclosure": "on-ask",
@@ -938,7 +970,15 @@
           "什么关系",
           "您是谁",
           "家属",
-          "亲属"
+          "亲属",
+          "丈夫",
+          "老公",
+          "爱人",
+          "儿子",
+          "女儿",
+          "姐妹",
+          "兄弟",
+          "配偶"
         ],
         "en": [
           "related",
@@ -946,7 +986,14 @@
           "who are you",
           "family member",
           "relative",
-          "knowher"
+          "knowher",
+          "husband",
+          "wife",
+          "son",
+          "daughter",
+          "sister",
+          "brother",
+          "partner"
         ]
       },
       "disclosure": "on-ask",
@@ -991,7 +1038,9 @@
           "explainedtoyou",
           "told you",
           "whathappened",
-          "goingon"
+          "goingon",
+          "theytellyou",
+          "didtheytell"
         ]
       },
       "disclosure": "on-ask",
@@ -1022,7 +1071,9 @@
           "害怕",
           "顾虑",
           "放心不下",
-          "心里"
+          "心里",
+          "最怕",
+          "怕什么"
         ],
         "en": [
           "worries",
@@ -1102,7 +1153,9 @@
           "反应",
           "清醒",
           "昏迷",
-          "gcs"
+          "gcs",
+          "睁眼",
+          "睁开眼"
         ],
         "en": [
           "responsive",
@@ -1115,7 +1168,8 @@
           "avpu",
           "awake",
           "hearme",
-          "rouse"
+          "rouse",
+          "open your eyes"
         ]
       },
       "finding": {
@@ -1196,7 +1250,10 @@
           "jerking",
           "limbs",
           "seizing",
-          "fit"
+          "fit",
+          "shaking",
+          "twitching",
+          "jerks"
         ]
       },
       "finding": {
@@ -1289,6 +1346,12 @@
       "source": {
         "zh-CN": "报告事实（1.0.0版）：双瞳孔等大，右侧光反应迟钝",
         "en": "Report fact (version 1.0.0): equal pupils with a sluggish right light response"
+      },
+      "excludeKeywords": {
+        "en": [
+          "openyoureyes",
+          "openhereyes"
+        ]
       }
     },
     {
@@ -1314,7 +1377,8 @@
           "neck wound",
           "dressing",
           "exit site",
-          "neck"
+          "neck",
+          "line came out"
         ]
       },
       "finding": {
@@ -1478,7 +1542,6 @@
         "zh-CN": [
           "手术记录",
           "手术经过",
-          "麻醉记录",
           "术中记录",
           "手术单"
         ],
@@ -1486,8 +1549,7 @@
           "operation note",
           "operative note",
           "op note",
-          "theatre record",
-          "anaesthetic record"
+          "theatre record"
         ]
       },
       "requires": [
@@ -2845,8 +2907,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "治疗剂量的肝素不是气体栓塞的治疗——在UHMS气体栓塞推荐中，抗凝药最多只是IIb类辅助措施（Moon 2019）——也不能终止抽搐；她5天前做过胸部手术、颈部刚拔过管，抗凝会增加出血风险，还会拖延纯氧和高压氧。",
-        "en": "Therapeutic heparin is no treatment for gas embolism — anticoagulants are at most a class IIb adjunct in the UHMS gas-embolism recommendations (Moon 2019) — and does nothing for a seizure; five days after chest surgery and with a fresh neck puncture it adds bleeding risk, and it delays oxygen and recompression."
+        "zh-CN": "治疗剂量的肝素不是气体栓塞的治疗：UHMS气体栓塞推荐只把抗凝药列为IIb类辅助措施，其推荐使用的肝素（低分子肝素，I类）用于神经损伤致卧床24小时及以上患者的静脉血栓预防（Moon 2019）。肝素也不能终止抽搐；她5天前做过胸部手术、颈部刚拔过管，抗凝会增加出血风险，还会拖延纯氧和高压氧。",
+        "en": "Therapeutic heparin is no treatment for gas embolism: the UHMS gas-embolism recommendations rate anticoagulants only class IIb as an adjunct, and the heparin they do recommend (low-molecular-weight, class I) is prophylaxis against venous thrombosis once neurological injury has kept a patient immobile for 24 hours or more (Moon 2019). It does nothing for a seizure; five days after chest surgery and with a fresh neck puncture it adds bleeding risk, and it delays oxygen and recompression."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -2976,8 +3038,8 @@
         ]
       },
       "response": {
-        "zh-CN": "康复科会来评估。原报告记录她接受了康复治疗；本病例不模拟其效果。",
-        "en": "Rehabilitation will assess her. The report records that she had rehabilitation; this case does not simulate its effect."
+        "zh-CN": "康复科会在她病情稳定后来评估。本病例不模拟其效果。",
+        "en": "Rehabilitation will assess her once she is stable. This case does not simulate its effect."
       }
     }
   ],
@@ -3507,13 +3569,13 @@
         {
           "id": "convulsive-faint",
           "text": {
-            "zh-CN": "术后第一次坐起时发生的晕厥伴短暂抽动：让她平躺、抬高双腿，查血糖，留在病房继续观察；如果10分钟以后还没醒过来，再呼叫急救团队",
-            "en": "A faint with brief jerks on first sitting up after surgery: lie her down with her legs raised, check her glucose and keep watching her on the ward, calling the team only if she has not come round in 10 minutes"
+            "zh-CN": "术后第5天坐起时发生的晕厥伴短暂抽动：让她平躺、抬高双腿，查血糖，留在病房继续观察；如果10分钟以后还没醒过来，再呼叫急救团队",
+            "en": "A faint with brief jerks on sitting up five days after surgery: lie her down with her legs raised, check her glucose and keep watching her on the ward, calling the team only if she has not come round in 10 minutes"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "第一次坐起时的惊厥性晕厥确实存在，但平躺后几秒钟内抽动就会停止、意识很快恢复；颈部导管拔出后数分钟出现的呼之不应伴抽搐，不能先当晕厥观察。等10分钟会错过纯氧和尽早加压最有价值的时间（Moon，UHMS 2019）。",
-            "en": "Convulsive syncope on first sitting up does happen, but the jerks stop within seconds of lying flat and consciousness returns quickly; unresponsiveness with convulsions minutes after a neck line came out cannot be watched as a faint. Waiting 10 minutes loses the time in which oxygen and early recompression matter most (Moon, UHMS 2019)."
+            "zh-CN": "坐起时的惊厥性晕厥确实存在，但平躺后几秒钟内抽动就会停止、意识很快恢复；颈部导管拔出后数分钟出现的呼之不应伴抽搐，不能先当晕厥观察。等10分钟会错过纯氧和尽早加压最有价值的时间（Moon，UHMS 2019）。",
+            "en": "Convulsive syncope on sitting up does happen, but the jerks stop within seconds of lying flat and consciousness returns quickly; unresponsiveness with convulsions minutes after a neck line came out cannot be watched as a faint. Waiting 10 minutes loses the time in which oxygen and early recompression matter most (Moon, UHMS 2019)."
           }
         },
         {
@@ -3536,8 +3598,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "能造成这种情况的大面积肺栓塞通常表现为休克和低氧，而不是在颈部导管拔出后数分钟、坐起时突然呼之不应和抽搐。肝素不是针对气体的治疗（UHMS气体栓塞推荐中，抗凝药最多只是IIb类辅助措施，Moon 2019），又在胸部手术后5天增加出血风险；溶栓只用于高危肺栓塞，而3周内的大手术是溶栓的绝对禁忌（ESC 2019急性肺栓塞指南）。",
-            "en": "A pulmonary embolism large enough to do this usually shows itself as shock and hypoxaemia, not as sudden unresponsiveness and convulsions minutes after a neck line came out, as she sat up. Heparin is no treatment for gas (anticoagulants are at most a class IIb adjunct in the UHMS gas-embolism recommendations, Moon 2019) and adds bleeding risk 5 days after chest surgery; thrombolysis is for high-risk PE, and major surgery in the previous 3 weeks is an absolute contraindication to it (ESC 2019 acute PE guideline)."
+            "zh-CN": "能造成这种情况的大面积肺栓塞通常表现为休克和低氧，而不是在颈部导管拔出后数分钟、坐起时突然呼之不应和抽搐。肝素不是针对气体的治疗（UHMS气体栓塞推荐只把抗凝药列为IIb类辅助措施，Moon 2019），又在胸部手术后5天增加出血风险；溶栓只用于高危肺栓塞，而3周内的大手术是溶栓的绝对禁忌（ESC 2019急性肺栓塞指南）。",
+            "en": "A pulmonary embolism large enough to do this usually shows itself as shock and hypoxaemia, not as sudden unresponsiveness and convulsions minutes after a neck line came out, as she sat up. Heparin is no treatment for gas (the UHMS gas-embolism recommendations rate anticoagulants only class IIb as an adjunct, Moon 2019) and adds bleeding risk 5 days after chest surgery; thrombolysis is for high-risk PE, and major surgery in the previous 3 weeks is an absolute contraindication to it (ESC 2019 acute PE guideline)."
           }
         },
         {
@@ -4186,7 +4248,7 @@
     },
     "conclusion": {
       "zh-CN": "51岁女性，双手遇冷发白疼痛，检查中发现房间隔缺损和肺动脉高压；胸交感神经链切断术后第5天拔除右颈内静脉导管：平卧拔管，按压约1分钟，普通胶布覆盖。拔管后约3分钟，她坐起时突然呼之不应、呼吸短促并抽搐；大动脉搏动可触及，双侧瞳孔等大，右侧对光反射迟钝。给氧后气管插管，急诊头颅CT示颅内空气栓塞——中心静脉导管拔除后的脑空气栓塞。原报告记录呼吸支持、高压氧和康复治疗；次日神志转清但左侧重度偏瘫，约第35天能独立行走。现行做法：拔颈部导管时穿刺点低于心脏、屏气拔出、封闭敷料并平卧一段时间；出现这样的情况按气体栓塞处理，不等CT——封闭穿刺点、水平位、纯氧、保护气道——排除气胸后尽快高压氧。",
-      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes after the removal, as she sat up, she became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism — cerebral air embolism after line removal. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time flat; treat such a collapse as gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
+      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes after the removal, as she sat up, she suddenly became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism — cerebral air embolism after line removal. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time flat; treat such a collapse as gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
     },
     "keyReasoning": [
       {
@@ -4914,6 +4976,48 @@
         "locale": "en",
         "expect": [
           "line-today"
+        ]
+      },
+      {
+        "text": "Is the line coming out today?",
+        "locale": "en",
+        "expect": [
+          "line-today"
+        ]
+      },
+      {
+        "text": "How long have you had the drip in your neck?",
+        "locale": "en",
+        "expect": [
+          "neck-line"
+        ]
+      },
+      {
+        "text": "Are you her husband?",
+        "locale": "en",
+        "expect": [
+          "relative-who"
+        ]
+      },
+      {
+        "text": "你的手怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "hands"
+        ]
+      },
+      {
+        "text": "您是她丈夫吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "relative-who"
+        ]
+      },
+      {
+        "text": "你们最怕的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "relative-worry"
         ]
       }
     ]

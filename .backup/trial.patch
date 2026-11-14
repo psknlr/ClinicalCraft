@@ -1,3 +1,20 @@
+diff --git a/.gitignore b/.gitignore
+index f633edf..cb0cb7b 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -19,10 +19,11 @@ packages/web/public/assets/local/
+ packages/web/dist-standalone/
+ dist-standalone/
+ *.standalone.html
+-# Benchmark and demonstration outputs (`clinicalcraft bench run|demo`); curated samples live in docs/bench/
++# Benchmark and demonstration outputs (`clinicalcraft bench run|demo|team`); curated samples live in docs/bench/
+ bench-results/
+ bench-demo/
+ grounding-results/
++team-results/
+ # Python bytecode (scripts/blender)
+ __pycache__/
+ *.pyc
 diff --git a/docs/CASE_AUTHORING.md b/docs/CASE_AUTHORING.md
 index f5de8db..d16dae2 100644
 --- a/docs/CASE_AUTHORING.md
@@ -50,10 +67,189 @@ index f5de8db..d16dae2 100644
    The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
    teaching material, not the case report.
 diff --git a/docs/EMBODIED.md b/docs/EMBODIED.md
-index 977955f..4c04609 100644
+index 977955f..ea81090 100644
 --- a/docs/EMBODIED.md
 +++ b/docs/EMBODIED.md
-@@ -2281,7 +2281,7 @@ the measurements of §4, §7, §11).
+@@ -275,8 +275,9 @@ the world model; the browser supplies its sensors and actuators
+     a room's edge as well (audit 2026-11-12 P2-15: after the PE bed
+     transport the map read "CT Suite" while the badge read "MRI Suite"); the
+     toasts that name a place (where the patient was taken, where a colleague
+-    is walking to) use the same lookup, and the building garden, outdoors, is
+-    named by the facility's outdoor region like the rest of the outdoors;
++    is walking to) ask the world for it (`WorldRuntime.regionName`, the same
++    lookup), and inside the build zone all of them say "Build zone" /
++    "建造园地", as the map draws it (audit W5);
+   - the autopilot's live trace, delegation outcomes and the HUD dock speak
+     the learner's language (`ui/panels/trace-labels.ts`), and colleagues are
+     named (`app/staff.ts`): the learner's words go to that person
+@@ -454,8 +455,17 @@ Every entity is labelled with what the actor knows of it:
+   "通常放在抢救室", "Lin Xiao said it is in ED Cubicle 1" / "林晓说在急诊诊室
+   1"). The room, level and distance filters of `find` / `roomInfo`, the
+   distance, bearing and reachability all measure to that place, and it is
+-  never `inReach`: moving a cart out of an actor's sight changes nothing the
+-  actor is told. Navigation goes there too (below). Staff therefore know
++  never `inReach`. What it is like there is what the actor saw of it at its
++  last sighting there (`SeenPlace.state` / `version`, kept with the place):
++  its `state` and `stateVersion` then ("· connected when last seen" /
++  "· 上次所见：connected"), none when it was never seen there (`usual`,
++  `told`, `missing`), and no `availableActions` (what it offers depends on
++  where it really is) — so moving a cart out of an actor's sight, wheeling it
++  to the patient or putting its leads on, changes nothing the actor is told
++  (audit 2026-11-12 W1). A thing known to be `missing` is listed with no
++  distance or direction in an agent's text; the world measures both to where
++  it was looked for, never to where it is. Navigation goes there too
++  (below). Staff therefore know
+   their department's equipment: `/delegate staff:ed-nurse record_ecg` from
+   the nurse's post finds the bay's cart (regression tests in
+   `general-hospital` and `teaching-hospital`).
+@@ -508,8 +518,10 @@ Every entity is labelled with what the actor knows of it:
+   records each step (§10).
+ * **Location text** (`WorldRuntime.regionName`): a point is named by its
+   room; in no room inside a building, "a corridor of ‹building›" /
+-  "‹building›走廊"; outdoors the facility's `outdoorRegion` ("Healing
+-  Garden" / "疗愈花园") — never "outside / a corridor". `roomInfo` exits carry
++  "‹building›走廊"; outdoors, inside the facility's build zone on the ground
++  level "Build zone" / "建造园地" (audit W5), else the facility's
++  `outdoorRegion` ("Healing Garden" / "疗愈花园") — never "outside / a
++  corridor". `roomInfo` exits carry
+   `toName` (the room beyond, or that corridor / outdoor region), and a
+   door's description names both sides the same way.
+ * **`observe`** lists perceived entities (visible, nearby) nearest first,
+@@ -533,7 +545,8 @@ Every entity is labelled with what the actor knows of it:
+   flooded and has line of sight to it; on another level: the
+   walking-equivalent of its route through the connectors), the behaviour
+   `state` (`out-of-service` when a scenario took it out), `stateVersion` and
+-  `availableActions`.
++  `availableActions` — for a thing believed elsewhere, as last seen there
++  and none (Whereabouts, above).
+ * **Cues**: the patient's — `ClinicalView.cues(slot)` (posture, distressed,
+   accessory, speaking; §8.4) — only while perceived; a monitor's `screen` /
+   `alarms` — `ClinicalView.bedside()`, the `check_vitals` snapshot in one
+@@ -545,7 +558,9 @@ Every entity is labelled with what the actor knows of it:
+   contains a history answer, finding, result text, diagnosis or decision
+   option of the case.
+ * **Memory and versions**: `observe` / `find` / `inspect` / `roomInfo`
+-  record the entities they report as `visible` in the actor's memory; a
++  record the entities they report as `visible` in the actor's memory (a
++  movable thing with where it was and what was seen of it there: its state
++  and version); a
+   navigation records what is visible on arrival (`actor.discovered`); being
+   told (`askWhereabouts`) and finding a thing gone (`missed`) are memory too.
+   Memory changes no version and emits no event, so read-only tools are
+@@ -680,8 +695,11 @@ code path returns it.
+ * **Versions** (R4): the global `version` steps with every committed change
+   by the bus or a scenario control; every entity (actors included) has its
+   own counter, bumped only when that entity changes; a sensor `updatePose`
+-  bumps only the actor's own counter — so another actor walking, or the
+-  human turning, never stales a device action that pins
++  bumps only the actor's own counter — and the patient's, when the patient
++  walking with that actor takes a step after it (`sensorPatch`, §8.4; a
++  step that takes them away from a device whose leads were on them changes
++  that device too: the leads come off, §6) — so another actor walking, or
++  the human turning, never stales a device action that pins
+   `expectedTargetVersion`. Memory, tasks, events, results and in-flight
+   device locks bump nothing.
+ * **TOCTOU**: the bus checks the §6 policy before invoking; the re-check
+@@ -780,16 +798,22 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
+   bed (no other bed space of their room nearer to it than they are) and, for
+   a stored behaviour, on the patient: in a state its type marks `live` (the
+   ECG cart with its leads on, `connected` / `completed` — prepared, nobody
+-  yet), else out of its initial state; a device wheeled away in a `live`
+-  state is unplugged, back to the state those are entered from (the cart:
+-  `prepared`); else nobody — a device without a live screen,
++  yet), else out of its initial state; a device in a `live` state that no
++  longer stands by the patient — wheeled away, or the patient taken from it
++  by a transport, a relocation or a walk together (audit 2026-11-12 W2) — is
++  unplugged, back to the state those are entered from (the cart:
++  `prepared`; event `entity.state` by whoever moved, `team` for a
++  relocation), and putting the leads on again is a new act (`connect`), the
++  patient brought back or not; else nobody — a device without a live screen,
+   out of service, or a patient taken elsewhere. A front-end draws that
+   patient's bedside snapshot (the session's, the one the monitor panel and
+   `check_vitals` show) or "no patient", and binds no screen to a bed of its
+   own (`screen-source.test.ts`, the web's `screen-slot.test.ts` and
+   `live-screens.spec.ts`: a cart from the next bed wheeled over and
+   connected shows the patient, wheeled away nobody; the ward monitor shows
+-  nobody while its patient is on the CT table).
++  nobody while its patient is on the CT table; the verifier's replay — a
++  connected cart, its patient taken to CT and back — `prepared`, showing
++  nobody, until connected again; a relocation and a walk together the same).
+ * **Every vitals channel follows this one check** (reviews G3/G11):
+   `ClinicalSession.vitalsView()` is the learner's view (`learnerVitals`:
+   never the ECG morphology — an interpretation that takes a 12-lead and its
+@@ -1210,14 +1234,14 @@ record (`PatientPlaceState.legs`, the last `MAX_PATIENT_LEGS`; `PatientLeg`) and
+ 
+ | `kind` | how (`mode`) | departure | in transit | arrival |
+ |---|---|---|---|---|
+-| `escort` — they walk with someone (`escort_patient`) | `walk` | the walker's first step | held by the walker (`by`): the follower walks a step behind, along the walker's way — a world walk's planned route, or, for a walker steered by hand, each move checked as the follower's own step (a straight step clear of walls, a short route the planner finds around them, a ride of the lift or the stairs the walker took); a move no one walked (a jump of the body farther than `MAX_FOLLOW_STEP`, 5 m, through a wall, another level by no connector) ends the walk together where the follower last was, `stopped` | one leg per walk the walker makes in the world, or per stretch of a hand-steered walk (closed when the walk together ends or the walker next walks in the world); `patient.arrived.path` is the follower's own path, from where they stood to where they arrived — never a straight line through walls to where the walker stands; no handover (the walker stays with them) |
++| `escort` — they walk with someone (`escort_patient`) | `walk` | the follower's first step | held by the walker (`by`): the follower walks their own route — planned for them from their own spot (`PatientPlaceState.spot`) to the walker's side by the walking grid (walls, windows, closed doors, furniture: never a line of sight), through the walker's access zones — after each world walk of the walker and, for a walker steered by hand, whenever the walker is more than `FOLLOW_KEEP` (1.2 m) away: a route at most twice the straight distance and a metre more (round a corner, through a door), or the ride of the lift or the stairs the walker took; a move no one walked (more than `MAX_FOLLOW_STEP`, 5 m, beyond that in one sensor pose, through a wall or a window, another level by no connector; a world walk they have no route after) moves them not at all and ends the walk together where they are, `stopped` — the jump is no part of any leg (audit 2026-11-12 W3) | one leg per walk the walker makes in the world, or per stretch of a hand-steered walk (closed when the walk together ends or the walker next walks in the world); `patient.arrived.path` is the follower's own path, from where they stood to where they arrived — never a straight line through walls to where the walker stands; no handover (the walker stays with them) |
+ | `transport` — a body takes them (`transport_patient`) | `bed` (a hospital bed), `trolley` (a stretcher), `wheelchair` (for content packs: no built-in wheelchair carries a patient, §14.3), by the equipment type of the trolley they lie on (`vehicle`; `TRAVEL_MODES`) — or `walk` (a patient who can walk goes on foot beside the walker) | `departedAt`, from, to, the monitor that travels | held by the walker (`by`, `role`) | `arrivedAt`, `distance`, `status` (`arrived` / `stopped`) and the handover: `receivedBy` / `receivedRole` — a colleague other than the walker at their bedside there (THE bedside rule; `RECEIVING_ROLES`: clinician, attending, nurse, paramedic, radiologist), nearest first ("Lin Xiao took over the patient there." / "由林晓在那里接手…"); nobody: null — the walker stays responsible |
+ | `relocation` — a phase with a `location` or an intervention with a `destination` (the table above) | none (`mode` null) | none | nobody (`by` null) | `cause` (`{phase}` / `{intervention}`, from the session), `departedAt` = `arrivedAt`, `distance` 0; told by its `patient.moved` |
+ 
+ Responsibility and deterioration in transit are read from the legs — who held the patient from `departedAt` to
+ `arrivedAt`, who took over — against the encounter's timeline; physiology does not change in transit. The world
+-keeps an open stretch of a hand-steered walk only in memory (a snapshot does not); the escort's place itself is still
+-derived from the walker's pose (below), the record is the follower's own.
++keeps an open stretch of a hand-steered walk only in memory (a snapshot does not); the follower's spot, which their
++steps advance, is physical state (a snapshot keeps it).
+ 
+ **Saved in the middle of a journey.** A walk's poses are committed when it ends, so a snapshot taken while a
+ body wheels the patient holds both where the journey started, plus the journey itself
+@@ -1300,13 +1324,19 @@ needed …") — and goes once a usable one is there.
+ `escort.ts`). "Follow me": a patient who can walk — not lying by clinical
+ state, able to respond (`cannotSpeak`), not in distress (`distressed`) — gets
+ up and goes wherever the asking actor goes: a world navigation, a staff
+-member's walk, or the learner's avatar steered by hand. Their place is
+-**derived** from that actor's pose (`PatientPlaceState.escort`;
+-`PatientBody.escortSpot`: half a step behind, to one side, on the actor's side
+-of any wall), so a sensor-driven avatar takes them along without a stored step
+-or a version; standing, with no body box of their own (like a patient in
+-transit); `PatientPlace.escort` names the actor and `patient.escort` events
+-start and end it. Every rule measured from the patient follows (the bedside,
++member's walk, or the learner's avatar steered by hand. They keep a spot of
++their own (`PatientPlaceState.spot`; `PatientPlaceState.escort` names the
++walker), advanced only by their own steps: a route planned for their body
++from where they stand to the walker's side (`PatientBody.escortSpot`: half a
++step behind, to one side, a straight step from the walker clear of walls and
++windows) — after the walker's walk in the world, and, for a walker steered by
++hand, once the walker is more than 1.2 m away (`journey.ts`; audit 2026-11-12
++W3: never derived from the walker's pose, never through a window). A
++hand-steered step changes the patient's own version only, never the world's;
++standing, with no body box of their own (like a patient in transit);
++`PatientPlace.escort` names the actor and `patient.escort` events start and
++end it. Walking away from a device whose leads are on them takes the leads
++off (§6, W2). Every rule measured from the patient follows (the bedside,
+ conversation range, goals on the patient, perception); their bed stays where
+ it is. Their walk is recorded as their own (**Journeys in the event log**,
+ above): a leg per walk with the follower's own path and arrival. A study on
+@@ -1390,7 +1420,10 @@ requirement holds for both.
+ avatar or a staff member — (turned along the way) with the patient lying on
+ it (`WorldApi.pushEquipment` + `pushPatient`), then drawn where the world
+ parks them (`placePatient`: on the CT table, the cath-lab table, a new bed
+-space; their own bed space again); beds are movable records like carts. A
++space; their own bed space again); beds are movable records like carts. The
++monitor taken along (§8.7) is drawn at the walker's side, beside the bed's
++head end (`PatientPlace.transit.monitor`; `pushEquipment(…, "beside")`), and
++parked where the world leaves it on arrival (audit 2026-11-12 W4). A
+ patient who walks — on a transport or walking with someone
+ (`escortPatient`) — is drawn upright a step behind the walker **on the
+ walker's own path** (`world/trail.ts`: round corners and through doorways,
+@@ -1519,8 +1552,12 @@ plays and verifies as before.
+ **A monitor in transit.** `transport_patient {monitor: true}` (`/transport <destination> monitor`; `delegate_task …
+ transport_patient` with `params.monitor`; `/delegate porter transport_patient <destination> monitor=true`) takes the
+ portable device providing cardiac monitoring at the patient's bedside along (`TRAVEL_MONITOR_CAPABILITY`: a
+-defibrillator's monitor) — in service, free and at the bedside, or the one named —; it waits beside the patient where
+-they arrive. With none at the bedside the transport does not set off (`PRECONDITION_FAILED`: "wheel one to the
++defibrillator's monitor) — in service, free and at the bedside, or the one named —; it travels with them (the transit
++names it, `PatientPlace.transit.monitor`: every front-end draws it with their bed or trolley) and stays with them where
++they arrive: on a free spot beside them, else — no room there — right where they are, on the bed, trolley or table
++they lie on ("… went with them, monitoring; with no free spot beside them on arrival, it stays right with them."),
++never back where it is kept; the leg names it (audit 2026-11-12 W4). With none at the bedside the transport does not
++set off (`PRECONDITION_FAILED`: "wheel one to the
+ bedside first"). The in-world demonstration and the bench's reference walker take it along whenever the patient is on
+ a monitor (`monitorTravels`). Physiology does not change: the legs are the record that an assessment reads (the bench
+ predicates `studyStages` and `world.patientTransit`, §13.2; `workflow-pe-ctpa-transport`).
+@@ -2281,7 +2318,7 @@ the measurements of §4, §7, §11).
  | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-11-14: 50 steps, 287 spans, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
  | Content scale (case index, lazy per-case chunks, paginated ETag'd server API, `CaseLibrary` in the CLI and MCP) | yes | unit: indexer, case store, server content API, the web index plugin | measured with 100–1 000 synthetic cases (§11) | no — browser start-up and case switching with a large catalogue unmeasured; first-load validation ≈ 150–230 ms per case. Perf |
  | Operative field (`procedure`, `operate`, docs/PROCEDURE.md): anatomy, regions, ports and instruments, safety views judged on the field, unsafe acts and injuries that follow from the anatomy, the operator's view (handles, never duct names), `observe_field` / `operate` tools, `safetyGates`; a colleague holding a port (`hand-over`, `delegate_task hold_traction`), traction that falls when they leave the table (`exposure-lost`); the web's scope dock beside the theatre with one presentation queue | yes (procedure round; the assistant and the dock: the 2.5.0 recommendations) | core unit tests: a safe path, adversarial paths (habitual traction, a misidentified common bile duct clipped and divided, clipping without a pause, a claimed but untrue view, a bleed managed, hidden-hazard energy, a torn gallbladder), bail-outs, reach and port ergonomics, determinism; hand-over rules (`approach.test.ts`); the presentation queue and the exposure window (web `scope-presenter.test.ts`); SurgeryCraft `case126-release.test.ts` and the fourth browser demonstration | not validated: no surgical, anaesthetic or radiological review; the one case using it (SurgeryCraft cmcr-1654623) runs on reference anatomy | no — rule-based tissue states, not calibrated mechanics; the web panel is a first version. Rel, Val |
@@ -329,7 +525,7 @@ index 7cdf92c..42ef233 100644
    };
    const fetch = async (cart: string): Promise<boolean> => {
 diff --git a/packages/agent/src/session/i18n-embodied.ts b/packages/agent/src/session/i18n-embodied.ts
-index a28cfc9..375260c 100644
+index a28cfc9..3d8d41f 100644
 --- a/packages/agent/src/session/i18n-embodied.ts
 +++ b/packages/agent/src/session/i18n-embodied.ts
 @@ -44,6 +44,7 @@ export const EMBODIED_EN = {
@@ -344,7 +540,7 @@ index a28cfc9..375260c 100644
    "world.entity": "- {name} [{id}] · {distance} 米 {direction}{state}{reach}{actions}{cues}",
    "world.entity.missing": "- {name} [{id}]",
    "world.entity.state": " · {state}",
-+  "world.entity.stateSeen": " · 上次见到时{state}",
++  "world.entity.stateSeen": " · 上次所见：{state}",
    "world.entity.inReach": " · 伸手可及",
    "world.entity.actions": " · 可操作：{actions}",
    "world.entity.cues": " · {cues}",
@@ -540,7 +736,7 @@ index e314621..fa378dc 100644
    /** `inform`: the information as the holder reported it (said again if the read-back is wrong). */
    fact?: Bilingual;
 diff --git a/packages/agent/src/session/whereabouts.test.ts b/packages/agent/src/session/whereabouts.test.ts
-index f3c7014..089bbf8 100644
+index f3c7014..c8b3c09 100644
 --- a/packages/agent/src/session/whereabouts.test.ts
 +++ b/packages/agent/src/session/whereabouts.test.ts
 @@ -66,6 +66,33 @@ describe("where is …? — a colleague's knowledge, then the learner's (audit P
@@ -552,7 +748,7 @@ index f3c7014..089bbf8 100644
 +    const CUB2 = "eq:cub2-ecg";
 +    for (const [locale, usual, seenLine] of [
 +      ["en", `- Cubicle ECG Cart [${CUB2}] · 69 m behind (usually kept in ED Cubicle 2)`, /^- Cubicle ECG Cart \[eq:cub2-ecg\] · \d+(\.\d)? m [a-z -]+ · connected when last seen \(last seen in Resuscitation Room\)$/],
-+      ["zh-CN", `- 急诊诊室心电图机 [${CUB2}] · 69 米 身后（通常放在急诊诊室 2）`, /^- 急诊诊室心电图机 \[eq:cub2-ecg\] · \d+(\.\d)? 米 \S+ · 上次见到时connected（上次见于抢救室）$/],
++      ["zh-CN", `- 急诊诊室心电图机 [${CUB2}] · 69 米 身后（通常放在急诊诊室 2）`, /^- 急诊诊室心电图机 \[eq:cub2-ecg\] · \d+(\.\d)? 米 \S+ · 上次所见：connected（上次见于抢救室）$/],
 +    ] as const) {
 +      const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { locale } });
 +      const line = async () => (await tool(t, "find_entities", { capabilities: ["ecg-12lead"], limit: 8 })).output.split("\n").find((l) => l.includes(`[${CUB2}]`));
@@ -1252,38 +1448,153 @@ index 80b487e..76091f6 100644
                          "when": {
                            "$ref": "#/definitions/Condition"
 diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
-index 4e266b1..84e0fc2 100644
+index 4e266b1..e382fce 100644
 --- a/packages/core/src/engine/dose-read.ts
 +++ b/packages/core/src/engine/dose-read.ts
-@@ -37,7 +37,10 @@ export interface DoseMention {
+@@ -37,8 +37,19 @@ export interface DoseMention {
    unit: DoseUnit;
    /** A volume the order converts through the strength it states ("0.5 mL of 1 mg/mL" → 0.5 mg): the volume as written. */
    volume?: { amount: number; unit: DoseUnit };
 -  /** Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷ hours. */
 +  /**
 +   * Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷
-+   * hours. Of several durations after one dose, the longest ("over 60 min, 10% as a bolus over 1 min").
++   * hours. Of several times after one dose, the longest ("72 mg, bolus over 1 min, then over 60 min"); a time after a
++   * part of the dose named after it is that part's — its bolus's is not the dose's ("0.9 mg/kg, 10% as a bolus over
++   * 1 min"), its rest's is `restOver`.
 +   */
    over?: number;
++  /**
++   * Minutes the rest of it runs after its bolus, as the order names that rest ("7.2 mg bolus, the rest over 60 min",
++   * "0.9 mg/kg, 10% bolus, the remaining 90% over 60 min", "其余60分钟内泵入"): how long the infusion of a dose given in
++   * parts runs (`checkOrder` compares it with the preset's).
++   */
++  restOver?: number;
    /** The cap the order states with a dose per kg ("0.01 mg/kg, max 0.5 mg"): never more than this, absolute. */
    max?: { amount: number; unit: DoseUnit };
-@@ -782,11 +785,12 @@ export function readOrder(text: string): OrderReading {
+   /**
+@@ -251,8 +262,11 @@ function numbers(s: string): Num[] {
+     let end = start + m[0].length;
+     const before = s[start - 1] ?? "";
+     // a word's digits ("co2", "q4h", "x2"), a ratio's or a fraction's second number, a count, a broken number's half —
+-    // but a drug's name written onto its dose ("adrenaline5mg", "KCl400mmol/h") is a dose: a unit follows the digits
+-    if (NOT_ALONE.test(before) && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
++    // but a drug's name written onto its dose ("adrenaline5mg", "KCl400mmol/h") is a dose: a unit follows the digits;
++    // and a colon is a ratio's or a clock's only after a number ("1:1000", "10:30"): after a word the number stands
++    // alone ("剂量：5mg", "72mg：7.2mg静推" — NFKC writes "：" as ":")
++    const wordColon = before === ":" && !/\d\s*$/u.test(s.slice(0, start - 1));
++    if (NOT_ALONE.test(before) && !wordColon && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
+     const after = s.slice(end);
+     // a ratio ("1:1000", "10:30"): not an amount
+     if (/^\s*:\s*\d/u.test(after)) continue;
+@@ -502,6 +516,22 @@ const FREQUENCY =
+ const OVER_EN = /\bover\s+(?:(\d+(?:[.,]\d+)?)|(an?|one)|(half\s+an?))\s*(min(?:ute)?s?|h(?:ou)?rs?|hours?|h)(?![a-z])/gu;
+ /** "在60分钟内", "60分钟内泵入", "60分钟泵入", "20分钟以上" (never "每60分钟", every 60 minutes). */
+ const OVER_ZH = /(?<!每\s*)(?:在|于)?\s*(\d+(?:\.\d+)?)\s*(分钟|小时)\s*(?:内|以上|以内|泵入|静滴|滴注|输注|输入|静脉泵入|静脉滴注)/gu;
++/**
++ * A share of a dose: a percentage ("10%", "90%") followed by how or when it is given — never by what it is the strength
++ * of ("0.9% NaCl", "10%氯化钾", "5% dextrose": `SHARE_AFTER` fails).
++ */
++const SHARE = /(?<!\d|\d[.,])(\d+(?:\.\d+)?)\s*%/gu;
++const SHARE_AFTER =
++  /^\s*(?:$|[,，;；:：)）(（\]、。.]|\d|(?:bolus|push|stat|as|given|administered|of|over|iv|i\.v|intravenous(?:ly)?|by|infus[a-z]*|then|and|via|rapid(?:ly)?|immediately|now)(?![a-z])|静推|静注|静脉推注|静脉注射|推注|快速|于|在|的|剂量|药量|量|泵入|静滴|静脉滴注|静脉泵入|滴注|输注|持续|立即|先|然后|随后)/u;
++/** Words for the rest of a dose, after its bolus ("the rest", "the remaining 90%", "其余", "剩余"). */
++const REST_WORDS = /(?<![a-z])(?:rest|remainder|remaining)(?![a-z])|其余|剩余|余下|余量/gu;
++/** Before a share that is the rest of the dose ("the remaining 90%", "剩余90%"). */
++const REST_BEFORE = /(?:(?<![a-z])(?:rest|remainder|remaining)(?:\s+of\s+(?:the\s+|it\s*)?(?:dose)?)?|其余|剩余|余下|余)\s*[(（]?\s*$/u;
++/** A bolus ("bolus", "push", "静推") or an infusion ("infusion", "泵入") — a part of the dose when its clause names no dose before it. */
++const BOLUS_WORDS = /(?<![a-z])(?:bolus|push)(?![a-z])|静推|静注|推注/gu;
++const INFUSION_WORDS = /(?<![a-z])(?:infusion|infuse[ds]?|infusing)(?![a-z])|泵入|静滴|滴注|输注/gu;
++/** Where an order's clause starts: after a comma, a colon or a bracket, "then", "with", "其中", "随后"… */
++const CLAUSE_START = /[,，;；:：(（]|(?<![a-z])(?:then|followed\s+by|after\s+that|and|with)(?![a-z])|随后|然后|之后|接着|其中|另/gu;
+ 
+ /** Route words (zh-CN and en, after NFKC and lower-casing). "IN" is never read as intranasal (it is the word "in"). */
+ export const ROUTE_WORDS: readonly [DoseRoute, RegExp][] = [
+@@ -534,10 +564,43 @@ interface Found {
+   perKg: boolean;
+   time: "" | "/h" | "/min";
+   over?: number;
++  restOver?: number;
+   max?: { amount: number; quantity: DoseQuantity };
+   then?: true;
+ }
+ 
++/** A part of a dose named after it, before a time (`partsOf`): the time is its bolus's, or how long its rest runs. */
++interface Part {
++  end: number;
++  kind: "bolus" | "rest";
++}
++
++/**
++ * The parts of a dose an order names after it, each where its words end: a share ("a 10% bolus", "其中10%": under
++ * half its bolus, half or more — or after "the rest", "剩余" — its rest), "the rest" ("the rest over 60 min", "其余60分钟
++ * 内泵入"), and a bolus or an infusion at the start of a clause that names no dose before it (", bolus over 1 min", ",
++ * then infusion over 60 min") — not one that says how the dose before it is given ("72 mg IV bolus over 1 min" gives
++ * the whole dose as a bolus).
++ */
++function partsOf(s: string, doses: readonly Pick<Found, "start" | "end">[]): Part[] {
++  const parts: Part[] = [];
++  for (const m of s.matchAll(SHARE)) {
++    const end = m.index + m[0].length;
++    if (!SHARE_AFTER.test(s.slice(end))) continue;
++    parts.push({ end, kind: Number(m[1]) >= 50 || REST_BEFORE.test(s.slice(0, m.index)) ? "rest" : "bolus" });
++  }
++  for (const m of s.matchAll(REST_WORDS)) parts.push({ end: m.index + m[0].length, kind: "rest" });
++  const starts = [...s.matchAll(CLAUSE_START)].map((m) => m.index + m[0].length);
++  const opensClause = (at: number) => {
++    const from = Math.max(0, ...starts.filter((x) => x <= at));
++    return !doses.some((d) => d.start >= from && d.end <= at);
++  };
++  for (const [re, kind] of [[BOLUS_WORDS, "bolus"], [INFUSION_WORDS, "rest"]] as const) {
++    for (const m of s.matchAll(re)) if (opensClause(m.index)) parts.push({ end: m.index + m[0].length, kind });
++  }
++  return parts;
++}
++
+ /** Minutes in a duration's words ("2", "hours" → 120; "an", "hour" → 60; "half an hour" → 30). */
+ function minutesOf(amount: string | undefined, one: string | undefined, half: string | undefined, unit: string): number {
+   const n = amount != null ? arabicValue(amount) : half != null ? 0.5 : one != null ? 1 : NaN;
+@@ -782,11 +845,22 @@ export function readOrder(text: string): OrderReading {
      if (!isTaken(m.index)) note("unreadable", m.index - s.slice(Math.max(0, m.index - 3), m.index).match(/[几若干多少数个]*$/u)![0].length, m.index + m[0].length);
    }
    for (const m of s.matchAll(PLACEHOLDER_UNIT)) if (!isTaken(m.index + m[0].length - 1)) note("unreadable", m.index, m.index + m[0].length);
 -  // a duration belongs to the dose (or preparation) last before it
-+  // a duration belongs to the dose (or preparation) last before it; of several, the longest is how long it runs ("0.9
-+  // mg/kg over 60 min with 10% as a bolus over 1 min")
++  // a duration belongs to the dose (or preparation) last before it; of several, the longest is how long it runs
++  // ("72 mg, bolus over 1 min, then over 60 min") — unless a part of the dose is named after it: then the time is that
++  // part's — its bolus's is none of the dose's ("0.9 mg/kg, 10% as a bolus over 1 min"), its rest's is how long the
++  // infusion runs (`restOver`: "7.2 mg bolus, the rest over 60 min", "其余60分钟内泵入")
++  const parts = partsOf(s, [...found, ...preparations]);
++  const last = <T extends { end: number }>(xs: readonly T[], at: number) => xs.filter((x) => x.end <= at).sort((a, b) => b.end - a.end)[0];
    for (const d of durations) {
      if (!(d.minutes > 0)) continue;
-     const owner = [...found, ...preparations].filter((f) => f.end <= d.at).sort((a, b) => b.end - a.end)[0];
+-    const owner = [...found, ...preparations].filter((f) => f.end <= d.at).sort((a, b) => b.end - a.end)[0];
 -    if (owner && !owner.time && owner.upTo == null) owner.over = d.minutes;
-+    if (owner && !owner.time && owner.upTo == null) owner.over = Math.max(owner.over ?? 0, d.minutes);
++    const owner = last([...found, ...preparations], d.at);
++    const part = last(parts, d.at);
++    if (!owner || owner.time || owner.upTo != null) continue;
++    if (part && part.end > owner.end) {
++      if (part.kind === "rest") owner.restOver = Math.max(owner.restOver ?? 0, d.minutes);
++      continue;
++    }
++    owner.over = Math.max(owner.over ?? 0, d.minutes);
    }
    // a later single dose after "then" and at a frequency ("300 mg now, then 75 mg daily"): the regimen's maintenance
    for (let i = 1; i < found.length; i++) {
+@@ -800,7 +874,12 @@ export function readOrder(text: string): OrderReading {
+   // one strength stated (however often): volumes are read as what they hold
+   const distinct = strengths.filter((x, i) => strengths.findIndex((y) => y.quantity === x.quantity && Math.abs(y.perMl - x.perMl) <= 1e-9 * Math.max(1, x.perMl)) === i);
+   const strength = distinct.length === 1 ? distinct[0]! : null;
+-  const extras = (f: Found) => ({ ...(f.over != null ? { over: f.over } : {}), ...(f.max ? { max: { amount: f.max.amount, unit: f.max.quantity as DoseUnit } } : {}), ...(f.then ? { then: true as const } : {}) });
++  const extras = (f: Found) => ({
++    ...(f.over != null ? { over: f.over } : {}),
++    ...(f.restOver != null ? { restOver: f.restOver } : {}),
++    ...(f.max ? { max: { amount: f.max.amount, unit: f.max.quantity as DoseUnit } } : {}),
++    ...(f.then ? { then: true as const } : {}),
++  });
+   const mentions = found.map((f): DoseMention => {
+     const unit = unitOf(f);
+     if (f.quantity !== "mL" || !strength || strength.quantity === "mL") return { amount: f.amount, ...(f.upTo != null ? { upTo: f.upTo } : {}), unit, ...extras(f) };
 diff --git a/packages/core/src/engine/dose.test.ts b/packages/core/src/engine/dose.test.ts
-index 6facd31..6b97f58 100644
+index 6facd31..e3467e9 100644
 --- a/packages/core/src/engine/dose.test.ts
 +++ b/packages/core/src/engine/dose.test.ts
 @@ -4,7 +4,7 @@
@@ -1295,7 +1606,7 @@ index 6facd31..6b97f58 100644
  
  describe("parseDose: the dose a written order states", () => {
    it("reads the amount, its unit and the route, in English and Chinese", () => {
-@@ -518,3 +518,67 @@ describe("no exemption leaves an order without the dose it states (re-review of
+@@ -518,3 +518,124 @@ describe("no exemption leaves an order without the dose it states (re-review of
      for (const [text, iv] of rows) expect(never(check(text, iv)), text).toBe(true);
    });
  });
@@ -1350,6 +1661,63 @@ index 6facd31..6b97f58 100644
 +    expect(doseMentions("alteplase 0.9 mg/kg over 60 min with 10% given as a bolus over 1 min")).toEqual([{ amount: 0.9, unit: "mg/kg", over: 60 }]);
 +  });
 +
++  it("a time after a part of the dose is that part's: the bolus's minute is no infusion, the rest's time is how long it runs — en and zh-CN", () => {
++    // the bolus's own minute, after the whole (these were critical 60-fold errors when it was read as the whole's time)
++    for (const text of [
++      "alteplase 0.9 mg/kg IV, 10% bolus over 1 min",
++      "alteplase 72 mg IV, 10% as a bolus over 1 minute, rest as infusion",
++      "阿替普酶0.9mg/kg，其中10%于1分钟内静推",
++      "阿替普酶72mg静脉，10%在1分钟内推注，其余持续泵入",
++      "alteplase 0.9 mg/kg IV, bolus over 1 min, rest over 60 min",
++      "alteplase 72 mg IV, bolus over 1 minute then infusion over 60 minutes",
++      "alteplase 0.9 mg/kg IV (10% bolus over 1 min, 90% over 60 min)",
++      "alteplase 0.9 mg/kg IV, 10% as IV bolus over 1 minute, remaining 90% infused over 60 minutes",
++      "阿替普酶0.9mg/kg（最大90mg），10%在1分钟内静推，剩余90%在60分钟内静滴",
++      "阿替普酶0.9mg/kg静脉溶栓，其中10%静推，剩余60分钟内泵入",
++    ]) {
++      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
++    }
++    expect(doseMentions("alteplase 0.9 mg/kg IV, 10% bolus over 1 min")).toEqual([{ amount: 0.9, unit: "mg/kg" }]);
++    expect(doseMentions("阿替普酶0.9mg/kg，其中10%于1分钟内静推，其余60分钟内泵入")).toEqual([{ amount: 0.9, unit: "mg/kg", restOver: 60 }]);
++    // a percentage that is a strength is no part of the dose: the time stays the dose's
++    expect(doseMentions("KCl 40 mmol in 1 L 0.9% NaCl over 2 hours")).toEqual([{ amount: 40, unit: "mmol", over: 120 }]);
++    expect(doseMentions("magnesium sulfate 2 g in 100 mL 5% dextrose over 20 min")).toEqual([{ amount: 2, unit: "g", over: 20 }]);
++    // the rest given too fast: tenfold, as the rate it runs at in the unit of the dose stated
++    for (const [text, dose] of [
++      ["alteplase 0.9 mg/kg IV, 10% bolus over 1 min, rest over 6 min", { amount: 8.1, unit: "mg/kg/h" }],
++      ["阿替普酶0.9mg/kg，其中10%于1分钟内静推，其余6分钟内泵入", { amount: 8.1, unit: "mg/kg/h" }],
++      ["alteplase 72 mg IV, bolus over 1 minute then infusion over 6 minutes", { amount: 648, unit: "mg/h" }],
++      ["alteplase 7.2 mg IV bolus, the rest over 6 min", { amount: 648, unit: "mg/h" }],
++      ["阿替普酶7.2mg静推，其余6分钟内泵入", { amount: 648, unit: "mg/h" }],
++    ] as const) {
++      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "conflict", dose, ratio: 10, severity: "critical" });
++    }
++    // the bolus with the time its rest runs over is the whole, given in its parts (a warning dose error before)
++    for (const text of ["alteplase 7.2 mg IV bolus, the rest over 60 min", "阿替普酶7.2mg静推，其余60分钟内泵入"]) {
++      expect(check(text, alteplase, 80), text).toEqual({ outcome: "given", checked: true, dose: { amount: 7.2, unit: "mg", route: "IV" } });
++    }
++    // the bolus alone over its own minute is the bolus, asked about — not a critical dose error at 432 mg/h
++    expect(check("alteplase 7.2 mg IV over 1 min", alteplase, 80)).toMatchObject({ outcome: "query", reason: "partial" });
++    // the whole dose given as a bolus over a minute is still the 60-fold error it says
++    expect(check("alteplase 72 mg IV bolus over 1 minute", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 60, severity: "critical" });
++  });
++
++  it("a time is stated rounded: within 10 % of the infusion's own it is the preset's", () => {
++    for (const text of ["alteplase 0.9 mg/kg IV over 61 min", "alteplase 0.9 mg/kg IV over 65 min", "alteplase 0.09 mg/kg bolus then 0.81 mg/kg over 61 min", "heparin 80 units/kg IV bolus then 36 units/kg over 121 min"]) {
++      expect(check(text, text.startsWith("heparin") ? ufh : alteplase, text.startsWith("heparin") ? 70 : 80), text).toMatchObject({ outcome: "given" });
++    }
++    expect(check("alteplase 0.9 mg/kg IV over 50 min", alteplase, 80)).toMatchObject({ outcome: "conflict", severity: "warning" });
++  });
++
++  it("a colon after a word is no ratio: the dose after it is read (zh-CN \"：\")", () => {
++    expect(doseMentions("肾上腺素剂量：5mg肌注")).toEqual([{ amount: 5, unit: "mg" }]);
++    expect(check("阿替普酶72mg：7.2mg 1分钟内静推，64.8mg 60分钟内泵入", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
++    // a ratio and a clock time are still no doses
++    expect(doseMentions("时间：10:30 肾上腺素0.5mg肌注")).toEqual([{ amount: 0.5, unit: "mg" }]);
++    expect(doseMentions("IM adrenaline 1:1000 0.5 mL")).toEqual([{ amount: 0.5, unit: "mg", volume: { amount: 0.5, unit: "mL" } }]);
++    expect(doseMentions("BP：180/100，拉贝洛尔10mg静推")).toEqual([{ amount: 10, unit: "mg" }]);
++  });
++
 +  it("beside a single dose, an amount over a time at the infusion's rate is the infusion — never a second dose to ask about (en and zh-CN)", () => {
 +    // 2520 units over 2 h is 1260 units/h, the preset's 18 units/kg/h at 70 kg (a833280 gave it; the second set asked "several")
 +    for (const text of ["heparin 5000 units IV bolus then 2520 units over 2 h", "肝素5000单位静推，随后2520单位于2小时内泵入"]) {
@@ -1364,10 +1732,28 @@ index 6facd31..6b97f58 100644
 +  });
 +});
 diff --git a/packages/core/src/engine/dose.ts b/packages/core/src/engine/dose.ts
-index 6839c5f..c2693e4 100644
+index 6839c5f..21fb970 100644
 --- a/packages/core/src/engine/dose.ts
 +++ b/packages/core/src/engine/dose.ts
-@@ -224,10 +224,14 @@ interface Candidate {
+@@ -56,10 +56,16 @@ interface Framed {
+   high: number;
+   partLow: number;
+   partHigh: number;
+-  /** A dose per kg against an absolute one (or capped): the tolerance is `WEIGHT_BASED_TOLERANCE`. */
++  /** A dose per kg against an absolute one (or capped), or a rate from a stated time (`timed`): the tolerance is `WEIGHT_BASED_TOLERANCE`. */
+   mixed: boolean;
+ }
+ 
++/**
++ * A rate from a time the order states ("64.8 mg over 60 min"), or that time itself, compared as a weight-based dose is
++ * (`WEIGHT_BASED_TOLERANCE`): a time is stated rounded — "over 1 hour" for the 61 minutes a bolus and its infusion take.
++ */
++const timed = (f: Framed): Framed => ({ ...f, mixed: true });
++
+ /** A dose an order states, as `checkOrder` compares it: an amount or a range, its unit, a cap with a dose per kg. */
+ interface Stated {
+   amount: number;
+@@ -224,12 +230,16 @@ interface Candidate {
    f: Framed;
  }
  
@@ -1382,9 +1768,12 @@ index 6839c5f..c2693e4 100644
 -  | { state: "ok"; dose: Stated }
 +  | { state: "ok"; dose: Stated; rest?: Candidate[]; whole?: Candidate[] }
    /** A part of a dose given in parts, alone: its bolus, or the rest of it (the whole less the bolus). */
-   | { state: "partial"; dose: Stated }
+-  | { state: "partial"; dose: Stated }
++  | { state: "partial"; dose: Stated; part: "bolus" | "rest" }
    | { state: "mismatch"; dose: Stated; ratio: number; far: number }
-@@ -267,7 +271,7 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+   | { state: "range"; words: string }
+   | { state: "several"; doses: Stated[] };
+@@ -267,7 +277,7 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
      if (candidates.length > 1) return { state: "several", doses: candidates.map((c) => c.stated) };
      const c = ranges[0]!;
      const { low, high, partLow, partHigh } = c.f;
@@ -1393,7 +1782,7 @@ index 6839c5f..c2693e4 100644
      // wholly above or below the preset: a dose error, measured from the order's nearer end
      if (low > partHigh * (1 + tol(c))) return { state: "mismatch", dose: c.stated, ...measure(c.f, low) };
      if (high < partLow * (1 - tol(c))) return { state: "mismatch", dose: c.stated, ...measure(c.f, high) };
-@@ -280,14 +284,15 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+@@ -280,14 +290,15 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
    const mixed = candidates.some((c) => c.f.mixed);
    const isWhole = (value: number) => whole != null && measure({ ...whole, mixed }, value).equivalent;
    const sum = (cs: Candidate[]) => cs.reduce((total, c) => total + c.f.low, 0);
@@ -1412,9 +1801,12 @@ index 6839c5f..c2693e4 100644
    };
    // a dose given in parts (`bolus`), stated as its parts adding up to the whole ("7.2 mg bolus then 64.8 mg over 60 min")
    if (bolus && candidates.length > 1 && isWhole(sum(candidates))) return parted(candidates, totalOf(candidates));
-@@ -303,7 +308,8 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+@@ -301,9 +312,10 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+       const rest: Framed = { ...c.f, partLow: c.f.partLow - fb.partHigh, partHigh: c.f.partHigh - fb.partLow };
+       const off = (f: Framed) => Math.abs(Math.log(measure(f, f.low).ratio));
        const nearest = [c.f, fb, rest].filter((f) => f.partLow > 0 && measure(f, f.low).equivalent).sort((a, b) => off(a) - off(b))[0];
-       if (nearest && nearest !== c.f) return { state: "partial", dose: c.stated };
+-      if (nearest && nearest !== c.f) return { state: "partial", dose: c.stated };
++      if (nearest && nearest !== c.f) return { state: "partial", dose: c.stated, part: nearest === fb ? "bolus" : "rest" };
      }
 -    if (m.equivalent) return { state: "ok", dose: c.stated };
 +    // the one dose stated (however often written) is the whole
@@ -1422,7 +1814,7 @@ index 6839c5f..c2693e4 100644
      return { state: "mismatch", dose: c.stated, ratio: m.ratio, far: m.far };
    }
    // a total stated (once or more) beside the parts that add up to it ("7.2 mg, then 64.8 mg; total 72 mg")
-@@ -311,10 +317,60 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+@@ -311,10 +323,90 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
    const total = candidates.filter((c) => isWhole(c.f.low)).sort((a, b) => offBy(a) - offBy(b))[0];
    const parts = total ? candidates.filter((c) => !same(c, total)) : [];
    const near = (a: number, b: number) => Math.abs(a / b - 1) <= (mixed ? WEIGHT_BASED_TOLERANCE : EXACT);
@@ -1455,49 +1847,83 @@ index 6839c5f..c2693e4 100644
 +  return { low: tidy((60 * restLow) / perHour(maintenance.upTo ?? maintenance.amount)), high: tidy((60 * restHigh) / perHour(maintenance.amount)) };
 +}
 +
++/** A time the order states for an infusion against the infusion's own duration: the faster, the shorter — compared as one over the minutes (`timed`). */
++function measureTime(stated: number, minutes: { low: number; high: number }): { equivalent: boolean; ratio: number; far: number } {
++  return measure(timed({ low: 1 / stated, high: 1 / stated, partLow: 1 / minutes.high, partHigh: 1 / minutes.low, mixed: true }), 1 / stated);
++}
++
 +/**
-+ * A dose given in parts (`bolus` and `maintenance`) whose parts the order states as the preset's: is the infusion run
-+ * at the preset's rate? Each later part given over a time (`rest`: "then 64.8 mg over 60 min") is checked as a rate
-+ * against `maintenance`, and the whole given over a time ("72 mg over 60 min") against the infusion's own duration
-+ * (`infusionMinutes`: the ratio is that duration over the minutes ordered — ten times as fast is tenfold). The first
-+ * that differs, as the rate it runs at, with how far it is from the preset's; undefined when none does.
++ * The rest of a dose given in parts, as the rate it runs at when the order gives it over `minutes` instead of the
++ * infusion's own (`own`): "7.2 mg bolus, the rest over 6 min" is 64.8 mg over 6 min, 648 mg/h — in the unit of the dose
++ * the order states, the whole or its bolus, whichever it is nearer; else in the infusion's own unit.
 + */
-+function infusionMismatch(v: Extract<PartVerdict, { state: "ok" }>, overRates: readonly Candidate[], preset: DoseSpec, weight: number | null): { stated: Stated; ratio: number; far: number } | undefined {
++function restRate(m: DoseMention, minutes: number, own: number, preset: DoseSpec, weight: number | null): Stated {
++  const bolus = preset.bolus!;
++  const share = 1 - bolus.amount / preset.amount;
++  const stated: Stated = { amount: m.amount, unit: m.unit };
++  const off = (f: Framed | IncomparableDoseReason) => (typeof f === "string" ? Infinity : Math.abs(Math.log(measure(f, f.low).ratio)));
++  const asWhole = off(frame(stated, preset, weight));
++  const asBolus = off(frame(stated, bolus, weight));
++  if (asWhole === Infinity && asBolus === Infinity) return { amount: tidy((preset.maintenance!.amount * own) / minutes), unit: preset.maintenance!.unit };
++  const rest = asWhole <= asBolus ? m.amount * share : (m.amount * share * preset.amount) / bolus.amount;
++  return { amount: tidy(rest / (minutes / 60)), unit: `${m.unit}/h` as DoseUnit };
++}
++
++/**
++ * How a dose given in parts (`bolus` and `maintenance`) runs its infusion, as the order states it: each later part given
++ * over a time (`rest`: "then 64.8 mg over 60 min") as a rate against `maintenance`; the whole given over a time ("72 mg
++ * over 60 min") and the rest's own time ("the rest over 60 min", `restOver`) against the infusion's own duration
++ * (`infusionMinutes`: the ratio is that duration over the minutes ordered — ten times as fast is tenfold). Times are
++ * stated rounded (`timed`). The first that differs, as the rate it runs at, with how far it is from the preset's
++ * (`mismatch`), and whether the order states how its infusion runs at all (`stated`).
++ */
++function infusionCheck(v: { rest?: Candidate[]; whole?: Candidate[] }, own: readonly DoseMention[], overRates: readonly Candidate[], preset: DoseSpec, weight: number | null): { mismatch?: { stated: Stated; ratio: number; far: number }; stated: boolean } {
++  let stated = false;
 +  for (const c of overRates) {
 +    if (!v.rest?.some((r) => r.mention === c.mention)) continue;
-+    const m = measure(c.f, c.f.low);
-+    if (!m.equivalent) return { stated: c.stated, ratio: m.ratio, far: m.far };
++    const m = measure(timed(c.f), c.f.low);
++    if (!m.equivalent) return { mismatch: { stated: c.stated, ratio: m.ratio, far: m.far }, stated: true };
++    stated = true;
 +  }
 +  const minutes = infusionMinutes(preset, weight ?? undefined);
-+  if (!minutes) return undefined;
++  if (!minutes) return { stated };
 +  for (const c of v.whole ?? []) {
-+    const over = c.mention.over;
-+    const stated = asRate(c.mention);
-+    if (over == null || !stated) continue;
-+    // the faster it runs, the shorter the time: compared as one over the minutes
-+    const m = measure({ low: 1 / over, high: 1 / over, partLow: 1 / minutes.high, partHigh: 1 / minutes.low, mixed: c.f.mixed }, 1 / over);
-+    if (!m.equivalent) return { stated, ratio: m.ratio, far: m.far };
++    const rate = asRate(c.mention);
++    if (c.mention.over == null || !rate) continue;
++    const m = measureTime(c.mention.over, minutes);
++    if (!m.equivalent) return { mismatch: { stated: rate, ratio: m.ratio, far: m.far }, stated: true };
++    stated = true;
 +  }
-+  return undefined;
++  for (const x of own) {
++    if (x.restOver == null || x.upTo != null) continue;
++    const m = measureTime(x.restOver, minutes);
++    if (!m.equivalent) return { mismatch: { stated: restRate(x, x.restOver, minutes.low, preset, weight), ratio: m.ratio, far: m.far }, stated: true };
++    stated = true;
++  }
++  return { stated };
 +}
 +
  /** The dose of an order: an amount (or a range) as stated, with the route. */
  function doseOf(s: Stated | null, route: OrderedDose["route"]): OrderedDose | null {
    const d: OrderedDose = { ...(s ? { amount: s.amount, ...(s.upTo != null ? { upTo: s.upTo } : {}), unit: s.unit } : {}), ...(route ? { route } : {}) };
-@@ -347,7 +403,11 @@ function itemWords(iv: Partial<Pick<Intervention, "name" | "aliases">>): string[
+@@ -346,8 +438,14 @@ function itemWords(iv: Partial<Pick<Intervention, "name" | "aliases">>): string[
+  *   range within it, a total stated beside the parts that add up to it) is given; another dose, or a range wholly
   *   above or below, is a dose error (`conflict`, `doseErrorSeverity`); a range across its ends, or several doses that
   *   disagree (`several`), are asked about. A dose given in parts (`bolus`): the whole, or its parts (the first its
-  *   bolus), or the bolus with the infusion's rate, is given; a part alone — the bolus, or the rest — is asked about
+- *   bolus), or the bolus with the infusion's rate, is given; a part alone — the bolus, or the rest — is asked about
 - *   (`partial`); an amount over a stated time is also checked as a rate against the infusion's.
-+ *   (`partial`); an amount over a stated time is also checked as a rate against the infusion's — a later part even when
-+ *   the parts add up to the whole ("7.2 mg bolus then 64.8 mg over 6 min" is a tenfold infusion), the whole over a time
-+ *   against the infusion's own duration (`infusionMinutes`: "72 mg over 6 min" runs ten times as fast as over 60 min).
++ *   bolus), or the bolus with the infusion's rate or with the time its rest runs over, is given; a part alone — the
++ *   bolus, or the rest — is asked about (`partial`); an amount over a stated time is also checked as a rate against the
++ *   infusion's — a later part even when the parts add up to the whole ("7.2 mg bolus then 64.8 mg over 6 min" is a
++ *   tenfold infusion), the whole over a time and the rest's own time against the infusion's own duration
++ *   (`infusionMinutes`: "72 mg over 6 min", "7.2 mg bolus, the rest over 6 min" run ten times as fast as over 60 min),
++ *   a stated time within `WEIGHT_BASED_TOLERANCE`; the bolus's own time is no infusion ("10% as a bolus over 1 min").
 + *   Beside a single dose (`maintenance` without `bolus`), an amount over a time at the infusion's rate is the infusion,
 + *   not another single dose ("5000 units bolus then 2520 units over 2 h" is the bolus and 1260 units/h).
   * - a later dose after "then" at a frequency (`then`: "300 mg now, then 75 mg daily") is the regimen's maintenance,
   *   not the order's dose: only one above the preset is a dose error.
   * - a daily total that is the order's only dose ("每日2g", "20 g/day"): the preset's dose (once daily) is given, a
-@@ -393,13 +453,18 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
+@@ -393,13 +491,18 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
        if (asRateOf) place(m, asRateOf, preset, rates);
        else incomparable.push({ reason: "rate", stated: statedOf(m) });
      } else if (!isRate) {
@@ -1511,8 +1937,8 @@ index 6839c5f..c2693e4 100644
 +      const over = r && f && typeof f !== "string" ? { mention: m, stated: r, f } : null;
 +      // beside a single dose (no `bolus`), an amount over a time at the infusion's own rate is the infusion, never
 +      // another single dose ("heparin 5000 units bolus then 2520 units over 2 h" is the bolus and 1260 units/h)
-+      if (over && !preset.bolus && measure(over.f, over.f.low).equivalent) {
-+        rates.push(over);
++      if (over && !preset.bolus && measure(timed(over.f), over.f.low).equivalent) {
++        rates.push({ ...over, f: timed(over.f) });
 +        continue;
        }
 +      place(m, statedOf(m), preset, doses);
@@ -1520,7 +1946,7 @@ index 6839c5f..c2693e4 100644
      } else if (preset.maintenance) place(m, statedOf(m), preset.maintenance, rates);
      else incomparable.push({ reason: "rate", stated: statedOf(m) });
    }
-@@ -414,11 +479,18 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
+@@ -414,11 +517,20 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
      return { outcome: "conflict", dose: doseOf(stated, route)!, ratio, conflicts, severity: doseErrorSeverity(ratio, conflicts, iv, far) };
    };
    const given = (stated: Stated | null): OrderCheck => (routeConflicts.length ? conflict(stated, stated ? 1 : null, stated ? 1 : null, false) : { outcome: "given", dose: doseOf(stated, route), checked: true });
@@ -1528,14 +1954,16 @@ index 6839c5f..c2693e4 100644
 -  // parts do not already make the preset's dose: a dose error
 -  const overMismatch = dose.state === "ok" ? undefined : overRates.map((c) => ({ c, m: measure(c.f, c.f.low) })).find((x) => !x.m.equivalent);
 +  // an amount over a stated time whose rate is not the infusion's ("7.2 mg bolus, then 648 mg over 60 min"): a dose
-+  // error. When the doses stated are the preset's, a dose given in parts still runs its infusion at the preset's rate
-+  // ("7.2 mg bolus then 64.8 mg over 6 min", "72 mg over 6 min" are tenfold: `infusionMismatch`); a single dose given
-+  // over a time beside an infusion is that dose ("heparin 5000 units over 5 min")
-+  const overMismatch =
-+    dose.state === "ok"
-+      ? preset.bolus && preset.maintenance
-+        ? infusionMismatch(dose, overRates, preset, weight)
-+        : undefined
++  // error. When the doses stated are the preset's — or its bolus alone —, a dose given in parts still runs its infusion
++  // at the preset's rate ("7.2 mg bolus then 64.8 mg over 6 min", "72 mg over 6 min", "7.2 mg bolus, the rest over
++  // 6 min" are tenfold: `infusionCheck`), and the bolus's own minute is no infusion ("7.2 mg over 1 min"); a single dose
++  // given over a time beside an infusion is that dose ("heparin 5000 units over 5 min")
++  const inParts = preset.bolus != null && preset.maintenance != null && (dose.state === "ok" || (dose.state === "partial" && dose.part === "bolus"));
++  const infusion = inParts ? infusionCheck(dose.state === "ok" ? dose : {}, own, overRates, preset, weight) : null;
++  const overMismatch = infusion
++    ? infusion.mismatch
++    : dose.state === "ok"
++      ? undefined
 +      : overRates.map((c) => ({ stated: c.stated, ...measure(c.f, c.f.low) })).find((x) => !x.equivalent);
    if (dose.state === "mismatch") return conflict(dose.dose, dose.ratio, dose.far, true);
 -  if (overMismatch) return conflict(overMismatch.c.stated, overMismatch.m.ratio, overMismatch.m.far, true);
@@ -1543,6 +1971,18 @@ index 6839c5f..c2693e4 100644
    for (const v of [dose, rate]) if (v.state === "several") return { outcome: "query", reason: "several", words: v.doses.map((d) => partText(d)).join(", "), dose: routeOnly };
    for (const v of [dose, rate]) if (v.state === "range") return { outcome: "query", reason: "range", words: v.words, dose: routeOnly };
    if (rate.state === "mismatch") return conflict(rate.dose, rate.ratio, rate.far, true);
+@@ -434,8 +546,9 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
+     }
+   }
+   if (dose.state === "ok") return given(dose.dose);
+-  // a dose given in parts: the bolus with the infusion's rate is the whole; a part alone is asked about
+-  if (dose.state === "partial") return rate.state === "ok" ? given(dose.dose) : { outcome: "query", reason: "partial", words: null, dose: doseOf(dose.dose, route) };
++  // a dose given in parts: the bolus with the infusion's rate — or with the time its rest runs over ("7.2 mg bolus, the
++  // rest over 60 min") — is the whole; a part alone is asked about
++  if (dose.state === "partial") return rate.state === "ok" || infusion?.stated ? given(dose.dose) : { outcome: "query", reason: "partial", words: null, dose: doseOf(dose.dose, route) };
+   if (rate.state === "ok") return preset.bolus ? { outcome: "query", reason: "partial", words: null, dose: doseOf(rate.dose, route) } : given(rate.dose);
+   // nothing that could be compared: why not (a dose the words state that cannot be read or compared), else the route
+   if (incomparable.length > 0) return { outcome: "query", reason: incomparable[0]!.reason, words: null, dose: doseOf(incomparable[0]!.stated, route) };
 diff --git a/packages/core/src/engine/index.ts b/packages/core/src/engine/index.ts
 index c045f1f..423359e 100644
 --- a/packages/core/src/engine/index.ts
@@ -1645,6 +2085,132 @@ index 301ba48..835e6a7 100644
  /** A team scenario: initial conditions and perturbations, never the steps (authored teaching / benchmark material). */
  export const TeamScenarioSchema = z
    .object({
+diff --git a/packages/web/e2e/place-labels.spec.ts b/packages/web/e2e/place-labels.spec.ts
+index 0f069fa..3e7a12a 100644
+--- a/packages/web/e2e/place-labels.spec.ts
++++ b/packages/web/e2e/place-labels.spec.ts
+@@ -7,8 +7,9 @@
+  * Both labels now come from the world's region lookup at the avatar's position, reported whenever the body moved, and
+  * the world has the body at that very position: the map's place, the badge and the world's own room agree — after
+  * walking up to the wall from either suite, after the transport, after the reposition (playing, and with a window
+- * open, on either side of the wall line), and after a walk the world drives. Assertions read the HUD and the world
+- * model (`__QA__`), not the pixels.
++ * open, on either side of the wall line), and after a walk the world drives. Inside the build zone the lookup names
++ * it again — "Build zone", not the outdoor region (audit W5). Assertions read the HUD and the world model (`__QA__`),
++ * not the pixels.
+  */
+ import { expect, test, type Page } from "@playwright/test";
+ import { embodiedSetup, enterCase, freshStart, placeAvatar, shot, toPatientSide } from "./helpers.js";
+@@ -18,6 +19,8 @@ const PATIENT = "patient:ward-1";
+ /** general-hospital: the wall between the CT suite (x 21–26) and the MRI suite (x 26–31), and a line clear of both scanners. */
+ const WALL_X = 26;
+ const Z = -34.2;
++/** general-hospital: a spot in the build zone (x −59…−47, z 23…39), clear of its seed blocks (z 30). */
++const BUILD_ZONE = { x: -53, z: 34 };
+ 
+ /** The place beside the map, the badge, the world's name and room of the body, the avatar and the world's pose: one read. */
+ async function places(page: Page) {
+@@ -45,8 +48,8 @@ async function agreement(page: Page) {
+   return same ? "agree" : p;
+ }
+ 
+-/** Wait until both labels and the world agree; then they name `name` (and the world's room is `room`). */
+-async function agreeOn(page: Page, name: string, room: string): Promise<void> {
++/** Wait until both labels and the world agree; then they name `name` (and the world's room is `room`, null in none). */
++async function agreeOn(page: Page, name: string, room: string | null): Promise<void> {
+   await expect.poll(() => agreement(page), { timeout: 30_000 }).toBe("agree");
+   const p = await places(page);
+   expect(p.world).toBe(name);
+@@ -144,6 +147,13 @@ test.describe("the place beside the map and the badge (en)", () => {
+     expect((await walk)?.status).toBe("completed");
+     await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
+     await agreeOn(page, "MRI Suite", "rad-mri");
++
++    // the build zone (audit W5): named as such beside the map, on the badge and by the world — no longer the garden
++    await placeAvatar(page, BUILD_ZONE.x, BUILD_ZONE.z);
++    await agreeOn(page, "Build zone", null);
++    await shot(page, "place-build-zone");
++    await placeAvatar(page, BUILD_ZONE.x + 9, BUILD_ZONE.z);
++    await agreeOn(page, "Healing Garden", null);
+     expect(errors).toEqual([]);
+   });
+ });
+diff --git a/packages/web/e2e/transport.spec.ts b/packages/web/e2e/transport.spec.ts
+index 9a47fad..2266a04 100644
+--- a/packages/web/e2e/transport.spec.ts
++++ b/packages/web/e2e/transport.spec.ts
+@@ -4,8 +4,9 @@
+  * the scanner (§8.7) —, she is wheeled on her ward bed to the CT scanner — the bed is pushed in front of the
+  * avatar with her lying on it, then drawn where the world parks it, her on the scanner table, where the scan is
+  * done —, and she is wheeled back to her bed space. Sitting her up (an authored
+- * `posture`) changes the posture of the drawn patient. Assertions read the authoritative state (__QA__: the
+- * world model, the renderer's records), not the pixels.
++ * `posture`) changes the posture of the drawn patient. The monitor taken along (§8.7) travels beside her bed — the
++ * world's transit names it — and stays with her on arrival (audit 2026-11-12 W4). Assertions read the
++ * authoritative state (__QA__: the world model, the renderer's records), not the pixels.
+  */
+ import { expect, test, type Page } from "@playwright/test";
+ import { embodiedSetup, enterCase, freshStart, placeAvatar, shot, toPatientSide, traceLines } from "./helpers.js";
+@@ -17,11 +18,12 @@ const BED = "ward-bed-1";
+ 
+ const drawnPatient = (page: Page) => page.evaluate((slot) => (window as any).__QA__.world.debug.patientPose(slot), SLOT);
+ const worldPlace = (page: Page) => page.evaluate(() => (window as any).__QA__.worldModel.patientPlace());
+-const drawnBed = (page: Page) =>
++const drawnPortable = (page: Page, id: string) =>
+   page.evaluate((id) => {
+     const r = (window as any).__QA__.world.debug.portables.get(id);
+-    return r ? { x: r.x as number, z: r.z as number, pushedBy: (r.pushedBy ?? null) as string | null, promoted: r.promoted as boolean } : null;
+-  }, BED);
++    return r ? { x: r.x as number, z: r.z as number, pushedBy: (r.pushedBy ?? null) as string | null, pushAt: (r.pushAt ?? null) as string | null, promoted: r.promoted as boolean } : null;
++  }, id);
++const drawnBed = (page: Page) => drawnPortable(page, BED);
+ 
+ test.describe("patient transport (en)", () => {
+   test.use({ locale: "en-US" });
+@@ -109,4 +111,43 @@ test.describe("patient transport (en)", () => {
+     await placeAvatar(page, at.x + 1.8, at.z + 2.4, { x: at.x, z: at.z });
+     await shot(page, "transport-posture-sitting");
+   });
++
++  test("(m) PE: the monitor taken along travels beside her bed and stays with her at the CT scanner (audit W4)", async ({ page }) => {
++    const errors: string[] = [];
++    page.on("pageerror", (e) => errors.push(e.message));
++    const MONITOR = "ward-defibrillator";
++    await freshStart(page);
++    await enterCase(page, CASE);
++    await embodiedSetup(page, { bypassApprovals: true });
++    await toPatientSide(page);
++    const home = await page.evaluate((id) => (window as any).__QA__.worldModel.entity(`eq:${id}`).position, MONITOR);
++    const done = page.evaluate((patient) => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: patient, parameters: { destination: "eq:ct-scanner", monitor: true } }), PATIENT);
++    // on the way: the world's transit names the monitor, and it is drawn travelling at the avatar's side, beside her
++    // bed (before W4: left standing at her bedside on the ward until she arrived)
++    await expect.poll(async () => (await drawnPortable(page, MONITOR))?.pushedBy ?? null, { timeout: 60_000, intervals: [200] }).toBe("avatar");
++    expect(await drawnPortable(page, MONITOR)).toMatchObject({ pushAt: "beside", promoted: true });
++    expect(await page.evaluate(() => (window as any).__QA__.worldModel.patientPlace()?.transit?.monitor ?? null)).toBe(`eq:${MONITOR}`);
++    await expect.poll(async () => {
++      const m = await drawnPortable(page, MONITOR);
++      return m ? Math.hypot(m.x - home.x, m.z - home.z) : 0;
++    }, { timeout: 60_000, intervals: [300] }).toBeGreaterThan(3);
++    await shot(page, "transport-monitor-travelling");
++    const result = await done;
++    expect(result?.status, result?.message).toBe("completed");
++    expect(result?.message).toMatch(/went with them, monitoring/);
++    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
++    // there: parked with her (beside the scanner's table), drawn where the world has it, at her bedside
++    const where = await page.evaluate((id) => {
++      const w = (window as any).__QA__.worldModel;
++      return { at: w.snapshot().entities[`eq:${id}`].position, room: w.roomOf(`eq:${id}`), bedside: w.atBedside(`eq:${id}`), place: w.patientPlace() };
++    }, MONITOR);
++    expect(where).toMatchObject({ room: "rad-ct", bedside: true, place: { provider: "eq:ct-scanner" } });
++    expect(where.place.transit).toBeUndefined();
++    const drawn = await drawnPortable(page, MONITOR);
++    expect(drawn).toMatchObject({ pushedBy: null });
++    expect(Math.hypot(drawn!.x - where.at.x, drawn!.z - where.at.z)).toBeLessThan(0.05);
++    await placeAvatar(page, where.place.x + 2.6, where.place.z + 3.2, { x: where.place.x, z: where.place.z });
++    await shot(page, "transport-monitor-at-ct");
++    expect(errors).toEqual([]);
++  });
+ });
 diff --git a/packages/web/src/app/app.ts b/packages/web/src/app/app.ts
 index 69d33b1..85e90c7 100644
 --- a/packages/web/src/app/app.ts
@@ -1658,10 +2224,29 @@ index 69d33b1..85e90c7 100644
        // a hidden tab draws no frames: bodies are put at their targets (an external agent's walk does not stall)
        hidden: () => typeof document !== "undefined" && document.hidden,
 diff --git a/packages/web/src/app/embodied-link.ts b/packages/web/src/app/embodied-link.ts
-index 40a3c4a..2e76d6e 100644
+index 40a3c4a..2f6a405 100644
 --- a/packages/web/src/app/embodied-link.ts
 +++ b/packages/web/src/app/embodied-link.ts
-@@ -326,6 +326,17 @@ export class EmbodiedLink {
+@@ -284,8 +284,16 @@ export class EmbodiedLink {
+       const e = world?.entity(place.provider);
+       if (e) return t(e.name, L);
+     }
+-    // THE region lookup of the world (the HUD's badge and the map's label say the same, P2-15)
+-    return placeAt(this.o.facility, place.x, place.z, L, place.level).name;
++    return this.placeName({ level: place.level, x: place.x, z: place.z });
++  }
++
++  /**
++   * A place by name: asked of the world (`WorldRuntime.regionName`, THE region lookup — the one the map's label and
++   * the badge use, P2-15; audit W5), the same lookup over the facility only while no world model runs.
++   */
++  private placeName(at: { level: string; x: number; z: number }): string {
++    const L = this.o.locale();
++    return this.world?.regionName(at, L) ?? placeAt(this.o.facility, at.x, at.z, L, at.level).name;
+   }
+ 
+   /** A device's stored behaviour state (ECG cart: idle / prepared / connected / completed), else null. */
+@@ -326,6 +334,17 @@ export class EmbodiedLink {
      return best ? placementIdOf(best.id) : null;
    }
  
@@ -1679,6 +2264,16 @@ index 40a3c4a..2e76d6e 100644
    /** The patient an actor takes along in its `transport_patient` (lying on the trolley, or walking): their slot and posture. */
    carrying(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null {
      const world = this.world;
+@@ -338,8 +357,7 @@ export class EmbodiedLink {
+   onBodyStart(actorId: ActorId, plan: Extract<NavPlan, { ok: true }>): void {
+     const world = this.world;
+     if (!world || !staffIdOf(actorId)) return;
+-    const L = this.o.locale();
+-    const place = placeAt(this.o.facility, plan.target.x, plan.target.z, L, plan.target.level).name;
++    const place = this.placeName({ level: plan.target.level, x: plan.target.x, z: plan.target.z });
+     this.o.toast(tr("emb.toast.walking", { who: this.staffName(actorId), place }), "", "info", `walk-${actorId}`);
+   }
+ 
 diff --git a/packages/web/src/app/embodied.test.ts b/packages/web/src/app/embodied.test.ts
 index 2dc8d02..df258ec 100644
 --- a/packages/web/src/app/embodied.test.ts
@@ -1767,6 +2362,42 @@ index 6224fb1..d01a061 100644
    /**
     * Draw the patient where the world model has them (EMBODIED §8): at a spot (`PatientSpot`), or back in their
     * own bed space (`null`). Their collider (standing) and aim target follow.
+diff --git a/packages/web/src/ui/place.test.ts b/packages/web/src/ui/place.test.ts
+index fe93290..b4c70f0 100644
+--- a/packages/web/src/ui/place.test.ts
++++ b/packages/web/src/ui/place.test.ts
+@@ -57,6 +57,31 @@ describe("one place for the map's label and the badge", () => {
+       }
+   });
+ 
++  it("inside the build zone: 'Build zone' / '建造园地' beside the map and on the badge again — the world's own name (audit W5)", () => {
++    const zone = gh.buildZone!.rect;
++    const world = regionLookup(gh);
++    for (const [locale, name] of [
++      ["en", "Build zone"],
++      ["zh-CN", "建造园地"],
++    ] as const) {
++      setLocale(locale);
++      // before W5: "Healing Garden" / "疗愈花园" (the outdoor region) at every one of these
++      for (const [x, z] of [
++        [zone.x, zone.z],
++        [zone.x - zone.w / 2 + 0.5, zone.z + zone.d / 2 - 0.5],
++      ] as const) {
++        const where = placeAt(gh, x, z, locale);
++        expect(where).toEqual({ name, roomId: null });
++        expect(world({ level: "L0", x, z }, locale).name).toBe(name);
++        const t = placeTexts({ region: where.name }, { walking: false });
++        expect(t.region).toBe(name);
++        expect(t.badge).toContain(name);
++      }
++      // a step outside it: the outdoor region
++      expect(placeAt(gh, zone.x + zone.w / 2 + 1, zone.z, locale).name).not.toBe(name);
++    }
++  });
++
+   it("the badge: the same place in-world, 'walking…' while the world moves the body, its own words in clinical mode", () => {
+     setLocale("en");
+     expect(placeTexts({ region: "MRI Suite" }, { walking: false })).toEqual({ region: "MRI Suite", badge: "In-world · MRI Suite" });
 diff --git a/packages/web/src/world/carts.ts b/packages/web/src/world/carts.ts
 index 390fe8f..938e626 100644
 --- a/packages/web/src/world/carts.ts
@@ -1858,6 +2489,34 @@ index 6a155b5..aeee525 100644
    const lift = rec.origin.y - host.elevation(rec.origin.level);
    if (level !== rec.level) {
      host.levelRoot(level).add(rec.group);
+diff --git a/packages/web/src/world/region.ts b/packages/web/src/world/region.ts
+index 035ac9b..a643473 100644
+--- a/packages/web/src/world/region.ts
++++ b/packages/web/src/world/region.ts
+@@ -1,17 +1,18 @@
+ /**
+  * Region naming. `placeAt` — where the player is, by name, for the HUD — is THE region lookup of the world
+  * (`regionLookup` of @clinicalcraft/world, the one `WorldRuntime.regionName` uses): the smallest room containing
+- * the point on the level; in no room but in a building, that building's corridor; outdoors, the facility's outdoor
+- * region. The place beside the map and the in-world badge both show it (one lookup of one position, audit
+- * 2026-11-12 P2-15). `roomAt` is the room a placement is built in (V4 `O()` generalised: smallest room containing
+- * the point; in a multi-level facility pass the level — only its rooms count).
++ * the point on the level; in no room but in a building, that building's corridor; outdoors, the build zone ("Build
++ * zone" / "建造园地") inside it, else the facility's outdoor region. The place beside the map and the in-world badge
++ * both show it (one lookup of one position, audit 2026-11-12 P2-15; the build zone named again, W5). `roomAt` is the
++ * room a placement is built in (V4 `O()` generalised: smallest room containing the point; in a multi-level facility
++ * pass the level — only its rooms count).
+  */
+ import { defaultLevelId, roomLevel, type FacilityDefinition } from "@clinicalcraft/core";
+ import { regionLookup, type NamedRegion } from "@clinicalcraft/world";
+ import { rectContains } from "./geometry.js";
+ 
+ type RoomDef = FacilityDefinition["rooms"][number];
+-type RegionSource = Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion">;
++type RegionSource = Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion" | "buildZone">;
+ 
+ export function roomAt(f: Pick<FacilityDefinition, "rooms" | "levels">, x: number, z: number, level?: string): RoomDef | null {
+   let best: RoomDef | null = null;
 diff --git a/packages/world/src/actions.ts b/packages/world/src/actions.ts
 index 52810e1..9c9bc97 100644
 --- a/packages/world/src/actions.ts
@@ -2050,11 +2709,24 @@ index 7efdad3..5983892 100644
    host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
    host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
    mover.placeEntity?.(id, { ...spot, rot: cart.rot });
+diff --git a/packages/world/src/escort.test.ts b/packages/world/src/escort.test.ts
+index 7d92cee..660da8e 100644
+--- a/packages/world/src/escort.test.ts
++++ b/packages/world/src/escort.test.ts
+@@ -50,7 +50,7 @@ describe("follow me (escort_patient)", () => {
+     expect(w.runtime.plan(PRIMARY_ACTOR, { kind: "point", x: p.x, z: p.z }).ok).toBe(true);
+   });
+ 
+-  it("a hand-steered avatar (sensor poses) takes the patient along without a stored step or a version", async () => {
++  it("a hand-steered avatar (sensor poses) takes the patient along by their own steps — no world version (audit W3)", async () => {
+     const w = makeWorld("smzl-lung-adeno");
+     expect((await follow(w)).status).toBe("completed");
+     const v = w.runtime.version;
 diff --git a/packages/world/src/escort.ts b/packages/world/src/escort.ts
-index d21ee9f..b9a60a2 100644
+index d21ee9f..ef0a53d 100644
 --- a/packages/world/src/escort.ts
 +++ b/packages/world/src/escort.ts
-@@ -2,11 +2,13 @@
+@@ -2,25 +2,27 @@
   * Walking with the patient (EMBODIED §8.4): `escort_patient` — "follow me" — and `release_patient` — "wait here".
   *
   * A patient who can walk (`PatientBody.walkProblem`: not lying by clinical state, able to respond, not in
@@ -2073,8 +2745,19 @@ index d21ee9f..b9a60a2 100644
   *
   * It ends when the actor asks them to wait (`release_patient`: they stand where they are, a body on the floor
   * again), when someone takes them somewhere (`transport_patient`: they arrive there) or the team moves them (a
-@@ -20,7 +22,7 @@
-  * way) and where they arrived, told by `patient.departed` / `patient.arrived`.
+  * transfer), when clinical state no longer lets them walk (`endEscortIfUnable`, from `refreshPatient`: they
+- * lie down, or stop, where they are), and when a hand-steered walker moves where no one could have followed (a jump
+- * of the body, through a wall: `stopFollowing` — they stop where they last were). No time is charged: the walking is
+- * the walker's own.
++ * lie down, or stop, where they are), and when the walker goes where no one could have followed (a jump of a
++ * hand-steered body, through a wall or a window; a world walk they have no route after: `stopFollowing` — they stop
++ * where they are). No time is charged: the walking is the walker's own.
+  *
+  * Their walk is recorded as their own (audit 2026-11-12 P2-11; `journey.ts`): each walk of the walker in the world —
+- * and each stretch of a hand-steered walk — is a leg with the follower's own path (a step behind, along the walker's
+- * way) and where they arrived, told by `patient.departed` / `patient.arrived`.
++ * and each stretch of a hand-steered walk — is a leg with the follower's own path (their own route, to a step behind
++ * the walker) and where they arrived, told by `patient.departed` / `patient.arrived`.
   */
  import type { ActorState, BodyPosture, EntityId, PatientPlaceState, WorldActionRequest, WorldEvent } from "./contracts.js";
 -import type { Outcome } from "./effects.js";
@@ -2161,7 +2844,7 @@ index d21ee9f..b9a60a2 100644
  
  /**
 diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
-index 22c2305..dfec2f1 100644
+index 22c2305..8676e3b 100644
 --- a/packages/world/src/i18n.ts
 +++ b/packages/world/src/i18n.ts
 @@ -279,7 +279,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
@@ -2173,8 +2856,153 @@ index 22c2305..dfec2f1 100644
    "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
    "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
    "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+@@ -349,6 +349,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+ /** Where things are (lead notes 1 and 2). */
+ export const WHEREABOUTS: Record<string, Pair> = {
+   "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
++  "region.buildZone": { "zh-CN": "建造园地", en: "Build zone" },
+   "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
+   "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
+   // what an actor knows after looking, or asking (audit 2026-11-12 P1-8)
+diff --git a/packages/world/src/journey.test.ts b/packages/world/src/journey.test.ts
+index 40f205c..152e97d 100644
+--- a/packages/world/src/journey.test.ts
++++ b/packages/world/src/journey.test.ts
+@@ -1,12 +1,17 @@
+ /**
+  * The patient's journeys in the event log (EMBODIED §8.4, audit 2026-11-12 P2-11): a walk with someone (the
+- * follower's own path and arrival, never only the walker's pose), a transport on their bed, a trolley or on foot
+- * (departure, transit, arrival, the colleague who takes over), and a relocation by a phase or an intervention (no
+- * journey) — told by `patient.departed` / `patient.arrived` and kept in `PatientPlaceState.legs`.
++ * follower's own spot, steps and path along a route planned for them — never the walker's pose, never through a wall
++ * or a window: audit W3), a transport on their bed, a trolley or on foot (departure, transit, arrival, the colleague
++ * who takes over), and a relocation by a phase or an intervention (no journey) — told by `patient.departed` /
++ * `patient.arrived` and kept in `PatientPlaceState.legs`.
+  */
+ import { describe, expect, it } from "vitest";
+-import { PRIMARY_ACTOR, type PatientLeg, type Pose, type WorldEvent } from "./contracts.js";
+-import { makeWorld, type TestWorld } from "./__fixtures__/world.js";
++import { buildCollisionModel } from "./collision.js";
++import { PRIMARY_ACTOR, type PatientLeg, type PathPoint, type Pose, type WorldEvent } from "./contracts.js";
++import { levelElevation } from "./levels.js";
++import { PHYSICS } from "./physics.js";
++import { segmentCrossesArea } from "./raster.js";
++import { catalogs, makeWorld, type TestWorld } from "./__fixtures__/world.js";
+ 
+ const A = PRIMARY_ACTOR;
+ 
+@@ -21,6 +26,18 @@ const arrived = (seen: WorldEvent[]) => seen.filter((e): e is Extract<WorldEvent
+ const departed = (seen: WorldEvent[]) => seen.filter((e): e is Extract<WorldEvent, { type: "patient.departed" }> => e.type === "patient.departed");
+ const near = (a: { x: number; z: number }, b: { x: number; z: number }, m = 0.05) => Math.hypot(a.x - b.x, a.z - b.z) <= m;
+ 
++/** The walls, partitions, windows and balustrades (at body height) a path's steps cross: none when a person walked it. */
++function crossings(w: TestWorld, path: readonly PathPoint[]): string[] {
++  const floor = (level: string) => levelElevation(w.facility, level);
++  const barriers = buildCollisionModel(w.facility, catalogs()).colliders.filter((c) => ["wall", "partition", "window", "rail"].includes(c.kind) && c.maxY - floor(c.level) > 0.05 && c.minY - floor(c.level) < PHYSICS.height);
++  const out: string[] = [];
++  for (let i = 1; i < path.length; i++) {
++    const a = path[i - 1]!, b = path[i]!;
++    if (a.level === b.level) for (const c of barriers) if (c.level === a.level && segmentCrossesArea(a, b, c)) out.push(c.id);
++  }
++  return out;
++}
++
+ async function follow(w: TestWorld) {
+   expect((await w.act({ actorId: A, operation: "navigate", goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
+   expect((await w.act({ actorId: A, operation: "escort_patient", targetId: w.patientId })).status).toBe("completed");
+@@ -43,9 +60,10 @@ describe("walking with someone: the follower's own path and arrival (audit P2-11
+     const path = done!.path!;
+     expect(near(path[0]!, start)).toBe(true);
+     expect(near(path.at(-1)!, end)).toBe(true);
+-    const walker = walk.navigation!.path;
+-    expect(path.length).toBeGreaterThanOrEqual(walker.length);
++    expect(path.length).toBeGreaterThanOrEqual(2);
+     expect(done!.leg.distance).toBeGreaterThan(walk.navigation!.length - 2);
++    // their own route (W3): planned for them from where they stood — through no wall or window
++    expect(crossings(w, path)).toEqual([]);
+     // the walk's events carry it; the record keeps the leg
+     expect(walk.events.map((e) => e.type)).toEqual(expect.arrayContaining(["patient.departed", "patient.arrived"]));
+     expect(legs(w)).toEqual([done!.leg]);
+@@ -55,30 +73,70 @@ describe("walking with someone: the follower's own path and arrival (audit P2-11
+     expect(legs(w)[1]).toMatchObject({ kind: "escort", from: { room: end.room } });
+   });
+ 
+-  it("a hand-steered walk (sensor poses): no stored step while walking; the stretch is recorded with its path when they stop", async () => {
++  it("a hand-steered walk (sensor poses): the patient walks by their own steps, a step behind — no world version; the stretch is recorded with their path when they stop (audit W3)", async () => {
+     const w = makeWorld("smzl-lung-adeno");
+     await follow(w);
+     const seen = events(w);
+     const v = w.runtime.version;
+     const me = w.runtime.actor(A)!.pose;
+     const start = w.runtime.patientPlace()!;
+-    const step = (dx: number): Pose => ({ ...me, x: me.x + dx });
+-    for (const dx of [0.2, 1, 2, 3]) w.runtime.updatePose(A, step(dx));
+-    // the walk is in progress: set off, nothing stored, no version
++    // facing the way they walk (+x), steered by hand in steps of a quarter of a metre (a slow walk's sensor poses)
++    const east = -Math.PI / 2;
++    const step = (dx: number, yaw = east): Pose => ({ ...me, x: me.x + dx, yaw });
++    for (let i = 1; i <= 12; i++) w.runtime.updatePose(A, step(i * 0.25));
++    // the walk is in progress: set off, nothing recorded yet, no world version (their own steps change only them)
+     expect(departed(seen)).toHaveLength(1);
+     expect(arrived(seen)).toEqual([]);
+     expect(w.runtime.version).toBe(v);
++    // their own spot, a step behind the walker — they step once the walker is more than 1.2 m away (FOLLOW_KEEP)
++    const walked = w.runtime.patientPlace()!;
++    expect(walked.escort).toBe(A);
++    expect(Math.hypot(walked.x - (me.x + 3), walked.z - me.z)).toBeLessThanOrEqual(1.2);
++    expect(near(walked, { x: me.x + 3, z: me.z }, 0.3)).toBe(false);
++    // turning round on the spot is no walk: they stay where they stand (before W3 their place was derived from the
++    // walker's pose and swung round behind the new facing)
++    w.runtime.updatePose(A, step(3, east + Math.PI));
++    expect(w.runtime.patientPlace()).toMatchObject({ x: walked.x, z: walked.z });
+     const r = await w.act({ actorId: A, operation: "release_patient", targetId: w.patientId });
+     expect(r.status).toBe("completed");
+     const [done] = arrived(seen);
+     expect(done!.leg).toMatchObject({ kind: "escort", mode: "walk", by: A, status: "arrived" });
+-    expect(near(done!.path![0]!, start)).toBe(true);
+-    // every step of half a metre or more is on their path (the 0.2 m shuffle is not)
+-    expect(done!.path!.length).toBe(5);
++    const path = done!.path!;
++    expect(near(path[0]!, start)).toBe(true);
++    // their steps, one each time the walker got away from them: none through a wall or a window
++    expect(path.length).toBeGreaterThan(3);
++    expect(crossings(w, path)).toEqual([]);
+     expect(done!.leg.distance).toBeGreaterThan(2.5);
+     expect(legs(w)).toHaveLength(1);
+   });
+ 
++  it("the verifier's replay (audit W3): a hand-steered move through a window is no step — the patient stays in the room, the walk together ends there, the jump is no leg", async () => {
++    const w = makeWorld("smzl-lung-adeno");
++    await follow(w);
++    const seen = events(w);
++    const me = w.runtime.actor(A)!.pose;
++    const north = Math.PI;
++    // by hand to the consultation room's window onto the garden (facing +z, steps of half a metre)
++    for (let z = me.z; z <= 6; z += 0.5) w.runtime.updatePose(A, { ...me, z, yaw: north });
++    for (let x = me.x; x >= -7.75; x -= 0.5) w.runtime.updatePose(A, { ...me, x, z: 6, yaw: north });
++    const before = w.runtime.patientPlace()!;
++    expect(before).toMatchObject({ room: "consult", escort: A });
++    // one sensor pose 3.4 m on, through the window: sight passes a window, a body does not
++    w.runtime.updatePose(A, { ...me, x: -8, z: 9.4, yaw: north });
++    expect(w.runtime.actor(A)!.room).toBeNull();
++    const after = w.runtime.patientPlace()!;
++    // before W3: at (-8.45, 8.7) in the garden, still walking with the clinician
++    expect(after.escort).toBeUndefined();
++    expect(after.room).toBe("consult");
++    expect(Math.hypot(after.x - before.x, after.z - before.z)).toBeLessThan(0.5);
++    expect(seen.some((e) => e.type === "patient.escort" && e.escort === null)).toBe(true);
++    // the walk up to the window is their leg, stopped where they stood; the jump is none of it
++    const [leg] = arrived(seen);
++    expect(leg!.leg).toMatchObject({ kind: "escort", mode: "walk", status: "stopped", to: { room: "consult" } });
++    expect(leg!.path!.every((p) => p.z < 6.5)).toBe(true);
++    expect(crossings(w, leg!.path!)).toEqual([]);
++  });
++
+   it("a transport picks them up where the walk together ended: two legs, the walk's and the transport's", async () => {
+     const w = makeWorld("smzl-lung-adeno");
+     await follow(w);
 diff --git a/packages/world/src/journey.ts b/packages/world/src/journey.ts
-index 4c38286..a5c3bf0 100644
+index 4c38286..64e017e 100644
 --- a/packages/world/src/journey.ts
 +++ b/packages/world/src/journey.ts
 @@ -6,34 +6,41 @@
@@ -2233,7 +3061,7 @@ index 4c38286..a5c3bf0 100644
  export const MAX_FOLLOW_STEP = 5;
  
  /** A level change is a ride (or a flight of stairs) when both spots lie this close (m) to the same connector's stops. */
-@@ -57,6 +64,8 @@ export interface FollowStretch {
+@@ -57,10 +64,16 @@ export interface FollowStretch {
  export interface JourneyHost extends EffectsHost {
    /** The stretch of a hand-steered walk together now, or null. */
    follow: FollowStretch | null;
@@ -2242,7 +3070,15 @@ index 4c38286..a5c3bf0 100644
  }
  
  const r2 = (v: number) => Math.round(v * 100) / 100;
-@@ -122,12 +131,58 @@ export function withLeg(st: PatientPlaceState, leg: PatientLeg): PatientLeg[] {
+ 
++/** Two points of a path closer than this (m, same level) are one: a step to it is no step. */
++const SAME_SPOT = 0.05;
++const sameSpot = (a: PathPoint, b: PathPoint) => a.level === b.level && Math.hypot(a.x - b.x, a.z - b.z) < SAME_SPOT;
++
+ /** Where a leg starts or ends, from a stored place: the bed space, the device, the room. */
+ export function legEnd(host: EffectsHost, st: Pick<PatientPlaceState, "slot" | "provider" | "spot">): LegEnd {
+   const room = st.slot ? (host.d.patient.slot(st.slot)?.room ?? null) : st.spot ? host.d.registry.roomAt(st.spot.level, st.spot.x, st.spot.z) : null;
+@@ -122,12 +135,58 @@ export function withLeg(st: PatientPlaceState, leg: PatientLeg): PatientLeg[] {
  /* Walking with someone: the follower's own path and arrival            */
  /* ------------------------------------------------------------------ */
  
@@ -2302,18 +3138,18 @@ index 4c38286..a5c3bf0 100644
  /** Arm a stretch of the walk together where the follower stands now (the walk together starts, or goes on after a leg). */
  export function followArm(host: JourneyHost, walker: ActorState): void {
    host.follow = { by: walker.id, role: walker.role, from: placeEnd(host), departedAt: null, path: [spotNow(host)] };
-@@ -151,7 +206,9 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
+@@ -151,7 +210,9 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
    if (!s || !body.id || !body.state()) return [];
    const out: WorldEvent[] = [];
    if (s.departedAt !== null) {
 -    const path = [...s.path, spotNow(host)];
 +    const now = spotNow(host);
 +    const last = s.path[s.path.length - 1];
-+    const path = last && last.level === now.level && Math.hypot(last.x - now.x, last.z - now.z) < 0.01 ? [...s.path] : [...s.path, now];
++    const path = last && sameSpot(last, now) ? [...s.path] : [...s.path, now];
      const leg: PatientLeg = { by: s.by, role: s.role, from: s.from, to: placeEnd(host), departedAt: s.departedAt, arrivedAt: host.d.clinical.clock(), monitor: null, status, kind: "escort", mode: "walk", vehicle: null, distance: pathLength(path), receivedBy: null, receivedRole: null };
      out.push(recordLeg(host, leg, path));
    }
-@@ -161,27 +218,29 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
+@@ -161,27 +222,29 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
  }
  
  /**
@@ -2356,7 +3192,7 @@ index 4c38286..a5c3bf0 100644
   */
  export function followSensor(host: JourneyHost, walker: ActorState): PathPoint | null {
    const body = host.d.patient;
-@@ -189,13 +248,14 @@ export function followSensor(host: JourneyHost, walker: ActorState): PathPoint |
+@@ -189,13 +252,16 @@ export function followSensor(host: JourneyHost, walker: ActorState): PathPoint |
    if (host.follow?.by !== walker.id) followArm(host, walker);
    const s = host.follow!;
    const here = spotNow(host);
@@ -2368,6 +3204,8 @@ index 4c38286..a5c3bf0 100644
 +  const target = body.escortSpot(walker.pose);
 +  const step = stepOf(host, walker, here, target);
 +  if (!step) return here;
++  // nowhere nearer the walker's side to go (it is taken, or blocked): they stay where they are, nothing changes
++  if (sameSpot(step.end, here)) return null;
    setOff(host, s);
 -  s.path.push(...step);
 +  s.path.push(...step.path);
@@ -2376,7 +3214,7 @@ index 4c38286..a5c3bf0 100644
    return null;
  }
  
-@@ -212,14 +272,24 @@ export function followWalkStart(host: JourneyHost, walker: ActorState): WorldEve
+@@ -212,14 +278,26 @@ export function followWalkStart(host: JourneyHost, walker: ActorState): WorldEve
  }
  
  /**
@@ -2404,10 +3242,54 @@ index 4c38286..a5c3bf0 100644
 +    const target = body.escortSpot(walker.pose);
 +    const own = followerRoute(host, walker, here, target, Infinity);
 +    if (!own) return { events: [], stoppedAt: here };
-+    s.path.push(...own.path);
-+    events.push(...stepTo(host, own.end, target.rot, false, walker.id));
++    if (!sameSpot(own.end, here)) {
++      s.path.push(...own.path);
++      events.push(...stepTo(host, own.end, target.rot, false, walker.id));
++    }
 +  }
 +  return { events: [...events, ...closeStretch(host, interrupted ? "stopped" : "arrived", "arm")], stoppedAt: null };
+ }
+diff --git a/packages/world/src/locate.ts b/packages/world/src/locate.ts
+index 8f1c6a3..d0c8d74 100644
+--- a/packages/world/src/locate.ts
++++ b/packages/world/src/locate.ts
+@@ -8,7 +8,7 @@
+  * it or a short walk away — across a room boundary only for an open slot or
+  * a cart just outside; never through a wall).
+  */
+-import { buildingLevels, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
++import { buildingLevels, defaultLevelId, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+ import { BedsideRule, type BedsideAnchor } from "./bedside.js";
+ import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SeenPlace, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
+ import { rotateXZ, rotatedFootprint } from "./geometry.js";
+@@ -30,13 +30,16 @@ export interface NamedRegion {
+ /**
+  * THE region lookup of the world (`WorldRuntime.regionName`, lead note 2): where a point is, by name — the room it
+  * is in (`roomLookup`, the registry's own); in no room but inside a building on that level, that building's
+- * corridor; outdoors, the facility's outdoor region (e.g. "Healing Garden") — never "a corridor". Pure, built once
+- * per facility: the web's HUD names the learner's place with it, so the place beside the map and the in-world
+- * badge are one lookup of one position (audit 2026-11-12 P2-15).
++ * corridor; outdoors, the facility's build zone on the ground level ("Build zone" / "建造园地", where blocks are built:
++ * `buildZone.rect`), else its outdoor region (e.g. "Healing Garden") — never "a corridor". Pure, built once per
++ * facility: the web's HUD names the learner's place with it, so the place beside the map and the in-world badge are
++ * one lookup of one position (audit 2026-11-12 P2-15; the build zone named again, W5).
+  */
+-export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion">): (at: { level: string; x: number; z: number }, locale: string) => NamedRegion {
++export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion" | "buildZone">): (at: { level: string; x: number; z: number }, locale: string) => NamedRegion {
+   const roomAt = roomLookup(f);
+   const rooms = new Map(f.rooms.map((r) => [r.id, r]));
++  const ground = defaultLevelId(f);
++  const zone = f.buildZone?.rect ?? null;
+   return (at, locale) => {
+     const room = roomAt(at.level, at.x, at.z);
+     const r = room ? rooms.get(room) : undefined;
+@@ -45,6 +48,7 @@ export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "b
+       .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(f, b).includes(at.level))
+       .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
+     if (building) return { room: null, name: worldMessage("region.corridor", locale, { building: t(building.name, locale) }) };
++    if (zone && at.level === ground && rectContains(zone, at.x, at.z)) return { room: null, name: worldMessage("region.buildZone", locale) };
+     return { room: null, name: t(f.outdoorRegion, locale) };
+   };
  }
 diff --git a/packages/world/src/patient.ts b/packages/world/src/patient.ts
 index 3f437dc..703b0d1 100644
@@ -2723,6 +3605,38 @@ index 1c784f4..0957d6d 100644
  /** Distance from a point to an area (0 inside). */
  export function distanceToArea(x: number, z: number, a: Area): number {
    const dx = Math.max(a.minX - x, 0, x - a.maxX);
+diff --git a/packages/world/src/region-lookup.test.ts b/packages/world/src/region-lookup.test.ts
+index 4d6c4fb..e7da73a 100644
+--- a/packages/world/src/region-lookup.test.ts
++++ b/packages/world/src/region-lookup.test.ts
+@@ -73,4 +73,27 @@ describe("the world's room and region lookups", () => {
+       }
+     }
+   });
++
++  it("the build zone is named as such (audit W5: it read as the outdoor region) — on the ground, in no room; the runtime says the same", () => {
++    for (const [facility, caseId] of [
++      ["general-hospital", "pulmonary-embolism-postop"],
++      ["clinic-v4", "smzl-lung-adeno"],
++    ] as const) {
++      const f = loadFacility(facility);
++      const zone = f.buildZone!.rect;
++      const ground = defaultLevelId(f);
++      const lookup = regionLookup(f);
++      const inside = { level: ground, x: zone.x, z: zone.z };
++      expect(lookup(inside, "en"), facility).toEqual({ room: null, name: "Build zone" });
++      expect(lookup(inside, "zh-CN"), facility).toEqual({ room: null, name: "建造园地" });
++      // just outside it: the outdoor region again
++      expect(lookup({ ...inside, x: zone.x + zone.w / 2 + 1 }, "en"), facility).toEqual({ room: null, name: "Healing Garden" });
++      const w = makeWorld(caseId);
++      for (const locale of ["en", "zh-CN"]) expect(w.runtime.regionName(inside, locale)).toBe(lookup(inside, locale).name);
++      expect(w.runtime.roomAt(inside)).toBeNull();
++    }
++    // a facility without one: the outdoor region everywhere outside its buildings
++    const th = loadFacility("teaching-hospital");
++    expect(th.buildZone).toBeUndefined();
++  });
+ });
 diff --git a/packages/world/src/runtime.ts b/packages/world/src/runtime.ts
 index 0be02f6..5243f98 100644
 --- a/packages/world/src/runtime.ts
@@ -2786,7 +3700,7 @@ index 0be02f6..5243f98 100644
    });
    // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built
 diff --git a/packages/world/src/screen-source.test.ts b/packages/world/src/screen-source.test.ts
-index b9a64bf..d9bab30 100644
+index b9a64bf..bd38fd7 100644
 --- a/packages/world/src/screen-source.test.ts
 +++ b/packages/world/src/screen-source.test.ts
 @@ -5,7 +5,7 @@
@@ -2798,7 +3712,7 @@ index b9a64bf..d9bab30 100644
  import { makeWorld } from "./__fixtures__/world.js";
  
  const A = PRIMARY_ACTOR;
-@@ -81,6 +81,47 @@ describe("screenPatient: whose bedside a device's live screen shows", () => {
+@@ -81,6 +81,66 @@ describe("screenPatient: whose bedside a device's live screen shows", () => {
      expect(w.runtime.stateOf(CART)).toBe("prepared");
    });
  
@@ -2841,6 +3755,25 @@ index b9a64bf..d9bab30 100644
 +    // the only device on her: every other cart is as it was
 +    expect(seen.filter((e) => e.type === "entity.state")).toHaveLength(1);
 +    expect(w.runtime.stateOf("eq:resus2-ecg")).toBe("idle");
++  });
++
++  it("audit W2: walking away with the clinician takes the leads off too — not when they get up by the cart, once they are no longer by it", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    const P = w.patientId;
++    const CART = "eq:resus1-ecg";
++    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
++    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: CART })).status, op).toBe("completed");
++    // she is well enough to sit up and walk: she gets up beside the cart, its leads still on her
++    w.harness.cues.posture = "sitting";
++    w.runtime.refreshPatient();
++    expect((await w.act({ actorId: A, operation: "escort_patient", targetId: P })).status).toBe("completed");
++    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["connected", P]);
++    // she walks with the clinician out of the bay (before W2: still "connected", showing nobody)
++    const walk = await w.act({ actorId: A, operation: "navigate", goal: { kind: "room", id: "ed-cubicle-1" } });
++    expect(walk.status, walk.message).toBe("completed");
++    expect(w.runtime.patientPlace()?.escort).toBe(A);
++    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
++    expect(walk.events.find((e) => e.type === "entity.state" && e.entityId === CART)).toMatchObject({ from: "connected", to: "prepared", operation: "escort_patient", actorId: A });
 +  });
 +
    it("out of service: nobody, the patient's own monitor included", () => {
@@ -3103,10 +4036,10 @@ index 1f8307a..0f4ec59 100644
    const leg = body.state()?.legs?.at(-1);
    const handed = leg?.receivedBy ? ` ${worldMessage("ok.receivedBy", L, { patient: name, receiver: locator.name(leg.receivedBy) })}` : "";
 diff --git a/packages/world/src/whereabouts.test.ts b/packages/world/src/whereabouts.test.ts
-index 6202fa4..e31d572 100644
+index 6202fa4..f8988e4 100644
 --- a/packages/world/src/whereabouts.test.ts
 +++ b/packages/world/src/whereabouts.test.ts
-@@ -287,6 +287,76 @@ describe("audit 2026-11-12 P1-8: navigation goes where the actor believes a thin
+@@ -287,6 +287,83 @@ describe("audit 2026-11-12 P1-8: navigation goes where the actor believes a thin
    });
  });
  
@@ -3169,9 +4102,16 @@ index 6202fa4..e31d572 100644
 +    const truth = w.runtime.snapshot().entities[ECG]!.position!;
 +    expect(missing).toMatchObject({ lastKnown: { kind: "missing" }, room: null, availableActions: [], stateVersion: 0 });
 +    expect(missing.state).toBeUndefined();
-+    // the distance is to where it looked (within the cart's footprint of it), never to where the cart is
++    // the distance and the bearing are to where it looked (within the cart's footprint of it), never to where the cart is
 +    expect(Math.abs(missing.distance - Math.hypot(looked.x - me.x, looked.z - me.z))).toBeLessThan(1);
 +    expect(Math.abs(missing.distance - Math.hypot(truth.x - me.x, truth.z - me.z))).toBeGreaterThan(5);
++    const bearingTo = (x: number, z: number) => {
++      const dx = x - me.x, dz = z - me.z;
++      return (Math.atan2(dx * Math.cos(me.yaw) - dz * Math.sin(me.yaw), -dx * Math.sin(me.yaw) - dz * Math.cos(me.yaw)) * 180) / Math.PI;
++    };
++    const turn = (a: number, b: number) => Math.abs(((a - b + 540) % 360) - 180);
++    expect(turn(missing.bearing, bearingTo(looked.x, looked.z))).toBeLessThan(0.5);
++    expect(turn(missing.bearing, bearingTo(truth.x, truth.z))).toBeGreaterThan(10);
 +    w.runtime.askWhereabouts(A, ECG, NURSE);
 +    const told = listed(w, ECG);
 +    expect(told).toMatchObject({ lastKnown: { kind: "told" }, room: "ed-cubicle-1", availableActions: [], stateVersion: 0 });
