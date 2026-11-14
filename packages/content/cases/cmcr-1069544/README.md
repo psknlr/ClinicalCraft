@@ -21,9 +21,9 @@ teaching roles. Hospitals and calendar dates are removed. What 1.0.0 does not re
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and three independent AI-assisted reviews (2026-11-14: a first review, review round 2 and review round 3); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a gastroenterologist, endocrinologist or endocrine surgeon review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and four independent AI-assisted reviews (2026-11-14: a first review and review rounds 2, 3 and 4); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a gastroenterologist, endocrinologist or endocrine surgeon review it before teaching use |
 | phases | `first-attack` 第一次住院 / First admission → `recurrence` 约 20 个月后再次入院 / Readmission about 20 months later → `post-op` 手术之后 / After the operation → `followup` 记录的结局 / Recorded outcome — all one-way, none learner-switchable |
-| content | 32 history items (13 recorded facts, 1 labelled teaching device, 18 unknown; 10 required; 6 phase twins) · 4 examination findings (all first admission) · 17 investigations (4 record reviews; 10 without a recorded result) · 17 interventions (7 always harmful, 1 of them `critical`; oral calcium harmful while the calcium is raised; 1 wrong disposition) · 6 objectives · 5 decisions (24 options) · 13 rubric items (12 deterministic, weight 29; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 62 test utterances |
+| content | 32 history items (13 recorded facts, 1 labelled teaching device, 18 unknown; 10 required; 6 phase twins) · 4 examination findings (all first admission) · 17 investigations (4 record reviews; 10 without a recorded result) · 17 interventions (7 always harmful, 1 of them `critical`; oral calcium harmful while the calcium is raised; 1 wrong disposition) · 6 objectives · 5 decisions (24 options) · 13 rubric items (12 deterministic, weight 29; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 70 test utterances |
 
 The card no longer names the cause: 1.0.0's title ("Recurrent upper abdominal pain with elevated calcium on two
 occasions") and summary named the key clue (governance survey: spoiler finding for this case), and `endocrinology`
@@ -34,7 +34,7 @@ pointed to the answer discipline, so the card keeps the presenting disciplines o
 After the case the learner can:
 
 1. Manage the first days of acute pancreatitis to the current standard — lactated Ringer's at a moderate rate reassessed
-   against the response, early low-fat oral feeding, no prophylactic antibiotics, ERCP only for cholangitis — and contrast it with
+   against the response, early low-fat oral feeding, no prophylactic antibiotics, early ERCP only for cholangitis — and contrast it with
    fasting and antibiotics (ACG 2024; IAP 2025).
 2. Screen every attack of pancreatitis for its cause, and treat a raised calcium during an attack as a red flag that needs
    a repeat albumin-adjusted calcium with a paired PTH (IAP 2025; NICE NG132, 2019).
@@ -94,7 +94,7 @@ the provenance notes and under "Source and adaptation").
 | 2 | `obj-attack-care` Examine her, read the results and set her care | abdomen examined; amylase, calcium and CT read (phase `first-attack`); decision 1 right |
 | 3 | `obj-attack-cause` Think through the cause before discharge | decision 2 right **and** one discharge-time act: the hormone assay ordered in `first-attack`, the follow-up recheck arranged, or the routine discharge (a wrong act) |
 | 4 | `obj-return` When she is readmitted | the earlier attack and the interval asked; amylase, calcium and CT read (phase `recurrence`); decision 3 right |
-| 5 | `obj-definitive` Plan the definitive treatment | hormone result and neck imaging read (phase `recurrence`); decision 4 right **and** one definitive-plan act: the surgical referral, cinacalcet or a needle biopsy |
+| 5 | `obj-definitive` Turn the results into a plan | hormone result and neck imaging read (phase `recurrence`); decision 4 right **and** one definitive-plan act: the surgical referral, cinacalcet or a needle biopsy |
 | 6 | `obj-recovery` Follow her recovery and outcome | post-operative symptoms and spasms asked; histology, calcium and hormone read (phase `post-op`); decision 5 right; outcome read |
 
 Titles name no finding, result or treatment (the journal lists later titles before they are reached); hints are
@@ -161,7 +161,7 @@ decision's `requires` guarantees; locked decisions show only a neutral `need`.
 | `rb-recovery` | management | 2 | decision 5 right first time and the follow-up plan made |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: explains pancreatitis and why the calcium must be followed; answers her fear of recurrence honestly; explains the blood-test-first diagnosis, the unclear label and the operation, with consent; after surgery explains the numbness, what to report and the cure check; teach-back; invents nothing |
 
-### How wrong choices score (measured with the reducer on 2026-11-14, after review round 3)
+### How wrong choices score (measured with the reducer on 2026-11-14, after review round 4)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -229,7 +229,7 @@ albumin/ionised calcium → decision 3 → hormone result, renal function, vitam
 the laboratory and repeat the PTH** → decision 4 → **surgical referral** → (phase `post-op`) numbness, spasms, perioral
 tingling, voice → histology, calcium, PTH, albumin/ionised calcium, magnesium → oral calcium → follow-up plan → decision 5 → (phase
 `followup`) how she has been → outcome record → finish. `cases verify` passes: objectives 6/6, decisions 5/5,
-utterances 62/62, rubric 29/29.
+utterances 70/70, rubric 29/29.
 
 ## Clinical numbers check
 
@@ -258,7 +258,7 @@ is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 **Times.** Recorded: one day of pain before the first admission; "about 20 months later" for the second attack (1.0.0
 gives no anchor beyond the first episode — the case says "about 20 months after the first attack"); 8 hours before the
 second presentation. Not recorded: the day of each CT, when the hormone value was measured (dated "before the operation",
-shown in the readmission phase), the operation date relative to the second admission, when the post-operative PTH and calcium were taken
+shown in the readmission phase), the operation date relative to the second presentation, when the post-operative PTH and calcium were taken
 (before or after the numbness), and the length of follow-up. **Derived values:** none — no albumin is recorded, so no
 albumin-adjusted calcium can be calculated, and no reference interval is recorded, so no fold-of-normal is stated for
 any value (the case reads 2.76 and 2.87 mmol/L as raised because 1.0.0 calls them so; it flags neither amylase value).
@@ -344,7 +344,7 @@ attacks of acute pancreatitis and that a causal link is uncertain — the teachi
   nurse (梁护士 / Nurse Liang, handover in ISBAR from the triage facts), the attending and the endocrinologist.
 - **She speaks throughout** (a conscious adult answers for herself; no companion). Examination findings exist only in
   `first-attack`; any other manoeuvre, and any examination in a later phase, answers with `examNotRecorded`.
-- **Measured (offline demonstration, 2026-11-14, after review round 3).** `embodied-autopilot.test.ts -t
+- **Measured (offline demonstration, 2026-11-14, after review round 4).** `embodied-autopilot.test.ts -t
   "cmcr-1069544:"` passes in en and zh-CN: every objective done, in-world score equal to the clinical score (29/29), no
   "cannot do this".
 
@@ -369,7 +369,7 @@ their options and feedback; the 17 interventions (their responses say what the c
 historical steps say only that the report's care included fasting and antibiotics — not the regimen their names
 describe); the rubric; the tests a learner would order that
 1.0.0 does not record, as honest `available: false` records. **Labelled teaching device:** her voiced worry ("I'm
-afraid this will keep coming back", `persona.concerns` and the `concerns` item) adds no clinical fact; 1.0.0 records no
+afraid this will come back", `persona.concerns` and the `concerns` item) adds no clinical fact; 1.0.0 records no
 concerns. Unknown history items answer with the collection's lay unknown ("这个我说不上来，医生。" / "I'm not sure,
 doctor."); for a conscious adult asked whether she drinks alcohol this is an artefact of the record, not a persona trait
 — say so if learners remark on it.
@@ -459,6 +459,26 @@ false`; `embodied.ivAccessInSitu: false`; no `sourceTextSha256` until the source
   "rapid", "3 ml/kg"…): each now reaches nothing or `aggressive-fluids`, while "Hartmann's 120 ml/h", "10 ml/kg bolus
   then 1.5 ml/kg/h" and 林格液10ml/kg推注后1.5ml/kg/h still reach `ringer-lactate`. The two negation-reader gaps are
   reported for a central fix; the excludes can go once it lands.
+- **Plain questions, examination requests and orders (review round 4).** A fresh set — 44 zh-CN and 41 en questions,
+  20 examination requests and 57 orders, none from the corpus or the earlier lists, plus the orders run through the
+  session's own resolver — missed 21 questions, among them recorded facts that reached nothing (四肢有没有麻的感觉 for the
+  required post-operative numbness, 以前也因为这个住过院吗 for the required earlier attack, 哪儿不得劲, 今天过来主要是为了什么,
+  麻的感觉现在还有吗, 现在身体怎么样了, "Are you keeping anything down?") or the wrong item (发病之前吃了些什么 → `earlier-episodes`;
+  上次住院打了什么针 and "Do you remember what treatment you had the first time?" → `last-attack`, the second through its
+  `earlier-episodes` twin), and one examination request ("Let me press on your abdomen"). Keywords were added (`presenting`,
+  `character`, `site`, `radiation`, `meal-trigger`, `earlier-episodes`, `gallstones`, `pmh`, `last-attack`,
+  `last-treatment`, `post-op-feeling`, `followup-status`, `nausea-vomiting`, the abdominal manoeuvre) with excludes on the
+  twins (`earlier-episodes`: 吃, treatment, hours; `last-attack`: 针, 药, hours). **Orders:** 没必要做ERCP, 没有必要做ERCP,
+  不必做ERCP, 不能做ERCP and ERCP没有指征 still resolved to the critical `urgent-ercp` (the negation reader does not see a Chinese
+  cue before Latin letters) — now excluded (没必要, 不必, 不能, 没有指征…); "ring the laboratory" and "give the lab a ring"
+  resolved to Ringer's (now excluded: lab, laboratory, ring the); the routine discharge's own alias "no follow-up" could never
+  match because its excludes held "follow-up" — they now name only the phrases that arrange follow-up, and "no follow-up",
+  "without follow-up", 不用随访, 无需随访, 不需要随访 and 不随访 reach `routine-discharge`, while every discharge order that arranges
+  a recheck still reaches `calcium-follow-up`; the first admission's discharge recheck and the post-operative plan tied (both
+  answered 复查血钙, with near-identical names) — the post-operative item is now "Post-operative follow-up plan" / 术后出院随访计划,
+  answers 术后…, 3到6个月复查 and 确认治愈, and `calcium-follow-up` excludes post-operative words; `lab-query-repeat` no longer
+  answers discharge orders; 给她补点液 reaches Ringer's and 甲状腺B超 the neck imaging. All 162 probes, the resolver
+  batteries and every earlier round's probe set now reach the expected item or nothing; 8 phrasings joined the corpus.
 - **Order entry.** `orderMatching.rules` send CT or ultrasound queries naming the neck or thyroid (颈, 甲状腺) to the neck
   imaging report, urine-calcium queries to `urine-calcium`, and ionised, adjusted or corrected calcium to
   `albumin-ionised`. The hormone assay (named "Hormone assay" / 激素测定) answers to PTH names only (甲状旁腺激素, PTH, iPTH,
@@ -469,9 +489,9 @@ false`; `embodied.ivAccessInSitu: false`; no `sourceTextSha256` until the source
   it); it answers "surgical specimen" and "resected specimen".
 - **Spasms.** The `spasms` item asks about cramps or spasms of the hands or feet only, matching what is recorded (无抽搐);
   facial twitching is not recorded and gets her "I'm not sure" (no item matches it).
-- **Corpus.** 62 test utterances (34 zh-CN, 28 en), written as learners speak; every required item and every phase twin
+- **Corpus.** 70 test utterances (39 zh-CN, 31 en), written as learners speak; every required item and every phase twin
   is covered. Four negatives (`expect: []`): the look-alikes "你家里人知道你住院了吗？", "你吃过午饭了吗？" and "Is your
-  family coming in to visit today?", and "Any twitching around your face?" (unrecorded). `cases verify` reports 62/62.
+  family coming in to visit today?", and "Any twitching around your face?" (unrecorded). `cases verify` reports 70/70.
 
 ## References
 
@@ -533,7 +553,15 @@ manifestations); AAES 2016 (the localisation guiding principle "imaging has no u
 diagnosis", now cited for "neither make nor exclude", which the Workshop states only as "not for diagnosis"; 3-11,
 4-2, 4-4, 15-1a); the Society for Endocrinology guidance (journal text, including the symptom threshold "dependent on
 the rate of fall"). No newer edition of AAES 2016, the Fifth Workshop, the Society for Endocrinology guidance or NICE
-NG132 was found.
+NG132 was found. **Review round 4 (2026-11-14)** re-read every attributed statement in the same primary texts
+(ACG 2024 recommendations 3, 4, 5, 8, 10, 11 and its idiopathic definition; IAP 2025 statements 2 and 61–63 and recommendations 3, 10, 11, 19, 22,
+28 and 29; NICE NG132 1.1.4–1.1.6, 1.1.10, 1.3.1, 1.4.10–1.4.11, 1.5.1; the Fifth Workshop 1.1, 5.1.3, 5.2, 6.1 and its
+gastrointestinal manifestations; AAES 2016 4-4, 15-1a and the imaging principle; the Society for Endocrinology journal
+text). IAP 2025 restricts *early* ERCP to cholangitis (28) but indicates elective ERCP for a bile-duct stone on imaging
+(29), so learning outcome 1 now says "early ERCP only for cholangitis"; the Society for Endocrinology grades
+hypocalcaemia by the adjusted calcium (decision 5's English feedback now says so, as the Chinese did). Currency checked
+again: NICE's NG132 history page lists only the 23 May 2019 publication; no sixth workshop, newer AAES guideline, Society
+for Endocrinology revision after the 2019 addendum or newer Chinese acute-pancreatitis guideline was found.
 
 ### To verify
 
@@ -552,7 +580,7 @@ NG132 was found.
 - The pre-operative 31 pmol/L value: its analyte (PTH or free thyroxine), unit, reference interval, sampling date, the
   paired calcium, and any TSH or thyroid hormones; whether the article itself shows the label error 1.0.0 describes.
 - Localisation: what the ultrasound and the CT each showed (1.0.0 reports them together), lesion size, any sestamibi.
-- The operation: date relative to the second admission, approach (focused or bilateral), intraoperative PTH, frozen
+- The operation: date relative to the second presentation, approach (focused or bilateral), intraoperative PTH, frozen
   section, the other glands, gland weight.
 - After surgery: when the PTH of 3.8 pmol/L and the calcium of 2.18 mmol/L were measured, their reference intervals, the
   timing and duration of the numbness, and whether any calcium was given.
@@ -688,6 +716,27 @@ NG132 was found.
   Fifth Workshop and "measured together" to NICE NG132; "neither make nor exclude" now credited to AAES 2016; magnesium,
   which decision 5's key asks for, is orderable (no result recorded) and 甲状腺彩超 orders the neck imaging; stale counts,
   dangling STANDARD section numbers and an out-of-date engine limit in this guide.
+- **Review round 4 (2026-11-14).** A fourth independent review (every patient-fact string of case.json and this guide
+  traced to 1.0.0 in both languages, with a programmatic sweep for words of degree, order, extent and specificity; every
+  attributed statement re-read in its primary text and the editions checked again for currency; replays of each harmful
+  act in every phase, late steps, decision opening and lengths; 162 fresh probes plus orders run through the session's own
+  resolver). *Assessment (major):* 没必要做ERCP, 不必做ERCP, 不能做ERCP and ERCP没有指征 resolved to the critical urgent ERCP,
+  so a learner who declined it failed the safety outcome — now excluded (the negation-reader gap is reported centrally);
+  21 of 85 plain questions reached nothing or the wrong item, among them the required post-operative numbness (四肢有没有麻的
+  感觉) and earlier attack (以前也因为这个住过院吗) — keywords and twin excludes added, 8 test utterances (now 70). *Facts
+  (major):* decision 4's `need` called the neck imaging "the imaging report that follows" the hormone result (随后的影像报告),
+  an order 1.0.0 does not record — now "the neck imaging report". *Minor:* learning outcome 1 "ERCP only for cholangitis"
+  (IAP 2025 indicates elective ERCP for a duct stone; now "early ERCP only for cholangitis"); decision 5's English feedback
+  credited the Society for Endocrinology with grading by ionised calcium (it grades by the adjusted calcium); decision 1's
+  fasting-and-carbapenem feedback now says the report's agents, purpose and duration are not recorded; the worry "keep coming
+  back" (en; 以后还会再犯) became "come back" — it implied earlier recurrences, which are unknown at the first attack; 采血时间
+  became 采样时间 in the amylase notes (the specimen is not recorded); the debrief's unknowns say "second presentation"
+  (1.0.0: 就诊), not "second admission"; objective 5's title "Plan the definitive treatment" / 制订根治方案 named the answer's
+  class from the start of the case — now "Turn the results into a plan" / 根据结果定下方案; orders: "ring the laboratory" gave
+  Ringer's, the routine discharge's own alias "no follow-up" could never match, the first admission's discharge recheck tied
+  with the post-operative plan (renamed "Post-operative follow-up plan" / 术后出院随访计划), discharge orders could reach the
+  laboratory query, and 给她补点液 / 甲状腺B超 reached nothing. Scores, critical items and the safety outcome of every measured
+  path are unchanged.
 
 ### 1.0.0 — 2026-10-28
 
@@ -698,13 +747,13 @@ NG132 was found.
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1069544/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1069544 --lang en                                                 # 108 steps · objectives 6/6 · decisions 5/5 · utterances 62/62 · rubric 29/29 (100 %)
+npm run -s cc -- cases verify cmcr-1069544 --lang en                                                 # 108 steps · objectives 6/6 · decisions 5/5 · utterances 70/70 · rubric 29/29 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-1069544                                       # depth floor, do-nothing 0/25, wrong-first 48 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1069544:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1069544:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-14, after review round 3: all five pass.
+Measured on 2026-11-14, after review round 4: all five pass.
 
 ## 中文摘要
 
@@ -718,7 +767,7 @@ Measured on 2026-11-14, after review round 3: all five pass.
 
 **学习目标。**
 
-1. 按现行标准处理急性胰腺炎最初几天（乳酸钠林格液适度补液并按反应调整、尽早低脂饮食、不预防性使用抗菌药物、仅胆管炎时 ERCP），并与禁食加抗菌药物对照（ACG 2024；IAP 2025）。
+1. 按现行标准处理急性胰腺炎最初几天（乳酸钠林格液适度补液并按反应调整、尽早低脂饮食、不预防性使用抗菌药物、仅合并胆管炎时行早期 ERCP），并与禁食加抗菌药物对照（ACG 2024；IAP 2025）。
 2. 对每次发作做病因筛查，把发作期血钙升高视为危险信号：复查白蛋白校正钙并同步测 PTH（IAP 2025；NICE NG132，2019）。
 3. 先用生化确诊原发性甲旁亢，再做定位影像，说明影像为何不能确诊或排除（第五届国际研讨会，2022；AAES 2016）。
 4. 遇到项目名称存疑的结果，先与检验科核实或复查，再用它做手术等决定。
@@ -735,4 +784,4 @@ Measured on 2026-11-14, after review round 3: all five pass.
 
 **安全结果。** `urgent-ercp` 标为 `critical: true`：没有胆管炎、也没有任何胆管证据时行急诊 ERCP，可引起胰腺炎、出血和穿孔，而真正的病因（血钙）仍未解释；一旦给予，无论得分多少，安全结果都判为不通过，并同时失去关键评分项 `rb-no-ercp`。
 
-**复盘要点（PEARLS）。** 先谈面对一个解释不了的结果仍要安排出院时的感受；用两句话说清诊断依据和不寻常之处；分析哪些依据可以诊断胰腺炎（腹痛加 CT；淀粉酶的标本类型和参考区间没有记录，不要说它超过正常上限三倍）、发作期血钙为何应当下降、血钙升高时是否仍用乳酸钠林格液、报告中的禁食和抗菌药物与现行做法的差别、为何先查血再做影像、标为“甲状腺素”的结果该怎么办、为何不选西那卡塞、穿刺或 ERCP、术后麻木查什么以及何时静脉补钙、如何确认治愈；总结下次遇到胰腺炎合并高血钙时怎么做。评分：确定性总分 29 分，三项关键项（第一次住院就追查血钙；向检验科核实后才转诊外科；没有无指征的急诊 ERCP），沟通项由考官评判。记录中的处置（禁食、抗菌药物、第二次发作后才发现病灶）只作历史对照；第一次出院后是否追查血钙没有记录，不要说成“漏诊”。本病例经人工智能辅助编辑审核（含 2026-11-14 第二轮和第三轮独立审核），尚未经执业医师审核；待核实事项见上文 “To verify”。
+**复盘要点（PEARLS）。** 先谈面对一个解释不了的结果仍要安排出院时的感受；用两句话说清诊断依据和不寻常之处；分析哪些依据可以诊断胰腺炎（腹痛加 CT；淀粉酶的标本类型和参考区间没有记录，不要说它超过正常上限三倍）、发作期血钙为何应当下降、血钙升高时是否仍用乳酸钠林格液、报告中的禁食和抗菌药物与现行做法的差别、为何先查血再做影像、标为“甲状腺素”的结果该怎么办、为何不选西那卡塞、穿刺或 ERCP、术后麻木查什么以及何时静脉补钙、如何确认治愈；总结下次遇到胰腺炎合并高血钙时怎么做。评分：确定性总分 29 分，三项关键项（第一次住院就追查血钙；向检验科核实后才转诊外科；没有无指征的急诊 ERCP），沟通项由考官评判。记录中的处置（禁食、抗菌药物、第二次发作后才发现病灶）只作历史对照；第一次出院后是否追查血钙没有记录，不要说成“漏诊”。本病例经人工智能辅助编辑审核（含 2026-11-14 第二、第三和第四轮独立审核），尚未经执业医师审核；待核实事项见上文 “To verify”。

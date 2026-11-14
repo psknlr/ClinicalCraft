@@ -35,7 +35,10 @@ for p in sorted(glob.glob(os.path.join(WF, "*", "journal.jsonl")), key=os.path.g
         v = d.get("result")
         if d.get("type") == "result" and isinstance(v, dict) and "caseId" in v and "findings" in v and "allChecksPass" in v:
             rounds[v["caseId"]][int(v.get("round") or 1)] = v
-missing = [cid for cid in included if 1 not in rounds.get(cid, {})]
+status = json.load(open(os.path.join(SP, "case-status.json")))
+# The pilots' first reviews (2026-10-30) ran before these journals: case-status.json and their READMEs record them.
+pilot_first = sorted(cid for cid in included if 1 not in rounds.get(cid, {}) and status.get(cid, {}).get("reviewed"))
+missing = [cid for cid in included if 1 not in rounds.get(cid, {}) and cid not in pilot_first]
 assert not missing, f"no first review on record: {missing}"
 
 per_round = collections.defaultdict(collections.Counter)
@@ -44,7 +47,7 @@ total = collections.Counter()
 answered = 0
 for cid in included:
     rs = rounds[cid]
-    by_count[len(rs)] += 1
+    by_count[len(rs) + (1 if cid in pilot_first else 0)] += 1
     for r, v in rs.items():
         for f in v["findings"]:
             per_round[r][f["severity"]] += 1
@@ -90,7 +93,7 @@ if "--print-stats" in sys.argv:
                       "byCount": dict(by_count), "perRound": {r: dict(c) for r, c in sorted(per_round.items())},
                       "total": dict(total), "answered": answered, "stats": dict(s), "settings": dict(settings),
                       "verified": len(verified), "pending": pending, "figures": [fig_ok, fig_no], "pdfs": [pdf_ok, pdf_no],
-                      "assets": [len(assets), asset_cases]}, indent=1))
+                      "assets": [len(assets), asset_cases], "pilotFirst": pilot_first}, indent=1))
     sys.exit(0)
 
 n, m = len(included), len(awaiting)
@@ -99,7 +102,8 @@ ZH_SETTING = {"inpatient": "住院", "emergency": "急诊", "icu": "重症监护
 setting_zh = "、".join(f"{ZH_SETTING.get(k, k)} {v} 例" for k, v in sorted(settings.items(), key=lambda kv: -kv[1]))
 rounds_en = "; ".join(f"{by_count[k]} case{'s' if by_count[k] != 1 else ''} had {k} round{'s' if k > 1 else ''}" for k in sorted(by_count))
 rounds_zh = "；".join(f"{by_count[k]} 例经 {k} 轮" for k in sorted(by_count))
-round_rows = "\n".join(f"| {r} | {sum(1 for cid in included if r in rounds[cid])} | {per_round[r]['critical']} | {per_round[r]['major']} | {per_round[r]['minor']} |" for r in sorted(per_round))
+round_rows = "\n".join(f"| {r} | {sum(1 for cid in included if r in rounds[cid])}{f' (+{len(pilot_first)} pilot reviews, below)' if r == 1 and pilot_first else ''} | {per_round[r]['critical']} | {per_round[r]['major']} | {per_round[r]['minor']} |" for r in sorted(per_round))
+pilot_note = (f" The first reviews of {len(pilot_first)} cases ({', '.join(pilot_first)}) were the pilot reviews of 2026-10-30, before these records were kept; each case's README states what they found and what was changed, so the table does not count them." if pilot_first else "")
 pending_rows = "\n".join(f"| {cid} | `{entries[cid].get('doiPendingVerification', '')}` | {entries[cid].get('doiPendingReason', '')} |" for cid in pending)
 awaiting_list = ", ".join(f"`{cid}`" for cid in awaiting)
 
@@ -148,7 +152,7 @@ The 1.0.0 versions were generated from one template: three decisions of three op
 |---|---|---|---|---|
 {round_rows}
 
-All {total['critical']} critical and {total['major']} major findings were fixed{f", or answered with a reason in the case's README ({answered})" if answered else ""}. Most cases have had one independent review; a second review of each remains the next step, as do the full source articles and a specialty clinician's review.
+{pilot_note.strip()}{' ' if pilot_note else ''}All {total['critical']} critical and {total['major']} major findings in the table were fixed{f", or answered with a reason in the case's README ({answered})" if answered else ""}. Most cases have had one independent review; a second review of each remains the next step, as do the full source articles and a specialty clinician's review.
 
 每例 1.1.0 版均依据内容标准重写：分阶段呈现证据，在病程的真实决策点设置 4–5 个先于答案开放的决策，纳入报告中的处理、当前推荐与常见错误或过时做法（其危害说明注明所依据的指南），关键评分项为及时完成的操作，高风险操作设置安全结局。写完后由另一智能体独立审核：逐条核对患者事实与 1.0.0 版是否一致（中英文均核对），在指南原文中核对引用的推荐，回放评分与匹配，检查语气、隐私与剧透；发现的问题全部修复后重新通过全部检查。{rounds_zh}。
 

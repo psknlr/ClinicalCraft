@@ -24,8 +24,8 @@
   "estimatedMinutes": 45,
   "learningOutcomes": [
     {
-      "zh-CN": "从昏迷、血糖33.7 mmol/L、无酮症、无酸中毒和高渗透压识别高渗高血糖状态（JBDS-IP 2022所列特征），并指出单纯高血糖危象解释不了的一点：血钠172 mmol/L时尿比重却是1.005。",
-      "en": "Recognise a hyperosmolar hyperglycaemic state from coma, a glucose of 33.7 mmol/L, no ketosis or acidosis and a high osmolality (the JBDS-IP 2022 features), and name what a hyperglycaemic crisis alone does not explain: urine of specific gravity 1.005 beside a sodium of 172 mmol/L."
+      "zh-CN": "从意识不清、血糖33.7 mmol/L、无酮症、无酸中毒和高渗透压识别高渗高血糖状态（JBDS-IP 2022所列特征），并指出单纯高血糖危象解释不了的一点：血钠172 mmol/L时尿比重却是1.005。",
+      "en": "Recognise a hyperosmolar hyperglycaemic state from unconsciousness, a glucose of 33.7 mmol/L, no ketosis or acidosis and a high osmolality (the JBDS-IP 2022 features), and name what a hyperglycaemic crisis alone does not explain: urine of specific gravity 1.005 beside a sodium of 172 mmol/L."
     },
     {
       "zh-CN": "制定最初24小时的安全方案：先用0.9%氯化钠；血钾3.2 mmol/L时先补钾、暂缓胰岛素（补液后血糖不再下降时才以0.05单位/kg/h开始）；每小时监测；血钠24小时下降不超过10 mmol/L（JBDS-IP 2022；2024年共识）。",
@@ -233,8 +233,8 @@
     {
       "id": "desmopressin",
       "label": {
-        "zh-CN": "开始去氨加压素以后",
-        "en": "After desmopressin was started"
+        "zh-CN": "之后，在病房",
+        "en": "Later on the ward"
       },
       "description": {
         "zh-CN": "她已经开始使用去氨加压素。",
@@ -421,7 +421,9 @@
           "以前的病",
           "既往",
           "查出",
-          "监测"
+          "监测",
+          "什么病",
+          "有什么病"
         ],
         "en": [
           "diabetes",
@@ -433,6 +435,8 @@
           "checking",
           "medical history",
           "past medical",
+          "medical problems",
+          "health problems",
           "illnesses"
         ]
       },
@@ -489,9 +493,7 @@
           "medication",
           "medicines",
           "pills",
-          "take for",
           "regularly",
-          "on any",
           "treatment for her diabetes"
         ]
       },
@@ -846,7 +848,10 @@
           "drinking alcohol",
           "drunk",
           "poison",
-          "taken something"
+          "takensomething",
+          "takenanything",
+          "tookanything",
+          "takeanything"
         ]
       },
       "disclosure": "unknown",
@@ -1146,8 +1151,7 @@
       "disclosure": "on-ask",
       "required": true,
       "phases": [
-        "ward",
-        "desmopressin"
+        "ward"
       ],
       "speaker": "patient",
       "source": {
@@ -1258,8 +1262,7 @@
       },
       "disclosure": "unknown",
       "phases": [
-        "ward",
-        "desmopressin"
+        "ward"
       ],
       "speaker": "patient",
       "source": {
@@ -1300,8 +1303,7 @@
       },
       "disclosure": "unknown",
       "phases": [
-        "ward",
-        "desmopressin"
+        "ward"
       ],
       "speaker": "patient",
       "source": {
@@ -2396,8 +2398,8 @@
     {
       "id": "deprivation-test",
       "name": {
-        "zh-CN": "禁水-垂体后叶素试验记录",
-        "en": "Water deprivation and extract test record"
+        "zh-CN": "试验记录：尿比重与尿量",
+        "en": "Test record: urine specific gravity and output"
       },
       "category": "record",
       "aliases": {
@@ -2610,8 +2612,8 @@
     {
       "id": "desmo-record",
       "name": {
-        "zh-CN": "去氨加压素治疗记录",
-        "en": "Record on desmopressin"
+        "zh-CN": "后续记录：尿量与血钠",
+        "en": "Later record: urine output and sodium"
       },
       "category": "record",
       "aliases": {
@@ -2717,6 +2719,18 @@
       }
     }
   ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "urine-osmolality",
+        "remove": [
+          "osmolality"
+        ]
+      }
+    ],
+    "exact": {},
+    "warnings": []
+  },
   "interventions": [
     {
       "id": "airway",
@@ -2982,8 +2996,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "每小时测指尖血糖；开始时每小时查钠、钾和渗透压（计算值或实测值）（JBDS-IP 2022）；留置导尿，记录每小时尿量和出入量。",
-        "en": "Capillary glucose hourly; sodium, potassium and osmolality (calculated or measured) hourly at first (JBDS-IP 2022); a urinary catheter with hourly urine output and a fluid balance chart."
+        "zh-CN": "开始时每小时查一次渗透压（JBDS-IP 2022）——根据钠、血糖和尿素计算或实测——同时每小时测指尖血糖，密切复查血钾；留置导尿，记录每小时尿量和出入量。",
+        "en": "Osmolality every hour at first (JBDS-IP 2022) — calculated from sodium, glucose and urea, or measured — with capillary glucose hourly, potassium rechecked closely, and a urinary catheter with hourly urine output and a fluid balance chart."
       },
       "requires": [],
       "risk": "none",
@@ -3296,8 +3310,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她的血钠已经很高：只按血钠计算，血浆渗透压就超过320 mOsm/kg，早已超过美国内分泌学会2016年禁水试验方案停止禁水的295 mOsm/kg（此时尿仍稀释即可确诊尿崩症，随后给去氨加压素）；现在禁水只会增加危险：血钠进一步升高、抽搐和循环衰竭。",
-        "en": "Her sodium is already high: on the sodium alone her plasma osmolality is above 320 mOsm/kg, well past the 295 mOsm/kg at which the Endocrine Society 2016 water-deprivation protocol stops thirsting (dilute urine then confirms diabetes insipidus) and gives desmopressin — so deprivation now adds only danger: a further rise in sodium, seizures and collapse."
+        "zh-CN": "她的血钠已经很高：只按血钠计算（2×162=324），血浆渗透压就远远超过美国内分泌学会2016年禁水试验方案停止禁水的295 mOsm/L（此时尿仍稀释即可确诊尿崩症，随后给去氨加压素）；现在禁水只会增加危险：血钠进一步升高、抽搐和循环衰竭。",
+        "en": "Her sodium is already high: on the sodium alone (2 × 162 = 324) her plasma osmolality is well past the 295 mOsm/L at which the Endocrine Society 2016 water-deprivation protocol stops thirsting (dilute urine then confirms diabetes insipidus) and gives desmopressin — so deprivation now adds only danger: a further rise in sodium, seizures and collapse."
       },
       "response": {
         "zh-CN": "已停止饮水。",
@@ -3648,7 +3662,7 @@
         "en": "First tests"
       },
       "hint": {
-        "zh-CN": "一个昏迷的糖尿病患者，哪些床旁和实验室检查要马上做？每个结果说明什么？哪一个结果和其他结果对不上？",
+        "zh-CN": "一个意识不清的糖尿病患者，哪些床旁和实验室检查要马上做？每个结果说明什么？哪一个结果和其他结果对不上？",
         "en": "Which bedside and laboratory tests does an unconscious person with diabetes need at once? What does each result tell you — and which one does not fit with the others?"
       },
       "guidance": {
@@ -4001,8 +4015,8 @@
         {
           "id": "dka",
           "text": {
-            "zh-CN": "糖尿病酮症酸中毒：已知糖尿病、昏迷、血糖这么高，在酮体结果排除之前，都应按酮症酸中毒治疗",
-            "en": "Diabetic ketoacidosis: with known diabetes, coma and a glucose this high, she should be treated for ketoacidosis until her ketones prove otherwise"
+            "zh-CN": "糖尿病酮症酸中毒：已知糖尿病、意识不清、血糖这么高，在酮体结果排除之前，都应按酮症酸中毒治疗",
+            "en": "Diabetic ketoacidosis: with known diabetes, unconsciousness and a glucose this high, she should be treated for ketoacidosis until her ketones prove otherwise"
           },
           "correct": false,
           "feedback": {
@@ -4030,8 +4044,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。抽搐不会让血钠升到172 mmol/L、血糖升到33.7 mmol/L；能引起昏迷和抽搐的恰恰是高渗状态，而且她的头颅CT未见异常。CT未见异常并不能排除所有结构性或感染性病因，需要不断再评估——但现在要先处理代谢紊乱。",
-            "en": "No. A fit does not raise the sodium to 172 mmol/L or the glucose to 33.7 mmol/L; it is the hyperosmolar state that can cause coma and convulsions, and her head CT was unremarkable. An unremarkable CT does not rule out every structural or infective cause, so keep reassessing — but treat the metabolic state now."
+            "zh-CN": "不对。抽搐不会让血钠升到172 mmol/L、血糖升到33.7 mmol/L；能引起意识不清和抽搐的恰恰是高渗状态，而且她的头颅CT未见异常。CT未见异常并不能排除所有结构性或感染性病因，需要不断再评估——但现在要先处理代谢紊乱。",
+            "en": "No. A fit does not raise the sodium to 172 mmol/L or the glucose to 33.7 mmol/L; it is the hyperosmolar state that can cause unconsciousness and convulsions, and her head CT was unremarkable. An unremarkable CT does not rule out every structural or infective cause, so keep reassessing — but treat the metabolic state now."
           }
         }
       ]
@@ -4059,14 +4073,14 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。先用0.9%氯化钠——2024年共识建议对没有心、肾疾病的成人在最初2–4小时按500–1000 mL/h输注；血钾低于3.5 mmol/L需上级医生评估，补钾量要超过常规方案（JBDS-IP 2022）；没有酮血症的HHS，要等补液后血糖不再下降才以0.05单位/kg/h开始胰岛素；开始时每小时查渗透压，每小时下降3–8 mOsm/kg，血糖每小时下降不超过5 mmol/L，血钠24小时下降不超过10 mmol/L（JBDS-IP 2022；2024年共识）。她的尿是稀释的，尿量是要盯住的数字。",
-            "en": "Right. 0.9% sodium chloride first — the 2024 consensus suggests 500–1000 mL/h for the first 2–4 hours in adults without heart or kidney disease; a potassium below 3.5 mmol/L needs senior review and more than the standard replacement (JBDS-IP 2022); insulin in HHS without ketonaemia only once the glucose stops falling on fluids, at 0.05 U/kg/h; osmolality hourly at first, falling 3–8 mOsm/kg an hour, glucose by no more than 5 mmol/L an hour and sodium by no more than 10 mmol/L in 24 hours (JBDS-IP 2022; 2024 consensus). With her dilute urine, the urine output is the number to watch."
+            "zh-CN": "正确。先用0.9%氯化钠——2024年共识推荐没有心、肾功能受损的成人在最初2–4小时按500–1000 mL/h输注；她肌酐122.9 μmol/L且没有基线值，要勤加评估；血钾低于3.5 mmol/L需上级医生评估，补钾量要超过常规方案（JBDS-IP 2022）；没有酮血症的HHS，要等补液后血糖不再下降才以0.05单位/kg/h开始胰岛素；开始时每小时查渗透压，每小时下降3–8 mOsm/kg，血糖每小时下降不超过5 mmol/L，血钠24小时下降不超过10 mmol/L（JBDS-IP 2022；2024年共识）。她的尿是稀释的，尿量是要盯住的数字。",
+            "en": "Right. 0.9% sodium chloride first — the 2024 consensus recommends 500–1000 mL/h for the first 2–4 hours in adults without heart or kidney compromise, so reassess often with a creatinine of 122.9 μmol/L and no baseline; a potassium below 3.5 mmol/L needs senior review and more than the standard replacement (JBDS-IP 2022); insulin in HHS without ketonaemia only once the glucose stops falling on fluids, at 0.05 U/kg/h; osmolality hourly at first, falling 3–8 mOsm/kg an hour, glucose by no more than 5 mmol/L an hour and sodium by no more than 10 mmol/L in 24 hours (JBDS-IP 2022; 2024 consensus). With her dilute urine, the urine output is the number to watch."
           }
         },
         {
           "id": "normalise-today",
           "text": {
-            "zh-CN": "今天之内用5%葡萄糖或0.45%氯化钠快速输注，把血钠降到正常，因为让她昏迷的正是172 mmol/L的高钠；傍晚复查，正常以后再减慢速度",
+            "zh-CN": "今天之内用5%葡萄糖或0.45%氯化钠快速输注，把血钠降到正常，因为让她意识不清的正是172 mmol/L的高钠；傍晚复查，正常以后再减慢速度",
             "en": "Bring her sodium back to normal today with 5% glucose or 0.45% saline run fast, since a sodium of 172 mmol/L is what keeps her unconscious; recheck it this evening and slow the drip once it is back to normal"
           },
           "correct": false,
@@ -4136,8 +4150,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血糖已控制，就不再有渗透性利尿；习惯性多饮会稀释血浆，而不会让血钠升到162 mmol/L——是她的肾脏没有把尿浓缩。她现在的浓缩程度已经超过禁水试验想要达到的程度——美国内分泌学会2016年方案在血浆渗透压超过295 mOsm/kg而尿仍稀释时就停止禁水、给去氨加压素——所以安全的下一步是配对测血、尿渗透压并给去氨加压素，同时补水，使血钠24小时下降不超过10 mmol/L（英国内分泌学会2018）。",
-            "en": "Right. With her glucose controlled there is no osmotic diuresis left, and habit drinking dilutes the plasma rather than raising the sodium to 162 mmol/L: her kidneys are not concentrating the urine. She is already more concentrated than a deprivation test sets out to make her — the Endocrine Society 2016 protocol stops thirsting once plasma osmolality passes 295 mOsm/kg with dilute urine and gives desmopressin — so the safe next step is paired osmolalities and desmopressin, with water replaced so the sodium falls by no more than 10 mmol/L in 24 hours (Society for Endocrinology 2018)."
+            "zh-CN": "正确。血糖已控制，就不再有渗透性利尿；习惯性多饮会稀释血浆，而不会让血钠升到162 mmol/L——是她的肾脏没有把尿浓缩。她现在的浓缩程度已经超过禁水试验想要达到的程度——美国内分泌学会2016年方案在血浆渗透压超过295 mOsm/L而尿仍稀释时就停止禁水、给去氨加压素——所以安全的下一步是配对测血、尿渗透压并给去氨加压素，同时补水，使血钠24小时下降不超过10 mmol/L（英国内分泌学会2018）。",
+            "en": "Right. With her glucose controlled there is no osmotic diuresis left, and habit drinking dilutes the plasma rather than raising the sodium to 162 mmol/L: her kidneys are not concentrating the urine. She is already more concentrated than a deprivation test sets out to make her — the Endocrine Society 2016 protocol stops thirsting once plasma osmolality passes 295 mOsm/L with dilute urine and gives desmopressin — so the safe next step is paired osmolalities and desmopressin, with water replaced so the sodium falls by no more than 10 mmol/L in 24 hours (Society for Endocrinology 2018)."
           }
         },
         {
@@ -4148,8 +4162,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "危险。血钠162 mmol/L，只按血钠计算血浆渗透压就已超过320 mOsm/kg——高于美国内分泌学会2016年方案停止禁水的295 mOsm/kg——再禁水一夜只会让血钠更高，走向抽搐和循环衰竭，而不会带来任何新信息。",
-            "en": "Dangerous. A sodium of 162 mmol/L already puts her plasma osmolality above 320 mOsm/kg on the sodium alone — past the 295 mOsm/kg at which the Endocrine Society 2016 protocol stops thirsting — so a night without water can only push her sodium higher, towards seizures and collapse, and adds no information."
+            "zh-CN": "危险。血钠162 mmol/L，只按血钠计算（2×162=324），血浆渗透压就已高于美国内分泌学会2016年方案停止禁水的295 mOsm/L——再禁水一夜只会让血钠更高，走向抽搐和循环衰竭，而不会带来任何新信息。",
+            "en": "Dangerous. On a sodium of 162 mmol/L alone (2 × 162 = 324) her plasma osmolality is already past the 295 mOsm/L at which the Endocrine Society 2016 protocol stops thirsting — so a night without water can only push her sodium higher, towards seizures and collapse, and adds no information."
           }
         },
         {
@@ -4271,8 +4285,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先看用去氨加压素以后的记录，并问问她现在感觉怎么样。",
-        "en": "Read the record on desmopressin and ask her how she feels."
+        "zh-CN": "先看后续记录（尿量与血钠），并问问她现在感觉怎么样。",
+        "en": "Read the later record (urine output and sodium) and ask her how she feels."
       },
       "options": [
         {
@@ -4332,8 +4346,8 @@
       "domain": "history",
       "weight": 2,
       "text": {
-        "zh-CN": "向陪同者问清：她怎样、何时被发现，她的糖尿病和血糖监测，二甲双胍，口干和喝水，以及有没有头部受伤或吃药过量可以解释昏迷",
-        "en": "From her companion: how and when she was found, her diabetes and its monitoring, her metformin, her dry mouth and drinking, and whether a head injury or too many tablets could explain the coma"
+        "zh-CN": "向陪同者问清：她怎样、何时被发现，她的糖尿病和血糖监测，二甲双胍，口干和喝水，以及有没有头部受伤或吃药过量可以解释她的意识不清",
+        "en": "From her companion: how and when she was found, her diabetes and its monitoring, her metformin, her dry mouth and drinking, and whether a head injury or too many tablets could explain her unconsciousness"
       },
       "met": {
         "all": [
@@ -4655,7 +4669,7 @@
         "en": "Explained her condition and its uncertainties honestly and in plain words to her companion and, once awake, to her, and checked they understood"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge框架评价两段谈话。与陪同者（急诊）：介绍自己，先问对方知道什么、最担心什么（“她还能醒过来吗？”）；用通俗的话说明她的血糖和血钠都高得危险、为什么昏迷、为什么要慢慢纠正、接下来会做什么，不作虚假保证；问清她平时喝水和吃药的情况。与患者（病房和用药后）：说明她有两种不同的病——一种是糖尿病，另一种是保水激素加压素不足（AVP缺乏，以前叫尿崩症）——以及名字为什么容易混淆；去氨加压素为什么既不能停也不能多用；口渴才喝水；每周让药效过去一次；定期查血钠；随身带病情卡。消息较重时用SPIKES步骤；请对方复述要点以确认理解。本病例没有记录医生对她或陪同者说了什么。",
+        "zh-CN": "按Calgary–Cambridge框架评价两段谈话。与陪同者（急诊）：介绍自己，先问对方知道什么、最担心什么（“她还能醒过来吗？”）；用通俗的话说明她的血糖和血钠都高得危险、为什么意识不清、为什么要慢慢纠正、接下来会做什么，不作虚假保证；问清她平时喝水和吃药的情况。与患者（病房和用药后）：说明她有两种不同的病——一种是糖尿病，另一种是保水激素加压素不足（AVP缺乏，以前叫尿崩症）——以及名字为什么容易混淆；去氨加压素为什么既不能停也不能多用；口渴才喝水；每周让药效过去一次；定期查血钠；随身带病情卡。消息较重时用SPIKES步骤；请对方复述要点以确认理解。本病例没有记录医生对她或陪同者说了什么。",
         "en": "Judge two conversations against the Calgary–Cambridge guide. With her companion in the emergency department: introduce yourself, ask first what they know and fear ('Will she wake up?'), explain in plain words that her sugar and salt are dangerously high, why she is unconscious, why they must be brought down slowly and what happens next, without false reassurance, and ask what they know about her drinking and medicines. With her, once awake and on desmopressin: explain that she has two different conditions — her diabetes, and a shortage of the water-holding hormone vasopressin (AVP deficiency, once called diabetes insipidus) — and why the names are easily confused; why desmopressin must be neither stopped nor overdosed; drinking to thirst; letting a dose wear off once a week; sodium checks; carrying an alert card. Use SPIKES where the news is heavy, and check understanding by teach-back. This case does not record what she or her companion were told."
       }
     }
@@ -4705,8 +4719,8 @@
         "en": "Dr Han (radiology, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "放射科医生，只解读学员已经看过的影像。可以说明：昏迷患者头颅CT未见异常，并不能排除所有结构性、缺血性或感染性病因，要结合临床；“空蝶鞍”指蝶鞍看上去被脑脊液充填、垂体被压扁贴在鞍底，这是结构上的描述，本身不说明激素功能；报告没有描述垂体柄、垂体后叶高信号或所用序列。不说出诊断结论；没有记录的内容不补充。",
-        "en": "Radiologist who interprets only images the learner has already read. Can explain: an unremarkable head CT in a comatose patient does not exclude every structural, ischaemic or infective cause and must be read with the clinical picture; 'empty sella' means the sella appears filled with cerebrospinal fluid with the pituitary flattened against its floor — a structural description that by itself says nothing about hormone function; the report describes neither the pituitary stalk nor the posterior pituitary bright spot, nor the sequences used. Does not state the diagnosis; adds nothing that is not recorded."
+        "zh-CN": "放射科医生，只解读学员已经看过的影像。可以说明：意识不清的患者头颅CT未见异常，并不能排除所有结构性、缺血性或感染性病因，要结合临床；“空蝶鞍”指蝶鞍看上去被脑脊液充填、垂体被压扁贴在鞍底，这是结构上的描述，本身不说明激素功能；报告没有描述垂体柄、垂体后叶高信号或所用序列。不说出诊断结论；没有记录的内容不补充。",
+        "en": "Radiologist who interprets only images the learner has already read. Can explain: an unremarkable head CT in an unconscious patient does not exclude every structural, ischaemic or infective cause and must be read with the clinical picture; 'empty sella' means the sella appears filled with cerebrospinal fluid with the pituitary flattened against its floor — a structural description that by itself says nothing about hormone function; the report describes neither the pituitary stalk nor the posterior pituitary bright spot, nor the sequences used. Does not state the diagnosis; adds nothing that is not recorded."
       },
       "interprets": [
         "ct-head",
@@ -4726,8 +4740,8 @@
     },
     "keyReasoning": [
       {
-        "zh-CN": "昏迷、血糖33.7 mmol/L、无酮症、pH 7.4、有效渗透压2×172+33.7=377.7 mOsm/kg：这是高渗高血糖状态，不是酮症酸中毒。",
-        "en": "Coma with a glucose of 33.7 mmol/L, no ketosis, a pH of 7.4 and an effective osmolality of 2 × 172 + 33.7 = 377.7 mOsm/kg is a hyperosmolar hyperglycaemic state, not ketoacidosis."
+        "zh-CN": "意识不清、血糖33.7 mmol/L、无酮症、pH 7.4、有效渗透压2×172+33.7=377.7 mOsm/kg：这是高渗高血糖状态，不是酮症酸中毒。",
+        "en": "Unconsciousness with a glucose of 33.7 mmol/L, no ketosis, a pH of 7.4 and an effective osmolality of 2 × 172 + 33.7 = 377.7 mOsm/kg is a hyperosmolar hyperglycaemic state, not ketoacidosis."
       },
       {
         "zh-CN": "高渗的患者本该排出浓缩尿；血钠172 mmol/L时尿比重只有1.005，说明排出的水几乎不带溶质——提示除了血糖还有别的原因。",
@@ -4760,8 +4774,8 @@
         "en": "Potassium before insulin: insulin moves potassium into cells. Below 3.5 mmol/L, JBDS-IP 2022 asks for senior review and more potassium than its standard regimen, and starts insulin in HHS only once the glucose stops falling on IV fluids alone (unless there is ketonaemia), at 0.05 U/kg/h; for ketoacidosis, the 2024 consensus delays insulin until potassium is above 3.5 mmol/L."
       },
       {
-        "zh-CN": "高渗患者排出稀释尿是警讯：有多尿时要同时测血、尿渗透压——美国内分泌学会2016指出，血浆渗透压高于295时尿渗透压应达到约600（尿/血比值≥2），且尿试纸糖阴性。已经高钠的患者早已越过其禁水方案停止禁水的界值，她需要的是去氨加压素和配对渗透压，而不是禁水。",
-        "en": "A dilute urine in a hyperosmolar patient is a warning: with polyuria, measure plasma and urine osmolality together — when plasma osmolality is above 295, the urine should reach about 600 (urine-to-plasma ratio ≥2), with a urine dipstick negative for glucose (Endocrine Society 2016). A patient already hypernatraemic is past the point at which its deprivation protocol stops; she needs desmopressin and paired osmolalities, not thirsting."
+        "zh-CN": "高渗患者排出稀释尿是警讯：有多尿时要同时测血、尿渗透压——美国内分泌学会2016指出，血浆渗透压高于295 mOsm/L时，尿渗透压应达到约600 mOsm/L（尿/血比值≥2），且尿试纸糖阴性。已经高钠的患者早已越过其禁水方案停止禁水的界值，她需要的是去氨加压素和配对渗透压，而不是禁水。",
+        "en": "A dilute urine in a hyperosmolar patient is a warning: with polyuria, measure plasma and urine osmolality together — when plasma osmolality is above 295 mOsm/L, the urine should reach about 600 mOsm/L (urine-to-plasma ratio ≥2), with a urine dipstick negative for glucose (Endocrine Society 2016). A patient already hypernatraemic is past the point at which its deprivation protocol stops; she needs desmopressin and paired osmolalities, not thirsting."
       },
       {
         "zh-CN": "口渴保护中枢性尿崩症患者：口渴感正常、能自由饮水时，他们能维持水平衡；意识下降或喝不到水时，可能出现危及生命的脱水（英国内分泌学会2018）。由此看，十八年来每天喝5–8 L更像是代偿，而不是要戒掉的习惯。中枢性尿崩症伴高钠血症是急症，应在高依赖病房处理；无症状或症状轻时，血钠每小时下降不超过0.5 mmol/L、24小时不超过10 mmol/L（英国内分泌学会2018）。",

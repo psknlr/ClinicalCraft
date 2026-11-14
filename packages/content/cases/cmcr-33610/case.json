@@ -226,25 +226,21 @@
       }
     },
     {
-      "id": "postop",
+      "id": "theatre",
       "label": {
-        "zh-CN": "手术之后",
-        "en": "After the operation"
+        "zh-CN": "手术与病理",
+        "en": "Operation and histology"
       },
       "description": {
-        "zh-CN": "手术已经完成，手术及病理记录可以调阅。",
-        "en": "The operation is over; its operation and histology record can be read."
+        "zh-CN": "按你的方案送他去手术室；手术完成后，手术及病理记录可以调阅。",
+        "en": "He goes to theatre on your plan; once the operation is done, its operation and histology record can be read."
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "all": [
-          {
-            "decided": "mass-plan"
-          },
-          {
-            "intervened": "resection"
-          }
-        ]
+        "decided": "mass-plan"
+      },
+      "location": {
+        "roomKind": "operating-room"
       }
     },
     {
@@ -1452,7 +1448,7 @@
             "en": "Reference ranges, the time of the testosterone sample, basal LH and FSH, the stimulating agent and the sampling times are not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "睾酮55.5 nmol/L；GnRH激发后LH峰值0.1 IU/L，FSH峰值2.15 IU/L。",
             "en": "Testosterone 55.5 nmol/L; after GnRH stimulation, LH peak 0.1 IU/L and FSH peak 2.15 IU/L."
@@ -1626,7 +1622,7 @@
             "en": "The method is not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "骨龄11岁（就诊时实际年龄8岁4个月）。",
             "en": "Bone age 11 years (his age at presentation: 8 years 4 months)."
@@ -1748,7 +1744,7 @@
             "en": "Whether the scan covered the pineal and suprasellar regions is not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "垂体MRI未见异常。",
             "en": "Pituitary MRI: no abnormality seen."
@@ -1856,7 +1852,7 @@
             "en": "The modality (ultrasound, CT or MRI) is not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "肾上腺、睾丸等影像检查未见异常。",
             "en": "Imaging of the adrenals, the testes, etc.: no abnormality seen."
@@ -1958,7 +1954,7 @@
             "en": "The specimen and the number of cells counted are not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "两次染色体核型分析均为47,XXY。",
             "en": "Two karyotype analyses: both 47,XXY."
@@ -2284,7 +2280,7 @@
             "en": "The specimen and the timing of this sample relative to the chest imaging and the operation are not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "available": false,
           "text": {
             "zh-CN": "这一阶段没有这项检查的结果记录。",
@@ -2390,7 +2386,7 @@
             "en": "The modality, the size of the mass on imaging, its relation to the trachea and great vessels, and any effusion are not recorded."
           }
         },
-        "postop": {
+        "theatre": {
           "available": false,
           "text": {
             "zh-CN": "这一阶段没有这项检查的结果记录。",
@@ -2419,6 +2415,11 @@
         "zh-CN": "手术及病理记录",
         "en": "Operation and histology record"
       },
+      "availability": {
+        "when": {
+          "intervened": "resection"
+        }
+      },
       "category": "pathology",
       "aliases": {
         "zh-CN": [
@@ -2443,7 +2444,7 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "postop": {
+        "theatre": {
           "text": {
             "zh-CN": "切除的肿物约8×5×4 cm；病理：囊实性畸胎瘤。",
             "en": "Resected mass approximately 8×5×4 cm; histology: cystic-solid teratoma."
@@ -2828,6 +2829,9 @@
         "surgery"
       ],
       "scope": "medical",
+      "destination": {
+        "setting": "inpatient"
+      },
       "risk": "high",
       "critical": true,
       "maxDoses": 1,
@@ -2848,8 +2852,8 @@
         }
       },
       "harm": {
-        "zh-CN": "没有先评估颈部或胸部有无压迫气道和循环的肿物就施行全身麻醉，可能在诱导时发生气道塌陷或循环衰竭。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，有压迫或积液时做经胸心脏超声，并进行多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。",
-        "en": "A general anaesthetic without first assessing whether a mass compresses the airway or circulation risks airway collapse or circulatory failure at induction. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): even children with no respiratory symptoms can have cardiorespiratory compromise or collapse on induction; before anaesthesia ask about symptoms of airway and circulatory compression, assess compression of the airway, great vessels and heart on chest CT, add a transthoracic echocardiogram if there is compression or an effusion, and hold a multidisciplinary huddle; avoid general anaesthesia where possible and keep spontaneous ventilation if it is needed."
+        "zh-CN": "没有先评估颈部或胸部有无压迫气道和循环的肿物就施行全身麻醉，可能在诱导时发生气道塌陷或循环衰竭。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声，并进行多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。",
+        "en": "A general anaesthetic without first assessing whether a mass compresses the airway or circulation risks airway collapse or circulatory failure at induction. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): even children with no respiratory symptoms can have cardiorespiratory compromise or collapse on induction; before anaesthesia ask about symptoms of airway and circulatory compression, assess compression of the airway, great vessels and heart on chest CT, add a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion, and hold a multidisciplinary huddle; avoid general anaesthesia where possible and keep spontaneous ventilation if it is needed."
       },
       "response": {
         "zh-CN": "手术已完成，所见和切除物见“手术及病理记录”。",
@@ -2884,7 +2888,7 @@
       "maxDoses": 1,
       "indicatedWhen": {
         "read": "pathology",
-        "phase": "postop"
+        "phase": "theatre"
       },
       "response": {
         "zh-CN": "随访计划已写好。报告只记录了一年随访时的情况，没有记录随访的频次和项目。",
@@ -3041,8 +3045,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有组织学诊断、没有足以确诊的肿瘤标志物水平、也没有多学科决定时，不应开始化疗。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：手术方式需要个体化——直接切除、化疗前活检，或例如在气道受压且肿瘤标志物升高时不先手术；是否化疗取决于病理或足以确诊的标志物水平。铂类药物和博来霉素可损害听力、肾脏和肺。",
-        "en": "Chemotherapy is not started without a tissue diagnosis or diagnostic tumour-marker levels and a multidisciplinary decision. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the surgical approach is individualised — primary resection, biopsy before chemotherapy, or no surgery, for example when the airway is compromised and tumour markers are raised; whether to give chemotherapy rests on the histology or diagnostic marker levels. Platinum drugs and bleomycin can damage hearing, the kidneys and the lungs."
+        "zh-CN": "化疗需要组织学诊断（或足以确诊的肿瘤标志物水平）和多学科决定，没有这些不应开始。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：手术方式需要个体化——直接切除、化疗前活检，或例如在气道受压且肿瘤标志物升高时不先手术。铂类药物和博来霉素可损害听力、肾脏和肺。",
+        "en": "Chemotherapy needs a tissue diagnosis (or marker levels that establish one) and a multidisciplinary decision; without them it is not started. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the surgical approach is individualised — primary resection, biopsy before chemotherapy, or no surgery, for example when the airway is compromised and tumour markers are raised. Platinum drugs and bleomycin can damage hearing, the kidneys and the lungs."
       },
       "response": {
         "zh-CN": "已开始。报告没有记录任何化疗。",
@@ -3440,7 +3444,7 @@
           "id": "central-progressive",
           "text": {
             "zh-CN": "进展快的中枢性性早熟：睾酮高、骨龄超前2年8个月、半年长高8 cm，说明性腺轴已经充分启动；LH峰值低只是激发试验的采血时间点不对或测定方法不灵敏造成的，应开始GnRH类似物治疗，3个月后复查激发试验、骨龄和身高。",
-            "en": "Rapidly progressive central precocious puberty: a high testosterone, a bone age 2 years 8 months ahead and 8 cm of growth in six months show a fully active axis; the low LH peak only reflects badly timed sampling or an insensitive assay, so start a GnRH analogue and repeat the stimulation test and bone age in three months."
+            "en": "Rapidly progressive central precocious puberty: a high testosterone, a bone age 2 years 8 months ahead and 8 cm of growth in six months show a fully active axis; the low LH peak only reflects badly timed sampling or an insensitive assay, so start a GnRH analogue and repeat the stimulation test, bone age and height in three months."
           },
           "correct": false,
           "feedback": {
@@ -3587,15 +3591,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，有压迫或积液时做经胸心脏超声，并进行包括肿瘤、外科、重症和麻醉的多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。NCI PDQ（2024）：儿童颅外生殖细胞肿瘤的手术方式要个体化，可以直接切除。",
-            "en": "Right. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): a child with an anterior mediastinal mass can have cardiorespiratory collapse on induction even without respiratory symptoms; ask about symptoms of airway and circulatory compression, assess compression of the airway, great vessels and heart on chest CT, add a transthoracic echocardiogram if there is compression or an effusion, and hold a multidisciplinary huddle (oncology, surgery, critical care, anaesthesia); avoid general anaesthesia where possible and keep spontaneous ventilation if it is needed. NCI PDQ (2024): for childhood extracranial germ-cell tumours the surgical approach is individualised and may be primary resection."
+            "zh-CN": "正确。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声，并进行包括肿瘤、影像、外科、重症和麻醉的多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。NCI PDQ（2024）：儿童颅外生殖细胞肿瘤的手术方式要个体化，可以直接切除。",
+            "en": "Right. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): a child with an anterior mediastinal mass can have cardiorespiratory collapse on induction even without respiratory symptoms; ask about symptoms of airway and circulatory compression, assess compression of the airway, great vessels and heart on chest CT, add a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion, and hold a multidisciplinary huddle (oncology, radiology, surgery, critical care, anaesthesia); avoid general anaesthesia where possible and keep spontaneous ventilation if it is needed. NCI PDQ (2024): for childhood extracranial germ-cell tumours the surgical approach is individualised and may be primary resection."
           }
         },
         {
           "id": "chemo-on-markers",
           "text": {
             "zh-CN": "β-hCG升高就足以诊断恶性生殖细胞肿瘤，不必再冒险取组织：今天开始以顺铂为基础的化疗，每个疗程复查β-hCG，等肿物缩小一半以上再考虑手术，这样可以免去一次风险很大的大手术，也能更早控制激素的分泌和男性化。",
-            "en": "A raised β-hCG is enough to diagnose a malignant germ-cell tumour, so no tissue is needed: start cisplatin-based chemotherapy today, recheck the β-hCG with each cycle and consider surgery only once the mass has shrunk by half, sparing him a high-risk operation under anaesthesia and bringing the hormone under control sooner."
+            "en": "A raised β-hCG is enough to diagnose a malignant germ-cell tumour, so no tissue is needed: start cisplatin-based chemotherapy today, recheck the β-hCG with each cycle and consider surgery only once the mass has shrunk by half, sparing him a high-risk operation under anaesthesia and bringing the hormone and the virilisation under control sooner."
           },
           "correct": false,
           "feedback": {
@@ -3607,7 +3611,7 @@
           "id": "sedated-biopsy-now",
           "text": {
             "zh-CN": "今天就在CT室给他镇静（口服水合氯醛或静脉咪达唑仑），做CT引导下穿刺活检，拿到病理再决定化疗还是手术；麻醉科等到正式手术前再会诊，免得他在病房里多等几天、反复抽血检查。",
-            "en": "Sedate him in the CT room today (oral chloral hydrate or IV midazolam) for a CT-guided needle biopsy, choose chemotherapy or surgery on the histology, and leave the anaesthetic review until just before any definitive operation so that he does not wait days on the ward for a theatre slot."
+            "en": "Sedate him in the CT room today (oral chloral hydrate or IV midazolam) for a CT-guided needle biopsy, choose chemotherapy or surgery on the histology, and leave the anaesthetic review until just before any definitive operation so that he does not wait days on the ward having repeated blood tests."
           },
           "correct": false,
           "feedback": {
@@ -3638,7 +3642,7 @@
       },
       "requires": {
         "read": "pathology",
-        "phase": "postop"
+        "phase": "theatre"
       },
       "need": {
         "zh-CN": "先调阅手术及病理记录。",
@@ -4054,8 +4058,8 @@
         "en": "Dr Shao (paediatric anaesthesia)"
       },
       "knowledge": {
-        "zh-CN": "儿科麻醉医生，负责镇静和全麻前的评估。对任何可能压迫气道或大血管的颈部或胸部肿物：先问咳嗽、气促、喘鸣、声音嘶哑和平卧时呼吸困难（气道受压），以及晕厥、心动过速、颈静脉怒张和上腔静脉综合征（心血管受压）；需要近期的胸部CT评估气道、大血管和心脏受压，有压迫或积液时做经胸心脏超声（准备镇静或麻醉时门槛要低）；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸、避免肌松，手术室备好硬质支气管镜，高危时准备ECMO；需要肿瘤、外科、重症和麻醉的多学科讨论（SPA病例指南2024）。只知道学员告诉或给他看的这个孩子的情况，不补充病历中没有的症状或检查结果。",
-        "en": "Paediatric anaesthetist who assesses children before sedation or general anaesthesia. For any neck or chest mass that could compress the airway or great vessels: asks about cough, breathlessness, stridor, hoarseness and trouble breathing lying flat (airway compression), and about fainting, a fast heart rate, distended neck veins and superior vena cava syndrome (cardiovascular compression); needs recent chest CT for compression of the airway, great vessels and heart, and a transthoracic echocardiogram if there is compression or an effusion (a low threshold when sedation or anaesthesia is planned); knows collapse can occur on induction even without symptoms; avoids general anaesthesia where possible and otherwise keeps spontaneous breathing and avoids paralysis, with a rigid bronchoscope in theatre and ECMO ready for high-risk cases; wants a multidisciplinary huddle with oncology, surgery and critical care (SPA case guide 2024). Knows only what the learner tells or shows about this boy and adds no symptom or result his notes do not hold."
+        "zh-CN": "儿科麻醉医生，负责镇静和全麻前的评估。对任何可能压迫气道或大血管的颈部或胸部肿物：先问咳嗽、气促、喘鸣、声音嘶哑和平卧时呼吸困难（气道受压），以及晕厥、心动过速、颈静脉怒张和上腔静脉综合征（心血管受压）；需要近期的胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声（准备镇静或麻醉时门槛要低）；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸、避免肌松，手术室备好硬质支气管镜，高危时准备ECMO；需要肿瘤、影像、外科、重症和麻醉的多学科讨论（SPA病例指南2024）。只知道学员告诉或给他看的这个孩子的情况，不补充病历中没有的症状或检查结果。",
+        "en": "Paediatric anaesthetist who assesses children before sedation or general anaesthesia. For any neck or chest mass that could compress the airway or great vessels: asks about cough, breathlessness, stridor, hoarseness and trouble breathing lying flat (airway compression), and about fainting, a fast heart rate, distended neck veins and superior vena cava syndrome (cardiovascular compression); needs recent chest CT for compression of the airway, great vessels and heart, and a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion (a very low threshold when sedation or anaesthesia is planned); knows collapse can occur on induction even without symptoms; avoids general anaesthesia where possible and otherwise keeps spontaneous breathing and avoids paralysis, with a rigid bronchoscope in theatre and ECMO ready for high-risk cases; wants a multidisciplinary huddle with oncology, radiology, surgery and critical care (SPA case guide 2024). Knows only what the learner tells or shows about this boy and adds no symptom or result his notes do not hold."
       },
       "interprets": [
         "chest-imaging"
@@ -4138,8 +4142,8 @@
         "en": "Klinefelter syndrome and mediastinal germ-cell tumours — think in both directions. EAA guideline on Klinefelter syndrome (2021, endorsed by the European Society of Endocrinology): extragonadal germ-cell tumours are more frequent, mainly mediastinal and usually non-seminomas (mature teratomas or mixed tumours), and younger boys may present with precocious puberty due to hCG production. NCI PDQ (2024): Klinefelter syndrome raises the risk of mediastinal germ-cell tumours, which present younger, and testing younger males with these tumours for Klinefelter syndrome should be considered."
       },
       {
-        "zh-CN": "前纵隔肿物首先是麻醉风险。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：麻醉前问气道受压（咳嗽、气促、喘鸣、声嘶、端坐呼吸）和心血管受压（晕厥、心动过速、颈静脉怒张、上腔静脉综合征）的表现；用胸部CT评估气道、大血管和心脏受压；有压迫或积液时做经胸心脏超声；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸；进行多学科讨论。报告没有记录他的症状、气道评估或麻醉经过。",
-        "en": "An anterior mediastinal mass is first an anaesthetic hazard. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): before anaesthesia ask about airway compression (cough, dyspnoea, stridor, hoarseness, orthopnoea) and cardiovascular compression (syncope, tachycardia, distended neck veins, superior vena cava syndrome); assess compression of the airway, great vessels and heart on chest CT; add a transthoracic echocardiogram if there is compression or an effusion; collapse can occur on induction even without symptoms; avoid general anaesthesia where possible and keep spontaneous ventilation if needed; hold a multidisciplinary huddle. The report records none of his symptoms, airway assessment or anaesthetic course."
+        "zh-CN": "前纵隔肿物首先是麻醉风险。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：麻醉前问气道受压（咳嗽、气促、喘鸣、声嘶、端坐呼吸）和心血管受压（晕厥、心动过速、颈静脉怒张、上腔静脉综合征）的表现；用胸部CT评估气道、大血管和心脏受压；CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸；进行多学科讨论。报告没有记录他的症状、气道评估或麻醉经过。",
+        "en": "An anterior mediastinal mass is first an anaesthetic hazard. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): before anaesthesia ask about airway compression (cough, dyspnoea, stridor, hoarseness, orthopnoea) and cardiovascular compression (syncope, tachycardia, distended neck veins, superior vena cava syndrome); assess compression of the airway, great vessels and heart on chest CT; add a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion; collapse can occur on induction even without symptoms; avoid general anaesthesia where possible and keep spontaneous ventilation if needed; hold a multidisciplinary huddle. The report records none of his symptoms, airway assessment or anaesthetic course."
       },
       {
         "zh-CN": "畸胎瘤的治疗和随访。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：畸胎瘤的主要治疗是完整手术切除；包括纵隔在内的成熟畸胎瘤以手术加观察治疗，未成熟畸胎瘤也主要以手术加观察处理；良性和未成熟畸胎瘤可有AFP和β-hCG的小幅升高，以成熟或未成熟成分为主的畸胎瘤中可能有少量恶性成分；所有儿童术后3年内都要频繁复查肿瘤标志物。报告的一年随访——β-hCG 0.7 IU/L，胸片未见异常，因这些结果未复查MRI——没有记录病理分级和是否完整切除，这正是需要继续监测的原因。",
@@ -4414,7 +4418,7 @@
     {
       "type": "read",
       "investigationId": "pathology",
-      "phase": "postop"
+      "phase": "theatre"
     },
     {
       "type": "intervene",

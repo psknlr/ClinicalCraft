@@ -72,12 +72,12 @@
       "en": "Distinguish a non-inflammatory arthropathy from inflammatory arthritis using the history (painless, no fever or rash, worse every year), the examination (flexed fingers and toes sparing the thumbs and great toes, joint contractures) and repeatedly negative inflammatory and autoantibody tests, and explain from the ILAR classification (2004) why JIA is a diagnosis of exclusion."
     },
     {
-      "zh-CN": "把心音稍钝伴心包摩擦音识别为心包受累、可能有积液的体征：当场在床旁评估有无心脏压塞（心率、血压、奇脉、呼吸、颈静脉），并按ESC 2025指南完成初始评估（超声心动图、心电图、胸片和炎症指标），不等到门诊。",
-      "en": "Recognise slightly muffled heart sounds with a pericardial rub as signs of pericardial involvement, possibly with fluid: check for tamponade at the bedside at once (heart rate, blood pressure, pulsus paradoxus, breathing, neck veins) and complete the initial assessment ESC 2025 recommends (echocardiography, ECG, chest X-ray, inflammatory markers) during this admission, not as an outpatient."
+      "zh-CN": "把心音稍钝伴心包摩擦音识别为心包受累、可能有积液的体征：当场在床旁评估有无心脏压塞（心率、血压、奇脉、呼吸、颈静脉），并按ESC 2025指南完成初始评估（超声心动图、心电图、胸片，以及肌钙蛋白、CRP、NT-proBNP等生物标志物），不等到门诊。",
+      "en": "Recognise slightly muffled heart sounds with a pericardial rub as signs of pericardial involvement, possibly with fluid: check for tamponade at the bedside at once (heart rate, blood pressure, pulsus paradoxus, breathing, neck veins) and complete the initial assessment ESC 2025 recommends (echocardiography, ECG, chest X-ray and biomarkers — troponin, CRP, NT-proBNP) during this admission, not as an outpatient."
     },
     {
-      "zh-CN": "对没有压塞表现、没有炎症证据的中等量心包积液作出处理：不引流、不用抗炎药，请心脏科评估并定期复查超声心动图，说明需要引流的指征（ESC 2025）。",
-      "en": "Manage a moderate pericardial effusion without signs of tamponade or inflammation: no drainage and no anti-inflammatory drugs, cardiology review with repeat echocardiography, and state the indications for drainage (ESC 2025)."
+      "zh-CN": "对没有心脏压塞、没有炎症证据的中等量心包积液作出处理：不引流、不用抗炎药，请心脏科评估，做心脏磁共振并定期复查超声心动图，说明需要引流的指征（ESC 2025）。",
+      "en": "Manage a moderate pericardial effusion without tamponade or evidence of inflammation: no drainage and no anti-inflammatory drugs, cardiology review with cardiac MRI and repeat echocardiography, and state the indications for drainage (ESC 2025)."
     },
     {
       "zh-CN": "说出CACP综合征的组成、致病基因（PRG4）和遗传方式（常染色体隐性），区分临床诊断与分子诊断，并给家庭说明再发风险（父母都携带时每个孩子1/4）。",
@@ -132,7 +132,7 @@
       "affect": "calm",
       "openingLine": {
         "zh-CN": "（家属）大夫，他胳膊和腿上好几个关节都肿，三年前开始发现的，一年比一年重。",
-        "en": "(His relative) Doctor, several joints in his arms and legs are swollen. We first noticed it three years ago, and it's been worse every year."
+        "en": "(His relative) Doctor, several joints in his arms and legs are swollen. It was first noticed three years ago, and it's been worse every year."
       },
       "fallbackUnknown": {
         "zh-CN": "这个我说不上来，医生。",
@@ -190,12 +190,12 @@
     {
       "id": "work-up",
       "label": {
-        "zh-CN": "住院检查：结果回报",
-        "en": "In hospital: the results are back"
+        "zh-CN": "检查结果记录",
+        "en": "Results on record"
       },
       "description": {
-        "zh-CN": "血液检查和关节影像已经报告。超声心动图如果还没有申请，现在申请也能做，只是已经晚了一步。",
-        "en": "The blood tests and joint imaging have been reported. An echocardiogram not yet requested can still be done now, a step late."
+        "zh-CN": "现在可以调阅他的血液检查和关节影像记录（检查时间没有记录）。超声心动图如果还没有申请，现在申请也能做，只是已经晚了一步。",
+        "en": "The records of his blood tests and joint imaging can now be read; when they were done is not recorded. An echocardiogram not yet requested can still be done now, a step late."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -277,7 +277,7 @@
       },
       "answer": {
         "zh-CN": "他胳膊和腿上好几个关节都肿，三年前开始发现的，一年比一年重。",
-        "en": "Several joints in his arms and legs are swollen. We first noticed it three years ago, and it's been worse every year."
+        "en": "Several joints in his arms and legs are swollen. It was first noticed three years ago, and it's been worse every year."
       },
       "keywords": {
         "zh-CN": [
@@ -298,7 +298,14 @@
           "关节肿",
           "肿了多久",
           "肿胀",
-          "怎么不好"
+          "怎么不好",
+          "哪儿不好",
+          "哪儿不舒服",
+          "哪不好",
+          "什么毛病",
+          "越来越",
+          "加重",
+          "一年比一年"
         ],
         "en": [
           "whatbringsyou",
@@ -493,7 +500,8 @@
           "early on",
           "range of movement",
           "getintheway",
-          "move normally"
+          "move normally",
+          "beginning"
         ]
       },
       "excludeKeywords": {
@@ -521,7 +529,7 @@
       "id": "previous-tests",
       "topic": "pmh",
       "question": {
-        "zh-CN": "这几年在别的地方查过什么吗？",
+        "zh-CN": "这几年为这个病查过什么吗？",
         "en": "Has he had any tests for this before?"
       },
       "answer": {
@@ -677,7 +685,10 @@
           "兄弟",
           "姐妹",
           "结核",
-          "爸爸妈妈是"
+          "爸爸妈妈是",
+          "别的孩子",
+          "其他孩子",
+          "还有孩子"
         ],
         "en": [
           "related to each other",
@@ -688,7 +699,9 @@
           "sister",
           "sibling",
           "tuberculosis",
-          "parents related"
+          "parents related",
+          "other children",
+          "other kids"
         ]
       },
       "disclosure": "on-ask",
@@ -997,13 +1010,20 @@
           "姐姐",
           "妹妹",
           "几个孩子",
-          "独生"
+          "独生",
+          "别的孩子",
+          "其他孩子",
+          "还有孩子",
+          "老大",
+          "老二"
         ],
         "en": [
           "brother",
           "sister",
           "sibling",
-          "only child"
+          "only child",
+          "other children",
+          "other kids"
         ]
       },
       "disclosure": "unknown",
@@ -1092,7 +1112,9 @@
           "weight",
           "howtall",
           "weigh",
-          "kilos"
+          "kilos",
+          "heavy",
+          "howheavy"
         ]
       },
       "disclosure": "on-ask",
@@ -1273,7 +1295,8 @@
           "talk",
           "baby",
           "at first",
-          "early on"
+          "early on",
+          "beginning"
         ]
       },
       "disclosure": "unknown",
@@ -1360,6 +1383,20 @@
       "source": {
         "zh-CN": "报告病例资料·入院查体（除拇指拇趾外各指趾屈曲）（1.0.0版提取，待对照原文核对）",
         "en": "The report's case data · admission examination (digits other than the thumbs and great toes flexed) (extracted for version 1.0.0; not yet checked against the full article)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "手腕",
+          "脚踝",
+          "肘",
+          "膝"
+        ],
+        "en": [
+          "wrist",
+          "ankle",
+          "elbow",
+          "knee"
+        ]
       }
     },
     {
@@ -1380,7 +1417,11 @@
           "关节活动",
           "屈伸",
           "关节检查",
-          "肿的关节"
+          "肿的关节",
+          "手腕",
+          "脚踝",
+          "胳膊肘",
+          "膝盖"
         ],
         "en": [
           "joints",
@@ -1391,7 +1432,11 @@
           "range of motion",
           "large joints",
           "joint exam",
-          "swollen joints"
+          "swollen joints",
+          "wrists",
+          "ankles",
+          "elbows",
+          "knees"
         ]
       },
       "finding": {
@@ -1423,7 +1468,11 @@
           "听诊",
           "杂音",
           "摩擦音",
-          "听心"
+          "听心",
+          "胸口",
+          "听胸",
+          "心前区",
+          "听诊器"
         ],
         "en": [
           "heart",
@@ -1514,7 +1563,10 @@
           "echo",
           "cardiac ultrasound",
           "heart scan",
-          "tte"
+          "transthoracic echo",
+          "heart ultrasound",
+          "ultrasound of the heart",
+          "ultrasound of his heart"
         ]
       },
       "requires": [
@@ -1723,6 +1775,73 @@
       }
     },
     {
+      "id": "cardiac-biomarkers",
+      "name": {
+        "zh-CN": "肌钙蛋白和NT-proBNP",
+        "en": "Troponin and NT-proBNP"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肌钙蛋白",
+          "心肌损伤标志物",
+          "心肌标志物",
+          "心肌酶",
+          "NT-proBNP",
+          "BNP",
+          "脑钠肽"
+        ],
+        "en": [
+          "troponin",
+          "nt-probnp",
+          "bnp",
+          "natriuretic peptide",
+          "cardiac biomarkers",
+          "cardiac enzymes"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "work-up": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "diagnosis": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        }
+      }
+    },
+    {
       "id": "fbc",
       "name": {
         "zh-CN": "血常规",
@@ -1905,17 +2024,17 @@
       "aliases": {
         "zh-CN": [
           "类风湿因子",
-          "RF",
           "自身抗体",
           "抗体检查",
-          "风湿抗体"
+          "风湿抗体",
+          "RF检测"
         ],
         "en": [
           "rheumatoid factor",
-          "rf",
           "autoantibodies",
           "autoantibody",
-          "antibody tests"
+          "antibody tests",
+          "rf test"
         ]
       },
       "requires": [
@@ -2230,6 +2349,72 @@
       }
     },
     {
+      "id": "cardiac-mri",
+      "name": {
+        "zh-CN": "心脏磁共振（CMR）",
+        "en": "Cardiac MRI (cardiovascular magnetic resonance)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "心脏磁共振",
+          "心脏核磁",
+          "心脏MRI",
+          "心血管磁共振",
+          "CMR"
+        ],
+        "en": [
+          "cardiac mri",
+          "cardiac magnetic resonance",
+          "cardiovascular magnetic resonance",
+          "heart mri",
+          "mri of the heart",
+          "mri of his heart",
+          "cmr"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "work-up": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "diagnosis": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        }
+      }
+    },
+    {
       "id": "pelvis-xray",
       "name": {
         "zh-CN": "骨盆（髋关节）X线片",
@@ -2243,7 +2428,9 @@
           "髋关节X线",
           "髋关节片",
           "髋部X线",
-          "拍髋"
+          "拍髋",
+          "髋部片",
+          "髋关节平片"
         ],
         "en": [
           "pelvic x-ray",
@@ -2251,7 +2438,11 @@
           "hip x-ray",
           "hip radiograph",
           "pelvic radiograph",
-          "hip film"
+          "hip film",
+          "x-ray of his hip",
+          "x-ray of the hip",
+          "x-ray of the pelvis",
+          "hips x-ray"
         ]
       },
       "requires": [
@@ -2318,7 +2509,10 @@
           "synovial fluid",
           "knee aspiration",
           "joint fluid",
-          "aspirate the knee"
+          "aspirate the knee",
+          "aspirate his knee",
+          "tap his knee",
+          "knee tap"
         ]
       },
       "requires": [
@@ -2913,8 +3107,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有指征：没有记录到心脏压塞的表现（无颈静脉怒张）。ESC 2025指南推荐在心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液时，在超声、CT或X线透视引导下行心包穿刺（I类）——他没有这些情况。没有指征、没有影像引导的穿刺可刺伤心肌或冠状动脉，引起气胸和心律失常。",
-        "en": "No indication: no sign of tamponade is recorded (no jugular venous distension). ESC 2025 recommends pericardiocentesis, guided by echocardiography, CT or fluoroscopy, for cardiac tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I) — none of which applies to him. A needle without an indication or imaging guidance can lacerate the heart or a coronary artery and cause pneumothorax and arrhythmia."
+        "zh-CN": "没有指征：没有任何记录能确立心脏压塞——他没有颈静脉怒张，也没有记录到血流动力学受影响；单凭心音稍钝不能诊断压塞，压塞是临床诊断，要由超声心动图证实。ESC 2025指南推荐在心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液时，在超声、CT或X线透视引导下行心包穿刺（I类）——这些情况在他身上都没有确立。没有指征、没有影像引导的穿刺可刺伤心肌或冠状动脉，引起气胸和心律失常。",
+        "en": "No indication: nothing recorded establishes tamponade — his neck veins are not distended, no haemodynamic compromise is recorded, and slightly muffled heart sounds alone do not make the diagnosis, which is clinical and confirmed by echocardiography. ESC 2025 recommends pericardiocentesis, guided by echocardiography, CT or fluoroscopy, for cardiac tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I) — none of which is established for him. A needle without an indication or imaging guidance can lacerate the heart or a coronary artery and cause pneumothorax and arrhythmia."
       },
       "response": {
         "zh-CN": "这是一次没有指征的有创操作（见安全提示）。本病例不模拟它的后果；本病例也没有记录任何心包穿刺或引流。",
@@ -2969,6 +3163,25 @@
       "response": {
         "zh-CN": "已开始泼尼松龙（见安全提示）。本病例不模拟它的作用。",
         "en": "Prednisolone started (see the safety note). The case does not simulate its effect."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "关节腔",
+          "关节内",
+          "关节注射",
+          "注射到关节",
+          "打到关节",
+          "膝关节注射"
+        ],
+        "en": [
+          "intra-articular",
+          "into the knee",
+          "into his knee",
+          "into the joint",
+          "into his joint",
+          "joint injection",
+          "knee injection"
+        ]
       }
     },
     {
@@ -3076,14 +3289,24 @@
           "关节内注射",
           "关节腔内注射",
           "关节腔激素",
-          "曲安奈德"
+          "曲安奈德",
+          "关节腔注射激素",
+          "关节内打激素",
+          "关节腔打激素",
+          "关节注射激素",
+          "膝关节注射"
         ],
         "en": [
           "intra-articular",
           "joint injection",
           "triamcinolone",
           "inject the knees",
-          "steroid injection into the joint"
+          "steroid injection into the joint",
+          "steroid injection",
+          "inject steroid",
+          "knee injection",
+          "inject his knees",
+          "joint injections"
         ]
       },
       "dose": {
@@ -3246,16 +3469,16 @@
     {
       "id": "obj-heart",
       "title": {
-        "zh-CN": "对胸前听到的声音作出反应",
-        "en": "Act on what you hear in his chest"
+        "zh-CN": "定下入院当天要做的事",
+        "en": "Decide what he needs on day one"
       },
       "short": {
         "zh-CN": "心脏",
         "en": "Heart"
       },
       "hint": {
-        "zh-CN": "听到的这些声音说明什么？今天他需要哪项检查？在床旁怎样判断他是否安全？",
-        "en": "What do those sounds tell you? Which test does he need today, and how do you judge at the bedside whether he is safe?"
+        "zh-CN": "心脏听诊发现了什么、说明什么？今天他需要哪项检查？在床旁怎样判断他是否安全？",
+        "en": "What does the heart examination tell you? Which test does he need today, and how do you judge at the bedside whether he is safe?"
       },
       "guidance": {
         "zh-CN": "入院当天，关节的问题之外还有心脏的发现。",
@@ -3294,8 +3517,8 @@
         "en": "Results"
       },
       "hint": {
-        "zh-CN": "调阅血液检查和关节影像，再看超声心动图：哪些支持炎症，哪些不支持？积液现在需要处理吗？",
-        "en": "Read the blood tests and the joint imaging alongside the echocardiogram: what supports inflammation and what does not? Does the effusion need treatment now?"
+        "zh-CN": "调阅血液检查和关节影像，再看超声心动图：哪些支持炎症，哪些不支持？他的心脏现在需要怎么处理？",
+        "en": "Read the blood tests and the joint imaging alongside the echocardiogram: what supports inflammation and what does not? What does his heart need now?"
       },
       "guidance": {
         "zh-CN": "结果已经回报。",
@@ -3468,8 +3691,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有穿刺指征：他没有颈静脉怒张，没有记录到压塞的表现，积液也还没有成像。ESC 2025推荐影像引导下心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液——他一样都没有；盲目穿刺可能刺伤心肌或冠状动脉。",
-            "en": "No indication for a needle: his neck veins are not distended, no sign of tamponade is recorded, and the effusion has not been imaged. ESC 2025 recommends image-guided pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy — none of which he has; a blind needle can lacerate the heart or a coronary artery."
+            "zh-CN": "没有穿刺指征：心脏压塞是临床诊断，要由超声心动图证实，而目前没有任何记录能确立它——他没有颈静脉怒张，单凭心音稍钝不能诊断压塞，积液也还没有成像。ESC 2025推荐影像引导下心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液——这些在他身上都没有确立；盲目穿刺可能刺伤心肌或冠状动脉。",
+            "en": "No indication for a needle: tamponade is a clinical diagnosis confirmed by echocardiography, and nothing recorded establishes it — his neck veins are not distended, slightly muffled heart sounds alone do not make it, and the effusion has not been imaged. ESC 2025 recommends image-guided pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy — none of which is established for him; a blind needle can lacerate the heart or a coronary artery."
           }
         },
         {
@@ -3533,13 +3756,13 @@
         {
           "id": "watch-repeat-echo",
           "text": {
-            "zh-CN": "暂不引流：继续观察压塞表现，请儿童心脏科评估、定期复查超声心动图并找原因；出现压塞、治疗后仍有症状或疑有感染、肿瘤时再引流。",
-            "en": "No drainage now: keep checking for tamponade, have paediatric cardiology review him and repeat the echo at set intervals, and seek the cause; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer."
+            "zh-CN": "暂不引流：继续观察压塞表现；请儿童心脏科评估，做心脏磁共振，定期复查超声心动图并找原因；出现压塞、治疗后仍有症状或疑有感染、肿瘤时再引流。",
+            "en": "No drainage: keep checking for tamponade; paediatric cardiology review, cardiac MRI and repeat echoes at set intervals while the cause is sought; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ESC 2025：积液的治疗应尽量针对病因；没有心包炎症（CRP不高、影像无炎症证据）时不推荐抗炎治疗；推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；原因仍不清楚时，可以用心脏磁共振评估心包有无炎症。随访主要看症状、超声心动图上积液大小的变化和血流动力学，以及CRP；若没有症状，至少中等量的积液合理的随访间隔约为6个月，最好在专科中心，出现气短、乏力或胸痛时要及时就诊。",
-            "en": "Right. ESC 2025: treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP, no inflammation on imaging) anti-inflammatory treatment is not recommended; pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy, and cardiac MRI can look for pericardial inflammation if the cause stays unclear. Follow-up rests on symptoms, focused echo for size and haemodynamics, and CRP; if he has no symptoms, review about every 6 months for an effusion of at least moderate size, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain."
+            "zh-CN": "正确。ESC 2025：积液的治疗应尽量针对病因；没有心包炎症（CRP不高、影像无炎症证据）时不推荐抗炎治疗；推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类），看心包有无增厚、水肿和延迟强化。随访主要看症状、超声心动图上积液大小的变化和血流动力学，以及CRP；若没有症状，至少中等量的积液合理的随访间隔约为6个月，最好在专科中心，出现气短、乏力或胸痛时要及时就诊。",
+            "en": "Right. ESC 2025: treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP, no inflammation on imaging) anti-inflammatory treatment is not recommended; pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy, and cardiac MRI is recommended (class I) when suspected pericarditis cannot be confirmed on clinical criteria, to look for pericardial thickening, oedema and late gadolinium enhancement. Follow-up rests on symptoms, focused echo for size and haemodynamics, and CRP; if he has no symptoms, review about every 6 months for an effusion of at least moderate size, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain."
           }
         },
         {
@@ -3550,8 +3773,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有引流指征：没有记录到压塞的表现，左室收缩功能正常。ESC 2025推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；他没有这些情况，宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
-            "en": "No indication for drainage: no sign of tamponade is recorded and left ventricular systolic function is normal. ESC 2025 recommends pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; he has none of these, so conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
+            "zh-CN": "没有引流指征：没有任何记录能确立心脏压塞——他没有颈静脉怒张，左室收缩功能正常。ESC 2025推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；这些在他身上都没有确立，宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
+            "en": "No indication for drainage: nothing recorded establishes tamponade — his neck veins are not distended and left ventricular systolic function is normal. ESC 2025 recommends pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; none of these is established for him, so conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
           }
         },
         {
@@ -4144,8 +4367,8 @@
         "en": "Talked with Qinghe and his relative: the working diagnosis, what is not yet proven and the plan, the worry about steroids, and teach-back"
       },
       "judgeGuidance": {
-        "zh-CN": "优秀表现（Calgary–Cambridge）：先问家属知道什么、最担心什么（三年来查血沉、查风湿都阴性却越来越重；怕用激素）；用通俗的话解释：肿胀不是常见的那种“风湿”炎症，抗炎药和激素帮不上忙；心脏外面有一层积液，现在没有危险的表现，但要请心脏科定期复查；告诉家属诊断（用SPIKES：先了解他们的认识，询问想知道多少，再分步告知），说清楚这是根据表现作出的诊断，还需要基因检测来证实，结果对家里以后的孩子也有意义；回答“会不会遗传”时不作没有根据的保证；对9岁的孩子用他能听懂的话说明锻炼的作用；最后请家属用自己的话复述计划（复述法），并告诉他们出现气短、乏力或胸痛时要马上就诊。原报告没有记录与家属的谈话。",
-        "en": "Good performance (Calgary–Cambridge): start from what the relative knows and fears most (three years of negative ESR and rheumatism tests yet worse every year; a fear of steroids); explain in plain words that the swelling is not the usual inflammatory “rheumatism”, so anti-inflammatory drugs and steroids will not help; that there is fluid around the heart with no dangerous signs now, which the heart team will recheck; give the diagnosis with SPIKES (their understanding first, how much they want to know, then step by step), making clear it rests on his features and needs a gene test to confirm it, which also matters for future children in the family; no unfounded reassurance about inheritance; explain to the 9-year-old, in words he can follow, why the exercises matter; close with teach-back and tell them to come back at once for breathlessness, tiredness or chest pain. The report records no conversation with the family."
+        "zh-CN": "优秀表现（Calgary–Cambridge）：先问家属知道什么、最担心什么（三年来查血沉、查风湿都阴性却越来越重；怕用激素）；用通俗的话解释：肿胀不是常见的那种“风湿”炎症，抗炎药和激素帮不上忙；心脏外面有一层积液，要请心脏科评估并定期复查；告诉家属诊断（用SPIKES：先了解他们的认识，询问想知道多少，再分步告知），说清楚这是根据表现作出的诊断，还需要基因检测来证实，结果对家里以后的孩子也有意义；回答“会不会遗传”时不作没有根据的保证；对9岁的孩子用他能听懂的话说明锻炼的作用；最后请家属用自己的话复述计划（复述法），并告诉他们出现气短、乏力或胸痛时要马上就诊。原报告没有记录与家属的谈话。",
+        "en": "Good performance (Calgary–Cambridge): start from what the relative knows and fears most (three years of negative ESR and rheumatism tests yet worse every year; a fear of steroids); explain in plain words that the swelling is not the usual inflammatory “rheumatism”, so anti-inflammatory drugs and steroids will not help; that there is fluid around the heart, which the heart team will assess and recheck; give the diagnosis with SPIKES (their understanding first, how much they want to know, then step by step), making clear it rests on his features and needs a gene test to confirm it, which also matters for future children in the family; no unfounded reassurance about inheritance; explain to the 9-year-old, in words he can follow, why the exercises matter; close with teach-back and tell them to come back at once for breathlessness, tiredness or chest pain. The report records no conversation with the family."
       }
     }
   ],
@@ -4190,8 +4413,8 @@
         "en": "Paediatric cardiologist"
       },
       "knowledge": {
-        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合一项以上附加标准；诊断不能靠临床标准确定时，心脏磁共振可以评估心包炎症。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）推荐用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
-        "en": "Comes when asked to review. From the ESC 2025 myocarditis and pericarditis guidelines: suspected pericarditis needs an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I); a pericardial rub is one additional criterion, and a definite diagnosis needs a clinical presentation (such as chest pain) with more than one additional criterion; cardiac MRI can assess pericardial inflammation when clinical criteria cannot settle the diagnosis. Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly; pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg; tamponade is a last-drop phenomenon. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended. Pericardiocentesis (echocardiography-, CT- or fluoroscopy-guided) is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). For an asymptomatic effusion of at least moderate size a reasonable follow-up is about every 6 months, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain. Corticosteroids are restricted in children even more than in adults (growth impairment). Interprets the echocardiogram only once the learner has read it; its record gives no effusion depth, distribution or echocardiographic signs of tamponade."
+        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合一项以上附加标准；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类），评估心包增厚、水肿和延迟强化。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）推荐用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
+        "en": "Comes when asked to review. From the ESC 2025 myocarditis and pericarditis guidelines: suspected pericarditis needs an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I); a pericardial rub is one additional criterion, and a definite diagnosis needs a clinical presentation (such as chest pain) with more than one additional criterion; cardiac MRI is recommended (class I) in suspected pericarditis when clinical criteria cannot make the diagnosis, to look for pericardial thickening, oedema and late gadolinium enhancement. Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly; pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg; tamponade is a last-drop phenomenon. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended. Pericardiocentesis (echocardiography-, CT- or fluoroscopy-guided) is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). For an asymptomatic effusion of at least moderate size a reasonable follow-up is about every 6 months, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain. Corticosteroids are restricted in children even more than in adults (growth impairment). Interprets the echocardiogram only once the learner has read it; its record gives no effusion depth, distribution or echocardiographic signs of tamponade."
       },
       "interprets": [
         "echo"
@@ -4205,8 +4428,8 @@
         "en": "Clinical geneticist"
       },
       "knowledge": {
-        "zh-CN": "被请会诊时到场，只讲方法和原则，不替团队下诊断。说明怎样选检测（单基因、基因包或外显子组）、检测能说明什么和不能说明什么（变异按ACMG/AMP 2015标准分为致病、可能致病、意义不明、可能良性和良性）；常染色体隐性遗传时，携带者父母通常健康、家里常常没有类似的人，父母不是近亲也可以各带一个变异；父母都是携带者时，每个孩子有1/4的机会患病；找到孩子的变异后检测父母，确认两个变异分别来自父母双方；检测前后都要做遗传咨询并取得同意。这个孩子没有任何基因检测结果，也没有做过遗传咨询。",
-        "en": "Comes when asked to review and talks about methods and principles only, never making the team's diagnosis. Explains how a test is chosen (a single gene, a panel or an exome), what a result can and cannot show (variants classed under the ACMG/AMP 2015 standards as pathogenic, likely pathogenic, of uncertain significance, likely benign or benign); that in autosomal recessive inheritance carrier parents are usually well, there is often nobody similar in the family, and unrelated parents can each carry a variant; that when both parents carry one, each child has a 1 in 4 chance of being affected; that once the child's variants are found the parents are tested to show one came from each; and that counselling and consent come before and after testing. This boy has no gene-test result of any kind and has had no genetic counselling."
+        "zh-CN": "被请会诊时到场，只讲方法和原则，不替团队下诊断。说明怎样选检测（单基因、基因包或外显子组）、检测能说明什么和不能说明什么（变异按ACMG/AMP 2015标准分为致病、可能致病、意义不明、可能良性和良性）；常染色体隐性遗传时，携带者父母通常健康、家里常常没有类似的人，父母不是近亲也可以各带一个变异；父母都是携带者时，每个孩子有1/4的机会患病；找到孩子的变异后检测父母，确认两个变异分别来自父母双方；检测前后都要做遗传咨询并取得同意。本病例没有记录这个孩子的任何基因检测结果，也没有记录遗传咨询。",
+        "en": "Comes when asked to review and talks about methods and principles only, never making the team's diagnosis. Explains how a test is chosen (a single gene, a panel or an exome), what a result can and cannot show (variants classed under the ACMG/AMP 2015 standards as pathogenic, likely pathogenic, of uncertain significance, likely benign or benign); that in autosomal recessive inheritance carrier parents are usually well, there is often nobody similar in the family, and unrelated parents can each carry a variant; that when both parents carry one, each child has a 1 in 4 chance of being affected; that once the child's variants are found the parents are tested to show one came from each; and that counselling and consent come before and after testing. No gene-test result of any kind and no genetic counselling are recorded for this boy."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4287,8 +4510,8 @@
         "en": "ESC 2025 myocarditis and pericarditis guidelines: everyone with suspected pericarditis gets an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I). Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly, pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg, and tamponade is a last-drop phenomenon — so his normal neck veins are no reason to defer the echocardiogram to the clinic."
       },
       {
-        "zh-CN": "ESC 2025对心包积液：尽量针对病因治疗；没有心包炎症（既没有CRP升高、影像也没有炎症证据）时不推荐抗炎治疗；心包穿刺（影像引导）推荐用于压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）；无症状、至少中等量的积液约每6个月随访一次，最好在专科中心。原报告没有记录心脏科随访或复查的超声心动图——这是今天要补上的。",
-        "en": "ESC 2025 on pericardial effusion: treat the cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended; image-guided pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I); an asymptomatic effusion of at least moderate size is followed about every 6 months, ideally in a specialised centre. The report records no cardiology follow-up or repeat echocardiogram — today's care adds them."
+        "zh-CN": "ESC 2025对心包积液：尽量针对病因治疗；没有心包炎症（既没有CRP升高、影像也没有炎症证据）时不推荐抗炎治疗；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类）；心包穿刺（影像引导）推荐用于压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）；无症状、至少中等量的积液约每6个月随访一次，最好在专科中心。原报告没有记录心脏科随访或复查的超声心动图——这是今天要补上的。",
+        "en": "ESC 2025 on pericardial effusion: treat the cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended; cardiac MRI is recommended (class I) when suspected pericarditis cannot be confirmed on clinical criteria; image-guided pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I); an asymptomatic effusion of at least moderate size is followed about every 6 months, ideally in a specialised centre. The report records no cardiology follow-up or repeat echocardiogram — today's care adds them."
       },
       {
         "zh-CN": "CACP是常染色体隐性遗传，由PRG4（润滑素）的双等位致病变异引起（Marcelino等，1999）。原报告是临床诊断、没有PRG4结果；今天应做基因检测（变异按ACMG/AMP 2015标准判读），再检测父母，并在检测前后做遗传咨询：父母都携带时每个孩子有1/4的机会患病；父母不是近亲、家里没有类似的人，并不能排除隐性遗传病。",
@@ -4501,6 +4724,15 @@
       "phase": "admission"
     },
     {
+      "type": "order",
+      "investigationId": "cardiac-biomarkers"
+    },
+    {
+      "type": "read",
+      "investigationId": "cardiac-biomarkers",
+      "phase": "admission"
+    },
+    {
       "type": "answer",
       "decisionId": "heart-today",
       "optionIds": [
@@ -4559,6 +4791,15 @@
     {
       "type": "read",
       "investigationId": "urine-gag",
+      "phase": "work-up"
+    },
+    {
+      "type": "order",
+      "investigationId": "cardiac-mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "cardiac-mri",
       "phase": "work-up"
     },
     {
@@ -4932,6 +5173,48 @@
         ]
       },
       {
+        "text": "孩子哪儿不好？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "肿得越来越厉害吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "家里还有别的孩子吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "siblings"
+        ]
+      },
+      {
+        "text": "How heavy is he?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "At the beginning, could he run and play normally?",
+        "locale": "en",
+        "expect": [
+          "early-movement"
+        ]
+      },
+      {
+        "text": "Are there any other children in the family?",
+        "locale": "en",
+        "expect": [
+          "siblings"
+        ]
+      },
+      {
         "text": "您家住在哪里？",
         "locale": "zh-CN",
         "expect": []
@@ -4947,5 +5230,17 @@
         "expect": []
       }
     ]
+  },
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "pelvis-xray",
+        "unlessMatches": "关节片和|关节x线和|和关节|四肢|手|足|膝|肘|腕|踝|joint|knee|elbow|wrist|ankle|hand|foot|feet",
+        "remove": [
+          "joint-imaging"
+        ]
+      }
+    ],
+    "exact": {}
   }
 }

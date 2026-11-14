@@ -84,6 +84,7 @@
    "case-check": true,
    "contract": true,
    "in-world": true,
+   "spatial-policy": true,
    "validate": true,
    "verify": true
   },
@@ -110,8 +111,16 @@
      "major": 2,
      "minor": 15
     }
+   },
+   "4": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 4,
+     "minor": 7
+    }
    }
-  }
+  },
+  "roundsCommitted": 4
  },
  "cmcr-1171301": {
   "allChecksPass": true,
@@ -358,6 +367,9 @@
    }
   }
  },
+ "cmcr-33610": {
+  "authored": true
+ },
  "cmcr-33632": {
   "allChecksPass": true,
   "authored": true,
@@ -575,10 +587,24 @@
   "reviewed": true
  },
  "cmcr-44362": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "findings": {
+   "critical": 1,
+   "major": 7,
+   "minor": 5
+  },
+  "reviewed": true
  },
  "cmcr-44399": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "findings": {
+   "critical": 2,
+   "major": 6,
+   "minor": 9
+  },
+  "reviewed": true
  },
  "cmcr-44477": {
   "allChecksPass": true,
@@ -712,6 +738,9 @@
    "minor": 11
   },
   "reviewed": true
+ },
+ "cmcr-634927": {
+  "authored": true
  },
  "cmcr-635101": {
   "allChecksPass": true,

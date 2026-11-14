@@ -1,7 +1,7 @@
 """Wait until a case run needs attention: one of its lanes starts a case outside the in-flight set, or all of its
 in-flight cases are complete. Prints what happened and the state of each in-flight case, then exits.
 
-usage: python3 -I watch-inflight.py <runId>=<case>,<case> [...]   (polls the journals every 60 s)
+usage: python3 -I watch-inflight.py <runId>[!]=<case>,<case> [...]   (polls the journals every 60 s; ! = completion only)
 """
 import json, os, sys, time
 
@@ -51,14 +51,17 @@ def describe(cid, rs, authored):
 
 
 def main():
-    runs = {}
+    runs, quiet = {}, set()
     for a in sys.argv[1:]:
         run, cases = a.split("=", 1)
+        if run.endswith("!"):  # "<run>!=…": wait for completion only, ignore a lane that has moved on
+            run = run[:-1]
+            quiet.add(run)
         runs[run] = cases.split(",")
     while True:
         for run, allowed in runs.items():
             starts, rounds, authored = state(run)
-            outside = [s for s in starts if s.split(":", 1)[1] not in allowed]
+            outside = [] if run in quiet else [s for s in starts if s.split(":", 1)[1] not in allowed]
             done = [c for c in allowed if complete(rounds.get(c, {}))]
             if outside or len(done) == len(allowed):
                 print(time.strftime("%H:%M UTC", time.gmtime()), run,
