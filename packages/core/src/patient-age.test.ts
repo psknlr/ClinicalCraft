@@ -14,7 +14,7 @@ describe("patient age", () => {
   it("gives a newborn's first days in completed hours", () => {
     expect(zh(18 / 24, "days")).toBe("18小时");
     expect(en(18 / 24, "days")).toBe("18 hours");
-    // the stored binary fractions of the library's newborns (cmcr-639083, cmcr-33497, cmcr-44848, cmcr-655460)
+    // stored binary fractions of newborns' ages (cmcr-639083, cmcr-44848; and the drafts of cmcr-33497, cmcr-655460)
     expect(en(0.4583333333333333, "days")).toBe("11 hours");
     expect(en(0.6666666666666666, "days")).toBe("16 hours");
     expect(zh(1.5833333333333333, "days")).toBe("38小时");

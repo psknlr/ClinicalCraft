@@ -28,7 +28,13 @@ describe("CMCR published-case collection", () => {
       withdrawn: { case: string; file: string; sha256: string }[];
     };
     expect(withdrawn.length).toBeGreaterThan(0);
+    // A report awaiting re-authoring has no case in the library, so nothing there can reference its withdrawn media.
+    const awaiting = new Set(
+      (JSON.parse(readFileSync(new URL("../../../scripts/cmcr-105-sources.json", import.meta.url), "utf8")) as { awaitingReauthoring?: { ids: string[] } })
+        .awaitingReauthoring?.ids ?? [],
+    );
     for (const w of withdrawn) {
+      if (awaiting.has(w.case)) continue;
       const c = JSON.parse(readFileSync(new URL(`../cases/${w.case}/case.json`, import.meta.url), "utf8")) as { assets: { path: string; sha256?: string }[] };
       expect(c.assets.filter((a) => a.path.endsWith(`/${w.file}`) || a.sha256 === w.sha256), `${w.case}/${w.file}`).toEqual([]);
     }

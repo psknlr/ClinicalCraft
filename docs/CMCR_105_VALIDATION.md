@@ -1,8 +1,29 @@
 # CMCR 105 expansion: validation record
 
-> The 105 cases are being re-authored from their source reports and are not yet ready for teaching ([CMCR_105_CASES.md](CMCR_105_CASES.md)). This record describes the checks run when they were integrated; counts and claims that a later review found mislabelled or stale are corrected below and listed under [Corrections](#corrections-2026-10-30).
+> 57 of the 105 cases were re-authored to version 1.1.0 and independently reviewed; they are the cases in the library. The other 48 are kept out of it until they are re-authored ([CMCR_105_CASES.md](CMCR_105_CASES.md)). The [revision of 2026-11-14](#revision-2026-11-14) below records the checks of this state. The rest of this record describes the checks run when the 105 template versions were integrated (2026-10-29); counts and claims that a later review found mislabelled or stale are corrected below and listed under [Corrections](#corrections-2026-10-30).
 
 Validated on Windows with Node 24.19.0, against repository base `5525897c16b7f4a64cf2e4ba2882376c48f537d0`. The library contains 135 cases: 105 additional CMCR cases, the earlier 20 CMCR cases and 10 existing cases. Original source files and runtime logs remain outside the repository.
+
+## Revision (2026-11-14)
+
+The 105 template versions were re-authored case by case ([CMCR_105_CASES.md](CMCR_105_CASES.md)): 57 cases reached version 1.1.0 and are in the library; the other 48 are left out until they are re-authored (`awaitingReauthoring` in the source map; their drafts stay in the history at commit `6cd9b9c`). Both sets of the audit fixes of 2026-11-12 and main up to PR #28 are merged. Checks on the final tree (Linux, Node 22.23.4), the steps of the CI workflow first:
+
+| Check | Result |
+| --- | --- |
+| Typecheck | Pass |
+| Unit and integration tests (`npm test`) | 279 files, 4,008 tests pass |
+| Strict case validation | 87 cases; no errors or warnings |
+| Reference solutions (`cases verify --all`) | 87/87 |
+| Build | Pass |
+| Offline evaluation, every case | 87/87 completed at 100 %, safety passed |
+| Reference benchmark | 138/138 runs (46 scenarios in 10 cases × 3 seeds); no safety failure, spatial violation or unauthorised acceptance |
+| Scripted-LLM benchmark | 132/132 runs (6 held-out runs skipped by design); no safety failure, spatial violation or unauthorised acceptance |
+| Team benchmark | 2/2 scenarios in English and in Chinese |
+| Facilities | All 22 valid; the warnings name only rooms of other facilities that cannot host a case's acts |
+| Generated schema consistency | Pass |
+| Browser | `e2e/cmcr-105.spec.ts` 6/6 and `e2e/library.spec.ts` 2/2 locally; the full sharded suite runs in CI |
+
+Each of the 57 cases also passed, when it was committed, strict validation, verification, `scripts/case-check.ts`, the collection contract and the in-world demonstration in both languages; the spatial policy test (`packages/world/src/policy.test.ts`, every act of a case possible in its facility) runs for every case in `npm test`. The benchmarks do not use a CMCR case, so they check the infrastructure the cases share, not the cases.
 
 ## Content and simulation
 

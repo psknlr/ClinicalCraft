@@ -1,17 +1,25 @@
 /** Real source cases, distinct from the catalogue-only stress fixtures. */
 import { expect, test } from "@playwright/test";
+import { readFileSync, readdirSync } from "node:fs";
 import { enterCase, freshStart, shot, toPatientSide } from "./helpers.js";
+
+/** The library as shipped: every case folder, and those of each CMCR collection (counted, not assumed). */
+const CASES = new URL("../../content/cases/", import.meta.url);
+const tagsOf = (id: string): string[] => JSON.parse(readFileSync(new URL(`${id}/case.json`, CASES), "utf8")).tags ?? [];
+const ALL = readdirSync(CASES).filter((id) => readdirSync(new URL(`${id}/`, CASES)).includes("case.json"));
+const ADDITIONAL = ALL.filter((id) => tagsOf(id).includes("cmcr-105")).length;
+const ORIGINAL_20 = ALL.filter((id) => tagsOf(id).includes("cmcr-20")).length;
 
 for (const locale of ["zh-CN", "en"] as const) {
   test(`real collection library: counts, search and mobile layout (${locale})`, async ({ page }) => {
     await page.addInitScript((language) => localStorage.setItem("clinicalcraft-v5-settings", JSON.stringify({ version: 1, ui: { quality: "low", locale: language } })), locale);
     await freshStart(page);
     const cards = page.locator(".case-card");
-    await expect(cards).toHaveCount(135);
+    await expect(cards).toHaveCount(ALL.length);
     await page.locator("#filter-collection").selectOption("cmcr-20");
-    await expect(cards).toHaveCount(20);
+    await expect(cards).toHaveCount(ORIGINAL_20);
     await page.locator("#filter-collection").selectOption("cmcr-105");
-    await expect(cards).toHaveCount(105);
+    await expect(cards).toHaveCount(ADDITIONAL);
     await page.locator("#library-search").fill("脐血");
     await expect(cards).toHaveCount(1);
     await expect(cards).toHaveAttribute("data-case", "cmcr-655458");
@@ -19,8 +27,8 @@ for (const locale of ["zh-CN", "en"] as const) {
     await expect(page.locator("#case-load-status")).toHaveAttribute("data-status", "ready");
     await expect(page.locator("#case-outcomes")).not.toHaveAttribute("open", "");
     await page.locator("#library-search").fill("");
-    await expect(cards).toHaveCount(105);
-    await shot(page, `real-library-105-${locale}`);
+    await expect(cards).toHaveCount(ADDITIONAL);
+    await shot(page, `real-library-additional-${locale}`);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.locator("#library-search").scrollIntoViewIfNeeded();
     const dimensions = await page.locator(".library").evaluate((library) => {
@@ -31,7 +39,7 @@ for (const locale of ["zh-CN", "en"] as const) {
     expect(dimensions.contentWidth).toBeLessThanOrEqual(dimensions.clientWidth);
     expect(dimensions.listHeight).toBeLessThan(dimensions.viewportHeight * 0.6);
     expect(dimensions.overflow).toBe(true);
-    await shot(page, `real-library-105-mobile-${locale}`);
+    await shot(page, `real-library-additional-mobile-${locale}`);
   });
 }
 
@@ -40,9 +48,9 @@ for (const locale of ["zh-CN", "en"] as const) {
     test(`additional collection: ${caseId} loads and completes in-world (${locale})`, async ({ page }) => {
       await page.addInitScript((language) => localStorage.setItem("clinicalcraft-v5-settings", JSON.stringify({ version: 1, ui: { quality: "low", locale: language } })), locale);
       await freshStart(page);
-      await expect(page.locator(".case-card")).toHaveCount(135);
+      await expect(page.locator(".case-card")).toHaveCount(ALL.length);
       await page.locator("#filter-collection").selectOption("cmcr-105");
-      await expect(page.locator(".case-card")).toHaveCount(105);
+      await expect(page.locator(".case-card")).toHaveCount(ADDITIONAL);
       await enterCase(page, caseId);
       expect(await page.evaluate(() => (window as any).__QA__.embodiment)).toBe("embodied");
       await toPatientSide(page);

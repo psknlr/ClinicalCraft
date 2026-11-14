@@ -11,7 +11,7 @@
 > （技术名称为具身模式，网页世界默认开启）下，医院是一个无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
-> 临床医生智能体还能做示范接诊。内置 135 个中英双语教学病例（原有 10 例，以及中华病例说 125 例：原选 20 例、新增 105 例；新增病例正在依据原文重写，尚不可用于教学）、3 个场馆（含两层的教学医院）、
+> 临床医生智能体还能做示范接诊。内置 87 个中英双语教学病例（原有 10 例，以及中华病例说 77 例：原选 20 例、新增 57 例；新增病例依据其报告已提取的事实重写，经 AI 辅助的独立审核，尚未经执业医师审核）、3 个场馆（含两层的教学医院）、
 > 103 种设备（每种都有三维模型，体素部件为后备），以及 46 个具身智能体基准场景（其中 2 个为留出场景）；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
@@ -37,7 +37,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Grounding benchmark](docs/GROUNDING.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) ·
 [中华病例说 · 原选 20 例 / CMCR original selection](docs/CMCR_CASES.md) ·
-[中华病例说 · 新增 105 例 / CMCR additional cases](docs/CMCR_105_CASES.md) ·
+[中华病例说 · 新增 57 例 / CMCR additional cases](docs/CMCR_105_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
 [Equipment models in Blender](docs/BLENDER.md) ·
@@ -111,7 +111,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   official Anthropic SDK and OpenAI-compatible Chat Completions), per-agent
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
-- **Data-driven content.** 135 bilingual cases (the original ten and 125 adapted from published CMCR case reports), 3 facilities (one with two
+- **Data-driven content.** 87 bilingual cases (the original ten and 77 adapted from published CMCR case reports), 3 facilities (one with two
   storeys, built from 15 room templates) and 103 equipment types, each drawn
   as a 3D model with its voxel parts as the fallback; patients and staff are
   figures of real proportions dressed for their job (a tailored white coat and

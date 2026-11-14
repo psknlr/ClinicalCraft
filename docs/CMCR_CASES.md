@@ -1,6 +1,6 @@
 # 中华病例说：20 例真实病例 / CMCR collection
 
-This page documents the original 20 cases. The separate [105-case expansion](CMCR_105_CASES.md), which is being re-authored from its sources and is not yet ready for teaching, brings the library to 135 cases: the 10 earlier cases and 125 CMCR cases. The original collection remains available under its own filter. 本页保留原 20 例的来源和审核记录；新增 105 例（正在依据原文重写，尚不可用于教学）详见独立文档。全库共 135 例：原有 10 例和中华病例说 125 例。
+This page documents the original 20 cases. The separate [additional collection](CMCR_105_CASES.md) — 57 cases re-authored from the facts their reports' first adaptations recorded and independently reviewed — brings the library to 87 cases: the 10 earlier cases and 77 CMCR cases. The original collection remains available under its own filter. 本页保留原 20 例的来源和审核记录；新增 57 例（依据其报告已提取的事实重写并经独立审核）详见独立文档。全库共 87 例：原有 10 例和中华病例说 77 例。
 
 本病例集从中华医学会系列期刊的已发表病例报告语料（本地目录 `<selected-20 directory>`，不入库）选取 20 篇有完整正文的报告，覆盖多专科的常见就诊问题与疑难诊断。每例保留原报告的年龄、症状、检查、诊断依据、处置和结局，以化名及中英双语改写为可交互的教学病例：问诊、查体、检查、处置和会诊板决策都可操作，复盘时把报告当年的做法与现行指南对照讲解。
 
