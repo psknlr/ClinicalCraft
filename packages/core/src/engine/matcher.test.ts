@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import { distinctHistoryHits, EXCLUDE_KEYWORD_FACTOR, interventionNegation, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
+import { distinctHistoryHits, EXCLUDE_KEYWORD_FACTOR, interventionNegation, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, NEGATED_EXCLUDE_FACTOR, normalizeQuery, orderWarnings, parseCase } from "./index.js";
 import { longestCommonSubstring, phraseEvidence, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
@@ -665,5 +665,120 @@ describe("matchSpecificity (tie-break for resolvers)", () => {
     expect(hits.map((h) => h.score)).toEqual([1, 1]);
     expect(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "activate")).toBeGreaterThan(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "transfer"));
     expect(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "nope")).toBe(0);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Findings of the CMCR case reviews (2026-11-14)                      */
+/* ------------------------------------------------------------------ */
+
+describe("matching findings of the case reviews", () => {
+  type Json = { history: Record<string, unknown>[]; interventions: Record<string, unknown>[]; investigations: Record<string, unknown>[] };
+  const base = () => fixture("mini-anaphylaxis.case.json") as Json;
+  const intervention = (id: string, en: string, zh: string, aliases: { en?: string[]; "zh-CN"?: string[] } = {}, extra: Record<string, unknown> = {}) => ({
+    id,
+    name: { en, "zh-CN": zh },
+    kind: "medication",
+    aliases,
+    ...extra,
+  });
+
+  it("an exclusion is no exclusion inside a word it does not begin: discontinue, what first, 250", () => {
+    const json = base();
+    json.interventions.push(
+      intervention("continue-aspirin", "Continue the aspirin", "继续阿司匹林", { en: ["keep the aspirin going"] }, { excludeKeywords: { en: ["continue"] } }),
+      intervention("glucose-50", "50% glucose", "50%葡萄糖", { en: ["glucose bolus"] }, { excludeKeywords: { en: ["50%"] } }),
+    );
+    json.history.find((h) => h.id === "allergies")!.excludeKeywords = { en: ["at first"] };
+    const c = load(json);
+    // "continue" excludes the item it is written on…
+    expect(matchInterventions(c, "continue the aspirin", "en").map((h) => h.id)).not.toContain("continue-aspirin");
+    // …but "discontinue" holds no "continue": the exclusion stays out of it
+    expect(interventionNegation(c, "discontinue the aspirin", "en")?.withheld).toContain("continue-aspirin");
+    // an exclusion that begins with a number or a function word counts only where it begins a word
+    expect(matchInterventions(c, "glucose bolus at 250 ml/h", "en").map((h) => h.id)).toContain("glucose-50");
+    expect(matchInterventions(c, "glucose bolus, 50% please", "en").map((h) => h.id)).not.toContain("glucose-50");
+    expect(matchHistory(c, "What allergies do you have, what first happened?", "en").map((h) => h.id)).toContain("allergies");
+    expect(matchHistory(c, "Any allergies at first?", "en").map((h) => h.id)).not.toContain("allergies");
+  });
+
+  it("an exclusion that only a negated clause holds argues less against what the instruction asks for", () => {
+    const json = base();
+    json.interventions.push(
+      intervention("cefotaxime", "IV cefotaxime", "静脉头孢噻肟", { en: ["cefotaxime"] }, { excludeKeywords: { en: ["ceftriaxone"] } }),
+      intervention("ceftriaxone", "IV ceftriaxone", "静脉头孢曲松", { en: ["ceftriaxone"] }),
+    );
+    const c = load(json);
+    expect(NEGATED_EXCLUDE_FACTOR).toBe(0.8);
+    expect(matchInterventions(c, "give cefotaxime, not ceftriaxone", "en")).toEqual([{ id: "cefotaxime", score: 0.8 }]);
+    expect(matchInterventions(c, "cefotaxime with ceftriaxone", "en").map((h) => h.id)).toEqual(["ceftriaxone"]);
+  });
+
+  it("a Latin order alias begins a word of the order, and a short one ends one too", () => {
+    const json = base();
+    json.investigations.push(
+      { id: "tte", name: { en: "Transthoracic echo", "zh-CN": "经胸超声心动图" }, aliases: { en: ["tte"] }, category: "imaging", results: {} },
+      { id: "ua", name: { en: "Urinalysis", "zh-CN": "尿常规" }, aliases: { en: ["ua"] }, category: "lab", results: {} },
+      { id: "lft", name: { en: "Liver function tests", "zh-CN": "肝功能" }, aliases: { en: ["lft"] }, category: "lab", results: {} },
+    );
+    const c = load(json);
+    expect(matchOrders(c, "better get a chest pattern", "en")).not.toContain("tte");
+    expect(matchOrders(c, "evaluate her", "en")).not.toContain("ua");
+    expect(matchOrders(c, "order a TTE", "en")).toContain("tte");
+    expect(matchOrders(c, "查个tte", "zh-CN")).toContain("tte");
+    expect(matchOrders(c, "send UA and LFTs", "en")).toEqual(expect.arrayContaining(["ua", "lft"]));
+  });
+
+  it("a greeting that opens a question is not scored", () => {
+    const json = base();
+    json.history.find((h) => h.id === "allergies")!.keywords = { en: ["morning"], "zh-CN": ["早上"] };
+    const c = load(json);
+    expect(matchHistory(c, "Good morning, any allergies?", "en")[0]?.id).toBe("allergies");
+    expect(matchHistory(c, "Good morning, what happened?", "en").map((h) => h.id)).not.toContain("allergies");
+    expect(matchHistory(c, "早上好，哪里不舒服？", "zh-CN").map((h) => h.id)).not.toContain("allergies");
+    expect(matchHistory(c, "Good morning", "en").map((h) => h.id)).toContain("allergies"); // a question that is only a greeting stays whole
+  });
+
+  it("a generic order verb alone matches no intervention ('give oxygen' is no half of 'give atropine')", () => {
+    const json = base();
+    json.interventions.push(intervention("atropine", "Atropine", "阿托品", { en: ["give atropine"] }));
+    const c = load(json);
+    expect(matchInterventions(c, "give paracetamol", "en").map((h) => h.id)).not.toContain("atropine");
+    expect(matchInterventions(c, "give atropine", "en")[0]).toEqual({ id: "atropine", score: 1 });
+  });
+
+  it("several negated scopes are read together (禁食禁水)", () => {
+    const json = base();
+    json.interventions.push(intervention("npo", "Nil by mouth", "禁食禁水", { "zh-CN": ["禁食禁水"] }, { kind: "other" }));
+    const c = load(json);
+    expect(matchInterventions(c, "禁食禁水", "zh-CN")[0]).toEqual({ id: "npo", score: 1 });
+  });
+
+  it("a Latin overlap inside a word is no match for a mixed phrase (BEP方案 ≁ 'the pulse'), its Latin word is", () => {
+    const bep = prepare("BEP方案");
+    expect(phraseScore(prepare("check the pulse"), bep)).toBe(0);
+    expect(phraseScore(prepare("start BEP chemotherapy"), bep)).toBeGreaterThanOrEqual(0.55);
+    expect(phraseScore(prepare("BEP化疗"), bep)).toBeGreaterThanOrEqual(0.55);
+    expect(phraseScore(prepare("他有TIA吗"), prepare("有过tia吗"))).toBeGreaterThanOrEqual(0.55);
+  });
+
+  it("the 下 of the particle 一下 begins no phrase (量一下体温 holds no 下体)", () => {
+    expect(phraseScore(prepare("量一下体温"), prepare("下体"))).toBe(0);
+    expect(phraseScore(prepare("量一下体温"), prepare("体温"))).toBe(1);
+    expect(phraseScore(prepare("听一下心脏"), prepare("听一下心脏"))).toBe(1);
+    expect(phraseScore(prepare("看一下肢体"), prepare("下肢"))).toBe(0);
+    expect(phraseScore(prepare("一下子就疼了"), prepare("下子"))).toBe(1); // 一下子 (suddenly) is a word of its own
+  });
+
+  it("keeps a medicine, an agent noun and a name apart from look-alikes", () => {
+    expect(tokensMatch(tokenize("aspirate")[0]!, tokenize("aspirin")[0]!)).toBe(false);
+    expect(tokensMatch(tokenize("atrophy")[0]!, tokenize("atropine")[0]!)).toBe(false);
+    expect(tokensMatch(tokenize("penicillamine")[0]!, tokenize("penicillin")[0]!)).toBe(false);
+    expect(tokensMatch(tokenize("anaesthetist")[0]!, tokenize("anaesthetic")[0]!)).toBe(false);
+    expect(tokensMatch(tokenize("ring")[0]!, tokenize("Ringer's")[0]!)).toBe(false);
+    // close forms stay together
+    expect(tokensMatch(tokenize("aspirin")[0]!, tokenize("aspirins")[0]!)).toBe(true);
+    expect(tokensMatch(tokenize("anaesthetics")[0]!, tokenize("anaesthetic")[0]!)).toBe(true);
+    expect(tokensMatch(tokenize("allergic")[0]!, tokenize("allergy")[0]!)).toBe(true);
   });
 });

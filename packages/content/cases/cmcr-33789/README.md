@@ -589,6 +589,10 @@ published AKI guideline; its 2026 AKI/AKD update closed public review in May 202
 
 ## Changelog
 
+### 1.1.1 — 2026-11-14
+
+- Order matching: `right chest` in an order-matching pattern rewritten without a space. Orders are matched with their spaces removed, so as written it never matched (a content lint now reports such patterns). No patient fact, score or key changed.
+
 ### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article.
 
 - **Facts unchanged, re-organised.** Every patient fact of 1.0.0 is kept and none is added: the presenting story is split

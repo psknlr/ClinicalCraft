@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551888",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "下肢水肿伴活动后胸闷 · 48岁男性",
     "en": "Leg swelling and exertional chest discomfort · 48-year-old man"
@@ -2510,7 +2510,7 @@
       },
       {
         "ifHas": "old-op-record",
-        "ifMatches": "再次|这次|术后|后续|redo|post|subsequent|this time",
+        "ifMatches": "再次|这次|术后|后续|redo|post|subsequent|thistime",
         "remove": [
           "old-op-record"
         ]

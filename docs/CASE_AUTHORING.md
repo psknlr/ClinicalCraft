@@ -124,7 +124,18 @@ solution is sent to the browser).
 * `excludeKeywords` per locale stop look-alike questions from selecting an item
   (its match score is multiplied by 0.2): e.g. on a medications item add
   `["allerg", "过敏"]` so "any drug allergies?" reaches the allergy item instead;
-  on the patient's own cancer history add `["family", "家里", "家族"]`.
+  on the patient's own cancer history add `["family", "家里", "家族"]`. A Latin
+  exclusion may match the start of a longer word ("allerg" in "allergic"), never
+  after a prefix that reverses it ("continue" is not in "discontinue"); one that
+  starts with a function word or a digit ("at first", "50%") only where it starts
+  a word. There is no need to exclude what a learner's instruction negates
+  ("give cefotaxime, not ceftriaxone"): the negation reader withholds it, and an
+  exclusion found only in a negated clause weighs less (ARCHITECTURE §3.3).
+* Greetings are not matched ("Good morning, what brings you in?" is read as
+  "what brings you in?"), so never key an item on "morning"/"早上" to catch them.
+  A question about when it began that reaches nothing in the phase ("When did it
+  start?", "多久了？") is answered with the presenting complaint when its answer
+  states a time — say when it began in the presenting complaint's answer.
 * `phases` restricts an item to phases (e.g. a medication changed after treatment);
   the patient pipeline only selects items available in the current phase.
   An answer in the present tense of the presenting state ("现在喘不上气",

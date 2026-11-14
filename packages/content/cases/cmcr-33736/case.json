@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-33736",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "右腿疼痛、麻木 6 小时 · 29岁男性",
     "en": "Right leg pain and numbness for six hours · 29-year-old man"
@@ -2668,7 +2668,7 @@
     "warnings": [
       {
         "investigation": "cta",
-        "ifMatches": "下肢|腿|run-?off|legs? only",
+        "ifMatches": "下肢|腿|run-?off|legs?only",
         "message": {
           "zh-CN": "本病例记录的是一次包括主动脉在内的 CT 血管成像，没有单独的下肢 CT 记录。",
           "en": "The recorded CT angiogram included the aorta; this case holds no leg-only scan."

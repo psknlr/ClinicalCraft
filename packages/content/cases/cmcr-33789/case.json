@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-33789",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "胸闷后意识丧失 · 66岁女性",
     "en": "Loss of consciousness after chest tightness · 66-year-old woman"
@@ -2490,7 +2490,7 @@
     "rules": [
       {
         "ifHas": "ecg",
-        "ifMatches": "右胸|右侧导联|镜像|反接|互换|v[1-6]r|right[- ]?sided|rightchest|right chest|mirror|revers|swap",
+        "ifMatches": "右胸|右侧导联|镜像|反接|互换|v[1-6]r|right[- ]?sided|rightchest|mirror|revers|swap",
         "remove": [
           "ecg"
         ],
