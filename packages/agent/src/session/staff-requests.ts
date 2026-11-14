@@ -11,7 +11,7 @@
  * | come here / to the bedside         | they walk to the learner (a `follow` goal) or to the patient |
  * | go back                            | they walk back to their post |
  * | show me the way to …               | they say where it is and walk there (the learner follows) |
- * | where is …?                        | an answer from the hospital's public directory as they know it (a room, its distance) — never a case fact |
+ * | where is …?                        | an answer from what they know (EMBODIED §4: a place on the hospital map; a cart or a colleague where they last saw it or left it — or "I don't know where it is now", never where it really is), its distance; the learner then knows it too (`askWhereabouts`) — never a case fact |
  *
  * Leaving an anaesthetised patient: an anaesthetist (team duty `anaesthesia`) asked to go out of the patient's room
  * (back to a post elsewhere, to show the way) while the patient is under anaesthesia first calls a colleague who
@@ -26,6 +26,7 @@ import { handoverFromRecord, handoverText } from "./handover.js";
 import { MAX_HELD, PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity, type WorldActionResult } from "@clinicalcraft/world";
 import { npcDisplayName } from "../agents/prompts.js";
 import { resolveIntervention } from "../tools/clinical.js";
+import { doseQueryReadBack, doseReadBack, orderClause } from "../tools/dose-order.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { checkTaskScope, scopeOf } from "../tools/scope.js";
 import { rt, type RuntimeKey } from "./i18n.js";
@@ -134,7 +135,15 @@ export class StaffRequests {
         const r = resolveIntervention(this.k.caseDef, { query: intent.what }, L);
         if (r.kind !== "id") return false;
         const item = this.k.caseDef.interventions.find((i) => i.id === r.id)!;
-        return this.task(id, say, who, "give_intervention", { params: { intervention: r.id } }, rt(L, "req.ackGive", { item: t(item.name, L) }), signal, r.id);
+        // the order as said — the part of the request that orders this item ("给患者静推呋塞米 40 mg" keeps its route;
+        // "paracetamol 1 g, then adrenaline 0.5 mg IM" gives adrenaline its own dose): its dose and route are checked
+        // against the dose prepared (docs/PROTOCOL.md §3.2). Several orders and none for this item alone: one at a time.
+        const order = orderClause(this.k.caseDef, body.trim() || intent.what, r.id, L);
+        if (order == null) {
+          say(rt(L, "req.oneAtATime"));
+          return true;
+        }
+        return this.task(id, say, who, "give_intervention", { params: { intervention: r.id, order } }, rt(L, "req.ackGive", { item: t(item.name, L) }), signal, r.id);
       }
       case "come": {
         const patient = this.k.embodied!.patientId();
@@ -197,6 +206,10 @@ export class StaffRequests {
     const d = (out.data as { delegation?: DelegationResult } | undefined)?.delegation;
     if (d?.status === "completed") say(rt(L, "req.done", { task: label }));
     else if (d?.status === "cancelled") say(rt(L, "req.stopped", { task: label }));
+    // the order's dose differed from the dose prepared: nothing given — they read the order back (closed loop)
+    else if (d?.doseError) say(doseReadBack(k.caseDef, { type: "dose.error", ...d.doseError }, L));
+    // the order's dose was not clear: nothing given — they ask for it as a number with its unit
+    else if (d?.doseQuery) say(doseQueryReadBack(k.caseDef, d.doseQuery.interventionId, { outcome: "query", reason: d.doseQuery.reason, words: d.doseQuery.words, dose: d.doseQuery.ordered }, L));
     else say(rt(L, "req.failed", { task: label, reason: this.reasonOf(d, out.output) }));
     return true;
   }
@@ -394,10 +407,26 @@ export class StaffRequests {
     }
     const place = this.find(who, phrase);
     if (!place) return null;
-    const ent = world.entity(place.id);
+    // what the colleague knows of where it is (EMBODIED §4, audit P1-8): a thing that moves only where they saw it or
+    // left it — then the learner knows it too —, else they say they do not know where it is now
+    const answer = place.kind === "room" ? null : world.askWhereabouts(PRIMARY_ACTOR, place.id, who.actor.id);
+    const theirs = answer?.whereabouts ?? null;
+    if (answer && !answer.answeredBy) {
+      // what they do know: where it is usually kept, where they looked, where they last saw it (the learner looked there)
+      const what =
+        theirs?.kind === "usual" && theirs.label
+          ? theirs.label
+          : theirs?.kind === "missing" && theirs.missed
+            ? rt(L, "req.whereLooked", { where: world.regionName(theirs.missed) })
+            : theirs?.place
+              ? rt(L, "req.whereLastThere", { where: world.regionName(theirs.place) })
+              : rt(L, "req.whereNeverSeen");
+      return rt(L, "req.whereUnknown", { place: place.name, what });
+    }
     const me = world.actor(PRIMARY_ACTOR);
-    const room = this.roomOf(place);
-    if (me && ent && me.room && me.room === ent.room) return rt(L, "req.whereHere", { place: place.name, room });
+    const room = theirs?.place ? world.regionName(theirs.place) : this.roomOf(place);
+    const roomId = theirs ? theirs.room : (world.entity(place.id)?.room ?? null);
+    if (me && me.room && me.room === roomId) return rt(L, "req.whereHere", { place: place.name, room });
     const goal: NavGoal = place.kind === "room" ? { kind: "room", id: place.id.replace(/^room:/, "") } : { kind: "interact", id: place.id };
     const plan = world.plan(PRIMARY_ACTOR, goal);
     const metres = plan.ok ? Math.max(1, Math.round(plan.length)) : null;

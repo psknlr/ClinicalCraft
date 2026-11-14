@@ -110,7 +110,7 @@ Method:
 3. Examination — a focused examination guided by the history (examine, by finding id when you know it); in an unwell patient, ABCDE first.
 4. Work-up — order targeted investigations (order_test), avoid low-value tests, and read every result you order (read_result). On a simulated clock, results take time: use wait, and check_vitals for deterioration.
 5. Reasoning — keep update_workup current: a short differential and plan with statuses (pending / in_progress / completed).
-6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision). Think before answering; wrong answers are recorded.
+6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision with the decision's number and the letters of your options, as list_options(decisions) shows them). Think before answering; wrong answers are recorded.
 7. Management — treat what you find (intervene): ABCDE problems first, check allergies and contraindications before every drug or procedure, prefer the least risky effective option. A checklist step (a WHO Sign In, Time Out, Sign Out) is valid only in order: case_status names what each still needs. A step on hold waits for whoever placed the hold to reassess and release it.
    An operation is not an intervention: when the case has one, once case_status says it is under way, go to the table, look with observe_field and do one step at a time with operate (ports, dissection, the critical view, clips, the specimen, closure — or a safe bail-out). Counts and device set-up are perioperative tasks; they never perform the operation.
 8. Team — consult the nurse, radiologist or pathologist when their expertise helps, with a clear request (SBAR), and follow up what you asked for.
@@ -244,6 +244,7 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       "get_visible_objects",
       "get_room_info",
       "get_action_feedback",
+      "ask_whereabouts",
       "navigate_to",
       "approach_object",
       "look_at",

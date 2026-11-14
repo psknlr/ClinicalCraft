@@ -11,8 +11,8 @@
 > （技术名称为具身模式，网页世界默认开启）下，医院是一个无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
-> 临床医生智能体还能做示范接诊。内置 30 个中英双语教学病例（含新增的中华病例说 20 例）、3 个场馆（含两层的教学医院）、
-> 97 种设备（每种都有三维模型，体素部件为后备），以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 临床医生智能体还能做示范接诊。内置 87 个中英双语教学病例（原有 10 例，以及中华病例说 77 例：原选 20 例、新增 57 例；新增病例依据其报告已提取的事实重写，经 AI 辅助的独立审核，尚未经执业医师审核）、3 个场馆（含两层的教学医院）、
+> 103 种设备（每种都有三维模型，体素部件为后备），以及 46 个具身智能体基准场景（其中 2 个为留出场景）；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
 > Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
@@ -36,7 +36,8 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Benchmark samples](docs/bench/) ·
 [Grounding benchmark](docs/GROUNDING.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) ·
-[中华病例说 20 例 / CMCR collection](docs/CMCR_CASES.md) ·
+[中华病例说 · 原选 20 例 / CMCR original selection](docs/CMCR_CASES.md) ·
+[中华病例说 · 新增 57 例 / CMCR additional cases](docs/CMCR_105_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
 [Equipment models in Blender](docs/BLENDER.md) ·
@@ -100,16 +101,18 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   while the learner watches, with the same tools and approvals (`/autopilot`,
   `exec --autopilot`, `eval`); in embodied mode it walks, fetches equipment
   and transports the patient.
-- **Embodied benchmark.** `clinicalcraft bench`: 41 reproducible scenarios
-  judged only from the final engine and world state, with spatial and
-  authorisation audits and Wilson 95 % intervals; a reference demonstration
-  of the full STEMI encounter.
+- **Embodied benchmark.** `clinicalcraft bench`: 46 reproducible scenarios
+  (2 held out) judged only from the final engine and world state, with
+  spatial and authorisation audits and Wilson 95 % intervals, reports that
+  label the reference and scripted agents as controls and state the case and
+  scenario denominators apart; a reference demonstration of the full STEMI
+  encounter.
 - **Any model, or none.** 13 networked provider templates over two wires (the
   official Anthropic SDK and OpenAI-compatible Chat Completions), per-agent
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
-- **Data-driven content.** 10 bilingual cases, 3 facilities (one with two
-  storeys, built from 15 room templates) and 97 equipment types, each drawn
+- **Data-driven content.** 87 bilingual cases (the original ten and 77 adapted from published CMCR case reports), 3 facilities (one with two
+  storeys, built from 15 room templates) and 103 equipment types, each drawn
   as a 3D model with its voxel parts as the fallback; patients and staff are
   figures of real proportions dressed for their job (a tailored white coat and
   a stethoscope, scrubs, a sterile gown in theatre); all JSON validated by
@@ -231,9 +234,11 @@ Anthropic-compatible gateway under `providers` in settings (see below).
 
 ## Case library
 
-The original ten scenarios below are joined by the [20-case CMCR collection](docs/CMCR_CASES.md):
-published multispecialty reports reconstructed as bilingual, staged historical encounters.
-Use the collection filter in the web library to find them. Original PDFs and figures are installed locally.
+The original ten scenarios below are joined by 125 CMCR cases, published multispecialty reports
+reconstructed as bilingual, staged historical cases: the [original selection of 20](docs/CMCR_CASES.md)
+and the [additional 105](docs/CMCR_105_CASES.md), which are being re-authored from their sources and are
+not yet ready for teaching. Use the collection filter in the web library (**CMCR · original selection**,
+**CMCR · additional cases**) to find them. Original PDFs and figures are installed locally from the user's own download.
 
 | id | 标题 | title | specialty | setting | difficulty | clock | facility |
 |---|---|---|---|---|---|---|---|
@@ -257,7 +262,7 @@ name the diagnosis — and how far its content has been checked
 ([docs/GLOSSARY.md §4](docs/GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show);
 content standard: [CASE_AUTHORING §9](docs/CASE_AUTHORING.md#9-clinical-content-standard)). `smzl-lung-adeno` is the faithful
 port of the V4 case, adapted from a published case report; the other nine in the table
-are synthetic. The additional 20 CMCR cases are published cases ([docs/CMCR_CASES.md](docs/CMCR_CASES.md)). Write your own with `npm run cc -- cases new <id>` and
+are synthetic. The 125 CMCR cases are adapted from published case reports ([docs/CMCR_CASES.md](docs/CMCR_CASES.md), [docs/CMCR_105_CASES.md](docs/CMCR_105_CASES.md)). Write your own with `npm run cc -- cases new <id>` and
 [docs/CASE_AUTHORING.md](docs/CASE_AUTHORING.md).
 
 ## Facilities and equipment
@@ -265,13 +270,14 @@ are synthetic. The additional 20 CMCR cases are published cases ([docs/CMCR_CASE
 | facility | contents |
 |---|---|
 | `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, case board, atlas kiosk, build zone and crafting bench |
-| `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 260 placements, 14 patient slots for every case setting, 10 staff |
-| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 283 placements, 17 patient slots, 11 staff (a porter among them). Offered as an alternative for compatible cases |
+| `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward and ICU (with EEG, apheresis, neonatal incubator and phototherapy, CTG and a monoplace hyperbaric chamber), operating theatre, conference room, gardens — 37 rooms, 270 placements, 14 patient slots for every case setting, 10 staff |
+| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 285 placements, 17 patient slots, 11 staff (a porter among them). Offered as an alternative for compatible cases |
 
-Three equipment catalogs define **97 equipment types**, each with a 3D model built in
+Three equipment catalogs define **103 equipment types**, each with a 3D model built in
 Blender from its voxel parts ([docs/BLENDER.md](docs/BLENDER.md)) — `core-furniture` (39),
-`core-clinical` (32: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator, a mobile non-invasive ventilator,
-infusion pumps, anaesthesia machine, rehabilitation equipment…),
+`core-clinical` (38: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator, a mobile non-invasive ventilator,
+infusion pumps, anaesthesia machine, dialysis and apheresis machines, EEG cart, fetal monitor (CTG),
+neonatal incubator, phototherapy unit, monoplace hyperbaric chamber, rehabilitation equipment…),
 `core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,
 microscope, flow cytometer, endoscopy tower…) — and `materials` holds the
 procedural pixel textures (and the colours that are codes: medical gases follow
@@ -300,7 +306,7 @@ about the pairs that cannot). See [docs/FACILITIES.md](docs/FACILITIES.md);
 | `/ask` · `/ask 3` | list the canonical history questions, or ask one |
 | `/exam abdomen` `/order 血常规` `/results` `/read cbc` `/give aspirin` | examine, order, list orders, read a result, give a treatment |
 | `/vitals` `/status` `/case` `/plan` `/note …` | monitor, session status, case summary, work-up plan, notes |
-| `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | the case board's decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
+| `/board` · `/answer <decision> <letter\|number…>` · `/phase` · `/wait 10` | the case board's decisions, answered by the number and the letters `/board` shows (e.g. `/answer 1 B`, several as `/answer 2 A C`), phases, simulated time |
 | `/hint` `/consult attending …` | Socratic help (hints count against the score) |
 | `/autopilot [goal]` `/finish` `/assess` `/debrief` | demonstration (the clinician agent works the case), finish the case once every objective is complete, assessment (examiner), debrief (with the learning outcomes) |
 | `/look` `/where` `/find ecg` `/go patient` `/inspect eq:resus1-ecg` `/use eq:resus1-ecg prepare` `/map` | in-world mode: perceive, walk and operate equipment |
@@ -393,11 +399,12 @@ production-ready, and no live model has been run through these tools yet):
   [MCP](#mcp-let-claude-code-codex-or-grok-cli-play-the-clinician)).
 
 **The embodied benchmark** — `clinicalcraft bench` measures embodied agents
-headless and reproducibly: 41 scenarios in
+headless and reproducibly: 46 scenarios in
 `packages/content/bench/embodied-v1` (perception, spatial reasoning,
 navigation, device interaction, clinical workflows — one per built-in case
-plus the full STEMI encounter —, recovery, multi-agent delegation and
-safety), fixed seeds, a fresh session per run, success judged only from the
+plus five whole encounters: STEMI, septic shock, DKA, and the held-out
+asthma and anaphylaxis —, recovery, multi-agent delegation and safety; 2
+held out, never used to tune an agent), fixed seeds, a fresh session per run, success judged only from the
 final engine and world state (never from what the agent says), with
 independent spatial-rule and authorisation audits and Wilson 95 % intervals.
 
@@ -408,9 +415,13 @@ npm run -s cc -- bench run --suite embodied-v1 --agent scripted-llm   # must be 
 npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --live --max-tokens 2000000 --scenario workflow-pe-ctpa --seeds 1
 ```
 
-`reference` and `scripted-llm` validate the infrastructure, not clinical
-reasoning, and run in CI (123 / 123 runs each, no accepted spatial or
-authorisation violation). A live model (`--agent llm`) runs only with
+`reference` and `scripted-llm` are controls: they validate the
+infrastructure, not clinical reasoning, every report labels them so, and
+they run in CI (138 / 138 and 132 / 132 runs — the scripted control does not
+run the held-out scenarios — with no accepted spatial or authorisation
+violation). Each report states its denominators apart: the cases covered,
+the scenarios per case (24 of the 46 use the STEMI case), the splits and the
+coverage of history-taking, time-critical emergencies and team coordination. A live model (`--agent llm`) runs only with
 `--live` and a spending cap (`--max-tokens`; `--max-usd` only for a model
 with a catalogue price), needs a configured API key and refuses to run in
 CI; no live run has been recorded yet. Reports: `bench-report.json` +
@@ -502,7 +513,8 @@ shows you; it never picks a session by itself.
    from the badge):
 
    ```bash
-   mkdir -p ~/.clinicalcraft && (umask 077; printf '%s\n' 'ak_…paste the key…' > ~/.clinicalcraft/attach-key)
+   mkdir -p ~/.clinicalcraft && (umask 077; printf '%s\
+' 'ak_…paste the key…' > ~/.clinicalcraft/attach-key)
 
    # Claude Code
    claude mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --world-session ls_… --attach-key-file ~/.clinicalcraft/attach-key --cwd "$PWD"
@@ -771,9 +783,11 @@ in it is medical advice. The nine synthetic cases are fictional, with
 pseudonymous patients. The SMZL case is adapted from a published,
 de-identified case report: 丁凤丽, 秦彩霞, 汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例.
 中国临床案例成果数据库, 2026. DOI [10.3760/cma.cmcr20260128-00421](https://doi.org/10.3760/cma.cmcr20260128-00421).
-The 20 CMCR cases are teaching adaptations of published case reports, with pseudonyms, relative times and no
-figure or PDF that identifies a patient; the reports remain © their publishers and are not distributed here
-([docs/CMCR_CASES.md](docs/CMCR_CASES.md), Privacy).
+The 125 CMCR cases are teaching adaptations of published case reports, with pseudonyms, relative times and no
+figure or PDF that identifies a patient; the reports remain © their publishers and are not distributed here,
+and the permission basis for redistributing the adaptations is not yet confirmed
+([docs/CMCR_CASES.md](docs/CMCR_CASES.md), Privacy; [docs/CMCR_105_CASES.md](docs/CMCR_105_CASES.md)). The additional 105
+are being re-authored from their sources and are not yet ready for teaching.
 Agents may state only facts present in the case data. Scores and debriefs
 are formative teaching measures, not validated competency assessments. A
 case's `provenance.review` says how far its content has been checked; an
@@ -797,6 +811,13 @@ production-ready ([docs/EMBODIED.md §14](docs/EMBODIED.md#14-status-limitations
 - **Runtime dependencies:** three.js (MIT), Anthropic TypeScript SDK (MIT),
   zod (MIT). **Development:** TypeScript and Playwright (Apache-2.0), Vite,
   Vitest and tsx (MIT), zod-to-json-schema (ISC).
+- **Case content:** the 125 CMCR cases paraphrase published case reports,
+  © their publishers and authors. The MIT licence above is stated for the code;
+  no licence has been stated for these adaptations and permission to redistribute
+  them is pending, so confirm the permission basis before distributing them beyond
+  your own teaching ([docs/CMCR_CASES.md](docs/CMCR_CASES.md), [docs/CMCR_105_CASES.md](docs/CMCR_105_CASES.md)).
 - **Local-only assets (not in this repository):** anatomy model from
   Z-Anatomy / BodyParts3D (CC BY-SA 4.0, attribution kept); the SMZL case
-  figures and paper © their rights holders, local teaching use only.
+  figures and paper © their rights holders, local teaching use only; the CMCR
+  reports' figures and PDFs © their publishers and authors, installed only from
+  the user's own download for local teaching use ([docs/ASSETS.md](docs/ASSETS.md)).

@@ -13,7 +13,7 @@ import { createSession as createEngineSession, procedureFor, reduce, type CaseDe
 import { lapCholeCase } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js";
 import { benchEnvironment } from "../environment.js";
 import { createOperativeReferenceAgent, createOperativeScriptedAgent, planFromReference } from "./agents.js";
-import { operativeMarkdown, operativeReportPasses, runOperativeSuite } from "./report.js";
+import { operativeMarkdown, operativeMetrics, operativeReportPasses, runOperativeSuite } from "./report.js";
 import { drawVariant, leaksIn, runOperativeScenario } from "./run.js";
 import { parseOperativeScenario, type OperativeScenario } from "./schema.js";
 import { loadOperativeSuite, operativeRefIssues } from "./suites.js";
@@ -129,6 +129,7 @@ describe("the operative agents", () => {
       const run = await runOperativeScenario(s, createOperativeReferenceAgent(), 1, { content });
       expect({ v, success: run.success, error: run.error, predicates: run.predicates.filter((p) => !p.ok) }).toEqual({ v, success: true, error: undefined, predicates: [] });
       expect(run.verdict).toBe("clear");
+      expect(run.safety).toEqual({ passed: true, criticalFailures: [], doseErrors: [], verdict: "clear" });
       expect(run.outcome).toBe(v === "frozen-triangle" ? "bailout" : "completed");
     }
   });
@@ -142,12 +143,26 @@ describe("the operative agents", () => {
     }
   });
 
+  it("a run whose safety outcome did not pass is never a success, even when every predicate holds (audit 2026-11-12 P0-3)", async () => {
+    // only the operation's end is asked for: the blind routine closes, but its unsafe acts set a safety-critical gate
+    const raw = scenario("blind-closed", "posterior-artery", "complete");
+    raw.predicates = [{ clinical: { procedure: { closed: true } } }];
+    const blind = createOperativeScriptedAgent({ kind: "blind", planFor: () => planFromReference(trajectory("reference") as never) });
+    const run = await runOperativeScenario(parsed(raw), blind, 1, { content });
+    expect(run.predicates.every((p) => p.ok)).toBe(true);
+    expect(run.safety.passed).toBe(false);
+    expect(run.success).toBe(false);
+    const metrics = operativeMetrics([run]);
+    expect(metrics.safetyNotPassed).toMatchObject({ k: 1, n: 1 });
+  });
+
   it("a plan that does not look at the anatomy fails in the variants: the reference-anatomy routine misses the second artery", async () => {
     const s = parsed(scenario("blind", "posterior-artery", "complete"));
     const blind = createOperativeScriptedAgent({ kind: "blind", planFor: () => planFromReference(trajectory("reference") as never) });
     const run = await runOperativeScenario(s, blind, 1, { content });
     expect(run.success).toBe(false);
     expect(run.verdict).toBe("safety-critical");
+    expect(run.safety).toMatchObject({ passed: false, verdict: "safety-critical" });
     expect(run.irreversibleWithoutView).toBeGreaterThan(0);
     expect(run.injuries.map((i) => i.structure)).toContain("posterior-cystic-artery");
     expect(run.pauses.at(-1)?.overclaims).toBeGreaterThan(0);
@@ -205,5 +220,10 @@ describe("a suite on disk and its report", () => {
     const md = operativeMarkdown(report, "zh-CN");
     expect(md).toContain("手术基准测试");
     expect(md).toContain("mini-pool");
+    // the safety outcome beside each run's success, and in the metrics
+    expect(report.metrics.overall.safetyNotPassed).toMatchObject({ k: 0 });
+    expect(md).toContain("| 安全性 |");
+    expect(md).toContain("安全性：通过");
+    expect(md).toContain("安全性未通过（不计为成功）");
   });
 });

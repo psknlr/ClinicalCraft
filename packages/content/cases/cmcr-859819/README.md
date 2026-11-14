@@ -13,7 +13,7 @@ or current guidelines.
 
 | | |
 |---|---|
-| id / version | `cmcr-859819` / `1.1.0` |
+| id / version | `cmcr-859819` / `1.1.1` |
 | setting / facility | `inpatient` (respiratory ward → ICU) / `general-hospital` |
 | specialty | respiratory medicine, critical care, obstetrics, infectious diseases |
 | difficulty / estimated time | 4 / 5 · ~35 min (static clock; historical review) |
@@ -304,6 +304,23 @@ source DOI matches the DOI printed in the source PDF. No DOI is given where none
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all three
+  single-best decisions in both languages (1.3–3.1 times the mean length of the other options); now it is in none
+  (0.84–1.07). The `diagnosis` key now names the evidence it integrates (poultry exposure, a positive H7N9 test,
+  bilateral opacities, severe hypoxaemia); each distractor now says why it tempts: bacterial pneumonia with air
+  bronchograms, the poultry market dismissed as a common exposure; pulmonary oedema from the blood volume of
+  pregnancy; an upper respiratory infection in a previously well woman; staying on NIV to spare her and the fetus
+  sedation and invasive ventilation; large tidal volumes because the oxygenation index stays below 100 mmHg; high-flow
+  nasal oxygen to avoid intubation in pregnancy; routine recruitment to reopen the lung before proning; immunoglobulin
+  and thymosin to boost immunity in pregnancy; high-dose steroids citing ATS 2024. In the select-all
+  `empirical-antiviral` decision, "withhold oseltamivir because of the pregnancy" now gives its reason (fetal safety
+  at 22 weeks). Medical meaning, correct flags, scoring and the reference path are unchanged; the feedback of
+  `bacterial-cap` and `continue-niv` now also answers the reason its text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
+- Checked on 2026-10-30: see Validation.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 Substantive changes from PR #3's 1.0.0:
@@ -341,7 +358,7 @@ Substantive changes from PR #3's 1.0.0:
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-859819/case.json
+npm run -s cc -- cases validate packages/content/cases/cmcr-859819/case.json --strict
 npm run -s cc -- cases verify cmcr-859819
 npm run -s cc -- exec --case cmcr-859819 --autopilot --approval bypass --provider offline --output-format json
 npm run -s cc -- exec --case cmcr-859819 --autopilot --approval bypass --provider offline --embodied --output-format json
@@ -351,6 +368,9 @@ npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-859819
 On 2026-10-28 (version 1.1.0): validate 0 errors, 0 warnings; verify passes — 51 steps, objectives 5/5, decisions 4/4,
 38/38 matcher test utterances; the reference path scores 16/16 with no rejection and no contraindicated intervention in
 both clinical and in-world mode; the collection contract test for this case passes.
+
+On 2026-10-30 (version 1.1.1): `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes — 51 steps,
+objectives 5/5, decisions 4/4, utterances 38/38, rubric 16/16 (100 %).
 
 ## 中文摘要
 

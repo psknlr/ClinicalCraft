@@ -10,12 +10,19 @@
  *
  * It ends when the actor asks them to wait (`release_patient`: they stand where they are, a body on the floor
  * again), when someone takes them somewhere (`transport_patient`: they arrive there) or the team moves them (a
- * transfer), and when clinical state no longer lets them walk (`endEscortIfUnable`, from `refreshPatient`: they
- * lie down, or stop, where they are). No time is charged: the walking is the walker's own.
+ * transfer), when clinical state no longer lets them walk (`endEscortIfUnable`, from `refreshPatient`: they
+ * lie down, or stop, where they are), and when a hand-steered walker moves where no one could have followed (a jump
+ * of the body, through a wall: `stopFollowing` — they stop where they last were). No time is charged: the walking is
+ * the walker's own.
+ *
+ * Their walk is recorded as their own (audit 2026-11-12 P2-11; `journey.ts`): each walk of the walker in the world —
+ * and each stretch of a hand-steered walk — is a leg with the follower's own path (a step behind, along the walker's
+ * way) and where they arrived, told by `patient.departed` / `patient.arrived`.
  */
 import type { ActorState, BodyPosture, EntityId, PatientPlaceState, WorldActionRequest, WorldEvent } from "./contracts.js";
 import type { Outcome } from "./effects.js";
 import { worldMessage } from "./i18n.js";
+import { closeStretch, followArm } from "./journey.js";
 import { freeCellNear, type PatientBody } from "./patient.js";
 import type { TransportHost } from "./transport.js";
 
@@ -59,18 +66,23 @@ function stopHere(host: TransportHost, st: PatientPlaceState, posture: BodyPostu
 export function escortPatient(host: TransportHost, _request: WorldActionRequest, actor: ActorState, patientId: EntityId, start: boolean): Outcome {
   const { patient: body, locale: L, locator } = host.d;
   const name = locator.name(patientId);
-  const st = body.state()!;
   if (!start) {
-    const event = commit(host, stopHere(host, st, "standing"), actor.id);
+    // the walk together ends where they are: its last leg first, then they wait on a free spot there
+    const walked = closeStretch(host, "arrived", "end");
+    const event = commit(host, stopHere(host, body.state()!, "standing"), actor.id);
     const ended = host.emit({ type: "patient.escort", entityId: patientId, escort: null, actorId: actor.id });
-    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [event, ended] };
+    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [...walked, event, ended] };
   }
+  // walking with someone else until now: that walk ends here (its own leg)
+  const walked = closeStretch(host, "arrived", "end");
   // they get up and come along: no bed space, no provider, no support any more — the place is the walker's side
   const here = body.place()!;
-  const next: PatientPlaceState = { ...without(st), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
+  const next: PatientPlaceState = { ...without(body.state()!), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
   const event = commit(host, next, actor.id);
   const started = host.emit({ type: "patient.escort", entityId: patientId, escort: actor.id, actorId: actor.id });
-  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [event, started] };
+  // their own walk starts from here (a leg per walk of the walker: `journey.ts`)
+  followArm(host, actor);
+  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [...walked, event, started] };
 }
 
 /** Why the patient cannot start (`start`) or stop walking with this actor now — a precondition — or null. */
@@ -84,6 +96,23 @@ export function escortProblem(body: PatientBody, name: string, actor: ActorState
 }
 
 /**
+ * The walker went where the patient walking with them cannot have followed (`journey.ts` `followSensor`: a jump of a
+ * hand-steered body, through a wall, another level by no connector): the walk together ends — the patient stopped
+ * where they last were (`at`), standing on a free spot there, and the leg is recorded `stopped`.
+ */
+export function stopFollowing(host: TransportHost, at: { level: string; x: number; z: number }): WorldEvent[] {
+  const body = host.d.patient;
+  const st = body.state();
+  if (!st || !body.id || !body.escort(st)) return [];
+  const rot = body.place()?.rot ?? 0;
+  const cell = freeCellNear(host.d.grids, host.d.visibility, at.level, { minX: at.x, maxX: at.x, minZ: at.z, maxZ: at.z }, 1.5, null) ?? { x: at.x, z: at.z };
+  const moved = commit(host, { ...without(st), slot: null, provider: null, spot: { level: at.level, x: cell.x, z: cell.z, rot }, posture: "standing", support: null }, null);
+  const walked = closeStretch(host, "stopped", "end");
+  const ended = host.emit({ type: "patient.escort", entityId: body.id, escort: null, actorId: null });
+  return [moved, ...walked, ended];
+}
+
+/**
  * Clinical state no longer lets the patient walk (laid flat, sedated, in distress): they stop where they are —
  * lying down there when clinical state has them lying — and the walk together ends. True when it did.
  */
@@ -92,7 +121,9 @@ export function endEscortIfUnable(host: TransportHost): boolean {
   const st = body.state();
   if (!st || !body.id || !body.escort(st) || !body.walkProblem(st)) return false;
   const lying = body.clinicalPostureOf(st) === "lying";
-  commit(host, stopHere(host, st, lying ? null : "standing"), null);
+  // the walk stopped short where they are (its last leg), then they stop there
+  closeStretch(host, "stopped", "end");
+  commit(host, stopHere(host, body.state()!, lying ? null : "standing"), null);
   host.emit({ type: "patient.escort", entityId: body.id, escort: null, actorId: null });
   return true;
 }

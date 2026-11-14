@@ -16,9 +16,12 @@ import { studyTools } from "./studies.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
+export * from "./decision-refs.js";
+export * from "./dose-order.js";
 export * from "./npc.js";
 export { procedureTools } from "./procedure.js";
 export { orderText, studyLines, studyText, studyTools } from "./studies.js";
+export * from "./option-labels.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";

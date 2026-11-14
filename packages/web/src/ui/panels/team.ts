@@ -24,8 +24,13 @@ export function teamPanel(app: App): () => PanelView {
     if (!game) throw new Error("no game");
     const session = game.session.session;
     const world = () => game.session.world();
+    // what the team calls the learner: the case team's name for them ("the doctor" in an ED team), else the surgeon
+    const lead = game.caseDef.team?.members.find((m) => m.staff === "surgeon")?.name;
+    const leadName = lead ? (typeof lead === "string" ? lead : (lead[getLocale()] ?? lead.en ?? "")) : "";
+    // an operating team (instruments, a count) is a 手术团队; any other a 医护团队 (docs/GLOSSARY.md)
+    const theatre = !!game.caseDef.team?.members.some((m) => m.duties.includes("instruments") || m.duties.includes("count")) || !!game.caseDef.team?.count;
     const name = (id: string): string => {
-      if (id === PRIMARY_ACTOR) return tr("team.surgeon");
+      if (id === PRIMARY_ACTOR) return leadName || tr("team.surgeon");
       const e = world()?.entity(id);
       return e ? (typeof e.name === "string" ? e.name : (e.name[getLocale()] ?? e.name.en ?? id)) : id;
     };
@@ -46,8 +51,8 @@ export function teamPanel(app: App): () => PanelView {
       const who = h(
         "div",
         { class: "team-row", role: "group", "aria-label": tr("team.surgeon") },
-        h("span", { class: "muted" }, tr("team.surgeon")),
-        h("button", { type: "button", id: "team-learner", "aria-pressed": String(cp.surgeon === "learner"), title: tr("team.learnerTitle"), onclick: () => op({ action: "surgeon", surgeon: "learner" }) }, tr("team.learner")),
+        h("span", { class: "muted" }, leadName || tr("team.surgeon")),
+        h("button", { type: "button", id: "team-learner", "aria-pressed": String(cp.surgeon === "learner"), title: tr("team.learnerTitle"), onclick: () => op({ action: "surgeon", surgeon: "learner" }) }, leadName ? tr("team.learnerAs", { name: leadName }) : tr("team.learner")),
         h("button", { type: "button", id: "team-observer", "aria-pressed": String(cp.surgeon === "simulated"), title: tr("team.observerTitle"), onclick: () => op({ action: "surgeon", surgeon: "simulated" }) }, tr("team.observer")),
       );
       const patient = world()?.find(PRIMARY_ACTOR, { kind: "patient", limit: 1 })[0]?.id;
@@ -74,6 +79,8 @@ export function teamPanel(app: App): () => PanelView {
           m.about.hold ? h("button", { type: "button", class: "team-wound", onclick: () => reply("report", tr("team.woundChecked")) }, tr("team.woundChecked")) : null,
         );
       if (m.kind === "escalate") return h("button", { type: "button", class: "team-understood", onclick: () => reply("report", tr("team.understood")) }, tr("team.understood"));
+      // information told to the learner (docs/TEAM.md §4.5): read back, as said — only then is it recorded in the case
+      if (m.kind === "report" && m.about.info) return h("button", { type: "button", class: "team-readback", onclick: () => reply("readback") }, tr("team.readBack"));
       return null;
     };
 
@@ -130,6 +137,6 @@ export function teamPanel(app: App): () => PanelView {
       mount(body, controls(cp), count(cp), messages(cp), tasks(cp));
     };
     render();
-    return { id: "team", kicker: tr("team.kicker"), title: tr("team.title"), body, variant: "wide", update: render };
+    return { id: "team", kicker: tr(theatre ? "team.kicker" : "team.kickerCare"), title: tr(theatre ? "team.title" : "team.titleCare"), body, variant: "wide", update: render };
   };
 }

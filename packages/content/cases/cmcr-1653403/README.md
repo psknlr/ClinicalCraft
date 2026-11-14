@@ -15,7 +15,7 @@ feedback and the debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653403` / `1.1.0` |
+| id / version | `cmcr-1653403` / `1.1.2` |
 | setting / facility | `outpatient` / `general-hospital` (antenatal clinic → operating theatre → ward) |
 | specialty | obstetrics, neonatology |
 | difficulty | 3 / 5 |
@@ -180,7 +180,9 @@ Replays of the reference path with changes (`paths.ts`, 2026-10-28):
 | every decision guessed wrong once | 13/23 (57 %) |
 
 Contraindicated: `reassure-home`, `ecv`, `induction` and `anti-d` (always);
-`emergency-cs` before the CTG has been read.
+`emergency-cs` before the CTG has been read. Since 1.1.2 `ecv` is `critical`: the version path above (19/23) also
+fails the assessment's safety outcome (`safety.passed: false`), which every debrief and export shows beside the
+score; the other contraindicated steps are recoverable.
 
 ## Reference path (`solution`)
 
@@ -378,6 +380,46 @@ edition and URL were confirmed by the audit, its publication year was not.
   guideline (ERC/AHA) is cited; a reviewer may add them.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failures (audit P0-3).** External cephalic version with an abnormal CTG is `critical: true`
+  (manipulating a baby who may already be anaemic and hypoxic; obstetric procedures are among the causes of
+  fetomaternal haemorrhage the report lists), and so is sending her home with a repeat CTG in a week
+  (`reassure-home`): reduced movements at term with an abnormal CTG need prompt assessment and delivery (RCOG
+  GTG 57), and going home to wait risks a stillbirth. Giving either fails the safety outcome shown beside the score;
+  `r-safety-delay` was already a critical rubric item and names both. Induction stays non-critical (it delays the
+  birth, but she stays on the labour ward). `emergency-cs` before the CTG has been read is `critical: false` (a
+  sequencing guard). Scores are unchanged.
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four
+  single-best decisions the keyed option was the uniquely longest in both
+  languages (1.4–2.5 times the mean option length); now it is in none. The
+  `neonatal-resus` and `diagnosis` keys say the same in fewer words (the
+  `management` and `anti-d` keys are unchanged). Each distractor now gives
+  the reason it tempts, in the key's register: she has not counted the
+  movements and last week's scan was normal (repeat the CTG in a week, sooner
+  if the movements stop); the sinusoidal pattern is only suspected, so
+  confirm fetal anaemia by MCA Doppler and KB first; two previous births, so
+  induce under continuous CTG; a breech at term, so turn the baby first;
+  shock at 49/25 mmHg, so 10 mL/kg saline boluses that need no crossmatch;
+  samples taken after a transfusion are harder to interpret; an exchange
+  corrects the anaemia without overloading the circulation; ABO disease
+  despite a negative Coombs test; Rhesus disease worsening in a third
+  pregnancy; anaemia found the moment she was born (blood lost at the
+  caesarean); severe α-thalassaemia as a recognised cause of anaemia from
+  birth — each `diagnosis` option now also names the test it would send;
+  a standard anti-D dose within 72 hours for a large bleed; a calculated
+  dose because the bleed exceeds a standard dose; anti-D as routine antenatal
+  prophylaxis rather than a response to a bleed. The feedback of
+  `routine-review`, `investigate-first`, `induce`, `ecv`, `crystalloid-only`,
+  `wait-tests`, `exchange`, `abo`, `rh`, `standard-dose` and `never` now also
+  answers the reason its text gives. Every reason uses facts the case
+  already holds (triage note, history, CTG, the decision prompts); medical
+  meaning, correct flags, scoring and the reference path are unchanged.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

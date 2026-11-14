@@ -13,7 +13,7 @@ outcome are the report's; what the report does not record stays unknown.
 
 | | |
 |---|---|
-| id / version | `cmcr-1551890` / `1.1.0` |
+| id / version | `cmcr-1551890` / `1.1.2` |
 | setting / facility | `icu` / `general-hospital` (ICU bed 1) |
 | specialty | cardiology, critical care |
 | difficulty | 4 / 5 |
@@ -150,9 +150,10 @@ Every option has its own feedback (why it is right or wrong, with the guidance i
   and `neutral` afterwards; it is not in the reference path because the report does not say what the referring
   hospital offers (see the teaching point on cardiac-surgical centres).
 - `crrt` is `neutral`: the report started it without stating why.
-- **Pending framework fields** (S/pr3/fxc-annotations/cmcr-1551890.json, applied by the coordinator):
-  `rb-safety` gets `scoredWhen` (counts once the learner has attempted the support decision or given any support or
-  harmful item) and `critical: true`. Until then, as in every case, doing nothing earns `rb-safety` (3/19).
+- `rb-safety` counts once the learner has attempted the support decision, started vasoactive drugs, the IABP or
+  VA-ECMO, or given a harmful item (`scoredWhen`), so doing nothing earns nothing, and it is `critical`: a miss is named first in the debrief.
+- `repeat-lysis` is `critical` (since 1.1.2): giving it fails the assessment's safety outcome
+  (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
 
 ## Reference path (`solution`)
 
@@ -346,6 +347,33 @@ no DOI: its volume and pages appear only in citing articles.
 
 ## Changelog
 
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-1, P0-3).** `repeat-lysis` — a second fibrinolytic dose given for failed
+  reperfusion with a mechanical complication — is `critical: true`: giving it fails the safety outcome shown beside the
+  score, whatever the score (`rb-safety` was already a critical rubric item). Scores are unchanged.
+- README: the "pending framework fields" note on `rb-safety` described its state before 1.1.0; it now says what
+  the case has (`scoredWhen`, `critical`).
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 4
+  single-best decisions in both languages; now it is in one (`lv-unloading`). Each distractor states its reasoning in
+  the key's register: re-occlusion after lysis with an ischaemic murmur; papillary-muscle rupture with severe mitral
+  regurgitation, confirmed by echo; free-wall rupture as the most rapidly fatal complication; fluid boluses because
+  positive-pressure ventilation lowers preload; multivessel PCI to restore pump function; a titrated vasodilator with
+  support in reserve; immediate repair because each day on support adds complications; a fixed 4–6-week date (the
+  report's surgical advice) on ECMO and the IABP; no repair while support holds; device closure to spare a sternotomy;
+  more ECMO flow with CRRT ultrafiltration; removing the IABP to spare a femoral line; a fluid bolus to fill the
+  ventricle. The keys of `support`, `management` and `lv-unloading` are tighter wording of the same plan; the
+  `diagnosis` key text is unchanged. The more-flow feedback also answers the ultrafiltration argument. Correct flags
+  and scoring are unchanged.
+- **Option id `supported`** (it named the answer) is now `septal-rupture`; the reference `solution` answers with it. No
+  test, benchmark scenario or e2e spec referred to it (`packages/web/e2e/cmcr.spec.ts` replays the `solution`).
+- **Companion named in character** (`cases validate --strict`): 「家属（教学设定）」/ "Relative (teaching role)" →
+  「欧阳女士的家属（化名）」/ "Ms Ouyang's relative (pseudonym)", as in cmcr-138898. The persona, the answers and
+  the unrecorded relationship are unchanged.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 - **She cannot speak (audit B1, D1, D4).** The ventilated patient no longer greets the learner: an actor brief
@@ -398,7 +426,7 @@ no DOI: its volume and pages appear only in citing articles.
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1551890/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-1551890/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1551890                                      # 52 steps, objectives 6/6, decisions 4/4, utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1551890
 npm run -s cc -- exec --case cmcr-1551890 --autopilot --approval bypass --provider offline --output-format json             # 19/19

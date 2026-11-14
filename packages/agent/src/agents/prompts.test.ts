@@ -1,10 +1,11 @@
 import { createSession as createEngineState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { loadMiniCase } from "../__fixtures__/harness.js";
-import { buildPatientContext } from "../session/patient-pipeline.js";
+import { verifyGrounding } from "../session/grounding.js";
+import { buildPatientContext, voiceGroundingInputs } from "../session/patient-pipeline.js";
 import { BUILTIN_AGENTS, builtinAgent, mergeAgentProfiles } from "./builtin.js";
 import { clinicianOfflineSteps, narrateAction } from "./offline.js";
-import { agentKind, buildSystemSections, clockLabel, renderTemplate, type PromptContext } from "./prompts.js";
+import { agentKind, buildSystemSections, clockLabel, renderTemplate, templateVars, type PromptContext } from "./prompts.js";
 import type { AgentProfile } from "./types.js";
 
 const caseDef = loadMiniCase();
@@ -189,5 +190,34 @@ describe("future phases stay unannounced to the clinician model (F9)", () => {
     expect(brief).not.toContain("cath-secret");
     expect(brief).not.toContain("Secret cath lab");
     expect(brief).toContain("list_options");
+  });
+});
+
+describe("the patient's age in the prompts", () => {
+  it("reads as clinicians write it (core patientAgeAdjective), and the voice may say it in years and months", () => {
+    const child = loadMiniCase((x) => {
+      x.patient.age = 100;
+      x.patient.ageUnit = "months";
+    });
+    const s = createEngineState(child);
+    const patient = buildPatientContext({ caseDef: child, locale: "en", speaker: "patient", memory: { approached: true, affectIntensity: 1 }, scene: null }, s, [], [], null);
+    const voice = buildSystemSections(builtinAgent("patient")!, { caseDef: child, state: s, locale: "en", memory: null, patient }).map((x) => x.text).join("\n");
+    expect(voice).toContain("8-year-4-month-old male patient");
+    expect(voice).not.toContain("100-month-old");
+    const nurse = buildSystemSections(builtinAgent("nurse")!, { caseDef: child, state: s, locale: "en", memory: null }).map((x) => x.text).join("\n");
+    expect(nurse).toContain("8-year-4-month-old");
+    const fraction = loadMiniCase((x) => {
+      x.patient.age = 4 + 1 / 12;
+    });
+    expect(buildSystemSections(builtinAgent("nurse")!, { caseDef: fraction, state: createEngineState(fraction), locale: "en", memory: null }).map((x) => x.text).join("\n")).toContain("4-year-1-month-old");
+    // {{patient.age}} reads as clinicians write it in the session language, never the raw record ("100", "4.083…").
+    const age = (c: typeof child, locale: string) => renderTemplate("{{patient.age}} / {{patient.ageText}}", templateVars({ name: "custom" }, { caseDef: c, state: createEngineState(c), locale, memory: null }));
+    expect(age(child, "en")).toBe("8 years 4 months / 8-year-4-month-old");
+    expect(age(child, "zh-CN")).toBe("8岁4个月 / 8-year-4-month-old");
+    expect(age(fraction, "en")).toBe("4 years 1 month / 4-year-1-month-old");
+    expect(age(fraction, "zh-CN")).toBe("4岁1个月 / 4-year-1-month-old");
+    // The grounding check accepts the age the prompt gives, in either language.
+    const { sources, options } = voiceGroundingInputs(child, s, [], new Set(), "你多大了？", null, "zh-CN");
+    expect(verifyGrounding("我8岁4个月了。", sources, options).ok).toBe(true);
   });
 });

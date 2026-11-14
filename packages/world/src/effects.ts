@@ -22,6 +22,7 @@ import { metres, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
 import { formatScreen } from "./screen.js";
+import { screenPatient, unpluggedState } from "./screen-source.js";
 import type { SightTarget } from "./visibility.js";
 import type { WorldEventInput } from "./state.js";
 
@@ -37,6 +38,10 @@ export interface Outcome {
   clinical?: { tool: string; ok: boolean; output: string };
   clinicalEventIds?: string[];
   moved?: WorldActionResult["moved"];
+  /** A walk to where a thing was believed to be (audit P1-8). */
+  belief?: WorldActionResult["belief"];
+  /** The receipt a hand-over of an item kept in custody, or its confirmation, wrote (audit P2-12; `hand.ts`). */
+  receipt?: WorldActionResult["receipt"];
 }
 
 /** A finished walk (committed pose, events, telemetry). */
@@ -58,6 +63,8 @@ export interface EffectsHost {
   invalidate(area: Area & { level: string }): void;
   /** Hint for a refusal, verified by planning (null when no route leads there). */
   verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined, then?: ActionHint["then"]): ActionHint | null | undefined;
+  /** Whoever moved these things knows where they left them, and so does the actor they did it for (audit P1-8). */
+  learnWhere(actorId: ActorId | null, ids: readonly EntityId[]): void;
   /** Is this a well-formed navigation goal? */
   isGoal(goal: unknown): goal is NavGoal;
 }
@@ -135,6 +142,7 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
       events.push(host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }));
       host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
       mover.placeEntity?.(id, spot);
+      host.learnWhere(actor.id, [id]);
       break;
     }
     case "equip": {
@@ -146,7 +154,8 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
       events.push(...commitTransition(host, actor, id, o, rules.state(id)));
   }
   if (o.effect !== "wash-hands") charge(o.durationSeconds);
-  const state = rules.stateLabel(id);
+  // the state the operation led to — for a carried item its own (a specimen tube "filled and labelled"), not "held"
+  const state = o.to !== undefined && rules.spec(id).stateSource === "stored" ? rules.stateLabel(id, o.to) : rules.stateLabel(id);
   const out: Outcome = { status: "completed", message: message ?? (o.to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target })), events };
   if (elapsed > 0) out.elapsedSeconds = elapsed;
   return out;
@@ -229,6 +238,22 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
 /* Carts                                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * A device wheeled away from the patient with its leads on (a `live` state, audit P2-13): they come off — it goes back
+ * to the state they were put on from (`unpluggedState`: the ECG cart → `prepared`) once its screen no longer shows
+ * the patient where it now stands. Its events (none when it stays by them, or was not on the patient).
+ */
+function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): WorldEvent[] {
+  const { rules, store, locator } = host.d;
+  const spec = rules.spec(id);
+  if (spec.stateSource !== "stored") return [];
+  const from = rules.state(id);
+  const to = unpluggedState(spec, from);
+  if (!to || screenPatient({ locator, rules }, id)) return [];
+  store.patchEntity(id, { state: to });
+  return [host.emit({ type: "entity.state", entityId: id, from, to, operation: "move_to", actorId: actor.id })];
+}
+
 async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, signal: AbortSignal): Promise<Outcome> {
   const { store, locator, backend, locale: L, mover } = host.d;
   const target = locator.name(id);
@@ -271,10 +296,12 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
   store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
-  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id })];
+  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }), ...unplugIfAway(host, actor, id)];
   host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
   host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
   mover.placeEntity?.(id, { ...spot, rot: cart.rot });
+  // whoever wheeled it knows where they left it (and the actor they did it for: audit P1-8)
+  host.learnWhere(actor.id, [id]);
   // where it now stands: its room, else the building's corridor or the facility's outdoor region (lead note 2)
   const placeName = locator.regionName({ level: spot.level, x: spot.x, z: spot.z });
   const displacement = r2(cart.level === spot.level ? Math.hypot(spot.x - cart.position.x, spot.z - cart.position.z) : walk.walked);

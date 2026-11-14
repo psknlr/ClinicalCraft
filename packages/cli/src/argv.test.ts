@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { parseCase, type CaseDefinition } from "@clinicalcraft/core";
+import { availableDecisions, createSession as createEngineState, parseCase, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { colorEnabled, createPalette, stripAnsi } from "./ansi.js";
 import { editDistance, flagBool, flagList, flagNumber, flagPositiveInt, flagString, lookupFlag, parseArgs, suggest, UsageError, type FlagSpec } from "./argv.js";
 import { EXEC, ROOT } from "./commands.js";
@@ -235,6 +235,23 @@ describe("REPL helpers", () => {
     const exams = argumentCandidates("exam", ana.value, agents);
     expect(exams).toContain("ex-chest-scene");
     expect(exams).not.toContain("ex-chest-ed");
+  });
+
+  it("/answer completes the numbers of the decisions open now, never their authored ids", () => {
+    /** Decisions unlocked and not yet decided, by number in case order. */
+    const open = (s: SessionState) => availableDecisions(c, s).flatMap((d, i) => (d.unlocked && !d.decided ? [String(i + 1)] : []));
+    const start = createEngineState(c);
+    expect(argumentCandidates("answer", c, agents, start)).toEqual(open(start));
+    // The evidence read: decisions open; one decided drops out.
+    const reviewed: SessionState = { ...start, seen: [...new Set(c.solution.flatMap((a) => (a.type === "read" ? [`${a.investigationId}@${a.phase ?? start.phase}`] : [])))] };
+    expect(open(reviewed).length).toBeGreaterThan(0);
+    expect(argumentCandidates("answer", c, agents, reviewed)).toEqual(open(reviewed));
+    const first = open(reviewed)[0]!;
+    const decided: SessionState = { ...reviewed, decisions: { [c.decisions[Number(first) - 1]!.id]: 1 } };
+    expect(argumentCandidates("answer", c, agents, decided)).toEqual(open(decided));
+    expect(argumentCandidates("answer", c, agents, decided)).not.toContain(first);
+    const ids = c.decisions.map((d) => d.id);
+    for (const s of [start, reviewed, decided]) expect(completeLine("/answer ", commands, c, agents, s)[0].filter((x) => ids.includes(x))).toEqual([]);
   });
 
   it("parses approval answers", () => {

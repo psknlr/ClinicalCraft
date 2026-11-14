@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-70044` · v1.1.0 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-70044` · v1.1.2 · CMCR collection (`cmcr-20`) |
 | Source | 张睿, 裴亮, 王佳, 张晗, 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学. 2014;21(1):63 |
 | Setting | Children's ward (`inpatient`); the reaction happens at the bedside |
 | Facility | `general-hospital` |
@@ -107,7 +107,7 @@ in the `reaction` phase (the `aftercare` decision needs adrenaline given).
 Every option has its own feedback. Decisions never lock once unlocked, so a learner who answers wrongly first
 can answer again; the rubric scores the first attempt (`decidedFirstTry`).
 
-### Rubric (11 deterministic items, 26 points, + 1 examiner-judged)
+### Rubric (12 deterministic items, 28 points, + 1 examiner-judged)
 
 | id | Domain | Item | Weight |
 |---|---|---|---|
@@ -120,19 +120,23 @@ can answer again; the rubric scores the first attempt (`decidedFirstTry`).
 | `rb-first-line` | Management | infusion stopped **and** IM adrenaline given (annotation: `critical`) | 3 |
 | `rb-support` | Management | help called, lying flat, high-flow oxygen, crystalloid bolus, monitoring | 2 |
 | `rb-no-unsafe-adrenaline` | **Safety** | IM adrenaline given with no IV push and no wrong-strength dose (needs the IM dose, so it cannot be earned by doing nothing; annotation: `critical`) | 2 |
+| `rb-no-rechallenge` | **Safety** | the culprit drug not restarted (scored once the infusion is stopped or the drug restarted; `critical`) | 2 |
 | `rb-aftercare` | Management | aftercare decision, first attempt | 2 |
 | `rb-tryptase` | Investigations | tryptase requested | 1 |
 | `rb-communication` | Communication (examiner) | calm words to the boy during the emergency, a plain explanation to the parent, the drug to avoid, a written allergy record, teach-back | 1 |
 
 **How wrong choices score.** A steroid or an antihistamine before any adrenaline is `contraindicated` (a
 safety event with harm text: it delays first-line treatment); after adrenaline the second dexamethasone, as
-in the report, is neutral. The report's IV push, the 1 mg/mL IV push, the 0.1 mg/mL IM injection and
-restarting the drug are `contraindicated` (`contraindicatedWhen: always`) and cost `rb-no-unsafe-adrenaline`.
+in the report, is neutral. The report's IV push, the 1 mg/mL IV push and the 0.1 mg/mL IM injection are
+`contraindicated` (`contraindicatedWhen: always`) and cost `rb-no-unsafe-adrenaline`; restarting the drug is
+contraindicated and costs `rb-no-rechallenge`. All four are `critical`: giving one fails the assessment's safety
+outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
 Nasal oxygen 3 L/min (the report's) is neutral, with a response that explains why a non-rebreather mask is
 needed. A third IM dose is refused (`maxDoses: 2` — after two doses it is refractory anaphylaxis for
-specialists). Replayed paths (2026-10-28): the report's own sequence finishes with 12/26 and two safety
-events; a minimal correct path (no extra history, no supportive care) with 21/26; skipping ahead is refused
-(`phase-locked`, `not-ordered`, `requirements-unmet`).
+specialists). Replayed paths (2026-10-28, on 26 points): the report's own sequence finishes with 12/26 and two
+safety events; a minimal correct path (no extra history, no supportive care) with 21/26; skipping ahead is refused
+(`phase-locked`, `not-ordered`, `requirements-unmet`). Since 1.1.2 the total is 28: `rb-no-rechallenge` is
+earned whenever the infusion is stopped and the drug not restarted.
 
 ## Reference path (`solution`)
 
@@ -142,7 +146,7 @@ decision `pre-dose` → reaction: the boy's symptoms, skin, airway, perfusion, d
 infusion, call for help, IM adrenaline, lie him flat, high-flow oxygen, monitoring, a crystalloid bolus; the
 parent's account, conscious level, heart, monitor readings, tryptase; decision `adrenaline` → recovery: the
 boy's account, reassessment, the aftercare plan, decision `aftercare` → follow-up record → finish. It scores
-**26/26** with no contraindicated action, in clinical and in-world mode, in both languages.
+**28/28** with no contraindicated action (safety passed), in clinical and in-world mode, in both languages.
 
 ## Clinical numbers check
 
@@ -192,10 +196,10 @@ boy's account, reassessment, the aftercare plan, decision `aftercare` → follow
 | Taking the negative penicillin skin test as clearance (the report's sequence: skin test, then the infusion) | `pre-dose` distractor; feedback cites China 2021 and AAAAI/ACAAI 2022 |
 | Reading the monitor or the chart before treating | `diagnosis` opens on any one bedside step; no record is needed to treat |
 | Steroid or antihistamine first (the report's first step) | `contraindicated` before adrenaline; `adrenaline` distractor |
-| IV push on the ward (the report's practice) | `contraindicated`; distractor; the record still moves on because it is what the report did |
-| 1 mg/mL given IV, or 0.1 mg/mL given IM | `contraindicated`; distractors; the record does not move on |
+| IV push on the ward (the report's practice) | `contraindicated`, a critical safety failure; distractor; the record still moves on because it is what the report did |
+| 1 mg/mL given IV, or 0.1 mg/mL given IM | `contraindicated`, critical safety failures; distractors; the record does not move on |
 | Nasal oxygen for hypoxic shock | neutral, with a response pointing to the non-rebreather mask |
-| No tryptase, no allergy record, rechallenge | `aftercare` distractors; `restart-infusion` is contraindicated; `rb-tryptase` |
+| No tryptase, no allergy record, rechallenge | `aftercare` distractors; `restart-infusion` is contraindicated, a critical safety failure, and costs `rb-no-rechallenge`; `rb-tryptase` |
 
 ## Embodied mode
 
@@ -217,7 +221,7 @@ boy's account, reassessment, the aftercare plan, decision `aftercare` → follow
 * **The boy's voice.** He answers questions put to him (`speaker: "patient"` on his symptom items) and speaks
   throughout — the report says he described the numbness himself — so no `nonVerbalWhen` annotation is
   needed. His parent answers the history (`companion.answersHistory`).
-* Clinical, in-world, zh-CN and en demonstrations all score 26/26 with every objective done.
+* Clinical, in-world, zh-CN and en demonstrations all score 28/28 with every objective done.
 
 ## Source and adaptation
 
@@ -316,6 +320,48 @@ notices (no DOI exists).
 
 ## Changelog
 
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical safety failures (audit P0-3).** The IV push of 1 in 10 000 adrenaline on the ward, the 2.5 mg IV
+  push of 1 mg/mL, the 30-microgram IM dose of 1 in 10 000 (a tenth of the dose) and restarting the culprit drug are
+  `critical: true`: giving one fails the safety outcome shown beside the score.
+* **New critical rubric item `rb-no-rechallenge`** (safety, weight 2; scored once the infusion is stopped or the
+  drug restarted): restarting the drug that caused the shock was not scored by any item. Deterministic total 26 → 28;
+  the reference path scores 28/28 and a restart 26/28 with the safety outcome failed.
+* **Preset dose (audit P0-2).** IM adrenaline's text now states the dose first, then the volume ("Adrenaline 300
+  micrograms IM (0.3 mL of 1 mg/mL [1 in 1000])"; zh-CN likewise), and the item has a `doseSpec` of 300 micrograms
+  IM — the RCUK 2021 dose for age 6–12, his weight not being recorded. "Adrenaline 0.3 mg IM" is that dose; "3 mg IM"
+  (ten times) or "30 micrograms IM" (a tenth — the dilute-strength error by its dose) is not given and is a critical
+  dose error that fails the safety outcome; the adult 0.5 mg draws the nurse's read-back and is kept as a dose error
+  to review. A volume with its strength ("0.3 mL of 1 mg/mL", "1:1000 0.3 mL") is read as the 300 micrograms it holds
+  and given; a volume without it ("0.3 mL") is asked about — not given, no dose error. The item's name now states the
+  dose first too ("IM adrenaline 300 micrograms (0.3 mL of 1 mg/mL)"; it read "IM adrenaline (1 mg/mL, 0.3 mL = 300
+  micrograms)", which, typed as an order, was read as 0.3 mL). The strengths a learner may confuse stay separate
+  interventions (`adrenaline-im-dilute`, `adrenaline-iv-1mg`), given whatever dose is written so that the error
+  plays out.
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four
+  decisions in both languages (1.3–5.2 times the mean length of the other options); now it is in none
+  (0.85–1.09). The `pre-dose` and `aftercare` keys say the same in fewer words; in `adrenaline` every option now
+  carries the same supportive steps (stop the drug, call for help, lie flat, high-flow oxygen, a 10 mL/kg
+  crystalloid bolus, monitoring), so only the adrenaline strength, dose, route and site — the point of the
+  decision — tell the options apart. Each distractor now says why it tempts: the negative penicillin test plus
+  the clinic's four days of cefuroxime; routine cephalosporin skin tests "as many wards do"; lifelong avoidance
+  recorded as a severe allergy; a frightened child fainting; asthma after ten days of cough; a typical
+  urticarial rash; the IV push because IV acts faster in shock (the report's practice); dexamethasone to damp
+  the reaction; the standard 1 mg/mL ampoule pushed IV; the 1 in 10 000 resuscitation strength given IM; a
+  rechallenge with steroid premedication; steroids against a biphasic reaction; "an infusion that ran too fast,
+  not an allergy". Medical meaning, correct flags, scoring and the reference path are unchanged; the feedback of
+  `skin-test-clears`, `iv-bolus-report`, both concentration errors, `rechallenge`, `steroids-home` and
+  `not-allergy` now also answers the reason its text gives.
+* **Option ids neutral:** `iv-1mg-error` → `iv-push-1-in-1000` and `im-dilute-error` → `im-1-in-10000` (the
+  suffix named the option as wrong). No solution step, rubric item, test, benchmark scenario or e2e spec
+  referred to them.
+* Checked on 2026-10-30: `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes (47 steps,
+  objectives 6/6, decisions 4/4, utterances 39/39, rubric 26/26).
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Treatment no longer waits for the records:** `diagnosis` opens on any one bedside step (1.0.0 required
@@ -360,11 +406,11 @@ notices (no DOI exists).
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-70044/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-70044/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-70044        # solution 47 steps · objectives 6/6 · decisions 4/4 · utterances 39/39
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-70044              # 1 passed
-npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json             # 26/26, 6/6
-npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json --embodied  # 26/26, 6/6
+npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json             # 28/28, 6/6
+npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json --embodied  # 28/28, 6/6
 ```
 
 ## 中文摘要

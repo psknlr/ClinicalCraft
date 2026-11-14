@@ -15,6 +15,7 @@ import {
   IdSchema,
   matchHistory,
   parseCase,
+  patientAgeText,
   supersededIn,
   t,
   teamFacilityIssues,
@@ -286,7 +287,8 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   ctx.print(ct(c.summary));
   ctx.print();
   const pt = c.patient;
-  ctx.print(`${p.bold(ctx.t("show.patient"))} ${ct(pt.displayName)} · ${ctx.t(`age.${pt.ageUnit}` as "age.years", { n: pt.age })} · ${ctx.t(`sex.${pt.sex}` as "sex.male")}`);
+  // The age as clinicians write it ("8 years 4 months", "18小时"), never a raw fraction: core `patientAgeText`.
+  ctx.print(`${p.bold(ctx.t("show.patient"))} ${ct(pt.displayName)} · ${patientAgeText(pt, L)} · ${ctx.t(`sex.${pt.sex}` as "sex.male")}`);
   ctx.print(`${p.bold(ctx.t("show.complaint"))} ${ct(pt.chiefComplaint)}`);
   // The facility by its name in the UI language (its id when it is not installed).
   const facility = c.facility ? content.facilities.get(c.facility)?.def : undefined;
@@ -440,7 +442,8 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
   if (all && args.positionals.length > 0) files.push(...resolveTargets(ctx, args.positionals));
   if (files.length === 0) throw new CliError(ctx.t("cases.noFiles"), EXIT.error);
   // Facilities and catalogs of the same content directories: a case must be completable in its own facility.
-  const content = await loadContent({ dirs: settings.contentDirs });
+  // Not the cases: each file is read and validated below.
+  const content = await loadContent({ dirs: settings.contentDirs, cases: false });
   const strict = flagBool(args, "strict");
   const results = await Promise.all([...new Set(files)].map((f) => validateCaseFile(f, content, strict)));
   const failed = results.filter((r) => !r.ok).length;
@@ -470,6 +473,12 @@ export interface CaseVerification {
   decisions: { decided: number; total: number };
   /** The reference path's rubric score (deterministic, scored items: core `assess`). */
   score: { earned: number; possible: number; percent: number };
+  /**
+   * The reference path's safety outcome beside its score (core `assess`, docs/PROTOCOL.md §3.2): passed, the critical
+   * safety failures (by intervention) and the dose errors it made. Core `verifyCase` already fails a path that makes
+   * either, unless the case declares it (`errorRecovery`).
+   */
+  safety: { passed: boolean; criticalFailures: string[]; doseErrors: number };
   /** `extra`: utterances that also select (and credit) unexpected facts (warnings). */
   utterances: { total: number; failed: number; extra: number };
   issues: Issue[];
@@ -493,6 +502,7 @@ export function verifyCaseDefinition(c: CaseDefinition): CaseVerification {
     objectives: { done: a.objectives.filter((o) => o.done).length, total: a.objectives.length },
     decisions: { decided: a.decisions.filter((d) => d.decided).length, total: a.decisions.length },
     score: { ...a.score },
+    safety: { passed: a.safety.passed, criticalFailures: a.safety.criticalFailures.map((f) => f.interventionId), doseErrors: a.safety.doseErrors.length },
     utterances: { total: corpus.total, failed: corpus.failures.length, extra: corpus.extras.length },
     issues,
   };
@@ -526,7 +536,7 @@ export async function casesVerify(ctx: CliContext, args: ParsedArgs): Promise<nu
           possible: r.score.possible,
           percent: r.score.percent,
         }),
-      )}`,
+      )}${r.safety.passed ? "" : ` ${p.red(ctx.t("cases.verifyUnsafe", { failures: r.safety.criticalFailures.length, doses: r.safety.doseErrors }))}`}`,
     );
     printIssues(ctx, r.issues, !flagBool(args, "quiet"));
   }

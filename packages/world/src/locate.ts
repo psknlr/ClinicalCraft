@@ -9,7 +9,7 @@
  * a cart just outside; never through a wall).
  */
 import { buildingLevels, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
-import { BedsideRule } from "./bedside.js";
+import { BedsideRule, type BedsideAnchor } from "./bedside.js";
 import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SeenPlace, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
 import { rotateXZ, rotatedFootprint } from "./geometry.js";
 import { roleName, worldMessage } from "./i18n.js";
@@ -18,8 +18,36 @@ import { MIN_RANGE } from "./nav/backend.js";
 import type { NavGrids } from "./nav/grid.js";
 import { distanceToArea, footprintArea, type Area } from "./raster.js";
 import type { PatientBody } from "./patient.js";
-import { BODY_FOOTPRINT, type SemanticRegistry } from "./registry.js";
+import { BODY_FOOTPRINT, roomLookup, type SemanticRegistry } from "./registry.js";
 import type { SightTarget, VisibilityModel } from "./visibility.js";
+
+/** A point of the facility, named (`regionLookup`): the room it is in (null outside one) and the region's name. */
+export interface NamedRegion {
+  room: string | null;
+  name: string;
+}
+
+/**
+ * THE region lookup of the world (`WorldRuntime.regionName`, lead note 2): where a point is, by name — the room it
+ * is in (`roomLookup`, the registry's own); in no room but inside a building on that level, that building's
+ * corridor; outdoors, the facility's outdoor region (e.g. "Healing Garden") — never "a corridor". Pure, built once
+ * per facility: the web's HUD names the learner's place with it, so the place beside the map and the in-world
+ * badge are one lookup of one position (audit 2026-11-12 P2-15).
+ */
+export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion">): (at: { level: string; x: number; z: number }, locale: string) => NamedRegion {
+  const roomAt = roomLookup(f);
+  const rooms = new Map(f.rooms.map((r) => [r.id, r]));
+  return (at, locale) => {
+    const room = roomAt(at.level, at.x, at.z);
+    const r = room ? rooms.get(room) : undefined;
+    if (r) return { room: r.id, name: t(r.name, locale) };
+    const building = f.buildings
+      .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(f, b).includes(at.level))
+      .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
+    if (building) return { room: null, name: worldMessage("region.corridor", locale, { building: t(building.name, locale) }) };
+    return { room: null, name: t(f.outdoorRegion, locale) };
+  };
+}
 
 /** The parts of the state store the locator reads. */
 export interface StateView {
@@ -55,7 +83,13 @@ export class WorldLocator {
   readonly patientId: EntityId | null;
   /** The bedside rule of this encounter (`bedside.ts`), measured from where the patient is now. */
   readonly bedside: BedsideRule;
+  /**
+   * Where the patient is now, as the bedside rule measures it: the point and room of the bed space they are in, the
+   * spot they were brought to, or where they walk beside someone; null without a patient.
+   */
+  readonly patientAnchor: () => BedsideAnchor | null;
   private readonly monitorIds: EntityId[];
+  private readonly regions: ReturnType<typeof regionLookup>;
 
   constructor(
     readonly facility: FacilityDefinition,
@@ -77,7 +111,9 @@ export class WorldLocator {
       if (this.patientBody) return this.patientBody.anchor();
       return slot ? { level: entityLevel(facility, slot), x: slot.x, z: slot.z, room: slot.room } : null;
     };
+    this.patientAnchor = anchor;
     this.bedside = new BedsideRule({ facility, visibility, grids, anchor, sight: (p) => this.sight(p) });
+    this.regions = regionLookup(facility);
   }
 
   /** Localised display name of an entity or actor (patients: their display name). */
@@ -165,16 +201,10 @@ export class WorldLocator {
    * Localised name of where a point is (lead note 2): the room it is in; in
    * no room but inside a building, that building's corridor; outdoors, the
    * facility's outdoor region (e.g. "Healing Garden") — never "a corridor".
+   * THE region lookup (`regionLookup`).
    */
   regionName(at: { level: string; x: number; z: number }, locale: string = this.locale): string {
-    const room = this.registry.roomAt(at.level, at.x, at.z);
-    const e = room ? this.registry.entity(`room:${room}`) : null;
-    if (e) return t(e.name, locale);
-    const building = this.facility.buildings
-      .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(this.facility, b).includes(at.level))
-      .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
-    if (building) return worldMessage("region.corridor", locale, { building: t(building.name, locale) });
-    return t(this.facility.outdoorRegion, locale);
+    return this.regions(at, locale).name;
   }
 
   /** Sight target of a placed entity (its current footprint). */

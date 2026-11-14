@@ -6,7 +6,7 @@
  * second history array anywhere in the UI (DESIGN_PRINCIPLES "UI derives
  * from the event log").
  */
-import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
+import { doseChallengeText, rt, type AgentEvent, type AgentRole, type ApprovalDecision, type EventMsg, type Op, type PlanItem, type TurnPhase } from "@clinicalcraft/agent";
 import type { WorldActionResult } from "@clinicalcraft/world";
 import { commandRefusal, learnerText, refusalLead, SPATIAL_CODES } from "./spatial.js";
 import { createSession as createEngineState, historyVoice, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
@@ -535,9 +535,18 @@ export class SessionStore {
         this.interventions.set(event.interventionId, { appropriateness: event.appropriateness, count: (prev?.count ?? 0) + 1, at: this.snapshot?.state.clock ?? 0 });
         if (iv) {
           const harm = event.appropriateness === "contraindicated" && iv.harm ? t(iv.harm, L) : "";
-          const text = [iv.dose ? t(iv.dose, L) : "", iv.response ? t(iv.response, L) : "", harm].filter(Boolean).join(" ");
-          this.chat.push({ key: this.key("i"), role: "system", agent: "patient", speaker: t(iv.name, L), text, grounded: [], streaming: false, tone: harm ? "harm" : "treat", at });
+          // a critical safety failure says so first, and is never shown in the colours of a treatment given (PROTOCOL §3.2)
+          const critical = event.critical ? rt(L, "safety.criticalFailureNow") : "";
+          const text = [critical, iv.dose ? t(iv.dose, L) : "", iv.response ? t(iv.response, L) : "", harm].filter(Boolean).join(" ");
+          this.chat.push({ key: this.key("i"), role: "system", agent: "patient", speaker: t(iv.name, L), text, grounded: [], streaming: false, tone: harm || critical ? "harm" : "treat", at });
         }
+        break;
+      }
+      case "dose.error": {
+        // an order whose dose differed from the dose prepared: not given — the nurse's read-back, as the nurse's
+        // words, then that nothing was given (docs/PROTOCOL.md §3.2)
+        const iv = c.interventions.find((x) => x.id === event.interventionId);
+        this.chat.push({ key: this.key("d"), role: "system", agent: "patient", speaker: iv ? t(iv.name, L) : event.interventionId, text: doseChallengeText(c, event, L), grounded: [], streaming: false, tone: "harm", at });
         break;
       }
       case "hint.used":

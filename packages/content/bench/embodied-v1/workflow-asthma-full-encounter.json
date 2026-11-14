@@ -1,0 +1,68 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-asthma-full-encounter",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "完整的具身儿童急性哮喘接诊",
+    "en": "Full embodied acute asthma encounter (child)"
+  },
+  "instruction": {
+    "zh-CN": "从患儿到达一直处理到安全处置：完成每一个学习目标，然后结束病例。",
+    "en": "Manage this child from arrival to a safe disposition: complete every objective, then finish the case."
+  },
+  "caseId": "pediatric-asthma",
+  "locale": "en",
+  "split": "test",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "objective": "obj-assess"
+          },
+          {
+            "objective": "obj-first-line"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-reassess"
+          },
+          {
+            "objective": "obj-discharge"
+          }
+        ]
+      }
+    },
+    {
+      "caseFinished": true
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 400,
+    "maxTurns": 10,
+    "timeoutMs": 600000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "solve-case"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": []
+  }
+}

@@ -39,6 +39,17 @@ const PHRASES = {
   woundChecked: { en: "Wound checked.", "zh-CN": "术野已检查。" },
   countReconciled: { en: "Recount correct: {n} of {of} {item} — you may close.", "zh-CN": "复点无误：{item}{n}/{of}——可以关闭。" },
   countUnresolved: { en: "Still {n} of {of} {item} after searching the room — an X-ray before the patient leaves.", "zh-CN": "全面查找后{item}仍只有{n}/{of}——患者离开前需拍 X 线片。" },
+  // information a colleague holds (docs/TEAM.md §4.5): asked for, reported back, told to the person, read back
+  infoNotice: { en: "{info} for {for} — {holder} has it; I'm getting it.{blocked}", "zh-CN": "{for}需要的{info}在{holder}那里，我去问。{blocked}" },
+  infoBlocked: { en: " {blocks} waits until it's confirmed.", "zh-CN": "{blocks}等确认后再进行。" },
+  infoRequest: { en: "{to}, {for} needs {info} — what did you learn?", "zh-CN": "{to}，{for}需要{info}——你了解到的情况是什么？" },
+  infoReport: { en: "{info}: {fact}", "zh-CN": "{info}：{fact}" },
+  infoRelay: { en: "{info}, from {holder}: {fact}", "zh-CN": "{info}——{holder}转述：{fact}" },
+  infoReadback: { en: "Read back — {info}: {fact}", "zh-CN": "复述——{info}：{fact}" },
+  infoConfirm: { en: "Yes — {info} as read back.", "zh-CN": "对——{info}复述无误。" },
+  infoNotKnown: { en: "I don't have {info}.", "zh-CN": "我不了解{info}。" },
+  infoUnresolved: { en: "{info} for {for} hasn't come — {reason}.{blocked}", "zh-CN": "{for}需要的{info}还没拿到——{reason}。{blocked}" },
+  infoStillBlocked: { en: " {blocks} still waits.", "zh-CN": "{blocks}仍需等待。" },
   // why a task could not be done, as a colleague tells it (escalations)
   "why.noAnswer": { en: "no answer from {to}", "zh-CN": "{to}没有回应" },
   "why.notFound": { en: "{to} can't find one in the room", "zh-CN": "{to}在手术间里找不到" },
@@ -46,6 +57,10 @@ const PHRASES = {
   "why.handsFull": { en: "{for}'s hands are full", "zh-CN": "{for}手里拿满了" },
   "why.failed": { en: "{to} couldn't pass it", "zh-CN": "{to}没能递过去" },
   "why.nobody": { en: "nobody is free to bring it", "zh-CN": "没有人能去拿" },
+  "why.infoAbsent": { en: "{to} isn't available", "zh-CN": "{to}现在不在" },
+  "why.infoUnknown": { en: "{to} doesn't have it", "zh-CN": "{to}也不了解" },
+  "why.noReadback": { en: "{for} hasn't read it back", "zh-CN": "{for}还没有复述确认" },
+  "why.infoNotHere": { en: "{for} isn't here to take it", "zh-CN": "{for}不在场，没法转告" },
 } as const;
 
 export type TeamPhrase = keyof typeof PHRASES;

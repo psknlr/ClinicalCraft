@@ -66,7 +66,8 @@ describe("follow me (escort_patient)", () => {
     expect((await follow(w)).status).toBe("completed");
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:ct-scanner" } });
     const ct = w.caseDef.investigations.find((i) => i.requires?.includes("ct"))!;
-    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: ct.id });
+    // the scan (its acquisition, EMBODIED §8.7) needs the patient on the scanner — walking beside it is not that
+    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: ct.id });
     expect(!check.ok && check.reason).toBe("patient-not-at-provider");
     if (check.ok || !check.hint?.then) return;
     const seen = events(w);
@@ -75,7 +76,7 @@ describe("follow me (escort_patient)", () => {
     expect(place(w)).toMatchObject({ provider: "eq:ct-scanner", posture: "lying" });
     expect(place(w).escort).toBeUndefined();
     expect(seen.find((e) => e.type === "patient.escort")).toMatchObject({ escort: null, actorId: null });
-    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: ct.id }).ok).toBe(true);
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: ct.id }).ok).toBe(true);
   });
 
   it("back to their own bed space afterwards: they walk home and are there again", async () => {

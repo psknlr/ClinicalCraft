@@ -14,7 +14,7 @@ not medical advice.).
 
 | | |
 |---|---|
-| id / version | `new-onset-t2dm` / `1.1.1` |
+| id / version | `new-onset-t2dm` / `1.1.2` |
 | setting / facility | `outpatient` / `general-hospital` (outpatient consulting room) |
 | specialty | endocrinology, general practice, internal medicine |
 | difficulty | 3 / 5 |
@@ -524,6 +524,29 @@ against a publisher record.
   代谢功能障碍相关脂肪性肝病 as the literal rendering of MASLD.
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In both
+  single-best decisions (`dec-diagnosis`, `dec-first-line`) the keyed option
+  was the uniquely longest in both languages; now it is in neither. The keys
+  are tighter wording of the same answer (the classic symptoms `dx-t2dm` no
+  longer lists stay in its feedback); the OGTT option gives its reason with
+  the same two values and thresholds, full-dose metformin is the key's plan at
+  full dose from day one (a near miss), and the insulin (glargine 10 units at
+  bedtime), sulfonylurea (gliclazide MR 30 mg), lifestyle-only, prediabetes,
+  repeat-test, type 1/LADA and GLP-1 RA options give their dose, plan or
+  rationale. In the
+  select-all `dec-cv-risk` and `dec-review` the wrong options now carry the
+  same specificity (aspirin "given his smoking and raised blood pressure",
+  perindopril plus irbesartan, the 4.9 mmol/L statin threshold, bedtime
+  glargine, gliclazide MR 30 mg); `rv-stop-statin` still quotes no ALT or
+  fatty liver. Medical meaning, correct flags, feedback and scoring are
+  unchanged.
+- **Option ids:** all already name their content; none changed.
+- **Matcher corpus:** two `extensions.testUtterances` that were one of their
+  item's keywords (`cases validate --strict`) are now paraphrases; no history
+  item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

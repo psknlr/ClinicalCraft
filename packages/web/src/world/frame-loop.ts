@@ -9,12 +9,13 @@
 import { MathUtils, Vector3 } from "three";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { clampPitch, PHYSICS, stepPlayer, targetFov, type Aabb } from "./physics.js";
-import { regionAt } from "./region.js";
+import { placeAt } from "./region.js";
 import { animateDoors } from "./structures.js";
 import { normAngle, rigRotationOf, yawTowards } from "./embodiment.js";
 import type { NpcRecord } from "./context.js";
 import { animateLive } from "./live.js";
 import { setBlink, setBreath, setMouth } from "./npc.js";
+import { screenSource } from "./screen-source.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
 /** Within this distance (m) someone speaking to the learner turns to face them. */
@@ -38,6 +39,11 @@ const PAUSED_FRAME_MS = 125;
 /** Longest stretch of an agent's walk (s) simulated in one slow frame (in physics sub-steps). */
 const AGENT_FRAME_MAX = 0.5;
 
+/** Has the player moved since `last` was reported (any distance; null: never reported)? */
+export function movedSince(last: { x: number; z: number; y: number } | null, now: { x: number; z: number; y: number }): boolean {
+  return !last || last.x !== now.x || last.z !== now.z || last.y !== now.y;
+}
+
 /** The frame loop of one world (`start` requests the first frame; `stop` cancels the pending one). */
 export class FrameLoop {
   private raf = 0;
@@ -49,6 +55,8 @@ export class FrameLoop {
   private readonly tmpV = new Vector3();
   private readonly tmpCam = new Vector3();
   private lastMove = 0;
+  /** Where the player was when last reported (`reportMove`); null: not yet. */
+  private reported: { x: number; z: number; y: number } | null = null;
 
   constructor(private readonly world: VoxelWorld) {}
 
@@ -62,11 +70,30 @@ export class FrameLoop {
     cancelAnimationFrame(this.raf);
   }
 
-  /** The room / region the player is in (the level's, in a multi-level facility). */
+  /**
+   * Where the player is, by name: THE region lookup of the world (`placeAt`, the one `WorldRuntime.regionName` uses)
+   * at the avatar's position on its level — the one lookup both the place beside the map and the in-world badge show.
+   */
   private region() {
     const world = this.world;
-    const { facility, player, locale, levels } = world;
-    return regionAt(facility, player.x, player.z, locale, levels.multi ? world.currentLevel() : undefined);
+    const { facility, player, locale, levels, level } = world;
+    return placeAt(facility, player.x, player.z, locale, levels.multi ? world.currentLevel() : level);
+  }
+
+  /**
+   * Report where the player is (`onMove`, ≤ ~10 Hz): the region — one lookup — and, in a multi-level facility, the
+   * level (its name indoors). Remembers what it reported, so a body moved while nobody plays is reported too.
+   */
+  private reportMove(now: number, moving: boolean): void {
+    const world = this.world;
+    const { player, levels, locale, callbacks } = world;
+    this.lastMove = now;
+    const r = this.region();
+    const lv = levels.multi ? world.currentLevel() : null;
+    // the level's name is shown indoors (outdoors is the ground anyway)
+    const levelInfo = lv ? (world.culling.buildingAt(player.x, player.z) >= 0 ? { level: lv, levelName: levels.name(lv, locale) } : { level: lv }) : {};
+    this.reported = { x: player.x, z: player.z, y: player.y };
+    callbacks.onMove({ x: player.x, z: player.z, yaw: world.yaw, region: r.name, roomId: r.roomId, moving, ...levelInfo });
   }
 
   /** Colliders near the player (the physics step tests these). */
@@ -75,7 +102,10 @@ export class FrameLoop {
     return ctx.colliders.query(player.x, player.z, 1.6);
   }
 
-  /** Redraw the live vitals / ECG screens near the player (≤ 10 Hz each; far ones only once). */
+  /**
+   * Redraw the live vitals / ECG screens near the player (≤ 10 Hz each; far ones only once). Whose vitals each one
+   * shows is asked every time (`screenSource`: the world model's answer — a cart wheeled to or from a bed included).
+   */
   private updateScreens(now: number): void {
     const { ctx, player, people, opts, locale } = this.world;
     for (const sc of ctx.screens) {
@@ -85,13 +115,15 @@ export class FrameLoop {
       if (d > 14 && sc.lastDraw > 0) continue;
       sc.lastDraw = now;
       let snap = null;
-      if (sc.slotId && people.patients.has(sc.slotId) && opts.vitals) {
-        try {
-          snap = opts.vitals(sc.slotId);
-        } catch {
-          snap = null;
-        }
+      let slot: string | null = null;
+      try {
+        slot = opts.vitals ? screenSource(sc, opts.screenSlot, (s) => people.patients.has(s)) : null;
+        snap = slot ? opts.vitals!(slot) : null;
+      } catch {
+        snap = null;
       }
+      sc.showing = snap ? slot : null;
+      sc.shown = snap;
       monitorRenderer.draw(sc.ctx, sc.canvas.width, sc.canvas.height, snap, now, locale);
       sc.texture.needsUpdate = true;
     }
@@ -165,18 +197,14 @@ export class FrameLoop {
       if (this.aimTimer > 0.09) {
         this.aimTimer = 0;
         world.interaction.update();
-        if (now - this.lastMove > 95) {
-          this.lastMove = now;
-          const r = this.region();
-          const lv = levels.multi ? world.currentLevel() : null;
-          // the level's name is shown indoors (outdoors is the ground anyway)
-          const levelInfo = lv ? (world.culling.buildingAt(player.x, player.z) >= 0 ? { level: lv, levelName: levels.name(lv, locale) } : { level: lv }) : {};
-          callbacks.onMove({ x: player.x, z: player.z, yaw: world.yaw, region: r.name, roomId: r.roomId, moving: moved > 0.001, ...levelInfo });
-        }
+        if (now - this.lastMove > 95) this.reportMove(now, moved > 0.001);
       }
     } else {
       camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
       camera.rotation.set(world.pitch, world.yaw, 0);
+      // nobody plays (a window is open): a body put somewhere else all the same — a reposition, the end of a walk
+      // settling on its spot — is reported, so the place beside the map and the badge never keep the old room
+      if (movedSince(this.reported, player) && now - this.lastMove > 95) this.reportMove(now, false);
     }
     // staff walking world-model routes (delegated tasks): an animation, real time
     if (walkers.update(Math.min(realDt, 0.25))) world.culling.cullWalkers();

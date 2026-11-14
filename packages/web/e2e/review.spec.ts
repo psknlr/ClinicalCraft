@@ -13,7 +13,7 @@
  */
 import { expect, test, type ConsoleMessage, type Page } from "@playwright/test";
 import fs from "node:fs";
-import { dispatch, enterCase, freshStart, shot, talkToPatient } from "./helpers.js";
+import { dispatch, enterCase, freshStart, replaySolution, shot, talkToPatient } from "./helpers.js";
 
 /** Console errors and warnings (WebGL warnings included). */
 function watchConsole(page: Page): string[] {
@@ -217,7 +217,12 @@ test.describe("assets, toasts and the finished HUD", () => {
 
     // Report figures: placeholders instead of broken images.
     // embodied mode: CT images are read at an imaging workstation — set-up reads it (this checks the placeholders)
-    await dispatch(page, [{ type: "order", investigationId: "abdct" }, { type: "read", investigationId: "abdct" }]);
+    // set-up: the CT ordered, done with the patient on the scanner (the acquisition the session records, EMBODIED §8.7), read
+    await dispatch(page, [
+      { type: "order", investigationId: "abdct" },
+      { type: "acquire", investigationId: "abdct", collector: "radiographer", by: "system" },
+      { type: "read", investigationId: "abdct" },
+    ]);
     await page.evaluate(() => (window as any).__QA__.route("report", { investigationId: "abdct", phase: "pre", back: { panel: "journal" } }));
     const tiles = page.locator(".report-images .image-tile");
     await expect(tiles.first()).toBeVisible();
@@ -262,10 +267,7 @@ test.describe("assets, toasts and the finished HUD", () => {
       const title = objectives[objectives.length - 1].title;
       return typeof title === "string" ? title : title["zh-CN"];
     });
-    await page.evaluate(() => {
-      const qa = (window as any).__QA__;
-      for (const a of qa.game.caseDef.solution) qa.dispatch(a);
-    });
+    await replaySolution(page);
     await expect(page.locator(".toast.show .toast-title")).toContainText(lastChapter);
     await expect(page.locator("#chapter")).toHaveText("CASE CLOSED");
     await expect(page.locator("#quest-title")).toHaveText("病例已结束 · 查看复盘");
@@ -327,11 +329,8 @@ test.describe("phone layout (390 px)", () => {
     await page.keyboard.press("Escape");
 
     // Debrief rubric: stacked rows inside the window (no horizontal overflow).
-    await page.evaluate(() => {
-      const qa = (window as any).__QA__;
-      for (const a of qa.game.caseDef.solution) if (a.type !== "finish") qa.dispatch(a);
-      qa.route("board");
-    });
+    await replaySolution(page, { finish: false });
+    await page.evaluate(() => (window as any).__QA__.route("board"));
     await page.locator("#finish").click();
     await expect(page.locator(".rubric-table")).toBeVisible({ timeout: 60_000 });
     const fit = await page.evaluate(() => {

@@ -138,7 +138,7 @@ export async function benchOperative(ctx: CliContext, args: ParsedArgs): Promise
   const m = report.metrics.overall;
   const verdict = operativeReportPasses(report, required);
   const rate = `${verdict.successPercent.toFixed(1)} %`;
-  ctx.print(om(L, "cli.summary", { agent: agent.kind, k: m.taskSuccess.k, n: m.taskSuccess.n, rate, critical: `${m.safetyCritical.k}/${m.safetyCritical.n}`, leaks: m.leaks }));
+  ctx.print(om(L, "cli.summary", { agent: agent.kind, k: m.taskSuccess.k, n: m.taskSuccess.n, rate, critical: `${m.safetyCritical.k}/${m.safetyCritical.n}`, unsafe: `${m.safetyNotPassed.k}/${m.safetyNotPassed.n}`, leaks: m.leaks }));
   ctx.print(om(L, "cli.written", { md: ctx.show(mdPath), json: ctx.show(jsonPath) }));
   if (verdict.leaks) ctx.printErr(ctx.err.red(om(L, "cli.leaks")));
   if (required !== null && verdict.successPercent + 1e-9 < required) ctx.printErr(ctx.err.red(om(L, "cli.below", { rate, required: `${required} %` })));

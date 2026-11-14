@@ -42,13 +42,14 @@ export function autopilotPanel(app: App): () => PanelView {
         return label ? learnerText(label) : null;
       };
       clear(trace);
-      // labels in the learner's language: case items by name, staff by name (the world's registry)
+      // labels in the learner's language: case items by name (a locked decision by its number only), staff by name
+      // (the world's registry)
       const world = game.session.world();
       const name = (id: string) => {
         const e = world?.entity(id);
         return e ? ct(e.name) : null;
       };
-      trace.append(traceList(traceGroups(spans, hintOf, 10), { caseDef: game.caseDef, name }));
+      trace.append(traceList(traceGroups(spans, hintOf, 10), { caseDef: game.caseDef, name, state: store.snapshot?.state ?? game.session.session.state }));
       const list = trace.firstElementChild as HTMLElement | null;
       if (list) list.scrollTop = list.scrollHeight;
     };
@@ -76,6 +77,8 @@ export function autopilotPanel(app: App): () => PanelView {
           external ? h("small", { class: "muted", id: "autopilot-external" }, tr("ext.autopilotOff")) : null,
         ]);
       const list = store.toolCalls.filter((c) => c.agent === "clinician");
+      // A decision still locked is named by its number only, as the case board names it.
+      const learnerState = store.snapshot?.state ?? game.session.session.state;
       clear(calls);
       if (!list.length) calls.append(h("li", { class: "empty" }, tr("auto.noCalls")));
       for (const c of list.slice(-60)) {
@@ -85,7 +88,7 @@ export function autopilotPanel(app: App): () => PanelView {
             { class: `call ${c.status}` },
             h("span", { class: "call-status", "aria-label": c.status === "ok" ? tr("auto.ok") : c.status === "failed" ? tr("auto.fail") : tr("auto.running") }, c.status === "ok" ? "✓" : c.status === "failed" ? "✕" : "…"),
             h("b", { class: "call-tool", title: c.tool, dataset: { tool: c.tool } }, nameLabel(c.tool)),
-            h("small", null, callArgsLabel(c.args, game.caseDef)),
+            h("small", null, callArgsLabel(c.args, game.caseDef, learnerState)),
             c.output ? h("p", { class: "call-output" }, c.output.length > 280 ? `${c.output.slice(0, 277)}…` : c.output) : null,
           ),
         );

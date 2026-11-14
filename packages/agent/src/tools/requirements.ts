@@ -25,7 +25,8 @@ import {
   type Requirement,
   type SessionState,
 } from "@clinicalcraft/core";
-import { joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { decisionNumber } from "./decision-refs.js";
 import { countItemName, openItemsText } from "../session/notifications.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { procedureLabel } from "../session/i18n-procedure.js";
@@ -82,11 +83,25 @@ export function countLines(c: CaseDefinition, s: SessionState, L: string): strin
   return lines;
 }
 
+/**
+ * A decision by its number, never its authored id (which can name the answer: docs/PROTOCOL.md §6.1). A decision's
+ * prompt may state results not yet obtained: shown only once it was answered.
+ */
 function decisionLabel(c: CaseDefinition, s: SessionState, id: string, L: string): string {
   const d = c.decisions.find((x) => x.id === id);
-  const n = c.decisions.findIndex((x) => x.id === id) + 1;
-  // a decision's prompt may state results not yet obtained: shown only once it was answered or is unlocked
-  return d && Object.prototype.hasOwnProperty.call(s.decisions, id) ? `[${id}] ${t(d.prompt, L)}` : `[${id}] ${rt(L, "label.decisionN", { n })}`;
+  const n = String(decisionNumber(c, id));
+  // "req.decided" reads "decision {label}" / "决策 {label}": "decision 2", "decision 2: <prompt>"
+  return d && Object.prototype.hasOwnProperty.call(s.decisions, id) ? `${n}${isZh(L) ? "：" : ": "}${t(d.prompt, L)}` : n;
+}
+
+/** A time since the last dose in words: "at least 5 min after the last IM adrenaline" / "距上次肌注肾上腺素至少5分钟". */
+function elapsedSinceText(c: CaseDefinition, leaf: { intervened: string; gte?: number; lte?: number }, L: string): string {
+  const name = interventionLabel(c, leaf.intervened, L);
+  const { gte, lte } = leaf;
+  if (gte == null && lte == null) return rt(L, "req.intervened", { name });
+  const range =
+    gte != null && lte != null ? rt(L, "req.elapsedSince.between", { gte, lte }) : gte != null ? rt(L, "req.elapsedSince.gte", { gte }) : rt(L, "req.elapsedSince.lte", { lte: lte! });
+  return rt(L, "req.elapsedSince", { range, name });
 }
 
 /** One requirement in words (a leaf, or an `any` / `not` kept whole). */
@@ -105,6 +120,7 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   }
   if ("inOrder" in cond) return rt(L, "req.inOrder", { names: cond.inOrder.map((id) => interventionLabel(c, id, L)).join(" → ") });
   if ("held" in cond) return rt(L, "req.held", { name: interventionLabel(c, cond.held, L) });
+  if ("elapsedSince" in cond) return elapsedSinceText(c, cond.elapsedSince, L);
   if ("decided" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.decided, L) });
   if ("decidedFirstTry" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.decidedFirstTry, L) });
   if ("attempted" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.attempted, L) });
@@ -131,7 +147,7 @@ export function nextAction(c: CaseDefinition, s: SessionState, r: Requirement, L
     const missing = cond.inOrder.find((id: string) => !s.interventions.some((x) => x.interventionId === id && x.appropriateness !== "contraindicated"));
     return missing ? rt(L, "next.intervene", { id: missing }) : null;
   }
-  if ("decided" in cond) return rt(L, "next.answer", { id: cond.decided });
+  if ("decided" in cond) return rt(L, "next.answer", { id: String(decisionNumber(c, cond.decided)) });
   if ("procedure" in cond) {
     const step = procedureStep(cond.procedure);
     return step ? rt(L, "next.operate", { op: step }) : rt(L, "next.observe");

@@ -13,13 +13,13 @@
  *                  clock ticks — paused while an agent drives a body (EMBODIED R8) —, the clinical-mode
  *                  `walk_to` dynamic tool (embodied: mapped onto a world navigation)
  */
-import { patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import { patientAgeText, patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
 import { presentationOfSex } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
-import { tr } from "../i18n/index.js";
+import { getLocale, tr } from "../i18n/index.js";
 import { surgeryOffered } from "../ui/panels/surgery-controls.js";
 import { STANDALONE } from "./llm.js";
 import type { EmbodiedLink } from "./embodied-link.js";
@@ -36,10 +36,9 @@ export function slotFor(c: Pick<CaseDefinition, "setting">, f: FacilityDefinitio
   return f.patientSlots.find((s) => s.accepts.includes(c.setting)) ?? f.patientSlots[0] ?? null;
 }
 
+/** The patient's age in the UI language as clinicians write it ("8岁4个月", "18 hours"): core `patientAgeText`. */
 export function ageText(c: CaseDefinition): string {
-  const p = c.patient;
-  const key = p.ageUnit === "months" ? "age.months" : p.ageUnit === "days" ? "age.days" : "age.years";
-  return tr(key, { n: p.age });
+  return patientAgeText(c.patient, getLocale());
 }
 
 export function sexText(c: CaseDefinition): string {
@@ -92,6 +91,8 @@ export class WorldHost {
     private readonly settings: () => WorldSettings,
     private readonly callbacks: WorldCallbacks,
     private readonly vitals: (slotId: string) => VitalsSnapshot | null,
+    /** Which slot a live screen shows now (`WorldOptions.screenSlot`: the world model's answer; undefined: none to ask). */
+    private readonly screenSlot: (placementId: string) => string | null | undefined = () => undefined,
   ) {}
 
   static keyOf(spec: WorldSpec): string {
@@ -114,6 +115,7 @@ export class WorldHost {
         saved,
         callbacks: this.callbacks,
         vitals: (slotId) => this.vitals(slotId),
+        screenSlot: (placementId) => this.screenSlot(placementId),
         // equipment models are served files (`/local-assets/models/…`): the single-file build draws voxels
         ...(STANDALONE ? { models: false as const } : {}),
       });

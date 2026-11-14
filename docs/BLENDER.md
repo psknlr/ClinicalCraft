@@ -14,7 +14,7 @@ The parts:
 | Blender bridge | `scripts/blender/clinicalcraft_blender.py` | finds an equipment type in the catalogs, describes it, builds its voxel parts as a blockout, makes palette materials, exports the model and returns its catalog `model` reference |
 | Shape kit | `scripts/blender/clinicalcraft_shapes.py` | boxes, cylinders, tubes, bars, rings, lathes and flat profiles in the type's own frame, into one mesh with one material (colours as vertex colours, roughness, metalness and glow from a palette texture) |
 | Refiner | `scripts/blender/clinicalcraft_refine.py` | a model from a type's own voxel parts: rounded boxes, round bars and poles, casters or glides, discs where the voxels drew a circle, a dark housing behind each screen, blobs for foliage |
-| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (97) into `packages/content/assets/models` and writes each reference into its catalog |
+| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (105) into `packages/content/assets/models` and writes each reference into its catalog |
 | blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
 | Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
 | Previewer | `node scripts/preview/render.mjs models …` | draws the built models as the web world does — placed by their catalog references, lit like the world, a glowing quad where each live screen goes, the body a type is drawn with (its `manikin`), the voxel parts beside them with `--compare 1` — in headless Chromium: no Blender needed to look at a model |
@@ -26,7 +26,10 @@ bed, wheelchair and stool, the IV pole and the infusion pumps, the oxygen cylind
 the ventilator, suction unit, defibrillator and crash cart, the mobile C-arm (its C
 one arc: `Kit.revolve`), the surgical light, the garden bench and the wall diagnostic
 set (the otoscope and ophthalmoscope on coiled cords, the aneroid gauge over its cuff,
-a stethoscope hung by its headset on a peg: `coiled`, `stethoscope` in `builtin_models.py`); the CT, MRI and
+a stethoscope hung by its headset on a peg: `coiled`, `stethoscope` in `builtin_models.py`), and the two handheld
+items kept in custody (audit 2026-11-12 P2-12): the blood specimen tube lying on its side — clear tube, red serum cap
+(the ISO 6710 code), with layers for its looks: `sample`, the blood, and `label`, the patient label with its barcode,
+drawn once it is filled and labelled — and the medication box with its pharmacy label; the CT, MRI and
 PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
 (or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
 (the web bundle carries the catalogs and so the pinned hashes).

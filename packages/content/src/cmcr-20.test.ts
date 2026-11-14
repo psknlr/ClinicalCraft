@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { assess, availableDecisions, caseCapabilityGaps, createSession, parseCase, parseCatalog, parseFacility, reduce, verifyCase } from "@clinicalcraft/core";
+import { stepsThatTrapALateLearner } from "./__fixtures__/completable.js";
 
 const ids = ["1551890", "33716", "859819", "1653413", "1551894", "138796", "1423446", "1423442", "1423434", "70044", "1653406", "1653403", "1653404", "1551887", "51617", "70005", "138898", "1074569", "1551893", "1653409"].map((id) => `cmcr-${id}`).sort();
 const hospital = parseFacility(JSON.parse(readFileSync(new URL("../facilities/general-hospital.json", import.meta.url), "utf8")));
@@ -14,7 +15,12 @@ const catalogs = readdirSync(new URL("../catalogs/", import.meta.url)).filter((f
 
 describe("CMCR published-case collection", () => {
   it("contains exactly the 20 selected, distinct source reports", () => {
-    expect(readdirSync(new URL("../cases/", import.meta.url)).filter((id) => id.startsWith("cmcr-")).sort()).toEqual(ids);
+    const collection = readdirSync(new URL("../cases/", import.meta.url)).filter((id) => {
+      if (!id.startsWith("cmcr-")) return false;
+      const c = JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")) as { tags: string[] };
+      return c.tags.includes("cmcr-20");
+    });
+    expect(collection.sort()).toEqual(ids);
   });
 
   it("never references media withdrawn because they identify a patient", () => {
@@ -22,7 +28,13 @@ describe("CMCR published-case collection", () => {
       withdrawn: { case: string; file: string; sha256: string }[];
     };
     expect(withdrawn.length).toBeGreaterThan(0);
+    // A report awaiting re-authoring has no case in the library, so nothing there can reference its withdrawn media.
+    const awaiting = new Set(
+      (JSON.parse(readFileSync(new URL("../../../scripts/cmcr-105-sources.json", import.meta.url), "utf8")) as { awaitingReauthoring?: { ids: string[] } })
+        .awaitingReauthoring?.ids ?? [],
+    );
     for (const w of withdrawn) {
+      if (awaiting.has(w.case)) continue;
       const c = JSON.parse(readFileSync(new URL(`../cases/${w.case}/case.json`, import.meta.url), "utf8")) as { assets: { path: string; sha256?: string }[] };
       expect(c.assets.filter((a) => a.path.endsWith(`/${w.file}`) || a.sha256 === w.sha256), `${w.case}/${w.file}`).toEqual([]);
     }
@@ -67,6 +79,8 @@ describe("CMCR published-case collection", () => {
     }
     const verification = verifyCase(c);
     expect(verification.ok, JSON.stringify(verification.issues)).toBe(true);
+    // No objective can become impossible: a learner who does any order or intervention late can still finish.
+    expect(stepsThatTrapALateLearner(c)).toEqual([]);
   });
 });
 
@@ -83,7 +97,7 @@ function load(id: string) {
 describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () => {
   for (const id of ids) it(`${id}: decisions, rubric, debrief, references, matcher corpus and README`, () => {
     const c = load(id);
-    expect(c.version).toBe("1.1.0");
+    expect(c.version).toMatch(/^1\.1\.\d+$/); // the 1.1 revision; patch releases keep the standard
     // Decisions test reasoning: at least three, each with at least three options and feedback of its own.
     expect(c.decisions.length).toBeGreaterThanOrEqual(3);
     for (const d of c.decisions) {
@@ -133,8 +147,16 @@ describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () =
   });
 
   it("gives every patient a distinct pseudonym in both languages", () => {
+    // The case contracts above already validate the full definitions. This
+    // cross-case metadata check only needs each display name, read once.
+    const displayNames = ids.map((id) => {
+      const c = JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")) as {
+        patient: { displayName: Record<"zh-CN" | "en", string> };
+      };
+      return c.patient.displayName;
+    });
     for (const locale of ["zh-CN", "en"] as const) {
-      const names = ids.map((id) => load(id).patient.displayName[locale]);
+      const names = displayNames.map((name) => name[locale]);
       expect(new Set(names).size, locale).toBe(names.length);
     }
   });

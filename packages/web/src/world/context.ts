@@ -2,7 +2,7 @@
  * Shared state while building and running a world.
  */
 import type { Box3, Group, Mesh, MeshStandardMaterial, Object3D, PointLight, Scene, Texture } from "three";
-import type { EquipmentModel, EquipmentType, FacilityDefinition } from "@clinicalcraft/core";
+import type { EquipmentModel, EquipmentType, FacilityDefinition, VitalsSnapshot } from "@clinicalcraft/core";
 import type { CollisionModel, DoorSpec } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
 import type { WorldLevels } from "./levels.js";
@@ -102,8 +102,17 @@ export interface ScreenRecord {
   texture: Texture;
   x: number;
   z: number;
-  /** Patient slot whose vitals feed this screen (vitals/ecg). */
+  /**
+   * The bed space this screen was built beside (vitals/ecg: the slot whose monitor it is, else the nearest slot in
+   * its room within 4 m) — what it shows only without a world model (clinical mode, the harness: nothing moves).
+   * With one, what it shows is the world's answer each time it is drawn (`WorldOptions.screenSlot`, THE screen rule:
+   * what the device is connected to where it stands now).
+   */
   slotId: string | null;
+  /** The patient slot whose vitals it showed when last drawn (null: nobody — "no patient"). QA and tests. */
+  showing?: string | null;
+  /** The bedside snapshot it drew last (null: none). QA and tests compare it with the engine's and the monitor panel's. */
+  shown?: VitalsSnapshot | null;
   lastDraw: number;
   /** Level of the screen's placement. */
   level: string;

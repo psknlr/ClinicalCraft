@@ -10,7 +10,7 @@
 import { datumStatus } from "./datum.js";
 import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition, ProcedurePredicate } from "../schema/common.js";
-import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
+import type { HoldRecord, InterventionRecord, OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
@@ -40,9 +40,21 @@ export function resultFor(c: CaseDefinition, investigationId: string, phase: str
   return Object.prototype.hasOwnProperty.call(investigation.results, phase) ? investigation.results[phase] : null;
 }
 
-/** True when the order's result can be read: static clock, or turnaround elapsed. */
+/**
+ * Is the order's study still waiting for its acquisition — placed with a `modality` (in-world mode: done on the
+ * patient at that device, docs/EMBODIED.md §8.7) and the patient not yet there? Its result does not exist yet.
+ */
+export function awaitingAcquisition(order: Pick<OrderRecord, "modality" | "acquired">): boolean {
+  return !!order.modality?.length && !order.acquired;
+}
+
+/**
+ * True when the order's result can be read: it was acquired (implied at the order unless it waits for the patient
+ * at a device), and on a simulated clock its turnaround after the acquisition has elapsed.
+ */
 export function isOrderReady(c: CaseDefinition, s: SessionState, order: OrderRecord): boolean {
-  return c.clock.mode === "static" || s.clock >= order.readyAt;
+  if (awaitingAcquisition(order)) return false;
+  return c.clock.mode === "static" || (order.readyAt != null && s.clock >= order.readyAt);
 }
 
 function inRange(value: number, range: { gte?: number; lte?: number }): boolean {
@@ -79,6 +91,34 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
   );
 }
 
+/**
+ * The minute an intervention was last given — its latest record that is not an invalid checklist attempt (a dose
+ * given while contraindicated was given) — or null while it has never been given.
+ */
+export function lastGiven(s: SessionState, interventionId: string): number | null {
+  return lastGivenRecord(s, interventionId)?.at ?? null;
+}
+
+/** The latest record of an intervention that is not an invalid checklist attempt (`lastGiven`), or null. */
+export function lastGivenRecord(s: SessionState, interventionId: string): InterventionRecord | null {
+  for (let i = s.interventions.length - 1; i >= 0; i--) {
+    const r = s.interventions[i]!;
+    if (r.interventionId === interventionId && !r.invalid) return r;
+  }
+  return null;
+}
+
+/**
+ * Was a finding examined after the intervention was last given? By committed action sequence (records saved before
+ * `seq` compare minutes); false while either never happened.
+ */
+function examinedAfterLast(s: SessionState, findingId: string, interventionId: string): boolean {
+  const exam = s.lastExamined?.[findingId];
+  const last = lastGivenRecord(s, interventionId);
+  if (!exam || !last) return false;
+  return last.seq != null ? exam.seq > last.seq : exam.at > last.at;
+}
+
 /** The holds standing on an intervention (placed, not released), oldest first. */
 export function activeHolds(s: SessionState, interventionId: string): HoldRecord[] {
   return (s.holds ?? []).filter((h) => h.interventionId === interventionId && !h.released);
@@ -88,9 +128,13 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
  * Evaluate a condition against a session.
  *
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
- * without `phase` match any phase. `asked` also holds when an item that
+ * without `phase` match any phase. `ordered` holds for a test ordered and done: an in-world study waiting for the
+ * patient at its device (`awaitingAcquisition`, docs/EMBODIED.md §8.7) stays outstanding until it was acquired there
+ * (text mode: acquired at the order). `asked` also holds when an item that
  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
- * recorded attempt (rejected answers are not attempts).
+ * recorded attempt (rejected answers are not attempts). `elapsedSince` measures from the last time the
+ * intervention was given (`lastGiven`) and is false while it never was; `examined` with `afterLast` holds when the
+ * finding's latest examination came after it.
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
   if ("all" in cond) return cond.all.every((x) => evaluate(c, s, x));
@@ -98,15 +142,20 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("not" in cond) return !evaluate(c, s, cond.not);
   if ("always" in cond) return cond.always;
   if ("asked" in cond) return historyCredited(c, s, cond.asked);
-  if ("examined" in cond) return s.examined.includes(cond.examined);
-  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase));
+  if ("examined" in cond) return s.examined.includes(cond.examined) && (cond.afterLast == null || examinedAfterLast(s, cond.examined, cond.afterLast));
+  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase) && !awaitingAcquisition(o));
   if ("read" in cond) return wasRead(s, cond.read, cond.phase);
   if ("resultReady" in cond) return resultReady(c, s, cond.resultReady, cond.phase);
   if ("decided" in cond) return Object.prototype.hasOwnProperty.call(s.decisions, cond.decided);
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
   if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
-    const count = s.interventions.filter((r) => r.interventionId === cond.intervened && (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid)).length;
+    const count = s.interventions.filter(
+      (r) =>
+        r.interventionId === cond.intervened &&
+        (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid) &&
+        (!cond.whenIndicated || r.appropriateness === "indicated"),
+    ).length;
     return count >= (cond.minCount ?? 1);
   }
   if ("inOrder" in cond) {
@@ -126,6 +175,11 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
     return value != null && compare(value, cond.op, cond.value);
   }
   if ("elapsed" in cond) return inRange(s.clock, cond.elapsed);
+  if ("elapsedSince" in cond) {
+    const at = lastGiven(s, cond.elapsedSince.intervened);
+    // minutes, freed of floating-point noise (fractional action costs add up)
+    return at != null && inRange(Math.round((s.clock - at) * 1e6) / 1e6, cond.elapsedSince);
+  }
   if ("hints" in cond) return inRange(s.hints, cond.hints);
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
@@ -147,13 +201,22 @@ export type ConditionRef =
   | { kind: "exam"; id: string; path: (string | number)[] }
   | { kind: "investigation"; id: string; phase?: string; requiresRecord: boolean; path: (string | number)[] }
   | { kind: "decision"; id: string; path: (string | number)[] }
-  | { kind: "intervention"; id: string; minCount?: number; path: (string | number)[] }
+  | { kind: "intervention"; id: string; minCount?: number; whenIndicated?: boolean; path: (string | number)[] }
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
   | { kind: "vital"; id: string; path: (string | number)[] }
   /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
   | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] };
+
+/** The `elapsedSince` leaves of a condition (through all, any and not), in document order. */
+export function elapsedSinceLeaves(cond: Condition | undefined): Extract<Condition, { elapsedSince: unknown }>["elapsedSince"][] {
+  if (!cond) return [];
+  if ("all" in cond) return cond.all.flatMap(elapsedSinceLeaves);
+  if ("any" in cond) return cond.any.flatMap(elapsedSinceLeaves);
+  if ("not" in cond) return elapsedSinceLeaves(cond.not);
+  return "elapsedSince" in cond ? [cond.elapsedSince] : [];
+}
 
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
@@ -163,7 +226,10 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("any" in node) node.any.forEach((x, i) => visit(x, [...path, "any", i]));
     else if ("not" in node) visit(node.not, [...path, "not"]);
     else if ("asked" in node) out.push({ kind: "history", id: node.asked, path: [...path, "asked"] });
-    else if ("examined" in node) out.push({ kind: "exam", id: node.examined, path: [...path, "examined"] });
+    else if ("examined" in node) {
+      out.push({ kind: "exam", id: node.examined, path: [...path, "examined"] });
+      if (node.afterLast != null) out.push({ kind: "intervention", id: node.afterLast, path: [...path, "afterLast"] });
+    }
     else if ("ordered" in node) out.push({ kind: "investigation", id: node.ordered, phase: node.phase, requiresRecord: false, path: [...path, "ordered"] });
     else if ("read" in node) out.push({ kind: "investigation", id: node.read, phase: node.phase, requiresRecord: true, path: [...path, "read"] });
     else if ("resultReady" in node)
@@ -172,8 +238,9 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("attempted" in node) out.push({ kind: "decision", id: node.attempted, path: [...path, "attempted"] });
     else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
-      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
+      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), ...(node.whenIndicated ? { whenIndicated: true } : {}), path: [...path, "intervened"] });
     else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
+    else if ("elapsedSince" in node) out.push({ kind: "intervention", id: node.elapsedSince.intervened, path: [...path, "elapsedSince", "intervened"] });
     else if ("held" in node) out.push({ kind: "intervention", id: node.held, path: [...path, "held"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });

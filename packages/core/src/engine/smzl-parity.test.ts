@@ -499,8 +499,9 @@ const V4_UI = {
 };
 
 /**
- * Deliberate V5 divergences from V4's zh-CN text, keyed `${historyId}.${field}`.
- * Each entry pins both the V4 text (it must still equal V4's `Za`) and the
+ * Deliberate V5 divergences from V4's zh-CN text, keyed `${historyId}.${field}`
+ * (a `Za` question) or `${decisionId}.${optionId}.text` (a `Ka` option).
+ * Each entry pins both the V4 text (it must still equal V4's `Za` / `Ka`) and the
  * V5 text exactly, and is listed in the case README's V4 differences table.
  * Keep it minimal: every other carried-over string stays identical.
  */
@@ -510,7 +511,25 @@ const V5_TEXT_DIVERGENCES: Record<string, { v4: string; v5: string; why: string 
     v5: "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。",
     why: "V4's last sentence is a clinician's diagnostic caveat spoken in the patient's voice (against persona.actingNotes: no diagnostic conclusions); V5 keeps it in the attending's teaching knowledge instead",
   },
+  "diagnosis.metastasis.text": {
+    v4: "肺腺癌转移可以解释全部异常",
+    v5: "肺腺癌骨髓及脾转移可以解释全部异常",
+    why: "length cue (CASE_AUTHORING §9.8): V4's key was the longest option in every decision; the distractor now names the sites it would have to explain, which its V4 feedback already answers",
+  },
+  "safety.negative.text": {
+    v4: "HBV DNA未检出，可以排除再激活风险",
+    v5: "HBV DNA未检出，可以排除再激活风险，无需抗病毒预防",
+    why: "length cue: the distractor states the consequence a learner would draw (no prophylaxis), which its V4 feedback already answers",
+  },
+  "genetics.same.text": {
+    v4: "足以证明两种肿瘤具有共同起源",
+    v5: "足以证明两种肿瘤同源，并可据断点确定融合基因",
+    why: "length cue: the distractor adds the fusion-gene claim that its V4 feedback already rebuts",
+  },
 };
+
+/** The V5 zh-CN text of a V4 `Ka` option: V4's, unless a divergence is pinned for it. */
+const v5OptionText = (decisionId: string, o: { id: string; text: string }) => V5_TEXT_DIVERGENCES[`${decisionId}.${o.id}.text`]?.v5 ?? o.text;
 
 /* ------------------------------------------------------------------ */
 /* V4 ⇄ V5 adapters                                                    */
@@ -700,8 +719,8 @@ describe("smzl-lung-adeno — V4 text fidelity (zh-CN)", () => {
     expect(C.history.find((h) => h.id === "other")!.disclosure).toBe("unknown");
   });
 
-  it("divergences: only spleen.answer, which drops V4's last (caveat) sentence and changes nothing else", () => {
-    expect(Object.keys(V5_TEXT_DIVERGENCES)).toEqual(["spleen.answer"]);
+  it("divergences: spleen.answer drops V4's last (caveat) sentence and changes nothing else", () => {
+    expect(Object.keys(V5_TEXT_DIVERGENCES)).toEqual(["spleen.answer", "diagnosis.metastasis.text", "safety.negative.text", "genetics.same.text"]);
     const d = V5_TEXT_DIVERGENCES["spleen.answer"]!;
     expect(Za.find((q) => q.id === "spleen")!.answer).toBe(d.v4);
     expect(d.v4.startsWith(d.v5)).toBe(true);
@@ -718,13 +737,24 @@ describe("smzl-lung-adeno — V4 text fidelity (zh-CN)", () => {
     });
   });
 
-  it("decisions Ka: identical prompt/need/options/feedback, single best answer", () => {
+  it("divergences: the option texts are V4 distractors, pinned to V4's Ka (keys and feedback unchanged)", () => {
+    for (const [key, d] of Object.entries(V5_TEXT_DIVERGENCES)) {
+      const m = /^(\w+)\.(\w+)\.text$/.exec(key);
+      if (!m) continue;
+      const v4 = Ka[m[1]!]!.options.find((o) => o.id === m[2])!;
+      expect(v4.ok, key).toBe(false);
+      expect(v4.text, key).toBe(d.v4);
+      expect(zh(C.decisions.find((x) => x.id === m[1])!.options.find((o) => o.id === m[2])!.text), key).toBe(d.v5);
+    }
+  });
+
+  it("decisions Ka: identical prompt/need/options/feedback (except the pinned option divergences), single best answer", () => {
     expect(C.decisions.map((d) => d.id)).toEqual(Object.keys(Ka));
     for (const [id, k] of Object.entries(Ka)) {
       const d = C.decisions.find((x) => x.id === id)!;
       expect(d.kind).toBe("single");
       expect([zh(d.prompt), zh(d.need)], id).toEqual([k.title, k.need]);
-      expect(d.options.map((o) => [o.id, zh(o.text), o.correct, zh(o.feedback)]), id).toEqual(k.options.map((o) => [o.id, o.text, o.ok, o.feedback]));
+      expect(d.options.map((o) => [o.id, zh(o.text), o.correct, zh(o.feedback)]), id).toEqual(k.options.map((o) => [o.id, v5OptionText(id, o), o.ok, o.feedback]));
     }
   });
 

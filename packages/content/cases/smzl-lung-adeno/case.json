@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
@@ -2293,49 +2293,37 @@
       "requires": {
         "all": [
           {
-            "all": [
+            "asked": "pain"
+          },
+          {
+            "asked": "spleen"
+          },
+          {
+            "asked": "lung"
+          },
+          {
+            "read": "cbc",
+            "phase": "pre"
+          },
+          {
+            "any": [
               {
-                "asked": "pain"
+                "read": "abdct",
+                "phase": "pre"
               },
               {
-                "asked": "spleen"
-              },
-              {
-                "asked": "lung"
+                "read": "us",
+                "phase": "pre"
               }
             ]
           },
           {
-            "all": [
-              {
-                "read": "cbc",
-                "phase": "pre"
-              },
-              {
-                "any": [
-                  {
-                    "read": "abdct",
-                    "phase": "pre"
-                  },
-                  {
-                    "read": "us",
-                    "phase": "pre"
-                  }
-                ]
-              }
-            ]
+            "read": "biopsy",
+            "phase": "pre"
           },
           {
-            "all": [
-              {
-                "read": "biopsy",
-                "phase": "pre"
-              },
-              {
-                "read": "flow",
-                "phase": "pre"
-              }
-            ]
+            "read": "flow",
+            "phase": "pre"
           }
         ]
       },
@@ -2347,8 +2335,8 @@
         {
           "id": "metastasis",
           "text": {
-            "zh-CN": "肺腺癌转移可以解释全部异常",
-            "en": "Metastatic lung adenocarcinoma explains all the abnormalities"
+            "zh-CN": "肺腺癌骨髓及脾转移可以解释全部异常",
+            "en": "Lung adenocarcinoma metastatic to the marrow and spleen explains all the abnormalities"
           },
           "correct": false,
           "feedback": {
@@ -2401,8 +2389,8 @@
         {
           "id": "negative",
           "text": {
-            "zh-CN": "HBV DNA未检出，可以排除再激活风险",
-            "en": "HBV DNA is undetectable, so the risk of reactivation can be ruled out"
+            "zh-CN": "HBV DNA未检出，可以排除再激活风险，无需抗病毒预防",
+            "en": "HBV DNA is undetectable, so the risk of reactivation can be ruled out and no antiviral prophylaxis is needed"
           },
           "correct": false,
           "feedback": {
@@ -2443,8 +2431,8 @@
         {
           "id": "same",
           "text": {
-            "zh-CN": "足以证明两种肿瘤具有共同起源",
-            "en": "It is sufficient to prove that the two tumours share a common origin"
+            "zh-CN": "足以证明两种肿瘤同源，并可据断点确定融合基因",
+            "en": "It is enough to prove that the two tumours share a common origin and to name the fusion gene from the breakpoints"
           },
           "correct": false,
           "feedback": {
@@ -3416,7 +3404,7 @@
         ]
       },
       {
-        "text": "现在吃什么药？",
+        "text": "您现在吃的药都有哪些？",
         "locale": "zh-CN",
         "expect": [
           "meds",
