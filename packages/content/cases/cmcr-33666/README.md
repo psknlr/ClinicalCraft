@@ -40,8 +40,8 @@ After the case the learner can:
 3. Apply the WHO 5th edition (2022) criteria to a JAK2 V617F-positive, BCR::ABL1-negative marrow and say what
    is still needed to separate essential thrombocythaemia from polycythaemia vera and prefibrotic myelofibrosis.
 4. Choose, with paediatric haematology and from adult evidence (ELN 2018; Tefferi 2024; PT-1, 2005), one
-   first-line cytoreductive drug for a young child rather than three at once, and give the family specific
-   advice on aspirin, Reye's syndrome, NSAIDs and vaccination.
+   first-line cytoreductive drug for a young child — hydroxyurea or interferon-α, not both — and give the family
+   specific advice on aspirin, Reye's syndrome, NSAIDs and vaccination.
 5. Manage a new afebrile seizure in a child with a myeloproliferative neoplasm as a possible stroke or venous
    sinus thrombosis: glucose, count and clotting, antiplatelet drugs held, a same-day MRI with vascular
    sequences (RCPCH 2017).
@@ -69,7 +69,7 @@ recorded.
 ranges recorded); no VWF test. Marrow smear: 172 megakaryocytes, 100 of them platelet-producing; trephine:
 myeloproliferative changes, reticulin "±". JAK2 at V617: heterozygous G/T (JAK2 V617F); BCR::ABL1 P210 and a
 second fusion test negative; karyotype 46,XX. The report's diagnosis: **childhood essential thrombocythaemia
-with onset in the preschool years, JAK2 V617F-positive**.
+with onset in the preschool years**; its JAK2 result (G/T at V617) is the V617F mutation.
 
 **Course:** treatment included hydroxyurea, interferon and aspirin, among others (doses, start days and order not
 recorded). On treatment day 2 she had a brief afebrile seizure; a contrast-enhanced MRI showed no abnormality.
@@ -80,8 +80,9 @@ did not return.
 measure the bleeding risk (VWF activity, the APTT against its range) and image the abdominal veins before any
 antiplatelet drug or anticoagulant; complete the WHO 2022 criteria (haemoglobin, a marrow morphology review
 against prefibrotic myelofibrosis, given her white count and spleen); lower the count with one first-line
-cytoreductive drug chosen with paediatric haematology, with interferon-α often preferred in the young and aspirin
-waiting for VWF activity; give the family specific advice on aspirin, Reye's syndrome, NSAIDs and vaccines; and
+cytoreductive drug, hydroxyurea or interferon-α, chosen with paediatric haematology and the family (interferon
+spares decades of hydroxyurea but means weekly injections and flu-like and mood effects at 5), with aspirin only
+once VWF activity is shown to be adequate (ristocetin cofactor activity above 30 %); give the family specific advice on aspirin, Reye's syndrome, NSAIDs and vaccines; and
 treat a new seizure as a possible stroke or sinus thrombosis with same-day imaging.
 
 ## Scenario timeline and physiology
@@ -123,12 +124,13 @@ Titles and hints name no diagnosis and contain no option text.
 | `first-assessment` | presentation and earlier treatment asked, spleen examined, counts and CRP read | `primary-workup`: a primary (clonal) cause is likelier; film, iron status, BCR::ABL1 and JAK2 (then CALR, MPL), marrow aspirate and trephine | `more-antibiotics` (infection is the commonest cause in children — the pre-admission course); `iron-trial` (iron deficiency is common and treatable); `start-imatinib` (leucocytosis + spleen + thrombocytosis looks like CML) |
 | `bleeding-clotting` | decision 1, clotting read, abdomen palpated | `vwf-doppler-first`: no aspirin yet; VWF antigen, activity and factor VIII; the APTT against its range; Doppler of the portal, splenic and mesenteric veins | `aspirin-today` (the colleague's suggestion; aspirin was among the report's drugs); `empirical-heparin` (ten days of pain might be a mesenteric clot); `ct-then-aspirin` (the near-miss: right worry, wrong test, and aspirin once the scan is clear) |
 | `classification` | marrow smear, trephine, gene mutation, fusion and karyotype read | `mpn-label-pending`: a BCR::ABL1-negative, JAK2 V617F-positive MPN, essential thrombocythaemia likely; WHO 2022 still needs the haemoglobin and a marrow morphology review against prefibrotic myelofibrosis | `cml-likely` (white count + spleen; a missed rare transcript); `prefibrotic-settled` (leucocytosis, spleen and reticulin "settle" it — the near-miss); `hereditary-first` (onset this young; pause the marrow work-up) |
-| `treatment` | decision 3 | `single-cytoreductive`: one first-line cytoreductive drug (interferon-α first in a young child, hydroxyurea the alternative); aspirin only once VWF activity is known and the count has fallen; written advice on ibuprofen, chickenpox and flu | `report-triple` (start the three drugs the report used at the same time); `aspirin-alone` (the adult revised IPSET would call her low risk); `anagrelide-first` (spare a child hydroxyurea) |
+| `treatment` | decision 3 | `single-cytoreductive`: one first-line cytoreductive drug, hydroxyurea or pegylated interferon-α, chosen with paediatric haematology; aspirin only once VWF activity is shown to be adequate; written advice on ibuprofen, chickenpox and flu | `report-triple` (start the three drugs the report used at the same time); `aspirin-alone` (the adult revised IPSET would call her low risk); `anagrelide-first` (spare a child hydroxyurea) |
 | `seizure-response` | the seizure asked about in `seizure` | `urgent-vascular-imaging`: possible stroke or sinus thrombosis until imaging says otherwise — airway, bedside glucose, count and clotting, antiplatelet drugs held, urgent MRI with diffusion, venous and arterial sequences, neurology | `outpatient-eeg` (the first-seizure pathway for otherwise healthy children); `antiseizure-load` (load levetiracetam, image in a few days); `stop-new-drug` (blame interferon, scan only if it recurs) |
 
 Every option has its own feedback (2–4 sentences naming the guidance, issuing body and year). Option ids name
-their content. Measured option lengths: the key is the uniquely longest option only in decision 1 (both
-locales); in `treatment` the key and `report-triple` tie in zh-CN; elsewhere a distractor is longer.
+their content. Measured option lengths (re-measured 2026-11-14): the key is the uniquely longest option only in decision 1
+(both locales); in every other decision a distractor is longer in both locales (`treatment`: `report-triple`
+229 / 69 characters against the key's 213 / 68).
 
 ### Rubric (11 deterministic items, weight 30, + 1 examiner-judged)
 
@@ -257,14 +259,14 @@ flag, and the teaching text reads the APTT and fibrinogen only against "the labo
 2. **Description** — "Walk me through what you knew on admission, and what you ordered before any treatment."
 3. **Analysis**
    * "What made a reactive cause unlikely here — and what would have made you accept it?"
-   * "Why did aspirin wait? What do the APTT of 52.3 s and a count near 2000 have to do with bleeding?"
+   * "Why did aspirin wait? What do the APTT of 52.3 s and counts of 1905 and 1497 have to do with bleeding?"
    * "Ten days of periumbilical pain with a palpable spleen: which clot were you looking for, and with what test?"
    * "What does a positive JAK2 V617F settle, and what does it leave open? Why does her white count matter for the
      label?"
    * "How did you choose a cytoreductive drug for a 5-year-old, and what did you tell the family about aspirin,
      ibuprofen, chickenpox and flu?"
    * "On treatment day 2 she had a brief seizure without fever. What did you rule out first, and how fast?"
-   * "The report gave hydroxyurea, interferon and aspirin and her count fell to 559 by day 15. What can — and
+   * "The report gave hydroxyurea, interferon and aspirin, among others, and her count fell to 559 by day 15. What can — and
      can't — this single case tell us?"
 4. **Summary** — "What will you check before prescribing aspirin the next time a child's platelets are above
    1000 × 10⁹/L?"
@@ -276,7 +278,7 @@ flag, and the teaching text reads the APTT and fibrinogen only against "the labo
 | "Still an infection" — another course of antibiotics | `more-antibiotics`; `antibiotics` contraindicated (no fever, CRP < 8 mg/L, count unchanged) | `rb-first-assessment` |
 | Empirical iron without a ferritin | `iron-trial` | `rb-first-assessment` |
 | Imatinib before a BCR::ABL1 result | `start-imatinib` | `rb-first-assessment` |
-| Aspirin "to prevent a clot" at a count near 2000 | `aspirin-today`, `ct-then-aspirin`, `aspirin-alone`; `aspirin` contraindicated and `critical: true` | `rb-bleeding-clotting`, `rb-no-antithrombotic`, `rb-treatment` |
+| Aspirin "to prevent a clot" at counts of 1905 and 1497 | `aspirin-today`, `ct-then-aspirin`, `aspirin-alone`; `aspirin` contraindicated and `critical: true` | `rb-bleeding-clotting`, `rb-no-antithrombotic`, `rb-treatment` |
 | Anticoagulating a clot nobody has shown | `empirical-heparin`; `heparin` contraindicated | `rb-bleeding-clotting`, `rb-no-antithrombotic` |
 | Contrast CT before a Doppler ultrasound in a child | `ct-then-aspirin` | `rb-bleeding-clotting` |
 | CML because of the white count and spleen | `cml-likely` | `rb-classification` |
@@ -320,7 +322,7 @@ previously healthy with growth and intelligence as for her age; no family histor
 alert and generally well, no petechiae, bruises or bleeding spots; soft abdomen with periumbilical tenderness and
 no rebound; spleen 2 cm below the costal margin; both counts, CRP and the clotting screen; the marrow smear and
 trephine; JAK2, the fusion tests and the karyotype; the report's diagnosis and drugs; the seizure on treatment
-day 2 and the contrast MRI; the day-15 and 5-month counts and the pain's resolution.
+day 2 and the contrast MRI; the day-15 and 5-month counts and no further abdominal pain.
 
 **Extraction summary (1.0.0 field → 1.1.0).** 15 template history slots → 27 items (the 4 recorded symptom slots
 split into presentation, site, pattern, trigger, fever, bleeding, bowel and treatment; past health and family
@@ -338,9 +340,19 @@ are a phase of their own (`seizure`); the day-15 and 5-month counts are a separa
 
 **Adapted for teaching (labelled).** The relative (relationship not recorded — the persona says so), all
 dialogue, three worries that add no clinical fact (`concerns-admission`, `concerns-workup`, `concerns-seizure`,
-sourced "Teaching device"); the staff; the phases' wording; decisions, options, feedback, interventions, rubric,
+sourced "Teaching device"); the staff; the setting as a children's ward and the phases' wording; decisions, options, feedback, interventions, rubric,
 teaching points; the unrecorded tests offered to the learner with "No result is recorded for this test."; the
 order-entry notices; the child's pointing in the opening line.
+
+**Inferences (derived from 1.0.0, not new facts; each is under "To verify").** "G/T heterozygous at V617" is
+read as JAK2 V617F (c.1849G>T); "输抗感染药" as IV anti-infective treatment, and its place in the presenting
+history as before admission; the 10 days of the chief complaint as admission on day 10 of the pain; 1.0.0's
+"极高" as the HH flag on both platelet counts.
+
+**Inferences (derived from 1.0.0, not new facts; each is under "To verify").** "G/T heterozygous at V617" is
+read as JAK2 V617F (c.1849G>T); "输抗感染药" as IV anti-infective treatment, and its place in the presenting
+history as before admission; the 10 days of the chief complaint as admission on day 10 of the pain; 1.0.0's
+"极高" as the HH flag on both platelet counts.
 
 **Contradictions and ambiguities kept, not resolved.**
 * The two counts have no dates; the triage note gives 1905 × 10⁹/L as an earlier result ("曾"), and 1.0.0 calls
@@ -350,6 +362,10 @@ order-entry notices; the child's pointing in the opening line.
   day 2" and "day 15".
 * "增强MRI" names no region or sequences; the case calls the study "Urgent MRI with contrast" and says the
   sequences are not recorded.
+* 1.0.0 words the trephine "骨髓增生性改变" in Chinese (which can also be read as "hyperplastic") and
+  "myeloproliferative changes" in English; each language keeps its own wording in the record.
+* 1.0.0 words the trephine "骨髓增生性改变" in Chinese (which can also be read as "hyperplastic") and
+  "myeloproliferative changes" in English; each language keeps its own wording in the record.
 * Reticulin keeps the report's "±" notation; no fibrosis grade is assigned.
 * Which drugs had started by the seizure, and whether they were started together, are not recorded; the case
   claims neither.
@@ -450,7 +466,9 @@ and product-information records and is named in the text without a reference ent
   grade.
 * The JAK2 result's wording and method (is "G/T heterozygous at V617" V617F, c.1849G>T?), the allele burden;
   which second fusion was tested; CALR and MPL; the karyotype's specimen and metaphases.
-* The antibiotics given before admission (drug, dose, days) and where.
+* The antibiotics given before admission (drug, dose, days) and where; that they were intravenous ("输") and
+  given before admission, and that admission was on day 10 of the pain.
+* The trephine's wording: "骨髓增生性改变" (hyperplastic) or "骨髓增殖性改变" (myeloproliferative).
 * The treatment: hydroxyurea dose; the interferon preparation (standard or pegylated) and dose; aspirin dose and
   start day; what "等" (among others) includes; the order of the drugs; whether aspirin preceded the seizure.
 * The seizure: description, duration, recovery, the count and clotting that day, glucose and electrolytes, any
@@ -459,40 +477,54 @@ and product-information records and is named in the text without a reference ent
   thrombosis; follow-up beyond 5 months.
 * Who accompanied the child (to name the companion by relation); whether the family's counts were checked.
 
-**Guidance details (secondary sources only in this review):**
+**Guidance checked from primary texts in the independent review (2026-11-14):**
+* GTH/GPOH THROMKID-Plus 2021 (full text, Europe PMC): a study-group review that states no consensus guideline
+  for paediatric thrombocytosis exists; an antiplatelet drug above 1000 × 10⁹/L only with a ristocetin cofactor
+  activity above 30 % (citing Barbui, Leukemia 2012); low-dose aspirin in paediatric ET with symptoms (including
+  splenomegaly) or a JAK2 mutation; cytoreduction proposed for persistent extreme thrombocytosis, with hydroxyurea
+  suggested as a possible first line (Kucine et al., Haematologica 2014) and interferon-α "may constitute a
+  preferred treatment option in children", though injections and flu-like and neuropsychiatric effects may
+  complicate adherence in younger children. This is why decision 4 keys either drug, not interferon first.
+* ELN 2018 (full text): hydroxyurea and recombinant interferon-α as first-line agents in high-risk ET, no
+  consensus on anagrelide; a platelet count above 1500 × 10⁹/L an additional indication for cytoreduction;
+  interferon preferred in young patients needing long-term treatment (stated for polycythaemia vera); low-dose
+  aspirin for low- or intermediate-risk ET with JAK2 V617F.
+* Tefferi 2024 (full text): the abstract names hydroxyurea and pegylated interferon-α first line and busulfan second
+  line (the body calls hydroxyurea first line and prefers interferon-α as second line under 65); ristocetin
+  cofactor screening is advised above 1000 × 10⁹/L.
+* RCPCH 2017 (pathway poster): CT/CTA within 1 hour; MRI with stroke-specific sequences when there is diagnostic
+  uncertainty; new-onset focal seizures among the presentations in which to consider stroke.
+* MHRA aspirin advice for under-16s in force from 1 October 2003 (RCPCH Reye's syndrome pages; product wording).
+* NICE NG217 (2022, recommendation 7.1.1): emergency treatment for convulsive seizures lasting 5 minutes or more.
+* Start smart then focus (UKHSA, updated 12 September 2023): antimicrobials only when the patient clinically
+  requires them.
+
+**Guidance still to confirm (secondary sources only):**
 * BSH 2010: whether it advises a VWF screen before aspirin at extreme counts, its paediatric recommendations, and
   the adult high-risk criterion "platelets > 1500 × 10⁹/L" (seen only in a UK audit summary of the guideline).
-* ELN 2018: its wording on extreme thrombocytosis and acquired von Willebrand syndrome (confirmed only for the 2011
-  ELN statements, "≥ 1500 × 10⁹/L"), its risk categories for ET, and whether it names hydroxyurea "at any age" or
-  interferon for young patients (the case cites ELN 2018 only for "cytoreduction is for high-risk disease").
-* Tefferi 2024: its wording on AVWS screening before aspirin (the authors' 2012 update advised screening at
-  > 1000 × 10⁹/L) and the VWF activity cut-off below which aspirin is withheld (< 30 % is commonly used, e.g. in a
-  Mayo series; not printed as a rule in the case).
-* Interferon-α "often preferred in the young": supported here by Kucine N, et al. Use of pegylated interferon in
-  young patients with polycythemia vera and essential thrombocythemia. Pediatr Blood Cancer. 2021;68(3):e28888,
-  doi:10.1002/pbc.28888 (abstract: adult guidelines favour interferon upfront for young patients); a clinician
-  reviewer may add it as a reference.
-* RCPCH 2017: imaging within 1 hour of arrival for a suspected stroke and MRI when the diagnosis is uncertain were
-  confirmed from the launch announcement and pathway; its wording on venous imaging for sinus thrombosis was not
-  (the case attributes venography to "when sinus thrombosis is possible" without quoting RCPCH for it).
+* Tiede 2011: the wording of its myeloproliferative section on lowering the count before antiplatelet drugs
+  (bibliographic data and abstract only).
+* RCPCH 2017: its wording on venous imaging for sinus thrombosis (not in the pathway poster; the case attributes
+  venography to "when sinus thrombosis is possible" without quoting RCPCH for it).
+* Interferon-α in young patients: Kucine N, et al. Use of pegylated interferon in young patients with
+  polycythemia vera and essential thrombocythemia. Pediatr Blood Cancer. 2021;68(3):e28888,
+  doi:10.1002/pbc.28888 — a clinician reviewer may add it as a reference.
 * WHO 5th edition (2022) criteria: ET and prefibrotic myelofibrosis kept from the revised 4th edition (2016),
   with leucoerythroblastosis added as a minor criterion of prefibrotic myelofibrosis; the ICC 2022 (Arber et al.,
   Blood 2022;140(11):1200-1228, doi:10.1182/blood.2022015850) criteria are the same for this case's purpose and
   could be cited beside WHO.
 * Plateletpheresis: the ASFA 2023 categories for symptomatic (II) and prophylactic (III) thrombocytosis were seen
   only in secondary sources and are not printed.
-* Influenza vaccination for children on aspirin (inactivated vaccine; the live nasal vaccine's labelling
-  contraindicates it with aspirin) — confirmed from CDC/ACIP summaries; the case names no year for it.
+* Vaccines: the inactivated influenza vaccine for children on aspirin (the live nasal vaccine's labelling
+  contraindicates it with aspirin) was confirmed from CDC/ACIP summaries; the advice to ask haematology before
+  any live vaccine during cytoreductive treatment follows the hydroxycarbamide product information and was not
+  re-checked here.
 * Revised IPSET-thrombosis (Barbui et al., Blood Cancer J 2015) is named in decision 4 without a reference entry.
 * Chinese guidance to add after review: 中华医学会血液学分会白血病淋巴瘤学组《原发性血小板增多症诊断与治疗中国专家共识
   （2016年版）》（中华血液学杂志 2016;37(10):833-836, doi:10.3760/cma.j.issn.0253-2727.2016.10.001）— its wording on
   aspirin and acquired von Willebrand syndrome was not confirmed, and no newer edition was found.
 * NICE NG217 (2022) first-seizure recommendations are not cited; check them if the outpatient-pathway feedback is
   extended.
-* Collection contract vs STANDARD §6.6: the contract matches the English review note with the case-sensitive
-  pattern "not yet reviewed by a licensed clinician", which the §6.6 sentence ("… Not yet reviewed by a licensed
-  clinician.") does not match; like most re-authored cases, this one ends the note with "The case is not yet
-  reviewed by a licensed clinician."
 
 ## Changelog
 
@@ -522,12 +554,38 @@ and product-information records and is named in the text without a reference ent
   first answer everywhere scores 50 %. `aspirin` is `critical: true`, `heparin` `critical: false`.
 * **Teaching layer.** 6 learning outcomes, 6 key reasoning steps, 5 teaching points with guidance and year, 8
   unknowns, 4 staff (attending, nurse, haematology and neurology consultants), 9 Vancouver references (DOIs found
-  by search), editorial review status with six guidelines and the §6.6 notes.
+  by search), editorial review status with six guidelines and the review notes (STANDARD §1.2).
 * **Fact check of the teaching text.** Nothing attributes to the report an order, a timing, a dose or a
   combination it does not record (the three drugs are "among others", their order and start days unknown); the
   MRI is "contrast-enhanced", region and sequences unrecorded.
 * **Corpus and schema.** 40 paraphrased utterances with negatives; extensions unified (`sourceDoi`,
   `doiVerifiedAt`, `sourceTextChecked: false`, `embodied.ivAccessInSitu: false`).
+
+* **Independent review (2026-11-14).** Decision 4 keys one first-line drug, hydroxyurea or pegylated
+  interferon-α, chosen with paediatric haematology (it had keyed interferon first in a young child, which the
+  paediatric review the case cites does not support); aspirin waits for an adequate VWF activity (ristocetin
+  cofactor above 30 %, Stockklausner et al. 2021) rather than for both VWF and a fall in the count; learning
+  outcome 4 no longer implies the report started three drugs at once; the day-15 count no longer appears in a
+  work-up-phase feedback; the debrief keeps "among others", the PT, the runny nose and "no further abdominal
+  pain" (not "pain-free"), and the recorded counts (1905 and 1497, not "near 2000"); harm texts for heparin,
+  antibiotics and levetiracetam name their guidance (Tefferi 2024; Start smart then focus, UKHSA 2023; NICE NG217,
+  2022); WHO 2022 is cited for what it defines, not for treatment order; the trephine keeps 1.0.0's Chinese
+  wording; the outcome record no longer puts the derived V617F label in the report's words; the zh judge
+  guidance no longer gives the relative a sex; the family advice adds live-vaccine caution; THROMKID-Plus is
+  labelled a study-group review; the attending names the report's drugs only at the debrief.
+
+* **Independent review (2026-11-14).** Decision 4 keys one first-line drug, hydroxyurea or pegylated
+  interferon-α, chosen with paediatric haematology (it had keyed interferon first in a young child, which the
+  paediatric review the case cites does not support); aspirin waits for an adequate VWF activity (ristocetin
+  cofactor above 30 %, Stockklausner et al. 2021) rather than for both VWF and a fall in the count; learning
+  outcome 4 no longer implies the report started three drugs at once; the day-15 count no longer appears in a
+  work-up-phase feedback; the debrief keeps "among others", the PT, the runny nose and "no further abdominal
+  pain" (not "pain-free"), and the recorded counts (1905 and 1497, not "near 2000"); harm texts for heparin,
+  antibiotics and levetiracetam name their guidance (Tefferi 2024; Start smart then focus, UKHSA 2023; NICE NG217,
+  2022); WHO 2022 is cited for what it defines, not for treatment order; the trephine keeps 1.0.0's Chinese
+  wording; the outcome record no longer puts the derived V617F label in the report's words; the zh judge
+  guidance no longer gives the relative a sex; the family advice adds live-vaccine caution; THROMKID-Plus is
+  labelled a study-group review; the attending names the report's drugs only at the debrief.
 
 ### 1.0.0
 
@@ -536,12 +594,12 @@ and product-information records and is named in the text without a reference ent
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-13):
+Run from the worktree root (all passed on 2026-11-14, after the independent review):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-33666/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-33666 --lang en          # 81 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-33666        # depth floor, do-nothing 0, wrong-first 50 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-33666        # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33666:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33666:"   # in-world demonstration, en + zh-CN
 ```
@@ -552,7 +610,7 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 抗感染治疗后腹痛稍缓解，血常规无明显变化。无发热、流涕，无明显黏膜出血，无恶心呕吐、腹泻或便秘；未报告家族遗传病史。
 查体神志清楚、一般情况好，无瘀点瘀斑或出血点，腹软，脐周压痛，无反跳痛，脾肋下2 cm；没有记录生命体征。两次血常规先后为
 血小板1905、1497×10⁹/L，白细胞27.29、20.27×10⁹/L；CRP<8 mg/L；PT 14.2 s，APTT 52.3 s，纤维蛋白原1.84 g/L（参考范围
-未记录），没有VWF检测。骨髓巨核细胞172个，其中产板型100个；活检为骨髓增殖性改变，网状纤维“±”；JAK2 V617位点G/T杂合
+未记录），没有VWF检测。骨髓巨核细胞172个，其中产板型100个；活检为骨髓增生性改变，网状纤维“±”；JAK2 V617位点G/T杂合
 （JAK2 V617F），BCR::ABL1 P210及另一项融合基因阴性，核型46,XX。报告诊断：学龄前期发病的儿童原发性血小板增多症。治疗给予
 羟基脲、干扰素和阿司匹林等（剂量、开始日期和先后顺序未记录）；治疗第2天出现一次短暂无热惊厥，增强MRI未见异常；第15天
 血小板559×10⁹/L，随访5个月220–390×10⁹/L，未再腹痛。本版事实沿用1.0.0版的提取内容，尚未对照原文全文核对。
@@ -563,8 +621,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 2. 在VWF活性明确之前暂缓阿司匹林，解释获得性血管性血友病综合征，并在按血栓处理腹痛之前先做腹部多普勒超声（Tiede等，2011）。
 3. 按WHO第5版（2022）标准判读JAK2 V617F阳性、BCR::ABL1阴性的骨髓结果，说明与真性红细胞增多症、纤维化前期骨髓纤维化
    鉴别还需要什么。
-4. 依据成人证据（ELN 2018；Tefferi 2024；PT-1，2005）与儿童血液科一起选择一种一线降细胞药，而不是三药同用，并就阿司匹林、
-   瑞氏综合征、非甾体抗炎药和疫苗接种给出具体建议。
+4. 依据成人证据（ELN 2018；Tefferi 2024；PT-1，2005）与儿童血液科一起选择一种一线降细胞药（羟基脲或干扰素α，不两药
+   并用），并就阿司匹林、瑞氏综合征、非甾体抗炎药和疫苗接种给出具体建议。
 5. 把骨髓增殖性肿瘤患儿新出现的无热惊厥当作可能的卒中或静脉窦血栓处理：血糖、血象和凝血，暂停抗血小板药，当天做含血管
    成像的MRI（RCPCH 2017）。
 6. 用Calgary–Cambridge的分段说明和回授法向家属解释一种需要长期随访的血液病，并说明这例报告能说明什么、不能说明什么。
@@ -573,14 +631,14 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 项：再用一个疗程抗生素、经验性补铁、先用伊马替尼）；② 出血与血栓：暂不用阿司匹林，查VWF抗原、活性和Ⅷ因子，复核APTT，做
 门静脉、脾静脉和肠系膜静脉多普勒超声（干扰项：今天就用阿司匹林、不做影像先用肝素、先做增强CT再用阿司匹林）；③ 分类：
 BCR::ABL1阴性、JAK2 V617F阳性的骨髓增殖性肿瘤，按WHO 2022还需血红蛋白和骨髓形态复核（干扰项：仍按慢粒、纤维化前期骨髓
-纤维化“已定论”、先按遗传性处理）；④ 治疗：选一种一线降细胞药（年幼儿童先考虑干扰素α），阿司匹林等VWF，书面交代用药
-安全（干扰项：照搬报告三药同用、只用阿司匹林、首选阿那格雷）；⑤ 惊厥：在影像排除前按卒中或静脉窦血栓处理，查血糖、血象
-和凝血，暂停抗血小板药，当天做含弥散、静脉和动脉成像的MRI，请神经科（干扰项：按普通首次惊厥门诊随访、先用抗癫痫药负荷、
+纤维化“已定论”、先按遗传性处理）；④ 治疗：与儿童血液科一起选一种一线降细胞药（羟基脲或聚乙二醇干扰素α），阿司匹林
+等VWF活性证实足够，书面交代用药安全（干扰项：把报告用过的三种药同时起用、只用阿司匹林、首选阿那格雷）；⑤ 惊厥：在影像
+排除前按卒中或静脉窦血栓处理，查血糖、血象和凝血，暂停抗血小板药，当天做含弥散、静脉和动脉成像的MRI，请神经科（干扰项：按普通首次惊厥门诊随访、先用抗癫痫药负荷、
 归因于干扰素）。关键项：出血风险明确前不用阿司匹林、不经影像不用肝素；惊厥当天安排脑影像。
 
 **安全结果。** `aspirin` 标为 `critical: true`：血小板1905和1497×10⁹/L、APTT 52.3 s未解释且始终没有VWF结果时给予阿司匹林，即判安全结果不通过（`safety.passed: false`），无论得分多少；`heparin` 标为 `critical: false`，由关键评分项 `rb-no-antithrombotic` 显示。
 
 **复盘要点（PEARLS）。** 先谈感受；复述入院时知道什么、用药之前先查了什么；分析：为什么不像反应性增多、为什么阿司匹林
 要等VWF、腹痛加脾大要找哪种血栓、JAK2 V617F能说明什么不能说明什么、白细胞为什么影响诊断、怎样为5岁孩子选药并交代阿司
-匹林和疫苗、惊厥时首先排除什么；最后讨论：报告三种药之后第15天559×10⁹/L、5个月220–390×10⁹/L的结局，单个病例能说明什么、
+匹林和疫苗、惊厥时首先排除什么；最后讨论：报告用羟基脲、干扰素和阿司匹林等药之后第15天559×10⁹/L、5个月220–390×10⁹/L的结局，单个病例能说明什么、
 不能说明什么。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。

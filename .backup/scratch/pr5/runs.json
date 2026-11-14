@@ -39,7 +39,8 @@
       "script": "pr5/reauthor-v4.js",
       "argsFile": "args-C.json",
       "started": "2026-11-14 01:05",
-      "plan": "14 reviews, then 32 authors"
+      "plan": "14 reviews, then 32 authors",
+      "status": "stopped at the weekly limit 2026-11-14 ~03:50 (10 reviews each done)"
     },
     {
       "name": "cases-D",
@@ -48,7 +49,8 @@
       "script": "pr5/reauthor-v4.js",
       "argsFile": "args-D.json",
       "started": "2026-11-14 01:05",
-      "plan": "14 reviews, then 32 authors"
+      "plan": "14 reviews, then 32 authors",
+      "status": "stopped at the weekly limit 2026-11-14 ~03:50 (10 reviews each done)"
     },
     {
       "name": "audit-wave2 (resumed)",
@@ -59,7 +61,37 @@
         "base": "a833280"
       },
       "started": "2026-11-14 01:05",
-      "plan": "re-review cached; implementation agents continue from their uncommitted work"
+      "plan": "re-review cached; implementation agents continue from their uncommitted work",
+      "status": "stopped at the weekly limit ~03:50: re-review, imaging, world, team-bench, dose done (reports in audit2/wave2-reports.json); handheld, web stopped"
+    },
+    {
+      "name": "cases-E",
+      "runId": "wf_0e4d051b-466",
+      "task": "wwbf2dfbs",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-E.json",
+      "started": "2026-11-14 04:00",
+      "plan": "4 reviews, then 32 authors"
+    },
+    {
+      "name": "cases-F",
+      "runId": "wf_05812a35-ee5",
+      "task": "wbvs2300c",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-F.json",
+      "started": "2026-11-14 04:03",
+      "plan": "4 reviews, then 32 authors"
+    },
+    {
+      "name": "audit-wave2b",
+      "runId": "wf_5adfbd09-c67",
+      "task": "wxmty5rt6",
+      "script": "audit2/wave2b.js",
+      "args": {
+        "base": "a833280"
+      },
+      "started": "2026-11-14 04:06",
+      "plan": "handheld + web (continue), then two review lenses, fix, verify"
     }
   ]
 }

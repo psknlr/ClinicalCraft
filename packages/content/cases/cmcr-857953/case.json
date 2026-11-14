@@ -64,7 +64,8 @@
         "ACCP 2013 (3rd ed.) establishing the diagnosis of lung cancer",
         "AAAAI/ACAAI 2022 drug allergy practice parameter update",
         "国家卫生健康委员会 β内酰胺类抗菌药物皮肤试验指导原则（2021年版）",
-        "中华人民共和国卫生行业标准 WS 288—2017 肺结核诊断"
+        "中华人民共和国卫生行业标准 WS 288—2017 肺结核诊断",
+        "Johns Hopkins ABX Guide 2023: Actinomyces (Fabre V)"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -1837,8 +1838,8 @@
             "en": "During this admission (dates not recorded)"
           },
           "text": {
-            "zh-CN": "多次痰抗酸染色涂片：阴性。痰培养：阴性。同时所送的其他感染相关检查：均阴性。",
-            "en": "Repeated sputum acid-fast smears: negative. Sputum cultures: negative. The other infection tests sent with them: negative."
+            "zh-CN": "多次痰抗酸染色涂片：阴性。痰培养：阴性。其他感染相关检查：均阴性。",
+            "en": "Repeated sputum acid-fast smears: negative. Sputum cultures: negative. Other infection tests: negative."
           },
           "note": {
             "zh-CN": "本病例没有记录送检份数、培养的种类（细菌、分枝杆菌或真菌）、“其他感染相关检查”具体是哪些，也没有记录标本是否在使用莫西沙星之前留取。阴性结果降低了感染的可能，但不能排除感染。",
@@ -2481,8 +2482,8 @@
         "admission": {
           "available": false,
           "text": {
-            "zh-CN": "本病例没有这份报告的内容：只知道当年病理称为肺结核。",
-            "en": "This case does not hold the report itself: only that its pathology was called tuberculosis."
+            "zh-CN": "她的病历中没有这份报告；只知道当年病理称为肺结核。",
+            "en": "The report itself is not in her records; all that is known is that its pathology was called tuberculosis."
           },
           "source": {
             "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -2492,8 +2493,8 @@
         "workup": {
           "available": false,
           "text": {
-            "zh-CN": "本病例没有这份报告的内容：只知道当年病理称为肺结核。",
-            "en": "This case does not hold the report itself: only that its pathology was called tuberculosis."
+            "zh-CN": "她的病历中没有这份报告；只知道当年病理称为肺结核。",
+            "en": "The report itself is not in her records; all that is known is that its pathology was called tuberculosis."
           },
           "source": {
             "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -2503,8 +2504,8 @@
         "relapse": {
           "available": false,
           "text": {
-            "zh-CN": "本病例没有这份报告的内容：只知道当年病理称为肺结核。",
-            "en": "This case does not hold the report itself: only that its pathology was called tuberculosis."
+            "zh-CN": "她的病历中没有这份报告；只知道当年病理称为肺结核。",
+            "en": "The report itself is not in her records; all that is known is that its pathology was called tuberculosis."
           },
           "source": {
             "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -2790,8 +2791,18 @@
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": {
-        "read": "biopsy-histology",
-        "phase": "workup"
+        "all": [
+          {
+            "read": "biopsy-histology",
+            "phase": "workup"
+          },
+          {
+            "not": {
+              "read": "biopsy-histology",
+              "phase": "relapse"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "已与病理科沟通。本病例没有记录首次标本加做了哪些染色、何时做的；不模拟其结果。",
@@ -2962,7 +2973,16 @@
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": {
-        "decided": "antibiotic-plan"
+        "all": [
+          {
+            "decided": "antibiotic-plan"
+          },
+          {
+            "not": {
+              "phase": "followup"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "已安排。复查发现什么见记录的转归；本病例没有记录复查的间隔。",
@@ -3009,8 +3029,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "莫西沙星对结核分枝杆菌有活性，可使结核暂时好转、延误诊断并诱导耐药；ISTC（2014）建议在可能是结核时不要用氟喹诺酮类做试验性治疗。它也解决不了中央型肿块需要取组织的问题，而六年来每个短疗程之后都会复发。",
-        "en": "Moxifloxacin is active against M. tuberculosis: it can improve TB transiently, delay its diagnosis and select resistance, and ISTC (2014) advises against fluoroquinolones as an antibiotic trial when TB is possible. It also leaves the central mass unsampled, and for six years every short course has been followed by relapse."
+        "zh-CN": "莫西沙星对结核分枝杆菌有杀菌作用，可使结核暂时好转；ISTC（2014）提醒，经验性使用氟喹诺酮类治疗呼吸道感染曾延误抗结核治疗，并导致氟喹诺酮耐药。它也解决不了中央型肿块需要取组织的问题，而六年来每个短疗程之后都会复发。",
+        "en": "Moxifloxacin is bactericidal for M. tuberculosis and can improve TB transiently; ISTC (2014) warns that empiric fluoroquinolone treatment of respiratory infections has delayed TB treatment and bred fluoroquinolone resistance. It also leaves the central mass unsampled, and for six years every short course has been followed by relapse."
       },
       "response": {
         "zh-CN": "已给药。本病例记录这次病程中用莫西沙星后病灶缩小；不模拟本次用药的效果。",
@@ -3060,8 +3080,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有任何分枝杆菌学证据就开始四联抗结核治疗，会让她承受数月的肝毒性等不良反应，影响此后标本的判读，而中央型肿块仍未取到组织。ISTC（2014）和WHO（2025）要求先留取标本（涂片、培养和快速分子检测），经验性治疗只用于标本送检后临床证据强烈提示结核的情况。",
-        "en": "Starting four drugs without any mycobacterial evidence exposes her to months of hepatotoxicity and other adverse effects, clouds the reading of later specimens and still leaves the central mass unsampled. ISTC (2014) and WHO (2025) ask for specimens first — smear, culture and a rapid molecular test — and keep empirical treatment for strong clinical evidence once specimens have been sent."
+        "zh-CN": "没有任何分枝杆菌学证据就开始四联抗结核治疗，会让她承受数月的肝毒性等不良反应，影响此后标本的判读，而中央型肿块仍未取到组织。ISTC（2014）要求先留取标本（涂片或快速分子检测，以及培养），只有临床证据强烈提示结核时，才在留取培养标本之后开始经验性治疗；WHO（2025）以快速分子检测作为初始检查。",
+        "en": "Starting four drugs without any mycobacterial evidence exposes her to months of hepatotoxicity and other adverse effects, clouds the reading of later specimens and still leaves the central mass unsampled. ISTC (2014) asks for specimens first — smear or a rapid molecular test, and culture — and starts empirical treatment only for strong clinical evidence after specimens for culture have been taken; WHO (2025) makes a rapid molecular test the initial test."
       },
       "response": {
         "zh-CN": "已开始。本病例没有记录这次病程用过抗结核治疗；不模拟其效果。",
@@ -3375,6 +3395,10 @@
             "phase": "admission"
           },
           {
+            "ordered": "sputum-naat",
+            "phase": "admission"
+          },
+          {
             "ordered": "bronchoscopy",
             "phase": "admission"
           }
@@ -3441,8 +3465,8 @@
     {
       "id": "obj-relapse-cause",
       "title": {
-        "zh-CN": "查明复发的原因并开始治疗",
-        "en": "Find the cause of the relapse and start treatment"
+        "zh-CN": "查明病因，开始她能用的治疗",
+        "en": "Identify the cause and start a treatment she can take"
       },
       "hint": {
         "zh-CN": "这几种染色各能识别什么？哪些病原会形成颗粒？她报告的两类过敏会怎样改变你通常的首选药物？",
@@ -3510,8 +3534,8 @@
     {
       "id": "obj-intolerance",
       "title": {
-        "zh-CN": "处理用药不耐受",
-        "en": "Manage the drug intolerance"
+        "zh-CN": "复查她的治疗情况",
+        "en": "Review her treatment"
       },
       "hint": {
         "zh-CN": "停用这个药以后，感染还需要治多久？换成哪一类药？换药之前要查什么？",
@@ -3627,8 +3651,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。抗菌后缩小并不能排除肿瘤——阻塞后方的感染也会随抗菌治疗好转——而莫西沙星对结核分枝杆菌也有活性，可能掩盖结核。ATS/IDSA/CDC 2017指南推荐痰抗酸涂片和分枝杆菌培养（以3份标本为常规），并建议对首份标本做核酸扩增检测，WHO 2025推荐以快速分子检测作为初始检查；中央型病灶首选支气管镜取材（ACCP 2013：对中央型支气管内肺癌的汇总敏感度88%）。排除结核之前，她应当处于空气传播隔离之下。",
-            "en": "Right. Shrinkage on antibiotics does not exclude a tumour — the infection behind an obstruction also settles — and moxifloxacin is active against M. tuberculosis, so it can mask TB. ATS/IDSA/CDC 2017 recommends sputum acid-fast smear and mycobacterial culture — three specimens is the norm — and suggests a nucleic acid amplification test on the first, and WHO 2025 recommends a rapid molecular test as the initial test; a central lesion is sampled by bronchoscopy (ACCP 2013: pooled sensitivity 88 % for central endobronchial cancer). Until TB is excluded she stays under airborne precautions."
+            "zh-CN": "正确。抗菌后缩小并不能排除肿瘤——阻塞后方的感染也会随抗菌治疗好转——而莫西沙星对结核分枝杆菌也有活性，可能掩盖结核。ATS/IDSA/CDC 2017指南建议做痰抗酸涂片和分枝杆菌培养（以3份标本为常规），并建议对首份标本做核酸扩增检测，WHO 2025推荐以快速分子检测作为初始检查；中央型病灶首选支气管镜取材（ACCP 2013：对中央型支气管内肺癌的汇总敏感度88%）。排除结核之前，她应当处于空气传播隔离之下。",
+            "en": "Right. Shrinkage on antibiotics does not exclude a tumour — the infection behind an obstruction also settles — and moxifloxacin is active against M. tuberculosis, so it can mask TB. ATS/IDSA/CDC 2017 advises sputum acid-fast smear and mycobacterial culture — three specimens is the norm — and suggests a nucleic acid amplification test on the first, and WHO 2025 recommends a rapid molecular test as the initial test; a central lesion is sampled by bronchoscopy (ACCP 2013: pooled sensitivity 88 % for central endobronchial cancer). Until TB is excluded she stays under airborne precautions."
           }
         },
         {
@@ -3639,20 +3663,20 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这正是过去六年的循环：每个疗程都让情况好转，停药后又复发。莫西沙星后缩小，既排除不了阻塞后方的肿瘤，也排除不了结核——ISTC（2014）正因为氟喹诺酮类能让结核暂时好转，建议在可能是结核时不要用它做试验性治疗。55岁、中央型肿块，现在就需要组织学证据，而不是再等一个疗程。",
-            "en": "This is the cycle of the last six years: every course has improved the picture and the disease has come back. Shrinkage on moxifloxacin excludes neither a tumour behind the infection nor TB — ISTC (2014) advises against fluoroquinolones as a trial when TB is possible precisely because they can improve it transiently. A central mass at 55 needs tissue now, not after another course."
+            "zh-CN": "这正是过去六年的循环：每个疗程都让情况好转，停药后又复发。莫西沙星后缩小，既排除不了阻塞后方的肿瘤，也排除不了结核——氟喹诺酮类对结核分枝杆菌有杀菌作用，ISTC（2014）提醒，经验性使用曾延误抗结核治疗并导致耐药。55岁、中央型肿块，现在就需要组织学证据，而不是再等一个疗程。",
+            "en": "This is the cycle of the last six years: every course has improved the picture and the disease has come back. Shrinkage on moxifloxacin excludes neither a tumour behind the infection nor TB — fluoroquinolones are bactericidal for M. tuberculosis, and ISTC (2014) warns that empiric courses have delayed TB treatment and bred resistance. A central mass at 55 needs tissue now, not after another course."
           }
         },
         {
           "id": "restart-tb-treatment",
           "text": {
-            "zh-CN": "按结核复发处理：手术后只治了3个月，疗程明显不足，现在就重新开始异烟肼、利福平、吡嗪酰胺和乙胺丁醇四联治疗，2个月后复查胸部CT。",
+            "zh-CN": "按结核复发处理：手术后只治了3个月，疗程明显不足，加上有糖尿病，复发风险更高，现在就重新开始异烟肼、利福平、吡嗪酰胺和乙胺丁醇四联治疗，2个月后复查胸部CT。",
             "en": "Treat it as relapsed tuberculosis: three months of treatment after the lobectomy was far too short and diabetes adds to the risk, so restart isoniazid, rifampicin, pyrazinamide and ethambutol now and repeat the chest CT in two months."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "旧的“结核”诊断只有一句病史，这次病程还没有任何分枝杆菌学证据。ISTC（2014）和WHO（2025）都要求先留取标本——涂片、培养和快速分子检测——再决定治疗；先上四联药物会让她承受数月的肝毒性等不良反应，影响之后标本的判读，而中央型肿块仍然没有取到组织。",
-            "en": "The old TB label rests on one line of history, and nothing in this illness yet shows mycobacteria. ISTC (2014) and WHO (2025) ask for specimens — smear, culture and a rapid molecular test — before treatment; starting four drugs first exposes her to months of hepatotoxicity and other adverse effects, clouds the reading of later specimens and still leaves the central mass unsampled."
+            "zh-CN": "旧的“结核”诊断只有一句病史，这次病程还没有任何分枝杆菌学证据。ISTC（2014）要求先留取标本——涂片或快速分子检测，以及培养——再决定治疗，WHO（2025）以快速分子检测作为初始检查；先上四联药物会让她承受数月的肝毒性等不良反应，影响之后标本的判读，而中央型肿块仍然没有取到组织。",
+            "en": "The old TB label rests on one line of history, and nothing in this illness yet shows mycobacteria. ISTC (2014) asks for specimens — smear or a rapid molecular test, and culture — before treatment, and WHO (2025) makes the molecular test the initial one; starting four drugs first exposes her to months of hepatotoxicity and other adverse effects, clouds the reading of later specimens and still leaves the central mass unsampled."
           }
         },
         {
@@ -3684,8 +3708,8 @@
     {
       "id": "first-results",
       "prompt": {
-        "zh-CN": "结果回报：多次痰抗酸涂片和痰培养均阴性，同时所送的其他感染相关检查也阴性。支气管镜：支气管黏膜充血、水肿，管腔狭窄。活检：炎性肉芽组织和坏死，可见细菌菌团，未见肿瘤细胞。你怎么判断，下一步怎么做？",
-        "en": "The results are back. Repeated sputum acid-fast smears and cultures are negative, as are the other infection tests sent with them. Bronchoscopy: hyperaemic, oedematous bronchial mucosa with narrowing of the lumen. Biopsy: inflammatory granulation tissue and necrosis with bacterial colonies; no tumour cells. What do you conclude, and what next?"
+        "zh-CN": "结果回报：多次痰抗酸涂片和痰培养均阴性，其他感染相关检查也阴性。支气管镜：支气管黏膜充血、水肿，管腔狭窄。活检：炎性肉芽组织和坏死，可见细菌菌团，未见肿瘤细胞。你怎么判断，下一步怎么做？",
+        "en": "The results are back. Repeated sputum acid-fast smears and cultures are negative, as are the other infection tests. Bronchoscopy: hyperaemic, oedematous bronchial mucosa with narrowing of the lumen. Biopsy: inflammatory granulation tissue and necrosis with bacterial colonies; no tumour cells. What do you conclude, and what next?"
       },
       "kind": "single",
       "requires": {
@@ -3814,7 +3838,7 @@
         {
           "id": "pulmonary-nocardiosis",
           "text": {
-            "zh-CN": "肺诺卡菌病：银染阳性的革兰阳性丝状菌，发生在有糖尿病、反复用过抗生素的患者身上",
+            "zh-CN": "肺诺卡菌病：银染阳性的革兰阳性丝状菌，发生在有糖尿病、反复用过抗生素、做过肺手术的患者身上",
             "en": "Pulmonary nocardiosis: silver-positive, Gram-positive filaments in a patient with diabetes, repeated antibiotic courses and an old lung operation"
           },
           "correct": false,
@@ -3843,8 +3867,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "结核应能见到抗酸杆菌，典型者有干酪样坏死性肉芽肿；这里两种抗酸染色都阴性，多次痰涂片和培养也是阴性，放射状菌丝形成的颗粒更不是结核的表现。至于8年前的“结核”诊断是否可靠，倒值得请病理科复核当年的切片（ATS/IDSA/CDC 2017以培养作为诊断的参考标准）。",
-            "en": "Tuberculosis would show acid-fast bacilli and, typically, caseating granulomas; both acid-fast stains are negative here, as were repeated sputum smears and cultures, and granules of radiating filaments are not a feature of TB. Whether the TB label of eight years ago was right is a fair question to put to the pathologist (ATS/IDSA/CDC 2017 treats culture as the reference standard)."
+            "zh-CN": "结核典型者有干酪样坏死性肉芽肿，常能见到抗酸杆菌；这里两种抗酸染色都阴性，多次痰涂片和培养也是阴性，放射状菌丝形成的颗粒更不是结核的表现。至于8年前的“结核”诊断是否可靠，倒值得请病理科复核当年的切片（ATS/IDSA/CDC 2017以培养作为诊断的参考标准）。",
+            "en": "Tuberculosis typically shows caseating granulomas, often with acid-fast bacilli; both acid-fast stains are negative here, as were repeated sputum smears and cultures, and granules of radiating filaments are not a feature of TB. Whether the TB label of eight years ago was right is a fair question to put to the pathologist (ATS/IDSA/CDC 2017 treats culture as the reference standard)."
           }
         },
         {
@@ -3891,8 +3915,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。青霉素是放线菌病的首选药物，传统上大剂量使用6–12个月（Valour 2014），一个未经核实的过敏标签会让她在长疗程中失去最好的药；AAAAI/ACAAI 2022支持结构化评估和检测，以去除不属实的标签。在此之前，四环素类是常用的替代药物——多西环素100 mg、每日2次（原报告用的是米诺环素）——疗程按临床和CT反应决定（Boot 2023：长疗程抗菌治疗是治疗的主体）。",
-            "en": "Right. Penicillin is the drug of choice for actinomycosis, traditionally at high dose for 6–12 months (Valour 2014), so an unverified label costs her the best drug for a long course; AAAAI/ACAAI 2022 supports structured assessment and testing to remove labels that are wrong. Meanwhile a tetracycline is the usual alternative — doxycycline 100 mg twice daily (the report used minocycline) — with the duration set by clinical and CT response (Boot 2023: prolonged antibiotic therapy is the mainstay)."
+            "zh-CN": "正确。青霉素是放线菌病的首选药物，传统上大剂量使用6–12个月（Valour 2014），一个未经核实的过敏标签会让她在长疗程中失去最好的药；AAAAI/ACAAI 2022支持结构化评估和检测，以去除不属实的标签。在此之前，四环素类是公认的替代药物——多西环素100 mg、每日2次，即Johns Hopkins ABX Guide（2023）列出的替代方案；原报告用的是米诺环素——疗程按临床和CT反应决定（Boot 2023：长疗程抗菌治疗是治疗的主体）。",
+            "en": "Right. Penicillin is the drug of choice for actinomycosis, traditionally at high dose for 6–12 months (Valour 2014), so an unverified label costs her the best drug for a long course; AAAAI/ACAAI 2022 supports structured assessment and testing to remove labels that are wrong. Meanwhile a tetracycline is a recognised alternative — doxycycline 100 mg twice daily, the alternative regimen in the Johns Hopkins ABX Guide (2023); the report used minocycline — with the duration set by clinical and CT response (Boot 2023: prolonged antibiotic therapy is the mainstay)."
           }
         },
         {
@@ -3934,8 +3958,8 @@
         {
           "id": "two-more-weeks",
           "text": {
-            "zh-CN": "再用两周莫西沙星：她能耐受，以前也让肿块缩小过；等发热消退、复查CT好转就停药。",
-            "en": "Give another two-week course of moxifloxacin, which she tolerated and which shrank the mass before, and stop once the fever has gone and the CT has improved."
+            "zh-CN": "再用两周莫西沙星：以前它让肿块缩小过；等发热消退、复查CT好转就停药。",
+            "en": "Give another two-week course of moxifloxacin, which shrank the mass before, and stop once the fever has gone and the CT has improved."
           },
           "correct": false,
           "feedback": {
@@ -3975,8 +3999,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。米诺环素的色素沉着与累积剂量有关，停药后也可能不退，是停药的理由；但感染仍需要数月的治疗。不能用青霉素和四环素类时，大环内酯类是公认的替代药物，不过阿奇霉素的临床资料有限；长疗程前查QTc并核对相互作用，继续推进过敏评估，以便标签排除后改用青霉素；何时停药按症状和CT决定，传统疗程为6–12个月（Valour 2014）。",
-            "en": "Right. Minocycline pigmentation rises with the cumulative dose and may not fade, which is a reason to stop it — but the infection still needs months of treatment. A macrolide is a recognised alternative when penicillin and tetracyclines cannot be used, although the clinical data for azithromycin are limited; check the QTc and interactions before a long course, keep the allergy assessment going so that penicillin can follow if the labels fall, and judge the end by symptoms and CT, over a course that traditionally runs 6–12 months (Valour 2014)."
+            "zh-CN": "正确。米诺环素的色素沉着与累积剂量有关，停药后也可能不退，是停药的理由；但感染仍需要数月的治疗。不能用青霉素和四环素类时，大环内酯类是公认的替代药物，不过阿奇霉素的临床资料有限（Johns Hopkins ABX Guide 2023）；长疗程前查QTc并核对相互作用，继续推进过敏评估，以便标签排除后改用青霉素；何时停药按症状和CT决定，传统疗程为6–12个月（Valour 2014）。",
+            "en": "Right. Minocycline pigmentation rises with the cumulative dose and may not fade, which is a reason to stop it — but the infection still needs months of treatment. A macrolide is a recognised alternative when penicillin and tetracyclines cannot be used, although the clinical data for azithromycin are limited (Johns Hopkins ABX Guide 2023); check the QTc and interactions before a long course, keep the allergy assessment going so that penicillin can follow if the labels fall, and judge the end by symptoms and CT, over a course that traditionally runs 6–12 months (Valour 2014)."
           }
         },
         {
@@ -4148,8 +4172,8 @@
       "domain": "diagnosis",
       "weight": 3,
       "text": {
-        "zh-CN": "第一次作答即正确解读首轮结果，并请病理科对菌团加做特殊染色",
-        "en": "Read the first results correctly at the first attempt and asked pathology to stain the colonies"
+        "zh-CN": "第一次作答即正确解读首轮结果，并在调阅复发后病理之前请病理科对菌团加做特殊染色",
+        "en": "Read the first results correctly at the first attempt and asked pathology to stain the colonies before the relapse pathology was read"
       },
       "met": {
         "all": [
@@ -4157,7 +4181,8 @@
             "decidedFirstTry": "first-results"
           },
           {
-            "intervened": "pathology-discussion"
+            "intervened": "pathology-discussion",
+            "whenIndicated": true
           }
         ]
       }
@@ -4225,8 +4250,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "第一次作答即正确处理不耐受：换用大环内酯类把疗程用足，并安排CT复查",
-        "en": "Handled the intolerance correctly at the first attempt: changed to a macrolide to complete the course and planned CT reviews"
+        "zh-CN": "第一次作答即正确处理不耐受：换用大环内酯类把疗程用足，并在转归阶段之前安排CT复查",
+        "en": "Handled the intolerance correctly at the first attempt: changed to a macrolide to complete the course and planned CT reviews before the outcome phase"
       },
       "met": {
         "all": [
@@ -4237,7 +4262,8 @@
             "intervened": "macrolide"
           },
           {
-            "intervened": "ct-follow-up"
+            "intervened": "ct-follow-up",
+            "whenIndicated": true
           }
         ]
       }
@@ -4356,8 +4382,8 @@
         "en": "Dr Fu (respiratory medicine attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教的呼吸科主治医师，只围绕学员已经掌握的信息提问，不给结果，不说出诊断。决策1之前：“同一部位六年来反复发作、每次用抗生素都会好转，可能是什么？”——引导出阻塞性病变（包括生长缓慢的中央型肿瘤）伴感染、结核、慢性细菌感染、异物或支气管结石、支气管扩张；“用莫西沙星后缩小，能排除什么、不能排除什么？”（莫西沙星对结核有活性，阻塞后方的感染也会好转）；“中央型肺门肿块怎么取材？”；“术后只治了3个月的‘结核’，到底说明了什么？”。决策2之后：“一次活检阴性能排除什么？”“坏死组织里的菌团为什么值得追问？”。只有在决策3之后才问：“哪种染色能把这个病原和诺卡菌分开？”；决策4之前：“首选药是什么？今天是什么让你不能用？”“关于过敏反应，你需要知道哪些细节？”。历史与现行做法的对照（只在学员进入治疗阶段之后讨论）：记录的治疗是米诺环素，后改阿奇霉素；现在会同时推进过敏评估，若标签不属实可改用青霉素，在此之前用四环素类或大环内酯类。本病例没有记录：过敏反应的类型、培养和菌种、药物剂量、入院时的其他生命体征和血液检查、各次CT的日期、牙齿情况和随访时长。",
-        "en": "A Socratic respiratory attending who asks only about information the learner already has and never gives results or the diagnosis. Before decision 1: “What keeps coming back to the same place for six years and settles on every course of antibiotics?” — draw out an obstructing lesion with infection behind it (including a slow-growing central tumour), tuberculosis, a chronic bacterial infection, a foreign body or broncholith, and bronchiectasis; “What does shrinkage on moxifloxacin rule out, and what not?” (moxifloxacin is active against TB, and infection behind an obstruction also improves); “How would you sample a central hilar mass?”; “What did three months of treatment for ‘TB’ after the lobectomy really establish?” After decision 2: “What does one negative biopsy exclude?”, “Why do colonies in necrotic tissue deserve a name?” Only after decision 3: “Which stain separates this organism from Nocardia?” Before decision 4: “What is the drug of choice, and what stops you giving it today?”, “What would you need to know about the reactions?” Historical versus current practice, only once the learner has reached the treatment phase: the recorded treatment was minocycline and then azithromycin; today the allergy assessment would run alongside, so that penicillin could be used if the labels are wrong, with a tetracycline or a macrolide meanwhile. Not recorded in this case: the type of the reactions, culture and species, drug doses, her other vital signs and blood tests on admission, the dates of the CT scans, her teeth and the length of follow-up."
+        "zh-CN": "苏格拉底式带教的呼吸科主治医师，只围绕学员已经掌握的信息提问，不给结果，不说出诊断。决策1之前：“同一部位六年来反复发作、每次用抗生素都会好转，可能是什么？”——引导出阻塞性病变（包括生长缓慢的中央型肿瘤）伴感染、结核、慢性细菌感染、异物或支气管结石、支气管扩张；“用莫西沙星后缩小，能排除什么、不能排除什么？”（莫西沙星对结核有活性，阻塞后方的感染也会好转）；“中央型肺门肿块怎么取材？”；“术后只治了3个月的‘结核’，到底说明了什么？”。决策2之后：“一次活检阴性能排除什么？”“坏死组织里的菌团为什么值得追问？”。只有在决策3之后才问：“哪种染色能把这个病原和诺卡菌分开？”；决策4之前：“首选药是什么？今天是什么让你不能用？”“关于过敏反应，你需要知道哪些细节？”。历史与现行做法的对照（只在转归阶段、决策5之后讨论）：记录的治疗是米诺环素，后改阿奇霉素；现在会同时推进过敏评估，若标签不属实可改用青霉素，在此之前用四环素类或大环内酯类。本病例没有记录：过敏反应的类型、培养和菌种、药物剂量、入院时的其他生命体征和血液检查、各次CT的日期、牙齿情况和随访时长。",
+        "en": "A Socratic respiratory attending who asks only about information the learner already has and never gives results or the diagnosis. Before decision 1: “What keeps coming back to the same place for six years and settles on every course of antibiotics?” — draw out an obstructing lesion with infection behind it (including a slow-growing central tumour), tuberculosis, a chronic bacterial infection, a foreign body or broncholith, and bronchiectasis; “What does shrinkage on moxifloxacin rule out, and what not?” (moxifloxacin is active against TB, and infection behind an obstruction also improves); “How would you sample a central hilar mass?”; “What did three months of treatment for ‘TB’ after the lobectomy really establish?” After decision 2: “What does one negative biopsy exclude?”, “Why do colonies in necrotic tissue deserve a name?” Only after decision 3: “Which stain separates this organism from Nocardia?” Before decision 4: “What is the drug of choice, and what stops you giving it today?”, “What would you need to know about the reactions?” Historical versus current practice, only in the outcome phase, after decision 5: the recorded treatment was minocycline and then azithromycin; today the allergy assessment would run alongside, so that penicillin could be used if the labels are wrong, with a tetracycline or a macrolide meanwhile. Not recorded in this case: the type of the reactions, culture and species, drug doses, her other vital signs and blood tests on admission, the dates of the CT scans, her teeth and the length of follow-up."
       },
       "interprets": [
         "chest-ct",
@@ -4434,7 +4460,7 @@
     },
     "conclusion": {
       "zh-CN": "55岁女性，不吸烟，2型糖尿病，有青霉素和头孢类过敏标签，诊断为肺放线菌病。六年来每年一两次痰中带血，每次约两周抗生素后好转；这次右肺门约4.5 cm肿块在莫西沙星治疗后缩小，停药后再次出现并伴渗出影。多次痰抗酸涂片和培养阴性；首次活检为炎性肉芽组织、坏死和细菌菌团，未见肿瘤细胞；复查支气管镜见黄色颗粒堵塞支气管，标本为硫磺颗粒伴放射状菌丝，革兰和银染阳性、抗酸和弱抗酸染色阴性，两次标本经专科复核鉴定为放线菌。米诺环素因色素沉着和胃肠反应停用，改阿奇霉素6个月后病灶基本吸收，遗留轻度支气管扩张，停药后未再复发。按现行做法：再用抗生素前先查结核、取组织，鉴定菌团，评估过敏标签以便能用青霉素，并给予以月计的疗程。",
-      "en": "Pulmonary actinomycosis in a 55-year-old non-smoker with penicillin and cephalosporin allergy labels. For six years blood-streaked sputum recurred once or twice a year, settling on about two weeks of antibiotics; this time a right hilar mass of about 4.5 cm shrank on moxifloxacin and returned with infiltrates after the antibiotics stopped. Sputum acid-fast smears and cultures were negative; the first biopsy showed granulation tissue, necrosis and bacterial colonies without tumour cells; repeat bronchoscopy found yellow granules blocking the bronchus — sulphur granules with radiating, Gram- and silver-positive filaments, negative on both acid-fast stains — and specialist review identified Actinomyces. Minocycline was stopped for pigmentation and gastrointestinal effects; after six months of azithromycin the lesions largely resolved with mild bronchiectasis, without relapse. Today: TB tests and tissue before more antibiotics, the allergy labels assessed and months of treatment."
+      "en": "Pulmonary actinomycosis in a 55-year-old non-smoker with type 2 diabetes and penicillin and cephalosporin allergy labels. For six years blood-streaked sputum recurred once or twice a year, settling on about two weeks of antibiotics; this time a right hilar mass of about 4.5 cm shrank on moxifloxacin and returned with infiltrates after the antibiotics stopped. Sputum acid-fast smears and cultures were negative; the first biopsy showed inflammatory granulation tissue, necrosis and bacterial colonies without tumour cells; repeat bronchoscopy found yellow granules blocking the bronchus — sulphur granules with radiating, Gram- and silver-positive filaments, negative on both acid-fast stains — and specialist review identified Actinomyces in the specimens from two occasions. Minocycline was stopped for pigmentation and gastrointestinal effects; after six months of azithromycin the lesions largely resolved with mild bronchiectasis, with no relapse after treatment stopped. Today: TB tests and tissue before more antibiotics, the allergy labels assessed and months of treatment."
     },
     "keyReasoning": [
       {
@@ -4460,8 +4486,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "先取证，再治疗（ATS/IDSA/CDC 2017；WHO 2025；ISTC 2014）。再次用抗生素之前，送3份痰做抗酸涂片和分枝杆菌培养，并以快速分子检测作为初始检查；氟喹诺酮类对结核分枝杆菌有活性，可使结核暂时好转，ISTC 2014建议在可能是结核时不要用它做试验性治疗。排除结核前采取空气传播隔离，通常在3份痰涂片阴性后解除。本病例没有记录痰标本是否在使用莫西沙星之前留取。",
-        "en": "Sample before treating (ATS/IDSA/CDC 2017; WHO 2025; ISTC 2014). Before any further antibiotic, three sputum specimens go for acid-fast smear and mycobacterial culture, with a rapid molecular test as the initial test; fluoroquinolones are active against M. tuberculosis and can improve TB transiently, so ISTC 2014 advises against them as a trial when TB is possible. Airborne precautions stay until TB is excluded, usually after three negative smears. The case does not record whether the sputum was taken before the moxifloxacin."
+        "zh-CN": "先取证，再治疗（ATS/IDSA/CDC 2017；WHO 2025；ISTC 2014）。再次用抗生素之前，送3份痰做抗酸涂片和分枝杆菌培养，并以快速分子检测作为初始检查；氟喹诺酮类对结核分枝杆菌有杀菌作用，可使结核暂时好转，ISTC 2014提醒，经验性使用曾延误抗结核治疗并导致耐药。排除结核前采取空气传播隔离，通常在3份痰涂片阴性后解除（CDC 2005）。本病例没有记录痰标本是否在使用莫西沙星之前留取。",
+        "en": "Sample before treating (ATS/IDSA/CDC 2017; WHO 2025; ISTC 2014). Before any further antibiotic, three sputum specimens go for acid-fast smear and mycobacterial culture, with a rapid molecular test as the initial test; fluoroquinolones are bactericidal for M. tuberculosis and can improve TB transiently, and ISTC 2014 warns that empiric fluoroquinolone courses have delayed TB treatment and bred resistance. Airborne precautions stay until TB is excluded, usually after three negative smears (CDC 2005). The case does not record whether the sputum was taken before the moxifloxacin."
       },
       {
         "zh-CN": "取到组织（ACCP 2013）。中央型、肺门部病灶首选支气管镜：活检做组织学和特殊染色，灌洗做分枝杆菌、需氧和厌氧培养；ACCP 2013汇总的支气管镜对中央型支气管内肺癌的敏感度为88%。首次支气管镜未能确诊时应再次取材，而不是结案；PET-CT分不清感染和肿瘤，因为感染灶同样摄取FDG。",
@@ -4472,12 +4498,12 @@
         "en": "Reading the stains (Boot 2023; Könönen and Wade 2015). Gram stain shows Gram-positive bacteria; methenamine silver stains fungi and filamentous bacteria; the Ziehl–Neelsen stain finds mycobacteria; the modified acid-fast stain picks out weakly acid-fast Nocardia. Sulphur granules with radiating filaments negative on both acid-fast stains point to Actinomyces; culture needs anaerobic conditions and long incubation, so histology often carries the diagnosis."
       },
       {
-        "zh-CN": "过敏标签（AAAAI/ACAAI 2022）。大多数青霉素过敏标签不属实，但反应不明并不等于低风险：问清是哪种药、什么反应、多少年前、怎么处理，记录下来并转诊评估（皮试，必要时在监护下药物激发）。她同时有青霉素和头孢类标签，评估之前两类都不用，改用有效的非β-内酰胺类药物。记录的治疗是米诺环素、后改阿奇霉素；现在会同时推进过敏评估，因为青霉素本是首选。",
-        "en": "The allergy labels (AAAAI/ACAAI 2022). Most penicillin labels are not true allergy, but an unknown reaction is not a low-risk history: ask which drug, what reaction, how long ago and how it was treated, document it and refer for assessment (skin testing, then a supervised challenge where appropriate). With both penicillin and cephalosporin labels, neither class is used before assessment, and an active non-β-lactam is chosen. The recorded treatment was minocycline, then azithromycin; today the assessment would run alongside, because penicillin would otherwise be the drug of choice."
+        "zh-CN": "过敏标签（AAAAI/ACAAI 2022；PEN-FAST 2020）。大多数青霉素过敏标签不属实，但反应不明并不等于低风险——PEN-FAST把时间不明和处理不明都计为风险分，合计3分（中危）：问清是哪种药、什么反应、多少年前、怎么处理，记录下来并转诊评估（皮试，必要时在监护下药物激发）。她同时有青霉素和头孢类标签，评估之前两类都不用，改用有效的非β-内酰胺类药物。记录的治疗是米诺环素、后改阿奇霉素；现在会同时推进过敏评估，因为青霉素本是首选。",
+        "en": "The allergy labels (AAAAI/ACAAI 2022; PEN-FAST 2020). Most penicillin labels are not true allergy, but an unknown reaction is not a low-risk history — PEN-FAST scores an unknown interval and unknown treatment as risk points, together 3 (moderate risk): ask which drug, what reaction, how long ago and how it was treated, document it and refer for assessment (skin testing, then a supervised challenge where appropriate). With both penicillin and cephalosporin labels, neither class is used before assessment, and an active non-β-lactam is chosen. The recorded treatment was minocycline, then azithromycin; today the assessment would run alongside, because penicillin would otherwise be the drug of choice."
       },
       {
-        "zh-CN": "药物与疗程（Valour 2014；Boot 2023）。经典方案为青霉素G每日1800万–2400万U静脉2–6周，再口服青霉素或阿莫西林，传统总疗程6–12个月；充分手术切除后疗程或可缩短到约3个月（Valour 2014）。不能用青霉素时，多西环素100 mg每日2次是常用替代，大环内酯类也可用；手术只用于严重病例或并发症（Boot 2023）。以往两周一个疗程，与反复复发的病程相符；记录的病程中，米诺环素因色素沉着和胃肠反应停用后改阿奇霉素6个月，病灶基本吸收。",
-        "en": "Drug and duration (Valour 2014; Boot 2023). The classic regimen is benzylpenicillin 18–24 million units a day IV for 2–6 weeks, then oral penicillin or amoxicillin, traditionally 6–12 months in all; after optimal surgical resection about 3 months may do (Valour 2014). Without penicillin, doxycycline 100 mg twice daily is the usual alternative and macrolides are an option; surgery is reserved for severe disease or complications (Boot 2023). The earlier two-week courses fit the pattern of relapse; in the recorded course, six months of azithromycin after minocycline was stopped for pigmentation and gastrointestinal effects left the lesions largely resolved."
+        "zh-CN": "药物与疗程（Valour 2014；Boot 2023；Johns Hopkins ABX Guide 2023）。经典方案为青霉素G每日1800万–2400万U静脉2–6周，再口服青霉素或阿莫西林，传统总疗程6–12个月；充分手术切除后疗程或可缩短到约3个月（Valour 2014）。不能用青霉素时，列出的替代方案是多西环素100 mg、每日2次，用6–12个月（Johns Hopkins ABX Guide 2023）；不过Valour 2014指出，多西环素对放线菌的活性被认为较差，但有临床成功的报道，大环内酯类和克林霉素也曾成功用作替代；严重病例才加用手术（Boot 2023）。以往两周一个疗程，与反复复发的病程相符；记录的病程中，米诺环素因色素沉着和胃肠反应停用后改阿奇霉素6个月，病灶基本吸收。",
+        "en": "Drug and duration (Valour 2014; Boot 2023; Johns Hopkins ABX Guide 2023). The classic regimen is benzylpenicillin 18–24 million units a day IV for 2–6 weeks, then oral penicillin or amoxicillin, traditionally 6–12 months in all; after optimal surgical resection about 3 months may do (Valour 2014). Without penicillin, the listed alternative is doxycycline 100 mg twice daily for 6–12 months (Johns Hopkins ABX Guide 2023), although Valour 2014 notes that doxycycline's activity against Actinomyces is considered poor despite clinical successes, and that macrolides and clindamycin have been used successfully; surgery is added for severe disease (Boot 2023). The earlier two-week courses fit the pattern of relapse; in the recorded course, six months of azithromycin after minocycline was stopped for pigmentation and gastrointestinal effects left the lesions largely resolved."
       },
       {
         "zh-CN": "不良反应与随访。米诺环素的色素沉着随累积剂量增加，停药后也可能不退；出现时换用另一类有效药物，长疗程用大环内酯类之前先查QTc。以症状和CT吸收决定停药，停药后继续观察有无复发；本例遗留轻度支气管扩张。",
@@ -4531,7 +4557,9 @@
       "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: a 2022 practice parameter update. J Allergy Clin Immunol. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
       "Valour F, Sénéchal A, Dupieux C, et al. Actinomycosis: etiology, clinical features, diagnosis, treatment, and management. Infect Drug Resist. 2014;7:183-197. doi:10.2147/IDR.S39601",
       "Boot M, Archer J, Ali I. The diagnosis and management of pulmonary actinomycosis. J Infect Public Health. 2023;16(4):490-500. doi:10.1016/j.jiph.2023.02.004",
-      "Könönen E, Wade WG. Actinomyces and related organisms in human infections. Clin Microbiol Rev. 2015;28(2):419-442. doi:10.1128/CMR.00100-14"
+      "Könönen E, Wade WG. Actinomyces and related organisms in human infections. Clin Microbiol Rev. 2015;28(2):419-442. doi:10.1128/CMR.00100-14",
+      "Fabre V. Actinomyces [Internet]. Johns Hopkins ABX Guide. Baltimore (MD): Johns Hopkins University; [updated 2023 Feb 8; cited 2026 Nov 14]. Available from: https://www.hopkinsguides.com/hopkins/view/Johns_Hopkins_ABX_Guide/540005/all/Actinomyces",
+      "Trubiano JA, Vogrin S, Chua KYL, et al. Development and validation of a penicillin allergy clinical decision rule. JAMA Intern Med. 2020;180(5):745-752. doi:10.1001/jamainternmed.2020.0403"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",

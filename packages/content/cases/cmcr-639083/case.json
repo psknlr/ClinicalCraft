@@ -75,7 +75,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -1172,8 +1172,8 @@
         "en": "What else has been arranged and tested for her since then?"
       },
       "answer": {
-        "zh-CN": "后来她转了院。医生抽了她和她爸妈的血查基因，还给她做了一个专门的扫描。",
-        "en": "She was transferred to another hospital later on. They took blood from her and from her mum and dad for gene tests, and she had a special scan."
+        "zh-CN": "后来她转了院。医生给她和她爸妈都查了基因，还给她做了一个专门的扫描。",
+        "en": "She was transferred to another hospital later on. They did gene tests on her and on her mum and dad, and she had a special scan."
       },
       "keywords": {
         "zh-CN": [
@@ -2930,8 +2930,8 @@
         "en": "Octreotide is second-line after diazoxide: necrotising enterocolitis has been reported in newborns given it (Laje et al., 2010) and its effect fades quickly; diazoxide comes first (2024 international hyperinsulinism guideline)."
       },
       "response": {
-        "zh-CN": "已给药。本病例记录用过奥曲肽，之后仍频繁低血糖，但没有记录剂量；不模拟其效果。",
-        "en": "Given. This case records that octreotide was used and that frequent lows continued, but not the dose; it does not simulate the effect."
+        "zh-CN": "已给药。本病例记录用过奥曲肽，但没有记录剂量；她的反应见药物治疗记录，不模拟其效果。",
+        "en": "Given. This case records that octreotide was used but not its dose; how she responded is in the treatment record, and the effect is not simulated."
       }
     },
     {
@@ -3038,6 +3038,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "indicatedWhen": {
         "all": [
           {
@@ -3061,8 +3062,8 @@
         "en": "Operating without a localisation scan is a blind resection that may miss the lesion or remove too much normal pancreas; a limited resection is planned from the ¹⁸F-DOPA PET (2024 international hyperinsulinism guideline)."
       },
       "response": {
-        "zh-CN": "已安排手术。报告记录做了局灶部分切除，术后病理证实为局灶型；本病例没有记录手术细节、冰冻切片和切缘。",
-        "en": "Operation arranged. The report records a focal partial resection with histology confirming the focal form; this case does not record the operative details, frozen sections or margins."
+        "zh-CN": "已安排手术。报告记录的手术经过和病理结果见转归记录；本病例不模拟手术的效果。",
+        "en": "Operation arranged. What the report records about the operation and its histology is in the outcome record; the case does not simulate the effect."
       }
     },
     {
@@ -3132,8 +3133,8 @@
         "decided": "operation"
       },
       "response": {
-        "zh-CN": "随访计划已制定。本病例只记录了三个月时的血糖；神经发育、复发和胰腺功能没有记录。",
-        "en": "Follow-up plan made. The case records only her glucose at three months; neurodevelopment, recurrence and pancreatic function are not recorded."
+        "zh-CN": "随访计划已制定。报告记录的随访结果见转归记录；本病例不模拟以后的病程。",
+        "en": "Follow-up plan made. What the report records at follow-up is in the outcome record; the later course is not simulated."
       }
     },
     {
@@ -3166,6 +3167,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3211,8 +3213,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有证实皮质醇缺乏就用激素升血糖，会掩盖诊断（低血糖时应先采血测皮质醇和生长激素），也纠正不了胰岛素过多，还带来感染、高血压和生长抑制等不良反应（2024年国际高胰岛素血症指南）。她的ACTH正常。",
-        "en": "Steroids to raise the glucose without a proven cortisol deficiency hide the diagnosis (cortisol and growth hormone belong in the sample taken during a low), do not correct insulin excess and add infection, hypertension and poor growth (2024 international hyperinsulinism guideline). Her ACTH was normal."
+        "zh-CN": "没有证实皮质醇缺乏就用激素升血糖，会掩盖诊断（低血糖时应先采血测皮质醇和生长激素），也纠正不了胰岛素过多，还带来感染、高血压和生长抑制等不良反应（2024年国际高胰岛素血症指南）。",
+        "en": "Steroids to raise the glucose without a proven cortisol deficiency hide the diagnosis (cortisol and growth hormone belong in the sample taken during a low), do not correct insulin excess and add infection, hypertension and poor growth (2024 international hyperinsulinism guideline)."
       },
       "response": {
         "zh-CN": "已给药。本病例没有记录用过激素；不模拟其后果。",
@@ -3246,6 +3248,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3285,6 +3288,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3324,12 +3328,13 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "危险：出院前必须证明她能在与年龄相应的禁食中维持安全的血糖（PES 2015）；在这之前出院，低血糖会发生在家里，可致不可逆的脑损伤。",
-        "en": "Dangerous: before discharge she must show she can keep a safe glucose through an age-appropriate fast (PES 2015); sent home before that, her lows happen at home and can cause permanent brain injury."
+        "zh-CN": "危险：出院前必须证明她能在与年龄相应的禁食中维持安全的血糖（PES 2015；2024年国际高胰岛素血症指南建议所有患儿出院前做禁食试验）；在这之前出院，低血糖会发生在家里，可致不可逆的脑损伤。",
+        "en": "Dangerous: before discharge she must show she can keep a safe glucose through an age-appropriate fast (PES 2015; the 2024 international hyperinsulinism guideline suggests a fasting study before discharge for every child); sent home before that, her lows happen at home and can cause permanent brain injury."
       },
       "response": {
         "zh-CN": "本病例没有这样处理；不模拟其后果。",
@@ -3714,8 +3719,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "等化验结果再补糖，会让她在低血糖中多停留数小时，增加脑损伤的风险。关键标本应在开始补糖前抽好，然后立即静脉补糖（2024年国际高胰岛素血症指南）；之后输入的葡萄糖改变不了已经抽出的标本。",
-            "en": "Waiting for the laboratory leaves her hypoglycaemic for hours and risks brain injury. Draw the critical sample before the glucose goes in and then treat at once (2024 international hyperinsulinism guideline); glucose given afterwards cannot change a sample already taken."
+            "zh-CN": "等化验结果再补糖，会让她在低血糖中多停留数小时，增加脑损伤的风险。关键标本应在开始补糖前抽好，然后立即静脉补糖，绝不因等标本而推迟治疗（BAPM 2024；2024年国际高胰岛素血症指南）；之后输入的葡萄糖改变不了已经抽出的标本。",
+            "en": "Waiting for the laboratory leaves her hypoglycaemic for hours and risks brain injury. Draw the critical sample before the glucose goes in and then treat at once, never delaying treatment for the samples (BAPM 2024; 2024 international hyperinsulinism guideline); glucose given afterwards cannot change a sample already taken."
           }
         },
         {
@@ -3768,8 +3773,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024年国际高胰岛素血症指南：低血糖（<2.8 mmol/L）时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、注射胰高血糖素后血糖升高≥1.7 mmol/L提示高胰岛素血症，胰岛素可测得是支持证据。本例胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸和胰高血糖素反应没有记录，血氨因单位存疑无法判读。采样日龄不详，生后48小时内的过渡期低血糖也会有同样的表现（PES 2015），所以关键在于低血糖是否持续到过渡期之后。",
-            "en": "Right. By the 2024 international hyperinsulinism guideline, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucose rise ≥ 1.7 mmol/L after glucagon during hypoglycaemia (< 2.8 mmol/L) indicate hyperinsulinism, and measurable insulin supports it. Here insulin was 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids and a glucagon response are not recorded, and the ammonia cannot be read because its unit is doubtful. Her age at sampling is unknown and transitional hypoglycaemia in the first 48 hours looks the same (PES 2015), so what counts is whether the lows persist beyond that window."
+            "zh-CN": "正确。2024年国际高胰岛素血症指南：低血糖（<2.8 mmol/L）时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、注射胰高血糖素后血糖升高≥1.7 mmol/L提示高胰岛素血症，胰岛素可测得是支持证据。本例胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸和胰高血糖素反应没有记录，血氨因单位存疑无法判读。采样日龄不详，过渡期低血糖也会有同样的表现：PES 2015在生后48小时以后评估，2024年国际指南要求生后72小时内采的标本在72小时后复查，所以关键在于低血糖是否持续到过渡期之后。",
+            "en": "Right. By the 2024 international hyperinsulinism guideline, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucose rise ≥ 1.7 mmol/L after glucagon during hypoglycaemia (< 2.8 mmol/L) indicate hyperinsulinism, and measurable insulin supports it. Here insulin was 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids and a glucagon response are not recorded, and the ammonia cannot be read because its unit is doubtful. Her age at sampling is unknown, and transitional hypoglycaemia looks the same: PES 2015 evaluates after 48 hours and the 2024 guideline repeats a sample taken before 72 hours, so what counts is whether the lows persist beyond that window."
           }
         },
         {
@@ -3910,13 +3915,13 @@
         {
           "id": "genes-then-pet",
           "text": {
-            "zh-CN": "按二氮嗪无效的高胰岛素血症处理：急查她和父母的ABCC8/KCNJ11，转诊有经验的专科中心，基因提示局灶型时做¹⁸F-DOPA PET，其间保证血糖安全",
-            "en": "Treat it as diazoxide-unresponsive hyperinsulinism: urgent ABCC8/KCNJ11 testing of her and both parents, referral to an experienced centre, and ¹⁸F-DOPA PET if the genetics suggest focal disease, with IV glucose keeping her safe"
+            "zh-CN": "按二氮嗪无效的高胰岛素血症处理：急查她和父母的ABCC8/KCNJ11，转诊有经验的专科中心，基因未证实弥漫型就做¹⁸F-DOPA PET，其间保证血糖安全",
+            "en": "Treat it as diazoxide-unresponsive hyperinsulinism: urgent ABCC8/KCNJ11 testing of her and both parents, referral to an experienced centre, and ¹⁸F-DOPA PET unless the genetics show diffuse disease, with IV glucose keeping her safe"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024年国际高胰岛素血症指南：二氮嗪无效时尽快做ABCC8/KCNJ11等基因检测并同时检测父母，结果提示局灶型时行¹⁸F-DOPA PET定位，并转到有经验的高胰岛素血症中心。基因和PET结果出来之前，用静脉葡萄糖（必要时加用胰高血糖素）保证血糖安全。",
-            "en": "Right. The 2024 international hyperinsulinism guideline calls for rapid ABCC8/KCNJ11 testing with both parents once diazoxide fails, ¹⁸F-DOPA PET when the result suggests focal disease, and care at an experienced hyperinsulinism centre. Until the results are in, IV glucose (with glucagon if needed) keeps her safe."
+            "zh-CN": "正确。2024年国际高胰岛素血症指南：二氮嗪无效时尽快检测ABCC8和KCNJ11，并同时留取父母双方的标本，因为单个父源隐性变异提示局灶型；除非基因证实为弥漫型，二氮嗪无效的婴儿都要做¹⁸F-DOPA PET寻找可切除的局灶病灶，并在有经验的高胰岛素血症中心诊治。基因和PET结果出来之前，用静脉葡萄糖（必要时加用胰高血糖素）保证血糖安全。",
+            "en": "Right. The 2024 international hyperinsulinism guideline calls rapid ABCC8 and KCNJ11 testing crucial once diazoxide fails — with samples from both parents, because a single paternally inherited recessive variant predicts focal disease — and recommends ¹⁸F-DOPA PET to look for a resectable focal lesion in every diazoxide-unresponsive infant unless the genetics show diffuse disease, with care at an experienced hyperinsulinism centre. Until the results are in, IV glucose (with glucagon if needed) keeps her safe."
           }
         },
         {
@@ -3989,8 +3994,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024年国际高胰岛素血症指南：局灶型可以通过¹⁸F-DOPA PET引导的局部切除治愈，术中冰冻切片确认切缘，术后禁食试验证实痊愈。局灶型通常由一个父源的隐性KATP通道变异加上病灶内母源11p15区域缺失引起；本例变异在父母中都没有检出，可能是新发于父源染色体的变异，并不排除局灶型，PET和病理才能定论。",
-            "en": "Right. By the 2024 international hyperinsulinism guideline, focal disease is cured by a PET-guided limited resection with frozen sections checking the margins, and a fast afterwards confirms cure. Focal lesions usually arise from one paternal recessive KATP-channel variant plus loss of the maternal 11p15 region within the lesion; a variant found in neither parent may have arisen new on the paternal chromosome, which does not exclude focal disease — the PET and the histology decide."
+            "zh-CN": "正确。2024年国际高胰岛素血症指南：局灶型可以通过¹⁸F-DOPA PET引导的局部切除治愈（部分研究报道治愈率超过95%），术中冰冻切片确认切缘，术后禁食试验证实痊愈。局灶型通常由一个父源的隐性KATP通道变异加上病灶内母源11p15区域缺失引起；本例变异在父母中都没有检出，可能是新发于父源染色体的变异，并不排除局灶型，PET和病理才能定论。",
+            "en": "Right. By the 2024 international hyperinsulinism guideline, focal disease can be cured by a PET-guided limited resection (cure rates above 95 % in some series), with frozen sections checking the margins and a fast afterwards confirming cure. Focal lesions usually arise from one paternal recessive KATP-channel variant plus loss of the maternal 11p15 region within the lesion; a variant found in neither parent may have arisen new on the paternal chromosome, which does not exclude focal disease — the PET and the histology decide."
           }
         },
         {
@@ -4239,8 +4244,8 @@
       "id": "rb-no-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有做危险的处置：50%葡萄糖静推、经验性氢化可的松、在家禁食、近全胰切除，或未做禁食试验就出院",
-        "en": "Avoided the dangerous steps: a 50 % glucose push, empirical hydrocortisone, a fast at home, near-total pancreatectomy, or discharge without a fasting check"
+        "zh-CN": "没有做危险的处置：50%葡萄糖静推、在家禁食、未做禁食试验就出院、近全胰切除，或在读到PET结果之前手术",
+        "en": "Avoided the dangerous steps: a 50 % glucose push, a fast at home, discharge without a fasting check, near-total pancreatectomy, or an operation before the PET had been read"
       },
       "weight": 4,
       "met": {
@@ -4250,16 +4255,17 @@
               "intervened": "concentrated-glucose-push"
             },
             {
-              "intervened": "hydrocortisone"
+              "intervened": "home-fast"
             },
             {
-              "intervened": "home-fast"
+              "intervened": "discharge-home"
             },
             {
               "intervened": "near-total-pancreatectomy"
             },
             {
-              "intervened": "discharge-home"
+              "intervened": "partial-pancreatectomy",
+              "valid": false
             }
           ]
         }
@@ -4273,20 +4279,65 @@
             "intervened": "concentrated-glucose-push"
           },
           {
-            "intervened": "hydrocortisone"
+            "intervened": "home-fast"
           },
           {
-            "intervened": "home-fast"
+            "intervened": "discharge-home"
           },
           {
             "intervened": "near-total-pancreatectomy"
           },
           {
-            "intervened": "discharge-home"
+            "intervened": "partial-pancreatectomy",
+            "valid": false
           }
         ]
       },
       "critical": true
+    },
+    {
+      "id": "rb-drug-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "用药没有出错：没有经验性使用氢化可的松，读到低血糖时标本的结果之后才用二氮嗪，用过二氮嗪之后才用奥曲肽",
+        "en": "Avoided the drug errors: no empirical hydrocortisone, diazoxide only once the sample taken during a low had been read, and octreotide only after diazoxide"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "hydrocortisone"
+            },
+            {
+              "intervened": "diazoxide",
+              "valid": false
+            },
+            {
+              "intervened": "octreotide",
+              "valid": false
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "sample-reading"
+          },
+          {
+            "intervened": "hydrocortisone"
+          },
+          {
+            "intervened": "diazoxide",
+            "valid": false
+          },
+          {
+            "intervened": "octreotide",
+            "valid": false
+          }
+        ]
+      }
     },
     {
       "id": "rb-communication",
@@ -4297,8 +4348,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge）：先问家属已经知道什么、最担心什么（例如会不会伤到脑子）；用日常语言解释“她的胰腺分泌了太多胰岛素，把血糖压得很低”，说明为什么要输葡萄糖、频繁测血糖、趁血糖低时抽血；解释二氮嗪的作用和需要留意的问题（浮肿、尿少、呼吸变快），以及为什么因为她心脏的情况要复查心超；药物无效时，说明为什么要抽她和父母双方的血查基因，为什么要做PET而不是普通CT或超声；讲清局部切除和近全胰切除的区别（后者以后很可能得糖尿病）以及术中冰冻切片的意义；坦诚说明三个月时血糖正常不等于以后发育一定没问题，需要定期随访；对父母都没有检出的变异，说明再生育的风险要由遗传咨询来评估；留出提问时间，用回授法确认理解。不堆砌术语，不承诺具体的治愈率或发育结局。",
-        "en": "Good performance (Calgary–Cambridge): first asks what the family already knows and fears most (for example brain damage); explains in plain words that “her pancreas is making too much insulin, which drives her sugar very low”, and why she needs a glucose drip, frequent checks and a blood test taken while she is low; explains what diazoxide does and what to watch for (puffiness, less urine, faster breathing), and why her heart findings mean a repeat echo; when the medicines fail, explains why her blood and both parents' blood go for gene tests and why a PET scan rather than ordinary CT or ultrasound; makes clear the difference between removing only the affected part and removing most of the pancreas (the latter often leads to diabetes later) and what frozen sections are for; is honest that a normal glucose at three months does not guarantee normal development, so follow-up continues; for a variant found in neither parent, explains that the risk for a future baby needs genetic counselling; leaves time for questions and checks understanding by teach-back. Avoids jargon and promises no cure rate or developmental outcome."
+        "zh-CN": "良好表现（Calgary–Cambridge）：先问家属已经知道什么、最担心什么（例如会不会伤到脑子）；用日常语言解释“她的胰腺分泌了太多胰岛素，把血糖压得很低”，说明为什么要输葡萄糖、频繁测血糖、趁血糖低时抽血；解释二氮嗪的作用和需要留意的问题（浮肿、尿少、呼吸变快），以及为什么因为她心脏的情况要复查心超；药物无效时，说明为什么要抽她和父母双方的血查基因，为什么要做PET而不是普通CT或超声；药物无效、需要手术时，按SPIKES告知这个坏消息（安静的环境，先了解家属已经知道什么、想知道多少，分步说明，回应情绪，共同商定计划）；讲清局部切除和近全胰切除的区别（后者以后很可能得糖尿病）以及术中冰冻切片的意义；坦诚说明三个月时血糖正常不等于以后发育一定没问题，需要定期随访；对父母都没有检出的变异，说明再生育的风险要由遗传咨询来评估；留出提问时间，用回授法确认理解。不堆砌术语，不承诺具体的治愈率或发育结局。",
+        "en": "Good performance (Calgary–Cambridge): first asks what the family already knows and fears most (for example brain damage); explains in plain words that “her pancreas is making too much insulin, which drives her sugar very low”, and why she needs a glucose drip, frequent checks and a blood test taken while she is low; explains what diazoxide does and what to watch for (puffiness, less urine, faster breathing), and why her heart findings mean a repeat echo; when the medicines fail, explains why her blood and both parents' blood go for gene tests and why a PET scan rather than ordinary CT or ultrasound; when the medicines fail and an operation is needed, breaks that news with SPIKES (a quiet setting, what they already understand and how much they want to know, the news in small steps, a response to their emotions, a shared plan); makes clear the difference between removing only the affected part and removing most of the pancreas (the latter often leads to diabetes later) and what frozen sections are for; is honest that a normal glucose at three months does not guarantee normal development, so follow-up continues; for a variant found in neither parent, explains that the risk for a future baby needs genetic counselling; leaves time for questions and checks understanding by teach-back. Avoids jargon and promises no cure rate or developmental outcome."
       }
     }
   ],
@@ -4343,8 +4394,8 @@
         "en": "Dr Qian (paediatric endocrinology consultant)"
       },
       "knowledge": {
-        "zh-CN": "儿童内分泌科会诊医生，只解读学员已经看过的结果。可以讲：2024年国际高胰岛素血症指南的诊断要点（低血糖时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、胰高血糖素反应≥1.7 mmol/L，胰岛素可测得是支持证据）和疑似持续性低血糖症时>3.9 mmol/L的目标（PES 2015）；过渡期低血糖与持续性低血糖的区别；二氮嗪的用法、合用利尿剂和疗效判断（院内监护下的禁食试验）；二氮嗪无效时尽快做基因检测并检测父母；局灶型的机制（父源隐性KATP通道变异加病灶内母源11p15缺失，新发变异也可能发生在父源染色体上），以及¹⁸F-DOPA PET的指征；变异按HGVS规范命名。不提前给出决策答案或结局，不补充没有记录的结果。",
-        "en": "Paediatric endocrinology consultant who interprets only results the learner has already read. Can explain the 2024 international hyperinsulinism guideline's diagnostic features (during hypoglycaemia β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L, a glucagon response ≥ 1.7 mmol/L, with measurable insulin as support) and the target above 3.9 mmol/L once a persistent disorder is suspected (PES 2015); transitional versus persistent hypoglycaemia; how diazoxide is given with a diuretic and how its effect is judged (a supervised fast in hospital); rapid genetic testing with both parents when diazoxide fails; the focal mechanism (a paternal recessive KATP-channel variant plus loss of the maternal 11p15 region in the lesion — a new variant can also arise on the paternal chromosome) and the indications for ¹⁸F-DOPA PET; HGVS naming of variants. Never gives a decision's answer or the outcome early, and adds no result the case does not record."
+        "zh-CN": "儿童内分泌科会诊医生，只解读学员已经看过的结果。可以讲：2024年国际高胰岛素血症指南的诊断要点（低血糖时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、胰高血糖素反应≥1.7 mmol/L，胰岛素可测得是支持证据）和疑似持续性低血糖症时>3.9 mmol/L的目标（PES 2015）；过渡期低血糖与持续性低血糖的区别；二氮嗪的用法、合用利尿剂和疗效判断（院内监护下的禁食试验）；二氮嗪无效时尽快做基因检测并检测父母；局灶型的机制（父源隐性KATP通道变异加病灶内母源11p15缺失，新发变异也可能发生在父源染色体上），以及¹⁸F-DOPA PET的指征（二氮嗪无效时都要做，除非基因证实为弥漫型）；变异按HGVS规范命名。不提前给出决策答案或结局，不补充没有记录的结果。",
+        "en": "Paediatric endocrinology consultant who interprets only results the learner has already read. Can explain the 2024 international hyperinsulinism guideline's diagnostic features (during hypoglycaemia β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L, a glucagon response ≥ 1.7 mmol/L, with measurable insulin as support) and the target above 3.9 mmol/L once a persistent disorder is suspected (PES 2015); transitional versus persistent hypoglycaemia; how diazoxide is given with a diuretic and how its effect is judged (a supervised fast in hospital); rapid genetic testing with both parents when diazoxide fails; the focal mechanism (a paternal recessive KATP-channel variant plus loss of the maternal 11p15 region in the lesion — a new variant can also arise on the paternal chromosome) and the indication for ¹⁸F-DOPA PET (every diazoxide-unresponsive infant unless the genetics show diffuse disease); HGVS naming of variants. Never gives a decision's answer or the outcome early, and adds no result the case does not record."
       },
       "interprets": [
         "critical-sample",
@@ -4396,7 +4447,7 @@
     },
     "conclusion": {
       "zh-CN": "足月顺产女婴，出生体重4.05 kg，无窒息，母亲孕期无糖耐量异常，父母非近亲。生后11小时出现低血糖，此后多次低于2.8 mmol/L。低血糖时标本：血糖1.8 mmol/L，胰岛素11 μU/mL，C肽0.74 nmol/L，β-羟丁酸0.5 mmol/L，提示胰岛素过多；甲状腺功能和ACTH正常，胰腺超声和头颅及垂体MRI未见异常，心脏超声示房间隔缺损、动脉导管未闭和轻度三尖瓣反流。用过二氮嗪和奥曲肽仍频繁低血糖。患儿ABCC8 c.1792C>T，p.(Arg598*)，父母该位点均未检出，KCNJ11未见异常；¹⁸F-DOPA定位胰体远端12.2 mm×9.5 mm病灶。局灶部分切除后病理证实为局灶型，三个月时空腹血糖约4.4–6.0 mmol/L、餐后约7 mmol/L。现行做法：低血糖反复时立即静脉补糖并在低血糖时留取标本，二氮嗪合用利尿剂并监测肺动脉高压，无效时急查基因（含父母）并转诊做¹⁸F-DOPA PET，按PET做局部切除并用冰冻切片确认切缘，长期随访神经发育。",
-      "en": "A term girl of 4.05 kg (vaginal birth, no asphyxia; unrelated parents; mother without glucose intolerance) was hypoglycaemic from 11 hours, with repeated readings below 2.8 mmol/L. A sample during a low showed glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L: insulin excess. Thyroid function, ACTH, pancreatic ultrasound and brain/pituitary MRI were unremarkable; the echo showed an ASD, a PDA and mild tricuspid regurgitation. Lows continued on diazoxide and octreotide. ABCC8 c.1792C>T, p.(Arg598*) was found in her but in neither parent, with no KCNJ11 abnormality; ¹⁸F-DOPA localised a 12.2 × 9.5 mm lesion in the distal pancreatic body. A partial resection confirmed focal disease; at three months fasting glucose was about 4.4–6.0 mmol/L. Today: prompt IV glucose and a critical sample, diazoxide with a thiazide and a pulmonary-hypertension watch, urgent genetics with both parents, PET, a guided resection with frozen sections, and follow-up."
+      "en": "A term girl of 4.05 kg (vaginal birth, no asphyxia; unrelated parents; mother without glucose intolerance) was hypoglycaemic from 11 hours, with repeated readings below 2.8 mmol/L. A sample during a low showed glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L: insulin excess. Thyroid function, ACTH, pancreatic ultrasound and brain/pituitary MRI were unremarkable; the echo showed an ASD, a PDA and mild tricuspid regurgitation. Lows continued on diazoxide and octreotide. ABCC8 c.1792C>T, p.(Arg598*) was found in her but in neither parent, with no KCNJ11 abnormality; ¹⁸F-DOPA localised a 12.2 × 9.5 mm lesion in the distal pancreatic body. A focal partial resection was done and histology confirmed focal disease; at three months fasting glucose was about 4.4–6.0 mmol/L and post-meal glucose about 7 mmol/L. Today: prompt IV glucose and a critical sample, diazoxide with a thiazide and a pulmonary-hypertension watch, urgent genetics with both parents, PET, a guided resection with frozen sections, and neurodevelopmental follow-up."
     },
     "keyReasoning": [
       {
@@ -4416,8 +4467,8 @@
         "en": "Frequent lows despite diazoxide and octreotide turn the question into focal or diffuse — answered by genetics and ¹⁸F-DOPA PET, not by ultrasound or MRI."
       },
       {
-        "zh-CN": "一个父母都没有的截短型ABCC8变异，加上PET上12.2 mm×9.5 mm的病灶，符合发生在父源染色体上的新发变异所致的局灶型；局部切除并用冰冻切片确认切缘可以治愈，病理也证实了局灶型。",
-        "en": "A truncating ABCC8 variant found in neither parent, with a 12.2 × 9.5 mm lesion on PET, fits focal disease from a new variant on the paternal chromosome; a limited resection with frozen-section margins can cure it, and the histology confirmed the focal form."
+        "zh-CN": "一个父母都没有的截短型ABCC8变异，加上PET上12.2 mm×9.5 mm的病灶，若变异新发于父源染色体，即可解释局灶型——记录无法说明是哪一条染色体；局部切除并用冰冻切片确认切缘可以治愈，病理也证实了局灶型。",
+        "en": "A truncating ABCC8 variant found in neither parent, with a 12.2 × 9.5 mm lesion on PET, is compatible with focal disease if the variant arose new on the paternal chromosome — the record cannot show which; a limited resection with frozen-section margins can cure it, and the histology confirmed the focal form."
       },
       {
         "zh-CN": "三个月时血糖正常只是短期结果：神经发育、是否复发和胰腺功能都没有记录，随访和遗传咨询仍然需要。",
@@ -4468,16 +4519,16 @@
         "en": "The first hours: recurrent lows need IV glucose — 10% glucose 2 mL/kg (200 mg/kg), then 5–8 mg/kg/min by infusion (AAP 2011) — with the critical sample drawn during the low but never at the cost of delay (2024 international hyperinsulinism guideline); once a persistent disorder is suspected, the target is above 3.9 mmol/L (PES 2015). Here the lows began at 11 hours and recurred below 2.8 mmol/L in a 4.05 kg baby whose mother had no glucose intolerance; this case does not record how glucose was given at the time."
       },
       {
-        "zh-CN": "关键标本的判读（2024年国际高胰岛素血症指南）：血糖<2.8 mmol/L时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、胰高血糖素反应≥1.7 mmol/L提示胰岛素过多，胰岛素可测得是支持证据。本例血糖1.8 mmol/L、胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸、皮质醇、生长激素和胰高血糖素反应没有记录，血氨单位存疑。生后48小时内的过渡期低血糖可有相同表现（PES 2015），所以要看低血糖是否持续。",
-        "en": "Reading the critical sample (2024 international hyperinsulinism guideline): at a glucose < 2.8 mmol/L, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucagon response ≥ 1.7 mmol/L indicate insulin excess, and measurable insulin supports it. Here glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids, cortisol, growth hormone and a glucagon response are not recorded, and the ammonia unit is doubtful. Transitional hypoglycaemia in the first 48 hours can look the same (PES 2015), so persistence is what counts."
+        "zh-CN": "关键标本的判读（2024年国际高胰岛素血症指南）：血糖<2.8 mmol/L时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、胰高血糖素反应≥1.7 mmol/L提示胰岛素过多，胰岛素可测得是支持证据。本例血糖1.8 mmol/L、胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸、皮质醇、生长激素和胰高血糖素反应没有记录，血氨单位存疑。过渡期低血糖可有相同表现——PES 2015在生后48小时以后评估，2024年国际指南要求72小时内采的标本在72小时后复查——所以要看低血糖是否持续。",
+        "en": "Reading the critical sample (2024 international hyperinsulinism guideline): at a glucose < 2.8 mmol/L, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucagon response ≥ 1.7 mmol/L indicate insulin excess, and measurable insulin supports it. Here glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids, cortisol, growth hormone and a glucagon response are not recorded, and the ammonia unit is doubtful. Transitional hypoglycaemia can look the same — PES 2015 evaluates after 48 hours, and the 2024 guideline repeats a sample taken before 72 hours — so persistence is what counts."
       },
       {
         "zh-CN": "二氮嗪的安全使用：一线药物（2024年国际指南），5–15 mg/(kg·d)分2–3次、从低端起、合用噻嗪类利尿剂并监测水钠潴留、肺动脉高压和中性粒细胞（PES 2020）；FDA 2015年警示先天性心脏病是二氮嗪相关肺动脉高压的危险因素，她有房间隔缺损和动脉导管未闭。疗效用院内监护下的禁食试验判断，绝不在家禁食。奥曲肽是二线药物，新生儿有坏死性小肠结肠炎的报道（Laje 2010）。报告记录用过两药仍频繁低血糖；本病例没有收录剂量，是否合用利尿剂也没有记录。",
         "en": "Using diazoxide safely: first-line (2024 international guideline), 5–15 mg/kg/day in 2–3 doses starting low, with a thiazide and monitoring for fluid retention, pulmonary hypertension and neutropenia (PES 2020); the FDA's 2015 warning names congenital heart disease as a risk factor for diazoxide-associated pulmonary hypertension, and she had an ASD and a PDA. Response is judged by a supervised fast in hospital, never at home. Octreotide is second-line, with necrotising enterocolitis reported in newborns (Laje 2010). The report records frequent lows on both drugs; this case does not include the doses, and whether a diuretic was given is not recorded."
       },
       {
-        "zh-CN": "二氮嗪无效之后（2024年国际高胰岛素血症指南）：急查ABCC8/KCNJ11并同时检测父母；局灶型通常是父源的单个隐性KATP通道变异加病灶内母源11p15缺失，基因提示局灶型时做¹⁸F-DOPA PET；超声、CT和MRI正常不能排除局灶病灶。本例变异按HGVS写作c.1792C>T，p.(Arg598*)（报告写作p.Arg598X），父母均未检出，可能是新发于父源染色体的变异；PET定位胰体远端12.2 mm×9.5 mm病灶。",
-        "en": "After diazoxide fails (2024 international hyperinsulinism guideline): urgent ABCC8/KCNJ11 testing with both parents; focal disease usually means one paternal recessive KATP-channel variant plus loss of the maternal 11p15 region in the lesion, and genetics suggesting focal disease lead to ¹⁸F-DOPA PET; normal ultrasound, CT or MRI cannot exclude a focal lesion. Here the variant, in HGVS form c.1792C>T, p.(Arg598*) (written p.Arg598X in the report), was in neither parent and may have arisen new on the paternal chromosome; PET localised a 12.2 × 9.5 mm lesion in the distal pancreatic body."
+        "zh-CN": "二氮嗪无效之后（2024年国际高胰岛素血症指南）：急查ABCC8/KCNJ11，并同时检测父母，因为局灶型通常是父源的单个隐性KATP通道变异加病灶内母源11p15缺失；除非基因证实为弥漫型，二氮嗪无效的婴儿都做¹⁸F-DOPA PET；超声、CT和MRI正常不能排除局灶病灶。本例变异按HGVS写作c.1792C>T，p.(Arg598*)（报告写作p.Arg598X），父母均未检出，可能是新发于父源染色体的变异；PET定位胰体远端12.2 mm×9.5 mm病灶。",
+        "en": "After diazoxide fails (2024 international hyperinsulinism guideline): rapid ABCC8/KCNJ11 testing, with both parents sampled because focal disease usually means one paternal recessive KATP-channel variant plus loss of the maternal 11p15 region in the lesion; ¹⁸F-DOPA PET for every diazoxide-unresponsive infant unless the genetics show diffuse disease; normal ultrasound, CT or MRI cannot exclude a focal lesion. Here the variant, in HGVS form c.1792C>T, p.(Arg598*) (written p.Arg598X in the report), was in neither parent and may have arisen new on the paternal chromosome; PET localised a 12.2 × 9.5 mm lesion in the distal pancreatic body."
       },
       {
         "zh-CN": "手术选择（2024年国际高胰岛素血症指南）：局灶型按PET做局部切除，术中冰冻切片确认切缘，术后禁食试验证实痊愈；近全胰切除（95%–98%）只留给药物无效的弥漫型，常留下糖尿病和胰腺外分泌功能不全。本例做了局灶部分切除，病理证实局灶型，三个月时空腹血糖约4.4–6.0 mmol/L、餐后约7 mmol/L；本病例没有记录冰冻切片和切缘。",
@@ -4495,9 +4546,9 @@
       "中华医学会儿科学分会新生儿学组. 新生儿低血糖临床规范管理专家共识（2021）. 中国当代儿科杂志. 2022;24(1):1-13. doi:10.7499/j.issn.1008-8830.2108061",
       "British Association of Perinatal Medicine. Identification and Management of Neonatal Hypoglycaemia in the Full Term Infant (Birth – 72 hours): A BAPM Framework for Practice. London: BAPM; 2024.",
       "Brar PC, Heksch R, Cossen K, et al. Management and Appropriate Use of Diazoxide in Infants and Children with Hyperinsulinism. J Clin Endocrinol Metab. 2020;105(12):3750-3761. doi:10.1210/clinem/dgaa543",
-      "US Food and Drug Administration. FDA Drug Safety Communication: FDA warns about a serious lung condition in infants and newborns treated with Proglycem (diazoxide). Silver Spring (MD): FDA; 2015 Jul.",
+      "US Food and Drug Administration. FDA Drug Safety Communication: FDA warns about a serious lung condition in infants and newborns treated with Proglycem (diazoxide). Silver Spring (MD): FDA; 2015 Jul 16.",
       "Adamkin DH; Committee on Fetus and Newborn. Postnatal glucose homeostasis in late-preterm and term infants. Pediatrics. 2011;127(3):575-579. doi:10.1542/peds.2010-3851",
-      "Laje P, Halaby L, Adzick NS, Stanley CA. Necrotizing enterocolitis in neonates receiving octreotide for the management of congenital hyperinsulinism. Pediatr Diabetes. 2010;11(2):142-147."
+      "Laje P, Halaby L, Adzick NS, Stanley CA. Necrotizing enterocolitis in neonates receiving octreotide for the management of congenital hyperinsulinism. Pediatr Diabetes. 2010;11(2):142-147. doi:10.1111/j.1399-5448.2009.00547.x"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",

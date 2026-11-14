@@ -23,9 +23,9 @@ when the article text is available. Everything listed under "To verify" belongs 
 | Specialty | Neonatology, endocrinology, paediatric surgery, genetics (`neonatology`, `endocrinology`, `pediatric-surgery`, `genetics`) |
 | Languages | `zh-CN` (source language), `en` |
 | Learner level | Final-year students, paediatric and neonatal residents; neonatal nurses for the first two phases |
-| Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance; **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a neonatologist and a paediatric endocrinologist review it before teaching use |
+| Review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent AI-assisted review with fixes (2026-11-14); **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a neonatologist and a paediatric endocrinologist review it before teaching use |
 | Phases | `first-low` 生后11小时：第一次血糖偏低 / 11 hours old: the first low glucose → `recurrent` 此后：低血糖反复出现 / Afterwards: the lows keep coming back → `medical` 药物治疗期间 / On medical treatment → `localisation` 转诊与专科检查 / Referral and specialist tests → `outcome` 报告记录的转归与随访 / The recorded outcome and follow-up — none learner-switchable |
-| Content | 23 history items (6 required, 10 unknown; the relative answers) · 1 examination finding (the only one 1.0.0 records) · 16 investigations (4 record reviews; 8 results with no record) · 19 interventions (5 always contraindicated, 3 contraindicated in the wrong order) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| Content | 23 history items (6 required, 10 unknown; the relative answers) · 1 examination finding (the only one 1.0.0 records) · 16 investigations (4 record reviews; 8 results with no record) · 19 interventions (5 always contraindicated, 3 contraindicated in the wrong order; 5 marked `critical`) · 6 objectives · 5 decisions (20 options) · 13 rubric items (12 deterministic, weight 31; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
 
 ## Learning outcomes
 
@@ -122,14 +122,14 @@ Titles and hints name no diagnosis and contain no option text (the journal lists
 | `first-response` | recurrence asked, bedside glucose read in `recurrent`, birth, mother's glucose and size known | `iv-glucose-and-sample`: IV access, critical sample during the low without delay, 10% glucose 2 mL/kg then an infusion, keep feeding, frequent checks, target > 3.9 mmol/L | `feed-and-gel` (first 48 h "transitional"); `results-before-glucose` (protect the sample); `strong-glucose-push` (50 % glucose for speed) |
 | `sample-reading` | critical sample, thyroid and ACTH read | `insulin-excess`: measurable insulin and C-peptide with suppressed ketones at 1.8 mmol/L; keep > 3.9 mmol/L; persistence beyond the transitional days; repeat the ammonia | `normal-transition` (insulin "in the fasting range"); `fat-oxidation-defect` (hypoketotic hypoglycaemia); `cortisol-deficiency` (empirical hydrocortisone) |
 | `first-medicine` | decision 2, echo read | `diazoxide-with-thiazide`: low start within 5–15 mg/kg/day, thiazide, IV glucose while titrating, weights, fluids, repeat echo, supervised fast after several days | `diazoxide-full-dose` (maximum dose, fluid restriction, failure on day 2); `octreotide-first` (avoid diazoxide because of the heart); `steroid-cover` (hydrocortisone, floor 2.8 mmol/L) |
-| `after-medicines` | treatment record read in `medical`, pancreatic ultrasound read | `genes-then-pet`: diazoxide-unresponsive HI → urgent ABCC8/KCNJ11 with both parents, experienced centre, ¹⁸F-DOPA PET if focal is suggested, glucose kept safe | `near-total-now` (normal ultrasound = diffuse); `ct-mri-search` (look for an insulinoma first); `home-with-meter` (maximal octreotide and home) |
+| `after-medicines` | treatment record read in `medical`, pancreatic ultrasound read | `genes-then-pet`: diazoxide-unresponsive HI → urgent ABCC8/KCNJ11 with both parents, experienced centre, ¹⁸F-DOPA PET unless the genetics show diffuse disease (2024 guideline, recommendation 1.5), glucose kept safe | `near-total-now` (normal ultrasound = diffuse); `ct-mri-search` (look for an insulinoma first); `home-with-meter` (maximal octreotide and home) |
 | `operation` | genetic and PET reports read | `limited-resection`: PET-guided partial pancreatectomy, frozen-section margins, fast to confirm cure | `near-total-to-be-safe` (variant absent from parents "acts dominant"); `pet-false-positive` (not paternal, so not focal); `enucleate-without-frozen` (spare tissue, no frozen sections) |
 
 Every option has its own feedback (2–4 sentences naming the guidance, issuing body and year). Option ids name their
 content. The key is the uniquely longest option in at most one decision per locale (`first-response` in zh-CN; none
 in en).
 
-### Rubric (11 deterministic items, weight 29, + 1 examiner-judged)
+### Rubric (12 deterministic items, weight 31, + 1 examiner-judged)
 
 | id | Domain | Weight | Met when |
 |---|---|---:|---|
@@ -143,27 +143,47 @@ in en).
 | `rb-diazoxide-safety` | safety | 3 | decision 3 right first time; diazoxide and thiazide given |
 | `rb-after-medicines` | management | 3 | decision 4 right first time; genetic samples sent; referral made |
 | `rb-operation` | management | 3 | decision 5 right first time; partial pancreatectomy arranged |
-| `rb-no-harm` | safety | 4 | **critical** — none of: 50 % glucose push, empirical hydrocortisone, a fast at home, near-total pancreatectomy, discharge without a fasting check; `scoredWhen` = decision 1 attempted or any of those five acts |
+| `rb-no-harm` | safety | 4 | **critical** — none of the five critical acts: 50 % glucose push, a fast at home, discharge without a fasting check, near-total pancreatectomy, a partial pancreatectomy before the PET report has been read (`valid: false`); `scoredWhen` = decision 1 attempted or any of those acts |
+| `rb-drug-safety` | safety | 2 | none of: empirical hydrocortisone, diazoxide before the critical sample has been read, octreotide before diazoxide (the last two `valid: false`); `scoredWhen` = decision 2 attempted or any of those acts |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge conversation with the family (see judge guidance) |
 
-**Critical items are acts**, not decisions: `rb-iv-glucose` (the missed life-saving act) and `rb-no-harm` (the
-dangerous errors). Three further wrong-order acts are flagged as contraindicated safety events in the debrief without
-a rubric penalty (the rubric cannot express "A before B"): diazoxide before the critical sample has been read,
-octreotide before diazoxide, and a partial pancreatectomy before the PET report has been read.
+**Critical items are acts**, not decisions: `rb-iv-glucose` (the life-saving act; the later phases wait for it, so it
+is always given while the lows recur) and `rb-no-harm` (exactly the five interventions marked `critical`). The three
+wrong-order acts are scored with the condition language's `valid: false` (given while contraindicated): a partial
+pancreatectomy before the PET report has been read loses the critical `rb-no-harm`; diazoxide before the critical
+sample has been read and octreotide before diazoxide lose the non-critical `rb-drug-safety`, as empirical
+hydrocortisone does.
 
-### How wrong choices score (measured 2026-10-30 with core `assess`)
+### How wrong choices score (measured 2026-11-14 with core `assess`)
 
-| Path | Score | Critical items missed |
-|---|---|---|
-| Reference path (`solution`) | 29/29 (100 %) | none |
-| Do nothing (start, then try to finish) | 0/25 (finish refused: objectives incomplete) | `rb-iv-glucose` |
-| A wrong first answer at every decision, then the right one | 14/29 (48 %) | none |
-| A wrong first answer at one decision only (each of the five) | 26/29 (90 %) | none |
-| Reference path plus any one of the five dangerous acts | 25/29 (86 %), and the act is a contraindicated safety event | `rb-no-harm` |
-| Reference path without the thiazide | 26/29 (90 %) | none |
-| Reference path without the three unrecorded-history questions | 28/29 (97 %) | none |
-| Decisions 1 and 2 answered but no IV glucose (the case cannot move past `recurrent`) | 14/29 (48 %) so far; cannot finish | `rb-iv-glucose` |
-| Reference path plus octreotide before diazoxide | 29/29, with octreotide listed as a contraindicated act | none |
+| Path | Score | Critical items missed | Safety outcome |
+|---|---|---|---|
+| Reference path (`solution`) | 31/31 (100 %) | none | passed |
+| Do nothing (start, then try to finish) | 0/25 (finish refused: objectives incomplete) | `rb-iv-glucose` | passed |
+| A wrong first answer at every decision, then the right one | 16/31 (52 %) | none | passed |
+| A wrong first answer at one decision only (each of the five) | 28/31 (90 %) | none | passed |
+| Reference path plus a 50 % glucose push, a fast at home, discharge without a fasting check or near-total pancreatectomy (each) | 27/31 (87 %) | `rb-no-harm` | **failed** (critical act) |
+| A partial pancreatectomy before the PET report has been read | 27/31 (87 %) | `rb-no-harm` | **failed** (critical act) |
+| Reference path plus empirical hydrocortisone | 29/31 (94 %) | none | passed; flagged as contraindicated |
+| Diazoxide before the critical sample has been read | 29/31 (94 %) | none | passed; flagged as contraindicated |
+| Octreotide before diazoxide | 29/31 (94 %) | none | passed; flagged as contraindicated |
+| Reference path without the thiazide | 28/31 (90 %) | none | passed |
+| Reference path without the three unrecorded-history questions | 30/31 (97 %) | none | passed |
+| Decisions 1 and 2 answered but no IV glucose (the case cannot move past `recurrent`) | 16/31 (52 %) so far; cannot finish | `rb-iv-glucose` | passed |
+
+**Safety outcome.** Five high-risk interventions carry `critical: true`, because giving any of them while it is
+contraindicated causes irreversible or life-threatening harm and fails the run's safety outcome whatever the score:
+`home-fast` and `discharge-home` (always contraindicated: lows at home without monitoring can cause seizures and
+permanent brain injury), `near-total-pancreatectomy` (always contraindicated here: it removes pancreas that a limited
+resection would keep and commonly leaves diabetes and exocrine insufficiency), `partial-pancreatectomy` while the PET
+report has not been read (a blind resection that may miss the lesion or take too much gland) and
+`concentrated-glucose-push` (always contraindicated: 50 % glucose 1–2 mL/kg is a hyperosmolar push of 2.5–5 times the
+200 mg/kg bolus through a neonatal peripheral cannula, with extravasation necrosis and rebound hypoglycaemia; the
+engine already fails a twofold overdose of a high-risk item). Each also loses the critical `rb-no-harm`. No
+intervention is marked `critical: false`: the remaining contraindicated acts — empirical `hydrocortisone`, `diazoxide`
+before the critical sample has been read and `octreotide` before diazoxide — are moderate-risk, recoverable
+misjudgements that show their harm text, are listed as contraindicated in the debrief and lose `rb-drug-safety`, but do
+not fail the safety outcome. The reference path gives nothing while it is contraindicated.
 
 ## Reference path (`solution`)
 
@@ -176,8 +196,8 @@ pancreatic ultrasound, brain/pituitary MRI → decision 3 → thiazide, diazoxid
 doses, side effects, worries → bedside glucose, treatment record → decision 4 → genetic samples, referral →
 (`localisation`) the relative's account, age at referral, worries → genetic and PET reports → decision 5 → partial
 pancreatectomy → (`outcome`) the relative's account, development, pancreatic function → follow-up glucose, outcome
-record → follow-up plan → finish. It scores 29/29 with no contraindicated act, in clinical and in-world mode, in both
-languages.
+record → follow-up plan → finish. It scores 31/31 with no contraindicated act and a passed safety outcome, in clinical
+and in-world mode, in both languages.
 
 ## Clinical numbers check
 
@@ -249,13 +269,16 @@ relation to the glucose, which decision 2 asks the learner to judge.
 |---|---|---|
 | Treating recurrent lows as transitional (feeds, gel, wait for symptoms) | `feed-and-gel`; progress waits for IV glucose | `rb-first-response`, `rb-iv-glucose` |
 | Waiting for the laboratory before IV glucose | `results-before-glucose` | `rb-first-response` |
-| 50 % glucose in a newborn | `strong-glucose-push`; `concentrated-glucose-push` contraindicated | `rb-first-response`, `rb-no-harm` |
+| Glucose given before the critical sample is drawn | the key of decision 1 and `results-before-glucose`; the order of a sample (an investigation) and a bolus (an intervention) is not scored, so watch for it | `rb-first-response` |
+| 50 % glucose in a newborn | `strong-glucose-push`; `concentrated-glucose-push` contraindicated and critical (safety outcome fails) | `rb-first-response`, `rb-no-harm` |
 | Reading insulin 11 µU/mL against a fasting range | `normal-transition` | `rb-mechanism` |
 | Low ketones read as a fatty-acid oxidation defect | `fat-oxidation-defect` | `rb-mechanism` |
-| Empirical steroids for neonatal hypoglycaemia | `cortisol-deficiency`, `steroid-cover`; `hydrocortisone` contraindicated | `rb-mechanism`, `rb-diazoxide-safety`, `rb-no-harm` |
+| Empirical steroids for neonatal hypoglycaemia | `cortisol-deficiency`, `steroid-cover`; `hydrocortisone` contraindicated (2024 guideline, recommendation 2.6: avoid glucocorticoids) | `rb-mechanism`, `rb-diazoxide-safety`, `rb-drug-safety` |
+| Diazoxide before the sample taken during a low has been read | `diazoxide` contraindicated until the critical sample is read | `rb-drug-safety` |
 | Diazoxide at full dose without a diuretic despite ASD/PDA; failure called on day 2 | `diazoxide-full-dose`; thiazide scored | `rb-diazoxide-safety` |
-| Octreotide first in a newborn | `octreotide-first`; octreotide contraindicated before diazoxide | `rb-diazoxide-safety`, safety event |
-| Blind near-total pancreatectomy after a normal ultrasound | `near-total-now`, `near-total-to-be-safe`; contraindicated | `rb-after-medicines`, `rb-operation`, `rb-no-harm` |
+| Octreotide first in a newborn | `octreotide-first`; octreotide contraindicated before diazoxide | `rb-diazoxide-safety`, `rb-drug-safety` |
+| Blind near-total pancreatectomy after a normal ultrasound | `near-total-now`, `near-total-to-be-safe`; contraindicated and critical | `rb-after-medicines`, `rb-operation`, `rb-no-harm` |
+| Operating before the PET report has been read | `partial-pancreatectomy` contraindicated and critical until the PET is read | `rb-no-harm` |
 | Searching for an insulinoma with CT/MRI or invasive venous sampling | `ct-mri-search`; `pancreas-ct` low-value, `venous-sampling` harmful (no result) | `rb-after-medicines` |
 | Discharge or a fast at home | `home-with-meter`; `discharge-home`, `home-fast` contraindicated | `rb-after-medicines`, `rb-no-harm` |
 | "Not paternal, so not focal" | `pet-false-positive` | `rb-operation` |
@@ -381,11 +404,11 @@ stays 0.4583 days: the schema has no hour unit, and the core formatter shows "11
 6. Brar PC, Heksch R, Cossen K, et al. Management and Appropriate Use of Diazoxide in Infants and Children with
    Hyperinsulinism. J Clin Endocrinol Metab. 2020;105(12):3750-3761. doi:10.1210/clinem/dgaa543
 7. US Food and Drug Administration. FDA Drug Safety Communication: FDA warns about a serious lung condition in infants
-   and newborns treated with Proglycem (diazoxide). Silver Spring (MD): FDA; 2015 Jul.
+   and newborns treated with Proglycem (diazoxide). Silver Spring (MD): FDA; 2015 Jul 16.
 8. Adamkin DH; Committee on Fetus and Newborn. Postnatal glucose homeostasis in late-preterm and term infants.
    Pediatrics. 2011;127(3):575-579. doi:10.1542/peds.2010-3851
 9. Laje P, Halaby L, Adzick NS, Stanley CA. Necrotizing enterocolitis in neonates receiving octreotide for the
-   management of congenital hyperinsulinism. Pediatr Diabetes. 2010;11(2):142-147.
+   management of congenital hyperinsulinism. Pediatr Diabetes. 2010;11(2):142-147. doi:10.1111/j.1399-5448.2009.00547.x
 
 The same strings are `debrief.references`. How they were checked (2026-10-30, by web search; PubMed, PMC, Karger
 and journal pages could not be fetched from this environment, so search records were used): ref. 1 — the source map's
@@ -398,6 +421,26 @@ bibliographic records (DOI; pulmonary hypertension and neutropenia named as seri
 FDA page and secondary reports (11 cases; congenital heart disease among the risk factors; resolution on stopping);
 ref. 8 — PubMed 21357346 (DOI; 200 mg/kg minibolus and 5–8 mg/kg/min infusion via secondary copies); ref. 9 —
 citations in later case reports (no DOI printed).
+
+**Independent review (2026-11-14).** Read in full this time: ref. 2 on PMC (PMC11124746) — Table 1's diagnostic
+features (β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L, glucagon response ≥ 30 mg/dL at a plasma
+glucose < 50 mg/dL; insulin > 1.25 µU/mL and C-peptide > 0.5 ng/mL as less definitive), recommendation 2.1 (keep
+70–100 mg/dL), 2.2 (restore glucose without delay), 2.4 (diazoxide first-line, 5–15 mg/kg/day, a diuretic started
+with it, an echocardiogram a week after starting, unresponsive if not reducible after 5 days at 15 mg/kg/day), 2.5
+(somatostatin analogues second-line; NEC, tachyphylaxis), 2.6 (glucocorticoids to be avoided), 1.2 and section 1.4
+(genetic testing for all; rapid ABCC8/KCNJ11 testing crucial when diazoxide fails; a paternally inherited variant
+predicts focal disease), 1.5 (¹⁸F-DOPA PET in diazoxide-unresponsive infants except those with genetic evidence of
+diffuse disease), 3.1–3.2 (frozen biopsies; cure of focal disease > 95 % in some series; 90–98 % pancreatectomy for
+diffuse disease), 4.1 (a fasting study before discharge for all children), 5.2 (developmental surveillance) and the
+retest after 72 hours of a sample taken during the transitional days. Ref. 6 in full (J Clin Endocrinol Metab
+2020;105(12):3750–3761, PES Drug and Therapeutics Committee, Table 1): 5–15 mg/kg/day in 2–3 doses, a lower starting
+dose for neonates with cardiac disease, a baseline cardiopulmonary assessment, a thiazide started with diazoxide
+(strong recommendation), an echocardiogram about a week after starting, blood counts for neutropenia. Ref. 8's text:
+"minibolus (200 mg/kg [2 mL/kg] D10W) and/or intravenous infusion of D10W at 5 to 8 mg/kg per minute". Ref. 5: the
+January 2024 framework (revised June and September 2024) keeps 40 % gel (200 mg/kg) with a feeding plan for
+1.0–1.9 mmol/L, and practice point 21 takes the samples before treatment but never delays treatment for them. Ref. 7:
+16 July 2015, congenital heart disease among the risk factors. Ref. 4: the abstract states that early standardised
+management reduces neonatal hypoglycaemia and hypoglycaemic brain injury. Ref. 9: DOI resolved at the publisher.
 
 ### To verify
 
@@ -435,26 +478,22 @@ citations in later case reports (no DOI printed).
   case cites none of it until it has been read.
 * Which relative accompanied the baby, to name the companion by relation.
 
-**Guidance details (secondary sources only in this review):**
-* 2024 international hyperinsulinism guideline: the exact wording and grading of the diagnostic features quoted; the
-  glucose target > 70 mg/dL (3.9 mmol/L), confirmed only in secondary summaries; the diazoxide dose band and
-  starting dose, the thiazide recommendation, the definition of diazoxide responsiveness (fast duration, timing after
-  starting — about 5 days in one centre's protocol), the genetic-testing and PET recommendations (including how a
-  variant absent from both parents is handled), the surgical recommendations and any neurodevelopmental follow-up
-  recommendation.
-* PES 2015: the > 70 mg/dL target for suspected genetic hypoglycaemia disorders, evaluation at ≥ 48 hours, and its
-  wording on a safety fast before discharge (the case cites PES 2015 for "show an age-appropriate fast before
-  discharge").
-* PES 2020 diazoxide consensus (Brar et al.): the starting-dose advice (the case says "start at the low end"),
-  echocardiography before and after starting, the thiazide wording, and the adverse-effect frequencies (2–3 %
-  pulmonary hypertension, 15 % neutropenia in the abstract; not printed in the case).
-* AAP 2011 clinical report: whether it has been reaffirmed, revised or retired (AAP clinical reports expire after
-  five years unless reaffirmed); the case uses it only for the 200 mg/kg minibolus and the 5–8 mg/kg/min infusion.
-* BAPM 2024 framework: whether it keeps the 2017 framework's dextrose-gel step and IV bolus volume (2.5 mL/kg of 10%
-  glucose in 2017); the case cites BAPM only for "feeding support and gel first for a well baby with a mild low".
+**Guidance details (what the independent review of 2026-11-14 could not settle):**
+* 2024 international hyperinsulinism guideline: it does not say how a variant found in neither parent is handled (a
+  new variant on the paternal chromosome, a missed paternal carrier, non-paternity) — the case teaches that it does
+  not exclude focal disease and that PET and histology decide; a paediatric endocrinologist should confirm the
+  wording. The case's "a sample taken during a low without delaying treatment" combines the guideline's critical
+  sample (Table 4) and recommendation 2.2 with BAPM's practice point 21.
+* PES 2015: the > 70 mg/dL target and evaluation at ≥ 48 hours were confirmed in summaries; its wording on a safety
+  fast before discharge (6–8 hours in a later guideline summary) was not read in the original — the discharge trap
+  now also cites the 2024 guideline's section 4.1, which was.
+* BAPM 2024 aims above 3.0 mmol/L in the first 48 hours and above 3.5 mmol/L afterwards for suspected
+  hyperinsulinism, below the PES 2015 and 2024 international > 3.9 mmol/L (70 mg/dL) the case teaches; a neonatologist
+  should confirm which target the case's setting follows.
+* AAP 2011 clinical report: its doses were read in the text; whether it has been reaffirmed, revised or retired (AAP
+  clinical reports expire after five years unless reaffirmed) is still open.
 * Chinese 2021 consensus: its thresholds are not printed in the case; no Chinese consensus on congenital
   hyperinsulinism was found — check before citing one.
-* FDA Drug Safety Communication: the exact day in July 2015; Laje 2010: the DOI.
 * The peripheral limit for glucose concentration (commonly 12.5 %) — the case says only "concentrated glucose needs
   a central line"; glucagon and octreotide doses are left to the formulary and the specialist team.
 * Collection contract vs STANDARD §6.6: the contract matches the English review note with the case-sensitive
@@ -492,6 +531,23 @@ citations in later case reports (no DOI printed).
   briefs; no authoring language in anything the carer says.
 * **Corpus and schema.** 38 paraphrased utterances with negatives; `sourceTextChecked: false` added.
 * **Media.** `fig01`, `fig02` kept (approved, unattached), retitled.
+* **Independent review (2026-11-14), fixes.** Safety outcome: `critical: true` on the five high-risk interventions
+  that can be contraindicated (the strict lint warned on all five and the collection contract failed), and a
+  **Safety outcome.** paragraph. Assessment: an operation before the PET report has been read now loses the critical
+  `rb-no-harm` (`valid: false`), which holds exactly the critical acts; empirical hydrocortisone, diazoxide before the
+  critical sample has been read and octreotide before diazoxide lose the new `rb-drug-safety` (the earlier guide said
+  the rubric could not express "A before B"; `valid: false` does); scores re-measured (31). Guidance: the PET
+  indication follows the 2024 guideline's recommendation 1.5 (every diazoxide-unresponsive infant unless the genetics
+  show diffuse disease, not "if the genetics suggest focal disease") in decision 4, teaching point 4 and the
+  consultant's brief; testing both parents is tied to the guideline's paternal-inheritance statement; the transitional
+  window cites the 2024 guideline's retest after 72 hours beside PES 2015's 48 hours; "focal disease is cured" became
+  "can be cured (> 95 % in some series)"; the discharge trap cites the 2024 guideline's section 4.1; the
+  results-first distractor cites BAPM 2024's practice point 21; the communication item adds SPIKES for the news of an
+  operation; references 7 (day) and 9 (DOI) completed. Facts: the relative no longer says "took blood" for the gene
+  tests (the specimen is not recorded); the hydrocortisone harm no longer shows the ACTH result before it is read; the
+  English conclusion now also gives the post-meal glucose (as the Chinese does); key reasoning 5 marks the new paternal
+  variant as an explanation the record cannot prove. In-world: the responses of the operation, octreotide and the
+  follow-up plan point to the records instead of quoting the recorded histology, failure and follow-up early.
 
 ### 1.0.0 — 2026-10-28
 
@@ -500,12 +556,12 @@ citations in later case reports (no DOI printed).
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-10-30):
+Run from the worktree root (all passed on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-639083/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-639083 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 38/38 · rubric 29/29
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-639083        # depth floor, do-nothing 0, wrong-first 48 % < 100 %
+npm run -s cc -- cases verify cmcr-639083 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 38/38 · rubric 31/31
+npx tsx --conditions=source scripts/case-check.ts cmcr-639083        # depth floor, do-nothing 0, wrong-first 52 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-639083:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-639083:"   # in-world demonstration, en + zh-CN
 ```
@@ -534,12 +590,17 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **关键决策。** ① 低血糖反复：建立静脉通路，趁低血糖先抽关键标本，10%葡萄糖2 mL/kg静推后持续输注，目标>3.9 mmol/L
 （干扰项：喂奶加凝胶等症状、先等化验结果、50%葡萄糖静推）；② 判读标本：胰岛素过多（干扰项：正常过渡、脂肪酸氧化障碍、
 皮质醇缺乏并用激素）；③ 开始用药：低剂量二氮嗪加噻嗪类利尿剂，复查心超，禁食试验判断疗效（干扰项：一开始满量并第2天判失败、
-先用奥曲肽、长期激素）；④ 药物无效：急查基因（含父母）、转诊、¹⁸F-DOPA PET（干扰项：立即近全胰切除、先做CT/MRI找胰岛素瘤、
+先用奥曲肽、长期激素）；④ 药物无效：急查基因（含父母）、转诊，除非基因证实为弥漫型都做¹⁸F-DOPA PET（干扰项：立即近全胰切除、先做CT/MRI找胰岛素瘤、
 加量奥曲肽后带血糖仪回家）；⑤ 手术：PET引导的局部切除加冰冻切片（干扰项：近全胰切除、认定PET假阳性、只剜除结节不做冰冻）。
-关键项：低血糖反复时静脉补糖（推注加持续输注），以及避免五种危险处置。
+关键项：低血糖反复时静脉补糖（推注加持续输注），以及避免五种危险处置（50%葡萄糖静推、在家禁食、未做禁食试验就出院、近全胰切除、未读PET就手术）。
 
 **复盘要点（PEARLS）。** 先谈感受；复述从第一次低血糖到治疗、留标本和读结果的经过；分析：什么让你不再认为是过渡期低血糖、
 血糖1.8 mmol/L时胰岛素11 μU/mL意味着什么、为什么先抽标本却不等结果、4.05 kg和母亲无糖代谢异常提示什么、房间隔缺损和动脉导管
 未闭怎样改变二氮嗪的用法、何时才能判定药物无效、超声和MRI正常为什么还要做PET、父母都没有的变异为什么仍可能是局灶型及其对
 再生育的意义、三个月时血糖正常能说明什么不能说明什么；最后总结下一次遇到反复低血糖的大体重新生儿时第一个小时怎么做。本病例为
 人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核；待核实事项见上文“To verify”。
+
+**安全结果。** 五项高风险处置标为 `critical: true`：在家禁食、未做禁食试验就出院、近全胰切除、未读PET报告就做部分胰腺切除，以及
+50%葡萄糖静推——在禁忌时实施会造成不可逆或危及生命的伤害，无论得分多少，安全结果都判为不通过，并失去关键项 `rb-no-harm`；经验性
+氢化可的松、读到关键标本结果前用二氮嗪和未用二氮嗪先用奥曲肽是中等风险、可挽回的误判，会显示伤害说明、在复盘中列为禁忌处置并失去
+`rb-drug-safety`，但不使安全结果判为不通过。

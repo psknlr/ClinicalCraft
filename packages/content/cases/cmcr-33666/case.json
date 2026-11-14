@@ -57,7 +57,7 @@
         "WHO Classification of Haematolymphoid Tumours, 5th edition (2022): myeloid neoplasms — essential thrombocythaemia and prefibrotic myelofibrosis",
         "BSH 2010: Guideline for investigation and management of adults and children presenting with a thrombocytosis",
         "ELN 2018: Philadelphia chromosome-negative classical myeloproliferative neoplasms — revised management recommendations",
-        "GTH/GPOH THROMKID-Plus 2021: Thrombocytosis in children and adolescents — classification, diagnostic approach and clinical management",
+        "GTH/GPOH THROMKID-Plus study group 2021 (review in Ann Hematol; notes that no paediatric consensus guideline exists): Thrombocytosis in children and adolescents — classification, diagnostic approach and clinical management",
         "RCPCH 2017: Stroke in childhood — clinical guideline for diagnosis, management and rehabilitation",
         "MHRA 2003: aspirin and Reye's syndrome — no aspirin under 16 years unless specifically indicated"
       ],
@@ -85,8 +85,8 @@
       "en": "Apply the WHO 5th edition (2022) criteria to a JAK2 V617F-positive, BCR::ABL1-negative marrow and say what is still needed to separate essential thrombocythaemia from polycythaemia vera and prefibrotic myelofibrosis."
     },
     {
-      "zh-CN": "与儿童血液科一起，依据成人证据（ELN 2018；Tefferi 2024；PT-1，2005）为年幼儿童选择一种一线降细胞药，而不是三药同用，并就阿司匹林、瑞氏综合征、非甾体抗炎药和疫苗接种给家属具体建议。",
-      "en": "Choose, with paediatric haematology and from adult evidence (ELN 2018; Tefferi 2024; PT-1, 2005), one first-line cytoreductive drug for a young child rather than three at once, and give the family specific advice on aspirin, Reye's syndrome, NSAIDs and vaccination."
+      "zh-CN": "与儿童血液科一起，依据成人证据（ELN 2018；Tefferi 2024；PT-1，2005）为年幼儿童选择一种一线降细胞药（羟基脲或干扰素α，不两药并用），并就阿司匹林、瑞氏综合征、非甾体抗炎药和疫苗接种给家属具体建议。",
+      "en": "Choose, with paediatric haematology and from adult evidence (ELN 2018; Tefferi 2024; PT-1, 2005), one first-line cytoreductive drug for a young child — hydroxyurea or interferon-α, not both — and give the family specific advice on aspirin, Reye's syndrome, NSAIDs and vaccination."
     },
     {
       "zh-CN": "把骨髓增殖性肿瘤患儿新出现的无热惊厥当作可能的卒中或静脉窦血栓处理：血糖、血象和凝血，暂停抗血小板药，当天做含血管成像的MRI（RCPCH 2017）。",
@@ -1464,7 +1464,7 @@
       },
       "answer": {
         "zh-CN": "治血的药刚开始用。哪种药是哪天开始的，我分不清楚。",
-        "en": "She'd just started the medicines for her blood. Which one started on which day, I couldn't tell you."
+        "en": "She'd only just started the treatment for her blood. Which medicine started on which day, I couldn't tell you."
       },
       "keywords": {
         "zh-CN": [
@@ -2448,7 +2448,7 @@
             "en": "During the admission (exact day not recorded)"
           },
           "text": {
-            "zh-CN": "骨髓活检：骨髓增殖性改变；网状纤维染色“±”（报告的原始记法，没有给出纤维化分级）。增生程度和巨核细胞形态（大小、核分叶、成簇）没有记录。",
+            "zh-CN": "骨髓活检：骨髓增生性改变；网状纤维染色“±”（报告的原始记法，没有给出纤维化分级）。增生程度和巨核细胞形态（大小、核分叶、成簇）没有记录。",
             "en": "Trephine biopsy: myeloproliferative changes; reticulin stain “±” (the report's own notation; no fibrosis grade is given). Cellularity and megakaryocyte morphology (size, nuclear lobulation, clustering) are not recorded."
           },
           "source": {
@@ -2936,8 +2936,8 @@
             "en": "From the start of treatment to 5 months of follow-up"
           },
           "text": {
-            "zh-CN": "报告的诊断为学龄前期发病的儿童原发性血小板增多症，JAK2 V617F阳性。治疗给予羟基脲、干扰素和阿司匹林等；剂量、开始日期和先后顺序本病例没有记录。治疗第2天出现一次短暂的无热惊厥，增强MRI未见异常。到第15天血小板降至559×10⁹/L；随访5个月，血小板220–390×10⁹/L，未再腹痛。本病例没有记录惊厥的原因、是否做过VWF检测和腹部影像、有无出血或血栓、药物不良反应以及5个月以后的随访；单个病例也不能说明惊厥的机制或疗效能否持久。",
-            "en": "The report's diagnosis is childhood essential thrombocythaemia with onset in the preschool years, JAK2 V617F-positive. Treatment included hydroxyurea, interferon and aspirin, among others; the doses, start days and order are not recorded in this case. A brief afebrile seizure occurred on treatment day 2, and a contrast-enhanced MRI showed no abnormality. By day 15 the platelet count had fallen to 559 × 10⁹/L; over 5 months of follow-up it was 220–390 × 10⁹/L and the abdominal pain did not return. The case does not record the cause of the seizure, whether VWF tests or abdominal imaging were done, any bleeding or thrombosis, drug side effects, or follow-up beyond 5 months; a single case cannot establish the seizure's mechanism or whether the response lasts."
+            "zh-CN": "报告的诊断为学龄前期发病的儿童原发性血小板增多症；JAK2 V617位点G/T杂合，即V617F突变。治疗给予羟基脲、干扰素和阿司匹林等；剂量、开始日期和先后顺序本病例没有记录。治疗第2天出现一次短暂的无热惊厥，增强MRI未见异常。到第15天血小板降至559×10⁹/L；随访5个月，血小板220–390×10⁹/L，未再腹痛。本病例没有记录惊厥的原因、是否做过VWF检测和腹部影像、有无出血或血栓、药物不良反应以及5个月以后的随访；单个病例也不能说明惊厥的机制或疗效能否持久。",
+            "en": "The report's diagnosis is childhood essential thrombocythaemia with onset in the preschool years; its JAK2 result (G/T at V617) is the V617F mutation. Treatment included hydroxyurea, interferon and aspirin, among others; the doses, start days and order are not recorded in this case. A brief afebrile seizure occurred on treatment day 2, and a contrast-enhanced MRI showed no abnormality. By day 15 the platelet count had fallen to 559 × 10⁹/L; over 5 months of follow-up it was 220–390 × 10⁹/L and the abdominal pain did not return. The case does not record the cause of the seizure, whether VWF tests or abdominal imaging were done, any bleeding or thrombosis, drug side effects, or follow-up beyond 5 months; a single case cannot establish the seizure's mechanism or whether the response lasts."
           },
           "source": {
             "zh-CN": "报告病例资料·诊断、治疗与随访（儿童原发性血小板增多症；羟基脲、干扰素和阿司匹林等；治疗第2天短暂无热惊厥，增强MRI未见异常；15天血小板559×10⁹/L，5个月220–390×10⁹/L，无再腹痛）（1.0.0版提取，待对照原文核对）",
@@ -3172,8 +3172,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她的血小板1905和1497×10⁹/L，APTT 52.3 s尚未解释，本病例任何时候都没有VWF结果。血小板超过1000×10⁹/L时可丢失大分子VWF多聚体（获得性血管性血友病综合征），这时阿司匹林会带来严重出血风险：先测VWF活性，等血小板降下来再考虑阿司匹林（Tiede等，Blood 2011）。16岁以下儿童只有在有明确指征时才用阿司匹林（英国MHRA，2003），因为有瑞氏综合征的风险。",
-        "en": "Her platelets were 1905 and 1497 × 10⁹/L, the APTT of 52.3 s is unexplained, and no VWF result is recorded at any point in this case. Above 1000 × 10⁹/L the largest VWF multimers can be lost (acquired von Willebrand syndrome), and aspirin then carries a serious bleeding risk: measure VWF activity first and consider aspirin once the count has come down (Tiede et al., Blood 2011). In a child under 16, aspirin is used only for a specific indication (UK MHRA, 2003), because of Reye's syndrome."
+        "zh-CN": "她的血小板1905和1497×10⁹/L，APTT 52.3 s尚未解释，本病例任何时候都没有VWF结果。血小板超过1000×10⁹/L时可丢失大分子VWF多聚体（获得性血管性血友病综合征），这时阿司匹林会带来严重出血风险：先测VWF活性，瑞斯托霉素辅因子活性高于30%时才可用阿司匹林，否则先把血小板降下来（Tiede等，Blood 2011；Stockklausner等，Ann Hematol 2021）。16岁以下儿童只有在有明确指征时才用阿司匹林（英国MHRA，2003），因为有瑞氏综合征的风险。",
+        "en": "Her platelets were 1905 and 1497 × 10⁹/L, the APTT of 52.3 s is unexplained, and no VWF result is recorded at any point in this case. Above 1000 × 10⁹/L the largest VWF multimers can be lost (acquired von Willebrand syndrome), and aspirin then carries a serious bleeding risk: measure VWF activity first, and give aspirin only if ristocetin cofactor activity is above 30 %, otherwise after the count has been lowered (Tiede et al., Blood 2011; Stockklausner et al., Ann Hematol 2021). In a child under 16, aspirin is used only for a specific indication (UK MHRA, 2003), because of Reye's syndrome."
       },
       "response": {
         "zh-CN": "已给阿司匹林。报告记录她用过阿司匹林，但没有记录开始的时间、剂量和当时的血小板计数；不模拟其效果。",
@@ -3217,8 +3217,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "本病例没有任何影像证实的血栓，APTT 52.3 s尚未解释，VWF活性未知：不做影像就抗凝，只会增加出血风险，治疗的却是未经证实的血栓。内脏静脉或颅内静脉血栓要先用影像证实，再与儿童血液科一起制定抗凝方案。",
-        "en": "No clot is shown on imaging at any point in this case, the APTT of 52.3 s is unexplained and VWF activity is unknown: anticoagulation without imaging adds bleeding risk to treat a clot nobody has shown. Splanchnic or cerebral venous thrombosis is shown on imaging first, and anticoagulation is then planned with paediatric haematology."
+        "zh-CN": "本病例没有任何影像证实的血栓，APTT 52.3 s尚未解释，VWF活性未知：不做影像就抗凝，只会增加出血风险，治疗的却是未经证实的血栓。内脏静脉或颅内静脉血栓要先用影像证实，再与儿童血液科一起制定抗凝方案（Tefferi等，Am J Hematol 2024）。",
+        "en": "No clot is shown on imaging at any point in this case, the APTT of 52.3 s is unexplained and VWF activity is unknown: anticoagulation without imaging adds bleeding risk to treat a clot nobody has shown. Splanchnic or cerebral venous thrombosis is shown on imaging first, and anticoagulation is then planned with paediatric haematology (Tefferi et al., Am J Hematol 2024)."
       },
       "response": {
         "zh-CN": "本病例没有记录用过肝素；不模拟其后果。",
@@ -3262,8 +3262,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她没有发热，CRP<8 mg/L，第一个疗程后血象也没有变化：没有需要治疗的感染。再用抗生素会增加不良反应和耐药，还会推迟对原发病因的检查。",
-        "en": "She has no fever, a CRP below 8 mg/L and a count the first course did not change: there is no infection to treat. More antibiotics add side effects and resistance, and delay the search for a primary cause."
+        "zh-CN": "她没有发热，CRP<8 mg/L，第一个疗程后血象也没有变化：没有任何线索提示需要治疗的感染，而抗菌药只在患者临床上确实需要时才开始（英国UKHSA《Start smart then focus》，2023）。再用抗生素会增加不良反应和耐药，还会推迟对原发病因的检查。",
+        "en": "She has no fever, a CRP below 8 mg/L and a count the first course did not change: nothing points to an infection to treat, and antimicrobials start only when a patient clinically needs them (Start smart then focus, UKHSA 2023). More antibiotics add side effects and resistance, and delay the search for a primary cause."
       },
       "response": {
         "zh-CN": "本病例没有记录入院后再用抗生素；不模拟其后果。",
@@ -3438,8 +3438,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "由血液科医生和护士一起谈：骨髓里血小板生成过多是怎么回事、为什么要降血小板、药物的作用和不良反应、需要长期随访；书面交代：不自行用阿司匹林或布洛芬；如果用上阿司匹林，出水痘或流感时停药并就诊（瑞氏综合征）；按时接种疫苗（流感用灭活疫苗）；出血、剧烈头痛、抽搐或腹痛加重时立即就诊。也用孩子听得懂的话告诉清和。",
-        "en": "With the haematologist and the nurse: what it means that her marrow makes too many platelets, why the count must come down, what the medicines do and their side effects, and that follow-up is long-term; in writing: no aspirin or ibuprofen unless prescribed; if aspirin is started, stop it and call during chickenpox or flu (Reye's syndrome); keep vaccinations up to date (inactivated flu vaccine); come straight back for bleeding, a severe headache, a fit or worse tummy pain. Tell Qinghe too, in words she understands."
+        "zh-CN": "由血液科医生和护士一起谈：骨髓里血小板生成过多是怎么回事、为什么要降血小板、药物的作用和不良反应、需要长期随访；书面交代：不自行用阿司匹林或布洛芬；如果用上阿司匹林，出水痘或流感时停药并就诊（瑞氏综合征）；按时接种疫苗，用药期间接种水痘等减毒活疫苗前先问血液科，每年接种灭活流感疫苗——服用阿司匹林期间不用鼻喷减毒活疫苗；出血、剧烈头痛、抽搐或腹痛加重时立即就诊。也用孩子听得懂的话告诉清和。",
+        "en": "With the haematologist and the nurse: what it means that her marrow makes too many platelets, why the count must come down, what the medicines do and their side effects, and that follow-up is long-term; in writing: no aspirin or ibuprofen unless prescribed; if aspirin is started, stop it and call during chickenpox or flu (Reye's syndrome); keep vaccinations up to date, asking haematology before any live vaccine (such as chickenpox) while she is on these drugs, with a yearly inactivated flu vaccine — not the live nasal one while she takes aspirin; come straight back for bleeding, a severe headache, a fit or worse tummy pain. Tell Qinghe too, in words she understands."
       },
       "requires": [],
       "scope": "medical",
@@ -3561,8 +3561,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "一次短暂、已经停止的惊厥，在原因查清之前不需要立即用抗癫痫药；紧急的是找原因——血糖、血象、凝血和当天的脑影像。先用药再把影像推后，可能漏掉需要处理的血栓或出血。",
-        "en": "One brief seizure that has stopped does not call for an antiseizure drug before its cause is known; what is urgent is finding the cause — glucose, the count, clotting and same-day brain imaging. Giving the drug and putting the imaging off can miss a clot or a bleed that needs treatment."
+        "zh-CN": "一次短暂、已经停止的惊厥，在原因查清之前不需要立即用抗癫痫药——紧急抗癫痫治疗针对持续5分钟及以上的发作（NICE NG217，2022）；紧急的是找原因——血糖、血象、凝血和当天的脑影像（RCPCH 2017）。先用药再把影像推后，可能漏掉需要处理的血栓或出血。",
+        "en": "One brief seizure that has stopped does not call for an antiseizure drug before its cause is known — emergency antiseizure treatment is for seizures lasting 5 minutes or more (NICE NG217, 2022); what is urgent is finding the cause — glucose, the count, clotting and same-day brain imaging (RCPCH 2017). Giving the drug and putting the imaging off can miss a clot or a bleed that needs treatment."
       },
       "response": {
         "zh-CN": "本病例没有记录用过抗癫痫药；不模拟其后果。",
@@ -3951,8 +3951,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "缺铁确实会让儿童血小板升高，所以要查铁代谢——但应先测铁蛋白和血红蛋白，而不是凭经验补铁（Stockklausner等，2021）。缺铁解释不了可触及的脾脏；在接近2000×10⁹/L的计数下等待6周，会同时推迟诊断和出血风险评估。",
-            "en": "Iron deficiency does raise platelets in children, which is why iron status is checked — with a measured ferritin and haemoglobin, not an empirical trial (Stockklausner et al., 2021). It does not explain a palpable spleen, and six weeks' wait at a count near 2000 × 10⁹/L delays both the diagnosis and the bleeding assessment."
+            "zh-CN": "缺铁确实会让儿童血小板升高，所以要查铁代谢——但应先测铁蛋白和血红蛋白，而不是凭经验补铁（Stockklausner等，2021）。缺铁解释不了可触及的脾脏；在1905和1497×10⁹/L的计数下等待6周，会同时推迟诊断和出血风险评估。",
+            "en": "Iron deficiency does raise platelets in children, which is why iron status is checked — with a measured ferritin and haemoglobin, not an empirical trial (Stockklausner et al., 2021). It does not explain a palpable spleen, and six weeks' wait at counts of 1905 and 1497 × 10⁹/L delays both the diagnosis and the bleeding assessment."
           }
         },
         {
@@ -3963,8 +3963,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "慢性髓系白血病必须排除——儿童可以表现为白细胞增高、脾大和血小板增多——但伊马替尼只能在BCR::ABL1阳性之后使用，不能先用后查（WHO第5版，2022）。没有分子诊断就用药，会让孩子长期服用一种可能并不需要的药。",
-            "en": "CML must be excluded — leucocytosis, a spleen and thrombocytosis are how it can present in a child — but imatinib follows a positive BCR::ABL1 result and never precedes it (WHO 5th edition, 2022). Treating before the molecular diagnosis commits a child to long-term therapy she may not need."
+            "zh-CN": "慢性髓系白血病必须排除——儿童可以表现为白细胞增高、脾大和血小板增多——但慢性髓系白血病以BCR::ABL1融合基因来定义（WHO第5版，2022），伊马替尼只能在结果阳性之后使用，不能先用后查。没有分子诊断就用药，会让孩子长期服用一种可能并不需要的药。",
+            "en": "CML must be excluded — leucocytosis, a spleen and thrombocytosis are how it can present in a child — but CML is defined by the BCR::ABL1 fusion (WHO 5th edition, 2022), so imatinib follows a positive result and never precedes it. Treating before the molecular diagnosis commits a child to long-term therapy she may not need."
           }
         }
       ]
@@ -4049,7 +4049,7 @@
       "id": "classification",
       "kind": "single",
       "prompt": {
-        "zh-CN": "骨髓涂片：巨核细胞172个，其中产板型100个；骨髓活检：骨髓增殖性改变，网状纤维“±”。JAK2 V617F（G/T杂合）阳性；BCR::ABL1 P210和另一项融合基因阴性；核型46,XX。这些结果说明了什么？还缺什么？",
+        "zh-CN": "骨髓涂片：巨核细胞172个，其中产板型100个；骨髓活检：骨髓增生性改变，网状纤维“±”。JAK2 V617F（G/T杂合）阳性；BCR::ABL1 P210和另一项融合基因阴性；核型46,XX。这些结果说明了什么？还缺什么？",
         "en": "Marrow smear: 172 megakaryocytes, 100 platelet-producing. Trephine: myeloproliferative changes, reticulin “±”. JAK2 V617F (heterozygous G/T) detected; BCR::ABL1 P210 and a second fusion test negative; karyotype 46,XX. What do these establish, and what is still missing?"
       },
       "requires": {
@@ -4101,8 +4101,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "BCR::ABL1 P210和另一项融合基因均阴性，核型46,XX没有费城染色体，又检出JAK2 V617F，慢性髓系白血病没有依据；对少见转录本的疑问应通过进一步检测（如FISH）解决，而不是先用伊马替尼（WHO第5版，2022）。",
-            "en": "BCR::ABL1 P210 and a second fusion test are negative, the 46,XX karyotype shows no Philadelphia chromosome and a JAK2 V617F mutation is present: there is no case for CML. A doubt about a rare transcript is settled by further testing such as FISH, not by starting imatinib (WHO 5th edition, 2022)."
+            "zh-CN": "BCR::ABL1 P210和另一项融合基因均阴性，核型46,XX没有费城染色体，又检出JAK2 V617F，慢性髓系白血病没有依据；慢性髓系白血病以BCR::ABL1来定义（WHO第5版，2022），对少见转录本的疑问应通过进一步检测（如FISH）解决，而不是先用伊马替尼。",
+            "en": "BCR::ABL1 P210 and a second fusion test are negative, the 46,XX karyotype shows no Philadelphia chromosome and a JAK2 V617F mutation is present: there is no case for CML. Because CML is defined by BCR::ABL1 (WHO 5th edition, 2022), a doubt about a rare transcript is settled by further testing such as FISH, not by starting imatinib."
           }
         },
         {
@@ -4125,8 +4125,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "遗传性血小板增多症（如THPO、MPL的胚系变异）确实是儿童鉴别诊断的一部分，查父母血常规也合理（Stockklausner等，2021）。但JAK2 V617F几乎都是获得性的驱动突变，骨髓又见巨核系增生，这个结果不能放在一边；评估应继续，而不是暂停。",
-            "en": "Hereditary thrombocytosis (germline THPO or MPL variants, for example) is part of the paediatric differential, and checking the parents' counts is reasonable (Stockklausner et al., 2021). But JAK2 V617F is almost always an acquired driver mutation and the marrow shows megakaryocytic proliferation: the result cannot be set aside, and the assessment goes on rather than pausing."
+            "zh-CN": "遗传性血小板增多症（如THPO、MPL的胚系变异）确实是儿童鉴别诊断的一部分，查父母血常规也合理（Stockklausner等，2021）。但JAK2 V617F几乎都是获得性的驱动突变，骨髓活检又示骨髓增生性改变，这个结果不能放在一边；评估应继续，而不是暂停。",
+            "en": "Hereditary thrombocytosis (germline THPO or MPL variants, for example) is part of the paediatric differential, and checking the parents' counts is reasonable (Stockklausner et al., 2021). But JAK2 V617F is almost always an acquired driver mutation and the trephine shows myeloproliferative changes: the result cannot be set aside, and the assessment goes on rather than pausing."
           }
         }
       ]
@@ -4149,13 +4149,13 @@
         {
           "id": "single-cytoreductive",
           "text": {
-            "zh-CN": "选一种一线降细胞药（年幼儿童先考虑干扰素α，羟基脲为替代）；阿司匹林等VWF活性明确、计数下降后再定；书面交代布洛芬、水痘和流感的注意事项",
-            "en": "One first-line cytoreductive drug (interferon-α first in a young child, hydroxyurea the alternative); aspirin only once VWF activity is known and the count has fallen; written advice on ibuprofen, chickenpox and flu"
+            "zh-CN": "与儿童血液科一起选一种一线降细胞药（羟基脲或聚乙二醇干扰素α）；阿司匹林等VWF活性证实足够后再定；书面交代布洛芬、水痘和流感的注意事项",
+            "en": "One first-line cytoreductive drug, hydroxyurea or pegylated interferon-α, chosen with paediatric haematology; aspirin only once VWF activity is shown to be adequate; written advice on ibuprofen, chickenpox and flu"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。儿童没有共识指南，只能外推成人证据：降细胞治疗用于高危疾病（ELN 2018），一线药物为羟基脲或聚乙二醇干扰素α（Tefferi等，Am J Hematol 2024），年轻患者常首选干扰素，以免几十年接触羟基脲。她的计数极高且有症状，降血小板是合理的；阿司匹林要等VWF活性明确；由于瑞氏综合征，用阿司匹林的孩子出水痘或流感时要停药就诊（英国MHRA，2003）。",
-            "en": "Right. With no paediatric consensus, adult evidence is extrapolated: cytoreduction is for high-risk disease (ELN 2018), with hydroxyurea or pegylated interferon-α as first-line drugs (Tefferi, Vannucchi and Barbui, Am J Hematol 2024), and interferon-α is often preferred in the young to avoid decades of hydroxyurea. Her count is extreme and symptomatic, so lowering it is reasonable; aspirin waits for VWF activity, and because of Reye's syndrome a child taking aspirin stops it and is seen during chickenpox or flu (UK MHRA, 2003)."
+            "zh-CN": "正确。儿童没有共识指南，只能外推成人证据：降细胞治疗用于高危疾病，一线药物为羟基脲或干扰素α（ELN 2018；Tefferi等，Am J Hematol 2024）。干扰素可免去几十年接触羟基脲，但每周注射以及流感样和情绪方面的不良反应对5岁孩子并不容易，而羟基脲在儿童镰状细胞病中已有长期使用经验（Stockklausner等，2021）——所以由儿童血液科和家属一起选药。计数持续极高是儿童专家提出降细胞治疗的理由之一；阿司匹林要等VWF活性证实足够；由于瑞氏综合征，用阿司匹林的孩子出水痘或流感时要停药就诊（英国MHRA，2003）。",
+            "en": "Right. With no paediatric consensus, adult evidence is extrapolated: cytoreduction is for high-risk disease, with hydroxyurea or interferon-α first line (ELN 2018; Tefferi, Vannucchi and Barbui, Am J Hematol 2024). Interferon spares a child decades of hydroxyurea, but weekly injections and flu-like and mood effects are hard at 5, while hydroxyurea has long paediatric use in sickle cell disease (Stockklausner et al., 2021) — so the drug is chosen with paediatric haematology and the family. A count that stays extreme is one reason paediatric experts give for cytoreduction; aspirin waits until VWF activity is shown to be adequate, and because of Reye's syndrome a child taking aspirin stops it and is seen during chickenpox or flu (UK MHRA, 2003)."
           }
         },
         {
@@ -4166,8 +4166,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "报告确实用了这三种药，到第15天血小板降至559×10⁹/L，但剂量、开始日期和先后顺序没有记录。两种降细胞药同时起用会叠加骨髓抑制和不良反应，没有证据显示获益更大——成人指南都是选一种一线药（Tefferi等，2024）；阿司匹林在VWF活性明确之前也不宜开始。",
-            "en": "The report did use all three, and the count was 559 × 10⁹/L by day 15, but their doses, start days and order are not recorded. Two cytoreductive drugs from the start add marrow suppression and side effects with no evidence of greater benefit — adult guidance starts one first-line drug (Tefferi et al., 2024) — and aspirin should not start before VWF activity is known."
+            "zh-CN": "报告确实用了这三种药（还有“等”所指的其他药），但剂量、开始日期和先后顺序没有记录。两种降细胞药同时起用会叠加骨髓抑制和不良反应，没有证据显示获益更大——成人指南都是选一种一线药（Tefferi等，2024）；阿司匹林在VWF活性明确之前也不宜开始。",
+            "en": "The report did use all three, among others, but their doses, start days and order are not recorded. Two cytoreductive drugs from the start add marrow suppression and side effects with no evidence of greater benefit — adult guidance starts one first-line drug (Tefferi et al., 2024) — and aspirin should not start before VWF activity is known."
           }
         },
         {
@@ -4613,7 +4613,7 @@
         "en": "Explained a long-term blood disorder in words the family and the child understand, and checked their understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge）：介绍自己，确认在场的是谁、想知道多少；先问家属已经知道什么、最担心什么（她们担心“血液里有什么大毛病”、要不要一直吃药）；分段说明并随时确认：“她的骨髓做出的血小板太多了，这是一种需要长期随访、可以用药控制的血液病”；解释为什么暂时不用阿司匹林（先查出血风险）、准备用什么药降血小板、可能的不良反应；具体交代需要马上回来的情况（出血、剧烈头痛、抽搐、腹痛加重），以及不自行用阿司匹林或布洛芬、出水痘或流感时的处理、疫苗；用孩子能懂的话告诉清和要打针吃药、会经常抽血；请家属复述关键点，给书面材料，约好复诊。惊厥之后：如实说明正在查原因、MRI的意义和局限。不要引用成人的统计数字来预测她的结局，不要承诺“治好”，不要指责之前的抗生素治疗，不要用术语堆砌。",
+        "zh-CN": "良好表现（Calgary–Cambridge）：介绍自己，确认在场的是谁、想知道多少；先问家属已经知道什么、最担心什么（家属担心“血液里有什么大毛病”、要不要一直吃药）；分段说明并随时确认：“她的骨髓做出的血小板太多了，这是一种需要长期随访、可以用药控制的血液病”；解释为什么暂时不用阿司匹林（先查出血风险）、准备用什么药降血小板、可能的不良反应；具体交代需要马上回来的情况（出血、剧烈头痛、抽搐、腹痛加重），以及不自行用阿司匹林或布洛芬、出水痘或流感时的处理、疫苗；用孩子能懂的话告诉清和要打针吃药、会经常抽血；请家属复述关键点，给书面材料，约好复诊。惊厥之后：如实说明正在查原因、MRI的意义和局限。不要引用成人的统计数字来预测她的结局，不要承诺“治好”，不要指责之前的抗生素治疗，不要用术语堆砌。",
         "en": "Good performance (Calgary–Cambridge): introduces themself, checks who is present and how much they want to know; asks first what the family already knows and what worries them most (“something badly wrong with her blood”, lifelong medicine); explains in chunks and checks as they go — “her bone marrow makes too many platelets; it is a long-term blood condition that medicines can control, with regular check-ups”; explains why aspirin is held for now (the bleeding risk is checked first), which drug will lower the count and its side effects; gives specific reasons to come straight back (bleeding, a severe headache, a fit, worse tummy pain), no aspirin or ibuprofen unless prescribed, what to do in chickenpox or flu, and vaccinations; tells Qinghe in words a 5-year-old understands about the injections, tablets and blood tests; checks understanding by teach-back, gives written information and books follow-up. After the seizure: says honestly that the cause is being looked for, and what the MRI can and cannot show. Does not quote adult statistics as her outlook, promise a cure, blame the earlier antibiotics or bury the family in jargon."
       }
     }
@@ -4626,8 +4626,8 @@
         "en": "Dr Shen (paediatric attending)"
       },
       "knowledge": {
-        "zh-CN": "儿科上级医师，用苏格拉底式提问带教，按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“孩子血小板高，最常见的原因是什么？什么情况下你会怀疑不是反应性的？”“在开任何抗血小板药之前，你最担心什么？”“JAK2阳性能说明什么、不能说明什么？诊断还缺哪块证据？”“对一个5岁的孩子，降血小板治疗的好处和代价怎么权衡？”“她出现无热惊厥时，你首先要排除什么？”说明这是2013年发表的历史病例：报告用了羟基脲、干扰素和阿司匹林等，诊断标准和对出血风险的认识与现在不同，单个病例不能评价疗效；儿童没有共识指南，成人证据只能谨慎外推。不提前透露诊断、决策答案或结局；生命体征、体重、血红蛋白和血涂片、VWF、铁代谢、腹部影像、各药剂量和开始时间、惊厥细节和MRI序列都没有记录，不要替它补上。",
-        "en": "Paediatric attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “What usually raises a child's platelet count, and when would you suspect it is not reactive?”, “Before you prescribe any antiplatelet drug, what worries you most?”, “What does a positive JAK2 tell you, what does it not, and which piece of evidence is still missing?”, “For a 5-year-old, how do you weigh the benefit of lowering the count against its costs?”, “When she has a seizure without fever, what do you rule out first?”. Explains that this is a historical case published in 2013: the report gave hydroxyurea, interferon and aspirin among others, its diagnostic criteria and its view of bleeding risk differ from today's, and a single case cannot judge treatment; there is no paediatric consensus, so adult evidence is extrapolated with care. Never reveals the diagnosis, a decision's answer or the outcome early; vital signs, weight, haemoglobin and the film, VWF, iron studies, abdominal imaging, the drugs' doses and start days, the seizure's details and the MRI sequences are not recorded — never supply them."
+        "zh-CN": "儿科上级医师，用苏格拉底式提问带教，按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“孩子血小板高，最常见的原因是什么？什么情况下你会怀疑不是反应性的？”“在开任何抗血小板药之前，你最担心什么？”“JAK2阳性能说明什么、不能说明什么？诊断还缺哪块证据？”“对一个5岁的孩子，降血小板治疗的好处和代价怎么权衡？”“她出现无热惊厥时，你首先要排除什么？”复盘时（转归记录开放之后）复盘时（转归记录开放之后）说明这是2013年发表的历史病例：报告用了羟基脲、干扰素和阿司匹林等，诊断标准和对出血风险的认识与现在不同，单个病例不能评价疗效；儿童没有共识指南，成人证据只能谨慎外推。不提前透露诊断、决策答案或结局；生命体征、体重、血红蛋白和血涂片、VWF、铁代谢、腹部影像、各药剂量和开始时间、惊厥细节和MRI序列都没有记录，不要替它补上。",
+        "en": "Paediatric attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “What usually raises a child's platelet count, and when would you suspect it is not reactive?”, “Before you prescribe any antiplatelet drug, what worries you most?”, “What does a positive JAK2 tell you, what does it not, and which piece of evidence is still missing?”, “For a 5-year-old, how do you weigh the benefit of lowering the count against its costs?”, “When she has a seizure without fever, what do you rule out first?”. At the debrief, once the outcome record is open, explains that this is a historical case published in 2013: the report gave hydroxyurea, interferon and aspirin among others, its diagnostic criteria and its view of bleeding risk differ from today's, and a single case cannot judge treatment; there is no paediatric consensus, so adult evidence is extrapolated with care. Never reveals the diagnosis, a decision's answer or the outcome early; vital signs, weight, haemoglobin and the film, VWF, iron studies, abdominal imaging, the drugs' doses and start days, the seizure's details and the MRI sequences are not recorded — never supply them."
       },
       "interprets": [
         "fbc",
@@ -4692,8 +4692,8 @@
       "en": "Debrief: JAK2 V617F-positive essential thrombocythaemia in a 5-year-old"
     },
     "conclusion": {
-      "zh-CN": "5岁女孩脐周间断疼痛10天、无明显诱因，同期发现血小板很高；入院前静脉抗感染后腹痛稍减，血象无明显变化。无发热、流涕、黏膜出血和消化道症状；神志清楚，一般情况好，脐周压痛、无反跳痛，无出血点，脾肋下2 cm。血小板1905后1497×10⁹/L，白细胞27.29后20.27×10⁹/L，CRP<8 mg/L；PT 14.2 s，APTT 52.3 s，纤维蛋白原1.84 g/L。骨髓巨核细胞172个（产板型100个），活检示骨髓增殖性改变、网状纤维“±”；JAK2 V617F杂合，BCR::ABL1 P210阴性，核型46,XX。报告诊断儿童原发性血小板增多症，给予羟基脲、干扰素和阿司匹林等；治疗第2天短暂无热惊厥，增强MRI未见异常；第15天血小板559×10⁹/L，随访5个月220–390×10⁹/L，未再腹痛。现在的做法：按WHO 2022标准补齐血红蛋白和骨髓形态复核；用药前先查VWF活性和腹部静脉；与儿童血液科选一种降细胞药；新的惊厥当天做脑影像。",
-      "en": "A 5-year-old girl had 10 days of intermittent periumbilical pain with no trigger and a very high platelet count; IV antibiotics eased the pain a little, not the count. No fever, mucosal bleeding or bowel symptoms; alert and well, periumbilical tenderness without rebound, no petechiae, spleen 2 cm below the costal margin. Platelets 1905 then 1497 × 10⁹/L, white cells 27.29 then 20.27 × 10⁹/L, CRP < 8 mg/L; APTT 52.3 s, fibrinogen 1.84 g/L. Marrow: 172 megakaryocytes (100 platelet-producing), myeloproliferative changes, reticulin “±”; JAK2 V617F heterozygous, BCR::ABL1 P210 negative, 46,XX. The report diagnosed childhood essential thrombocythaemia and gave hydroxyurea, interferon and aspirin; a brief afebrile seizure on treatment day 2 had a normal contrast MRI; platelets were 559 × 10⁹/L by day 15 and 220–390 × 10⁹/L over 5 months, pain-free. Today: complete the WHO 2022 criteria, check VWF and the abdominal veins before aspirin, use one cytoreductive drug, image a new seizure that day."
+      "zh-CN": "5岁女孩脐周间断疼痛10天、无明显诱因，同期发现血小板很高；入院前静脉抗感染后腹痛稍减，血象无明显变化。无发热、流涕、黏膜出血和消化道症状；神志清楚，一般情况好，脐周压痛、无反跳痛，无出血点，脾肋下2 cm。血小板1905后1497×10⁹/L，白细胞27.29后20.27×10⁹/L，CRP<8 mg/L；PT 14.2 s，APTT 52.3 s，纤维蛋白原1.84 g/L。骨髓巨核细胞172个（产板型100个），活检示骨髓增生性改变、网状纤维“±”；JAK2 V617F杂合，BCR::ABL1 P210阴性，核型46,XX。报告诊断儿童原发性血小板增多症，给予羟基脲、干扰素和阿司匹林等；治疗第2天短暂无热惊厥，增强MRI未见异常；第15天血小板559×10⁹/L，随访5个月220–390×10⁹/L，未再腹痛。现在的做法：按WHO 2022标准补齐血红蛋白和骨髓形态复核；用药前先查VWF活性和腹部静脉；与儿童血液科选一种降细胞药；新的惊厥当天做脑影像。",
+      "en": "A 5-year-old girl had 10 days of intermittent periumbilical pain with no trigger and a very high platelet count; IV antibiotics eased the pain a little, not the count. No fever, runny nose, mucosal bleeding or bowel symptoms; alert and generally well, periumbilical tenderness without rebound, no petechiae, spleen 2 cm below the costal margin. Platelets 1905 then 1497 × 10⁹/L, white cells 27.29 then 20.27 × 10⁹/L, CRP < 8 mg/L; PT 14.2 s, APTT 52.3 s, fibrinogen 1.84 g/L. Marrow: 172 megakaryocytes (100 platelet-producing), myeloproliferative changes, reticulin “±”; JAK2 V617F heterozygous, BCR::ABL1 P210 negative, 46,XX. The report diagnosed childhood essential thrombocythaemia and gave hydroxyurea, interferon and aspirin, among others; after a brief afebrile seizure on treatment day 2 a contrast MRI showed no abnormality; platelets were 559 × 10⁹/L by day 15 and 220–390 × 10⁹/L over 5 months, with no further abdominal pain. Today: complete the WHO 2022 criteria, check VWF and the abdominal veins before aspirin, use one cytoreductive drug, image a new seizure that day."
     },
     "keyReasoning": [
       {
@@ -4701,8 +4701,8 @@
         "en": "The lead is the count, not the pain: no fever, a CRP below 8 mg/L and a count unchanged by antibiotics argue against infection, and a palpable spleen with white cells of 27.29 × 10⁹/L point to the marrow."
       },
       {
-        "zh-CN": "处理血栓风险之前先量化出血风险：APTT 52.3 s加接近2000×10⁹/L的计数，提示可能有获得性血管性血友病综合征——阿司匹林要等VWF活性，腹部静脉要先看影像，而不是盲目抗凝。",
-        "en": "Measure the bleeding risk before treating the clotting risk: an APTT of 52.3 s and a count near 2000 × 10⁹/L make acquired von Willebrand syndrome possible, so aspirin waits for VWF activity and the abdominal veins are imaged rather than anticoagulated blind."
+        "zh-CN": "处理血栓风险之前先量化出血风险：APTT 52.3 s加1905和1497×10⁹/L的计数，提示可能有获得性血管性血友病综合征——阿司匹林要等VWF活性，腹部静脉要先看影像，而不是盲目抗凝。",
+        "en": "Measure the bleeding risk before treating the clotting risk: an APTT of 52.3 s and counts of 1905 and 1497 × 10⁹/L make acquired von Willebrand syndrome possible, so aspirin waits for VWF activity and the abdominal veins are imaged rather than anticoagulated blind."
       },
       {
         "zh-CN": "JAK2 V617F证明是克隆性骨髓增殖性肿瘤，但没说明是哪一种：BCR::ABL1阴性排除了慢性髓系白血病，原发性血小板增多症与纤维化前期骨髓纤维化的区分仍要靠血红蛋白和骨髓形态。",
@@ -4713,12 +4713,12 @@
         "en": "Adult risk scores do not transfer: the treatment decision weighs symptoms, the bleeding risk of an extreme count and years of drug exposure for a 5-year-old."
       },
       {
-        "zh-CN": "骨髓增殖性肿瘤的孩子出现新的神经系统事件，在影像证明之前都按血管事件处理；报告中正常的MRI是这一评估的结果，不能替代评估。",
-        "en": "A new neurological event in a child with a myeloproliferative neoplasm is vascular until imaging shows otherwise; the report's normal MRI is the result of that assessment, not a reason to skip it."
+        "zh-CN": "骨髓增殖性肿瘤的孩子出现新的神经系统事件，在影像证明之前都按血管事件处理；事后知道报告的增强MRI未见异常，不能成为不做影像检查的理由。",
+        "en": "A new neurological event in a child with a myeloproliferative neoplasm is vascular until imaging shows otherwise; knowing that the report's contrast MRI showed no abnormality is hindsight, not a reason to skip the scan."
       },
       {
-        "zh-CN": "报告的好结局（第15天559×10⁹/L，5个月220–390×10⁹/L，腹痛消失）出现在用了三种药之后，而这些药的剂量和先后顺序都没有记录：它不能说明哪种药起了作用，也说明不了惊厥的原因。",
-        "en": "The report's good course (559 × 10⁹/L by day 15, 220–390 × 10⁹/L over 5 months, the pain gone) followed three drugs whose doses and order are not recorded: it cannot show which drug helped, nor what caused the seizure."
+        "zh-CN": "报告的好结局（第15天559×10⁹/L，5个月220–390×10⁹/L，未再腹痛）出现在用了羟基脲、干扰素和阿司匹林等药物之后，而这些药的剂量和先后顺序都没有记录：它不能说明哪种药起了作用，也说明不了惊厥的原因。",
+        "en": "The report's good course (559 × 10⁹/L by day 15, 220–390 × 10⁹/L over 5 months, no further abdominal pain) followed hydroxyurea, interferon and aspirin, among others, whose doses and order are not recorded: it cannot show which drug helped, nor what caused the seizure."
       }
     ],
     "boundaries": {
@@ -4765,16 +4765,16 @@
         "en": "Raised platelets in a child: most are reactive (infection, iron deficiency, inflammation), but a count that stays above 1000 × 10⁹/L after the trigger is treated, with a low CRP, a palpable spleen and a raised white count, sends the child for a primary work-up — film, iron status, BCR::ABL1 and driver mutations, marrow — with hereditary thrombocytosis (germline THPO or MPL variants) in the differential (GTH/GPOH THROMKID-Plus, Ann Hematol 2021; BSH 2010 thrombocytosis guideline). Here: 1905 and 1497 × 10⁹/L, CRP < 8 mg/L, spleen 2 cm, white cells 27.29 × 10⁹/L — after a course of antibiotics had come first."
       },
       {
-        "zh-CN": "先看出血再谈抗血栓：血小板超过约1000×10⁹/L时可丢失大分子VWF多聚体，造成获得性血管性血友病综合征；她的APTT 52.3 s、纤维蛋白原1.84 g/L需要对照本实验室的范围解释，在阿司匹林或有创操作之前查VWF抗原、活性和Ⅷ因子，活性低时先降血小板（Tiede等，Blood 2011）。报告用过阿司匹林（开始时间没有记录）；现在应等VWF结果。16岁以下儿童只有在有明确指征时才用阿司匹林（英国MHRA，2003）：遇水痘或流感要停药就诊（瑞氏综合征），流感疫苗用灭活疫苗，鼻喷减毒活疫苗不能用于正在服阿司匹林的孩子。",
-        "en": "Bleeding before antithrombotics: above about 1000 × 10⁹/L the largest VWF multimers can be lost (acquired von Willebrand syndrome). Her APTT of 52.3 s and fibrinogen of 1.84 g/L need reading against the laboratory's own ranges, and VWF antigen, activity and factor VIII are checked before aspirin or any procedure, lowering the count first when activity is low (Tiede et al., Blood 2011). The report gave aspirin (start not recorded); today it waits for VWF. Under 16, aspirin is used only for a specific indication (UK MHRA, 2003): it is stopped during chickenpox or flu (Reye's syndrome), and the flu vaccine is the inactivated one — the live nasal vaccine is not given to a child on aspirin."
+        "zh-CN": "先看出血再谈抗血栓：血小板超过约1000×10⁹/L时可丢失大分子VWF多聚体，造成获得性血管性血友病综合征；她的APTT 52.3 s、纤维蛋白原1.84 g/L需要对照本实验室的范围解释，在阿司匹林或有创操作之前查VWF抗原、活性和Ⅷ因子，活性低时先降血小板（Tiede等，Blood 2011）；计数超过1000×10⁹/L时，瑞斯托霉素辅因子活性高于30%才可用抗血小板药（Stockklausner等，Ann Hematol 2021）。报告用过阿司匹林（开始时间没有记录）；现在应等VWF结果。16岁以下儿童只有在有明确指征时才用阿司匹林（英国MHRA，2003）：遇水痘或流感要停药就诊（瑞氏综合征），流感疫苗用灭活疫苗，鼻喷减毒活疫苗不能用于正在服阿司匹林的孩子。",
+        "en": "Bleeding before antithrombotics: above about 1000 × 10⁹/L the largest VWF multimers can be lost (acquired von Willebrand syndrome). Her APTT of 52.3 s and fibrinogen of 1.84 g/L need reading against the laboratory's own ranges, and VWF antigen, activity and factor VIII are checked before aspirin or any procedure, lowering the count first when activity is low (Tiede et al., Blood 2011); above 1000 × 10⁹/L an antiplatelet drug needs a ristocetin cofactor activity above 30 % (Stockklausner et al., Ann Hematol 2021). The report gave aspirin (start not recorded); today it waits for VWF. Under 16, aspirin is used only for a specific indication (UK MHRA, 2003): it is stopped during chickenpox or flu (Reye's syndrome), and the flu vaccine is the inactivated one — the live nasal vaccine is not given to a child on aspirin."
       },
       {
         "zh-CN": "分类（WHO第5版，2022，沿用此前标准）：原发性血小板增多症要求血小板≥450×10⁹/L、以大而成熟、核分叶多的巨核细胞增生为主的骨髓、排除BCR::ABL1阳性慢性髓系白血病、真性红细胞增多症、原发性骨髓纤维化等，并有JAK2、CALR或MPL突变。本例JAK2 V617F阳性、BCR::ABL1阴性、核型46,XX，但血红蛋白没有记录，骨髓描述缺巨核细胞形态和增生程度；而白细胞≥11×10⁹/L和可触及的脾脏是纤维化前期骨髓纤维化的次要标准——2013年报告的诊断，今天需要骨髓复核来确认。",
         "en": "Classification (WHO 5th edition, 2022, keeping the earlier criteria): essential thrombocythaemia needs platelets ≥ 450 × 10⁹/L, a marrow dominated by large, mature, hyperlobulated megakaryocytes, exclusion of BCR::ABL1-positive CML, polycythaemia vera, primary myelofibrosis and other myeloid neoplasms, and a JAK2, CALR or MPL mutation. Here JAK2 V617F was positive, BCR::ABL1 negative and the karyotype 46,XX, but the haemoglobin is not recorded and the marrow report lacks megakaryocyte morphology and cellularity — while white cells ≥ 11 × 10⁹/L and a palpable spleen are minor criteria for prefibrotic myelofibrosis. The 2013 label needs a marrow review today."
       },
       {
-        "zh-CN": "治疗（儿童无共识，成人证据外推）：降细胞治疗用于高危疾病（ELN 2018），一线为羟基脲或聚乙二醇干扰素α（Tefferi等，Am J Hematol 2024），年轻患者常首选干扰素；PT-1试验（809例高危成人，NEJM 2005）中阿那格雷加阿司匹林的动脉血栓、严重出血和骨髓纤维化转化都多于羟基脲加阿司匹林。成人BSH 2010方案把血小板>1500×10⁹/L列为高危，修订版IPSET却会把一个年轻、无血栓的JAK2阳性者列为低危——两者都没有在儿童中验证。报告用了羟基脲、干扰素和阿司匹林（剂量和先后顺序没有记录），第15天降至559×10⁹/L；现在选一种一线药，阿司匹林等VWF。",
-        "en": "Treatment (no paediatric consensus; adult evidence extrapolated): cytoreduction is for high-risk disease (ELN 2018), with hydroxyurea or pegylated interferon-α first line (Tefferi et al., Am J Hematol 2024) and interferon often preferred in the young; in PT-1 (809 high-risk adults, NEJM 2005) anagrelide plus aspirin gave more arterial thrombosis, serious haemorrhage and myelofibrotic transformation than hydroxyurea plus aspirin. The adult BSH 2010 scheme counts platelets > 1500 × 10⁹/L as high risk, while the revised IPSET would call a young, JAK2-positive patient without thrombosis low risk — neither is validated in children. The report gave hydroxyurea, interferon and aspirin (doses and order not recorded; 559 × 10⁹/L by day 15); today, one first-line drug, with aspirin waiting for VWF."
+        "zh-CN": "治疗（儿童无共识，成人证据外推）：降细胞治疗用于高危疾病（ELN 2018），一线为羟基脲或聚乙二醇干扰素α（Tefferi等，Am J Hematol 2024），年轻患者常首选干扰素；PT-1试验（809例高危成人，NEJM 2005）中阿那格雷加阿司匹林的动脉血栓、严重出血和骨髓纤维化转化都多于羟基脲加阿司匹林。成人BSH 2010方案把血小板>1500×10⁹/L列为高危，修订版IPSET却会把一个年轻、无血栓的JAK2阳性者列为低危——两者都没有在儿童中验证。报告用了羟基脲、干扰素和阿司匹林等（剂量和先后顺序没有记录），第15天降至559×10⁹/L；现在选一种一线药，阿司匹林等VWF。",
+        "en": "Treatment (no paediatric consensus; adult evidence extrapolated): cytoreduction is for high-risk disease (ELN 2018), with hydroxyurea or pegylated interferon-α first line (Tefferi et al., Am J Hematol 2024) and interferon often preferred in the young; in PT-1 (809 high-risk adults, NEJM 2005) anagrelide plus aspirin gave more arterial thrombosis, serious haemorrhage and myelofibrotic transformation than hydroxyurea plus aspirin. The adult BSH 2010 scheme counts platelets > 1500 × 10⁹/L as high risk, while the revised IPSET would call a young, JAK2-positive patient without thrombosis low risk — neither is validated in children. The report gave hydroxyurea, interferon and aspirin, among others (doses and order not recorded; 559 × 10⁹/L by day 15); today, one first-line drug, with aspirin waiting for VWF."
       },
       {
         "zh-CN": "惊厥：骨髓增殖性肿瘤、血小板极高的孩子新出现惊厥，先按动脉缺血性卒中、静脉窦血栓或出血处理——查气道和血糖、复查血象和凝血、暂停抗血小板药，脑影像在到院1小时内完成（疑似卒中，RCPCH 2017），诊断不明时做MRI并包括静脉和动脉成像；一次短暂、已停止的惊厥在原因不明前不急于用抗癫痫药，也不先做腰穿。报告的增强MRI未见异常，但序列没有记录；单个病例不能把惊厥归因于疾病还是药物。",
