@@ -122,8 +122,8 @@ an instrument its control; `stepPartyRefusal` — a member the team scenario mak
 hold it, by `bodyControls`; §8.6: during the operation only a body holding `retract` checks the wound in the team's
 room), and **so do the scope of practice and delegation** (docs/EMBODIED.md §8.3: for the operative field's tools and
 the theatre's delegation tasks a body's controls replace its role's scope; a role asked for an operating table's task
-is narrowed by control and ranked by position, docs/PROTOCOL.md "delegate_task"); the policies below do not read them
-yet.
+is narrowed by control and ranked by position, docs/PROTOCOL.md "delegate_task"); the policies below read them to
+answer a request about the field (§4.4) and the stand-in to choose whom it asks (§4.5).
 
 ### Places
 
@@ -173,9 +173,17 @@ table's tasks either (never the camera; nor a port taken back from whoever holds
 field takes no part from (absent this encounter, or outside its team while the learner holds a place). The care team
 runs with the place: each member is a body (core `memberBody`) — the surgeon member the stand-in's, the learner's place
 member the learner's, the chosen line-up's assistants members too —, the assistants and the scrub nurse answer requests
-about the field (§4.4), and a critical step by the stand-in's body is asked of the learner as its call-out (§4.5).
-Nothing drives the stand-in yet, so the learner's own start in a place is still refused (`permission_denied`,
-docs/PROTOCOL.md) and no front-end offers one; only tests take one, at the session's kernel.
+about the field (§4.4), and **the stand-in surgeon operates** along the case's reference path, asking the team — the
+learner in their place among them — for their part, its critical steps called out first (§4.5).
+
+**Where a place is offered.** A session takes the learner's own start in a place (`clinical_action start {seat}`) in
+in-world mode only: in a clinical session it is refused `not_embodied`, whether or not the case is played in a facility.
+It is refused too (`permission_denied`, saying why) when the session's permission settings would refuse the stand-in's
+own steps — plan mode, a practice scope without the operation, a deny rule matching `operate` or `observe_field` for any
+step the stand-in may take —, so the stand-in never meets a refusal by a rule in the middle of the operation ("…while you
+hold the scrub nurse's place the stand-in surgeon operates, and this session's settings would stop them (…)."). The
+browser's start screen does not offer a place yet (a session started in one — over the protocol, a replay, QA — is
+played in every front-end as any other).
 
 ### Checks
 
@@ -220,7 +228,8 @@ One `TeamScheduler` per session. It is created when the encounter starts, becaus
 **Rounds.** A round wakes the members who have something to do, in a fixed order:
 1. those answering an unread message (oldest message first);
 2. those with work under way;
-3. those noticing something (a need, a count that has fallen due, the work to follow with the camera they hold — §4.4);
+3. those noticing something (a need, a count that has fallen due, the work to follow with the camera they hold — §4.4 —,
+   the stand-in surgeon with an operation to begin — §4.5);
 4. ties go to the stable staff id.
 
 Each awakened member proposes at most one thing: a message, a world act, a step in the operative field, or a change to
@@ -258,14 +267,17 @@ Everything is plain JSON (`TeamState`), saved as a whole: `TeamCheckpoint`, form
 - **Tasks**, per member: `supply` (see that someone gets an item), `deliver`, `count`, `check` (a count discrepancy
   seen through), `wound` (the simulated surgeon checks the wound), `assist` (a request about the operative field seen
   through: `field`, what was asked — §4.4; or, need `field:follow`, a camera holder's own following of the work, with
-  what they last looked at: `followed`), `operate` (the operator's own plan, with a `cursor`: the stand-in surgeon's,
-  which no policy drives yet). Each has a status, the round it last changed, the colleagues already asked, the act
-  counter, whether the result was verified, and the reason.
+  what they last looked at: `followed`), `operate` (the stand-in surgeon's own plan, §4.5: `cursor`, the plan step it
+  is at — for the record only, the plan being read from the field's own record —; `request`, its request about the field
+  under way; `requested`, the requests seen through or given up; `failed`, the step the field last refused and how often).
+  Each has a status, the round it last changed, the colleagues already asked, the act counter, whether the result was
+  verified, and the reason.
 - A message is also about a request of the operative field (`about.field`: `{op, port?, structure?, direction?,
   force?, region?, zoom?, instrument?}`) or a call-out (`about.callout`: `{op, handle}`).
 - A step in the operative field is an act too: its receipt has `operation: "operate"` and the step (`step`: `retract`,
   `hand-over`, `pass`…), under the same stable action id, which the field also records as the step's `ref`
-  (`ProcedureState.refs`).
+  (`ProcedureState.refs`) — the stand-in surgeon's steps excepted: the field records each with its plan step's ref,
+  `standin:<k>` (§4.5). A look at the field (the stand-in's after a stop) is an act too: `operation: "observe_field"`.
 - **Claims** map an item to the task carrying it. Two tasks never carry one item: the first claim holds.
 - **The count's record** (`CountLedger`): the baseline, when the count fell due, when a hold was asked for, when it
   was settled, the outcome, the holds asked for, and whether closure began on a hold.
@@ -372,8 +384,9 @@ A request about the operative field is a team message like any other (`about.fie
 asks one of: hold **traction** with the instrument in a port (`port`, the `structure` pulled, its `direction` in the
 patient's terms, `force`, firm by default), **let go** (a `port`, or all one holds), take the **camera** (its `port`),
 **aim** it at a region (and close up), go **closer** or **wider** (`zoom`), **pass** an instrument. It comes from the
-learner (`team ask`, below) — and later from the stand-in surgeon. Whoever it is said to answers it, whatever their
-duty (`assistant.ts`, pure: the same view gives the same proposal):
+learner (`team ask`, below) or from the stand-in surgeon (§4.5) — and the learner in a place answers the stand-in's as
+any colleague does, with their own steps and `team reply`. Whoever it is said to answers it, whatever their duty
+(`assistant.ts`, pure: the same view gives the same proposal):
 
 1. **Read back** to the one who asked ("The grasper in port B, pulling the infundibulum to the patient's left and
    caudally — confirm?" / "B 孔的抓钳，把胆囊颈向患者左侧、尾侧牵拉——确认吗？"), or **declined at once, saying
@@ -390,7 +403,8 @@ duty (`assistant.ts`, pure: the same view gives the same proposal):
    the field is checked again at the table, before anything is taken: a member out of sight of the screen reads it
    back, and declines there.
 2. The asker's **confirmation** accepts it (the learner: `team reply {kind: "confirm"}` — "Yes — go ahead." /
-   "对，开始吧。" unless they give words of their own); their decline withdraws it ("No — not now." / "先不用。").
+   "对，开始吧。" unless they give words of their own); their decline withdraws it ("No — not now." / "先不用。"),
+   before it is done or while it is (the stand-in withdraws a request it gave up waiting for, and does it itself).
 3. **The work**, one step a round: walk to the operating table (the patient on it, within reach); **take the port** —
    the operator's handed over to them (`hand-over {port, to: <their id>}`), or the instrument put into an empty port of
    its kind (a grasper into an assist port, the laparoscope into the camera port) —; then **the step asked**: traction
@@ -418,12 +432,15 @@ Anything else said to an assistant is taken in. A member who asks nothing of the
 `assist` member — sees no change: every existing scenario's messages and timings are as before. There is no lens
 soiling and no cleaning of the lens.
 
-**`team ask {to, field}`** (docs/PROTOCOL.md): the learner asks a member of the team — `to`, their staff id — for one
-of the above. It is said aloud as the learner's own request ("Dr Abe, please hold the grasper in port B, pulling the
-infundibulum to the patient's left and caudally."), and the loop runs as above: the read-back is said to the learner,
-who confirms it with `team reply`; the member acts and reports. Refused: observing (§4.6), nobody of that name in the
-team, the learner's own place, a member away this encounter, the one who operates, one who is not in the theatre now
-("Dr Abe is not in the theatre now: ask a colleague at the table." — said aloud there, nobody would hear it; a relief
+**`team ask {to, field}`** (docs/PROTOCOL.md): the learner asks a member of the team — `to`: their staff id, their name,
+or the position they hold in words ("first assistant", "一助", "扶镜手", "camera holder"), through the one resolver every
+front-end shares (`lookupStaff`; whoever operates for 主刀 / 术者 / "surgeon") — for one of the above. It is said aloud as
+the learner's own request ("Dr Abe, please hold the grasper in port B, pulling the infundibulum to the patient's left
+and caudally."), and the loop runs as above: the read-back is said to the learner, who confirms it with `team reply`;
+the member acts and reports. Refused: observing (§4.6), nobody of that name in the team (`invalid_op`; several equally
+named: which ones), the learner's own place, a member away this encounter, the one who operates (the stand-in in a
+place: what it asks of the learner, and its stop, the learner answers with `team reply`), one who is not in the theatre
+now ("Dr Abe is not in the theatre now: ask a colleague at the table." — said aloud there, nobody would hear it; a relief
 colleague is called by phone and asked all the same); a malformed `field` is `invalid_op`; outside the team's phases a
 warning says when the team works.
 
@@ -438,50 +455,129 @@ counts."); nothing to count now is a warning that says which — not due yet ("T
 already with no recount asked for ("You have said the count: there is nothing more to count until a recount is asked
 for."). The record names who counted by the place's member, shown to the learner as "you".
 
-### 4.5 The team's caller and the call-out
+### 4.5 The stand-in surgeon, the team's caller and the call-out
 
-Every step a team member takes in the operative field — an assistant's traction or camera, the scrub nurse's pass,
-and later the stand-in surgeon's steps — runs through the one tool path: the `operate` tool under the team's own
-caller (agent `team`, a built-in profile holding `operate` and `observe_field` only — never in the roster a learner
+While the learner holds a place in the team, **the stand-in surgeon operates** (`operator.ts`, `operator-plan.ts`,
+pure: the same view gives the same proposal): the team's surgeon member, with the body of the facility's surgeon its
+`standIn` names, works the case's **reference path** — its plan is the reference solution's operative steps, in order —
+and asks the team for their part. A reference step the reference gives a colleague (`actor`) is that colleague's own:
+the plan passes over it.
+
+**Where the operation has got to is the field's record, never the team's memory.** The stand-in's own steps are recorded
+with their plan step's ref, `standin:<k>` (`k`: the step's index in the plan); its next step is the first of its plan
+whose ref the field has not recorded (`ProcedureState.refs`). A run of dissections of one region is one move: it goes on
+until the screen shows the region cleared — past the reference's steps if need be, with extra dissections up to the
+run's length — and is passed over once a later step is recorded. Its own extra steps — a port taken back, the camera
+aimed or zoomed, an instrument put back, an injury said aloud, suction, the abdomen insufflated again after a gas fault,
+a traction pulled again — are `standin:<k>:<kind>:<n>`, counted from the record to bound each kind. So a save and resume
+anywhere — from the transcript, whose last team record may be older than the field's, or from a snapshot — carries on
+from the same step, and no step is done twice or skipped: a ref the field holds is never taken again.
+
+Each round, at most one thing, in this order:
+1. **What was said to it**, first: a hold on closure read back and the wound checked, an escalation acknowledged (as any
+   surgeon, §4.6); a read-back of its own request confirmed ("Yes — go ahead.") when it says what was asked, else the
+   request said again; a decline taken in (it does the thing itself).
+2. **To the table**: the room, where the world pointed after a refusal for reach, the patient.
+3. **An injury** the screen shows, or one a colleague said aloud (only the operator's own word recognises it), said aloud
+   by itself (`recognise`).
+4. **A request under way** (one at a time) is seen through: done once the field shows it (an aim: the camera on that
+   region, as close as asked — a follow aim elsewhere never counts); a read-back not given within `waitRounds` — asked
+   once more, then given up; once confirmed, `waitRounds × 3` rounds to be done; given up, it is withdrawn in its
+   thread ("No — not now.") and the stand-in does it itself. **A pass is never given up and never forged**: the
+   stand-in keeps waiting for it and says what for ("I'm waiting for the Maryland dissector to be passed.").
+5. **The equipment and the field**: no gas or no picture — it waits and says so, once ("No CO₂ — I'm waiting for the
+   insufflator."); the gas back after a fault — the abdomen insufflated again; blood obscuring the field, or bile and
+   stones in it — suction (irrigation first for spillage), the suction put into its working port when none is in, and
+   the reference's instrument put back after.
+6. **What its last step hands on**, right after it: after its own scope insert, "Take the camera, please." to the camera
+   holder (the holder of the camera port, else the present colleague other than the surgeon holding the camera control —
+   the first assistant with two surgeons, the second with three); after its own traction on an assist port, that
+   traction to the **traction assistant** (a present colleague other than the camera holder holding `retract` — the
+   first assistant with three surgeons): "Dr Abe, please hold the grasper in port D, pulling the fundus cephalad." — read
+   back, confirmed; they take the port and the traction comes with it: "Holding.". The stand-in sets the traction up
+   itself (it is the reference's step) and hands it on; on a timeout it simply keeps it.
+7. **What the next step needs**: a port a colleague holds — "I'll take port B." / "B 孔我来。", then taken back (the
+   camera port before the extraction through it too); on tissue, the reference's traction (gone: the port taken back and
+   pulled again) and the camera on the step's region — "Camera on the cystic plate." when a colleague holds it aimed
+   elsewhere; held by nobody, the stand-in aims it itself; given up, the camera port taken back first —; "Closer." before
+   the safety pause (camera on the region worked, close up, when it looks at the whole field), "Wider." after it; the
+   instrument the reference has in the port; and in the scrub nurse's place (core `passingRequired`) every instrument it
+   puts in, asked for ("Maryland dissector, please.") and passed first.
+8. **The call-out**, one round before a clip, a division, a coagulation or a bail-out: said to the learner ("Clipping the
+   cystic duct." / "正在夹闭胆囊管。", `about.callout {op, handle}` — a bail-out's strategy as its handle). See
+   Approvals below.
+9. **Closure** only once the count is settled (correct, reconciled or excluded: "I'll close once the count is
+   settled."), never on an open count. **The step**: insufflation and letting the gas out through the device that offers
+   them now (a tower's `operate` effect: the world operation with the stand-in's body, its clinical effect on the team's
+   caller, recorded with the plan step's ref — `ClinicalCaller.stepRef`), else at the table; every other step the
+   `operate` tool with its own body.
+A step the field refuses is tried again once what it needs is secured; three refusals of one step in a row stop the
+operation there, said with the field's reason ("I can't go on: …"). Its own hand-overs only ever take a port back — it
+never hands one to anyone, so none names a taker without the port's control.
+
+**The team's caller.** Every step a team member takes in the operative field — an assistant's traction or camera, the
+scrub nurse's pass, the stand-in surgeon's steps — runs through the one tool path: the `operate` tool under the team's
+own caller (agent `team`, a built-in profile holding `operate` and `observe_field` only — never in the roster a learner
 talks to, never overridden by a profile of that name: a user or project profile named `team` is not used, and the
 session says so in a start-up warning), with the member's own body (`actorId`), so hooks, deny rules, the practice
-scope, the scope of practice by control, the spatial gate and the approval gate all apply; the plan step's id reaches
-the tool only through the tool context (`stepRef` → the step's `ref`, from the action id `team.<task>.<n>`), never
-from what anyone types. What the tool says is said to the learner (`addressee`); a refusal's reason is said again in
-the member's decline in both languages. World acts (walking to the table) stay on a nurse's tool path. Each call runs
-in a turn of its own that always ends —
-`turn_started` (synthetic) → its tool call (and an approval's phases) → `turn_complete` → `turn_phase idle` — so a
-front-end that follows each agent's phase never sees the team still driving, and the team's clock, the staff's clock
-and the real-time clock run on after it.
+scope, the scope of practice by control, the spatial gate and the approval gate all apply; the step's ref reaches the
+tool only through the tool context (`stepRef` → the step's `ref`: the action id `team.<task>.<n>`, or the stand-in's
+plan step), never from what anyone types. What the tool says is said to the learner (`addressee`); a refusal's reason is
+said again in the member's decline in both languages. World acts (walking to the table) stay on a nurse's tool path —
+but a device's step of the operation (the stand-in's gas) runs on the team's caller. Each call runs in a turn of its own
+that always ends — `turn_started` (synthetic) → its tool call (and an approval's phases) → `turn_complete` →
+`turn_phase idle` — so a front-end that follows each agent's phase never sees the team still driving, and the team's
+clock, the staff's clock and the real-time clock run on after it.
 
-**Exactly once.** The step is recorded with its action id as `ref`; the scheduler, before it takes a step, moves a
-task's act counter past every id the field (`ProcedureState.refs`) or the world already recorded — so a save and
-restore in the middle of a request carries out every act once, even when the team's record is older than the field's
-(saved after the confirmation, restored after the steps: a crash in the middle of `team run`), and a later act never
-takes an earlier one's id. The policies read what is done from the field (the port held, the traction, the camera's
-aim); what the field cannot show once done comes from the record: a pass task with a step recorded has passed (the
-instrument may be in already), a letting go with a step recorded was said.
+**Exactly once.** A step is recorded with its ref; the scheduler never takes a step whose ref the field holds, and
+before it takes one moves a task's act counter past every id the field (`ProcedureState.refs`) or the world already
+recorded — so a save and restore in the middle of a request carries out every act once, even when the team's record is
+older than the field's (saved after the confirmation, restored after the steps: a crash in the middle of `team run`),
+and a later act never takes an earlier one's id. A team restored older than the record gives out new ids only after
+every task id the field's refs and the world's results hold, so a task made after the restore never takes a lost one's
+acts for its own. The policies read what is done from the field (the port held, the traction, the camera's aim); what
+the field cannot show once done comes from the record: a pass task with a step recorded has passed (the instrument may
+be in already), a letting go with a step recorded was said.
 
 **Approvals.** None of the team's steps is asked about — in any approval mode — except the stand-in surgeon's
 critical steps: a clip, a division, a coagulation or a bail-out by the body that operates while the learner holds a
-place in the team. That one is the **call-out**: the session asks the learner (`approval_request` with `actorId` the
-stand-in's body and `callout`, the step said aloud in the learner's language — "Clipping the cystic duct." /
-"正在夹闭胆囊管。", the duct named as the operator identified it, else by its handle), answered No objection (approve)
-or Stop (deny), in every approval mode but bypass, never for the session (rule `team.callout`; any other team step:
-`team.step`). A rule-based refusal — the practice scope, a deny rule, plan mode — still stands for any team step. The
-benchmark's authorisation audit reads a team step (its `ref` `team.…`) with the same rung. Nothing drives the
-stand-in yet: the call-out is the gate's answer whenever the stand-in's body takes such a step.
+place in the team. That one is the **call-out**: said aloud one round before (8. above), then the session asks the
+learner (`approval_request` with `actorId` the stand-in's body and `callout`, the step said aloud in the learner's
+language — "Clipping the cystic duct." / "正在夹闭胆囊管。", the duct named as the operator identified it, else by its
+handle), answered No objection (approve) or Stop (deny), in every approval mode but bypass, never for the session (rule
+`team.callout`; any other team step: `team.step`). **Stopped**, the stand-in takes nothing: it looks at the field
+(`observe_field`, its own body, the team's caller), says "Stopped — tell me what you see." / "停下了——告诉我你看到了什么。"
+(a request to the learner, `about.callout`) and waits — however long — for the learner's confirmation (`team reply
+{kind: "confirm"}`; what they say they see is taken in); then the same plan step again, its call-out first (the field's
+record unchanged by the stopped step). In observer mode the place's own policy says go on. A rule-based refusal — the
+practice scope, a deny rule, plan mode — still stands for any team step (it is no Stop: the tool output says whose
+denial it was); a session whose settings would refuse the stand-in's steps refuses the place at the start (§1). The
+benchmark's authorisation audit reads a team step (its `ref` `team.…` or `standin:…`) with the same rung.
 
-### 4.6 The surgeon
+**Pacing.** The stand-in takes at most one step of the operation a round, and a run of the team until it is idle — its
+turn after each act of the learner — ends after a round in which it took one (`TeamScheduler.round` reports it): the
+operation goes on with the team's clock (in the browser one round every `TEAM_STEP_MS`, 2 s) and with each act of the
+learner, never in one burst. Headless front-ends drive rounds with `team step` / `team run` (which runs until what was
+set in motion has ended: the operation's plan task included).
 
+### 4.6 The surgeon, and the learner's part played or watched
+
+`team surgeon learner | simulated` keeps its name and its status field, and means: the learner plays their own part, or
+watches it played.
 - **Learner mode** (default): the learner answers with the `team reply` op or the panel's buttons: Read back, Wound
-  checked, Understood. They search with their own world action ("Check the wound", "Search within reach").
-- **Observer mode** (`team surgeon simulated`): a simulated surgeon answers instead:
+  checked, Understood. They search with their own world action ("Check the wound", "Search within reach"). Holding a
+  place, they play it with their own steps in the field and `team reply` / `team ask` / `team count`.
+- **Observer mode** (`team surgeon simulated`), without a place: a simulated surgeon answers instead (`surgeon.ts`):
   - reads a hold back;
   - checks the wound (`search` of the patient);
   - takes out what it finds;
   - reports "Wound checked.";
   - acknowledges an escalation.
+
+  It never operates: the benchmark's runs are unchanged. **In a place**, observer mode plays the learner's place with
+  that place's own policy, with the learner's body — the assistant's (the camera taken, aimed, followed; the traction
+  held), the scrub nurse's (the passes, the count) —, and the stand-in operates as always: a demonstration of the place.
+  The colleague standing by stays standing by.
 
   The learner watches: their own `team reply`, `team ask` and `team count` are refused while observing
   (`permission_denied`: "You are observing: the team plays your part. …").
@@ -490,21 +586,23 @@ stand-in yet: the call-out is the gate's answer whenever the stand-in's body tak
 
 | piece | what it is |
 |---|---|
-| `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need — `for` the surgeon, by default, whether or not the team lists a surgeon member; or a member of the team by their staff id — the body it works with: in a place the stand-in's own id is the surgeon, the place's member the learner —, else `invalid_op`; the team takes it from there), `ask {to, field}` (a request about the operative field, §4.4), `count` (the learner holding the count says it, §4.4). A case without a team: `error` `no_team` |
+| `team` op | `step`, `run {rounds?}` (until settled — the stand-in's operation included), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}` (the learner plays their part, or watches it played: §4.6 — in a place, the place's own policy with the learner's body), `reply {message, kind, text?, item?}` (also the learner's answer to the stand-in: a read-back of its request, the go-on after its stop), `need {item, for?}` (the surgeon says what they need — `for` the surgeon, by default, whether or not the team lists a surgeon member; or a member of the team by their staff id — the body it works with: in a place the stand-in's own id is the surgeon, the place's member the learner —, else `invalid_op`; the team takes it from there), `ask {to, field}` (a request about the operative field, §4.4; `to` an id, a name or a position in words), `count` (the learner holding the count says it, §4.4). A case without a team: `error` `no_team` |
 | replies | the learner answers only what was said to them (else `permission_denied`), in their own words (`text`) — else a confirmation says "Yes — go ahead." / "对，开始吧。", a decline "No — not now." / "先不用。", anything else repeats what it answers; a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again; observing, the learner answers nothing (`permission_denied`) |
 | status | `team_event` `status`: the round, the pace, who answers as the surgeon, and the learner's place and line-up (`seat`, `lineup`) when the start chose them |
 | names | in the team's words whoever operates is "the surgeon" (术者) — the learner, or the stand-in while the learner holds a place —, and the learner holding a place is that place, "you": "the first assistant (you)" / "第一助手（你）"; a member of staff by their name. Each line is spoken through the profile of the speaker's role (the nurses' through the nurse's, an assistant's through the attending's); the learner's own words as before |
 | one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
 | `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon) |
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |
-| acts | world acts through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member; steps in the operative field through the team's caller (`team`, §4.5), each in a turn of its own that always ends |
+| acts | world acts through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member; steps in the operative field — and a device's step of the operation, the stand-in's gas — through the team's caller (`team`, §4.5), each in a turn of its own that always ends |
+| the stand-in surgeon | while the learner holds a place, the team's surgeon member with its `standIn`'s body works the reference path (§4.5): its progress is the field's record (`standin:<k>`), never the team's memory; it asks the team — the learner in their place among them — for the camera, a traction, a pass; it calls a critical step out, and stops when the learner says Stop; one step of the operation a round at most, and a run until idle ends after it |
+| places | a learner's start in a place is taken in-world only (`not_embodied` otherwise, facility or none) and only when the session's permission settings let the stand-in work (`permission_denied`, saying why); the demonstration is refused in a place (§1) |
 | approvals | a team member's step is never asked about, in any mode — except the stand-in surgeon's clip, division, coagulation or bail-out, asked of the learner as its call-out (`approval_request.callout`, `actorId`), in every mode but bypass (§4.5) |
 | browser | the HUD's **Team** button (in the team's phases) opens the panel: pace (Auto / Step / Next step), the surgeon (I am the surgeon / Observe), Search within reach / Check the wound, what was said (lines to the learner marked, with their answers), the tasks (with "seen to be done"), the count. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, whichever panel is open, and stops only with the encounter's explicit pause |
 | anaesthesia responsibility | continuous (`SessionState.anaesthesia`, core `engine/anaesthesia.ts`): the responsible anaesthetist is the team's `anaesthesia` member until a hand-over moves it. While the patient is under anaesthesia (`patient.nonVerbalWhen`) the responsible anaesthetist never leaves the patient's room by **any** path — a walk, a request to fetch, a delegated task, the team's own move, a learner's world action on their body: every one goes through `EmbodiedSession.act`, which refuses a movement whose destination is outside the patient's room (`NOT_AUTHORIZED`, "Continuous anaesthesia responsibility is required. Arrange relief before leaving the patient."); within the room they move freely, and moving with the patient (a transport) is staying |
 | the sterile field | the scrub nurse keeps it: while the operation is under way (world `operationInProgress`), the staff body of the team member with the `instruments` duty (the team as it is: a team scenario's relief scrub nurse too) never leaves the team's room by **any** path — a request to fetch, a direct move, a delegated task, the team's own move — unless another scrub nurse who can take over is in the room (not one the team scenario makes absent, nor the colleague standing by while the learner holds a place): the same guard in `EmbodiedSession.act` as the anaesthetist's (`NOT_AUTHORIZED`, "The scrub nurse keeps the sterile field while the operation is under way: another scrub nurse takes over in the room before she leaves."). Within the theatre she moves freely. Staff bodies only: the learner's body — in the scrub nurse's place too — moves by poses and walks no guard refuses |
 | leaving an anaesthetised patient | asked to go out of the room (back to a post elsewhere, to show the way), the responsible anaesthetist first asks a colleague from `team.cover` (else the team's own anaesthetist) — `anaesthesia request-relief`; the colleague walks to the patient with their own body and the world confirms them there — `relief-arrived`; the structured hand-over is accepted — `handover {from, to, airway, ventilation, haemodynamics, drugs, unresolved}`, taken from the record (airway interventions, the vitals now, the drugs given, open holds), said in the new anaesthetist's voice; responsibility is transferred, and only then does the first one go. The new anaesthetist is bound by the same rule at once. Nobody to take over, or they cannot come: the anaesthetist stays and says why. Before induction or after emergence they just go (`staff-requests.ts`, `handover.ts`). A learner's `anaesthesia` action is refused (`permission_denied`) |
 | staff working on their own | `StaffAutonomy` (`session/staff-autonomy.ts`): one round of what every staff member does without being told each step — the circulating nurse's work on a new investigation (device fetched and reserved, acquired at the patient, reported, reviewed: docs/STUDIES.md), a colleague holding a port who is no longer at the table letting go (`assist.ts`), the operation's equipment checked against the room and, once the operation has begun, a device it lacks that is only switched off switched on by the circulating nurse (docs/PROCEDURE.md "Equipment"), and the responsible anaesthetist of an anaesthetised patient answering a **new** critical alarm. Each alarm is an episode in the record (`SessionState.alarms`, the `alarm-response` action by the system): **detected**; the anaesthetist goes to the patient with their own body; only once the world has them within reach is it **arrived** and said ("Alarm: SBP 72 — I'm at the patient and checking it."); a walk that fails (a locked door, no route) is **blocked** with its reason and said once per reason ("Alarm: SBP 72 — I can't get to the patient: <reason> I need someone at the bedside now."), and the walk is tried again every round until it succeeds; an alarm no longer critical is **cleared** (a recurrence is a new episode). A save and resume replays the episodes: a blocked responder keeps trying, an arrival already said is never said again. With model-driven characters the anaesthetist's words carry the record's place (docs/CHARACTERS.md §4): a blocked responder's line that claims the bedside is refused and the template that states the record is said. No drug or treatment of their own: what follows is the case's or the operator's. The round runs after every act of the learner and on the **staff's own clock**: Op `staff_step`, which the browser sends every `STAFF_STEP_MS` while the encounter runs, whatever the learner is looking at — so work goes on off-screen (in a case whose clock moves only with what is done, what needs time waits for the clock). `ClinicalSession.staffStates(): RoleState[]` — each staff member's goal, current task, place (room, x, z, level), responsibility (`anaesthesia`, `port B`, an order, a team task), held items, reservations, pending requests (the care team's, read by member id: the body `staff:<id>`) and what blocks them, the place in the team they stand in (`seat`), their controls in the operative field (`controls`), the delegation tasks they may be handed now (`delegable`: `checkTaskScope` — by role, the operating table's by control, none of those for the stand-in who operates or a colleague the field takes no part from) and whether they stand by while the learner holds their place (`standingBy`), **derived** from the record and the world, so a reload agrees by construction |
-| model-driven members | with `characters.engine: "llm"` (docs/CHARACTERS.md) each member decides each round with their own model, from their role card and what they perceive: the policy's move (`act`, in their own words — and the only option when it is owed: a closed-loop reply or the count), `wait` (never twice in a row on one move), `notice` a colleague, or `escalate` their own stuck task; a line is said only when grounded, and the rules decide whenever the model is missing, slow or off-script (`TeamHost.decide`, `ModelTeamMind`) |
+| model-driven members | with `characters.engine: "llm"` (docs/CHARACTERS.md) each member decides each round with their own model, from their role card and what they perceive, among the moves the rules allow — the policy's move (`act`, in their own words — and the only option when it is owed: a closed-loop reply or the count; at the operating table a step in the field, the stand-in surgeon's plan step or an assistant's, offered as that step and taken as the policy gives it — the model never makes a step of its own —, or a look at the field), `wait` (never twice in a row on one move), `notice` a colleague, or `escalate` their own stuck task; a line is said only when grounded, and the rules decide whenever the model is missing, slow or off-script (`TeamHost.decide`, `ModelTeamMind`) |
 | saves | the web's save keeps `team` with the world (`persistence.ts`); a resume restores both. The scenario's lifecycle is saved with it — `pending` (the team's phases not begun, nothing set up in the world), `active` (set up once: `setup {round, at, worldVersion}`), `completed` — so a save before the operation sets the scenario up when the operation begins, exactly as a run never interrupted, and a save after it never sets anything up twice; holds, requests, hand-overs and item positions are in the checkpoint and the world snapshot |
 
 ## 6. Team scenarios (authored)
@@ -595,7 +693,20 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   back, nothing while a camera request is under way); only a confirmed request done as asked reported; never letting
   go unasked; "Letting go now.", the release and the hand-back; the scrub nurse's pass to the asker (the operator's
   hand, a colleague's), never unasked, her count and needle holder as before, and the learner's count the same as hers
-  from the same view; the same view, the same proposal.
+  from the same view; the same view, the same proposal. The stand-in surgeon: its plan from the field's record (a
+  colleague's steps never move it, the place member's own steps passed over); a dissection run continued until the
+  region is cleared, bounded by its length and passed once a later step is recorded; "Take the camera, please." after
+  its scope insert — confirmed, waited for, done when the field shows it; a request said once more, then given up and
+  withdrawn; "Camera on …" while a colleague holds it aimed elsewhere (a follow aim never counted), aimed itself when
+  nobody holds it, taken back first when given up; "Closer." before the safety pause, "Wider." after it; "I'll take
+  port B." and the port taken back, the camera port before the extraction; its traction on an assist port handed to
+  the traction assistant, taken back and pulled again when the pull has gone; in the scrub nurse's place each
+  instrument asked for and waited for, never put in without the pass; the call-out before a clip, in both languages;
+  stopped by the learner — the look, "Stopped — tell me what you see.", the wait, the go-on, the call-out again — and a
+  rule's denial no Stop; an injury the screen shows or a colleague called said aloud first; suction (the suction put
+  in, irrigation for spillage, the instrument put back); no gas or no picture, said once; the gas through the tower;
+  closure only on a settled count; three refusals stopping the operation, reach followed; the same view, the same
+  proposal.
 - `agent/src/session/team/session-team.test.ts`: the op without a team, the transcript replay, checkpoint validation
   (an old version-2 checkpoint loads unchanged and carries on); status with the place and the line-up; replies, asks
   and counts refused while observing; whom a need is for (the surgeon by default, a team with no surgeon member too;
@@ -612,13 +723,27 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   (actorId, the line in English and Chinese), its turn closed whether approved or stopped in the default mode with the
   clocks running on, never asked in bypass mode; an assistant's traction and the scrub nurse's pass never asked about
   in any mode; the scrub nurse's pass; `team count` from the scrub nurse's place, never typed, and said once ("You
-  have said the count: …"); a profile named `team` never used, said at start in both languages.
+  have said the count: …"); a profile named `team` never used, said at start in both languages; observing in a place,
+  the place's own policy playing it with the learner's body through to the close (the colleague standing by never
+  acting); the team's turn after each act of the learner taking at most one step of the stand-in's; `team ask` by name
+  or position in words ("Dr Abe", "一助", "扶镜手"), whoever operates refused.
+- `agent/src/session/team/places.test.ts`, through the learner's own path only: a clinical session refuses a place
+  (`not_embodied`, with a facility or none, in both languages); settings that would stop the stand-in refuse it at the
+  start (plan mode, a deny rule on `operate` — a step's or the tool's —, a practice scope without it); each place sees
+  the reference operation through with the learner's part played by a scripted learner (`team reply` and their own
+  steps): the first assistant with two surgeons (the camera: taken, aimed, closer, wider; the camera port taken back
+  for the extraction), the second assistant with three on a four-port path (the camera; the simulated first assistant
+  holding the traction the stand-in hands on), the scrub nurse (every instrument asked for and passed first), the first
+  assistant with the scrub nurse on a break (no pass; the relief scrub nurse bringing what the stand-in needs);
+  resumed from the transcript and from a snapshot in the middle of a `team run`, no step of the stand-in's repeated or
+  skipped; a clip the learner stops stopping the stand-in until they say go on, then done once.
 - A session in a place, on the agent's theatre fixture (`agent/src/session/__fixtures__/theatre.ts`: the world's
   theatre with core's lap-chole team): `seat-operate.test.ts` (the first assistant's port and traction; dissection
   refused before any approval in both languages; the engine's English message after the reason; no `actor`, no `ref`;
   whom the operator hands a port, by their controls; a step naming an absent member refused before any approval;
-  body-less MCP-, CLI- and external calls are the learner's body; in-world only; no demonstration in a place; the
-  body at the table once, across a save and resume), `scope-review.test.ts` (the theatre's work by control),
+  body-less MCP-, CLI- and external calls are the learner's body; in-world only, the learner's own start taking a
+  place there; no demonstration in a place; the body at the table once, across a save and resume),
+  `scope-review.test.ts` (the theatre's work by control),
   `delegation-theatre.test.ts` (the camera, passes, traction by control and position; the colleague standing by, the
   operating stand-in and colleagues who take no part passed over and refused; the camera port only; the report's
   names), `tools/field-words.test.ts` ("you" is whom the words are said to; the count's record as the learner reads
@@ -648,31 +773,36 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
 
 ## 9. Limits (stated as they are)
 
-- The policies are **rules**, written for the instrument handoff, the count and requests at the operating table. With
-  model-driven characters a member's model chooses among the moves the rules allow (§5); no live model has been asked
-  to work with this team.
+- The policies are **rules**, written for the instrument handoff, the count, requests at the operating table and the
+  stand-in's operation. With model-driven characters a member's model chooses among the moves the rules allow (§5) — a
+  step in the operative field is the policy's, which a model may put off once but never change —; no live model has
+  been asked to work with this team.
 - **Time is logical.** A round is not a clock interval, and a member does one thing per round.
 - **Perception stands in for a glance round the room.** Verification uses what the body perceives (line of sight
   within 8 m counts, whatever the facing); a count — the simulated counter's and the learner's `team count` alike — is
   what the team in the room can account for (every item in the room or in hands there, never a concealed one): the
   room's accounting, not a model of a nurse miscounting nor what the learner's own eyes see. A member outside the room
   knows whether someone is in it.
-- **The surgeon is the learner's body.** In observer mode the simulated surgeon acts with it.
-- **Places are not offered to the learner yet.** A place in the team can be taken at the engine's `start` and joins
-  at the team's phase, and a session in one stamps the learner's steps with their place, but nothing drives the
-  stand-in surgeon yet, so the learner's own start in a place is refused and no front-end offers one. The join drives
-  the record only — the world's device state machines (the count board) are not driven by it —, the Sign Out and the
-  steps after the operation are the operator's, and a case served without its reference solution offers no place. The
-  controls are enforced in the operative field (docs/PROCEDURE.md §3), the world's operations (docs/EMBODIED.md §8.2,
-  §8.6: an operation's `control`, who checks the wound), the scope of practice and delegation (docs/EMBODIED.md §8.3)
-  — not in these policies.
+- **The surgeon is the learner's body** — without a place. In observer mode the simulated surgeon acts with it; in a
+  place the stand-in operates with its own, and observer mode plays the learner's place with the learner's body.
+- **Places.** A place joins at the team's phase; the join drives the record only — the world's device state machines
+  (the count board) are not driven by it —, the Sign Out and the steps after the operation are the operator's, and a
+  case served without its reference solution offers no place. The browser's start screen does not offer a place yet.
   There is no place for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
+  The controls are enforced in the operative field (docs/PROCEDURE.md §3), the world's operations (docs/EMBODIED.md
+  §8.2, §8.6: an operation's `control`, who checks the wound), the scope of practice and delegation (docs/EMBODIED.md
+  §8.3), and read by these policies to answer a request.
+- **The stand-in surgeon follows the reference path.** It does not reason about the anatomy (places are offered with
+  the base anatomy only): it never changes its plan, chooses a bail-out of its own or calls for help, and its answer to a
+  complication is to say the injury aloud and to suction — a major bleed is beyond it, and three refusals of one step
+  end its operation there. It sets an assist port's traction up itself before handing it on, and a request it gives up
+  waiting for it does itself (never a pass). It reads the gas from the tower only when the tower offers the step in the
+  state it is in.
 - **Only the duties above have policies.** `anaesthesia` is declared only (an anaesthetist asked for something of the
-  field declines). The assistants and the scrub nurse act in the field only when asked; nobody asks yet but the
-  learner (`team ask`): the stand-in surgeon has no policy, so in a place the operation does not go on by itself, and
-  the call-out is only the gate's answer to a stand-in's critical step. Relief colleagues are reached "by phone";
-  nobody walks to fetch an instrument from another room.
-- The **benchmark measures the reference policies** (it must stay at 100 %). Measuring an agent or a learner in a
-  team member's place is future work.
+  field declines). The assistants and the scrub nurse act in the field only when asked — by the learner (`team ask`) or
+  by the stand-in surgeon. Relief colleagues are reached "by phone"; nobody walks to fetch an instrument from another
+  room.
+- The **benchmark measures the reference policies** (it must stay at 100 %), in observer mode without a place.
+  Measuring an agent or a learner in a team member's place is future work.
 - Not reviewed by perioperative nurses. The check-back follows TeamSTEPPS and the count follows AORN / WHO practice
   in outline, not any institution's policy.

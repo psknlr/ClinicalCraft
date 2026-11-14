@@ -56,7 +56,7 @@ const readback: Proposal = { kind: "say", to: CIRC, message: { thread: "thread-1
 
 const decision = (o: Record<string, unknown>) => textScript(JSON.stringify(o));
 
-function harness(scripts: ((request: ChatRequest) => ReturnType<typeof textScript>)[] | null, o: { locale?: string; timeoutMs?: number; delayMs?: number } = {}) {
+function harness(scripts: ((request: ChatRequest) => ReturnType<typeof textScript>)[] | null, o: { locale?: string; timeoutMs?: number; delayMs?: number; position?: MindHost["position"] } = {}) {
   const provider = scripts ? new ScriptedProvider(scripts, { delayMs: o.delayMs ?? 0 }) : null;
   const warnings: string[] = [];
   const records: Record<string, unknown>[] = [];
@@ -64,7 +64,7 @@ function harness(scripts: ((request: ChatRequest) => ReturnType<typeof textScrip
     locale: o.locale ?? "en",
     timeoutMs: o.timeoutMs ?? 2000,
     model: () => (provider ? { provider, agent: "nurse", request: {} } : null),
-    position: (m) => (m.duties.includes("circulate") ? "circulating-nurse" : "scrub-nurse"),
+    position: o.position ?? ((m) => (m.duties.includes("circulate") ? "circulating-nurse" : "scrub-nurse")),
     name: (id) => NAMES[id] ?? id,
     staffNames: () => ["Nurse Aisyah", "Nurse Lim", "Dr Tanaka (anaesthesia)"],
     warn: (m) => void warnings.push(m),
@@ -217,6 +217,36 @@ describe("a model-driven team member", () => {
     const slow = harness([() => decision({ option: "wait", line: "", why: "" })], { timeoutMs: 30, delayMs: 40 });
     expect(await slow.mind.decide(me, view(me), request, new AbortController().signal)).toEqual(request);
     expect(slow.warnings[0]).toMatch(/no decision within 30 ms/u);
+  });
+
+  it("at the operating table a step in the field is offered as the policy's move: an assistant's and the stand-in surgeon's — chosen as it is, never one of the model's own, and waited on at most once", async () => {
+    const FIRST = "staff:or.first";
+    const STANDIN = "staff:or.standin";
+    const traction: Proposal = { kind: "operate", task: "task-5", op: { op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" } };
+    const clip: Proposal = { kind: "operate", task: "task-9", op: { op: "clip", port: "C", handle: "T2", count: 3 }, ref: "standin:22" };
+    const cases = [
+      [FIRST, ["assist"], traction, "first-assistant", /take a step in the operative field: retract \(port B, structure gallbladder-infundibulum, direction patient-left and caudal, force firm\)/u],
+      [STANDIN, ["surgeon"], clip, "surgeon", /take a step in the operative field: clip \(port C, handle T2, count 3\)/u],
+    ] as const;
+    for (const [who, duties, rules, position, described] of cases) {
+      const reqs: ChatRequest[] = [];
+      const { mind, records } = harness(
+        [
+          (r) => (reqs.push(r), decision({ option: "wait", line: "", why: "the field is still moving" })),
+          (r) => (reqs.push(r), decision({ option: "act", line: "Clipping it now, three clips.", why: "now" })),
+        ],
+        { position: () => position },
+      );
+      const m = member(who, [...duties]);
+      // waited once on the step
+      expect(await mind.decide(m, view(m), rules, new AbortController().signal), who).toBeNull();
+      // then the step itself — exactly the policy's, whatever the model said with it
+      expect(await mind.decide(m, view(m), rules, new AbortController().signal), who).toEqual(rules);
+      expect(offered(reqs[0]!), who).toEqual(["act", "wait", "notice"]);
+      expect(offered(reqs[1]!), who).not.toContain("wait");
+      expect(JSON.stringify(reqs[0]!.messages), who).toMatch(described);
+      expect(records.map((x) => x.option), who).toEqual(["wait", "act"]);
+    }
   });
 
   it("tells a colleague in the room what it sees (no obligation); escalates its own task stuck waiting", async () => {

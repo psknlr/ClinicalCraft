@@ -686,3 +686,64 @@ describe("a team saved before requests about the field", () => {
     await t.session.close();
   });
 });
+
+describe("the stand-in surgeon in a session (docs/TEAM.md §4.5)", () => {
+  it("observing in a place, the place's own policy plays it with the learner's body: the camera taken, held and aimed through to the close", async () => {
+    const t = await theatreSession({ start: { type: "start", seat: "first-assistant" }, settingsPatch: { approvalMode: "bypass" } });
+    const status = teamOf(await t.session.run({ type: "team", action: "surgeon", surgeon: "simulated" })).filter((e) => e.kind === "status");
+    expect(status.at(-1)).toMatchObject({ surgeon: "simulated", seat: "first-assistant" });
+    const ran = await t.session.run({ type: "team", action: "run", rounds: 200 });
+    expect(msgsOf(ran, "error")).toEqual([]);
+    const p = t.session.state.procedure!;
+    expect(p).toMatchObject({ closed: true, specimen: "extracted", unsafe: [] });
+    // the place's steps: the learner's body (its member's: doc-1 in the field), never the colleague standing by
+    const steps = receiptsIn(ran).filter((r) => r.operation === "operate" && r.actor !== STAFF.standIn);
+    expect(steps.length).toBeGreaterThan(0);
+    expect(steps.every((r) => r.actor === PRIMARY_ACTOR)).toBe(true);
+    expect(receiptsIn(ran).some((r) => r.actor === STAFF.first)).toBe(false);
+    expect(t.session.snapshot().actions.flatMap((a) => (a.type === "operate" && a.actor ? [a.actor] : []))).toEqual(steps.map(() => "doc-1"));
+    // the camera request answered for the learner, read back to the stand-in
+    expect(saidIn(ran).filter((m) => m.from === PRIMARY_ACTOR).map((m) => m.text.en)).toContain("I take the camera in port A — confirm?");
+    await t.session.close();
+  });
+
+  it("an untilIdle run — the team's turn after each act of the learner — takes at most one step of the stand-in's", async () => {
+    const t = await theatreSession({ settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start", seat: "scrub-nurse" } });
+    // the scrub nurse's place, observed: the team plays the passes; each note of the learner's lets the team take one turn
+    await t.session.run({ type: "team", action: "surgeon", surgeon: "simulated" });
+    const perTurn: number[] = [];
+    for (let i = 0; i < 40 && !t.session.state.procedure?.closed; i++) {
+      const turn = await t.session.run({ type: "clinical_action", action: { type: "note", text: `Watching ${i}.` } });
+      perTurn.push(receiptsIn(turn).filter((r) => r.actor === STAFF.standIn && r.operation === "operate").length);
+    }
+    expect(Math.max(...perTurn)).toBe(1);
+    expect(perTurn.filter((n) => n === 1).length).toBeGreaterThan(10);
+    // a team run goes on round after round, one stand-in step a round at most
+    const run = await t.session.run({ type: "team", action: "run", rounds: 5 });
+    const rounds = new Map<number, number>();
+    for (const r of receiptsIn(run).filter((x) => x.actor === STAFF.standIn && x.operation === "operate")) rounds.set(r.round, (rounds.get(r.round) ?? 0) + 1);
+    expect([...rounds.values()].every((n) => n === 1)).toBe(true);
+    await t.session.close();
+  });
+
+  it("the learner asks a member by name or by the position they hold in words, through the one resolver", async () => {
+    const t = await atTheTable();
+    for (const to of ["Dr Abe", "first assistant", "一助", "扶镜手", "camera holder", "staff:doc-1", "doc-1"]) {
+      const asked = await t.session.run({ type: "team", action: "ask", to, field: { op: "camera" } } as never);
+      expect(msgsOf(asked, "error"), to).toEqual([]);
+      expect(saidIn(asked)[0], to).toMatchObject({ from: PRIMARY_ACTOR, to: STAFF.first, kind: "request" });
+    }
+    const operator = await t.session.run({ type: "team", action: "ask", to: "主刀", field: { op: "camera" } } as never);
+    expect(msgsOf(operator, "error")).toEqual([expect.objectContaining({ code: "permission_denied" })]);
+    await t.session.close();
+    // in a place, the stand-in by any of its names is the one who operates: the learner answers its stop with `team reply`
+    const placed = await theatreSession({ start: { type: "start", seat: "first-assistant" } });
+    operatorSteps(placed, ACCESS);
+    for (const to of ["主刀", "Dr Ito", "surgeon"]) {
+      const asked = await placed.session.run({ type: "team", action: "ask", to, field: { op: "pass", instrument: "maryland" } } as never);
+      expect(msgsOf(asked, "error"), to).toEqual([expect.objectContaining({ code: "permission_denied" })]);
+    }
+    await placed.session.close();
+  });
+});

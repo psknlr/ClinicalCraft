@@ -37,7 +37,6 @@ import {
   type CountRecord,
   type FacilityDefinition,
   type FieldView,
-  type PortState,
   type ProcedureOp,
   type SessionState,
   type TeamNeed,
@@ -46,6 +45,7 @@ import {
 import { behaviorOf, PRIMARY_ACTOR, RANGES, type ActorState, type NavGoal, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg, TeamEvent } from "../../protocol.js";
 import { lookupStaff } from "../../tools/consult-target.js";
+import { positionWord } from "../../tools/position-words.js";
 import { checkTaskScope, THEATRE_TASK_CONTROL } from "../../tools/scope.js";
 import { scopeActorOf } from "../../tools/scope-actor.js";
 import type { SurgicalCount } from "../count.js";
@@ -701,8 +701,10 @@ export class TeamScheduler {
    * The learner asks a member of the team for something in the operative field (`team ask`): said aloud as a request
    * from the learner's own member (`about.field`), in both languages; the member reads it back, the learner confirms it
    * (`reply`), the member acts and reports — or declines at once, saying why. Refused: observing, nobody of that name in
-   * the team (`to`: their staff id, or `staff:<id>`), the learner's own member, one away this encounter, the one who
-   * operates, one who is not in the team's room now (a relief colleague is called by phone: asked all the same).
+   * the team (`to`: their staff id, `staff:<id>`, their name or the position they hold in words — several equally named:
+   * `ambiguous`), the learner's own member, one away this encounter, the one who operates (the stand-in: the learner
+   * answers what it asks, and its stop, with `reply`), one who is not in the team's room now (a relief colleague is called
+   * by phone: asked all the same).
    */
   ask(to: string, field: FieldAsk): { message: TeamMessage } | { refused: "observer" } | { refused: "unknown" | "self" | "absent" | "operator" | "away"; to: string } | { refused: "ambiguous"; to: string; who: string[] } {
     if (this.surgeon === "simulated") return { refused: "observer" };
@@ -752,6 +754,8 @@ export class TeamScheduler {
     const ref = to.replace(/^staff:/u, "");
     const direct = this.state.members.find((m) => m.id === to || m.id === `staff:${ref}` || m.staff === ref);
     if (direct) return direct;
+    // whoever operates ("主刀", "术者", "surgeon"): the learner without a place, the stand-in with one
+    if (positionWord(to) === "surgeon") return this.member(this.surgeonBody());
     const found = lookupStaff(this.host.facility, to, this.config.room, { caseDef: this.host.caseDef, state: this.host.state() });
     if (found.kind === "ambiguous") return { ambiguous: found.staff.map((x) => `staff:${x.id}`) };
     if (found.kind !== "one") return null;

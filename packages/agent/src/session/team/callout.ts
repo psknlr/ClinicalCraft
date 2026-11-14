@@ -13,6 +13,14 @@ import { both, phrase, type Bilingual } from "./i18n.js";
 /** The agent id the care team's own steps in the operative field run under (`TEAM_PROFILE`). */
 export const TEAM_CALLER = "team";
 
+/**
+ * Whether a step the field recorded was the care team's own, taken through the team's caller (`TEAM_CALLER`): its `ref`
+ * is a team act's id (`team.<task>.<n>`) or a plan step of the stand-in surgeon's (`standin:<k>…`).
+ */
+export function isTeamStepRef(ref: string | undefined): boolean {
+  return !!ref && (ref.startsWith("team.") || ref.startsWith("standin:"));
+}
+
 /** The critical steps the stand-in surgeon calls out before doing them. */
 export const CALLOUT_OPS: readonly ProcedureOpType[] = ["clip", "divide", "coagulate", "bailout"];
 

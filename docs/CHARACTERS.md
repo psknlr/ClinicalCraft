@@ -117,7 +117,7 @@ own proposal first and hands it to the member's model as one of the **options**:
 
 | option | what it is | offered when |
 |---|---|---|
-| `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation) or anything about the count — is then the only option |
+| `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate; at the operating table a step in the operative field, described as that step — "take a step in the operative field: clip (port C, handle T2, count 3)" — or a look at the field), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation) or anything about the count — is then the only option |
 | `wait` | not now | the move is not owed, and was not deferred last round (a member never waits twice in a row on one move) |
 | `notice` | tell a colleague in the room what you see or are doing (`to`), creating no obligation | a colleague is in the room |
 | `escalate` | raise your own task, stuck waiting, to the person it is for, saying what was tried | the member owns a task in `waiting` |
@@ -128,9 +128,10 @@ noticed, their colleagues (in the room, on a break, reachable by phone, busy) an
 never the hidden state. It answers JSON (`team_decision`: `option`, `to`, `line`, `why`). The engine then:
 
 - refuses an option that was not offered (the rules decide);
-- for `act`, keeps the policy's move — its addressee, its kind, its thread, its task changes — and only replaces the
-  words in the session's language with `line` when the line is grounded (the other language keeps the team's
-  wording, so a change of language never shows a stale line);
+- for `act`, keeps the policy's move — its addressee, its kind, its thread, its task changes; a step in the field
+  exactly as the policy gives it — and only replaces the words in the session's language with `line` when the move
+  speaks and the line is grounded (the other language keeps the team's wording, so a change of language never shows a
+  stale line);
 - builds `notice` and `escalate` itself (an escalation ends the task `escalated`, as the policy's would);
 - records every decision (`diagnostic` transcript item, `source: "characters"`: option, accepted or refused and why,
   the line, the model's private `why`) — never an event.
@@ -167,7 +168,9 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
   priority; the role section; a model-driven member does the protocol's move
   in its own words, refuses ungrounded lines (a stray number, a colleague not in view, the wrong language), waits at
   most once and never on a read-back it owes, falls back to the rules on an option not offered, an unreadable answer,
-  no model or a slow model (one warning), notices to a colleague and escalates its stuck task; grounded staff lines;
+  no model or a slow model (one warning), notices to a colleague and escalates its stuck task; at the operating table
+  an assistant's and the stand-in surgeon's step in the field offered as the policy's move, described as that step,
+  taken exactly as the policy gives it and waited on at most once; grounded staff lines;
   a line never claims a place the record contradicts (shut out: no "I'm at the bedside" in English or Chinese; at the
   patient: no "I can't get there").
 - SurgeryCraft `tools/case126-characters.test.ts`: every member of staff in the IMPF hospital holds a position; Nurse
@@ -181,7 +184,10 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
 
 - The options are the policy's move plus `wait`, `notice` and `escalate`: a model reorders the team's priorities only
   within them (a member cannot invent a new kind of act). New kinds of moves come from the policy, where the engine can
-  check them.
+  check them. At the operating table the policy's move may be a step in the operative field — an assistant's traction
+  or camera, the scrub nurse's pass, the stand-in surgeon's plan step — or the stand-in's look at the field: offered
+  described as that step, it is taken exactly as the policy gives it or put off once; a model never chooses a step of
+  its own, and the stand-in's operation is the reference path's whatever its model says.
 - The grounding check is lexical (numbers, names, language, one line, first-person place claims): it does not judge
   tone or clinical register, and a place claim worded in a way the patterns do not know is not caught (the record
   stays right; only the words could be wrong).

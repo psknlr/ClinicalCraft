@@ -18,10 +18,10 @@
  * 5. **The equipment**: no gas or no picture, it waits and says so; the gas back after a fault, the abdomen insufflated
  *    again. **The field**: obscured, or bile and stones in it — suction (and irrigation for spillage), the suction put
  *    into a working port when none is in.
- * 6. **What its last steps hand on** (A17): after its own scope insert, "Take the camera, please." to the camera holder
- *    (the holder of the camera port, else the present colleague holding the camera control); after its own traction on
- *    an assist port, that traction to the traction assistant (a present colleague other than the camera holder holding
- *    `retract`: "Please hold the grasper in port D, pulling the fundus cephalad.").
+ * 6. **What its last step hands on** (A17), right after it: after its own scope insert, "Take the camera, please." to the
+ *    camera holder (the holder of the camera port, else the present colleague holding the camera control); after its own
+ *    traction on an assist port, that traction to the traction assistant (a present colleague other than the camera
+ *    holder holding `retract`: "Please hold the grasper in port D, pulling the fundus cephalad.").
  * 7. **What the next step needs**: a port a colleague holds — "I'll take port B." / "B 孔我来。", then taken back (the
  *    camera port before the extraction through it too); on tissue, the reference's traction (taken back and pulled again
  *    when lost) and the camera on the step's region ("Camera on the cystic plate."; held by nobody, it aims it itself);
@@ -305,9 +305,12 @@ function supplyStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, ne
   return undefined;
 }
 
-/** The gas through the device that offers it now (the tower: A11), with its own body; else at the table. */
+/**
+ * The gas through the device that offers it now (the tower: A11), with its own body; at the table when none does — or
+ * when the device refused the step (out of the patient's reach, say: `failed` holds the step's ref).
+ */
 function gasStep(v: MemberView, task: TeamTask, op: ProcedureOp, ref: string, k: number): Proposal {
-  const device = op.op === "insufflate" || op.op === "desufflate" ? v.gasControl(op.op) : null;
+  const device = (op.op === "insufflate" || op.op === "desufflate") && task.failed?.ref !== ref ? v.gasControl(op.op) : null;
   if (!device) return step(task, op, ref, k);
   const parameters = { ...(device.parameters ?? {}), ...(op.op === "insufflate" ? { pressure: op.pressure } : {}) };
   return { kind: "act", task: task.id, operation: device.operation, targetId: device.id, ...(Object.keys(parameters).length ? { parameters } : {}), ref, patch: [{ id: task.id, set: { ...going(task), cursor: k } }] };
@@ -341,21 +344,23 @@ function fieldStep(v: MemberView, task: TeamTask, next: NextStep): Part {
 }
 
 /**
- * What its last steps hand on (A17): the camera after its own scope insert, to the camera holder; its own traction on an
- * assist port, to the traction assistant — each asked once, then the stand-in carries on either way.
+ * What its last step hands on (A17), right after it: the camera after its own scope insert, to the camera holder; its own
+ * traction on an assist port, to the traction assistant — each asked once, then the stand-in carries on either way (and
+ * never again once the plan has moved on: a port it takes back later stays its own).
  */
 function handOnStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, next: NextStep): Part {
   const f = v.field;
   if (!f) return undefined;
   const k = next.step.k;
   const asked = new Set(task.requested ?? []);
-  const scope = lastOwn(plan, k, (op) => op.op === "insert" && op.instrument === "laparoscope");
+  const last = lastOwn(plan, k, () => true);
+  const scope = last?.op.op === "insert" && last.op.instrument === "laparoscope" ? last : null;
   if (scope && !asked.has(`camera:${scope.k}`)) {
     const port = f.ports.find((p) => p.role === "camera" && p.instrument === "laparoscope" && p.holder === undefined);
     const holder = cameraHolder(v, f);
     if (port && holder) return request(v, task, holder, { op: "camera", port: port.port }, `camera:${scope.k}`);
   }
-  const pull = lastOwn(plan, k, (op) => op.op === "retract");
+  const pull = last?.op.op === "retract" ? last : null;
   if (pull && pull.op.op === "retract" && !asked.has(`traction:${pull.k}`)) {
     const t: Traction = { structure: pull.op.structure, port: pull.op.port, direction: directionNames(pull.op.direction), force: pull.op.force };
     const port = f.ports.find((p) => p.port === t.port);
@@ -523,7 +528,8 @@ export function afterStandIn(v: MemberView, task: TeamTask, outcome: StandInOutc
   if (outcome.status === "completed") {
     const set: Partial<TeamTask> = {};
     if (task.failed) set.failed = undefined;
-    if (outcome.ref && task.step && !task.step.startsWith("stopped:") && !task.step.startsWith("take:")) set.step = undefined;
+    // a step of the field done: what was said for it (its call-out, "I'll take port P.") is spent — never the stop's own states
+    if (outcome.ref && task.step && !/^(denied|inspected|stopped):/u.test(task.step)) set.step = undefined;
     return Object.keys(set).length ? { kind: "update", patch: [{ id: task.id, set }] } : null;
   }
   if (outcome.status === "cancelled") return null;

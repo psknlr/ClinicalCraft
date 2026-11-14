@@ -116,7 +116,9 @@ export type Op =
    * `ask` (the learner asks a member, `to`, for something in the operative field — `field`: traction, letting go, the
    * camera, its aim or zoom, a pass —, a closed loop: they read it back, the learner confirms with `reply`, they act and
    * report), `count` (the learner holding the count says it: the items are what the team in the room can account for,
-   * never typed). Answered by `team_event`s.
+   * never typed). Answered by `team_event`s. While the learner holds a place in the team the stand-in surgeon operates,
+   * paced by the team's rounds; what it asks of the learner — a read-back, its stop after a call-out ("Stopped — tell me
+   * what you see.") — the learner answers with `reply`.
    */
   | {
       type: "team";
@@ -128,7 +130,7 @@ export type Op =
       text?: string;
       item?: string;
       for?: string;
-      /** `ask`: the member asked (their staff id, or `staff:<id>`). */
+      /** `ask`: the member asked — their staff id, `staff:<id>`, their name or the position they hold in words ("first assistant", "一助", "扶镜手"). */
       to?: string;
       /** `ask`: what is asked of the operative field. */
       field?: FieldAsk;

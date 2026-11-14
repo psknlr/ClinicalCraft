@@ -213,7 +213,7 @@ describe("a body-less call is the learner's body (A6)", () => {
 });
 
 describe("where a place is offered", () => {
-  it("a place needs in-world mode (not_embodied); in-world the learner's own start in one is not offered yet; the surgeon's place is the learner as always", async () => {
+  it("a place needs in-world mode (not_embodied); in-world the learner's own start takes it, the stand-in operating meanwhile; the surgeon's place is the learner as always", async () => {
     const c = await theatreSession({ clinical: true });
     const refused = await c.session.run({ type: "clinical_action", action: FIRST });
     expect(msgsOf(refused, "error")[0]).toMatchObject({ code: "not_embodied" });
@@ -221,17 +221,23 @@ describe("where a place is offered", () => {
     expect(c.session.state.started).toBe(false);
     await c.session.close();
     const e = await theatreSession();
-    const notYet = await e.session.run({ type: "clinical_action", action: FIRST });
-    expect(msgsOf(notYet, "error")[0]).toMatchObject({ code: "permission_denied" });
-    expect(e.session.state.started).toBe(false);
-    await e.session.run({ type: "clinical_action", action: { type: "start", seat: "surgeon" } });
-    expect(e.session.state).toMatchObject({ started: true });
-    expect(e.session.state.seat).toBeUndefined();
+    const taken = await e.session.run({ type: "clinical_action", action: FIRST });
+    expect(msgsOf(taken, "error")).toEqual([]);
+    expect(e.session.state).toMatchObject({ started: true, seat: "first-assistant", phase: "theatre" });
+    // the team's turn after the start: the stand-in begins (to the table, the port plan)
+    expect(e.session.state.procedure?.refs).toEqual(["standin:0"]);
     await e.session.close();
+    const s = await theatreSession();
+    await s.session.run({ type: "clinical_action", action: { type: "start", seat: "surgeon" } });
+    expect(s.session.state).toMatchObject({ started: true });
+    expect(s.session.state.seat).toBeUndefined();
+    await s.session.close();
   });
 
   it("the demonstration is refused in a place: nothing is done, and it says why", async () => {
     const t = await theatreSession({ start: FIRST });
+    // the team waits (its turn after the learner's act would have the stand-in take a step): only the demonstration's is looked at
+    await t.session.run({ type: "team", action: "pause" });
     const seq = t.session.state.seq;
     const r = await t.session.run({ type: "autopilot", maxTurns: 3 });
     expect(msgsOf(r, "error")[0]).toMatchObject({ code: "permission_denied" });
