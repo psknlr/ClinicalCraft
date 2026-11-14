@@ -12,6 +12,7 @@
  *   clinician         → replays `case.solution` one tool call per step, narrated
  */
 import {
+  canonicalPosition,
   ClinicalActionSchema,
   caseData,
   createSession as createEngineState,
@@ -21,13 +22,16 @@ import {
   orderStatus,
   reduce,
   resultKey,
+  staffPosition,
   t,
   vitalsAt,
   type AssessmentReport,
   type CaseDefinition,
   type ClinicalAction,
+  type FacilityDefinition,
   type ReduceResult,
   type SessionState,
+  type StaffPosition,
   type VitalsSnapshot,
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
@@ -212,13 +216,22 @@ export function attendingOffline(ctx: OfflineContext, _dispatch: (action: Clinic
   return { text: asksForHint(utterance) ? `${nudge} ${rt(L, "attending.offline.hintChannel")}` : nudge, hinted: false };
 }
 
-/** A colleague's specialty, from the case team's duties or their title. */
-export function specialtyOf(c: CaseDefinition, staffId: string, name: string): "anaesthesia" | "surgery" | "radiology" | "pathology" | "other" {
+/** The positions of the operating team's surgeons: the operating surgeon and the assistants. */
+const SURGICAL: ReadonlySet<StaffPosition> = new Set<StaffPosition>(["surgeon", "first-assistant", "second-assistant"]);
+
+/**
+ * A colleague's specialty: the anaesthetist by the case team's duties or their title; a surgeon of the operating team —
+ * the operating surgeon, a first or second assistant — by their position (core `staffPosition`: the team's, else the
+ * facility's), never by a word in their name; a radiologist or pathologist by title.
+ */
+export function specialtyOf(c: CaseDefinition, staffId: string, name: string, facility?: FacilityDefinition | null): "anaesthesia" | "surgery" | "radiology" | "pathology" | "other" {
   if (c.team?.members.some((m) => m.staff === staffId && m.duties.includes("anaesthesia")) || c.team?.cover.some((m) => m.staff === staffId && m.duties.includes("anaesthesia"))) return "anaesthesia";
   if (/anaesth|anesth|麻醉/iu.test(name)) return "anaesthesia";
+  const position = staffPosition(c, facility, staffId);
+  if (position === "anaesthetist") return "anaesthesia";
+  if (position && SURGICAL.has(canonicalPosition(position))) return "surgery";
   if (/radiolog|放射|影像/iu.test(name)) return "radiology";
   if (/patholog|病理/iu.test(name)) return "pathology";
-  if (/surg|外科|术者|助手/iu.test(name)) return "surgery";
   return "other";
 }
 
@@ -228,11 +241,11 @@ export function specialtyOf(c: CaseDefinition, staffId: string, name: string): "
  * (induced or not), the vitals as monitored, and each safety datum as the record knows it (an unknown stays unknown);
  * another specialist says that offline they can speak only to what the record holds.
  */
-export function specialistOffline(ctx: OfflineContext, voice: { staffId: string; name: string }, _facility?: unknown): string {
+export function specialistOffline(ctx: OfflineContext, voice: { staffId: string; name: string }, facility?: FacilityDefinition | null): string {
   const c = ctx.caseDef;
   const L = ctx.locale;
   const s = ctx.state();
-  const specialty = specialtyOf(c, voice.staffId, voice.name);
+  const specialty = specialtyOf(c, voice.staffId, voice.name, facility);
   if (specialty !== "anaesthesia") return rt(L, "specialist.offline.other", { name: voice.name });
   const induction = c.interventions.filter((i) => i.kind === "airway").map((i) => s.interventions.find((r) => r.interventionId === i.id && !r.invalid)).find(Boolean);
   const parts = [rt(L, induction ? "specialist.anaesthesia.induced" : "specialist.anaesthesia.notInduced")];

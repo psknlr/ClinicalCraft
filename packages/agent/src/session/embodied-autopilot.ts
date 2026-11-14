@@ -34,7 +34,7 @@ import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
-import { lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
+import { demonstrationRefused, lostTraction, refusedTurn, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
@@ -349,6 +349,9 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
  * tool step differs).
  */
 export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
+  // the demonstration plays the operating surgeon: never while the learner holds a place in the team
+  const refused = demonstrationRefused(host.state(), host.locale);
+  if (refused) return refusedTurn(host, turnId, refused);
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";

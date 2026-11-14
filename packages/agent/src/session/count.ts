@@ -10,7 +10,7 @@
  * item); a count is the items the team in the room can account for (lying in the room, or in the hands of someone
  * in it — never one concealed: under a drape, in the wound); a scan is what the RF wand finds inside the patient.
  */
-import { COUNT_EFFECT_STEPS, COUNT_STAGES, countLedger, countStatus, t, type CaseDefinition, type ClinicalAction, type CountOp, type CountStage, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { COUNT_EFFECT_STEPS, COUNT_STAGES, countLedger, countStatus, seatMember, t, type CaseDefinition, type ClinicalAction, type CountOp, type CountStage, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type ActorId, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { rt, type RuntimeKey } from "./i18n.js";
 import { sentence } from "./i18n-checklist.js";
@@ -49,11 +49,25 @@ export class SurgicalCount {
     return team?.count ? { item: team.count.item, room: team.room } : null;
   }
 
-  /** Who did it, as the record names people: a staff id, `surgeon` (the learner in a case team with a surgeon), else `learner`. */
+  /**
+   * Who did it, as the record names people: a staff id; the learner — holding a place in the team, that place's member
+   * (their ref: the record names the place, A19 — shown to the learner as "you"); operating, `surgeon` in a case team
+   * with a surgeon, else `learner`.
+   */
   staffOf(actorId: ActorId): string {
     if (actorId.startsWith("staff:")) return actorId.slice("staff:".length);
-    if (actorId === PRIMARY_ACTOR) return this.h.caseDef.team?.members.some((m) => m.staff === "surgeon") ? "surgeon" : "learner";
+    if (actorId === PRIMARY_ACTOR) {
+      const s = this.h.state();
+      if (s.seat) return seatMember(this.h.caseDef, s)?.staff ?? "learner";
+      return this.h.caseDef.team?.members.some((m) => m.staff === "surgeon") ? "surgeon" : "learner";
+    }
     return actorId;
+  }
+
+  /** A record's staff as the learner reads it: their place's member is "you" (A19); everyone else as recorded. */
+  private shown(staff: string, L: string): string {
+    const s = this.h.state();
+    return s.seat && seatMember(this.h.caseDef, s)?.staff === staff ? rt(L, "place.you") : staff;
   }
 
   /** The items opened onto the field: every placement of the counted type in the operating room, by entity id. */
@@ -164,7 +178,7 @@ export class SurgicalCount {
       case "baseline":
         return { ok: true, output: rt(L, "count.baseline", { n: e.ids.length, item, status: statusText }), data: { step, status, staff } };
       case "recover":
-        return { ok: true, output: rt(L, "count.recovered", { from: e.from, staff: e.staff, items: e.ids.map(name).join(", ") }), data: { step, status, staff } };
+        return { ok: true, output: rt(L, "count.recovered", { from: e.from, staff: this.shown(e.staff, L), items: e.ids.map(name).join(", ") }), data: { step, status, staff } };
       case "count": {
         const { expected, transferred } = countLedger(record!);
         const of = expected.filter((id) => !transferred.includes(id)).length;
@@ -182,7 +196,7 @@ export class SurgicalCount {
       case "escalate":
         return { ok: true, output: rt(L, "count.escalated", { to: e.to, reason: sentence(e.reason), status: statusText }), data: { step, status, staff } };
       case "transfer":
-        return { ok: true, output: rt(L, "count.transferred", { items: e.ids.map(name).join(", "), staff: e.staff, to: e.to, reason: sentence(e.reason), status: statusText }), data: { step, status, staff } };
+        return { ok: true, output: rt(L, "count.transferred", { items: e.ids.map(name).join(", "), staff: this.shown(e.staff, L), to: e.to, reason: sentence(e.reason), status: statusText }), data: { step, status, staff } };
       default:
         return { ok: true, output: statusText, data: { step, status, staff } };
     }

@@ -5,6 +5,7 @@
  * session" answer adds an in-memory allow rule for each thing the call acts on. Every agent's tool calls
  * (`LoopHost.authorize`) and the learner's tool path go through it.
  */
+import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { AuthorizeRequest, GateOutcome } from "../loop.js";
 import { callSpecifiers, checkPermission, PermissionState } from "../permissions.js";
 import type { ApprovalDecision } from "../protocol.js";
@@ -48,9 +49,12 @@ export class ApprovalGate {
     } catch {
       summary = req.tool.name;
     }
+    // the body that would act, when it is not the caller's own (a colleague's, the stand-in surgeon's): a front-end
+    // shows whose step it is asked about (the stand-in's call-out)
+    const actorId = req.ctx.actorId !== undefined && req.ctx.actorId !== PRIMARY_ACTOR ? req.ctx.actorId : undefined;
     const answer = await this.broker.request(
       id,
-      { agent: req.agent, tool: req.tool.name, args: req.args, risk: check.risk, summary, reason: check.reason, ruleId: check.ruleId, allowSession: check.allowSession },
+      { agent: req.agent, ...(actorId ? { actorId } : {}), tool: req.tool.name, args: req.args, risk: check.risk, summary, reason: check.reason, ruleId: check.ruleId, allowSession: check.allowSession },
       req.signal,
     );
     phase("executing_tools");

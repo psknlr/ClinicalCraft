@@ -57,6 +57,12 @@ export interface ToolContext {
   readonly actorId?: string;
   /** The model turn this call belongs to (set by `executeToolCall`; nested tool calls reuse it). */
   readonly turnId?: string;
+  /**
+   * Informational: which step of a care-team member's plan an `operate` call is (`standin:3`), recorded with an accepted
+   * step (`ProcedureState.refs`, docs/TEAM.md). Set only by the team's host — never from a model's or the learner's
+   * input (the learner path refuses an `operate` that carries one).
+   */
+  readonly stepRef?: string;
   /** Embodied mode: the world action whose clinical effect this call carries out (its spans are recorded by the world). */
   readonly worldActionId?: string;
   /**

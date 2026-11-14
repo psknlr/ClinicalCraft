@@ -12,10 +12,13 @@
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
-import { anaesthetised, capabilityLabel, openAlarm, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
+import { anaesthetised, canonicalPosition, capabilityLabel, isSterilePosition, openAlarm, placeMember, responsibleAnaesthetist, t, TEAM_PLACES, vitalsAt, type Place, type StaffPosition, type SurgicalControl } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
 import { positionOf, roleCardOf } from "../characters/roles.js";
+import { checkTaskScope } from "../tools/scope.js";
+import { scopeActorOf } from "../tools/scope-actor.js";
+import { DELEGATION_TASKS } from "../tools/world.js";
 import { wordLine } from "../characters/voice.js";
 import { characterModel } from "./character-models.js";
 import { idleSupplier, syncProcedureSupply } from "./procedure-supply.js";
@@ -41,12 +44,20 @@ export interface RoleState {
   pendingRequests: string[];
   blockedReason: string | null;
   lastObservation: number | null;
+  /** The place in the team this colleague stands in (a learner may take it: `start {seat}`), or null. */
+  seat: Place | null;
+  /** What they may work in the operative field (core `bodyControls` for the field; none while standing by). */
+  controls: SurgicalControl[];
+  /** The delegation tasks they may be handed now (`checkTaskScope`: by role, the operating table's by control). */
+  delegable: string[];
+  /** The learner holds their place: they stand by (no controls, skipped by delegation and the team). */
+  standingBy: boolean;
 }
 
 const DONE = new Set(["done", "declined", "escalated"]);
 
-/** Who never touches a non-sterile device during the operation (they keep the sterile field). */
-const STERILE: ReadonlySet<StaffPosition> = new Set<StaffPosition>(["scrub-nurse", "surgeon", "assistant-surgeon"]);
+/** Who never touches a non-sterile device during the operation: whoever works scrubbed at the sterile field (core). */
+const sterile = (p: StaffPosition | null): boolean => p !== null && isSterilePosition(canonicalPosition(p));
 
 export class StaffAutonomy {
   /** Equipment a colleague could not switch on, by `device:reason` (said once each). */
@@ -86,7 +97,7 @@ export class StaffAutonomy {
     const room = w.roomOf(need.device);
     const here = (k.facility?.staff ?? []).filter((s) => w.actor(`staff:${s.id}`) && w.roomOf(`staff:${s.id}`) === room && (!need.roles.length || need.roles.includes(s.role)));
     const position = (s: { id: string }) => positionOf(k.caseDef, k.facility, s.id);
-    const who = here.find((s) => position(s) === "circulating-nurse") ?? here.find((s) => s.role === "nurse" && !STERILE.has(position(s) as StaffPosition));
+    const who = here.find((s) => position(s) === "circulating-nurse") ?? here.find((s) => s.role === "nurse" && !sterile(position(s)));
     if (!who) return;
     const actorId = `staff:${who.id}`;
     const L = k.locale;
@@ -216,12 +227,15 @@ export class StaffAutonomy {
       const orders = (s.studies?.orders ?? []).filter((o) => o.assignee === sid && !o.accessions.length);
       for (const o of orders) responsibility.push(o.id);
       const reservations = Object.entries(snapshot).flatMap(([eid, st]) => (st.reservedBy === a.id ? [eid] : []));
-      // the care team's work of theirs (a member is a staff id): requests not yet answered, tasks not yet done
-      const pending = (team?.state.messages ?? []).filter((m) => m.to === sid && m.kind === "request" && !(team?.state.messages ?? []).some((r) => r.thread === m.thread && r.from === sid)).map((m) => m.id);
-      const tasks = (team?.state.tasks ?? []).filter((x) => x.owner === sid && !DONE.has(x.status));
+      // the care team's work of theirs (a member is their body: `staff:<id>`): requests not yet answered, tasks not yet done
+      const pending = (team?.state.messages ?? []).filter((m) => m.to === a.id && m.kind === "request" && !(team?.state.messages ?? []).some((r) => r.thread === m.thread && r.from === a.id)).map((m) => m.id);
+      const tasks = (team?.state.tasks ?? []).filter((x) => x.owner === a.id && !DONE.has(x.status));
       for (const x of tasks) responsibility.push(`task ${x.id}`);
       const port = s.procedure?.ports.find((p) => p.holder === sid)?.site;
       const goal = anaesthetist === sid ? rt(L, "staff.goal.anaesthesia") : port ? rt(L, "staff.goal.traction", { port }) : orders[0] ? rt(L, "staff.goal.study", { order: orders[0].id }) : tasks[0] ? tasks[0].need : null;
+      // their place and controls as the scope of practice sees them, and what they may be handed (by role; the table's by control)
+      const scope = scopeActorOf(c, s, k.facility, w, a.id, L);
+      const delegable = scope ? DELEGATION_TASKS.filter((task) => checkTaskScope(scope, task, c, L).ok) : [];
       return [
         {
           actorId: a.id,
@@ -237,6 +251,10 @@ export class StaffAutonomy {
           pendingRequests: pending,
           blockedReason: orders.find((o) => o.waiting)?.waiting?.reason ?? null,
           lastObservation: s.clock,
+          seat: TEAM_PLACES.find((place) => placeMember(c, place, s.lineup)?.staff === sid) ?? null,
+          controls: scope?.controls === "all" ? [] : [...(scope?.controls ?? [])],
+          delegable,
+          standingBy: scope?.standingBy === true,
         },
       ];
     });

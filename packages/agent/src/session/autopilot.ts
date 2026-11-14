@@ -5,7 +5,7 @@
  * stops acting. Offline it replays `case.solution` one step at a time through
  * the SAME tool path (approval gate, hooks, events) as an LLM clinician.
  */
-import { progress, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { POSITION_TITLES, progress, t, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallOutcome, TurnStopReason } from "../loop.js";
 import type { EventMsg } from "../protocol.js";
@@ -90,12 +90,28 @@ export function walkthroughEndText(c: CaseDefinition, state: SessionState, misse
 }
 
 /**
+ * Why the demonstration does not run now (null: it may): it works the case as the operating surgeon, so never while the
+ * learner holds a place in the team (docs/TEAM.md §1) — their place is not the operator's, and the stand-in operates.
+ */
+export function demonstrationRefused(state: Pick<SessionState, "seat">, locale: string): string | null {
+  return state.seat ? rt(locale, "place.demonstration", { place: t(POSITION_TITLES[state.seat], locale) }) : null;
+}
+
+/** The turn of a demonstration that does not run in a place: said once, nothing done. */
+export function refusedTurn(host: Pick<AutopilotHost, "narrate">, turnId: string, text: string): AgentOutcome {
+  host.narrate(turnId, text);
+  return { status: "end_turn", text, grounded: [], done: true, toolCalls: 0 };
+}
+
+/**
  * Offline clinician: execute up to `maxSteps` reference-walkthrough steps.
  * Steps already satisfied are skipped; denied steps are skipped (and listed
  * when the walkthrough ends with the case incomplete); an "abort" approval
  * answer stops the turn.
  */
 export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
+  const refused = demonstrationRefused(host.state(), host.locale);
+  if (refused) return refusedTurn(host, turnId, refused);
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";
@@ -196,6 +212,12 @@ export function lostTraction(s: SessionState, steps: readonly OfflineClinicianSt
 /** Run the autopilot loop (one `turn_started` … `turn_complete` per clinician turn). */
 export async function runAutopilot(host: AutopilotHost, options: { goal?: string | undefined; maxTurns?: number | undefined; signal: AbortSignal }): Promise<void> {
   const { signal } = options;
+  // the demonstration plays the operating surgeon: refused while the learner holds a place in the team
+  const refused = demonstrationRefused(host.state(), host.locale);
+  if (refused) {
+    host.emit({ type: "error", message: rt(host.locale, "action.denied", { reason: refused }), code: "permission_denied" });
+    return;
+  }
   host.ensureStarted();
   const turns = Math.max(1, Math.min(Math.floor(options.maxTurns ?? DEFAULT_AUTOPILOT_TURNS), 500));
   const online = host.clinicianOnline();

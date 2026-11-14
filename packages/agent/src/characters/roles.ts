@@ -298,13 +298,25 @@ export function roleCardOf(c: CaseDefinition, facility: FacilityDefinition | nul
   return p ? ROLE_CARDS[p] : null;
 }
 
-/** The role card as a system-prompt section (`<role>`): the character's job description, then the shared protocol. */
-export function roleSection(card: RoleCard, name: string): string {
+/**
+ * The line a stood-down colleague's card adds (docs/TEAM.md §1, A19): the learner holds their place, so they stand by
+ * — no part in the operation's work, still there to be spoken to.
+ */
+export function standingByLine(card: RoleCard): string {
+  return `You are standing by: the learner holds your place as the ${card.title.en} in this operation. Until they hand it back you take no part in its work — no traction, camera, passes or counts, nothing at the table — and you can still be spoken to.`;
+}
+
+/**
+ * The role card as a system-prompt section (`<role>`): the character's job description, then the shared protocol;
+ * `standingBy`: the learner holds their place in the team (`standingByLine`).
+ */
+export function roleSection(card: RoleCard, name: string, standingBy = false): string {
   const list = (xs: readonly string[]) => xs.map((x) => `- ${x}`).join("\n");
   const escalate = card.escalatesTo.length ? card.escalatesTo.map((p) => ROLE_CARDS[p].title.en).join(", then ") : "the person responsible";
   return [
     "<role>",
     `You are ${name}, the ${card.title.en}. ${card.mission}`,
+    ...(standingBy ? [standingByLine(card)] : []),
     "Your responsibilities:",
     list(card.responsibilities),
     "You may:",

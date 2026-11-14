@@ -260,6 +260,11 @@ export type EventMsg =
       type: "approval_request";
       requestId: string;
       agent: AgentRole | "learner";
+      /**
+       * Embodied mode: the body that would act when it is not the caller's own — a colleague's (`staff:<id>`: a delegated
+       * step), the stand-in surgeon's (their call-out before a critical step). Absent: the caller's own (the learner's).
+       */
+      actorId?: string;
       tool: string;
       args: unknown;
       risk: RiskLevel;

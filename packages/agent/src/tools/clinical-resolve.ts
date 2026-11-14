@@ -69,11 +69,15 @@ export function rejectionText(locale: string, code: RejectionCode, action?: Clin
  * Tool output for a rejected engine action. The model-facing `output` names
  * the rejection code; `data.message` is the same reason without it, for
  * learner-facing text (slash commands), and `data.rejected` keeps the code.
+ * `detail` (the engine's English message) is kept as it is, word for word;
+ * `lead` — a refusal's reason said in the caller's language with the
+ * people's names (an operative step: `reasonText`) — replaces only the
+ * generic lead-in of the rejection code.
  */
-export function rejectedOutput(locale: string, result: ReduceResult, detail?: string): ToolOutput {
+export function rejectedOutput(locale: string, result: ReduceResult, detail?: string, lead?: string | null): ToolOutput {
   const code = result.rejected?.code ?? "invalid";
   const action = result.events.find((e): e is Extract<DomainEvent, { type: "action.rejected" }> => e.type === "action.rejected")?.action;
-  const reason = rejectionText(locale, code, action);
+  const reason = lead || rejectionText(locale, code, action);
   const message = detail ? `${reason} ${detail}` : reason;
   return { ok: false, output: rt(locale, "tool.rejected", { code, message }), data: { rejected: result.rejected, message } };
 }

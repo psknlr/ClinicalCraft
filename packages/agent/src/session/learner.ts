@@ -6,12 +6,13 @@
  * commit, the engine, PostToolUse hooks. Only learner tools may run on this path (never an NPC's or a
  * front-end's), and simulation-owned flags can never be set directly.
  */
-import { ClinicalActionSchema, historyVoice, POSITION_TITLES, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { ClinicalActionSchema, historyVoice, LEARNER_BODY, POSITION_TITLES, refOfBody, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { agentKind } from "../agents/prompts.js";
 import { executeCommand, type CommandHost } from "../commands.js";
 import { actionToolName } from "../permissions.js";
 import { rejectionText } from "../tools/clinical.js";
+import { reasonText } from "../tools/field-words.js";
 import { isLearnerTool } from "../tools/learner.js";
 import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
@@ -59,8 +60,9 @@ export class LearnerPath {
     let body = text;
     // a colleague named — in an `@` mention or the staff picker (id or name) — through the one room-aware resolver
     const room = encounterRoom(k.caseDef, k.facility);
+    // a position in the team ("@first assistant", "@一助", "@扶镜手") is whoever holds it in this encounter
     const lookup = (name: string) => {
-      const r = lookupStaff(k.facility, name, room);
+      const r = lookupStaff(k.facility, name, room, { caseDef: k.caseDef, state: k.state });
       return r.kind === "none" ? null : r;
     };
     let named = staff ? lookup(staff) : null;
@@ -268,10 +270,20 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // which step of a colleague's plan an operative step is, the care team records — never the learner (docs/TEAM.md)
+    if (requested.type === "operate" && requested.ref !== undefined) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.refHandEntry") }), code: "permission_denied" });
+      return null;
+    }
     // a place in the team is not offered yet: nobody would operate while the learner held it (docs/TEAM.md §1)
     const place = placeNotOffered(requested);
     if (place) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "team.place.notOffered", { place: t(POSITION_TITLES[place], L) }) }), code: "permission_denied" });
+      return null;
+    }
+    // a place in the team works with bodies at the table: in-world mode only
+    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
       return null;
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
@@ -295,13 +307,25 @@ export class LearnerPath {
       }
       const early = tool.precheck?.(args, k.tools.context("learner", id, signal));
       if (early) {
-        const code = spatialCodeOf(early);
+        // a spatial refusal, or an act outside the learner's place (NOT_AUTHORIZED): an error with its code
+        const code = spatialCodeOf(early) ?? ((early.data as { code?: unknown } | undefined)?.code === "NOT_AUTHORIZED" ? "NOT_AUTHORIZED" : null);
         k.emit(id, code ? { type: "error", message: early.output, code } : { type: "warning", message: early.output });
         return null;
       }
       if (await this.authorizeTool(id, tool, args, pre.approved, signal)) return null;
     }
     if (!["start", "set-phase", "note", "flag"].includes(action.type)) k.ensureStarted(id);
+    // the learner's operative step is their body's: the operator's, or in a place in the team that place's member
+    // (core `refOfBody`) — never a name the caller supplies
+    if (action.type === "operate") {
+      const ref = refOfBody(k.caseDef, k.state, LEARNER_BODY);
+      if (ref === null) {
+        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.noPart", { who: rt(L, "place.You") }) }), code: "permission_denied" });
+        return null;
+      }
+      const { actor: _none, ...op } = action;
+      action = ref === undefined ? op : { ...op, actor: ref };
+    }
     // Embodied: the body may have moved while the approval was pending — re-check right before the engine commit.
     const embodied = k.embodied;
     const intent = embodied && tool ? actionIntent(action) : null;
@@ -320,8 +344,10 @@ export class LearnerPath {
     if (intent && embodied && tool) {
       await embodied.gate().traced!(PRIMARY_ACTOR, tool.name, args ?? {}, async () => (commit(), { ok: !result.rejected, output: "" }));
     } else commit();
-    // The action type picks the specific wording (a `set-phase` to an automatic phase is "not switchable", not "locked").
-    const rejection = result.rejected ? rt(L, "action.rejected", { code: result.rejected.code, message: rejectionText(L, result.rejected.code, action.type) }) : null;
+    // The action type picks the specific wording (a `set-phase` to an automatic phase is "not switchable", not "locked");
+    // a refused operative step says why in the learner's words with the people's names, then the engine's own English
+    // message word for word
+    const rejection = result.rejected ? rt(L, "action.rejected", { code: result.rejected.code, message: this.rejectionMessage(action, result.rejected, signal) }) : null;
     if (rejection) {
       k.emit(id, { type: "warning", message: rejection });
     } else if (action.type === "ask") {
@@ -341,6 +367,15 @@ export class LearnerPath {
       for (const w of post.warnings) k.emit(id, { type: "warning", message: w });
     }
     return result;
+  }
+
+  /** What a refusal of the learner's action says: the generic wording, or for an operative step its reason and the engine's message. */
+  private rejectionMessage(action: ClinicalAction, rejected: NonNullable<ReduceResult["rejected"]>, signal?: AbortSignal): string {
+    const L = this.k.locale;
+    const generic = rejectionText(L, rejected.code, action.type);
+    if (action.type !== "operate") return generic;
+    const lead = reasonText(this.k.tools.context("learner", this.k.currentSubmission, signal), rejected.reason) ?? generic;
+    return `${lead} ${rejected.message}`;
   }
 
   /**

@@ -98,7 +98,8 @@ export interface PromptContext {
    */
   speakingAs?: { name: string; role: string };
   /** The speaker's role card (a staff member's position, docs/CHARACTERS.md): their job description in `<role>`. */
-  roleCard?: { card: RoleCard; name: string };
+  /** The speaker's role card and name; `standingBy`: the learner holds their place in the team (they stand by). */
+  roleCard?: { card: RoleCard; name: string; standingBy?: boolean };
 }
 
 /* ------------------------------------------------------------------ */
@@ -534,7 +535,7 @@ export function buildSystemSections(profile: AgentProfile, ctx: PromptContext): 
 
   stable("identity", renderTemplate(profile.prompt, vars));
   if (ctx.speakingAs && ctx.speakingAs.role !== profile.name) stable("speaking-as", speakingAsSection(ctx.speakingAs, profile.name));
-  if (ctx.roleCard) stable("role", roleSection(ctx.roleCard.card, ctx.roleCard.name));
+  if (ctx.roleCard) stable("role", roleSection(ctx.roleCard.card, ctx.roleCard.name, ctx.roleCard.standingBy === true));
   stable("rules", rulesFor(kind, ctx));
   stable("language", languageRule(kind, ctx.locale));
   if (profile.injectMemory && ctx.memory?.trim()) {

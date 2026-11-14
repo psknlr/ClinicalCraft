@@ -74,12 +74,17 @@ export const THEATRE_EN = {
   "delegate.param.port": "a port (params.port or target)",
   "delegate.param.region": "a region to aim at (params.region)",
   "delegate.param.instrument": "an instrument (params.instrument)",
+  "delegate.operator": "the operating surgeon",
   "assist.camera": "{who} has the camera in port {port}.",
   "assist.aimed": "{who} aims the camera at {region} ({zoom}).",
   "assist.passed": "{who} passed the {instrument} to {to}.",
   "assist.letGo.camera": "{who} let go of the camera in port {port}{why}.",
   "assist.letGo.left.you": ": you are no longer at the table",
   "assist.cameraLost": "The camera has gone: the picture is the surgeon's to keep.",
+  // the scrub nurse keeps the sterile field (docs/TEAM.md §5)
+  "sterile.relief": "The scrub nurse keeps the sterile field while the operation is under way: another scrub nurse takes over in the room before she leaves.",
+  // placed at the table after joining the team (docs/TEAM.md §1)
+  "place.atTable": "You join the team at the operating table as the {place}.",
 } as const;
 
 export const THEATRE_ZH: Record<keyof typeof THEATRE_EN, string> = {
@@ -144,10 +149,13 @@ export const THEATRE_ZH: Record<keyof typeof THEATRE_EN, string> = {
   "delegate.param.port": "一个孔（params.port 或 target）",
   "delegate.param.region": "要对准的区域（params.region）",
   "delegate.param.instrument": "一件器械（params.instrument）",
+  "delegate.operator": "术者",
   "assist.camera": "{who}接过了 {port} 孔的镜头。",
   "assist.aimed": "{who}把镜头对准{region}（{zoom}）。",
   "assist.passed": "{who}把{instrument}递给了{to}。",
   "assist.letGo.camera": "{who}松开了 {port} 孔的镜头{why}。",
   "assist.letGo.left.you": "：你已离开手术台",
   "assist.cameraLost": "镜头已无人扶持：画面交回术者自己掌握。",
+  "sterile.relief": "手术进行中洗手护士要守住无菌区：须有另一位洗手护士进入手术间接手后，她才能离开。",
+  "place.atTable": "你以{place}的身份在手术台旁加入团队。",
 };

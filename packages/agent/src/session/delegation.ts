@@ -16,18 +16,34 @@
  * the bedside), `transport_patient` (the target or `params.destination` —
  * a device, a bed space or room, `home` — or `params.capability`: the staff
  * member walks to the patient and wheels them there; porters and nurses),
- * `hold_traction` (`params.port`: a doctor walks to the operating table and
- * takes the instrument in that port, keeping its traction — PROCEDURE.md §3
- * `hand-over`), `release_traction` (lets go and hands it back). Someone who
- * holds traction lets go before any other task (`letGo` in the result): the
- * window closes, and the operator sees it.
+ * `hold_traction` (`params.port`: a colleague holding traction walks to the
+ * operating table and takes the instrument in that port, keeping its traction —
+ * PROCEDURE.md §3 `hand-over`), `release_traction` (lets go of every port
+ * they hold and hands it back), `hold_camera` (`params.port`, else the plan's
+ * camera port: the camera holder takes it by hand-over, or puts the laparoscope
+ * into it when it is empty), `aim_camera` (`params.region`, `params.zoom`: the
+ * camera holder — taking the camera port first — aims it there) and
+ * `pass_instrument` (`params.instrument`, `params.to`: the scrub nurse passes it
+ * into that hand, the operator's without `to`). Someone who holds a port lets
+ * go before any other task (`letGo` in the result): the window closes, and the
+ * operator sees it.
+ *
+ * The operating table's tasks go by control (docs/EMBODIED.md §8.3): the scope
+ * check is the control each is worked with (`THEATRE_TASK_CONTROL`), and a
+ * colleague asked for by role (`attending`, `nurse`) is chosen among those of
+ * that role in the patient's room whose controls cover the task — never the
+ * colleague standing by, never the surgeon for the camera — by position
+ * (traction: the first assistant, the second, the surgeon; the camera: whoever
+ * holds the camera port), then by distance; a position in words (`first
+ * assistant`, `一助`, `扶镜手`) is whoever holds it in this encounter.
  */
 import { lookupStaff } from "../tools/consult-target.js";
-import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { bodyControls, cameraPort, canonicalPosition, memberBody, monitorAttached, standingBy, type CaseDefinition, type FacilityDefinition, type SessionState, type StaffPosition, type SurgicalControl } from "@clinicalcraft/core";
+import { bodyPosition, holdsControl, ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type ActorState, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
-import { checkTaskScope } from "../tools/scope.js";
+import { checkTaskScope, THEATRE_TASK_CONTROL } from "../tools/scope.js";
+import { scopeActorOf } from "../tools/scope-actor.js";
 import { spatialCodeOf } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { DELEGATION_TASKS } from "../tools/world.js";
@@ -38,6 +54,8 @@ import type { SessionTrace } from "./trace.js";
 /** What delegation needs from the embodied session. */
 export interface DelegationHost {
   readonly caseDef: CaseDefinition;
+  /** The facility (a staff member's position, for their controls). */
+  readonly facility: FacilityDefinition | null;
   locale(): string;
   state(): SessionState;
   world(): WorldRuntime;
@@ -86,24 +104,87 @@ export interface DelegationResult {
   letGo?: { port: string; instrument: string }[];
   /** `hold_traction`: the port taken and its instrument. */
   holding?: { port: string; instrument: string };
+  /** `hold_camera` / `aim_camera`: the camera port held. */
+  camera?: { port: string };
+  /** `aim_camera`: where the camera looks now, and how close. */
+  aimed?: { region: string; zoom: string };
+  /** `pass_instrument`: what was passed, and to whom (absent: the operator). */
+  passed?: { instrument: string; to?: string };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 
-/** The staff member for a role (or a staff id): the one nearest to the patient where the patient is now. */
-export function pickStaff(world: WorldRuntime, role: string, patientId: string | null): ActorId | null {
+/** What choosing a colleague for a task reads beyond the world: the case, the state, the facility and the task. */
+export interface StaffPick {
+  caseDef: CaseDefinition;
+  state: SessionState;
+  facility: FacilityDefinition | null;
+  task: string;
+}
+
+/** The positions traction is asked of, in order: the first assistant, the second, the surgeon (anyone else after). */
+const TRACTION_ORDER: readonly StaffPosition[] = ["first-assistant", "second-assistant", "surgeon"];
+
+/** Distance from the patient where the patient is now (far away on another level or without a patient). */
+function fromPatient(world: WorldRuntime, patientId: string | null): (a: ActorState) => number {
+  const place = patientId ? world.patientPlace() : null;
+  const entity = patientId && !place ? world.entity(patientId) : null;
+  const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;
+  return (a) => (at && a.pose.level === at.level ? Math.hypot(a.pose.x - at.x, a.pose.z - at.z) : 1e9);
+}
+
+/**
+ * Among colleagues of a role, the one for an operating table's task (null: none covers it): in the patient's room,
+ * holding the task's control (`bodyControls` for the field), never the colleague standing by, never the surgeon for
+ * the camera; by position — release: whoever holds a port; traction: the first assistant, the second, the surgeon;
+ * the camera: whoever holds the camera port — then by distance.
+ */
+function theatreChoice(world: WorldRuntime, pick: StaffPick, control: SurgicalControl, pool: readonly ActorState[], patientId: string | null): ActorId | null {
+  const c = pick.caseDef;
+  const s = pick.state;
+  const room = patientId ? world.roomOf(patientId) : null;
+  const standing = standingBy(c, s);
+  const surgeon = memberBody(c, s, "surgeon");
+  const eligible = pool.filter(
+    (a) => a.id !== standing && (room === null || world.roomOf(a.id) === room) && holdsControl(bodyControls(c, s, pick.facility, a.id, "field"), control) && !(control === "camera" && a.id === surgeon),
+  );
+  if (!eligible.length) return null;
+  const ports = s.procedure?.ports ?? [];
+  const ref = (a: ActorState) => a.id.slice("staff:".length);
+  const camera = s.procedure ? cameraPort(s.procedure)?.holder : undefined;
+  const rank = (a: ActorState): number => {
+    if (pick.task === "release_traction") return ports.some((p) => p.holder === ref(a) && p.instrument) ? 0 : 1;
+    if (control === "camera") return camera === ref(a) ? 0 : 1;
+    if (control !== "retract") return 0;
+    const p = bodyPosition(c, s, pick.facility, a.id);
+    const i = p ? TRACTION_ORDER.indexOf(canonicalPosition(p)) : -1;
+    return i < 0 ? TRACTION_ORDER.length : i;
+  };
+  const dist = fromPatient(world, patientId);
+  return [...eligible].sort((a, b) => rank(a) - rank(b) || dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
+}
+
+/**
+ * The staff member for a role (or a staff id): the one nearest to the patient where the patient is now — for an
+ * operating table's task (`pick`: the case, the state, the task) the one of that role whose controls cover it
+ * (`theatreChoice`), else the nearest of the role, whose scope then says what they cannot do. A role nobody holds is
+ * looked up as a name, a position in this encounter's team (`first assistant`, `一助`, `扶镜手`) or a title
+ * (`lookupStaff`).
+ */
+export function pickStaff(world: WorldRuntime, role: string, patientId: string | null, pick?: StaffPick): ActorId | null {
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
   const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
   if (!candidates.length) {
-    // a colleague by name or title ("Nurse Lim", "洗手护士"): the one room-aware resolver, in the patient's room
-    const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null);
+    // a colleague by name, a position in the team or a title ("Nurse Lim", "first assistant", "一助", "洗手护士"): the
+    // one room-aware resolver, in the patient's room
+    const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null, pick ? { caseDef: pick.caseDef, state: pick.state } : undefined);
     return named.kind === "one" && world.actor(`staff:${named.staff.id}`) ? `staff:${named.staff.id}` : null;
   }
-  const place = patientId ? world.patientPlace() : null;
-  const entity = patientId && !place ? world.entity(patientId) : null;
-  const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;
-  const dist = (a: (typeof candidates)[number]) => (at && a.pose.level === at.level ? Math.hypot(a.pose.x - at.x, a.pose.z - at.z) : 1e9);
+  const control = pick ? THEATRE_TASK_CONTROL[pick.task] : undefined;
+  const chosen = pick && control ? theatreChoice(world, pick, control, candidates, patientId) : null;
+  if (chosen) return chosen;
+  const dist = fromPatient(world, patientId);
   return [...candidates].sort((a, b) => dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
 }
 
@@ -152,14 +233,14 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     return result;
   };
   if (!(DELEGATION_TASKS as readonly string[]).includes(task)) return finish("failed", "unknown-task");
-  const staff = pickStaff(world, role, patient);
+  const staff = pickStaff(world, role, patient, { caseDef: h.caseDef, state: h.state(), facility: h.facility, task });
   if (!staff) return finish("failed", "unknown-role");
   result.staffId = staff;
   if (!patient) return finish("failed", "no-patient");
-  // Only what the staff member's role may do — checked before they take a step (review S3).
+  // Only what the staff member's role — or for the operating table's tasks, their controls — allows: checked before
+  // they take a step (review S3; EMBODIED §8.3).
   const L = h.locale();
-  const entity = world.entity(staff);
-  const who = { role: world.actor(staff)?.role ?? role, name: entity ? t(entity.name, L) : staff };
+  const who = scopeActorOf(h.caseDef, h.state(), h.facility, world, staff, L) ?? { role: world.actor(staff)?.role ?? role, name: staff };
   const scoped = checkTaskScope(who, task, h.caseDef, L, task === "give_intervention" ? interventionOf(h, params, target) : null);
   if (!scoped.ok) {
     result.refusal = scoped.message;
@@ -250,7 +331,7 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   };
 
   const verify = (name: string, ok: boolean) => h.trace.start("verification", name, { actorId: staff, refs: { entities: [patient] } }).end({ ok, worldVersion: world.version });
-  /** Let go of every traction this colleague holds and hand the instruments back (their own steps, at the table). */
+  /** Let go of every port this colleague holds — traction first, the camera too — and hand the instruments back (their own steps, at the table). */
   const letGo = async (): Promise<boolean> => {
     for (const p of holding()) {
       const held = { port: p.site, instrument: p.instrument! };
@@ -260,9 +341,22 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     }
     return true;
   };
+  /** The plan's camera port: the one with the scope in it, else the first camera port (null: none, or no plan yet). */
+  const cameraSite = (): string | null => {
+    const ports = h.state().procedure?.ports ?? [];
+    return (ports.find((p) => p.role === "camera" && p.instrument === "laparoscope") ?? ports.find((p) => p.role === "camera"))?.site ?? null;
+  };
+  /** Take the camera port: already theirs; handed over to them; or, empty, the laparoscope put into it (their own steps). */
+  const takeCamera = async (port: string): Promise<boolean> => {
+    const p = (h.state().procedure?.ports ?? []).find((x) => x.site === port);
+    if (p?.holder === staffRef && p.instrument) return true;
+    const ok = p && !p.instrument ? await clinical("operate", { op: "insert", port, instrument: "laparoscope" }) : await clinical("operate", { op: "hand-over", port, to: staffRef });
+    if (ok) result.camera = { port };
+    return ok && holding().some((x) => x.site === port);
+  };
   const run = async (): Promise<DelegationResult> => {
-    // traction is let go before anything else is done with these hands
-    if (task !== "hold_traction" && task !== "release_traction" && holding().length && !(await letGo())) return finish(cancelled ? "cancelled" : "failed");
+    // traction is let go before anything else is done with these hands (the operating table's own tasks keep them)
+    if (!THEATRE_TASK_CONTROL[task] && holding().length && !(await letGo())) return finish(cancelled ? "cancelled" : "failed");
     switch (task as DelegationTask) {
       case "hold_traction": {
         const port = strArg(params, "port") || target;
@@ -277,6 +371,37 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
       case "release_traction": {
         const ok = (await letGo()) && holding().length === 0;
         verify("traction let go", ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "hold_camera": {
+        const port = strArg(params, "port") || target || cameraSite();
+        if (!port) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const ok = await takeCamera(port);
+        verify(`camera in port ${port}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "aim_camera": {
+        const region = strArg(params, "region") || target;
+        const zoom = strArg(params, "zoom");
+        const port = strArg(params, "port") || cameraSite();
+        if (!region || !port || (zoom && zoom !== "close" && zoom !== "wide")) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        let ok = (await takeCamera(port)) && (await clinical("operate", { op: "aim", port, at: region }));
+        if (ok && zoom) ok = await clinical("operate", { op: "zoom", port, level: zoom });
+        const camera = h.state().procedure?.camera;
+        if (ok && camera) result.aimed = { region, zoom: camera.zoom };
+        verify(`camera on ${region}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "pass_instrument": {
+        const instrument = strArg(params, "instrument") || target;
+        const to = strArg(params, "to").replace(/^staff:/u, "");
+        if (!instrument) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const ok = await clinical("operate", { op: "pass", instrument, ...(to ? { to } : {}) });
+        if (ok) result.passed = { instrument, ...(to ? { to } : {}) };
+        verify(`passed ${instrument}`, ok);
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "attach_monitor": {

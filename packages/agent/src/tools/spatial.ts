@@ -22,7 +22,7 @@
  * (phone/pager) are not gated.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
-import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
 import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
 import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
@@ -64,8 +64,12 @@ export function clinicalIntent(tool: string, args: Record<string, unknown>, ctx:
     }
     case "consult":
       return { tool, kind: "consult", agent: strArg(args, "role") };
-    case "operate":
-      return ctx.caseDef.procedure ? { tool, kind: "operate" } : null;
+    case "operate": {
+      if (!ctx.caseDef.procedure) return null;
+      // the step (its op), for the scope of practice: saying an injury aloud needs no control of the field
+      const step = args.step && typeof args.step === "object" ? (args.step as Record<string, unknown>) : args;
+      return typeof step.op === "string" ? { tool, kind: "operate", itemId: step.op } : { tool, kind: "operate" };
+    }
     case "observe_field":
       return ctx.caseDef.procedure ? { tool, kind: "observe" } : null;
     default:
@@ -129,8 +133,9 @@ export interface SpatialGate {
   /** Does a device at the bedside show the heart rhythm (`check_vitals` shows none without one)? */
   rhythm?(): boolean;
   /**
-   * The role and name of a body other than the learner's avatar (a staff member), for its scope of practice and
-   * the approval summary; null for the learner's avatar (a clinician: every act).
+   * Whom the scope of practice sees in a body (`scopeActorOf`): a staff member's role and name, and for the theatre's
+   * work their controls; the learner's avatar in a place in the team, scoped as that place; null for the learner's
+   * avatar while the learner operates (a clinician: every act).
    */
   staff?(actorId: ActorId, locale: string): ScopeActor | null;
   /** The vitals a body can see now (review G11): `wait` reports only these. */
@@ -166,10 +171,11 @@ class SpatialAbort extends Error {
 export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefinition<A>, gate: SpatialGate): ToolDefinition<A> {
   return {
     ...tool,
-    // The approval names the staff member who would act (review S3).
+    // The approval names the staff member who would act (review S3) — never the learner's own body.
     summarize(args, ctx) {
       const summary = tool.summarize(args, ctx);
-      const who = gate.staff?.(gate.actorOf(ctx), ctx.locale);
+      const actorId = gate.actorOf(ctx);
+      const who = actorId === PRIMARY_ACTOR ? null : gate.staff?.(actorId, ctx.locale);
       return who ? rt(ctx.locale, "sum.byStaff", { who: who.name || who.role, role: roleLabel(who.role, ctx.locale), summary }) : summary;
     },
     precheck(args, ctx) {

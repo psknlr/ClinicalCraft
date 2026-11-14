@@ -83,8 +83,23 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
   return (ctx.skillDepth ?? 0) > MAX_SKILL_NESTING ? { ok: false, output: rt(ctx.locale, "skill.tooDeep", { max: MAX_SKILL_NESTING }), data: { code: "SKILL_TOO_DEEP" } } : null;
 }
 
-/** Tasks staff can be delegated (`delegate_task`). */
-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
+/**
+ * Tasks staff can be delegated (`delegate_task`) — the operating table's last five by the control each is worked with
+ * (`THEATRE_TASK_CONTROL`: traction, the camera, the instrument table), the others by role.
+ */
+export const DELEGATION_TASKS = [
+  "attach_monitor",
+  "record_ecg",
+  "obtain_iv_access",
+  "fetch_equipment",
+  "give_intervention",
+  "transport_patient",
+  "hold_traction",
+  "release_traction",
+  "hold_camera",
+  "aim_camera",
+  "pass_instrument",
+] as const;
 
 const GOAL_SCHEMA = {
   type: "object",
@@ -187,10 +202,10 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "delegate_task",
     description:
-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a colleague holding traction at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go of every port they hold and hand it back), hold_camera (params.port optional: the camera holder takes the camera port, or puts the laparoscope into an empty one), aim_camera (params.region, params.zoom 'close'|'wide' optional: the camera holder aims it), pass_instrument (params.instrument, params.to optional staff id: the scrub nurse passes it into that hand; no to: the operator). The operating table's tasks go to whoever holds the control (traction, the camera, the instrument table) in the patient's room. Someone holding a port lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
     inputSchema: obj(
       {
-        role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
+        role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic…, a position in the team (first assistant, 一助, scrub nurse, camera holder…) or a staff id staff:<id>." },
         task: { type: "string", enum: [...DELEGATION_TASKS] },
         target: { type: "string", maxLength: 120 },
         params: { type: "object" },

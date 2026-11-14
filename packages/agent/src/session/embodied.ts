@@ -25,10 +25,12 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { assignPatientSlot, canLeaveAnaesthetisedPatient, effectiveTeam, memberBody, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
+  bodyPosition,
   createWorldRuntime,
+  operationInProgress,
   operationName,
   PRIMARY_ACTOR,
   rhythmAtBedside,
@@ -61,6 +63,7 @@ import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment }
 import { strArg } from "../tools/clinical.js";
 import { learnerVitals } from "../tools/format.js";
 import type { ScopeActor } from "../tools/scope.js";
+import { scopeActorOf } from "../tools/scope-actor.js";
 import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
 import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
 import { createWorldTools, DELEGATION_TASKS, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
@@ -266,6 +269,32 @@ export class EmbodiedSession {
     return here && there !== here ? rt(this.host.locale(), "relief.required") : null;
   }
 
+  /**
+   * Why this request would take the scrub nurse away from the sterile field (null: it would not; docs/TEAM.md §5): the
+   * staff body of the team member with the instruments duty (the team as it is — a team scenario's relief scrub nurse
+   * too) moving out of the team's room while the operation is under way, unless another scrub nurse is in the room to
+   * take over. Staff bodies only: the learner's body — in the scrub nurse's place too — moves by sensor poses no guard
+   * sees.
+   */
+  private leavesSterileField(request: WorldActionRequest): string | null {
+    if (!request.actorId.startsWith("staff:") || request.operation === "transport_patient") return null;
+    const c = this.host.caseDef;
+    const s = this.host.state();
+    const room = c.team?.room;
+    if (!room || !operationInProgress(c, s)) return null;
+    const scrubs = effectiveTeam(c, s).filter((m) => m.duties.includes("instruments"));
+    if (!scrubs.some((m) => memberBody(c, s, m.staff) === request.actorId)) return null;
+    if (this.inner.roomOf(request.actorId) !== room) return null;
+    const params = (request.parameters ?? {}) as { goal?: NavGoal };
+    const goal = request.goal ?? params.goal;
+    if (!goal) return null;
+    const plan = this.inner.plan(request.actorId, goal);
+    if (!plan.ok || this.inner.roomAt(plan.target) === room) return null;
+    const facility = this.host.facility;
+    const relief = this.inner.actors().some((a) => a.id !== request.actorId && this.inner.roomOf(a.id) === room && bodyPosition(c, s, facility, a.id) === "scrub-nurse");
+    return relief ? null : rt(this.host.locale(), "sterile.relief");
+  }
+
   /** The transport a restored snapshot was taken in the middle of, until `resumeJourney` carries it out. */
   private journey: WorldJourney | null = null;
 
@@ -419,6 +448,26 @@ export class EmbodiedSession {
     if (this.inner.version !== before) this.record();
   }
 
+  /**
+   * A place in the team taken (docs/TEAM.md §1): the learner's body joins the team at the operating table — set through
+   * the world's sensor-pose channel (`updatePose`, the one `world_pose` uses for the browser's avatar), where a walk to
+   * the patient in the team's room would end (the world's own plan to the patient; beside the patient's place when no
+   * walk plans there) — and the world is written to the transcript at once: a resume restores the body where it was
+   * then, and the place's start, replayed through the engine, never places it again. False: the patient is not in the
+   * team's room.
+   */
+  placeAtTable(room: string): boolean {
+    const patient = this.patientId();
+    if (!patient || this.inner.roomOf(patient) !== room) return false;
+    const plan = this.inner.plan(PRIMARY_ACTOR, { kind: "interact", id: patient });
+    const place = this.inner.patientPlace();
+    const pose: Pose | null = plan.ok ? plan.target : place ? { x: place.x, y: 0, z: place.z + 0.8, yaw: Math.PI, pitch: 0, level: place.level } : null;
+    if (!pose) return false;
+    this.updatePose(PRIMARY_ACTOR, pose);
+    this.record();
+    return true;
+  }
+
   /** Sensor pose of a human-driven body (`world_pose`): applied at once, never queued, bumps only that actor's version. */
   updatePose(actorId: ActorId, pose: Pose): void {
     const before = this.inner.actor(actorId)?.pose;
@@ -441,8 +490,9 @@ export class EmbodiedSession {
     const actionId = input.actionId ?? `wa-${this.host.newId()}`;
     const request: WorldActionRequest = { ...input, actorId, actionId };
     // continuous anaesthesia responsibility (docs/TEAM.md §5): whoever asks and by whatever path — a walk, a fetch, a
-    // delegated task, the team's own move — the responsible anaesthetist of an anaesthetised patient does not leave
-    const leaving = this.leavesAnaesthetisedPatient(request);
+    // delegated task, the team's own move — the responsible anaesthetist of an anaesthetised patient does not leave;
+    // nor does the scrub nurse leave the sterile field during the operation unrelieved
+    const leaving = this.leavesAnaesthetisedPatient(request) ?? this.leavesSterileField(request);
     if (leaving) {
       const refused: WorldActionResult = { actionId, status: "failed", errorCode: "NOT_AUTHORIZED", message: leaving, worldVersion: this.inner.version, events: [] };
       this.host.emit({ type: "world_action_result", result: refused }, caller.submission);
@@ -706,13 +756,13 @@ export class EmbodiedSession {
     return { ok: false, code: "SPATIAL_PRECONDITION_CHANGED", requirement: { kind: "anywhere" }, reason: "record-unbound", message: rt(L, "board.unbound", { board: t(e.name, L) }), hint: null, details: { board: target } } as SpatialCheck;
   }
 
-  /** A body other than the learner's avatar, as its scope of practice sees it (review S3); null for the avatar. */
+  /**
+   * A body as its scope of practice sees it (review S3; EMBODIED §8.3 — `scopeActorOf`): a staff member's role and name
+   * with their controls in the field, their position and whether they stand by; the learner's avatar in a place in the
+   * team scoped as that place; null for the avatar while the learner operates.
+   */
   staffActor(actorId: ActorId, locale: string): ScopeActor | null {
-    if (actorId === PRIMARY_ACTOR) return null;
-    const actor = this.facade.actor(actorId);
-    if (!actor) return { role: "porter", name: actorId }; // an unknown body: no clinical authority
-    const entity = this.facade.entity(actorId);
-    return { role: actor.role, name: entity ? t(entity.name, locale) : actorId };
+    return scopeActorOf(this.host.caseDef, this.host.state(), this.host.facility, this.facade, actorId, locale);
   }
 
   /**
@@ -877,6 +927,7 @@ export class EmbodiedSession {
       const result = await runDelegation(
         {
           caseDef: this.host.caseDef,
+          facility: this.host.facility,
           locale: () => this.host.locale(),
           state: () => this.host.state(),
           world: () => this.facade,
@@ -1030,6 +1081,14 @@ export class EmbodiedSession {
   }
 }
 
+/** What a task that names nothing needed (`delegate.needTarget`). */
+const NEEDED_PARAM: Readonly<Record<string, RuntimeKey>> = {
+  give_intervention: "delegate.param.intervention",
+  hold_camera: "delegate.param.port",
+  aim_camera: "delegate.param.region",
+  pass_instrument: "delegate.param.instrument",
+};
+
 /** Clinical tools (besides the spatially gated ones) whose calls can relocate the patient: a phase, a decision. */
 const NOTED_TOOLS: readonly string[] = ["set_phase", "answer_decision"];
 
@@ -1059,7 +1118,7 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   const staff = r.staffId ? (world.entity(r.staffId) ? t(world.entity(r.staffId)!.name, locale) : r.staffId) : r.role;
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
-  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : "delegate.param.target") });
+  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, NEEDED_PARAM[r.task] ?? "delegate.param.target") });
   if (r.message === "target-not-intervention") {
     const id = world.resolveId(r.asked ?? "");
     const e = id ? world.entity(id) : null;
@@ -1067,9 +1126,19 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   }
   if (r.message === "unknown-intervention") return rt(locale, "delegate.unknownIntervention", { asked: r.asked ?? "" });
   const lines = [rt(locale, "delegate.result", { staff, task, status: rt(locale, `delegate.status.${r.status}` as RuntimeKey), steps: r.steps.length, seconds: Math.round(r.elapsedSeconds) })];
-  // traction let go (before the task, or as it) and an instrument taken: what the operator sees change on the screen
-  for (const g of r.letGo ?? []) lines.push(rt(locale, "assist.letGo", { who: staff, instrument: procedureLabel(locale, g.instrument), port: g.port, why: r.task === "release_traction" ? "" : rt(locale, "assist.letGo.task", { task }) }));
+  // traction or the camera let go (before the task, or as it), an instrument taken, the camera aimed, an instrument
+  // passed: what the operator sees change on the screen
+  for (const g of r.letGo ?? []) {
+    const why = r.task === "release_traction" ? "" : rt(locale, "assist.letGo.task", { task });
+    lines.push(g.instrument === "laparoscope" ? rt(locale, "assist.letGo.camera", { who: staff, port: g.port, why }) : rt(locale, "assist.letGo", { who: staff, instrument: procedureLabel(locale, g.instrument), port: g.port, why }));
+  }
   if (r.holding) lines.push(rt(locale, "assist.took", { who: staff, instrument: procedureLabel(locale, r.holding.instrument), port: r.holding.port }));
+  if (r.camera) lines.push(rt(locale, "assist.camera", { who: staff, port: r.camera.port }));
+  if (r.aimed) lines.push(rt(locale, "assist.aimed", { who: staff, region: r.aimed.region, zoom: rt(locale, `field.zoom.${r.aimed.zoom}` as RuntimeKey) }));
+  if (r.passed) {
+    const to = r.passed.to ? (world.entity(`staff:${r.passed.to}`) ? t(world.entity(`staff:${r.passed.to}`)!.name, locale) : r.passed.to) : rt(locale, "delegate.operator");
+    lines.push(rt(locale, "assist.passed", { who: staff, instrument: procedureLabel(locale, r.passed.instrument), to }));
+  }
   if (r.delivered) {
     const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
     lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));

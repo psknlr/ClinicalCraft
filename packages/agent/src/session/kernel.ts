@@ -21,6 +21,7 @@ import { actionIdOf } from "./action-ids.js";
 import {
   createSession as createEngineState,
   currentWaypoint,
+  POSITION_TITLES,
   progress,
   reduce,
   t,
@@ -387,7 +388,10 @@ export class SessionKernel {
       for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
     }
     // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
-    if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");
+    if (accepted && action.type === "start") {
+      this.embodied?.count.ensureBaseline("system");
+      this.joinAtTable(id);
+    }
     if (accepted) {
       this.emitSnapshot(id);
       if (action.type === "note") {
@@ -425,6 +429,19 @@ export class SessionKernel {
       this.conversations.append(line.agent, [{ role: "assistant", content: [{ type: "text", text: line.text }] }]);
       this.conversations.addDialogue({ who: line.agent, speaker, text: line.text });
     }
+  }
+
+  /**
+   * In-world, a place in the team just taken (docs/TEAM.md §1): the start joined the team at its phase in the record, and
+   * the learner's body joins it at the operating table in the team's room (`EmbodiedSession.placeAtTable`) — once: a
+   * resume replays the start through the engine and restores the body from the saved world.
+   */
+  private joinAtTable(id: string): void {
+    const room = this.caseDef.team?.room;
+    const seat = this.state.seat;
+    if (!this.embodied || !room || !seat || !this.embodied.placeAtTable(room)) return;
+    const L = this.locale;
+    this.emit(id, { type: "notification", level: "info", title: rt(L, "assist.title"), body: rt(L, "place.atTable", { place: t(POSITION_TITLES[seat], L) }) });
   }
 
   /** Start the encounter (a `start` action by the system) unless it has started or finished. */

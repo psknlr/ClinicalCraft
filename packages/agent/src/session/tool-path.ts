@@ -22,6 +22,8 @@ export interface ToolPathExtra {
   skillDepth?: number;
   /** A nested skill's share of its caller's `CallProgress` (review S1). */
   progress?: CallProgress;
+  /** A care-team member's plan step an `operate` call takes (`ToolContext.stepRef`): set by the team's host only. */
+  stepRef?: string;
 }
 
 /** A dynamic tool's answer (`dynamic_tool_response`). */
@@ -44,6 +46,7 @@ export class ToolPath {
       ...(extra.turnId ? { turnId: extra.turnId } : {}),
       ...(extra.skillDepth ? { skillDepth: extra.skillDepth } : {}),
       ...(extra.progress ? { progress: extra.progress } : {}),
+      ...(extra.stepRef ? { stepRef: extra.stepRef } : {}),
       caseDef: k.caseDef,
       facility: k.facility,
       catalogs: k.catalogs,

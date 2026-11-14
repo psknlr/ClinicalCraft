@@ -8,6 +8,8 @@ import type { AgentRole, ApprovalDecision, EventMsg, RiskLevel } from "../protoc
 
 export interface ApprovalAsk {
   agent: AgentRole | "learner";
+  /** The body that would act (embodied mode: a colleague's `staff:<id>`, the stand-in surgeon's); absent: the caller's own. */
+  actorId?: string;
   tool: string;
   args: unknown;
   risk: RiskLevel;

@@ -126,9 +126,10 @@ export function placeRefusal(ctx: FieldContext, op: ProcedureOp): ToolOutput | n
   if (ref === undefined) return null;
   const learner = body === LEARNER_BODY;
   if (ref === null) {
+    // the colleague standing by while the learner holds their place, or a body that is nobody's in the team
     const who = learner ? rt(L, "place.You") : nameOfBody(ctx, body);
     const standing = !learner && body.startsWith("staff:");
-    return notAuthorized(standing ? rt(L, "scope.standingBy", { who, position: positionWords(ctx, body) }) : rt(L, "place.noPart", { who }), { key: "needs-control", params: { who: body, control: "operate", op: op.op, instrument: "", port: "" } });
+    return notAuthorized(standing ? rt(L, "scope.standingBy", { who, position: positionWords(ctx, body) }) : rt(L, "place.noPart", { who }), { key: standing ? "standing-by" : "no-part", params: { who: body, op: op.op } });
   }
   const step = normaliseStep(c, s, op, ref);
   if (step.actor === undefined) return null;
