@@ -1929,19 +1929,37 @@ index 80b487e..76091f6 100644
                          "when": {
                            "$ref": "#/definitions/Condition"
 diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
-index 4e266b1..6fbb9e4 100644
+index 4e266b1..2e4835e 100644
 --- a/packages/core/src/engine/dose-read.ts
 +++ b/packages/core/src/engine/dose-read.ts
-@@ -37,8 +37,19 @@ export interface DoseMention {
+@@ -8,9 +8,11 @@
+  * * **Units** in their usual spellings ("mcg", "microg", "µg", "gm", "I.U.", "mmols", "毫克"), also written onto the
+  *   drug's name ("adrenaline5mg"); a dose per kg and per hour or minute however written ("0.1 units/kg/h",
+  *   "0.1U/(kg·h)", "0.1 U·kg-1·h-1", "5.5 units hourly", "每小时5.5单位", "每千克体重40毫克"); "max 0.5 mg" after a dose is
+- *   its cap — with no dose before it ("up to 5 mg", "最多5mg") it is the dose; "over 2 hours" is how long a dose is given
+- *   over; a later dose after "then" at a frequency ("then 75 mg daily", "随后90mg每日两次") is the regimen's maintenance
+- *   (`then`); a daily total or a dose per m² ("20 g/day", "每日2g", "1.5 g/m2") is no single dose (`totals`).
++ *   its cap — with no dose before it ("up to 5 mg", "最多5mg") it is the dose; a time is how long a dose is given over
++ *   ("over 2 hours", "over six minutes", "infused for 60 min", "64.8 mg in 6 min", "60分钟内泵入", "6min内", "六分钟内",
++ *   "6分钟泵完", "持续滴注1小时" — `DURATION_FORMS`); a later dose after "then" at a frequency ("then 75 mg daily",
++ *   "随后90mg每日两次") is the regimen's maintenance (`then`); a daily total or a dose per m² ("20 g/day", "每日2g",
++ *   "1.5 g/m2") is no single dose (`totals`).
+  * * **Concentrations.** A volume is read as what it contains when the order states the strength — "0.5 mL of
+  *   1 mg/mL", "1:1000 0.5 mL", "insulin 50 units in 50 mL at 5.5 mL/h" (5.5 units/h). A preparation ("50 units in
+  *   50 mL", "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol") is then not itself a dose; alone, it is the dose it
+@@ -37,8 +39,22 @@ export interface DoseMention {
    unit: DoseUnit;
    /** A volume the order converts through the strength it states ("0.5 mL of 1 mg/mL" → 0.5 mg): the volume as written. */
    volume?: { amount: number; unit: DoseUnit };
 -  /** Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷ hours. */
 +  /**
-+   * Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷
-+   * hours. Of several times after one dose, the longest ("0.9 mg/kg over 60 min, over 1 min for its first 10%"); a time
-+   * after a part of the dose named after it is that part's — its bolus's is not the dose's ("0.9 mg/kg, 10% as a bolus
-+   * over 1 min"), its rest's is `restOver`.
++   * Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours" — also the time given
++   * after the volume it is made up in, "72 mg IV in 100 mL over 60 min"): as a rate, amount ÷ hours. Of several times
++   * after one dose, the longest ("0.9 mg/kg over 60 min, over 1 min for its first 10%"); a dose written again in
++   * brackets has the time of the copy ("5000 units (5000 IU) over 5 min"). When the order names the dose in parts — a
++   * share ("10%"), "the rest", or a bolus and then its infusion —, a time after a part named after the dose is that
++   * part's: its bolus's is not the dose's ("0.9 mg/kg, 10% as a bolus over 1 min"), its rest's is `restOver`; a bolus or
++   * an infusion word alone names no part ("72 mg IV, bolus over 1 min" is the whole over 1 min).
 +   */
    over?: number;
 +  /**
@@ -1953,7 +1971,7 @@ index 4e266b1..6fbb9e4 100644
    /** The cap the order states with a dose per kg ("0.01 mg/kg, max 0.5 mg"): never more than this, absolute. */
    max?: { amount: number; unit: DoseUnit };
    /**
-@@ -251,8 +262,11 @@ function numbers(s: string): Num[] {
+@@ -251,8 +267,12 @@ function numbers(s: string): Num[] {
      let end = start + m[0].length;
      const before = s[start - 1] ?? "";
      // a word's digits ("co2", "q4h", "x2"), a ratio's or a fraction's second number, a count, a broken number's half —
@@ -1961,21 +1979,58 @@ index 4e266b1..6fbb9e4 100644
 -    if (NOT_ALONE.test(before) && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
 +    // but a drug's name written onto its dose ("adrenaline5mg", "KCl400mmol/h") is a dose: a unit follows the digits;
 +    // and a colon is a ratio's or a clock's only after a number ("1:1000", "10:30"): after a word the number stands
-+    // alone ("剂量：5mg", "72mg：7.2mg静推" — NFKC writes "：" as ":")
-+    const wordColon = before === ":" && !/\d\s*$/u.test(s.slice(0, start - 1));
-+    if (NOT_ALONE.test(before) && !wordColon && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
++    // alone ("剂量：5mg", "72mg：7.2mg静推" — NFKC writes "：" as ":"); so does one after an enumeration comma that
++    // follows a word ("7.2mg静推、64.8mg…" — "0、5" is a broken number)
++    const afterWord = (before === ":" || before === "、") && !/\d\s*$/u.test(s.slice(0, start - 1));
++    if (NOT_ALONE.test(before) && !afterWord && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
      const after = s.slice(end);
      // a ratio ("1:1000", "10:30"): not an amount
      if (/^\s*:\s*\d/u.test(after)) continue;
-@@ -502,6 +516,25 @@ const FREQUENCY =
- const OVER_EN = /\bover\s+(?:(\d+(?:[.,]\d+)?)|(an?|one)|(half\s+an?))\s*(min(?:ute)?s?|h(?:ou)?rs?|hours?|h)(?![a-z])/gu;
- /** "在60分钟内", "60分钟内泵入", "60分钟泵入", "20分钟以上" (never "每60分钟", every 60 minutes). */
- const OVER_ZH = /(?<!每\s*)(?:在|于)?\s*(\d+(?:\.\d+)?)\s*(分钟|小时)\s*(?:内|以上|以内|泵入|静滴|滴注|输注|输入|静脉泵入|静脉滴注)/gu;
+@@ -498,10 +518,57 @@ const THEN = /(?<![a-z])(?:then|followed\s+by|thereafter|after\s+that|subsequent
+  */
+ const FREQUENCY =
+   /(?<![a-z])(?:(?:once|twice|three\s+times|four\s+times)\s+(?:a\s+)?(?:day|daily)|daily|nightly|b\.?i?\.?d\.?|t\.?[id]\.?[sd]\.?|q\.?[id]\.?[sd]\.?|nocte|mane|o\.d\.|every\s+(?:\d+(?:[.,]\d+)?\s*(?:(?:-|–|to)\s*\d+\s*)?)?(?:h|hrs?|hours?|min(?:ute)?s?|days?|morning|evening|night)|q\s*\d+\s*(?:h|hrs?|min)|prn|p\.r\.n\.|as\s+(?:needed|required)|if\s+(?:needed|required))(?![a-z])|每\s*(?:日|天|晚|早|\d+\s*(?:小时|分钟|天|日)|[一二两三四五六七八九十]+\s*(?:小时|分钟|天|日))|(?:一日|一天|日)\s*[一二两三四\d]\s*次|必要时|按需/u;
+-/** How long a dose is given over: "over 60 min", "over 2 hours", "over an hour", "over half an hour". */
+-const OVER_EN = /\bover\s+(?:(\d+(?:[.,]\d+)?)|(an?|one)|(half\s+an?))\s*(min(?:ute)?s?|h(?:ou)?rs?|hours?|h)(?![a-z])/gu;
+-/** "在60分钟内", "60分钟内泵入", "60分钟泵入", "20分钟以上" (never "每60分钟", every 60 minutes). */
+-const OVER_ZH = /(?<!每\s*)(?:在|于)?\s*(\d+(?:\.\d+)?)\s*(分钟|小时)\s*(?:内|以上|以内|泵入|静滴|滴注|输注|输入|静脉泵入|静脉滴注)/gu;
++/** A time's number in English words ("six", "sixty", "one hundred and twenty"). */
++const EN_NUMBER_WORD = String.raw`(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)`;
++/** A time's number in English: numerals, "an", "half an", words. */
++const EN_TIME_NUMBER = String.raw`(\d+(?:[.,]\d+)?|half\s+an?|an?|${EN_NUMBER_WORD}(?:[\s-]+(?:and\s+)?${EN_NUMBER_WORD})*)`;
++const EN_TIME_UNIT = String.raw`(min(?:ute)?s?|h(?:ou)?rs?|hours?|h)(?![a-z])`;
++/** A time's number in Chinese text: numerals, Chinese numerals ("六", "六十", "两"), "半" (half an hour). */
++const ZH_TIME_NUMBER = String.raw`(\d+(?:\.\d+)?|[零〇一二两三四五六七八九十百]+(?:点[零〇一二三四五六七八九]+)?|半)`;
++const ZH_TIME_UNIT = String.raw`(?:个\s*)?(分钟|小时|min(?:ute)?s?|h(?:ou)?rs?|hours?|h(?![a-z]))`;
 +/**
-+ * A share of a dose: a percentage ("10%", "90%") followed by how or when it is given — never by what it is the strength
-+ * of ("0.9% NaCl", "10%氯化钾", "5% dextrose": `SHARE_AFTER` fails).
++ * The forms of how long a dose is given over (`over`, `restOver`; zh-CN and en, numbers in numerals or words), each
++ * with its number and unit as its first two groups and whether it is an infusion's own time ("1小时静滴"):
++ * - "over 60 min", "over 2 hours", "over an hour", "over half an hour", "over six minutes";
++ * - "infused for 60 minutes", "infusion for 1 h", "run for 2 hours" — "for" only after an infusion's word ("for 3 days"
++ *   is how long a course lasts);
++ * - "64.8 mg in 6 min", "IV in 60 min" — "in" only after a dose, a route or an infusion's word ("repeat in 5 min",
++ *   "recheck in 1 hour" say when, not how long);
++ * - "在60分钟内", "60分钟内泵入", "60分钟泵入", "20分钟以上", "6分钟泵完", "6min内", "六十分钟内", "半小时内", "1个小时内"
++ *   (never "每60分钟", every 60 minutes, nor "第1小时");
++ * - "持续滴注6分钟", "泵入1小时", "静滴1h", "历时60分钟" — after an infusion's word (never "静滴1小时后", after an hour).
 + */
-+const SHARE = /(?<!\d|\d[.,])(\d+(?:\.\d+)?)\s*%/gu;
++const DURATION_FORMS: readonly { re: RegExp; infusion: boolean; before?: RegExp }[] = [
++  { re: new RegExp(String.raw`\bover\s+${EN_TIME_NUMBER}\s*${EN_TIME_UNIT}`, "dgu"), infusion: false },
++  { re: new RegExp(String.raw`\b(?:infus(?:e|ed|es|ion|ing)|run(?:ning)?|drip)\s+(?:(?:iv|i\.v\.?|intravenously)\s+)?for\s+${EN_TIME_NUMBER}\s*${EN_TIME_UNIT}`, "dgu"), infusion: true },
++  {
++    re: new RegExp(String.raw`\bin\s+${EN_TIME_NUMBER}\s*${EN_TIME_UNIT}`, "dgu"),
++    infusion: false,
++    before: /(?:\d\s*(?:mg|mcg|μg|ug|micrograms?|milligrams?|g|grams?|units?|u|iu|mmols?|millimoles?|ml|l)|(?<![a-z])(?:iv|i\.v\.?|intravenous(?:ly)?|infus(?:e|ed|es|ion|ing)|bolus|push(?:ed)?|given))\s*$/u,
++  },
++  { re: new RegExp(String.raw`(?<!每\s*|第\s*)(?:在|于)?\s*${ZH_TIME_NUMBER}\s*${ZH_TIME_UNIT}\s*(?:内|以上|以内|泵入|静滴|滴注|输注|输入|静脉泵入|静脉滴注|泵完|滴完|输完)`, "dgu"), infusion: false },
++  { re: new RegExp(String.raw`(?:(?:持续)?(?:静脉)?(?:泵入|静滴|滴注|输注|输入|泵注)|历时|持续)\s*(?:时间\s*)?${ZH_TIME_NUMBER}\s*${ZH_TIME_UNIT}(?!\s*(?:后|以后|之后))`, "dgu"), infusion: true },
++];
++/**
++ * A share of a dose: a whole percentage ("10%", "90%") followed by how or when it is given — never a strength: one
++ * with decimals ("0.9%"), one right after a volume or a diluent ("in 100 mL 0.9%", "NaCl 0.9%", "1000ml 5%"), or one
++ * followed by what it is the strength of ("10%氯化钾", "5% dextrose": `SHARE_AFTER` fails).
++ */
++const SHARE = /(?<![\d.,])([1-9]\d?)\s*%/gu;
 +const SHARE_AFTER =
 +  /^\s*(?:$|[,，;；:：)）(（\]、。.]|\d|(?:bolus|push|stat|as|given|administered|of|over|iv|i\.v|intravenous(?:ly)?|by|infus[a-z]*|then|and|via|rapid(?:ly)?|immediately|now)(?![a-z])|静推|静注|静脉推注|静脉注射|推注|快速|于|在|的|剂量|药量|量|泵入|静滴|静脉滴注|静脉泵入|滴注|输注|持续|立即|先|然后|随后)/u;
 +/** Words for the rest of a dose, after its bolus ("the rest", "the remaining 90%", "其余", "剩余"). */
@@ -1993,7 +2048,7 @@ index 4e266b1..6fbb9e4 100644
  
  /** Route words (zh-CN and en, after NFKC and lower-casing). "IN" is never read as intranasal (it is the word "in"). */
  export const ROUTE_WORDS: readonly [DoseRoute, RegExp][] = [
-@@ -534,10 +567,49 @@ interface Found {
+@@ -534,10 +601,49 @@ interface Found {
    perKg: boolean;
    time: "" | "/h" | "/min";
    over?: number;
@@ -2043,7 +2098,7 @@ index 4e266b1..6fbb9e4 100644
  /** Minutes in a duration's words ("2", "hours" → 120; "an", "hour" → 60; "half an hour" → 30). */
  function minutesOf(amount: string | undefined, one: string | undefined, half: string | undefined, unit: string): number {
    const n = amount != null ? arabicValue(amount) : half != null ? 0.5 : one != null ? 1 : NaN;
-@@ -567,8 +639,9 @@ export function readOrder(text: string): OrderReading {
+@@ -567,8 +673,9 @@ export function readOrder(text: string): OrderReading {
    const isTaken = (i: number) => taken.some(([a, b]) => i >= a && i < b);
    // a duration's or a clock's numbers are not doses
    for (const re of [OVER_EN, OVER_ZH]) for (const m of s.matchAll(re)) taken.push([m.index, m.index + m[0].length]);
@@ -2055,7 +2110,7 @@ index 4e266b1..6fbb9e4 100644
    );
  
    // strengths written as a ratio: 1:1000 is 1 g in 1000 mL
-@@ -782,11 +855,23 @@ export function readOrder(text: string): OrderReading {
+@@ -782,11 +889,23 @@ export function readOrder(text: string): OrderReading {
      if (!isTaken(m.index)) note("unreadable", m.index - s.slice(Math.max(0, m.index - 3), m.index).match(/[几若干多少数个]*$/u)![0].length, m.index + m[0].length);
    }
    for (const m of s.matchAll(PLACEHOLDER_UNIT)) if (!isTaken(m.index + m[0].length - 1)) note("unreadable", m.index, m.index + m[0].length);
@@ -2082,7 +2137,7 @@ index 4e266b1..6fbb9e4 100644
    }
    // a later single dose after "then" and at a frequency ("300 mg now, then 75 mg daily"): the regimen's maintenance
    for (let i = 1; i < found.length; i++) {
-@@ -800,7 +885,12 @@ export function readOrder(text: string): OrderReading {
+@@ -800,7 +919,12 @@ export function readOrder(text: string): OrderReading {
    // one strength stated (however often): volumes are read as what they hold
    const distinct = strengths.filter((x, i) => strengths.findIndex((y) => y.quantity === x.quantity && Math.abs(y.perMl - x.perMl) <= 1e-9 * Math.max(1, x.perMl)) === i);
    const strength = distinct.length === 1 ? distinct[0]! : null;

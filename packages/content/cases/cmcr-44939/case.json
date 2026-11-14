@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-44939",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "长程发热、跛行与重度贫血 · 3岁9月女孩",
     "en": "Prolonged fever, limp and severe anaemia · girl aged 3 years 9 months"
   },
   "summary": {
-    "zh-CN": "曾对激素退热并不能确认风湿病，局灶骨痛和不协调血象需要重启肿瘤及感染鉴别。",
-    "en": "Steroid-responsive fever does not confirm rheumatic disease; focal skeletal symptoms and discordant counts require reassessment for malignancy and infection."
+    "zh-CN": "3岁9个月的女孩发热七十多天，走路逐渐跛行，面色苍白；外院按全身型幼年特发性关节炎用激素后，发热又起。住院诊疗：从病史、查体到检查和治疗计划。",
+    "en": "A girl of 3 years 9 months has had fever for more than seventy days, a limp that came on gradually and pallor; after treatment elsewhere for systemic juvenile idiopathic arthritis, the fever has returned. An inpatient case from history and examination to tests and a treatment plan."
   },
   "specialty": [
     "pediatrics",
@@ -16,13 +16,39 @@
     "orthopedics",
     "rheumatology"
   ],
+  "difficulty": 4,
   "setting": "inpatient",
   "facility": "general-hospital",
-  "difficulty": 4,
-  "estimatedMinutes": 30,
   "locales": [
     "zh-CN",
     "en"
+  ],
+  "estimatedMinutes": 40,
+  "learningOutcomes": [
+    {
+      "zh-CN": "说出本例中使全身型幼年特发性关节炎（JIA）诊断站不住脚的表现（起病时无皮疹、无浅表淋巴结肿大、血小板低至65×10⁹/L、乳酸脱氢酶1312 U/L、服激素期间再次发热），并在排除肿瘤、感染和巨噬细胞活化综合征之前不加强免疫抑制（EULAR/PReS 2024）。",
+      "en": "Name the features that make the systemic juvenile idiopathic arthritis (JIA) label unsafe here (no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, an LDH of 1312 U/L, fever returning on steroids) and hold further immunosuppression until malignancy, infection and macrophage activation are excluded (EULAR/PReS 2024)."
+    },
+    {
+      "zh-CN": "解释为什么骨盆平片“未见明显破坏”和一次骨髓阴性都不能排除骨肿瘤，并依据MRI和增强CT所见判断需要取得组织（ESMO 2021）。",
+      "en": "Explain why pelvic radiographs without obvious destruction and one negative marrow do not exclude a bone tumour, and use the MRI and contrast-enhanced CT findings to decide that tissue is needed (ESMO 2021)."
+    },
+    {
+      "zh-CN": "与儿童骨肉瘤专科团队一起规划可疑骨肉瘤的活检：先查血小板和凝血，穿刺道能随日后手术切除，标本同时送病理、分子检测和培养；并说明擅自切开切除的危害。",
+      "en": "Plan the biopsy of a suspected bone sarcoma with a paediatric bone sarcoma team — platelets and clotting checked first, a tract the later resection can remove, samples for histology, molecular testing and culture — and explain the harm of an unplanned excision."
+    },
+    {
+      "zh-CN": "判断“尤文瘤、无融合基因结果”的活检报告和“病灶未逐个取材”的PET-CT能确定什么，并说出今天还需要的分子确认（WHO 2020、ESMO 2021）和分期检查。",
+      "en": "Judge what a biopsy reported as Ewing tumour without a fusion result, and a PET-CT whose bone lesions were not each sampled, establish, and name the molecular confirmation (WHO 2020, ESMO 2021) and staging still needed today."
+    },
+    {
+      "zh-CN": "概述今天的治疗路径——按方案化疗、由多学科团队决定局部治疗时机、治疗前讨论生育力保存——并与原报告的经过对比。",
+      "en": "Outline today's treatment pathway — protocol chemotherapy, local control timed by the multidisciplinary team, fertility preservation discussed before treatment — and contrast it with the report's course."
+    },
+    {
+      "zh-CN": "用SPIKES向家长说明诊断和尚不确定的部分，并用回授法确认对方理解。",
+      "en": "Explain the diagnosis and what is still uncertain to her parent using SPIKES, and check understanding with teach-back."
+    }
   ],
   "tags": [
     "cmcr-105",
@@ -40,46 +66,35 @@
     ],
     "license": "Educational paraphrase; the source publication retains its copyright.",
     "notes": {
-      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
-      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+      "zh-CN": "依据已发表的单例报告改写。1.1.0版依据1.0.0版已记录的事实重写，尚未对照原文全文核对。保留年龄、性别、体重、病程、检查结果和转归；姓名为化名，医院、日期和身份细节已去除。对话、阶段、决策、处置选项、医护人员和评分为教学设计；1.0.0版没有记录的资料保持未知。",
+      "en": "Adapted from a published single-case report. Version 1.1.0 is re-authored from the facts version 1.0.0 recorded; the check against the full article is still pending. Age, sex, weight, course, results and outcome are kept; names are pseudonyms, and hospitals, dates and identifying details are removed. Dialogue, phases, decisions, management options, staff and scoring are educational design; anything version 1.0.0 does not record stays unknown."
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-28",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
-        "AI-assisted editorial source and guidance check; not a licensed clinician"
+        "ClinicalCraft editorial review (AI-assisted)"
       ],
       "guidelines": [
-        "National Cancer Institute. Ewing Sarcoma Treatment (PDQ), professional version. Accessed 2026-10-28. https://www.cancer.gov/types/bone/hp/ewing-treatment-pdq"
+        "EULAR/PReS 2024: recommendations for the diagnosis and management of Still's disease (systemic JIA and adult-onset Still's disease)",
+        "ACR 2021 guideline for the treatment of JIA: oligoarthritis, TMJ arthritis and systemic JIA (Arthritis Rheumatol 2022)",
+        "NICE NG12 Suspected cancer: recognition and referral (2015, last updated April 2026): leukaemia and bone sarcoma in children and young people",
+        "ESMO–EURACAN–GENTURIS–ERN PaedCan Clinical Practice Guideline 2021: bone sarcomas",
+        "WHO Classification of Tumours: Soft Tissue and Bone Tumours, 5th edition (2020)",
+        "国家卫生健康委员会 儿童及青少年尤文肉瘤诊疗规范（2019年版）",
+        "ESPID 2017 clinical practice guideline: bone and joint infections",
+        "BSH 2016: Guidelines on transfusion for fetuses, neonates and older children"
       ],
       "notes": {
-        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
-        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+        "zh-CN": "人工智能辅助编写，并对照所引指南做了编辑审核；尚未经执业医师审核。病例事实来自1.0.0版的提取，尚未对照原文全文核对。用于教学前请由儿童肿瘤科和儿童风湿免疫科医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician. The facts are version 1.0.0's extraction and have not yet been checked against the full source article. Have a paediatric oncologist and a paediatric rheumatologist review it before teaching use."
       }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
-    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。病程和结果来自已发表报告（按1.0.0版的提取），不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not for individual care or self-medication. The course and results come from the published report as version 1.0.0 extracted them; unrecorded physiological changes are not simulated."
   },
-  "learningOutcomes": [
-    {
-      "zh-CN": "识别发热跛行中的肿瘤红旗。",
-      "en": "Identify malignant red flags in fever with limp."
-    },
-    {
-      "zh-CN": "比较平片阴性与MRI/CT阳性的证据强度。",
-      "en": "Compare negative radiographs with positive MRI/CT evidence."
-    },
-    {
-      "zh-CN": "区分活检诊断、分子分类与影像分期。",
-      "en": "Distinguish biopsy diagnosis, molecular classification and imaging stage."
-    },
-    {
-      "zh-CN": "识别非典型风湿表现并规划专科组织诊断，避免继续盲目激素",
-      "en": "Recognise atypical rheumatic features and plan specialist tissue diagnosis instead of further blind steroids"
-    }
-  ],
   "patient": {
     "displayName": {
       "zh-CN": "孔清和（化名）",
@@ -91,47 +106,64 @@
     "weightKg": 15.9,
     "chiefComplaint": {
       "zh-CN": "发热70余天，逐渐跛行",
-      "en": "Over seventy days of fever with progressive limping"
+      "en": "Fever for more than 70 days and a limp that came on gradually"
     },
     "triageNote": {
-      "zh-CN": "长期发热曾被诊断全身型JIA，激素后再次发热并显著贫血。",
-      "en": "Longstanding fever previously labelled systemic JIA recurred after steroids with marked anaemia."
+      "zh-CN": "3岁9个月女孩，体重15.9 kg，家长陪同入院。发热70余天，逐渐出现跛行。曾被诊断为全身型幼年特发性关节炎，用激素后热退，继续口服期间又发热。贫血明显。",
+      "en": "Girl aged 3 years 9 months, 15.9 kg, admitted with her parent. Fever for more than 70 days and a limp that came on gradually. Previously diagnosed with systemic juvenile idiopathic arthritis; the fever settled on steroids and returned while she was still taking them by mouth. Marked anaemia."
     },
-    "tags": [],
+    "tags": [
+      {
+        "zh-CN": "长期发热",
+        "en": "Prolonged fever"
+      },
+      {
+        "zh-CN": "跛行",
+        "en": "Limp"
+      },
+      {
+        "zh-CN": "贫血",
+        "en": "Anaemia"
+      }
+    ],
     "persona": {
       "personality": {
-        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
-        "en": "Provides information from the current stage; conversational style is an educational convention."
+        "zh-CN": "3岁9个月的女孩，发热七十多天，脸色苍白，躺在床上，不愿意下地走路；家长守在床边。",
+        "en": "A girl of 3 years 9 months who has had fever for more than seventy days; she is pale, lying in bed and does not want to walk. Her parent is at the bedside."
       },
       "speechStyle": {
-        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
-        "en": "Uses everyday language; numerical results come from the records."
+        "zh-CN": "孩子太小，病史由家长用日常口语回答；不用医学术语，不知道的就直说不知道。",
+        "en": "She is too young to give her own history; her parent answers in everyday words, without medical terms, and says plainly when they do not know."
       },
+      "healthLiteracy": "medium",
       "affect": "calm",
       "openingLine": {
-        "zh-CN": "发热七十多天，最初约38℃，后来最高39.5℃、每天数次。",
-        "en": "Fever lasted over seventy days, initially about 38°C and later up to 39.5°C several times daily."
+        "zh-CN": "（清和躺在床上，脸色苍白；家长替她说）她发烧七十多天了，现在走路也跛了。",
+        "en": "(Qinghe is lying in bed, pale; her parent speaks for her) She's had a fever for more than seventy days, and now she's limping."
       },
       "fallbackUnknown": {
-        "zh-CN": "这点我说不清楚，医生。",
-        "en": "I am not sure about that, doctor."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure about that, doctor."
       },
       "concerns": [],
       "actingNotes": {
-        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
-        "en": "Use only facts documented for the current phase; do not anticipate later results."
+        "zh-CN": "扮演者：孩子3岁9个月，不回答病史问题。家长回答所有病史问题，只讲自己知道的：发热七十多天，起初38℃左右，后来最高39.5℃、一天好几次；慢慢出现轻度跛行、不愿走路，起初关节没有明显肿痛；外院按幼年特发性关节炎用激素后热退，继续口服期间又发热；来这儿之前诊断的是全身型幼年特发性关节炎；最近差不多一个月断断续续抗感染，烧还是加重；起病时没有皮疹、出血点、口腔溃疡或脱发；以前身体健康，没接触过结核、肝炎病人，疫苗按计划打；体重15.9公斤。激素的名字、剂量、疗程和现在怎么吃，用的是哪些抗生素，过敏、疼痛、体重变化、出血、大小便、家族史和接触史都说不上来，不要编。检查结果和诊断让医生说；后面阶段的结果不要提前说。",
+        "en": "For the actor: the child is 3 years 9 months old and does not answer history questions. Her parent answers every history question and says only what they know: fever for more than seventy days, about 38 °C at first and later up to 39.5 °C several times a day; a slight limp that came on gradually and reluctance to walk, with no obvious joint swelling or pain at first; steroids at another hospital for juvenile idiopathic arthritis settled the fever, which came back while she was still taking them by mouth; before coming here she was diagnosed with systemic juvenile idiopathic arthritis; on-and-off treatment for infection for about the last month while the fever still got worse; no rash, bleeding spots, mouth ulcers or hair loss at the start; previously healthy, no contact with TB or hepatitis, vaccinations on schedule; weight 15.9 kg. The steroid's name, dose, duration and how she takes it now, which antibiotics were used, allergies, pain, weight change, bleeding, bladder and bowels, family history and exposures are not known — never invent them. Results and the diagnosis are for the doctors; never mention a later phase's results early."
       },
       "companion": {
         "role": "parent",
         "name": {
-          "zh-CN": "陪同者（教学角色）",
-          "en": "Companion (educational role)"
+          "zh-CN": "清和的家长（化名）",
+          "en": "Qinghe's parent (pseudonym)"
         },
         "persona": {
-          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
-          "en": "Relays only source-record information without invented relationship details or events."
+          "zh-CN": "陪孩子住院的家长，回答所有病史问题。只讲自己知道或听医生说过的事，不知道就直说，不替医生下结论。",
+          "en": "The parent staying with her, who answers every history question. Says only what they know or have heard from doctors, says so plainly when they do not know, and draws no medical conclusions."
         },
-        "answersHistory": true
+        "answersHistory": true,
+        "appearance": {
+          "stature": "adult"
+        }
       }
     },
     "appearance": {
@@ -142,625 +174,920 @@
   },
   "phases": [
     {
-      "id": "initial",
+      "id": "admission",
       "label": {
-        "zh-CN": "初诊病史与查体",
-        "en": "Presenting history and examination"
+        "zh-CN": "入院：发热复发、走路跛",
+        "en": "Admission: fever back and a limp"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "3岁9个月的女孩发热七十多天，走路逐渐跛行。外院按全身型幼年特发性关节炎给她用了激素，热退后在继续口服期间又发热。向家长了解病史，给她查体，决定下一步。",
+        "en": "A girl of 3 years 9 months has had fever for more than seventy days and a limp that came on gradually. Another hospital treated her for systemic juvenile idiopathic arthritis with steroids; the fever settled and came back while she was still taking them by mouth. Take the history from her parent, examine her and decide the next step."
+      },
+      "learnerSwitchable": false
     },
     {
       "id": "workup",
       "label": {
-        "zh-CN": "早期检查与鉴别",
-        "en": "Early investigations and differential"
+        "zh-CN": "检查结果",
+        "en": "The results"
+      },
+      "description": {
+        "zh-CN": "她的血液检查、骨髓和影像结果都在病历里（每项检查在哪家医院、什么时候做的，病历没有记录）。逐项调阅，想清楚怎样明确诊断。",
+        "en": "Her blood tests, marrow and imaging are in the records (which hospital did each test, and when, is not recorded). Read them one by one and work out how to reach a diagnosis."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "first-step"
+      }
+    },
+    {
+      "id": "diagnosis",
+      "label": {
+        "zh-CN": "活检之后",
+        "en": "After the biopsy"
+      },
+      "description": {
+        "zh-CN": "右髂骨活检已有病理报告，PET-CT也已完成（两者的先后病历没有记录）。判断这些结果能确定什么，并与家长商定治疗。",
+        "en": "The right iliac biopsy has been reported and a PET-CT is available (their order is not recorded). Judge what the results establish and agree the treatment with her parent."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "asked": "fever"
+            "decided": "imaging-meaning"
           },
           {
-            "asked": "limp"
+            "decided": "tissue-route"
           },
           {
-            "asked": "steroids"
-          },
-          {
-            "asked": "rash"
-          },
-          {
-            "examined": "pallor"
-          },
-          {
-            "examined": "joints"
+            "any": [
+              {
+                "intervened": "planned-biopsy"
+              },
+              {
+                "intervened": "open-excision"
+              }
+            ]
           }
         ]
       }
     },
     {
-      "id": "confirmation",
+      "id": "outcome",
       "label": {
-        "zh-CN": "后续验证与计划",
-        "en": "Subsequent evidence and planning"
+        "zh-CN": "原报告记录的后续",
+        "en": "The reported course"
+      },
+      "description": {
+        "zh-CN": "原报告记录的转科、治疗和随访情况。",
+        "en": "Transfer, treatment and follow-up as the report records them."
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告处置与转归",
-        "en": "Reported care and outcome"
-      },
-      "learnerSwitchable": false,
-      "enterWhen": {
-        "decided": "management"
+        "all": [
+          {
+            "decided": "first-step"
+          },
+          {
+            "decided": "imaging-meaning"
+          },
+          {
+            "decided": "tissue-route"
+          },
+          {
+            "decided": "what-is-proven"
+          },
+          {
+            "decided": "treatment-plan"
+          }
+        ]
       }
     }
   ],
-  "initialPhase": "initial",
+  "initialPhase": "admission",
   "clock": {
     "mode": "static",
     "realtimeScale": 0
   },
   "history": [
     {
-      "id": "fever",
+      "id": "presenting-complaint",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "发热已经多久，每天发几次？ 这次发烧是不是已经两个多月？",
-        "en": "How long has fever lasted, and how often each day? Has this fever lasted more than two months?"
+        "zh-CN": "清和这次是因为什么来住院的？",
+        "en": "What has brought Qinghe into hospital this time?"
       },
       "answer": {
-        "zh-CN": "发热七十多天，最初约38℃，后来最高39.5℃、每天数次。",
-        "en": "Fever lasted over seventy days, initially about 38°C and later up to 39.5°C several times daily."
+        "zh-CN": "她发烧七十多天了，后来走路慢慢有点跛。",
+        "en": "She's had a fever for more than seventy days, and bit by bit she's started to limp a little."
       },
       "keywords": {
         "zh-CN": [
-          "长程发热",
-          "发热已经多久，每天发几次？",
-          "这次发烧是不是已经两个多月？",
-          "长程发热情况"
+          "怎么了",
+          "怎么啦",
+          "这次怎么了",
+          "哪里不舒服",
+          "怎么回事",
+          "有什么不舒服",
+          "多久了",
+          "什么时候开始的",
+          "因为什么来",
+          "为什么住院",
+          "主要是什么问题",
+          "来看什么病"
         ],
         "en": [
-          "prolonged fever",
-          "How long has fever lasted, and how often each day?",
-          "Has this fever lasted more than two months?",
-          "prolonged fever information"
+          "whatbringsyou",
+          "whatbroughtyou",
+          "bringsyouin",
+          "what happened",
+          "whatstheproblem",
+          "whatistheproblem",
+          "what's been going on",
+          "going on",
+          "how long",
+          "whendiditstart",
+          "why is she here",
+          "main problem",
+          "made you bring",
+          "bringhertohospital",
+          "broughtherin"
         ]
       },
       "disclosure": "volunteer",
       "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·主诉：发热70余天，逐渐跛行",
+        "en": "The report (as extracted in version 1.0.0) · chief complaint: fever for more than 70 days and a gradual limp"
+      }
+    },
+    {
+      "id": "fever-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "烧得最高多少度？一天烧几次？",
+        "en": "How high has the fever gone, and how often does it come?"
+      },
+      "answer": {
+        "zh-CN": "一开始38℃左右，后来最高烧到39.5℃，一天要烧好几次。",
+        "en": "At first it was around 38 degrees; later it went as high as 39.5, several times a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体温",
+          "多少度",
+          "最高",
+          "烧几次",
+          "一天几次",
+          "热型",
+          "发烧的规律",
+          "发烧情况",
+          "高烧"
+        ],
+        "en": [
+          "temperature",
+          "how high",
+          "highest",
+          "how often",
+          "times a day",
+          "fever pattern",
+          "degrees",
+          "spikes"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "激素",
+          "抗生素",
+          "疹",
+          "溃疡"
+        ],
+        "en": [
+          "steroid",
+          "antibiotic",
+          "rash",
+          "ulcer"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·病史：发热，起初约38℃，后来最高39.5℃，每天数次",
+        "en": "The report (as extracted in version 1.0.0) · history: fever about 38 °C at first, later up to 39.5 °C, several times a day"
       }
     },
     {
       "id": "limp",
       "topic": "hpi",
       "question": {
-        "zh-CN": "什么时候开始不愿走路或跛行？ 最初关节有明显肿痛吗？",
-        "en": "When did limping or reluctance to walk begin? Were joints clearly swollen or painful at first?"
+        "zh-CN": "走路跛是怎么开始的？刚开始关节肿不肿、疼不疼？",
+        "en": "How did the limp come on, and were her joints swollen or sore at the start?"
       },
       "answer": {
-        "zh-CN": "逐渐轻度跛行、不愿走路，最初无明显关节肿痛。",
-        "en": "A limp and reluctance to walk developed, initially without obvious swollen painful joints."
+        "zh-CN": "是慢慢开始的，走路有点跛，也不愿意走路。刚开始关节没有明显的肿和疼。",
+        "en": "It came on gradually — a slight limp, and she didn't want to walk. At the start her joints weren't obviously swollen or sore."
       },
       "keywords": {
         "zh-CN": [
-          "跛行活动",
-          "什么时候开始不愿走路或跛行？",
-          "最初关节有明显肿痛吗？",
-          "跛行活动情况"
+          "跛",
+          "瘸",
+          "走路",
+          "不愿走",
+          "不肯走",
+          "不想走路",
+          "关节肿",
+          "关节疼",
+          "腿"
         ],
         "en": [
-          "limp and activity",
-          "When did limping or reluctance to walk begin?",
-          "Were joints clearly swollen or painful at first?",
-          "limp and activity information"
+          "limp",
+          "limping",
+          "walking",
+          "won't walk",
+          "doesn't want to walk",
+          "reluctant to walk",
+          "joints swollen",
+          "joint pain",
+          "legs",
+          "joints"
         ]
       },
       "disclosure": "on-ask",
       "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·病史：逐渐出现轻度跛行、不愿走路，起初无明显关节肿痛",
+        "en": "The report (as extracted in version 1.0.0) · history: a gradual, mild limp and reluctance to walk; no obvious joint swelling or pain at first"
       }
     },
     {
-      "id": "steroids",
+      "id": "steroid-response",
       "topic": "medications",
       "question": {
-        "zh-CN": "激素后退热多久，后来又烧了吗？ 之前激素治疗是不是只让体温暂时正常？",
-        "en": "How long did fever settle with steroids, and did it return? Did steroid treatment only temporarily normalise temperature?"
+        "zh-CN": "用了激素以后，烧是怎么变化的？",
+        "en": "What happened to the fever once she was on steroids?"
       },
       "answer": {
-        "zh-CN": "外院按JIA用激素后退热，持续口服后又发热。",
-        "en": "Steroids for presumed JIA suppressed fever, which later recurred during oral treatment."
+        "zh-CN": "外院说是幼年特发性关节炎，给她用了激素，烧就退了；后来一直口服着，又烧起来了。",
+        "en": "The other hospital said it was juvenile arthritis and started her on steroids, and the fever went away. She stayed on them by mouth, and then the fever came back."
       },
       "keywords": {
         "zh-CN": [
-          "激素反应",
-          "激素后退热多久，后来又烧了吗？",
-          "之前激素治疗是不是只让体温暂时正常？",
-          "激素反应情况"
+          "激素",
+          "泼尼松",
+          "强的松",
+          "甲泼尼龙",
+          "地塞米松",
+          "吃激素",
+          "用激素",
+          "激素以后",
+          "退烧"
         ],
         "en": [
-          "steroid response",
-          "How long did fever settle with steroids, and did it return?",
-          "Did steroid treatment only temporarily normalise temperature?",
-          "steroid response information"
+          "steroid",
+          "steroids",
+          "prednisolone",
+          "prednisone",
+          "methylprednisolone",
+          "dexamethasone",
+          "after the steroids",
+          "on steroids"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "剂量",
+          "吃多少",
+          "多少毫克",
+          "几片",
+          "多大量"
+        ],
+        "en": [
+          "dose",
+          "milligram",
+          "how much",
+          "tablets"
         ]
       },
       "disclosure": "on-ask",
       "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·病史：外院按JIA用激素后退热，持续口服后又发热",
+        "en": "The report (as extracted in version 1.0.0) · history: steroids given at another hospital for JIA; the fever settled and recurred during continued oral treatment"
       }
     },
     {
-      "id": "rash",
-      "topic": "ros",
-      "question": {
-        "zh-CN": "最初发热时有皮疹或口腔溃疡吗？ 有没有掉头发或皮肤出血点？",
-        "en": "Was there rash or mouth ulceration when fever began? Was there hair loss or petechiae?"
-      },
-      "answer": {
-        "zh-CN": "最初没有皮疹出血点、口腔溃疡或脱发。",
-        "en": "Initially there was no rash, bleeding spots, oral ulceration or alopecia."
-      },
-      "keywords": {
-        "zh-CN": [
-          "初期皮肤黏膜",
-          "最初发热时有皮疹或口腔溃疡吗？",
-          "有没有掉头发或皮肤出血点？",
-          "初期皮肤黏膜情况"
-        ],
-        "en": [
-          "initial skin and mucosa",
-          "Was there rash or mouth ulceration when fever began?",
-          "Was there hair loss or petechiae?",
-          "initial skin and mucosa information"
-        ]
-      },
-      "disclosure": "on-ask",
-      "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
-      }
-    },
-    {
-      "id": "infection-treatment",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "之前接受过什么治疗或药物？ 此前处理有没有改善症状？",
-        "en": "What earlier medicines or treatments were given? Did previous treatment improve symptoms?"
-      },
-      "answer": {
-        "zh-CN": "近一个月间断抗感染，发热仍加重。",
-        "en": "Intermittent antibiotics for about a month did not prevent worsening fever."
-      },
-      "keywords": {
-        "zh-CN": [
-          "早先抗感染",
-          "之前接受过什么治疗或药物？",
-          "此前处理有没有改善症状？",
-          "早先抗感染情况"
-        ],
-        "en": [
-          "early antibiotics",
-          "What earlier medicines or treatments were given?",
-          "Did previous treatment improve symptoms?",
-          "early antibiotics information"
-        ]
-      },
-      "disclosure": "on-ask",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
-      }
-    },
-    {
-      "id": "prior-health",
+      "id": "jia-label",
       "topic": "pmh",
       "question": {
-        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
-        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+        "zh-CN": "之前诊断的到底是什么病？",
+        "en": "What exactly was she diagnosed with before?"
       },
       "answer": {
-        "zh-CN": "既往健康，否认结核肝炎接触。",
-        "en": "Previously healthy, with TB/hepatitis contact denied."
+        "zh-CN": "来这儿之前，诊断的是全身型幼年特发性关节炎。",
+        "en": "Before we came here, she was diagnosed with systemic juvenile idiopathic arthritis."
       },
       "keywords": {
         "zh-CN": [
-          "既往健康",
-          "以前身体怎样，有哪些病？",
-          "既往有没有需要治疗的疾病？",
-          "既往健康情况"
+          "诊断",
+          "什么病",
+          "关节炎",
+          "幼年特发性关节炎",
+          "全身型",
+          "之前说是什么",
+          "外院诊断"
         ],
         "en": [
-          "previous health",
-          "What was health like before this illness?",
-          "Were any earlier illnesses treated?",
-          "previous health information"
+          "diagnosis",
+          "diagnosed",
+          "whatdidtheysay",
+          "arthritis",
+          "jia",
+          "juvenile idiopathic arthritis",
+          "systemic",
+          "whatwasthediagnosis",
+          "other hospital say",
+          "otherhospitalsay",
+          "diagnosed with"
         ]
       },
       "disclosure": "on-ask",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·分诊记录：曾被诊断为全身型JIA",
+        "en": "The report (as extracted in version 1.0.0) · triage note: previously diagnosed with systemic JIA"
+      }
+    },
+    {
+      "id": "steroid-details",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "用的是哪种激素？剂量多少、用了多久，现在还在吃吗？",
+        "en": "Which steroid was it, at what dose and for how long — and is she still taking it?"
+      },
+      "answer": {
+        "zh-CN": "药名和剂量我说不清楚，现在具体怎么吃的我也说不准，医生。",
+        "en": "I can't tell you the name or the dose, doctor, or exactly how she's taking it now."
+      },
+      "keywords": {
+        "zh-CN": [
+          "剂量",
+          "多少毫克",
+          "吃多少",
+          "一天吃多少",
+          "多大量",
+          "吃了多久",
+          "用了多久",
+          "还在吃吗",
+          "现在还吃",
+          "哪种激素",
+          "激素叫什么",
+          "每天吃几片"
+        ],
+        "en": [
+          "dose",
+          "how much",
+          "howlonghasshe",
+          "still taking",
+          "still on",
+          "which steroid",
+          "milligrams",
+          "tablets a day",
+          "name of the steroid"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "发烧",
+          "退烧",
+          "烧退"
+        ],
+        "en": [
+          "fever"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "skin-mouth",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "刚开始发烧那阵，身上有没有皮疹、出血点，嘴里有没有溃疡，掉不掉头发？",
+        "en": "When the fever first started, was there any rash or bleeding spots, any mouth ulcers or hair loss?"
+      },
+      "answer": {
+        "zh-CN": "刚开始的时候没有皮疹、出血点，嘴里没有溃疡，也没掉头发。",
+        "en": "At the start there was no rash and no bleeding spots, no mouth ulcers, and no hair falling out."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮疹",
+          "疹子",
+          "出血点",
+          "口腔溃疡",
+          "口疮",
+          "掉头发",
+          "脱发",
+          "红疹",
+          "起疹"
+        ],
+        "en": [
+          "rash",
+          "spots",
+          "bleeding spots",
+          "petechiae",
+          "mouth ulcers",
+          "ulcers",
+          "hair loss",
+          "hair falling out"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·病史：起病时无皮疹、出血点、口腔溃疡或脱发",
+        "en": "The report (as extracted in version 1.0.0) · history: at onset no rash or bleeding spots, no oral ulcers, no hair loss"
+      }
+    },
+    {
+      "id": "anti-infection",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "用过抗生素或者别的抗感染治疗吗？效果怎么样？",
+        "en": "Has she had antibiotics or other treatment for infection, and did it help?"
+      },
+      "answer": {
+        "zh-CN": "最近差不多一个月，断断续续用过抗感染的药，烧还是在加重。",
+        "en": "On and off over roughly the past month she's had treatment for infection, and the fever still got worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗生素",
+          "消炎药",
+          "抗感染",
+          "输液",
+          "打吊针",
+          "头孢",
+          "青霉素"
+        ],
+        "en": [
+          "antibiotics",
+          "antibiotic",
+          "infection treatment",
+          "drip",
+          "iv antibiotics",
+          "penicillin",
+          "cephalosporin",
+          "treated for infection"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·病史：近一个月间断抗感染，发热仍加重",
+        "en": "The report (as extracted in version 1.0.0) · history: intermittent anti-infective treatment for about the last month (近一个月); the fever still worsened"
+      }
+    },
+    {
+      "id": "past-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次生病以前，她身体怎么样？",
+        "en": "How was her health before this illness?"
+      },
+      "answer": {
+        "zh-CN": "以前身体是健康的。",
+        "en": "She was healthy before this."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前身体",
+          "既往",
+          "以前生过什么病",
+          "之前身体",
+          "过去身体"
+        ],
+        "en": [
+          "before this",
+          "previously well",
+          "past illnesses",
+          "medical history",
+          "healthy before",
+          "everbeenill"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·病史：既往健康",
+        "en": "The report (as extracted in version 1.0.0) · history: previously healthy"
+      }
+    },
+    {
+      "id": "tb-hepatitis-contact",
+      "topic": "social",
+      "question": {
+        "zh-CN": "她接触过结核病人或者肝炎病人吗？",
+        "en": "Has she been in contact with anyone who had TB or hepatitis?"
+      },
+      "answer": {
+        "zh-CN": "没有，没接触过结核和肝炎病人。",
+        "en": "No — she hasn't been in contact with anyone with TB or hepatitis."
+      },
+      "keywords": {
+        "zh-CN": [
+          "结核",
+          "肺结核",
+          "肝炎",
+          "接触",
+          "传染病人"
+        ],
+        "en": [
+          "tb",
+          "tuberculosis",
+          "hepatitis",
+          "contact",
+          "infectious"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·病史：否认结核、肝炎接触",
+        "en": "The report (as extracted in version 1.0.0) · history: contact with TB or hepatitis denied"
       }
     },
     {
       "id": "vaccines",
       "topic": "immunisation",
       "question": {
-        "zh-CN": "疫苗按时接种了吗？ 能查到预防接种记录吗？",
-        "en": "Were vaccinations given on schedule? Are vaccination records available?"
+        "zh-CN": "疫苗都按时打了吗？",
+        "en": "Has she had all her vaccinations on time?"
       },
       "answer": {
-        "zh-CN": "按计划接种。",
-        "en": "Routine vaccination was reported."
+        "zh-CN": "疫苗都是按计划打的。",
+        "en": "Yes, she's had her vaccinations on schedule."
       },
       "keywords": {
         "zh-CN": [
           "疫苗",
-          "疫苗按时接种了吗？",
-          "能查到预防接种记录吗？",
-          "疫苗情况"
+          "打预防针",
+          "预防接种",
+          "接种"
         ],
         "en": [
-          "vaccination",
-          "Were vaccinations given on schedule?",
-          "Are vaccination records available?",
-          "vaccination information"
+          "vaccines",
+          "vaccinations",
+          "jabs",
+          "immunisations",
+          "immunizations",
+          "shots"
         ]
       },
       "disclosure": "on-ask",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·病史：按计划接种",
+        "en": "The report (as extracted in version 1.0.0) · history: routine vaccination as scheduled"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "她现在体重多少？",
+        "en": "How much does she weigh?"
+      },
+      "answer": {
+        "zh-CN": "15.9公斤。",
+        "en": "She's 15.9 kilos."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "多少公斤",
+          "多少斤",
+          "称过"
+        ],
+        "en": [
+          "weigh",
+          "weight",
+          "how heavy",
+          "kilos",
+          "kilograms"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "瘦",
+          "体重下降",
+          "掉秤"
+        ],
+        "en": [
+          "lost weight",
+          "weight loss",
+          "losing weight"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·患者资料：体重15.9 kg",
+        "en": "The report (as extracted in version 1.0.0) · patient record: weight 15.9 kg"
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "原资料有药物过敏吗？",
-        "en": "Is medicine allergies documented?"
+        "zh-CN": "她对什么药过敏过吗？",
+        "en": "Has she ever reacted badly to a medicine?"
       },
       "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+        "zh-CN": "有没有药物过敏，我说不上来，医生。",
+        "en": "I'm not sure whether she's allergic to anything, doctor."
       },
       "keywords": {
         "zh-CN": [
+          "过敏",
           "药物过敏",
-          "有关药物过敏",
-          "药物过敏情况",
-          "药物过敏记录"
+          "过敏史",
+          "对药过敏",
+          "过敏反应"
         ],
         "en": [
-          "medicine allergies",
-          "details of medicine allergies",
-          "medicine allergies information",
-          "medicine allergies record"
+          "allergy",
+          "allergies",
+          "allergic",
+          "reaction to medicine",
+          "drug reaction"
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
       }
     },
     {
-      "id": "family",
+      "id": "night-pain",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "她喊疼吗？晚上会不会疼醒？",
+        "en": "Does she complain of pain — does it wake her at night?"
+      },
+      "answer": {
+        "zh-CN": "疼不疼、夜里会不会疼醒，这个我说不准，医生。",
+        "en": "Whether it hurts her, or wakes her at night, I couldn't say, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疼",
+          "痛",
+          "夜里疼",
+          "疼醒",
+          "晚上疼",
+          "哪里疼",
+          "骨头疼",
+          "喊疼"
+        ],
+        "en": [
+          "pain",
+          "hurt",
+          "night pain",
+          "wake at night",
+          "sore",
+          "bone pain",
+          "wheredoesithurt",
+          "painful"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "关节"
+        ],
+        "en": [
+          "joint"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "weight-loss-sweats",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "她瘦了没有？胃口怎么样？夜里出汗多吗？",
+        "en": "Has she lost weight, gone off her food or had sweats at night?"
+      },
+      "answer": {
+        "zh-CN": "瘦没瘦、胃口和夜里出汗的情况，我说不上来，医生。",
+        "en": "Whether she's lost weight, how she's eating or sweating at night — I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "瘦了",
+          "体重下降",
+          "掉秤",
+          "胃口",
+          "食欲",
+          "吃饭",
+          "出汗",
+          "盗汗"
+        ],
+        "en": [
+          "lost weight",
+          "weight loss",
+          "losing weight",
+          "appetite",
+          "eating",
+          "night sweats",
+          "sweating",
+          "sweats"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "bruising-bleeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近身上有没有青紫，流鼻血或者牙龈出血？",
+        "en": "Lately, any bruising, nosebleeds or bleeding gums?"
+      },
+      "answer": {
+        "zh-CN": "最近有没有出血、青紫，这个我说不准，医生。",
+        "en": "Lately — I'm not sure about bruising or bleeding, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "青紫",
+          "瘀斑",
+          "流鼻血",
+          "鼻出血",
+          "牙龈出血",
+          "容易出血"
+        ],
+        "en": [
+          "bruising",
+          "bruises",
+          "nosebleeds",
+          "bleeding gums",
+          "bleed easily",
+          "bleeding"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "bladder-bowel",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "她大小便有没有困难？",
+        "en": "Any trouble passing urine or opening her bowels?"
+      },
+      "answer": {
+        "zh-CN": "大小便的情况我说不上来，医生。",
+        "en": "I'm not sure about her bladder or bowels, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "大小便",
+          "小便",
+          "大便",
+          "尿",
+          "便秘",
+          "拉不出",
+          "尿不出"
+        ],
+        "en": [
+          "urine",
+          "passing urine",
+          "wee",
+          "bowels",
+          "constipation",
+          "poo",
+          "bladder",
+          "peeing"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "family-history",
       "topic": "family",
       "question": {
-        "zh-CN": "原资料有家族病史吗？",
-        "en": "Is family illnesses documented?"
+        "zh-CN": "家里人有没有关节炎、血液病或者肿瘤？",
+        "en": "Does anyone in the family have arthritis, a blood disorder or cancer?"
       },
       "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+        "zh-CN": "家里人有什么病，这个我说不上来，医生。",
+        "en": "I'm not sure about illnesses in the family, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "家族病史",
-          "有关家族病史",
-          "家族病史情况",
-          "家族病史记录"
+          "家里人",
+          "家族",
+          "遗传",
+          "亲戚"
         ],
         "en": [
-          "family illnesses",
-          "details of family illnesses",
-          "family illnesses information",
-          "family illnesses record"
+          "family",
+          "relatives",
+          "runs in the family",
+          "inherited"
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
       }
     },
     {
-      "id": "surgery",
-      "topic": "psh",
-      "question": {
-        "zh-CN": "原资料有既往手术吗？",
-        "en": "Is earlier operations documented?"
-      },
-      "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
-      },
-      "keywords": {
-        "zh-CN": [
-          "既往手术",
-          "有关既往手术",
-          "既往手术情况",
-          "既往手术记录"
-        ],
-        "en": [
-          "earlier operations",
-          "details of earlier operations",
-          "earlier operations information",
-          "earlier operations record"
-        ]
-      },
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
-      }
-    },
-    {
-      "id": "regular-medication",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "原资料有日常用药清单吗？",
-        "en": "Is regular medicines documented?"
-      },
-      "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
-      },
-      "keywords": {
-        "zh-CN": [
-          "日常用药清单",
-          "有关日常用药清单",
-          "日常用药清单情况",
-          "日常用药清单记录"
-        ],
-        "en": [
-          "regular medicines",
-          "details of regular medicines",
-          "regular medicines information",
-          "regular medicines record"
-        ]
-      },
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
-      }
-    },
-    {
-      "id": "exposure",
+      "id": "exposures",
       "topic": "social",
       "question": {
-        "zh-CN": "原资料有照护环境暴露吗？",
-        "en": "Is environmental exposure documented?"
+        "zh-CN": "家里养动物吗？最近出过远门，或者喝过没消毒的奶吗？",
+        "en": "Any animals at home, recent travel, or unpasteurised milk?"
       },
       "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+        "zh-CN": "这些我说不上来，医生。",
+        "en": "I'm not sure about any of that, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "照护环境暴露",
-          "有关照护环境暴露",
-          "照护环境暴露情况",
-          "照护环境暴露记录"
+          "动物",
+          "养狗",
+          "养猫",
+          "牛羊",
+          "出远门",
+          "旅行",
+          "生奶",
+          "羊奶"
         ],
         "en": [
-          "environmental exposure",
-          "details of environmental exposure",
-          "environmental exposure information",
-          "environmental exposure record"
+          "animals",
+          "pets",
+          "farm",
+          "travel",
+          "unpasteurised",
+          "raw milk",
+          "goats",
+          "sheep"
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
       }
     },
     {
-      "id": "function",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "原资料有平时生长和活动吗？",
-        "en": "Is baseline function documented?"
-      },
-      "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
-      },
-      "keywords": {
-        "zh-CN": [
-          "平时生长和活动",
-          "有关平时生长和活动",
-          "平时生长和活动情况",
-          "平时生长和活动记录"
-        ],
-        "en": [
-          "baseline function",
-          "details of baseline function",
-          "baseline function information",
-          "baseline function record"
-        ]
-      },
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
-      }
-    },
-    {
-      "id": "expectations",
+      "id": "concerns",
       "topic": "ice",
       "question": {
-        "zh-CN": "原资料有希望和担忧吗？",
-        "en": "Is concerns documented?"
+        "zh-CN": "对孩子这次的病，你们最担心什么？",
+        "en": "What worries you most about her illness?"
       },
       "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+        "zh-CN": "这个我一时说不上来，医生。",
+        "en": "I'm not sure how to answer that, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "希望和担忧",
-          "有关希望和担忧",
-          "希望和担忧情况",
-          "希望和担忧记录"
+          "担心",
+          "最怕",
+          "顾虑",
+          "希望"
         ],
         "en": [
+          "worried",
+          "worries",
+          "worry",
           "concerns",
-          "details of concerns",
-          "concerns information",
-          "concerns record"
+          "afraid",
+          "hoping"
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
       "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
-      }
-    },
-    {
-      "id": "other-history",
-      "topic": "other",
-      "question": {
-        "zh-CN": "原资料有其他既往住院吗？",
-        "en": "Is other admissions documented?"
-      },
-      "answer": {
-        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
-      },
-      "keywords": {
-        "zh-CN": [
-          "其他既往住院",
-          "有关其他既往住院",
-          "其他既往住院情况",
-          "其他既往住院记录"
-        ],
-        "en": [
-          "other admissions",
-          "details of other admissions",
-          "other admissions information",
-          "other admissions record"
-        ]
-      },
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "confirmation"
-      ],
-      "source": {
-        "zh-CN": "原报告未提供此项资料。",
-        "en": "The report does not supply this information."
+        "zh-CN": "1.0.0版提取的资料中没有：保持未知，不补写",
+        "en": "Not in the facts extracted in version 1.0.0: kept unknown, nothing added"
       }
     }
   ],
@@ -769,271 +1096,1752 @@
       "id": "pallor",
       "system": "general",
       "maneuver": {
-        "zh-CN": "核对苍白及淋巴结",
-        "en": "Review pallor and nodes"
+        "zh-CN": "看面色和口唇",
+        "en": "Look at her colour and lips"
+      },
+      "keywords": {
+        "zh-CN": [
+          "面色",
+          "脸色",
+          "口唇",
+          "苍白",
+          "贫血貌",
+          "看起来怎么样"
+        ],
+        "en": [
+          "colour",
+          "color",
+          "pale",
+          "pallor",
+          "lips",
+          "general appearance",
+          "howshelooks"
+        ]
       },
       "finding": {
-        "zh-CN": "贫血貌、口唇苍白，无浅表淋巴结大，当前无皮疹。",
-        "en": "Pallor and pale lips without superficial lymphadenopathy or current rash."
+        "zh-CN": "贫血貌，口唇苍白。",
+        "en": "She looks anaemic; her lips are pale."
       },
       "abnormal": true,
-      "phases": [
-        "initial"
-      ],
       "required": true,
+      "phases": [
+        "admission"
+      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·查体：贫血貌、口唇苍白",
+        "en": "The report (as extracted in version 1.0.0) · examination: anaemic appearance, pale lips"
       }
     },
     {
-      "id": "joints",
-      "system": "musculoskeletal",
+      "id": "lymph-nodes",
+      "system": "lymphatic",
       "maneuver": {
-        "zh-CN": "核对关节和髋部",
-        "en": "Review joints and hips"
+        "zh-CN": "触诊浅表淋巴结",
+        "en": "Feel for enlarged lymph nodes"
+      },
+      "keywords": {
+        "zh-CN": [
+          "淋巴结",
+          "颈部淋巴结",
+          "腋下",
+          "腹股沟",
+          "淋巴"
+        ],
+        "en": [
+          "lymph nodes",
+          "nodes",
+          "glands",
+          "lymphadenopathy",
+          "neck nodes",
+          "armpits",
+          "groin"
+        ]
       },
       "finding": {
-        "zh-CN": "双踝足背肿，双侧4字征阳性，肌力张力正常。",
-        "en": "Swollen ankles/feet and bilateral positive figure-four tests, with normal tone and power."
+        "zh-CN": "浅表淋巴结未触及肿大。",
+        "en": "No enlarged superficial lymph nodes."
+      },
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·查体：无浅表淋巴结肿大",
+        "en": "The report (as extracted in version 1.0.0) · examination: no superficial lymphadenopathy"
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "查看全身皮肤",
+        "en": "Look over her skin"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤",
+          "皮疹",
+          "出血点",
+          "疹子",
+          "瘀斑"
+        ],
+        "en": [
+          "skin",
+          "rash",
+          "spots",
+          "petechiae",
+          "bruises"
+        ]
+      },
+      "finding": {
+        "zh-CN": "目前没有皮疹。",
+        "en": "No rash at present."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·查体：当前无皮疹",
+        "en": "The report (as extracted in version 1.0.0) · examination: no rash at present"
+      }
+    },
+    {
+      "id": "ankles-feet",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查双踝和足背",
+        "en": "Examine her ankles and feet"
+      },
+      "keywords": {
+        "zh-CN": [
+          "踝",
+          "脚踝",
+          "足背",
+          "脚",
+          "关节肿",
+          "下肢",
+          "关节"
+        ],
+        "en": [
+          "ankles",
+          "ankle",
+          "feet",
+          "foot",
+          "swelling",
+          "joints",
+          "legs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双侧踝部和足背肿胀。",
+        "en": "Both ankles and the backs of both feet are swollen."
       },
       "abnormal": true,
-      "phases": [
-        "initial"
-      ],
       "required": true,
+      "phases": [
+        "admission"
+      ],
       "source": {
-        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+        "zh-CN": "原报告（据1.0.0版提取）·查体：双踝、足背肿",
+        "en": "The report (as extracted in version 1.0.0) · examination: both ankles and dorsa of the feet swollen"
+      }
+    },
+    {
+      "id": "figure-four",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "做“4”字试验（检查髋和骶髂关节）",
+        "en": "Do the figure-four (FABER) test of the hips and sacroiliac joints"
+      },
+      "keywords": {
+        "zh-CN": [
+          "4字",
+          "四字",
+          "髋",
+          "骶髂",
+          "髋关节",
+          "屈髋"
+        ],
+        "en": [
+          "figure four",
+          "figure-four",
+          "faber",
+          "patrick",
+          "hip",
+          "hips",
+          "sacroiliac",
+          "si joint"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双侧“4”字试验阳性。",
+        "en": "The figure-four test is positive on both sides."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·查体：双侧4字征阳性",
+        "en": "The report (as extracted in version 1.0.0) · examination: figure-four test positive on both sides"
+      }
+    },
+    {
+      "id": "power-tone",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查肌力和肌张力",
+        "en": "Check muscle power and tone"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肌力",
+          "肌张力",
+          "神经系统",
+          "力气"
+        ],
+        "en": [
+          "power",
+          "tone",
+          "strength",
+          "neurological",
+          "neuro exam",
+          "muscle"
+        ]
+      },
+      "finding": {
+        "zh-CN": "肌力、肌张力正常。",
+        "en": "Muscle power and tone are normal."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告（据1.0.0版提取）·查体：肌力、肌张力正常",
+        "en": "The report (as extracted in version 1.0.0) · examination: normal muscle power and tone"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
-    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+    "zh-CN": "她的病历里没有这项检查的记录。",
+    "en": "This examination is not recorded in her notes."
   },
   "investigations": [
     {
-      "id": "blood",
+      "id": "fbc",
       "name": {
-        "zh-CN": "血象及炎症趋势",
-        "en": "Counts and inflammatory trends"
+        "zh-CN": "血常规结果",
+        "en": "Blood count results"
       },
-      "category": "record",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "血象及炎症趋势"
+          "血常规",
+          "血象",
+          "血红蛋白",
+          "血小板",
+          "全血细胞计数",
+          "血细胞分析"
         ],
         "en": [
-          "Counts and inflammatory trends"
+          "fbc",
+          "full blood count",
+          "cbc",
+          "blood count",
+          "haemoglobin",
+          "hemoglobin",
+          "platelets",
+          "platelet count"
         ]
       },
-      "performedAt": "records",
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
         "workup": {
           "available": true,
           "text": {
-            "zh-CN": "Hb55–80 g/L、血小板65–199×10⁹/L，LDH1312 U/L、ESR140 mm/h、CRP71 mg/L。",
-            "en": "Hb 55–80 g/L, platelets 65–199×10⁹/L, LDH 1312 U/L, ESR 140 mm/h and CRP 71 mg/L."
+            "zh-CN": "血红蛋白55–80 g/L，血小板65–199×10⁹/L（为所记录各次结果的范围）。",
+            "en": "Haemoglobin 55–80 g/L and platelets 65–199 × 10⁹/L (the range across the recorded results)."
           },
           "source": {
-            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+            "zh-CN": "原报告（据1.0.0版提取）·血象及炎症趋势",
+            "en": "The report (as extracted in version 1.0.0) · counts and inflammatory trends"
           },
-          "values": [],
-          "figures": [],
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": {
+                "zh-CN": "55–80",
+                "en": "55–80"
+              },
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": {
+                "zh-CN": "65–199",
+                "en": "65–199"
+              },
+              "unit": "×10⁹/L"
+            }
+          ],
           "note": {
-            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
-            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+            "zh-CN": "这是多次结果的范围：每个数值的日期和先后、白细胞计数及分类、参考范围都没有记录。",
+            "en": "This is a range across more than one result: the date and order of each value, the white cell count and differential, and the reference intervals are not recorded."
           }
         }
       }
     },
     {
-      "id": "screen",
+      "id": "esr-crp",
       "name": {
-        "zh-CN": "免疫感染及骨髓筛查",
-        "en": "Immune, infectious and marrow screen"
+        "zh-CN": "血沉和C反应蛋白",
+        "en": "ESR and CRP"
       },
-      "category": "record",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "免疫感染及骨髓筛查"
+          "血沉",
+          "红细胞沉降率",
+          "C反应蛋白",
+          "炎症指标"
         ],
         "en": [
-          "Immune, infectious and marrow screen"
+          "esr",
+          "crp",
+          "c-reactive protein",
+          "sed rate",
+          "sedimentation rate",
+          "inflammatory markers"
         ]
       },
-      "performedAt": "records",
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
         "workup": {
           "available": true,
           "text": {
-            "zh-CN": "多项自身抗体和病毒检查阴性；骨髓红系增生，未提供确诊肿瘤浸润。",
-            "en": "Multiple antibodies/viral studies were negative; marrow showed erythroid proliferation without reported definitive tumour infiltration."
+            "zh-CN": "血沉140 mm/h，C反应蛋白71 mg/L。",
+            "en": "ESR 140 mm/h; CRP 71 mg/L."
           },
           "source": {
-            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+            "zh-CN": "原报告（据1.0.0版提取）·血象及炎症趋势",
+            "en": "The report (as extracted in version 1.0.0) · counts and inflammatory trends"
           },
-          "values": [],
-          "figures": [],
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血沉",
+                "en": "ESR"
+              },
+              "value": 140,
+              "unit": "mm/h"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": 71,
+              "unit": "mg/L"
+            }
+          ],
           "note": {
-            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
-            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+            "zh-CN": "检测日期和参考范围没有记录。",
+            "en": "The dates and reference intervals are not recorded."
           }
         }
       }
     },
     {
-      "id": "imaging",
+      "id": "ldh",
       "name": {
-        "zh-CN": "骨盆序贯影像",
-        "en": "Serial pelvic imaging"
+        "zh-CN": "乳酸脱氢酶（LDH）",
+        "en": "Lactate dehydrogenase (LDH)"
       },
-      "category": "record",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "骨盆序贯影像"
+          "乳酸脱氢酶",
+          "LDH"
         ],
         "en": [
-          "Serial pelvic imaging"
+          "ldh",
+          "lactate dehydrogenase"
         ]
       },
-      "performedAt": "records",
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
         "workup": {
           "available": true,
           "text": {
-            "zh-CN": "MRI右髂骨及周围包块、弥散受限；平片未见明显破坏；增强CT见包绕髂骨肿块、骨膜反应及骶骨异常。",
-            "en": "MRI showed a right iliac/peri-iliac mass with restricted diffusion; radiographs lacked obvious destruction, while CT showed an encasing mass, periosteal reaction and sacral abnormalities."
+            "zh-CN": "乳酸脱氢酶1312 U/L。",
+            "en": "LDH 1312 U/L."
           },
           "source": {
-            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+            "zh-CN": "原报告（据1.0.0版提取）·血象及炎症趋势",
+            "en": "The report (as extracted in version 1.0.0) · counts and inflammatory trends"
           },
-          "values": [],
-          "figures": [],
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "乳酸脱氢酶",
+                "en": "LDH"
+              },
+              "value": 1312,
+              "unit": "U/L"
+            }
+          ],
           "note": {
-            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
-            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+            "zh-CN": "检测日期和该实验室的参考范围没有记录。",
+            "en": "The date and the laboratory's reference interval are not recorded."
           }
         }
       }
     },
     {
-      "id": "tissue",
+      "id": "autoantibodies",
       "name": {
-        "zh-CN": "骨病理与分期记录",
-        "en": "Bone pathology and staging"
+        "zh-CN": "自身抗体检查",
+        "en": "Autoantibody tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "自身抗体",
+          "免疫学检查",
+          "风湿抗体",
+          "自身免疫抗体"
+        ],
+        "en": [
+          "autoantibodies",
+          "autoantibody",
+          "autoimmune screen",
+          "immunology screen",
+          "rheumatology antibodies"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "多项自身抗体检查阴性。",
+            "en": "Multiple autoantibody tests were negative."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·免疫、感染及骨髓筛查",
+            "en": "The report (as extracted in version 1.0.0) · immune, infectious and marrow screen"
+          },
+          "note": {
+            "zh-CN": "具体查了哪些抗体没有记录。",
+            "en": "Which antibodies were tested is not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "viral-studies",
+      "name": {
+        "zh-CN": "病毒学检查",
+        "en": "Viral tests"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "病毒",
+          "病毒学",
+          "病毒检查",
+          "病毒抗体"
+        ],
+        "en": [
+          "viral",
+          "virology",
+          "viral studies",
+          "virus tests",
+          "viral serology"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "多项病毒学检查阴性。",
+            "en": "Multiple viral tests were negative."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·免疫、感染及骨髓筛查",
+            "en": "The report (as extracted in version 1.0.0) · immune, infectious and marrow screen"
+          },
+          "note": {
+            "zh-CN": "具体查了哪些病毒、用的什么方法没有记录。",
+            "en": "Which viruses were tested, and by which methods, is not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓检查",
+        "en": "Bone marrow examination"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "骨髓",
+          "骨穿",
+          "骨髓穿刺",
+          "骨髓象",
+          "骨髓活检"
+        ],
+        "en": [
+          "bone marrow",
+          "marrow",
+          "bone marrow aspirate",
+          "marrow aspirate",
+          "bone marrow biopsy",
+          "trephine"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "骨髓红系增生；未报告确诊的肿瘤浸润。",
+            "en": "Erythroid hyperplasia; no confirmed tumour infiltration is reported."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·免疫、感染及骨髓筛查",
+            "en": "The report (as extracted in version 1.0.0) · immune, infectious and marrow screen"
+          },
+          "note": {
+            "zh-CN": "是穿刺涂片还是活检、取材部位和次数，以及与激素治疗的先后都没有记录。",
+            "en": "Whether this was an aspirate or a trephine, the site, the number of samples and its timing relative to the steroids are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "radiographs",
+      "name": {
+        "zh-CN": "X线平片（骨盆影像）",
+        "en": "Plain radiographs (pelvic imaging)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "平片",
+          "X线",
+          "X光",
+          "骨盆片",
+          "髋关节片",
+          "拍片"
+        ],
+        "en": [
+          "x-ray",
+          "xray",
+          "radiograph",
+          "radiographs",
+          "plain film",
+          "pelvic x-ray",
+          "hip x-ray"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "未见明显骨质破坏。",
+            "en": "No obvious bone destruction."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·骨盆序贯影像",
+            "en": "The report (as extracted in version 1.0.0) · serial pelvic imaging"
+          },
+          "note": {
+            "zh-CN": "这些平片归在她的骨盆影像中；具体部位、体位和拍摄时间没有记录。",
+            "en": "These films are filed with her pelvic imaging; the exact region, the views and when they were taken are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "mri",
+      "name": {
+        "zh-CN": "MRI（骨盆）",
+        "en": "MRI (pelvis)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "磁共振",
+          "核磁",
+          "骨盆MRI",
+          "髋部MRI"
+        ],
+        "en": [
+          "mri",
+          "magnetic resonance",
+          "mri pelvis",
+          "pelvic mri",
+          "mri hips"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "右髂骨及其周围包块，弥散受限。",
+            "en": "A mass in the right ilium and the tissue around it, with restricted diffusion."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·骨盆序贯影像",
+            "en": "The report (as extracted in version 1.0.0) · serial pelvic imaging"
+          },
+          "note": {
+            "zh-CN": "序列、是否增强、病灶大小和范围没有记录。",
+            "en": "The sequences, contrast, size and extent are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "增强CT（骨盆）",
+        "en": "Contrast-enhanced CT (pelvis)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "增强CT",
+          "骨盆CT",
+          "髋部CT",
+          "盆腔CT"
+        ],
+        "en": [
+          "contrast ct",
+          "ct pelvis",
+          "pelvic ct",
+          "ct scan of the pelvis",
+          "ct hips"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "包绕髂骨的肿块，伴骨膜反应，骶骨异常。",
+            "en": "A mass encasing the ilium, with periosteal reaction and an abnormality of the sacrum."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·骨盆序贯影像",
+            "en": "The report (as extracted in version 1.0.0) · serial pelvic imaging"
+          },
+          "note": {
+            "zh-CN": "CT记录没有写明侧别（MRI记录为右侧）；肿块大小和骶骨异常的性质没有记录。",
+            "en": "The CT record does not name the side (the MRI record says right); the size of the mass and the nature of the sacral abnormality are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "右髂骨活检病理报告",
+        "en": "Right iliac biopsy: pathology report"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "活检",
+          "病理",
+          "病理报告",
+          "髂骨活检",
+          "活检结果"
+        ],
+        "en": [
+          "biopsy",
+          "pathology",
+          "histology",
+          "biopsy report",
+          "iliac biopsy",
+          "pathology report"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "diagnosis": {
+          "available": true,
+          "text": {
+            "zh-CN": "右髂骨活检：尤文瘤。未给出融合基因等分子分型。",
+            "en": "Right iliac biopsy: Ewing tumour. No fusion gene or other molecular classification is given."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·骨病理与分期记录",
+            "en": "The report (as extracted in version 1.0.0) · bone pathology and staging"
+          },
+          "note": {
+            "zh-CN": "活检方式（穿刺或切开）、免疫组化结果和由谁操作都没有记录。",
+            "en": "The biopsy approach (needle or open), the immunohistochemistry and who performed it are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "pet-ct",
+      "name": {
+        "zh-CN": "PET-CT",
+        "en": "PET-CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "PET",
+          "正电子",
+          "全身PET"
+        ],
+        "en": [
+          "pet",
+          "pet ct",
+          "pet scan",
+          "fdg pet"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "diagnosis": {
+          "available": true,
+          "text": {
+            "zh-CN": "多部位骨病灶，报告考虑转移或多中心病变；病灶未逐个取材。",
+            "en": "Multiple bone lesions, reported as metastatic or multicentric disease; the lesions were not each sampled."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）·骨病理与分期记录",
+            "en": "The report (as extracted in version 1.0.0) · bone pathology and staging"
+          },
+          "note": {
+            "zh-CN": "累及哪些骨、肺部情况，以及与活检的先后没有记录。",
+            "en": "Which bones are involved, the lungs, and its timing relative to the biopsy are not recorded."
+          }
+        }
+      }
+    },
+    {
+      "id": "outcome",
+      "name": {
+        "zh-CN": "转科与随访记录",
+        "en": "Transfer and follow-up record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "骨病理与分期记录"
+          "转归",
+          "随访",
+          "后续",
+          "转科记录"
         ],
         "en": [
-          "Bone pathology and staging"
+          "outcome",
+          "follow-up",
+          "follow up",
+          "what happened next",
+          "transfer record"
         ]
       },
-      "performedAt": "records",
       "requires": [
         "records"
       ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "confirmation": {
-          "available": true,
-          "text": {
-            "zh-CN": "右髂骨活检报告尤文瘤，未给出融合基因等现代分型；PET-CT多部骨病灶，报告考虑转移或多中心，未逐个取材。",
-            "en": "Right iliac biopsy was reported as Ewing tumour without molecular fusion details. PET-CT showed multiple bone lesions interpreted as metastatic or multicentric, without sampling each lesion."
-          },
-          "source": {
-            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
-          },
-          "values": [],
-          "figures": [],
-          "note": {
-            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
-            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
-          }
-        }
-      }
-    },
-    {
-      "id": "followup",
-      "name": {
-        "zh-CN": "原报告治疗及转归",
-        "en": "Reported treatment and outcome"
-      },
-      "category": "record",
       "performedAt": "records",
-      "requires": [
-        "records"
-      ],
       "risk": "none",
       "value": "useful",
       "results": {
-        "followup": {
-          "text": {
-            "zh-CN": "确诊后转血液科化疗；后续方案反应、生存和功能结局没有报告。",
-            "en": "After diagnosis she transferred for chemotherapy; regimen response, survival and functional outcomes were not reported."
-          },
+        "outcome": {
           "available": true,
+          "text": {
+            "zh-CN": "确诊后转血液科化疗。化疗方案、疗效、生存和功能结局没有报告。",
+            "en": "After the diagnosis she was transferred to the haematology department for chemotherapy. The regimen, her response, survival and function are not reported."
+          },
           "source": {
-            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
-            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+            "zh-CN": "原报告（据1.0.0版提取）·原报告治疗及转归",
+            "en": "The report (as extracted in version 1.0.0) · reported treatment and outcome"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-film",
+      "name": {
+        "zh-CN": "外周血涂片",
+        "en": "Blood film"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血涂片",
+          "外周血涂片",
+          "涂片",
+          "幼稚细胞"
+        ],
+        "en": [
+          "blood film",
+          "peripheral smear",
+          "blood smear",
+          "peripheral film",
+          "blasts"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-culture",
+      "name": {
+        "zh-CN": "血培养",
+        "en": "Blood culture"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "血培养"
+        ],
+        "en": [
+          "blood culture",
+          "blood cultures"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "mas-screen",
+      "name": {
+        "zh-CN": "铁蛋白、甘油三酯和肝酶",
+        "en": "Ferritin, triglycerides and liver enzymes"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "铁蛋白",
+          "甘油三酯",
+          "肝功能",
+          "肝酶",
+          "转氨酶"
+        ],
+        "en": [
+          "ferritin",
+          "triglycerides",
+          "liver function",
+          "liver enzymes",
+          "lfts",
+          "transaminases"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "urine-catecholamines",
+      "name": {
+        "zh-CN": "尿儿茶酚胺代谢物（VMA、HVA）",
+        "en": "Urine catecholamine metabolites (VMA, HVA)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "尿VMA",
+          "尿HVA",
+          "香草扁桃酸",
+          "高香草酸",
+          "儿茶酚胺",
+          "尿儿茶酚胺"
+        ],
+        "en": [
+          "vma",
+          "hva",
+          "urine catecholamines",
+          "catecholamines",
+          "homovanillic acid",
+          "vanillylmandelic acid"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血功能（PT、APTT、纤维蛋白原）",
+        "en": "Coagulation screen (PT, APTT, fibrinogen)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "凝血",
+          "凝血功能",
+          "凝血四项",
+          "APTT",
+          "纤维蛋白原"
+        ],
+        "en": [
+          "coagulation",
+          "clotting",
+          "coag",
+          "aptt",
+          "inr",
+          "fibrinogen",
+          "clotting screen"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "chest-ct",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "CT chest"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部CT",
+          "肺CT",
+          "胸CT"
+        ],
+        "en": [
+          "chest ct",
+          "ct chest",
+          "ct thorax",
+          "lung ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "diagnosis": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "fusion-test",
+      "name": {
+        "zh-CN": "活检组织融合基因检测（FISH、RT-PCR或测序）",
+        "en": "Gene-fusion testing on the biopsy (FISH, RT-PCR or sequencing)"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "融合基因",
+          "EWSR1",
+          "FISH",
+          "分子检测",
+          "EWSR1-FLI1",
+          "RT-PCR"
+        ],
+        "en": [
+          "ewsr1",
+          "fusion",
+          "fish",
+          "molecular testing",
+          "ewsr1-fli1",
+          "rt-pcr",
+          "next-generation sequencing",
+          "translocation"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "value": "essential",
+      "results": {
+        "diagnosis": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "原报告（据1.0.0版提取）没有这项检查：保持未知，不补写",
+            "en": "Not in the report as extracted in version 1.0.0: kept unknown, nothing added"
           }
         }
       }
     }
   ],
-  "interventions": [],
+  "interventions": [
+    {
+      "id": "oncology-referral",
+      "name": {
+        "zh-CN": "活检前转诊儿童肿瘤及骨肉瘤专科团队",
+        "en": "Refer to the paediatric oncology and bone sarcoma team before any biopsy"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "转诊肿瘤科",
+          "请肿瘤科会诊",
+          "骨肉瘤团队",
+          "肉瘤中心",
+          "多学科会诊",
+          "儿童肿瘤科"
+        ],
+        "en": [
+          "oncology referral",
+          "refer to oncology",
+          "sarcoma team",
+          "sarcoma centre",
+          "bone sarcoma mdt",
+          "paediatric oncology"
+        ]
+      },
+      "dose": {
+        "zh-CN": "转诊儿童肿瘤科及骨肉瘤多学科团队（有儿童专长的骨肉瘤中心），由他们阅片并规划取组织的方式和地点。",
+        "en": "Refer to the paediatric oncology and bone sarcoma multidisciplinary team (a bone sarcoma centre with paediatric expertise) to review the imaging and plan how and where tissue is taken."
+      },
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "intervened": "planned-biopsy"
+            },
+            {
+              "intervened": "open-excision"
+            }
+          ]
+        }
+      },
+      "response": {
+        "zh-CN": "已转诊：儿童肿瘤及骨肉瘤团队会阅片，规划在哪里、怎样取组织。她病程中的活检由谁规划，病历没有写。",
+        "en": "Referral made: the paediatric oncology and bone sarcoma team will review her imaging and plan where and how tissue is taken. Who planned the biopsy in her recorded course is not stated."
+      },
+      "requires": [],
+      "effects": []
+    },
+    {
+      "id": "planned-biopsy",
+      "name": {
+        "zh-CN": "由骨肉瘤团队规划的影像引导下髂骨病灶穿刺活检",
+        "en": "Image-guided core biopsy of the iliac lesion, planned with the bone sarcoma team"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "穿刺活检",
+          "髂骨活检",
+          "影像引导活检",
+          "CT引导活检",
+          "粗针活检",
+          "取活检"
+        ],
+        "en": [
+          "core biopsy",
+          "needle biopsy",
+          "iliac biopsy",
+          "image-guided biopsy",
+          "ct-guided biopsy",
+          "take a biopsy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按骨肉瘤团队规划的穿刺道，在影像引导下粗针多点取材；标本送病理、分子检测（新鲜或冰冻组织）和培养；术前确认当天血小板和凝血结果，并告知麻醉医生她的激素用药史。",
+        "en": "Image-guided core needle biopsy with several cores, along the tract the bone sarcoma team has planned; samples for histology, molecular testing (fresh or frozen tissue) and culture; today's platelet count and clotting checked first, and the anaesthetist told about her steroid treatment."
+      },
+      "risk": "moderate",
+      "critical": false,
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "intervened": "oncology-referral"
+          },
+          {
+            "read": "fbc",
+            "phase": "workup"
+          },
+          {
+            "ordered": "coagulation"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "fbc",
+          "phase": "workup"
+        }
+      },
+      "harm": {
+        "zh-CN": "她的血小板最低到过65×10⁹/L：在针进骨头之前，先知道当天的血小板和凝血情况（国家卫健委2019年规范把凝血功能列为治疗前应了解的检查），并让麻醉医生了解她的激素用药。",
+        "en": "Her platelet count has been as low as 65 × 10⁹/L: know today's count and clotting before a needle goes into bone (China's 2019 national guideline lists clotting among the tests to know before treatment), and let the anaesthetist know about her steroid treatment."
+      },
+      "response": {
+        "zh-CN": "已按骨肉瘤团队的规划在影像引导下完成活检，组织已送病理、分子检测和培养。原报告记录做了右髂骨活检，但没有写明活检方式。",
+        "en": "Biopsy done with image guidance along the bone sarcoma team's plan; tissue sent for histology, molecular testing and culture. The report records a right iliac biopsy but not its approach."
+      },
+      "requires": [],
+      "effects": []
+    },
+    {
+      "id": "rbc-transfusion",
+      "name": {
+        "zh-CN": "按当天血红蛋白输注红细胞",
+        "en": "Red-cell transfusion against today's haemoglobin"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "输血",
+          "输红细胞",
+          "输注红细胞",
+          "悬浮红细胞",
+          "纠正贫血"
+        ],
+        "en": [
+          "transfuse",
+          "transfusion",
+          "red cells",
+          "packed cells",
+          "blood transfusion",
+          "prbc"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "化疗",
+          "肿瘤科",
+          "转科"
+        ],
+        "en": [
+          "oncology",
+          "chemotherapy",
+          "chemo"
+        ]
+      },
+      "dose": {
+        "zh-CN": "当天血红蛋白低于阈值时输注红细胞（BSH 2016：病情稳定的儿童为70 g/L，儿童肿瘤患者70–80 g/L较为合理）；按体重计算输注量，使输后血红蛋白不超过阈值20 g/L；输血前先留血涂片和配血标本。",
+        "en": "Red cells if today's haemoglobin is below the threshold (BSH 2016: 70 g/L in a stable child; 70–80 g/L is reasonable in children with cancer); volume calculated from her weight so that the post-transfusion haemoglobin is no more than 20 g/L above the threshold; send the blood film and the group-and-screen sample first."
+      },
+      "requires": [
+        "blood-bank",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "critical": false,
+      "indicatedWhen": {
+        "read": "fbc",
+        "phase": "workup"
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "fbc",
+          "phase": "workup"
+        }
+      },
+      "harm": {
+        "zh-CN": "输血要对照测得的血红蛋白：BSH 2016对病情稳定的儿童以70 g/L为阈值（儿童肿瘤患者70–80 g/L较为合理），输注量以输后不超过阈值20 g/L为度。先看她的血常规。",
+        "en": "A transfusion is given against a measured haemoglobin: BSH 2016 uses a threshold of 70 g/L in a stable child (70–80 g/L is reasonable in children with cancer) and a volume that brings it no more than 20 g/L above the threshold. Read her blood count first."
+      },
+      "response": {
+        "zh-CN": "已按当天的血红蛋白和体重（15.9 kg）开出红细胞。她在病程中是否输过血，病历没有记录。",
+        "en": "Red cells ordered against today's haemoglobin and her weight (15.9 kg). Whether she was transfused in her recorded course is not recorded."
+      },
+      "effects": []
+    },
+    {
+      "id": "family-meeting",
+      "name": {
+        "zh-CN": "与儿童肿瘤科医生和护士一起向家长说明诊断",
+        "en": "Meet her parent with the paediatric oncologist and the nurse to explain the diagnosis"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "家属谈话",
+          "告知家长",
+          "和家长谈",
+          "沟通病情",
+          "坏消息告知"
+        ],
+        "en": [
+          "family meeting",
+          "talk to the parents",
+          "explain the diagnosis",
+          "break the news",
+          "meet the family"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在安静的房间与家长谈话（SPIKES）：先了解他们已经知道什么、想知道多少，用通俗的话说明诊断、仍不确定的部分和下一步，回应情绪，用回授法确认理解。",
+        "en": "A conversation with her parent in a quiet room (SPIKES): find out what they know and want to know, explain the diagnosis, what is still uncertain and the next steps in plain words, respond to emotion and check understanding with teach-back."
+      },
+      "risk": "none",
+      "indicatedWhen": {
+        "read": "biopsy",
+        "phase": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "已与家长谈话，说明了诊断、仍不确定的部分和下一步。病历没有记录当时向家属交代了什么。",
+        "en": "Her parent has been seen; the diagnosis, what is still uncertain and the next steps have been explained. Her notes do not record what the family was told."
+      },
+      "requires": [],
+      "effects": []
+    },
+    {
+      "id": "fertility-consult",
+      "name": {
+        "zh-CN": "化疗前与家长讨论生育力保存",
+        "en": "Discuss fertility preservation with her parent before chemotherapy"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "生育力保存",
+          "卵巢组织冻存",
+          "生殖科会诊",
+          "保护生育"
+        ],
+        "en": [
+          "fertility preservation",
+          "ovarian tissue cryopreservation",
+          "fertility referral",
+          "fertility consult"
+        ]
+      },
+      "dose": {
+        "zh-CN": "化疗开始前请生育力保存团队与家长讨论；她尚未进入青春期，可考虑的方法是卵巢组织冻存（有条件时）。",
+        "en": "Ask the fertility-preservation team to see her parent before chemotherapy starts; she is prepubertal, so the option to consider is ovarian tissue cryopreservation, where it is available."
+      },
+      "risk": "none",
+      "indicatedWhen": {
+        "read": "biopsy",
+        "phase": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "已请生育力保存团队在化疗前与家长讨论。病历没有提到生育力的问题。",
+        "en": "The fertility-preservation team has been asked to see her parent before chemotherapy. Her notes do not mention fertility."
+      },
+      "requires": [],
+      "effects": []
+    },
+    {
+      "id": "transfer-oncology",
+      "name": {
+        "zh-CN": "转儿童血液肿瘤科化疗",
+        "en": "Transfer to paediatric haematology–oncology for chemotherapy"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转血液科",
+          "转肿瘤科",
+          "开始化疗",
+          "化疗",
+          "转科"
+        ],
+        "en": [
+          "transfer to oncology",
+          "transfer to haematology",
+          "start chemotherapy",
+          "chemotherapy",
+          "chemo"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "输血",
+          "红细胞"
+        ],
+        "en": [
+          "red cells",
+          "transfuse",
+          "transfusion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "转儿童血液肿瘤团队，按现行尤文肉瘤方案化疗。",
+        "en": "Transfer to the paediatric haematology–oncology team for chemotherapy on a current Ewing sarcoma protocol."
+      },
+      "risk": "moderate",
+      "critical": false,
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "biopsy",
+        "phase": "diagnosis"
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "biopsy",
+          "phase": "diagnosis"
+        }
+      },
+      "harm": {
+        "zh-CN": "化疗要等组织诊断：ESMO 2021以活检作为可疑骨肿瘤的确诊依据，而不同肿瘤的治疗各不相同；取材前开始化疗可能让诊断再也无法明确。",
+        "en": "Chemotherapy waits for a tissue diagnosis: ESMO 2021 makes the biopsy the definitive diagnosis of a suspected bone tumour, and treatment differs between tumour types; chemotherapy before tissue is taken can make the diagnosis impossible."
+      },
+      "response": {
+        "zh-CN": "已安排转儿童血液肿瘤团队。",
+        "en": "Transfer to the paediatric haematology–oncology team arranged."
+      },
+      "requires": [],
+      "effects": []
+    },
+    {
+      "id": "methylpred-pulse",
+      "name": {
+        "zh-CN": "静脉甲泼尼龙冲击治疗“难治性全身型JIA”",
+        "en": "IV methylprednisolone pulse for “refractory systemic JIA”"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "甲泼尼龙冲击",
+          "激素冲击",
+          "加大激素",
+          "静脉激素",
+          "甲强龙冲击"
+        ],
+        "en": [
+          "methylprednisolone pulse",
+          "steroid pulse",
+          "pulse steroids",
+          "iv methylprednisolone",
+          "increase the steroids",
+          "iv steroids"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按全身型JIA方案静脉甲泼尼龙冲击。",
+        "en": "Methylprednisolone by IV pulse, as for refractory systemic JIA."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "high",
+      "critical": true,
+      "contraindicatedWhen": {
+        "not": {
+          "read": "biopsy",
+          "phase": "diagnosis"
+        }
+      },
+      "harm": {
+        "zh-CN": "病因未明就加大激素，是在按诊断标签治疗。EULAR/PReS 2024要求在治疗Still病（全身型JIA）之前认真考虑肿瘤、感染等其他诊断，并提醒一旦误诊，糖皮质激素可能有害，尤其是肿瘤时。大剂量激素会压住发热、部分治疗白血病或淋巴瘤，让诊断推迟并变得模糊。",
+        "en": "Raising the steroids before the cause is known treats a label. EULAR/PReS 2024 asks that malignancy, infection and other mimics be carefully considered before Still's disease (systemic JIA) is treated, and warns that glucocorticoids can be deleterious when it is misdiagnosed, particularly in malignancy. Pulsed steroids can blunt the fever and partly treat a leukaemia or lymphoma, delaying and blurring the diagnosis."
+      },
+      "response": {
+        "zh-CN": "已给药。这不在她记录的病程中；发热的原因仍然不明，现在用激素可能让之后的活检所见变得模糊。",
+        "en": "Given. It is not part of her recorded course; the cause of her fever is still unknown, and steroids now can blur what a biopsy would show."
+      },
+      "effects": []
+    },
+    {
+      "id": "il-blockade",
+      "name": {
+        "zh-CN": "开始IL-1或IL-6抑制剂治疗“难治性全身型JIA”",
+        "en": "Start an IL-1 or IL-6 inhibitor for “refractory systemic JIA”"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "托珠单抗",
+          "阿那白滞素",
+          "生物制剂",
+          "IL-6抑制剂",
+          "IL-1抑制剂"
+        ],
+        "en": [
+          "tocilizumab",
+          "anakinra",
+          "biologic",
+          "il-6 inhibitor",
+          "il-1 inhibitor",
+          "canakinumab"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按全身型JIA用托珠单抗或阿那白滞素。",
+        "en": "Tocilizumab or anakinra, as for systemic JIA."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "high",
+      "critical": false,
+      "contraindicatedWhen": {
+        "not": {
+          "read": "biopsy",
+          "phase": "diagnosis"
+        }
+      },
+      "harm": {
+        "zh-CN": "EULAR/PReS 2024建议在Still病诊断确立后尽早使用IL-1或IL-6抑制剂（推荐7）；她的诊断并未确立，肿瘤和感染也还没有排除。IL-6阻断还会压低发热和C反应蛋白，而这正是你需要追踪的指标。",
+        "en": "EULAR/PReS 2024 starts an IL-1 or IL-6 inhibitor once the diagnosis of Still's disease is established (recommendation 7); hers is not, and malignancy and infection have not been excluded. IL-6 blockade also suppresses fever and CRP, the very signs you need to follow."
+      },
+      "response": {
+        "zh-CN": "已开始。这不在她记录的病程中；诊断仍未明确，现在她的发热和C反应蛋白更难解读了。",
+        "en": "Started. It is not part of her recorded course; the diagnosis is still open, and her fever and CRP are now harder to interpret."
+      },
+      "effects": []
+    },
+    {
+      "id": "open-excision",
+      "name": {
+        "zh-CN": "由本院骨科立即切开切除或刮除髂骨包块",
+        "en": "Open excision or curettage of the iliac mass by the local orthopaedic team now"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "切除肿物",
+          "刮除",
+          "手术切除",
+          "病灶清除",
+          "切掉包块"
+        ],
+        "en": [
+          "excise the mass",
+          "curettage",
+          "surgical excision",
+          "debulk",
+          "remove the mass"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在本院骨科手术室切开，切除或刮除髂骨包块，同时取病理。",
+        "en": "Open operation by the local orthopaedic team to excise or curette the iliac mass and send it for histology."
+      },
+      "requires": [
+        "surgery"
+      ],
+      "risk": "high",
+      "critical": true,
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "ESMO–EURACAN–GENTURIS–ERN PaedCan 2021：可疑骨肉瘤的活检应由将来做根治手术的团队来做（或由介入放射科医生与该外科医生商定后进行），尤文肉瘤应避免病灶内手术。未经规划的切除或刮除会把肿瘤带到周围组织，可能使日后无法做到切缘阴性的切除。",
+        "en": "ESMO–EURACAN–GENTURIS–ERN PaedCan 2021: the biopsy of a suspected bone sarcoma is done by the team who will do the definitive resection (or by an interventional radiologist after discussing it with that surgeon), and intralesional surgery is to be avoided in Ewing sarcoma. An unplanned excision or curettage spreads tumour into the surrounding tissue and can rule out a later resection with clear margins."
+      },
+      "response": {
+        "zh-CN": "手术已做，拿到了组织，但瘤床被打开，周围组织受到污染；之后的手术或放疗都要覆盖更大的范围。原报告记录的是活检，不是切除。",
+        "en": "Done. Tissue is obtained, but the tumour bed has been opened and the surrounding tissue contaminated; any later surgery or radiotherapy must now cover a wider field. The report records a biopsy, not an excision."
+      },
+      "effects": []
+    },
+    {
+      "id": "empirical-antibiotics",
+      "name": {
+        "zh-CN": "再给一疗程经验性静脉抗生素（按骨髓炎）",
+        "en": "Another empirical IV antibiotic course for presumed osteomyelitis"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗生素",
+          "经验性抗生素",
+          "静脉抗生素",
+          "抗感染治疗",
+          "头孢曲松"
+        ],
+        "en": [
+          "antibiotics",
+          "empirical antibiotics",
+          "iv antibiotics",
+          "ceftriaxone",
+          "treat as osteomyelitis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按骨髓炎经验性静脉抗生素治疗。",
+        "en": "Empirical IV antibiotics, as for osteomyelitis."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "moderate",
+      "critical": false,
+      "contraindicatedWhen": {
+        "not": {
+          "all": [
+            {
+              "ordered": "blood-culture"
+            },
+            {
+              "intervened": "planned-biopsy"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "她已经断断续续抗感染差不多一个月，烧还在加重。ESPID 2017要求用抗生素前一定先做血培养，并指出亚急性骨髓炎可与恶性肿瘤混淆，通常需要活检才能确诊；再盲目用一疗程，会降低培养和组织检查的阳性率，延误诊断。",
+        "en": "She has already had about a month of intermittent anti-infective treatment while the fever got worse. ESPID 2017 asks for a blood culture before any antibiotic and notes that subacute osteomyelitis can be confused with malignancy and usually needs a biopsy for the diagnosis; another blind course lowers the yield of cultures and tissue and delays the diagnosis."
+      },
+      "response": {
+        "zh-CN": "已开始。诊断仍未明确，此后留取的培养更难长出细菌。",
+        "en": "Started. The diagnosis is still open, and cultures taken from now on are less likely to grow an organism."
+      },
+      "effects": []
+    }
+  ],
   "objectives": [
     {
-      "id": "obj-1",
+      "id": "obj-history",
       "title": {
-        "zh-CN": "重建当前病史",
-        "en": "Reconstruct the presenting history"
+        "zh-CN": "向家长了解病史",
+        "en": "Take the history from her parent"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
-        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+        "zh-CN": "问清发热和跛行怎么开始、怎么变化，用过哪些治疗、效果怎样，发热时还有什么别的表现。",
+        "en": "Ask how the fever and the limp began and changed, what treatment she has had and how she responded, and what else came with the fever."
       },
       "guidance": {
-        "zh-CN": "重建当前病史",
-        "en": "Reconstruct the presenting history"
+        "zh-CN": "清和太小，病史由家长回答。",
+        "en": "Qinghe is too young to give the history; her parent answers."
       },
       "completeWhen": {
         "all": [
           {
-            "asked": "fever"
+            "asked": "presenting-complaint"
+          },
+          {
+            "asked": "fever-course"
           },
           {
             "asked": "limp"
           },
           {
-            "asked": "steroids"
+            "asked": "steroid-response"
           },
           {
-            "asked": "rash"
+            "asked": "skin-mouth"
           }
         ]
       },
@@ -1044,18 +2852,22 @@
       ]
     },
     {
-      "id": "obj-2",
+      "id": "obj-examine",
       "title": {
-        "zh-CN": "核对床旁体征",
-        "en": "Review bedside findings"
+        "zh-CN": "给她查体",
+        "en": "Examine her"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Examination"
       },
       "hint": {
-        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
-        "en": "Identify localising signs and retain missing information as unknown."
+        "zh-CN": "看面色，摸浅表淋巴结，看皮肤，再检查关节、髋部和下肢。",
+        "en": "Look at her colour, feel for lymph nodes, look at her skin, then examine her joints, hips and legs."
       },
       "guidance": {
-        "zh-CN": "核对床旁体征",
-        "en": "Review bedside findings"
+        "zh-CN": "她躺在床上，不愿意下地走路。",
+        "en": "She is lying in bed and does not want to walk."
       },
       "completeWhen": {
         "all": [
@@ -1063,7 +2875,13 @@
             "examined": "pallor"
           },
           {
-            "examined": "joints"
+            "examined": "lymph-nodes"
+          },
+          {
+            "examined": "ankles-feet"
+          },
+          {
+            "examined": "figure-four"
           }
         ]
       },
@@ -1074,21 +2892,25 @@
       ]
     },
     {
-      "id": "obj-3",
+      "id": "obj-first-step",
       "title": {
-        "zh-CN": "比较检查证据",
-        "en": "Compare investigation evidence"
+        "zh-CN": "决定下一步",
+        "en": "Decide the next step"
+      },
+      "short": {
+        "zh-CN": "下一步",
+        "en": "Next step"
       },
       "hint": {
-        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
-        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+        "zh-CN": "在按带来的诊断处理之前，先想想这个诊断有什么依据，还有哪些病会有同样的表现。",
+        "en": "Before acting on the diagnosis she arrived with, ask what it rests on and what else could look like this."
       },
       "guidance": {
-        "zh-CN": "比较检查证据",
-        "en": "Compare investigation evidence"
+        "zh-CN": "外院的诊断和激素治疗都在病史里。",
+        "en": "The other hospital's diagnosis and the steroid course are in her history."
       },
       "completeWhen": {
-        "decided": "diagnosis"
+        "decided": "first-step"
       },
       "waypoints": [
         {
@@ -1097,223 +2919,521 @@
       ]
     },
     {
-      "id": "obj-4",
+      "id": "obj-results",
       "title": {
-        "zh-CN": "制定计划并复盘转归",
-        "en": "Plan care and review the outcome"
+        "zh-CN": "解读检查结果",
+        "en": "Make sense of the results"
+      },
+      "short": {
+        "zh-CN": "结果",
+        "en": "Results"
       },
       "hint": {
-        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
-        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+        "zh-CN": "逐一调阅血液检查、骨髓和每一项影像，想一想每一项能排除什么、不能排除什么。",
+        "en": "Read the blood results, the marrow and each imaging study, and ask what each one can and cannot exclude."
       },
       "guidance": {
-        "zh-CN": "制定计划并复盘转归",
-        "en": "Plan care and review the outcome"
+        "zh-CN": "她的检查结果都在病历里。",
+        "en": "Her results are in the records."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "read": "fbc",
+            "phase": "workup"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "marrow",
+            "phase": "workup"
+          },
+          {
+            "read": "radiographs",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "decided": "imaging-meaning"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ct",
+            "phase": "workup"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-tissue",
+      "title": {
+        "zh-CN": "规划确诊的路径",
+        "en": "Plan the route to a diagnosis"
+      },
+      "short": {
+        "zh-CN": "确诊路径",
+        "en": "Route"
+      },
+      "hint": {
+        "zh-CN": "想一想该由谁来做、在哪里做、怎样做，做之前要先查什么。",
+        "en": "Think about who should do it, where and how, and what must be checked first."
+      },
+      "guidance": {
+        "zh-CN": "下一步的每个选择都会影响她以后的治疗。",
+        "en": "Each choice at this step shapes her later treatment."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "tissue-route"
+          },
+          {
+            "any": [
+              {
+                "intervened": "planned-biopsy"
+              },
+              {
+                "intervened": "open-excision"
+              }
+            ]
           }
         ]
       },
       "waypoints": [
         {
           "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "解读结果并商定治疗",
+        "en": "Interpret the findings and agree a plan"
+      },
+      "short": {
+        "zh-CN": "计划",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "分清报告证明了什么、只是提示了什么，再和家长商定治疗计划，最后看原报告的后续经过。",
+        "en": "Separate what the reports prove from what they only suggest, agree a plan with her parent, then read the reported course."
+      },
+      "guidance": {
+        "zh-CN": "新的报告已经出来。",
+        "en": "New reports are back."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "what-is-proven"
+          },
+          {
+            "decided": "treatment-plan"
+          },
+          {
+            "read": "outcome",
+            "phase": "outcome"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "decided": "treatment-plan"
+          },
+          "target": "board"
+        },
+        {
+          "target": "records"
         }
       ]
     }
   ],
   "decisions": [
     {
-      "id": "diagnosis",
-      "kind": "single",
+      "id": "first-step",
       "prompt": {
-        "zh-CN": "什么情况要求重启JIA之外的鉴别？",
-        "en": "What requires reopening the differential beyond JIA?"
+        "zh-CN": "清和3岁9个月，发热七十多天、走路跛、面色苍白。外院按全身型幼年特发性关节炎用激素，热退后在继续口服期间又发热。你下一步怎么做？",
+        "en": "Qinghe, 3 years 9 months, has had fever for more than seventy days and a limp, and she is pale. Another hospital treated her for systemic juvenile idiopathic arthritis with steroids; the fever settled and came back while she was still taking them. What is your next step?"
       },
+      "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "blood",
-            "phase": "workup"
+            "asked": "presenting-complaint"
           },
           {
-            "read": "screen",
-            "phase": "workup"
+            "asked": "fever-course"
           },
           {
-            "read": "imaging",
-            "phase": "workup"
+            "asked": "limp"
+          },
+          {
+            "asked": "steroid-response"
+          },
+          {
+            "examined": "pallor"
+          },
+          {
+            "examined": "ankles-feet"
           }
         ]
       },
       "need": {
-        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
-        "en": "Review the current investigation records before comparing explanations."
+        "zh-CN": "先问清发热、跛行和激素治疗的经过，并给她查体。",
+        "en": "Take the history of the fever, the limp and the steroid treatment, and examine her first."
       },
       "options": [
         {
-          "id": "yes",
+          "id": "investigate-before-escalating",
           "text": {
-            "zh-CN": "局灶骨病变、重度贫血和血小板下降要求肿瘤与骨感染评估",
-            "en": "Focal bone disease, severe anaemia and thrombocytopenia warrant malignancy and osteomyelitis assessment"
+            "zh-CN": "把全身型JIA当作未经证实的诊断：暂不加量激素、不加新的免疫抑制药，先查肿瘤、感染和巨噬细胞活化综合征——血常规和涂片、血培养、铁蛋白、骨髓，以及髋部和骨盆影像。",
+            "en": "Treat the systemic JIA label as unproven: no higher steroid dose and no new immunosuppressant for now, and look first for malignancy, infection and macrophage activation — blood count and film, cultures, ferritin, marrow, and imaging of the hips and pelvis."
           },
+          "correct": true,
           "feedback": {
-            "zh-CN": "退热反应并不具有病因特异性。",
-            "en": "Defervescence on steroids is not disease-specific."
-          },
-          "correct": true
+            "zh-CN": "对。全身型JIA是排除性诊断，而她并不符合：起病时发热只有38℃左右、没有皮疹，查体没有淋巴结肿大（ILAR标准要求在关节炎和发热之外，至少有皮疹、全身淋巴结肿大、肝脾肿大或浆膜炎之一；后两项她的病历没有记录），她还面色苍白、走路跛。NICE NG12（2015，2026年更新）要求对面色苍白或不明原因发热的儿童尽快查血常规；EULAR/PReS 2024要求认真考虑肿瘤、感染等其他诊断，因为误诊时激素和免疫调节药可能有害。血细胞低也要想到巨噬细胞活化综合征，要用铁蛋白、纤维蛋白原、甘油三酯和肝功能来查，而不是猜。激素也不要突然停：先问清剂量和疗程，再计划减量。",
+            "en": "Right. Systemic JIA is a diagnosis of exclusion, and hers does not fit: the fever was about 38 °C at the start with no rash, and she has no enlarged lymph nodes (ILAR needs, besides arthritis and fever, at least one of rash, generalised lymphadenopathy, liver or spleen enlargement or serositis — the last two are not recorded for her), and she is pale with a limp. NICE NG12 (2015, updated 2026) asks for a very urgent blood count in a child with pallor or unexplained fever, and EULAR/PReS 2024 asks that malignancy, infection and other mimics be carefully considered because steroids and immunomodulators can do harm when the diagnosis is wrong. Low counts also raise macrophage activation, which is tested with ferritin, fibrinogen, triglycerides and liver tests, not assumed. Do not stop her steroids abruptly either: find out the dose and duration and plan any reduction."
+          }
         },
         {
-          "id": "response",
+          "id": "methylpred-then-methotrexate",
           "text": {
-            "zh-CN": "激素能退热就确证JIA",
-            "en": "Steroid-responsive fever confirms JIA"
+            "zh-CN": "按激素依赖的全身型JIA处理：先静脉甲泼尼龙冲击三天把热控制住，再加用甲氨蝶呤作为减激素的药物，之后几周内逐渐减停口服激素，出院后在风湿门诊随访，定期复查血常规和肝功能。",
+            "en": "Treat this as steroid-dependent systemic JIA: give three days of IV methylprednisolone pulses to bring the fever under control, then add methotrexate as a steroid-sparing drug, taper the oral steroids over the following weeks and follow her up in the rheumatology clinic with blood counts and liver tests."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "许多炎症或肿瘤症状也可短暂受抑制。",
-            "en": "Inflammatory and malignant symptoms can be temporarily suppressed."
-          },
-          "correct": false
+            "zh-CN": "加大激素是在治疗一个标签，而不是诊断。EULAR/PReS 2024提醒，Still病（全身型JIA）一旦误诊，糖皮质激素或免疫调节药可能有害，尤其是病因为肿瘤时。激素能压住发热、部分治疗白血病或淋巴瘤，使诊断更难。她在口服激素期间再次发热，这是怀疑诊断的理由，而不是加量的理由。",
+            "en": "Escalating steroids treats a label, not a diagnosis. EULAR/PReS 2024 warns that glucocorticoids or immunomodulators can be deleterious when Still's disease (systemic JIA) is misdiagnosed, particularly when a malignancy is the cause. Steroids can mask the fever and partly treat a leukaemia or lymphoma, making the diagnosis harder. Her fever came back during oral steroids — a reason to doubt the label, not to raise the dose."
+          }
         },
         {
-          "id": "xray",
+          "id": "il-inhibitor-now",
           "text": {
-            "zh-CN": "平片未见破坏即可排除骨肿瘤",
-            "en": "No radiographic destruction excludes a bone tumour"
+            "zh-CN": "按难治性全身型JIA处理：现在就开始IL-1或IL-6抑制剂，因为现行风湿病指南更推荐它而不是长期激素，两周后门诊复查疗效。",
+            "en": "Treat this as refractory systemic JIA: start an IL-1 or IL-6 inhibitor now, which current rheumatology guidance prefers to long-term steroids, and review the response in clinic in two weeks."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "MRI和CT已提供更明显病灶证据。",
-            "en": "MRI and CT already show significant disease."
+            "zh-CN": "IL-1或IL-6阻断是全身型JIA确诊后的首选治疗（ACR 2021；EULAR/PReS 2024推荐7：“诊断确立后”）。她的诊断并未确立：分类所需的表现不全，血象也指向别处。IL-6阻断还会压低发热和C反应蛋白，而追踪感染或肿瘤恰恰要靠这些指标。",
+            "en": "IL-1 or IL-6 blockade is the preferred treatment once systemic JIA is established (ACR 2021; EULAR/PReS 2024 recommendation 7: “when the diagnosis is established”). Hers is not: the classification features are missing and her counts point elsewhere. IL-6 blockade also suppresses fever and CRP, the very signs you would use to follow an infection or a tumour."
+          }
+        },
+        {
+          "id": "mas-ciclosporin-now",
+          "text": {
+            "zh-CN": "按全身型JIA并发巨噬细胞活化综合征处理：不等其他检查，马上用环孢素加大剂量激素，因为巨噬细胞活化综合征可以在数小时内加重。",
+            "en": "Treat this as macrophage activation syndrome complicating systemic JIA: start ciclosporin with high-dose steroids straight away, before further tests, because it can worsen within hours."
           },
-          "correct": false
+          "correct": false,
+          "feedback": {
+            "zh-CN": "巨噬细胞活化综合征值得排查——EULAR/PReS 2024把“不相称的血细胞减少”列为警示表现之一——但要用铁蛋白、纤维蛋白原、甘油三酯、肝功能和骨髓来证实，而不是假定。在这些检查之前、在排除肿瘤之前就用环孢素和大剂量激素，可能掩盖真正的病因。",
+            "en": "Macrophage activation is worth checking — EULAR/PReS 2024 lists inappropriately low cell counts among its warning signs — but it is confirmed with ferritin, fibrinogen, triglycerides, liver tests and the marrow, not assumed. Ciclosporin and high-dose steroids before those tests, and before malignancy is excluded, can mask the real cause."
+          }
         }
       ]
     },
     {
-      "id": "evidence",
-      "kind": "single",
+      "id": "imaging-meaning",
       "prompt": {
-        "zh-CN": "后续资料能支持哪一项结论？",
-        "en": "Which conclusion is supported by the subsequent records?"
+        "zh-CN": "平片未见明显骨质破坏，但MRI示右髂骨及周围包块、弥散受限，增强CT示包绕髂骨的肿块、骨膜反应和骶骨异常；骨髓红系增生，未报告确诊的肿瘤浸润。你怎么综合解读？",
+        "en": "The radiographs show no obvious bone destruction, but MRI shows a mass in and around the right ilium with restricted diffusion, and contrast-enhanced CT a mass encasing the ilium with periosteal reaction and a sacral abnormality; the marrow shows erythroid hyperplasia without confirmed tumour. How do you read these together?"
       },
+      "kind": "single",
       "requires": {
         "all": [
           {
-            "decided": "diagnosis"
+            "read": "fbc",
+            "phase": "workup"
           },
           {
-            "read": "tissue",
-            "phase": "confirmation"
+            "read": "marrow",
+            "phase": "workup"
+          },
+          {
+            "read": "radiographs",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
           }
         ]
       },
       "need": {
-        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
-        "en": "Review the subsequent records before judging what they do and do not establish."
+        "zh-CN": "先调阅血常规、骨髓和每一项影像记录。",
+        "en": "Read the blood count, the marrow and each imaging record first."
       },
       "options": [
         {
-          "id": "yes",
+          "id": "tissue-needed",
           "text": {
-            "zh-CN": "活检支持尤文方向，但现代分子分型和每处病灶属性仍需核实",
-            "en": "Biopsy supports Ewing disease, while modern molecular classification and individual lesions need confirmation"
+            "zh-CN": "髂骨包块伴骨膜反应，在证实之前按骨肿瘤对待——她这个年龄要考虑转移性神经母细胞瘤、尤文肉瘤、淋巴瘤或朗格汉斯细胞组织细胞增生症；平片正常、一次骨髓阴性都排除不了，骨髓炎也仍有可能，需要组织。",
+            "en": "An iliac mass with periosteal reaction is a bone tumour until shown otherwise — at her age metastatic neuroblastoma, Ewing sarcoma, lymphoma or Langerhans cell histiocytosis; normal films and one marrow exclude none of them, osteomyelitis remains possible, and tissue is needed."
           },
+          "correct": true,
           "feedback": {
-            "zh-CN": "PET高代谢不等于每处均已病理确证。",
-            "en": "PET avidity is not histological proof at every site."
-          },
-          "correct": true
+            "zh-CN": "对。ESMO–EURACAN–GENTURIS–ERN PaedCan 2021以平片为第一步，但只要平片不能排除恶性病变，就要做包括整个间室的MRI；它还指出5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症。骨盆平片常常看不出肿瘤，一次骨髓阴性排除不了实体瘤，亚急性骨髓炎的表现也可以与肿瘤相同——ESPID 2017指出它可与恶性肿瘤混淆、通常需要活检确诊。下一步是取得组织。",
+            "en": "Right. ESMO–EURACAN–GENTURIS–ERN PaedCan 2021 makes radiographs the first test but asks for MRI of the whole compartment whenever they cannot exclude malignancy, and notes that under 5 years of age a destructive bone lesion is most often metastatic neuroblastoma or Langerhans cell histiocytosis. Pelvic films often miss a tumour, one negative marrow does not exclude a solid tumour, and subacute osteomyelitis can look the same — ESPID 2017 notes it can be confused with malignancy and usually needs a biopsy. The next step is tissue."
+          }
         },
         {
-          "id": "pet",
+          "id": "reactive-change",
           "text": {
-            "zh-CN": "所有PET热点必然是已确证转移",
-            "en": "Every PET hotspot is proven metastasis"
+            "zh-CN": "平片是诊断骨肿瘤的标准检查，平片没有骨质破坏，MRI和CT的改变就是全身型JIA的反应性骨髓水肿和滑膜炎，不需要活检，原诊断可以维持，继续目前的激素治疗，三个月后再复查一次骨盆平片看有无变化即可。",
+            "en": "Plain films are the reference test for bone tumours; with no destruction on them, the MRI and CT changes are the reactive marrow oedema and synovitis of systemic JIA, so no biopsy is needed, the label stands and her current treatment continues, with a repeat pelvic film in three months."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "炎症等亦可摄取，需综合分期。",
-            "en": "Inflammation can also be avid; integrate staging evidence."
-          },
-          "correct": false
+            "zh-CN": "平片是第一步，不是最后一步：ESMO 2021要求平片不能排除恶性时做MRI，而骨盆的肿瘤在平片上常常看起来正常。带骨膜反应的包块不是关节炎的滑膜炎。",
+            "en": "Radiographs are the first test, not the last: ESMO 2021 asks for MRI whenever they cannot exclude malignancy, and pelvic tumours often look normal on plain films. A mass with periosteal reaction is not the synovitis of arthritis."
+          }
         },
         {
-          "id": "marrow",
+          "id": "pelvic-abscess",
           "text": {
-            "zh-CN": "初始骨髓未见肿瘤就排除实体骨肿瘤",
-            "en": "An initially negative marrow excludes a solid bone tumour"
+            "zh-CN": "MRI上弥散受限说明是脓液：这是骨盆骨髓炎合并脓肿，应安排引流和六周静脉抗生素，骨头不必再做活检。",
+            "en": "Restricted diffusion on MRI means pus: this is pelvic osteomyelitis with an abscess, so arrange drainage and six weeks of intravenous antibiotics, without a biopsy of the bone."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "局灶实体病灶需直接组织评估。",
-            "en": "A focal solid lesion requires direct tissue assessment."
+            "zh-CN": "脓肿确实会弥散受限，但细胞密集的肿瘤也会；而且她已经用了约一个月抗感染治疗，烧仍在加重。不取骨组织就引流、用药，可能漏掉肿瘤。ESPID 2017指出亚急性骨髓炎可与恶性肿瘤混淆、通常需要活检；取到的组织应同时送病理和培养。",
+            "en": "An abscess does restrict diffusion, but so does a densely cellular tumour, and about a month of anti-infective treatment has already failed her. Draining and treating without bone tissue risks missing a tumour: ESPID 2017 notes that subacute osteomyelitis can be confused with malignancy and usually needs a biopsy — and the tissue should go for both histology and culture."
+          }
+        },
+        {
+          "id": "anaemia-of-inflammation",
+          "text": {
+            "zh-CN": "骨髓只有红系增生、没有肿瘤，说明贫血是炎症所致，肿瘤已经排除；六周后复查MRI，并继续目前的治疗。",
+            "en": "The marrow shows only erythroid hyperplasia and no tumour, which explains the anaemia as inflammation; malignancy is excluded, so repeat the MRI in six weeks and continue her current treatment."
           },
-          "correct": false
+          "correct": false,
+          "feedback": {
+            "zh-CN": "红系增生只是一种反应，不是诊断；一次骨髓取材可能漏掉局灶病变，也说明不了骨盆的包块是什么。不对病灶本身取材，就谈不上排除肿瘤。",
+            "en": "Erythroid hyperplasia is a reaction, not a diagnosis; one marrow sample can miss focal disease and says nothing about what the pelvic mass is. Malignancy is not excluded until the lesion itself is sampled."
+          }
         }
       ]
     },
     {
-      "id": "management",
-      "kind": "single",
+      "id": "tissue-route",
       "prompt": {
-        "zh-CN": "如何避免进一步延误和损害后续治疗？",
-        "en": "How can further delay and disruption of definitive care be avoided?"
+        "zh-CN": "需要从髂骨病灶取得组织。她的血小板最低到过65×10⁹/L。应该怎样取？",
+        "en": "Tissue is needed from the iliac lesion, and her platelet count has been as low as 65 × 10⁹/L. How should the tissue be obtained?"
       },
+      "kind": "single",
+      "requires": {
+        "decided": "imaging-meaning"
+      },
+      "need": {
+        "zh-CN": "先解读她的影像和骨髓结果。",
+        "en": "Interpret her imaging and marrow results first."
+      },
+      "options": [
+        {
+          "id": "sarcoma-team-core-biopsy",
+          "text": {
+            "zh-CN": "任何人取组织之前，先转诊儿童肿瘤及骨肉瘤团队，由他们规划影像引导下粗针活检，穿刺道能随日后手术切除；先查血小板和凝血，标本送病理、分子检测和培养。",
+            "en": "Refer her to the paediatric oncology and bone sarcoma team before anyone takes tissue: they plan an image-guided core biopsy along a tract the resection can later remove, after checking platelets and clotting, with samples for histology, molecular tests and culture."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "对。ESMO 2021：影像怀疑原发骨肉瘤的儿童应转诊到具备儿童专长的骨肉瘤中心；活检由将来做根治手术的外科团队来做，或由介入放射科医生与该外科医生商定后进行；多数情况下影像引导下粗针活检是合适的；穿刺道要标记，日后随肿瘤一并切除；标本要能做分子检测。先确认当天的血小板和凝血，并让麻醉医生了解她的激素用药。",
+            "en": "Right. ESMO 2021: a child whose imaging suggests a primary bone sarcoma is referred to a sarcoma centre with paediatric expertise; the biopsy is done by the surgical team who will do the resection, or by an interventional radiologist after discussing it with that surgeon; an image-guided core biopsy is usually appropriate; the tract is marked and later removed with the tumour; and the samples must allow molecular testing. Check today's platelets and clotting first, and tell the anaesthetist about her steroid treatment."
+          }
+        },
+        {
+          "id": "local-open-excision",
+          "text": {
+            "zh-CN": "请本院骨科现在就切开，把髂骨包块整块切除或刮除干净，一次麻醉、一次手术同时拿到诊断和治疗，免得转诊到别的中心耽误时间，孩子还要再多受一次麻醉和操作。",
+            "en": "Ask the local orthopaedic team to excise or curette the iliac mass now through an open approach, so that a single operation under one anaesthetic gives both the diagnosis and the treatment, and she avoids the delay of a referral to another centre and a second procedure."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "未经规划的切除或刮除会污染组织间隙，可能让日后保留肢体或骨盆的切除无法做到，而且没有任何好处：ESMO 2021要求活检由将来做根治手术的团队规划，并指出尤文肉瘤应避免病灶内手术。",
+            "en": "An unplanned excision or curettage contaminates the tissue planes, can make a later limb- or pelvis-sparing resection impossible and brings no benefit: ESMO 2021 asks for the biopsy to be planned by the team who will do the definitive surgery and says intralesional surgery is to be avoided in Ewing sarcoma."
+          }
+        },
+        {
+          "id": "repeat-marrow-only",
+          "text": {
+            "zh-CN": "从对侧髂嵴再做一次骨髓穿刺；如果还是没有肿瘤，就不必对髂骨病灶活检，六周后复查MRI观察即可。",
+            "en": "Repeat the marrow aspirate from the other iliac crest; if it again shows no tumour, the iliac lesion needs no biopsy and can be watched with a repeat MRI in six weeks."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "第二次骨髓阴性同样排除不了实体骨肿瘤，也说明不了包块是什么；骨盆包块再等六周只会耽误时间。必须对病灶本身取材。",
+            "en": "A second negative marrow would not exclude a solid bone tumour either, nor say what the mass is; waiting six weeks with a pelvic mass loses time. The lesion itself has to be sampled."
+          }
+        },
+        {
+          "id": "quick-fine-needle",
+          "text": {
+            "zh-CN": "排进下一次放射科检查，从最近的路径做细针穿刺，不必和外科商量；单凭细胞学结果就足以开始治疗。",
+            "en": "Book a fine-needle aspirate by the shortest route at the next radiology list without involving the surgeons; cytology alone will be enough to start treatment."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "细针抽吸很少能提供足够做病理、免疫组化和分子检测的组织；不与外科商量就选的穿刺路径，可能污染日后切除无法包括的组织间隙（ESMO 2021：活检要与将做切除的外科医生商定）。",
+            "en": "A fine-needle aspirate rarely gives enough tissue for histology, immunohistochemistry and molecular tests, and a route chosen without the surgeon may contaminate compartments the later resection cannot include (ESMO 2021: plan the biopsy with the surgeon who will do the resection)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-is-proven",
+      "prompt": {
+        "zh-CN": "右髂骨活检报告为尤文瘤，没有分子检测结果；PET-CT示多部位骨病灶，报告考虑转移或多中心，病灶未逐个取材。这些结果能确定什么？",
+        "en": "The right iliac biopsy is reported as Ewing tumour, without a molecular result; PET-CT shows multiple bone lesions, reported as metastatic or multicentric, which were not each sampled. What do these results establish?"
+      },
+      "kind": "single",
       "requires": {
         "all": [
           {
-            "decided": "evidence"
+            "read": "biopsy",
+            "phase": "diagnosis"
           },
           {
-            "read": "tissue",
-            "phase": "confirmation"
+            "read": "pet-ct",
+            "phase": "diagnosis"
           }
         ]
       },
       "need": {
-        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
-        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+        "zh-CN": "先调阅活检病理报告和PET-CT。",
+        "en": "Read the biopsy report and the PET-CT first."
       },
       "options": [
         {
-          "id": "yes",
+          "id": "confirm-fusion-complete-staging",
           "text": {
-            "zh-CN": "儿肿瘤及骨肿瘤团队规划活检路径、分子确认和全身分期，复核激素影响",
-            "en": "Paediatric and bone-tumour teams should plan biopsy, molecular confirmation and staging and review steroid effects"
+            "zh-CN": "它们使尤文肉瘤伴多发骨病灶成为很可能的诊断；但还需要在活检组织上证实EWSR1（FET）–ETS融合，以排除形态相似的圆细胞肉瘤，分期还需胸部CT，并对会改变方案的可疑病灶活检。",
+            "en": "They make Ewing sarcoma with multiple bone lesions likely, but the diagnosis still needs an EWSR1 (FET)–ETS fusion on the biopsy to exclude look-alike round-cell sarcomas, and staging needs a chest CT and a biopsy of any lesion whose nature would change the plan."
           },
+          "correct": true,
           "feedback": {
-            "zh-CN": "不应只反复经验激素或在未规划路径下随意切除。",
-            "en": "Avoid repeated empirical steroids or unplanned excision."
-          },
-          "correct": true
+            "zh-CN": "对。ESMO 2021：尤文肉瘤以FET–ETS融合（通常为EWSR1–FLI1）为特征，必须做分子确认，才能与其他圆细胞肉瘤区分；WHO 2020分类已把CIC重排肉瘤和BCOR改变肉瘤单列，它们的生物学行为不同。分期要查肺、骨和骨髓转移：胸部CT和PET-CT（或全身MRI），可疑病灶要活检。2012年发表的这份报告没有融合基因结果；今天会在组织条件允许时用已有的活检组织补做检测，而不是一切重来。",
+            "en": "Right. ESMO 2021: Ewing sarcoma is marked by a FET–ETS fusion (usually EWSR1–FLI1), and molecular confirmation is mandatory to separate it from other round-cell sarcomas; the WHO 2020 classification now places CIC-rearranged and BCOR-altered sarcomas apart, with different behaviour. Staging looks for lung, bone and marrow metastases with chest CT and PET-CT (or whole-body MRI), and doubtful lesions are biopsied. The report, published in 2012, gives no fusion result; today the test would be added on the existing biopsy tissue, where the tissue allows, rather than starting again."
+          }
         },
         {
-          "id": "steroid",
+          "id": "incurable-palliate",
           "text": {
-            "zh-CN": "再加激素至退热即可停止调查",
-            "en": "Increase steroids until fever resolves and stop investigation"
+            "zh-CN": "PET-CT已经证明每一处高摄取的骨都是转移，诊断时就已无法治愈；不需要再做检查，只向家属提供姑息治疗。",
+            "en": "PET-CT has proven a metastasis in every avid bone, so the disease is incurable at diagnosis; no further tests are needed, and the family should be offered palliative care alone."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "可能继续掩盖重大病因。",
-            "en": "This can further mask important disease."
-          },
-          "correct": false
+            "zh-CN": "高摄取不等于病理证实：炎症或修复中的骨也可以摄取，ESMO 2021要求对可疑病灶活检。即使证实为多发骨转移，治疗目标仍是治愈；ESMO 2021指出多发骨转移的预后明显差于单纯肺转移，但这不是诊断时只给姑息治疗的理由。",
+            "en": "Avidity is not histology: inflamed or healing bone can take up tracer, and ESMO 2021 asks for doubtful lesions to be biopsied. Even confirmed multiple bone metastases are treated with curative intent; ESMO 2021 notes they carry a much poorer outcome than lung metastases alone, but that is no reason to offer palliation only at diagnosis."
+          }
         },
         {
-          "id": "observe",
+          "id": "histology-is-enough",
           "text": {
-            "zh-CN": "因年龄小就排除恶性肿瘤并观察",
-            "en": "Young age excludes malignancy and permits observation"
+            "zh-CN": "单凭病理报告就能确诊，分子检测只对科研有意义；多处骨的PET高摄取已经确定为转移，分期已经完成，不必再做胸部CT、融合基因检测或对其他病灶活检，可以马上按转移性尤文肉瘤的方案开始化疗。",
+            "en": "The histology report alone is diagnostic and molecular tests only matter for research; PET-CT avidity in several bones already settles the stage as metastatic, so chemotherapy can start at once without a chest CT, fusion testing or any biopsy of the other lesions."
           },
+          "correct": false,
           "feedback": {
-            "zh-CN": "幼龄并不排除恶性骨肿瘤。",
-            "en": "Young age does not exclude malignant bone disease."
+            "zh-CN": "ESMO 2021规定必须做分子确认：没有FET–ETS融合的圆细胞肉瘤可能是CIC重排或BCOR改变肉瘤（WHO 2020），它们的行为和对治疗的反应不同。单靠PET-CT也不能完成分期：肺部还需要胸部CT。",
+            "en": "ESMO 2021 makes molecular confirmation mandatory: a round-cell sarcoma without a FET–ETS fusion may be a CIC-rearranged or BCOR-altered sarcoma (WHO 2020), which behave and respond differently. Nor does PET-CT alone complete staging: the lungs need a chest CT."
+          }
+        },
+        {
+          "id": "other-lesions-infection",
+          "text": {
+            "zh-CN": "多处骨病灶但只有一处证实是肿瘤，说明其余病灶是多灶性骨髓炎：髂骨按尤文肉瘤治疗，其余部位用长疗程抗生素。",
+            "en": "Several avid bones with a tumour proven in only one suggest the other lesions are multifocal osteomyelitis: treat the ilium as Ewing sarcoma and give the other sites a long course of antibiotics."
           },
-          "correct": false
+          "correct": false,
+          "feedback": {
+            "zh-CN": "尤文肉瘤患儿出现多处高摄取骨病灶，在证实之前应视为转移；不取组织就当作感染，会让她的治疗不足。若某个病灶的性质会改变方案，ESMO 2021要求对它活检。",
+            "en": "Multiple avid bones in a child with Ewing sarcoma are metastases until shown otherwise; calling them infection without tissue would under-treat her. If a lesion's nature would change the plan, ESMO 2021 asks for it to be biopsied."
+          }
+        }
+      ]
+    },
+    {
+      "id": "treatment-plan",
+      "prompt": {
+        "zh-CN": "家长问接下来怎么治。你建议什么方案？",
+        "en": "Her parent asks what happens next. Which plan do you recommend?"
+      },
+      "kind": "single",
+      "requires": {
+        "decided": "what-is-proven"
+      },
+      "need": {
+        "zh-CN": "先判断活检和PET-CT能确定什么。",
+        "en": "Decide first what the biopsy and the PET-CT establish."
+      },
+      "options": [
+        {
+          "id": "protocol-chemo-mdt",
+          "text": {
+            "zh-CN": "在儿童肿瘤团队按现行尤文肉瘤方案治疗：先多药联合化疗，再由骨肉瘤团队决定骨盆的局部治疗（手术、放疗或两者），治疗前讨论生育力保存。",
+            "en": "Care under a paediatric oncology team on a current Ewing sarcoma protocol: multi-agent chemotherapy first, then local control of the pelvis by surgery, radiotherapy or both as the sarcoma team decides, with fertility preservation discussed before treatment."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "对。ESMO 2021：骨肉瘤应在专科中心治疗；尤文肉瘤先做诱导化疗（长春新碱、多柔比星、环磷酰胺或异环磷酰胺、依托泊苷），再做局部治疗，局部治疗的时机由多学科团队决定，之后巩固治疗，总疗程10–12个月；女性患者在有条件时应考虑生育力咨询（她尚未进入青春期，可考虑卵巢组织冻存）。",
+            "en": "Right. ESMO 2021: bone sarcoma is treated at reference centres; for Ewing sarcoma, induction chemotherapy (vincristine, doxorubicin, cyclophosphamide or ifosfamide, etoposide) comes first, then local therapy at a time the multidisciplinary team decides, then consolidation, 10–12 months in all; for girls a fertility consultation should be considered where available (she is prepubertal, so ovarian tissue cryopreservation)."
+          }
+        },
+        {
+          "id": "resect-first",
+          "text": {
+            "zh-CN": "趁肿瘤还能切、化疗还没把她身体拖垮，先把右髂骨整块切掉；只有术后病理提示切缘阳性，或三个月后复查PET-CT发现其他骨病灶增大时才化疗。",
+            "en": "Resect the right ilium first, in one piece, while the tumour is still operable and before chemotherapy can weaken her, and give chemotherapy only if the pathologist reports involved margins or the other bone lesions grow on a repeat PET-CT in three months' time."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "尤文肉瘤按全身性疾病治疗：ESMO 2021先做诱导化疗，再在多学科团队决定的时机做局部治疗；先手术会让微小转移得不到治疗。国家卫健委2019年规范也指出单纯局部治疗的复发率高达80%–90%。",
+            "en": "Ewing sarcoma is treated as a systemic disease: ESMO 2021 gives induction chemotherapy first and local therapy afterwards, at a time the multidisciplinary team decides; operating first leaves micrometastatic disease untreated, and China's 2019 national guideline notes relapse rates of 80–90 % with local treatment alone."
+          }
+        },
+        {
+          "id": "radiotherapy-alone",
+          "text": {
+            "zh-CN": "对骨盆和每一处PET高摄取的骨做根治性放疗；她才三岁，多药化疗毒性太大，不值得冒这个险。",
+            "en": "Give radical radiotherapy to the pelvis and to every PET-avid bone, because at three years of age multi-agent chemotherapy is too toxic to be worth the risk for her."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "放疗是局部治疗的一种选择，不能代替化疗：ESMO 2021指出，在没有全身治疗的年代，历史队列的5年生存率不到10%。她年龄小，需要儿童肿瘤团队和细致的支持治疗，而不是省去化疗。",
+            "en": "Radiotherapy is one option for local control, not a substitute for chemotherapy: ESMO 2021 notes that without systemic treatment 5-year survival was under 10 % in historical series. Her young age calls for a paediatric oncology team and careful supportive care, not for leaving chemotherapy out."
+          }
+        },
+        {
+          "id": "comfort-care-only",
+          "text": {
+            "zh-CN": "诊断时多处骨病灶无法治愈，只提供舒适照护，让她免受化疗、手术和放疗的副作用。",
+            "en": "Offer comfort care only, because bone lesions in several places at diagnosis cannot be cured, and spare her the side effects of chemotherapy, surgery and radiotherapy."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "多发骨病灶的预后确实更差，但ESMO 2021对转移性尤文肉瘤仍采用同样的多学科综合治疗。姑息治疗团队可以与抗肿瘤治疗同时支持这个家庭，而不是在诊断时取代治疗。",
+            "en": "Multiple bone lesions do carry a poorer outlook, but ESMO 2021 treats metastatic Ewing sarcoma with the same multimodal approach. Palliative care can support the family alongside treatment; it does not replace treatment at diagnosis."
+          }
         }
       ]
     }
@@ -1323,130 +3443,285 @@
       "id": "rb-history",
       "domain": "history",
       "text": {
-        "zh-CN": "查清首发症状与病程",
-        "en": "Establish presenting symptoms and course"
+        "zh-CN": "问清发热、跛行、激素治疗及其反应和抗感染治疗，并追问起病时皮肤黏膜表现、夜间疼痛、体重和盗汗以及激素剂量",
+        "en": "Took the history of the fever, the limp, the steroid course and response and the anti-infective treatment, and asked about the skin and mouth at onset, night pain, weight and sweats and the steroid dose"
       },
-      "weight": 2,
+      "weight": 3,
       "met": {
         "all": [
           {
-            "asked": "fever"
+            "asked": "presenting-complaint"
+          },
+          {
+            "asked": "fever-course"
           },
           {
             "asked": "limp"
           },
           {
-            "asked": "steroids"
+            "asked": "steroid-response"
           },
           {
-            "asked": "rash"
+            "asked": "anti-infection"
+          },
+          {
+            "asked": "skin-mouth"
+          },
+          {
+            "asked": "night-pain"
+          },
+          {
+            "asked": "weight-loss-sweats"
+          },
+          {
+            "asked": "steroid-details"
           }
         ]
       }
     },
     {
-      "id": "rb-context",
-      "domain": "history",
-      "text": {
-        "zh-CN": "补充伴随症状及相关病史",
-        "en": "Elicit associated symptoms and relevant background"
-      },
-      "weight": 1,
-      "met": {
-        "all": [
-          {
-            "asked": "infection-treatment"
-          },
-          {
-            "asked": "prior-health"
-          },
-          {
-            "asked": "vaccines"
-          }
-        ]
-      }
-    },
-    {
-      "id": "rb-unknown",
-      "domain": "safety",
-      "text": {
-        "zh-CN": "明确过敏资料的证据边界",
-        "en": "Establish the evidence boundary for allergy information"
-      },
-      "weight": 1,
-      "met": {
-        "asked": "allergies"
-      }
-    },
-    {
-      "id": "rb-examination",
+      "id": "rb-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对与当前表现相关的体征",
-        "en": "Review signs relevant to the presentation"
+        "zh-CN": "检查面色、浅表淋巴结、皮肤、踝和足背、髋部（“4”字试验）以及肌力和肌张力",
+        "en": "Examined her colour, lymph nodes, skin, ankles and feet, hips (figure-four test) and muscle power and tone"
       },
-      "weight": 1,
+      "weight": 2,
       "met": {
         "all": [
           {
             "examined": "pallor"
           },
           {
-            "examined": "joints"
+            "examined": "lymph-nodes"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "ankles-feet"
+          },
+          {
+            "examined": "figure-four"
+          },
+          {
+            "examined": "power-tone"
           }
         ]
       }
     },
     {
-      "id": "rb-workup",
-      "domain": "investigations",
-      "text": {
-        "zh-CN": "调阅早期关键检查",
-        "en": "Review the key early investigations"
-      },
-      "weight": 2,
-      "met": {
-        "all": [
-          {
-            "read": "blood",
-            "phase": "workup"
-          },
-          {
-            "read": "screen",
-            "phase": "workup"
-          },
-          {
-            "read": "imaging",
-            "phase": "workup"
-          }
-        ]
-      }
-    },
-    {
-      "id": "rb-differential",
+      "id": "rb-first-step",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即正确整合早期证据",
-        "en": "Integrate the early evidence correctly on the first attempt"
+        "zh-CN": "没有直接接受全身型JIA的诊断，先检查而不加强治疗（第一次即答对）",
+        "en": "Did not take the systemic JIA label at face value and investigated before escalating (first attempt)"
       },
       "weight": 3,
       "met": {
-        "decidedFirstTry": "diagnosis"
+        "decidedFirstTry": "first-step"
       }
     },
     {
-      "id": "rb-confirmation",
+      "id": "rb-first-tests",
       "domain": "investigations",
       "text": {
-        "zh-CN": "核对后续验证资料",
-        "en": "Review subsequent corroborating evidence"
+        "zh-CN": "送检能区分白血病、神经母细胞瘤、感染和巨噬细胞活化综合征的检查：血涂片、血培养、尿儿茶酚胺代谢物，以及铁蛋白、甘油三酯和肝酶",
+        "en": "Sent the tests that separate leukaemia, neuroblastoma, infection and macrophage activation: blood film, blood culture, urine catecholamine metabolites, and ferritin, triglycerides and liver enzymes"
       },
       "weight": 2,
       "met": {
         "all": [
           {
-            "read": "tissue",
-            "phase": "confirmation"
+            "ordered": "blood-film"
+          },
+          {
+            "ordered": "blood-culture"
+          },
+          {
+            "ordered": "urine-catecholamines"
+          },
+          {
+            "ordered": "mas-screen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅血常规、血沉和C反应蛋白、乳酸脱氢酶、自身抗体和病毒学检查、骨髓以及每一项影像记录",
+        "en": "Read the blood count, ESR and CRP, LDH, autoantibody and viral tests, the marrow and every imaging record"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "fbc",
+            "phase": "workup"
+          },
+          {
+            "read": "esr-crp",
+            "phase": "workup"
+          },
+          {
+            "read": "ldh",
+            "phase": "workup"
+          },
+          {
+            "read": "autoantibodies",
+            "phase": "workup"
+          },
+          {
+            "read": "viral-studies",
+            "phase": "workup"
+          },
+          {
+            "read": "marrow",
+            "phase": "workup"
+          },
+          {
+            "read": "radiographs",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-imaging",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "把看似正常的平片、阴性的骨髓与MRI和CT放在一起解读，判断需要组织（第一次即答对）",
+        "en": "Read normal-looking films and a negative marrow against the MRI and CT and concluded that tissue was needed (first attempt)"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "imaging-meaning"
+      }
+    },
+    {
+      "id": "rb-tissue-route",
+      "domain": "management",
+      "text": {
+        "zh-CN": "选对由谁、在哪里、怎样取组织（第一次即答对）",
+        "en": "Chose who should take the tissue, where and how (first attempt)"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "tissue-route"
+      }
+    },
+    {
+      "id": "rb-referral-first",
+      "domain": "management",
+      "text": {
+        "zh-CN": "在任何取材之前转诊儿童肿瘤及骨肉瘤团队",
+        "en": "Referred her to the paediatric oncology and bone sarcoma team before any tissue was taken"
+      },
+      "weight": 2,
+      "met": {
+        "intervened": "oncology-referral",
+        "whenIndicated": true
+      }
+    },
+    {
+      "id": "rb-biopsy-in-time",
+      "domain": "management",
+      "text": {
+        "zh-CN": "活检按骨肉瘤团队的规划进行，且在调阅血常规、送检凝血之后",
+        "en": "Had the biopsy done as the bone sarcoma team planned it, after the blood count was read and clotting was sent"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "intervened": "planned-biopsy",
+        "whenIndicated": true
+      }
+    },
+    {
+      "id": "rb-no-critical-harm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有为“关节炎”标签做激素冲击，也没有擅自切开切除髂骨包块",
+        "en": "Gave no steroid pulse for the arthritis label and had no unplanned excision of the iliac mass"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "methylpred-pulse"
+            },
+            {
+              "intervened": "open-excision"
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "first-step"
+          },
+          {
+            "intervened": "methylpred-pulse"
+          },
+          {
+            "intervened": "open-excision"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-no-blind-treatment",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有为“关节炎”标签开始生物制剂，没有在留培养和组织之前再给抗生素，也没有在看血常规之前输血",
+        "en": "Started no biologic for the arthritis label, gave no antibiotics before cultures and tissue were taken, and transfused nothing before reading her blood count"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "il-blockade"
+            },
+            {
+              "intervened": "empirical-antibiotics",
+              "valid": false
+            },
+            {
+              "intervened": "rbc-transfusion",
+              "valid": false
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "first-step"
+          },
+          {
+            "intervened": "il-blockade"
+          },
+          {
+            "intervened": "empirical-antibiotics",
+            "valid": false
+          },
+          {
+            "intervened": "rbc-transfusion",
+            "valid": false
           }
         ]
       }
@@ -1455,132 +3730,262 @@
       "id": "rb-evidence",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次正确说明后续证据的强度和边界",
-        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+        "zh-CN": "判断活检和PET-CT能确定什么（第一次即答对），并送检融合基因和胸部CT",
+        "en": "Judged what the biopsy and PET-CT establish (first attempt), and sent fusion testing and a chest CT"
       },
       "weight": 3,
       "met": {
-        "decidedFirstTry": "evidence"
+        "all": [
+          {
+            "decidedFirstTry": "what-is-proven"
+          },
+          {
+            "ordered": "fusion-test"
+          },
+          {
+            "ordered": "chest-ct"
+          }
+        ]
       }
     },
     {
-      "id": "rb-safety",
-      "domain": "safety",
-      "text": {
-        "zh-CN": "识别非典型风湿表现并规划专科组织诊断，避免继续盲目激素",
-        "en": "Recognise atypical rheumatic features and plan specialist tissue diagnosis instead of further blind steroids"
-      },
-      "weight": 4,
-      "critical": true,
-      "met": {
-        "decidedFirstTry": "management"
-      }
-    },
-    {
-      "id": "rb-outcome",
+      "id": "rb-plan",
       "domain": "management",
       "text": {
-        "zh-CN": "复盘原报告治疗及转归",
-        "en": "Review reported treatment and outcome"
+        "zh-CN": "选定治疗路径（第一次即答对），有了组织诊断才转科化疗，并安排生育力保存讨论和家属谈话",
+        "en": "Chose the treatment pathway (first attempt), transferred her for chemotherapy only after the tissue diagnosis, and arranged the fertility discussion and the family meeting"
       },
-      "weight": 1,
+      "weight": 3,
       "met": {
-        "read": "followup",
-        "phase": "followup"
+        "all": [
+          {
+            "decidedFirstTry": "treatment-plan"
+          },
+          {
+            "intervened": "transfer-oncology",
+            "whenIndicated": true
+          },
+          {
+            "intervened": "fertility-consult"
+          },
+          {
+            "intervened": "family-meeting"
+          }
+        ]
       }
     },
     {
       "id": "rb-communication",
       "domain": "communication",
       "text": {
-        "zh-CN": "清楚说明证据与不确定性",
-        "en": "Explain evidence and uncertainty clearly"
+        "zh-CN": "向家长说明为什么要重新考虑诊断、检查的目的，以及活检结果和仍不确定之处，并核实理解",
+        "en": "Explained to her parent why the diagnosis was being reconsidered, what the tests were for, the biopsy result and what is still uncertain, and checked understanding"
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "用日常语言说明证据：识别发热跛行中的肿瘤红旗。同时解释以下信息仍有缺失或疑问：融合分型、每处病灶组织、完整治疗与长期生存功能。请对方复述关键内容以确认理解。",
-        "en": "Explain the evidence in everyday language: Identify malignant red flags in fever with limp. Identify the following as missing or uncertain: Fusion classification, individual lesion histology, full treatment and long-term survival/function. Check understanding through teach-back."
+        "zh-CN": "良好表现（Calgary–Cambridge；告知诊断时用SPIKES）：入院时向清和和家长自我介绍，用通俗的话问病史；说明为什么要重新考虑“关节炎”的诊断，不指责外院；解释为什么暂不加量激素、每项检查查什么，并用回授法确认家长听懂了计划。活检结果出来后：选安静的房间，请儿童肿瘤科医生和护士在场；先问家长已经了解什么、想知道多少；先给出预警，再用通俗的话说明活检显示的是一种叫尤文肉瘤的骨肿瘤，其他骨病灶可能是转移，也可能是多处原发，尚未证实；说明还不确定的部分（确认用的基因检测、胸部检查）和接下来要做什么（在儿童肿瘤团队治疗、先化疗、治疗前讨论生育力保存）；回应情绪，留出提问时间，用回授法确认理解，约定下次谈话。不引用本例无法支持的生存率数字，也不把原报告没有记录的治疗说成已经做过。",
+        "en": "Good performance (Calgary–Cambridge; SPIKES for the diagnosis): on admission, introduces themself to Qinghe and her parent and takes the history in plain words; explains why the arthritis diagnosis is being reconsidered without blaming the other hospital; explains why the steroids are not being increased and what each test is for, and checks by teach-back that the parent has understood the plan. When the biopsy is back: a quiet room with the paediatric oncologist and the nurse; asks what the parent already knows and wants to know; gives a warning shot, then says in plain words that the biopsy shows a bone tumour called Ewing sarcoma and that the other bone lesions may be spread from it or several primary sites, not yet proven; explains what is still uncertain (the confirming gene test, the chest scan) and what happens next (treatment with a children's cancer team, chemotherapy first, a fertility discussion before treatment); responds to emotion, leaves time for questions, checks understanding by teach-back and agrees when to talk again. Quotes no survival figure the case cannot support and describes no treatment the report does not record as given."
       }
     }
   ],
   "npcs": [
     {
       "role": "attending",
+      "name": {
+        "zh-CN": "曹医生（儿科上级医师）",
+        "en": "Dr Cao (paediatric attending)"
+      },
       "knowledge": {
-        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
-        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+        "zh-CN": "儿科上级医师，用苏格拉底式提问带教、按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“全身型JIA这个诊断的依据是什么？她真正具备其中哪些表现？”“发热、跛行的孩子出现哪些表现时，你会在加用激素之前停下来？”“看似正常的骨盆平片和一次骨髓检查能排除什么、不能排除什么？”“骨盆包块该由谁来取组织？取之前要先查什么？”“没有融合基因结果的活检报告，按今天的标准能确定什么？”提醒学员在任何麻醉前先问清她的激素剂量和疗程，激素不能突然停。说明这份报告发表于2012年，早于把融合基因纳入诊断的2020年WHO分类。不提前透露诊断、决策答案或结局。她的生命体征、白细胞计数、铁蛋白、血涂片、凝血、培养、尿儿茶酚胺、胸部影像、激素种类和剂量、用过的抗生素、活检方式、融合基因状态和化疗方案都没有记录，不要替它补上。",
+        "en": "Paediatric attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “What does the systemic JIA label rest on, and which of its features does she actually have?”, “Which findings in a child with fever and a limp make you stop before giving more steroids?”, “What can a normal-looking pelvic film and one marrow sample exclude — and what not?”, “Who should take tissue from a pelvic mass, and what must be checked first?”, “By today's standard, what does a biopsy report without a fusion result establish?”. Reminds the learner to find out her steroid dose and duration before any anaesthetic, and that steroids are never stopped abruptly. Explains that the report was published in 2012, before the 2020 WHO classification made the fusion part of the diagnosis. Never reveals the diagnosis, a decision's answer or the outcome early. Her vital signs, white cell count, ferritin, blood film, clotting, cultures, urine catecholamines, chest imaging, the steroid and its dose, the antibiotics used, the biopsy approach, the fusion status and the chemotherapy regimen are not recorded, and the attending does not supply them."
       },
       "interprets": [
-        "blood",
-        "screen",
-        "imaging",
-        "tissue",
-        "followup"
+        "fbc",
+        "esr-crp",
+        "ldh",
+        "autoantibodies",
+        "viral-studies",
+        "marrow",
+        "radiographs",
+        "mri",
+        "ct",
+        "biopsy",
+        "pet-ct",
+        "outcome"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "林护士（儿科病房）",
+        "en": "Nurse Lin (children's ward)"
+      },
+      "knowledge": {
+        "zh-CN": "儿科病房护士。交班（ISBAR）：S——清和，3岁9个月，体重15.9 kg，因发热70余天、逐渐跛行入院；面色苍白，躺在床上，家长陪着。B——此前被诊断为全身型幼年特发性关节炎，外院按此给她用了激素，热退后在继续口服期间又发热；近一个月断断续续抗感染，发热仍加重。A——交给我的病历里没有她在病房的生命体征。R——请今天来看她。可以抽血查血常规和涂片、血培养、凝血、铁蛋白和配血，留尿，和血库联系输血，预约影像检查，联系肿瘤科。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（激素名称和剂量、过敏）时直接说没有记录。",
+        "en": "Children's ward nurse. Handover (ISBAR): S — Qinghe, 3 years 9 months, 15.9 kg, admitted with fever for more than 70 days and a limp that came on gradually; she is pale, lying in bed, and her parent is with her. B — previously diagnosed with systemic juvenile idiopathic arthritis, for which another hospital gave steroids; the fever settled and came back while she was still taking them by mouth; on-and-off treatment for infection for about a month has not stopped the fever getting worse. A — the notes handed over to me have no ward observations for her. R — please review her today. Can take blood for a count and film, cultures, clotting, ferritin and group and screen, collect urine, set up a transfusion with the blood bank, book imaging and call the oncology team. Reads orders back, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (the steroid's name and dose, allergies)."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "唐医生（儿童肿瘤科会诊）",
+        "en": "Dr Tang (paediatric oncology consultant)"
+      },
+      "knowledge": {
+        "zh-CN": "儿童肿瘤科会诊医生，只解读学员已经看过的结果，不补充病例没有记录的结果。可以讲解ESMO–EURACAN–GENTURIS–ERN PaedCan 2021：5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症；平片不能排除恶性时做包括整个间室的MRI；影像怀疑原发骨肉瘤时转诊到具备儿童专长的专科中心；活检由将做根治手术的外科团队进行，或由介入放射科医生与该外科医生商定后进行，通常为影像引导下粗针活检，穿刺道要标记并在日后切除；尤文肉瘤必须做分子确认（FET–ETS融合，通常为EWSR1–FLI1）；分期用胸部CT和PET-CT或全身MRI，可疑病灶要活检，做了PET-CT时骨髓活检和穿刺不作强制要求；诱导化疗、由多学科团队决定时机的局部治疗、巩固治疗，总疗程10–12个月；女性患者有条件时考虑生育力咨询。还可以讲WHO 2020分类：CIC重排肉瘤和BCOR改变肉瘤与尤文肉瘤分开。不提前给出决策答案或结局。",
+        "en": "Paediatric oncology consultant who interprets only results the learner has already read and adds no result the case does not record. Can explain ESMO–EURACAN–GENTURIS–ERN PaedCan 2021: under 5 years a destructive bone lesion is most often metastatic neuroblastoma or Langerhans cell histiocytosis; MRI of the whole compartment when radiographs cannot exclude malignancy; referral of a suspected primary bone sarcoma to a reference centre with paediatric expertise; biopsy by the surgical team who will do the resection, or by an interventional radiologist after discussing it with that surgeon, usually an image-guided core biopsy, with the tract marked and later excised; molecular confirmation of Ewing sarcoma mandatory (a FET–ETS fusion, usually EWSR1–FLI1); staging with chest CT and PET-CT or whole-body MRI, doubtful lesions biopsied, marrow biopsy and aspirate not mandated when PET-CT is done; induction chemotherapy, local therapy timed by the multidisciplinary team, then consolidation, 10–12 months in all; a fertility consultation for girls where available. And the WHO 2020 classification, which separates CIC-rearranged and BCOR-altered sarcomas from Ewing sarcoma. Never gives a decision's answer or the outcome early."
+      },
+      "interprets": [
+        "marrow",
+        "radiographs",
+        "mri",
+        "ct",
+        "biopsy",
+        "pet-ct"
       ],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据复盘",
-      "en": "Case evidence debrief"
+      "zh-CN": "复盘：长期发热、跛行与“关节炎”标签",
+      "en": "Debrief: prolonged fever, a limp and an arthritis label"
     },
     "conclusion": {
-      "zh-CN": "原报告右髂骨尤文瘤多骨病灶，曾被JIA标签与激素退热反应延误识别。",
-      "en": "The source reports right iliac Ewing tumour with multiple bone lesions, initially obscured by a JIA label and steroid-responsive fever."
+      "zh-CN": "清和3岁9个月，发热七十多天——起初38℃左右，后来最高39.5℃、一天数次——逐渐出现轻度跛行，面色苍白。此前她被诊断为全身型幼年特发性关节炎，在外院用激素后热退，继续口服期间又发热；近一个月断断续续抗感染，发热仍加重。这个诊断并不吻合：起病时无皮疹，查体无浅表淋巴结肿大，血小板最低65×10⁹/L，血红蛋白55–80 g/L，乳酸脱氢酶1312 U/L。平片未见明显骨质破坏，但MRI示右髂骨及周围包块伴弥散受限，增强CT示包绕髂骨的肿块、骨膜反应和骶骨异常；一次骨髓检查为红系增生，未报告确诊的肿瘤浸润。右髂骨活检报告为尤文瘤，未给出融合基因结果；PET-CT示多部位骨病灶，考虑转移或多中心。确诊后她转血液科化疗，疗效和结局没有报告。今天的做法是：排除肿瘤、感染和巨噬细胞活化综合征之前不加强免疫抑制；任何取材之前先转诊儿童骨肉瘤专科团队；用融合基因检测确认诊断；完成分期；按现行方案治疗，治疗前先讨论生育力保存。",
+      "en": "Qinghe, aged 3 years 9 months, had fever for more than 70 days — about 38 °C at first, later up to 39.5 °C several times a day — a mild limp that came on gradually, and pallor. She had been diagnosed with systemic juvenile idiopathic arthritis and given steroids at another hospital; the fever settled and came back while she was still taking them by mouth, and on-and-off anti-infective treatment for about a month did not stop it worsening. The label did not fit: there was no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, haemoglobin 55–80 g/L and an LDH of 1312 U/L. Radiographs showed no obvious destruction, but MRI showed a mass in and around the right ilium with restricted diffusion, and contrast-enhanced CT a mass encasing the ilium with periosteal reaction and a sacral abnormality; one marrow examination showed erythroid hyperplasia without confirmed tumour. A right iliac biopsy was reported as Ewing tumour, without a fusion result, and PET-CT showed multiple bone lesions considered metastatic or multicentric. She was transferred to the haematology department for chemotherapy; her response and outcome are not reported. Today: hold immunosuppression until malignancy, infection and macrophage activation are excluded; refer to a paediatric bone sarcoma team before any tissue is taken; confirm the diagnosis with fusion testing; complete staging; and treat on a current protocol, with fertility preservation discussed first."
     },
     "keyReasoning": [
       {
-        "zh-CN": "识别发热跛行中的肿瘤红旗。",
-        "en": "Identify malignant red flags in fever with limp."
+        "zh-CN": "诊断标签要有自己的依据：全身型JIA需要关节炎、发热至少2周，并至少有皮疹、全身淋巴结肿大、肝脾肿大或浆膜炎之一（ILAR）；她起病时无皮疹、无淋巴结肿大，而激素能退热并不能说明发热的原因。",
+        "en": "A label needs its own criteria: systemic JIA needs arthritis, fever for at least 2 weeks and at least one of rash, generalised lymphadenopathy, hepatosplenomegaly or serositis (ILAR); she had no rash at onset and no enlarged nodes, and a fever that settles on steroids says nothing about its cause."
       },
       {
-        "zh-CN": "比较平片阴性与MRI/CT阳性的证据强度。",
-        "en": "Compare negative radiographs with positive MRI/CT evidence."
+        "zh-CN": "跛行的孩子血小板低、乳酸脱氢酶1312 U/L、血沉和C反应蛋白升高，指向肿瘤或感染而不是关节炎：先检查再治疗，巨噬细胞活化综合征也要有证据才按它处理。",
+        "en": "Low platelets, an LDH of 1312 U/L and a raised ESR and CRP in a limping child point to malignancy or infection rather than arthritis: test before treating, and treat macrophage activation only once it is shown."
       },
       {
-        "zh-CN": "区分活检诊断、分子分类与影像分期。",
-        "en": "Distinguish biopsy diagnosis, molecular classification and imaging stage."
+        "zh-CN": "骨盆平片看似正常、一次骨髓阴性，都排除不了骨盆肿瘤；MRI和CT显示髂骨包块伴骨膜反应，所以需要组织。",
+        "en": "Normal-looking pelvic films and one negative marrow do not exclude a pelvic tumour; MRI and CT showed an iliac mass with periosteal reaction, so tissue is needed."
+      },
+      {
+        "zh-CN": "可疑骨肉瘤的组织应由将来做切除的团队来取，或与他们商定后取；穿刺道要能切除，取材前要知道血小板和凝血。",
+        "en": "Tissue from a suspected bone sarcoma is taken by, or with, the team who will resect it, along a tract that can be removed, once the platelet count and clotting are known."
+      },
+      {
+        "zh-CN": "“尤文瘤、无融合基因结果”的活检和未逐个取材的PET病灶，是需要补全的工作诊断：做融合基因检测、胸部CT，对会改变方案的病灶活检，然后按方案化疗，由团队决定局部治疗的时机。",
+        "en": "A biopsy reported as Ewing tumour without a fusion result, and PET lesions that were not each sampled, are a working diagnosis to complete — fusion testing, a chest CT and a biopsy of any lesion that would change the plan — before protocol chemotherapy with local control timed by the team."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单个已发表病例不能说明这种情况有多常见，也不能说明哪种治疗效果更好；原报告的经过作为历史回看，教学答案依据现行指南。",
+      "en": "A single published report cannot show how often this happens or how well any treatment works; the report's course is reviewed as history, and the teaching answers follow current guidance."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "活检的免疫组化结果和融合基因状态（EWSR1/FET–ETS），以及活检是怎样取的。",
+        "en": "The biopsy's immunohistochemistry and fusion status (EWSR1/FET–ETS), and how the biopsy was taken."
+      },
+      {
+        "zh-CN": "PET-CT病灶累及哪些骨、是否对其他病灶取过材，以及肺部情况（没有记录胸部影像）。",
+        "en": "Which bones the PET-CT lesions involved, whether any other lesion was sampled, and the lungs (no chest imaging is recorded)."
+      },
+      {
+        "zh-CN": "激素的种类、剂量和疗程，入院时是否仍在服用，以及用过哪些抗生素。",
+        "en": "The steroid's name, dose and duration, whether she was still taking it on admission, and which antibiotics she had."
+      },
+      {
+        "zh-CN": "她的生命体征、白细胞计数及分类、血涂片、铁蛋白、凝血、培养和尿儿茶酚胺代谢物。",
+        "en": "Her vital signs, white cell count and differential, blood film, ferritin, clotting, cultures and urine catecholamine metabolites."
+      },
+      {
+        "zh-CN": "每项检查在哪家医院、什么时候、以什么先后完成（包括骨髓与激素治疗、PET-CT与活检的先后）。",
+        "en": "Which hospital did each test, when and in what order (including the marrow relative to the steroids and the PET-CT relative to the biopsy)."
+      },
+      {
+        "zh-CN": "化疗方案、局部治疗、疗效、生存和功能结局。",
+        "en": "The chemotherapy regimen, local treatment, response, survival and function."
+      },
+      {
+        "zh-CN": "过敏史、家族史、接触史、生长发育情况和家长的担忧。",
+        "en": "Allergies, family history, exposures, development and her parent's concerns."
       }
     ],
     "teachingPoints": [
       {
-        "zh-CN": "识别发热跛行中的肿瘤红旗。",
-        "en": "Identify malignant red flags in fever with limp."
+        "zh-CN": "全身型JIA（Still病）只有在排除其他疾病后才能诊断。EULAR/PReS 2024（推荐3）要求认真考虑肿瘤、感染以及其他炎症性和自身炎症性疾病，并提醒误诊时糖皮质激素或免疫调节药可能有害，尤其是肿瘤；ACR 2021对无巨噬细胞活化综合征的全身型JIA，有条件地不推荐以口服激素作为初始单药治疗。原报告中，她在骨病灶活检之前就因“关节炎”标签用上了激素。",
+        "en": "Systemic JIA (Still's disease) is diagnosed only once its mimics are excluded. EULAR/PReS 2024 (recommendation 3) asks that malignancy, infection and other inflammatory and autoinflammatory diseases be carefully considered, and warns that glucocorticoids or immunomodulators can be deleterious when the disease is misdiagnosed, particularly in malignancy; ACR 2021 conditionally recommends against oral glucocorticoids as initial monotherapy for systemic JIA without macrophage activation. In the report, she was given steroids for the arthritis label before the bone lesion was biopsied."
       },
       {
-        "zh-CN": "比较平片阴性与MRI/CT阳性的证据强度。",
-        "en": "Compare negative radiographs with positive MRI/CT evidence."
+        "zh-CN": "发热、跛行儿童的肿瘤警示：NICE NG12（2015，2026年更新）对面色苍白、不明原因发热或持续/不明原因骨痛的儿童要求尽快查血常规（推荐1.10.3），对不明原因骨肿胀或骨痛要求尽快拍X线片（1.11.3）。被贴上“关节炎”标签的孩子出现血小板减少，应在排除白血病、神经母细胞瘤和骨肿瘤之前停止加强免疫抑制。",
+        "en": "Malignancy red flags in a child with fever and a limp: NICE NG12 (2015, updated 2026) asks for a very urgent blood count in children with pallor, unexplained fever or persistent or unexplained bone pain (recommendation 1.10.3), and a very urgent X-ray for unexplained bone swelling or pain (1.11.3). Thrombocytopenia in a child labelled with arthritis should stop any escalation of immunosuppression until leukaemia, neuroblastoma and bone tumours are excluded."
       },
       {
-        "zh-CN": "区分活检诊断、分子分类与影像分期。",
-        "en": "Distinguish biopsy diagnosis, molecular classification and imaging stage."
-      }
-    ],
-    "boundaries": {
-      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
-      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
-    },
-    "unknowns": [
+        "zh-CN": "平片是第一步，不是最后一步。ESMO–EURACAN–GENTURIS–ERN PaedCan 2021要求平片不能排除恶性时做包括整个间室的MRI，认为MRI是骨盆肿瘤局部分期的最佳方法，并指出5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症——3岁患尤文肉瘤并不常见，要靠活检来定。",
+        "en": "Radiographs are the first test, not the last. ESMO–EURACAN–GENTURIS–ERN PaedCan 2021 asks for MRI of the whole compartment when radiographs cannot exclude malignancy, regards MRI as the best local staging for pelvic tumours, and notes that under 5 years of age a destructive bone lesion is most often metastatic neuroblastoma or Langerhans cell histiocytosis — Ewing sarcoma at 3 years is uncommon, so the biopsy decides."
+      },
       {
-        "zh-CN": "融合分型、每处病灶组织、完整治疗与长期生存功能。",
-        "en": "Fusion classification, individual lesion histology, full treatment and long-term survival/function."
+        "zh-CN": "可疑骨肉瘤的活检（ESMO 2021）：转诊到具备儿童专长的专科中心；由将做根治手术的外科团队活检，或由介入放射科医生与该外科医生商定后进行，通常为影像引导下粗针活检；穿刺道要标记，日后随肿瘤一并切除；尤文肉瘤应避免病灶内手术。ESPID 2017提醒用抗生素前一定先做血培养，并指出亚急性骨髓炎可与恶性肿瘤混淆、通常需要活检——所以活检组织也要送培养。",
+        "en": "Biopsy of a suspected bone sarcoma (ESMO 2021): refer to a reference centre with paediatric expertise; the biopsy is done by the surgical team who will resect the tumour, or by an interventional radiologist after discussing it with that surgeon, usually as an image-guided core biopsy; the tract is marked and later removed with the tumour; intralesional surgery is to be avoided in Ewing sarcoma. ESPID 2017 asks for a blood culture before any antibiotic and notes that subacute osteomyelitis can be confused with malignancy and usually needs a biopsy — so the biopsy also goes for culture."
+      },
+      {
+        "zh-CN": "过去与现在：这份2012年发表的报告仅凭病理诊断为“尤文瘤”，没有融合基因结果。ESMO 2021规定必须做分子确认（FET–ETS融合，通常为EWSR1–FLI1），WHO 2020分类把行为不同的CIC重排肉瘤和BCOR改变肉瘤单列；我国《儿童及青少年尤文肉瘤诊疗规范（2019年版）》也建议有条件时做EWSR1检测，以FISH为主，并尽量用PCR验证。",
+        "en": "Then and now: the report, published in 2012, diagnosed 'Ewing tumour' on histology without a fusion result. ESMO 2021 makes molecular confirmation mandatory (a FET–ETS fusion, usually EWSR1–FLI1), and the WHO 2020 classification places CIC-rearranged and BCOR-altered sarcomas, which behave differently, apart; China's 2019 national guideline for Ewing sarcoma in children and adolescents also recommends EWSR1 testing where available, by FISH and, where possible, confirmed by PCR."
+      },
+      {
+        "zh-CN": "分期与治疗（ESMO 2021）：胸部CT和PET-CT（或全身MRI），可疑病灶要活检（做了PET-CT时不强制要求骨髓活检）；先诱导化疗，再由多学科团队决定时机做局部治疗，之后巩固，总疗程10–12个月；多发骨转移的预后明显差于肺转移；女性患者治疗前在有条件时考虑生育力咨询（青春期前为卵巢组织冻存）。",
+        "en": "Staging and treatment (ESMO 2021): chest CT and PET-CT (or whole-body MRI), with biopsy of doubtful lesions (marrow biopsy is not mandated when PET-CT is done); induction chemotherapy, then local therapy timed by the multidisciplinary team, then consolidation, 10–12 months in all; multiple bone metastases carry a much poorer outcome than lung metastases; for girls, consider a fertility consultation before treatment where available (ovarian tissue cryopreservation before puberty)."
       }
     ],
     "references": [
-      "王新宁, 苏改秀, 吴凤岐. 小儿右髂骨尤文肉瘤误诊为幼年特发性关节炎一例. 中华儿科杂志. 2012;50(11):866-867. doi:10.3760/cma.j.issn.0578-1310.2012.11.017.",
-      "https://rs.yiigle.com/cmaid/44939",
-      "National Cancer Institute. Ewing Sarcoma Treatment (PDQ), professional version. Accessed 2026-10-28. https://www.cancer.gov/types/bone/hp/ewing-treatment-pdq"
+      "王新宁, 苏改秀, 吴凤岐. 小儿右髂骨尤文肉瘤误诊为幼年特发性关节炎一例. 中华儿科杂志. 2012;50(11):866-867. doi:10.3760/cma.j.issn.0578-1310.2012.11.017. Available from: https://rs.yiigle.com/cmaid/44939",
+      "Fautrel B, Mitrovic S, De Matteis A, et al. EULAR/PReS recommendations for the diagnosis and management of Still's disease, comprising systemic juvenile idiopathic arthritis and adult-onset Still's disease. Ann Rheum Dis. 2024;83(12):1614-1627. doi:10.1136/ard-2024-225851",
+      "Onel KB, Horton DB, Lovell DJ, et al. 2021 American College of Rheumatology guideline for the treatment of juvenile idiopathic arthritis: therapeutic approaches for oligoarthritis, temporomandibular joint arthritis, and systemic juvenile idiopathic arthritis. Arthritis Rheumatol. 2022;74(4):553-569. doi:10.1002/art.42037",
+      "Petty RE, Southwood TR, Manners P, et al. International League of Associations for Rheumatology classification of juvenile idiopathic arthritis: second revision, Edmonton, 2001. J Rheumatol. 2004;31(2):390-392.",
+      "National Institute for Health and Care Excellence. Suspected cancer: recognition and referral. NICE guideline NG12. London: NICE; 2015 (last updated 15 April 2026). Available from: https://www.nice.org.uk/guidance/ng12",
+      "Strauss SJ, Frezza AM, Abecassis N, et al. Bone sarcomas: ESMO–EURACAN–GENTURIS–ERN PaedCan Clinical Practice Guideline for diagnosis, treatment and follow-up. Ann Oncol. 2021;32(12):1520-1536. doi:10.1016/j.annonc.2021.08.1995",
+      "WHO Classification of Tumours Editorial Board. Soft tissue and bone tumours. 5th ed. Lyon: International Agency for Research on Cancer; 2020. (WHO classification of tumours series; vol. 3).",
+      "国家卫生健康委员会. 儿童及青少年尤文肉瘤诊疗规范（2019年版）. 北京: 国家卫生健康委员会; 2019. Available from: https://www.gov.cn/zhengce/zhengceku/2019-11/15/5452452/files/e02943aaccad42789c0b359594e65f9d.pdf",
+      "Saavedra-Lozano J, Falup-Pecurariu O, Faust SN, et al. Bone and joint infections. Pediatr Infect Dis J. 2017;36(8):788-799. doi:10.1097/INF.0000000000001635",
+      "New HV, Berryman J, Bolton-Maggs PHB, et al. Guidelines on transfusion for fetuses, neonates and older children. Br J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233",
+      "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
     ],
     "notice": {
-      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "zh-CN": "教学脚本评分，不是经过验证的能力评估。",
       "en": "A teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "融合分型、每处病灶组织、完整治疗与长期生存功能。",
-      "en": "Fusion classification, individual lesion histology, full treatment and long-term survival/function."
+      "zh-CN": "活检的免疫组化结果和融合基因状态（EWSR1/FET–ETS），以及活检是怎样取的。",
+      "en": "The biopsy's immunohistochemistry and fusion status (EWSR1/FET–ETS), and how the biopsy was taken."
+    },
+    {
+      "zh-CN": "PET-CT病灶累及哪些骨、是否对其他病灶取过材，以及肺部情况（没有记录胸部影像）。",
+      "en": "Which bones the PET-CT lesions involved, whether any other lesion was sampled, and the lungs (no chest imaging is recorded)."
+    },
+    {
+      "zh-CN": "激素的种类、剂量和疗程，入院时是否仍在服用，以及用过哪些抗生素。",
+      "en": "The steroid's name, dose and duration, whether she was still taking it on admission, and which antibiotics she had."
+    },
+    {
+      "zh-CN": "她的生命体征、白细胞计数及分类、血涂片、铁蛋白、凝血、培养和尿儿茶酚胺代谢物。",
+      "en": "Her vital signs, white cell count and differential, blood film, ferritin, clotting, cultures and urine catecholamine metabolites."
+    },
+    {
+      "zh-CN": "每项检查在哪家医院、什么时候、以什么先后完成（包括骨髓与激素治疗、PET-CT与活检的先后）。",
+      "en": "Which hospital did each test, when and in what order (including the marrow relative to the steroids and the PET-CT relative to the biopsy)."
+    },
+    {
+      "zh-CN": "化疗方案、局部治疗、疗效、生存和功能结局。",
+      "en": "The chemotherapy regimen, local treatment, response, survival and function."
+    },
+    {
+      "zh-CN": "过敏史、家族史、接触史、生长发育情况和家长的担忧。",
+      "en": "Allergies, family history, exposures, development and her parent's concerns."
     }
   ],
   "assets": [],
@@ -1590,7 +3995,11 @@
     },
     {
       "type": "ask",
-      "itemId": "fever"
+      "itemId": "presenting-complaint"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever-course"
     },
     {
       "type": "ask",
@@ -1598,19 +4007,31 @@
     },
     {
       "type": "ask",
-      "itemId": "steroids"
+      "itemId": "steroid-response"
     },
     {
       "type": "ask",
-      "itemId": "rash"
+      "itemId": "jia-label"
     },
     {
       "type": "ask",
-      "itemId": "infection-treatment"
+      "itemId": "steroid-details"
     },
     {
       "type": "ask",
-      "itemId": "prior-health"
+      "itemId": "skin-mouth"
+    },
+    {
+      "type": "ask",
+      "itemId": "anti-infection"
+    },
+    {
+      "type": "ask",
+      "itemId": "past-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "tb-hepatitis-contact"
     },
     {
       "type": "ask",
@@ -1618,35 +4039,39 @@
     },
     {
       "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
       "itemId": "allergies"
     },
     {
       "type": "ask",
-      "itemId": "family"
+      "itemId": "night-pain"
     },
     {
       "type": "ask",
-      "itemId": "surgery"
+      "itemId": "weight-loss-sweats"
     },
     {
       "type": "ask",
-      "itemId": "regular-medication"
+      "itemId": "bruising-bleeding"
     },
     {
       "type": "ask",
-      "itemId": "exposure"
+      "itemId": "bladder-bowel"
     },
     {
       "type": "ask",
-      "itemId": "function"
+      "itemId": "family-history"
     },
     {
       "type": "ask",
-      "itemId": "expectations"
+      "itemId": "exposures"
     },
     {
       "type": "ask",
-      "itemId": "other-history"
+      "itemId": "concerns"
     },
     {
       "type": "examine",
@@ -1654,73 +4079,218 @@
     },
     {
       "type": "examine",
-      "findingId": "joints"
+      "findingId": "lymph-nodes"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "ankles-feet"
+    },
+    {
+      "type": "examine",
+      "findingId": "figure-four"
+    },
+    {
+      "type": "examine",
+      "findingId": "power-tone"
     },
     {
       "type": "order",
-      "investigationId": "blood"
-    },
-    {
-      "type": "read",
-      "investigationId": "blood",
-      "phase": "workup"
+      "investigationId": "blood-film"
     },
     {
       "type": "order",
-      "investigationId": "screen"
-    },
-    {
-      "type": "read",
-      "investigationId": "screen",
-      "phase": "workup"
+      "investigationId": "blood-culture"
     },
     {
       "type": "order",
-      "investigationId": "imaging"
+      "investigationId": "mas-screen"
     },
     {
-      "type": "read",
-      "investigationId": "imaging",
-      "phase": "workup"
+      "type": "order",
+      "investigationId": "urine-catecholamines"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "first-step",
       "optionIds": [
-        "yes"
+        "investigate-before-escalating"
       ]
     },
     {
       "type": "order",
-      "investigationId": "tissue"
+      "investigationId": "fbc"
     },
     {
       "type": "read",
-      "investigationId": "tissue",
-      "phase": "confirmation"
+      "investigationId": "fbc",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "esr-crp"
+    },
+    {
+      "type": "read",
+      "investigationId": "esr-crp",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ldh"
+    },
+    {
+      "type": "read",
+      "investigationId": "ldh",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "autoantibodies"
+    },
+    {
+      "type": "read",
+      "investigationId": "autoantibodies",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "viral-studies"
+    },
+    {
+      "type": "read",
+      "investigationId": "viral-studies",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "radiographs"
+    },
+    {
+      "type": "read",
+      "investigationId": "radiographs",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "mri",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
     },
     {
       "type": "answer",
-      "decisionId": "evidence",
+      "decisionId": "imaging-meaning",
       "optionIds": [
-        "yes"
+        "tissue-needed"
       ]
     },
     {
+      "type": "intervene",
+      "interventionId": "oncology-referral"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "rbc-transfusion"
+    },
+    {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "tissue-route",
       "optionIds": [
-        "yes"
+        "sarcoma-team-core-biopsy"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "planned-biopsy"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "diagnosis"
+    },
+    {
+      "type": "order",
+      "investigationId": "pet-ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "pet-ct",
+      "phase": "diagnosis"
+    },
+    {
+      "type": "order",
+      "investigationId": "fusion-test"
+    },
+    {
+      "type": "order",
+      "investigationId": "chest-ct"
+    },
+    {
+      "type": "answer",
+      "decisionId": "what-is-proven",
+      "optionIds": [
+        "confirm-fusion-complete-staging"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "family-meeting"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "fertility-consult"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfer-oncology"
+    },
+    {
+      "type": "answer",
+      "decisionId": "treatment-plan",
+      "optionIds": [
+        "protocol-chemo-mdt"
       ]
     },
     {
       "type": "order",
-      "investigationId": "followup"
+      "investigationId": "outcome"
     },
     {
       "type": "read",
-      "investigationId": "followup",
-      "phase": "followup"
+      "investigationId": "outcome",
+      "phase": "outcome"
     },
     {
       "type": "finish"
@@ -1733,258 +4303,321 @@
     "sourceDoi": "10.3760/cma.j.issn.0578-1310.2012.11.017",
     "doiVerifiedAt": "2026-10-29",
     "historicalReview": true,
+    "sourceTextChecked": false,
     "testUtterances": [
       {
-        "text": "发热已经多久，每天发几次？",
-        "locale": "zh-CN",
-        "expect": [
-          "fever"
-        ]
-      },
-      {
-        "text": "How long has fever lasted, and how often each day?",
+        "text": "So what's been happening with her?",
         "locale": "en",
         "expect": [
-          "fever"
+          "presenting-complaint"
         ]
       },
       {
-        "text": "这次发烧是不是已经两个多月？",
-        "locale": "zh-CN",
-        "expect": [
-          "fever"
-        ]
-      },
-      {
-        "text": "Has this fever lasted more than two months?",
+        "text": "What made you bring her to hospital?",
         "locale": "en",
         "expect": [
-          "fever"
+          "presenting-complaint"
         ]
       },
       {
-        "text": "什么时候开始不愿走路或跛行？",
-        "locale": "zh-CN",
+        "text": "How high does her temperature get?",
+        "locale": "en",
         "expect": [
-          "limp"
+          "fever-course"
         ]
       },
       {
-        "text": "When did limping or reluctance to walk begin?",
+        "text": "How many times a day does she spike a fever?",
+        "locale": "en",
+        "expect": [
+          "fever-course"
+        ]
+      },
+      {
+        "text": "Is she limping when she walks?",
         "locale": "en",
         "expect": [
           "limp"
         ]
       },
       {
-        "text": "最初关节有明显肿痛吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "limp"
-        ]
-      },
-      {
-        "text": "Were joints clearly swollen or painful at first?",
+        "text": "Were her joints puffy or sore when this began?",
         "locale": "en",
         "expect": [
           "limp"
         ]
       },
       {
-        "text": "激素后退热多久，后来又烧了吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "steroids"
-        ]
-      },
-      {
-        "text": "How long did fever settle with steroids, and did it return?",
+        "text": "Did the steroids bring the fever down?",
         "locale": "en",
         "expect": [
-          "steroids"
+          "steroid-response"
         ]
       },
       {
-        "text": "之前激素治疗是不是只让体温暂时正常？",
-        "locale": "zh-CN",
-        "expect": [
-          "steroids"
-        ]
-      },
-      {
-        "text": "Did steroid treatment only temporarily normalise temperature?",
+        "text": "What did the other hospital say she had?",
         "locale": "en",
         "expect": [
-          "steroids"
+          "jia-label"
         ]
       },
       {
-        "text": "最初发热时有皮疹或口腔溃疡吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "rash"
-        ]
-      },
-      {
-        "text": "Was there rash or mouth ulceration when fever began?",
+        "text": "Do you know what dose of steroid she's on?",
         "locale": "en",
         "expect": [
-          "rash"
+          "steroid-details"
         ]
       },
       {
-        "text": "有没有掉头发或皮肤出血点？",
-        "locale": "zh-CN",
-        "expect": [
-          "rash"
-        ]
-      },
-      {
-        "text": "Was there hair loss or petechiae?",
+        "text": "Did she get a rash when the fevers started?",
         "locale": "en",
         "expect": [
-          "rash"
+          "skin-mouth"
         ]
       },
       {
-        "text": "之前接受过什么治疗或药物？",
-        "locale": "zh-CN",
-        "expect": [
-          "infection-treatment"
-        ]
-      },
-      {
-        "text": "What earlier medicines or treatments were given?",
+        "text": "Any mouth ulcers, or has her hair been falling out?",
         "locale": "en",
         "expect": [
-          "infection-treatment"
+          "skin-mouth"
         ]
       },
       {
-        "text": "此前处理有没有改善症状？",
-        "locale": "zh-CN",
-        "expect": [
-          "infection-treatment"
-        ]
-      },
-      {
-        "text": "Did previous treatment improve symptoms?",
+        "text": "Has she been given antibiotics for this?",
         "locale": "en",
         "expect": [
-          "infection-treatment"
+          "anti-infection"
         ]
       },
       {
-        "text": "以前身体怎样，有哪些病？",
-        "locale": "zh-CN",
-        "expect": [
-          "prior-health"
-        ]
-      },
-      {
-        "text": "What was health like before this illness?",
+        "text": "Was she a healthy little girl before all this?",
         "locale": "en",
         "expect": [
-          "prior-health"
+          "past-health"
         ]
       },
       {
-        "text": "既往有没有需要治疗的疾病？",
-        "locale": "zh-CN",
-        "expect": [
-          "prior-health"
-        ]
-      },
-      {
-        "text": "Were any earlier illnesses treated?",
+        "text": "Has anyone around her had tuberculosis?",
         "locale": "en",
         "expect": [
-          "prior-health"
+          "tb-hepatitis-contact"
         ]
       },
       {
-        "text": "疫苗按时接种了吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "vaccines"
-        ]
-      },
-      {
-        "text": "Were vaccinations given on schedule?",
+        "text": "Are her jabs up to date?",
         "locale": "en",
         "expect": [
           "vaccines"
         ]
       },
       {
-        "text": "能查到预防接种记录吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "vaccines"
-        ]
-      },
-      {
-        "text": "Are vaccination records available?",
+        "text": "What does she weigh?",
         "locale": "en",
         "expect": [
-          "vaccines"
+          "weight"
         ]
       },
       {
-        "text": "以前有没有药物过敏方面的情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "allergies"
-        ]
-      },
-      {
-        "text": "Could you describe any medicine allergies?",
+        "text": "Is she allergic to any drugs?",
         "locale": "en",
         "expect": [
           "allergies"
         ]
       },
       {
-        "text": "以前有没有家族病史方面的情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "family"
-        ]
-      },
-      {
-        "text": "Could you describe any family illnesses?",
+        "text": "Does the pain wake her up at night?",
         "locale": "en",
         "expect": [
-          "family"
+          "night-pain"
         ]
       },
       {
-        "text": "以前有没有既往手术方面的情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "surgery"
-        ]
-      },
-      {
-        "text": "Could you describe any earlier operations?",
+        "text": "Has she been losing weight lately?",
         "locale": "en",
         "expect": [
-          "surgery"
+          "weight-loss-sweats"
         ]
       },
       {
-        "text": "以前有没有日常用药清单方面的情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "regular-medication"
-        ]
-      },
-      {
-        "text": "Could you describe any regular medicines?",
+        "text": "Any nosebleeds or bruises recently?",
         "locale": "en",
         "expect": [
-          "regular-medication"
+          "bruising-bleeding"
         ]
+      },
+      {
+        "text": "Is she peeing normally?",
+        "locale": "en",
+        "expect": [
+          "bladder-bowel"
+        ]
+      },
+      {
+        "text": "Does cancer run in the family?",
+        "locale": "en",
+        "expect": [
+          "family-history"
+        ]
+      },
+      {
+        "text": "Has she been near farm animals or drunk raw milk?",
+        "locale": "en",
+        "expect": [
+          "exposures"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "Does she have a cough?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Has she been vomiting?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "孩子这是怎么啦？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting-complaint"
+        ]
+      },
+      {
+        "text": "发烧最高到过多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-course"
+        ]
+      },
+      {
+        "text": "她走路一瘸一拐的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "limp"
+        ]
+      },
+      {
+        "text": "吃了激素烧退了没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid-response"
+        ]
+      },
+      {
+        "text": "外院诊断的是什么病？",
+        "locale": "zh-CN",
+        "expect": [
+          "jia-label"
+        ]
+      },
+      {
+        "text": "激素一天吃多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid-details"
+        ]
+      },
+      {
+        "text": "发烧开始时起过疹子吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin-mouth"
+        ]
+      },
+      {
+        "text": "之前打过抗生素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "anti-infection"
+        ]
+      },
+      {
+        "text": "她以前身体好不好？",
+        "locale": "zh-CN",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "有没有接触过肺结核的人？",
+        "locale": "zh-CN",
+        "expect": [
+          "tb-hepatitis-contact"
+        ]
+      },
+      {
+        "text": "预防针都打了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "孩子体重多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "她有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "她晚上会疼醒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "night-pain"
+        ]
+      },
+      {
+        "text": "最近是不是瘦了？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss-sweats"
+        ]
+      },
+      {
+        "text": "大小便正常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bladder-bowel"
+        ]
+      },
+      {
+        "text": "家里有人得过肿瘤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-history"
+        ]
+      },
+      {
+        "text": "你们最担心的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "她咳嗽吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "有没有呕吐？",
+        "locale": "zh-CN",
+        "expect": []
       }
     ]
   }

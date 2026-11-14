@@ -133,6 +133,15 @@ exploration the pilot authors needed; it does not replace STANDARD.md.
 16. **Leaks of later results.** A work-up feedback quoting a value only the follow-up record holds; objective
     titles (the journal lists later objectives by title from the start) that name the decision or the diagnosis
     ("decide on reperfusion"); the response of an act available before a decision that states its answer.
+17. **A README that misstates the engine.** "Known limits" lines such as "ordering is not scorable" or
+    "contraindicated actions do not lower the score by themselves" are out of date: core scores a dose given while
+    contraindicated with a rubric criterion `{"intervened": "<id>", "valid": false}` and an order of acts with
+    `{"inOrder": ["<id>", …]}`, and a critical act fails the safety outcome (§6). Use them where the teaching needs
+    them, and state only limits that hold for the current engine (check CASE_AUTHORING before writing one).
+18. **Wordings the engine cannot read yet** (reported centrally; do not work around them by changing a fact):
+    enoxaparin ordered in anti-Xa IU (4000 IU) against a doseSpec in mg; a per-kg rate written "U/(kg·h)",
+    "单位/(kg·h)" or "单位/(kg·小时)" (write "0.1 U/kg/h" / "0.1 单位/kg/h" in the case's own texts); 不透气 /
+    不透水 read as a negation. Name such a gap in your report; the integration fixes the engine.
 
 ## 4. Practicalities
 

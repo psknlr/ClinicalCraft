@@ -38,7 +38,7 @@
     },
     {
       "zh-CN": "依据 Shibata 等（2015）的标准，结合抽吸后管壁光滑、血管内超声未见斑块破裂、未抗凝的心房颤动和左心房内考虑为血栓的回声诊断冠状动脉栓塞，说明血管内超声和超声心动图（经胸与经食管）的局限，并决定不置入支架。",
-      "en": "Diagnose coronary embolism with the Shibata criteria (2015) from a smooth post-aspiration vessel, intravascular ultrasound without plaque rupture, untreated atrial fibrillation and a left atrial echo considered thrombus; state the limits of IVUS and of echocardiography (transthoracic versus transoesophageal); and decide against a stent."
+      "en": "Diagnose coronary embolism with the Shibata criteria (2015) from a smooth post-aspiration vessel, intravascular ultrasound without plaque rupture, atrial fibrillation without anticoagulation and a left atrial echo considered thrombus; state the limits of IVUS and of echocardiography (transthoracic versus transoesophageal); and decide against a stent."
     },
     {
       "zh-CN": "为心房颤动相关的栓塞性心肌梗死制订抗凝方案：计算 CHA₂DS₂-VA 评分，除机械瓣或中重度二尖瓣狭窄外优先选用 DOAC，按说明书依据年龄、体重和肾功能定剂量，如需加用抗血小板药只用一种并限定疗程（ESC 2024 AF；ESC 2023 ACS）。",
@@ -250,7 +250,7 @@
       },
       "description": {
         "zh-CN": "术后第 3 天，她在病房。查阅超声心动图和住院期间的化验，制订长期抗栓方案。",
-        "en": "On day 3 after the procedure she is on the ward. Read the echocardiogram and the in-hospital blood results, and set her long-term antithrombotic plan."
+        "en": "On day 3 after the procedure she is on the ward. Read the echocardiogram and the in-hospital laboratory results, and set her long-term antithrombotic plan."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -359,7 +359,9 @@
           "来看急诊",
           "怎么了",
           "怎么回事",
-          "出什么事"
+          "出什么事",
+          "怎么啦",
+          "这是怎么了"
         ],
         "en": [
           "brought you",
@@ -409,7 +411,9 @@
           "weak",
           "swallow",
           "walk",
-          "sleep"
+          "sleep",
+          "thinner",
+          "worri"
         ]
       },
       "disclosure": "volunteer",
@@ -459,7 +463,9 @@
           "cameon",
           "suddenly",
           "sudden",
-          "when did the pain start"
+          "when did the pain start",
+          "firstnotice",
+          "whendidyoufirst"
         ]
       },
       "excludeKeywords": {
@@ -483,7 +489,9 @@
           "exercise",
           "exert",
           "asleep",
-          "activity"
+          "activity",
+          "resting",
+          "while you were"
         ]
       },
       "disclosure": "on-ask",
@@ -515,7 +523,10 @@
           "一直痛",
           "没好",
           "痛得怎么样",
-          "好些了吗"
+          "好些了吗",
+          "好点没有",
+          "好点没",
+          "现在好点"
         ],
         "en": [
           "still hurting",
@@ -606,7 +617,10 @@
           "allerg",
           "tablet",
           "before",
-          "illness"
+          "illness",
+          "when did",
+          "how long",
+          "firstnotice"
         ]
       },
       "disclosure": "on-ask",
@@ -725,6 +739,15 @@
       "source": {
         "zh-CN": "1.0.0 版提取的报告事实：主诉（胸痛；放射情况未记录）（待对照原文全文核对）；患者口吻为教学改写",
         "en": "Report fact as extracted for version 1.0.0: chief complaint (chest pain; radiation not recorded) (check against the full article pending); the patient's wording is a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "en": [
+          "travelled",
+          "traveled",
+          "recently",
+          "holiday",
+          "abroad"
+        ]
       }
     },
     {
@@ -1010,7 +1033,9 @@
           "tablets",
           "medicines",
           "offer",
-          "suggest"
+          "suggest",
+          "normally",
+          "usually"
         ]
       },
       "disclosure": "on-ask",
@@ -1044,7 +1069,11 @@
           "controlled",
           "blood pressure control",
           "usual blood pressure",
-          "readings at home"
+          "readings at home",
+          "blood pressure normally",
+          "blood pressure usually",
+          "wellcontrolled",
+          "undercontrol"
         ]
       },
       "disclosure": "on-ask",
@@ -1109,7 +1138,11 @@
           "thinn",
           "react",
           "wanttoask",
-          "fromnowon"
+          "fromnowon",
+          "questions",
+          "new tablet",
+          "new medic",
+          "new pill"
         ]
       },
       "disclosure": "on-ask",
@@ -1162,7 +1195,11 @@
           "为什么没",
           "担心",
           "害怕",
-          "一辈子"
+          "一辈子",
+          "以前吃过",
+          "以前用过",
+          "吃过抗凝",
+          "用过抗凝"
         ],
         "en": [
           "allerg",
@@ -1176,7 +1213,12 @@
           "scared",
           "afraid",
           "suggest",
-          "offer"
+          "offer",
+          "ever put",
+          "ever been on",
+          "ever taken",
+          "ever prescribed",
+          "worri"
         ]
       },
       "disclosure": "on-ask",
@@ -1206,7 +1248,11 @@
           "以前医生",
           "提过",
           "为什么没吃",
-          "没开过"
+          "没开过",
+          "以前吃过抗凝",
+          "以前用过抗凝",
+          "吃过抗凝药",
+          "用过抗凝药"
         ],
         "en": [
           "ever suggested",
@@ -1215,7 +1261,11 @@
           "why not",
           "never prescribed",
           "told you to take",
-          "suggest"
+          "suggest",
+          "everputyouon",
+          "everbeenon",
+          "evertaken",
+          "everprescribed"
         ]
       },
       "disclosure": "unknown",
@@ -1542,7 +1592,10 @@
           "taken anything",
           "seen anyone",
           "gp",
-          "ambulance"
+          "ambulance",
+          "beforecomingin",
+          "beforeyougothere",
+          "takeanythingbefore"
         ]
       },
       "disclosure": "unknown",
@@ -1630,7 +1683,9 @@
           "since the procedure",
           "howareyoufeeling",
           "feeling today",
-          "any pain today"
+          "any pain today",
+          "howareyoutoday",
+          "howareyou"
         ]
       },
       "excludeKeywords": {
@@ -1824,12 +1879,17 @@
           "ankle",
           "swell",
           "oedema",
-          "edema"
+          "edema",
+          "neck",
+          "vein",
+          "jvp",
+          "jugular"
         ],
         "zh-CN": [
           "腿",
           "水肿",
-          "浮肿"
+          "浮肿",
+          "颈静脉"
         ]
       }
     },
@@ -2848,8 +2908,8 @@
         "followup": {
           "available": true,
           "date": {
-            "zh-CN": "入院至住院头 10 天",
-            "en": "From admission through the first 10 days"
+            "zh-CN": "前 10 天的病程（天数按记录，起算点未注明）",
+            "en": "The first 10 days (day counts as recorded; their starting point is not stated)"
           },
           "text": {
             "zh-CN": "记录的病程：80岁女性，高血压 10 年、心房颤动 5 年，服用培哚普利和氨氯地平，未用抗栓药。胸痛 6 小时不缓解伴面色苍白、大汗就诊，入院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 导联抬高 0.1 mV；入院 INR 1.1，肌酐 57.3 μmol/L。急诊冠状动脉造影见右冠状动脉远段大量血栓、TIMI 血流 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声示内膜完整、无斑块破裂，未置入支架。肌钙蛋白 I 94.12 μg/L（参考 0–0.04），BNP 3981.2 ng/L（两者采血时间未记录）。术后第 3 天超声心动图：左心房增大，游离壁回声考虑血栓，下壁、后壁运动减弱，LVEF 55%。治疗：华法林加过渡期肝素，并用阿司匹林；第 6 天 INR 达 2.3 后停用肝素。前 10 天有心衰症状，随后好转，并加用了相应药物（药名未记录）。报告题目将本例归为心房颤动患者左心房血栓脱落所致急性心肌梗死；栓子迁移没有被直接观察到。本病例没有记录药物剂量、INR 目标、阿司匹林疗程、出院方案，以及远期栓塞和出血结局。",
@@ -3007,33 +3067,44 @@
           "嚼服阿司匹林",
           "阿斯匹林",
           "拜阿司匹灵",
-          "阿司匹林负荷"
+          "阿司匹林负荷",
+          "阿司匹林和氯吡格雷",
+          "阿司匹林加氯吡格雷",
+          "双抗",
+          "双抗负荷",
+          "双联抗血小板负荷"
         ],
         "en": [
           "aspirin",
           "chew aspirin",
           "aspirin 300",
           "acetylsalicylic acid",
-          "aspirin load"
+          "aspirin load",
+          "aspirin and clopidogrel",
+          "aspirin and clopidogrel loading",
+          "dapt",
+          "dual antiplatelet loading"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "长期",
           "华法林",
-          "双联",
           "代替",
-          "抽吸"
+          "抽吸",
+          "三联"
         ],
         "en": [
           "long-term",
           "warfarin",
-          "dual",
           "instead",
-          "clopidogrel",
           "aspirate",
           "aspiration",
-          "thrombus"
+          "thrombus",
+          "doac",
+          "apixaban",
+          "rivaroxaban",
+          "triple"
         ]
       },
       "dose": {
@@ -3080,27 +3151,39 @@
           "氯吡格雷",
           "波立维",
           "p2y12",
-          "氯吡格雷负荷"
+          "氯吡格雷负荷",
+          "阿司匹林和氯吡格雷",
+          "阿司匹林加氯吡格雷",
+          "双抗",
+          "双抗负荷",
+          "双联抗血小板负荷"
         ],
         "en": [
           "clopidogrel",
           "plavix",
           "p2y12",
-          "clopidogrel load"
+          "clopidogrel load",
+          "aspirin and clopidogrel",
+          "aspirin and clopidogrel loading",
+          "dapt",
+          "dual antiplatelet loading"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
-          "阿司匹林加",
-          "双联",
           "代替抗凝",
-          "三联"
+          "三联",
+          "长期",
+          "华法林"
         ],
         "en": [
           "instead of",
-          "dual",
           "triple",
-          "aspirin and"
+          "long-term",
+          "warfarin",
+          "doac",
+          "apixaban",
+          "rivaroxaban"
         ]
       },
       "dose": {
@@ -3184,8 +3267,8 @@
         ]
       },
       "response": {
-        "zh-CN": "肝素已推注。本病例没有记录是否做过这一步；不模拟其效果。",
-        "en": "Heparin given. This case does not record whether this was done; it does not simulate its effect."
+        "zh-CN": "肝素已推注。她的体重没有记录：按实测或估计的体重给药，再按活化凝血时间追加。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Heparin given. Her weight is not recorded: the bolus goes on a measured or estimated weight and is topped up by the activated clotting time. This case does not record whether this was done; it does not simulate its effect."
       }
     },
     {
@@ -3666,16 +3749,14 @@
           "支架",
           "放支架",
           "药物洗脱支架",
-          "置入支架",
-          "球囊扩张"
+          "置入支架"
         ],
         "en": [
           "stent",
           "drug-eluting stent",
           "des",
           "implant a stent",
-          "stenting",
-          "balloon"
+          "stenting"
         ]
       },
       "excludeKeywords": {
@@ -3750,14 +3831,7 @@
       "risk": "moderate",
       "maxDoses": 2,
       "indicatedWhen": {
-        "any": [
-          {
-            "phase": "post-aspiration"
-          },
-          {
-            "phase": "day3"
-          }
-        ]
+        "phase": "day3"
       },
       "contraindicatedWhen": {
         "any": [
@@ -3766,6 +3840,9 @@
           },
           {
             "phase": "cath-lab"
+          },
+          {
+            "phase": "post-aspiration"
           }
         ]
       },
@@ -3818,14 +3895,7 @@
       "risk": "moderate",
       "maxDoses": 2,
       "indicatedWhen": {
-        "any": [
-          {
-            "phase": "post-aspiration"
-          },
-          {
-            "phase": "day3"
-          }
-        ]
+        "phase": "day3"
       },
       "contraindicatedWhen": {
         "any": [
@@ -3834,6 +3904,9 @@
           },
           {
             "phase": "cath-lab"
+          },
+          {
+            "phase": "post-aspiration"
           }
         ]
       },
@@ -3855,18 +3928,26 @@
       "kind": "medication",
       "aliases": {
         "zh-CN": [
-          "双联抗血小板",
-          "阿司匹林加氯吡格雷",
-          "双抗",
+          "代替抗凝",
           "不抗凝",
-          "代替抗凝"
+          "双抗代替抗凝",
+          "双联抗血小板代替抗凝",
+          "只用双抗",
+          "只用抗血小板",
+          "阿司匹林加氯吡格雷代替抗凝",
+          "以双抗代替抗凝",
+          "双抗"
         ],
         "en": [
-          "dual antiplatelet",
-          "dapt",
-          "aspirin and clopidogrel",
           "instead of anticoagulation",
-          "antiplatelets only"
+          "antiplatelets only",
+          "dapt instead of anticoagulation",
+          "dual antiplatelet therapy instead of anticoagulation",
+          "antiplatelets instead of an anticoagulant",
+          "aspirin and clopidogrel instead of anticoagulation",
+          "dapt instead of a doac",
+          "dapt instead of warfarin",
+          "dapt"
         ]
       },
       "dose": {
@@ -3889,6 +3970,21 @@
       "response": {
         "zh-CN": "本病例没有记录这一方案；不模拟其效果。",
         "en": "This case does not record this regimen; it does not simulate its effect."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "负荷",
+          "嚼服",
+          "顿服",
+          "暂",
+          "先不"
+        ],
+        "en": [
+          "load",
+          "chew",
+          "yet",
+          "for now"
+        ]
       }
     },
     {
@@ -3903,13 +3999,18 @@
           "三联",
           "三联抗栓",
           "抗凝加双抗",
-          "三联治疗"
+          "三联治疗",
+          "抗凝药加阿司匹林和氯吡格雷",
+          "华法林加阿司匹林和氯吡格雷"
         ],
         "en": [
           "triple therapy",
           "triple antithrombotic",
           "oac plus dapt",
-          "anticoagulant plus dual antiplatelet"
+          "anticoagulant plus dual antiplatelet",
+          "doac plus aspirin and clopidogrel",
+          "anticoagulant plus aspirin and clopidogrel",
+          "warfarin plus aspirin and clopidogrel"
         ]
       },
       "dose": {
@@ -3932,6 +4033,14 @@
       "response": {
         "zh-CN": "本病例没有记录这一方案；不模拟其效果。",
         "en": "This case does not record this regimen; it does not simulate its effect."
+      },
+      "excludeKeywords": {
+        "en": [
+          "load"
+        ],
+        "zh-CN": [
+          "负荷"
+        ]
       }
     }
   ],
@@ -4392,8 +4501,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。主动脉夹层确可累及右冠状动脉开口，但需要临床线索——撕裂样胸背痛、双上肢血压或脉搏不对称、神经系统体征、纵隔增宽——本病例没有记录这些表现。没有线索时常规先做 CT，只会推迟 ESC 2023 ACS 要求在诊断后 120 分钟内完成的直接 PCI。",
-            "en": "No. Dissection can involve the right coronary ostium, but it needs clinical clues — tearing pain into the back, a pulse or pressure difference between the arms, neurological signs, a widened mediastinum — and none is recorded here. Without them a routine CT only delays the primary PCI that ESC 2023 ACS wants within 120 minutes of diagnosis."
+            "zh-CN": "不对。主动脉夹层确可累及右冠状动脉开口，但怀疑夹层要有临床线索——撕裂样胸背痛、双上肢血压或脉搏不对称、神经系统体征、纵隔增宽。本病例没有记录这些表现，应在床旁查找；没有线索时常规先做 CT，只会推迟 ESC 2023 ACS 要求在诊断后 120 分钟内完成的直接 PCI。",
+            "en": "No. Dissection can involve the right coronary ostium, but suspicion rests on clinical clues — tearing pain into the back, a pulse or pressure difference between the arms, neurological signs, a widened mediastinum. None is recorded here: look for them at the bedside, and without them a routine CT only delays the primary PCI that ESC 2023 ACS wants within 120 minutes of diagnosis."
           }
         },
         {
@@ -4609,7 +4718,7 @@
           "correct": true,
           "feedback": {
             "zh-CN": "正确。抽吸后管壁光滑、腔内影像未见斑块破裂，加上未抗凝的房颤，可满足 Shibata 等（2015）标准中的 1 项主要和 1 项次要标准，即“很可能”的冠状动脉栓塞；影像上找到栓子来源即可达到“确诊”。没有病变就没有支架指征，也就免去了联合抗栓治疗。IVUS 不能完全排除斑块侵蚀：OCT 分辨率更高，ESC 2023 ACS 对不确定的罪犯病变首选 OCT。",
-            "en": "Correct. A smooth wall after aspiration, imaging without plaque rupture and untreated AF can meet one major and one minor Shibata criterion (2015) — probable coronary embolism — and an embolic source on imaging would make it definite. No lesion means no indication for a stent, which spares her combined antithrombotic therapy. IVUS cannot fully exclude plaque erosion: OCT resolves the wall more finely, and ESC 2023 ACS prefers it for an ambiguous culprit lesion."
+            "en": "Correct. A smooth wall after aspiration, imaging without plaque rupture and AF without anticoagulation can meet one major and one minor Shibata criterion (2015) — probable coronary embolism — and an embolic source on imaging would make it definite. No lesion means no indication for a stent, which spares her combined antithrombotic therapy. IVUS cannot fully exclude plaque erosion: OCT resolves the wall more finely, and ESC 2023 ACS prefers it for an ambiguous culprit lesion."
           }
         },
         {
@@ -4621,7 +4730,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "不对。IVUS 确实不能完全排除斑块侵蚀（ESC 2023 ACS 对不确定病变首选 OCT），但管腔通畅、没有明显狭窄时，支架没有可以处理的狭窄；而未抗凝的房颤是更直接的解释。支架加 12 个月双联抗血小板，再叠加她需要的抗凝，出血风险很高（ESC 2024 AF）。",
-            "en": "No. IVUS cannot entirely exclude erosion (ESC 2023 ACS prefers OCT for ambiguous lesions), but with a patent lumen and no significant stenosis there is nothing for a stent to treat, and untreated AF is the more direct explanation. A stent with 12 months of dual antiplatelet therapy on top of the anticoagulation she needs carries a high bleeding risk (ESC 2024 AF)."
+            "en": "No. IVUS cannot entirely exclude erosion (ESC 2023 ACS prefers OCT for ambiguous lesions), but with a patent lumen and no significant stenosis there is nothing for a stent to treat, and AF without anticoagulation is the more direct explanation. A stent with 12 months of dual antiplatelet therapy on top of the anticoagulation she needs carries a high bleeding risk (ESC 2024 AF)."
           }
         },
         {
@@ -4633,7 +4742,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "不对。痉挛很少留下这么多血栓，而且她本来就在服钙通道阻滞剂氨氯地平；低血压时冠状动脉内给硝酸酯还可能让血压更低。更关键的是这一解释忽略了未抗凝的房颤——按 ESC 2024 AF 指南，她本来就达到抗凝标准。",
-            "en": "No. Spasm rarely leaves this much thrombus, she already takes a calcium-channel blocker (amlodipine), and an intracoronary nitrate in hypotension may push the pressure lower. Above all, this ignores her untreated AF — by ESC 2024 AF she met the threshold for anticoagulation anyway."
+            "en": "No. Spasm rarely leaves this much thrombus, she already takes a calcium-channel blocker (amlodipine), and an intracoronary nitrate in hypotension may push the pressure lower. Above all, this ignores her AF without anticoagulation — by ESC 2024 AF she met the threshold for anticoagulation anyway."
           }
         },
         {
@@ -4645,7 +4754,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "不对。腔内影像显示内膜完整，没有描述内膜片或壁内血肿；自发性冠状动脉夹层多见于中青年女性，而不是 80 岁、未抗凝的房颤患者。停用抗凝会让更可能的问题——心腔内的栓子来源——得不到处理，而她的房颤本就达到抗凝标准（ESC 2024 AF）。",
-            "en": "No. Imaging showed an intact intima, with no flap or intramural haematoma described, and spontaneous dissection is mainly a disease of younger and middle-aged women, not of an 80-year-old with untreated AF. Stopping anticoagulation leaves the likelier problem — an intracardiac source of emboli — untreated, in a woman whose AF already met the threshold for anticoagulation (ESC 2024 AF)."
+            "en": "No. Imaging showed an intact intima, with no flap or intramural haematoma described, and spontaneous dissection is mainly a disease of younger and middle-aged women, not of an 80-year-old with AF and no anticoagulation. Stopping anticoagulation leaves the likelier problem — an intracardiac source of emboli — untreated, in a woman whose AF already met the threshold for anticoagulation (ESC 2024 AF)."
           }
         }
       ]
@@ -4921,8 +5030,8 @@
       "id": "rb-ed-support",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即定下保护右心室前负荷的方案，并在开通血管之前落实：上监护、暂停降压药、谨慎补液、给予阿司匹林负荷，在启动导管室之后才转运，且不开始口服抗凝",
-        "en": "Set a preload-protecting plan at the first attempt and acted on it before the artery was opened: monitoring, antihypertensives held, cautious fluid, an aspirin load, the transfer only after the activation call, and no oral anticoagulant"
+        "zh-CN": "首次作答即定下保护右心室前负荷的方案，并在开通血管之前落实：上监护、暂停降压药、谨慎补液、给予阿司匹林负荷，在启动导管室之后才转运；术前和术中都不开始口服抗凝",
+        "en": "Set a preload-protecting plan at the first attempt and acted on it before the artery was opened: monitoring, antihypertensives held, cautious fluid, an aspirin load, the transfer only after the activation call — and started no oral anticoagulant before or during the procedure"
       },
       "weight": 2,
       "met": {
@@ -5148,8 +5257,8 @@
         "en": "Pharmacist Gan (clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "临床药师，术后第 3 天参与用药讨论。讲解 DOAC 与华法林的选择（只有机械瓣或中重度二尖瓣狭窄才首选华法林，目标 INR 2.0–3.0，用肝素过渡到达标；她的瓣膜情况没有记录，选用 DOAC 前要在超声上确认）；各 DOAC 按说明书的剂量依据——年龄、体重、肾功能（计算肌酐清除率需要体重，本病例没有体重）和相互作用；阿哌沙班在年龄 ≥ 80 岁、体重 ≤ 60 kg、血肌酐 ≥ 133 μmol/L 中满足两项时减为 2.5 mg 每日 2 次（欧洲说明书在肌酐清除率 15–29 mL/min 时也减量），不能只因高龄减量，不超说明书减量；与口服抗凝药合用时 P2Y12 受体抑制剂首选氯吡格雷，替格瑞洛和普拉格雷不用于三联治疗；联合抗栓时考虑质子泵抑制剂；低血压期间暂停降压药。不解读化验和影像，不报告学员没有读到的结果，不编造体重或剂量。",
-        "en": "Clinical pharmacist who joins the medicines discussion on day 3. Explains DOAC versus warfarin (warfarin first only with a mechanical valve or moderate–severe mitral stenosis, INR 2.0–3.0 with heparin until in range — her valves are not recorded, so they are confirmed on the echo before a DOAC); the label basis of each DOAC's dose — age, weight, renal function (creatinine clearance needs a weight, and none is recorded) and interactions; that apixaban is reduced to 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L (the European label also at a creatinine clearance of 15–29 mL/min), never for age alone or off label; that clopidogrel is the P2Y12 inhibitor to pair with an oral anticoagulant, ticagrelor and prasugrel not being used in triple therapy; a proton-pump inhibitor with combined antithrombotic therapy; and holding antihypertensives while she is hypotensive. Does not interpret results or images, reports nothing the learner has not read, and invents no weight or dose."
+        "zh-CN": "临床药师，术后第 3 天参与用药讨论。讲解 DOAC 与华法林的选择（只有机械瓣或中重度二尖瓣狭窄才首选华法林——房颤目标 INR 2.0–3.0，机械瓣按瓣膜另定目标；她刚发生栓塞，用肝素过渡到 INR 达标；她的瓣膜情况没有记录，选用 DOAC 前要在超声上确认）；各 DOAC 按说明书的剂量依据——年龄、体重、肾功能（计算肌酐清除率需要体重，本病例没有体重）和相互作用；阿哌沙班在年龄 ≥ 80 岁、体重 ≤ 60 kg、血肌酐 ≥ 133 μmol/L 中满足两项时减为 2.5 mg 每日 2 次（欧洲说明书在肌酐清除率 15–29 mL/min 时也减量），不能只因高龄减量，不超说明书减量；与口服抗凝药合用时 P2Y12 受体抑制剂首选氯吡格雷，替格瑞洛和普拉格雷不用于三联治疗；联合抗栓时考虑质子泵抑制剂；低血压期间暂停降压药。不解读化验和影像，不报告学员没有读到的结果，不编造体重或剂量。",
+        "en": "Clinical pharmacist who joins the medicines discussion on day 3. Explains DOAC versus warfarin (warfarin first only with a mechanical valve or moderate–severe mitral stenosis — for AF to an INR of 2.0–3.0, a mechanical valve having its own target — and, for her so soon after an embolic event, with heparin until in range; her valves are not recorded, so they are confirmed on the echo before a DOAC); the label basis of each DOAC's dose — age, weight, renal function (creatinine clearance needs a weight, and none is recorded) and interactions; that apixaban is reduced to 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L (the European label also at a creatinine clearance of 15–29 mL/min), never for age alone or off label; that clopidogrel is the P2Y12 inhibitor to pair with an oral anticoagulant, ticagrelor and prasugrel not being used in triple therapy; a proton-pump inhibitor with combined antithrombotic therapy; and holding antihypertensives while she is hypotensive. Does not interpret results or images, reports nothing the learner has not read, and invents no weight or dose."
       },
       "interprets": [
         "renal-function"
@@ -5164,7 +5273,7 @@
     },
     "conclusion": {
       "zh-CN": "80岁女性，高血压 10 年、房颤 5 年，服培哚普利和氨氯地平，未用抗栓药；胸痛 6 小时不缓解，面色苍白、大汗，入院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 抬高 0.1 mV：下壁 ST 段抬高型心肌梗死合并右心室受累和低血压。急诊造影示右冠状动脉远段大量血栓、TIMI 1 级；抽吸后管壁光滑、无明显狭窄，IVUS 内膜完整、无斑块破裂，未放支架。术后第 3 天超声见左心房增大、游离壁回声考虑血栓，下壁和后壁运动减弱，LVEF 55%。肌钙蛋白 I 94.12 μg/L、BNP 3981.2 ng/L（采血时间均未记录）。诊断：未抗凝房颤患者左心房血栓栓塞冠状动脉所致急性心肌梗死——以左心房回声为栓子来源时按 Shibata 标准可确诊，但栓子迁移本身未被直接观察到。记录中用华法林加肝素过渡（第 6 天 INR 2.3 停肝素）并加阿司匹林，前 10 天心衰症状随后好转。按现行指南：立即直接 PCI，不用硝酸酯，选择性抽吸加腔内影像，不放支架，按说明书剂量使用 DOAC。",
-      "en": "An 80-year-old woman with 10 years of hypertension and 5 of AF, on perindopril and amlodipine, no antithrombotic, had 6 h of unrelieved chest pain, pallor and heavy sweating; admission BP 88/62 mmHg, HR 62/min, no wheeze or crackles. ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R: inferior STEMI with RV involvement and hypotension. Angiography: heavy distal RCA thrombus, TIMI 1 flow; after aspiration a smooth wall, no significant stenosis, IVUS an intact intima, no plaque rupture; no stent. Day-3 echo: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Troponin I 94.12 μg/L and BNP 3981.2 ng/L (sampling times not recorded). Diagnosis: MI from coronary embolism of left atrial thrombus in untreated AF — definite by the Shibata criteria once the atrial echo is taken as its source, though the migration itself was not observed. Recorded care: warfarin, heparin until INR 2.3 on day 6, aspirin; heart-failure symptoms in the first 10 days then improved. Today: immediate primary PCI, no nitrate, selective aspiration with imaging, no stent, a label-dose DOAC."
+      "en": "An 80-year-old woman with 10 years of hypertension and 5 of AF, on perindopril and amlodipine, no antithrombotic, had 6 h of unrelieved chest pain, pallor and heavy sweating; admission BP 88/62 mmHg, HR 62/min, no wheeze or crackles. ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R: inferior STEMI with RV involvement and hypotension. Angiography: heavy distal RCA thrombus, TIMI 1 flow; after aspiration a smooth wall, no significant stenosis, IVUS an intact intima, no plaque rupture; no stent. Day-3 echo: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Troponin I 94.12 μg/L and BNP 3981.2 ng/L (sampling times not recorded). Diagnosis: MI from coronary embolism of left atrial thrombus in AF without anticoagulation — definite by the Shibata criteria once the atrial echo is taken as its source, though the migration itself was not observed. Recorded care: warfarin, heparin until INR 2.3 on day 6, aspirin; heart-failure symptoms in the first 10 days then improved. Today: immediate primary PCI, no nitrate, selective aspiration with imaging, no stent, a label-dose DOAC."
     },
     "keyReasoning": [
       {
@@ -5181,7 +5290,7 @@
       },
       {
         "zh-CN": "抽吸后管壁光滑、无明显狭窄、无斑块破裂，再加上未抗凝的房颤，问题就从“哪块斑块破了”变成“血栓从哪里来”：按 Shibata 标准很可能是冠状动脉栓塞，超声找到左心房来源后可达确诊。",
-        "en": "A smooth wall without significant stenosis or plaque rupture after aspiration, in untreated AF, turns the question from 'which plaque?' to 'where did the clot come from?' — coronary embolism, probable by the Shibata criteria and definite once the echo shows a left atrial source."
+        "en": "A smooth wall without significant stenosis or plaque rupture after aspiration, in AF without anticoagulation, turns the question from 'which plaque?' to 'where did the clot come from?' — coronary embolism, probable by the Shibata criteria and definite once the echo shows a left atrial source."
       },
       {
         "zh-CN": "没有病变就没有支架，也就没有双联抗血小板的理由；处理栓子来源靠抗凝，药物和剂量按房颤指南选择——而她在这次事件之前就已符合抗凝标准。",
@@ -5233,7 +5342,7 @@
       },
       {
         "zh-CN": "80 岁同样直接 PCI。ESC 2023 ACS：发病 12 小时内的 STEMI，能在诊断后 120 分钟内完成时直接 PCI 优于溶栓；阿司匹林 150–300 mg 负荷，PCI 时普通肝素 70–100 U/kg；再灌注不等肌钙蛋白。预计需要口服抗凝时（如未抗凝的房颤），P2Y12 受体抑制剂选氯吡格雷（负荷 300–600 mg）。中国 STEMI 指南（2019）的优先次序相同，并指出再灌注治疗不存在年龄限制，尤其是直接 PCI。",
-        "en": "Primary PCI at 80 as at any age. ESC 2023 ACS: STEMI within 12 hours of onset gets primary PCI in preference to fibrinolysis when it can be done within 120 minutes of diagnosis; aspirin 150–300 mg loading and unfractionated heparin 70–100 U/kg at PCI; reperfusion does not wait for troponin. When oral anticoagulation is foreseeable — as in untreated AF — choose clopidogrel (300–600 mg loading) as the P2Y12 inhibitor. The Chinese STEMI guideline (2019) sets the same priorities and no age limit on reperfusion, least of all on primary PCI."
+        "en": "Primary PCI at 80 as at any age. ESC 2023 ACS: STEMI within 12 hours of onset gets primary PCI in preference to fibrinolysis when it can be done within 120 minutes of diagnosis; aspirin 150–300 mg loading and unfractionated heparin 70–100 U/kg at PCI; reperfusion does not wait for troponin. When oral anticoagulation is foreseeable — as in AF not yet anticoagulated — choose clopidogrel (300–600 mg loading) as the P2Y12 inhibitor. The Chinese STEMI guideline (2019) sets the same priorities and no age limit on reperfusion, least of all on primary PCI."
       },
       {
         "zh-CN": "血栓抽吸的过去与现在。ESC 2012 STEMI 指南曾把常规抽吸列为Ⅱa 类；TASTE（2013）未见死亡率获益，TOTAL（2015）未见获益且 30 天卒中更多，ESC 2023 ACS 现将常规抽吸列为Ⅲ类（A 级）。导丝通过后仍有大量血栓时选择性抽吸属于临床判断——本例记录中做了抽吸，也做了 IVUS。腔内影像可指导 ACS 的 PCI；罪犯病变不确定时 ESC 2023 ACS 首选 OCT；IVUS 分辨率较低，不能排除斑块侵蚀。",
@@ -5244,12 +5353,12 @@
         "en": "Coronary embolism. The Shibata criteria (2015): major — angiographic coronary embolism and thrombosis without atherosclerotic components, simultaneous emboli in several coronary sites, concomitant systemic embolism without a left-ventricular thrombus from the infarct; minor — < 25 % stenosis outside the culprit lesion, an embolic source on TTE, TEE, CT or MRI, embolic risk factors such as AF. Definite with ≥ 2 major, 1 major + ≥ 2 minor or 3 minor; probable with 1 major + 1 minor or 2 minor; AF is the commonest cause. Most AF thrombi form in the left atrial appendage, which transthoracic echo easily misses, and an echo on the free wall is atypical (this case does not record whether its echo was transthoracic or transoesophageal) — a transoesophageal echo, CT or cardiac MRI, or shrinkage on repeat imaging under anticoagulation, separates thrombus from myxoma; look for emboli elsewhere too."
       },
       {
-        "zh-CN": "栓塞性心肌梗死后的抗凝。ESC 2024 AF 以 CHA₂DS₂-VA 取代 CHA₂DS₂-VASc：评分 ≥ 2 分推荐口服抗凝——她在这次事件前至少 3 分（高血压 1 分、年龄 ≥ 75 岁 2 分），事件后至少 4 分（心肌梗死计血管疾病 1 分）；若把这次很可能的冠状动脉栓塞也计为动脉血栓栓塞（2 分），则至少 6 分。除机械瓣或中重度二尖瓣狭窄外，DOAC 优于维生素 K 拮抗剂，按说明书剂量（阿哌沙班满足年龄 ≥ 80 岁、体重 ≤ 60 kg、肌酐 ≥ 133 μmol/L 中两项时用 2.5 mg 每日 2 次——不能只因高龄减量）；抗血小板药不能替代抗凝（Ⅲ类；ACTIVE W），出血评分用来发现可纠正的出血危险因素，而不是拒绝抗凝的理由。",
-        "en": "Anticoagulation after an embolic infarct. ESC 2024 AF replaces CHA₂DS₂-VASc with CHA₂DS₂-VA and recommends oral anticoagulation from a score of 2 — she had at least 3 before this event (hypertension 1, age ≥ 75 2) and at least 4 after it (vascular disease 1 for the infarct) — at least 6 if the probable coronary embolism also counts as arterial thromboembolism (2). A DOAC is preferred to a vitamin K antagonist except with a mechanical valve or moderate–severe mitral stenosis, at its label dose (apixaban 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L — never for age alone); antiplatelets are no alternative (class III; ACTIVE W), and bleeding scores identify correctable risks rather than reasons to withhold."
+        "zh-CN": "栓塞性心肌梗死后的抗凝。ESC 2024 AF 以 CHA₂DS₂-VA 取代 CHA₂DS₂-VASc：评分 ≥ 2 分推荐口服抗凝——她在这次事件前至少 3 分（高血压 1 分、年龄 ≥ 75 岁 2 分），事件后至少 4 分（心肌梗死计血管疾病 1 分）；若把这次冠状动脉栓塞也计为动脉血栓栓塞（2 分），则至少 6 分。除机械瓣或中重度二尖瓣狭窄外，DOAC 优于维生素 K 拮抗剂，按说明书剂量（阿哌沙班满足年龄 ≥ 80 岁、体重 ≤ 60 kg、肌酐 ≥ 133 μmol/L 中两项时用 2.5 mg 每日 2 次——不能只因高龄减量）；抗血小板药不能替代抗凝（Ⅲ类；ACTIVE W），出血评分用来发现可纠正的出血危险因素，而不是拒绝抗凝的理由。",
+        "en": "Anticoagulation after an embolic infarct. ESC 2024 AF replaces CHA₂DS₂-VASc with CHA₂DS₂-VA and recommends oral anticoagulation from a score of 2 — she had at least 3 before this event (hypertension 1, age ≥ 75 2) and at least 4 after it (vascular disease 1 for the infarct) — at least 6 if the coronary embolism also counts as arterial thromboembolism (2). A DOAC is preferred to a vitamin K antagonist except with a mechanical valve or moderate–severe mitral stenosis, at its label dose (apixaban 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L — never for age alone); antiplatelets are no alternative (class III; ACTIVE W), and bleeding scores identify correctable risks rather than reasons to withhold."
       },
       {
-        "zh-CN": "抗栓方案的过去与现在。记录中的做法是华法林、肝素过渡到第 6 天 INR 2.3 时停用，再加阿司匹林（疗程未记录）——这是 2014 年报告中的方案。现在，没有机械瓣或中重度二尖瓣狭窄时首选 DOAC；没有支架就没有双联抗血小板；心肌梗死后若加一种抗血小板药（首选氯吡格雷）要限定疗程，12 个月后单用抗凝（ESC 2023 ACS；ESC 2024 AF）。DOAC 有禁忌时华法林仍然正确：目标 INR 2.0–3.0；她刚发生栓塞、左心房回声考虑血栓，肝素要用到 INR 达标。",
-        "en": "The antithrombotic plan, then and now. The record shows warfarin, heparin until the INR reached 2.3 on day 6, plus aspirin for an unrecorded time — a regimen reported in 2014. Today, without a mechanical valve or moderate–severe mitral stenosis, a DOAC comes first; no stent means no dual antiplatelet therapy; if one antiplatelet (preferably clopidogrel) is added after the infarct it is time-limited, and the anticoagulant continues alone after 12 months (ESC 2023 ACS; ESC 2024 AF). Warfarin is still right when a DOAC is contraindicated: INR 2.0–3.0 — and, so soon after an embolic event with an atrial echo considered thrombus, with heparin until it is in range."
+        "zh-CN": "抗栓方案的过去与现在。记录中的做法是华法林、肝素过渡到第 6 天 INR 2.3 时停用，再加阿司匹林（疗程未记录）——这是 2014 年报告中的方案。现在，没有机械瓣或中重度二尖瓣狭窄时首选 DOAC；没有支架就没有双联抗血小板；心肌梗死后若加一种抗血小板药（首选氯吡格雷）要限定疗程，12 个月后单用抗凝（ESC 2023 ACS；ESC 2024 AF）。DOAC 有禁忌时华法林仍然正确：房颤的目标 INR 为 2.0–3.0（机械瓣按瓣膜另定目标）；她刚发生栓塞、左心房回声考虑血栓，肝素要用到 INR 达标。",
+        "en": "The antithrombotic plan, then and now. The record shows warfarin, heparin until the INR reached 2.3 on day 6, plus aspirin for an unrecorded time — a regimen reported in 2014. Today, without a mechanical valve or moderate–severe mitral stenosis, a DOAC comes first; no stent means no dual antiplatelet therapy; if one antiplatelet (preferably clopidogrel) is added after the infarct it is time-limited, and the anticoagulant continues alone after 12 months (ESC 2023 ACS; ESC 2024 AF). Warfarin is still right when a DOAC is contraindicated: for AF an INR of 2.0–3.0 (a mechanical valve sets its own target) — and, so soon after an embolic event with an atrial echo considered thrombus, with heparin until it is in range."
       }
     ],
     "references": [
@@ -5598,10 +5707,6 @@
       "type": "read",
       "investigationId": "natriuretic-peptide",
       "phase": "day3"
-    },
-    {
-      "type": "order",
-      "investigationId": "tee"
     },
     {
       "type": "ask",
@@ -6115,6 +6220,53 @@
         "text": "Does anything make it better or worse?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "When did you first notice the chest pain?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Is your blood pressure normally okay?",
+        "locale": "en",
+        "expect": [
+          "bp-control"
+        ]
+      },
+      {
+        "text": "Did you take anything before coming in?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "Have you travelled anywhere recently?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "您这是怎么啦？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "现在好点没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-now"
+        ]
+      },
+      {
+        "text": "以前吃过抗凝药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "anticoag-advice"
+        ]
       }
     ]
   }

@@ -2447,8 +2447,7 @@
         "zh-CN": [
           "病程记录",
           "病程",
-          "治疗后变化",
-          "护理记录"
+          "治疗后变化"
         ],
         "en": [
           "progress note",
@@ -4291,8 +4290,8 @@
         "en": "His age at the laparoscopy, whether a cholangiogram was done, the biopsy site and the fibrosis scoring used."
       },
       {
-        "zh-CN": "家属不接受Kasai手术的理由，之后的治疗（如肝移植评估）、长期肝功能、营养和生存结局；1.0.0版提到的“HBsAg后续核实”是谁的结果。",
-        "en": "The family's reasons for not accepting a Kasai operation, his later treatment (such as transplant assessment) and his long-term liver, nutritional and survival outcomes; whose result the 'follow-up of HBsAg positivity' named in version 1.0.0 refers to."
+        "zh-CN": "家属不接受Kasai手术的理由，之后的治疗（如肝移植评估）、长期肝功能、营养和生存结局；HBsAg阳性的后续核实（没有写明是谁的结果）。",
+        "en": "The family's reasons for not accepting a Kasai operation, his later treatment (such as transplant assessment) and his long-term liver, nutritional and survival outcomes; the follow-up of an HBsAg-positive result (whose is not stated)."
       },
       {
         "zh-CN": "父母是否近亲、母亲孕期情况和产前超声、过敏史。",
@@ -4362,8 +4361,8 @@
       "en": "His age at the laparoscopy, whether a cholangiogram was done, the biopsy site and the fibrosis scoring used."
     },
     {
-      "zh-CN": "家属不接受Kasai手术的理由，之后的治疗（如肝移植评估）、长期肝功能、营养和生存结局；1.0.0版提到的“HBsAg后续核实”是谁的结果。",
-      "en": "The family's reasons for not accepting a Kasai operation, his later treatment (such as transplant assessment) and his long-term liver, nutritional and survival outcomes; whose result the 'follow-up of HBsAg positivity' named in version 1.0.0 refers to."
+      "zh-CN": "家属不接受Kasai手术的理由，之后的治疗（如肝移植评估）、长期肝功能、营养和生存结局；HBsAg阳性的后续核实（没有写明是谁的结果）。",
+      "en": "The family's reasons for not accepting a Kasai operation, his later treatment (such as transplant assessment) and his long-term liver, nutritional and survival outcomes; the follow-up of an HBsAg-positive result (whose is not stated)."
     },
     {
       "zh-CN": "父母是否近亲、母亲孕期情况和产前超声、过敏史。",

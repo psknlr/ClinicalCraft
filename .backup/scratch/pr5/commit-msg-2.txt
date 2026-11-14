@@ -7,9 +7,9 @@ lengths, aliases, leaks, plain questions in both languages); a further round fol
 found a critical or major issue. Findings by round (all critical and major ones fixed or answered
 with a reason in the case's README):
 
-- cmcr-561144: round 2: 4 critical, 14 major, 9 minor; round 3: 1 critical, 6 major, 11 minor; round 4: 2 major, 9 minor
+- cmcr-33790: round 2: 1 critical, 11 major, 17 minor; round 3: 3 major, 11 minor; round 4: 4 major, 10 minor
 
-Totals: 5 critical, 22 major and 29 minor findings. Each case passes
+Totals: 1 critical, 18 major and 38 minor findings. Each case passes
 strict validation, verification (100 %), scripts/case-check.ts, the collection contract and the
 in-world demonstration in both languages.
 
