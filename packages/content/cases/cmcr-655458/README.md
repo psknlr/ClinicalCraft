@@ -568,7 +568,7 @@ Run from the worktree root (all passed on 2026-10-30):
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-655458/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-655458 --lang en          # 80 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-655458        # depth floor, do-nothing 0, wrong-first 50 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-655458        # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-655458:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-655458:"   # in-world demonstration, en + zh-CN
 ```

@@ -502,7 +502,7 @@ against the full source article.
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1067495/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1067495 --lang en        # 88 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 28/28
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1067495                   # PASS (depth floor, do nothing 0, wrong-first < reference)
+npx tsx --conditions=source scripts/case-check.ts cmcr-1067495                   # PASS (depth floor, do nothing 0, wrong-first < reference)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1067495:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1067495:"  # demonstration, en + zh-CN
 ```

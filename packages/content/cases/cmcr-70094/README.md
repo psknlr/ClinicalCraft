@@ -571,7 +571,7 @@ place until the echocardiogram, and the empirical antibiotic choice with a centr
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-70094/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-70094 --lang en        # 72 steps · objectives 6/6 · decisions 4/4 · utterances 39/39 · rubric 29/29
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-70094          # PASS: depth floor, do-nothing 0, wrong-first 62 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-70094          # PASS: depth floor, do-nothing 0, wrong-first 62 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-70094:"                      # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-70094:"       # in-world demonstration, en + zh-CN
 ```

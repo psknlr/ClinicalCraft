@@ -580,7 +580,7 @@ other library cases cite them.
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1653411/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1653411 --lang en                                                 # 52 steps · objectives 6/6 · decisions 4/4 · utterances 40/40 · rubric 24/24 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1653411                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-1653411                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1653411:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1653411:"  # in-world demonstration, en + zh-CN
 ```
