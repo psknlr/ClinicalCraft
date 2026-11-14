@@ -1,6 +1,7 @@
 /**
- * Operations restricted by a surgical control, and who checks the wound (docs/EMBODIED.md §8.2, §8.6): the words a
- * refusal names — the positions that hold the control, the acting body's position — and when the wound rule holds.
+ * Operations restricted by a surgical control, who checks the wound, and who stands at the operating table
+ * (docs/EMBODIED.md §8.2, §8.5, §8.6): the words a refusal names — the positions that hold the control, the acting
+ * body's position —, when the wound rule holds, and the table's own rule a port is held by (`atOperatingTable`).
  * Which controls a body holds is core's (`bodyControls`, asked through `DeviceRules.controlsOf`): a body stores no
  * position and no control, and the world reads only the case, the start's choices and the facility.
  */

@@ -810,8 +810,11 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   (waited for, insufflated again) and the scope taken out by the camera holder (asked back) — never the end of the
   operation; resumed from the transcript and from a snapshot in the middle of a `team run`, no step of the stand-in's
   repeated or skipped, and in learner mode just after an instrument passed went in (no second pass waited for); a
-  `configure` that would stop the stand-in refused while the place is held, in both languages; a clip the learner
-  stops stopping the stand-in until they say go on, then done once.
+  `configure` that would stop the stand-in refused while the place is held, in both languages; a saved encounter in a
+  place asked before it goes on (`standInRefusal`: the settings it would resume with, in both languages; none once the
+  operation is closed); a start the engine itself refuses said with its reason (the place's member away in the team
+  scenario, by name) and then the engine's words; a clip the learner stops stopping the stand-in until they say go on,
+  then done once.
 - A session in a place, on the agent's theatre fixture (`agent/src/session/__fixtures__/theatre.ts`: the world's
   theatre with core's lap-chole team): `seat-operate.test.ts` (the first assistant's port and traction; dissection
   refused before any approval in both languages; the engine's English message after the reason; no `actor`, no `ref`;
