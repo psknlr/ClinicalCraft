@@ -26,7 +26,7 @@ import { MovementRequests } from "./movement.js";
 import { sessionSnapshot } from "./resume.js";
 import { parseLearnerInput, parseMention, resolveAgentAlias } from "./router.js";
 import { staffAgent, staffVoice, type StaffVoice } from "./staff-voice.js";
-import { placeNotOffered } from "./team/places.js";
+import { standInRefusal } from "./team/places.js";
 import { encounterRoom, lookupStaff, staffChoice } from "../tools/consult-target.js";
 
 /** The learner as the holder of a hold they place or release themselves. */
@@ -275,18 +275,20 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.refHandEntry") }), code: "permission_denied" });
       return null;
     }
-    // a place in the team works with bodies at the table: in-world mode only. Until a stand-in surgeon operates, a
-    // clinical session of a case with no facility meets the not-offered refusal below instead; once that guard goes,
-    // every clinical session is refused here (`not_embodied`), facility or none
-    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied && k.facility) {
-      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
-      return null;
-    }
-    // a place in the team is not offered yet: nobody would operate while the learner held it (docs/TEAM.md §1)
-    const place = placeNotOffered(requested);
-    if (place) {
-      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "team.place.notOffered", { place: t(POSITION_TITLES[place], L) }) }), code: "permission_denied" });
-      return null;
+    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon") {
+      const place = t(POSITION_TITLES[requested.seat], L);
+      // a place in the team works with bodies at the table: in-world mode only, facility or none
+      if (!k.embodied) {
+        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place }) }), code: "not_embodied" });
+        return null;
+      }
+      // the stand-in surgeon operates meanwhile through the team's caller: settings that would refuse its steps refuse
+      // the place now, never the stand-in in the middle of the operation (docs/TEAM.md §1)
+      const refused = standInRefusal(k, id, requested.seat);
+      if (refused) {
+        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.standInRefused", { place, reason: refused }) }), code: "permission_denied" });
+        return null;
+      }
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
     // writes `releasedBy: "attending"` releases as the learner — refused unless the learner placed that hold

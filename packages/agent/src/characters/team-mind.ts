@@ -5,7 +5,9 @@
  * The model chooses; the engine keeps the physics and the protocol. The options are the legal moves the engine
  * lists for this member now:
  * - `act`: the team's protocol move — the policy's own proposal (ask the colleague whose duty it is, read back,
- *   hand over, report, count, search…), worded in the member's own words when it speaks;
+ *   hand over, report, count, search…; at the operating table a step in the operative field — the stand-in surgeon's
+ *   plan step, an assistant's traction or camera, the scrub nurse's pass — or a look at the field), worded in the
+ *   member's own words when it speaks; the model chooses among the moves the policy gives, never a step of its own;
  * - `wait`: not now — once in a row for the same move, and never for a closed-loop obligation (a read-back, a
  *   confirmation, a report, a decline, an escalation) or the count;
  * - `notice`: say something you see to a colleague in the room (no obligation created);
@@ -15,7 +17,7 @@
  * failed call, an option not offered, an ungrounded line — and the rules decide (the policy's proposal, its own
  * words), with one warning per member and a diagnostic record of what was refused.
  */
-import { t, type StaffPosition } from "@clinicalcraft/core";
+import { t, type ProcedureOp, type StaffPosition } from "@clinicalcraft/core";
 import { completeText, parseJsonObject } from "../loop.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatRequest, LLMProvider } from "../providers/types.js";
@@ -249,8 +251,12 @@ export class ModelTeamMind {
         rules.kind === "say"
           ? `say to ${this.host.name(rules.to)} (${KIND_WORD[rules.message.kind]}) — the team's usual words: "${t(rules.message.text, L)}"${owed ? " [owed: the closed loop needs it now]" : ""}`
           : rules.kind === "act"
-            ? `do: ${rules.operation}${rules.targetId ? ` ${this.host.name(rules.targetId)}` : ""}${rules.recipient ? ` to ${this.host.name(rules.recipient)}` : ""} (task ${rules.task})`
-            : "update the task list";
+            ? `do: ${rules.operation}${rules.targetId ? ` ${this.host.name(rules.targetId)}` : ""}${rules.recipient ? ` to ${this.host.name(rules.recipient)}` : ""}${rules.ref ? " (a step of the operation, through the device)" : ""} (task ${rules.task})`
+            : rules.kind === "operate"
+              ? `take a step in the operative field: ${operativeStep(rules.op)} (task ${rules.task})`
+              : rules.kind === "observe"
+                ? `look at the operative field on the screen (task ${rules.task})`
+                : "update the task list";
       out.push({ id: "act", text });
       // an owed move is the only move: nothing else may come first (the member still says it in their own words)
       if (owed || countWork) return out;
@@ -300,10 +306,20 @@ export class ModelTeamMind {
   }
 }
 
+/** A step in the operative field in words ("clip in port C, handle T2"): the step and what it names. */
+function operativeStep(op: ProcedureOp): string {
+  const parts = Object.entries(op)
+    .filter(([key]) => key !== "op")
+    .map(([key, value]) => `${key} ${Array.isArray(value) ? value.join(" and ") : typeof value === "object" ? JSON.stringify(value) : String(value)}`);
+  return parts.length ? `${op.op} (${parts.join(", ")})` : op.op;
+}
+
 /** A move's identity (the same move deferred again is the same digest). */
 function digest(p: Proposal | null): string {
   if (!p) return "none";
   if (p.kind === "say") return `say:${p.to}:${p.message.kind}:${p.message.thread}`;
   if (p.kind === "act") return `act:${p.task}:${p.operation}:${p.targetId ?? ""}`;
+  if (p.kind === "operate") return `operate:${p.task}:${p.ref ?? ""}:${JSON.stringify(p.op)}`;
+  if (p.kind === "observe") return `observe:${p.task}`;
   return "update";
 }

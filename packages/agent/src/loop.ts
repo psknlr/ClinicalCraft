@@ -299,7 +299,8 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
   if (gate.kind === "abort") return fail(p.signal?.aborted ? "interrupted" : "cancelled", rt(L, "tool.aborted"));
   if (gate.kind === "deny") {
     const text = gate.byLearner ? rt(L, "tool.deniedByLearner", { reason: gate.reason ? `: ${gate.reason}` : "" }) : rt(L, "tool.denied", { reason: gate.reason });
-    return fail("denied", text);
+    // whose denial it was (the learner's answer, or a rule): the care team's stand-in stops only for the learner's
+    return finish("denied", { ok: false, output: text, data: { denied: { ruleId: gate.ruleId, ...(gate.byLearner ? { byLearner: true } : {}) } } });
   }
   if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"));
 

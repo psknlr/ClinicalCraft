@@ -21,6 +21,7 @@ import {
   cameraPort,
   compareCount,
   countLedger,
+  countSettled,
   countStatus,
   memberBody,
   observeField,
@@ -36,22 +37,25 @@ import {
   type CountRecord,
   type FacilityDefinition,
   type FieldView,
+  type PortState,
   type ProcedureOp,
   type SessionState,
   type TeamNeed,
   type TeamScenario,
 } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, RANGES, type ActorState, type NavGoal, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { behaviorOf, PRIMARY_ACTOR, RANGES, type ActorState, type NavGoal, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg, TeamEvent } from "../../protocol.js";
+import { lookupStaff } from "../../tools/consult-target.js";
 import { checkTaskScope, THEATRE_TASK_CONTROL } from "../../tools/scope.js";
 import { scopeActorOf } from "../../tools/scope-actor.js";
 import type { SurgicalCount } from "../count.js";
 import { afterFieldWalk, afterOperate, followStep } from "./assistant.js";
 import { askText } from "./asks.js";
 import { both, phrase, SURGEON_NAME, type Bilingual } from "./i18n.js";
-import { afterAct, learnerCount, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
+import { afterStandIn, type StandInOutcome } from "./operator.js";
+import { afterAct, learnerCount, propose, type ColleagueView, type DeviceStep, type ItemSighting, type MemberView } from "./policy.js";
 import { validTeamCheckpoint } from "./checkpoint.js";
-import { TEAM_STATE_VERSION, type ActionReceipt, type FieldAsk, type KnownNeed, type MemberId, type MemberState, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
+import { TEAM_STATE_VERSION, type ActionReceipt, type FieldAsk, type KnownNeed, type MemberId, type MemberState, type PlanStep, type Proposal, type SeenInjury, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
 /**
  * How a step in the operative field went (`TeamHost.operate`): the tool's outcome, with where the world points after a
@@ -64,6 +68,14 @@ export interface OperateOutcome {
   message: string;
   hint?: NavGoal;
   reason?: Bilingual;
+  /** Refused because the learner answered its approval Stop (the stand-in's call-out), not by a rule. */
+  byLearner?: boolean;
+}
+
+/** What one round did: something said or done (`busy`), and whether the stand-in surgeon took a step of the operation. */
+export interface RoundReport {
+  busy: boolean;
+  operated: boolean;
 }
 
 /** What the scheduler needs from the session. */
@@ -79,6 +91,17 @@ export interface TeamHost {
    * step recorded with `ref` (the action id: carried out once) — in a turn of its own that always ends.
    */
   operate(member: MemberId, op: ProcedureOp, ref: string, signal: AbortSignal): Promise<OperateOutcome>;
+  /**
+   * A member's look at the operative field (`observe_field` through the team's caller, with their own body) — the
+   * stand-in's look after the learner stopped it — in a turn of its own that always ends.
+   */
+  observe(member: MemberId, signal: AbortSignal): Promise<OperateOutcome>;
+  /**
+   * A step of the operation done through a device that offers it (the tower's gas, docs/TEAM.md §4.5): the world act with
+   * the member's own body, its clinical effect through the team's caller, the step recorded with `ref` — in a turn of its
+   * own that always ends.
+   */
+  deviceStep(request: WorldActionRequest, ref: string, signal: AbortSignal): Promise<WorldActionResult>;
   /** Has the field recorded a step with this ref (`ProcedureState.refs`)? */
   stepDone(ref: string): boolean;
   /** Simulated minute now. */
@@ -160,6 +183,20 @@ export class TeamScheduler {
     this.autonomy = valid.autonomy;
     this.surgeon = valid.surgeon;
     this.setUp = this.state.lifecycle !== "pending";
+    this.catchUpIds();
+  }
+
+  /**
+   * A team restored older than the field's and the world's record (saved before acts it went on to do: a crash in the
+   * middle of `team run`) never gives an id out again for something else: its next ids come after every task id those
+   * records hold (`team.<task>.<n>` refs and world results), so a new task never takes a lost one's acts for its own.
+   */
+  private catchUpIds(): void {
+    const used = [...(this.host.state().procedure?.refs ?? []), ...this.host.world().snapshot().results.map((r) => r.actionId)];
+    for (const id of used) {
+      const n = /^team\.[a-z]+-(\d+)\./u.exec(id)?.[1];
+      if (n !== undefined) this.state.seq = Math.max(this.state.seq, Number(n));
+    }
   }
 
   /* ---------------------------------------------------------------- */
@@ -232,16 +269,18 @@ export class TeamScheduler {
   }
 
   /**
-   * Run rounds until the team is idle (no message said, no act done in a round) — `untilIdle` — or every need
-   * is settled, or `maxRounds`. Returns the rounds run.
+   * Run rounds until the team is idle (no message said, no act done in a round) — `untilIdle`, which also ends after a
+   * round in which the stand-in surgeon took a step of the operation: the operation goes on one step at a time, with the
+   * team's clock and each act of the learner, never in one burst — or until every need is settled, or `maxRounds`.
+   * Returns the rounds run.
    */
   async run(signal: AbortSignal, opts: { maxRounds?: number; untilIdle?: boolean } = {}): Promise<number> {
     if (!this.active()) return 0;
     const max = opts.maxRounds ?? 40;
     let n = 0;
     for (; n < max && !signal.aborted; n++) {
-      const busy = await this.round(signal);
-      if (opts.untilIdle !== false && !busy) {
+      const r = await this.round(signal);
+      if (opts.untilIdle !== false && (!r.busy || r.operated)) {
         n++;
         break;
       }
@@ -267,25 +306,36 @@ export class TeamScheduler {
     return (posted.length > 0 || ledger?.dueRound !== undefined || field.length > 0) && needsDone && countDone && fieldDone;
   }
 
-  /** One round: each awakened member proposes and carries out at most one thing. True when something was said or done. */
-  async round(signal: AbortSignal): Promise<boolean> {
-    if (!this.active()) return false;
+  /**
+   * One round: each awakened member proposes and carries out at most one thing. Reports whether something was said or
+   * done, and whether the stand-in surgeon took a step of the operation (in the field, or through a device).
+   */
+  async round(signal: AbortSignal): Promise<RoundReport> {
+    if (!this.active()) return { busy: false, operated: false };
     this.prepare();
     this.watchCount();
     this.syncSteps();
     let busy = false;
+    let operated = false;
     for (const member of this.order()) {
       if (signal.aborted) break;
       const view = this.view(member);
       const rules = propose(view);
       const p = this.host.decide ? await this.host.decide(member, view, rules, signal) : rules;
       if (!p) continue;
-      busy = (await this.carryOut(member, p, signal)) || busy;
+      const did = await this.carryOut(member, p, signal);
+      busy = did || busy;
+      if (did && this.isOperator(member) && (p.kind === "operate" || (p.kind === "act" && p.ref !== undefined))) operated = true;
     }
     this.state.round++;
     if (this.state.lifecycle === "active" && this.settled()) this.state.lifecycle = "completed";
     this.host.emit({ type: "team_event", event: this.statusEvent() });
-    return busy;
+    return { busy, operated };
+  }
+
+  /** The stand-in surgeon: the surgeon member with a member of staff's body (while the learner holds a place). */
+  private isOperator(m: MemberState): boolean {
+    return m.duties.includes("surgeon") && m.id.startsWith("staff:");
   }
 
   /** The scheduler's status: the round, the pace, who answers as the surgeon, and the learner's place and line-up (when chosen). */
@@ -339,7 +389,8 @@ export class TeamScheduler {
       const unread = m.inbox.map((id) => this.state.messages.findIndex((x) => x.id === id)).filter((i) => i >= 0);
       if (unread.length) return [0, Math.min(...unread), m.id];
       if (this.state.tasks.some((t) => t.owner === m.id && !TERMINAL.has(t.status))) return [1, 0, m.id];
-      if (this.pendingNeeds(m).length || this.countDue(m) || following(m)) return [2, 0, m.id];
+      // the stand-in surgeon with an operation to begin notices it (its plan task is made then)
+      if (this.pendingNeeds(m).length || this.countDue(m) || following(m) || (this.isOperator(m) && !this.state.tasks.some((t) => t.owner === m.id && t.kind === "operate"))) return [2, 0, m.id];
       return [3, 0, m.id];
     };
     return this.state.members
@@ -399,19 +450,18 @@ export class TeamScheduler {
       return true;
     }
     if (p.kind === "operate") return this.carryOutStep(member, p, signal);
+    if (p.kind === "observe") return this.carryOutLook(member, p, signal);
     // a world act, under a stable id: never twice, and a retry returns the recorded result
     this.apply(member, p.patch ?? []);
     const task = this.task(p.task);
     if (!task) return false;
     const actionId = `team.${task.id}.${task.acts + 1}`;
     const w = this.host.world();
-    let r: WorldActionResult | null = this.state.completed.includes(actionId) ? w.feedback(actionId) : null;
-    if (!r) {
-      r = await this.host.act(
-        { actionId, actorId: member.id, operation: p.operation, ...(p.targetId ? { targetId: p.targetId } : {}), ...(p.goal ? { goal: p.goal } : {}), ...(p.parameters ? { parameters: p.parameters } : {}), onBehalfOf: task.initiator },
-        signal,
-      );
-    }
+    const request: WorldActionRequest = { actionId, actorId: member.id, operation: p.operation, ...(p.targetId ? { targetId: p.targetId } : {}), ...(p.goal ? { goal: p.goal } : {}), ...(p.parameters ? { parameters: p.parameters } : {}), onBehalfOf: task.initiator };
+    // a step of the operation through a device (`ref`): never again once the field recorded it
+    const stepped = p.ref !== undefined && this.host.stepDone(p.ref);
+    let r: WorldActionResult | null = this.state.completed.includes(actionId) ? w.feedback(actionId) : stepped ? { actionId, status: "completed", message: "", worldVersion: w.version, events: [] } : null;
+    if (!r) r = p.ref !== undefined ? await this.host.deviceStep(request, p.ref, signal) : await this.host.act(request, signal);
     task.acts++;
     if (r.status === "completed" && !this.state.completed.includes(actionId)) this.state.completed.push(actionId);
     const receipt: ActionReceipt = {
@@ -436,7 +486,12 @@ export class TeamScheduler {
     // the member inspects the receipt at once: a hand-over done is reported; a refusal they cannot fix is said (a field
     // task's walk to the table, in its own words)
     const outcome = { status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message, operation: p.operation, ...(r.hint?.goal ? { hint: r.hint.goal } : {}) };
-    const follow = task.kind === "assist" ? afterFieldWalk(this.view(member), task, outcome) : afterAct(this.view(member), task, outcome);
+    const follow =
+      task.kind === "assist"
+        ? afterFieldWalk(this.view(member), task, outcome)
+        : task.kind === "operate"
+          ? afterStandIn(this.view(member), task, { ...outcome, ...(r.errorCode === "APPROVAL_DENIED" ? { code: "DENIED", byLearner: true } : {}), ...(p.ref !== undefined ? { ref: p.ref } : {}) })
+          : afterAct(this.view(member), task, outcome);
     if (follow && follow.kind === "say") {
       this.apply(member, follow.patch ?? []);
       this.send(member, follow);
@@ -456,8 +511,10 @@ export class TeamScheduler {
     if (!task) return false;
     this.syncSteps();
     const actionId = `team.${task.id}.${task.acts + 1}`;
-    const done = this.state.completed.includes(actionId) || this.host.stepDone(actionId);
-    const r: OperateOutcome = done ? { status: "completed", message: "" } : await this.host.operate(member.id, p.op, actionId, signal);
+    // the field records the step with its plan step's ref (the stand-in's `standin:<k>…`), else with the action id
+    const ref = p.ref ?? actionId;
+    const done = this.state.completed.includes(actionId) || this.host.stepDone(ref);
+    const r: OperateOutcome = done ? { status: "completed", message: "" } : await this.host.operate(member.id, p.op, ref, signal);
     task.acts++;
     if (r.status === "completed" && !this.state.completed.includes(actionId)) this.state.completed.push(actionId);
     const op = p.op;
@@ -480,11 +537,41 @@ export class TeamScheduler {
     this.state.receipts.push(receipt);
     this.observe(member, "receipt", receipt.id, `${op.op} ${receipt.outcome}`);
     this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
-    const follow = afterOperate(this.view(member), task, { ...r, op });
+    const view = this.view(member);
+    const follow = task.kind === "operate" ? afterStandIn(view, task, { ...r, ref } satisfies StandInOutcome) : afterOperate(view, task, { ...r, op });
     if (follow?.kind === "say") {
       this.apply(member, follow.patch ?? []);
       this.send(member, follow);
     } else if (follow?.kind === "update") this.apply(member, follow.patch);
+    this.emitTask(task);
+    return true;
+  }
+
+  /** A member's look at the field (`observe_field`, the team's caller), under the task's next action id: its receipt kept. */
+  private async carryOutLook(member: MemberState, p: Extract<Proposal, { kind: "observe" }>, signal: AbortSignal): Promise<boolean> {
+    this.apply(member, p.patch ?? []);
+    const task = this.task(p.task);
+    if (!task) return false;
+    const actionId = `team.${task.id}.${task.acts + 1}`;
+    const r = this.state.completed.includes(actionId) ? ({ status: "completed", message: "" } as OperateOutcome) : await this.host.observe(member.id, signal);
+    task.acts++;
+    if (r.status === "completed" && !this.state.completed.includes(actionId)) this.state.completed.push(actionId);
+    const receipt: ActionReceipt = {
+      id: actionId,
+      actor: member.id,
+      operation: "observe_field",
+      initiator: task.initiator,
+      outcome: r.status,
+      ...(r.code ? { code: r.code } : {}),
+      message: r.message.split("\n")[0] ?? "",
+      worldVersion: this.host.world().version,
+      at: this.host.clock(),
+      round: this.state.round,
+      task: task.id,
+    };
+    this.state.receipts.push(receipt);
+    this.observe(member, "receipt", receipt.id, `observe_field ${receipt.outcome}`);
+    this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
     this.emitTask(task);
     return true;
   }
@@ -617,11 +704,11 @@ export class TeamScheduler {
    * the team (`to`: their staff id, or `staff:<id>`), the learner's own member, one away this encounter, the one who
    * operates, one who is not in the team's room now (a relief colleague is called by phone: asked all the same).
    */
-  ask(to: string, field: FieldAsk): { message: TeamMessage } | { refused: "observer" } | { refused: "unknown" | "self" | "absent" | "operator" | "away"; to: string } {
+  ask(to: string, field: FieldAsk): { message: TeamMessage } | { refused: "observer" } | { refused: "unknown" | "self" | "absent" | "operator" | "away"; to: string } | { refused: "ambiguous"; to: string; who: string[] } {
     if (this.surgeon === "simulated") return { refused: "observer" };
-    const ref = to.replace(/^staff:/u, "");
-    // by staff id, as the facility names them, or by body (the stand-in is the surgeon member's body)
-    const target = this.state.members.find((m) => m.id === to || m.id === `staff:${ref}` || m.staff === ref);
+    const named = this.memberNamed(to);
+    if (named && "ambiguous" in named) return { refused: "ambiguous", to, who: named.ambiguous };
+    const target = named;
     if (!target) return { refused: "unknown", to };
     if (target.id === PRIMARY_ACTOR) return { refused: "self", to: target.id };
     if (target.absent) return { refused: "absent", to: target.id };
@@ -654,6 +741,22 @@ export class TeamScheduler {
     this.apply(me, p.patch ?? []);
     this.send(me, p);
     return { message: this.state.messages.at(-1)! };
+  }
+
+  /**
+   * The member a learner names (`team ask {to}`): by staff id, as the facility names them, or by body (the stand-in is the
+   * surgeon member's body); else by name or by a position in words — "Dr Abe", "first assistant", "一助", "扶镜手" —
+   * through the one resolver every front-end shares (`lookupStaff`); several equally named: which ones.
+   */
+  private memberNamed(to: string): MemberState | { ambiguous: string[] } | null {
+    const ref = to.replace(/^staff:/u, "");
+    const direct = this.state.members.find((m) => m.id === to || m.id === `staff:${ref}` || m.staff === ref);
+    if (direct) return direct;
+    const found = lookupStaff(this.host.facility, to, this.config.room, { caseDef: this.host.caseDef, state: this.host.state() });
+    if (found.kind === "ambiguous") return { ambiguous: found.staff.map((x) => `staff:${x.id}`) };
+    if (found.kind !== "one") return null;
+    const id = found.staff.id;
+    return this.state.members.find((m) => m.id === `staff:${id}` || m.staff === id) ?? null;
   }
 
   /** The equipment type a reply names in its words (the longest name of a type in the room's hospital), or null. */
@@ -730,7 +833,9 @@ export class TeamScheduler {
       const l = countLedger(record);
       return l.expected.filter((id) => !l.transferred.includes(id)).length;
     })() : (ledger?.baseline ?? 0);
-    const view: Omit<MemberView, "controls" | "atTable" | "field"> = {
+    const def = procedureFor(c, s);
+    const procedure = s.procedure;
+    const view: Omit<MemberView, "controls" | "atTable" | "field" | "injuries"> = {
       me: { ...me, holding: body?.holding ?? [], inRoom: body?.room === room },
       room,
       count:
@@ -770,16 +875,53 @@ export class TeamScheduler {
       surgeon: this.surgeonBody(),
       learner: PRIMARY_ACTOR,
       passingRequired: passingRequired(c, s),
-      plan: null,
+      plan: this.isOperator(me) ? this.plan() : null,
+      refs: [...(procedure?.refs ?? [])],
+      where: (handle) => {
+        // a duct or vessel the screen shows, where it lies
+        if (!def || !procedure || !field()?.tubes.some((x) => x.handle === handle)) return null;
+        const structure = procedure.handles.find((h) => h.handle === handle)?.structure;
+        return def.anatomy.find((a) => a.id === structure)?.in ?? null;
+      },
+      gasControl: (step) => this.gasControl(step),
+      countSettled: count && record ? countSettled(record) : null,
       refOf: (who) => refOfBody(c, s, who) ?? undefined,
       bodyOf: (ref) => memberBody(c, s, ref ?? "surgeon"),
       label: (id) => this.label(id),
     };
     // what the member's body can work and see in the operative field: asked for only by work in the field
-    const def = procedureFor(c, s);
-    const atTable = () => !!def && !!s.procedure && w.checkSpatial(me.id, { tool: "operate", kind: "operate" }).ok;
-    const field = (): FieldView | null => (def && s.procedure && w.checkSpatial(me.id, { tool: "observe_field", kind: "observe" }).ok ? observeField(def, s.procedure) : null);
-    return lazy(lazy(lazy(view as MemberView, "controls", () => controlsOf(me.id)), "atTable", atTable), "field", field);
+    const atTable = () => !!def && w.checkSpatial(me.id, { tool: "operate", kind: "operate" }).ok;
+    let seen: { f: FieldView | null } | null = null;
+    const field = (): FieldView | null => (seen ??= { f: def && procedure && w.checkSpatial(me.id, { tool: "observe_field", kind: "observe" }).ok ? observeField(def, procedure) : null }).f;
+    // what has gone wrong that the member can tell: what the screen shows them, what a colleague said aloud in the room
+    const injuries = (): SeenInjury[] =>
+      (procedure?.injuries ?? [])
+        .filter((i) => (i.visible && field() !== null) || (i.recognisedBy !== undefined && body?.room === room))
+        .map((i) => ({ kind: i.kind, recognised: i.recognised, ...(i.recognisedBy !== undefined ? { calledBy: i.recognisedBy } : {}) }));
+    return lazy(lazy(lazy(lazy(view as MemberView, "controls", () => controlsOf(me.id)), "atTable", atTable), "field", field), "injuries", injuries);
+  }
+
+  /** The stand-in surgeon's plan: the case's reference solution's operative steps, in order (`PlanStep.k`: their index). */
+  private plan(): PlanStep[] {
+    const steps: PlanStep[] = [];
+    for (const a of this.host.caseDef.solution) if (a.type === "operate") steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) });
+    return steps;
+  }
+
+  /**
+   * The device in the team's room that offers a step of the operation now — the operation whose clinical effect is that
+   * step (`operate`: the tower's gas), offered in the state the device is in — or null (the step is done at the table).
+   */
+  private gasControl(step: "insufflate" | "desufflate"): DeviceStep | null {
+    const w = this.host.world();
+    const states = w.snapshot().entities;
+    for (const e of w.entities()) {
+      if (e.kind !== "equipment" || e.room !== this.config.room || states[e.id]?.available === false) continue;
+      const state = w.stateOf(e.id);
+      const op = behaviorOf(e).operations.find((o) => o.clinical?.tool === "operate" && o.clinical.item === step && (o.from === "*" || (state !== null && o.from.includes(state))));
+      if (op) return { id: e.id, operation: op.id };
+    }
+    return null;
   }
 
   /** A body's name as the team says it: whoever operates is "the surgeon" (术者); the learner in a place, by that place ("the first assistant (you)"). */

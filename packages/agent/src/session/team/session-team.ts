@@ -71,6 +71,9 @@ export class SessionTeam {
       act: (request, signal) => k.embodied!.act({ agent: "nurse", submission: k.currentSubmission, signal }, request, signal),
       // a member's step in the operative field: the team's caller, their own body
       operate: (member, op, ref, signal) => this.operateAs(member, op, ref, signal),
+      observe: (member, signal) => this.observeAs(member, signal),
+      // a step of the operation through a device (the tower's gas): the member's body, its effect on the team's caller
+      deviceStep: (request, ref, signal) => k.inTurn(k.currentSubmission, TEAM_CALLER, (turnId) => k.embodied!.act({ agent: TEAM_CALLER, submission: k.currentSubmission, turnId, signal, stepRef: ref }, request, signal)),
       stepDone: (ref) => (k.state.procedure?.refs ?? []).includes(ref),
       clock: () => k.state.clock,
       phase: () => k.state.phase,
@@ -108,7 +111,7 @@ export class SessionTeam {
       runToolAs(k, { agent: TEAM_CALLER, submission: id, turnId, ...(signal ? { signal } : {}) }, "operate", { ...op } as Record<string, unknown>, { actorId: member, stepRef: ref, addressee: PRIMARY_ACTOR }),
     );
     if (call.ok) return { status: "completed", message: call.output.output };
-    const d = call.output.data as { code?: string; hint?: { goal?: NavGoal } | null; rejected?: { code?: string; reason?: RefusalReason }; refusal?: RefusalReason } | undefined;
+    const d = call.output.data as { code?: string; hint?: { goal?: NavGoal } | null; rejected?: { code?: string; reason?: RefusalReason }; refusal?: RefusalReason; denied?: { byLearner?: boolean } } | undefined;
     const cancelled = call.status === "cancelled" || call.status === "interrupted";
     // the field's reason (a refusal by control, or the field's own), in both languages as the learner is told it
     const refusal = d?.refusal ?? d?.rejected?.reason;
@@ -121,7 +124,20 @@ export class SessionTeam {
       message: call.output.output,
       ...(d?.hint?.goal ? { hint: d.hint.goal } : {}),
       ...(en && zh ? { reason: { en, "zh-CN": zh } } : {}),
+      ...(call.status === "denied" && d?.denied?.byLearner ? { byLearner: true } : {}),
     };
+  }
+
+  /**
+   * A member's look at the operative field (docs/TEAM.md §4.5, the stand-in's after the learner stopped it): the
+   * `observe_field` tool under the team's caller with the member's own body, in a turn of its own that always ends.
+   */
+  async observeAs(member: string, signal?: AbortSignal): Promise<OperateOutcome> {
+    const k = this.k;
+    const id = k.currentSubmission;
+    const call = await k.inTurn(id, TEAM_CALLER, (turnId) => runToolAs(k, { agent: TEAM_CALLER, submission: id, turnId, ...(signal ? { signal } : {}) }, "observe_field", {}, { actorId: member, addressee: PRIMARY_ACTOR }));
+    const cancelled = call.status === "cancelled" || call.status === "interrupted";
+    return call.ok ? { status: "completed", message: call.output.output } : { status: cancelled ? "cancelled" : "failed", code: call.status.toUpperCase(), message: call.output.output };
   }
 
   private mindInstance: ModelTeamMind | null = null;
@@ -237,7 +253,12 @@ export class SessionTeam {
         const r = s.ask(to, field);
         if ("refused" in r) {
           if (r.refused === "observer") return this.observing(id);
-          const who = "to" in r ? t(k.embodied!.world().entity(r.to)?.name ?? r.to.replace(/^staff:/u, ""), k.locale) : to;
+          const nameOf = (body: string) => t(k.embodied!.world().entity(body)?.name ?? body.replace(/^staff:/u, ""), k.locale);
+          if (r.refused === "ambiguous") {
+            k.emit(id, { type: "error", message: rt(k.locale, "team.ask.ambiguous", { asked: to, who: r.who.map(nameOf).join(", ") }), code: "invalid_op" });
+            return;
+          }
+          const who = "to" in r ? nameOf(r.to) : to;
           const key = r.refused === "unknown" ? "team.unknownMember" : r.refused === "self" ? "team.ask.self" : r.refused === "absent" ? "team.ask.absent" : r.refused === "away" ? "team.ask.away" : "team.ask.operator";
           k.emit(id, { type: "error", message: rt(k.locale, key, { who }), code: r.refused === "unknown" ? "invalid_op" : "permission_denied" });
           return;

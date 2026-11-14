@@ -93,6 +93,14 @@ const PHRASES = {
   "callout.divide": { en: "Dividing {structure}.", "zh-CN": "正在离断{structure}。" },
   "callout.coagulate": { en: "Coagulating {structure}.", "zh-CN": "正在电凝{structure}。" },
   "callout.bailout": { en: "Bail-out: {strategy}.", "zh-CN": "补救策略：{strategy}。" },
+  // the stand-in surgeon's own words (docs/TEAM.md §4.5): a port taken back, the stop after a call-out, what it waits for
+  "standin.take": { en: "I'll take port {port}.", "zh-CN": "{port} 孔我来。" },
+  "standin.stopped": { en: "Stopped — tell me what you see.", "zh-CN": "停下了——告诉我你看到了什么。" },
+  "standin.wait.gas": { en: "No CO₂ — I'm waiting for the insufflator.", "zh-CN": "没有二氧化碳——等气腹机恢复。" },
+  "standin.wait.picture": { en: "No picture — I'm waiting for the camera.", "zh-CN": "没有图像——等摄像系统恢复。" },
+  "standin.wait.pass": { en: "I'm waiting for the {instrument} to be passed.", "zh-CN": "我在等递{instrument}。" },
+  "standin.wait.count": { en: "I'll close once the count is settled.", "zh-CN": "清点核对无误后我再关闭。" },
+  "standin.cannot": { en: "I can't go on: {reason}.", "zh-CN": "无法继续：{reason}。" },
   // clauses (filled into the sentences above; never capitalised)
   "clause.the": { en: "the {name}", "zh-CN": "{name}" },
   "clause.learner": { en: "the {position} (you)", "zh-CN": "{position}（你）" },

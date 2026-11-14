@@ -16,7 +16,9 @@
  *   in the operative field ("Maryland, please"), she passes it into the asker's hand (`./assistant.ts`); never unasked.
  * - `assist` (an assistant at the table, `./assistant.ts`): reads back a request about the field — traction, letting go,
  *   the camera —, walks to the table, takes the port, does it and reports; holding the camera, follows the work.
- * - `surgeon` (the simulated surgeon of observer mode): acknowledges what is escalated to them.
+ * - `surgeon`: the simulated surgeon of observer mode (`./surgeon.ts`) acknowledges what is escalated to them and checks
+ *   the wound when asked; while the learner holds a place in the team, the stand-in surgeon (`./operator.ts`) — the
+ *   surgeon duty on a member of staff's body — operates along the case's reference path, asking the team for its part.
  *
  * A request about the operative field said to anyone else of the team is declined with the reason (their controls do
  * not cover it), naming who may be handed it instead.
@@ -25,11 +27,20 @@
  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
  * and it is not there).
  */
-import type { Controls, FieldView, ProcedureOp, TeamDuty } from "@clinicalcraft/core";
+import type { Controls, FieldView, TeamDuty } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
 import { answerField, assist, fieldWork, isFieldMessage } from "./assistant.js";
 import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
-import type { KnownNeed, MemberId, MemberState, Proposal, TaskPatch, TeamMessage, TeamTask } from "./types.js";
+import { operator } from "./operator.js";
+import { surgeon } from "./surgeon.js";
+import type { KnownNeed, MemberId, MemberState, PlanStep, Proposal, SeenInjury, TaskPatch, TeamMessage, TeamTask } from "./types.js";
+
+/** A step of the operation a device in the team's room offers now (a tower's gas: its operation, with the step's parameters). */
+export interface DeviceStep {
+  id: string;
+  operation: string;
+  parameters?: Record<string, unknown>;
+}
 
 /** An item of a type, as the member knows of it. */
 export interface ItemSighting {
@@ -133,8 +144,21 @@ export interface MemberView {
   atTable: boolean;
   /** Every instrument is passed before it goes in (core `passingRequired`: the scrub nurse's place). */
   passingRequired: boolean;
-  /** The operator's own plan (the stand-in surgeon's reference steps); null for everyone else. */
-  plan: readonly ProcedureOp[] | null;
+  /**
+   * The operator's own plan — the case's reference solution's operative steps, in order (`PlanStep`) — for the stand-in
+   * surgeon (the surgeon duty on a member of staff's body); null for everyone else.
+   */
+  plan: readonly PlanStep[] | null;
+  /** The plan steps the field has recorded (`ProcedureState.refs`, in order): what the team's steps there were. */
+  refs: readonly string[];
+  /** What the member can tell has gone wrong in the field: an injury the screen shows, or one a colleague said aloud. */
+  injuries: readonly SeenInjury[];
+  /** The region a duct or vessel in view lies in, as the screen shows it (null: not in view). */
+  where(handle: string): string | null;
+  /** A device in the team's room that offers this step of the operation now (the tower's gas), or null: done at the table. */
+  gasControl(step: "insufflate" | "desufflate"): DeviceStep | null;
+  /** The case's count is settled (correct, reconciled or excluded); null: the team keeps no count. */
+  countSettled: boolean | null;
   /** The field's name for a body (a hand-over's or a pass's `to`); undefined for the operator. */
   refOf(who: MemberId): string | undefined;
   /** The body a field reference works with (undefined: the operator's). */
@@ -190,8 +214,14 @@ function say(v: MemberView, to: MemberId, kind: TeamMessage["kind"], key: TeamPh
  */
 export function propose(v: MemberView): Proposal | null {
   if (v.me.absent) return null;
-  if (has(v.me.duties, "surgeon")) return surgeon(v);
+  // whoever operates: the stand-in surgeon (a member of staff's body, while the learner holds a place) works its plan;
+  // the simulated surgeon of observer mode only answers
+  if (has(v.me.duties, "surgeon")) return v.me.id.startsWith("staff:") && v.plan ? operator(v) : surgeon(v);
   const first = v.inbox[0];
+  // the stand-in's stop after a call-out, said to the learner's place played in observer mode: no objection
+  if (first && first.kind === "request" && first.about.callout && first.from === surgeonOf(v)) {
+    return { kind: "say", to: first.from, message: { thread: first.thread, kind: "confirm", text: phrase("reply.confirm"), about: structuredClone(first.about), evidence: [], replyTo: first.id }, patch: [{ read: first.id }] };
+  }
   if (first && isFieldMessage(v, first)) return answerField(v, first);
   if (has(v.me.duties, "circulate")) {
     const p = circulate(v);
@@ -521,32 +551,4 @@ export function afterAct(v: MemberView, task: TeamTask, outcome: { status: strin
   if (outcome.code === "NOT_IN_RANGE" || outcome.code === "NOT_VISIBLE" || outcome.code === "MOVEMENT_INTERRUPTED") return outcome.hint ? { kind: "update", patch: [{ id: task.id, set: { goal: outcome.hint } }] } : null;
   const reason = outcome.message.split("\n")[0]!.replace(/[.。]\s*$/u, "");
   return say(v, task.initiator, "decline", "failedAct", task, { extra: { reason: { en: reason, "zh-CN": reason } }, reason: outcome.code ?? "failed", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed" } }, ...release] });
-}
-
-/* ------------------------------------------------------------------ */
-/* surgeon (observer mode)                                             */
-/* ------------------------------------------------------------------ */
-
-function surgeon(v: MemberView): Proposal | null {
-  for (const m of v.inbox) {
-    if (m.kind === "request" && m.about.hold) {
-      // check-back: the hold read back; then the wound is checked
-      const task: TeamTask = { id: v.newId("task"), kind: "wound", need: "count", item: m.about.item ?? "", for: v.me.id, owner: v.me.id, initiator: m.from, thread: m.thread, status: "accepted", since: v.round, tried: [], acts: 0 };
-      return { kind: "say", to: m.from, message: { thread: m.thread, kind: "readback", text: phrase("holdReadback"), about: m.about, evidence: [], replyTo: m.id }, patch: [{ read: m.id }, { create: task }] };
-    }
-    if (m.kind === "escalate") {
-      return { kind: "say", to: m.from, message: { thread: m.thread, kind: "report", text: phrase("acknowledged"), about: m.about, evidence: [m.id], replyTo: m.id }, patch: [{ read: m.id }] };
-    }
-    return { kind: "update", patch: [{ read: m.id }] };
-  }
-  for (const task of v.tasks) {
-    if (task.kind !== "wound" || task.status !== "accepted" || !v.patient) continue;
-    if (task.goal) return { kind: "act", task: task.id, operation: "navigate", goal: task.goal, patch: [{ id: task.id, set: { goal: undefined } }] };
-    if (task.step !== "searched") return { kind: "act", task: task.id, operation: "search", targetId: v.patient };
-    // what the search brought to light is taken out (and so counted); then the wound is reported checked
-    const out = v.count && v.me.holding.length < 2 ? v.items(v.count.item).find((s) => s.perceived && !s.holder && s.distance <= 2.5) : undefined;
-    if (out) return { kind: "act", task: task.id, operation: out.inReach ? "pick_up" : "approach", targetId: out.id };
-    return { kind: "say", to: task.initiator, message: { thread: task.thread, kind: "report", text: phrase("woundChecked"), about: { item: task.item }, evidence: [] }, patch: [{ id: task.id, set: { status: "done", since: v.round } }] };
-  }
-  return null;
 }

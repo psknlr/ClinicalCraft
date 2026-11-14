@@ -134,7 +134,7 @@ export interface EmbodiedHost {
    * Run a tool through a caller's tool path, with the acting body (and the world action carrying it out, the skill
    * nesting; `addressee`: the body its words are said to, when not the acting body's — a delegated step, the learner's).
    */
-  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; addressee?: ActorId; worldActionId?: string; skillDepth?: number; progress?: CallProgress }): Promise<SkillToolCall>;
+  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; addressee?: ActorId; worldActionId?: string; skillDepth?: number; progress?: CallProgress; stepRef?: string }): Promise<SkillToolCall>;
   /** The session's definition of a tool (risk and summaries of a skill's steps). */
   tool(name: string): ToolDefinition<any> | undefined;
   /** Emit an event (the caller's submission, else the current one). */
@@ -609,7 +609,7 @@ export class EmbodiedSession {
     this.captures.add(captured);
     let call: SkillToolCall;
     try {
-      call = await this.host.runTool(combined ? { ...caller, signal: combined } : caller, tool, args, { actorId, ...(actionId ? { worldActionId: actionId } : {}) });
+      call = await this.host.runTool(combined ? { ...caller, signal: combined } : caller, tool, args, { actorId, ...(actionId ? { worldActionId: actionId } : {}), ...(caller.stepRef && tool === "operate" ? { stepRef: caller.stepRef } : {}) });
     } finally {
       this.captures.delete(captured);
     }

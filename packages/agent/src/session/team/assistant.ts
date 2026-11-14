@@ -10,7 +10,8 @@
  *    instrument only the operator works (core `instrumentControl`); a port a colleague holds (they hand it over
  *    themselves); no such port; a camera step the field refuses whoever holds the camera (closer with nothing aimed at,
  *    a region the field does not have) — so nothing is taken first; letting go with nothing held.
- * 2. The asker's confirmation (step 3) accepts the task; a decline from them withdraws it.
+ * 2. The asker's confirmation (step 3) accepts the task; a decline from them withdraws it, before it is done or while it
+ *    is (the stand-in surgeon does it itself once it gave up waiting).
  * 3. The work, one step a round: walk to the operating table; take the port — the operator's handed over to them, or
  *    the instrument put into an empty port of its kind (a grasper into an assist port, the laparoscope into the camera
  *    port) —; then the step asked: traction on the structure, which way and how hard; the camera aimed, closer or
@@ -220,7 +221,8 @@ export function answerField(v: MemberView, m: TeamMessage): Proposal {
   }
   const task = v.tasks.find((t) => t.kind === "assist" && t.thread === m.thread);
   if (task && task.status === "asked" && m.kind === "confirm") return { kind: "update", patch: [read, { id: task.id, set: { status: "accepted", since: v.round } }] };
-  if (task && task.status === "asked" && m.kind === "decline") return { kind: "update", patch: [read, { id: task.id, set: { status: "declined", since: v.round, reason: "withdrawn" } }] };
+  // withdrawn by the one who asked — before it was confirmed, or while it is being done (they do it themselves)
+  if (task && (task.status === "asked" || task.status === "accepted") && m.kind === "decline" && m.from === task.initiator) return { kind: "update", patch: [read, { id: task.id, set: { status: "declined", since: v.round, reason: "withdrawn" } }] };
   return { kind: "update", patch: [read] };
 }
 

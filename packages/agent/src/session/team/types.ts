@@ -4,7 +4,7 @@
  * whom, the outcome and the world version after it), what each member is doing (tasks) and what each member
  * knows (observations with an evidence reference). Plain JSON: the whole state is a checkpoint.
  */
-import type { DirectionName, InstrumentId, ProcedureOp, ProcedureOpType, TeamDuty, TeamNeed, ZoomLevel } from "@clinicalcraft/core";
+import type { DirectionName, InjuryKind, InstrumentId, ProcedureOp, ProcedureOpType, TeamDuty, TeamNeed, ZoomLevel } from "@clinicalcraft/core";
 import type { NavGoal } from "@clinicalcraft/world";
 import type { Bilingual } from "./i18n.js";
 
@@ -33,6 +33,43 @@ export interface FieldAsk {
   region?: string;
   zoom?: ZoomLevel;
   instrument?: InstrumentId;
+}
+
+/**
+ * One step of the stand-in surgeon's plan (docs/TEAM.md §4.5): an operative step of the case's reference solution, in
+ * order — `k`, its index among them, is the plan step's own number (`standin:<k>`, the ref the field records it with).
+ * `actor`: the colleague the reference gives it to (their own step, not the stand-in's).
+ */
+export interface PlanStep {
+  k: number;
+  op: ProcedureOp;
+  actor?: string;
+}
+
+/** An injury a member can tell is there (`MemberView.injuries`): the field shows it, or a colleague said it aloud. */
+export interface SeenInjury {
+  kind: InjuryKind;
+  /** The operator has said it aloud (`recognise` with no actor). */
+  recognised: boolean;
+  /** The colleague who said it aloud first (a staff id), when one did. */
+  calledBy?: string;
+}
+
+/**
+ * A request of the stand-in surgeon's under way (`TeamTask.request`, one at a time; docs/TEAM.md §4.5): what it is for
+ * (`key`: `camera:<k>`, `traction:<k>`, `aim:<k>`, `closer:<k>`, `wider:<k>`, `pass:<ref>`, `stop:<k>`), to whom, the
+ * request about the field (none for the stop after a call-out), the thread it is said in, how many times it was said,
+ * the round it was last said or confirmed in, whether its read-back was confirmed and whether it was declined.
+ */
+export interface StandInRequest {
+  key: string;
+  to: MemberId;
+  field?: FieldAsk;
+  thread: string;
+  times: number;
+  since: number;
+  confirmed?: boolean;
+  declined?: boolean;
 }
 
 export type MessageKind =
@@ -66,7 +103,8 @@ export interface TeamMessage {
    * `unexpected`), a hold on closure (`hold`), a recount asked for (`recount`), an item set aside off the field
    * (`setAside`: not in the count); a request about the operative field (`field`: traction, letting go, the camera, a
    * pass — read back and confirmed like any request); the call-out before the stand-in's critical step (`callout`: the
-   * step and the handle it is done to).
+   * step and the handle it is done to — a bail-out's strategy —, said as a `notice`; a `request` about it is the
+   * stand-in's stop after the learner said Stop: "Stopped — tell me what you see.", answered with a confirmation).
    */
   about: {
     need?: string;
@@ -197,8 +235,17 @@ export interface TeamTask {
    * camera aimed elsewhere since (someone asked for it), it stays there until the work moves on.
    */
   followed?: { working: string | null; at: string | null };
-  /** `operate`: where the operator's plan has got to (the next reference step). */
+  /**
+   * `operate`: where the operator's plan has got to (the next reference step, `PlanStep.k`) — kept for the record only:
+   * the plan is read from the field's own record (`ProcedureState.refs`) every round, never from here.
+   */
   cursor?: number;
+  /** `operate`: the stand-in's request about the field under way (one at a time). */
+  request?: StandInRequest;
+  /** `operate`: the requests already seen through, declined or given up, by key: never made again. */
+  requested?: string[];
+  /** `operate`: the step the field last refused (its ref), how many times in a row, and the refusal's code. */
+  failed?: { ref: string; times: number; code?: string };
   /** Why it ended this way (declined, escalated): a short code, and what was said. */
   reason?: string;
   reasonText?: Bilingual;
@@ -304,12 +351,16 @@ export interface TeamCheckpoint {
 /**
  * What a member decides to do this round (at most one): say something; act in the world (`act`, the action bus); take
  * a step in the operative field (`operate`: the `operate` tool with the member's own body, through the team's caller —
- * carried out once, under the task's next action id); or change their own tasks.
+ * carried out once, under the task's next action id, or under `ref` when the step is a plan step of the stand-in
+ * surgeon's: `standin:<k>`, the field's own record of it); look at the field (`observe`: the `observe_field` tool,
+ * through the team's caller); or change their own tasks. A world act with a `ref` is the stand-in's step of the
+ * operation through a device that offers it (the tower's gas: docs/TEAM.md §4.5), recorded with that ref.
  */
 export type Proposal =
   | { kind: "say"; to: MemberId; message: Pick<TeamMessage, "thread" | "kind" | "text" | "about" | "evidence"> & { replyTo?: string }; patch?: TaskPatch[] }
-  | { kind: "act"; task: string; operation: string; targetId?: string; goal?: NavGoal; parameters?: Record<string, unknown>; recipient?: MemberId; patch?: TaskPatch[] }
-  | { kind: "operate"; task: string; op: ProcedureOp; patch?: TaskPatch[] }
+  | { kind: "act"; task: string; operation: string; targetId?: string; goal?: NavGoal; parameters?: Record<string, unknown>; recipient?: MemberId; ref?: string; patch?: TaskPatch[] }
+  | { kind: "operate"; task: string; op: ProcedureOp; ref?: string; patch?: TaskPatch[] }
+  | { kind: "observe"; task: string; patch?: TaskPatch[] }
   | { kind: "update"; patch: TaskPatch[] };
 
 /** A change to the task list: a new task, or fields of an existing one. */

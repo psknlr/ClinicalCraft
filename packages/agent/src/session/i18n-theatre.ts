@@ -9,6 +9,7 @@
 export const THEATRE_EN = {
   // places in the team (docs/TEAM.md §1)
   "place.notEmbodied": "the {place}'s place in the team needs in-world mode: the team works at the table with their own hands.",
+  "place.standInRefused": "while you hold the {place}'s place the stand-in surgeon operates, and this session's settings would stop them ({reason}). Change the approval mode, the practice scope or the deny rules, or start as the operating surgeon.",
   "place.demonstration": "The demonstration works the case as the operating surgeon: it does not run while you hold the {place}'s place.",
   "place.refHandEntry": "which step of a colleague's plan an operative step is (`ref`) is recorded by the care team, never entered.",
   "place.noPart": "{who} has no part in the operative field.",
@@ -105,6 +106,7 @@ export const THEATRE_EN = {
 
 export const THEATRE_ZH: Record<keyof typeof THEATRE_EN, string> = {
   "place.notEmbodied": "团队中的{place}岗位需要实景模式：团队成员要在手术台旁亲手操作。",
+  "place.standInRefused": "你担任{place}岗位时由主刀同事主刀，而本会话的设置会阻止其操作（{reason}）。请调整审批模式、操作范围或拒绝规则，或以主刀医生身份开始。",
   "place.demonstration": "示范接诊是以主刀医生的身份完成病例：你担任{place}岗位时不能使用。",
   "place.refHandEntry": "手术步骤属于同事计划中的哪一步（ref）由团队记录，不能手工录入。",
   "place.noPart": "{who}不参与术野操作。",
