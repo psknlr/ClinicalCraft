@@ -566,11 +566,12 @@ const intervene: ToolDefinition<ToolArgs> = {
 export const CONSULT_ROLES = ["nurse", "radiologist", "pathologist", "attending"] as const;
 
 /** The recipient of a consult call, resolved before anything is said (shown in the approval and the result). */
-function consultRecipient(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "facility" | "locale">): { ok: true; agent: string; voice: StaffVoice | null; label: string } | { ok: false; output: string } {
+function consultRecipient(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "facility" | "locale"> & Partial<Pick<ToolContext, "state">>): { ok: true; agent: string; voice: StaffVoice | null; label: string } | { ok: false; output: string } {
   const L = ctx.locale;
   const staff = strArg(args, "staff");
   if (staff) {
-    const r = resolveConsultStaff(ctx.caseDef, ctx.facility, staff, L);
+    // a position in the team ("first assistant", "一助", "扶镜手") is whoever holds it in this encounter
+    const r = resolveConsultStaff(ctx.caseDef, ctx.facility, staff, L, ctx.state?.());
     if (!r.ok) return { ok: false, output: rt(L, r.ambiguous ? "tool.consult.ambiguousStaff" : "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
     return { ok: true, ...r.target };
   }

@@ -13,6 +13,7 @@ import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
 import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
+import { THEATRE_EN, THEATRE_ZH } from "./i18n-theatre.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -488,6 +489,7 @@ const EN = {
   ...CHECKLIST_EN,
   ...COUNT_EN,
   ...STUDIES_EN,
+  ...THEATRE_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -929,6 +931,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...CHECKLIST_ZH,
   ...COUNT_ZH,
   ...STUDIES_ZH,
+  ...THEATRE_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

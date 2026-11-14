@@ -2,12 +2,15 @@
  * Who a named colleague is (docs/PROTOCOL.md §3): ONE room-aware resolver for every way the learner names a
  * colleague — a typed `@` mention, `consult {staff}`, `delegate_task`, the staff picker — so "@Nurse Lim", "Lim", the
  * staff id and the OR 7 scrub nurse picked from the list reach the same person, and "anaesthetist" and "麻醉医生"
- * the same anaesthetist. A named colleague answers under their own name through the profile that speaks for their
- * role (`STAFF_AGENT`). Nothing unresolved is silently sent to the nurse: it is refused with who can be asked, and
- * a name several people answer to equally is refused with the choice.
+ * the same anaesthetist; with the case's team, a position in words reaches whoever holds it in this encounter ("first
+ * assistant", "一助", "二助", "主刀", "术者", "扶镜手", "camera holder": `position-words.ts`). A named colleague answers
+ * under their own name through the profile that speaks for their role (`STAFF_AGENT`). Nothing unresolved is silently
+ * sent to the nurse: it is refused with who can be asked, and a name several people answer to equally is refused with
+ * the choice.
  */
-import { assignPatientSlot, t, type CaseDefinition, type FacilityDefinition, type LocalizedText } from "@clinicalcraft/core";
+import { assignPatientSlot, t, type CaseDefinition, type FacilityDefinition, type LocalizedText, type SessionState, type TeamChoice } from "@clinicalcraft/core";
 import { staffAgent, type StaffVoice } from "../session/staff-voice.js";
+import { membersInPosition, positionWord, type TeamView } from "./position-words.js";
 
 /** A resolved recipient: the agent profile and, for a named colleague, the voice they answer in. */
 export interface ConsultTarget {
@@ -54,20 +57,26 @@ export function encounterRoom(c: CaseDefinition, facility: FacilityDefinition | 
 
 /**
  * The facility colleague a request names (see the module docs): id → a room's post (`….anaesthetist`) → name (with
- * or without the title and the role in brackets, in any language) → title → role. Within the first of these that matches anyone, colleagues in `room`
- * (the encounter's) come first: one there — or one in all — is the answer; several equally placed are ambiguous.
+ * or without the title and the role in brackets, in any language) → a position in this encounter's team (`team`: the
+ * case and the state; `membersInPosition`) → title → role. Within the first of these that matches anyone, colleagues
+ * in `room` (the encounter's) come first: one there — or one in all — is the answer; several equally placed are
+ * ambiguous.
  */
-export function lookupStaff(facility: FacilityDefinition | null | undefined, asked: string, room: string | null): StaffLookup {
+export function lookupStaff(facility: FacilityDefinition | null | undefined, asked: string, room: string | null, team?: TeamView): StaffLookup {
   const staff = facility?.staff ?? [];
   const q = norm(asked);
   if (!q || !staff.length) return { kind: "none" };
   const byId = staff.find((s) => norm(s.id) === q);
   if (byId) return { kind: "one", staff: byId };
   const title = TITLE_ALIASES.find(([re]) => re.test(asked))?.[1];
+  const word = team ? positionWord(asked) : null;
+  const holders = word && team ? membersInPosition(team, word) : [];
   const tiers: ((s: Staff) => boolean)[] = [
     // a room's own id for the post (`or-7.anaesthetist` asked as "anaesthetist")
     (s) => norm(s.id).endsWith(`.${q}`),
     (s) => names(s.name).some((n) => norm(n) === q || core(n) === core(asked)),
+    // whoever holds that position in this encounter's team ("first assistant", "一助", "扶镜手")
+    (s) => holders.includes(s.id),
     (s) => !!title && (names(s.name).some((n) => title.some((w) => n.toLowerCase().includes(w))) || title.some((w) => s.id.toLowerCase().includes(w))),
     (s) => s.role === q,
   ];
@@ -96,10 +105,11 @@ export function staffChoice(s: Staff, locale: string): string {
 }
 
 /**
- * Resolve a `consult` request's `staff` (id, name, title or role) to one colleague: the facility's (room-aware,
- * `lookupStaff`), else the case's named consultants (`npcs[].name`, answering through the attending's profile).
+ * Resolve a `consult` request's `staff` (id, name, a position in the team, title or role) to one colleague: the
+ * facility's (room-aware, `lookupStaff`; `state`: the encounter's, for the position tier), else the case's named
+ * consultants (`npcs[].name`, answering through the attending's profile).
  */
-export function resolveConsultStaff(c: CaseDefinition, facility: FacilityDefinition | null | undefined, asked: string, locale: string): ConsultResolution {
+export function resolveConsultStaff(c: CaseDefinition, facility: FacilityDefinition | null | undefined, asked: string, locale: string, state?: TeamChoice & Pick<SessionState, "procedure">): ConsultResolution {
   const q = norm(asked);
   const staff = facility?.staff ?? [];
   const voiceOf = (s: Staff): ConsultTarget => {
@@ -107,7 +117,7 @@ export function resolveConsultStaff(c: CaseDefinition, facility: FacilityDefinit
     return { agent: consultAgentFor(s.role), voice: { staffId: s.id, role: s.role, name }, label: `${name} (${s.role})` };
   };
   if (q) {
-    const found = lookupStaff(facility, asked, encounterRoom(c, facility));
+    const found = lookupStaff(facility, asked, encounterRoom(c, facility), { caseDef: c, state: state ?? {} });
     if (found.kind === "one") return { ok: true, target: voiceOf(found.staff) };
     if (found.kind === "ambiguous") return { ok: false, asked, candidates: found.staff.map((s) => staffChoice(s, locale)).slice(0, 16), ambiguous: true };
     // a case consultant by name (the anaesthetist of a case played without a facility)
