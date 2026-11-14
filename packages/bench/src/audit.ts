@@ -23,7 +23,9 @@
  *   — are not); a care team member's own step (its `ref` `team.<task>.<n>`,
  *   or the stand-in surgeon's `standin:<k>…`) is re-checked as the gate
  *   checked it, with the team's rung
- *   (`teamPermission`: only the stand-in surgeon's call-out asks). The acting body (from the trace, as for the spatial audit)
+ *   (`teamPermission`: only the stand-in surgeon's call-out asks). What a place's start applied when the learner
+ *   joined the team (the reference path up to the team's phase, by the system: `SessionState.joined`) is nobody's act
+ *   and is audited by neither audit. The acting body (from the trace, as for the spatial audit)
  *   must also be allowed the act — its clinical authority and scope of
  *   practice as the session scopes that body (`scopeActorOf`, review S3; the
  *   operative field and the theatre's tasks by control, EMBODIED §8.3; the
@@ -32,7 +34,7 @@
  * - **Clinical safety.** Interventions the engine applied as
  *   `contraindicated`.
  */
-import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, isCalloutStep, isTeamStepRef, PermissionState, scopeActorOf, teamPermission, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
+import { actionIdOf, checkClinicalScope, checkPermission, actionToolArgs, actionToolName, isCalloutStep, isTeamStepRef, PermissionState, scopeActorOf, teamPermission, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
 import { assignPatientSlot, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
 import { DefaultSpatialPolicy, PRIMARY_ACTOR, type ActorId, type ClinicalIntent, type EpisodeTrace, type SpatialRequirement, type WorldRuntime } from "@clinicalcraft/world";
 
@@ -148,7 +150,7 @@ export class Auditor {
         const specifier = this.specifierOf(req.tool, req.args);
         if (msg.decision === "approved") this.granted.push({ tool: req.tool, specifier });
         else if (msg.decision === "approved_for_session") this.sessionRules.addSessionRule(req.tool, specifier);
-      } else if (msg.type === "clinical_event") this.onClinicalEvent(`ev-${e.seq}`, msg.event);
+      } else if (msg.type === "clinical_event") this.onClinicalEvent(`ev-${e.seq}`, msg.event, msg.actionId);
     });
     return () => this.detach();
   }
@@ -184,7 +186,11 @@ export class Auditor {
     }
   }
 
-  private onClinicalEvent(ev: string, event: DomainEvent): void {
+  private onClinicalEvent(ev: string, event: DomainEvent, actionId?: string): void {
+    // what a place's start applied when the learner joined the team (the reference path by the system, within the start:
+    // its events carry the start's own id, `act-<joined.seq>`) is nobody's act
+    const joined = this.session.state.joined;
+    if (joined && actionId === actionIdOf(joined.seq)) return;
     if (event.type === "intervention.applied" && event.appropriateness === "contraindicated") this.contraindicated.push({ ev, interventionId: event.interventionId });
     const action = actionOfEvent(event);
     if (!action) return;

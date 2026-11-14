@@ -2,11 +2,13 @@
  * What a session needs before it lets the learner take a place in the care team (docs/TEAM.md §1, docs/PROTOCOL.md
  * §3.1): while the learner holds a place the stand-in surgeon operates, through the team's caller (`TEAM_CALLER`) —
  * so a session whose permission settings would refuse that caller's steps (plan mode, a practice scope that leaves the
- * operation out, a deny rule matching `operate` or `observe_field`) refuses the place at the start, saying why, and the
- * stand-in never meets a refusal by a rule in the middle of the operation.
+ * operation out, a deny rule matching `operate` or `observe_field`) refuses the place at the start, saying why, and a
+ * change of the settings that would (`configure`) is refused while the place is held: the stand-in never meets a
+ * refusal by a rule in the middle of the operation.
  */
-import { memberBody, standInOf, type Place, type ProcedureOp } from "@clinicalcraft/core";
+import { memberBody, normaliseStep, standInOf, type Place, type ProcedureOp } from "@clinicalcraft/core";
 import { checkPermission } from "../../permissions.js";
+import type { ResolvedSettings } from "../../settings/schema.js";
 import type { SessionKernel } from "../kernel.js";
 import { TEAM_CALLER } from "./callout.js";
 import { planOf } from "./operator-plan.js";
@@ -22,16 +24,16 @@ const STAND_IN_EXTRAS: readonly ProcedureOp[] = [
 ];
 
 /**
- * Why the session's permission settings would refuse the stand-in surgeon's steps (the ladder's own reason, in the
- * session's language), or null: the reference's operative steps and the stand-in's own, and its look at the field, as
- * the team's caller with the stand-in's body would ask them.
+ * Why the session's permission settings — the session's own, or `settings` a change would bring — would refuse the
+ * stand-in surgeon's steps (the ladder's own reason, in the session's language), or null: the reference's operative
+ * steps and the stand-in's own, and its look at the field, as the team's caller with the stand-in's body would ask them.
  */
-export function standInRefusal(k: SessionKernel, id: string, seat: Place): string | null {
+export function standInRefusal(k: SessionKernel, id: string, seat: Place, settings: ResolvedSettings = k.settings): string | null {
   // no stand-in named: the engine refuses the place itself, saying why
   if (!standInOf(k.caseDef)) return null;
-  const s = k.settings;
+  const s = settings;
   const ctx = k.tools.context(TEAM_CALLER, id, undefined, { actorId: memberBody(k.caseDef, { seat }, "surgeon") });
-  const steps = [...planOf(k.caseDef.solution).map((x) => x.op), ...STAND_IN_EXTRAS];
+  const steps = [...planOf(k.caseDef.solution, { normalise: (op, actor) => normaliseStep(k.caseDef, { seat }, op, actor) }).map((x) => x.op), ...STAND_IN_EXTRAS];
   const seen = new Set<string>();
   const calls: [string, Record<string, unknown>][] = [["observe_field", {}]];
   for (const op of steps) {

@@ -746,6 +746,24 @@ describe("the stand-in surgeon in a session (docs/TEAM.md §4.5)", () => {
     await t.session.close();
   });
 
+  it("a team run stops where the stand-in waits on the learner whatever else of the team's is still under way — a need being fetched: the request never runs out", async () => {
+    const t = await theatreSession({ start: { type: "start", seat: "first-assistant", team: "scrub-break" }, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "team", action: "pause" });
+    const need = await t.session.run({ type: "team", action: "need", item: "test-swab" });
+    expect(msgsOf(need, "error")).toEqual([]);
+    const ran = await t.session.run({ type: "team", action: "run", rounds: 200 });
+    expect(msgsOf(ran, "error")).toEqual([]);
+    // the camera asked of the learner, and the run ended there — asked once, never said again or withdrawn, the
+    // stand-in never on to its next step meanwhile
+    const toLearner = saidIn(ran).filter((m) => m.to === PRIMARY_ACTOR);
+    expect(toLearner.map((m) => [m.kind, m.text.en])).toEqual([["request", "The first assistant (you), take the camera, please."]]);
+    expect(t.session.state.procedure?.refs).toEqual(["standin:0", "standin:1", "standin:2"]);
+    // what is left besides is the team's own work (the swab): not settled, and yet the run is over
+    expect(t.session.team()!.state.lifecycle).toBe("active");
+    expect(t.session.team()!.state.round).toBeLessThan(40);
+    await t.session.close();
+  });
+
   it("the learner asks a member by name or by the position they hold in words, through the one resolver", async () => {
     const t = await atTheTable();
     for (const to of ["Dr Abe", "first assistant", "一助", "扶镜手", "camera holder", "staff:doc-1", "doc-1"]) {

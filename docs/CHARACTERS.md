@@ -118,9 +118,9 @@ own proposal first and hands it to the member's model as one of the **options**:
 | option | what it is | offered when |
 |---|---|---|
 | `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate; at the operating table a step in the operative field, described as that step — "take a step in the operative field: clip (port C, handle T2, count 3)" — or a look at the field), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation) or anything about the count — is then the only option |
-| `wait` | not now | the move is not owed, and was not deferred last round (a member never waits twice in a row on one move) |
+| `wait` | not now | the move is not owed, and was not deferred last round (a member never waits twice in a row on one move — one proposed afresh each round under new ids, a request on a thread of its own or a task it begins, is the same move) |
 | `notice` | tell a colleague in the room what you see or are doing (`to`), creating no obligation | a colleague is in the room |
-| `escalate` | raise your own task, stuck waiting, to the person it is for, saying what was tried | the member owns a task in `waiting` |
+| `escalate` | raise your own task, stuck waiting, to the person it is for, saying what was tried | the member owns a task in `waiting` that is for someone else — never the stand-in surgeon's operation, whose waits (on the learner's word, the gas, a pass) say themselves what they wait for: ending it would end the operation |
 
 The model sees its role card, a `<deciding>` instruction and its **situation** — only what the member perceives
 (`MemberView`): where they are and what they hold, the unread messages said to them, their own tasks, the needs they
@@ -170,7 +170,9 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
   most once and never on a read-back it owes, falls back to the rules on an option not offered, an unreadable answer,
   no model or a slow model (one warning), notices to a colleague and escalates its stuck task; at the operating table
   an assistant's and the stand-in surgeon's step in the field offered as the policy's move, described as that step,
-  taken exactly as the policy gives it and waited on at most once; grounded staff lines;
+  taken exactly as the policy gives it and waited on at most once — a move proposed afresh under new ids too —; the
+  stand-in, stopped or waiting, never offered to escalate its own operation (a model answering escalate is refused);
+  grounded staff lines;
   a line never claims a place the record contradicts (shut out: no "I'm at the bedside" in English or Chinese; at the
   patient: no "I can't get there").
 - SurgeryCraft `tools/case126-characters.test.ts`: every member of staff in the IMPF hospital holds a position; Nurse

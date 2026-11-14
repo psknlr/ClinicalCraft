@@ -249,6 +249,61 @@ describe("a model-driven team member", () => {
     }
   });
 
+  it("the stand-in surgeon is never offered to escalate its own operation — stopped by the learner or waiting on the equipment, its plan task is no task to raise", async () => {
+    const STANDIN = "staff:or.standin";
+    const me = member(STANDIN, ["surgeon"]);
+    const plan = (extra: Partial<TeamTask>): TeamTask => task({ id: "task-9", kind: "operate", need: "operate", item: "", for: STANDIN, owner: STANDIN, initiator: STANDIN, thread: "thread-9", status: "waiting", cursor: 22, ...extra });
+    const look: Proposal = { kind: "observe", task: "task-9" };
+    for (const waiting of [plan({ step: "denied:22" }), plan({ reason: "no-gas" }), plan({ step: "stopped:22" })]) {
+      const reqs: ChatRequest[] = [];
+      const { mind } = harness([(r) => (reqs.push(r), decision({ option: "act", line: "", why: "look first" }))], { position: () => "surgeon" });
+      expect(await mind.decide(me, view(me, { tasks: [waiting] }), look, new AbortController().signal)).toEqual(look);
+      expect(offered(reqs[0]!)).not.toContain("escalate");
+    }
+    // a model that answers escalate all the same is refused: the rules decide, and the operation stays its own
+    const { mind, warnings } = harness([() => decision({ option: "escalate", line: "I have stopped and cannot go on.", why: "stuck" })], { position: () => "surgeon" });
+    expect(await mind.decide(me, view(me, { tasks: [plan({ step: "denied:22" })] }), look, new AbortController().signal)).toEqual(look);
+    expect(warnings[0]).toMatch(/option "escalate" was not offered/u);
+    // a task of its own for itself is none to raise either; one for a colleague is
+    const own = task({ id: "task-3", owner: STANDIN, for: STANDIN, status: "waiting" });
+    const reqs: ChatRequest[] = [];
+    const h = harness([(r) => (reqs.push(r), decision({ option: "wait", line: "", why: "-" })), (r) => (reqs.push(r), decision({ option: "wait", line: "", why: "-" }))], { position: () => "surgeon" });
+    await h.mind.decide(me, view(me, { tasks: [own] }), look, new AbortController().signal);
+    await h.mind.decide(me, view(me, { tasks: [task({ id: "task-4", owner: STANDIN, for: CIRC, status: "waiting" })] }), { kind: "observe", task: "task-4" }, new AbortController().signal);
+    expect(offered(reqs[0]!)).not.toContain("escalate");
+    expect(offered(reqs[1]!)).toContain("escalate");
+  });
+
+  it("waits at most once on a move proposed afresh each round — the stand-in's request on a thread of its own, its operation begun with a task made each time", async () => {
+    const STANDIN = "staff:or.standin";
+    const FIRST = "staff:or.first";
+    const me = member(STANDIN, ["surgeon"]);
+    /** The stand-in's camera request as its policy proposes it in round `n`: a new thread each time it is proposed. */
+    const asking = (n: number): Proposal => ({
+      kind: "say",
+      to: FIRST,
+      message: { thread: `thread-${30 + n}`, kind: "request", text: { en: "Dr Abe, take the camera, please.", "zh-CN": "阿部医生，请扶镜。" }, about: { field: { op: "camera", port: "A" } }, evidence: [] },
+      patch: [{ id: "task-9", set: { request: { key: "camera:2", to: FIRST, field: { op: "camera", port: "A" }, thread: `thread-${30 + n}`, times: 1, since: n } } }],
+    });
+    /** Its first move: the walk to the table, with its plan task made — a new task id each time it is proposed. */
+    const begin = (n: number): Proposal => {
+      const made = task({ id: `task-${40 + n}`, kind: "operate", need: "operate", item: "", for: STANDIN, owner: STANDIN, initiator: STANDIN, thread: `thread-${40 + n}`, status: "accepted" });
+      return { kind: "act", task: made.id, operation: "navigate", goal: { kind: "interact", id: "patient:or-7" }, patch: [{ create: made }] };
+    };
+    for (const move of [asking, begin]) {
+      const reqs: ChatRequest[] = [];
+      const wait = (r: ChatRequest) => (reqs.push(r), decision({ option: "wait", line: "", why: "not yet" }));
+      const { mind } = harness([wait, wait, wait], { position: () => "surgeon" });
+      const colleagues = [colleague(FIRST, ["assist"])];
+      expect(await mind.decide(me, view(me, { colleagues }), move(1), new AbortController().signal)).toBeNull();
+      // the same move again, under new ids: no second wait
+      expect(offered(reqs[0]!)).toContain("wait");
+      const second = await mind.decide(me, view(me, { colleagues }), move(2), new AbortController().signal);
+      expect(offered(reqs[1]!)).not.toContain("wait");
+      expect(second).toEqual(move(2));
+    }
+  });
+
   it("tells a colleague in the room what it sees (no obligation); escalates its own task stuck waiting", async () => {
     const me = member(CIRC, ["circulate"]);
     const { mind } = harness([

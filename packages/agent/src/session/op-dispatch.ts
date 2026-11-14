@@ -6,11 +6,13 @@
  * before an interrupt or a shutdown is cancelled before it starts. Also the session-level ops: `configure`
  * (only the known `RuntimeConfigPatch` fields: `cleanConfigPatch`) and the shutdown sequence.
  */
+import { POSITION_TITLES, t } from "@clinicalcraft/core";
 import type { ActorId, Pose, WorldActionRequest } from "@clinicalcraft/world";
 import type { ApprovalMode, Op, PracticeScope, RuntimeConfigPatch } from "../protocol.js";
 import { canonicalLocale, type ResolvedSettings } from "../settings/schema.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
+import { standInRefusal } from "./team/places.js";
 
 /** Valid `approval_response` decisions (ops may arrive as untyped JSON). */
 const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_for_session", "denied", "abort"]);
@@ -297,6 +299,19 @@ export class OpDispatcher {
       const target = patch.interlocutor.replace(/^@/, "").toLowerCase();
       if (k.availableAgents().includes(target)) k.interlocutor = target;
       else issues.push(`interlocutor "${patch.interlocutor}"`);
+    }
+    // while the learner holds a place the stand-in surgeon operates through the team's caller: a change of the approval
+    // mode or the practice scope that would refuse its steps is refused, as the start would have been (docs/TEAM.md §1)
+    const seat = k.state.seat;
+    if (seat && !k.state.finished && !k.state.procedure?.closed && (next.approvalMode !== k.settings.approvalMode || next.practiceScope !== k.settings.practiceScope)) {
+      const why = standInRefusal(k, id, seat, next);
+      if (why) {
+        next.approvalMode = k.settings.approvalMode;
+        next.practiceScope = k.settings.practiceScope;
+        delete patch.approvalMode;
+        delete patch.practiceScope;
+        k.emit(id, { type: "error", message: rt(k.locale, "place.configRefused", { place: t(POSITION_TITLES[seat], k.locale), reason: why }), code: "permission_denied" });
+      }
     }
     k.settings = next;
     k.models.reset();

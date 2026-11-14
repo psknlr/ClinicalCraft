@@ -420,8 +420,11 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   `by: "system"`, until the case is in one of the team's phases
   (`SessionState.joined`); its events follow the start's own, each joined
   action takes a sequence number of its own (the start is the last of them:
-  `act-<joined.seq>`), and a refused step refuses the start. A session does
-  not offer a place yet (PROTOCOL.md: `permission_denied`).
+  `act-<joined.seq>`), and a refused step refuses the start. A session
+  offers a place in-world only (`not_embodied` in a clinical session), and
+  refuses it `permission_denied` when its permission settings would stop the
+  stand-in surgeon, who operates meanwhile (PROTOCOL.md §3.1, TEAM.md §4.5);
+  the browser's start screen does not offer a place yet.
   After `finish`, everything is rejected `finished`.
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by

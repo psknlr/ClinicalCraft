@@ -2,7 +2,7 @@
  * The stand-in surgeon (docs/TEAM.md §4.5): the operator while the learner holds a place in the team — the team's
  * surgeon member, with a member of staff's body (`standIn`). Pure and deterministic, from its own view (`MemberView`):
  * the same view gives the same proposal, and where the operation has got to is read from the field's own record
- * (`./operator-plan.ts`), never from the team's memory.
+ * (`./operator-plan.ts`), never from the team's memory; its requests to the team are `./operator-asks.ts`.
  *
  * Each round, at most one thing:
  * 1. **What was said to it** first, as any surgeon answers (`./surgeon.ts`: a hold on closure read back and the wound
@@ -54,8 +54,9 @@ import type { NavGoal } from "@clinicalcraft/world";
 import { askText, instrumentWords, theWords } from "./asks.js";
 import { CALLOUT_OPS } from "./callout.js";
 import { phrase, type Bilingual } from "./i18n.js";
-import { colleagueSteps, directionNames, expectedInstruments, expectedTractions, extraRef, extras, furthestDone, instrumentPort, lastOwn, needsPicture, nextStep, planRef, TISSUE_OPS, tractionShown, type Handed, type NextStep } from "./operator-plan.js";
-import type { ColleagueView, MemberView } from "./policy.js";
+import { askOf, cameraHolder, fieldShows, going, handedAsk, handedIn, here, nextAsk, over, request, requestDone, sameAsk, scrubNurse, stale, stepOfRef, tractionAssistant } from "./operator-asks.js";
+import { colleagueSteps, expectedInstruments, expectedTractions, extraRef, extras, furthestDone, instrumentPort, lastOwn, needsPicture, nextStep, planRef, TISSUE_OPS, tractionShown, type Handed, type NextStep } from "./operator-plan.js";
+import type { MemberView } from "./policy.js";
 import { surgeonAnswer, woundStep } from "./surgeon.js";
 import type { FieldAsk, MemberId, PlanStep, Proposal, StandInRequest, TaskPatch, TeamMessage, TeamTask } from "./types.js";
 
@@ -64,8 +65,6 @@ const plain = (text: string): Bilingual => ({ en: text, "zh-CN": text });
 
 /** Refusals of one step in a row before the stand-in stops there and asks the learner for their word. */
 const MAX_TRIES = 3;
-/** How often a request for one purpose is asked before the stand-in does the thing itself. */
-const ASKS = 2;
 /** The most extra steps of a kind for one plan step (a port taken back, the camera worked, an instrument put back…). */
 const BOUND: Readonly<Record<string, number>> = { take: 3, aim: 2, zoom: 2, recognise: 3, suction: 2, irrigate: 1, insert: 3, retract: 2, insufflate: 3 };
 
@@ -74,9 +73,6 @@ const PORT_STEPS: ReadonlySet<ProcedureOp["op"]> = new Set(["insert", "withdraw"
 
 /** The states in which it waits on the learner's word for a plan step: stopped by them, or unable to go on. */
 const HALTED = /^(denied|inspected|stopped|cannot):(\d+)$/u;
-
-/** Requests asked after the plan step they name (the camera after its scope insert, wider after the pause): over once a later one is done. */
-const ASKED_AFTER: ReadonlySet<string> = new Set(["camera", "wider"]);
 
 /** How a step of the stand-in's went (`TeamHost.operate`, a device's operation, a walk): with its ref, and whether the learner said Stop. */
 export interface StandInOutcome {
@@ -106,17 +102,6 @@ function ensureTask(v: MemberView): { task: TeamTask; created: TaskPatch[] } {
   return { task, created: [{ create: task }] };
 }
 
-/** The plan step a ref is for (`standin:<k>…`), or null. */
-function stepOfRef(ref: string | undefined): number | null {
-  const k = Number(ref?.split(":")[1]);
-  return ref?.startsWith("standin:") && Number.isInteger(k) ? k : null;
-}
-
-/** Waiting no more: the task under way again (what it was waiting for, forgotten). */
-function going(task: TeamTask): Partial<TeamTask> {
-  return task.status === "accepted" && task.reason === undefined ? {} : { status: "accepted", reason: undefined, reasonText: undefined };
-}
-
 /** A step in the field under the plan task, recorded with `ref`. */
 function step(task: TeamTask, op: ProcedureOp, ref: string, k: number, set: Partial<TeamTask> = {}): Proposal {
   return { kind: "operate", task: task.id, op, ref, patch: [{ id: task.id, set: { ...going(task), cursor: k, ...set } }] };
@@ -133,182 +118,8 @@ function waitFor(v: MemberView, task: TeamTask, code: string, text: Bilingual): 
   return notice(task, v.learner, text, { status: "waiting", reason: code, reasonText: text, since: v.round });
 }
 
-const holds = (c: ColleagueView, control: "camera" | "retract" | "instruments"): boolean => c.controls === "all" || (c.controls ?? []).includes(control);
-const here = (c: ColleagueView): boolean => c.present && !c.absent;
-
-/** The camera holder (A16): the colleague holding the camera port with the scope in it, else the present colleague holding the camera control. */
-function cameraHolder(v: MemberView, f: FieldView): MemberId | null {
-  if (f.camera?.holder !== undefined) return v.bodyOf(f.camera.holder);
-  return v.colleagues.find((c) => here(c) && c.id !== v.me.id && holds(c, "camera"))?.id ?? null;
-}
-
-/** The traction assistant (A17): a present colleague other than the camera holder, holding `retract`. */
-function tractionAssistant(v: MemberView, f: FieldView): MemberId | null {
-  const camera = cameraHolder(v, f);
-  return v.colleagues.find((c) => here(c) && c.id !== v.me.id && c.id !== camera && holds(c, "retract"))?.id ?? null;
-}
-
-/** The scrub nurse in the room: the present colleague holding the instrument table. */
-function scrubNurse(v: MemberView): MemberId | null {
-  return v.colleagues.find((c) => here(c) && c.id !== v.me.id && holds(c, "instruments"))?.id ?? null;
-}
-
-/** Two requests about the field are the same request (a read-back is about what was asked). */
-function sameAsk(a: FieldAsk | undefined, b: FieldAsk | undefined): boolean {
-  if (!a || !b) return false;
-  const key = (x: FieldAsk) => JSON.stringify([x.op, x.port ?? null, x.structure ?? null, [...(x.direction ?? [])].sort(), x.force ?? null, x.region ?? null, x.zoom ?? null, x.instrument ?? null]);
-  return key(a) === key(b);
-}
-
-/** A request about the field said to a colleague (`key`: what it is for), its thread its own. */
-function request(v: MemberView, task: TeamTask, to: MemberId, field: FieldAsk, key: string): Proposal {
-  const thread = v.newId("thread");
-  const open: StandInRequest = { key, to, field: structuredClone(field), thread, times: 1, since: v.round };
-  return { kind: "say", to, message: { thread, kind: "request", text: askText(v, field, to), about: { field: structuredClone(field) }, evidence: [] }, patch: [{ id: task.id, set: { ...going(task), request: open } }] };
-}
-
-/**
- * The request over — seen through, declined or given up (`undone`: not done — the stand-in then does it itself) —, or
- * dropped: never made again.
- */
-function over(v: MemberView, task: TeamTask, key: string, undone = false): Partial<TeamTask> {
-  return { ...going(task), request: undefined, requested: [...(task.requested ?? []), key], ...(undone ? { undone: [...(task.undone ?? []), key] } : {}), since: v.round };
-}
-
-/**
- * The request to make now for one purpose (`base`: `aim:<k>`, `closer:<k>`, `wider:<k>`, `exposure:<k>`, `scope:<k>`),
- * asked at most twice (`<base>`, then `<base>#2`): the first not asked yet — once the one before it was seen through and
- * then undone —, or `self`: one was given up or declined, or both were undone again — the stand-in does it itself.
- */
-function nextAsk(task: TeamTask, base: string): { ask: string } | { self: true } {
-  const ended = new Set(task.requested ?? []);
-  const undone = new Set(task.undone ?? []);
-  for (let n = 1; n <= ASKS; n++) {
-    const key = n === 1 ? base : `${base}#${n}`;
-    if (!ended.has(key)) return { ask: key };
-    if (undone.has(key)) return { self: true };
-  }
-  return { self: true };
-}
-
-/**
- * What the screen shows once a request said to `to` is done: the camera in their hands; an aim — the camera on that
- * region, as close as asked (a follow aim elsewhere never counts); the zoom; their traction as asked; the port let go;
- * the instrument passed to the operator.
- */
-function fieldShows(v: MemberView, ask: FieldAsk, to: MemberId): boolean {
-  const f = v.field;
-  if (!f) return false;
-  const ref = v.refOf(to);
-  switch (ask.op) {
-    case "camera":
-      return !!f.camera && f.camera.holder === ref;
-    case "aim":
-      return !!f.camera && f.camera.at === (ask.region ?? null) && (!ask.zoom || f.camera.zoom === ask.zoom);
-    case "zoom":
-      return !!f.camera && f.camera.zoom === ask.zoom;
-    case "traction": {
-      const p = f.ports.find((x) => x.port === ask.port);
-      return !!p && p.holder === ref && tractionShown(f, { structure: ask.structure ?? "", port: ask.port ?? "", direction: ask.direction ?? [], force: ask.force ?? "firm" });
-    }
-    case "release":
-      return !f.retractions.some((r) => r.port === ask.port) && f.ports.find((p) => p.port === ask.port)?.holder !== ref;
-    case "pass":
-      return f.passed.some((q) => q.instrument === ask.instrument && q.to === undefined);
-  }
-}
-
-/** What the screen shows once a request is done (`fieldShows`); the stop after a call-out, or after it could not go on, ends only by the learner's word. */
-function requestDone(v: MemberView, req: StandInRequest): boolean {
-  return !!req.field && fieldShows(v, req.field, req.to);
-}
-
-/**
- * A request the field's record has gone past — a team restored older than the field (a crash in the middle of a run):
- * a pass whose insert is recorded, a request for a plan step that is done (or, asked after a step — the camera after its
- * scope insert, wider after the pause —, once a later one is).
- */
-function stale(plan: readonly PlanStep[], refs: readonly string[], key: string): boolean {
-  const at = key.indexOf(":");
-  const kind = key.slice(0, at);
-  const rest = key.slice(at + 1);
-  const furthest = furthestDone(plan, new Set(refs));
-  if (kind === "pass") {
-    const k = stepOfRef(rest);
-    return refs.includes(rest) || (k !== null && furthest >= k);
-  }
-  const k = Number.parseInt(rest, 10);
-  if (!Number.isInteger(k)) return false;
-  return ASKED_AFTER.has(kind) ? furthest > k : furthest >= k;
-}
-
 /** A field step of the operation the camera works with (an aim or a zoom) — the stand-in's own on a camera port nobody holds. */
 type CameraOp = Extract<ProcedureOp, { op: "aim" | "zoom" }>;
-
-/**
- * A colleague's own step of the reference as a request about the field (null: none names it — passed over): a traction,
- * letting go of one, the camera taken (the scope handed to them, or put into the camera port by them), an aim at a
- * region, a zoom, a pass to the operator (`operator`: whether a field reference names the stand-in).
- */
-function askOf(f: FieldView, x: PlanStep, operator: (ref: string) => boolean): FieldAsk | null {
-  const op = x.op;
-  switch (op.op) {
-    case "retract":
-      return { op: "traction", port: op.port, structure: op.structure, direction: directionNames(op.direction), force: op.force };
-    case "release": {
-      const port = f.retractions.find((r) => r.structure === op.structure)?.port;
-      return port ? { op: "release", port } : null;
-    }
-    case "aim":
-      return op.at !== undefined ? { op: "aim", region: op.at } : null;
-    case "zoom":
-      return { op: "zoom", zoom: op.level };
-    case "pass":
-      return op.to === undefined || op.to === "surgeon" || operator(op.to) ? { op: "pass", instrument: op.instrument } : null;
-    case "hand-over":
-    case "insert": {
-      const port = f.ports.find((p) => p.port === op.port);
-      const scope = op.op === "insert" ? op.instrument === "laparoscope" : port?.instrument === "laparoscope";
-      const theirs = op.op === "insert" || op.to === x.actor;
-      return port?.role === "camera" && scope && theirs ? { op: "camera", port: op.port } : null;
-    }
-    default:
-      return null;
-  }
-}
-
-/**
- * A step of its own plan the stand-in hands on now (A17), to whom and asked how: its traction on an assist port, to the
- * traction assistant; a hand-over the reference has the operator make, to whoever holds the port's control — the scope
- * in a camera port to the camera holder, a grasper pulling to the traction assistant. `keep`: a hand-over nobody may take
- * (an instrument only the operator works, nobody holding the control): the stand-in keeps the port. Null: its own to take.
- */
-function handedAsk(v: MemberView, f: FieldView, x: PlanStep): { to: MemberId; ask: FieldAsk } | "keep" | null {
-  const op = x.op;
-  if (x.actor !== undefined) return null;
-  if (op.op === "retract") {
-    const port = f.ports.find((p) => p.port === op.port);
-    const who = port?.role === "assist" ? tractionAssistant(v, f) : null;
-    return who ? { to: who, ask: { op: "traction", port: op.port, structure: op.structure, direction: directionNames(op.direction), force: op.force } } : null;
-  }
-  if (op.op === "hand-over" && op.to !== undefined) {
-    const port = f.ports.find((p) => p.port === op.port);
-    if (port?.role === "camera" && port.instrument === "laparoscope") {
-      const who = cameraHolder(v, f);
-      return who && who !== v.me.id ? { to: who, ask: { op: "camera", port: op.port } } : "keep";
-    }
-    const pull = f.retractions.find((r) => r.port === op.port);
-    const who = port?.instrument === "grasper" && pull ? tractionAssistant(v, f) : null;
-    return who && pull ? { to: who, ask: { op: "traction", port: op.port, structure: pull.structure, direction: [...pull.direction] as FieldAsk["direction"] & string[], force: pull.force } } : "keep";
-  }
-  return null;
-}
-
-/** The steps of its own plan the stand-in hands on in this view (`handedAsk`). */
-function handedIn(v: MemberView): Handed {
-  const f = v.field;
-  return (x) => !!f && handedAsk(v, f, x) !== null;
-}
 
 /**
  * The colleagues' own steps the reference has before the stand-in's next (`colleagueSteps`, A3), and the steps of its
@@ -670,8 +481,7 @@ function finished(v: MemberView, task: TeamTask): Proposal {
 function decide(v: MemberView, plan: readonly PlanStep[], task: TeamTask): Proposal | null {
   // a request the record has gone past (a team restored older than the field) is over
   if (task.request && stale(plan, v.refs, task.request.key)) {
-    const { request: req } = task;
-    return { kind: "update", patch: [{ id: task.id, set: { ...over(v, task, req.key), ...(HALTED.test(task.step ?? "") ? { step: undefined } : {}) } }] };
+    return { kind: "update", patch: [{ id: task.id, set: { ...over(v, task, task.request.key), ...(HALTED.test(task.step ?? "") ? { step: undefined } : {}) } }] };
   }
   const halt = haltStep(v, plan, task);
   if (halt !== undefined) return halt;
@@ -776,8 +586,9 @@ export function afterStandIn(v: MemberView, task: TeamTask, outcome: StandInOutc
   const code = awayFromTable ? "NOT_AT_TABLE" : outcome.code;
   const failed = { ref, times, ...(code ? { code } : {}) };
   if (times < MAX_TRIES) return { kind: "update", patch: [{ id: task.id, set: { failed } }] };
-  // it stops there and says why — then waits for the learner's word (their confirmation) to try again
-  const k = stepOfRef(outcome.ref) ?? task.cursor ?? 0;
+  // it stops there and says why — then waits for the learner's word (their confirmation) to try again (a walk: for the
+  // plan step it was walking to)
+  const k = stepOfRef(outcome.ref) ?? nextStep(v.plan ?? [], v.refs, v.field, handedIn(v))?.step.k ?? task.cursor ?? 0;
   const text = phrase("standin.cannot", { reason: awayFromTable ? phrase("standin.reason.table") : refusalWords(outcome) });
   const thread = v.newId("thread");
   const open: StandInRequest = { key: `cannot:${k}`, to: v.learner, thread, times: 1, since: v.round };

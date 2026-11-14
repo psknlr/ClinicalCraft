@@ -583,9 +583,32 @@ describe("the stand-in surgeon", () => {
     expect(stepOf(propose(standIn(6, { refs: [...done(6), "team.task-3.1", "team.task-3.2"] })))).toEqual({ op: REFERENCE_OPS[6], ref: "standin:6" });
     // the learner's start applied the reference up to its fourth operative step (`joined.actions` 5: the phase, steps
     // 0–3, recorded with no ref): the plan begins after them
-    const joined = planOf(LAP_CHOLE_SOLUTION as never, 5);
+    const joined = planOf(LAP_CHOLE_SOLUTION as never, { joined: 5 });
     expect(joined.filter((x) => x.joined).map((x) => x.k)).toEqual([0, 1, 2, 3]);
     expect(stepOf(propose(standIn(0, { plan: joined, refs: [], field: at(4) })))).toEqual({ op: REFERENCE_OPS[4], ref: "standin:4" });
+  });
+
+  it("a reference step written with the operator's own names — the `surgeon` token, the stand-in's id — is its own step, as the field reads it", () => {
+    const solution = [
+      { type: "start" },
+      { type: "operate", op: REFERENCE_OPS[0] },
+      { type: "operate", actor: "surgeon", op: REFERENCE_OPS[1] },
+      { type: "operate", actor: "or.standin", op: REFERENCE_OPS[2] },
+      { type: "operate", op: { op: "pass", instrument: "maryland", to: "surgeon" } },
+    ] as never;
+    // as core's normaliseStep reads it in the place: the operator's names are no actor, a pass to them has no `to`
+    const normalise = (op: (typeof REFERENCE_OPS)[number], actor?: string) => {
+      const own = actor === "surgeon" || actor === "or.standin";
+      const rest = op.op === "pass" && (op.to === "surgeon" || op.to === "or.standin") ? { op: "pass" as const, instrument: op.instrument } : op;
+      return { op: rest, ...(actor && !own ? { actor } : {}) };
+    };
+    const plan = planOf(solution, { normalise });
+    expect(plan.map((x) => x.actor)).toEqual([undefined, undefined, undefined, undefined]);
+    expect(plan[3]!.op).toEqual({ op: "pass", instrument: "maryland" });
+    // the pneumoperitoneum is its own next step: never passed over as a colleague's
+    expect(stepOf(propose(standIn(1, { plan, refs: done(1), field: at(1) })))).toEqual({ op: REFERENCE_OPS[1], ref: "standin:1" });
+    // without the reading, the raw token would have made it nobody's step
+    expect(planOf(solution).map((x) => x.actor)).toEqual([undefined, "surgeon", "or.standin", undefined]);
   });
 
   it("a step the reference gives the learner's place is theirs: asked of them and waited for — its cursor goes on after it, never taking it", () => {
@@ -678,10 +701,17 @@ describe("the stand-in surgeon", () => {
     expect(sets(propose(standIn(12, { field: aimed(12, "cystic-plate"), tasks: [asking] })))).toContainEqual(expect.objectContaining({ requested: ["camera:2", "aim:12"] }));
     // nobody holds the camera: the operator aims it itself, an extra step of its plan
     expect(stepOf(propose(standIn(12, { field: aimed(12, "hepatocystic-triangle", null) })))).toEqual({ op: { op: "aim", port: "A", at: "cystic-plate" }, ref: "standin:12:aim:1" });
-    // given up: the camera port taken back first ("I'll take port A."), then aimed by the operator
-    const gaveUp = planTask({ requested: ["camera:2", "aim:12"] });
+    // given up (or declined): the camera port taken back first ("I'll take port A."), then aimed by the operator
+    const gaveUp = planTask({ requested: ["camera:2", "aim:12"], undone: ["aim:12"] });
     expect(said(propose(standIn(12, { field: aimed(12, "hepatocystic-triangle"), tasks: [gaveUp] })))).toMatchObject({ to: LEARNER, kind: "notice", text: "I'll take port A." });
     expect(stepOf(propose(standIn(12, { field: aimed(12, "hepatocystic-triangle"), tasks: [{ ...gaveUp, step: "take:A:12" }] })))).toEqual({ op: { op: "hand-over", port: "A" }, ref: "standin:12:take:1" });
+    // done, then the camera holder looked elsewhere again: never taken from them without asking — asked once more, then
+    // (done and undone again) the port taken back
+    const undoneOnce = planTask({ requested: ["camera:2", "aim:12"] });
+    const again = propose(standIn(12, { field: aimed(12, "hepatocystic-triangle"), tasks: [undoneOnce] }));
+    expect(said(again)).toMatchObject({ to: LEARNER, kind: "request", text: "The first assistant (you), camera on the cystic plate, please." });
+    expect(requestOf(again)).toMatchObject({ key: "aim:12#2" });
+    expect(said(propose(standIn(12, { field: aimed(12, "hepatocystic-triangle"), tasks: [planTask({ requested: ["camera:2", "aim:12", "aim:12#2"] })] })))).toMatchObject({ kind: "notice", text: "I'll take port A." });
   });
 
   it("'Closer.' before the safety pause (aimed first when the camera looks at the whole field), 'Wider.' after it", () => {
@@ -690,10 +720,18 @@ describe("the stand-in surgeon", () => {
     expect(said(propose(standIn(19, { field: camera(19, null, "wide") })))).toMatchObject({ text: "The first assistant (you), camera on the hepatocystic triangle, close up, please.", about: { field: { op: "aim", region: "hepatocystic-triangle", zoom: "close" } } });
     // close: the pause itself
     expect(stepOf(propose(standIn(19, { field: camera(19, "hepatocystic-triangle", "close") })))).toEqual({ op: REFERENCE_OPS[19], ref: "standin:19" });
-    // after the pause, still close: wider before anything else
+    // right after the pause, still close: wider before anything else
     const wider = propose(standIn(20, { field: camera(20, "hepatocystic-triangle", "close") }));
     expect(said(wider)).toMatchObject({ text: "The first assistant (you), wider, please.", about: { field: { op: "zoom", zoom: "wide" } } });
     expect(requestOf(wider)).toMatchObject({ key: "wider:19" });
+    // given up: the port taken back, then made wide by the operator; done and the camera close again: asked once more
+    expect(said(propose(standIn(20, { field: camera(20, "hepatocystic-triangle", "close"), tasks: [planTask({ requested: ["camera:2", "wider:19"], undone: ["wider:19"] })] })))).toMatchObject({ kind: "notice", text: "I'll take port A." });
+    expect(requestOf(propose(standIn(20, { field: camera(20, "hepatocystic-triangle", "close"), tasks: [planTask({ requested: ["camera:2", "wider:19"] })] })))).toMatchObject({ key: "wider:19#2" });
+    // later on a close view is the camera holder's to keep: the clips watched close up, the bed dissected close up —
+    // nothing asked, nothing taken
+    const later = (k: number, where: string) => standIn(k, { field: camera(k, where, "close"), tasks: [planTask({ requested: ["camera:2", "wider:19"] })] });
+    expect(said(propose(later(22, "hepatocystic-triangle")))).toMatchObject({ kind: "notice", text: "Clipping T2.", about: { callout: { op: "clip", handle: "T2" } } });
+    expect(stepOf(propose(later(31, "gallbladder-bed")))).toEqual({ op: REFERENCE_OPS[31], ref: "standin:31" });
   });
 
   it("'I'll take port P.' before a step on a port a colleague holds, then takes it back — the camera port before the extraction through it too", () => {
@@ -710,14 +748,16 @@ describe("the stand-in surgeon", () => {
     expect(stepOf(propose(standIn(39, { field: at(39, { specimen: "bagged" }, null), refs: done(39, ["standin:39:take:1"]) })))).toEqual({ op: { op: "extract", port: "A" }, ref: "standin:39" });
   });
 
-  it("hands its traction on an assist port to the traction assistant — read back, confirmed, held; given up while the pull has gone, it takes the port back and pulls again itself", () => {
-    // four ports: its own grasper in D pulls the fundus cephalad (plan steps 3 and 4); the second assistant holds the camera
+  it("hands the reference's traction on an assist port to the traction assistant before it — they take the port and pull: 'Holding.'; given up, it takes the port back and pulls itself, as its plan step", () => {
+    // four ports: its own grasper into the assist port D (plan step 3), the fundus pulled cephalad through it (4) — the
+    // second assistant holds the camera, so the first assistant is the traction assistant
     const D_IN = { op: "insert", port: "D", instrument: "grasper" } as const;
     const D_PULL = { op: "retract", port: "D", structure: "gallbladder-fundus", direction: ["cephalad"], force: "firm" } as const;
     const plan = [...PLAN.slice(0, 3), { k: 3, op: D_IN }, { k: 4, op: D_PULL }, ...PLAN.slice(3).map((x) => ({ ...x, k: x.k + 2 }))];
     const D = { port: "D", role: "assist" as const, sizeMm: 5, instrument: "grasper" as const };
-    const four = (k: number, holder: string | null, pulling = true): FieldView => {
-      const f = at(k - 2, { plan: "mirror-four-port" }, "or.second");
+    /** The field before plan step `k` of the four-port plan, D held by `holder`, its pull there or not. */
+    const four = (k: number, holder: string | null, pulling: boolean): FieldView => {
+      const f = at(k <= 5 ? 3 : k - 2, { plan: "mirror-four-port" }, "or.second");
       return {
         ...f,
         ports: [...f.ports, { ...D, ...(holder ? { holder } : {}) }],
@@ -727,19 +767,61 @@ describe("the stand-in surgeon", () => {
     const SECOND = "staff:or.second";
     const colleagues = [colleague(FIRST, ["assist"], { controls: ["retract", "suction"] }), colleague(SECOND, ["assist"], { controls: ["camera", "retract", "suction"] }), colleague(LEARNER, ["instruments", "count"], { controls: ["instruments", "count"] })];
     const view = (k: number, extra: Partial<MemberView>) => standIn(k, { plan, colleagues, refOf: (who) => (who === STANDIN ? undefined : who.replace(/^staff:/u, "")), bodyOf: (ref) => (ref === undefined ? STANDIN : `staff:${ref}`), ...extra });
-    const p = propose(view(5, { field: four(5, null) }));
-    expect(said(p)).toMatchObject({ to: FIRST, kind: "request", text: "Dr Abe, please hold the grasper in port D, pulling the fundus cephalad.", about: { field: { op: "traction", port: "D", structure: "gallbladder-fundus", direction: ["cephalad"], force: "firm" } } });
+    const PULL = { op: "traction", port: "D", structure: "gallbladder-fundus", direction: ["cephalad"], force: "firm" };
+    // its grasper in D, nothing pulled yet: the traction asked of the first assistant — never pulled by the stand-in first
+    const p = propose(view(4, { field: four(4, null, false) }));
+    expect(said(p)).toMatchObject({ to: FIRST, kind: "request", text: "Dr Abe, please hold the grasper in port D, pulling the fundus cephalad.", about: { field: PULL } });
     const req = requestOf(p)!;
-    expect(req).toMatchObject({ key: "traction:4", to: FIRST });
-    // waiting for them (the read-back, then the port taken)
-    expect(propose(view(5, { field: four(5, null), tasks: [planTask({ request: { ...req, confirmed: true } })] }))).toBeNull();
-    // they hold it, pulling as the reference does: done — the plan goes on
-    expect(sets(propose(view(5, { field: four(5, "or.first"), tasks: [planTask({ request: { ...req, confirmed: true } })] })))).toContainEqual(expect.objectContaining({ requested: ["camera:2", "traction:4"] }));
-    // given up while they hold the port and the pull has gone: the port taken back, then pulled again by the operator
-    const gaveUp = planTask({ requested: ["camera:2", "traction:4"] });
-    expect(said(propose(view(8, { field: four(8, "or.first", false), tasks: [gaveUp] })))).toMatchObject({ to: FIRST, text: "I'll take port D." });
-    expect(stepOf(propose(view(8, { field: four(8, "or.first", false), tasks: [{ ...gaveUp, step: "take:D:8" }] })))).toEqual({ op: { op: "hand-over", port: "D" }, ref: "standin:8:take:1" });
-    expect(stepOf(propose(view(8, { field: four(8, null, false), tasks: [gaveUp], refs: done(8, ["standin:8:take:1"]) })))).toEqual({ op: D_PULL, ref: "standin:8:retract:1" });
+    expect(req).toMatchObject({ key: "step:4", to: FIRST });
+    // waiting for them (the read-back, then the port taken and pulled): its next own step is not taken meanwhile
+    expect(propose(view(4, { field: four(4, null, false), tasks: [planTask({ request: { ...req, confirmed: true } })] }))).toBeNull();
+    // they hold D, pulling as the reference does: done — the plan goes on past it (plan step 4 is theirs, not recorded)
+    expect(sets(propose(view(4, { field: four(4, "or.first", true), tasks: [planTask({ request: { ...req, confirmed: true } })] })))).toContainEqual(expect.objectContaining({ request: undefined, requested: ["camera:2", "step:4"] }));
+    expect(stepOf(propose(view(4, { field: four(5, "or.first", true), tasks: [planTask({ requested: ["camera:2", "step:4"] })] })))).toEqual({ op: PLAN[3]!.op, ref: "standin:5" });
+    // given up with D still the operator's: it pulls itself, as its plan step
+    const gaveUp = planTask({ requested: ["camera:2", "step:4"], undone: ["step:4"] });
+    expect(stepOf(propose(view(4, { field: four(4, null, false), tasks: [gaveUp] })))).toEqual({ op: D_PULL, ref: "standin:4" });
+    // given up once they had taken D without pulling: "I'll take port D.", the port back, then its own pull
+    expect(said(propose(view(4, { field: four(4, "or.first", false), tasks: [gaveUp] })))).toMatchObject({ to: FIRST, kind: "notice", text: "I'll take port D." });
+    expect(stepOf(propose(view(4, { field: four(4, "or.first", false), tasks: [{ ...gaveUp, step: "take:D:4" }] })))).toEqual({ op: { op: "hand-over", port: "D" }, ref: "standin:4:take:1" });
+    // two surgeons (the first assistant holds the camera): nobody to hand it to — its own step
+    const two = [colleague(LEARNER, ["assist"], { controls: ["camera", "retract", "suction"] }), colleague(SCRUB, ["instruments", "count"], { controls: ["instruments", "count"] })];
+    expect(stepOf(propose(view(4, { colleagues: two, field: { ...four(4, null, false), camera: { port: "A", at: null, zoom: "wide", holder: "or.first" } }, refOf: (who) => (who === STANDIN ? undefined : who === LEARNER ? "or.first" : who.replace(/^staff:/u, "")), bodyOf: (ref) => (ref === undefined ? STANDIN : ref === "or.first" ? LEARNER : `staff:${ref}`) })))).toEqual({ op: D_PULL, ref: "standin:4" });
+  });
+
+  it("a traction lost before a step on tissue is asked of whoever holds its port first — never taken from them unasked; given up, the port taken back and pulled by the operator", () => {
+    // the first assistant (the learner) holds B but the reference's pull on the infundibulum has gone
+    const lost = holding(at(12, { retractions: [] }), "B", "or.first");
+    const p = propose(standIn(12, { field: lost }));
+    expect(said(p)).toMatchObject({ to: LEARNER, kind: "request", text: "The first assistant (you), please hold the grasper in port B, pulling the infundibulum to the patient's left and caudally.", about: { field: { op: "traction", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" } } });
+    expect(requestOf(p)).toMatchObject({ key: "exposure:12" });
+    // pulled again as asked, then lost once more: asked once more
+    expect(requestOf(propose(standIn(12, { field: lost, tasks: [planTask({ requested: ["camera:2", "exposure:12"] })] })))).toMatchObject({ key: "exposure:12#2" });
+    // given up (or declined): "I'll take port B.", the port back, then the traction pulled by the operator
+    const gaveUp = planTask({ requested: ["camera:2", "exposure:12"], undone: ["exposure:12"] });
+    expect(said(propose(standIn(12, { field: lost, tasks: [gaveUp] })))).toMatchObject({ to: LEARNER, kind: "notice", text: "I'll take port B." });
+    expect(stepOf(propose(standIn(12, { field: lost, tasks: [{ ...gaveUp, step: "take:B:12" }] })))).toEqual({ op: { op: "hand-over", port: "B" }, ref: "standin:12:take:1" });
+    expect(stepOf(propose(standIn(12, { field: at(12, { retractions: [] }), tasks: [gaveUp], refs: done(12, ["standin:12:take:1"]) })))).toEqual({ op: REFERENCE_OPS[5], ref: "standin:12:retract:1" });
+    // the operator's own port (a working port): pulled again by itself, nobody asked
+    expect(stepOf(propose(standIn(12, { field: at(12, { retractions: [] }) })))).toEqual({ op: REFERENCE_OPS[5], ref: "standin:12:retract:1" });
+  });
+
+  it("a hand-over the reference has the operator make goes to whoever holds the port's control — asked, never made for them; one nobody may take it keeps", () => {
+    // after the scope insert the reference hands the camera to someone else by name: the camera holder (the first
+    // assistant, by control) is asked to take it, and the stand-in never hands the port over itself
+    const handover = [...PLAN.slice(0, 3), { k: 3, op: { op: "hand-over" as const, port: "A", to: "or.someone" } }, ...PLAN.slice(3).map((x) => ({ ...x, k: x.k + 1 }))];
+    const scopeIn = at(3, {}, null);
+    const asked = propose(standIn(3, { plan: handover, field: scopeIn, tasks: [planTask({ requested: [] })] }));
+    expect(said(asked)).toMatchObject({ to: LEARNER, kind: "request", text: "The first assistant (you), take the camera, please." });
+    expect(requestOf(asked)).toMatchObject({ key: "step:3", field: { op: "camera", port: "A" } });
+    // that seen through, the hand-over step is the camera holder's already: passed over, the plan goes on
+    expect(sets(propose(standIn(3, { plan: handover, field: at(3), tasks: [planTask({ requested: ["camera:2"] })] })))).toContainEqual(expect.objectContaining({ requested: ["camera:2", "step:3"] }));
+    expect(stepOf(propose(standIn(3, { plan: handover, field: at(4), tasks: [planTask({ requested: ["camera:2", "step:3"] })] })))).toEqual({ op: PLAN[3]!.op, ref: "standin:4" });
+    // nobody in the team holds the camera control: the stand-in keeps the camera — never a hand-over refused by control
+    const none = [colleague(SCRUB, ["instruments", "count"], { controls: ["instruments", "count"] })];
+    const kept = propose(standIn(3, { plan: handover, colleagues: none, field: scopeIn, tasks: [planTask({ requested: ["camera:2"] })] }));
+    expect(sets(kept)).toContainEqual(expect.objectContaining({ requested: ["camera:2", "step:3"] }));
+    expect(kept!.kind).toBe("update");
   });
 
   it("in the scrub nurse's place every instrument is asked for and waited for — never put in without the pass", () => {
@@ -844,16 +926,69 @@ describe("the stand-in surgeon", () => {
     expect(sets(propose(standIn(41, { field: at(41, { closed: true }, null) })))).toContainEqual(expect.objectContaining({ status: "done" }));
   });
 
-  it("after a refusal: where the world points for reach; three refusals of one step in a row stop the operation there, saying why", () => {
+  it("after a refusal: where the world points for reach; three refusals of one step in a row stop it there, saying why — until the learner's word", () => {
     const goal = { kind: "interact" as const, id: PATIENT };
     expect(sets(afterStandIn(standIn(12), planTask(), { status: "failed", code: "SPATIAL_REQUIREMENT_UNMET", message: "Too far.", hint: goal, ref: "standin:12" }))).toContainEqual({ goal });
     expect(propose(standIn(12, { tasks: [planTask({ goal })] }))).toMatchObject({ kind: "act", operation: "navigate", goal });
     const once = afterStandIn(standIn(12), planTask(), { status: "failed", code: "invalid", message: "Rejected (invalid): no.", ref: "standin:12" });
     expect(sets(once)).toContainEqual({ failed: { ref: "standin:12", times: 1, code: "invalid" } });
     const third = afterStandIn(standIn(12), planTask({ failed: { ref: "standin:12", times: 2 } }), { status: "failed", code: "invalid", message: "Rejected (invalid): no.", reason: { en: "The hook cannot dissect here.", "zh-CN": "电钩在这里无法分离。" }, ref: "standin:12" });
-    expect(said(third)).toMatchObject({ to: LEARNER, kind: "escalate", text: "I can't go on: The hook cannot dissect here." });
-    expect(sets(third)).toContainEqual(expect.objectContaining({ status: "escalated" }));
+    expect(said(third)).toMatchObject({ to: LEARNER, kind: "escalate", text: "I can't go on: The hook cannot dissect here. Tell me when to try again." });
+    expect(third!.kind === "say" && third!.message.text["zh-CN"]).toBe("无法继续：电钩在这里无法分离。可以再试时告诉我。");
+    // not the end of the operation: it waits for the learner's word (a request to them), however long
+    const stuck = planTask({ ...sets(third).find((x) => x.status)! });
+    expect(stuck).toMatchObject({ status: "waiting", step: "cannot:12", request: { key: "cannot:12", to: LEARNER } });
+    expect(propose(standIn(12, { round: 90, tasks: [stuck] }))).toBeNull();
+    // their confirmation: the same step tried afresh
+    const go = message({ id: "msg-60", thread: stuck.request!.thread, from: LEARNER, to: STANDIN, kind: "confirm", about: {} });
+    expect(sets(propose(standIn(12, { tasks: [stuck], inbox: [go] })))).toContainEqual(expect.objectContaining({ status: "accepted", step: undefined, request: undefined, failed: undefined }));
     expect(sets(afterStandIn(standIn(12), planTask({ failed: { ref: "standin:12", times: 1 } }), { status: "completed", message: "Done.", ref: "standin:12" }))).toContainEqual({ failed: undefined });
+  });
+
+  it("a walk to the patient that leaves it away from the operating table counts as a refusal: bounded, then said, waiting for the learner's word", () => {
+    const walk = { kind: "interact" as const, id: PATIENT };
+    // arrived and at the table: nothing to say
+    expect(afterStandIn(standIn(0, { field: null }), planTask(), { status: "completed", message: "Arrived.", goal: walk })).toBeNull();
+    // arrived, but not at the table (no operating table there, out of reach of the patient): a refusal of the walk
+    const away = standIn(0, { atTable: false, field: null });
+    expect(sets(afterStandIn(away, planTask(), { status: "completed", message: "Arrived.", goal: walk }))).toContainEqual({ failed: { ref: "walk", times: 1, code: "NOT_AT_TABLE" } });
+    const third = afterStandIn(away, planTask({ failed: { ref: "walk", times: 2, code: "NOT_AT_TABLE" } }), { status: "completed", message: "Arrived.", goal: walk });
+    expect(said(third)).toMatchObject({ to: LEARNER, kind: "escalate", text: "I can't go on: I can't get to the patient at the operating table. Tell me when to try again." });
+    expect(sets(third)).toContainEqual(expect.objectContaining({ status: "waiting", step: "cannot:0" }));
+    // the walk into the room is no walk to the table: never counted
+    expect(afterStandIn(away, planTask(), { status: "completed", message: "Arrived.", goal: { kind: "room", id: "or" } })).toBeNull();
+  });
+
+  it("the gas lost or the scope out in the middle of the operation: it waits for the gas and insufflates again; the camera holder is asked to put the scope back, else it does", () => {
+    // the insufflator failed: the abdomen let down, no gas — it waits and says so, once
+    const deflated = at(12, { insufflated: false, pressure: 0, supply: { image: true, gas: false } });
+    expect(said(propose(standIn(12, { field: deflated })))).toMatchObject({ to: LEARNER, kind: "notice", text: "No CO₂ — I'm waiting for the insufflator." });
+    expect(propose(standIn(12, { field: deflated, tasks: [planTask({ reason: "no-gas", status: "waiting" })] }))).toBeNull();
+    // the gas back: insufflated again first, as the reference did — through the device that offers it, when one does
+    const back = at(12, { insufflated: false, pressure: 0 });
+    expect(stepOf(propose(standIn(12, { field: back, tasks: [planTask({ reason: "no-gas", status: "waiting" })] })))).toEqual({ op: { op: "insufflate", pressure: 12 }, ref: "standin:12:insufflate:1" });
+    // the scope taken out of the camera port: the camera holder (the learner, by control) asked to put it back
+    const out = at(12, { camera: undefined, ports: at(12).ports.map((x) => (x.port === "A" ? { port: "A", role: "camera" as const, sizeMm: 10, instrument: null } : x)) });
+    const asked = propose(standIn(12, { field: out }));
+    expect(said(asked)).toMatchObject({ to: LEARNER, kind: "request", text: "The first assistant (you), take the camera, please.", about: { field: { op: "camera", port: "A" } } });
+    expect(requestOf(asked)).toMatchObject({ key: "scope:12" });
+    // given up: the operator puts the scope back itself (in the scrub nurse's place, passed first)
+    expect(stepOf(propose(standIn(12, { field: out, tasks: [planTask({ requested: ["camera:2", "scope:12"], undone: ["scope:12"] })] })))).toEqual({ op: { op: "insert", port: "A", instrument: "laparoscope" }, ref: "standin:12:insert:1" });
+  });
+
+  it("a request the field's record has gone past — a team restored older than the field — is dropped, never waited on", () => {
+    // the Maryland passed and put in (standin:4 recorded) while the restored team still waits for the pass
+    const passing = planTask({ request: { key: "pass:standin:4", to: LEARNER, field: { op: "pass", instrument: "maryland" }, thread: "thread-40", times: 1, since: 4, confirmed: true } });
+    const dropped = propose(standIn(5, { passingRequired: true, tasks: [passing] }));
+    expect(sets(dropped)).toContainEqual(expect.objectContaining({ request: undefined, requested: ["camera:2", "pass:standin:4"] }));
+    // the camera asked after the scope insert, once a later step is recorded; the stop after a call-out once its step is
+    const camera = planTask({ requested: [], request: { key: "camera:2", to: LEARNER, field: { op: "camera", port: "A" }, thread: "thread-41", times: 1, since: 4 } });
+    expect(sets(propose(standIn(4, { tasks: [camera] })))).toContainEqual(expect.objectContaining({ request: undefined, requested: ["camera:2"] }));
+    expect(said(propose(standIn(3, { field: at(3, {}, null), tasks: [camera] })))).toBeNull();
+    const stopped = planTask({ step: "stopped:22", status: "waiting", request: { key: "stop:22", to: LEARNER, thread: "thread-42", times: 1, since: 9 } });
+    expect(sets(propose(standIn(23, { tasks: [stopped] })))).toContainEqual(expect.objectContaining({ request: undefined, step: undefined, status: "accepted" }));
+    // still its plan step: the stop stands
+    expect(propose(standIn(22, { tasks: [stopped] }))).toBeNull();
   });
 
   it("answers a hold on closure as any surgeon does, and checks the wound", () => {

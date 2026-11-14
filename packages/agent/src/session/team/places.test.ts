@@ -80,13 +80,19 @@ async function play(t: TestSession, o: { until?: (t: TestSession) => boolean; on
         acted = true;
       } else if (m.kind === "confirm" && asked.has(m.thread)) {
         const f = asked.get(m.thread)!.about.field!;
-        const camera = t.session.state.procedure!.ports.find((p) => p.role === "camera")!.site;
-        if (f.op === "camera") await operate({ op: "hand-over", port: f.port ?? camera, to: me });
+        const ports = t.session.state.procedure!.ports;
+        const camera = ports.find((p) => p.role === "camera")!.site;
+        // the camera: taken from whoever holds it, or the scope put into the empty camera port
+        if (f.op === "camera") await operate(ports.find((p) => p.site === (f.port ?? camera))?.instrument ? { op: "hand-over", port: f.port ?? camera, to: me } : { op: "insert", port: f.port ?? camera, instrument: "laparoscope" });
         if (f.op === "aim") await operate({ op: "aim", port: camera, at: f.region! });
         if (f.op === "aim" && f.zoom) await operate({ op: "zoom", port: camera, level: f.zoom });
         if (f.op === "zoom") await operate({ op: "zoom", port: camera, level: f.zoom! });
         if (f.op === "pass") await operate({ op: "pass", instrument: f.instrument! });
-        if (f.op === "traction") await operate({ op: "hand-over", port: f.port!, to: me });
+        // a traction: the port taken (unless theirs already), then pulled as asked — which way, how hard
+        if (f.op === "traction") {
+          if (ports.find((p) => p.site === f.port)?.holder !== me) await operate({ op: "hand-over", port: f.port!, to: me });
+          await operate({ op: "retract", port: f.port!, structure: f.structure!, direction: f.direction!, force: f.force ?? "firm" });
+        }
         await reply(m, "report", "Done.");
         acted = true;
       }
@@ -99,15 +105,18 @@ async function play(t: TestSession, o: { until?: (t: TestSession) => boolean; on
 /** The stand-in's steps as the field recorded them (its plan refs, in order). */
 const standInRefs = (t: TestSession) => (t.session.state.procedure?.refs ?? []).filter((r) => r.startsWith("standin:"));
 
-/** The operation seen through: closed, the specimen out, the view of safety documented and real, nothing unsafe. */
-function seenThrough(t: TestSession, plan: number): void {
+/**
+ * The operation seen through: closed, the specimen out, the view of safety documented and real, nothing unsafe; every
+ * plan step of the stand-in's recorded once, in order — but those it handed on (`handed`: a colleague did them).
+ */
+function seenThrough(t: TestSession, plan: number, handed: readonly number[] = []): void {
   const p = t.session.state.procedure!;
   expect(p).toMatchObject({ closed: true, specimen: "extracted", unsafe: [], injuries: [] });
   expect(p.pauses.map((x) => x.achieved)).toEqual([true]);
   // every plan step of the stand-in's recorded once, in order (the extraction's port taken back first)
   const refs = standInRefs(t);
   expect(new Set(refs).size).toBe(refs.length);
-  expect(refs.filter((r) => /^standin:\d+$/u.test(r))).toEqual(Array.from({ length: plan }, (_, k) => `standin:${k}`));
+  expect(refs.filter((r) => /^standin:\d+$/u.test(r))).toEqual(Array.from({ length: plan }, (_, k) => k).filter((k) => !handed.includes(k)).map((k) => `standin:${k}`));
   expect(new Set(p.refs).size).toBe(p.refs!.length);
 }
 
@@ -198,10 +207,11 @@ describe("each place sees the reference operation through, the learner playing i
     await t.session.close();
   });
 
-  it("the second assistant (three surgeons): the camera holder — the simulated first assistant holds the traction the stand-in hands on", async () => {
+  it("the second assistant (three surgeons): the camera holder — the reference's traction on the assist port is the simulated first assistant's, asked before it", async () => {
     const t = await inPlace({ type: "start", seat: "second-assistant", lineup: "three-surgeons" }, { caseDef: fourPortCase() });
     const played = await play(t);
-    seenThrough(t, FOUR_PORTS.length);
+    // plan step 4 (the fundus pulled through D) is the traction assistant's: never the stand-in's own
+    seenThrough(t, FOUR_PORTS.length, [4]);
     expect(played.steps[0]).toEqual({ op: "hand-over", port: "A", to: "doc-2" });
     expect(new Set(played.steps.map((s) => s.op))).toEqual(new Set(["hand-over", "aim", "zoom"]));
     // the traction on the assist port: asked of the first assistant, read back, confirmed, held — by his own steps
@@ -214,8 +224,31 @@ describe("each place sees the reference operation through, the learner playing i
       [STAFF.standIn, "confirm", "Yes — go ahead."],
       [STAFF.first, "report", "Holding."],
     ]);
-    const handedOn = t.session.snapshot().actions.find((a) => a.type === "operate" && a.actor === "doc-1");
-    expect(handedOn).toMatchObject({ op: { op: "hand-over", port: "D", to: "doc-1" }, ref: expect.stringMatching(/^team\.task-\d+\.\d+$/u) });
+    // he took the port with the stand-in's grasper in it and set the traction up himself — the reference's own pull
+    const his = t.session.snapshot().actions.flatMap((a) => (a.type === "operate" && a.actor === "doc-1" ? [a] : []));
+    expect(his.slice(0, 2)).toMatchObject([
+      { op: { op: "hand-over", port: "D", to: "doc-1" }, ref: expect.stringMatching(/^team\.task-\d+\.\d+$/u) },
+      { op: FOUR_PORTS[4], ref: expect.stringMatching(/^team\.task-\d+\.\d+$/u) },
+    ]);
+    await t.session.close();
+  });
+
+  it("the first assistant (three surgeons): the traction assistant — asked for the reference's traction on the assist port before the stand-in's step: takes the port and sets the pull up", async () => {
+    const t = await inPlace({ type: "start", seat: "first-assistant", lineup: "three-surgeons" }, { caseDef: fourPortCase() });
+    const played = await play(t);
+    seenThrough(t, FOUR_PORTS.length, [4]);
+    // their own steps: the port with the stand-in's grasper in it, then the reference's pull — structure, way, force
+    expect(played.steps).toEqual([
+      { op: "hand-over", port: "D", to: "doc-1" },
+      { op: "retract", port: "D", structure: "gallbladder-fundus", direction: ["cephalad"], force: "firm" },
+    ]);
+    expect(played.heard.filter((m) => m.kind === "request").map((m) => m.text.en)).toEqual(["The first assistant (you), please hold the grasper in port D, pulling the fundus cephalad."]);
+    // the pull is theirs in the record, and the camera the simulated second assistant's
+    expect(t.session.snapshot().actions.flatMap((a) => (a.type === "operate" && a.actor ? [[a.actor, a.op.op]] : [])).filter(([who]) => who === "doc-1")).toEqual([
+      ["doc-1", "hand-over"],
+      ["doc-1", "retract"],
+    ]);
+    expect(t.session.team()!.state.messages.some((m) => m.from === STAFF.second && m.text.en === "I have the camera.")).toBe(true);
     await t.session.close();
   });
 
@@ -310,6 +343,58 @@ function insufflatorWorld(): Pick<Parameters<typeof theatreSession>[0] & object,
   return { facility, catalogs: [...catalogs(), theatreCatalog(), r.value] };
 }
 
+/** A gas-only insufflator in the theatre (the pneumoperitoneum's supply: `insufflator`), in service. */
+function gasWorld(): Pick<Parameters<typeof theatreSession>[0] & object, "facility" | "catalogs"> {
+  const L = (en: string, zh: string) => ({ en, "zh-CN": zh });
+  const r = parseCatalog({
+    schema: "clinicalcraft/equipment-catalog@1",
+    id: "places-gas",
+    name: L("Gas", "气体"),
+    equipment: [{ id: "test-gas", name: L("Insufflator", "气腹机"), category: "surgery", description: L("A stand-alone insufflator", "独立气腹机"), capabilities: ["insufflator"], footprint: { w: 0.4, d: 0.4, h: 0.4 }, solid: false, parts: [{ m: "white", p: [0, 0.2, 0], s: [0.4, 0.4, 0.4] }], interaction: { kind: "device" } }],
+  });
+  if (!r.ok) throw new Error(JSON.stringify(r.issues));
+  const facility = theatreFacility();
+  facility.placements.push({ id: "p-gas", type: "test-gas", x: -23.1, z: -10.3, y: 0, rot: 0, room: THEATRE });
+  return { facility, catalogs: [...catalogs(), theatreCatalog(), r.value] };
+}
+
+describe("the stand-in through a fault in the middle of the operation", () => {
+  it("the gas lost: it waits and says so — never three refusals and the end —; the gas back, it insufflates again and carries on to the close", async () => {
+    const t = await inPlace({ type: "start", seat: "first-assistant" }, gasWorld());
+    await play(t, { until: (x) => standInRefs(x).includes("standin:7") });
+    const w = t.session.world()!;
+    w.setAvailability("eq:p-gas", false);
+    // the staff's own round sees the insufflator gone: the abdomen let down
+    await t.session.run({ type: "staff_step" });
+    expect(t.session.state.procedure).toMatchObject({ insufflated: false });
+    const waited = await play(t, { rounds: 12 });
+    expect(waited.heard.map((m) => m.text.en)).toContain("No CO₂ — I'm waiting for the insufflator.");
+    expect(waited.heard.some((m) => /can't go on/u.test(m.text.en))).toBe(false);
+    expect(standInRefs(t).filter((r) => /^standin:\d+$/u.test(r)).at(-1)).toBe("standin:7");
+    // back in service: the record follows on the staff's round, and the stand-in insufflates again before its next step
+    w.setAvailability("eq:p-gas", true);
+    await t.session.run({ type: "staff_step" });
+    await play(t);
+    seenThrough(t, WHOLE_OPERATION.length);
+    expect(standInRefs(t)).toContain("standin:8:insufflate:1");
+    await t.session.close();
+  });
+
+  it("the scope taken out by the camera holder: the stand-in asks them to put it back — never three refusals and the end — and carries on", async () => {
+    const t = await inPlace({ type: "start", seat: "first-assistant" });
+    await play(t, { until: (x) => standInRefs(x).includes("standin:8") });
+    // the learner, holding the camera, takes the scope out (their own step, as the first assistant)
+    const out = await t.session.run({ type: "clinical_action", action: { type: "operate", op: { op: "withdraw", port: "A" } } });
+    expect(msgsOf(out, "error")).toEqual([]);
+    const played = await play(t);
+    seenThrough(t, WHOLE_OPERATION.length);
+    // asked to put it back ("take the camera"), and they did: the scope into the empty camera port
+    expect(played.steps).toContainEqual({ op: "insert", port: "A", instrument: "laparoscope" });
+    expect(played.heard.some((m) => /can't go on/u.test(m.text.en))).toBe(false);
+    await t.session.close();
+  });
+});
+
 describe("the stand-in uses the devices as the demonstration does", () => {
   it("insufflation through the device that offers it — the stand-in's own body and the world's operation, recorded as its plan step; the device shows it", async () => {
     const t = await inPlace({ type: "start", seat: "first-assistant" }, insufflatorWorld());
@@ -375,6 +460,61 @@ describe("the stand-in's steps exactly once across a resume in the middle of a t
       expect(new Set(receipts).size, from).toBe(receipts.length);
       await r.session.close();
     }
+  });
+});
+
+describe("a resume in learner mode, the team's record older than the field's", () => {
+  it("the scrub nurse's place, cut just after the stand-in put in what the learner passed: no second pass waited for, no step repeated", async () => {
+    const transcript = new MemoryTranscript();
+    const t = await inPlace({ type: "start", seat: "scrub-nurse" }, { transcript });
+    let items: MemoryTranscript["items"] | null = null;
+    const off = t.session.subscribe(() => {
+      if (items || !t.session.state.procedure?.refs?.includes("standin:4")) return;
+      items = structuredClone(transcript.items);
+    });
+    await play(t, { until: () => items !== null });
+    off();
+    await t.session.close();
+    expect(items, "cut after the Maryland went in").not.toBeNull();
+    const replayed = replayTranscript(items!);
+    // the transcript's team still waits for the Maryland: its last record is from before the pass was taken
+    const open = replayed.team!.state.tasks.find((x) => x.kind === "operate")?.request;
+    expect(open).toMatchObject({ key: "pass:standin:4", confirmed: true });
+    const r = await theatreSession({ resume: { sessionId: "places-resume", actions: replayed.actions, messages: replayed.messages, dialogue: replayed.dialogue }, embodied: { snapshot: replayed.world!, team: replayed.team! }, settingsPatch: { approvalMode: "bypass" } } as never);
+    expect(standInRefs(r)).toContain("standin:4");
+    const played = await play(r);
+    seenThrough(r, WHOLE_OPERATION.length);
+    // the Maryland was passed once — before the cut — and nothing is left waiting
+    expect(played.steps.filter((x) => x.op === "pass" && x.instrument === "maryland")).toEqual([]);
+    expect(r.session.state.procedure!.passed).toBeUndefined();
+    await r.session.close();
+  });
+});
+
+describe("the settings while a place is held", () => {
+  it("a change that would stop the stand-in is refused, saying why, in both languages — the mode stays; one that would not is taken", async () => {
+    for (const [locale, refusal] of [
+      ["en", /^While you hold the first assistant's place the stand-in surgeon operates, and this change would stop them \(.*plan.*\): the approval mode and the practice scope stay as they were\.$/isu],
+      ["zh-CN", /^你担任第一助手岗位时由主刀同事主刀，而这项更改会阻止其操作（.*）：审批模式和操作范围保持不变。$/u],
+    ] as const) {
+      const t = await inPlace({ type: "start", seat: "first-assistant" }, { settingsPatch: { locale } });
+      const refused = await t.session.run({ type: "configure", patch: { approvalMode: "plan" } });
+      expect(msgsOf(refused, "error"), locale).toEqual([expect.objectContaining({ code: "permission_denied", message: expect.stringMatching(refusal) })]);
+      expect(msgsOf(refused, "config_changed")[0]!.patch).not.toHaveProperty("approvalMode");
+      expect(t.session.settings.approvalMode).toBe("bypass");
+      const scope = await t.session.run({ type: "configure", patch: { practiceScope: "workup" } });
+      expect(msgsOf(scope, "error"), locale).toEqual([expect.objectContaining({ code: "permission_denied" })]);
+      expect(t.session.settings.practiceScope).toBe("full");
+      // strict mode asks — the call-out — but stops nothing: taken
+      expect(msgsOf(await t.session.run({ type: "configure", patch: { approvalMode: "strict" } }), "error")).toEqual([]);
+      expect(t.session.settings.approvalMode).toBe("strict");
+      await t.session.close();
+    }
+    // without a place, plan mode is the learner's to choose
+    const free = await theatreSession();
+    expect(msgsOf(await free.session.run({ type: "configure", patch: { approvalMode: "plan" } }), "error")).toEqual([]);
+    expect(free.session.settings.approvalMode).toBe("plan");
+    await free.session.close();
   });
 });
 

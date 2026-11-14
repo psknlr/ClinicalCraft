@@ -116,6 +116,31 @@ describe("authorisation audit: the care team's own steps (docs/TEAM.md §4.5)", 
     await s.close();
   });
 
+  it("a place started through the learner's own path in strict mode: what the start applied when they joined is nobody's act, and the stand-in's whole operation is authorised", async () => {
+    const settings = mergeSettings([{ source: "flag", settings: { provider: "offline", locale: "en", embodiment: "embodied", approvalMode: "strict", transcripts: { enabled: false } } }]);
+    const s = await createSession({ caseDef: theatreCase(), facility: theatreFacility(), catalogs: [...worldCatalogs(), theatreCatalog()], settings });
+    const auditor = new Auditor(s);
+    auditor.attach();
+    s.subscribe((e) => {
+      if (e.msg.type === "approval_request") s.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
+    });
+    const started = await s.run({ type: "clinical_action", action: { type: "start", seat: "first-assistant" } });
+    expect(started.filter((e) => e.msg.type === "error")).toEqual([]);
+    // the join (the reference path up to the team's phase, within the start, by the system) put the case in theatre
+    expect(s.state.joined).toBeDefined();
+    expect(s.state.phase).toBe("theatre");
+    await s.run({ type: "team", action: "surgeon", surgeon: "simulated" });
+    await s.run({ type: "team", action: "run", rounds: 200 });
+    expect(s.state.procedure).toMatchObject({ closed: true, unsafe: [] });
+    const result = auditor.finish(s.trace());
+    expect(result.authorisation.unauthorised).toEqual([]);
+    expect(result.spatial.violations).toEqual([]);
+    // every step in the field was audited — the stand-in's plan and the place's own — and nothing of the join
+    expect(result.authorisation.audited).toBeGreaterThanOrEqual(WHOLE_OPERATION.length);
+    auditor.detach();
+    await s.close();
+  });
+
   it("the stand-in's clip, its call-out asked and approved, is authorised: the audit reads the team's rung as the gate did", async () => {
     const s = await theatre("default", "first-assistant");
     const auditor = new Auditor(s);

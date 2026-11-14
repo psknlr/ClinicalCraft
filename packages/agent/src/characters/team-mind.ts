@@ -11,7 +11,8 @@
  * - `wait`: not now — once in a row for the same move, and never for a closed-loop obligation (a read-back, a
  *   confirmation, a report, a decline, an escalation) or the count;
  * - `notice`: say something you see to a colleague in the room (no obligation created);
- * - `escalate`: raise your own task, stuck waiting, to the person it is for.
+ * - `escalate`: raise your own task, stuck waiting, to the person it is for — never a task for oneself, and never the
+ *   stand-in surgeon's operation, whose waits say themselves what they wait for (ending it would end the operation).
  * A line is accepted only when it is grounded: one line, in the session's language, every number in it is in what
  * the member perceives, and no staff member is named who is not in their view. Anything else — no model, a slow or
  * failed call, an option not offered, an ungrounded line — and the rules decide (the policy's proposal, its own
@@ -23,7 +24,7 @@ import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatRequest, LLMProvider } from "../providers/types.js";
 import type { TokenUsage } from "../protocol.js";
 import { escalateTask, type MemberView } from "../session/team/policy.js";
-import type { MemberId, MemberState, Proposal, TeamMessage } from "../session/team/types.js";
+import type { MemberId, MemberState, Proposal, TeamMessage, TeamTask } from "../session/team/types.js";
 import { ROLE_CARDS, roleSection, type RoleCard } from "./roles.js";
 
 /** A member's model, resolved by the session. */
@@ -215,7 +216,7 @@ export class ModelTeamMind {
         return { kind: "say", to, message: { thread: view.newId("thread"), kind: "notice", text: { en: line, "zh-CN": line }, about: {}, evidence: [] } };
       }
       case "escalate": {
-        const task = view.tasks.find((x) => x.owner === member.id && x.status === "waiting");
+        const task = stuckTask(member, view);
         if (!task || !line || problem) {
           record(false, { refused: problem ?? "nothing to escalate", ...(line ? { line } : {}) });
           return this.fallback(member, rules, problem ?? "escalation without a waiting task", false);
@@ -264,7 +265,7 @@ export class ModelTeamMind {
     const deferred = this.waited.get(member.id) === digest(rules);
     if (!rules || (!owed && !countWork && !deferred)) out.push({ id: "wait", text: rules ? "not now — this round you do nothing (you cannot wait twice in a row on the same move)" : "nothing to do now" });
     if (this.addressable(view).length) out.push({ id: "notice", text: "tell a colleague in the room something you see or are doing (`to`: who; no request, no obligation)" });
-    if (view.tasks.some((x) => x.owner === member.id && x.status === "waiting") && !(rules?.kind === "say" && rules.message.kind === "escalate")) out.push({ id: "escalate", text: "raise your task that is stuck waiting to the person it is for (`line`: what was tried and why it failed)" });
+    if (stuckTask(member, view) && !(rules?.kind === "say" && rules.message.kind === "escalate")) out.push({ id: "escalate", text: "raise your task that is stuck waiting to the person it is for (`line`: what was tried and why it failed)" });
     return out;
   }
 
@@ -314,12 +315,39 @@ function operativeStep(op: ProcedureOp): string {
   return parts.length ? `${op.op} (${parts.join(", ")})` : op.op;
 }
 
-/** A move's identity (the same move deferred again is the same digest). */
+/**
+ * The member's own task stuck waiting that they may raise with whom it is for (`escalate`) — never one that is for
+ * themselves, and never the stand-in surgeon's operation (its plan task waits on the learner's word or on the equipment,
+ * and says so itself: ending it would end the operation).
+ */
+function stuckTask(member: MemberState, view: MemberView): TeamTask | undefined {
+  return view.tasks.find((x) => x.owner === member.id && x.status === "waiting" && x.kind !== "operate" && x.for !== member.id);
+}
+
+/** The ids a move makes for itself — a task it creates and that task's thread, a request's own new thread: no part of what the move is. */
+function freshIds(p: Proposal): ReadonlySet<string> {
+  const out = new Set<string>();
+  for (const x of p.patch ?? []) {
+    if ("create" in x) {
+      out.add(x.create.id);
+      out.add(x.create.thread);
+    } else if ("set" in x && x.set.request?.thread) out.add(x.set.request.thread);
+  }
+  return out;
+}
+
+/**
+ * A move's identity (the same move deferred again is the same digest) — what it is, never the ids it makes for itself
+ * afresh each round it is proposed (a request on a thread of its own, the task it begins), so a member waits on one move
+ * at most once.
+ */
 function digest(p: Proposal | null): string {
   if (!p) return "none";
-  if (p.kind === "say") return `say:${p.to}:${p.message.kind}:${p.message.thread}`;
-  if (p.kind === "act") return `act:${p.task}:${p.operation}:${p.targetId ?? ""}`;
-  if (p.kind === "operate") return `operate:${p.task}:${p.ref ?? ""}:${JSON.stringify(p.op)}`;
-  if (p.kind === "observe") return `observe:${p.task}`;
+  const fresh = freshIds(p);
+  const id = (x: string) => (fresh.has(x) ? "new" : x);
+  if (p.kind === "say") return `say:${p.to}:${p.message.kind}:${id(p.message.thread)}:${JSON.stringify(p.message.about.field ?? p.message.about.callout ?? null)}`;
+  if (p.kind === "act") return `act:${id(p.task)}:${p.operation}:${p.targetId ?? ""}`;
+  if (p.kind === "operate") return `operate:${id(p.task)}:${p.ref ?? ""}:${JSON.stringify(p.op)}`;
+  if (p.kind === "observe") return `observe:${id(p.task)}`;
   return "update";
 }

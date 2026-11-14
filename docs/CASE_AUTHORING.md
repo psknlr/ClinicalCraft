@@ -446,7 +446,11 @@ A theatre case can give its room a care team that works on its own in in-world m
   the first assistant's, the second assistant's or the scrub nurse's place (`start {seat}`); without one the learner can
   only operate. A team with a stand-in works in every phase of the operation, and the reference solution must bring the
   case to the team's phases with every step accepted: a place joins there along that path (`checkTeamDefinition` tries
-  every place). The reference solution's own `start` takes no seat. Sessions do not offer a place yet (TEAM.md §1).
+  every place). The reference solution's own `start` takes no seat. A session offers a place in-world only, and the
+  stand-in then works this reference path as the operator (TEAM.md §4.5): write a step the operator does with no
+  `actor` (or `surgeon`), a colleague's own step with theirs — a traction through an assist port the stand-in asks the
+  traction assistant for, and a hand-over of the operator's goes to whoever holds the port's control (TEAM.md §4.5). The
+  browser's start screen does not offer a place yet.
 * **Line-ups** (`lineups`: id, name, provenance, note, members) add assistants for one encounter (`start {lineup}`):
   new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
   team as the source reports it and mark an added line-up `provenance: "authored"`.

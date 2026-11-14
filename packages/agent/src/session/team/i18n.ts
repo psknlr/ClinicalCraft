@@ -100,7 +100,8 @@ const PHRASES = {
   "standin.wait.picture": { en: "No picture — I'm waiting for the camera.", "zh-CN": "没有图像——等摄像系统恢复。" },
   "standin.wait.pass": { en: "I'm waiting for the {instrument} to be passed.", "zh-CN": "我在等递{instrument}。" },
   "standin.wait.count": { en: "I'll close once the count is settled.", "zh-CN": "清点核对无误后我再关闭。" },
-  "standin.cannot": { en: "I can't go on: {reason}.", "zh-CN": "无法继续：{reason}。" },
+  "standin.cannot": { en: "I can't go on: {reason}. Tell me when to try again.", "zh-CN": "无法继续：{reason}。可以再试时告诉我。" },
+  "standin.reason.table": { en: "I can't get to the patient at the operating table", "zh-CN": "我到不了手术台旁的患者身边" },
   // clauses (filled into the sentences above; never capitalised)
   "clause.the": { en: "the {name}", "zh-CN": "{name}" },
   "clause.learner": { en: "the {position} (you)", "zh-CN": "{position}（你）" },

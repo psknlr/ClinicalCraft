@@ -60,10 +60,13 @@ export interface SeenInjury {
 
 /**
  * A request of the stand-in surgeon's under way (`TeamTask.request`, one at a time; docs/TEAM.md §4.5): what it is for
- * (`key`: `camera:<k>`, `traction:<k>`, `aim:<k>`, `closer:<k>`, `wider:<k>`, `pass:<ref>`, `step:<k>` — a colleague's
- * own step of the reference —, `stop:<k>`), to whom, the
- * request about the field (none for the stop after a call-out), the thread it is said in, how many times it was said,
- * the round it was last said or confirmed in, whether its read-back was confirmed and whether it was declined.
+ * (`key`: `camera:<k>` — the camera after its scope insert —, `aim:<k>`, `closer:<k>`, `wider:<k>`, `exposure:<k>` — a
+ * traction lost before plan step `k` —, `scope:<k>` — the scope put back —, each of these asked a second time as
+ * `<key>#2`; `pass:<ref>`; `step:<k>` — a colleague's own step of the reference, or one of its own it hands on —;
+ * `stop:<k>` — after the learner stopped its call-out —, `cannot:<k>` — after it could not go on: both answered by the
+ * learner's confirmation), to whom, the request about the field (none for `stop` and `cannot`), the thread it is said
+ * in, how many times it was said, the round it was last said or confirmed in, whether its read-back was confirmed and
+ * whether it was declined.
  */
 export interface StandInRequest {
   key: string;
@@ -248,6 +251,8 @@ export interface TeamTask {
   request?: StandInRequest;
   /** `operate`: the requests already seen through, declined or given up, by key: never made again. */
   requested?: string[];
+  /** `operate`: of those, the ones declined or given up — not done: the stand-in did, or does, the thing itself. */
+  undone?: string[];
   /** `operate`: the step the field last refused (its ref), how many times in a row, and the refusal's code. */
   failed?: { ref: string; times: number; code?: string };
   /** Why it ended this way (declined, escalated): a short code, and what was said. */

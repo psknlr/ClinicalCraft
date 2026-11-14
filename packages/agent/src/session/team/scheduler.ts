@@ -24,6 +24,7 @@ import {
   countSettled,
   countStatus,
   memberBody,
+  normaliseStep,
   observeField,
   passingRequired,
   POSITION_TITLES,
@@ -272,8 +273,9 @@ export class TeamScheduler {
   /**
    * Run rounds until the team is idle (no message said, no act done in a round) — `untilIdle`, which also ends after a
    * round in which the stand-in surgeon took a step of the operation: the operation goes on one step at a time, with the
-   * team's clock and each act of the learner, never in one burst — or until every need is settled, or `maxRounds`.
-   * Returns the rounds run.
+   * team's clock and each act of the learner, never in one burst — or until every need is settled, or `maxRounds`. A run
+   * until settled ends too as soon as the stand-in waits on the learner playing their place (`awaitsLearner`): a run
+   * never plays the learner's part, nor lets the stand-in's wait for them run out. Returns the rounds run.
    */
   async run(signal: AbortSignal, opts: { maxRounds?: number; untilIdle?: boolean } = {}): Promise<number> {
     if (!this.active()) return 0;
@@ -285,12 +287,23 @@ export class TeamScheduler {
         n++;
         break;
       }
-      if (opts.untilIdle === false && this.settled()) {
+      if (opts.untilIdle === false && (this.settled() || this.awaitsLearner())) {
         n++;
         break;
       }
     }
     return n;
+  }
+
+  /**
+   * The stand-in surgeon waits on the learner playing their place (learner mode): its request said to them — a camera, a
+   * traction, a pass —, its stop after their Stop, or its word that it cannot go on, open; or the closure, while the count
+   * it waits for is the learner's to say.
+   */
+  awaitsLearner(): boolean {
+    if (this.surgeon !== "learner") return false;
+    const counts = this.member(PRIMARY_ACTOR)?.duties.includes("count") ?? false;
+    return this.state.tasks.some((t) => t.kind === "operate" && !TERMINAL.has(t.status) && (t.request?.to === PRIMARY_ACTOR || (counts && t.reason === "count")));
   }
 
   /**
@@ -496,7 +509,7 @@ export class TeamScheduler {
       task.kind === "assist"
         ? afterFieldWalk(this.view(member), task, outcome)
         : task.kind === "operate"
-          ? afterStandIn(this.view(member), task, { ...outcome, ...(p.ref !== undefined ? { ref: p.ref } : {}) })
+          ? afterStandIn(this.view(member), task, { ...outcome, ...(p.ref !== undefined ? { ref: p.ref } : {}), ...(p.goal ? { goal: p.goal } : {}) })
           : afterAct(this.view(member), task, outcome);
     if (follow && follow.kind === "say") {
       this.apply(member, follow.patch ?? []);
@@ -885,7 +898,7 @@ export class TeamScheduler {
       surgeon: this.surgeonBody(),
       learner: PRIMARY_ACTOR,
       passingRequired: passingRequired(c, s),
-      plan: this.isOperator(me) ? planOf(c.solution, s.joined?.actions ?? 0) : null,
+      plan: this.isOperator(me) ? planOf(c.solution, { joined: s.joined?.actions ?? 0, normalise: (op, actor) => normaliseStep(c, s, op, actor) }) : null,
       refs: [...(procedure?.refs ?? [])],
       where: (handle) => {
         // a duct or vessel the screen shows, where it lies
