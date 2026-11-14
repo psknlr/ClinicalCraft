@@ -5,32 +5,46 @@
  * step, exactly once.
  * - A plan step `k` is done once the field has recorded a step with its ref, `standin:<k>` — or when the learner's start
  *   in a place applied it (core `joinPath`, `SessionState.joined`: the reference up to the team's phase, by the system).
+ *   The stand-in works its plan in order: a step of its own before the furthest one done is passed, never gone back to.
  * - A run of dissections of one region is one move: done once the region shows cleared, or once every reference step of
  *   it and the extra dissections it allows (as many as the run has steps: `standin:<k>:dissect:<n>`) are recorded.
  * - The stand-in's own extra steps — a port taken back, the camera aimed, an instrument put back, an injury said aloud,
  *   suction — are `standin:<k>:<kind>:<n>` (`k`: the plan step they are for), counted from the record to bound them.
- * - A reference step the reference gives a colleague (`actor`) is that colleague's own, never the stand-in's: its next
- *   step passes over it, and before that step it asks the colleague for it (`colleagueSteps`), or waits for the learner
- *   when the step is their place's.
+ * - A reference step the reference gives a colleague (`actor`; the operator's own names — the `surgeon` token, the
+ *   stand-in's id — are no actor, as core `normaliseStep` reads them) is that colleague's own, never the stand-in's: its
+ *   next step passes over it, and before that step it asks the colleague for it (`colleagueSteps`), or waits for the
+ *   learner when the step is their place's. So is a step of its own it hands to a colleague (`handed`: a traction on an
+ *   assist port the traction assistant takes, a port the reference hands over) — unless it takes it back after all, as
+ *   its own plan step.
  */
 import { describeDirection, directionVector, type ClinicalAction, type Direction, type DirectionName, type FieldView, type InstrumentId, type ProcedureOp } from "@clinicalcraft/core";
 import type { PlanStep } from "./types.js";
 
+/** How a reference step reads in this encounter (core `normaliseStep`: the operator's own names are no actor, no `to`). */
+export type StepReading = (op: ProcedureOp, actor?: string) => { op: ProcedureOp; actor?: string };
+
 /**
- * The stand-in's plan: a case's reference solution's operative steps, in order (`PlanStep.k`: their index among them);
+ * The stand-in's plan: a case's reference solution's operative steps, in order (`PlanStep.k`: their index among them),
+ * each as the field reads it (`normalise`: the `surgeon` token and the stand-in's own id are the operator — no actor);
  * `joined`, the reference actions the learner's start in a place applied (`SessionState.joined.actions`: the first of
  * the solution's actions after its own start) — their operative steps are done.
  */
-export function planOf(solution: readonly ClinicalAction[], joined = 0): PlanStep[] {
+export function planOf(solution: readonly ClinicalAction[], o: { joined?: number; normalise?: StepReading } = {}): PlanStep[] {
   const start = solution.findIndex((a) => a.type === "start");
+  const joined = o.joined ?? 0;
   const steps: PlanStep[] = [];
   solution.forEach((a, i) => {
     if (a.type !== "operate") return;
     const byJoin = i > start && i <= start + joined;
-    steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}), ...(byJoin ? { joined: true as const } : {}) });
+    const read = o.normalise ? o.normalise(structuredClone(a.op), a.actor) : { op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) };
+    steps.push({ k: steps.length, op: read.op, ...(read.actor ? { actor: read.actor } : {}), ...(byJoin ? { joined: true as const } : {}) });
   });
   return steps;
 }
+
+/** A step of the stand-in's own plan it hands to a colleague now (A17): not its to take, as a colleague's own step is not. */
+export type Handed = (x: PlanStep) => boolean;
+const NONE_HANDED: Handed = () => false;
 
 /** A plan step done: recorded with its ref, or applied when the learner joined. */
 function isDone(x: PlanStep, refs: ReadonlySet<string>): boolean {
@@ -38,7 +52,7 @@ function isDone(x: PlanStep, refs: ReadonlySet<string>): boolean {
 }
 
 /** The index in the plan of the furthest plan step done (-1: none): the stand-in works its plan in order. */
-function furthestDone(plan: readonly PlanStep[], refs: ReadonlySet<string>): number {
+export function furthestDone(plan: readonly PlanStep[], refs: ReadonlySet<string>): number {
   let furthest = -1;
   plan.forEach((x, i) => {
     if (isDone(x, refs)) furthest = i;
@@ -71,13 +85,13 @@ export interface NextStep {
 }
 
 /** The dissection run a plan step opens: the consecutive dissections of one region, through one port, alike. */
-function runEnd(plan: readonly PlanStep[], i: number): number {
+function runEnd(plan: readonly PlanStep[], i: number, handed: Handed): number {
   const first = plan[i]!.op;
   if (first.op !== "dissect") return i;
   let j = i;
   while (j + 1 < plan.length) {
     const next = plan[j + 1]!;
-    if (next.actor !== undefined || next.op.op !== "dissect" || next.op.region !== first.region || next.op.port !== first.port || next.op.energy !== first.energy) break;
+    if (next.actor !== undefined || handed(next) || next.op.op !== "dissect" || next.op.region !== first.region || next.op.port !== first.port || next.op.energy !== first.energy) break;
     j++;
   }
   return j;
@@ -89,21 +103,22 @@ function cleared(f: FieldView | null, region: string): boolean {
 }
 
 /**
- * The stand-in's next step (null: the plan is done): the first of its own plan steps whose ref the field has not
- * recorded — a dissection run passed over once its region shows cleared or a later plan step is recorded (the stand-in
- * never goes back), else continued past its reference steps with extra dissections up to the run's length.
+ * The stand-in's next step (null: the plan is done): the first of its own plan steps — not a colleague's, not one it
+ * hands on (`handed`) — whose ref the field has not recorded and that comes after the furthest one done (it never goes
+ * back) — a dissection run passed over once its region shows cleared or a later plan step is recorded, else continued
+ * past its reference steps with extra dissections up to the run's length.
  */
-export function nextStep(plan: readonly PlanStep[], refs: readonly string[], f: FieldView | null): NextStep | null {
+export function nextStep(plan: readonly PlanStep[], refs: readonly string[], f: FieldView | null, handed: Handed = NONE_HANDED): NextStep | null {
   const done = new Set(refs);
   const furthest = furthestDone(plan, done);
   for (let i = 0; i < plan.length; i++) {
     const step = plan[i]!;
-    if (step.actor !== undefined) continue;
+    if (step.actor !== undefined || handed(step)) continue;
     if (step.op.op !== "dissect") {
-      if (!isDone(step, done)) return { step, ref: planRef(step.k) };
+      if (!isDone(step, done) && i > furthest) return { step, ref: planRef(step.k) };
       continue;
     }
-    const end = runEnd(plan, i);
+    const end = runEnd(plan, i, handed);
     const run = plan.slice(i, end + 1);
     const region = step.op.region;
     i = end;
@@ -118,15 +133,15 @@ export function nextStep(plan: readonly PlanStep[], refs: readonly string[], f: 
 }
 
 /**
- * The colleagues' own steps the reference has now — after the furthest plan step done and before the stand-in's next
- * (`next`; null: the plan's end), in order: the stand-in asks for each before it goes on (or waits for the learner, when
- * it is their place's), and never takes one itself.
+ * The colleagues' own steps the reference has now, and the steps of its own the stand-in hands on (`handed`) — after the
+ * furthest plan step done and before the stand-in's next (`next`; null: the plan's end), in order: the stand-in asks for
+ * each before it goes on (or waits for the learner, when it is their place's), and never takes a colleague's itself.
  */
-export function colleagueSteps(plan: readonly PlanStep[], refs: readonly string[], next: PlanStep | null): PlanStep[] {
+export function colleagueSteps(plan: readonly PlanStep[], refs: readonly string[], next: PlanStep | null, handed: Handed = NONE_HANDED): PlanStep[] {
   const done = new Set(refs);
   const furthest = furthestDone(plan, done);
   const end = next ? plan.findIndex((x) => x.k === next.k) : plan.length;
-  return plan.filter((x, i) => x.actor !== undefined && !x.joined && i > furthest && i < end);
+  return plan.filter((x, i) => (x.actor !== undefined || handed(x)) && !x.joined && i > furthest && i < end);
 }
 
 /** The plan steps before step `k` (the reference as it stands when `k` is next), the stand-in's own and its colleagues'. */
