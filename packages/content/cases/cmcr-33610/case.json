@@ -7,8 +7,8 @@
     "en": "Penile growth and deepening voice · boy aged 8 years 4 months"
   },
   "summary": {
-    "zh-CN": "8岁男孩半年来阴茎增大、变声、生长突然加快，从小发育落后：找出男性化的原因，并安全地处理所发现的问题。",
-    "en": "An 8-year-old boy with six months of penile growth, a breaking voice and a growth spurt, whose development has lagged since he was little: find the cause of the virilisation and act on what you find safely."
+    "zh-CN": "8岁男孩半年来阴茎增大、声音变粗、长高8 cm，从小生长发育落后：找出男性化的原因，并安全地处理所发现的问题。",
+    "en": "An 8-year-old boy with six months of penile growth, a deepening voice and 8 cm of growth, whose growth and development have lagged since he was little: find the cause of the virilisation and act on what you find safely."
   },
   "specialty": [
     "pediatrics",
@@ -44,7 +44,7 @@
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
       "zh-CN": "依据单篇已发表病例报告改编（原文为中文）。本版（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容——8岁4个月男孩，阴茎增大、声音变粗6个月；生长、发育、出生、手术和家族史；发育体征和外生殖器检查；睾酮与GnRH激发试验、骨龄、垂体MRI、肾上腺和睾丸等影像、两次核型；前上纵隔肿物与β-hCG；肿物切除与病理；一年随访——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（各项结果在哪个阶段出现）、决策、处置选项、评分、医护角色以及家长说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、基础LH、肾上腺激素、AFP数值、肿物的影像方式、症状、麻醉和手术细节、病理分级、远期结局）保持未知。1.0.0版中英文之间的几处出入作为原样保留并列入README的“To verify”。本病例没有图片。",
-      "en": "Adapted from a single published case report (written in Chinese). Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a boy of 8 years 4 months with six months of penile enlargement and a deepening voice; his growth, development, birth, operation and family history; the pubertal and genital examination; testosterone with a GnRH stimulation test, bone age, pituitary MRI, adrenal and testicular imaging and two karyotypes; the anterosuperior mediastinal mass and β-hCG; the resection and histology; the one-year follow-up — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (which result opens in which phase), decisions, intervention options, scoring, staff and the parent's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, basal LH, adrenal steroids, the AFP value, the imaging modality of the mass, symptoms, anaesthetic and surgical details, histological grade, long-term outcome) stays unknown. The few differences between the Chinese and English text of 1.0.0 are kept and listed under \"To verify\" in the README. The case has no figures."
+      "en": "Adapted from a single published case report (written in Chinese). Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a boy of 8 years 4 months with six months of penile enlargement and a deepening voice; his growth, development, birth, operation and family history; the pubertal and genital examination; testosterone with a GnRH stimulation test, bone age, pituitary MRI, adrenal, testicular and other imaging and two karyotypes; the anterosuperior mediastinal mass and β-hCG; the resection and histology; the one-year follow-up — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (which result opens in which phase), decisions, intervention options, scoring, staff and the parent's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, basal LH, adrenal steroids, the AFP value, the imaging modality of the mass, symptoms, anaesthetic and surgical details, histological grade, long-term outcome) stays unknown. The few differences between the Chinese and English text of 1.0.0 are kept and listed under \"To verify\" in the README. The case has no figures."
     },
     "review": {
       "status": "editorial",
@@ -58,11 +58,11 @@
         "EAA guidelines on Klinefelter syndrome, endorsed by the European Society of Endocrinology (Andrology 2021)",
         "NCI PDQ Childhood Extracranial Germ Cell Tumors Treatment, Health Professional Version (updated 2024-11-05)",
         "SPA case guide: Anesthesia for patients with anterior mediastinal mass (Society for Pediatric Anesthesia 2024)",
-        "AAP policy statement: Use of chaperones for the pediatric and adolescent encounter (Pediatrics 2025)"
+        "AAP policy statement: Use of chaperones for the pediatric and adolescent encounter (Pediatrics 2025; checked in its abstract only)"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过一轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance and one independent editorial review round (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
       }
     }
   },
@@ -76,12 +76,12 @@
       "en": "Weigh testicular volume against virilisation — stage III–IV pubic hair and a 9 cm penis with 5–6 mL testes — to keep a peripheral source in view while the axis is tested, and give no puberty-suppressing drug before a diagnosis."
     },
     {
-      "zh-CN": "把睾酮与GnRH激发后LH峰值（0.1 IU/L，低于ESPE/LWPES 2009提出的约3.3–5.0 IU/L青春期前上限）一起解读为促性腺激素非依赖性性早熟，并说明GnRH类似物为何对它无效。",
+      "zh-CN": "把睾酮与GnRH激发后LH峰值（0.1 IU/L，低于ESPE/LWPES 2009提出的约3.3–5.0 IU/L青春期前上限，该上限与测定方法有关）一起解读为促性腺激素非依赖性性早熟，并说明GnRH类似物为何对它无效。",
       "en": "Interpret testosterone with a GnRH-stimulated LH peak of 0.1 IU/L (below the assay-specific prepubertal limit of about 3.3–5.0 IU/L cited by ESPE/LWPES 2009) as gonadotropin-independent precocity, and explain why a GnRH analogue cannot treat it."
     },
     {
-      "zh-CN": "不因47,XXY过早下结论：说明Klinefelter综合征导致性腺功能减退而非性早熟，并据EAA 2021和NCI PDQ 2024查找分泌hCG的生殖细胞肿瘤——查β-hCG和AFP，首先做纵隔影像。",
-      "en": "Avoid premature closure on 47,XXY: explain that Klinefelter syndrome causes hypogonadism rather than precocity, and search for an hCG-secreting germ-cell tumour — β-hCG and AFP, mediastinal imaging first — as EAA 2021 and NCI PDQ 2024 describe."
+      "zh-CN": "不因47,XXY过早下结论：说明Klinefelter综合征导致性腺功能减退而非性早熟，并查找分泌hCG的生殖细胞肿瘤——查β-hCG和AFP，首先做纵隔影像：EAA 2021指出这类肿瘤主要位于纵隔，NCI PDQ 2024把Klinefelter综合征列为纵隔生殖细胞肿瘤的危险因素。",
+      "en": "Avoid premature closure on 47,XXY: explain that Klinefelter syndrome causes hypogonadism rather than precocity, and search for an hCG-secreting germ-cell tumour — β-hCG and AFP, mediastinal imaging first, because EAA 2021 places these tumours mainly in the mediastinum and NCI PDQ 2024 lists Klinefelter syndrome as a risk for them."
     },
     {
       "zh-CN": "前纵隔肿物在任何镇静或全麻之前，按SPA 2024病例指南评估气道和循环受压并进行多学科讨论，再安排完整手术切除。",
@@ -92,8 +92,8 @@
       "en": "Plan follow-up after resection: β-hCG, AFP and imaging as NCI PDQ 2024 describes, testosterone, LH, growth and bone age for secondary central puberty, and Klinefelter care per EAA 2021 — genetic counselling, learning support and no testosterone before puberty needs it."
     },
     {
-      "zh-CN": "在解释、征得家长和孩子同意并有陪检人员在场的情况下检查儿童的外生殖器（AAP 2025），并分阶段、用通俗语言向孩子和家长说明结果。",
-      "en": "Examine a child's genitals with an explanation, the parent's consent and the child's agreement and a chaperone (AAP 2025), and explain the results to the boy and his parent in stages and in plain words."
+      "zh-CN": "在解释、征得家长和孩子同意、并与他们商定陪检人员在场的情况下检查儿童的外生殖器，并分阶段、用通俗语言向孩子和家长说明结果。",
+      "en": "Examine a child's genitals with an explanation, the parent's consent, the child's agreement and a chaperone agreed with them, and explain the results to the boy and his parent in stages and in plain words."
     }
   ],
   "patient": {
@@ -345,7 +345,10 @@
           "勃起",
           "遗精",
           "最先",
-          "哪个先"
+          "哪个先",
+          "体味",
+          "狐臭",
+          "气味"
         ],
         "en": [
           "grow",
@@ -356,7 +359,10 @@
           "spots",
           "erection",
           "wet dream",
-          "came first"
+          "came first",
+          "odour",
+          "odor",
+          "smell"
         ]
       },
       "disclosure": "volunteer",
@@ -387,7 +393,9 @@
           "体重",
           "长胖",
           "长了多少",
-          "增重"
+          "增重",
+          "瘦了",
+          "变瘦"
         ],
         "en": [
           "grown",
@@ -399,7 +407,8 @@
           "weight",
           "heavier",
           "put on",
-          "gained"
+          "gained",
+          "lost weight"
         ]
       },
       "excludeKeywords": {
@@ -468,13 +477,19 @@
           "家里",
           "家族",
           "家人",
-          "爸爸"
+          "爸爸",
+          "体味",
+          "狐臭",
+          "气味"
         ],
         "en": [
           "came first",
           "family",
           "father",
-          "relatives"
+          "relatives",
+          "odour",
+          "odor",
+          "smell"
         ]
       },
       "required": true,
@@ -540,7 +555,11 @@
           "发育迟缓",
           "走路说话",
           "早期发育",
-          "跟得上"
+          "跟得上",
+          "会走路",
+          "会说话",
+          "走路",
+          "说话"
         ],
         "en": [
           "whenhewasyounger",
@@ -813,6 +832,22 @@
       "source": {
         "zh-CN": "1.0.0版未记录：保持未知，不补写",
         "en": "Not recorded in 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "出生",
+          "早产",
+          "生的时候",
+          "走路",
+          "说话"
+        ],
+        "en": [
+          "born",
+          "birth",
+          "premature",
+          "walk",
+          "talk"
+        ]
       }
     },
     {
@@ -1089,7 +1124,9 @@
           "躺下",
           "憋气",
           "胸闷",
-          "胸痛"
+          "胸痛",
+          "躺平",
+          "躺着"
         ],
         "en": [
           "cough",
@@ -1142,6 +1179,18 @@
       "source": {
         "zh-CN": "1.0.0版未记录：保持未知，不补写",
         "en": "Not recorded in 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "肚子",
+          "腹"
+        ],
+        "en": [
+          "tummy",
+          "belly",
+          "abdomen",
+          "stomach"
+        ]
       }
     },
     {
@@ -1196,7 +1245,9 @@
           "害怕",
           "顾虑",
           "最怕",
-          "想知道"
+          "想知道",
+          "希望",
+          "期望"
         ],
         "en": [
           "worried",
@@ -1266,6 +1317,25 @@
       "source": {
         "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：身高132 cm，面胸背痤疮，腋毛，阴毛Ⅲ–Ⅳ期（英文1.0.0写作“facial/truncal acne”）",
         "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): height 132 cm, acne on the face, chest and back (面胸背; the English of 1.0.0 says \"facial/truncal\"), axillary hair, pubic hair stage III–IV"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "外生殖器",
+          "生殖器",
+          "阴茎",
+          "睾丸",
+          "阴囊",
+          "下面",
+          "下体"
+        ],
+        "en": [
+          "genital",
+          "penis",
+          "testes",
+          "testicle",
+          "scrotum",
+          "private"
+        ]
       }
     },
     {
@@ -1284,7 +1354,9 @@
           "睾丸容积",
           "阴囊",
           "下面",
-          "下体"
+          "下体",
+          "私处",
+          "隐私部位"
         ],
         "en": [
           "genital",
@@ -1294,7 +1366,9 @@
           "testicles",
           "testicular volume",
           "orchidometer",
-          "scrotum"
+          "scrotum",
+          "private parts",
+          "privates"
         ]
       },
       "finding": {
@@ -2256,8 +2330,8 @@
         },
         "search": {
           "text": {
-            "zh-CN": "β-hCG 16.0 IU/L（当地参考上限5.3）。AFP：报告中有AFP结果，但其中部分单位有疑问，在对照原文核实之前，本病例不显示AFP数值。",
-            "en": "β-hCG 16.0 IU/L (upper limit of the local reference range 5.3). AFP: the report gives AFP results, some with questionable units; this case shows no AFP value until they are checked against the full article."
+            "zh-CN": "β-hCG 16.0 IU/L（当地参考上限5.3）。AFP：报告中有AFP结果，但其中部分单位有疑问，本病例不显示AFP数值。",
+            "en": "β-hCG 16.0 IU/L (upper limit of the local reference range 5.3). AFP: the report gives AFP results, some with questionable units; this case shows no AFP value."
           },
           "source": {
             "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：前上纵隔肿物，β-hCG 16.0 IU/L（当地上限5.3）；原文部分AFP单位异常，未改写为标准值",
@@ -2544,7 +2618,17 @@
     }
   ],
   "orderMatching": {
-    "rules": [],
+    "rules": [
+      {
+        "ifHas": "tumour-markers",
+        "ifMatches": "绒毛膜|chorionic",
+        "unlessMatches": "lh|fsh|睾酮|testosterone|黄体生成素|卵泡刺激素|激发|gnrh|lhrh",
+        "add": [],
+        "remove": [
+          "gnrh-test"
+        ]
+      }
+    ],
     "exact": {
       "lh": [
         "gnrh-test"
@@ -2553,6 +2637,18 @@
         "gnrh-test"
       ],
       "mri": [
+        "pituitary-mri",
+        "brain-mri"
+      ],
+      "磁共振": [
+        "pituitary-mri",
+        "brain-mri"
+      ],
+      "核磁共振": [
+        "pituitary-mri",
+        "brain-mri"
+      ],
+      "核磁": [
         "pituitary-mri",
         "brain-mri"
       ]
@@ -2609,6 +2705,17 @@
       "response": {
         "zh-CN": "已解释并取得同意：护士在场陪检，拉好帘子，家长和孩子都同意检查。报告没有描述当时是怎样检查的。",
         "en": "Explained and agreed: a nurse chaperones, the curtains are drawn, and his parent and he agree to the examination. The report does not describe how its examination was done."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "麻醉",
+          "气道"
+        ],
+        "en": [
+          "anaesth",
+          "anesth",
+          "airway"
+        ]
       }
     },
     {
@@ -2681,6 +2788,20 @@
       "response": {
         "zh-CN": "已转介。报告没有记录他是否接受过发育评估或学习支持。",
         "en": "Referral made. The report does not record any developmental assessment or learning support."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "睾酮",
+          "雄激素",
+          "激素",
+          "可的松"
+        ],
+        "en": [
+          "testosterone",
+          "androgen",
+          "hormone",
+          "hydrocortisone"
+        ]
       }
     },
     {
@@ -2730,8 +2851,7 @@
       "indicatedWhen": {
         "all": [
           {
-            "read": "chest-imaging",
-            "phase": "search"
+            "decided": "source-search"
           },
           {
             "not": {
@@ -2762,7 +2882,9 @@
           "术前评估",
           "心脏超声",
           "超声心动图",
-          "气管受压"
+          "气管受压",
+          "评估气道",
+          "麻醉医生评估"
         ],
         "en": [
           "anaesthetic assessment",
@@ -2773,17 +2895,20 @@
           "pre-anaesthetic",
           "pre-op assessment",
           "echocardiogram",
-          "tracheal compression"
+          "tracheal compression",
+          "assess his airway",
+          "assess the airway",
+          "anaesthetist",
+          "anesthetist"
         ]
       },
       "requires": [],
       "risk": "none",
-      "maxDoses": 1,
+      "maxDoses": 2,
       "indicatedWhen": {
         "all": [
           {
-            "read": "chest-imaging",
-            "phase": "search"
+            "decided": "source-search"
           },
           {
             "not": {
@@ -2794,7 +2919,7 @@
       },
       "response": {
         "zh-CN": "已请麻醉科评估并安排相应检查。报告没有记录他有无气道或循环受压的症状、气道测量、心脏超声或麻醉经过，这些结果在本病例中都不存在。",
-        "en": "Anaesthesia review and the tests are requested. The report records no symptoms of airway or circulatory compression, airway measurements, echocardiogram or anaesthetic course — none of these results exists in this case."
+        "en": "Anaesthesia review and the tests are requested. The report does not record whether he had symptoms of airway or circulatory compression, nor any airway measurement, echocardiogram or anaesthetic course; none of these results exists in this case."
       }
     },
     {
@@ -2842,17 +2967,19 @@
             "phase": "search"
           },
           {
-            "intervened": "airway-assessment"
+            "intervened": "airway-assessment",
+            "whenIndicated": true
           }
         ]
       },
       "contraindicatedWhen": {
         "not": {
-          "intervened": "airway-assessment"
+          "intervened": "airway-assessment",
+          "whenIndicated": true
         }
       },
       "harm": {
-        "zh-CN": "没有先评估颈部或胸部有无压迫气道和循环的肿物就施行全身麻醉，可能在诱导时发生气道塌陷或循环衰竭。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声，并进行多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。",
+        "zh-CN": "没有先评估肿物有无压迫气道和循环就施行全身麻醉，可能在诱导时发生气道塌陷或循环衰竭。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：前纵隔肿物的孩子即使术前没有呼吸道症状，也可能在全麻诱导时发生心肺塌陷；麻醉前要问气道和循环受压的症状，用胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声，并进行多学科讨论；尽量避免全麻，必须全麻时保留自主呼吸。",
         "en": "A general anaesthetic without first assessing whether a mass compresses the airway or circulation risks airway collapse or circulatory failure at induction. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): even children with no respiratory symptoms can have cardiorespiratory compromise or collapse on induction; before anaesthesia ask about symptoms of airway and circulatory compression, assess compression of the airway, great vessels and heart on chest CT, add a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion, and hold a multidisciplinary huddle; avoid general anaesthesia where possible and keep spontaneous ventilation if it is needed."
       },
       "response": {
@@ -2931,12 +3058,17 @@
       "contraindicatedWhen": {
         "all": [
           {
-            "read": "chest-imaging",
-            "phase": "search"
+            "decided": "source-search"
           },
           {
             "not": {
-              "intervened": "airway-assessment"
+              "intervened": "resection"
+            }
+          },
+          {
+            "not": {
+              "intervened": "airway-assessment",
+              "whenIndicated": true
             }
           }
         ]
@@ -2948,6 +3080,28 @@
       "response": {
         "zh-CN": "已镇静。报告没有记录他做任何检查时是否用过镇静。",
         "en": "Sedation given. The report does not record whether he was sedated for any scan."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "麻醉评估",
+          "麻醉会诊",
+          "麻醉科评估",
+          "气道",
+          "镇静前",
+          "镇静之前",
+          "陪检",
+          "征得同意"
+        ],
+        "en": [
+          "anaesthetic review",
+          "anaesthesia review",
+          "anesthesia review",
+          "anaesthetic assessment",
+          "anesthetic assessment",
+          "airway",
+          "before any sedation",
+          "before sedation"
+        ]
       }
     },
     {
@@ -3014,10 +3168,10 @@
           "化疗",
           "顺铂",
           "卡铂",
-          "BEP方案",
-          "PEB方案",
           "依托泊苷",
-          "博来霉素"
+          "博来霉素",
+          "BEP化疗方案",
+          "PEB化疗方案"
         ],
         "en": [
           "chemotherapy",
@@ -3185,8 +3339,8 @@
         "en": "First tests"
       },
       "hint": {
-        "zh-CN": "诊断明确之前先别用药：哪些检查能告诉你垂体驱动有没有启动？",
-        "en": "No drugs before a diagnosis: which tests tell you whether the pituitary drive is switched on?"
+        "zh-CN": "哪些检查能告诉你垂体驱动有没有启动？现在就开始治疗，会对这些检查有什么影响？",
+        "en": "Which tests tell you whether the pituitary drive is switched on — and what would starting treatment now do to them?"
       },
       "guidance": {
         "zh-CN": "在决策板上作答。",
@@ -3327,8 +3481,8 @@
       "id": "first-line",
       "kind": "single",
       "prompt": {
-        "zh-CN": "他8岁4个月，阴茎增大、声音变粗半年，半年长高8 cm；你已经问完病史、做完查体。在用任何药之前，第一批检查怎么安排？",
-        "en": "He is 8 years 4 months old, with six months of penile enlargement and a deepening voice and 8 cm of growth in six months; you have taken the history and examined him. Before any drug, how do you plan the first tests?"
+        "zh-CN": "他8岁4个月，阴茎增大、声音变粗半年，半年长高8 cm；你已经问完病史、做完查体。下一步怎么安排？",
+        "en": "He is 8 years 4 months old, with six months of penile enlargement and a deepening voice and 8 cm of growth in six months; you have taken the history and examined him. What is your plan now?"
       },
       "requires": {
         "all": [
@@ -3369,8 +3523,8 @@
         {
           "id": "gnrha-first",
           "text": {
-            "zh-CN": "8岁多出现阴毛、变声、喉结和生长突增，是典型的中枢性性早熟，睾丸超过4 mL也说明性腺轴已经启动：今天先开始每月一次的GnRH类似物注射，尽早保护成年身高，激素检查、骨龄片和影像检查都等第一针打完之后再一起补做。",
-            "en": "Pubic hair, a breaking voice, an Adam's apple and a growth spurt at eight are classic central precocious puberty, and testes above 4 mL confirm the axis is on: start a monthly GnRH analogue today to protect his adult height, and complete the hormone tests, bone age and imaging after the first injection."
+            "zh-CN": "8岁多出现阴毛、声音变粗、喉结和生长突增，是典型的中枢性性早熟，睾丸超过4 mL也说明性腺轴已经启动：今天先开始每月一次的GnRH类似物注射，尽早保护成年身高，激素检查、骨龄片和影像检查都等第一针打完之后再一起补做。",
+            "en": "Pubic hair, a deepening voice, an Adam's apple and a growth spurt at eight are classic central precocious puberty, and testes above 4 mL confirm the axis is on: start a monthly GnRH analogue today to protect his adult height, and complete the hormone tests, bone age and imaging after the first injection."
           },
           "correct": false,
           "feedback": {
@@ -3431,8 +3585,8 @@
         {
           "id": "peripheral-axis-suppressed",
           "text": {
-            "zh-CN": "促性腺激素非依赖性（外周性）性早熟：睾酮55.5 nmol/L，而激发后LH几乎测不出（0.1 IU/L，远低于约3.3–5.0 IU/L的青春期前上限），性腺轴被抑制；GnRH类似物无效，必须找到雄激素来源。",
-            "en": "Gonadotropin-independent (peripheral) precocious puberty: testosterone 55.5 nmol/L with a stimulated LH that is barely detectable (0.1 IU/L, far below a prepubertal limit of about 3.3–5.0 IU/L), so the axis is suppressed; a GnRH analogue cannot treat this — find the androgen's source."
+            "zh-CN": "促性腺激素非依赖性（外周性）性早熟：睾酮55.5 nmol/L，而激发后LH峰值仅0.1 IU/L（远低于约3.3–5.0 IU/L的青春期前上限），性腺轴被抑制；GnRH类似物无效，必须找到雄激素来源。",
+            "en": "Gonadotropin-independent (peripheral) precocious puberty: testosterone 55.5 nmol/L with a stimulated LH peak of only 0.1 IU/L (far below a prepubertal limit of about 3.3–5.0 IU/L), so the axis is suppressed; a GnRH analogue cannot treat this — find the androgen's source."
           },
           "correct": true,
           "feedback": {
@@ -3529,8 +3683,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对，这是过早下结论。Klinefelter综合征导致的是原发性性腺功能减退（睾酮偏低、LH升高），而他是睾酮高、LH被抑制，方向正好相反。EAA指南（2021）提醒：Klinefelter综合征的男孩可因产生hCG的生殖细胞肿瘤（多在纵隔）而出现性早熟，医生应注意这一肿瘤风险，以免错过早期发现和治疗的机会。",
-            "en": "No — premature closure. Klinefelter syndrome causes primary hypogonadism, a low testosterone with a high LH; he has a high testosterone with a suppressed LH, the opposite. The EAA guideline (2021) warns that boys with Klinefelter syndrome may present with precocious puberty from hCG-producing germ-cell tumours, mostly mediastinal, and that physicians should be aware of the tumour risk so as not to lose the chance of early detection and treatment."
+            "zh-CN": "不对，这是过早下结论。Klinefelter综合征导致的是原发性性腺功能减退（从青春期中期起睾酮偏低或处于正常低限、LH升高），而他是睾酮高、LH被抑制，方向正好相反。EAA指南（2021）提醒：Klinefelter综合征的男孩可因产生hCG的生殖细胞肿瘤（多在纵隔）而出现性早熟，医生应注意这一肿瘤风险，以免错过早期发现和治疗的机会。",
+            "en": "No — premature closure. Klinefelter syndrome causes primary hypogonadism — from mid-puberty a low or low-normal testosterone with a high LH; he has a high testosterone with a suppressed LH, the opposite. The EAA guideline (2021) warns that boys with Klinefelter syndrome may present with precocious puberty from hCG-producing germ-cell tumours, mostly mediastinal, and that physicians should be aware of the tumour risk so as not to lose the chance of early detection and treatment."
           }
         },
         {
@@ -3652,7 +3806,7 @@
         {
           "id": "markers-imaging-puberty-ks",
           "text": {
-            "zh-CN": "按生殖细胞肿瘤随访：定期查β-hCG、AFP（例如前6个月每月一次，此后每3个月一次至满2年）和胸部影像；追踪睾酮、LH、生长和骨龄，留意继发中枢性青春期；安排遗传咨询和学习、言语支持，青春期再评估雄激素和生育问题。",
+            "zh-CN": "按生殖细胞肿瘤随访：查β-hCG、AFP（例如前6个月每月一次，此后每3个月一次至满2年）和胸部影像；追踪睾酮、LH、生长和骨龄，留意继发中枢性青春期；安排遗传咨询和学习、言语支持，青春期再评估雄激素和生育。",
             "en": "Follow him as after a germ-cell tumour: β-hCG, AFP (e.g. monthly for 6 months, then 3-monthly to 2 years) and chest imaging; track testosterone, LH, growth and bone age for secondary central puberty; arrange genetic counselling and learning and speech support, revisiting androgens and fertility at adolescence."
           },
           "correct": true,
@@ -3908,8 +4062,8 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "肿物的处理方案正确（第一次即答对），并提交了多学科讨论",
-        "en": "Planned the mass's management correctly (first attempt) and referred to the multidisciplinary team"
+        "zh-CN": "肿物的处理方案正确（第一次即答对），并在手术前提交了多学科讨论",
+        "en": "Planned the mass's management correctly (first attempt) and referred to the multidisciplinary team before the operation"
       },
       "met": {
         "all": [
@@ -3917,7 +4071,8 @@
             "decidedFirstTry": "mass-plan"
           },
           {
-            "intervened": "mdt-referral"
+            "intervened": "mdt-referral",
+            "whenIndicated": true
           }
         ]
       }
@@ -4010,8 +4165,8 @@
         "en": "Explained the findings to the boy and his parent in stages, protected his privacy and checked understanding by teach-back"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评判。开始时询问家长和孩子的担忧（家长：“他才8岁，怎么就这样了？我就怕是什么不好的病。”），用通俗的话解释每一步要做什么、为什么做。检查外生殖器前解释、征得家长和孩子同意、有陪检人员在场、保护隐私（AAP 2025：是否陪检、由谁陪检由患儿、家长和医生共同决定）。核型和胸部结果出来后，用SPIKES分阶段告知：先了解家长已知道什么，坏消息前给出预告（例如“片子上胸腔里有一个肿物，很可能就是它在产生激素”），说明Klinefelter综合征现在和将来意味着什么（学习、青春期、生育），不要一次说太多；解释为什么麻醉前要先评估气道，以及手术的目的；不承诺“治好”。考虑到他与同学交流有困难，用适合他的方式让孩子本人参与。最后用回授法请家长复述计划。原报告没有记录与家属的沟通。",
-        "en": "Judge with Calgary–Cambridge. Start by asking the parent and the boy what worries them (the parent: \"He's only eight — why is this happening? I'm afraid it's something bad.\") and explain each step and its reason in plain words. Before the genital examination explain it, gain the parent's consent and the boy's agreement, have a chaperone and protect his privacy (AAP 2025: whether a chaperone is used, and who, is decided jointly by patient, parent and clinician). When the karyotype and chest results are known, give the news in stages with SPIKES: find out what the parent knows, warn before bad news (\"the scan shows a lump in the chest that is probably making the hormone\"), explain what Klinefelter syndrome means now and later (learning, puberty, fertility) without overloading, explain why the airway is checked before any anaesthetic and what the operation is for, and promise no cure. Involve the boy at his own level, given his difficulty communicating with classmates. Close with teach-back of the plan. The report records no conversation with the family."
+        "zh-CN": "按Calgary–Cambridge评判。开始时询问家长和孩子的担忧（家长：“他才8岁，怎么就这样了？我就怕是什么不好的病。”），用通俗的话解释每一步要做什么、为什么做。检查外生殖器前解释、征得家长和孩子同意、有陪检人员在场、保护隐私（AAP 2025年陪检政策声明的摘要：是否陪检、由谁陪检，由患儿、家长和医生共同决定）。核型和胸部结果出来后，用SPIKES分阶段告知：先了解家长已知道什么，坏消息前给出预告（例如“片子上胸腔里有一个肿物，很可能就是它在产生激素”），说明Klinefelter综合征现在和将来意味着什么（学习、青春期、生育），不要一次说太多；解释为什么麻醉前要先评估气道，以及手术的目的；不承诺“治好”。考虑到他与同学交流有困难，用适合他的方式让孩子本人参与。最后用回授法请家长复述计划。原报告没有记录与家属的沟通。",
+        "en": "Judge with Calgary–Cambridge. Start by asking the parent and the boy what worries them (the parent: \"He's only eight — why is this happening? I'm afraid it's something bad.\") and explain each step and its reason in plain words. Before the genital examination explain it, gain the parent's consent and the boy's agreement, have a chaperone and protect his privacy (the abstract of the AAP's 2025 chaperone policy statement: whether a chaperone is used, and who, is decided jointly by patient, parent and clinician). When the karyotype and chest results are known, give the news in stages with SPIKES: find out what the parent knows, warn before bad news (\"the scan shows a lump in the chest that is probably making the hormone\"), explain what Klinefelter syndrome means now and later (learning, puberty, fertility) without overloading, explain why the airway is checked before any anaesthetic and what the operation is for, and promise no cure. Involve the boy at his own level, given his difficulty communicating with classmates. Close with teach-back of the plan. The report records no conversation with the family."
       }
     }
   ],
@@ -4046,7 +4201,7 @@
       },
       "knowledge": {
         "zh-CN": "儿科病房护士，负责余知远。交班（ISBAR）：余知远，8岁4个月男孩，家长陪同；因阴茎增大、声音变粗6个月入院；半年长高8 cm；病历卡记录体重30 kg（测量时间未记录）；病历中没有记录生命体征、过敏和用药。可以在外生殖器检查时担任陪检，抽血、预约检查和联系会诊；报告出来后在病历终端调阅。",
-        "en": "Children's ward nurse looking after Yu Zhiyuan. Handover (ISBAR): Yu Zhiyuan, 8 years 4 months, with his parent; admitted with six months of penile enlargement and a deepening voice; 8 cm of growth in six months; his card records a weight of 30 kg (when it was measured is not recorded); his notes record no vital signs, allergies or medicines. Can chaperone the genital examination, take blood, book tests and call consultants; reports are read at the records terminal as they come."
+        "en": "Children's ward nurse looking after Yu Zhiyuan. Handover (ISBAR): Yu Zhiyuan, 8 years 4 months, with his parent; admitted with six months of penile enlargement and a deepening voice; 8 cm of growth in six months; his card records a weight of 30 kg (when it was measured is not recorded); his notes do not record his vital signs, allergies or medicines. Can chaperone the genital examination, take blood, book tests and call consultants; reports are read at the records terminal as they come."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4074,7 +4229,7 @@
     },
     "conclusion": {
       "zh-CN": "余知远，8岁4个月男孩，阴茎增大、声音变粗6个月，伴痤疮、喉结出现和勃起（无遗精），半年长高8 cm、增重5 kg；从小生长发育落后，学习较差，与同学交流困难。查体：身高132 cm，面部、胸部和背部痤疮，有腋毛，阴毛Ⅲ–Ⅳ期，阴茎长9 cm、周径8 cm，双侧睾丸5–6 mL。睾酮55.5 nmol/L，GnRH激发后LH峰值0.1 IU/L、FSH峰值2.15 IU/L，骨龄11岁，垂体MRI及肾上腺、睾丸等影像未见异常——促性腺激素非依赖性（外周性）性早熟；两次核型均为47,XXY。后续发现前上纵隔肿物，β-hCG 16.0 IU/L（当地上限5.3）；切除约8×5×4 cm肿物，病理为囊实性畸胎瘤。一年随访男性化减慢，睾酮8.49 nmol/L，β-hCG 0.7 IU/L，胸片未见异常；因这些结果未复查MRI，报告仍强调警惕残留。今天的做法：把睾丸和男性化程度对照，先证明性腺轴被抑制，不在染色体结果处停下，查β-hCG和AFP并做纵隔影像，任何麻醉前先评估气道和循环，完整切除，再随访标志物、影像、青春期和Klinefelter综合征。",
-      "en": "Yu Zhiyuan, aged 8 years 4 months, had six months of penile enlargement and voice deepening, with acne, a laryngeal prominence and erections (no nocturnal emissions), and had grown 8 cm and gained 5 kg in six months; his growth and development had been behind since he was little, his schoolwork was rather poor and he had difficulty communicating with classmates. Examination: height 132 cm, acne on the face, chest and back, axillary hair, pubic hair stage III–IV, a penis 9 cm long and 8 cm in circumference, both testes 5–6 mL. Testosterone was 55.5 nmol/L with a GnRH-stimulated LH peak of 0.1 IU/L and FSH peak of 2.15 IU/L, bone age 11 years, and pituitary MRI and adrenal and testicular imaging unremarkable — gonadotropin-independent (peripheral) precocious puberty; two karyotypes showed 47,XXY. An anterosuperior mediastinal mass was subsequently found, with β-hCG 16.0 IU/L (local upper limit 5.3); an approximately 8×5×4 cm mass was resected and histology showed a cystic-solid teratoma. At one year of follow-up virilisation had slowed, testosterone was 8.49 nmol/L, β-hCG 0.7 IU/L and the chest radiograph showed no abnormality; because of these results the MRI was not repeated, and the report still urged vigilance for residual disease. Today's answer: weigh the testes against the virilisation, show that the axis is suppressed, do not stop at the karyotype, measure β-hCG and AFP and image the mediastinum, assess the airway and circulation before any anaesthetic, resect completely, then follow markers, imaging, puberty and Klinefelter care."
+      "en": "Yu Zhiyuan, aged 8 years 4 months, had six months of penile enlargement and voice deepening, with acne, a laryngeal prominence and erections (no nocturnal emissions), and had grown 8 cm and gained 5 kg in six months; his growth and development had been behind since he was little, his schoolwork was rather poor and he had difficulty communicating with classmates. Examination: height 132 cm, acne on the face, chest and back, axillary hair, pubic hair stage III–IV, a penis 9 cm long and 8 cm in circumference, both testes 5–6 mL. Testosterone was 55.5 nmol/L with a GnRH-stimulated LH peak of 0.1 IU/L and FSH peak of 2.15 IU/L, bone age 11 years, and pituitary MRI and adrenal, testicular and other imaging unremarkable — gonadotropin-independent (peripheral) precocious puberty; two karyotypes showed 47,XXY. An anterosuperior mediastinal mass was subsequently found, with β-hCG 16.0 IU/L (local upper limit 5.3); an approximately 8×5×4 cm mass was resected and histology showed a cystic-solid teratoma. At one year of follow-up virilisation had slowed, testosterone was 8.49 nmol/L, β-hCG 0.7 IU/L and the chest radiograph showed no abnormality; because of these results the MRI was not repeated, and the report still urged vigilance for residual disease. Today's answer: weigh the testes against the virilisation, show that the axis is suppressed, do not stop at the karyotype, measure β-hCG and AFP and image the mediastinum, assess the airway and circulation before any anaesthetic, resect completely, then follow markers, imaging, puberty and Klinefelter care."
     },
     "keyReasoning": [
       {
@@ -4147,11 +4302,11 @@
       },
       {
         "zh-CN": "畸胎瘤的治疗和随访。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：畸胎瘤的主要治疗是完整手术切除；包括纵隔在内的成熟畸胎瘤以手术加观察治疗，未成熟畸胎瘤也主要以手术加观察处理；良性和未成熟畸胎瘤可有AFP和β-hCG的小幅升高，以成熟或未成熟成分为主的畸胎瘤中可能有少量恶性成分；所有儿童术后3年内都要频繁复查肿瘤标志物。报告的一年随访——β-hCG 0.7 IU/L，胸片未见异常，因这些结果未复查MRI——没有记录病理分级和是否完整切除，这正是需要继续监测的原因。",
-        "en": "Treating and following a teratoma. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the primary treatment of teratomas is complete resection; mature teratomas, including those of the mediastinum, are treated with surgery and observation, and immature teratomas primarily with surgery and observation; benign and immature teratomas may produce small elevations of AFP and β-hCG, and malignant elements may form a small fraction of a predominantly mature or immature teratoma; markers are measured frequently for 3 years in all children. The report's one-year review — β-hCG 0.7 IU/L, a chest radiograph with no abnormality, the MRI not repeated because of these results — leaves the grade and the completeness of resection unrecorded, which is why monitoring continues."
+        "en": "Treating and following a teratoma. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the primary treatment of teratomas is complete resection; mature teratomas, including those of the mediastinum, are treated with surgery and observation, and immature teratomas primarily with surgery and observation; benign and immature teratomas may produce small elevations of AFP and β-hCG, and malignant elements may form a small fraction of a predominantly mature or immature teratoma; markers are measured frequently for 3 years in all children. The report's one-year review — β-hCG 0.7 IU/L, a chest radiograph with no abnormality, the MRI not repeated because of these results — leaves the grade and the completeness of resection unrecorded, which is why monitoring must continue."
       },
       {
-        "zh-CN": "Klinefelter综合征的儿童期照护和检查时的隐私。EAA指南（2021）：向患者和父母提供遗传咨询；青春期前儿童如有需要给予言语治疗、学习监测、社交训练和心理支持；不对婴儿和青春期前男孩用睾酮；从预计青春期开始之前起评估青春期发育、睾酮和促性腺激素；青春期延迟或性腺功能减退时、讨论生育问题后再用睾酮。AAP政策声明（2025）：敏感部位检查是否陪检、由谁陪检，由患儿、家长和医生共同决定。他在一年随访时睾酮8.49 nmol/L，需要查LH和肿瘤标志物来判断是已进入中枢性青春期，还是仍有来源。",
-        "en": "Childhood care in Klinefelter syndrome, and privacy in the examination. EAA guideline (2021): offer genetic counselling to patients and parents; speech therapy, monitoring of learning, social training and psychological support for pre-pubertal children if needed; no testosterone in infants and pre-pubertal boys; assess pubertal development, testosterone and gonadotropins from before the expected start of puberty, and give testosterone for delayed puberty or hypogonadism after fertility has been addressed. AAP policy statement (2025): whether a chaperone is used for sensitive examinations, and who, is decided jointly by the patient, parent and clinician. His testosterone of 8.49 nmol/L at one year needs LH and the markers to tell whether central puberty has begun or a source remains."
+        "zh-CN": "Klinefelter综合征的儿童期照护和检查时的隐私。EAA指南（2021）：向患者和父母提供遗传咨询；青春期前儿童如有需要给予言语治疗、学习监测、社交训练和心理支持；不对婴儿和青春期前男孩用睾酮；从预计青春期开始之前起评估青春期发育、睾酮和促性腺激素；青春期延迟或性腺功能减退时、讨论生育问题后再用睾酮。AAP 2025年陪检政策声明（摘要）：敏感部位检查是否陪检、由谁陪检，由患儿、家长和医生共同决定。他在一年随访时睾酮8.49 nmol/L，需要查LH和肿瘤标志物来判断是已进入中枢性青春期，还是仍有来源。",
+        "en": "Childhood care in Klinefelter syndrome, and privacy in the examination. EAA guideline (2021): offer genetic counselling to patients and parents; speech therapy, monitoring of learning, social training and psychological support for pre-pubertal children if needed; no testosterone in infants and pre-pubertal boys; assess pubertal development, testosterone and gonadotropins from before the expected start of puberty, and give testosterone for delayed puberty or hypogonadism after fertility has been addressed. The AAP's 2025 policy statement on chaperones (abstract): whether a chaperone is used for sensitive examinations, and who, is decided jointly by the patient, parent and clinician. His testosterone of 8.49 nmol/L at one year needs LH and the markers to tell whether central puberty has begun or a source remains."
       }
     ],
     "references": [
@@ -4160,7 +4315,7 @@
       "Bangalore Krishna K, Fuqua JS, Rogol AD, Klein KO, Popovic J, Houk CP, et al. Use of gonadotropin-releasing hormone analogs in children: update by an international consortium. Horm Res Paediatr. 2019;91(6):357-372. doi:10.1159/000501336",
       "Zitzmann M, Aksglaede L, Corona G, Isidori AM, Juul A, T'Sjoen G, et al. European academy of andrology guidelines on Klinefelter Syndrome: endorsing organization: European Society of Endocrinology. Andrology. 2021;9(1):145-167. doi:10.1111/andr.12909",
       "PDQ Childhood Extracranial Germ Cell Tumors Treatment (Health Professional Version). Bethesda (MD): National Cancer Institute; updated 2024 Nov 5 [cited 2026 Nov 14]. Available from: https://www.cancer.gov/types/extracranial-germ-cell/hp/germ-cell-treatment-pdq",
-      "Waller EJ. Anesthesia for patients with anterior mediastinal mass. SPA Case Guides. Society for Pediatric Anesthesia; 2024 Oct 31 [cited 2026 Nov 14]. Available from: https://www2.pedsanesthesia.org/case-guides/Anesthesia_for_Aneterior_Mediastinal_Mass_SPA_Case_Guide_103124.pdf",
+      "Waller EJ. Anesthesia for patients with anterior mediastinal mass. SPA Case Guides. Society for Pediatric Anesthesia; 2022 [revised 2024 Aug 28; cited 2026 Nov 14]. Available from: https://www2.pedsanesthesia.org/case-guides/Anesthesia_for_Aneterior_Mediastinal_Mass_SPA_Case_Guide_103124.pdf",
       "Berhane A, Hackell JM, Wallace S; Committee on Practice and Ambulatory Medicine; Committee on Adolescence. Use of chaperones for the pediatric and adolescent encounter: policy statement. Pediatrics. 2025;155(6):e2025071810. doi:10.1542/peds.2025-071810"
     ],
     "notice": {
@@ -4807,6 +4962,65 @@
       {
         "text": "How is his appetite?",
         "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Was he born early?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Has he lost weight?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Any lumps in his tummy?",
+        "locale": "en",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "Has his body odour changed?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "他几岁会走路、会说话？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "晚上躺平能睡吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "你们希望我们做什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "最近瘦了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "他身上有没有体味？",
+        "locale": "zh-CN",
         "expect": []
       }
     ]

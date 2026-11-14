@@ -324,7 +324,18 @@
           "why is he here",
           "broughthimin",
           "the matter",
-          "happening"
+          "happening",
+          "mainproblem",
+          "bringhimtohospital",
+          "broughthimtohospital",
+          "bringhimin",
+          "cometohospital",
+          "howdidallthisstart",
+          "howdidthisstart",
+          "howdiditstart",
+          "howdiditallstart",
+          "puffy",
+          "sincewhen"
         ]
       },
       "excludeKeywords": {
@@ -334,11 +345,15 @@
           "手指",
           "脚趾",
           "弯",
-          "早上",
           "眼",
           "活动",
           "受伤",
-          "家住"
+          "家住",
+          "早上起",
+          "早上关节",
+          "早晨",
+          "僵",
+          "药"
         ],
         "en": [
           "hurt",
@@ -347,12 +362,14 @@
           "finger",
           "toe",
           "bent",
-          "morning",
           "eye",
           "move",
           "movement",
           "moving",
-          "injur"
+          "injur",
+          "in the morning",
+          "mornings",
+          "stiff"
         ]
       },
       "disclosure": "volunteer",
@@ -612,7 +629,10 @@
           "药物",
           "特别的治疗",
           "吃什么药",
-          "治疗"
+          "治疗",
+          "治关节的药",
+          "吃过药",
+          "什么药"
         ],
         "en": [
           "treatment",
@@ -688,7 +708,9 @@
           "爸爸妈妈是",
           "别的孩子",
           "其他孩子",
-          "还有孩子"
+          "还有孩子",
+          "是亲戚",
+          "沾亲"
         ],
         "en": [
           "related to each other",
@@ -701,7 +723,11 @@
           "tuberculosis",
           "parents related",
           "other children",
-          "other kids"
+          "other kids",
+          "father related",
+          "mother related",
+          "dad related",
+          "you related"
         ]
       },
       "disclosure": "on-ask",
@@ -729,7 +755,11 @@
           "表亲",
           "血缘",
           "亲上加亲",
-          "有亲戚关系"
+          "有亲戚关系",
+          "是亲戚",
+          "爸妈是亲戚",
+          "父母是亲戚",
+          "沾亲"
         ],
         "en": [
           "consanguin",
@@ -737,7 +767,10 @@
           "cousins",
           "blood relative",
           "parents related",
-          "related by blood"
+          "related by blood",
+          "you and his father related",
+          "mum and dad related",
+          "his father related"
         ]
       },
       "disclosure": "on-ask",
@@ -892,6 +925,14 @@
       "source": {
         "zh-CN": "本病例没有记录：保持未知",
         "en": "Not recorded in this case: kept unknown"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "早上好"
+        ],
+        "en": [
+          "good morning"
+        ]
       }
     },
     {
@@ -945,7 +986,8 @@
           "at first",
           "early on",
           "bruis",
-          "bleed"
+          "bleed",
+          "puffy"
         ]
       },
       "disclosure": "unknown",
@@ -1323,7 +1365,10 @@
           "顾虑",
           "害怕",
           "有什么想问",
-          "想知道"
+          "想知道",
+          "最怕",
+          "怕什么",
+          "怕的"
         ],
         "en": [
           "worry",
@@ -1331,7 +1376,10 @@
           "worries",
           "concern",
           "afraid",
-          "questionsforus"
+          "questionsforus",
+          "scared",
+          "frightened",
+          "fear"
         ]
       },
       "disclosure": "on-ask",
@@ -1555,7 +1603,8 @@
           "心脏超声",
           "心超",
           "心脏彩超",
-          "心彩超"
+          "心彩超",
+          "心脏B超"
         ],
         "en": [
           "echocardiogram",
@@ -1681,8 +1730,8 @@
       "aliases": {
         "zh-CN": [
           "心电图",
-          "心电",
-          "十二导联"
+          "十二导联",
+          "12导联"
         ],
         "en": [
           "ecg",
@@ -1710,6 +1759,17 @@
           }
         },
         "work-up": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "diagnosis": {
           "available": false,
           "text": {
             "zh-CN": "该检查没有记录结果。",
@@ -1762,6 +1822,17 @@
           }
         },
         "work-up": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "diagnosis": {
           "available": false,
           "text": {
             "zh-CN": "该检查没有记录结果。",
@@ -1885,6 +1956,17 @@
           }
         },
         "work-up": {
+          "available": false,
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        },
+        "diagnosis": {
           "available": false,
           "text": {
             "zh-CN": "该检查没有记录结果。",
@@ -2286,7 +2368,14 @@
           "手足X线",
           "膝关节片",
           "关节超声",
-          "关节磁共振"
+          "关节磁共振",
+          "手的X线",
+          "手部X线",
+          "双手X线",
+          "膝的X线",
+          "膝部X线",
+          "双膝X线",
+          "膝关节X线"
         ],
         "en": [
           "joint imaging",
@@ -2295,7 +2384,13 @@
           "knee x-ray",
           "joint ultrasound",
           "joint mri",
-          "joint films"
+          "joint films",
+          "x-rays of his hands",
+          "x-ray of his hands",
+          "x-rays of the hands",
+          "x-rays of his knees",
+          "x-ray of his knee",
+          "x-rays of the knees"
         ]
       },
       "requires": [
@@ -2430,7 +2525,9 @@
           "髋部X线",
           "拍髋",
           "髋部片",
-          "髋关节平片"
+          "髋关节平片",
+          "骨盆正位",
+          "骨盆平片"
         ],
         "en": [
           "pelvic x-ray",
@@ -2442,7 +2539,9 @@
           "x-ray of his hip",
           "x-ray of the hip",
           "x-ray of the pelvis",
-          "hips x-ray"
+          "hips x-ray",
+          "ap pelvis",
+          "pelvic film"
         ]
       },
       "requires": [
@@ -2697,13 +2796,11 @@
       "aliases": {
         "zh-CN": [
           "诊断记录",
-          "诊断",
           "出院诊断",
           "病历诊断"
         ],
         "en": [
           "diagnosis record",
-          "diagnosis",
           "final diagnosis",
           "discharge diagnosis"
         ]
@@ -3334,8 +3431,8 @@
     {
       "id": "nsaid-colchicine",
       "name": {
-        "zh-CN": "按急性心包炎给大剂量NSAID加秋水仙碱",
-        "en": "High-dose NSAID plus colchicine, as for acute pericarditis"
+        "zh-CN": "按急性心包炎给大剂量NSAID或阿司匹林，加秋水仙碱",
+        "en": "High-dose NSAID or aspirin, plus colchicine, as for acute pericarditis"
       },
       "kind": "medication",
       "aliases": {
@@ -3346,7 +3443,9 @@
           "NSAID",
           "消炎痛",
           "吲哚美辛",
-          "抗炎药"
+          "抗炎药",
+          "阿司匹林",
+          "乙酰水杨酸"
         ],
         "en": [
           "ibuprofen",
@@ -3354,12 +3453,14 @@
           "nsaid",
           "anti-inflammatory",
           "indometacin",
-          "naproxen"
+          "naproxen",
+          "aspirin",
+          "acetylsalicylic acid"
         ]
       },
       "dose": {
-        "zh-CN": "布洛芬（大剂量，按体重给药）加秋水仙碱，用数周至数月。",
-        "en": "Ibuprofen (high dose, by weight) plus colchicine for weeks to months."
+        "zh-CN": "布洛芬（大剂量，按体重给药）或阿司匹林，加秋水仙碱，用数周至数月。",
+        "en": "Ibuprofen (high dose, by weight) or aspirin, plus colchicine, for weeks to months."
       },
       "requires": [
         "medications"
@@ -3371,12 +3472,12 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ESC 2025：心包摩擦音只是心包炎的附加标准之一，确诊心包炎要有临床表现（如心包炎样胸痛），并有一项以上附加标准；他没有记录到胸痛。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像上也没有炎症证据）时不推荐抗炎治疗（第11.7.4节）——先查炎症指标、给积液成像。在积液和它的原因评估清楚之前就开数周到数月的NSAID和秋水仙碱，会带来胃肠和肾脏不良反应，却没有可以期待的获益。",
-        "en": "ESC 2025: a pericardial rub is one additional criterion; a definite diagnosis of pericarditis needs a clinical presentation (such as pericarditic chest pain) with more than one additional criterion, and no chest pain is recorded for him. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence of inflammation) anti-inflammatory treatment is not recommended (section 11.7.4) — check the inflammatory markers and image the effusion first. Weeks to months of NSAID and colchicine before the effusion and its cause are assessed bring gastrointestinal and renal adverse effects without an expected benefit."
+        "zh-CN": "ESC 2025：心包摩擦音只是心包炎的附加标准之一，确诊心包炎要有临床表现（如心包炎样胸痛），并有一项以上附加标准；他没有记录到胸痛。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像上也没有炎症证据）时不推荐抗炎治疗（第11.7.4节）——先查炎症指标、给积液成像。在积液和它的原因评估清楚之前就开数周到数月的NSAID或阿司匹林加秋水仙碱，会带来胃肠和肾脏不良反应，却没有可以期待的获益；而且多数儿科医生在儿童中避免使用阿司匹林（ESC 2025第12.2.2节）。",
+        "en": "ESC 2025: a pericardial rub is one additional criterion; a definite diagnosis of pericarditis needs a clinical presentation (such as pericarditic chest pain) with more than one additional criterion, and no chest pain is recorded for him. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence of inflammation) anti-inflammatory treatment is not recommended (section 11.7.4) — check the inflammatory markers and image the effusion first. Weeks to months of NSAID or aspirin with colchicine before the effusion and its cause are assessed bring gastrointestinal and renal adverse effects without an expected benefit, and most paediatricians avoid aspirin in children (ESC 2025, section 12.2.2)."
       },
       "response": {
-        "zh-CN": "已开始NSAID和秋水仙碱（见安全提示）。本病例不模拟它们的作用。",
-        "en": "NSAID and colchicine started (see the safety note). The case does not simulate their effect."
+        "zh-CN": "已开始抗炎药和秋水仙碱（见安全提示）。本病例不模拟它们的作用。",
+        "en": "Anti-inflammatory drug and colchicine started (see the safety note). The case does not simulate their effect."
       }
     }
   ],
@@ -3521,8 +3622,8 @@
         "en": "Read the blood tests and the joint imaging alongside the echocardiogram: what supports inflammation and what does not? What does his heart need now?"
       },
       "guidance": {
-        "zh-CN": "结果已经回报。",
-        "en": "The results are back."
+        "zh-CN": "现在可以调阅他的检查记录。",
+        "en": "His test records can now be read."
       },
       "completeWhen": {
         "all": [
@@ -3691,8 +3792,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有穿刺指征：心脏压塞是临床诊断，要由超声心动图证实，而目前没有任何记录能确立它——他没有颈静脉怒张，单凭心音稍钝不能诊断压塞，积液也还没有成像。ESC 2025推荐影像引导下心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液——这些在他身上都没有确立；盲目穿刺可能刺伤心肌或冠状动脉。",
-            "en": "No indication for a needle: tamponade is a clinical diagnosis confirmed by echocardiography, and nothing recorded establishes it — his neck veins are not distended, slightly muffled heart sounds alone do not make it, and the effusion has not been imaged. ESC 2025 recommends image-guided pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy — none of which is established for him; a blind needle can lacerate the heart or a coronary artery."
+            "zh-CN": "没有穿刺指征：心脏压塞是临床诊断，要由超声心动图证实，而目前没有任何记录能确立它——他没有颈静脉怒张，单凭心音稍钝不能诊断压塞；要等影像显示有指征时才考虑穿刺。ESC 2025推荐影像引导下心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液——这些在他身上都没有确立；盲目穿刺可能刺伤心肌或冠状动脉。",
+            "en": "No indication for a needle: tamponade is a clinical diagnosis confirmed by echocardiography, and nothing recorded establishes it — his neck veins are not distended, and slightly muffled heart sounds alone do not make it; a needle waits until imaging shows an indication. ESC 2025 recommends image-guided pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy — none of which is established for him; a blind needle can lacerate the heart or a coronary artery."
           }
         },
         {
@@ -3715,8 +3816,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "心音稍钝加心包摩擦音，这次住院就要做超声心动图，测量积液并判断有没有压塞：ESC 2025建议所有怀疑心包炎的患者在初始评估时就做超声心动图。颈静脉不怒张不能排除压塞：缓慢积聚的积液可以积得很多，ESC 2025称压塞是“最后一滴”现象，再多一点就可能失代偿。",
-            "en": "Slightly muffled heart sounds with a rub need echocardiography during this admission to size the effusion and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Normal neck veins do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
+            "zh-CN": "心音稍钝加心包摩擦音，这次住院就要做超声心动图，看有没有积液、有多少，并判断有没有压塞：ESC 2025建议所有怀疑心包炎的患者在初始评估时就做超声心动图。颈静脉不怒张不能排除压塞：缓慢积聚的积液可以积得很多，ESC 2025称压塞是“最后一滴”现象，再多一点就可能失代偿。",
+            "en": "Slightly muffled heart sounds with a rub need echocardiography during this admission to look for fluid, size it and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Normal neck veins do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
           }
         }
       ]
@@ -3773,8 +3874,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有引流指征：没有任何记录能确立心脏压塞——他没有颈静脉怒张，左室收缩功能正常。ESC 2025推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；这些在他身上都没有确立，宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
-            "en": "No indication for drainage: nothing recorded establishes tamponade — his neck veins are not distended and left ventricular systolic function is normal. ESC 2025 recommends pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; none of these is established for him, so conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
+            "zh-CN": "没有引流指征：没有任何记录能确立心脏压塞——他没有颈静脉怒张，没有记录到血流动力学受影响，超声心动图报告也没有提到任何压塞表现（左室收缩功能正常既不能说明有压塞，也不能排除压塞）。ESC 2025推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；这些在他身上都没有确立，宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
+            "en": "No indication for drainage: nothing recorded establishes tamponade — his neck veins are not distended, no haemodynamic compromise is recorded and the echocardiogram report names no sign of tamponade (normal left ventricular systolic function neither shows nor excludes it). ESC 2025 recommends pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; none of these is established for him, so conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
           }
         },
         {
@@ -4311,8 +4412,8 @@
       "domain": "safety",
       "weight": 3,
       "text": {
-        "zh-CN": "没有在炎症未确立时使用激素、甲氨蝶呤、生物制剂、关节腔注射或NSAID加秋水仙碱",
-        "en": "Gave no steroid, methotrexate, biologic, joint injection or NSAID with colchicine while no inflammation was established"
+        "zh-CN": "没有在炎症未确立时使用激素、甲氨蝶呤、生物制剂、关节腔注射或NSAID（或阿司匹林）加秋水仙碱",
+        "en": "Gave no steroid, methotrexate, biologic, joint injection or NSAID (or aspirin) with colchicine while no inflammation was established"
       },
       "met": {
         "not": {
@@ -4502,7 +4603,7 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "JIA是排除性诊断（ILAR分类标准，Petty等，2004）：16岁前起病、持续至少6周、病因不明的关节炎，并且要先排除其他已知疾病；其中“关节炎”的定义本身也排除了其他可以识别的原因。CACP就是这样一个原因：Offiah等（2005）建议，凡是非炎症性关节病或“不典型JIA”都要想到CACP，骨盆片上的大髋臼囊肿在相应临床背景下可视为其特征；在22例沙特患儿中，转诊诊断多数是JIA，所有患儿炎症指标正常、类风湿因子阴性（Albuhairan等，2013）。",
+        "zh-CN": "JIA是排除性诊断（ILAR分类标准，Petty等，2004）：16岁前起病、持续至少6周、病因不明的关节炎，并且要先排除其他已知疾病；其中“关节炎”的定义本身也排除了其他可以识别的原因。CACP就是这样一个原因：Offiah等（2005）建议，凡是非炎症性关节病或“不典型JIA”都要想到CACP，骨盆片上的大髋臼囊肿在相应临床背景下可视为CACP的特征性（可据以诊断的）表现；在22例沙特患儿中，转诊诊断多数是JIA，所有患儿炎症指标正常、类风湿因子阴性（Albuhairan等，2013）。",
         "en": "JIA is a diagnosis of exclusion (ILAR classification, Petty et al., 2004): arthritis of unknown cause beginning before the 16th birthday and persisting at least 6 weeks, other known conditions excluded — and its definition of arthritis itself excludes other identifiable causes. CACP is such a cause: Offiah et al. (2005) advise considering it in every non-inflammatory arthropathy or “atypical JIA”, with large acetabular cysts on pelvic radiographs regarded as pathognomonic in the right setting; among 22 Saudi children, JIA was the referral diagnosis in most, and all had normal inflammatory markers and a negative RF (Albuhairan et al., 2013)."
       },
       {
@@ -5228,6 +5329,62 @@
         "text": "今天是星期几？",
         "locale": "zh-CN",
         "expect": []
+      },
+      {
+        "text": "Good morning. What's the main problem with Qinghe?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What made you bring him to hospital?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Are you and his father related?",
+        "locale": "en",
+        "expect": [
+          "consanguinity"
+        ]
+      },
+      {
+        "text": "What are you most scared of?",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "早上好，孩子怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "孩子爸妈是亲戚吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "consanguinity"
+        ]
+      },
+      {
+        "text": "吃过治关节的药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "您最怕的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
       }
     ]
   },

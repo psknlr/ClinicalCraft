@@ -14,7 +14,7 @@
 | The patient | Chen Qinghe (pseudonym), a 9-year-old boy weighing 19.5 kg, admitted with a relative whose relationship to him is not recorded; swelling of several limb joints, first noticed three years ago and worse every year |
 | What the learner can do | Take the history from the relative (the boy answers questions put to him), examine digits, large joints, heart and neck veins; check for tamponade at the bedside; order echocardiography, ECG, chest X-ray, troponin and NT-proBNP, other blood tests, a cardiac MRI, a pelvic radiograph, a urine glycosaminoglycan screen, a knee aspiration and a gene test; read the chart's records at a terminal; call cardiology, rehabilitation, clinical genetics and orthopaedics; talk with the family; answer five decisions |
 | Languages | Simplified Chinese and English (same facts, same teaching) |
-| Review status | Editorial review (AI-assisted) against the cited guidance, with an independent review round 1 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
+| Review status | Editorial review (AI-assisted) against the cited guidance, with independent review rounds 1 and 2 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
 
 ## Learning outcomes
 
@@ -131,7 +131,7 @@ attempt (`decidedFirstTry`).
 | `rb-joint-plan-first-try` | Management | decision 5, first attempt | 3 |
 | `rb-team` | Management | cardiology, rehabilitation, clinical genetics and orthopaedics involved | 3 |
 | `rb-no-needle` | **Safety** | no pericardiocentesis (scored once decision 1 is attempted or the needle is given) — **critical** | 3 |
-| `rb-no-immunosuppression` | **Safety** | no prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID with colchicine (scored once decision 1 is attempted or one of them is given) | 3 |
+| `rb-no-immunosuppression` | **Safety** | no prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID (or aspirin) with colchicine (scored once decision 1 is attempted or one of them is given) | 3 |
 | `rb-communication` | Communication (examiner) | the working diagnosis, what is unproven and the plan, the steroid worry, SPIKES for the diagnosis, teach-back, when to return | 1 |
 
 The three critical items are acts done in time — an order placed on the day of admission, a bedside check given
@@ -148,7 +148,7 @@ echo ordered or a tamponade check done in the work-up phase does not count.
 | Wrong first at `heart-today` (any distractor) | 37/39 (95 %) | none | pass |
 | Wrong first at `effusion-plan` / `genetics` / `joint-care` | 36/39 (92 %) | none | pass |
 | Wrong first at `joint-pattern` | 35/39 (90 %) | none | pass |
-| Reference + prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID with colchicine (each alone) | 36/39 (92 %) | none | pass (each is `critical: false`) |
+| Reference + prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID (or aspirin) with colchicine (each alone) | 36/39 (92 %) | none | pass (each is `critical: false`) |
 | Reference + pericardiocentesis (on admission, or in work-up after the echo) | 36/39 (92 %) | `rb-no-needle` | **fail** (`critical: true`) |
 | Echo ordered late (work-up) | 36/39 (92 %) | `rb-echo-admission` | pass |
 | Tamponade check late (work-up) or never | 36/39 (92 %) | `rb-tamponade-check` | pass |
@@ -164,8 +164,8 @@ the needle also fails the safety outcome.
 establishes tamponade (his neck veins are not distended; slightly muffled heart sounds alone do not make the diagnosis),
 bacterial or neoplastic pericarditis, or a symptomatic effusion despite treatment (ESC 2025 indications, class I); giving it fails the run's safety outcome whatever the score, and it also misses the
 critical `rb-no-needle`. The TNF inhibitor is the other `risk: "high"` intervention and is explicitly
-`critical: false`, like long-term prednisolone, weekly methotrexate, intra-articular triamcinolone and NSAID with
-colchicine (all `risk: "moderate"`): each is a wrong but recoverable decision in this case — one dose or start that
+`critical: false`, like long-term prednisolone, weekly methotrexate, intra-articular triamcinolone and NSAID or
+aspirin with colchicine (all `risk: "moderate"`): each is a wrong but recoverable decision in this case — one dose or start that
 the next clinician stops — so each costs `rb-no-immunosuppression` (3 points) without failing the safety outcome. No
 intervention carries a dose preset: none states a dose, so a preset would invent one; methotrexate, a high-alert
 medicine in many hospital lists, appears only as a wrong step without a dose.
@@ -229,8 +229,8 @@ No drug dose is stated anywhere in the case: the report records none and the wro
 |---|---|
 | Treating the joints first and leaving the heart for later (outpatient echo) | Decision 1 distractor `outpatient-echo`; an echo ordered in work-up misses the critical `rb-echo-admission` |
 | Taking normal neck veins as "no tamponade" | Decision 1 feedback; the critical `rb-tamponade-check` needs the bedside check on admission |
-| Reading the rub as acute pericarditis and starting NSAID with colchicine | Decision 1 and 2 distractors; the intervention's harm text (ESC 2025 Table 4 and §11.7.4) and `rb-no-immunosuppression` |
-| Draining a moderate effusion "before it tamponades" | Decision 2 distractor; pericardiocentesis is `critical: true` and fails the safety outcome |
+| Reading the rub as acute pericarditis and starting an NSAID (or aspirin) with colchicine | Decision 1 and 2 distractors; the intervention's harm text (ESC 2025 Table 4 and §11.7.4; §12.2.2 for aspirin in children) and `rb-no-immunosuppression` |
+| Draining a moderate effusion "before it tamponades", or reading normal left ventricular function as "no tamponade" | Decision 2 distractor and its feedback (ESC 2025 Table 17: the echocardiographic signs of tamponade); pericardiocentesis is `critical: true` and fails the safety outcome |
 | Calling it RF-negative polyarticular JIA and starting methotrexate | Decision 3 and 5 distractors; methotrexate's harm text (ILAR 2004, ACR/AF 2019) |
 | Explaining camptodactyly away as old arthritic contractures | Decision 3 distractor and key reasoning |
 | Reassuring the family that unrelated parents mean no risk | Decision 4 distractors (de novo, dominant, X-linked, "label is enough") |
@@ -331,9 +331,20 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
   ("髋关节片", "髋关节X线") from also ordering the joint-imaging record ("关节片", "关节X线") unless another joint is named;
   `prednisolone` has excludeKeywords so that a joint injection ("关节腔注射激素", "steroid injection into the knees")
   reaches the intra-articular item, and `digits` excludes wrists, ankles, elbows and knees.
-- `extensions.testUtterances`: 48 paraphrases (24 zh-CN, 24 en; three look-alike negatives), at least one for every
+- `extensions.testUtterances`: 56 paraphrases (28 zh-CN, 28 en; three look-alike negatives), at least one for every
   required item; all pass with no unexpected match (`cases verify`). Review round 1 also probed about 60 fresh history
   phrasings, 15 examination requests, 24 orders and 28 interventions (including negated orders) in both languages.
+- Review round 2 probed 72 further history phrasings, 19 examination requests, 34 orders and 39 interventions
+  (`work-cmcr-44362/r2-probe.ts`) and fixed what they found: a greeting ("Good morning, …", 早上好…) sent any question
+  to morning stiffness (now an `excludeKeywords` entry there; the presenting complaint excludes "in the morning",
+  "stiff", 僵 and 药 instead of every "morning"/早上); plain openers ("What made you bring him to hospital?", "How did
+  all this start?", "puffy" joints) reach the presenting complaint; "Are you and his father related?" and 爸妈是亲戚
+  reach consanguinity before family history; 心脏B超 orders the echocardiogram (the critical order), 骨盆正位片 the
+  pelvic film and "x-rays of his hands and knees" the joint-imaging record; the bare aliases 诊断/"diagnosis" and 心电
+  were removed because they fired inside other orders ("做基因检测明确诊断", 心电监护); aspirin reaches the
+  anti-inflammatory wrong step and a negated aspirin order withholds. Two probes are accepted as they are: "observe him
+  closely" gives the bedside tamponade check (the author's "obs"/"vital signs" aliases), and an off-topic "where is the
+  canteen?" (医院食堂在哪儿？) reaches the presenting complaint.
 
 ## References
 
@@ -378,7 +389,12 @@ Albuhairan 2013 in their PubMed abstracts; Kisla Ekinci 2021 in its full text (P
 ESC 2025's own text: CMR is recommended in suspected pericarditis when a diagnosis cannot be made using clinical
 criteria (class I, level B; also Recommendation Table 1, I B); the initial assessment's "biomarkers" include
 high-sensitivity troponin, CRP and NT-proBNP (Recommendation Table 1, footnote c); and §11.8.1 lists diminished heart
-sounds among the classical signs of tamponade.
+sounds among the classical signs of tamponade. Review round 2 (2026-11-14) re-read every attributed statement in the
+same sources (the ESC 2025 PDF; the ILAR 2004 PDF; the ACR/AF 2019 and ACR 2021 full texts; the PubMed abstracts; the
+Kisla Ekinci full text), re-resolved all eleven DOIs by Crossref, and checked that ACMG/AMP 2015 is still the published
+variant standard (the ACMG/AMP/CAP/ClinGen sequence variant classification v4.0 was still in pilot in 2026); it added
+ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include left ventricular systolic function) and
+§12.2.2's note that most paediatricians avoid aspirin.
 
 ### To verify
 
@@ -408,9 +424,11 @@ sounds among the classical signs of tamponade.
    CACP may differ); cardiac MRI in this boy (keyed in decision 2 and in the reference path after ESC 2025's class I
    recommendation: feasibility and sedation at 9 years, timing); troponin and NT-proBNP in the initial assessment.
 2. Paediatric rheumatology: the keyed reading of the arthropathy; prednisolone, methotrexate, TNF inhibitor, joint
-   injection and NSAID with colchicine scored as non-critical harms; the knee aspiration scored neutral.
+   injection and NSAID (or aspirin) with colchicine scored as non-critical harms; the knee aspiration scored neutral.
 3. Clinical genetics: the testing strategy (single gene, panel or exome) and the counselling content of decision 4.
 4. General paediatrics: whether his weight of 19.5 kg at 9 years warrants comment once his height is known.
+5. Clinical genetics (currency): when the ACMG/AMP/CAP/ClinGen sequence variant classification v4.0 is published,
+   replace the ACMG/AMP 2015 citation (decision 4 feedback, geneticist's brief, teaching point 4, references).
 
 ## Changelog
 
@@ -452,6 +470,21 @@ sounds among the classical signs of tamponade.
   it" (who noticed is not recorded); a Chinese question that added "elsewhere". Scores unchanged (reference 39/39,
   doing nothing 0/33, wrong first everywhere 62 %, each harm 36/39); 16 investigations, 69 steps, 48 utterances.
   Still to verify: the source pass and the clinician review (see To verify).
+- **Review round 2 (2026-11-14).** A second independent review re-traced every patient fact in both languages (no
+  added or changed fact found), re-read each attributed statement in its source, replayed the assessment and probed
+  the matcher with fresh phrasings. Fixed: the drainage distractor's feedback gave normal left ventricular systolic
+  function as a reason no tamponade was established (it is not a sign of tamponade, ESC 2025 Table 17; now: no
+  recorded haemodynamic compromise and no tamponade sign named in the echocardiogram report); two heart feedbacks
+  presupposed that the effusion had not been imaged, or that there was one, before the echocardiogram; an objective's
+  guidance said "the results are back" (when the tests were done is not recorded); matcher gaps — a greeting sent any
+  question to morning stiffness, plain openers reached past illness or nothing, consanguinity look-alikes reached
+  family history, and the echocardiogram ordered as 心脏B超 (the critical order), the pelvic film (骨盆正位片) and hand
+  and knee films reached nothing; generic aliases (诊断, "diagnosis", 心电) fired inside other orders; the ECG, chest
+  X-ray and FBC answered nothing when ordered in the diagnosis phase (now "No result is recorded for this test.");
+  aspirin now belongs to the anti-inflammatory wrong step (ESC 2025 §12.2.2: most paediatricians avoid aspirin),
+  closing round 1's open minor; a Chinese teaching point weakened "pathognomonic". Scores unchanged (reference 39/39,
+  doing nothing 0/33, wrong first everywhere 62 %, each harm 36/39, the needle fails the safety outcome); 56
+  utterances. Still to verify: the source pass and the clinician review (see To verify).
 
 ### 1.0.0
 
@@ -461,14 +494,15 @@ on 2026-10-29.
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-14, again after review round 1):
+Run from the worktree root (all passed on 2026-11-14, again after review rounds 1 and 2):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-44362/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 48/48 · rubric 39/39 (100 %)
+npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 56/56 · rubric 39/39 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44362   # depth floor; do nothing 0/33; wrong first 62 % < 100 %; openers reach the presenting complaint
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44362:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44362:"   # in-world demonstration, en + zh-CN
+npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-44362"                       # every act possible in the facility
 ```
 
 ## 中文摘要
@@ -494,7 +528,7 @@ PRG4基因和常染色体隐性遗传，给出再发风险；为非炎症性的�
 **复盘要点：** 心脏优先：颈静脉不怒张不能排除压塞；无痛肿胀、屈曲指加反复阴性的炎症检查，提示非炎症性关节病而不是JIA；
 没有炎症证据时不推荐抗炎治疗，心包穿刺只用于有指征时；临床诊断需要分子诊断和遗传咨询来证实；原报告不用特殊药物、建议功能
 锻炼，与今天的做法一致，今天还要补上基因检测、遗传咨询、髋关节影像和心脏科随访。本病例的事实沿用1.0.0版的提取，尚未对照
-原文全文核对；2026-11-14完成第一轮独立审核（见更新记录），尚未经执业医师审核。
+原文全文核对；2026-11-14完成两轮独立审核（见更新记录），尚未经执业医师审核。
 
 **安全结果。** 唯一的`critical: true`处置是无指征的床旁心包穿刺引流：给予即判定安全结果不合格；激素、甲氨蝶呤、TNF抑制剂、
-关节腔注射和NSAID加秋水仙碱均为`critical: false`：给了其中任何一项，就失去安全项的3分，但不判定安全结果不合格。
+关节腔注射和NSAID（或阿司匹林）加秋水仙碱均为`critical: false`：给了其中任何一项，就失去安全项的3分，但不判定安全结果不合格。

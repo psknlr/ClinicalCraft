@@ -339,6 +339,7 @@
    "case-check": true,
    "contract": true,
    "in-world": true,
+   "spatial-policy": true,
    "validate": true,
    "verify": true
   },
@@ -364,11 +365,27 @@
      "major": 9,
      "minor": 10
     }
+   },
+   "4": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 1,
+     "major": 5,
+     "minor": 8
+    }
    }
-  }
+  },
+  "roundsCommitted": 4
  },
  "cmcr-33610": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "findings": {
+   "critical": 1,
+   "major": 6,
+   "minor": 11
+  },
+  "reviewed": true
  },
  "cmcr-33632": {
   "allChecksPass": true,
@@ -594,7 +611,16 @@
    "major": 7,
    "minor": 5
   },
-  "reviewed": true
+  "reviewed": true,
+  "rounds": {
+   "2": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 3,
+     "minor": 11
+    }
+   }
+  }
  },
  "cmcr-44399": {
   "allChecksPass": true,
