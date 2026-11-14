@@ -16,7 +16,7 @@
  * again, and what it escalated is asked first — up to the act it held up.
  */
 import type { CaseDefinition, ClinicalAction, CountRecord, TeamScenario } from "@clinicalcraft/core";
-import { awaitingAcquisition, countStatus, evaluate } from "@clinicalcraft/core";
+import { awaitingAcquisition, countStatus, evaluate, informBlocks } from "@clinicalcraft/core";
 import { actionIntent, createSession, mergeSettings, minutesUntilReadable, monitorTravels, type ClinicalSession, type TeamCheckpoint } from "@clinicalcraft/agent";
 import { catalogsFor, chooseFacility, type LoadedContent } from "@clinicalcraft/agent/node";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
@@ -57,15 +57,22 @@ export interface HandoffParty {
 /**
  * An information handoff as the record has it (docs/TEAM.md §4.5): the request to the member who holds it
  * (`ordered`), their report back (`performed`), the read-back of the person who needed it, confirmed (`received`);
- * then the first clinical act after it (`next`) and the act it held up (`blocked`: when it was given — after the
- * information arrived, or not).
+ * then the first clinical act after it (`next`) and each act it held up (`blocked`, the scenario's `blocks` in their
+ * order: when each was given — after the information arrived, or not; null when it was not given).
  */
 export interface InformHandoff {
   ordered: HandoffParty | null;
   performed: HandoffParty | null;
   received: HandoffParty | null;
   next: { action: string; by: string; at: number } | null;
-  blocked?: { intervention: string; givenAt: number | null; afterReceipt: boolean | null };
+  blocked?: HeldUpAct[];
+}
+
+/** An act an information need held up, as the run ended: when it was given, and whether after the information arrived. */
+export interface HeldUpAct {
+  intervention: string;
+  givenAt: number | null;
+  afterReceipt: boolean | null;
 }
 
 /** One act of the clinician in charge after the team's handoff (the case's reference path, continued). */
@@ -232,13 +239,16 @@ async function continueAfter(session: ClinicalSession, c: CaseDefinition, scenar
     taken.add(h);
     if (!(await run({ type: "ask", itemId: h }))) return acts;
   }
-  const blocks = new Set(scenario.inform.flatMap((n) => (n.blocks ? [n.blocks] : [])));
+  // the acts each information need held up: the path stops once one of each need's acts has been given (they may be
+  // alternatives — thrombolysis by either drug)
+  const held = scenario.inform.map((n) => informBlocks(n)).filter((ids) => ids.length > 0);
+  const given = (id: string) => acts.some((x) => x.interventionId === id && x.accepted);
   for (let i = from; i < c.solution.length; i++) {
     const a = c.solution[i]!;
     if (isEnd(a)) break;
     if (a.type === "ask" && taken.has(a.itemId)) continue;
     if (!(await run(a))) break;
-    if (a.type === "intervene" && blocks.has(a.interventionId) && [...blocks].every((b) => acts.some((x) => x.interventionId === b && x.accepted))) break;
+    if (a.type === "intervene" && held.some((ids) => ids.includes(a.interventionId)) && held.every((ids) => ids.some(given))) break;
   }
   return acts;
 }
@@ -364,13 +374,17 @@ function informObligation(n: TeamScenario["inform"][number], expect: TeamRunResu
   const after = ctx.after ?? [];
   const accepted = after.filter((x) => x.accepted);
   const first = accepted[0];
-  const given = n.blocks ? accepted.find((x) => x.interventionId === n.blocks) : undefined;
+  // each act it held up, tracked on its own
+  const blocked = informBlocks(n).map((id): HeldUpAct => {
+    const given = accepted.find((x) => x.interventionId === id);
+    return { intervention: id, givenAt: given?.at ?? null, afterReceipt: given ? (task?.relayed ? given.at >= task.relayed.at : null) : null };
+  });
   const handoff: InformHandoff = {
     ordered: party(thread.find((m) => m.kind === "request" && m.to === memberBody(n.heldBy))),
     performed: party(thread.find((m) => m.kind === "report" && m.from === memberBody(n.heldBy))),
     received: received && task?.relayed ? { by: received.from, at: task.relayed.at, round: received.round } : null,
     next: first ? { action: first.action, by: first.by, at: first.at } : null,
-    ...(n.blocks ? { blocked: { intervention: n.blocks, givenAt: given?.at ?? null, afterReceipt: given ? (task?.relayed ? given.at >= task.relayed.at : null) : null } } : {}),
+    ...(blocked.length ? { blocked } : {}),
   };
   let status: TeamObligation["status"] = "unfinished";
   let escalation: TeamObligation["escalation"];
@@ -420,8 +434,10 @@ export function score(c: CaseDefinition, scenario: string, expect: TeamRunResult
       if (o.status === "met" && expect.informed === false) failures.push(`${o.id}: supplied, but the scenario expects it escalated`);
       if (o.status === "met" && !(h?.ordered && h.performed && h.received)) failures.push(`${o.id}: the record lacks who asked, who supplied it or who received it`);
       if ((o.status === "met" || o.status === "escalated") && !h?.next) failures.push(`${o.id}: nothing was recorded of what the clinician did next`);
-      if (h?.blocked && h.blocked.givenAt !== null && h.blocked.afterReceipt === false) failures.push(`${o.id}: ${h.blocked.intervention} was given before the information arrived (inappropriate progression)`);
-      if (o.status === "met" && h?.blocked && h.blocked.givenAt === null) failures.push(`${o.id}: ${h.blocked.intervention} was never given after the information arrived`);
+      // every act it held up given before the information arrived is an inappropriate progression; once it arrived,
+      // one of them (they may be alternatives) is what the clinician went on to
+      for (const b of h?.blocked ?? []) if (b.givenAt !== null && b.afterReceipt === false) failures.push(`${o.id}: ${b.intervention} was given before the information arrived (inappropriate progression)`);
+      if (o.status === "met" && h?.blocked?.length && h.blocked.every((b) => b.givenAt === null)) failures.push(`${o.id}: ${h.blocked.map((b) => b.intervention).join(" / ")} was never given after the information arrived`);
     }
   }
   if (escalations.some((m) => !m.text.en.includes("—"))) failures.push("an escalation without a reason");

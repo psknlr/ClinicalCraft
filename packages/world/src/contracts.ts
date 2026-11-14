@@ -298,6 +298,13 @@ export interface SeenPlace {
   rot?: number;
   /** Not seen: a colleague said it is there (`WorldRuntime.askWhereabouts`) — where they had last seen it or left it. */
   toldBy?: ActorId;
+  /**
+   * What the actor saw of it there (a sighting, never a colleague's word): its behaviour state (`out-of-service` when
+   * out of service; absent for a thing with none) and its entity version then — what it is listed with while believed
+   * there (`ObservedEntity.state`, `stateVersion`; audit 2026-11-12 W1).
+   */
+  state?: string;
+  version?: number;
 }
 
 /** Where an actor looked for a thing and did not find it (`ActorState.missed`): the place, its room, the simulated minute. */
@@ -425,7 +432,10 @@ export interface PatientPlaceState {
   provider: EntityId | null;
   /** Where a transport back goes: the bed space (or provider) the patient belongs to. */
   home: { slot: string | null; provider: EntityId | null };
-  /** A spot that is not a bed space (at a provider, in transit): level, centre and facing (degrees); null in a slot. */
+  /**
+   * A spot that is not a bed space (at a provider, where a transport stopped, walking with someone — where they stand,
+   * advanced by their own steps: `escort`): level, centre and facing (degrees); null in a slot.
+   */
   spot: { level: string; x: number; z: number; rot: number } | null;
   /** The posture the place forces (lying on a table or a trolley, standing at a station); null: the clinical one. */
   posture: BodyPosture | null;
@@ -434,9 +444,10 @@ export interface PatientPlaceState {
   /** What the patient lies or sits on at the spot (a table, the scanner, the trolley), or null (standing). In a slot: its bed. */
   support: EntityId | null;
   /**
-   * The actor the patient walks with (`escort_patient`, EMBODIED §8.4): while set, the patient is at that actor's
-   * side wherever the actor goes — derived from the actor's pose, never stored step by step — standing, with no
-   * body on the floor of their own. Absent or null: they stay where they are.
+   * The actor the patient walks with (`escort_patient`, EMBODIED §8.4): while set, the patient goes wherever that
+   * actor goes on their own feet — their own `spot`, advanced by their own steps along a route planned for them to the
+   * actor's side (never derived from the actor's pose, never through a wall or a window: audit 2026-11-12 W3) —
+   * standing, with no body on the floor of their own. Absent or null: they stay where they are.
    */
   escort?: ActorId | null;
   /**
@@ -528,9 +539,11 @@ export interface PatientPlace {
   footprint: { w: number; d: number; h: number };
   /**
    * While a body wheels (or walks) the patient somewhere (`transport_patient` in progress): who, on which trolley
-   * (null: walking), in which posture — renderers draw them travelling with the walker. Absent otherwise.
+   * (null: walking), in which posture, and the monitor that travels with them (`monitor`, absent when none: on their
+   * bed or trolley, beside the walker on foot — EMBODIED §8.7, audit W4) — renderers draw them travelling with the
+   * walker. Absent otherwise.
    */
-  transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture };
+  transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture; monitor?: EntityId };
   /** The actor the patient walks with now (`escort_patient`): renderers draw them following that actor. Absent otherwise. */
   escort?: ActorId;
 }
@@ -719,10 +732,17 @@ export interface ObservedEntity {
   /** Within interaction reach with line of sight right now. */
   inReach: boolean;
   capabilities?: string[];
-  /** Behaviour state (stored or derived), e.g. "idle", "attached", "open". */
+  /**
+   * Behaviour state (stored or derived), e.g. "idle", "attached", "open". A thing believed elsewhere (`lastKnown`):
+   * the state it was in when the actor last saw it (`last-seen`), else none — never the state it is in now.
+   */
   state?: string;
+  /** The entity's version (EMBODIED R4); believed elsewhere: its version when last seen, else 0. */
   stateVersion: number;
-  /** Operations offered now (depend on the behaviour, its state and the actor's role). */
+  /**
+   * Operations offered now (depend on the behaviour, its state and the actor's role). None for a thing believed
+   * elsewhere or missing (`lastKnown`): nothing is done at it from here, and what it offers depends on where it is.
+   */
   availableActions: string[];
   /** Bystander-visible cues (patients: posture, distressed, accessory; monitors: screen summary when visible). */
   cues?: Record<string, string>;
@@ -733,9 +753,12 @@ export interface ObservedEntity {
    * where the actor last saw it (it may have moved since); `told` — where a
    * colleague said it is; `missing` — the actor looked where it believed it
    * was and it was not there (audit P1-8): its whereabouts are unknown, `room`
-   * is null and distance and bearing measure to where it looked. `level`,
-   * `room`, distances, bearing and reachability then measure to that place.
-   * Absent for perceived things and things that never move.
+   * is null and distance and bearing measure to where it looked — never to
+   * where it is. `level`, `room`, distances, bearing and reachability then
+   * measure to that place; `state` is the one last seen (none unless
+   * `last-seen`) and `availableActions` is empty: what it is and offers now
+   * is not known from here (audit 2026-11-12 W1). Absent for perceived things
+   * and things that never move.
    */
   lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
   /**

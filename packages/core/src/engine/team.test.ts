@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
+import { informBlocks, TeamInformSchema } from "../schema/team.js";
 import { checkCaseIntegrity, checkTeamDefinition, createSession, parseCase, parseCatalog, parseFacility, reduce, teamFacilityIssues } from "./index.js";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -148,6 +149,20 @@ describe("care team · information a colleague holds (docs/TEAM.md §4.5)", () =
         '"surgeon" is not a member or relief colleague who could hold it',
       ]),
     );
+  });
+
+  it("blocks names one act, or several — each an intervention of the case, once (verification D4)", () => {
+    // one id still parses as before; a list holds up each of its acts
+    expect(checkTeamDefinition(withTeam({ ...TEAM, scenarios: [informScenario({ ...good, blocks: ["epi", "fluids"] })] }))).toEqual([]);
+    expect(informBlocks({ blocks: "epi" })).toEqual(["epi"]);
+    expect(informBlocks({ blocks: ["epi", "fluids"] })).toEqual(["epi", "fluids"]);
+    expect(informBlocks({})).toEqual([]);
+    const c = withTeam({ ...TEAM, scenarios: [informScenario({ ...good, blocks: ["epi", "nothing", "epi"] })] });
+    expect(checkTeamDefinition(c).map((i) => [i.path, i.message])).toEqual([
+      ["team.scenarios.0.inform.0.blocks.1", 'unknown intervention "nothing"'],
+      ["team.scenarios.0.inform.0.blocks.2", '"epi" is listed twice'],
+    ]);
+    expect(TeamInformSchema.safeParse({ ...good, blocks: [] }).success).toBe(false);
   });
 
   it("the member who circulates may be posted in another room (she comes to the team's room); the others may not", () => {

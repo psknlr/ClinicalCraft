@@ -279,7 +279,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
   "ok.receivedBy": { "zh-CN": "由{receiver}在那里接手{patient}。", en: "{receiver} took over {patient} there." },
   "ok.monitorTravelled": { "zh-CN": "{monitor}随行监护。", en: "{monitor} went with them, monitoring." },
-  "ok.monitorReturned": { "zh-CN": "{monitor}随行监护；到达后旁边没有地方放，已推回原处。", en: "{monitor} went with them, monitoring; there was no room for it beside them on arrival, so it went back to where it is kept." },
+  "ok.monitorWithThem": { "zh-CN": "{monitor}随行监护；到达后旁边没有空位，它仍留在患者身边。", en: "{monitor} went with them, monitoring; with no free spot beside them on arrival, it stays right with them." },
   "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
   "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
   "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
@@ -349,6 +349,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
 /** Where things are (lead notes 1 and 2). */
 export const WHEREABOUTS: Record<string, Pair> = {
   "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
+  "region.buildZone": { "zh-CN": "建造园地", en: "Build zone" },
   "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
   "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
   // what an actor knows after looking, or asking (audit 2026-11-12 P1-8)

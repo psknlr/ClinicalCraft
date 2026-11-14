@@ -24,7 +24,8 @@
 import { awaitingAcquisition, type ClinicalAction } from "@clinicalcraft/core";
 import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
-import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
+import { resolveFinding, resolveInvestigation, strArg } from "./clinical.js";
+import { resolveOrderedIntervention } from "./dose-order.js";
 import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
 import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./types.js";
 import { hintLines } from "./world-format.js";
@@ -59,7 +60,8 @@ export function clinicalIntent(tool: string, args: Record<string, unknown>, ctx:
       return r.kind === "id" ? { tool, kind, investigationId: r.id, itemId: r.id } : { tool, kind };
     }
     case "intervene": {
-      const r = resolveIntervention(c, args, L);
+      // the item the call orders, as the tool reads it (the first of several orders)
+      const r = resolveOrderedIntervention(c, args, L);
       return r.kind === "id" ? { tool, kind: "intervene", interventionId: r.id, itemId: r.id } : { tool, kind: "intervene" };
     }
     case "consult":

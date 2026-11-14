@@ -108,6 +108,9 @@ const RAW: readonly unknown[] = [
         args: { target: ECG, operation: "move_to", parameters: { goal: { kind: "interact", id: "${patient}" } } },
         when: { not: { world: { deviceAtBedside: true }, target: ECG } },
       },
+      // a cart in the room but out of the body's sight: what state it is in is known only by looking (EMBODIED §4,
+      // audit 2026-11-12 W1) — go and see it before judging which of the steps below it needs
+      { id: "look", tool: "navigate_to", args: { target: ECG }, when: { not: { entityState: ECG, state: ["idle", "prepared", "connected", "completed", "out-of-service"] } } },
       { id: "back", tool: "navigate_to", args: { target: "${patient}" }, when: notNear(1.5) },
       { id: "clear", tool: "interact_object", args: { target: ECG, operation: "reset" }, when: { entityState: ECG, state: ["completed"] } },
       { id: "prepare", tool: "interact_object", args: { target: ECG, operation: "prepare" }, when: { entityState: ECG, state: ["idle"] } },

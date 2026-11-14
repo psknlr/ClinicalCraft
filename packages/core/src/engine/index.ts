@@ -86,7 +86,7 @@ export {
 } from "./text.js";
 
 // doses: an order's stated dose against an intervention's preset (docs/PROTOCOL.md §3.2)
-export { checkOrder, compareDose, doseErrorSeverity, formatDose, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
+export { BOLUS_MINUTES, checkOrder, compareDose, doseErrorSeverity, formatDose, infusionMinutes, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
 export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS, type DoseMention, type OrderReading, type UnclearDose, type UnclearDoseReason } from "./dose-read.js";
 export { isHighAlert } from "./high-alert.js";
 

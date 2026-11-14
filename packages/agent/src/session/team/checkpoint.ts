@@ -17,8 +17,15 @@ export function validTeamCheckpoint(value: unknown): TeamCheckpoint | null {
   if (cp.surgeon !== "learner" && cp.surgeon !== "simulated") return null;
   if (st.version === 1) {
     const begun = (st.round ?? 0) > 0 || (st.messages?.length ?? 0) > 0 || st.tasks.length > 0 || !!st.count;
-    return { ...(cp as TeamCheckpoint), state: { ...(st as TeamCheckpoint["state"]), version: TEAM_STATE_VERSION, lifecycle: begun ? "active" : "pending" } };
+    return withBlockLists({ ...(cp as TeamCheckpoint), state: { ...(st as TeamCheckpoint["state"]), version: TEAM_STATE_VERSION, lifecycle: begun ? "active" : "pending" } });
   }
   if (!LIFECYCLES.includes(st.lifecycle as TeamLifecycle)) return null;
-  return cp as TeamCheckpoint;
+  return withBlockLists(cp as TeamCheckpoint);
+}
+
+/** An information task saved when `blocks` named one act (a string): read as the list it now is. */
+function withBlockLists(cp: TeamCheckpoint): TeamCheckpoint {
+  const old = (t: TeamCheckpoint["state"]["tasks"][number]) => typeof (t as { blocks?: unknown }).blocks === "string";
+  if (!cp.state.tasks.some(old)) return cp;
+  return { ...cp, state: { ...cp.state, tasks: cp.state.tasks.map((t) => (old(t) ? { ...t, blocks: [(t as { blocks?: unknown }).blocks as string] } : t)) } };
 }

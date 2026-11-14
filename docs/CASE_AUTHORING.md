@@ -410,9 +410,29 @@ solution is sent to the browser).
     in parts, `bolus` is the part given first and `amount` the whole (stroke
     alteplase: `"amount": 0.9, "unit": "mg/kg", "bolus": { "amount": 0.09,
     "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit": "mg/kg/h" }`):
-    the whole, its parts or the bolus with the rate are given; a part alone is
-    asked about ("is that the whole dose?"), never a tenfold dose error. The
-    lint checks the rate the text states against `maintenance`.
+    the whole, its parts, the whole beside its bolus ("72 mg: 7.2 mg bolus
+    over 1 min, the rest over 60 min") or the bolus with the rate are given; a
+    part alone is asked about ("is that the whole dose?"), never a tenfold
+    dose error — the bolus's amount over more than a bolus's few minutes runs
+    at a rate, checked as one ("7.2 mg over 120 min"). The infusion is checked
+    even when the parts add up to the whole: a part given over a time against
+    `maintenance` ("then 64.8 mg over 6 min" is tenfold), the whole given over
+    a time, or its rest ("the rest over 60 min", "其余60分钟内泵入"), against
+    the infusion's own duration — the whole less the bolus at the maintenance
+    rate (alteplase: 60 min; "72 mg over 6 min" is tenfold), a stated time
+    within 10 %, however it is written ("over six minutes", "infused for
+    60 min", "64.8 mg in 6 min", "6分钟泵完", "6min内", "六分钟内", "持续滴注
+    1小时"). The bolus's own time is no infusion ("0.9 mg/kg, 10% as a bolus
+    over 1 min", "其中10%于1分钟内静推" are given): a share or "the rest" names
+    the dose in parts, a bolus or an infusion word alone does not ("72 mg IV,
+    bolus over 1 min" is the whole in a minute), and a strength is no share
+    ("KCl 40 mmol in 100 mL 0.9% over 10 min" is 240 mmol/h). Beside a single
+    dose (no `bolus`), an amount over a time is the infusion: at the
+    maintenance rate ("5000 units bolus then 2520 units over 2 h" at 70 kg is
+    given), or — after the single dose, over more than a bolus's few minutes —
+    at whatever rate it runs ("5000 units bolus then 5000 units over 20 min"
+    is 15000 units/h, a dose error). The lint checks the rate the text states
+    against `maintenance`.
   * **A preset spans every dose the case's cited guidance allows** — `amount`
     to `upTo` (labetalol 10–20 mg: `"amount": 10, "upTo": 20`), around the
     dose the text gives: aspirin 300 mg with ESC, Chinese and ACC/AHA loading
@@ -462,8 +482,19 @@ solution is sent to the browser).
     twice the preset or by another route; every other dose error (a rounding
     or weight-band difference, an under-dose that is not tenfold) is a
     warning to review. An order without a dose gives the preset, as does a choice
-    from a list. Write each dose a learner may choose as its own intervention
-    only when it changes the clinical course (IM vs IV-bolus adrenaline);
+    from a list. An order that names several items ("ticagrelor 180 mg and
+    aspirin 300 mg", "替格瑞洛180mg+阿司匹林300mg", "…、…") is read clause by
+    clause, alike in both languages: the first item named (or the one an id
+    names) is given on its own clause — never a "which one?" whose choice
+    gives the preset and drops the dose written —, and every other clause is
+    checked against its own item's preset — a dose error there is recorded
+    (critical ones fail the safety outcome) and read back, though that item is
+    not given; it is given on its own order (PROTOCOL §3.2). That holds for a
+    list of orders only: an item's own name or alias that holds a join
+    ("Continuous ECG, blood pressure and SpO₂ monitoring", "…、…、…") is one
+    clause, ordering that item — a name may hold "and", "、" or a comma. Write each dose a
+    learner may choose as its own intervention only when it changes the
+    clinical course (IM vs IV-bolus adrenaline);
     otherwise one intervention with its preset is enough — a wrong dose is
     caught as a dose error.
   * **High-alert medicines** (ISMP's: an insulin, an anticoagulant, an
@@ -546,8 +577,10 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
   - move an item beside another placement (in the room, or elsewhere in the hospital), or conceal it (`concealed`:
     where it lies; `inside` + `beside: "patient"`: in the wound);
   - route information through the team (`inform`, TEAM.md §4.5): a history item the case already records, held by
-    one named member or relief colleague (duty `inform`), needed by a member, holding up an intervention (`blocks`)
-    from a moment on (`when`). Never write a new fact for it: the holder reports the item's recorded answer.
+    one named member or relief colleague (duty `inform`), needed by a member, holding up interventions (`blocks`:
+    one id, or every act the missing fact contraindicates — `["tenecteplase", "alteplase"]` — each tracked by
+    `bench team`) from a moment on (`when`). Never write a new fact for it: the holder reports the item's recorded
+    answer.
 
   The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
   teaching material, not the case report.

@@ -280,9 +280,14 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     }
     return done.status === "completed";
   };
-  /** The nearest cart providing a capability (at the bedside first). */
+  /**
+   * The nearest cart providing a capability (at the bedside first), out of the carts the department has in service: a
+   * cart out of the staff member's sight is listed in no state it could know (EMBODIED §4, audit 2026-11-12 W1), and
+   * which of its carts a department has taken out of service is its own record — the staff member goes by it, as the
+   * world's capability rule says it (`provides`: nothing out of service), never by the cart's state now.
+   */
   const cartFor = (capability: string): string | null => {
-    const list = world.find(staff, { kind: "equipment", capabilities: [capability], limit: 20 }).filter((e) => world.entity(e.id)?.portable && e.state !== "out-of-service");
+    const list = world.find(staff, { kind: "equipment", capabilities: [capability], limit: 20 }).filter((e) => world.entity(e.id)?.portable && world.provides(e.id).includes(capability));
     return list.find((e) => h.atBedside(e.id))?.id ?? list[0]?.id ?? null;
   };
   const fetch = async (cart: string): Promise<boolean> => {

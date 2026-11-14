@@ -38,6 +38,9 @@ export function entityLine(e: ObservedEntity, locale: string, actorLevel: string
   const cues = cuesText(e.cues, locale);
   // missing: no distance or direction to where it was looked for, no state, nothing to do with it (EMBODIED §4)
   if (e.lastKnown?.kind === "missing") return rt(locale, "world.entity.missing", { name: e.name, id: e.id }) + awareness;
+  // believed elsewhere: the state it was in when last seen there (none when never seen there), never its state now,
+  // and nothing it offers (audit 2026-11-12 W1: the world lists none)
+  const state = !e.state ? "" : e.lastKnown ? rt(locale, "world.entity.stateSeen", { state: e.state }) : rt(locale, "world.entity.state", { state: e.state });
   return (
     rt(locale, "world.entity", {
       name: e.name,
@@ -45,7 +48,7 @@ export function entityLine(e: ObservedEntity, locale: string, actorLevel: string
       distance: round1(e.distance),
       direction,
       // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
-      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) + (e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : "") : "",
+      state: state + (state && e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : ""),
       reach: e.inReach ? rt(locale, "world.entity.inReach") : "",
       actions: e.availableActions.length ? rt(locale, "world.entity.actions", { actions: e.availableActions.join(", ") }) : "",
       cues: cues ? rt(locale, "world.entity.cues", { cues }) : "",

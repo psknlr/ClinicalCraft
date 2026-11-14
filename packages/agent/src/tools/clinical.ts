@@ -58,7 +58,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
-import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, itemOrder, orderCheck, otherOrdersText, writtenOrder } from "./dose-order.js";
+import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, interventionNameText, itemOrder, orderCheck, otherClauses, resolveOrderedIntervention, writtenOrder, type DoseErrorEvent, type DoseQuery } from "./dose-order.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -533,7 +533,7 @@ function operationRedirect(ctx: ToolContext, query: string): ToolOutput {
 }
 
 function interventionRisk(args: ToolArgs, ctx: ToolContext) {
-  const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+  const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
   return r.kind === "id" ? (ctx.caseDef.interventions.find((i) => i.id === r.id)?.risk ?? "low") : "none";
 }
 
@@ -544,6 +544,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm. " +
     "A dose and route written in the order (query or dose: \"IM adrenaline 0.5 mg\", \"肌注肾上腺素 0.5 mg\") are checked against the dose the nurse prepared: " +
     "a dose that differs is not given — the nurse reads the order back and asks you to confirm, and it is recorded as a dose error; a dose that cannot be read (a fraction, a range, no unit, a volume of unknown strength) is not given either — the nurse asks for it as a number with its unit. Without a dose the prepared dose is given. " +
+    "Each treatment is given on its own order: words that order several give the first of them; the others are checked against their own doses (a dose error there is recorded and read back) and named, to be ordered on their own. " +
     "An operation is not an intervention: when the case has one, it is done with observe_field and operate at the table.",
   inputSchema: {
     type: "object",
@@ -560,7 +561,7 @@ const intervene: ToolDefinition<ToolArgs> = {
   risk: interventionRisk,
   alwaysAsk: (args, ctx) => interventionRisk(args, ctx) === "high",
   summarize(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
     const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
     // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
     // the words that order this item (its own clause when they order several)
@@ -571,11 +572,11 @@ const intervene: ToolDefinition<ToolArgs> = {
     return dose ? rt(ctx.locale, "sum.interveneDose", { name, dose: doseText(dose, ctx.locale) }) : rt(ctx.locale, "sum.intervene", { name });
   },
   specifier(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
     return r.kind === "id" ? r.id : strArg(args, "intervention_id") || strArg(args, "query");
   },
   precheck(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
     const iv = r.kind === "id" ? ctx.caseDef.interventions.find((i) => i.id === r.id) : undefined;
     if (!iv) return null;
     // Refused before the approval gate: no high-risk confirmation for a dose that cannot be given.
@@ -584,7 +585,7 @@ const intervene: ToolDefinition<ToolArgs> = {
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
-    const r = resolveIntervention(c, args, L);
+    const r = resolveOrderedIntervention(c, args, L);
     if (r.kind !== "id") {
       // the operation itself asked for as an intervention: the way in is the operative field, with what it still needs
       const asked = strArg(args, "query") || strArg(args, "intervention_id");
@@ -596,35 +597,36 @@ const intervene: ToolDefinition<ToolArgs> = {
     // the order as written (words only: an id alone states none; the clause that names this item when they order
     // several) and the dose read from it — the engine checks it
     const ordered = itemOrder(c, args, r.id, L);
-    // the other treatments the words order: each on its own order (never silently dropped)
-    const others = (() => {
-      const words = writtenOrder(args)?.text;
-      return words ? otherOrdersText(c, words, r.id, L) : null;
-    })();
-    const withOthers = (text: string) => (others ? `${text}\n${others}` : text);
     const result = dispatch(ctx, { type: "intervene", interventionId: r.id, ...(ordered ? { ordered } : {}) });
+    // the other treatments the words order: each checked against its own preset — a dose error recorded and read back,
+    // an unclear dose asked about — and given on its own order (never silently dropped)
+    const others = alsoOrdered(ctx, args, r.id);
+    // a refusal ends with them; a treatment given names the others after its dose check, as before, and reads back the
+    // other orders' doses after its own lines
+    const withOthers = (out: ToolOutput, lines = [...(others.named ? [others.named] : []), ...others.readBacks]): ToolOutput =>
+      others.data.length ? { ...out, output: [out.output, ...lines].join("\n"), data: { ...((out.data as Record<string, unknown> | undefined) ?? {}), alsoOrdered: others.data } } : out;
     if (result.rejected?.code === "on-hold") {
       const hold = activeHolds(ctx.state(), r.id)[0];
       const message = hold ? rt(L, "intervene.onHold", { name: interventionLabel(c, r.id, L), by: hold.placedBy, reason: sentence(hold.reason) }) : rejectionText(L, "on-hold");
-      return { ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } };
+      return withOthers({ ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } });
     }
     // the order's dose is not clear: nothing given, no dose error — the nurse asks for it as a number with its unit
     if (result.rejected?.code === "dose-unclear" && ordered) {
       const check = orderCheck(c, r.id, ordered);
       if (check?.outcome === "query") {
-        const message = withOthers(doseQueryChallengeText(c, r.id, check, L));
+        const message = doseQueryChallengeText(c, r.id, check, L);
         const iv = c.interventions.find((i) => i.id === r.id)!;
-        return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } };
+        return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } });
       }
     }
     // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
-    if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
+    if (result.rejected) return withOthers(rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined));
     const iv = c.interventions.find((i) => i.id === r.id)!;
     const doseError = eventsOf(result, "dose.error")[0];
     if (doseError) {
       // the dose ordered differs from the dose prepared: nothing given — the nurse reads the order back (closed loop)
-      const message = withOthers(doseChallengeText(c, doseError, L));
-      return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } };
+      const message = doseChallengeText(c, doseError, L);
+      return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } });
     }
     const applied = eventsOf(result, "intervention.applied")[0];
     const appropriateness = applied?.appropriateness ?? "neutral";
@@ -632,7 +634,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     if (applied?.invalid) {
       // a checklist step out of order: recorded as invalid, nothing applied — never reported as done
       const output = [rt(L, "intervene.invalid", { harm }).trim(), ...objectiveRequirementLines(c, ctx.state(), L, visiblePhases(c, ctx.state()))].join("\n");
-      return { ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } };
+      return withOthers({ ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } });
     }
     const dose = iv.dose ? t(iv.dose, L) : "";
     const name = t(iv.name, L);
@@ -643,7 +645,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
     const checked = doseCheckText(c, iv, recorded, L);
     if (checked) lines.push(checked);
-    if (others) lines.push(others);
+    if (others.named) lines.push(others.named);
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
     // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
     const data = safetyDataLines(c, ctx.state(), iv.reports, L);
@@ -651,9 +653,62 @@ const intervene: ToolDefinition<ToolArgs> = {
     if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
     // the order as written and the dose read from it, apart from the dose given: the preset (`doseSpec`, the dose text)
     const order = recorded ? { ordered: recorded, administered: administeredDose(c, iv.id, L) } : {};
-    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
+    return withOthers({ ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } }, others.readBacks);
   },
 };
+
+/**
+ * Another treatment an `intervene` call's words order beside its own (`otherClauses`), as the call left it:
+ * `dose-error` — its own words' dose conflicts with its preset: recorded by the engine (`dose.error`, the reducer's own
+ * check; nothing given) and read back; `dose-query` — a dose that cannot be read or compared, asked about (nothing
+ * given or recorded); `named` — to be given on its own order.
+ */
+export interface AlsoOrdered {
+  interventionId: string;
+  /** The words that order it. */
+  text: string;
+  outcome: "dose-error" | "dose-query" | "named";
+  doseError?: ReturnType<typeof doseErrorData>;
+  doseQuery?: ReturnType<typeof doseQueryData>;
+}
+
+/**
+ * The other orders of an `intervene` call's words, each checked against its own item's preset (core `checkOrder`, as
+ * the engine checks it): a dose error is dispatched as that item's order — the reducer records it (a critical one fails
+ * the safety outcome) and gives nothing — and the nurse reads it back; an unclear dose is asked about; the rest are
+ * named, each given on its own order. Run after the call's own order reached the engine, so the spatial re-check is
+ * its own. The line naming the others ("Your order also names …"), the nurse's read-backs and questions, and
+ * `data.alsoOrdered`.
+ */
+function alsoOrdered(ctx: ToolContext, args: ToolArgs, interventionId: string): { named: string | null; readBacks: string[]; data: AlsoOrdered[] } {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const readBacks: string[] = [];
+  const named: string[] = [];
+  const data: AlsoOrdered[] = [];
+  for (const other of otherClauses(c, args, interventionId, L)) {
+    const order = writtenOrder({ query: other.text });
+    const check = order ? orderCheck(c, other.id, order) : null;
+    if (order && check?.outcome === "conflict") {
+      const e: DoseErrorEvent | undefined = eventsOf(dispatch(ctx, { type: "intervene", interventionId: other.id, ordered: order }), "dose.error")[0];
+      if (e) {
+        readBacks.push(doseChallengeText(c, e, L));
+        data.push({ interventionId: other.id, text: other.text, outcome: "dose-error", doseError: doseErrorData(e) });
+        continue;
+      }
+    }
+    if (order && check?.outcome === "query") {
+      const q: DoseQuery = check;
+      readBacks.push(doseQueryChallengeText(c, other.id, q, L));
+      data.push({ interventionId: other.id, text: other.text, outcome: "dose-query", doseQuery: doseQueryData(c, other.id, order.text, q) });
+      continue;
+    }
+    named.push(other.id);
+    data.push({ interventionId: other.id, text: other.text, outcome: "named" });
+  }
+  const names = named.length ? rt(L, "dose.alsoOrdered", { items: joinList(L, named.map((id) => interventionNameText(c, id, L))) }) : null;
+  return { named: names, readBacks, data };
+}
 
 /* ------------------------------------------------------------------ */
 /* Team                                                                */
