@@ -1,34 +1,32 @@
 /**
- * The surgery window by place (docs/PROCEDURE.md §7): what each place in the care team is offered is core's verdict —
- * the field's gates (`seatCheck` with each body's controls, `stepPartyRefusal`, `COLLEAGUE_OPS`), never a rule of the
- * web's own: Take, Hand back and Hand to by the controls; the camera aimed only by the camera holder, or by the
- * operator while nobody holds the camera port; "Ask for" instead of an insert where every instrument is passed first
- * (the scrub nurse's place) and none waits; passing for the place that holds the instrument table. Each offer is also
- * sent through the engine: an offer is taken, a step not offered is refused.
+ * The surgery window by place (docs/PROCEDURE.md §7): what each place in the care team is offered is the field's own
+ * verdict — its gates (core `fieldGate`: the session's precheck of a step) and then the engine's (the reducer, which the
+ * window asks without taking the step: core `operateRefusal`) — never a rule of the web's own: Take, Hand back and Hand
+ * to (to a colleague at the operating table: the world's rule) by the controls, consent and two hands; the camera aimed
+ * only by the camera holder, or by the operator while nobody holds the camera port; "Ask for" instead of an insert where
+ * every instrument is passed first (the scrub nurse's place) and none waits; no insert before the gas; passing for the
+ * place that holds the instrument table, each instrument to whoever may put it in. Every candidate step is checked both
+ * ways against the session: an offer is taken, a step not offered is refused.
  */
 import {
-  bodyControls,
-  COLLEAGUE_OPS,
   createSession,
   effectiveTeam,
+  fieldGate,
   LEARNER_BODY,
-  memberBody,
-  normaliseStep,
   observeField,
-  procedureStateOf,
   reduce,
   refOfBody,
-  seatCheck,
-  stepPartyRefusal,
   type CaseDefinition,
   type ClinicalAction,
-  type Controls,
+  type FacilityDefinition,
   type FieldView,
   type InstrumentId,
   type ProcedureOp,
   type SessionState,
 } from "@clinicalcraft/core";
+import { atOperatingTable } from "@clinicalcraft/world";
 import { describe, expect, it } from "vitest";
+import { STAFF, theatreWorld, standBeside, operate as operateIn } from "../../../../world/src/__fixtures__/theatre.js";
 import { lapCholeTeamCase } from "./__fixtures__/lap-chole-sit.js";
 import { cameraOffer, controlsForPlace, holderOf, learnerRef, portsForPlace, stepOffered, tableOffer, type FieldSeat } from "./surgery-controls.js";
 
@@ -61,15 +59,12 @@ function engineTakes(c: CaseDefinition, s: SessionState, op: ProcedureOp): boole
   return !reduce(c, s, { type: "operate", op, ...(me ? { actor: me } : {}) } as ClinicalAction).rejected;
 }
 
-/** Core's gates before the physics, for the learner's step: the oracle the acceptance names (`seatCheck`, with each body's controls). */
-function gatesLetThrough(f: FieldSeat, op: ProcedureOp): boolean {
-  const me = refOfBody(f.c, f.s, LEARNER_BODY);
-  if (me === null) return false;
-  const step = normaliseStep(f.c, f.s, op, me);
-  if (step.actor !== undefined && !COLLEAGUE_OPS.has(step.op.op)) return false;
-  if (stepPartyRefusal(f.c, f.s, step.op, step.actor)) return false;
-  const controlsOf = (who: string): Controls => bodyControls(f.c, f.s, f.facility, memberBody(f.c, f.s, who), "field");
-  return seatCheck(f.c, { ...f.s, procedure: procedureStateOf(f.s) }, step.op, step.actor, controlsOf) === null;
+/**
+ * What the session does with the learner's step: its precheck before any approval (core `fieldGate`, each body's
+ * controls) and then the engine (the reducer) — the oracle every offer is checked against, both ways.
+ */
+function sessionTakes(f: FieldSeat, op: ProcedureOp): boolean {
+  return fieldGate(f.c, f.s, f.facility, op, LEARNER_BODY) === null && engineTakes(f.c, f.s, op);
 }
 
 const field = (s: SessionState): FieldView => observeField(def, s.procedure!);
@@ -97,40 +92,76 @@ const PLACES = [
   { name: "scrub nurse (the instrument table, the count)", start: { type: "start", seat: "scrub-nurse" } as Start, steps: SCRUB_ACCESS },
 ] as const;
 
-describe("the window by place: core's verdicts, never a rule of the web's own", () => {
-  it("every port offer of every place is what core's gates say — and the engine takes each offer and refuses each step not offered", () => {
-    for (const place of PLACES) {
+describe("the window by place: the field's own verdicts, never a rule of the web's own", () => {
+  it("every port offer of every place is what the session would take — each offer taken, each step not offered refused", () => {
+    // the places as the operator's access leaves them, and after the place has taken the grasper in port B
+    const states = PLACES.flatMap((place) => {
       const s = encounter(place.start, place.steps);
+      const me = learnerRef(seatOf(s));
+      const took = typeof me === "string" && sessionTakes(seatOf(s), { op: "hand-over", port: "B", to: me }) ? [{ name: `${place.name}, holding port B`, s: encounter(place.start, [...place.steps, { op: { op: "hand-over", port: "B", to: me }, actor: me }]) }] : [];
+      return [{ name: place.name, s }, ...took];
+    });
+    for (const { name, s } of states) {
       const f = seatOf(s);
       const me = learnerRef(f);
       const offers = portsForPlace(f, def, field(s));
       for (const offer of offers) {
-        const label = `${place.name} · port ${offer.port}`;
-        // Take: a port the operator holds, into the learner's place (operating, nothing to take)
-        const take = typeof me === "string" && offer.instrument && offer.holder.kind === "operator" ? { op: "hand-over" as const, port: offer.port, to: me } : null;
-        expect(offer.take, label).toEqual(take && gatesLetThrough(f, take) ? take : null);
-        if (take) expect(engineTakes(k, s, take), `${label} take`).toBe(!!offer.take);
-        // Hand to: the members of the team as it is whose controls cover the port's instrument (never anyone else)
-        const members = new Set(effectiveTeam(k, s).map((m) => m.staff));
-        for (const to of ["nurse-1", "nurse-2", "doc-1", "doc-2", "anaes-1"]) {
-          const op = { op: "hand-over" as const, port: offer.port, to };
-          const offered = offer.handTo.some((x) => x.to === to);
-          if (offer.instrument && offer.mine) expect(offered, `${label} hand to ${to}`).toBe(members.has(to) && to !== me && gatesLetThrough(f, op));
-          else expect(offered, `${label} hand to ${to}`).toBe(false);
-          if (offered) expect(engineTakes(k, s, op), `${label} hand to ${to}`).toBe(true);
+        const label = `${name} · port ${offer.port}`;
+        // Take: into the learner's place — or, operating, back from the colleague who holds it
+        const take: ProcedureOp | null = offer.mine || !offer.instrument ? null : me === undefined ? { op: "hand-over", port: offer.port } : { op: "hand-over", port: offer.port, to: me! };
+        if (take) expect(offer.take, `${label} take`).toEqual(sessionTakes(f, take) ? take : null);
+        else expect(offer.take, `${label} take`).toBeNull();
+        // Hand back (a place's own port) and withdraw: what the session takes
+        if (offer.mine && offer.instrument && me !== undefined) {
+          const back: ProcedureOp = { op: "hand-over", port: offer.port };
+          expect(offer.handBack, `${label} hand back`).toEqual(sessionTakes(f, back) ? back : null);
+          const out: ProcedureOp = { op: "withdraw", port: offer.port };
+          expect(offer.withdraw, `${label} withdraw`).toEqual(sessionTakes(f, out) ? out : null);
         }
-        // an insert into the empty assist port: a colleague's only what fits and their controls cover
+        // Hand to: every member of the team as it is but the learner's place, both ways (never anyone else)
+        const members = new Set(effectiveTeam(k, s).map((m) => m.staff));
+        for (const to of ["nurse-1", "nurse-2", "nurse-9", "doc-0", "doc-1", "doc-2", "anaes-1"]) {
+          const op: ProcedureOp = { op: "hand-over", port: offer.port, to };
+          const offered = offer.handTo.some((x) => x.to === to);
+          const want = !!offer.instrument && offer.mine && members.has(to) && to !== me && to !== "doc-0" && sessionTakes(f, op);
+          expect(offered, `${label} hand to ${to}`).toBe(want);
+        }
+        // an insert into an empty port: a colleague's, what the session takes ("Ask for" where it needs a pass first)
         if (!offer.instrument && typeof me === "string") {
           for (const instrument of def.instruments.map((i) => i.id)) {
-            const op = { op: "insert" as const, port: offer.port, instrument };
-            const insert = offer.insert.includes(instrument) || offer.askFor.some((a) => a.instrument === instrument);
-            if (insert) expect(gatesLetThrough(f, op), `${label} insert ${instrument}`).toBe(true);
-            if (offer.insert.includes(instrument)) expect(engineTakes(k, s, op), `${label} insert ${instrument}`).toBe(true);
-            if (!insert) expect(engineTakes(k, s, op), `${label} insert ${instrument} (not offered)`).toBe(false);
+            const op: ProcedureOp = { op: "insert", port: offer.port, instrument };
+            expect(offer.insert.includes(instrument), `${label} insert ${instrument}`).toBe(sessionTakes(f, op));
+            if (offer.askFor.some((a) => a.instrument === instrument)) expect(fieldGate(k, s, null, op, LEARNER_BODY), `${label} ask for ${instrument}`).toBeNull();
           }
         }
       }
     }
+  });
+
+  it("no insert before the gas: the engine's own verdict, in a place — not a gate the window could offer through", () => {
+    const plan = encounter({ type: "start", seat: "first-assistant" }, ACCESS("doc-0").slice(0, 1));
+    const a = portsForPlace(seatOf(plan), def, field(plan)).find((o) => o.port === "A")!;
+    expect(stepOffered(seatOf(plan), { op: "insert", port: "A", instrument: "laparoscope" })).toBe(true);
+    expect(engineTakes(k, plan, { op: "insert", port: "A", instrument: "laparoscope" })).toBe(false);
+    expect([a.insert, a.askFor]).toEqual([[], []]);
+    const gas = encounter({ type: "start", seat: "first-assistant" }, ACCESS("doc-0").slice(0, 2));
+    expect(portsForPlace(seatOf(gas), def, field(gas)).find((o) => o.port === "A")!.insert).toEqual(["laparoscope"]);
+  });
+
+  it("Hand to only a colleague at the operating table — the world's own rule (a port held away from it is let go at once)", () => {
+    const w = theatreWorld();
+    operateIn(w, ACCESS());
+    const seatIn = (): FieldSeat => ({ c: w.caseDef, s: w.harness.state(), facility: w.facility, atTable: (body) => atOperatingTable(w.runtime, body) });
+    const handTo = () => portsForPlace(seatIn(), w.caseDef.procedure!, observeField(w.caseDef.procedure!, w.harness.state().procedure!)).find((o) => o.port === "B")!.handTo.map((x) => x.to);
+    // the first assistant at their post, across the theatre: not handed the grasper
+    expect(atOperatingTable(w.runtime, STAFF.first)).toBe(false);
+    expect(handTo()).toEqual([]);
+    // beside the patient on the table: handed it
+    standBeside(w, STAFF.first, w.patientId);
+    expect(atOperatingTable(w.runtime, STAFF.first)).toBe(true);
+    expect(handTo()).toEqual(["doc-1"]);
+    // no world (clinical mode): no table rule
+    expect(portsForPlace({ ...seatIn(), atTable: undefined }, w.caseDef.procedure!, observeField(w.caseDef.procedure!, w.harness.state().procedure!)).find((o) => o.port === "B")!.handTo.map((x) => x.to)).toEqual(["doc-1"]);
   });
 
   it("Take, Hand back and Hand to are offered by the controls of each place", () => {
@@ -205,9 +236,11 @@ describe("the camera block: aimed only by the camera holder, or by the operator 
   it("operating: the operator aims while nobody holds the camera port, not once it is handed to the camera holder", () => {
     const free = encounter({ type: "start" }, ACCESS());
     expect(cameraOffer(seatOf(free), field(free))).toMatchObject({ port: "A", at: null, zoom: "wide", holder: { kind: "you" }, aims: true });
+    expect(cameraOffer(seatOf(free), field(free))?.refusal).toBeUndefined();
     expect(engineTakes(k, free, aimOp)).toBe(true);
     const handed = encounter({ type: "start" }, [...ACCESS(), { op: { op: "hand-over", port: "A", to: "doc-1" } }]);
-    expect(cameraOffer(seatOf(handed), field(handed))).toMatchObject({ holder: { kind: "colleague", ref: "doc-1" }, aims: false });
+    // not the operator's while the camera holder has it: the field's own reason
+    expect(cameraOffer(seatOf(handed), field(handed))).toMatchObject({ holder: { kind: "colleague", ref: "doc-1" }, aims: false, refusal: { key: "port-held", params: { holder: "doc-1", port: "A" } } });
     expect(engineTakes(k, handed, aimOp)).toBe(false);
   });
 
@@ -220,8 +253,9 @@ describe("the camera block: aimed only by the camera holder, or by the operator 
     ] as [Start, boolean][]) {
       const steps = start.seat === "scrub-nurse" ? SCRUB_ACCESS : ACCESS("doc-0");
       const before = encounter(start, steps);
-      // the operator holds it: not the place's to aim
+      // the operator holds it: not the place's to aim — not handed to them, or not their control
       expect(aims(before), `${start.seat} ${start.lineup}`).toBe(false);
+      expect(cameraOffer(seatOf(before), field(before))?.refusal?.key, `${start.seat} ${start.lineup}`).toBe(holds ? "not-handed" : "needs-control");
       expect(engineTakes(k, before, aimOp)).toBe(false);
       const me = learnerRef(seatOf(before)) as string;
       const take: ProcedureOp = { op: "hand-over", port: "A", to: me };
@@ -273,13 +307,25 @@ describe("the instrument table and 'Ask for': every instrument passed first in t
     expect(engineTakes(two, first, { op: "insert", port: "A", instrument: "laparoscope" })).toBe(true);
   });
 
-  it("the table: what is on it and what waits; passing for the place holding the instrument table, to whom the gates allow", () => {
+  it("the table: what is on it and what waits; passing for the place holding the instrument table — each instrument to whoever may put it in", () => {
     const scrub = encounter({ type: "start", seat: "scrub-nurse" }, SCRUB_ACCESS.slice(0, 3));
-    const offer = tableOffer(seatOf(scrub), def, field(scrub));
+    const f = seatOf(scrub);
+    const offer = tableOffer(f, def, field(scrub));
     expect(offer.instruments).toEqual(def.instruments.map((i) => i.id as InstrumentId));
     expect(offer.passed).toEqual([{ instrument: "laparoscope", by: "nurse-2" }]);
-    expect(offer.pass?.to).toEqual([undefined, "nurse-1", "doc-1", "anaes-1"]);
-    for (const to of offer.pass!.to) expect(engineTakes(k, scrub, { op: "pass", instrument: "grasper", ...(to ? { to } : {}) }), String(to)).toBe(true);
+    // the operator puts in every instrument; the first assistant (two surgeons) the grasper, the suction and the
+    // laparoscope (the camera holder) — never an operating instrument; the circulating nurse and the anaesthetist nothing
+    expect(offer.pass?.to).toMatchObject({ grasper: [undefined, "doc-1"], suction: [undefined, "doc-1"], hook: [undefined], "clip-applier": [undefined], maryland: [undefined] });
+    // the laparoscope passed already waits for the operator: passed again only to the camera holder
+    expect(offer.pass?.to.laparoscope).toEqual(["doc-1"]);
+    for (const [instrument, takers] of Object.entries(offer.pass!.to) as [InstrumentId, (string | undefined)[]][]) {
+      for (const to of [undefined, "nurse-1", "doc-1", "anaes-1"]) {
+        const op: ProcedureOp = { op: "pass", instrument, ...(to ? { to } : {}) };
+        if (takers.includes(to)) expect(sessionTakes(f, op), `${instrument} to ${to}`).toBe(true);
+        else if (to === undefined || to === "doc-1") expect(sessionTakes(f, op) && !(instrument === "laparoscope" && to === undefined), `${instrument} to ${to}`).toBe(false);
+      }
+      expect(takers.filter((x) => x === "nurse-1" || x === "anaes-1"), instrument).toEqual([]);
+    }
     for (const place of PLACES.filter((p) => p.start.seat !== "scrub-nurse")) {
       const s = encounter(place.start, place.steps);
       expect(tableOffer(seatOf(s), def, field(s)).pass, place.name).toBeNull();

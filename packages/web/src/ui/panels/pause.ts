@@ -666,10 +666,16 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
       title: menu ? tr("pause.title") : tr("settings.title"),
       body,
       focus: menu ? resume : null,
-      // external control can change under the open menu (the bridge connects, closes, the session ends)
+      // external control can change under the open menu (the bridge connects, closes, the session ends); the approval
+      // mode and the practice scope the session kept (a change refused while a place is held) show as they are
       update() {
         renderExternal();
         lockAutopilot();
+        const kept = prefs.value.agent;
+        const approval = body.querySelector<HTMLSelectElement>("#setting-approval");
+        if (approval) approval.value = kept.approvalMode ?? "default";
+        const scope = body.querySelector<HTMLSelectElement>("#setting-scope");
+        if (scope) scope.value = kept.practiceScope ?? "full";
       },
     };
   };

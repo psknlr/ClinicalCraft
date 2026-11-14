@@ -35,7 +35,7 @@ import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/
 import { Toaster, type ToastLevel } from "../ui/toast.js";
 import { ActionFeedback } from "../ui/feedback.js";
 import { playSound } from "./audio.js";
-import { fetchServerCase, loadContent, loadServerContent, placeReady, type ContentIndex } from "./content.js";
+import { fetchServerCase, loadContent, loadServerContent, PlacePathError, placeReady, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
@@ -590,7 +590,7 @@ export class ClinicalCraftApp implements App {
     }
     if (game) {
       game.link.refresh();
-      game.session.reconfigure(this.prefs.value, this.choice(), locale);
+      this.reconfigure(game, locale);
       // a rebuilt scene starts from the facility data: draw the world's physical state again
       game.embodied?.syncScene();
     }
@@ -602,9 +602,27 @@ export class ClinicalCraftApp implements App {
 
   applySettings(): void {
     const game = this.game;
-    if (game) game.session.reconfigure(this.prefs.value, this.choice(), getLocale());
+    if (game) this.reconfigure(game, getLocale());
     this.intro.render();
     this.hud.update();
+  }
+
+  /**
+   * The settings reach the running session (`configure`). While the learner holds a place in the team the session may
+   * keep its approval mode and practice scope (a change that would stop the stand-in surgeon: `place.configRefused`,
+   * said as a toast): then the preferences take back the values it runs with, so the settings show what it does and the
+   * refused value is not asked again on the next change or language switch.
+   */
+  private reconfigure(game: Game, locale: string): void {
+    void game.session.reconfigure(this.prefs.value, this.choice(), locale).then((kept) => {
+      if (!kept || this.game !== game) return;
+      this.prefs.update((s) => {
+        s.agent.approvalMode = kept.approvalMode;
+        s.agent.practiceScope = kept.practiceScope;
+      });
+      this.panels.update();
+      this.hud.update();
+    });
   }
 
   async backToLibrary(): Promise<void> {
@@ -747,8 +765,12 @@ export class ClinicalCraftApp implements App {
    */
   startChoice: StartChoice = startChoiceFromSearch(location.search);
 
-  /** The last start in a place the session refused, with its words (shown under the intro's picker until the next start). */
-  placeRefusal: { caseId: string; seat: Place; text: string } | null = null;
+  /**
+   * The last start in a place that did not happen, with its words (shown under the intro's picker until the next start):
+   * refused by the session, a saved encounter in a place its settings would stop (`resume`), or a place path that could
+   * not be had.
+   */
+  placeRefusal: { caseId: string; seat: Place; text: string; resume?: boolean } | null = null;
 
   /**
    * The intro's picker chose a place in the team or a line-up (null, "" or the operating surgeon's: no place; null or "":
@@ -771,6 +793,14 @@ export class ClinicalCraftApp implements App {
     return { ok: false, words: said.flatMap((m) => (m.type === "error" || m.type === "warning" ? [m.message] : [])).join("\n") };
   }
 
+  /** Why a case's place path could not be had (`PlacePathError`), in the UI language; the cause as it came goes to the console. */
+  private placePathWords(err: unknown): string {
+    console.error(err);
+    if (!(err instanceof PlacePathError)) return tr("intro.place.path.network");
+    if (err.kind === "http") return err.status === 404 ? tr("intro.place.path.notFound") : tr("intro.place.path.http", { status: err.status ?? 0 });
+    return tr(`intro.place.path.${err.kind}`);
+  }
+
   async startCase(caseId: string, facilityId: string, resume: boolean): Promise<void> {
     if (this.starting) return;
     this.starting = true;
@@ -783,17 +813,25 @@ export class ClinicalCraftApp implements App {
         return;
       }
       this.placeRefusal = null;
-      // a place in the care team joins the team along the case's reference path: a case served without it (`clinicalcraft
-      // serve`) gets its place path fetched beside it — for a new start in a place, or a saved encounter in one
       const card = this.content.cards.find((x) => x.id === caseId);
+      // the start's choices, read once — what the picker shows when the start begins is what is sent (it is locked
+      // meanwhile, and nothing below reads the choices again)
+      const wanted = startAction(loaded.def, this.startChoice, card);
+      // a place in the care team joins the team along the case's reference path, and the stand-in surgeon works from its
+      // operative steps: a case served without it (`clinicalcraft serve`) gets its place path fetched beside it — for a
+      // new start in a place, or a saved encounter in one
       const prior = resume ? this.saves.caseSave(caseId) : null;
-      const seat = prior ? savedPlace(prior.snapshot.actions).seat : startAction(loaded.def, this.startChoice, card).seat;
+      const seat = prior ? savedPlace(prior.snapshot.actions).seat : (wanted.seat ?? null);
       let caseDef: CaseDefinition = loaded.def;
       if (seat) {
         try {
+          this.intro.startNote(tr("intro.place.loading"));
           caseDef = await placeReady(loaded.def);
         } catch (err) {
-          this.toast(tr("intro.place.pathFailed"), err instanceof Error ? err.message : String(err), "critical");
+          const why = this.placePathWords(err);
+          this.placeRefusal = { caseId, seat, text: `${tr("intro.place.pathFailed")}: ${why}`, ...(prior ? { resume: true } : {}) };
+          this.toast(tr("intro.place.pathFailed"), why, "critical", "place-refused");
+          this.intro.render();
           return;
         }
       }
@@ -901,8 +939,21 @@ export class ClinicalCraftApp implements App {
       this.lastTalk = {
         agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
-      const start = pendingStart(session.session.state, caseDef, this.startChoice, card);
+      const start = pendingStart(session.session.state, wanted);
       let notices: { title: string; body: string }[] = [];
+      const held = save ? session.session.state.seat : undefined;
+      if (held) {
+        // a saved encounter in a place: the settings it would go on with must let the stand-in surgeon work — asked of the
+        // session as a start in a place is; refused, nothing is entered and the save stays as it was
+        const why = session.session.placeRefusal();
+        if (why) {
+          await this.endGame(false);
+          this.placeRefusal = { caseId, seat: held, text: why, resume: true };
+          this.toast(tr("intro.place.resumeRefused", { place: t(POSITION_TITLES[held], getLocale()) }), why, "warning", "place-refused");
+          this.intro.render();
+          return;
+        }
+      }
       if (start?.seat) {
         // a place in the team: the session accepts the start or says why not — refused, nothing is entered and the
         // intro shows its words

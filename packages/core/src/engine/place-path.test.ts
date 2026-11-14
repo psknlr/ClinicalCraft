@@ -11,7 +11,7 @@ import { placesCase } from "./__fixtures__/team-places.js";
 import { lapCholeTeamCase } from "./procedure/__fixtures__/lap-chole-team.js";
 import { placePath, withPlacePath } from "./place-path.js";
 import { createSession, reduce } from "./reducer.js";
-import { seatsOf } from "./seats.js";
+import { canJoinTeam, seatsOf } from "./seats.js";
 import { TEAM_PLACES } from "../schema/positions.js";
 
 const MINI = JSON.parse(readFileSync(new URL("./__fixtures__/mini-anaphylaxis.case.json", import.meta.url), "utf8")) as Record<string, unknown>;
@@ -58,6 +58,21 @@ describe("the place path of a case served without its solution", () => {
     const lap = lapCholeTeamCase();
     expect(placePath(lap).map((a) => a.type)).toEqual(["start", "set-phase", ...lap.solution.filter((a) => a.type === "operate").map(() => "operate")]);
     expect(placePath(lap).some((a) => a.type === "finish")).toBe(false);
+  });
+
+  it("an operation-only case (it starts in the team's phase): joined at once without its solution, but the stand-in's plan is in the path only", () => {
+    const solution = lapCholeTeamCase().solution.filter((a) => a.type !== "set-phase");
+    const full = lapCholeTeamCase({ initialPhase: "theatre", solution });
+    // served, it can be joined (nothing to join along: it starts in the team's phase) and offers its places ...
+    expect(canJoinTeam(served(full))).toBe(true);
+    expect(seatsOf(served(full))).toEqual(seatsOf(full));
+    expect(reduce(full, createSession(full), { type: "start", seat: "first-assistant" }).state.joined?.actions ?? 0).toBe(0);
+    // ... but the operative steps the stand-in surgeon works from are the solution's: none in the served case, all in its path
+    expect(served(full).solution.filter((a) => a.type === "operate")).toEqual([]);
+    const path = placePath(full);
+    expect(path.map((a) => a.type)).toEqual(["start", ...solution.filter((a) => a.type === "operate").map(() => "operate")]);
+    expect(withPlacePath(served(full), path).solution.filter((a) => a.type === "operate")).toEqual(full.solution.filter((a) => a.type === "operate"));
+    for (const start of starts(full)) expect(reduce(withPlacePath(served(full), path), createSession(full), start).state, JSON.stringify(start)).toEqual(reduce(full, createSession(full), start).state);
   });
 
   it("is empty for a case that offers no place in the team; the path never replaces a solution a case carries", () => {

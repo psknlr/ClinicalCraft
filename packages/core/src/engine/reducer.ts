@@ -18,7 +18,7 @@ import {
   type SessionState,
 } from "../schema/session.js";
 import type { Place } from "../schema/positions.js";
-import type { RefusalReason } from "../schema/procedure.js";
+import type { ProcedureOp, RefusalReason } from "../schema/procedure.js";
 import { canJoinTeam, initialPhase, joinPath, normaliseStep, passingRequired, placeMember, seatCheck, standInOf, stepPartyRefusal } from "./seats.js";
 import { t } from "../i18n.js";
 import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
@@ -26,7 +26,7 @@ import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
-import { createProcedureState, operate, procedureFor, procedureStateOf, waitingPass } from "./procedure/index.js";
+import { createProcedureState, operate, procedureFor, procedureStateOf, waitingPass, type ProcedureStepResult } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
@@ -154,7 +154,7 @@ function onStart(ctx: Ctx, a: Action<"start">): Outcome {
   // the operating surgeon's seat is the learner as always: recorded as no place
   if (a.seat != null && a.seat !== "surgeon") {
     const refusal = placeRefusal(ctx.c, ctx.s, a.seat);
-    if (refusal) return rejected("invalid", refusal);
+    if (refusal) return rejected("invalid", refusal.message, refusal.reason);
     ctx.s.seat = a.seat;
   }
   ctx.s.started = true;
@@ -162,22 +162,26 @@ function onStart(ctx: Ctx, a: Action<"start">): Outcome {
   return accepted();
 }
 
-/** Why a place in the team cannot be taken in this encounter (null: it can; docs/TEAM.md §1). */
-function placeRefusal(c: CaseDefinition, s: SessionState, place: Place): string | null {
+/**
+ * Why a place in the team cannot be taken in this encounter (null: it can; docs/TEAM.md §1): the engine's English
+ * message, and — for the place's member away in the team scenario — the reason a front-end words (`member-absent`).
+ */
+function placeRefusal(c: CaseDefinition, s: SessionState, place: Place): { message: string; reason?: RefusalReason } | null {
+  const said = (message: string, reason?: RefusalReason) => ({ message, ...(reason ? { reason } : {}) });
   const team = c.team;
-  if (!team) return `this case has no care team: the learner operates (there is no ${place} place)`;
-  if (!standInOf(c)) return `nobody in this case's team stands in for the surgeon (the surgeon member's "standIn"): the learner operates (there is no ${place} place)`;
+  if (!team) return said(`this case has no care team: the learner operates (there is no ${place} place)`);
+  if (!standInOf(c)) return said(`nobody in this case's team stands in for the surgeon (the surgeon member's "standIn"): the learner operates (there is no ${place} place)`);
   // the join applies the reference path from its beginning: nothing may have been done before (a phase switched to,
   // a note, a flag)
   if (s.seq !== 0 || s.phase !== initialPhase(c)) {
-    return `a place in the team is taken at the start of an untouched encounter: the team's work up to its phase follows the reference path from the beginning (${s.seq} action${s.seq === 1 ? "" : "s"} came before this start)`;
+    return said(`a place in the team is taken at the start of an untouched encounter: the team's work up to its phase follows the reference path from the beginning (${s.seq} action${s.seq === 1 ? "" : "s"} came before this start)`);
   }
-  if (!canJoinTeam(c)) return `this case was loaded without its reference solution, which a place in the team joins along: only the operating surgeon's place is offered`;
-  if ((s.variant ?? BASE_VARIANT) !== BASE_VARIANT) return `the ${place} place is offered with the base anatomy only: the stand-in surgeon follows the reference path`;
+  if (!canJoinTeam(c)) return said(`this case was loaded without its reference solution, which a place in the team joins along: only the operating surgeon's place is offered`);
+  if ((s.variant ?? BASE_VARIANT) !== BASE_VARIANT) return said(`the ${place} place is offered with the base anatomy only: the stand-in surgeon follows the reference path`);
   const member = placeMember(c, place, s.lineup);
-  if (!member) return `this case's team${s.lineup ? ` with line-up "${s.lineup}"` : ""} has no ${place}: there is no such place`;
+  if (!member) return said(`this case's team${s.lineup ? ` with line-up "${s.lineup}"` : ""} has no ${place}: there is no such place`);
   const scenario = s.teamScenario ? team.scenarios.find((x) => x.id === s.teamScenario) : undefined;
-  if (scenario?.absent.includes(member.staff)) return `"${member.staff}" is absent in team scenario "${scenario.id}": the ${place} place is not offered`;
+  if (scenario?.absent.includes(member.staff)) return said(`"${member.staff}" is absent in team scenario "${scenario.id}": the ${place} place is not offered`, { key: "member-absent", params: { who: member.staff } });
   return null;
 }
 
@@ -419,6 +423,52 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
   return accepted();
 }
 
+/** Why the engine refuses a step: its code, its English message and the reason a front-end words. */
+export interface StepRefusal {
+  code: RejectionCode;
+  message: string;
+  reason?: RefusalReason;
+}
+
+/**
+ * What the field answers an operative step (`onOperate` before anything is recorded): its refusal, or the step it takes
+ * (and the open count at a closure, recorded with it).
+ */
+function operateStep(c: CaseDefinition, s: SessionState, a: Action<"operate">): { refused: StepRefusal } | { step: ProcedureStepResult; open: ReturnType<typeof closureOnOpenCount> } {
+  const refuse = (code: RejectionCode, message: string, reason?: RefusalReason) => ({ refused: { code, message, ...(reason ? { reason } : {}) } });
+  const def = procedureFor(c, s);
+  if (!def) return refuse("invalid", "this case has no operation");
+  if (!def.phases.includes(s.phase)) return refuse("phase-locked", `the operation is not under way in phase "${s.phase}"`);
+  const open = a.op.op === "close" ? closureOnOpenCount(c, s) : null;
+  if (open?.policy === "refuse") return refuse("requirements-unmet", openCountMessage(open));
+  // the operation's first step: it opens with the equipment as recorded so far (a fault before it stays a fault)
+  const field = procedureStateOf(s);
+  const gate = stepPartyRefusal(c, s, a.op, a.actor) ?? seatCheck(c, { ...s, procedure: field }, a.op, a.actor);
+  if (gate) return refuse(gate.code, gate.message, gate.reason);
+  if (a.op.op === "insert" && passingRequired(c, s) && waitingPass(field, a.op.instrument, a.actor) < 0) {
+    const to = a.actor ?? "the operator";
+    return refuse("requirements-unmet", `The ${a.op.instrument} has not been passed to ${to}: in the scrub nurse's place every instrument is passed before it goes in.`, { key: "pass-first", params: { instrument: a.op.instrument, to: a.actor ?? "" } });
+  }
+  const step = operate(def, field, a.op, s.clock, a.actor, a.ref);
+  if (step.rejected) return refuse(step.rejected.code, step.rejected.message, step.rejected.reason);
+  return { step, open };
+}
+
+/**
+ * Why the engine would refuse an operative step now — the reducer's own verdict on `{type: "operate", op, actor}`,
+ * without taking it (docs/PROCEDURE.md §3): the step normalised as the record keeps it, the encounter started and not
+ * finished, the operation under way, the count at closure, the field's gates (who takes part, the controls), the
+ * passing rule and the physics. Null: it would be taken. Pure — what a front-end offers is what the engine takes (the
+ * web's surgery window by place).
+ */
+export function operateRefusal(c: CaseDefinition, s: SessionState, op: ProcedureOp, actor?: string): StepRefusal | null {
+  const a = normalised(c, s, { type: "operate", op, ...(actor !== undefined ? { actor } : {}) } as ClinicalAction) as Action<"operate">;
+  const blocked = guard(s, "operate");
+  if (blocked) return blocked;
+  const v = operateStep(c, s, a);
+  return "refused" in v ? v.refused : null;
+}
+
 /**
  * One step of the operation (docs/PROCEDURE.md §5): the field changes only here. The step comes normalised (`reduce`:
  * the stand-in surgeon is the operator, a `to` the operator no `to`); the gates only refuse — nobody the team scenario
@@ -427,24 +477,13 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
  * nurse's place every instrument is passed before it goes in (`passingRequired`) — and then the field's own physics,
  * whose every change depends only on the state, the op and the actor (the web's playback replays it so). Closure reads
  * the count (docs/TEAM.md §4.3): while it is not settled, closure is refused (`team.count.closure: "refuse"`) or carried
- * out and recorded as an unsafe progression — kept for the debrief whatever is pressed later.
+ * out and recorded as an unsafe progression — kept for the debrief whatever is pressed later. The verdict is
+ * `operateStep`'s, which `operateRefusal` asks without taking the step.
  */
 function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
-  const def = procedureFor(ctx.c, ctx.s);
-  if (!def) return rejected("invalid", "this case has no operation");
-  if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
-  const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
-  if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
-  // the operation's first step: it opens with the equipment as recorded so far (a fault before it stays a fault)
-  const field = procedureStateOf(ctx.s);
-  const gate = stepPartyRefusal(ctx.c, ctx.s, a.op, a.actor) ?? seatCheck(ctx.c, { ...ctx.s, procedure: field }, a.op, a.actor);
-  if (gate) return rejected(gate.code, gate.message, gate.reason);
-  if (a.op.op === "insert" && passingRequired(ctx.c, ctx.s) && waitingPass(field, a.op.instrument, a.actor) < 0) {
-    const to = a.actor ?? "the operator";
-    return rejected("requirements-unmet", `The ${a.op.instrument} has not been passed to ${to}: in the scrub nurse's place every instrument is passed before it goes in.`, { key: "pass-first", params: { instrument: a.op.instrument, to: a.actor ?? "" } });
-  }
-  const step = operate(def, field, a.op, ctx.s.clock, a.actor, a.ref);
-  if (step.rejected) return rejected(step.rejected.code, step.rejected.message, step.rejected.reason);
+  const v = operateStep(ctx.c, ctx.s, a);
+  if ("refused" in v) return rejected(v.refused.code, v.refused.message, v.refused.reason);
+  const { step, open } = v;
   ctx.s.procedure = step.state;
   const n = step.state.counters.steps;
   ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), ...(a.actor ? { actor: a.actor } : {}), detail: structuredClone(a.op), ...(a.ref ? { ref: a.ref } : {}) });

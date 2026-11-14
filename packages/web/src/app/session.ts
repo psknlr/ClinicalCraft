@@ -218,6 +218,9 @@ export interface AppSessionOptions {
   embodied?: { mover?: Mover; camera?: CameraSensor };
 }
 
+/** The approval mode and practice scope a session kept when it refused a change of them (`AppSession.reconfigure`). */
+export type SettingsKept = Pick<ResolvedSettings, "approvalMode" | "practiceScope">;
+
 export interface AppSession {
   readonly session: ClinicalSession;
   readonly store: SessionStore;
@@ -234,8 +237,12 @@ export interface AppSession {
   /** Run the clinician autopilot; resolves when it stops. */
   autopilot(goal?: string): Promise<void>;
   interrupt(): void;
-  /** Update provider/model/locale/approval/scope on a running session. */
-  reconfigure(stored: StoredSettings, choice: RuntimeChoice, locale: string): void;
+  /**
+   * Update provider/model/locale/approval/scope on a running session. Resolves, once the session has taken it, with the
+   * approval mode and practice scope the session kept instead of those asked for — while the learner holds a place in
+   * the team it refuses a change that would stop the stand-in surgeon (`place.configRefused`) — else null.
+   */
+  reconfigure(stored: StoredSettings, choice: RuntimeChoice, locale: string): Promise<SettingsKept | null>;
   /** Serializable snapshot (embodied: with its world, the idempotency window trimmed for local storage). */
   snapshot(): SessionSnapshot;
   close(): Promise<void>;
@@ -361,10 +368,20 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
       }
     },
     interrupt: () => void session.submit({ type: "interrupt" }),
-    reconfigure(stored, choice, locale) {
-      settings = resolveAgentSettings(stored, { provider: choice.provider, model: choice.model, locale, embodiment: session.embodiment }).settings;
+    async reconfigure(stored, choice, locale) {
+      const wanted = resolveAgentSettings(stored, { provider: choice.provider, model: choice.model, locale, embodiment: session.embodiment }).settings;
       mode = choice.mode;
-      submit({ type: "configure", patch: configurePatch(settings, choice, locale) });
+      settings = wanted;
+      // the approval mode and the practice scope only when they change: a value the session kept (a place held) is not
+      // asked for again on every other change or language switch
+      const patch = configurePatch(wanted, choice, locale);
+      if (patch.approvalMode === session.settings.approvalMode) delete patch.approvalMode;
+      if (patch.practiceScope === session.settings.practiceScope) delete patch.practiceScope;
+      await session.run({ type: "configure", patch });
+      const now = session.settings;
+      if (session.isClosed || (now.approvalMode === wanted.approvalMode && now.practiceScope === wanted.practiceScope)) return null;
+      settings = { ...settings, approvalMode: now.approvalMode, practiceScope: now.practiceScope };
+      return { approvalMode: now.approvalMode, practiceScope: now.practiceScope };
     },
     snapshot: () => {
       const snap = session.snapshot();

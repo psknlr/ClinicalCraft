@@ -62,7 +62,8 @@ describe("a place in the team, at start", () => {
     delete noStandIn.members[4].standIn;
     expect(start(placesCase(MINI, noStandIn), { seat: "first-assistant" }).rejected?.message).toMatch(/^nobody in this case's team stands in for the surgeon/u);
     expect(start(c, { seat: "second-assistant" }).rejected).toEqual({ code: "invalid", message: "this case's team has no second-assistant: there is no such place" });
-    expect(start(c, { seat: "scrub-nurse", team: "scrub-break" }).rejected).toEqual({ code: "invalid", message: `"nurse-2" is absent in team scenario "scrub-break": the scrub-nurse place is not offered` });
+    // the place's member away in the team scenario: the engine's message, and the reason a front-end words (member-absent)
+    expect(start(c, { seat: "scrub-nurse", team: "scrub-break" }).rejected).toEqual({ code: "invalid", message: `"nurse-2" is absent in team scenario "scrub-break": the scrub-nurse place is not offered`, reason: { key: "member-absent", params: { who: "nurse-2" } } });
     expect(start(c, { lineup: "nope" }).rejected).toEqual({ code: "unknown-id", message: `this case's team has no line-up "nope"` });
     expect(start(noTeam, { lineup: "three-surgeons" }).rejected?.code).toBe("invalid");
     // a refused start leaves the session as it was: not started, no place

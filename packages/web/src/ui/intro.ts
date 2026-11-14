@@ -173,12 +173,18 @@ export class Intro {
   }
 
   private async start(caseId: string, facilityId: string, resume: boolean): Promise<void> {
-    const btns = [...this.root.querySelectorAll("button")] as HTMLButtonElement[];
-    for (const b of btns) b.disabled = true;
-    const enter = this.root.querySelector("#enter");
-    if (enter) enter.textContent = this.app.content.caseStatus(caseId) === "ready" ? tr("intro.preparing") : tr("intro.loadingCase");
+    // every control is locked while the start runs: the start's choices (the place, the line-up) are read once
+    const controls = [...this.root.querySelectorAll<HTMLButtonElement | HTMLSelectElement | HTMLInputElement>("button, select, input")];
+    for (const b of controls) b.disabled = true;
+    this.startNote(this.app.content.caseStatus(caseId) === "ready" ? tr("intro.preparing") : tr("intro.loadingCase"));
     await this.app.startCase(caseId, facilityId, resume);
     if (!this.app.game) this.render();
+  }
+
+  /** What the start is doing, on the enter button while it runs ("Preparing…", fetching the steps the team joins along). */
+  startNote(text: string): void {
+    const enter = this.root.querySelector("#enter");
+    if (enter) enter.textContent = text;
   }
 
   /** The selected case's load status (in place: re-rendering would steal the focus from the library). */
@@ -187,6 +193,8 @@ export class Intro {
     const card = this.selectedCard();
     if (!el || !card) return;
     el.replaceWith(this.caseStatusLine(card));
+    // a team scenario chosen: the places it leaves are read from the full case, once it has loaded
+    if (this.app.startChoice.team) this.refreshPlaceRows(card);
     // The learning outcomes are the full case's: fill them in once it has loaded (open state kept).
     const outcomes = this.root.querySelector<HTMLElement>("#case-outcomes");
     const fresh = outcomes ? this.outcomesDisclosure(card) : null;
@@ -320,15 +328,17 @@ export class Intro {
 
   /**
    * The place rows again, in place (the rest of the card untouched: re-rendering it would take the focus), the keyboard
-   * focus kept on the control that changed (`selector`).
+   * focus kept on the control that changed (`selector`) or that had it.
    */
   private refreshPlaceRows(card: CaseCard, selector?: string): void {
     const slot = this.root.querySelector<HTMLElement>("#place-slot");
     if (!slot) return;
+    const focused = document.activeElement instanceof HTMLElement && slot.contains(document.activeElement) && document.activeElement.id ? `#${document.activeElement.id}` : undefined;
     clear(slot);
     const rows = this.placeRows(card);
     if (rows) slot.append(rows);
-    if (selector) slot.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
+    const keep = selector ?? focused;
+    if (keep) slot.querySelector<HTMLElement>(keep)?.focus({ preventScroll: true });
   }
 
   /**
@@ -339,14 +349,16 @@ export class Intro {
    */
   private placeRows(card: CaseCard): HTMLElement | null {
     const app = this.app;
-    const picker = placePicker(card, app.preferredEmbodiment() === "embodied", app.startChoice);
+    // a team scenario a facilitator chose leaves out the places whose member it makes absent (read from the full case)
+    const scenario = app.startChoice.team ? { def: app.content.peekCase(card.id), scenario: app.startChoice.team } : undefined;
+    const picker = placePicker(card, app.preferredEmbodiment() === "embodied", app.startChoice, scenario);
     const saved = app.saves.caseSave(card.id);
     const was = saved ? savedPlace(saved.snapshot.actions) : null;
     const lineupName = (id: string | null) => {
       const l = id ? card.lineups.find((x) => x.id === id) : undefined;
       if (!l) return tr("intro.lineup.base");
       const tag = trMaybe(`intro.lineup.tag.${l.provenance}`, "");
-      return tag ? `${ct(l.name)} (${tag})` : ct(l.name);
+      return tag ? tr("intro.lineup.tagged", { name: ct(l.name), tag }) : ct(l.name);
     };
     const savedLine =
       was && (was.seat || was.lineup)
@@ -354,7 +366,12 @@ export class Intro {
         : null;
     const refusal = app.placeRefusal?.caseId === card.id ? app.placeRefusal : null;
     const refused = refusal
-      ? h("p", { id: "place-refused", class: "place-refused", role: "alert", dataset: { seat: refusal.seat } }, h("b", null, tr("intro.place.refused", { place: tr(`position.${refusal.seat}`) })), h("span", null, refusal.text))
+      ? h(
+          "p",
+          { id: "place-refused", class: "place-refused", role: "alert", dataset: { seat: refusal.seat, resume: refusal.resume ? "true" : "" } },
+          h("b", null, tr(refusal.resume ? "intro.place.resumeRefused" : "intro.place.refused", { place: tr(`position.${refusal.seat}`) })),
+          h("span", null, refusal.text),
+        )
       : null;
     if (!picker) return savedLine || refused ? h("div", { class: "place-rows", id: "place-rows" }, savedLine, refused) : null;
     const lineup = picker.lineups.length
@@ -382,8 +399,11 @@ export class Intro {
           this.refreshPlaceRows(card, "#place-select");
         },
       },
-      h("option", { value: "", selected: !picker.seat }, tr("place.surgeon")),
+      h("option", { value: "", selected: !picker.seat && !picker.unavailable }, tr("place.surgeon")),
       picker.places.map((p) => h("option", { value: p, selected: p === picker.seat }, tr(`place.${p}`))),
+      // a place asked for (the page's address) that this team does not offer: shown as chosen, saying so — the start
+      // sends it and the session says why it cannot be taken
+      picker.unavailable ? h("option", { value: picker.unavailable, selected: true, dataset: { unavailable: "true" } }, tr("intro.place.unavailable", { place: tr(`place.${picker.unavailable}`) })) : null,
     );
     return h(
       "div",

@@ -24,6 +24,7 @@ import {
   type SurgicalControl,
   type TeamChoice,
 } from "@clinicalcraft/core";
+import type { ActorId, ClinicalIntent, WorldRuntime } from "./contracts.js";
 
 /** The control it takes to check the patient's wound while the operation is under way in the team's room (§8.6). */
 export const WOUND_CONTROL: SurgicalControl = "retract";
@@ -74,4 +75,19 @@ export function operationInProgress(c: Pick<CaseDefinition, "procedure">, s: Pic
   const p = s.procedure;
   if (!p || p.closed || p.bailouts.includes("abandon-refer")) return false;
   return procedureFor(c, s)?.phases.includes(s.phase) ?? false;
+}
+
+/**
+ * What working the operative field asks of a body: the spatial policy's `operate` rule — the patient on the operating
+ * table, the body within contact range (§8.5).
+ */
+export const AT_THE_TABLE: ClinicalIntent = { tool: "operate", kind: "operate" };
+
+/**
+ * Whether a body stands at the operating table now (§8.5): where a port is worked and held. The session lets go of any
+ * port held by a body that is not (its traction falls), so a front-end hands a port only to someone who is, and the
+ * care team walks to the table before it takes one.
+ */
+export function atOperatingTable(world: Pick<WorldRuntime, "checkSpatial">, body: ActorId): boolean {
+  return world.checkSpatial(body, AT_THE_TABLE).ok;
 }

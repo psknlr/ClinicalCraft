@@ -2597,11 +2597,16 @@ details.topic .question {
 .embodied-row .embodied-saved {
   color: #6e5718;
 }
-/* a place in the care team and the team's line-up (in-world mode, a case that offers places) */
+/* a place in the care team and the team's line-up (in-world mode, a case that offers places): one column the selects
+   shrink into (an auto column would grow to their longest option and push the library past a phone's screen) */
 .place-rows {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
   margin-top: 10px;
+}
+.place-rows > * {
+  min-width: 0;
 }
 .place-rows .facility-note {
   margin-top: 0;

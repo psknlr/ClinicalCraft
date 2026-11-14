@@ -9,7 +9,7 @@
  * go is the surgeon's again.
  */
 import { memberBody, t } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR } from "@clinicalcraft/world";
+import { atOperatingTable, PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { rt } from "./i18n.js";
 import { procedureLabel } from "./i18n-procedure.js";
 import type { SessionKernel } from "./kernel.js";
@@ -25,7 +25,7 @@ export function dropTractionAwayFromTable(k: SessionKernel, id: string): void {
     const holder = port.holder;
     const body = memberBody(k.caseDef, k.state, holder);
     // at the table: the operate rule (the patient on the operating table, the body within contact range)
-    if (e.world().checkSpatial(body, { tool: "operate", kind: "operate" }).ok) continue;
+    if (atOperatingTable(e.world(), body)) continue;
     const instrument = port.instrument;
     for (const [structure, r] of Object.entries(k.state.procedure?.retractions ?? {})) {
       if (r.port === port.site) k.dispatch({ type: "operate", op: { op: "release", structure }, actor: holder, by: "system" }, id);

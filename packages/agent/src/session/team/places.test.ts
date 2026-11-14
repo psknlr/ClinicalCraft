@@ -181,6 +181,43 @@ describe("a place in the care team: refused where the stand-in could not work", 
     expect(other.session.state.seat).toBe("scrub-nurse");
     await other.session.close();
   });
+
+  it("the engine's own refusal is said with its reason — the place's member away in the team scenario, by name — then its English words", async () => {
+    for (const [locale, said] of [
+      ["en", 'Not possible: Chen Yu is not here in this encounter: they take no part in the operation. "nurse-2" is absent in team scenario "scrub-break": the scrub-nurse place is not offered'],
+      ["zh-CN", '无法执行：本次接诊中陈雨不在场：不参与手术操作。 "nurse-2" is absent in team scenario "scrub-break": the scrub-nurse place is not offered'],
+    ] as const) {
+      const t = await theatreSession({ settingsPatch: { locale, approvalMode: "bypass" } });
+      const refused = await t.session.run({ type: "clinical_action", action: { type: "start", seat: "scrub-nurse", team: "scrub-break" } });
+      expect(msgsOf(refused, "warning").map((m) => m.message), locale).toEqual([said]);
+      expect(t.session.state.started).toBe(false);
+      // a refusal with no reason of its own: the generic words, then the engine's
+      const none = await t.session.run({ type: "clinical_action", action: { type: "start", seat: "second-assistant" } });
+      expect(msgsOf(none, "warning")[0]!.message, locale).toMatch(/this case's team has no second-assistant: there is no such place$/u);
+      await t.session.close();
+    }
+  });
+});
+
+describe("a saved encounter in a place resumed: the settings it would go on with", () => {
+  it("settings that would stop the stand-in are said before the encounter goes on (placeRefusal), in both languages; none without a place or once the operation is closed", async () => {
+    const t = await inPlace({ type: "start", seat: "first-assistant" });
+    expect(t.session.placeRefusal()).toBeNull();
+    const plan = { ...t.session.settings, approvalMode: "plan" as const };
+    expect(t.session.placeRefusal(plan)).toMatch(/^Action not permitted: while you hold the first assistant's place the stand-in surgeon operates, and this session's settings would stop them \(.*plan.*\)\. Change the approval mode, the practice scope or the deny rules to go on with this encounter\.$/isu);
+    expect(t.session.placeRefusal({ ...t.session.settings, practiceScope: "workup" })).toMatch(/^Action not permitted: /u);
+    const snapshot = t.session.snapshot();
+    await t.session.close();
+    // the same save resumed in plan mode, in Chinese: said by the session itself
+    const resumed = await theatreSession({ settingsPatch: { locale: "zh-CN", approvalMode: "plan" }, resume: { sessionId: snapshot.sessionId, actions: snapshot.actions, messages: snapshot.messages, dialogue: snapshot.dialogue }, embodied: { snapshot: snapshot.world!, team: snapshot.team! } } as never);
+    expect(resumed.session.state.seat).toBe("first-assistant");
+    expect(resumed.session.placeRefusal()).toMatch(/^操作不被允许：你担任第一助手岗位时由主刀同事主刀，而本会话的设置会阻止其操作（.*）。请调整审批模式、操作范围或拒绝规则后再继续这次接诊。$/u);
+    await resumed.session.close();
+    // without a place, plan mode is the learner's to choose
+    const free = await theatreSession({ settingsPatch: { approvalMode: "plan" } });
+    expect(free.session.placeRefusal()).toBeNull();
+    await free.session.close();
+  });
 });
 
 describe("each place sees the reference operation through, the learner playing it with their own actions", () => {

@@ -43,7 +43,7 @@ import {
   type TeamNeed,
   type TeamScenario,
 } from "@clinicalcraft/core";
-import { behaviorOf, PRIMARY_ACTOR, RANGES, type ActorState, type NavGoal, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { atOperatingTable, behaviorOf, PRIMARY_ACTOR, RANGES, type ActorState, type NavGoal, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg, TeamEvent } from "../../protocol.js";
 import { lookupStaff } from "../../tools/consult-target.js";
 import { positionWord } from "../../tools/position-words.js";
@@ -913,7 +913,7 @@ export class TeamScheduler {
       label: (id) => this.label(id),
     };
     // what the member's body can work and see in the operative field: asked for only by work in the field
-    const atTable = () => !!def && w.checkSpatial(me.id, { tool: "operate", kind: "operate" }).ok;
+    const atTable = () => !!def && atOperatingTable(w, me.id);
     let seen: { f: FieldView | null } | null = null;
     const field = (): FieldView | null => (seen ??= { f: def && procedure && w.checkSpatial(me.id, { tool: "observe_field", kind: "observe" }).ok ? observeField(def, procedure) : null }).f;
     // what has gone wrong that the member can tell: what the screen shows them, what a colleague said aloud in the room

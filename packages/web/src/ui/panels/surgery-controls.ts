@@ -6,33 +6,29 @@
  *
  * The window by place (docs/PROCEDURE.md §7): what the learner's place may do — who holds each port, which ports they
  * may take, hand back or hand on, what they may put in or ask to be passed, what they may do through the ports they
- * hold, the camera and the instrument table — is asked of core: the field's gates before the physics (`stepOffered`:
- * `COLLEAGUE_OPS`, `stepPartyRefusal`, `seatCheck` with each body's controls) and the instrument vocabulary
- * (`INSTRUMENT_OPS`, `colleaguePortFits`). The operating learner (no place) is offered what the instrument does, as
- * always; the field refuses the rest with its reason.
+ * hold, the camera and the instrument table — is asked of core, never worked out here: the field's gates (`fieldGate`,
+ * the session's own precheck of a step), the engine's own verdict on a step without taking it (`operateRefusal`: the
+ * passing rule and the physics), the instrument vocabulary (`INSTRUMENT_OPS`) — and of the world, whether a colleague
+ * stands at the operating table to take a port (`atOperatingTable`). The operating learner (no place) is offered what
+ * the instrument does, as always; the field refuses the rest with its reason.
  */
-import type { CaseDefinition, Controls, DomainEvent, FacilityDefinition, FieldView, InstrumentId, ProcedureDefinition, ProcedureOp, SessionState, ZoomLevel } from "@clinicalcraft/core";
+import type { CaseDefinition, DomainEvent, FacilityDefinition, FieldGate, FieldView, InstrumentId, ProcedureDefinition, ProcedureOp, RefusalReason, SessionState, StepRefusal, ZoomLevel } from "@clinicalcraft/core";
 import {
   bodyControls,
-  COLLEAGUE_OPS,
-  COLLEAGUE_PORTS,
-  colleaguePortFits,
   effectiveTeam,
   ENERGY_INSTRUMENTS,
+  fieldGate,
   INSTRUMENT_OPS,
   LEARNER_BODY,
   memberBody,
-  normaliseStep,
+  operateRefusal,
   operatorOf,
   passingRequired,
   procedureStateOf,
   refOfBody,
-  seatCheck,
-  stepPartyRefusal,
   t,
   UNCERTAIN,
   vocabularyStructures,
-  waitingPass,
 } from "@clinicalcraft/core";
 import { joinList, trMaybe } from "../../i18n/index.js";
 
@@ -179,6 +175,11 @@ export interface FieldSeat {
   c: CaseDefinition;
   s: SessionState;
   facility?: FacilityDefinition | null;
+  /**
+   * Whether a body stands at the operating table now — the world's own rule (`atOperatingTable`): a port handed to a
+   * body that is not is let go at once (the session's traction rule). Absent: no world (clinical mode), no table rule.
+   */
+  atTable?: (body: string) => boolean;
 }
 
 /**
@@ -190,19 +191,34 @@ export function learnerRef(f: FieldSeat): string | null | undefined {
 }
 
 /**
- * Whether the field's gates let the learner send a step — what core says before the physics, as the session's own
- * precheck does: a step only the operator takes is not a colleague's (`COLLEAGUE_OPS`); whom it names takes part
- * (`stepPartyRefusal`); and the controls cover it, the learner's place's and whoever takes a port's (`seatCheck`, each
- * body's own: `bodyControls` for the field). The physics (who holds a port, what is in it) answers the rest.
+ * Whether the field's gates let the learner send a step — core `fieldGate`, the session's own precheck of the step
+ * before any approval (a step only the operator takes is not a colleague's; whom it names takes part; the controls
+ * cover it, the learner's place's and whoever takes a port's). The physics answers the rest (`stepVerdict`).
  */
 export function stepOffered(f: FieldSeat, op: ProcedureOp): boolean {
-  const me = learnerRef(f);
-  if (me === null) return false;
-  const step = normaliseStep(f.c, f.s, op, me);
-  if (step.actor !== undefined && !COLLEAGUE_OPS.has(step.op.op)) return false;
-  if (stepPartyRefusal(f.c, f.s, step.op, step.actor)) return false;
-  const controlsOf = (who: string): Controls => bodyControls(f.c, f.s, f.facility, memberBody(f.c, f.s, who), "field");
-  return seatCheck(f.c, { ...f.s, procedure: procedureStateOf(f.s) }, step.op, step.actor, controlsOf) === null;
+  return fieldGate(f.c, f.s, f.facility, op, LEARNER_BODY) === null;
+}
+
+/** What the field says to the learner's step now (`stepVerdict`): taken (null), refused by its gates, or by the engine. */
+export type StepVerdict = null | { by: "gate"; gate: FieldGate } | { by: "engine"; refusal: StepRefusal };
+
+/**
+ * The field's verdict on the learner's step now, without sending it: its gates (core `fieldGate`: the session's own
+ * precheck) and then the engine's own verdict (core `operateRefusal`: the passing rule and the physics — who holds a
+ * port, consent, two hands, what is in it, the gas). An offer of the window by place is a step this takes.
+ */
+export function stepVerdict(f: FieldSeat, op: ProcedureOp): StepVerdict {
+  const gate = fieldGate(f.c, f.s, f.facility, op, LEARNER_BODY);
+  if (gate) return { by: "gate", gate };
+  const refusal = operateRefusal(f.c, f.s, op, learnerRef(f) ?? undefined);
+  return refusal ? { by: "engine", refusal } : null;
+}
+
+/** The reason a verdict refuses for, as the field gives it (undefined: none — taken, no part, or the physics' English only). */
+export function verdictReason(v: StepVerdict): RefusalReason | undefined {
+  if (!v) return undefined;
+  if (v.by === "engine") return v.refusal.reason;
+  return v.gate.kind === "no-part" ? undefined : v.gate.kind === "operator-only" ? v.gate.reason : v.gate.refusal.reason;
 }
 
 /** Who holds a port (or the camera), as the learner reads it: you, the operator (the stand-in while you hold a place) or a colleague. */
@@ -214,7 +230,7 @@ export function holderOf(f: FieldSeat, holder: string | undefined): Holder {
   return holder === undefined ? { kind: "operator", ref: operatorOf(f.c, f.s) ?? null } : { kind: "colleague", ref: holder };
 }
 
-/** What the learner's place may do with one port (`portsForPlace`): each an `operate` op the field's gates let through. */
+/** What the learner's place may do with one port (`portsForPlace`): each an `operate` op the field takes now. */
 export interface PortOffer {
   port: string;
   instrument: InstrumentId | null;
@@ -225,11 +241,11 @@ export interface PortOffer {
   take: ProcedureOp | null;
   /** Hand it back to the operator. */
   handBack: ProcedureOp | null;
-  /** Hand it, from the learner's hands, to a member of the team whose controls cover its instrument. */
+  /** Hand it, from the learner's hands, to a member of the team at the operating table whose controls cover its instrument. */
   handTo: { to: string; op: ProcedureOp }[];
-  /** Instruments the learner may put into it: a colleague, into an empty port; operating, every instrument on the table into a port of their own (an exchange too), as always. */
+  /** Instruments the learner may put into it: a colleague, into an empty port, what the field takes; operating, every instrument on the table into a port of their own (an exchange too), as always. */
   insert: InstrumentId[];
-  /** Instead of an insert, while every instrument is passed first and none waits: the instrument asked for, and of whom. */
+  /** Instead of an insert, while every instrument is passed first and none waits (the engine's `pass-first`): the instrument asked for, and of whom. */
   askFor: { instrument: InstrumentId; to: string }[];
   /** Take its instrument out. */
   withdraw: ProcedureOp | null;
@@ -248,53 +264,58 @@ function passerFor(f: FieldSeat, me: string): string | null {
   return colleaguesOf(f, me).find((x) => { const own = bodyControls(f.c, f.s, f.facility, memberBody(f.c, f.s, x), "field"); return own === "all" || own.includes("instruments"); }) ?? null;
 }
 
+/** The session's state with a pass of `instrument` waiting for `to` (by `by`): what the field would say once it is passed. */
+function withPass(s: SessionState, instrument: InstrumentId, to: string, by: string): SessionState {
+  const p = procedureStateOf(s);
+  return { ...s, procedure: { ...p, passed: [...(p.passed ?? []), { instrument, to, by }] } };
+}
+
+/** Whether a member stands at the operating table (the world's rule; no world: no table rule). */
+function atTable(f: FieldSeat, who: string): boolean {
+  return f.atTable ? f.atTable(memberBody(f.c, f.s, who)) : true;
+}
+
 /**
- * The ports as the learner's place may work them (docs/PROCEDURE.md §7): who holds each; Take, Hand back and Hand to by
- * the controls (a colleague takes a port from the operator — another colleague hands theirs over themselves); what may
- * be put in (a colleague: the laparoscope into a camera port, a grasper or the suction into an assist port — the
- * instrument's control); while every instrument is passed first (`passingRequired`: the scrub nurse's place) an insert
- * with no pass waiting becomes a request for one; and the withdrawal of the instrument in a port the learner holds. A
- * colleague holding two ports (`COLLEAGUE_PORTS`: two hands) is offered no third, nor is anyone handed one.
+ * The ports as the learner's place may work them (docs/PROCEDURE.md §7): who holds each, and every offer a step the
+ * field takes now (`stepVerdict`: core's gates, then the engine's own verdict — consent, two hands, what is in a port,
+ * the gas —, never a rule of the web's own): Take, Hand back, Hand to — only to a member at the operating table (the
+ * world's rule: a port held away from it is let go) —, an insert (a colleague's into an empty port of its kind), and a
+ * withdrawal. While every instrument is passed first (the scrub nurse's place) an insert the engine refuses for want of
+ * a pass (`pass-first`) and would take once one waits becomes a request for one. Operating, the learner's own ports
+ * offer every instrument and the withdrawal, as always: the field refuses the rest with its reason.
  */
 export function portsForPlace(f: FieldSeat, def: ProcedureDefinition, v: FieldView): PortOffer[] {
   const me = learnerRef(f);
-  const field = procedureStateOf(f.s);
-  const held = (who: string) => v.ports.filter((p) => p.holder === who).length;
+  const taken = (op: ProcedureOp): ProcedureOp | null => (stepVerdict(f, op) === null ? op : null);
   return v.ports.map((p): PortOffer => {
     const holder = holderOf(f, p.holder);
     const none: PortOffer = { port: p.port, instrument: p.instrument, holder, mine: false, take: null, handBack: null, handTo: [], insert: [], askFor: [], withdraw: null };
     if (me === null) return none;
     const mine = (p.holder ?? undefined) === me;
-    const offer = (op: ProcedureOp): ProcedureOp | null => (stepOffered(f, op) ? op : null);
-    // a colleague's two hands (`COLLEAGUE_PORTS`): holding two ports, the place takes or puts in no other
-    const handsFull = me !== undefined && held(me) >= COLLEAGUE_PORTS;
     let take: ProcedureOp | null = null;
-    if (!mine && p.instrument) {
-      if (me !== undefined && p.holder === undefined && !handsFull) take = offer({ op: "hand-over", port: p.port, to: me });
-      else if (me === undefined && p.holder !== undefined) take = offer({ op: "hand-over", port: p.port });
-    }
-    const handBack = mine && p.instrument && me !== undefined ? offer({ op: "hand-over", port: p.port }) : null;
-    const handTo = mine && p.instrument ? colleaguesOf(f, me).filter((to) => held(to) < COLLEAGUE_PORTS).flatMap((to) => {
-      const op = offer({ op: "hand-over", port: p.port, to });
-      return op ? [{ to, op }] : [];
-    }) : [];
-    let insert: InstrumentId[] = [];
-    const askFor: PortOffer["askFor"] = [];
+    if (!mine && p.instrument) take = me === undefined ? taken({ op: "hand-over", port: p.port }) : taken({ op: "hand-over", port: p.port, to: me });
+    const handBack = mine && p.instrument && me !== undefined ? taken({ op: "hand-over", port: p.port }) : null;
+    const handTo = mine && p.instrument
+      ? colleaguesOf(f, me).flatMap((to) => {
+          const op = atTable(f, to) ? taken({ op: "hand-over", port: p.port, to }) : null;
+          return op ? [{ to, op }] : [];
+        })
+      : [];
     const table = def.instruments.map((i) => i.id);
-    // operating: into a port of the operator's own, any instrument (an exchange too); a colleague: into an empty port
-    if (me === undefined) insert = mine ? table : [];
-    else if (!p.instrument && !handsFull) {
-      const own = table.filter((i) => colleaguePortFits(p.role, i) && stepOffered(f, { op: "insert", port: p.port, instrument: i }));
-      if (!passingRequired(f.c, f.s)) insert = own;
-      else {
-        const passer = passerFor(f, me);
-        for (const i of own) {
-          if (waitingPass(field, i, me) >= 0) insert.push(i);
-          else if (passer) askFor.push({ instrument: i, to: passer });
-        }
+    const insert: InstrumentId[] = [];
+    const askFor: PortOffer["askFor"] = [];
+    // operating: into a port of the operator's own, any instrument (an exchange too); a colleague: what the field takes
+    if (me === undefined) insert.push(...(mine ? table : []));
+    else if (!p.instrument) {
+      const passer = passingRequired(f.c, f.s) ? passerFor(f, me) : null;
+      for (const i of table) {
+        const op: ProcedureOp = { op: "insert", port: p.port, instrument: i };
+        const verdict = stepVerdict(f, op);
+        if (verdict === null) insert.push(i);
+        else if (passer && verdict.by === "engine" && verdict.refusal.reason?.key === "pass-first" && operateRefusal(f.c, withPass(f.s, i, me, passer), op, me) === null) askFor.push({ instrument: i, to: passer });
       }
     }
-    const withdraw = mine && p.instrument ? (me === undefined ? { op: "withdraw" as const, port: p.port } : offer({ op: "withdraw", port: p.port })) : null;
+    const withdraw = mine && p.instrument ? (me === undefined ? { op: "withdraw" as const, port: p.port } : taken({ op: "withdraw", port: p.port })) : null;
     return { ...none, mine, take, handBack, handTo, insert, askFor, withdraw };
   });
 }
@@ -326,7 +347,8 @@ function controlProbe(control: Control, port: string): ProcedureOp {
 /**
  * The actions offered through a port (`controlsFor` by place): only a port the learner holds; operating, everything its
  * instrument does, as always; in a place, what its instrument does that the field's gates let the place do (traction,
- * suction and irrigation, the camera's — by the controls; never the operator's own steps).
+ * suction and irrigation, the camera's — by the controls; never the operator's own steps). Their targets are chosen
+ * after: the field refuses what it cannot take, with its reason.
  */
 export function controlsForPlace(f: FieldSeat, port: FieldView["ports"][number]): readonly Control[] {
   const me = learnerRef(f);
@@ -341,36 +363,59 @@ export interface CameraOffer {
   at: string | null;
   zoom: ZoomLevel;
   holder: Holder;
-  /** The learner aims and zooms it: the camera holder — or the operator while nobody holds the camera port — by the controls. */
+  /** The learner aims and zooms it: the field takes their aim now — the camera holder's, or the operator's while nobody holds the camera port. */
   aims: boolean;
+  /** Why not, as the field gives it (the port is someone else's, a control not held, no picture…); undefined: aims, or no reason given. */
+  refusal?: RefusalReason;
 }
 
-/** The camera block's offer (null: no laparoscope in a camera port). Aiming is the camera holder's, or the operator's on an unheld camera port. */
+/**
+ * The camera block's offer (null: no laparoscope in a camera port): whether the field takes the learner's aim now
+ * (`stepVerdict` of an aim at the whole field) — the camera holder's, or the operator's on an unheld camera port, with a
+ * picture — and, if not, why.
+ */
 export function cameraOffer(f: FieldSeat, v: FieldView): CameraOffer | null {
   const cam = v.camera;
   if (!cam) return null;
-  const me = learnerRef(f);
-  const aims = me !== null && (cam.holder ?? undefined) === me && stepOffered(f, { op: "aim", port: cam.port });
-  return { port: cam.port, at: cam.at, zoom: cam.zoom, holder: holderOf(f, cam.holder), aims };
+  const verdict = stepVerdict(f, { op: "aim", port: cam.port });
+  const refusal = verdictReason(verdict);
+  return { port: cam.port, at: cam.at, zoom: cam.zoom, holder: holderOf(f, cam.holder), aims: verdict === null, ...(refusal ? { refusal } : {}) };
 }
 
 /** The instrument table as the learner reads it (`tableOffer`): what is on it, what was passed and waits, and passing. */
 export interface TableOffer {
   instruments: InstrumentId[];
   passed: FieldView["passed"];
-  /** Passing, for a place holding the instrument table: to whom (undefined: the operator) — null: not the learner's. */
-  pass: { to: (string | undefined)[] } | null;
+  /**
+   * Passing, for a place holding the instrument table: to whom each instrument may go (undefined: the operator) — the
+   * operator, and a member whose controls let them put it in — where the field takes the pass now; null: not the
+   * learner's to pass.
+   */
+  pass: { to: Partial<Record<InstrumentId, (string | undefined)[]>> } | null;
 }
 
-/** The Table section's offer: the case's instruments, the passes waiting, and — holding the instrument table — whom the learner may pass to. */
+/** Whether a member's controls let them put an instrument in (core `fieldGate` of their own insert: its control is the instrument's). */
+function mayPutIn(f: FieldSeat, who: string, instrument: InstrumentId): boolean {
+  const port = f.s.procedure?.ports[0]?.site ?? "A";
+  return fieldGate(f.c, f.s, f.facility, { op: "insert", port, instrument }, memberBody(f.c, f.s, who)) === null;
+}
+
+/**
+ * The Table section's offer: the case's instruments, the passes waiting, and — holding the instrument table — whom the
+ * learner may pass each instrument to: the operator, or a member who may put it in (a grasper to whoever holds traction,
+ * the laparoscope to the camera holder; an operating instrument to the operator only), where the field takes the pass.
+ */
 export function tableOffer(f: FieldSeat, def: ProcedureDefinition, v: FieldView): TableOffer {
   const me = learnerRef(f);
   const instruments = def.instruments.map((i) => i.id);
-  const probe = instruments[0];
   let pass: TableOffer["pass"] = null;
-  if (typeof me === "string" && probe) {
-    const to = [undefined, ...colleaguesOf(f, me)].filter((x) => stepOffered(f, { op: "pass", instrument: probe, ...(x ? { to: x } : {}) }));
-    if (to.length) pass = { to };
+  if (typeof me === "string") {
+    const to: Partial<Record<InstrumentId, (string | undefined)[]>> = {};
+    for (const i of instruments) {
+      const takers = [undefined, ...colleaguesOf(f, me).filter((x) => mayPutIn(f, x, i))].filter((x) => stepVerdict(f, { op: "pass", instrument: i, ...(x ? { to: x } : {}) }) === null);
+      if (takers.length) to[i] = takers;
+    }
+    if (Object.keys(to).length) pass = { to };
   }
   return { instruments, passed: v.passed, pass };
 }

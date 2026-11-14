@@ -1,9 +1,9 @@
 /**
  * The operative field said to whoever asked (docs/PROCEDURE.md §3, §7): a refusal's reason with the people's names,
  * controls by their names, the camera and the passes waiting; and the refusal, before any approval, of a step the
- * field would not take from the acting body (`placeRefusal`: who takes part — core `stepPartyRefusal` — and the
- * controls — core `seatCheck` with each body's own, `bodyControls` for the field, for whoever does the step and whoever
- * takes a port — so nobody is asked to approve what the body may not do). The engine's English `message` stays as it
+ * field would not take from the acting body (`placeRefusal`: core `fieldGate` — who takes part, `stepPartyRefusal`,
+ * and the controls, `seatCheck` with each body's own, `bodyControls` for the field, for whoever does the step and
+ * whoever takes a port — so nobody is asked to approve what the body may not do). The engine's English `message` stays as it
  * is: callers keep it as the detail of a rejection and replace only the generic lead-in with `reasonText` (the A4 rule
  * of the theatre round).
  *
@@ -14,23 +14,18 @@
  */
 import {
   bodyControls,
-  COLLEAGUE_OPS,
   CONTROL_TITLES,
   FIELD_REFUSALS,
+  fieldGate,
   LEARNER_BODY,
   memberBody,
-  normaliseStep,
   POSITION_TITLES,
   procedureFor,
-  procedureStateOf,
   refOfBody,
-  seatCheck,
   seatMember,
-  stepPartyRefusal,
   SurgicalControlSchema,
   t,
   type CaseDefinition,
-  type Controls,
   type FieldGateRefusal,
   type FieldView,
   type ProcedureOp,
@@ -190,14 +185,14 @@ function partyRejected(ctx: FieldContext, refusal: FieldGateRefusal): ToolOutput
 
 /**
  * Whether the field would take this step from the acting body at all, before the approval gate (docs/PROCEDURE.md §3;
- * null: it may, or the field decides). The body — `ctx.actorId`, a body-less call being the learner's — works the field
- * as its member (core `refOfBody`): a body with no part in the field (the colleague standing by) is refused; a
- * colleague's step only the operator does is ("You are the first assistant: dissection is the operating surgeon's.");
- * a step naming someone the field takes no part from (core `stepPartyRefusal`: a member the team scenario makes absent;
- * a pass, or in a place a hand-over, to someone outside the team) is, as the field would say it; and any other step
- * needs the control it is worked with (core `seatCheck`, each body's own controls — `bodyControls` for the field):
- * the colleague's own for their step — the operator's are never narrowed — and whoever takes a port, from the operator
- * too, theirs.
+ * null: it may, or the field decides) — core `fieldGate`, the composition a front-end's offers ask too, said in the
+ * caller's words. The body — `ctx.actorId`, a body-less call being the learner's — works the field as its member (core
+ * `refOfBody`): a body with no part in the field (the colleague standing by) is refused; a colleague's step only the
+ * operator does is ("You are the first assistant: dissection is the operating surgeon's."); a step naming someone the
+ * field takes no part from (core `stepPartyRefusal`: a member the team scenario makes absent; a pass, or in a place a
+ * hand-over, to someone outside the team) is, as the field would say it; and any other step needs the control it is
+ * worked with (core `seatCheck`, each body's own controls — `bodyControls` for the field): the colleague's own for
+ * their step — the operator's are never narrowed — and whoever takes a port, from the operator too, theirs.
  */
 export function placeRefusal(ctx: FieldContext, op: ProcedureOp): ToolOutput | null {
   const c = ctx.caseDef;
@@ -206,8 +201,9 @@ export function placeRefusal(ctx: FieldContext, op: ProcedureOp): ToolOutput | n
   const L = ctx.locale;
   const body = ctx.actorId ?? LEARNER_BODY;
   const you = body === addresseeOf(ctx);
-  const ref = refOfBody(c, s, body);
-  if (ref === null) {
+  const gate = fieldGate(c, s, ctx.facility, op, body);
+  if (!gate) return null;
+  if (gate.kind === "no-part") {
     // the colleague standing by while the learner holds their place, or a body that is nobody's in the team
     const standing = body !== LEARNER_BODY && body.startsWith("staff:");
     const said = standing
@@ -217,18 +213,12 @@ export function placeRefusal(ctx: FieldContext, op: ProcedureOp): ToolOutput | n
         : rt(L, "place.noPart", { who: nameOfBody(ctx, body) });
     return notAuthorized(said, { key: standing ? "standing-by" : "no-part", params: { who: body, op: op.op } });
   }
-  const step = normaliseStep(c, s, op, ref);
-  if (step.actor !== undefined && !COLLEAGUE_OPS.has(step.op.op)) {
-    const reason: RefusalReason = { key: "operator-only", params: { op: step.op.op, actor: step.actor } };
-    const params = { position: positionWords(ctx, body), op: rt(L, `op.noun.${step.op.op}` as RuntimeKey) };
-    return notAuthorized(you ? rt(L, "op.place.operatorOnly.you", params) : rt(L, "op.place.operatorOnly", { ...params, who: nameOfBody(ctx, body) }), reason);
+  if (gate.kind === "operator-only") {
+    const params = { position: positionWords(ctx, body), op: rt(L, `op.noun.${gate.step.op.op}` as RuntimeKey) };
+    return notAuthorized(you ? rt(L, "op.place.operatorOnly.you", params) : rt(L, "op.place.operatorOnly", { ...params, who: nameOfBody(ctx, body) }), gate.reason);
   }
-  const party = stepPartyRefusal(c, s, step.op, step.actor);
-  if (party) return partyRejected(ctx, party);
-  const controlsOf = (who: string): Controls => bodyControls(c, s, ctx.facility, memberBody(c, s, who), "field");
-  const gate = seatCheck(c, { ...s, procedure: procedureStateOf(s) }, step.op, step.actor, controlsOf);
-  if (!gate) return null;
-  return notAuthorized(reasonText(ctx, gate.reason) ?? gate.message, gate.reason, gate.message);
+  if (gate.kind === "party") return partyRejected(ctx, gate.refusal);
+  return notAuthorized(reasonText(ctx, gate.refusal.reason) ?? gate.refusal.message, gate.refusal.reason, gate.refusal.message);
 }
 
 /**

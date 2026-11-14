@@ -10,15 +10,18 @@
  * does not show and unsafe acts wait for the debrief.
  *
  * By place (docs/PROCEDURE.md §7): holding a place in the care team, the window offers what that place may do —
- * core's offers (`surgery-controls.ts`: `portsForPlace`, `controlsForPlace`, `cameraOffer`, `tableOffer`): who holds
- * each port ("you", a colleague by name and position), Take / Hand back / Hand to by the controls, an insert (or, in the
- * scrub nurse's place, a request for the pass), the actions through the ports the place holds, the camera block (aim at
- * a region, closer / wider — the camera holder's) and the instrument table (passing, for the place that holds it). The
- * operator's own steps (the plan, the pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in
- * view, read-only. Saying an injury aloud is anyone's.
+ * core's verdicts (`surgery-controls.ts`: `portsForPlace`, `controlsForPlace`, `cameraOffer`, `tableOffer` — the field's
+ * gates and the engine's own verdict on each step, the world's rule for who stands at the operating table): who holds
+ * each port ("you", a colleague by name and position), Take / Hand back / Hand to (a colleague at the table), an insert
+ * (or, in the scrub nurse's place, a request for the pass), the actions through the ports the place holds, the camera
+ * block (aim at a region, closer / wider — the camera holder's; otherwise why not) and the instrument table (passing,
+ * for the place that holds it, each instrument to whoever may put it in). The operator's own steps (the plan, the
+ * pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in view, read-only. Saying an injury
+ * aloud is anyone's.
  */
 import { bodyControls, LEARNER_BODY, observeField, portReport, POSITION_TITLES, procedureFor, procedureStateOf, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState, type SessionState } from "@clinicalcraft/core";
 import type { FieldContext } from "@clinicalcraft/agent";
+import { atOperatingTable } from "@clinicalcraft/world";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { App, Game } from "../../app/context.js";
 import type { LaparoscopeApi } from "../../contracts.js";
@@ -150,8 +153,14 @@ export function surgeryPanel(app: App): () => PanelView {
       passInstrument: "",
       passTo: "",
     };
-    /** What the learner's place may do in the field now (core's offers: `surgery-controls.ts`). */
-    const seat = (): FieldSeat => ({ c, s: session() as SessionState, facility: game.facility });
+    /**
+     * What the learner's place may do in the field now (core's offers: `surgery-controls.ts`), and who stands at the
+     * operating table — the world's own rule, asked of the encounter's world (none in clinical mode).
+     */
+    const seat = (): FieldSeat => {
+      const world = game.session.world();
+      return { c, s: session() as SessionState, facility: game.facility, ...(world ? { atTable: (body: string) => atOperatingTable(world, body) } : {}) };
+    };
     /** The field's people in the learner's words ("you"; anyone else by name). */
     const words: FieldContext = fieldWordsOf(game);
 
@@ -515,7 +524,8 @@ export function surgeryPanel(app: App): () => PanelView {
         return r ? ct(r.name) : id;
       };
       const now = h("p", { class: "small", id: "lap-camera-now", dataset: { at: cam.at ?? "", zoom: cam.zoom, holder: cam.holder.kind } }, cameraWords(words, v, def));
-      if (!cam.aims) return h("div", { class: "lap-block", id: "lap-camera" }, h("h5", null, tr("surgery.camera.title")), now, h("p", { class: "small muted" }, tr("surgery.camera.notYours", { who: holderText(cam.holder) })));
+      // not the learner's to aim now: why, as the field says it (the port someone else's, a control not held, no picture)
+      if (!cam.aims) return h("div", { class: "lap-block", id: "lap-camera" }, h("h5", null, tr("surgery.camera.title")), now, h("p", { class: "small muted", dataset: { offer: "none", reason: cam.refusal?.key ?? "" } }, refusalWords(words, cam.refusal) ?? tr("surgery.camera.notYours", { who: holderText(cam.holder) })));
       const regions = def.regions.map((r) => r.id);
       if (!regions.includes(d.aimAt)) d.aimAt = cam.at ?? v.working ?? regions[0] ?? "";
       const pick = h("select", { id: "lap-aim-region", "aria-label": tr("surgery.camera.region") }, regions.map((id) => h("option", { value: id, selected: id === d.aimAt }, regionName(id))));
@@ -605,11 +615,16 @@ export function surgeryPanel(app: App): () => PanelView {
         h("p", { class: "small", id: "lap-passed", dataset: { passed: String(table.passed.length) } }, passes.length ? tr("surgery.table.passed", { list: joinList(passes) }) : tr("surgery.table.none")),
       ];
       if (table.pass) {
-        if (!table.instruments.includes(d.passInstrument as InstrumentId)) d.passInstrument = table.instruments[0] ?? "";
-        const recipients = table.pass.to.map((x) => x ?? "");
+        // what may be passed now, and to whom each may go: the operator first (the default), then whoever may put it in
+        const passable = table.instruments.filter((i) => table.pass!.to[i]?.length);
+        if (!passable.includes(d.passInstrument as InstrumentId)) d.passInstrument = passable[0] ?? "";
+        const recipients = (table.pass.to[d.passInstrument as InstrumentId] ?? []).map((x) => x ?? "");
         if (!recipients.includes(d.passTo)) d.passTo = recipients[0] ?? "";
-        const what = h("select", { id: "lap-pass-instrument", "aria-label": tr("surgery.table.instrument") }, table.instruments.map((i) => h("option", { value: i, selected: i === d.passInstrument }, label("instrument", i))));
-        what.addEventListener("change", () => (d.passInstrument = what.value));
+        const what = h("select", { id: "lap-pass-instrument", "aria-label": tr("surgery.table.instrument") }, passable.map((i) => h("option", { value: i, selected: i === d.passInstrument }, label("instrument", i))));
+        what.addEventListener("change", () => {
+          d.passInstrument = what.value;
+          rerender();
+        });
         const to = h("select", { id: "lap-pass-to", "aria-label": tr("surgery.table.to") }, recipients.map((x) => h("option", { value: x, selected: x === d.passTo }, partyWords(words, x || undefined))));
         to.addEventListener("change", () => (d.passTo = to.value));
         rows.push(

@@ -48,6 +48,8 @@ export {
   type TeamChoice,
 } from "./seats.js";
 export { placePath, withPlacePath } from "./place-path.js";
+// the operative field's gate before the physics, one composition for the session's precheck and a front-end's offers
+export { fieldGate, type FieldGate, type FieldStep } from "./field-gate.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 
@@ -55,7 +57,7 @@ export { verifyCase } from "./verify.js";
 export * from "./procedure/index.js";
 
 // session lifecycle
-export { createSession, reduce, replay } from "./reducer.js";
+export { createSession, operateRefusal, reduce, replay, type StepRefusal } from "./reducer.js";
 
 // queries
 export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";

@@ -1,11 +1,12 @@
 /**
  * A place in the care team at the start of an encounter (docs/EMBODIED.md §2.1, docs/TEAM.md §1) — pure: what the
- * intro's picker offers for a case (its index entry's `seats` and `lineups`), the choices a page address makes
- * (`?team=`, `?seat=`, `?lineup=`), the `start` the web sends, and a saved encounter's own place. The operating
- * surgeon's place is the learner as always — no place recorded (`start {seat: "surgeon"}` is normalised away) —, so it
- * is the picker's default and never sent. Whether a place can be taken is the session's to say: the web shows its words.
+ * intro's picker offers for a case (its index entry's `seats` and `lineups`; with a team scenario chosen, less the places
+ * whose member it makes absent), the choices a page address makes (`?team=`, `?seat=`, `?lineup=`), the `start` the web
+ * sends, and a saved encounter's own place. The operating surgeon's place is the learner as always — no place recorded
+ * (`start {seat: "surgeon"}` is normalised away) —, so it is the picker's default and never sent. Whether a place can be
+ * taken is the session's to say: a place asked for is sent, never dropped, and the web shows the session's words.
  */
-import { TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
+import { effectiveTeam, placeMember, TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
 import type { CaseCard } from "./content.js";
 
 /** The start's own choices besides the case and the facility (null: none). */
@@ -34,22 +35,38 @@ export function startChoiceFromSearch(search: string): StartChoice {
 }
 
 /**
- * `__QA__.start(case, facility, resume, team, seat, lineup)`'s choices over the page's: a value given replaces (`""` —
- * or, for the place, the operating surgeon's — clears it), one not given keeps the page's (`?team=`, `?seat=`,
- * `?lineup=`). The four-argument form a pack's demonstrations call keeps the page's place: none, unless asked.
+ * `__QA__.start(case, facility, resume, team, seat, lineup)`'s choices: the place and the line-up are the call's own —
+ * not given (the four-argument form a pack's demonstrations call), no place and the case's own team, whatever the
+ * page's address or the picker chose —; the team scenario not given keeps the page's (`?team=`), `""` clears it.
  */
 export function withStartArgs(choice: StartChoice, team?: string, seat?: string, lineup?: string): StartChoice {
   return {
     team: team === undefined ? choice.team : team || null,
-    seat: seat === undefined ? choice.seat : placeOf(seat),
-    lineup: lineup === undefined ? choice.lineup : lineup || null,
+    seat: placeOf(seat),
+    lineup: lineup || null,
   };
 }
 
-/** The places a case's card offers with a line-up (null: its own team) — the index entry's, as core's `seatsOf` gives them. */
-export function placesOffered(card: Pick<CaseCard, "seats" | "lineups">, lineup: string | null): Place[] {
-  if (!lineup) return [...card.seats];
-  return [...(card.lineups.find((l) => l.id === lineup)?.seats ?? [])];
+/** A team scenario chosen, with the case it is read from (the full case: the index entry carries no scenario). */
+export interface ScenarioOf {
+  def: Pick<CaseDefinition, "team"> | null;
+  scenario: string | null;
+}
+
+/**
+ * The places a case's card offers with a line-up (null: its own team) — the index entry's, as core's `seatsOf` gives
+ * them — and, given the full case and a team scenario, less the places whose member that scenario makes absent (core
+ * `placeMember`, `effectiveTeam`: the team as it is in that encounter).
+ */
+export function placesOffered(card: Pick<CaseCard, "seats" | "lineups">, lineup: string | null, scenario?: ScenarioOf): Place[] {
+  const places = lineup ? (card.lineups.find((l) => l.id === lineup)?.seats ?? []) : card.seats;
+  const def = scenario?.def as CaseDefinition | null | undefined;
+  if (!def?.team || !scenario?.scenario) return [...places];
+  const present = new Set(effectiveTeam(def, { ...(lineup ? { lineup } : {}), teamScenario: scenario.scenario }).map((m) => m.staff));
+  return places.filter((p) => {
+    const m = placeMember(def, p, lineup ?? undefined);
+    return !m || present.has(m.staff);
+  });
 }
 
 /** Whether a case's card offers any place in the team, with its own team or with a line-up. */
@@ -62,41 +79,50 @@ export interface PlacePicker {
   /** The case's line-ups (empty: no line-up row). */
   lineups: CaseCard["lineups"];
   lineup: string | null;
-  /** The places offered with the line-up chosen (the operating surgeon's, the default, comes first and is not listed). */
+  /** The places offered with the line-up and the team scenario chosen (the operating surgeon's, the default, comes first and is not listed). */
   places: Place[];
   seat: Place | null;
+  /**
+   * A place asked for (the page's address, `__QA__.start`) that is not offered with that line-up or team scenario: shown
+   * as chosen, saying so — it is sent as asked, and the session's refusal says why (null: none).
+   */
+  unavailable: Place | null;
 }
 
 /**
  * The intro's place picker for a case (null: no rows) — shown only in in-world mode for a case that offers places in
- * its team (docs/EMBODIED.md §2.1): a choice the case does not offer reads as the default (no line-up, operating).
+ * its team (docs/EMBODIED.md §2.1). A line-up the case does not have reads as its own team; a place asked for that the
+ * case does not offer with the line-up or the team scenario chosen (`scenario`: read from the full case once loaded) is
+ * shown as chosen but not offered (`unavailable`), so the picker never says a start other than the one sent.
  */
-export function placePicker(card: Pick<CaseCard, "seats" | "lineups">, embodied: boolean, choice: Pick<StartChoice, "seat" | "lineup">): PlacePicker | null {
+export function placePicker(card: Pick<CaseCard, "seats" | "lineups">, embodied: boolean, choice: Pick<StartChoice, "seat" | "lineup">, scenario?: ScenarioOf): PlacePicker | null {
   if (!embodied || !offersPlaces(card)) return null;
   const lineup = choice.lineup && card.lineups.some((l) => l.id === choice.lineup) ? choice.lineup : null;
-  const places = placesOffered(card, lineup);
-  return { lineups: card.lineups, lineup, places, seat: choice.seat && places.includes(choice.seat) ? choice.seat : null };
+  const places = placesOffered(card, lineup, scenario);
+  const seat = choice.seat && places.includes(choice.seat) ? choice.seat : null;
+  return { lineups: card.lineups, lineup, places, seat, unavailable: choice.seat && !seat ? choice.seat : null };
 }
 
 /**
- * The `start` of a new encounter: the team scenario and the line-up when the case has them; a place when the case has a
- * care team — and, given its library card, when the card offers it with that line-up, so what the picker shows is what
- * is sent (a place a case does not offer is dropped, as `?team=` always was). The session says whether it can be taken
- * now (in-world mode, the settings, the team scenario): its words are shown.
+ * The `start` of a new encounter: the team scenario and the line-up when the case has them (others are dropped, as
+ * `?team=` always was); a place asked for whenever the case has a care team — given its library card, one that offers
+ * places at all (a page's `?seat=` leaves a case with none as it is) —, never dropped: the session says whether it can
+ * be taken now (in-world mode, the settings, the line-up, the team scenario), and its words are shown.
  */
 export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice, card?: Pick<CaseCard, "seats" | "lineups">): StartAction {
   const team = choice.team && c.team?.scenarios.some((x) => x.id === choice.team) ? choice.team : null;
   const lineup = choice.lineup && (c.team?.lineups ?? []).some((l) => l.id === choice.lineup) ? choice.lineup : null;
-  const seat = choice.seat && c.team && (!card || placesOffered(card, lineup).includes(choice.seat)) ? choice.seat : null;
+  const seat = choice.seat && c.team && (!card || offersPlaces(card)) ? choice.seat : null;
   return { type: "start", ...(team ? { team } : {}), ...(seat ? { seat } : {}), ...(lineup ? { lineup } : {}) };
 }
 
 /**
- * The `start` an encounter sends now (null: none — it has started already, a resumed save among them, or finished): a
- * place's start runs once, and so does the first-person view's move to the team's table that follows it.
+ * The `start` an encounter sends now — the one worked out when the start began (`start`) — or null: none, it has
+ * started already (a resumed save among them) or finished. A place's start runs once, and so does the first-person
+ * view's move to the team's table that follows it.
  */
-export function pendingStart(s: Pick<SessionState, "started" | "finished">, c: Pick<CaseDefinition, "team">, choice: StartChoice, card?: Pick<CaseCard, "seats" | "lineups">): StartAction | null {
-  return !s.started && !s.finished ? startAction(c, choice, card) : null;
+export function pendingStart(s: Pick<SessionState, "started" | "finished">, start: StartAction): StartAction | null {
+  return !s.started && !s.finished ? start : null;
 }
 
 /** The place and line-up a saved encounter was started with (its recorded `start`; none: the operating surgeon's). */

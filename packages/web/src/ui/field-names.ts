@@ -37,16 +37,20 @@ export function partyName(ctx: FieldContext, ref: string | undefined): string {
   return bodyOf(ctx, ref) === LEARNER_BODY ? tr("holder.you") : nameOfRef(ctx, ref === "" ? undefined : ref);
 }
 
+/** A name that already says who someone is in brackets ("Dr Mori (assistant surgeon)", "林护士（洗手）"): a facility's own. */
+const QUALIFIED = /[)）]\s*$/u;
+
 /**
  * A port's holder, a step's party (a staff id; absent or `""`: the operator) in the learner's words: "you" for the
- * learner, anyone else by name and, for a member of staff, position ("Dr Ito (operating surgeon)").
+ * learner, anyone else by name and, for a member of staff, position ("Dr Ito (operating surgeon)") — unless the
+ * facility's name for them already says it in brackets (said once: "Dr Mori (assistant surgeon)").
  */
 export function partyWords(ctx: FieldContext, ref: string | undefined): string {
   const body = bodyOf(ctx, ref);
   if (body === LEARNER_BODY) return tr("holder.you");
   const name = nameOfRef(ctx, ref === "" ? undefined : ref);
   const position = bodyPosition(ctx.caseDef, ctx.state(), ctx.facility, body);
-  return position ? tr("holder.named", { name, position: tr(`position.${position}`) }) : name;
+  return position && !QUALIFIED.test(name) ? tr("holder.named", { name, position: tr(`position.${position}`) }) : name;
 }
 
 /** A sentence of the web's for a reason key (`<key>` or its "you" variant `<key>.you`), its blanks filled. */

@@ -13,7 +13,7 @@
  * op dispatch, the learner's tool path, agent turns, the tool path and approval
  * gate, agent models, conversations, external calls, the embodied wiring, resume.
  */
-import { nextEvent, vitalsAt, type PendingEvent, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { nextEvent, POSITION_TITLES, t, vitalsAt, type PendingEvent, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type EpisodeTrace, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { TEAM_PROFILE } from "../agents/builtin.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
@@ -28,6 +28,7 @@ import type { ToolDefinition, VitalsView } from "../tools/types.js";
 import { rt } from "./i18n.js";
 import { SessionKernel } from "./kernel.js";
 import { provenanceNow, restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
+import { standInRefusal } from "./team/places.js";
 import { emptyTrace } from "./trace.js";
 import type { ClinicalSessionApi, RecordProvenance, ReplayIssue, SessionOptions, SessionSnapshot } from "./types.js";
 import type { TeamCheckpoint } from "./team/types.js";
@@ -144,6 +145,22 @@ export class ClinicalSession implements ClinicalSessionApi {
    */
   tool(name: string): ToolDefinition<any> | undefined {
     return this.k.registry.get(name);
+  }
+
+  /**
+   * Why the session's permission settings — its own, or `settings` — would stop the stand-in surgeon now, in the
+   * session's words (docs/TEAM.md §1); null while the learner holds no place in the team, once the encounter has finished
+   * or the operation is closed, or when the settings let the stand-in work. A front-end resuming a saved encounter in a
+   * place asks before it goes on — as a start in a place is refused (`place.standInRefused`) and a `configure` is
+   * (`place.configRefused`): the stand-in never meets a refusal by a rule in the middle of the operation.
+   */
+  placeRefusal(settings?: ResolvedSettings): string | null {
+    const k = this.k;
+    const seat = k.state.seat;
+    if (!seat || k.state.finished || k.state.procedure?.closed) return null;
+    const why = standInRefusal(k, k.currentSubmission || k.id, seat, settings ?? k.settings);
+    const L = k.locale;
+    return why ? rt(L, "action.denied", { reason: rt(L, "place.resumeRefused", { place: t(POSITION_TITLES[seat], L), reason: why }) }) : null;
   }
 
   /** Where the learner's body is (embodied mode; the REPL status line), or null. */

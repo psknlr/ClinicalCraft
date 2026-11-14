@@ -20,7 +20,6 @@
  */
 import { canCompleteWith, caseIndexEntry, compareLibraryOrder, createLimiter, libraryOrder, mapLimit, normalizeIndexEntry, type CaseIndexEntry } from "@clinicalcraft/agent";
 import {
-  canJoinTeam,
   ClinicalActionSchema,
   compileFacility,
   facilityCapabilities,
@@ -28,6 +27,7 @@ import {
   parseCatalog,
   parseFacility,
   parseRoomTemplate,
+  standInOf,
   withPlacePath,
   type CaseDefinition,
   type ClinicalAction,
@@ -459,8 +459,27 @@ export function placePathOf(body: unknown, id: string): ClinicalAction[] | null 
 }
 
 /**
+ * Why a case's place path could not be had (`PlacePathError.kind`): the server answered with an error (`http`, its
+ * status — 404 from a server without the endpoint), nothing came back in time (`timeout`), the request failed
+ * (`network`), or what came back is not this case's path (`malformed`). The app words each in the UI language.
+ */
+export type PlacePathFailure = "http" | "timeout" | "network" | "malformed";
+
+/** A place path that could not be had: its kind and HTTP status, worded by the app; `message` (the cause as it came) is for the console only. */
+export class PlacePathError extends Error {
+  constructor(
+    readonly kind: PlacePathFailure,
+    message: string,
+    readonly status?: number,
+  ) {
+    super(message);
+    this.name = "PlacePathError";
+  }
+}
+
+/**
  * `GET /api/content/cases/:id/place-path` from `clinicalcraft serve`: the part of a case's reference solution a place
- * in its care team needs. Throws with the server's message or the HTTP status.
+ * in its care team needs. Throws a `PlacePathError`: the HTTP status, a timeout, a failed request, an answer not JSON.
  */
 export async function fetchPlacePath(id: string, timeoutMs = 20_000): Promise<unknown> {
   const ctrl = new AbortController();
@@ -469,7 +488,12 @@ export async function fetchPlacePath(id: string, timeoutMs = 20_000): Promise<un
     const res = await fetch(`/api/content/cases/${encodeURIComponent(id)}/place-path`, { signal: ctrl.signal, headers: { accept: "application/json" } });
     const json = (res.headers.get("content-type") ?? "").includes("json") ? ((await res.json().catch(() => null)) as { error?: { message?: unknown } } | null) : null;
     if (res.ok && json && typeof json === "object") return json;
-    throw new Error(typeof json?.error?.message === "string" ? json.error.message : `HTTP ${res.status}`);
+    const said = typeof json?.error?.message === "string" ? json.error.message : `HTTP ${res.status}`;
+    throw new PlacePathError(res.ok ? "malformed" : "http", said, res.status);
+  } catch (err) {
+    if (err instanceof PlacePathError) throw err;
+    if (ctrl.signal.aborted) throw new PlacePathError("timeout", `no place path for case "${id}" within ${timeoutMs} ms`);
+    throw new PlacePathError("network", err instanceof Error ? err.message : String(err));
   } finally {
     clearTimeout(timer);
   }
@@ -477,14 +501,16 @@ export async function fetchPlacePath(id: string, timeoutMs = 20_000): Promise<un
 
 /**
  * A case ready for a start in a place in its care team (docs/TEAM.md §1): a bundled case carries its reference
- * solution; a case `clinicalcraft serve` sends comes without it, and a place joins the team along it — so its place
- * path is fetched beside it (`fetchPath`, default `fetchPlacePath`) and put in as its solution (core `withPlacePath`):
- * core's own start then joins exactly as it does for the full case, and the stand-in surgeon works from the same
- * operative steps. Never the rest of the solution. A case that can be joined already, or has no team, is as it is.
+ * solution; a case `clinicalcraft serve` sends comes without it — and a place joins the team along it, and the stand-in
+ * surgeon works from its operative steps, even where nothing is joined (a case that starts in the team's phase) — so
+ * its place path is fetched beside it (`fetchPath`, default `fetchPlacePath`) and put in as its solution (core
+ * `withPlacePath`): core's own start then joins exactly as it does for the full case, and the stand-in works from the
+ * same steps. Never the rest of the solution. A case that carries its solution, or offers no place in its team (no
+ * team, no stand-in surgeon), is as it is. Throws a `PlacePathError`.
  */
 export async function placeReady(def: CaseDefinition, fetchPath: (id: string) => Promise<unknown> = fetchPlacePath): Promise<CaseDefinition> {
-  if (!def.team || canJoinTeam(def)) return def;
+  if (!def.team || !standInOf(def) || def.solution.length > 0) return def;
   const path = placePathOf(await fetchPath(def.id), def.id);
-  if (!path) throw new Error(`the server sent no place path for case "${def.id}"`);
+  if (!path) throw new PlacePathError("malformed", `the server sent no place path for case "${def.id}"`);
   return withPlacePath(def, path);
 }
