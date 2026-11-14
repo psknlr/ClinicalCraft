@@ -402,7 +402,7 @@ describe("operations restricted by a surgical control (EMBODIED §8.2)", () => {
     // the scrub nurse whose place it is stands by: nothing
     expect(offered(s, STAFF.scrub, DEVICE.stapler)).toEqual({ available: [], refused: { load: "NOT_AUTHORIZED", fire: "NOT_AUTHORIZED" } });
     const standing = await act(s, STAFF.scrub, "fire", DEVICE.stapler);
-    expect(standing).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Chen Yu stands by: you hold the scrub nurse's place." });
+    expect(standing).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Fire the stapler is for the operating surgeon: Chen Yu stands by — you hold the scrub nurse's place." });
     expect(standing.hint).toBeUndefined();
     // the stand-in operates: the surgeon's controls — the stapler fired, never a reload loaded
     expect(offered(s, STAFF.standIn, DEVICE.stapler)).toEqual({ available: ["fire"], refused: { load: "NOT_AUTHORIZED" } });
@@ -412,7 +412,7 @@ describe("operations restricted by a surgical control (EMBODIED §8.2)", () => {
     const f = theatreWorld({ start: { type: "start", seat: "first-assistant" } });
     expect(offered(f, A, DEVICE.stapler)).toEqual({ available: [], refused: { load: "NOT_AUTHORIZED", fire: "NOT_AUTHORIZED" } });
     expect((await act(f, A, "load", DEVICE.stapler)).message).toBe("Load a reload is for the scrub nurse: you are the first assistant.");
-    expect((await act(f, STAFF.first, "load", DEVICE.stapler)).message).toBe("Dr Abe stands by: you hold the first assistant's place.");
+    expect((await act(f, STAFF.first, "load", DEVICE.stapler)).message).toBe("Load a reload is for the scrub nurse: Dr Abe stands by — you hold the first assistant's place.");
   });
 
   it("availableActions are exactly the operations the action bus lets through, for every body and device", async () => {

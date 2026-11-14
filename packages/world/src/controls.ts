@@ -12,6 +12,7 @@ import {
   memberControls,
   memberPosition,
   positionOfMember,
+  procedureFor,
   staffPosition,
   StaffPositionSchema,
   standInOf,
@@ -64,10 +65,13 @@ export function bodyPosition(c: CaseDefinition, s: TeamChoice, facility: Facilit
 
 /**
  * Whether the operation is in progress (§8.6): begun — the first accepted `operate` opened the field
- * (`SessionState.procedure`) — and neither closed nor abandoned (`abandon-refer`). A conversion to open does not end
- * it: the wound is open all the more.
+ * (`SessionState.procedure`) —, the case in one of the operation's phases (`procedure.phases`: the engine's own test
+ * for an operation under way, which takes no step in any other phase) and neither closed nor abandoned
+ * (`abandon-refer`). A conversion to open does not end it — the wound is open all the more, though the engine takes no
+ * `close` after it —; the case moving on to a phase outside the operation does.
  */
-export function operationInProgress(s: Pick<SessionState, "procedure">): boolean {
+export function operationInProgress(c: Pick<CaseDefinition, "procedure">, s: Pick<SessionState, "procedure" | "phase" | "variant">): boolean {
   const p = s.procedure;
-  return !!p && !p.closed && !p.bailouts.includes("abandon-refer");
+  if (!p || p.closed || p.bailouts.includes("abandon-refer")) return false;
+  return procedureFor(c, s)?.phases.includes(s.phase) ?? false;
 }

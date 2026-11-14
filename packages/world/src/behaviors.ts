@@ -399,9 +399,10 @@ export class DeviceRules {
   }
 
   /**
-   * A refusal by control: `NOT_AUTHORIZED` with no hint — no walk gives anyone a position. It names who holds the
-   * control and what the actor is: `key` for a member of staff, `<key>.self` for the learner's own body ("you are the
-   * scrub nurse"), and for the colleague standing by while the learner holds their place, `pre.standingBy`.
+   * A refusal by control: `NOT_AUTHORIZED` with no hint — no walk gives anyone a position. It names what is refused,
+   * who holds the control and what the actor is: `key` for a member of staff ("Chen Yu is the scrub nurse"),
+   * `<key>.self` for the learner's own body ("you are the scrub nurse"), and `<key>.standingBy` for the colleague
+   * standing by while the learner holds their place ("Chen Yu stands by — you hold the scrub nurse's place").
    */
   private controlRefusal(actor: ActorState, control: SurgicalControl, key: "pre.control" | "pre.woundScrubbed", vars: Record<string, string>): RuleFailure {
     const L = this.d.locale;
@@ -410,25 +411,25 @@ export class DeviceRules {
     const position = bodyPosition(c.caseDef, s, this.d.locator.facility, actor.id);
     const title = position ? t(POSITION_TITLES[position], L) : roleName(actor.role, L);
     const who = this.d.locator.name(actor.id);
-    if (actor.id === standingBy(c.caseDef, s)) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.standingBy", L, { who, position: title }) };
     const holders = listText(this.holdersOf(control).map((p) => t(POSITION_TITLES[p], L)), L);
-    const message = worldMessage(actor.id === PRIMARY_ACTOR ? `${key}.self` : key, L, { ...vars, holders, who, position: title, control: t(CONTROL_TITLES[control], L) });
+    const variant = actor.id === PRIMARY_ACTOR ? `${key}.self` : actor.id === standingBy(c.caseDef, s) ? `${key}.standingBy` : key;
+    const message = worldMessage(variant, L, { ...vars, holders, who, position: title, control: t(CONTROL_TITLES[control], L) });
     return { code: "NOT_AUTHORIZED", message };
   }
 
   /**
    * Who may check the wound (docs/EMBODIED.md §8.6): a `search` of the patient (`targetId`) while the operation is in
-   * progress (`operationInProgress`: begun, neither closed nor abandoned — a conversion to open included) and the
-   * patient is in the case team's room takes the `retract` control — the surgeon and the assistants; never a nurse,
-   * the anaesthetist or a porter (`NOT_AUTHORIZED`, no hint). Null: nothing to refuse — a search where one stands, of
-   * anything else, in another room or at another time.
+   * progress (`operationInProgress`: begun, in one of the operation's phases, neither closed nor abandoned — a
+   * conversion to open included) and the patient is in the case team's room takes the `retract` control — the surgeon
+   * and the assistants; never a nurse, the anaesthetist or a porter (`NOT_AUTHORIZED`, no hint). Null: nothing to
+   * refuse — a search where one stands, of anything else, in another room or at another time.
    */
   searchRefusal(actor: ActorState, targetId?: EntityId): RuleFailure | null {
     const loc = this.d.locator;
     const c = this.d.clinical;
     const room = c.caseDef.team?.room;
     if (!room || !targetId || targetId !== loc.patientId) return null;
-    if (loc.place(targetId)?.room !== room || !operationInProgress(c.state())) return null;
+    if (loc.place(targetId)?.room !== room || !operationInProgress(c.caseDef, c.state())) return null;
     if (holdsControl(this.controlsOf(actor), WOUND_CONTROL)) return null;
     return this.controlRefusal(actor, WOUND_CONTROL, "pre.woundScrubbed", {});
   }

@@ -6,8 +6,8 @@
  * `three-surgeons`), the anaesthetist `anaes-1` and the stand-in surgeon `doc-0`; the relief scrub nurse `nurse-9`
  * waits in the scrub room — and a porter, outside the team. Its catalog's operations carry controls: a stapler loaded
  * at the instrument table (`instruments`) and fired (`operate`), a tower switched on and off (`equipment`), a
- * lung-isolation set (`anaesthesia`); a camera head's white balance needs the tower on and names no control. Test data,
- * not a team any hospital works with.
+ * lung-isolation set (`anaesthesia`); a camera head's white balance needs the tower on and names no control; and a swab
+ * (a handheld item, no behaviour) to hide where a search finds it. Test data, not a team any hospital works with.
  */
 import { parseCatalog, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ProcedureOp } from "@clinicalcraft/core";
 import { LAP_CHOLE_TEAM, lapCholeTeamCase, REFERENCE_OPS } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
@@ -36,6 +36,10 @@ export const STAFF = {
 
 /** The test devices (placement ids). */
 export const DEVICE = { stapler: "eq:t-stapler", tower: "eq:t-tower", camera: "eq:t-camera", lung: "eq:t-lung" } as const;
+
+/** A swab in the theatre (a handheld item: `placeItem` hides it), and the instrument table it can be hidden in. */
+export const SWAB = "eq:t-swab";
+export const INSTRUMENT_TABLE = "eq:or-instrument-table";
 
 /** Test types whose operations name a surgical control (and one that does not). */
 export function theatreCatalog(): EquipmentCatalog {
@@ -86,6 +90,7 @@ export function theatreCatalog(): EquipmentCatalog {
           restore: { name: L("Ventilate both lungs", "恢复双肺通气"), from: ["one-lung"], to: "two-lung", control: "anaesthesia" },
         },
       }),
+      { id: "test-swab", name: L("Swab", "纱布"), category: "surgery", description: L("A swab", "纱布"), footprint: { w: 0.1, d: 0.1, h: 0.02 }, solid: false, parts: part, interaction: { kind: "device" }, portable: "handheld" },
     ],
   });
   if (!r.ok) throw new Error(JSON.stringify(r.issues));
@@ -112,6 +117,7 @@ export function theatreFacility(): FacilityDefinition {
     { id: "t-tower", type: "test-tower", x: -20.5, z: -12.5, y: 0, rot: 0, room: THEATRE },
     { id: "t-camera", type: "test-camera-head", x: -21.4, z: -12.5, y: 0, rot: 0, room: THEATRE },
     { id: "t-lung", type: "test-lung-isolation", x: -27.4, z: -11, y: 0, rot: 0, room: THEATRE },
+    { id: "t-swab", type: "test-swab", x: -17.5, z: -8, y: 0, rot: 0, room: THEATRE },
   );
   return f;
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR, type WorldEvent } from "./contracts.js";
 import { hospitalWithTestItems, makeWorld, steppingMover, type TestWorld } from "./__fixtures__/world.js";
-import { abandonableCase, DEVICE, operate, STAFF, standBeside, THEATRE, theatreWorld, WHOLE_OPERATION } from "./__fixtures__/theatre.js";
+import { abandonableCase, DEVICE, INSTRUMENT_TABLE, operate, STAFF, standBeside, SWAB, THEATRE, theatreWorld, WHOLE_OPERATION } from "./__fixtures__/theatre.js";
 
 const A = PRIMARY_ACTOR;
 const N = "staff:ed-nurse";
@@ -351,7 +351,7 @@ describe("refusals by control name who holds it and what the actor is (EMBODIED 
     expect((await three.act({ actorId: STAFF.anaesthetist, operation: "power_on", targetId: DEVICE.tower })).message).toBe("开机由巡回护士负责：王医生是麻醉医生。");
     const seat = theatreWorld({ start: { type: "start", seat: "scrub-nurse" }, locale: "zh-CN" });
     expect((await fire(seat, A)).message).toBe("击发闭合器由主刀医生负责：你是洗手护士。");
-    expect((await fire(seat, STAFF.scrub)).message).toBe("陈雨在旁待命：由你担任洗手护士的岗位。");
+    expect((await fire(seat, STAFF.scrub)).message).toBe("击发闭合器由主刀医生负责：陈雨在旁待命，由你担任洗手护士的岗位。");
   });
 });
 
@@ -392,7 +392,7 @@ describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
     const mine = await search(seat, A);
     expect(mine).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant: you are the scrub nurse." });
     expect(mine.hint).toBeUndefined();
-    expect((await search(seat, STAFF.scrub)).message).toBe("Chen Yu stands by: you hold the scrub nurse's place.");
+    expect((await search(seat, STAFF.scrub)).message).toBe("Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant: Chen Yu stands by — you hold the scrub nurse's place.");
     // the stand-in surgeon operates: theirs to check
     expect((await search(seat, STAFF.standIn)).status).toBe("completed");
     // the first assistant's place holds traction: the learner checks it
@@ -401,7 +401,7 @@ describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
     expect((await search(first, A)).status).toBe("completed");
   });
 
-  it("nothing changes before the operation, once it is closed or abandoned, or outside the team's room", async () => {
+  it("nothing changes before the operation, once it is closed or abandoned, once the case leaves the operation's phases, or outside the team's room", async () => {
     const w = theatreWorld();
     expect(w.harness.state().procedure).toBeUndefined();
     expect((await search(w, STAFF.circulating)).status).toBe("completed");
@@ -412,6 +412,18 @@ describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
     const a = theatreWorld({ caseDef: abandonableCase() });
     operate(a, [...OPEN, { op: "bailout", strategy: "abandon-refer" }]);
     expect((await search(a, STAFF.circulating)).status).toBe("completed");
+    // converted to open, the engine takes no close: the operation is under way while the case is in its phases (as the
+    // engine takes a step), and no longer once the case moves on — the patient still on the theatre's table
+    const v = theatreWorld();
+    operate(v, [...OPEN, { op: "bailout", strategy: "convert-open" }]);
+    expect(v.harness.dispatch({ type: "operate", op: { op: "close" } }).rejected?.message).toMatch(/ended/);
+    expect((await search(v, STAFF.circulating)).errorCode).toBe("NOT_AUTHORIZED");
+    expect(v.harness.dispatch({ type: "set-phase", phase: "ward" }).rejected).toBeUndefined();
+    expect(v.harness.dispatch({ type: "operate", op: { op: "inspect" } }).rejected?.code).toBe("phase-locked");
+    expect(v.runtime.patientPlace()!.room).toBe(THEATRE);
+    expect((await search(v, STAFF.circulating)).status).toBe("completed");
+    expect(v.harness.dispatch({ type: "set-phase", phase: "theatre" }).rejected).toBeUndefined();
+    expect((await search(v, STAFF.circulating)).errorCode).toBe("NOT_AUTHORIZED");
     // the operation in progress, but the patient taken out of the team's room
     const r = theatreWorld();
     operate(r, OPEN);
@@ -419,6 +431,30 @@ describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
     expect(r.runtime.relocatePatient({ slot: "ward-1" })).toMatchObject({ ok: true, moved: true });
     expect(r.runtime.patientPlace()!.room).not.toBe(THEATRE);
     expect((await search(r, STAFF.circulating)).status).toBe("completed");
+  });
+
+  it("during the operation in the team's room a search of anything but the patient is unchanged: a placement searched, or where one stands beside it", async () => {
+    const w = theatreWorld();
+    operate(w, OPEN);
+    const revealed = (r: { events: { type: string }[] }) => r.events.flatMap((e) => (e.type === "entity.concealed" ? [(e as { entityId: string }).entityId] : []));
+    for (const who of [STAFF.circulating, STAFF.scrub]) {
+      expect((await search(w, who)).errorCode, who).toBe("NOT_AUTHORIZED");
+      // a swab hidden inside the instrument table: searching the table finds it, into the searcher's hand
+      w.runtime.placeItem(SWAB, INSTRUMENT_TABLE, { inside: true });
+      standBeside(w, who, INSTRUMENT_TABLE);
+      const table = await w.act({ actorId: who, operation: "search", targetId: INSTRUMENT_TABLE });
+      expect(table.status, `${who} ${table.message}`).toBe("completed");
+      expect(revealed(table), who).toEqual([SWAB]);
+      expect(w.runtime.actor(who)!.holding, who).toContain(SWAB);
+      // lying hidden by it: walking to the table and searching there finds it (as the count's searches do)
+      w.runtime.placeItem(SWAB, INSTRUMENT_TABLE, { concealed: true });
+      expect((await w.act({ actorId: who, operation: "approach", targetId: INSTRUMENT_TABLE })).status, who).toBe("completed");
+      const here = await w.act({ actorId: who, operation: "search" });
+      expect(here.status, `${who} ${here.message}`).toBe("completed");
+      expect(revealed(here), who).toEqual([SWAB]);
+    }
+    expect(w.runtime.patientPlace()!.room).toBe(THEATRE);
+    expect(w.harness.state().procedure!.closed).toBe(false);
   });
 
   it("a case without a team keeps every search as it was", async () => {
