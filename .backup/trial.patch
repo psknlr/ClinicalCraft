@@ -1,3 +1,167 @@
+diff --git a/docs/CASE_AUTHORING.md b/docs/CASE_AUTHORING.md
+index f5de8db..d16dae2 100644
+--- a/docs/CASE_AUTHORING.md
++++ b/docs/CASE_AUTHORING.md
+@@ -412,7 +412,14 @@ solution is sent to the browser).
+     "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit": "mg/kg/h" }`):
+     the whole, its parts or the bolus with the rate are given; a part alone is
+     asked about ("is that the whole dose?"), never a tenfold dose error. The
+-    lint checks the rate the text states against `maintenance`.
++    infusion is checked even when the parts add up to the whole: a part given
++    over a time against `maintenance` ("then 64.8 mg over 6 min" is tenfold),
++    the whole given over a time against the infusion's own duration — the
++    whole less the bolus at the maintenance rate (alteplase: 60 min; "72 mg
++    over 6 min" is tenfold). Beside a single dose (no `bolus`), an amount
++    over a time at the maintenance rate is the infusion ("5000 units bolus
++    then 2520 units over 2 h" at 70 kg is given). The lint checks the rate
++    the text states against `maintenance`.
+   * **A preset spans every dose the case's cited guidance allows** — `amount`
+     to `upTo` (labetalol 10–20 mg: `"amount": 10, "upTo": 20`), around the
+     dose the text gives: aspirin 300 mg with ESC, Chinese and ACC/AHA loading
+@@ -462,8 +469,15 @@ solution is sent to the browser).
+     twice the preset or by another route; every other dose error (a rounding
+     or weight-band difference, an under-dose that is not tenfold) is a
+     warning to review. An order without a dose gives the preset, as does a choice
+-    from a list. Write each dose a learner may choose as its own intervention
+-    only when it changes the clinical course (IM vs IV-bolus adrenaline);
++    from a list. An order that names several items ("ticagrelor 180 mg and
++    aspirin 300 mg", "替格瑞洛180mg+阿司匹林300mg", "…、…") is read clause by
++    clause, alike in both languages: the first item named (or the one an id
++    names) is given on its own clause, and every other clause is checked
++    against its own item's preset — a dose error there is recorded (critical
++    ones fail the safety outcome) and read back, though that item is not
++    given; it is given on its own order (PROTOCOL §3.2). Write each dose a
++    learner may choose as its own intervention only when it changes the
++    clinical course (IM vs IV-bolus adrenaline);
+     otherwise one intervention with its preset is enough — a wrong dose is
+     caught as a dose error.
+   * **High-alert medicines** (ISMP's: an insulin, an anticoagulant, an
+@@ -546,8 +560,10 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
+   - move an item beside another placement (in the room, or elsewhere in the hospital), or conceal it (`concealed`:
+     where it lies; `inside` + `beside: "patient"`: in the wound);
+   - route information through the team (`inform`, TEAM.md §4.5): a history item the case already records, held by
+-    one named member or relief colleague (duty `inform`), needed by a member, holding up an intervention (`blocks`)
+-    from a moment on (`when`). Never write a new fact for it: the holder reports the item's recorded answer.
++    one named member or relief colleague (duty `inform`), needed by a member, holding up interventions (`blocks`:
++    one id, or every act the missing fact contraindicates — `["tenecteplase", "alteplase"]` — each tracked by
++    `bench team`) from a moment on (`when`). Never write a new fact for it: the holder reports the item's recorded
++    answer.
+ 
+   The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
+   teaching material, not the case report.
+diff --git a/docs/EMBODIED.md b/docs/EMBODIED.md
+index 977955f..4c04609 100644
+--- a/docs/EMBODIED.md
++++ b/docs/EMBODIED.md
+@@ -2281,7 +2281,7 @@ the measurements of §4, §7, §11).
+ | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-11-14: 50 steps, 287 spans, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
+ | Content scale (case index, lazy per-case chunks, paginated ETag'd server API, `CaseLibrary` in the CLI and MCP) | yes | unit: indexer, case store, server content API, the web index plugin | measured with 100–1 000 synthetic cases (§11) | no — browser start-up and case switching with a large catalogue unmeasured; first-load validation ≈ 150–230 ms per case. Perf |
+ | Operative field (`procedure`, `operate`, docs/PROCEDURE.md): anatomy, regions, ports and instruments, safety views judged on the field, unsafe acts and injuries that follow from the anatomy, the operator's view (handles, never duct names), `observe_field` / `operate` tools, `safetyGates`; a colleague holding a port (`hand-over`, `delegate_task hold_traction`), traction that falls when they leave the table (`exposure-lost`); the web's scope dock beside the theatre with one presentation queue | yes (procedure round; the assistant and the dock: the 2.5.0 recommendations) | core unit tests: a safe path, adversarial paths (habitual traction, a misidentified common bile duct clipped and divided, clipping without a pause, a claimed but untrue view, a bleed managed, hidden-hazard energy, a torn gallbladder), bail-outs, reach and port ergonomics, determinism; hand-over rules (`approach.test.ts`); the presentation queue and the exposure window (web `scope-presenter.test.ts`); SurgeryCraft `case126-release.test.ts` and the fourth browser demonstration | not validated: no surgical, anaesthetic or radiological review; the one case using it (SurgeryCraft cmcr-1654623) runs on reference anatomy | no — rule-based tissue states, not calibrated mechanics; the web panel is a first version. Rel, Val |
+-| Care team (docs/TEAM.md; §8.5): `case.team`, team scenarios chosen at `start` (hidden), `TeamScheduler` (rounds, autonomy auto / step / off), offline role policies (circulating nurse, scrub nurse, the count, the simulated surgeon, a colleague holding information — audit 2026-11-12 P1-9), messages with check-back, action receipts with the true initiator, claims, exactly-once action ids, `team` op / `team_event`, `team` transcript items and `SessionSnapshot.team` (with the scenario's lifecycle: pending / active / completed and its set-up event), web Team panel and team clock, one scheduling path (the learner's acts, external agents, every autopilot step), `bench team` scored by obligations (assigned / activated / completed / escalated / invalid); the surgical count as one record by item identity (`SessionState.count`, §8.1 record-backed boards bound to the patient's room) | yes (team round) | core `team.test.ts` (consistency, facility fit, start), `count.test.ts` (11: every count ending, 6/5, a false 5/5, a documented transfer, closure recorded or refused); agent `team/policy.test.ts` (22 rules on hand-built views), `team/session-team.test.ts`, `session/identity.test.ts`; bench `team/score.test.ts` (obligations), `team/inform.test.ts` (the stroke case's information handoff: found and reported by `bench team`, an act before the information it waited for failing the run, the single-learner path unchanged); SurgeryCraft `tools/case126-team.test.ts` (16: the two-nurse handoff while the learner watches, relief, moved and missing instruments, the surgeon away, one owner for two requests, save / restore mid-handoff with one hand-over, every count ending in learner and observer mode, closing on a hold, who a reply is for, named colleagues, speech under anaesthesia) and `tools/case126-count.test.ts` (11: the field, the board, the RF wand, the Sign Out, the team and the score agree on every count ending; a save before the operation; the headless autopilot) | `bench team` over Case 126: 11 / 11 scenarios (11 activated, 11 completed, 2 appropriately escalated, 0 invalid), every one exactly once; over the built-in content: 2 / 2 (`acute-ischemic-stroke`: the anticoagulant history asked → supplied → received and read back, tenecteplase after it; escalated at once with the holder away), the case's single-learner path, `cases verify` and in-world demonstration unchanged; the browser (2026-11-02, Case 126 under `serve`, Chromium + SwiftShader): the team clock carried a needle-holder handoff through to "seen to be done", and the autosave kept the team — the count record, the board binding and the reload of a pending scenario not yet demonstrated in the browser | no — rule-based policies for two duties, the count and passing on one recorded fact; no language model drives a team member; two cases (Case 126, the stroke case); not reviewed by perioperative or emergency nurses. Rel |
++| Care team (docs/TEAM.md; §8.5): `case.team`, team scenarios chosen at `start` (hidden), `TeamScheduler` (rounds, autonomy auto / step / off), offline role policies (circulating nurse, scrub nurse, the count, the simulated surgeon, a colleague holding information — audit 2026-11-12 P1-9), messages with check-back, action receipts with the true initiator, claims, exactly-once action ids, `team` op / `team_event`, `team` transcript items and `SessionSnapshot.team` (with the scenario's lifecycle: pending / active / completed and its set-up event), web Team panel and team clock, one scheduling path (the learner's acts, external agents, every autopilot step), `bench team` scored by obligations (assigned / activated / completed / escalated / invalid); the surgical count as one record by item identity (`SessionState.count`, §8.1 record-backed boards bound to the patient's room) | yes (team round) | core `team.test.ts` (consistency, facility fit, start), `count.test.ts` (11: every count ending, 6/5, a false 5/5, a documented transfer, closure recorded or refused); agent `team/policy.test.ts` (22 rules on hand-built views), `team/session-team.test.ts`, `session/identity.test.ts`; bench `team/score.test.ts` (obligations), `team/inform.test.ts` (the stroke case's information handoff: found and reported by `bench team`, an act before the information it waited for failing the run, the single-learner path unchanged); SurgeryCraft `tools/case126-team.test.ts` (16: the two-nurse handoff while the learner watches, relief, moved and missing instruments, the surgeon away, one owner for two requests, save / restore mid-handoff with one hand-over, every count ending in learner and observer mode, closing on a hold, who a reply is for, named colleagues, speech under anaesthesia) and `tools/case126-count.test.ts` (11: the field, the board, the RF wand, the Sign Out, the team and the score agree on every count ending; a save before the operation; the headless autopilot) | `bench team` over Case 126: 11 / 11 scenarios (11 activated, 11 completed, 2 appropriately escalated, 0 invalid), every one exactly once; over the built-in content: 2 / 2 (`acute-ischemic-stroke`: the anticoagulant history asked → supplied → received and read back, tenecteplase after it — both thrombolytics it holds up tracked, alteplase not given; escalated at once with the holder away), the case's single-learner path, `cases verify` and in-world demonstration unchanged; the browser (2026-11-02, Case 126 under `serve`, Chromium + SwiftShader): the team clock carried a needle-holder handoff through to "seen to be done", and the autosave kept the team — the count record, the board binding and the reload of a pending scenario not yet demonstrated in the browser | no — rule-based policies for two duties, the count and passing on one recorded fact; no language model drives a team member; two cases (Case 126, the stroke case); not reviewed by perioperative or emergency nurses. Rel |
+ | Concealed items and `search` (§8.6) | yes (team round) | world `conceal.test.ts` (out of observations, `find`, `canSee`, memory and events; refused by id and as a goal; revealed within reach or from inside the patient into the hand; kept by a snapshot) | the Case 126 count scenarios (a swab under the Mayo stand, in the wound, gone from the room) | no — concealment is set by a scenario only; nothing hides an item during play. Rel |
+ 
+ ### 14.3 Known limitations
+diff --git a/docs/PROTOCOL.md b/docs/PROTOCOL.md
+index aa12f89..a55faf2 100644
+--- a/docs/PROTOCOL.md
++++ b/docs/PROTOCOL.md
+@@ -156,12 +156,12 @@ The engine contract (core `schema/session.ts`, `engine/dose.ts`, `engine/dose-re
+ 
+ * **The order as written.** `ClinicalAction {type: "intervene", interventionId, ordered?: {text, dose?: {amount?, upTo?, unit?, route?}}}` — `text` the order as the learner wrote it (1–1000 characters), `dose` what a client read from it: an `amount` with its `unit` (both or neither; a range ordered as `amount`–`upTo`), a `route`, or both. Units: `g`, `mg`, `microgram`, `mL`, `unit`, `mmol`, each optionally `/kg` and then `/h` or `/min` (`DOSE_UNITS`: `mg/kg`, `unit/kg/h`, `microgram/kg/min`); routes `IM`, `IV`, `IO`, `SC`, `PO`, `SL`, `PR`, `IN`, `INH`, `TOP` (`DOSE_ROUTES`). A front-end or tool sends `ordered` only for words — a choice from a list or an id sends none.
+ * **The engine reads the words itself** (core `readOrder`, `parseDose`; zh-CN and en). Numbers in figures ("0.5", "0,5", "5,000", "40万", "50k"), in Chinese numerals ("五", "零点五", "两千", "八十万", with "个" before the unit: "5个毫克") and in English words ("five", "zero point five", "half a", "a milligram"); a number word counts only before a unit. Units in their usual spellings ("mcg", "microg", "µg", "gm", "I.U.", "mmols", "毫克"); a dose per kg and per time however written ("0.1 units/kg/h", "0.1U/(kg·h)", "0.1 U·kg⁻¹·h⁻¹", "5.5 units hourly", "每小时5.5单位", "每千克体重40毫克"). A volume is read as what it holds when the order states the strength ("0.5 mL of 1 mg/mL", "1:1000 0.5 mL" → 0.5 mg); a preparation ("insulin 50 units in 50 mL", "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol") is how the drug is made up, not the dose, so "… at 5.5 mL/h" is 5.5 units/h — alone, a preparation is the dose it holds, and "over 2 hours" after it is how long it runs ("KCl 40 mmol in 1 L over 2 hours" is 20 mmol/h against a rate). A combination's strengths are its total ("piperacillin/tazobactam 4 g/0.5 g" is 4.5 g), so many tablets of a dose theirs ("90mg×2片" is 180 mg), a drug's name written onto its dose is read ("adrenaline5mg", "KCl400mmol/h"), and "max 0.5 mg" after a dose per kg is its cap ("0.01 mg/kg, max 0.5 mg" is 0.5 mg at 62 kg) — after any other dose a titration's cap, but with no dose before it ("up to 5 mg", "最多5mg") the order's dose. A later dose after "then" at a frequency ("300 mg now, then 75 mg daily", "随后90mg每日两次") is the regimen's maintenance (`then`), not the order's dose; a daily total or a dose per m² ("20 g/day", "每日2g", "1.5 g/m2") is no single dose (`totals`, below). A concentration, a percentage, a ratio, a gas flow ("oxygen 15 L/min"), a diluent ("with 2.5 mL saline"), a body weight ("62千克", "62 kg"), a cannula's gauge where the words say so ("via the 18G", "18G cannula"), a lab value ("K+ 3.8 mmol/L", "glucose 450 mg/dL"), a vital sign, score, age, place or clock time ("HR 130", "GCS 14", "T: 38.5", "bed 3", "at 1430") or a count ("×2") is not a dose; a number with no unit after the name of a measurement that is also a medicine ("potassium 40 IV", "K+ 4") is a lab value or that medicine's dose (`labNumbers`: asked when the order is for it); a route named twice differently is no route, and "PR 120" is a pulse rate. What it **cannot read** is never guessed (`readOrder` `unclears`, quoting the words as written): a fraction ("1/2 mg", "½ mg"), a number broken by a Chinese full stop, an enumeration comma, a middle dot or a space after its point ("0。5 mg", "0·5 mg", "0. 5 mg"), "5.000" or "50 000" (five, or five thousand?), zero, a capital G with no word of a cannula ("2G", "20G": grams, or a gauge?), a repeat that may be a total ("81 mg x 4", "5 x 0.1 mg"), "0.5 mg/5 mg" after a single drug's name, a unit with no number ("几毫克", "x mg"), a unit no preset is counted in ("200 mEq/h", "500 ng": `unit`), a count of tablets, ampoules or puffs ("一支", "2 tablets": `count`), a range ("0.5–1 mg", compared end for end below) and a number with no unit ("adrenaline 0.5 IM"). The words are the order: a client's `ordered.dose` adds only a route the words name (a choice between "IV or IM") — a dose the words do not state, or a choice among two they do, never decides the dose (`checkOrder`).
+-* **The dose against the preset.** When the intervention has a `doseSpec` (`{amount, upTo?, unit, route?, maintenance?, bolus?}`) the reducer checks the order (`checkOrder(ordered, intervention, patient.weightKg)`, through `compareDose`): g / mg / microgram convert into one another, per minute into per hour, a dose per kg into an absolute one through the weight (then within 10 %; an order's own cap after that); a volume, units and mmol compare only with themselves (a volume through a stated strength), a bolus never with a rate; an amount within `[amount, upTo]` is the preset's. Each dose the words state is checked against its part: a single dose against `amount`–`upTo`, a rate against `maintenance` — the infusion that goes with a bolus (PE heparin: 70–80 units/kg IV, then 18 units/kg/h) — or against the preset when it is itself a rate (an amount over a stated time as its rate). A range is compared end for end: within the preset it is given ("morphine 2–3 mg" against 2–4 mg), wholly above or below it a dose error ("adrenaline 5–10 mg" against 0.3–0.5 mg), across its ends asked about. Several doses that disagree ("0.5 mg, sorry, 5 mg"; two drugs' doses in one order) are asked about (`several`), never the first given — unless one is a total stated beside the parts that add up to it ("7.2 mg bolus, then 64.8 mg over 60 min (total 72 mg)"). A dose given in parts states the part given first (`bolus`; `amount` is then the whole — stroke alteplase: 0.9 mg/kg, a 0.09 mg/kg bolus, the rest at 0.81 mg/kg/h): the whole, its parts adding up to it (the first its bolus), or the bolus with the rate are given; the bolus alone, or the rest alone (the whole less the bolus, however written: "64.8 mg IV", "64.8 mg over 60 min"), is asked about (`partial`: "is that the whole dose?"); any other amount is the whole dose's, checked against it ("alteplase 0.9 mg IV", the mg-for-mg/kg slip, is a critical dose error). An amount over a stated time is also the infusion's rate, checked against `maintenance` ("7.2 mg bolus, then 648 mg over 60 min" is a tenfold infusion, never "several"). A regimen's later doses (`then`) are its maintenance: unchecked when at or below the preset, a dose error above it. A daily total that is the order's only dose is the preset's when it equals it (once daily: "头孢曲松每日2g"), a dose error when tenfold or more either way ("每日20g"), else asked about (`total`), as a dose per m² always is. An order that gives a dose in the preset's form beside a rate the preset has no part for ("heparin 80 units/kg bolus then 18 units/kg/h" against a bolus alone) is that dose. The outcomes:
++* **The dose against the preset.** When the intervention has a `doseSpec` (`{amount, upTo?, unit, route?, maintenance?, bolus?}`) the reducer checks the order (`checkOrder(ordered, intervention, patient.weightKg)`, through `compareDose`): g / mg / microgram convert into one another, per minute into per hour, a dose per kg into an absolute one through the weight (then within 10 %; an order's own cap after that); a volume, units and mmol compare only with themselves (a volume through a stated strength), a bolus never with a rate; an amount within `[amount, upTo]` is the preset's. Each dose the words state is checked against its part: a single dose against `amount`–`upTo`, a rate against `maintenance` — the infusion that goes with a bolus (PE heparin: 70–80 units/kg IV, then 18 units/kg/h) — or against the preset when it is itself a rate (an amount over a stated time as its rate). A range is compared end for end: within the preset it is given ("morphine 2–3 mg" against 2–4 mg), wholly above or below it a dose error ("adrenaline 5–10 mg" against 0.3–0.5 mg), across its ends asked about. Several doses that disagree ("0.5 mg, sorry, 5 mg"; two drugs' doses in one order) are asked about (`several`), never the first given — unless one is a total stated beside the parts that add up to it ("7.2 mg bolus, then 64.8 mg over 60 min (total 72 mg)"). A dose given in parts states the part given first (`bolus`; `amount` is then the whole — stroke alteplase: 0.9 mg/kg, a 0.09 mg/kg bolus, the rest at 0.81 mg/kg/h): the whole, its parts adding up to it (the first its bolus), or the bolus with the rate are given; the bolus alone, or the rest alone (the whole less the bolus, however written: "64.8 mg IV", "64.8 mg over 60 min"), is asked about (`partial`: "is that the whole dose?"); any other amount is the whole dose's, checked against it ("alteplase 0.9 mg IV", the mg-for-mg/kg slip, is a critical dose error). An amount over a stated time is also the infusion's rate, checked against `maintenance` ("7.2 mg bolus, then 648 mg over 60 min" is a tenfold infusion, never "several") — a later part of a dose given in parts even when the parts add up to the whole ("7.2 mg bolus then 64.8 mg over 6 min": 648 mg/h, a critical dose error), and the whole given over a time against the infusion's own duration, the whole less the bolus at the maintenance rate (`infusionMinutes`: alteplase's 60 min; "72 mg over 6 min" runs ten times as fast — read as the rate it runs at, 720 mg/h, ratio 10 —, "72 mg over 60 min" is the preset's); of several times after one dose, the longest is how long it runs ("0.9 mg/kg over 60 min with 10% as a bolus over 1 min"). Beside a single dose (`maintenance` without `bolus`), an amount over a time at the infusion's own rate is the infusion, never a second single dose ("heparin 5000 units bolus then 2520 units over 2 h" is the bolus and 1260 units/h: given); a single dose given over a time is that dose ("heparin 5000 units over 5 min"). A regimen's later doses (`then`) are its maintenance: unchecked when at or below the preset, a dose error above it. A daily total that is the order's only dose is the preset's when it equals it (once daily: "头孢曲松每日2g"), a dose error when tenfold or more either way ("每日20g"), else asked about (`total`), as a dose per m² always is. An order that gives a dose in the preset's form beside a rate the preset has no part for ("heparin 80 units/kg bolus then 18 units/kg/h" against a bolus alone) is that dose. The outcomes:
+   - **Given** — the dose read is the preset's, or the order states none: given as before, and the `InterventionRecord` keeps `ordered` with the dose the engine read (the order as written and the dose read, apart from the dose given — the preset).
+   - **Asked about** — the words state a dose it cannot read (above), or one it cannot compare with the preset: a volume or another measure without its strength, a dose per kg without the patient's weight, a rate for a single dose or the reverse (`checkOrder` `query`, `reason`: `unreadable` · `range` (across the preset's ends) · `no-unit` · `unit` · `count` · `several` · `partial` · `total` · `strength` · `weight` · `rate`). The action is **rejected** with the code `dose-unclear`: nothing is given, nothing recorded, no dose error — the nurse asks for the dose as a number with its unit (for a part of a dose given in parts: "is that the whole dose?").
+   - **A dose error** — the amount or the route conflicts: **nothing is given** — no record, no effect, no flag, no dose of `maxDoses` used — and the action is still accepted (its time passes, like the nurse's query): the session state gains a `DoseErrorRecord` in `SessionState.doseErrors` (`{interventionId, at, seq, text, ordered, preset, ratio, conflicts, severity}`; `ratio` = ordered ÷ preset after conversion, to the nearer end of a range, null without a comparable amount) and the event `{type: "dose.error", interventionId, text, ordered, preset, ratio, conflicts, severity}` is emitted. `severity` (`doseErrorSeverity`): `"critical"` when the order is ten times, or a tenth of, any dose the preset allows (`TENFOLD`; measured from a range's farther end — `compareDose` `far` —, so "aspirin 3000 mg" against 150–325 mg is critical though 9.2 times its top) for any medicine, and for an intervention that is `critical`, `risk: "high"` or a high-alert medicine (core `isHighAlert`, ISMP by its name: insulins, anticoagulants, opioids and thrombolytics by any route; potassium (for injection, never oral), adrenaline, noradrenaline, phenylephrine, vasopressin, magnesium sulfate, sedation agents, neuromuscular blockers, antiarrhythmics, digoxin and milrinone IV or IO) also when the order is at least twice the preset (ratio ≥ 2 from the range's nearer end, `TWOFOLD`) or its route conflicts; every other conflict is a `"warning"` — a rounding or weight-band difference, an under-dose of a high-risk drug that is not tenfold — which is not given and stays for the debrief but never fails the safety outcome. A tool reports a dose error as not given — never "Given" — with what was written, the dose read and the preset.
+   - **Unchecked** — the intervention has no `doseSpec`: given as before, the dose the words state kept in `ordered` (the tool says it was not checked).
+-* **Orders in the runtime** (`tools/dose-order.ts`). The `intervene` tool sends `ordered` for words only: `query` and `dose` as written (`writtenOrder`: the `dose` argument's amount and route first, else the whole order's) — and of those, the words that order this item (`itemOrder`): an order that names several items is read clause by clause, as a spoken request is (`orderClause`, splitting at "then", ";", "+", "&", "and", "plus", "with", "和", "及", "与", "联合", "加"… but never inside a dose or a preparation — its bag, the join and its diluent: "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol", "made up to 50 mL with 0.9% NaCl" —, and a clause of only doses, routes and how they run ("500ml/h静滴", "0.1 units/kg/h IV") names no item; an id written before the words owns their first clause ("/give ticagrelor 180 mg PO and aspirin 300 mg PO"), and a preparation's diluent is never another order), so "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化" gives ipratropium "异丙托溴铵250微克雾化"; the tool's reply names the other items, which are given on their own orders ("Your order also names …", `otherOrdersText`) — never silently dropped. An id alone sends none. The words name the item and the dose is read apart: words that name no single item are tried again without their doses (`withoutDoses`: "adrenaline 0.5 mg i.m." → "adrenaline i.m.") and that reading is taken when it names one of their candidates, so a dose never decides which item an order names — words that name an item by its own dose ("0.9% sodium chloride 500 mL") resolve as written, but a drug made up in a diluent ("insulin 50 units in 50 mL normal saline at 5.5 mL/h") names the drug. `/give <words>` is the order in words, `/give <id> <dose…>` an id with its dose as written; in the web's treatment search, words that state an amount — or a dose that cannot be read — are the order, each row found given the words that order its item (`searchOrder(case, words, id, locale)`: it shows the dose read — on a treatment without a preset, that it is not checked — or that it is not clear, and gives the words), while a row chosen from the list gives the preset it shows. A learner `clinical_action` with `ordered` reaches the hooks and the gate as `{intervention_id, query: ordered.text}` (`actionToolArgs`) and keeps its `ordered` unless a hook rewrites the words (then read again, `actionFromToolInput`). A dose error is answered by the nurse in the learner's language, closing the loop — "Nurse: “Before I give intramuscular adrenaline, let me read it back: you ordered 5 mg IM; the dose for this is 0.3–0.5 mg IM. Can you confirm the dose?”" (for a single preset: "what I have prepared is …"; a dose per kg with what it comes to for this patient, "0.9 mg/kg IV (72 mg)") then "Not given: the dose ordered differs from the preset dose (10 times the top of the preset range). Order it again with the dose you mean." (`doseChallengeText`); a dose that is asked about likewise — "Nurse: “Before I give …, I need the dose clearly: I can't read the dose in “0。5mg”. …”" then "Not given: the dose in the order is not clear. …" (`doseQueryChallengeText`; the tool's `data.doseQuery`); a part of a dose given in parts — "Nurse: “Before I give IV alteplase, let me check: you ordered 7.2 mg IV, which is only part of the dose. Is that the whole dose? The dose for this is 0.9 mg/kg IV (72 mg) (0.09 mg/kg (7.2 mg) as a bolus, the rest at 0.81 mg/kg/h (64.8 mg/h)).”" then "Not given: the order is for part of the dose. …". A `clinical_action` gets either as an `agent_message` of the nurse. A verbal order to a colleague in the world ("give aspirin 300 g", EMBODIED §8.4) carries its words as `give_intervention` `params.order` — the clause of the request that names the item ("paracetamol 1 g now, then ceftriaxone 2 g IV" gives ceftriaxone its own "ceftriaxone 2 g IV", `orderClause`); a request of several orders none of which names the item alone is answered "One order at a time, please…" —; a colleague voiced by a model acts (`do_task`) on the learner's own words in that turn, the clause that orders the treatment, never on a dose the model writes or leaves out (`staff-tool.ts`); a dose error ends the task with the delegation's `doseError`, a dose that is not clear with its `doseQuery`, and the colleague reads the order back, or asks, in their own voice. The approval summary names the dose as the engine will read it ("Give … — 5 mg IM as ordered?"; "— as written “…” (the dose is not clear)?").
++* **Orders in the runtime** (`tools/dose-order.ts`). The `intervene` tool sends `ordered` for words only: `query` and `dose` as written (`writtenOrder`: the `dose` argument's amount and route first, else the whole order's) — and of those, the words that order this item (`itemOrder`): an order that names several items is read clause by clause, as a spoken request is (`orderClause`, splitting alike in both languages at "then", ";", "+", "&", "and", "plus", "with", "as well as", "和", "及", "以及", "与", "同时", "联合", "加", "、"… but never inside a dose or a preparation — its bag, the join and its diluent: "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol", "made up to 50 mL with 0.9% NaCl" —, and a clause of only doses, routes and how they run ("500ml/h静滴", "0.1 units/kg/h IV") names no item; an id written before the words owns their first clause ("/give ticagrelor 180 mg PO and aspirin 300 mg PO"), and a preparation's diluent is never another order). Free words that order several items order **the first of them**, in either language (`resolveOrderedIntervention` — the item the approval, the spatial gate and a hook's rewrite read too): never the one whose name the matcher finds longer, and never a "which one?" that one language got and the other did not — "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化" gives salbutamol "沙丁胺醇2.5毫克", as "nebulise salbutamol 2.5 mg with ipratropium 250 micrograms" does, and "替格瑞洛180mg、阿司匹林300mg口服" gives ticagrelor, as "ticagrelor 180 mg PO and aspirin 300 mg PO" does. (Of the two behaviours the languages had — the first item given, or "which one?" with nothing given —, the first is kept everywhere: the reply to "which one?" listed the items to choose from, each of which gives its preset, so the dose the learner wrote for each was never read; now every one is.) **Every other clause is checked against its own item's preset** (`otherClauses`, core `checkOrder`, whether or not the first is given): a dose error is sent to the engine as that item's order — recorded (`dose.error`, nothing given; a critical one fails the safety outcome) — and read back by the nurse after the reply's own lines ("ticagrelor 180 mg PO with aspirin 3000 mg" gives ticagrelor and records aspirin's critical dose error); a dose that cannot be read or compared is asked about; the rest are named, each given on its own order ("Your order also names …: each treatment is given on its own order.") — never silently dropped. The tool's `data.alsoOrdered` lists them: `[{interventionId, text, outcome: "dose-error" | "dose-query" | "named", doseError?, doseQuery?}]`. An id alone sends none. The words name the item and the dose is read apart: words that name no single item are tried again without their doses (`withoutDoses`: "adrenaline 0.5 mg i.m." → "adrenaline i.m.") and that reading is taken when it names one of their candidates, so a dose never decides which item an order names — words that name an item by its own dose ("0.9% sodium chloride 500 mL") resolve as written, but a drug made up in a diluent ("insulin 50 units in 50 mL normal saline at 5.5 mL/h") names the drug. `/give <words>` is the order in words, `/give <id> <dose…>` an id with its dose as written; in the web's treatment search, words that state an amount — or a dose that cannot be read — are the order, each row found given the words that order its item (`searchOrder(case, words, id, locale)`: it shows the dose read — on a treatment without a preset, that it is not checked — or that it is not clear, and gives the words), while a row chosen from the list gives the preset it shows. A learner `clinical_action` with `ordered` reaches the hooks and the gate as `{intervention_id, query: ordered.text}` (`actionToolArgs`) and keeps its `ordered` unless a hook rewrites the words (then read again, `actionFromToolInput`). A dose error is answered by the nurse in the learner's language, closing the loop — "Nurse: “Before I give intramuscular adrenaline, let me read it back: you ordered 5 mg IM; the dose for this is 0.3–0.5 mg IM. Can you confirm the dose?”" (for a single preset: "what I have prepared is …"; a dose per kg with what it comes to for this patient, "0.9 mg/kg IV (72 mg)") then "Not given: the dose ordered differs from the preset dose (10 times the top of the preset range). Order it again with the dose you mean." (`doseChallengeText`); a dose that is asked about likewise — "Nurse: “Before I give …, I need the dose clearly: I can't read the dose in “0。5mg”. …”" then "Not given: the dose in the order is not clear. …" (`doseQueryChallengeText`; the tool's `data.doseQuery`); a part of a dose given in parts — "Nurse: “Before I give IV alteplase, let me check: you ordered 7.2 mg IV, which is only part of the dose. Is that the whole dose? The dose for this is 0.9 mg/kg IV (72 mg) (0.09 mg/kg (7.2 mg) as a bolus, the rest at 0.81 mg/kg/h (64.8 mg/h)).”" then "Not given: the order is for part of the dose. …". A `clinical_action` gets either as an `agent_message` of the nurse. A verbal order to a colleague in the world ("give aspirin 300 g", EMBODIED §8.4) carries its words as `give_intervention` `params.order` — the clause of the request that names the item ("paracetamol 1 g now, then ceftriaxone 2 g IV" gives ceftriaxone its own "ceftriaxone 2 g IV", `orderClause`); a request of several orders none of which names the item alone is answered "One order at a time, please…" —; a colleague voiced by a model acts (`do_task`) on the learner's own words in that turn, the clause that orders the treatment, never on a dose the model writes or leaves out (`staff-tool.ts`); a dose error ends the task with the delegation's `doseError`, a dose that is not clear with its `doseQuery`, and the colleague reads the order back, or asks, in their own voice. The approval summary names the dose as the engine will read it ("Give … — 5 mg IM as ordered?"; "— as written “…” (the dose is not clear)?").
+ * **Critical safety failures.** An intervention with `critical: true` given while its `contraindicatedWhen` holds is applied as before (its effects and `harm`: the learner meets the consequence) and its `intervention.applied` event carries `critical: true` (an invalid checklist attempt gives nothing and is never one).
+ * **Time since a dose.** The condition leaf `{elapsedSince: {intervened, gte?, lte?}}` — minutes since the intervention was last given (`lastGiven`), false while never given; a settle-time condition that waits on it is evaluated at the exact minute its `gte` is reached. `{examined, afterLast}` holds when the finding's latest examination came after the intervention was last given (by action sequence; `SessionState.lastExamined`) — the reassessment a repeat dose needs, which a dose given since undoes.
+ * **The safety outcome.** `AssessmentReport.safety` = `{contraindicated: [{interventionId, at}], criticalAlarms, gates?, verdict?, passed, criticalFailures: [{interventionId, at, harm?}], doseErrors: [{interventionId, at, text, ordered, preset, ratio, conflicts, severity}]}`. `passed` (core `safetyPassed`) is false when there is a critical failure, a critical dose error or a safety-critical gate; the numeric `score` is computed as before and never folded into it. **Every debrief and export** (web, CLI `/assess` / `/debrief` / `exec --assess` and `stream-json` `result`, MCP `get_debrief`, the embodied and operative benchmark reports) shows the safety outcome beside the score, lists the critical failures (with `harm`) and the dose errors (the order as written, the dose read, the preset, the ratio), and never presents a run whose `passed` is false as passed — whatever its percentage. The words (agent `safety.ts`: `safetyHeadline`, `safetySummary`, `safetyLines`; zh-CN and en, docs/GLOSSARY.md): "Safety: passed", "Safety: passed (dose errors: 1 to review)", "Safety: not passed — critical safety failures: 1; critical dose errors: 1", then "⚠ Critical safety failure: <item> given while contraindicated (minute n) — <harm>" and "⚠ Critical dose error: <item> — as ordered “…”, read as …; preset dose … — 10 times the preset dose; not given (minute n)". For a case with an operation, a front-end that holds the score back until the case is finished holds the operation's gates back too (`safetySummary(…, {gates: false})`: `passed` without the gate's verdict) — a gate mid-case would tell the operator that a hidden view or injury holds (PROCEDURE §7); the critical failures and dose errors, which the learner made, show at once. Where: the CLI assessment (the line after the score), `/debrief` (and `data.safety`), `exec`'s text summary and its `result.safety` (`{passed, critical_failures, dose_errors}`), the `eval` report's safety column and its progress line, `sessions show` (the web's uploaded transcripts included: the server stores them as sent), `cases verify` (the reference path's `safety` in `--json`, `{passed, criticalFailures, doseErrors}`, and a note on its line when it did not pass); MCP `get_debrief` (after the score), the transcript resource's `assessment` (`safety`) and the state resource (`doseErrors`); the web debrief (a safety tile beside the score, an alert naming each failure and dose error), its conversation (a dose error's read-back, or the nurse's question, where the treatment would have been) and its learning record (`outcome: {score, safety}`, `doseErrors`, and each intervention given on an order written in words with its `ordered` and the dose given, `administered: {dose, text}` — agent `administeredDose`, the preset); the examiner's prompt and offline narrative; the embodied benchmark (`BenchRun.safety` — a run whose safety did not pass is never a task success —, metrics and both reports, EMBODIED §13.3) and the operative benchmark (`OperativeRun.safety`, the same rule; its metrics and report, BENCHMARK_OPERATIVE §4). The team benchmark reports none: it scores the team's obligations on a session whose clinical actions are the case's reference path, which `cases verify` already holds to a passed safety outcome.
+diff --git a/docs/TEAM.md b/docs/TEAM.md
+index fa67d35..02de05b 100644
+--- a/docs/TEAM.md
++++ b/docs/TEAM.md
+@@ -69,7 +69,8 @@ Duties:
+ - somebody circulates;
+ - needs are for members;
+ - information needs (`inform`, §4.5) name a history item the case records, a holder who is a member or relief
+-  colleague (never the person it is for), a member it is for, and an intervention of the case it holds up;
++  colleague (never the person it is for), a member it is for, and the interventions of the case it holds up (one or
++  several, each once);
+ - absent members are members, and the surgeon is never absent;
+ - relief and cover colleagues are not members (and nobody covers the surgeon);
+ - the solution's `start {team}` names a scenario;
+@@ -246,19 +247,19 @@ nurse at the door):
+   "name": { "en": "his anticoagulant and antiplatelet history", "zh-CN": "他的抗凝和抗血小板用药情况" },
+   "heldBy": "triage-nurse",             // a member, or a relief colleague (by phone) — they learned it before
+   "for": "surgeon",                     // who needs it
+-  "blocks": "tenecteplase",             // the act it holds up until it is supplied or escalated
++  "blocks": ["tenecteplase", "alteplase"], // the acts it holds up until it is supplied or escalated (one id, or several)
+   "when": { "read": "ct-head" }         // when the need arises (default: as soon as the team works)
+ }]
+ ```
+ 
+ | step | who | what is recorded |
+ |---|---|---|
+-| the need, noticed once `when` holds | the circulating nurse (or `noticedBy`) | an `inform` task; a `notice` to the person: who holds it, and that the act it `blocks` waits ("IV tenecteplase waits until it's confirmed.") |
++| the need, noticed once `when` holds | the circulating nurse (or `noticedBy`) | an `inform` task; a `notice` to the person: who holds it, and that the acts it `blocks` wait ("IV tenecteplase and IV alteplase wait until it's confirmed.") |
+ | asked | the circulating nurse → the holder (in the room aloud, or by phone) | a `request` about `info` — **who ordered** the task |
+ | supplied | the holder → the circulating nurse | a `report` carrying the fact as the case records it — **who performed** it; a holder who does not have it declines (`not-known`) |
+ | told | the circulating nurse → the person, once they are in the room (`waiting` until then) | a `report` with the fact |
+ | read back, confirmed | the person reads it back (the simulated surgeon; the learner from the Team panel); the circulating nurse confirms a read-back about the same item and says it again after a wrong one | **who received** it and when: only now is it recorded in the case as known to them — `ask` with `via: "team"` (docs/PROTOCOL.md), so the case's own rules (thrombolysis contraindicated until the anticoagulant history is known) see it |
+-| escalated | the circulating nurse → the person, with the reason | the holder away (`holder-absent`, at once: nobody else knows it), no answer within `waitRounds` (`no-answer`), not known, the person not in the room for `waitRounds × 4`, or no read-back for `waitRounds × 4`; "… still waits." when it blocks an act |
++| escalated | the circulating nurse → the person, with the reason | the holder away (`holder-absent`, at once: nobody else knows it), no answer within `waitRounds` (`no-answer`), not known, the person not in the room for `waitRounds × 4`, or no read-back for `waitRounds × 4`; "… still wait." when it blocks acts |
+ 
+ Only the one named holder is asked: rerouting cannot help, so an unanswered request is escalated rather than passed
+ on. What the person does next — the change in management — is theirs: in learner mode the learner's, in the team
+@@ -331,16 +332,17 @@ them, headless, in **observer mode**:
+ 2. the surgeon's body goes to the table (the patient);
+ 3. the team then works alone (`team run`) until what was set in motion has ended;
+ 4. after an information handoff the clinician's path goes on — what the team escalated they take themselves first,
+-   what it supplied they never ask again — up to the act the information held up, so the run records what they did
+-   next.
++   what it supplied they never ask again — up to an act each information need held up (one of its `blocks`: they may
++   be alternatives, thrombolysis by either drug), so the run records what they did next.
+ 
+ The score comes from the session's own record (the team checkpoint, the case's count record, what bodies hold), never
+ from the team's say-so, checked against the scenario's `expect`. Its denominator is the scenario's **obligations**,
+ enumerated by id at the start (`obligations`): every need — its recipient, the physical outcome (they hold an item of
+ the type, one no other need was credited with), whether the circulating nurse verified it —, every information need —
+ the physical outcome is the case recording it as known to its recipient, verified by their read-back, and the
+-**handoff**: who asked the holder, who supplied it, who received it and when, the first act after it and when the act
+-it held up was given — and the count, when the scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
++**handoff**: who asked the holder, who supplied it, who received it and when, the first act after it and, for each act
++it held up, when it was given — any of them given before the information arrived is an inappropriate progression, and
++once it arrived one of them must follow — and the count, when the scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
+ `unfinished` when the run stopped — a run with an unfinished obligation never passes, however many rounds it ran. A
+ scenario is `activated` when it was set up in the world and its work began; one assigned and never activated is
+ **invalid** (nothing about the team can be concluded from it). The report publishes the denominators apart: scenarios
+@@ -355,7 +357,7 @@ The report (`team-report.json`, `team-report.md`) gives, per scenario:
+ | false hold | a hold when every item was there (the control) |
+ | obligations: met / escalated / unfinished / failed | the scenario's obligations as they ended |
+ | inappropriate progression | closure began while the count was not settled (the count record's unsafe progression; `closedOnHold`); an act given before the information it waited for |
+-| information: asked by → supplied by → received by · then · held-up act | the handoff of each information need, with the simulated minute of each (the report's "Information handoffs") |
++| information: asked by → supplied by → received by · then · held-up acts | the handoff of each information need, with the simulated minute of each, and each act it held up: when it was given, after the read-back or before it, or not given (the report's "Information handoffs") |
+ | exactly once | no action id carried out twice; no more hand-overs than needs |
+ | rounds · messages · acts · seconds | the work it took (simulated seconds) |
+ 
+diff --git a/docs/zh-CN/EMBODIED.md b/docs/zh-CN/EMBODIED.md
+index de1e2e9..6333560 100644
+--- a/docs/zh-CN/EMBODIED.md
++++ b/docs/zh-CN/EMBODIED.md
+@@ -1777,7 +1777,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实
+ | 参考演示（`clinicalcraft bench demo`） | yes（A7） | 两种语言的 STEMI：每一步都由引擎 + 世界状态确认，带 ID 与版本的逐步链条，评估跨度；中途中断的接诊判为失败 | 2026-11-14 重新生成的 `docs/bench/demo.en.md` / `demo.zh-CN.md`：50 步、287 个跨度、26 个世界动作、0 违规、22 / 22；重新生成时轨迹逐字节相同 | no——演示的是基础设施（一次重放），不是临床推理 |
+ | 内容规模（病例索引、按病例懒加载的分块、分页带 ETag 的服务器 API、CLI 与 MCP 中的 `CaseLibrary`） | yes | 单元测试：索引器、病例存储、服务器内容 API、网页索引插件 | 用 100–1 000 个合成病例测量（§11） | no——大型病例目录下浏览器的启动与切换病例未测量；首次加载校验每个病例约 150–230 ms。Perf |
+ | 术野模型（`procedure`、`operate`，见 docs/PROCEDURE.md）：解剖、区域、穿刺孔与器械、按术野判定的安全视野、由解剖导致的不安全操作与损伤、操作者视角（结构编号，从不显示胆管名称）、`observe_field` / `operate` 工具、`safetyGates`；同事握持某个孔的器械（`hand-over`、`delegate_task hold_traction`），离开手术台时牵引随之松开（`exposure-lost`）；网页中与手术室并列的腹腔镜画面，单一展示队列 | yes（术野轮次；助手与腹腔镜画面：2.5.0 建议） | core 单元测试：安全路径；对抗路径（习惯性牵拉、把胆总管误认为胆囊管并夹闭离断、未暂停即夹闭、声称但未真实建立的视野、出血处理、隐藏结构旁使用能量、胆囊撕破）；补救策略；可及性与布孔人体工学；确定性；交接规则（`approach.test.ts`）；展示队列与显露窗口（网页 `scope-presenter.test.ts`）；SurgeryCraft `case126-release.test.ts` 与第四个浏览器演示 | 未验证：没有外科、麻醉或影像专家审核；唯一使用它的病例（SurgeryCraft cmcr-1654623）基于参考解剖 | no — 组织为规则状态，并非标定的力学模型；网页面板为第一版。Rel, Val |
+-| 医护团队（docs/TEAM.md；§8.5）：`case.team`，在 `start` 时选定且隐藏的团队情境，`TeamScheduler`（轮次，自主程度 auto / step / off），离线角色策略（巡回护士、洗手护士、清点、模拟术者、掌握信息的同事——2026-11-12 审查 P1-9），带复述确认的消息，记录真实发起人的动作回执，占用，恰好一次的动作 id，`team` 操作 / `team_event`，`team` 记录项与 `SessionSnapshot.team`（含团队情境的生命周期：pending / active / completed 及其设置事件），网页团队面板与团队时钟，统一的调度路径（学员的动作、外部智能体、示范接诊的每一步），按职责计分的 `bench team`（分配 / 激活 / 完成 / 上报 / 无效）；手术清点作为按物品身份记录的唯一病历记录（`SessionState.count`，§8.1 绑定到患者所在房间的记录看板） | yes（团队轮次） | core `team.test.ts`（一致性、与场馆相符、开始时选择）、`count.test.ts`（11 项：每种清点结局、6/5、假 5/5、有记录的转移、关闭被记录或被拒绝）；agent `team/policy.test.ts`（在手工构造的视图上验证 22 条规则）、`team/session-team.test.ts`、`session/identity.test.ts`；bench `team/score.test.ts`（职责）、`team/inform.test.ts`（卒中病例的信息交接：被 `bench team` 找到并报告、在所等信息之前给药判为失败、单人学习路径不变）；SurgeryCraft `tools/case126-team.test.ts`（16 项：学员观看时两名护士传递器械、顶班、器械被挪动或缺失、术者不在台旁、两个请求争一把持针器只有一个占用者、传递中途保存 / 恢复只递交一次、学员与观察模式下每种清点结局、清点未解决时关闭、回复对象、点名同事、麻醉中不能说话）与 `tools/case126-count.test.ts`（11 项：术野、清点板、RF 检测棒、Sign Out、团队与评分在每种清点结局上一致；术前存档；无界面示范接诊） | `bench team` 在病例 126 上：11 / 11 个情境（激活 11、完成 11、恰当上报 2、无效 0），全部恰好一次；在内置内容上：2 / 2（`acute-ischemic-stroke`：抗凝用药情况经询问 → 回报 → 接收并复述确认，之后才给替奈普酶；掌握者不在时立即上报），该病例的单人接诊路径、`cases verify` 与实景示范接诊不变；浏览器（2026-11-02，`serve` 下的病例 126，Chromium + SwiftShader）：团队时钟把一次持针器传递推进到“已亲眼核实”，自动存档保留了团队——清点记录、看板绑定与待初始化情境的重新加载尚未在浏览器中演示 | no — 规则策略，只覆盖两种职责、清点和转达一条已记录的事实；没有语言模型驱动团队成员；两个病例（病例 126、卒中病例）；未经围术期或急诊护理人员审核。Rel |
++| 医护团队（docs/TEAM.md；§8.5）：`case.team`，在 `start` 时选定且隐藏的团队情境，`TeamScheduler`（轮次，自主程度 auto / step / off），离线角色策略（巡回护士、洗手护士、清点、模拟术者、掌握信息的同事——2026-11-12 审查 P1-9），带复述确认的消息，记录真实发起人的动作回执，占用，恰好一次的动作 id，`team` 操作 / `team_event`，`team` 记录项与 `SessionSnapshot.team`（含团队情境的生命周期：pending / active / completed 及其设置事件），网页团队面板与团队时钟，统一的调度路径（学员的动作、外部智能体、示范接诊的每一步），按职责计分的 `bench team`（分配 / 激活 / 完成 / 上报 / 无效）；手术清点作为按物品身份记录的唯一病历记录（`SessionState.count`，§8.1 绑定到患者所在房间的记录看板） | yes（团队轮次） | core `team.test.ts`（一致性、与场馆相符、开始时选择）、`count.test.ts`（11 项：每种清点结局、6/5、假 5/5、有记录的转移、关闭被记录或被拒绝）；agent `team/policy.test.ts`（在手工构造的视图上验证 22 条规则）、`team/session-team.test.ts`、`session/identity.test.ts`；bench `team/score.test.ts`（职责）、`team/inform.test.ts`（卒中病例的信息交接：被 `bench team` 找到并报告、在所等信息之前给药判为失败、单人学习路径不变）；SurgeryCraft `tools/case126-team.test.ts`（16 项：学员观看时两名护士传递器械、顶班、器械被挪动或缺失、术者不在台旁、两个请求争一把持针器只有一个占用者、传递中途保存 / 恢复只递交一次、学员与观察模式下每种清点结局、清点未解决时关闭、回复对象、点名同事、麻醉中不能说话）与 `tools/case126-count.test.ts`（11 项：术野、清点板、RF 检测棒、Sign Out、团队与评分在每种清点结局上一致；术前存档；无界面示范接诊） | `bench team` 在病例 126 上：11 / 11 个情境（激活 11、完成 11、恰当上报 2、无效 0），全部恰好一次；在内置内容上：2 / 2（`acute-ischemic-stroke`：抗凝用药情况经询问 → 回报 → 接收并复述确认，之后才给替奈普酶——它所阻挡的两种溶栓药分别记录，阿替普酶未给予；掌握者不在时立即上报），该病例的单人接诊路径、`cases verify` 与实景示范接诊不变；浏览器（2026-11-02，`serve` 下的病例 126，Chromium + SwiftShader）：团队时钟把一次持针器传递推进到“已亲眼核实”，自动存档保留了团队——清点记录、看板绑定与待初始化情境的重新加载尚未在浏览器中演示 | no — 规则策略，只覆盖两种职责、清点和转达一条已记录的事实；没有语言模型驱动团队成员；两个病例（病例 126、卒中病例）；未经围术期或急诊护理人员审核。Rel |
+ | 藏匿物品与 `search`（§8.6） | yes（团队轮次） | world `conceal.test.ts`（不出现在观察、`find`、`canSee`、记忆与事件中；按 id 或作为目标都被拒绝；在伸手可及处显现，或从患者身上取出到手中；快照保留） | 病例 126 的清点情境（纱布在 Mayo 托盘下、在术野里、已离开手术间） | no — 只有情境能藏匿物品；接诊过程中没有东西会把物品藏起来。Rel |
+ 
+ ### 14.3 已知局限
 diff --git a/packages/agent/src/dose-orders.test.ts b/packages/agent/src/dose-orders.test.ts
 index 9bfc3d2..3bae0ad 100644
 --- a/packages/agent/src/dose-orders.test.ts
@@ -143,6 +307,27 @@ index dcfd33b..1dca22e 100644
        if (r.kind !== "id") return refuse(r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
        // The order as written: kept as the action states it (its dose as read) while the hook left the words alone,
        // else read again from the words the input now holds (`itemOrder`, as the tool reads them: this item's clause).
+diff --git a/packages/agent/src/session/delegation.ts b/packages/agent/src/session/delegation.ts
+index 7cdf92c..42ef233 100644
+--- a/packages/agent/src/session/delegation.ts
++++ b/packages/agent/src/session/delegation.ts
+@@ -280,9 +280,14 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
+     }
+     return done.status === "completed";
+   };
+-  /** The nearest cart providing a capability (at the bedside first). */
++  /**
++   * The nearest cart providing a capability (at the bedside first), out of the carts the department has in service: a
++   * cart out of the staff member's sight is listed in no state it could know (EMBODIED §4, audit 2026-11-12 W1), and
++   * which of its carts a department has taken out of service is its own record — the staff member goes by it.
++   */
+   const cartFor = (capability: string): string | null => {
+-    const list = world.find(staff, { kind: "equipment", capabilities: [capability], limit: 20 }).filter((e) => world.entity(e.id)?.portable && e.state !== "out-of-service");
++    const entities = world.snapshot().entities;
++    const list = world.find(staff, { kind: "equipment", capabilities: [capability], limit: 20 }).filter((e) => world.entity(e.id)?.portable && entities[e.id]?.available !== false);
+     return list.find((e) => h.atBedside(e.id))?.id ?? list[0]?.id ?? null;
+   };
+   const fetch = async (cart: string): Promise<boolean> => {
 diff --git a/packages/agent/src/session/i18n-embodied.ts b/packages/agent/src/session/i18n-embodied.ts
 index a28cfc9..375260c 100644
 --- a/packages/agent/src/session/i18n-embodied.ts
@@ -163,8 +348,251 @@ index a28cfc9..375260c 100644
    "world.entity.inReach": " · 伸手可及",
    "world.entity.actions": " · 可操作：{actions}",
    "world.entity.cues": " · {cues}",
+diff --git a/packages/agent/src/session/review-runtime.test.ts b/packages/agent/src/session/review-runtime.test.ts
+index c585d2c..9a0791c 100644
+--- a/packages/agent/src/session/review-runtime.test.ts
++++ b/packages/agent/src/session/review-runtime.test.ts
+@@ -186,7 +186,9 @@ describe("C3: no device stays reserved after a failed route", () => {
+     expect(out.data.delegation).toMatchObject({ status: "failed" });
+     expect(out.data.delegation.steps.map((s: { operation: string }) => s.operation)).toContain("reset");
+     expect(reserved(t)).toEqual([]);
+-    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")!.state).toBe("idle");
++    // the cart's own state (the clinician, who has not seen it, is told no state of it: EMBODIED §4, audit W1)
++    expect(w.stateOf("eq:resus1-ecg")).toBe("idle");
++    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")).toMatchObject({ lastKnown: { kind: "usual" }, availableActions: [] });
+     expect(t.session.state.orders).toEqual([]);
+     await w.execute({ actionId: "c0", actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient" });
+     expect((await w.execute({ actionId: "c1", actorId: PRIMARY_ACTOR, operation: "prepare", targetId: "eq:resus1-ecg" })).status).toBe("completed");
+diff --git a/packages/agent/src/session/team/checkpoint.ts b/packages/agent/src/session/team/checkpoint.ts
+index 41d9b9f..1697dc6 100644
+--- a/packages/agent/src/session/team/checkpoint.ts
++++ b/packages/agent/src/session/team/checkpoint.ts
+@@ -17,8 +17,15 @@ export function validTeamCheckpoint(value: unknown): TeamCheckpoint | null {
+   if (cp.surgeon !== "learner" && cp.surgeon !== "simulated") return null;
+   if (st.version === 1) {
+     const begun = (st.round ?? 0) > 0 || (st.messages?.length ?? 0) > 0 || st.tasks.length > 0 || !!st.count;
+-    return { ...(cp as TeamCheckpoint), state: { ...(st as TeamCheckpoint["state"]), version: TEAM_STATE_VERSION, lifecycle: begun ? "active" : "pending" } };
++    return withBlockLists({ ...(cp as TeamCheckpoint), state: { ...(st as TeamCheckpoint["state"]), version: TEAM_STATE_VERSION, lifecycle: begun ? "active" : "pending" } });
+   }
+   if (!LIFECYCLES.includes(st.lifecycle as TeamLifecycle)) return null;
+-  return cp as TeamCheckpoint;
++  return withBlockLists(cp as TeamCheckpoint);
++}
++
++/** An information task saved when `blocks` named one act (a string): read as the list it now is. */
++function withBlockLists(cp: TeamCheckpoint): TeamCheckpoint {
++  const old = (t: TeamCheckpoint["state"]["tasks"][number]) => typeof (t as { blocks?: unknown }).blocks === "string";
++  if (!cp.state.tasks.some(old)) return cp;
++  return { ...cp, state: { ...cp.state, tasks: cp.state.tasks.map((t) => (old(t) ? { ...t, blocks: [(t as { blocks?: unknown }).blocks as string] } : t)) } };
+ }
+diff --git a/packages/agent/src/session/team/i18n.ts b/packages/agent/src/session/team/i18n.ts
+index c638f76..ca5137a 100644
+--- a/packages/agent/src/session/team/i18n.ts
++++ b/packages/agent/src/session/team/i18n.ts
+@@ -42,6 +42,7 @@ const PHRASES = {
+   // information a colleague holds (docs/TEAM.md §4.5): asked for, reported back, told to the person, read back
+   infoNotice: { en: "{info} for {for} — {holder} has it; I'm getting it.{blocked}", "zh-CN": "{for}需要的{info}在{holder}那里，我去问。{blocked}" },
+   infoBlocked: { en: " {blocks} waits until it's confirmed.", "zh-CN": "{blocks}等确认后再进行。" },
++  infoBlockedMany: { en: " {blocks} wait until it's confirmed.", "zh-CN": "{blocks}都等确认后再进行。" },
+   infoRequest: { en: "{to}, {for} needs {info} — what did you learn?", "zh-CN": "{to}，{for}需要{info}——你了解到的情况是什么？" },
+   infoReport: { en: "{info}: {fact}", "zh-CN": "{info}：{fact}" },
+   infoRelay: { en: "{info}, from {holder}: {fact}", "zh-CN": "{info}——{holder}转述：{fact}" },
+@@ -50,6 +51,7 @@ const PHRASES = {
+   infoNotKnown: { en: "I don't have {info}.", "zh-CN": "我不了解{info}。" },
+   infoUnresolved: { en: "{info} for {for} hasn't come — {reason}.{blocked}", "zh-CN": "{for}需要的{info}还没拿到——{reason}。{blocked}" },
+   infoStillBlocked: { en: " {blocks} still waits.", "zh-CN": "{blocks}仍需等待。" },
++  infoStillBlockedMany: { en: " {blocks} still wait.", "zh-CN": "{blocks}都仍需等待。" },
+   // why a task could not be done, as a colleague tells it (escalations)
+   "why.noAnswer": { en: "no answer from {to}", "zh-CN": "{to}没有回应" },
+   "why.notFound": { en: "{to} can't find one in the room", "zh-CN": "{to}在手术间里找不到" },
+@@ -74,6 +76,12 @@ export function phrase(key: TeamPhrase, params: Params = {}): Bilingual {
+   return { en: key.startsWith("why.") ? en : en.charAt(0).toUpperCase() + en.slice(1), "zh-CN": fill(p["zh-CN"], "zh-CN") };
+ }
+ 
++/** Names in both languages as one list: "A and B", "A, B and C"; zh-CN "A和B", "A、B和C". */
++export function bothList(items: readonly Bilingual[]): Bilingual {
++  const join = (names: string[], sep: string, last: string) => (names.length <= 1 ? (names[0] ?? "") : `${names.slice(0, -1).join(sep)}${last}${names.at(-1)}`);
++  return { en: join(items.map((x) => x.en), ", ", " and "), "zh-CN": join(items.map((x) => x["zh-CN"]), "、", "和") };
++}
++
+ /** A name in both languages from a localized value (strings stand for both). */
+ export function both(value: LocalizedText | string): Bilingual {
+   if (typeof value === "string") return { en: value, "zh-CN": value };
+diff --git a/packages/agent/src/session/team/policy.test.ts b/packages/agent/src/session/team/policy.test.ts
+index 4e25ca7..447207c 100644
+--- a/packages/agent/src/session/team/policy.test.ts
++++ b/packages/agent/src/session/team/policy.test.ts
+@@ -199,7 +199,7 @@ describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
+   const FACT = { en: "(Wife) No, none of them.", "zh-CN": "（妻子）没有，一样都没有。" };
+   const NAME = { en: "his anticoagulant history", "zh-CN": "他的抗凝用药情况" };
+   const need = { need: { id: "i1", history: INFO, heldBy: "triage", for: "surgeon", blocks: "tenecteplase" }, forId: SURGEON, holderId: TRIAGE, noticedBy: CIRC };
+-  const inform = (extra: Partial<TeamTask> = {}) => task({ kind: "inform", need: "i1", item: INFO, holder: TRIAGE, blocks: "tenecteplase", ...extra });
++  const inform = (extra: Partial<TeamTask> = {}) => task({ kind: "inform", need: "i1", item: INFO, holder: TRIAGE, blocks: ["tenecteplase"], ...extra });
+   const infoView = (me: MemberState, extra: Partial<MemberView> = {}) =>
+     view(me, { itemName: () => NAME, actName: () => ({ en: "IV tenecteplase", "zh-CN": "替奈普酶静脉溶栓" }), colleagues: [colleague(TRIAGE, ["inform"], { relief: true, present: false })], ...extra });
+ 
+@@ -208,7 +208,20 @@ describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
+     expect(p).toMatchObject({ to: SURGEON, message: { kind: "notice", about: { need: "i1", info: INFO, for: SURGEON } } });
+     // (the test view names everyone by their body id)
+     expect(p!.message.text.en).toBe("His anticoagulant history for actor:clinician — staff:triage has it; I'm getting it. IV tenecteplase waits until it's confirmed.");
+-    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", owner: CIRC, holder: TRIAGE, blocks: "tenecteplase", status: "open" } });
++    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", owner: CIRC, holder: TRIAGE, blocks: ["tenecteplase"], status: "open" } });
++  });
++
++  it("an information need that holds up several acts names each as waiting, and still waiting when it is escalated (verification D4)", () => {
++    const names: Record<string, { en: string; "zh-CN": string }> = { tenecteplase: { en: "IV tenecteplase", "zh-CN": "替奈普酶静脉溶栓" }, alteplase: { en: "IV alteplase", "zh-CN": "阿替普酶静脉溶栓" } };
++    const both = { ...need, need: { ...need.need, blocks: ["tenecteplase", "alteplase"] } };
++    const named = (me: MemberState, extra: Partial<MemberView> = {}) => infoView(me, { actName: (id) => names[id]!, ...extra });
++    const p = say(propose(named(member(CIRC, ["circulate"]), { informs: [both] })));
++    expect(p!.message.text.en).toBe("His anticoagulant history for actor:clinician — staff:triage has it; I'm getting it. IV tenecteplase and IV alteplase wait until it's confirmed.");
++    expect(p!.message.text["zh-CN"]).toMatch(/替奈普酶静脉溶栓和阿替普酶静脉溶栓都等确认后再进行。$/u);
++    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", blocks: ["tenecteplase", "alteplase"] } });
++    const away = say(propose(named(member(CIRC, ["circulate"]), { tasks: [inform({ blocks: ["tenecteplase", "alteplase"] })], colleagues: [colleague(TRIAGE, ["inform"], { relief: true, absent: true })] })));
++    expect(away!.message.text.en).toMatch(/isn't available\. IV tenecteplase and IV alteplase still wait\.$/u);
++    expect(away!.message.text["zh-CN"]).toMatch(/替奈普酶静脉溶栓和阿替普酶静脉溶栓都仍需等待。$/u);
+   });
+ 
+   it("asks the one member who holds it (by phone), and escalates at once when they are away — with the reason", () => {
+diff --git a/packages/agent/src/session/team/policy.ts b/packages/agent/src/session/team/policy.ts
+index 70233dd..c574b23 100644
+--- a/packages/agent/src/session/team/policy.ts
++++ b/packages/agent/src/session/team/policy.ts
+@@ -23,9 +23,9 @@
+  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
+  * and it is not there).
+  */
+-import type { TeamDuty } from "@clinicalcraft/core";
++import { informBlocks, type TeamDuty } from "@clinicalcraft/core";
+ import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
+-import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
++import { bothList, phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
+ import type { KnownInform, KnownNeed, MemberId, MemberState, Proposal, TaskPatch, TeamMessage, TeamTask } from "./types.js";
+ 
+ /** An item of a type, as the member knows of it. */
+@@ -281,6 +281,13 @@ function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskP
+ /** What the team calls an intervention (its id when the view cannot name it). */
+ const actName = (v: MemberView, id: string): Bilingual => v.actName?.(id) ?? { en: id, "zh-CN": id };
+ 
++/** That the acts an information need holds up wait ("IV tenecteplase and IV alteplase wait until it's confirmed."); nothing when it holds up none. */
++function waiting(v: MemberView, acts: readonly string[] | undefined, still: boolean): Bilingual {
++  if (!acts?.length) return { en: "", "zh-CN": "" };
++  const blocks = bothList(acts.map((id) => actName(v, id)));
++  return phrase(acts.length > 1 ? (still ? "infoStillBlockedMany" : "infoBlockedMany") : still ? "infoStillBlocked" : "infoBlocked", { blocks });
++}
++
+ /** What an information message is about (the need, the history item, the person; the fact as said). */
+ function infoAbout(task: TeamTask, fact?: Bilingual): TeamMessage["about"] {
+   return { need: task.need, info: task.item, for: task.for, ...(fact ? { fact } : {}) };
+@@ -307,15 +314,16 @@ function tell(v: MemberView): Proposal | null {
+ 
+ /** An information need noticed: the circulator's task, said aloud to the person who needs it — and what waits meanwhile. */
+ function noticeInform(v: MemberView, n: KnownInform): Proposal {
+-  const task: TeamTask = { id: v.newId("task"), kind: "inform", need: n.need.id, item: n.need.history, for: n.forId, owner: v.me.id, initiator: v.me.id, holder: n.holderId, ...(n.need.blocks ? { blocks: n.need.blocks } : {}), thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0 };
+-  const blocked = n.need.blocks ? phrase("infoBlocked", { blocks: actName(v, n.need.blocks) }) : { en: "", "zh-CN": "" };
++  const acts = informBlocks(n.need);
++  const task: TeamTask = { id: v.newId("task"), kind: "inform", need: n.need.id, item: n.need.history, for: n.forId, owner: v.me.id, initiator: v.me.id, holder: n.holderId, ...(acts.length ? { blocks: acts } : {}), thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0 };
++  const blocked = waiting(v, acts, false);
+   return sayInfo(v, n.forId, "notice", phrase("infoNotice", { info: v.itemName(task.item), for: v.name(task.for), holder: v.name(n.holderId), blocked }), task, { patch: [{ create: task }] });
+ }
+ 
+ /** Raise information that has not come to the person who needs it, with the reason; what it holds up still waits. */
+ function escalateInform(v: MemberView, task: TeamTask, reason: string, reasonText: Bilingual, patch: TaskPatch[] = []): Proposal {
+   const clause = { en: reasonText.en.replace(/[.。]\s*$/u, ""), "zh-CN": reasonText["zh-CN"].replace(/[.。]\s*$/u, "") };
+-  const blocked = task.blocks ? phrase("infoStillBlocked", { blocks: actName(v, task.blocks) }) : { en: "", "zh-CN": "" };
++  const blocked = waiting(v, task.blocks, true);
+   const text = phrase("infoUnresolved", { info: v.itemName(task.item), for: v.name(task.for), reason: clause, blocked });
+   return sayInfo(v, task.for, "escalate", text, task, { patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason, reasonText } }] });
+ }
+diff --git a/packages/agent/src/session/team/session-team.test.ts b/packages/agent/src/session/team/session-team.test.ts
+index 9efd32b..a70b9c1 100644
+--- a/packages/agent/src/session/team/session-team.test.ts
++++ b/packages/agent/src/session/team/session-team.test.ts
+@@ -38,4 +38,12 @@ describe("the care team in a session", () => {
+     expect(validTeamCheckpoint({ ...checkpoint(1), state: { ...checkpoint(1).state, version: 2 } })).toBeNull();
+     expect(validTeamCheckpoint(null)).toBeNull();
+   });
++
++  it("a team saved when an information need held up one act reads it as the list it now is (verification D4)", () => {
++    const task = { id: "task-1", kind: "inform", need: "i1", item: "anticoagulants", for: "actor:clinician", owner: "staff:ed-nurse", initiator: "staff:ed-nurse", holder: "staff:triage-nurse", blocks: "tenecteplase", thread: "th-1", status: "asked", since: 2, tried: [], acts: 0 };
++    const saved = { ...checkpoint(3), state: { ...checkpoint(3).state, tasks: [task] } } as unknown as TeamCheckpoint;
++    expect(validTeamCheckpoint(saved)?.state.tasks[0]).toMatchObject({ id: "task-1", blocks: ["tenecteplase"] });
++    const now = { ...saved, state: { ...saved.state, version: 2, lifecycle: "active", tasks: [{ ...task, blocks: ["tenecteplase", "alteplase"] }] } } as unknown as TeamCheckpoint;
++    expect(validTeamCheckpoint(now)?.state.tasks[0]?.blocks).toEqual(["tenecteplase", "alteplase"]);
++  });
+ });
+diff --git a/packages/agent/src/session/team/types.ts b/packages/agent/src/session/team/types.ts
+index e314621..fa378dc 100644
+--- a/packages/agent/src/session/team/types.ts
++++ b/packages/agent/src/session/team/types.ts
+@@ -158,9 +158,12 @@ export interface TeamTask {
+   count?: CountCheck;
+   /** Where the world pointed after a refusal for reach or sight (walk there, then act again). */
+   goal?: NavGoal;
+-  /** `inform`: who holds it, the intervention it holds up, and when the case recorded it as known to the person (the read-back confirmed). */
++  /**
++   * `inform`: who holds it, the interventions it holds up (the scenario's `blocks`, one or several), and when the case
++   * recorded it as known to the person (the read-back confirmed).
++   */
+   holder?: MemberId;
+-  blocks?: string;
++  blocks?: string[];
+   relayed?: { at: number; round: number };
+   /** `inform`: the information as the holder reported it (said again if the read-back is wrong). */
+   fact?: Bilingual;
+diff --git a/packages/agent/src/session/whereabouts.test.ts b/packages/agent/src/session/whereabouts.test.ts
+index f3c7014..089bbf8 100644
+--- a/packages/agent/src/session/whereabouts.test.ts
++++ b/packages/agent/src/session/whereabouts.test.ts
+@@ -66,6 +66,33 @@ describe("where is …? — a colleague's knowledge, then the learner's (audit P
+   });
+ });
+ 
++describe("a cart believed elsewhere is listed as last seen (audit 2026-11-12 W1)", () => {
++  it("the verifier's replay: the nurse wheels the cubicle cart to the patient and connects it — the clinician's line does not change; seen, it is 'connected when last seen'", async () => {
++    const CUB2 = "eq:cub2-ecg";
++    for (const [locale, usual, seenLine] of [
++      ["en", `- Cubicle ECG Cart [${CUB2}] · 69 m behind (usually kept in ED Cubicle 2)`, /^- Cubicle ECG Cart \[eq:cub2-ecg\] · \d+(\.\d)? m [a-z -]+ · connected when last seen \(last seen in Resuscitation Room\)$/],
++      ["zh-CN", `- 急诊诊室心电图机 [${CUB2}] · 69 米 身后（通常放在急诊诊室 2）`, /^- 急诊诊室心电图机 \[eq:cub2-ecg\] · \d+(\.\d)? 米 \S+ · 上次见到时connected（上次见于抢救室）$/],
++    ] as const) {
++      const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { locale } });
++      const line = async () => (await tool(t, "find_entities", { capabilities: ["ecg-12lead"], limit: 8 })).output.split("\n").find((l) => l.includes(`[${CUB2}]`));
++      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
++      expect(await line()).toBe(usual);
++      expect((await act(t, { actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
++      expect((await act(t, { actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: "patient:resus-1" } })).status).toBe("completed");
++      // before W1: "· idle · can: prepare, move_to" — the cart at the patient's bedside, out of the clinician's sight
++      expect(await line()).toBe(usual);
++      for (const operation of ["prepare", "connect"]) expect((await act(t, { actorId: NURSE, operation, targetId: CUB2 })).status, operation).toBe("completed");
++      // before W1: "· connected" — the state it is in now, out of the clinician's sight
++      expect(await line()).toBe(usual);
++      // seen at the bedside, then left behind: the state it was in when last seen there, and nothing to do with it
++      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient:resus-1" })).status).toBe("completed");
++      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
++      expect(await line()).toMatch(seenLine);
++      await t.session.close();
++    }
++  });
++});
++
+ describe("staff and the in-world demonstration go by the same rule (audit P1-8)", () => {
+   it("a delegated ECG: the cart moved out of the nurse's sight — she asks around, fetches it from the cubicle and records it", async () => {
+     const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { approvalMode: "bypass" } });
+diff --git a/packages/agent/src/skills/builtin.ts b/packages/agent/src/skills/builtin.ts
+index 817e9d8..7a319a3 100644
+--- a/packages/agent/src/skills/builtin.ts
++++ b/packages/agent/src/skills/builtin.ts
+@@ -108,6 +108,9 @@ const RAW: readonly unknown[] = [
+         args: { target: ECG, operation: "move_to", parameters: { goal: { kind: "interact", id: "${patient}" } } },
+         when: { not: { world: { deviceAtBedside: true }, target: ECG } },
+       },
++      // a cart in the room but out of the body's sight: what state it is in is known only by looking (EMBODIED §4,
++      // audit 2026-11-12 W1) — go and see it before judging which of the steps below it needs
++      { id: "look", tool: "navigate_to", args: { target: ECG }, when: { not: { entityState: ECG, state: ["idle", "prepared", "connected", "completed", "out-of-service"] } } },
+       { id: "back", tool: "navigate_to", args: { target: "${patient}" }, when: notNear(1.5) },
+       { id: "clear", tool: "interact_object", args: { target: ECG, operation: "reset" }, when: { entityState: ECG, state: ["completed"] } },
+       { id: "prepare", tool: "interact_object", args: { target: ECG, operation: "prepare" }, when: { entityState: ECG, state: ["idle"] } },
 diff --git a/packages/agent/src/tools/clinical.ts b/packages/agent/src/tools/clinical.ts
-index 99be572..abf3ce3 100644
+index 99be572..b0087f6 100644
 --- a/packages/agent/src/tools/clinical.ts
 +++ b/packages/agent/src/tools/clinical.ts
 @@ -58,7 +58,7 @@ import {
@@ -185,7 +613,15 @@ index 99be572..abf3ce3 100644
    return r.kind === "id" ? (ctx.caseDef.interventions.find((i) => i.id === r.id)?.risk ?? "low") : "none";
  }
  
-@@ -560,7 +560,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -544,6 +544,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+     "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm. " +
+     "A dose and route written in the order (query or dose: \"IM adrenaline 0.5 mg\", \"肌注肾上腺素 0.5 mg\") are checked against the dose the nurse prepared: " +
+     "a dose that differs is not given — the nurse reads the order back and asks you to confirm, and it is recorded as a dose error; a dose that cannot be read (a fraction, a range, no unit, a volume of unknown strength) is not given either — the nurse asks for it as a number with its unit. Without a dose the prepared dose is given. " +
++    "Each treatment is given on its own order: words that order several give the first of them; the others are checked against their own doses (a dose error there is recorded and read back) and named, to be ordered on their own. " +
+     "An operation is not an intervention: when the case has one, it is done with observe_field and operate at the table.",
+   inputSchema: {
+     type: "object",
+@@ -560,7 +561,7 @@ const intervene: ToolDefinition<ToolArgs> = {
    risk: interventionRisk,
    alwaysAsk: (args, ctx) => interventionRisk(args, ctx) === "high",
    summarize(args, ctx) {
@@ -194,7 +630,7 @@ index 99be572..abf3ce3 100644
      const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
      // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
      // the words that order this item (its own clause when they order several)
-@@ -571,11 +571,11 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -571,11 +572,11 @@ const intervene: ToolDefinition<ToolArgs> = {
      return dose ? rt(ctx.locale, "sum.interveneDose", { name, dose: doseText(dose, ctx.locale) }) : rt(ctx.locale, "sum.intervene", { name });
    },
    specifier(args, ctx) {
@@ -208,7 +644,7 @@ index 99be572..abf3ce3 100644
      const iv = r.kind === "id" ? ctx.caseDef.interventions.find((i) => i.id === r.id) : undefined;
      if (!iv) return null;
      // Refused before the approval gate: no high-risk confirmation for a dose that cannot be given.
-@@ -584,7 +584,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -584,7 +585,7 @@ const intervene: ToolDefinition<ToolArgs> = {
    async run(args, ctx) {
      const c = ctx.caseDef;
      const L = ctx.locale;
@@ -217,7 +653,7 @@ index 99be572..abf3ce3 100644
      if (r.kind !== "id") {
        // the operation itself asked for as an intervention: the way in is the operative field, with what it still needs
        const asked = strArg(args, "query") || strArg(args, "intervention_id");
-@@ -596,35 +596,36 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -596,35 +597,36 @@ const intervene: ToolDefinition<ToolArgs> = {
      // the order as written (words only: an id alone states none; the clause that names this item when they order
      // several) and the dose read from it — the engine checks it
      const ordered = itemOrder(c, args, r.id, L);
@@ -266,7 +702,7 @@ index 99be572..abf3ce3 100644
      }
      const applied = eventsOf(result, "intervention.applied")[0];
      const appropriateness = applied?.appropriateness ?? "neutral";
-@@ -632,7 +633,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -632,7 +634,7 @@ const intervene: ToolDefinition<ToolArgs> = {
      if (applied?.invalid) {
        // a checklist step out of order: recorded as invalid, nothing applied — never reported as done
        const output = [rt(L, "intervene.invalid", { harm }).trim(), ...objectiveRequirementLines(c, ctx.state(), L, visiblePhases(c, ctx.state()))].join("\n");
@@ -275,7 +711,7 @@ index 99be572..abf3ce3 100644
      }
      const dose = iv.dose ? t(iv.dose, L) : "";
      const name = t(iv.name, L);
-@@ -643,7 +644,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -643,7 +645,7 @@ const intervene: ToolDefinition<ToolArgs> = {
      // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
      const checked = doseCheckText(c, iv, recorded, L);
      if (checked) lines.push(checked);
@@ -284,7 +720,7 @@ index 99be572..abf3ce3 100644
      if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
      // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
      const data = safetyDataLines(c, ctx.state(), iv.reports, L);
-@@ -651,10 +652,63 @@ const intervene: ToolDefinition<ToolArgs> = {
+@@ -651,10 +653,63 @@ const intervene: ToolDefinition<ToolArgs> = {
      if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
      // the order as written and the dose read from it, apart from the dose given: the preset (`doseSpec`, the dose text)
      const order = recorded ? { ordered: recorded, administered: administeredDose(c, iv.id, L) } : {};
@@ -350,11 +786,22 @@ index 99be572..abf3ce3 100644
  /* Team                                                                */
  /* ------------------------------------------------------------------ */
 diff --git a/packages/agent/src/tools/dose-order.ts b/packages/agent/src/tools/dose-order.ts
-index 74531ac..f1354bc 100644
+index 74531ac..08983e4 100644
 --- a/packages/agent/src/tools/dose-order.ts
 +++ b/packages/agent/src/tools/dose-order.ts
-@@ -9,8 +9,8 @@
-  * their question about one that is not clear (nothing given either way), and the check of an order's dose.
+@@ -4,13 +4,16 @@
+  * several items (`itemOrder`, `orderClause`) — and the dose read from them (core `parseDose`, zh-CN and en). The
+  * engine checks the words against the intervention's preset (`doseSpec`, core `checkOrder`): an equivalent dose is
+  * given, a conflicting one is not — the session records a dose error (`dose.error`) —, and one it cannot read or
+- * compare is refused (`dose-unclear`) — the nurse asks. This module builds the order and says what the learner reads
+- * back: a dose in their language, the nurse's read-back of an order whose dose differs from the dose prepared and
+- * their question about one that is not clear (nothing given either way), and the check of an order's dose.
++ * compare is refused (`dose-unclear`) — the nurse asks. Words that order several items order the first of them, in
++ * either language (`resolveOrderedIntervention`); the others' clauses are checked too, each against its own item's
++ * preset (`otherClauses`: a dose error recorded and read back though that item is not given). This module builds the
++ * order and says what the learner reads back: a dose in their language, the nurse's read-back of an order whose dose
++ * differs from the dose prepared and their question about one that is not clear (nothing given either way), and the
++ * check of an order's dose.
   */
  import { checkOrder, readOrder, parseDose, ROUTE_WORDS, t, type CaseDefinition, type DomainEvent, type DosePart, type DoseRoute, type DoseSpec, type DoseUnit, type Intervention, type OrderCheck, type OrderedDose, type WrittenOrder } from "@clinicalcraft/core";
 -import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
@@ -364,7 +811,7 @@ index 74531ac..f1354bc 100644
  
  /** Longest order text kept (core `WrittenOrderSchema`). */
  const MAX_ORDER_LENGTH = 1000;
-@@ -114,12 +114,24 @@ export function doseRatioText(ratio: number | null, locale: string, range = fals
+@@ -114,12 +117,24 @@ export function doseRatioText(ratio: number | null, locale: string, range = fals
  /** Is the preset a range (`upTo` above `amount`), or given in parts — "the dose for this is …", not "what I have prepared"? */
  export const isRange = (preset: DoseSpec): boolean => (preset.upTo != null && preset.upTo !== preset.amount) || preset.maintenance != null || preset.bolus != null;
  
@@ -391,7 +838,7 @@ index 74531ac..f1354bc 100644
      if (ratio) parts.push(ratio);
    }
    if (e.conflicts.includes("route") && e.ordered.route && e.preset.route) {
-@@ -227,11 +239,12 @@ export function doseQueryData(c: Pick<CaseDefinition, "interventions">, interven
+@@ -227,11 +242,12 @@ export function doseQueryData(c: Pick<CaseDefinition, "interventions">, interven
  }
  
  /**
@@ -408,15 +855,16 @@ index 74531ac..f1354bc 100644
  
  /**
   * Words that say how, when or how fast — never what (beside a dose and a route): a clause of only these names no item
-@@ -303,15 +316,55 @@ export function orderClause(c: CaseDefinition, request: string, interventionId:
+@@ -303,15 +319,56 @@ export function orderClause(c: CaseDefinition, request: string, interventionId:
    return own ? text.slice(own.start, own.end).trim() : null;
  }
  
 -/** The other items an order names beside this one, each in its own clause (`orderClause`): ordered, not given here. */
 +/**
 + * The items a request orders, each with the words that order it (`orderClauses`), in the order written: one per item
-+ * named alone in its own clause (an item named twice keeps its first clause; words naming none are no order). Empty
-+ * for words that are one order. `leadingId`: the item a first clause naming none orders (an id written before them).
++ * named alone in its own clause (an item named twice keeps its first clause; words naming none are no order) — fewer
++ * than two for words that are one order. `leadingId`: the item a first clause naming none orders (an id written before
++ * them).
 + */
 +export function orderedItems(c: CaseDefinition, request: string, locale: string, leadingId?: string): { id: string; text: string }[] {
 +  const text = request.trim();
@@ -517,6 +965,292 @@ index 6b13d94..2701233 100644
        reach: e.inReach ? rt(locale, "world.entity.inReach") : "",
        actions: e.availableActions.length ? rt(locale, "world.entity.actions", { actions: e.availableActions.join(", ") }) : "",
        cues: cues ? rt(locale, "world.entity.cues", { cues }) : "",
+diff --git a/packages/bench/src/team/inform.test.ts b/packages/bench/src/team/inform.test.ts
+index aa565dd..4e91bd6 100644
+--- a/packages/bench/src/team/inform.test.ts
++++ b/packages/bench/src/team/inform.test.ts
+@@ -40,7 +40,11 @@ describe("the stroke case's information handoff (bench team)", () => {
+     // what the clinician did next; thrombolysis only after the information arrived
+     expect(h.next).toMatchObject({ by: "actor:clinician" });
+     expect(h.next!.at).toBeGreaterThanOrEqual(h.received!.at);
+-    expect(h.blocked).toMatchObject({ intervention: "tenecteplase", afterReceipt: true });
++    // each act it holds up tracked on its own (verification D4): tenecteplase given after the read-back, alteplase not given
++    expect(h.blocked).toEqual([
++      { intervention: "tenecteplase", givenAt: expect.any(Number), afterReceipt: true },
++      { intervention: "alteplase", givenAt: null, afterReceipt: null },
++    ]);
+ 
+     const away = report.runs[1]!.obligations[0]!;
+     expect(away).toMatchObject({ status: "escalated", physical: false, escalation: { appropriate: true } });
+@@ -49,10 +53,11 @@ describe("the stroke case's information handoff (bench team)", () => {
+     expect(away.escalation!.reasonText?.["zh-CN"]).toMatch(/[\u4e00-\u9fff]/u);
+     expect(report.runs[1]!.escalated).toBe(1);
+     // the change in management: the clinician takes the history directly, then thrombolysis
+-    expect(away.handoff).toMatchObject({ ordered: null, performed: null, received: null, next: { action: "ask anticoagulants" }, blocked: { intervention: "tenecteplase" } });
++    expect(away.handoff).toMatchObject({ ordered: null, performed: null, received: null, next: { action: "ask anticoagulants" }, blocked: [{ intervention: "tenecteplase" }, { intervention: "alteplase", givenAt: null }] });
+ 
+     const md = teamMarkdown(report, "en");
+     expect(md).toContain("## Information handoffs");
++    expect(md).toMatch(/\| tenecteplase: [\d.]+ \(after the read-back\) · alteplase: not given \| met \|/u);
+     expect(md).toMatch(/\| acute-ischemic-stroke \| anticoagulants-from-triage \| anticoagulants \| ed-nurse \(min [\d.]+\) \| triage-nurse \(min [\d.]+\) \| clinician \(min [\d.]+\) \|/);
+     const zh = teamMarkdown(report, "zh-CN");
+     expect(zh).toContain("## 信息交接");
+@@ -74,6 +79,13 @@ describe("the stroke case's information handoff (bench team)", () => {
+     expect(r.pass).toBe(false);
+     expect(r.failures.join("; ")).toMatch(/tenecteplase was given before the information arrived/);
+     expect(r.failures.join("; ")).toMatch(/lacks who asked, who supplied it or who received it/);
++    // the other thrombolytic the scenario holds up is tracked too (verification D4: only tenecteplase was)
++    const early = score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: [{ action: "intervene alteplase", by: "actor:clinician", at: 20, accepted: true, interventionId: "alteplase" }] });
++    expect(early.failures.join("; ")).toMatch(/alteplase was given before the information arrived \(inappropriate progression\)/);
++    // after the information, one of them is what the clinician goes on to; neither given fails
++    const after = (interventionId: string) => [{ action: `intervene ${interventionId}`, by: "actor:clinician", at: 40, accepted: true, interventionId }];
++    expect(score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: after("alteplase") }).failures.join("; ")).not.toMatch(/never given|before the information/);
++    expect(score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: after("labetalol") }).failures.join("; ")).toMatch(/tenecteplase \/ alteplase was never given after the information arrived/);
+   });
+ 
+   it("played alone (no scenario), the team takes no round: the case is as it was without a team", { timeout: T }, async () => {
+diff --git a/packages/bench/src/team/report.ts b/packages/bench/src/team/report.ts
+index b336df7..4195851 100644
+--- a/packages/bench/src/team/report.ts
++++ b/packages/bench/src/team/report.ts
+@@ -1,5 +1,5 @@
+ /** The team benchmark's report (docs/TEAM.md §7): Markdown in either language; the JSON is the `TeamReport` itself. */
+-import type { HandoffParty, TeamObligation, TeamReport, TeamRunResult } from "./run.js";
++import type { HandoffParty, HeldUpAct, TeamObligation, TeamReport, TeamRunResult } from "./run.js";
+ 
+ const TEXT = {
+   en: {
+@@ -18,8 +18,8 @@ const TEXT = {
+     note: "Observer mode (the simulated surgeon); every act through the session's `team` op and the world's action bus. Detection latency is in scheduler rounds from the count falling due to the hold asked for.",
+     informed: "informed",
+     handoffs: "Information handoffs",
+-    handoffNote: "Who asked the member holding it, who supplied it, who received it (read back, confirmed and recorded in the case) — each with the simulated minute — then the first act of the clinician in charge and the act the information held up. Afterwards the case's reference path goes on as the simulated clinician's.",
+-    handoffCols: ["Case", "Scenario", "Information", "Asked by", "Supplied by", "Received by", "Then", "Held-up act given", "Result"],
++    handoffNote: "Who asked the member holding it, who supplied it, who received it (read back, confirmed and recorded in the case) — each with the simulated minute — then the first act of the clinician in charge and each act the information held up (when it was given, or not). Afterwards the case's reference path goes on as the simulated clinician's.",
++    handoffCols: ["Case", "Scenario", "Information", "Asked by", "Supplied by", "Received by", "Then", "Held-up acts given", "Result"],
+     at: "{who} (min {at})",
+     afterReceipt: "after the read-back",
+     beforeReceipt: "BEFORE the information",
+@@ -42,8 +42,8 @@ const TEXT = {
+     note: "观察模式（模拟术者）；每个动作都经会话的 `team` 操作和世界的动作总线。发现延迟以调度轮次计：从清点到期到提出暂停。",
+     informed: "已告知",
+     handoffs: "信息交接",
+-    handoffNote: "谁去问掌握情况的成员、谁提供了信息、谁接收（复述确认并记入病例）——各附模拟时间（分钟）——随后负责医生的第一个操作，以及这条信息所阻挡的操作。之后病例的参考解法作为模拟医生的路径继续进行。",
+-    handoffCols: ["病例", "情境", "信息", "询问者", "提供者", "接收者", "随后", "被阻挡的操作给予时间", "结果"],
++    handoffNote: "谁去问掌握情况的成员、谁提供了信息、谁接收（复述确认并记入病例）——各附模拟时间（分钟）——随后负责医生的第一个操作，以及这条信息所阻挡的每项操作（何时给予，或未给予）。之后病例的参考解法作为模拟医生的路径继续进行。",
++    handoffCols: ["病例", "情境", "信息", "询问者", "提供者", "接收者", "随后", "被阻挡的各项操作给予时间", "结果"],
+     at: "{who}（第 {at} 分钟）",
+     afterReceipt: "在复述确认之后",
+     beforeReceipt: "早于信息到达",
+@@ -68,8 +68,9 @@ function handoffRow(r: TeamRunResult, o: TeamObligation, L: (typeof TEXT)[keyof
+   const body = (id: string) => id.replace(/^(staff|actor):/u, "");
+   const who = (p: HandoffParty | null) => (p ? L.at.replace("{who}", body(p.by)).replace("{at}", minute(p.at)) : L.none);
+   const next = h?.next ? L.at.replace("{who}", `${body(h.next.by)}: ${h.next.action}`).replace("{at}", minute(h.next.at)) : L.none;
+-  const b = h?.blocked;
+-  const blocked = !b ? L.none : b.givenAt === null ? `${b.intervention}: ${L.notGiven}` : `${b.intervention}: ${minute(b.givenAt)}${b.afterReceipt === true ? ` (${L.afterReceipt})` : b.afterReceipt === false ? ` (${L.beforeReceipt})` : ""}`;
++  // each act it held up
++  const act = (b: HeldUpAct) => (b.givenAt === null ? `${b.intervention}: ${L.notGiven}` : `${b.intervention}: ${minute(b.givenAt)}${b.afterReceipt === true ? ` (${L.afterReceipt})` : b.afterReceipt === false ? ` (${L.beforeReceipt})` : ""}`);
++  const blocked = h?.blocked?.length ? h.blocked.map(act).join(" · ") : L.none;
+   const reason = o.escalation ? (o.escalation.reasonText?.[L === TEXT["zh-CN"] ? "zh-CN" : "en"] ?? o.escalation.reason) : "";
+   const result = o.status === "escalated" ? `${L.escalated}${reason ? ` — ${reason}` : ""}` : L.status[o.status];
+   return `| ${r.caseId} | ${r.scenario} | ${o.item} | ${who(h?.ordered ?? null)} | ${who(h?.performed ?? null)} | ${who(h?.received ?? null)} | ${next} | ${blocked} | ${result} |`;
+diff --git a/packages/bench/src/team/run.ts b/packages/bench/src/team/run.ts
+index 84f1cda..e88e1e5 100644
+--- a/packages/bench/src/team/run.ts
++++ b/packages/bench/src/team/run.ts
+@@ -16,7 +16,7 @@
+  * again, and what it escalated is asked first — up to the act it held up.
+  */
+ import type { CaseDefinition, ClinicalAction, CountRecord, TeamScenario } from "@clinicalcraft/core";
+-import { awaitingAcquisition, countStatus, evaluate } from "@clinicalcraft/core";
++import { awaitingAcquisition, countStatus, evaluate, informBlocks } from "@clinicalcraft/core";
+ import { actionIntent, createSession, mergeSettings, minutesUntilReadable, monitorTravels, type ClinicalSession, type TeamCheckpoint } from "@clinicalcraft/agent";
+ import { catalogsFor, chooseFacility, type LoadedContent } from "@clinicalcraft/agent/node";
+ import { PRIMARY_ACTOR } from "@clinicalcraft/world";
+@@ -57,15 +57,22 @@ export interface HandoffParty {
+ /**
+  * An information handoff as the record has it (docs/TEAM.md §4.5): the request to the member who holds it
+  * (`ordered`), their report back (`performed`), the read-back of the person who needed it, confirmed (`received`);
+- * then the first clinical act after it (`next`) and the act it held up (`blocked`: when it was given — after the
+- * information arrived, or not).
++ * then the first clinical act after it (`next`) and each act it held up (`blocked`, the scenario's `blocks` in their
++ * order: when each was given — after the information arrived, or not; null when it was not given).
+  */
+ export interface InformHandoff {
+   ordered: HandoffParty | null;
+   performed: HandoffParty | null;
+   received: HandoffParty | null;
+   next: { action: string; by: string; at: number } | null;
+-  blocked?: { intervention: string; givenAt: number | null; afterReceipt: boolean | null };
++  blocked?: HeldUpAct[];
++}
++
++/** An act an information need held up, as the run ended: when it was given, and whether after the information arrived. */
++export interface HeldUpAct {
++  intervention: string;
++  givenAt: number | null;
++  afterReceipt: boolean | null;
+ }
+ 
+ /** One act of the clinician in charge after the team's handoff (the case's reference path, continued). */
+@@ -232,13 +239,16 @@ async function continueAfter(session: ClinicalSession, c: CaseDefinition, scenar
+     taken.add(h);
+     if (!(await run({ type: "ask", itemId: h }))) return acts;
+   }
+-  const blocks = new Set(scenario.inform.flatMap((n) => (n.blocks ? [n.blocks] : [])));
++  // the acts each information need held up: the path stops once one of each need's acts has been given (they may be
++  // alternatives — thrombolysis by either drug)
++  const held = scenario.inform.map((n) => informBlocks(n)).filter((ids) => ids.length > 0);
++  const given = (id: string) => acts.some((x) => x.interventionId === id && x.accepted);
+   for (let i = from; i < c.solution.length; i++) {
+     const a = c.solution[i]!;
+     if (isEnd(a)) break;
+     if (a.type === "ask" && taken.has(a.itemId)) continue;
+     if (!(await run(a))) break;
+-    if (a.type === "intervene" && blocks.has(a.interventionId) && [...blocks].every((b) => acts.some((x) => x.interventionId === b && x.accepted))) break;
++    if (a.type === "intervene" && held.some((ids) => ids.includes(a.interventionId)) && held.every((ids) => ids.some(given))) break;
+   }
+   return acts;
+ }
+@@ -364,13 +374,17 @@ function informObligation(n: TeamScenario["inform"][number], expect: TeamRunResu
+   const after = ctx.after ?? [];
+   const accepted = after.filter((x) => x.accepted);
+   const first = accepted[0];
+-  const given = n.blocks ? accepted.find((x) => x.interventionId === n.blocks) : undefined;
++  // each act it held up, tracked on its own
++  const blocked = informBlocks(n).map((id): HeldUpAct => {
++    const given = accepted.find((x) => x.interventionId === id);
++    return { intervention: id, givenAt: given?.at ?? null, afterReceipt: given ? (task?.relayed ? given.at >= task.relayed.at : null) : null };
++  });
+   const handoff: InformHandoff = {
+     ordered: party(thread.find((m) => m.kind === "request" && m.to === memberBody(n.heldBy))),
+     performed: party(thread.find((m) => m.kind === "report" && m.from === memberBody(n.heldBy))),
+     received: received && task?.relayed ? { by: received.from, at: task.relayed.at, round: received.round } : null,
+     next: first ? { action: first.action, by: first.by, at: first.at } : null,
+-    ...(n.blocks ? { blocked: { intervention: n.blocks, givenAt: given?.at ?? null, afterReceipt: given ? (task?.relayed ? given.at >= task.relayed.at : null) : null } } : {}),
++    ...(blocked.length ? { blocked } : {}),
+   };
+   let status: TeamObligation["status"] = "unfinished";
+   let escalation: TeamObligation["escalation"];
+@@ -420,8 +434,10 @@ export function score(c: CaseDefinition, scenario: string, expect: TeamRunResult
+       if (o.status === "met" && expect.informed === false) failures.push(`${o.id}: supplied, but the scenario expects it escalated`);
+       if (o.status === "met" && !(h?.ordered && h.performed && h.received)) failures.push(`${o.id}: the record lacks who asked, who supplied it or who received it`);
+       if ((o.status === "met" || o.status === "escalated") && !h?.next) failures.push(`${o.id}: nothing was recorded of what the clinician did next`);
+-      if (h?.blocked && h.blocked.givenAt !== null && h.blocked.afterReceipt === false) failures.push(`${o.id}: ${h.blocked.intervention} was given before the information arrived (inappropriate progression)`);
+-      if (o.status === "met" && h?.blocked && h.blocked.givenAt === null) failures.push(`${o.id}: ${h.blocked.intervention} was never given after the information arrived`);
++      // every act it held up given before the information arrived is an inappropriate progression; once it arrived,
++      // one of them (they may be alternatives) is what the clinician went on to
++      for (const b of h?.blocked ?? []) if (b.givenAt !== null && b.afterReceipt === false) failures.push(`${o.id}: ${b.intervention} was given before the information arrived (inappropriate progression)`);
++      if (o.status === "met" && h?.blocked?.length && h.blocked.every((b) => b.givenAt === null)) failures.push(`${o.id}: ${h.blocked.map((b) => b.intervention).join(" / ")} was never given after the information arrived`);
+     }
+   }
+   if (escalations.some((m) => !m.text.en.includes("—"))) failures.push("an escalation without a reason");
+diff --git a/packages/content/cases/acute-ischemic-stroke/README.md b/packages/content/cases/acute-ischemic-stroke/README.md
+index d616e28..275a466 100644
+--- a/packages/content/cases/acute-ischemic-stroke/README.md
++++ b/packages/content/cases/acute-ischemic-stroke/README.md
+@@ -414,15 +414,17 @@ at the bedside (duty `circulate`; posted at the ED nurse station, she comes to r
+ learner is the doctor in charge (the team calls them "the doctor" / 医生). Two authored team scenarios route one fact
+ the case records — his wife's answer to the anticoagulant question (`anticoagulants`) — through the team: the triage
+ nurse, Yang Jie, heard it at the door (a relief colleague with duty `inform`, reached by phone). Once the CT head has
+-been read the need arises; until the doctor has read the answer back, IV tenecteplase waits (`blocks`):
++been read the need arises; until the doctor has read the answer back, thrombolysis by either drug — IV tenecteplase
++and IV alteplase — waits (`blocks`, each act tracked):
+ 
+ | scenario | set-up | expected |
+ |---|---|---|
+ | `anticoagulants-from-triage` | Yang Jie holds it | asked by the resus nurse, answered by Yang Jie, told to the doctor, read back, confirmed and recorded in the case (`ask` `via: "team"`): `informed` |
+-| `anticoagulants-triage-away` | Yang Jie on her break (`absent`) | escalated at once with the reason ("Yang Jie isn't available. IV tenecteplase still waits."): the doctor asks his wife directly |
++| `anticoagulants-triage-away` | Yang Jie on her break (`absent`) | escalated at once with the reason ("Yang Jie isn't available. IV tenecteplase and IV alteplase still wait."): the doctor asks his wife directly |
+ 
+ `clinicalcraft bench team --case acute-ischemic-stroke` runs both in observer mode and records who asked, who
+-supplied it, who received it and when, and what the doctor did next (tenecteplase given only after the read-back).
++supplied it, who received it and when, and what the doctor did next — each thrombolytic it holds up, when given
++(tenecteplase only after the read-back; alteplase not given).
+ Played alone, with no scenario chosen at `start`, the team takes no round: the single-learner path, `cases verify`
+ and the in-world demonstration are unchanged. A facilitator chooses a scenario with `?team=<id>` in the browser; the
+ learner reads the information back from the Team panel.
+@@ -539,7 +541,7 @@ journal, volume and pages); none was added from memory.
+ 
+ ## Changelog
+ 
+-### 1.1.4 — 2026-11-13 (clinical and gameplay audit of 2026-11-12: the team handoff, P1-9)
++### 1.1.4 — 2026-11-14 (clinical and gameplay audit of 2026-11-12: the team handoff, P1-9, and its verification)
+ 
+ * **A care team with an information handoff.** The audit found that no built-in case exercised the full team
+   handoff (`bench team` found no eligible case). The case now has a `team` in the resus room — the ED nurse
+@@ -547,6 +549,11 @@ journal, volume and pages); none was added from memory.
+   wife's recorded answer, no new fact) is held by the triage nurse and thrombolysis waits for it: supplied (asked,
+   answered, told, read back, confirmed, recorded) or escalated with the reason when she is away. `bench team` runs
+   both (2 / 2). The single-learner path is unchanged: no scenario, no team round; `cases verify` 100 %.
++* **Both thrombolytics wait for it** (the audit's verification, 2026-11-14). The scenarios held up tenecteplase only,
++  so `bench team` tracked tenecteplase alone, though alteplase has the same contraindication (`contraindicatedWhen`:
++  the anticoagulant history unknown and no coagulation screen). Each scenario's `blocks` now names both
++  (`["tenecteplase", "alteplase"]`): the resus nurse says both wait, and `bench team` records each — either given
++  before the read-back fails the run, one of them after it is what the doctor went on to (2 / 2, en and zh-CN).
+ 
+ ### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+ 
+@@ -665,6 +672,6 @@ NIHSS ≥ 6、ASPECTS ≥ 6、6小时内、发病前mRS 0–1。
+ 
+ **团队协作（信息交接，1.1.4）。** 抢救室有一个医护团队：急诊护士林晓在床旁协调，学员是负责的医生。两个团队情境把病例
+ 已记录的一条事实——妻子关于抗凝药的回答——交给团队传递：分诊护士杨洁在门口听到了这个回答（电话联系）。头颅CT判读后
+-需求出现；医生复述确认之前，替奈普酶静脉溶栓需等待。`anticoagulants-from-triage`：抢救室护士去问、杨洁回答、转告医生、
++需求出现；医生复述确认之前，替奈普酶和阿替普酶静脉溶栓都需等待（两种溶栓药分别记录）。`anticoagulants-from-triage`：抢救室护士去问、杨洁回答、转告医生、
+ 医生复述、护士确认并记入病例；`anticoagulants-triage-away`：杨洁在休息，护士立即上报并说明原因，医生直接询问妻子。
+ `clinicalcraft bench team` 记录谁去问、谁提供、谁在何时接收，以及医生接下来做了什么。单人接诊不选情境时团队不行动。
+diff --git a/packages/content/cases/acute-ischemic-stroke/case.json b/packages/content/cases/acute-ischemic-stroke/case.json
+index b7f8915..fcb4d3c 100644
+--- a/packages/content/cases/acute-ischemic-stroke/case.json
++++ b/packages/content/cases/acute-ischemic-stroke/case.json
+@@ -7000,7 +7000,10 @@
+             },
+             "heldBy": "triage-nurse",
+             "for": "surgeon",
+-            "blocks": "tenecteplase",
++            "blocks": [
++              "tenecteplase",
++              "alteplase"
++            ],
+             "when": {
+               "read": "ct-head"
+             }
+@@ -7039,7 +7042,10 @@
+             },
+             "heldBy": "triage-nurse",
+             "for": "surgeon",
+-            "blocks": "tenecteplase",
++            "blocks": [
++              "tenecteplase",
++              "alteplase"
++            ],
+             "when": {
+               "read": "ct-head"
+             }
+diff --git a/packages/content/schemas/case.schema.json b/packages/content/schemas/case.schema.json
+index 80b487e..76091f6 100644
+--- a/packages/content/schemas/case.schema.json
++++ b/packages/content/schemas/case.schema.json
+@@ -6896,7 +6896,18 @@
+                           "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                         },
+                         "blocks": {
+-                          "$ref": "#/definitions/Id"
++                          "anyOf": [
++                            {
++                              "$ref": "#/definitions/Id"
++                            },
++                            {
++                              "type": "array",
++                              "items": {
++                                "$ref": "#/definitions/Id"
++                              },
++                              "minItems": 1
++                            }
++                          ]
+                         },
+                         "when": {
+                           "$ref": "#/definitions/Condition"
 diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
 index 4e266b1..84e0fc2 100644
 --- a/packages/core/src/engine/dose-read.ts
@@ -822,8 +1556,310 @@ index c045f1f..423359e 100644
  export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS, type DoseMention, type OrderReading, type UnclearDose, type UnclearDoseReason } from "./dose-read.js";
  export { isHighAlert } from "./high-alert.js";
  
+diff --git a/packages/core/src/engine/team.test.ts b/packages/core/src/engine/team.test.ts
+index 5496bd6..a0de34a 100644
+--- a/packages/core/src/engine/team.test.ts
++++ b/packages/core/src/engine/team.test.ts
+@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
+ import { describe, expect, it } from "vitest";
+ import type { CaseDefinition } from "../schema/case.js";
+ import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
++import { informBlocks, TeamInformSchema } from "../schema/team.js";
+ import { checkCaseIntegrity, checkTeamDefinition, createSession, parseCase, parseCatalog, parseFacility, reduce, teamFacilityIssues } from "./index.js";
+ 
+ type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+@@ -150,6 +151,20 @@ describe("care team · information a colleague holds (docs/TEAM.md §4.5)", () =
+     );
+   });
+ 
++  it("blocks names one act, or several — each an intervention of the case, once (verification D4)", () => {
++    // one id still parses as before; a list holds up each of its acts
++    expect(checkTeamDefinition(withTeam({ ...TEAM, scenarios: [informScenario({ ...good, blocks: ["epi", "fluids"] })] }))).toEqual([]);
++    expect(informBlocks({ blocks: "epi" })).toEqual(["epi"]);
++    expect(informBlocks({ blocks: ["epi", "fluids"] })).toEqual(["epi", "fluids"]);
++    expect(informBlocks({})).toEqual([]);
++    const c = withTeam({ ...TEAM, scenarios: [informScenario({ ...good, blocks: ["epi", "nothing", "epi"] })] });
++    expect(checkTeamDefinition(c).map((i) => [i.path, i.message])).toEqual([
++      ["team.scenarios.0.inform.0.blocks.1", 'unknown intervention "nothing"'],
++      ["team.scenarios.0.inform.0.blocks.2", '"epi" is listed twice'],
++    ]);
++    expect(TeamInformSchema.safeParse({ ...good, blocks: [] }).success).toBe(false);
++  });
++
+   it("the member who circulates may be posted in another room (she comes to the team's room); the others may not", () => {
+     const { f, catalogs } = facility();
+     const raw = structuredClone(f);
+diff --git a/packages/core/src/engine/team.ts b/packages/core/src/engine/team.ts
+index 2b12061..d5310be 100644
+--- a/packages/core/src/engine/team.ts
++++ b/packages/core/src/engine/team.ts
+@@ -4,6 +4,7 @@
+  * items and the placements a scenario moves exist there).
+  */
+ import type { CaseDefinition } from "../schema/case.js";
++import { informBlocks } from "../schema/team.js";
+ import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
+ import { formatPath } from "./parse.js";
+ import type { Issue } from "./types.js";
+@@ -68,7 +69,13 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
+       if (!known(n.for)) issues.push(err([...here, "for"], `"${n.for}" is not a member of the team`));
+       if (n.heldBy === n.for) issues.push(err([...here, "heldBy"], `"${n.heldBy}" already holds what they need`));
+       if (n.noticedBy && !members.has(n.noticedBy)) issues.push(err([...here, "noticedBy"], `"${n.noticedBy}" is not a member of the team`));
+-      if (n.blocks && !interventions.has(n.blocks)) issues.push(err([...here, "blocks"], `unknown intervention "${n.blocks}"`));
++      // the acts it holds up: each an intervention of the case, once
++      const blocks = informBlocks(n);
++      blocks.forEach((b, k) => {
++        const path = typeof n.blocks === "string" ? [...here, "blocks"] : [...here, "blocks", k];
++        if (!interventions.has(b)) issues.push(err(path, `unknown intervention "${b}"`));
++        else if (blocks.indexOf(b) !== k) issues.push(err(path, `"${b}" is listed twice`));
++      });
+     });
+     if (s.expect?.delivered !== undefined && s.needs.length === 0) issues.push(err([...at, "expect", "delivered"], `nothing is needed in team scenario "${s.id}" (no need to deliver)`));
+     if (s.expect?.informed !== undefined && s.inform.length === 0) issues.push(err([...at, "expect", "informed"], `no information is needed in team scenario "${s.id}" (no inform)`));
+diff --git a/packages/core/src/schema/team.ts b/packages/core/src/schema/team.ts
+index 301ba48..835e6a7 100644
+--- a/packages/core/src/schema/team.ts
++++ b/packages/core/src/schema/team.ts
+@@ -72,14 +72,22 @@ export const TeamInformSchema = z
+     for: MemberRef,
+     /** The member who notices it is needed (default: the member who circulates). */
+     noticedBy: MemberRef.optional(),
+-    /** The case's intervention it holds up: not to be given until the information is supplied or escalated. */
+-    blocks: IdSchema.optional(),
++    /**
++     * The case's interventions it holds up — one id, or several (thrombolysis by either drug: `["tenecteplase",
++     * "alteplase"]`): none of them is to be given until the information is supplied or escalated (`informBlocks`).
++     */
++    blocks: z.union([IdSchema, z.array(IdSchema).min(1)]).optional(),
+     /** When the need arises (a CT read: thrombolysis is being considered); default: as soon as the team works. */
+     when: ConditionSchema.optional(),
+   })
+   .strict();
+ export type TeamInform = z.infer<typeof TeamInformSchema>;
+ 
++/** The interventions an information need holds up (`TeamInform.blocks`: one id or several), in the order written. */
++export function informBlocks(n: Pick<TeamInform, "blocks">): string[] {
++  return n.blocks == null ? [] : typeof n.blocks === "string" ? [n.blocks] : [...n.blocks];
++}
++
+ /** A team scenario: initial conditions and perturbations, never the steps (authored teaching / benchmark material). */
+ export const TeamScenarioSchema = z
+   .object({
+diff --git a/packages/web/src/app/app.ts b/packages/web/src/app/app.ts
+index 69d33b1..85e90c7 100644
+--- a/packages/web/src/app/app.ts
++++ b/packages/web/src/app/app.ts
+@@ -162,6 +162,7 @@ export class ClinicalCraftApp implements App {
+         this.refresh();
+       },
+       pushing: (actorId) => this.game?.embodied?.pushing(actorId) ?? null,
++      riding: (actorId) => this.game?.embodied?.riding(actorId) ?? null,
+       carrying: (actorId) => this.game?.embodied?.carrying(actorId) ?? null,
+       // a hidden tab draws no frames: bodies are put at their targets (an external agent's walk does not stall)
+       hidden: () => typeof document !== "undefined" && document.hidden,
+diff --git a/packages/web/src/app/embodied-link.ts b/packages/web/src/app/embodied-link.ts
+index 40a3c4a..2e76d6e 100644
+--- a/packages/web/src/app/embodied-link.ts
++++ b/packages/web/src/app/embodied-link.ts
+@@ -326,6 +326,17 @@ export class EmbodiedLink {
+     return best ? placementIdOf(best.id) : null;
+   }
+ 
++  /**
++   * The monitor that travels with the patient in an actor's `transport_patient` (the world's `transit.monitor`, EMBODIED
++   * §8.7): drawn travelling beside their bed, never left at the bedside it came from (audit W4).
++   */
++  riding(actorId: ActorId): string | null {
++    const world = this.world;
++    if (!world || this.tasks.get(actorId) !== "transport_patient") return null;
++    const transit = world.patientPlace()?.transit;
++    return transit?.by === actorId && transit.monitor ? placementIdOf(transit.monitor) : null;
++  }
++
+   /** The patient an actor takes along in its `transport_patient` (lying on the trolley, or walking): their slot and posture. */
+   carrying(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null {
+     const world = this.world;
+diff --git a/packages/web/src/app/embodied.test.ts b/packages/web/src/app/embodied.test.ts
+index 2dc8d02..df258ec 100644
+--- a/packages/web/src/app/embodied.test.ts
++++ b/packages/web/src/app/embodied.test.ts
+@@ -28,7 +28,7 @@ function fakeRenderer(over: Partial<WorldApi> = {}) {
+       return { arrived: true, pose: { ...target }, replans: 0 };
+     }),
+     staffPose: (id: string) => staff.get(id) ?? null,
+-    pushEquipment: (id: string, by: string | null) => calls.push(`push:${id}:${by}`),
++    pushEquipment: (id: string, by: string | null, at?: string) => calls.push(`push:${id}:${by}${at ? `:${at}` : ""}`),
+     pushPatient: (slot: string, by: string | null, posture?: string) => calls.push(`patient:${slot}:${by}${posture ? `:${posture}` : ""}`),
+     placeEquipment: (id: string, at: unknown) => calls.push(`place:${id}:${at === null ? "hidden" : JSON.stringify(at)}`),
+     setDoor: (id: string, open: boolean) => calls.push(`door:${id}:${open}`),
+@@ -75,6 +75,26 @@ describe("BrowserMover", () => {
+     expect(calls).toEqual(["push:ward-bed-1:ed-nurse", "patient:ward-1:ed-nurse:lying", "staff:ed-nurse:2", "push:ward-bed-1:null", "patient:ward-1:null"]);
+   });
+ 
++  it("a transport with the monitor taken along (audit W4): it travels at the walker's side, beside the bed — not left at the bedside", async () => {
++    const { api, calls } = fakeRenderer();
++    const mover = new BrowserMover({
++      renderer: () => api,
++      pushing: (a) => (a === "staff:ed-nurse" ? "ward-bed-1" : null),
++      riding: (a) => (a === "staff:ed-nurse" ? "ward-defibrillator" : null),
++      carrying: (a) => (a === "staff:ed-nurse" ? { slotId: "ward-1", posture: "lying" } : null),
++    });
++    expect((await mover.move("staff:ed-nurse", plan)).arrived).toBe(true);
++    expect(calls).toEqual([
++      "push:ward-bed-1:ed-nurse",
++      "push:ward-defibrillator:ed-nurse:beside",
++      "patient:ward-1:ed-nurse:lying",
++      "staff:ed-nurse:2",
++      "push:ward-bed-1:null",
++      "push:ward-defibrillator:null",
++      "patient:ward-1:null",
++    ]);
++  });
++
+   it("moves bodies the renderer does not draw instantly, like the headless mover", async () => {
+     const { api, calls } = fakeRenderer();
+     const mover = new BrowserMover({ renderer: () => api });
+diff --git a/packages/web/src/app/embodied.ts b/packages/web/src/app/embodied.ts
+index ab7a002..e6ccb9d 100644
+--- a/packages/web/src/app/embodied.ts
++++ b/packages/web/src/app/embodied.ts
+@@ -28,6 +28,8 @@ export interface MoverHooks {
+   onEnd?(actorId: ActorId, move: BodyMove): void;
+   /** The cart this move pushes (`move_to`) or the trolley the patient lies on (`transport_patient`), if any — drawn in front of the walker. */
+   pushing?(actorId: ActorId): string | null;
++  /** The monitor that travels with the patient on this move (`transport_patient`, the world's `transit.monitor`) — drawn at the walker's side. */
++  riding?(actorId: ActorId): string | null;
+   /** The patient this move takes along (`transport_patient`): their slot and the posture they travel in. */
+   carrying?(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null;
+   /** The page is hidden (`document.hidden`): no frames are drawn, so nothing would animate a walk. */
+@@ -79,6 +81,9 @@ export class BrowserMover implements Mover {
+     }
+     const cart = this.hooks.pushing?.(actorId) ?? null;
+     if (cart) api!.pushEquipment(cart, staff ?? "avatar");
++    // the monitor taken along travels beside the bed (never left behind at the bedside it came from)
++    const monitor = this.hooks.riding?.(actorId) ?? null;
++    if (monitor) api!.pushEquipment(monitor, staff ?? "avatar", "beside");
+     // the patient travels with the walker (lying on the pushed trolley, or walking upright behind): placed by the world model after
+     const patient = this.hooks.carrying?.(actorId) ?? null;
+     if (patient) api!.pushPatient(patient.slotId, staff ?? "avatar", patient.posture);
+@@ -105,6 +110,7 @@ export class BrowserMover implements Mover {
+       offHidden();
+       signal?.removeEventListener("abort", onAbort);
+       if (cart) this.hooks.renderer()?.pushEquipment(cart, null);
++      if (monitor) this.hooks.renderer()?.pushEquipment(monitor, null);
+       if (patient) this.hooks.renderer()?.pushPatient(patient.slotId, null);
+     }
+     if (hid && !result.arrived && !signal?.aborted) {
+diff --git a/packages/web/src/contracts.ts b/packages/web/src/contracts.ts
+index 6224fb1..d01a061 100644
+--- a/packages/web/src/contracts.ts
++++ b/packages/web/src/contracts.ts
+@@ -270,9 +270,10 @@ export interface WorldApi {
+   /**
+    * Draw a cart in front of a walker while it is pushed (`by`: "avatar" or a staff id; `null`: stop) — no
+    * collider meanwhile; the world model parks it (`placeEquipment`) when the push ends. A trolley (a bed, a
+-   * stretcher) is turned along the way.
++   * stretcher) is turned along the way. `at: "beside"`: drawn at the walker's side instead — the monitor that
++   * travels with the patient beside their bed (`PatientPlace.transit.monitor`, EMBODIED §8.7).
+    */
+-  pushEquipment(placementId: string, by: string | null): void;
++  pushEquipment(placementId: string, by: string | null, at?: "ahead" | "beside"): void;
+   /**
+    * Draw the patient where the world model has them (EMBODIED §8): at a spot (`PatientSpot`), or back in their
+    * own bed space (`null`). Their collider (standing) and aim target follow.
+diff --git a/packages/web/src/world/carts.ts b/packages/web/src/world/carts.ts
+index 390fe8f..938e626 100644
+--- a/packages/web/src/world/carts.ts
++++ b/packages/web/src/world/carts.ts
+@@ -42,12 +42,12 @@ export class Carts {
+     world.culling.invalidate();
+   }
+ 
+-  /** `WorldApi.pushEquipment`: drawn in front of a walker while pushed (`by`), or not any more (`null`). */
+-  push(placementId: string, by: string | null): void {
++  /** `WorldApi.pushEquipment`: drawn in front of a walker (or at their side: `at`) while pushed (`by`), or not any more (`null`). */
++  push(placementId: string, by: string | null, at: "ahead" | "beside" = "ahead"): void {
+     const world = this.world;
+     const rec = world.ctx.portables.get(placementId.replace(/^eq:/, ""));
+     if (!rec) return;
+-    pushPortable(this.host, rec, by);
++    pushPortable(this.host, rec, by, at);
+     if (by) this.drag();
+     world.stage.markShadows();
+   }
+diff --git a/packages/web/src/world/context.ts b/packages/web/src/world/context.ts
+index cd9bf87..88962d3 100644
+--- a/packages/web/src/world/context.ts
++++ b/packages/web/src/world/context.ts
+@@ -87,6 +87,8 @@ export interface PortableRecord {
+   meshes: Object3D[];
+   /** Being pushed by a walker ("avatar" or a staff id): drawn in front of them, no collider until parked. */
+   pushedBy?: string | null;
++  /** Where it travels with its walker: in front (a pushed cart), or at their side (the monitor beside the patient's bed). */
++  pushAt?: "ahead" | "beside";
+   /** A trolley a patient travels on (a bed, a stretcher: EMBODIED §8): turned along the way when pushed; its length (m). */
+   trolley?: { length: number };
+   /** Where its aim box, live screens and lights were when built (moves are applied from these). */
+diff --git a/packages/web/src/world/index.ts b/packages/web/src/world/index.ts
+index 819b87d..731ff25 100644
+--- a/packages/web/src/world/index.ts
++++ b/packages/web/src/world/index.ts
+@@ -99,7 +99,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
+       return n ? walkers.pose(n) : null;
+     },
+     placeEquipment: (placementId, at) => world.carts.place(placementId, at),
+-    pushEquipment: (placementId, by) => world.carts.push(placementId, by),
++    pushEquipment: (placementId, by, at) => world.carts.push(placementId, by, at),
+     placePatient: (slotId, at) => world.people.placeAt(slotId, at),
+     pushPatient: (slotId, by, posture) => world.people.push(slotId, by, posture),
+     escortPatient: (slotId, by) => world.people.escort(slotId, by),
+diff --git a/packages/web/src/world/portable.ts b/packages/web/src/world/portable.ts
+index 6a155b5..aeee525 100644
+--- a/packages/web/src/world/portable.ts
++++ b/packages/web/src/world/portable.ts
+@@ -247,18 +247,24 @@ export function placePortable(host: PortableHost, rec: PortableRecord, at: { x:
+ /** How far in front of the walker (m) a pushed cart is drawn. */
+ export const PUSH_AHEAD = 0.95;
+ 
+-/** Start / stop pushing: the collider is lifted while the cart travels with its walker. */
+-export function pushPortable(host: PortableHost, rec: PortableRecord, by: string | null): void {
++/** Start / stop pushing (in front of the walker, or at their side: `at`): the collider is lifted while the cart travels with its walker. */
++export function pushPortable(host: PortableHost, rec: PortableRecord, by: string | null, at: "ahead" | "beside" = "ahead"): void {
+   homeOf(host.ctx, rec);
+   if (by) {
+     promotePortable(host, rec);
+     rec.pushedBy = by;
++    rec.pushAt = at;
+     dropCollider(host, rec);
+     return;
+   }
+   rec.pushedBy = null;
++  rec.pushAt = undefined;
+ }
+ 
++/** Where (m) equipment travelling at a walker's side is drawn: to their right, a little ahead (beside the bed's head end). */
++export const BESIDE_SIDE = 0.8;
++export const BESIDE_AHEAD = 0.35;
++
+ /** How far in front of the walker (m) a pushed trolley's centre is drawn: half its length beyond the walker's hands. */
+ export function trolleyAhead(rec: Pick<PortableRecord, "trolley">): number {
+   return rec.trolley ? 0.35 + rec.trolley.length / 2 : PUSH_AHEAD;
+@@ -270,8 +276,11 @@ export function trolleyAhead(rec: Pick<PortableRecord, "trolley">): number {
+  * (a bed) is turned to lie along the walking direction.
+  */
+ export function dragPortable(host: PortableHost, rec: PortableRecord, x: number, z: number, yaw: number, level: string): void {
+-  const ahead = trolleyAhead(rec);
+-  const ax = x - Math.sin(yaw) * ahead, az = z - Math.cos(yaw) * ahead;
++  // at the walker's side (the monitor travelling with the patient, beside their bed), else in front of them
++  const beside = rec.pushAt === "beside";
++  const ahead = beside ? BESIDE_AHEAD : trolleyAhead(rec);
++  const side = beside ? BESIDE_SIDE : 0;
++  const ax = x - Math.sin(yaw) * ahead + Math.cos(yaw) * side, az = z - Math.cos(yaw) * ahead - Math.sin(yaw) * side;
+   const lift = rec.origin.y - host.elevation(rec.origin.level);
+   if (level !== rec.level) {
+     host.levelRoot(level).add(rec.group);
 diff --git a/packages/world/src/actions.ts b/packages/world/src/actions.ts
-index 52810e1..bdd913b 100644
+index 52810e1..9c9bc97 100644
 --- a/packages/world/src/actions.ts
 +++ b/packages/world/src/actions.ts
 @@ -373,11 +373,9 @@ export class ActionBus implements EffectsHost, TransportHost {
@@ -866,8 +1902,22 @@ index 52810e1..bdd913b 100644
      }
    }
  
+@@ -747,7 +744,12 @@ export class ActionBus implements EffectsHost, TransportHost {
+     if (discovered.length) events.push(this.emit({ type: "actor.discovered", actorId: actor.id, entities: discovered }));
+     // whoever sees the walker where it arrived knows it is there (and what it carries)
+     if (!samePose(from, pose)) this.witness([actor.id, ...store.actor(actor.id)!.holding], actor.id);
+-    if (follower) events.push(...followWalkEnd(this, from, plan.path, interrupted));
++    // the patient walking with them walks their own route to their side — or, when they cannot, stops where they are
++    if (follower) {
++      const end = followWalkEnd(this, interrupted);
++      events.push(...end.events);
++      if (end.stoppedAt) events.push(...stopFollowing(this, end.stoppedAt));
++    }
+     store.setTask(actor.id, null);
+     this.emit({ type: "task.changed", actorId: actor.id, task: null });
+     if (travelSeconds > 0) port?.elapse(travelSeconds, "travel");
 diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
-index 6f759c3..654f3b0 100644
+index 6f759c3..d13fa7a 100644
 --- a/packages/world/src/contracts.ts
 +++ b/packages/world/src/contracts.ts
 @@ -298,6 +298,13 @@ export interface SeenPlace {
@@ -884,7 +1934,21 @@ index 6f759c3..654f3b0 100644
  }
  
  /** Where an actor looked for a thing and did not find it (`ActorState.missed`): the place, its room, the simulated minute. */
-@@ -719,10 +726,17 @@ export interface ObservedEntity {
+@@ -528,9 +535,11 @@ export interface PatientPlace {
+   footprint: { w: number; d: number; h: number };
+   /**
+    * While a body wheels (or walks) the patient somewhere (`transport_patient` in progress): who, on which trolley
+-   * (null: walking), in which posture — renderers draw them travelling with the walker. Absent otherwise.
++   * (null: walking), in which posture, and the monitor that travels with them (`monitor`, absent when none: on their
++   * bed or trolley, beside the walker on foot — EMBODIED §8.7, audit W4) — renderers draw them travelling with the
++   * walker. Absent otherwise.
+    */
+-  transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture };
++  transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture; monitor?: EntityId };
+   /** The actor the patient walks with now (`escort_patient`): renderers draw them following that actor. Absent otherwise. */
+   escort?: ActorId;
+ }
+@@ -719,10 +728,17 @@ export interface ObservedEntity {
    /** Within interaction reach with line of sight right now. */
    inReach: boolean;
    capabilities?: string[];
@@ -904,7 +1968,7 @@ index 6f759c3..654f3b0 100644
    availableActions: string[];
    /** Bystander-visible cues (patients: posture, distressed, accessory; monitors: screen summary when visible). */
    cues?: Record<string, string>;
-@@ -733,9 +747,12 @@ export interface ObservedEntity {
+@@ -733,9 +749,12 @@ export interface ObservedEntity {
     * where the actor last saw it (it may have moved since); `told` — where a
     * colleague said it is; `missing` — the actor looked where it believed it
     * was and it was not there (audit P1-8): its whereabouts are unknown, `room`
@@ -921,10 +1985,20 @@ index 6f759c3..654f3b0 100644
    lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
    /**
 diff --git a/packages/world/src/effects.ts b/packages/world/src/effects.ts
-index 7efdad3..787d7f9 100644
+index 7efdad3..5983892 100644
 --- a/packages/world/src/effects.ts
 +++ b/packages/world/src/effects.ts
-@@ -239,11 +239,13 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
+@@ -71,6 +71,9 @@ export interface EffectsHost {
+ 
+ export const failed = (code: WorldErrorCode, message: string, extra: Partial<Outcome> = {}): Outcome => ({ status: "failed", errorCode: code, message, events: [], ...extra });
+ 
++/** Who the events of a change the team made name as its actor (a relocation: no body moved the patient, EMBODIED §8.4). */
++export const TEAM_ACTOR = "team";
++
+ /** Run an operation that passed authority, preconditions and the spatial check. */
+ export async function runOperation(host: EffectsHost, request: WorldActionRequest, actor: ActorState, targetId: EntityId, o: OperationSpec, signal: AbortSignal): Promise<Outcome> {
+   if (o.effect === "move-to") return moveCart(host, request, actor, targetId, signal);
+@@ -239,11 +242,13 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
  /* ------------------------------------------------------------------ */
  
  /**
@@ -942,7 +2016,7 @@ index 7efdad3..787d7f9 100644
    const { rules, store, locator } = host.d;
    const spec = rules.spec(id);
    if (spec.stateSource !== "stored") return [];
-@@ -251,7 +253,23 @@ function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): World
+@@ -251,7 +256,23 @@ function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): World
    const to = unpluggedState(spec, from);
    if (!to || screenPatient({ locator, rules }, id)) return [];
    store.patchEntity(id, { state: to });
@@ -967,7 +2041,7 @@ index 7efdad3..787d7f9 100644
  }
  
  async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, signal: AbortSignal): Promise<Outcome> {
-@@ -296,7 +314,7 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
+@@ -296,7 +317,7 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
    const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
    if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
    store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
@@ -976,6 +2050,445 @@ index 7efdad3..787d7f9 100644
    host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
    host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
    mover.placeEntity?.(id, { ...spot, rot: cart.rot });
+diff --git a/packages/world/src/escort.ts b/packages/world/src/escort.ts
+index d21ee9f..b9a60a2 100644
+--- a/packages/world/src/escort.ts
++++ b/packages/world/src/escort.ts
+@@ -2,11 +2,13 @@
+  * Walking with the patient (EMBODIED §8.4): `escort_patient` — "follow me" — and `release_patient` — "wait here".
+  *
+  * A patient who can walk (`PatientBody.walkProblem`: not lying by clinical state, able to respond, not in
+- * distress) gets up and walks with the actor who asked, from conversation range: from then on the patient is at
+- * that actor's side wherever the actor goes — a world navigation, a staff member's walk, or the learner's own
+- * avatar steered by hand, whose sensor pose takes the patient along without a stored step (the place is derived,
+- * `PatientBody.escortSpot`). Every rule that measures from the patient follows: the bedside, conversation range,
+- * goals on the patient, perception. Their bed stays where it is.
++ * distress) gets up and walks with the actor who asked, from conversation range: from then on the patient goes
++ * wherever the actor goes — a world navigation, a staff member's walk, or the learner's own avatar steered by hand —
++ * on their own feet: their own spot (`PatientPlaceState.spot`), advanced by their own steps along their own planned
++ * route to the actor's side (`journey.ts`: never a step through a wall or a window, audit 2026-11-12 W3; a step of a
++ * hand-steered walk changes no world version). Every rule that measures from the patient follows: the bedside,
++ * conversation range, goals on the patient, perception. Their bed stays where it is; the leads of a device left by it
++ * come off once they walk away from it (audit W2).
+  *
+  * It ends when the actor asks them to wait (`release_patient`: they stand where they are, a body on the floor
+  * again), when someone takes them somewhere (`transport_patient`: they arrive there) or the team moves them (a
+@@ -20,7 +22,7 @@
+  * way) and where they arrived, told by `patient.departed` / `patient.arrived`.
+  */
+ import type { ActorState, BodyPosture, EntityId, PatientPlaceState, WorldActionRequest, WorldEvent } from "./contracts.js";
+-import type { Outcome } from "./effects.js";
++import { pluggedIn, TEAM_ACTOR, unplugIfAway, type Outcome } from "./effects.js";
+ import { worldMessage } from "./i18n.js";
+ import { closeStretch, followArm } from "./journey.js";
+ import { freeCellNear, type PatientBody } from "./patient.js";
+@@ -28,19 +30,24 @@ import type { TransportHost } from "./transport.js";
+ 
+ const grow = (a: { minX: number; maxX: number; minZ: number; maxZ: number }, m: number) => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
+ 
+-/** Store the patient's place, re-stamp the grids where the body was and is, and say where they went. */
+-function commit(host: TransportHost, next: PatientPlaceState, by: string | null): WorldEvent {
++/**
++ * Store the patient's place, re-stamp the grids where the body was and is, and say where they went — then the leads of
++ * a device they are no longer by come off (audit W2). The `patient.moved` event first, then those.
++ */
++function commit(host: TransportHost, next: PatientPlaceState, by: string | null): WorldEvent[] {
+   const body = host.d.patient;
+   const id = body.id!;
+   const from = body.place()!;
+   const old = host.patientStamp.body;
++  const plugged = pluggedIn(host);
+   host.d.store.patchEntity(id, { patient: next });
+   const now = body.body();
+   for (const b of [old, now]) if (b) host.invalidate({ level: b.level, ...grow(b.area, 0.1) });
+   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: now };
+   const to = body.place()!;
+   const distance = from.level === to.level ? Math.round(Math.hypot(to.x - from.x, to.z - from.z) * 100) / 100 : 0;
+-  return host.emit({ type: "patient.moved", entityId: id, from, to, by, distance, path: [] });
++  const moved = host.emit({ type: "patient.moved", entityId: id, from, to, by, distance, path: [] });
++  return [moved, ...plugged.flatMap((d) => unplugIfAway(host, by ?? TEAM_ACTOR, d, "escort_patient"))];
+ }
+ 
+ /** The stored place without an escort or a posture asked for (the keys left out: snapshots stay as they were before). */
+@@ -69,20 +76,21 @@ export function escortPatient(host: TransportHost, _request: WorldActionRequest,
+   if (!start) {
+     // the walk together ends where they are: its last leg first, then they wait on a free spot there
+     const walked = closeStretch(host, "arrived", "end");
+-    const event = commit(host, stopHere(host, body.state()!, "standing"), actor.id);
++    const moved = commit(host, stopHere(host, body.state()!, "standing"), actor.id);
+     const ended = host.emit({ type: "patient.escort", entityId: patientId, escort: null, actorId: actor.id });
+-    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [...walked, event, ended] };
++    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [...walked, ...moved, ended] };
+   }
+   // walking with someone else until now: that walk ends here (its own leg)
+   const walked = closeStretch(host, "arrived", "end");
+-  // they get up and come along: no bed space, no provider, no support any more — the place is the walker's side
++  // they get up and come along: no bed space, no provider, no support any more — their own spot is where they stand
++  // (they walk from it by their own steps: `journey.ts`)
+   const here = body.place()!;
+   const next: PatientPlaceState = { ...without(body.state()!), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
+-  const event = commit(host, next, actor.id);
++  const moved = commit(host, next, actor.id);
+   const started = host.emit({ type: "patient.escort", entityId: patientId, escort: actor.id, actorId: actor.id });
+   // their own walk starts from here (a leg per walk of the walker: `journey.ts`)
+   followArm(host, actor);
+-  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [...walked, event, started] };
++  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [...walked, ...moved, started] };
+ }
+ 
+ /** Why the patient cannot start (`start`) or stop walking with this actor now — a precondition — or null. */
+@@ -96,9 +104,10 @@ export function escortProblem(body: PatientBody, name: string, actor: ActorState
+ }
+ 
+ /**
+- * The walker went where the patient walking with them cannot have followed (`journey.ts` `followSensor`: a jump of a
+- * hand-steered body, through a wall, another level by no connector): the walk together ends — the patient stopped
+- * where they last were (`at`), standing on a free spot there, and the leg is recorded `stopped`.
++ * The walker went where the patient walking with them cannot have followed (`journey.ts`: a jump of a hand-steered
++ * body, through a wall or a window, another level by no connector; a world walk they have no route after): the walk
++ * together ends — the patient stopped where they are (`at`), standing on a free spot there, and the leg is recorded
++ * `stopped`.
+  */
+ export function stopFollowing(host: TransportHost, at: { level: string; x: number; z: number }): WorldEvent[] {
+   const body = host.d.patient;
+@@ -109,7 +118,7 @@ export function stopFollowing(host: TransportHost, at: { level: string; x: numbe
+   const moved = commit(host, { ...without(st), slot: null, provider: null, spot: { level: at.level, x: cell.x, z: cell.z, rot }, posture: "standing", support: null }, null);
+   const walked = closeStretch(host, "stopped", "end");
+   const ended = host.emit({ type: "patient.escort", entityId: body.id, escort: null, actorId: null });
+-  return [moved, ...walked, ended];
++  return [...moved, ...walked, ended];
+ }
+ 
+ /**
+diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
+index 22c2305..dfec2f1 100644
+--- a/packages/world/src/i18n.ts
++++ b/packages/world/src/i18n.ts
+@@ -279,7 +279,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
+   "ok.receivedBy": { "zh-CN": "由{receiver}在那里接手{patient}。", en: "{receiver} took over {patient} there." },
+   "ok.monitorTravelled": { "zh-CN": "{monitor}随行监护。", en: "{monitor} went with them, monitoring." },
+-  "ok.monitorReturned": { "zh-CN": "{monitor}随行监护；到达后旁边没有地方放，已推回原处。", en: "{monitor} went with them, monitoring; there was no room for it beside them on arrival, so it went back to where it is kept." },
++  "ok.monitorWithThem": { "zh-CN": "{monitor}随行监护；到达后旁边没有空位，它仍留在患者身边。", en: "{monitor} went with them, monitoring; with no free spot beside them on arrival, it stays right with them." },
+   "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
+   "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
+   "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+diff --git a/packages/world/src/journey.ts b/packages/world/src/journey.ts
+index 4c38286..a5c3bf0 100644
+--- a/packages/world/src/journey.ts
++++ b/packages/world/src/journey.ts
+@@ -6,34 +6,41 @@
+  * - a transport (`transport_patient`): on their bed or a trolley (`TRAVEL_MODES`), or walking beside the body that
+  *   takes them; held in transit by that body; on arrival, the colleague at their bedside there who takes over
+  *   (`receiverAt`, THE bedside rule; `RECEIVING_ROLES`) — nobody: the one who brought them stays responsible;
+- * - a walk with someone (`escort_patient`): their own feet, a step behind the walker on the walker's way — one leg
+- *   per walk the walker makes in the world (the follower's path: from where they stood, along the walker's route, to
+- *   where they arrived), or per stretch of a hand-steered walk (closed when the walk together ends or the walker next
+- *   walks in the world). A hand-steered walker's every move is checked as the follower's own step (`followSensor`):
+- *   a straight step clear of walls, else a short route the planner finds around them, or a ride in a lift or up the
+- *   stairs the walker took — otherwise (a jump of the body, through a wall, another level by no connector) the walk
+- *   together ends where the follower last was (`stopped`). The follower's own path and arrival are recorded, never
+- *   inferred from where the walker is;
++ * - a walk with someone (`escort_patient`): their own feet, behind the walker — one leg per walk the walker makes in
++ *   the world, or per stretch of a hand-steered walk (closed when the walk together ends or the walker next walks in
++ *   the world). The follower has a spot of their own (`PatientPlaceState.spot`, audit 2026-11-12 W3), advanced only by
++ *   their own steps: each time the walker gets farther than `FOLLOW_KEEP` from them (or out of a straight step), they
++ *   walk their own route, planned for their own body from their own spot (`followerRoute`: walls, windows, closed
++ *   doors and furniture by the walking grid — never a line of sight), to the walker's side (`PatientBody.escortSpot`).
++ *   A hand-steered walker's move that no one could have walked — farther than `MAX_FOLLOW_STEP` in one sensor pose,
++ *   or a route much longer than the step (through a wall or a window), or another level by no connector — moves them
++ *   not at all: the walk together ends where they are (`stopped`; `escort.ts` `stopFollowing`), and the jump is no
++ *   leg. A world walk of the walker: they walk their own route after it (none: they stop where they are). Their path
++ *   and arrival are their own, never inferred from where the walker is;
+  * - a relocation (a phase or an intervention, `relocatePatient`): no journey — no departure, nobody in transit, no
+  *   handover; the leg names the cause.
+  *
+  * The stretch of a hand-steered walk is transient (`TransportHost.follow`): a snapshot does not keep it.
+  */
+ import { RECEIVING_ROLES, TRAVEL_MODES } from "./capabilities.js";
+-import type { ActorId, ActorState, EntityId, LegEnd, PatientLeg, PatientPlaceState, PathPoint, Pose, TravelMode, WorldEvent } from "./contracts.js";
+-import type { EffectsHost } from "./effects.js";
+-import { connectorInfos } from "./levels.js";
++import type { ActorId, ActorState, BodyPosture, EntityId, LegEnd, PatientLeg, PatientPlaceState, PathPoint, TravelMode, WorldEvent } from "./contracts.js";
++import { pluggedIn, unplugIfAway, type EffectsHost } from "./effects.js";
++import { connectorInfos, levelElevation } from "./levels.js";
++import type { Area } from "./raster.js";
+ 
+ /** How many legs of the patient's journey the world keeps (`PatientPlaceState.legs`, oldest dropped). */
+ export const MAX_PATIENT_LEGS = 32;
+ 
+-/** A hand-steered walker's positions closer than this (m) to the last one recorded are not added to the follower's path. */
+-const STEP = 0.5;
++/**
++ * A follower this close (m, flat, same level) to the walker — and a straight step from them (`PatientBody.clearStep`:
++ * no wall, closed door or window between) — stays where they are: they step only when the walker gets away.
++ */
++export const FOLLOW_KEEP = 1.2;
+ 
+ /** Most points one stretch of a hand-steered walk keeps (the oldest intermediate ones are thinned out). */
+ const MAX_STRETCH_POINTS = 256;
+ 
+-/** The farthest (m, flat) a follower walks between two sensor poses of the walker: farther, no one walked it. */
++/** The farthest (m, flat) a follower walks for one sensor pose of the walker (beyond `FOLLOW_KEEP`): farther, no one walked it. */
+ export const MAX_FOLLOW_STEP = 5;
+ 
+ /** A level change is a ride (or a flight of stairs) when both spots lie this close (m) to the same connector's stops. */
+@@ -57,6 +64,8 @@ export interface FollowStretch {
+ export interface JourneyHost extends EffectsHost {
+   /** The stretch of a hand-steered walk together now, or null. */
+   follow: FollowStretch | null;
++  /** What the grids hold of the patient's body (`TransportHost.patientStamp`; the follower's step keeps it up to date). */
++  patientStamp: { key: string; posture: BodyPosture | null; body: { level: string; area: Area } | null };
+ }
+ 
+ const r2 = (v: number) => Math.round(v * 100) / 100;
+@@ -122,12 +131,58 @@ export function withLeg(st: PatientPlaceState, leg: PatientLeg): PatientLeg[] {
+ /* Walking with someone: the follower's own path and arrival            */
+ /* ------------------------------------------------------------------ */
+ 
+-/** The follower's spot now (where the patient walking with someone is). */
++/** The follower's spot now (where the patient walking with someone is: their own spot). */
+ function spotNow(host: EffectsHost): PathPoint {
+   const p = host.d.patient.place()!;
+   return { x: p.x, z: p.z, level: p.level };
+ }
+ 
++/** Is the follower beside the walker now — within `FOLLOW_KEEP` on their level, a straight step from them? */
++function beside(host: EffectsHost, walker: ActorState, at: PathPoint): boolean {
++  const w = walker.pose;
++  return at.level === w.level && Math.hypot(at.x - w.x, at.z - w.z) <= FOLLOW_KEEP && host.d.patient.clearStep(w.level, w, at);
++}
++
++/**
++ * The follower's own route from `from` to `to` (audit W3): planned for the patient's own body from their own spot —
++ * by the walking grid (walls, windows, closed and locked doors, furniture, obstacles), through the access zones and
++ * connectors of the one who walks them (escorted) — at most `maxLength` m; its points and where it ends, or null when
++ * no one could walk it there. The planner starts from the free cell nearest their spot: never one beyond a wall or a
++ * window.
++ */
++function followerRoute(host: JourneyHost, walker: ActorState, from: PathPoint, to: PathPoint, maxLength: number): { path: PathPoint[]; end: PathPoint } | null {
++  const body = host.d.patient;
++  const plan = host.d.backend.plan({
++    actorId: body.id!,
++    from: { x: from.x, y: levelElevation(host.d.facility, from.level), z: from.z, yaw: walker.pose.yaw, pitch: 0, level: from.level },
++    goal: { kind: "point", x: to.x, z: to.z, level: to.level },
++    role: walker.role,
++  });
++  if (!plan.ok || plan.length > maxLength + 1e-6) return null;
++  const path = plan.path.map((p) => ({ x: p.x, z: p.z, level: p.level }));
++  const first = path[0];
++  if (first && first.level === from.level && !body.clearStep(from.level, from, first)) return null;
++  const end = { x: plan.target.x, z: plan.target.z, level: plan.target.level };
++  return { path: path.length ? path : [end], end };
++}
++
++/**
++ * Store where the follower stepped to (their own spot, facing `rot`): a world walk's arrival as a change of the world,
++ * a hand-steered step as a sensor update's consequence (the patient's own version only). A device whose leads were on
++ * them that no longer stands by them comes off (audit W2). Returns those events.
++ */
++function stepTo(host: JourneyHost, at: PathPoint, rot: number, sensor: boolean, actorId: ActorId): WorldEvent[] {
++  const body = host.d.patient;
++  const st = body.state()!;
++  const plugged = pluggedIn(host);
++  const next: PatientPlaceState = { ...st, spot: { level: at.level, x: at.x, z: at.z, rot } };
++  if (sensor) host.d.store.sensorPatch(body.id!, { patient: next });
++  else host.d.store.patchEntity(body.id!, { patient: next });
++  // walking with someone they have no body box: nothing to re-stamp on the grids, only what the stamp says of them
++  host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: body.body() };
++  return plugged.flatMap((id) => unplugIfAway(host, actorId, id, "escort_patient"));
++}
++
+ /** Arm a stretch of the walk together where the follower stands now (the walk together starts, or goes on after a leg). */
+ export function followArm(host: JourneyHost, walker: ActorState): void {
+   host.follow = { by: walker.id, role: walker.role, from: placeEnd(host), departedAt: null, path: [spotNow(host)] };
+@@ -151,7 +206,9 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
+   if (!s || !body.id || !body.state()) return [];
+   const out: WorldEvent[] = [];
+   if (s.departedAt !== null) {
+-    const path = [...s.path, spotNow(host)];
++    const now = spotNow(host);
++    const last = s.path[s.path.length - 1];
++    const path = last && last.level === now.level && Math.hypot(last.x - now.x, last.z - now.z) < 0.01 ? [...s.path] : [...s.path, now];
+     const leg: PatientLeg = { by: s.by, role: s.role, from: s.from, to: placeEnd(host), departedAt: s.departedAt, arrivedAt: host.d.clinical.clock(), monitor: null, status, kind: "escort", mode: "walk", vehicle: null, distance: pathLength(path), receivedBy: null, receivedRole: null };
+     out.push(recordLeg(host, leg, path));
+   }
+@@ -161,27 +218,29 @@ export function closeStretch(host: JourneyHost, status: PatientLeg["status"], th
+ }
+ 
+ /**
+- * The way a follower walks from `from` to `to` when its walker moved by hand: a straight step clear of walls, else a
+- * short route around them (the planner's, at most twice the step and a little more), or the ride of a connector both
+- * spots lie by — null when no one walked it (a jump, through a wall, another level by no connector).
++ * The follower's own step from where they stand (`from`) to the walker's side (`to`) after a sensor pose of the walker:
++ * on one level, their own route (`followerRoute`) when the walker is at most `MAX_FOLLOW_STEP` beyond `FOLLOW_KEEP`
++ * away and the route at most twice the straight distance and a little more (round a corner, through a door — never a
++ * detour round the building: that move was a jump, or through a wall or a window); to another level, the ride of a
++ * connector both spots lie by (the lift or the stairs the walker took), on their own route when the planner has one.
++ * Null when no one walked it.
+  */
+-function stepOf(host: JourneyHost, walker: ActorState, from: PathPoint, to: PathPoint): PathPoint[] | null {
++function stepOf(host: JourneyHost, walker: ActorState, from: PathPoint, to: PathPoint): { path: PathPoint[]; end: PathPoint } | null {
+   if (from.level !== to.level) {
+     const near = (p: PathPoint) => (stop: { level: string; x: number; z: number }) => stop.level === p.level && Math.hypot(stop.x - p.x, stop.z - p.z) <= CONNECTOR_REACH;
+-    return connectorInfos(host.d.locator.facility).some((c) => c.stops.some(near(from)) && c.stops.some(near(to))) ? [to] : null;
++    if (!connectorInfos(host.d.locator.facility).some((c) => c.stops.some(near(from)) && c.stops.some(near(to)))) return null;
++    return followerRoute(host, walker, from, to, Infinity) ?? { path: [to], end: to };
+   }
+   const gap = Math.hypot(to.x - from.x, to.z - from.z);
+-  if (gap > MAX_FOLLOW_STEP) return null;
+-  if (host.d.visibility.lineOfSight(from.level, from, to)) return [to];
+-  const plan = host.d.backend.plan({ actorId: walker.id, from: { ...walker.pose, x: from.x, z: from.z, level: from.level }, goal: { kind: "point", x: to.x, z: to.z, level: to.level }, role: walker.role });
+-  return plan.ok && plan.length <= 2 * gap + 1 ? [...plan.path.slice(1).map((p) => ({ x: p.x, z: p.z, level: p.level })), to] : null;
++  if (gap > MAX_FOLLOW_STEP + FOLLOW_KEEP) return null;
++  return followerRoute(host, walker, from, to, 2 * gap + 1);
+ }
+ 
+ /**
+- * The walker of a patient walking with them moved by hand (a sensor pose): the stretch sets off at the first step and
+- * the follower's own path goes on to where they are now — the follower's own step (`stepOf`). Returns where the
+- * follower stopped when no one could have walked the walker's move (the walk together is then to end there:
+- * `escort.ts` `stopFollowing`), else null.
++ * The walker of a patient walking with them moved by hand (a sensor pose): when the walker got away from them, the
++ * follower takes their own step to the walker's side (`stepOf`) — the stretch sets off at the first, and their path
++ * goes on with it. Returns where the follower stands when no one could have walked the walker's move (the walk
++ * together is then to end there: `escort.ts` `stopFollowing` — they did not move), else null.
+  */
+ export function followSensor(host: JourneyHost, walker: ActorState): PathPoint | null {
+   const body = host.d.patient;
+@@ -189,13 +248,14 @@ export function followSensor(host: JourneyHost, walker: ActorState): PathPoint |
+   if (host.follow?.by !== walker.id) followArm(host, walker);
+   const s = host.follow!;
+   const here = spotNow(host);
+-  const last = s.path[s.path.length - 1]!;
+-  if (last.level === here.level && Math.hypot(last.x - here.x, last.z - here.z) < STEP) return null;
+-  const step = stepOf(host, walker, last, here);
+-  if (!step) return { ...last };
++  if (beside(host, walker, here)) return null;
++  const target = body.escortSpot(walker.pose);
++  const step = stepOf(host, walker, here, target);
++  if (!step) return here;
+   setOff(host, s);
+-  s.path.push(...step);
++  s.path.push(...step.path);
+   if (s.path.length > MAX_STRETCH_POINTS) s.path.splice(1, s.path.length - MAX_STRETCH_POINTS);
++  stepTo(host, step.end, target.rot, true, walker.id);
+   return null;
+ }
+ 
+@@ -212,14 +272,24 @@ export function followWalkStart(host: JourneyHost, walker: ActorState): WorldEve
+ }
+ 
+ /**
+- * After a world walk of the walker (`from`: where the walker started, `route`: its path): the follower walked the same
+- * way a step behind — from their own spot, to the walker's start, along the route, to where they arrived now — and
+- * that is the leg (`stopped` when the walk was cut short).
++ * After a world walk of the walker: the follower walks their own route from their own spot to the walker's side where
++ * the walker arrived (`followerRoute`, any length: they went the same way) — and that is the leg (`stopped` when the
++ * walk was cut short). None (the walker went where they cannot follow): they did not move — `stoppedAt` is where they
++ * stand, and the walk together is to end there (`escort.ts` `stopFollowing`, which records the leg).
+  */
+-export function followWalkEnd(host: JourneyHost, from: Pose, route: readonly PathPoint[], interrupted: boolean): WorldEvent[] {
++export function followWalkEnd(host: JourneyHost, interrupted: boolean): { events: WorldEvent[]; stoppedAt: PathPoint | null } {
+   const s = host.follow;
+-  if (!s) return [];
+-  const walked = route.slice(0, Math.max(0, route.length - 1)).map((p) => ({ ...p }));
+-  s.path = [s.path[0]!, { x: from.x, z: from.z, level: from.level }, ...walked];
+-  return closeStretch(host, interrupted ? "stopped" : "arrived", "arm");
++  const walker = s ? host.d.store.actor(s.by) : null;
++  if (!s || !walker) return { events: [], stoppedAt: null };
++  const body = host.d.patient;
++  const here = spotNow(host);
++  const events: WorldEvent[] = [];
++  if (!beside(host, walker, here)) {
++    const target = body.escortSpot(walker.pose);
++    const own = followerRoute(host, walker, here, target, Infinity);
++    if (!own) return { events: [], stoppedAt: here };
++    s.path.push(...own.path);
++    events.push(...stepTo(host, own.end, target.rot, false, walker.id));
++  }
++  return { events: [...events, ...closeStretch(host, interrupted ? "stopped" : "arrived", "arm")], stoppedAt: null };
+ }
+diff --git a/packages/world/src/patient.ts b/packages/world/src/patient.ts
+index 3f437dc..703b0d1 100644
+--- a/packages/world/src/patient.ts
++++ b/packages/world/src/patient.ts
+@@ -15,10 +15,11 @@
+  * the bed and has no collider of its own; otherwise a body box at the slot point. At a spot: on a support
+  * (sitting or lying) the support collides; standing, a body box.
+  *
+- * A patient who walks with someone (`escort`, EMBODIED §8.4) is where that actor is — half a step behind,
+- * on the actor's side of any wall — standing, with no body box of their own (like a patient in transit): the
+- * place is derived from the actor's pose, so a human avatar driven by its sensor takes the patient along
+- * without a single stored step. Whether a patient can walk at all is `walkProblem`.
++ * A patient who walks with someone (`escort`, EMBODIED §8.4) is where they walked to — their own spot (`spot`),
++ * advanced by their own steps along their own planned route towards the walker's side (`escortSpot`: half a step
++ * behind the walker, on the walker's side of any wall or window; `journey.ts`) — standing, with no body box of their
++ * own (like a patient in transit). Never derived from the walker's pose (audit 2026-11-12 W3). Whether a patient can
++ * walk at all is `walkProblem`.
+  */
+ import { capabilityLabels, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+ import { PATIENT_PERFORMED_CAPABILITIES, TABLE_CAPABILITIES, TROLLEY_TYPES } from "./capabilities.js";
+@@ -56,7 +57,11 @@ export interface PatientBodyDeps {
+   locale: string;
+   /** The pose of an actor (whom a patient walks with), null when unknown. */
+   actorPose?: (id: ActorId) => Pose | null;
+-  /** Clear sight between two points of a level (walls, partitions): a patient walking with someone stays on their side of a wall. */
++  /**
++   * A straight step a person can take between two points of a level: nothing in the way at body height — no wall,
++   * partition or closed door (sight), and no window (sight passes, a body does not). A patient walking with someone
++   * heads for a spot on the walker's side of all of these (audit W3).
++   */
+   clear?: (level: string, a: { x: number; z: number }, b: { x: number; z: number }) => boolean;
+   /** What clinical state shows of the patient now (distress, cannot speak) — whether they can walk with someone. */
+   cues?: () => { distressed?: boolean; cannotSpeak?: string };
+@@ -186,8 +191,9 @@ export class PatientBody {
+   }
+ 
+   /**
+-   * Where a patient walking with an actor is: half a step behind them, to one side, on the actor's side of any wall
+-   * (else at the actor's own spot), facing the actor's way (`rot`, degrees).
++   * Where a patient walking with an actor heads for: half a step behind them, to one side, a straight step away from
++   * the actor (`clear`: on their side of any wall or window; else the actor's own spot), facing the actor's way (`rot`,
++   * degrees). The patient gets there by their own steps (`journey.ts`); their place is where they arrived.
+    */
+   escortSpot(pose: Pose): { level: string; x: number; z: number; rot: number } {
+     const back = { x: Math.sin(pose.yaw), z: Math.cos(pose.yaw) };
+@@ -201,6 +207,16 @@ export class PatientBody {
+     return { level: pose.level, x: pose.x, z: pose.z, rot };
+   }
+ 
++  /** Is a straight step between two points of a level one a person can take (`PatientBodyDeps.clear`; none given: yes)? */
++  clearStep(level: string, a: { x: number; z: number }, b: { x: number; z: number }): boolean {
++    return !this.d.clear || this.d.clear(level, a, b);
++  }
++
++  /** Where a patient walking with someone stands now: their own spot (an old snapshot without one: beside the walker). */
++  private followerSpot(st: PatientPlaceState, by: ActorId): { level: string; x: number; z: number; rot: number } {
++    return st.spot ? { ...st.spot } : this.escortSpot(this.d.actorPose!(by)!);
++  }
++
+   /** A slot by id. */
+   slot(id: string | null): PatientSlot | null {
+     return id ? (this.d.facility.patientSlots.find((s) => s.id === id) ?? null) : null;
+@@ -230,7 +246,7 @@ export class PatientBody {
+     const f = this.d.facility;
+     const by = this.escort(st);
+     if (by) {
+-      const s = this.escortSpot(this.d.actorPose!(by)!);
++      const s = this.followerSpot(st, by);
+       return { slot: null, provider: null, home: { ...st.home }, level: s.level, x: s.x, y: levelElevation(f, s.level), z: s.z, rot: s.rot, room: this.d.registry.roomAt(s.level, s.x, s.z), posture, support: null, trolley: st.trolley, footprint: { ...BODY_FOOTPRINT[posture] }, escort: by };
+     }
+     if (st.slot) {
+@@ -257,7 +273,7 @@ export class PatientBody {
+     if (!st) return null;
+     const by = this.escort(st);
+     if (by) {
+-      const s = this.escortSpot(this.d.actorPose!(by)!);
++      const s = this.followerSpot(st, by);
+       return { level: s.level, x: s.x, z: s.z, room: this.d.registry.roomAt(s.level, s.x, s.z) };
+     }
+     if (st.slot) {
 diff --git a/packages/world/src/perception.ts b/packages/world/src/perception.ts
 index 795d75b..c605bab 100644
 --- a/packages/world/src/perception.ts
@@ -1178,11 +2691,177 @@ index 795d75b..c605bab 100644
      this.record(actor, entities);
      return { id: room.id, name: t(room.name, this.d.locale), kind: room.type, level: room.level, exits, entities };
    }
+diff --git a/packages/world/src/raster.ts b/packages/world/src/raster.ts
+index 1c784f4..0957d6d 100644
+--- a/packages/world/src/raster.ts
++++ b/packages/world/src/raster.ts
+@@ -111,6 +111,27 @@ export function areasOverlap(a: Area, b: Area): boolean {
+   return a.minX < b.maxX && b.minX < a.maxX && a.minZ < b.maxZ && b.minZ < a.maxZ;
+ }
+ 
++/** Does the segment `a`–`b` cross (or touch) an area? (slab test on the XZ plane) */
++export function segmentCrossesArea(a: { x: number; z: number }, b: { x: number; z: number }, area: Area): boolean {
++  let t0 = 0, t1 = 1;
++  const d = { x: b.x - a.x, z: b.z - a.z };
++  for (const [p, q, min, max] of [
++    [a.x, d.x, area.minX, area.maxX],
++    [a.z, d.z, area.minZ, area.maxZ],
++  ] as const) {
++    if (Math.abs(q) < 1e-12) {
++      if (p < min || p > max) return false;
++      continue;
++    }
++    let u0 = (min - p) / q, u1 = (max - p) / q;
++    if (u0 > u1) [u0, u1] = [u1, u0];
++    t0 = Math.max(t0, u0);
++    t1 = Math.min(t1, u1);
++    if (t0 > t1) return false;
++  }
++  return true;
++}
++
+ /** Distance from a point to an area (0 inside). */
+ export function distanceToArea(x: number, z: number, a: Area): number {
+   const dx = Math.max(a.minX - x, 0, x - a.maxX);
+diff --git a/packages/world/src/runtime.ts b/packages/world/src/runtime.ts
+index 0be02f6..5243f98 100644
+--- a/packages/world/src/runtime.ts
++++ b/packages/world/src/runtime.ts
+@@ -17,13 +17,15 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
+ import { ActionBus, goalProblem, instantMover } from "./actions.js";
+ import { DeviceRules } from "./behaviors.js";
+ import { buildCollisionModel } from "./collision.js";
+-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
++import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type Collider, type ColliderKind, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+ import { navMessage, worldMessage } from "./i18n.js";
+-import { levelInfos } from "./levels.js";
++import { levelElevation, levelInfos } from "./levels.js";
+ import { WorldLocator } from "./locate.js";
+ import { receiptsOf, receiptsToConfirm } from "./hand.js";
+ import { GridAStarBackend } from "./nav/backend.js";
+ import { PatientBody } from "./patient.js";
++import { PHYSICS } from "./physics.js";
++import { segmentCrossesArea } from "./raster.js";
+ import { Perception } from "./perception.js";
+ import { DefaultSpatialPolicy, SpatialChecker } from "./policy.js";
+ import { Reachability } from "./reach.js";
+@@ -39,6 +41,9 @@ const copyActor = (a: ActorState): ActorState => {
+   return out;
+ };
+ 
++/** What a straight step of a person cannot pass (`PatientBodyDeps.clear`): door leaves only when the door is locked. */
++const BARRIER_KINDS: ReadonlySet<ColliderKind> = new Set(["wall", "partition", "window", "rail", "door"]);
++
+ /** A body steered by hand looks around again once it has moved this far (m) since it last did, or entered a room. */
+ const NOTICE_STEP = 1;
+ /** …or turned this far (radians, about 30°). */
+@@ -65,6 +70,17 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
+   // the patient's body (EMBODIED §8): where it is now, its posture (the place's, else clinical state's), its collider
+   const staticBody = slot ? collision.colliders.find((c) => c.id === `patient:${slot.id}`) : undefined;
++  // a straight step a person can take (audit 2026-11-12 W3): no wall, partition, window or balustrade at body height in
++  // the way — a window lets sight through, never a body — and no locked door (doors open as one walks, unless locked)
++  const barriers = new Map<string, Collider[]>();
++  for (const c of collision.colliders) {
++    if (!BARRIER_KINDS.has(c.kind)) continue;
++    const floor = levelElevation(facility, c.level);
++    if (c.maxY - floor <= 0.05 || c.minY - floor >= PHYSICS.height) continue;
++    barriers.set(c.level, [...(barriers.get(c.level) ?? []), c]);
++  }
++  const stepClear = (level: string, a: { x: number; z: number }, b: { x: number; z: number }) =>
++    !(barriers.get(level) ?? []).some((c) => (c.kind !== "door" || (!!c.entity && !!store.doorState(c.entity)?.locked)) && segmentCrossesArea(a, b, c));
+   const patient = new PatientBody({
+     facility,
+     registry,
+@@ -74,9 +90,9 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+     initialPosture: bindingPosture(binding, facility),
+     staticBody: staticBody ? { minX: staticBody.minX, maxX: staticBody.maxX, minZ: staticBody.minZ, maxZ: staticBody.maxZ } : null,
+     locale,
+-    // walking with someone (`escort_patient`): at that actor's side, on their side of any wall
++    // walking with someone (`escort_patient`): heading for that actor's side, on their side of any wall or window
+     actorPose: (id) => store.actor(id)?.pose ?? null,
+-    clear: (level, a, b) => visibility.lineOfSight(level, a, b),
++    clear: stepClear,
+     cues: () => (slot ? clinical.cues(slot.id) : {}),
+   });
+   // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built
+diff --git a/packages/world/src/screen-source.test.ts b/packages/world/src/screen-source.test.ts
+index b9a64bf..d9bab30 100644
+--- a/packages/world/src/screen-source.test.ts
++++ b/packages/world/src/screen-source.test.ts
+@@ -5,7 +5,7 @@
+  * equipment of the next bed in the same bay never shows this patient; nothing shows a patient who was taken away.
+  */
+ import { describe, expect, it } from "vitest";
+-import { PRIMARY_ACTOR } from "./contracts.js";
++import { PRIMARY_ACTOR, type WorldEvent } from "./contracts.js";
+ import { makeWorld } from "./__fixtures__/world.js";
+ 
+ const A = PRIMARY_ACTOR;
+@@ -81,6 +81,47 @@ describe("screenPatient: whose bedside a device's live screen shows", () => {
+     expect(w.runtime.stateOf(CART)).toBe("prepared");
+   });
+ 
++  it("audit W2, the verifier's replay: the patient taken away from a connected cart — its leads come off; back home it shows them only once connected again", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    const P = w.patientId;
++    const CART = "eq:resus1-ecg";
++    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
++    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: CART })).status, op).toBe("completed");
++    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["connected", P]);
++    // to the CT on her bed: the cart stays in resus — its leads come off (before W2: still "connected", showing nobody)
++    const ct = await w.act({ actorId: A, operation: "transport_patient", targetId: P, parameters: { destination: "eq:ct-scanner" } });
++    expect(ct.status, ct.message).toBe("completed");
++    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
++    expect(ct.events.find((e) => e.type === "entity.state" && e.entityId === CART)).toMatchObject({ from: "connected", to: "prepared", operation: "transport_patient", actorId: A });
++    // the event log: the leads came off when she arrived elsewhere — after her move, before the leg is closed
++    const types = ct.events.map((e) => (e.type === "entity.state" ? `entity.state:${e.entityId}` : e.type));
++    expect(types.indexOf(`entity.state:${CART}`)).toBeGreaterThan(types.indexOf("patient.moved"));
++    expect(types.indexOf(`entity.state:${CART}`)).toBeLessThan(types.indexOf("patient.arrived"));
++    // back home: by her bed again, but nothing on her (before W2: "connected", showing her again without a new act)
++    const home = await w.act({ actorId: A, operation: "transport_patient", targetId: P, parameters: { destination: "home" } });
++    expect(home.status, home.message).toBe("completed");
++    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
++    // connecting is a new act
++    expect((await w.act({ actorId: A, operation: "connect", targetId: CART })).status).toBe("completed");
++    expect(w.runtime.screenPatient(CART)).toBe(P);
++  });
++
++  it("audit W2: a team relocation takes the leads off too (the team moved her); a cart not on her is left as it was", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    const P = w.patientId;
++    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
++    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: "eq:resus1-ecg" })).status, op).toBe("completed");
++    const seen: WorldEvent[] = [];
++    w.runtime.subscribe((e) => seen.push(e));
++    const rel = w.runtime.relocatePatient({ capability: "fluoroscopy" }, { intervention: "transfer-cath-lab" });
++    expect(rel).toMatchObject({ ok: true, moved: true });
++    expect([w.runtime.stateOf("eq:resus1-ecg"), w.runtime.screenPatient("eq:resus1-ecg")]).toEqual(["prepared", null]);
++    expect(seen.find((e) => e.type === "entity.state")).toMatchObject({ entityId: "eq:resus1-ecg", from: "connected", to: "prepared", operation: "relocate", actorId: "team" });
++    // the only device on her: every other cart is as it was
++    expect(seen.filter((e) => e.type === "entity.state")).toHaveLength(1);
++    expect(w.runtime.stateOf("eq:resus2-ecg")).toBe("idle");
++  });
++
+   it("out of service: nobody, the patient's own monitor included", () => {
+     const w = makeWorld("stemi-inferior-rv");
+     w.runtime.setAvailability("eq:resus1-monitor", false);
 diff --git a/packages/world/src/state.ts b/packages/world/src/state.ts
-index 5fe0dee..092ee3f 100644
+index 5fe0dee..637a36c 100644
 --- a/packages/world/src/state.ts
 +++ b/packages/world/src/state.ts
-@@ -363,7 +363,11 @@ export class WorldStateStore implements WorldDynamics {
+@@ -13,7 +13,9 @@
+  *   (`entityVersion`, 0 until first changed), bumped only when that entity
+  *   changes. A device's version is therefore untouched by anyone walking.
+  * - Sensor updates of human-driven bodies (`sensorPose`, ~10 Hz) bump only
+- *   the actor's own version — never the global version, never another entity.
++ *   the actor's own version — never the global version, never another entity
++ *   but the patient walking with that body, whose own step (`sensorPatch`)
++ *   bumps only the patient's version.
+  * - Memory (`remember`; `miss` and `tell`: what an actor knows of where
+  *   things are), current tasks (`setTask`), events, results and transient
+  *   in-flight locks bump nothing: read-only tools stay idempotent with
+@@ -363,7 +365,11 @@ export class WorldStateStore implements WorldDynamics {
    tell(actorId: ActorId, id: EntityId, place: SeenPlace & { toldBy: ActorId }): void {
      const a = this.actorMap.get(actorId);
      if (!a || id === actorId) return;
@@ -1195,6 +2874,27 @@ index 5fe0dee..092ee3f 100644
      this.unmiss(a, id);
      this.onWhereabouts?.({ actorId, entityId: id, change: "told", place: { level: place.level, x: place.x, z: place.z }, by: place.toldBy });
    }
+@@ -379,7 +385,19 @@ export class WorldStateStore implements WorldDynamics {
+    * to `undefined` is removed; `version` cannot be patched.
+    */
+   patchEntity(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>): void {
+-    this.bump(id);
++    this.applyPatch(id, patch, true);
++  }
++
++  /**
++   * A step of a patient walking with a body steered by hand — the consequence of a sensor update (`sensorPose`): like
++   * it, the entity's own version only, never the global one (audit 2026-11-12 W3: the follower's own spot).
++   */
++  sensorPatch(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>): void {
++    this.applyPatch(id, patch, false);
++  }
++
++  private applyPatch(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>, global: boolean): void {
++    this.bump(id, global);
+     const e = this.entityMap.get(id)!;
+     for (const [key, value] of Object.entries(patch) as [keyof EntityRuntimeState, unknown][]) {
+       if (key === "version") continue;
 diff --git a/packages/world/src/supplies.test.ts b/packages/world/src/supplies.test.ts
 index 53f9df0..660d2bf 100644
 --- a/packages/world/src/supplies.test.ts
@@ -1216,8 +2916,57 @@ index 53f9df0..660d2bf 100644
      const on = await w.act({ actorId: PRIMARY_ACTOR, operation: "power_on", targetId: "eq:gas-only" });
      expect(on.status, on.message).toBe("completed");
      expect(rt.provides("eq:gas-only")).toEqual(["insufflator"]);
+diff --git a/packages/world/src/transport.test.ts b/packages/world/src/transport.test.ts
+index 0478c01..fccf24c 100644
+--- a/packages/world/src/transport.test.ts
++++ b/packages/world/src/transport.test.ts
+@@ -543,6 +543,44 @@ describe("the policy: a study done on the patient at a fixed device needs the pa
+     expect(named).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+   });
+ 
++  it("audit W4: the monitor taken along travels on the transit (every front-end draws it with the bed) and stays with the patient — beside them, or with no free spot right with them, never back where it is kept", async () => {
++    const MONITOR = "eq:ward-defibrillator";
++    let w!: TestWorld;
++    let armed = false;
++    const mid: (PatientPlace["transit"] | undefined)[] = [];
++    const mover = steppingMover((i) => {
++      if (!armed) return;
++      if (i === 1) mid.push(w.runtime.patientPlace()?.transit);
++      // the CT room filled with boxes while the bed is on its way: no free spot left beside the table
++      if (i === 2) w.runtime.setObstacle({ id: "w4-boxes", level: "L0", rect: { x: 23.5, z: -37, w: 9, d: 14 }, label: { en: "boxes", "zh-CN": "箱子" } }, true);
++    });
++    w = makeWorld("pulmonary-embolism-postop", { mover });
++    await toPatient(w);
++    armed = true;
++    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
++    armed = false;
++    expect(r.status, r.message).toBe("completed");
++    // in transit: the monitor is the transit's, on her bed (before W4 the transit named no monitor)
++    expect(mid).toEqual([{ by: PRIMARY_ACTOR, trolley: "eq:ward-bed-1", posture: "lying", monitor: MONITOR }]);
++    // on arrival with no free spot: it stays with her, where she lies (before W4: back on the ward, the leg still naming it)
++    const at = w.runtime.snapshot().entities[MONITOR]!.position!;
++    const p = place(w);
++    expect(near(at, p, 0.01)).toBe(true);
++    expect(w.runtime.roomOf(MONITOR)).toBe("rad-ct");
++    expect(w.runtime.atBedside(MONITOR)).toBe(true);
++    expect(r.message).toMatch(/stays right with them/);
++    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: MONITOR, to: { provider: "eq:ct-scanner" } });
++    // in zh-CN as well; with room beside her, the monitor waits beside her (as before)
++    const zh = makeWorld("pulmonary-embolism-postop", { locale: "zh-CN" });
++    await toPatient(zh);
++    const there = await zh.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: zh.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
++    expect(there.message).toMatch(/除颤监护仪随行监护。$/);
++    const beside = zh.runtime.snapshot().entities[MONITOR]!.position!;
++    expect(near(beside, zh.runtime.patientPlace()!, 0.01)).toBe(false);
++    expect(near(beside, zh.runtime.patientPlace()!, 6)).toBe(true);
++    expect(zh.runtime.patientPlace()!.transit).toBeUndefined();
++  });
++
+   it("a peak flow is no longer done at the triage station with the child left in the resus bay", async () => {
+     const w = makeWorld("pediatric-asthma");
+     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:triage-peak-flow" } });
 diff --git a/packages/world/src/transport.ts b/packages/world/src/transport.ts
-index 1f8307a..6c226e3 100644
+index 1f8307a..0f4ec59 100644
 --- a/packages/world/src/transport.ts
 +++ b/packages/world/src/transport.ts
 @@ -17,7 +17,7 @@
@@ -1225,26 +2974,61 @@ index 1f8307a..6c226e3 100644
  import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES, TRAVEL_MONITOR_CAPABILITY } from "./capabilities.js";
  import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientLeg, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, TravelMode, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
 -import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
-+import { failed, pluggedIn, unplugIfAway, type EffectsHost, type Outcome, type Walk } from "./effects.js";
++import { failed, pluggedIn, TEAM_ACTOR, unplugIfAway, type EffectsHost, type Outcome, type Walk } from "./effects.js";
  import { endEscortIfUnable } from "./escort.js";
  import { closeStretch, legEnd, placeEnd, receiverAt, travelMode, withLeg, type JourneyHost } from "./journey.js";
  import { listText, metres, worldMessage } from "./i18n.js";
-@@ -207,17 +207,22 @@ function travellingMonitor(host: TransportHost, request: WorldActionRequest, act
-   return id ? { id } : { error: worldMessage("pre.noTravelMonitor", L, { patient }) };
+@@ -142,19 +142,28 @@ function equipmentArea(host: EffectsHost, id: EntityId): { level: string; area:
+ 
+ const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
+ 
+-/** Park a portable device beside the patient's body (a free spot near it; none: back where it is kept), re-stamping the grids. */
+-function placeBeside(host: TransportHost, id: EntityId, near: { level: string; area: Area }): void {
+-  const { store, mover, facility, registry } = host.d;
+-  const e = registry.entity(id);
+-  const at = host.d.patient.equipmentAt(id);
+-  if (!e || !at) return;
++/** Where the monitor that travelled with the patient was left (`placeWithPatient`): beside them, or right with them. */
++export type MonitorPlacement = "beside" | "with";
++
++/**
++ * Leave the monitor that travelled with the patient with them where they are now (audit W4): on a free spot beside
++ * their body (`trolleySpot`), else — no room there — right where they are (on the bed, the trolley or the table they
++ * lie on, at their side on foot): it travelled with them and stays with them, never sent back where it is kept.
++ * Re-stamps the grids; returns which.
++ */
++function placeWithPatient(host: TransportHost, id: EntityId, near: { level: string; area: Area }, at: { x: number; z: number }): MonitorPlacement | null {
++  const { store, mover, facility } = host.d;
++  const now = host.d.patient.equipmentAt(id);
++  if (!now) return null;
+   const before = equipmentArea(host, id);
+   const spot = trolleySpot(targetDeps(host), id, near.level, near.area);
+-  const position = spot ? { x: spot.x, y: levelElevation(facility, near.level), z: spot.z, level: near.level, rot: at.rot } : undefined;
++  const where = spot ?? at;
++  const position = { x: where.x, y: levelElevation(facility, near.level), z: where.z, level: near.level, rot: now.rot };
+   store.patchEntity(id, { position });
+   const after = equipmentArea(host, id);
+   for (const a of [before, after]) if (a) host.invalidate({ level: a.level, ...grow(a.area, 0.6) });
+-  mover.placeEntity?.(id, position ?? { x: e.position.x, y: e.position.y, z: e.position.z, level: e.level, rot: e.rot });
++  mover.placeEntity?.(id, position);
++  return spot ? "beside" : "with";
  }
  
-+/** Who a team relocation's own events name as having moved (no body moved the patient, EMBODIED §8.4). */
-+export const TEAM_ACTOR = "team";
-+
+ /** How many legs of the patient's journey the world keeps (`PatientPlaceState.legs`, oldest dropped). */
+@@ -209,15 +218,18 @@ function travellingMonitor(host: TransportHost, request: WorldActionRequest, act
+ 
  /**
   * Commit the patient's new place: the trolley (parked beside a provider, carrying the patient at a spot,
-  * or home again with the patient in a bed space), the monitor that travelled with them (beside them now), home, the
+- * or home again with the patient in a bed space), the monitor that travelled with them (beside them now), home, the
 - * grids where bodies and beds were and are, the leg of the journey (`PatientPlaceState.legs`), the event. Returns the
 - * events.
-+ * grids where bodies and beds were and are, the leads of a device they left (off: audit W2), the leg of the journey
-+ * (`PatientPlaceState.legs`), the events. Returns the events.
++ * or home again with the patient in a bed space), the monitor that travelled with them (with them now: beside them, or
++ * right where they are — audit W4), home, the grids where bodies and beds were and are, the leads of a device they
++ * left (off: audit W2), the leg of the journey (`PatientPlaceState.legs`), the events. Returns the events and where
++ * the monitor that travelled was left (null: none travelled).
   */
- export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): WorldEvent[] {
+-export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): WorldEvent[] {
++export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): { events: WorldEvent[]; monitor: MonitorPlacement | null } {
    const { store, patient: body, facility, mover } = host.d;
    const id = body.id!;
    const st = body.state()!;
@@ -1254,7 +3038,19 @@ index 1f8307a..6c226e3 100644
    const touched: { level: string; area: Area }[] = [];
    const oldBody = host.patientStamp.body;
    if (oldBody) touched.push(oldBody);
-@@ -304,6 +309,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+@@ -292,9 +304,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+   const newBody = body.body();
+   if (newBody) touched.push(newBody);
+   for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
+-  // the monitor that travelled with them waits beside them where they are now (back where it is kept if no room)
++  // the monitor that travelled with them stays with them where they are now: beside them, else right with them
+   const now = body.place();
+-  if (departure.monitor && now) placeBeside(host, departure.monitor, { level: now.level, area: footprintArea({ position: { x: now.x, z: now.z }, footprint: { w: now.footprint.w, d: now.footprint.d } }) });
++  const monitorAt = departure.monitor && now ? placeWithPatient(host, departure.monitor, { level: now.level, area: footprintArea({ position: { x: now.x, z: now.z }, footprint: { w: now.footprint.w, d: now.footprint.d } }) }, now) : null;
+   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
+   // the handover (P2-11): a transport that arrived is taken over by a colleague at the bedside there, if one is — the
+   // leg is completed before the commit's events go out (it is the object just stored)
+@@ -304,9 +316,12 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
    host.learnWhere(by, [...moves.map((m) => m.id), ...(departure.monitor ? [departure.monitor] : [])]);
    const to = body.place()!;
    const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
@@ -1263,4 +3059,127 @@ index 1f8307a..6c226e3 100644
 +  for (const d of plugged) events.push(...unplugIfAway(host, by ?? TEAM_ACTOR, d, relocation ? "relocate" : "transport_patient"));
    if (escorted) events.push(host.emit({ type: "patient.escort", entityId: id, escort: null, actorId: null }));
    events.push(host.emit({ type: "patient.arrived", entityId: id, leg: { ...leg, from: { ...leg.from }, to: { ...leg.to } } }));
-   return events;
+-  return events;
++  return { events, monitor: monitorAt };
+ }
+ 
+ /** Where the patient stays when a transport stops short: beside the body that wheeled them (on the trolley), or standing where they walked to. */
+@@ -361,7 +376,8 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+   if (trolley) host.busy.set(trolley, actor.id);
+   if (monitor.id) host.busy.set(monitor.id, actor.id);
+   // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
+-  host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
++  // …and the monitor that travels with them, on their bed or trolley (renderers draw it travelling: audit W4)
++  host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing", ...(monitor.id ? { monitor: monitor.id } : {}) };
+   host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
+   // walking beside the transporter, the patient is reassessed on the way: one who can no longer walk stops the walk
+   let collapsed: WalkProblem | null = null;
+@@ -396,21 +412,21 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+     const stop = stopTarget(host, now.pose, null);
+     // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
+     const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
+-    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
++    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked, departure("stopped")).events];
+     const message = `${worldMessage(`pre.cannotWalk.${collapsed}`, L, { patient: name })} ${worldMessage("pre.stoppedEnRoute", L, { patient: name, place: stop.name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`;
+     return { status: "failed", errorCode: "PRECONDITION_FAILED", message, events, hint: null, ...base };
+   }
+   if (walk.interrupted) {
+     const now = host.d.store.actor(actor.id)!;
+     const stop = stopTarget(host, now.pose, trolley);
+-    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
++    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked, departure("stopped")).events];
+     return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
+   }
+-  const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked, departure("arrived"))];
++  const arrived = commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked, departure("arrived"));
++  const events = [...walkedWith, setOff, ...walk.events, ...arrived.events];
+   const transported = worldMessage("ok.transported", L, { patient: name, place: target.name, distance: metres(walk.walked) });
+-  // the monitor parked beside them — or, with no room there, back where it is kept: said so (re-review P2-11)
+-  const besideThem = monitor.id ? !!host.d.store.entity(monitor.id)?.position : false;
+-  const monitored = monitor.id ? ` ${worldMessage(besideThem ? "ok.monitorTravelled" : "ok.monitorReturned", L, { monitor: locator.name(monitor.id) })}` : "";
++  // the monitor that travelled stays with them: beside them — or, with no room there, right with them (audit W4)
++  const monitored = monitor.id ? ` ${worldMessage(arrived.monitor === "with" ? "ok.monitorWithThem" : "ok.monitorTravelled", L, { monitor: locator.name(monitor.id) })}` : "";
+   // the handover, in words (P2-11): who took over where they arrived
+   const leg = body.state()?.legs?.at(-1);
+   const handed = leg?.receivedBy ? ` ${worldMessage("ok.receivedBy", L, { patient: name, receiver: locator.name(leg.receivedBy) })}` : "";
+diff --git a/packages/world/src/whereabouts.test.ts b/packages/world/src/whereabouts.test.ts
+index 6202fa4..e31d572 100644
+--- a/packages/world/src/whereabouts.test.ts
++++ b/packages/world/src/whereabouts.test.ts
+@@ -287,6 +287,76 @@ describe("audit 2026-11-12 P1-8: navigation goes where the actor believes a thin
+   });
+ });
+ 
++describe("audit 2026-11-12 W1: a thing believed elsewhere is listed as last seen — never as it is now", () => {
++  const CUB2 = "eq:cub2-ecg";
++  const listed = (w: ReturnType<typeof makeWorld>, id: string) => w.runtime.find(A, { capabilities: ["ecg-12lead"] }).find((e) => e.id === id)!;
++
++  it("the verifier's replay: the nurse wheels the cubicle cart to the patient and connects it out of the clinician's sight — nothing the clinician is told changes", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
++    const before = listed(w, CUB2);
++    // never seen: where it is kept, in no state, nothing to do with it from here, no version of it
++    expect(before).toMatchObject({ awareness: "mapped", room: "ed-cubicle-2", lastKnown: { kind: "usual", label: "usually kept in ED Cubicle 2" }, availableActions: [], stateVersion: 0, inReach: false });
++    expect(before.state).toBeUndefined();
++    expect((await w.act({ actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
++    expect((await w.act({ actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
++    expect(listed(w, CUB2)).toEqual(before);
++    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: NURSE, operation: op, targetId: CUB2 })).status, op).toBe("completed");
++    expect(w.runtime.stateOf(CUB2)).toBe("connected");
++    // the same in every read: find, a room report, an inspection (its operations all refused where it is believed)
++    expect(listed(w, CUB2)).toEqual(before);
++    expect(w.runtime.roomInfo(A, "ed-cubicle-2")!.entities.find((e) => e.id === CUB2)).toEqual(before);
++    const insp = w.runtime.inspect(A, CUB2)!;
++    expect(insp).toMatchObject({ availableActions: [], stateVersion: 0, lastKnown: { kind: "usual" } });
++    expect(insp.state).toBeUndefined();
++    expect(insp.operations.every((o) => !o.available)).toBe(true);
++  });
++
++  it("seen, then out of sight again: the state it was in when last seen, never a change made since", async () => {
++    const w = makeWorld("stemi-inferior-rv");
++    expect((await w.act({ actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
++    expect((await w.act({ actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
++    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: NURSE, operation: op, targetId: CUB2 })).status, op).toBe("completed");
++    // the clinician walks up to the patient: the cart is there, connected — perceived, as it is
++    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
++    const seen = listed(w, CUB2);
++    expect(seen).toMatchObject({ state: "connected", awareness: expect.stringMatching(/visible|nearby/) });
++    expect(seen.lastKnown).toBeUndefined();
++    const version = seen.stateVersion;
++    expect(version).toBeGreaterThan(0);
++    // to the office: remembered as last seen — connected, at that version, nothing to do with it from here
++    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
++    const remembered = listed(w, CUB2);
++    expect(remembered).toMatchObject({ awareness: "remembered", state: "connected", stateVersion: version, availableActions: [], lastKnown: { kind: "last-seen" } });
++    // the nurse records and resets it out of the clinician's sight: still "connected, as last seen"
++    for (const op of ["record", "reset"]) await w.act({ actorId: NURSE, operation: op, targetId: CUB2, parameters: { investigation: "ecg-12lead" } });
++    expect(w.runtime.stateOf(CUB2)).toBe("idle");
++    expect(listed(w, CUB2)).toEqual(remembered);
++    // the belief, its last-seen state included, survives a snapshot
++    const again = makeWorld("stemi-inferior-rv", { extra: { snapshot: w.runtime.snapshot() } });
++    expect(again.runtime.find(A, { capabilities: ["ecg-12lead"] }).find((e) => e.id === CUB2)).toMatchObject({ state: "connected", stateVersion: version, lastKnown: { kind: "last-seen" } });
++  });
++
++  it("told where it is: where, not what it is like — no state; missing: no state, no actions, and distance and bearing only to where it was looked for", async () => {
++    const w = await cartMovedOutOfSight();
++    expect((await w.act({ actorId: A, operation: "approach", targetId: ECG })).errorCode).toBe("STALE_DESTINATION");
++    const missing = listed(w, ECG);
++    const me = w.runtime.actor(A)!.pose;
++    const looked = w.runtime.whereabouts(A, ECG)!.missed!;
++    const truth = w.runtime.snapshot().entities[ECG]!.position!;
++    expect(missing).toMatchObject({ lastKnown: { kind: "missing" }, room: null, availableActions: [], stateVersion: 0 });
++    expect(missing.state).toBeUndefined();
++    // the distance is to where it looked (within the cart's footprint of it), never to where the cart is
++    expect(Math.abs(missing.distance - Math.hypot(looked.x - me.x, looked.z - me.z))).toBeLessThan(1);
++    expect(Math.abs(missing.distance - Math.hypot(truth.x - me.x, truth.z - me.z))).toBeGreaterThan(5);
++    w.runtime.askWhereabouts(A, ECG, NURSE);
++    const told = listed(w, ECG);
++    expect(told).toMatchObject({ lastKnown: { kind: "told" }, room: "ed-cubicle-1", availableActions: [], stateVersion: 0 });
++    expect(told.state).toBeUndefined();
++    expect(w.runtime.snapshot().actors.find((a) => a.id === A)!.lastSeen![ECG]).toEqual({ level: "L0", x: truth.x, y: truth.y, z: truth.z, rot: expect.any(Number), toldBy: NURSE });
++  });
++});
++
+ describe("lead note 2: where a place is", () => {
+   it("a room by name; a corridor inside the building; outdoors the facility's outdoor region", () => {
+     const en = makeWorld("stemi-inferior-rv");
