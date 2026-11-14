@@ -45,6 +45,8 @@ describe("cases index", () => {
     const content = await loadContent();
     expect(entries.map((e) => e.id)).toEqual(sortedCases(content).map((c) => c.id));
     for (const e of entries) expect(Object.keys(e).sort()).toEqual([...CASE_INDEX_ENTRY_KEYS].sort());
+    // the places in a care team the picker offers (none in the built-in content: no case has a team)
+    for (const e of entries) expect([e.seats, e.lineups], e.id).toEqual([[], []]);
     const builtin = builtinContentDir();
     if (builtin) expect(entries).toEqual((await buildCaseIndex({ dirs: [builtin] })).entries);
     // No reference solution (a learning outcome may still say "saline solution").

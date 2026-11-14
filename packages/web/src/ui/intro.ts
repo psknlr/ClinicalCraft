@@ -245,7 +245,7 @@ export class Intro {
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
       this.embodimentRow(card),
-      this.placeRows(card),
+      h("div", { id: "place-slot" }, this.placeRows(card)),
       h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
       this.outcomesDisclosure(card),
       this.caseStatusLine(card),
@@ -304,7 +304,7 @@ export class Intro {
         });
         // a place in the team needs in-world mode: off, the learner operates; the picker follows the switch
         if (!checked) app.chooseStart({ seat: null });
-        this.renderKeeping("#embodied-toggle");
+        this.refreshPlaceRows(card);
       },
     });
     const saved = app.saves.caseSave(card.id);
@@ -318,10 +318,17 @@ export class Intro {
     );
   }
 
-  /** Re-render, the keyboard focus kept on the control that changed (`selector`). */
-  private renderKeeping(selector: string): void {
-    this.render();
-    this.root.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
+  /**
+   * The place rows again, in place (the rest of the card untouched: re-rendering it would take the focus), the keyboard
+   * focus kept on the control that changed (`selector`).
+   */
+  private refreshPlaceRows(card: CaseCard, selector?: string): void {
+    const slot = this.root.querySelector<HTMLElement>("#place-slot");
+    if (!slot) return;
+    clear(slot);
+    const rows = this.placeRows(card);
+    if (rows) slot.append(rows);
+    if (selector) slot.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
   }
 
   /**
@@ -347,7 +354,7 @@ export class Intro {
         : null;
     const refusal = app.placeRefusal?.caseId === card.id ? app.placeRefusal : null;
     const refused = refusal
-      ? h("p", { id: "place-refused", class: "place-refused", role: "alert", dataset: { seat: refusal.seat } }, h("b", null, tr("intro.place.refused", { place: tr(`place.${refusal.seat}`) })), h("span", null, refusal.text))
+      ? h("p", { id: "place-refused", class: "place-refused", role: "alert", dataset: { seat: refusal.seat } }, h("b", null, tr("intro.place.refused", { place: tr(`position.${refusal.seat}`) })), h("span", null, refusal.text))
       : null;
     if (!picker) return savedLine || refused ? h("div", { class: "place-rows", id: "place-rows" }, savedLine, refused) : null;
     const lineup = picker.lineups.length
@@ -358,7 +365,7 @@ export class Intro {
             "aria-label": tr("intro.lineup.label"),
             onchange: (e: Event) => {
               app.chooseStart({ lineup: (e.target as HTMLSelectElement).value || null });
-              this.renderKeeping("#lineup-select");
+              this.refreshPlaceRows(card, "#lineup-select");
             },
           },
           h("option", { value: "", selected: !picker.lineup }, lineupName(null)),
@@ -372,7 +379,7 @@ export class Intro {
         "aria-label": tr("intro.place.label"),
         onchange: (e: Event) => {
           app.chooseStart({ seat: (e.target as HTMLSelectElement).value || null });
-          this.renderKeeping("#place-select");
+          this.refreshPlaceRows(card, "#place-select");
         },
       },
       h("option", { value: "", selected: !picker.seat }, tr("place.surgeon")),

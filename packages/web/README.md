@@ -82,6 +82,24 @@ interact · `T`/`Enter` talk · `V` monitor · `J` journal · `M` map ·
 `B`/`Tab` bag · `1–9` hotbar · `Esc` pause. Touch controls appear on
 touch screens.
 
+**A place in the care team** (docs/EMBODIED.md §2.1): for a case that offers
+places, the case-start card shows — in in-world mode — the team's line-up and
+"Your place in the team" (the operating surgeon by default; first assistant,
+second assistant, scrub nurse where the case's team has them); `?seat=` and
+`?lineup=` (beside `?team=`) choose them from the address, `__QA__.start(case,
+facility, resume, team, seat, lineup)` from a test. A place the session
+refuses is not entered: the card says why, in the session's words. Taken, you
+join the team at the operating table and the stand-in surgeon operates; a
+case `clinicalcraft serve` sends fetches its place path first
+(`/api/content/cases/:id/place-path`). The **surgery window** then works by
+place (docs/PROCEDURE.md §7): each port says who holds it, with **Take**,
+**Hand back** and **Hand to …** by your controls, an insert where your place
+may put one in (in the scrub nurse's place **Ask for the …** until it is
+passed), the actions through the ports you hold, the **camera block** — aim at
+a region, the whole field, follow the work, **Closer** / **Wider** — for the
+camera holder, and the **instrument table** (passing, for the scrub nurse);
+the operator's own steps stay in view, read-only.
+
 | folder (`src/`) | |
 |---|---|
 | `world/` | voxel renderer — `index.ts` builds the `WorldApi` over a `VoxelWorld` (`voxel-world.ts`) and its parts: `stage.ts` (renderer, scene, lights), `facility-build.ts`, `people.ts` (patients and staff), `doors.ts`, `rides.ts`, `autowalk.ts`, `input.ts`, `interaction.ts`, `overlay.ts`, `blocks.ts`, `carts.ts`, `culling.ts`, `frame-loop.ts`, `map-data.ts`, `qa.ts`; equipment meshes (and optional GLB models, `models.ts`, their layers `layers.ts`; the body a type is drawn with, `manikin.ts`; a placement whose look follows its state, `live.ts`), live screens and the pictures of the others (`screens.ts`; a thoracoscope's picture: `scope-picture.ts`), NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |

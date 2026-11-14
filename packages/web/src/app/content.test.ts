@@ -53,6 +53,8 @@ describe("bundled case index (C1)", () => {
     expect(index.cards.map((c) => c.id)).toEqual(libraryOrder(index.cards).map((c) => c.id));
     for (const card of index.cards) {
       expect(Object.keys(card).sort()).toEqual([...CASE_INDEX_ENTRY_KEYS, "source"].sort());
+      // no built-in case has a care team: no place in a team is offered, no line-up listed
+      expect([card.seats, card.lineups], card.id).toEqual([[], []]);
       expect(card.source).toBe("bundled");
       expect(index.caseStatus(card.id)).toBe("idle");
       expect(index.peekCase(card.id)).toBeNull();
@@ -245,6 +247,15 @@ describe("server content (C5)", () => {
     expect(index.facilitiesFor(card!).map((f) => f.id)).toContain("general-hospital");
     // Not served (offline / standalone): nothing changes.
     expect(await loadServerContent(index, async () => null)).toBe(0);
+  });
+
+  it("a server case lists the places in its team and its line-ups as the server's index gives them (an older server: none)", async () => {
+    const index = createContentIndex(bundledSources());
+    const team = { ...caseIndexEntry({ ...publicCase, id: "team-server-case" }, "t")!, seats: ["scrub-nurse", "first-assistant"], lineups: [{ id: "three-surgeons", name: "Three surgeons", provenance: "authored", seats: ["second-assistant", "first-assistant", "scrub-nurse"] }] };
+    const { seats: _seats, lineups: _lineups, ...older } = caseIndexEntry({ ...publicCase, id: "older-server-case" }, "o")!;
+    index.addServerEntries([team, older], async () => null);
+    expect(index.cards.find((c) => c.id === "team-server-case")).toMatchObject({ source: "server", seats: ["first-assistant", "scrub-nurse"], lineups: [{ id: "three-surgeons", seats: ["first-assistant", "second-assistant", "scrub-nurse"] }] });
+    expect(index.cards.find((c) => c.id === "older-server-case")).toMatchObject({ seats: [], lineups: [] });
   });
 
   it("server cases join the library in library order, not at the end (review round 3)", () => {

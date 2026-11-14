@@ -450,7 +450,8 @@ A theatre case can give its room a care team that works on its own in in-world m
   stand-in then works this reference path as the operator (TEAM.md §4.5): write a step the operator does with no
   `actor` (or `surgeon`), a colleague's own step with theirs — a traction through an assist port the stand-in asks the
   traction assistant for, and a hand-over of the operator's goes to whoever holds the port's control (TEAM.md §4.5). The
-  browser's start screen does not offer a place yet.
+  browser's case-start card offers the places in in-world mode (docs/EMBODIED.md §2.1); a case served by
+  `clinicalcraft serve` is joined along its place path, served beside it.
 * **Line-ups** (`lineups`: id, name, provenance, note, members) add assistants for one encounter (`start {lineup}`):
   new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
   team as the source reports it and mark an added line-up `provenance: "authored"`.

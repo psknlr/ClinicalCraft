@@ -39,7 +39,7 @@ import { fetchServerCase, loadContent, loadServerContent, placeReady, type Conte
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
-import { placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
+import { pendingStart, placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
 import { BrowserCamera, BrowserMover } from "./embodied.js";
@@ -898,7 +898,7 @@ export class ClinicalCraftApp implements App {
       this.lastTalk = {
         agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
-      const start = !session.session.state.started && !session.session.state.finished ? startAction(caseDef, this.startChoice) : null;
+      const start = pendingStart(session.session.state, caseDef, this.startChoice);
       let notices: { title: string; body: string }[] = [];
       if (start?.seat) {
         // a place in the team: the session accepts the start or says why not — refused, nothing is entered and the

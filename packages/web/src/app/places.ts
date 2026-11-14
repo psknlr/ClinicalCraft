@@ -5,7 +5,7 @@
  * surgeon's place is the learner as always — no place recorded (`start {seat: "surgeon"}` is normalised away) —, so it
  * is the picker's default and never sent. Whether a place can be taken is the session's to say: the web shows its words.
  */
-import { TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place } from "@clinicalcraft/core";
+import { TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
 import type { CaseCard } from "./content.js";
 
 /** The start's own choices besides the case and the facility (null: none). */
@@ -88,6 +88,14 @@ export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice
   const lineup = choice.lineup && (c.team?.lineups ?? []).some((l) => l.id === choice.lineup) ? choice.lineup : null;
   const seat = choice.seat && c.team ? choice.seat : null;
   return { type: "start", ...(team ? { team } : {}), ...(seat ? { seat } : {}), ...(lineup ? { lineup } : {}) };
+}
+
+/**
+ * The `start` an encounter sends now (null: none — it has started already, a resumed save among them, or finished): a
+ * place's start runs once, and so does the first-person view's move to the team's table that follows it.
+ */
+export function pendingStart(s: Pick<SessionState, "started" | "finished">, c: Pick<CaseDefinition, "team">, choice: StartChoice): StartAction | null {
+  return !s.started && !s.finished ? startAction(c, choice) : null;
 }
 
 /** The place and line-up a saved encounter was started with (its recorded `start`; none: the operating surgeon's). */

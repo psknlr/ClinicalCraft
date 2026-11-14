@@ -424,6 +424,31 @@ In in-world mode it also opens from equipment with the `surgery` capability (the
 picture and controls come from `observeField` (and `portReport` while choosing a plan), and every
 control submits `operate` through the app's action path.
 
+**The window by place** (`packages/web/src/ui/panels/surgery-controls.ts`). Operating, the window offers what each
+instrument does, as always, and the field refuses the rest with its reason. Holding a place in the team, it offers what
+that place may do, and every offer is core's verdict, never a rule of the web's own: the field's gates before the
+physics (`stepOffered`: `COLLEAGUE_OPS`, `stepPartyRefusal`, `seatCheck` with each body's controls — the same checks the
+session's precheck makes), the instrument vocabulary (`INSTRUMENT_OPS`, `colleaguePortFits`) and who holds each port
+(`FieldView.ports[].holder`). `portsForPlace` gives each port's holder ("you" — the learner's place's member, core
+`memberBody` —, the stand-in surgeon, or a colleague by name and position) and its offers: **Take** (a port the
+operator holds, into the place, when its instrument's control is the place's; a colleague hands theirs over
+themselves), **Hand back**, **Hand to …** (members of the team as it is whose controls cover the port; operating, the
+operator's own ports — "Take back" a colleague's), an insert into an empty port (a colleague's only the laparoscope
+into a camera port, a grasper or the suction into an assist port, by control) and its withdrawal. In the scrub nurse's
+place, where every instrument is passed first, an insert with no pass waiting becomes **Ask for the …** — the team's
+ask (`team ask {field: {op: "pass"}}`) of the member who passes. `controlsForPlace` gives the actions through a port
+the learner holds: traction, suction and irrigation by control, never the operator's own steps. **The camera block**
+(`cameraOffer`) replaces the laparoscope's port actions: where the camera looks, how close and who holds it; aim at a
+region of the case, the whole field, follow the work (`working`), closer / wider (a close view needs an aim) — offered
+to the camera holder, or to the operator while nobody holds the camera port; the picture looks at the aimed region's
+centre, nearer at a close view (`surgery-scene.ts`), and without an aim it is the picture as it always was. **The
+instrument table** (`tableOffer`): what is on it, what was passed and waits to go in, and — for the place holding the
+instrument table — passing an instrument to the operator or a member. The operator's own steps (the port plan, the
+pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in view, read-only; saying an injury
+aloud (`recognise`) is anyone's. The window's own refusal line is the session's words, and the playback's refusal frame
+says the field's reason in the learner's words (the web's `surgery.reason.<key>` with the people named by the agent's
+`reasonText` — "you" for the learner), else the engine's message.
+
 **Who looks and who works** (docs/TEAM.md §1). Both tools work as the acting body's member (core `refOfBody`): a call
 with no body — the learner's, a slash command's, MCP's, the external clinician's — is the learner's body: the operator,
 or while the learner holds a place in the team that place's member; a colleague's body is their staff id. `operate`
@@ -453,8 +478,10 @@ shows the same picture full size): the world canvas is the theatre — people, e
 is what the operator sees. **One operative playback** (`operative-playback.ts`, `App.playback`) feeds both the
 dock and the surgery window: neither works out the latest state on its own. It owns the queue of the record's
 operative events in order — each accepted step replayed from its recorded `detail` through the pure engine (the
-clips of a fast demonstration one by one), each refused step a frame of its own with the engine's reason and the
-field unchanged (the refusal event carries the step asked, `at` and `after`) — the frame on screen and its time
+clips of a fast demonstration one by one; a step with its recorded actor — the stand-in's normalised to the operator,
+the learner's in a place as their place's member, said "you"), each refused step a frame of its own with its reason
+and the field unchanged (the refusal event carries the step asked, `at` and `after`; the reason in the learner's
+words when the field gives one, the engine's message word for word on the frame) — the frame on screen and its time
 (a step with a signal, and a refusal, stay longer; a frame keeps its time when the next step arrives late). Opening
 the surgery window while step 38 is on screen goes on from step 38. The last frame is the session's own field, and a
 first look (a reload) shows the field as it is without replaying the operation. The picture keeps the dissection

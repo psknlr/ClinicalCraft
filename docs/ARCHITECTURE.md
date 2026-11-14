@@ -424,7 +424,7 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   offers a place in-world only (`not_embodied` in a clinical session), and
   refuses it `permission_denied` when its permission settings would stop the
   stand-in surgeon, who operates meanwhile (PROTOCOL.md §3.1, TEAM.md §4.5);
-  the browser's start screen does not offer a place yet.
+  the browser's case-start card offers the places (EMBODIED.md §2.1).
   After `finish`, everything is rejected `finished`.
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by
@@ -965,8 +965,10 @@ spoken by the patient — those come from engine actions.
   and facility tooling (`cases …`, `facilities list|validate|compile`),
   `assets inspect`, `trust`, `serve`, `mcp`, `import-v4`, `eval`, `bench`.
 * **server** — `node:http`: static web, `GET /api/health`, `/api/content/*`
-  (a paginated, filterable case index; cases validated on first request;
-  strong ETags),
+  (a paginated, filterable case index — each entry with the places in its care
+  team and its line-ups —; cases validated on first request and served
+  without their reference solution, the part of it a place in the team needs
+  beside them, `/api/content/cases/:id/place-path`; strong ETags),
   `/api/providers`, `POST /api/llm/stream` (provider-neutral SSE proxy; keys
   stay server-side), `POST /api/transcripts/:id`, local-only assets at
   `/local-assets/*`, the world bridge (`/api/world/sessions…`: a learner's

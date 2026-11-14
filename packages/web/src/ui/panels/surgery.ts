@@ -343,7 +343,12 @@ export function surgeryPanel(app: App): () => PanelView {
         select,
         select ? button(tr("surgery.port.insert"), { dataset: { op: "insert", port: port.port } }, () => send({ op: "insert", port: port.port, instrument: (d.instrument[port.port] ?? chosen) as InstrumentId })) : null,
         offer.withdraw ? button(tr("surgery.port.withdraw"), { dataset: { op: "withdraw", port: port.port } }, () => send(offer.withdraw)) : null,
-        offer.take ? button(tr("surgery.port.takeBack"), { dataset: { op: "hand-over", port: port.port, to: "operator" } }, () => send(offer.take)) : null,
+        offer.take
+          ? button(tr("surgery.port.takeBack"), { dataset: { op: "hand-over", port: port.port, to: "operator" } }, () => {
+              d.port = port.port;
+              send(offer.take);
+            })
+          : null,
       );
     };
 
@@ -375,7 +380,13 @@ export function surgeryPanel(app: App): () => PanelView {
             app.submit({ type: "team", action: "ask", to: a.to, field: { op: "pass", instrument: a.instrument } });
           }),
         ),
-        offer.take ? button(tr("surgery.port.take"), { dataset: { op: "hand-over", port: port.port, to: "me" }, title: tr("surgery.port.takeTitle", { port: port.port, instrument: port.instrument ? label("instrument", port.instrument) : "" }) }, () => send(offer.take)) : null,
+        // taken, it is the port to work with
+        offer.take
+          ? button(tr("surgery.port.take"), { dataset: { op: "hand-over", port: port.port, to: "me" }, title: tr("surgery.port.takeTitle", { port: port.port, instrument: port.instrument ? label("instrument", port.instrument) : "" }) }, () => {
+              d.port = port.port;
+              send(offer.take);
+            })
+          : null,
         offer.handBack ? button(tr("surgery.port.handBack"), { dataset: { op: "hand-over", port: port.port, to: "operator" }, title: tr("surgery.port.handBackTitle", { port: port.port, instrument: port.instrument ? label("instrument", port.instrument) : "" }) }, () => send(offer.handBack)) : null,
         offer.withdraw ? button(tr("surgery.port.withdraw"), { dataset: { op: "withdraw", port: port.port } }, () => send(offer.withdraw)) : null,
       );

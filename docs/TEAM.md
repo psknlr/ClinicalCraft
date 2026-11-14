@@ -136,7 +136,12 @@ The learner chooses a **place** once, at `start {seat, lineup}`, recorded with t
   chosen line-up, has a member in that place who is present — a team scenario that makes them absent refuses it —,
   with the base anatomical variant only. A place is a base member's or a line-up assistant's, never a relief
   colleague's. A case served without its reference solution (the content API's `publicCase` / `learnerCase`, what the
-  browser loads under `serve`) offers the operating surgeon's place only, and its start refuses another.
+  browser loads under `serve`) offers the operating surgeon's place only, and its start refuses another — until its
+  **place path** is put in as its solution: the content API serves it beside the case
+  (`GET /api/content/cases/:id/place-path`, core `placePath`: the solution's start, the actions a place's start applies
+  to join the team, then the operator's operative steps the stand-in works from — nothing else of the solution), and
+  with it the case offers the full case's places and a start in a place joins exactly as the full case's does
+  (`withPlacePath`; the web fetches it for a start in a place, or a saved encounter in one).
 - A place is taken at the start of an **untouched encounter**: nothing accepted before the start — not a phase
   switched to, a note or a flag —, else the start is refused, because the join follows the reference path from its
   beginning.
@@ -185,8 +190,9 @@ hold the scrub nurse's place the stand-in surgeon operates, and this session's s
 same reason, while the place is held (until the operation is closed), a `configure` that would (plan mode, a practice
 scope without the operation) is refused — `permission_denied`, saying why — and the approval mode and the practice
 scope stay as they were. The
-browser's start screen does not offer a place yet (a session started in one — over the protocol, a replay, QA — is
-played in every front-end as any other).
+browser's case-start card offers the places a case's index entry lists (`seats`, `lineups`), in in-world mode
+(docs/EMBODIED.md §2.1); its start in a place runs before the encounter is entered, and a refusal is shown in the
+session's words.
 
 ### Checks
 
@@ -853,7 +859,8 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   place the stand-in operates with its own, and observer mode plays the learner's place with the learner's body.
 - **Places.** A place joins at the team's phase; the join drives the record only — the world's device state machines
   (the count board) are not driven by it —, the Sign Out and the steps after the operation are the operator's, and a
-  case served without its reference solution offers no place. The browser's start screen does not offer a place yet.
+  case served without its reference solution offers a place only with its place path put in (served beside it). The
+  browser's team panel does not show the place yet (its case-start card and its surgery window do).
   There is no place for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
   The controls are enforced in the operative field (docs/PROCEDURE.md §3), the world's operations (docs/EMBODIED.md
   §8.2, §8.6: an operation's `control`, who checks the wound), the scope of practice and delegation (docs/EMBODIED.md
