@@ -1,0 +1,1266 @@
+diff --git a/packages/agent/src/dose-orders.test.ts b/packages/agent/src/dose-orders.test.ts
+index 9bfc3d2..3bae0ad 100644
+--- a/packages/agent/src/dose-orders.test.ts
++++ b/packages/agent/src/dose-orders.test.ts
+@@ -507,10 +507,12 @@ describe("a learner's own order that names several items is read clause by claus
+   it("the intervene tool, /give and a hook's rewrite send the item's own clause; the other items are named, not dropped", async () => {
+     expect(itemOrder(asthma, { query: "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化" }, "ipratropium-neb", "zh-CN")).toEqual({ text: "异丙托溴铵250微克雾化", dose: { amount: 250, unit: "microgram", route: "INH" } });
+     expect(itemOrder(asthma, { query: "salbutamol 2.5 mg nebulised" }, "salbutamol-neb", "en")).toEqual({ text: "salbutamol 2.5 mg nebulised", dose: { amount: 2.5, unit: "mg", route: "INH" } });
++    // free words that order several items order the first of them, in either language (verification D3: the zh order
++    // gave ipratropium, whose name the matcher found longer, while the en one gave salbutamol)
+     const zh = await give("zh-CN", asthma, "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化");
+-    expect(zh.state.interventions).toEqual([expect.objectContaining({ interventionId: "ipratropium-neb", ordered: { text: "异丙托溴铵250微克雾化", dose: { amount: 250, unit: "microgram", route: "INH" } } })]);
++    expect(zh.state.interventions).toEqual([expect.objectContaining({ interventionId: "salbutamol-neb", ordered: { text: "沙丁胺醇2.5毫克", dose: { amount: 2.5, unit: "mg" } } })]);
+     expect(zh.state.doseErrors ?? []).toEqual([]);
+-    expect(zh.out.text).toContain("您的医嘱还写了沙丁胺醇氧驱动雾化吸入：每种治疗请单独下医嘱。");
++    expect(zh.out.text).toContain("您的医嘱还写了异丙托溴铵雾化吸入：每种治疗请单独下医嘱。");
+     const en = await give("en", asthma, "nebulise salbutamol 2.5 mg with ipratropium 250 micrograms");
+     expect(en.state.interventions).toEqual([expect.objectContaining({ interventionId: "salbutamol-neb", ordered: expect.objectContaining({ text: "nebulise salbutamol 2.5 mg" }) })]);
+     expect(en.out.text).toContain("Your order also names Nebulised ipratropium bromide: each treatment is given on its own order.");
+@@ -593,3 +595,72 @@ describe("second re-review replays: no exemption swallows the only dose; prepara
+     expect(parts.out.text).toContain("Dose checked: 7.2 mg as a bolus, then 64.8 mg/h, as ordered, is the preset dose");
+   });
+ });
++
++/* ------------------------------------------------------------------ */
++/* The second set's verification (D3): every clause of an order checked */
++/* ------------------------------------------------------------------ */
++
++describe("an order that names several items: every clause checked against its own item, the same in both languages (verification D3)", () => {
++  const stemi = builtin("stemi-inferior-rv");
++
++  it("a tenfold dose in a clause that is not given is recorded, fails the safety outcome and is read back — en and zh-CN alike", async () => {
++    for (const [locale, order, words] of [
++      ["en", "ticagrelor 180 mg PO with aspirin 3000 mg", "Nurse: “Before I give aspirin loading dose, let me read it back: you ordered 3000 mg; the dose for this is 150–325 mg PO. Can you confirm the dose?”\nNot given: the dose ordered differs from the preset dose (9.23 times the top of the preset range). Order it again with the dose you mean."],
++      ["zh-CN", "替格瑞洛180mg口服+阿司匹林3000mg", "护士：“给阿司匹林负荷之前我复述一下：您开的是 3000 mg，这个药的剂量是 150–325 mg 口服。请您确认剂量。”\n未给药：医嘱剂量与预设剂量不符（为预设剂量上限的 9.23 倍）。请写明您要给的剂量，重新下医嘱。"],
++      ["zh-CN", "替格瑞洛180mg和阿司匹林3000mg口服", "您开的是 3000 mg 口服"],
++      ["zh-CN", "替格瑞洛180mg、阿司匹林3000mg口服", "您开的是 3000 mg 口服"],
++      ["en", "give ticagrelor 180 mg PO and aspirin 3000 mg PO", "you ordered 3000 mg PO"],
++    ] as const) {
++      const { state, out } = await give(locale, stemi, order, "bypass");
++      // the first order is given on its own words; the other's dose error is the engine's record, not given
++      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ticagrelor"]);
++      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: "aspirin", ordered: expect.objectContaining({ amount: 3000, unit: "mg" }), severity: "critical" })]);
++      expect(assess(stemi, state).safety.passed, order).toBe(false);
++      expect(out.text, order).toContain(words);
++      expect((out.data as { data: unknown }).data, order).toMatchObject({ interventionId: "ticagrelor", alsoOrdered: [{ interventionId: "aspirin", outcome: "dose-error", doseError: { severity: "critical" } }] });
++    }
++  });
++
++  it("the joiners of both languages split alike: the first item is given, never a \"which one?\" for one language only", async () => {
++    for (const [locale, order] of [
++      ["en", "ticagrelor 180 mg PO and aspirin 300 mg PO"],
++      ["en", "ticagrelor 180 mg PO plus aspirin 300 mg PO"],
++      ["en", "ticagrelor 180 mg PO as well as aspirin 300 mg PO"],
++      ["en", "give ticagrelor 180 mg PO & aspirin 300 mg PO"],
++      ["zh-CN", "替格瑞洛180mg+阿司匹林300mg口服"],
++      ["zh-CN", "替格瑞洛180mg和阿司匹林300mg口服"],
++      ["zh-CN", "替格瑞洛180mg、阿司匹林300mg口服"],
++      ["zh-CN", "替格瑞洛180mg以及阿司匹林300mg口服"],
++      ["zh-CN", "替格瑞洛180mg同时阿司匹林300mg口服"],
++    ] as const) {
++      const { state, out } = await give(locale, stemi, order, "bypass");
++      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ticagrelor"]);
++      expect(state.doseErrors ?? [], order).toEqual([]);
++      expect(out.text, order).toContain(locale === "en" ? "Your order also names Aspirin loading dose: each treatment is given on its own order." : "您的医嘱还写了阿司匹林负荷：每种治疗请单独下医嘱。");
++    }
++    // the first of them, whichever name is longer
++    for (const [locale, order] of [["en", "give aspirin 300 mg PO and ticagrelor 180 mg PO"], ["zh-CN", "阿司匹林300mg和替格瑞洛180mg嚼服"]] as const) {
++      const { state } = await give(locale, stemi, order, "bypass");
++      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["aspirin"]);
++    }
++    // a dose that cannot be read in the other order is asked about: nothing recorded for it
++    const unclear = await give("en", stemi, "ticagrelor 180 mg PO and aspirin 0.5 tablet", "bypass");
++    expect(unclear.state.interventions.map((r) => r.interventionId)).toEqual(["ticagrelor"]);
++    expect(unclear.state.doseErrors ?? []).toEqual([]);
++    expect((unclear.out.data as { data: unknown }).data).toMatchObject({ alsoOrdered: [{ interventionId: "aspirin", outcome: "dose-query" }] });
++  });
++
++  it("a multi-drug order whose doses are all right stays given exactly as before", async () => {
++    // the id first, its own clause (the reply as the first set gave it, line for line)
++    const both = await give("en", stemi, "ticagrelor 180 mg PO and aspirin 300 mg PO", "bypass");
++    expect(both.state.interventions).toEqual([expect.objectContaining({ interventionId: "ticagrelor", ordered: { text: "180 mg PO", dose: { amount: 180, unit: "mg", route: "PO" } } })]);
++    expect(both.state.doseErrors ?? []).toEqual([]);
++    expect(both.out.text.split("\n").slice(0, 4)).toEqual([
++      "Given: Ticagrelor loading dose (Ticagrelor 180 mg PO).",
++      "Dose checked: 180 mg PO as ordered is the preset dose (180 mg PO).",
++      "Your order also names Aspirin loading dose: each treatment is given on its own order.",
++      expect.stringMatching(/^Response: Ticagrelor 180 mg given orally\./u),
++    ]);
++    expect(assess(stemi, both.state).safety.passed).toBe(true);
++  });
++});
+diff --git a/packages/agent/src/safety.ts b/packages/agent/src/safety.ts
+index 1911ee9..367d969 100644
+--- a/packages/agent/src/safety.ts
++++ b/packages/agent/src/safety.ts
+@@ -8,7 +8,7 @@
+  */
+ import { safetyPassed, t, type AssessedDoseError, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
+ import { isZh, rt } from "./session/i18n.js";
+-import { doseRatioText, doseText, interventionNameText, isRange } from "./tools/dose-order.js";
++import { againstRange, doseRatioText, doseText, interventionNameText } from "./tools/dose-order.js";
+ 
+ /**
+  * The safety part of a report, as saved transcripts and exports may hold it: reports written before the safety
+@@ -127,7 +127,7 @@ export function safetySummary(c: Pick<CaseDefinition, "interventions">, report:
+     const name = interventionNameText(c, e.interventionId, L);
+     const readAs = doseText(e.ordered, L);
+     const preset = doseText(e.preset, L);
+-    const ratio = doseRatioText(e.ratio, L, isRange(e.preset));
++    const ratio = doseRatioText(e.ratio, L, againstRange(e));
+     const key = e.severity === "critical" ? "safety.doseError.critical" : "safety.doseError.warning";
+     return {
+       interventionId: e.interventionId,
+diff --git a/packages/agent/src/session/action-input.ts b/packages/agent/src/session/action-input.ts
+index dcfd33b..1dca22e 100644
+--- a/packages/agent/src/session/action-input.ts
++++ b/packages/agent/src/session/action-input.ts
+@@ -17,7 +17,6 @@ import {
+   noSuchDecisionText,
+   resolveFinding,
+   resolveHits,
+-  resolveIntervention,
+   resolveInvestigation,
+   strArg,
+   unknownOptionsText,
+@@ -25,7 +24,7 @@ import {
+   type Resolution,
+ } from "../tools/clinical.js";
+ import { decisionRefFor } from "../tools/decision-refs.js";
+-import { itemOrder } from "../tools/dose-order.js";
++import { itemOrder, resolveOrderedIntervention } from "../tools/dose-order.js";
+ import { interventionLabel, investigationName } from "../tools/format.js";
+ import { optionLabelsFor } from "../tools/option-labels.js";
+ 
+@@ -161,7 +160,8 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
+       return { ok: true, action: { ...rest, investigationId: r.id, ...(phase ? { phase } : {}) } };
+     }
+     case "intervene": {
+-      const r = resolveIntervention(c, input, L);
++      // the item the words order, as the intervene tool reads them (the first of several orders)
++      const r = resolveOrderedIntervention(c, input, L);
+       if (r.kind !== "id") return refuse(r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
+       // The order as written: kept as the action states it (its dose as read) while the hook left the words alone,
+       // else read again from the words the input now holds (`itemOrder`, as the tool reads them: this item's clause).
+diff --git a/packages/agent/src/session/i18n-embodied.ts b/packages/agent/src/session/i18n-embodied.ts
+index a28cfc9..375260c 100644
+--- a/packages/agent/src/session/i18n-embodied.ts
++++ b/packages/agent/src/session/i18n-embodied.ts
+@@ -44,6 +44,7 @@ export const EMBODIED_EN = {
+   "world.entity": "- {name} [{id}] · {distance} m {direction}{state}{reach}{actions}{cues}",
+   "world.entity.missing": "- {name} [{id}]",
+   "world.entity.state": " · {state}",
++  "world.entity.stateSeen": " · {state} when last seen",
+   "world.entity.inReach": " · in reach",
+   "world.entity.actions": " · can: {actions}",
+   "world.entity.cues": " · {cues}",
+@@ -319,6 +320,7 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "world.entity": "- {name} [{id}] · {distance} 米 {direction}{state}{reach}{actions}{cues}",
+   "world.entity.missing": "- {name} [{id}]",
+   "world.entity.state": " · {state}",
++  "world.entity.stateSeen": " · 上次见到时{state}",
+   "world.entity.inReach": " · 伸手可及",
+   "world.entity.actions": " · 可操作：{actions}",
+   "world.entity.cues": " · {cues}",
+diff --git a/packages/agent/src/tools/clinical.ts b/packages/agent/src/tools/clinical.ts
+index 99be572..abf3ce3 100644
+--- a/packages/agent/src/tools/clinical.ts
++++ b/packages/agent/src/tools/clinical.ts
+@@ -58,7 +58,7 @@ import {
+   type ToolArgs,
+ } from "./clinical-resolve.js";
+ import { studyLines } from "./studies.js";
+-import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, itemOrder, orderCheck, otherOrdersText, writtenOrder } from "./dose-order.js";
++import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, interventionNameText, itemOrder, orderCheck, otherClauses, resolveOrderedIntervention, writtenOrder, type DoseErrorEvent, type DoseQuery } from "./dose-order.js";
+ import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
+ import { resolveConsultStaff } from "./consult-target.js";
+ import type { StaffVoice } from "../session/staff-voice.js";
+@@ -533,7 +533,7 @@ function operationRedirect(ctx: ToolContext, query: string): ToolOutput {
+ }
+ 
+ function interventionRisk(args: ToolArgs, ctx: ToolContext) {
+-  const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
++  const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
+   return r.kind === "id" ? (ctx.caseDef.interventions.find((i) => i.id === r.id)?.risk ?? "low") : "none";
+ }
+ 
+@@ -560,7 +560,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+   risk: interventionRisk,
+   alwaysAsk: (args, ctx) => interventionRisk(args, ctx) === "high",
+   summarize(args, ctx) {
+-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
++    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
+     const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
+     // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
+     // the words that order this item (its own clause when they order several)
+@@ -571,11 +571,11 @@ const intervene: ToolDefinition<ToolArgs> = {
+     return dose ? rt(ctx.locale, "sum.interveneDose", { name, dose: doseText(dose, ctx.locale) }) : rt(ctx.locale, "sum.intervene", { name });
+   },
+   specifier(args, ctx) {
+-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
++    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
+     return r.kind === "id" ? r.id : strArg(args, "intervention_id") || strArg(args, "query");
+   },
+   precheck(args, ctx) {
+-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
++    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
+     const iv = r.kind === "id" ? ctx.caseDef.interventions.find((i) => i.id === r.id) : undefined;
+     if (!iv) return null;
+     // Refused before the approval gate: no high-risk confirmation for a dose that cannot be given.
+@@ -584,7 +584,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+   async run(args, ctx) {
+     const c = ctx.caseDef;
+     const L = ctx.locale;
+-    const r = resolveIntervention(c, args, L);
++    const r = resolveOrderedIntervention(c, args, L);
+     if (r.kind !== "id") {
+       // the operation itself asked for as an intervention: the way in is the operative field, with what it still needs
+       const asked = strArg(args, "query") || strArg(args, "intervention_id");
+@@ -596,35 +596,36 @@ const intervene: ToolDefinition<ToolArgs> = {
+     // the order as written (words only: an id alone states none; the clause that names this item when they order
+     // several) and the dose read from it — the engine checks it
+     const ordered = itemOrder(c, args, r.id, L);
+-    // the other treatments the words order: each on its own order (never silently dropped)
+-    const others = (() => {
+-      const words = writtenOrder(args)?.text;
+-      return words ? otherOrdersText(c, words, r.id, L) : null;
+-    })();
+-    const withOthers = (text: string) => (others ? `${text}\n${others}` : text);
+     const result = dispatch(ctx, { type: "intervene", interventionId: r.id, ...(ordered ? { ordered } : {}) });
++    // the other treatments the words order: each checked against its own preset — a dose error recorded and read back,
++    // an unclear dose asked about — and given on its own order (never silently dropped)
++    const others = alsoOrdered(ctx, args, r.id);
++    // a refusal ends with them; a treatment given names the others after its dose check, as before, and reads back the
++    // other orders' doses after its own lines
++    const withOthers = (out: ToolOutput, lines = [...(others.named ? [others.named] : []), ...others.readBacks]): ToolOutput =>
++      others.data.length ? { ...out, output: [out.output, ...lines].join("\n"), data: { ...((out.data as Record<string, unknown> | undefined) ?? {}), alsoOrdered: others.data } } : out;
+     if (result.rejected?.code === "on-hold") {
+       const hold = activeHolds(ctx.state(), r.id)[0];
+       const message = hold ? rt(L, "intervene.onHold", { name: interventionLabel(c, r.id, L), by: hold.placedBy, reason: sentence(hold.reason) }) : rejectionText(L, "on-hold");
+-      return { ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } };
++      return withOthers({ ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } });
+     }
+     // the order's dose is not clear: nothing given, no dose error — the nurse asks for it as a number with its unit
+     if (result.rejected?.code === "dose-unclear" && ordered) {
+       const check = orderCheck(c, r.id, ordered);
+       if (check?.outcome === "query") {
+-        const message = withOthers(doseQueryChallengeText(c, r.id, check, L));
++        const message = doseQueryChallengeText(c, r.id, check, L);
+         const iv = c.interventions.find((i) => i.id === r.id)!;
+-        return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } };
++        return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } });
+       }
+     }
+     // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
+-    if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
++    if (result.rejected) return withOthers(rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined));
+     const iv = c.interventions.find((i) => i.id === r.id)!;
+     const doseError = eventsOf(result, "dose.error")[0];
+     if (doseError) {
+       // the dose ordered differs from the dose prepared: nothing given — the nurse reads the order back (closed loop)
+-      const message = withOthers(doseChallengeText(c, doseError, L));
+-      return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } };
++      const message = doseChallengeText(c, doseError, L);
++      return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } });
+     }
+     const applied = eventsOf(result, "intervention.applied")[0];
+     const appropriateness = applied?.appropriateness ?? "neutral";
+@@ -632,7 +633,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+     if (applied?.invalid) {
+       // a checklist step out of order: recorded as invalid, nothing applied — never reported as done
+       const output = [rt(L, "intervene.invalid", { harm }).trim(), ...objectiveRequirementLines(c, ctx.state(), L, visiblePhases(c, ctx.state()))].join("\n");
+-      return { ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } };
++      return withOthers({ ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } });
+     }
+     const dose = iv.dose ? t(iv.dose, L) : "";
+     const name = t(iv.name, L);
+@@ -643,7 +644,7 @@ const intervene: ToolDefinition<ToolArgs> = {
+     // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
+     const checked = doseCheckText(c, iv, recorded, L);
+     if (checked) lines.push(checked);
+-    if (others) lines.push(others);
++    if (others.named) lines.push(others.named);
+     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
+     // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
+     const data = safetyDataLines(c, ctx.state(), iv.reports, L);
+@@ -651,10 +652,63 @@ const intervene: ToolDefinition<ToolArgs> = {
+     if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
+     // the order as written and the dose read from it, apart from the dose given: the preset (`doseSpec`, the dose text)
+     const order = recorded ? { ordered: recorded, administered: administeredDose(c, iv.id, L) } : {};
+-    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
++    return withOthers({ ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } }, others.readBacks);
+   },
+ };
+ 
++/**
++ * Another treatment an `intervene` call's words order beside its own (`otherClauses`), as the call left it:
++ * `dose-error` — its own words' dose conflicts with its preset: recorded by the engine (`dose.error`, the reducer's own
++ * check; nothing given) and read back; `dose-query` — a dose that cannot be read or compared, asked about (nothing
++ * given or recorded); `named` — to be given on its own order.
++ */
++export interface AlsoOrdered {
++  interventionId: string;
++  /** The words that order it. */
++  text: string;
++  outcome: "dose-error" | "dose-query" | "named";
++  doseError?: ReturnType<typeof doseErrorData>;
++  doseQuery?: ReturnType<typeof doseQueryData>;
++}
++
++/**
++ * The other orders of an `intervene` call's words, each checked against its own item's preset (core `checkOrder`, as
++ * the engine checks it): a dose error is dispatched as that item's order — the reducer records it (a critical one fails
++ * the safety outcome) and gives nothing — and the nurse reads it back; an unclear dose is asked about; the rest are
++ * named, each given on its own order. Run after the call's own order reached the engine, so the spatial re-check is
++ * its own. The line naming the others ("Your order also names …"), the nurse's read-backs and questions, and
++ * `data.alsoOrdered`.
++ */
++function alsoOrdered(ctx: ToolContext, args: ToolArgs, interventionId: string): { named: string | null; readBacks: string[]; data: AlsoOrdered[] } {
++  const c = ctx.caseDef;
++  const L = ctx.locale;
++  const readBacks: string[] = [];
++  const named: string[] = [];
++  const data: AlsoOrdered[] = [];
++  for (const other of otherClauses(c, args, interventionId, L)) {
++    const order = writtenOrder({ query: other.text });
++    const check = order ? orderCheck(c, other.id, order) : null;
++    if (order && check?.outcome === "conflict") {
++      const e: DoseErrorEvent | undefined = eventsOf(dispatch(ctx, { type: "intervene", interventionId: other.id, ordered: order }), "dose.error")[0];
++      if (e) {
++        readBacks.push(doseChallengeText(c, e, L));
++        data.push({ interventionId: other.id, text: other.text, outcome: "dose-error", doseError: doseErrorData(e) });
++        continue;
++      }
++    }
++    if (order && check?.outcome === "query") {
++      const q: DoseQuery = check;
++      readBacks.push(doseQueryChallengeText(c, other.id, q, L));
++      data.push({ interventionId: other.id, text: other.text, outcome: "dose-query", doseQuery: doseQueryData(c, other.id, order.text, q) });
++      continue;
++    }
++    named.push(other.id);
++    data.push({ interventionId: other.id, text: other.text, outcome: "named" });
++  }
++  const names = named.length ? rt(L, "dose.alsoOrdered", { items: joinList(L, named.map((id) => interventionNameText(c, id, L))) }) : null;
++  return { named: names, readBacks, data };
++}
++
+ /* ------------------------------------------------------------------ */
+ /* Team                                                                */
+ /* ------------------------------------------------------------------ */
+diff --git a/packages/agent/src/tools/dose-order.ts b/packages/agent/src/tools/dose-order.ts
+index 74531ac..f1354bc 100644
+--- a/packages/agent/src/tools/dose-order.ts
++++ b/packages/agent/src/tools/dose-order.ts
+@@ -9,8 +9,8 @@
+  * their question about one that is not clear (nothing given either way), and the check of an order's dose.
+  */
+ import { checkOrder, readOrder, parseDose, ROUTE_WORDS, t, type CaseDefinition, type DomainEvent, type DosePart, type DoseRoute, type DoseSpec, type DoseUnit, type Intervention, type OrderCheck, type OrderedDose, type WrittenOrder } from "@clinicalcraft/core";
+-import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+-import { resolveIntervention, strArg, withoutDoses, type ToolArgs } from "./clinical-resolve.js";
++import { isZh, rt, type RuntimeKey } from "../session/i18n.js";
++import { resolveIntervention, strArg, withoutDoses, type Resolution, type ToolArgs } from "./clinical-resolve.js";
+ 
+ /** Longest order text kept (core `WrittenOrderSchema`). */
+ const MAX_ORDER_LENGTH = 1000;
+@@ -114,12 +114,24 @@ export function doseRatioText(ratio: number | null, locale: string, range = fals
+ /** Is the preset a range (`upTo` above `amount`), or given in parts — "the dose for this is …", not "what I have prepared"? */
+ export const isRange = (preset: DoseSpec): boolean => (preset.upTo != null && preset.upTo !== preset.amount) || preset.maintenance != null || preset.bolus != null;
+ 
++/**
++ * Was a dose error's amount compared with a range — the preset's own, or, for a rate ordered beside a single dose, its
++ * infusion's (`maintenance`: a heparin rate against 18 units/kg/h, not against the bolus's 70–80 units/kg)? A dose
++ * given in parts is one dose (its whole), not a range. How far apart they are is then said from the range's nearer end
++ * (`doseRatioText`).
++ */
++export function againstRange(e: Pick<DoseErrorEvent, "ordered" | "preset">): boolean {
++  const isRate = (unit: string | undefined) => unit != null && /\/(?:h|min)$/u.test(unit);
++  const part = isRate(e.ordered.unit) && !isRate(e.preset.unit) && e.preset.maintenance ? e.preset.maintenance : e.preset;
++  return part.upTo != null && part.upTo !== part.amount;
++}
++
+ /** What conflicts, in words: the amount (how far), the route, an incomparable unit. */
+ function conflictText(e: Pick<DoseErrorEvent, "conflicts" | "ordered" | "preset" | "ratio">, locale: string): string {
+   const parts: string[] = [];
+   if (e.conflicts.includes("amount")) {
+-    // against a range's nearer end; a dose given in parts is one dose (its whole), not a range
+-    const ratio = doseRatioText(e.ratio, locale, e.preset.upTo != null && e.preset.upTo !== e.preset.amount);
++    // against a range's nearer end
++    const ratio = doseRatioText(e.ratio, locale, againstRange(e));
+     if (ratio) parts.push(ratio);
+   }
+   if (e.conflicts.includes("route") && e.ordered.route && e.preset.route) {
+@@ -227,11 +239,12 @@ export function doseQueryData(c: Pick<CaseDefinition, "interventions">, interven
+ }
+ 
+ /**
+- * Where an order moves to its next one: "…, then …", "…; …", "然后", "接着" — and where it adds another drug: "+", "&",
+- * "and", "plus", "with", "和", "及", "与", "联合", "加" (a comma between digits is a number's; a join inside a dose or a
+- * preparation, "50U+NS 50ml", "KCl 40 mmol with saline", is not one).
++ * Where an order moves to its next one: "…, then …", "…; …", "然后", "接着" — and where it adds another drug, the same
++ * in both languages: "+", "&", "and", "plus", "with", "as well as", "和", "及", "以及", "与", "同时", "联合", "加" and
++ * the enumeration comma "、" (a comma between digits is a number's; a join inside a dose or a preparation, "50U+NS
++ * 50ml", "KCl 40 mmol with saline", "0、5mg", is not one).
+  */
+-const CLAUSE = /\s*(?:(?<!\d),|,(?!\d)|，|;|；|。|\+|＋|&|\b(?:and then|then|after that|followed by|and|plus|with)\b|然后|接着|随后|之后|再给|并给|联合|并用|加用|加上|加(?![入至量快慢压温热])|和|及|与)\s*/giu;
++const CLAUSE = /\s*(?:(?<!\d),|,(?!\d)|，|、|;|；|。|\+|＋|&|\b(?:and then|then|after that|followed by|as well as|and|plus|with)\b|然后|接着|随后|之后|再给|并给|联合|并用|加用|加上|加(?![入至量快慢压温热])|和|以及|及|与|同时)\s*/giu;
+ 
+ /**
+  * Words that say how, when or how fast — never what (beside a dose and a route): a clause of only these names no item
+@@ -303,15 +316,55 @@ export function orderClause(c: CaseDefinition, request: string, interventionId:
+   return own ? text.slice(own.start, own.end).trim() : null;
+ }
+ 
+-/** The other items an order names beside this one, each in its own clause (`orderClause`): ordered, not given here. */
++/**
++ * The items a request orders, each with the words that order it (`orderClauses`), in the order written: one per item
++ * named alone in its own clause (an item named twice keeps its first clause; words naming none are no order). Empty
++ * for words that are one order. `leadingId`: the item a first clause naming none orders (an id written before them).
++ */
++export function orderedItems(c: CaseDefinition, request: string, locale: string, leadingId?: string): { id: string; text: string }[] {
++  const text = request.trim();
++  const seen = new Set<string>();
++  const out: { id: string; text: string }[] = [];
++  for (const o of orderClauses(c, text, locale, leadingId)) {
++    if (o.id == null || seen.has(o.id)) continue;
++    seen.add(o.id);
++    out.push({ id: o.id, text: text.slice(o.start, o.end).trim() });
++  }
++  return out;
++}
++
++/** The other items an order names beside this one, each in its own clause (`orderedItems`): ordered, not given here. */
+ export function otherOrders(c: CaseDefinition, request: string, interventionId: string, locale: string): string[] {
+-  return [...new Set(orderClauses(c, request.trim(), locale).map((o) => o.id).filter((id): id is string => id != null && id !== interventionId))];
++  return orderedItems(c, request, locale).map((o) => o.id).filter((id) => id !== interventionId);
+ }
+ 
+-/** "Your order also names salbutamol: each treatment is given on its own order." — null when it names no other. */
+-export function otherOrdersText(c: CaseDefinition, request: string, interventionId: string, locale: string): string | null {
+-  const others = otherOrders(c, request, interventionId, locale);
+-  return others.length ? rt(locale, "dose.alsoOrdered", { items: joinList(locale, others.map((id) => interventionNameText(c, id, locale))) }) : null;
++/**
++ * The item an `intervene` call orders, as every step of the call reads it — the tool, its approval and risk, the
++ * spatial gate and a hook's rewrite (docs/PROTOCOL.md §3.2): by id (`intervention_id`) that item; free words as
++ * `resolveIntervention` reads them — but words that order several items, each in its own clause ("ticagrelor 180 mg
++ * PO and aspirin 300 mg PO", "替格瑞洛180mg+阿司匹林300mg口服", "…、…"), order the first of them, in either language:
++ * never the one whose name the matcher finds longer, nor none ("which one?"). The others are checked clause by clause
++ * against their own presets (`otherClauses`) and given on their own orders. Words that, whole, name one item none of
++ * the clauses names alone keep it.
++ */
++export function resolveOrderedIntervention(c: CaseDefinition, args: ToolArgs, locale: string): Resolution {
++  const r = resolveIntervention(c, args, locale);
++  const query = strArg(args, "query");
++  if (strArg(args, "intervention_id") || !query || (r.kind !== "id" && r.kind !== "ambiguous")) return r;
++  const items = orderedItems(c, query, locale).map((o) => o.id);
++  if (items.length < 2 || (r.kind === "id" && !items.includes(r.id))) return r;
++  return { kind: "id", id: items[0]! };
++}
++
++/**
++ * The other orders of an `intervene` call's words (`writtenOrder`) beside its item's — each item with the words that
++ * order it, as written (`orderedItems`; an id written before the words owns their first clause).
++ */
++export function otherClauses(c: CaseDefinition, args: ToolArgs, interventionId: string, locale: string): { id: string; text: string }[] {
++  const words = writtenOrder(args)?.text;
++  if (!words) return [];
++  const leading = strArg(args, "intervention_id") && !strArg(args, "query") ? interventionId : undefined;
++  return orderedItems(c, words, locale, leading).filter((o) => o.id !== interventionId);
+ }
+ 
+ /**
+diff --git a/packages/agent/src/tools/spatial.ts b/packages/agent/src/tools/spatial.ts
+index 4c6299a..b44e77a 100644
+--- a/packages/agent/src/tools/spatial.ts
++++ b/packages/agent/src/tools/spatial.ts
+@@ -24,7 +24,8 @@
+ import { awaitingAcquisition, type ClinicalAction } from "@clinicalcraft/core";
+ import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
+ import { rt } from "../session/i18n.js";
+-import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
++import { resolveFinding, resolveInvestigation, strArg } from "./clinical.js";
++import { resolveOrderedIntervention } from "./dose-order.js";
+ import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
+ import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./types.js";
+ import { hintLines } from "./world-format.js";
+@@ -59,7 +60,8 @@ export function clinicalIntent(tool: string, args: Record<string, unknown>, ctx:
+       return r.kind === "id" ? { tool, kind, investigationId: r.id, itemId: r.id } : { tool, kind };
+     }
+     case "intervene": {
+-      const r = resolveIntervention(c, args, L);
++      // the item the call orders, as the tool reads it (the first of several orders)
++      const r = resolveOrderedIntervention(c, args, L);
+       return r.kind === "id" ? { tool, kind: "intervene", interventionId: r.id, itemId: r.id } : { tool, kind: "intervene" };
+     }
+     case "consult":
+diff --git a/packages/agent/src/tools/world-format.ts b/packages/agent/src/tools/world-format.ts
+index 6b13d94..2701233 100644
+--- a/packages/agent/src/tools/world-format.ts
++++ b/packages/agent/src/tools/world-format.ts
+@@ -38,6 +38,9 @@ export function entityLine(e: ObservedEntity, locale: string, actorLevel: string
+   const cues = cuesText(e.cues, locale);
+   // missing: no distance or direction to where it was looked for, no state, nothing to do with it (EMBODIED §4)
+   if (e.lastKnown?.kind === "missing") return rt(locale, "world.entity.missing", { name: e.name, id: e.id }) + awareness;
++  // believed elsewhere: the state it was in when last seen there (none when never seen there), never its state now,
++  // and nothing it offers (audit 2026-11-12 W1: the world lists none)
++  const state = !e.state ? "" : e.lastKnown ? rt(locale, "world.entity.stateSeen", { state: e.state }) : rt(locale, "world.entity.state", { state: e.state });
+   return (
+     rt(locale, "world.entity", {
+       name: e.name,
+@@ -45,7 +48,7 @@ export function entityLine(e: ObservedEntity, locale: string, actorLevel: string
+       distance: round1(e.distance),
+       direction,
+       // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
+-      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) + (e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : "") : "",
++      state: state + (state && e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : ""),
+       reach: e.inReach ? rt(locale, "world.entity.inReach") : "",
+       actions: e.availableActions.length ? rt(locale, "world.entity.actions", { actions: e.availableActions.join(", ") }) : "",
+       cues: cues ? rt(locale, "world.entity.cues", { cues }) : "",
+diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
+index 4e266b1..84e0fc2 100644
+--- a/packages/core/src/engine/dose-read.ts
++++ b/packages/core/src/engine/dose-read.ts
+@@ -37,7 +37,10 @@ export interface DoseMention {
+   unit: DoseUnit;
+   /** A volume the order converts through the strength it states ("0.5 mL of 1 mg/mL" → 0.5 mg): the volume as written. */
+   volume?: { amount: number; unit: DoseUnit };
+-  /** Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷ hours. */
++  /**
++   * Minutes the order gives it over ("64.8 mg over 60 min", "KCl 40 mmol in 1 L over 2 hours"): as a rate, amount ÷
++   * hours. Of several durations after one dose, the longest ("over 60 min, 10% as a bolus over 1 min").
++   */
+   over?: number;
+   /** The cap the order states with a dose per kg ("0.01 mg/kg, max 0.5 mg"): never more than this, absolute. */
+   max?: { amount: number; unit: DoseUnit };
+@@ -782,11 +785,12 @@ export function readOrder(text: string): OrderReading {
+     if (!isTaken(m.index)) note("unreadable", m.index - s.slice(Math.max(0, m.index - 3), m.index).match(/[几若干多少数个]*$/u)![0].length, m.index + m[0].length);
+   }
+   for (const m of s.matchAll(PLACEHOLDER_UNIT)) if (!isTaken(m.index + m[0].length - 1)) note("unreadable", m.index, m.index + m[0].length);
+-  // a duration belongs to the dose (or preparation) last before it
++  // a duration belongs to the dose (or preparation) last before it; of several, the longest is how long it runs ("0.9
++  // mg/kg over 60 min with 10% as a bolus over 1 min")
+   for (const d of durations) {
+     if (!(d.minutes > 0)) continue;
+     const owner = [...found, ...preparations].filter((f) => f.end <= d.at).sort((a, b) => b.end - a.end)[0];
+-    if (owner && !owner.time && owner.upTo == null) owner.over = d.minutes;
++    if (owner && !owner.time && owner.upTo == null) owner.over = Math.max(owner.over ?? 0, d.minutes);
+   }
+   // a later single dose after "then" and at a frequency ("300 mg now, then 75 mg daily"): the regimen's maintenance
+   for (let i = 1; i < found.length; i++) {
+diff --git a/packages/core/src/engine/dose.test.ts b/packages/core/src/engine/dose.test.ts
+index 6facd31..6b97f58 100644
+--- a/packages/core/src/engine/dose.test.ts
++++ b/packages/core/src/engine/dose.test.ts
+@@ -4,7 +4,7 @@
+  */
+ import { describe, expect, it } from "vitest";
+ import { DOSE_UNITS, DoseSpecSchema, OrderedDoseSchema } from "../schema/common.js";
+-import { checkOrder, compareDose, doseErrorSeverity, doseMentions, doseRoute, formatDose, isHighAlert, parseDose, readOrder } from "./index.js";
++import { checkOrder, compareDose, doseErrorSeverity, doseMentions, doseRoute, formatDose, infusionMinutes, isHighAlert, parseDose, readOrder } from "./index.js";
+ 
+ describe("parseDose: the dose a written order states", () => {
+   it("reads the amount, its unit and the route, in English and Chinese", () => {
+@@ -518,3 +518,67 @@ describe("no exemption leaves an order without the dose it states (re-review of
+     for (const [text, iv] of rows) expect(never(check(text, iv)), text).toBe(true);
+   });
+ });
++
++/* ------------------------------------------------------------------ */
++/* The second set's verification (audit 2026-11-12 follow-ups, D1–D2)   */
++/* ------------------------------------------------------------------ */
++
++describe("checkOrder: an infusion's rate is checked even when the parts add up to the whole (verification D1, D2)", () => {
++  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
++  const ufh = { doseSpec: DoseSpecSchema.parse({ amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance: { amount: 18, unit: "unit/kg/h" } }), risk: "moderate", name: "Unfractionated heparin IV infusion" } as const;
++  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
++
++  it("the infusion of a dose given in parts runs for its own duration: the whole less the bolus at the maintenance rate", () => {
++    expect(infusionMinutes(alteplase.doseSpec)).toEqual({ low: 60, high: 60 });
++    // a per-kg whole beside an absolute rate needs the weight
++    expect(infusionMinutes({ amount: 0.9, unit: "mg/kg", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 64.8, unit: "mg/h" } }, 80)).toEqual({ low: 60, high: 60 });
++    expect(infusionMinutes({ amount: 0.9, unit: "mg/kg", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 64.8, unit: "mg/h" } })).toBeNull();
++    expect(infusionMinutes(ufh.doseSpec)).toBeNull();
++  });
++
++  it("a tenfold infusion is a critical dose error, whether its parts add up to the whole or the whole is given too fast — en and zh-CN", () => {
++    // the parts are the preset's, the infusion runs over 6 min instead of 60: 648 mg/h, ten times 64.8 mg/h
++    for (const text of ["alteplase 7.2 mg IV bolus then 64.8 mg over 6 min", "阿替普酶7.2mg静推，随后64.8mg于6分钟内泵入", "alteplase 7.2 mg IV bolus then 64.8 mg over 6 min (total 72 mg)"]) {
++      expect(check(text, alteplase, 80), text).toEqual({ outcome: "conflict", dose: { amount: 648, unit: "mg/h", route: "IV" }, ratio: 10, conflicts: ["amount"], severity: "critical" });
++    }
++    // the whole over 6 min: ten times as fast as the infusion's own 60 min (as the rate it runs at, 720 mg/h)
++    for (const text of ["alteplase 72 mg IV over 6 min", "阿替普酶72mg静脉，6分钟内泵入"]) {
++      expect(check(text, alteplase, 80), text).toEqual({ outcome: "conflict", dose: { amount: 720, unit: "mg/h", route: "IV" }, ratio: 10, conflicts: ["amount"], severity: "critical" });
++    }
++    expect(check("alteplase 0.9 mg/kg IV over 6 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 9, unit: "mg/kg/h" }, ratio: 10, severity: "critical" });
++    // twice as fast is critical for a thrombolytic; slower than the preset is a dose error to review
++    expect(check("alteplase 72 mg IV over 30 min", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 2, severity: "critical" });
++    expect(check("alteplase 72 mg IV over 90 min", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 0.666667, severity: "warning" });
++  });
++
++  it("the right regimen stays given in either language, however its times are written", () => {
++    for (const text of [
++      "alteplase 7.2 mg IV bolus then 64.8 mg over 60 min",
++      "阿替普酶7.2mg静推，随后64.8mg于60分钟内泵入",
++      "alteplase 72 mg IV over 60 min",
++      "alteplase 0.9 mg/kg IV over 1 hour",
++      // the bolus given over its own minute is no infusion
++      "alteplase 7.2 mg IV bolus over 1 min, then 64.8 mg over 60 min",
++      // of two times after one dose, the longer is how long it runs
++      "alteplase 0.9 mg/kg over 60 min with 10% given as a bolus over 1 min",
++      "阿替普酶0.9mg/kg静脉，其中10%在1分钟内静推，其余60分钟内泵入",
++      "阿替普酶0.9mg/kg，总量72mg，其中10%即7.2mg静推，余64.8mg 1小时内泵入",
++    ]) {
++      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
++    }
++    expect(doseMentions("alteplase 0.9 mg/kg over 60 min with 10% given as a bolus over 1 min")).toEqual([{ amount: 0.9, unit: "mg/kg", over: 60 }]);
++  });
++
++  it("beside a single dose, an amount over a time at the infusion's rate is the infusion — never a second dose to ask about (en and zh-CN)", () => {
++    // 2520 units over 2 h is 1260 units/h, the preset's 18 units/kg/h at 70 kg (a833280 gave it; the second set asked "several")
++    for (const text of ["heparin 5000 units IV bolus then 2520 units over 2 h", "肝素5000单位静推，随后2520单位于2小时内泵入"]) {
++      expect(check(text, ufh, 70), text).toEqual({ outcome: "given", checked: true, dose: { amount: 5000, unit: "unit", route: "IV" } });
++    }
++    expect(check("heparin 2520 units over 2 h", ufh, 70)).toEqual({ outcome: "given", checked: true, dose: { amount: 1260, unit: "unit/h" } });
++    // the single dose given over a time is that dose; an infusion at ten times the rate is still a critical dose error
++    expect(check("heparin 5000 units IV over 5 min", ufh, 70)).toMatchObject({ outcome: "given", dose: { amount: 5000, unit: "unit" } });
++    expect(check("heparin 5000 units IV bolus then 25200 units over 2 h", ufh, 70)).toMatchObject({ outcome: "conflict", dose: { amount: 12600, unit: "unit/h" }, ratio: 10, severity: "critical" });
++    // two single doses that disagree are still asked about
++    expect(check("heparin 5000 units IV, sorry, 7000 units", ufh, 70)).toMatchObject({ outcome: "query", reason: "several" });
++  });
++});
+diff --git a/packages/core/src/engine/dose.ts b/packages/core/src/engine/dose.ts
+index 6839c5f..c2693e4 100644
+--- a/packages/core/src/engine/dose.ts
++++ b/packages/core/src/engine/dose.ts
+@@ -224,10 +224,14 @@ interface Candidate {
+   f: Framed;
+ }
+ 
+-/** What one part of the preset makes of the doses the words state for it. */
++/**
++ * What one part of the preset makes of the doses the words state for it. The part's own dose (`ok`) says, for a dose
++ * given in parts, which doses stated are its later parts (`rest`: what runs as the infusion) and which state the whole
++ * (`whole`) — what `infusionMismatch` checks the times they are given over against.
++ */
+ type PartVerdict =
+   | { state: "absent" }
+-  | { state: "ok"; dose: Stated }
++  | { state: "ok"; dose: Stated; rest?: Candidate[]; whole?: Candidate[] }
+   /** A part of a dose given in parts, alone: its bolus, or the rest of it (the whole less the bolus). */
+   | { state: "partial"; dose: Stated }
+   | { state: "mismatch"; dose: Stated; ratio: number; far: number }
+@@ -267,7 +271,7 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+     if (candidates.length > 1) return { state: "several", doses: candidates.map((c) => c.stated) };
+     const c = ranges[0]!;
+     const { low, high, partLow, partHigh } = c.f;
+-    if (low >= partLow * (1 - tol(c)) && high <= partHigh * (1 + tol(c))) return { state: "ok", dose: c.stated };
++    if (low >= partLow * (1 - tol(c)) && high <= partHigh * (1 + tol(c))) return { state: "ok", dose: c.stated, whole: [c] };
+     // wholly above or below the preset: a dose error, measured from the order's nearer end
+     if (low > partHigh * (1 + tol(c))) return { state: "mismatch", dose: c.stated, ...measure(c.f, low) };
+     if (high < partLow * (1 - tol(c))) return { state: "mismatch", dose: c.stated, ...measure(c.f, high) };
+@@ -280,14 +284,15 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+   const mixed = candidates.some((c) => c.f.mixed);
+   const isWhole = (value: number) => whole != null && measure({ ...whole, mixed }, value).equivalent;
+   const sum = (cs: Candidate[]) => cs.reduce((total, c) => total + c.f.low, 0);
+-  // a dose given in parts, its first part the bolus: a bolus that is not the preset's is a dose error
+-  const parted = (parts: Candidate[], dose: Stated): PartVerdict => {
++  // a dose given in parts, its first part the bolus: a bolus that is not the preset's is a dose error; the later parts
++  // are the infusion (`rest`), a total stated beside them the whole
++  const parted = (parts: Candidate[], dose: Stated, totals: Candidate[] = []): PartVerdict => {
+     const f = bolus?.(parts[0]!.stated);
+     if (f && typeof f !== "string") {
+       const m = measure(f, f.low);
+       if (!m.equivalent) return { state: "mismatch", dose: parts[0]!.stated, ratio: m.ratio, far: m.far };
+     }
+-    return { state: "ok", dose };
++    return { state: "ok", dose, rest: parts.slice(1), whole: totals };
+   };
+   // a dose given in parts (`bolus`), stated as its parts adding up to the whole ("7.2 mg bolus then 64.8 mg over 60 min")
+   if (bolus && candidates.length > 1 && isWhole(sum(candidates))) return parted(candidates, totalOf(candidates));
+@@ -303,7 +308,8 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+       const nearest = [c.f, fb, rest].filter((f) => f.partLow > 0 && measure(f, f.low).equivalent).sort((a, b) => off(a) - off(b))[0];
+       if (nearest && nearest !== c.f) return { state: "partial", dose: c.stated };
+     }
+-    if (m.equivalent) return { state: "ok", dose: c.stated };
++    // the one dose stated (however often written) is the whole
++    if (m.equivalent) return { state: "ok", dose: c.stated, whole: candidates };
+     return { state: "mismatch", dose: c.stated, ratio: m.ratio, far: m.far };
+   }
+   // a total stated (once or more) beside the parts that add up to it ("7.2 mg, then 64.8 mg; total 72 mg")
+@@ -311,10 +317,60 @@ function partVerdict(candidates: Candidate[], whole: Framed | null, bolus: ((s:
+   const total = candidates.filter((c) => isWhole(c.f.low)).sort((a, b) => offBy(a) - offBy(b))[0];
+   const parts = total ? candidates.filter((c) => !same(c, total)) : [];
+   const near = (a: number, b: number) => Math.abs(a / b - 1) <= (mixed ? WEIGHT_BASED_TOLERANCE : EXACT);
+-  if (total && parts.length > 0 && near(sum(parts), total.f.low)) return bolus ? parted(parts, total.stated) : { state: "ok", dose: total.stated };
++  const totals = total ? candidates.filter((c) => same(c, total)) : [];
++  if (total && parts.length > 0 && near(sum(parts), total.f.low)) return bolus ? parted(parts, total.stated, totals) : { state: "ok", dose: total.stated, whole: totals };
+   return { state: "several", doses: distinct.map((c) => c.stated) };
+ }
+ 
++/**
++ * How long the infusion of a dose given in parts runs, in minutes: the whole less the bolus at the maintenance rate
++ * (alteplase: (0.9 − 0.09) mg/kg at 0.81 mg/kg/h is 60 min; a range from its ends). Null when the preset has no such
++ * parts, or they cannot be compared without the patient's weight.
++ */
++export function infusionMinutes(preset: Pick<DoseSpec, "amount" | "upTo" | "unit" | "bolus" | "maintenance">, weightKg?: number): { low: number; high: number } | null {
++  const { bolus, maintenance } = preset;
++  if (!bolus || !maintenance) return null;
++  const weight = weightKg != null && weightKg > 0 ? weightKg : null;
++  const whole = unitParts(preset.unit);
++  const rate = unitParts(maintenance.unit);
++  if (whole.dimension !== rate.dimension || whole.rate || !rate.rate) return null;
++  // the weight only where one is per kg and the other is not
++  if (whole.perKg !== rate.perKg && weight == null) return null;
++  const scale = (perKg: boolean) => (perKg && whole.perKg !== rate.perKg ? weight! : 1);
++  const amount = (x: number) => x * whole.factor * scale(whole.perKg);
++  const perHour = (x: number) => x * rate.factor * scale(rate.perKg);
++  const restLow = amount(preset.amount - (bolus.upTo ?? bolus.amount));
++  const restHigh = amount((preset.upTo ?? preset.amount) - bolus.amount);
++  if (!(restLow > 0)) return null;
++  return { low: tidy((60 * restLow) / perHour(maintenance.upTo ?? maintenance.amount)), high: tidy((60 * restHigh) / perHour(maintenance.amount)) };
++}
++
++/**
++ * A dose given in parts (`bolus` and `maintenance`) whose parts the order states as the preset's: is the infusion run
++ * at the preset's rate? Each later part given over a time (`rest`: "then 64.8 mg over 60 min") is checked as a rate
++ * against `maintenance`, and the whole given over a time ("72 mg over 60 min") against the infusion's own duration
++ * (`infusionMinutes`: the ratio is that duration over the minutes ordered — ten times as fast is tenfold). The first
++ * that differs, as the rate it runs at, with how far it is from the preset's; undefined when none does.
++ */
++function infusionMismatch(v: Extract<PartVerdict, { state: "ok" }>, overRates: readonly Candidate[], preset: DoseSpec, weight: number | null): { stated: Stated; ratio: number; far: number } | undefined {
++  for (const c of overRates) {
++    if (!v.rest?.some((r) => r.mention === c.mention)) continue;
++    const m = measure(c.f, c.f.low);
++    if (!m.equivalent) return { stated: c.stated, ratio: m.ratio, far: m.far };
++  }
++  const minutes = infusionMinutes(preset, weight ?? undefined);
++  if (!minutes) return undefined;
++  for (const c of v.whole ?? []) {
++    const over = c.mention.over;
++    const stated = asRate(c.mention);
++    if (over == null || !stated) continue;
++    // the faster it runs, the shorter the time: compared as one over the minutes
++    const m = measure({ low: 1 / over, high: 1 / over, partLow: 1 / minutes.high, partHigh: 1 / minutes.low, mixed: c.f.mixed }, 1 / over);
++    if (!m.equivalent) return { stated, ratio: m.ratio, far: m.far };
++  }
++  return undefined;
++}
++
+ /** The dose of an order: an amount (or a range) as stated, with the route. */
+ function doseOf(s: Stated | null, route: OrderedDose["route"]): OrderedDose | null {
+   const d: OrderedDose = { ...(s ? { amount: s.amount, ...(s.upTo != null ? { upTo: s.upTo } : {}), unit: s.unit } : {}), ...(route ? { route } : {}) };
+@@ -347,7 +403,11 @@ function itemWords(iv: Partial<Pick<Intervention, "name" | "aliases">>): string[
+  *   above or below, is a dose error (`conflict`, `doseErrorSeverity`); a range across its ends, or several doses that
+  *   disagree (`several`), are asked about. A dose given in parts (`bolus`): the whole, or its parts (the first its
+  *   bolus), or the bolus with the infusion's rate, is given; a part alone — the bolus, or the rest — is asked about
+- *   (`partial`); an amount over a stated time is also checked as a rate against the infusion's.
++ *   (`partial`); an amount over a stated time is also checked as a rate against the infusion's — a later part even when
++ *   the parts add up to the whole ("7.2 mg bolus then 64.8 mg over 6 min" is a tenfold infusion), the whole over a time
++ *   against the infusion's own duration (`infusionMinutes`: "72 mg over 6 min" runs ten times as fast as over 60 min).
++ *   Beside a single dose (`maintenance` without `bolus`), an amount over a time at the infusion's rate is the infusion,
++ *   not another single dose ("5000 units bolus then 2520 units over 2 h" is the bolus and 1260 units/h).
+  * - a later dose after "then" at a frequency (`then`: "300 mg now, then 75 mg daily") is the regimen's maintenance,
+  *   not the order's dose: only one above the preset is a dose error.
+  * - a daily total that is the order's only dose ("每日2g", "20 g/day"): the preset's dose (once daily) is given, a
+@@ -393,13 +453,18 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
+       if (asRateOf) place(m, asRateOf, preset, rates);
+       else incomparable.push({ reason: "rate", stated: statedOf(m) });
+     } else if (!isRate) {
+-      place(m, statedOf(m), preset, doses);
+       // an amount over a stated time is also the infusion's rate ("64.8 mg over 60 min" → 64.8 mg/h)
+       const r = preset.maintenance ? asRate(m) : null;
+-      if (r) {
+-        const f = frame(r, preset.maintenance!, weight);
+-        if (typeof f !== "string") overRates.push({ mention: m, stated: r, f });
++      const f = r ? frame(r, preset.maintenance!, weight) : null;
++      const over = r && f && typeof f !== "string" ? { mention: m, stated: r, f } : null;
++      // beside a single dose (no `bolus`), an amount over a time at the infusion's own rate is the infusion, never
++      // another single dose ("heparin 5000 units bolus then 2520 units over 2 h" is the bolus and 1260 units/h)
++      if (over && !preset.bolus && measure(over.f, over.f.low).equivalent) {
++        rates.push(over);
++        continue;
+       }
++      place(m, statedOf(m), preset, doses);
++      if (over) overRates.push(over);
+     } else if (preset.maintenance) place(m, statedOf(m), preset.maintenance, rates);
+     else incomparable.push({ reason: "rate", stated: statedOf(m) });
+   }
+@@ -414,11 +479,18 @@ export function checkOrder(order: WrittenOrder, iv: Pick<Intervention, "doseSpec
+     return { outcome: "conflict", dose: doseOf(stated, route)!, ratio, conflicts, severity: doseErrorSeverity(ratio, conflicts, iv, far) };
+   };
+   const given = (stated: Stated | null): OrderCheck => (routeConflicts.length ? conflict(stated, stated ? 1 : null, stated ? 1 : null, false) : { outcome: "given", dose: doseOf(stated, route), checked: true });
+-  // an amount over a stated time whose rate is not the infusion's ("7.2 mg bolus, then 648 mg over 60 min"), when the
+-  // parts do not already make the preset's dose: a dose error
+-  const overMismatch = dose.state === "ok" ? undefined : overRates.map((c) => ({ c, m: measure(c.f, c.f.low) })).find((x) => !x.m.equivalent);
++  // an amount over a stated time whose rate is not the infusion's ("7.2 mg bolus, then 648 mg over 60 min"): a dose
++  // error. When the doses stated are the preset's, a dose given in parts still runs its infusion at the preset's rate
++  // ("7.2 mg bolus then 64.8 mg over 6 min", "72 mg over 6 min" are tenfold: `infusionMismatch`); a single dose given
++  // over a time beside an infusion is that dose ("heparin 5000 units over 5 min")
++  const overMismatch =
++    dose.state === "ok"
++      ? preset.bolus && preset.maintenance
++        ? infusionMismatch(dose, overRates, preset, weight)
++        : undefined
++      : overRates.map((c) => ({ stated: c.stated, ...measure(c.f, c.f.low) })).find((x) => !x.equivalent);
+   if (dose.state === "mismatch") return conflict(dose.dose, dose.ratio, dose.far, true);
+-  if (overMismatch) return conflict(overMismatch.c.stated, overMismatch.m.ratio, overMismatch.m.far, true);
++  if (overMismatch) return conflict(overMismatch.stated, overMismatch.ratio, overMismatch.far, true);
+   for (const v of [dose, rate]) if (v.state === "several") return { outcome: "query", reason: "several", words: v.doses.map((d) => partText(d)).join(", "), dose: routeOnly };
+   for (const v of [dose, rate]) if (v.state === "range") return { outcome: "query", reason: "range", words: v.words, dose: routeOnly };
+   if (rate.state === "mismatch") return conflict(rate.dose, rate.ratio, rate.far, true);
+diff --git a/packages/core/src/engine/index.ts b/packages/core/src/engine/index.ts
+index c045f1f..423359e 100644
+--- a/packages/core/src/engine/index.ts
++++ b/packages/core/src/engine/index.ts
+@@ -86,7 +86,7 @@ export {
+ } from "./text.js";
+ 
+ // doses: an order's stated dose against an intervention's preset (docs/PROTOCOL.md §3.2)
+-export { checkOrder, compareDose, doseErrorSeverity, formatDose, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
++export { checkOrder, compareDose, doseErrorSeverity, formatDose, infusionMinutes, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
+ export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS, type DoseMention, type OrderReading, type UnclearDose, type UnclearDoseReason } from "./dose-read.js";
+ export { isHighAlert } from "./high-alert.js";
+ 
+diff --git a/packages/world/src/actions.ts b/packages/world/src/actions.ts
+index 52810e1..bdd913b 100644
+--- a/packages/world/src/actions.ts
++++ b/packages/world/src/actions.ts
+@@ -373,11 +373,9 @@ export class ActionBus implements EffectsHost, TransportHost {
+    * they are there (memory only): every actor but `except` (it learns by its own walk).
+    */
+   private witness(ids: readonly EntityId[], except: ActorId | null): void {
+-    const { store, locator, perception } = this.d;
+-    const placeOf = (id: EntityId): SeenPlace | null => {
+-      const p = locator.place(id);
+-      return p ? { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot } : null;
+-    };
++    const { store, perception } = this.d;
++    // a sighting: where it is and what is seen of it (its state, audit W1)
++    const placeOf = (id: EntityId): SeenPlace | null => perception.sighting(id);
+     for (const a of store.actors()) {
+       if (a.id === except) continue;
+       const seen = ids.filter((id) => id !== a.id && perception.perceives(a, id));
+@@ -397,10 +395,7 @@ export class ActionBus implements EffectsHost, TransportHost {
+    */
+   learnWhere(actorId: ActorId | null, ids: readonly EntityId[]): void {
+     if (!ids.length) return;
+-    const placeOf = (id: EntityId): SeenPlace | null => {
+-      const p = this.d.locator.place(id);
+-      return p ? { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot } : null;
+-    };
++    const placeOf = (id: EntityId): SeenPlace | null => this.d.perception.sighting(id);
+     this.witness(ids, actorId);
+     if (!actorId) return;
+     this.d.store.remember(actorId, ids, placeOf);
+@@ -408,8 +403,10 @@ export class ActionBus implements EffectsHost, TransportHost {
+     if (!principal) return;
+     for (const id of ids) {
+       const at = placeOf(id);
+-      if (at && !this.d.perception.perceives(this.d.store.actor(principal)!, id)) this.d.store.tell(principal, id, { ...at, toldBy: actorId });
+-      else if (at) this.d.store.remember(principal, [id], placeOf);
++      if (!at) continue;
++      // told where it is, not what it is like (a colleague's word: no state of it, audit W1)
++      if (!this.d.perception.perceives(this.d.store.actor(principal)!, id)) this.d.store.tell(principal, id, { level: at.level, x: at.x, y: at.y, z: at.z, ...(at.rot !== undefined ? { rot: at.rot } : {}), toldBy: actorId });
++      else this.d.store.remember(principal, [id], placeOf);
+     }
+   }
+ 
+diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
+index 6f759c3..654f3b0 100644
+--- a/packages/world/src/contracts.ts
++++ b/packages/world/src/contracts.ts
+@@ -298,6 +298,13 @@ export interface SeenPlace {
+   rot?: number;
+   /** Not seen: a colleague said it is there (`WorldRuntime.askWhereabouts`) — where they had last seen it or left it. */
+   toldBy?: ActorId;
++  /**
++   * What the actor saw of it there (a sighting, never a colleague's word): its behaviour state (`out-of-service` when
++   * out of service; absent for a thing with none) and its entity version then — what it is listed with while believed
++   * there (`ObservedEntity.state`, `stateVersion`; audit 2026-11-12 W1).
++   */
++  state?: string;
++  version?: number;
+ }
+ 
+ /** Where an actor looked for a thing and did not find it (`ActorState.missed`): the place, its room, the simulated minute. */
+@@ -719,10 +726,17 @@ export interface ObservedEntity {
+   /** Within interaction reach with line of sight right now. */
+   inReach: boolean;
+   capabilities?: string[];
+-  /** Behaviour state (stored or derived), e.g. "idle", "attached", "open". */
++  /**
++   * Behaviour state (stored or derived), e.g. "idle", "attached", "open". A thing believed elsewhere (`lastKnown`):
++   * the state it was in when the actor last saw it (`last-seen`), else none — never the state it is in now.
++   */
+   state?: string;
++  /** The entity's version (EMBODIED R4); believed elsewhere: its version when last seen, else 0. */
+   stateVersion: number;
+-  /** Operations offered now (depend on the behaviour, its state and the actor's role). */
++  /**
++   * Operations offered now (depend on the behaviour, its state and the actor's role). None for a thing believed
++   * elsewhere or missing (`lastKnown`): nothing is done at it from here, and what it offers depends on where it is.
++   */
+   availableActions: string[];
+   /** Bystander-visible cues (patients: posture, distressed, accessory; monitors: screen summary when visible). */
+   cues?: Record<string, string>;
+@@ -733,9 +747,12 @@ export interface ObservedEntity {
+    * where the actor last saw it (it may have moved since); `told` — where a
+    * colleague said it is; `missing` — the actor looked where it believed it
+    * was and it was not there (audit P1-8): its whereabouts are unknown, `room`
+-   * is null and distance and bearing measure to where it looked. `level`,
+-   * `room`, distances, bearing and reachability then measure to that place.
+-   * Absent for perceived things and things that never move.
++   * is null and distance and bearing measure to where it looked — never to
++   * where it is. `level`, `room`, distances, bearing and reachability then
++   * measure to that place; `state` is the one last seen (none unless
++   * `last-seen`) and `availableActions` is empty: what it is and offers now
++   * is not known from here (audit 2026-11-12 W1). Absent for perceived things
++   * and things that never move.
+    */
+   lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
+   /**
+diff --git a/packages/world/src/effects.ts b/packages/world/src/effects.ts
+index 7efdad3..787d7f9 100644
+--- a/packages/world/src/effects.ts
++++ b/packages/world/src/effects.ts
+@@ -239,11 +239,13 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
+ /* ------------------------------------------------------------------ */
+ 
+ /**
+- * A device wheeled away from the patient with its leads on (a `live` state, audit P2-13): they come off — it goes back
+- * to the state they were put on from (`unpluggedState`: the ECG cart → `prepared`) once its screen no longer shows
+- * the patient where it now stands. Its events (none when it stays by them, or was not on the patient).
++ * A device with its leads on the patient (a `live` state, audit P2-13) that no longer stands by them — wheeled away
++ * (`move_to`), or the patient taken away from it (a transport, a relocation, a walk together: audit W2): the leads come
++ * off — it goes back to the state they were put on from (`unpluggedState`: the ECG cart → `prepared`) once its screen
++ * no longer shows the patient. Putting them on again is a new act (`connect`). Its events (none when it still stands
++ * by them, or was not on the patient). `actorId`: who moved (a relocation: `team`); `operation`: what moved.
+  */
+-function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): WorldEvent[] {
++export function unplugIfAway(host: EffectsHost, actorId: ActorId, id: EntityId, operation: string): WorldEvent[] {
+   const { rules, store, locator } = host.d;
+   const spec = rules.spec(id);
+   if (spec.stateSource !== "stored") return [];
+@@ -251,7 +253,23 @@ function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): World
+   const to = unpluggedState(spec, from);
+   if (!to || screenPatient({ locator, rules }, id)) return [];
+   store.patchEntity(id, { state: to });
+-  return [host.emit({ type: "entity.state", entityId: id, from, to, operation: "move_to", actorId: actor.id })];
++  return [host.emit({ type: "entity.state", entityId: id, from, to, operation, actorId })];
++}
++
++/**
++ * The devices whose leads are on the patient now (a stored `live` state, and THE screen rule has them showing the
++ * patient): what a move of the patient may take off (`unplugIfAway` after the move). Registry order.
++ */
++export function pluggedIn(host: EffectsHost): EntityId[] {
++  const { rules, locator, registry } = host.d;
++  if (!locator.patientId) return [];
++  return registry
++    .ofKind("equipment")
++    .filter((e) => {
++      const spec = rules.spec(e.id);
++      return spec.stateSource === "stored" && unpluggedState(spec, rules.state(e.id)) !== null && screenPatient({ locator, rules }, e.id) === locator.patientId;
++    })
++    .map((e) => e.id);
+ }
+ 
+ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, signal: AbortSignal): Promise<Outcome> {
+@@ -296,7 +314,7 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
+   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
+   if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
+   store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
+-  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }), ...unplugIfAway(host, actor, id)];
++  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }), ...unplugIfAway(host, actor.id, id, "move_to")];
+   host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
+   host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
+   mover.placeEntity?.(id, { ...spot, rot: cart.rot });
+diff --git a/packages/world/src/perception.ts b/packages/world/src/perception.ts
+index 795d75b..c605bab 100644
+--- a/packages/world/src/perception.ts
++++ b/packages/world/src/perception.ts
+@@ -94,6 +94,8 @@ const round = (v: number, digits: number) => {
+ interface Belief {
+   p: Placed;
+   lastKnown?: ObservedEntity["lastKnown"];
++  /** Believed elsewhere: what the actor saw of it when it last saw it there (`last-seen`), else nothing (audit W1). */
++  seen?: { state?: string; version: number };
+ }
+ 
+ /**
+@@ -174,25 +176,29 @@ export class Perception {
+    * while perceived (and for things that never move); else, when it looked
+    * for it and did not find it, nowhere — `missing`, reported where it looked,
+    * in no room; else where it was last seen or a colleague said it is; else,
+-   * for portable equipment, where it is usually kept.
++   * for portable equipment, where it is usually kept. Believed elsewhere, all
++   * it knows of the thing is what it saw at its last sighting there (`seen`:
++   * its state and version then) — nothing of it when told, missing or never
++   * seen (audit 2026-11-12 W1).
+    */
+   private believed(actor: ActorState, p: Placed, a: Awareness): Belief {
+     if (a === "visible" || a === "nearby" || !this.movable(p)) return { p };
+     const loc = this.d.locator;
+     const L = this.d.locale;
+     const where = (q: Placed) => loc.regionName({ level: q.level, x: q.position.x, z: q.position.z });
++    const none = { version: 0 };
+     const missed = this.d.store.missed(actor.id, p.id);
+     if (missed) {
+       const at = loc.placedAt(p.id, { level: missed.level, x: missed.x, y: levelElevation(loc.facility, missed.level), z: missed.z });
+       const label = worldMessage("whereabouts.missing", L, { where: loc.regionName(missed) });
+-      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label } };
++      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label }, seen: none };
+     }
+     const seen = this.d.store.lastSeen(actor.id, p.id);
+     const last = seen ? loc.placedAt(p.id, seen) : null;
+-    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) } };
+-    if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) } };
++    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) }, seen: none };
++    if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) }, seen: { ...(seen?.state !== undefined ? { state: seen.state } : {}), version: seen?.version ?? 0 } };
+     const home = p.kind === "equipment" ? loc.home(p.id) : null;
+-    if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) } };
++    if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) }, seen: none };
+     return { p };
+   }
+ 
+@@ -219,7 +225,8 @@ export class Perception {
+     if (missed) return { kind: "missing", place: null, room: missed.room };
+     const seen = this.d.store.lastSeen(actor.id, id);
+     const home = !seen && (truth.kind === "equipment" || truth.kind === "staff") ? loc.home(id) : null;
+-    const place: SeenPlace | null = seen ? { ...seen } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
++    // the place only (what was seen there stays in memory)
++    const place: SeenPlace | null = seen ? { level: seen.level, x: seen.x, y: seen.y, z: seen.z, ...(seen.rot !== undefined ? { rot: seen.rot } : {}), ...(seen.toldBy ? { toldBy: seen.toldBy } : {}) } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
+     if (!place) return null;
+     if (place.level === truth.level && Math.hypot(place.x - truth.position.x, place.z - truth.position.z) <= SAME_PLACE) return null;
+     return { kind: seen ? (seen.toldBy ? "told" : "last-seen") : "usual", place, room: this.d.locator.registry.roomAt(place.level, place.x, place.z) };
+@@ -304,11 +311,21 @@ export class Perception {
+     return { entityId: id, kind: lastKnown.kind, place: placeOf(p), room: p.room, level: p.level, label: lastKnown.label, ...(told ? { toldBy: told } : {}) };
+   }
+ 
+-  /** Where a movable thing is now, as a sighting (null for things that never move). */
+-  private seenPlace(id: EntityId): SeenPlace | null {
++  /**
++   * Where a movable thing is now, as a sighting (null for things that never move): its place, and what is seen of it
++   * there — its behaviour state (`out-of-service` when out of service) and version (audit 2026-11-12 W1). Memory
++   * records it at every sighting (`ActorState.lastSeen`); the action bus records what a mover or a witness sees.
++   */
++  sighting(id: EntityId): SeenPlace | null {
+     const p = this.d.locator.place(id);
+     if (!p || !this.movable(p)) return null;
+-    return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot };
++    const state = this.stateNow(p.id);
++    return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot, ...(state !== null ? { state } : {}), version: this.d.store.entityVersion(p.id) };
++  }
++
++  /** The behaviour state of a thing now (`out-of-service` when a scenario took it out), or null when it has none. */
++  private stateNow(id: EntityId): string | null {
++    return this.d.store.available(id) ? this.d.rules.state(id) : "out-of-service";
+   }
+ 
+   /**
+@@ -317,7 +334,7 @@ export class Perception {
+    */
+   notice(actor: ActorState): EntityId[] {
+     const sought = Object.keys(actor.missed ?? {}).filter((id) => this.perceives(actor, id));
+-    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.seenPlace(id));
++    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.sighting(id));
+   }
+ 
+   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
+@@ -363,8 +380,11 @@ export class Perception {
+     return (Math.atan2(dx * right.x + dz * right.z, dx * f.x + dz * f.z) * 180) / Math.PI;
+   }
+ 
+-  /** The observed form of an entity for an actor. */
+-  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean, lastKnown?: ObservedEntity["lastKnown"]): ObservedEntity {
++  /**
++   * The observed form of an entity for an actor. Believed elsewhere (`lastKnown`): where it is believed to be, with
++   * what the actor saw of it there (`seen`) — never what it is or offers where it is now (audit 2026-11-12 W1).
++   */
++  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean, lastKnown?: ObservedEntity["lastKnown"], seen?: Belief["seen"]): ObservedEntity {
+     const loc = this.d.locator;
+     const e = p.entity;
+     const distance = this.distanceTo(actor, p);
+@@ -384,9 +404,11 @@ export class Perception {
+       visible: awareness === "visible",
+       reachable: null,
+       inReach,
+-      stateVersion: this.d.store.entityVersion(p.id),
+-      // a missing thing: nothing to do with it, and no state of it is known (audit P1-8 re-review)
+-      availableActions: lastKnown?.kind === "missing" ? [] : this.d.rules.availableActions(p.id, actor),
++      // believed elsewhere: the version it had when last seen (audit W1)
++      stateVersion: lastKnown ? (seen?.version ?? 0) : this.d.store.entityVersion(p.id),
++      // believed elsewhere or missing: nothing to do with it from here — what it offers depends on where it truly is,
++      // and that is not known (audit P1-8 re-review, W1)
++      availableActions: lastKnown ? [] : this.d.rules.availableActions(p.id, actor),
+     };
+     // a missing thing has no place to walk to (audit P1-8): reachability is not computed for it
+     if (withReach && lastKnown?.kind !== "missing") {
+@@ -397,8 +419,9 @@ export class Perception {
+       }
+     }
+     if (e?.kind === "equipment" && e.capabilities.length) out.capabilities = [...e.capabilities];
+-    const state = this.d.store.available(p.id) ? this.d.rules.state(p.id) : "out-of-service";
+-    if (state !== null && lastKnown?.kind !== "missing") out.state = state;
++    // believed elsewhere: the state it was in when last seen there, or none (told, usual, missing) — never its state now
++    const state = lastKnown ? (seen?.state ?? null) : this.stateNow(p.id);
++    if (state !== null) out.state = state;
+     const cues = awareness === "visible" || awareness === "nearby" ? this.cues(actor, p, awareness) : null;
+     if (cues) out.cues = cues;
+     if (lastKnown) out.lastKnown = lastKnown;
+@@ -451,7 +474,7 @@ export class Perception {
+   }
+ 
+   private record(actor: ActorState, entities: ObservedEntity[]): void {
+-    const placeOf = (id: EntityId) => this.seenPlace(id);
++    const placeOf = (id: EntityId) => this.sighting(id);
+     this.d.store.remember(
+       actor.id,
+       entities.filter((e) => e.awareness === "visible").map((e) => e.id),
+@@ -476,12 +499,12 @@ export class Perception {
+       if (!truth || truth.kind === "room") continue;
+       const a = this.awareness(actor, truth, o);
+       if (!a || a === "mapped") continue;
+-      const { p, lastKnown } = this.believed(actor, truth, a);
+-      rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
++      const { p, lastKnown, seen } = this.believed(actor, truth, a);
++      rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown, seen });
+     }
+     const sorted = this.ordered(rows);
+     const kept = sorted.slice(0, Math.max(0, o.maxEntities));
+-    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability, r.lastKnown));
++    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability, r.lastKnown, r.seen));
+     this.record(actor, entities);
+     const room = actor.room ? this.d.locator.registry.entity(`room:${actor.room}`) : null;
+     return {
+@@ -584,15 +607,15 @@ export class Perception {
+       const a = this.awareness(actor, truth, o);
+       if (!a || !allowed.has(a) || (q.visibleOnly && a !== "visible")) continue;
+       // where the actor believes it is (lead note 1): the room, level and distance filters follow the belief
+-      const { p, lastKnown } = this.believed(actor, truth, a);
++      const { p, lastKnown, seen } = this.believed(actor, truth, a);
+       if (room !== undefined && p.room !== room) continue;
+       if (q.level !== undefined && p.level !== q.level) continue;
+       const d = this.distanceTo(actor, p);
+       if (q.maxDistance !== undefined && !(d <= q.maxDistance)) continue;
+-      rows.push({ p, a, d, lastKnown });
++      rows.push({ p, a, d, lastKnown, seen });
+     }
+     const withReach = o.reachability || !!q.reachableOnly || q.sort === "path";
+-    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach, r.lastKnown) }));
++    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach, r.lastKnown, r.seen) }));
+     if (q.reachableOnly) found = found.filter((x) => x.e.reachable === true);
+     const sort = q.sort ?? (withReach ? "path" : "distance");
+     found.sort((x, y) => {
+@@ -629,7 +652,7 @@ export class Perception {
+     const a = this.awareness(actor, p);
+     if (!a) return null;
+     const belief = this.believed(actor, p, a);
+-    const base = this.observed(actor, belief.p, a, this.d.options.reachability, belief.lastKnown);
++    const base = this.observed(actor, belief.p, a, this.d.options.reachability, belief.lastKnown, belief.seen);
+     this.record(actor, [base]);
+     const L = this.d.locale;
+     const rules = this.d.rules;
+@@ -693,12 +716,12 @@ export class Perception {
+       if (!truth || truth.kind === "room") continue;
+       const a = this.awareness(actor, truth);
+       if (!a) continue;
+-      const { p, lastKnown } = this.believed(actor, truth, a);
+-      if (p.room === rid) rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
++      const { p, lastKnown, seen } = this.believed(actor, truth, a);
++      if (p.room === rid) rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown, seen });
+     }
+     const entities = this.ordered(rows)
+       .slice(0, this.d.options.maxEntities)
+-      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability, r.lastKnown));
++      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability, r.lastKnown, r.seen));
+     this.record(actor, entities);
+     return { id: room.id, name: t(room.name, this.d.locale), kind: room.type, level: room.level, exits, entities };
+   }
+diff --git a/packages/world/src/state.ts b/packages/world/src/state.ts
+index 5fe0dee..092ee3f 100644
+--- a/packages/world/src/state.ts
++++ b/packages/world/src/state.ts
+@@ -363,7 +363,11 @@ export class WorldStateStore implements WorldDynamics {
+   tell(actorId: ActorId, id: EntityId, place: SeenPlace & { toldBy: ActorId }): void {
+     const a = this.actorMap.get(actorId);
+     if (!a || id === actorId) return;
+-    (a.lastSeen ??= {})[id] = { ...place };
++    // where it is, in a colleague's words — not what it is like (no state or version of it: those are sightings)
++    const { state: _state, version: _version, ...where } = place;
++    void _state;
++    void _version;
++    (a.lastSeen ??= {})[id] = where;
+     this.unmiss(a, id);
+     this.onWhereabouts?.({ actorId, entityId: id, change: "told", place: { level: place.level, x: place.x, z: place.z }, by: place.toldBy });
+   }
+diff --git a/packages/world/src/supplies.test.ts b/packages/world/src/supplies.test.ts
+index 53f9df0..660d2bf 100644
+--- a/packages/world/src/supplies.test.ts
++++ b/packages/world/src/supplies.test.ts
+@@ -51,10 +51,15 @@ describe("what a device supplies follows its state", () => {
+     const all = ["endoscopic-camera", "light-source", "insufflator"];
+     expect(rt.provides("eq:tower-off")).toEqual([]);
+     expect(rt.provides("eq:tower-ready")).toEqual(all);
+-    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBe("on");
++    expect(rt.stateOf("eq:tower-ready")).toBe("on");
++    // a cart the clinician has not seen yet is believed where it is kept, in no state it could know (audit W1)…
++    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")).toMatchObject({ lastKnown: { kind: "usual" }, availableActions: [] });
++    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBeUndefined();
+     // the stand-alone insufflator switched on: the gas, never a picture
+     const at = (id: string) => w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id } });
+     expect((await at("eq:gas-only")).status).toBe("completed");
++    // …and seen, in the state it is in
++    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBe("on");
+     const on = await w.act({ actorId: PRIMARY_ACTOR, operation: "power_on", targetId: "eq:gas-only" });
+     expect(on.status, on.message).toBe("completed");
+     expect(rt.provides("eq:gas-only")).toEqual(["insufflator"]);
+diff --git a/packages/world/src/transport.ts b/packages/world/src/transport.ts
+index 1f8307a..6c226e3 100644
+--- a/packages/world/src/transport.ts
++++ b/packages/world/src/transport.ts
+@@ -17,7 +17,7 @@
+ import { capabilityLabels } from "@clinicalcraft/core";
+ import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES, TRAVEL_MONITOR_CAPABILITY } from "./capabilities.js";
+ import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientLeg, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, TravelMode, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
+-import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
++import { failed, pluggedIn, unplugIfAway, type EffectsHost, type Outcome, type Walk } from "./effects.js";
+ import { endEscortIfUnable } from "./escort.js";
+ import { closeStretch, legEnd, placeEnd, receiverAt, travelMode, withLeg, type JourneyHost } from "./journey.js";
+ import { listText, metres, worldMessage } from "./i18n.js";
+@@ -207,17 +207,22 @@ function travellingMonitor(host: TransportHost, request: WorldActionRequest, act
+   return id ? { id } : { error: worldMessage("pre.noTravelMonitor", L, { patient }) };
+ }
+ 
++/** Who a team relocation's own events name as having moved (no body moved the patient, EMBODIED §8.4). */
++export const TEAM_ACTOR = "team";
++
+ /**
+  * Commit the patient's new place: the trolley (parked beside a provider, carrying the patient at a spot,
+  * or home again with the patient in a bed space), the monitor that travelled with them (beside them now), home, the
+- * grids where bodies and beds were and are, the leg of the journey (`PatientPlaceState.legs`), the event. Returns the
+- * events.
++ * grids where bodies and beds were and are, the leads of a device they left (off: audit W2), the leg of the journey
++ * (`PatientPlaceState.legs`), the events. Returns the events.
+  */
+ export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): WorldEvent[] {
+   const { store, patient: body, facility, mover } = host.d;
+   const id = body.id!;
+   const st = body.state()!;
+   const from = body.place()!;
++  // the devices whose leads are on them where they are now: the ones they leave behind come off (below)
++  const plugged = pluggedIn(host);
+   const touched: { level: string; area: Area }[] = [];
+   const oldBody = host.patientStamp.body;
+   if (oldBody) touched.push(oldBody);
+@@ -304,6 +309,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+   host.learnWhere(by, [...moves.map((m) => m.id), ...(departure.monitor ? [departure.monitor] : [])]);
+   const to = body.place()!;
+   const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
++  // a device left at the bedside they were taken from is no longer on them: its leads came off (audit W2) —
++  // connecting it again is a new act, wherever they are
++  for (const d of plugged) events.push(...unplugIfAway(host, by ?? TEAM_ACTOR, d, relocation ? "relocate" : "transport_patient"));
+   if (escorted) events.push(host.emit({ type: "patient.escort", entityId: id, escort: null, actorId: null }));
+   events.push(host.emit({ type: "patient.arrived", entityId: id, leg: { ...leg, from: { ...leg.from }, to: { ...leg.to } } }));
+   return events;

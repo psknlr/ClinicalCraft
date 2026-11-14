@@ -1,8 +1,0 @@
-- cmcr-1423436: Upper abdominal pain and vomiting · 43-year-old woman (5 decisions, 16 interventions;
-  review: 3 critical, 3 major, 12 minor findings)
-- cmcr-1423444: Back pain and progressive difficulty walking · 63-year-old man (5 decisions, 16 interventions;
-  review: 1 critical, 5 major, 9 minor findings)
-- cmcr-1653405: Recurrent abdominal distension and nausea · 69-year-old woman (5 decisions, 12 interventions;
-  review: 0 critical, 5 major, 12 minor findings)
-- cmcr-70172: Double vision, dizziness and progressive leg weakness · 9-year-old boy (5 decisions, 13 interventions;
-  review: 0 critical, 6 major, 9 minor findings)
