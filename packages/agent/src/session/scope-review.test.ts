@@ -184,12 +184,14 @@ describe("the theatre's work goes by control (EMBODIED §8.3): the control repla
     const t = await theatreSession({ ...(start ? { start } : {}), settingsPatch: { approvalMode: "default", permissions: { ask: ["operate"] } } });
     operatorSteps(t, ACCESS);
     const asked: string[] = [];
+    const bodies: (string | null)[] = [];
     t.session.subscribe((e) => {
       if (e.msg.type !== "approval_request") return;
       asked.push(e.msg.summary);
+      bodies.push(e.msg.actorId ?? null);
       t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
     });
-    return { t, asked };
+    return { t, asked, bodies };
   }
   /** The operate (or observe_field) tool's own check, before any approval, for a body. */
   const precheck = (t: TestSession, tool: "operate" | "observe_field", args: Record<string, unknown>, actorId: string) => {
@@ -198,7 +200,7 @@ describe("the theatre's work goes by control (EMBODIED §8.3): the control repla
   };
 
   it("the anaesthetist is refused traction NOT_AUTHORIZED before a step or an approval; asked of the attendings, the first assistant takes it", async () => {
-    const { t, asked } = await theatre();
+    const { t, asked, bodies } = await theatre();
     const w = t.session.world()!;
     const before = w.actor(STAFF.anaesthetist)!.pose;
     const refused = await delegate(t, "c1", { role: "staff:anaes-1", task: "hold_traction", params: { port: "B" } });
@@ -211,7 +213,14 @@ describe("the theatre's work goes by control (EMBODIED §8.3): the control repla
     const held = await delegate(t, "c2", { role: "attending", task: "hold_traction", params: { port: "B" } });
     expect(held.delegation).toMatchObject({ staffId: STAFF.first, status: "completed", holding: { port: "B", instrument: "grasper" } });
     expect(asked).toEqual([expect.stringMatching(/^Dr Abe \(Attending\): /)]);
+    // the approval names the body that would act: his
+    expect(bodies).toEqual([STAFF.first]);
     expect(t.session.state.procedure!.ports.find((p) => p.site === "B")!.holder).toBe("doc-1");
+    // the learner's own step asks with no other body named
+    standAtTable(t, PRIMARY_ACTOR);
+    await t.session.run({ type: "clinical_action", action: { type: "operate", op: { op: "insert", port: "B", instrument: "grasper" } } as never });
+    expect(bodies.length).toBe(2);
+    expect(bodies[1]).toBeNull();
     await t.session.close();
   });
 
@@ -263,7 +272,7 @@ describe("the theatre's work goes by control (EMBODIED §8.3): the control repla
     expect(precheck(t, "observe_field", {}, STAFF.first)).toMatchObject({ ok: false, data: { code: "NOT_AUTHORIZED", reason: "standing-by" } });
     // asked of the attendings, traction passes them over
     const held = await delegate(t, "s-role", { role: "attending", task: "hold_traction", params: { port: "B" } });
-    expect(held.delegation.staffId).not.toBe(STAFF.first);
+    expect((held.delegation as { staffId?: string }).staffId).not.toBe(STAFF.first);
     expect(s.staffStates().find((r) => r.actorId === STAFF.first)).toMatchObject({ seat: "first-assistant", controls: [], delegable: [], standingBy: true });
     expect(asked.every((a) => !a.startsWith("Dr Abe"))).toBe(true);
     await s.close();

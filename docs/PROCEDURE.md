@@ -424,6 +424,22 @@ In in-world mode it also opens from equipment with the `surgery` capability (the
 picture and controls come from `observeField` (and `portReport` while choosing a plan), and every
 control submits `operate` through the app's action path.
 
+**Who looks and who works** (docs/TEAM.md §1). Both tools work as the acting body's member (core `refOfBody`): a call
+with no body — the learner's, a slash command's, MCP's, the external clinician's — is the learner's body: the operator,
+or while the learner holds a place in the team that place's member; a colleague's body is their staff id. `operate`
+takes the actor from there, never from its input, and never a plan step `ref` (the care team's host sets it). A step
+outside the body's controls is refused before the approval gate (`NOT_AUTHORIZED`: core `seatCheck` with each body's
+own controls; "You are the first assistant: dissection is the operating surgeon's." / "你是第一助手：分离由主刀完成。"),
+so nobody is asked to approve what the body may not do. A refusal of the field says its reason in the caller's language
+— `op.reason.<key>` with the people's names, the learner as "you" — and then the engine's English `message` word for
+word (a refusal that carries no reason keeps the generic lead-in). `observe_field` names a port's holder (the learner
+"held by you"), and for a body that is not the operator adds its place and controls ("Your place: first assistant
+(id doc-1); your controls: Camera, Traction, Suction." — the id is what a hand-over's `to` takes: `{op: "hand-over",
+port: "B", to: "doc-1"}` takes port B, `{op: "hand-over", port: "B"}` hands it back), where the camera looks, how close
+and who holds it ("Camera (port A): aimed at Hepatocystic triangle (hepatocystic-triangle), close up — held by you."),
+and the instruments passed and waiting to go in ("hook for Dr Ito (passed by you)"). `operate` takes the camera's
+`aim {port, at?}` and `zoom {port, level}`, the scrub nurse's `pass {instrument, to?}` and a hand-over's `to`.
+
 **The scope dock** (`packages/web/src/ui/scope-dock.ts`) keeps the laparoscopic picture beside the theatre
 from the moment a port plan is chosen, whatever window is open (it steps aside only while the surgery window
 shows the same picture full size): the world canvas is the theatre — people, equipment, hand-overs —, the dock

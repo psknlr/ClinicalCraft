@@ -119,7 +119,10 @@ an instrument its control; `stepPartyRefusal` — a member the team scenario mak
 `passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the operator, `normaliseStep`), and
 **so do the world's operations** (docs/EMBODIED.md §8.2: an operation's `control` is refused to a body that does not
 hold it, by `bodyControls`; §8.6: during the operation only a body holding `retract` checks the wound in the team's
-room); the scope of practice, delegation and the policies below do not read them yet.
+room), and **so do the scope of practice and delegation** (docs/EMBODIED.md §8.3: for the operative field's tools and
+the theatre's delegation tasks a body's controls replace its role's scope; a role asked for an operating table's task
+is narrowed by control and ranked by position, docs/PROTOCOL.md "delegate_task"); the policies below do not read them
+yet.
 
 ### Places
 
@@ -153,9 +156,18 @@ The learner chooses a **place** once, at `start {seat, lineup}`, recorded with t
   outcomes.
 
 In the engine the stand-in's steps are the operator's — recorded with no actor (docs/PROCEDURE.md §3) — and an
-`operate` with no actor is the operator's step, whoever sends it; nothing drives the stand-in yet, and no session
-stamps the learner's place on their steps. So a session refuses a place in the team (`permission_denied`,
-docs/PROTOCOL.md) and no front-end offers one; only the engine's own tests take one.
+`operate` with no actor is the operator's step. A session in a place gives the learner's steps their place: a call with
+no body — the learner's, the CLI's, MCP's, the external clinician's — is the learner's body, so its operative step is
+stamped with that place's member (core `refOfBody`); a step the place's controls do not cover is refused before any
+approval ("You are the first assistant: dissection is the operating surgeon's."); the learner never names an `actor` or
+a plan step (`ref`) themselves. The learner's body is scoped as the place (docs/EMBODIED.md §8.3) and, once the start
+is accepted in-world, stands at the team's table (the world's sensor-pose channel, written with the world at once: a
+resume restores the body where it was and never places it again); a place needs in-world mode (`not_embodied`) and the
+demonstration is refused in one (it plays the operator). The colleague whose place the learner holds **stands by**: no
+controls, never handed a task — a role asked passes them over —, still in the room to be spoken to, from their role
+card and a standing-by line (docs/CHARACTERS.md). Nothing drives the stand-in yet, so the learner's own start in a
+place is still refused (`permission_denied`, docs/PROTOCOL.md) and no front-end offers one; only tests take one, at the
+session's kernel.
 
 ### Checks
 
@@ -352,6 +364,7 @@ searcher's hand, recorded as recovered.
 | acts | through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member |
 | browser | the HUD's **Team** button (in the team's phases) opens the panel: pace (Auto / Step / Next step), the surgeon (I am the surgeon / Observe), Search within reach / Check the wound, what was said (lines to the learner marked, with their answers), the tasks (with "seen to be done"), the count. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, whichever panel is open, and stops only with the encounter's explicit pause |
 | anaesthesia responsibility | continuous (`SessionState.anaesthesia`, core `engine/anaesthesia.ts`): the responsible anaesthetist is the team's `anaesthesia` member until a hand-over moves it. While the patient is under anaesthesia (`patient.nonVerbalWhen`) the responsible anaesthetist never leaves the patient's room by **any** path — a walk, a request to fetch, a delegated task, the team's own move, a learner's world action on their body: every one goes through `EmbodiedSession.act`, which refuses a movement whose destination is outside the patient's room (`NOT_AUTHORIZED`, "Continuous anaesthesia responsibility is required. Arrange relief before leaving the patient."); within the room they move freely, and moving with the patient (a transport) is staying |
+| the sterile field | the scrub nurse keeps it: while the operation is under way (world `operationInProgress`), the staff body of the team member with the `instruments` duty (the team as it is: a team scenario's relief scrub nurse too) never leaves the team's room by **any** path — a request to fetch, a direct move, a delegated task, the team's own move — unless another scrub nurse who can take over is in the room (not one the team scenario makes absent, nor the colleague standing by while the learner holds a place): the same guard in `EmbodiedSession.act` as the anaesthetist's (`NOT_AUTHORIZED`, "The scrub nurse keeps the sterile field while the operation is under way: another scrub nurse takes over in the room before she leaves."). Within the theatre she moves freely. Staff bodies only: the learner's body — in the scrub nurse's place too — moves by poses and walks no guard refuses |
 | leaving an anaesthetised patient | asked to go out of the room (back to a post elsewhere, to show the way), the responsible anaesthetist first asks a colleague from `team.cover` (else the team's own anaesthetist) — `anaesthesia request-relief`; the colleague walks to the patient with their own body and the world confirms them there — `relief-arrived`; the structured hand-over is accepted — `handover {from, to, airway, ventilation, haemodynamics, drugs, unresolved}`, taken from the record (airway interventions, the vitals now, the drugs given, open holds), said in the new anaesthetist's voice; responsibility is transferred, and only then does the first one go. The new anaesthetist is bound by the same rule at once. Nobody to take over, or they cannot come: the anaesthetist stays and says why. Before induction or after emergence they just go (`staff-requests.ts`, `handover.ts`). A learner's `anaesthesia` action is refused (`permission_denied`) |
 | staff working on their own | `StaffAutonomy` (`session/staff-autonomy.ts`): one round of what every staff member does without being told each step — the circulating nurse's work on a new investigation (device fetched and reserved, acquired at the patient, reported, reviewed: docs/STUDIES.md), a colleague holding a port who is no longer at the table letting go (`assist.ts`), the operation's equipment checked against the room and, once the operation has begun, a device it lacks that is only switched off switched on by the circulating nurse (docs/PROCEDURE.md "Equipment"), and the responsible anaesthetist of an anaesthetised patient answering a **new** critical alarm. Each alarm is an episode in the record (`SessionState.alarms`, the `alarm-response` action by the system): **detected**; the anaesthetist goes to the patient with their own body; only once the world has them within reach is it **arrived** and said ("Alarm: SBP 72 — I'm at the patient and checking it."); a walk that fails (a locked door, no route) is **blocked** with its reason and said once per reason ("Alarm: SBP 72 — I can't get to the patient: <reason> I need someone at the bedside now."), and the walk is tried again every round until it succeeds; an alarm no longer critical is **cleared** (a recurrence is a new episode). A save and resume replays the episodes: a blocked responder keeps trying, an arrival already said is never said again. With model-driven characters the anaesthetist's words carry the record's place (docs/CHARACTERS.md §4): a blocked responder's line that claims the bedside is refused and the template that states the record is said. No drug or treatment of their own: what follows is the case's or the operator's. The round runs after every act of the learner and on the **staff's own clock**: Op `staff_step`, which the browser sends every `STAFF_STEP_MS` while the encounter runs, whatever the learner is looking at — so work goes on off-screen (in a case whose clock moves only with what is done, what needs time waits for the clock). `ClinicalSession.staffStates(): RoleState[]` — each staff member's goal, current task, place (room, x, z, level), responsibility (`anaesthesia`, `port B`, an order, a team task), held items, reservations, pending requests and what blocks them, **derived** from the record and the world, so a reload agrees by construction |
 | model-driven members | with `characters.engine: "llm"` (docs/CHARACTERS.md) each member decides each round with their own model, from their role card and what they perceive: the policy's move (`act`, in their own words — and the only option when it is owed: a closed-loop reply or the count), `wait` (never twice in a row on one move), `notice` a colleague, or `escalate` their own stuck task; a line is said only when grounded, and the rules decide whenever the model is missing, slow or off-script (`TeamHost.decide`, `ModelTeamMind`) |
@@ -436,6 +449,17 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   reach or of what they are in, kept by a snapshot.
 - `agent/src/session/team/policy.test.ts`: every rule above on hand-built views.
 - `agent/src/session/team/session-team.test.ts`: the op without a team, the transcript replay, checkpoint validation.
+- A session in a place, on the agent's theatre fixture (`agent/src/session/__fixtures__/theatre.ts`: the world's
+  theatre with core's lap-chole team): `seat-operate.test.ts` (the first assistant's port and traction; dissection
+  refused before any approval in both languages; the engine's English message after the reason; no `actor`, no `ref`;
+  body-less MCP-, CLI- and external calls are the learner's body; in-world only; no demonstration in a place; the
+  body at the table once, across a save and resume), `scope-review.test.ts` (the theatre's work by control),
+  `delegation-theatre.test.ts` (the camera, passes, traction by control and position, the colleague standing by and
+  the surgeon passed over), `tools/consult-target.test.ts` (positions in words), `assist.test.ts` (hands go with the
+  body — the learner's too, the camera said as the camera), `staff-autonomy.test.ts` (role states: the team's work by
+  member id, places, controls, delegable tasks), `sterile-field.test.ts` (the scrub nurse stays by every path; a
+  relief frees her; never the learner's body), `place-people.test.ts` (specialty by position, the standing-by line,
+  the count's names); `bench/src/audit-scope.test.ts` (a team scrub nurse's pass through the authorisation audit).
 - `core/src/engine/count.test.ts`: the count record — clean, recoverable, unresolved (closure recorded, never
   erased; or refused), excluded, six of five, a false five of five, a documented transfer.
 - `bench/src/team/score.test.ts`: obligations — two requests with one delivery is not a pass; one item cannot answer
@@ -463,14 +487,14 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   room or in hands there, never a concealed one) — not a model of a nurse miscounting. A member outside the room
   knows whether someone is in it.
 - **The surgeon is the learner's body.** In observer mode the simulated surgeon acts with it.
-- **Places and controls are the engine's only.** A place in the team can be taken at the engine's `start` and joins
-  at the team's phase, but nothing drives the stand-in surgeon yet and no session stamps the learner's place on their
-  steps (an `operate` with no actor is the operator's step), so a session refuses a place and no front-end offers one.
-  The join drives the record only — the world's device state machines (the count board) are not driven by it —, the
-  Sign Out and the steps after the operation are the operator's, and a case served without its reference solution
-  offers no place. The controls are enforced in the operative field (docs/PROCEDURE.md §3) and the world's operations
-  (docs/EMBODIED.md §8.2, §8.6: an operation's `control`, who checks the wound) — not in the scope of practice,
-  delegation or these policies.
+- **Places are not offered to the learner yet.** A place in the team can be taken at the engine's `start` and joins
+  at the team's phase, and a session in one stamps the learner's steps with their place, but nothing drives the
+  stand-in surgeon yet, so the learner's own start in a place is refused and no front-end offers one. The join drives
+  the record only — the world's device state machines (the count board) are not driven by it —, the Sign Out and the
+  steps after the operation are the operator's, and a case served without its reference solution offers no place. The
+  controls are enforced in the operative field (docs/PROCEDURE.md §3), the world's operations (docs/EMBODIED.md §8.2,
+  §8.6: an operation's `control`, who checks the wound), the scope of practice and delegation (docs/EMBODIED.md §8.3)
+  — not in these policies.
   There is no place for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
 - **Only the duties above have policies.** `anaesthesia` is declared only. Relief colleagues are reached "by phone";
   nobody walks to fetch an instrument from another room.

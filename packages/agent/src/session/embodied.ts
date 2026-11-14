@@ -25,7 +25,7 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, canLeaveAnaesthetisedPatient, effectiveTeam, memberBody, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { assignPatientSlot, canLeaveAnaesthetisedPatient, effectiveTeam, memberBody, patientCues, standingBy, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
   bodyPosition,
@@ -272,8 +272,9 @@ export class EmbodiedSession {
   /**
    * Why this request would take the scrub nurse away from the sterile field (null: it would not; docs/TEAM.md §5): the
    * staff body of the team member with the instruments duty (the team as it is — a team scenario's relief scrub nurse
-   * too) moving out of the team's room while the operation is under way, unless another scrub nurse is in the room to
-   * take over. Staff bodies only: the learner's body — in the scrub nurse's place too — moves by sensor poses no guard
+   * too) moving out of the team's room while the operation is under way, unless another scrub nurse who can take over is
+   * in the room (not one the team scenario makes absent, nor the colleague standing by while the learner holds their
+   * place). Staff bodies only: the learner's body — in the scrub nurse's place too — moves by sensor poses no guard
    * sees.
    */
   private leavesSterileField(request: WorldActionRequest): string | null {
@@ -291,7 +292,9 @@ export class EmbodiedSession {
     const plan = this.inner.plan(request.actorId, goal);
     if (!plan.ok || this.inner.roomAt(plan.target) === room) return null;
     const facility = this.host.facility;
-    const relief = this.inner.actors().some((a) => a.id !== request.actorId && this.inner.roomOf(a.id) === room && bodyPosition(c, s, facility, a.id) === "scrub-nurse");
+    const scenario = s.teamScenario ? (c.team?.scenarios ?? []).find((x) => x.id === s.teamScenario) : undefined;
+    const away = new Set([...(scenario?.absent ?? []).map((id) => `staff:${id}`), standingBy(c, s)]);
+    const relief = this.inner.actors().some((a) => a.id !== request.actorId && !away.has(a.id) && this.inner.roomOf(a.id) === room && bodyPosition(c, s, facility, a.id) === "scrub-nurse");
     return relief ? null : rt(this.host.locale(), "sterile.relief");
   }
 

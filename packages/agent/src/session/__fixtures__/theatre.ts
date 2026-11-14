@@ -19,7 +19,7 @@ import { catalogs } from "../../../../world/src/__fixtures__/world.js";
 import { makeSession, type TestSession, type TestSessionOptions } from "../../__fixtures__/harness.js";
 import type { SessionKernel } from "../kernel.js";
 
-export { STAFF, THEATRE, theatreCase, WHOLE_OPERATION };
+export { STAFF, THEATRE, theatreCase, theatreFacility, WHOLE_OPERATION };
 
 /**
  * The session's kernel (test-only access to what no op reaches directly): the learner's own tool path — the one the

@@ -275,8 +275,9 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.refHandEntry") }), code: "permission_denied" });
       return null;
     }
-    // a place in the team works with bodies at the table: in-world mode only
-    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied) {
+    // a place in the team works with bodies at the table: in-world mode only — said so where the case can be played
+    // in-world (it has a facility); without one, no place is offered at all (below)
+    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied && k.facility) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
       return null;
     }
