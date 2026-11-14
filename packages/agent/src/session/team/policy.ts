@@ -12,15 +12,22 @@
  *   does not answer or cannot do it; escalates to the person it was for when nobody can, saying why.
  * - `instruments` (the scrub nurse): reads a request back and waits for the confirmation; locates an item of
  *   that type she can see in the room (claiming it, so two tasks never carry one item), picks it up, reaches
- *   the person and hands it over, then reports; declines with the reason when she cannot.
+ *   the person and hands it over, then reports; declines with the reason when she cannot. Asked for an instrument
+ *   in the operative field ("Maryland, please"), she passes it into the asker's hand (`./assistant.ts`); never unasked.
+ * - `assist` (an assistant at the table, `./assistant.ts`): reads back a request about the field — traction, letting go,
+ *   the camera —, walks to the table, takes the port, does it and reports; holding the camera, follows the work.
  * - `surgeon` (the simulated surgeon of observer mode): acknowledges what is escalated to them.
+ *
+ * A request about the operative field said to anyone else of the team is declined with the reason (their controls do
+ * not cover it), naming who may be handed it instead.
  *
  * Knowledge: a member uses only what is in their view. An item is used only when the member perceives it
  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
  * and it is not there).
  */
-import type { TeamDuty } from "@clinicalcraft/core";
+import type { Controls, FieldView, ProcedureOp, TeamDuty } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
+import { answerField, assist, fieldWork, isFieldMessage } from "./assistant.js";
 import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
 import type { KnownNeed, MemberId, MemberState, Proposal, TaskPatch, TeamMessage, TeamTask } from "./types.js";
 
@@ -53,6 +60,13 @@ export interface ColleagueView {
   absent: boolean;
   /** Metres from the member (Infinity: elsewhere). */
   distance: number;
+  /** Their controls in the operative field (core `bodyControls`), when the view knows them. */
+  controls?: Controls;
+  /**
+   * The operating table's tasks they may be handed now (`checkTaskScope`: by control — never the body that operates,
+   * the colleague standing by, or one the field takes no part from), when the view knows them.
+   */
+  handed?: readonly string[];
 }
 
 /** The count as a member can know it (docs/TEAM.md §4.3): by item identity, from the case's count record. */
@@ -102,16 +116,36 @@ export interface MemberView {
   near(who: MemberId): boolean;
   /** Item claims of the team (item id → task id). */
   claims: Readonly<Record<string, string>>;
-  /** Names in both languages (messages). */
+  /** Names in both languages (messages): whoever operates is "the surgeon" (术者), the learner in a place by that place. */
   name(who: MemberId): Bilingual;
   itemName(type: string): Bilingual;
   /** A new id (tasks, threads). */
   newId(prefix: string): string;
+  /** The surgeon's body: whoever operates — the learner's avatar, the stand-in's while the learner holds a place. */
+  surgeon: MemberId;
+  /** The learner's body: their own member answers through them (in learner mode the policies never play it). */
+  learner: MemberId;
+  /** The member's controls in the operative field (core `bodyControls`; `all`: whoever operates). */
+  controls: Controls;
+  /** The operative field on the screen, when the member can see it (core `observeField`: handles, never names); else null. */
+  field: FieldView | null;
+  /** The member stands at the operating table with the patient on it (an operative step is done from there). */
+  atTable: boolean;
+  /** Every instrument is passed before it goes in (core `passingRequired`: the scrub nurse's place). */
+  passingRequired: boolean;
+  /** The operator's own plan (the stand-in surgeon's reference steps); null for everyone else. */
+  plan: readonly ProcedureOp[] | null;
+  /** The field's name for a body (a hand-over's or a pass's `to`); undefined for the operator. */
+  refOf(who: MemberId): string | undefined;
+  /** The body a field reference works with (undefined: the operator's). */
+  bodyOf(ref: string | undefined): MemberId;
+  /** A part or a region of the operation by its name, in both languages (else its id). */
+  label(id: string): Bilingual;
 }
 
 const TERMINAL = new Set(["done", "declined", "escalated"]);
-/** The surgeon's body (the learner's avatar; the simulated surgeon in observer mode). */
-const SURGEON = PRIMARY_ACTOR;
+/** The surgeon's body in a view: whoever operates (a view built without one is the learner's: they operate). */
+const surgeonOf = (v: Pick<MemberView, "surgeon">): MemberId => v.surgeon ?? PRIMARY_ACTOR;
 /** Colleagues asked in turn before the circulator escalates. */
 const MAX_TRIES = 3;
 
@@ -149,16 +183,26 @@ function say(v: MemberView, to: MemberId, kind: TeamMessage["kind"], key: TeamPh
   };
 }
 
-/** The member's next step (null: nothing to do now). */
+/**
+ * The member's next step (null: nothing to do now). The oldest thing said to them comes first: a request about the
+ * operative field — whatever their duty — is read back or declined (`answerField`); anything else is their duty's. Then
+ * their duty's own work; then their work in the field (an assistant's, the scrub nurse's passes).
+ */
 export function propose(v: MemberView): Proposal | null {
   if (v.me.absent) return null;
   if (has(v.me.duties, "surgeon")) return surgeon(v);
+  const first = v.inbox[0];
+  if (first && isFieldMessage(v, first)) return answerField(v, first);
   if (has(v.me.duties, "circulate")) {
     const p = circulate(v);
     if (p) return p;
   }
-  if (has(v.me.duties, "instruments") || has(v.me.duties, "count")) return scrub(v);
-  return null;
+  if (has(v.me.duties, "instruments") || has(v.me.duties, "count")) {
+    const p = scrub(v);
+    if (p) return p;
+  }
+  if (has(v.me.duties, "assist")) return assist(v);
+  return fieldWork(v);
 }
 
 const num = (n: number): Bilingual => ({ en: String(n), "zh-CN": String(n) });
@@ -171,7 +215,7 @@ function circulate(v: MemberView): Proposal | null {
   // 1. answers to my requests first (oldest first)
   for (const m of v.inbox) {
     // a count, from whoever counts (never the surgeon's word for one)
-    if (m.kind === "report" && m.about.count !== undefined && m.about.of !== undefined && m.from !== SURGEON) return countReported(v, m);
+    if (m.kind === "report" && m.about.count !== undefined && m.about.of !== undefined && m.from !== surgeonOf(v)) return countReported(v, m);
     const check = v.tasks.find((t) => t.thread === m.thread && t.kind === "check" && !TERMINAL.has(t.status));
     if (check) return checkMessage(v, check, m);
     const task = v.tasks.find((t) => t.thread === m.thread && t.kind === "supply");
@@ -301,7 +345,7 @@ function scrub(v: MemberView): Proposal | null {
 
 /** Whom a count is reported to: the circulating nurse in the room, else the surgeon. */
 function countTo(v: MemberView): MemberId {
-  return v.colleagues.find((c) => has(c.duties, "circulate") && c.present)?.id ?? SURGEON;
+  return v.colleagues.find((c) => has(c.duties, "circulate") && c.present)?.id ?? surgeonOf(v);
 }
 
 /**
@@ -337,6 +381,21 @@ function recount(v: MemberView, m: TeamMessage): Proposal {
 }
 
 /**
+ * The count said for the learner who holds it (`team count`, A18): what the simulated counter's policy would say from the
+ * same view and the same `CountView` — a recount asked of them, answered in its thread; else the count, once it is due
+ * and not yet said. The items are the view's (`CountView.seen`: what the team in the room can account for, by item),
+ * never typed. Null: nothing to count now (no count kept, not due, said already).
+ */
+export function learnerCount(v: MemberView): Proposal | null {
+  const count = v.count;
+  if (!count) return null;
+  const asked = v.inbox.find((m) => m.kind === "request" && m.about.recount && !m.read);
+  if (asked) return recount(v, asked);
+  if (count.due && !v.tasks.some((t) => t.kind === "count")) return firstCount(v, count);
+  return null;
+}
+
+/**
  * The circulating nurse hears a count — by item identity, never a bare number: every expected item there and none
  * that is not in the count — correct, said to the surgeon; otherwise (short, or six of five, or five of five made up
  * with an item that is not in the count) — the hold, then the search and the recount.
@@ -348,7 +407,7 @@ function countReported(v: MemberView, m: TeamMessage): Proposal {
   const unexpected = m.about.unexpected ?? [];
   const clean = missing.length === 0 && unexpected.length === 0;
   const name = v.count?.name ?? v.itemName(m.about.item ?? "");
-  const surgeon = SURGEON;
+  const surgeon = surgeonOf(v);
   const check = v.tasks.find((t) => t.kind === "check" && !TERMINAL.has(t.status));
   const params = { item: name, n: num(n), of: num(of), k: num(unexpected.length) };
   // my own recount (nobody else counts) carries its items, recorded with what I say
@@ -400,7 +459,7 @@ function searchStep(v: MemberView, check: TeamTask): Proposal | null {
       return { kind: "act", task: check.id, operation: sighting.inReach ? "pick_up" : "approach", targetId: extra };
     }
     const what = { en: `${count.name.en} ${extra.replace(/^eq:/u, "")}`, "zh-CN": `${count.name["zh-CN"]} ${extra.replace(/^eq:/u, "")}` };
-    const counter = v.colleagues.find((x) => has(x.duties, "count") && x.present)?.id ?? SURGEON;
+    const counter = v.colleagues.find((x) => has(x.duties, "count") && x.present)?.id ?? surgeonOf(v);
     return { kind: "say", to: counter, message: { thread: check.thread, kind: "report", text: phrase("setAside", { what }), about: { item: count.item, setAside: [extra] }, evidence: [] }, patch: [{ id: check.id, set: { count: { ...c, setAside: [...(c.setAside ?? []), extra] } } }] };
   }
   const foundAll = now.missing.length === 0 && now.unexpected.length === 0;

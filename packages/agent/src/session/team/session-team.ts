@@ -1,21 +1,29 @@
 /**
  * The care team of a session (docs/TEAM.md): the `TeamScheduler` wired to the session — created once the
  * encounter has started (the team scenario is chosen at `start`), driven by the `team` op and, in autonomy
- * `auto`, after each op of the learner; its acts go through the embodied session's action bus with the
- * member's own body (a nurse's tool path), its lines are heard as the member's own, and its state is saved
- * (`team` transcript items, `SessionSnapshot.team`) and restored mid-task.
+ * `auto`, after each op of the learner; its world acts go through the embodied session's action bus with the
+ * member's own body (a nurse's tool path), its steps in the operative field through the team's caller (`team`: the
+ * `operate` tool with the member's body, in a turn of its own that always ends), its lines are heard as the member's
+ * own (spoken through the profile of their role), and its state is saved (`team` transcript items,
+ * `SessionSnapshot.team`) and restored mid-task.
  */
-import { evaluate, t, type TeamNeed } from "@clinicalcraft/core";
+import { evaluate, standInOf, t, type ProcedureOp, type TeamNeed } from "@clinicalcraft/core";
 import type { Op } from "../../protocol.js";
+import { spatialCodeOf } from "../../tools/spatial.js";
+import type { NavGoal } from "@clinicalcraft/world";
+import { runToolAs } from "../embodied-wiring.js";
 import { rt } from "../i18n.js";
 import type { SessionKernel } from "../kernel.js";
-import { TeamScheduler, type TeamHost } from "./scheduler.js";
+import { staffAgent } from "../staff-voice.js";
+import { TEAM_CALLER } from "./callout.js";
+import { TeamScheduler, type OperateOutcome, type TeamHost } from "./scheduler.js";
 import type { MemberState, TeamCheckpoint } from "./types.js";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { ModelTeamMind } from "../../characters/team-mind.js";
 import { positionOf } from "../../characters/roles.js";
 import { characterModel } from "../character-models.js";
 import { SURGEON_NAME } from "./i18n.js";
+import { parseFieldAsk } from "./ask-input.js";
 
 export { validTeamCheckpoint } from "./checkpoint.js";
 
@@ -54,9 +62,15 @@ export class SessionTeam {
   private host(): TeamHost {
     const k = this.k;
     return {
+      caseDef: k.caseDef,
+      facility: k.facility,
+      state: () => k.state,
       world: () => k.embodied!.world(),
       // a member acts with their own body on a nurse's tool path (their role's scope of practice)
       act: (request, signal) => k.embodied!.act({ agent: "nurse", submission: k.currentSubmission, signal }, request, signal),
+      // a member's step in the operative field: the team's caller, their own body
+      operate: (member, op, ref, signal) => this.operateAs(member, op, ref, signal),
+      stepDone: (ref) => (k.state.procedure?.refs ?? []).includes(ref),
       clock: () => k.state.clock,
       phase: () => k.state.phase,
       get locale() {
@@ -67,12 +81,39 @@ export class SessionTeam {
       count: () => k.embodied?.count ?? null,
       record: () => k.state.count,
       say: (speaker, text, member) => {
+        // spoken through the profile of the speaker's role (the nurses' through the nurse's, an assistant's or the
+        // stand-in's through the attending's); the learner's own words as before
         const staffId = member?.startsWith("staff:") ? member.slice("staff:".length) : undefined;
-        k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [], ...(staffId ? { staffId } : {}) });
-        k.conversations.addDialogue({ who: "nurse", speaker, text });
+        const role = staffId ? k.facility?.staff.find((x) => x.id === staffId)?.role : undefined;
+        const agent = role ? staffAgent(role) : "nurse";
+        k.speakLine(k.currentSubmission, { agent, speaker, text, grounded: [], ...(staffId ? { staffId } : {}) });
+        k.conversations.addDialogue({ who: agent, speaker, text });
       },
       // every member decides with their own model (docs/CHARACTERS.md): read at each round, so a `configure` applies
       decide: (member, view, rules, signal) => (k.settings.characters.engine === "llm" ? this.mind().decide(member, view, rules, signal) : Promise.resolve(rules)),
+    };
+  }
+
+  /**
+   * A member's step in the operative field (docs/TEAM.md §4.5): the `operate` tool through the one tool path, under the
+   * team's caller (`team`: hooks, deny rules, the scope of practice, the spatial gate and the approval gate all apply),
+   * with the member's own body and the step's `ref` (from the tool context only); what it says is said to the learner
+   * (`addressee`). In a turn of its own, which always ends: a front-end following each agent's phase sees it idle again.
+   */
+  async operateAs(member: string, op: ProcedureOp, ref: string, signal?: AbortSignal): Promise<OperateOutcome> {
+    const k = this.k;
+    const id = k.currentSubmission;
+    const call = await k.inTurn(id, TEAM_CALLER, (turnId) =>
+      runToolAs(k, { agent: TEAM_CALLER, submission: id, turnId, ...(signal ? { signal } : {}) }, "operate", { ...op } as Record<string, unknown>, { actorId: member, stepRef: ref, addressee: PRIMARY_ACTOR }),
+    );
+    if (call.ok) return { status: "completed", message: call.output.output };
+    const d = call.output.data as { code?: string; hint?: { goal?: NavGoal } | null; rejected?: { code?: string } } | undefined;
+    const cancelled = call.status === "cancelled" || call.status === "interrupted";
+    return {
+      status: cancelled ? "cancelled" : "failed",
+      code: spatialCodeOf(call.output) ?? d?.code ?? d?.rejected?.code ?? call.status.toUpperCase(),
+      message: call.output.output,
+      ...(d?.hint?.goal ? { hint: d.hint.goal } : {}),
     };
   }
 
@@ -82,7 +123,8 @@ export class SessionTeam {
   private mind(): ModelTeamMind {
     if (this.mindInstance) return this.mindInstance;
     const k = this.k;
-    const staffOf = (member: MemberState) => k.facility?.staff.find((s) => s.id === member.staff);
+    // each member's own: the surgeon member is the stand-in while the learner holds a place
+    const staffOf = (member: MemberState) => k.facility?.staff.find((s) => s.id === (member.staff === "surgeon" ? (member.id.startsWith("staff:") ? standInOf(k.caseDef) : undefined) : member.staff));
     this.mindInstance = new ModelTeamMind({
       get locale() {
         return k.locale;
@@ -153,6 +195,7 @@ export class SessionTeam {
         const kinds = new Set(["readback", "confirm", "decline", "report"]);
         if (typeof op.message !== "string" || !op.kind || !kinds.has(op.kind)) return this.invalid(id, "reply needs message and kind (readback, confirm, decline, report)");
         const r = s.reply(op.message, op.kind, typeof op.text === "string" && op.text.trim() ? op.text.trim() : undefined, typeof op.item === "string" ? op.item : undefined);
+        if ("refused" in r && r.refused === "observer") return this.observing(id);
         if ("refused" in r && r.refused === "unknown") return this.invalid(id, `no team message "${op.message}"`);
         if ("refused" in r && r.refused === "notYours") {
           const to = t(k.embodied!.world().entity(r.to)?.name ?? r.to, k.locale);
@@ -165,9 +208,45 @@ export class SessionTeam {
         const item = typeof op.item === "string" ? op.item.trim() : "";
         const world = k.embodied!.world();
         if (!item || !world.entities().some((e) => e.equipmentType?.id === item)) return this.invalid(id, `no equipment of type "${item}" in this hospital`);
-        const forRef = typeof op.for === "string" && op.for.trim() ? op.for.trim() : "surgeon";
+        const forRef = typeof op.for === "string" && op.for.trim() ? op.for.trim().replace(/^staff:/u, "") : "surgeon";
+        // whom it is for: a member of the team (the surgeon by default)
+        if (!s.state.members.some((m) => m.staff === forRef)) {
+          k.emit(id, { type: "error", message: rt(k.locale, "team.unknownMember", { who: forRef }), code: "invalid_op" });
+          return;
+        }
         const need: TeamNeed = { id: `asked-${s.state.posted.length + 1}`, item, for: forRef };
         s.postNeed(need);
+        if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
+        break;
+      }
+      case "ask": {
+        if (!this.working(id, s)) return;
+        const to = typeof op.to === "string" ? op.to.trim() : "";
+        const field = parseFieldAsk(op.field);
+        if (!to) return this.invalid(id, "ask needs to (a member's staff id) and field");
+        if (typeof field === "string") return this.invalid(id, field);
+        const r = s.ask(to, field);
+        if ("refused" in r) {
+          if (r.refused === "observer") return this.observing(id);
+          const who = "to" in r ? t(k.embodied!.world().entity(r.to)?.name ?? r.to.replace(/^staff:/u, ""), k.locale) : to;
+          const key = r.refused === "unknown" ? "team.unknownMember" : r.refused === "self" ? "team.ask.self" : r.refused === "absent" ? "team.ask.absent" : "team.ask.operator";
+          k.emit(id, { type: "error", message: rt(k.locale, key, { who }), code: r.refused === "unknown" ? "invalid_op" : "permission_denied" });
+          return;
+        }
+        if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
+        break;
+      }
+      case "count": {
+        if (!this.working(id, s)) return;
+        const r = s.count();
+        if ("refused" in r) {
+          if (r.refused === "observer") return this.observing(id);
+          if (r.refused === "none") return void k.emit(id, { type: "error", message: rt(k.locale, "team.count.none"), code: "invalid_op" });
+          if (r.refused === "notDue") return void k.emit(id, { type: "warning", message: rt(k.locale, "team.count.notDue") });
+          const counters = ("counters" in r ? r.counters : []).map((x: string) => t(k.embodied!.world().entity(x)?.name ?? x, k.locale)).join(", ");
+          k.emit(id, { type: "error", message: rt(k.locale, "team.count.notYours", { who: counters || "—" }), code: "permission_denied" });
+          return;
+        }
         if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
         break;
       }
@@ -193,11 +272,16 @@ export class SessionTeam {
   }
 
   private status(s: TeamScheduler): void {
-    this.k.emit(this.k.currentSubmission, { type: "team_event", event: { kind: "status", round: s.state.round, autonomy: s.autonomy, surgeon: s.surgeon } });
+    this.k.emit(this.k.currentSubmission, { type: "team_event", event: s.statusEvent() });
   }
 
   private invalid(id: string, reason: string): void {
     this.k.emit(id, { type: "error", message: rt(this.k.locale, "team.invalid", { reason }), code: "invalid_op" });
+  }
+
+  /** Observing (observer mode): the learner's part is played for them — they answer, ask and count in learner mode. */
+  private observing(id: string): void {
+    this.k.emit(id, { type: "error", message: rt(this.k.locale, "team.observer"), code: "permission_denied" });
   }
 
   /** The team as saved now (a session snapshot), or null. */

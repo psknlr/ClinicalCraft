@@ -5,12 +5,14 @@
  * session" answer adds an in-memory allow rule for each thing the call acts on. Every agent's tool calls
  * (`LoopHost.authorize`) and the learner's tool path go through it.
  */
+import { t } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { AuthorizeRequest, GateOutcome } from "../loop.js";
-import { callSpecifiers, checkPermission, PermissionState } from "../permissions.js";
+import { callSpecifiers, checkPermission, PermissionState, teamPermission } from "../permissions.js";
 import type { ApprovalDecision } from "../protocol.js";
 import { ApprovalBroker } from "./approvals.js";
 import type { SessionKernel } from "./kernel.js";
+import { calloutLine, isCallout, operateArgsOp, TEAM_CALLER } from "./team/callout.js";
 
 /** The permission ladder and the approval_request flow of one session. */
 export class ApprovalGate {
@@ -36,7 +38,18 @@ export class ApprovalGate {
   async authorize(id: string, req: AuthorizeRequest): Promise<GateOutcome> {
     const k = this.k;
     const s = k.settings;
-    const check = checkPermission(req.tool, req.args as never, req.ctx, s.approvalMode, s.practiceScope, s.permissions, this.permissionState);
+    let check = checkPermission(req.tool, req.args as never, req.ctx, s.approvalMode, s.practiceScope, s.permissions, this.permissionState);
+    // the care team's own steps (docs/TEAM.md §4.5): never asked about — but the stand-in surgeon's critical step, which
+    // is asked as their call-out ("Clipping the cystic duct.": No objection / Stop), in every mode but bypass
+    let callout: string | undefined;
+    if (String(req.agent) === TEAM_CALLER) {
+      const op = req.tool.name === "operate" ? operateArgsOp(req.args) : null;
+      const state = req.ctx.state();
+      const asks = isCallout(req.ctx.caseDef, state, req.ctx.actorId, op);
+      check = teamPermission(check, s.approvalMode, asks, req.ctx.locale);
+      const line = asks && op ? calloutLine(req.ctx.caseDef, state, op) : null;
+      if (line) callout = t(line, req.ctx.locale);
+    }
     if (check.decision === "deny") return { kind: "deny", reason: check.reason, ruleId: check.ruleId };
     if (check.decision === "allow" || req.hookApproved) return { kind: "allow", ruleId: check.ruleId };
     const phase = (p: "awaiting_approval" | "executing_tools") => {
@@ -54,7 +67,7 @@ export class ApprovalGate {
     const actorId = req.ctx.actorId !== undefined && req.ctx.actorId !== PRIMARY_ACTOR ? req.ctx.actorId : undefined;
     const answer = await this.broker.request(
       id,
-      { agent: req.agent, ...(actorId ? { actorId } : {}), tool: req.tool.name, args: req.args, risk: check.risk, summary, reason: check.reason, ruleId: check.ruleId, allowSession: check.allowSession },
+      { agent: req.agent, ...(actorId ? { actorId } : {}), ...(callout ? { callout } : {}), tool: req.tool.name, args: req.args, risk: check.risk, summary, reason: check.reason, ruleId: check.ruleId, allowSession: check.allowSession },
       req.signal,
     );
     phase("executing_tools");

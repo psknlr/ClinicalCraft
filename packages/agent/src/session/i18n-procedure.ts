@@ -63,6 +63,14 @@ export const PROCEDURE_EN = {
   "team.invalid": "That team request is not well formed: {reason}",
   "team.notYours": "That message was said to {to}, not to you: only they can read it back or answer it.",
   "team.place.notOffered": "the {place}'s place in the team is not offered yet: no stand-in surgeon would operate while you held it. Start as the operating surgeon.",
+  "team.observer": "You are observing: the team plays your part. Choose “I am the surgeon” to answer, ask or count yourself.",
+  "team.unknownMember": "There is nobody called {who} in the team.",
+  "team.ask.self": "That is your own place in the team: ask a colleague.",
+  "team.ask.absent": "{who} is not here in this encounter.",
+  "team.ask.operator": "{who} is operating: ask a colleague at the table.",
+  "team.count.none": "This team keeps no count.",
+  "team.count.notDue": "The count is not due yet.",
+  "team.count.notYours": "The count is not yours to say: {who} counts.",
 } as const;
 
 export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
@@ -122,6 +130,14 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "team.invalid": "团队请求格式不正确：{reason}",
   "team.notYours": "这句话是对{to}说的，不是对你：只有{to}能复述或回答。",
   "team.place.notOffered": "暂不提供团队中的{place}岗位：你担任该岗位时，还没有主刀同事来主刀。请以主刀医生身份开始。",
+  "team.observer": "你正在观察：你的岗位由团队代为完成。选择“我来当术者”后才能自己回答、请求或清点。",
+  "team.unknownMember": "团队中没有“{who}”。",
+  "team.ask.self": "这是你自己在团队中的岗位：请向同事提出。",
+  "team.ask.absent": "{who}本次不在场。",
+  "team.ask.operator": "{who}正在主刀：请向手术台旁的同事提出。",
+  "team.count.none": "本团队不做清点。",
+  "team.count.notDue": "还没到清点的时候。",
+  "team.count.notYours": "清点不由你报：由{who}清点。",
 };
 
 /** Labels of the field view's enumerations (dissection, exposure, findings, signals…), per language. */

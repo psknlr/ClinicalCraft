@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { createSession, mergeSettings, type ClinicalSession } from "@clinicalcraft/agent";
 import { catalogsFor, chooseFacility, loadContent } from "@clinicalcraft/agent/node";
 import { PRIMARY_ACTOR, type EpisodeTrace, type TraceSpan } from "@clinicalcraft/world";
-import { theatreCase, theatreCatalog, theatreFacility } from "../../world/src/__fixtures__/theatre.js";
+import { theatreCase, theatreCatalog, theatreFacility, WHOLE_OPERATION } from "../../world/src/__fixtures__/theatre.js";
 import { catalogs as worldCatalogs } from "../../world/src/__fixtures__/world.js";
 import { Auditor } from "./audit.js";
 
@@ -76,6 +76,61 @@ describe("authorisation audit: the operative field by control (EMBODIED §8.3)",
     // the session's own records of the field (a colleague's hands letting go away from the table) are no gated act
     s.dispatch({ type: "operate", op: { op: "insufflate", pressure: 12 }, by: "system" });
     expect(auditor.finish(s.trace()).authorisation.audited).toBe(byScrub.authorisation.audited);
+    auditor.detach();
+    await s.close();
+  });
+});
+
+describe("authorisation audit: the care team's own steps (docs/TEAM.md §4.5)", () => {
+  /** The theatre case in a session of this approval mode; `seat`: a place taken at the start. */
+  async function theatre(approvalMode: string, seat?: "first-assistant"): Promise<ClinicalSession> {
+    const settings = mergeSettings([{ source: "flag", settings: { provider: "offline", locale: "en", embodiment: "embodied", approvalMode, transcripts: { enabled: false } } }]);
+    const s = await createSession({ caseDef: theatreCase(), facility: theatreFacility(), catalogs: [...worldCatalogs(), theatreCatalog()], settings });
+    s.dispatch({ type: "start", by: "system", ...(seat ? { seat } : {}) });
+    if (!seat) s.dispatch({ type: "set-phase", phase: "theatre", by: "system" });
+    return s;
+  }
+
+  /** A body right beside the patient (a sensor pose). */
+  function atTable(s: ClinicalSession, actorId: string, dz: number): void {
+    const p = s.world()!.patientPlace()!;
+    s.submit({ type: "world_pose", actorId, pose: { x: p.x, y: 0, z: p.z + dz, yaw: 0, pitch: 0, level: p.level } });
+  }
+
+  it("an assistant's traction, asked of them through the team, is authorised in strict mode: never asked about, as the gate let it", async () => {
+    const s = await theatre("strict");
+    const auditor = new Auditor(s);
+    auditor.attach();
+    for (const op of WHOLE_OPERATION.slice(0, 5)) s.dispatch({ type: "operate", op, by: "system" });
+    atTable(s, PRIMARY_ACTOR, 0.6);
+    const asked = await s.run({ type: "team", action: "ask", to: "doc-1", field: { op: "traction", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"] } });
+    const readback = asked.flatMap((e) => (e.msg.type === "team_event" && e.msg.event.kind === "message" && e.msg.event.message.kind === "readback" ? [e.msg.event.message] : []))[0]!;
+    await s.run({ type: "team", action: "reply", message: readback.id, kind: "confirm" });
+    const ran = await s.run({ type: "team", action: "run" });
+    expect(ran.some((e) => e.msg.type === "approval_request")).toBe(false);
+    expect(s.state.procedure!.ports.find((p) => p.site === "B")!.holder).toBe("doc-1");
+    const result = auditor.finish(s.trace());
+    expect(result.authorisation.unauthorised).toEqual([]);
+    expect(result.authorisation.audited).toBeGreaterThanOrEqual(2);
+    auditor.detach();
+    await s.close();
+  });
+
+  it("the stand-in's clip, its call-out asked and approved, is authorised: the audit reads the team's rung as the gate did", async () => {
+    const s = await theatre("default", "first-assistant");
+    const auditor = new Auditor(s);
+    auditor.attach();
+    const clip = WHOLE_OPERATION.findIndex((op) => op.op === "clip");
+    for (const op of WHOLE_OPERATION.slice(0, clip)) s.dispatch({ type: "operate", op, by: "system" });
+    atTable(s, "staff:doc-0", 0.3);
+    s.subscribe((e) => {
+      if (e.msg.type === "approval_request") s.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
+    });
+    const team = (s as unknown as { k: { team: { operateAs(body: string, op: unknown, ref: string): Promise<{ status: string }> } } }).k.team;
+    expect((await team.operateAs("staff:doc-0", WHOLE_OPERATION[clip], "team.test-1.1")).status).toBe("completed");
+    const result = auditor.finish(s.trace());
+    expect(result.authorisation.unauthorised).toEqual([]);
+    expect(result.authorisation.audited).toBe(1);
     auditor.detach();
     await s.close();
   });

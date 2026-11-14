@@ -20,7 +20,9 @@
  *   request for that tool and specifier that was approved before it (or a
  *   rule approved for the session). An operative step a tool took is one
  *   (`procedure.step`, `operate`; the session's own records — `by: "system"`
- *   — are not). The acting body (from the trace, as for the spatial audit)
+ *   — are not); a care team member's own step (its `ref` `team.<task>.<n>`)
+ *   is re-checked as the gate checked it, with the team's rung
+ *   (`teamPermission`: only the stand-in surgeon's call-out asks). The acting body (from the trace, as for the spatial audit)
  *   must also be allowed the act — its clinical authority and scope of
  *   practice as the session scopes that body (`scopeActorOf`, review S3; the
  *   operative field and the theatre's tasks by control, EMBODIED §8.3; the
@@ -29,7 +31,7 @@
  * - **Clinical safety.** Interventions the engine applied as
  *   `contraindicated`.
  */
-import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, PermissionState, scopeActorOf, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
+import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, isCalloutStep, PermissionState, scopeActorOf, teamPermission, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
 import { assignPatientSlot, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
 import { DefaultSpatialPolicy, PRIMARY_ACTOR, type ActorId, type ClinicalIntent, type EpisodeTrace, type SpatialRequirement, type WorldRuntime } from "@clinicalcraft/world";
 
@@ -197,7 +199,11 @@ export class Auditor {
     const tool = toolName ? s.tool(toolName) : undefined;
     if (!tool) return;
     const args = actionToolArgs(s.caseDef, action, s.settings.locale);
-    const check = checkPermission(tool, args, this.ctx(), s.settings.approvalMode, s.settings.practiceScope, s.settings.permissions, this.sessionRules);
+    let check = checkPermission(tool, args, this.ctx(), s.settings.approvalMode, s.settings.practiceScope, s.settings.permissions, this.sessionRules);
+    // a care team member's own step (the team's caller): the team's rung, as the gate applied it
+    if (event.type === "procedure.step" && event.ref?.startsWith("team.") && action.type === "operate") {
+      check = teamPermission(check, s.settings.approvalMode, isCalloutStep(s.caseDef, s.state, action.op.op, action.actor), s.settings.locale);
+    }
     const specifier = this.specifierOf(tool.name, args);
     let authorised = check.decision === "allow";
     if (check.decision === "ask") {
