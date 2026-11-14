@@ -277,9 +277,16 @@ export interface ActorState {
   /**
    * Where this actor last saw each movable thing it has perceived (portable
    * equipment, staff, other actors): what it believes while not perceiving
-   * it (lead note 1). Absent until the first sighting.
+   * it (lead note 1) — or where a colleague said it is (`SeenPlace.toldBy`).
+   * Absent until the first sighting.
    */
   lastSeen?: Record<EntityId, SeenPlace>;
+  /**
+   * Movable things this actor went to where it believed them and did not find (EMBODIED §4 "Whereabouts", audit
+   * 2026-11-12 P1-8): where it looked and when. It knows only that they are not there — until it sees them again or a
+   * colleague tells it where they are. Absent until the first.
+   */
+  missed?: Record<EntityId, MissedPlace>;
 }
 
 /** A place where an actor saw something (its position, level and facing). */
@@ -289,6 +296,52 @@ export interface SeenPlace {
   y: number;
   z: number;
   rot?: number;
+  /** Not seen: a colleague said it is there (`WorldRuntime.askWhereabouts`) — where they had last seen it or left it. */
+  toldBy?: ActorId;
+}
+
+/** Where an actor looked for a thing and did not find it (`ActorState.missed`): the place, its room, the simulated minute. */
+export interface MissedPlace {
+  level: string;
+  x: number;
+  z: number;
+  room: string | null;
+  at: number;
+}
+
+/**
+ * What an actor knows of where a thing is (EMBODIED §4 "Whereabouts", audit P1-8; `WorldRuntime.whereabouts`):
+ * `perceived` — it sees it (or it is in its hands) now; `fixed` — a thing that never moves (a room, a door, fixed
+ * equipment, the encounter's patient), where it is; `last-seen` — where it last saw it; `told` — where a colleague
+ * said it is; `usual` — portable equipment never seen: where the department keeps it; `missing` — it looked where it
+ * believed it was and it was not there: whereabouts unknown (`missed`). `place` is null only when missing; `room`,
+ * `level` and the localised `label` (absent for perceived and fixed things) describe the belief.
+ */
+export interface Whereabouts {
+  entityId: EntityId;
+  kind: "perceived" | "fixed" | "last-seen" | "told" | "usual" | "missing";
+  place: SeenPlace | null;
+  room: string | null;
+  level: string | null;
+  label?: string;
+  /** `told`: who said so. */
+  toldBy?: ActorId;
+  /** `missing`: where it looked and when. */
+  missed?: MissedPlace;
+}
+
+/** The answer to "where is …?" asked of colleagues (`WorldRuntime.askWhereabouts`). */
+export interface WhereaboutsAnswer {
+  /** The colleague who knew where it is (null: nobody asked did). */
+  answeredBy: ActorId | null;
+  /** What that colleague knows — or, when one colleague was asked and did not know, what they do know (usually kept, missing); null: nothing. */
+  whereabouts: Whereabouts | null;
+  /** The colleagues asked, in order. */
+  asked: ActorId[];
+  /** The asker now believes the thing is where the colleague said (its knowledge changed). */
+  updated: boolean;
+  /** The answer in the world's language: who said where it is, what the one colleague asked does know, or that nobody knew. */
+  message: string;
 }
 
 export const MAX_HELD = 2;
@@ -319,6 +372,42 @@ export interface EntityRuntimeState {
   concealed?: true | EntityId;
   /** The patient (`patient:<slot>`): where the body is once it moved (EMBODIED §8, patient transport). */
   patient?: PatientPlaceState;
+  /** An item kept in custody (`EquipmentType.custody`): the receipts of its hand-overs, oldest first (the last `MAX_RECEIPTS`). */
+  receipts?: HandoffReceipt[];
+}
+
+/** Receipts kept per item in custody (the oldest dropped first; their numbers go on). */
+export const MAX_RECEIPTS = 32;
+
+/**
+ * One hand-over of an item kept in custody (`EquipmentType.custody`: a labelled specimen, a medication box — EMBODIED
+ * §8.1, audit 2026-11-12 P2-12): who handed what to whom, where and at which simulated minute, what the item was then,
+ * and the receiver's confirmation — made by the receiver's own act (`confirm_receipt`), never by the one who handed
+ * it over.
+ */
+export interface HandoffReceipt {
+  /** `<item>#<n>`: the item's n-th hand-over. */
+  id: string;
+  /** The item and its equipment type. */
+  item: EntityId;
+  type: string;
+  /** The item's own state when it was handed over (a specimen tube's `collected`); null: it has none. */
+  state: string | null;
+  /** Who handed it over, and their role. */
+  from: ActorId;
+  fromRole: ActorRole;
+  /** Who received it, and their role. */
+  to: ActorId;
+  toRole: ActorRole;
+  /** The room it was handed over in (null: between rooms). */
+  room: string | null;
+  /** The simulated minute of the hand-over, and the action that made it. */
+  at: number;
+  actionId: string;
+  /** The simulated minute the receiver confirmed it; null: not yet. */
+  confirmedAt: number | null;
+  /** The receiver's action that confirmed it. */
+  confirmActionId?: string;
 }
 
 /** A body posture (core `Posture`). */
@@ -356,6 +445,66 @@ export interface PatientPlaceState {
    * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
    */
   asked?: { posture: BodyPosture; over: BodyPosture } | null;
+  /**
+   * The patient's journeys so far, oldest first (EMBODIED §8.7; the last `MAX_PATIENT_LEGS`): one leg per transport or
+   * transfer that moved them, and per walk they made with someone (§8.4). Absent until the first.
+   */
+  legs?: PatientLeg[];
+}
+
+/**
+ * How the patient travelled on a leg (EMBODIED §8.4, audit 2026-11-12 P2-11): `walk` — on their own feet beside the
+ * body that took them (`by`); `bed` / `trolley` / `wheelchair` — wheeled on it (`PatientLeg.vehicle`; the equipment
+ * type decides, `TRAVEL_MODES`). A relocation has none (no journey).
+ */
+export type TravelMode = "walk" | "bed" | "trolley" | "wheelchair";
+
+/** Where a leg of the patient's journey starts or ends: a bed space, a device, the room. */
+export interface LegEnd {
+  slot: string | null;
+  provider: EntityId | null;
+  room: string | null;
+}
+
+/**
+ * One leg of the patient's journey (EMBODIED §8.7), recorded by the world when the patient arrives — or stops short:
+ * who held responsibility in transit (`by`, the body that wheeled or walked them, with its `role`; null: the team
+ * carried out a transfer, nobody named), where from and to, the simulated minutes of departure and arrival, and the
+ * monitor that travelled with them (a device providing cardiac monitoring at their side all the way; null: none).
+ */
+export interface PatientLeg {
+  by: ActorId | null;
+  role: string | null;
+  from: LegEnd;
+  to: LegEnd;
+  departedAt: number;
+  arrivedAt: number;
+  monitor: EntityId | null;
+  /** `arrived`; `stopped`: the walk ended short (interrupted, or the patient could no longer go on). */
+  status: "arrived" | "stopped";
+  /**
+   * What moved them (audit 2026-11-12 P2-11): `transport` — a body took them somewhere (`transport_patient`: wheeled,
+   * or walking beside a patient who can walk); `escort` — they walked with someone on their own feet (`escort_patient`:
+   * one leg per walk of the one they follow, or per stretch of a hand-steered walk); `relocation` — a clinical phase
+   * or an intervention moved them (`cause`): no journey — nobody held them in transit, `departedAt` = `arrivedAt`,
+   * `mode` null, `distance` 0.
+   */
+  kind: "transport" | "escort" | "relocation";
+  /** How they travelled (null: a relocation). */
+  mode: TravelMode | null;
+  /** What they were wheeled on (their bed, a stretcher), or null (on foot; a relocation). */
+  vehicle: EntityId | null;
+  /** Metres they travelled: the route of a transport; on an escort leg, the follower's own path; 0 for a relocation. */
+  distance: number;
+  /**
+   * The handover: who received them where a transport arrived — a colleague other than `by` at their bedside there
+   * (THE bedside rule), nearest first — with that colleague's role; null: nobody did (`by` stays responsible), and
+   * always null for an escort leg (the walker stays with them) or a relocation.
+   */
+  receivedBy: ActorId | null;
+  receivedRole: string | null;
+  /** A relocation's cause, when the session gave it: the phase entered or the intervention given. */
+  cause?: { phase: string } | { intervention: string };
 }
 
 /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
@@ -478,6 +627,11 @@ export type WorldEvent = (
   /** An item concealed by a scenario (`actorId` "scenario"), or revealed by someone's search (`concealed: false`). */
   | { id: string; type: "entity.concealed"; entityId: EntityId; concealed: boolean; actorId: ActorId }
   | { id: string; type: "item.held"; entityId: EntityId; actorId: ActorId; held: boolean }
+  /**
+   * An item kept in custody changed hands (`receipt.confirmedAt` null: handed over by `actorId`, the receiver to
+   * confirm) or its receiver confirmed the receipt (`actorId` = the receiver). EMBODIED §8.1, audit 2026-11-12 P2-12.
+   */
+  | { id: string; type: "item.handoff"; entityId: EntityId; actorId: ActorId; receipt: HandoffReceipt }
   | { id: string; type: "door.changed"; entityId: EntityId; open: boolean; locked: boolean; actorId: ActorId | null }
   | { id: string; type: "reservation.changed"; entityId: EntityId; reservedBy: ActorId | null }
   | { id: string; type: "obstacle.changed"; obstacle: DynamicObstacle; present: boolean }
@@ -495,6 +649,19 @@ export type WorldEvent = (
    * they are); `actorId` asked for it (null: it ended by itself — a transport, a transfer, clinical state).
    */
   | { id: string; type: "patient.escort"; entityId: EntityId; escort: ActorId | null; actorId: ActorId | null }
+  /**
+   * A journey of the patient set off (EMBODIED §8.4, audit 2026-11-12 P2-11): a transport (`kind: "transport"`, to
+   * `to`) or a walk with someone (`kind: "escort"`, `to` null: wherever the walker goes) — who holds them in transit
+   * (`by`, `role`), how (`mode`, `vehicle`), with which monitor, from where, at which simulated minute. A relocation
+   * has no departure (no journey).
+   */
+  | { id: string; type: "patient.departed"; entityId: EntityId; kind: "transport" | "escort"; by: ActorId; role: string; mode: TravelMode; vehicle: EntityId | null; monitor: EntityId | null; from: LegEnd; to: LegEnd | null; at: number }
+  /**
+   * A leg of the patient's journey ended — they arrived, or stopped short (`leg.status`) — or a relocation moved them
+   * (`leg.kind: "relocation"`): the leg as recorded (`PatientPlaceState.legs`), with the handover. `path`: the
+   * follower's own path on an escort leg (from where they stood to where they arrived, along the walker's way).
+   */
+  | { id: string; type: "patient.arrived"; entityId: EntityId; leg: PatientLeg; path?: PathPoint[] }
 ) & {
   /**
    * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
@@ -563,11 +730,19 @@ export interface ObservedEntity {
    * A movable thing not perceived now is reported where the actor believes
    * it is (lead note 1), and this says which belief: `usual` — where the
    * department keeps it (portable equipment not seen yet); `last-seen` —
-   * where the actor last saw it (it may have moved since). `level`, `room`,
-   * distances, bearing and reachability then measure to that place. Absent
-   * for perceived things and things that never move.
+   * where the actor last saw it (it may have moved since); `told` — where a
+   * colleague said it is; `missing` — the actor looked where it believed it
+   * was and it was not there (audit P1-8): its whereabouts are unknown, `room`
+   * is null and distance and bearing measure to where it looked. `level`,
+   * `room`, distances, bearing and reachability then measure to that place.
+   * Absent for perceived things and things that never move.
    */
-  lastKnown?: { kind: "usual" | "last-seen"; label: string };
+  lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
+  /**
+   * A carried item the actor perceives in someone else's hands: who carries it (their id and name — a member of staff
+   * with their role, e.g. "Lin Xiao (Nurse)"). EMBODIED §8.1, audit 2026-11-12 P2-12.
+   */
+  holder?: { id: ActorId; name: string };
 }
 
 export interface WorldObservation {
@@ -669,6 +844,12 @@ export interface NavRequest {
    * them aside (the route a relocation records). Walls, fixed equipment, locks and zones still apply.
    */
   ignoreObstacles?: boolean;
+  /**
+   * Where the planning actor believes things are (EMBODIED §4 "Whereabouts", audit P1-8): a goal on one of these
+   * entities leads to that place — the interaction points, reach and line of sight of its footprint standing there —
+   * instead of where it really is. The action bus passes the actor's stale beliefs; a custom backend may ignore it.
+   */
+  believed?: Readonly<Record<EntityId, SeenPlace>>;
 }
 
 export type NavPlan =
@@ -759,9 +940,10 @@ export interface ClinicalIntent {
   /**
    * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
    * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
-   * own requirement (at the count board, the wand at the table).
+   * own requirement (at the count board, the wand at the table); `acquire`: the acquisition of an ordered study (EMBODIED
+   * §8.7) — the patient on the device a study done on them needs (`anywhere`: acquired at the order).
    */
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "acquire" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
   itemId?: string;
   findingId?: string;
   investigationId?: string;
@@ -926,6 +1108,18 @@ export interface WorldActionResult {
    * it already satisfied the destination and nothing was moved (docs/EMBODIED.md §5).
    */
   moved?: { entityId: EntityId; displacement: number; at: { x: number; z: number; level: string }; satisfied: boolean; alreadyAtDestination?: true };
+  /**
+   * A walk to a movable thing the actor did not perceive and believed elsewhere than it is (EMBODIED §4, audit P1-8):
+   * it went where it believed the thing was (`kind`: how it knew; `room`: there), and `found` says what it found there —
+   * `in-view`: not there, but in view from there, so the walk went on to it; `absent`: neither — it now knows the thing
+   * is missing (`STALE_DESTINATION`); `unknown`: it already knew it was missing, so there was nowhere to go (no walk).
+   */
+  belief?: { entityId: EntityId; kind: "last-seen" | "told" | "usual" | "missing"; room: string | null; found: "in-view" | "absent" | "unknown" };
+  /**
+   * The receipt this action wrote (EMBODIED §8.1, audit 2026-11-12 P2-12): a `hand_over` of an item kept in custody
+   * (the receiver to confirm), or a `confirm_receipt` (confirmed).
+   */
+  receipt?: HandoffReceipt;
 }
 
 /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
@@ -1067,8 +1261,34 @@ export interface WorldRuntime {
    * (default: the world's).
    */
   regionName(at: { level: string; x: number; z: number }, locale?: string): string;
+  /**
+   * What an actor knows of where a thing is (EMBODIED §4 "Whereabouts", audit P1-8): perceived now, fixed, last seen,
+   * told by a colleague, usually kept, or missing (looked for and not found); null for unknown ids and things it does
+   * not know at all. Read-only (records nothing).
+   */
+  whereabouts(actorId: ActorId, id: EntityId): Whereabouts | null;
+  /**
+   * "Where is …?" asked of a colleague (`colleagueId`), or of every colleague nearest first until one knows (EMBODIED
+   * §4, audit P1-8): a colleague answers from what they know first-hand or were told — they see it, saw it last or left
+   * it there, or were told —, never from where it really is; a place the asker already looked at without finding it is
+   * no answer. When one knows, the asker now believes it is there (told: `SeenPlace.toldBy`; no longer missing).
+   * Memory only: no version changes, no event; the trace records the inquiry and the update.
+   */
+  askWhereabouts(askerId: ActorId, id: EntityId, colleagueId?: ActorId): WhereaboutsAnswer;
+  /**
+   * The receipts of hand-overs of items kept in custody (EMBODIED §8.1, audit 2026-11-12 P2-12): of one item, oldest
+   * first, or of every item, by simulated minute then item. Read-only.
+   */
+  receipts(id?: EntityId): HandoffReceipt[];
+  /**
+   * The receipts an actor is to confirm now — THE custody rule (EMBODIED §8.1, `awaitingConfirmation`): of the items in
+   * its hands, those whose last hand-over names it and awaits its confirmation. What a front-end offers "Sign for it"
+   * on and what a member of staff signs for in their round. Read-only, unrecorded (no trace span).
+   */
+  receiptsToConfirm(actorId: ActorId): HandoffReceipt[];
 
   /* navigation (read-only planning) */
+  /** A route as the actor's navigation would plan it: a goal on a movable thing it believes elsewhere leads to that belief (§4). */
   plan(actorId: ActorId, goal: NavGoal): NavPlan;
 
   /* spatial policy */
@@ -1126,11 +1346,20 @@ export interface WorldRuntime {
    */
   screenInView(actorId: ActorId): EntityId | null;
   /**
+   * THE screen rule, the device's side (EMBODIED §6, audit 2026-11-12 P2-13): the patient whose bedside the live
+   * screen (`vitals` / `ecg`) of device `id` shows now — the patient's monitor; another device in service at their
+   * bedside, by their bed (no other bed space of their room nearer), in use (a stored behaviour out of its initial
+   * state: the ECG cart from `prepare` to `reset`) — or null: it shows nobody. Wherever the device was wheeled;
+   * front-ends draw that patient's bedside snapshot or "no patient", and never bind a screen to a bed themselves.
+   */
+  screenPatient(id: EntityId): EntityId | null;
+  /**
    * Move the patient to a destination at once: a transfer the team carries out (a disposition, entering a phase
    * with a location) — nobody walks, no time is charged (the clinical act's own time). Already there: nothing
-   * moves; no such place in the facility: the patient stays (`ok: false`, a localised message).
+   * moves; no such place in the facility: the patient stays (`ok: false`, a localised message). `cause`: the phase or
+   * the intervention that moved them, recorded on the leg (a relocation: no journey, EMBODIED §8.4).
    */
-  relocatePatient(destination: PatientDestination): PatientRelocation;
+  relocatePatient(destination: PatientDestination, cause?: { phase: string } | { intervention: string }): PatientRelocation;
   /** Re-read the patient's clinical posture (after an intervention): the body's collider follows; true when the body changed. */
   refreshPatient(): boolean;
 

@@ -2,7 +2,7 @@
  * Slash commands of embodied mode (docs/EMBODIED.md): `/look`, `/where`,
  * `/find <query>`, `/go <target>`, `/inspect <target>`,
  * `/use <target> <operation> [key=value…]`, `/map`, `/skill [id] [key=value…]`,
- * `/delegate <role> <task> [target]`, `/transport <destination|home>`. Each runs its world tool as the
+ * `/delegate <role> <task> [target] [key=value…]`, `/transport <destination|home> [monitor]`. Each runs its world tool as the
  * learner — validation, PreToolUse hooks, the approval gate (and, for an
  * operation with a clinical effect, the clinical tool's own gate) — exactly
  * like `/order` runs `order_test`. Registered only in embodied sessions; in
@@ -22,8 +22,8 @@ const NAMES = [
   ["use", "<target> <operation> [key=value…]"],
   ["map", ""],
   ["skill", "[id] [key=value…]"],
-  ["delegate", "<role> <task> [target]"],
-  ["transport", "<destination|home>"],
+  ["delegate", "<role> <task> [target] [key=value…]"],
+  ["transport", "<destination|home> [monitor]"],
 ] as const;
 
 /** Names of the embodied slash commands. */
@@ -124,13 +124,18 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
       return true;
     }
     case "transport":
-      if (!args) usage(host, name, "<destination|home>");
+      // `monitor`: the portable monitor at the bedside goes along (EMBODIED §8.7)
+      if (!args) usage(host, name, "<destination|home> [monitor]");
+      else if (tokens.length === 2 && tokens[1] === "monitor") await run("transport_patient", { destination: tokens[0], monitor: true });
       else await run("transport_patient", { destination: args });
       return true;
     case "delegate": {
-      const [role, task, target] = tokens;
-      if (!role || !task) usage(host, name, "<role> <task> [target]");
-      else await run("delegate_task", { role, task, ...(target ? { target } : {}) });
+      // `key=value…` after the target: the task's params (`monitor=true`: the portable monitor goes along, EMBODIED §8.7)
+      const [role, task, ...rest] = tokens;
+      const target = rest[0] !== undefined && !rest[0].includes("=") ? rest.shift() : undefined;
+      const params = keyValues(rest);
+      if (!role || !task) usage(host, name, "<role> <task> [target] [key=value…]");
+      else await run("delegate_task", { role, task, ...(target ? { target } : {}), ...(Object.keys(params).length ? { params } : {}) });
       return true;
     }
     default:

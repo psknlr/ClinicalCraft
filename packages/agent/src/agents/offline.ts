@@ -34,7 +34,7 @@ import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from ".
 import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { obtainedResultsText } from "../tools/npc.js";
-import { resultStatus } from "../tools/clinical-resolve.js";
+import { modalityText, resultStatus } from "../tools/clinical-resolve.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
@@ -74,10 +74,13 @@ export function nurseResultsLine(ctx: OfflineContext): string {
   // the clinician's own status for each (`resultStatus`): "no record" is never "back"
   const ready = orders.filter((o) => resultStatus(c, o) === "ready").map(label);
   const pending = orders.filter((o) => resultStatus(c, o) === "pending").map(label);
+  // ordered, not done: the patient must go to the device first (docs/EMBODIED.md §8.7)
+  const notDone = orders.filter((o) => resultStatus(c, o) === "not-acquired").map((o) => `${label(o)} — ${modalityText(o.order, L)}`);
   const none = orders.filter((o) => resultStatus(c, o) === "no-record").map(label);
   const parts: string[] = [];
   if (ready.length > 0) parts.push(rt(L, "nurse.offline.ready", { list: joinList(L, ready) }));
   if (pending.length > 0) parts.push(rt(L, "nurse.offline.pending", { list: joinList(L, pending) }));
+  if (notDone.length > 0) parts.push(rt(L, "nurse.offline.atModality", { list: joinList(L, notDone) }));
   if (none.length > 0) parts.push(rt(L, "nurse.offline.noRecord", { list: joinList(L, none) }));
   if (parts.length === 0) {
     const read = obtainedResultsText({ ...ctx, agent: "nurse" }, null);
@@ -358,6 +361,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "note":
     case "count":
     case "study":
+    case "acquire":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
@@ -410,6 +414,7 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "release-hold":
     case "count":
     case "study":
+    case "acquire":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
@@ -504,6 +509,9 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
     case "study":
       return a.study.op === "order" ? (state.studies?.orders.some((o) => o.key === (a.study as { key: string }).key) ?? false) : false;
+    case "acquire":
+      // the hospital's record (the patient at the device), never a step of the walkthrough
+      return state.orders.some((o) => o.key === resultKey(a.investigationId, a.phase ?? state.phase) && !!o.acquired);
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
@@ -518,12 +526,14 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
 /**
  * Minutes until the order behind a `read` step is ready (simulated clock;
  * 0 when ready, not ordered, or the clock is static) — a learner who ordered
- * later than the reference run did would otherwise read too early.
+ * later than the reference run did would otherwise read too early. A study still
+ * waiting for the patient at its device has no release minute: 0 (waiting would
+ * not bring it; the patient must go there first).
  */
 export function minutesUntilReadable(c: CaseDefinition, state: SessionState, action: ClinicalAction): number {
   if (action.type !== "read" || c.clock.mode === "static") return 0;
   const order = state.orders.find((o) => o.key === resultKey(action.investigationId, action.phase ?? state.phase));
-  return order ? Math.max(0, order.readyAt - state.clock) : 0;
+  return order?.readyAt != null ? Math.max(0, order.readyAt - state.clock) : 0;
 }
 
 /** PROTOCOL §2 name for the offline clinician plan (see `offlineClinicianTurn` in session/autopilot.ts for execution). */

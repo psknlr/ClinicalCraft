@@ -251,15 +251,23 @@ describe("a dose error in the conversation", () => {
 });
 
 describe("the treatment search: words that state a dose are an order", () => {
+  const tnk = (text: string, id = "tenecteplase", locale = "en") => searchOrder(stroke, text, id, locale);
+
   it("reads an order when the words state an amount, or a dose that cannot be read (the nurse asks — never the preset instead)", () => {
-    expect(searchOrder("tenecteplase 20 mg IV")).toEqual({ text: "tenecteplase 20 mg IV", dose: { amount: 20, unit: "mg", route: "IV" } });
-    expect(searchOrder("替奈普酶 20毫克 静推")).toEqual({ text: "替奈普酶 20毫克 静推", dose: { amount: 20, unit: "mg", route: "IV" } });
-    expect(searchOrder("替奈普酶二十毫克静推")).toEqual({ text: "替奈普酶二十毫克静推", dose: { amount: 20, unit: "mg", route: "IV" } });
-    expect(searchOrder("tenecteplase 0。5 mg IV")).toEqual({ text: "tenecteplase 0。5 mg IV", dose: { route: "IV" } });
-    expect(searchOrder("tenecteplase 20 IV")).toEqual({ text: "tenecteplase 20 IV", dose: { route: "IV" } });
-    expect(searchOrder("tenecteplase IV")).toBeUndefined();
-    expect(searchOrder("oxygen")).toBeUndefined();
-    expect(searchOrder("oxygen 15 L/min")).toBeUndefined();
+    expect(tnk("tenecteplase 20 mg IV")).toEqual({ text: "tenecteplase 20 mg IV", dose: { amount: 20, unit: "mg", route: "IV" } });
+    expect(tnk("替奈普酶 20毫克 静推", "tenecteplase", "zh-CN")).toEqual({ text: "替奈普酶 20毫克 静推", dose: { amount: 20, unit: "mg", route: "IV" } });
+    expect(tnk("替奈普酶二十毫克静推", "tenecteplase", "zh-CN")).toEqual({ text: "替奈普酶二十毫克静推", dose: { amount: 20, unit: "mg", route: "IV" } });
+    expect(tnk("tenecteplase 0。5 mg IV")).toEqual({ text: "tenecteplase 0。5 mg IV", dose: { route: "IV" } });
+    expect(tnk("tenecteplase 20 IV")).toEqual({ text: "tenecteplase 20 IV", dose: { route: "IV" } });
+    expect(tnk("tenecteplase IV")).toBeUndefined();
+    expect(tnk("oxygen")).toBeUndefined();
+    expect(tnk("oxygen 15 L/min")).toBeUndefined();
+  });
+
+  it("an order that names several treatments gives each row its own clause (re-review: every row got the whole order)", () => {
+    expect(tnk("tenecteplase 20 mg IV and aspirin 300 mg PO")).toEqual({ text: "tenecteplase 20 mg IV", dose: { amount: 20, unit: "mg", route: "IV" } });
+    expect(tnk("tenecteplase 20 mg IV and aspirin 300 mg PO", "aspirin")).toEqual({ text: "aspirin 300 mg PO", dose: { amount: 300, unit: "mg", route: "PO" } });
+    expect(tnk("替奈普酶20毫克静推，阿司匹林300毫克口服", "aspirin", "zh-CN")).toMatchObject({ text: "阿司匹林300毫克口服" });
   });
 
   it("a row found by an order whose dose is not clear says so, and gives the words for the nurse to ask about", () => {
@@ -268,7 +276,7 @@ describe("the treatment search: words that state a dose are an order", () => {
     const acts: ClinicalAction[] = [];
     const app = { act: (a: ClinicalAction) => (acts.push(a), null) } as unknown as App;
     const game = { session: { store: { interventions: new Map() } }, embodied: null } as unknown as Game;
-    const ordered = searchOrder("tenecteplase 0。5 mg IV")!;
+    const ordered = searchOrder(stroke, "tenecteplase 0。5 mg IV", "tenecteplase", "en")!;
     const row = treatRow(app, game, iv, new Set(iv.requires), false, ordered) as unknown as FakeElement;
     expect(row.textContent).toContain("The dose in your order is not clear (“0。5 mg”) — the nurse will ask before giving anything");
     row.find("button")!.click();
@@ -276,9 +284,9 @@ describe("the treatment search: words that state a dose are an order", () => {
     // a treatment without a preset dose: its dose is not checked, and the row says so (nobody asks about an unclear one)
     const nifedipine = stroke.interventions.find((i) => i.id === "nifedipine-sl")!;
     expect(nifedipine.doseSpec).toBeUndefined();
-    const unchecked = treatRow(app, game, nifedipine, new Set(nifedipine.requires), false, searchOrder("nifedipine 10 mg SL")) as unknown as FakeElement;
+    const unchecked = treatRow(app, game, nifedipine, new Set(nifedipine.requires), false, searchOrder(stroke, "nifedipine 10 mg SL", "nifedipine-sl", "en")) as unknown as FakeElement;
     expect(unchecked.textContent).toContain("Dose read from your order: 10 mg SL — this treatment has no preset dose to check it against");
-    const unclear = treatRow(app, game, nifedipine, new Set(nifedipine.requires), false, searchOrder("nifedipine 0。5 mg SL")) as unknown as FakeElement;
+    const unclear = treatRow(app, game, nifedipine, new Set(nifedipine.requires), false, searchOrder(stroke, "nifedipine 0。5 mg SL", "nifedipine-sl", "en")) as unknown as FakeElement;
     expect(unclear.textContent).not.toContain("not clear");
   });
 
@@ -288,7 +296,7 @@ describe("the treatment search: words that state a dose are an order", () => {
     const acts: ClinicalAction[] = [];
     const app = { act: (a: ClinicalAction) => (acts.push(a), null) } as unknown as App;
     const game = { session: { store: { interventions: new Map() } }, embodied: null } as unknown as Game;
-    const ordered = searchOrder("tenecteplase 2 mg IV")!;
+    const ordered = searchOrder(stroke, "tenecteplase 2 mg IV", "tenecteplase", "en")!;
     const row = treatRow(app, game, iv, new Set(iv.requires), false, ordered) as unknown as FakeElement;
     expect(row.textContent).toContain("Dose read from your order: 2 mg IV — checked against the preset dose when given");
     row.find("button")!.click();

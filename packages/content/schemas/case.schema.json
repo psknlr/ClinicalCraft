@@ -969,7 +969,8 @@
               "enum": [
                 "button",
                 "free-text",
-                "agent"
+                "agent",
+                "team"
               ]
             },
             "by": {
@@ -1026,6 +1027,53 @@
             },
             "at": {
               "type": "string"
+            },
+            "modality": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Capability"
+              },
+              "minItems": 1,
+              "maxItems": 8
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "acquire"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "collector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "where": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
             },
             "by": {
               "type": "string",
@@ -1176,6 +1224,10 @@
                   "type": "object",
                   "properties": {
                     "amount": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "upTo": {
                       "type": "number",
                       "exclusiveMinimum": 0
                     },
@@ -4653,6 +4705,124 @@
                       "INH",
                       "TOP"
                     ]
+                  },
+                  "maintenance": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "upTo": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "g",
+                          "g/h",
+                          "g/min",
+                          "g/kg",
+                          "g/kg/h",
+                          "g/kg/min",
+                          "mg",
+                          "mg/h",
+                          "mg/min",
+                          "mg/kg",
+                          "mg/kg/h",
+                          "mg/kg/min",
+                          "microgram",
+                          "microgram/h",
+                          "microgram/min",
+                          "microgram/kg",
+                          "microgram/kg/h",
+                          "microgram/kg/min",
+                          "mL",
+                          "mL/h",
+                          "mL/min",
+                          "mL/kg",
+                          "mL/kg/h",
+                          "mL/kg/min",
+                          "unit",
+                          "unit/h",
+                          "unit/min",
+                          "unit/kg",
+                          "unit/kg/h",
+                          "unit/kg/min",
+                          "mmol",
+                          "mmol/h",
+                          "mmol/min",
+                          "mmol/kg",
+                          "mmol/kg/h",
+                          "mmol/kg/min"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "amount",
+                      "unit"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "bolus": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "upTo": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "g",
+                          "g/h",
+                          "g/min",
+                          "g/kg",
+                          "g/kg/h",
+                          "g/kg/min",
+                          "mg",
+                          "mg/h",
+                          "mg/min",
+                          "mg/kg",
+                          "mg/kg/h",
+                          "mg/kg/min",
+                          "microgram",
+                          "microgram/h",
+                          "microgram/min",
+                          "microgram/kg",
+                          "microgram/kg/h",
+                          "microgram/kg/min",
+                          "mL",
+                          "mL/h",
+                          "mL/min",
+                          "mL/kg",
+                          "mL/kg/h",
+                          "mL/kg/min",
+                          "unit",
+                          "unit/h",
+                          "unit/min",
+                          "unit/kg",
+                          "unit/kg/h",
+                          "unit/kg/min",
+                          "mmol",
+                          "mmol/h",
+                          "mmol/min",
+                          "mmol/kg",
+                          "mmol/kg/h",
+                          "mmol/kg/min"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "amount",
+                      "unit"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -6542,10 +6712,14 @@
                         "instruments",
                         "count",
                         "surgeon",
-                        "anaesthesia"
+                        "anaesthesia",
+                        "inform"
                       ]
                     },
                     "minItems": 1
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
                   }
                 },
                 "required": [
@@ -6617,10 +6791,14 @@
                         "instruments",
                         "count",
                         "surgeon",
-                        "anaesthesia"
+                        "anaesthesia",
+                        "inform"
                       ]
                     },
                     "minItems": 1
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
                   }
                 },
                 "required": [
@@ -6691,6 +6869,49 @@
                     },
                     "default": []
                   },
+                  "inform": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "history": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "heldBy": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "for": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "noticedBy": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "blocks": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "when": {
+                          "$ref": "#/definitions/Condition"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "history",
+                        "heldBy",
+                        "for"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
                   "absent": {
                     "type": "array",
                     "items": {
@@ -6717,10 +6938,14 @@
                               "instruments",
                               "count",
                               "surgeon",
-                              "anaesthesia"
+                              "anaesthesia",
+                              "inform"
                             ]
                           },
                           "minItems": 1
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
                         }
                       },
                       "required": [
@@ -6744,6 +6969,9 @@
                           "reconciled",
                           "unresolved"
                         ]
+                      },
+                      "informed": {
+                        "type": "boolean"
                       }
                     },
                     "additionalProperties": false

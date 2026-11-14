@@ -24,6 +24,22 @@ export type BenchCategory = (typeof BENCH_CATEGORIES)[number];
 export const BENCH_LOCALES = ["zh-CN", "en"] as const;
 export type BenchLocale = (typeof BENCH_LOCALES)[number];
 
+/**
+ * Splits (EMBODIED §13.1): `dev` — may be looked at while an agent is improved; `test` — held out: never used to tune
+ * an agent (its prompts, its tool descriptions, a scripted plan), so it carries no scripted plan and the scripted
+ * control does not run it. Reports give the two apart.
+ */
+export const BENCH_SPLITS = ["dev", "test"] as const;
+export type BenchSplit = (typeof BENCH_SPLITS)[number];
+
+/**
+ * What a scenario covers beyond its category (EMBODIED §13.9, from scenario and case metadata): taking a history,
+ * a time-critical emergency, coordinating with the team. A scenario's `tags` may name one; the rest is derived
+ * (`scenarioCoverage`).
+ */
+export const COVERAGE_KINDS = ["history-taking", "time-critical", "team"] as const;
+export type CoverageKind = (typeof COVERAGE_KINDS)[number];
+
 /** The bench-only answer tool (perception / spatial tasks). */
 export const SUBMIT_ANSWER_TOOL = "submit_answer";
 
@@ -157,6 +173,12 @@ export const BenchWorldPredicateSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("doorState"), door: Ref, open: z.boolean().optional(), locked: z.boolean().optional() }).strict(),
   /** Where the patient is now (EMBODIED §8): in a bed space (`slot`), at a device (`provider`, an id or alias), in a room. */
   z.object({ kind: z.literal("patientAt"), slot: Ref.optional(), provider: Ref.optional(), room: Ref.optional() }).strict(),
+  /**
+   * The patient's journeys (EMBODIED §8.7, the world's `PatientPlaceState.legs`): at least one, and every one with a
+   * monitor travelling with them (`monitored`) and held in transit by a body of one of `roles` (a team transfer is
+   * held by no one named).
+   */
+  z.object({ kind: z.literal("patientTransit"), monitored: z.boolean().optional(), roles: z.array(Ref).min(1).max(8).optional() }).strict(),
 ]);
 export type BenchWorldPredicate = z.infer<typeof BenchWorldPredicateSchema>;
 
@@ -165,6 +187,13 @@ const RefusalCode = z.enum(REFUSAL_CODES);
 export const PredicateSchema = z.union([
   /** The engine state (core Condition DSL). */
   z.object({ clinical: ConditionSchema }).strict(),
+  /**
+   * A study done on the patient at a device, stage by stage and in order (EMBODIED §8.7): ordered → the journey to the
+   * device (departure after the order, arrival) → acquired there → released (acquisition + turnaround, by the final
+   * clock) → reviewed (the first read) → the resulting action after the review. `phase`: that phase's order (default:
+   * the first order of the investigation).
+   */
+  z.object({ studyStages: z.object({ investigation: IdSchema, phase: IdSchema.optional() }).strict() }).strict(),
   z.object({ world: BenchWorldPredicateSchema }).strict(),
   /** The last answer submitted with `submit_answer` resolves to one of these entity ids. */
   z.object({ answerEquals: z.union([Ref, z.array(Ref).min(1).max(8)]) }).strict(),
@@ -279,7 +308,11 @@ const ScenarioShape = z
     predicates: z.array(PredicateSchema).min(1).max(32),
     limits: LimitsSchema.default({}),
     reference: z.object({ steps: z.array(ReferenceStepSchema).min(1).max(200) }).strict(),
+    /** The scripted model's plan; empty for a held-out (`test`) scenario: the scripted control does not run it. */
     scripted: z.object({ plan: z.array(ScriptedCallSchema).max(500), final: LocalizedTextSchema.optional() }).strict(),
+    /** `dev` (default) or `test`: held out — never used to tune an agent, no scripted plan (`BENCH_SPLITS`). */
+    split: z.enum(BENCH_SPLITS).default("dev"),
+    /** Free labels; `history-taking`, `time-critical` and `team` count the scenario under that coverage (`COVERAGE_KINDS`). */
     tags: z.array(z.string().min(1).max(40)).max(16).optional(),
   })
   .strict();
@@ -302,6 +335,7 @@ export const BenchScenarioSchema = ScenarioShape.superRefine((s, ctx) => {
     if (!known.has(tool)) issue(["allowedTools", i], `unknown tool "${tool}"`);
   });
   if (s.allowedTools && s.answer && !s.allowedTools.includes(SUBMIT_ANSWER_TOOL)) issue(["allowedTools"], `an answer task must allow ${SUBMIT_ANSWER_TOOL}`);
+  if (s.split === "test" && s.scripted.plan.length > 0) issue(["scripted", "plan"], "a held-out (test) scenario carries no scripted plan: nothing tuned may use it");
   s.scripted.plan.forEach((call, i) => {
     if (!known.has(call.tool)) issue(["scripted", "plan", i, "tool"], `unknown tool "${call.tool}"`);
     else if (call.tool === SUBMIT_ANSWER_TOOL && !s.answer) issue(["scripted", "plan", i, "tool"], `${SUBMIT_ANSWER_TOOL} is offered only in answer tasks`);

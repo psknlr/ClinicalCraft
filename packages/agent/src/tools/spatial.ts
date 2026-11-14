@@ -21,7 +21,7 @@
  * (decisions, phases, waiting, the plan, status, finishing) and `consult`
  * (phone/pager) are not gated.
  */
-import type { ClinicalAction } from "@clinicalcraft/core";
+import { awaitingAcquisition, type ClinicalAction } from "@clinicalcraft/core";
 import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
 import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
@@ -84,6 +84,10 @@ export function actionIntent(action: ClinicalAction): ClinicalIntent | null {
       return { tool: "order_test", kind: "order", investigationId: action.investigationId, itemId: action.investigationId };
     case "read":
       return { tool: "read_result", kind: "read", investigationId: action.investigationId, itemId: action.investigationId };
+    // the acquisition of an ordered study (EMBODIED §8.7): the patient on its device — the session records it, never a
+    // learner; its requirement is what a front-end shows as the way there
+    case "acquire":
+      return { tool: "order_test", kind: "acquire", investigationId: action.investigationId, itemId: action.investigationId };
     case "intervene":
       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
     case "operate":
@@ -151,6 +155,18 @@ export function vitalsGated<A extends Record<string, unknown>>(tool: ToolDefinit
 
 const roleLabel = (role: string, locale: string) => roleName(role, locale);
 
+/**
+ * An in-world study ordered and waiting for the patient at its device (EMBODIED §8.7): the order's output gains the way
+ * to take them there — the world's hint for the acquisition (go to the patient, then `transport_patient`), as a
+ * refusal's hint reads.
+ */
+function acquisitionWay(out: ToolOutput, gate: SpatialGate, actor: ActorId, ctx: ToolContext, investigationId: string | undefined): ToolOutput {
+  if (!investigationId || !ctx.state().orders.some((o) => o.investigationId === investigationId && awaitingAcquisition(o))) return out;
+  const check = gate.check(actor, actionIntent({ type: "acquire", investigationId })!, false);
+  if (check.ok || !check.hint) return out;
+  return { ...out, output: [out.output, ...hintLines(check.hint, ctx.locale)].join("\n") };
+}
+
 /** Thrown inside a gated run when the re-check fails: nothing was committed. */
 class SpatialAbort extends Error {
   constructor(readonly check: Extract<SpatialCheck, { ok: false }>) {
@@ -214,7 +230,8 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
       };
       const run = async (): Promise<ToolOutput> => {
         try {
-          return await tool.run(args, gated);
+          const out = await tool.run(args, gated);
+          return intent.kind === "order" && out.ok ? acquisitionWay(out, gate, actor, ctx, intent.investigationId) : out;
         } catch (err) {
           if (err instanceof SpatialAbort) return spatialRefusal(err.check, ctx.locale);
           throw err;

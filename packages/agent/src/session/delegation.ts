@@ -12,6 +12,10 @@
  * cart — wheeled to the bedside if none is there — prepare, connect, record,
  * reset), `obtain_iv_access` (the case's IV-access procedure),
  * `fetch_equipment` (a cart, by id or capability, to the bedside),
+ * `deliver_item` (a handheld item — the target — taken to `params.to`, a staff
+ * id or role, default the delegating clinician: picked up where it lies, or
+ * from the staff member's own hands, and handed over; an item kept in custody
+ * against a receipt the receiver confirms — EMBODIED §8.1, audit P2-12),
  * `give_intervention` (`params.intervention`, fetching what must stand at
  * the bedside; `params.order` — the order as said — and `params.dose` state
  * the dose, checked against the dose prepared: a dose that differs is not
@@ -24,10 +28,16 @@
  * `hand-over`), `release_traction` (lets go and hands it back). Someone who
  * holds traction lets go before any other task (`letGo` in the result): the
  * window closes, and the operator sees it.
+ *
+ * Staff walk by the rule every body walks by (EMBODIED §4, audit 2026-11-12
+ * P1-8): to where they believe a thing is. Not there, they ask around
+ * (`askWhereabouts`, a step `ask_whereabouts`) and go where a colleague who
+ * knows says it is — once; nobody knows: the task fails with the walk's
+ * reason.
  */
 import { lookupStaff } from "../tools/consult-target.js";
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type HandoffReceipt, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
 import type { DoseErrorEvent, doseQueryData } from "../tools/dose-order.js";
@@ -86,6 +96,8 @@ export interface DelegationResult {
   asked?: string;
   /** Equipment delivered (`fetch_equipment`): where it stands now and how far from the patient. */
   delivered?: { entityId: string; room: string | null; distance: number; x: number; z: number };
+  /** `deliver_item` of an item kept in custody: the receipt the hand-over wrote (the receiver to confirm it). */
+  receipt?: HandoffReceipt;
   /** Traction let go: the instruments this colleague held at the table, handed back before this task or as it. */
   letGo?: { port: string; instrument: string }[];
   /** `hold_traction`: the port taken and its instrument. */
@@ -104,11 +116,14 @@ export interface DelegationResult {
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 
-/** The staff member for a role (or a staff id): the one nearest to the patient where the patient is now. */
-export function pickStaff(world: WorldRuntime, role: string, patientId: string | null): ActorId | null {
+/**
+ * The staff member for a role (or a staff id): the one nearest to the patient where the patient is now. `exclude`: a
+ * colleague a role never picks (who carries an item to someone in that role is not its receiver).
+ */
+export function pickStaff(world: WorldRuntime, role: string, patientId: string | null, exclude?: ActorId): ActorId | null {
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
-  const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
+  const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role && a.id !== exclude);
   if (!candidates.length) {
     // a colleague by name or title ("Nurse Lim", "洗手护士"): the one room-aware resolver, in the patient's room
     const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null);
@@ -125,9 +140,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
 function transportParameters(h: Pick<DelegationHost, "resolve">, staff: ActorId, params: Record<string, unknown>, target: string): Record<string, unknown> | null {
   const destination = strArg(params, "destination") || target;
   const capability = strArg(params, "capability");
-  if (destination === "home" || destination === "back") return { destination: "home" };
-  if (destination) return { destination: h.resolve(destination, staff) ?? destination };
-  return capability ? { capability } : null;
+  // the portable monitor at the bedside goes along (EMBODIED §8.7): `true`, or the device named
+  const monitor = params.monitor === true ? { monitor: true } : strArg(params, "monitor") ? { monitor: h.resolve(strArg(params, "monitor"), staff) ?? strArg(params, "monitor") } : {};
+  if (destination === "home" || destination === "back") return { destination: "home", ...monitor };
+  if (destination) return { destination: h.resolve(destination, staff) ?? destination, ...monitor };
+  return capability ? { capability, ...monitor } : null;
 }
 
 /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
@@ -198,7 +215,16 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     return r;
   };
   // done for the delegating clinician: its observations report the staff member's actions (G13)
-  const go = async (goal: NavGoal) => record("navigate", await h.act(caller, { actorId: staff, operation: "navigate", goal, onBehalfOf: PRIMARY_ACTOR }), "id" in goal ? goal.id : undefined);
+  const walk = async (goal: NavGoal) => record("navigate", await h.act(caller, { actorId: staff, operation: "navigate", goal, onBehalfOf: PRIMARY_ACTOR }), "id" in goal ? goal.id : undefined);
+  // not where they believed it was (EMBODIED §4, audit P1-8): they ask around — "has anyone seen the ECG cart?" — and
+  // go where a colleague who knows says it is; nobody knows: the walk's failure stands
+  const go = async (goal: NavGoal): Promise<WorldActionResult> => {
+    const r = await walk(goal);
+    if (r.errorCode !== "STALE_DESTINATION" || !r.belief) return r;
+    const answer = world.askWhereabouts(staff, r.belief.entityId);
+    result.steps.push({ operation: "ask_whereabouts", target: r.belief.entityId, status: answer.answeredBy ? "completed" : "failed", message: answer.message });
+    return answer.updated ? walk(goal) : r;
+  };
   const operate = async (id: string, operation: string, parameters?: Record<string, unknown>, goal?: NavGoal): Promise<WorldActionResult> => {
     const request: WorldRequestInput = { actorId: staff, operation, targetId: id, onBehalfOf: PRIMARY_ACTOR, ...(parameters ? { parameters } : {}), ...(goal ? { goal } : {}) };
     let r = record(operation, await h.act(caller, request), id);
@@ -340,6 +366,23 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         if (e && p) result.delivered = { entityId: cart, room: e.room, distance: r2(Math.hypot(e.position.x - p.position.x, e.position.z - p.position.z)), x: r2(e.position.x), z: r2(e.position.z) };
         verify(`at bedside ${cart}`, ok && h.atBedside(cart));
         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "deliver_item": {
+        const item = h.resolve(strArg(params, "item") || target, staff);
+        if (!item || world.entity(item)?.portable !== "handheld") return finish("failed", "no-target");
+        const wanted = strArg(params, "to");
+        // "me" is the delegating clinician; a role, the nearest colleague in it other than the one carrying it
+        const named = wanted ? h.resolve(wanted, PRIMARY_ACTOR) : PRIMARY_ACTOR;
+        const to = named && world.actor(named) ? named : wanted ? pickStaff(world, wanted, patient, staff) : null;
+        if (!to || to === staff) return finish("failed", "no-recipient");
+        // taken where it lies (in someone else's hands the world refuses, saying whose), unless already in theirs
+        if (!world.actor(staff)?.holding.includes(item) && (await operate(item, "pick_up")).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        if ((await go({ kind: "entity", id: to, range: 1 })).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const r = await operate(item, "hand_over", { to });
+        if (r.receipt) result.receipt = r.receipt;
+        const ok = r.status === "completed" && !!world.actor(to)?.holding.includes(item);
+        verify(`${item} handed to ${to}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "transport_patient": {
         const parameters = transportParameters(h, staff, params, target);

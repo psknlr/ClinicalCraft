@@ -93,8 +93,8 @@
         "states": {
           "idle": {"name": {"zh-CN":"待机","en":"Idle"}},
           "prepared": {"name": {"zh-CN":"已备好","en":"Prepared"}},
-          "connected": {"name": {"zh-CN":"导联已连接","en":"Leads connected"}},
-          "completed": {"name": {"zh-CN":"已记录","en":"Tracing recorded"}}
+          "connected": {"name": {"zh-CN":"导联已连接","en":"Leads connected"}, "live": true},
+          "completed": {"name": {"zh-CN":"已记录","en":"Tracing recorded"}, "live": true}
         },
         "operations": {
           "prepare": {"name": {"zh-CN":"准备心电图机","en":"Prepare the ECG machine"}, "from": ["idle"], "to": "prepared", "requires": [{"deviceAtBedside": true}, {"actorWithin": 1.5}, {"patientWithin": 1.5}], "durationSeconds": 30, "reserve": true},
@@ -2022,6 +2022,75 @@
         {"m":"navy","p":[0,0.051,0.9],"s":[1.2,0.002,0.04]}
       ],
       "model": {"uri":"models/exercise-mat.glb","sha256":"e6b5b2fcdf9c74b818ca2cd0a219444cf8ea185e34f1b11bd155bf4429800564","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+    },
+    {
+      "id": "specimen-tube",
+      "name": {"zh-CN":"血标本管","en":"Blood specimen tube"},
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "红帽真空采血管（血清管，ISO 6710 颜色编码）。在床旁采血，并当着患者的面贴上患者信息标签；送往检验科途中的每一次交接都要签收。",
+        "en": "An evacuated blood collection tube with a red cap (serum, the ISO 6710 colour code). It is filled at the bedside and labelled there with the patient's details, in front of them; every hand-over on its way to the laboratory is signed for."
+      },
+      "usage": {
+        "zh-CN": "先洗手，把标本管拿到患者身边采血并当场贴好标签（医生、护士或急救员）；再凭交接记录递交——交给送检的同事，或直接交给检验科——由接收人确认签收。",
+        "en": "Clean your hands, take the tube to the patient, fill it and label it there (a doctor, a nurse or a paramedic); then hand it over against a receipt — to the colleague taking it to the laboratory, or to the laboratory itself — and the receiver confirms it."
+      },
+      "capabilities": [],
+      "footprint": {"w":0.14,"d":0.04,"h":0.04},
+      "solid": false,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 血标本管","en":"E · Blood specimen tube"}
+      },
+      "screen": "none",
+      "tags": ["bedside","laboratory","specimen","ed","ward"],
+      "portable": "handheld",
+      "custody": true,
+      "behavior": {
+        "initial": "empty",
+        "states": {
+          "empty": {"name": {"zh-CN":"空管，未贴标签","en":"Empty, unlabelled"}},
+          "collected": {"name": {"zh-CN":"已采血、已贴标签","en":"Filled and labelled"}, "look": {"layers": ["label","sample"]}}
+        },
+        "operations": {
+          "collect": {"name": {"zh-CN":"床旁采血并贴标签","en":"Take the sample and label it at the bedside"}, "from": ["empty"], "to": "collected", "requires": [{"state": "held"}, {"handsClean": true}, {"patientWithin": 1.5}], "roles": ["clinician","attending","nurse","paramedic"], "durationSeconds": 180}
+        }
+      },
+      "parts": [
+        {"m":"plastic","p":[-0.012,0.0082,0],"s":[0.1,0.013,0.013]},
+        {"m":"ambulance-red","p":[0.0505,0.0082,0],"s":[0.023,0.0164,0.0164]}
+      ],
+      "model": {"uri":"models/specimen-tube.glb","sha256":"b05b5804effc4e0429eff86a2b5329de5c875d5f772244e599e620740969566c","scale":1,"offset":[-0.0021,-0.0007,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+    },
+    {
+      "id": "medication-box",
+      "name": {"zh-CN":"药盒","en":"Medication box"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "药房为一位患者发出的一盒药，盒盖上贴着药房标签（患者、药名、剂量）。每一次交接都要签收。",
+        "en": "A box of medicine dispensed by the pharmacy for one patient, the pharmacy label (patient, drug, dose) on its lid. Every hand-over is signed for."
+      },
+      "usage": {
+        "zh-CN": "凭交接记录递交：接收人核对药房标签后确认签收。",
+        "en": "Hand it over against a receipt: the receiver checks the pharmacy label and confirms it."
+      },
+      "capabilities": [],
+      "footprint": {"w":0.14,"d":0.08,"h":0.05},
+      "solid": false,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 药盒","en":"E · Medication box"}
+      },
+      "screen": "none",
+      "tags": ["medication","pharmacy","ed","ward"],
+      "portable": "handheld",
+      "custody": true,
+      "parts": [
+        {"m":"white","p":[0,0.0225,0],"s":[0.12,0.045,0.07]},
+        {"m":"blue","p":[0.038,0.0226,0],"s":[0.022,0.0452,0.0702]},
+        {"m":"paper","p":[-0.015,0.0454,0],"s":[0.06,0.001,0.046]}
+      ],
+      "model": {"uri":"models/medication-box.glb","sha256":"0b6420f1d4f314e181d3724c34e35e29d4b66231ad66ba6b1db5f0822e22d8af","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     }
   ]
 }

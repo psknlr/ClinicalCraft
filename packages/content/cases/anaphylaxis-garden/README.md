@@ -244,9 +244,11 @@ WAO and EAACI (0.01 mg/kg up to 0.5 mg); 0.3 mg from an adult auto-injector, whi
 5 mg", "肌注肾上腺素 5 mg", "五毫克" or "five milligrams" is not given: a critical dose error (ten times the top of the range)
 that also fails the safety outcome; "500 micrograms IM", "零点五毫克", "EpiPen 0.3 mg IM" and a volume with its
 strength ("0.5 mL of 1:1000", "1 mg/mL 0.5 mL") are given. "1 mg IM" draws the nurse's read-back and is not given —
-a dose error to review (twice the top of the range), not a safety failure. A dose the nurse cannot check — a volume
-without its strength ("0.3 mL"), "1/2 mg", "0。5 mg", a range, a number without its unit — is asked about: not given,
-and no dose error. The adjuncts have no preset:
+a dose error to review (twice the top of the range), not a safety failure; "4 mg" is critical (more than ten times
+the range's 0.3 mg). A range is read end for end: "0.3–0.5 mg" is given, "5–10 mg" is a critical dose error. A dose
+the nurse cannot check — a volume without its strength ("0.3 mL"), "1/2 mg", "0。5 mg", a range across the preset's
+ends, two doses that disagree, a number without its unit — is asked about: not given, and no dose error. The
+adjuncts have no preset:
 their items stand for a class — the steroid item for dexamethasone or methylprednisolone, the antihistamines for
 fexofenadine or diphenhydramine, the salbutamol nebuliser for an inhaler in puffs — and the dose check compares
 amounts, not drugs, so another member's usual dose would read as a dose error (dexamethasone 8 mg as a twenty-fifth

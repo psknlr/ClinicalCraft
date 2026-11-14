@@ -329,6 +329,9 @@
             "handheld"
           ]
         },
+        "custody": {
+          "type": "boolean"
+        },
         "reach": {
           "type": "number",
           "exclusiveMinimum": 0,
@@ -453,6 +456,9 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "live": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false

@@ -15,6 +15,7 @@
  */
 import {
   activeHolds,
+  awaitingAcquisition,
   datumStatus,
   availableDecisions,
   currentObjective,
@@ -44,6 +45,7 @@ import {
   actorFor,
   capabilityRefusal,
   maxDosesRefusal,
+  modalityText,
   orderStatusText,
   readPhase,
   rejectedOutput,
@@ -56,7 +58,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
-import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, orderCheck, writtenOrder } from "./dose-order.js";
+import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, itemOrder, orderCheck, otherOrdersText, writtenOrder } from "./dose-order.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -67,6 +69,7 @@ export {
   RESOLVE_THRESHOLD,
   actorFor,
   missingCapabilities,
+  modalityText,
   orderStatusText,
   readPhase,
   rejectedOutput,
@@ -383,19 +386,50 @@ const orderTest: ToolDefinition<ToolArgs> = {
     if (duplicate) return { ok: true, output: rt(L, "tool.orderDuplicate", { name, phase: phaseLabel(c, duplicate.phase, L) }), data: { investigationId: r.id, duplicate: true, phase: duplicate.phase } };
     const placed = eventsOf(result, "order.placed")[0];
     const phase = placed?.phase ?? s.phase;
-    const readyAt = placed?.readyAt ?? s.clock;
+    const order = s.orders.find((o) => o.key === placed?.key);
+    // in-world, a study done on the patient at a device: ordered here, done once the patient is there (EMBODIED §8.7)
+    const atModality = !!order?.modality?.length;
+    const waiting = !!order && awaitingAcquisition(order);
+    const readyAt = order?.readyAt ?? placed?.readyAt ?? s.clock;
     const hasRecord = resultFor(c, r.id, phase) != null;
+    const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+    const modality = order ? modalityText(order, L) : "";
     const ready = !hasRecord
       ? rt(L, "tool.ordered.noRecord", { phase: phaseLabel(c, phase, L) })
-      : readyAt <= s.clock
-        ? rt(L, "tool.ordered.readyNow")
-        : readyAtText(c, readyAt, s.clock, L);
+      : waiting
+        ? rt(L, "tool.ordered.atModality", { modality, minutes: turnaround })
+        : atModality && readyAt > s.clock
+          ? rt(L, "tool.ordered.atModalityNow", { patient: t(c.patient.displayName, L), modality, time: clockTime(c, readyAt, L, "ceil"), now: clockTime(c, s.clock, L) })
+          : readyAt <= s.clock
+            ? rt(L, "tool.ordered.readyNow")
+            : readyAtText(c, readyAt, s.clock, L);
     const lines = [rt(L, "tool.ordered", { name, phase: phaseLabel(c, phase, L), ready })];
     const query = strArg(args, "query");
     if (query) for (const w of orderWarnings(c, query, r.id, L, before)) lines.push(rt(L, "tool.orderWarning", { text: w }));
-    return { ok: true, output: lines.join("\n"), data: { investigationId: r.id, phase, readyAt, ready: hasRecord && readyAt <= s.clock, hasRecord } };
+    return {
+      ok: true,
+      output: lines.join("\n"),
+      data: { investigationId: r.id, phase, ...(waiting ? { acquired: false, modality: order!.modality } : { readyAt }), ready: hasRecord && !waiting && readyAt <= s.clock, hasRecord },
+    };
   },
 };
+
+/**
+ * A read of a study ordered but not done — the patient was never at its device (docs/EMBODIED.md §8.7): what it waits
+ * for and the way there, answered before anything else (never "go to the console" for a study nobody has done).
+ */
+function notAcquiredOutput(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, args: ToolArgs): ToolOutput | null {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const r = resolveInvestigation(c, args, L);
+  if (r.kind !== "id") return null;
+  const phase = readPhase(ctx.state(), r.id, strArg(args, "phase"));
+  const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
+  if (!order || !awaitingAcquisition(order)) return null;
+  const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+  const detail = rt(L, "tool.read.notAcquired", { name: investigationName(c, r.id, L), modality: modalityText(order, L), minutes: turnaround });
+  return rejectedOutput(L, { state: ctx.state(), events: [], rejected: { code: "not-ready", message: detail } }, detail);
+}
 
 const readResult: ToolDefinition<ToolArgs> = {
   name: "read_result",
@@ -424,6 +458,8 @@ const readResult: ToolDefinition<ToolArgs> = {
     const r = resolveInvestigation(ctx.caseDef, args, ctx.locale);
     return r.kind === "id" ? r.id : strArg(args, "investigation_id");
   },
+  // a study not done yet: said before the spatial gate sends anyone to a console to read nothing
+  precheck: (args, ctx) => notAcquiredOutput(ctx, args),
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
@@ -435,7 +471,12 @@ const readResult: ToolDefinition<ToolArgs> = {
     if (result.rejected) {
       if (result.rejected.code === "not-ready") {
         const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
-        return rejectedOutput(L, result, order ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
+        // ordered, not done: the patient was never at the device — no result exists to wait for
+        if (order && awaitingAcquisition(order)) {
+          const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+          return rejectedOutput(L, result, rt(L, "tool.read.notAcquired", { name: investigationName(c, r.id, L), modality: modalityText(order, L), minutes: turnaround }));
+        }
+        return rejectedOutput(L, result, order?.readyAt != null ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
       }
       if (result.rejected.code === "not-ordered") {
         // Name the phase(s) it was ordered in, with the exact command (/results shows labels).
@@ -522,7 +563,8 @@ const intervene: ToolDefinition<ToolArgs> = {
     const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
     const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
     // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
-    const order = writtenOrder(args);
+    // the words that order this item (its own clause when they order several)
+    const order = r.kind === "id" ? itemOrder(ctx.caseDef, args, r.id, ctx.locale) : writtenOrder(args);
     const check = order && r.kind === "id" ? orderCheck(ctx.caseDef, r.id, order) : null;
     if (order && check?.outcome === "query") return rt(ctx.locale, "sum.interveneUnclear", { name, text: order.text });
     const dose = check ? check.dose : order?.dose;
@@ -551,8 +593,15 @@ const intervene: ToolDefinition<ToolArgs> = {
     }
     const unavailable = capabilityRefusal(ctx, interventionLabel(c, r.id, L), c.interventions.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
-    // the order as written (words only: an id alone states none) and the dose read from it — the engine checks it
-    const ordered = writtenOrder(args);
+    // the order as written (words only: an id alone states none; the clause that names this item when they order
+    // several) and the dose read from it — the engine checks it
+    const ordered = itemOrder(c, args, r.id, L);
+    // the other treatments the words order: each on its own order (never silently dropped)
+    const others = (() => {
+      const words = writtenOrder(args)?.text;
+      return words ? otherOrdersText(c, words, r.id, L) : null;
+    })();
+    const withOthers = (text: string) => (others ? `${text}\n${others}` : text);
     const result = dispatch(ctx, { type: "intervene", interventionId: r.id, ...(ordered ? { ordered } : {}) });
     if (result.rejected?.code === "on-hold") {
       const hold = activeHolds(ctx.state(), r.id)[0];
@@ -563,7 +612,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     if (result.rejected?.code === "dose-unclear" && ordered) {
       const check = orderCheck(c, r.id, ordered);
       if (check?.outcome === "query") {
-        const message = doseQueryChallengeText(c, r.id, check, L);
+        const message = withOthers(doseQueryChallengeText(c, r.id, check, L));
         const iv = c.interventions.find((i) => i.id === r.id)!;
         return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } };
       }
@@ -574,7 +623,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     const doseError = eventsOf(result, "dose.error")[0];
     if (doseError) {
       // the dose ordered differs from the dose prepared: nothing given — the nurse reads the order back (closed loop)
-      const message = doseChallengeText(c, doseError, L);
+      const message = withOthers(doseChallengeText(c, doseError, L));
       return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } };
     }
     const applied = eventsOf(result, "intervention.applied")[0];
@@ -594,6 +643,7 @@ const intervene: ToolDefinition<ToolArgs> = {
     // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
     const checked = doseCheckText(c, iv, recorded, L);
     if (checked) lines.push(checked);
+    if (others) lines.push(others);
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
     // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
     const data = safetyDataLines(c, ctx.state(), iv.reports, L);
@@ -1026,7 +1076,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       currentObjective: objective?.id ?? null,
       // the next steps of the current objective, each with whether the engine would run it now and what blocks it
       recommendations: recommendations(c, s, L),
-      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
+      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, acquired: o.acquired, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
       decisions: decisions.map((d) => ({ number: decisionNumber(c, d.decision.id), unlocked: d.unlocked, decided: d.decided })),
       holds: (s.holds ?? []).filter((h) => !h.released),
       hints: s.hints,

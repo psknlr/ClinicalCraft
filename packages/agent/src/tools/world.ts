@@ -73,7 +73,7 @@ const ENTITY_KINDS: readonly EntityKind[] = ["patient", "staff", "actor", "equip
 export { WORLD_TOOL_NAMES };
 
 /** World tools that only read (never need approval, may run in parallel). */
-export const WORLD_READ_ONLY_TOOLS: readonly string[] = ["observe_world", "get_agent_state", "find_entities", "find_objects", "inspect_object", "get_nearby_objects", "get_visible_objects", "get_room_info", "get_action_feedback", "get_camera_frame"];
+export const WORLD_READ_ONLY_TOOLS: readonly string[] = ["observe_world", "get_agent_state", "find_entities", "find_objects", "inspect_object", "get_nearby_objects", "get_visible_objects", "get_room_info", "get_action_feedback", "ask_whereabouts", "get_camera_frame"];
 
 /** How deep skills nest (review C10): a skill may run one skill (or delegate); the one it runs may do neither. */
 export const MAX_SKILL_NESTING = 1;
@@ -84,7 +84,7 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
 }
 
 /** Tasks staff can be delegated (`delegate_task`). */
-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
+export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "deliver_item", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
 
 const GOAL_SCHEMA = {
   type: "object",
@@ -149,9 +149,15 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   { name: "get_room_info", description: "A room: its exits and what you know in it (default: the room you are in). Read-only.", inputSchema: obj({ room: { type: "string", maxLength: 80 } }) },
   { name: "get_action_feedback", description: "The recorded result of an earlier world action by its action id. Read-only.", inputSchema: obj({ action_id: { type: "string", minLength: 1, maxLength: 200 } }, ["action_id"]) },
   {
+    name: "ask_whereabouts",
+    description:
+      'Ask colleagues where someone or something is — when it was not where you expected it (a walk ended "not in …", find_entities says "whereabouts unknown") or you never saw it. A colleague answers from what they know: they see it, saw it last or left it there; then you know it too, and navigate_to goes there. colleague: a staff id or a role (default: ask around, nearest first). Read-only.',
+    inputSchema: obj({ target: TARGET, colleague: { type: "string", minLength: 1, maxLength: 80, description: "staff:<id>, or a role (nurse, porter…)." } }, ["target"]),
+  },
+  {
     name: "navigate_to",
     description:
-      'Walk somewhere: a target ("patient", an entity id or alias, a room id — or a name) or an explicit goal (pass a refusal\'s hint.goal as is). Walking takes simulated time. Returns the route length and travel time.',
+      'Walk somewhere: a target ("patient", an entity id or alias, a room id — or a name) or an explicit goal (pass a refusal\'s hint.goal as is). Something you do not see now you go to where you believe it is (find_entities says where: last seen, usually kept, told); not there, the walk ends "not in …" (STALE_DESTINATION) — look around, or ask_whereabouts. Walking takes simulated time. Returns the route length and travel time.',
     inputSchema: obj({ target: { type: "string", minLength: 1, maxLength: 120 }, goal: GOAL_SCHEMA, range: { type: "number", minimum: 0, maximum: 30, description: "Stop within this distance (m) of the target." } }),
   },
   { name: "approach_object", description: "Walk to the best interaction point of an entity (within reach, line of sight, facing it).", inputSchema: obj({ target: TARGET }, ["target"]) },
@@ -159,7 +165,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "interact_object",
     description:
-      "Operate an entity with one of its operations (inspect_object lists them): doors open/close, workstation order/read {investigation}, monitor attach/read, ECG cart prepare/connect/record/reset, device use {investigation|intervention}, carts move_to {goal}, sinks wash_hands, items pick_up/put_down. Operations with a clinical effect run the clinical tool through the same approval gate.",
+      "Operate an entity with one of its operations (inspect_object lists them): doors open/close, workstation order/read {investigation}, monitor attach/read, ECG cart prepare/connect/record/reset, device use {investigation|intervention}, carts move_to {goal}, sinks wash_hands, items pick_up/put_down/hand_over {to: a person within arm's reach}. An item kept in custody (a blood specimen tube, a medication box) is handed over against a receipt, and whoever receives it confirms it with confirm_receipt; a specimen tube is filled and labelled at the bedside with collect. Operations with a clinical effect run the clinical tool through the same approval gate.",
     inputSchema: obj(
       {
         target: TARGET,
@@ -173,11 +179,12 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "transport_patient",
     description:
-      'Take the patient somewhere on their bed or trolley (or walk a patient who can walk): you must be at the patient\'s side, and you wheel them there. destination: a device a study is done at (e.g. "eq:ct-scanner", the cath-lab C-arm, a peak-flow station), a bed space or room id, or "home" (back to their own bed space). A refusal\'s hint names it (then: transport_patient). Travel takes simulated time. A porter or a nurse can do it for you: delegate_task task transport_patient.',
+      'Take the patient somewhere on their bed or trolley (or walk a patient who can walk): you must be at the patient\'s side, and you wheel them there. destination: a device a study is done at (e.g. "eq:ct-scanner", the cath-lab C-arm, a peak-flow station — a study ordered there is done once the patient arrives), a bed space or room id, or "home" (back to their own bed space). monitor: true takes the portable monitor at the bedside along (a patient who needs monitoring on the way: wheel one to the bedside first). A refusal\'s hint names it (then: transport_patient). Travel takes simulated time. A porter or a nurse can do it for you: delegate_task task transport_patient.',
     inputSchema: obj(
       {
         destination: { type: "string", minLength: 1, maxLength: 120, description: 'Equipment id or alias, bed space or room id, or "home".' },
         capability: { type: "string", maxLength: 60, description: "Instead of a destination: the nearest device providing this capability (e.g. ct)." },
+        monitor: { type: "boolean", description: "Take the portable monitor at the patient's bedside along (a defibrillator's monitor): it travels with them and stays beside them." },
       },
       [],
     ),
@@ -187,7 +194,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "delegate_task",
     description:
-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), deliver_item (target: a handheld item, e.g. a filled specimen tube; params.to: who receives it — a staff id, a role such as lab-tech, or me (the default): they take it where it lies or from their own hands, walk there and hand it over against a receipt the receiver confirms), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there; params.monitor: true takes the portable monitor at the bedside along), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
     inputSchema: obj(
       {
         role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
@@ -561,6 +568,29 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         return { ok: true, output: actionResultText(result, L(ctx)), data: { result } };
       },
     ),
+    readOnly(
+      "ask_whereabouts",
+      (args, ctx) => `ask_whereabouts ${targetName(ctx, strArg(args, "target"))}`,
+      async (args, ctx) => {
+        // "Where is …?" (EMBODIED §4, audit P1-8): a colleague's own knowledge, which then becomes the caller's
+        const world = host.world();
+        const actorId = host.actorOf(ctx);
+        const id = targetEntity(host, actorId, strArg(args, "target"));
+        if (!id) return failedOutput(ctx, "world.unknownTarget", { target: strArg(args, "target") });
+        const wanted = strArg(args, "colleague");
+        let colleague: string | undefined;
+        if (wanted) {
+          const me = world.actor(actorId);
+          const byId = host.resolve(wanted, actorId);
+          const away = (a: { pose: { x: number; z: number; level: string } }) => (me && a.pose.level === me.pose.level ? Math.hypot(a.pose.x - me.pose.x, a.pose.z - me.pose.z) : 1e6);
+          const byRole = world.actors().filter((a) => a.id !== actorId && a.role === wanted.toLowerCase()).sort((a, b) => away(a) - away(b) || (a.id < b.id ? -1 : 1))[0]?.id;
+          colleague = byId && world.actor(byId) ? byId : byRole;
+          if (!colleague) return failedOutput(ctx, "world.unknownTarget", { target: wanted });
+        }
+        const answer = world.askWhereabouts(actorId, id, colleague);
+        return { ok: answer.answeredBy !== null, output: answer.message, data: { answer } };
+      },
+    ),
     acting(
       "navigate_to",
       (args, ctx) => rt(ctx.locale, "sum.navigate", { target: strArg(args, "target") ? targetName(ctx, strArg(args, "target")) : JSON.stringify(args.goal ?? {}) }),
@@ -642,7 +672,7 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         if (!destination && !capability) return failedOutput(ctx, "world.transport.needDestination");
         // an alias resolves as the world resolves it ("ct-scanner" → eq:ct-scanner); home, bed spaces and rooms as given
         const resolved = destination && destination !== "home" && destination !== "back" ? (host.resolve(destination, actorId) ?? destination) : destination;
-        const parameters: Record<string, unknown> = resolved ? { destination: resolved } : { capability };
+        const parameters: Record<string, unknown> = { ...(resolved ? { destination: resolved } : { capability }), ...(args.monitor === true ? { monitor: true } : {}) };
         return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters }), L(ctx));
       },
       {

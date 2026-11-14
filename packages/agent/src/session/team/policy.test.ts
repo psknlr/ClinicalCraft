@@ -192,3 +192,71 @@ describe("simulated surgeon (observer mode)", () => {
     expect(propose(v())).toEqual(propose(v()));
   });
 });
+
+describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
+  const TRIAGE = "staff:triage";
+  const INFO = "anticoagulants";
+  const FACT = { en: "(Wife) No, none of them.", "zh-CN": "（妻子）没有，一样都没有。" };
+  const NAME = { en: "his anticoagulant history", "zh-CN": "他的抗凝用药情况" };
+  const need = { need: { id: "i1", history: INFO, heldBy: "triage", for: "surgeon", blocks: "tenecteplase" }, forId: SURGEON, holderId: TRIAGE, noticedBy: CIRC };
+  const inform = (extra: Partial<TeamTask> = {}) => task({ kind: "inform", need: "i1", item: INFO, holder: TRIAGE, blocks: "tenecteplase", ...extra });
+  const infoView = (me: MemberState, extra: Partial<MemberView> = {}) =>
+    view(me, { itemName: () => NAME, actName: () => ({ en: "IV tenecteplase", "zh-CN": "替奈普酶静脉溶栓" }), colleagues: [colleague(TRIAGE, ["inform"], { relief: true, present: false })], ...extra });
+
+  it("the circulating nurse notices it, says who holds it and what waits meanwhile", () => {
+    const p = say(propose(infoView(member(CIRC, ["circulate"]), { informs: [need] })));
+    expect(p).toMatchObject({ to: SURGEON, message: { kind: "notice", about: { need: "i1", info: INFO, for: SURGEON } } });
+    // (the test view names everyone by their body id)
+    expect(p!.message.text.en).toBe("His anticoagulant history for actor:clinician — staff:triage has it; I'm getting it. IV tenecteplase waits until it's confirmed.");
+    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", owner: CIRC, holder: TRIAGE, blocks: "tenecteplase", status: "open" } });
+  });
+
+  it("asks the one member who holds it (by phone), and escalates at once when they are away — with the reason", () => {
+    const asked = say(propose(infoView(member(CIRC, ["circulate"]), { tasks: [inform()] })));
+    expect(asked).toMatchObject({ to: TRIAGE, message: { kind: "request", about: { info: INFO } } });
+    expect(sets(asked)).toContainEqual(expect.objectContaining({ status: "asked", assignee: TRIAGE }));
+    const away = say(propose(infoView(member(CIRC, ["circulate"]), { tasks: [inform()], colleagues: [colleague(TRIAGE, ["inform"], { relief: true, absent: true })] })));
+    expect(away).toMatchObject({ to: SURGEON, message: { kind: "escalate" } });
+    expect(away!.message.text.en).toMatch(/hasn't come — staff:triage isn't available\. IV tenecteplase still waits\./);
+    expect(sets(away)).toContainEqual(expect.objectContaining({ status: "escalated", reason: "holder-absent" }));
+    // no answer within the wait: escalated (nobody else holds it, so there is no one to reroute to)
+    const silent = say(propose(infoView(member(CIRC, ["circulate"]), { round: 9, tasks: [inform({ status: "asked", since: 5 })] })));
+    expect(sets(silent)).toContainEqual(expect.objectContaining({ status: "escalated", reason: "no-answer" }));
+  });
+
+  it("the holder reports what they learned — the case's recorded answer — or says they do not have it", () => {
+    const request = message({ id: "msg-3", from: CIRC, to: TRIAGE, kind: "request", about: { need: "i1", info: INFO, for: SURGEON } });
+    const holder = member(TRIAGE, ["inform"], { relief: true });
+    const told = say(propose(infoView(holder, { inbox: [request], knows: (info) => (info === INFO ? FACT : null) })));
+    expect(told).toMatchObject({ to: CIRC, message: { kind: "report", replyTo: "msg-3", about: { info: INFO, fact: FACT } } });
+    expect(told!.message.text.en).toBe("His anticoagulant history: (Wife) No, none of them.");
+    const unknown = say(propose(infoView(holder, { inbox: [request], knows: () => null })));
+    expect(unknown).toMatchObject({ message: { kind: "decline", about: { reason: "not-known" } } });
+  });
+
+  it("tells the person once they are in the room, confirms a right read-back, and says it again after a wrong one", () => {
+    const me = member(CIRC, ["circulate"]);
+    const report = message({ id: "msg-4", from: TRIAGE, to: CIRC, kind: "report", about: { need: "i1", info: INFO, for: SURGEON, fact: FACT } });
+    const kept = propose(infoView(me, { inbox: [report], tasks: [inform({ status: "asked" })] }));
+    expect(sets(kept)).toContainEqual(expect.objectContaining({ status: "waiting", fact: FACT }));
+    // the doctor is out of the room: nothing said yet; in the room: told, as the holder said it
+    expect(propose(infoView(me, { tasks: [inform({ status: "waiting", since: 5, fact: FACT })], inRoom: () => false }))).toBeNull();
+    const relay = say(propose(infoView(me, { tasks: [inform({ status: "waiting", since: 5, fact: FACT })] })));
+    expect(relay).toMatchObject({ to: SURGEON, message: { kind: "report", about: { info: INFO, fact: FACT } } });
+    expect(relay!.message.text.en).toBe("His anticoagulant history, from staff:triage: (Wife) No, none of them.");
+    const accepted = inform({ status: "accepted", fact: FACT });
+    const right = say(propose(infoView(me, { inbox: [message({ id: "msg-6", from: SURGEON, to: CIRC, kind: "readback", about: { need: "i1", info: INFO, for: SURGEON, fact: FACT } })], tasks: [accepted] })));
+    expect(right).toMatchObject({ to: SURGEON, message: { kind: "confirm", replyTo: "msg-6" } });
+    expect(sets(right)).toContainEqual(expect.objectContaining({ status: "done", verified: true }));
+    const wrong = say(propose(infoView(me, { inbox: [message({ id: "msg-7", from: SURGEON, to: CIRC, kind: "readback", about: { need: "i1", info: "allergies", for: SURGEON } })], tasks: [accepted] })));
+    expect(wrong).toMatchObject({ to: SURGEON, message: { kind: "report", about: { info: INFO, fact: FACT } } });
+    expect(sets(wrong)).toEqual([]);
+  });
+
+  it("the simulated surgeon reads information back, as it was said", () => {
+    const told = message({ id: "msg-8", from: CIRC, to: SURGEON, kind: "report", about: { need: "i1", info: INFO, for: SURGEON, fact: FACT } });
+    const p = say(propose(view(member(SURGEON, ["surgeon"]), { inbox: [told], itemName: () => NAME })));
+    expect(p).toMatchObject({ to: CIRC, message: { kind: "readback", replyTo: "msg-8", about: { info: INFO, fact: FACT } } });
+    expect(p!.message.text["zh-CN"]).toBe("复述——他的抗凝用药情况：（妻子）没有，一样都没有。");
+  });
+});

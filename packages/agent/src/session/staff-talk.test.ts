@@ -184,6 +184,36 @@ describe("a colleague voiced by a model acts with the tool only", () => {
     await t.session.close();
   });
 
+  // audit 2026-11-12 re-review: the order is the learner's own words, never the model's tidied dose (en and zh-CN)
+  for (const [locale, said] of [
+    ["en", "Lin, can you get 3000 mg of aspirin into him"],
+    ["zh-CN", "我们给他嚼服阿司匹林3000mg"],
+  ] as const) {
+    it(`a tenfold dose the learner said is checked as said, whatever dose the model writes (${locale})`, async () => {
+      const t = await makeEmbodiedSession({
+        caseId: "stemi-inferior-rv",
+        settingsPatch: { approvalMode: "bypass", locale },
+        scripts: [toolCallScript([{ id: "c1", name: "do_task", args: { task: "give_intervention", params: { intervention: "aspirin", dose: "300 mg PO" } } }]), textScript("OK.")],
+      });
+      await say(t, said, "nurse", "ed-nurse");
+      expect(t.session.state.interventions.some((i) => i.interventionId === "aspirin")).toBe(false);
+      expect(t.session.state.doseErrors).toEqual([expect.objectContaining({ interventionId: "aspirin", severity: "critical", ordered: expect.objectContaining({ amount: 3000, unit: "mg" }) })]);
+      await t.session.close();
+    });
+  }
+
+  it("a model that leaves the dose out gives no dose of its own: the learner's order is read", async () => {
+    const t = await makeEmbodiedSession({
+      caseId: "stemi-inferior-rv",
+      settingsPatch: { approvalMode: "bypass" },
+      scripts: [toolCallScript([{ id: "c1", name: "do_task", args: { task: "give_intervention", params: { intervention: "aspirin" } } }]), textScript("Given.")],
+    });
+    await say(t, "Lin, can you get 300 mg of aspirin into him", "nurse", "ed-nurse");
+    const given = t.session.state.interventions.find((i) => i.interventionId === "aspirin");
+    expect(given?.ordered).toMatchObject({ text: "Lin, can you get 300 mg of aspirin into him", dose: { amount: 300, unit: "mg" } });
+    await t.session.close();
+  });
+
   it("not in clinical mode (no body to act with)", async () => {
     const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", clinical: true, scripts: [textScript("Sure.")] });
     await say(t, "Could you get him hooked up to everything?", "nurse");

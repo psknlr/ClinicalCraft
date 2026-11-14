@@ -106,13 +106,15 @@ export type LearnerState = Omit<Pick<SessionState, (typeof LEARNER_STATE_KEYS)[n
 /**
  * `state` reduced to `LEARNER_STATE_KEYS`, with the case's opaque handle as `caseId`, decided decisions keyed by
  * their numbers and each attempt as `{decision, options}` — the number and letters `list_options(decisions)` shows
- * (authored decision and option ids can name the diagnosis or the answer).
+ * (authored decision and option ids can name the diagnosis or the answer); an order whose resulting action was a
+ * decision (`orders[].next`, docs/PROTOCOL.md §3.3) names it by its number too.
  */
 export function learnerState(state: SessionState, c: Pick<CaseDefinition, "id" | "decisions">): LearnerState {
   const visible: Record<string, unknown> = { caseId: caseHandle(c.id) };
   for (const key of LEARNER_STATE_KEYS) if (state[key] !== undefined) visible[key] = state[key];
   visible.decisions = Object.fromEntries(Object.entries(state.decisions).map(([id, at]) => [String(decisionNumber(c, id)), at]));
   visible.attempts = state.attempts.map(({ decisionId, optionIds, ...attempt }) => ({ ...attempt, ...learnerAnswer(c, decisionId, optionIds) }));
+  visible.orders = state.orders.map((o) => (o.next?.type === "answer" && o.next.id ? { ...o, next: { ...o.next, id: String(decisionNumber(c, o.next.id)) } } : o));
   return visible as LearnerState;
 }
 

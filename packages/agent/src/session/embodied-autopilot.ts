@@ -14,7 +14,11 @@
  *   connect → record → reset, the patient's monitor `attach`, a
  *   workstation's `order` / `read`, a device's `use`), else the clinical
  *   tool itself → verify the postcondition in engine state
- *   (asked / examined / ordered / read / intervened / decided…).
+ *   (asked / examined / ordered / read / intervened / decided…). A study done
+ *   on the patient at a device is ordered where the clinician is; then the
+ *   patient is taken to the device for it (EMBODIED §8.7) — with the portable
+ *   monitor at the bedside when they are on a monitor — and the session
+ *   records the acquisition on arrival.
  *
  * Every step records a `plan` span whose children are the observation, the
  * walks (`navigation`), the device operations (`interaction` →
@@ -27,8 +31,8 @@
  * before `operate close` on a count that is not settled, the closing count is made at the count board in the
  * patient's room (docs/TEAM.md §4.3) — the autopilot never closes on a count it did not take.
  */
-import { countSettled, countStatus, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
-import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { awaitingAcquisition, countSettled, countStatus, monitorAttached, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { behaviorOf, PRIMARY_ACTOR, roleName, TRAVEL_MONITOR_CAPABILITY, type ActionHint, type ClinicalIntent, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
@@ -47,6 +51,26 @@ export interface EmbodiedAutopilotHost {
   act(request: WorldRequestInput, turnId: string, signal?: AbortSignal): Promise<WorldActionResult>;
   patientId(): string | null;
   patientMonitorId(): string | null;
+}
+
+/**
+ * The clinician's world actions as a person does them (EMBODIED §4, audit 2026-11-12 P1-8): a walk that ended where a
+ * thing was believed to be and found it gone asks around — "has anyone seen …?" (`ask_whereabouts`, a tool call) —
+ * and goes once more, where a colleague who knows says it is; nobody knows: the walk's failure stands.
+ */
+function askingWhenMissing(host: AutopilotHost, e: EmbodiedAutopilotHost): EmbodiedAutopilotHost {
+  return {
+    world: () => e.world(),
+    trace: e.trace,
+    patientId: () => e.patientId(),
+    patientMonitorId: () => e.patientMonitorId(),
+    act: async (request, turnId, signal) => {
+      const r = await e.act(request, turnId, signal);
+      if (r.errorCode !== "STALE_DESTINATION" || !r.belief || signal?.aborted) return r;
+      const asked = await host.executeTool(turnId, "ask_whereabouts", { target: r.belief.entityId }, signal);
+      return asked.status === "ok" && asked.output.ok ? e.act(request, turnId, signal) : r;
+    },
+  };
 }
 
 /** Longest single `wait` tool call (its input schema's maximum). */
@@ -141,7 +165,7 @@ function needsPatientAtProvider(r: SpatialRequirement): boolean {
 async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, then: NonNullable<ActionHint["then"]>, turnId: string, signal?: AbortSignal): Promise<boolean> {
   const world = e.world();
   const L = host.locale;
-  const parameters = { ...(then.parameters ?? {}) };
+  const parameters: Record<string, unknown> = { ...(then.parameters ?? {}), ...(monitorTravels(host.caseDef, host.state(), world) ? { monitor: true } : {}) };
   const destination = typeof parameters.destination === "string" ? parameters.destination : "";
   const target = destination === "home" ? rt(L, "world.transport.home") : destination ? nameOf(world, destination, L) : String(parameters.capability ?? "—");
   if (world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
@@ -156,8 +180,69 @@ async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, t
 }
 
 /**
- * After a step, a patient who was taken to a device for a study goes back to their bed space — unless the next
- * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there).
+ * Does a monitor travel with the patient (EMBODIED §8.7)? A patient on a monitor (the engine's attachment) travels
+ * with one when a portable device providing cardiac monitoring stands at the bedside (a defibrillator's monitor) —
+ * the rule of the in-world demonstration and of the bench's reference walker.
+ */
+export function monitorTravels(c: CaseDefinition, s: SessionState, world: WorldRuntime): boolean {
+  if (!monitorAttached(c, s)) return false;
+  return world.bedsideProviders(TRAVEL_MONITOR_CAPABILITY).some((id) => !!world.entity(id)?.portable);
+}
+
+/** The acquisition intent of an ordered study (`acquire`, EMBODIED §8.7). */
+const acquireIntent = (investigationId: string): ClinicalIntent => actionIntent({ type: "acquire", investigationId })!;
+
+/**
+ * Studies ordered that wait for the patient at their device (EMBODIED §8.7): the patient is taken there (`hint.then`),
+ * and the session records the acquisition on arrival — each in its own plan span, verified in the engine state.
+ */
+async function acquirePending(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, signal?: AbortSignal): Promise<void> {
+  const tried = new Set<string>();
+  for (;;) {
+    const order = host.state().orders.find((o) => awaitingAcquisition(o) && !tried.has(o.key));
+    if (!order || signal?.aborted) return;
+    tried.add(order.key);
+    const world = e.world();
+    const check = world.checkSpatial(PRIMARY_ACTOR, acquireIntent(order.investigationId));
+    const then = !check.ok ? check.hint?.then : undefined;
+    if (check.ok || then?.operation !== "transport_patient") continue;
+    const plan = e.trace.start("plan", `transport_patient ${String(then.parameters?.destination ?? "")}`.trim(), { actorId: PRIMARY_ACTOR, refs: { entities: [then.targetId] }, data: { tool: "transport_patient", args: then.parameters ?? {}, acquire: order.key } });
+    let ok = false;
+    try {
+      ok = await e.trace.within(plan.id, async () => {
+        await transportPatient(host, e, then, turnId, signal);
+        const done = !awaitingAcquisition(host.state().orders.find((o) => o.key === order.key) ?? order);
+        e.trace.start("verification", "acquired", { actorId: PRIMARY_ACTOR }).end({ ok: done, worldVersion: world.version, data: { order: order.key } });
+        return done;
+      });
+    } finally {
+      plan.end({ ok, worldVersion: world.version });
+    }
+  }
+}
+
+/**
+ * Does a patient taken to a device stay there after a step (EMBODIED §8.4, §8.7)? While a study ordered still waits
+ * for them at its device, or when the next step that acts on the patient needs them at a device — to act (a test the
+ * patient performs at a station), or for the study it orders. The rule of the in-world demonstration and of the
+ * bench's reference walker; otherwise they go back to their bed space.
+ */
+export function patientStaysAtDevice(world: WorldRuntime, state: SessionState, steps: readonly OfflineClinicianStep[], from: number, extraOps = 0): boolean {
+  if (state.orders.some((o) => awaitingAcquisition(o))) return true;
+  for (let i = from; i < steps.length; i++) {
+    const step = steps[i]!;
+    if (step.kind !== "tool" || stepAlreadySatisfied(step, state, extraOps)) continue;
+    const intent = actionIntent(step.action as ClinicalAction);
+    if (!intent) continue;
+    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return true;
+    return step.action.type === "order" && needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, acquireIntent(step.action.investigationId)).requirement);
+  }
+  return false;
+}
+
+/**
+ * After a step, a patient who was taken to a device for a study goes back to their bed space — unless they stay
+ * there (`patientStaysAtDevice`: the next step needs them at a device, then `satisfy` takes them on from there).
  */
 async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, steps: readonly OfflineClinicianStep[], turnId: string, signal?: AbortSignal): Promise<void> {
   const world = e.world();
@@ -165,15 +250,7 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
   const patient = e.patientId();
   if (!place || !patient || signal?.aborted) return;
   const home = place.home.slot ? place.slot === place.home.slot : !place.slot && place.provider === place.home.provider;
-  if (home) return;
-  for (let i = host.cursor.value; i < steps.length; i++) {
-    const step = steps[i]!;
-    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
-    const intent = actionIntent(step.action as ClinicalAction);
-    if (!intent) continue;
-    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
-    break;
-  }
+  if (home || patientStaysAtDevice(world, host.state(), steps, host.cursor.value, host.cursor.extraOps)) return;
   // its own plan span: the walk (or the porter's task) and the verification that the patient is home
   const plan = e.trace.start("plan", "transport_patient home", { actorId: PRIMARY_ACTOR, refs: { entities: [patient] }, data: { tool: "transport_patient", args: { destination: "home" } } });
   let ok = false;
@@ -348,7 +425,8 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
  * `offlineClinicianTurn` for the walkthrough rules; only the execution of a
  * tool step differs).
  */
-export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
+export async function embodiedOfflineTurn(host: AutopilotHost, body: EmbodiedAutopilotHost, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
+  const e = askingWhenMissing(host, body);
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";
@@ -418,6 +496,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
     if (run === step && !outcome.ok) host.cursor.missed.push(step);
     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
+    // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.7)
+    await acquirePending(host, e, turnId, signal);
     // a study done at a device: the patient goes back to their bed space (unless the next step needs a device too)
     await returnPatient(host, e, steps, turnId, signal);
     // the care team's turn (its assigned scenario runs alongside: a hold, a search, a request)

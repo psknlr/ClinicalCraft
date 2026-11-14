@@ -166,7 +166,8 @@ function checkAlarms(tl: Timeline): void {
 function emitReadyResults(tl: Timeline, from: number, to: number): void {
   const { c, s } = tl;
   for (const order of s.orders) {
-    if (order.readyAt <= from || order.readyAt > to) continue;
+    // a study still waiting for the patient at its device has no release minute yet
+    if (order.readyAt == null || order.readyAt <= from || order.readyAt > to) continue;
     const result = resultFor(c, order.investigationId, order.phase);
     if (!result) continue;
     tl.events.push({ type: "result.ready", key: order.key, investigationId: order.investigationId, phase: order.phase, critical: result.critical });
@@ -243,6 +244,7 @@ function steps(tl: Timeline, from: number, to: number): number[] {
   for (let m = Math.floor(from) + 1; m < to; m++) points.add(m);
   const scheduled = [
     ...(tl.c.physiology?.events ?? []).map((e) => e.atMinute),
+    // a study still waiting for the patient at its device has no release minute yet
     ...(tl.c.clock.mode === "simulated" ? tl.s.orders.map((o) => o.readyAt) : []),
     ...sinceThresholds(tl.c, tl.s),
   ];

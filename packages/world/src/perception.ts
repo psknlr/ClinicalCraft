@@ -16,14 +16,18 @@
  *   knows which bed). Never staff or other actors: those are known only by
  *   seeing them.
  *
- * Whereabouts (lead note 1): a movable thing (portable equipment, staff,
- * other actors) not perceived now is reported where the actor believes it
- * is — where it last saw it (`ActorState.lastSeen`, updated at every
- * sighting), else, for portable equipment, where it is usually kept — with
- * `lastKnown` saying which; the room, level and distance filters, the
- * distances, bearing and reachability all measure to that place, and it is
- * never `inReach`. Moving a thing out of an actor's sight changes nothing
- * the actor is told. (Navigation by id still finds the thing where it is.)
+ * Whereabouts (lead note 1, audit P1-8): a movable thing (portable
+ * equipment, staff, other actors) not perceived now is reported where the
+ * actor believes it is — where it last saw it (`ActorState.lastSeen`,
+ * updated at every sighting) or a colleague said it is (`toldBy`), else, for
+ * portable equipment, where it is usually kept — with `lastKnown` saying
+ * which; the room, level and distance filters, the distances, bearing and
+ * reachability all measure to that place, and it is never `inReach`. Moving
+ * a thing out of an actor's sight changes nothing the actor is told. A thing
+ * the actor looked for where it believed it was and did not find
+ * (`ActorState.missed`) is `missing`: in no room, until it is seen again or
+ * a colleague says where it is. Navigation by id or name goes where the
+ * actor believes the thing is (`belief`, the action bus).
  *
  * Recent events (G13): an observation lists the actor's own events (in the
  * second person), those of actions done on its behalf (a delegated task,
@@ -51,9 +55,11 @@
  * `version`. `canSee` records nothing.
  */
 import { t, type LocalizedText } from "@clinicalcraft/core";
-import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
-import type { DeviceRules } from "./behaviors.js";
-import { metres, operationName, postureName, roleName, stateName, worldMessage } from "./i18n.js";
+import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type Whereabouts, type WhereaboutsAnswer, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
+import { permits } from "./authority.js";
+import type { DeviceRules, OperationSpec } from "./behaviors.js";
+import { metres, operationName, postureName, roleName, stateName, travelModeName, worldMessage } from "./i18n.js";
+import { levelElevation } from "./levels.js";
 import type { Placed, WorldLocator } from "./locate.js";
 import type { Reachability } from "./reach.js";
 import { formatScreen } from "./screen.js";
@@ -89,6 +95,20 @@ interface Belief {
   p: Placed;
   lastKnown?: ObservedEntity["lastKnown"];
 }
+
+/**
+ * A belief a navigation acts on (`Perception.belief`, audit P1-8): the actor believes a movable thing it does not
+ * perceive is somewhere else than where it is — `place` (null: missing, nowhere to go) — and how it knows.
+ */
+export interface StaleBelief {
+  kind: "last-seen" | "told" | "usual" | "missing";
+  place: SeenPlace | null;
+  /** The room of the believed place (where it looked, when missing). */
+  room: string | null;
+}
+
+/** Believed and true places this close (m, same level) are the same place: the thing is there, give or take. */
+const SAME_PLACE = 1;
 
 /** A candidate entry of a listing: where it is believed to be, the awareness, the distance. */
 interface Row extends Belief {
@@ -150,21 +170,138 @@ export class Perception {
   }
 
   /**
-   * Where the actor believes a thing is (lead note 1): where it is while
-   * perceived (and for things that never move); else where it was last seen;
-   * else, for portable equipment, where it is usually kept.
+   * Where the actor believes a thing is (lead note 1, audit P1-8): where it is
+   * while perceived (and for things that never move); else, when it looked
+   * for it and did not find it, nowhere — `missing`, reported where it looked,
+   * in no room; else where it was last seen or a colleague said it is; else,
+   * for portable equipment, where it is usually kept.
    */
   private believed(actor: ActorState, p: Placed, a: Awareness): Belief {
     if (a === "visible" || a === "nearby" || !this.movable(p)) return { p };
     const loc = this.d.locator;
     const L = this.d.locale;
     const where = (q: Placed) => loc.regionName({ level: q.level, x: q.position.x, z: q.position.z });
+    const missed = this.d.store.missed(actor.id, p.id);
+    if (missed) {
+      const at = loc.placedAt(p.id, { level: missed.level, x: missed.x, y: levelElevation(loc.facility, missed.level), z: missed.z });
+      const label = worldMessage("whereabouts.missing", L, { where: loc.regionName(missed) });
+      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label } };
+    }
     const seen = this.d.store.lastSeen(actor.id, p.id);
     const last = seen ? loc.placedAt(p.id, seen) : null;
+    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) } };
     if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) } };
     const home = p.kind === "equipment" ? loc.home(p.id) : null;
     if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) } };
     return { p };
+  }
+
+  /** Is the thing perceived by the actor now (visible or nearby, or in its hands)? */
+  perceives(actor: ActorState, id: EntityId): boolean {
+    const p = this.d.locator.place(id);
+    const a = p ? this.awareness(actor, p) : null;
+    return a === "visible" || a === "nearby";
+  }
+
+  /**
+   * The belief a walk to a thing acts on (audit P1-8): null when the actor walks to where the thing is — it perceives
+   * it, the thing never moves (rooms, fixed equipment, the encounter's patient), or it believes it there (within
+   * `SAME_PLACE`); else where it believes the thing is, or `missing` (`place` null). A staff member the actor never
+   * saw is sought at their post. Navigation, read-only planning and the policy's hint ranking use it.
+   */
+  belief(actor: ActorState, id: EntityId): StaleBelief | null {
+    const loc = this.d.locator;
+    const truth = loc.place(id);
+    if (!truth || !this.movable(truth)) return null;
+    const a = this.awareness(actor, truth);
+    if (a === "visible" || a === "nearby") return null;
+    const missed = this.d.store.missed(actor.id, id);
+    if (missed) return { kind: "missing", place: null, room: missed.room };
+    const seen = this.d.store.lastSeen(actor.id, id);
+    const home = !seen && (truth.kind === "equipment" || truth.kind === "staff") ? loc.home(id) : null;
+    const place: SeenPlace | null = seen ? { ...seen } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
+    if (!place) return null;
+    if (place.level === truth.level && Math.hypot(place.x - truth.position.x, place.z - truth.position.z) <= SAME_PLACE) return null;
+    return { kind: seen ? (seen.toldBy ? "told" : "last-seen") : "usual", place, room: this.d.locator.registry.roomAt(place.level, place.x, place.z) };
+  }
+
+  /**
+   * An operation on a movable thing the actor does not perceive and believes elsewhere — or knows to be missing (audit
+   * P1-8): refused where the actor believes it is (`pre.believedElsewhere`, `nav.unknown`), never with its true
+   * distance, place or state. Null when the actor perceives it, the operation needs no one at the thing (a carried
+   * item's own, a hand-over measured at the recipient), or the actor's role may not do it at all (that refusal says
+   * more). The action bus refuses with it before any other check; `inspect` gives it as each operation's reason.
+   */
+  unperceived(actor: ActorState, id: EntityId, o: Pick<OperationSpec, "id" | "effect" | "roles" | "clinical">): { belief: StaleBelief; message: string } | null {
+    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over" || o.effect === "confirm-receipt") return null;
+    if (!permits(actor.role, o.id, o)) return null;
+    const belief = this.belief(actor, id);
+    if (!belief) return null;
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const target = loc.name(id);
+    if (belief.place) return { belief, message: worldMessage("pre.believedElsewhere", L, { target, where: loc.regionName(belief.place) }) };
+    const missed = this.d.store.missed(actor.id, id);
+    return { belief, message: worldMessage("nav.unknown", L, { target, where: missed ? loc.regionName(missed) : "—" }) };
+  }
+
+  /**
+   * `WorldRuntime.askWhereabouts` (see there): the colleague asked — or every colleague nearest first — answers from
+   * their own knowledge (they see it, saw it last or left it there, were told; a fixed thing everyone knows); a place
+   * the asker already looked at without finding it is no answer. `tell`: what the asker is to be told (the caller
+   * stores it, `store.tell`, after recording the inquiry).
+   */
+  ask(askerId: ActorId, id: EntityId, colleagueId?: ActorId): WhereaboutsAnswer & { tell?: SeenPlace & { toldBy: ActorId } } {
+    const asker = this.actorOf(askerId);
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const target = loc.name(id);
+    const away = (a: ActorState) => (a.pose.level === asker.pose.level ? Math.hypot(a.pose.x - asker.pose.x, a.pose.z - asker.pose.z) : 1e6);
+    const others = colleagueId ? [colleagueId] : this.d.store.actors().filter((a) => a.id !== askerId).sort((a, b) => away(a) - away(b) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).map((a) => a.id);
+    const looked = this.d.store.missed(askerId, id);
+    const asked: ActorId[] = [];
+    let theirs: Whereabouts | null = null;
+    let already: string | null = null;
+    for (const who of others) {
+      if (who === askerId || !this.d.store.actor(who)) continue;
+      asked.push(who);
+      const w = this.whereabouts(who, id);
+      if (colleagueId) theirs = w;
+      if (!w?.place || !(w.kind === "perceived" || w.kind === "last-seen" || w.kind === "told" || w.kind === "fixed")) continue;
+      const where = loc.regionName(w.place);
+      if (looked && looked.level === w.place.level && Math.hypot(looked.x - w.place.x, looked.z - w.place.z) <= SAME_PLACE) {
+        already ??= worldMessage("ask.alreadyLooked", L, { who: loc.name(who), where });
+        continue;
+      }
+      const message = worldMessage("ask.knows", L, { who: loc.name(who), target, where });
+      if (w.kind === "fixed") return { answeredBy: who, whereabouts: w, asked, updated: false, message };
+      return { answeredBy: who, whereabouts: w, asked, updated: true, message, tell: { ...w.place, toldBy: who } };
+    }
+    if (already) return { answeredBy: null, whereabouts: theirs, asked, updated: false, message: already };
+    if (colleagueId && asked.length) {
+      // what they do know: where it is usually kept, that it was not where they looked — or nothing at all
+      const what = theirs?.kind === "missing" && theirs.missed ? worldMessage("ask.theyLooked", L, { where: loc.regionName(theirs.missed) }) : theirs?.kind === "usual" && theirs.label ? theirs.label : worldMessage("ask.never", L);
+      return { answeredBy: null, whereabouts: theirs, asked, updated: false, message: worldMessage("ask.doesNotKnow", L, { who: loc.name(asked[0]!), target, what }) };
+    }
+    return { answeredBy: null, whereabouts: null, asked, updated: false, message: worldMessage("ask.nobody", L, { target, asked: asked.map((x) => loc.name(x)).join(L.toLowerCase().startsWith("zh") ? "、" : ", ") || "—" }) };
+  }
+
+  /** `WorldRuntime.whereabouts`: what the actor knows of where a thing is (see `Whereabouts`); records nothing. */
+  whereabouts(actorId: ActorId, id: EntityId): Whereabouts | null {
+    const actor = this.actorOf(actorId);
+    const truth = this.d.locator.place(id);
+    if (!truth) return null;
+    // one knows where one is
+    if (id === actorId) return { entityId: id, kind: "perceived", place: { level: truth.level, x: truth.position.x, y: truth.position.y, z: truth.position.z, rot: truth.rot }, room: truth.room, level: truth.level };
+    const a = this.awareness(actor, truth);
+    if (!a) return null;
+    const missed = this.d.store.missed(actor.id, id);
+    const { p, lastKnown } = this.believed(actor, truth, a);
+    const placeOf = (q: Placed): SeenPlace => ({ level: q.level, x: q.position.x, y: q.position.y, z: q.position.z, rot: q.rot });
+    if (!lastKnown) return { entityId: id, kind: this.movable(truth) ? "perceived" : "fixed", place: placeOf(p), room: p.room, level: p.level };
+    if (lastKnown.kind === "missing" && missed) return { entityId: id, kind: "missing", place: null, room: null, level: missed.level, label: lastKnown.label, missed: { ...missed } };
+    const told = lastKnown.kind === "told" ? this.d.store.lastSeen(actor.id, id)?.toldBy : undefined;
+    return { entityId: id, kind: lastKnown.kind, place: placeOf(p), room: p.room, level: p.level, label: lastKnown.label, ...(told ? { toldBy: told } : {}) };
   }
 
   /** Where a movable thing is now, as a sighting (null for things that never move). */
@@ -174,9 +311,13 @@ export class Perception {
     return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot };
   }
 
-  /** Remember what is visible from the actor's pose now, where it is (a walk's arrival); returns the newly seen ids. */
+  /**
+   * Remember what is visible from the actor's pose now, where it is (a walk's arrival) — and a thing it is looking for
+   * (missing, audit P1-8) that it notices nearby; returns the newly seen ids.
+   */
   notice(actor: ActorState): EntityId[] {
-    return this.d.store.remember(actor.id, this.visibleIds(actor), (id) => this.seenPlace(id));
+    const sought = Object.keys(actor.missed ?? {}).filter((id) => this.perceives(actor, id));
+    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.seenPlace(id));
   }
 
   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
@@ -244,9 +385,11 @@ export class Perception {
       reachable: null,
       inReach,
       stateVersion: this.d.store.entityVersion(p.id),
-      availableActions: this.d.rules.availableActions(p.id, actor),
+      // a missing thing: nothing to do with it, and no state of it is known (audit P1-8 re-review)
+      availableActions: lastKnown?.kind === "missing" ? [] : this.d.rules.availableActions(p.id, actor),
     };
-    if (withReach) {
+    // a missing thing has no place to walk to (audit P1-8): reachability is not computed for it
+    if (withReach && lastKnown?.kind !== "missing") {
       const path = this.d.reach.pathDistance(actor, p);
       if (path !== null) {
         out.reachable = Number.isFinite(path);
@@ -255,11 +398,21 @@ export class Perception {
     }
     if (e?.kind === "equipment" && e.capabilities.length) out.capabilities = [...e.capabilities];
     const state = this.d.store.available(p.id) ? this.d.rules.state(p.id) : "out-of-service";
-    if (state !== null) out.state = state;
+    if (state !== null && lastKnown?.kind !== "missing") out.state = state;
     const cues = awareness === "visible" || awareness === "nearby" ? this.cues(actor, p, awareness) : null;
     if (cues) out.cues = cues;
     if (lastKnown) out.lastKnown = lastKnown;
+    // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
+    if (p.heldBy && p.heldBy !== actor.id && !lastKnown && (awareness === "visible" || awareness === "nearby")) out.holder = { id: p.heldBy, name: this.holderName(p.heldBy) };
     return out;
+  }
+
+  /** A person as a holder is named: a member of staff with their role ("Lin Xiao (Nurse)"), anyone else by name. */
+  private holderName(id: ActorId): string {
+    const L = this.d.locale;
+    const name = this.d.locator.name(id);
+    const a = this.d.store.actor(id);
+    return a && id.startsWith("staff:") ? `${name}${L.toLowerCase().startsWith("zh") ? `（${roleName(a.role, L)}）` : ` (${roleName(a.role, L)})`}` : name;
   }
 
   private nameOf(p: Placed): string {
@@ -304,8 +457,8 @@ export class Perception {
       entities.filter((e) => e.awareness === "visible").map((e) => e.id),
       placeOf,
     );
-    // a known thing noticed nearby (not looked at) is now known to be here
-    const nearby = entities.filter((e) => e.awareness === "nearby" && this.d.store.remembers(actor.id, e.id)).map((e) => e.id);
+    // a known thing noticed nearby (not looked at) is now known to be here — and so is a thing it is looking for
+    const nearby = entities.filter((e) => e.awareness === "nearby" && (this.d.store.remembers(actor.id, e.id) || !!this.d.store.missed(actor.id, e.id))).map((e) => e.id);
     if (nearby.length) this.d.store.remember(actor.id, nearby, placeOf);
   }
 
@@ -382,6 +535,9 @@ export class Perception {
       case "entity.moved":
       case "entity.concealed":
         return sees(e.actorId) || sees(e.entityId);
+      case "item.handoff":
+        // the giver and the receiver always know of their hand-over (audit P2-12)
+        return e.receipt.from === actor.id || e.receipt.to === actor.id || sees(e.actorId) || sees(e.entityId);
       case "door.changed":
         return e.actorId === actor.id || sees(e.entityId);
       case "reservation.changed":
@@ -394,6 +550,11 @@ export class Perception {
         return sees(e.entityId);
       case "patient.escort":
         return e.actorId === actor.id || e.escort === actor.id || sees(e.entityId);
+      case "patient.departed":
+        return e.by === actor.id || sees(e.entityId);
+      case "patient.arrived":
+        // a relocation is told by its `patient.moved`; a journey's end to who took them, who took over, who sees them
+        return e.leg.kind !== "relocation" && (e.leg.by === actor.id || e.leg.receivedBy === actor.id || sees(e.entityId));
       case "obstacle.changed": {
         const r = e.obstacle.rect;
         const at = { x: r.x, z: r.z };
@@ -472,8 +633,11 @@ export class Perception {
     this.record(actor, [base]);
     const L = this.d.locale;
     const rules = this.d.rules;
+    // not perceived: every operation done at it is refused where the actor believes it is — never its true distance,
+    // place or state (audit P1-8; the action bus's own rule, `unperceived`)
     const operations = rules.spec(p.id).operations.map((op) => {
-      const fail = rules.precheck(p.id, op, actor) ?? rules.spatial(p.id, op, actor);
+      const unseen = this.unperceived(actor, p.id, op);
+      const fail = unseen ? { code: "NOT_IN_RANGE", message: unseen.message } : (rules.precheck(p.id, op, actor) ?? rules.spatial(p.id, op, actor));
       const row: { op: string; name: string; available: boolean; reason?: string; code?: string } = { op: op.id, name: operationName(op.id, L, op.name), available: !fail };
       if (fail) {
         row.reason = fail.message;
@@ -593,6 +757,11 @@ export class Perception {
       case "item.held":
         summary = worldMessage(e.held ? key(e.actorId, "item.held", "self.held") : key(e.actorId, "item.dropped", "self.dropped"), L, { actor: n(e.actorId), target: n(e.entityId) });
         break;
+      case "item.handoff":
+        summary = e.receipt.confirmedAt === null
+          ? worldMessage(key(e.actorId, "item.handoff", "self.handoff"), L, { actor: n(e.actorId), target: n(e.entityId), receiver: n(e.receipt.to) })
+          : worldMessage(key(e.actorId, "item.receipt", "self.receipt"), L, { actor: n(e.actorId), target: n(e.entityId), giver: n(e.receipt.from) });
+        break;
       case "door.changed":
         summary = worldMessage("door.changed", L, { target: n(e.entityId), state: stateName(e.locked ? "locked" : e.open ? "open" : "closed", L) });
         break;
@@ -625,6 +794,16 @@ export class Perception {
       case "patient.escort":
         summary = e.escort ? worldMessage(key(e.escort, "patient.escort", "self.escort"), L, { actor: n(e.escort), patient: n(e.entityId) }) : worldMessage("patient.stays", L, { patient: n(e.entityId) });
         break;
+      case "patient.departed":
+        summary = worldMessage(key(e.by, "patient.departed", "self.departed"), L, { actor: n(e.by), patient: n(e.entityId), mode: travelModeName(e.mode, L) });
+        break;
+      case "patient.arrived": {
+        const leg = e.leg;
+        const place = this.d.locator.patientBody?.placeName({ ...leg.to, level: "", x: 0, z: 0 }) ?? "—";
+        const vars = { patient: n(e.entityId), place, receiver: leg.receivedBy ? n(leg.receivedBy) : "—" };
+        summary = worldMessage(leg.status === "stopped" ? "patient.stoppedAt" : leg.receivedBy ? "patient.handedOver" : "patient.arrived", L, vars);
+        break;
+      }
     }
     return { id: e.id, type: e.type, summary };
   }

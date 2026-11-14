@@ -272,6 +272,12 @@ export const DeviceBehaviorSchema = z
           supplies: z.array(CapabilitySchema).optional(),
           /** What is drawn of the equipment in this state (omitted: the type as it is, none of its model's layers). */
           look: StateLookSchema.optional(),
+          /**
+           * The device's live screen shows the patient in this state (an ECG cart with its leads on): a device with
+           * states so marked shows them in those states only, and is unplugged — back to the state they are entered
+           * from — when it is wheeled away from the patient; one with none shows them in every state but `initial`.
+           */
+          live: z.boolean().optional(),
         })
         .strict(),
     ),
@@ -463,6 +469,12 @@ export const EquipmentTypeSchema = z
     tags: z.array(z.string()).default([]),
     /** Can be moved: `cart` (wheeled to another spot) or `handheld` (carried by an actor). Absent: fixed. */
     portable: z.enum(["cart", "handheld"]).optional(),
+    /**
+     * A handheld item kept in custody (a labelled specimen, a medication box; docs/EMBODIED.md §8.1, audit 2026-11-12
+     * P2-12): each hand-over records a receipt — who handed it to whom, where and at which simulated minute — and the
+     * receiver confirms it with their own act (`confirm_receipt`). Handheld items only.
+     */
+    custody: z.boolean().optional(),
     /** Interaction reach in metres from the footprint (default per interaction kind, @clinicalcraft/world `DEFAULT_REACH`). */
     reach: z.number().positive().max(10).optional(),
     /** Where an actor stands to use it: local offsets from the footprint centre (rotated with the placement). Absent: any free spot within reach. */

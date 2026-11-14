@@ -4398,7 +4398,7 @@
         "zh-CN": "普通肝素80 U/kg静脉推注（或固定剂量5000 U），随后18 U/kg/h持续泵入；6小时后查APTT（目标为对照值的1.5–2.5倍，或抗Xa 0.3–0.7 IU/mL），按院内列线图调整；每2–3天复查血小板计数",
         "en": "UFH 80 U/kg IV bolus (or a fixed 5,000 U bolus), then 18 U/kg/h infusion; APTT at 6 h (target 1.5–2.5 × control, or anti-Xa 0.3–0.7 IU/mL) and adjust per the hospital nomogram; platelet count every 2–3 days"
       },
-      "doseSpec": { "amount": 70, "upTo": 80, "unit": "unit/kg", "route": "IV" },
+      "doseSpec": { "amount": 70, "upTo": 80, "unit": "unit/kg", "route": "IV", "maintenance": { "amount": 18, "unit": "unit/kg/h" } },
       "requires": [
         "infusion-pump",
         "medications",
