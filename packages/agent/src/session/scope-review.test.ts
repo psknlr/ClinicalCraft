@@ -206,7 +206,9 @@ describe("the theatre's work goes by control (EMBODIED §8.3): the control repla
     const refused = await delegate(t, "c1", { role: "staff:anaes-1", task: "hold_traction", params: { port: "B" } });
     expect(refused.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
     expect(refused.delegation.steps).toEqual([expect.objectContaining({ code: "NOT_AUTHORIZED" })]);
-    expect(refused.delegation.refusal).toBe("Dr Wang (anaesthetist) cannot be asked to take an instrument in a port and keep its traction: it needs the Traction control, which the anaesthetist does not hold here.");
+    expect(refused.delegation.refusal).toBe(
+      "Dr Wang (anaesthetist) cannot be asked to take an instrument in a port and keep its traction: it needs the Traction control, which the anaesthetist does not hold here. In this team the Traction control is held by Dr Abe (first assistant).",
+    );
     expect(w.actor(STAFF.anaesthetist)!.pose).toEqual(before);
     expect(asked).toEqual([]);
     // the role word reaches whoever holds traction among the attendings in the room: the first assistant

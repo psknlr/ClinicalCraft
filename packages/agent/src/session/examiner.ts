@@ -12,7 +12,8 @@
  * results) nor the debrief — and is told the encounter is still in progress.
  * After `finish` it also gets the guidance and the full authored debrief.
  */
-import { t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { POSITION_TITLES, t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { joinedParts, ownObjectives } from "../agents/joined.js";
 import { examinerOffline } from "../agents/offline.js";
 import { buildSystemSections } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
@@ -169,7 +170,13 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
   // Mid-case: the item texts only (judgeGuidance often spells out the diagnosis or results).
   const items = pending.map((r) => `- id: ${r.id} | domain: ${r.domain} | item: ${t(r.text, L)}${finished && r.judgeGuidance ? ` | what good looks like: ${t(r.judgeGuidance, L)}` : ""}`);
   const debrief = finished ? `${debriefBlock(c, L)}\n\n` : "";
-  const summary = `Deterministic results (already scored, for context only): ${p.report.score.percent}% of deterministic points; objectives ${p.report.objectives.filter((o) => o.done).length}/${p.report.objectives.length}.`;
+  // a place in the team: the learner's objectives are those left when they joined; what the team did before is the team's
+  const objectives = ownObjectives(p.report);
+  const parts = p.report.seat ? joinedParts(c, p.report, "en") : [];
+  const place = p.report.seat
+    ? ` The learner held the ${POSITION_TITLES[p.report.seat].en}'s place in the care team, which they joined at its phase; done by the team before they joined (the team's, never credited to the learner): ${parts.length ? parts.join("; ") : "nothing that is scored"}.`
+    : "";
+  const summary = `Deterministic results (already scored, for context only): ${p.report.score.percent}% of deterministic points; objectives ${objectives.done}/${objectives.total}.${place}`;
   const request: ChatRequest = {
     model: p.model ?? p.provider.model,
     system: buildSystemSections(p.profile, { caseDef: c, state: p.state, locale: L, memory: p.memory ?? null }),

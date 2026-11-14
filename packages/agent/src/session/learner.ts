@@ -275,8 +275,9 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.refHandEntry") }), code: "permission_denied" });
       return null;
     }
-    // a place in the team works with bodies at the table: in-world mode only — said so where the case can be played
-    // in-world (it has a facility); without one, no place is offered at all (below)
+    // a place in the team works with bodies at the table: in-world mode only. Until a stand-in surgeon operates, a
+    // clinical session of a case with no facility meets the not-offered refusal below instead; once that guard goes,
+    // every clinical session is refused here (`not_embodied`), facility or none
     if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied && k.facility) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
       return null;
@@ -321,7 +322,7 @@ export class LearnerPath {
     if (action.type === "operate") {
       const ref = refOfBody(k.caseDef, k.state, LEARNER_BODY);
       if (ref === null) {
-        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.noPart", { who: rt(L, "place.You") }) }), code: "permission_denied" });
+        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.noPart.you") }), code: "permission_denied" });
         return null;
       }
       const { actor: _none, ...op } = action;

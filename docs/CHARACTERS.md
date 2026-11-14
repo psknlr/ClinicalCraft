@@ -81,10 +81,17 @@ The card is the character's job description in every model call: `roleSection` r
 the system prompt — for a colleague the learner talks to by name (Nurse Lim answers as the scrub nurse, Dr Tanaka as
 the anaesthetist — never the learner's preceptor —, Dr Mori as the assistant surgeon), for a care-team member's
 decision and for a staff line worded by a model. A card never grants an act: the world and the scope of practice
-refuse what a body may not do whatever its card says.
+refuse what a body may not do whatever its card says. The colleague whose place the learner holds in the team (docs/TEAM.md
+§1, A19) still speaks from their own card, which adds the **standing-by line** (`roleSection(card, name, standingBy)`,
+`standingByLine`): "You are standing by: the learner holds your place as the first assistant in this operation. Until
+they hand it back you take no part in its work — no traction, camera, passes or counts, nothing at the table — and you
+can still be spoken to."
 
 `ClinicalSession.staffStates()` reports each staff member's `position` with their goal, task, place, responsibilities,
-holdings, reservations, pending requests and what blocks them (docs/TEAM.md §5).
+holdings, reservations, pending requests and what blocks them, the place in the team they stand in (`seat`), their
+controls in the operative field (`controls`), the delegation tasks they may be handed now (`delegable`) and whether
+they stand by while the learner holds their place (`standingBy`) (docs/TEAM.md §5) — a front-end offers a colleague's
+tasks from `delegable`, never from their role's scope.
 
 ## 3. The character engine (`characters.engine`)
 

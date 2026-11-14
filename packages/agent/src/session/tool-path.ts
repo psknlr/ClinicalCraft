@@ -24,6 +24,8 @@ export interface ToolPathExtra {
   progress?: CallProgress;
   /** A care-team member's plan step an `operate` call takes (`ToolContext.stepRef`): set by the team's host only. */
   stepRef?: string;
+  /** The body the call's words are said to (`ToolContext.addressee`; absent: the acting body). */
+  addressee?: string;
 }
 
 /** A dynamic tool's answer (`dynamic_tool_response`). */
@@ -47,6 +49,7 @@ export class ToolPath {
       ...(extra.skillDepth ? { skillDepth: extra.skillDepth } : {}),
       ...(extra.progress ? { progress: extra.progress } : {}),
       ...(extra.stepRef ? { stepRef: extra.stepRef } : {}),
+      ...(extra.addressee ? { addressee: extra.addressee } : {}),
       caseDef: k.caseDef,
       facility: k.facility,
       catalogs: k.catalogs,

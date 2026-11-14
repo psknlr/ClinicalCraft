@@ -30,6 +30,7 @@ import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
+import { joinedLines } from "./agents/joined.js";
 import { executeEmbodiedCommand } from "./commands-world.js";
 import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
@@ -405,7 +406,10 @@ function debriefCommand(host: CommandHost): void {
   const d = c.debrief;
   const colon = isZh(L) ? "：" : ": ";
   // Critical items missed come first, prominently (they do not cap the score).
-  const critical = criticalMisses(c, assess(c, s), L);
+  const report = assess(c, s);
+  const critical = criticalMisses(c, report, L);
+  // a place in the team: the place, and what the team had done before the learner joined — shown, never credited
+  const joined = joinedLines(c, report, L);
   const section = (key: RuntimeKey, items: string[], marker: (i: number) => string = () => "-") =>
     items.length > 0 ? [`${rt(L, key)}${colon.trimEnd()}`, ...items.map((x, i) => `  ${marker(i)} ${x}`)] : [];
   // The case's learning outcomes (they name the diagnosis: listed here, once the debrief is unlocked) and who
@@ -417,6 +421,7 @@ function debriefCommand(host: CommandHost): void {
   const lines = [
     t(d.title, L),
     ...critical.map((x) => rt(L, "critical.missed", { text: x.text })),
+    ...joined,
     t(d.conclusion, L),
     ...section("cmd.debrief.reasoning", d.keyReasoning.map((x) => t(x, L))),
     ...section("cmd.debrief.outcomes", outcomes, (i) => `${i + 1}.`),
@@ -431,6 +436,8 @@ function debriefCommand(host: CommandHost): void {
   host.output(lines.join("\n"), {
     title: t(d.title, L),
     criticalMissed: critical,
+    place: report.seat ?? null,
+    joined: report.seat ? (report.joined ?? null) : null,
     conclusion: t(d.conclusion, L),
     keyReasoning: d.keyReasoning.map((x) => t(x, L)),
     learningOutcomes: outcomes,

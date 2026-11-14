@@ -430,10 +430,17 @@ or while the learner holds a place in the team that place's member; a colleague'
 takes the actor from there, never from its input, and never a plan step `ref` (the care team's host sets it). A step
 outside the body's controls is refused before the approval gate (`NOT_AUTHORIZED`: core `seatCheck` with each body's
 own controls; "You are the first assistant: dissection is the operating surgeon's." / "你是第一助手：分离由主刀完成。"),
-so nobody is asked to approve what the body may not do. A refusal of the field says its reason in the caller's language
-— `op.reason.<key>` with the people's names, the learner as "you" — and then the engine's English `message` word for
-word (a refusal that carries no reason keeps the generic lead-in). `observe_field` names a port's holder (the learner
-"held by you"), and for a body that is not the operator adds its place and controls ("Your place: first assistant
+so nobody is asked to approve what the body may not do — the operator's own steps are never narrowed, but whoever takes
+a port, from the operator too, holds its control (a hand-over to the porter or to a physician is refused: "Li Qiang does
+not hold the Traction control that this needs."). A step naming someone the field takes no part from (core
+`stepPartyRefusal`: a member this encounter's team scenario makes absent; a pass — and, while the learner holds a place,
+a hand-over — to someone outside the team) is refused before the gate too, worded as the field's own rejection. A
+refusal of the field says its reason in the caller's language — `op.reason.<key>` with the people's names — and then
+the engine's English `message` word for word (a refusal that carries no reason keeps the generic lead-in). "You" in
+these words is whom they are said to: the acting body, unless the caller names another (`ToolContext.addressee`: a
+delegated step reports to the learner who delegated it); the learner, said to a colleague, is named by their place
+("the first assistant (the learner)"; the operating surgeon while they operate). `observe_field` names a port's holder
+(the learner "held by you"), and for a body that is not the operator adds its place and controls ("Your place: first assistant
 (id doc-1); your controls: Camera, Traction, Suction." — the id is what a hand-over's `to` takes: `{op: "hand-over",
 port: "B", to: "doc-1"}` takes port B, `{op: "hand-over", port: "B"}` hands it back), where the camera looks, how close
 and who holds it ("Camera (port A): aimed at Hepatocystic triangle (hepatocystic-triangle), close up — held by you."),

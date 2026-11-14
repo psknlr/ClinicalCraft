@@ -35,6 +35,7 @@ import {
   type VitalsSnapshot,
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
+import { joinedLines, ownObjectives } from "./joined.js";
 import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { obtainedResultsText } from "../tools/npc.js";
@@ -267,7 +268,11 @@ export function specialistOffline(ctx: OfflineContext, voice: { staffId: string;
 /* Examiner                                                            */
 /* ------------------------------------------------------------------ */
 
-/** Deterministic examiner: no transcript judging (judged items stay null) + a narrative of the report. */
+/**
+ * Deterministic examiner: no transcript judging (judged items stay null) + a narrative of the report. In a place in the
+ * team the objectives counted are the learner's (not those the team had done before they joined), and the narrative
+ * ends with the place and what the team had done (`joinedLines`).
+ */
 export function examinerOffline(c: CaseDefinition, report: AssessmentReport, locale: string): { items: { id: string; met: boolean; evidence: string }[]; narrative: string } {
   const L = locale;
   const missing = report.history.missingRequired.map((id) => {
@@ -279,12 +284,13 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
     return e ? t(e.maneuver, L) : id;
   });
   const judged = report.rubric.filter((r) => r.met === null).length;
+  const objectives = ownObjectives(report);
   const narrative = rt(L, "examiner.offline.narrative", {
     percent: report.score.percent,
     earned: report.score.earned,
     possible: report.score.possible,
-    done: report.objectives.filter((o) => o.done).length,
-    total: report.objectives.length,
+    done: objectives.done,
+    total: objectives.total,
     hAsked: report.history.requiredAsked,
     hRequired: report.history.required,
     eDone: report.exam.requiredPerformed,
@@ -294,7 +300,7 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
       (missingExam.length > 0 ? rt(L, "examiner.offline.missingExam", { list: joinList(L, missingExam) }) : ""),
     judged: judged > 0 ? rt(L, "examiner.offline.judged", { count: judged }) : "",
   });
-  return { items: [], narrative: narrative.trim() };
+  return { items: [], narrative: [narrative.trim(), ...joinedLines(c, report, L)].join(isZh(L) ? "" : " ") };
 }
 
 /* ------------------------------------------------------------------ */

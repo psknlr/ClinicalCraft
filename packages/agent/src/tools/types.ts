@@ -55,6 +55,12 @@ export interface ToolContext {
    * clinician's calls act with `actor:clinician`. Spatial gates measure from this body (docs/EMBODIED.md §6).
    */
   readonly actorId?: string;
+  /**
+   * Embodied mode: the body this call's words are said to — whom the operative field's tools call "you" (docs/PROCEDURE.md
+   * §7). Absent: the acting body (`actorId`; a call with no body is the learner's). A delegated step sets the learner's:
+   * its outcome is reported to whoever delegated it.
+   */
+  readonly addressee?: string;
   /** The model turn this call belongs to (set by `executeToolCall`; nested tool calls reuse it). */
   readonly turnId?: string;
   /**

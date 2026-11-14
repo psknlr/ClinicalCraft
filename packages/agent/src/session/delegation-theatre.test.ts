@@ -11,13 +11,14 @@
 import { describe, expect, it } from "vitest";
 import { msgsOf, type TestSession } from "../__fixtures__/harness.js";
 import { lookupStaff } from "../tools/consult-target.js";
-import { ACCESS, operatorSteps, STAFF, standAtTable, system, THEATRE, theatreSession, type TheatreSessionOptions } from "./__fixtures__/theatre.js";
+import { ACCESS, LATERAL, operatorSteps, sendToScrubRoom, STAFF, standAtTable, system, THEATRE, theatreFacility, theatreSession, type TheatreSessionOptions } from "./__fixtures__/theatre.js";
 
 interface Delegation {
   staffId: string | null;
   status: string;
   message?: string;
   refusal?: string;
+  asked?: string;
   camera?: { port: string };
   aimed?: { region: string; zoom: string };
   passed?: { instrument: string; to?: string };
@@ -25,13 +26,30 @@ interface Delegation {
   letGo?: { port: string; instrument: string }[];
 }
 
-/** A theatre session in the default approval mode (every approval answered `approved`); `start`: a place taken first. */
-async function theatre(start?: TheatreSessionOptions["start"]): Promise<TestSession> {
-  const t = await theatreSession({ ...(start ? { start } : {}), settingsPatch: { approvalMode: "default" } });
+/** Approvals asked for in a session (each answered `approved`): their summaries. */
+const asked = new WeakMap<TestSession, string[]>();
+
+/**
+ * A theatre session in the default approval mode (every approval answered `approved`); `start`: a place taken first;
+ * `options`: more of the session's options (the facility, settings).
+ */
+async function theatre(start?: TheatreSessionOptions["start"], options: Omit<TheatreSessionOptions, "start"> = {}): Promise<TestSession> {
+  const t = await theatreSession({ ...options, ...(start ? { start } : {}), settingsPatch: { approvalMode: "default", ...(options.settingsPatch ?? {}) } });
+  const summaries: string[] = [];
+  asked.set(t, summaries);
   t.session.subscribe((e) => {
-    if (e.msg.type === "approval_request") t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
+    if (e.msg.type !== "approval_request") return;
+    summaries.push(e.msg.summary);
+    t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
   });
   return t;
+}
+
+/** general-hospital's theatre without its physician (`attending`, a bare staff id that spells the role): a role then names only the theatre's attendings. */
+function noPhysician() {
+  const f = theatreFacility();
+  f.staff = f.staff.filter((x) => x.id !== "attending");
+  return f;
 }
 
 let calls = 0;
@@ -76,7 +94,8 @@ describe("the camera", () => {
     const d = await delegate(t, { role: "一助", task: "aim_camera", params: { region: "hepatocystic-triangle", zoom: "close" } });
     expect(d.delegation).toMatchObject({ staffId: STAFF.first, status: "completed", camera: { port: "A" }, aimed: { region: "hepatocystic-triangle", zoom: "close" } });
     expect(t.session.state.procedure!.camera).toMatchObject({ at: "hepatocystic-triangle", zoom: "close" });
-    expect(d.text).toContain("Dr Abe aims the camera at hepatocystic-triangle (close up).");
+    // the region by its name, its id in brackets (as observe_field shows it)
+    expect(d.text).toContain("Dr Abe aims the camera at Hepatocystic triangle (hepatocystic-triangle), close up.");
     const none = await delegate(t, { role: "一助", task: "aim_camera" });
     expect(none.delegation).toMatchObject({ status: "failed", message: "no-target" });
     expect(none.text).toMatch(/needs a region to aim at/);
@@ -108,7 +127,8 @@ describe("passes and traction", () => {
     operatorSteps(t, ACCESS);
     const d = await delegate(t, { role: "nurse", task: "pass_instrument", params: { instrument: "hook" } });
     expect(d.delegation).toMatchObject({ staffId: STAFF.scrub, status: "completed", passed: { instrument: "hook" } });
-    expect(d.text).toContain("Chen Yu passed the hook to the operating surgeon.");
+    // without a place the operator is the learner: the pass is into their hand ("you")
+    expect(d.text).toContain("Chen Yu passed the hook to you.");
     const e = await delegate(t, { role: "scrub nurse", task: "pass_instrument", params: { instrument: "suction", to: "doc-1" } });
     expect(e.delegation).toMatchObject({ staffId: STAFF.scrub, status: "completed", passed: { instrument: "suction", to: "doc-1" } });
     expect(e.text).toContain("Chen Yu passed the suction–irrigation to Dr Abe.");
@@ -168,5 +188,136 @@ describe("who is chosen while the learner holds a place", () => {
     expect(camera(t, "主刀")).toEqual({ kind: "none" });
     expect(t.session.staffStates().every((r) => !r.standingBy)).toBe(true);
     await t.session.close();
+  });
+});
+
+/** The operating table's tasks (`THEATRE_TASK_CONTROL`). */
+const TABLE_TASKS = ["hold_traction", "release_traction", "hold_camera", "aim_camera", "pass_instrument"];
+const FIRST = { type: "start", seat: "first-assistant" } as const;
+const learnerStep = (t: TestSession, op: Record<string, unknown>) => t.session.run({ type: "clinical_action", action: { type: "operate", op } as never });
+
+describe("the body that operates is handed none of the table's tasks (A16), and nobody the field takes no part from is chosen", () => {
+  it("the stand-in surgeon: named (主刀) he is refused the camera, with who holds it; asked of the attendings he is never chosen, however near — the ports the learner holds stay theirs", async () => {
+    // two surgeons, the learner as first assistant (who holds the camera); no physician spelling the role
+    const t = await theatre(FIRST, { facility: noPhysician() });
+    operatorSteps(t, ACCESS);
+    standAtTable(t, STAFF.standIn, 0.3);
+    standAtTable(t, STAFF.anaesthetist, -0.9);
+    const named = await delegate(t, { role: "主刀", task: "hold_camera" });
+    expect(named.delegation).toMatchObject({ staffId: STAFF.standIn, status: "failed", message: "not-authorized" });
+    expect(named.delegation.refusal).toBe(
+      "Dr Ito operates: the operating table's tasks — traction, the camera, passing — go to the assistants and the scrub nurse. In this team the Camera control is held by you (first assistant).",
+    );
+    // his role state offers none of them
+    expect(t.session.staffStates().find((r) => r.actorId === STAFF.standIn)!.delegable.filter((x) => TABLE_TASKS.includes(x))).toEqual([]);
+    // the learner takes the camera in A and the grasper in B, and keeps the traction
+    for (const op of [{ op: "hand-over", port: "A", to: "doc-1" }, { op: "hand-over", port: "B", to: "doc-1" }, LATERAL]) expect(msgsOf(await learnerStep(t, op), "error")).toEqual([]);
+    const field = () => JSON.stringify([port(t, "A"), port(t, "B"), t.session.state.procedure!.retractions]);
+    const before = field();
+    for (const [task, params] of [
+      ["hold_camera", {}],
+      ["aim_camera", { region: "hepatocystic-triangle" }],
+      ["hold_traction", { port: "B" }],
+    ] as const) {
+      const d = await delegate(t, { role: "attending", task, params });
+      expect(d.delegation.staffId, task).not.toBe(STAFF.standIn);
+      expect(d.delegation, task).toMatchObject({ status: "failed", message: "not-authorized" });
+    }
+    expect(field()).toBe(before);
+    expect([port(t, "A").holder, port(t, "B").holder]).toEqual(["doc-1", "doc-1"]);
+    expect(asked.get(t)).toEqual([]);
+    await t.session.close();
+  });
+
+  it("traction asked of the attendings while the stand-in is the only one at hand who holds it: refused, never taken back from the learner", async () => {
+    const t = await theatre(FIRST);
+    operatorSteps(t, ACCESS);
+    sendToScrubRoom(t, STAFF.second);
+    for (const op of [{ op: "hand-over", port: "B", to: "doc-1" }, LATERAL]) expect(msgsOf(await learnerStep(t, op), "error")).toEqual([]);
+    const d = await delegate(t, { role: "attending", task: "hold_traction", params: { port: "B" } });
+    expect(d.delegation.staffId).not.toBe(STAFF.standIn);
+    expect(d.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
+    expect(port(t, "B").holder).toBe("doc-1");
+    expect(t.session.state.procedure!.retractions["gallbladder-infundibulum"]).toMatchObject({ port: "B" });
+    await t.session.close();
+  });
+
+  it("a colleague the field takes no part from is never chosen nor offered the table's tasks: outside the team while the learner holds a place, or absent this encounter", async () => {
+    // the first assistant's place, two surgeons: the second assistant (another line-up's) is outside this team
+    const t = await theatre(FIRST, { settingsPatch: { permissions: { ask: ["operate"] } } });
+    operatorSteps(t, ACCESS);
+    standAtTable(t, STAFF.second, 0.4);
+    const d = await delegate(t, { role: "attending", task: "hold_traction", params: { port: "B" } });
+    expect(d.delegation.staffId).not.toBe(STAFF.second);
+    expect(d.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
+    const named = await delegate(t, { role: "staff:doc-2", task: "hold_traction", params: { port: "B" } });
+    expect(named.delegation.refusal).toBe(
+      "Dr Sato is not in this encounter's care team: they take no part in the operation. In this team the Traction control is held by you (first assistant).",
+    );
+    expect(t.session.staffStates().find((r) => r.actorId === STAFF.second)!.delegable.filter((x) => TABLE_TASKS.includes(x))).toEqual([]);
+    expect(asked.get(t)).toEqual([]);
+    await t.session.close();
+    // no place, three surgeons, the second assistant away (still in the theatre) and the first out of it: the facility's
+    // surgeon outside the team takes the traction — never the absent colleague
+    const away = await theatre({ type: "start", lineup: "three-surgeons", team: "second-away" } as never);
+    operatorSteps(away, ACCESS);
+    sendToScrubRoom(away, STAFF.first);
+    standAtTable(away, STAFF.second, 0.3);
+    const held = await delegate(away, { role: "attending", task: "hold_traction", params: { port: "B" } });
+    expect(held.delegation).toMatchObject({ staffId: STAFF.standIn, status: "completed", holding: { port: "B", instrument: "grasper" } });
+    expect(away.session.staffStates().find((r) => r.actorId === STAFF.second)!.delegable.filter((x) => TABLE_TASKS.includes(x))).toEqual([]);
+    await away.session.close();
+  });
+});
+
+describe("the camera tasks work the camera port", () => {
+  it("a working port named is refused before anyone moves, and no camera is reported held", async () => {
+    const t = await theatre();
+    operatorSteps(t, ACCESS);
+    const before = JSON.stringify(t.session.state.procedure!.ports);
+    for (const [task, params] of [
+      ["hold_camera", { port: "B" }],
+      ["aim_camera", { port: "B", region: "hepatocystic-triangle" }],
+    ] as const) {
+      const d = await delegate(t, { role: "attending", task, params });
+      expect(d.delegation, task).toMatchObject({ status: "failed", message: "not-camera-port", asked: "B", steps: [] });
+      expect(d.delegation.camera, task).toBeUndefined();
+      expect(d.text, task).toMatch(/needs a camera port \(the laparoscope in it, or empty\): port B is not one\./);
+    }
+    expect(JSON.stringify(t.session.state.procedure!.ports)).toBe(before);
+    await t.session.close();
+  });
+
+  it("a hand-over the field refuses reports no camera held: the camera holder already holds two ports — the reason said to the learner", async () => {
+    const t = await theatre();
+    operatorSteps(t, [...ACCESS, { op: "withdraw", port: "C" }, { op: "insert", port: "C", instrument: "suction" }]);
+    standAtTable(t, STAFF.first);
+    for (const site of ["B", "C"]) system(t, { type: "operate", op: { op: "hand-over", port: site, to: "doc-1" }, actor: "doc-1", by: "system" });
+    const d = await delegate(t, { role: "first assistant", task: "hold_camera" });
+    expect(d.delegation).toMatchObject({ staffId: STAFF.first, status: "failed" });
+    expect(d.delegation.camera).toBeUndefined();
+    expect(d.text).toMatch(/Dr Abe already holds two ports \(B, C\): a colleague holds at most two\./);
+    expect(d.text).not.toMatch(/has the camera/);
+    expect(port(t, "A").holder).toBeUndefined();
+    await t.session.close();
+  });
+});
+
+describe("the report names people and regions as the learner reads them", () => {
+  it("a pass into the learner's hand is to 'you'; the operator's token is the operator — the stand-in by name; a region by its name, in either language", async () => {
+    const t = await theatre(FIRST);
+    operatorSteps(t, ACCESS);
+    const mine = await delegate(t, { role: "nurse", task: "pass_instrument", params: { instrument: "suction", to: "doc-1" } });
+    expect(mine.delegation).toMatchObject({ status: "completed", passed: { instrument: "suction", to: "doc-1" } });
+    expect(mine.text).toContain("Chen Yu passed the suction–irrigation to you.");
+    const op = await delegate(t, { role: "nurse", task: "pass_instrument", params: { instrument: "hook", to: "surgeon" } });
+    expect(op.delegation.passed).toEqual({ instrument: "hook" });
+    expect(op.text).toContain("Chen Yu passed the hook to Dr Ito.");
+    await t.session.close();
+    const zh = await theatre(undefined, { settingsPatch: { locale: "zh-CN" } });
+    operatorSteps(zh, ACCESS);
+    const aimed = await delegate(zh, { role: "一助", task: "aim_camera", params: { region: "hepatocystic-triangle", zoom: "close" } });
+    expect(aimed.text).toContain("阿部医生把镜头对准Hepatocystic triangle（hepatocystic-triangle），近景。");
+    await zh.session.close();
   });
 });

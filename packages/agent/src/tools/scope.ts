@@ -16,7 +16,9 @@
  * tools (`operate`, `observe_field`: any control of the field — saying an injury aloud needs none) and the theatre's
  * delegation tasks (`hold_traction` / `release_traction`: traction, `hold_camera` / `aim_camera`: the camera,
  * `pass_instrument`: the instrument table); the colleague standing by while the learner holds their place gets none of
- * them, and is handed no task at all. Everything else stays with the role.
+ * them, and is handed no task at all; the body that operates (the stand-in while the learner holds a place) and a
+ * colleague the field takes no part from (absent in this encounter, or outside the team while the learner holds a
+ * place) are handed none of the theatre's tasks. Everything else stays with the role.
  *
  * | role | delegable tasks | clinical tools with their body | interventions |
  * |---|---|---|---|
@@ -97,7 +99,7 @@ export function scopeOf(role: string): RoleScope {
 export interface ScopeRefusal {
   ok: false;
   code: "NOT_AUTHORIZED";
-  reason: "no-clinical-authority" | "tool" | "intervention" | "investigation" | "task" | "control" | "standing-by";
+  reason: "no-clinical-authority" | "tool" | "intervention" | "investigation" | "task" | "control" | "standing-by" | "operator" | "no-part";
   message: string;
 }
 export type ScopeCheck = { ok: true } | ScopeRefusal;
@@ -117,6 +119,16 @@ export interface ScopeActor {
   position?: StaffPosition | null;
   /** The colleague whose place the learner holds: standing by, they take no part in the theatre's work. */
   standingBy?: boolean;
+  /**
+   * The body that operates (the stand-in's while the learner holds a place): the operating table's tasks are not handed
+   * to it — never the camera (A16), nor a port to take back from whoever holds it.
+   */
+  operates?: boolean;
+  /**
+   * The operative field takes no part from them (core `stepPartyRefusal`): a member this encounter's team scenario makes
+   * absent, or — while the learner holds a place — a colleague outside this encounter's team. No theatre task.
+   */
+  noPart?: boolean;
 }
 
 /** The operative field's tools: with a known body, a control of the field decides them (`FIELD_CONTROLS`), not the role. */
@@ -213,12 +225,15 @@ export function checkClinicalScope(actor: ScopeActor, tool: string, itemId: stri
 /**
  * May this staff member be handed this task (`interventionId`: what a `give_intervention` gives)? Never the colleague
  * standing by while the learner holds their place — delegation passes them over (docs/TEAM.md §1); the theatre's tasks
- * by the control each is worked with when the body's controls are known (`THEATRE_TASK_CONTROL`), every other task —
- * and a theatre task for a body whose controls are unknown — by the role's scope.
+ * never to the body that operates nor to a colleague the field takes no part from, and by the control each is worked
+ * with when the body's controls are known (`THEATRE_TASK_CONTROL`); every other task — and a theatre task for a body
+ * whose controls are unknown — by the role's scope.
  */
 export function checkTaskScope(actor: ScopeActor, task: string, caseDef: CaseDefinition, locale: string, interventionId?: string | null): ScopeCheck {
   if (actor.standingBy) return refusal(locale, actor, "standing-by", "scope.standingBy");
   const control = THEATRE_TASK_CONTROL[task];
+  if (control && actor.operates) return refusal(locale, actor, "operator", "scope.operator");
+  if (control && actor.noPart) return refusal(locale, actor, "no-part", "scope.noPart");
   if (control && actor.controls !== undefined) {
     if (holdsControl(actor.controls, control)) return OK;
     return refusal(locale, actor, "control", "scope.control.task", { task: rt(locale, `delegate.task.${task}` as RuntimeKey), control: t(CONTROL_TITLES[control], locale) });

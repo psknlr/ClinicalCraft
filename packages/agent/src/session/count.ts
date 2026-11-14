@@ -12,6 +12,7 @@
  */
 import { COUNT_EFFECT_STEPS, COUNT_STAGES, countLedger, countStatus, seatMember, t, type CaseDefinition, type ClinicalAction, type CountOp, type CountStage, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type ActorId, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { shownRef } from "../tools/field-words.js";
 import { rt, type RuntimeKey } from "./i18n.js";
 import { sentence } from "./i18n-checklist.js";
 import { countItemName, openItemsText } from "./notifications.js";
@@ -66,8 +67,7 @@ export class SurgicalCount {
 
   /** A record's staff as the learner reads it: their place's member is "you" (A19); everyone else as recorded. */
   private shown(staff: string, L: string): string {
-    const s = this.h.state();
-    return s.seat && seatMember(this.h.caseDef, s)?.staff === staff ? rt(L, "place.you") : staff;
+    return shownRef(this.h.caseDef, this.h.state(), staff, L);
   }
 
   /** The items opened onto the field: every placement of the counted type in the operating room, by entity id. */

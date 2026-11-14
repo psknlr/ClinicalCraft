@@ -61,6 +61,7 @@ import { findSkill, parseSkill, PROJECT_SKILL_PREFIX, type SkillDefinition } fro
 import { runSkill, skillResultText, type SkillRunner, type SkillToolCall } from "../skills/interpreter.js";
 import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment } from "../skills/risk.js";
 import { strArg } from "../tools/clinical.js";
+import { nameOfRef, regionText, type FieldContext } from "../tools/field-words.js";
 import { learnerVitals } from "../tools/format.js";
 import type { ScopeActor } from "../tools/scope.js";
 import { scopeActorOf } from "../tools/scope-actor.js";
@@ -129,8 +130,11 @@ export interface EmbodiedHost {
   newId(): string;
   /** Dispatch an engine action outside any tool (travel / procedure time). */
   dispatch(action: ClinicalAction): ReduceResult;
-  /** Run a tool through a caller's tool path, with the acting body (and the world action carrying it out, the skill nesting). */
-  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; worldActionId?: string; skillDepth?: number; progress?: CallProgress }): Promise<SkillToolCall>;
+  /**
+   * Run a tool through a caller's tool path, with the acting body (and the world action carrying it out, the skill
+   * nesting; `addressee`: the body its words are said to, when not the acting body's — a delegated step, the learner's).
+   */
+  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; addressee?: ActorId; worldActionId?: string; skillDepth?: number; progress?: CallProgress }): Promise<SkillToolCall>;
   /** The session's definition of a tool (risk and summaries of a skill's steps). */
   tool(name: string): ToolDefinition<any> | undefined;
   /** Emit an event (the caller's submission, else the current one). */
@@ -949,7 +953,9 @@ export class EmbodiedSession {
         caller,
         args,
       );
-      return { ok: result.status === "completed", output: delegationText(result, L, this.facade, this.host.caseDef), data: { delegation: result } };
+      // said to the learner who delegated: the learner is "you" (their place's member, the operator while they operate)
+      const field = { caseDef: this.host.caseDef, facility: this.host.facility, locale: L, state: () => this.host.state() };
+      return { ok: result.status === "completed", output: delegationText(result, L, this.facade, this.host.caseDef, field), data: { delegation: result } };
     } finally {
       if (staff) {
         const left = (this.delegates.get(staff) ?? 1) - 1;
@@ -1113,8 +1119,12 @@ function stepWords(s: DelegationResult["steps"][number], locale: string, world: 
   return { operation: operationName(s.operation, locale, own), target: s.target ? nameOf(world, s.target, locale) : "" };
 }
 
-/** The text of a delegation result (operations and entities in words: CLI, MCP and transcripts show it). */
-export function delegationText(r: DelegationResult, locale: string, world: WorldRuntime, caseDef?: CaseDefinition): string {
+/**
+ * The text of a delegation result (operations and entities in words: CLI, MCP and transcripts show it). `field`: the
+ * encounter's people and regions — the learner as "you" (their place's member; the operator while they operate), the
+ * stand-in by name, a region by its name.
+ */
+export function delegationText(r: DelegationResult, locale: string, world: WorldRuntime, caseDef?: CaseDefinition, field?: FieldContext): string {
   if (r.message === "unknown-task") return rt(locale, "delegate.unknownTask", { task: r.task });
   if (r.message === "unknown-role") return rt(locale, "delegate.unknownRole", { role: r.role });
   if (r.message === "not-authorized") return rt(locale, "delegate.notAuthorized", { message: r.refusal ?? "" });
@@ -1122,6 +1132,7 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
   if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, NEEDED_PARAM[r.task] ?? "delegate.param.target") });
+  if (r.message === "not-camera-port") return rt(locale, "delegate.notCameraPort", { task, port: r.asked ?? "" });
   if (r.message === "target-not-intervention") {
     const id = world.resolveId(r.asked ?? "");
     const e = id ? world.entity(id) : null;
@@ -1137,9 +1148,10 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   }
   if (r.holding) lines.push(rt(locale, "assist.took", { who: staff, instrument: procedureLabel(locale, r.holding.instrument), port: r.holding.port }));
   if (r.camera) lines.push(rt(locale, "assist.camera", { who: staff, port: r.camera.port }));
-  if (r.aimed) lines.push(rt(locale, "assist.aimed", { who: staff, region: r.aimed.region, zoom: rt(locale, `field.zoom.${r.aimed.zoom}` as RuntimeKey) }));
+  if (r.aimed) lines.push(rt(locale, "assist.aimed", { who: staff, region: field ? regionText(field, r.aimed.region) : r.aimed.region, zoom: rt(locale, `field.zoom.${r.aimed.zoom}` as RuntimeKey) }));
   if (r.passed) {
-    const to = r.passed.to ? (world.entity(`staff:${r.passed.to}`) ? t(world.entity(`staff:${r.passed.to}`)!.name, locale) : r.passed.to) : rt(locale, "delegate.operator");
+    const named = (id: string) => (world.entity(`staff:${id}`) ? t(world.entity(`staff:${id}`)!.name, locale) : id);
+    const to = field ? nameOfRef(field, r.passed.to) : r.passed.to ? named(r.passed.to) : rt(locale, "delegate.operator");
     lines.push(rt(locale, "assist.passed", { who: staff, instrument: procedureLabel(locale, r.passed.instrument), to }));
   }
   if (r.delivered) {

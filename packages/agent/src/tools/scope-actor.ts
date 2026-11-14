@@ -7,10 +7,12 @@
  * - the learner's body in a place is scoped as that place — the scrub nurse's as a nurse, an assistant's as an
  *   attending —, with the place's controls;
  * - a member of staff by their own role, with their own controls; the colleague standing by while the learner holds
- *   their place, with none;
+ *   their place, with none; the body that operates (the stand-in's while the learner holds a place) and a colleague the
+ *   operative field takes no part from (core `stepPartyRefusal`: absent in this encounter, or outside the team while the
+ *   learner holds a place) marked so — the operating table's tasks are not theirs;
  * - a body the world does not know: no clinical authority.
  */
-import { bodyControls, standingBy, t, type CaseDefinition, type FacilityDefinition, type Place, type SessionState } from "@clinicalcraft/core";
+import { bodyControls, memberBody, standingBy, stepPartyRefusal, t, type CaseDefinition, type FacilityDefinition, type Place, type SessionState, type TeamChoice } from "@clinicalcraft/core";
 import { bodyPosition, PRIMARY_ACTOR, type ActorId, type ActorRole, type WorldRuntime } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
 import type { ScopeActor } from "./scope.js";
@@ -31,11 +33,24 @@ export function scopeActorOf(c: CaseDefinition, s: SessionState, facility: Facil
   const actor = world.actor(actorId);
   if (!actor) return { role: "porter", name: actorId }; // an unknown body: no clinical authority
   const entity = world.entity(actorId);
+  const operates = memberBody(c, s, "surgeon") === actorId;
+  const noPart = !operates && actorId.startsWith("staff:") && !takesPart(c, s, actorId.slice("staff:".length));
   return {
     role: actor.role,
     name: entity ? t(entity.name, locale) : actorId,
     controls: bodyControls(c, s, facility, actorId, "field"),
     position: bodyPosition(c, s, facility, actorId),
     standingBy: standingBy(c, s) === actorId,
+    ...(operates ? { operates } : {}),
+    ...(noPart ? { noPart } : {}),
   };
+}
+
+/**
+ * Whether the operative field takes a colleague as a party to the theatre's work: core `stepPartyRefusal` on the step
+ * that hands them a port (any port: the rule reads who, not where) — not a member this encounter's team scenario makes
+ * absent, nor, while the learner holds a place, someone outside this encounter's team.
+ */
+export function takesPart(c: CaseDefinition, s: TeamChoice, ref: string): boolean {
+  return stepPartyRefusal(c, s, { op: "hand-over", port: "", to: ref }, ref) === null;
 }

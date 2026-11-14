@@ -16,7 +16,7 @@ import { msgsOf, type TestSession } from "../__fixtures__/harness.js";
 import type { AgentEvent } from "../protocol.js";
 import type { ToolContext } from "../tools/types.js";
 import { MemoryTranscript, replayTranscript } from "../transcript.js";
-import { ACCESS, kernelOf, LATERAL, operatorSteps, sendToScrubRoom, standAtTable, system, THEATRE, theatreSession } from "./__fixtures__/theatre.js";
+import { ACCESS, kernelOf, LATERAL, operatorSteps, sendToScrubRoom, STAFF, standAtTable, system, THEATRE, theatreSession } from "./__fixtures__/theatre.js";
 import { offlineClinicianTurn, type AutopilotHost } from "./autopilot.js";
 import { embodiedOfflineTurn, type EmbodiedAutopilotHost } from "./embodied-autopilot.js";
 
@@ -138,6 +138,54 @@ describe("the learner's operative steps are their place's", () => {
     expect(t.session.state.seat).toBeUndefined();
     const look = await t.session.run({ type: "external_tool_call", callId: "look", tool: "observe_field", args: {} });
     expect(ended(look, "look").output).not.toMatch(/Your place/);
+    await t.session.close();
+  });
+});
+
+describe("whom a port is handed to, and who takes part, before any approval", () => {
+  it("the operator's hand-over: whoever takes the port holds its control — the porter and the physician are refused NOT_AUTHORIZED; the first assistant takes it, and so does a surgeon of the facility outside the team", async () => {
+    const t = await theatreSession({ settingsPatch: { permissions: { ask: ["operate"] } } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    operatorSteps(t, ACCESS);
+    standAtTable(t, PRIMARY_ACTOR);
+    // hands at the table keep what they take
+    standAtTable(t, STAFF.first, -0.6);
+    standAtTable(t, STAFF.standIn, 0.3);
+    const asked = approvals(t);
+    const holder = () => t.session.state.procedure!.ports.find((x) => x.site === "B")!.holder;
+    for (const [to, said] of [
+      ["porter-1", "Li Qiang does not hold the Traction control that this needs."],
+      ["attending", "Dr Xu Ming does not hold the Traction control that this needs."],
+    ] as const) {
+      const r = await learnerStep(t, { op: "hand-over", port: "B", to });
+      expect(msgsOf(r, "error"), to).toEqual([expect.objectContaining({ code: "NOT_AUTHORIZED", message: said })]);
+      const ext = await t.session.run({ type: "external_tool_call", callId: `x-${to}`, tool: "operate", args: { op: "hand-over", port: "B", to } });
+      expect(ended(ext, `x-${to}`), to).toMatchObject({ output: said, data: { code: "NOT_AUTHORIZED" } });
+    }
+    expect(asked).toEqual([]);
+    expect(holder()).toBeUndefined();
+    // the first assistant holds traction: he takes it (asked, as the rules say)
+    expect(msgsOf(await learnerStep(t, TAKE_B), "error")).toEqual([]);
+    expect(holder()).toBe("doc-1");
+    system(t, { type: "operate", op: { op: "hand-over", port: "B" }, actor: "doc-1", by: "system" });
+    // Dr Ito — a surgeon of the facility, outside the team while the learner operates — holds a colleague's traction
+    expect(msgsOf(await learnerStep(t, { op: "hand-over", port: "B", to: "doc-0" }), "error")).toEqual([]);
+    expect(holder()).toBe("doc-0");
+    expect(asked.length).toBe(2);
+    await t.session.close();
+  });
+
+  it("a step naming someone the field takes no part from is refused as the field would say it, before anyone is asked to approve it", async () => {
+    const t = await theatreSession({ start: { type: "start", lineup: "three-surgeons", team: "second-away" } as never, settingsPatch: { permissions: { ask: ["operate"] } } });
+    operatorSteps(t, ACCESS);
+    standAtTable(t, PRIMARY_ACTOR);
+    const asked = approvals(t);
+    const r = await learnerStep(t, { op: "hand-over", port: "B", to: "doc-2" });
+    expect(msgsOf(r, "warning")).toEqual([
+      expect.objectContaining({ message: 'Rejected (invalid): Dr Sato is not here in this encounter: they take no part in the operation. doc-2 is absent in this encounter (team scenario "second-away"): they take no part in the operation.' }),
+    ]);
+    expect(asked).toEqual([]);
+    expect(t.session.state.procedure!.ports.find((x) => x.site === "B")!.holder).toBeUndefined();
     await t.session.close();
   });
 });
