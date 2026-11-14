@@ -165,7 +165,9 @@ export function fieldPlaceLines(ctx: FieldContext, v: FieldView): string[] {
   const controls = bodyControls(c, s, ctx.facility, body, "field");
   if (controls !== "all") {
     const position = positionWords(ctx, body);
-    lines.push(controls.length ? rt(L, "field.controls", { position, controls: controlsText(L, controls) }) : rt(L, "field.controls.none", { position }));
+    // the id the field knows the body by (a `hand-over` `to` that takes a port): the place's member, or their own
+    const ref = refOfBody(c, s, body) ?? body.replace(/^staff:/u, "");
+    lines.push(controls.length ? rt(L, "field.controls", { position, ref, controls: controlsText(L, controls) }) : rt(L, "field.controls.none", { position, ref }));
   }
   if (v.camera) {
     const def = procedureFor(c, s);

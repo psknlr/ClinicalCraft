@@ -12,7 +12,7 @@
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
-import { anaesthetised, canonicalPosition, capabilityLabel, isSterilePosition, openAlarm, placeMember, responsibleAnaesthetist, t, TEAM_PLACES, vitalsAt, type Place, type StaffPosition, type SurgicalControl } from "@clinicalcraft/core";
+import { anaesthetised, canonicalPosition, capabilityLabel, isSterilePosition, openAlarm, placeMember, responsibleAnaesthetist, SURGICAL_CONTROLS, t, TEAM_PLACES, vitalsAt, type Place, type StaffPosition, type SurgicalControl } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
 import { positionOf, roleCardOf } from "../characters/roles.js";
@@ -252,7 +252,7 @@ export class StaffAutonomy {
           blockedReason: orders.find((o) => o.waiting)?.waiting?.reason ?? null,
           lastObservation: s.clock,
           seat: TEAM_PLACES.find((place) => placeMember(c, place, s.lineup)?.staff === sid) ?? null,
-          controls: scope?.controls === "all" ? [] : [...(scope?.controls ?? [])],
+          controls: scope?.controls === "all" ? [...SURGICAL_CONTROLS] : [...(scope?.controls ?? [])],
           delegable,
           standingBy: scope?.standingBy === true,
         },

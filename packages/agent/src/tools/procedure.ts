@@ -131,7 +131,7 @@ const operateTool: ToolDefinition<ToolArgs> = {
     "{op:'bailout', strategy:'subtotal-fenestrating'} (changing a committed subtotal technique: revise:true), {op:'hand-over', port:'B'} (take back what a colleague holds; to:'<staff id>' hands it to that colleague), {op:'inspect'}, {op:'recognise', injury:'bleeding'}, {op:'bag'|'extract', port}, {op:'close'}. " +
     "The camera: {op:'aim', port:'A', at:'<region>'} (no at: the whole field), {op:'zoom', port:'A', level:'close'|'wide'} (close needs an aim) — the camera holder's, or yours while nobody holds the camera port. " +
     "{op:'pass', instrument:'maryland', to:'<staff id>'} puts an instrument from the table into the hand of the one who will insert it (a scrub nurse's step; no to: the operator). " +
-    "You work the field as your place in the team: the operating surgeon does every step; holding another place, only what your controls cover (observe_field says which). " +
+    "You work the field as your place in the team: the operating surgeon does every step; holding another place, only what your controls cover (observe_field says which, and your place's id: {op:'hand-over', port:'B', to:'<that id>'} takes a port, {op:'hand-over', port:'B'} hands it back). " +
     "Directions are in the patient's terms (patient-left is the patient's left). Look with observe_field first. Steps: " +
     OP_NAMES.join(", ") +
     ".",

@@ -62,13 +62,17 @@ export interface Colleague {
   name: string;
 }
 
-/** The colleague addressed: by name, else the nearest of the agent's roles to the patient (none, or clinical mode: null). */
+/**
+ * The colleague addressed: by name, else the nearest of the agent's roles to the patient — never the colleague standing
+ * by while the learner holds their place, when the role has anyone else (none, or clinical mode: null).
+ */
 export function colleagueOf(k: SessionKernel, agent: string, voice: StaffVoice | null): Colleague | null {
   const e = k.embodied;
   if (!e) return null;
   const world = e.world();
   let actorId: ActorId | null = voice ? `staff:${voice.staffId}` : null;
-  if (!actorId) for (const role of AGENT_ROLES[agent] ?? []) if ((actorId = pickStaff(world, role, e.patientId()))) break;
+  const pick = { caseDef: k.caseDef, state: k.state, facility: k.facility };
+  if (!actorId) for (const role of AGENT_ROLES[agent] ?? []) if ((actorId = pickStaff(world, role, e.patientId(), pick))) break;
   const actor = actorId ? world.actor(actorId) : null;
   if (!actor) return null;
   const ent = world.entity(actor.id);

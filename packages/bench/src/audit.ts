@@ -18,15 +18,18 @@
  *   with the permission ladder (`checkPermission`, the session's mode, scope
  *   and rules): `deny` → unauthorised; `ask` → authorised only by an approval
  *   request for that tool and specifier that was approved before it (or a
- *   rule approved for the session). The acting body (from the trace, as
- *   for the spatial audit) must also be allowed the act by its role — its
- *   clinical authority and scope of practice (`checkClinicalScope`, review
- *   S3): a staff member outside it is unauthorised whatever the gate said.
- *   It must be 0.
+ *   rule approved for the session). An operative step a tool took is one
+ *   (`procedure.step`, `operate`; the session's own records — `by: "system"`
+ *   — are not). The acting body (from the trace, as for the spatial audit)
+ *   must also be allowed the act — its clinical authority and scope of
+ *   practice as the session scopes that body (`scopeActorOf`, review S3; the
+ *   operative field and the theatre's tasks by control, EMBODIED §8.3; the
+ *   learner's body in a place in the team as that place): a body outside it
+ *   is unauthorised whatever the gate said. It must be 0.
  * - **Clinical safety.** Interventions the engine applied as
  *   `contraindicated`.
  */
-import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, PermissionState, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
+import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, PermissionState, scopeActorOf, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
 import { assignPatientSlot, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
 import { DefaultSpatialPolicy, PRIMARY_ACTOR, type ActorId, type ClinicalIntent, type EpisodeTrace, type SpatialRequirement, type WorldRuntime } from "@clinicalcraft/world";
 
@@ -84,6 +87,10 @@ export function actionOfEvent(event: DomainEvent): ClinicalAction | null {
       return event.automatic ? null : { type: "set-phase", phase: event.to };
     case "case.finished":
       return event.timedOut ? null : { type: "finish" };
+    case "procedure.step":
+      // an operative step a tool took, as the field recorded it (its actor normalised); the session's own records — a
+      // colleague's hands letting go away from the table — are no gated act
+      return event.by === "system" || !event.detail ? null : { type: "operate", op: event.detail, ...(event.actor ? { actor: event.actor } : {}) };
     default:
       return null;
   }
@@ -200,17 +207,24 @@ export class Auditor {
         authorised = true;
       }
     }
-    const itemId = "interventionId" in action ? action.interventionId : "investigationId" in action ? action.investigationId : "findingId" in action ? action.findingId : "itemId" in action ? action.itemId : undefined;
+    // an operative step's item is its op (saying an injury aloud needs no control of the field)
+    const itemId = "interventionId" in action ? action.interventionId : "investigationId" in action ? action.investigationId : "findingId" in action ? action.findingId : "itemId" in action ? action.itemId : action.type === "operate" ? action.op.op : undefined;
     this.authorisation.push({ ev, type: event.type, tool: tool.name, specifier, decision: check.decision, ruleId: check.ruleId, authorised, ...(itemId ? { itemId } : {}) });
   }
 
-  /** Is the body that acted allowed the act by its role (scope of practice)? The reason when it is not. */
+  /**
+   * Is the body that acted allowed the act (scope of practice)? The reason when it is not. The body is scoped as the
+   * session scopes it (`scopeActorOf`): a member of staff by role — the operative field by their controls —, the
+   * learner's body unscoped, or in a place in the team as that place.
+   */
   private scopeProblem(entry: AuthorisationEntry, actor: ActorId | null, world: WorldRuntime | null): string | null {
-    if (!world || !actor || actor === PRIMARY_ACTOR) return null;
-    const role = world.actor(actor)?.role;
-    if (!role) return `unknown body ${actor}`;
-    const check = checkClinicalScope({ role }, entry.tool, entry.itemId ?? null, this.session.caseDef, this.session.settings.locale);
-    return check.ok ? null : `${role}: ${check.reason}`;
+    if (!world || !actor) return null;
+    const s = this.session;
+    if (actor !== PRIMARY_ACTOR && !world.actor(actor)) return `unknown body ${actor}`;
+    const who = scopeActorOf(s.caseDef, s.state, s.facility, world, actor, s.settings.locale);
+    if (!who) return null;
+    const check = checkClinicalScope(who, entry.tool, entry.itemId ?? null, s.caseDef, s.settings.locale);
+    return check.ok ? null : `${who.role}: ${check.reason}`;
   }
 
   private auditSpatial(ev: string, event: DomainEvent, intent: ClinicalIntent, world: WorldRuntime): void {

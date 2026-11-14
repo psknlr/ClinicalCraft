@@ -16,7 +16,7 @@
  * tools (`operate`, `observe_field`: any control of the field — saying an injury aloud needs none) and the theatre's
  * delegation tasks (`hold_traction` / `release_traction`: traction, `hold_camera` / `aim_camera`: the camera,
  * `pass_instrument`: the instrument table); the colleague standing by while the learner holds their place gets none of
- * them. Everything else stays with the role.
+ * them, and is handed no task at all. Everything else stays with the role.
  *
  * | role | delegable tasks | clinical tools with their body | interventions |
  * |---|---|---|---|
@@ -211,14 +211,15 @@ export function checkClinicalScope(actor: ScopeActor, tool: string, itemId: stri
 }
 
 /**
- * May this staff member be handed this task (`interventionId`: what a `give_intervention` gives)? The theatre's tasks
- * by the control each is worked with when the body's controls are known (`THEATRE_TASK_CONTROL`; never the colleague
- * standing by), every other task — and a theatre task for a body whose controls are unknown — by the role's scope.
+ * May this staff member be handed this task (`interventionId`: what a `give_intervention` gives)? Never the colleague
+ * standing by while the learner holds their place — delegation passes them over (docs/TEAM.md §1); the theatre's tasks
+ * by the control each is worked with when the body's controls are known (`THEATRE_TASK_CONTROL`), every other task —
+ * and a theatre task for a body whose controls are unknown — by the role's scope.
  */
 export function checkTaskScope(actor: ScopeActor, task: string, caseDef: CaseDefinition, locale: string, interventionId?: string | null): ScopeCheck {
+  if (actor.standingBy) return refusal(locale, actor, "standing-by", "scope.standingBy");
   const control = THEATRE_TASK_CONTROL[task];
   if (control && actor.controls !== undefined) {
-    if (actor.standingBy) return refusal(locale, actor, "standing-by", "scope.standingBy");
     if (holdsControl(actor.controls, control)) return OK;
     return refusal(locale, actor, "control", "scope.control.task", { task: rt(locale, `delegate.task.${task}` as RuntimeKey), control: t(CONTROL_TITLES[control], locale) });
   }

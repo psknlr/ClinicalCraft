@@ -21,6 +21,7 @@ export { procedureTools } from "./procedure.js";
 export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export * from "./spatial.js";
 export * from "./scope.js";
+export { PLACE_ROLE, scopeActorOf } from "./scope-actor.js";
 export * from "./world.js";
 export { isLearnerTool, LEARNER_CLINICAL_TOOLS, LEARNER_TOOL_NAMES, LEARNER_TOOLS } from "./learner.js";
 export * from "./world-format.js";

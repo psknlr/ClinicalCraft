@@ -275,15 +275,15 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.refHandEntry") }), code: "permission_denied" });
       return null;
     }
+    // a place in the team works with bodies at the table: in-world mode only
+    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
+      return null;
+    }
     // a place in the team is not offered yet: nobody would operate while the learner held it (docs/TEAM.md §1)
     const place = placeNotOffered(requested);
     if (place) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "team.place.notOffered", { place: t(POSITION_TITLES[place], L) }) }), code: "permission_denied" });
-      return null;
-    }
-    // a place in the team works with bodies at the table: in-world mode only
-    if (requested.type === "start" && requested.seat !== undefined && requested.seat !== "surgeon" && !k.embodied) {
-      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "place.notEmbodied", { place: t(POSITION_TITLES[requested.seat], L) }) }), code: "not_embodied" });
       return null;
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who

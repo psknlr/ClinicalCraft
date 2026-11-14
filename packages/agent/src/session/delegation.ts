@@ -114,12 +114,15 @@ export interface DelegationResult {
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 
-/** What choosing a colleague for a task reads beyond the world: the case, the state, the facility and the task. */
+/**
+ * What choosing a colleague reads beyond the world: the case, the state and the facility (the team as it is: who stands
+ * by, who holds which control) and, for a delegated task, the task.
+ */
 export interface StaffPick {
   caseDef: CaseDefinition;
   state: SessionState;
   facility: FacilityDefinition | null;
-  task: string;
+  task?: string;
 }
 
 /** The positions traction is asked of, in order: the first assistant, the second, the surgeon (anyone else after). */
@@ -165,25 +168,34 @@ function theatreChoice(world: WorldRuntime, pick: StaffPick, control: SurgicalCo
 }
 
 /**
- * The staff member for a role (or a staff id): the one nearest to the patient where the patient is now — for an
- * operating table's task (`pick`: the case, the state, the task) the one of that role whose controls cover it
- * (`theatreChoice`), else the nearest of the role, whose scope then says what they cannot do. A role nobody holds is
- * looked up as a name, a position in this encounter's team (`first assistant`, `一助`, `扶镜手`) or a title
- * (`lookupStaff`).
+ * The staff member for a role (or a staff id): `staff:<id>` is that body; an operating table's task (`pick`: the case,
+ * the state, the task) asked of a role goes to the one of that role whose controls cover it (`theatreChoice`) — before a
+ * bare staff id that happens to spell the role (general-hospital's `attending`); then a bare staff id; else the one of
+ * the role nearest to the patient where the patient is now, whose scope then says what they cannot do. With `pick`, the
+ * colleague standing by while the learner holds their place is passed over (when the role has anyone else: named
+ * alone, their scope says why). A role nobody holds is looked up as a name, a position in this encounter's team (`first
+ * assistant`, `一助`, `扶镜手`) or a title (`lookupStaff`).
  */
 export function pickStaff(world: WorldRuntime, role: string, patientId: string | null, pick?: StaffPick): ActorId | null {
-  const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
-  if (direct && direct.id.startsWith("staff:")) return direct.id;
-  const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
+  if (role.startsWith("staff:")) {
+    const named = world.actor(role);
+    if (named) return named.id;
+  }
+  const ofRole = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
+  const standing = pick ? standingBy(pick.caseDef, pick.state) : null;
+  const working = ofRole.filter((a) => a.id !== standing);
+  const candidates = working.length ? working : ofRole;
+  const control = pick?.task ? THEATRE_TASK_CONTROL[pick.task] : undefined;
+  const chosen = pick && control && candidates.length ? theatreChoice(world, pick, control, candidates, patientId) : null;
+  if (chosen) return chosen;
+  const bare = role.startsWith("staff:") ? null : world.actor(`staff:${role}`);
+  if (bare && bare.id.startsWith("staff:")) return bare.id;
   if (!candidates.length) {
     // a colleague by name, a position in the team or a title ("Nurse Lim", "first assistant", "一助", "洗手护士"): the
     // one room-aware resolver, in the patient's room
     const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null, pick ? { caseDef: pick.caseDef, state: pick.state } : undefined);
     return named.kind === "one" && world.actor(`staff:${named.staff.id}`) ? `staff:${named.staff.id}` : null;
   }
-  const control = pick ? THEATRE_TASK_CONTROL[pick.task] : undefined;
-  const chosen = pick && control ? theatreChoice(world, pick, control, candidates, patientId) : null;
-  if (chosen) return chosen;
   const dist = fromPatient(world, patientId);
   return [...candidates].sort((a, b) => dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
 }
