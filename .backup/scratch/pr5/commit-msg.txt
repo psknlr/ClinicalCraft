@@ -1,18 +1,18 @@
-CMCR 105: 2 more cases re-authored and reviewed (1.1.0)
+CMCR 105: 1 more case re-authored and reviewed (1.1.0)
 
 Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),
-then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
-current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
+then reviewed in at least two rounds, each by a fresh independent reviewer (every patient fact traced
+to 1.0.0 in both languages, every guideline statement looked up in its source's own text, the kit's
+checklist of earlier reviews' findings, assessment replays), further rounds following while a round
+found a critical or major issue, and fixed:
 
-- cmcr-1322444: Recurrent headache, dizziness and unsteady walking · 19-year-old man (5 decisions, 11 interventions;
-  review: 3 critical, 7 major, 11 minor findings)
-- cmcr-44939: Prolonged fever, limp and severe anaemia · girl aged 3 years 9 months (5 decisions, 10 interventions;
-  review: 0 critical, 7 major, 13 minor findings)
+- cmcr-44362: Swollen joints for three years · 9-year-old boy (5 decisions, 12 interventions;
+  reviews: round 1: 1 critical, 7 major, 5 minor; round 2: 0 critical, 3 major, 11 minor; round 3: 0 critical, 3 major, 5 minor; round 4: 1 critical, 1 major, 9 minor)
 
-Reviews: 3 critical, 14 major and 24 minor findings; every critical and major one fixed or
-answered with a reason. Each case passes strict validation (with the audit's safety lints),
-verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
-in both languages.
+Reviews: 2 critical, 14 major and 30 minor findings; every critical and major
+one fixed or answered with a reason in the case's README. Each case passes strict validation (with the
+audit's safety lints), verification (100 %), scripts/case-check.ts, the collection contract and the
+in-world demonstration in both languages.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab

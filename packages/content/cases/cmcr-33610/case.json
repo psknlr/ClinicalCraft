@@ -61,8 +61,8 @@
         "AAP policy statement: Use of chaperones for the pediatric and adolescent encounter (Pediatrics 2025; checked in its abstract only)"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过两轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance and two independent editorial review rounds (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过三轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance and three independent editorial review rounds (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
       }
     }
   },
@@ -154,8 +154,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "家长回答病史，只说病历里记录的事实（起病、长高和体重、其他发育变化、从小的发育和上学情况、出生、疝气手术、家里情况）；其他事情（用药、过敏、疫苗、激素接触、呼吸或头痛等症状、先出现哪种变化、家里人的发育年龄）如实说“这个我说不上来，医生。”，不要编。检查外生殖器前，家长希望医生先说明、征得同意，并有护士在场；孩子会害羞，用几个字回答。不要提前说出任何检查结果。",
-        "en": "His parent gives the history and states only what his notes record (the onset, his growth and weight gain, the other changes, his development since he was little and his schooling, his birth, the hernia operation, the family). For anything else (medicines, allergies, vaccinations, contact with hormones, breathing or headache symptoms, which change came first, when relatives went through puberty) the parent says honestly \"I'm not sure, doctor.\" and invents nothing. Before the genital examination the parent expects an explanation, consent and a nurse present; the boy is shy and answers in a few words. Never anticipate a test result."
+        "zh-CN": "家长回答病史，只说病历里记录的事实（姓名和年龄、起病、长高和体重、其他发育变化、从小的发育和上学情况、出生、疝气手术、家里情况）；其他事情（用药、过敏、疫苗、激素接触、呼吸或头痛等症状、先出现哪种变化、家里人的发育年龄）如实说“这个我说不上来，医生。”，不要编。检查外生殖器前，家长希望医生先说明、征得同意，并有护士在场；孩子会害羞，用几个字回答。不要提前说出任何检查结果。",
+        "en": "His parent gives the history and states only what his notes record (his name and age, the onset, his growth and weight gain, the other changes, his development since he was little and his schooling, his birth, the hernia operation, the family). For anything else (medicines, allergies, vaccinations, contact with hormones, breathing or headache symptoms, which change came first, when relatives went through puberty) the parent says honestly \"I'm not sure, doctor.\" and invents nothing. Before the genital examination the parent expects an explanation, consent and a nurse present; the boy is shy and answers in a few words. Never anticipate a test result."
       },
       "companion": {
         "role": "parent",
@@ -333,7 +333,11 @@
           "penis",
           "voice",
           "what's wrong",
-          "bring him"
+          "bring him",
+          "whyhaveyoucome",
+          "come to see us",
+          "come in today",
+          "broughtyouhere"
         ]
       },
       "excludeKeywords": {
@@ -351,7 +355,11 @@
           "狐臭",
           "气味",
           "先是",
-          "还是先"
+          "还是先",
+          "爸爸",
+          "父亲",
+          "家里人",
+          "家族"
         ],
         "en": [
           "grow",
@@ -367,7 +375,13 @@
           "odor",
           "smell",
           "happened first",
-          "which was first"
+          "which was first",
+          "friend",
+          "breath",
+          "family",
+          "relatives",
+          "father",
+          "dad"
         ]
       },
       "disclosure": "volunteer",
@@ -375,6 +389,90 @@
       "source": {
         "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：半年前阴茎增粗增长，声音变粗（主诉：阴茎增大、声音变粗6个月）；家长的口吻为改写",
         "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): penile enlargement and voice deepening from six months earlier (chief complaint: six months of penile growth and voice deepening); the parent's wording is a paraphrase"
+      }
+    },
+    {
+      "id": "identity",
+      "topic": "other",
+      "question": {
+        "zh-CN": "孩子叫什么名字，今年多大了？",
+        "en": "What's his name, and how old is he?"
+      },
+      "answer": {
+        "zh-CN": "他叫余知远，8岁4个月了。我是他的家长。",
+        "en": "He's Yu Zhiyuan, and he's 8 years and 4 months old. I'm his parent."
+      },
+      "keywords": {
+        "zh-CN": [
+          "名字",
+          "叫什么",
+          "几岁",
+          "多大了",
+          "孩子多大",
+          "今年多大",
+          "年龄",
+          "岁数",
+          "您是孩子的",
+          "您是他的",
+          "你是他的"
+        ],
+        "en": [
+          "his name",
+          "called",
+          "how old",
+          "his age",
+          "what age",
+          "who are you",
+          "relationtohim"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "爸爸",
+          "父亲",
+          "妈妈",
+          "母亲",
+          "弟弟",
+          "手术",
+          "疝",
+          "出生",
+          "生下来",
+          "走路",
+          "说话",
+          "变声",
+          "发育",
+          "青春期",
+          "开始",
+          "阴茎",
+          "睾丸",
+          "下面"
+        ],
+        "en": [
+          "dad",
+          "father",
+          "mum",
+          "mother",
+          "brother",
+          "puberty",
+          "operation",
+          "surgery",
+          "hernia",
+          "walk",
+          "talk",
+          "born",
+          "birth",
+          "voice",
+          "start",
+          "notice",
+          "penis",
+          "testicle"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：年龄100个月（8岁4个月）；姓名为本病例的化名，陪同者为1.0.0版的家长角色",
+        "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): age 100 months (8 years 4 months); the name is the case's pseudonym and the companion is 1.0.0's parent role"
       }
     },
     {
@@ -402,7 +500,10 @@
           "瘦了",
           "变瘦",
           "多重",
-          "体重多少"
+          "体重多少",
+          "胖了",
+          "变胖",
+          "发胖"
         ],
         "en": [
           "grown",
@@ -475,7 +576,10 @@
           "erection",
           "erections",
           "wet dreams",
-          "emissions"
+          "emissions",
+          "get hard",
+          "gets hard",
+          "hard-on"
         ]
       },
       "excludeKeywords": {
@@ -489,7 +593,10 @@
           "爸爸",
           "体味",
           "狐臭",
-          "气味"
+          "气味",
+          "脾气",
+          "情绪",
+          "心情"
         ],
         "en": [
           "came first",
@@ -503,7 +610,9 @@
           "mum",
           "mother",
           "parents",
-          "brother"
+          "brother",
+          "mood",
+          "temper"
         ]
       },
       "required": true,
@@ -593,7 +702,9 @@
           "walker",
           "walking",
           "talking",
-          "first words"
+          "first words",
+          "early years",
+          "early childhood"
         ]
       },
       "excludeKeywords": {
@@ -664,7 +775,10 @@
           "teacher",
           "get on with",
           "get along",
-          "kids in his class"
+          "kids in his class",
+          "reading",
+          "writing",
+          "making friends"
         ]
       },
       "required": true,
@@ -697,7 +811,11 @@
           "出生体重",
           "生下来多重",
           "窒息",
-          "窘迫"
+          "窘迫",
+          "怀孕",
+          "孕期",
+          "生产",
+          "分娩"
         ],
         "en": [
           "born",
@@ -801,7 +919,11 @@
           "siblings",
           "inherited",
           "runs in the family",
-          "similar"
+          "similar",
+          "oldest",
+          "eldest",
+          "only child",
+          "youngest"
         ]
       },
       "excludeKeywords": {
@@ -851,7 +973,12 @@
           "父亲青春期",
           "家里人发育",
           "爸爸小时候",
-          "父亲小时候"
+          "父亲小时候",
+          "爸爸几岁",
+          "父亲几岁",
+          "爸爸变声",
+          "爸爸青春期",
+          "几岁变声"
         ],
         "en": [
           "puberty early",
@@ -888,7 +1015,10 @@
           "talk",
           "smell",
           "odour",
-          "odor"
+          "odor",
+          "early years",
+          "early childhood",
+          "early life"
         ]
       }
     },
@@ -976,7 +1106,9 @@
           "hormone",
           "cream",
           "gel",
-          "testosterone"
+          "testosterone",
+          "react",
+          "reaction"
         ]
       },
       "disclosure": "unknown",
@@ -1005,7 +1137,10 @@
         "en": [
           "allergic",
           "allergy",
-          "allergies"
+          "allergies",
+          "react badly",
+          "reaction to",
+          "reactions"
         ]
       },
       "disclosure": "unknown",
@@ -1035,7 +1170,10 @@
           "大病",
           "生过什么病",
           "其他疾病",
-          "健康问题"
+          "健康问题",
+          "以前身体",
+          "身体好吗",
+          "身体一直"
         ],
         "en": [
           "illnesses",
@@ -1055,7 +1193,12 @@
           "疝",
           "家里",
           "家族",
-          "家人"
+          "家人",
+          "父母",
+          "爸爸",
+          "妈妈",
+          "弟弟",
+          "兄弟"
         ],
         "en": [
           "operation",
@@ -1207,14 +1350,16 @@
           "睾丸肿",
           "疙瘩",
           "肿块",
-          "阴囊"
+          "阴囊",
+          "蛋蛋"
         ],
         "en": [
           "testicle",
           "testicular pain",
           "lump",
           "scrotum",
-          "scrotal"
+          "scrotal",
+          "balls"
         ]
       },
       "disclosure": "unknown",
@@ -1333,7 +1478,13 @@
           "查个体",
           "检查身体",
           "后背",
-          "背上"
+          "背上",
+          "腋下",
+          "胳肢窝",
+          "背部",
+          "他的背",
+          "胸部",
+          "脸上"
         ],
         "en": [
           "height",
@@ -1348,7 +1499,10 @@
           "secondary sexual",
           "examine him",
           "examination",
-          "his back"
+          "his back",
+          "spots",
+          "pimples",
+          "his face"
         ]
       },
       "finding": {
@@ -1372,7 +1526,6 @@
           "阴茎",
           "睾丸",
           "阴囊",
-          "下面",
           "下体",
           "肚子",
           "腹部",
@@ -1381,7 +1534,18 @@
           "血压",
           "视野",
           "脖子",
-          "颈部"
+          "颈部",
+          "看下面",
+          "查下面",
+          "检查下面",
+          "一下下面",
+          "他下面",
+          "的下面",
+          "下面变",
+          "下面长",
+          "听一下",
+          "听",
+          "蛋蛋"
         ],
         "en": [
           "genital",
@@ -1398,7 +1562,9 @@
           "auscultat",
           "blood pressure",
           "visual field",
-          "neck"
+          "neck",
+          "down below",
+          "willy"
         ]
       }
     },
@@ -1417,10 +1583,18 @@
           "睾丸",
           "睾丸容积",
           "阴囊",
-          "下面",
+          "他下面",
+          "的下面",
+          "看下面",
+          "查下面",
+          "摸下面",
+          "一下下面",
+          "孩子下面",
           "下体",
           "私处",
-          "隐私部位"
+          "隐私部位",
+          "蛋蛋",
+          "小鸡鸡"
         ],
         "en": [
           "genital",
@@ -1432,7 +1606,9 @@
           "orchidometer",
           "scrotum",
           "private parts",
-          "privates"
+          "privates",
+          "down below",
+          "willy"
         ]
       },
       "finding": {
@@ -1448,6 +1624,31 @@
       "source": {
         "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：阴茎长9 cm、周径8 cm，双睾丸5–6 mL（测量方法未记录）",
         "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): penile length 9 cm, circumference 8 cm, both testes 5–6 mL (the measuring method is not recorded)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "一下体",
+          "面部",
+          "面色",
+          "面容",
+          "体温",
+          "体重",
+          "体格",
+          "身高",
+          "肚子",
+          "腹部",
+          "心肺",
+          "听",
+          "血压",
+          "脖子",
+          "颈部",
+          "视野",
+          "皮肤",
+          "背上",
+          "后背",
+          "背部"
+        ],
+        "en": []
       }
     }
   ],
@@ -1473,7 +1674,10 @@
           "GnRH激发试验",
           "激发试验",
           "LH和FSH",
-          "性腺轴"
+          "性腺轴",
+          "LH、FSH",
+          "LH/FSH",
+          "LH、FSH测定"
         ],
         "en": [
           "testosterone",
@@ -1928,7 +2132,7 @@
       "id": "adrenal-testis-imaging",
       "name": {
         "zh-CN": "肾上腺、睾丸等影像报告",
-        "en": "Adrenal and testicular imaging report"
+        "en": "Adrenal, testicular and other imaging report"
       },
       "category": "imaging",
       "aliases": {
@@ -1949,7 +2153,11 @@
           "testicular ultrasound",
           "scrotal ultrasound",
           "testis ultrasound",
-          "adrenal scan"
+          "adrenal scan",
+          "ultrasound of his testes",
+          "ultrasound of the testes",
+          "testes ultrasound",
+          "ultrasound of his testicles"
         ]
       },
       "requires": [
@@ -2220,7 +2428,11 @@
           "颅脑MRI",
           "脑部核磁",
           "松果体",
-          "鞍上区"
+          "鞍上区",
+          "头颅核磁",
+          "头部核磁",
+          "脑核磁",
+          "脑MRI"
         ],
         "en": [
           "brain mri",
@@ -2228,7 +2440,10 @@
           "mri brain",
           "mri head",
           "pineal",
-          "suprasellar"
+          "suprasellar",
+          "mri of his brain",
+          "mri of the brain",
+          "brain scan"
         ]
       },
       "requires": [
@@ -2491,7 +2706,11 @@
           "纵隔CT",
           "胸部磁共振",
           "胸部MRI",
-          "肺部CT"
+          "肺部CT",
+          "胸部增强CT",
+          "纵隔增强CT",
+          "看纵隔",
+          "纵隔影像"
         ],
         "en": [
           "chest ct",
@@ -2504,7 +2723,11 @@
           "chest mri",
           "mediastinum",
           "ct thorax",
-          "x-ray of the chest"
+          "x-ray of the chest",
+          "ct of the chest",
+          "ct scan of the chest",
+          "ct scan of his chest",
+          "contrast ct of the chest"
         ]
       },
       "requires": [
@@ -2996,7 +3219,8 @@
           "超声心动图",
           "气管受压",
           "评估气道",
-          "麻醉医生评估"
+          "麻醉医生评估",
+          "心脏彩超"
         ],
         "en": [
           "anaesthetic assessment",
@@ -3034,8 +3258,8 @@
         ]
       },
       "response": {
-        "zh-CN": "已请麻醉科评估并安排相应检查。报告没有记录他有无气道或循环受压的症状、气道测量、心脏超声或麻醉经过，这些结果在本病例中都不存在。",
-        "en": "Anaesthesia review and the tests are requested. The report does not record whether he had symptoms of airway or circulatory compression, nor any airway measurement, echocardiogram or anaesthetic course; none of these results exists in this case."
+        "zh-CN": "已请麻醉科评估并安排相应检查。报告没有记录他有无气道或循环受压的症状、气道测量、心脏超声或麻醉经过，因此没有这些结果可供调阅。",
+        "en": "Anaesthesia review and the tests are requested. The report does not record whether he had symptoms of airway or circulatory compression, nor any airway measurement, echocardiogram or anaesthetic course, so no such result can be shown."
       }
     },
     {
@@ -3063,7 +3287,11 @@
           "surgery for the mass",
           "thoracic surgery",
           "thoracotomy",
-          "sternotomy"
+          "sternotomy",
+          "remove the tumour",
+          "remove the tumor",
+          "excise the mass",
+          "take him to theatre"
         ]
       },
       "requires": [
@@ -3511,8 +3739,8 @@
         "en": "First tests"
       },
       "hint": {
-        "zh-CN": "哪些检查能告诉你垂体驱动有没有启动？现在就开始治疗，会对这些检查有什么影响？",
-        "en": "Which tests tell you whether the pituitary drive is switched on — and what would starting treatment now do to them?"
+        "zh-CN": "哪些检查能告诉你垂体驱动有没有启动？他的查体已经提示了什么？",
+        "en": "Which tests tell you whether the pituitary drive is switched on, and what does his examination already suggest?"
       },
       "guidance": {
         "zh-CN": "在决策板上作答。",
@@ -3538,8 +3766,8 @@
         "en": "Results"
       },
       "hint": {
-        "zh-CN": "LH对GnRH的反应说明了什么？一个遗传学结果能不能解释你看到的全部表现？",
-        "en": "What does the LH response to GnRH tell you? Can one genetic result explain everything you see?"
+        "zh-CN": "LH对GnRH的反应说明了什么？染色体核型又补充了什么？",
+        "en": "What does the LH response to GnRH tell you, and what does the karyotype add?"
       },
       "guidance": {
         "zh-CN": "报告在病历终端调阅。",
@@ -3983,7 +4211,7 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。NCI PDQ（2024）：儿童颅外生殖细胞肿瘤治疗后可每月查AFP和β-hCG共6个月，再每3个月一次至满2年，并做原发部位影像和每年胸片；畸胎瘤术后虽没有统一方案，所有儿童都要在3年内频繁复查肿瘤标志物。雄激素来源去除后，骨龄已超前的男孩可能出现继发中枢性性早熟，要用LH证实后再处理。EAA指南（2021）：向患者和父母提供遗传咨询；青春期前儿童如有需要给予言语治疗、学习监测、社交训练和心理支持；不对青春期前男孩用睾酮。",
+            "zh-CN": "正确。NCI PDQ（2024）：儿童颅外生殖细胞肿瘤治疗后可每月查AFP和β-hCG共6个月，再每3个月一次至满2年，并做原发部位影像和每年胸片；畸胎瘤术后虽没有统一方案，所有儿童都会在3年内频繁复查肿瘤标志物。雄激素来源去除后，骨龄已超前的男孩可能出现继发中枢性性早熟，要用LH证实后再处理。EAA指南（2021）：向患者和父母提供遗传咨询；青春期前儿童如有需要给予言语治疗、学习监测、社交训练和心理支持；不对青春期前男孩用睾酮。",
             "en": "Right. NCI PDQ (2024): after treatment of childhood extracranial germ-cell tumours, AFP and β-hCG may be checked monthly for 6 months and then every 3 months to 2 years, with imaging of the primary site and an annual chest X-ray; after a teratoma there is no standard schedule, but markers are measured frequently for 3 years in all children. Once the androgen source is removed, a boy whose bone age has advanced can enter central puberty, which is shown by LH before it is treated. EAA guideline (2021): offer genetic counselling to patients and parents; speech therapy, monitoring of learning, social training and psychological support for pre-pubertal children if needed; no testosterone in pre-pubertal boys."
           }
         },
@@ -3995,7 +4223,7 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。一次β-hCG正常不等于治愈：NCI PDQ（2024）指出，畸胎瘤术后所有儿童都要在3年内频繁复查肿瘤标志物，而且以成熟或未成熟成分为主的畸胎瘤中可能藏有少量恶性成分，需要依据完整的病理决定后续处理。Klinefelter综合征需要从儿童期开始的持续照护（EAA指南2021）。",
+            "zh-CN": "不对。一次β-hCG正常不等于治愈：NCI PDQ（2024）指出，畸胎瘤术后所有儿童都会在3年内频繁复查肿瘤标志物，而且以成熟或未成熟成分为主的畸胎瘤中可能藏有少量恶性成分，需要依据完整的病理决定后续处理。Klinefelter综合征需要从儿童期开始的持续照护（EAA指南2021）。",
             "en": "No. One normal β-hCG is not a cure: NCI PDQ (2024) has tumour markers measured frequently for 3 years in all children after a teratoma, and malignant elements may form a small fraction of a predominantly mature or immature teratoma, so the full histology decides what comes next. Klinefelter syndrome needs care from childhood on (EAA guideline 2021)."
           }
         },
@@ -4337,8 +4565,8 @@
         "en": "Explained the findings to the boy and his parent in stages, protected his privacy and checked understanding by teach-back"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评判。开始时询问家长和孩子的担忧（家长：“他才8岁，怎么就这样了？我就怕是什么不好的病。”），用通俗的话解释每一步要做什么、为什么做。检查外生殖器前解释、征得家长和孩子同意、有陪检人员在场、保护隐私（AAP 2025年陪检政策声明的摘要：是否陪检、由谁陪检，由患儿、家长和医生共同决定）。核型和胸部结果出来后，用SPIKES分阶段告知：先了解家长已知道什么，坏消息前给出预告（例如“片子上胸腔里有一个肿物，很可能就是它在产生激素”），说明Klinefelter综合征现在和将来意味着什么（学习、青春期、生育），不要一次说太多；解释为什么麻醉前要先评估气道，以及手术的目的；不承诺“治好”。考虑到他与同学交流有困难，用适合他的方式让孩子本人参与。最后用回授法请家长复述计划。原报告没有记录与家属的沟通。",
-        "en": "Judge with Calgary–Cambridge. Start by asking the parent and the boy what worries them (the parent: \"He's only eight — why is this happening? I'm afraid it's something bad.\") and explain each step and its reason in plain words. Before the genital examination explain it, gain the parent's consent and the boy's agreement, have a chaperone and protect his privacy (the abstract of the AAP's 2025 chaperone policy statement: whether a chaperone is used, and who, is decided jointly by patient, parent and clinician). When the karyotype and chest results are known, give the news in stages with SPIKES: find out what the parent knows, warn before bad news (\"the scan shows a lump in the chest that is probably making the hormone\"), explain what Klinefelter syndrome means now and later (learning, puberty, fertility) without overloading, explain why the airway is checked before any anaesthetic and what the operation is for, and promise no cure. Involve the boy at his own level, given his difficulty communicating with classmates. Close with teach-back of the plan. The report records no conversation with the family."
+        "zh-CN": "按Calgary–Cambridge评判。开始时询问家长和孩子的担忧（家长：“他才8岁，怎么就这样了？我就怕是什么不好的病。”），用通俗的话解释每一步要做什么、为什么做。检查外生殖器前解释、征得家长和孩子同意、有陪检人员在场、保护隐私（AAP 2025年陪检政策声明的摘要：是否陪检、由谁陪检，由患儿、家长和医生共同决定）。核型和胸部结果出来后，用SPIKES分阶段告知：先了解家长已知道什么，坏消息前先给出预告（例如“片子上发现了一些情况，需要和您谈一谈”），再直接说明（“胸腔里有一个肿物，很可能就是它在产生激素”），说明Klinefelter综合征现在和将来意味着什么（学习、青春期、生育），不要一次说太多；解释为什么麻醉前要先评估气道，以及手术的目的；不承诺“治好”。考虑到他与同学交流有困难，用适合他的方式让孩子本人参与。最后用回授法请家长复述计划。原报告没有记录与家属的沟通。",
+        "en": "Judge with Calgary–Cambridge. Start by asking the parent and the boy what worries them (the parent: \"He's only eight — why is this happening? I'm afraid it's something bad.\") and explain each step and its reason in plain words. Before the genital examination explain it, gain the parent's consent and the boy's agreement, have a chaperone and protect his privacy (the abstract of the AAP's 2025 chaperone policy statement: whether a chaperone is used, and who, is decided jointly by patient, parent and clinician). When the karyotype and chest results are known, give the news in stages with SPIKES: find out what the parent knows, warn before bad news (\"I'm afraid the scan has shown something we need to talk about\"), then say it plainly (\"there is a lump in his chest that is probably making the hormone\"), explain what Klinefelter syndrome means now and later (learning, puberty, fertility) without overloading, explain why the airway is checked before any anaesthetic and what the operation is for, and promise no cure. Involve the boy at his own level, given his difficulty communicating with classmates. Close with teach-back of the plan. The report records no conversation with the family."
       }
     }
   ],
@@ -4473,8 +4701,8 @@
         "en": "An anterior mediastinal mass is first an anaesthetic hazard. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): before anaesthesia ask about airway compression (cough, dyspnoea, stridor, hoarseness, orthopnoea) and cardiovascular compression (syncope, tachycardia, distended neck veins, superior vena cava syndrome); assess compression of the airway, great vessels and heart on chest CT; add a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion; collapse can occur on induction even without symptoms; avoid general anaesthesia where possible and keep spontaneous ventilation if needed; hold a multidisciplinary huddle. The report records none of his symptoms, airway assessment or anaesthetic course."
       },
       {
-        "zh-CN": "畸胎瘤的治疗和随访。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：畸胎瘤的主要治疗是完整手术切除；包括纵隔在内的成熟畸胎瘤以手术加观察治疗，未成熟畸胎瘤也主要以手术加观察处理；良性和未成熟畸胎瘤可有AFP和β-hCG的小幅升高，以成熟或未成熟成分为主的畸胎瘤中可能有少量恶性成分；所有儿童术后3年内都要频繁复查肿瘤标志物。报告的一年随访——β-hCG 0.7 IU/L，胸片未见异常，因这些结果未复查MRI——没有记录病理分级和是否完整切除，这正是需要继续监测的原因。",
-        "en": "Treating and following a teratoma. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the primary treatment of teratomas is complete resection; mature teratomas, including those of the mediastinum, are treated with surgery and observation, and immature teratomas primarily with surgery and observation; benign and immature teratomas may produce small elevations of AFP and β-hCG, and malignant elements may form a small fraction of a predominantly mature or immature teratoma; markers are measured frequently for 3 years in all children. The report's one-year review — β-hCG 0.7 IU/L, a chest radiograph with no abnormality, the MRI not repeated because of these results — leaves the grade and the completeness of resection unrecorded, which is why monitoring must continue."
+        "zh-CN": "畸胎瘤的治疗和随访。NCI PDQ《儿童颅外生殖细胞肿瘤治疗》（2024）：畸胎瘤的主要治疗是完整手术切除；包括纵隔在内的成熟畸胎瘤以手术加观察治疗，未成熟畸胎瘤也主要以手术加观察处理；良性和未成熟畸胎瘤可有AFP和β-hCG的小幅升高，以成熟或未成熟成分为主的畸胎瘤中可能有少量恶性成分；所有儿童术后3年内都会频繁复查肿瘤标志物。报告的一年随访——男性化减慢，睾酮8.49 nmol/L，β-hCG 0.7 IU/L，胸片未见异常，因这些结果未复查MRI——既没有记录病理分级，也没有记录是否完整切除；这两点都不清楚时，监测必须继续。",
+        "en": "Treating and following a teratoma. NCI PDQ, Childhood Extracranial Germ Cell Tumors Treatment (2024): the primary treatment of teratomas is complete resection; mature teratomas, including those of the mediastinum, are treated with surgery and observation, and immature teratomas primarily with surgery and observation; benign and immature teratomas may produce small elevations of AFP and β-hCG, and malignant elements may form a small fraction of a predominantly mature or immature teratoma; markers are measured frequently for 3 years in all children. The report's one-year review — virilisation slowed, testosterone 8.49 nmol/L, β-hCG 0.7 IU/L, a chest radiograph with no abnormality, and the MRI not repeated because of these results — records neither the grade nor whether the resection was complete; with both unknown, surveillance must continue."
       },
       {
         "zh-CN": "Klinefelter综合征的儿童期照护和检查时的隐私。EAA指南（2021）：向患者和父母提供遗传咨询；青春期前儿童如有需要给予言语治疗、学习监测、社交训练和心理支持；不对婴儿和青春期前男孩用睾酮；从预计青春期开始之前起评估青春期发育、睾酮和促性腺激素；青春期延迟或性腺功能减退时、讨论生育问题后再用睾酮。AAP 2025年陪检政策声明（摘要）：敏感部位检查是否陪检、由谁陪检，由患儿、家长和医生共同决定。他在一年随访时睾酮8.49 nmol/L，需要查LH和肿瘤标志物来判断是已进入中枢性青春期，还是仍有来源。",
@@ -4529,6 +4757,10 @@
     {
       "type": "ask",
       "itemId": "presenting"
+    },
+    {
+      "type": "ask",
+      "itemId": "identity"
     },
     {
       "type": "ask",
@@ -5247,6 +5479,128 @@
       {
         "text": "Has he started to smell like an adult?",
         "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Why have you come to see us today?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "How old is he now?",
+        "locale": "en",
+        "expect": [
+          "identity"
+        ]
+      },
+      {
+        "text": "What's his name?",
+        "locale": "en",
+        "expect": [
+          "identity"
+        ]
+      },
+      {
+        "text": "Does he have trouble making friends?",
+        "locale": "en",
+        "expect": [
+          "school"
+        ]
+      },
+      {
+        "text": "Any trouble with his breathing at night?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "Does he react badly to any medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any pain in his balls?",
+        "locale": "en",
+        "expect": [
+          "testicular"
+        ]
+      },
+      {
+        "text": "Tell me about his early years",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Is he the oldest child?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Has he been more moody lately?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "他几岁了？",
+        "locale": "zh-CN",
+        "expect": [
+          "identity"
+        ]
+      },
+      {
+        "text": "孩子叫什么名字？",
+        "locale": "zh-CN",
+        "expect": [
+          "identity"
+        ]
+      },
+      {
+        "text": "他胖了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "怀孕和生产过程顺利吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "他爸爸几岁变声的？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-puberty"
+        ]
+      },
+      {
+        "text": "他以前身体好吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "蛋蛋疼不疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "testicular"
+        ]
+      },
+      {
+        "text": "脾气有没有变化？",
+        "locale": "zh-CN",
         "expect": []
       }
     ]

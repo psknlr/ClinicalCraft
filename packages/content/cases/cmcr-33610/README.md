@@ -22,9 +22,9 @@ unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five phases, no simulated time) |
 | languages | `zh-CN` (source language; the report is in Chinese), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and two independent review rounds (rounds 1 and 2, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and three independent review rounds (rounds 1–3, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
 | phases | `admission` 入院：病史与查体 / Admission: history and examination → `workup` 第一批检查结果 / The first results → `search` 继续查找来源 / Looking further for the source → `theatre` 手术与病理 / Operation and histology → `followup` 报告记录的随访结局 / The reported follow-up — all one-way, none learner-switchable |
-| content | 20 history items (8 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 69 test utterances |
+| content | 21 history items (9 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 87 test utterances |
 
 ## Learning outcomes
 
@@ -96,6 +96,8 @@ evolves with time. Phases advance by themselves when their condition holds; none
 Records of the first work-up stay readable in later phases (dated "At the first work-up (earlier record)"). Before its
 phase, the β-hCG/AFP and chest-imaging orders return "No result for this test is recorded at this stage."; in `theatre`
 they show the search-phase result again (dated "Earlier record"); the work-up records cannot be retrieved before the `workup` phase ("does not exist yet").
+A β-hCG/AFP or chest-imaging order placed before decision 3 returns that placeholder; it has to be placed again in
+`search` to give the result, and that order counts for `rb-tumour-search` (replayed in review round 3: 32/32).
 
 ## Decisions and assessment
 
@@ -128,8 +130,8 @@ No objective holds a condition that can become permanently false (no phase leaf,
    `lab-error` (stop and repeat), `cah-hydrocortisone`.
 3. **`source-search` (workup) — 47,XXY with peripheral precocity.** Key `hcg-tumour-search`: Klinefelter syndrome causes
    hypogonadism, not precocity; two enlarged testes with no adrenal or testicular lesion suggest an hCG-like stimulus;
-   β-hCG and AFP, chest (mediastinal) imaging first, and brain imaging covering the pineal and suprasellar regions (EAA
-   2021; NCI PDQ 2024). Distractors: `ks-explains-discharge` (premature closure), `fmpp-block` (anti-androgen and
+   β-hCG and AFP, chest (mediastinal) imaging first (EAA 2021; NCI PDQ 2024), and brain imaging covering the pineal and
+   suprasellar regions. Distractors: `ks-explains-discharge` (premature closure), `fmpp-block` (anti-androgen and
    aromatase inhibitor for presumed testotoxicosis), `testis-biopsy`.
 4. **`mass-plan` (search) — an anterosuperior mediastinal mass with β-hCG 16.0 IU/L.** Key `assess-then-resect`:
    multidisciplinary team; airway and circulation assessment before any sedation or anaesthetic; plan the anaesthetic
@@ -216,7 +218,7 @@ opioids, thrombolytics — and the drug traps stand for a class or a protocol wi
 
 ## Reference path (`solution`)
 
-56 steps, static clock: start → all 20 history items (presentation, growth, other changes, which came first,
+57 steps, static clock: start → all 21 history items (presentation, name and age, growth, other changes, which came first,
 development, school, birth, operations, family, family puberty, outside hormones, medicines, allergies, other illnesses,
 vaccinations, headache/vision/thirst, breathing, testicles, abdomen, the parent's worry) → growth/skin/hair examination →
 **chaperone and consent** → genital examination → `first-line` → (phase `workup`) testosterone/GnRH record, bone age →
@@ -224,7 +226,7 @@ vaccinations, headache/vision/thirst, breathing, testicles, abdomen, the parent'
 counselling, learning support → `source-search` → (phase `search`) **β-hCG/AFP**, **chest imaging** → MDT referral →
 **airway assessment** → `mass-plan` → (phase `theatre`, in the operating room) **operation** (back to the ward) →
 operation and histology record → follow-up plan → `aftercare` → (phase `followup`) follow-up record → finish.
-`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 69/69, safety passed.
+`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 87/87, safety passed.
 
 ## Clinical numbers check
 
@@ -325,7 +327,8 @@ slowed virilisation, testosterone 8.49 nmol/L, β-hCG 0.7 IU/L, an unremarkable 
 because of these results, and the report's call for vigilance about residual disease; AFP values in the source whose
 units looked wrong (not carried over); the weight of 30 kg on 1.0.0's patient card.
 
-**Extraction summary (1.0.0 → 1.1.0).** Presenting complaint, opening line and chief complaint → `presenting`; growth
+**Extraction summary (1.0.0 → 1.1.0).** Presenting complaint, opening line and chief complaint → `presenting`; age
+(100 months) with the case's pseudonym → `identity` (added in review round 3); growth
 and weight gain → `growth`; acne/laryngeal prominence/erections/no emissions → `puberty-signs`; early development →
 `development`; learning and peers → `school`; birth → `birth`; hernia → `surgery`; parents and brother → `family`;
 1.0.0's eight unknown slots (allergies, regular medicines, prior health, vaccinations, exposure, baseline function,
@@ -347,8 +350,8 @@ bad.", `persona.concerns` and the `expectations` item), which adds no clinical f
 staff; the five decisions, their options and feedback; the 11 interventions (their responses say what the report does or
 does not record); the rubric; the orderable tests without a recorded result (adrenal androgens, thyroid function, brain
 MRI). Unknown history items answer with the lay unknown ("这个我说不上来，医生。" / "I'm not sure, doctor."); for a parent
-asked about breathing or headaches this is an artefact of the record, not a persona trait — say so if learners remark
-on it.
+asked about breathing or headaches, or whether they are his mother or father, this is an artefact of the record, not a
+persona trait — say so if learners remark on it.
 
 **Contradictions kept (1.0.0's two languages differ; the Chinese reading is used in both, the English noted).**
 (1) "从小" growth/development lag vs "from infancy"; (2) "弟弟" (younger brother) vs "brother"; (3) acne "面胸背" (face,
@@ -402,7 +405,22 @@ already-completed reviews with generic names ("Subsequent chest and tumour evide
   sedation/anaesthesia for a procedure. History: "Which happened first…" / 先是…还是先… reach `sequence`, the father's
   puberty ("…his dad…", 他爸爸小时候…) reaches `family-puberty`, "late walker" reaches `development`, 怎么发现的 the
   presenting complaint and 他现在多重 the growth item; "Examine his abdomen" no longer returns the growth/skin/hair finding.
-- 69 test utterances (35 zh-CN, 34 en; 7 negatives), one at least for every required item; `cases verify` 69/69.
+- Review round 3: Chinese examination requests built on 一下 ("量一下体温", "测一下体重", "检查一下体格", "看一下面部")
+  and a sentence-initial 下面 ("next": "下面检查一下身高") contained the genital keywords 下体/下面 and performed the
+  genital examination, which also closed the chaperone act's window; the genital examination now takes 下面 only in
+  forms that mean the genitals (他下面, 的下面, 看下面, 一下下面…) and excludes temperature, weight, build, height,
+  face, skin, back, abdomen, heart-and-lung, blood-pressure, neck and visual-field words, and the growth/skin/hair
+  examination takes "下面检查一下身高". A name-and-age item (`identity`) answers "How old is he?", "What's his name?",
+  他几岁了, 孩子叫什么名字 (the parent had said "I'm not sure, doctor."); other phrasings fixed: "Why have you come to
+  see us today?", "Does he have trouble making friends?", "Any trouble with his breathing at night?" and "Has anything
+  like this happened in the family?" (they had tied with the presenting complaint), "Does he react badly to any
+  medicines?" (allergies), "Any pain in his balls?", "Tell me about his early years", "Is he the oldest child?", "Does
+  he struggle with reading and writing?", "Does his willy get hard?", 他胖了吗, 怀孕和生产过程顺利吗, 他爸爸几岁变声的,
+  他以前身体好吗, 蛋蛋疼不疼; examinations "Look at his face for spots", "Have a look down below", 看看他腋下有没有毛,
+  看一下他的背; orders "MRI of his brain", "Ultrasound of his testes", "CT of the chest with contrast", 查LH、FSH,
+  头颅核磁, 增强CT看纵隔; interventions "Remove the tumour" (had reached the MDT referral), "Take him to theatre",
+  心脏彩超.
+- 87 test utterances (43 zh-CN, 44 en; 9 negatives), one at least for every required item; `cases verify` 87/87.
 
 ## References
 
@@ -495,7 +513,8 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   chest imaging); theatre (operation and histology); the reported follow-up. The two languages' differences are kept
   (Chinese wording in both) and listed under "To verify".
 - **History.** 15 template slots (8 answering "The source case does not provide that information") → 20 items in the
-  parent's lay voice: 8 recorded facts, 11 honest unknowns ("I'm not sure, doctor."), 1 labelled ICE device; 7 required;
+  parent's lay voice: 9 recorded facts (the name-and-age item added in review round 3), 11 honest unknowns ("I'm not sure,
+  doctor."), 1 labelled ICE device; 7 required;
   the presenting complaint answers the plain openers in both languages.
 - **Decisions.** 3 template decisions (3 options, role ids `yes`) → 5 decisions at the real decision points (first
   tests; reading the axis; the karyotype trap; the mass and the anaesthetic; follow-up), 4 options each, content ids,
@@ -547,6 +566,21 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   "long androgen exposure" lost "long" (not in 1.0.0); the rubric table names the AAP abstract; the 中文摘要's learning
   outcomes keep "assay-specific" and "no testosterone before puberty". Matcher: eight history phrasings and three
   examination requests that reached the wrong item or none (see Matcher notes); eight utterances added (69).
+- **Review round 3 (2026-11-14), independent reviewer.** Facts: the teaching point on teratoma follow-up gave the reason
+  the MRI was not repeated as "these results" after listing only the β-hCG of 0.7 IU/L and the clear chest radiograph —
+  the class round 1 had corrected in this README; 1.0.0's reason is all four one-year results (slowed virilisation,
+  testosterone 8.49 nmol/L, β-hCG 0.7 IU/L, chest radiograph without abnormality), now listed in both languages, and the
+  sentence no longer presents the unrecorded grade as the reason for surveillance. Assessment: common Chinese
+  examination requests ("量一下体温", "检查一下体格", "看一下面部", "下面检查一下身高") performed the genital examination and
+  closed the chaperone act's window — fixed in the keywords; a name-and-age item answers "How old is he?" (the parent
+  had said "I'm not sure, doctor."); 28 further history, examination, order and intervention phrasings fixed (Matcher
+  notes; 18 utterances added, 87). Guidance: NCI PDQ (live page, last updated 2024-11-05) and EAA 2021 (self-archived
+  full text) re-read for every attributed passage and found as cited; the AAP 2025 full text is still unreachable. Words:
+  the Chinese of NCI PDQ's three-year marker sentence is descriptive (都会) like the source; two objective hints no
+  longer cue a key ("what would starting treatment now do…", "can one genetic result explain everything…"); the
+  SPIKES example now warns before the news; the airway assessment's response no longer speaks of "this case"; the
+  adrenal/testicular record's English name keeps 1.0.0's "other" (等); decision 3's guidance attribution covers the
+  mediastinal point only; the timeline says an early β-hCG or chest-imaging order is placed again in `search`.
 
 ### 1.0.0 — 2026-10-28
 
@@ -558,14 +592,14 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-33610/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 56 steps · objectives 6/6 · decisions 5/5 · utterances 69/69 · rubric 32/32 (100 %)
+npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 57 steps · objectives 6/6 · decisions 5/5 · utterances 87/87 · rubric 32/32 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33610                                       # depth floor, openers, do-nothing 0/30, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33610:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33610:"  # in-world demonstration, en + zh-CN
 npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-33610"                  # every act possible in the general hospital (KIT §3.19)
 ```
 
-Measured on 2026-11-14 after review round 2: all six pass.
+Measured on 2026-11-14 after review round 3: all six pass.
 
 ## 中文摘要
 
@@ -613,4 +647,4 @@ Measured on 2026-11-14 after review round 2: all six pass.
 `critical: true`，
 任一发生时无论得分多少，安全结果都判为不通过（`safety.passed: false`）；`chemo-now`、`gnrha`和`discharge-now`标为`critical: false`，
 属于可被纠正的判断失误。本病例经人工智能辅助编辑审核，并于2026-11-14完成第一轮独立复审（修正了一处改变事实的随访表述、气道评估与镇静的
-评分窗口和若干匹配问题；AAP 2025仅核对了摘要），同日完成第二轮独立复审（改正了一处把非指南内容归于ESPE/LWPES共识的表述、把“全麻下做CT”记作气道评估和把外科会诊记作手术的匹配错误，以及记录和措辞上的若干问题）；尚未经执业医师审核；待核实事项见上文“To verify”。
+评分窗口和若干匹配问题；AAP 2025仅核对了摘要），同日完成第二轮独立复审（改正了一处把非指南内容归于ESPE/LWPES共识的表述、把“全麻下做CT”记作气道评估和把外科会诊记作手术的匹配错误，以及记录和措辞上的若干问题），同日完成第三轮独立复审（改正了复盘要点中把未复查MRI的原因缩窄为β-hCG和胸片的表述——报告的原因是一年随访的四项结果；修正了“量一下体温”“检查一下体格”等中文说法被当作外生殖器检查的匹配错误，增加了姓名和年龄条目，并修正了若干问法和措辞）；尚未经执业医师审核；待核实事项见上文“To verify”。

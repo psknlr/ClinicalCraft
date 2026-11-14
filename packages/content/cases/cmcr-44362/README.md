@@ -14,7 +14,7 @@
 | The patient | Chen Qinghe (pseudonym), a 9-year-old boy weighing 19.5 kg, admitted with a relative whose relationship to him is not recorded; swelling of several limb joints, first noticed three years ago and worse every year |
 | What the learner can do | Take the history from the relative (the boy answers questions put to him), examine digits, large joints, heart and neck veins; check for tamponade at the bedside; order echocardiography, ECG, chest X-ray, troponin and NT-proBNP, other blood tests, a cardiac MRI, a pelvic radiograph, a urine glycosaminoglycan screen, a knee aspiration and a gene test; read the chart's records at a terminal; call cardiology, rehabilitation, clinical genetics and orthopaedics; talk with the family; answer five decisions |
 | Languages | Simplified Chinese and English (same facts, same teaching) |
-| Review status | Editorial review (AI-assisted) against the cited guidance, with independent review rounds 1, 2 and 3 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
+| Review status | Editorial review (AI-assisted) against the cited guidance, with independent review rounds 1, 2, 3 and 4 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
 
 ## Learning outcomes
 
@@ -76,9 +76,9 @@ has not opened.
 
 | Phase | Opens when | What exists in it |
 |---|---|---|
-| `admission` — Day of admission: history and examination | start | History (the relative; the boy for the pain question), examination of digits, large joints, heart and neck veins; bedside tamponade check; echocardiography, ECG, chest X-ray and troponin with NT-proBNP can be ordered (the echo result exists from this phase; the others have no recorded result); decision 1 |
-| `work-up` — Results on record | the history and examination objectives are complete **and** decision 1 is answered | Records of inflammatory markers, antibodies, liver and renal function with ferritin, and joint imaging (read at a records terminal; when those tests were done is not recorded); FBC, urine GAG screen, knee aspiration and cardiac MRI (no recorded result); an echo not yet requested can still be ordered (a step late); decisions 2 and 3 |
-| `diagnosis` — Diagnosis and long-term plan | objective 4 (records read, decisions 2 and 3 answered) | The team's diagnosis record; pelvic radiograph and gene test can be ordered (no recorded result); referrals and the family conversation; decisions 4 and 5 |
+| `admission` — Day of admission: history and examination | start | History (the relative; the boy for the pain question), examination of digits, large joints, heart and neck veins; bedside tamponade check; echocardiography, ECG, chest X-ray and troponin with NT-proBNP can be ordered, as can every other orderable test (the echo result exists from this phase; the others have no recorded result in any phase); decision 1 |
+| `work-up` — Results on record | the history and examination objectives are complete **and** decision 1 is answered | Records of inflammatory markers, antibodies, liver and renal function with ferritin, and joint imaging (read at a records terminal; when those tests were done is not recorded); FBC, urine GAG screen, knee aspiration and cardiac MRI (in the reference path here; no recorded result); an echo not yet requested can still be ordered (a step late); decisions 2 and 3 |
+| `diagnosis` — Diagnosis and long-term plan | objective 4 (records read, decisions 2 and 3 answered) | The team's diagnosis record; pelvic radiograph and gene test (in the reference path here; no recorded result); referrals and the family conversation; decisions 4 and 5 |
 | `outcome` — Reported treatment and follow-up | all five decisions answered **and** the plan objective (diagnosis record read, physiotherapy referral made) | The report's treatment and follow-up record, with the figure |
 
 The echocardiogram is staged as available from the day of admission because a learner who hears a rub should
@@ -107,8 +107,8 @@ any decision in either language (measured).
 
 | id | opens after | key | distractors (why they tempt) |
 |---|---|---|---|
-| `heart-today` | heart auscultated and neck veins examined (admission) | echocardiography and an ECG today, bedside tamponade checks now and repeated until the effusion is known, no anti-inflammatory or steroid yet (ESC 2025 initial assessment, class I; tamponade is a clinical diagnosis, Beck's triad may be absent with slow fluid) | NSAID and colchicine first with echo after a week (a rub "means pericarditis"); bedside pericardiocentesis today (fear of night-time tamponade); IV methylprednisolone as systemic-JIA serositis; outpatient echo in a few weeks (normal neck veins look reassuring) |
-| `effusion-plan` | echocardiogram read **and** the inflammatory-markers record read in work-up | no drainage; keep checking for tamponade; paediatric cardiology review, cardiac MRI (ESC 2025: recommended, I B, when suspected pericarditis cannot be confirmed on clinical criteria) and repeat echoes at set intervals while the cause is sought; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer (ESC 2025 §11.7.4–11.7.5, pericardiocentesis I C) | echo-guided drainage today; three months of NSAID plus colchicine; prednisolone with weekly echo; no cardiac follow-up because LV function is normal |
+| `heart-today` | heart auscultated and neck veins examined (admission) | echocardiography and an ECG today, bedside tamponade checks now and repeated regularly, no anti-inflammatory or steroid yet (ESC 2025 initial assessment, class I; tamponade is a clinical diagnosis, Beck's triad may be absent with slow fluid) | NSAID and colchicine first with echo after a week (a rub "means pericarditis"); bedside pericardiocentesis today (fear of night-time tamponade); IV methylprednisolone as systemic-JIA serositis; outpatient echo in a few weeks (undistended neck veins look reassuring) |
+| `effusion-plan` | echocardiogram read **and** the inflammatory-markers record read in work-up | no drainage; keep checking for tamponade; paediatric cardiology review, cardiac MRI (ESC 2025: recommended, I B, when suspected pericarditis cannot be confirmed on clinical criteria) and repeat echoes at set intervals while the cause is sought; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer (ESC 2025 §11.7.4–11.7.5, pericardiocentesis I C) | echo-guided drainage today; three months of NSAID plus colchicine; prednisolone with weekly echo; no cardiac follow-up because LV systolic function is normal |
 | `joint-pattern` | all four work-up records and the echocardiogram read | a non-inflammatory genetic arthropathy, CACP first; JIA only once that is excluded (ILAR 2004); pelvic radiograph and PRG4 test next (Offiah 2005; Albuhairan 2013) | RF-negative polyarticular JIA with methotrexate; systemic JIA with steroids and an IL-1/IL-6 inhibitor; "no active disease, no further tests" |
 | `genetics` | diagnosis record read (diagnosis phase) | autosomal recessive (Marcelino 1999): unrelated parents and no affected relatives do not contradict it; counselling and PRG4 testing, then the parents; 1 in 4 for each child when both carry a variant (ACMG/AMP 2015 classification) | de novo, no risk, no test; dominant with a 1 in 2 risk; X-linked via the mother; "the clinical label is enough" |
 | `joint-care` | diagnosis record read | no steroid, methotrexate or biologic; physiotherapy and occupational therapy; pelvic radiograph and orthopaedic follow-up of the hips; review shared with cardiology (Kisla Ekinci 2021; ACR 2026 JIA guidelines; Bahabri 1998) | treat-to-target polyarticular JIA (methotrexate, TNF inhibitor, joint injections); long-term oral prednisolone with calcium and vitamin D; "genetic, so nothing helps — no rehabilitation, no follow-up" |
@@ -175,7 +175,8 @@ medicine in many hospital lists, appears only as a wrong step without a dose.
 ## Reference path (`solution`)
 
 Start → ask all 22 history items (the relative answers; the boy answers the pain question; ten answers are
-"I'm not sure, doctor") → examine digits, large joints, heart and neck veins → bedside tamponade check → order and
+"I'm not sure, doctor" and the growth answer gives only the weight) → examine digits, large joints, heart and neck
+veins → bedside tamponade check → order and
 read the echocardiogram, ECG, chest X-ray and troponin with NT-proBNP (the last three have no recorded result) → decision 1
 (`echo-today-tamponade-check`) → *work-up*: order and read the inflammatory-markers, antibody, organ-function and
 joint-imaging records, FBC and urine GAG screen (no recorded result) → cardiac MRI (no recorded result) → cardiology
@@ -200,7 +201,7 @@ intervention is given while contraindicated, and no safety-critical gate is left
 | JIA: onset before the 16th birthday, ≥ 6 weeks; systemic arthritis: fever ≥ 2 weeks, daily for ≥ 3 days; polyarthritis: ≥ 5 joints in the first 6 months | ILAR (Petty 2004) | Decision 3 and decision 1 feedback |
 | Recurrence 1 in 4 per child when both parents carry a variant | Autosomal recessive inheritance (Marcelino 1999) | Decision 4 |
 | PRG4 on chromosome 1 (1q31.1) | NCBI Gene (PRG4, Gene ID 10216); Bahabri 1998 mapped the locus to 1q25–31 | Decision 4, X-linked distractor feedback |
-| Children on long-term oral glucocorticoids: growth (height and weight) checked at least twice a year, bone health at least once a year (strong); oral glucocorticoids as an adjunct to initial therapy for polyarthritis conditionally recommended against | ACR 2026 JIA guidelines (summary posted 13 May 2026) | Prednisolone harm text, decision 5 feedback |
+| People with JIA on chronic oral or intravenous glucocorticoids: growth (height and weight) checked at least twice a year, bone health at least once a year (strong); oral glucocorticoids as an adjunct to initial therapy for polyarthritis conditionally recommended against | ACR 2026 JIA guidelines (summary posted 13 May 2026) | Prednisolone harm text, decision 5 feedback |
 
 No drug dose is stated anywhere in the case: the report records none and the wrong steps are named without doses.
 
@@ -213,7 +214,7 @@ No drug dose is stated anywhere in the case: the report records none and the wro
 - **Analysis.**
   - What does a pericardial rub mean, and what more does ESC 2025 need for a definite pericarditis (a clinical
     presentation with more than one additional criterion)? Which of those does this boy have recorded?
-  - Normal neck veins: why do they not exclude tamponade (slow "medical" tamponade, Beck's triad absent, the
+  - Neck veins that are not distended: why do they not exclude tamponade (slow "medical" tamponade, Beck's triad absent, the
     last-drop phenomenon), and what else did you check?
   - Painless swelling, camptodactyly sparing thumbs and great toes, negative ESR/CRP/RF/autoantibodies and an
     effusion: what single cause explains all of them? Why is JIA a diagnosis of exclusion under ILAR?
@@ -230,9 +231,9 @@ No drug dose is stated anywhere in the case: the report records none and the wro
 | Error | How the case surfaces it |
 |---|---|
 | Treating the joints first and leaving the heart for later (outpatient echo) | Decision 1 distractor `outpatient-echo`; an echo ordered in work-up misses the critical `rb-echo-admission` |
-| Taking normal neck veins as "no tamponade" | Decision 1 feedback; the critical `rb-tamponade-check` needs the bedside check on admission |
+| Taking undistended neck veins as "no tamponade" | Decision 1 feedback; the critical `rb-tamponade-check` needs the bedside check on admission |
 | Reading the rub as acute pericarditis and starting an NSAID (or aspirin) with colchicine | Decision 1 and 2 distractors; the intervention's harm text (ESC 2025 Table 4 and §11.7.4; §12.2.2 for aspirin in children) and `rb-no-immunosuppression` |
-| Draining a moderate effusion "before it tamponades", or reading normal left ventricular function as "no tamponade" | Decision 2 distractor and its feedback (ESC 2025 Table 17: the echocardiographic signs of tamponade); pericardiocentesis is `critical: true` and fails the safety outcome |
+| Draining a moderate effusion "before it tamponades", or reading normal left ventricular systolic function as "no tamponade" | Decision 2 distractor and its feedback (ESC 2025 Table 17: the echocardiographic signs of tamponade); pericardiocentesis is `critical: true` and fails the safety outcome |
 | Calling it RF-negative polyarticular JIA and starting methotrexate | Decision 3 and 5 distractors; methotrexate's harm text (ILAR 2004, ACR 2026) |
 | Explaining camptodactyly away as old arthritic contractures | Decision 3 distractor and key reasoning |
 | Reassuring the family that unrelated parents mean no risk | Decision 4 distractors (de novo, dominant, X-linked, "label is enough") |
@@ -333,7 +334,7 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
   ("髋关节片", "髋关节X线") from also ordering the joint-imaging record ("关节片", "关节X线") unless another joint is named;
   `prednisolone` has excludeKeywords so that a joint injection ("关节腔注射激素", "steroid injection into the knees")
   reaches the intra-articular item, and `digits` excludes wrists, ankles, elbows and knees.
-- `extensions.testUtterances`: 64 paraphrases (32 zh-CN, 32 en; three look-alike negatives), at least one for every
+- `extensions.testUtterances`: 76 paraphrases (36 zh-CN, 40 en; three look-alike negatives), at least one for every
   required item; all pass with no unexpected match (`cases verify`). Review round 1 also probed about 60 fresh history
   phrasings, 15 examination requests, 24 orders and 28 interventions (including negated orders) in both languages.
 - Review round 2 probed 72 further history phrasings, 19 examination requests, 34 orders and 39 interventions
@@ -359,6 +360,21 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
   髋关节X光 or "x-ray both hips" and 抽膝关节积液 ordered nothing. Two compound English questions stay ambiguous by
   design: "Did the swelling stop him walking at first?" (presentation first, early movement second) and "Has he ever
   hurt his joints?" (pain first: "hurt" is pain or injury).
+- Review round 4 probed 63 further history phrasings, 22 examination requests, 37 orders and 65 interventions in both
+  languages (`work-cmcr-44362/r4-probe.ts`, `r4-probe2.ts`) and fixed what they found: the plain openers "Could you tell
+  me why Qinghe is here?" and "What's been bothering him?" reached nothing, "Does it get worse each year?" nothing and
+  "Is it only his knees, or other joints as well?" consanguinity (now presentation keywords, run-together where the
+  words are stop words: "whyqingheishere", "bother", "worse each year", "other joints"; 这次来 for 孩子这次来是什么情况);
+  "a long cough or TB" reached the presenting complaint through "how long" (now `excludeKeywords` "cough"); sitting and
+  crawling ages, "seriously ill", the family's hopes (hoping, 希望), 红点, "make a fist" and lay blood-pressure and
+  heart-rate orders (量血压, 测心率, "check his blood pressure and pulse") reached the wrong item, nothing or the bedside
+  check only below the agent's 0.55 threshold; an examination request for the blood pressure returned the neck-vein
+  finding through the keyword "venous pressure" (now "jugular venous pressure"); 胸部正位片, 肝功 and 肾功 ordered
+  nothing; 跟孩子家长谈谈 reached nothing; a steroid injection into the ankles (踝关节打激素) reached oral prednisolone
+  first. Accepted as they are: "drain the fluid around his heart" stays ambiguous between the needle, the cardiology
+  review and the bedside check (the learner is asked which), so that no wording about the heart reaches the critical
+  needle by accident, and an off-topic 厕所在哪里？ reaches the presenting complaint only below the threshold (like
+  round 2's canteen).
 
 ## References
 
@@ -412,12 +428,21 @@ JIA, systemic JIA, uveitis, and nonpharmacologic management, medication monitori
 they make DMARDs the first-line therapy (strong), with methotrexate the first conventional DMARD and a TNF inhibitor
 the first biologic (conditional), intra-articular glucocorticoids an adjunct to initial therapy (conditional) and oral
 glucocorticoids not recommended as such an adjunct (conditional); they conditionally recommend physical and
-occupational therapy, and physical activity, regardless of drug therapy; and for children on long-term glucocorticoids
-they strongly recommend checking growth at least twice a year and bone health at least yearly. The 2019 strong
+occupational therapy, and physical activity, regardless of drug therapy; and for people with JIA on chronic oral or
+intravenous glucocorticoids they strongly recommend checking growth at least twice a year and bone health at least
+yearly. The 2019 strong
 recommendation against adding chronic low-dose glucocorticoids, which the case had quoted as current, is not among
 them, so every ACR statement now quotes the 2026 summary in its own words and ACR/AF 2019 and ACR 2021 are no longer
 cited. The full 2026 manuscripts were not located (no DOI found; see To verify). ACMG/AMP 2015 is still the published
 variant standard (v4.0 still "forthcoming" in 2026).
+Review round 4 (2026-11-14) re-read every attributed statement in its source's own text: ESC 2025 in the guideline
+PDF (Recommendation Table 1 with footnote c; Table 4, where definite pericarditis needs a clinical presentation with
+more than one additional criterion and possible pericarditis one; §11.7.3–§11.8.2; the pericardiocentesis and
+corticosteroid recommendations; §12.2.2), ILAR 2004 in its PDF, the 2026 ACR JIA summary (its monitoring statement is
+for people with JIA on chronic oral or intravenous glucocorticoids), and the PubMed abstracts of Offiah 2005,
+Albuhairan 2013, Bahabri 1998, Marcelino 1999 and Kisla Ekinci 2021 (with the Kisla Ekinci full text); it re-resolved
+the reference DOIs by Crossref and found the 2026 ACR manuscripts still unpublished and ACMG/AMP SVC v4.0 still
+forthcoming.
 
 ### To verify
 
@@ -534,6 +559,22 @@ variant standard (v4.0 still "forthcoming" in 2026).
   prednisolone although the order may be an IV methylprednisolone pulse. Scores unchanged (reference 39/39, doing
   nothing 0/33, wrong first everywhere 62 %, each harm 36/39, the needle fails the safety outcome); 64 utterances.
   Still to verify: the source pass, the clinician review and the 2026 ACR manuscripts (see To verify).
+- **Review round 4 (2026-11-14).** A fourth independent review re-traced every patient fact in both languages (no
+  added, changed or dropped patient fact found), re-read each attributed statement in its source, replayed the
+  assessment and probed the matcher with fresh phrasings. Fixed: the Chinese texts gave ESC 2025's criterion for a
+  definite pericarditis as "一项以上附加标准", which in Chinese usage includes one (so ESC's *possible* pericarditis
+  would have counted as definite), where the guideline and the English say more than one (now "超过一项（即至少两项）";
+  the anti-inflammatory step's harm text and the cardiologist's brief); plain English openers ("Could you tell me
+  why Qinghe is here?", "What's been bothering him?") and other questions reached nothing or the wrong item, a
+  blood-pressure examination request returned the neck-vein finding, and some lay orders reached nothing (see Matcher notes); "normal neck veins" (three
+  English texts) widened the recorded "no jugular venous distension", a distractor said "normal left ventricular
+  function" for the recorded systolic function and another dropped "slightly" from the muffled heart sounds; five
+  texts a learner can meet before the echocardiogram (the decision 1 key, the bedside check's instruction, two
+  decision 1 feedbacks, the anti-inflammatory harm text) presupposed an effusion; the ACR monitoring statement was
+  given for any child on long-term steroids, though it is for people with JIA on chronic oral or intravenous
+  glucocorticoids. Scores unchanged (reference 39/39, doing nothing 0/33, wrong first everywhere 62 %, each harm
+  36/39, the needle fails the safety outcome); 76 utterances. Still to verify: the source pass, the clinician review
+  and the 2026 ACR manuscripts (see To verify).
 
 ### 1.0.0
 
@@ -543,11 +584,11 @@ on 2026-10-29.
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-14, again after review rounds 1, 2 and 3):
+Run from the worktree root (all passed on 2026-11-14, again after review rounds 1, 2, 3 and 4):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-44362/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 64/64 · rubric 39/39 (100 %)
+npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 76/76 · rubric 39/39 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44362   # depth floor; do nothing 0/33; wrong first 62 % < 100 %; openers reach the presenting complaint
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44362:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44362:"   # in-world demonstration, en + zh-CN
@@ -577,7 +618,7 @@ PRG4基因和常染色体隐性遗传，给出再发风险；为非炎症性的�
 **复盘要点：** 心脏优先：颈静脉不怒张不能排除压塞；无痛肿胀、屈曲指加反复阴性的炎症检查，提示非炎症性关节病而不是JIA；
 没有炎症证据时不推荐抗炎治疗，心包穿刺只用于有指征时；临床诊断需要分子诊断和遗传咨询来证实；原报告不用特殊药物、建议功能
 锻炼，与今天的做法一致（2026年ACR JIA指南：不论是否用药，都有条件地推荐物理治疗和作业治疗），今天还要补上基因检测、遗传咨询、髋关节影像和心脏科随访。本病例的事实沿用1.0.0版的提取，尚未对照
-原文全文核对；2026-11-14完成三轮独立审核（见更新记录），尚未经执业医师审核。
+原文全文核对；2026-11-14完成四轮独立审核（见更新记录），尚未经执业医师审核。
 
 **安全结果。** 唯一的`critical: true`处置是无指征的床旁心包穿刺引流：给予即判定安全结果不合格；激素、甲氨蝶呤、TNF抑制剂、
 关节腔注射和NSAID（或阿司匹林）加秋水仙碱均为`critical: false`：给了其中任何一项，就失去安全项的3分，但不判定安全结果不合格。

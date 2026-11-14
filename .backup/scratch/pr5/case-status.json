@@ -385,7 +385,16 @@
    "major": 6,
    "minor": 11
   },
-  "reviewed": true
+  "reviewed": true,
+  "rounds": {
+   "2": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 3,
+     "minor": 10
+    }
+   }
+  }
  },
  "cmcr-33632": {
   "allChecksPass": true,
@@ -606,6 +615,15 @@
  "cmcr-44362": {
   "allChecksPass": true,
   "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "spatial-policy": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
   "findings": {
    "critical": 1,
    "major": 7,
@@ -626,8 +644,17 @@
      "major": 3,
      "minor": 5
     }
+   },
+   "4": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 1,
+     "major": 1,
+     "minor": 9
+    }
    }
-  }
+  },
+  "roundsCommitted": 4
  },
  "cmcr-44399": {
   "allChecksPass": true,
@@ -645,6 +672,13 @@
      "critical": 1,
      "major": 4,
      "minor": 7
+    }
+   },
+   "3": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 2,
+     "minor": 9
     }
    }
   }
@@ -790,7 +824,16 @@
    "major": 7,
    "minor": 9
   },
-  "reviewed": true
+  "reviewed": true,
+  "rounds": {
+   "2": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 5,
+     "minor": 8
+    }
+   }
+  }
  },
  "cmcr-635101": {
   "allChecksPass": true,

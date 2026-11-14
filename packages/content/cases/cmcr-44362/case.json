@@ -313,7 +313,8 @@
           "孩子的情况",
           "他的情况",
           "说说情况",
-          "讲讲情况"
+          "讲讲情况",
+          "这次来"
         ],
         "en": [
           "whatbringsyou",
@@ -347,7 +348,18 @@
           "tellmeabout",
           "gettingworse",
           "gotworse",
-          "worseeveryyear"
+          "worseeveryyear",
+          "whyqingheishere",
+          "whyisqinghehere",
+          "whyheishere",
+          "whyareyouhere",
+          "whyhaveyoucome",
+          "whatbringshim",
+          "whyisheinhospital",
+          "whyisqingheinhospital",
+          "bother",
+          "worse each year",
+          "other joints"
         ]
       },
       "excludeKeywords": {
@@ -381,7 +393,8 @@
           "injur",
           "in the morning",
           "mornings",
-          "stiff"
+          "stiff",
+          "cough"
         ]
       },
       "disclosure": "volunteer",
@@ -475,7 +488,10 @@
           "起疹",
           "高烧",
           "烧过",
-          "发过烧"
+          "发过烧",
+          "红点",
+          "红斑",
+          "长疹"
         ],
         "en": [
           "fever",
@@ -1128,7 +1144,12 @@
           "baby",
           "born",
           "pregnancy",
-          "newborn"
+          "newborn",
+          "crawl",
+          "sit up",
+          "sat up",
+          "usual age",
+          "normal age"
         ]
       },
       "excludeKeywords": {
@@ -1242,7 +1263,10 @@
           "开过刀",
           "其他病",
           "别的病",
-          "既往"
+          "既往",
+          "重病",
+          "生过什么病",
+          "生过病"
         ],
         "en": [
           "other illness",
@@ -1252,7 +1276,9 @@
           "surgery",
           "past medical",
           "beeninhospital",
-          "illnesses"
+          "illnesses",
+          "ill",
+          "unwell"
         ]
       },
       "excludeKeywords": {
@@ -1364,7 +1390,10 @@
           "baby",
           "at first",
           "early on",
-          "beginning"
+          "beginning",
+          "crawl",
+          "usual age",
+          "normal age"
         ]
       },
       "disclosure": "unknown",
@@ -1397,7 +1426,10 @@
           "怕的",
           "您觉得",
           "觉得是什么",
-          "您认为"
+          "您认为",
+          "希望",
+          "期望",
+          "想让我们"
         ],
         "en": [
           "worry",
@@ -1410,7 +1442,9 @@
           "frightened",
           "fear",
           "causing",
-          "whatdoyouthink"
+          "whatdoyouthink",
+          "hope",
+          "expect"
         ]
       },
       "disclosure": "on-ask",
@@ -1438,7 +1472,8 @@
           "趾头",
           "手足",
           "看手",
-          "看脚"
+          "看脚",
+          "握拳"
         ],
         "en": [
           "fingers",
@@ -1447,7 +1482,9 @@
           "feet",
           "digits",
           "hand",
-          "foot"
+          "foot",
+          "fist",
+          "grip"
         ]
       },
       "finding": {
@@ -1598,7 +1635,7 @@
           "jvp",
           "jugular",
           "neck",
-          "venous pressure"
+          "jugular venous pressure"
         ]
       },
       "finding": {
@@ -1828,7 +1865,10 @@
           "X线胸片",
           "胸部X光",
           "X光胸片",
-          "胸透"
+          "胸透",
+          "胸部正位",
+          "胸部正侧位",
+          "胸正位"
         ],
         "en": [
           "chest x-ray",
@@ -2263,7 +2303,9 @@
           "肝肾功能",
           "铁蛋白",
           "转氨酶",
-          "肌酐"
+          "肌酐",
+          "肝功",
+          "肾功"
         ],
         "en": [
           "liver function",
@@ -2970,7 +3012,13 @@
           "测血压心率",
           "生命体征监测",
           "监测生命体征",
-          "测生命体征"
+          "测生命体征",
+          "血压",
+          "心率",
+          "量血压",
+          "测心率",
+          "监测心率",
+          "监测血压"
         ],
         "en": [
           "pulsus paradoxus",
@@ -2979,12 +3027,15 @@
           "observations",
           "vital signs",
           "obs",
-          "monitor his observations"
+          "monitor his observations",
+          "blood pressure",
+          "heart rate",
+          "pulse and blood pressure"
         ]
       },
       "dose": {
-        "zh-CN": "床旁测心率、血压（包括奇脉：吸气时收缩压下降≥10 mmHg）、呼吸和颈静脉；在积液的大小和对血流动力学的影响明确之前定时复查，出现异常立即报告。",
-        "en": "At the bedside: heart rate, blood pressure (including pulsus paradoxus — an inspiratory fall in systolic pressure of 10 mmHg or more), breathing and neck veins; repeat regularly until the effusion's size and haemodynamic effect are known, and report any change at once."
+        "zh-CN": "床旁测心率、血压（包括奇脉：吸气时收缩压下降≥10 mmHg）、呼吸和颈静脉；定时复查，出现异常立即报告。",
+        "en": "At the bedside: heart rate, blood pressure (including pulsus paradoxus — an inspiratory fall in systolic pressure of 10 mmHg or more), breathing and neck veins; repeat them regularly and report any change at once."
       },
       "requires": [],
       "maxDoses": 1,
@@ -3192,14 +3243,24 @@
           "解释病情",
           "和家属谈",
           "告诉家属",
-          "沟通病情"
+          "沟通病情",
+          "家长谈",
+          "跟家长",
+          "和家长",
+          "跟家属谈",
+          "家长沟通",
+          "谈谈病情"
         ],
         "en": [
           "family meeting",
           "talk to the family",
           "explain to the family",
           "explain the diagnosis",
-          "discuss with the family"
+          "discuss with the family",
+          "talk to his relative",
+          "talk with the family",
+          "speak to the family",
+          "speak with the family"
         ]
       },
       "dose": {
@@ -3323,7 +3384,9 @@
           "关节注射",
           "注射到关节",
           "打到关节",
-          "膝关节注射"
+          "膝关节注射",
+          "关节打",
+          "踝关节注射"
         ],
         "en": [
           "intra-articular",
@@ -3332,7 +3395,13 @@
           "into the joint",
           "into his joint",
           "joint injection",
-          "knee injection"
+          "knee injection",
+          "into the ankle",
+          "into his ankle",
+          "into the wrist",
+          "into his wrist",
+          "into the elbow",
+          "into his elbow"
         ]
       }
     },
@@ -3446,7 +3515,9 @@
           "关节内打激素",
           "关节腔打激素",
           "关节注射激素",
-          "膝关节注射"
+          "膝关节注射",
+          "踝关节注射",
+          "关节打激素"
         ],
         "en": [
           "intra-articular",
@@ -3527,8 +3598,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ESC 2025：心包摩擦音只是心包炎的附加标准之一，确诊心包炎要有临床表现（如心包炎样胸痛），并有一项以上附加标准；他没有记录到胸痛。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像上也没有炎症证据）时不推荐抗炎治疗（第11.7.4节）——先查炎症指标、给积液成像。在积液和它的原因评估清楚之前就开数周到数月的NSAID或阿司匹林加秋水仙碱，会带来胃肠和肾脏不良反应，却没有可以期待的获益；而且多数儿科医生在儿童中避免使用阿司匹林（ESC 2025第12.2.2节）。",
-        "en": "ESC 2025: a pericardial rub is one additional criterion; a definite diagnosis of pericarditis needs a clinical presentation (such as pericarditic chest pain) with more than one additional criterion, and no chest pain is recorded for him. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence of inflammation) anti-inflammatory treatment is not recommended (section 11.7.4) — check the inflammatory markers and image the effusion first. Weeks to months of NSAID or aspirin with colchicine before the effusion and its cause are assessed bring gastrointestinal and renal adverse effects without an expected benefit, and most paediatricians avoid aspirin in children (ESC 2025, section 12.2.2)."
+        "zh-CN": "ESC 2025：心包摩擦音只是心包炎的附加标准之一，确诊心包炎要有临床表现（如心包炎样胸痛），并有超过一项（即至少两项）附加标准；他没有记录到胸痛。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像上也没有炎症证据）时不推荐抗炎治疗（第11.7.4节）——先查炎症指标、做心脏超声。在心包情况和病因评估清楚之前就开数周到数月的NSAID或阿司匹林加秋水仙碱，会带来胃肠和肾脏不良反应，却没有可以期待的获益；而且多数儿科医生在儿童中避免使用阿司匹林（ESC 2025第12.2.2节）。",
+        "en": "ESC 2025: a pericardial rub is one additional criterion; a definite diagnosis of pericarditis needs a clinical presentation (such as pericarditic chest pain) with more than one additional criterion, and no chest pain is recorded for him. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence of inflammation) anti-inflammatory treatment is not recommended (section 11.7.4) — check the inflammatory markers and image the heart first. Weeks to months of NSAID or aspirin with colchicine before the pericardium and the cause are assessed bring gastrointestinal and renal adverse effects without an expected benefit, and most paediatricians avoid aspirin in children (ESC 2025, section 12.2.2)."
       },
       "response": {
         "zh-CN": "已开始抗炎药和秋水仙碱（见安全提示）。本病例不模拟它们的作用。",
@@ -3827,13 +3898,13 @@
         {
           "id": "echo-today-tamponade-check",
           "text": {
-            "zh-CN": "今天做超声心动图和心电图；现在就查心率、血压、奇脉、呼吸和颈静脉，积液明确前定时复查；暂不用抗炎药或激素。",
-            "en": "Echocardiography and an ECG today, with heart rate, blood pressure, pulsus paradoxus, breathing and neck veins checked now and repeated until the effusion is known; no anti-inflammatory or steroid yet."
+            "zh-CN": "今天做超声心动图和心电图；现在就查心率、血压、奇脉、呼吸和颈静脉，并定时复查；暂不用抗炎药或激素。",
+            "en": "Echocardiography and an ECG today, with heart rate, blood pressure, pulsus paradoxus, breathing and neck veins checked now and repeated regularly; no anti-inflammatory or steroid yet."
           },
           "correct": true,
           "feedback": {
             "zh-CN": "正确。心音稍钝加心包摩擦音提示心包受累，可能已有积液。ESC 2025建议，所有怀疑心包炎的患者都要做完整的初始评估——病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；超声心动图是发现和测量积液、判断血流动力学影响以及随访的主要工具。心脏压塞是临床诊断：积液缓慢积聚时Beck三联征可以缺如，没有颈静脉怒张不能排除，要结合心率、血压和奇脉，并由超声证实。",
-            "en": "Right. Slightly muffled heart sounds with a rub point to pericardial involvement, possibly with fluid. ESC 2025 recommends a complete initial evaluation — history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I) — for everyone with suspected pericarditis, and echocardiography is the main tool to find and size an effusion, judge its haemodynamic effect and follow it. Tamponade is a clinical diagnosis: Beck's triad may be missing when fluid gathers slowly, so normal neck veins do not exclude it — add heart rate, blood pressure and pulsus paradoxus, with echo confirmation."
+            "en": "Right. Slightly muffled heart sounds with a rub point to pericardial involvement, possibly with fluid. ESC 2025 recommends a complete initial evaluation — history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I) — for everyone with suspected pericarditis, and echocardiography is the main tool to find and size an effusion, judge its haemodynamic effect and follow it. Tamponade is a clinical diagnosis: Beck's triad may be missing when fluid gathers slowly, so neck veins that are not distended do not exclude it — add heart rate, blood pressure and pulsus paradoxus, with echo confirmation."
           }
         },
         {
@@ -3844,15 +3915,15 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "先治疗、后成像，顺序颠倒了。ESC 2025要求怀疑心包炎时先做包括超声心动图在内的完整评估，积液的大小和对心脏的影响决定下一步；没有心包炎症证据（CRP不高、影像上也没有炎症）时不推荐抗炎治疗，积液要针对病因处理。",
-            "en": "Treatment before imaging is the wrong order. ESC 2025 asks for a complete evaluation including echocardiography first when pericarditis is suspected, and the effusion's size and effect decide what follows; without evidence of pericardial inflammation (no raised CRP and none on imaging) it does not recommend anti-inflammatory treatment, and an effusion is treated by its cause."
+            "zh-CN": "先治疗、后成像，顺序颠倒了。ESC 2025要求怀疑心包炎时先做包括超声心动图在内的完整评估，有没有积液、积液多少以及对心脏的影响决定下一步；没有心包炎症证据（CRP不高、影像上也没有炎症）时不推荐抗炎治疗，积液要针对病因处理。",
+            "en": "Treatment before imaging is the wrong order. ESC 2025 asks for a complete evaluation including echocardiography first when pericarditis is suspected, and whether there is an effusion, its size and its effect decide what follows; without evidence of pericardial inflammation (no raised CRP and none on imaging) it does not recommend anti-inflammatory treatment, and an effusion is treated by its cause."
           }
         },
         {
           "id": "pericardiocentesis-now",
           "text": {
-            "zh-CN": "摩擦音加心音变钝说明积液已经不少，今天就在床旁做心包穿刺引流，同时把积液送检找原因，免得夜里发生心脏压塞。",
-            "en": "A rub with muffled heart sounds means a sizeable effusion: drain it today by bedside pericardiocentesis and send the fluid to find the cause, before tamponade develops overnight."
+            "zh-CN": "摩擦音加心音稍钝说明积液已经不少，今天就在床旁做心包穿刺引流，同时把积液送检找原因，免得夜里发生心脏压塞。",
+            "en": "A rub with slightly muffled heart sounds means a sizeable effusion: drain it today by bedside pericardiocentesis and send the fluid to find the cause, before tamponade develops overnight."
           },
           "correct": false,
           "feedback": {
@@ -3868,8 +3939,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "全身型JIA要求关节炎伴有（或之前有）持续至少两周的发热，其中至少3天记录为每日发热，并有一过性皮疹、全身淋巴结肿大、肝脾大或浆膜炎之一（ILAR 2004）；他没有发热，也没有皮疹。原因不明、积液没有成像就用激素，会掩盖病情、延误诊断；ESC 2025还指出，儿童更要严格限制激素（生长受损）。",
-            "en": "Systemic JIA needs arthritis with, or preceded by, fever of at least two weeks documented as daily for at least three days, plus one of an evanescent rash, generalised lymph node enlargement, hepatomegaly or splenomegaly, or serositis (ILAR 2004); he has no fever and no rash. Steroids before the cause is known and the effusion imaged mask the picture and delay the diagnosis, and ESC 2025 restricts corticosteroids in children even more than in adults because of growth impairment."
+            "zh-CN": "全身型JIA要求关节炎伴有（或之前有）持续至少两周的发热，其中至少3天记录为每日发热，并有一过性皮疹、全身淋巴结肿大、肝脾大或浆膜炎之一（ILAR 2004）；他没有发热，也没有皮疹。原因不明、心脏还没有做超声就用激素，会掩盖病情、延误诊断；ESC 2025还指出，儿童更要严格限制激素（生长受损）。",
+            "en": "Systemic JIA needs arthritis with, or preceded by, fever of at least two weeks documented as daily for at least three days, plus one of an evanescent rash, generalised lymph node enlargement, hepatomegaly or splenomegaly, or serositis (ILAR 2004); he has no fever and no rash. Steroids given before the cause is known and the heart imaged mask the picture and delay the diagnosis, and ESC 2025 restricts corticosteroids in children even more than in adults because of growth impairment."
           }
         },
         {
@@ -3881,7 +3952,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "心音稍钝加心包摩擦音，这次住院就要做超声心动图，看有没有积液、有多少，并判断有没有压塞：ESC 2025建议所有怀疑心包炎的患者在初始评估时就做超声心动图。颈静脉不怒张不能排除压塞：缓慢积聚的积液可以积得很多，ESC 2025称压塞是“最后一滴”现象，再多一点就可能失代偿。",
-            "en": "Slightly muffled heart sounds with a rub need echocardiography during this admission to look for fluid, size it and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Normal neck veins do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
+            "en": "Slightly muffled heart sounds with a rub need echocardiography during this admission to look for fluid, size it and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Neck veins that are not distended do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
           }
         }
       ]
@@ -3970,7 +4041,7 @@
           "id": "no-cardiac-follow-up",
           "text": {
             "zh-CN": "左室收缩功能正常，积液只是中等量，心脏没有需要随访的问题：积液不用再管，出院以后只随访关节。",
-            "en": "Normal left ventricular function and only a moderate effusion: there is no heart problem to follow — leave the effusion alone and follow only his joints after discharge."
+            "en": "Normal left ventricular systolic function and only a moderate effusion: there is no heart problem to follow — leave the effusion alone and follow only his joints after discharge."
           },
           "correct": false,
           "feedback": {
@@ -4200,8 +4271,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有可治疗的炎症，激素改善不了非炎症性关节病；长期激素会抑制生长、加重骨质稀疏（他的手足已有骨质稀疏）、增加感染风险。即使是确诊的多关节型JIA，2026年ACR JIA指南也有条件地不建议把口服激素作为初始治疗的辅助用药；对长期用激素的孩子，指南强烈建议每年至少两次监测生长、每年至少一次评估骨骼健康。",
-            "en": "With no inflammation to treat, steroids cannot help a non-inflammatory arthropathy; long-term steroids stunt growth, worsen osteopenia (his hands and feet already show it) and raise infection risk. Even for established polyarticular JIA, the 2026 ACR JIA guidelines conditionally recommend against oral glucocorticoids as an adjunct to initial therapy, and for a child on long-term steroids they strongly recommend checking growth at least twice a year and bone health at least once a year."
+            "zh-CN": "没有可治疗的炎症，激素改善不了非炎症性关节病；长期激素会抑制生长、加重骨质稀疏（他的手足已有骨质稀疏）、增加感染风险。即使是确诊的多关节型JIA，2026年ACR JIA指南也有条件地不建议把口服激素作为初始治疗的辅助用药；对长期口服或静脉用激素的JIA患者，指南强烈建议每年至少两次监测生长、每年至少一次评估骨骼健康。",
+            "en": "With no inflammation to treat, steroids cannot help a non-inflammatory arthropathy; long-term steroids stunt growth, worsen osteopenia (his hands and feet already show it) and raise infection risk. Even for established polyarticular JIA, the 2026 ACR JIA guidelines conditionally recommend against oral glucocorticoids as an adjunct to initial therapy, and for people with JIA on chronic oral or intravenous glucocorticoids they strongly recommend checking growth at least twice a year and bone health at least once a year."
           }
         },
         {
@@ -4578,7 +4649,7 @@
         "en": "Paediatric cardiologist"
       },
       "knowledge": {
-        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合一项以上附加标准；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类），评估心包增厚、水肿和延迟强化。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）推荐用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
+        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合超过一项（即至少两项）附加标准；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类），评估心包增厚、水肿和延迟强化。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）推荐用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
         "en": "Comes when asked to review. From the ESC 2025 myocarditis and pericarditis guidelines: suspected pericarditis needs an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I); a pericardial rub is one additional criterion, and a definite diagnosis needs a clinical presentation (such as chest pain) with more than one additional criterion; cardiac MRI is recommended (class I) in suspected pericarditis when clinical criteria cannot make the diagnosis, to look for pericardial thickening, oedema and late gadolinium enhancement. Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly; pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg; tamponade is a last-drop phenomenon. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended. Pericardiocentesis (echocardiography-, CT- or fluoroscopy-guided) is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). For an asymptomatic effusion of at least moderate size a reasonable follow-up is about every 6 months, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain. Corticosteroids are restricted in children even more than in adults (growth impairment). Interprets the echocardiogram only once the learner has read it; its record gives no effusion depth, distribution or echocardiographic signs of tamponade."
       },
       "interprets": [
@@ -4672,7 +4743,7 @@
       },
       {
         "zh-CN": "ESC 2025心肌炎和心包炎指南：所有怀疑心包炎的患者，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）。心脏压塞是临床诊断、由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如，奇脉是吸气时收缩压下降至少10 mmHg，压塞是“最后一滴”现象——所以他没有颈静脉怒张，不等于可以把超声心动图推到门诊。",
-        "en": "ESC 2025 myocarditis and pericarditis guidelines: everyone with suspected pericarditis gets an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I). Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly, pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg, and tamponade is a last-drop phenomenon — so his normal neck veins are no reason to defer the echocardiogram to the clinic."
+        "en": "ESC 2025 myocarditis and pericarditis guidelines: everyone with suspected pericarditis gets an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I). Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly, pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg, and tamponade is a last-drop phenomenon — so the absence of jugular venous distension is no reason to defer the echocardiogram to the clinic."
       },
       {
         "zh-CN": "ESC 2025对心包积液：尽量针对病因治疗；没有心包炎症（既没有CRP升高、影像也没有炎症证据）时不推荐抗炎治疗；怀疑心包炎而临床标准不能确诊时，推荐做心脏磁共振（I类）；心包穿刺（影像引导）推荐用于压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）；无症状、至少中等量的积液约每6个月随访一次，最好在专科中心。原报告没有记录心脏科随访或复查的超声心动图——这是今天要补上的。",
@@ -5503,6 +5574,90 @@
         "locale": "zh-CN",
         "expect": [
           "concerns"
+        ]
+      },
+      {
+        "text": "Could you tell me why Qinghe is here?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What's been bothering him?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Does it get worse each year?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Is it only his knees, or other joints as well?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Did he sit, crawl and walk at the normal ages?",
+        "locale": "en",
+        "expect": [
+          "birth-development"
+        ]
+      },
+      {
+        "text": "Has he ever been seriously ill?",
+        "locale": "en",
+        "expect": [
+          "past-illness"
+        ]
+      },
+      {
+        "text": "What were you hoping we could do for him?",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "Has anyone at home had a long cough or TB?",
+        "locale": "en",
+        "expect": [
+          "tb-contact"
+        ]
+      },
+      {
+        "text": "孩子这次来是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "皮肤上长过红点吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-rash"
+        ]
+      },
+      {
+        "text": "你们希望我们怎么帮他？",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "他以前生过什么重病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "past-illness"
         ]
       }
     ]

@@ -22,10 +22,10 @@ record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then independent review rounds 1 and 2 (AI-assisted, both 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then independent review rounds 1, 2 and 3 (AI-assisted, all 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
 | the patient | a 9-year-old boy (9 years 3 months, 36 kg), awake but listless, who says a few words himself; a parent of unrecorded sex gives the history |
 | phases | `arrival` 到院：服药后约四小时 / Arrival → `results` 入院化验结果回报 / Admission results back → `two-hours` 入院约两小时 / About two hours after admission → `course` 治疗过程中 / Later in his treatment → `outcome` 住院经过与随访 / Hospital course and follow-up — all one-way, none learner-switchable |
-| content | 24 history items (12 recorded facts — `blackout` also says what is not recorded —, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 73 matcher test utterances |
+| content | 24 history items (12 recorded facts — `blackout` also says what is not recorded —, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 85 matcher test utterances |
 | what the learner can do | take the history from the parent and the boy; examine him; order an ECG, a bedside glucose, the cholinesterase and electrolytes (staged: back in the next phase), a blood gas and a chest film (no result recorded); read the observation chart and, at the end, the hospital-course record; monitor, cannulate, give atropine and fluids, call the poisons service, arrange a monitored bed, stop the drug, report the error and teach back; answer five decisions |
 
 ## Learning outcomes
@@ -42,8 +42,8 @@ By the end of the case the learner can:
 4. Interpret a cholinesterase of 1790 U/L, sinus rhythm and a sodium of 126.7 mmol/L for what each can and cannot show,
    and act on them: isotonic maintenance fluid (AAP 2018) and no suxamethonium if he needs intubation.
 5. Recognise the fall in heart rate to 47/min about two hours after admission as a muscarinic effect, and treat it with
-   repeated, titrated atropine under continuous monitoring (AHA/AAP 2025 PALS: atropine for bradycardia from increased
-   vagal tone), with oxygenation, ventilation and CPR ready if perfusion fails.
+   repeated, titrated atropine under continuous monitoring (AHA/AAP 2025 PALS: atropine for bradycardia with
+   cardiopulmonary compromise from increased vagal tone), with oxygenation, ventilation and CPR ready if perfusion fails.
 6. Close the error chain before discharge: stop the drug and question its indication, report and disclose the error,
    and confirm dose instructions written in mg and in tablets by teach-back (AHRQ 2024).
 
@@ -179,7 +179,7 @@ No key is the uniquely longest option of its decision in either language (strict
 | `rb-discharge` | management | 2 | decision 5 right first time |
 | `rb-communication` | communication | 1 | examiner-judged (Calgary–Cambridge; teach-back; no promise beyond the record) — not in the deterministic total |
 
-### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14; re-measured after review round 2, unchanged)
+### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14; re-measured after review rounds 2 and 3, unchanged)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -255,7 +255,7 @@ intervention while contraindicated, has no dose error and ends with the safety o
 | sodium 126.7 mmol/L; potassium 3.79 mmol/L | 1.0.0 initial investigations | reference ranges not recorded; 126.7 is below the 135 mmol/L that AAP 2018 uses to define hyponatraemia |
 | heart rate at its lowest 47/min about 2 h after admission | 1.0.0 subsequent monitored changes | **derived:** about 6 h after the tablets (used in decision 4's lavage feedback) |
 | treatment stopped day 5; discharged day 6; no complaints and normal cholinesterase 5 days after discharge | 1.0.0 outcome | value not recorded |
-| atropine 50 micrograms/kg IV, max 3 mg, doubled every 5 min while ineffective | Perth Children's Hospital monograph (reviewed Aug 2024; next review Aug 2027), its dosing for a cholinergic crisis from organophosphates or nerve agents — applied here to a carbamate drug overdose, as the dose text and teaching point say | **derived:** 1.8 mg at 36 kg (below the 3 mg cap on the 50-microgram/kg dose); not a dose the report records |
+| atropine 50 micrograms/kg IV, max 3 mg, doubled every 5 min while ineffective | Perth Children's Hospital monograph (reviewed Aug 2024; next review Aug 2027), its dosing for a cholinergic crisis from organophosphates or nerve agents — applied here to a carbamate drug overdose, as the dose text and teaching point say | **derived:** 1.8 mg at 36 kg (below the 3 mg cap, which the monograph sets on this weight-based starting dose — not on the doubled doses that follow (the monograph's infusion example works from a 10 mg atropinisation total)); not a dose the report records |
 | atropine 20 micrograms/kg, max 600 micrograms, repeat once | same monograph, bradycardia with haemodynamic compromise | **derived:** 0.72 mg at 36 kg, capped at 0.6 mg (taught in a teaching point only, which states the cap: "600 micrograms, not 720, at 36 kg") |
 | atropine 0.02 mg/kg, minimum 0.1 mg | AHA/AAP 2025 PALS, as restated by its writing group (2026) | 0.02 × 36 = 0.72 mg is **not** a dose to give: a single dose is capped (600 micrograms in the PCH bradycardia dose above; 0.5 mg in AHA's algorithm as a search engine indexes it, not verified in its text). The case states no PALS dose in mg |
 | activated charcoal 0.5–1 g/kg (ages 1–12) | AACT/EAPCCT 2005 (quoting USP DI 2003) | **derived:** 18–36 g; offered only as a harmful option |
@@ -406,6 +406,25 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
   gave him the tablets?" → the dose story, which does not say who). The engine prefix-matches tokens of 6 or more
   letters, so a run-together keyword that starts with such a word ("prescribedfor") matches any "prescribed…": run-
   together keywords here start with a short or stop word ("thetrouble", "whyheneeded", "inthefamily").
+- Review round 3 probed 86 more history questions and 11 on the traps below (the session's own `selectFacts` +
+  `offlineRerank`, by phase), 29 examination requests and 76 orders (`resolveFinding`, `resolveIntervention`,
+  `resolveInvestigation`). Two run-together keywords had been prefix traps after all: `clinic-visit`'s "unwellwith"
+  matched every "unwell" ("How long after taking them did he become unwell?" got the clinic visit; now "heunwellwith")
+  and `presenting`'s "broughthimin" every "brought" ("Have you brought the bottle with you?" opened with the
+  presenting complaint; now excluded for bottle/packet questions). Also fixed: "Did he throw up?" reached nothing;
+  "What was he prescribed the tablets for?" and "Does he normally take any other tablets?" reached the dose story;
+  "Has he had the runs?" reached the family history ("run in the family"); "When did he take the tablets?" / 吃药的时候是几点
+  reached the dose story or regular medicines (now the pre-transfer answer, which gives the four hours); 家里有人得过肌无力吗
+  reached the boy's own earlier weakness; "How's your tummy, buddy?" got a clarifying question; "Let me have a look at
+  him" found no examination; "Admit to HDU for monitoring" resolved to monitoring (so the monitored bed of
+  `rb-escalation` was never arranged; monitoring now yields to admit/HDU/PICU); "Get a line in" and "Speak to the
+  family about the error" were ambiguous. After the fixes 83 of 86 history questions reach the intended item and the
+  three others get fitting answers ("When did all this start?" → the onset; "How did the mix-up happen?" → the opening
+  answer and the dose story; "Had he been poorly before all this?" → a clarifying question); every examination request
+  and every order but one reaches its item ("Transfer him to the ward for routine obs" asks the learner to confirm the
+  unmonitored bed), and negated orders (no charcoal, 不要洗胃, 暂时不要出院, 不要再吃新斯的明了) withhold. Round 1's and round 2's probe
+  sets give the same results as before. Glycopyrrolate (which the FDA label names beside atropine for muscarinic
+  effects) and oxygen are not offered as acts: an order for either is not given.
 - Orders: `matchOrders` matches an alias anywhere inside the order, so no alias may be a fragment of common words — the
   cholinesterase's "che"/"CHE" was removed in review round 1 (it made "check the obs" order the cholinesterase and
   "chest x-ray" or "check his glucose" ambiguous with it). A plain isotonic order ("normal saline with dextrose") now
@@ -415,11 +434,12 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
   aliases). Repeat-lavage orders in plain Chinese (再洗一次胃, 洗一下胃) now reach the harmful item; negated ones withhold it.
 - The boy's four items share his phrases and are phase twins (`supersedes`: `child-now` → `child-now-results` →
   `child-now-2h` → `child-course`), so "How are you feeling?" reaches the version for the current phase.
-- The corpus has 73 utterances (43 en, 30 zh-CN), nine of them negatives (`expect: []`) — four off-topic, five
+- The corpus has 85 utterances (52 en, 33 zh-CN), ten of them negatives (`expect: []`) — four off-topic, six
   history-like questions the record cannot answer ("Does he like school?", "Is he right- or left-handed?", "Has he passed
-  any urine today?", 他上几年级了？, 他有兄弟姐妹吗？) — and one or more for every required item, with review round 2's
-  regressions (fainting, stomach ache, "the trouble", allergies, phlegm, the written dose, 毫克, 大便稀…); `cases verify`
-  passes 73/73.
+  any urine today?", 他上几年级了？, 他有兄弟姐妹吗？, 孩子喜欢吃什么？) — and one or more for every required item, with review
+  round 2's regressions (fainting, stomach ache, "the trouble", allergies, phlegm, the written dose, 毫克, 大便稀…) and
+  round 3's (throwing up, "become unwell", what the tablets were for, "the runs", other tablets, the bottle, the written
+  instructions, when he took them, "buddy", 家里有人…肌无力, 几点吃的); `cases verify` passes 85/85.
 - Cholinesterase orders naming a specific enzyme (plasma, red-cell, pseudo-, butyryl-, acetyl-; 血浆, 红细胞, 全血) reach
   the one record with a notice that its assay is not recorded.
 
@@ -473,6 +493,22 @@ DailyMed), ATSDR's pralidoxime page (last reviewed 26 June 2023) and the AHRQ to
 the statements the case attributes to them. The PALS 2025 Part 8 text and AHA's algorithm still return 403 and the
 Part 8 article is not in PMC.
 
+**Re-checked in review round 3 (2026-11-14), in each source's own text** (fresh downloads, except the 2005 charcoal
+paper and AAP 2018, read in the publisher PDFs an earlier round saved: clintox.org hosts only the 1997 charcoal
+statement and publications.aap.org returned 403): Drugs@FDA lists no
+neostigmine label for NDA 203629 later than supplement 3 (approved 4 February 2021, "Revised: 3/2020"), whose §5.5
+("Cholinergic Crisis") and §10 hold every sentence the case attributes to the label (the January 2015 §10 has the same
+sentences). The PCH monograph (last reviewed August 2024) reads "50 microg/kg/dose (max 3 mg). Give double the previous
+ineffective dose every 5 minutes until atropine effect (tachycardia, dry flushed skin, mydriasis) is evident": the
+3 mg cap is on the weight-based starting dose, so the case no longer calls it a maximum per dose (it contradicted the
+doubling at 36 kg, 1.8 → 3.6 mg). The PALS writing group's letter recommends atropine for bradycardia "with
+cardiopulmonary compromise" from increased vagal tone or AV block, so learning outcome 5 now says so. AACT's list of
+position statements (clintox.org) still gives the 2013 lavage update and the 2005 charcoal paper as current; their
+texts, AAP 2018 (key action statement 1A; "<135 mEq/L"), ATSDR's pralidoxime page (last reviewed 26 June 2023), the
+current Quelicin label (Hospira, DailyMed August 2026: §5.8, §5.9) and the AHRQ toolkit (3rd edition; Tool 5) hold
+the statements attributed to them. The PALS 2025 Part 8 text (ahajournals.org, cpr.heart.org, including the
+algorithm's accessible long description) still returns 403 and is not in Europe PMC or PMC.
+
 ### To verify
 
 **In the source article (the facts 1.0.0 gives, and what it leaves out):**
@@ -511,6 +547,9 @@ Part 8 article is not in PMC.
 - `abnormal: false` on the heart rate of 72/min: commonly quoted PALS reference ranges for awake school-age children
   start around 75/min (not verified here); the case avoids calling the rate normal in its teaching.
 - The suxamethonium teaching, given that the assay measured is not recorded.
+- Whether AAP 2018 (maintenance intravenous fluids) has been reaffirmed since its five-year review point (December
+  2023): no newer AAP edition was found, but the reaffirmation could not be confirmed (publications.aap.org was not
+  reachable in review round 3).
 
 ## Changelog
 
@@ -527,7 +566,7 @@ Part 8 article is not in PMC.
   generic history slots with "the source does not provide" answers → 22 items in lay voice (24 after review round 2); the hindsight critical item
   (a decision) → two critical acts done in time and a critical avoided-harm item; stock objectives and rubric texts →
   case-specific ones; a debrief with dated, guideline-attributed teaching points; 43 genuine matcher paraphrases (57 after
-  review round 1, 73 after review round 2).
+  review round 1, 73 after review round 2, 85 after review round 3).
 - **Safety and teaching fixes.** 1.0.0's management key praised "individualised antagonism" without saying what to do
   and offered no act; the case now keys continuous monitoring, titrated atropine and no further decontamination, makes
   more neostigmine, a repeat lavage and early discharge critical errors, and teaches the sodium of 126.7 mmol/L (isotonic fluid),
@@ -570,6 +609,21 @@ Part 8 article is not in PMC.
   gave the tablets is unknown, not whether a parent did; the drug-indication feedback keeps "reluctant to open the
   eyes"; the conclusion gives the sodium value instead of calling it low; LO 3 credits the FDA label only with
   atropine; the anticholinesterase response is neutral (pyridostigmine reaches the same harmful item).
+- **Review round 3 (2026-11-14): a third independent AI-assisted review** re-traced every patient-fact string in both
+  languages, re-read each cited source in a fresh download and replayed the assessment with the session's own selection
+  and resolvers. Fixed: the atropine dose text and teaching point called PCH's 3 mg cap a "maximum per dose" /
+  单次最大3 mg, which contradicted the doubling they teach (1.8 → 3.6 mg at 36 kg); the monograph caps the 50-microgram/kg
+  starting dose (major); natural questions still reached the wrong item or none, through two run-together keywords that
+  prefix-matched every "unwell" and every "brought", and gaps for throwing up, what the tablets were for, other tablets,
+  "the runs", the timing of the tablets and a family history of muscle disease; "Admit to HDU for monitoring" resolved
+  to monitoring, so the monitored bed was never arranged (major; 12 regression utterances). Also: the parent no longer
+  says "the doctor" prescribed the drug (1.0.0 does not say who did; 被开了这药); learning outcome 5 gives PALS's
+  atropine recommendation with its condition (cardiopulmonary compromise); the outcome record, listed at the records
+  terminal from the start, is no longer named for a discharge ("Hospital course record" / 住院经过记录); the discharge-
+  teaching response, available from arrival, no longer mentions a discharge; the restart rule is no longer chained to
+  the FDA label's sentence; the label's muscarinic symptoms "may appear" with overdose (was "overdose brings"); the
+  hypotonic option names the same fluids in both languages. Replays unchanged: reference 100 %, do nothing 0/32, wrong
+  first 61 %, each critical harm fails the safety outcome while contraindicated.
 
 ### 1.0.0 — 2026-10-28
 
@@ -581,13 +635,13 @@ Part 8 article is not in PMC.
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-44399/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 74 steps · objectives 6/6 · decisions 5/5 · utterances 73/73 · rubric 36/36 (100 %)
+npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 74 steps · objectives 6/6 · decisions 5/5 · utterances 85/85 · rubric 36/36 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44399                                       # reference 100 % · do nothing 0/32 · wrong first 61 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44399:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44399:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-14 (after review round 2's fixes): all five pass, and so does
+Measured on 2026-11-14 (after review round 3's fixes): all five pass, and so does
 `npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-44399"` (every act possible in the general
 hospital).
 
@@ -600,7 +654,7 @@ hospital).
 126.7 mmol/L，钾3.79 mmol/L，心电图窦性心律。入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿。此后在拮抗和监测治疗下好转，
 胆碱酯酶逐渐上升；用阿托品并持续监测，症状逐渐消退，第5天停药，第6天出院，出院后5天无不适、胆碱酯酶正常。诊断：新斯的明
 （氨基甲酸酯类胆碱酯酶抑制剂）60倍过量引起的胆碱能危象。阿托品剂量、开药理由以及心率以外的生命体征均无记录。本版依据1.0.0版
-提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一、二轮独立复核（人工智能辅助，见更新记录）。
+提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一至第三轮独立复核（人工智能辅助，见更新记录）。
 
 **学习目标。**
 
@@ -609,8 +663,8 @@ hospital).
 3. 安排第一个小时：持续监护、针对毒蕈碱样表现静脉用阿托品（美国FDA说明书，2020年修订）并按效果滴定、中毒咨询，服药4小时后不再去污（AACT/EAPCCT
    2013、2005）。
 4. 解读胆碱酯酶、窦性心律和血钠126.7 mmol/L的意义与局限：等张维持液（AAP 2018），需插管时避免琥珀胆碱。
-5. 把入院约两小时心率降至47次/分识别为毒蕈碱样作用，在监护下重复、滴定阿托品（AHA/AAP 2025 PALS：迷走张力增高引起的心动过缓用
-   阿托品），灌注不良时准备好氧合、通气和心肺复苏。
+5. 把入院约两小时心率降至47次/分识别为毒蕈碱样作用，在监护下重复、滴定阿托品（AHA/AAP 2025 PALS：迷走张力增高引起、伴心肺功能受损的
+   心动过缓用阿托品），灌注不良时准备好氧合、通气和心肺复苏。
 6. 出院前切断差错链：停药并追问指征，上报并坦诚告知，用回授法核实毫克和片数写明的用法（AHRQ 2024）。
 
 **关键决策。**

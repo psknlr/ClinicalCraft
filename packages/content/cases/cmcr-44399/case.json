@@ -48,8 +48,8 @@
       "en": "Interpret a cholinesterase of 1790 U/L, sinus rhythm and a sodium of 126.7 mmol/L for what each can and cannot show, and act on them: isotonic maintenance fluid (AAP 2018) and no suxamethonium if he needs intubation."
     },
     {
-      "zh-CN": "把入院约两小时心率降到47次/分识别为毒蕈碱样作用，在持续监护下重复、滴定阿托品（AHA/AAP 2025 PALS：迷走张力增高引起的心动过缓用阿托品），灌注不良时准备好氧合、通气和心肺复苏。",
-      "en": "Recognise the fall in heart rate to 47/min about two hours after admission as a muscarinic effect, and treat it with repeated, titrated atropine under continuous monitoring (AHA/AAP 2025 PALS: atropine for bradycardia from increased vagal tone), with oxygenation, ventilation and CPR ready if perfusion fails."
+      "zh-CN": "把入院约两小时心率降到47次/分识别为毒蕈碱样作用，在持续监护下重复、滴定阿托品（AHA/AAP 2025 PALS：迷走张力增高引起、伴心肺功能受损的心动过缓用阿托品），灌注不良时准备好氧合、通气和心肺复苏。",
+      "en": "Recognise the fall in heart rate to 47/min about two hours after admission as a muscarinic effect, and treat it with repeated, titrated atropine under continuous monitoring (AHA/AAP 2025 PALS: atropine for bradycardia with cardiopulmonary compromise from increased vagal tone), with oxygenation, ventilation and CPR ready if perfusion fails."
     },
     {
       "zh-CN": "出院前切断差错链：停药并追问用药指征，上报并坦诚告知差错，用回授法核实以毫克和片数写明的用法（AHRQ 2024）。",
@@ -372,7 +372,11 @@
           "lavage",
           "clinic",
           "how soon after",
-          "minutes after"
+          "minutes after",
+          "bottle",
+          "packet",
+          "broughtthe",
+          "broughthis"
         ]
       },
       "disclosure": "volunteer",
@@ -477,7 +481,18 @@
           "afterthetablets",
           "sickafter",
           "firsthospital",
-          "otherhospital"
+          "otherhospital",
+          "tabletsfor",
+          "medicinefor",
+          "neostigminefor",
+          "pillsfor",
+          "othertablets",
+          "otherpills",
+          "normallytake",
+          "usuallytake",
+          "whendidhetake",
+          "whattime",
+          "sincethetablets"
         ]
       },
       "disclosure": "volunteer",
@@ -532,7 +547,13 @@
           "wassick",
           "cramp",
           "stomach cramps",
-          "start being unwell"
+          "start being unwell",
+          "throwup",
+          "threwup",
+          "throwingup",
+          "longaftertaking",
+          "become unwell",
+          "unwell since"
         ]
       },
       "disclosure": "on-ask",
@@ -550,8 +571,8 @@
         "en": "Why did he go to the clinic in the first place?"
       },
       "answer": {
-        "zh-CN": "他发烧、咳嗽两天了。去诊所的时候眼睛流泪、怕光，不愿意睁眼。医生除了开治感染的药，还开了这个药。",
-        "en": "He'd had a fever and a cough for two days. At the clinic his eyes were watering, the light bothered him and he didn't want to open his eyes. Besides something for the infection, the doctor prescribed this medicine."
+        "zh-CN": "他发烧、咳嗽两天了。去诊所的时候眼睛流泪、怕光，不愿意睁眼。除了治感染的药，还给他开了这个药。",
+        "en": "He'd had a fever and a cough for two days. At the clinic his eyes were watering, the light bothered him and he didn't want to open his eyes. Besides something for the infection, he was prescribed this medicine."
       },
       "keywords": {
         "zh-CN": [
@@ -578,7 +599,7 @@
           "whatwashebeingtreatedfor",
           "what else was prescribed",
           "illwith",
-          "unwellwith"
+          "heunwellwith"
         ]
       },
       "excludeKeywords": {
@@ -591,7 +612,10 @@
           "what was it for",
           "still",
           "now",
-          "phlegm"
+          "phlegm",
+          "sincethetablets",
+          "afterthetablets",
+          "aftertaking"
         ]
       },
       "disclosure": "on-ask",
@@ -634,7 +658,15 @@
           "meant to treat",
           "whywashegiven",
           "whydidheget",
-          "whyheneeded"
+          "whyheneeded",
+          "thetabletsfor",
+          "thesetabletsfor",
+          "themedicinefor",
+          "theneostigminefor",
+          "isneostigminefor",
+          "thepillsfor",
+          "whydidtheyprescribe",
+          "whydidtheygive"
         ]
       },
       "disclosure": "unknown",
@@ -663,7 +695,11 @@
           "转院",
           "转过来",
           "当地",
-          "急救过"
+          "急救过",
+          "什么时候吃的",
+          "几点吃的",
+          "吃药的时候",
+          "多久以前吃的"
         ],
         "en": [
           "before he came",
@@ -679,7 +715,9 @@
           "pumped",
           "first hospital",
           "local hospital",
-          "washout"
+          "washout",
+          "whendidhetake",
+          "whattimedidhetake"
         ]
       },
       "disclosure": "on-ask",
@@ -733,7 +771,8 @@
           "diarrhea",
           "loose stools",
           "convulsions",
-          "runny stools"
+          "runny stools",
+          "theruns"
         ]
       },
       "excludeKeywords": {
@@ -870,6 +909,14 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知，不补写",
         "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家人",
+          "家族",
+          "亲戚"
+        ]
       }
     },
     {
@@ -907,6 +954,12 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知，不补写",
         "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "en": [
+          "written",
+          "instruction"
+        ]
       }
     },
     {
@@ -950,7 +1003,11 @@
         ],
         "en": [
           "left",
-          "remaining"
+          "remaining",
+          "withyou",
+          "bringthe",
+          "broughtthe",
+          "gotthe"
         ]
       },
       "disclosure": "unknown",
@@ -1016,13 +1073,19 @@
           "anything else regularly",
           "other medicines",
           "usual medicines",
-          "long-term medication"
+          "long-term medication",
+          "other tablets",
+          "normally take",
+          "usually take"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "新斯的明",
-          "几片"
+          "几片",
+          "喜欢吃",
+          "几点",
+          "什么时候吃"
         ],
         "en": [
           "neostigmine",
@@ -1123,7 +1186,9 @@
           "家里人",
           "家族",
           "遗传",
-          "家人有病"
+          "家人有病",
+          "家里有人",
+          "家里谁"
         ],
         "en": [
           "run in the family",
@@ -1138,6 +1203,11 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知，不补写",
         "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "en": [
+          "theruns"
+        ]
       }
     },
     {
@@ -1282,7 +1352,9 @@
           "howdoyoufeel",
           "does your tummy hurt",
           "areyousore",
-          "how are you doing"
+          "how are you doing",
+          "buddy",
+          "yourtummy"
         ]
       },
       "disclosure": "on-ask",
@@ -1324,7 +1396,9 @@
           "still hurt",
           "does your tummy hurt",
           "areyousore",
-          "how are you doing"
+          "how are you doing",
+          "buddy",
+          "yourtummy"
         ]
       },
       "disclosure": "on-ask",
@@ -1371,7 +1445,9 @@
           "does your tummy hurt",
           "areyousore",
           "how are you doing",
-          "tummy"
+          "tummy",
+          "buddy",
+          "yourtummy"
         ]
       },
       "disclosure": "on-ask",
@@ -1416,7 +1492,9 @@
           "howareyoufeeling",
           "howdoyoufeel",
           "still hurt",
-          "how are you doing"
+          "how are you doing",
+          "buddy",
+          "yourtummy"
         ]
       },
       "disclosure": "on-ask",
@@ -1459,7 +1537,8 @@
           "responsive",
           "howdoeshelook",
           "listless",
-          "awake"
+          "awake",
+          "lookathim"
         ]
       },
       "finding": {
@@ -1709,7 +1788,9 @@
           "vital signs",
           "obs",
           "skin",
-          "tummy"
+          "tummy",
+          "lookathim",
+          "anotherlook"
         ]
       },
       "finding": {
@@ -2288,8 +2369,8 @@
     {
       "id": "outcome",
       "name": {
-        "zh-CN": "住院经过与出院后记录",
-        "en": "Hospital course and post-discharge record"
+        "zh-CN": "住院经过记录",
+        "en": "Hospital course record"
       },
       "category": "record",
       "aliases": {
@@ -2397,6 +2478,21 @@
       "response": {
         "zh-CN": "已接上监护，并定时评估呼吸和肌力。除病历中记录的心率外，监护读数没有记录。",
         "en": "He is on the monitor, and his breathing and strength are checked regularly. Beyond the heart rate charted, no monitor readings are recorded."
+      },
+      "excludeKeywords": {
+        "en": [
+          "admit",
+          "hdu",
+          "picu",
+          "intensive care",
+          "high dependency"
+        ],
+        "zh-CN": [
+          "收住",
+          "收入",
+          "病房",
+          "重症"
+        ]
       }
     },
     {
@@ -2420,7 +2516,8 @@
           "iv line",
           "venous access",
           "put in a line",
-          "cannulate"
+          "cannulate",
+          "alinein"
         ]
       },
       "dose": {
@@ -2522,8 +2619,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "阿托品50 μg/kg静脉注射（36 kg约1.8 mg；单次最大3 mg）；无效时每5分钟给予前一剂量的两倍，直至出现阿托品效应，之后按需每1–4小时重复有效剂量或更低剂量（珀斯儿童医院阿托品用药专论，2024年审核：其有机磷或神经毒剂所致胆碱能危象的剂量，本例借用于氨基甲酸酯类药物过量）；与中毒咨询共同决定。",
-        "en": "Atropine 50 micrograms/kg IV (1.8 mg at 36 kg; maximum 3 mg per dose); if a dose is ineffective, give double that dose every 5 minutes until the atropine effect is evident, then repeat the effective or a lower dose every 1–4 hours as needed (Perth Children's Hospital atropine monograph, reviewed 2024: its dosing for a cholinergic crisis from organophosphates or nerve agents, applied here to a carbamate drug overdose); agree the plan with the poisons service."
+        "zh-CN": "首剂阿托品50 μg/kg静脉注射（36 kg约1.8 mg；该专论规定按体重计算的这一剂量最多3 mg）；无效时每5分钟给予前一剂量的两倍，直至出现阿托品效应，之后按需每1–4小时重复有效剂量或更低剂量（珀斯儿童医院阿托品用药专论，2024年审核：其有机磷或神经毒剂所致胆碱能危象的剂量，本例借用于氨基甲酸酯类药物过量）；与中毒咨询共同决定。",
+        "en": "Atropine 50 micrograms/kg IV as the first dose (1.8 mg at 36 kg; the monograph caps this weight-based dose at 3 mg); if a dose is ineffective, give double that dose every 5 minutes until the atropine effect is evident, then repeat the effective or a lower dose every 1–4 hours as needed (Perth Children's Hospital atropine monograph, reviewed 2024: its dosing for a cholinergic crisis from organophosphates or nerve agents, applied here to a carbamate drug overdose); agree the plan with the poisons service."
       },
       "requires": [
         "iv-access",
@@ -2774,7 +2871,9 @@
           "duty of candour",
           "incident form",
           "what went wrong",
-          "explain the error"
+          "explain the error",
+          "abouttheerror",
+          "aboutthemistake"
         ]
       },
       "dose": {
@@ -2833,8 +2932,8 @@
         ]
       },
       "response": {
-        "zh-CN": "已用回授法核实，发现的偏差已纠正并再次核对。病历没有记录出院时给了哪些指导。",
-        "en": "Teach-back done; any gaps were corrected and checked again. His record does not describe the advice given at discharge."
+        "zh-CN": "已用回授法核实，发现的偏差已纠正并再次核对。病历中没有这类宣教的记录。",
+        "en": "Teach-back done; any gaps were corrected and checked again. His record does not describe any such teaching."
       }
     },
     {
@@ -2929,7 +3028,7 @@
       "id": "hypotonic-fluids",
       "name": {
         "zh-CN": "静脉低张维持液（如1/4或1/5张含钠液）",
-        "en": "IV hypotonic maintenance fluid (such as 0.18% sodium chloride with 4% glucose)"
+        "en": "IV hypotonic maintenance fluid (such as 0.225% or 0.18% sodium chloride with glucose)"
       },
       "kind": "fluid",
       "aliases": {
@@ -3693,8 +3792,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。病历中没有记录新斯的明的用药指征——他当时是发热、咳嗽、流泪怕光、不愿睁眼。美国FDA说明书（2020年修订）要求胆碱能危象时立即停用所有这类药物；要再用，必须有明确的理由和安全的方案。",
-            "en": "Right. No indication for neostigmine is recorded — he had fever, cough and watering, light-sensitive eyes that he did not want to open. The FDA prescribing information (revised 2020) calls for prompt withdrawal of all drugs of this type in a cholinergic crisis; any restart needs a confirmed reason and a safe regimen."
+            "zh-CN": "正确。病历中没有记录新斯的明的用药指征——他当时是发热、咳嗽、流泪怕光、不愿睁眼。美国FDA说明书（2020年修订）要求胆碱能危象时立即停用所有这类药物。要再用，必须有明确的理由和安全的方案。",
+            "en": "Right. No indication for neostigmine is recorded — he had fever, cough and watering, light-sensitive eyes that he did not want to open. The FDA prescribing information (revised 2020) calls for prompt withdrawal of all drugs of this type in a cholinergic crisis. Any restart needs a confirmed reason and a safe regimen."
           }
         },
         {
@@ -4209,12 +4308,12 @@
         "en": "Lavage and charcoal, then and now. He had a lavage locally before transfer (its timing and fluid are not recorded). AACT/EAPCCT 2013 position paper update: gastric lavage should not be performed routinely, if at all; it is contraindicated with an unprotected airway or where it adds aspiration risk; its complications include aspiration pneumonia, laryngospasm, arrhythmia and fluid and electrolyte imbalance. AACT/EAPCCT 2005: single-dose charcoal may be considered up to one hour after ingestion (benefit later cannot be excluded) and is contraindicated unless the airway is intact or protected. Four hours out, in a child who has vomited and cannot stand unaided, a second lavage or charcoal adds only risk."
       },
       {
-        "zh-CN": "新斯的明过量：胆碱能危象还是肌无力危象。美国FDA新斯的明注射液说明书（2020年修订）：过量时出现毒蕈碱样表现（恶心、呕吐、腹泻、出汗、支气管和唾液分泌增加、心动过缓），可用阿托品或格隆溴铵处理；要支持通气直到自主呼吸足够，并监测心脏功能；胆碱能危象以肌无力加重为特点，累及呼吸肌时可致死；与肌无力危象难以区分时，再加用新斯的明可能造成严重后果——胆碱能危象需要停用所有这类药物，并建议立即用阿托品。说明书针对注射剂型；本病例把其中的过量处理原则用于这次口服过量。",
-        "en": "Neostigmine overdose: cholinergic or myasthenic crisis. FDA prescribing information for neostigmine methylsulfate injection (revised 2020): overdose brings muscarinic symptoms (nausea, vomiting, diarrhoea, sweating, increased bronchial and salivary secretions, bradycardia) that may be managed with atropine or glycopyrrolate; ventilation is supported until spontaneous breathing is adequate and cardiac function is monitored; a cholinergic crisis is marked by increasing weakness that can kill through the respiratory muscles; and because it can be hard to tell from a myasthenic crisis, more neostigmine could have grave consequences — the crisis calls for withdrawal of all drugs of this type, with immediate atropine. The label is for the injection; the case applies its overdose principles to this oral overdose."
+        "zh-CN": "新斯的明过量：胆碱能危象还是肌无力危象。美国FDA新斯的明注射液说明书（2020年修订）：过量时可出现毒蕈碱样表现（恶心、呕吐、腹泻、出汗、支气管和唾液分泌增加、心动过缓），可用阿托品或格隆溴铵处理；要支持通气直到自主呼吸足够，并监测心脏功能；胆碱能危象以肌无力加重为特点，累及呼吸肌时可致死；与肌无力危象难以区分时，再加用新斯的明可能造成严重后果——胆碱能危象需要停用所有这类药物，并建议立即用阿托品。说明书针对注射剂型；本病例把其中的过量处理原则用于这次口服过量。",
+        "en": "Neostigmine overdose: cholinergic or myasthenic crisis. FDA prescribing information for neostigmine methylsulfate injection (revised 2020): overdose can bring muscarinic symptoms (nausea, vomiting, diarrhoea, sweating, increased bronchial and salivary secretions, bradycardia) that may be managed with atropine or glycopyrrolate; ventilation is supported until spontaneous breathing is adequate and cardiac function is monitored; a cholinergic crisis is marked by increasing weakness that can kill through the respiratory muscles; and because it can be hard to tell from a myasthenic crisis, more neostigmine could have grave consequences — the crisis calls for withdrawal of all drugs of this type, with immediate atropine. The label is for the injection; the case applies its overdose principles to this oral overdose."
       },
       {
-        "zh-CN": "儿童阿托品：两种剂量，两个目的。珀斯儿童医院阿托品用药专论（2024年审核）：有机磷或神经毒剂所致的胆碱能危象（本例借用于这次氨基甲酸酯类药物过量）50 μg/kg静脉注射（单次最大3 mg），无效时每5分钟加倍直至出现阿托品效应——36 kg约1.8 mg；伴血流动力学受损的心动过缓20 μg/kg（最大600 μg），必要时重复一次——36 kg时为600 μg，而不是720 μg。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品，标准剂量0.02 mg/kg、最小剂量0.1 mg（PALS写作组2026年说明）。报告中他用过的阿托品剂量没有记录。",
-        "en": "Atropine in children: two doses, two purposes. Perth Children's Hospital atropine monograph (reviewed 2024): for a cholinergic crisis from organophosphates or nerve agents — the case applies it to this carbamate overdose — 50 micrograms/kg IV (maximum 3 mg per dose), doubled every 5 minutes while ineffective until the atropine effect is evident — about 1.8 mg at 36 kg; for bradycardia with haemodynamic compromise, 20 micrograms/kg (maximum 600 micrograms), repeated once if needed — 600 micrograms, not 720, at 36 kg. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone at a standard dose of 0.02 mg/kg with a minimum of 0.1 mg (as its writing group restated in 2026). The doses he actually received are not recorded."
+        "zh-CN": "儿童阿托品：两种剂量，两个目的。珀斯儿童医院阿托品用药专论（2024年审核）：有机磷或神经毒剂所致的胆碱能危象（本例借用于这次氨基甲酸酯类药物过量）首剂50 μg/kg静脉注射（这一剂量最多3 mg），无效时每5分钟加倍直至出现阿托品效应——36 kg约1.8 mg；伴血流动力学受损的心动过缓20 μg/kg（最大600 μg），必要时重复一次——36 kg时为600 μg，而不是720 μg。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品，标准剂量0.02 mg/kg、最小剂量0.1 mg（PALS写作组2026年说明）。报告中他用过的阿托品剂量没有记录。",
+        "en": "Atropine in children: two doses, two purposes. Perth Children's Hospital atropine monograph (reviewed 2024): for a cholinergic crisis from organophosphates or nerve agents — the case applies it to this carbamate overdose — 50 micrograms/kg IV as the first dose (capped at 3 mg), doubled every 5 minutes while ineffective until the atropine effect is evident — about 1.8 mg at 36 kg; for bradycardia with haemodynamic compromise, 20 micrograms/kg (maximum 600 micrograms), repeated once if needed — 600 micrograms, not 720, at 36 kg. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone at a standard dose of 0.02 mg/kg with a minimum of 0.1 mg (as its writing group restated in 2026). The doses he actually received are not recorded."
       },
       {
         "zh-CN": "低钠与补液。钠126.7 mmol/L低于AAP 2018年儿童静脉维持液指南界定低钠血症的135 mmol/L；该指南（关键行动声明1A，证据质量A，强推荐）要求28天至18岁需要维持液的患儿使用含适量氯化钾和葡萄糖的等张液。他吐过、出过汗、洗过胃；报告没有记录补液，也没有记录复查血钠。",
@@ -5101,6 +5200,88 @@
         "text": "Has he passed any urine today?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "Did he throw up?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long after taking them did he become unwell?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "What was he prescribed the tablets for?",
+        "locale": "en",
+        "expect": [
+          "prescription-reason"
+        ]
+      },
+      {
+        "text": "Has he had the runs?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Does he normally take any other tablets?",
+        "locale": "en",
+        "expect": [
+          "regular-medicines"
+        ]
+      },
+      {
+        "text": "Have you brought the bottle with you?",
+        "locale": "en",
+        "expect": [
+          "tablets-left"
+        ]
+      },
+      {
+        "text": "Were the instructions written on the box?",
+        "locale": "en",
+        "expect": [
+          "instructions"
+        ]
+      },
+      {
+        "text": "When did he take the tablets?",
+        "locale": "en",
+        "expect": [
+          "lavage-transfer"
+        ]
+      },
+      {
+        "text": "家里有人得过肌无力吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "吃药的时候是几点？",
+        "locale": "zh-CN",
+        "expect": [
+          "lavage-transfer"
+        ]
+      },
+      {
+        "text": "孩子喜欢吃什么？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "How are you holding up, buddy?",
+        "locale": "en",
+        "expect": [
+          "child-now"
+        ]
       }
     ]
   }
