@@ -1,4 +1,6 @@
-- cmcr-1551889: Abnormal fetal heart scan at 32 weeks · 26-year-old woman (5 decisions, 11 interventions;
-  review: 2 critical, 6 major, 7 minor findings)
-- cmcr-33736: Right leg pain and numbness for six hours · 29-year-old man (5 decisions, 17 interventions;
-  review: 2 critical, 8 major, 5 minor findings)
+- cmcr-1233223: Dizziness for over a month · 26-year-old man (5 decisions, 10 interventions;
+  review: 1 critical, 6 major, 10 minor findings)
+- cmcr-138892: Left lower abdominal pain, fever and a rising white count · 81-year-old man (5 decisions, 15 interventions;
+  review: 1 critical, 7 major, 15 minor findings)
+- cmcr-44477: Years of thirst and heavy urination, now vomiting · 13-year-old boy (5 decisions, 17 interventions;
+  review: 0 critical, 6 major, 10 minor findings)

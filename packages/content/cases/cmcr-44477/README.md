@@ -473,6 +473,21 @@ In the guidance (wording not reachable in full text from this environment):
   中华儿科杂志 2020;58(6):447-454；儿童糖尿病酮症酸中毒诊疗指南（2009年版），中华儿科杂志 2009;47(6):421-425): confirmed to
   exist but not read; check the case against them.
 
+For a clinician of the specialty (paediatric endocrinology, with paediatric urology for the bladder plan):
+- the "not shocked" reading of cool peripheries with a heart rate of 102/min and a blood pressure of 95/60 mmHg, and
+  so the 10 mL/kg bolus over 30 minutes rather than shock boluses;
+- the deficit to assume: BSPED 2021 grades by pH and/or bicarbonate and assumes 10 % in severe DKA, so a bicarbonate of
+  4.2 mmol/L with a pH of 7.21 points to 10 %, while NICE NG18 ties the deficit to the pH; the case states no
+  percentage;
+- the rate at which the corrected sodium (about 128 mmol/L) may rise on 0.9 % sodium chloride, and the 2–4-hourly
+  sodium checks;
+- the critical flags: the insulin bolus, bicarbonate and fluid restriction as critical; insulin before the fluids and
+  desmopressin before testing as recoverable;
+- after DKA, whether to repeat a water-deprivation test or go from paired osmolalities to a supervised desmopressin
+  response, given that medullary washout and the dilated urinary tract may blunt the response;
+- the bladder plan (post-void residual, renal function, urodynamics, clean intermittent catheterisation) as an
+  extrapolation of EAU/ESPU 2020 to WFS1 spectrum disorder.
+
 ## Changelog
 
 ### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article

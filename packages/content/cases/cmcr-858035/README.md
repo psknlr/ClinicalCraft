@@ -19,13 +19,13 @@ calendar dates are removed. What 1.0.0 does not record stays unknown.
 |---|---|
 | id / version | `cmcr-858035` / `1.1.0` |
 | setting / facility | `inpatient` / `general-hospital` (a ward bed; CT in imaging) |
-| specialty | respiratory medicine, haematology (rheumatology is involved through the consultant and the guidance, but is left off the card: it would point at the answer — STANDARD §6.7) |
+| specialty | respiratory medicine, haematology (rheumatology is involved through the consultant and the guidance, but is left off the card: it would point at the answer — STANDARD §1.14) |
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: three record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
 | review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a respiratory physician and a haematologist (or rheumatologist) review it before teaching use |
 | phases | `admission` 入院当天：病房床旁 / Day of admission: at the bedside on the ward → `workup` 住院期间：进一步检查回报 / During the admission: further results back → `followup` 记录的病程与结局 / Recorded course and outcome — one-way, none learner-switchable |
-| content | 23 history items (10 recorded facts, 1 labelled teaching device, 12 unknown; 8 required) · 4 exam findings (all 1.0.0 records) · 19 investigations (9 with a recorded result, 10 with none in any phase; 3 record reviews) · 15 interventions (5 always contraindicated; LMWH and UFH contraindicated on top of each other; warfarin contraindicated without heparin cover; 1 critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 27; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| content | 23 history items (10 recorded facts, 1 labelled teaching device, 12 unknown; 8 required) · 4 exam findings (all 1.0.0 records) · 19 investigations (9 with a recorded result, 10 with none in any phase; 3 record reviews) · 15 interventions (5 always contraindicated; LMWH and UFH contraindicated on top of each other; warfarin contraindicated without heparin cover; 1 critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 27; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
 
 ## Learning outcomes
 
@@ -74,11 +74,13 @@ LMWH the same day with daily platelet counts (normotensive PE: no lysis; platele
 APS while confirming persistence at ≥ 12 weeks; long-term warfarin to an INR of 2.0–3.0 with no planned stop, no DOAC;
 a pregnancy test before warfarin, no oestrogen-containing contraception, and pregnancy planned with the specialists.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
-1.0.0 times none of the tests. The split below — first-line imaging and bloods on the day of admission, the factor
-assays, autoantibodies and anticardiolipin later in the admission — is a teaching device that follows the usual order
-of a work-up; the README and `provenance.notes` say so.
+Static clock (`clock.mode: "static"`, no `physiology`): the report gives no time series, so nothing changes with time and
+no treatment response is simulated; each intervention's `response` says what the case records. 1.0.0 times none of the
+tests. The split below — first-line imaging and bloods on the day of admission, the factor assays, autoantibodies and
+anticardiolipin later in the admission — is a teaching device that follows the usual order of a work-up; the README
+and `provenance.notes` say so.
 
 | phase | what the learner can do | records with a result | records with none |
 |---|---|---|---|

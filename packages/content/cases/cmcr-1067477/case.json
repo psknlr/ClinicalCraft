@@ -45,7 +45,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -72,20 +72,20 @@
   },
   "learningOutcomes": [
     {
-      "zh-CN": "对产后24小时以后的继发性产后出血，系统排查宫腔残留、子宫内膜炎、子宫复旧不良和胎盘植入：留取宫颈阴道拭子和血培养，怀疑子宫内膜炎时静脉用抗菌药物（WHO 2015：克林霉素联合庆大霉素），并由高年资医生在超声引导下清除残留组织（RCOG 2016）。",
-      "en": "Work up secondary postpartum haemorrhage for retained tissue, endometritis, subinvolution and a placenta accreta spectrum: take swabs and blood cultures, start IV antibiotics when endometritis is suspected (WHO 2015: clindamycin with gentamicin), and have a senior obstetrician evacuate retained tissue under ultrasound guidance (RCOG 2016)."
+      "zh-CN": "对产后24小时以后的继发性产后出血，系统排查宫腔残留、子宫内膜炎、子宫复旧不良和胎盘植入：留取阴道拭子（怀疑感染时在用抗菌药物前留血培养），怀疑子宫内膜炎时静脉用抗菌药物（WHO 2015：克林霉素联合庆大霉素），由有经验的医生清除残留组织（RCOG 2016），鉴于她既往的子宫手术，在超声引导下进行。",
+      "en": "Work up secondary postpartum haemorrhage for retained tissue, endometritis, subinvolution and a placenta accreta spectrum: take vaginal swabs (and blood cultures before antibiotics when infection is suspected), start IV antibiotics when endometritis is suspected (WHO 2015: clindamycin with gentamicin), and have an experienced obstetrician evacuate retained tissue (RCOG 2016), under ultrasound guidance given her previous uterine surgery."
     },
     {
-      "zh-CN": "清宫后宫腔已空而子宫仍增大、回声不均，白细胞和CRP上升时，即使没有明显发热，也判断为子宫壁的感染或坏死，安排断层影像，停止盲目刮宫。",
-      "en": "Read an empty cavity with a still enlarged, heterogeneous uterus and a rising white count and CRP as infection or necrosis of the uterine wall even without a marked fever, image it, and stop blind curettage."
+      "zh-CN": "清宫后宫腔已空而子宫仍增大、回声不均，白细胞上升伴中性粒细胞升高时，即使没有明显发热，也判断为子宫壁的感染或坏死，安排断层影像，停止盲目刮宫。",
+      "en": "Read an empty cavity with a still enlarged, heterogeneous uterus and a white count rising with neutrophilia as infection or necrosis of the uterine wall even without a marked fever, image it, and stop blind curettage."
     },
     {
       "zh-CN": "对伴休克的继发性产后出血（血压53/34 mmHg）启动产科大出血预案：早期输注红细胞和血浆，持续出血时纤维蛋白原维持在2 g/L以上（RCOG 2016）；并说明为什么分娩3小时以后不再开始使用氨甲环酸（WHO 2017；WHO/FIGO/ICM 2025）。",
       "en": "Run the obstetric major haemorrhage response for secondary PPH with shock (BP 53/34 mmHg): red cells and plasma early and fibrinogen kept above 2 g/L during ongoing bleeding (RCOG 2016); and explain why tranexamic acid is not started more than 3 hours after the birth (WHO 2017; WHO/FIGO/ICM 2025)."
     },
     {
-      "zh-CN": "可能存在脓毒性休克时，在1小时内给予含克林霉素的广谱抗菌药物（SSC 2021；SMFM 2023），并在条件允许时尽快完成感染源控制。",
-      "en": "When septic shock is possible, give broad-spectrum antibiotics including clindamycin within the hour (SSC 2021; SMFM 2023) and achieve source control as soon as it is practical."
+      "zh-CN": "可能存在脓毒性休克时，在1小时内给予广谱抗菌药物（SSC 2021；SMFM 2023），可能为坏死性或产毒素感染时加用克林霉素（IDSA 2014），并在条件允许时尽快完成感染源控制。",
+      "en": "When septic shock is possible, give broad-spectrum antibiotics within the hour (SSC 2021; SMFM 2023), adding clindamycin when a necrotising or toxin-producing infection is possible (IDSA 2014), and achieve source control as soon as it is practical."
     },
     {
       "zh-CN": "宫颈处组织为大片坏死的子宫肌层时，选择开腹子宫切除去除感染源（IDSA 2014），而不是宫腔镜分离、保留子宫的局部切除或子宫动脉栓塞，并按《民法典》第一千二百一十九条向她本人说明风险和替代方案、取得她的明确同意。",
@@ -109,8 +109,8 @@
       "en": "Since they induced the birth I keep bleeding heavily down below — it's been three days"
     },
     "triageNote": {
-      "zh-CN": "31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起阴道大量流血并曾休克（血压40/20 mmHg）。转出医院行清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少，但此后反复阴道多量流血3天。转入时体温37.4 ℃。",
-      "en": "31-year-old; membranes ruptured at just over 28 weeks and the birth was induced about 10 hours later, with heavy vaginal bleeding from about 2 hours after it and shock (BP 40/20 mmHg). The transferring unit evacuated the uterus, repaired a perineal tear, transfused her and gave uterotonics; the bleeding lessened, but heavy bleeding has recurred for 3 days. Temperature on arrival 37.4 °C."
+      "zh-CN": "31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起阴道大量流血并曾休克（血压40/20 mmHg）。转出医院行清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少。引产后反复阴道多量流血3天。转入时体温37.4 ℃。",
+      "en": "31-year-old; membranes ruptured at just over 28 weeks and the birth was induced about 10 hours later, with heavy vaginal bleeding from about 2 hours after it and shock (BP 40/20 mmHg). The transferring unit evacuated the uterus, repaired a perineal tear, transfused her and gave uterotonics, after which the bleeding lessened. 3 days of recurrent heavy vaginal bleeding since the induced birth. Temperature on arrival 37.4 °C."
     },
     "tags": [
       {
@@ -160,8 +160,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "转入时：疲惫、害怕，但清醒配合，用自己的话回答，不用术语。再次清宫后：仍然担心，回答简短。第三次入院时：大出血后面色苍白、手脚发凉，说话吃力、句子很短。只回答问到的内容，不增减任何数字、孕周或时间；问到不知道的事（比如宝宝的情况、药物过敏、以后的打算），就说说不上来，不要编。",
-        "en": "On transfer: tired and frightened but alert and cooperative, answering in her own words without medical terms. After the repeat evacuation: still anxious, with brief answers. At the third admission: pale and cold after the bleed, speaking with effort in very short sentences. Answer only what is asked, never adding or changing numbers, weeks or times; for anything you do not know (the baby, allergies, plans for the future), say you are not sure — never invent."
+        "zh-CN": "转入时：疲惫、害怕，但清醒配合，用自己的话回答，不用术语。再次清宫后：仍然担心，回答简短。第三次入院时：大出血后面色苍白、手脚发凉，只简短回答。只回答问到的内容，不增减任何数字、孕周或时间；问到不知道的事（比如宝宝的情况、药物过敏、以后的打算），就说说不上来，不要编。",
+        "en": "On transfer: tired and frightened but alert and cooperative, answering in her own words without medical terms. After the repeat evacuation: still anxious, with brief answers. At the third admission: pale and cold after the bleed, answering only briefly. Answer only what is asked, never adding or changing numbers, weeks or times; for anything you do not know (the baby, allergies, plans for the future), say you are not sure — never invent."
       }
     },
     "appearance": {
@@ -313,7 +313,10 @@
           "main problem",
           "presenting complaint",
           "reason for transfer",
-          "blood loss"
+          "blood loss",
+          "whatbringsyou",
+          "bringsyouin",
+          "whatsthematter"
         ]
       },
       "excludeKeywords": {
@@ -378,8 +381,8 @@
         "en": "Has the bleeding eased off at all along the way?"
       },
       "answer": {
-        "zh-CN": "那边处理完以后少了一阵，后来又反反复复地多起来。",
-        "en": "After they treated me there it eased for a while, but then it kept coming back heavy, on and off."
+        "zh-CN": "那边处理完以后少了些，可还是反反复复地出很多血。",
+        "en": "After they treated me there it eased off, but it keeps coming back heavy, on and off."
       },
       "keywords": {
         "zh-CN": [
@@ -409,8 +412,8 @@
         "transfer"
       ],
       "source": {
-        "zh-CN": "报告（1.0.0版摘录）：分诊记录（清宫、输血和促宫缩后出血减少）与主诉（此后反复多量流血）；患者口吻为教学改写",
-        "en": "Report (version 1.0.0 extract): triage note (bleeding lessened after evacuation, transfusion and uterotonics) and chief complaint (recurrent heavy bleeding since); her words are a teaching adaptation"
+        "zh-CN": "报告（1.0.0版摘录）：分诊记录（清宫、输血和促宫缩后出血减少）与主诉（引产后反复多量流血3天）；患者口吻为教学改写",
+        "en": "Report (version 1.0.0 extract): triage note (bleeding lessened after evacuation, transfusion and uterotonics) and chief complaint (3 days of recurrent heavy bleeding after the induced birth); her words are a teaching adaptation"
       }
     },
     {
@@ -625,7 +628,10 @@
           "medicinetocontract",
           "other hospital",
           "treatedsofar",
-          "stop the bleeding"
+          "stop the bleeding",
+          "blood given",
+          "given blood",
+          "give you blood"
         ]
       },
       "excludeKeywords": {
@@ -688,7 +694,9 @@
           "womb surgery",
           "previous pregnancies",
           "miscarriage",
-          "past surgery"
+          "past surgery",
+          "pregnant before",
+          "howmanypregnancies"
         ]
       },
       "excludeKeywords": {
@@ -914,7 +922,10 @@
           "medical conditions",
           "health problems",
           "pregnancy complications",
-          "chronic"
+          "chronic",
+          "medical problems",
+          "illnesses",
+          "any conditions"
         ]
       },
       "excludeKeywords": {
@@ -1187,7 +1198,9 @@
           "怎么又",
           "出了多少血",
           "又来了",
-          "又住院"
+          "又住院",
+          "怎么又来了",
+          "这次什么时候开始"
         ],
         "en": [
           "thistime",
@@ -1197,7 +1210,10 @@
           "readmitted",
           "howmuchblood",
           "thisadmission",
-          "come back in"
+          "come back in",
+          "whatbringsyou",
+          "broughtyouback",
+          "bleeding start"
         ]
       },
       "excludeKeywords": {
@@ -1612,8 +1628,8 @@
             "en": "On transfer"
           },
           "text": {
-            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少，此后反复阴道多量流血。",
-            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened; heavy bleeding has recurred since."
+            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少。引产后反复阴道多量流血3天。",
+            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened. Recurrent heavy vaginal bleeding for 3 days after the induced birth."
           },
           "note": {
             "zh-CN": "本病例没有记录输血量、所用促宫缩药的名称和剂量、胎盘娩出情况和新生儿情况。",
@@ -1631,8 +1647,8 @@
             "en": "On transfer"
           },
           "text": {
-            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少，此后反复阴道多量流血。",
-            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened; heavy bleeding has recurred since."
+            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少。引产后反复阴道多量流血3天。",
+            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened. Recurrent heavy vaginal bleeding for 3 days after the induced birth."
           },
           "note": {
             "zh-CN": "本病例没有记录输血量、所用促宫缩药的名称和剂量、胎盘娩出情况和新生儿情况。",
@@ -1650,8 +1666,8 @@
             "en": "On transfer"
           },
           "text": {
-            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少，此后反复阴道多量流血。",
-            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened; heavy bleeding has recurred since."
+            "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。产后约2小时开始阴道大量流血，出现休克：血压40/20 mmHg，脉搏细数。予清宫、会阴裂伤缝合、输血及促宫缩药物后出血减少。引产后反复阴道多量流血3天。",
+            "en": "Membranes ruptured at just over 28 weeks; the birth was induced about 10 hours later. Heavy vaginal bleeding began about 2 hours after the birth, with shock: blood pressure 40/20 mmHg and a thready, rapid pulse. After evacuation of the uterus, repair of a perineal tear, transfusion and uterotonics the bleeding lessened. Recurrent heavy vaginal bleeding for 3 days after the induced birth."
           },
           "note": {
             "zh-CN": "本病例没有记录输血量、所用促宫缩药的名称和剂量、胎盘娩出情况和新生儿情况。",
@@ -3012,6 +3028,7 @@
         "setting": "operating-room"
       },
       "risk": "moderate",
+      "critical": true,
       "indicatedWhen": {
         "all": [
           {
@@ -3029,8 +3046,8 @@
         }
       },
       "harm": {
-        "zh-CN": "她已经再次清过宫：再刮一次，是在可能已经发炎甚至坏死的子宫壁上操作，穿孔和大出血的风险高，还可能造成宫腔粘连，并会耽误她需要的静脉抗菌药物和影像检查。留在宫颈或阴道里的组织，应在窥器下用卵圆钳轻柔取出送病理，而不是再搔刮子宫壁。",
-        "en": "She has already had a repeat evacuation: curetting again works on a uterine wall that may be inflamed or even necrotic, with a high risk of perforation and major bleeding and a risk of adhesions, and it delays the IV antibiotics and imaging she needs. Tissue lying in the cervix or vagina is eased out with sponge forceps under a speculum for histology — the uterine wall is not curetted again."
+        "zh-CN": "她已经再次清过宫：再刮一次，是在可能已经发炎甚至坏死的子宫壁上操作，穿孔和大出血的风险高，还可能造成宫腔粘连，并会耽误她需要的静脉抗菌药物和影像检查。RCOG绿顶指南第52号（2016）的清宫针对的是残留的胎盘组织，没有残留就不应反复刮宫；坏死组织要靠手术去除（IDSA 2014）。留在宫颈或阴道里的组织，应在窥器下用卵圆钳轻柔取出送病理，而不是再搔刮子宫壁。",
+        "en": "She has already had a repeat evacuation: curetting again works on a uterine wall that may be inflamed or even necrotic, with a high risk of perforation and major bleeding and a risk of adhesions, and it delays the IV antibiotics and imaging she needs. RCOG Green-top Guideline 52 (2016) evacuates retained placental tissue — it does not repeat curettage without it — and necrotic tissue needs removal at surgery (IDSA 2014). Tissue lying in the cervix or vagina is eased out with sponge forceps under a speculum for histology — the uterine wall is not curetted again."
       },
       "response": {
         "zh-CN": "清宫已完成，组织已送病理。原报告记录她曾再次清宫；本病例没有记录清宫时的所见和这次组织的病理。",
@@ -3071,12 +3088,13 @@
         "setting": "operating-room"
       },
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "在正在出血、可能已经感染、子宫壁可能已经病变的产后子宫上做宫腔镜分离或切除，穿孔和大出血的风险很高，而且处理不了子宫壁本身的病变。急性期的宫腔残留，由高年资医生在超声引导下清宫；宫腔已经空了以后，继续宫腔内操作没有帮助。",
-        "en": "Hysteroscopic separation or resection in a bleeding postpartum uterus that may be infected, and whose wall may itself be diseased, carries a high risk of perforation and major bleeding and does nothing about the wall. Retained tissue in the acute phase is removed by a senior obstetrician by ultrasound-guided evacuation; once the cavity is empty, more intrauterine instrumentation does not help."
+        "zh-CN": "在正在出血、可能已经感染、子宫壁可能已经病变的产后子宫上做宫腔镜分离或切除，穿孔和大出血的风险很高，而且处理不了子宫壁本身的病变。对继发性产后出血，RCOG绿顶指南第52号（2016）主张由有经验的医生实施或指导清宫来清除残留组织；宫腔已经空了以后，继续宫腔内操作没有帮助，坏死组织要靠手术去除（IDSA 2014）。",
+        "en": "Hysteroscopic separation or resection in a bleeding postpartum uterus that may be infected, and whose wall may itself be diseased, carries a high risk of perforation and major bleeding and does nothing about the wall. In secondary PPH, RCOG Green-top Guideline 52 (2016) has retained tissue removed by surgical evacuation undertaken or supervised by an experienced clinician; once the cavity is empty, more intrauterine instrumentation does not help, and necrotic tissue needs removal at surgery (IDSA 2014)."
       },
       "response": {
         "zh-CN": "已安排宫腔镜手术。原报告的处理经过见结局记录；本病例不模拟这次手术的效果。",
@@ -3120,12 +3138,13 @@
         "capability": "fluoroscopy"
       },
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "感染是子宫动脉栓塞的禁忌（危及生命的大出血时为相对禁忌）：栓塞本身可引起子宫坏死、栓塞后子宫内膜炎和脓肿，而且清除不了残留或坏死的组织。休克时把她送去介入室，还会推迟手术止血和去除病灶。",
-        "en": "Infection is a contraindication to uterine artery embolisation (a relative one when bleeding is life-threatening): embolisation can itself cause uterine necrosis, post-embolisation endometritis and abscess, and it removes no retained or necrotic tissue. In a woman in shock, a trip to the angiography suite also delays surgical control of the bleeding and of its source."
+        "zh-CN": "感染是子宫动脉栓塞的禁忌（危及生命的大出血时为相对禁忌）：栓塞本身可引起子宫坏死、栓塞后子宫内膜炎和脓肿，而且清除不了残留或坏死的组织。RCOG绿顶指南第52号（2016）把介入治疗作为合适病例的止血选择，而不是代替去除病灶；SSC 2021要求尽快控制感染源。休克时把她送去介入室，还会推迟手术止血和去除病灶。",
+        "en": "Infection is a contraindication to uterine artery embolisation (a relative one when bleeding is life-threatening): embolisation can itself cause uterine necrosis, post-embolisation endometritis and abscess, and it removes no retained or necrotic tissue. RCOG Green-top Guideline 52 (2016) offers interventional radiology for suitable cases of PPH, not in place of removing the source, and SSC 2021 asks for source control as soon as practical. In a woman in shock, a trip to the angiography suite also delays surgical control of the bleeding and of its source."
       },
       "response": {
         "zh-CN": "她被送往介入室。本病例没有记录是否做过这一步；不模拟其效果。",
@@ -3258,7 +3277,8 @@
           "saline",
           "hartmann",
           "fluid bolus",
-          "ringer"
+          "ringer's lactate",
+          "lactated ringer's"
         ]
       },
       "dose": {
@@ -3272,6 +3292,18 @@
       "response": {
         "zh-CN": "正在输注。本病例没有记录她的补液情况；不模拟其效果。",
         "en": "Running. This case does not record her fluids; it does not simulate the effect."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "卵圆钳",
+          "组织",
+          "团块"
+        ],
+        "en": [
+          "forceps",
+          "tissue",
+          "mass"
+        ]
       }
     },
     {
@@ -3297,6 +3329,11 @@
       "dose": {
         "zh-CN": "氨甲环酸1 g静脉注射（10分钟以上）。",
         "en": "Tranexamic acid 1 g IV over 10 minutes."
+      },
+      "doseSpec": {
+        "amount": 1,
+        "unit": "g",
+        "route": "IV"
       },
       "requires": [
         "iv-access",
@@ -3393,6 +3430,7 @@
         "setting": "operating-room"
       },
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "indicatedWhen": {
         "phase": "third-admission"
@@ -3408,12 +3446,12 @@
         ]
       },
       "harm": {
-        "zh-CN": "现在切除子宫为时过早：复旧不良的子宫里有残留组织，应先抗感染并清宫；清宫后子宫仍不正常，需要的是静脉抗菌药物和影像检查，而不是马上切除。还没有坏死的证据、治疗也没有失败时，切除一位31岁女性的子宫，会让她永久失去生育能力。",
-        "en": "A hysterectomy at this stage is premature: retained tissue in a subinvoluted uterus is treated first with antibiotics and evacuation, and a uterus that stays abnormal afterwards needs IV antibiotics and imaging before anyone removes it. Without evidence of necrosis or of failed treatment, removing a 31-year-old's uterus ends her fertility for good."
+        "zh-CN": "现在切除子宫为时过早：复旧不良的子宫里有残留组织，应先抗感染并由有经验的医生清宫（RCOG绿顶指南第52号，2016；子宫内膜炎用药见WHO 2015）；清宫后子宫仍不正常，需要的是静脉抗菌药物和影像检查，而不是马上切除。还没有坏死的证据、治疗也没有失败时，切除一位31岁女性的子宫，会让她永久失去生育能力；RCOG（2016）还要求切除子宫的决定有第二位有经验的医生参与。",
+        "en": "A hysterectomy at this stage is premature: retained tissue in a subinvoluted uterus is treated first with antibiotics and evacuation by an experienced clinician (RCOG Green-top Guideline 52, 2016; WHO 2015 for endometritis), and a uterus that stays abnormal afterwards needs IV antibiotics and imaging before anyone removes it. Without evidence of necrosis or of failed treatment, removing a 31-year-old's uterus ends her fertility for good; RCOG (2016) also asks for a second experienced clinician in any decision to remove the uterus."
       },
       "response": {
-        "zh-CN": "她被送进手术室。原报告各次手术的经过见结局记录；本病例不模拟这次手术的效果。",
-        "en": "She is taken to theatre. The report's operations, in their order, are in the outcome record; this case does not simulate the effect of this one."
+        "zh-CN": "她被送进手术室行子宫切除。原报告的处理经过见结局记录；本病例不模拟手术的效果。",
+        "en": "She is taken to theatre for the hysterectomy. The report's course is in the outcome record; this case does not simulate the effect of the operation."
       }
     },
     {
@@ -3451,12 +3489,13 @@
         "setting": "operating-room"
       },
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "保留子宫的局部切除只见于病灶局限、病情稳定、充分知情的个案报道；子宫壁一旦坏死，局部切除很可能留下坏死、感染的肌层，再出血和感染持续的风险很高。没有证据表明子宫壁本身有病变时，更没有理由开腹切除。",
-        "en": "Uterus-sparing excision appears only in case reports of limited disease in stable, fully informed women; once the wall is necrotic, a local excision is likely to leave dead, infected muscle behind, with a high risk of further bleeding and continuing infection. Without evidence that the wall itself is diseased, there is no reason to open the abdomen at all."
+        "zh-CN": "保留子宫的局部切除只见于病灶局限、病情稳定、充分知情的个案报道；子宫壁一旦坏死，局部切除很可能留下坏死、感染的肌层，再出血和感染持续的风险很高——IDSA 2014要求坏死性感染彻底清除坏死组织，SSC 2021要求有效控制感染源。没有证据表明子宫壁本身有病变时，更没有理由开腹切除。",
+        "en": "Uterus-sparing excision appears only in case reports of limited disease in stable, fully informed women; once the wall is necrotic, a local excision is likely to leave dead, infected muscle behind, with a high risk of further bleeding and continuing infection — IDSA 2014 calls for removal of all necrotic tissue in a necrotising infection, and SSC 2021 for effective source control. Without evidence that the wall itself is diseased, there is no reason to open the abdomen at all."
       },
       "response": {
         "zh-CN": "她被送进手术室。原报告的处理经过见结局记录；本病例不模拟这次手术的效果。",
@@ -3582,10 +3621,17 @@
         "zh-CN": "出血控制后开始：按体重给予预防剂量（如体重50–90 kg者依诺肝素40 mg皮下注射，每日1次），至少10天，危险因素持续时延长到产后6周；出血控制前用机械预防。",
         "en": "Once bleeding is controlled: a weight-based prophylactic dose (enoxaparin 40 mg subcutaneously once daily for 50–90 kg), for at least 10 days, extended to 6 weeks after the birth if risk factors persist; mechanical prophylaxis until then."
       },
+      "doseSpec": {
+        "amount": 20,
+        "upTo": 80,
+        "unit": "mg",
+        "route": "SC"
+      },
       "requires": [
         "medications"
       ],
       "risk": "low",
+      "critical": false,
       "indicatedWhen": {
         "intervened": "hysterectomy"
       },
@@ -3802,8 +3848,8 @@
     {
       "id": "obj-after-evacuation",
       "title": {
-        "zh-CN": "清宫后重新评估并开始治疗",
-        "en": "Reassess her after the evacuation and start treatment"
+        "zh-CN": "重新评估并开始治疗",
+        "en": "Reassess her and start treatment"
       },
       "short": {
         "zh-CN": "清宫后",
@@ -3838,7 +3884,14 @@
             "decided": "post-evacuation"
           },
           {
-            "intervened": "iv-antibiotics"
+            "any": [
+              {
+                "intervened": "iv-antibiotics"
+              },
+              {
+                "intervened": "broad-spectrum-antibiotics"
+              }
+            ]
           }
         ]
       },
@@ -3882,8 +3935,8 @@
     {
       "id": "obj-third-admission",
       "title": {
-        "zh-CN": "第三次入院：先救命，再取得组织诊断",
-        "en": "Third admission: resuscitate first, then get a tissue diagnosis"
+        "zh-CN": "稳定病情，查明原因",
+        "en": "Stabilise her and establish the cause"
       },
       "short": {
         "zh-CN": "第三次入院",
@@ -4040,7 +4093,7 @@
     {
       "id": "transfer-plan",
       "prompt": {
-        "zh-CN": "31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起大出血并曾休克（血压40/20 mmHg），经清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少，但此后反复阴道多量流血3天转入。既往剖宫产1次、人工流产4次。体温37.4 ℃，宫底平脐、子宫收缩差；超声见宫腔内约28×18×36 mm不均质团块；白细胞13.04×10⁹/L。你的判断和处理是什么？",
+        "zh-CN": "31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起大出血并曾休克（血压40/20 mmHg），经清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少；引产后反复阴道多量流血3天转入。既往剖宫产1次、人工流产4次。体温37.4 ℃，宫底平脐、子宫收缩差；超声见宫腔内约28×18×36 mm不均质团块；白细胞13.04×10⁹/L。你的判断和处理是什么？",
         "en": "A 31-year-old whose membranes ruptured at just over 28 weeks had an induced birth about 10 hours later; heavy bleeding from about 2 hours after it, with shock (BP 40/20 mmHg), lessened after evacuation, perineal repair, transfusion and uterotonics, but she has had 3 days of recurrent heavy bleeding. One previous caesarean and four terminations. Temperature 37.4 °C; the fundus is at the umbilicus and poorly contracted; ultrasound shows a heterogeneous 28 × 18 × 36 mm mass in the cavity; white cells 13.04×10⁹/L. What is your assessment and plan?"
       },
       "kind": "single",
@@ -4090,8 +4143,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。产后24小时以后的异常出血属于继发性产后出血，最常见的原因是宫腔残留和子宫内膜炎。RCOG绿顶指南第52号（2016）要求留取拭子和血培养、怀疑子宫内膜炎时用抗菌药物，并由有经验的医生清宫；WHO（2015）推荐克林霉素联合庆大霉素治疗产后子宫内膜炎（用药前先问过敏史，本病例没有记录）。她有一次剖宫产和4次人流，清宫要由高年资医生在超声引导下进行，并备好血制品。",
-            "en": "Right. Abnormal bleeding more than 24 hours after a birth is secondary postpartum haemorrhage, most often from retained tissue and endometritis. RCOG Green-top Guideline 52 (2016) asks for swabs and blood cultures, antibiotics when endometritis is suspected and evacuation by an experienced clinician; WHO (2015) recommends clindamycin with gentamicin for postpartum endometritis (ask about allergies first — the case does not record them). With one caesarean and four terminations behind her, the evacuation belongs to a senior under ultrasound guidance, with blood ready."
+            "zh-CN": "正确。产后24小时以后的异常出血属于继发性产后出血，最常见的原因是宫腔残留和子宫内膜炎。RCOG绿顶指南第52号（2016）要求留取阴道拭子（发热时加做血培养）、怀疑子宫内膜炎时用抗菌药物，并由有经验的医生清宫；怀疑感染时，在第一剂抗菌药物前留好培养并不费事；WHO（2015）推荐克林霉素联合庆大霉素治疗产后子宫内膜炎（用药前先问过敏史，本病例没有记录）。她有一次剖宫产和4次人流，清宫要由高年资医生在超声引导下进行，并备好血制品。",
+            "en": "Right. Abnormal bleeding more than 24 hours after a birth is secondary postpartum haemorrhage, most often from retained tissue and endometritis. RCOG Green-top Guideline 52 (2016) asks for vaginal swabs (and blood cultures if she is febrile), antibiotics when endometritis is suspected and evacuation by an experienced clinician; cultures taken before the first antibiotic dose cost nothing when infection is suspected; WHO (2015) recommends clindamycin with gentamicin for postpartum endometritis (ask about allergies first — the case does not record them). With one caesarean and four terminations behind her, the evacuation belongs to a senior under ultrasound guidance, with blood ready."
           }
         },
         {
@@ -4171,8 +4224,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。宫腔已空而子宫仍大、回声不均，白细胞和CRP还在上升，问题已经在子宫壁本身。没有明显发热不能排除深部或坏死性感染，产后白细胞要看趋势和临床表现。SMFM（2023）和SSC（2021）都要求怀疑脓毒症时留培养、尽快给予广谱抗菌药物，并尽早查明需要处理的感染源。",
-            "en": "Right. With an empty cavity, an enlarged heterogeneous uterus and a white count and CRP still rising, the problem lies in the uterine wall. No marked fever does not exclude a deep or necrotising infection, and a postpartum white count is read by its trend and the clinical picture. SMFM (2023) and SSC (2021) call for cultures, prompt broad-spectrum antibiotics and early identification of any source that needs control."
+            "zh-CN": "正确。宫腔已空而子宫仍大、回声不均，白细胞还在上升（13.04→16.12×10⁹/L，中性粒细胞升高），问题已经在子宫壁本身。没有明显发热不能排除深部或坏死性感染，产后白细胞要看趋势和临床表现。SMFM（2023）和SSC（2021）都要求怀疑脓毒症时留培养、尽快给予广谱抗菌药物，并尽早查明需要处理的感染源。",
+            "en": "Right. With an empty cavity, an enlarged heterogeneous uterus and a white count still rising (13.04 → 16.12×10⁹/L, with neutrophilia), the problem lies in the uterine wall. No marked fever does not exclude a deep or necrotising infection, and a postpartum white count is read by its trend and the clinical picture. SMFM (2023) and SSC (2021) call for cultures, prompt broad-spectrum antibiotics and early identification of any source that needs control."
           }
         },
         {
@@ -4195,8 +4248,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是把“不发热”当成“没有严重感染”。白细胞从13.04升到16.12×10⁹/L、中性粒细胞升高、CRP升高，子宫又增大、回声不均，都指向子宫壁的感染。SSC（2021）和SMFM（2023）要求对可能的脓毒症静脉用药并尽快评估感染源，而不是让她带着正在进展的感染回家。",
-            "en": "This reads 'no fever' as 'no serious infection'. A white count rising from 13.04 to 16.12×10⁹/L with neutrophilia and a raised CRP in an enlarged, heterogeneous uterus all point to infection of the wall. SSC (2021) and SMFM (2023) treat possible sepsis with IV antibiotics and prompt assessment of the source, not discharge with an infection that is still advancing."
+            "zh-CN": "这是把“不发热”当成“没有严重感染”。白细胞从13.04升到16.12×10⁹/L、中性粒细胞升高，CRP约14.52–15.82 mg/L，子宫又增大、回声不均，都指向子宫壁的感染。SSC（2021）和SMFM（2023）要求对可能的脓毒症静脉用药并尽快评估感染源，而不是让她带着正在进展的感染回家。",
+            "en": "This reads 'no fever' as 'no serious infection'. A white count rising from 13.04 to 16.12×10⁹/L with neutrophilia, a CRP of about 14.52–15.82 mg/L and an enlarged, heterogeneous uterus all point to infection of the wall. SSC (2021) and SMFM (2023) treat possible sepsis with IV antibiotics and prompt assessment of the source, not discharge with an infection that is still advancing."
           }
         },
         {
@@ -4207,8 +4260,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "血管病变和植入值得排除，但应先由影像回答，而不是直接栓塞。炎症指标上升提示子宫可能已经感染，而感染是子宫动脉栓塞的禁忌：栓塞本身可引起子宫坏死、子宫内膜炎和脓肿，也处理不了感染源（SSC 2021要求尽快查明需要控制的感染源）。",
-            "en": "A vascular lesion or accreta is worth excluding, but imaging answers that before anyone embolises. Rising inflammatory markers suggest the uterus may be infected, and infection is a contraindication to embolisation, which can itself cause uterine necrosis, endometritis and abscess and does nothing for the source (SSC 2021: identify a source needing control promptly)."
+            "zh-CN": "血管病变和植入值得排除，但应先由影像回答，而不是直接栓塞。白细胞上升、中性粒细胞升高提示子宫可能已经感染，而感染是子宫动脉栓塞的禁忌：栓塞本身可引起子宫坏死、子宫内膜炎和脓肿，也处理不了感染源（SSC 2021要求尽快查明需要控制的感染源）。",
+            "en": "A vascular lesion or accreta is worth excluding, but imaging answers that before anyone embolises. A rising white count with neutrophilia suggests the uterus may be infected, and infection is a contraindication to embolisation, which can itself cause uterine necrosis, endometritis and abscess and does nothing for the source (SSC 2021: identify a source needing control promptly)."
           }
         }
       ]
@@ -4249,8 +4302,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血压53/34 mmHg是危及生命的失血性休克：按WHO/FIGO/ICM（2025）和RCOG（2016）启动大出血流程，尽早输注红细胞和血浆，持续出血时纤维蛋白原维持在2 g/L以上。宫颈处的组织轻柔取出送病理，既能减少出血，也能明确病因。她此前炎症指标已在上升，休克也可能有脓毒症的成分，SSC（2021）和SMFM（2023）要求1小时内给予广谱抗菌药物。",
-            "en": "Right. A BP of 53/34 mmHg is life-threatening haemorrhagic shock: run the major haemorrhage response (WHO/FIGO/ICM 2025; RCOG 2016), with early red cells and plasma and fibrinogen kept above 2 g/L while she bleeds. Easing out the tissue at the cervix reduces the bleeding and sends the diagnosis to histology. Her inflammatory markers were already rising, so sepsis may be part of the shock: SSC (2021) and SMFM (2023) give broad-spectrum antibiotics within the hour."
+            "zh-CN": "正确。血压53/34 mmHg是危及生命的失血性休克：按WHO/FIGO/ICM（2025）和RCOG（2016）启动大出血流程，尽早输注红细胞和血浆，持续出血时纤维蛋白原维持在2 g/L以上。宫颈处的组织轻柔取出送病理，既能减少出血，也能明确病因。她此前白细胞已在上升，休克也可能有脓毒症的成分，SSC（2021）和SMFM（2023）要求1小时内给予广谱抗菌药物。",
+            "en": "Right. A BP of 53/34 mmHg is life-threatening haemorrhagic shock: run the major haemorrhage response (WHO/FIGO/ICM 2025; RCOG 2016), with early red cells and plasma and fibrinogen kept above 2 g/L while she bleeds. Easing out the tissue at the cervix reduces the bleeding and sends the diagnosis to histology. Her white count was already rising, so sepsis may be part of the shock: SSC (2021) and SMFM (2023) give broad-spectrum antibiotics within the hour."
           }
         },
         {
@@ -4334,8 +4387,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "原报告的团队做过宫腔镜下分离（经过见结局记录）。坏死的是子宫壁本身：宫腔镜去除不了坏死的肌层，还很容易穿透脆弱的子宫壁、引起大出血。坏死性感染需要手术去除坏死组织（IDSA 2014）。",
-            "en": "The report's team did attempt hysteroscopic separation (its course is in the outcome record). The necrosis is in the uterine wall itself: hysteroscopy cannot remove necrotic muscle and easily breaches a friable wall, with major bleeding. Necrotising infection needs surgical removal of the dead tissue (IDSA 2014)."
+            "zh-CN": "坏死的是子宫壁本身：宫腔镜去除不了坏死的肌层，还很容易穿透脆弱的子宫壁、引起大出血，保留子宫也就留下了感染源。坏死性感染需要手术去除坏死组织（IDSA 2014；SSC 2021要求尽快控制感染源）。",
+            "en": "The necrosis is in the uterine wall itself: hysteroscopy cannot remove necrotic muscle and easily breaches a friable wall, with major bleeding — and keeping the uterus leaves the source behind. A necrotising infection needs surgical removal of the dead tissue (IDSA 2014; SSC 2021: source control as soon as practical)."
           }
         },
         {
@@ -4358,8 +4411,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "抗菌药物到达不了坏死组织，单靠用药控制不了坏死性感染，等待只会让感染扩散（IDSA 2014；SSC 2021要求尽快控制感染源）。她一直没有明显发热，等“高热”出现才手术会错过时机；在感染的子宫上栓塞还可能加重坏死。",
-            "en": "Antibiotics do not reach dead tissue, so drugs alone do not control a necrotising infection, and waiting lets it spread (IDSA 2014; SSC 2021: source control as soon as practical). She has never had a marked fever, so waiting for a 'high fever' means waiting too long, and embolising an infected uterus can extend the necrosis."
+            "zh-CN": "抗菌药物到达不了坏死组织，单靠用药控制不了坏死性感染，等待只会让感染扩散（IDSA 2014；SSC 2021要求尽快控制感染源）。到目前为止的记录里她都没有明显发热，等“高热”出现才手术会错过时机；在感染的子宫上栓塞还可能加重坏死。",
+            "en": "Antibiotics do not reach dead tissue, so drugs alone do not control a necrotising infection, and waiting lets it spread (IDSA 2014; SSC 2021: source control as soon as practical). No marked fever is recorded at any point so far, so waiting for a 'high fever' means waiting too long, and embolising an infected uterus can extend the necrosis."
           }
         }
       ]
@@ -4596,8 +4649,15 @@
             "decidedFirstTry": "post-evacuation"
           },
           {
-            "intervened": "iv-antibiotics",
-            "whenIndicated": true
+            "any": [
+              {
+                "intervened": "iv-antibiotics",
+                "whenIndicated": true
+              },
+              {
+                "intervened": "broad-spectrum-antibiotics"
+              }
+            ]
           },
           {
             "any": [
@@ -4708,7 +4768,7 @@
           "any": [
             {
               "intervened": "evacuation",
-              "minCount": 2
+              "valid": false
             },
             {
               "intervened": "hysteroscopic-separation"
@@ -4732,7 +4792,7 @@
           },
           {
             "intervened": "evacuation",
-            "minCount": 2
+            "valid": false
           },
           {
             "intervened": "hysteroscopic-separation"
@@ -4751,8 +4811,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "首次作答即制定术后计划（决策 5），转入ICU，出血控制后开始低分子肝素，并安排心理支持",
-        "en": "Planned the days after the operation at the first attempt (decision 5): ICU care, LMWH once bleeding was controlled, and psychological support"
+        "zh-CN": "首次作答即制定术后计划（决策 5），转入ICU，出血控制后才开始低分子肝素，并安排心理支持",
+        "en": "Planned the days after the operation at the first attempt (decision 5): ICU care, LMWH started only once bleeding was controlled, and psychological support"
       },
       "met": {
         "all": [
@@ -4768,6 +4828,12 @@
           },
           {
             "intervened": "psych-support"
+          },
+          {
+            "not": {
+              "intervened": "lmwh",
+              "valid": false
+            }
           }
         ]
       }
@@ -4781,8 +4847,8 @@
         "en": "Talked with her about the hysterectomy — her condition, the reasons, the alternatives and what it means for having children — responded to her fear, and let her make the decision herself"
       },
       "judgeGuidance": {
-        "zh-CN": "按SPIKES和知情同意的要素评价术前谈话。S（环境）：复苏同时尽量私密，上级医生在场，问她希望谁陪着；P（了解认知）：先问她对这几次出血知道多少；I（征得同意）：问她想知道多少细节；K（告知）：用通俗的话说明病理结果——子宫壁已经大片坏死、有炎症，抗菌药物到不了坏死的组织，再次出血和感染随时可能危及生命，所以建议切除子宫；说明其他办法（宫腔镜、局部切除、栓塞）及为什么风险更大；明确说出切除后不能再怀孕；E（回应情绪）：承认她的害怕和失落，给她提问和沉默的时间；S（总结）：复述计划，请她用自己的话说一遍，由她本人签字（《民法典》第一千二百一十九条：先向患者本人说明，只有不能或不宜向她说明时才向近亲属说明）。还要问她以后是否想再要孩子、宝宝的情况（本病例都没有记录，不要假设），并说明术后会有心理支持和随访。本病例没有记录术前谈话的内容。",
-        "en": "Judge the pre-operative conversation by SPIKES and the elements of informed consent. S (setting): as private as resuscitation allows, a senior present, asking whom she wants with her; P (perception): ask what she understands about the bleeds so far; I (invitation): ask how much detail she wants; K (knowledge): in plain words, the histology — a large part of the uterine wall is dead and inflamed, antibiotics cannot reach dead tissue, and further bleeding or infection could kill her at any time, so removing the uterus is recommended; the alternatives (hysteroscopy, local excision, embolisation) and why they carry more risk; and, stated clearly, that she will not be able to carry another pregnancy; E (emotions): acknowledge her fear and loss and leave room for questions and silence; S (summary): restate the plan, ask her to say it back in her own words, and have her sign herself (Civil Code of China, Article 1219: explain to the patient first, and to close relatives only when it cannot or should not be explained to her). Also ask whether she hoped for more children and about the baby (neither is recorded — assume nothing), and say that psychological support and follow-up will follow. The case does not record what was said before the operation."
+        "zh-CN": "按Calgary–Cambridge问诊指南（解释与计划）、SPIKES和知情同意的要素评价术前谈话。S（环境）：复苏同时尽量私密，上级医生在场，问她希望谁陪着；P（了解认知）：先问她对这几次出血知道多少；I（征得同意）：问她想知道多少细节；K（告知）：用通俗的话说明病理结果——子宫壁已经大片坏死、有炎症，抗菌药物到不了坏死的组织，再次出血和感染随时可能危及生命，所以建议切除子宫；说明其他办法（宫腔镜、局部切除、栓塞）及为什么风险更大；明确说出切除后不能再怀孕；E（回应情绪）：承认她的害怕和失落，给她提问和沉默的时间；S（总结）：复述计划，请她用自己的话说一遍，由她本人签字（《民法典》第一千二百一十九条：先向患者本人说明，只有不能或不宜向她说明时才向近亲属说明）。还要问她以后是否想再要孩子、宝宝的情况（本病例都没有记录，不要假设），并说明术后会有心理支持和随访。本病例没有记录术前谈话的内容。",
+        "en": "Judge the pre-operative conversation by the Calgary–Cambridge guide (explanation and planning), SPIKES and the elements of informed consent. S (setting): as private as resuscitation allows, a senior present, asking whom she wants with her; P (perception): ask what she understands about the bleeds so far; I (invitation): ask how much detail she wants; K (knowledge): in plain words, the histology — a large part of the uterine wall is dead and inflamed, antibiotics cannot reach dead tissue, and further bleeding or infection could kill her at any time, so removing the uterus is recommended; the alternatives (hysteroscopy, local excision, embolisation) and why they carry more risk; and, stated clearly, that she will not be able to carry another pregnancy; E (emotions): acknowledge her fear and loss and leave room for questions and silence; S (summary): restate the plan, ask her to say it back in her own words, and have her sign herself (Civil Code of China, Article 1219: explain to the patient first, and to close relatives only when it cannot or should not be explained to her). Also ask whether she hoped for more children and about the baby (neither is recorded — assume nothing), and say that psychological support and follow-up will follow. The case does not record what was said before the operation."
       }
     }
   ],
@@ -4794,8 +4860,8 @@
         "en": "Dr Zhong (obstetric attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“产后24小时以后的出血，你会想到哪几类原因？”“她的剖宫产和4次人流，让清宫多了什么风险？谁来做，做之前准备什么？”“宫腔已经空了，子宫为什么还大？”“产后的白细胞怎么解读？没有明显发热，能排除严重感染吗？”“血压很低、还在出血时，最先做哪几件事？晶体液和血制品怎么取舍？”“宫颈里的团块怎么取、送什么检查？”“坏死的子宫壁能不能靠抗菌药物治好？保留子宫要付出什么代价？”“怎样和她谈子宫切除？”。可以讲RCOG绿顶指南第52号（2016）、WHO/FIGO/ICM产后出血综合指南（2025）、中国产后出血预防与处理指南（2023）、WHO产褥期感染推荐（2015）、SMFM（2023）、SSC（2021）、IDSA（2014）和RCOG绿顶指南第37a号（2015）的相关原则。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；血红蛋白、血小板、纤维蛋白原、培养结果和病原体、转入时除体温以外的生命体征、团块的血流、几次住院之间的间隔和宝宝的情况都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'Bleeding more than 24 hours after a birth — which groups of cause come to mind?', 'What extra risk do her caesarean and four terminations add to an evacuation, who should do it, and what must be ready?', 'If the cavity is empty, why is the uterus still large?', 'How do you read a postpartum white count — and does the lack of a marked fever rule out a serious infection?', 'When the blood pressure is very low and she is still bleeding, what comes first, and how do you weigh crystalloid against blood?', 'How should the mass in the cervix be removed, and what test should it go for?', 'Can antibiotics cure a necrotic uterine wall, and what would keeping the uterus cost?', 'How will you talk with her about a hysterectomy?'. May explain the relevant principles of RCOG Green-top Guideline 52 (2016), the WHO/FIGO/ICM consolidated PPH guidelines (2025), the Chinese PPH guideline (2023), the WHO peripartum infection recommendations (2015), SMFM (2023), SSC (2021), IDSA (2014) and RCOG Green-top Guideline 37a (2015). The report's management is a historical record shown at the end of the case, and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; the haemoglobin, platelets, fibrinogen, culture results and organism, the vital signs at transfer other than the temperature, the blood flow in the mass, the intervals between admissions and the baby's condition are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教（复盘采用PEARLS），只围绕学员已经拿到的资料提问，例如：“产后24小时以后的出血，你会想到哪几类原因？”“她的剖宫产和4次人流，让清宫多了什么风险？谁来做，做之前准备什么？”“宫腔已经空了，子宫为什么还大？”“产后的白细胞怎么解读？没有明显发热，能排除严重感染吗？”“血压很低、还在出血时，最先做哪几件事？晶体液和血制品怎么取舍？”“宫颈里的团块怎么取、送什么检查？”“坏死的子宫壁能不能靠抗菌药物治好？保留子宫要付出什么代价？”“怎样和她谈子宫切除？”。可以讲RCOG绿顶指南第52号（2016）、WHO/FIGO/ICM产后出血综合指南（2025）、中国产后出血预防与处理指南（2023）、WHO产褥期感染推荐（2015）、SMFM（2023）、SSC（2021）、IDSA（2014）和RCOG绿顶指南第37a号（2015）的相关原则。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；血红蛋白、血小板、纤维蛋白原、培养结果和病原体、转入时除体温以外的生命体征、团块的血流、几次住院之间的间隔和宝宝的情况都没有记录，不要替它补上。",
+        "en": "A Socratic teacher (debriefs with PEARLS) who asks only about information the learner already has, for example: 'Bleeding more than 24 hours after a birth — which groups of cause come to mind?', 'What extra risk do her caesarean and four terminations add to an evacuation, who should do it, and what must be ready?', 'If the cavity is empty, why is the uterus still large?', 'How do you read a postpartum white count — and does the lack of a marked fever rule out a serious infection?', 'When the blood pressure is very low and she is still bleeding, what comes first, and how do you weigh crystalloid against blood?', 'How should the mass in the cervix be removed, and what test should it go for?', 'Can antibiotics cure a necrotic uterine wall, and what would keeping the uterus cost?', 'How will you talk with her about a hysterectomy?'. May explain the relevant principles of RCOG Green-top Guideline 52 (2016), the WHO/FIGO/ICM consolidated PPH guidelines (2025), the Chinese PPH guideline (2023), the WHO peripartum infection recommendations (2015), SMFM (2023), SSC (2021), IDSA (2014) and RCOG Green-top Guideline 37a (2015). The report's management is a historical record shown at the end of the case, and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; the haemoglobin, platelets, fibrinogen, culture results and organism, the vital signs at transfer other than the temperature, the blood flow in the mass, the intervals between admissions and the baby's condition are not recorded — do not supply them."
       },
       "interprets": [
         "referral-notes",
@@ -4814,8 +4880,8 @@
         "en": "Midwife Bai (pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "产科病房助产士。交班（ISBAR）：31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起阴道大量流血，曾休克（血压40/20 mmHg），转出医院行清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少，此后反复多量流血3天；转入时体温37.4 ℃，其他生命体征没有记录。可以协助建立静脉通路、抽血、配血，联系血库、手术室和介入室，推床旁超声车；超声车在急诊抢救室和超声室，血制品由血库送到床旁。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（比如血红蛋白、她的体重、宝宝的情况）时，如实说没有记录。",
-        "en": "Obstetric ward midwife. Handover (ISBAR): 31, membranes ruptured at just over 28 weeks and the birth induced about 10 hours later; heavy vaginal bleeding from about 2 hours after it with shock (BP 40/20 mmHg); the transferring unit evacuated the uterus, repaired a perineal tear, transfused her and gave uterotonics, and the bleeding lessened but has recurred heavily for 3 days; temperature 37.4 °C on arrival, other observations not recorded. Can place cannulae, take bloods and the crossmatch, call the blood bank, theatre and the angiography suite, and bring the bedside ultrasound cart (kept in the ED resus room and the ultrasound room); blood products come up from the blood bank to the bedside. Reads back orders, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (her haemoglobin, her weight, the baby)."
+        "zh-CN": "产科病房助产士。交班（ISBAR）：31岁，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起阴道大量流血，曾休克（血压40/20 mmHg），转出医院行清宫、会阴裂伤缝合、输血和促宫缩治疗后出血减少；引产后反复阴道多量流血3天；转入时体温37.4 ℃，其他生命体征没有记录。可以协助建立静脉通路、抽血、配血，联系血库、手术室和介入室，推床旁超声车；超声车在急诊抢救室和超声室，血制品由血库送到床旁。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（比如血红蛋白、她的体重、宝宝的情况）时，如实说没有记录。",
+        "en": "Obstetric ward midwife. Handover (ISBAR): 31, membranes ruptured at just over 28 weeks and the birth induced about 10 hours later; heavy vaginal bleeding from about 2 hours after it with shock (BP 40/20 mmHg); the transferring unit evacuated the uterus, repaired a perineal tear, transfused her and gave uterotonics, after which the bleeding lessened; 3 days of recurrent heavy bleeding since the birth; temperature 37.4 °C on arrival, other observations not recorded. Can place cannulae, take bloods and the crossmatch, call the blood bank, theatre and the angiography suite, and bring the bedside ultrasound cart (kept in the ED resus room and the ultrasound room); blood products come up from the blood bank to the bedside. Reads back orders, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (her haemoglobin, her weight, the baby)."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4876,8 +4942,8 @@
       "en": "Debrief: myometrial necrosis behind recurrent secondary postpartum haemorrhage"
     },
     "conclusion": {
-      "zh-CN": "31岁，孕28周多胎膜早破约10小时后引产；产后约2小时大出血并休克（血压40/20 mmHg），清宫、会阴裂伤缝合、输血和促宫缩后出血减少，此后反复大量出血3天转入：体温37.4 ℃，宫底平脐、收缩差，宫腔内约28×18×36 mm不均质团块。再次清宫后宫腔已空，但子宫仍增大、回声不均，白细胞由13.04升至16.12×10⁹/L、中性粒细胞升高，CRP约14.52–15.82 mg/L，发热不明显。第三次入院再次大出血（血压53/34 mmHg，脉搏110次/分），宫颈阴道内团块70×62×51 mm；宫颈处组织病理为大片子宫肌层坏死伴炎性渗出。原报告先行宫腔镜下分离（发生穿孔）、宫底楔形切除（未见绒毛），再次大出血并发现感染后切除子宫（肌层坏死，皮下化脓性炎症，引流液培养阴性），之后治愈出院；诊断为坏死性子宫肌炎、子宫内膜炎及反复失血性休克。按现行指南：继发性产后出血从一开始就按可能感染处理（培养后静脉用抗菌药物），宫腔排空后仍异常时转向子宫壁并做影像，休克时以血制品复苏、1小时内用广谱抗菌药物，并以子宫切除去除坏死病灶，而不是继续宫腔操作或栓塞。",
-      "en": "A 31-year-old had an induced birth about 10 hours after her membranes ruptured at just over 28 weeks. Heavy bleeding from about 2 hours later caused shock (BP 40/20 mmHg); evacuation, repair, transfusion and uterotonics helped only briefly. On transfer after 3 days: 37.4 °C, an early 28 × 18 × 36 mm cavity mass on ultrasound and (at the readmission) a poorly contracted fundus at the umbilicus. After a repeat evacuation the cavity was empty but the uterus stayed large and heterogeneous; white cells rose from 13.04 to 16.12×10⁹/L, CRP about 14.52–15.82 mg/L, no marked fever. At a third admission she bled again (BP 53/34 mmHg), with a 70 × 62 × 51 mm mass in the cervix and vagina; cervical tissue was necrotic myometrium. After hysteroscopic separation (perforation) and a wedge resection, more bleeding and infection led to hysterectomy; she recovered. Today: early antibiotics, imaging of an empty cavity, blood and antibiotics within the hour in shock, hysterectomy for the necrotic uterus."
+      "zh-CN": "31岁，孕28周多胎膜早破约10小时后引产；产后约2小时大出血并休克（血压40/20 mmHg），清宫、会阴裂伤缝合、输血和促宫缩后出血减少；引产后反复阴道大量出血3天转入：体温37.4 ℃，宫底平脐、收缩差（记录为“再次入院”时），宫腔内约28×18×36 mm不均质团块。再次清宫后宫腔已空，但子宫仍增大、回声不均，白细胞由13.04升至16.12×10⁹/L、中性粒细胞升高，CRP约14.52–15.82 mg/L，发热不明显。第三次入院再次大出血（血压53/34 mmHg，脉搏110次/分），宫颈阴道内团块70×62×51 mm；宫颈处组织病理为大片子宫肌层坏死伴炎性渗出。原报告先行宫腔镜下分离（发生穿孔）、宫底楔形切除（未见绒毛），再次大出血并发现感染后切除子宫（肌层坏死，皮下化脓性炎症，引流液培养阴性），之后治愈出院；诊断为坏死性子宫肌炎、子宫内膜炎及反复失血性休克。按现行指南：继发性产后出血从一开始就按可能感染处理（培养后静脉用抗菌药物），宫腔排空后仍异常时转向子宫壁并做影像，休克时以血制品复苏、1小时内用广谱抗菌药物，并以子宫切除去除坏死病灶，而不是继续宫腔操作或栓塞。",
+      "en": "A 31-year-old's membranes ruptured at just over 28 weeks and the birth was induced about 10 hours later. About 2 hours after the birth she bled heavily, with shock (BP 40/20 mmHg); evacuation, perineal repair, transfusion and uterotonics lessened the bleeding, and she was transferred with 3 days of recurrent heavy bleeding after the birth: temperature 37.4 °C, the fundus at the umbilicus and poorly contracted (recorded at the 'readmission'), a heterogeneous cavity mass of about 28 × 18 × 36 mm. After a repeat evacuation the cavity was empty, but the uterus stayed enlarged and heterogeneous; white cells rose from 13.04 to 16.12×10⁹/L with neutrophilia, CRP was about 14.52–15.82 mg/L and fever was not prominent. At a third admission she bled heavily again (BP 53/34 mmHg, pulse 110/min), with a 70 × 62 × 51 mm mass in the cervix and vagina; tissue from the cervix was extensive necrotic myometrium with inflammatory exudate. The report's team then attempted hysteroscopic separation (a perforation occurred) and a fundal wedge resection (no villi); after further heavy bleeding and the finding of infection the uterus was removed (myometrial necrosis again, suppurative subcutaneous inflammation, drainage cultures negative), and she recovered and was discharged. The report's diagnosis: necrotising myometritis, endometritis and recurrent haemorrhagic shock. Today: treat secondary PPH as possibly infected from the start (cultures, then IV antibiotics), image the uterine wall once the cavity is empty, resuscitate shock with blood products and give broad-spectrum antibiotics within the hour, and remove the necrotic uterus by hysterectomy rather than instrumenting or embolising it."
     },
     "keyReasoning": [
       {
@@ -4889,8 +4955,8 @@
         "en": "Once the cavity is empty but the uterus stays large and heterogeneous, the problem lies in the wall, not the cavity: another curettage cannot find it."
       },
       {
-        "zh-CN": "白细胞从13.04升到16.12×10⁹/L、中性粒细胞升高、CRP升高，比单次体温更能说明问题；没有明显发热排除不了深部或坏死性感染。",
-        "en": "A white count climbing from 13.04 to 16.12×10⁹/L with neutrophilia and a raised CRP says more than any single temperature; the absence of a marked fever does not exclude a deep or necrotising infection."
+        "zh-CN": "白细胞从13.04升到16.12×10⁹/L、中性粒细胞升高，再结合约14.52–15.82 mg/L的CRP，比单次体温更能说明问题；没有明显发热排除不了深部或坏死性感染。",
+        "en": "A white count climbing from 13.04 to 16.12×10⁹/L with neutrophilia, read with a CRP of about 14.52–15.82 mg/L, says more than any single temperature; the absence of a marked fever does not exclude a deep or necrotising infection."
       },
       {
         "zh-CN": "两次失血性休克（血压40/20和53/34 mmHg）说明每次再出血都可能致命：先按大出血复苏，同时把脓毒症当作休克的可能原因之一。",
@@ -4941,8 +5007,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "继发性产后出血（RCOG绿顶指南第52号，2016）指分娩24小时至12周内的异常出血。评估包括拭子和血培养、盆腔超声（有助于排除宫腔残留，但不可靠）；怀疑子宫内膜炎时用抗菌药物（WHO 2015推荐克林霉素联合庆大霉素治疗产后子宫内膜炎）；清宫由有经验的医生进行，有剖宫产和多次人流史时要备血并警惕胎盘植入。本病例没有记录她是否用过抗菌药物。",
-        "en": "Secondary PPH (RCOG Green-top Guideline 52, 2016) is abnormal bleeding from 24 hours to 12 weeks after the birth. Assessment includes swabs, blood cultures and a pelvic ultrasound (helpful to exclude retained tissue, but unreliable); antibiotics are given when endometritis is suspected (WHO 2015: clindamycin with gentamicin for postpartum endometritis); and evacuation is done by an experienced clinician — with blood ready and placenta accreta in mind after a caesarean and several terminations. This case does not record whether she had antibiotics."
+        "zh-CN": "继发性产后出血（RCOG绿顶指南第52号，2016）指分娩24小时至12周内的异常出血。评估包括阴道上段和下段拭子、发热时的血培养、血常规、CRP和盆腔超声（有助于排除宫腔残留，但据此诊断残留并不可靠）；怀疑子宫内膜炎时用抗菌药物（WHO 2015推荐克林霉素联合庆大霉素治疗产后子宫内膜炎）；清宫由有经验的医生进行，有剖宫产和多次人流史时要备血并警惕胎盘植入。本病例没有记录她是否用过抗菌药物。",
+        "en": "Secondary PPH (RCOG Green-top Guideline 52, 2016) is abnormal bleeding from 24 hours to 12 weeks after the birth. Assessment includes high and low vaginal swabs, blood cultures if she is febrile, a full blood count, CRP and a pelvic ultrasound (it may help to exclude retained tissue, but its diagnosis of retained tissue is unreliable); antibiotics are given when endometritis is suspected (WHO 2015: clindamycin with gentamicin for postpartum endometritis); and evacuation is done by an experienced clinician — with blood ready and placenta accreta in mind after a caesarean and several terminations. This case does not record whether she had antibiotics."
       },
       {
         "zh-CN": "产褥期脓毒症（SMFM 2023；SSC 2021）：对可能的脓毒性休克或高度可能的脓毒症，1小时内给予广谱抗菌药物，不致延误时先留培养，并查乳酸；尽快查明并控制需要处理的感染源。体温正常排除不了脓毒症；产后白细胞可生理性升高，要看趋势和临床表现。原报告中发热“并不突出”，引流液培养阴性，病原体没有记录。",
@@ -4970,7 +5036,7 @@
       "World Health Organization, International Federation of Gynecology and Obstetrics, International Confederation of Midwives. Consolidated guidelines for the prevention, diagnosis and treatment of postpartum haemorrhage. Geneva: World Health Organization; 2025. Available from: https://www.ncbi.nlm.nih.gov/books/NBK619233/",
       "Mavrides E, Allard S, Chandraharan E, Collins P, Green L, Hunt BJ, Riris S, Thomson AJ, on behalf of the Royal College of Obstetricians and Gynaecologists. Prevention and management of postpartum haemorrhage: Green-top Guideline No. 52. BJOG. 2017;124(5):e106-e149. doi:10.1111/1471-0528.14178",
       "中华医学会妇产科学分会产科学组, 中华医学会围产医学分会. 产后出血预防与处理指南(2023). 中华妇产科杂志. 2023;58(6):401-409.",
-      "World Health Organization. WHO recommendations for prevention and treatment of maternal peripartum infections. Geneva: World Health Organization; 2015. Available from: https://www.ncbi.nlm.nih.gov/books/NBK327079/",
+      "World Health Organization. WHO recommendations for prevention and treatment of maternal peripartum infections. Geneva: World Health Organization; 2015. Available from: https://www.who.int/publications/i/item/9789241549363",
       "World Health Organization. WHO recommendation on tranexamic acid for the treatment of postpartum haemorrhage. Geneva: World Health Organization; 2017. Available from: https://www.who.int/publications/i/item/9789241550154",
       "Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2021. Crit Care Med. 2021;49(11):e1063-e1143. doi:10.1097/CCM.0000000000005337",
       "Shields AD, Plante LA, Pacheco LD, Louis JM; Society for Maternal-Fetal Medicine. Society for Maternal-Fetal Medicine Consult Series #67: Maternal sepsis. Am J Obstet Gynecol. 2023;229(3):B2-B19. doi:10.1016/j.ajog.2023.05.019",
@@ -5661,6 +5727,46 @@
         "text": "Do you smoke?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "bleeding-onset"
+        ]
+      },
+      {
+        "text": "Any medical problems?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "So what's brought you back to us?",
+        "locale": "en",
+        "expect": [
+          "status-third"
+        ]
+      },
+      {
+        "text": "Could you put the light on for me?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Were you given blood?",
+        "locale": "en",
+        "expect": [
+          "earlier-treatment"
+        ]
+      },
+      {
+        "text": "Have you been pregnant before?",
+        "locale": "en",
+        "expect": [
+          "prior-uterine-surgery"
+        ]
       }
     ]
   }

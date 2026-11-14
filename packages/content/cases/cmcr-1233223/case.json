@@ -45,7 +45,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -310,7 +310,8 @@
           "reason for coming",
           "whatstroublingyou",
           "bothering you",
-          "madeyoucomein"
+          "madeyoucomein",
+          "whatbringsyou"
         ]
       },
       "excludeKeywords": {
@@ -1028,7 +1029,7 @@
           "哪里不舒服"
         ],
         "en": [
-          "this time",
+          "thistime",
           "whats wrong",
           "whatshappening",
           "new symptoms",
@@ -1429,11 +1430,16 @@
       "excludeKeywords": {
         "zh-CN": [
           "心情",
-          "情绪"
+          "情绪",
+          "治疗",
+          "什么药"
         ],
         "en": [
           "mood",
-          "spirits"
+          "spirits",
+          "treated",
+          "treatment",
+          "medicine"
         ]
       },
       "disclosure": "volunteer",
@@ -1457,8 +1463,8 @@
         "en": "Were you treated after the last episode — and with what?"
       },
       "answer": {
-        "zh-CN": "治过。治疗 35 天以后又拍了一次片子。用的是什么药，我说不上来。",
-        "en": "Yes. After 35 days of treatment I had another scan. What the medicine was, I can't say."
+        "zh-CN": "治过。治疗 35 天以后又拍了一次片子。具体是怎么治的，我说不上来。",
+        "en": "Yes. After 35 days of treatment I had another scan. What the treatment was, I can't say."
       },
       "keywords": {
         "zh-CN": [
@@ -1475,7 +1481,7 @@
           "treated",
           "wereyoutreated",
           "treatment",
-          "what medicine",
+          "whatmedicine",
           "howlongwereyoutreated",
           "previous treatment"
         ]
@@ -1487,6 +1493,18 @@
       "source": {
         "zh-CN": "1.0.0 版提取：第二次发作后治疗 35 天后复查，强化消失；未记录药名；患者口吻为改写；尚未对照原文全文核对",
         "en": "As extracted for version 1.0.0: after 35 days of treatment following the second episode the enhancement had resolved; no drug is named; the patient's wording is adapted; not yet checked against the full article"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "现在",
+          "目前"
+        ],
+        "en": [
+          "on now",
+          "taking now",
+          "currently",
+          "at the moment"
+        ]
       }
     },
     {
@@ -2026,8 +2044,8 @@
             "en": "Six new lesions compared with before, including one in the left temporal lobe."
           },
           "note": {
-            "zh-CN": "本病例对左颞病灶有两种写法：一处只写“左颞叶”，另一处写作“左侧颞叶白质”。其余 5 个新病灶的位置、是否强化以及颈髓情况都没有记录。",
-            "en": "The case words the left temporal lesion two ways — 'left temporal lobe' in one place and 'left temporal white matter' in another. Where the other five new lesions lie, whether any enhance and the state of the cord are not recorded."
+            "zh-CN": "记录中左颞病灶有两种写法：“左颞叶”和“左侧颞叶白质”。其余 5 个新病灶的位置、是否强化以及颈髓情况都没有记录。",
+            "en": "The record words the left temporal lesion two ways — 'left temporal lobe' and 'left temporal white matter'. Where the other five new lesions lie, whether any enhance and the state of the cord are not recorded."
           },
           "source": {
             "zh-CN": "1.0.0 版提取：再约 9 个月后左颞叶等新增 6 个病灶（英文本作“左侧颞叶白质”）；尚未对照原文全文核对",
@@ -2348,8 +2366,12 @@
         "second-episode": {
           "available": false,
           "text": {
-            "zh-CN": "此时病历中还没有可调阅的脑脊液报告。本病例记录了一次脑脊液检查，但没有记录检查日期，它随后续病程一并展示。",
-            "en": "No CSF report is available in his record at this point. The case records one CSF examination without its date; it is shown with the later course."
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "note": {
+            "zh-CN": "病历中有一次脑脊液检查，但没有记录检查日期；它的报告随第三次就诊的病历一并调阅。",
+            "en": "His record holds one CSF examination without a date; its report is read with the third visit's record."
           },
           "source": {
             "zh-CN": "1.0.0 版只记录了一次脑脊液检查，未记录日期；尚未对照原文全文核对",
@@ -3045,12 +3067,12 @@
         "en": "First tests"
       },
       "hint": {
-        "zh-CN": "在给出诊断之前想一想：要诊断脱髓鞘疾病，对症状和受累部位的数量各有什么要求？",
-        "en": "Before you name a diagnosis: what does it take — in symptoms and in the number of affected regions — to call something demyelinating disease?"
+        "zh-CN": "下诊断之前想一想：你找到的发现能解释他的症状吗？凭这些，今天就足以下诊断——或开始治疗——吗？",
+        "en": "Before you name a diagnosis: do your findings explain his symptoms — and are they enough to commit to a diagnosis, or to treatment, today?"
       },
       "guidance": {
-        "zh-CN": "查体并评定 EDSS，安排 MRI，查看常规化验和神经电生理报告，然后在会诊板作答决策 1。",
-        "en": "Examine him and score the EDSS, arrange the MRI, read the routine blood tests and the neurophysiology report, then answer decision 1 on the case board."
+        "zh-CN": "查体并评定 EDSS，安排 MRI，查看常规化验和神经电生理报告，并把你对他的处理落实下去；然后在会诊板作答决策 1——作答后（病史也已问完时）这次就诊即结束。",
+        "en": "Examine him and score the EDSS, arrange the MRI, read the routine blood tests and the neurophysiology report, and put your plan for him into action; then answer decision 1 on the case board — once it is answered (and the history taken), this visit ends."
       },
       "completeWhen": {
         "all": [
@@ -3133,8 +3155,8 @@
         "en": "Put this MRI beside the first one: how many regions are involved now, what does a new lesion tell you — and what here is not typical of demyelination?"
       },
       "guidance": {
-        "zh-CN": "问清这次的症状，查体并评定 EDSS，复查 MRI，然后作答决策 2 和决策 3。",
-        "en": "Ask about this episode, examine him and score the EDSS, repeat the MRI, then answer decisions 2 and 3."
+        "zh-CN": "问清这次的症状，查体并评定 EDSS，复查 MRI，送出你选择的检查，然后作答决策 2 和决策 3。决策 2–4 都作答、感染情况也问过后，这次就诊即结束，所以先把处理落实下去。",
+        "en": "Ask about this episode, examine him and score the EDSS, repeat the MRI, send the tests you choose, then answer decisions 2 and 3. This visit ends once decisions 2–4 are answered and infection has been asked about, so act on your plan first."
       },
       "completeWhen": {
         "all": [
@@ -3197,8 +3219,8 @@
         "en": "Before any treatment, what must you exclude first — and which episodes need treating, at what dose and for how long?"
       },
       "guidance": {
-        "zh-CN": "先问清有没有感染的表现，再在会诊板作答决策 4，并开出你的治疗。",
-        "en": "Ask about signs of infection first, then answer decision 4 on the case board and order your treatment."
+        "zh-CN": "先问清有没有感染的表现，开出你为这次发作选择的治疗，然后在会诊板作答决策 4。决策 2–4 都作答后，这次就诊即结束。",
+        "en": "Ask about signs of infection, order the treatment you choose for this episode, then answer decision 4 on the case board. This visit ends once decisions 2–4 are all answered."
       },
       "completeWhen": {
         "all": [
@@ -3237,8 +3259,8 @@
         "en": "What do the scans since then and today's changes mean for long-term treatment — and beyond the nervous system, what else about him needs your attention?"
       },
       "guidance": {
-        "zh-CN": "问清这段时间的变化和他的感受，做精神状态检查，查看治疗后复查 MRI、这次的 MRI 和脑脊液报告，然后作答决策 5。",
-        "en": "Ask what has changed and how he feels, assess his mental state, read the post-treatment MRI, today's MRI and the CSF report, then answer decision 5."
+        "zh-CN": "问清这段时间的变化和他的感受，做精神状态检查，查看治疗后复查 MRI、这次的 MRI 和脑脊液报告，把你对他的处理落实下去，然后作答决策 5——作答后这次就诊即结束。",
+        "en": "Ask what has changed and how he feels, assess his mental state, read the post-treatment MRI, today's MRI and the CSF report, and put your plan for him into action; then answer decision 5 — once it is answered, this visit ends."
       },
       "completeWhen": {
         "all": [
@@ -3393,8 +3415,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。McDonald 标准针对的是典型的脱髓鞘综合征（影像孤立综合征等情形另有规定）；按 2024 年修订（Lancet Neurol 2025），空间多发需要至少 2 个特征部位各有病灶，并要有时间多发或脑脊液阳性等进一步证据。非特异的头晕、正常查体和一个颈髓病灶，既不支持诊断，也不支持治疗；但脊髓是特征部位之一，所以要随访复查 MRI，并告诉他哪些新症状要马上回来。",
-            "en": "Correct. The McDonald criteria are built for a typical demyelinating syndrome (with set rules for exceptions such as radiologically isolated syndrome), and under the 2024 revision (Lancet Neurol 2025) dissemination in space needs lesions in at least two characteristic regions, with further evidence such as dissemination in time or positive CSF. Non-specific dizziness, a normal examination and one cord lesion support neither a diagnosis nor treatment — but the cord is one of those regions, so arrange review with repeat MRI and tell him which new symptoms should bring him straight back."
+            "zh-CN": "正确。McDonald 标准针对的是典型的脱髓鞘综合征；像他这样的非特异症状，与影像孤立综合征一样，按 2024 年修订（Lancet Neurol 2025）需要至少 2 个特征部位各有病灶（空间多发），再加时间多发、脑脊液阳性或中央静脉征等进一步证据。非特异的头晕、正常查体和一个颈髓病灶，既不支持诊断，也不支持治疗；NICE NG220（2022，2026 年修订）也指出，以头晕为主、没有局灶神经症状或体征时不应常规怀疑多发性硬化，而怀疑多发性硬化但不满足标准时，应安排复评并告诉患者出现新的神经症状时找谁。脊髓是特征部位之一，所以要随访复查 MRI，并告诉他哪些新症状要马上回来。",
+            "en": "Correct. The McDonald criteria are built for a typical demyelinating syndrome. For non-specific symptoms like his — as for radiologically isolated syndrome — the 2024 revision (Lancet Neurol 2025) needs lesions in at least two characteristic regions (dissemination in space) plus further evidence such as dissemination in time, positive CSF or the central vein sign. Non-specific dizziness, a normal examination and one cord lesion support neither a diagnosis nor treatment; NICE NG220 (2022, amended 2026) advises against routinely suspecting MS when dizziness is the main symptom without focal neurological symptoms or signs, and, when MS is suspected but the criteria are not met, asks for a planned review and clear advice on whom to contact if new neurological symptoms come. The cord is one of the characteristic regions, so arrange review with repeat MRI and tell him which new symptoms should bring him straight back."
           }
         },
         {
@@ -3405,8 +3427,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。2024 年修订（Lancet Neurol 2025）仍要求至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，以及新增的视神经）各有病灶，并有时间多发或脑脊液阳性等进一步证据；一个颈髓病灶只占一个部位，头晕也不是典型发作。过早诊断会让一位可能没有多发性硬化的年轻人长期承受免疫治疗的风险。",
-            "en": "No. The 2024 revision (Lancet Neurol 2025) still needs lesions in at least two characteristic regions — periventricular, cortical/juxtacortical, infratentorial, spinal cord and now the optic nerve — with further evidence such as dissemination in time or positive CSF; one cord lesion is one region, and dizziness is not a typical attack. A premature label commits a young man who may not have MS to long-term immunotherapy and its risks."
+            "zh-CN": "不对。像他这样以头晕为主的非特异症状，与无症状的影像发现一样，按 2024 年修订（Lancet Neurol 2025）需要至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，以及新增的视神经）各有病灶，再加时间多发或脑脊液阳性等进一步证据；只有在典型发作之后、并有更多 MRI 或脑脊液标志物时，单个部位才可能足够。一个颈髓病灶只占一个部位。过早诊断会让一位可能没有多发性硬化的年轻人长期承受免疫治疗的风险。",
+            "en": "No. For non-specific symptoms like his dizziness — as for an MRI finding without symptoms — the 2024 revision (Lancet Neurol 2025) needs lesions in at least two characteristic regions (periventricular, cortical/juxtacortical, infratentorial, spinal cord and now the optic nerve) plus further evidence such as dissemination in time or positive CSF; a single region can suffice only after a typical attack, and then only with further MRI or CSF markers. One cord lesion is one region. A premature label commits a young man who may not have MS to long-term immunotherapy and its risks."
           }
         },
         {
@@ -3480,13 +3502,13 @@
         {
           "id": "dis-dit-now",
           "text": {
-            "zh-CN": "很可能已是多发性硬化：脑室旁加脊髓为空间多发，较首诊新出现的病灶为时间多发——前提是鉴别检查找不到更好的解释",
-            "en": "Probably MS now: periventricular plus cord lesions give dissemination in space and a lesion new since the first scan gives it in time — unless the mimic work-up finds a better explanation"
+            "zh-CN": "已同时满足空间和时间多发：脑室旁加脊髓为空间多发，较首诊新出现的病灶为时间多发；排除相似疾病后即可诊断",
+            "en": "Both disseminations are met now: periventricular plus cord lesions give dissemination in space and a lesion new since the first scan gives it in time; MS once mimics are excluded"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。按 2017 年 McDonald 标准（Lancet Neurol 2018）及其 2024 年修订（Lancet Neurol 2025），至少 2 个特征部位各有 ≥ 1 个病灶即为空间多发；随访 MRI 上与基线相比出现的新 T2 或强化病灶即为时间多发，与基线检查做了多久无关。左侧脑室旁的新病灶加上首诊的颈髓病灶同时满足两者；但听力下降和环形强化不典型，诊断要以排除其他疾病为前提。",
-            "en": "Correct. Under the 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025), ≥ 1 lesion in at least two characteristic regions gives dissemination in space, and a new T2 or enhancing lesion on follow-up MRI compared with a baseline scan — whenever that scan was done — gives dissemination in time. His new left periventricular lesion with the earlier cord lesion meets both; but reduced hearing and ring enhancement are atypical, so the diagnosis stands only once other causes have been excluded."
+            "zh-CN": "正确。按 2017 年 McDonald 标准（Lancet Neurol 2018）及其 2024 年修订（Lancet Neurol 2025），至少 2 个特征部位各有 ≥ 1 个病灶即为空间多发；随访 MRI 上与基线相比出现的新 T2 或强化病灶即为时间多发，与基线检查做了多久无关。左侧脑室旁的新病灶加上首诊的颈髓病灶同时满足两者；但听力下降在多发性硬化中少见，环形强化病灶也要看它的形态，诊断要以排除其他疾病为前提。",
+            "en": "Correct. Under the 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025), ≥ 1 lesion in at least two characteristic regions gives dissemination in space, and a new T2 or enhancing lesion on follow-up MRI compared with a baseline scan — whenever that scan was done — gives dissemination in time. His new left periventricular lesion with the earlier cord lesion meets both; but reduced hearing is uncommon in MS and a ring-enhancing lesion needs its pattern judged, so the diagnosis stands only once other causes have been excluded."
           }
         },
         {
@@ -3570,8 +3592,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。2015 年 NMOSD 国际共识（IPND，Neurology 2015）强烈推荐用细胞法检测 AQP4-IgG；MOG-IgG 是 2023 年国际 MOGAD 专家组标准（Lancet Neurol 2023）的核心条件。视物模糊加脊髓病灶正是需要排除这两种疾病的情形，而且部分多发性硬化免疫治疗可使 NMOSD 加重。本病例没有记录这两项结果。",
-            "en": "Needed. The 2015 international NMOSD criteria (IPND, Neurology 2015) strongly recommend a cell-based assay for AQP4-IgG, and MOG-IgG is the core criterion of the 2023 International MOGAD Panel criteria (Lancet Neurol 2023). Blurred vision with a cord lesion is exactly when both must be excluded — and some MS immunotherapies can make NMOSD worse. The case records neither result."
+            "zh-CN": "需要。2015 年 NMOSD 国际共识（IPND，Neurology 2015）强烈推荐用细胞法检测 AQP4-IgG；2023 年国际 MOGAD 专家组标准（Lancet Neurol 2023）要求 MOG-IgG 阳性。视物模糊加脊髓病灶正是需要排除这两种疾病的情形，而且部分多发性硬化免疫治疗可使 NMOSD 加重。本病例没有记录这两项结果。",
+            "en": "Needed. The 2015 international NMOSD criteria (IPND, Neurology 2015) strongly recommend a cell-based assay for AQP4-IgG, and the 2023 International MOGAD Panel criteria (Lancet Neurol 2023) require a positive MOG-IgG. Blurred vision with a cord lesion is exactly when both must be excluded — and some MS immunotherapies can make NMOSD worse. The case records neither result."
           }
         },
         {
@@ -3628,8 +3650,8 @@
       "id": "relapse-treatment",
       "kind": "single",
       "prompt": {
-        "zh-CN": "这次发作有乏力、视物模糊和听力下降，EDSS 2 分，MRI 见新的环形强化病灶。他有没有发热或感染，本病例没有记录。这次发作你打算怎么治疗？",
-        "en": "This episode brings weakness, blurred vision and reduced hearing, with EDSS 2 and a new ring-enhancing lesion. Whether he has a fever or an infection is not recorded. How will you treat this episode?"
+        "zh-CN": "这次发作有乏力、视物模糊和听力下降，EDSS 2 分，MRI 见新的环形强化病灶。这次发作你打算怎么治疗？",
+        "en": "This episode brings weakness, blurred vision and reduced hearing, with EDSS 2 and a new ring-enhancing lesion. How will you treat this episode?"
       },
       "requires": {
         "all": [
@@ -3917,8 +3939,8 @@
       "id": "rb-first-plan",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即判断首诊既不能诊断也不该治疗，安排了随访和复查 MRI，没有直接结束随诊",
-        "en": "Judged at the first attempt that the first visit supported neither a diagnosis nor treatment, arranged review with repeat MRI and did not discharge him"
+        "zh-CN": "首次作答即判断首诊既不能诊断也不该治疗，并在首诊时安排了随访和复查 MRI",
+        "en": "Judged at the first attempt that the first visit supported neither a diagnosis nor treatment, and arranged review with repeat MRI at that visit"
       },
       "weight": 3,
       "met": {
@@ -3929,11 +3951,6 @@
           {
             "intervened": "follow-up-plan",
             "whenIndicated": true
-          },
-          {
-            "not": {
-              "intervened": "discharge-no-follow-up"
-            }
           }
         ]
       }
@@ -3954,8 +3971,8 @@
       "id": "rb-mimic-workup",
       "domain": "investigations",
       "text": {
-        "zh-CN": "首次作答即选对鉴别检查，在第二次发作时送检 AQP4/MOG 抗体、请眼科和听力评估，没有先去活检",
-        "en": "Chose the mimic work-up at the first attempt, sent AQP4 and MOG antibodies and requested eye and hearing assessment at the second episode, and did not go to biopsy first"
+        "zh-CN": "首次作答即选对鉴别检查，并在第二次发作时送检 AQP4/MOG 抗体、请眼科和听力评估",
+        "en": "Chose the mimic work-up at the first attempt, and at the second episode sent AQP4 and MOG antibodies and requested eye and hearing assessment"
       },
       "weight": 2,
       "met": {
@@ -3970,11 +3987,6 @@
           {
             "intervened": "eye-hearing-referral",
             "whenIndicated": true
-          },
-          {
-            "not": {
-              "intervened": "biopsy-referral"
-            }
           }
         ]
       }
@@ -3983,8 +3995,8 @@
       "id": "rb-relapse-treatment",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选对复发治疗，排查感染后才给足量甲泼尼龙，没有用小剂量激素或开备用激素",
-        "en": "Chose the relapse treatment at the first attempt and gave full-dose methylprednisolone only after an infection screen, with no low-dose course and no home supply"
+        "zh-CN": "首次作答即选对复发治疗，并在排查感染之后给予足量甲泼尼龙",
+        "en": "Chose the relapse treatment at the first attempt and gave full-dose methylprednisolone after an infection screen"
       },
       "weight": 2,
       "met": {
@@ -3995,22 +4007,6 @@
           {
             "intervened": "methylprednisolone",
             "whenIndicated": true
-          },
-          {
-            "not": {
-              "intervened": "methylprednisolone",
-              "valid": false
-            }
-          },
-          {
-            "not": {
-              "intervened": "prednisolone-low-dose"
-            }
-          },
-          {
-            "not": {
-              "intervened": "steroid-standby-supply"
-            }
           }
         ]
       }
@@ -4074,6 +4070,68 @@
       }
     },
     {
+      "id": "rb-no-harm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有做本例中的有害处置：不随访即结束随诊、过早转介脑活检、小剂量激素疗程、开备用激素，或未排查感染就用激素",
+        "en": "Avoided this case's harmful steps: discharge without follow-up, an early brain-biopsy referral, a low-dose steroid course, a home supply of steroids, and steroids before an infection screen"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "discharge-no-follow-up"
+            },
+            {
+              "intervened": "biopsy-referral"
+            },
+            {
+              "intervened": "prednisolone-low-dose"
+            },
+            {
+              "intervened": "steroid-standby-supply"
+            },
+            {
+              "intervened": "methylprednisolone",
+              "valid": false
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "first-visit-plan"
+          },
+          {
+            "attempted": "episode-two-criteria"
+          },
+          {
+            "attempted": "mimic-workup"
+          },
+          {
+            "attempted": "relapse-treatment"
+          },
+          {
+            "intervened": "discharge-no-follow-up"
+          },
+          {
+            "intervened": "biopsy-referral"
+          },
+          {
+            "intervened": "prednisolone-low-dose"
+          },
+          {
+            "intervened": "steroid-standby-supply"
+          },
+          {
+            "intervened": "methylprednisolone"
+          }
+        ]
+      }
+    },
+    {
       "id": "rb-suicide-screen",
       "domain": "safety",
       "text": {
@@ -4103,8 +4161,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、采集信息、解释与计划、结束）：首诊时先了解他对头晕的想法和担心，用通俗的话说明 MRI 上颈髓的一个小点现在还不能下任何诊断，也不需要治疗，讲清为什么要随访复查、哪些新症状要立即回来；第二次时坦诚说明这很可能是多发性硬化，但还要做抗体、脑脊液、眼科和听力检查排除别的病，解释激素的用法、作用和副作用（血糖、睡眠、情绪），以及长期治疗的选择，请他参与决定；第三次时留出时间询问他的情绪，敏感而直接地问是否有轻生念头，回答含糊时不轻易放过，并约定支持和随访。全程用复述确认理解，不作虚假保证，不编造病例中没有的结果。",
-        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): at the first visit, elicits his ideas and worries about the dizziness, explains in plain words that one small spot in the spinal cord in his neck does not yet mean any diagnosis or need any treatment, and why he will be reviewed and which new symptoms should bring him straight back; at the second, says honestly that this is probably MS but that antibody, CSF, eye and hearing tests are needed to exclude other conditions, explains the steroid course — what it does and its effects on glucose, sleep and mood — and the long-term treatment choices, which he helps decide; at the third, makes time to ask about his mood, asks directly and sensitively about suicidal thoughts and does not let a vague answer pass, and agrees support and follow-up. Checks understanding by teach-back throughout, gives no false reassurance and invents no result the case does not record."
+        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、采集信息、解释与计划、结束）：首诊时先了解他对头晕的想法和担心，用通俗的话说明 MRI 上颈髓的一个小点现在还不能下任何诊断，也不需要治疗，讲清为什么要随访复查、哪些新症状要立即回来；第二次时按 SPIKES 告知坏消息——安排不受打扰的环境，先了解他已经知道多少、想知道多少，再坦诚说明这很可能是多发性硬化，但还要做抗体、脑脊液、眼科和听力检查排除别的病，并回应他的情绪——解释激素的用法、作用和副作用（血糖、睡眠、情绪）以及长期治疗的选择，请他参与决定，最后总结并约定计划；第三次时留出时间询问他的情绪，敏感而直接地问是否有轻生念头，回答含糊时不轻易放过，并约定支持和随访。全程用复述确认理解，不作虚假保证，不编造病例中没有的结果。",
+        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): at the first visit, elicits his ideas and worries about the dizziness, explains in plain words that one small spot in the spinal cord in his neck does not yet mean any diagnosis or need any treatment, and why he will be reviewed and which new symptoms should bring him straight back; at the second, breaks the news with SPIKES — a private setting, what he already understands and how much he wants to know, then honestly that this is probably MS but that antibody, CSF, eye and hearing tests are needed to exclude other conditions, responding to his emotions — explains the steroid course (what it does and its effects on glucose, sleep and mood) and the long-term treatment choices, which he helps decide, and closes with a summary and plan; at the third, makes time to ask about his mood, asks directly and sensitively about suicidal thoughts and does not let a vague answer pass, and agrees support and follow-up. Checks understanding by teach-back throughout, gives no false reassurance and invents no result the case does not record."
       }
     }
   ],
@@ -4237,8 +4295,8 @@
         "en": "How the criteria changed. The report applied the 2005 revision. The 2010 revision (Ann Neurol 2011) replaced its Barkhof lesion counts for dissemination in space with ≥ 1 T2 lesion in at least two of four regions, and accepted a new lesion on follow-up MRI, whenever the baseline scan was done, as dissemination in time — the basis of the 2017 criteria and the 2024 revision. A diagnosis made only after a third episode fits the older counting; today the question at the second episode is whether anything else explains the whole picture better."
       },
       {
-        "zh-CN": "诊断多发性硬化之前先排除相似疾病。视物模糊加脊髓病灶要查 AQP4-IgG（2015 年 NMOSD 国际共识强烈推荐细胞法）和 MOG-IgG（2023 年国际 MOGAD 标准的核心条件）——部分多发性硬化免疫治疗（如 β 干扰素、那他珠单抗、芬戈莫德）可使 NMOSD 加重；听力下降在多发性硬化中少见，要客观测听（Susac 综合征同时有听力下降、视觉症状和脑白质病灶）；环形强化要结合大小、强化环形态、占位效应和弥散判断，不完整的开环更支持脱髓鞘。本病例没有记录抗体、眼科和听力结果，也没有记录这些影像特征。",
-        "en": "Exclude the mimics before diagnosing MS. Blurred vision with a cord lesion calls for AQP4-IgG — by cell-based assay, as the 2015 international NMOSD criteria strongly recommend — and MOG-IgG, the core of the 2023 International MOGAD Panel criteria; some MS immunotherapies (interferon beta, natalizumab, fingolimod) can make NMOSD worse. Reduced hearing is uncommon in MS and needs audiometry (Susac syndrome combines hearing loss, visual symptoms and white-matter lesions); ring enhancement is judged by size, ring pattern, mass effect and diffusion, an open ring favouring demyelination. The case records none of the antibody, eye or hearing results, nor those imaging features."
+        "zh-CN": "诊断多发性硬化之前先排除相似疾病。视物模糊加脊髓病灶要查 AQP4-IgG（2015 年 NMOSD 国际共识强烈推荐细胞法）和 MOG-IgG（2023 年国际 MOGAD 标准要求其阳性）——部分多发性硬化免疫治疗（如 β 干扰素、那他珠单抗、芬戈莫德）可使 NMOSD 加重；听力下降在多发性硬化中少见，要客观测听（Susac 综合征同时有听力下降、视觉症状和脑白质病灶）；环形强化要结合大小、强化环形态、占位效应和弥散判断，不完整的开环更支持脱髓鞘。本病例没有记录抗体、眼科和听力结果，也没有记录这些影像特征。",
+        "en": "Exclude the mimics before diagnosing MS. Blurred vision with a cord lesion calls for AQP4-IgG — by cell-based assay, as the 2015 international NMOSD criteria strongly recommend — and MOG-IgG, whose positivity the 2023 International MOGAD Panel criteria require; some MS immunotherapies (interferon beta, natalizumab, fingolimod) can make NMOSD worse. Reduced hearing is uncommon in MS and needs audiometry (Susac syndrome combines hearing loss, visual symptoms and white-matter lesions); ring enhancement is judged by size, ring pattern, mass effect and diffusion, an open ring favouring demyelination. The case records none of the antibody, eye or hearing results, nor those imaging features."
       },
       {
         "zh-CN": "复发的治疗：NICE NG220（2022）对影响日常活动的复发，在起病 14 天内给予甲泼尼龙 0.5 g 口服、每日 1 次、共 5 天；口服无效、不耐受或需住院（严重复发，或需监测躯体或心理情况）时考虑 1 g 静脉、每日 1 次、共 3–5 天；不用更低的剂量，也不给备用激素在家自行服用。先排查感染，以免把假性复发当作复发。激素加快恢复，但不是疾病修正治疗。记录与现行做法：本病例只记录“治疗 35 天后强化消失”，没有记录药名和剂量；强化消失只说明该病灶不再活动——约 9 个月后又出现 6 个新病灶。",
@@ -4255,13 +4313,13 @@
     ],
     "references": [
       "周福庆, 龚洪翰. 1例复发缓解型多发性硬化MRI连贯分析. 磁共振成像. 2011;2(4):314-316. doi:10.3969/j.issn.1674-8034.2011.04.015. Available from: https://rs.yiigle.com/cmaid/1233223",
-      "Montalban X, et al. Diagnosis of multiple sclerosis: 2024 revisions of the McDonald criteria. Lancet Neurol. 2025;24(10):850-865.",
-      "Thompson AJ, et al. Diagnosis of multiple sclerosis: 2017 revisions of the McDonald criteria. Lancet Neurol. 2018;17(2):162-173.",
-      "Polman CH, et al. Diagnostic criteria for multiple sclerosis: 2010 revisions to the McDonald criteria. Ann Neurol. 2011;69(2):292-302.",
+      "Montalban X, et al. Diagnosis of multiple sclerosis: 2024 revisions of the McDonald criteria. Lancet Neurol. 2025;24(10):850-865. doi:10.1016/S1474-4422(25)00270-4",
+      "Thompson AJ, et al. Diagnosis of multiple sclerosis: 2017 revisions of the McDonald criteria. Lancet Neurol. 2018;17(2):162-173. doi:10.1016/S1474-4422(17)30470-2",
+      "Polman CH, et al. Diagnostic criteria for multiple sclerosis: 2010 revisions to the McDonald criteria. Ann Neurol. 2011;69(2):292-302. doi:10.1002/ana.22366",
       "National Institute for Health and Care Excellence. Multiple sclerosis in adults: management. NICE guideline NG220. London: NICE; 2022 [updated 2026].",
-      "Montalban X, Gold R, Thompson AJ, et al. ECTRIMS/EAN guideline on the pharmacological treatment of people with multiple sclerosis. Mult Scler. 2018;24(2):96-120.",
-      "Wingerchuk DM, et al. International consensus diagnostic criteria for neuromyelitis optica spectrum disorders. Neurology. 2015;85(2):177-189.",
-      "Banwell B, et al. Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD Panel proposed criteria. Lancet Neurol. 2023;22(3):268-282.",
+      "Montalban X, Gold R, Thompson AJ, et al. ECTRIMS/EAN guideline on the pharmacological treatment of people with multiple sclerosis. Mult Scler. 2018;24(2):96-120. doi:10.1177/1352458517751049",
+      "Wingerchuk DM, et al. International consensus diagnostic criteria for neuromyelitis optica spectrum disorders. Neurology. 2015;85(2):177-189. doi:10.1212/WNL.0000000000001729",
+      "Banwell B, et al. Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD Panel proposed criteria. Lancet Neurol. 2023;22(3):268-282. doi:10.1016/S1474-4422(22)00431-8",
       "National Institute for Health and Care Excellence. Depression in adults with a chronic physical health problem: recognition and management. Clinical guideline CG91. London: NICE; 2009."
     ],
     "notice": {
@@ -4817,6 +4875,13 @@
         ]
       },
       {
+        "text": "上次发作以后有没有给你治疗过？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment-last"
+        ]
+      },
+      {
         "text": "你们医院停车方便吗？",
         "locale": "zh-CN",
         "expect": []
@@ -4921,6 +4986,27 @@
       },
       {
         "text": "Are you on anything to stop further attacks?",
+        "locale": "en",
+        "expect": [
+          "long-term-medicine"
+        ]
+      },
+      {
+        "text": "What brings you in to see me today?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Did they give you any treatment after the last episode?",
+        "locale": "en",
+        "expect": [
+          "treatment-last"
+        ]
+      },
+      {
+        "text": "What medicines are you taking now?",
         "locale": "en",
         "expect": [
           "long-term-medicine"

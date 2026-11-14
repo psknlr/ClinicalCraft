@@ -42,8 +42,8 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——30岁女性，咳嗽、少量白痰偶带血丝、活动后气短（休息缓解）、偶发与呼吸咳嗽劳累无关的阵发性钝痛半个月，近3天加重；双下肢先胀痛、后出现可凹性水肿；数年前诊断“特发性血小板减少”；胆囊切除；一次死胎、无流产；无烟酒嗜好；无明显发绀、双肺呼吸音清无啰音、双下肢轻度凹陷性水肿、血压 130/80 mmHg；CT 双肺动脉及右下肺静脉充盈缺损；左股浅静脉和右腘静脉血栓；血小板 58×10⁹/L、APTT 71.6 s、INR 正常、D-二聚体 902 μg/L；凝血因子Ⅷ、Ⅸ、Ⅺ无异常；ANA谱、ANCA、补体等未见异常；抗心磷脂抗体 104 U/mL（参考 0–12）；肝素后转华法林，同时使用激素并逐渐停用；3 个月CT示血栓消失、血小板改善、无复发报告——均尚未对照原文全文核对。患者为化名，医院和日期已去除，时间以相对时间表示。分阶段设计（CT、超声和首批血液检查放在入院当天，凝血因子、自身抗体和抗心磷脂抗体放在住院期间——1.0.0 版没有记录任何检查的具体时间）、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；1.0.0 版没有记录的内容（其他生命体征、右心评估、抗体同型、狼疮抗凝物和抗β2GPI、死胎孕周、体重、肾功能、药物剂量）保持未知。1.0.0 版中英文稿的差异（中文写明低分子肝素、英文只写肝素；中文为左股浅静脉、英文为左股静脉）两种说法都保留，并列入导师指南的待核实清单。本例没有获准展示的原图。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one that version 1.0.0 extracted from the report — a 30-year-old woman with two weeks of cough with a little white, occasionally blood-streaked sputum, breathlessness on exertion relieved by rest and occasional paroxysmal dull chest pain unrelated to breathing, coughing or exertion, all worse for three days; legs that ached and later developed pitting oedema; 'idiopathic thrombocytopenia' diagnosed years earlier; a cholecystectomy; one stillbirth and no miscarriage; no smoking or alcohol; no obvious cyanosis, clear lungs without crackles, mild bilateral pitting oedema and BP 130/80 mmHg; CT filling defects in both pulmonary arteries and the right lower pulmonary vein; left superficial femoral and right popliteal vein thrombosis; platelets 58 × 10⁹/L, APTT 71.6 s, normal INR, D-dimer 902 µg/L; normal factors VIII, IX and XI; unremarkable ANA panel, ANCA and complement; anticardiolipin 104 U/mL (reference 0–12); heparin then warfarin, with steroids given alongside and tapered; clots resolved on CT at 3 months, platelets improved, no recurrence reported — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and dates are removed and time is relative. The staging (the CT, ultrasound and first blood tests on the day of admission; the factor assays, autoantibodies and anticardiolipin during the admission — 1.0.0 times none of the tests), decisions, intervention options, scoring, staff and the patient's voiced worries (a teaching device that adds no clinical fact) are teaching design; what 1.0.0 does not record (other vital signs, right-heart assessment, the antibody isotype, lupus anticoagulant and anti-β2GPI, the stillbirth's gestation, weight, renal function, drug doses) stays unknown. Where the Chinese and English texts of 1.0.0 differ (low-molecular-weight heparin in Chinese, heparin in English; the left superficial femoral vein in Chinese, the left femoral vein in English) both readings are kept and listed in the facilitator guide's 'To verify'. No figure of the report is approved for display."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——30岁女性，咳嗽、少量白痰偶带血丝、活动后气短（休息缓解）、偶发与呼吸、咳嗽、劳累无明确关系的阵发性钝痛半个月，近3天加重；双下肢先胀痛、后出现可凹性水肿；数年前诊断“特发性血小板减少”；胆囊切除；一次死胎、无流产；无烟酒嗜好；无明显发绀、双肺呼吸音清无啰音、双下肢轻度凹陷性水肿、血压 130/80 mmHg；CT 双肺动脉及右下肺静脉充盈缺损；左股浅静脉和右腘静脉血栓；血小板 58×10⁹/L、APTT 71.6 s、INR 正常、D-二聚体 902 μg/L；凝血因子Ⅷ、Ⅸ、Ⅺ无异常；ANA谱、ANCA、补体等未见异常；抗心磷脂抗体 104 U/mL（参考 0–12）；肝素后转华法林，同时使用激素并逐渐停用；3 个月CT示血栓消失、血小板改善、无复发报告——均尚未对照原文全文核对。患者为化名，医院和日期已去除，时间以相对时间表示。分阶段设计（CT、超声和首批血液检查放在入院当天，凝血因子、自身抗体和抗心磷脂抗体放在住院期间——1.0.0 版没有记录任何检查的具体时间）、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；1.0.0 版没有记录的内容（其他生命体征、右心评估、抗体同型、狼疮抗凝物和抗β2GPI、死胎孕周、体重、肾功能、药物剂量）保持未知。1.0.0 版中英文稿的差异（中文写明低分子肝素、英文只写肝素；中文为左股浅静脉、英文为左股静脉）记录采用更具体、且与英文稿并不矛盾的中文说法（“肝素（低分子肝素）”“股浅静脉”），两种说法都列入导师指南的待核实清单。本例没有获准展示的原图。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one that version 1.0.0 extracted from the report — a 30-year-old woman with two weeks of cough with a little white, occasionally blood-streaked sputum, breathlessness on exertion relieved by rest and occasional paroxysmal dull chest pain with no clear relation to breathing, coughing or exertion, all worse for three days; legs that ached and later developed pitting oedema; 'idiopathic thrombocytopenia' diagnosed years earlier; a cholecystectomy; one stillbirth and no miscarriage; no smoking or alcohol; no obvious cyanosis, clear lungs without crackles, mild bilateral pitting oedema and BP 130/80 mmHg; CT filling defects in both pulmonary arteries and the right lower pulmonary vein; left superficial femoral and right popliteal vein thrombosis; platelets 58 × 10⁹/L, APTT 71.6 s, normal INR, D-dimer 902 µg/L; normal factors VIII, IX and XI; unremarkable ANA panel, ANCA and complement; anticardiolipin 104 U/mL (reference 0–12); heparin then warfarin, with steroids given alongside and tapered; clots resolved on CT at 3 months, platelets improved, no recurrence reported — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and dates are removed and time is relative. The staging (the CT, ultrasound and first blood tests on the day of admission; the factor assays, autoantibodies and anticardiolipin during the admission — 1.0.0 times none of the tests), decisions, intervention options, scoring, staff and the patient's voiced worries (a teaching device that adds no clinical fact) are teaching design; what 1.0.0 does not record (other vital signs, right-heart assessment, the antibody isotype, lupus anticoagulant and anti-β2GPI, the stillbirth's gestation, weight, renal function, drug doses) stays unknown. Where the Chinese and English texts of 1.0.0 differ (low-molecular-weight heparin in Chinese, heparin in English; the left superficial femoral vein in Chinese, the left femoral vein in English) the records give the more specific Chinese reading, which the English one does not contradict ('heparin (low-molecular-weight heparin)', 'superficial femoral vein'), and both readings are listed in the facilitator guide's 'To verify'. No figure of the report is approved for display."
     },
     "review": {
       "status": "editorial",
@@ -161,7 +161,7 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演者：入院第一阶段，她躺在病床上，安静休息时说话不喘，偶尔咳嗽；紧张但配合。她只说自己知道的：咳嗽、少量白痰偶带血丝、一活动就喘、歇一会儿能缓解、胸口偶尔阵发闷痛（与喘气、咳嗽、劳累无明显关系）、这三天都加重；两条腿先胀痛、后来肿了、一按一个坑；几年前查出血小板低（医生说是“特发性血小板减少”，细节记不清）；切过胆囊（年份说不准）；有过一次死胎，没有流过产，那次怀孕几周记不清；不抽烟、不喝酒。不说任何化验或检查数字，不编造用药、过敏、家族史、体重、月经、避孕或发热情况；问到这些就说说不上来。说到死胎时会停顿、声音变低。住院期间她的症状有什么变化，本病例没有记录：被问到现在感觉怎样，就说说不清。",
+        "zh-CN": "扮演者：入院第一阶段，她躺在病床上，安静休息时说话不喘，偶尔咳嗽；紧张但配合。她只说自己知道的：咳嗽、少量白痰偶带血丝、一活动就喘、歇一会儿能缓解、胸口偶尔阵发钝痛（与喘气、咳嗽、劳累无明显关系）、这三天都加重；两条腿先胀痛、后来肿了、一按一个坑；几年前查出血小板低（医生说是“特发性血小板减少”，细节记不清）；切过胆囊（年份说不准）；有过一次死胎，没有流过产，那次怀孕几周记不清；不抽烟、不喝酒。不说任何化验或检查数字，不编造用药、过敏、家族史、体重、月经、避孕或发热情况；问到这些就说说不上来。说到死胎时会停顿、声音变低。住院期间她的症状有什么变化，本病例没有记录：被问到现在感觉怎样，就说说不清。",
         "en": "For the actor: in the first phase she is lying in her ward bed, not breathless while resting and talking, coughing now and then; anxious but cooperative. She says only what she knows: a cough with a little white phlegm, now and then streaked with blood; getting out of breath whenever she does anything, settling with rest; an occasional dull ache in the chest that comes and goes, with no clear link to breathing, coughing or exertion; all worse these three days; legs that ached first and then swelled, leaving a dent when pressed; low platelets found a few years ago ('idiopathic thrombocytopenia', the doctor said; she does not remember the details); her gallbladder out (she cannot say which year); one stillborn baby, no miscarriage, and she cannot remember how many weeks pregnant she was. No smoking, no alcohol. She never gives numbers or test results and never invents medicines, allergies, family history, weight, periods, contraception or fevers — asked about these, she says she cannot say. She pauses and speaks more quietly when the stillbirth comes up. The case does not record how she felt later in the admission: asked how she feels now, she says she cannot really say."
       }
     },
@@ -264,7 +264,7 @@
         "en": "Are you bringing anything up with the cough? What does it look like?"
       },
       "answer": {
-        "zh-CN": "咳得不算多，有一点白痰。",
+        "zh-CN": "痰不多，就一点白痰。",
         "en": "Not a lot — a little white phlegm."
       },
       "keywords": {
@@ -467,7 +467,7 @@
         "en": "What is the chest pain like? Does breathing in, coughing or exertion bring it on?"
       },
       "answer": {
-        "zh-CN": "是一阵一阵的闷痛，不常有。跟喘气、咳嗽、累不累好像都没什么关系。",
+        "zh-CN": "是那种钝钝的痛，一阵一阵的，不常有。跟喘气、咳嗽、累不累好像都没什么关系。",
         "en": "It's a dull ache that comes and goes, not often. It doesn't seem to be linked to breathing, coughing or how much I'm doing."
       },
       "keywords": {
@@ -487,7 +487,11 @@
           "whatisthepainlike",
           "kind of pain",
           "pain in the chest",
-          "chest ache"
+          "chest ache",
+          "pleuritic",
+          "pain breathing in",
+          "hurts to breathe",
+          "pain on a deep breath"
         ]
       },
       "excludeKeywords": {
@@ -1605,8 +1609,8 @@
           "values": [],
           "figures": [],
           "note": {
-            "zh-CN": "本病例没有记录血栓的范围、静脉是否完全闭塞和小腿静脉的情况。（本记录英文稿只写“左侧股静脉”，中文稿写明为股浅静脉。）",
-            "en": "This case does not record the extent of the thrombi, whether the veins were occluded or the state of the calf veins. (The English text of this record says only 'left femoral'; the Chinese text names the superficial femoral vein.)"
+            "zh-CN": "本病例没有记录血栓的范围、静脉是否完全闭塞和小腿静脉的情况。股浅静脉虽然名字里有“浅”，其实是深静脉。",
+            "en": "This case does not record the extent of the thrombi, whether the veins were occluded or the state of the calf veins. Despite its name, the superficial femoral vein is a deep vein."
           },
           "source": {
             "zh-CN": "报告·入院检查（超声：左股浅静脉及右腘静脉血栓）——依 1.0.0 版提取，尚未对照原文全文核对",
@@ -2682,8 +2686,8 @@
             "en": "From the admission to follow-up"
           },
           "text": {
-            "zh-CN": "抗凝先用肝素（本记录中文稿写明为低分子肝素，英文稿只写“肝素”），之后改为华法林；同时使用激素，以后逐渐停用。3 个月时复查CT，血栓消失；血小板改善。随访中没有复发的报告，随访总时长不清楚。",
-            "en": "Anticoagulation began with heparin (specified as low-molecular-weight heparin in the Chinese text of this record; the English text says only 'heparin') and was changed to warfarin; steroids were given at the same time and later tapered off. A CT at 3 months showed that the clots had resolved, and the platelet count improved. No recurrence was reported; the total length of follow-up is not clear."
+            "zh-CN": "抗凝先用肝素（低分子肝素），之后改为华法林；同时使用激素，以后逐渐停用。3 个月时复查CT，血栓消失；血小板改善。随访中没有复发的报告，随访总时长不清楚。",
+            "en": "Anticoagulation began with heparin (low-molecular-weight heparin) and was changed to warfarin; steroids were given at the same time and later tapered off. A CT at 3 months showed that the clots had resolved, and the platelet count improved. No recurrence was reported; the total length of follow-up is not clear."
           },
           "values": [],
           "figures": [],
@@ -2829,11 +2833,26 @@
       "indicatedWhen": {
         "all": [
           {
+            "read": "fbc",
             "phase": "admission"
           },
           {
-            "read": "fbc",
-            "phase": "admission"
+            "not": {
+              "any": [
+                {
+                  "read": "factor-assays",
+                  "phase": "workup"
+                },
+                {
+                  "read": "autoimmune-screen",
+                  "phase": "workup"
+                },
+                {
+                  "read": "thrombophilia-antibodies",
+                  "phase": "workup"
+                }
+              ]
+            }
           }
         ]
       },
@@ -2845,8 +2864,8 @@
         "en": "An unfractionated heparin infusion is already running: adding LMWH stacks two anticoagulants and sharply raises the bleeding risk, with blood already in her sputum. To change drugs, stop the infusion first; never stack them."
       },
       "response": {
-        "zh-CN": "已皮下注射。本病例记录的抗凝从肝素开始（中文记录写明为低分子肝素），没有记录剂量、给药时间和抗Xa水平；不模拟其效果。",
-        "en": "Given. This case records that anticoagulation began with heparin (low-molecular-weight heparin in the Chinese text) but not the dose, the timing or any anti-Xa level; it does not simulate the effect."
+        "zh-CN": "已皮下注射。本病例记录的抗凝从肝素（低分子肝素）开始，没有记录剂量、给药时间和抗Xa水平；不模拟其效果。",
+        "en": "Given. This case records that anticoagulation began with heparin (low-molecular-weight heparin) but not the dose, the timing or any anti-Xa level; it does not simulate the effect."
       }
     },
     {
@@ -2899,11 +2918,26 @@
       "indicatedWhen": {
         "all": [
           {
+            "read": "fbc",
             "phase": "admission"
           },
           {
-            "read": "fbc",
-            "phase": "admission"
+            "not": {
+              "any": [
+                {
+                  "read": "factor-assays",
+                  "phase": "workup"
+                },
+                {
+                  "read": "autoimmune-screen",
+                  "phase": "workup"
+                },
+                {
+                  "read": "thrombophilia-antibodies",
+                  "phase": "workup"
+                }
+              ]
+            }
           }
         ]
       },
@@ -2985,8 +3019,8 @@
         "en": "There is no heparin cover yet: warfarin takes days to work and, because protein C falls first, can briefly raise the clotting risk on its own. ESC 2019 requires overlap with heparin for at least 5 days and until the INR is 2.0–3.0. Start the LMWH first."
       },
       "response": {
-        "zh-CN": "已开始华法林，肝素继续重叠。本病例记录此后改用华法林，但没有记录剂量、目标 INR 或 INR 数值；不模拟其效果。",
-        "en": "Warfarin started, with the heparin continuing alongside. This case records the later change to warfarin but not the dose, the INR target or any INR value; it does not simulate the effect."
+        "zh-CN": "已开始华法林，肝素继续重叠。本病例记录此后改用华法林，但没有记录剂量、目标 INR 或 INR 数值。本病例没有记录妊娠试验结果；实际工作中，首剂华法林要等妊娠试验阴性之后。本病例不模拟其效果。",
+        "en": "Warfarin started, with the heparin continuing alongside. This case records the later change to warfarin but not the dose, the INR target or any INR value. No pregnancy test result is recorded in this case; in practice the first dose waits for a negative test. The case does not simulate the effect."
       }
     },
     {
@@ -3172,8 +3206,8 @@
       "risk": "low",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "已开始口服激素。报告在抗凝的同时用了激素、以后逐渐停用，但没有记录药名和剂量。ASH 2019 对新诊断的成人免疫性血小板减少症、血小板 ≥ 30×10⁹/L 且无出血或仅有轻微皮肤黏膜出血者推荐观察而不是糖皮质激素；她的血小板减少由来已久，58×10⁹/L 且无明显出血，看不出用激素的理由，激素也不能治疗血栓。本病例不模拟其效果。",
-        "en": "Steroid started. The report gave steroids alongside the anticoagulation and later tapered them off, without recording the drug or dose. ASH 2019 recommends observation rather than corticosteroids for adults with newly diagnosed immune thrombocytopenia and platelets ≥ 30 × 10⁹/L with no or only minor mucocutaneous bleeding; her low platelets are long-standing, and 58 × 10⁹/L without significant bleeding gives no reason for steroids, which do not treat clots. The case does not simulate the effect."
+        "zh-CN": "已开始口服激素。报告在抗凝的同时用了激素、以后逐渐停用，但没有记录药名和剂量。ASH 2019 对新诊断的成人免疫性血小板减少症、血小板 ≥ 30×10⁹/L 且无出血或仅有轻微皮肤黏膜出血者推荐观察而不是糖皮质激素；她的血小板减少是几年前就发现的，并非新诊断，58×10⁹/L 且无明显出血，看不出用激素的理由，激素也不能治疗血栓。本病例不模拟其效果。",
+        "en": "Steroid started. The report gave steroids alongside the anticoagulation and later tapered them off, without recording the drug or dose. ASH 2019 recommends observation rather than corticosteroids for adults with newly diagnosed immune thrombocytopenia and platelets ≥ 30 × 10⁹/L with no or only minor mucocutaneous bleeding; her low platelets were first found years ago, not newly, and 58 × 10⁹/L without significant bleeding gives no reason for steroids, which do not treat clots. The case does not simulate the effect."
       }
     },
     {
@@ -3543,8 +3577,8 @@
         "en": "Examination"
       },
       "hint": {
-        "zh-CN": "哪些体征能帮你区分心脏、肺和血管的原因？双肺听诊正常能排除什么、不能排除什么？",
-        "en": "Which signs help you tell a cardiac, a lung and a vascular cause apart — and what can a normal chest examination not exclude?"
+        "zh-CN": "哪些体征能帮你区分心脏、肺和血管的原因？双肺听诊能排除什么、不能排除什么？",
+        "en": "Which signs help you tell a cardiac, a lung and a vascular cause apart — and what can a chest examination not exclude?"
       },
       "guidance": {
         "zh-CN": "看一般情况，听诊双肺，检查双下肢，测血压。",
@@ -3684,8 +3718,8 @@
         "en": "Cause and plan"
       },
       "hint": {
-        "zh-CN": "一次阳性的抗体结果能证明什么、不能证明什么？长期用哪种抗凝药、用多久？以后怀孕的可能，会改变计划里的哪些部分？",
-        "en": "What can one positive antibody result prove, and what can it not? Which anticoagulant, and for how long — and what does a future pregnancy change in the plan?"
+        "zh-CN": "单独一次抗体结果能证明什么、不能证明什么？长期用哪种抗凝药、用多久？以后怀孕的可能，会改变计划里的哪些部分？",
+        "en": "What can a single antibody result prove, and what can it not? Which anticoagulant, and for how long — and what does a future pregnancy change in the plan?"
       },
       "guidance": {
         "zh-CN": "读住院期间回报的结果，在会诊板上回答决策 3 到 5，并开始长期抗凝。",
@@ -3979,8 +4013,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。因子活性正常排除了因子缺乏；ANA谱和补体正常，目前没有系统性红斑狼疮的证据（以后仍要随访）。2023 ACR/EULAR 分类标准的实验室领域只计持续阳性（间隔至少 12 周），IgG 计分高于 IgM；一次、同型不明的抗心磷脂抗体还不能完成分类。分类标准是研究工具，不能代替临床诊断：现在就按抗磷脂综合征治疗。",
-            "en": "Correct. Normal factor activity rules out a deficiency, and a normal ANA panel and complement give no evidence of lupus for now (keep watching). The 2023 ACR/EULAR criteria score the laboratory domains only for persistent positivity (≥ 12 weeks apart), with IgG scoring higher than IgM; one anticardiolipin of unstated isotype cannot complete classification. Classification criteria are research tools, not a substitute for diagnosis: treat as APS now."
+            "zh-CN": "正确。凝血因子Ⅷ、Ⅸ、Ⅺ活性正常，排除了这些因子的缺乏；ANA谱和补体正常，目前没有系统性红斑狼疮的证据（以后仍要随访）。2023 ACR/EULAR 分类标准中，抗心磷脂抗体和抗β2GPI 只有持续阳性（间隔至少 12 周）才计分，IgG 计分高于 IgM；一次、同型不明的抗心磷脂抗体还不能完成分类。分类标准是研究工具，不能代替临床诊断：现在就按抗磷脂综合征治疗。",
+            "en": "Correct. Normal factor VIII, IX and XI activity rules out a deficiency of those factors, and a normal ANA panel and complement give no evidence of lupus for now (keep watching). The 2023 ACR/EULAR criteria score anticardiolipin and anti-β2GPI only when persistently positive (≥ 12 weeks apart), IgG higher than IgM; one anticardiolipin of unstated isotype cannot complete classification. Classification criteria are research tools, not a substitute for diagnosis: treat as APS now."
           }
         },
         {
@@ -3991,8 +4025,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。2023 ACR/EULAR 标准的实验室领域要求持续阳性（间隔至少 12 周），中、高滴度的界值（40–79 和 ≥ 80 单位）按标准化单位和同型（IgG 或 IgM）计分；一次、同型不明的 104 U/mL 不能代替复查。感染等情况也可能出现一过性阳性。",
-            "en": "No. The 2023 ACR/EULAR laboratory domains need persistent positivity (≥ 12 weeks apart), and the moderate and high thresholds (40–79 and ≥ 80 units) are scored in standardised units by isotype (IgG or IgM); a single 104 U/mL of unknown isotype cannot replace a repeat. Infections, among other things, can cause transient positivity."
+            "zh-CN": "不对。2023 ACR/EULAR 标准中抗心磷脂抗体和抗β2GPI 要求持续阳性（间隔至少 12 周）才计分，中、高滴度的界值（40–79 和 ≥ 80 单位）按标准化单位和同型（IgG 或 IgM）计分；一次、同型不明的 104 U/mL 不能代替复查。感染等情况也可能出现一过性阳性。",
+            "en": "No. The 2023 ACR/EULAR criteria score anticardiolipin and anti-β2GPI only when persistently positive (≥ 12 weeks apart), and the moderate and high thresholds (40–79 and ≥ 80 units) are scored in standardised units by isotype (IgG or IgM); a single 104 U/mL of unknown isotype cannot replace a repeat. Infections, among other things, can cause transient positivity."
           }
         },
         {
@@ -4326,8 +4360,8 @@
       "id": "rb-anticoagulated-day-one",
       "domain": "management",
       "text": {
-        "zh-CN": "入院当天、看过血小板计数后即开始治疗剂量抗凝（低分子肝素，或按抗Xa监测的普通肝素）",
-        "en": "Started treatment-dose anticoagulation on the day of admission once the platelet count was known (LMWH, or anti-Xa-monitored UFH)"
+        "zh-CN": "看过血小板计数后即开始治疗剂量抗凝，没有等进一步检查结果（低分子肝素，或按抗Xa监测的普通肝素）",
+        "en": "Started treatment-dose anticoagulation as soon as the platelet count was known, without waiting for the further results (LMWH, or anti-Xa-monitored UFH)"
       },
       "weight": 4,
       "critical": true,
@@ -4541,8 +4575,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "Calgary–Cambridge 的解释与计划环节。好的表现：先问她已经知道什么、最担心什么；用日常语言说明肺里和双腿都有血栓，痰里的血丝和胸痛与此有关；说明化验里“凝血慢”其实提示更容易长血栓，这就是为什么今天就要打抗凝针；坦率说明诊断目前是“工作诊断”，要在至少 12 周后复查抗体才能确认，不夸大也不轻描淡写；解释改用华法林后要定期抽血查 INR、留意出血、注意药物和饮食的相互影响，以及为什么不换成“不用抽血”的新药；谈到死胎时承认她的伤痛，说明那次经历可能与这个病有关，但具体情况还不清楚；关于生育：华法林可能伤害胎儿，现在要用不含雌激素的可靠避孕，想怀孕前先来计划，一旦怀孕要立即改为打针加小剂量阿司匹林——她可以怀孕，但要有计划；最后请她用自己的话复述要点（teach-back），并给出复诊和出现胸痛加重、气促加重、咯血增多、黑便或其他出血时立即就医的安排。不应出现的：虚假的保证，“血小板低所以不能抗凝”之类的错误说法，或回避她的生育问题。",
-        "en": "Calgary–Cambridge explanation and planning. Good performance: start by finding out what she already knows and what she fears most; explain in everyday words that there are clots in her lungs and both legs, and that the streaks of blood and the chest pain fit with them; explain that the 'slow clotting' blood test actually points to a tendency to clot, which is why the injections start today; say frankly that the diagnosis is a working one that needs repeat antibody tests at least 12 weeks later — neither overstated nor played down; explain warfarin: regular INR blood tests, watching for bleeding, interactions with other medicines and food, and why she is not switched to a 'no-blood-test' tablet; acknowledge her loss when the stillbirth comes up, and that it may be linked to this condition though the details are unknown; on a future pregnancy: warfarin can harm a baby, so reliable contraception without oestrogen now, a planning visit before trying, and a change to injections plus low-dose aspirin as soon as she is pregnant — pregnancy is possible, with planning; finish with teach-back and safety-netting (return at once with worse chest pain or breathlessness, more blood in the sputum, black stools or other bleeding) and a follow-up appointment. Not acceptable: false reassurance, 'your platelets are too low for blood thinners', or avoiding her question about a baby."
+        "zh-CN": "Calgary–Cambridge 的解释与计划环节，告知需要长期治疗的病情时用 SPIKES。好的表现：先问她已经知道什么、最担心什么；用日常语言说明肺里和双腿都有血栓，痰里的血丝和胸痛与此有关；说明化验里“凝血慢”其实提示更容易长血栓，这就是为什么今天就要打抗凝针；坦率说明诊断目前是“工作诊断”，要在至少 12 周后复查抗体才能确认，不夸大也不轻描淡写；解释改用华法林后要定期抽血查 INR、留意出血、注意药物和饮食的相互影响，以及为什么不换成“不用抽血”的新药；谈到死胎时承认她的伤痛，说明那次经历可能与这个病有关，但具体情况还不清楚；关于生育：华法林可能伤害胎儿，现在要用不含雌激素的可靠避孕，想怀孕前先来计划，一旦怀孕要立即改为打针加小剂量阿司匹林——她可以怀孕，但要有计划；最后请她用自己的话复述要点（teach-back），并给出复诊和出现胸痛加重、气促加重、咯血增多、黑便或其他出血时立即就医的安排。不应出现的：虚假的保证，“血小板低所以不能抗凝”之类的错误说法，或回避她的生育问题。",
+        "en": "Calgary–Cambridge explanation and planning, with SPIKES for the news of a long-term condition. Good performance: start by finding out what she already knows and what she fears most; explain in everyday words that there are clots in her lungs and both legs, and that the streaks of blood and the chest pain fit with them; explain that the 'slow clotting' blood test actually points to a tendency to clot, which is why the injections start today; say frankly that the diagnosis is a working one that needs repeat antibody tests at least 12 weeks later — neither overstated nor played down; explain warfarin: regular INR blood tests, watching for bleeding, interactions with other medicines and food, and why she is not switched to a 'no-blood-test' tablet; acknowledge her loss when the stillbirth comes up, and that it may be linked to this condition though the details are unknown; on a future pregnancy: warfarin can harm a baby, so reliable contraception without oestrogen now, a planning visit before trying, and a change to injections plus low-dose aspirin as soon as she is pregnant — pregnancy is possible, with planning; finish with teach-back and safety-netting (return at once with worse chest pain or breathlessness, more blood in the sputum, black stools or other bleeding) and a follow-up appointment. Not acceptable: false reassurance, 'your platelets are too low for blood thinners', or avoiding her question about a baby."
       }
     }
   ],
@@ -4554,8 +4588,8 @@
         "en": "Dr Wen (respiratory medicine attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，最后按 PEARLS 复盘；只就学员已经得到的信息提问，从不先给结果或诊断。决策 1 之前：“年轻女性活动后气短、痰中带血、胸痛、两条腿肿——你最担心什么？靠什么确认？”“双肺听诊正常能排除什么？”“用任何抗凝药之前，哪些血液结果必须先看到？”学员读过凝血结果之后：“一个可能正在长血栓的人，凝血检查却是这样的结果——怎么解释？”“她以前的血小板诊断和那次死胎，和现在有什么联系？”决策 1 之后：“首剂肝素前要送哪些标本？为什么不等结果再抗凝？”“这里为什么用低分子肝素而不是普通肝素？万一要用普通肝素，怎么监测？”“血小板到多少你会调整剂量？”“为什么不溶栓？”住院期间、学员读过进一步检查之后：“这个抗体结果能说明什么？要完成分类还缺什么？”“为什么用华法林，用多久？”“对可能还想要孩子的她，华法林意味着什么？”看过结局后讨论当年与现在：与抗凝同时使用的激素、3 个月时的CT、抗体只查过一次。清楚哪些内容没有记录（心率、呼吸、血氧饱和度、体温、右心室情况、肌钙蛋白、体重、肾功能、死胎孕周、采样是否在肝素之前、所有剂量，以及学员读到结果后才谈的后续检查细节）；遇到这些就直说没有记录，不替病例补全。",
-        "en": "Socratic teacher who closes with a PEARLS debrief; asks only about what the learner already has and never gives a result or the diagnosis first. Before decision 1: 'A young woman, breathless on exertion, blood in her sputum, chest pain and two swollen legs — what worries you, and what will confirm it?' 'What does a clear chest examination rule out?' 'Which blood results must you see before any anticoagulant?' Once the learner has read the clotting screen: 'How do you explain this clotting result in someone who may be forming clots?' 'What links her old platelet diagnosis and her stillbirth to this?' After decision 1: 'Which samples go before the first heparin dose, and why not wait for their results?' 'Why LMWH rather than UFH here, and how would you monitor UFH if you had to use it?' 'At what platelet count would you change the dose?' 'Why not thrombolysis?' During the admission, once the further results are read: 'What does that antibody result establish, and what is still missing for classification?' 'Why warfarin, and for how long?' 'What does warfarin mean for a woman who may want a baby?' After the outcome, then versus now: steroids given alongside the heparin, a CT at three months, antibodies tested once. Knows what is not recorded — her pulse, respiratory rate, saturation and temperature, the right ventricle, troponin, weight, renal function, the stillbirth's gestation, whether the samples preceded the heparin, every dose, and the details of the later tests, which it discusses only once the learner has read them — and says so rather than filling the gap."
+        "zh-CN": "苏格拉底式带教，最后按 PEARLS 复盘；只就学员已经得到的信息提问，从不先给结果或诊断。决策 1 之前：“年轻女性活动后气短、痰中带血、胸痛、两条腿肿——你最担心什么？靠什么确认？”“双肺听诊正常能排除什么？”“用任何抗凝药之前，哪些血液结果必须先看到？”学员读过凝血结果之后：“一个可能正在长血栓的人，凝血检查却是这样的结果——怎么解释？”“她以前的血小板诊断和那次死胎，和现在有什么联系？”决策 1 之后：“首剂肝素前要送哪些标本？为什么不等结果再抗凝？”“这里为什么用低分子肝素而不是普通肝素？万一要用普通肝素，怎么监测？”“血小板到多少你会调整剂量？”“为什么不溶栓？”住院期间、学员读过进一步检查之后：“这个抗体结果能说明什么？要完成分类还缺什么？”“为什么用华法林，用多久？”“对可能还想要孩子的她，华法林意味着什么？”看过结局后讨论当年与现在：与抗凝同时使用的激素、3 个月时的CT、只记录了一次抗体结果。清楚哪些内容没有记录（心率、呼吸、血氧饱和度、体温、右心室情况、肌钙蛋白、体重、肾功能、死胎孕周、采样是否在肝素之前、所有剂量，以及学员读到结果后才谈的后续检查细节）；遇到这些就直说没有记录，不替病例补全。",
+        "en": "Socratic teacher who closes with a PEARLS debrief; asks only about what the learner already has and never gives a result or the diagnosis first. Before decision 1: 'A young woman, breathless on exertion, blood in her sputum, chest pain and two swollen legs — what worries you, and what will confirm it?' 'What does a clear chest examination rule out?' 'Which blood results must you see before any anticoagulant?' Once the learner has read the clotting screen: 'How do you explain this clotting result in someone who may be forming clots?' 'What links her old platelet diagnosis and her stillbirth to this?' After decision 1: 'Which samples go before the first heparin dose, and why not wait for their results?' 'Why LMWH rather than UFH here, and how would you monitor UFH if you had to use it?' 'At what platelet count would you change the dose?' 'Why not thrombolysis?' During the admission, once the further results are read: 'What does that antibody result establish, and what is still missing for classification?' 'Why warfarin, and for how long?' 'What does warfarin mean for a woman who may want a baby?' After the outcome, then versus now: steroids given alongside the heparin, a CT at three months, a single antibody result on record. Knows what is not recorded — her pulse, respiratory rate, saturation and temperature, the right ventricle, troponin, weight, renal function, the stillbirth's gestation, whether the samples preceded the heparin, every dose, and the details of the later tests, which it discusses only once the learner has read them — and says so rather than filling the gap."
       },
       "interprets": [
         "ctpa",
@@ -4624,8 +4658,8 @@
         "en": "Dr Pang (rheumatology)"
       },
       "knowledge": {
-        "zh-CN": "只解读学员已经读过的自身抗体、补体和易栓相关抗体结果。2023 ACR/EULAR 分类标准用于研究队列，不是诊断清单：实验室领域要求持续阳性，IgG 计分高于 IgM，产科事件按孕周计分——她死胎时的孕周、有无子痫前期或胎盘功能不全都没有记录。ANA谱和补体正常时，目前不太像系统性红斑狼疮，但不是永远排除，随访时要留意狼疮的表现。妊娠：要提前计划；对血栓性抗磷脂综合征，EULAR 2019 推荐孕期治疗剂量肝素加小剂量阿司匹林，确认妊娠后尽快从华法林换过来；避孕不用含雌激素的方法（ACR 2020）。学员作答前不说出诊断，也不解读结局记录。",
-        "en": "Interprets only the autoantibody, complement and thrombophilia antibody results the learner has read. The 2023 ACR/EULAR classification criteria are for research cohorts, not a diagnostic checklist: they need persistent laboratory positivity, score IgG above IgM and score obstetric events by gestation — the gestation of her stillbirth and any pre-eclampsia or placental insufficiency are not recorded. When the ANA panel and complement are normal, lupus is unlikely for now, not for ever: look for lupus features at follow-up. Pregnancy: plan ahead; for thrombotic APS, EULAR 2019 recommends treatment-dose heparin plus low-dose aspirin through pregnancy, changing from warfarin as soon as pregnancy is confirmed; contraception without oestrogen (ACR 2020). Does not name the diagnosis before the learner commits and never interprets the outcome record."
+        "zh-CN": "只解读学员已经读过的自身抗体、补体和易栓相关抗体结果。2023 ACR/EULAR 分类标准用于研究队列，不是诊断清单：抗心磷脂抗体和抗β2GPI 只有持续阳性才计分（狼疮抗凝物一次阳性只计 1 分），IgG 计分高于 IgM，产科事件按孕周计分——她死胎时的孕周、有无子痫前期或胎盘功能不全都没有记录。ANA谱和补体正常时，目前不太像系统性红斑狼疮，但不是永远排除，随访时要留意狼疮的表现。妊娠：要提前计划；对血栓性抗磷脂综合征，EULAR 2019 推荐孕期治疗剂量肝素加小剂量阿司匹林，确认妊娠后尽快从华法林换过来；避孕不用含雌激素的方法（ACR 2020）。学员作答前不说出诊断，也不解读结局记录。",
+        "en": "Interprets only the autoantibody, complement and thrombophilia antibody results the learner has read. The 2023 ACR/EULAR classification criteria are for research cohorts, not a diagnostic checklist: they score anticardiolipin and anti-β2GPI only when persistently positive (a single positive lupus anticoagulant scores just 1 point), score IgG above IgM and score obstetric events by gestation — the gestation of her stillbirth and any pre-eclampsia or placental insufficiency are not recorded. When the ANA panel and complement are normal, lupus is unlikely for now, not for ever: look for lupus features at follow-up. Pregnancy: plan ahead; for thrombotic APS, EULAR 2019 recommends treatment-dose heparin plus low-dose aspirin through pregnancy, changing from warfarin as soon as pregnancy is confirmed; contraception without oestrogen (ACR 2020). Does not name the diagnosis before the learner commits and never interprets the outcome record."
       },
       "interprets": [
         "autoimmune-screen",
@@ -4640,8 +4674,8 @@
       "en": "Debrief: antiphospholipid syndrome presenting with bilateral pulmonary embolism and leg deep-vein thrombosis"
     },
     "conclusion": {
-      "zh-CN": "抗磷脂综合征（报告诊断为原发性）以双侧肺栓塞和近端深静脉血栓起病。30岁女性，咳嗽、少量白痰偶带血丝、活动后气短伴间断钝性胸痛半个月，近3天加重，双下肢胀痛、可凹性水肿；血压 130/80 mmHg。CT 示双肺动脉及右下肺静脉充盈缺损，超声示左股浅静脉和右腘静脉血栓；血小板 58×10⁹/L，APTT 71.6 s，INR 正常，D-二聚体 902 μg/L；凝血因子Ⅷ、Ⅸ、Ⅺ正常，ANA谱、ANCA、补体未见异常；抗心磷脂抗体 104 U/mL（参考 0–12），只有一次记录、同型未注明。既往“特发性血小板减少”，曾有一次死胎。报告先用肝素（中文记录为低分子肝素）后改华法林，同时使用激素并逐渐停用；3 个月CT示血栓消失，血小板改善，没有复发的报告。现行做法：确诊当天即用低分子肝素、不溶栓；至少 12 周后复查抗体；华法林 INR 2–3 长期抗凝，不用直接口服抗凝药（ESC 2019；EULAR 2019；AHA/ACC 2026）。",
-      "en": "Antiphospholipid syndrome (primary, per the report) presenting with bilateral PE and proximal DVT. A 30-year-old woman had two weeks of cough with scant white, sometimes blood-streaked sputum, exertional breathlessness and intermittent dull chest pain, worse for three days, and aching legs with pitting oedema; BP 130/80 mmHg. CT: filling defects in both pulmonary arteries and the right inferior pulmonary vein; ultrasound: left superficial femoral and right popliteal vein thrombosis. Platelets 58 × 10⁹/L, APTT 71.6 s, INR normal, D-dimer 902 µg/L; factors VIII, IX, XI normal; ANA panel, ANCA, complement unremarkable; anticardiolipin 104 U/mL (reference 0–12), one recorded result. Past 'idiopathic thrombocytopenia'; one stillbirth. Heparin then warfarin, steroids tapered; clots gone on CT at 3 months, platelets improved, no recurrence reported. Today: LMWH on day one, no lysis, antibodies repeated at ≥ 12 weeks, indefinite warfarin (INR 2–3), no DOAC (ESC 2019; EULAR 2019; AHA/ACC 2026)."
+      "zh-CN": "抗磷脂综合征（报告诊断为原发性）以双侧肺栓塞和近端深静脉血栓起病。30岁女性，咳嗽、少量白痰偶带血丝、活动后气短伴间断钝性胸痛半个月，近3天加重，双下肢胀痛、可凹性水肿；血压 130/80 mmHg。CT 示双肺动脉及右下肺静脉充盈缺损，超声示左股浅静脉和右腘静脉血栓；血小板 58×10⁹/L，APTT 71.6 s，INR 正常，D-二聚体 902 μg/L；凝血因子Ⅷ、Ⅸ、Ⅺ正常，ANA谱、ANCA、补体未见异常；抗心磷脂抗体 104 U/mL（参考 0–12），只有一次记录、同型未注明。既往“特发性血小板减少”，曾有一次死胎。报告先用肝素（低分子肝素）后改华法林，同时使用激素并逐渐停用；3 个月CT示血栓消失，血小板改善，没有复发的报告。现行做法：确诊当天即用低分子肝素、不溶栓；至少 12 周后复查抗体；华法林 INR 2–3 长期抗凝，不用直接口服抗凝药（ESC 2019；EULAR 2019；AHA/ACC 2026）。",
+      "en": "Antiphospholipid syndrome (primary, per the report) presenting with bilateral PE and proximal DVT. A 30-year-old woman had two weeks of cough with scant white, sometimes blood-streaked sputum, exertional breathlessness and intermittent dull chest pain, worse for three days, and aching legs with pitting oedema; BP 130/80 mmHg. CT: filling defects in both pulmonary arteries and the right inferior pulmonary vein; ultrasound: left superficial femoral and right popliteal vein thrombosis. Platelets 58 × 10⁹/L, APTT 71.6 s, INR normal, D-dimer 902 µg/L; factors VIII, IX, XI normal; ANA panel, ANCA, complement unremarkable; anticardiolipin 104 U/mL (reference 0–12), one recorded result. Past 'idiopathic thrombocytopenia'; one stillbirth. Heparin (low-molecular-weight heparin) then warfarin, steroids tapered; clots gone on CT at 3 months, platelets improved, no recurrence reported. Today: LMWH on day one, no lysis, antibodies repeated at ≥ 12 weeks, indefinite warfarin (INR 2–3), no DOAC (ESC 2019; EULAR 2019; AHA/ACC 2026)."
     },
     "keyReasoning": [
       {
@@ -4695,8 +4729,8 @@
         "en": "Possible provoking factors: when the cholecystectomy was done, recent immobility or travel, hormonal medicines."
       },
       {
-        "zh-CN": "治疗细节：肝素的种类（中文记录为低分子肝素）和剂量、采样与首剂肝素的先后、华法林的目标 INR 和数值、所用激素及剂量、随访期间的血小板数值、有无出血，以及随访时长。",
-        "en": "The treatment details: the heparin type (low-molecular-weight in the Chinese text) and dose, whether the samples preceded the first dose, the warfarin INR target and values, the steroid and its dose, platelet counts during follow-up, any bleeding, and the length of follow-up."
+        "zh-CN": "治疗细节：肝素种类（低分子肝素）的核实及其剂量、采样与首剂肝素的先后、华法林的目标 INR 和数值、所用激素及剂量、随访期间的血小板数值、有无出血，以及随访时长。",
+        "en": "The treatment details: confirmation of the heparin preparation (low-molecular-weight heparin) and its dose, whether the samples preceded the first dose, the warfarin INR target and values, the steroid and its dose, platelet counts during follow-up, any bleeding, and the length of follow-up."
       },
       {
         "zh-CN": "肺静脉充盈缺损是否经图像复核证实，以及 CT 的扫描方案。",
@@ -4709,8 +4743,8 @@
         "en": "Lupus anticoagulant: a clotting test that runs slow in the tube, a patient who clots. ISTH SSC 2020: test with two systems (dilute Russell viper venom time and an LA-sensitive APTT) by screen, mix and confirm, ideally before anticoagulation because heparin and vitamin K antagonists interfere — but never delay treatment for the sample; anticardiolipin and anti-β2GPI immunoassays are unaffected. Then and now: this case records only the APTT of 71.6 s with a normal INR — no mixing study and no lupus anticoagulant result."
       },
       {
-        "zh-CN": "确诊当天就抗凝。ESC 2019：肺栓塞确诊后立即抗凝；初始胃肠外抗凝首选低分子肝素而非普通肝素（Ⅰ类，AHA/ACC 2026 相同）；中危或低危肺栓塞不常规全身溶栓（Ⅲ类）——她血压 130/80 mmHg；下腔静脉滤器只用于抗凝绝对禁忌（常规使用为Ⅲ类）。ISTH SSC 2018（针对癌症相关血栓）以 ≥ 50×10⁹/L 作为全量低分子肝素的界值：血小板 58×10⁹/L 时用全量并每天复查。如需普通肝素，按抗Xa监测——被狼疮抗凝物延长的基线 APTT 无法指导剂量。",
-        "en": "Anticoagulate on day one. ESC 2019: anticoagulation without delay once PE is confirmed; LMWH rather than UFH for initial parenteral treatment (class I; AHA/ACC 2026 likewise); no routine systemic thrombolysis in intermediate- or low-risk PE (class III) — her BP was 130/80 mmHg; IVC filters only for an absolute contraindication to anticoagulation (routine use class III). ISTH SSC 2018, for cancer-associated thrombosis, sets ≥ 50 × 10⁹/L for full-dose LMWH: at 58 × 10⁹/L, the full dose with daily counts. If UFH is needed, monitor anti-Xa — a baseline APTT prolonged by a lupus anticoagulant cannot guide the dose."
+        "zh-CN": "确诊当天就抗凝。ESC 2019：肺栓塞确诊后立即抗凝；初始胃肠外抗凝首选低分子肝素而非普通肝素（Ⅰ类，AHA/ACC 2026 相同）；中危或低危肺栓塞不常规全身溶栓（Ⅲ类）——她血压 130/80 mmHg；下腔静脉滤器只用于抗凝绝对禁忌或充分抗凝下仍复发（常规使用为Ⅲ类）。ISTH SSC 2018（针对癌症相关血栓）以 ≥ 50×10⁹/L 作为全量低分子肝素的界值：血小板 58×10⁹/L 时用全量并每天复查。如需普通肝素，按抗Xa监测——被狼疮抗凝物延长的基线 APTT 无法指导剂量。",
+        "en": "Anticoagulate on day one. ESC 2019: anticoagulation without delay once PE is confirmed; LMWH rather than UFH for initial parenteral treatment (class I; AHA/ACC 2026 likewise); no routine systemic thrombolysis in intermediate- or low-risk PE (class III) — her BP was 130/80 mmHg; IVC filters only for an absolute contraindication to anticoagulation or recurrence despite it (routine use class III). ISTH SSC 2018, for cancer-associated thrombosis, sets ≥ 50 × 10⁹/L for full-dose LMWH: at 58 × 10⁹/L, the full dose with daily counts. If UFH is needed, monitor anti-Xa — a baseline APTT prolonged by a lupus anticoagulant cannot guide the dose."
       },
       {
         "zh-CN": "分类不等于诊断。2023 ACR/EULAR 抗磷脂综合征分类标准：先满足入选条件（临床事件前后 3 年内至少一次抗磷脂抗体阳性），再在临床和实验室领域各得至少 3 分；抗心磷脂抗体/抗β2GPI 只按持续的中、高滴度阳性计分（间隔至少 12 周；中滴度 40–79、高滴度 ≥ 80 单位），IgG 计分高于 IgM；狼疮抗凝物一次阳性计 1 分、持续阳性计 5 分；血小板 20–130×10⁹/L 属于临床领域，产科事件按孕周计分——本例孕周没有记录。当年与现在：报告的“原发性抗磷脂综合征”只依据一次同型未注明的抗心磷脂抗体（104 U/mL，参考 0–12）；今天的做法是按抗磷脂综合征治疗，同时确认持续阳性。",
@@ -4721,8 +4755,8 @@
         "en": "Long term: warfarin, not a DOAC. ESC 2019: indefinite VKA for APS (class I) and no NOACs in APS (class III); overlap with parenteral anticoagulation for at least 5 days and until the INR is 2.0–3.0. EULAR 2019: long-term VKA with a target INR of 2–3 after a first unprovoked venous event; no rivaroxaban in triple positivity. AHA/ACC 2026: warfarin for thrombotic APS. Then and now: the report's move from heparin to warfarin matches; it records no INR target, duration or repeat antibody test."
       },
       {
-        "zh-CN": "激素与血小板。ASH 2019 对新诊断的成人免疫性血小板减少症、血小板 ≥ 30×10⁹/L 且无出血或仅有轻微皮肤黏膜出血者推荐观察而不是糖皮质激素（强推荐，证据确定性很低）；她的血小板减少由来已久，58×10⁹/L 且无明显出血，看不出用激素的理由，而激素也不能治疗血栓。当年与现在：报告在抗凝的同时用了激素并逐渐停用，血小板随后改善——单例报告不能说明这是激素的作用。",
-        "en": "Steroids and the platelet count. ASH 2019 recommends observation rather than corticosteroids for adults with newly diagnosed immune thrombocytopenia and platelets ≥ 30 × 10⁹/L with no or only minor mucocutaneous bleeding (strong recommendation, very low certainty); her low platelets were long-standing, and 58 × 10⁹/L without significant bleeding gives no reason for steroids — which do not treat thrombosis. Then and now: the report gave steroids alongside the anticoagulation and tapered them, and the platelets improved — a single case cannot show that the steroid caused it."
+        "zh-CN": "激素与血小板。ASH 2019 对新诊断的成人免疫性血小板减少症、血小板 ≥ 30×10⁹/L 且无出血或仅有轻微皮肤黏膜出血者推荐观察而不是糖皮质激素（强推荐，证据确定性很低）；她的血小板减少几年前就已发现，并非新诊断，58×10⁹/L 且无明显出血，看不出用激素的理由，而激素也不能治疗血栓。当年与现在：报告在抗凝的同时用了激素并逐渐停用，血小板随后改善——单例报告不能说明这是激素的作用。",
+        "en": "Steroids and the platelet count. ASH 2019 recommends observation rather than corticosteroids for adults with newly diagnosed immune thrombocytopenia and platelets ≥ 30 × 10⁹/L with no or only minor mucocutaneous bleeding (strong recommendation, very low certainty); her low platelets were first found years earlier, not newly, and 58 × 10⁹/L without significant bleeding gives no reason for steroids — which do not treat thrombosis. Then and now: the report gave steroids alongside the anticoagulation and tapered them, and the platelets improved — a single case cannot show that the steroid caused it."
       },
       {
         "zh-CN": "生育计划是处方的一部分。华法林可能伤害胎儿：开始前排除妊娠，确认怀孕后尽快改为低分子肝素。ACR 2020：抗磷脂抗体阳性者不用复方雌孕激素避孕药，可用宫内节育器或单纯孕激素口服片。EULAR 2019：血栓性抗磷脂综合征孕期用小剂量阿司匹林加治疗剂量肝素。当年与现在：报告没有记录避孕和妊娠计划，也没有记录那次死胎的孕周。",
@@ -4734,11 +4768,11 @@
       "Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). Eur Heart J. 2020;41(4):543-603. doi:10.1093/eurheartj/ehz405",
       "Creager MA, Barnes GD, Giri J, et al. 2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN guideline for the evaluation and management of acute pulmonary embolism in adults. Circulation. 2026;153(12):e977-e1051. doi:10.1161/CIR.0000000000001415",
       "Tektonidou MG, Andreoli L, Limper M, et al. EULAR recommendations for the management of antiphospholipid syndrome in adults. Ann Rheum Dis. 2019;78(10):1296-1304. doi:10.1136/annrheumdis-2019-215213",
-      "Barbhaiya M, Zuily S, Naden R, et al. 2023 ACR/EULAR antiphospholipid syndrome classification criteria. Ann Rheum Dis. 2023;82(10):1258-1270.",
-      "Devreese KMJ, de Groot PG, de Laat B, et al. Guidance from the Scientific and Standardization Committee for lupus anticoagulant/antiphospholipid antibodies of the International Society on Thrombosis and Haemostasis: update of the guidelines for lupus anticoagulant detection and interpretation. J Thromb Haemost. 2020;18(11):2828-2839.",
-      "Samuelson Bannow BT, Lee A, Khorana AA, et al. Management of cancer-associated thrombosis in patients with thrombocytopenia: guidance from the SSC of the ISTH. J Thromb Haemost. 2018;16(6):1246-1249.",
-      "Neunert C, Terrell DR, Arnold DM, et al. American Society of Hematology 2019 guidelines for immune thrombocytopenia. Blood Adv. 2019;3(23):3829-3866.",
-      "Sammaritano LR, Bermas BL, Chakravarty EE, et al. 2020 American College of Rheumatology guideline for the management of reproductive health in rheumatic and musculoskeletal diseases. Arthritis Rheumatol. 2020;72(4):529-556."
+      "Barbhaiya M, Zuily S, Naden R, et al. 2023 ACR/EULAR antiphospholipid syndrome classification criteria. Ann Rheum Dis. 2023;82(10):1258-1270. doi:10.1136/ard-2023-224609",
+      "Devreese KMJ, de Groot PG, de Laat B, et al. Guidance from the Scientific and Standardization Committee for lupus anticoagulant/antiphospholipid antibodies of the International Society on Thrombosis and Haemostasis: update of the guidelines for lupus anticoagulant detection and interpretation. J Thromb Haemost. 2020;18(11):2828-2839. doi:10.1111/jth.15047",
+      "Samuelson Bannow BT, Lee A, Khorana AA, et al. Management of cancer-associated thrombosis in patients with thrombocytopenia: guidance from the SSC of the ISTH. J Thromb Haemost. 2018;16(6):1246-1249. doi:10.1111/jth.14015",
+      "Neunert C, Terrell DR, Arnold DM, et al. American Society of Hematology 2019 guidelines for immune thrombocytopenia. Blood Adv. 2019;3(23):3829-3866. doi:10.1182/bloodadvances.2019000966",
+      "Sammaritano LR, Bermas BL, Chakravarty EE, et al. 2020 American College of Rheumatology guideline for the management of reproductive health in rheumatic and musculoskeletal diseases. Arthritis Rheumatol. 2020;72(4):529-556. doi:10.1002/art.41191"
     ],
     "notice": {
       "zh-CN": "评分是教学脚本的衡量，不是经过验证的能力评分。",
@@ -4767,8 +4801,8 @@
       "en": "Possible provoking factors: when the cholecystectomy was done, recent immobility or travel, hormonal medicines."
     },
     {
-      "zh-CN": "治疗细节：肝素的种类（中文记录为低分子肝素）和剂量、采样与首剂肝素的先后、华法林的目标 INR 和数值、所用激素及剂量、随访期间的血小板数值、有无出血，以及随访时长。",
-      "en": "The treatment details: the heparin type (low-molecular-weight in the Chinese text) and dose, whether the samples preceded the first dose, the warfarin INR target and values, the steroid and its dose, platelet counts during follow-up, any bleeding, and the length of follow-up."
+      "zh-CN": "治疗细节：肝素种类（低分子肝素）的核实及其剂量、采样与首剂肝素的先后、华法林的目标 INR 和数值、所用激素及剂量、随访期间的血小板数值、有无出血，以及随访时长。",
+      "en": "The treatment details: confirmation of the heparin preparation (low-molecular-weight heparin) and its dose, whether the samples preceded the first dose, the warfarin INR target and values, the steroid and its dose, platelet counts during follow-up, any bleeding, and the length of follow-up."
     },
     {
       "zh-CN": "肺静脉充盈缺损是否经图像复核证实，以及 CT 的扫描方案。",
@@ -5167,6 +5201,13 @@
       },
       {
         "text": "describe the chest pain for me — sharp or dull?",
+        "locale": "en",
+        "expect": [
+          "chest-pain"
+        ]
+      },
+      {
+        "text": "does the pain get worse with a deep breath?",
         "locale": "en",
         "expect": [
           "chest-pain"

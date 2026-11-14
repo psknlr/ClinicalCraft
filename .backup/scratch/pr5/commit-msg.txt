@@ -1,15 +1,17 @@
-CMCR 105: 2 more cases re-authored and reviewed (1.1.0)
+CMCR 105: 3 more cases re-authored and reviewed (1.1.0)
 
 Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-1551889: Abnormal fetal heart scan at 32 weeks · 26-year-old woman (5 decisions, 11 interventions;
-  review: 2 critical, 6 major, 7 minor findings)
-- cmcr-33736: Right leg pain and numbness for six hours · 29-year-old man (5 decisions, 17 interventions;
-  review: 2 critical, 8 major, 5 minor findings)
+- cmcr-1233223: Dizziness for over a month · 26-year-old man (5 decisions, 10 interventions;
+  review: 1 critical, 6 major, 10 minor findings)
+- cmcr-138892: Left lower abdominal pain, fever and a rising white count · 81-year-old man (5 decisions, 15 interventions;
+  review: 1 critical, 7 major, 15 minor findings)
+- cmcr-44477: Years of thirst and heavy urination, now vomiting · 13-year-old boy (5 decisions, 17 interventions;
+  review: 0 critical, 6 major, 10 minor findings)
 
-Reviews: 4 critical, 14 major and 12 minor findings; every critical and major one fixed or
+Reviews: 2 critical, 19 major and 35 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

@@ -2,8 +2,8 @@
 
 > **Facilitator guide — contains spoilers.** Learners open the case from the case library, where the title,
 > summary, chief complaint, tags and triage note name no diagnosis. The patient (朱知远 / Zhu Zhiyuan) is a
-> pseudonym; the attending (江医生 / Dr Jiang), the ward nurse (陆护士 / Nurse Lu) and the two consultants
-> (唐医生 / Dr Tang, pathology; 沈医生 / Dr Shen, haematology) are teaching roles. The case adapts one published
+> pseudonym; the attending (江医生 / Dr Jiang), the ward nurse (陆护士 / Nurse Lu) and the three consultants
+> (孔医生 / Dr Kong, general surgery; 唐医生 / Dr Tang, pathology; 沈医生 / Dr Shen, haematology) are teaching roles. The case adapts one published
 > clinicopathological case discussion; it is not medical advice.
 > 导师指南，含剧透。患者为化名，医护人物为教学角色；本病例改编自一篇已发表的临床病例讨论，不构成医疗建议。
 
@@ -25,7 +25,7 @@ article text is available, and everything listed under "To verify" belongs to it
 | Learner level | Final-year students and residents in internal medicine, gastroenterology and general surgery; useful for haematology and pathology trainees in the later phases |
 | Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance; **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a gastroenterologist or general surgeon, a pathologist and a haematologist review it before teaching use |
 | Phases | `admission` 入院：腹痛、发热不退 / Admission: pain and fever not settling → `work-up` 住院检查 / Work-up in hospital → `exploration` 手术探查 / Surgical exploration (theatre) → `pathology` 术后：病理与血象 / After the operation: pathology and blood counts (ward) → `outcome` 原报告记录的病程与转归 / Reported course and outcome — none learner-switchable |
-| Content | 24 history items (7 required, 13 honest unknowns, 2 labelled teaching worries; the patient answers himself) · 6 examination findings · 19 investigations (3 record reviews; 12 with no result recorded in one or more phases, 2 of them staged "comes back at the next stage") · 15 interventions (5 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 31; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| Content | 24 history items (7 required, 13 honest unknowns, 2 labelled teaching worries; the patient answers himself) · 6 examination findings · 19 investigations (3 record reviews; 12 with no result recorded in one or more phases, 2 of them staged "comes back at the next stage") · 15 interventions (5 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 31; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 46 test utterances |
 
 ## Learning outcomes
 
@@ -33,16 +33,16 @@ After the case the learner can:
 
 1. Manage fever, localised left lower quadrant peritonism and a rising neutrophil count that outlast antimicrobial
    treatment before admission in an older man as a possible complicated intra-abdominal infection: screen with NEWS2 rather than
-   qSOFA alone (SSC 2026), take cultures before IV cover of enteric Gram-negative and anaerobic bacteria, and get
-   contrast CT the same day (SIS 2017).
+   qSOFA alone (SSC 2026), take cultures before IV cover of enteric Gram-negative and anaerobic bacteria (SIS 2024),
+   and get contrast CT the same day (IDSA 2024).
 2. Use colonoscopy and a small-bowel contrast study to place an abdominal mass inside or outside the bowel, and obtain
    tissue by image-guided core biopsy (or laparoscopy) rather than by cytology alone or an unplanned resection.
 3. Treat an intraoperative frozen section as provisional and explain why, with the mesenteric root involved and
    disease widespread, the operation should take generous tissue and not an irreversible resection decided on the
    frozen reading (PSOGI/EURACAN 2021).
 4. Judge a calretinin-positive, CEA-negative peritoneal tumour against the International Mesothelioma Interest Group
-   2017 update — at least two mesothelial and two carcinoma markers, with BAP1 or CDKN2A testing where malignancy is
-   in doubt — and take an occupational asbestos history.
+   2023 update — two mesothelial and two carcinoma markers, with BAP1 or MTAP immunostaining (or CDKN2A FISH) where
+   malignancy is in doubt — and take an occupational asbestos history.
 5. Accept a leukaemoid reaction behind a mature neutrophilia above 100 × 10⁹/L only by exclusion — chronic myeloid and
    chronic neutrophilic leukaemia (BCR::ABL1, CSF3R; WHO 5th edition, 2022), occult infection and drugs — without
    cytoreduction or blind antibiotic escalation (IDSA/SHEA 2016).
@@ -106,10 +106,12 @@ their phases (`availability.earliestPhase`); ordering the outcome record earlier
 | 2 | `obj-examine` Examine his abdomen and renal angles | inspection, tenderness, rebound, guarding, mass, renal-angle percussion |
 | 3 | `obj-first-hours` Act in his first hours on the ward | admission count read; decision 1 right; blood cultures ordered; IV antibiotics given; imaging requested — so cultures, antibiotics and imaging all precede the imaging result |
 | 4 | `obj-localise` Read the work-up and plan the diagnosis | imaging, colonoscopy, small-bowel study, repeat count, blood cultures and marrow read in `work-up`; decision 2 right; core biopsy requested |
-| 5 | `obj-theatre` Advise the surgeon during the operation | operative findings and frozen section read; decision 3 right |
-| 6 | `obj-diagnosis` Reconcile the reports and the count, and plan with him | operation note, final pathology and latest count read; decisions 4 and 5 right; conversation with him arranged; outcome record read |
+| 5 | `obj-theatre` Advise when the first tissue result comes back | operative findings and frozen section read; decision 3 right |
+| 6 | `obj-diagnosis` Weigh the pathology and the count, and plan with him | operation note, final pathology and latest count read; decisions 4 and 5 right; conversation with him arranged; outcome record read |
 
-Titles and hints name no diagnosis and contain no option text (the journal lists later titles early). Every
+Titles and hints name no diagnosis and contain no option text; because the journal lists later titles early, no title
+announces the operation or a disagreement between the pathology reports (hints show only for the current objective,
+on request). Every
 `completeWhen` uses only conditions that cannot become permanently false: a read in a phase that can be selected
 again, or an act that can still be done.
 
@@ -118,7 +120,7 @@ again, or an act that can still be done.
 | id | Opens after | Key | Distractors (why they tempt) |
 |---|---|---|---|
 | `admission-plan` | presentation, onset, progression, urinary symptoms and earlier care asked; all six findings examined; admission count read | `cultures-iv-cover-ct`: treat as a possible complicated abdominal infection — blood and urine cultures first, then IV Gram-negative and anaerobic cover, contrast CT today | `pyelonephritis-iv` (urinary symptoms + renal-angle tenderness; anchoring on the earlier UTI); `colonoscopy-first` (the outside hospital's "bowel tumour"; stop antibiotics, scope first — perforation risk with peritonism); `tumour-fever-steroid` (failed antibiotics → "tumour fever", dexamethasone) |
-| `mass-origin` | imaging, colonoscopy and small-bowel study read in `work-up` | `core-biopsy-mdt`: extraintestinal mass — image-guided core biopsy of the solid part, diagnostic tap of the ascites, MDT | `explore-resect` (the report's own route: explore and let a frozen section set the resection — near-miss); `fna-cytology` (least invasive, but too little for typing); `abscess-reimage` (two more weeks of antibiotics and re-imaging) |
+| `mass-origin` | imaging, colonoscopy and small-bowel study read in `work-up` | `core-biopsy-mdt`: extraintestinal mass — image-guided core biopsy of the solid part, diagnostic tap of the ascites, MDT | `explore-resect` (close to the report's route — the team did explore surgically — but letting a frozen section set the resection; near-miss); `fna-cytology` (least invasive, but too little for typing); `abscess-reimage` (two more weeks of antibiotics and re-imaging) |
 | `frozen-section` | operative findings and frozen section read | `biopsies-no-resection`: generous biopsies for paraffin and immunostaining, fresh tissue for culture including TB, record the extent, no resection | `resect-debulk` (frozen "metastatic adenocarcinoma" → debulk); `single-biopsy-primary` (frozen is the diagnosis; one small piece, then hunt for a primary); `washings-close` (keep an 81-year-old's operation short; washings only) |
 | `final-pathology` | final pathology read; decision 3 | `final-report-complete-panel`: the paraffin report outranks the frozen section and supports mesothelioma, but add a second mesothelial marker and carcinoma markers, expert review, asbestos history | `frozen-stands` (fresh tissue; CEA can be negative in GI adenocarcinoma); `two-stains-enough` (near-miss: calretinin + CEA settle it); `vimentin-sarcoma` (keratin + vimentin read as sarcoma) |
 | `neutrophilia` | 113.7 × 10⁹/L count read in `pathology`; marrow and blood cultures read in `work-up`; decision 4 | `leukaemoid-by-exclusion`: probably a tumour-related leukaemoid reaction, proved by exclusion — film review, BCR::ABL1 and CSF3R, a renewed search for an undrained source, stop untargeted antibiotics, read it as a grave sign | `cml-cytoreduce` (count > 100 → CML, hydroxycarbamide now); `escalate-cover` (negative cultures don't exclude infection → carbapenem + antifungal); `gcsf-proven` (1.0.0's "G-CSF secretion is proven" made plausible) |
@@ -140,7 +142,7 @@ content. No key is the uniquely longest option of its decision in either locale 
 | `rb-pathology` | diagnosis | 3 | decision 4 right first time; further immunostains ordered in `pathology`; asbestos asked |
 | `rb-neutrophilia` | management | 3 | decision 5 right first time; BCR::ABL1/CSF3R ordered; antibiotic review done in `pathology` (`whenIndicated`) |
 | `rb-care-plan` | management | 2 | MDT referral, conversation with him, palliative care involved |
-| `rb-no-critical-harm` | safety | 4 | **critical** — no dexamethasone while contraindicated (before the final pathology is read) and no resection of the mass; `scoredWhen` = decision 1 attempted or either act |
+| `rb-no-critical-harm` | safety | 4 | **critical** — no dexamethasone to bring down his fever (contraindicated throughout) and no resection of the mass; `scoredWhen` = decision 1 attempted or either act |
 | `rb-no-harm` | safety | 2 | no hydroxycarbamide, no carbapenem-plus-antifungal escalation, no discharge on oral antibiotics; `scoredWhen` = decision 1 attempted or any of the three |
 | `rb-communication` | communication | (judged) | SPIKES conversation with him about the diagnosis, its uncertainty and his priorities (see judge guidance) |
 
@@ -150,7 +152,7 @@ enforced twice: the antibiotics count only when given in `admission` after the c
 (`indicatedWhen`), and `work-up` — where the imaging result lives — opens only once cultures, antibiotics and the
 imaging request are done (`obj-first-hours`).
 
-### How wrong choices score (measured 2026-11-13 with core `assess`)
+### How wrong choices score (measured 2026-11-14 with core `assess`)
 
 | Path | Score | Critical items missed | Safety outcome |
 |---|---|---|---|
@@ -168,16 +170,18 @@ imaging request are done (`obj-first-hours`).
 | No MDT, conversation or palliative care | 29/31, and the case cannot finish until the conversation is arranged | none | passed |
 | No NEWS2 / no BCR::ABL1 / no antibiotic review / no asbestos question / no further stains (each) | 28/31 (90 %) | none | passed |
 | No urine tests | 29/31 (94 %) | none | passed |
-| Dexamethasone after the final pathology has been read | 31/31 (100 %) | none | passed (no longer contraindicated: palliative steroid use is a separate judgement) |
+| Dexamethasone after the final pathology has been read | 27/31 (87 %) | `rb-no-critical-harm` | **failed** (`dexamethasone`: infection is still not excluded, and a steroid raises the neutrophil count the learner is working up) |
 
 Contraindicated acts are listed as safety events in every debrief. The other interventions are indicated in their
 phases (`news2-obs`, `paracetamol` and `iv-access` throughout; `surgical-review` in admission and work-up; the
 consults and the antibiotic review later) or neutral.
 
-**Safety outcome.** `dexamethasone` and `radical-resection` are `critical: true`: steroids given before the tissue
-diagnosis can mask an abdominal infection and leave a lymphoma (still in the differential) undiagnosable, and a
-resection at the mesenteric root decided on a frozen section is an irreversible, dangerous operation that cannot
-clear widespread disease; either fails the assessment's safety outcome (`safety.passed: false`) whatever the score.
+**Safety outcome.** `dexamethasone` and `radical-resection` are `critical: true`. Dexamethasone given to bring down his
+fever is contraindicated throughout (`contraindicatedWhen: always`): before the tissue diagnosis it can mask an
+abdominal infection and leave a lymphoma (still in the differential) undiagnosable; after it, infection has still not
+been excluded, and a steroid raises the very neutrophil count decision 5 asks the learner to explain. A resection at
+the mesenteric root decided on a frozen section is an irreversible, dangerous operation that cannot clear widespread
+disease. Either fails the assessment's safety outcome (`safety.passed: false`) whatever the score.
 `hydroxycarbamide`, `broad-escalation` and `discharge-oral` are contraindicated but `critical: false` — recoverable
 misjudgements (`risk: "moderate"`) that cost marks in `rb-no-harm`.
 
@@ -270,7 +274,8 @@ positive/negative as text values.
 | Anchoring on the earlier urinary infection | `pyelonephritis-iv` distractor; `discharge-oral` contraindicated | `rb-admission-plan`, `rb-no-harm` |
 | Antibiotics before cultures, or no imaging on admission | `iv-antibiotics` counts only after cultures are ordered in `admission`; `work-up` waits for cultures, antibiotics and the imaging request | `rb-first-hours` (critical) |
 | Colonoscopy first while peritonism is unexplained | `colonoscopy-first` distractor (WSES 2020) | `rb-admission-plan` |
-| "Tumour fever" and dexamethasone before tissue | `tumour-fever-steroid` distractor; `dexamethasone` contraindicated, critical | `rb-admission-plan`, `rb-no-critical-harm` |
+| "Tumour fever" and dexamethasone to bring the temperature down | `tumour-fever-steroid` distractor; `dexamethasone` contraindicated throughout, critical | `rb-admission-plan`, `rb-no-critical-harm` |
+| Fearing a carbapenem is always wrong, or escalating for the count | an empirical carbapenem on admission counts as IV antibiotics (`iv-antibiotics` accepts meropenem or ertapenem); a carbapenem plus an antifungal later is the `broad-escalation` trap | `rb-first-hours`, `rb-no-harm` |
 | Cytology alone, or two more weeks of antibiotics | `fna-cytology`, `abscess-reimage` distractors | `rb-tissue` |
 | Resecting on a frozen section | `resect-debulk` distractor; `radical-resection` contraindicated, critical | `rb-tissue`, `rb-no-critical-harm` |
 | Trusting the frozen section over the paraffin report, or accepting a two-marker panel | `frozen-stands`, `two-stains-enough` distractors; further stains orderable (no result recorded) | `rb-pathology` |
@@ -296,6 +301,10 @@ positive/negative as text values.
 * **He speaks for himself** (81, conscious): no companion. During `exploration` he is under anaesthesia
   (`nonVerbalWhen: {phase: "exploration"}`, reason "under anaesthesia in theatre for the exploration"), so nobody answers
   history there; the reference path asks nothing in theatre.
+* **Staff.** The attending (Socratic, PEARLS debrief), the ward nurse (ISBAR handover; says there is nothing recorded
+  to report when asked for numbers the case does not hold), and three consultants: Dr Kong, general surgery (source
+  control, the operative findings once read; he phones from theatre with the frozen section and asks for the learner's
+  view without answering for them), Dr Tang, pathology, and Dr Shen, haematology. None reveals the diagnosis.
 * **Scope of practice.** IV access and the NEWS2 observations are nursing scope; the antibiotic review and the
   conversation with him are a doctor's acts; drugs follow their kind; referrals are consults. The resection requires the
   theatre (`surgery`) and is a trap only.
@@ -320,7 +329,7 @@ with the long-term outcome unknown.
 **Moved to the phase where it is true.** 1.0.0 showed all work-up and pathology records at once and kept the
 113.7 × 10⁹/L count and "antibacterial treatment ineffective" in the outcome record. Now the first count is an
 admission result, the second a work-up result, the operative findings and the final pathology their own phases, and
-the 113.7 × 10⁹/L count a post-operative result, so the learner acts on each before the outcome opens. The team's
+the 113.7 × 10⁹/L count is shown in the post-operative phase (its timing relative to the operation is not recorded, and its date says so), so the learner acts on each before the outcome opens. The team's
 leukaemoid interpretation and his leaving hospital stay in the outcome record.
 
 **Adapted for teaching (labelled).** All dialogue; the two worries (`concerns`, `concerns-now`: "Teaching device
@@ -371,9 +380,19 @@ not attached to any result (a composite can show later findings); `fig02` (withh
 
 ## Matcher notes
 
-* 39 `extensions.testUtterances` (26 zh-CN, 13 en), written as a learner would type them; none equals a keyword or a
+* 46 `extensions.testUtterances` (27 zh-CN, 19 en), written as a learner would type them; none equals a keyword or a
   canonical question; 3 look-alike negatives (the weather, the car park twice). Every required item and the phase twin
-  `concerns-now` has a paraphrase; `cases verify` passes 39/39 with no extra selections.
+  `concerns-now` has a paraphrase; `cases verify` passes 46/46 with no extra selections.
+* The review's probe (2026-11-14) found plain questions that reached nothing or the wrong item — "What brings you in
+  today?", "Do you have a fever?", "Where does it hurt?", "肚子哪里痛？" (answered as pain spread), "What do you do for a
+  living?", "Who lives with you at home?" — and "Do you feel tired?" answered with the chills. Keywords were added
+  (`bringsyouin`, `whatbringsyou`, `fever`/`发烧`/`发热`, `wheredoesithurt`, `哪里痛`, `foraliving`, `livewithyou`,
+  `tired`/`乏力` under the unrecorded `constitutional` item), duration words are excluded from `fever-detail` so
+  "发烧几天了？" stays with `onset`, and seven of these questions are now test utterances.
+* Orders: a bare carbapenem ("IV meropenem", "美罗培南", "ertapenem") is an empirical antibiotic (`iv-antibiotics`);
+  only an antifungal or an escalation ("switch to meropenem and add fluconazole", "escalate to meropenem", "升级抗生素")
+  reaches the `broad-escalation` trap; "antibiotic review" reaches `antibiotic-review`, not a new course; "leukapheresis"
+  no longer maps to hydroxycarbamide.
 * English keywords of three or more words are written run together where they would otherwise reduce to one token
   (`broughtyouin`, `whendiditstart`, `howmanydays`, `outoften`, `didithelp`, `offyourfood`, `whatdidtheysay`,
   `whereithurts`, `liketoknow`). `home-function` had "day to day", which the probe showed matching any "days" question at
@@ -391,29 +410,48 @@ not attached to any result (a composite can show later findings); `fig02` (withh
    2014;94(6):467-469. doi:10.3760/cma.j.issn.0376-2491.2014.06.018. Available from: https://rs.yiigle.com/cmaid/138892
 2. Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of
    sepsis and septic shock 2026. Crit Care Med. 2026. doi:10.1097/CCM.0000000000007075
-3. Mazuski JE, Tessier JM, May AK, et al. The Surgical Infection Society revised guidelines on the management of
-   intra-abdominal infection. Surg Infect (Larchmt). 2017;18(1):1-76. doi:10.1089/sur.2016.261
-4. Sartelli M, Weber DG, Kluger Y, et al. 2020 update of the WSES guidelines for the management of acute colonic
-   diverticulitis in the emergency setting. World J Emerg Surg. 2020;15(1):32.
-5. Kusamura S, Kepenekian V, Villeneuve L, et al. Peritoneal mesothelioma: PSOGI/EURACAN clinical practice guidelines
-   for diagnosis, treatment and follow-up. Eur J Surg Oncol. 2021;47(1):36-59.
-6. Husain AN, Colby TV, Ordóñez NG, et al. Guidelines for pathologic diagnosis of malignant mesothelioma 2017 update of
-   the consensus statement from the International Mesothelioma Interest Group. Arch Pathol Lab Med.
-   2018;142(1):89-108.
-7. Khoury JD, Solary E, Abla O, et al. The 5th edition of the World Health Organization Classification of
+3. Huston JM, Barie PS, Dellinger EP, et al. The Surgical Infection Society guidelines on the management of
+   intra-abdominal infection: 2024 update. Surg Infect (Larchmt). 2024;25(6):419-435. doi:10.1089/sur.2024.137
+4. Bonomo RA, Chow AW, Edwards MS, et al. 2024 clinical practice guideline update by the Infectious Diseases Society of
+   America on complicated intra-abdominal infections: risk assessment, diagnostic imaging, and microbiological
+   evaluation in adults, children, and pregnant people. Clin Infect Dis. 2024;79(Suppl 3):S81-S87. doi:10.1093/cid/ciae346
+5. Sartelli M, Weber DG, Kluger Y, et al. 2020 update of the WSES guidelines for the management of acute colonic
+   diverticulitis in the emergency setting. World J Emerg Surg. 2020;15(1):32. doi:10.1186/s13017-020-00313-4
+6. Kusamura S, Kepenekian V, Villeneuve L, et al. Peritoneal mesothelioma: PSOGI/EURACAN clinical practice guidelines
+   for diagnosis, treatment and follow-up. Eur J Surg Oncol. 2021;47(1):36-59. doi:10.1016/j.ejso.2020.02.011
+7. Husain AN, Chapel DB, Attanoos R, et al. Guidelines for pathologic diagnosis of mesothelioma: 2023 update of the
+   consensus statement from the International Mesothelioma Interest Group. Arch Pathol Lab Med. 2024;148(11):1251-1271.
+   doi:10.5858/arpa.2023-0304-RA
+8. Khoury JD, Solary E, Abla O, et al. The 5th edition of the World Health Organization Classification of
    Haematolymphoid Tumours: Myeloid and Histiocytic/Dendritic Neoplasms. Leukemia. 2022;36(7):1703-1719.
-8. Barlam TF, Cosgrove SE, Abbo LM, et al. Implementing an antibiotic stewardship program: guidelines by the Infectious
+9. Barlam TF, Cosgrove SE, Abbo LM, et al. Implementing an antibiotic stewardship program: guidelines by the Infectious
    Diseases Society of America and the Society for Healthcare Epidemiology of America. Clin Infect Dis.
    2016;62(10):e51-e77.
-9. 中华人民共和国卫生部. 糖皮质激素类药物临床应用指导原则. 卫办医政发〔2011〕23号. 2011.
-10. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news:
+10. 中华人民共和国卫生部. 糖皮质激素类药物临床应用指导原则. 卫办医政发〔2011〕23号. 2011.
+11. 国家卫生健康委员会, 人力资源社会保障部, 国家疾病预防控制局, 中华全国总工会. 职业病分类和目录. 国卫职健发〔2024〕39号. 2024.
+12. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news:
     application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
 
-DOIs are given only where another case of this library records a web lookup of them (refs. 2, 3, 10: `septic-shock-cap`,
-`acute-appendicitis`, `cmcr-655458`) and for the article (the source map's `verifiedDoi`). This session's web search
-budget was exhausted before any reference could be looked up, so refs. 4–9 are cited from the reviewer's knowledge,
-without DOIs, and listed under "To verify". The list has nine guidance entries after the article, one more than the
-standard's eight, because the steroid trap rests on a Chinese national principle (ref. 9).
+**Checked online in the independent review (2026-11-14).** SSC 2026 (the SCCM guideline page: published March 2026;
+NEWS, NEWS2, MEWS or SIRS preferred over qSOFA as a single screening tool). SIS 2024 (PubMed record and a published
+summary of its recommendations: metronidazole as the preferred anti-anaerobic partner in combinations; source control
+within 12 hours, or within 6 hours in higher-risk patients with septic shock; no empirical antifungal therapy in
+lower-risk patients) — it replaces the 2017 guideline 1.1.0 first cited. IDSA 2024 (the IDSA guideline page and PubMed:
+CT as the first imaging for a suspected diverticulitis or abscess in adults; blood cultures when a raised temperature
+comes with hypotension, tachypnoea or delirium, or resistant organisms are a concern) — 1.1.0 had attributed "contrast
+CT the same day" to SIS 2017, whose scope (risk assessment, source control, antimicrobial therapy) does not include
+imaging. WSES 2020 (full text: contrast-enhanced CT as the imaging of first choice, 2B; colonic evaluation 4–6 weeks
+after a diverticular abscess treated without an operation). PSOGI/EURACAN 2021 (guideline text: Recommendation 2 —
+tissue from a core needle biopsy or exploratory laparoscopy is mandatory rather than effusion cytology or fine-needle
+material, I-A; expert pathology review and a specialised MDT mandatory; CRS-HIPEC only with resectable disease, fitness
+for a major operation and a specialised centre; massive small-bowel serosal involvement an absolute contraindication).
+IMIG 2023 update (PubMed record and summaries: an immunopanel of two mesothelial and two epithelial markers is generally
+advisable; BAP1 and MTAP immunostains and CDKN2A FISH separate benign from malignant proliferations) — it supersedes
+the 2017 update 1.1.0 first cited. The occupational-disease catalogue (gov.cn: 国卫职健发〔2024〕39号, issued
+11 December 2024, in force from 1 August 2025, replacing the 2013 catalogue; category IX, item 1 "石棉所致肺癌、间皮瘤").
+The DOIs of refs. 3–7 come from their PubMed or PMC records. **Not confirmed online:** the exact sentence of the 2011
+glucocorticoid principles (ref. 10), and a 2023 edition by the Chinese Society of Endocrinology exists; both stay under
+"To verify".
 
 ### To verify
 
@@ -436,30 +474,35 @@ standard's eight, because the steroid trap rests on a Chinese national principle
 * Treatment after the diagnosis, how he left hospital (discharge, self-discharge, transfer) and any follow-up.
 * `fig01`, `fig03`, `fig04`: what each shows, descriptive titles, and whether one can be attached to a result.
 
-**Guidance details (no web lookup was possible in this session):**
-* SSC 2026 (ref. 2): the case uses only the point another case verified — qSOFA not to be used alone for screening;
-  NEWS/NEWS2, MEWS or SIRS preferred. Volume, issue and pages are not given.
-* SIS 2017 (ref. 3): the wording on empirical Gram-negative and anaerobic cover and source control.
-* WSES 2020 diverticulitis (ref. 4): contrast CT as the first test and colonoscopy deferred after the acute episode;
-  volume/issue, DOI.
-* PSOGI/EURACAN 2021 (ref. 5): authors, pages, DOI; the wording on histological diagnosis from adequate biopsies
-  (laparoscopy vs image-guided core biopsy) and on selecting patients for cytoreductive surgery with HIPEC; whether a
-  newer edition exists.
-* IMIG 2017 update (ref. 6): the "two mesothelial plus two carcinoma markers" rule, BAP1 and CDKN2A; DOI; whether a
-  later IMIG update supersedes it.
-* WHO 5th edition myeloid (ref. 7): the chronic neutrophilic leukaemia criteria (CSF3R) and the DOI recorded in
+**Guidance details:**
+* 糖皮质激素类药物临床应用指导原则 (ref. 10): the sentence that names using glucocorticoids purely to reduce a fever or
+  relieve pain as misuse, the document number (卫办医政发〔2011〕23号), and whether the 2023 edition (中华医学会内分泌学分会,
+  中国内分泌代谢病专科联盟) keeps it — if it does, cite the 2023 edition in the harm and feedback texts.
+* SIS 2024 (ref. 3): its definition of higher-risk patients and its empirical regimens, against the `iv-antibiotics`
+  dose text (piperacillin–tazobactam; a carbapenem where resistant organisms are likely).
+* IDSA 2024 (ref. 4): whether to cite the section papers on diverticulitis and abscess imaging (doi:10.1093/cid/ciae350,
+  doi:10.1093/cid/ciae351) beside the overview.
+* IMIG 2023 update (ref. 7): the exact wording of the two-plus-two panel and of BAP1, MTAP and CDKN2A, against the full
+  text (only the abstract and secondary summaries could be read).
+* WHO 5th edition myeloid (ref. 8): the chronic neutrophilic leukaemia criteria (CSF3R) and the DOI recorded in
   `cmcr-33666` (10.1038/s41375-022-01613-1), which no review has confirmed.
-* IDSA/SHEA 2016 (ref. 8): the recommendations the feedback relies on (reviewing empirical courses, de-escalation,
-  avoiding untargeted broad-spectrum therapy); DOI.
-* 糖皮质激素类药物临床应用指导原则 (ref. 9): the sentence "不能单纯以退热和止痛为目的使用糖皮质激素", the document
-  number (卫办医政发〔2011〕23号) and whether a later edition replaces it.
-* 《职业病分类和目录》(2013): the listing of "石棉所致肺癌、间皮瘤", its issuing bodies, and any later revision.
+* IDSA/SHEA 2016 (ref. 9): the recommendations the feedback relies on (reviewing empirical courses, de-escalation,
+  avoiding untargeted broad-spectrum therapy); DOI; whether a newer stewardship guideline replaces it.
 * The leukaemoid definition (> 50 × 10⁹/L) and the statement that tumour-related extreme leucocytosis usually signals
   a poor prognosis (e.g. Granger and Kontoyiannis, Cancer 2009) before any figure is quoted.
 * Paracetamol dosing for older adults in the current BNF / 中国药典 临床用药须知.
-* Collection: the standard's §6.6 note sentence "Not yet reviewed by a licensed clinician." does not match the contract
-  test's case-sensitive pattern; the case uses "The case is not yet reviewed by a licensed clinician.", as most re-authored
-  cases do.
+
+**For the specialty reviewers (a licensed clinician of each should confirm):**
+* General surgery / gastroenterology: the admission key (cultures, IV Gram-negative and anaerobic cover, contrast CT the
+  same day); that an empirical carbapenem on admission counts as acceptable cover for this 81-year-old after failed
+  treatment; the image-guided core biopsy as the reference route to tissue (laparoscopy where there is no safe window);
+  the theatre key (generous biopsies, fresh tissue for culture including TB, no resection).
+* Pathology: the stains to add for a peritoneal tumour in a man (D2-40 or CK5/6; claudin-4, MOC-31 or Ber-EP4; BAP1 or
+  MTAP) and the place of the frozen section.
+* Haematology: the exclusion work-up before calling the leucocytosis a leukaemoid reaction, and stopping untargeted
+  antibiotics while a source is sought again.
+* Safety outcome: whether `dexamethasone` should stay `critical` after the final pathology (the review made it
+  contraindicated throughout: infection not excluded, and a steroid raises the neutrophil count under work-up).
 
 ## Changelog
 
@@ -489,14 +532,39 @@ standard's eight, because the steroid trap rests on a Chinese national principle
   `rb-no-critical-harm` with `scoredWhen`), 12 rubric items with first-try scoring and a SPIKES communication item
   written for him. Do nothing scores 0; a wrong first answer everywhere scores 58 %.
 * **Teaching layer.** 6 learning outcomes, 5 key reasoning steps, 6 teaching points with guidance and year, 8
-  unknowns, 4 staff (attending, nurse, pathologist, haematologist), 10 Vancouver references, editorial review status
-  with eight guidelines and the §6.6 notes.
+  unknowns, 5 staff (attending, nurse, general surgeon, pathologist, haematologist), 12 Vancouver references, editorial
+  review status with ten guidelines and the §6.6 notes.
 * **Card and voice.** Title "· 81-year-old man"; spoiler-free summary distinct from the triage note; specialty without
   `oncology` (the answer) and with general surgery and infectious disease; 4 patient tags; persona fields written as
   actor briefs; no authoring language in anything he says.
-* **Corpus and schema.** 39 paraphrased utterances with negatives; extensions unified (`sourceDoi`, `doiVerifiedAt`,
+* **Corpus and schema.** 46 paraphrased utterances with negatives; extensions unified (`sourceDoi`, `doiVerifiedAt`,
   `sourceTextChecked: false`; `authorChecks` and `sourceTextSha256` dropped).
 * **Media.** `fig01`, `fig03`, `fig04` kept (approved, unattached), retitled.
+* **Independent review (2026-11-14), against the 1.0.0 facts, the standard and current guidance.**
+  * Facts: the debrief conclusion said "no guarding or mass" where 1.0.0 records "no definite mass" palpated, and
+    dropped "widespread", "without obvious atypia", the site and the blurred fat that the Chinese kept — restored in
+    both languages; "normal colonoscopy" became "no obvious abnormality" (无明显异常) wherever it appeared; the persona's
+    "worn down" / "人有些乏" (a fatigue 1.0.0 does not record) was removed; the 113.7 × 10⁹/L count's date no longer
+    asserts "after the operation", which its own note says is not recorded.
+  * Safety: `dexamethasone` is contraindicated throughout (it had stopped being contraindicated once the final
+    pathology was read, although infection is still not excluded then and a steroid raises the neutrophil count the
+    learner is working up); `rb-no-critical-harm` reworded.
+  * Currency: SIS 2017 → SIS 2024; "contrast CT the same day" re-attributed from SIS 2017 (which does not cover
+    imaging) to IDSA 2024; IMIG 2017 → IMIG 2023 update (published 2024; MTAP beside BAP1 and CDKN2A, D2-40 or CK5/6
+    as the second mesothelial marker); the 2013 occupational-disease catalogue → the 2024 catalogue in force since
+    August 2025; PSOGI/EURACAN 2021 quoted as it reads (core needle biopsy or exploratory laparoscopy, not effusion
+    cytology or fine-needle material); the steroid principle reworded to what the 2011 text is recalled to say, with
+    its exact sentence under "To verify".
+  * Validity: an empirical carbapenem ordered on admission reached the carbapenem-plus-antifungal trap (a harm, and no
+    credit for antibiotics) — it now counts as IV antibiotics, and only an antifungal or an escalation reaches the
+    trap; "leukapheresis" no longer gives hydroxycarbamide; decision 4's prompt no longer asks "what is still
+    missing?" (it presupposed the key); the `obj-theatre` and `obj-diagnosis` titles, listed from the start, no longer
+    announce the operation or a disagreement between the pathology reports.
+  * Staff and voice: a general surgeon (Dr Kong) for the theatre phone call and source control; the nurse says there
+    is nothing recorded to report instead of "this case records none"; the communication guidance says the mass was
+    not removed (not that the operation "could not" remove it).
+  * Matcher: plain questions that reached nothing or the wrong item now reach theirs (Matcher notes); seven new test
+    utterances.
 
 ### 1.0.0
 
@@ -505,12 +573,12 @@ standard's eight, because the steroid trap rests on a Chinese national principle
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-13):
+Run from the worktree root (all passed on 2026-11-14, after the independent review):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-138892/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-138892 --lang en          # 91 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 31/31
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-138892        # depth floor, do-nothing 0, wrong-first 58 % < 100 %
+npm run -s cc -- cases verify cmcr-138892 --lang en          # 91 steps · objectives 6/6 · decisions 5/5 · utterances 46/46 · rubric 31/31
+npx tsx --conditions=source scripts/case-check.ts cmcr-138892        # depth floor, do-nothing 0, wrong-first 58 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-138892:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-138892:"   # in-world demonstration, en + zh-CN
 ```
@@ -527,10 +595,10 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **学习目标。**
 1. 把高龄患者入院前抗感染治疗后仍有的发热、左下腹局限性腹膜刺激征和中性粒细胞升高按可能的复杂性腹腔感染处理：用NEWS2而不是单用qSOFA
-   筛查（SSC 2026），先留培养再静脉覆盖肠道革兰阴性菌和厌氧菌，当天做增强CT（SIS 2017）。
+   筛查（SSC 2026），先留培养再静脉覆盖肠道革兰阴性菌和厌氧菌（SIS 2024），当天做增强CT（IDSA 2024）。
 2. 用结肠镜和小肠造影判断肿块在肠内还是肠外，选择影像引导下粗针活检（必要时腹腔镜）取组织。
 3. 把术中冰冻当作初步意见；肠系膜根部受累、病变广泛时只取足量组织、不凭冰冻做不可逆切除（PSOGI/EURACAN 2021）。
-4. 按IMIG 2017年更新的标准（至少两个间皮标志物和两个癌标志物，必要时BAP1或CDKN2A）评价calretinin阳性、CEA阴性的腹膜肿瘤，
+4. 按IMIG 2023年更新的标准（两个间皮标志物和两个癌标志物，必要时BAP1或MTAP免疫组化、CDKN2A荧光原位杂交）评价calretinin阳性、CEA阴性的腹膜肿瘤，
    并采集职业性石棉接触史。
 5. 把超过100×10⁹/L、以成熟中性粒细胞为主的白细胞增多作为排除性诊断认定为类白血病反应：按WHO第5版（2022）排除慢性髓性白血病和
    慢性中性粒细胞白血病（BCR::ABL1、CSF3R）、隐匿感染和药物因素，不降细胞、不盲目升级抗菌药（IDSA/SHEA 2016）。
@@ -538,14 +606,14 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **关键决策。** ① 入院：按可能的复杂性腹腔感染处理——先留血、尿培养，再静脉覆盖肠道革兰阴性菌和厌氧菌，当天增强CT（干扰项：按肾盂
 肾炎等48小时、先停药做肠镜、按“肿瘤热”用地塞米松）；② 定位与取材：肠外肿块，影像引导下粗针活检并抽腹水，提交多学科讨论（干扰项：
-直接开腹切除——原报告的做法是手术探查、细针细胞学、再用两周抗菌药复查）；③ 术中：多处取足量组织、留新鲜组织培养（含结核），
+直接手术探查、凭冰冻定切除范围（接近原报告的路径，原团队做的是手术探查）；细针穿刺细胞学；再用两周抗菌药后复查）；③ 术中：多处取足量组织、留新鲜组织培养（含结核），
 不切除（干扰项：凭冰冻减瘤、取一小块后找原发灶、只做冲洗液细胞学）；④ 最终病理：以石蜡为准、支持间皮瘤，但补做第二个间皮标志物
 和癌标志物、专家复核、问石棉接触史（干扰项：以冰冻为准、两项染色已足够、按肉瘤处理）；⑤ 极度白细胞增多：多半是肿瘤相关的类白血病
 反应，靠排除认定——复核涂片、查BCR::ABL1和CSF3R、再找感染灶、停用无目标的抗菌药（干扰项：按慢性髓性白血病用羟基脲、升级碳青霉烯加
 抗真菌药、认定已证明分泌G-CSF）。关键项：入院阶段先送血培养、再给静脉抗菌药并申请影像（不完成这些，检查阶段不会开放），以及避免两种
 危险操作。
 
-**安全结果。** `dexamethasone`（取得组织诊断前用地塞米松退热）和 `radical-resection`（凭冰冻切除肠系膜根部肿块）标为 `critical: true`，
+**安全结果。** `dexamethasone`（用地塞米松退热，全程禁忌：组织诊断前会掩盖感染、妨碍活检，确诊后感染仍未排除，且激素本身升高中性粒细胞）和 `radical-resection`（凭冰冻切除肠系膜根部肿块）标为 `critical: true`，
 给予任一项即判安全结果不通过（`safety.passed: false`），无论得分多少；羟基脲、升级抗菌药和口服抗菌药出院为可纠正的错误（`critical: false`）。
 
 **复盘要点（PEARLS）。** 先谈感受；复述最初几小时的处置和顺序；分析：尿路症状好了而腹痛发热未好说明什么、为什么先留培养再用抗菌药、

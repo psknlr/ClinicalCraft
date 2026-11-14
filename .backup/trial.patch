@@ -2839,10 +2839,21 @@ index 5edb10b..dcfd33b 100644
      case "alarm-response":
      case "procedure-supply":
 diff --git a/packages/agent/src/session/delegation.ts b/packages/agent/src/session/delegation.ts
-index e1f9962..3533f31 100644
+index e1f9962..10566e0 100644
 --- a/packages/agent/src/session/delegation.ts
 +++ b/packages/agent/src/session/delegation.ts
-@@ -24,6 +24,12 @@
+@@ -12,6 +12,10 @@
+  * cart — wheeled to the bedside if none is there — prepare, connect, record,
+  * reset), `obtain_iv_access` (the case's IV-access procedure),
+  * `fetch_equipment` (a cart, by id or capability, to the bedside),
++ * `deliver_item` (a handheld item — the target — taken to `params.to`, a staff
++ * id or role, default the delegating clinician: picked up where it lies, or
++ * from the staff member's own hands, and handed over; an item kept in custody
++ * against a receipt the receiver confirms — EMBODIED §8.1, audit P2-12),
+  * `give_intervention` (`params.intervention`, fetching what must stand at
+  * the bedside; `params.order` — the order as said — and `params.dose` state
+  * the dose, checked against the dose prepared: a dose that differs is not
+@@ -24,10 +28,16 @@
   * `hand-over`), `release_traction` (lets go and hands it back). Someone who
   * holds traction lets go before any other task (`letGo` in the result): the
   * window closes, and the operator sees it.
@@ -2855,7 +2866,21 @@ index e1f9962..3533f31 100644
   */
  import { lookupStaff } from "../tools/consult-target.js";
  import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-@@ -125,9 +131,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
+-import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
++import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type HandoffReceipt, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+ import type { SkillToolCall } from "../skills/interpreter.js";
+ import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
+ import type { DoseErrorEvent, doseQueryData } from "../tools/dose-order.js";
+@@ -86,6 +96,8 @@ export interface DelegationResult {
+   asked?: string;
+   /** Equipment delivered (`fetch_equipment`): where it stands now and how far from the patient. */
+   delivered?: { entityId: string; room: string | null; distance: number; x: number; z: number };
++  /** `deliver_item` of an item kept in custody: the receipt the hand-over wrote (the receiver to confirm it). */
++  receipt?: HandoffReceipt;
+   /** Traction let go: the instruments this colleague held at the table, handed back before this task or as it. */
+   letGo?: { port: string; instrument: string }[];
+   /** `hold_traction`: the port taken and its instrument. */
+@@ -125,9 +137,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
  function transportParameters(h: Pick<DelegationHost, "resolve">, staff: ActorId, params: Record<string, unknown>, target: string): Record<string, unknown> | null {
    const destination = strArg(params, "destination") || target;
    const capability = strArg(params, "capability");
@@ -2870,7 +2895,7 @@ index e1f9962..3533f31 100644
  }
  
  /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
-@@ -198,7 +206,16 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
+@@ -198,7 +212,16 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
      return r;
    };
    // done for the delegating clinician: its observations report the staff member's actions (G13)
@@ -2888,6 +2913,29 @@ index e1f9962..3533f31 100644
    const operate = async (id: string, operation: string, parameters?: Record<string, unknown>, goal?: NavGoal): Promise<WorldActionResult> => {
      const request: WorldRequestInput = { actorId: staff, operation, targetId: id, onBehalfOf: PRIMARY_ACTOR, ...(parameters ? { parameters } : {}), ...(goal ? { goal } : {}) };
      let r = record(operation, await h.act(caller, request), id);
+@@ -341,6 +364,22 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
+         verify(`at bedside ${cart}`, ok && h.atBedside(cart));
+         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
+       }
++      case "deliver_item": {
++        const item = h.resolve(strArg(params, "item") || target, staff);
++        if (!item || world.entity(item)?.portable !== "handheld") return finish("failed", "no-target");
++        const wanted = strArg(params, "to");
++        const named = wanted ? h.resolve(wanted, staff) : PRIMARY_ACTOR;
++        const to = named && world.actor(named) ? named : wanted ? pickStaff(world, wanted, patient) : null;
++        if (!to || to === staff) return finish("failed", "no-recipient");
++        // taken where it lies (in someone else's hands the world refuses, saying whose), unless already in theirs
++        if (!world.actor(staff)?.holding.includes(item) && (await operate(item, "pick_up")).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
++        if ((await go({ kind: "entity", id: to, range: 1 })).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
++        const r = await operate(item, "hand_over", { to });
++        if (r.receipt) result.receipt = r.receipt;
++        const ok = r.status === "completed" && !!world.actor(to)?.holding.includes(item);
++        verify(`${item} handed to ${to}`, ok);
++        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
++      }
+       case "transport_patient": {
+         const parameters = transportParameters(h, staff, params, target);
+         if (!parameters) return finish("failed", "no-target");
 diff --git a/packages/agent/src/session/embodied-autopilot.ts b/packages/agent/src/session/embodied-autopilot.ts
 index e2b1c8e..c584a4c 100644
 --- a/packages/agent/src/session/embodied-autopilot.ts
@@ -3061,7 +3109,7 @@ index e2b1c8e..c584a4c 100644
      await returnPatient(host, e, steps, turnId, signal);
      // the care team's turn (its assigned scenario runs alongside: a hold, a search, a request)
 diff --git a/packages/agent/src/session/embodied.ts b/packages/agent/src/session/embodied.ts
-index b8d5962..7062b53 100644
+index b8d5962..5901c70 100644
 --- a/packages/agent/src/session/embodied.ts
 +++ b/packages/agent/src/session/embodied.ts
 @@ -25,8 +25,9 @@
@@ -3105,16 +3153,17 @@ index b8d5962..7062b53 100644
    private readonly facade: WorldRuntime;
    readonly view: ClinicalView;
    readonly port: ClinicalPort;
-@@ -374,6 +378,8 @@ export class EmbodiedSession {
+@@ -374,6 +378,9 @@ export class EmbodiedSession {
        roomInfo: (actorId, roomId) => w().roomInfo(actorId, roomId),
        canSee: (actorId, id) => w().canSee(actorId, id),
        regionName: (at, locale) => w().regionName(at, locale),
 +      whereabouts: (actorId, id) => w().whereabouts(actorId, id),
 +      askWhereabouts: (askerId, id, colleagueId) => w().askWhereabouts(askerId, id, colleagueId),
++      receipts: (id) => w().receipts(id),
        plan: (actorId, goal) => w().plan(actorId, goal),
        checkSpatial: (actorId, intent, opts) => w().checkSpatial(actorId, intent, opts),
        recordBound: (id) => w().recordBound(id),
-@@ -387,9 +393,9 @@ export class EmbodiedSession {
+@@ -387,9 +394,9 @@ export class EmbodiedSession {
        patientPlace: () => w().patientPlace(),
        patientMonitor: () => w().patientMonitor(),
        screenInView: (actorId) => w().screenInView(actorId),
@@ -3126,7 +3175,7 @@ index b8d5962..7062b53 100644
          return r!;
        },
        refreshPatient: () => {
-@@ -470,6 +476,8 @@ export class EmbodiedSession {
+@@ -470,6 +477,8 @@ export class EmbodiedSession {
        }
        // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
        this.count.afterAct(request, result);
@@ -3135,7 +3184,7 @@ index b8d5962..7062b53 100644
        this.traceEngineChanges(actionId, actorId);
        this.host.emit({ type: "world_action_result", result }, caller.submission);
        if (inner.version !== before) this.record();
-@@ -619,11 +627,11 @@ export class EmbodiedSession {
+@@ -619,11 +628,11 @@ export class EmbodiedSession {
      const c = this.host.caseDef;
      if (event.type === "intervention.applied") {
        const destination = c.interventions.find((i) => i.id === event.interventionId)?.destination;
@@ -3149,7 +3198,7 @@ index b8d5962..7062b53 100644
      }
    }
  
-@@ -632,23 +640,54 @@ export class EmbodiedSession {
+@@ -632,23 +641,54 @@ export class EmbodiedSession {
     * outcome — moved, or no such place here — is appended to the outputs of the tool calls running now and sent as
     * a notification; already there: nothing to say.
     */
@@ -3208,11 +3257,69 @@ index b8d5962..7062b53 100644
    }
  
    /** A tool whose call may relocate the patient: the relocation's line is appended to its output. */
+@@ -1059,7 +1099,8 @@ export function delegationText(r: DelegationResult, locale: string, world: World
+   const staff = r.staffId ? (world.entity(r.staffId) ? t(world.entity(r.staffId)!.name, locale) : r.staffId) : r.role;
+   const task = taskLabel(locale, r.task);
+   if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
+-  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : "delegate.param.target") });
++  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : r.task === "deliver_item" ? "delegate.param.item" : "delegate.param.target") });
++  if (r.message === "no-recipient") return rt(locale, "delegate.needTarget", { task, param: rt(locale, "delegate.param.to") });
+   if (r.message === "target-not-intervention") {
+     const id = world.resolveId(r.asked ?? "");
+     const e = id ? world.entity(id) : null;
+@@ -1074,6 +1115,11 @@ export function delegationText(r: DelegationResult, locale: string, world: World
+     const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
+     lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));
+   }
++  // an item kept in custody handed over: against a receipt, for its receiver to confirm (EMBODIED §8.1)
++  if (r.receipt) {
++    const to = world.entity(r.receipt.to) ? nameOf(world, r.receipt.to, locale) : roleName(world.actor(r.receipt.to)?.role ?? "clinician", locale);
++    lines.push(rt(locale, "delegate.receipt", { item: nameOf(world, r.receipt.item, locale), to, at: r.receipt.at }));
++  }
+   r.steps.forEach((s, i) => {
+     const words = stepWords(s, locale, world, caseDef);
+     lines.push(
 diff --git a/packages/agent/src/session/i18n-embodied.ts b/packages/agent/src/session/i18n-embodied.ts
-index 0d268f4..6db6034 100644
+index 0d268f4..e74e0f2 100644
 --- a/packages/agent/src/session/i18n-embodied.ts
 +++ b/packages/agent/src/session/i18n-embodied.ts
-@@ -163,6 +163,10 @@ export const EMBODIED_EN = {
+@@ -46,6 +46,7 @@ export const EMBODIED_EN = {
+   "world.entity.inReach": " · in reach",
+   "world.entity.actions": " · can: {actions}",
+   "world.entity.cues": " · {cues}",
++  "world.entity.holder": " by {holder}",
+   "world.entity.awareness.remembered": " (remembered)",
+   "world.entity.awareness.mapped": " (on the hospital map)",
+   "world.found": "Found {count}:",
+@@ -113,7 +114,7 @@ export const EMBODIED_EN = {
+   "scope.kind.other": "other orders",
+   "sum.byStaff": "{who} ({role}): {summary}",
+   "vitals.notInView": "Vitals not in view from here: {reason}",
+-  "delegate.unknownTask": "Unknown task “{task}” (attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient, hold_traction, release_traction).",
++  "delegate.unknownTask": "Unknown task “{task}” (attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, deliver_item, give_intervention, transport_patient, hold_traction, release_traction).",
+   "delegate.needTarget": "Task {task} needs {param}.",
+   "delegate.param.intervention": "an intervention (params.intervention or target: an id from list_options interventions)",
+   "delegate.param.target": "a target",
+@@ -121,6 +122,9 @@ export const EMBODIED_EN = {
+     "{target} is a thing in the room, not a treatment: give_intervention takes one of the case's interventions (list_options interventions). To bring equipment to the bedside use fetch_equipment; to move it yourself, interact_object move_to. Nobody was sent.",
+   "delegate.unknownIntervention": "This case has no intervention that matches “{asked}” (see list_options interventions). Nobody was sent.",
+   "delegate.delivered": "  Now: {target} in {room}, {distance} m from the patient (x {x}, z {z}).",
++  "delegate.receipt": "  Handed over against a receipt: {item} to {to} at minute {at}, for {to} to confirm.",
++  "delegate.param.item": "a handheld item to take (target)",
++  "delegate.param.to": "who receives it (params.to: a staff id or a role, such as lab-tech)",
+   "delegate.noItem": "This case has no {what} for the task {task}.",
+   "delegate.result": "{staff} — {task}: {status} ({steps} step(s), {seconds} s simulated).",
+   "delegate.status.completed": "done",
+@@ -142,6 +146,8 @@ export const EMBODIED_EN = {
+   "req.ackFetch": "Sure — I'll bring the {thing} over.",
+   "req.ackHand": "{thing} — coming.",
+   "req.handed": "Here you are: {thing}.",
++  "staff.receipt.confirmed": "Received the {item} from {from} — checked and signed for.",
++  "staff.receipt.you": "you",
+   "req.handHave": "You've already got the {thing}.",
+   "req.handWith": "{holder} has the {thing}.",
+   "req.handsFull": "Your hands are full — put something down and I'll pass you the {thing}.",
+@@ -163,6 +169,10 @@ export const EMBODIED_EN = {
    "req.where": "{place}: in {room}, about {metres} m from here.",
    "req.whereFar": "{place}: in {room}.",
    "req.whereHere": "{place} is right here, in {room}.",
@@ -3223,7 +3330,15 @@ index 0d268f4..6db6034 100644
    "req.wherePatient": "{patient} is in {room}.",
    "req.cantGo": "I can't get there: {reason}.",
    "staff.offline.porter": "I'm {name}, the porter. I can fetch equipment, or take the patient for a study and back — just tell me where. For anything clinical, ask a nurse.",
-@@ -247,8 +251,8 @@ export const EMBODIED_EN = {
+@@ -174,6 +184,7 @@ export const EMBODIED_EN = {
+   "delegate.task.record_ecg": "record a 12-lead ECG",
+   "delegate.task.obtain_iv_access": "obtain IV access",
+   "delegate.task.fetch_equipment": "fetch equipment to the bedside",
++  "delegate.task.deliver_item": "take an item to someone and hand it over",
+   "delegate.task.give_intervention": "give a treatment",
+   "delegate.task.transport_patient": "take the patient there on their trolley",
+   "delegate.task.hold_traction": "take an instrument in a port and keep its traction",
+@@ -247,8 +258,8 @@ export const EMBODIED_EN = {
    "cmd.use": "Operate equipment: /use <target> <operation> [key=value…] (in-world mode)",
    "cmd.map": "Rooms of the facility, nearest first (in-world mode)",
    "cmd.skill": "Run a skill: /skill <id> [key=value…] (in-world mode)",
@@ -3234,7 +3349,42 @@ index 0d268f4..6db6034 100644
    "cmd.embodiedOnly": "/{name} needs in-world mode (start with --embodied).",
    "cmd.skills.list": "Skills:",
    "cmd.map.header": "Rooms (nearest first):",
-@@ -424,6 +428,10 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+@@ -309,6 +320,7 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "world.entity.inReach": " · 伸手可及",
+   "world.entity.actions": " · 可操作：{actions}",
+   "world.entity.cues": " · {cues}",
++  "world.entity.holder": "（在{holder}手里）",
+   "world.entity.awareness.remembered": "（记得的）",
+   "world.entity.awareness.mapped": "（院内导览图上的）",
+   "world.found": "找到 {count} 个：",
+@@ -375,13 +387,16 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "scope.kind.other": "其他医嘱",
+   "sum.byStaff": "{who}（{role}）：{summary}",
+   "vitals.notInView": "从这里看不到生命体征：{reason}",
+-  "delegate.unknownTask": "未知任务“{task}”（attach_monitor、record_ecg、obtain_iv_access、fetch_equipment、give_intervention、transport_patient、hold_traction、release_traction）。",
++  "delegate.unknownTask": "未知任务“{task}”（attach_monitor、record_ecg、obtain_iv_access、fetch_equipment、deliver_item、give_intervention、transport_patient、hold_traction、release_traction）。",
+   "delegate.needTarget": "任务 {task} 需要提供 {param}。",
+   "delegate.param.intervention": "一项处置（params.intervention 或 target：list_options interventions 中的编号）",
+   "delegate.param.target": "目标",
+   "delegate.notIntervention": "{target}是房间里的物品，不是一项治疗：give_intervention 只接受本病例的处置（list_options interventions）。要把设备推到床旁请用 fetch_equipment；自己移动请用 interact_object move_to。未派任何人。",
+   "delegate.unknownIntervention": "本病例没有与“{asked}”匹配的处置（见 list_options interventions）。未派任何人。",
+   "delegate.delivered": "  现在：{target}在{room}，距患者 {distance} 米（x {x}，z {z}）。",
++  "delegate.receipt": "  已凭交接记录递交：{item}于第 {at} 分钟交给{to}，待{to}签收。",
++  "delegate.param.item": "要送的手持物品（target）",
++  "delegate.param.to": "接收人（params.to：员工编号或岗位，如 lab-tech）",
+   "delegate.noItem": "本病例没有可用于任务 {task} 的{what}。",
+   "delegate.result": "{staff}——{task}：{status}（{steps} 步，模拟用时 {seconds} 秒）。",
+   "delegate.status.completed": "已完成",
+@@ -403,6 +418,8 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "req.ackFetch": "好的，我去把{thing}拿过来。",
+   "req.ackHand": "{thing}，马上。",
+   "req.handed": "给您，{thing}。",
++  "staff.receipt.confirmed": "收到{from}递来的{item}，已核对签收。",
++  "staff.receipt.you": "您",
+   "req.handHave": "{thing}已经在您手里了。",
+   "req.handWith": "{thing}在{holder}那里。",
+   "req.handsFull": "您手里拿满了——先放下一样，我再把{thing}递给您。",
+@@ -424,6 +441,10 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
    "req.where": "{place}在{room}，离这里大约 {metres} 米。",
    "req.whereFar": "{place}在{room}。",
    "req.whereHere": "{place}就在这里（{room}）。",
@@ -3245,7 +3395,15 @@ index 0d268f4..6db6034 100644
    "req.wherePatient": "{patient}在{room}。",
    "req.cantGo": "我过不去：{reason}。",
    "staff.offline.porter": "我是护工{name}。我可以去取设备，也可以送患者去做检查再送回来——告诉我去哪儿就行。临床上的事请问护士。",
-@@ -504,8 +512,8 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+@@ -435,6 +456,7 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "delegate.task.record_ecg": "做 12 导联心电图",
+   "delegate.task.obtain_iv_access": "建立静脉通路",
+   "delegate.task.fetch_equipment": "把设备推到床旁",
++  "delegate.task.deliver_item": "把物品送交给某人",
+   "delegate.task.give_intervention": "执行治疗",
+   "delegate.task.transport_patient": "用推床把患者送过去",
+   "delegate.task.hold_traction": "接过某个孔的器械并维持牵引",
+@@ -504,8 +526,8 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
    "cmd.use": "操作设备：/use <目标> <操作> [键=值…]（实景模式）",
    "cmd.map": "本场馆的房间（由近及远，实景模式）",
    "cmd.skill": "执行技能：/skill <id> [键=值…]（实景模式）",
@@ -3438,6 +3596,19 @@ index f89e323..3feba14 100644
      case "hold.placed":
        return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
      case "hold.released":
+diff --git a/packages/agent/src/session/scope-review.test.ts b/packages/agent/src/session/scope-review.test.ts
+index 8381bc7..0c41e02 100644
+--- a/packages/agent/src/session/scope-review.test.ts
++++ b/packages/agent/src/session/scope-review.test.ts
+@@ -118,7 +118,7 @@ describe("S3: the spatial gate refuses a clinical act outside the acting body's
+     expect(checkClinicalScope({ role: "nurse" }, "order_test", "eeg", withTraces, "en").ok).toBe(false);
+     expect(checkClinicalScope({ role: "clinician" }, "order_test", "eeg", withTraces, "en").ok).toBe(true);
+     // porters fetch equipment and wheel patients to a study and back (EMBODIED §8, G8); the front desk only fetches
+-    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment", "transport_patient"]);
++    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment", "deliver_item", "transport_patient"]);
+     expect(SCOPE_OF_PRACTICE.receptionist.tasks).toEqual(["fetch_equipment"]);
+     for (const role of ["nurse", "paramedic", "clinician", "attending"] as const) expect(SCOPE_OF_PRACTICE[role].tasks, role).toContain("transport_patient");
+     expect(checkTaskScope({ role: "porter" }, "transport_patient", septic, "en").ok).toBe(true);
 diff --git a/packages/agent/src/session/staff-requests.ts b/packages/agent/src/session/staff-requests.ts
 index 2756e5a..9d71451 100644
 --- a/packages/agent/src/session/staff-requests.ts
@@ -4939,6 +5110,42 @@ index 1188c23..0839294 100644
        );
        data.push({ investigationId: id, phase: o.order.phase, ready: status === "ready", read: false, status });
      }
+diff --git a/packages/agent/src/tools/scope.ts b/packages/agent/src/tools/scope.ts
+index 4d736fc..a03de44 100644
+--- a/packages/agent/src/tools/scope.ts
++++ b/packages/agent/src/tools/scope.ts
+@@ -14,9 +14,9 @@
+  * | role | delegable tasks | clinical tools with their body | interventions |
+  * |---|---|---|---|
+  * | clinician (the learner's avatar), attending | all (with hold_traction / release_traction: an assistant at the operating table) | all | all |
+- * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow, CTG — not an EEG), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
++ * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, deliver_item, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow, CTG — not an EEG), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
+  * | paramedic | as a nurse | as a nurse | as a nurse + airway |
+- * | porter | fetch_equipment, transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
++ * | porter | fetch_equipment, deliver_item (a specimen to the laboratory), transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
+  * | receptionist | fetch_equipment | — (no clinical class) | — |
+  * | lab-tech, pharmacist, radiologist, pathologist | fetch_equipment | check_vitals, read_result | — (no patient interventions) |
+  *
+@@ -44,7 +44,7 @@ export interface RoleScope {
+   readonly investigations: "*" | "bedside";
+ }
+ 
+-const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"] as const;
++const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "deliver_item", "give_intervention", "transport_patient"] as const;
+ /** A doctor also assists at the operating table: takes an instrument in a port and keeps its traction (PROCEDURE.md §3). */
+ const ALL_TASKS = [...CARE_TASKS, "hold_traction", "release_traction"] as const;
+ const FULL: RoleScope = { tasks: ALL_TASKS, tools: "*", interventionKinds: "*", ivAccess: true, nursing: true, investigations: "*" };
+@@ -57,8 +57,8 @@ const NURSE: RoleScope = {
+   investigations: "bedside",
+ };
+ const FETCH_ONLY: RoleScope = { tasks: ["fetch_equipment"], tools: [], interventionKinds: [], ivAccess: false, nursing: false, investigations: "bedside" };
+-/** A porter fetches equipment and wheels patients (`transport_patient`, EMBODIED §8) — nothing clinical. */
+-const PORTER: RoleScope = { ...FETCH_ONLY, tasks: ["fetch_equipment", "transport_patient"] };
++/** A porter fetches equipment, carries an item to someone (a specimen to the laboratory) and wheels patients (`transport_patient`, EMBODIED §8) — nothing clinical. */
++const PORTER: RoleScope = { ...FETCH_ONLY, tasks: ["fetch_equipment", "deliver_item", "transport_patient"] };
+ const SERVICE: RoleScope = { tasks: ["fetch_equipment"], tools: ["check_vitals", "read_result"], interventionKinds: [], ivAccess: false, nursing: false, investigations: "bedside" };
+ 
+ /** Role → scope of practice (see the module table). */
 diff --git a/packages/agent/src/tools/spatial.ts b/packages/agent/src/tools/spatial.ts
 index e15687e..4c6299a 100644
 --- a/packages/agent/src/tools/spatial.ts
@@ -4993,7 +5200,7 @@ index e15687e..4c6299a 100644
            if (err instanceof SpatialAbort) return spatialRefusal(err.check, ctx.locale);
            throw err;
 diff --git a/packages/agent/src/tools/world-format.ts b/packages/agent/src/tools/world-format.ts
-index 5cb18d4..b239676 100644
+index 5cb18d4..122d992 100644
 --- a/packages/agent/src/tools/world-format.ts
 +++ b/packages/agent/src/tools/world-format.ts
 @@ -31,7 +31,8 @@ function cuesText(cues: Record<string, string> | undefined, locale: string): str
@@ -5006,8 +5213,18 @@ index 5cb18d4..b239676 100644
    const where = e.lastKnown ? (isZh(locale) ? `（${e.lastKnown.label}）` : ` (${e.lastKnown.label})`) : null;
    const awareness = where ?? (e.awareness === "remembered" ? rt(locale, "world.entity.awareness.remembered") : e.awareness === "mapped" ? rt(locale, "world.entity.awareness.mapped") : "");
    const cues = cuesText(e.cues, locale);
+@@ -41,7 +42,8 @@ export function entityLine(e: ObservedEntity, locale: string, actorLevel: string
+       id: e.id,
+       distance: round1(e.distance),
+       direction,
+-      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) : "",
++      // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
++      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) + (e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : "") : "",
+       reach: e.inReach ? rt(locale, "world.entity.inReach") : "",
+       actions: e.availableActions.length ? rt(locale, "world.entity.actions", { actions: e.availableActions.join(", ") }) : "",
+       cues: cues ? rt(locale, "world.entity.cues", { cues }) : "",
 diff --git a/packages/agent/src/tools/world.ts b/packages/agent/src/tools/world.ts
-index 6ded05c..7c7b951 100644
+index 6ded05c..8b6b3e0 100644
 --- a/packages/agent/src/tools/world.ts
 +++ b/packages/agent/src/tools/world.ts
 @@ -73,7 +73,7 @@ const ENTITY_KINDS: readonly EntityKind[] = ["patient", "staff", "actor", "equip
@@ -5019,6 +5236,15 @@ index 6ded05c..7c7b951 100644
  
  /** How deep skills nest (review C10): a skill may run one skill (or delegate); the one it runs may do neither. */
  export const MAX_SKILL_NESTING = 1;
+@@ -84,7 +84,7 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
+ }
+ 
+ /** Tasks staff can be delegated (`delegate_task`). */
+-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
++export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "deliver_item", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
+ 
+ const GOAL_SCHEMA = {
+   type: "object",
 @@ -148,10 +148,16 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
    { name: "get_visible_objects", description: "Entities you can see right now (field of view, line of sight), nearest first. Read-only.", inputSchema: obj({}) },
    { name: "get_room_info", description: "A room: its exits and what you know in it (default: the room you are in). Read-only.", inputSchema: obj({ room: { type: "string", maxLength: 80 } }) },
@@ -5037,6 +5263,15 @@ index 6ded05c..7c7b951 100644
      inputSchema: obj({ target: { type: "string", minLength: 1, maxLength: 120 }, goal: GOAL_SCHEMA, range: { type: "number", minimum: 0, maximum: 30, description: "Stop within this distance (m) of the target." } }),
    },
    { name: "approach_object", description: "Walk to the best interaction point of an entity (within reach, line of sight, facing it).", inputSchema: obj({ target: TARGET }, ["target"]) },
+@@ -159,7 +165,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
+   {
+     name: "interact_object",
+     description:
+-      "Operate an entity with one of its operations (inspect_object lists them): doors open/close, workstation order/read {investigation}, monitor attach/read, ECG cart prepare/connect/record/reset, device use {investigation|intervention}, carts move_to {goal}, sinks wash_hands, items pick_up/put_down. Operations with a clinical effect run the clinical tool through the same approval gate.",
++      "Operate an entity with one of its operations (inspect_object lists them): doors open/close, workstation order/read {investigation}, monitor attach/read, ECG cart prepare/connect/record/reset, device use {investigation|intervention}, carts move_to {goal}, sinks wash_hands, items pick_up/put_down/hand_over {to: a person within arm's reach}. An item kept in custody (a blood specimen tube, a medication box) is handed over against a receipt, and whoever receives it confirms it with confirm_receipt; a specimen tube is filled and labelled at the bedside with collect. Operations with a clinical effect run the clinical tool through the same approval gate.",
+     inputSchema: obj(
+       {
+         target: TARGET,
 @@ -173,11 +179,12 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
    {
      name: "transport_patient",
@@ -5056,7 +5291,7 @@ index 6ded05c..7c7b951 100644
      name: "delegate_task",
      description:
 -      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
-+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there; params.monitor: true takes the portable monitor at the bedside along), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
++      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), deliver_item (target: a handheld item, e.g. a filled specimen tube; params.to: who receives it — a staff id or a role such as lab-tech, default you: they take it where it lies or from their own hands, walk there and hand it over against a receipt the receiver confirms), give_intervention (params.intervention; params.dose: the dose and route as you would write them, checked against the dose prepared — a dose that differs is not given and is read back), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there; params.monitor: true takes the portable monitor at the bedside along), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
      inputSchema: obj(
        {
          role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
@@ -7370,6 +7605,294 @@ index 0000000..e6565d6
 +  ctx.print((zh(L) ? TEXT["zh-CN"] : TEXT.en).written.replace("{file}", ctx.show(ctx.path(out))));
 +  return EXIT.ok;
 +}
+diff --git a/packages/content/assets/models/medication-box.glb b/packages/content/assets/models/medication-box.glb
+new file mode 100644
+index 0000000000000000000000000000000000000000..33e230d76f6d723b1d032dfdab2c37918f639ba9
+GIT binary patch
+literal 22052
+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
+I6V4>~Uo8GzS^xk5
+
+literal 0
+HcmV?d00001
+
+diff --git a/packages/content/assets/models/specimen-tube.glb b/packages/content/assets/models/specimen-tube.glb
+new file mode 100644
+index 0000000000000000000000000000000000000000..3a14ae1ba61993965bb3e53b7fb4b9f54abaca73
+GIT binary patch
+literal 50196
+zcmeHw34B!5+5R~!LPS(h$|e%RB1?do%p{p)Ze~E%$PzXcWDOxeB%4V<5D-MAxMGVN
+zPz36}RQ+5E3dyLrwiPR_UEJDQ>(ctQb*WmH`aSQN^G?pabMFQJ{r~#?|G(cP-uFD`
+zz0Y~ibC!D(u9N#NtDZH!jS%A0r-gX0ix6kcEStJEr@XPTvMHx{ZB9j9{hEfVWy?{?
+z8B<+VTUAkBJ*J_2X;XGZU2RiC)#8;+bq$TV*)?@bDyyq2mt<GfW}jJIS-YgNA$w^<
+zT}^h=^2+R{HT9KeG-j`=TU}Y5U0>eN)R;ZEv7(`>zNvBK;v{)U_PmvWz~aK}DW$V=
+za&wkd)>bx@BQ(05w7j9NwyrUI8I-1CmyRsUUX?#0Fd{Dq`l`x?#;Uqnkn=_aa@ObO
+zG*%!$PH{k^#+>50YjbMLYv9Y7sm|r*)Iu_y2;>HH^X9Lg-|AVLQ&ZWvTs7Bi8tW@7
+zs%k20hc~TUT!{{t5k#Y8)avpzl?}z!<%=t;jq`bq^Nr;-_0<S~&T7h=DjTZGt8LmU
+zDvIr0<>u5cZkSTpR9;<ORWYM(<+A0qm5pdZ0vyg+m8+XpHeiHnbE+`^tD%4WdXidR
+zUBA413Py{;pE-Hl)UlW`t=idN@v>?xJ<faey12Zta!g%yUBmeD3bj0QgP6WxE-gfn
+z`ievXg++nFAPrGVWG<GYfrpUtjR*#kU%_xuAQ&tN=B-!LgB4KAlUld5iD{^+scNcP
+zrCH@o$?ZthwK>zuW|qz>Et{$qacbF&DWfOn6l1k!jhj8DtZc^Eg@K%6EY6s+$z?ML
+zhp=fdYgHB0JlwiEG>J5Y9>Mc-b2xZ`J$RuJJYohfGJ^-#&!_M%dk9N#Y~u@JR#`*P
+zF~XoZ#Gq}ALB}A|b?Ci%>_Uvm2s&mXXii7aHXlLTgaj}l*f~wfy_~!@l0tARpv$>#
+zWkUsB*~F@<DPN{nfAPwtODh}Bsj9p%rx-eFaIwz9T?ac}kw(_nF7w&-bqzJ@nk=ut
+z`ZwZ+rtTMJOmtmQS5seCTUpzb44fa#!yqf_R@UO)7z$9Q<+$eN21W!5@<MbeL_&eW
+zyu3)D2v<iSSeV@Bh50xaDa<b*XCM+$*Gyp~FB}d9!i5-AO%?8A6eSc1Cr=gyLy=Hn
+zICnU;2oxr-mZD%dKR;4f5J|dS0?}O;<3DHIn2@?7nZv<8IqGoy+GAgRi}rbG{fE9)
+z`*i)-yy^X`plUe^3a~U<|I9I?Cy$<yra-No_ktE-!=~0VoLstKFq9XLMDp_0dWO|P
+z<P{Y}LO4Npz(AlNxnczck#M*uSP%-Q)|1w*pdeqZT|s_+L4Gi~Eds#;wN(P)P`D6#
+zBR?;>o^Fx+76fwBC!}?M(s2BmN4`z-^yS1Q{O|Nmx3Ki~t;-oIgg*b}q&r`Fh}H=R
+z<AQ5l&`_SbvWg;k!C<5S3!_#vKVNzCaZ%wa%ga+sS{T4}9K<r=A`BK4*cKF*EPVyT
+z1%VJwD}GonGOqVfK`4};T+YHkL4E{3+zLPrV3`rdZ#n3`ebmwT1~|$ErlzAcK>CW(
+zkB5Ix0d9!t0b18IQh*+gvZhD5MsZ6tmNb;SF@}r6g~3RE@)`|AXnpc<A?D}hW6jkH
+z>17Uu!UYAPpjwOMJy%_$xNz}>h03FgQH22{UnCOFE5Z#R6bdC5)g@5tl&0Ua=x1R1
+zjI?f18jf%Kqg<r+_AX0$l&jR<K3#v_QLfUwNcvTZect+G$NZ_PewZ&_(^NURvUXV$
+ze%B6R%0Y&wZ0S<<j}KIv${Uu^ze7UdqJlj7MJXBV7#b(T9cz31^mTMz7^2}GYx{KZ
+zMTIn+V{IP{g>c22gAaznP67D!&2s{R5nNfe_Tj>OzZt{52;0rxq9}yTc+8U10~FxL
+z<go`REJSZM0fl+$o^Xt7?lOW%fR^!CM?k-W*##8k1?U<y1o+K)ez?%NXt;5F3jyf?
+z^76y95ljVsix?^h<B~JyFcc_q4#6)#x&quO@hiwND+m_mITVC(zx@`I7@?bnIf8Hy
+z8~4}+q_@W=`ZjA&<XFQn?)r2eGd6+W45s%V4mvMfzxMcL!!dsRj_Bw=ME};&{|HLn
+zL-FsP@m1A$evngKq*eewz)S}<NZu;-J=eI=(mxx*_*YhTcJ|2+32|oWR5ARaJ|zP-
+z?kmP)pp8y^-Rv)mS6w;u0QpV)^YII!L$>ZxeiNTtvoBin`ishM;?g<CSzC_0sr)8>
+z_sf9Ad=tN!eYVB%O}ueJjm3IQeC<;!t!rLbxtDaBSaYJ}H?fYX{3g~Kl;6Z!v+|o*
+zk5Tzetmj1eO|0io`58a?lYS+b`~RZ(cjD!H`WJtG$CLx)H*sWXpXkbOnw8(g-}&9`
+z(aU0=E5C_J^I3C_J4kU%-0@J6#e5UDn^S3Vd=rniF0ojTiO-s|+4@)T`n?q2#F`T&
+zzln8B<u|d`p!_D*nk_@W!g`E~Z(=<s%5P#lhsw|Rw}&sp{Et%ePk6STbHZUg&xB9a
+zb4z%lo=?KZ={Y3aR?i#ZaeA%@^PCv|sKHlQ$5B|vw}_+rRer5UVXZS-^UTF1*`<Bd
+z_3Om5R_`c&Vn^%%`AwV~E{d+{@u2dXI8gbc=tZZ#qx>c&Ju9;Qsr)AX{F{7>`6j-+
+za)HJ1O}x2cjm3IQ{7vm8*74_Ev6pn3SaYJ}H?fYX{3g~Kl;6Z!v+|o*k5Tzetmj1e
+zO|0io`56zmX@lAibp77)w=+trv;G;K`f?Y`5C4An$rf|GFvXcT?W-uqal_P>{ciZH
+zyDv!T@x!cvI9{0ba2)E_iCF{3VGjFgEW3Biw)RYWLXFD{@4RHGb@S=3D~=z&YtwBh
+zjvKydc~hz{H%vNNgCAxM#PP$VfjMrNH4w)Q)BNlkwaJ=Z+UN13;hDJRnd641bi3Mu
+zU&Zmm=u5>RjuVqk)^jvW8kpmTSp#wWFlk_p6VrJ0{2%bcdQBC_3+wq;94}0LVI5O_
+zIWg&EJ${%q5XTF%2I6>O*28^~9uw1?=<D~OAJ+FM#qq-WnpI=>!up<|IBuA<u^vCn
+z8i?bCSp&zxy+w`P^s@$z!yNY0oV>AcS`_ymrP&Mr<xr0(?mvp-h5s8I-Va{*)3T?E
+zxi2?NI$47sW(~yg!mNQfUYIoy#|_i`)OKxK%=Z&7Tn`SeO?7Ya!UY=(ALsjt7Y>8N
+z_b4|^I$47sW(~yg!mNQfUYIoy#|_i`{582ZqJEgxbhrK)=Y?th_iBz8{&RAVslMDW
+z>0~{Am^Bc`3$q5|cwyE+95+01`n1IIpPrh)??UwJkS>KNoi;7;=QUZ0TUshwO#fG9
+z(-I%o9ciJ%^b?=B)W-Bve2Sdx!yX^}n3J#L$K2wB8+Yo_`s37x*{{}5{Fv!C;@kXM
+zKj}fNR-J}^o8K6(&2P+4T6`L-Q;(_Jz7|4^xU@R))!z=a=&`8zCH^Pv@)L9zePJzx
+zATG5rv?a)&{Mwi>#-jY-#|*w+3l%?Z#Mf(~^u!H4dMzmWM$CZ__O(dyV_Lsni&Xr$
+zeJzxJ(i7ME^;%G5`q~&b^sD~#c$wdlT)Wi#aD3XUSc}wrvL3Y-Pc9r1o4jV7nvX9R
+z4T<#{U6mMD@?^`M^M=F@Zq7^4L4NYlIpR|+YNP$CjpoOh4{n^===e&nj!*uW!H*kp
+z;zoS-Q@?RTkMe7svAdSs6PvR90;T`#_cz49SO4pSr0;F`b2=<c9QXYGmNNM3Pkip+
+zrqu%vJ^_E_!$T8v%!J>XfAc{)h)-N<Lww>=8;Vcys1J%ynEKFs)raO=#MklTMtqCo
+zBX-=-V^JSkzly8%ThxcvPyCqHPkhUWAJ_URzGdi%8+t55f85Z|d>SwFX}lbt=7;0c
+z{3yPjPu4^839ZS!Pnui5*vIz~E?XI`?VMa2N3AQkj?$H*=CGA(<2cT7pROF{>e9wZ
+zBx@->ejL|0`rf6^@qNsx8GgF|m>gj4GpRsx5>z|JIO?9}5{K@kW?zVDpC8?q$pLod
+zpsh`hYC}Hya>QXhHcpbsV|A9vvznvZ`Erz=R;|o+jpK-C<8T}<HP^;*w71WX*6e8S
+z%HcSUG8sY7p^5`cYX@u}m-egnJ{+2V=I~mmxI8L4Z*ZtD@YDLzZGG2WxAo<ied(C?
+z`SH-B#=x3A=Gitb2S=Z?k4tlOY}Vn+@r%Rf9Pv!m96MENu8rep&$?VWjy{td#~kuJ
+zYp#u>eBjgC0kbX}Cr&lZ0Z!vkTa$CNIIKstN%oYwZ=h|eFN)*FQ9eVDljEkx#!2?c
+zu~TJ&wX~KzR$q>eo#Oh%(dU@k+EeRTQ+?^UHV(Jf=a_5b@Hq$9#^G~Z>NZIZt*2v6
+zao(=k!QnO4@ltWz*22lrZEfrB#({<u2iQJ#4?U_)QjOU*h0%{|9QfTiFaGRj^#8@;
+znKCmEnSGGC4l?(F%zYqpAIRJXGWUW1?0sPP=5Fz&oh~UE(XFT?gERAx*#nt9kl6#7
+zJ&@T0nLUu%1DQRL*#nt9kl6#7J#Z|0K!`S?KOW-r6Q{%WM=3>n(H1rfr4(IIO3@Rg
+z6n#)i(HCVK(M}A69f%g~#Bt&b*fUUT4|WICJBlH&L*VNuju*pVhoP1wI*U%QT~Hn`
+zP7uRkhvUo%;zThLb|h+@arPwCPZmMgAbcl_t|9~*LamGFCQgCviL$FWRpi6w<IJhz
+zJE9P_5VdYN+a2{Dq6oGKz8<2Nh{8ru>k0L}Q9n(Tz?Q&w8b%(6jiYut#vd2iB1epd
+z9VKG0qfzFF0pd*9Gf^8L28l7SV^A9;28*$<V^JF{hKg~p<4_waa>aPq@u=mB5n=-D
+z1k^@|fS3q75w(EG6Q!`FsO5>UI1BbH)WV`bOoE++T7ig&$*_}Ai-=+|1$GK*#ljL(
+zVW*;IL1h_i8EP?TEyFQd%z&My@C=lrp>-DQEcnla)^lLbL2V4Q&W4?h+E{2k5B5CN
+z#zE^m*m<apht>tK3s9Q?t&3n6p*9g(7sD<_trS|9z%D`UENEQ{yA-ua(7GIUIck%k
+z^?ca#QJVs-)v(p5O@+!@*jm)eptV*^7c)gYY`v%hIveHL;#}Bs#T?i<VlM1lF&}om
+zSO~jNl*5*b3fKx!30o<a!7dY3uvKCO><Uo>TZ4%8;sUW=G>HbWT3jp|#VWB5cAZ!Q
+z-+Hl8tQ41s@4|jptQ8lEi^OKw&Eit9F9UyrxLj<)_vK=XxI)|@t`S#?>%@)XDsip2
+z9`<_iJ#n?TS=<79i}*gy-ypV&tzw(l4ZB<H1p5cz-z0X49r)fQ_K3aWPVpo0Lvg>j
+zUEC_}5ck2}C+-%vi3i1xVSg;{!I}H<2WfYThrzr{+$;9M?h}uQ2gIY|A$&h7_KU~F
+z6XF^1xOi4HivyxXJPrG_cv2h`&x@B}UlNCK=2`KANQkGzVc5gsr)cvtw0cgwD1L(P
+z7sb!T%i<03OL0W}M!YG0A$}!ZhkafA7QQ#c@5L+P58_?ecg1Vs*Wy+24(vPPk6^zI
+z{_n(}#9R3OlXy?OFa9R}A^t2r6(5Mdh`)+YU_TKbqV}oyT>Q8Ar}zf;8}TuCUxN8}
+z@sao!?7zfU;xqBJ_yXTw3n8WKAUn%8@<iEQww1@p6JSq}S+boxS$+rhJMws(IZ<{2
+z?-VdQ%1*L7Y<GF8JV|zwUGd#b_K-d0KzW+%CHu-jvbQ{44uBmX`@uI*4wil75IF*N
+zgv<eB7&zIozZ?lWQs&At<Zw9@-@|1<UNLRzgwDtJIvzL7&ZQH_&Oq57hwRt}cKZ)L
+zz70h|<?Pa>Q>Ne^AaLiwXD4yURM|%MN;ZL~qwJl+C!;Q|Tm3ish+kIS`0<TYS6{CV
+z{qbRdton&_;Ox|u4teB_i@$=iYw6h0vpV*v`23q2|FEHL+b!+-iz!xC;QfBvc2e6?
+zykhG9GZ$?VX9Tx2PsQJj!ME{^0h^oO8Gc>V4KKKBd-RDNEsqn&#0&3u1b?FzI6!_A
+zf6(a-{EgaD<u@_)wIXYc@|*aM+|%(lYDvC{s~6_sZ`6|UO<eP49Dk#h)MMhicaFv1
+zsAcUXJto$iV)C0<$BdHS#9D*$n^<dBeiQ34D!+;KoG8DE^&Bcaj7xWIY+g{>N6kOs
+zb&=v|&sALx5bj>KIeJ;eW`(zYb|^ak#s?H84IgxFQTUfX9%`}w<f}?8=C2>Hz~VS#
+z7gbv2w@u$mF||KRSo0OuaTM0^71sSKto10Ybw(dv+t9q{$eZeK90@P|)k)Fw+Vwv`
+z`1ixBqxbH-QQ_Laf#~w*o>rLRfBf|?6<*S7q{aRLcTTsM-==xF#c?M7rrz5A;rV+h
+zruIh(Yreudj>0;=!n$9DwH}4FPWAcy)mlIO-GGT_=&_LB#6Q#HBEN~3=rNMt#Pm0^
+zG+y$Xc#$4E`Aytc&ja~Q{I7$_IU&D^$LRSXzlk+RjnTw9rt+IuYfyd@Yt71UVm(IX
+zH?f`*<u|dOL*-|TTafyk3EiM(F6fbXe%};T4}Jf_#7C1iwUGa!g*_7MPK+gbU$CoX
+zEBr4UtZ&)A`nl#u;18|pqK?tuyD;%ZS)_#y;uDwJ5TCfzhT>B^>Vx7Fram-3X7Edh
+zuj9w54;??o@xhH7dScXv)*q+1TEF^CwboDknAT7H5+i=xh#xcb#I=6X6EpP34gJig
+z@iL#r8#CsI<J0^oK8@ATL-Sd3+^iQ`4lG)s<|SD6Ld(oma}q;_KGO0J_+P9Wl%RwB
+z<fC)Mr?FBS?T?XP^W)5iFHUWAd^JBhKKWw?KW@Z{8}Zps{l*PF%1?b#oEd|jYX0qS
+zE>`-t18=)vMdG_%54D^$_^D<q98S<de)7>d;*)-Aqx~`RYkr*h@WrW(j<59V_~efn
+z{J0S(Zp3Fl^&2<zC_nW{aY#$+^<e)@7XAGO{T&3(tNxQ*_s?h1IsG>im<u~U*^aI`
+zyB~b@HzH2I{!CdKpZ<QsO;2lkdwk8u814Sn&#c+~S`Wr*_iO!Wem&kaKjQ1p-`V5n
+z`LyZD{Qv9!?Ek;c%=iDB^Zm@iEwLX?>m1+pNT+xPXXYWZ2Qqu$e`^oWbLnjS&~JxQ
+z;8}7z*p4U#o*8$9JprY_6XFwKPezHSASm(Pbd&<meNTn$fl}ZpFFk)b4W+>I-P2&R
+zQA#}H&VlWR=h+gdAL{M#G`lU19H0((!rLB4f1oTp+3tX208l49?ajh55U4YrZ+F5m
+z2<Rj{`R$D344^J})_oF=!9b_r2~ZatLx8&BS@$V8h5~iR6X9++h5_}&bMNjra)El|
+z>2OaR!-4wX>344&BY^tiNpT+>BZ2y%><5*3utA0MQ072u2sQ+Ne`pQEhEW>;t@*I|
+zs11bH0@wo720?2fY$0lAKx+gxg4$qcErKmVZ3wg$!xp196k4OOQPhS(s|9PJmJ6*V
+zuqCJsht?Qu47Cx^8i$ReHWDgF!Hz;L0Ij2N<l(t<5YMCuk3pFSt>a+Fp%#MH39u7T
+z3qvbC6)#0CA6h5DPC~5!TBpEHL9Gy4%V5h;i$Lpi*y*ShLF-J|nWz;*>)EhpqZWnM
+zb79X#&4SiBuyar=f!4XOb5V;y>wMVxsKudjA?!lb=;``GJU<_c=iX!STzn!dJr$pb
+zXWo-xC*v9RL>!BNrlOpNXYR9LXW_Z}G#rb7&OtdF&(`O`&Vy$jo~JJo&twOhpZMUG
+z=u7=tqJFr;!keRyu6;pq+;E#=9ZJ~mhq*7}xM9-p;B_xY@2mZV>dVA`?RYqP`iZ|+
+ze#R8X3v*lIFsAsUKWS@CzW6m2$HaHN)Ykg&=J%AJF}3x=+?F_uDgL$N`&z4BdPT)C
+z@#aI>)~Ic7DL-Rs>xH>3aTrtl30Xzf*yg8H920+fl4ad6|FH5irnX*~+Y*N{#b39(
+z%sPL~ttyU*7kx9+dOP|f<!4N7y)d^W4r7Xc`tEXT_(zQ@j)}W>U1p6ReTnijrnX*~
+z+Y*N{#lPd-8mrsAT~r(s&-+f3wPJoR<!4N7y)d^W4r7X+_ei7l{3$()op?+1B5Q78
+zj`B06wqBUy5Qj0veE!Y`Yf|T}k2`UXzH6-8Zn{bN8B<#?%yEdrm|_<H;(Y6YUk462
+z@f%0#tu;%d%FmeEdSQ-39L5y$gh%FCUtIZJ701M{zE*B+{oz*SXH0FqFt;TRV~YQS
+z+)``d@cUI96aRh46svmMe&uIOZM`tJB@SbX|Jll*wg250R2&oku4CA`_8+e(KVxd^
+zg}E(p7*qU`6S`YhfBhR3$Hc2T^{_tt@K4ImnA&<_Zc7}-6#t&#pGC9QzpCPx_}RDr
+z5uLf^UFBy?ZM`tJB@SbX|FfM>Mu$&5tm1g#VcE^mF}sr*+%UytzaQrK#BsyTO{X+h
+zXRWdDZl_{DjQ8`UI9{0Iw0rmJ102T<Q(N}C;RE|Sr}X$?)<7ID%z8Ku_3Ol}f#WcT
+z{Wpy1l+xpeSp#vrFzews)Rz;R{kq}DzUq+D<A+%TalA0=;W(tniCF{3VGjGZ-Q6ao
+z#}Bgx;&@@!!*QrDCpP<a!#S`0^B~2c{p^QX197}C>)|-0$B9`3$6*fpUs?TrN{=6A
+z4aD)ntcT-JUrucH>xTRM<*k$+Kg=44<Aqrd$00pV%o;cjbJ%}GyqVJDhgk!0yfEwG
+zIMkODoBg`s!&{D|^!Q=cKpZd3dN>a0abniMahSvYO>aGy(&L9&197}C>)|-mmlK=)
+zy5XP9dNQTQ53>g1cwyGVaY&C7vj&dC9QLpK=)sg8Kg=44<Aqrd$DzKQ*zDI0ufFK^
+zlpa6K8i?bCSr5k{Jx<ITI1Y2zKjOMQDLsCeH4w)OvmTB^eL1n&uNz*~W=BeoA7%~2
+z@xrW!<B%RFW(^#NIqV-YZ)-}AA7%~2@xrW!<4|8tZ1(Gh2flr2N{=6A4aD)ntcT-}
+z9w%lE9EUmVf3WSclpa6K8i?bCSr5mdzMR<X*A2(so0HPxhgk!0yfEwGIHbpkSp&ym
+z4*TyuWm-y)A7%~2@xrW!<4|8tZ1(GhZ|z@{(&L9&197}C>)|-0$B9`3$6*fpZ`(Qc
+z0L7VJx~td^6Q4O=nBsKb_wr*L#|=|k_PgP?Z{KOL9zV<)h~tG>567W?otQOn9Okf}
+z$Ab5>9`M7&XO0&pJw5hKPsMS=)Rz5jcq?*1P#o&Z53>g1cwyGVaj0J>W(^#NIqb)y
+zfAQglXJe&bBtPp?^YHw{V*($8H9m`^IW6GeGX+9?OO9$o?dZ#+FB@m)AFqhrbmgiv
+z4e+<X4{qz{q$sB0_ljfl2d{s~s`>kdwD|BJgg-65;rEJT^N+e}c}sKInzZ=v$KX$k
+zZ}`39*!*u*e$X=c)QYtD@W<d!i*NY7;@JG#|1dPM>XukqeE8$=r^Pq?UU6*x_g|fr
+zm{@#bT73B9@TbK${9bWv{ueH}Ao1BR?xxQNp^w%t_~Y=?=Ulw}UU6*x1;=ejY`Ebe
+zd|t{P2mUzxcpsFf-z$#If5r9d5}jWjl%^B@IQ(hjGW=d~Z2s40oS%pV4yVP3KMsFd
+ze8cY*$L8-_QJR>3!s+nY=K=mW{0SewR~(!Fy<hiE^zAt*Ek68l_|xJWey=z-f8~iU
+zwCt**d!1cB{4w~`;v0UiI5z*|ExlW=X}>-#KKwEG)8ZR`uQ)dUmWQ7&x%%mg)8fP5
+z41ZdD!|xTx=I_zBB6iPix{u-g!q?R&_VjunZ7+e-0uK86)|_MM%f_KTuvXf~YsO{r
+zY|^GU4z7)p&|F99%JGZiILCe4;xNZi+BgY^9?f;-_{HIKj(D~>%;8dVZ5&5?*Lh}+
+zUmVA|%>0<M?6RNre3>ksGiPbz@LF)`7RPap<JscqcD&wPx^f&`8;ARHl&&1VIF56^
+znwhIh*S-=-uWKB~Iadz%!CYP1`eF{3ZXE67`Q_3UhdF+69OryBGgp_ceI+vU<2r{t
+zFI@V~p+4sthtF{wUE0=yIb6DNw2$`<m$o>}@r&a)=c}2yx^(R;k=Z}4bI9|;rQaOt
+zbFOjt9LLe6Z7rC?r5i{4c;9eoi^CkhIF56^nwhIh*S->&{o^`^JTF}O&7nT$8i&tu
+z99`Phf;n8eakP*34VSh!%<+rkIOnUGxw>@iE0Nhhu5-xq!lmCF>T|Af_#DU4rEM*k
+z!=)QX`*`1QX^X=gzc`L_zM7e<OV_><|A+gBVrGua9Ax%DW)J+w_dqBVQhjF1%skM~
+zq0BzW?1Ric$Xo}R`#|PCa4h$MrAwEp-ybsN|IR%8^n(@gk4BWozkmDKcm`+YA+rZE
+zdmyt1GJD|vmp!oifh#O|$D>x!JI`1doSBEr9?0y0%pS<>fy^Gr?19W4$n1g49?0y0
+ze`gOoc%)0ol4q(*_6=HClEImI__lk1-kM0+d^(7Bu*aipgLfRB1bY(RUDy_HS3DV(
+z-lo_Q?=?IHmU8W6p;cEL^kzkR&tZ4i?s#`0<>=`FOK(}E_Z;?y?TvRAQeK{3IOvUw
+z^q#}Mu#_{1GV)}@(%Tp5J%{~aDc=y~;>p1=0G8f!cm^!x5;`5s!LWnzj>3Lm4uhpE
+zLX?YVD2`m%fnbh=rOZK;izfgZz&i(rfEj|NoI#X}Cl5y$b~u=Yu#_i=a`8l9BY1~k
+z5X>knWeB2NJjFOH*nBYKu#_8!a`B9UrK~_jV2**M_ZCtvo-=Wbg)ISd0xZ3^kaF=%
+zgq?_Y1daxC5-h#9klq}47LLiV<G?I~rS}%nn*^u9PQzOROTnB8OYbeDw+ha{LAiUT
+zfO#$~y|<9wEjSyNa`#ZioVl>{-a>lY;CVPGcMs*wSqMw-Eu?o2E`p`pJ(NSI0=5EK
+zbLcIEi*Zoy9?GY)40ahZ=+GMpm%~!-9?Gq=0(J$m=`05Gd>oX!hw|*y!PX(O&QdVz
+zVe65>hjQ*T!Zsq;&iP<A;Gm2<lz-<!*b9+grxwiBu&a@Q=K?U-!mdRYo(3>4!m$o^
+zC72svHy|_5Dlj*~ZbTNIHDF!}dnt1DTm<GO9GAha2lEQpE0D40Vlc0Sy%L#xE&+2Z
+z>{evu*#zb_Du2(l$l*hIdnhB%HstN0oIKx0zMh@1JCVa@8~nSG(Ps~G@?4K&2lDo8
+zM<$*dar_YMTfx5t`FZx@`!?j}xeNJt?nT}n%E@yN^7K3m`!I6&+zbCcWc1mOoILm8
+zcu3{)X@+e^ww?!&rRP!P_&JFDJ&(aAR7Rdd$lF6Xd7eUUo}a@06ghkjAydyw$msKP
+z<m7o8$4^u)pI2aCLAIXfkfrBEWc2wZ^7p(9`)iev=QZT*p`1LgB6rUpVgHB>KCdBD
+z&%4Oz^B!{YypH27<n8$bGV#2L<IiCK1^joArRRNoe}LRPe@8x^kCC^Ba`JqHJUw5+
+zeu)e|AH)9*GWrPQ<oQG#C%-^mpMQ$>@>3jb<Y%I-{2IA@+97|BM3$Zo$jEalGV^4q
+zoIJ-PPtPgH+j9zX_;iB5J2Lw8Ku(?$aCB9<eEPulLAIWgkfo;^a{Qcz{5?Hk`ywMx
+zE;94<Q#pBZkh^CXGWHBZ2A}@$k3>eFfGmJ5K(?Mi$mx?0n=kXg4k3Hb2pN_^e1~PB
+zjL5MvDvM-Xj+4c*M2>+SBS*nER!)$XoG7QlPL*fMm>eyqz)q28fjtTQ@p7^(#rI@c
+zCa1}Ha;BUv&z1A#40*Pk3p-cNhHsu+C}+t<aw+Umd7eB+&XJX{m2xrI72q$BOJq5|
+zm&j#uxonavWR<LwE9LpJMmEAW%6j;k<b|?Yu9g?WUMw4At-L_4hg~l(0(&j^tK>Sl
+z2H)%C2DwpQEiaXq$nVN)<R*E!ybAUzxdpzf<yLu_yiVQ-d!xKkZkAWb8(?pc-v@ge
+z_}9wo<@fM?y}U`@EN_!L<#xGS-Y$2@UGi4gTjd`3Zj*P)AIQ7p{jm4TAIe+gUil-~
+zAIW>bz8CyE<bCpPeBUP@kPpg(@?rU3a-VFL56MU60oVg_KYRyeLOvp&kk7(CD<79X
+zmXFD2V4smsfqe-47WuS%65mhD=j65?m!<L-?H{$Nd3Nb8l|RRcR~OtD-E!p3$H{Nv
+zFTVa|bmHfu4v^o(ls9I}kp;?c;@zPfi}@yAbW;KN$@nJzd*_&S%?tn7L-9?lImP5R
+zv5pxfzlpU5<u|d`to$a{V^r}O_kV3o^Fuqws`(-On=uX1r<M#oK)870zUTwjZBv-y
+zKegl@g)janV6p#>e$(Jj@*livu65BT(Y@4G`=f+4Utt|bVI5y#-EZ`vU3JZemkd>U
+z2p@ml+-PWH;Q_*%K6)^E!=G<anBs&s?o)VfQP^Vt&4<s1KgnO-bFr1EI%_Yr)qWLU
+z^A*-{6xQ(-*8N5&7iN{TXgyB+#nz-Y@|$>#)=7R7Q*Ip6OnwueqxF;D#MkSwkl(~h
+z^ti}xV$D&SO{`-ozlpU5<u|d`to$a{V^n^|ZL^M7W5MSpHsZeoO7(T}zAlNo*UnJ&
+zSJzyasBM2K{)S$Nv-WpM<V+|?)UH3$vi7126L0=yam!tww`n0i`RE+^$w%iX4z;6L
+z6o)Xy()^ggj}c$Tj~nr06ie%gQ+urkf1jPwL;RT5L;RQ#Kd$vq{FtF9Zs=h?>1RIa
+zSAIQSj!)x_J#cV;%Q;Whs_}gB`2LnVo|&4+N&K~ia6gn(Ck|;Op7zJculaG}>o{s$
+zhCgQT<3^mg_EUU?b-%IK2k&W~R7mgt5Ta$^p5`6x=O=z2`KE<1l~gAVohP35$H=ew
+zapLJXaU%}-V+KEN#EEM^#aCGOtJa41Q}M4h#1BQfs=g^MziVX%{P*<z`rxN8eUB31
+z;kP1@pmXFWADttA@@r#);t=Lo;KvQV#eDeU6idgqI6m~K_F50#X_5TW{J6oV+<Byj
+z;wwL5P<-W2w%Qms^r%=`Kl4ey;*&;-WsDd8q!x;`WBYcRuXv`+%)|eUeX#2C1F>g!
+zd}*~z9bS^bnR&?Uf&a`Npj;-DgXG`MWkNYidf~|(<+qkVJyCCuCuwbQP(IlXc#75@
+zM{l4kJVon(<20a7c#4*VqmRm2(igTbYV<5G8#Ws?%30D6wjXNrEH4L^a-vYqlK!xi
+z6NR4T4S=PbD3r5g0FGXG-qsV(-w0DqlwRoj3|PvE(i?pbhNYY+r=jm5u#^*}5BeSo
+zOF2<aN8iI>DJM!_^qmV!IZ?9F_i$Lsi9(r9M!-@|6v}Zj5|(nJP>z!TEagO@947%B
+zgYX=0AfDq9re}YY<AgGuP>yiQaZ(6N&;D9-oD@O@<un<hp8ZjdlM>V^FF55miNn&f
+zKgw}38g?{ll;dO!EIs?994F&oDQ5}gIGF%T&;BUK$prNzu@sgvd{b6$%2^VDrA*$X
+f>bYSlo*Tx1=~-bZjx%BD`CuuI@v!tvuvGjHz*PE@
+
+literal 0
+HcmV?d00001
+
 diff --git a/packages/content/bench/embodied-v1/interaction-ecg-cart-from-corridor.json b/packages/content/bench/embodied-v1/interaction-ecg-cart-from-corridor.json
 index 1262aa8..ec31ffe 100644
 --- a/packages/content/bench/embodied-v1/interaction-ecg-cart-from-corridor.json
@@ -9617,11 +10140,100 @@ index 29d9dc5..684c4ad 100644
        "requires": [
          "medications",
          "iv-access"
+diff --git a/packages/content/catalogs/core-clinical.json b/packages/content/catalogs/core-clinical.json
+index 08d71c6..9ef8ec7 100644
+--- a/packages/content/catalogs/core-clinical.json
++++ b/packages/content/catalogs/core-clinical.json
+@@ -2022,6 +2022,75 @@
+         {"m":"navy","p":[0,0.051,0.9],"s":[1.2,0.002,0.04]}
+       ],
+       "model": {"uri":"models/exercise-mat.glb","sha256":"e6b5b2fcdf9c74b818ca2cd0a219444cf8ea185e34f1b11bd155bf4429800564","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
++    },
++    {
++      "id": "specimen-tube",
++      "name": {"zh-CN":"血标本管","en":"Blood specimen tube"},
++      "category": "laboratory",
++      "description": {
++        "zh-CN": "红帽真空采血管（血清管，ISO 6710 颜色编码）。在床旁采血，并当着患者的面贴上患者信息标签；送往检验科途中的每一次交接都要签收。",
++        "en": "An evacuated blood collection tube with a red cap (serum, the ISO 6710 colour code). It is filled at the bedside and labelled there with the patient's details, in front of them; every hand-over on its way to the laboratory is signed for."
++      },
++      "usage": {
++        "zh-CN": "先洗手，把标本管拿到患者身边采血并当场贴好标签（医生、护士或急救员）；再凭交接记录递交——交给送检的同事，或直接交给检验科——由接收人确认签收。",
++        "en": "Clean your hands, take the tube to the patient, fill it and label it there (a doctor, a nurse or a paramedic); then hand it over against a receipt — to the colleague taking it to the laboratory, or to the laboratory itself — and the receiver confirms it."
++      },
++      "capabilities": [],
++      "footprint": {"w":0.14,"d":0.04,"h":0.04},
++      "solid": false,
++      "interaction": {
++        "kind": "device",
++        "prompt": {"zh-CN":"E · 血标本管","en":"E · Blood specimen tube"}
++      },
++      "screen": "none",
++      "tags": ["bedside","laboratory","specimen","ed","ward"],
++      "portable": "handheld",
++      "custody": true,
++      "behavior": {
++        "initial": "empty",
++        "states": {
++          "empty": {"name": {"zh-CN":"空管，未贴标签","en":"Empty, unlabelled"}},
++          "collected": {"name": {"zh-CN":"已采血、已贴标签","en":"Filled and labelled"}, "look": {"layers": ["label","sample"]}}
++        },
++        "operations": {
++          "collect": {"name": {"zh-CN":"床旁采血并贴标签","en":"Take the sample and label it at the bedside"}, "from": ["empty"], "to": "collected", "requires": [{"state": "held"}, {"handsClean": true}, {"patientWithin": 1.5}], "roles": ["clinician","attending","nurse","paramedic"], "durationSeconds": 180}
++        }
++      },
++      "parts": [
++        {"m":"plastic","p":[-0.012,0.0082,0],"s":[0.1,0.013,0.013]},
++        {"m":"ambulance-red","p":[0.0505,0.0082,0],"s":[0.023,0.0164,0.0164]}
++      ],
++      "model": {"uri":"models/specimen-tube.glb","sha256":"b05b5804effc4e0429eff86a2b5329de5c875d5f772244e599e620740969566c","scale":1,"offset":[-0.0021,-0.0007,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
++    },
++    {
++      "id": "medication-box",
++      "name": {"zh-CN":"药盒","en":"Medication box"},
++      "category": "therapy",
++      "description": {
++        "zh-CN": "药房为一位患者发出的一盒药，盒盖上贴着药房标签（患者、药名、剂量）。每一次交接都要签收。",
++        "en": "A box of medicine dispensed by the pharmacy for one patient, the pharmacy label (patient, drug, dose) on its lid. Every hand-over is signed for."
++      },
++      "usage": {
++        "zh-CN": "凭交接记录递交：接收人核对药房标签后确认签收。",
++        "en": "Hand it over against a receipt: the receiver checks the pharmacy label and confirms it."
++      },
++      "capabilities": [],
++      "footprint": {"w":0.14,"d":0.08,"h":0.05},
++      "solid": false,
++      "interaction": {
++        "kind": "device",
++        "prompt": {"zh-CN":"E · 药盒","en":"E · Medication box"}
++      },
++      "screen": "none",
++      "tags": ["medication","pharmacy","ed","ward"],
++      "portable": "handheld",
++      "custody": true,
++      "parts": [
++        {"m":"white","p":[0,0.0225,0],"s":[0.12,0.045,0.07]},
++        {"m":"blue","p":[0.038,0.0226,0],"s":[0.022,0.0452,0.0702]},
++        {"m":"paper","p":[-0.015,0.0454,0],"s":[0.06,0.001,0.046]}
++      ],
++      "model": {"uri":"models/medication-box.glb","sha256":"0b6420f1d4f314e181d3724c34e35e29d4b66231ad66ba6b1db5f0822e22d8af","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+     }
+   ]
+ }
 diff --git a/packages/content/facilities/general-hospital.json b/packages/content/facilities/general-hospital.json
-index 0b66090..6216897 100644
+index 0b66090..78f98f6 100644
 --- a/packages/content/facilities/general-hospital.json
 +++ b/packages/content/facilities/general-hospital.json
-@@ -2122,6 +2122,7 @@
+@@ -1860,6 +1860,8 @@
+     {"id": "ed-case-board", "type": "evidence-board", "x": 16.525, "z": -16, "rot": 90, "room": "ed-station", "label": {"zh-CN": "急诊病例讨论板", "en": "ED Case Board"}},
+     {"id": "ed-tube-station", "type": "pneumatic-tube-station", "x": 16.425, "z": -9.6, "rot": 90, "room": "ed-station", "label": {"zh-CN": "气动物流站 · 送检验科", "en": "Pneumatic Tube · to Lab"}},
+     {"id": "ed-station-sink", "type": "sink", "x": 16.5, "z": -6, "rot": 90, "room": "ed-station"},
++    {"id": "ed-specimen-tube", "type": "specimen-tube", "x": 20.2, "z": -7.9, "y": 0.76, "rot": 0, "room": "ed-station"},
++    {"id": "ed-medication-box", "type": "medication-box", "x": 21.8, "z": -7.9, "y": 0.76, "rot": 0, "room": "ed-station"},
+     {"id": "resus1-bed", "type": "hospital-bed", "x": 31, "z": -17.325, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救床 1", "en": "Resus Bed 1"}},
+     {"id": "resus1-monitor", "type": "patient-monitor", "x": 29.65, "z": -19.475, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救监护仪 1", "en": "Resus Monitor 1"}},
+     {"id": "resus1-oxygen", "type": "oxygen-outlet", "x": 31.25, "z": -19.7, "rot": 0, "room": "ed-resus"},
+@@ -2122,6 +2124,7 @@
      {
        "id": "ed-nurse",
        "role": "nurse",
@@ -10101,6 +10713,20 @@ index 6f4ee13..80b487e 100644
                        }
                      },
                      "additionalProperties": false
+diff --git a/packages/content/schemas/equipment-catalog.schema.json b/packages/content/schemas/equipment-catalog.schema.json
+index 49fe0e4..4d909f4 100644
+--- a/packages/content/schemas/equipment-catalog.schema.json
++++ b/packages/content/schemas/equipment-catalog.schema.json
+@@ -329,6 +329,9 @@
+             "handheld"
+           ]
+         },
++        "custody": {
++          "type": "boolean"
++        },
+         "reach": {
+           "type": "number",
+           "exclusiveMinimum": 0,
 diff --git a/packages/content/schemas/operative-scenario.schema.json b/packages/content/schemas/operative-scenario.schema.json
 index 2e17f68..c98f695 100644
 --- a/packages/content/schemas/operative-scenario.schema.json
@@ -12172,6 +12798,53 @@ index f398f2a..356090d 100644
  
 -export type { DoseMention };
 +export type { DoseMention, OrderReading };
+diff --git a/packages/core/src/engine/facility.test.ts b/packages/core/src/engine/facility.test.ts
+index 8c9b130..e46f0d2 100644
+--- a/packages/core/src/engine/facility.test.ts
++++ b/packages/core/src/engine/facility.test.ts
+@@ -511,6 +511,13 @@ describe("checkCatalogs: embodiment fields", () => {
+     expect(held.issues.map((i) => i.message)).toEqual(expect.arrayContaining([expect.stringMatching(/a body is not carried in a hand/)]));
+   });
+ 
++  it("keeps only handheld items in custody (a receipt at every hand-over, audit 2026-11-12 P2-12)", () => {
++    const fixed = withType({ custody: true });
++    expect(fixed.issues.map((i) => [i.path.slice(fixed.prefix.length + 1), i.severity, i.message])).toEqual([["custody", "warning", expect.stringMatching(/not handheld/)]]);
++    const carried = withType({ custody: true, portable: "handheld", solid: false, footprint: { w: 0.14, d: 0.04, h: 0.04 } });
++    expect(carried.issues.filter((i) => i.path.endsWith(".custody") || i.path.endsWith(".portable"))).toEqual([]);
++  });
++
+   it("the built-in catalogs' behaviours and portable flags are consistent", () => {
+     const content = new URL("../../../content/", import.meta.url);
+     const read = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, content), "utf8"));
+@@ -531,7 +538,14 @@ describe("checkCatalogs: embodiment fields", () => {
+     expect(monitor.behavior!.operations.attach.clinical).toEqual({ tool: "intervene", select: "monitoring" });
+     expect(Object.keys(monitor.behavior!.operations)).toEqual(["attach", "read", "cycle_nibp"]);
+     for (const id of ["defibrillator", "crash-cart", "pocus-cart", "ultrasound-machine", "glucometer-station", "oxygen-cylinder"]) expect(equipment.get(id)?.portable).toBe("cart");
+-    // nothing wall-mounted or fixed became portable
+-    for (const e of equipment.values()) if (e.portable) expect(e.solid && !e.tags.includes("wall")).toBe(true);
++    // nothing wall-mounted or fixed became a cart
++    for (const e of equipment.values()) if (e.portable === "cart") expect(e.solid && !e.tags.includes("wall")).toBe(true);
++    // the handheld items are carried by hand and kept in custody (audit 2026-11-12 P2-12): no collider, a receipt at each hand-over
++    const handheld = [...equipment.values()].filter((e) => e.portable === "handheld");
++    expect(handheld.map((e) => [e.id, e.solid, e.custody])).toEqual([
++      ["specimen-tube", false, true],
++      ["medication-box", false, true],
++    ]);
++    expect(equipment.get("specimen-tube")!.behavior!.operations.collect).toMatchObject({ from: ["empty"], to: "collected", requires: [{ state: "held" }, { handsClean: true }, { patientWithin: 1.5 }] });
+   });
+ });
+diff --git a/packages/core/src/engine/facility.ts b/packages/core/src/engine/facility.ts
+index 4d1abb2..cb9a104 100644
+--- a/packages/core/src/engine/facility.ts
++++ b/packages/core/src/engine/facility.ts
+@@ -867,6 +867,7 @@ function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
+   });
+   if (e.portable === "cart" && (!e.solid || e.tags.includes("wall"))) issues.push(warn(`${path}.portable`, `"${e.id}" is a portable cart but wall-mounted (${!e.solid ? "solid: false" : 'tag "wall"'})`));
+   if (e.portable === "handheld" && (w > 1 || d > 1 || e.footprint.h > 1.5)) issues.push(warn(`${path}.portable`, `"${e.id}" is too large (${w}×${d}×${e.footprint.h}) to be handheld`));
++  if (e.custody && e.portable !== "handheld") issues.push(warn(`${path}.custody`, `"${e.id}" is kept in custody but not handheld: only an item carried by hand is handed over against a receipt`));
+   if (e.model && !/\.(glb|gltf)(\.gz)?([?#].*)?$/i.test(e.model.uri)) issues.push(warn(`${path}.model.uri`, `model "${e.model.uri}" is not a .glb/.gltf file`));
+   if (e.manikin) {
+     // a body drawn with the equipment belongs on it: inside the footprint, no higher than the equipment is
 diff --git a/packages/core/src/engine/high-alert.ts b/packages/core/src/engine/high-alert.ts
 new file mode 100644
 index 0000000..b91166f
@@ -12736,6 +13409,23 @@ index dd779f1..334ed2d 100644
    .refine((d) => d.amount != null || d.route != null, "a dose states an amount, a route or both");
  export type OrderedDose = z.infer<typeof OrderedDoseSchema>;
  
+diff --git a/packages/core/src/schema/facility.ts b/packages/core/src/schema/facility.ts
+index 46147a3..359cadc 100644
+--- a/packages/core/src/schema/facility.ts
++++ b/packages/core/src/schema/facility.ts
+@@ -463,6 +463,12 @@ export const EquipmentTypeSchema = z
+     tags: z.array(z.string()).default([]),
+     /** Can be moved: `cart` (wheeled to another spot) or `handheld` (carried by an actor). Absent: fixed. */
+     portable: z.enum(["cart", "handheld"]).optional(),
++    /**
++     * A handheld item kept in custody (a labelled specimen, a medication box; docs/EMBODIED.md §8.1, audit 2026-11-12
++     * P2-12): each hand-over records a receipt — who handed it to whom, where and at which simulated minute — and the
++     * receiver confirms it with their own act (`confirm_receipt`). Handheld items only.
++     */
++    custody: z.boolean().optional(),
+     /** Interaction reach in metres from the footprint (default per interaction kind, @clinicalcraft/world `DEFAULT_REACH`). */
+     reach: z.number().positive().max(10).optional(),
+     /** Where an actor stands to use it: local offsets from the footprint centre (rotated with the placement). Absent: any free spot within reach. */
 diff --git a/packages/core/src/schema/session.ts b/packages/core/src/schema/session.ts
 index caa6b77..b8d92c6 100644
 --- a/packages/core/src/schema/session.ts
@@ -13054,6 +13744,129 @@ index 15fe8a4..9a47fad 100644
  
      // and back to her bed space: the bed goes home with her on it
      const back = await page.evaluate((patient) => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: patient, parameters: { destination: "home" } }), PATIENT);
+diff --git a/packages/web/e2e/zz-scratch-p2.spec.ts b/packages/web/e2e/zz-scratch-p2.spec.ts
+new file mode 100644
+index 0000000..d8a0588
+--- /dev/null
++++ b/packages/web/e2e/zz-scratch-p2.spec.ts
+@@ -0,0 +1,117 @@
++/** Scratch reproduction of audit 2026-11-12 P2-13 / P2-15 (deleted once the real specs exist). */
++import { expect, test, type Page } from "@playwright/test";
++import { embodiedSetup, enterCase, freshStart, placeAvatar, toPatientSide } from "./helpers.js";
++
++const labels = (page: Page) =>
++  page.evaluate(() => {
++    const qa = (window as any).__QA__;
++    const pose = qa.worldSnapshot()?.actors.find((a: any) => a.id === "actor:clinician")?.pose ?? null;
++    const p = qa.world.position;
++    return {
++      region: document.querySelector("#region")?.textContent ?? null,
++      badge: document.querySelector("#embodiment-badge")?.textContent ?? null,
++      world: pose ? { x: +pose.x.toFixed(3), z: +pose.z.toFixed(3) } : null,
++      avatar: { x: +p.x.toFixed(3), z: +p.z.toFixed(3) },
++      playing: qa.playing,
++    };
++  });
++
++test.describe("scratch (en)", () => {
++  test.use({ locale: "en-US" });
++
++  test("P2-15 PE transport labels", async ({ page }) => {
++    await freshStart(page);
++    await enterCase(page, "pulmonary-embolism-postop");
++    await embodiedSetup(page, { bypassApprovals: true });
++    await toPatientSide(page);
++    console.log("at bedside", JSON.stringify(await labels(page)));
++    const r = await page.evaluate(() => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: "patient:ward-1", parameters: { destination: "eq:ct-scanner" } }));
++    console.log("transport", r?.status, r?.message);
++    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
++    await page.waitForTimeout(800);
++    console.log("after transport", JSON.stringify(await labels(page)));
++    const at = await page.evaluate(() => (window as any).__QA__.worldModel.patientPlace());
++    await placeAvatar(page, at.x + 2.6, at.z + 3.2, { x: at.x, z: at.z });
++    await page.waitForTimeout(800);
++    console.log("after reposition", JSON.stringify(await labels(page)));
++    await page.evaluate(() => (window as any).__QA__.app.hud.update());
++    await page.waitForTimeout(300);
++    console.log("after hud update", JSON.stringify(await labels(page)));
++  });
++
++  test("P2-15 PE transport labels with a window open", async ({ page }) => {
++    await freshStart(page);
++    await enterCase(page, "pulmonary-embolism-postop");
++    await embodiedSetup(page, { bypassApprovals: true });
++    await toPatientSide(page);
++    await page.waitForTimeout(500);
++    console.log("W at bedside", JSON.stringify(await labels(page)));
++    await page.evaluate(() => (window as any).__QA__.route("journal"));
++    await page.waitForTimeout(300);
++    console.log("W panel", await page.evaluate(() => (window as any).__QA__.panel), "paused", await page.evaluate(() => (window as any).__QA__.world.debug.paused));
++    const r = await page.evaluate(() => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: "patient:ward-1", parameters: { destination: "eq:ct-scanner" } }));
++    console.log("W transport", r?.status);
++    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
++    await page.waitForTimeout(800);
++    console.log("W after transport", JSON.stringify(await labels(page)));
++    const at = await page.evaluate(() => (window as any).__QA__.worldModel.patientPlace());
++    await placeAvatar(page, at.x + 2.6, at.z + 3.2, { x: at.x, z: at.z });
++    await page.waitForTimeout(800);
++    console.log("W after reposition", JSON.stringify(await labels(page)));
++    await page.evaluate(() => (window as any).__QA__.app.hud.update());
++    await page.waitForTimeout(300);
++    console.log("W after hud update", JSON.stringify(await labels(page)));
++    await page.evaluate(() => (window as any).__QA__.closePanel());
++    await page.waitForTimeout(800);
++    console.log("W after close", JSON.stringify(await labels(page)), JSON.stringify(await page.evaluate(() => { const d = (window as any).__QA__.world.debug; return { paused: d.paused, started: d.started, panel: (window as any).__QA__.panel, hidden: document.hidden }; })));
++    await page.evaluate(() => { (window as any).__moves = []; const app = (window as any).__QA__.app; const orig = app.hud.onMove.bind(app.hud); app.hud.onMove = (i: any) => { (window as any).__moves.push(i.region + "@" + i.x.toFixed(3)); return orig(i); }; });
++    await page.waitForTimeout(600);
++    console.log("W moves", JSON.stringify(await page.evaluate(() => (window as any).__moves.slice(-3))));
++    // the boundary: 5 mm either side of x = 26 with the same facing
++    for (const x of [25.998, 26.003, 25.997, 26.004]) {
++      await page.evaluate((x) => { const qa = (window as any).__QA__; qa.world.debug.teleport(x, -36, 0, 1.5707963, 0); }, x);
++      await page.waitForTimeout(500);
++      console.log("B", x, JSON.stringify(await labels(page)));
++    }
++  });
++
++  test("P2-13 STEMI ECG cart from resus 2", async ({ page }) => {
++    test.setTimeout(600_000);
++    await freshStart(page);
++    await enterCase(page, "stemi-inferior-rv");
++    await embodiedSetup(page, { bypassApprovals: true });
++    const screenOf = (id: string) =>
++      page.evaluate((id) => {
++        const qa = (window as any).__QA__;
++        const sc = qa.world.debug.screens.find((s: any) => s.placementId === id);
++        const shown = sc.slotId ? qa.app.vitalsFor(sc.slotId) : null;
++        const engine = qa.store.snapshot.vitals;
++        return { bound: sc.slotId, at: { x: +sc.x.toFixed(2), z: +sc.z.toFixed(2) }, showsPatient: !!shown, engineHr: engine?.vitals?.hr ?? null, state: qa.worldSnapshot().entities[`eq:${id}`]?.state ?? null };
++      }, id);
++    console.log("before resus2-ecg", JSON.stringify(await screenOf("resus2-ecg")), "resus1-ecg", JSON.stringify(await screenOf("resus1-ecg")));
++    // stand at resus2-ecg and wheel it to the patient
++    const cart = await page.evaluate(() => (window as any).__QA__.worldModel.plan("actor:clinician", { kind: "interact", id: "eq:resus2-ecg" }).target);
++    await placeAvatar(page, cart.x, cart.z);
++    const moved = await page.evaluate(() => (window as any).__QA__.worldAction({ operation: "move_to", targetId: "eq:resus2-ecg", goal: { kind: "interact", id: "patient:resus-1" } }));
++    console.log("move_to", moved?.status, moved?.message);
++    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
++    for (const op of ["prepare", "connect"]) {
++      const r = await page.evaluate((op) => (window as any).__QA__.worldAction({ operation: op, targetId: "eq:resus2-ecg" }), op);
++      console.log(op, r?.status, r?.message);
++    }
++    await page.waitForTimeout(600);
++    console.log("connected at patient: resus2-ecg", JSON.stringify(await screenOf("resus2-ecg")), "bedside", await page.evaluate(() => (window as any).__QA__.worldModel.atBedside("eq:resus2-ecg")));
++    // the cart that stood at the patient's bed, wheeled away to the other bed
++    const c1 = await page.evaluate(() => (window as any).__QA__.worldModel.plan("actor:clinician", { kind: "interact", id: "eq:resus1-ecg" }).target);
++    await placeAvatar(page, c1.x, c1.z);
++    for (const op of ["prepare", "connect"]) {
++      const r = await page.evaluate((op) => (window as any).__QA__.worldAction({ operation: op, targetId: "eq:resus1-ecg" }), op);
++      console.log("resus1-ecg", op, r?.status, r?.message);
++    }
++    const away = await page.evaluate(() => (window as any).__QA__.worldAction({ operation: "move_to", targetId: "eq:resus1-ecg", goal: { kind: "interact", id: "eq:resus2-monitor" } }));
++    console.log("move away", away?.status, away?.message);
++    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
++    await page.waitForTimeout(600);
++    console.log("moved away: resus1-ecg", JSON.stringify(await screenOf("resus1-ecg")), "bedside", await page.evaluate(() => (window as any).__QA__.worldModel.atBedside("eq:resus1-ecg")));
++  });
++});
 diff --git a/packages/web/src/i18n/en.ts b/packages/web/src/i18n/en.ts
 index a419950..785441a 100644
 --- a/packages/web/src/i18n/en.ts
@@ -13697,10 +14510,10 @@ index 08c890a..5d36113 100644
      expect(await w.act({ actorId: N, operation: "move_to", targetId: "ed-glucometer", goal: { kind: "room", id: "ed-station" } })).toMatchObject({ errorCode: "NOT_IN_RANGE", hint: { goal: { kind: "interact", id: "eq:ed-glucometer" } } });
    });
 diff --git a/packages/world/src/actions.ts b/packages/world/src/actions.ts
-index 305a712..884c173 100644
+index 305a712..8036d3a 100644
 --- a/packages/world/src/actions.ts
 +++ b/packages/world/src/actions.ts
-@@ -36,14 +36,31 @@
+@@ -36,17 +36,34 @@
   * Interrupted movement (cancel, abort, a mover that stops short) is
   * `cancelled` with `MOVEMENT_INTERRUPTED`; the partial pose is kept.
   *
@@ -13733,7 +14546,11 @@ index 305a712..884c173 100644
 +import { followSensor, followWalkEnd, followWalkStart } from "./journey.js";
  import type { PatientBody } from "./patient.js";
  import { repositionPatient } from "./posture.js";
- import { handOver } from "./hand.js";
+-import { handOver } from "./hand.js";
++import { confirmReceipt, handOver } from "./hand.js";
+ import { refreshPatient, relocatePatient, transportPatient, type TransportHost } from "./transport.js";
+ import type {
+   ActionHint,
 @@ -63,9 +80,11 @@ import type {
    NavGoal,
    NavPlan,
@@ -13892,7 +14709,7 @@ index 305a712..884c173 100644
    }
  
    /** The clinical posture may have changed the patient's body: re-stamp the grids (see `transport.ts`). */
-@@ -510,9 +635,13 @@ export class ActionBus implements EffectsHost, TransportHost {
+@@ -510,14 +635,19 @@ export class ActionBus implements EffectsHost, TransportHost {
      if (spatial) {
        // the goal that fixes it, when a route leads there; otherwise say why not
        if (!spatial.goal) return failed(spatial.code, spatial.message, { hint: null });
@@ -13909,7 +14726,13 @@ index 305a712..884c173 100644
      }
      if (o.effect === "transport") return transportPatient(this, request, actor, targetId, signal);
      if (o.effect === "escort" || o.effect === "release") return escortPatient(this, request, actor, targetId, o.effect === "escort");
-@@ -527,19 +656,57 @@ export class ActionBus implements EffectsHost, TransportHost {
+     if (o.effect === "reposition") return repositionPatient(this, request, actor, targetId);
+     if (o.effect === "hand-over") return handOver(this, request, actor, targetId, (x) => this.resolve(x));
++    if (o.effect === "confirm-receipt") return confirmReceipt(this, request, actor, targetId);
+     return runOperation(this, request, actor, targetId, o, signal);
+   }
+ 
+@@ -527,19 +657,57 @@ export class ActionBus implements EffectsHost, TransportHost {
      const goalIds = (g: NavGoal): string[] => (g.kind === "any" ? g.goals.flatMap(goalIds) : "id" in g ? [g.id] : []);
      const hidden = goalIds(goal).find((id) => { const r = this.resolve(id); return !!r && isConcealed(this, r); });
      if (hidden) return failed("TARGET_NOT_FOUND", navMessage("TARGET_NOT_FOUND", L, { target: hidden }));
@@ -13971,7 +14794,7 @@ index 305a712..884c173 100644
    /**
     * Move a body along a plan with the mover, commit the reported pose,
     * record what is visible there, charge the travel once.
-@@ -552,6 +719,9 @@ export class ActionBus implements EffectsHost, TransportHost {
+@@ -552,6 +720,9 @@ export class ActionBus implements EffectsHost, TransportHost {
      const task = { id: request.actionId, kind: request.operation, label, startedAt: this.d.now() };
      store.setTask(actor.id, task);
      this.emit({ type: "task.changed", actorId: actor.id, task });
@@ -13981,7 +14804,7 @@ index 305a712..884c173 100644
      let moved: { arrived: boolean; pose: Pose; replans: number };
      try {
        moved = await mover.move(actor.id, plan, signal);
-@@ -571,6 +741,9 @@ export class ActionBus implements EffectsHost, TransportHost {
+@@ -571,6 +742,9 @@ export class ActionBus implements EffectsHost, TransportHost {
      }
      const discovered = perception.notice(store.actor(actor.id)!);
      if (discovered.length) events.push(this.emit({ type: "actor.discovered", actorId: actor.id, entities: discovered }));
@@ -13991,14 +14814,87 @@ index 305a712..884c173 100644
      store.setTask(actor.id, null);
      this.emit({ type: "task.changed", actorId: actor.id, task: null });
      if (travelSeconds > 0) port?.elapse(travelSeconds, "travel");
-@@ -608,6 +781,7 @@ export class ActionBus implements EffectsHost, TransportHost {
+@@ -608,6 +782,8 @@ export class ActionBus implements EffectsHost, TransportHost {
      if (o.clinicalEventIds) result.clinicalEventIds = o.clinicalEventIds;
      if (o.hint !== undefined) result.hint = o.hint;
      if (o.moved) result.moved = o.moved;
 +    if (o.belief) result.belief = o.belief;
++    if (o.receipt) result.receipt = o.receipt;
      if (actionId && record) {
        const done = this.emit({ type: "action.completed", actionId, actorId: typeof request.actorId === "string" ? request.actorId : "", operation: typeof request.operation === "string" ? request.operation : "", status: o.status, ...(o.errorCode ? { errorCode: o.errorCode } : {}) });
        result.events.push(done);
+diff --git a/packages/world/src/behaviors.test.ts b/packages/world/src/behaviors.test.ts
+index beb048b..1d9e5a1 100644
+--- a/packages/world/src/behaviors.test.ts
++++ b/packages/world/src/behaviors.test.ts
+@@ -32,7 +32,8 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
+     expect(doors.length).toBeGreaterThan(5);
+     for (const d of doors) expect(ops(w, d.id)).toEqual(["open", "close", "lock", "unlock"]); // a door never offers order
+     for (const e of w.runtime.entities().filter((x) => x.kind === "equipment")) {
+-      expect(ops(w, e.id).includes("pick_up"), e.id).toBe(false); // no handheld items in the built-in catalogs
++      // the built-in handheld items (the ED desk's specimen tube and medication box, audit P2-12) — nothing else
++      expect(ops(w, e.id).includes("pick_up"), e.id).toBe(e.portable === "handheld");
+       expect(ops(w, e.id).includes("move_to"), e.id).toBe(e.portable === "cart");
+     }
+     const cabinet = w.runtime.entities().find((e) => e.type === "cabinet")!;
+diff --git a/packages/world/src/behaviors.ts b/packages/world/src/behaviors.ts
+index 0b10e13..fa79ddb 100644
+--- a/packages/world/src/behaviors.ts
++++ b/packages/world/src/behaviors.ts
+@@ -17,7 +17,9 @@
+  *
+  * Portable equipment adds, whatever its behaviour: carts `move_to` (wheel it
+  * to a goal; the actor walks, the cart is parked next to them), handheld
+- * items `pick_up` / `put_down` / `equip` (at most `MAX_HELD` in hand).
++ * items `pick_up` / `put_down` / `equip` (at most `MAX_HELD` in hand) /
++ * `hand_over`, and an item kept in custody (`custody`) `confirm_receipt` —
++ * its receiver confirms the receipt of a hand-over (`hand.ts`).
+  *
+  * Built-in effects attach by operation name to catalog behaviours too: a
+  * monitor's `read` shows the screen. Predicates: `actorWithin` /
+@@ -39,7 +41,7 @@ import type { Area } from "./raster.js";
+ import type { WorldStateStore } from "./state.js";
+ 
+ /** Built-in effects of operations (beyond a declarative state transition). */
+-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "hand-over" | "transport" | "escort" | "release" | "reposition";
++export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "hand-over" | "confirm-receipt" | "transport" | "escort" | "release" | "reposition";
+ 
+ /** One operation an entity offers (built-in or from the catalog). */
+ export interface OperationSpec {
+@@ -222,6 +224,8 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
+   } else spec = BUILTIN_BEHAVIORS[e.interaction] ?? NO_BEHAVIOR;
+   if (type.portable === "cart") spec = { ...spec, operations: [...spec.operations, op("move_to", { effect: "move-to" })] };
+   if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" }), op("hand_over", { effect: "hand-over" })] };
++  // an item kept in custody changes hands against a receipt its receiver confirms (audit 2026-11-12 P2-12)
++  if (type.portable === "handheld" && type.custody) spec = { ...spec, operations: [...spec.operations, op("confirm_receipt", { effect: "confirm-receipt" })] };
+   cache.set(type, spec);
+   return spec;
+ }
+@@ -610,6 +614,13 @@ export class DeviceRules {
+       case "hand-over":
+         if (s?.heldBy !== actor.id) return { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
+         return s.data?.equipped ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.handOverWorn", L, { target }) } : null;
++      case "confirm-receipt": {
++        // the receiver confirms, with the item in hand; nobody confirms a receipt for someone else
++        if (s?.heldBy !== actor.id) return { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
++        const last = s.receipts?.at(-1);
++        if (!last || last.to !== actor.id) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.noReceipt", L, { target }) };
++        return last.confirmedAt !== null ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.receiptConfirmed", L, { target, at: last.confirmedAt }) } : null;
++      }
+       case "put-down":
+         return s?.heldBy === actor.id ? null : { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
+       case "equip":
+@@ -726,8 +737,8 @@ export class DeviceRules {
+    * reach; `put_down` / `equip` need nothing. Null when satisfied.
+    */
+   spatial(id: EntityId, o: OperationSpec, actor: ActorState): RuleFailure | null {
+-    // the item travels with its holder; a hand-over measures the recipient (`hand.ts`)
+-    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over") return null;
++    // the item travels with its holder; a hand-over measures the recipient (`hand.ts`); a receipt is confirmed in hand
++    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over" || o.effect === "confirm-receipt") return null;
+     const loc = this.d.locator;
+     const place = loc.place(id);
+     if (!place) return null;
 diff --git a/packages/world/src/capabilities.ts b/packages/world/src/capabilities.ts
 index db1a44a..570234e 100644
 --- a/packages/world/src/capabilities.ts
@@ -14038,7 +14934,7 @@ index db1a44a..570234e 100644
 +/** Roles that take over a patient brought to them (the handover of a transport, `PatientLeg.receivedBy`). */
 +export const RECEIVING_ROLES: readonly string[] = ["clinician", "attending", "nurse", "paramedic", "radiologist"];
 diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
-index 2da080f..aaccf5c 100644
+index 2da080f..7eeeb0c 100644
 --- a/packages/world/src/contracts.ts
 +++ b/packages/world/src/contracts.ts
 @@ -277,9 +277,16 @@ export interface ActorState {
@@ -14112,7 +15008,50 @@ index 2da080f..aaccf5c 100644
  }
  
  export const MAX_HELD = 2;
-@@ -356,6 +409,66 @@ export interface PatientPlaceState {
+@@ -319,6 +372,42 @@ export interface EntityRuntimeState {
+   concealed?: true | EntityId;
+   /** The patient (`patient:<slot>`): where the body is once it moved (EMBODIED §8, patient transport). */
+   patient?: PatientPlaceState;
++  /** An item kept in custody (`EquipmentType.custody`): the receipts of its hand-overs, oldest first (the last `MAX_RECEIPTS`). */
++  receipts?: HandoffReceipt[];
++}
++
++/** Receipts kept per item in custody (the oldest dropped first; their numbers go on). */
++export const MAX_RECEIPTS = 32;
++
++/**
++ * One hand-over of an item kept in custody (`EquipmentType.custody`: a labelled specimen, a medication box — EMBODIED
++ * §8.1, audit 2026-11-12 P2-12): who handed what to whom, where and at which simulated minute, what the item was then,
++ * and the receiver's confirmation — made by the receiver's own act (`confirm_receipt`), never by the one who handed
++ * it over.
++ */
++export interface HandoffReceipt {
++  /** `<item>#<n>`: the item's n-th hand-over. */
++  id: string;
++  /** The item and its equipment type. */
++  item: EntityId;
++  type: string;
++  /** The item's own state when it was handed over (a specimen tube's `collected`); null: it has none. */
++  state: string | null;
++  /** Who handed it over, and their role. */
++  from: ActorId;
++  fromRole: ActorRole;
++  /** Who received it, and their role. */
++  to: ActorId;
++  toRole: ActorRole;
++  /** The room it was handed over in (null: between rooms). */
++  room: string | null;
++  /** The simulated minute of the hand-over, and the action that made it. */
++  at: number;
++  actionId: string;
++  /** The simulated minute the receiver confirmed it; null: not yet. */
++  confirmedAt: number | null;
++  /** The receiver's action that confirmed it. */
++  confirmActionId?: string;
+ }
+ 
+ /** A body posture (core `Posture`). */
+@@ -356,6 +445,66 @@ export interface PatientPlaceState {
     * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
     */
    asked?: { posture: BodyPosture; over: BodyPosture } | null;
@@ -14179,7 +15118,19 @@ index 2da080f..aaccf5c 100644
  }
  
  /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
-@@ -495,6 +608,19 @@ export type WorldEvent = (
+@@ -478,6 +627,11 @@ export type WorldEvent = (
+   /** An item concealed by a scenario (`actorId` "scenario"), or revealed by someone's search (`concealed: false`). */
+   | { id: string; type: "entity.concealed"; entityId: EntityId; concealed: boolean; actorId: ActorId }
+   | { id: string; type: "item.held"; entityId: EntityId; actorId: ActorId; held: boolean }
++  /**
++   * An item kept in custody changed hands (`receipt.confirmedAt` null: handed over by `actorId`, the receiver to
++   * confirm) or its receiver confirmed the receipt (`actorId` = the receiver). EMBODIED §8.1, audit 2026-11-12 P2-12.
++   */
++  | { id: string; type: "item.handoff"; entityId: EntityId; actorId: ActorId; receipt: HandoffReceipt }
+   | { id: string; type: "door.changed"; entityId: EntityId; open: boolean; locked: boolean; actorId: ActorId | null }
+   | { id: string; type: "reservation.changed"; entityId: EntityId; reservedBy: ActorId | null }
+   | { id: string; type: "obstacle.changed"; obstacle: DynamicObstacle; present: boolean }
+@@ -495,6 +649,19 @@ export type WorldEvent = (
     * they are); `actorId` asked for it (null: it ended by itself — a transport, a transfer, clinical state).
     */
    | { id: string; type: "patient.escort"; entityId: EntityId; escort: ActorId | null; actorId: ActorId | null }
@@ -14199,7 +15150,7 @@ index 2da080f..aaccf5c 100644
  ) & {
    /**
     * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
-@@ -563,11 +689,14 @@ export interface ObservedEntity {
+@@ -563,11 +730,19 @@ export interface ObservedEntity {
     * A movable thing not perceived now is reported where the actor believes
     * it is (lead note 1), and this says which belief: `usual` — where the
     * department keeps it (portable equipment not seen yet); `last-seen` —
@@ -14212,13 +15163,18 @@ index 2da080f..aaccf5c 100644
 +   * is null and distance and bearing measure to where it looked. `level`,
 +   * `room`, distances, bearing and reachability then measure to that place.
 +   * Absent for perceived things and things that never move.
++   */
++  lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
++  /**
++   * A carried item the actor perceives in someone else's hands: who carries it (their id and name — a member of staff
++   * with their role, e.g. "Lin Xiao (Nurse)"). EMBODIED §8.1, audit 2026-11-12 P2-12.
     */
 -  lastKnown?: { kind: "usual" | "last-seen"; label: string };
-+  lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
++  holder?: { id: ActorId; name: string };
  }
  
  export interface WorldObservation {
-@@ -669,6 +798,12 @@ export interface NavRequest {
+@@ -669,6 +844,12 @@ export interface NavRequest {
     * them aside (the route a relocation records). Walls, fixed equipment, locks and zones still apply.
     */
    ignoreObstacles?: boolean;
@@ -14231,7 +15187,7 @@ index 2da080f..aaccf5c 100644
  }
  
  export type NavPlan =
-@@ -759,9 +894,10 @@ export interface ClinicalIntent {
+@@ -759,9 +940,10 @@ export interface ClinicalIntent {
    /**
     * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
     * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
@@ -14244,7 +15200,7 @@ index 2da080f..aaccf5c 100644
    itemId?: string;
    findingId?: string;
    investigationId?: string;
-@@ -926,6 +1062,13 @@ export interface WorldActionResult {
+@@ -926,6 +1108,18 @@ export interface WorldActionResult {
     * it already satisfied the destination and nothing was moved (docs/EMBODIED.md §5).
     */
    moved?: { entityId: EntityId; displacement: number; at: { x: number; z: number; level: string }; satisfied: boolean; alreadyAtDestination?: true };
@@ -14255,10 +15211,15 @@ index 2da080f..aaccf5c 100644
 +   * is missing (`STALE_DESTINATION`); `unknown`: it already knew it was missing, so there was nowhere to go (no walk).
 +   */
 +  belief?: { entityId: EntityId; kind: "last-seen" | "told" | "usual" | "missing"; room: string | null; found: "in-view" | "absent" | "unknown" };
++  /**
++   * The receipt this action wrote (EMBODIED §8.1, audit 2026-11-12 P2-12): a `hand_over` of an item kept in custody
++   * (the receiver to confirm), or a `confirm_receipt` (confirmed).
++   */
++  receipt?: HandoffReceipt;
  }
  
  /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
-@@ -1067,8 +1210,23 @@ export interface WorldRuntime {
+@@ -1067,8 +1261,28 @@ export interface WorldRuntime {
     * (default: the world's).
     */
    regionName(at: { level: string; x: number; z: number }, locale?: string): string;
@@ -14276,13 +15237,18 @@ index 2da080f..aaccf5c 100644
 +   * Memory only: no version changes, no event; the trace records the inquiry and the update.
 +   */
 +  askWhereabouts(askerId: ActorId, id: EntityId, colleagueId?: ActorId): WhereaboutsAnswer;
++  /**
++   * The receipts of hand-overs of items kept in custody (EMBODIED §8.1, audit 2026-11-12 P2-12): of one item, oldest
++   * first, or of every item, by simulated minute then id. Read-only.
++   */
++  receipts(id?: EntityId): HandoffReceipt[];
  
    /* navigation (read-only planning) */
 +  /** A route as the actor's navigation would plan it: a goal on a movable thing it believes elsewhere leads to that belief (§4). */
    plan(actorId: ActorId, goal: NavGoal): NavPlan;
  
    /* spatial policy */
-@@ -1128,9 +1286,10 @@ export interface WorldRuntime {
+@@ -1128,9 +1342,10 @@ export interface WorldRuntime {
    /**
     * Move the patient to a destination at once: a transfer the team carries out (a disposition, entering a phase
     * with a location) — nobody walks, no time is charged (the clinical act's own time). Already there: nothing
@@ -14295,20 +15261,189 @@ index 2da080f..aaccf5c 100644
    /** Re-read the patient's clinical posture (after an intervention): the body's collider follows; true when the body changed. */
    refreshPatient(): boolean;
  
+diff --git a/packages/world/src/custody.test.ts b/packages/world/src/custody.test.ts
+new file mode 100644
+index 0000000..8225cd3
+--- /dev/null
++++ b/packages/world/src/custody.test.ts
+@@ -0,0 +1,161 @@
++/**
++ * Items kept in custody (EMBODIED §8.1, audit 2026-11-12 P2-12): the built-in catalog's handheld items — the blood
++ * specimen tube and the medication box — on the general hospital's ED nurse station desk. The tube is taken at the
++ * bedside (in hand, clean hands, at the patient's side) and labelled there; every hand-over writes a receipt (who
++ * handed what to whom, where, at which minute) that only the receiver confirms, by their own act; whoever sees a
++ * carried item sees whose hands it is in; receipts survive a save and restore and are in the trace.
++ */
++import { describe, expect, it } from "vitest";
++import { behaviorOf } from "./behaviors.js";
++import { PRIMARY_ACTOR, type HandoffReceipt } from "./contracts.js";
++import { createWorldRuntime } from "./runtime.js";
++import { catalogs, makeWorld, type TestWorld } from "./__fixtures__/world.js";
++
++const A = PRIMARY_ACTOR;
++const NURSE = "staff:ed-nurse";
++const LAB = "staff:lab-tech";
++const TUBE = "eq:ed-specimen-tube";
++const BOX = "eq:ed-medication-box";
++
++async function ok(w: TestWorld, request: Parameters<TestWorld["act"]>[0]) {
++  const r = await w.act(request);
++  expect(r.status, `${request.operation}: ${r.message}`).toBe("completed");
++  return r;
++}
++
++/** Walk up to someone (asked where they are first: one seeks a person where one believes they are, P1-8). */
++async function stepTo(w: TestWorld, actorId: string, toId: string) {
++  w.runtime.askWhereabouts(actorId, toId, toId);
++  await ok(w, { actorId, operation: "navigate", goal: { kind: "entity", id: toId, range: 1 } });
++}
++
++/** The tube taken at the bedside: picked up at the desk, hands cleaned at the station sink, filled and labelled at the patient. */
++async function collected(w: TestWorld): Promise<void> {
++  await ok(w, { actorId: A, operation: "approach", targetId: TUBE });
++  await ok(w, { actorId: A, operation: "pick_up", targetId: TUBE });
++  await ok(w, { actorId: A, operation: "approach", targetId: "eq:ed-station-sink" });
++  await ok(w, { actorId: A, operation: "wash_hands", targetId: "eq:ed-station-sink" });
++  await ok(w, { actorId: A, operation: "approach", targetId: w.patientId });
++  await ok(w, { actorId: A, operation: "collect", targetId: TUBE });
++}
++
++describe("built-in handheld items (the default catalog)", () => {
++  it("a specimen tube and a medication box, handheld and kept in custody, on the ED nurse station desk", () => {
++    const w = makeWorld("dka-adult");
++    const handheld = catalogs().flatMap((c) => c.equipment.filter((e) => e.portable === "handheld").map((e) => [e.id, !!e.custody]));
++    expect(handheld).toEqual([
++      ["specimen-tube", true],
++      ["medication-box", true],
++    ]);
++    for (const id of [TUBE, BOX]) expect(w.runtime.entity(id), id).toMatchObject({ kind: "equipment", portable: "handheld", room: "ed-station" });
++    expect(behaviorOf(w.runtime.entity(TUBE)!).operations.map((o) => o.id)).toEqual(["collect", "pick_up", "put_down", "equip", "hand_over", "confirm_receipt"]);
++    expect(behaviorOf(w.runtime.entity(BOX)!).operations.map((o) => o.id)).toEqual(["use", "pick_up", "put_down", "equip", "hand_over", "confirm_receipt"]);
++    // lying on the desk: nobody holds it, nothing to confirm
++    expect(w.runtime.inspect(NURSE, TUBE)).toMatchObject({ state: "empty" });
++    expect(w.runtime.inspect(NURSE, TUBE)!.availableActions).not.toContain("confirm_receipt");
++    expect(w.runtime.receipts()).toEqual([]);
++  });
++});
++
++describe("the specimen is taken at the bedside", () => {
++  it("in hand, with clean hands, at the patient's side — refused otherwise, with the way to put it right", async () => {
++    const w = makeWorld("dka-adult");
++    await ok(w, { actorId: A, operation: "approach", targetId: TUBE });
++    // on the desk: picked up first
++    const lying = await w.act({ actorId: A, operation: "collect", targetId: TUBE });
++    expect(lying).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED", hint: { then: { operation: "pick_up", targetId: TUBE } } });
++    await ok(w, { actorId: A, operation: "pick_up", targetId: TUBE });
++    // hands not cleaned: to the nearest sink
++    const dirty = await w.act({ actorId: A, operation: "collect", targetId: TUBE });
++    expect(dirty).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED", hint: { then: { operation: "wash_hands" } } });
++    await ok(w, { actorId: A, operation: "approach", targetId: "eq:ed-station-sink" });
++    await ok(w, { actorId: A, operation: "wash_hands", targetId: "eq:ed-station-sink" });
++    // away from the patient: to their side
++    const away = await w.act({ actorId: A, operation: "collect", targetId: TUBE });
++    expect(away).toMatchObject({ status: "failed", errorCode: "NOT_IN_RANGE", hint: { goal: { kind: "interact", id: w.patientId } } });
++    // a porter may not take blood
++    expect(behaviorOf(w.runtime.entity(TUBE)!).operations.find((o) => o.id === "collect")!.roles).toEqual(["clinician", "attending", "nurse", "paramedic"]);
++    await ok(w, { actorId: A, operation: "approach", targetId: w.patientId });
++    const r = await ok(w, { actorId: A, operation: "collect", targetId: TUBE });
++    expect(r.message).toBe("Done: Take the sample and label it at the bedside (Blood specimen tube); it is now Filled and labelled.");
++    // three minutes at the bedside, charged as procedure time
++    expect(r.elapsedSeconds).toBe(180);
++    expect(w.harness.elapsed.at(-1)).toEqual({ seconds: 180, reason: "procedure" });
++    expect(w.runtime.inspect(A, TUBE)!.state).toBe("held");
++    expect(w.runtime.snapshot().entities[TUBE]).toMatchObject({ state: "collected", heldBy: A });
++  });
++});
++
++describe("hand-over against a receipt", () => {
++  it("records who handed what to whom, where and when; only the receiver confirms it; whoever sees it sees whose hands it is in", async () => {
++    const w = makeWorld("dka-adult");
++    await collected(w);
++    await stepTo(w, A, NURSE);
++    const at = w.harness.view.clock();
++    const handed = await ok(w, { actionId: "give-1", actorId: A, operation: "hand_over", targetId: TUBE, parameters: { to: NURSE } });
++    const first: HandoffReceipt = { id: `${TUBE}#1`, item: TUBE, type: "specimen-tube", state: "collected", from: A, fromRole: "clinician", to: NURSE, toRole: "nurse", room: w.runtime.actor(A)!.room, at, actionId: "give-1", confirmedAt: null };
++    expect(handed.receipt).toEqual(first);
++    expect(handed.message).toMatch(/for Lin Xiao to confirm/);
++    expect(handed.events.map((e) => e.type)).toEqual(["item.held", "item.held", "item.handoff", "action.completed"]);
++    expect(w.runtime.receipts(TUBE)).toEqual([first]);
++    expect(w.runtime.snapshot().entities[TUBE]!.receipts).toEqual([first]);
++    // the holder named: the clinician sees the tube in the nurse's hands
++    expect(w.runtime.inspect(A, TUBE)).toMatchObject({ state: "held", holder: { id: NURSE, name: "Lin Xiao (Nurse)" } });
++    // the giver cannot confirm it (no longer holds it), nor can anyone but the receiver
++    expect(await w.act({ actorId: A, operation: "confirm_receipt", targetId: TUBE })).toMatchObject({ status: "failed", errorCode: "DEVICE_BUSY" });
++    expect(w.runtime.inspect(NURSE, TUBE)!.availableActions).toContain("confirm_receipt");
++    const confirmed = await ok(w, { actionId: "sign-1", actorId: NURSE, operation: "confirm_receipt", targetId: TUBE });
++    expect(confirmed.receipt).toEqual({ ...first, confirmedAt: w.harness.view.clock(), confirmActionId: "sign-1" });
++    expect(confirmed.message).toMatch(/Receipt confirmed: "Blood specimen tube" from Clinician, handed over at minute/);
++    expect(await w.act({ actorId: NURSE, operation: "confirm_receipt", targetId: TUBE })).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
++    expect(w.runtime.inspect(NURSE, TUBE)!.availableActions).not.toContain("confirm_receipt");
++    // the receipt and the confirmation in the trace
++    const spans = w.trace.spans().filter((s) => s.data?.receipt);
++    expect(spans.map((s) => [s.name, (s.data?.receipt as { confirmedAt: number | null }).confirmedAt === null])).toEqual([
++      ["hand_over", true],
++      ["confirm_receipt", false],
++    ]);
++    expect(w.trace.spans().some((s) => s.kind === "state_change" && s.name.includes("item.handoff"))).toBe(true);
++  });
++
++  it("the specimen carried to the laboratory: a chain of receipts, each confirmed by its receiver; restored from a snapshot", async () => {
++    const w = makeWorld("dka-adult");
++    await collected(w);
++    await stepTo(w, A, NURSE);
++    await ok(w, { actorId: A, operation: "hand_over", targetId: TUBE, parameters: { to: NURSE } });
++    await ok(w, { actorId: NURSE, operation: "confirm_receipt", targetId: TUBE });
++    // the nurse carries it to the laboratory and hands it to the laboratory technician, who signs for it
++    await stepTo(w, NURSE, LAB);
++    expect(w.runtime.actor(NURSE)!.room).toBe("laboratory");
++    const handed = await ok(w, { actorId: NURSE, operation: "hand_over", targetId: TUBE, parameters: { to: LAB } });
++    expect(handed.receipt).toMatchObject({ id: `${TUBE}#2`, from: NURSE, to: LAB, toRole: "lab-tech", room: "laboratory", state: "collected", confirmedAt: null });
++    // the receiver knows of the hand-over even before they look (a summary in their recent events)
++    expect(w.runtime.observe(LAB).recentEvents.map((e) => e.summary)).toContain("Lin Xiao handed Blood specimen tube to Wang Yue, to be confirmed");
++    await ok(w, { actorId: LAB, operation: "confirm_receipt", targetId: TUBE });
++    const chain = w.runtime.receipts(TUBE);
++    expect(chain.map((r) => [r.from, r.to, r.confirmedAt !== null])).toEqual([
++      [A, NURSE, true],
++      [NURSE, LAB, true],
++    ]);
++    expect(chain[1]!.confirmedAt).toBeGreaterThanOrEqual(chain[0]!.confirmedAt!);
++    // a save and a restore keep the chain, byte for byte
++    const snapshot = w.runtime.snapshot();
++    const restored = createWorldRuntime({ facility: w.facility, catalogs: catalogs(), binding: { caseDef: w.caseDef, slotId: w.slotId, locale: "en" }, clinical: w.harness.view, now: () => 0, newId: () => "x", snapshot });
++    expect(restored.receipts(TUBE)).toEqual(chain);
++    expect(JSON.stringify(restored.snapshot())).toBe(JSON.stringify(snapshot));
++  });
++
++  it("a nurse hands the medication box to the clinician; the clinician confirms; in Chinese too", async () => {
++    const w = makeWorld("stemi-inferior-rv", { locale: "zh-CN" });
++    await ok(w, { actorId: NURSE, operation: "approach", targetId: BOX });
++    await ok(w, { actorId: NURSE, operation: "pick_up", targetId: BOX });
++    await stepTo(w, NURSE, A);
++    const handed = await ok(w, { actorId: NURSE, operation: "hand_over", targetId: BOX, parameters: { to: A } });
++    expect(handed.receipt).toMatchObject({ item: BOX, type: "medication-box", state: null, from: NURSE, fromRole: "nurse", to: A, toRole: "clinician", confirmedAt: null });
++    expect(handed.message).toBe("已把「药盒」递给医生，交接已记录，待医生签收。");
++    expect(w.runtime.inspect(NURSE, BOX)).toMatchObject({ holder: { id: A } });
++    const r = await ok(w, { actorId: A, operation: "confirm_receipt", targetId: BOX });
++    expect(r.message).toMatch(/^已签收「药盒」：林晓于第 \d+(\.\d+)? 分钟递交。$/);
++    expect(w.runtime.inspect(A, "eq:ed-medication-box")!.holder).toBeUndefined(); // one's own hands: no holder line
++  });
++});
 diff --git a/packages/world/src/effects.ts b/packages/world/src/effects.ts
-index 9705920..6913c6c 100644
+index 9705920..f30de24 100644
 --- a/packages/world/src/effects.ts
 +++ b/packages/world/src/effects.ts
-@@ -37,6 +37,8 @@ export interface Outcome {
+@@ -37,6 +37,10 @@ export interface Outcome {
    clinical?: { tool: string; ok: boolean; output: string };
    clinicalEventIds?: string[];
    moved?: WorldActionResult["moved"];
 +  /** A walk to where a thing was believed to be (audit P1-8). */
 +  belief?: WorldActionResult["belief"];
++  /** The receipt a hand-over of an item kept in custody, or its confirmation, wrote (audit P2-12; `hand.ts`). */
++  receipt?: WorldActionResult["receipt"];
  }
  
  /** A finished walk (committed pose, events, telemetry). */
-@@ -58,6 +60,8 @@ export interface EffectsHost {
+@@ -58,6 +62,8 @@ export interface EffectsHost {
    invalidate(area: Area & { level: string }): void;
    /** Hint for a refusal, verified by planning (null when no route leads there). */
    verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined, then?: ActionHint["then"]): ActionHint | null | undefined;
@@ -14317,7 +15452,7 @@ index 9705920..6913c6c 100644
    /** Is this a well-formed navigation goal? */
    isGoal(goal: unknown): goal is NavGoal;
  }
-@@ -135,6 +139,7 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
+@@ -135,6 +141,7 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
        events.push(host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }));
        host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
        mover.placeEntity?.(id, spot);
@@ -14325,7 +15460,17 @@ index 9705920..6913c6c 100644
        break;
      }
      case "equip": {
-@@ -275,6 +280,8 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
+@@ -146,7 +153,8 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
+       events.push(...commitTransition(host, actor, id, o, rules.state(id)));
+   }
+   if (o.effect !== "wash-hands") charge(o.durationSeconds);
+-  const state = rules.stateLabel(id);
++  // the state the operation led to — for a carried item its own (a specimen tube "filled and labelled"), not "held"
++  const state = o.to !== undefined && rules.spec(id).stateSource === "stored" ? rules.stateLabel(id, o.to) : rules.stateLabel(id);
+   const out: Outcome = { status: "completed", message: message ?? (o.to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target })), events };
+   if (elapsed > 0) out.elapsedSeconds = elapsed;
+   return out;
+@@ -275,6 +283,8 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
    host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
    host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
    mover.placeEntity?.(id, { ...spot, rot: cart.rot });
@@ -14430,8 +15575,98 @@ index cec80e6..36fcb9d 100644
    const r = await w.act({ actorId, operation: "navigate", goal: { kind: "entity", id: toId, range: 1 } });
    expect(r.status, r.message).toBe("completed");
  }
+diff --git a/packages/world/src/hand.ts b/packages/world/src/hand.ts
+index 71c59ef..28b3438 100644
+--- a/packages/world/src/hand.ts
++++ b/packages/world/src/hand.ts
+@@ -4,11 +4,17 @@
+  * (contact range, the same level, line of sight) to a person — an actor or a member of staff — with a free hand;
+  * a worn item is taken off first (`put_down`, behaviours `hand-over` precheck). The item stays carried: its state is
+  * still "held", now in the recipient's hands.
++ *
++ * An item kept in custody (`EquipmentType.custody`: a labelled specimen, a medication box — audit 2026-11-12 P2-12)
++ * changes hands against a receipt: the hand-over records who handed what to whom, where and at which simulated
++ * minute (`HandoffReceipt`, kept on the item), and the receiver confirms it with their own act (`confirm_receipt`),
++ * never the one who handed it over. Each writes the receipt in an `item.handoff` event and in the action's result.
+  */
+ import { itemsInHand } from "./behaviors.js";
+-import { MAX_HELD, RANGES, type ActorState, type EntityId, type NavGoal, type WorldActionRequest, type WorldEvent } from "./contracts.js";
++import { MAX_HELD, MAX_RECEIPTS, RANGES, type ActorState, type EntityId, type HandoffReceipt, type NavGoal, type WorldActionRequest, type WorldEvent } from "./contracts.js";
+ import { failed, type EffectsHost, type Outcome } from "./effects.js";
+ import { metres, worldMessage } from "./i18n.js";
++import type { WorldStateStore } from "./state.js";
+ 
+ /** `hand_over {to}` (the bus checked authority and that the actor holds the item, not worn). */
+ export function handOver(host: EffectsHost, request: WorldActionRequest, actor: ActorState, itemId: EntityId, resolve: (idOrAlias: string) => EntityId | null): Outcome {
+@@ -29,6 +35,8 @@ export function handOver(host: EffectsHost, request: WorldActionRequest, actor:
+     return failed("NOT_IN_RANGE", worldMessage("NOT_IN_RANGE", L, { target: who, distance: Number.isFinite(distance) ? metres(distance) : "—", range: metres(RANGES.contact) }), { hint: hint ?? null });
+   }
+   if (itemsInHand(recipient, store).length >= MAX_HELD) return failed("HANDS_FULL", worldMessage("pre.recipientHandsFull", L, { holder: who, max: MAX_HELD }));
++  // what the item is as it changes hands (its own lifecycle state: a specimen tube "collected"), read before it moves
++  const own = host.d.rules.states(itemId).find((s) => s !== "held" && s !== "equipped") ?? null;
+   store.setHolding(actor.id, actor.holding.filter((h) => h !== itemId));
+   store.setHolding(recipient.id, [...recipient.holding, itemId]);
+   store.patchEntity(itemId, { heldBy: recipient.id });
+@@ -36,5 +44,56 @@ export function handOver(host: EffectsHost, request: WorldActionRequest, actor:
+     host.emit({ type: "item.held", entityId: itemId, actorId: actor.id, held: false }),
+     host.emit({ type: "item.held", entityId: itemId, actorId: recipient.id, held: true }),
+   ];
+-  return { status: "completed", message: worldMessage("ok.handedOver", L, { target: item, recipient: who }), events };
++  if (!inCustody(host, itemId)) return { status: "completed", message: worldMessage("ok.handedOver", L, { target: item, recipient: who }), events };
++  // against a receipt: who handed what to whom, where and when — the receiver to confirm it
++  const previous = receiptsOf(store, itemId);
++  const receipt: HandoffReceipt = {
++    id: `${itemId}#${(previous.length ? receiptNumber(previous.at(-1)!) : 0) + 1}`,
++    item: itemId,
++    type: locator.registry.entity(itemId)?.type ?? "",
++    state: own,
++    from: actor.id,
++    fromRole: actor.role,
++    to: recipient.id,
++    toRole: recipient.role,
++    room: actor.room,
++    at: host.d.clinical.clock(),
++    actionId: request.actionId,
++    confirmedAt: null,
++  };
++  store.patchEntity(itemId, { receipts: [...previous, receipt].slice(-MAX_RECEIPTS) });
++  events.push(host.emit({ type: "item.handoff", entityId: itemId, actorId: actor.id, receipt }));
++  return { status: "completed", message: worldMessage("ok.handedOverReceipt", L, { target: item, recipient: who }), events, receipt };
++}
++
++/**
++ * `confirm_receipt` (the bus checked that the actor holds the item and that its last receipt awaits this actor's
++ * confirmation — behaviours `confirm-receipt` precheck): the receiver confirms the hand-over at this minute.
++ */
++export function confirmReceipt(host: EffectsHost, request: WorldActionRequest, actor: ActorState, itemId: EntityId): Outcome {
++  const { store, locator, locale: L } = host.d;
++  const all = receiptsOf(store, itemId);
++  const last = all.at(-1);
++  if (!last || last.to !== actor.id || last.confirmedAt !== null) return failed("PRECONDITION_FAILED", worldMessage("pre.noReceipt", L, { target: locator.name(itemId) }));
++  const receipt: HandoffReceipt = { ...last, confirmedAt: host.d.clinical.clock(), confirmActionId: request.actionId };
++  store.patchEntity(itemId, { receipts: [...all.slice(0, -1), receipt] });
++  const event = host.emit({ type: "item.handoff", entityId: itemId, actorId: actor.id, receipt });
++  return { status: "completed", message: worldMessage("ok.receiptConfirmed", L, { target: locator.name(itemId), giver: locator.name(last.from), at: last.at }), events: [event], receipt };
++}
++
++/** Is the item kept in custody (its type's `custody`)? */
++export function inCustody(host: Pick<EffectsHost, "d">, itemId: EntityId): boolean {
++  const e = host.d.locator.registry.entity(itemId);
++  return e?.portable === "handheld" && !!e.equipmentType?.custody;
++}
++
++/** The receipts of an item kept in custody, oldest first (copies). */
++export function receiptsOf(store: Pick<WorldStateStore, "entity">, itemId: EntityId): HandoffReceipt[] {
++  return (store.entity(itemId)?.receipts ?? []).map((r) => ({ ...r }));
++}
++
++/** The n of a receipt id `<item>#<n>`. */
++function receiptNumber(r: HandoffReceipt): number {
++  const n = Number(r.id.slice(r.id.lastIndexOf("#") + 1));
++  return Number.isFinite(n) ? n : 0;
+ }
 diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
-index 38c4411..b02c7b2 100644
+index 38c4411..85cff37 100644
 --- a/packages/world/src/i18n.ts
 +++ b/packages/world/src/i18n.ts
 @@ -13,6 +13,8 @@ export const ROLE_NAMES: Record<string, Pair> = {
@@ -14443,7 +15678,24 @@ index 38c4411..b02c7b2 100644
    pathologist: { "zh-CN": "病理科医生", en: "Pathologist" },
    "lab-tech": { "zh-CN": "检验技师", en: "Lab technician" },
    attending: { "zh-CN": "上级医师", en: "Attending" },
-@@ -239,6 +241,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+@@ -115,6 +117,7 @@ export const OPERATION_NAMES: Record<string, Pair> = {
+   put_down: { "zh-CN": "放下", en: "Put down" },
+   equip: { "zh-CN": "佩戴", en: "Equip" },
+   hand_over: { "zh-CN": "递给", en: "Hand over" },
++  confirm_receipt: { "zh-CN": "确认签收", en: "Confirm receipt" },
+   transport_patient: { "zh-CN": "转运患者", en: "Transport the patient" },
+   escort_patient: { "zh-CN": "请患者跟着走", en: "Ask the patient to walk with you" },
+   release_patient: { "zh-CN": "请患者在此等候", en: "Ask the patient to wait here" },
+@@ -205,6 +208,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+   "pre.handOverWorn": { "zh-CN": "「{target}」正穿戴着，先脱下（放下）再递给别人。", en: '"{target}" is being worn: take it off (put it down) before handing it to someone.' },
+   "pre.handOverTo": { "zh-CN": "「{target}」不是在场的人，东西只能递给人。", en: '"{target}" is not a person here: items are handed to people.' },
+   "pre.handOverSelf": { "zh-CN": "「{target}」已经在你手里。", en: '"{target}" is already in your hands.' },
++  "pre.noReceipt": { "zh-CN": "「{target}」没有递给你、等你签收的交接记录。", en: 'No hand-over of "{target}" to you awaits your confirmation.' },
++  "pre.receiptConfirmed": { "zh-CN": "「{target}」的交接已于第 {at} 分钟签收。", en: 'The hand-over of "{target}" was already confirmed at minute {at}.' },
+   "pre.recipientHandsFull": { "zh-CN": "{holder}两手都占着（最多拿 {max} 件）。", en: "{holder}'s hands are full (at most {max} items in hand)." },
+   "pre.nearbyState": { "zh-CN": "{operation}需要附近的「{device}」处于{states}状态（现在是{state}）。", en: '{operation} needs the nearby "{device}" to be {states} (it is {state}).' },
+   "pre.nearbyStateNone": { "zh-CN": "{operation}需要 {distance} 米内有一台「{device}」，附近没有。", en: '{operation} needs a "{device}" within {distance} m; there is none nearby.' },
+@@ -239,6 +244,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
    "pre.cannotWalk.unresponsive": { "zh-CN": "{patient}无法回应，不能跟你走。", en: "{patient} cannot respond and cannot walk with you." },
    "pre.trolleyOutOfService": { "zh-CN": "{trolley}已停用，不能用它转运{patient}：需要一张可用的推床或病床——先推一张来（或请护工带来），再转运。", en: "{trolley} is out of service, so {patient} cannot be taken on it: a usable trolley or bed is needed — bring one (or ask a porter for one) first." },
    "pre.stoppedEnRoute": { "zh-CN": "已在{place}停下，让{patient}就地安全躺下。", en: "Stopped in {place} and laid {patient} down safely where they were." },
@@ -14452,7 +15704,16 @@ index 38c4411..b02c7b2 100644
    "pre.needsTrolley": { "zh-CN": "转运{patient}需要推床或病床，身边没有：先推一张来（或请护工带来），再转运。", en: "Taking {patient} anywhere needs a trolley or a bed, and none is at hand: bring one (or ask a porter for one) first." },
    "pre.cannotWalk.unwell": { "zh-CN": "{patient}情况不稳定，现在不宜走动。", en: "{patient} is too unwell to walk now." },
    "pre.cannotStand.lying": { "zh-CN": "{patient}现在需要卧床，不能站起来。", en: "{patient} has to stay lying down and cannot stand up." },
-@@ -267,6 +271,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+@@ -259,6 +266,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+   "ok.interrupted": { "zh-CN": "移动被中断，停在 {distance} 米处。", en: "Movement interrupted after {distance} m." },
+   "ok.done": { "zh-CN": "已完成：{operation}（{target}）。", en: "Done: {operation} ({target})." },
+   "ok.handedOver": { "zh-CN": "已把「{target}」递给{recipient}。", en: 'Handed "{target}" to {recipient}.' },
++  "ok.handedOverReceipt": { "zh-CN": "已把「{target}」递给{recipient}，交接已记录，待{recipient}签收。", en: 'Handed "{target}" to {recipient}: the hand-over is recorded, for {recipient} to confirm.' },
++  "ok.receiptConfirmed": { "zh-CN": "已签收「{target}」：{giver}于第 {at} 分钟递交。", en: 'Receipt confirmed: "{target}" from {giver}, handed over at minute {at}.' },
+   "ok.searchFound": { "zh-CN": "仔细找了一遍伸手可及的地方，找到了：{found}。", en: "Searched everything within reach and found: {found}." },
+   "ok.searchNothing": { "zh-CN": "仔细找了一遍伸手可及的地方，什么也没找到。", en: "Searched everything within reach: nothing there." },
+   "ok.state": { "zh-CN": "已完成：{operation}（{target}），当前{state}。", en: "Done: {operation} ({target}); it is now {state}." },
+@@ -267,6 +276,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
    "ok.screen": { "zh-CN": "「{target}」屏幕：{screen}", en: '"{target}" screen: {screen}' },
    "ok.moved": { "zh-CN": "已把「{target}」推到 {place}（{distance} 米）。", en: 'Moved "{target}" to {place} ({distance} m).' },
    "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
@@ -14461,7 +15722,7 @@ index 38c4411..b02c7b2 100644
    "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
    "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
    "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
-@@ -338,8 +344,37 @@ export const WHEREABOUTS: Record<string, Pair> = {
+@@ -338,8 +349,37 @@ export const WHEREABOUTS: Record<string, Pair> = {
    "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
    "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
    "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
@@ -14499,7 +15760,25 @@ index 38c4411..b02c7b2 100644
  /** One-line event summaries (WorldEventSummary). */
  export const EVENT_SUMMARIES: Record<string, Pair> = {
    "actor.moved": { "zh-CN": "{actor}移动了 {distance} 米", en: "{actor} moved {distance} m" },
-@@ -382,6 +417,12 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
+@@ -352,6 +392,8 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
+   "entity.found": { "zh-CN": "{actor}找到了{target}", en: "{actor} found {target}" },
+   "item.held": { "zh-CN": "{actor}拿起了{target}", en: "{actor} picked up {target}" },
+   "item.dropped": { "zh-CN": "{actor}放下了{target}", en: "{actor} put down {target}" },
++  "item.handoff": { "zh-CN": "{actor}把{target}递交给{receiver}，待签收", en: "{actor} handed {target} to {receiver}, to be confirmed" },
++  "item.receipt": { "zh-CN": "{actor}签收了{giver}递交的{target}", en: "{actor} confirmed receipt of {target} from {giver}" },
+   "door.changed": { "zh-CN": "{target}：{state}", en: "{target}: {state}" },
+   "reservation.changed": { "zh-CN": "{target}由{actor}占用", en: "{target} reserved by {actor}" },
+   "reservation.released": { "zh-CN": "{target}已释放", en: "{target} released" },
+@@ -370,6 +412,8 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
+   "self.discovered": { "zh-CN": "你注意到 {count} 个新对象", en: "You noticed {count} new thing(s)" },
+   "self.held": { "zh-CN": "你拿起了{target}", en: "You picked up {target}" },
+   "self.dropped": { "zh-CN": "你放下了{target}", en: "You put down {target}" },
++  "self.handoff": { "zh-CN": "你把{target}递交给{receiver}，待签收", en: "You handed {target} to {receiver}, to be confirmed" },
++  "self.receipt": { "zh-CN": "你签收了{giver}递交的{target}", en: "You confirmed receipt of {target} from {giver}" },
+   "self.found": { "zh-CN": "你找到了{target}", en: "You found {target}" },
+   "self.reserved": { "zh-CN": "{target}由你占用", en: "{target} reserved by you" },
+   "self.hygiene": { "zh-CN": "你完成了手卫生", en: "You cleaned your hands" },
+@@ -382,6 +426,12 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
    "patient.escort": { "zh-CN": "{patient}跟着{actor}走", en: "{patient} walks with {actor}" },
    "self.escort": { "zh-CN": "{patient}跟着你走", en: "{patient} walks with you" },
    "patient.stays": { "zh-CN": "{patient}停下来等候", en: "{patient} stopped and waits" },
@@ -14973,7 +16252,7 @@ index 33c17e2..6c1be8e 100644
      expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.moved").map((e) => e.summary)).toEqual([expect.stringMatching(/ECG/)]);
    });
 diff --git a/packages/world/src/perception.ts b/packages/world/src/perception.ts
-index 69c506a..a97e59a 100644
+index 69c506a..c8a1d61 100644
 --- a/packages/world/src/perception.ts
 +++ b/packages/world/src/perception.ts
 @@ -16,14 +16,18 @@
@@ -15187,7 +16466,27 @@ index 69c506a..a97e59a 100644
        const path = this.d.reach.pathDistance(actor, p);
        if (path !== null) {
          out.reachable = Number.isFinite(path);
-@@ -304,8 +425,8 @@ export class Perception {
+@@ -259,9 +380,19 @@ export class Perception {
+     const cues = awareness === "visible" || awareness === "nearby" ? this.cues(actor, p, awareness) : null;
+     if (cues) out.cues = cues;
+     if (lastKnown) out.lastKnown = lastKnown;
++    // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
++    if (p.heldBy && p.heldBy !== actor.id && !lastKnown && (awareness === "visible" || awareness === "nearby")) out.holder = { id: p.heldBy, name: this.holderName(p.heldBy) };
+     return out;
+   }
+ 
++  /** A person as a holder is named: a member of staff with their role ("Lin Xiao (Nurse)"), anyone else by name. */
++  private holderName(id: ActorId): string {
++    const L = this.d.locale;
++    const name = this.d.locator.name(id);
++    const a = this.d.store.actor(id);
++    return a && id.startsWith("staff:") ? `${name}${L.toLowerCase().startsWith("zh") ? `（${roleName(a.role, L)}）` : ` (${roleName(a.role, L)})`}` : name;
++  }
++
+   private nameOf(p: Placed): string {
+     const L = this.d.locale;
+     const e = p.entity;
+@@ -304,8 +435,8 @@ export class Perception {
        entities.filter((e) => e.awareness === "visible").map((e) => e.id),
        placeOf,
      );
@@ -15198,7 +16497,17 @@ index 69c506a..a97e59a 100644
      if (nearby.length) this.d.store.remember(actor.id, nearby, placeOf);
    }
  
-@@ -394,6 +515,11 @@ export class Perception {
+@@ -382,6 +513,9 @@ export class Perception {
+       case "entity.moved":
+       case "entity.concealed":
+         return sees(e.actorId) || sees(e.entityId);
++      case "item.handoff":
++        // the giver and the receiver always know of their hand-over (audit P2-12)
++        return e.receipt.from === actor.id || e.receipt.to === actor.id || sees(e.actorId) || sees(e.entityId);
+       case "door.changed":
+         return e.actorId === actor.id || sees(e.entityId);
+       case "reservation.changed":
+@@ -394,6 +528,11 @@ export class Perception {
          return sees(e.entityId);
        case "patient.escort":
          return e.actorId === actor.id || e.escort === actor.id || sees(e.entityId);
@@ -15210,7 +16519,7 @@ index 69c506a..a97e59a 100644
        case "obstacle.changed": {
          const r = e.obstacle.rect;
          const at = { x: r.x, z: r.z };
-@@ -472,11 +598,15 @@ export class Perception {
+@@ -472,11 +611,15 @@ export class Perception {
      this.record(actor, [base]);
      const L = this.d.locale;
      const rules = this.d.rules;
@@ -15227,7 +16536,19 @@ index 69c506a..a97e59a 100644
          row.code = fail.code;
        }
        return row;
-@@ -625,6 +755,16 @@ export class Perception {
+@@ -593,6 +736,11 @@ export class Perception {
+       case "item.held":
+         summary = worldMessage(e.held ? key(e.actorId, "item.held", "self.held") : key(e.actorId, "item.dropped", "self.dropped"), L, { actor: n(e.actorId), target: n(e.entityId) });
+         break;
++      case "item.handoff":
++        summary = e.receipt.confirmedAt === null
++          ? worldMessage(key(e.actorId, "item.handoff", "self.handoff"), L, { actor: n(e.actorId), target: n(e.entityId), receiver: n(e.receipt.to) })
++          : worldMessage(key(e.actorId, "item.receipt", "self.receipt"), L, { actor: n(e.actorId), target: n(e.entityId), giver: n(e.receipt.from) });
++        break;
+       case "door.changed":
+         summary = worldMessage("door.changed", L, { target: n(e.entityId), state: stateName(e.locked ? "locked" : e.open ? "open" : "closed", L) });
+         break;
+@@ -625,6 +773,16 @@ export class Perception {
        case "patient.escort":
          summary = e.escort ? worldMessage(key(e.escort, "patient.escort", "self.escort"), L, { actor: n(e.escort), patient: n(e.entityId) }) : worldMessage("patient.stays", L, { patient: n(e.entityId) });
          break;
@@ -15397,10 +16718,10 @@ index 75278a5..ffd451b 100644
      const straight = Math.hypot(p.position.x - actor.pose.x, p.position.z - actor.pose.z);
      if (path !== null && Number.isFinite(path)) return [0, path, p.id];
 diff --git a/packages/world/src/runtime.ts b/packages/world/src/runtime.ts
-index eb1738c..cd74bbb 100644
+index eb1738c..978b4ca 100644
 --- a/packages/world/src/runtime.ts
 +++ b/packages/world/src/runtime.ts
-@@ -17,7 +17,7 @@ import { ActionBus, goalProblem, instantMover } from "./actions.js";
+@@ -17,21 +17,23 @@ import { ActionBus, goalProblem, instantMover } from "./actions.js";
  import { DeviceRules } from "./behaviors.js";
  import { buildCollisionModel } from "./collision.js";
  import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
@@ -15408,8 +16729,10 @@ index eb1738c..cd74bbb 100644
 +import { navMessage, worldMessage } from "./i18n.js";
  import { levelInfos } from "./levels.js";
  import { WorldLocator } from "./locate.js";
++import { receiptsOf } from "./hand.js";
  import { GridAStarBackend } from "./nav/backend.js";
-@@ -26,12 +26,13 @@ import { Perception } from "./perception.js";
+ import { PatientBody } from "./patient.js";
+ import { Perception } from "./perception.js";
  import { DefaultSpatialPolicy, SpatialChecker } from "./policy.js";
  import { Reachability } from "./reach.js";
  import { bindingPosture, buildRegistry } from "./registry.js";
@@ -15424,7 +16747,7 @@ index eb1738c..cd74bbb 100644
    return out;
  };
  
-@@ -42,7 +43,15 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+@@ -42,7 +44,15 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
    const slot = binding.slotId ? facility.patientSlots.find((s) => s.id === binding.slotId) : undefined;
    const collision = buildCollisionModel(facility, catalogs, { patients: slot ? [{ slotId: slot.id, posture: bindingPosture(binding, facility) }] : [] });
    const registry = buildRegistry(facility, catalogs, binding, collision);
@@ -15441,7 +16764,7 @@ index eb1738c..cd74bbb 100644
    /** The transport the snapshot was taken in the middle of, until the session takes it (`restoredJourney`). */
    let restored: WorldJourney | null = options.snapshot?.journey ? structuredClone(options.snapshot.journey) : null;
    const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
-@@ -85,7 +94,13 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+@@ -85,7 +95,13 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
    const rules = new DeviceRules({ store, locator, clinical, collision, locale, busy: (id) => bus?.busy.get(id) ?? null });
    const reach = new Reachability(grids, locator);
    const policy = options.policy ?? new DefaultSpatialPolicy();
@@ -15456,7 +16779,7 @@ index eb1738c..cd74bbb 100644
    const perception = new Perception({ store, locator, rules, reach, clinical, collision, locale, options: perceptionOptions, newId: options.newId });
    const mover = options.mover ?? instantMover((id) => store.actor(id)?.pose ?? null);
    bus = new ActionBus({ facility, caseDef: binding.caseDef, store, registry, locator, patient, rules, checker, perception, reach, backend, grids, visibility, collision, clinical, port: options.port, mover, locale, now: options.now, trace: options.trace });
-@@ -124,6 +139,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+@@ -124,6 +140,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
        if (!a || ![pose?.x, pose?.y, pose?.z, pose?.yaw, pose?.pitch].every(Number.isFinite) || !levels.some((l) => l.id === pose.level)) return;
        const { roomChanged, room } = store.sensorPose(actorId, pose);
        if (roomChanged) store.emit({ type: "actor.entered-room", actorId, room, level: pose.level });
@@ -15465,7 +16788,7 @@ index eb1738c..cd74bbb 100644
      },
  
      observe(actorId, opts) {
-@@ -144,6 +161,23 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+@@ -144,10 +162,35 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
      },
      roomInfo: (actorId, roomId) => perception.roomInfo(actorId, roomId),
      regionName: (at, locale) => locator.regionName(at, locale),
@@ -15489,7 +16812,19 @@ index eb1738c..cd74bbb 100644
      canSee(actorId, id) {
        const resolved = actions.resolve(id);
        return !!resolved && perception.canSee(actorId, resolved);
-@@ -155,7 +189,11 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+     },
++    receipts(id) {
++      if (id !== undefined) {
++        const resolved = actions.resolve(id);
++        return resolved ? receiptsOf(store, resolved) : [];
++      }
++      const all = registry.ofKind("equipment").flatMap((e) => receiptsOf(store, e.id));
++      return all.sort((x, y) => x.at - y.at || (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
++    },
+ 
+     plan(actorId: ActorId, goal: NavGoal): NavPlan {
+       const a = store.actor(actorId);
+@@ -155,7 +198,11 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
        // the cost bound of every planning request (EMBODIED §7): a malformed or oversized goal is refused unplanned
        const problem = goalProblem(goal);
        if (problem) return { ok: false, goal, code: "TARGET_NOT_FOUND", message: worldMessage("INVALID_REQUEST", locale, { reason: problem }), details: { reason: "invalid-goal", problem } };
@@ -15502,7 +16837,7 @@ index eb1738c..cd74bbb 100644
      },
  
      recordBound: (id: EntityId) => rules.recordBound(id),
-@@ -207,7 +245,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
+@@ -207,7 +254,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
        const m = id && store.available(id) ? locator.place(id) : null;
        return a && m && locator.screenInView(a, m) ? m.id : null;
      },
@@ -15658,27 +16993,40 @@ index dda12a9..5fe0dee 100644
     * Patch an entity's runtime state (global + entity version). A member set
     * to `undefined` is removed; `version` cannot be patched.
 diff --git a/packages/world/src/trace.ts b/packages/world/src/trace.ts
-index 97c146d..bb20a9b 100644
+index 97c146d..9e40cbc 100644
 --- a/packages/world/src/trace.ts
 +++ b/packages/world/src/trace.ts
-@@ -9,8 +9,9 @@
+@@ -9,8 +9,11 @@
   *
   * `recordActionSpans` writes the spans of one world action: a root span
   * (`navigation` for navigate / approach / look_at / move_to, else
 - * `interaction`) and children — `clinical_action` when a clinical tool ran,
 - * `state_change` when the action committed physical changes.
 + * `interaction`; `data.belief` when the walk went where a thing was believed
-+ * to be — audit P1-8) and children — `clinical_action` when a clinical tool
-+ * ran, `state_change` when the action committed physical changes.
++ * to be — audit P1-8; `data.receipt` when it handed over an item kept in
++ * custody or confirmed its receipt — audit P2-12) and children —
++ * `clinical_action` when a clinical tool ran, `state_change` when the action
++ * committed physical changes.
   */
  import type { ActorId, EntityId, EpisodeTrace, TraceSink, TraceSpan, TraceSpanKind, WorldActionRequest, WorldActionResult, WorldEvent } from "./contracts.js";
  
-@@ -120,6 +121,8 @@ export function recordActionSpans(sink: TraceSink, request: WorldActionRequest,
+@@ -98,7 +101,7 @@ export class TraceRecorder implements TraceSink {
+ export const NAVIGATION_OPERATIONS: readonly string[] = ["navigate", "approach", "look_at", "move_to"];
+ 
+ /** Event types that are physical state changes (a `state_change` span). */
+-const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "entity.state", "entity.moved", "item.held", "door.changed", "reservation.changed", "hygiene"];
++const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "entity.state", "entity.moved", "item.held", "item.handoff", "door.changed", "reservation.changed", "hygiene"];
+ 
+ /** Timing of one action (injected clocks). */
+ export interface ActionTiming {
+@@ -120,6 +123,10 @@ export function recordActionSpans(sink: TraceSink, request: WorldActionRequest,
    if (request.targetId) data.targetId = request.targetId;
    if (result.navigation) data.navigation = { length: result.navigation.length, travelSeconds: result.navigation.travelSeconds, replans: result.navigation.replans, arrivalError: result.navigation.arrivalError, ok: result.navigation.ok, ...(result.navigation.code ? { code: result.navigation.code } : {}) };
    if (result.elapsedSeconds !== undefined) data.elapsedSeconds = result.elapsedSeconds;
 +  // a walk to where a thing was believed to be (audit P1-8): the stale belief and what was found there
 +  if (result.belief) data.belief = { ...result.belief };
++  // who handed what to whom, when — and its confirmation by the receiver (audit P2-12)
++  if (result.receipt) data.receipt = { id: result.receipt.id, item: result.receipt.item, state: result.receipt.state, from: result.receipt.from, to: result.receipt.to, room: result.receipt.room, at: result.receipt.at, confirmedAt: result.receipt.confirmedAt };
    const root = sink.add({ parentId, kind: NAVIGATION_OPERATIONS.includes(request.operation) ? "navigation" : "interaction", name: request.operation, actorId: request.actorId, ...timing, worldVersion: result.worldVersion, ok, refs, data });
    const out = [root];
    if (result.clinical) {
@@ -16180,3 +17528,53 @@ index 3d1b22c..0b120cc 100644
  describe("lead note 2: where a place is", () => {
    it("a room by name; a corridor inside the building; outdoors the facility's outdoor region", () => {
      const en = makeWorld("stemi-inferior-rv");
+diff --git a/scripts/blender/builtin_models.py b/scripts/blender/builtin_models.py
+index 5899733..5fec1de 100644
+--- a/scripts/blender/builtin_models.py
++++ b/scripts/blender/builtin_models.py
+@@ -623,3 +623,45 @@ def diagnostic_wall_set(k: Kit, eq):
+     k.cyl((0.365, 1.625, -0.061), 0.0058, 0.034, "chrome", axis="z", seg=10)
+     k.ball((0.365, 1.625, -0.043), 0.0078, "chrome", seg=8)
+     stethoscope(k, (0.365, 1.398, -0.062), (0.365, 1.172, -0.062))
++
++
++# ------------------------------------------------------------------------------------------------
++# handheld items kept in custody (audit 2026-11-12 P2-12)
++# ------------------------------------------------------------------------------------------------
++
++@builder("specimen-tube")
++def specimen_tube(k: Kit, eq):
++    """Blood specimen tube lying on its side: the clear tube with its round bottom and the red
++    screw cap (serum, the ISO 6710 colour code; the tube rests on the cap's rim). Layers for its
++    looks: `sample` — the blood in it, `label` — the patient label wrapped round it, with its
++    barcode (drawn once it is filled and labelled at the bedside)."""
++    r, y = 0.0065, 0.0082
++    # the tube: clear, round-bottomed, open end under the cap
++    k.lathe([(0.0, -0.0665), (0.0038, -0.0655), (0.0058, -0.0628), (r, -0.0592), (r, 0.041)], (0, y, 0), "glass", axis="x", seg=16)
++    # the cap: its grip ribs and the flat top
++    k.lathe([(0.0068, 0.0385), (0.0082, 0.0395), (0.0082, 0.0605), (0.0076, 0.0622), (0.0, 0.0624)], (0, y, 0), "ambulance-red", axis="x", seg=16)
++    for i in range(8):
++        a = 2 * math.pi * i / 8
++        k.box((0.05, y + 0.0083 * math.sin(a), 0.0083 * math.cos(a)), (0.018, 0.0012, 0.0012), "ambulance-red", rot=(math.degrees(a), 0, 0))
++    with k.layer("sample"):
++        k.lathe([(0.0, -0.0645), (0.0034, -0.0636), (0.0052, -0.061), (0.0056, -0.0585), (0.0056, 0.0335), (0.0, 0.0337)], (0, y, 0), "clin-blood-bag", axis="x", seg=12)
++    with k.layer("label"):
++        # wrapped over the top and the front, a window left underneath to see the blood
++        k.revolve([(0.0067, -0.043), (0.0071, -0.043), (0.0071, 0.033), (0.0067, 0.033)], (0, y, 0), "paper", axis="x", a0=-30, a1=200, seg=24)
++        for i in range(11):
++            k.box((-0.036 + 0.0024 * i + (0.0007 if i % 3 == 0 else 0), y + 0.0072, -0.0012), (0.0008 if i % 2 else 0.0014, 0.0004, 0.0062), "black")
++        k.box((0.008, y + 0.0072, 0.0004), (0.022, 0.0004, 0.0016), "coal")
++        k.box((0.006, y + 0.0072, -0.0026), (0.018, 0.0004, 0.0012), "coal")
++
++
++@builder("medication-box")
++def medication_box(k: Kit, eq):
++    """Medication box lying flat: the white carton with its end flaps and the maker's blue band,
++    and the pharmacy label on the lid (patient, drug, dose)."""
++    k.box((0, 0.0225, 0), (0.12, 0.045, 0.07), "white", r=0.0018, seg=1)
++    for x in (-0.0605, 0.0605):
++        k.box((x, 0.0225, 0), (0.0012, 0.041, 0.066), "plastic", r=0.0004, seg=1)
++    k.box((0.038, 0.0226, 0), (0.022, 0.0454, 0.0704), "blue")
++    k.box((-0.015, 0.0454, 0), (0.06, 0.0009, 0.046), "paper")
++    for i, (w, z) in enumerate(((0.044, -0.014), (0.036, -0.005), (0.04, 0.004), (0.026, 0.013))):
++        k.box((-0.019 + (0.004 if i else 0), 0.046, z), (w, 0.0004, 0.0024 if i == 0 else 0.0016), "coal" if i else "ambulance-red")
