@@ -368,7 +368,9 @@
           "in bed",
           "find her",
           "whendidyoufind",
-          "foundher"
+          "foundher",
+          "sincewhen",
+          "beenlikethis"
         ]
       },
       "excludeKeywords": {
@@ -383,7 +385,15 @@
           "一年",
           "糖尿病",
           "口渴",
-          "渴"
+          "渴",
+          "抽烟",
+          "吸烟",
+          "烟",
+          "这几天",
+          "前几天",
+          "那几天",
+          "最近几天",
+          "之前几天"
         ],
         "en": [
           "before",
@@ -476,7 +486,12 @@
           "any other",
           "highbloodpressure",
           "hypertension",
-          "stroke"
+          "stroke",
+          "what does she take",
+          "whatdoesshetake",
+          "what do you take",
+          "whatdoyoutake",
+          "take for"
         ]
       },
       "disclosure": "on-ask",
@@ -509,7 +524,8 @@
           "什么药",
           "按时吃",
           "规律",
-          "服药"
+          "服药",
+          "胰岛素"
         ],
         "en": [
           "metformin",
@@ -518,7 +534,8 @@
           "medicines",
           "pills",
           "regularly",
-          "treatment for her diabetes"
+          "treatment for her diabetes",
+          "insulin"
         ]
       },
       "excludeKeywords": {
@@ -551,7 +568,12 @@
           "starting",
           "new medicine",
           "this medicine",
-          "desmopressin"
+          "desmopressin",
+          "apart from",
+          "besides",
+          "other than",
+          "any other",
+          "other medication"
         ]
       },
       "disclosure": "on-ask",
@@ -586,7 +608,10 @@
           "饮水",
           "嘴巴干",
           "嘴干",
-          "嘴里干"
+          "嘴里干",
+          "她一天喝",
+          "她每天喝",
+          "她喝多少"
         ],
         "en": [
           "thirst",
@@ -678,6 +703,18 @@
       "source": {
         "zh-CN": "1.0.0版记录：初诊并无完整的长期尿量记录；陪同者口吻为教学改写",
         "en": "Recorded in version 1.0.0: no complete long-term urine-output record was available initially; the companion's words are a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "喝水",
+          "口渴",
+          "口干",
+          "喝得"
+        ],
+        "en": [
+          "drink",
+          "thirst"
+        ]
       }
     },
     {
@@ -1024,7 +1061,12 @@
           "感冒",
           "咳嗽",
           "生病",
-          "最近病"
+          "最近病",
+          "她这几天",
+          "这几天有没有",
+          "她前几天",
+          "前几天她",
+          "她最近几天"
         ],
         "en": [
           "fever",
@@ -1039,7 +1081,8 @@
           "illrecently",
           "beenill",
           "unwellrecently",
-          "sickrecently"
+          "sickrecently",
+          "beensick"
         ]
       },
       "disclosure": "unknown",
@@ -1091,6 +1134,12 @@
       "source": {
         "zh-CN": "1.0.0版没有记录：如实保持未知，不作补充",
         "en": "Not recorded in version 1.0.0; left unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟"
+        ]
       }
     },
     {
@@ -1231,7 +1280,12 @@
           "whathappened",
           "awake",
           "better",
-          "how have you been"
+          "how have you been",
+          "whyyoureinhospital",
+          "whyyouareinhospital",
+          "whyareyouinhospital",
+          "whyyourehere",
+          "whyareyouhere"
         ]
       },
       "disclosure": "volunteer",
@@ -1284,7 +1338,8 @@
           "dry mouth",
           "fluids",
           "aday",
-          "perday"
+          "perday",
+          "drunk"
         ]
       },
       "excludeKeywords": {
@@ -1299,7 +1354,10 @@
           "现在喝",
           "现在一天",
           "这几天喝",
-          "现在"
+          "现在",
+          "厕所",
+          "小便",
+          "尿"
         ],
         "en": [
           "alcohol",
@@ -1337,8 +1395,8 @@
         "en": "Do you have diabetes — how long have you known, and do you check your sugar?"
       },
       "answer": {
-        "zh-CN": "我一年前查出了糖尿病，平时没有按时测血糖。",
-        "en": "I was found to have diabetes a year ago, and I haven't been checking my sugar regularly."
+        "zh-CN": "我是住院前一年查出糖尿病的，平时没有按时测血糖。",
+        "en": "My diabetes was found a year before I came in, and I wasn't checking my sugar regularly."
       },
       "keywords": {
         "zh-CN": [
@@ -1392,7 +1450,10 @@
           "other than",
           "any other",
           "drink",
-          "thirst"
+          "thirst",
+          "what do you take",
+          "whatdoyoutake",
+          "take for"
         ]
       },
       "disclosure": "on-ask",
@@ -1407,8 +1468,8 @@
       ],
       "speaker": "patient",
       "source": {
-        "zh-CN": "1.0.0版记录：一年前发现糖尿病，平时没有规律监测血糖；由她本人讲述为教学改写",
-        "en": "Recorded in version 1.0.0: diabetes recognised one year earlier, without regular glucose monitoring; that she tells it herself is a teaching device"
+        "zh-CN": "1.0.0版记录：一年前发现糖尿病，平时没有规律监测血糖；由她本人讲述、以住院前为时间点均为教学改写",
+        "en": "Recorded in version 1.0.0: diabetes recognised one year earlier, without regular glucose monitoring; that she tells it herself, dated to before the admission, is a teaching device"
       }
     },
     {
@@ -1419,8 +1480,8 @@
         "en": "What do you take for your diabetes, and do you take it regularly?"
       },
       "answer": {
-        "zh-CN": "我吃二甲双胍，不过吃得不规律。",
-        "en": "I take metformin, but not regularly."
+        "zh-CN": "住院以前我吃二甲双胍，不过吃得不规律。",
+        "en": "Before I came in I was taking metformin, but not regularly."
       },
       "keywords": {
         "zh-CN": [
@@ -1431,7 +1492,8 @@
           "什么药",
           "按时吃",
           "规律",
-          "服药"
+          "服药",
+          "胰岛素"
         ],
         "en": [
           "metformin",
@@ -1440,7 +1502,8 @@
           "medicines",
           "pills",
           "regularly",
-          "foryourdiabetes"
+          "foryourdiabetes",
+          "insulin"
         ]
       },
       "excludeKeywords": {
@@ -1490,8 +1553,8 @@
       ],
       "speaker": "patient",
       "source": {
-        "zh-CN": "1.0.0版记录：二甲双胍服用不规律；由她本人讲述为教学改写",
-        "en": "Recorded in version 1.0.0: metformin taken irregularly; that she tells it herself is a teaching device"
+        "zh-CN": "1.0.0版记录：二甲双胍服用不规律；由她本人讲述、以住院前为时间点均为教学改写",
+        "en": "Recorded in version 1.0.0: metformin taken irregularly; that she tells it herself, dated to before the admission, is a teaching device"
       }
     },
     {
@@ -1519,7 +1582,10 @@
           "起来小便",
           "尿还多",
           "尿多吗",
-          "尿还很多"
+          "尿还很多",
+          "厕所",
+          "上厕所",
+          "几次厕所"
         ],
         "en": [
           "urine",
@@ -1541,7 +1607,10 @@
           "doesshe",
           "isshe",
           "hasshe",
-          "shepasses"
+          "shepasses",
+          "drink",
+          "drunk",
+          "thirst"
         ]
       },
       "disclosure": "unknown",
@@ -1733,7 +1802,10 @@
           "天旋地转",
           "发飘",
           "站不稳",
-          "头昏"
+          "头昏",
+          "现在怎么样",
+          "还好吗",
+          "好点了吗"
         ],
         "en": [
           "dizzy",
@@ -1802,6 +1874,12 @@
       "source": {
         "zh-CN": "1.0.0版没有记录：如实保持未知，不作补充",
         "en": "Not recorded in version 1.0.0; left unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟"
+        ]
       }
     },
     {
@@ -2395,7 +2473,9 @@
           "bicarbonate",
           "acid base",
           "acid-base",
-          "hco3"
+          "hco3",
+          "venous gas",
+          "arterial gas"
         ]
       },
       "requires": [
@@ -2565,8 +2645,8 @@
         "ed": {
           "available": true,
           "text": {
-            "zh-CN": "392（报告中所附的单位有待核实）。",
-            "en": "392 (the unit printed with it in the report needs checking)."
+            "zh-CN": "392（这个结果所附的单位有待核实）。",
+            "en": "392 (the unit printed with this result needs checking)."
           },
           "note": {
             "zh-CN": "是实测值还是计算值、用的是什么标本，都没有记录。可以把它和根据她的血钠、血糖算出的数值比较一下。",
@@ -3478,7 +3558,6 @@
       },
       "excludeKeywords": {
         "zh-CN": [
-          "3%",
           "高渗",
           "0.45%",
           "低渗",
@@ -3487,10 +3566,11 @@
           "限水",
           "口服",
           "喝",
-          "禁食"
+          "禁食",
+          "3%氯化钠",
+          "3%盐水"
         ],
         "en": [
-          "3%",
           "hypertonic",
           "0.45%",
           "half normal",
@@ -3502,7 +3582,9 @@
           "oral",
           "by mouth",
           "drink",
-          "nil by mouth"
+          "nil by mouth",
+          "3% saline",
+          "3% sodium chloride"
         ]
       },
       "dose": {
@@ -3607,19 +3689,23 @@
       },
       "excludeKeywords": {
         "en": [
-          "5%",
           "dextrose",
           "0.45%",
-          "0.9%",
           "saline",
           "ml per hour",
-          "ml/h"
+          "ml/h",
+          "5% dextrose",
+          "5% glucose",
+          "0.9% saline",
+          "0.9% sodium chloride"
         ],
         "zh-CN": [
-          "5%",
           "葡萄糖液",
           "氯化钠",
-          "毫升每小时"
+          "毫升每小时",
+          "5%葡萄糖",
+          "温水",
+          "口服"
         ]
       }
     },
@@ -3708,7 +3794,13 @@
           "intensive care",
           "my consultant",
           "the consultant",
-          "call the consultant"
+          "call the consultant",
+          "itu registrar",
+          "call itu",
+          "icu registrar",
+          "call icu",
+          "critical care",
+          "critical care outreach"
         ]
       },
       "dose": {
@@ -3796,7 +3888,14 @@
           "0.45%氯化钠快速输注",
           "5%葡萄糖快速输注",
           "把钠降下来",
-          "快速纠正高钠"
+          "快速纠正高钠",
+          "5%葡萄糖1小时内输完",
+          "5%葡萄糖一小时输完",
+          "0.45%氯化钠快速滴注",
+          "5%葡萄糖快速滴注",
+          "半张盐水快速输注",
+          "半张盐水一小时一升",
+          "低渗液一小时一升"
         ],
         "en": [
           "correct the sodium quickly",
@@ -3812,7 +3911,18 @@
           "5% glucose fast",
           "5% dextrose fast",
           "until the sodium is normal",
-          "until sodium normal"
+          "until sodium normal",
+          "half normal saline fast",
+          "half normal saline stat",
+          "5% dextrose stat",
+          "5% glucose stat",
+          "d5w fast",
+          "d5w stat",
+          "bolus of 5% dextrose",
+          "5% dextrose bolus",
+          "drop the sodium",
+          "drop her sodium",
+          "lower the sodium quickly"
         ]
       },
       "dose": {
@@ -3835,6 +3945,26 @@
       "response": {
         "zh-CN": "输液已开始。",
         "en": "The infusion is running."
+      },
+      "excludeKeywords": {
+        "en": [
+          "0.9% saline",
+          "0.9% sodium chloride",
+          "isotonic",
+          "slowly",
+          "gradually",
+          "no more than",
+          "not more than"
+        ],
+        "zh-CN": [
+          "生理盐水",
+          "0.9%氯化钠",
+          "等渗",
+          "缓慢",
+          "慢慢",
+          "逐渐",
+          "不超过"
+        ]
       }
     },
     {
@@ -3863,7 +3993,9 @@
           "静脉输注5%葡萄糖",
           "静滴5%葡萄糖",
           "喝点水",
-          "给她喝水"
+          "给她喝水",
+          "口服温水",
+          "温水"
         ],
         "en": [
           "water replacement",
@@ -3904,7 +4036,26 @@
           "1升每小时",
           "1000毫升每小时",
           "高糖",
-          "50%葡萄糖"
+          "50%葡萄糖",
+          "1小时内输完",
+          "一小时内输完",
+          "1小时输完",
+          "一小时输完",
+          "1小时内滴完",
+          "一小时内滴完",
+          "1小时滴完",
+          "一小时滴完",
+          "一小时一升",
+          "每小时一升",
+          "1小时1升",
+          "一升一小时",
+          "1升一小时",
+          "1升1小时",
+          "静推",
+          "推注",
+          "冲击",
+          "生理盐水",
+          "0.9%氯化钠"
         ],
         "en": [
           "fast",
@@ -3926,7 +4077,40 @@
           "1000 ml per hour",
           "1000ml/h",
           "50% dextrose",
-          "50% glucose"
+          "50% glucose",
+          "litre over 1 hour",
+          "liter over 1 hour",
+          "l over 1 hour",
+          "l over an hour",
+          "l over 60 min",
+          "litre over 60 min",
+          "liter over 60 min",
+          "1000 ml over 1 hour",
+          "1000 ml over an hour",
+          "1000ml over an hour",
+          "1000 ml an hour",
+          "1000ml an hour",
+          "1l an hour",
+          "1 l per hour",
+          "litre in an hour",
+          "liter in an hour",
+          "l in an hour",
+          "1000 ml in an hour",
+          "litre in 1 hour",
+          "l in 1 hour",
+          "1l stat",
+          "litre stat",
+          "liter stat",
+          "ml stat",
+          "bolus",
+          "dextrose over an hour",
+          "glucose over an hour",
+          "drop the sodium",
+          "drop her sodium",
+          "lower the sodium",
+          "lower her sodium",
+          "0.9% saline",
+          "0.9% sodium chloride"
         ]
       },
       "dose": {
@@ -4215,7 +4399,8 @@
             "phase": "ward"
           },
           {
-            "decided": "d3-ward-polyuria"
+            "read": "day-ten-record",
+            "phase": "ward"
           },
           {
             "not": {
@@ -4236,8 +4421,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "现在不该用：去氨加压素让肾脏保留水分，只在尿崩症已经明确、血钠有人盯着时使用——不在刚到院、血糖33.7 mmol/L且正在大量补液时用（即使已确诊中枢性尿崩症，英国内分泌学会2018也是先用0.9%氯化钠恢复容量，并提醒大量补液加去氨加压素可能使高钠纠正过快），也不在血钠偏低时再追加一剂（欧洲低钠血症指南2014要求停用诱发低钠的药物）。",
-        "en": "Not at this point: desmopressin makes the kidneys hold water, so it is given only once diabetes insipidus is established and the sodium is being watched — not on arrival, with a glucose of 33.7 mmol/L and large fluid volumes going in (even in known cranial diabetes insipidus the Society for Endocrinology 2018 restores volume with 0.9% sodium chloride first and warns that desmopressin with large fluid loads can correct a high sodium too fast), and not as a further dose while the sodium is low (the European hyponatraemia guideline 2014 stops medicines that provoke hyponatraemia)."
+        "zh-CN": "现在不该用：去氨加压素让肾脏保留水分，只在尿崩症已经明确、血钠有人盯着时使用——不在刚到院、血糖33.7 mmol/L且正在大量补液时用（即使已确诊中枢性尿崩症，英国内分泌学会2018也是先用0.9%氯化钠恢复容量，并提醒大量补液加去氨加压素可能使高钠纠正过快），也不在血钠偏低时再追加一剂（欧洲低钠血症指南2014要求尽可能停用诱发低钠的药物）。",
+        "en": "Not at this point: desmopressin makes the kidneys hold water, so it is given only once diabetes insipidus is established and the sodium is being watched — not on arrival, with a glucose of 33.7 mmol/L and large fluid volumes going in (even in known cranial diabetes insipidus the Society for Endocrinology 2018 restores volume with 0.9% sodium chloride first and warns that desmopressin with large fluid loads can correct a high sodium too fast), and not as a further dose while the sodium is low (the European hyponatraemia guideline 2014 stops, where possible, medicines that provoke hyponatraemia)."
       },
       "response": {
         "zh-CN": "已给去氨加压素。本病例不模拟它的效果。",
@@ -4479,12 +4664,35 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "3%氯化钠会让血钠快速升高。欧洲低钠血症指南（2014）把它用于伴严重症状（呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫）或中重度症状（恶心、意识模糊、头痛）的低钠血症，无论急性还是慢性；没有这些症状时，只用于有记录的急性下降超过10 mmol/L。它不用于高钠；没有上述症状、下降时间又没有记录的低钠，指南按慢性处理：停用诱发药物，第一个24小时升幅不超过10 mmol/L。",
-        "en": "3% saline raises the sodium quickly. The European hyponatraemia guideline (2014) gives it for hyponatraemia with severe symptoms (vomiting, deep somnolence, seizures, coma, cardiorespiratory distress) or moderately severe ones (nausea, confusion, headache), whether acute or chronic, and without such symptoms only for a documented acute fall of more than 10 mmol/L. It is not for a high sodium; and a low sodium without those symptoms whose fall is of undocumented timing is treated as chronic: stop the drug that provokes it and keep the rise within 10 mmol/L in the first 24 hours."
+        "zh-CN": "3%氯化钠会让血钠快速升高。欧洲低钠血症指南（2014）把它用于伴严重症状（呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫）或中重度症状（恶心、意识模糊、头痛）的低钠血症，无论急性还是慢性；没有这些症状时，只用于有记录的急性下降超过10 mmol/L。它不用于高钠。发生时间没有记录的低钠，除非病史提示是急性下降（指南列出了提示急性的药物和情况），都按慢性处理；无论哪种，没有上述症状时，先尽可能停用诱发因素并密切复查血钠，只要可能是慢性的，第一个24小时升幅就不超过10 mmol/L。",
+        "en": "3% saline raises the sodium quickly. The European hyponatraemia guideline (2014) gives it for hyponatraemia with severe symptoms (vomiting, deep somnolence, seizures, coma, cardiorespiratory distress) or moderately severe ones (nausea, confusion, headache), whether acute or chronic, and without such symptoms only for a documented acute fall of more than 10 mmol/L. It is not for a high sodium. A low sodium whose timing is not recorded counts as chronic unless the history points to an acute fall (the guideline lists the drugs and settings that do); either way, without those symptoms the first steps are to stop what provokes it where that is possible and to check the sodium closely, keeping the rise within 10 mmol/L in the first 24 hours while it may be chronic."
       },
       "response": {
         "zh-CN": "已输注。",
         "en": "Given."
+      },
+      "excludeKeywords": {
+        "en": [
+          "normal saline",
+          "0.9% saline",
+          "0.9% sodium chloride",
+          "isotonic",
+          "0.45",
+          "half normal",
+          "hypotonic",
+          "dextrose",
+          "glucose",
+          "d5w"
+        ],
+        "zh-CN": [
+          "生理盐水",
+          "0.9%氯化钠",
+          "等渗",
+          "0.45%",
+          "半张",
+          "低渗",
+          "葡萄糖"
+        ]
       }
     }
   ],
@@ -4672,8 +4880,8 @@
         "en": "About ten days later"
       },
       "short": {
-        "zh-CN": "十天后",
-        "en": "Ten days on"
+        "zh-CN": "约十天后",
+        "en": "About 10 days on"
       },
       "hint": {
         "zh-CN": "看看头几天和病房的记录：哪些数字放在一起说不通？她自己能告诉你什么？",
@@ -5184,8 +5392,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。这提示去氨加压素造成的水潴留：先停用或减少诱发药物（欧洲低钠血症指南2014，7.4.1.1）。122 mmol/L属于重度低钠血症；发生时间没有记录，指南按慢性处理，所以第一个24小时升幅不超过10 mmol/L，此后每24小时不超过8 mmol/L，每6小时查一次血钠（7.4.1.4–7.4.1.5）——药效一过，快速排水可能使血钠升得过快。之后以更低剂量重新开始，并告诉她用药过量的风险，至少每周安排一段多尿期（美国内分泌学会2016）。",
-            "en": "Right. This points to water held by desmopressin: stop or reduce what provokes it (European hyponatraemia guideline 2014, 7.4.1.1). At 122 mmol/L the hyponatraemia is profound; with its duration undocumented the guideline treats it as chronic, so keep the rise to no more than 10 mmol/L in the first 24 hours and 8 mmol/L in each 24 hours after, checking sodium every 6 hours (7.4.1.4–7.4.1.5) — once the drug wears off a brisk water diuresis can overshoot. Then restart lower, with teaching about overdosing and a phase of polyuria at least weekly (Endocrine Society 2016)."
+            "zh-CN": "正确。这提示去氨加压素造成的水潴留。她的AVP缺乏需要这个药，所以不是彻底停用，而是暂停下一剂或减量，并停用非必需的液体（欧洲低钠血症指南2014，7.4.1.1）。122 mmol/L属于重度低钠血症（6.1.1.3）。血钠下降有多快没有记录：指南把发生时间不明的低钠血症按慢性处理，除非病史提示是急性的，而它列出的这类提示中就有新近开始使用去氨加压素（6.1.2.3，表8）——所以可能是急性的，但无法证实。头晕既不属于中重度症状，也不属于严重症状，因此要选两种情况下都安全的做法：每6小时查一次血钠，第一个24小时升幅不超过10 mmol/L，此后每24小时不超过8 mmol/L（7.4.1.4–7.4.1.5）——药效一过，快速排水可能使血钠升得过快。之后以更低剂量重新开始，并告诉她用药过量的风险，至少每周安排一段多尿期（美国内分泌学会2016）。",
+            "en": "Right. This points to water held by desmopressin. She needs the drug for her AVP deficiency, so it is not stopped for good: hold the next dose or reduce it, and stop any non-essential fluid (European hyponatraemia guideline 2014, 7.4.1.1). At 122 mmol/L the hyponatraemia is profound (6.1.1.3). How fast it fell is not recorded: the guideline counts a hyponatraemia of unknown duration as chronic unless the history points to an acute one, and its list of such pointers includes recently started desmopressin (6.1.2.3, Table 8) — so it may be acute, but that cannot be shown. Dizziness is neither a moderately severe nor a severe symptom, so take the course that is safe either way: check sodium every 6 hours and keep the rise within 10 mmol/L in the first 24 hours and 8 mmol/L in each 24 hours after (7.4.1.4–7.4.1.5) — once the drug wears off a brisk water diuresis can overshoot. Then restart lower, with teaching about overdosing and a phase of polyuria at least weekly (Endocrine Society 2016)."
           }
         },
         {
@@ -5196,8 +5404,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。每次150 mL、反复给到血钠升高5 mmol/L，是欧洲指南（2014）用于严重症状（呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫）的治疗；即使是中重度症状（恶心、意识模糊、头痛）也只给一次。头晕不在这两类之列，而且下降时间没有记录，指南按慢性处理。去氨加压素剂量不变，病因就还在。",
-            "en": "No. Repeated 150 mL boluses until the sodium has risen by 5 mmol/L are the European guideline's (2014) treatment for severe symptoms — vomiting, deep somnolence, seizures, coma, cardiorespiratory distress — and even moderately severe ones (nausea, confusion, headache) get a single bolus; dizziness is in neither list, and with the timing of the fall undocumented the guideline treats it as chronic. Keeping desmopressin at the same dose leaves its cause in place."
+            "zh-CN": "不对。每次150 mL、反复给到血钠升高5 mmol/L，是欧洲指南（2014）用于严重症状（呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫）的治疗；中重度症状（恶心、意识模糊、头痛）只给一次。头晕不在这两类之列。没有这些症状时，指南只在有记录的急性下降超过10 mmol/L时才建议给一次，而她的血钠是什么时候开始下降的没有记录。去氨加压素剂量不变，病因就还在。",
+            "en": "No. Repeated 150 mL boluses until the sodium has risen by 5 mmol/L are the European guideline's (2014) treatment for severe symptoms — vomiting, deep somnolence, seizures, coma, cardiorespiratory distress — and moderately severe ones (nausea, confusion, headache) get a single bolus; dizziness is in neither list. Without those symptoms the guideline suggests a single bolus only when an acute fall of more than 10 mmol/L is documented, and the timing of her fall is not recorded. Keeping desmopressin at the same dose leaves its cause in place."
           }
         },
         {
@@ -5208,8 +5416,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。造成水潴留的药物剂量不变，再多喝水只会加重低钠血症；欧洲指南（2014）首先要停用诱发低钠的药物，而在随意饮水的情况下加盐，并不能去掉多余的水。",
-            "en": "No. The drug that is holding water stays at the same dose and more fluid feeds the hyponatraemia; the European guideline (2014) first stops the medicines that provoke it, and extra salt while she drinks freely leaves the water excess in place."
+            "zh-CN": "不对。造成水潴留的药物剂量不变，再多喝水只会加重低钠血症；欧洲指南（2014）首先要尽可能停用诱发低钠的药物，而在随意饮水的情况下加盐，并不能去掉多余的水。",
+            "en": "No. The drug that is holding water stays at the same dose and more fluid feeds the hyponatraemia; the European guideline (2014) first stops, where possible, the medicines that provoke it, and extra salt while she drinks freely leaves the water excess in place."
           }
         },
         {
@@ -5581,8 +5789,8 @@
         "en": "Explained her condition and its uncertainties honestly and in plain words to her companion and, once awake, to her, and checked they understood"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge框架评价两段谈话。与陪同者（急诊）：介绍自己，先问对方知道什么、最担心什么（“她还能醒过来吗？”）；用通俗的话说明她的血糖和血钠都高得危险、为什么意识不清、为什么要慢慢纠正、接下来会做什么，不作虚假保证；问清她平时喝水和吃药的情况。与患者（病房和用药后）：说明她有两种不同的病——一种是糖尿病，另一种是保水激素加压素不足（AVP缺乏，以前叫尿崩症）——以及名字为什么容易混淆；去氨加压素为什么既不能停也不能多用；口渴才喝水；每周让药效过去一次；定期查血钠；随身带病情卡。消息较重时用SPIKES步骤；请对方复述要点以确认理解。本病例没有记录医生对她或陪同者说了什么。",
-        "en": "Judge two conversations against the Calgary–Cambridge guide. With her companion in the emergency department: introduce yourself, ask first what they know and fear ('Will she wake up?'), explain in plain words that her sugar and salt are dangerously high, why she is unconscious, why they must be brought down slowly and what happens next, without false reassurance, and ask what they know about her drinking and medicines. With her, once awake and on desmopressin: explain that she has two different conditions — her diabetes, and a shortage of the water-holding hormone vasopressin (AVP deficiency, once called diabetes insipidus) — and why the names are easily confused; why desmopressin must be neither stopped nor overdosed; drinking to thirst; letting a dose wear off once a week; sodium checks; carrying an alert card. Use SPIKES where the news is heavy, and check understanding by teach-back. This case does not record what she or her companion were told."
+        "zh-CN": "按Calgary–Cambridge框架评价两段谈话。与陪同者（急诊）：介绍自己，先问对方知道什么、最担心什么（“她还能醒过来吗？”）；用通俗的话说明她的血糖和血钠都高得危险、为什么意识不清、为什么要慢慢纠正、接下来会做什么，不作虚假保证；问清她平时喝水和吃药的情况。与患者（病房和用药后）：说明她有两种不同的病——一种是糖尿病，另一种是保水激素加压素不足（AVP缺乏，以前叫尿崩症）——以及名字为什么容易混淆；去氨加压素为什么既不能停也不能多用；口渴才喝水；每周让药效过去一次；定期查血钠；随身带病情卡，佩戴急救手环或项链。消息较重时用SPIKES步骤；请对方复述要点以确认理解。本病例没有记录医生对她或陪同者说了什么。",
+        "en": "Judge two conversations against the Calgary–Cambridge guide. With her companion in the emergency department: introduce yourself, ask first what they know and fear ('Will she wake up?'), explain in plain words that her sugar and salt are dangerously high, why she is unconscious, why they must be brought down slowly and what happens next, without false reassurance, and ask what they know about her drinking and medicines. With her, once awake and on desmopressin: explain that she has two different conditions — her diabetes, and a shortage of the water-holding hormone vasopressin (AVP deficiency, once called diabetes insipidus) — and why the names are easily confused; why desmopressin must be neither stopped nor overdosed; drinking to thirst; letting a dose wear off once a week; sodium checks; carrying an alert card and wearing an emergency bracelet or necklace. Use SPIKES where the news is heavy, and check understanding by teach-back. This case does not record what she or her companion were told."
       }
     }
   ],
@@ -5594,8 +5802,8 @@
         "en": "Dr Qiao (endocrinology attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“血钠172时尿比重1.005说明什么？”“pH 7.4配上碳酸氢根36.5，二氧化碳分压大概要多高？这对她的呼吸意味着什么？（本病例没有记录）”“血钾3.2时为什么不马上用胰岛素？”“她的血钠最多能降多快？为什么看速度而不是看数值？”“十天以后，习惯性多饮能让血钠到162吗？”“为什么现在不做禁水试验？”“空蝶鞍能说明什么，不能说明什么？”“为什么长期用去氨加压素之前、用甲状腺素之前要先查皮质醇？”“用去氨加压素后血钠为什么会降，又该以多快的速度回升？”可以讲解JBDS-IP 2022（HHS）、2024年ADA/EASD/JBDS-IP/AACE/DTS共识、英国内分泌学会2018住院中枢性尿崩症指导、美国内分泌学会2016垂体功能减退指南、欧洲2014低钠血症指南，以及2022年改称AVP缺乏的声明。病例结束后按PEARLS框架复盘。报告中的处理是历史记录，学员读到时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；她的气道、格拉斯哥昏迷评分、呼吸频率、血氧、体温、体重、尿素、所输液体的种类、是否用过胰岛素或补钾、去氨加压素的剂型和剂量、垂体前叶检查结果和长期结局都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about what the learner already has, for example: 'What does a urine specific gravity of 1.005 mean beside a sodium of 172?', 'What PCO₂ would make a pH of 7.4 fit a bicarbonate of 36.5, and what would that say about her breathing? It is not recorded.', 'Why not insulin straight away with a potassium of 3.2?', 'How fast may her sodium fall, and why the rate rather than the number?', 'Ten days on, can habit drinking give a sodium of 162?', 'Why not a water deprivation test now?', 'What does an empty sella tell you, and what can it not?', 'Why cortisol before long-term desmopressin, and before thyroxine?', 'Why did her sodium fall on desmopressin, and how fast may it come back up?'. May explain JBDS-IP 2022 (HHS), the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, the Society for Endocrinology 2018 inpatient cranial diabetes insipidus guidance, the Endocrine Society 2016 hypopituitarism guideline, the European hyponatraemia guideline of 2014 and the 2022 renaming to AVP deficiency. Debriefs with PEARLS once the case is over. The report's management is a historical record, compared with current guidance when the learner reaches it. Never states the diagnosis, a decision's correct option or the outcome early; her airway, Glasgow Coma Scale score, respiratory rate, saturation, temperature, weight, urea, the type of fluid and any insulin or potassium she received, the desmopressin preparation and doses, any anterior pituitary results and the long-term outcome are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“血钠172时尿比重1.005说明什么？”“pH 7.4配上碳酸氢根36.5，二氧化碳分压大概要多高？这对她的呼吸意味着什么？（本病例没有记录）”“血钾3.2时为什么不马上用胰岛素？”“她的血钠最多能降多快？为什么看速度而不是看数值？”“约十天以后，习惯性多饮能让血钠到162吗？”“为什么现在不做禁水试验？”“空蝶鞍能说明什么，不能说明什么？”“为什么长期用去氨加压素之前、用甲状腺素之前要先查皮质醇？”“用去氨加压素后血钠为什么会降，又该以多快的速度回升？”可以讲解JBDS-IP 2022（HHS）、2024年ADA/EASD/JBDS-IP/AACE/DTS共识、英国内分泌学会2018住院中枢性尿崩症指导、美国内分泌学会2016垂体功能减退指南、欧洲2014低钠血症指南，以及2022年改称AVP缺乏的声明。病例结束后按PEARLS框架复盘。报告中的处理是历史记录，学员读到时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；她的气道、格拉斯哥昏迷评分、呼吸频率、血氧、体温、体重、尿素、所输液体的种类、是否用过胰岛素或补钾、去氨加压素的剂型和剂量、垂体前叶检查结果和长期结局都没有记录，不要替它补上。",
+        "en": "A Socratic teacher who asks only about what the learner already has, for example: 'What does a urine specific gravity of 1.005 mean beside a sodium of 172?', 'What PCO₂ would make a pH of 7.4 fit a bicarbonate of 36.5, and what would that say about her breathing? It is not recorded.', 'Why not insulin straight away with a potassium of 3.2?', 'How fast may her sodium fall, and why the rate rather than the number?', 'About ten days on, can habit drinking give a sodium of 162?', 'Why not a water deprivation test now?', 'What does an empty sella tell you, and what can it not?', 'Why cortisol before long-term desmopressin, and before thyroxine?', 'Why did her sodium fall on desmopressin, and how fast may it come back up?'. May explain JBDS-IP 2022 (HHS), the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, the Society for Endocrinology 2018 inpatient cranial diabetes insipidus guidance, the Endocrine Society 2016 hypopituitarism guideline, the European hyponatraemia guideline of 2014 and the 2022 renaming to AVP deficiency. Debriefs with PEARLS once the case is over. The report's management is a historical record, compared with current guidance when the learner reaches it. Never states the diagnosis, a decision's correct option or the outcome early; her airway, Glasgow Coma Scale score, respiratory rate, saturation, temperature, weight, urea, the type of fluid and any insulin or potassium she received, the desmopressin preparation and doses, any anterior pituitary results and the long-term outcome are not recorded — do not supply them."
       },
       "interprets": [
         "glucose",
@@ -5664,8 +5872,8 @@
         "en": "On the first day the safety target is the rate of change: a next-day sodium of 139 mmol/L is exactly what today's limits are written to prevent."
       },
       {
-        "zh-CN": "十天后血糖已控制，每天尿量8.4升、血钠162 mmol/L，只剩下尿液浓缩障碍这一解释；习惯性多饮会使血钠降低，而已经这样高渗的患者不需要禁水试验。",
-        "en": "Ten days on, with the glucose controlled, 8.4 L of urine a day and a sodium of 162 mmol/L leave a concentrating defect; habit drinking would have lowered the sodium, and a patient this hyperosmolar needs no deprivation test."
+        "zh-CN": "约十天后血糖已控制，每天尿量8.4升、血钠162 mmol/L，只剩下尿液浓缩障碍这一解释；习惯性多饮会使血钠降低，而已经这样高渗的患者不需要禁水试验。",
+        "en": "About ten days on, with the glucose controlled, 8.4 L of urine a day and a sodium of 162 mmol/L leave a concentrating defect; habit drinking would have lowered the sodium, and a patient this hyperosmolar needs no deprivation test."
       },
       {
         "zh-CN": "试验中尿液能浓缩，不支持AVP抵抗；空蝶鞍只是结构上的线索，所以要检查垂体前叶，先查皮质醇。",
@@ -5694,8 +5902,8 @@
         "en": "Thirst protects people with cranial diabetes insipidus: with intact thirst and free access to water they keep their balance, while reduced consciousness or limited access to water can bring life-threatening dehydration (Society for Endocrinology 2018). In that light, eighteen years of drinking 5–8 L a day reads as compensation rather than a habit to stop. Hypernatraemia in cranial diabetes insipidus is a medical emergency for a high-dependency setting, corrected by no more than 0.5 mmol/L an hour and 10 mmol/L in 24 hours when symptoms are absent or mild (Society for Endocrinology 2018)."
       },
       {
-        "zh-CN": "AVP缺乏伴鞍区异常要检查垂体前叶：首选晨8–9时皮质醇，同时查游离T4和TSH，开始左甲状腺素之前先评估肾上腺功能或给糖皮质激素（美国内分泌学会2016）。糖皮质激素帮助肾脏排出自由水，所以补上隐匿的皮质醇缺乏后，多尿可能才显现出来（英国内分泌学会2018）。",
-        "en": "AVP deficiency with an abnormal sella calls for anterior pituitary testing: an 8–9 am cortisol first, free T4 with TSH, and adrenal insufficiency assessed or covered before levothyroxine (Endocrine Society 2016). Glucocorticoids enable free water excretion, so treating a hidden cortisol deficiency can unmask the polyuria (Society for Endocrinology 2018)."
+        "zh-CN": "AVP缺乏伴鞍区异常要检查垂体前叶：首选晨8–9时皮质醇，同时查游离T4和TSH，开始左甲状腺素之前先评估肾上腺功能或给糖皮质激素（美国内分泌学会2016）。糖皮质激素帮助肾脏排出自由水（英国内分泌学会2018），所以补上隐匿的皮质醇缺乏后，多尿可能才显现出来。",
+        "en": "AVP deficiency with an abnormal sella calls for anterior pituitary testing: an 8–9 am cortisol first, free T4 with TSH, and adrenal insufficiency assessed or covered before levothyroxine (Endocrine Society 2016). Glucocorticoids enable renal free water excretion (Society for Endocrinology 2018), so treating a hidden cortisol deficiency can unmask the polyuria."
       },
       {
         "zh-CN": "去氨加压素的安全：最低有效剂量，告诉患者用药过量的风险，至少每周出现一段多尿期（美国内分泌学会2016）。血钠下降时——本例降到122 mmol/L，按欧洲指南（2014）属重度——停用或减量，每6小时查血钠，第一个24小时升幅不超过10 mmol/L、此后每24小时不超过8 mmol/L；报告减量后血钠为135 mmol/L。AVP缺乏（2022年更名）不是糖尿病：两者混淆曾导致去氨加压素被停用，甚至有患者死亡。",
@@ -6693,6 +6901,53 @@
         "locale": "zh-CN",
         "expect": [
           "drinking-history"
+        ]
+      },
+      {
+        "text": "她抽烟吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "她一天喝多少水？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Since when has she been like this?",
+        "locale": "en",
+        "expect": [
+          "found"
+        ]
+      },
+      {
+        "text": "Is she on insulin?",
+        "locale": "en",
+        "expect": [
+          "metformin"
+        ]
+      },
+      {
+        "text": "您平时一天上几次厕所？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine-amount"
+        ]
+      },
+      {
+        "text": "Do you know why you're in hospital?",
+        "locale": "en",
+        "expect": [
+          "ward-now"
+        ]
+      },
+      {
+        "text": "她这几天有没有不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "days-before"
         ]
       }
     ]

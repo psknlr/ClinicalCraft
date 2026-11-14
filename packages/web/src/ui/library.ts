@@ -32,7 +32,7 @@ function searchable(text: string): string {
 
 /**
  * A card's searchable text, made once per index entry (an entry never changes; a new one is a new object): the same
- * whatever the interface language, so a search over 135 cards compares strings only.
+ * whatever the interface language, so a search over the whole library compares strings only.
  */
 const haystacks = new WeakMap<CaseCard, string>();
 

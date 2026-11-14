@@ -133,6 +133,23 @@ export async function dispatch(page: Page, actions: unknown[]): Promise<void> {
   }, actions);
 }
 
+/**
+ * The case's reference path through the engine (test set-up), `finish` left out when asked. In-world, a study done
+ * with the patient on a device is acquired there, not at the order (docs/EMBODIED.md §8.7): set-up records each
+ * order's acquisition as the session does when the world has the patient on the device (`by: "system"`). An order
+ * acquired at the order (no device) is left unchanged by it.
+ */
+export async function replaySolution(page: Page, opts: { finish?: boolean } = {}): Promise<void> {
+  await page.evaluate((finish) => {
+    const qa = (window as any).__QA__;
+    for (const a of qa.game.caseDef.solution) {
+      if (a.type === "finish" && !finish) continue;
+      qa.dispatch(a);
+      if (a.type === "order") qa.dispatch({ type: "acquire", investigationId: a.investigationId, by: "system" });
+    }
+  }, opts.finish ?? true);
+}
+
 /** Embodied-mode set-up: low render quality (SwiftShader walks and renders faster); approvals bypassed when asked. */
 export async function embodiedSetup(page: Page, opts: { bypassApprovals?: boolean } = {}): Promise<void> {
   await page.evaluate((bypass) => {
