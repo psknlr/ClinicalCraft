@@ -314,9 +314,10 @@
           "变声",
           "下面变大",
           "怎么发现",
-          "孩子的情况",
           "说说情况",
-          "讲讲情况"
+          "讲讲情况",
+          "说说孩子的情况",
+          "讲讲孩子的情况"
         ],
         "en": [
           "what brings",
@@ -3471,6 +3472,18 @@
       "response": {
         "zh-CN": "随访计划已写好。报告只记录了一年随访时的情况，没有记录随访的频次和项目。",
         "en": "The plan is written. The report records only the one-year review, not the schedule or what was checked at each visit."
+      },
+      "excludeKeywords": {
+        "en": [
+          "send him home",
+          "discharge him",
+          "go home"
+        ],
+        "zh-CN": [
+          "让他出院",
+          "出院回家",
+          "回家"
+        ]
       }
     },
     {
@@ -3507,9 +3520,7 @@
           "anaesthetise him for the ct",
           "anaesthetise him for the scan",
           "ga for the ct",
-          "put him to sleep for the scan",
-          "anaesthetise him",
-          "anesthetize him"
+          "put him to sleep for the scan"
         ]
       },
       "dose": {
@@ -3764,14 +3775,8 @@
           "without",
           "follow-up plan",
           "follow up in",
-          "clinic",
           "outpatient",
           "appointment"
-        ],
-        "zh-CN": [
-          "随访",
-          "复查",
-          "门诊"
         ]
       }
     }

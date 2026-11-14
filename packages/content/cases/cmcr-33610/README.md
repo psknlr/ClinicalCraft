@@ -22,9 +22,9 @@ unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five phases, no simulated time) |
 | languages | `zh-CN` (source language; the report is in Chinese), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and three independent review rounds (rounds 1–3, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and four independent review rounds (rounds 1–4, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
 | phases | `admission` 入院：病史与查体 / Admission: history and examination → `workup` 第一批检查结果 / The first results → `search` 继续查找来源 / Looking further for the source → `theatre` 手术与病理 / Operation and histology → `followup` 报告记录的随访结局 / The reported follow-up — all one-way, none learner-switchable |
-| content | 21 history items (9 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 87 test utterances |
+| content | 21 history items (9 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 2 of them critical: sedation before the assessment and chemotherapy) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 92 test utterances |
 
 ## Learning outcomes
 
@@ -135,7 +135,7 @@ No objective holds a condition that can become permanently false (no phase leaf,
    aromatase inhibitor for presumed testotoxicosis), `testis-biopsy`.
 4. **`mass-plan` (search) — an anterosuperior mediastinal mass with β-hCG 16.0 IU/L.** Key `assess-then-resect`:
    multidisciplinary team; airway and circulation assessment before any sedation or anaesthetic; plan the anaesthetic
-   (spontaneous breathing); complete resection for full histology with baseline markers (SPA 2024; NCI PDQ 2024).
+   (spontaneous breathing where possible); complete resection for full histology with baseline markers (SPA 2024; NCI PDQ 2024).
    Distractors: `chemo-on-markers`, `sedated-biopsy-now` (sedation in the CT room without the anaesthetic review),
    `suppress-and-watch`.
 5. **`aftercare` (theatre) — after a resected cystic-solid teratoma.** Key `markers-imaging-puberty-ks`: β-hCG and AFP
@@ -176,7 +176,7 @@ distractor); `cases validate --strict` reports none.
 | wrong first answer at decision 1 / 2 / 4 / 5 only | 29/32 (91 %) each | passed | none |
 | wrong first answer at decision 3 only (closing on 47,XXY first) | 28/32 (88 %) | passed | `rb-tumour-search` |
 | reference path plus a GnRH analogue | 30/32 (94 %) | passed | none (`rb-no-harm` lost) |
-| reference path plus chemotherapy | 30/32 (94 %) | passed | none (`rb-no-harm` lost) |
+| reference path plus chemotherapy (at any point) | 30/32 (94 %) | **failed** (`chemo-now` is critical) | none (`rb-no-harm` lost) |
 | discharge before the follow-up plan | 30/32 (94 %) | passed | none (`rb-no-harm` lost) |
 | operation without any airway assessment | 28/32 (88 %); the case cannot be finished until the assessment is done | **failed** | `rb-airway-first` |
 | airway assessment only after the operation | 28/32 (88 %) | **failed** | `rb-airway-first` |
@@ -206,12 +206,15 @@ chest imaging that find the tumour — the phase that reveals the mass opens onl
 be credited in hindsight) and `rb-airway-first` (the dangerous error: an anaesthetic or sedation for an anterior
 mediastinal mass before the airway and circulation are assessed). Both are acts; neither reads a final-phase record.
 
-**Safety outcome.** `resection` and `sedation` are `critical: true`: an operation under general anaesthesia given before
-the airway and circulation assessment, or sedation or an anaesthetic for a scan or procedure given once a mediastinal tumour is being sought (decision 3
-answered) and before that assessment, risks airway or circulatory collapse (SPA case guide 2024), so either fails the assessment's safety outcome
-(`safety.passed: false`) whatever the score, and every debrief and export shows it. `chemo-now` (`risk: "high"`) is
-`critical: false`: starting chemotherapy without histology is a serious misjudgement, but one the tumour board and the
-next clinician stop before harm is done; `gnrha` and `discharge-now` (`risk: "moderate"`) are `critical: false` as
+**Safety outcome.** `resection`, `sedation` and `chemo-now` are `critical: true`. An operation under general
+anaesthesia given before the airway and circulation assessment, or sedation or an anaesthetic for a scan or procedure
+given once a mediastinal tumour is being sought (decision 3 answered) and before that assessment, risks airway or
+circulatory collapse (SPA case guide 2024). Platinum-based chemotherapy started without histology or diagnostic markers
+(`chemo-now`, contraindicated throughout: nothing in the case establishes an indication) exposes him to permanent
+hearing and kidney damage, bleomycin lung injury and neutropenic sepsis for a tumour that may not respond — irreversible
+or life-threatening harm, which CASE_AUTHORING §6 reserves `critical: true` for; the case's response records it as
+started, so no later check undoes it. Any of the three fails the assessment's safety outcome (`safety.passed: false`) whatever the
+score, and every debrief and export shows it. `gnrha` and `discharge-now` (`risk: "moderate"`) are `critical: false` as
 recoverable misjudgements. The reference path makes no critical or dose error (no dose presets are needed: the
 reference path gives no medicine, no item belongs to the engine's high-alert classes — insulins, potassium, heparins,
 opioids, thrombolytics — and the drug traps stand for a class or a protocol without a dose).
@@ -226,7 +229,7 @@ vaccinations, headache/vision/thirst, breathing, testicles, abdomen, the parent'
 counselling, learning support → `source-search` → (phase `search`) **β-hCG/AFP**, **chest imaging** → MDT referral →
 **airway assessment** → `mass-plan` → (phase `theatre`, in the operating room) **operation** (back to the ward) →
 operation and histology record → follow-up plan → `aftercare` → (phase `followup`) follow-up record → finish.
-`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 87/87, safety passed.
+`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 92/92, safety passed.
 
 ## Clinical numbers check
 
@@ -277,10 +280,10 @@ for a class or a protocol, and their `dose` texts say so.
 | error | where it shows |
 |---|---|
 | Treating as central puberty on the signs alone (GnRH analogue) | decision 1/2 distractors; the `gnrha` trap (`rb-no-harm`) |
-| Not comparing testicular volume with virilisation | decision 1 key and feedback; objective 2's hint |
+| Not comparing testicular volume with virilisation | decision 1 key and feedback; the attending's Socratic question |
 | Stopping at 47,XXY | decision 3 (`ks-explains-discharge`) costs the critical `rb-tumour-search`; the `discharge-now` trap |
 | Chasing the testes (biopsy) or blocking the androgen (FMPP regimen) without a source | decision 3 distractors |
-| Chemotherapy on a marker rise without tissue | decision 4 distractor and the `chemo-now` trap |
+| Chemotherapy on a marker rise without tissue | decision 4 distractor and the `chemo-now` trap (critical: the safety outcome fails) |
 | Sedating or anaesthetising before the airway assessment | decision 4 distractor; `sedation` and `resection` are critical; the case moves him to theatre once decision 4 is answered, so a learner who has not done the assessment meets the choice there |
 | Examining the genitals without explanation, consent and a chaperone | `rb-chaperone` is met only if the act comes before the examination |
 | Ending surveillance after one normal β-hCG, or giving testosterone/GnRH analogue routinely after surgery | decision 5 distractors |
@@ -420,7 +423,24 @@ already-completed reviews with generic names ("Subsequent chest and tumour evide
   看一下他的背; orders "MRI of his brain", "Ultrasound of his testes", "CT of the chest with contrast", 查LH、FSH,
   头颅核磁, 增强CT看纵隔; interventions "Remove the tumour" (had reached the MDT referral), "Take him to theatre",
   心脏彩超.
-- 87 test utterances (43 zh-CN, 44 en; 9 negatives), one at least for every required item; `cases verify` 87/87.
+- Review round 4: core's negation reader takes "no", "not", "don't", "avoid", "hold", 不要, 暂不, 无需… but not "without",
+  "unsedated" or 清醒/非 (reported centrally), so `sedation`, `chemo-now`, `gnrha` and `discharge-now` exclude "without"
+  and `sedation` also "awake", "unsedated", 清醒, 非镇静 and local-anaesthetic words: "Do the CT without sedation", "CT
+  chest without anaesthesia", "Unsedated CT chest", "Biopsy without sedation", 非镇静下做CT and 清醒状态下做CT had
+  reached the critical `sedation` (1.00), "Proceed to surgery without chemotherapy" `chemo-now`, "Manage him without a
+  GnRH analogue" `gnrha` — they now reach nothing or a which-did-you-mean prompt. The discharge item is "Discharge him
+  home now" / 现在让他出院回家 (its old name ended "…with routine clinic follow-up"), so "Arrange clinic follow-up",
+  "Follow up in clinic in 3 months", "Book an outpatient appointment", 安排门诊随访 and 门诊复查 reach the follow-up plan
+  instead of discharging him; "Send him home with clinic follow-up" still discharges. `airway-assessment` excludes
+  local-anaesthetic, intubation and chemotherapy words (局麻, 插管, 化疗); "Ask oncology to see him" and "Oncology review"
+  reach the MDT referral; "Book a CT scan" no longer offers the operation ("book surgery" became "book him for
+  surgery"). "Anaesthetise him" and "Give him an anaesthetic" stay a which-did-you-mean prompt (airway assessment or
+  sedation): a one-word "anaesthetise" alias would match every "anaesthetic …" order ("Refer to anaesthetics" →
+  sedation), the mirror of round 2's "anaesthetist" problem; 给他全麻 and 给他麻醉 reach `sedation`. History and
+  examination: 晨勃, 说说孩子的情况, "Is he taller than his classmates now?", "Has his behaviour changed?" (nothing),
+  "Any blood in his urine?" (nothing), "Measure how tall he is", and breast-examination requests (nothing: not
+  recorded) fixed.
+- 92 test utterances (45 zh-CN, 47 en; 11 negatives), one at least for every required item; `cases verify` 92/92.
 
 ## References
 
@@ -465,6 +485,12 @@ the ESPE/LWPES consensus does not say that a GnRH analogue makes a later stimula
 feedback had put that clause under its name; it is now the case's own sentence). Currency, checked online the same day:
 the PDQ page still reads "Updated: November 5, 2024"; the SPA guide on the society's site is the 2024-08-28 revision;
 no EAA Klinefelter update was found; the AAP statement's full text is still unreachable (publisher 403, no PMC copy).
+Review round 4 (2026-11-14) read every attributed passage again in the texts saved by rounds 1–3 (ESPE/LWPES 2009, EAA
+2021, NCI PDQ, the SPA guide) and on the live PDQ page, and found them as cited, except that the discharge trap's harm
+put "a gonadotropin-independent picture needs the source of the androgen found" under the ESPE/LWPES consensus, which
+does not discuss gonadotropin-independent precocity (now the case's own sentence), and that the anaesthetist applied the
+SPA guide to "any neck or chest mass" (its scope is the anterior mediastinal mass). Currency the same day: PDQ "Latest
+Updates to This Summary (11/05/2024)"; SPA "Last revised: 08/28/2024"; the AAP full text refused again (403).
 
 ### To verify
 
@@ -496,6 +522,8 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   the surveillance schedule (NCI PDQ's suggestions are at the physician's discretion).
 - Paediatric anaesthesia: the airway assessment as the critical act and `resection`/`sedation` as critical errors; the
   SPA case guide is a society teaching guide, not a formal guideline.
+- Paediatric oncology: `chemo-now` as a critical error (made `critical: true` in review round 4: platinum chemotherapy
+  without histology or diagnostic markers); confirm the classification and the harm text.
 - Genetics/endocrinology: the Klinefelter care items (EAA 2021) for a boy whose puberty has been driven early.
 - The AAP 2025 chaperone statement was checked in its abstract only (full text not reachable in review round 1); check
   its full text for genital examinations of a prepubertal child and restore the attribution if it holds.
@@ -512,7 +540,7 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   split into testosterone/GnRH, bone age, pituitary MRI, adrenal-testicular imaging, karyotype); the search (β-hCG/AFP and
   chest imaging); theatre (operation and histology); the reported follow-up. The two languages' differences are kept
   (Chinese wording in both) and listed under "To verify".
-- **History.** 15 template slots (8 answering "The source case does not provide that information") → 20 items in the
+- **History.** 15 template slots (8 answering "The source case does not provide that information") → 21 items in the
   parent's lay voice: 9 recorded facts (the name-and-age item added in review round 3), 11 honest unknowns ("I'm not sure,
   doctor."), 1 labelled ICE device; 7 required;
   the presenting complaint answers the plain openers in both languages.
@@ -582,6 +610,23 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   assessment's response no longer speaks of "this case"; the adrenal/testicular record's English name keeps 1.0.0's
   "other" (等); decision 3's guidance attribution covers the mediastinal point only; the timeline says an early β-hCG or
   chest-imaging order is placed again in `search`.
+- **Review round 4 (2026-11-14), independent reviewer.** Safety outcome: `chemo-now` is now `critical: true` — platinum
+  chemotherapy and bleomycin without histology or diagnostic markers risk permanent hearing and kidney damage, lung
+  injury and neutropenic sepsis (irreversible or life-threatening harm: CASE_AUTHORING §6), and the README's reason for
+  `false` ("the tumour board and the next clinician stop it before harm is done") contradicted the case's own response
+  ("Started."). Guidance: the discharge trap's harm put "a gonadotropin-independent picture needs the source of the
+  androgen found" under the ESPE/LWPES consensus's colon (the consensus does not say it; checked in its full text) — now
+  the case's own sentence; the anaesthetist applies the SPA guide to the anterior mediastinal mass, its scope, not "any
+  neck or chest mass". Assessment: core reads no "without" as a negation, so safe orders such as "Do the CT without
+  sedation", "Unsedated CT chest" and 非镇静下做CT reached the critical sedation, "Proceed to surgery without
+  chemotherapy" the chemotherapy and "Manage him without a GnRH analogue" the GnRH analogue; "Arrange clinic follow-up"
+  and 安排门诊随访 discharged him before the plan (the discharge item was named "…with routine clinic follow-up") — fixed
+  with exclusions, the discharge item renamed "Discharge him home now" and follow-up wording on the follow-up plan
+  (Matcher notes); two objective hints named a decision's key (the testes against the virilisation; "what still needs
+  assessing" before any anaesthetic) and coach without it now. Words: the mass-plan key keeps spontaneous breathing
+  "where possible" (its Chinese says 尽量); the parent says 我们俩, not 两口子 (1.0.0 records parents, not their
+  marriage); the changelog's history count is 21. Five utterances added (92). Every attributed passage re-read in its
+  source's own text; currency unchanged (PDQ 2024-11-05, SPA 2024-08-28, AAP full text still unreachable).
 
 ### 1.0.0 — 2026-10-28
 
@@ -593,14 +638,14 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-33610/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 57 steps · objectives 6/6 · decisions 5/5 · utterances 87/87 · rubric 32/32 (100 %)
+npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 57 steps · objectives 6/6 · decisions 5/5 · utterances 92/92 · rubric 32/32 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33610                                       # depth floor, openers, do-nothing 0/30, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33610:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33610:"  # in-world demonstration, en + zh-CN
-npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-33610"                  # every act possible in the general hospital (KIT §3.19)
+npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-33610"                  # every act possible in the general hospital (world spatial policy)
 ```
 
-Measured on 2026-11-14 after review round 3: all six pass.
+Measured on 2026-11-14 after review round 4: all six pass.
 
 ## 中文摘要
 
@@ -632,7 +677,7 @@ Measured on 2026-11-14 after review round 3: all six pass.
   的中枢性性早熟、化验误差、先天性肾上腺皮质增生症。
 - 决策3（47,XXY）：Klinefelter综合征导致性腺功能减退而不是性早熟，要查β-hCG和AFP、首先做纵隔影像并确认头颅影像覆盖松果体和
   鞍上区；首次答错即失去关键项`rb-tumour-search`。干扰项为用核型解释一切并出院、按家族性男性限性性早熟阻断雄激素、睾丸活检。
-- 决策4（纵隔肿物）：多学科讨论，任何镇静或全麻前评估气道和循环，保留自主呼吸的麻醉方案，完整切除送全面病理；干扰项为凭标
+- 决策4（纵隔肿物）：多学科讨论，任何镇静或全麻前评估气道和循环，尽量保留自主呼吸的麻醉方案，完整切除送全面病理；干扰项为凭标
   志物化疗、在CT室镇静穿刺、先抑制青春期观察。
 - 决策5（术后）：标志物和胸部影像随访，追踪睾酮、LH、生长和骨龄以发现继发中枢性青春期，Klinefelter综合征的遗传咨询和学习
   支持，青春期再评估雄激素和生育；干扰项为一次正常就停止随访、术后立即用睾酮、常规用GnRH类似物。
@@ -644,8 +689,8 @@ Measured on 2026-11-14 after review round 3: all six pass.
 遇到睾丸与男性化不相称的男孩时怎么做。评分：确定性总分32分；两项关键项（不在核型处停下、实际申请β-hCG/AFP和胸部影像；麻醉
 或镇静前先完成气道和循环评估）；沟通项由考官评判。
 
-**安全结果。** `resection`（未评估气道和循环就在全麻下手术）和`sedation`（决定查找纵隔肿瘤后、完成气道和循环评估之前为检查或操作镇静或麻醉）标为
-`critical: true`，
-任一发生时无论得分多少，安全结果都判为不通过（`safety.passed: false`）；`chemo-now`、`gnrha`和`discharge-now`标为`critical: false`，
+**安全结果。** `resection`（未评估气道和循环就在全麻下手术）、`sedation`（决定查找纵隔肿瘤后、完成气道和循环评估之前为检查或操作镇静或麻醉）
+和`chemo-now`（没有病理或足以确诊的肿瘤标志物就开始以铂类为基础的化疗，可造成永久性的听力和肾脏损害、博来霉素肺损伤和中性粒细胞减少期感染）
+标为`critical: true`，任一发生时无论得分多少，安全结果都判为不通过（`safety.passed: false`）；`gnrha`和`discharge-now`标为`critical: false`，
 属于可被纠正的判断失误。本病例经人工智能辅助编辑审核，并于2026-11-14完成第一轮独立复审（修正了一处改变事实的随访表述、气道评估与镇静的
-评分窗口和若干匹配问题；AAP 2025仅核对了摘要），同日完成第二轮独立复审（改正了一处把非指南内容归于ESPE/LWPES共识的表述、把“全麻下做CT”记作气道评估和把外科会诊记作手术的匹配错误，以及记录和措辞上的若干问题），同日完成第三轮独立复审（改正了复盘要点中把未复查MRI的原因缩窄为β-hCG和胸片的表述——报告的原因是一年随访的四项结果；修正了“量一下体温”“检查一下体格”等中文说法被当作外生殖器检查的匹配错误，增加了姓名和年龄条目，并修正了若干问法和措辞）；尚未经执业医师审核；待核实事项见上文“To verify”。
+评分窗口和若干匹配问题；AAP 2025仅核对了摘要），同日完成第二轮独立复审（改正了一处把非指南内容归于ESPE/LWPES共识的表述、把“全麻下做CT”记作气道评估和把外科会诊记作手术的匹配错误，以及记录和措辞上的若干问题），同日完成第三轮独立复审（改正了复盘要点中把未复查MRI的原因缩窄为β-hCG和胸片的表述——报告的原因是一年随访的四项结果；修正了“量一下体温”“检查一下体格”等中文说法被当作外生殖器检查的匹配错误，增加了姓名和年龄条目，并修正了若干问法和措辞），同日完成第四轮独立复审（把未经病理就化疗改为关键安全错误；改正了出院处置的危害说明中把“促性腺激素非依赖性的表现必须找到雄激素的来源”归于ESPE/LWPES共识的表述；修正了“不镇静做CT”“清醒状态下做CT”等安全医嘱被当作镇静、“安排门诊随访”被当作出院的匹配错误；两条目标提示不再点出决策答案）；尚未经执业医师审核；待核实事项见上文“To verify”。

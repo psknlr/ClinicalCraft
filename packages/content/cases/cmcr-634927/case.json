@@ -310,7 +310,7 @@
       },
       "answer": {
         "zh-CN": "她三个小时前被发现躺在床上，人不清醒，两只胳膊在抽。",
-        "en": "Three hours ago she was found lying in bed, not conscious, with both arms jerking."
+        "en": "Three hours ago she was found lying in bed, not conscious, with both arms convulsing."
       },
       "keywords": {
         "zh-CN": [
@@ -381,7 +381,9 @@
           "喝水",
           "口干",
           "一年",
-          "糖尿病"
+          "糖尿病",
+          "口渴",
+          "渴"
         ],
         "en": [
           "before",
@@ -395,7 +397,10 @@
           "a year",
           "long-term",
           "long term",
-          "illnesses"
+          "illnesses",
+          "diabetes",
+          "diabetic",
+          "metformin"
         ]
       },
       "disclosure": "volunteer",
@@ -455,7 +460,9 @@
           "过敏",
           "除了",
           "别的病",
-          "其他病"
+          "其他病",
+          "高血压",
+          "中风"
         ],
         "en": [
           "family",
@@ -466,7 +473,10 @@
           "apart from",
           "besides",
           "other than",
-          "any other"
+          "any other",
+          "highbloodpressure",
+          "hypertension",
+          "stroke"
         ]
       },
       "disclosure": "on-ask",
@@ -518,14 +528,30 @@
           "其他药",
           "多吃了",
           "别的什么药",
-          "其他什么药"
+          "其他什么药",
+          "药瓶",
+          "月经",
+          "例假",
+          "感觉",
+          "以后",
+          "去氨加压素",
+          "这个药"
         ],
         "en": [
           "allerg",
           "anything else",
           "other medicines",
           "overdose",
-          "too many"
+          "too many",
+          "bottle",
+          "empty",
+          "periods",
+          "menstrua",
+          "feel",
+          "starting",
+          "new medicine",
+          "this medicine",
+          "desmopressin"
         ]
       },
       "disclosure": "on-ask",
@@ -589,7 +615,11 @@
           "litres",
           "liters",
           "litre",
-          "eating"
+          "eating",
+          "today",
+          "haveyouhad",
+          "howlonghaveyou",
+          "haveyoubeen"
         ]
       },
       "disclosure": "on-ask",
@@ -622,7 +652,13 @@
           "排尿",
           "尿得多",
           "上厕所",
-          "厕所"
+          "厕所",
+          "起夜",
+          "夜尿",
+          "尿特别多",
+          "尿很多",
+          "尿是不是",
+          "尿多不多"
         ],
         "en": [
           "urine",
@@ -718,6 +754,13 @@
       "source": {
         "zh-CN": "1.0.0版没有记录：如实保持未知，不作补充",
         "en": "Not recorded in version 1.0.0; left unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "en": [
+          "healthproblem",
+          "medicalproblem",
+          "illness"
+        ]
       }
     },
     {
@@ -739,7 +782,12 @@
           "以前得过",
           "住过院",
           "心脏",
-          "肾"
+          "肾",
+          "中风",
+          "脑梗",
+          "高血压",
+          "心脏病",
+          "肾病"
         ],
         "en": [
           "other illness",
@@ -753,7 +801,11 @@
           "health problems",
           "apart from diabetes",
           "besides diabetes",
-          "other medical"
+          "other medical",
+          "stroke",
+          "highbloodpressure",
+          "hypertension",
+          "heart disease"
         ]
       },
       "excludeKeywords": {
@@ -810,6 +862,15 @@
       "source": {
         "zh-CN": "1.0.0版没有记录：如实保持未知，不作补充",
         "en": "Not recorded in version 1.0.0; left unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "en": [
+          "areyouarelative",
+          "areyouherrelative",
+          "areyourelated",
+          "areyoufamily",
+          "areyouherfamily"
+        ]
       }
     },
     {
@@ -870,7 +931,10 @@
           "喝酒",
           "酒",
           "吃了什么",
-          "中毒"
+          "中毒",
+          "药瓶",
+          "空药瓶",
+          "药盒"
         ],
         "en": [
           "toomanytablets",
@@ -882,7 +946,11 @@
           "takensomething",
           "takenanything",
           "tookanything",
-          "takeanything"
+          "takeanything",
+          "tooksomething",
+          "pill bottle",
+          "empty bottle",
+          "packets"
         ]
       },
       "disclosure": "unknown",
@@ -910,7 +978,10 @@
           "最后一次",
           "上一次看到",
           "还好的时候",
-          "什么时候还好"
+          "什么时候还好",
+          "看到她倒下",
+          "有人看到",
+          "谁看到"
         ],
         "en": [
           "last seen",
@@ -951,7 +1022,9 @@
           "那几天",
           "之前几天",
           "感冒",
-          "咳嗽"
+          "咳嗽",
+          "生病",
+          "最近病"
         ],
         "en": [
           "fever",
@@ -962,7 +1035,11 @@
           "days before",
           "unwell before",
           "infection",
-          "cough"
+          "cough",
+          "illrecently",
+          "beenill",
+          "unwellrecently",
+          "sickrecently"
         ]
       },
       "disclosure": "unknown",
@@ -992,7 +1069,11 @@
           "癫痫",
           "羊癫疯",
           "以前有没有抽",
-          "抽搐过"
+          "抽搐过",
+          "以前出现过",
+          "以前有过这种",
+          "以前也这样",
+          "以前发生过"
         ],
         "en": [
           "fits before",
@@ -1049,7 +1130,10 @@
           "your name",
           "are you her",
           "areyouher",
-          "family member"
+          "family member",
+          "areyourelated",
+          "youarelative",
+          "areyouherrelative"
         ]
       },
       "disclosure": "on-ask",
@@ -1059,6 +1143,13 @@
       "source": {
         "zh-CN": "教学设计：陪同者为教学角色；与她的关系没有记录",
         "en": "Teaching design: the companion is a teaching role; their relationship to her is not recorded"
+      },
+      "excludeKeywords": {
+        "en": [
+          "wanttoask",
+          "anyquestions",
+          "anythingyouwant"
+        ]
       }
     },
     {
@@ -1078,7 +1169,9 @@
           "最担心",
           "害怕",
           "顾虑",
-          "放心不下"
+          "放心不下",
+          "想问",
+          "有什么问题"
         ],
         "en": [
           "worried",
@@ -1087,7 +1180,10 @@
           "afraid",
           "concern",
           "scared",
-          "frightened"
+          "frightened",
+          "anyquestions",
+          "any questions",
+          "want to ask"
         ]
       },
       "disclosure": "on-ask",
@@ -1108,7 +1204,7 @@
       },
       "answer": {
         "zh-CN": "我现在醒过来了。他们告诉我，我是被发现躺在床上、人不清醒、两只胳膊在抽。",
-        "en": "I'm awake now. They tell me I was found lying in bed, not conscious, with both arms jerking."
+        "en": "I'm awake now. They tell me I was found lying in bed, not conscious, with both arms convulsing."
       },
       "keywords": {
         "zh-CN": [
@@ -1120,7 +1216,11 @@
           "怎么了",
           "怎么回事",
           "哪里不舒服",
-          "好些了"
+          "好些了",
+          "住进来",
+          "怎么来的医院",
+          "怎么进的医院",
+          "怎么住院"
         ],
         "en": [
           "how are you",
@@ -1181,18 +1281,41 @@
           "liters",
           "howmanyyears",
           "howlonghaveyou",
-          "a day",
           "dry mouth",
-          "fluids"
+          "fluids",
+          "aday",
+          "perday"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "喝酒",
-          "酒"
+          "酒",
+          "糖尿病",
+          "二甲双胍",
+          "降糖",
+          "血糖",
+          "今天",
+          "现在喝",
+          "现在一天",
+          "这几天喝",
+          "现在"
         ],
         "en": [
-          "alcohol"
+          "alcohol",
+          "diabetes",
+          "diabetic",
+          "metformin",
+          "tablets",
+          "sugar",
+          "glucose",
+          "today",
+          "drinkingnow",
+          "drinknow",
+          "atthemoment",
+          "thesedays",
+          "nowadays",
+          "rightnow"
         ]
       },
       "disclosure": "on-ask",
@@ -1204,6 +1327,171 @@
       "source": {
         "zh-CN": "1.0.0版记录：后续追问得知多饮十八年，每日5–8 L；由她本人讲述为教学设计",
         "en": "Recorded in version 1.0.0: further questioning disclosed polydipsia for eighteen years, 5–8 L a day; that she tells it herself is a teaching device"
+      }
+    },
+    {
+      "id": "own-diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "您有糖尿病吗？查出来多久了，平时测血糖吗？",
+        "en": "Do you have diabetes — how long have you known, and do you check your sugar?"
+      },
+      "answer": {
+        "zh-CN": "我一年前查出了糖尿病，平时没有按时测血糖。",
+        "en": "I was found to have diabetes a year ago, and I haven't been checking my sugar regularly."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病",
+          "血糖",
+          "测血糖",
+          "血糖高",
+          "查出",
+          "监测血糖",
+          "以前的病"
+        ],
+        "en": [
+          "diabetes",
+          "diabetic",
+          "sugar",
+          "blood sugar",
+          "glucose",
+          "monitor",
+          "checking",
+          "medical history",
+          "medical problems",
+          "health problems"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "她",
+          "家里",
+          "二甲双胍",
+          "吃什么药",
+          "过敏",
+          "除了",
+          "别的病",
+          "其他病",
+          "喝水",
+          "口渴"
+        ],
+        "en": [
+          "doesshe",
+          "isshe",
+          "hasshe",
+          "wasshe",
+          "didshe",
+          "family",
+          "metformin",
+          "tablets",
+          "medicine",
+          "allerg",
+          "apart from",
+          "besides",
+          "other than",
+          "any other",
+          "drink",
+          "thirst"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "ward",
+        "desmopressin",
+        "outcome"
+      ],
+      "supersedes": [
+        "diabetes"
+      ],
+      "speaker": "patient",
+      "source": {
+        "zh-CN": "1.0.0版记录：一年前发现糖尿病，平时没有规律监测血糖；由她本人讲述为教学改写",
+        "en": "Recorded in version 1.0.0: diabetes recognised one year earlier, without regular glucose monitoring; that she tells it herself is a teaching device"
+      }
+    },
+    {
+      "id": "own-metformin",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "您平时吃什么降糖药？吃得规律吗？",
+        "en": "What do you take for your diabetes, and do you take it regularly?"
+      },
+      "answer": {
+        "zh-CN": "我吃二甲双胍，不过吃得不规律。",
+        "en": "I take metformin, but not regularly."
+      },
+      "keywords": {
+        "zh-CN": [
+          "二甲双胍",
+          "降糖药",
+          "吃药",
+          "用药",
+          "什么药",
+          "按时吃",
+          "规律",
+          "服药"
+        ],
+        "en": [
+          "metformin",
+          "tablets",
+          "medication",
+          "medicines",
+          "pills",
+          "regularly",
+          "foryourdiabetes"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "她",
+          "过敏",
+          "别的药",
+          "其他药",
+          "多吃了",
+          "药瓶",
+          "去氨加压素",
+          "这个药",
+          "月经",
+          "例假",
+          "感觉",
+          "以后"
+        ],
+        "en": [
+          "doesshe",
+          "isshe",
+          "hasshe",
+          "shetake",
+          "allerg",
+          "anything else",
+          "other medicines",
+          "overdose",
+          "too many",
+          "bottle",
+          "desmopressin",
+          "new medicine",
+          "this medicine",
+          "periods",
+          "menstrua",
+          "feel",
+          "starting"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "ward",
+        "desmopressin",
+        "outcome"
+      ],
+      "supersedes": [
+        "metformin"
+      ],
+      "speaker": "patient",
+      "source": {
+        "zh-CN": "1.0.0版记录：二甲双胍服用不规律；由她本人讲述为教学改写",
+        "en": "Recorded in version 1.0.0: metformin taken irregularly; that she tells it herself is a teaching device"
       }
     },
     {
@@ -1228,7 +1516,10 @@
           "排尿",
           "晚上起来",
           "晚上要起来",
-          "起来小便"
+          "起来小便",
+          "尿还多",
+          "尿多吗",
+          "尿还很多"
         ],
         "en": [
           "urine",
@@ -1379,7 +1670,8 @@
           "自己的病",
           "我的病",
           "您的病",
-          "你的病"
+          "你的病",
+          "想问"
         ],
         "en": [
           "worried",
@@ -1392,7 +1684,9 @@
           "your illness",
           "yourillness",
           "your condition",
-          "yourcondition"
+          "yourcondition",
+          "want to ask",
+          "anyquestions"
         ]
       },
       "excludeKeywords": {
@@ -1436,7 +1730,10 @@
           "不舒服",
           "怎么样了",
           "现在感觉",
-          "天旋地转"
+          "天旋地转",
+          "发飘",
+          "站不稳",
+          "头昏"
         ],
         "en": [
           "dizzy",
@@ -1449,7 +1746,8 @@
           "howareyou",
           "unwell",
           "spinning",
-          "vertigo"
+          "vertigo",
+          "unsteady"
         ]
       },
       "disclosure": "volunteer",
@@ -1507,6 +1805,75 @@
       }
     },
     {
+      "id": "drinking-history",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "住院以前，您喝水多有多少年了？一天喝多少？",
+        "en": "Before you came into hospital, how many years had you been drinking a lot, and how much a day?"
+      },
+      "answer": {
+        "zh-CN": "住院以前，我喝水多已经十八年了，一天要喝五到八升。",
+        "en": "Before I came into hospital I'd been drinking a lot for eighteen years — five to eight litres a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "多少年",
+          "几年",
+          "十八年",
+          "以前喝",
+          "住院以前",
+          "住院前"
+        ],
+        "en": [
+          "howmanyyears",
+          "howlonghaveyou",
+          "years",
+          "before you came in",
+          "beforehospital"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "她",
+          "现在喝",
+          "现在一天",
+          "这几天喝",
+          "今天",
+          "糖尿病",
+          "二甲双胍",
+          "现在"
+        ],
+        "en": [
+          "doesshe",
+          "isshe",
+          "hasshe",
+          "drinkingnow",
+          "drinknow",
+          "atthemoment",
+          "thesedays",
+          "nowadays",
+          "rightnow",
+          "today",
+          "diabetes",
+          "metformin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "desmopressin",
+        "outcome"
+      ],
+      "supersedes": [
+        "long-drinking"
+      ],
+      "speaker": "patient",
+      "source": {
+        "zh-CN": "1.0.0版记录：后续追问得知多饮十八年，每日5–8 L；由她本人讲述、以住院前为时间点均为教学改写",
+        "en": "Recorded in version 1.0.0: further questioning disclosed polydipsia for eighteen years, 5–8 L a day; that she tells it herself, dated to before the admission, is a teaching adaptation"
+      }
+    },
+    {
       "id": "intake-now",
       "topic": "hpi",
       "question": {
@@ -1523,14 +1890,20 @@
           "现在一天",
           "最近喝",
           "这几天喝",
-          "喝多少水"
+          "喝多少水",
+          "喝了多少",
+          "今天喝了多少"
         ],
         "en": [
           "drinking now",
           "atthemoment",
-          "these days",
           "drinking each day",
-          "howmuchareyoudrinking"
+          "howmuchareyoudrinking",
+          "thesedays",
+          "water today",
+          "drink today",
+          "drunk today",
+          "fluid today"
         ]
       },
       "disclosure": "unknown",
@@ -1566,7 +1939,9 @@
           "反应",
           "睁眼",
           "疼痛刺激",
-          "叫得醒"
+          "叫得醒",
+          "掐",
+          "捏"
         ],
         "en": [
           "conscious",
@@ -1584,7 +1959,11 @@
           "wake",
           "react",
           "painful stimulus",
-          "sternal rub"
+          "sternal rub",
+          "trapezius",
+          "squeeze",
+          "pinch",
+          "supraorbital"
         ]
       },
       "finding": {
@@ -1615,7 +1994,8 @@
           "摸脉",
           "脉",
           "生命体征",
-          "心跳"
+          "心跳",
+          "体征"
         ],
         "en": [
           "pulse",
@@ -1627,7 +2007,8 @@
           "obs",
           "observations",
           "heart",
-          "heart going"
+          "heart going",
+          "wrist"
         ]
       },
       "excludeKeywords": {
@@ -1669,7 +2050,8 @@
           "血压",
           "量血压",
           "测血压",
-          "生命体征"
+          "生命体征",
+          "体征"
         ],
         "en": [
           "blood pressure",
@@ -1693,6 +2075,47 @@
       "source": {
         "zh-CN": "1.0.0版记录：血压121/74 mmHg",
         "en": "Recorded in version 1.0.0: blood pressure 121/74 mmHg"
+      }
+    },
+    {
+      "id": "awake-ward",
+      "system": "mental-status",
+      "maneuver": {
+        "zh-CN": "评估她的意识水平",
+        "en": "Assess her level of consciousness"
+      },
+      "keywords": {
+        "zh-CN": [
+          "意识",
+          "神志",
+          "清醒",
+          "叫醒",
+          "反应",
+          "睁眼"
+        ],
+        "en": [
+          "conscious",
+          "consciousness",
+          "alert",
+          "awake",
+          "responsive",
+          "level of",
+          "gcs",
+          "avpu"
+        ]
+      },
+      "finding": {
+        "zh-CN": "她已清醒。",
+        "en": "She is awake."
+      },
+      "abnormal": false,
+      "required": false,
+      "phases": [
+        "ward"
+      ],
+      "source": {
+        "zh-CN": "1.0.0版记录：经治疗后恢复意识（具体时间没有记录）",
+        "en": "Recorded in version 1.0.0: consciousness recovered after treatment (when is not recorded)"
       }
     }
   ],
@@ -1728,7 +2151,9 @@
           "finger prick",
           "bm",
           "cbg",
-          "sugar level"
+          "sugar level",
+          "check her sugar",
+          "her sugar"
         ]
       },
       "requires": [
@@ -2040,7 +2465,6 @@
           "urine ketones",
           "urine glucose",
           "specific gravity",
-          "ua",
           "dip her urine",
           "dipstick"
         ]
@@ -2172,7 +2596,8 @@
       "aliases": {
         "zh-CN": [
           "尿渗透压",
-          "尿渗"
+          "尿渗",
+          "尿的渗透压"
         ],
         "en": [
           "urine osmolality",
@@ -2195,8 +2620,8 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "报告用的是尿比重。",
-            "en": "The report used urine specific gravity."
+            "zh-CN": "她的尿液记录的是尿比重。",
+            "en": "Her urine was assessed by specific gravity."
           }
         },
         "ward": {
@@ -2206,8 +2631,8 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "报告用的是尿比重。",
-            "en": "The report used urine specific gravity."
+            "zh-CN": "她的尿液记录的是尿比重。",
+            "en": "Her urine was assessed by specific gravity."
           }
         }
       }
@@ -2367,7 +2792,9 @@
           "第一天记录",
           "第一天的记录",
           "首日记录",
-          "第一天出入量"
+          "第一天出入量",
+          "第一天的出入量",
+          "第1天的出入量"
         ],
         "en": [
           "day one record",
@@ -2378,7 +2805,9 @@
           "first day fluid balance",
           "day 1 notes",
           "day one notes",
-          "first day notes"
+          "first day notes",
+          "day one fluid chart",
+          "day 1 fluid chart"
         ]
       },
       "requires": [
@@ -2418,8 +2847,8 @@
     {
       "id": "day-ten-record",
       "name": {
-        "zh-CN": "约第10天病房记录",
-        "en": "Ward review, about day ten"
+        "zh-CN": "约十天后的病房记录",
+        "en": "Ward review, about ten days later"
       },
       "category": "record",
       "aliases": {
@@ -2428,7 +2857,9 @@
           "第十天记录",
           "第10天记录",
           "病程记录",
-          "查房记录"
+          "查房记录",
+          "十天后的记录",
+          "十天后的病房记录"
         ],
         "en": [
           "ward review",
@@ -2436,7 +2867,8 @@
           "day 10",
           "progress notes",
           "ward notes",
-          "ward round"
+          "ward round",
+          "ten days later"
         ]
       },
       "requires": [
@@ -2471,8 +2903,8 @@
             }
           ],
           "note": {
-            "zh-CN": "这段时间的血糖数值、第1天到第10天之间的治疗、她的体重以及她在病房能否自由饮水，都没有记录。",
-            "en": "Her glucose values, her treatment between day one and day ten, her weight and whether she could drink freely on the ward are not recorded."
+            "zh-CN": "这段时间的血糖数值、第1天到这次查房之间的治疗、她的体重以及她在病房能否自由饮水，都没有记录。",
+            "en": "Her glucose values, her treatment between day one and this review, her weight and whether she could drink freely on the ward are not recorded."
           },
           "source": {
             "zh-CN": "1.0.0版记录：治疗后恢复意识；约十天后血糖已控制，钠再升至162 mmol/L、尿量8.4 L/日；血糖与尿量变化不相称而进一步追问",
@@ -2496,7 +2928,8 @@
           "垂体后叶素试验结果",
           "禁水-加压素试验结果",
           "禁水加压试验记录",
-          "禁水试验的结果"
+          "禁水试验的结果",
+          "禁水试验的记录"
         ],
         "en": [
           "deprivation test result",
@@ -2535,7 +2968,7 @@
           },
           "source": {
             "zh-CN": "1.0.0版记录：禁水/垂体后叶素试验中尿比重由1.005升至1.020、尿量减少（1.0.0版称“既往完成”）",
-            "en": "Recorded in version 1.0.0: on the water deprivation / posterior-pituitary extract test urine specific gravity rose from 1.005 to 1.020 with reduced output (1.0.0 called it 'previously completed')"
+            "en": "Recorded in version 1.0.0: on the water deprivation / posterior-pituitary extract test urine specific gravity rose from 1.005 to 1.020 with reduced output (1.0.0 called it 'historically completed')"
           }
         }
       }
@@ -2713,7 +3146,9 @@
           "去氨加压素记录",
           "用药后记录",
           "去氨加压素治疗记录",
-          "后续记录"
+          "后续记录",
+          "用药后的记录",
+          "用去氨加压素后的记录"
         ],
         "en": [
           "desmopressin record",
@@ -2823,9 +3258,45 @@
         "unlessMatches": "serum|plasma|blood|paired|both|血浆|血清|血尿|血、尿|血和尿|配对"
       },
       {
-        "ifMatches": "urine ketone|尿酮",
+        "ifMatches": "urineketone|尿酮",
         "remove": [
           "ketones"
+        ]
+      },
+      {
+        "ifMatches": "urineglucose|urinesugar|尿糖",
+        "unlessMatches": "bloodglucose|bloodsugar|capillary|finger|cbg|血糖|指尖|末梢|床旁",
+        "remove": [
+          "glucose"
+        ]
+      },
+      {
+        "ifMatches": "(dip|urinalysis|尿常规|尿检|尿试纸).*(ketone|glucose|sugar|酮|糖)|(ketone|glucose|sugar|酮|糖).*(dip|urinalysis|尿常规|尿检|尿试纸)",
+        "unlessMatches": "blood|capillary|finger|serum|plasma|beta|bhb|cbg|血糖|血酮|指尖|末梢|床旁|羟丁酸",
+        "remove": [
+          "glucose",
+          "ketones"
+        ]
+      },
+      {
+        "ifHas": "deprivation-test",
+        "unlessMatches": "urinalysis|dipstick|尿常规|尿检",
+        "remove": [
+          "urinalysis"
+        ]
+      },
+      {
+        "ifHas": "desmo-record",
+        "unlessMatches": "repeat|again|recheck|electrolyte|复查|再查|电解质|肾功能",
+        "remove": [
+          "electrolytes"
+        ]
+      },
+      {
+        "ifMatches": "adrenal|肾上腺",
+        "unlessMatches": "electrolyte|sodium|potassium|creatinine|电解质|血钠|血钾|肌酐",
+        "remove": [
+          "electrolytes"
         ]
       }
     ],
@@ -3234,7 +3705,10 @@
           "admit her",
           "level 2",
           "admission",
-          "intensive care"
+          "intensive care",
+          "my consultant",
+          "the consultant",
+          "call the consultant"
         ]
       },
       "dose": {
@@ -3276,7 +3750,9 @@
           "insulin infusion",
           "insulin drip",
           "friii",
-          "iv insulin"
+          "iv insulin",
+          "actrapid",
+          "regular insulin"
         ]
       },
       "dose": {
@@ -3454,8 +3930,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "她已清醒，按量口服补水（不能饮水时才静脉输注5%葡萄糖，并监测血糖），使血钠每小时下降不超过0.5 mmol/L、24小时不超过10 mmol/L；补液期间每4小时查血钠（英国内分泌学会2018）。",
-        "en": "Water by mouth in measured amounts now that she is awake (5% glucose IV only if she cannot drink, with glucose checks), so that her sodium falls by no more than 0.5 mmol/L an hour and 10 mmol/L in 24 hours; sodium every 4 hours while fluids are being replaced (Society for Endocrinology 2018)."
+        "zh-CN": "能安全饮水时按量口服补水（不能饮水时才静脉输注5%葡萄糖，并监测血糖），使血钠每小时下降不超过0.5 mmol/L、24小时不超过10 mmol/L；补液期间每4小时查血钠（英国内分泌学会2018）。",
+        "en": "Water by mouth in measured amounts when she can drink safely (5% glucose IV only if she cannot, with glucose checks), so that her sodium falls by no more than 0.5 mmol/L an hour and 10 mmol/L in 24 hours; sodium every 4 hours while fluids are being replaced (Society for Endocrinology 2018)."
       },
       "requires": [],
       "risk": "moderate",
@@ -3571,7 +4047,9 @@
           "禁食禁水",
           "禁食水",
           "禁饮",
-          "禁止经口进食进水"
+          "禁止经口进食进水",
+          "饮水限制",
+          "限制在"
         ],
         "en": [
           "fluid restriction",
@@ -3611,7 +4089,33 @@
         "zh-CN": "血钠高时不能限水：她血钠162 mmol/L、每天尿量8.4 L，丢的水比喝进去的多，限制饮水只会让血钠更高，走向抽搐和循环衰竭。英国内分泌学会（2018）把这种高钠血症当作急症处理，并补足缺失的水分——能喝水时经口补充——而不是限制。",
         "en": "Not while her sodium is high: with a sodium of 162 mmol/L and 8.4 L of urine a day she is losing more water than she takes in, and restricting what she drinks drives the sodium higher, towards seizures and collapse. The Society for Endocrinology (2018) treats such hypernatraemia as a medical emergency and replaces the water deficit — by mouth when the patient can drink — rather than withholding it."
       },
-      "effects": []
+      "effects": [],
+      "excludeKeywords": {
+        "en": [
+          "no fluid restriction",
+          "avoid fluid restriction",
+          "not be fluid restricted",
+          "not fluid restrict",
+          "not restrict",
+          "dont restrict",
+          "no restriction",
+          "without restriction",
+          "avoid restricting",
+          "never restrict",
+          "no hypotonic"
+        ],
+        "zh-CN": [
+          "不要限",
+          "别限",
+          "不限",
+          "无需限",
+          "不需要限",
+          "不用限",
+          "不必限",
+          "不能限",
+          "不应限"
+        ]
+      }
     },
     {
       "id": "desmopressin",
@@ -3660,7 +4164,11 @@
           "暂缓",
           "别用",
           "不要再",
-          "调整"
+          "调整",
+          "改为",
+          "改成",
+          "换成",
+          "调为"
         ],
         "en": [
           "hold",
@@ -3684,7 +4192,12 @@
           "skip",
           "pause",
           "omit",
-          "adjust"
+          "adjust",
+          "change the desmopressin",
+          "change desmopressin",
+          "change the ddavp",
+          "change the dose",
+          "switch the desmopressin"
         ]
       },
       "dose": {
@@ -3874,7 +4387,10 @@
           "弥凝少用",
           "去氨加压素停一次",
           "去氨加压素用量减少",
-          "调整去氨加压素剂量"
+          "调整去氨加压素剂量",
+          "去氨加压素改为",
+          "去氨加压素改成",
+          "弥凝改为"
         ],
         "en": [
           "hold the desmopressin",
@@ -3894,7 +4410,10 @@
           "lower the desmopressin",
           "smaller dose of desmopressin",
           "pause the desmopressin",
-          "adjust the desmopressin"
+          "adjust the desmopressin",
+          "change the desmopressin",
+          "change the desmopressin dose",
+          "change the ddavp dose"
         ]
       },
       "dose": {
@@ -3960,8 +4479,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "3%氯化钠会让血钠快速升高。欧洲低钠血症指南（2014）只把它用于伴中重度或严重症状的低钠血症（恶心、意识模糊、头痛；呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫），或有记录的急性下降超过10 mmol/L——不用于高钠，不用于上述症状以外的情况，也不用于下降时间不明的低钠（指南按慢性处理：停用诱发药物，24小时升幅不超过10 mmol/L）。",
-        "en": "3% saline raises the sodium quickly. The European hyponatraemia guideline (2014) gives it for hyponatraemia with moderately severe or severe symptoms (nausea, confusion, headache; vomiting, deep somnolence, seizures, coma, cardiorespiratory distress) or for a documented acute fall of more than 10 mmol/L — not for a high sodium, not for symptoms outside those lists, and not when the timing of the fall is undocumented, which it treats as chronic: stop the drug that provokes it and keep the rise within 10 mmol/L in 24 hours."
+        "zh-CN": "3%氯化钠会让血钠快速升高。欧洲低钠血症指南（2014）把它用于伴严重症状（呕吐、深度嗜睡、抽搐、昏迷、心肺窘迫）或中重度症状（恶心、意识模糊、头痛）的低钠血症，无论急性还是慢性；没有这些症状时，只用于有记录的急性下降超过10 mmol/L。它不用于高钠；没有上述症状、下降时间又没有记录的低钠，指南按慢性处理：停用诱发药物，第一个24小时升幅不超过10 mmol/L。",
+        "en": "3% saline raises the sodium quickly. The European hyponatraemia guideline (2014) gives it for hyponatraemia with severe symptoms (vomiting, deep somnolence, seizures, coma, cardiorespiratory distress) or moderately severe ones (nausea, confusion, headache), whether acute or chronic, and without such symptoms only for a documented acute fall of more than 10 mmol/L. It is not for a high sodium; and a low sodium without those symptoms whose fall is of undocumented timing is treated as chronic: stop the drug that provokes it and keep the rise within 10 mmol/L in the first 24 hours."
       },
       "response": {
         "zh-CN": "已输注。",
@@ -4153,8 +4672,8 @@
         "en": "About ten days later"
       },
       "short": {
-        "zh-CN": "第十天",
-        "en": "Day ten"
+        "zh-CN": "十天后",
+        "en": "Ten days on"
       },
       "hint": {
         "zh-CN": "看看头几天和病房的记录：哪些数字放在一起说不通？她自己能告诉你什么？",
@@ -4506,7 +5025,7 @@
         ]
       },
       "need": {
-        "zh-CN": "先看第1天治疗记录和约第10天的病房记录，并问她喝水的情况。",
+        "zh-CN": "先看第1天治疗记录和约十天后的病房记录，并问她喝水的情况。",
         "en": "Read the day-one record and the ward review, and ask her about her drinking."
       },
       "options": [
@@ -5468,6 +5987,14 @@
     },
     {
       "type": "ask",
+      "itemId": "own-diabetes"
+    },
+    {
+      "type": "ask",
+      "itemId": "own-metformin"
+    },
+    {
+      "type": "ask",
       "itemId": "urine-amount"
     },
     {
@@ -5593,6 +6120,10 @@
     {
       "type": "ask",
       "itemId": "intake-now"
+    },
+    {
+      "type": "ask",
+      "itemId": "drinking-history"
     },
     {
       "type": "order",
@@ -6064,6 +6595,104 @@
         "locale": "en",
         "expect": [
           "days-before"
+        ]
+      },
+      {
+        "text": "Do you have diabetes?",
+        "locale": "en",
+        "expect": [
+          "own-diabetes"
+        ]
+      },
+      {
+        "text": "您有糖尿病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "own-diabetes"
+        ]
+      },
+      {
+        "text": "How long have you had diabetes?",
+        "locale": "en",
+        "expect": [
+          "own-diabetes"
+        ]
+      },
+      {
+        "text": "Do you take your metformin every day?",
+        "locale": "en",
+        "expect": [
+          "own-metformin"
+        ]
+      },
+      {
+        "text": "二甲双胍您按时吃吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "own-metformin"
+        ]
+      },
+      {
+        "text": "Are you a relative?",
+        "locale": "en",
+        "expect": [
+          "companion-who"
+        ]
+      },
+      {
+        "text": "Does she have high blood pressure?",
+        "locale": "en",
+        "expect": [
+          "past-illness"
+        ]
+      },
+      {
+        "text": "她晚上起夜多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine-record"
+        ]
+      },
+      {
+        "text": "How much water have you had today?",
+        "locale": "en",
+        "expect": [
+          "intake-now"
+        ]
+      },
+      {
+        "text": "走路发飘吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "dizzy"
+        ]
+      },
+      {
+        "text": "Was there an empty pill bottle near her?",
+        "locale": "en",
+        "expect": [
+          "ingestion"
+        ]
+      },
+      {
+        "text": "您知道自己怎么住进来的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ward-now"
+        ]
+      },
+      {
+        "text": "How long have you been drinking so much water?",
+        "locale": "en",
+        "expect": [
+          "drinking-history"
+        ]
+      },
+      {
+        "text": "您喝水多有多少年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "drinking-history"
         ]
       }
     ]

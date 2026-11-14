@@ -21,8 +21,8 @@
 | Specialty | Endocrinology, emergency medicine |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; foundation doctors and residents in emergency, acute and internal medicine and endocrinology; ED and ward nurses for the monitoring, fluid and desmopressin-safety items |
-| Review status | Editorial review 2026-11-14 (AI-assisted) against the guidance below, each statement checked in the guideline's own text; independent review round 1 on 2026-11-14 (every patient fact traced to 1.0.0, each guideline statement re-read in its own text, scoring and free-text orders replayed); independent review round 2 on 2026-11-14 (the same, by a second reviewer, every act replayed in every phase); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article |
-| Content | 25 history items (14 not recorded, 6 required) · 3 exam findings · 17 investigations (6 record reviews, 5 tests with no recorded result in any phase) · 18 interventions (7 contraindicated in some or all circumstances, 3 of them critical) · 6 objectives · 5 decisions (20 options) · 15 rubric items (14 deterministic, weight 34; 1 examiner-judged; 3 critical) · 3 staff characters · 6 learning outcomes · 6 teaching points · 58 matcher utterances |
+| Review status | Editorial review 2026-11-14 (AI-assisted) against the guidance below, each statement checked in the guideline's own text; independent review round 1 on 2026-11-14 (every patient fact traced to 1.0.0, each guideline statement re-read in its own text, scoring and free-text orders replayed); independent review round 2 on 2026-11-14 (the same, by a second reviewer, every act replayed in every phase); independent review round 3 on 2026-11-14 (a third reviewer: facts, guideline texts, every act and nearly 300 new questions, examination requests and orders replayed in both languages); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article |
+| Content | 28 history items (14 not recorded, 6 required; 3 phase twins: her own words in the later phases for her diabetes, her metformin and her drinking history) · 4 exam findings · 17 investigations (6 record reviews, 5 tests with no recorded result in any phase) · 18 interventions (7 contraindicated in some or all circumstances, 3 of them critical) · 6 objectives · 5 decisions (20 options) · 15 rubric items (14 deterministic, weight 34; 1 examiner-judged; 3 critical) · 3 staff characters · 6 learning outcomes · 6 teaching points · 72 matcher utterances |
 | What the learner does | Takes the history from the person who came with her (she is unconscious), examines her, orders bedside, laboratory and imaging tests, reads the records of the later course, treats (fluids, potassium, insulin, monitoring, thromboprophylaxis, admission, water or fluid restriction, desmopressin and its adjustment, education), answers five decisions, and talks to the attending, the nurse and the radiologist |
 
 ## Learning outcomes
@@ -181,7 +181,7 @@ decision 4 only (56 characters each) and is never uniquely longest.
 | `rb-no-sodium-harm` | Safety | no 3% saline; no desmopressin while contraindicated (ED, or a further dose at sodium 122); no controlled water while contraindicated (ED, or at sodium 122); no fluid restriction on the ward; `scoredWhen` decision 2, 3 or 5 attempted or any of these given | 2 |
 | `rb-communication` | Communication (examiner) | Calgary–Cambridge with the companion and with her; DM versus AVP deficiency in plain words; desmopressin never missed, never overdosed; SPIKES where heavy; teach-back | 1 |
 
-### How wrong choices score (measured 2026-11-14 with the core engine; re-measured in review rounds 1 and 2)
+### How wrong choices score (measured 2026-11-14 with the core engine; re-measured in review rounds 1, 2 and 3)
 
 | Path | Score | Critical items missed | Safety outcome |
 |---|---|---|---|
@@ -230,17 +230,18 @@ Desmopressin given while contraindicated, 3% saline, controlled water in the eme
 the next clinician can stop and correct — and cost `rb-no-sodium-harm`. Only an order to run a hypotonic fluid fast or
 to normalise the sodium reaches the critical `rapid-hypotonic`; a measured hypotonic fluid (5% glucose, 0.45% saline,
 in any route) reaches `free-water`; only an order that names the deprivation test reaches `water-deprivation`, while nil
-by mouth or withheld oral fluids reach `fluid-restriction`. No other intervention is high risk.
+by mouth or withheld oral fluids reach `fluid-restriction`, and a negated restriction ("no fluid restriction", "do not
+restrict her fluids", 不要限水) restricts nothing. No other intervention is high risk.
 
 ## Reference path (`solution`)
 
-88 steps: start → the companion's history (16 items, including every unknown) → consciousness, pulse, blood pressure →
+91 steps: start → the companion's history (16 items, including every unknown) → consciousness, pulse, blood pressure →
 airway, two cannulas, cardiac monitor → glucose, sodium/potassium/creatinine, pH/bicarbonate, urinalysis, osmolality
 (each read), blood ketones and ECG (no result recorded), head CT (read) → decision 1 → decision 2 → 0.9% saline,
-potassium, hourly monitoring, prophylactic LMWH, senior review and HDU (the ward phase opens) → her own history (6 items) →
+potassium, hourly monitoring, prophylactic LMWH, senior review and HDU (the ward phase opens) → her own history (8 items, her diabetes and metformin among them) →
 day-one record, ward review, sodium and glucose (read), plasma and urine osmolality ordered → decision 3 → controlled
 water, endocrine referral → test record and MRI report (read), cortisol and free T4/TSH ordered → decision 4 →
-education, desmopressin (the third phase opens) → dizziness and the other symptom questions → record on desmopressin and
+education, desmopressin (the third phase opens) → dizziness, the other symptom questions and her drinking history → record on desmopressin and
 sodium (read) → decision 5 → desmopressin held or reduced (the outcome phase opens) → outcome, sodium and glucose read →
 finish. The path gives nothing while contraindicated and has no dose error (`cases verify`).
 
@@ -250,7 +251,7 @@ finish. The path gives nothing while contraindicated and has no dose error (`cas
 |---|---|---|
 | 50 years, female | patient | 1.0.0 |
 | Found 3 hours earlier, unconscious, convulsions of both arms, lying in bed | history `found`, chief complaint, triage | 1.0.0 |
-| Diabetes found 1 year earlier; no regular glucose monitoring; metformin irregular | history `diabetes`, `metformin` | 1.0.0 |
+| Diabetes found 1 year earlier; no regular glucose monitoring; metformin irregular | history `diabetes`, `metformin` (companion, ED); `own-diabetes`, `own-metformin` (her own words, later phases) | 1.0.0 |
 | Dry mouth and polydipsia for more than a year (initial record) | history `thirst` | 1.0.0 |
 | Pulse 104/min; BP 121/74 mmHg; unconscious | exam | 1.0.0 |
 | Glucose 33.7 mmol/L | `glucose` (ED) | 1.0.0 |
@@ -260,9 +261,9 @@ finish. The path gives nothing while contraindicated and has no dose error (`cas
 | Osmolality "392", unit to verify | `osmolality` (ED) | 1.0.0 |
 | Head CT unremarkable | `ct-head` (ED) | 1.0.0 |
 | About 9 L of fluid and 4.7 L of urine on day one; sodium 139 mmol/L the next day | `day-one-record` (ward) | 1.0.0 |
-| Consciousness recovered after treatment (when not recorded) | `day-ten-record`, ward phase | 1.0.0 |
+| Consciousness recovered after treatment (when not recorded) | `day-ten-record`, ward phase; exam `awake-ward` | 1.0.0 |
 | About 10 days later: glucose controlled; sodium 162 mmol/L (risen again); urine 8.4 L/day | `day-ten-record`, `electrolytes`, `glucose` (ward) | 1.0.0 |
-| Polydipsia 18 years, 5–8 L/day (further questioning) | history `long-drinking` | 1.0.0 |
+| Polydipsia 18 years, 5–8 L/day (further questioning) | history `long-drinking` (ward); `drinking-history` (later phases, dated to before the admission) | 1.0.0 |
 | Test: urine SG 1.005 → 1.020, urine output fell | `deprivation-test` (ward) | 1.0.0 |
 | MRI: empty sella | `mri-report` (ward) | 1.0.0 |
 | On desmopressin: urine 1.4–2.4 L/day; dizziness; sodium 122 mmol/L | `desmo-record`, `electrolytes`, history `dizzy` | 1.0.0 |
@@ -309,7 +310,8 @@ symptoms (repeat to +5 mmol/L) or once for moderately severe symptoms or a docum
 - **Analysis.**
   - Why is a urine specific gravity of 1.005 alarming beside a sodium of 172 mmol/L? What would glycosuria do to it?
   - Why fluids and potassium before insulin here? What does insulin do to a potassium of 3.2?
-  - The report's sodium fell 33 mmol/L by the next day and she woke up. Does a good outcome prove the rate was safe?
+  - The report's sodium fell 33 mmol/L by the next day, and she regained consciousness after treatment (when is not
+    recorded). Does a good outcome prove the rate was safe?
   - What PCO₂ would a pH of 7.4 with a bicarbonate of 36.5 need — and what would that tell you about her airway and
     breathing? (Neither the PCO₂ nor the sample type is recorded.)
   - Ten days on, can habit drinking produce a sodium of 162 mmol/L? Why might a woman who had compensated by drinking
@@ -347,7 +349,9 @@ desmopressin and the outcome are existing documents read at a records terminal (
 the test record and the MRI report exist only once decision 3 is answered (`availability.when`). She is non-verbal in the
 emergency phase only (`nonVerbalWhen: {phase: ed}`, reason "unconscious"); her companion answers every question there
 (`answersHistory: true`). The companion's relationship and sex are not recorded, so the companion is named neutrally and
-carries no `presentation` (KIT §5). From the ward phase on, she answers herself (`speaker: patient`). Capabilities used:
+carries no `presentation` (KIT §5). From the ward phase on, she answers herself (`speaker: patient`); her diabetes, her metformin and (on desmopressin
+and at the outcome) her drinking history are phase twins (`supersedes`) of the companion's and her ward answers, so a
+question about them reaches her own words there. Capabilities used:
 point-of-care, lab-chemistry, lab-blood-gas, lab-urinalysis, lab-endocrine, ecg-12lead, ct, records, cardiac-monitor,
 iv-access, infusion-pump, medications — all provided (`caseCapabilityGaps` is empty). The in-world demonstration
 replays the reference path in English and Chinese.
@@ -362,14 +366,16 @@ bicarbonate", "MRI report"), and says in each result's note what is not recorded
 dose).
 
 **Extraction summary (1.0.0 fact → 1.1.0).** Found unconscious in bed 3 h earlier with convulsions of both arms →
-`found` (companion), chief complaint, triage; diabetes found a year earlier, without regular monitoring → `diabetes`; metformin
-irregular → `metformin`; dry mouth and polydipsia >1 year (initial record) → `thirst`; no complete long-term urine record
+`found` (companion), chief complaint, triage; diabetes found a year earlier, without regular monitoring → `diabetes` (and her own `own-diabetes` later); metformin
+irregular → `metformin` (and `own-metformin`); dry mouth and polydipsia >1 year (initial record) → `thirst`; no complete long-term urine record
 → `urine-record`; unconscious, pulse 104/min, BP 121/74 mmHg → exam `consciousness`, `pulse`, `bp`; glucose, sodium,
 potassium, creatinine, pH, bicarbonate, urine ketones/SG/glucose, osmolality "392", head CT → `glucose`, `electrolytes`,
 `acid-base`, `urinalysis`, `osmolality`, `ct-head` (ED results); about 9 L in, 4.7 L out on day one, sodium 139 the next
 day → `day-one-record`; consciousness recovered after treatment, glucose controlled, sodium 162, urine 8.4 L/day about
 ten days later, the disproportion prompting further history → `day-ten-record` (and ward results of `electrolytes`,
-`glucose`); 18 years of polydipsia, 5–8 L/day → `long-drinking` (she tells it herself); deprivation/extract test SG
+`glucose`); 18 years of polydipsia, 5–8 L/day → `long-drinking` (she tells it herself; `drinking-history` on desmopressin and at the
+outcome, dated to before the admission so that it states nothing about her intake then); consciousness recovered → exam
+`awake-ward`; deprivation/extract test SG
 1.005→1.020 with less urine → `deprivation-test`; MRI empty sella → `mri-report`; desmopressin → urine 1.4–2.4 L/day,
 dizziness, sodium 122 → `desmo-record`, `dizzy`, `electrolytes` (desmopressin phase); dose reduced → sodium 135,
 glucose 5.5–7.4; no long-term outcome → `outcome`, outcome results of `electrolytes` and `glucose`. The report's title
@@ -401,9 +407,10 @@ are relative.
 
 **Teaching devices (not facts of the report).** The emergency-department staging, the resuscitation bay and the order of
 the first tests; the person who came with her (relationship not recorded) and their worry; the senior review and
-high-dependency admission and the ward location; the patient telling the 18-year history herself and her "they tell me"
-account of how she was found; her worry on the ward; the record names ("Day-one treatment record", "Ward review, about
-day ten", "Test record: urine specific gravity and output", "Later record: urine output and sodium") — chosen so that no
+high-dependency admission and the ward location; the patient telling the 18-year history herself (and, later, dating it
+to before the admission), telling her diabetes and metformin herself on the ward, and her "they tell me" account of how
+she was found; her worry on the ward; the record names ("Day-one treatment record", "Ward review, about
+ten days later", "Test record: urine specific gravity and output", "Later record: urine output and sodium") — chosen so that no
 name shown before its phase points at the diagnosis; the release of the test record and the MRI report after decision 3; the staff
 (Dr Qiao, Nurse Fang, Dr Han) and everything they say beyond the record; the decisions, interventions, scoring and
 teaching points.
@@ -441,10 +448,25 @@ drug. Review round 2: a reduction of the desmopressin in plain words ("halve the
 ("withhold oral fluids", "no oral fluids", "no fluids overnight", "withhold all fluids") reach `fluid-restriction`
 instead of the critical test; "serum and urine osmolality" / 血尿渗透压 offers both tests (the rule that drops the plasma
 test now applies only when the order names neither serum, plasma nor blood); "respiratory rate" no longer reaches the
-pulse; 50% dextrose no longer reaches water replacement. The 58-utterance corpus (both languages, three look-alike
+pulse; 50% dextrose no longer reaches water replacement. After round 2 the 58-utterance corpus (both languages, three look-alike
 negatives) passes with no extra selections; 71 further plain questions in round 2 (37 en, 34 zh) select the intended
 item (a few together with a related one that also answers), as do round 1's
-72 plain questions across the phases (15 or more per language).
+72 plain questions across the phases (15 or more per language). Review round 3: the awake patient asked about her own
+diabetes or metformin on the ward, on desmopressin or at the outcome ("Do you have diabetes?", 您平时吃什么药？) heard
+"I'm not sure, doctor", and "How long have you had diabetes?" / "Do you take your metformin every day?" reached the
+18-year drinking answer — phase twins `own-diabetes` and `own-metformin` now answer in her words, and `drinking-history`
+answers "How long have you been drinking so much?" on desmopressin without stating her intake now; negated restriction
+orders ("no fluid restriction", "do not restrict her fluids", "avoid fluid restriction", "no hypotonic fluids")
+reached the act itself, contraindicated on the ward (the negation was read as withholding saline) — `fluid-restriction`
+now excludes them; the `orderMatching` rule for urine ketones was written with a space and never fired (rules see the
+order without spaces), so "urine ketones" also ordered the blood ketones, "urine glucose" the glucose test and a urine
+dipstick "for ketones and glucose" all three — the rules now match the order as the engine sees it; the alias "ua" matched inside "evaluate", "actual" and "usual"
+(removed); a record typed by its name, or "adrenal function", no longer adds the test it only spells; "change the
+desmopressin to 50 micrograms at night" / 去氨加压素改为睡前50微克 reach the adjustment, not a further dose; and some 30
+history, exam and order phrasings ("Are you a relative?", a pill bottle, high blood pressure, 起夜, 发飘, "Feel her
+wrist", actrapid, "the consultant", 第一天的出入量, 尿的渗透压 …) reach their items. The corpus has 72 utterances (both
+languages, three look-alike negatives) and passes with no extra selections; rounds 1-2's 143 probe questions select as
+before.
 
 ## References
 
@@ -486,6 +508,12 @@ in the same full texts (ES 2016 re-extracted from the publisher's PDF in reading
 of each guideline (none found); it reworded two attributions the texts do not hold: an "alert card" credited to
 ES 2016 (its 2.18 suggests an emergency bracelet or necklace) and anterior pituitary testing "before she goes" credited
 to ES 2016 (the guideline lists an empty sella among the causes of hypopituitarism; the timing is the case's).
+Review round 3 (2026-11-14) re-read every attributed statement in the full texts again (JBDS-IP, the consensus, SfE 2018
+and the renaming statement from Europe PMC; ES 2016 and ESE 2014 from their PDFs) and searched again for newer editions
+(none). One statement was scoped: the 3% saline harm text had ESE 2014 withhold hypertonic saline whenever the timing of
+a fall is undocumented; the guideline gives it for severe or moderately severe symptoms whether the hyponatraemia is
+acute or chronic (7.1, 7.2), and an undocumented timing makes a fall chronic only for a patient without those symptoms
+(6.1.2.3, 7.4).
 
 ### To verify
 
@@ -504,6 +532,8 @@ to ES 2016 (the guideline lists an empty sella among the causes of hypopituitari
   the MRI wording (stalk, posterior bright spot).
 - The desmopressin preparation, doses, the reduced dose, and the time course of the sodium (122 → 135 mmol/L).
 - Any follow-up after discharge.
+- That the 18-year drinking history describes her habit before the admission (the case's later-phase answer dates it so),
+  and what the article says about her drinking on the ward and on desmopressin.
 
 **Clinician of the specialty (endocrinology / acute medicine) to confirm:**
 - The decision to mark insulin in the emergency phase, fast hypotonic infusion and water deprivation as critical, and
@@ -527,7 +557,7 @@ to ES 2016 (the guideline lists an empty sella among the causes of hypopituitari
 - **Structure.** Four phases that stage the evidence where it existed (arrival, about ten days later, on desmopressin,
   the reported outcome) instead of 1.0.0's four review stages; the first phase ends on an act (senior review and
   admission), the later ones on desmopressin started and adjusted in their own windows.
-- **History.** 25 items in the companion's and the patient's own words (6 required, 14 not recorded and answered in
+- **History.** 25 items (28 after review round 3) in the companion's and the patient's own words (6 required, 14 not recorded and answered in
   voice) replacing 15 generic slots answered "the source case does not provide that information"; a presenting-complaint
   item reached by the plain openers in both languages; the 18-year drinking history moved to the phase in which it was
   obtained.
@@ -583,6 +613,21 @@ to ES 2016 (the guideline lists an empty sella among the causes of hypopituitari
   implied earlier episodes ("this time"); matcher gaps ("serum and urine osmolality" ordered only the urine test,
   "respiratory rate" showed the pulse, 50% dextrose reached water replacement, and 13 history, exam and order
   phrasings); five corpus entries added (58).
+- **Review round 3 (2026-11-14).** A third independent review traced every patient fact again in both languages,
+  re-read each attributed statement in the guidelines' full texts, replayed every act in every phase and probed nearly 300
+  new questions, examination requests and orders in both languages. Fixed: once awake (ward, desmopressin, outcome) she
+  could not state her own diabetes or metformin ("I'm not sure, doctor"; two questions reached the 18-year drinking
+  answer) — phase twins `own-diabetes`, `own-metformin` and, on desmopressin and at the outcome, `drinking-history` (her
+  long history dated to before the admission, so that it says nothing of her intake then); negated restriction orders
+  ("no fluid restriction", "do not restrict her fluids") did the contraindicated restriction; the 3% saline harm text
+  credited ESE 2014 with withholding hypertonic saline whenever the timing of a fall is undocumented (it gives it for
+  severe or moderately severe symptoms, acute or chronic; now scoped); the water-replacement dose text, listed in the
+  Treat tab from the emergency phase, said "now that she is awake"; "both arms jerking" narrowed the recorded
+  convulsions (now "convulsing"); the ward record's name and notes said "day ten" where 1.0.0 says "about ten days
+  later" without its starting point; an in-world note spoke of "the report"; a source note misquoted 1.0.0's
+  "historically completed"; on the ward, examining her consciousness found "no finding recorded" (now `awake-ward`:
+  she is awake); this guide's facilitator question put her waking beside the next-day sodium; matcher and order gaps
+  (see Matcher notes); 14 corpus entries added (72).
 
 ### 1.0.0 — 2026-10-28
 
@@ -593,11 +638,11 @@ guide. Its facts are the fact base of 1.1.0.
 
 ## Validation
 
-All run from the worktree root on 2026-11-14 (last after review round 2):
+All run from the worktree root on 2026-11-14 (last after review round 3):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-634927/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-634927 --lang en        # 88 steps · objectives 6/6 · decisions 5/5 · utterances 58/58 · rubric 34/34 (100 %)
+npm run -s cc -- cases verify cmcr-634927 --lang en        # 91 steps · objectives 6/6 · decisions 5/5 · utterances 72/72 · rubric 34/34 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-634927                                  # ✓ reference 100 % · do nothing 0/29 · wrong first at every decision 59 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-634927:"          # collection contract: passes
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-634927:"  # in-world demonstration, en + zh-CN: passes
@@ -634,7 +679,7 @@ pH 7.4，碳酸氢根36.5 mmol/L，尿酮阴性，尿比重1.005，尿糖阴性�
 **复盘要点（PEARLS）。** 尿比重1.005与血钠172放在一起意味着什么；为什么先补液补钾再用胰岛素；结局好不等于纠正速度安全；十天后高钠
 多尿为什么不是习惯性多饮，为什么不需要也不应该禁水；记录的试验能说明什么、不能说明什么；空蝶鞍与功能检查；去氨加压素后低钠的机制
 与安全纠正。待核实：尿糖阴性、渗透压单位、两种饮水史的来源、试验时间与阶段、首日液体种类、去氨加压素剂量与血钠变化时间（见上文
-To verify）。本病例为人工智能辅助编写、经编辑审核的教学材料，已完成两轮独立审核（均为2026-11-14），尚未经执业医师审核。
+To verify）。本病例为人工智能辅助编写、经编辑审核的教学材料，已完成三轮独立审核（均为2026-11-14），尚未经执业医师审核。
 
 **安全结果。** 急诊阶段输注胰岛素（血钾3.2 mmol/L）、快速输注低渗液体纠正血钠，以及在任何阶段做禁水试验，设为危急操作（`critical: true`），
 任何一项一旦发生，本次运行的安全结果即为不合格；不该用时给去氨加压素、输注3%氯化钠、在急诊阶段或血钠122 mmol/L时补水、在病房限水，作为禁忌操作标记并扣分（`rb-no-sodium-harm`），但不单独

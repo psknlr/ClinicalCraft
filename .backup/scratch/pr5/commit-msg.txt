@@ -6,10 +6,10 @@ to 1.0.0 in both languages, every guideline statement looked up in its source's 
 checklist of earlier reviews' findings, assessment replays), further rounds following while a round
 found a critical or major issue, and fixed:
 
-- cmcr-44399: Abdominal pain and muscle twitching after a medication error · 9-year-old boy (5 decisions, 14 interventions;
-  reviews: round 1: 2 critical, 6 major, 9 minor; round 2: 1 critical, 4 major, 7 minor; round 3: 0 critical, 2 major, 9 minor; round 4: 1 critical, 2 major, 8 minor)
+- cmcr-33610: Penile growth and deepening voice · boy aged 8 years 4 months (5 decisions, 11 interventions;
+  reviews: round 1: 1 critical, 6 major, 11 minor; round 2: 0 critical, 3 major, 10 minor; round 3: 1 critical, 1 major, 13 minor; round 4: 0 critical, 4 major, 7 minor)
 
-Reviews: 4 critical, 14 major and 33 minor findings; every critical and major
+Reviews: 2 critical, 14 major and 41 minor findings; every critical and major
 one fixed or answered with a reason in the case's README. Each case passes strict validation (with the
 audit's safety lints), verification (100 %), scripts/case-check.ts, the collection contract and the
 in-world demonstration in both languages.
