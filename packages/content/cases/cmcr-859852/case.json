@@ -7,8 +7,8 @@
     "en": "Worsening recurrent cough with blood-streaked sputum · 74-year-old woman"
   },
   "summary": {
-    "zh-CN": "一位老年女性咳嗽、痰中带血已有十年，近来加重：判断先要排除什么、什么时候需要组织学证据、怎样安全地开始治疗，再沿着她多年的病程回看。",
-    "en": "An older woman's ten-year cough with blood-streaked sputum has worsened: judge what must be excluded first, when tissue is needed and how to start treatment safely, then follow her course over the years."
+    "zh-CN": "一位老年女性咳嗽、痰中带血已有十年，近来加重：判断先要排除什么、靠什么才能确诊、怎样安全地开始治疗，再沿着她多年的病程回看。",
+    "en": "An older woman's ten-year cough with blood-streaked sputum has worsened: judge what must be excluded first, what would settle the diagnosis and how to start treatment safely, then follow her course over the years."
   },
   "specialty": [
     "respiratory-medicine",
@@ -37,12 +37,12 @@
       "en": "Read a lung nodule with central necrosis ringed by palisading epithelioid cells, in a patient with high-titre rheumatoid factor and joint deformity, as a rheumatoid nodule — and name what must still be excluded before calling it: mycobacteria, fungi and vasculitis."
     },
     {
-      "zh-CN": "为类风湿结节制订治疗：激素只作短期桥接并尽快减停，同时启用改善病情抗风湿药（EULAR 2022 及其 2025 更新）；开始前查乙肝和潜伏结核感染，大剂量时预防肺孢子菌（EULAR 2022 感染筛查与预防建议），长期用激素时评估骨折风险（ACR 2022 糖皮质激素性骨质疏松指南）。",
-      "en": "Plan treatment for rheumatoid lung nodules: a glucocorticoid only as a short bridge, tapered and stopped as fast as feasible, with a csDMARD started alongside (EULAR 2022 and its 2025 update); hepatitis B and latent TB screening before starting, Pneumocystis prophylaxis at high doses (EULAR 2022 infection screening and prophylaxis) and a fracture-risk assessment for long-term use (ACR 2022 glucocorticoid-induced osteoporosis)."
+      "zh-CN": "为类风湿结节制订治疗：激素只作短期桥接并尽快减停，同时启用改善病情抗风湿药，并结合她的肺结节选药（EULAR 2022 及其 2025 更新）；开始前查乙肝和潜伏结核感染，大剂量时预防肺孢子菌（EULAR 2022 感染筛查与预防建议），长期用激素时评估骨折风险（ACR 2022 糖皮质激素性骨质疏松指南）。",
+      "en": "Plan treatment for rheumatoid lung nodules: a glucocorticoid only as a short bridge, tapered and stopped as fast as feasible, with a csDMARD started alongside and chosen with her lung nodules in mind (EULAR 2022 and its 2025 update); hepatitis B and latent TB screening before starting, Pneumocystis prophylaxis at high doses (EULAR 2022 infection screening and prophylaxis) and a fracture-risk assessment for long-term use (ACR 2022 glucocorticoid-induced osteoporosis)."
     },
     {
-      "zh-CN": "把免疫治疗用药不规律之后的复发当作免疫抑制宿主可能的新感染来处理：恢复激素之前先重新取样，再换用她能坚持的改善病情药，并解决用药依从性。",
-      "en": "Treat a recurrence after irregular immunotherapy as a possible new infection in an immunosuppressed host: re-sample before restarting the glucocorticoid, then restart a DMARD she can keep taking and address adherence."
+      "zh-CN": "把免疫治疗用药不规律之后的复发当作免疫抑制宿主可能的新感染来处理：恢复激素之前先重新取样，再与风湿免疫科一起选用她能坚持的改善病情药，并解决用药依从性。",
+      "en": "Treat a recurrence after irregular immunotherapy as a possible new infection in an immunosuppressed host: re-sample before restarting the glucocorticoid, then choose with rheumatology a DMARD she can keep taking, and address adherence."
     },
     {
       "zh-CN": "说明为什么一份在复发时同时调整了抗生素和激素的单例报告，不能判断究竟是哪一种治疗起了作用。",
@@ -74,7 +74,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -88,8 +88,8 @@
         "ACR 2022 guideline for glucocorticoid-induced osteoporosis"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核和独立审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
+        "en": "AI-assisted teaching design with an editorial review and an independent review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
       }
     }
   },
@@ -129,8 +129,8 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "74岁女性，咳嗽、痰里带血拖了十年，这次加重住进了医院。她性子平和，有些疲惫；问什么答什么，只说自己清楚的事，不清楚的就直说说不上来，从不猜。痰里有血让她一直放心不下。",
-        "en": "A 74-year-old woman whose cough and blood-streaked phlegm have dragged on for ten years and have now worsened enough to bring her into hospital. Even-tempered and a little worn down, she answers what she is asked and says only what she knows; when she does not know, she says so and never guesses. The blood in her phlegm keeps her uneasy."
+        "zh-CN": "74岁女性，咳嗽、痰里带血拖了十年，这次加重住进了医院。她性子平和，被这病拖得有些灰心；问什么答什么，只说自己清楚的事，不清楚的就直说说不上来，从不猜。痰里有血让她一直放心不下。",
+        "en": "A 74-year-old woman whose cough and blood-streaked phlegm have dragged on for ten years and have now worsened enough to bring her into hospital. Even-tempered but a little disheartened by how long it has dragged on, she answers what she is asked and says only what she knows; when she does not know, she says so and never guesses. The blood in her phlegm keeps her uneasy."
       },
       "speechStyle": {
         "zh-CN": "口语、短句，不用医学术语；说到病名只会说“类风湿”。",
@@ -153,8 +153,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演者：入院时她咳嗽、有些紧张，回答简短；抗感染后好了一阵、一周后又加重时，她有些失望；第二次住院时她配合检查，很想知道结果；数年后复发时她显得疲惫，承认免疫治疗用得断断续续；最后痰里的血止住、准备回家时，她松了一口气。只回答被问到的内容；不提化验、影像或病理结果，除了自己病程的年数和天数不说任何数字，不编造病史、用药、过敏或生活情况。",
-        "en": "For the actor: on admission she coughs and is a little tense, answering briefly; after the brief improvement and the relapse a week later she is disappointed; at her second admission she goes along with the tests and wants to know what they show; at the recurrence years later she is tired and admits she took the immune treatment on and off; at the end, with the blood gone from her phlegm and home in sight, she is relieved. She answers only what she is asked, never mentions tests, scans or pathology, gives no number other than the years and days of her own illness, and never invents history, medicines, allergies or circumstances."
+        "zh-CN": "扮演者：入院时她咳嗽、有些紧张，回答简短；抗感染后好了一阵、一周后又加重时，她有些失望；第二次住院时她配合检查，很想知道结果；数年后复发时她有些沮丧，承认免疫治疗用得断断续续；最后痰里的血止住、准备回家时，她松了一口气。只回答被问到的内容；不提化验、影像或病理结果，除了自己病程的年数和天数不说任何数字，不编造病史、用药、过敏或生活情况。",
+        "en": "For the actor: on admission she coughs and is a little tense, answering briefly; after the brief improvement and the relapse a week later she is disappointed; at her second admission she goes along with the tests and wants to know what they show; at the recurrence years later she is downcast and admits she took the immune treatment on and off; at the end, with the blood gone from her phlegm and home in sight, she is relieved. She answers only what she is asked, never mentions tests, scans or pathology, gives no number other than the years and days of her own illness, and never invents history, medicines, allergies or circumstances."
       }
     },
     "appearance": {
@@ -2132,6 +2132,54 @@
       }
     },
     {
+      "id": "biopsy-stains",
+      "name": {
+        "zh-CN": "活检标本的抗酸染色、真菌染色和培养",
+        "en": "Acid-fast and fungal stains and culture of the biopsy specimen"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "特殊染色",
+          "组织特殊染色",
+          "六胺银染色",
+          "pas染色",
+          "组织培养",
+          "活检标本培养",
+          "补做染色",
+          "标本染色"
+        ],
+        "en": [
+          "special stains",
+          "tissue stains",
+          "ziehl-neelsen stain",
+          "grocott stain",
+          "pas stain",
+          "tissue culture",
+          "biopsy culture",
+          "stains on the biopsy"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "biopsy": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录，保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0; kept unknown (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
       "id": "igra",
       "name": {
         "zh-CN": "γ-干扰素释放试验（IGRA）",
@@ -2775,8 +2823,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "泼尼松每日一次口服，起始剂量和减量方案与风湿免疫科共同制订，用最低有效剂量、尽量短的疗程；只在痰分枝杆菌结果和组织学都已阅读之后开始，复发时须先重新送检痰标本。",
-        "en": "Prednisone by mouth once daily, starting dose and taper agreed with rheumatology, at the lowest effective dose for the shortest time; start only once the sputum mycobacterial results and the histology have both been read, and at a recurrence only after fresh sputum has been sent."
+        "zh-CN": "泼尼松每日一次口服，起始剂量和减量方案与风湿免疫科共同制订，用最低有效剂量、尽量短的疗程；只在痰分枝杆菌结果和组织学都已阅读、并已申请标本抗酸和真菌染色之后开始，复发时须先重新送检痰标本。",
+        "en": "Prednisone by mouth once daily, starting dose and taper agreed with rheumatology, at the lowest effective dose for the shortest time; start only once the sputum mycobacterial results and the histology have been read and the specimen's acid-fast and fungal stains requested, and at a recurrence only after fresh sputum has been sent."
       },
       "requires": [
         "medications"
@@ -2835,8 +2883,8 @@
     {
       "id": "pulse-methylprednisolone",
       "name": {
-        "zh-CN": "甲泼尼龙冲击（500–1000 mg 静脉，3 天）",
-        "en": "Pulse methylprednisolone (500–1000 mg IV for 3 days)"
+        "zh-CN": "甲泼尼龙静脉冲击",
+        "en": "IV pulse methylprednisolone"
       },
       "kind": "medication",
       "aliases": {
@@ -2962,8 +3010,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "与风湿免疫科共同启用传统合成改善病情抗风湿药：甲氨蝶呤是常用的锚定药，但要结合她的肺部病变和肾功能（未记录）权衡，必要时改用来氟米特或柳氮磺吡啶；按达标治疗定期复诊（EULAR 2022 及其 2025 更新）。",
-        "en": "Start a conventional synthetic DMARD with rheumatology: methotrexate is the usual anchor, weighed against her lung disease and renal function (not recorded), with leflunomide or sulfasalazine as alternatives; treat to target with regular review (EULAR 2022 and its 2025 update)."
+        "zh-CN": "与风湿免疫科共同启用传统合成改善病情抗风湿药，按达标治疗定期复诊（EULAR 2022 及其 2025 更新）。甲氨蝶呤是常用的锚定药，但它可加速类风湿结节形成（肺内结节也可受累），原有肺部病变还会增加其肺炎风险；她双肺有空洞结节、肾功能未记录，用甲氨蝶呤还是柳氮磺吡啶、来氟米特等替代药，要与风湿免疫科共同决定。",
+        "en": "Start a conventional synthetic DMARD with rheumatology and treat to target with regular review (EULAR 2022 and its 2025 update). Methotrexate is the usual anchor, but it can accelerate rheumatoid nodulosis — in the lung too — and pre-existing lung disease raises its pneumonitis risk, so with her cavitating nodules and unrecorded renal function the agent (methotrexate or an alternative such as sulfasalazine or leflunomide) is chosen with rheumatology."
       },
       "requires": [],
       "risk": "low",
@@ -3230,8 +3278,8 @@
     {
       "id": "obj-relapse-tissue",
       "title": {
-        "zh-CN": "重新评估短暂好转后的加重",
-        "en": "Reassess the relapse after a brief response"
+        "zh-CN": "首轮治疗后重新评估",
+        "en": "Reassess her after the first treatment"
       },
       "short": {
         "zh-CN": "再评估",
@@ -3300,8 +3348,8 @@
     {
       "id": "obj-biopsy-plan",
       "title": {
-        "zh-CN": "解读病理并制订治疗方案",
-        "en": "Interpret the pathology and plan treatment"
+        "zh-CN": "作出诊断并制订治疗方案",
+        "en": "Make the diagnosis and plan treatment"
       },
       "short": {
         "zh-CN": "诊断与治疗",
@@ -3312,8 +3360,8 @@
         "en": "In a patient like her, which conditions can produce necrosis ringed by palisading cells — and which stains or cultures does the report still lack? Before long-term glucocorticoid, what must you test for first, and what must you prevent alongside it?"
       },
       "guidance": {
-        "zh-CN": "阅读第二次住院的病理报告，作答决策 3 和决策 4，并开出相应的检查和治疗。",
-        "en": "Read the pathology report from her second admission, answer decisions 3 and 4, and order the tests and treatment that follow."
+        "zh-CN": "阅读第二次住院的病理报告，申请标本的特殊染色和培养，作答决策 3 和决策 4，并开出相应的检查和治疗。",
+        "en": "Read the pathology report from her second admission, ask for the specimen's stains and cultures, answer decisions 3 and 4, and order the tests and treatment that follow."
       },
       "completeWhen": {
         "all": [
@@ -3345,12 +3393,12 @@
     {
       "id": "obj-recurrence-course",
       "title": {
-        "zh-CN": "处理数年后的复发并回看结局",
-        "en": "Manage the recurrence years later and review the outcome"
+        "zh-CN": "跟进此后的病程并回看结局",
+        "en": "Follow her later course and review the outcome"
       },
       "short": {
-        "zh-CN": "复发与结局",
-        "en": "Recurrence and outcome"
+        "zh-CN": "后续病程与结局",
+        "en": "Later course and outcome"
       },
       "hint": {
         "zh-CN": "对用过免疫治疗的人，复发时最不能漏掉什么？加强任何治疗之前要先做什么？记录的结局能证明是哪一种治疗起了作用吗？",
@@ -3635,8 +3683,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。中央坏死伴纤维素样物质、周围组织细胞栅栏状排列并有淋巴细胞浸润，是类风湿结节的结构；她有 15 年类风湿关节炎、双手尺偏和高滴度类风湿因子，坏死结节形成空洞也说得通。但结核和真菌肉芽肿同样可见坏死伴类上皮细胞，报告没有记录特殊染色和培养，要请病理科补做；EULAR 2022 感染筛查与预防建议也要求在加强免疫抑制之前明确感染状况。",
-            "en": "Correct. Central necrosis with fibrinoid material ringed by palisading histiocytes, with lymphocytic infiltration, is the structure of a rheumatoid nodule; with 15 years of RA, ulnar deviation and high-titre RF, cavitating necrotic nodules make sense. But tuberculous and fungal granulomas can also show necrosis with epithelioid cells, and the report records no special stains or cultures — ask pathology to add them; the EULAR 2022 infection recommendations likewise ask for infection status before immunosuppression is stepped up."
+            "zh-CN": "正确。中央坏死伴纤维素样物质、周围类上皮细胞（组织细胞）栅栏状排列并有淋巴细胞浸润，是类风湿结节的结构；她有 15 年类风湿关节炎、双手尺偏和高滴度类风湿因子，坏死结节形成空洞也说得通。但结核和真菌肉芽肿同样可见坏死伴类上皮细胞，报告没有记录特殊染色和培养，要请病理科补做；EULAR 2022 感染筛查与预防建议也要求在加强免疫抑制之前明确感染状况。",
+            "en": "Correct. Central necrosis with fibrinoid material ringed by palisading epithelioid cells (histiocytes), with lymphocytic infiltration, is the structure of a rheumatoid nodule; with 15 years of RA, ulnar deviation and high-titre RF, cavitating necrotic nodules make sense. But tuberculous and fungal granulomas can also show necrosis with epithelioid cells, and the report records no special stains or cultures — ask pathology to add them; the EULAR 2022 infection recommendations likewise ask for infection status before immunosuppression is stepped up."
           }
         },
         {
@@ -3659,8 +3707,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。坏死周围组织细胞栅栏状排列也见于肉芽肿性多血管炎，但诊断还需要血管炎的组织学证据和相应的临床表现；她 ANCA 阴性，没有尿血或皮肤出血，报告也没有描述血管炎。在类风湿关节炎和高滴度类风湿因子的背景下，类风湿结节解释得更充分；而且利妥昔单抗之前须完成乙肝和结核筛查（EULAR 2022 感染筛查与预防建议）。",
-            "en": "No. Palisading histiocytes around necrosis occur in GPA too, but the diagnosis needs histological vasculitis and a fitting clinical picture; her ANCA is negative, she has no blood in her urine or skin bleeding, and the report describes no vasculitis. With RA and high-titre RF, rheumatoid nodules explain more — and rituximab would first need hepatitis B and TB screening (EULAR 2022 infection recommendations)."
+            "zh-CN": "不对。坏死周围组织细胞栅栏状排列也见于肉芽肿性多血管炎，但诊断还需要血管炎的组织学证据和相应的临床表现；她 ANCA 阴性，自述没有尿血或皮肤出血（尿常规没有记录），报告也没有描述血管炎。在类风湿关节炎和高滴度类风湿因子的背景下，类风湿结节解释得更充分；而且利妥昔单抗之前须完成乙肝和结核筛查（EULAR 2022 感染筛查与预防建议）。",
+            "en": "No. Palisading histiocytes around necrosis occur in GPA too, but the diagnosis needs histological vasculitis and a fitting clinical picture; her ANCA is negative, she reports no blood in her urine and no skin bleeding (no urinalysis is recorded), and the report describes no vasculitis. With RA and high-titre RF, rheumatoid nodules explain more — and rituximab would first need hepatitis B and TB screening (EULAR 2022 infection recommendations)."
           }
         },
         {
@@ -3707,13 +3755,13 @@
         {
           "id": "glucocorticoid-bridge",
           "text": {
-            "zh-CN": "口服泼尼松作为短期桥接，用最低有效剂量，并写明减量时间表",
-            "en": "Oral prednisone as a short bridge, at the lowest effective dose, with a written taper schedule"
+            "zh-CN": "标本染色阴性后，口服泼尼松作短期桥接，用最低有效剂量并写明减量时间表",
+            "en": "Oral prednisone as a short bridge once the specimen's stains are negative, at the lowest effective dose, with a written taper"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。感染已排除、组织学支持类风湿结节之后，激素可以控制炎症；EULAR 2022 类风湿关节炎管理建议（及其 2025 更新）把激素定位为短期桥接治疗，并要求在临床可行时尽快减量、停用。",
-            "en": "Select. With infection excluded and the histology supporting rheumatoid nodules, a glucocorticoid can settle the inflammation; the EULAR 2022 RA recommendations (and their 2025 update) position glucocorticoid as a short-term bridge, tapered and stopped as rapidly as clinically feasible."
+            "zh-CN": "应选。标本的抗酸染色和真菌染色阴性（请病理科补做——报告没有记录）、组织学又支持类风湿结节之后，激素可以控制炎症；组织培养需要数周，减量期间仍要警惕感染。EULAR 2022 类风湿关节炎管理建议（及其 2025 更新）把激素定位为短期桥接治疗，并要求在临床可行时尽快减量、停用。",
+            "en": "Select. Once the specimen's acid-fast and fungal stains are negative (ask pathology for them — the report records none) and the histology supports rheumatoid nodules, a glucocorticoid can settle the inflammation; tissue cultures take weeks, so stay alert to infection while it is tapered. The EULAR 2022 RA recommendations (and their 2025 update) position glucocorticoid as a short-term bridge, tapered and stopped as rapidly as clinically feasible."
           }
         },
         {
@@ -3724,8 +3772,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。她的类风湿关节炎 15 年来从未系统治疗；控制病情、摆脱对激素的依赖要靠改善病情抗风湿药。EULAR 2022（及 2025 更新）以甲氨蝶呤为锚定药；ACR 2021 指南对轻度、稳定的气道或肺实质病变以及皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时才建议换药——选药要结合她的肺部情况和肾功能。",
-            "en": "Select. Her RA has gone untreated for 15 years, and control without glucocorticoid dependence comes from a DMARD. EULAR 2022 (and the 2025 update) anchors treatment on methotrexate; the ACR 2021 guideline still conditionally prefers methotrexate in mild, stable airway or parenchymal lung disease and with subcutaneous nodules, advising a switch only if those nodules progress on it — so choose with her lungs and renal function in mind."
+            "zh-CN": "应选。她的类风湿关节炎 15 年来从未系统治疗；控制病情、摆脱对激素的依赖要靠改善病情抗风湿药。EULAR 2022（及 2025 更新）以甲氨蝶呤为锚定药；ACR 2021 指南对轻度、稳定的气道或肺实质病变以及皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时建议换药——而甲氨蝶呤也可能加速肺内结节形成，所以她这样有空洞结节的患者，要与风湿免疫科一起结合肺部情况和肾功能选药。",
+            "en": "Select. Her RA has never been treated consistently in 15 years, and control without glucocorticoid dependence comes from a DMARD. EULAR 2022 (and the 2025 update) anchors treatment on methotrexate; the ACR 2021 guideline still conditionally prefers methotrexate in mild, stable airway or parenchymal lung disease and with subcutaneous nodules, advising a switch if those nodules progress on it — and methotrexate can accelerate nodulosis in the lung too, so with her cavitating nodules the agent is chosen with rheumatology, her lungs and renal function in mind."
           }
         },
         {
@@ -3743,25 +3791,25 @@
         {
           "id": "resect-nodules",
           "text": {
-            "zh-CN": "转胸外科切除较大的空洞结节，以免再出血",
-            "en": "Refer to thoracic surgery to resect the larger cavitating nodules before they bleed again"
+            "zh-CN": "转胸外科，把较大的几个空洞结节手术切除，以免它们再出血或成为感染灶",
+            "en": "Refer to thoracic surgery to resect the larger cavitating nodules, so that they cannot bleed again or harbour infection"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不选。结节双肺多发，手术无法全部切除；类风湿结节可随病情控制而缩小，手术只用于大咯血、气胸或怀疑恶变等并发症，而她没有这些记录。",
-            "en": "Do not select. The nodules are multiple and in both lungs, beyond resection; rheumatoid nodules may regress as the disease is controlled, and surgery is kept for complications such as massive haemoptysis, pneumothorax or suspected malignancy, none of which is recorded for her."
+            "zh-CN": "不选。结节双肺多发，手术无法全部切除；类风湿结节可随病情控制而缩小，感染要靠取样和针对性治疗来处理，手术只用于大咯血、气胸或怀疑恶变等并发症，而她没有这些记录。",
+            "en": "Do not select. The nodules are multiple and in both lungs, beyond resection; rheumatoid nodules may regress as the disease is controlled, infection is handled by sampling and targeted treatment, and surgery is kept for complications such as massive haemoptysis, pneumothorax or suspected malignancy, none of which is recorded for her."
           }
         },
         {
           "id": "long-term-antibiotics",
           "text": {
-            "zh-CN": "用长期预防性抗生素代替激素，免得感染复燃",
-            "en": "Long-term prophylactic antibiotics instead of glucocorticoid, to keep infection from flaring"
+            "zh-CN": "不用激素，改为长期口服预防性抗生素，防止肺内空洞里的感染再次复燃",
+            "en": "Long-term prophylactic antibiotics in place of a glucocorticoid, to keep infection in the cavities from flaring again"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不选。组织学支持类风湿结节，长期抗生素既治不了结节，也治不了关节炎，还带来耐药和不良反应；她需要的是有针对性的预防（剂量达到阈值时预防肺孢子菌），而不是泛泛地用抗生素。",
-            "en": "Do not select. The histology supports rheumatoid nodules; long-term antibiotics treat neither them nor the arthritis, and add resistance and side effects. What she needs is targeted prophylaxis — against Pneumocystis once the dose threshold is reached — not blanket antibiotics."
+            "zh-CN": "不选。组织学支持类风湿结节，长期抗生素既治不了结节，也治不了关节炎，对分枝杆菌和真菌感染也起不到预防作用，还带来耐药和不良反应；她需要的是有针对性的预防（剂量达到阈值时预防肺孢子菌），而不是泛泛地用抗生素。",
+            "en": "Do not select. The histology supports rheumatoid nodules; long-term antibiotics treat neither them nor the arthritis, would not prevent mycobacterial or fungal infection anyway, and add resistance and side effects. What she needs is targeted prophylaxis — against Pneumocystis once the dose threshold is reached — not blanket antibiotics."
           }
         }
       ]
@@ -3803,8 +3851,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。用过免疫治疗、肺内有空洞的人复发时，可能是新的结核、非结核分枝杆菌或曲霉感染，抗感染无效并不能排除它们，所以先重新取样；EULAR 2022 感染筛查与预防建议要求在免疫抑制期间定期重新评估感染风险。不规律用药之后的复发提示炎症复燃：恢复激素作为桥接，同时解决依从性，选她能坚持的改善病情药——这是 EULAR 2022 及其 2025 更新中治疗的基础。",
-            "en": "Correct. In someone on immunotherapy with lung cavities, a recurrence may be a new tuberculosis, non-tuberculous mycobacterial or Aspergillus infection, and failure of antibiotics excludes none of them — so re-sample first; the EULAR 2022 infection recommendations ask for infection risk to be reassessed periodically during immunosuppression. A recurrence after irregular treatment suggests a flare: restart the glucocorticoid as a bridge and tackle adherence with a DMARD she can keep taking — the basis of treatment in EULAR 2022 and its 2025 update."
+            "zh-CN": "正确。用过免疫治疗、肺内有空洞的人复发时，可能是新的结核、非结核分枝杆菌或曲霉感染，抗感染无效并不能排除它们，所以先重新取样，新的痰检结果出来之前再次实施空气传播隔离；EULAR 2022 感染筛查与预防建议要求在免疫抑制期间定期重新评估感染风险。不规律用药之后的复发提示炎症复燃：恢复激素作为桥接，同时解决依从性，与风湿免疫科一起选她能坚持的改善病情药——她用过什么药没有记录，而甲氨蝶呤本身也可能促使结节增多——这是 EULAR 2022 及其 2025 更新中治疗的基础。",
+            "en": "Correct. In someone on immunotherapy with lung cavities, a recurrence may be a new tuberculosis, non-tuberculous mycobacterial or Aspergillus infection, and failure of antibiotics excludes none of them — so re-sample first, with airborne precautions again until the new sputum results are back; the EULAR 2022 infection recommendations ask for infection risk to be reassessed periodically during immunosuppression. A recurrence after irregular treatment suggests a flare: restart the glucocorticoid as a bridge and tackle adherence with a DMARD she can keep taking, chosen with rheumatology — the drug she took is not recorded, and methotrexate itself can drive nodulosis — the basis of treatment in EULAR 2022 and its 2025 update."
           }
         },
         {
@@ -3839,8 +3887,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。她恰恰是在用药不规律之后复发的；停掉所有治疗会让类风湿关节炎和肺部结节失去控制，而 12 天的抗感染治疗已经效果不佳。正确的做法是先排除感染，再恢复有效、能坚持的治疗（EULAR 2022 及其 2025 更新）。",
-            "en": "No. She relapsed precisely after taking treatment irregularly; stopping everything leaves the arthritis and the nodules uncontrolled, and 12 days of anti-infectives have already failed. Exclude infection, then restore effective treatment she can sustain (EULAR 2022 and its 2025 update)."
+            "zh-CN": "不对。她恰恰是在用药不规律之后复发的；停掉所有治疗会让类风湿关节炎和肺部结节失去控制，而 12 天的抗感染治疗已经效果不佳。即使怀疑是药物本身促使结节增多（甲氨蝶呤可以如此），也应换用另一种改善病情药，而不是什么都不用：先排除感染，再恢复有效、能坚持的治疗（EULAR 2022 及其 2025 更新）。",
+            "en": "No. She relapsed precisely after taking treatment irregularly; stopping everything leaves the arthritis and the nodules uncontrolled, and 12 days of anti-infectives have already failed. Even if the drug itself were suspected of driving the nodules (methotrexate can), the answer would be a different DMARD, not none: exclude infection, then restore effective treatment she can sustain (EULAR 2022 and its 2025 update)."
           }
         },
         {
@@ -4016,12 +4064,20 @@
       "id": "rb-biopsy-reading",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即把病理判读为类风湿结节，并把排除分枝杆菌、真菌和血管炎作为前提",
-        "en": "Read the pathology as rheumatoid nodules at the first attempt, conditional on excluding mycobacteria, fungi and vasculitis"
+        "zh-CN": "首次作答即把病理判读为类风湿结节，以排除分枝杆菌、真菌和血管炎为前提，并申请了标本的特殊染色和培养",
+        "en": "Read the pathology as rheumatoid nodules at the first attempt, conditional on excluding mycobacteria, fungi and vasculitis, and asked for the specimen's stains and cultures"
       },
       "weight": 3,
       "met": {
-        "decidedFirstTry": "biopsy-reading"
+        "all": [
+          {
+            "decidedFirstTry": "biopsy-reading"
+          },
+          {
+            "ordered": "biopsy-stains",
+            "phase": "biopsy"
+          }
+        ]
       }
     },
     {
@@ -4184,8 +4240,8 @@
         "en": "Dr Sheng (rheumatology)"
       },
       "knowledge": {
-        "zh-CN": "风湿免疫科医生，学员请会诊后参与。只解读学员已经读过的血液检查、类风湿因子、自身抗体和病理报告：高滴度类风湿因子与类风湿结节等关节外表现相关；ANCA 阴性降低但不能排除血管炎；类风湿结节须在排除感染之后才能确诊。可以讨论改善病情抗风湿药的选择（EULAR 2022 及其 2025 更新以甲氨蝶呤为锚定药；ACR 2021 对轻度、稳定的肺部病变和皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时建议换药）、激素桥接与减量、用药前的乙肝和潜伏结核筛查、肺孢子菌预防与骨保护，以及怎样帮助她坚持用药。不编造抗 CCP、补体、肾功能或她用过的药物（都没有记录）。",
-        "en": "Rheumatologist who joins once consulted. Interprets only the blood tests, rheumatoid factor, autoantibodies and pathology report the learner has read: high-titre RF goes with nodules and other extra-articular disease; a negative ANCA lowers but does not exclude vasculitis; a rheumatoid nodule is diagnosed only once infection is excluded. Can discuss the DMARD choice (EULAR 2022 and its 2025 update anchor on methotrexate; ACR 2021 still conditionally prefers it in mild, stable lung disease and with subcutaneous nodules, and advises switching if those nodules progress on it), glucocorticoid bridging and taper, hepatitis B and latent TB screening before treatment, Pneumocystis prophylaxis and bone protection, and how to help her keep taking treatment. Never invents anti-CCP, complement, renal function or the drugs she took (none is recorded)."
+        "zh-CN": "风湿免疫科医生，学员请会诊后参与。只解读学员已经读过的血液检查、类风湿因子、自身抗体和病理报告：高滴度类风湿因子与类风湿结节等关节外表现相关；ANCA 阴性降低但不能排除血管炎；类风湿结节须在排除感染之后才能确诊。可以讨论改善病情抗风湿药的选择（EULAR 2022 及其 2025 更新以甲氨蝶呤为锚定药；ACR 2021 对轻度、稳定的肺部病变和皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时建议换药；甲氨蝶呤也可能加速肺内结节形成，这对她有空洞结节时的选药很重要）、激素桥接与减量、用药前的乙肝和潜伏结核筛查、肺孢子菌预防与骨保护，以及怎样帮助她坚持用药。不编造抗 CCP、补体、肾功能或她用过的药物（都没有记录）。",
+        "en": "Rheumatologist who joins once consulted. Interprets only the blood tests, rheumatoid factor, autoantibodies and pathology report the learner has read: high-titre RF goes with nodules and other extra-articular disease; a negative ANCA lowers but does not exclude vasculitis; a rheumatoid nodule is diagnosed only once infection is excluded. Can discuss the DMARD choice (EULAR 2022 and its 2025 update anchor on methotrexate; ACR 2021 still conditionally prefers it in mild, stable lung disease and with subcutaneous nodules, and advises switching if those nodules progress on it; methotrexate can accelerate nodulosis in the lung too, which weighs on the choice for her cavitating nodules), glucocorticoid bridging and taper, hepatitis B and latent TB screening before treatment, Pneumocystis prophylaxis and bone protection, and how to help her keep taking treatment. Never invents anti-CCP, complement, renal function or the drugs she took (none is recorded)."
       },
       "interprets": [
         "fbc-inflammation",
@@ -4201,8 +4257,8 @@
       "en": "Debrief: multiple cavitating lung nodules in a woman with rheumatoid arthritis"
     },
     "conclusion": {
-      "zh-CN": "74岁女性，15 年前诊断类风湿关节炎、未系统治疗，咳嗽、痰中带血 10 年，近 15 天加重。查体双肺小水泡音、双手掌指关节尺侧偏斜；胸部 CT 示双肺多发大小不等的结节伴空洞；血红蛋白 95 g/L，C 反应蛋白 95 mg/L，血沉 90 mm/h，类风湿因子 2010 IU/mL，所查 ANA 谱和 ANCA 阴性；多次痰结核检查阴性。抗感染后短暂好转，一周后加重。第二次住院肺活检（右下叶结节）见中央急性炎性坏死伴少许纤维素样物质、周围类上皮细胞栅栏状排列、间质淋巴细胞浸润。诊断：类风湿关节炎的肺内类风湿（坏死性）结节伴空洞形成。加用激素后影像改善；数年后在免疫治疗用药不规律之后复发，抗感染 12 天效果不佳，调整抗生素并加用激素后血痰消失、空洞壁变薄，口服泼尼松出院。按现行做法：先隔离并送检痰分枝杆菌；痰检阴性后取组织（同时送染色和培养），再用激素；激素只作桥接，联用改善病情抗风湿药，并做乙肝、潜伏结核筛查和伴随预防；复发时先重新取样排除感染。长期随访没有记录。",
-      "en": "A 74-year-old woman with rheumatoid arthritis diagnosed 15 years earlier and never consistently treated had ten years of cough with blood-streaked sputum, worse for 15 days; fine crackles in both lungs; ulnar deviation of both hands. CT: multiple cavitating nodules in both lungs. Hb 95 g/L, CRP 95 mg/L, ESR 90 mm/h, RF 2010 IU/mL; ANA panel and ANCA negative; repeated sputum TB tests negative. Antibiotics helped briefly. A right lower-lobe biopsy at her second admission (necrosis with fibrinoid material ringed by palisading epithelioid cells) indicated rheumatoid nodules; after a glucocorticoid her imaging improved. Years later, after irregular immunotherapy, she relapsed; 12 days of anti-infectives did little; after an antibiotic change plus a glucocorticoid the bloody sputum stopped and the cavity walls thinned, and she left on prednisone. Today: isolate, test sputum, get tissue with stains and cultures before any steroid, screen and protect, add a DMARD, re-sample at relapse."
+      "zh-CN": "74岁女性，15 年前诊断类风湿关节炎、未系统治疗，咳嗽、痰中带血 10 年，近 15 天加重。查体双肺小水泡音、双手掌指关节尺侧偏斜；胸部 CT 示双肺多发大小不等的结节，伴大小不等的空洞；血红蛋白 95 g/L，C 反应蛋白 95 mg/L，血沉 90 mm/h，类风湿因子 2010 IU/mL，所查 ANA 谱和 ANCA 阴性；多次痰结核检查阴性。抗感染后短暂好转，一周后加重。第二次住院肺活检（右下叶结节）见中央急性炎性坏死伴少许纤维素样物质、周围类上皮细胞栅栏状排列、间质淋巴细胞浸润，结合类风湿关节炎病史，支持肺内类风湿（坏死性）结节伴空洞形成；报告没有记录特殊染色和培养。加用激素后影像改善；数年后在免疫治疗用药不规律之后复发，抗感染 12 天效果不佳，调整抗生素并加用激素后血痰消失、空洞壁变薄，口服泼尼松出院。按现行做法：先隔离并送检痰分枝杆菌；痰检阴性后取组织（同时送染色和培养），再用激素；激素只作桥接，联用结合肺结节选择的改善病情抗风湿药，并做乙肝、潜伏结核筛查和伴随预防；复发时先重新取样排除感染。长期随访没有记录。",
+      "en": "A 74-year-old woman with rheumatoid arthritis diagnosed 15 years earlier and never consistently treated had ten years of cough with blood-streaked sputum, worse for 15 days; fine crackles in both lungs; ulnar deviation of both hands. CT: multiple nodules of varying size in both lungs, with cavities of varying size. Hb 95 g/L, CRP 95 mg/L, ESR 90 mm/h, RF 2010 IU/mL; ANA panel and ANCA negative; repeated sputum TB tests negative. Antibiotics helped briefly, then she worsened a week later. A right lower-lobe biopsy at her second admission (central acute inflammatory necrosis with a little fibrinoid material, ringed by palisading epithelioid cells) supported rheumatoid nodules, with no special stains or cultures recorded; after a glucocorticoid her imaging improved. Years later, after irregular immunotherapy, she relapsed; 12 days of anti-infectives did little; after an antibiotic change plus a glucocorticoid the bloody sputum stopped and the cavity walls thinned, and she left on prednisone. Today: isolate, test sputum, get tissue with stains and cultures before any steroid, screen and protect, add a DMARD chosen with her nodules in mind, re-sample at relapse."
     },
     "keyReasoning": [
       {
@@ -4278,12 +4334,12 @@
         "en": "When sputum is negative and the antibiotic response is equivocal, get tissue: send the biopsy for histology, acid-fast and fungal stains and cultures, after a platelet count and clotting screen — not escalated antibiotics, a diagnostic anti-TB trial or an empirical glucocorticoid. Culture remains the reference standard for TB (ATS/IDSA/CDC 2017). Then and now: the recorded team biopsied a nodule at her second admission — the decisive step."
       },
       {
-        "zh-CN": "类风湿结节是排除性诊断。中央纤维素样坏死、周围组织细胞栅栏状排列是它的结构，多见于高滴度类风湿因子、病程长的患者，可形成空洞并引起痰中带血；结核和真菌肉芽肿、肉芽肿性多血管炎和肿瘤要靠染色、培养和临床表现来排除——本病例的病理报告没有记录特殊染色和培养。",
-        "en": "A rheumatoid nodule is a diagnosis of exclusion. Central fibrinoid necrosis ringed by palisading histiocytes is its structure; it goes with high-titre RF and long-standing disease, and can cavitate and bleed. Tuberculous and fungal granulomas, GPA and tumour are excluded by stains, cultures and the clinical picture — this report records no special stains or cultures."
+        "zh-CN": "类风湿结节是排除性诊断。中央纤维素样坏死、周围组织细胞栅栏状排列是它的结构，多见于高滴度类风湿因子、病程长的患者，可形成空洞并引起痰中带血；结核和真菌肉芽肿、肉芽肿性多血管炎和肿瘤要靠染色、培养和临床表现来排除——本病例的病理报告没有记录特殊染色和培养，用激素之前应请病理科补做。",
+        "en": "A rheumatoid nodule is a diagnosis of exclusion. Central fibrinoid necrosis ringed by palisading histiocytes is its structure; it goes with high-titre RF and long-standing disease, and can cavitate and bleed. Tuberculous and fungal granulomas, GPA and tumour are excluded by stains, cultures and the clinical picture — this report records no special stains or cultures; ask pathology for them before the glucocorticoid."
       },
       {
-        "zh-CN": "激素是桥，改善病情抗风湿药是路。EULAR 2022 建议（及其 2025 更新）以甲氨蝶呤为锚定药，激素作短期桥接并尽快减停；ACR 2021 指南对轻度、稳定的肺部病变和皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时才建议换药。记录与现行做法：记录写了活检后加用激素，没有记录同时启用改善病情药；之后的“免疫治疗”用得并不规律。",
-        "en": "Glucocorticoid is the bridge; a DMARD is the road. EULAR 2022 (and its 2025 update) anchors RA treatment on methotrexate with glucocorticoid as a short bridge, tapered and stopped as fast as feasible; ACR 2021 still conditionally prefers methotrexate in mild, stable lung disease and with subcutaneous nodules, advising a switch only if those nodules progress on it. Then and now: the record notes a glucocorticoid after the biopsy but records no DMARD started with it, and the later “immunotherapy” was taken irregularly."
+        "zh-CN": "激素是桥，改善病情抗风湿药是路。EULAR 2022 建议（及其 2025 更新）以甲氨蝶呤为锚定药，激素作短期桥接并尽快减停；ACR 2021 指南对轻度、稳定的肺部病变和皮下类风湿结节仍有条件地推荐甲氨蝶呤，皮下结节在用药中进展时建议换药——而甲氨蝶呤也可能加速肺内结节形成，所以对有空洞的肺结节，要与风湿免疫科一起选药。记录与现行做法：记录写了活检后加用激素，没有记录同时启用改善病情药；之后的“免疫治疗”用得并不规律。",
+        "en": "Glucocorticoid is the bridge; a DMARD is the road. EULAR 2022 (and its 2025 update) anchors RA treatment on methotrexate with glucocorticoid as a short bridge, tapered and stopped as fast as feasible; ACR 2021 still conditionally prefers methotrexate in mild, stable lung disease and with subcutaneous nodules, advising a switch if those nodules progress on it — and methotrexate can accelerate nodulosis in the lung too, so for cavitating lung nodules the agent is chosen with rheumatology. Then and now: the record notes a glucocorticoid after the biopsy but records no DMARD started with it, and the later “immunotherapy” was taken irregularly."
       },
       {
         "zh-CN": "免疫抑制之前先筛查，同时做预防。EULAR 2022 感染筛查与预防建议：用抗风湿药前明确乙肝状况（HBsAg、抗-HBc），激素和传统合成药之前考虑筛查潜伏结核（首选 γ-干扰素释放试验），泼尼松每日超过 15–30 mg、超过 2–4 周时考虑预防肺孢子菌。ACR 2022 指南：每日 ≥ 2.5 mg、超过 3 个月的激素，尽早评估骨折风险，中高危者给予抗骨质疏松治疗。本病例没有记录其中任何一项。",
@@ -4296,11 +4352,11 @@
     ],
     "references": [
       "董绍臣, 姜尧, 张向宁, 赵敏, 乔华. 双肺多发结节空洞影. 中华结核和呼吸杂志. 2014;37(2):152-153. doi:10.3760/cma.j.issn.1001-0939.2014.02.028. Available from: https://rs.yiigle.com/cmaid/859852",
-      "Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults and children. Clin Infect Dis. 2017;64(2):e1-e33.",
+      "Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults and children. Clin Infect Dis. 2017;64(2):e1-e33. doi:10.1093/cid/ciw694",
       "World Health Organization. WHO guidelines on tuberculosis infection prevention and control, 2019 update. Geneva: World Health Organization; 2019.",
       "中华人民共和国国家卫生和计划生育委员会. 肺结核诊断（WS 288—2017）. 2017.",
       "Smolen JS, Landewé RBM, Bergstra SA, et al. EULAR recommendations for the management of rheumatoid arthritis with synthetic and biological disease-modifying antirheumatic drugs: 2022 update. Ann Rheum Dis. 2023;82(1):3-18. doi:10.1136/ard-2022-223356",
-      "Smolen JS, et al. EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs: 2025 update. Ann Rheum Dis. 2026.",
+      "Smolen JS, Edwards CJ, Konzett V, et al. EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs: 2025 update. Ann Rheum Dis. 2026;85(6):991-1009. doi:10.1016/j.ard.2026.01.023",
       "Fraenkel L, Bathon JM, England BR, et al. 2021 American College of Rheumatology guideline for the treatment of rheumatoid arthritis. Arthritis Care Res (Hoboken). 2021;73(7):924-939. doi:10.1002/acr.24596",
       "Fragoulis GE, Nikiphorou E, Dey M, et al. 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in adults with autoimmune inflammatory rheumatic diseases. Ann Rheum Dis. 2023;82(6):742-753. doi:10.1136/ard-2022-223335",
       "Humphrey MB, Russell L, Danila MI, et al. 2022 American College of Rheumatology guideline for the prevention and treatment of glucocorticoid-induced osteoporosis. Arthritis Rheumatol. 2023;75(12):2088-2102. doi:10.1002/art.42646"
@@ -4579,6 +4635,15 @@
       "phase": "biopsy"
     },
     {
+      "type": "order",
+      "investigationId": "biopsy-stains"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy-stains",
+      "phase": "biopsy"
+    },
+    {
       "type": "answer",
       "decisionId": "biopsy-reading",
       "optionIds": [
@@ -4631,6 +4696,10 @@
     {
       "type": "ask",
       "itemId": "immunotherapy-adherence"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "airborne-isolation"
     },
     {
       "type": "order",

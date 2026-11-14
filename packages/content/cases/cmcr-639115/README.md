@@ -41,9 +41,8 @@ By the end of the case the learner can:
 4. Clear oedema safely with low blood pressure and an infiltrative cardiomyopathy: an IV loop diuretic titrated to
    weight, lying and standing blood pressure, creatinine and potassium (a rash with a sulfonamide antibiotic is no bar
    to furosemide, a non-antimicrobial sulfonamide: AAAAI/ACAAI 2022), no ACE inhibitor, ARB or beta-blocker for a
-   hypotensive, infiltrated heart (drugs
-   used only with caution in cardiac amyloidosis: ESC 2021 statement; ACC 2023), and no glucose-lowering drug that
-   causes hypoglycaemia (ADA 2026).
+   hypotensive, infiltrated heart (drugs used only with caution in cardiac amyloidosis: ESC 2021 statement; ACC
+   2023), and no glucose-lowering drug that causes hypoglycaemia (ADA 2026).
 5. After typing and staging (troponin, NT-proBNP, free light chains), choose today's first line — daratumumab with
    bortezomib, cyclophosphamide and dexamethasone (ANDROMEDA, 2021), dexamethasone reduced to 20 mg weekly for age
    and fluid overload — rather than the historical melphalan with prednisone.
@@ -287,10 +286,9 @@ admission and of the immunofixation, marrow, skeletal imaging and fat results la
 back yet" placeholders at admission are order status, not results); the serum monoclonal band filed under the
 immunofixation a learner orders today, with a note that the method behind it is not recorded; his answer about current
 medicines restating the recorded stopping of his diabetes and blood-pressure medicines (anything else he takes stays
-unknown); the three-month values staged as a clinic
-review, with his account limited to the swelling having gone down before discharge; "MP" expanded to melphalan with
-prednisone; the staff characters (Nurse Feng, Dr Hao, Dr Yin, Dr Luo); the decisions, interventions, rubric,
-feedback, teaching points and doses (current guidance).
+unknown); the three-month values staged as a clinic review, with his account limited to the swelling having gone
+down before discharge; "MP" expanded to melphalan with prednisone; the staff characters (Nurse Feng, Dr Hao, Dr Yin,
+Dr Luo); the decisions, interventions, rubric, feedback, teaching points and doses (current guidance).
 
 **Inconsistencies and gaps in 1.0.0 kept, not resolved.**
 * The oedema at discharge "消退" (subsided) in the Chinese text but "improved" in the English; the case says it "went
@@ -328,13 +326,14 @@ template history slots such as vaccinations) are all replaced.
 
 ## Matcher notes
 
-40 test utterances (22 zh-CN, 18 en), written as learners type: colloquial, abbreviated, multi-clause. Three
+40 test utterances (23 zh-CN, 17 en), written as learners type: colloquial, abbreviated, multi-clause. Three
 look-alike negatives (`expect: []`). Keywords were tuned against the corpus: "瘦得厉害" was dropped from the
 weight-loss item because "头晕得厉害" reached it; English multi-word phrases that reduce to one token are run
 together ("howmuchweight", "underthejaw", "daytoday", "getup", "outofbed", "puffedout"); exclusions keep blood
 pressure and glucose apart, send "on standing" questions to the postural item, and keep lymph-node and lung requests
-away from the oedema and heart findings. The review-phase item `since-discharge` supersedes `leg-swelling`. The plain opening question ("What brings you
-in?", "哪里不舒服？") reaches `weight-loss`, the volunteered presenting complaint (keywords added in the review).
+away from the oedema and heart findings. The review-phase item `since-discharge` supersedes `leg-swelling`. The
+plain opening question ("What brings you in?", "哪里不舒服？") reaches `weight-loss`, the volunteered presenting
+complaint (keywords added in the review).
 
 ## References
 
@@ -456,8 +455,7 @@ the primary text):**
   from the three-month timing; "eats little" replaced by the recorded poor appetite; his answer about current medicines
   now states the two medicines he stopped; the presenting-complaint item answers "What brings you in?"; the ASH 2026
   teaching point attributes only what the guideline recommends; the results objective's hint no longer names results
-  before they are read; the debrief calls AL λ the most likely reading until typed; "To verify" moved under References;
-  the **安全结果。** sentence added to the 中文摘要.
+  before they are read; the debrief calls AL λ the most likely reading until typed; "To verify" moved under References.
 
 ### 1.0.0 — 2026-10-28
 
@@ -487,7 +485,5 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **关键决策。** 决策 1：糖尿病解释不了，送检克隆和组织；决策 2：小剂量静脉呋塞米并监测，不用降压、降糖药；决策 3：已证实的与尚待确认的（分型、骨髓瘤定义事件）；决策 4：分型、分期后Dara-VCd（地塞米松每周20 mg）；决策 5：水肿消退不等于缓解，按游离轻链和器官标准评价。
 
 **复盘要点。** 长期糖尿病患者血糖、血压停药后反而“正常”，加上消瘦，是全身性疾病的信号；电压低而室壁厚提示心肌浸润；克隆和组织检查要同时送；刚果红加单克隆蛋白不等于AL型；报告的“骨髓瘤”按现行标准不能确认；MP方案已被Dara-VCd取代；利钠肽升高约5%达不到进展标准。待核实事项见上文“To verify”。
-
-**安全结果。** 降压药（如ACE抑制剂雷米普利）和磺脲类降糖药（如格列齐特）标为critical：他不用药血压约100/60 mmHg、有头晕和眼前发黑、心脏受浸润，用降压药可致严重低血压、晕厥和急性肾损伤；空腹血糖约4 mmol/L、消瘦、胃口差，用磺脲类可致严重而持久的低血糖——给其中任何一种，无论得分多少，安全结果都不通过。MP方案、自体移植、“等出现CRAB再治疗”和未送分型就开始的Dara-VCd为非critical的错误，在复盘中标出。
 
 **安全结果。** 开始或恢复降压药（含ACE抑制剂）和使用磺脲类降糖药被标为本病例的危险错误（`critical: true`），一旦给予，安全结果即判定不合格；MP方案、自体移植、“等CRAB再治疗”和分型前的Dara-VCd为可纠正的不当选择（`critical: false`）。

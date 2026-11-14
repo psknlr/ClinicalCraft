@@ -79,8 +79,8 @@
       "en": "In an infant with operated congenital cataract and glaucoma, hypotonia and absent reflexes, think of a multisystem eye–brain–kidney disorder and, choosing tests from the whole phenotype (AAP 2025), check the blood gas, electrolytes and urine alongside SMN1 testing (international SMA care consensus, 2018)."
     },
     {
-      "zh-CN": "把血液酸中毒时尿pH 7.0、尿β2微球蛋白 > 500 µg/L、广泛性氨基酸尿和0.86 g/24 h的尿蛋白判读为肾性范科尼型的近端肾小管病，并与远端肾小管酸中毒、胱氨酸病以及IPNA 2022所定义的肾病综合征相鉴别。",
-      "en": "Interpret a urine pH of 7.0 during acidaemia, urine β2-microglobulin above 500 µg/L, generalised aminoaciduria and 0.86 g/24 h of protein as a proximal tubulopathy of the renal Fanconi type, and tell it from distal RTA, cystinosis and nephrotic syndrome as IPNA 2022 defines it."
+      "zh-CN": "把血液酸中毒时尿pH 7.0判读为肾小管性酸中毒，用尿β2微球蛋白 > 500 µg/L和广泛性氨基酸尿把它定位在近端小管（肾性范科尼型表现），并与远端肾小管酸中毒、胱氨酸病以及IPNA 2022所定义的肾病综合征相鉴别——0.86 g/24 h的尿蛋白而没有白蛋白记录，不足以诊断肾病综合征。",
+      "en": "Read a urine pH of 7.0 during acidaemia as a renal tubular acidosis, place it in the proximal tubule from urine β2-microglobulin above 500 µg/L and generalised aminoaciduria (a renal Fanconi-type picture), and tell it from distal RTA, cystinosis and — 0.86 g/24 h of protein with no albumin recorded — nephrotic syndrome as IPNA 2022 defines it."
     },
     {
       "zh-CN": "先测钾、磷、钙和肌酐，再用分次口服的枸橼酸盐或碳酸氢钠按血碳酸氢根逐步纠正慢性酸中毒，并按结果补钾、补磷和骨化三醇（GeneReviews：Lowe综合征，2019；ERKNet/ESPN 2021）；不静脉推注碳酸氢钠，也不对肾小管性蛋白尿用激素。",
@@ -95,8 +95,8 @@
       "en": "Plan lifelong multidisciplinary follow-up — eye pressure and vision, a prompt diagnostic hearing assessment with amplification (JCIH 2019), tubular, bone and kidney-function monitoring and early intervention — and look for a separate cause of the haemoglobin of 70 g/L."
     },
     {
-      "zh-CN": "按Calgary–Cambridge的结构向家属解释诊断、治疗、遗传方式和其中的不确定性，并用回授法确认理解。",
-      "en": "Explain the diagnosis, the treatment, the inheritance and its uncertainties to the family in a Calgary–Cambridge structure, checking understanding by teach-back."
+      "zh-CN": "按Calgary–Cambridge的结构向家属解释诊断、治疗、遗传方式和其中的不确定性，用SPIKES告知基因诊断这一坏消息，并用回授法确认理解。",
+      "en": "Explain the diagnosis, the treatment, the inheritance and its uncertainties to the family in a Calgary–Cambridge structure, breaking the genetic diagnosis as bad news with SPIKES and checking understanding by teach-back."
     }
   ],
   "patient": {
@@ -303,7 +303,16 @@
           "独坐",
           "大运动",
           "现在会什么",
-          "运动发育"
+          "运动发育",
+          "孩子怎么了",
+          "他怎么了",
+          "这是怎么了",
+          "为什么住院",
+          "因为什么住院",
+          "这次住院",
+          "会坐",
+          "能坐",
+          "坐稳"
         ],
         "en": [
           "head control",
@@ -313,7 +322,17 @@
           "sitonhisown",
           "motor development",
           "gross motor",
-          "movement now"
+          "movement now",
+          "bringshimin",
+          "broughthimin",
+          "whatswrongwithhim",
+          "whatstheproblem",
+          "whatsbeengoingon",
+          "whyisheinhospital",
+          "whyishehere",
+          "reason for admission",
+          "whyhashebeenadmitted",
+          "whywasheadmitted"
         ]
       },
       "excludeKeywords": {
@@ -321,21 +340,24 @@
           "翻身",
           "八个月",
           "8个月",
-          "以前"
+          "以前",
+          "眼睛",
+          "眼科",
+          "听力",
+          "耳朵"
         ],
         "en": [
           "roll",
           "eight months",
           "earlier",
-          "first fell"
+          "first fell",
+          "eye",
+          "hearing",
+          "ears"
         ]
       },
       "disclosure": "volunteer",
       "required": true,
-      "phases": [
-        "admission",
-        "first-results"
-      ],
       "source": {
         "zh-CN": "报告病例资料·病史（11个月仍抬头不稳、不能独坐）（1.0.0版提取，待对照原文核对）；家属的话为改写",
         "en": "The report's case data · history (at 11 months, head control still unsteady and unable to sit unsupported) (extracted for version 1.0.0; not yet checked against the full article); the relative's words are adapted"
@@ -374,10 +396,6 @@
       },
       "disclosure": "on-ask",
       "required": true,
-      "phases": [
-        "admission",
-        "first-results"
-      ],
       "source": {
         "zh-CN": "报告病例资料·病史（8个月仍不会翻身）（1.0.0版提取，待对照原文核对）；家属的话为改写",
         "en": "The report's case data · history (still unable to roll at 8 months) (extracted for version 1.0.0; not yet checked against the full article); the relative's words are adapted"
@@ -507,7 +525,11 @@
           "看人脸",
           "盯着看",
           "看得清",
-          "眼神"
+          "眼神",
+          "看见东西",
+          "看得见",
+          "看得到",
+          "看东西"
         ],
         "en": [
           "see now",
@@ -617,7 +639,9 @@
           "顺产",
           "剖宫产",
           "怎么生的",
-          "足月"
+          "足月",
+          "早产",
+          "过了预产期"
         ],
         "en": [
           "which pregnancy",
@@ -627,7 +651,11 @@
           "caesarean",
           "c-section",
           "full term",
-          "howwasheborn"
+          "howwasheborn",
+          "born at term",
+          "premature",
+          "born early",
+          "due date"
         ]
       },
       "excludeKeywords": {
@@ -1398,8 +1426,8 @@
         "en": "Now the genetic result is back, what would you most like to ask?"
       },
       "answer": {
-        "zh-CN": "这个病是不是从我们家里传下来的？以后再要孩子，会不会也这样？他哥哥会不会有事？",
-        "en": "Did this come down through our family? Could another baby of ours have it too — and is his brother going to be all right?"
+        "zh-CN": "这个病是不是从家里传下来的？他爸妈以后再要孩子，会不会也这样？他哥哥会不会有事？",
+        "en": "Did this come down through the family? If his mum and dad have another baby, could it happen again — and is his brother going to be all right?"
       },
       "keywords": {
         "zh-CN": [
@@ -3689,12 +3717,12 @@
     {
       "id": "obj-acid-base",
       "title": {
-        "zh-CN": "安全地处理酸中毒",
-        "en": "Treat the acidosis safely"
+        "zh-CN": "安全地开始他的治疗",
+        "en": "Start his treatment safely"
       },
       "short": {
-        "zh-CN": "酸碱",
-        "en": "Acid–base"
+        "zh-CN": "治疗",
+        "en": "Treatment"
       },
       "hint": {
         "zh-CN": "开始治疗之前，你还需要知道哪几个数值？用什么途径、多大剂量、怎样调整，依据是什么？",
@@ -3729,8 +3757,8 @@
     {
       "id": "obj-family",
       "title": {
-        "zh-CN": "解释基因结果，安排长期随访",
-        "en": "Explain the genetic result and plan his follow-up"
+        "zh-CN": "与家属沟通，安排他的长期随访",
+        "en": "Talk with his family and plan his long-term follow-up"
       },
       "short": {
         "zh-CN": "家属与随访",
@@ -3885,8 +3913,8 @@
             "en": "Muscle biopsy under general anaesthesia as the very first test, for muscle and nerve histology"
           },
           "feedback": {
-            "zh-CN": "肌肉活检需要全身麻醉；对低张力婴儿，第一项检查已由基因检测取代（国际脊髓性肌萎缩诊疗共识，Mercuri等，2018），即使需要活检，也应在SMN1和无创检查缩小范围之后。给酸碱状态未知的婴儿先上麻醉，只会增加风险，回答不了问题。",
-            "en": "Muscle biopsy needs a general anaesthetic, and genetic testing has replaced it as the first test for a floppy infant (international SMA care consensus, Mercuri et al., 2018); if it is needed at all, it comes after SMN1 and the non-invasive tests have narrowed the question. An anaesthetic in an infant whose acid–base status is unknown adds risk without answering anything."
+            "zh-CN": "肌肉活检需要全身麻醉。怀疑脊髓性肌萎缩时，国际诊疗共识（Mercuri等，2018）把SMN1检测作为一线检查，典型病例不需要肌活检；对任何低张力婴儿，即使需要活检，也应在SMN1和无创检查缩小范围之后。给酸碱状态未知的婴儿先上麻醉，只会增加风险，回答不了问题。",
+            "en": "Muscle biopsy needs a general anaesthetic. When SMA is suspected, the international SMA care consensus (Mercuri et al., 2018) makes SMN1 testing the first-line investigation and a typical presentation needs no biopsy; in any floppy infant a biopsy comes, if at all, after SMN1 and the non-invasive tests have narrowed the question. An anaesthetic in an infant whose acid–base status is unknown adds risk without answering anything."
           }
         },
         {
@@ -3955,8 +3983,8 @@
             "en": "An X-linked oculocerebrorenal (Lowe) syndrome: congenital cataract, infantile areflexic hypotonia and a proximal tubulopathy share one cause; confirm with OCRL testing"
           },
           "feedback": {
-            "zh-CN": "正确。先天性白内障（伴青光眼）、婴儿期低张力伴腱反射消失，加上近端肾小管病——血液酸中毒时尿pH仍为7.0、尿β2微球蛋白 > 500 µg/L、广泛性氨基酸尿——正是Lowe综合征的眼、脑、肾三联征，由X连锁的OCRL基因致病（GeneReviews：Lowe综合征）。SMN1未见异常，使最需要鉴别的5q型脊髓性肌萎缩可能性很小；确诊靠OCRL基因检测。",
-            "en": "Right. Congenital cataract (with glaucoma), infantile hypotonia with absent reflexes and a proximal tubulopathy — a urine pH of 7.0 during acidaemia, β2-microglobulin above 500 µg/L and generalised aminoaciduria — are the eye, brain and kidney triad of Lowe syndrome, caused by the X-linked OCRL gene (GeneReviews: Lowe syndrome). An SMN1 result without abnormality makes 5q spinal muscular atrophy, the main neuromuscular alternative, very unlikely; OCRL testing confirms the diagnosis."
+            "zh-CN": "正确。先天性白内障（伴青光眼）、婴儿期低张力伴腱反射消失，加上近端肾小管病——血液酸中毒时尿pH仍为7.0提示肾小管性酸中毒，尿β2微球蛋白 > 500 µg/L和广泛性氨基酸尿把它定位在近端小管——正是Lowe综合征的眼、脑、肾三联征，由X连锁的OCRL基因致病（GeneReviews：Lowe综合征）。SMN1未见异常，使最需要鉴别的5q型脊髓性肌萎缩可能性很小；确诊靠OCRL基因检测。",
+            "en": "Right. Congenital cataract (with glaucoma), infantile hypotonia with absent reflexes and a proximal tubulopathy — a tubular acidosis (urine pH 7.0 during acidaemia) that β2-microglobulin above 500 µg/L and generalised aminoaciduria place in the proximal tubule — are the eye, brain and kidney triad of Lowe syndrome, caused by the X-linked OCRL gene (GeneReviews: Lowe syndrome). An SMN1 result without abnormality makes 5q spinal muscular atrophy, the main neuromuscular alternative, very unlikely; OCRL testing confirms the diagnosis."
           }
         },
         {
@@ -3979,8 +4007,8 @@
             "en": "Inherited distal renal tubular acidosis with sensorineural deafness (ATP6V1B1/ATP6V0A4), explaining acidaemia with a urine pH of 7.0 and the hearing; start alkali, test the genes"
           },
           "feedback": {
-            "zh-CN": "远端肾小管酸中毒伴耳聋能解释“血酸而尿不酸”和听力异常，但远端肾小管病不会漏出氨基酸和β2微球蛋白这类低分子蛋白，也没有先天性白内障和低张力无反射；广泛性氨基酸尿和β2微球蛋白尿把病变定位在近端小管（ERKNet/ESPN远端肾小管酸中毒临床实践要点，2021）。",
-            "en": "Distal RTA with deafness explains acid blood with a urine that is not acid, and the hearing result — but distal disease does not leak amino acids or low-molecular-weight proteins such as β2-microglobulin, and it brings no congenital cataract or areflexic hypotonia; generalised aminoaciduria with β2-microglobulinuria places the leak in the proximal tubule (ERKNet/ESPN clinical practice points on distal RTA, 2021)."
+            "zh-CN": "远端肾小管酸中毒伴耳聋能解释“血酸而尿不酸”和听力异常，但不会有先天性白内障、青光眼和低张力无反射。远端肾小管酸中毒也会出现氨基酸尿和低分子蛋白尿，主要见于酸中毒严重、尚未治疗的婴儿，补碱后消退（ERKNet/ESPN远端肾小管酸中毒临床实践要点，2021）；他的血碳酸氢根为17.9 mmol/L，再结合眼病和肌张力，这种漏出更符合原发的近端肾小管病。",
+            "en": "Distal RTA with deafness explains acid blood with a urine that is not acid, and the hearing result — but it brings no congenital cataract, glaucoma or areflexic hypotonia. A leak of amino acids and low-molecular-weight protein does occur in distal RTA, mainly in untreated infants with severe acidosis, and settles on alkali (ERKNet/ESPN clinical practice points on distal RTA, 2021); his bicarbonate is 17.9 mmol/L, and with his eyes and his tone the leak fits a primary proximal tubulopathy."
           }
         },
         {
@@ -4044,15 +4072,15 @@
             "en": "Send potassium, phosphate, calcium and creatinine, then oral citrate (or bicarbonate) in 3–4 daily doses, raised to a normal serum bicarbonate; potassium as the level requires"
           },
           "feedback": {
-            "zh-CN": "正确。口服碱剂分次给药、按血碳酸氢根调整到正常，是控制肾小管性酸中毒的方法——ERKNet/ESPN 2021临床实践要点为远端肾小管酸中毒规定了这一做法，GeneReviews（2019）对Lowe综合征的近端肾小管病同样如此，并按需补钾、补磷和骨化三醇；近端丢失需要的剂量大得多。碱化会让血钾进一步下降，所以先测钾、磷、钙和肌酐，再决定用不用含钾制剂和补充剂。",
-            "en": "Right. Oral alkali in divided doses, titrated to a normal serum bicarbonate, is how a tubular acidosis is controlled — the ERKNet/ESPN 2021 practice points set it out for distal RTA, and GeneReviews (2019) treats the proximal tubulopathy of Lowe syndrome the same way, with potassium, phosphate and calcitriol as needed; proximal wasting needs far larger doses. Alkali lowers potassium further, so potassium, phosphate, calcium and creatinine come first and decide the potassium salt and supplements."
+            "zh-CN": "正确。口服碱剂全天分次给药（这个月龄可随喂奶少量给）、按血碳酸氢根调整到正常，是控制肾小管性酸中毒的方法——ERKNet/ESPN 2021临床实践要点为远端肾小管酸中毒规定了这一做法，GeneReviews（2019）对Lowe综合征的近端肾小管病同样如此，并按需补钾、补磷和骨化三醇；近端丢失需要的剂量大得多。碱化会让血钾进一步下降，所以先测钾、磷、钙和肌酐，再决定用不用含钾制剂和补充剂。",
+            "en": "Right. Oral alkali in divided doses through the day — at his age, small amounts with his feeds — titrated to a normal serum bicarbonate, is how a tubular acidosis is controlled — the ERKNet/ESPN 2021 practice points set it out for distal RTA, and GeneReviews (2019) treats the proximal tubulopathy of Lowe syndrome the same way, with potassium, phosphate and calcitriol as needed; proximal wasting needs far larger doses. Alkali lowers potassium further, so potassium, phosphate, calcium and creatinine come first and decide the potassium salt and supplements."
           }
         },
         {
           "id": "iv-bicarbonate-correction",
           "correct": false,
           "text": {
-            "zh-CN": "按“碱缺失 × 体重 × 0.3”算出碳酸氢钠总量，现在先静脉推注一半，1小时后复查血气，再根据结果决定是否补足另一半",
+            "zh-CN": "按“碱缺失 × 体重 × 0.3”算出碳酸氢钠总量，现在先在30分钟内静脉推注一半，1小时后复查血气，再根据结果决定是否补足另一半",
             "en": "Work out the bicarbonate as base deficit × weight × 0.3 and give half of it now as an IV bolus over 30 minutes; recheck the gas an hour later and let that result decide the other half"
           },
           "feedback": {
@@ -4068,8 +4096,8 @@
             "en": "The acidosis is mild and chronic, so hold alkali until the gene result confirms the cause and nephrology decides, with a blood gas every week meanwhile"
           },
           "feedback": {
-            "zh-CN": "治疗酸中毒不需要等病因确诊：持续的代谢性酸中毒会影响婴儿的生长和骨骼，而把碳酸氢根纠正到正常的碱剂治疗可以避免大部分并发症（ERKNet/ESPN 2021临床实践要点）。等基因结果，只会让损害持续更久。",
-            "en": "Treating the acidosis does not wait for the cause: persistent metabolic acidosis impairs an infant's growth and bones, and alkali that brings the bicarbonate back to normal prevents most of the complications (ERKNet/ESPN 2021 clinical practice points). Waiting for the genetic result only prolongs the harm."
+            "zh-CN": "治疗酸中毒不需要等病因确诊：持续的代谢性酸中毒会影响婴儿的生长和骨骼，而把碳酸氢根纠正到正常的碱剂治疗可以避免大部分并发症（ERKNet/ESPN 2021远端肾小管酸中毒临床实践要点）。等基因结果，只会让损害持续更久。",
+            "en": "Treating the acidosis does not wait for the cause: persistent metabolic acidosis impairs an infant's growth and bones, and alkali that brings the bicarbonate back to normal prevents most of the complications (ERKNet/ESPN 2021 clinical practice points on distal RTA). Waiting for the genetic result only prolongs the harm."
           }
         },
         {
@@ -4080,8 +4108,8 @@
             "en": "Oral sodium bicarbonate 1–2 mmol/kg once each morning, kept unchanged; the urine is already alkaline, so the dose should not be raised and make it more so"
           },
           "feedback": {
-            "zh-CN": "方向对，剂量和用法不对：近端小管病时，碳酸氢根一超过阈值就从尿中丢失，需要更大的剂量、全天分次给，并按血碳酸氢根而不是尿pH调整——血碳酸氢根正常正是ERKNet/ESPN 2021临床实践要点设定的目标。每日一次的小剂量会让他一天中大部分时间仍处于酸中毒。",
-            "en": "Right direction, wrong dose and schedule: in proximal disease bicarbonate is lost in the urine as soon as it exceeds the threshold, so larger doses split through the day are needed, titrated to the serum bicarbonate rather than the urine pH — a normal serum bicarbonate is the target the ERKNet/ESPN 2021 practice points set. A small once-daily dose leaves him acidotic for most of the day."
+            "zh-CN": "方向对，剂量和用法不对：近端小管病时，碳酸氢根一超过阈值就从尿中丢失，需要更大的剂量、全天分次给，并按血碳酸氢根而不是尿pH调整——血碳酸氢根正常正是ERKNet/ESPN 2021临床实践要点为远端肾小管酸中毒设定的目标。每日一次的小剂量会让他一天中大部分时间仍处于酸中毒。",
+            "en": "Right direction, wrong dose and schedule: in proximal disease bicarbonate is lost in the urine as soon as it exceeds the threshold, so larger doses split through the day are needed, titrated to the serum bicarbonate rather than the urine pH — a normal serum bicarbonate is the target the ERKNet/ESPN 2021 practice points set for distal RTA. A small once-daily dose leaves him acidotic for most of the day."
           }
         }
       ]
@@ -4158,8 +4186,8 @@
             "en": "A single nonsense change found only in him may be a variant of uncertain significance: have a second laboratory repeat it, and say nothing about inheritance until it is confirmed"
           },
           "feedback": {
-            "zh-CN": "OCRL的无义变化预示功能丧失，而功能丧失正是这个病的致病机制；再加上他高度特异的三系统表型，按ACMG/AMP 2015标准，不需要等第二家实验室复核才告知家属。拖延解释，只会让家庭在最需要信息的时候得不到信息。",
-            "en": "A nonsense change in OCRL predicts loss of function — the mechanism of this disease — and with his highly specific three-system phenotype it does not need a second laboratory before the family is told (ACMG/AMP 2015). Delaying the explanation leaves the family without information when they need it most."
+            "zh-CN": "OCRL的无义变化预示功能丧失，而功能丧失正是这个病的致病机制，按ACMG/AMP 2015属于非常强的致病证据（PVS1）；再加上他高度特异的三系统表型，这不是意义不明的变异，没有理由等第二家实验室复核后才向家属解释。拖延解释，只会让家庭在最需要信息的时候得不到信息。",
+            "en": "A nonsense change in OCRL predicts loss of function — the mechanism of this disease — which ACMG/AMP 2015 grades as very strong evidence of pathogenicity (PVS1), and his highly specific three-system phenotype adds to it: this is no variant of uncertain significance, and there is no reason to hold back the explanation while a second laboratory repeats the test. Delay leaves the family without information when they need it most."
           }
         }
       ]
@@ -4605,8 +4633,8 @@
         "en": "Explained his condition, the treatment, the inheritance and its uncertainties in words the family understands, and checked their understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge：开始、收集信息、解释与计划、结束）：在床旁向家属介绍自己，先问清对方是孩子的什么人、已经知道些什么；问家属最担心什么（他为什么落后这么多；拿到基因结果后，是不是家里遗传、以后的孩子会不会这样、哥哥有没有事）。用通俗的话说明：他的眼睛、身体发软和肾脏“漏”酸、漏蛋白和氨基酸是同一个原因；为什么先查血和尿，而不是先做脑部检查；为什么要每天分几次口服药物纠正酸、定期抽血，而“打一针很快纠正”并不安全。基因结果出来后，说明变化在X染色体的一个基因上，在妈妈血里没有查到，但不能完全排除妈妈的卵细胞里有，所以以后的孩子仍有很小的风险——既不说成零，也不说成一半；提供遗传咨询、再次怀孕时的检测和妈妈的晶状体检查；说明10岁的哥哥身体健康，不需要做这项检测。讲清以后由哪些专科一起随访（肾脏、眼科、听力、康复）。用回授法确认理解，请对方提问，给书面总结，约好下次谈话。不好的表现：满口术语不加解释（范科尼、嵌合、半合子），保证他以后能正常发育，把风险说成零或50%，暗示是妈妈的错，或谈完没有随访计划。",
-        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): introduces themselves at the cot side and first asks who the relative is to him and what they already know; asks what worries them most (why he is so far behind; once the genetic result is back, whether it runs in the family, whether another baby could have it, whether his brother is all right). Explains in plain words that his eyes, his floppiness and his kidneys' leak of acid, protein and amino acids have one cause; why blood and urine tests come before any brain scan; and why he needs medicine by mouth several times a day for the acid, with regular blood tests, while an injection to ‘correct it quickly’ is not safe. After the genetic result, explains that the change is in a gene on the X chromosome, that it was not found in his mum's blood, but that it cannot be completely ruled out in her egg cells, so a future baby still has a small chance — neither zero nor one in two; offers a genetics appointment, testing in a future pregnancy and a lens check for his mum; says that his healthy 10-year-old brother does not need this test. Names the teams who will follow him together (kidneys, eyes, hearing, therapy). Checks understanding by teach-back, invites questions, gives a written summary and agrees when to talk again. Not good: unexplained jargon (Fanconi, mosaicism, hemizygous), promising normal development, calling the risk zero or 50 %, implying it is his mother's fault, or ending without a follow-up plan."
+        "zh-CN": "良好表现（Calgary–Cambridge：开始、收集信息、解释与计划、结束）：在床旁向家属介绍自己，先问清对方是孩子的什么人、已经知道些什么；问家属最担心什么（他为什么落后这么多；拿到基因结果后，是不是家里遗传、以后的孩子会不会这样、哥哥有没有事）。用通俗的话说明：他的眼睛、身体发软和肾脏“漏”酸、漏蛋白和氨基酸是同一个原因；为什么先查血和尿，而不是先做脑部检查；为什么要每天分几次口服药物纠正酸、定期抽血，而“打一针很快纠正”并不安全。基因诊断是坏消息，用SPIKES告知：找安静的房间，请孩子父母（尽量两人都在）和护士一起；先问他们已经知道什么、想知道多少；说结果前先给预告，用通俗的话分小段讲；留出时间让他们表达情绪并共情回应；最后总结并说明下一步。基因结果出来后，说明变化在X染色体的一个基因上，在妈妈血里没有查到，但不能完全排除妈妈的卵细胞里有，所以以后的孩子仍有很小的风险——既不说成零，也不说成一半；提供遗传咨询、再次怀孕时的检测和妈妈的晶状体检查；说明10岁的哥哥身体健康，不需要做这项检测。讲清以后由哪些专科一起随访（肾脏、眼科、听力、康复）。用回授法确认理解，请对方提问，给书面总结，约好下次谈话。不好的表现：随口告知结果、不先问对方想知道多少，满口术语不加解释（范科尼、嵌合、半合子），保证他以后能正常发育，把风险说成零或50%，暗示是妈妈的错，或谈完没有随访计划。",
+        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): introduces themselves at the cot side and first asks who the relative is to him and what they already know; asks what worries them most (why he is so far behind; once the genetic result is back, whether it runs in the family, whether another baby could have it, whether his brother is all right). Explains in plain words that his eyes, his floppiness and his kidneys' leak of acid, protein and amino acids have one cause; why blood and urine tests come before any brain scan; and why he needs medicine by mouth several times a day for the acid, with regular blood tests, while an injection to ‘correct it quickly’ is not safe. The genetic diagnosis is bad news and is broken with SPIKES: a quiet room, his parents invited (both if possible) with the nurse, first what they already know and how much they want to know, a warning before the result, plain words in small pieces, time for their feelings with an empathic response, and a summary with the next steps. After the genetic result, explains that the change is in a gene on the X chromosome, that it was not found in his mum's blood, but that it cannot be completely ruled out in her egg cells, so a future baby still has a small chance — neither zero nor one in two; offers a genetics appointment, testing in a future pregnancy and a lens check for his mum; says that his healthy 10-year-old brother does not need this test. Names the teams who will follow him together (kidneys, eyes, hearing, therapy). Checks understanding by teach-back, invites questions, gives a written summary and agrees when to talk again. Not good: giving the result in passing or before asking what they want to know, unexplained jargon (Fanconi, mosaicism, hemizygous), promising normal development, calling the risk zero or 50 %, implying it is his mother's fault, or ending without a follow-up plan."
       }
     }
   ],
@@ -4655,8 +4683,8 @@
         "en": "Dr Gu (paediatric nephrology consultant)"
       },
       "knowledge": {
-        "zh-CN": "儿童肾脏科会诊医生，只解读学员已经看过的结果。可以讲：酸中毒时尿pH的意义（远端酸化障碍，或近端碳酸氢根阈值降低、超过阈值即从尿中丢失）；β2微球蛋白等低分子蛋白和广泛性氨基酸尿为什么把病变定位在近端小管；诊断肾性范科尼综合征还要查什么（血钾、血磷、血钙、尿糖、尿钙、肌酐、碱性磷酸酶和甲状旁腺激素）；没有血钠和血氯就算不了阴离子间隙；口服碱剂的原则（枸橼酸盐或碳酸氢钠，分3–4次，按血碳酸氢根调整，近端丢失需要较大剂量，先知道血钾）；为什么不静脉推注碳酸氢钠；为什么肾小管性蛋白尿不是肾病综合征、不用激素（IPNA 2022的定义：肾病水平蛋白尿加血清白蛋白 < 30 g/L）；综合征性近端肾小管病的肾功能可随年龄下降，需要长期随访；贫血要单独查原因，不能都归到肾脏病上。不提前给出决策答案，不补充没有记录的结果。",
-        "en": "Paediatric nephrology consultant who interprets only results the learner has already read. Can explain what the urine pH means during an acidosis (a distal acidification defect, or a lowered proximal bicarbonate threshold with losses above it); why low-molecular-weight proteins such as β2-microglobulin and generalised aminoaciduria place the lesion in the proximal tubule; what else a renal Fanconi syndrome needs (potassium, phosphate, calcium, urine glucose and calcium, creatinine, alkaline phosphatase, PTH); that without sodium and chloride no anion gap can be calculated; the principles of oral alkali (citrate or bicarbonate, 3–4 doses a day, titrated to the serum bicarbonate, larger doses for proximal losses, potassium known first); why not an IV bicarbonate bolus; why tubular proteinuria is not nephrotic syndrome and is not treated with steroids (IPNA 2022 definition: nephrotic-range proteinuria with a serum albumin below 30 g/L); that kidney function in a syndromic proximal tubulopathy can decline with age, so follow-up is lifelong; and that an anaemia needs its own work-up rather than being put down to the kidney disease. Never gives a decision's answer early and adds no result the case does not record."
+        "zh-CN": "儿童肾脏科会诊医生，只解读学员已经看过的结果。可以讲：酸中毒时尿pH的意义（远端酸化障碍，或近端碳酸氢根阈值降低、超过阈值即从尿中丢失）；β2微球蛋白等低分子蛋白和广泛性氨基酸尿为什么把病变定位在近端小管（远端肾小管酸中毒时这种漏出主要见于酸中毒严重、未经治疗的婴儿，补碱后消退）；诊断肾性范科尼综合征还要查什么（血钾、血磷、血钙、尿糖、尿钙、肌酐、碱性磷酸酶和甲状旁腺激素）；没有血钠和血氯就算不了阴离子间隙；口服碱剂的原则（枸橼酸盐或碳酸氢钠，分3–4次，按血碳酸氢根调整，近端丢失需要较大剂量，先知道血钾）；为什么不静脉推注碳酸氢钠；为什么肾小管性蛋白尿不是肾病综合征、不用激素（IPNA 2022的定义：肾病水平蛋白尿加血清白蛋白 < 30 g/L）；综合征性近端肾小管病的肾功能可随年龄下降，需要长期随访；贫血要单独查原因，不能都归到肾脏病上。不提前给出决策答案，不补充没有记录的结果。",
+        "en": "Paediatric nephrology consultant who interprets only results the learner has already read. Can explain what the urine pH means during an acidosis (a distal acidification defect, or a lowered proximal bicarbonate threshold with losses above it); why low-molecular-weight proteins such as β2-microglobulin and generalised aminoaciduria place the lesion in the proximal tubule (in distal RTA such a leak is seen mainly in untreated infants with severe acidosis and settles on alkali); what else a renal Fanconi syndrome needs (potassium, phosphate, calcium, urine glucose and calcium, creatinine, alkaline phosphatase, PTH); that without sodium and chloride no anion gap can be calculated; the principles of oral alkali (citrate or bicarbonate, 3–4 doses a day, titrated to the serum bicarbonate, larger doses for proximal losses, potassium known first); why not an IV bicarbonate bolus; why tubular proteinuria is not nephrotic syndrome and is not treated with steroids (IPNA 2022 definition: nephrotic-range proteinuria with a serum albumin below 30 g/L); that kidney function in a syndromic proximal tubulopathy can decline with age, so follow-up is lifelong; and that an anaemia needs its own work-up rather than being put down to the kidney disease. Never gives a decision's answer early and adds no result the case does not record."
       },
       "interprets": [
         "blood-gas",
@@ -4692,7 +4720,7 @@
     },
     "conclusion": {
       "zh-CN": "11月龄男婴，第二胎第二产，41周顺产，无窒息、产伤和抢救史；3个月时眼睛不追光物，诊断先天性白内障和青光眼并手术。11个月仍抬头不稳、不能独坐，反应迟钝，四肢松软，腱反射引不出。血气pH 7.271、HCO₃⁻ 17.9 mmol/L、BE −8.4 mmol/L，同时尿pH 7.0，尿蛋白0.86 g/24 h，尿β2微球蛋白 > 500 µg/L，广泛性氨基酸尿；血红蛋白70 g/L；SMN1和脑电图正常；听觉诱发电位潜伏期延长、部分听阈异常。OCRL1（OCRL）第15外显子c.1528C>T无义变异，母亲外周血未检出，报告诊断为Lowe综合征；本病例没有记录治疗和随访。今天的做法：SMN1与血气、电解质、尿液检查同步送；先测钾，再分次口服碱剂，不静推碳酸氢钠、不用激素；遗传咨询讲清生殖腺嵌合的残余风险；终身随访眼压、听力（JCIH 2019）、肾脏和发育，并另查贫血原因。",
-      "en": "An 11-month-old boy, born vaginally at 41 weeks without asphyxia or resuscitation, had congenital cataracts and glaucoma diagnosed and operated on after his eyes failed to follow light or objects at 3 months. At 11 months he could not hold his head steady or sit, was slow to respond and floppy, with unelicitable reflexes. Blood gas pH 7.271, bicarbonate 17.9 mmol/L, base excess −8.4 mmol/L, with urine pH 7.0, protein 0.86 g/24 h, β2-microglobulin > 500 µg/L and generalised aminoaciduria; haemoglobin 70 g/L; SMN1 and EEG normal; abnormal auditory evoked potentials. A nonsense variant in exon 15 of OCRL1 (OCRL), c.1528C>T, absent from his mother's blood, gave the report's diagnosis of Lowe syndrome; no treatment or follow-up is recorded. Today: SMN1 alongside gas, electrolytes and urine; potassium first, then divided oral alkali, with no IV bicarbonate or steroids; counselling on germline mosaicism; lifelong eye, hearing, kidney and developmental follow-up; a separate anaemia work-up."
+      "en": "An 11-month-old boy, his mother's second pregnancy and second birth, born vaginally at 41 weeks without asphyxia, birth injury or resuscitation, had congenital cataracts and glaucoma diagnosed and operated on after his eyes failed to follow light or objects at 3 months. At 11 months he could not hold his head steady or sit, was slow to respond and floppy, with unelicitable reflexes. Blood gas pH 7.271, bicarbonate 17.9 mmol/L, base excess −8.4 mmol/L, with urine pH 7.0, protein 0.86 g/24 h, β2-microglobulin > 500 µg/L and generalised aminoaciduria; haemoglobin 70 g/L; SMN1 and EEG normal; auditory evoked potentials with prolonged latencies and partly abnormal hearing thresholds. A nonsense variant in exon 15 of OCRL1 (OCRL), c.1528C>T, absent from his mother's blood, gave the report's diagnosis of Lowe syndrome; no treatment or follow-up is recorded. Today: SMN1 alongside gas, electrolytes and urine; potassium first, then divided oral alkali, with no IV bicarbonate or steroids; counselling on germline mosaicism; lifelong eye, hearing, kidney and developmental follow-up; a separate anaemia work-up."
     },
     "keyReasoning": [
       {
@@ -4726,12 +4754,12 @@
         "en": "Recognition: Lowe syndrome's triad is congenital cataract (glaucoma in about half of affected boys), infantile hypotonia with absent reflexes and a proximal tubulopathy (GeneReviews: Lowe syndrome, 2019 update). Here: eyes not following light or objects at 3 months, congenital cataracts and glaucoma operated on; at 11 months unsteady head control, unable to sit, floppy limbs and unelicitable reflexes. Absent reflexes call for SMN1 testing (international SMA care consensus, 2018) — no abnormality here — but only the blood gas and the urine reveal the third system, and a phenotype-led work-up (AAP 2025) asks for both."
       },
       {
-        "zh-CN": "定位：血液酸中毒时尿pH > 5.5，说明肾脏没有正常酸化尿液——远端酸化障碍，或近端碳酸氢根阈值降低、超过阈值就丢失；β2微球蛋白升高和广泛性氨基酸尿说明近端小管受损，这是远端肾小管酸中毒（ERKNet/ESPN 2021）不会有的。本例尿pH 7.0、β2微球蛋白 > 500 µg/L、广泛性氨基酸尿；0.86 g/24 h的尿蛋白是肾小管性的，诊断肾病综合征还需要血清白蛋白 < 30 g/L（IPNA 2022）。本病例没有记录电解质、血磷、血钙、尿糖和肌酐，今天它们是确认范科尼型病变和开始治疗的必查项目。",
-        "en": "Localisation: a urine pH above 5.5 during acidaemia means the kidney is not acidifying the urine — a distal acidification defect, or bicarbonate wasting above a lowered proximal threshold; raised β2-microglobulin and generalised aminoaciduria mark proximal tubular damage, which distal RTA (ERKNet/ESPN 2021) does not cause. Here: urine pH 7.0, β2-microglobulin > 500 µg/L, generalised aminoaciduria; the 0.86 g/24 h of protein is tubular, and nephrotic syndrome would need a serum albumin below 30 g/L (IPNA 2022). This case records no electrolytes, phosphate, calcium, urine glucose or creatinine — today they are needed to confirm a Fanconi-type picture and to start treatment."
+        "zh-CN": "定位：血液酸中毒时尿pH > 5.5，说明肾脏没有正常酸化尿液——远端酸化障碍，或近端碳酸氢根阈值降低、超过阈值就丢失；β2微球蛋白升高和广泛性氨基酸尿说明近端小管功能障碍——远端肾小管酸中毒时它们主要见于酸中毒严重、未经治疗的婴儿，补碱后消退（ERKNet/ESPN 2021），所以血碳酸氢根17.9 mmol/L、又有眼病的他更符合原发的近端肾小管病。本例尿pH 7.0、β2微球蛋白 > 500 µg/L、广泛性氨基酸尿；0.86 g/24 h的尿蛋白是肾小管性的，诊断肾病综合征还需要血清白蛋白 < 30 g/L（IPNA 2022）。本病例没有记录电解质、血磷、血钙、尿糖和肌酐，今天它们是确认范科尼型病变和开始治疗的必查项目。",
+        "en": "Localisation: a urine pH above 5.5 during acidaemia means the kidney is not acidifying the urine — a distal acidification defect, or bicarbonate wasting above a lowered proximal threshold; raised β2-microglobulin and generalised aminoaciduria mark proximal tubular dysfunction — in distal RTA they appear mainly in untreated infants with severe acidosis and settle on alkali (ERKNet/ESPN 2021), so with a bicarbonate of 17.9 mmol/L and his eyes a primary proximal tubulopathy fits better. Here: urine pH 7.0, β2-microglobulin > 500 µg/L, generalised aminoaciduria; the 0.86 g/24 h of protein is tubular, and nephrotic syndrome would need a serum albumin below 30 g/L (IPNA 2022). This case records no electrolytes, phosphate, calcium, urine glucose or creatinine — today they are needed to confirm a Fanconi-type picture and to start treatment."
       },
       {
-        "zh-CN": "治疗：慢性肾小管性酸中毒用口服碱剂（枸橼酸盐或碳酸氢钠），每日分3–4次，按血碳酸氢根调整到正常（ERKNet/ESPN 2021）；近端丢失时所需剂量是远端肾小管酸中毒的数倍。先测血钾——范科尼型病变常还需要补钾、补磷和骨化三醇（GeneReviews：Lowe综合征，2019年更新）。静脉推注碳酸氢钠不适合pH 7.271的慢性酸中毒，还有诱发低钾、低钙的风险。本病例没有记录当年给过任何治疗。",
-        "en": "Treatment: a chronic tubular acidosis is treated with oral alkali (citrate or bicarbonate) in 3–4 doses a day, titrated to a normal serum bicarbonate (ERKNet/ESPN 2021); proximal wasting needs several times the distal-RTA dose. Potassium is measured first, and a Fanconi-type tubulopathy often needs potassium, phosphate and calcitriol as well (GeneReviews: Lowe syndrome, 2019 update). An IV bicarbonate bolus has no place in a chronic acidosis at pH 7.271 and risks hypokalaemia and hypocalcaemia. This case does not record any treatment given at the time."
+        "zh-CN": "治疗：慢性肾小管性酸中毒用口服碱剂（枸橼酸盐或碳酸氢钠），给药尽量频繁——婴儿随每次喂奶少量给，年长儿每日3–4次——按血碳酸氢根调整到正常，这是ERKNet/ESPN 2021为远端肾小管酸中毒规定的做法；近端丢失时所需剂量是远端肾小管酸中毒的数倍。先测血钾——范科尼型病变常还需要补钾、补磷和骨化三醇（GeneReviews：Lowe综合征，2019年更新）。静脉推注碳酸氢钠不适合pH 7.271的慢性酸中毒，还有诱发低钾、低钙的风险。本病例没有记录当年给过任何治疗。",
+        "en": "Treatment: a chronic tubular acidosis is treated with oral alkali (citrate or bicarbonate) given as often as possible — in an infant, small amounts with his feeds; three or four times a day in older children — and titrated to a normal plasma bicarbonate, as the ERKNet/ESPN 2021 practice points set out for distal RTA; proximal wasting needs several times the distal-RTA dose. Potassium is measured first, and a Fanconi-type tubulopathy often needs potassium, phosphate and calcitriol as well (GeneReviews: Lowe syndrome, 2019 update). An IV bicarbonate bolus has no place in a chronic acidosis at pH 7.271 and risks hypokalaemia and hypocalcaemia. This case does not record any treatment given at the time."
       },
       {
         "zh-CN": "遗传：OCRL（旧称OCRL1）位于X染色体，男孩为半合子。c.1528C>T这样的无义变异预示提前出现终止密码子，在以功能丧失致病的基因中按ACMG/AMP 2015属于非常强的致病证据（PVS1）；“20条对照染色体未检出”是2012年的做法，今天用大型人群数据库判断频率。母亲外周血阴性提示她很可能不是携带者，但生殖腺嵌合仍可导致再发：提供遗传咨询、母亲裂隙灯检查，以及再次怀孕时的产前或胚胎植入前检测（GeneReviews：Lowe综合征，2019年更新）。",
@@ -4784,11 +4812,11 @@
       "江芳, 高岩, 欧志英. Lowe综合征OCRL1基因突变一例. 中华儿科杂志. 2012;50(9):708-709. doi:10.3760/cma.j.issn.0578-1310.2012.09.016. Available from: https://rs.yiigle.com/cmaid/1171301",
       "Lewis RA, Nussbaum RL, Brewer ED. Lowe syndrome. 2001 Jul 24 [updated 2019 Apr 18]. In: Adam MP, Feldman J, Mirzaa GM, et al., editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-. Available from: https://www.ncbi.nlm.nih.gov/books/NBK1480/",
       "Mercuri E, Finkel RS, Muntoni F, et al. Diagnosis and management of spinal muscular atrophy: Part 1: Recommendations for diagnosis, rehabilitation, orthopedic and nutritional care. Neuromuscul Disord. 2018;28(2):103-115. doi:10.1016/j.nmd.2017.11.005",
-      "Rodan LH, Stoler J, Chen E, et al.; Council on Genetics. Genetic evaluation of the child with intellectual disability or global developmental delay: clinical report. Pediatrics. 2025;156(1):e2025072219. doi:10.1542/peds.2025-072219",
+      "Rodan LH, Stoler J, Chen E, Geleske T, Weaver KN; Council on Genetics. Genetic evaluation of the child with intellectual disability or global developmental delay: clinical report. Pediatrics. 2025;156(1):e2025072219. doi:10.1542/peds.2025-072219",
       "Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30",
       "Joint Committee on Infant Hearing. Year 2019 position statement: principles and guidelines for early hearing detection and intervention programs. J Early Hear Detect Interv. 2019;4(2):1-44. doi:10.15142/fptk-b748",
       "Trepiccione F, Walsh SB, Ariceta G, et al. Distal renal tubular acidosis: ERKNet/ESPN clinical practice points. Nephrol Dial Transplant. 2021;36(9):1585-1596. doi:10.1093/ndt/gfab171",
-      "Emma F, Nesterova G, Langman C, et al. Nephropathic cystinosis: an international consensus document. Nephrol Dial Transplant. 2014;29 Suppl 4:iv87-iv94.",
+      "Emma F, Nesterova G, Langman C, et al. Nephropathic cystinosis: an international consensus document. Nephrol Dial Transplant. 2014;29 Suppl 4:iv87-iv94. doi:10.1093/ndt/gfu090",
       "Trautmann A, Boyer O, Hodson E, et al. IPNA clinical practice recommendations for the diagnosis and management of children with steroid-sensitive nephrotic syndrome. Pediatr Nephrol. 2023;38(3):877-919. doi:10.1007/s00467-022-05739-3"
     ],
     "notice": {
@@ -5462,6 +5490,62 @@
         "text": "Did you drive in today?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "孩子这是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor-now"
+        ]
+      },
+      {
+        "text": "这次是因为什么住院的？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor-now"
+        ]
+      },
+      {
+        "text": "他现在会坐了没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor-now"
+        ]
+      },
+      {
+        "text": "他是早产的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "他能看见东西吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vision-now"
+        ]
+      },
+      {
+        "text": "What brings him in today?",
+        "locale": "en",
+        "expect": [
+          "motor-now"
+        ]
+      },
+      {
+        "text": "What's been going on with him?",
+        "locale": "en",
+        "expect": [
+          "motor-now"
+        ]
+      },
+      {
+        "text": "Was he premature, or born around his due date?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
       }
     ]
   }

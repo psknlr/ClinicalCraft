@@ -1,0 +1,8 @@
+- cmcr-1423433: Painful buttock swelling and a spreading bruise after an injection · 51-year-old man (5 decisions, 19 interventions;
+  review: 1 critical, 3 major, 15 minor findings)
+- cmcr-33667: Intermittent upward eye deviation and motor delay · 6-month-old boy (5 decisions, 12 interventions;
+  review: 0 critical, 5 major, 11 minor findings)
+- cmcr-33686: About a month of fever with an enlarged liver and spleen · boy aged 7 years 1 month (5 decisions, 14 interventions;
+  review: 0 critical, 3 major, 15 minor findings)
+- cmcr-639115: Weight loss and leg swelling in long-standing diabetes · 73-year-old man (5 decisions, 12 interventions;
+  review: 1 critical, 4 major, 8 minor findings)

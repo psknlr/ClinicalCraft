@@ -4,16 +4,16 @@ Each re-authored from the facts its 1.0.0 recorded (the full source articles are
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-33555: Fever and a seizure, then hard to rouse · 8-day-old boy (5 decisions, 18 interventions;
-  review: 2 critical, 7 major, 10 minor findings)
-- cmcr-44344: Recurrent black stools and pallor · 12-year-old boy (5 decisions, 14 interventions;
-  review: 1 critical, 5 major, 11 minor findings)
-- cmcr-598191: Fever, widespread rash and jaundice · 29-year-old woman (5 decisions, 20 interventions;
-  review: 1 critical, 3 major, 11 minor findings)
-- cmcr-598475: Transient memory disturbance, then heavy rectal bleeding · 38-year-old woman (5 decisions, 20 interventions;
-  review: 2 critical, 6 major, 11 minor findings)
+- cmcr-1423433: Painful buttock swelling and a spreading bruise after an injection · 51-year-old man (5 decisions, 19 interventions;
+  review: 1 critical, 3 major, 15 minor findings)
+- cmcr-33667: Intermittent upward eye deviation and motor delay · 6-month-old boy (5 decisions, 12 interventions;
+  review: 0 critical, 5 major, 11 minor findings)
+- cmcr-33686: About a month of fever with an enlarged liver and spleen · boy aged 7 years 1 month (5 decisions, 14 interventions;
+  review: 0 critical, 3 major, 15 minor findings)
+- cmcr-639115: Weight loss and leg swelling in long-standing diabetes · 73-year-old man (5 decisions, 12 interventions;
+  review: 1 critical, 4 major, 8 minor findings)
 
-Reviews: 6 critical, 21 major and 43 minor findings; every critical and major one fixed or
+Reviews: 2 critical, 15 major and 49 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

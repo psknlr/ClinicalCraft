@@ -35,9 +35,9 @@ After the case the learner can:
    pallor, petechiae, an enlarged liver and spleen, a raised white count of mostly lymphocytes and low platelets —
    and re-examine the original diagnosis instead of anchoring on it.
 2. Manage fever in a child with a suspected acute leukaemia as febrile neutropenia until the neutrophil count is
-   known: blood cultures, then an antipseudomonal β-lactam as soon as possible (international paediatric
-   fever-and-neutropenia guideline, 2023 update) — no ibuprofen with a low platelet count and no corticosteroid
-   before the diagnostic samples.
+   known: blood cultures, then as soon as possible the antipseudomonal β-lactam monotherapy that the international
+   paediatric fever-and-neutropenia guideline (2023 update) recommends for high-risk febrile neutropenia — no
+   ibuprofen with a low platelet count and no corticosteroid before the diagnostic samples.
 3. Handle an implausible laboratory value safely: recognise a haemoglobin written as 7.1 g/L as incompatible with
    life and probably a unit or transcription error, repeat the count before any red-cell transfusion, and decide on
    the measured value against the BSH 2016 threshold for stable children (70 g/L) — never acting on the written
@@ -80,8 +80,10 @@ peripheral blood on day 8, complete remission was assessed on day 33, and she wa
 publication. Drugs, doses, CSF, genetics, MRD and the later outcome are not recorded.
 
 **Today's answer:** a small round cell tumour in a child's bone is not Ewing sarcoma until a panel with TdT and
-lineage markers and a FET::ETS fusion test say so (WHO 2020). Fever with a leukaemic count is treated as febrile
-neutropenia (cultures, then an antipseudomonal β-lactam as soon as possible — 2023 guideline); no steroid and no
+lineage markers has excluded its mimics, and a FET::ETS fusion — the alteration that defines Ewing sarcoma in WHO
+2020, where its molecular proof is a desirable rather than an essential criterion — settles a doubtful case. Fever
+with a leukaemic count is treated as febrile neutropenia (cultures, then an antipseudomonal β-lactam as soon as
+possible — 2023 guideline); no steroid and no
 chemotherapy before the marrow, flow and CSF samples; tumour-lysis prevention; the impossible haemoglobin is
 re-measured before any transfusion; and the disease is treated on a contemporary paediatric ALL protocol with CNS
 staging after platelet support, genetics, MRD and the earlier anthracycline dose checked. The family is told openly
@@ -128,10 +130,13 @@ Titles and hints name no diagnosis and contain no option text.
 | `treatment-plan` (single) | decision 3 | `all-protocol`: a current paediatric ALL protocol at a haemato-oncology centre, LP with the first intrathecal dose after platelets, genetics, MRD-guided risk, echo and the earlier anthracycline dose | `lymphoma-chop` (treat it like other lymphomas, no intrathecal therapy, radiotherapy to the old sites); `transplant-first` ("relapse after six courses"); `palliation` (relapse after intensive chemotherapy) |
 | `family-talk` (single) | decision 3 | `open-explanation`: say plainly what changed and why, acknowledge distress, no guessing about fault, the new plan | `reassure-same` (false reassurance that nothing was lost); `blame-others` (speculating about the other hospital's fault); `defer-question` (answer only after induction) |
 
-Every option has its own feedback (2–4 sentences naming the guidance, issuing body or paper and year, and the reason).
-Option ids name their content. The length cue is controlled: in English only `classification` has a key that is
-uniquely the longest option (207 vs 204 characters); in Chinese no key is uniquely the longest (`working-diagnosis`
-ties at 71); `first-hours` is select-all.
+Every option has its own feedback (2–4 sentences: the reason, and the guidance, issuing body or paper and year where
+one applies). Option ids name their content. The length cue is controlled: in English only `classification` has a
+key that is uniquely the longest option (207 vs 204 characters); in Chinese no key is uniquely the longest
+(`working-diagnosis` ties at 71); in the select-all `first-hours` the three keys are not the three longest options in
+either language (English 113, 106, 92 against distractors of 94 and 93; Chinese 36, 35, 28 against 32 and 26). No
+hedging cue: the qualifier in the `working-diagnosis` key ("which the first tumour may also have been") is matched by
+two distractors ("which the earlier chemotherapy may have caused", "which may also explain").
 
 ### Rubric (11 deterministic items, weight 31, + 1 examiner-judged)
 
@@ -171,7 +176,7 @@ diagnostic phase, needs the culture and the antibiotics, and the rubric counts o
 | Antibiotics held back until the marrow results | not possible: `diagnosis` stays closed until they are given | — | — |
 | No platelets, LP or induction | 28/31 (90 %) | none | passed |
 | No family meeting | stays in `diagnosis` (`obj-plan`); 29/31 if the learner stops there | none | passed |
-| Dexamethasone given in `diagnosis` (after the samples) | 31/31 — neutral, not contraindicated (the harm text explains that the steroid belongs to the protocol) | none | passed |
+| Dexamethasone given in `diagnosis` (after the marrow and flow samples, possibly before the LP) | 31/31 — neutral, not contraindicated: the case flags a steroid only before the marrow (see "To verify") | none | passed |
 
 Contraindicated acts are listed as safety events in every debrief.
 
@@ -179,7 +184,8 @@ Contraindicated acts are listed as safety events in every debrief.
 unproven label, deepening marrow suppression in a febrile child with platelets of 20 × 10⁹/L and delaying the real
 treatment), `steroid-now` in `admission` and `all-induction` in `admission` (a steroid or chemotherapy before the
 marrow, flow cytometry and CSF samples can make the diagnosis and risk group impossible to complete and can
-precipitate tumour lysis). Giving any of them while contraindicated fails the assessment's safety outcome
+precipitate tumour lysis; the Children's Cancer and Leukaemia Group advises no corticosteroid before referral when
+leukaemia or lymphoma is possible, CCLG 2026). Giving any of them while contraindicated fails the assessment's safety outcome
 (`safety.passed: false`) whatever the score. `lp-intrathecal` is high-risk and explicitly `critical: false`: an LP
 before platelet support or before the diagnosis is a serious but recoverable misjudgement that the rubric
 (`rb-safe-support`) and the debrief record. `ibuprofen` and `red-cells` are moderate-risk contraindicated steps.
@@ -237,7 +243,7 @@ not believed.
 * Thresholds used in teaching: ALL with a white count below 100 × 10⁹/L is intermediate tumour-lysis risk unless
   the LDH is at least twice the upper limit (then high) (Cairo 2010; see "To verify"); prophylactic platelets below
   10 × 10⁹/L in stable children, below 20 × 10⁹/L with sepsis or severe mucositis (BSH 2016); marrow involvement of
-  25 % or more is conventionally called leukaemia rather than lymphoma.
+  more than 25 % is conventionally called leukaemia rather than lymphoma.
 * Doses in the intervention texts are formulas only (no weight or height is recorded): piperacillin–tazobactam
   90 mg/kg (80 mg/kg piperacillin + 10 mg/kg tazobactam) every 6 hours, maximum 4.5 g per dose; paracetamol
   10–15 mg/kg every 4–6 hours, at most 4 doses in 24 hours; allopurinol about 10 mg/kg/day in 2–3 doses;
@@ -353,7 +359,7 @@ the case.
 
 **Figures.** `fig01` (approved in `scripts/cmcr-105-media-review.json` as histology panels with cells, figure labels
 and the publication watermark only; checksum unchanged) is now attached to the outcome record, which opens only after
-every decision; its title says it shows later findings and is for the debrief. Its content could not be viewed in
+every decision; its title says it may show later findings and is for the debrief. Its content could not be viewed in
 this environment (no local asset), so the case describes no finding from it.
 
 **Survey findings fixed** (survey.json: template SI-01–SI-03 and the other systemic findings; the code review's
@@ -395,7 +401,7 @@ citation (no zero-padded issue, no duplicated bare URLs); one extension schema (
    emphasis on CD99-positive mimics of Ewing's sarcoma/primitive neuroectodermal tumor. Am J Surg Pathol.
    2000;24(12):1657-1662.
 3. Lucas DR, Bentley G, Dan ME, Tabaczka P, Poulik JM, Mott MP. Ewing sarcoma vs lymphoblastic lymphoma. A comparative
-   immunohistochemical study. Am J Clin Pathol. 2001;115:11-17. doi:10.1309/K1XJ-6CXR-BQQU-V255
+   immunohistochemical study. Am J Clin Pathol. 2001;115(1):11-17. doi:10.1309/K1XJ-6CXR-BQQU-V255
 4. WHO Classification of Tumours Editorial Board. Soft tissue and bone tumours. 5th ed. Lyon: International Agency for
    Research on Cancer; 2020. (WHO classification of tumours series; vol. 3).
 5. Alaggio R, Amador C, Anagnostopoulos I, et al. The 5th edition of the World Health Organization Classification of
@@ -415,18 +421,23 @@ citation (no zero-padded issue, no duplicated bare URLs); one extension schema (
     leukemia. Blood. 2000;96(10):3381-3384.
 11. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news:
     application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
+12. Children's Cancer and Leukaemia Group. Introduction to steroids. In: Community care information resource,
+    section 6: treatment [Internet]. CCLG; updated 2026 Jan. Available from:
+    https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids
 
-The same strings are `debrief.references`. Eleven references are two more than the standard's "article + 3–8": each
-is cited in the case text, and the pathology question (refs 2–4), the first-hours safety (refs 6–8, 10) and the
-treatment and communication (refs 5, 9, 11) each need their own sources. How they were checked (web search records,
+The same strings are `debrief.references`. Twelve references are three more than the standard's "article + 3–8":
+each is cited in the case text, and the pathology question (refs 2–4), the first-hours safety (refs 6–8, 10, 12) and
+the treatment and communication (refs 5, 9, 11) each need their own sources. How they were checked (web search records,
 2026-11-13; PubMed, Crossref and publisher pages could not be fetched directly): ref. 1 — the source map's
 `verifiedDoi` (publisher page checked 2026-10-29); ref. 2 — bibliographic records of the paper (journal, volume,
 issue, pages; 132 round cell tumours; FLI-1 protein not specific, lymphoblastic lymphomas, which are CD99 positive,
 mostly FLI-1 positive) — co-authors and DOI not confirmed, so "et al." and no DOI; ref. 3 — bibliographic and abstract
 records (authors, journal, volume, pages; all cases CD99 positive; a CD99 + TdT panel with other lymphoid markers
-separates the two) and the DOI as listed for the journal page — the issue number was not confirmed and is left out;
+separates the two) and the DOI as listed for the journal page — the issue, 115(1), was confirmed on review (2026-11-14);
 ref. 4 — secondary summaries of the classification (Ewing sarcoma defined by EWSR1 or FUS fusions with ETS-family
-genes; CD99 sensitive but not specific); ref. 5 — as checked for cmcr-655458; ref. 6 — the open-access PDF record
+genes; CD99 sensitive but not specific; on review, 2026-11-14, a review of the 2020 classification and a WHO lecture
+deck give small round cell morphology and membranous CD99 as essential and the fusion as desirable, so the case says
+the classification *defines* Ewing sarcoma by the fusion, never that it *requires* a fusion test); ref. 5 — as checked for cmcr-655458; ref. 6 — the open-access PDF record
 (J Clin Oncol 41(9):1774-1785, doi:10.1200/JCO.22.02224) and summaries (strong recommendation for monotherapy with an
 antipseudomonal β-lactam, a fourth-generation cephalosporin or a carbapenem in high-risk febrile neutropenia; a good
 practice statement to start empirical therapy as soon as possible in unstable patients); ref. 7 — PubMed record
@@ -437,7 +448,9 @@ with sepsis or severe mucositis; haemoglobin 70 g/L for stable non-cyanotic chil
 header and repository records (102(12):2086-2096, DOI; ALL-type, BFM-derived strategies efficacious in LBL); ref. 10
 — bibliographic and abstract records (Blood 96(10):3381-3384; 546 patients; blast contamination of the CSF at the
 diagnostic LP associated with worse event-free survival) — co-authors not confirmed; ref. 11 — PubMed 10964998 and
-the DOI record.
+the DOI record; ref. 12 — the CCLG page itself, read on review (2026-11-14; "last updated January 2026": when
+leukaemia or non-Hodgkin lymphoma is a consideration, corticosteroids must not be given before referral, as they may
+partially treat the disease, make the diagnosis hard to confirm and risk tumour lysis syndrome).
 
 ### To verify
 
@@ -463,7 +476,9 @@ the DOI record.
 
 **Guidance details not confirmed in this environment (web-search budget exhausted):**
 * Ref. 2: the full author list and DOI; the per-tumour figures (the case quotes no figure).
-* Ref. 7: the exact cell placement of ALL in the risk table and the prophylaxis it recommends for intermediate risk.
+* Ref. 7: the exact cell placement of ALL in the risk table (a 2010 Br J Haematol cohort quotes it as the case does:
+  white cells below 100 × 10⁹/L with an LDH at least twice the upper limit is high risk) and the prophylaxis it
+  recommends for intermediate risk.
 * The hydration volume (about 3 L/m²/day, potassium-free) and allopurinol dose (about 10 mg/kg/day) in the
   intervention texts, against BSH 2015 (Jones et al., Br J Haematol 2015;169:661-671) or Coiffier et al. 2008.
 * The red-cell and platelet volumes (10–15 mL/kg) against BSH 2016, and the platelet threshold BSH 2016 gives for a
@@ -476,30 +491,72 @@ the DOI record.
 * The WHO-HAEM5 (2022) wording of the 25 % marrow convention for leukaemia versus lymphoma.
 * The co-authors of ref. 10 and the third author onwards of ref. 6.
 * `fig01`: its panels and whether its title fits once the image can be viewed.
+* Ref. 4: the essential and desirable criteria for Ewing sarcoma in the book itself.
+
+**For the clinician review (paediatric haemato-oncology and paediatric pathology):**
+* Treating the fever of an undiagnosed leukaemia with an unknown neutrophil count as high-risk febrile neutropenia is
+  the case's teaching (common practice); the 2023 guideline's recommendations address established febrile
+  neutropenia, and the case cites it for the regimen only.
+* `lp-intrathecal` is `critical: false`: an LP before platelet support or before the diagnosis is scored as a serious
+  but recoverable error (the traumatic-tap risk of Gajjar 2000). Confirm that judgement.
+* Dexamethasone is contraindicated only in `admission`; given in `diagnosis` before the LP it is not flagged,
+  although it could clear blasts from the CSF before CNS staging.
+* `red-cells` stops being contraindicated once the repeat count is ordered; no repeat value is recorded, so the case
+  cannot judge a transfusion on it.
+* Allopurinol is keyed while the LDH is unknown; an LDH at least twice the upper limit would make the tumour-lysis
+  risk high, where the 2010 panel prefers rasburicase.
+* The `ibuprofen` harm names no guidance (none was found for a child off treatment; CCLG's NSAID advice concerns
+  children on treatment for solid tumours).
 
 ## Changelog
 
-- 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet
-  checked against the full source article. Spoiler-free title and summary; 25 history items in the relative's and
-  the girl's voices; six examination findings; 14 investigations with phase-specific results and the haemoglobin kept
-  as written; 15 interventions (the report's switch to ALL-type therapy, today's first-hours care, and six tempting
-  wrong steps, three of them critical); five decisions; a rubric with two critical acts; four staff; six learning
-  outcomes and teaching points; 40 matcher utterances; this facilitator guide. Guidance cited: WHO 2020 and 2022
-  classifications, the 2023 paediatric fever-and-neutropenia guideline, the 2010 TLS consensus, BSH 2016 transfusion,
-  EURO-LB02, SPIKES.
-- 1.0.0 — 2026-10-28 — initial de-identified educational adaptation (template version).
+### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
+
+- **Template defects replaced.** A spoiler-free title and summary; 25 history items in the relative's and the girl's
+  voices (were 15 generic slots, ten of them "the source case does not provide that information"); six examination
+  findings (were one); 14 investigations with phase-specific results and the haemoglobin kept as written (were four
+  record reviews); three phases built on the learner's acts; option ids that name their content (were `review`,
+  `same`, `correct-number`…).
+- **Added.** 15 interventions (none in 1.0.0): the report's switch to ALL-type therapy, today's first-hours care
+  (cultures and antibiotics, the repeat count, tumour-lysis prevention, the pathology review, the haemato-oncology
+  referral) and six tempting wrong steps, three of them critical; five decisions (were three of three options); a
+  rubric with two critical acts (the critical item was a decision taken after the corroborating records); four
+  staff; six learning outcomes and teaching points; 40 matcher utterances; this facilitator guide.
+- **Guidance cited:** WHO 2020 and 2022 classifications, the 2023 paediatric fever-and-neutropenia guideline, the 2010
+  TLS consensus, BSH 2016 transfusion, EURO-LB02, SPIKES.
+- **Independent review (2026-11-14), fixes within 1.1.0.** (1) *Guidance:* WHO 2020 defines Ewing sarcoma by a
+  FET::ETS fusion but lists its molecular proof as desirable, not essential — the keyed feedback of decision 1, a
+  distractor's feedback in decisions 1 and 3, a teaching point, the pathologist's brief and this guide no longer say
+  the classification "needs" or "requires" a fusion test; the `mixed-phenotype` feedback no longer says MPAL needs both
+  lineages on the same cells (one blast population or two separate ones, WHO 2022); learning outcome 2 cites the 2023
+  guideline for the regimen it recommends; the more-than-25 % convention. (2) *Assessment validity:* in the select-all
+  `first-hours` the English keys were exactly the three longest options (two distractors rewritten to the keys'
+  length); the `working-diagnosis` key was the only hedged option (two distractors now carry the same kind of
+  qualifier). (3) *Harms naming their guidance:* the steroid and induction harms and the steroid feedback cite the
+  CCLG community care resource (2026), reference 12. (4) *Facts:* the summary and the admission phase no longer say she
+  was "told" of the remission or "admitted again" (1.0.0: assessed as in complete remission); the English conclusion
+  now states what the Chinese states (bone destruction, CD20 negative, CD79 partly positive, scattered petechiae, both
+  legs). (5) *Spoilers:* three objective hints no longer point at the marrow, the lymphoblast or the change of
+  diagnosis; the figure title says "may show", as the image has not been viewed. (6) *This guide:* the changelog in the
+  standard's form, the case-check path, Lucas 2001's issue, and a clinician list under "To verify".
+
+### 1.0.0 — 2026-10-28 — initial de-identified educational adaptation (template version)
+
+- Generated from the collection template: four phases, 15 generic history slots, one examination finding, four
+  record reviews, no interventions, three decisions of three options with role-named ids, and a critical item scored
+  on a decision.
 
 ## Validation
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-44614/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-44614 --lang en                                                 # 68 steps, 6/6 objectives, 5/5 decisions, 40/40 utterances, 31/31 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-44614                       # depth floor, do nothing 0, wrong first 55 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-44614                                       # depth floor, do nothing 0, wrong first 55 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44614:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44614:"  # in-world demonstration, en + zh-CN
 ```
 
-All five passed on 2026-11-13 (results above).
+All five passed on 2026-11-13, and again on 2026-11-14 after the independent review's fixes (results above).
 
 ## 中文摘要
 

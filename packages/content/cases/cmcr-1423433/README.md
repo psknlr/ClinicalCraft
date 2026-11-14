@@ -1,4 +1,4 @@
-# cmcr-1423433 — Buttock swelling and a spreading bruise after an injection · 51-year-old man
+# cmcr-1423433 — Painful buttock swelling and a spreading bruise after an injection · 51-year-old man
 
 > **Spoilers — facilitator guide.** This file names the diagnosis. Learners open the case from the case library,
 > where the title, summary, chief complaint, tags, triage note and objective titles give nothing away.
@@ -22,9 +22,9 @@ What 1.0.0 does not record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a physician who manages anticoagulation (cardiology or haematology) and a transfusion specialist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent review (2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a physician who manages anticoagulation (cardiology or haematology) and a transfusion specialist review it before teaching use |
 | phases | `admission` 入院：左臀部肿痛 / Admission: a swollen, painful left buttock → `post-drainage` 引流术后 / After the drainage → `transfusion` 输血之后 / After the transfusion → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
-| content | 24 history items (11 recorded facts, one of them partly recorded; 1 labelled teaching device; 12 unknown; 8 required) · 4 exam findings (3 on admission, 1 at the one-month review) · 16 investigations (4 record reviews; results recorded for 5, the other 11 with no recorded result in any phase) · 19 interventions (5 always harmful; drainage contraindicated before any clotting-factor replacement; restarting anticoagulation contraindicated on admission) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| content | 24 history items (11 recorded facts, one of them partly recorded; 1 labelled teaching device; 12 unknown; 8 required) · 4 exam findings (3 on admission, 1 at the one-month review) · 16 investigations (4 record reviews; results recorded for 5, the other 11 with no recorded result in any phase) · 19 interventions (5 always harmful, 3 of them `critical: true`; drainage contraindicated before any clotting-factor replacement; restarting anticoagulation contraindicated on admission) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
 
 ## Learning outcomes
 
@@ -74,10 +74,11 @@ team considered heart failure (today: possible transfusion-associated circulator
   assess new breathlessness after a transfusion as possible TACO while excluding prosthetic-valve problems (ISBT
   2018). Confirm the valve type and target, restart as soon as haemostasis is secure, bridge a mechanical mitral
   valve, no DOAC for a mechanical valve (ACC 2020; ACC/AHA 2020). No IM injection while the INR is above range (NHS
-  SPS 2023); INR at least every 4 weeks, never six-monthly (CHEST 2012). Metamizole injection is no longer registered
+  SPS 2023). INR checks at least every 4 weeks while he restarts, never six-monthly: CHEST 2012 stretches the interval
+  to at most 12 weeks, and only for consistently stable INRs. Metamizole injection is no longer registered
   in China (NMPA 2020).
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology (staged evidence by phase; static clock, no simulated physiology)
 
 | phase | what has happened | what the learner can obtain | opens when |
 |---|---|---|---|
@@ -117,15 +118,15 @@ No objective holds a condition that can become permanently false (no phase leaf,
 | # | id | opens after | key (content id) | what it tests |
 |---|---|---|---|---|
 | 1 | `cause` | the injection story, valves, warfarin; bruising, mass, warmth; the three admission results | `haematoma-overanticoag` | haematoma on excessive warfarin vs abscess, retroperitoneal bleed, necrotising infection |
-| 2 | `first-steps` | decision 1 and the six-monthly checks | `pcc-ivk-recheck` | stop warfarin, IV vitamin K₁ 5–10 mg + 4-factor PCC, repeat INR before drainage vs the report's high-dose vitamin K alone, IM vitamin K with drainage today, oral vitamin K and observation, continuing warfarin |
+| 2 | `first-steps` | decision 1 and the six-monthly checks | `pcc-ivk-recheck` | stop warfarin, IV vitamin K₁ 5–10 mg + 4-factor PCC, repeat INR before drainage vs high-dose vitamin K alone (close to the report's course), IM vitamin K with drainage today, oral vitamin K and observation, continuing warfarin |
 | 3 | `transfuse` | the operation record and the post-operative count | `rbc-one-unit-review` | one unit at a time with review vs deferring for IV iron, four rapid units to Hb > 100 g/L, plasma with every unit |
 | 4 | `breathless` | his report after the transfusion and decision 3 | `stop-assess-overload` | stop, assess, oxygen, diuretic if overloaded, CXR/ECG/BNP/echo, report vs slowing and finishing the unit, assuming allergy, assuming TRALI with steroids and fluids |
 | 5 | `restart-plan` | decision 4; valves, warfarin, monitoring asked | `confirm-valve-restart-early` | confirm valve type and target, early restart with a heparin bridge if mechanical, INR at least 4-weekly, no IM injections vs aspirin alone, a DOAC, a month's wait with target 1.5 |
 
 Every decision opens before the record that would answer it (the operation record answers decision 1; the outcome
 record answers 2–5). No decision is gated on an unknown history item. Each option has its own feedback naming the
-guidance (ACC 2020, CHEST 2012, NHS SPS 2023, AABB 2023, NICE NG24, ISBT 2018, ACC/AHA 2020). The key is the
-uniquely longest option only in decision 4 (both locales).
+guidance (ACC 2020, CHEST 2012, NHS SPS 2023, AABB 2023, NICE NG24, ISBT 2018, ACC/AHA 2020). The key is never the
+uniquely longest option in English; in Chinese only in decision 4, by three characters (54 against 51).
 
 ### Rubric (11 deterministic items, total weight 26, + 1 examiner-judged)
 
@@ -146,17 +147,19 @@ uniquely longest option only in decision 4 (both locales).
 
 ### How wrong choices score (measured with the core reducer)
 
-| path | score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 26/26 (100 %) | — |
-| wrong first answer at every decision, then the key | 14/26 (54 %) | — |
-| start and do nothing | 0/23 (`rb-no-harm` not scored; the case cannot be finished) | `rb-reversal-in-time` |
-| the report's reversal: vitamin K alone (wrong first at decision 2), drainage requested before any factor replacement | 16/26 (62 %) | `rb-reversal-in-time`, `rb-no-harm` |
-| IM instead of IV vitamin K, no PCC (wrong first at decision 2) | 16/26 (62 %) | `rb-reversal-in-time`, `rb-no-harm` |
-| plasma instead of PCC | 23/26 (88 %) | — (`rb-reversal-plan` lost) |
-| four rapid units (wrong first at decision 3) | 21/26 (81 %) | `rb-no-harm` |
-| a DOAC at discharge (wrong first at decision 5) | 21/26 (81 %) | `rb-no-harm` |
-| bedside aspiration on arrival | 23/26 (88 %) | `rb-no-harm` |
+| path | score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 26/26 (100 %) | — | passed |
+| wrong first answer at every decision, then the key | 14/26 (54 %) | — | passed |
+| start and do nothing | 0/23 (`rb-no-harm` not scored; the case cannot be finished) | `rb-reversal-in-time` | passed |
+| vitamin K alone, close to the report's course (wrong first at decision 2), drainage requested before any factor replacement | 16/26 (62 %) | `rb-reversal-in-time`, `rb-no-harm` | passed |
+| IM instead of IV vitamin K, no PCC (wrong first at decision 2) | 16/26 (62 %) | `rb-reversal-in-time`, `rb-no-harm` | passed |
+| plasma instead of PCC | 23/26 (88 %) | — (`rb-reversal-plan` lost) | passed |
+| four rapid units (wrong first at decision 3) | 21/26 (81 %) | `rb-no-harm` | **failed** (`rapid-transfusion`) |
+| a DOAC at discharge (wrong first at decision 5) | 21/26 (81 %) | `rb-no-harm` | **failed** (`doac-switch`) |
+| bedside aspiration on arrival | 23/26 (88 %) | `rb-no-harm` | **failed** (`bedside-aspiration`) |
+
+Re-measured with core `assess` after the independent review (2026-11-14).
 
 The communication item is judged from the transcript and is not in the deterministic total.
 
@@ -171,8 +174,20 @@ The communication item is judged from the transcript and is not in the determini
   is how the case represents an operation on an uncorrected INR.
 - `rb-no-harm` — the dangerous errors this case invites: a needle or blade into the collection at an INR of 6.2, a
   drainage before any factor replacement, another IM injection (vitamin K or an NSAID), a rapid multi-unit
-  transfusion in valve disease and a DOAC for a probable mechanical valve. It counts only once a harm was possible
+  transfusion in valve disease and a DOAC for valves that may be mechanical. It counts only once a harm was possible
   (`scoredWhen`), so doing nothing earns nothing.
+
+**Safety outcome.** `bedside-aspiration`, `rapid-transfusion` and `doac-switch` are `critical: true`, the three acts an
+examiner would call dangerous here: a needle or blade into a collection of about 139×55 mm at an INR of 6.2 can turn an
+ongoing bleed into an uncontrolled one; four rapid units aiming above 100 g/L in a man with two prosthetic valves and no
+major active bleeding invites life-threatening circulatory overload; and a DOAC for valves that may be mechanical risks
+valve thrombosis and stroke (ACC/AHA 2020, class 3: harm). Giving any of them fails the assessment's safety outcome
+(`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score; each also loses
+`rb-no-harm`. The other harmful acts are moderate-risk, recoverable misjudgements that lose marks without failing the
+safety outcome on their own: IM vitamin K or IM diclofenac (a new bleeding site), restarting anticoagulation on
+admission, and asking for the drainage before any PCC or plasma (the static clock cannot let vitamin K alone take
+effect, so this stays a scored error that also costs `rb-reversal-in-time`). PCC is high-risk (thrombosis) but never
+contraindicated here, so it carries no flag; no intervention is `critical: false`.
 
 ## Reference path (`solution`)
 
@@ -253,7 +268,7 @@ added. No value was changed from 1.0.0.
 |---|---|
 | calling it an abscess on the WBC and warmth, and wanting to drain it now | decision 1 option `injection-abscess`; intervention `bedside-aspiration` (always harmful); `rb-no-harm` |
 | IM vitamin K — repeating the very route that caused the bleed | decision 2 option `im-vitk-drain-today`; intervention `vitk-im` (harm text cites NHS SPS 2023); `rb-no-harm` |
-| the report's approach, high-dose vitamin K alone and wait | decision 2 option `ivk-alone-repeat`; `surgical-drainage` before PCC/plasma is contraindicated; `rb-reversal-in-time` |
+| high-dose vitamin K alone and wait (close to the report's course; whether it used other agents is not recorded) | decision 2 option `ivk-alone-repeat`; `surgical-drainage` before PCC/plasma is contraindicated; `rb-reversal-in-time` |
 | treating it as a high INR without bleeding (oral vitamin K, observe) | decision 2 option `oral-vitk-observe` |
 | continuing warfarin "because of the valves" | decision 2 option `continue-reduced`; `restart-anticoag` contraindicated on admission |
 | an NSAID or IM analgesic for the pain | intervention `im-nsaid` (always harmful); paracetamol is the alternative |
@@ -328,7 +343,7 @@ the critic's collection-wide findings apply):
 - option ids `supported` / `alternative-N` are now content ids, and the key is the longest option only once per
   language;
 - the straw-man distractors ("Leukocytosis proves an abscess", "The lowest INR is always best") are replaced by
-  plausible near-misses, including the report's own reversal;
+  plausible near-misses, including one close to the report's own reversal;
 - the transfusion teaching ("distinguish temporal association from proven transfusion complications") becomes a
   decision on single-unit transfusion and one on TACO, with prosthetic-valve thrombosis after reversal in the
   differential;
@@ -339,6 +354,20 @@ the critic's collection-wide findings apply):
   specific questions; the single compound unknown becomes 8 specific unknowns;
 - the title, summary and tags are spoiler-free; the specialty `surgery` was already migrated to `general-surgery` and
   `hematology` is added for the anticoagulation and transfusion content.
+
+**Independent review (2026-11-14), applied within 1.1.0.** Strict validation and the collection contract failed on
+three high-risk, always-contraindicated interventions without a `critical` flag; they are now `critical: true` (see
+*Safety outcome*). One changed fact was removed: decision 5's prompt, one of its feedbacks and the communication
+guidance put the INR of 6.2 at the time of the injection, but it was measured on admission, 8 days later. Decision 2's
+prompt and several feedbacks had turned the recorded spreading bruise into a measured "growing haematoma"; they now say
+what is recorded. The first key-reasoning step no longer claims the Hb shows how much blood was lost (no earlier Hb is
+recorded), the unknowns name the injection's side rather than its site (the buttock comes from the title), and the
+drainage harm speaks of the last INR. Guidance was tightened against the sources: the ISBT 2018 TACO definition with
+its three-criteria rule, not cited for TRALI; single units as NICE NG24's advice, thresholds as AABB 2023's; the PCC
+indication as ACC 2020 states it (a reversal agent for a major bleed that does not settle) with CHEST 2012; IM vitamin K
+excluded by the SPS rule and ACC 2020's IV route rather than attributed to SPS (whose article does not mention vitamin
+K); "INR at least every 4 weeks" no longer attributed to CHEST 2012. Decision 4's key no longer stands out by length,
+and vitamin K₁ has a preset dose (5–10 mg IV).
 
 **Privacy.** Pseudonym unique in the collection; no hospital, city, date, ID, initials or occupation. Authors are named
 only in the citation. No figure of the report is approved for display (`scripts/cmcr-105-media-review.json` has no
@@ -398,6 +427,8 @@ In the source article (the source pass):
 - the metamizole dose, the injection site and side (the buttock is inferred from the title) and the number of
   injections;
 - the timing: "8 days ago" and "the next day" against "pain for 6 days";
+- the INR at the time of the injection (1.0.0 records only the admission INR of 6.2) and whether the swelling itself
+  was seen to enlarge (1.0.0 records the bruise spreading day by day and one size of the mass);
 - vital signs and temperature on admission, platelet count, prothrombin time in seconds, fibrinogen, renal and liver
   function;
 - the reversal: vitamin K dose, route and number of doses ("high-dose" in 1.0.0), any plasma or PCC, the INR before
@@ -430,7 +461,20 @@ In the guidance:
   doing nothing and less for a wrong first answer.
 - Four staff (cardiology attending, ward nurse, clinical pharmacist, general surgeon); six learning outcomes; six
   dated teaching points; eight unknowns; nine Vancouver references.
-- Provenance and review status per STANDARD §6.6; `sourceTextChecked: false`; unverifiable `authorChecks` removed.
+- Provenance and review status per STANDARD §1.2 and §6.3; `sourceTextChecked: false`; unverifiable `authorChecks` removed.
+- **Independent review (2026-11-14), fixes within 1.1.0.** (1) *Safety outcome:* `bedside-aspiration`,
+  `rapid-transfusion` and `doac-switch` set `critical: true` (strict validation and the collection contract had failed
+  on the missing flags); *Safety outcome* paragraph and 安全结果 added. (2) *Changed fact removed:* the INR of 6.2 was put
+  at the time of the injection (decision 5 prompt, `aspirin-instead` feedback, communication guidance); it is the
+  admission value. (3) *Recorded finding restored:* "still enlarging" / "growing haematoma" → the bruise still spreading
+  (decision 2 prompt and feedback, `restart-anticoag` harm, key reasoning, teaching point 1, attending). (4) *Internal
+  consistency:* the Hb no longer "shows how much has been lost"; unknowns name the injection's side, not its site; the
+  drainage harm cites the last INR; the injection answer dates the jab, not the cold; the zh source has no English. (5)
+  *Guidance:* ISBT 2018 TACO definition with its three-criteria rule and cited for TACO only; NICE NG24 for single units,
+  AABB 2023 for thresholds; the PCC indication per ACC 2020 and CHEST 2012; IM vitamin K not attributed to SPS; CHEST 2012
+  not cited for 4-weekly checks; the reversal "described as high-dose vitamin K" rather than what "the report describes".
+  (6) *Assessment:* decision 4's distractors given the key's specificity (the key had been about half again as long);
+  vitamin K₁ preset 5–10 mg IV. (7) README: title parity with zh, heading, validation path, measured safety outcomes.
 
 ### 1.0.0 — 2026-10-28
 
@@ -443,7 +487,7 @@ From the worktree root:
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1423433/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1423433 --lang en                                                 # 73 steps, 6/6 objectives, 5/5 decisions, 38/38 utterances, 26/26
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1423433                       # depth floor, do-nothing 0, wrong-first 54 % < 100 %
+npx tsx --conditions=source scripts/case-check.ts cmcr-1423433                                      # depth floor, do-nothing 0, wrong-first 54 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1423433:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1423433:"  # in-world demonstration, en + zh-CN
 ```
@@ -463,7 +507,7 @@ ISBT 2018 识别并处理输血相关循环超负荷，排除人工瓣膜问题�
 抗凝药，INR 至少每 4 周一次，INR 高于范围时不肌注；⑥ 用 Calgary–Cambridge 方法向担心瓣膜的患者解释病情和计划。
 
 **关键决策：** 决策 1 抗凝过度时的注射部位血肿（对比脓肿、腹膜后出血、坏死性感染）；决策 2 停华法林、静脉维生素K₁ 加
-4因子PCC、复查 INR 后再引流（对比原报告的单用大剂量维生素K、肌注维生素K并当天切开、口服小剂量观察、减量继续）；决策 3
+4因子PCC、复查 INR 后再引流（对比接近原报告做法的单用大剂量维生素K、肌注维生素K并当天切开、口服小剂量观察、减量继续）；决策 3
 每次 1 单位输血并复评；决策 4 停止继续输血、评估、吸氧、利尿、查胸片/心电图/BNP/超声心动图并上报；决策 5 核实瓣膜类型和
 目标 INR，止血后尽早恢复，机械瓣肝素过渡，INR 至少每 4 周一次，不再肌注。关键项：引流前及时逆转；不做危险操作。
 
@@ -471,3 +515,7 @@ ISBT 2018 识别并处理输血相关循环超负荷，排除人工瓣膜问题�
 注销注册证书（NHS SPS 2023；NMPA 2020）；瓣膜病患者的限制性、逐单位输血（AABB 2023；NICE NG24）；输血后气短按可能的
 TACO 评估并上报（ISBT 2018）；恢复抗凝与瓣膜相关的目标 INR、机械瓣禁用直接口服抗凝药（ACC 2020；ACC/AHA 2020）；INR 监测
 间隔不超过 CHEST 2012 的上限，半年一次远远不够。待核实事项见上文 “To verify”。
+
+**安全结果。** `bedside-aspiration`（INR 6.2 时床旁穿刺或切开）、`rapid-transfusion`（快速连续输注 4 单位红细胞）和
+`doac-switch`（瓣膜类型不明时改用直接口服抗凝药）标为 `critical: true`：分别可致出血失控、危及生命的循环超负荷和瓣膜血栓与
+卒中；做了其中任何一项，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示。

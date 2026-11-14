@@ -3920,7 +3920,7 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这接近原报告的做法（报告描述为大剂量维生素K，剂量未记录），但今天不应单独使用：维生素K需要数小时起效、约一天才充分，其间出血仍在继续，引流也只能等。CHEST 2012 建议华法林相关大出血用4因子PCC而不是血浆，并加用静脉维生素K。大剂量还会让恢复华法林后数天难以达标，对人工瓣膜不利。",
+            "zh-CN": "这接近原报告的做法（描述为大剂量维生素K，剂量未记录），但今天不应单独使用：维生素K需要数小时起效、约一天才充分，其间出血仍在继续，引流也只能等。CHEST 2012 建议华法林相关大出血用4因子PCC而不是血浆，并加用静脉维生素K。大剂量还会让恢复华法林后数天难以达标，对人工瓣膜不利。",
             "en": "Close to the report's course (described as high-dose vitamin K; the dose is not recorded), but not enough on its own today: vitamin K takes hours to act and about a day for full effect, while the bleeding goes on and the drainage waits. CHEST 2012 suggests 4-factor PCC rather than plasma for major bleeding on a vitamin K antagonist, with IV vitamin K added. High doses also make the INR hard to bring back into range when warfarin restarts — a problem with prosthetic valves."
           }
         },
@@ -4061,7 +4061,7 @@
         {
           "id": "stop-assess-overload",
           "text": {
-            "zh-CN": "停止继续输血并保留通路，评估生命体征、肺部和出入量，吸氧；超负荷时静注呋塞米；查胸片、心电图、BNP、心超并上报",
+            "zh-CN": "停止输血、保留通路；评估生命体征、肺部和出入量并吸氧；超负荷时静注呋塞米；查胸片、心电图、BNP、心超并上报",
             "en": "Stop further transfusion, keep the line; assess vital signs, chest and fluid balance; oxygen; IV furosemide if overloaded; chest film, ECG, BNP, echo; report it"
           },
           "correct": true,
@@ -4073,7 +4073,7 @@
         {
           "id": "slow-and-finish",
           "text": {
-            "zh-CN": "把输血速度调慢，先把这一单位输完再评估；输血时胸闷多半是紧张，先安慰他，输完后再复测生命体征",
+            "zh-CN": "把输血速度调慢，先把这一单位血输完再评估；输血时胸闷多半是紧张，先安慰他，等这单位输完后再复测生命体征",
             "en": "Slow the rate and finish the unit before assessing him; tightness during a transfusion is usually anxiety, so reassure him and repeat his observations at the end"
           },
           "correct": false,
@@ -4085,7 +4085,7 @@
         {
           "id": "allergy-continue",
           "text": {
-            "zh-CN": "按过敏反应处理：静脉给氢化可的松和氯苯那敏，查看皮肤并复测生命体征，症状缓解后继续把余下的血输完",
+            "zh-CN": "按过敏反应处理：静脉注射氢化可的松和氯苯那敏，查看皮肤并复测生命体征，等症状缓解后再继续把余下的血输完",
             "en": "Treat it as an allergic reaction with IV hydrocortisone and chlorphenamine, look at his skin and observations, and carry on with the transfusion once he settles"
           },
           "correct": false,
@@ -4097,8 +4097,8 @@
         {
           "id": "trali-steroids-fluids",
           "text": {
-            "zh-CN": "诊断为输血相关急性肺损伤：停止输血，给大剂量糖皮质激素并静脉补液，避免使用利尿剂，血袋退回输血科",
-            "en": "Diagnose transfusion-related acute lung injury: stop the unit, give high-dose corticosteroids and IV fluids, avoid diuretics and return the bag to the blood bank"
+            "zh-CN": "诊断为输血相关急性肺损伤：停止输血，给大剂量糖皮质激素并静脉补液，避免使用利尿剂，把血袋退回输血科检测",
+            "en": "Diagnose transfusion-related acute lung injury: stop the unit, give high-dose corticosteroids and IV fluids, avoid diuretics and return the bag to the blood bank for testing"
           },
           "correct": false,
           "feedback": {

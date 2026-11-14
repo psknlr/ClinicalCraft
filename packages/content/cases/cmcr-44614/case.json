@@ -7,8 +7,8 @@
     "en": "Fever and leg pain after treatment for a bone tumour · 6-year-old girl"
   },
   "summary": {
-    "zh-CN": "一个6岁女孩，曾在外院按骨肿瘤化疗并被告知已完全缓解；近两周发热、两条腿疼，已经不能走路，再次住院。",
-    "en": "A 6-year-old girl who was treated elsewhere with chemotherapy for a bone tumour and told it was in complete remission is admitted again after two weeks of fever and pain in both legs; she can no longer walk."
+    "zh-CN": "一个6岁女孩，曾在外院按骨肿瘤化疗，之后评估为完全缓解；近两周发热、两条腿疼，已经不能走路。",
+    "en": "A 6-year-old girl who had chemotherapy elsewhere for a bone tumour, and was assessed afterwards as in complete remission, now has two weeks of fever and pain in both legs and can no longer walk."
   },
   "specialty": [
     "pediatrics",
@@ -83,8 +83,8 @@
       "en": "Recognise marrow infiltration in a child previously treated for “Ewing sarcoma” — fever, pain in both legs, pallor, petechiae, an enlarged liver and spleen, a raised white count of mostly lymphocytes and low platelets — and re-examine the original diagnosis instead of anchoring on it."
     },
     {
-      "zh-CN": "在中性粒细胞计数明确之前，把可疑急性白血病患儿的发热按发热伴中性粒细胞减少处理：先送血培养，尽快静脉用抗假单胞菌β-内酰胺类单药（国际儿童发热伴中性粒细胞减少指南2023年更新）；血小板低时不用布洛芬，诊断标本取得前不用糖皮质激素。",
-      "en": "Manage fever in a child with a suspected acute leukaemia as febrile neutropenia until the neutrophil count is known: blood cultures, then an antipseudomonal β-lactam as soon as possible (international paediatric fever-and-neutropenia guideline, 2023 update) — no ibuprofen with a low platelet count and no corticosteroid before the diagnostic samples."
+      "zh-CN": "在中性粒细胞计数明确之前，把可疑急性白血病患儿的发热按发热伴中性粒细胞减少处理：先送血培养，再尽快按国际儿童发热伴中性粒细胞减少指南（2023年更新）对高危患儿的推荐，静脉用抗假单胞菌β-内酰胺类单药；血小板低时不用布洛芬，诊断标本取得前不用糖皮质激素。",
+      "en": "Manage fever in a child with a suspected acute leukaemia as febrile neutropenia until the neutrophil count is known: blood cultures, then as soon as possible the antipseudomonal β-lactam monotherapy that the international paediatric fever-and-neutropenia guideline (2023 update) recommends for high-risk febrile neutropenia — no ibuprofen with a low platelet count and no corticosteroid before the diagnostic samples."
     },
     {
       "zh-CN": "安全处理不可信的检验值：识别写作7.1 g/L的血红蛋白与生命不相容、可能是单位或录入错误，输红细胞前复查血常规，再按实测值和BSH 2016儿童阈值（病情稳定者70 g/L）决定，既不照此数值处置，也不擅自改写。",
@@ -196,8 +196,8 @@
         "en": "Admission: two weeks of fever, unable to walk"
       },
       "description": {
-        "zh-CN": "她曾在外院按骨肿瘤化疗，被告知已完全缓解；这两周发热、两条腿疼，现在走不了路，今天住进儿科病房。向家属和孩子了解病情、给她查体、调阅外院病理报告、开出入院检查，并安排最初几小时的处置。",
-        "en": "She was treated elsewhere with chemotherapy for a bone tumour and told it was in complete remission; for two weeks she has had a fever and pain in both legs, she can no longer walk, and today she is admitted to the children's ward. Take the history from her relative and from her, examine her, read the outside pathology report, send the admission tests and set up the first hours of care."
+        "zh-CN": "她曾在外院按骨肿瘤化疗，之后评估为完全缓解；这两周发热、两条腿疼，现在走不了路，今天住进儿科病房。向家属和孩子了解病情、给她查体、调阅外院病理报告、开出入院检查，并安排最初几小时的处置。",
+        "en": "She was treated elsewhere with chemotherapy for a bone tumour and assessed afterwards as in complete remission; for two weeks she has had a fever and pain in both legs, she can no longer walk, and today she is admitted to the children's ward. Take the history from her relative and from her, examine her, read the outside pathology report, send the admission tests and set up the first hours of care."
       },
       "learnerSwitchable": false
     },
@@ -3030,8 +3030,8 @@
         "phase": "admission"
       },
       "harm": {
-        "zh-CN": "在骨髓、流式细胞术和脑脊液标本取得之前用糖皮质激素，会让淋巴母细胞迅速溶解：诊断和危险度分组（包括激素反应）可能无法完成，还可能诱发肿瘤溶解综合征。激素属于确诊后的诱导方案；现在退热止痛用对乙酰氨基酚。",
-        "en": "A corticosteroid before the marrow, flow cytometry and CSF samples lyses lymphoblasts quickly: the diagnosis and the risk grouping (including the steroid response) may become impossible to complete, and tumour lysis can follow. The steroid belongs to the induction protocol after the diagnosis; for fever and pain now, use paracetamol."
+        "zh-CN": "在骨髓、流式细胞术和脑脊液标本取得之前用糖皮质激素，会让淋巴母细胞迅速溶解：诊断和危险度分组（包括激素反应）可能无法完成，还可能诱发肿瘤溶解综合征；英国儿童癌症与白血病组（CCLG，2026）要求怀疑白血病或淋巴瘤时转诊前不用糖皮质激素。激素属于确诊后的诱导方案；现在退热止痛用对乙酰氨基酚。",
+        "en": "A corticosteroid before the marrow, flow cytometry and CSF samples lyses lymphoblasts quickly: the diagnosis and the risk grouping (including the steroid response) may become impossible to complete, and tumour lysis can follow; the Children's Cancer and Leukaemia Group says no corticosteroid before referral when leukaemia or lymphoma is possible (CCLG, 2026). The steroid belongs to the induction protocol after the diagnosis; for fever and pain now, use paracetamol."
       },
       "response": {
         "zh-CN": "已给地塞米松。本病例没有记录这一步；不模拟其后果。",
@@ -3279,8 +3279,8 @@
         "phase": "admission"
       },
       "harm": {
-        "zh-CN": "确诊前开始化疗（诱导方案含糖皮质激素），会让骨髓、流式细胞术和脑脊液的诊断与危险度分组无法完成，并可能诱发肿瘤溶解。先取得诊断标本、明确诊断，再按方案开始。",
-        "en": "Chemotherapy before the diagnosis — the induction includes a corticosteroid — can leave the marrow, flow cytometry and CSF diagnosis and the risk grouping incomplete, and can precipitate tumour lysis. Take the diagnostic samples and make the diagnosis first, then start the protocol."
+        "zh-CN": "确诊前开始化疗（诱导方案含糖皮质激素，而英国儿童癌症与白血病组CCLG 2026要求怀疑白血病或淋巴瘤时转诊前不用激素），会让骨髓、流式细胞术和脑脊液的诊断与危险度分组无法完成，并可能诱发肿瘤溶解。先取得诊断标本、明确诊断，再按方案开始。",
+        "en": "Chemotherapy before the diagnosis — the induction includes a corticosteroid, which the Children's Cancer and Leukaemia Group says must not be given before referral when leukaemia or lymphoma is possible (CCLG, 2026) — can leave the marrow, flow cytometry and CSF diagnosis and the risk grouping incomplete, and can precipitate tumour lysis. Take the diagnostic samples and make the diagnosis first, then start the protocol."
       },
       "response": {
         "zh-CN": "已按儿童急性淋巴细胞白血病方案开始诱导。原报告记录治疗改为儿童淋巴母细胞方案；本病例不模拟治疗反应。",
@@ -3387,8 +3387,8 @@
         "en": "Examination"
       },
       "hint": {
-        "zh-CN": "一个发热、两条腿疼的孩子，哪些体征能告诉你骨髓里出了什么事？体温、面色、皮肤、肝脾和行走都查了吗？",
-        "en": "In a child with fever and pain in both legs, which signs could tell you what is happening in her marrow? Have you checked her temperature, colour, skin, liver, spleen and walking?"
+        "zh-CN": "一个发热、走不了路的孩子，床旁哪些体征最要紧，为什么？体温、面色、皮肤、肝脾和行走都查了吗？",
+        "en": "In a feverish child who can no longer walk, which bedside findings matter most, and why? Have you checked her temperature, colour, skin, liver, spleen and walking?"
       },
       "guidance": {
         "zh-CN": "在床旁给她查体。",
@@ -3512,8 +3512,8 @@
         "en": "Diagnosis"
       },
       "hint": {
-        "zh-CN": "哪些标记能确定细胞系别，哪个标记提示是淋巴母细胞？最初的骨活检和现在的骨髓说的是同一种病吗？",
-        "en": "Which markers set the lineage, and which one marks a lymphoblast? Do the original biopsy and today's marrow describe the same disease?"
+        "zh-CN": "哪些标记能确定细胞系别，哪些标记说明细胞有多幼稚？最初的骨活检和现在的骨髓说的是同一种病吗？",
+        "en": "Which markers set the lineage, and which tell you how immature the cells are? Do the original biopsy and today's marrow describe the same disease?"
       },
       "guidance": {
         "zh-CN": "调阅骨髓形态、流式细胞术和病理复核结果，在会诊板作答决策3。",
@@ -3562,8 +3562,8 @@
         "en": "Plan and talk"
       },
       "hint": {
-        "zh-CN": "这种病该用什么方案治？开始腰穿和化疗之前，还需要知道什么、先做什么才安全？家属会怎样理解诊断的改变？",
-        "en": "Which protocol treats this disease? What do you still need to know or do before a safe lumbar puncture and chemotherapy? How will the family take the change of diagnosis?"
+        "zh-CN": "这种病该用什么方案治？开始腰穿和化疗之前，还需要知道什么、先做什么才安全？家属听到你现在要说的话，会怎样理解？",
+        "en": "Which protocol treats this disease? What do you still need to know or do before a safe lumbar puncture and chemotherapy? How will the family take what you now have to tell them?"
       },
       "guidance": {
         "zh-CN": "在会诊板作答决策4和决策5，并与家属谈话。",
@@ -3686,8 +3686,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。发热、双腿疼痛、面色苍白、出血点、肝脾肿大、以淋巴细胞为主的白细胞升高和血小板20×10⁹/L，提示骨髓被浸润。外院的“尤文肉瘤”从未得到确证：CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中同样表达（Folpe 2000；Lucas 2001），这个肿瘤还是CD3阳性、没有TdT记录，而WHO软组织和骨肿瘤分类（2020）要求FET::ETS融合才能诊断尤文肉瘤。所以要同时取骨髓、复核原活检。",
-            "en": "Right. Fever, pain in both legs, pallor, petechiae, an enlarged liver and spleen, a lymphocyte-predominant leucocytosis and platelets of 20 × 10⁹/L point to marrow infiltration. The outside “Ewing sarcoma” was never proven: CD99 and FLI-1 protein are also expressed by lymphoblastic lymphoma (Folpe 2000; Lucas 2001), the tumour was CD3 positive with no TdT recorded, and the WHO Classification of Soft Tissue and Bone Tumours (2020) needs a FET::ETS fusion for Ewing sarcoma. So sample the marrow and have the original biopsy reviewed together."
+            "zh-CN": "正确。发热、双腿疼痛、面色苍白、出血点、肝脾肿大、以淋巴细胞为主的白细胞升高和血小板20×10⁹/L，提示骨髓被浸润。外院的“尤文肉瘤”从未得到确证：CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中同样表达（Folpe 2000；Lucas 2001），这个肿瘤还是CD3阳性、没有TdT记录，而WHO软组织和骨肿瘤分类（2020）以FET::ETS融合定义尤文肉瘤，这项检测也没有记录。所以要同时取骨髓、复核原活检。",
+            "en": "Right. Fever, pain in both legs, pallor, petechiae, an enlarged liver and spleen, a lymphocyte-predominant leucocytosis and platelets of 20 × 10⁹/L point to marrow infiltration. The outside “Ewing sarcoma” was never proven: CD99 and FLI-1 protein are also expressed by lymphoblastic lymphoma (Folpe 2000; Lucas 2001), the tumour was CD3 positive with no TdT recorded, and the WHO Classification of Soft Tissue and Bone Tumours (2020) defines Ewing sarcoma by a FET::ETS fusion, for which no test is recorded. So sample the marrow and have the original biopsy reviewed together."
           }
         },
         {
@@ -3698,15 +3698,15 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "尤文肉瘤可以转移到骨髓，但骨髓转移造成的是血细胞减少，不会出现白细胞42.38×10⁹/L、91%是淋巴细胞的血象。这个诊断本身也不牢靠：CD99和FLI-1在淋巴母细胞淋巴瘤中同样阳性（Folpe 2000），肿瘤还是CD3阳性，没有TdT和EWSR1检测，而WHO 2020分类要求FET::ETS融合。在骨髓和病理复核之前就重新分期、准备肉瘤二线化疗，是在治疗一个没有被证实的标签。",
-            "en": "Ewing sarcoma can spread to the marrow, but marrow metastases cause low counts, not a white count of 42.38 × 10⁹/L made up of 91 % lymphocytes. The diagnosis itself was never secure: CD99 and FLI-1 are also positive in lymphoblastic lymphoma (Folpe 2000), the tumour was CD3 positive, no TdT or EWSR1 test is recorded, and the WHO 2020 classification requires a FET::ETS fusion. Restaging and second-line sarcoma chemotherapy before the marrow and a pathology review would treat an unproven label."
+            "zh-CN": "尤文肉瘤可以转移到骨髓，但骨髓转移造成的是血细胞减少，不会出现白细胞42.38×10⁹/L、91%是淋巴细胞的血象。这个诊断本身也不牢靠：CD99和FLI-1在淋巴母细胞淋巴瘤中同样阳性（Folpe 2000），肿瘤还是CD3阳性，没有TdT和EWSR1检测的记录，而WHO 2020分类以FET::ETS融合定义尤文肉瘤。在骨髓和病理复核之前就重新分期、准备肉瘤二线化疗，是在治疗一个没有被证实的标签。",
+            "en": "Ewing sarcoma can spread to the marrow, but marrow metastases cause low counts, not a white count of 42.38 × 10⁹/L made up of 91 % lymphocytes. The diagnosis itself was never secure: CD99 and FLI-1 are also positive in lymphoblastic lymphoma (Folpe 2000), the tumour was CD3 positive, no TdT or EWSR1 test is recorded, and the WHO 2020 classification defines Ewing sarcoma by a FET::ETS fusion. Restaging and second-line sarcoma chemotherapy before the marrow and a pathology review would treat an unproven label."
           }
         },
         {
           "id": "therapy-related-leukaemia",
           "text": {
-            "zh-CN": "以前的化疗引起的治疗相关性急性白血病，尤文肉瘤仍在缓解中：做骨髓穿刺，查KMT2A和髓系相关的细胞遗传学改变；原来的骨活检不需要复核",
-            "en": "A therapy-related acute leukaemia caused by the earlier chemotherapy, with the Ewing sarcoma still in remission: marrow aspirate with cytogenetics for KMT2A and myeloid changes; the original biopsy needs no review"
+            "zh-CN": "可能是以前的化疗引起的治疗相关性急性白血病，尤文肉瘤仍在缓解中：做骨髓穿刺，查KMT2A和髓系相关的细胞遗传学改变；原来的骨活检不需要复核",
+            "en": "A therapy-related acute leukaemia, which the earlier chemotherapy may have caused, with the Ewing sarcoma still in remission: marrow aspirate with cytogenetics for KMT2A and myeloid changes; the original biopsy needs no review"
           },
           "correct": false,
           "feedback": {
@@ -3717,8 +3717,8 @@
         {
           "id": "reactive-infection",
           "text": {
-            "zh-CN": "化疗后孩子的发热性感染，伴反应性淋巴细胞增多和感染引起的血小板减少：送血培养、用抗生素，一周后复查血常规，再决定要不要做骨髓检查",
-            "en": "A febrile infection in a child after chemotherapy, with a reactive lymphocytosis and infection-related low platelets: blood cultures and antibiotics, then repeat the count in a week before deciding on a marrow test"
+            "zh-CN": "化疗后孩子的发热性感染，淋巴细胞增多和血小板减少也可能是感染引起的：送血培养、用抗生素，一周后复查血常规，再决定要不要做骨髓检查",
+            "en": "A febrile infection after chemotherapy, which may also explain a reactive lymphocytosis and the low platelets: blood cultures and antibiotics, then repeat the count in a week before deciding on a marrow test"
           },
           "correct": false,
           "feedback": {
@@ -3790,20 +3790,20 @@
         {
           "id": "steroid-for-pain",
           "text": {
-            "zh-CN": "今晚用地塞米松压一压发热和腿疼，等明天骨髓穿刺之后再说",
-            "en": "Dexamethasone tonight to settle the fever and leg pain, ahead of the marrow tomorrow"
+            "zh-CN": "今晚用地塞米松压住发热和两条腿的疼，明天再做骨髓穿刺",
+            "en": "Dexamethasone tonight to settle her fever and the pain in both legs before the marrow tomorrow"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不应做。在骨髓、流式细胞术和脑脊液标本取得之前用糖皮质激素，会溶解淋巴母细胞，使诊断和危险度分组难以完成，还可能诱发肿瘤溶解；激素属于确诊后的诱导方案。发热和疼痛用对乙酰氨基酚，血小板20×10⁹/L时不用非甾体抗炎药。",
-            "en": "No. A corticosteroid before the marrow, flow cytometry and CSF samples can lyse lymphoblasts, cloud the diagnosis and the risk group and precipitate tumour lysis; the steroid belongs to induction once the diagnosis is made. Treat the fever and pain with paracetamol, and avoid NSAIDs with platelets of 20 × 10⁹/L."
+            "zh-CN": "不应做。在骨髓、流式细胞术和脑脊液标本取得之前用糖皮质激素，会溶解淋巴母细胞，使诊断和危险度分组难以完成，还可能诱发肿瘤溶解，所以英国儿童癌症与白血病组（CCLG，2026）要求怀疑白血病或淋巴瘤时转诊前不用糖皮质激素；激素属于确诊后的诱导方案。发热和疼痛用对乙酰氨基酚，血小板20×10⁹/L时不用非甾体抗炎药。",
+            "en": "No. A corticosteroid before the marrow, flow cytometry and CSF samples can lyse lymphoblasts, cloud the diagnosis and the risk group and precipitate tumour lysis, which is why the Children's Cancer and Leukaemia Group says no corticosteroid before referral when leukaemia or lymphoma is possible (CCLG, 2026); the steroid belongs to induction once the diagnosis is made. Treat the fever and pain with paracetamol, and avoid NSAIDs with platelets of 20 × 10⁹/L."
           }
         },
         {
           "id": "red-cells-now",
           "text": {
-            "zh-CN": "按记录的7.1 g/L立即输注红细胞，血红蛋白太低了，等不得",
-            "en": "Red cells now for the recorded haemoglobin of 7.1 g/L, which is too low to wait"
+            "zh-CN": "按记录的7.1 g/L立即输注红细胞，血红蛋白这么低，等不及复查",
+            "en": "Red cells now for the recorded haemoglobin of 7.1 g/L, far too low to wait for a repeat count"
           },
           "correct": false,
           "feedback": {
@@ -3849,8 +3849,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。TdT标记淋巴母细胞，CD19、CD79a和CD10确定B系（WHO造血与淋巴组织肿瘤分类第5版，2022）；对原骨活检的复核同样记录到TdT阳性，把首发的骨肿瘤与现在这个淋巴母细胞肿瘤联系在一起，而CD99和FLI-1区分不了它和尤文肉瘤（Folpe 2000；Lucas 2001）。按惯例骨髓受累达25%即称白血病，而淋巴母细胞淋巴瘤本来也用急性淋巴细胞白血病式方案治疗（EURO-LB02，Landmann 2017）。",
-            "en": "Right. TdT marks lymphoblasts, and CD19, CD79a and CD10 assign B lineage (WHO Classification of Haematolymphoid Tumours, 5th edition, 2022); TdT recorded on review of the original biopsy as well ties the first tumour to the same lymphoblastic neoplasm, which CD99 and FLI-1 cannot separate from Ewing sarcoma (Folpe 2000; Lucas 2001). By convention, marrow involvement of 25 % or more is called leukaemia, and lymphoblastic lymphoma is treated with ALL-type protocols anyway (EURO-LB02, Landmann 2017)."
+            "zh-CN": "正确。TdT标记淋巴母细胞，CD19、CD79a和CD10确定B系（WHO造血与淋巴组织肿瘤分类第5版，2022）；对原骨活检的复核同样记录到TdT阳性，把首发的骨肿瘤与现在这个淋巴母细胞肿瘤联系在一起，而CD99和FLI-1区分不了它和尤文肉瘤（Folpe 2000；Lucas 2001）。按惯例骨髓受累超过25%即称白血病，而淋巴母细胞淋巴瘤本来也用急性淋巴细胞白血病式方案治疗（EURO-LB02，Landmann 2017）。",
+            "en": "Right. TdT marks lymphoblasts, and CD19, CD79a and CD10 assign B lineage (WHO Classification of Haematolymphoid Tumours, 5th edition, 2022); TdT recorded on review of the original biopsy as well ties the first tumour to the same lymphoblastic neoplasm, which CD99 and FLI-1 cannot separate from Ewing sarcoma (Folpe 2000; Lucas 2001). By convention, marrow involvement of more than 25 % is called leukaemia, and lymphoblastic lymphoma is treated with ALL-type protocols anyway (EURO-LB02, Landmann 2017)."
           }
         },
         {
@@ -3861,8 +3861,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "治疗相关性白血病确实可能发生，但它解释不了复核首次发病的诊断性骨活检时记录到的TdT阳性。一种被误认作尤文肉瘤的淋巴母细胞肿瘤，就能同时解释首发的骨病变和现在的骨髓；要维持尤文肉瘤的诊断，WHO 2020分类需要FET::ETS融合，而没有任何记录。",
-            "en": "A therapy-related leukaemia is possible, but it cannot explain the TdT positivity recorded on review of the diagnostic biopsy of the first illness. One lymphoblastic neoplasm misread as Ewing sarcoma explains both the first bone lesion and today's marrow; keeping the Ewing diagnosis would need a FET::ETS fusion under the WHO 2020 classification, and none is recorded."
+            "zh-CN": "治疗相关性白血病确实可能发生，但它解释不了复核首次发病的诊断性骨活检时记录到的TdT阳性。一种被误认作尤文肉瘤的淋巴母细胞肿瘤，就能同时解释首发的骨病变和现在的骨髓；一个TdT阳性的肿瘤，只有证实存在FET::ETS融合（WHO 2020分类定义尤文肉瘤的改变）才能维持尤文肉瘤的诊断，而这样的检测没有任何记录。",
+            "en": "A therapy-related leukaemia is possible, but it cannot explain the TdT positivity recorded on review of the diagnostic biopsy of the first illness. One lymphoblastic neoplasm misread as Ewing sarcoma explains both the first bone lesion and today's marrow; in a tumour that stains for TdT, only a demonstrated FET::ETS fusion — the alteration that defines Ewing sarcoma in the WHO 2020 classification — could keep the Ewing diagnosis, and no such test is recorded."
           }
         },
         {
@@ -3873,8 +3873,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "混合表型急性白血病要求同一群白血病细胞带有两个系别的定系标记，T系需要原始细胞胞质CD3阳性（WHO第5版，2022）。组织切片上的CD3免疫组化也会染到肿瘤周围的反应性T细胞，旧报告的CD3阳性是不是在肿瘤细胞上并没有记录；现在流式细胞术记录的是B系标记（CD19、CD79a、CD10）和前体标记（CD34、HLA-DR），没有记录T系标记。CD3这一点应作为问题交给病理医生，而不是当成第二个系别。",
-            "en": "Mixed-phenotype acute leukaemia needs lineage-defining markers of two lineages on the same leukaemic cells — for T lineage, cytoplasmic CD3 on the blasts (WHO 5th edition, 2022). A CD3 immunostain in a tissue section also stains the reactive T cells around a tumour, and whether the old CD3 positivity was in the tumour cells is not recorded; the flow cytometry now records B-lineage (CD19, CD79a, CD10) and precursor (CD34, HLA-DR) markers and no T-cell markers. Treat the CD3 result as a question for the pathologist, not as a second lineage."
+            "zh-CN": "混合表型急性白血病要求原始细胞本身符合两个系别的定系标准（同一群原始细胞或两群不同的原始细胞均可），T系需要原始细胞胞质（或膜）CD3阳性（WHO第5版，2022）。组织切片上的CD3免疫组化也会染到肿瘤周围的反应性T细胞，旧报告的CD3阳性是不是在肿瘤细胞上并没有记录；现在流式细胞术记录的是B系标记（CD19、CD79a、CD10）和前体标记（CD34、HLA-DR），没有记录T系标记。CD3这一点应作为问题交给病理医生，而不是当成第二个系别。",
+            "en": "Mixed-phenotype acute leukaemia needs blasts that meet the lineage-defining criteria of two lineages — in one blast population or in two separate ones — and for T lineage that means cytoplasmic (or surface) CD3 on the blasts themselves (WHO 5th edition, 2022). A CD3 immunostain in a tissue section also stains the reactive T cells around a tumour, and whether the old CD3 positivity was in the tumour cells is not recorded; the flow cytometry now records B-lineage (CD19, CD79a, CD10) and precursor (CD34, HLA-DR) markers and no T-cell markers. Treat the CD3 result as a question for the pathologist, not as a second lineage."
           }
         },
         {
@@ -4421,8 +4421,8 @@
         "en": "Dr Mai (pathology)"
       },
       "knowledge": {
-        "zh-CN": "病理科医生，只解读学员已经看过的病理和骨髓结果。可以讲：儿童骨的小圆细胞肿瘤的鉴别（尤文肉瘤、淋巴母细胞淋巴瘤、横纹肌肉瘤、神经母细胞瘤等）；CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中也表达，单靠它们不能诊断尤文肉瘤（Folpe 2000；Lucas 2001）；区分需要TdT、CD45、CD43、CD79a/PAX5、CD19、CD10、CD3等组合，以及EWSR1重排或FET::ETS融合的分子检测（WHO软组织和骨肿瘤分类第5版，2020）；组织切片上的CD3免疫组化会染到反应性T细胞；WHO造血与淋巴组织肿瘤分类第5版（2022）的定系原则。不提前给出决策答案或转归，不补充没有记录的结果（例如EWSR1、遗传学）。",
-        "en": "Pathologist who interprets only pathology and marrow results the learner has already read. Can explain the differential of small round cell tumours of bone in children (Ewing sarcoma, lymphoblastic lymphoma, rhabdomyosarcoma, neuroblastoma and others); that CD99 and FLI-1 protein are also expressed by lymphoblastic lymphoma and cannot make a diagnosis of Ewing sarcoma on their own (Folpe 2000; Lucas 2001); that separating them needs a panel with TdT, CD45, CD43, CD79a/PAX5, CD19, CD10 and CD3 and a molecular test for an EWSR1 rearrangement or FET::ETS fusion (WHO Classification of Soft Tissue and Bone Tumours, 5th edition, 2020); that a CD3 immunostain in a tissue section also stains reactive T cells; and the lineage rules of the WHO Classification of Haematolymphoid Tumours, 5th edition (2022). Never gives a decision's answer or the outcome early, and adds no result the case does not record (EWSR1, genetics)."
+        "zh-CN": "病理科医生，只解读学员已经看过的病理和骨髓结果。可以讲：儿童骨的小圆细胞肿瘤的鉴别（尤文肉瘤、淋巴母细胞淋巴瘤、横纹肌肉瘤、神经母细胞瘤等）；CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中也表达，单靠它们不能诊断尤文肉瘤（Folpe 2000；Lucas 2001）；区分需要TdT、CD45、CD43、CD79a/PAX5、CD19、CD10、CD3等组合；有疑问时靠EWSR1重排或FET::ETS融合的分子检测定论——WHO软组织和骨肿瘤分类第5版（2020）正是以这种融合定义尤文肉瘤；组织切片上的CD3免疫组化会染到反应性T细胞；WHO造血与淋巴组织肿瘤分类第5版（2022）的定系原则。不提前给出决策答案或转归，不补充没有记录的结果（例如EWSR1、遗传学）。",
+        "en": "Pathologist who interprets only pathology and marrow results the learner has already read. Can explain the differential of small round cell tumours of bone in children (Ewing sarcoma, lymphoblastic lymphoma, rhabdomyosarcoma, neuroblastoma and others); that CD99 and FLI-1 protein are also expressed by lymphoblastic lymphoma and cannot make a diagnosis of Ewing sarcoma on their own (Folpe 2000; Lucas 2001); that separating them needs a panel with TdT, CD45, CD43, CD79a/PAX5, CD19, CD10 and CD3, and that a molecular test for an EWSR1 rearrangement or FET::ETS fusion — the alteration that defines Ewing sarcoma in the WHO Classification of Soft Tissue and Bone Tumours, 5th edition (2020) — settles a doubtful case; that a CD3 immunostain in a tissue section also stains reactive T cells; and the lineage rules of the WHO Classification of Haematolymphoid Tumours, 5th edition (2022). Never gives a decision's answer or the outcome early, and adds no result the case does not record (EWSR1, genetics)."
       },
       "interprets": [
         "outside-biopsy",
@@ -4458,7 +4458,7 @@
     },
     "conclusion": {
       "zh-CN": "6岁女孩曾在外院按“尤文肉瘤”治疗：骨破坏、小圆细胞肿瘤，CD99、FLI-1和CD3阳性，CD20阴性，没有TdT记录；6个疗程化疗后评估为完全缓解。这次发热2周、双下肢疼痛、不能行走：体温38.6 ℃，贫血貌，散在出血点，肝肋下3 cm、脾肋下2.5 cm，白细胞42.38×10⁹/L、淋巴细胞91%，血小板20×10⁹/L，血红蛋白记为7.1 g/L。骨髓原始及幼稚淋巴细胞84.5%，流式细胞术表达CD10、CD19、CD79a、HLA-DR和CD34；复核原骨活检和本次骨髓，TdT、CD99阳性，CD79部分阳性：这是被误诊为尤文肉瘤的B淋巴母细胞淋巴瘤，现已广泛累及骨髓。改用儿童淋巴母细胞方案后，第8天外周血幼稚细胞为0，第33天完全缓解，报告发表时在维持治疗。按今天的标准：诊断尤文肉瘤前要做淋巴系标记和EWSR1检测；发热先培养、再用抗生素；取标本前不用激素；血红蛋白先复查；按微小残留病指导的急淋方案治疗，并评估中枢神经系统。",
-      "en": "A 6-year-old girl was treated elsewhere for “Ewing sarcoma” (a small round cell tumour, CD99, FLI-1 and CD3 positive, no TdT recorded) and judged in complete remission after six chemotherapy courses. After two weeks of fever and leg pain she could not walk: 38.6 °C, pallor, petechiae, liver 3 cm, spleen 2.5 cm, white cells 42.38 × 10⁹/L, 91 % lymphocytes, platelets 20 × 10⁹/L, haemoglobin written as 7.1 g/L. Marrow: 84.5 % lymphoblasts and immature lymphocytes; flow cytometry CD10, CD19, CD79a, HLA-DR, CD34; review of the first biopsy and new marrow TdT and CD99 positive — a B-lymphoblastic lymphoma misdiagnosed as Ewing sarcoma, now extensively in the marrow. On a paediatric lymphoblastic regimen: no immature cells in the blood on day 8, complete remission on day 33, maintenance at publication. Today: lymphoid markers and EWSR1 testing before a Ewing diagnosis, cultures, antibiotics, no steroid before the samples, a re-measured haemoglobin, an MRD-guided ALL protocol with CNS staging."
+      "en": "A 6-year-old girl was treated elsewhere for “Ewing sarcoma” — bone destruction and a small round cell tumour, CD99, FLI-1 and CD3 positive, CD20 negative, no TdT recorded — and assessed as in complete remission after six courses of chemotherapy. Now, after two weeks of fever and pain in both legs, she cannot walk: 38.6 °C, pallor, scattered petechiae, liver 3 cm and spleen 2.5 cm below the costal margins, white cells 42.38 × 10⁹/L with 91 % lymphocytes, platelets 20 × 10⁹/L, haemoglobin written as 7.1 g/L. Marrow: lymphoblasts and immature lymphocytes 84.5 %; flow cytometry CD10, CD19, CD79a, HLA-DR and CD34; review of the original biopsy and the new marrow TdT and CD99 positive, CD79 partly positive — a B-lymphoblastic lymphoma misdiagnosed as Ewing sarcoma, now extensively involving the marrow. On a paediatric lymphoblastic regimen: no immature cells in the blood on day 8, complete remission on day 33, maintenance at publication. Today: lymphoid markers and EWSR1 testing before a Ewing diagnosis; cultures, then antibiotics; no steroid before the samples; a re-measured haemoglobin; and an MRD-guided ALL protocol with CNS staging."
     },
     "keyReasoning": [
       {
@@ -4522,8 +4522,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "小圆细胞肿瘤的病理：CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中同样表达（Folpe，Am J Surg Pathol 2000；Lucas，Am J Clin Pathol 2001），所以免疫组化组合必须包括TdT和B、T系标记；WHO软组织和骨肿瘤分类（第5版，2020）以FET::ETS融合定义尤文肉瘤，分子检测是诊断的一部分。本例首次活检CD3阳性、CD20阴性、没有TdT记录，复核发现TdT阳性——这样的检查放在今天是不完整的。",
-        "en": "Pathology of small round cell tumours: CD99 and FLI-1 protein are expressed by lymphoblastic lymphoma as well as Ewing sarcoma (Folpe, Am J Surg Pathol 2000; Lucas, Am J Clin Pathol 2001), so the panel must include TdT and B- and T-lineage markers, and the WHO Classification of Soft Tissue and Bone Tumours (5th edition, 2020) defines Ewing sarcoma by a FET::ETS fusion, making a molecular test part of the diagnosis. Here the first biopsy was CD3 positive and CD20 negative with no TdT recorded, and the review found TdT positivity — a work-up that would be incomplete today."
+        "zh-CN": "小圆细胞肿瘤的病理：CD99和FLI-1蛋白在淋巴母细胞淋巴瘤中同样表达（Folpe，Am J Surg Pathol 2000；Lucas，Am J Clin Pathol 2001），所以免疫组化组合必须包括TdT和B、T系标记；WHO软组织和骨肿瘤分类（第5版，2020）以FET::ETS融合定义尤文肉瘤，有疑问的病例要靠分子检测来定论。本例首次活检CD3阳性、CD20阴性、没有TdT记录，复核发现TdT阳性——这样的检查放在今天是不完整的。",
+        "en": "Pathology of small round cell tumours: CD99 and FLI-1 protein are expressed by lymphoblastic lymphoma as well as Ewing sarcoma (Folpe, Am J Surg Pathol 2000; Lucas, Am J Clin Pathol 2001), so the panel must include TdT and B- and T-lineage markers, and the WHO Classification of Soft Tissue and Bone Tumours (5th edition, 2020) defines Ewing sarcoma by a FET::ETS fusion, so a molecular test is what settles a doubtful case. Here the first biopsy was CD3 positive and CD20 negative with no TdT recorded, and the review found TdT positivity — a work-up that would be incomplete today."
       },
       {
         "zh-CN": "可疑急性白血病患儿发热：中性粒细胞计数不明时按高危发热伴中性粒细胞减少处理——先送血培养，尽快用抗假单胞菌β-内酰胺类、第四代头孢菌素或碳青霉烯类单药经验治疗（国际儿童发热伴中性粒细胞减少指南，J Clin Oncol 2023），例如哌拉西林他唑巴坦90 mg/kg、每6小时1次（单次最大4.5 g）。血小板20×10⁹/L时退热用对乙酰氨基酚，不用非甾体抗炎药。本病例没有记录是否用过抗生素。",
@@ -4549,7 +4549,7 @@
     "references": [
       "吴诸丽, 张永红, 金玲, 金眉, 杨菁, 段彦龙, 李伟京, 薛学敏, 黄爽, 张蕊. 淋巴母细胞淋巴瘤误诊为尤文肉瘤一例. 中华儿科杂志. 2011;49(9):708-709. doi:10.3760/cma.j.issn.0578-1310.2011.09.017. Available from: https://rs.yiigle.com/cmaid/44614",
       "Folpe AL, et al. Immunohistochemical detection of FLI-1 protein expression: a study of 132 round cell tumors with emphasis on CD99-positive mimics of Ewing's sarcoma/primitive neuroectodermal tumor. Am J Surg Pathol. 2000;24(12):1657-1662.",
-      "Lucas DR, Bentley G, Dan ME, Tabaczka P, Poulik JM, Mott MP. Ewing sarcoma vs lymphoblastic lymphoma. A comparative immunohistochemical study. Am J Clin Pathol. 2001;115:11-17. doi:10.1309/K1XJ-6CXR-BQQU-V255",
+      "Lucas DR, Bentley G, Dan ME, Tabaczka P, Poulik JM, Mott MP. Ewing sarcoma vs lymphoblastic lymphoma. A comparative immunohistochemical study. Am J Clin Pathol. 2001;115(1):11-17. doi:10.1309/K1XJ-6CXR-BQQU-V255",
       "WHO Classification of Tumours Editorial Board. Soft tissue and bone tumours. 5th ed. Lyon: International Agency for Research on Cancer; 2020. (WHO classification of tumours series; vol. 3).",
       "Alaggio R, Amador C, Anagnostopoulos I, et al. The 5th edition of the World Health Organization Classification of Haematolymphoid Tumours: Lymphoid Neoplasms. Leukemia. 2022;36(7):1720-1748. doi:10.1038/s41375-022-01620-2",
       "Lehrnbecher T, Robinson PD, Ammann RA, et al. Guideline for the management of fever and neutropenia in pediatric patients with cancer and hematopoietic cell transplantation recipients: 2023 update. J Clin Oncol. 2023;41(9):1774-1785. doi:10.1200/JCO.22.02224",
@@ -4557,7 +4557,8 @@
       "New HV, Berryman J, Bolton-Maggs PH, et al. Guidelines on transfusion for fetuses, neonates and older children. Br J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233",
       "Landmann E, Burkhardt B, Zimmermann M, et al. Results and conclusions of the European Intergroup EURO-LB02 trial in children and adolescents with lymphoblastic lymphoma. Haematologica. 2017;102(12):2086-2096. doi:10.3324/haematol.2015.139162",
       "Gajjar A, et al. Traumatic lumbar puncture at diagnosis adversely affects outcome in childhood acute lymphoblastic leukemia. Blood. 2000;96(10):3381-3384.",
-      "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
+      "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302",
+      "Children's Cancer and Leukaemia Group. Introduction to steroids. In: Community care information resource, section 6: treatment [Internet]. CCLG; updated 2026 Jan. Available from: https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -4604,8 +4605,8 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-44614/fig01.png",
       "title": {
-        "zh-CN": "原报告图1（组织学图组；含后续结果，复盘时查看）",
-        "en": "Source figure 1 (histology panels; shows later findings — for the debrief)"
+        "zh-CN": "原报告图1（组织学图组；可能含后续结果，复盘时查看）",
+        "en": "Source figure 1 (histology panels; may show later findings — for the debrief)"
       },
       "credit": {
         "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
