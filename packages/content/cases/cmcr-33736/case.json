@@ -28,8 +28,8 @@
       "en": "Recognise acute arterial ischaemia in a pale, cold leg with absent distal pulses, numbness and weakness, grade it as immediately threatened (ESVS 2020 acute limb ischaemia guideline, modified Rutherford categories) and tell it apart from deep-vein thrombosis and isolated compartment syndrome."
     },
     {
-      "zh-CN": "把股动脉搏动减弱和超声所见的腹主动脉-髂动脉受累理解为可能起自主动脉的流入道问题，在溶栓或取栓之前行覆盖整条主动脉的 CT 血管成像（ACC/AHA 2022 主动脉疾病指南）。",
-      "en": "Read a weak femoral pulse and aorto-iliac involvement on duplex as an inflow problem that may begin in the aorta, and image the whole aorta by CT angiography before any thrombolysis or embolectomy (ACC/AHA 2022 aortic disease guideline)."
+      "zh-CN": "把股动脉搏动减弱和超声所见的腹主动脉-髂动脉受累理解为可能起自主动脉的流入道问题，在溶栓或取栓之前行覆盖整条主动脉的 CT 血管成像（ESC 2024 主动脉疾病指南：疑似急性主动脉综合征首选从颈部到盆腔的增强 CT）。",
+      "en": "Read a weak femoral pulse and aorto-iliac involvement on duplex as an inflow problem that may begin in the aorta, and image the whole aorta by CT angiography before any thrombolysis or embolectomy (ESC 2024 aortic guideline: contrast CT from the neck to the pelvis first in a suspected acute aortic syndrome)."
     },
     {
       "zh-CN": "把 CT 上的 A 型主动脉夹层、下肢灌注不良和 35 mmHg 的筋膜室压力整合为同一个病变，并解释为什么用全身舒张压算出的“安全”压差不能排除无血流肢体的骨筋膜室综合征。",
@@ -40,8 +40,8 @@
       "en": "Commit to immediate repair of the ascending aorta for acute type A dissection with leg malperfusion, with the leg's flow rechecked and its compartments decompressed in the same operation, and IV beta-blockade before theatre to a heart rate of 60–80/min and a systolic pressure below 120 mmHg or the lowest that keeps organs perfused (ACC/AHA 2022)."
     },
     {
-      "zh-CN": "预见缺血超过 6 小时的肢体再灌注后的高钾血症、肌红蛋白尿和急性肾损伤并安排监测，认识到正常的入院肌酐和血钾只是基线，不能用来放心。",
-      "en": "Anticipate hyperkalaemia, myoglobinuria and acute kidney injury when a leg ischaemic for more than six hours is reperfused, plan the monitoring, and treat a normal admission creatinine and potassium as a baseline rather than reassurance."
+      "zh-CN": "预见缺血超过 6 小时的肢体再灌注后的高钾血症、肌红蛋白尿和急性肾损伤并安排监测，认识到入院时不高的肌酐和血钾只是基线，不能用来放心。",
+      "en": "Anticipate hyperkalaemia, myoglobinuria and acute kidney injury when a leg ischaemic for more than six hours is reperfused, plan the monitoring, and treat an admission creatinine and potassium that are not raised as a baseline rather than reassurance."
     },
     {
       "zh-CN": "为 29 岁的夹层修复术后患者制订长期计划——终身主动脉影像随访、血压控制、遗传学评估和一级亲属筛查（ACC/AHA 2022）——并说明报告中的先后顺序（入院后 8 小时切开减压，48 小时后修复主动脉）与现行做法的差别。",
@@ -72,7 +72,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -130,18 +130,18 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "29岁男性，右腿疼得厉害、发麻、使不上劲，又害怕又着急；问什么答什么，句子短。他只说自己清楚的事，不清楚的就直说说不上来，从不猜。",
-        "en": "A 29-year-old man whose right leg hurts badly, has gone numb and will barely move; frightened and impatient, he answers what he is asked in short sentences. He says only what he knows; when he doesn't know, he says so and never guesses."
+        "zh-CN": "29岁男性，右腿疼、发麻、不太能动，又害怕又着急；问什么答什么，句子短。他只说自己清楚的事，不清楚的就直说说不上来，从不猜。",
+        "en": "A 29-year-old man whose right leg hurts, has gone numb and is hard to move; frightened and impatient, he answers what he is asked in short sentences. He says only what he knows; when he doesn't know, he says so and never guesses."
       },
       "speechStyle": {
-        "zh-CN": "口语、短句，不用医学术语；疼得厉害时话说一半就停下来。",
-        "en": "Plain, short sentences with no medical terms; he breaks off mid-sentence when the pain bites."
+        "zh-CN": "口语、短句，不用医学术语。",
+        "en": "Plain, short sentences with no medical terms."
       },
       "healthLiteracy": "medium",
       "affect": "in-pain",
       "openingLine": {
-        "zh-CN": "医生，我右腿疼得厉害，发麻，都不太能动了。",
-        "en": "Doctor, my right leg really hurts — it's gone numb and I can hardly move it."
+        "zh-CN": "医生，我右腿疼，发麻，都不太能动了。",
+        "en": "Doctor, my right leg hurts — it's gone numb and it's hard to move."
       },
       "fallbackUnknown": {
         "zh-CN": "这个我说不上来，医生。",
@@ -154,8 +154,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演者：右腿疼痛、发麻、几乎动不了，躺在推床上，害怕、着急。只回答被问到的内容；不提任何检查结果，除了“6 个钟头”不说任何数字，不编造病史、用药、过敏或别的症状——胸口、后背或肚子有没有疼过，他说不上来。手术以后的感受没有记录，被问到就说说不上来。",
-        "en": "For the actor: his right leg hurts, is numb and will barely move; he lies on the trolley, frightened and impatient. He answers only what he is asked, never mentions a test result or any number other than the six hours, and never invents history, medicines, allergies or other symptoms — whether his chest, back or tummy has hurt, he cannot say. How he feels after the operations is not recorded; if asked, he cannot say."
+        "zh-CN": "扮演者：右腿疼痛、发麻、不太能动，躺在推床上，害怕、着急。只回答被问到的内容；不提任何检查结果，除了“6 个钟头”不说任何数字，不编造病史、用药、过敏或别的症状——胸口、后背或肚子有没有疼过，他说不上来。手术以后的感受没有记录，被问到就说说不上来。",
+        "en": "For the actor: his right leg hurts, is numb and is hard to move; he lies on the trolley, frightened and impatient. He answers only what he is asked, never mentions a test result or any number other than the six hours, and never invents history, medicines, allergies or other symptoms — whether his chest, back or tummy has hurt, he cannot say. How he feels after the operations is not recorded; if asked, he cannot say."
       }
     },
     "appearance": {
@@ -277,7 +277,7 @@
       },
       "answer": {
         "zh-CN": "我右腿疼，发麻，都不太能动了。",
-        "en": "My right leg hurts and it's gone numb — I can hardly move it."
+        "en": "My right leg hurts and it's gone numb — it's hard to move."
       },
       "keywords": {
         "zh-CN": [
@@ -288,7 +288,13 @@
           "因为什么来",
           "来看急诊",
           "什么情况",
-          "怎么了"
+          "怎么了",
+          "腿疼",
+          "腿痛",
+          "腿麻",
+          "麻不麻",
+          "发麻",
+          "疼不疼"
         ],
         "en": [
           "brought in",
@@ -297,7 +303,11 @@
           "reason for coming",
           "what's happened",
           "whatbringsyou",
-          "goingon"
+          "goingon",
+          "leg hurt",
+          "leg hurting",
+          "numb",
+          "numbness"
         ]
       },
       "excludeKeywords": {
@@ -306,7 +316,18 @@
           "家里",
           "除了",
           "开车",
-          "谁陪"
+          "谁陪",
+          "多久",
+          "多长",
+          "几个钟头",
+          "几个小时",
+          "什么时候",
+          "胸",
+          "背",
+          "肚子",
+          "撞",
+          "摔",
+          "受伤"
         ],
         "en": [
           "before",
@@ -314,7 +335,15 @@
           "apart from",
           "besides",
           "drive",
-          "with you"
+          "with you",
+          "how long",
+          "when did",
+          "chest",
+          "back",
+          "tummy",
+          "recently",
+          "knock",
+          "injur"
         ]
       },
       "disclosure": "volunteer",
@@ -412,7 +441,10 @@
           "肿胀",
           "能不能动",
           "动得了",
-          "加重了吗"
+          "加重了吗",
+          "肿吗",
+          "腿肿",
+          "能动吗"
         ],
         "en": [
           "changed",
@@ -487,7 +519,8 @@
           "胸",
           "背",
           "肚子",
-          "尿"
+          "尿",
+          "哪里不舒服"
         ],
         "en": [
           "swell",
@@ -899,7 +932,11 @@
           "基础病",
           "以前得过什么病",
           "身体怎么样",
-          "糖尿病"
+          "糖尿病",
+          "以前有什么病",
+          "有什么病",
+          "病史",
+          "既往史"
         ],
         "en": [
           "medical history",
@@ -907,7 +944,11 @@
           "health problems",
           "illnesses",
           "diabetes",
-          "conditions"
+          "conditions",
+          "medical problems",
+          "medical conditions",
+          "past medical history",
+          "health conditions"
         ]
       },
       "excludeKeywords": {
@@ -1092,7 +1133,11 @@
           "amphetamines",
           "speed",
           "recreational drugs",
-          "methamphetamine"
+          "methamphetamine",
+          "use drugs",
+          "street drugs",
+          "illegal drugs",
+          "drug use"
         ]
       },
       "excludeKeywords": {
@@ -1358,7 +1403,7 @@
         "zh-CN": "入院时血压 128/76 mmHg。",
         "en": "Blood pressure on admission 128/76 mmHg."
       },
-      "abnormal": true,
+      "abnormal": false,
       "required": true,
       "phases": [
         "arrival",
@@ -2738,8 +2783,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "吗啡 2.5–5 mg 缓慢静脉注射，按疼痛评估每 5–10 分钟追加（或等效剂量的芬太尼）；注意呼吸和血压。",
-        "en": "Morphine 2.5–5 mg by slow IV injection, repeated every 5–10 minutes by pain assessment (or an equivalent dose of fentanyl); watch his breathing and blood pressure."
+        "zh-CN": "吗啡（或芬太尼）小剂量分次缓慢静脉注射，按疼痛程度和本院方案滴定；注意呼吸和血压。",
+        "en": "Morphine (or fentanyl) by slow IV injection in small increments, titrated to his pain by local protocol; watch his breathing and blood pressure."
       },
       "requires": [
         "medications",
@@ -2819,8 +2864,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "艾司洛尔 500 μg/kg 静脉注射 1 分钟，随后 50–300 μg/(kg·min) 泵入；目标心率 60–80 次/分、收缩压 < 120 mmHg，或能维持脑、肾、肠道和肢体灌注的最低血压（ACC/AHA 2022）。",
-        "en": "Esmolol 500 μg/kg IV over 1 minute, then 50–300 μg/kg/min by infusion; aim for a heart rate of 60–80/min and a systolic pressure below 120 mmHg, or the lowest pressure that keeps the brain, kidneys, gut and limbs perfused (ACC/AHA 2022)."
+        "zh-CN": "先接上监护、看到心率和血压，且没有心动过缓、低血压、心包填塞征象或重度主动脉瓣反流时：艾司洛尔 500 μg/kg 静脉注射 1 分钟，随后 50–300 μg/(kg·min) 泵入；目标心率 60–80 次/分、收缩压 < 120 mmHg，或能维持脑、肾、肠道和肢体灌注的最低血压（ACC/AHA 2022）。",
+        "en": "Once his heart rate and blood pressure are on the monitor, and only without bradycardia, hypotension, signs of tamponade or severe aortic regurgitation: esmolol 500 μg/kg IV over 1 minute, then 50–300 μg/kg/min by infusion; aim for a heart rate of 60–80/min and a systolic pressure below 120 mmHg, or the lowest pressure that keeps the brain, kidneys, gut and limbs perfused (ACC/AHA 2022)."
       },
       "requires": [
         "medications",
@@ -2830,14 +2875,21 @@
       "risk": "moderate",
       "maxDoses": 1,
       "indicatedWhen": {
-        "any": [
+        "all": [
           {
-            "read": "cta",
-            "phase": "arrival"
+            "intervened": "monitoring"
           },
           {
-            "read": "cta",
-            "phase": "workup"
+            "any": [
+              {
+                "read": "cta",
+                "phase": "arrival"
+              },
+              {
+                "read": "cta",
+                "phase": "workup"
+              }
+            ]
           }
         ]
       },
@@ -3161,6 +3213,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3197,8 +3250,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通肝素 80 U/kg 静脉推注，随后 18 U/(kg·h) 泵入，按 APTT 调整。",
-        "en": "Unfractionated heparin 80 U/kg IV bolus, then 18 U/kg/h by infusion, adjusted by the APTT."
+        "zh-CN": "普通肝素全量静脉推注后持续泵入，按 APTT 调整。",
+        "en": "Unfractionated heparin as a full-dose IV bolus followed by an infusion, adjusted by the APTT."
       },
       "requires": [
         "medications",
@@ -3206,21 +3259,8 @@
         "infusion-pump"
       ],
       "risk": "moderate",
+      "critical": false,
       "maxDoses": 1,
-      "indicatedWhen": {
-        "not": {
-          "any": [
-            {
-              "read": "cta",
-              "phase": "arrival"
-            },
-            {
-              "read": "cta",
-              "phase": "workup"
-            }
-          ]
-        }
-      },
       "contraindicatedWhen": {
         "any": [
           {
@@ -3272,6 +3312,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3314,6 +3355,7 @@
       },
       "requires": [],
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "any": [
@@ -3366,6 +3408,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "any": [
@@ -3420,6 +3463,7 @@
         "setting": "icu"
       },
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "any": [
@@ -3782,8 +3826,8 @@
     {
       "id": "limb-threat",
       "prompt": {
-        "zh-CN": "右腿疼痛、麻木 6 小时，几乎动不了。查体：右小腿肿胀、疼痛、苍白，摸上去比左侧凉；右股动脉搏动弱，右腘动脉和足背动脉未触及，左侧相应搏动可触及；右下肢活动障碍。你怎样判断这条腿？",
-        "en": "Six hours of pain and numbness in the right leg, which he can barely move. On examination the right calf is swollen, painful, pale and colder than the left; the right femoral pulse is weak and the right popliteal and dorsalis pedis pulses cannot be felt, while the left-sided pulses can; movement of the right leg is impaired. How do you read this leg?"
+        "zh-CN": "右腿疼痛、麻木 6 小时，活动困难。查体：右小腿肿胀、疼痛、苍白，摸上去比左侧凉；右股动脉搏动弱，右腘动脉和足背动脉未触及，左侧相应搏动可触及；右下肢活动障碍。你怎样判断这条腿？",
+        "en": "Six hours of pain and numbness in the right leg, which is difficult to move. On examination the right calf is swollen, painful, pale and colder than the left; the right femoral pulse is weak and the right popliteal and dorsalis pedis pulses cannot be felt, while the left-sided pulses can; movement of the right leg is impaired. How do you read this leg?"
       },
       "kind": "single",
       "requires": {
@@ -3898,13 +3942,13 @@
         {
           "id": "aorta-to-feet-cta",
           "text": {
-            "zh-CN": "立即行 CT 血管成像，从胸部一直扫到双足；请血管外科到场；在 CT 显示主动脉之前，不溶栓、不取栓",
-            "en": "CT angiography now, from the chest down to the feet, with the vascular surgeon present; no thrombolysis or embolectomy until the scan has shown the aorta"
+            "zh-CN": "立即行 CT 血管成像，从颈部一直扫到双足；请血管外科到场；在 CT 显示主动脉之前，不溶栓、不取栓",
+            "en": "CT angiography now, from the neck down to the feet, with the vascular surgeon present; no thrombolysis or embolectomy until the scan has shown the aorta"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。超声显示病变已经累及腹主动脉下段，这不是单纯的股动脉栓塞：29 岁的人出现主动脉-髂动脉受累，必须想到主动脉夹层，而夹层可以从胸主动脉开始。ACC/AHA 2022 主动脉疾病指南依靠覆盖整条主动脉的 CT 血管成像诊断急性主动脉综合征；在这之前溶栓或盲目取栓，可能在夹层的主动脉上造成严重伤害。",
-            "en": "Correct. The duplex shows the process reaching the lower abdominal aorta, so this is not a simple femoral embolus: aorto-iliac involvement at 29 must raise aortic dissection, which can begin in the chest. ACC/AHA 2022 aortic disease guidance diagnoses acute aortic syndromes by CT angiography of the whole aorta, and thrombolysis or a blind embolectomy before that scan can do serious harm in a dissected aorta."
+            "zh-CN": "正确。超声显示病变已经累及腹主动脉下段，这不是单纯的股动脉栓塞：29 岁的人出现主动脉-髂动脉受累，必须想到主动脉夹层，而夹层可以从胸主动脉开始。ESC 2024 主动脉疾病指南把尽早行从颈部到盆腔的心电门控增强 CT 作为疑似急性主动脉综合征的首选检查（这里向下扫到双足以显示下肢）；在这之前溶栓或盲目取栓，可能在夹层的主动脉上造成严重伤害。",
+            "en": "Correct. The duplex shows the process reaching the lower abdominal aorta, so this is not a simple femoral embolus: aorto-iliac involvement at 29 must raise aortic dissection, which can begin in the chest. The ESC 2024 aortic guideline makes early ECG-gated contrast CT from the neck to the pelvis the first-line test for a suspected acute aortic syndrome (run on to the feet here to show the leg), and thrombolysis or a blind embolectomy before that scan can do serious harm in a dissected aorta."
           }
         },
         {
@@ -3939,8 +3983,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。ESVS 2020 急性肢体缺血指南确实推荐对急性肢体缺血立即给予肝素，但肝素从来不能代替恢复血流：已经活动障碍的腿等不了 24 小时。超声提示病变累及主动脉，下一步是给整条主动脉做 CT，而不是复查超声；一旦 CT 显示夹层，全量肝素就不再适合，只会在手术前增加出血。",
-            "en": "No. The ESVS 2020 acute limb ischaemia guideline does recommend immediate heparin for acute limb ischaemia, but heparin never replaces restoring flow: a leg that is already weak cannot wait 24 hours. With the duplex showing the process reaching the aorta, the next step is a CT of the whole aorta, not a repeat duplex — and once a CT shows a dissection, full heparin no longer fits and only adds bleeding before surgery."
+            "en": "No. The ESVS 2020 acute limb ischaemia guideline does recommend immediate heparin for acute limb ischaemia, but heparin never replaces restoring flow: a leg that is already weak cannot wait 24 hours. And with the duplex showing the process reaching the aorta at 29, a dissection has to be excluded before he is anticoagulated — the CT of the whole aorta that settles it takes minutes; once it shows a dissection, full heparin no longer fits and only adds bleeding before surgery.",
+            "zh-CN": "不对。ESVS 2020 急性肢体缺血指南确实推荐对急性肢体缺血立即给予肝素，但肝素从来不能代替恢复血流：已经活动障碍的腿等不了 24 小时。而且超声显示病变已累及 29 岁患者的主动脉，抗凝之前要先排除夹层——给整条主动脉做 CT 只需几分钟；一旦 CT 显示夹层，全量肝素就不再适合，只会在手术前增加出血。"
           }
         },
         {
@@ -3951,8 +3995,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对，不过这是最接近正确的选择。下肢 CT 血管成像能显示阻塞在哪里，但超声已经提示病变累及主动脉；如果是夹层，决定生死的是升主动脉和主动脉弓，从腹部开始扫描会把它漏掉。ACC/AHA 2022 主动脉疾病指南对急性主动脉综合征要求影像覆盖整条主动脉。",
-            "en": "No — but the nearest miss. A run-off CT angiogram shows where the leg is blocked, but the duplex shows the process reaching the aorta; if this is a dissection, what decides his survival is the ascending aorta and arch, which a scan starting at the abdomen would miss. ACC/AHA 2022 aortic disease guidance images the whole aorta in acute aortic syndromes."
+            "zh-CN": "不对，不过这是最接近正确的选择。下肢 CT 血管成像能显示阻塞在哪里，但超声已经提示病变累及主动脉；如果是夹层，决定生死的是升主动脉和主动脉弓，从腹部开始扫描会把它漏掉。ESC 2024 主动脉疾病指南对疑似急性主动脉综合征要求从颈部到盆腔成像。",
+            "en": "No — but the nearest miss. A run-off CT angiogram shows where the leg is blocked, but the duplex shows the process reaching the aorta; if this is a dissection, what decides his survival is the ascending aorta and arch, which a scan starting at the abdomen would miss. The ESC 2024 aortic guideline images a suspected acute aortic syndrome from the neck to the pelvis."
           }
         }
       ]
@@ -4097,8 +4141,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ACC/AHA 2022 主动脉疾病指南对急性 A 型夹层建议紧急外科评估并立即手术，合并下肢灌注不良时立即修复升主动脉；中心修复后很多腿能恢复血流，仍缺血时由血管外科补做旁路。缺血超过 6 小时、已出现骨筋膜室综合征的小腿，应在恢复血流的同一次手术中切开减压（ESVS 2020）。术前心率控制在 60–80 次/分，收缩压降到 120 mmHg 以下或能维持脏器和肢体灌注的最低水平（ACC/AHA 2022）。",
-            "en": "Correct. ACC/AHA 2022 aortic disease guidance calls for emergency surgical evaluation and immediate surgery in acute type A dissection, with immediate repair of the ascending aorta when a leg is malperfused; central repair restores flow to many legs, and the vascular surgeon adds a bypass if it does not. A calf ischaemic for more than six hours, with compartment syndrome, is decompressed in the same operation that restores its flow (ESVS 2020). Before theatre: heart rate 60–80/min and systolic pressure below 120 mmHg, or the lowest that keeps organs and the leg perfused (ACC/AHA 2022)."
+            "zh-CN": "正确。ACC/AHA 2022 主动脉疾病指南对急性 A 型夹层建议紧急外科评估并立即手术，合并下肢灌注不良时立即修复升主动脉；中心修复后很多腿能恢复血流，仍缺血时由血管外科补做旁路。缺血超过 6 小时、已出现骨筋膜室综合征的小腿，应在恢复血流的同一次手术中切开减压（ESVS 2020）。术前先接上监护看到心率和血压（本病例没有记录心率和超声心动图，要先排查心动过缓、心包填塞和重度主动脉瓣反流），再用静脉 β 受体阻滞剂把心率控制在 60–80 次/分，收缩压降到 120 mmHg 以下或能维持脏器和肢体灌注的最低水平（ACC/AHA 2022）。",
+            "en": "Correct. ACC/AHA 2022 aortic disease guidance calls for emergency surgical evaluation and immediate surgery in acute type A dissection, with immediate repair of the ascending aorta when a leg is malperfused; central repair restores flow to many legs, and the vascular surgeon adds a bypass if it does not. A calf ischaemic for more than six hours, with compartment syndrome, is decompressed in the same operation that restores its flow (ESVS 2020). Before theatre: with his heart rate and blood pressure on the monitor first (neither the heart rate nor an echo is recorded, so bradycardia, tamponade and severe aortic regurgitation have to be looked for), IV beta-blockade to a heart rate of 60–80/min and a systolic pressure below 120 mmHg, or the lowest that keeps organs and the leg perfused (ACC/AHA 2022)."
           }
         },
         {
@@ -4484,17 +4528,10 @@
             }
           },
           {
-            "any": [
-              {
-                "not": {
-                  "intervened": "heparin"
-                }
-              },
-              {
-                "intervened": "heparin",
-                "whenIndicated": true
-              }
-            ]
+            "not": {
+              "intervened": "heparin",
+              "valid": false
+            }
           }
         ]
       },
@@ -4522,7 +4559,8 @@
             "intervened": "icu-observation"
           },
           {
-            "intervened": "heparin"
+            "intervened": "heparin",
+            "valid": false
           }
         ]
       }
@@ -4637,7 +4675,7 @@
     },
     "conclusion": {
       "zh-CN": "29岁男性，右下肢疼痛、麻木 6 小时。右小腿肿胀、疼痛、苍白，较对侧凉；右股动脉搏动弱，右腘动脉和足背动脉未触及；腹股沟压痛，右下肢活动障碍；入院血压 128/76 mmHg。超声示腹主动脉下段及右侧髂、股动脉低回声填充，右腘动脉和胫动脉无血流；CT 示 Stanford A 型主动脉夹层，髂动脉受累、管腔中重度狭窄。右下肢筋膜室压力 35 mmHg；肌酐 55.8 μmol/L，钾 3.8 mmol/L。诊断：急性 A 型主动脉夹层合并右下肢灌注不良和骨筋膜室综合征。记录中入院后 8 小时切开减压，48 小时后行升主动脉、弓部置换及象鼻手术，术后 35 天出院。按现行指南（ACC/AHA 2022），应立即修复升主动脉，并在同一次手术中处理下肢。",
-      "en": "A 29-year-old man had six hours of pain and numbness in the right leg. The right calf was swollen, painful, pale and colder than the left; the right femoral pulse was weak and the popliteal and dorsalis pedis pulses impalpable; the groin was tender and right-leg movement impaired; BP on admission was 128/76 mmHg. Duplex showed hypoechoic filling of the lower abdominal aorta and the right iliac and femoral arteries, with no popliteal or tibial flow; CT showed a Stanford type A dissection with iliac involvement and moderate-to-severe narrowing. The compartment pressure was 35 mmHg; creatinine 55.8 μmol/L, potassium 3.8 mmol/L. Diagnosis: acute type A aortic dissection with right-leg malperfusion and compartment syndrome. The record shows decompression 8 hours after admission and ascending and arch replacement with an elephant trunk 48 hours later; he went home 35 days after surgery. Today (ACC/AHA 2022): immediate ascending repair, with the leg treated in the same operation."
+      "en": "A 29-year-old man had six hours of pain and numbness in the right leg. The right calf was swollen, painful, pale and colder than the left; the right femoral pulse was weak and the popliteal and dorsalis pedis pulses impalpable; the groin was tender and right-leg movement impaired; BP on admission was 128/76 mmHg. Duplex showed hypoechoic filling of the lower abdominal aorta and the right iliac and femoral arteries, with no popliteal or tibial flow; CT showed a Stanford type A dissection with iliac involvement and moderate-to-severe narrowing. The compartment pressure was 35 mmHg; creatinine 55.8 μmol/L, potassium 3.8 mmol/L. Diagnosis: acute type A aortic dissection with right-leg malperfusion and compartment syndrome. The record shows decompression 8 hours after admission and ascending and arch replacement with an elephant trunk 48 hours later; he was discharged 35 days after surgery. Today (ACC/AHA 2022): immediate ascending repair, with the leg treated in the same operation."
     },
     "keyReasoning": [
       {
@@ -4653,8 +4691,8 @@
         "en": "The CT shows a Stanford type A dissection: the leg is branch-vessel malperfusion from a lesion whose deadliest part is the ascending aorta."
       },
       {
-        "zh-CN": "在没有流入血流的腿上，用全身舒张压算出的压差（76 − 35 = 41 mmHg）不能排除骨筋膜室综合征；正常的入院血钾和肌酐是再灌注之前的基线，不是保证。",
-        "en": "In a leg without inflow, a gradient worked out from systemic diastolic pressure (76 − 35 = 41 mmHg) cannot exclude compartment syndrome, and a normal admission potassium and creatinine are a baseline before reperfusion, not a guarantee."
+        "zh-CN": "在没有流入血流的腿上，用全身舒张压算出的压差（76 − 35 = 41 mmHg）不能排除骨筋膜室综合征；入院时不高的血钾和肌酐是再灌注之前的基线，不是保证。",
+        "en": "In a leg without inflow, a gradient worked out from systemic diastolic pressure (76 − 35 = 41 mmHg) cannot exclude compartment syndrome, and an admission potassium and creatinine that are not raised are a baseline before reperfusion, not a guarantee."
       },
       {
         "zh-CN": "因此计划从主动脉开始——立即中心修复——并把腿纳入同一次手术：复查血流、必要时旁路、筋膜切开，术后监测再灌注。",
@@ -4705,16 +4743,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "急性肢体缺血按功能分级：麻木再加上任何程度的肌力减退，就是“即刻受威胁”的肢体（ESVS 2020 对 Rutherford 分级的修订，IIb 级），需要毫不拖延地恢复血流；ESVS 2020 同时推荐对急性肢体缺血立即给予肝素——前提是病因允许。股动脉搏动减弱提示流入道病变；没有动脉粥样硬化背景的年轻人出现流入道病变，必须想到主动脉。",
-        "en": "Acute limb ischaemia is graded by function: numbness with any weakness is an immediately threatened limb (category IIb in the ESVS 2020 modification of Rutherford's categories) that needs its flow restored without delay; ESVS 2020 also recommends immediate heparin for acute limb ischaemia — when the cause allows it. A weak femoral pulse marks inflow disease, and inflow disease in a young adult without known atherosclerosis must make you think of the aorta."
+        "en": "Acute limb ischaemia is graded by function: sensory loss beyond the toes with mild or moderate weakness is an immediately threatened limb (category IIb in the ESVS 2020 modification of Rutherford's categories), profound anaesthesia and paralysis an irreversible one (III); a IIb leg needs its flow restored without delay. ESVS 2020 also recommends immediate heparin for acute limb ischaemia, but a weak femoral pulse marks inflow disease, and inflow disease in a young adult without known atherosclerosis must make you think of the aorta — image it, in minutes, before anticoagulating, lysing or operating.",
+        "zh-CN": "急性肢体缺血按功能分级：感觉丧失超过足趾、伴轻至中度肌力减退，就是“即刻受威胁”的肢体（ESVS 2020 对 Rutherford 分级的修订，IIb 级），深度感觉丧失和瘫痪则是不可逆的 III 级；IIb 级的腿需要毫不拖延地恢复血流。ESVS 2020 同时推荐对急性肢体缺血立即给予肝素，但股动脉搏动减弱提示流入道病变；没有已知动脉粥样硬化的年轻人出现流入道病变，必须想到主动脉——在抗凝、溶栓或手术之前，先花几分钟给它成像。"
       },
       {
-        "zh-CN": "腿可能是主动脉夹层唯一的线索：累及髂动脉的分支灌注不良表现为一条冰凉、无脉的腿。ACC/AHA 2022 主动脉疾病指南对疑似或确诊的急性 A 型夹层建议紧急外科评估并立即手术，合并肾、肠系膜或下肢灌注不良时立即修复升主动脉；先恢复灌注再修复主动脉只是明显肠系膜灌注不良时的可选做法。记录与现行做法：记录中入院后 8 小时切开减压，48 小时后才修复主动脉；按现行做法，主动脉手术不应等待。",
-        "en": "The leg can be the only clue to an aortic dissection: branch malperfusion of the iliac arteries presents as a cold, pulseless leg. ACC/AHA 2022 recommends emergency surgical evaluation and immediate surgery for suspected or confirmed acute type A dissection, and immediate repair of the ascending aorta when it presents with renal, mesenteric or lower-extremity malperfusion; reperfusion before central repair is an option only for clinically significant mesenteric malperfusion. Then and now: the record shows decompression 8 hours after admission and aortic repair 48 hours later; today the aortic operation would not wait."
+        "zh-CN": "腿可能是主动脉夹层唯一的线索：累及髂动脉的分支灌注不良表现为一条发凉、远端动脉摸不到搏动的腿。ACC/AHA 2022 主动脉疾病指南对疑似或确诊的急性 A 型夹层建议紧急外科评估并立即手术，合并肾、肠系膜或下肢灌注不良时立即修复升主动脉；先恢复灌注再修复主动脉只是明显肠系膜灌注不良时的可选做法。记录与现行做法：记录中入院后 8 小时切开减压，48 小时后才修复主动脉；按现行做法，主动脉手术不应等待。",
+        "en": "The leg can be the only clue to an aortic dissection: branch malperfusion of the iliac arteries presents as a cold leg without distal pulses. ACC/AHA 2022 recommends emergency surgical evaluation and immediate surgery for suspected or confirmed acute type A dissection, and immediate repair of the ascending aorta when it presents with renal, mesenteric or lower-extremity malperfusion; reperfusion before central repair is an option only for clinically significant mesenteric malperfusion. Then and now: the record shows decompression 8 hours after admission and aortic repair 48 hours later; today the aortic operation would not wait."
       },
       {
-        "zh-CN": "进手术室之前：先用静脉 β 受体阻滞剂（艾司洛尔 500 μg/kg 静脉注射 1 分钟，随后 50–300 μg/(kg·min)），把心率控制在 60–80 次/分、收缩压降到 120 mmHg 以下，或降到能维持脑、肾、肠道和肢体灌注的最低水平——有灌注不良时这一点最重要（ACC/AHA 2022）；充分镇痛；不溶栓——疑似主动脉夹层是溶栓的绝对禁忌（2025 ACC/AHA 急性冠脉综合征指南）；确诊夹层后也不要为这条腿开始全量肝素：它针对的是血栓栓塞，打不开被夹层压闭的管腔，只会在开胸手术前增加出血。",
-        "en": "Before theatre: IV beta-blockade first (esmolol 500 μg/kg over 1 minute, then 50–300 μg/kg/min) to a heart rate of 60–80/min and a systolic pressure below 120 mmHg, or the lowest pressure that keeps the brain, kidneys, gut and limbs perfused — which matters most when there is malperfusion (ACC/AHA 2022); good analgesia; no thrombolysis — suspected aortic dissection is an absolute contraindication (2025 ACC/AHA acute coronary syndrome guideline); and once the dissection is known, no full heparin for the leg: it is aimed at thrombo-embolism, cannot open a lumen closed by a dissection, and adds bleeding before open surgery."
+        "zh-CN": "进手术室之前：接上监护、看到心率和血压，并且没有心动过缓、低血压、心包填塞或重度主动脉瓣反流时，先用静脉 β 受体阻滞剂（艾司洛尔 500 μg/kg 静脉注射 1 分钟，随后 50–300 μg/(kg·min)），把心率控制在 60–80 次/分、收缩压降到 120 mmHg 以下，或降到能维持脑、肾、肠道和肢体灌注的最低水平——有灌注不良时这一点最重要（ACC/AHA 2022）；充分镇痛；不溶栓——疑似主动脉夹层是溶栓的绝对禁忌（2025 ACC/AHA 急性冠脉综合征指南）；确诊夹层后也不要为这条腿开始全量肝素：它针对的是血栓栓塞，打不开被夹层压闭的管腔，只会在开胸手术前增加出血。",
+        "en": "Before theatre: with the heart rate and blood pressure on the monitor and no bradycardia, hypotension, tamponade or severe aortic regurgitation, IV beta-blockade first (esmolol 500 μg/kg over 1 minute, then 50–300 μg/kg/min) to a heart rate of 60–80/min and a systolic pressure below 120 mmHg, or the lowest pressure that keeps the brain, kidneys, gut and limbs perfused — which matters most when there is malperfusion (ACC/AHA 2022); good analgesia; no thrombolysis — suspected aortic dissection is an absolute contraindication (2025 ACC/AHA acute coronary syndrome guideline); and once the dissection is known, no full heparin for the leg: it is aimed at thrombo-embolism, cannot open a lumen closed by a dissection, and adds bleeding before open surgery."
       },
       {
         "zh-CN": "缺血肢体的骨筋膜室综合征是临床诊断：常用的切开阈值“舒张压减筋膜室压力小于 30 mmHg”（McQueen 与 Court-Brown，1996）来自胫骨骨折，用的是全身血压；腘动脉和胫动脉没有血流时，腿本身的灌注压低得多，所以 35 mmHg 对舒张压 76 mmHg（压差 41 mmHg）并不能排除它。应在恢复血流的同一次手术中切开小腿四个筋膜室（ESVS 2020 对长时间缺血后的血运重建考虑切开减压），并监测再灌注：血钾、肌酸激酶、乳酸、肌酐、尿量和心电图——本病例入院以后这些都没有记录。",
@@ -4732,7 +4770,7 @@
       "Czerny M, Grabenwöger M, Berger T, et al. EACTS/STS Guidelines for Diagnosing and Treating Acute and Chronic Syndromes of the Aortic Organ. Eur J Cardiothorac Surg. 2024;65(2):ezad426. doi:10.1093/ejcts/ezad426",
       "Björck M, Earnshaw JJ, Acosta S, et al. Editor's Choice – European Society for Vascular Surgery (ESVS) 2020 Clinical Practice Guidelines on the Management of Acute Limb Ischaemia. Eur J Vasc Endovasc Surg. 2020;59(2):173-218. doi:10.1016/j.ejvs.2019.09.006",
       "中国医师协会心血管外科分会大血管外科专业委员会. 主动脉夹层诊断与治疗规范中国专家共识. 中华胸心血管外科杂志. 2017;33(11):641-654.",
-      "McQueen MM, Court-Brown CM. Compartment monitoring in tibial fractures. The pressure threshold for decompression. J Bone Joint Surg Br. 1996;78(1):99-104.",
+      "McQueen MM, Court-Brown CM. Compartment monitoring in tibial fractures. The pressure threshold for decompression. J Bone Joint Surg Br. 1996;78(1):99-104. doi:10.1302/0301-620X.78B1.0780099",
       "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI guideline for the management of patients with acute coronary syndromes: a report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines. Circulation. 2025;151(13):e771-e862. doi:10.1161/CIR.0000000000001309"
     ],
     "notice": {
@@ -5382,6 +5420,62 @@
         "text": "is your family on their way in?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "does the leg hurt a lot?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "is the foot numb at all?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "腿麻不麻？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "这条腿肿吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "腿还能动吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "do you have any medical problems?",
+        "locale": "en",
+        "expect": [
+          "pmh-other"
+        ]
+      },
+      {
+        "text": "以前有什么病没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-other"
+        ]
+      },
+      {
+        "text": "do you use any drugs?",
+        "locale": "en",
+        "expect": [
+          "drugs"
+        ]
       }
     ]
   }

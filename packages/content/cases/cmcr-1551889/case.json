@@ -38,8 +38,8 @@
       "en": "After an abnormal arch view, arrange a specialist fetal echocardiogram, genetic counselling with an offer of chromosomal microarray, which detects 22q11.2 deletion, and a written perinatal plan (ASE 2023; AHA 2014)."
     },
     {
-      "zh-CN": "说明拒绝产前检测后22q11.2状态仍是未知，并为宝宝安排出生后的遗传学检测、血钙和T细胞检查，在排除微缺失之前手术用血一律辐照（22q11.2学会2023；BSH 2020）。",
-      "en": "Explain that a declined prenatal test leaves the 22q11.2 status unknown, and plan the baby's genetic test, calcium and T-cell counts after birth, with irradiated blood components for surgery until a deletion is excluded (22q11.2 Society 2023; BSH 2020)."
+      "zh-CN": "说明拒绝产前检测后22q11.2状态仍是未知，并为宝宝安排出生后的遗传学检测、血钙和T细胞计数；在T细胞计数表明不需要之前，手术用的细胞成分血一律辐照（22q11.2学会2023；BSH 2020）。",
+      "en": "Explain that a declined prenatal test leaves the 22q11.2 status unknown, and plan the baby's genetic test, calcium and T-cell counts after birth, with irradiated cellular blood components for surgery until the T-cell counts show they are not needed (22q11.2 Society 2023; BSH 2020)."
     },
     {
       "zh-CN": "制定足月分娩、分娩方式按产科指征、新生儿团队事先知情的计划；把新生儿哭闹或吃奶后咳嗽、喘鸣或需要呼吸支持视为气管受压，及时做CT血管成像并由外科切断非优势弓。",
@@ -72,7 +72,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -81,7 +81,8 @@
         "ASE 2023 guidelines and recommendations for performance of the fetal echocardiogram (endorsed by the Fetal Heart Society, SPE and AIUM)",
         "AHA 2014 scientific statement: diagnosis and treatment of fetal cardiac disease",
         "22q11.2 Society 2023 updated clinical practice recommendations for managing children with 22q11.2 deletion syndrome",
-        "BSH 2020 guidelines on the use of irradiated blood components"
+        "BSH 2020 guidelines on the use of irradiated blood components",
+        "NICE NG25 (2015, updated 2022): preterm labour and birth"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -157,8 +158,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "坐在门诊，清醒、紧张但配合，自己回答所有问题。只说被问到的内容，用自己的话，不增减孕周、药名、剂量、数字或时间；不知道的就说说不上来，不要编。宝宝出生以后，她讲的是宝宝的情况，同样只讲她知道的（出生后要呼吸支持、哭或吃奶后咳嗽、偶尔喘鸣），其他细节说说不上来。",
-        "en": "She sits in clinic, alert, anxious and cooperative, and answers every question herself. Answer only what is asked, in her own words, never adding or changing weeks, drug names, doses, numbers or times; for anything she does not know, say she is not sure — never invent. After the birth she talks about her baby, again only what she knows (he needed breathing support after birth, coughs after crying or feeds, now and then wheezes); for other details she is not sure."
+        "zh-CN": "坐在门诊，清醒、紧张但配合，自己回答所有问题。只说被问到的内容，用自己的话，不增减孕周、药名、剂量、数字或时间；不知道的就说说不上来，不要编。宝宝出生以后，她讲的是宝宝的情况，同样只讲她的回答里有的内容，其他细节说说不上来。",
+        "en": "She sits in clinic, alert, anxious and cooperative, and answers every question herself. Answer only what is asked, in her own words, never adding or changing weeks, drug names, doses, numbers or times; for anything she does not know, say she is not sure — never invent. After the birth she talks about her baby, again only what her answers hold; for other details she is not sure."
       }
     },
     "appearance": {
@@ -408,8 +409,8 @@
         "en": "Did the earlier screening scans in this pregnancy show anything wrong with the baby's heart?"
       },
       "answer": {
-        "zh-CN": "没有。前面早孕和中孕做的筛查，都没说宝宝心脏有问题，这次是第一次发现。",
-        "en": "No. The screening scans earlier on — in the first months and in the middle of the pregnancy — never said anything about the baby's heart. This is the first time anything's been found."
+        "zh-CN": "没有。前面早孕和中孕做的筛查，都没有查出宝宝心脏的这个问题，这次是第一次发现。",
+        "en": "No. The screening scans earlier on — in the first months and in the middle of the pregnancy — never picked up this problem with the baby's heart. This is the first time it's been found."
       },
       "keywords": {
         "zh-CN": [
@@ -451,8 +452,8 @@
         "en": "Have there been any other problems during this pregnancy?"
       },
       "answer": {
-        "zh-CN": "有几样。孕期有贫血，血糖也有点问题；还有过宫缩，医生说有早产的可能。",
-        "en": "A few things. I've been anaemic in the pregnancy, I've had some trouble with my blood sugar, and I had contractions at one point — they said the baby might come early."
+        "zh-CN": "有几样。孕期有贫血，血糖也有问题；还有过宫缩，医生说有早产的可能。",
+        "en": "A few things. I've been anaemic in the pregnancy, I've had trouble with my blood sugar, and I've had contractions — they said the baby might come early."
       },
       "keywords": {
         "zh-CN": [
@@ -565,8 +566,8 @@
         "en": "Tell me about the blood-sugar problem — how was it found, and what was done?"
       },
       "answer": {
-        "zh-CN": "医生说我血糖有点问题。具体查的什么、数值多少、用没用药，我说不清楚；怀孕以前查没查过，我也说不上来。",
-        "en": "They told me my blood sugar was a bit of a problem. Exactly which test it was, the numbers, or whether I had any treatment — I can't really say, and I don't know whether it was ever checked before I was pregnant."
+        "zh-CN": "医生说我血糖有问题。具体查的什么、数值多少、用没用药，我说不清楚；怀孕以前查没查过，我也说不上来。",
+        "en": "They told me I had a problem with my blood sugar. Exactly which test it was, the numbers, or whether I had any treatment — I can't really say, and I don't know whether it was ever checked before I was pregnant."
       },
       "keywords": {
         "zh-CN": [
@@ -1856,6 +1857,11 @@
             "en": "Report (version 1.0.0 extract): airway and Doppler records (the trachea crosses the ring with an indentation; no flow obstruction in either arch; fetal movement and small structures prevented reliable prenatal identification of the dominant arch)"
           }
         }
+      },
+      "availability": {
+        "when": {
+          "attempted": "arch-anatomy"
+        }
       }
     },
     {
@@ -2356,6 +2362,11 @@
             "zh-CN": "报告（1.0.0版摘录）：结局段（CTA确认右弓优势及气管受压）；图为原报告图2",
             "en": "Report (version 1.0.0 extract): outcome section (CTA confirmed right dominance and tracheal compression); the figure is the report's figure 2"
           }
+        }
+      },
+      "availability": {
+        "when": {
+          "attempted": "newborn-plan"
         }
       }
     },
@@ -2874,6 +2885,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -2956,8 +2968,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "在排除22q11.2微缺失（或证实T细胞正常）之前，宝宝在手术前后需要的红细胞和血小板都用辐照成分（BSH 2020）。",
-        "en": "Until 22q11.2 deletion is excluded (or T cells are shown to be normal), any red cells or platelets the baby needs around an operation are irradiated (BSH 2020)."
+        "zh-CN": "在宝宝的T细胞计数表明不需要之前，他手术前后需要的红细胞和血小板都用辐照成分（BSH 2020）。",
+        "en": "Until the baby's T-cell counts show it is not needed, any red cells or platelets he needs around an operation are irradiated (BSH 2020)."
       },
       "requires": [],
       "risk": "none",
@@ -3050,8 +3062,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "新生儿出生后需要呼吸支持、哭闹或吃奶后咳嗽、喘鸣，首先要排除的就是产前已经看到的那处异常压迫气道；按反流或病毒感染等待，会延误影像检查和手术，而气道受压可能突然加重。",
-        "en": "When a newborn needs breathing support and coughs and wheezes after crying or feeds, the first thing to exclude is airway compression by the abnormality already seen before birth; waiting it out as reflux or a viral illness delays imaging and surgery, and the compression can worsen suddenly."
+        "zh-CN": "有这项产前发现的新生儿，如果需要呼吸支持，或者哭闹、吃奶后咳嗽、喘鸣，在证明是别的原因之前都应视为那处异常压迫气道；按反流或病毒感染等待，会延误影像检查和手术，而气道受压可能突然加重。AHA 2014要求用产前诊断来计划新生儿的处理，Bartsota等（Ultrasound Obstet Gynecol 2023）建议对这类胎儿主动脉弓发现在出生后尽早临床评估并考虑CT。",
+        "en": "In a newborn with this prenatal finding, a need for breathing support, cough after crying or feeds or wheeze is airway compression by the abnormality until proved otherwise; waiting it out as reflux or a viral illness delays imaging and surgery, and the compression can worsen suddenly. AHA 2014 uses the prenatal diagnosis to plan the newborn's care, and Bartsota and colleagues (Ultrasound Obstet Gynecol 2023) advise early clinical assessment after birth and considering CT for fetal arch findings like this one."
       },
       "response": {
         "zh-CN": "已按这个方案处理。",
@@ -3289,16 +3301,16 @@
     {
       "id": "obj-newborn",
       "title": {
-        "zh-CN": "宝宝出生后：判断呼吸问题并处理",
-        "en": "After the birth: act on the baby's breathing"
+        "zh-CN": "宝宝出生后：评估宝宝并计划处理",
+        "en": "After the birth: assess the baby and plan his care"
       },
       "short": {
         "zh-CN": "新生儿",
         "en": "Newborn"
       },
       "hint": {
-        "zh-CN": "出生后需要呼吸支持、哭和吃奶后咳嗽、偶尔喘鸣，和产前看到的气管压迹有什么关系？手术之前还需要弄清什么？下一步由谁来做？",
-        "en": "How do the need for breathing support, the cough after crying or feeds and the occasional wheeze relate to the tracheal indentation seen before birth? What must be known before any operation, and who takes the next step?"
+        "zh-CN": "他的病历和妈妈的描述告诉你他的呼吸和吃奶情况怎样？这和产前看到的情况可能有什么关系？接下来需要弄清什么，应该请谁参与？",
+        "en": "What do his notes and his mother tell you about his breathing and feeding, and how could that relate to what was seen before birth? What do you need to know next, and who should you involve?"
       },
       "guidance": {
         "zh-CN": "她在产后病房；宝宝由新生儿团队照护，记录可在病历终端查看。",
@@ -3436,8 +3448,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。两条弓分居气管两侧、各自发出同侧锁骨下动脉，气管和食管就被围在完整的血管环中。ISUOG 2023把三血管气管切面列入筛查，正是因为这类弓部异常位于四腔心平面之上。Bartsota等2023年的胎儿队列中，近一半双主动脉弓出生后左弓有闭锁段，所以两弓粗细要在出生后确认。",
-            "en": "Right. Two arches straddle the trachea and each gives its own subclavian artery, so the trachea and oesophagus sit inside a complete ring. ISUOG 2023 puts the three-vessel-and-trachea view in the screen precisely because such arch anomalies lie above the four-chamber plane. In Bartsota and colleagues' 2023 fetal series, nearly half of double arches had an atretic left segment after birth, so the size of each arch is confirmed postnatally."
+            "zh-CN": "正确。两条弓分居气管两侧、各自发出同侧锁骨下动脉，气管就被围在完整的血管环中。ISUOG 2023把三血管气管切面列入筛查，正是因为这类弓部异常位于四腔心平面之上。Bartsota等2023年的胎儿队列中，近一半双主动脉弓出生后左弓有闭锁段，所以两弓粗细要在出生后确认。",
+            "en": "Right. Two arches straddle the trachea and each gives its own subclavian artery, so the trachea sits inside a complete ring. ISUOG 2023 puts the three-vessel-and-trachea view in the screen precisely because such arch anomalies lie above the four-chamber plane. In Bartsota and colleagues' 2023 fetal series, nearly half of double arches had an atretic left segment after birth, so the size of each arch is confirmed postnatally."
           }
         },
         {
@@ -3586,13 +3598,13 @@
         {
           "id": "test-baby-after-birth",
           "text": {
-            "zh-CN": "尊重决定；22q11.2仍属未知，出生后查宝宝的基因、血钙和T细胞，排除前手术用辐照血",
-            "en": "Respect their choice: 22q11.2 stays unknown, so test the baby after birth, check calcium and T cells, and irradiate blood until excluded"
+            "zh-CN": "尊重决定；22q11.2仍未知，出生后查宝宝基因、血钙和T细胞，T细胞有结果前手术用辐照血",
+            "en": "Respect their choice: 22q11.2 stays unknown; test the baby after birth, check calcium and T cells, irradiate blood until T cells are known"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。拒绝检测后状态是“未知”，不是“阴性”。22q11.2学会2023年建议出生后用微阵列或靶向检测诊断，并评估血钙和免疫功能；BSH 2020建议怀疑T细胞免疫缺陷的婴儿在心脏手术前尽量先查T淋巴细胞，否则输注的细胞成分血都要辐照，直到排除。",
-            "en": "Right. A declined test leaves the status unknown, not negative. The 22q11.2 Society's 2023 recommendations diagnose it after birth by microarray or a targeted test and assess calcium and immunity; BSH 2020 asks for T-lymphocyte testing before cardiac surgery in an infant with suspected T-cell immunodeficiency where possible, and otherwise irradiated cellular components until it is excluded."
+            "zh-CN": "正确。拒绝检测后状态是“未知”，不是“阴性”。22q11.2学会2023年建议用MLPA或染色体微阵列诊断，并在诊断时评估血钙和免疫功能。BSH 2020要求怀疑免疫缺陷综合征的婴儿在心脏手术前尽量先做T淋巴细胞计数（超过400个/µL且幼稚T细胞至少占30%时不需要辐照），计数完成之前，输注的细胞成分血都要辐照。",
+            "en": "Right. A declined test leaves the status unknown, not negative. The 22q11.2 Society's 2023 recommendations diagnose it by MLPA or microarray and check calcium and immunity at diagnosis. BSH 2020 asks for T-lymphocyte counts before cardiac surgery in an infant with a suspected immunodeficiency syndrome wherever possible (no irradiation is needed above 400 cells/µL with at least 30% naive T cells), and irradiated cellular components until those counts are done."
           }
         },
         {
@@ -3603,8 +3615,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "可能性小不等于已经排除：22q11.2微缺失的心外表现（低钙、T细胞缺陷）在新生儿期可能并不明显，却直接影响手术用血。22q11.2学会2023年的建议用出生后的诊断性检测来回答这个问题；在没有结果时，BSH 2020的辐照血原则照样适用。",
-            "en": "Less likely is not excluded: the extracardiac features of 22q11.2 deletion (low calcium, a T-cell defect) can be silent in a newborn, yet they change the blood used for surgery. The 22q11.2 Society's 2023 recommendations answer the question with a diagnostic test after birth, and without a result BSH 2020's irradiation rule still applies."
+            "zh-CN": "可能性小不等于已经排除：22q11.2微缺失的心外表现（低钙、T细胞缺陷）在新生儿期可能并不明显，而T细胞缺陷会改变手术用血。22q11.2学会2023年的建议用出生后的诊断性检测来回答这个问题；BSH 2020则按宝宝的T细胞计数决定手术用血，而不是看微缺失显得多么不可能。",
+            "en": "Less likely is not excluded: the extracardiac features of 22q11.2 deletion (low calcium, a T-cell defect) can be silent in a newborn, and a T-cell defect changes the blood used for surgery. The 22q11.2 Society's 2023 recommendations answer the question with a diagnostic test after birth, and BSH 2020 sets the blood for surgery by the baby's T-cell counts, not by how unlikely a deletion seemed."
           }
         },
         {
@@ -3623,12 +3635,12 @@
           "id": "keep-offering-amnio",
           "text": {
             "zh-CN": "每次产检都继续劝他们做羊水穿刺，直到同意为止，因为外科医生必须先拿到结果才能计划手术",
-            "en": "Keep pressing for amniocentesis at every visit until they agree, because the surgeons need the result before they can plan an operation"
+            "en": "Keep pressing for amniocentesis at every antenatal visit until they agree, because the surgeons need the result before they can plan an operation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "产前检测是提供选择，不是强加：夫妇在充分咨询后拒绝，是正当的决定，反复施压会损害信任。手术计划并不依赖产前结果——22q11.2状态可以在出生后检测（22q11.2学会2023），在此之前按BSH 2020使用辐照血。",
-            "en": "Prenatal testing is offered, not imposed: declining after full counselling is a valid choice, and pressure damages trust. Planning surgery does not depend on a prenatal result — the 22q11.2 status can be tested after birth (22q11.2 Society 2023), with irradiated blood under BSH 2020 until then."
+            "zh-CN": "产前检测是提供选择，不是强加：夫妇在充分咨询后拒绝，是正当的决定，反复施压会损害信任。手术计划并不依赖产前结果——22q11.2状态可以在出生后检测（22q11.2学会2023），手术用血则按宝宝的T细胞计数决定（BSH 2020）。",
+            "en": "Prenatal testing is offered, not imposed: declining after full counselling is a valid choice, and pressure damages trust. Planning surgery does not depend on a prenatal result — the 22q11.2 status can be tested after birth (22q11.2 Society 2023), and the blood for surgery follows the baby's T-cell counts (BSH 2020)."
           }
         }
       ]
@@ -3663,8 +3675,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。产前诊断用来决定在哪里、由哪个团队接生（AHA 2014；ASE 2023围产期管理），而不是提前分娩；血管环本身不需要剖宫产。新生儿团队事先知情，出生后就能安排超声心动图并留意气道症状。原报告在孕39周剖宫产，指征没有记录。",
-            "en": "Right. Prenatal diagnosis decides where and with which team the baby is born (AHA 2014; ASE 2023 perinatal planning), not an earlier birth, and the ring itself does not call for a caesarean. A neonatal team that knows the diagnosis arranges echocardiography and watches for airway symptoms. The report's team delivered by caesarean at 39 weeks; the indication is not recorded."
+            "zh-CN": "正确。产前诊断用来决定在哪里、由哪个团队接生（AHA 2014；ASE 2023围产期管理），而不是提前分娩；血管环本身不需要剖宫产。新生儿团队事先知情，出生后就能安排超声心动图并留意气道症状。",
+            "en": "Right. Prenatal diagnosis decides where and with which team the baby is born (AHA 2014; ASE 2023 perinatal planning), not an earlier birth, and the ring itself does not call for a caesarean. A neonatal team that knows the diagnosis arranges echocardiography and watches for airway symptoms."
           }
         },
         {
@@ -3687,8 +3699,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "提前分娩换来的是早产的风险，而对血管环没有好处：手术时机取决于出生后的症状和影像，不取决于出生孕周。促胎肺成熟的激素是给近期内可能早产的孕妇用的，不是为了计划性提前分娩；产前诊断的作用是计划分娩地点和团队（AHA 2014；ASE 2023）。",
-            "en": "An early birth trades in the risks of prematurity and does nothing for the ring: surgery is timed by the symptoms and imaging after birth, not by the gestation at birth. Antenatal steroids are for women likely to give birth preterm within days, not for a planned early delivery; prenatal diagnosis plans the place and team of birth (AHA 2014; ASE 2023)."
+            "zh-CN": "提前分娩换来的是早产的风险，而对血管环没有好处：手术时机取决于出生后的症状和影像，不取决于出生孕周。促胎肺成熟的激素用于预计会早产、或因确实的产科或胎儿原因而计划早产的孕妇（NICE NG25，2022年更新）；这项发现不属于这类原因，而且她已经用过倍他米松。AHA 2014不建议在没有这类原因时于39周前择期分娩，产前诊断的作用是计划分娩地点和团队（ASE 2023）。",
+            "en": "An early birth trades in the risks of prematurity and does nothing for the ring: surgery is timed by the symptoms and imaging after birth, not by the gestation at birth. Antenatal corticosteroids are offered when a preterm birth is expected, or planned for a genuine obstetric or fetal reason (NICE NG25, 2022 update); this finding is not such a reason, and she has already had betamethasone. AHA 2014 advises against elective delivery before 39 weeks without one, and prenatal diagnosis plans the place and team of birth (ASE 2023)."
           }
         },
         {
@@ -3731,8 +3743,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先看分娩记录和新生儿病程记录，并问问她宝宝的咳嗽和吃奶情况。",
-        "en": "Read the delivery record and the newborn notes, and ask her about the baby's cough and feeds first."
+        "zh-CN": "先看分娩记录和新生儿病程记录，并问问她宝宝的呼吸和吃奶情况。",
+        "en": "Read the delivery record and the newborn notes, and ask her how the baby has been breathing and feeding first."
       },
       "options": [
         {
@@ -3743,8 +3755,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。出生后需要呼吸支持、哭和吃奶后咳嗽、喘鸣，提示血管环压迫气管，需要手术解除。产前不能判断优势弓，Bartsota等2023年的研究也表明两弓情况要靠出生后的CT确认；外科在不影响头臂血管供血的位置切断较细的非优势弓，由优势弓承担循环。在22q11.2排除之前，手术用血按BSH 2020辐照。",
-            "en": "Right. A need for breathing support with cough after crying or feeds and wheeze means the ring is compressing the trachea and needs surgical release. Dominance could not be called before birth, and Bartsota and colleagues (2023) show that postnatal CT settles the arches; the surgeon divides the smaller, non-dominant arch where flow to the head and arm vessels is preserved, leaving the dominant arch to carry the circulation. Until 22q11.2 is excluded, blood for surgery is irradiated (BSH 2020)."
+            "zh-CN": "正确。出生后需要呼吸支持、哭和吃奶后咳嗽、喘鸣，提示血管环压迫气管，需要手术解除。产前不能判断优势弓，Bartsota等2023年的研究也表明两弓情况要靠出生后的CT确认；外科在不影响头臂血管供血的位置切断较细的非优势弓，由优势弓承担循环。在T细胞计数出来之前，手术用血按BSH 2020辐照。",
+            "en": "Right. A need for breathing support with cough after crying or feeds and wheeze points to the ring compressing the trachea, which needs surgical release. Dominance could not be called before birth, and Bartsota and colleagues (2023) show that postnatal CT settles the arches; the surgeon divides the smaller, non-dominant arch where flow to the head and arm vessels is preserved, leaving the dominant arch to carry the circulation. Until his T cells have been counted, blood for surgery is irradiated (BSH 2020)."
           }
         },
         {
@@ -3767,8 +3779,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "有症状的血管环不会随着长大而松开：压迫一直存在，长期依赖呼吸支持本身就有风险。解剖明确以后，有症状的血管环应尽早手术，不必等待；本例的手术在出生后第18天进行。",
-            "en": "A symptomatic ring does not loosen as he grows: the compression persists, and prolonged breathing support carries its own risks. Once the anatomy is defined, a symptomatic ring is divided without waiting; in this case the operation was at 18 days of age."
+            "zh-CN": "有症状的血管环不会随着长大而松开：压迫一直存在，长期依赖呼吸支持本身就有风险。解剖明确以后，有症状的血管环应尽早手术，不必等待长大；Bartsota等（2023）建议出生后尽早临床评估并考虑CT。",
+            "en": "A symptomatic ring does not loosen as he grows: the compression persists, and prolonged breathing support carries its own risks. Once the anatomy is defined, a symptomatic ring is divided without waiting for growth; Bartsota and colleagues (2023) advise early clinical assessment and considering CT after birth."
           }
         },
         {
@@ -3779,8 +3791,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "双主动脉弓的两条弓都“异常”，要切的是较细的非优势弓；若误切优势弓，就只剩较细的那条弓给头臂血管和降主动脉供血。产前不能判断优势弓，必须先用CT等影像明确（Bartsota等2023）。本例CT证实右弓占优势，切断的是左弓。",
-            "en": "In a double arch both arches are 'abnormal'; the one to divide is the smaller, non-dominant arch, and dividing the dominant one would leave the smaller arch to carry the blood to the head, arms and descending aorta. Dominance could not be called before birth, so imaging such as CT must settle it first (Bartsota and colleagues 2023). Here CT showed right-arch dominance, and the left arch was divided."
+            "zh-CN": "双主动脉弓的两条弓都“异常”，要切的是较细的非优势弓；若误切优势弓，就只剩较细的那条弓给头臂血管和降主动脉供血。产前不能判断优势弓，必须先用CT等影像明确（Bartsota等2023）。",
+            "en": "In a double arch both arches are 'abnormal'; the one to divide is the smaller, non-dominant arch, and dividing the dominant one would leave the smaller arch to carry the blood to the head, arms and descending aorta. Dominance could not be called before birth, so imaging such as CT must settle it first (Bartsota and colleagues 2023)."
           }
         }
       ]
@@ -3980,8 +3992,8 @@
       "domain": "safety",
       "weight": 2,
       "text": {
-        "zh-CN": "在22q11.2微缺失排除之前，通知血库为宝宝准备辐照血液成分",
-        "en": "Asked the blood bank for irradiated components for the baby while 22q11.2 deletion was not excluded"
+        "zh-CN": "在22q11.2未排除、宝宝的T细胞尚未计数时，通知血库为他准备辐照血液成分",
+        "en": "Asked the blood bank for irradiated components for the baby while 22q11.2 was unexcluded and his T cells not yet counted"
       },
       "met": {
         "intervened": "irradiated-components"
@@ -4049,8 +4061,8 @@
         "en": "Dr Wen (fetal medicine attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“四腔心正常能排除什么，会漏掉什么？”“主动脉弓在气管哪一侧？另一侧是什么把环闭合的？”“两侧锁骨下动脉的起源怎样帮你区分不同的血管环？”“血流通畅能不能回答气道的问题？”“哪种检测能查出22q11.2微缺失，哪种查不出？”“夫妇拒绝羊水穿刺以后，什么还没有答案，什么时候能回答？”“这项发现会不会改变分娩的时间和方式？”“宝宝吃奶后咳嗽、需要高流量支持——是什么在压迫什么？外科医生手术前必须知道什么？”可以讲ISUOG 2023、ASE 2023、AHA 2014、22q11.2学会2023年建议和BSH 2020的相关原则。原报告的经过是历史记录，在病例结束时才展示。不提前说出诊断、任何决策的正确选项或结局。以下内容本病例没有记录，不要替它补上：她的生命体征和查体、胎儿测量值、血红蛋白、铁蛋白和血糖结果、地中海贫血的类型、配偶筛查、拒绝羊水穿刺的原因、剖宫产指征、宝宝的遗传学、血钙和T细胞结果，以及手术细节。",
-        "en": "A Socratic teacher who asks only about what the learner has already found, for example: 'What does a normal four-chamber view rule out — and what can it miss?', 'Which side of the trachea is the arch on, and what closes the circle on the other side?', 'How do the subclavian arteries help you tell one ring from another?', 'The flow is unobstructed — does that settle the airway question?', 'Which test finds a 22q11.2 deletion, and which misses it?', 'The couple said no to amniocentesis — what is still open, and when can it be answered?', 'Does this finding change when or how she gives birth?', 'He coughs after feeds and needed high-flow support — what is pressing on what, and what must the surgeon know before operating?'. May explain the principles of ISUOG 2023, ASE 2023, AHA 2014, the 22q11.2 Society's 2023 recommendations and BSH 2020. The report's course is a historical record, shown at the end of the case. Never states the diagnosis, a decision's correct option or the outcome early. Not recorded in this case, and never to be supplied: her vital signs and examination, the fetal measurements, her haemoglobin, ferritin and glucose results, the type of thalassaemia, her partner's screen, the reasons for declining amniocentesis, the indication for the caesarean, the baby's genetic, calcium and T-cell results, and the surgical details."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“四腔心正常能排除什么，会漏掉什么？”“主动脉弓和动脉导管与气管是什么位置关系？这说明什么？”“两侧锁骨下动脉的起源怎样帮你区分不同的弓部异常？”“彩色多普勒能告诉你血管的什么情况，又不能告诉你气道的什么情况？”“哪种检测能查出22q11.2微缺失，哪种查不出？”“夫妇做出选择以后，什么还没有答案，什么时候能回答？”“这项发现会不会改变分娩的时间和方式？”“宝宝出生以后，你会重点观察什么？需要请谁参与？”可以讲ISUOG 2023、ASE 2023、AHA 2014、22q11.2学会2023年建议、BSH 2020和NICE NG25的相关原则。原报告的经过是历史记录，在病例结束时才展示。不提前说出诊断、任何决策的正确选项或结局。病例结束时按PEARLS复盘：学员的感受、经过的回顾、对照指南的分析，以及下次会怎么做。以下内容本病例没有记录，不要替它补上：她的生命体征和查体、胎儿测量值、血红蛋白、铁蛋白和血糖结果、地中海贫血的类型、配偶筛查、拒绝羊水穿刺的原因、剖宫产指征、宝宝的遗传学、血钙和T细胞结果，以及手术细节。",
+        "en": "A Socratic teacher who asks only about what the learner has already found, for example: 'What does a normal four-chamber view rule out — and what can it miss?', 'Where do the arch and the ductus lie in relation to the trachea, and what does that tell you?', 'How do the subclavian arteries help you tell one arch anomaly from another?', 'What does colour Doppler tell you about the vessels — and what does it not tell you about the airway?', 'Which test finds a 22q11.2 deletion, and which misses it?', 'After the couple's choice, what is still open, and when can it be answered?', 'Does this finding change when or how she gives birth?', 'Once the baby is born, what would you watch for, and who needs to be involved?'. May explain the principles of ISUOG 2023, ASE 2023, AHA 2014, the 22q11.2 Society's 2023 recommendations, BSH 2020 and NICE NG25. The report's course is a historical record, shown at the end of the case. Never states the diagnosis, a decision's correct option or the outcome early. At the end, debriefs with PEARLS: how the learner felt, what happened, an analysis against the guidance, and what they will do next time. Not recorded in this case, and never to be supplied: her vital signs and examination, the fetal measurements, her haemoglobin, ferritin and glucose results, the type of thalassaemia, her partner's screen, the reasons for declining amniocentesis, the indication for the caesarean, the baby's genetic, calcium and T-cell results, and the surgical details."
       },
       "interprets": [
         "growth-heart-scan",
@@ -4101,8 +4113,8 @@
         "en": "Dr Qin (clinical genetics, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "临床遗传科医生，只解读学员已经看过的咨询记录和遗传学结果。可以讲：胎儿主动脉弓异常可能伴随的染色体问题，首先是22q11.2微缺失；染色体微阵列、FISH或MLPA能查出它，常规核型分析查不出；多数微缺失是孩子新发生的，父母正常并不能排除；不带倾向的遗传咨询和父母拒绝检测的权利；状态未知时宝宝出生后要做的事——遗传学检测、血钙、T细胞计数，以及手术用辐照血（22q11.2学会2023；BSH 2020）。不补充病例没有记录的结果。",
-        "en": "Clinical geneticist who interprets only the counselling note and the genetic records the learner has read. Can explain: the chromosomal conditions that may accompany a fetal arch anomaly, 22q11.2 deletion above all; that chromosomal microarray, FISH or MLPA detect it and a standard karyotype does not; that most deletions arise new in the child, so normal parents do not exclude it; non-directive counselling and the parents' right to decline; and what the newborn needs while the status is unknown — a genetic test, calcium, T-cell counts and irradiated blood for surgery (22q11.2 Society 2023; BSH 2020). Adds no result the case does not record."
+        "zh-CN": "临床遗传科医生，只解读学员已经看过的咨询记录和遗传学结果。可以讲：胎儿主动脉弓异常可能伴随的染色体问题，首先是22q11.2微缺失；染色体微阵列、FISH或MLPA能查出它，常规核型分析查不出；多数微缺失是孩子新发生的，父母正常并不能排除；不带倾向的遗传咨询和父母拒绝检测的权利；状态未知时宝宝出生后要做的事——遗传学检测、血钙和T细胞计数，在T细胞计数表明不需要之前，手术用血要辐照（22q11.2学会2023；BSH 2020）。不补充病例没有记录的结果。",
+        "en": "Clinical geneticist who interprets only the counselling note and the genetic records the learner has read. Can explain: the chromosomal conditions that may accompany a fetal arch anomaly, 22q11.2 deletion above all; that chromosomal microarray, FISH or MLPA detect it and a standard karyotype does not; that most deletions arise new in the child, so normal parents do not exclude it; non-directive counselling and the parents' right to decline; and what a newborn needs while the status is unknown — a genetic test, calcium and T-cell counts, and irradiated blood for surgery until the T-cell counts show it is not needed (22q11.2 Society 2023; BSH 2020). Adds no result the case does not record."
       },
       "interprets": [
         "counselling-note",
@@ -4119,8 +4131,8 @@
       "en": "Debrief: a fetal double aortic arch found late in pregnancy"
     },
     "conclusion": {
-      "zh-CN": "26岁初孕妇，有β地中海贫血，孕期贫血、血糖问题和先兆早产（用过硝苯地平、地屈孕酮和倍他米松），早、中孕筛查未发现心脏问题。孕32+2周超声：生长、羊水、胎盘位置、四腔心和流出道正常，三血管气管切面见右位主动脉弓、左侧导管和气管左侧的对称弓状结构围成完整血管环，两侧锁骨下动脉各自起自同侧弓——胎儿双主动脉弓；气管有压迹，两弓血流通畅，优势弓产前不能判断。夫妇拒绝了针对22q11.2微缺失等的羊水检查。孕39周剖宫产，男婴3120 g，5分钟Apgar 10分；出生后需高流量呼吸支持，哭闹或吃奶后咳嗽、偶有喘鸣；CT血管成像证实右弓优势、气管受压，出生第18天切断左弓；6月龄无呼吸困难、发绀或喉鸣，生长发育正常。按现行指南：发现后转诊胎儿超声心动图并提供含微阵列的遗传咨询，足月分娩、方式按产科指征，出生后检测22q11.2、手术用血辐照，症状出现即影像确认后切断非优势弓。",
-      "en": "A 26-year-old in her first pregnancy, with beta thalassaemia, anaemia, blood-sugar problems and threatened preterm labour, was scanned at 32+2 weeks; earlier screening had not flagged the heart. Four-chamber and outflow views were normal; the three-vessel-and-trachea view showed a right arch, a left ductus and a symmetrical arch-like structure left of the trachea closing a complete ring, each subclavian from its own arch: a fetal double aortic arch indenting the trachea, flow free, dominance unknown. The couple declined amniocentesis. A 3120 g boy born by caesarean at 39 weeks (Apgar 10 at 5 minutes) needed high-flow support and coughed after crying or feeds with occasional wheeze; CT angiography showed right-arch dominance and tracheal compression, and the left arch was divided at 18 days. At six months: no dyspnoea, cyanosis or stridor. Today: fetal echo, microarray counselling, a term birth, postnatal 22q11.2 testing with irradiated blood, prompt division of the non-dominant arch."
+      "zh-CN": "26岁初孕妇，有β地中海贫血，孕期贫血、血糖问题和先兆早产（用过硝苯地平、地屈孕酮和倍他米松），早、中孕筛查未发现这一心脏问题。孕32+2周超声：生长、羊水、胎盘位置、四腔心和流出道正常，三血管气管切面见右位主动脉弓、左侧导管和气管左侧的对称弓状结构围成完整血管环，两侧锁骨下动脉各自起自同侧弓——胎儿双主动脉弓；气管有压迹，两弓血流通畅，优势弓产前不能判断。夫妇拒绝了针对22q11.2微缺失等的羊水检查。孕39周剖宫产，男婴3120 g，5分钟Apgar 10分；出生后需高流量呼吸支持，哭闹或吃奶后咳嗽、偶有喘鸣；CT血管成像证实右弓优势、气管受压，出生第18天切断左弓；6月龄无呼吸困难、发绀或喉鸣，生长发育报告正常。按现行指南：发现后转诊胎儿超声心动图并提供含微阵列的遗传咨询，足月分娩、方式按产科指征，出生后检测22q11.2、血钙和T细胞，T细胞结果出来前手术用血辐照，症状出现即影像确认后切断非优势弓。",
+      "en": "A 26-year-old in her first pregnancy, with beta thalassaemia, anaemia, blood-sugar problems and threatened preterm labour (nifedipine, dydrogesterone, betamethasone), was scanned at 32+2 weeks; earlier screening had not identified this heart finding. Four-chamber and outflow views were normal; the three-vessel-and-trachea view showed a right arch, a left ductus and a symmetrical arch-like structure left of the trachea closing a complete ring, each subclavian from its own arch: a fetal double aortic arch indenting the trachea, flow free, dominance unknown. The couple declined amniocentesis. A 3120 g boy born by caesarean at 39 weeks (Apgar 10 at 5 minutes) needed high-flow support and coughed after crying or feeds with occasional wheeze; CT angiography showed right-arch dominance and tracheal compression, and the left arch was divided at 18 days. At six months: no dyspnoea, cyanosis or stridor; growth and development reported normal. Today: fetal echo, microarray counselling, a term birth, the baby's 22q11.2, calcium and T-cell tests with irradiated blood until the T cells are known, and prompt division of the non-dominant arch."
     },
     "keyReasoning": [
       {
@@ -4128,8 +4140,8 @@
         "en": "A normal four-chamber view answers a question about the chambers, not the arches: here the abnormality lay one plane higher, in the three-vessel-and-trachea view."
       },
       {
-        "zh-CN": "对着气管读主动脉弓：气管右侧一条弓、左侧一条导管，再加上左侧把环闭合的第二条弓状结构，说明气管和食管被两条弓围住。",
-        "en": "Read the arch against the trachea: an arch on the right, a ductus on the left and a second arch-like vessel on the left closing the circle mean two arches around the trachea and oesophagus."
+        "zh-CN": "对着气管读主动脉弓：气管右侧一条弓、左侧一条导管，再加上左侧把环闭合的第二条弓状结构，说明气管被两条弓围住。",
+        "en": "Read the arch against the trachea: an arch on the right, a ductus on the left and a second arch-like vessel on the left closing the circle mean two arches around the trachea."
       },
       {
         "zh-CN": "锁骨下动脉区分不同的血管环：各自起自同侧弓，指向双主动脉弓；左锁骨下动脉从气管后方的憩室发出，则指向右位弓伴迷走左锁骨下动脉。",
@@ -4184,8 +4196,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "筛查切面（ISUOG 2023胎儿心脏筛查指南更新版）：基础筛查除四腔心外，还包括左右流出道、三血管切面和三血管气管切面，因为主动脉弓和大血管异常位于四腔心平面之上。本例早孕和中孕的筛查超声都没有发现心脏问题；孕32+2周时四腔心和流出道正常，异常只出现在三血管气管切面。",
-        "en": "Screening views (ISUOG 2023 updated fetal cardiac screening guideline): the basic screen adds the left and right outflow tracts and the three-vessel and three-vessel-and-trachea views to the four-chamber view, because arch and great-vessel anomalies lie above the four-chamber plane. Here the first- and second-trimester screening scans had not flagged the heart; at 32+2 weeks the four-chamber and outflow views were normal and only the three-vessel-and-trachea view was abnormal."
+        "zh-CN": "筛查切面（ISUOG 2023胎儿心脏筛查指南更新版）：基础筛查除四腔心外，还包括左右流出道、三血管切面和三血管气管切面，因为主动脉弓和大血管异常位于四腔心平面之上。本例早孕和中孕的筛查超声都没有发现这一心脏问题；孕32+2周时四腔心和流出道正常，异常只出现在三血管气管切面。",
+        "en": "Screening views (ISUOG 2023 updated fetal cardiac screening guideline): the basic screen adds the left and right outflow tracts and the three-vessel and three-vessel-and-trachea views to the four-chamber view, because arch and great-vessel anomalies lie above the four-chamber plane. Here the first- and second-trimester screening scans had not identified this heart finding; at 32+2 weeks the four-chamber and outflow views were normal and only the three-vessel-and-trachea view was abnormal."
       },
       {
         "zh-CN": "读懂血管环：气管右侧的主动脉弓加左侧动脉导管可以围成环；气管左侧再有一条弓、两侧锁骨下动脉各自起自同侧的弓，提示双主动脉弓，而不是右位主动脉弓伴迷走左锁骨下动脉。Bartsota等的伦敦队列（Ultrasound Obstet Gynecol 2023，79例胎儿）中，48.6%出生后左弓有闭锁段，5.1%在首次胎儿超声时被诊断为右位主动脉弓；两弓粗细和优势侧要靠出生后的CT确定——本例产前也无法判断优势弓。",
@@ -4196,8 +4208,8 @@
         "en": "Genetics (AHA 2014 fetal cardiac disease statement; 22q11.2 Society 2023 recommendations for children): a fetal arch anomaly is a reason to offer genetic counselling and diagnostic testing, and chromosomal microarray (or a targeted FISH or MLPA test) detects the 22q11.2 deletion that a standard karyotype misses. The choice is the parents': this couple declined amniocentesis, so the deletion is neither confirmed nor excluded and the question passes to the newborn — a genetic test, calcium and T-cell (lymphocyte subset) counts. This case does not record whether the baby was tested."
       },
       {
-        "zh-CN": "手术用血（BSH 2020辐照血液成分指南）：怀疑T细胞免疫缺陷的婴儿（例如尚未排除22q11.2微缺失）在心脏手术前应尽量先查T淋巴细胞；来不及时，在排除之前输注的细胞成分血都要辐照，以预防输血相关移植物抗宿主病。本例宝宝在出生第18天手术，正处在这个时间窗内；是否输过血没有记录。",
-        "en": "Blood for surgery (BSH 2020 guideline on irradiated blood components): an infant with a suspected T-cell immunodeficiency, such as an unexcluded 22q11.2 deletion, should have T-lymphocyte testing before cardiac surgery where possible; otherwise cellular blood components are irradiated until it is excluded, to prevent transfusion-associated graft-versus-host disease. The baby's operation at 18 days fell inside that window; whether he was transfused is not recorded."
+        "zh-CN": "手术用血（BSH 2020辐照血液成分指南）：怀疑免疫缺陷综合征的新生儿或婴儿（本例是尚未排除的22q11.2微缺失）应尽量在心脏手术前做T淋巴细胞计数。T淋巴细胞超过400个/µL、其中幼稚T细胞至少占30%时，红细胞和血小板不必辐照；术前来不及检测时，在检测完成之前输注的细胞成分血都要辐照，以预防输血相关移植物抗宿主病。指南还指出，FISH检出或排除微缺失并不能预测是否有免疫缺陷。本例宝宝在出生第18天手术，正处在这个时期；是否输过血没有记录。",
+        "en": "Blood for surgery (BSH 2020 guideline on irradiated blood components): a neonate or infant with a suspected immunodeficiency syndrome — here an unexcluded 22q11.2 deletion — has T-lymphocyte counts before cardiac surgery wherever possible. Above 400 cells/µL with at least 30% naive T cells, red cells and platelets need not be irradiated; if the counts cannot be done first, cellular components are irradiated until they have been, to prevent transfusion-associated graft-versus-host disease. The guideline adds that finding or excluding the deletion by FISH does not predict the immune defect. The baby's operation at 18 days fell in this period; whether he was transfused is not recorded."
       },
       {
         "zh-CN": "分娩计划（AHA 2014；ASE 2023围产期管理）：产前诊断用来决定在哪里、由哪个团队接生，而不是提前分娩。四腔心和流出道正常、血流通畅时，血管环应计划足月分娩、方式按产科指征，新生儿团队事先知道诊断，并写好出生后超声心动图和气道症状的处理计划。原报告在孕39周剖宫产，指征没有记录。",
@@ -4216,7 +4228,8 @@
       "Donofrio MT, Moon-Grady AJ, Hornberger LK, Copel JA, Sklansky MS, et al. Diagnosis and treatment of fetal cardiac disease: a scientific statement from the American Heart Association. Circulation. 2014;129(21):2183-2242. doi:10.1161/01.cir.0000437597.44550.5d",
       "Óskarsdóttir S, Boot E, Crowley TB, et al. Updated clinical practice recommendations for managing children with 22q11.2 deletion syndrome. Genet Med. 2023;25(3):100338. doi:10.1016/j.gim.2022.11.006",
       "Foukaneli T, Kerr P, Bolton-Maggs PHB, et al. Guidelines on the use of irradiated blood components. Br J Haematol. 2020;191(5):704-724. doi:10.1111/bjh.17015",
-      "Bartsota M, et al. Double aortic arch: implications of antenatal diagnosis and differential diagnosis with right aortic arch. Ultrasound Obstet Gynecol. 2023;62:69-74. doi:10.1002/uog.26186"
+      "Bartsota M, et al. Double aortic arch: implications of antenatal diagnosis and differential diagnosis with right aortic arch. Ultrasound Obstet Gynecol. 2023;62:69-74. doi:10.1002/uog.26186",
+      "National Institute for Health and Care Excellence. Preterm labour and birth. NICE guideline NG25. London: NICE; 2015 (updated 2022). Available from: https://www.nice.org.uk/guidance/ng25"
     ],
     "notice": {
       "zh-CN": "评分为教学脚本评估，并非经过验证的能力评分。",

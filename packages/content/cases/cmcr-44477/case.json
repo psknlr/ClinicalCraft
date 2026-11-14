@@ -45,12 +45,12 @@
     ],
     "license": "Educational paraphrase; the source publication retains its copyright.",
     "notes": {
-      "zh-CN": "依据一篇已发表的单例病例报告改编。1.1.0版依据1.0.0版已记录的事实重写：13岁男孩，体重27 kg；多饮多尿7年（每日饮水约4200–6000 mL，尿量相近、色清，偶有遗尿），曾考虑精神性多饮或尿崩症，不规律服用中药和加压素，效果不佳；近3天非喷射性呕吐、进食即吐、不能进食、精神变差；否认头部外伤、头痛、呕吐和昏迷史；足月顺产，生长、智力与同龄儿相仿；父母体健，父母及祖辈非近亲婚配；入院查体（神志清、精神萎靡、极消瘦、皮肤黏膜干燥、弹性差、呼吸深长、末梢凉，心率102次/分，血压95/60 mmHg）；血糖、尿糖和尿酮体、pH、HCO₃⁻、阴离子间隙、钠、钾，GAD和IAA阴性；血糖稳定后每日饮水4700–5800 mL、尿比重1.000–1.005、双肾积水、输尿管扩张、排尿困难、视神经萎缩、高频感音神经性听力下降，加压素反应差；报告的临床诊断、胰岛素和氢氯噻嗪治疗、约2周出院和一年内两次随访稳定。这些事实尚未对照原文全文核对。患者姓名为化名，医院和日历日期已去除，时间以呕吐第几天、住院约几周等相对时间表示。陪同家属、全部对话、阶段、决策、处置选项、评分和教学要点为教学设计；1.0.0未记录的内容保持未知。1.0.0称动态试验数据和基因结果“未给出”，本版改为“本病例没有记录”，不再对原文作出断言。1.0.0教学文字中提到的“旧文常规碳酸氢钠”“禁水试验”和“肾性尿崩”标签未作为患者事实写入，列为待核实。体重27 kg与“生长与同龄儿相仿”之间的出入照原样保留。",
-      "en": "Adapted from one published single-case report. Version 1.1.0 is re-authored from the facts version 1.0.0 records: a 13-year-old boy weighing 27 kg; seven years of polydipsia and polyuria (about 4,200–6,000 mL a day drunk with a similar volume of clear urine, occasional enuresis), once thought to be psychogenic polydipsia or diabetes insipidus and treated irregularly with herbal medicine and vasopressin without benefit; three days of non-projectile vomiting after meals, unable to eat, increasingly listless; previous head injury, headache, vomiting and coma denied; term vaginal birth, growth and intelligence comparable to peers; healthy parents, no consanguinity in the parents' or grandparents' generation; the admission examination (alert but listless, very thin, dry skin and mucous membranes, poor turgor, deep breathing, cool peripheries, heart rate 102/min, blood pressure 95/60 mmHg); glucose, urine glucose and ketones, pH, bicarbonate, anion gap, sodium, potassium, negative GAD and IAA antibodies; after the glucose settled, an intake of 4,700–5,800 mL a day, urine specific gravity 1.000–1.005, bilateral hydronephrosis, ureteric dilatation, voiding difficulty, optic atrophy, high-frequency sensorineural hearing loss and a poor response to vasopressin; the report's clinical diagnosis, insulin and hydrochlorothiazide, discharge at about two weeks and two stable follow-up visits within a year. These facts have not yet been checked against the full article. The patient's name is a pseudonym; hospitals and calendar dates are removed and times are relative (day of vomiting, weeks in hospital). The relative, all dialogue, the phases, decisions, management options, scoring and teaching points are teaching design; what 1.0.0 does not record stays unknown. Version 1.0.0 said the dynamic test data and genetic results were “not given”; this version says this case does not record them, without a claim about the article. The “historical routine bicarbonate”, “deprivation testing” and “nephrogenic” label mentioned in 1.0.0's teaching text are not written in as patient facts and are listed to verify. The tension between the weight of 27 kg and “growth comparable to peers” is kept as recorded."
+      "zh-CN": "依据一篇已发表的单例病例报告改编。1.1.0版依据1.0.0版已记录的事实重写：13岁男孩，体重27 kg；多饮多尿7年（每日饮水约4200–6000 mL，尿量相近、色清，偶有遗尿），曾考虑精神性多饮或尿崩症，不规律服用中药和加压素，效果不佳；近3天非喷射性呕吐、进食即吐、不能进食、精神变差；否认头部外伤、头痛、呕吐和昏迷史；足月顺产，生长、智力与同龄儿相仿；父母体健，父母及祖辈非近亲婚配；入院查体（神志清、精神萎靡、极消瘦、皮肤黏膜干燥、弹性差、呼吸深长、末梢凉，心率102次/分，血压95/60 mmHg）；血糖、尿糖和尿酮体、pH、HCO₃⁻、阴离子间隙、钠、钾，GAD和IAA阴性；血糖稳定后每日饮水4700–5800 mL、尿比重1.000–1.005、双肾积水、输尿管扩张、排尿困难、视神经萎缩、高频感音神经性听力下降，加压素反应差；报告的临床诊断、胰岛素和氢氯噻嗪治疗、约2周出院和一年内两次随访稳定；1.0.0的教学文字还记载原报告急救时常规用碳酸氢钠纠酸、做过禁水试验，并把尿崩症定为肾性。这些事实尚未对照原文全文核对。患者姓名为化名，医院和日历日期已去除，时间以呕吐第几天、住院约几周等相对时间表示。陪同家属、全部对话、阶段、决策、处置选项、评分和教学要点为教学设计；1.0.0未记录的内容保持未知。1.0.0称动态试验数据和基因结果“未给出”，本版改为“本病例没有记录”，不再对原文作出断言。这三项只见于1.0.0的教学文字，本版以中性措辞（“记载为……”）写入加压素试验和转归记录，不补充剂量或数据，并列为待核实。体重27 kg与“生长与同龄儿相仿”之间的出入照原样保留。",
+      "en": "Adapted from one published single-case report. Version 1.1.0 is re-authored from the facts version 1.0.0 records: a 13-year-old boy weighing 27 kg; seven years of polydipsia and polyuria (about 4,200–6,000 mL a day drunk with a similar volume of clear urine, occasional enuresis), once thought to be psychogenic polydipsia or diabetes insipidus and treated irregularly with herbal medicine and vasopressin without benefit; three days of non-projectile vomiting after meals, unable to eat, increasingly listless; previous head injury, headache, vomiting and coma denied; term vaginal birth, growth and intelligence comparable to peers; healthy parents, no consanguinity in the parents' or grandparents' generation; the admission examination (alert but listless, very thin, dry skin and mucous membranes, poor turgor, deep breathing, cool peripheries, heart rate 102/min, blood pressure 95/60 mmHg); glucose, urine glucose and ketones, pH, bicarbonate, anion gap, sodium, potassium, negative GAD and IAA antibodies; after the glucose settled, an intake of 4,700–5,800 mL a day, urine specific gravity 1.000–1.005, bilateral hydronephrosis, ureteric dilatation, voiding difficulty, optic atrophy, high-frequency sensorineural hearing loss and a poor response to vasopressin; the report's clinical diagnosis, insulin and hydrochlorothiazide, discharge at about two weeks and two stable follow-up visits within a year; 1.0.0's teaching text also records that the report's emergency care used routine bicarbonate, that water-deprivation testing was done and that the report labelled the diabetes insipidus nephrogenic. These facts have not yet been checked against the full article. The patient's name is a pseudonym; hospitals and calendar dates are removed and times are relative (day of vomiting, weeks in hospital). The relative, all dialogue, the phases, decisions, management options, scoring and teaching points are teaching design; what 1.0.0 does not record stays unknown. Version 1.0.0 said the dynamic test data and genetic results were “not given”; this version says this case does not record them, without a claim about the article. Those three appear only in 1.0.0's teaching text; this version keeps them in neutral wording (“described as …”) in the vasopressin-test and outcome records, adds no dose or data, and lists them to verify. The tension between the weight of 27 kg and “growth comparable to peers” is kept as recorded."
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -59,7 +59,7 @@
         "NICE NG18 (2015; diabetic ketoacidosis recommendations updated December 2020, shock bolus October 2022): diabetes (type 1 and type 2) in children and young people",
         "BSPED 2021 guideline for diabetic ketoacidosis in children and young people, harmonised with NICE NG18 (Rugg-Gunn et al., BMJ Paediatr Open 2021)",
         "ISPAD Clinical Practice Consensus Guidelines 2022: the diagnosis and management of monogenic diabetes in children and adolescents (Greeley et al.)",
-        "GeneReviews: WFS1 spectrum disorder (Barrett et al.; initial posting 2009, updated 2023)",
+        "GeneReviews: WFS1 spectrum disorder (Barrett et al.; initial posting 2009, last comprehensive update December 2022)",
         "SID/SIEDP expert consensus 2025: early detection and management of Wolfram syndrome (Frontino et al., J Endocrinol Invest 2025)",
         "Approach to the pediatric patient: central diabetes insipidus (Patti et al., J Clin Endocrinol Metab 2022)",
         "EAU/ESPU 2020 guidelines on neurogenic bladder in children and adolescents, part I: diagnostics and conservative treatment (Stein et al., Neurourol Urodyn 2020)"
@@ -92,8 +92,8 @@
       "en": "Recognise hypotonic polyuria that persists after glucose control, investigate it with paired plasma and urine osmolality and a supervised inpatient water-deprivation–desmopressin test, and never restrict water outside such a test (Patti 2022)."
     },
     {
-      "zh-CN": "由16岁前出现的抗体阴性糖尿病和视神经萎缩，加上尿崩症、感音神经性听力下降和尿路扩张，作出Wolfram综合征的临床诊断，并以WFS1基因检测和头颅垂体MRI完善评估（GeneReviews WFS1谱系疾病，2023年更新；ISPAD 2022单基因糖尿病指南）。",
-      "en": "Make a clinical diagnosis of Wolfram syndrome from antibody-negative diabetes and optic atrophy before 16 years, with diabetes insipidus, sensorineural hearing loss and urinary tract dilatation, and complete the work-up with WFS1 testing and brain and pituitary MRI (GeneReviews WFS1 spectrum disorder, updated 2023; ISPAD 2022 monogenic diabetes)."
+      "zh-CN": "由16岁前出现的抗体阴性糖尿病和视神经萎缩，加上尿崩症、感音神经性听力下降和尿路扩张，作出Wolfram综合征的临床诊断，并以WFS1基因检测和头颅垂体MRI完善评估（GeneReviews WFS1谱系疾病，2022年更新；ISPAD 2022单基因糖尿病指南）。",
+      "en": "Make a clinical diagnosis of Wolfram syndrome from antibody-negative diabetes and optic atrophy before 16 years, with diabetes insipidus, sensorineural hearing loss and urinary tract dilatation, and complete the work-up with WFS1 testing and brain and pituitary MRI (GeneReviews WFS1 spectrum disorder, updated 2022; ISPAD 2022 monogenic diabetes)."
     },
     {
       "zh-CN": "制定多学科计划：对肾积水伴排尿困难评估膀胱排空并转诊泌尿外科（EAU/ESPU 2020），保证随时饮水并给出应急方案，安排胰岛素自我管理教育、眼科、听力、遗传咨询和心理支持（SID/SIEDP 2025）。",
@@ -391,7 +391,10 @@
           "litres",
           "howmuchdoyoupee",
           "polyuria",
-          "peeing a lot"
+          "peeing a lot",
+          "howmuchdoyouwee",
+          "weeing a lot",
+          "wee a lot"
         ]
       },
       "excludeKeywords": {
@@ -399,13 +402,19 @@
           "尿床",
           "费劲",
           "顺不顺",
-          "现在感觉"
+          "现在感觉",
+          "吃过什么药",
+          "治疗",
+          "用过什么药"
         ],
         "en": [
           "wet the bed",
           "bedwetting",
           "struggle",
-          "feeling now"
+          "feeling now",
+          "medicine",
+          "tried",
+          "treated"
         ]
       },
       "disclosure": "on-ask",
@@ -535,7 +544,11 @@
           "中药",
           "以前用药",
           "怎么治的",
-          "治过没有"
+          "治过没有",
+          "加压素",
+          "有效果吗",
+          "管不管用",
+          "有没有用"
         ],
         "en": [
           "treatment before",
@@ -544,19 +557,30 @@
           "herbal",
           "howwasittreated",
           "tabletsforit",
-          "treated before"
+          "treated before",
+          "vasopressin",
+          "didithelp",
+          "didtheyhelp",
+          "any good",
+          "haveyoutried",
+          "triedforit",
+          "medicines tried"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "现在还",
           "还在用",
-          "过敏"
+          "过敏",
+          "现在在吃",
+          "现在吃"
         ],
         "en": [
           "still",
           "at the moment",
-          "allerg"
+          "allerg",
+          "right now",
+          "these days"
         ]
       },
       "disclosure": "on-ask",
@@ -589,7 +613,14 @@
           "现在用什么药",
           "最近还用",
           "最后一次用",
-          "还在吃药"
+          "还在吃药",
+          "现在在吃什么药",
+          "在吃什么药",
+          "平时吃什么药",
+          "长期吃药",
+          "每天吃的药",
+          "吃哪些药",
+          "每天在吃"
         ],
         "en": [
           "still using",
@@ -597,7 +628,10 @@
           "last dose",
           "any medicines now",
           "currently taking",
-          "atthemoment"
+          "atthemoment",
+          "take any medicines",
+          "medicines do you take",
+          "regular medication"
         ]
       },
       "disclosure": "unknown",
@@ -609,6 +643,21 @@
       "source": {
         "zh-CN": "本病例没有记录；患者如实说不知道",
         "en": "Not recorded in this case; the patient says honestly that he does not know"
+      },
+      "excludeKeywords": {
+        "en": [
+          "tried",
+          "before",
+          "in the past",
+          "herbal",
+          "given",
+          "for it"
+        ],
+        "zh-CN": [
+          "以前",
+          "试过",
+          "用过什么"
+        ]
       }
     },
     {
@@ -783,6 +832,18 @@
       "source": {
         "zh-CN": "本病例没有记录；患者如实说不知道",
         "en": "Not recorded in this case; the patient says honestly that he does not know"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "尿",
+          "小便",
+          "头"
+        ],
+        "en": [
+          "pee",
+          "wee",
+          "head"
+        ]
       }
     },
     {
@@ -802,14 +863,18 @@
           "头疼吗",
           "头痛吗",
           "头疼不疼",
-          "脑袋疼"
+          "脑袋疼",
+          "头疼",
+          "头痛"
         ],
         "en": [
           "headache now",
           "head hurt",
           "head hurting",
           "sore head",
-          "headache at the moment"
+          "headache at the moment",
+          "headache",
+          "headachy"
         ]
       },
       "excludeKeywords": {
@@ -817,13 +882,19 @@
           "以前",
           "受过伤",
           "外伤",
-          "昏迷"
+          "昏迷",
+          "尿",
+          "小便",
+          "肚子"
         ],
         "en": [
           "before",
           "ever had",
           "injury",
-          "knocked"
+          "knocked",
+          "pee",
+          "wee",
+          "tummy"
         ]
       },
       "disclosure": "unknown",
@@ -1239,7 +1310,11 @@
           "费劲",
           "排尿",
           "尿等待",
-          "尿尿顺"
+          "尿尿顺",
+          "小便顺",
+          "尿得顺",
+          "尿不畅",
+          "排尿顺"
         ],
         "en": [
           "trouble passing urine",
@@ -1249,7 +1324,12 @@
           "passing water",
           "voiding",
           "flow of urine",
-          "stream"
+          "stream",
+          "problems peeing",
+          "trouble peeing",
+          "hard to start",
+          "difficulty urinating",
+          "pee properly"
         ]
       },
       "excludeKeywords": {
@@ -1354,6 +1434,18 @@
       "source": {
         "zh-CN": "本病例没有记录；患者如实说不知道",
         "en": "Not recorded in this case; the patient says honestly that he does not know"
+      },
+      "excludeKeywords": {
+        "en": [
+          "today",
+          "right now",
+          "better"
+        ],
+        "zh-CN": [
+          "今天",
+          "现在",
+          "好点"
+        ]
       }
     },
     {
@@ -1445,7 +1537,7 @@
       "topic": "hpi",
       "question": {
         "zh-CN": "出院以后这一年怎么样？",
-        "en": "How have you been in the year since you went home?"
+        "en": "How have you been in the year since you were discharged?"
       },
       "answer": {
         "zh-CN": "出院后一年里复查了两次，医生说情况都稳定。",
@@ -2551,12 +2643,12 @@
         "assessment": {
           "available": true,
           "text": {
-            "zh-CN": "记录为“对加压素反应差”。是否先禁水、试验时长、体重变化、试验前后的血钠和血、尿渗透压，以及所用加压素的制剂和剂量，本病例都没有记录。",
-            "en": "Recorded as a “poor response to vasopressin”. Whether water deprivation came first, the test's duration, weight change, the plasma sodium and plasma and urine osmolality before and after, and the vasopressin preparation and dose are not recorded in this case."
+            "zh-CN": "记载为禁水–加压素试验，结果为“对加压素反应差”。试验时长、体重变化、试验前后的血钠和血、尿渗透压，以及所用加压素的制剂和剂量，本病例都没有记录。",
+            "en": "Described as water-deprivation and vasopressin testing, with a “poor response to vasopressin”. The test's duration, weight change, the plasma sodium and plasma and urine osmolality before and after, and the vasopressin preparation and dose are not recorded in this case."
           },
           "source": {
-            "zh-CN": "报告记录（尚待对照原文核对）：血糖稳定后加压素反应差",
-            "en": "Recorded in the report (not yet checked against the full article): a poor response to vasopressin after the glucose had settled"
+            "zh-CN": "报告记录（尚待对照原文核对）：血糖稳定后加压素反应差；先行禁水一项来自1.0.0版的教学文字（“禁水流程”）",
+            "en": "Recorded in the report (not yet checked against the full article): a poor response to vasopressin after the glucose had settled; the water deprivation comes from version 1.0.0's teaching text (“deprivation testing”)"
           }
         }
       }
@@ -2722,8 +2814,8 @@
     {
       "id": "genetic-testing",
       "name": {
-        "zh-CN": "单基因糖尿病相关基因检测",
-        "en": "Genetic testing for monogenic diabetes"
+        "zh-CN": "基因检测",
+        "en": "Genetic testing"
       },
       "category": "genetics",
       "aliases": {
@@ -2853,12 +2945,12 @@
         "followup": {
           "available": true,
           "text": {
-            "zh-CN": "报告的诊断：Wolfram综合征（临床诊断，本病例没有基因结果记录），以糖尿病酮症酸中毒起病。多尿的解释依据“对加压素反应差”；由于试验数据没有记录，尿崩症是加压素缺乏还是加压素抵抗仍未得到证实。病程：急救后病情稳定；之后用胰岛素和氢氯噻嗪治疗（方案和剂量未记录）；住院约 2 周出院；一年内两次随访情况稳定（随访时测了哪些指标没有记录）。",
-            "en": "The report's diagnosis: Wolfram syndrome (a clinical diagnosis; no genetic result is recorded in this case), presenting with diabetic ketoacidosis. Its account of the polyuria rests on a “poor response to vasopressin”; with the test data not recorded, whether the diabetes insipidus is due to vasopressin deficiency or resistance remains unproven. Course: he stabilised after emergency treatment; insulin and hydrochlorothiazide followed (regimens and doses not recorded); he was discharged after about two weeks and was stable at two follow-up visits within a year (what was measured at them is not recorded)."
+            "zh-CN": "报告的诊断：Wolfram综合征（临床诊断，本病例没有基因结果记录），合并糖尿病酮症酸中毒。报告把尿崩症定为肾性，依据是禁水–加压素试验中“对加压素反应差”；试验数据本病例没有记录，因此尿崩症是加压素缺乏还是加压素抵抗仍未得到证实。病程：急救后病情稳定，急救处理记载为包括常规用碳酸氢钠纠正酸中毒（补液、胰岛素及各项剂量未记录）；之后用胰岛素和氢氯噻嗪治疗（方案和剂量未记录）；住院约 2 周出院；一年内两次随访情况稳定（随访时测了哪些指标没有记录）。",
+            "en": "The report's diagnosis: Wolfram syndrome (a clinical diagnosis; no genetic result is recorded in this case) with diabetic ketoacidosis. The report labels the diabetes insipidus nephrogenic, on a “poor response to vasopressin” in water-deprivation and vasopressin testing; with the test data not recorded, whether it is due to vasopressin deficiency or resistance remains unproven. Course: he stabilised after emergency treatment, described as including routine bicarbonate to correct the acidosis (the fluids, insulin and all doses are not recorded); insulin and hydrochlorothiazide followed (regimens and doses not recorded); he was discharged after about two weeks and was stable at two follow-up visits within a year (what was measured at them is not recorded)."
           },
           "source": {
-            "zh-CN": "报告记录（尚待对照原文核对）：临床诊断Wolfram综合征合并DKA，基因分型和尿崩机制未证实；急救后稳定，后用胰岛素和氢氯噻嗪，约2周出院，一年内两次随访稳定",
-            "en": "Recorded in the report (not yet checked against the full article): a clinical diagnosis of Wolfram syndrome with DKA, genetic subtype and mechanism of the diabetes insipidus unproven; stabilised after emergency care, then insulin and hydrochlorothiazide, discharge at about two weeks, stable at two follow-ups within a year"
+            "zh-CN": "报告记录（尚待对照原文核对）：临床诊断Wolfram综合征合并DKA，基因分型和尿崩机制未证实；急救后稳定，后用胰岛素和氢氯噻嗪，约2周出院，一年内两次随访稳定。常规碳酸氢钠、禁水试验和“肾性”标签来自1.0.0版的教学文字",
+            "en": "Recorded in the report (not yet checked against the full article): a clinical diagnosis of Wolfram syndrome with DKA, genetic subtype and mechanism of the diabetes insipidus unproven; stabilised after emergency care, then insulin and hydrochlorothiazide, discharge at about two weeks, stable at two follow-ups within a year. The routine bicarbonate, the water-deprivation testing and the nephrogenic label come from version 1.0.0's teaching text"
           }
         }
       }
@@ -2988,8 +3080,8 @@
         "phase": "admission"
       },
       "response": {
-        "zh-CN": "补液已开始。本病例记录他经急救后病情稳定，但没有记录所用液体的种类、液量和速度；不模拟其效果。",
-        "en": "Bolus running. This case records that he stabilised after emergency treatment but not which fluids, volumes or rates were used; it does not simulate the effect."
+        "zh-CN": "补液已开始。报告所用液体的种类、液量和速度本病例没有记录，也不模拟其效果。",
+        "en": "Bolus running. The fluids, volumes and rates the report used are not recorded in this case, and the effect is not simulated."
       }
     },
     {
@@ -3133,8 +3225,8 @@
         "en": "Insulin before any fluid: in a dehydrated child it drives glucose, water and potassium into cells and can drop the circulating volume and potassium further. Give the 0.9% sodium chloride first and start insulin at least an hour after the fluids began (ISPAD 2022; NICE NG18 and BSPED 2021: 1–2 hours). If the potassium is not yet known: a low potassium means delaying the insulin and replacing potassium first (ISPAD 2022)."
       },
       "response": {
-        "zh-CN": "胰岛素输注已开始。报告记录他稳定后改用胰岛素治疗，但本病例没有记录急救期胰岛素的用法和剂量；不模拟其效果。",
-        "en": "Insulin infusion running. The report records insulin treatment after he stabilised, but this case does not record how insulin was given in the emergency phase or at what dose; it does not simulate the effect."
+        "zh-CN": "胰岛素输注已开始。报告急救期胰岛素的用法和剂量本病例没有记录，也不模拟其效果。",
+        "en": "Insulin infusion running. How the report gave insulin in the emergency phase, and at what dose, is not recorded in this case; the effect is not simulated."
       }
     },
     {
@@ -3178,8 +3270,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "儿童不推注胰岛素：NICE NG18和BSPED 2021明确不给负荷量，ISPAD 2022把补液第1小时内用胰岛素列为脑水肿的治疗相关危险因素；推注还会使血糖、渗透压和血钾下降过快。改为补液1小时以上后以0.05–0.1 U/kg/h持续输注。",
-        "en": "No insulin bolus in children: NICE NG18 and BSPED 2021 advise against a loading dose, and ISPAD 2022 lists insulin in the first hour of fluids among the treatment-related risk factors for cerebral oedema; a bolus also drops the glucose, osmolality and potassium too fast. Use an infusion of 0.05–0.1 unit/kg/h from at least an hour after the fluids."
+        "zh-CN": "儿童不推注胰岛素：NICE NG18和BSPED 2021明确不给负荷量；ISPAD 2022要求在补液开始1小时后再开始输注、不静脉推注——它引用的英国病例对照研究（Edge 2006）发现，补液第1小时内用胰岛素与脑水肿相关；推注还会使血糖、渗透压和血钾下降过快。改为补液1小时以上后以0.05–0.1 U/kg/h持续输注。",
+        "en": "No insulin bolus in children: NICE NG18 and BSPED 2021 advise against a loading dose, and ISPAD 2022 starts the infusion an hour after the fluids with no IV bolus — in the UK case–control study it cites (Edge 2006), insulin in the first hour of fluids was associated with cerebral oedema; a bolus also drops the glucose, osmolality and potassium too fast. Use an infusion of 0.05–0.1 unit/kg/h from at least an hour after the fluids."
       },
       "response": {
         "zh-CN": "已推注。本病例没有记录推注胰岛素，也不模拟其效果。",
@@ -3227,8 +3319,8 @@
         "en": "Do not give it: ISPAD 2022 keeps bicarbonate for life-threatening hyperkalaemia or venous pH below 6.9 with impaired cardiac contractility, and neither is recorded here. In Glaser 2001 (NEJM) bicarbonate was the only treatment associated with cerebral oedema in children with DKA (relative risk 4.2); it also drives potassium down and can worsen CSF acidosis. Fluids and insulin correct the acidosis."
       },
       "response": {
-        "zh-CN": "已给药。本病例没有记录使用碳酸氢钠，也不模拟其效果。",
-        "en": "Given. This case does not record bicarbonate and does not simulate its effect."
+        "zh-CN": "已给药。本病例不模拟其效果。",
+        "en": "Given. The case does not simulate its effect."
       }
     },
     {
@@ -3431,13 +3523,9 @@
         "medications"
       ],
       "risk": "low",
-      "indicatedWhen": {
-        "read": "vasopressin-test",
-        "phase": "assessment"
-      },
       "response": {
-        "zh-CN": "已开始。报告记录他稳定后用了氢氯噻嗪（剂量和疗效未记录）；本病例不模拟其效果。",
-        "en": "Started. The report records hydrochlorothiazide after he stabilised (dose and effect not recorded); the case does not simulate the effect."
+        "zh-CN": "已开始。本病例不模拟其剂量，也不模拟它对尿量、血钠、血钾和血糖的影响。",
+        "en": "Started. Its dose and its effect on the urine volume, sodium, potassium and glucose are not simulated in this case."
       }
     },
     {
@@ -3979,8 +4067,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。高血糖、酮尿和高阴离子间隙代谢性酸中毒构成DKA；ISPAD 2022按pH或HCO₃⁻中较重的一项分级，HCO₃⁻低于5 mmol/L即为重度。校正钠＝116＋2×［(38.74－5.6)/5.6］≈128 mmol/L，仍然偏低；有效渗透压＝2×116＋38.74≈271 mOsm/kg，并不高。重度酸中毒是脑水肿的危险因素，需要高依赖病房级别的观察。",
-            "en": "Right. Hyperglycaemia, ketonuria and a high-anion-gap acidosis make this DKA, and ISPAD 2022 grades by whichever of pH or bicarbonate is worse: a bicarbonate below 5 mmol/L is severe. The corrected sodium, 116 + 2 × [(38.74 − 5.6)/5.6], is about 128 mmol/L — still low; the effective osmolality, 2 × 116 + 38.74, is about 271 mOsm/kg — not raised. Severe acidosis is a risk factor for cerebral oedema and calls for high-dependency observation."
+            "zh-CN": "正确。高血糖、酮尿和高阴离子间隙代谢性酸中毒构成DKA；ISPAD 2022按pH或HCO₃⁻中较重的一项分级，HCO₃⁻低于5 mmol/L即为重度。校正钠＝116＋2×［(38.74－5.6)/5.6］≈128 mmol/L，仍然偏低——用等渗液并密切复查血钠，而不是用高渗盐水去纠正；有效渗透压＝2×116＋38.74≈271 mOsm/kg，并不高。重度酸中毒是脑水肿的危险因素，需要高依赖病房级别的观察。",
+            "en": "Right. Hyperglycaemia, ketonuria and a high-anion-gap acidosis make this DKA, and ISPAD 2022 grades by whichever of pH or bicarbonate is worse: a bicarbonate below 5 mmol/L is severe. The corrected sodium, 116 + 2 × [(38.74 − 5.6)/5.6], is about 128 mmol/L — still low, which calls for isotonic fluids and close sodium checks, not hypertonic correction; the effective osmolality, 2 × 116 + 38.74, is about 271 mOsm/kg — not raised. Severe acidosis is a risk factor for cerebral oedema and calls for high-dependency observation."
           }
         },
         {
@@ -4060,8 +4148,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。他脱水、末梢凉但没有休克：NICE NG18（2020年更新）和BSPED 2021给0.9%氯化钠10 mL/kg、30分钟输完，余下的累积损失加维持量在48小时内匀速补足（ISPAD 2022：24–48小时）。胰岛素在补液开始1小时以上后以0.05–0.1 U/kg/h输注、不推注；血钾4.0 mmol/L，补钾随胰岛素开始。ISPAD 2022不推荐碳酸氢钠；HCO₃⁻低是加强观察的理由，而不是补碱的理由。",
-            "en": "Right. He is dehydrated with cool peripheries but not shocked: NICE NG18 (2020 update) and BSPED 2021 give 0.9% sodium chloride 10 mL/kg over 30 minutes and replace the rest of the deficit plus maintenance evenly over 48 hours (ISPAD 2022: 24–48 hours). Insulin runs at 0.05–0.1 unit/kg/h from at least an hour after the fluids start, with no bolus; with a potassium of 4.0 mmol/L, potassium starts with the insulin. ISPAD 2022 does not recommend bicarbonate; the low bicarbonate is a reason for closer observation, not for alkali."
+            "zh-CN": "正确。他血压维持；末梢凉、心率快在DKA中很常见，多是酸中毒和低碳酸血症引起的血管收缩，本身不等于休克（NICE NG18 2020：休克征象是脉搏细弱和低血压；BSPED 2021：休克不只是外周灌注差）。所以NICE NG18（2020年更新）和BSPED 2021给0.9%氯化钠10 mL/kg、30分钟输完，余下的累积损失加维持量在48小时内匀速补足（ISPAD 2022：24–48小时）；若出现休克征象，则10 mL/kg更快输入，评估后可重复，且不从累积损失中扣除。胰岛素在补液开始1小时以上后以0.05–0.1 U/kg/h输注、不推注；血钾4.0 mmol/L，补钾随胰岛素开始。ISPAD 2022不推荐碳酸氢钠；HCO₃⁻低是加强观察的理由，而不是补碱的理由。",
+            "en": "Right. His blood pressure is maintained, and cool peripheries with a fast pulse are common in DKA without shock — vasoconstriction from the acidosis and low CO₂ (NICE NG18, 2020: signs of shock are a weak, thready pulse and hypotension; BSPED 2021: shock is not just poor peripheral perfusion). So NICE NG18 (2020 update) and BSPED 2021 give 0.9% sodium chloride 10 mL/kg over 30 minutes and replace the rest of the deficit plus maintenance evenly over 48 hours (ISPAD 2022: 24–48 hours); signs of shock would call for 10 mL/kg given faster, repeated after reassessment and not subtracted. Insulin runs at 0.05–0.1 unit/kg/h from at least an hour after the fluids start, with no bolus; with a potassium of 4.0 mmol/L, potassium starts with the insulin. ISPAD 2022 does not recommend bicarbonate; the low bicarbonate is a reason for closer observation, not for alkali."
           }
         },
         {
@@ -4072,8 +4160,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "儿童不推注胰岛素：NICE NG18和BSPED 2021明确不给负荷量，ISPAD 2022把补液第1小时内用胰岛素列为脑水肿的危险因素；目标是平稳纠正，而不是越快越好。补液也不以尿量为终点——高血糖本身就造成渗透性利尿，他多年多尿的原因也还不清楚。",
-            "en": "No insulin bolus in children: NICE NG18 and BSPED 2021 advise against a loading dose, and ISPAD 2022 counts insulin in the first hour of fluids among the risk factors for cerebral oedema; the aim is steady correction, not speed. Nor is urine output the end point for fluids — hyperglycaemia keeps him in osmotic diuresis, and the cause of his years of polyuria is not yet known."
+            "zh-CN": "儿童不推注胰岛素：NICE NG18和BSPED 2021明确不给负荷量，ISPAD 2022要求补液1小时后再开始输注——补液第1小时内用胰岛素与脑水肿相关（Edge 2006）；目标是平稳纠正，而不是越快越好。补液也不以尿量为终点——高血糖本身就造成渗透性利尿，他多年多尿的原因也还不清楚。",
+            "en": "No insulin bolus in children: NICE NG18 and BSPED 2021 advise against a loading dose, and ISPAD 2022 starts the infusion an hour after the fluids — insulin in the first hour of fluids was associated with cerebral oedema (Edge 2006); the aim is steady correction, not speed. Nor is urine output the end point for fluids — hyperglycaemia keeps him in osmotic diuresis, and the cause of his years of polyuria is not yet known."
           }
         },
         {
@@ -4096,8 +4184,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "推迟胰岛素会让酮症和酸中毒继续加重。正确的做法是补液，补液1小时以上后开始胰岛素输注，每2–4小时复查钠并计算校正钠：血糖下降时实测钠应当上升，校正钠不升反降是脑水肿的警示（ISPAD 2022）。",
-            "en": "Delaying insulin lets the ketosis and acidosis worsen. Give fluids, start the insulin infusion an hour or more later, and recheck the sodium every 2–4 hours with the corrected value: the measured sodium should rise as the glucose falls, and a corrected sodium that fails to rise is a warning of cerebral oedema (ISPAD 2022)."
+            "zh-CN": "推迟胰岛素会让酮症和酸中毒继续加重。正确的做法是补液，补液1小时以上后开始胰岛素输注，每2–4小时复查钠并计算校正钠：血糖下降时实测钠应当上升（ISPAD 2022）；校正钠下降提示自由水过多，要请上级医生评估（BSPED 2021）。",
+            "en": "Delaying insulin lets the ketosis and acidosis worsen. Give fluids, start the insulin infusion an hour or more later, and recheck the sodium every 2–4 hours with the corrected value: the measured sodium should rise as the glucose falls (ISPAD 2022), and a falling corrected sodium, a sign of excess free water, needs a senior review (BSPED 2021)."
           }
         }
       ]
@@ -4137,15 +4225,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血糖平稳后尿比重仍只有1.000–1.005，是稀释性的水利尿，不是渗透性利尿。下一步区分加压素缺乏、加压素抵抗和原发性多饮：先配对测血钠、血和尿渗透压，再在住院监护下做禁水–去氨加压素试验，监测体重和血钠并设好终止标准（Patti 2022）；在此之前不限水。",
-            "en": "Right. A specific gravity of 1.000–1.005 once the glucose has settled means a water diuresis, not an osmotic one. The next step separates vasopressin deficiency, vasopressin resistance and primary polydipsia: paired plasma sodium and plasma and urine osmolality, then a supervised inpatient water-deprivation–desmopressin test with weights, sodium and stopping rules (Patti 2022) — and no restriction before it."
+            "zh-CN": "正确。血糖平稳后尿比重仍只有1.000–1.005，是稀释性的水利尿，不是渗透性利尿。下一步区分加压素缺乏、加压素抵抗和原发性多饮：先配对测血钠、血和尿渗透压，再在住院监护下做禁水–去氨加压素试验，监测体重和血钠并设好终止标准（Patti 2022）；如果配对结果已显示血渗透压高而尿仍很稀，就不必再禁水；在此之前不限水。",
+            "en": "Right. A specific gravity of 1.000–1.005 once the glucose has settled means a water diuresis, not an osmotic one. The next step separates vasopressin deficiency, vasopressin resistance and primary polydipsia: paired plasma sodium and plasma and urine osmolality, then a supervised inpatient water-deprivation–desmopressin test with weights, sodium and stopping rules (Patti 2022) — unnecessary if the paired values already show a high plasma osmolality with dilute urine — and no restriction before it."
           }
         },
         {
           "id": "persisting-osmotic-diuresis",
           "text": {
-            "zh-CN": "仍是血糖控制不够造成的渗透性利尿：加大胰岛素剂量，直到尿量降到正常为止；尿比重低只是因为他喝水太多，不必再做别的检查",
-            "en": "Still an osmotic diuresis from inadequate glucose control: increase the insulin until the urine volume falls to normal; the low specific gravity just reflects how much he drinks, so no further tests are needed"
+            "zh-CN": "仍是血糖控制不够造成的渗透性利尿：加大胰岛素剂量，直到尿量降到正常为止；尿比重低，是因为他每天喝下去的水实在太多",
+            "en": "Still an osmotic diuresis from inadequate glucose control: increase the insulin until the urine volume falls to normal, and put the low specific gravity down to the sheer volume of water he drinks every day"
           },
           "correct": false,
           "feedback": {
@@ -4168,8 +4256,8 @@
         {
           "id": "empirical-desmopressin",
           "text": {
-            "zh-CN": "直接用足量去氨加压素，同时限制饮水以防低钠：用药后尿量明显减少就说明是中枢性尿崩症，用不着再做禁水试验",
-            "en": "Start full-dose desmopressin now with fluid restriction to prevent hyponatraemia: if his urine volume falls, that proves central diabetes insipidus, and no deprivation test is needed"
+            "zh-CN": "现在就试用去氨加压素，同时限制饮水以防低钠；如果接下来几天尿量减少、尿液变浓，就诊断为中枢性尿崩症",
+            "en": "A desmopressin trial now, with his intake limited to prevent hyponatraemia, and a diagnosis of central diabetes insipidus if his urine volume falls and his urine concentrates over the next few days"
           },
           "correct": false,
           "feedback": {
@@ -4182,8 +4270,8 @@
     {
       "id": "synthesis",
       "prompt": {
-        "zh-CN": "他的糖尿病以DKA起病，GADA和IAA阴性；血糖平稳后仍是稀释性多尿，对加压素反应差；眼底见视神经萎缩；听力为高频感音神经性听力下降；影像示双肾积水、输尿管扩张，他尿尿费劲。最好的综合判断是？",
-        "en": "His diabetes presented in DKA with negative GADA and IAA; once the glucose settled he still had dilute polyuria with a poor response to vasopressin; fundoscopy shows optic atrophy; his hearing shows high-frequency sensorineural loss; imaging shows bilateral hydronephrosis and ureteric dilatation, and he struggles to pass urine. What is the best synthesis?"
+        "zh-CN": "他这次以DKA就诊，GADA和IAA阴性；血糖平稳后仍是稀释性多尿，对加压素反应差；眼底见视神经萎缩；听力为高频感音神经性听力下降；影像示双肾积水、输尿管扩张，他尿尿费劲。最好的综合判断是？",
+        "en": "He presented in DKA with negative GADA and IAA; once the glucose settled he still had dilute polyuria with a poor response to vasopressin; fundoscopy shows optic atrophy; his hearing shows high-frequency sensorineural loss; imaging shows bilateral hydronephrosis and ureteric dilatation, and he struggles to pass urine. What is the best synthesis?"
       },
       "kind": "single",
       "requires": {
@@ -4238,49 +4326,49 @@
         {
           "id": "clinical-wolfram-confirm",
           "text": {
-            "zh-CN": "临床诊断Wolfram综合征：16岁前糖尿病加视神经萎缩，伴尿崩症、耳聋和尿路扩张；查WFS1、做头颅垂体MRI，尿崩症类型尚未证实",
-            "en": "Clinical Wolfram syndrome: diabetes and optic atrophy before 16 with diabetes insipidus, deafness and a dilated urinary tract; test WFS1, image brain and pituitary, and treat the diabetes insipidus type as unproven"
+            "zh-CN": "临床诊断Wolfram综合征：16岁前糖尿病加视神经萎缩，伴尿崩症、耳聋和尿路扩张；查WFS1，做头颅垂体MRI，明确尿崩症类型",
+            "en": "Clinical Wolfram syndrome: diabetes and optic atrophy before 16 with diabetes insipidus, deafness and a dilated urinary tract; confirm with WFS1 testing, brain and pituitary MRI, and type the diabetes insipidus"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。GeneReviews（2023年更新）以16岁前出现的糖尿病和视神经萎缩为经典WFS1谱系疾病的特征，尿崩症、感音神经性耳聋和神经源性膀胱是常见伴随表现；抗体阴性的糖尿病伴胰外表现应做基因检测（ISPAD 2022单基因糖尿病指南）。双等位WFS1致病变异才能确诊；头颅和垂体MRI仍要做，既看该综合征的脑部改变，也排除鞍区病变。单凭“对加压素反应差”定不了尿崩症的类型。",
-            "en": "Right. GeneReviews (updated 2023) defines classic WFS1 spectrum disorder by diabetes and optic atrophy before 16 years, with diabetes insipidus, sensorineural deafness and neurogenic bladder as common companions, and antibody-negative diabetes with extra-pancreatic features calls for genetic testing (ISPAD 2022 monogenic diabetes). Biallelic pathogenic WFS1 variants confirm it, and brain and pituitary MRI is still needed — for the brain changes of the syndrome and to exclude a sellar lesion. A “poor response to vasopressin” alone does not settle the type of diabetes insipidus."
+            "zh-CN": "正确。GeneReviews（2022年更新）以16岁前出现的糖尿病和视神经萎缩为经典WFS1谱系疾病的特征，尿崩症（多为中枢性）、感音神经性耳聋和神经源性膀胱是常见伴随表现；抗体阴性的糖尿病伴胰外表现应做基因检测（ISPAD 2022单基因糖尿病指南）。双等位WFS1致病变异才能确诊；头颅和垂体MRI仍要做，既看该综合征的脑部改变，也排除鞍区病变。单凭“对加压素反应差”定不了尿崩症的类型，要靠配对渗透压和有完整记录的监护下去氨加压素反应。",
+            "en": "Right. GeneReviews (updated 2022) defines classic WFS1 spectrum disorder by diabetes and optic atrophy before 16 years, with diabetes insipidus (usually central), sensorineural deafness and neurogenic bladder as common companions, and antibody-negative diabetes with extra-pancreatic features calls for genetic testing (ISPAD 2022 monogenic diabetes). Biallelic pathogenic WFS1 variants confirm it, and brain and pituitary MRI is still needed — for the brain changes of the syndrome and to exclude a sellar lesion. A “poor response to vasopressin” alone does not settle the type of diabetes insipidus; paired osmolalities and a fully recorded, supervised desmopressin response do."
           }
         },
         {
           "id": "type1-plus-nephrogenic-di",
           "text": {
-            "zh-CN": "1型糖尿病合并另一种独立的肾性尿崩症：加压素反应差已证明是肾性；视神经和听力改变是多年未诊断糖尿病的并发症，不需要做基因检测",
-            "en": "Type 1 diabetes plus a separate nephrogenic diabetes insipidus, proven by the poor vasopressin response; the optic and hearing changes are complications of years of undiagnosed diabetes, so no genetic test is needed"
+            "zh-CN": "1型糖尿病合并另一种独立的肾性尿崩症，加压素反应差就是证据；视神经和听力改变是多年未被诊断的糖尿病造成的晚期并发症，各自分别处理",
+            "en": "Type 1 diabetes with a separate nephrogenic diabetes insipidus, as the poor vasopressin response shows; the optic and hearing changes are late complications of the years of undiagnosed diabetes, each managed on its own"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "视神经萎缩不是糖尿病的并发症（糖尿病眼病是视网膜病变），多年未诊断的糖尿病也解释不了尿崩症和高频听力下降。GADA和IAA阴性、16岁前糖尿病合并视神经萎缩，指向需要基因确认的单一综合征（GeneReviews 2023）；“反应差”也证明不了是肾性。",
-            "en": "Optic atrophy is not a complication of diabetes (diabetic eye disease is retinopathy), and undiagnosed diabetes explains neither the diabetes insipidus nor high-frequency hearing loss. Negative GADA and IAA with diabetes and optic atrophy before 16 point to one syndrome needing genetic confirmation (GeneReviews 2023); a “poor response” does not prove a nephrogenic cause either."
+            "zh-CN": "视神经萎缩不是糖尿病的并发症（糖尿病眼病是视网膜病变），多年未诊断的糖尿病也解释不了尿崩症和高频听力下降。GADA和IAA阴性、16岁前糖尿病合并视神经萎缩，指向需要基因确认的单一综合征（GeneReviews 2022）；“反应差”也证明不了是肾性——WFS1谱系疾病的尿崩症多为中枢性。",
+            "en": "Optic atrophy is not a complication of diabetes (diabetic eye disease is retinopathy), and undiagnosed diabetes explains neither the diabetes insipidus nor high-frequency hearing loss. Negative GADA and IAA with diabetes and optic atrophy before 16 point to one syndrome needing genetic confirmation (GeneReviews 2022); a “poor response” does not prove a nephrogenic cause either — in WFS1 spectrum disorder the diabetes insipidus is usually central."
           }
         },
         {
           "id": "mitochondrial-diabetes-deafness",
           "text": {
-            "zh-CN": "母系遗传的线粒体糖尿病伴耳聋（m.3243A>G）：糖尿病加感音神经性耳聋就够诊断了；查母亲的线粒体DNA，尿崩症和眼底改变另当别论",
-            "en": "Maternally inherited diabetes and deafness (m.3243A>G): diabetes with sensorineural deafness is enough; test his mother's mitochondrial DNA and treat the diabetes insipidus and optic findings as separate"
+            "zh-CN": "母系遗传线粒体糖尿病伴耳聋（m.3243A>G）是统一的病因：给他和他母亲查这个线粒体变异，尿崩症和眼底改变同时另行检查",
+            "en": "Maternally inherited diabetes and deafness (m.3243A>G) as the unifying cause: test him and his mother for the variant, and investigate the diabetes insipidus and the optic findings alongside it"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "母系遗传线粒体糖尿病伴耳聋可以有糖尿病和感音神经性耳聋，但不会引起尿崩症，视神经萎缩也不是它的特征。16岁前糖尿病合并视神经萎缩首先指向WFS1谱系疾病（GeneReviews 2023），ISPAD 2022也主张用多基因测序，而不是逐个猜基因。",
-            "en": "Maternally inherited diabetes and deafness gives diabetes and sensorineural deafness but not diabetes insipidus, and optic atrophy is not its feature. Diabetes with optic atrophy before 16 points first to WFS1 spectrum disorder (GeneReviews 2023), and ISPAD 2022 favours multi-gene sequencing over single-gene guesses."
+            "zh-CN": "母系遗传线粒体糖尿病伴耳聋可以有糖尿病和感音神经性耳聋，但不会引起尿崩症，视神经萎缩也不是它的特征。16岁前糖尿病合并视神经萎缩首先指向WFS1谱系疾病（GeneReviews 2022），ISPAD 2022也主张用多基因测序，而不是逐个猜基因。",
+            "en": "Maternally inherited diabetes and deafness gives diabetes and sensorineural deafness but not diabetes insipidus, and optic atrophy is not its feature. Diabetes with optic atrophy before 16 points first to WFS1 spectrum disorder (GeneReviews 2022), and ISPAD 2022 favours multi-gene sequencing over single-gene guesses."
           }
         },
         {
           "id": "sellar-lesion",
           "text": {
-            "zh-CN": "鞍上占位（如颅咽管瘤）压迫视交叉和垂体柄，能解释尿崩症和视神经萎缩；糖尿病和耳聋只是巧合，先请神经外科处理占位",
-            "en": "A suprasellar lesion such as a craniopharyngioma compressing the chiasm and stalk explains the diabetes insipidus and optic atrophy; the diabetes and deafness are coincidental, so refer to neurosurgery first"
+            "zh-CN": "鞍上占位（如颅咽管瘤）压迫视交叉和垂体柄，最能解释尿崩症和视神经萎缩：先转神经外科，糖尿病和听力下降另行处理",
+            "en": "A suprasellar lesion such as a craniopharyngioma, compressing the chiasm and stalk, best explains the diabetes insipidus and optic atrophy: refer to neurosurgery first and manage the diabetes and hearing loss separately"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "鞍区占位确实可以引起中枢性尿崩症和视力损害，所以MRI要做；但它解释不了抗体阴性的糖尿病、高频感音神经性耳聋和尿路扩张。先找能解释全部发现的一个诊断（GeneReviews 2023），MRI作为同一次评估的一部分（Patti 2022）。",
-            "en": "A sellar lesion can cause central diabetes insipidus and visual loss, which is why the MRI is needed; but it explains neither antibody-negative diabetes, nor high-frequency sensorineural deafness, nor the dilated urinary tract. Look for the one diagnosis that explains every finding (GeneReviews 2023), with the MRI part of the same work-up (Patti 2022)."
+            "zh-CN": "鞍区占位确实可以引起中枢性尿崩症和视力损害，所以MRI要做；但它解释不了抗体阴性的糖尿病、高频感音神经性耳聋和尿路扩张。先找能解释全部发现的一个诊断（GeneReviews 2022），MRI作为同一次评估的一部分（Patti 2022）。",
+            "en": "A sellar lesion can cause central diabetes insipidus and visual loss, which is why the MRI is needed; but it explains neither antibody-negative diabetes, nor high-frequency sensorineural deafness, nor the dilated urinary tract. Look for the one diagnosis that explains every finding (GeneReviews 2022), with the MRI part of the same work-up (Patti 2022)."
           }
         }
       ]
@@ -4288,8 +4376,8 @@
     {
       "id": "care-plan",
       "prompt": {
-        "zh-CN": "他双肾积水、输尿管扩张，尿尿费劲，每天仍排出大量尿液；目前是临床诊断，基因结果还没有。现阶段哪一项计划最能保护他？",
-        "en": "He has bilateral hydronephrosis and ureteric dilatation, struggles to pass urine and still passes large volumes every day; the diagnosis is clinical, with no genetic result yet. At this point, which plan protects him best?"
+        "zh-CN": "他双肾积水、输尿管扩张，尿尿费劲，每天仍喝4700–5800 mL水、尿很稀；目前是临床诊断，基因结果还没有。现阶段哪一项计划最能保护他？",
+        "en": "He has bilateral hydronephrosis and ureteric dilatation, struggles to pass urine and still drinks 4,700–5,800 mL a day with dilute urine; the diagnosis is clinical, with no genetic result yet. At this point, which plan protects him best?"
       },
       "kind": "single",
       "requires": {
@@ -4315,13 +4403,13 @@
         {
           "id": "thiazide-and-wait",
           "text": {
-            "zh-CN": "用氢氯噻嗪减少尿量，胰岛素控制血糖；尿量少了以后肾积水自然会慢慢好转，所以暂时不必查膀胱，门诊定期复查超声、看积水有没有减轻就行",
-            "en": "Reduce the urine volume with hydrochlorothiazide and control the glucose with insulin; with less urine flowing, the hydronephrosis will settle, so no bladder tests are needed yet — just repeat the ultrasound in clinic"
+            "zh-CN": "用氢氯噻嗪减少尿量、用胰岛素控制血糖，预计尿流量减少以后双肾积水会逐渐减轻；三个月后再到门诊复查一次泌尿系超声，看看积水有没有好转",
+            "en": "Reduce the urine volume with hydrochlorothiazide and control the glucose with insulin, expecting the hydronephrosis to settle as the flow falls, and repeat the renal tract ultrasound in clinic in three months' time"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "报告记录他稳定后用了胰岛素和氢氯噻嗪，这本身可以是合理的选择；但排尿困难合并双肾积水时，不能假定扩张只是尿量大所致——排空不全会持续损害上尿路。先测残余尿和肾功能，再做尿动力学（EAU/ESPU 2020）。",
-            "en": "The report records insulin and hydrochlorothiazide after he stabilised, which can be reasonable in itself; but with voiding difficulty and bilateral hydronephrosis you cannot assume the dilatation is only high flow — incomplete emptying keeps damaging the upper tracts. Measure the residual and renal function, then urodynamics (EAU/ESPU 2020)."
+            "zh-CN": "噻嗪类用于加压素抵抗，而这一点在这里并未明确（WFS1谱系疾病的尿崩症多为中枢性），它还可能升高血糖、降低血钾。更重要的是，排尿困难合并双肾积水时，不能假定扩张只是尿量大所致——排空不全会持续损害上尿路。先测残余尿和肾功能，再做尿动力学（EAU/ESPU 2020）。",
+            "en": "A thiazide treats vasopressin resistance, which is not established here (in WFS1 spectrum disorder the diabetes insipidus is usually central), and it can raise the glucose and lower the potassium. Above all, with voiding difficulty and bilateral hydronephrosis you cannot assume the dilatation is only high flow — incomplete emptying keeps damaging the upper tracts. Measure the residual and renal function, then urodynamics (EAU/ESPU 2020)."
           }
         },
         {
@@ -4339,8 +4427,8 @@
         {
           "id": "await-genetic-result",
           "text": {
-            "zh-CN": "先等基因检测结果出来再安排各专科，免得诊断不成立时让家庭白白担心；出院时只交代测血糖和打胰岛素",
-            "en": "Wait for the genetic result before arranging specialist care, so the family is not alarmed by a diagnosis that may not hold; at discharge, teach only glucose checks and insulin"
+            "zh-CN": "先不安排各专科，等基因结果出来再说，免得诊断不成立时让家庭白白担心；出院宣教集中在测血糖和打胰岛素上",
+            "en": "Hold the specialist referrals until the genetic result is back, so the family is not alarmed by a diagnosis that may not hold, and keep the discharge teaching to glucose checks and insulin"
           },
           "correct": false,
           "feedback": {
@@ -4671,7 +4759,7 @@
         "en": "Explained the diagnosis, its uncertainty and the safety points to him and his family, and checked understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge结构，告知这一可能为进行性的遗传综合征时用SPIKES：选安静的地方，先单独问他希望怎样谈，再和家人一起谈；先了解他们已经知道什么、最担心什么（是不是很重、渴了能不能喝）；用通俗的话分步说明：起病时的酮症酸中毒已经控制，糖尿病需要长期用胰岛素；持续多尿是另一个问题；眼睛、听力和排尿的发现可能属于同一个综合征——目前是临床诊断，需要基因检测确认，尿崩症的类型也还没有证实；把安全要点讲清楚：想喝就喝、绝不能自行限水，呕吐或喝不下水要尽快就医，以及生病期间的胰岛素规则；说明遗传方式和家里其他人的检测会在遗传咨询中讨论；不承诺“很快会好”，也不回避预后问题；给他表达感受的时间，提供心理支持；用回授法确认理解，并讲清随访安排。",
+        "zh-CN": "按Calgary–Cambridge结构，告知这一可能为进行性的遗传综合征时用SPIKES：选安静的地方，先单独问他希望怎样谈，再和家人一起谈；先了解他们已经知道什么、最担心什么（是不是很重、渴了能不能喝）；用通俗的话分步说明：这次入院时的酮症酸中毒已经控制，糖尿病需要长期用胰岛素；持续多尿是另一个问题；眼睛、听力和排尿的发现可能属于同一个综合征——目前是临床诊断，需要基因检测确认，尿崩症的类型也还没有证实；把安全要点讲清楚：想喝就喝、绝不能自行限水，呕吐或喝不下水要尽快就医，以及生病期间的胰岛素规则；说明遗传方式和家里其他人的检测会在遗传咨询中讨论；不承诺“很快会好”，也不回避预后问题；给他表达感受的时间，提供心理支持；用回授法确认理解，并讲清随访安排。",
         "en": "Calgary–Cambridge structure, with SPIKES for sharing a possibly progressive genetic diagnosis: a quiet setting; ask him first, privately, how he would like it done, then talk with his family together; find out what they know and fear most (whether it is serious, whether he may drink when thirsty); explain step by step in plain words — the ketoacidosis at presentation is under control and the diabetes needs lifelong insulin; the continuing polyuria is a separate problem; the eye, hearing and bladder findings may belong to one syndrome, a clinical diagnosis that needs genetic confirmation, and the type of diabetes insipidus is not yet proven; give the safety messages clearly — drink whenever thirsty and never restrict water, seek care early when vomiting or unable to drink, and the sick-day insulin rules; say that inheritance and testing of relatives belong in genetic counselling; promise no quick recovery but do not evade questions about the future; leave room for feelings and offer psychological support; check understanding by teach-back and explain the follow-up."
       }
     }
@@ -4684,8 +4772,8 @@
         "en": "Dr Wen (paediatric endocrinology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：多年“喝水太多”的标签为什么不能代替查血糖和尿酮；pH和HCO₃⁻不一致时按哪一项分级；怎样按血糖校正血钠、计算有效渗透压，这些数字对补液和脑水肿风险意味着什么；为什么先补液、补液1小时以上后才开始胰岛素输注而且不推注，血钾正常时补钾何时开始；为什么不用碳酸氢钠；血糖平稳后尿仍很稀说明什么，为什么禁水只能在住院监护下作为试验来做；能否找到一个诊断解释学员收集到的全部发现，为什么仍需要基因检测和MRI；排尿困难合并尿路扩张时为什么要马上评估膀胱排空；怎样与这个13岁的孩子和他的家人谈一个可能进行性的诊断。历史与现行：到复盘时，再把报告记录的处理与ISPAD 2022、NICE NG18和GeneReviews 2023逐项对照。病例没有记录的内容（体温、呼吸频率、血氧、PaCO₂、氯、尿素和肌酐、血酮、各次复查值、加压素试验的数据、视力和听阈、残余尿、MRI、基因结果、兄弟姐妹、学校和心情）不要替它补上。学员作答前，不说出诊断、任何决策的正确选项或报告的处理与结局。",
-        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why years of a “drinks too much” label never replace a glucose and urine ketone check; which of pH and bicarbonate sets the grade when they disagree; how to correct the sodium for glucose and work out the effective osmolality, and what those numbers mean for fluids and cerebral oedema risk; why fluids come first and the insulin infusion only an hour or more later with no bolus, and when potassium starts if it is normal; why no bicarbonate; what persistently dilute urine with a settled glucose means, and why water deprivation is only ever a supervised inpatient test; whether one diagnosis explains everything the learner has found, and why genetic testing and MRI are still needed; why voiding difficulty with a dilated urinary tract needs a bladder-emptying assessment now; how to talk with this 13-year-old and his family about a possibly progressive diagnosis. Then and now: in the debrief, compare the report's recorded management point by point with ISPAD 2022, NICE NG18 and GeneReviews 2023. Never supply what the case does not record (temperature, breathing rate, oxygen saturation, PaCO₂, chloride, urea and creatinine, blood ketones, repeat values, the vasopressin test data, visual acuity and hearing thresholds, residual volume, MRI, genetic results, siblings, school and mood). Before the learner commits, never state the diagnosis, any decision's correct option, or the report's management and outcome."
+        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：多年“喝水太多”的标签为什么不能代替查血糖和尿酮；pH和HCO₃⁻不一致时按哪一项分级；怎样按血糖校正血钠、计算有效渗透压，这些数字对补液和脑水肿风险意味着什么；为什么先补液、补液1小时以上后才开始胰岛素输注而且不推注，血钾正常时补钾何时开始；为什么不用碳酸氢钠；血糖平稳后尿仍很稀说明什么，为什么禁水只能在住院监护下作为试验来做；能否找到一个诊断解释学员收集到的全部发现，为什么仍需要基因检测和MRI；排尿困难合并尿路扩张时为什么要马上评估膀胱排空；怎样与这个13岁的孩子和他的家人谈一个可能进行性的诊断。历史与现行：到复盘时，再把报告记录的处理与ISPAD 2022、NICE NG18和GeneReviews 2022逐项对照。病例没有记录的内容（体温、呼吸频率、血氧、PaCO₂、氯、尿素和肌酐、血酮、各次复查值、加压素试验的数据、视力和听阈、残余尿、MRI、基因结果、兄弟姐妹、学校和心情）不要替它补上。学员作答前，不说出诊断、任何决策的正确选项或报告的处理与结局。",
+        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why years of a “drinks too much” label never replace a glucose and urine ketone check; which of pH and bicarbonate sets the grade when they disagree; how to correct the sodium for glucose and work out the effective osmolality, and what those numbers mean for fluids and cerebral oedema risk; why fluids come first and the insulin infusion only an hour or more later with no bolus, and when potassium starts if it is normal; why no bicarbonate; what persistently dilute urine with a settled glucose means, and why water deprivation is only ever a supervised inpatient test; whether one diagnosis explains everything the learner has found, and why genetic testing and MRI are still needed; why voiding difficulty with a dilated urinary tract needs a bladder-emptying assessment now; how to talk with this 13-year-old and his family about a possibly progressive diagnosis. Then and now: in the debrief, compare the report's recorded management point by point with ISPAD 2022, NICE NG18 and GeneReviews 2022. Never supply what the case does not record (temperature, breathing rate, oxygen saturation, PaCO₂, chloride, urea and creatinine, blood ketones, repeat values, the vasopressin test data, visual acuity and hearing thresholds, residual volume, MRI, genetic results, siblings, school and mood). Before the learner commits, never state the diagnosis, any decision's correct option, or the report's management and outcome."
       },
       "interprets": [
         "glucose",
@@ -4749,12 +4837,12 @@
   ],
   "debrief": {
     "title": {
-      "zh-CN": "复盘：以重度酮症酸中毒起病的Wolfram综合征",
-      "en": "Debrief: Wolfram syndrome presenting with severe diabetic ketoacidosis"
+      "zh-CN": "复盘：合并重度糖尿病酮症酸中毒的Wolfram综合征",
+      "en": "Debrief: Wolfram syndrome with severe diabetic ketoacidosis"
     },
     "conclusion": {
-      "zh-CN": "一个极度消瘦的13岁男孩七年来每天喝水4200–6000 mL、尿量相近，一直被认为是精神性多饮或尿崩症。呕吐3天后他精神萎靡、脱水、呼吸深长：血糖38.74 mmol/L，尿酮体++，pH 7.21，HCO₃⁻ 4.2 mmol/L，阴离子间隙35.6 mmol/L，钠116 mmol/L（校正约128），GADA和IAA阴性——重度DKA。血糖平稳后他每天仍喝4700–5800 mL水（尿比重1.000–1.005），对加压素反应差，并有视神经萎缩、高频感音神经性听力下降、双肾积水、输尿管扩张和排尿困难。报告临床诊断为Wolfram综合征，没有基因结果；之后用胰岛素和氢氯噻嗪，约2周出院，一年内两次随访稳定。今天的做法：先补液再开胰岛素输注，不推注、不补碱；禁水只在监护下作为试验，平时绝不限水；做WFS1检测和MRI，并及早处理膀胱排空。",
-      "en": "For seven years a very thin 13-year-old had drunk 4,200–6,000 mL a day, with similar urine volumes, labelled psychogenic polydipsia or diabetes insipidus. After three days of vomiting he was listless, dry and breathing deeply: glucose 38.74 mmol/L, ketonuria ++, pH 7.21, bicarbonate 4.2 mmol/L, anion gap 35.6 mmol/L, sodium 116 mmol/L (corrected about 128), GADA and IAA negative: severe DKA. With the glucose settled he still drank 4,700–5,800 mL a day (urine specific gravity 1.000–1.005) and responded poorly to vasopressin; he had optic atrophy, high-frequency sensorineural hearing loss, bilateral hydronephrosis, ureteric dilatation and voiding difficulty. The report diagnosed Wolfram syndrome clinically, with no genetic result; insulin and hydrochlorothiazide followed, discharge at about two weeks, stable at two visits within a year. Today: fluids before an insulin infusion, no bolus or bicarbonate; supervised water testing, never restriction; WFS1, MRI, early bladder care."
+      "zh-CN": "一个极度消瘦的13岁男孩七年来每天喝水4200–6000 mL、尿量相近，曾被考虑为精神性多饮或尿崩症。呕吐3天后他精神萎靡、脱水、呼吸深长：血糖38.74 mmol/L，尿酮体++，pH 7.21，HCO₃⁻ 4.2 mmol/L，阴离子间隙35.6 mmol/L，钠116 mmol/L（校正约128），GADA和IAA阴性——重度DKA。血糖平稳后他每天仍喝4700–5800 mL水（尿比重1.000–1.005），对加压素反应差，并有视神经萎缩、高频感音神经性听力下降、双肾积水、输尿管扩张和排尿困难。报告临床诊断为Wolfram综合征，没有基因结果，并把尿崩症定为肾性；急救记载为包括常规补碱，之后用胰岛素和氢氯噻嗪，约2周出院，一年内两次随访稳定。今天的做法：先补液再开胰岛素输注，不推注、不补碱；禁水只在监护下作为试验，平时绝不限水；明确尿崩症的类型（WFS1谱系疾病多为中枢性），做WFS1检测和MRI，并及早处理膀胱排空。",
+      "en": "For seven years a very thin 13-year-old had drunk 4,200–6,000 mL a day, with similar urine volumes; psychogenic polydipsia or diabetes insipidus had been considered. After three days of vomiting he was listless, dry and breathing deeply: glucose 38.74 mmol/L, ketonuria ++, pH 7.21, bicarbonate 4.2 mmol/L, anion gap 35.6 mmol/L, sodium 116 mmol/L (corrected about 128), GADA and IAA negative: severe DKA. With the glucose settled he still drank 4,700–5,800 mL a day (urine specific gravity 1.000–1.005) and responded poorly to vasopressin; he had optic atrophy, high-frequency sensorineural hearing loss, bilateral hydronephrosis, ureteric dilatation and voiding difficulty. The report diagnosed Wolfram syndrome clinically, with no genetic result, and labelled the diabetes insipidus nephrogenic; its emergency care is described as including routine bicarbonate, and insulin and hydrochlorothiazide followed, discharge at about two weeks, stable at two visits within a year. Today: fluids before an insulin infusion, no bolus or bicarbonate; supervised water testing, never restriction; type the diabetes insipidus (usually central in WFS1 spectrum disorder), WFS1 testing, MRI and early bladder care."
     },
     "keyReasoning": [
       {
@@ -4788,20 +4876,20 @@
         "en": "Grading and numbers: ISPAD 2022 grades by pH or bicarbonate — mild pH < 7.3 or bicarbonate < 18 mmol/L, moderate < 7.2 or < 10, severe < 7.1 or < 5 — so his pH of 7.21 alone reads as mild while a bicarbonate of 4.2 mmol/L is severe. The corrected sodium, 116 + 2 × [(38.74 − 5.6)/5.6], is about 128 mmol/L: true hyponatraemia; the effective osmolality, 2 × 116 + 38.74, is about 271 mOsm/kg. By Henderson–Hasselbalch, a pH of 7.21 with a bicarbonate of 4.2 mmol/L implies a PaCO₂ of about 11 mmHg, near the limit of respiratory compensation — whether the two values came from one sample needs checking."
       },
       {
-        "zh-CN": "最初几个小时（历史与现行）：本病例只记录了“急救后稳定”，没有补液和剂量。现行做法：没有休克时0.9%氯化钠10 mL/kg、30分钟输完，余下的累积损失加维持量在48小时内补足，补液中加氯化钾40 mmol/L（NICE NG18 2020年更新；BSPED 2021，见Rugg-Gunn 2021；ISPAD 2022为24–48小时）；胰岛素0.05–0.1 U/kg/h在补液开始1小时以上后输注，不推注。",
-        "en": "The first hours, then and now: this case records only “stabilised after emergency care”, with no fluids or doses. Current practice: without shock, 0.9% sodium chloride 10 mL/kg over 30 minutes, the remaining deficit plus maintenance over 48 hours with potassium chloride 40 mmol/L in the fluids (NICE NG18 2020 update; BSPED 2021, as harmonised by Rugg-Gunn 2021; ISPAD 2022: 24–48 hours), and insulin 0.05–0.1 unit/kg/h from at least an hour after the fluids start, with no bolus."
+        "zh-CN": "最初几个小时（历史与现行）：报告的急救记载为包括常规用碳酸氢钠纠正酸中毒，补液、胰岛素和剂量都没有记录。现行做法：没有休克时0.9%氯化钠10 mL/kg、30分钟输完，余下的累积损失加维持量在48小时内补足，补液中加氯化钾40 mmol/L（NICE NG18 2020年更新；BSPED 2021，见Rugg-Gunn 2021；ISPAD 2022为24–48小时）；胰岛素0.05–0.1 U/kg/h在补液开始1小时以上后输注，不推注；不用碳酸氢钠（BSPED 2021；ISPAD 2022）。",
+        "en": "The first hours, then and now: the report's emergency care is described as including routine bicarbonate to correct the acidosis; its fluids, insulin and doses are not recorded. Current practice: without shock, 0.9% sodium chloride 10 mL/kg over 30 minutes, the remaining deficit plus maintenance over 48 hours with potassium chloride 40 mmol/L in the fluids (NICE NG18 2020 update; BSPED 2021, as harmonised by Rugg-Gunn 2021; ISPAD 2022: 24–48 hours), insulin 0.05–0.1 unit/kg/h from at least an hour after the fluids start with no bolus, and no bicarbonate (BSPED 2021; ISPAD 2022)."
       },
       {
         "zh-CN": "碳酸氢钠与脑水肿：ISPAD 2022只在危及生命的高钾血症或静脉pH＜6.9伴心肌收缩力受损时考虑碳酸氢钠。Glaser 2001（NEJM）发现，就诊时PaCO₂低、尿素氮高与儿童DKA脑水肿相关，在各项治疗中只有碳酸氢钠与之相关（相对危险度4.2）。他HCO₃⁻很低，需要的是高依赖病房的每小时神经系统观察、追踪校正钠，以及床旁备好甘露醇或高渗盐水，而不是补碱。",
         "en": "Bicarbonate and cerebral oedema: ISPAD 2022 keeps bicarbonate for life-threatening hyperkalaemia or venous pH < 6.9 with impaired cardiac contractility. In Glaser 2001 (NEJM), low PaCO₂ and high urea at presentation were associated with cerebral oedema in children with DKA, and bicarbonate was the only treatment associated with it (relative risk 4.2). His very low bicarbonate calls for hourly neurological observation in a high-dependency bed, tracking of the corrected sodium and mannitol or hypertonic saline at the bedside — not for alkali."
       },
       {
-        "zh-CN": "血糖控制后的多尿：尿比重1.000–1.005、每天饮水4700–5800 mL，是水利尿而不是渗透性利尿——需要区分加压素缺乏、加压素抵抗（2022年起中枢性、肾性尿崩症的新名称）和原发性多饮。先配对测血钠和血、尿渗透压，再在住院监护下做禁水–去氨加压素试验，并做MRI（Patti 2022）。多年多尿造成的髓质浓度梯度丧失和尿路扩张都会削弱对加压素的反应，所以单凭“反应差”说明不了病变在哪里、是原发还是继发。",
-        "en": "Polyuria after glucose control: a specific gravity of 1.000–1.005 with 4,700–5,800 mL drunk a day is a water diuresis, not an osmotic one — vasopressin deficiency, vasopressin resistance (the names proposed since 2022 for central and nephrogenic diabetes insipidus) or primary polydipsia. Pair plasma sodium with plasma and urine osmolality, then a supervised inpatient water-deprivation–desmopressin test with MRI (Patti 2022). Medullary washout after years of polyuria and a dilated urinary tract both blunt the response to vasopressin, so a “poor response” alone cannot show where the defect lies, or whether it is primary or secondary."
+        "zh-CN": "血糖控制后的多尿：尿比重1.000–1.005、每天饮水4700–5800 mL，是水利尿而不是渗透性利尿——需要区分加压素缺乏、加压素抵抗（2022年起中枢性、肾性尿崩症的新名称）和原发性多饮。先配对测血钠和血、尿渗透压，再在住院监护下做禁水–去氨加压素试验，并做MRI（Patti 2022）。报告依据“对加压素反应差”把尿崩症定为肾性并用了噻嗪类；但WFS1谱系疾病的尿崩症多为中枢性（GeneReviews 2022），而多年多尿造成的髓质浓度梯度丧失和尿路扩张都会削弱对加压素的反应，所以单凭“反应差”说明不了病变在哪里、是原发还是继发。",
+        "en": "Polyuria after glucose control: a specific gravity of 1.000–1.005 with 4,700–5,800 mL drunk a day is a water diuresis, not an osmotic one — vasopressin deficiency, vasopressin resistance (the names proposed since 2022 for central and nephrogenic diabetes insipidus) or primary polydipsia. Pair plasma sodium with plasma and urine osmolality, then a supervised inpatient water-deprivation–desmopressin test with MRI (Patti 2022). The report called the diabetes insipidus nephrogenic on a “poor response” and gave a thiazide; yet the diabetes insipidus of WFS1 spectrum disorder is usually central (GeneReviews 2022), and medullary washout after years of polyuria and a dilated urinary tract both blunt the response to vasopressin, so a “poor response” alone cannot show where the defect lies, or whether it is primary or secondary."
       },
       {
-        "zh-CN": "统一诊断与遗传：GeneReviews（2023年更新）以16岁前出现的糖尿病和视神经萎缩为经典WFS1谱系疾病的特征，确诊需要双等位WFS1致病变异；ISPAD 2022单基因糖尿病指南对抗体阴性、伴胰外表现的糖尿病主张做基因检测。报告是临床诊断、没有基因结果记录；今天还要做WFS1检测（必要时CISD2）、遗传咨询和头颅垂体MRI。",
-        "en": "One diagnosis and its genetics: GeneReviews (updated 2023) defines classic WFS1 spectrum disorder by diabetes and optic atrophy before 16 years and confirms it with biallelic pathogenic WFS1 variants; the ISPAD 2022 monogenic diabetes guideline asks for genetic testing in antibody-negative diabetes with extra-pancreatic features. The report's diagnosis was clinical, with no genetic result recorded; today it would add WFS1 testing (CISD2 if indicated), genetic counselling and brain and pituitary MRI."
+        "zh-CN": "统一诊断与遗传：GeneReviews（2022年更新）以16岁前出现的糖尿病和视神经萎缩为经典WFS1谱系疾病的特征，确诊需要双等位WFS1致病变异；ISPAD 2022单基因糖尿病指南对抗体阴性、伴胰外表现的糖尿病主张做基因检测。报告是临床诊断、没有基因结果记录；今天还要做WFS1检测（必要时CISD2）、遗传咨询和头颅垂体MRI。",
+        "en": "One diagnosis and its genetics: GeneReviews (updated 2022) defines classic WFS1 spectrum disorder by diabetes and optic atrophy before 16 years and confirms it with biallelic pathogenic WFS1 variants; the ISPAD 2022 monogenic diabetes guideline asks for genetic testing in antibody-negative diabetes with extra-pancreatic features. The report's diagnosis was clinical, with no genetic result recorded; today it would add WFS1 testing (CISD2 if indicated), genetic counselling and brain and pituitary MRI."
       },
       {
         "zh-CN": "保护尿路与长期照护：尿路扩张伴排尿困难意味着膀胱可能排空不全——测残余尿和肾功能，做尿动力学，必要时清洁间歇导尿（EAU/ESPU 2020，外推到本综合征）；尿崩症的孩子必须随时能喝水，呕吐时尽早静脉补液并查血钠；眼科、听力、神经和心理随访按SID/SIEDP 2025共识多学科进行。",
@@ -4822,12 +4910,12 @@
         "en": "PaCO₂, chloride, blood β-hydroxybutyrate, urea, creatinine, plasma osmolality, HbA1c and C-peptide; the sample type of the glucose; whether the pH and bicarbonate came from one sample."
       },
       {
-        "zh-CN": "急性期的补液种类和量、胰岛素用法和剂量、补钾、是否用过碳酸氢钠、酮症酸中毒纠正所需时间，以及治疗中的钠和血糖变化。",
-        "en": "The acute-phase fluids and volumes, how insulin was given and at what dose, potassium, whether any bicarbonate was used, the time to resolution of the ketoacidosis, and the sodium and glucose during treatment."
+        "zh-CN": "急性期的补液种类和量、胰岛素用法和剂量、补钾、碳酸氢钠的剂量和时机、酮症酸中毒纠正所需时间，以及治疗中的钠和血糖变化。",
+        "en": "The acute-phase fluids and volumes, how insulin was given and at what dose, potassium, the bicarbonate dose and timing, the time to resolution of the ketoacidosis, and the sodium and glucose during treatment."
       },
       {
-        "zh-CN": "加压素试验：是否先禁水、时长、体重变化、试验前后的血钠和血、尿渗透压、所用制剂和剂量；血糖平稳后的尿量。",
-        "en": "The vasopressin test: whether water deprivation came first, its duration, weight change, plasma sodium and plasma and urine osmolality before and after, the preparation and dose; urine volumes after the glucose settled."
+        "zh-CN": "禁水–加压素试验：时长、体重变化、试验前后的血钠和血、尿渗透压、所用制剂和剂量；血糖平稳后的尿量。",
+        "en": "The water-deprivation and vasopressin test: its duration, weight change, plasma sodium and plasma and urine osmolality before and after, the preparation and dose; urine volumes after the glucose settled."
       },
       {
         "zh-CN": "视力、色觉和视野；听阈和左右侧；排尿后残余尿、尿动力学、肾功能，以及是哪种影像发现了肾积水。",
@@ -4847,11 +4935,14 @@
       "Glaser N, Fritsch M, Priyambada L, Rewers A, Cherubini V, Estrada S, Wolfsdorf JI, Codner E. ISPAD Clinical Practice Consensus Guidelines 2022: diabetic ketoacidosis and hyperglycemic hyperosmolar state. Pediatr Diabetes. 2022;23(7):835-856. doi:10.1111/pedi.13406",
       "National Institute for Health and Care Excellence. Diabetes (type 1 and type 2) in children and young people: diagnosis and management. NICE guideline NG18. London: NICE; 2015 [diabetic ketoacidosis recommendations updated 2020 Dec; shock bolus updated 2022 Oct].",
       "Rugg-Gunn CEM, Deakin M, Hawcutt DB. Update and harmonisation of guidance for the management of diabetic ketoacidosis in children and young people in the UK. BMJ Paediatr Open. 2021;5(1):e001079. doi:10.1136/bmjpo-2021-001079",
-      "Glaser N, Barnett P, McCaslin I, et al. Risk factors for cerebral edema in children with diabetic ketoacidosis. N Engl J Med. 2001;344(4):264-269.",
+      "Glaser N, Barnett P, McCaslin I, et al. Risk factors for cerebral edema in children with diabetic ketoacidosis. N Engl J Med. 2001;344(4):264-269. doi:10.1056/NEJM200101253440404",
+      "Edge JA, Jakes RW, Roy Y, Hawkins M, Winter D, Ford-Adams ME, et al. The UK case-control study of cerebral oedema complicating diabetic ketoacidosis in children. Diabetologia. 2006;49(9):2002-2009. doi:10.1007/s00125-006-0363-8",
       "Greeley SAW, Polak M, Njølstad PR, et al. ISPAD Clinical Practice Consensus Guidelines 2022: the diagnosis and management of monogenic diabetes in children and adolescents. Pediatr Diabetes. 2022;23(8):1188-1211. doi:10.1111/pedi.13426",
-      "Barrett T, Tranebjærg L, Gupta R, et al. WFS1 spectrum disorder. In: Adam MP, et al., editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-. 2009 Feb 24 [updated 2023 Oct 5]. Available from: https://www.ncbi.nlm.nih.gov/books/NBK4144/",
+      "Barrett T, Tranebjærg L, Gupta R, McCarthy L, Rendtorff ND, Williams D, Wright B, Dias R. WFS1 spectrum disorder. In: Adam MP, Feldman J, Mirzaa GM, et al., editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-. 2009 Feb 24 [updated 2022 Dec 1]. Available from: https://www.ncbi.nlm.nih.gov/books/NBK4144/",
       "Frontino G, Delvecchio M, Prudente S, et al. SID/SIEDP expert consensus on optimizing clinical strategies for early detection and management of Wolfram syndrome. J Endocrinol Invest. 2025;48(3):507-525. doi:10.1007/s40618-024-02495-z",
-      "Patti G, Napoli F, Fava D, Casalini E, Di Iorgi N, Maghnie M. Approach to the pediatric patient: central diabetes insipidus. J Clin Endocrinol Metab. 2022;107(5):1407-1416. doi:10.1210/clinem/dgab930"
+      "Patti G, Napoli F, Fava D, Casalini E, Di Iorgi N, Maghnie M. Approach to the pediatric patient: central diabetes insipidus. J Clin Endocrinol Metab. 2022;107(5):1407-1416. doi:10.1210/clinem/dgab930",
+      "Arima H, Cheetham T, Christ-Crain M, et al.; Working Group for Renaming Diabetes Insipidus. Changing the name of diabetes insipidus: a position statement of The Working Group for Renaming Diabetes Insipidus. Endocr Connect. 2022;11(11):e220378. doi:10.1530/EC-22-0378",
+      "Stein R, Bogaert G, Dogan HS, Hoen L, Kocvara R, Nijman RJM, et al. EAU/ESPU guidelines on the management of neurogenic bladder in children and adolescent part I diagnostics and conservative treatment. Neurourol Urodyn. 2020;39(1):45-57. doi:10.1002/nau.24211"
     ],
     "notice": {
       "zh-CN": "评分为教学脚本评估，并非经过验证的能力评分。",
@@ -4868,12 +4959,12 @@
       "en": "PaCO₂, chloride, blood β-hydroxybutyrate, urea, creatinine, plasma osmolality, HbA1c and C-peptide; the sample type of the glucose; whether the pH and bicarbonate came from one sample."
     },
     {
-      "zh-CN": "急性期的补液种类和量、胰岛素用法和剂量、补钾、是否用过碳酸氢钠、酮症酸中毒纠正所需时间，以及治疗中的钠和血糖变化。",
-      "en": "The acute-phase fluids and volumes, how insulin was given and at what dose, potassium, whether any bicarbonate was used, the time to resolution of the ketoacidosis, and the sodium and glucose during treatment."
+      "zh-CN": "急性期的补液种类和量、胰岛素用法和剂量、补钾、碳酸氢钠的剂量和时机、酮症酸中毒纠正所需时间，以及治疗中的钠和血糖变化。",
+      "en": "The acute-phase fluids and volumes, how insulin was given and at what dose, potassium, the bicarbonate dose and timing, the time to resolution of the ketoacidosis, and the sodium and glucose during treatment."
     },
     {
-      "zh-CN": "加压素试验：是否先禁水、时长、体重变化、试验前后的血钠和血、尿渗透压、所用制剂和剂量；血糖平稳后的尿量。",
-      "en": "The vasopressin test: whether water deprivation came first, its duration, weight change, plasma sodium and plasma and urine osmolality before and after, the preparation and dose; urine volumes after the glucose settled."
+      "zh-CN": "禁水–加压素试验：时长、体重变化、试验前后的血钠和血、尿渗透压、所用制剂和剂量；血糖平稳后的尿量。",
+      "en": "The water-deprivation and vasopressin test: its duration, weight change, plasma sodium and plasma and urine osmolality before and after, the preparation and dose; urine volumes after the glucose settled."
     },
     {
       "zh-CN": "视力、色觉和视野；听阈和左右侧；排尿后残余尿、尿动力学、肾功能，以及是哪种影像发现了肾积水。",
@@ -5532,6 +5623,48 @@
         "text": "I'll go and read the reports at the desk.",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "Any problems when you pee?",
+        "locale": "en",
+        "expect": [
+          "voiding"
+        ]
+      },
+      {
+        "text": "小便的时候顺畅吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "voiding"
+        ]
+      },
+      {
+        "text": "Have you got a bit of a headache today?",
+        "locale": "en",
+        "expect": [
+          "headache-now"
+        ]
+      },
+      {
+        "text": "Did the vasopressin do you any good?",
+        "locale": "en",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "你现在每天在吃哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "current-vasopressin"
+        ]
+      },
+      {
+        "text": "Are you on any regular medicines at all?",
+        "locale": "en",
+        "expect": [
+          "current-vasopressin"
+        ]
       }
     ]
   }

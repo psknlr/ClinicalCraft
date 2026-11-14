@@ -99,8 +99,23 @@
   "reviewed": true
  },
  "cmcr-1551889": {
+  "allChecksPass": true,
   "authored": true,
-  "drafted": "2026-10"
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "drafted": "2026-10",
+  "findings": {
+   "critical": 2,
+   "major": 6,
+   "minor": 7
+  },
+  "reviewed": true
  },
  "cmcr-1653411": {
   "allChecksPass": true,
@@ -168,8 +183,23 @@
   "drafted": "2026-10"
  },
  "cmcr-33736": {
+  "allChecksPass": true,
   "authored": true,
-  "drafted": "2026-10"
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "drafted": "2026-10",
+  "findings": {
+   "critical": 2,
+   "major": 8,
+   "minor": 5
+  },
+  "reviewed": true
  },
  "cmcr-33789": {
   "authored": true,

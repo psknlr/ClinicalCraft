@@ -26,8 +26,8 @@
   "estimatedMinutes": 40,
   "learningOutcomes": [
     {
-      "zh-CN": "把高龄患者入院前抗感染治疗后仍有的发热、左下腹局限性腹膜刺激征和中性粒细胞升高按可能的复杂性腹腔感染处理：用NEWS2而不是单用qSOFA筛查（SSC 2026），先留培养再静脉覆盖肠道革兰阴性菌和厌氧菌，并当天做增强CT（SIS 2017）。",
-      "en": "Manage fever, localised left lower quadrant peritonism and a rising neutrophil count that outlast antimicrobial treatment before admission in an older man as a possible complicated intra-abdominal infection: screen with NEWS2 rather than qSOFA alone (SSC 2026), take cultures before IV cover of enteric Gram-negative and anaerobic bacteria, and get contrast CT the same day (SIS 2017)."
+      "zh-CN": "把高龄患者入院前抗感染治疗后仍有的发热、左下腹局限性腹膜刺激征和中性粒细胞升高按可能的复杂性腹腔感染处理：用NEWS2而不是单用qSOFA筛查（SSC 2026），先留培养再静脉覆盖肠道革兰阴性菌和厌氧菌（SIS 2024），并当天做增强CT（IDSA 2024）。",
+      "en": "Manage fever, localised left lower quadrant peritonism and a rising neutrophil count that outlast antimicrobial treatment before admission in an older man as a possible complicated intra-abdominal infection: screen with NEWS2 rather than qSOFA alone (SSC 2026), take cultures before IV cover of enteric Gram-negative and anaerobic bacteria (SIS 2024), and get contrast CT the same day (IDSA 2024)."
     },
     {
       "zh-CN": "用结肠镜和小肠造影判断腹部肿块在肠内还是肠外，并选择影像引导下粗针活检（必要时腹腔镜）取得组织，而不是只做细胞学或贸然切除。",
@@ -38,8 +38,8 @@
       "en": "Treat an intraoperative frozen section as provisional and explain why, with the mesenteric root involved and disease widespread, the operation should take generous tissue and not an irreversible resection decided on the frozen reading (PSOGI/EURACAN 2021)."
     },
     {
-      "zh-CN": "按国际间皮瘤兴趣小组2017年更新的标准（至少两个间皮标志物和两个癌标志物，必要时BAP1或CDKN2A）评价calretinin阳性、CEA阴性的腹膜肿瘤，并采集职业性石棉接触史。",
-      "en": "Judge a calretinin-positive, CEA-negative peritoneal tumour against the International Mesothelioma Interest Group 2017 update — at least two mesothelial and two carcinoma markers, with BAP1 or CDKN2A testing where malignancy is in doubt — and take an occupational asbestos history."
+      "zh-CN": "按国际间皮瘤兴趣小组2023年更新的标准（两个间皮标志物和两个癌标志物，必要时BAP1或MTAP免疫组化或CDKN2A荧光原位杂交）评价calretinin阳性、CEA阴性的腹膜肿瘤，并采集职业性石棉接触史。",
+      "en": "Judge a calretinin-positive, CEA-negative peritoneal tumour against the International Mesothelioma Interest Group 2023 update — two mesothelial and two carcinoma markers, with BAP1 or MTAP immunostaining (or CDKN2A FISH) where malignancy is in doubt — and take an occupational asbestos history."
     },
     {
       "zh-CN": "把以成熟中性粒细胞为主、超过100×10⁹/L的白细胞增多作为排除性诊断来认定类白血病反应：先按WHO第5版（2022）排除慢性髓性白血病和慢性中性粒细胞白血病（BCR::ABL1、CSF3R）、隐匿感染和药物因素，不做降细胞治疗，也不盲目升级抗菌药（IDSA/SHEA 2016）。",
@@ -85,13 +85,15 @@
       ],
       "guidelines": [
         "SSC 2026: Surviving Sepsis Campaign international guidelines for management of sepsis and septic shock (SCCM/ESICM)",
-        "SIS 2017: The Surgical Infection Society revised guidelines on the management of intra-abdominal infection",
+        "SIS 2024: The Surgical Infection Society guidelines on the management of intra-abdominal infection: 2024 update",
+        "IDSA 2024: Clinical practice guideline update on complicated intra-abdominal infections — risk assessment, diagnostic imaging and microbiological evaluation",
         "WSES 2020: Update of the guidelines for the management of acute colonic diverticulitis in the emergency setting",
         "PSOGI/EURACAN 2021: Peritoneal mesothelioma — clinical practice guidelines for diagnosis, treatment and follow-up",
-        "IMIG 2017 update (published 2018): Guidelines for pathologic diagnosis of malignant mesothelioma",
+        "IMIG 2023 update (published 2024): Guidelines for pathologic diagnosis of mesothelioma (International Mesothelioma Interest Group)",
         "WHO Classification of Haematolymphoid Tumours, 5th edition (2022): myeloid and histiocytic/dendritic neoplasms",
         "IDSA/SHEA 2016: Implementing an antibiotic stewardship program",
-        "China Ministry of Health 2011: Guiding principles for the clinical use of glucocorticoids (糖皮质激素类药物临床应用指导原则)"
+        "China Ministry of Health 2011: Guiding principles for the clinical use of glucocorticoids (糖皮质激素类药物临床应用指导原则)",
+        "China NHC 2024: Classification and Catalogue of Occupational Diseases (职业病分类和目录, 国卫职健发〔2024〕39号)"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -139,8 +141,8 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "81岁男性，左下腹痛和发热一直不好，治疗以后也没退，人有些乏，心里不踏实。问什么答什么，话不多；只说自己清楚的事，药名、化验数字记不住就直说，从不猜。",
-        "en": "An 81-year-old man worn down by pain and a fever that treatment did not shift, and uneasy about it. He answers what he is asked in few words, says only what he knows, and admits it when he cannot remember a drug name or a number rather than guessing."
+        "zh-CN": "81岁男性，左下腹痛和发热一直不好，治疗以后也没退，心里不踏实。问什么答什么，话不多；只说自己清楚的事，药名、化验数字记不住就直说，从不猜。",
+        "en": "An 81-year-old man whose pain and fever did not shift with treatment, and who is uneasy about it. He answers what he is asked in few words, says only what he knows, and admits it when he cannot remember a drug name or a number rather than guessing."
       },
       "speechStyle": {
         "zh-CN": "口语，短句，不用医学术语；说到小便、大便有点不好意思，但会照实说。",
@@ -329,7 +331,9 @@
           "reason for admission",
           "whyareyouhere",
           "main problem",
-          "troubling you"
+          "troubling you",
+          "bringsyouin",
+          "whatbringsyou"
         ]
       },
       "excludeKeywords": {
@@ -426,7 +430,9 @@
           "疼痛部位",
           "痛的性质",
           "胀痛",
-          "刺痛"
+          "刺痛",
+          "哪里痛",
+          "哪儿痛"
         ],
         "en": [
           "whereisthepain",
@@ -436,7 +442,8 @@
           "describe the pain",
           "kind of pain",
           "dull or sharp",
-          "pain location"
+          "pain location",
+          "wheredoesithurt"
         ]
       },
       "excludeKeywords": {
@@ -600,7 +607,9 @@
           "寒战",
           "打摆子",
           "发抖",
-          "怕冷"
+          "怕冷",
+          "发烧",
+          "发热"
         ],
         "en": [
           "how high",
@@ -609,7 +618,9 @@
           "shivers",
           "shaking",
           "rigors",
-          "feel cold"
+          "feel cold",
+          "fever",
+          "feverish"
         ]
       },
       "disclosure": "on-ask",
@@ -621,6 +632,19 @@
       "source": {
         "zh-CN": "1.0.0版提取的病史：伴随症状（怕冷，无寒战；体温数值没有记录）（待对照原文核对）；患者的话为改写",
         "en": "History as extracted for version 1.0.0: associated symptoms (chilliness without rigors; no temperature reading recorded) (check against the full article pending); the patient's words are adapted"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "几天",
+          "多久",
+          "多长时间",
+          "什么时候开始"
+        ],
+        "en": [
+          "how long",
+          "howmanydays",
+          "when did"
+        ]
       }
     },
     {
@@ -750,7 +774,10 @@
           "胃口",
           "食欲",
           "盗汗",
-          "夜里出汗"
+          "夜里出汗",
+          "乏力",
+          "没力气",
+          "疲劳"
         ],
         "en": [
           "weight",
@@ -758,7 +785,11 @@
           "appetite",
           "offyourfood",
           "night sweats",
-          "sweating at night"
+          "sweating at night",
+          "tired",
+          "tiredness",
+          "fatigue",
+          "run down"
         ]
       },
       "disclosure": "unknown",
@@ -1073,7 +1104,10 @@
           "your job",
           "occupation",
           "insulation",
-          "shipyard"
+          "shipyard",
+          "doforaliving",
+          "foraliving",
+          "workdidyoudo"
         ]
       },
       "disclosure": "unknown",
@@ -1180,7 +1214,11 @@
           "whoisathome",
           "lookafteryourself",
           "independent",
-          "carer"
+          "carer",
+          "liveswithyou",
+          "live alone",
+          "on your own",
+          "livewithyou"
         ]
       },
       "disclosure": "unknown",
@@ -1591,8 +1629,8 @@
         },
         "pathology": {
           "date": {
-            "zh-CN": "术后（具体日期未记录）",
-            "en": "After the operation (day not recorded)"
+            "zh-CN": "后来（具体日期及与手术的先后均未记录）",
+            "en": "Later in the course (the day, and whether before or after the operation, not recorded)"
           },
           "text": {
             "zh-CN": "白细胞113.7×10⁹/L，以中性粒细胞为主；抗菌治疗期间仍持续上升。血红蛋白、血小板、分类计数和有无幼稚细胞没有记录。",
@@ -2728,7 +2766,10 @@
           "抗感染治疗",
           "哌拉西林他唑巴坦",
           "头孢",
-          "甲硝唑"
+          "甲硝唑",
+          "美罗培南",
+          "厄他培南",
+          "碳青霉烯"
         ],
         "en": [
           "iv antibiotics",
@@ -2737,26 +2778,31 @@
           "piperacillin",
           "tazocin",
           "cephalosporin",
-          "metronidazole"
+          "metronidazole",
+          "meropenem",
+          "ertapenem",
+          "carbapenem"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
-          "碳青霉烯",
-          "美罗培南",
           "抗真菌",
-          "口服"
+          "氟康唑",
+          "升级",
+          "口服",
+          "复评"
         ],
         "en": [
-          "carbapenem",
-          "meropenem",
           "antifungal",
-          "oral"
+          "fluconazole",
+          "escalat",
+          "oral",
+          "review"
         ]
       },
       "dose": {
-        "zh-CN": "先核实过敏史，留取培养后开始：例如哌拉西林他唑巴坦，或三代头孢菌素联合甲硝唑，按标准剂量并根据肾功能和当地耐药情况调整；48–72小时复评。",
-        "en": "Check the allergy history, then start after cultures: for example piperacillin–tazobactam, or a third-generation cephalosporin with metronidazole, at standard doses adjusted to renal function and local resistance; review at 48–72 hours."
+        "zh-CN": "先核实过敏史，留取培养后开始：例如哌拉西林他唑巴坦——高龄且入院前治疗失败，宜选覆盖较广的方案，怀疑耐药菌时用碳青霉烯类——按标准剂量并根据肾功能和当地耐药情况调整；48–72小时复评。",
+        "en": "Check the allergy history, then start after cultures: for example piperacillin–tazobactam — his age and the failed treatment before admission favour broad cover, and a carbapenem if resistant organisms are likely — at standard doses adjusted to renal function and local resistance; review at 48–72 hours."
       },
       "requires": [
         "iv-access",
@@ -3100,14 +3146,11 @@
       "risk": "high",
       "critical": true,
       "contraindicatedWhen": {
-        "not": {
-          "read": "final-pathology",
-          "phase": "pathology"
-        }
+        "always": true
       },
       "harm": {
-        "zh-CN": "糖皮质激素不是退热药（原卫生部《糖皮质激素类药物临床应用指导原则》2011：不能单纯以退热为目的使用）。感染没有排除时，它会掩盖并加重感染；在取得组织诊断之前使用，还可能让淋巴瘤等病变的活检无法确诊。应先查清发热原因、取得组织学诊断。",
-        "en": "Corticosteroids are not antipyretics (China's Ministry of Health principles for glucocorticoid use, 2011: never just to bring down a fever). Before infection is excluded they mask and worsen it, and before a tissue diagnosis they can leave a lymphoma or similar lesion undiagnosable on biopsy. Find the cause of the fever and obtain the histology first."
+        "zh-CN": "糖皮质激素不是退热药：原卫生部《糖皮质激素类药物临床应用指导原则》（2011）把单纯以退热、止痛为目的使用列为不合理用药。感染没有排除时，激素会掩盖并加重感染，本身还会使中性粒细胞升高，干扰对白细胞增多原因的排查；在取得组织诊断之前使用，还可能让淋巴瘤等病变的活检无法确诊。应先查清发热原因、取得组织学诊断。",
+        "en": "Corticosteroids are not antipyretics: China's 2011 Ministry of Health principles for glucocorticoid use name giving them purely to bring down a fever or relieve pain as misuse. Until infection has been excluded a steroid masks and worsens it, and it raises the neutrophil count itself, muddying the search for the cause of his leucocytosis; before a tissue diagnosis it can also leave a lymphoma or similar lesion undiagnosable on biopsy. Find the cause of the fever and obtain the histology first."
       },
       "response": {
         "zh-CN": "已给地塞米松。本病例没有记录用过激素；不模拟其后果。",
@@ -3169,15 +3212,13 @@
         "zh-CN": [
           "羟基脲",
           "降白细胞",
-          "降细胞治疗",
-          "白细胞单采"
+          "降细胞治疗"
         ],
         "en": [
           "hydroxycarbamide",
           "hydroxyurea",
           "cytoreduction",
-          "lower the white count",
-          "leukapheresis"
+          "lower the white count"
         ]
       },
       "dose": {
@@ -3210,18 +3251,22 @@
       "kind": "medication",
       "aliases": {
         "zh-CN": [
-          "碳青霉烯",
-          "美罗培南",
-          "亚胺培南",
+          "加抗真菌药",
           "抗真菌",
-          "升级抗生素"
+          "氟康唑",
+          "棘白菌素",
+          "升级抗生素",
+          "升级为碳青霉烯",
+          "升级为美罗培南"
         ],
         "en": [
-          "carbapenem",
-          "meropenem",
-          "imipenem",
+          "add an antifungal",
           "antifungal",
-          "escalate antibiotics"
+          "fluconazole",
+          "echinocandin",
+          "escalate antibiotics",
+          "escalate to a carbapenem",
+          "escalate to meropenem"
         ]
       },
       "dose": {
@@ -3238,8 +3283,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有培养结果或新的感染灶作依据，仅因白细胞高就升级为碳青霉烯类并加用抗真菌药，只会增加毒性、艰难梭菌感染和耐药（IDSA/SHEA 2016抗菌药物管理指南）；社区获得的腹腔感染一般不需要经验性抗真菌治疗。抗菌治疗下白细胞仍升高时，应重新寻找未控制的感染灶，并考虑非感染原因。",
-        "en": "Escalating to a carbapenem and adding an antifungal for a high count, with no culture result or new source to guide it, adds toxicity, C. difficile infection and resistance (IDSA/SHEA 2016 stewardship guideline); community-acquired abdominal infection does not usually need empirical antifungal cover. When the count keeps rising on antibiotics, look for an uncontrolled source and consider non-infective causes."
+        "zh-CN": "没有培养结果或新的感染灶作依据，仅因白细胞高就升级为碳青霉烯类并加用抗真菌药，只会增加毒性、艰难梭菌感染和耐药（IDSA/SHEA 2016抗菌药物管理指南）；社区获得的腹腔感染一般不需要经验性抗真菌治疗（SIS 2024不建议低危患者经验性抗真菌）。抗菌治疗下白细胞仍升高时，应重新寻找未控制的感染灶，并考虑非感染原因。",
+        "en": "Escalating to a carbapenem and adding an antifungal for a high count, with no culture result or new source to guide it, adds toxicity, C. difficile infection and resistance (IDSA/SHEA 2016 stewardship guideline); community-acquired abdominal infection does not usually need empirical antifungal cover (SIS 2024 advises against it in lower-risk patients). When the count keeps rising on antibiotics, look for an uncontrolled source and consider non-infective causes."
       },
       "response": {
         "zh-CN": "已升级抗菌方案。本病例没有记录这样处理；不模拟其后果。",
@@ -3278,8 +3323,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "81岁、发热、左下腹反跳痛、白细胞升高，入院前治疗后腹痛和发热仍不退，可能存在需要处理的腹腔感染源或其他严重疾病；他需要住院、留培养、静脉抗菌药和影像检查（SIS 2017），不能按单纯尿路感染让他回家。",
-        "en": "An 81-year-old with fever, left lower quadrant rebound and a raised white count, whose pain and fever outlasted treatment before admission, may have an abdominal source that needs control or another serious illness; he needs admission, cultures, IV antibiotics and imaging (SIS 2017), not a trip home as a simple urinary infection."
+        "zh-CN": "81岁、发热、左下腹反跳痛、白细胞升高，入院前治疗后腹痛和发热仍不退，可能存在需要处理的腹腔感染源或其他严重疾病；他需要住院、留培养、静脉抗菌药和影像检查（SIS 2024；IDSA 2024），不能按单纯尿路感染让他回家。",
+        "en": "An 81-year-old with fever, left lower quadrant rebound and a raised white count, whose pain and fever outlasted treatment before admission, may have an abdominal source that needs control or another serious illness; he needs admission, cultures, IV antibiotics and imaging (SIS 2024; IDSA 2024), not a trip home as a simple urinary infection."
       },
       "response": {
         "zh-CN": "本病例没有记录这样的安排；不模拟其后果。",
@@ -3511,8 +3556,8 @@
     {
       "id": "obj-theatre",
       "title": {
-        "zh-CN": "在手术中给术者建议",
-        "en": "Advise the surgeon during the operation"
+        "zh-CN": "第一份组织结果出来时给出建议",
+        "en": "Advise when the first tissue result comes back"
       },
       "short": {
         "zh-CN": "手术",
@@ -3553,16 +3598,16 @@
     {
       "id": "obj-diagnosis",
       "title": {
-        "zh-CN": "核对两份病理结论和白细胞，与他商定下一步",
-        "en": "Reconcile the reports and the count, and plan with him"
+        "zh-CN": "权衡病理与白细胞，与他商定下一步",
+        "en": "Weigh the pathology and the count, and plan with him"
       },
       "short": {
         "zh-CN": "确诊与计划",
         "en": "Diagnosis and plan"
       },
       "hint": {
-        "zh-CN": "两份病理结论不一致时以哪份为准，这组染色够不够？感染看来不像时，还有什么能让白细胞升得这么高？你会怎样开始和他的谈话？",
-        "en": "When two pathology readings disagree, which carries more weight, and is this panel enough? If infection looks less likely, what else can drive a count this high? How will you open the conversation with him?"
+        "zh-CN": "哪份病理结论更有分量？这组染色够不够？除了感染，还有什么能让白细胞升得这么高，又怎样证实？你会怎样开始和他的谈话？",
+        "en": "Which pathology reading carries more weight, and is this panel enough? Besides infection, what can drive a count this high, and how would you show it? How will you open the conversation with him?"
       },
       "guidance": {
         "zh-CN": "术后：调阅手术记录、术后病理和最新血常规，作答决策4和决策5，和他谈诊断与下一步，最后调阅病程与转归记录。",
@@ -3685,8 +3730,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。高龄、发热、左下腹局限性腹膜刺激征（反跳痛）、白细胞28.8×10⁹/L，入院前治疗后腹痛发热仍不退，在证明是别的病之前都应按复杂性腹腔感染处理：美国外科感染学会（SIS）2017年指南要求经验性覆盖肠道革兰阴性杆菌和厌氧菌，并尽早找到感染源加以控制。先留培养再换药，选药前核实过敏史（他说不清）；在查过肾功能的前提下做增强CT，它能显示病因，并指导引流或手术。拯救脓毒症运动（SSC）2026年指南不建议单用qSOFA筛查，应测全套生命体征、用NEWS2等评分。",
-            "en": "Right. An older man with fever, localised peritonism (rebound), white cells of 28.8 × 10⁹/L and pain and fever that outlasted treatment before admission has a complicated intra-abdominal infection until shown otherwise: the Surgical Infection Society 2017 guideline asks for empirical cover of enteric Gram-negative bacilli and anaerobes and early identification of a source to control. Take cultures before changing antibiotics and check his allergy status (he cannot say) before choosing the agent; contrast CT, with renal function checked, shows the cause and guides drainage or surgery. The Surviving Sepsis Campaign 2026 advises against qSOFA alone for screening — take a full set of observations and score NEWS2."
+            "zh-CN": "正确。高龄、发热、左下腹局限性腹膜刺激征（反跳痛）、白细胞28.8×10⁹/L，入院前治疗后腹痛发热仍不退，在证明是别的病之前都应按复杂性腹腔感染处理：美国外科感染学会（SIS）2024年更新的指南要求经验性覆盖肠道革兰阴性杆菌和厌氧菌（以甲硝唑为联合方案中的抗厌氧菌药），并在12小时内控制感染源。先留培养再换药，选药前核实过敏史（他说不清）；在查过肾功能的前提下做增强CT——美国感染病学会（IDSA）2024年指南建议怀疑憩室炎或腹腔脓肿时首选CT——它能显示病因，并指导引流或手术。拯救脓毒症运动（SSC）2026年指南不建议单用qSOFA筛查，应测全套生命体征、用NEWS2等评分。",
+            "en": "Right. An older man with fever, localised peritonism (rebound), white cells of 28.8 × 10⁹/L and pain and fever that outlasted treatment before admission has a complicated intra-abdominal infection until shown otherwise: the Surgical Infection Society's 2024 update asks for empirical cover of enteric Gram-negative bacilli and anaerobes (metronidazole as the anti-anaerobic partner) and source control within 12 hours. Take cultures before changing antibiotics and check his allergy status (he cannot say) before choosing the agent; contrast CT, with renal function checked, is the first imaging the IDSA 2024 guideline advises for a suspected diverticulitis or abscess, and it shows the cause and guides drainage or surgery. The Surviving Sepsis Campaign 2026 advises against qSOFA alone for screening — take a full set of observations and score NEWS2."
           }
         },
         {
@@ -3697,8 +3742,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "肾区叩痛和起初的尿路症状确实提示肾盂肾炎，但现在尿路症状已经好转，腹痛发热却没退，而且出现了左下腹反跳痛，单纯肾盂肾炎解释不了。入院前的治疗已经失败，再等48小时才做影像，会延误寻找和控制腹腔感染源（SIS 2017）。应先留培养、静脉覆盖肠道菌，并当天做增强CT。",
-            "en": "Renal-angle tenderness and the early urinary symptoms do suggest pyelonephritis, but those symptoms have eased while the pain and fever have not, and left lower quadrant rebound is not explained by pyelonephritis alone. Treatment before admission has already failed, so another 48 hours before imaging delays finding and controlling an abdominal source (SIS 2017). Take cultures, cover enteric organisms IV and get contrast CT today."
+            "zh-CN": "肾区叩痛和起初的尿路症状确实提示肾盂肾炎，但现在尿路症状已经好转，腹痛发热却没退，而且出现了左下腹反跳痛，单纯肾盂肾炎解释不了。入院前的治疗已经失败，再等48小时才做影像，会延误寻找和控制腹腔感染源（IDSA 2024建议怀疑憩室炎或脓肿时首选CT）。应先留培养、静脉覆盖肠道菌，并当天做增强CT。",
+            "en": "Renal-angle tenderness and the early urinary symptoms do suggest pyelonephritis, but those symptoms have eased while the pain and fever have not, and left lower quadrant rebound is not explained by pyelonephritis alone. Treatment before admission has already failed, so another 48 hours before imaging delays finding and controlling an abdominal source (IDSA 2024 makes CT the first imaging for a suspected diverticulitis or abscess). Take cultures, cover enteric organisms IV and get contrast CT today."
           }
         },
         {
@@ -3721,8 +3766,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "“肿瘤热”只能在排除感染以后考虑，而他还有局限性腹膜刺激征和升高的白细胞。地塞米松不能当退热药用（原卫生部《糖皮质激素类药物临床应用指导原则》2011：不能单纯以退热为目的使用），它会掩盖并加重腹腔感染；在取得组织之前用激素，还可能让淋巴瘤等病变的活检无法确诊。应先留培养、静脉抗感染并尽快做CT。",
-            "en": "Tumour fever is considered only once infection has been excluded, and he still has localised peritonism and a raised white count. Dexamethasone is no antipyretic (China's 2011 Ministry of Health principles for glucocorticoid use: never just to bring down a fever); it can mask and worsen an abdominal infection, and steroids before tissue is taken can leave a lymphoma or similar lesion undiagnosable on biopsy. Cultures, IV antibiotics and prompt CT come first."
+            "zh-CN": "“肿瘤热”只能在排除感染以后考虑，而他还有局限性腹膜刺激征和升高的白细胞。地塞米松不能当退热药用（原卫生部《糖皮质激素类药物临床应用指导原则》2011：单纯以退热为目的使用属于不合理用药），它会掩盖并加重腹腔感染；在取得组织之前用激素，还可能让淋巴瘤等病变的活检无法确诊。应先留培养、静脉抗感染并尽快做CT。",
+            "en": "Tumour fever is considered only once infection has been excluded, and he still has localised peritonism and a raised white count. Dexamethasone is no antipyretic (China's 2011 Ministry of Health principles for glucocorticoid use name using steroids purely to bring down a fever as misuse); it can mask and worsen an abdominal infection, and steroids before tissue is taken can leave a lymphoma or similar lesion undiagnosable on biopsy. Cultures, IV antibiotics and prompt CT come first."
           }
         }
       ]
@@ -3763,20 +3808,20 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。结肠镜正常、小肠受外压而无外漏，说明肿块在肠外；有血流的实性成分不像单纯脓肿。鉴别包括淋巴瘤、胃肠间质瘤、肉瘤、腹膜原发肿瘤和转移瘤，治疗完全取决于组织学和免疫组化，粗针活检能给病理医生足够的组织（穿刺前先查血小板和凝血，本病例没有记录）；腹水检查能同时查感染和肿瘤细胞。腹膜表面肿瘤协作组（PSOGI/EURACAN）2021年指南同样以足量活检的组织学作为诊断依据；没有安全的穿刺路径时再取腹腔镜活检。",
-            "en": "Right. A normal colonoscopy and extrinsic compression without leak place the mass outside the bowel, and a vascular solid component is unlike a simple abscess. The differential — lymphoma, GIST, sarcoma, a primary peritoneal tumour, metastasis — is decided only by histology with immunostaining, and a core biopsy, once platelets and clotting are checked (not recorded here), gives the pathologist enough tissue; the ascitic tap tests for infection and tumour cells at the same time. The peritoneal surface oncology guideline (PSOGI/EURACAN 2021) likewise bases diagnosis on histology from adequate biopsies; laparoscopy is the fallback when there is no safe window."
+            "zh-CN": "正确。结肠镜无明显异常、小肠受外压而无外漏，说明肿块在肠外；有血流的实性成分不像单纯脓肿。鉴别包括淋巴瘤、胃肠间质瘤、肉瘤、腹膜原发肿瘤和转移瘤，治疗完全取决于组织学和免疫组化，粗针活检能给病理医生足够的组织（穿刺前先查血小板和凝血，本病例没有记录）；腹水检查能同时查感染和肿瘤细胞。腹膜表面肿瘤协作组（PSOGI/EURACAN）2021年指南同样要求以粗针穿刺活检或探查性腹腔镜取得的组织诊断，而不是积液细胞学或细针穿刺材料；没有安全的经皮穿刺路径时再取腹腔镜活检。",
+            "en": "Right. A colonoscopy without obvious abnormality and extrinsic compression without leak place the mass outside the bowel, and a vascular solid component is unlike a simple abscess. The differential — lymphoma, GIST, sarcoma, a primary peritoneal tumour, metastasis — is decided only by histology with immunostaining, and a core biopsy, once platelets and clotting are checked (not recorded here), gives the pathologist enough tissue; the ascitic tap tests for infection and tumour cells at the same time. The peritoneal surface oncology guideline (PSOGI/EURACAN 2021) likewise requires tissue from a core needle biopsy or exploratory laparoscopy, not effusion cytology or fine-needle material; laparoscopy is the route when there is no safe percutaneous window."
           }
         },
         {
           "id": "explore-resect",
           "text": {
-            "zh-CN": "肿块大、症状重，直接开腹探查：术中用冰冻切片决定切除范围，争取一次手术既明确诊断又切除肿块，也免去经皮穿刺带来的风险",
+            "zh-CN": "肿块大、症状重，直接手术探查：术中用冰冻切片决定切除范围，争取一次手术既明确诊断又切除肿块，也免去经皮穿刺带来的风险",
             "en": "The mass is large and he is unwell, so explore him surgically: let a frozen section set the extent of resection, aiming to diagnose and remove it in one operation and spare him a needle biopsy"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "原报告的团队确实选择了手术探查。但在不知道肿块性质时开腹，冰冻切片只能给出初步意见，切除范围可能定错；若病变不能切除，就等于为取组织做了一次大手术。对一位发热的81岁老人，现行做法是先用创伤小的方式取得组织学诊断并经多学科讨论（PSOGI/EURACAN 2021），手术留给诊断明确、可以从中获益的情况。",
-            "en": "The report's team did choose a surgical exploration. But opening the abdomen without knowing what the mass is leaves the extent of surgery to a provisional frozen section, and if it proves unresectable he has had a major operation just for tissue. For a febrile 81-year-old, current practice is a histological diagnosis by the least invasive route and an MDT plan first (PSOGI/EURACAN 2021), keeping surgery for when the diagnosis is known and he can benefit."
+            "zh-CN": "原报告的团队确实选择了手术探查。但在不知道肿块性质时就手术探查，冰冻切片只能给出初步意见，切除范围可能定错；若病变不能切除，就等于为取组织做了一次大手术。对一位发热的81岁老人，现行做法是先用创伤小的方式取得组织学诊断并经多学科讨论（PSOGI/EURACAN 2021），手术留给诊断明确、可以从中获益的情况。",
+            "en": "The report's team did choose a surgical exploration. But operating without knowing what the mass is leaves the extent of surgery to a provisional frozen section, and if it proves unresectable he has had a major operation just for tissue. For a febrile 81-year-old, current practice is a histological diagnosis by the least invasive route and an MDT plan first (PSOGI/EURACAN 2021), keeping surgery for when the diagnosis is known and he can benefit."
           }
         },
         {
@@ -3799,8 +3844,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "有血流的囊实性肿块、正常的结肠镜和无外漏的小肠造影，都不支持单纯的脓肿或憩室炎性包块；他的白细胞还在上升。再等两周会延误诊断，而盲目延长抗菌疗程不符合抗菌药物管理原则（IDSA/SHEA 2016）。应先取得组织，同时抽腹水查感染。",
-            "en": "A vascular cystic-solid mass, a normal colonoscopy and a small-bowel study without leak do not support a simple abscess or diverticular phlegmon, and his count is still rising. Two more weeks delays the diagnosis, and stretching an empirical course without a target runs against antibiotic stewardship (IDSA/SHEA 2016). Get tissue now, and tap the fluid for infection at the same time."
+            "zh-CN": "有血流的囊实性肿块、无明显异常的结肠镜和无外漏的小肠造影，都不支持单纯的脓肿或憩室炎性包块；他的白细胞还在上升。再等两周会延误诊断，而盲目延长抗菌疗程不符合抗菌药物管理原则（IDSA/SHEA 2016）。应先取得组织，同时抽腹水查感染。",
+            "en": "A vascular cystic-solid mass, a colonoscopy without obvious abnormality and a small-bowel study without leak do not support a simple abscess or diverticular phlegmon, and his count is still rising. Two more weeks delays the diagnosis, and stretching an empirical course without a target runs against antibiotic stewardship (IDSA/SHEA 2016). Get tissue now, and tap the fluid for infection at the same time."
           }
         }
       ]
@@ -3833,8 +3878,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。冰冻切片只是初步意见，间皮瘤等腹膜原发肿瘤和转移性腺癌在冰冻上容易混淆，确诊要靠石蜡切片和成套免疫组化（国际间皮瘤兴趣小组IMIG 2017年更新的病理诊断指南）。肠系膜根部受累、病变广泛时，切除既不能清除病灶，又会危及肠系膜上血管；PSOGI/EURACAN 2021指南把减瘤手术留给确诊后、经过筛选、在有经验中心治疗的患者。伴发热的粟粒结节还要排除结核，所以要留新鲜组织送培养。",
-            "en": "Right. A frozen section is a provisional reading — mesothelioma and other primary peritoneal tumours are easily mistaken for metastatic adenocarcinoma on frozen tissue — and the diagnosis rests on paraffin histology with a full immunohistochemical panel (International Mesothelioma Interest Group 2017 update). With the mesenteric root involved and disease widespread, resection cannot clear it and endangers the superior mesenteric vessels; PSOGI/EURACAN 2021 keeps cytoreductive surgery for selected patients with a confirmed diagnosis at experienced centres. Miliary nodules with fever also mean TB must be excluded, hence fresh tissue for culture."
+            "zh-CN": "正确。冰冻切片只是初步意见，间皮瘤等腹膜原发肿瘤和转移性腺癌在冰冻上容易混淆，确诊要靠石蜡切片和成套免疫组化（国际间皮瘤兴趣小组IMIG 2023年更新的病理诊断指南）。肠系膜根部受累、病变广泛时，切除既不能清除病灶，又会危及肠系膜上血管；PSOGI/EURACAN 2021指南把减瘤手术留给确诊后、经过筛选、在有经验中心治疗的患者。伴发热的粟粒结节还要排除结核，所以要留新鲜组织送培养。",
+            "en": "Right. A frozen section is a provisional reading — mesothelioma and other primary peritoneal tumours are easily mistaken for metastatic adenocarcinoma on frozen tissue — and the diagnosis rests on paraffin histology with a full immunohistochemical panel (International Mesothelioma Interest Group 2023 update). With the mesenteric root involved and disease widespread, resection cannot clear it and endangers the superior mesenteric vessels; PSOGI/EURACAN 2021 keeps cytoreductive surgery for selected patients with a confirmed diagnosis at experienced centres. Miliary nodules with fever also mean TB must be excluded, hence fresh tissue for culture."
           }
         },
         {
@@ -3857,8 +3902,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "冰冻切片不是最终诊断，一小块组织可能不够做免疫组化；石蜡结果一旦与冰冻不符，就得再取组织，对81岁的老人意味着再做一次手术。鉴别间皮瘤和腺癌需要足量组织上的成套免疫组化（IMIG 2017年更新的指南），是否寻找原发灶要等石蜡病理出来再定。",
-            "en": "A frozen section is not the final diagnosis, and one small piece may not be enough for immunostaining; if the paraffin report disagrees, more tissue means a second operation for an 81-year-old. Telling mesothelioma from adenocarcinoma needs a full immunohistochemical panel on adequate tissue (IMIG 2017 update), and any search for a primary waits for the paraffin report."
+            "zh-CN": "冰冻切片不是最终诊断，一小块组织可能不够做免疫组化；石蜡结果一旦与冰冻不符，就得再取组织，对81岁的老人意味着再做一次手术。鉴别间皮瘤和腺癌需要足量组织上的成套免疫组化（IMIG 2023年更新的指南），是否寻找原发灶要等石蜡病理出来再定。",
+            "en": "A frozen section is not the final diagnosis, and one small piece may not be enough for immunostaining; if the paraffin report disagrees, more tissue means a second operation for an 81-year-old. Telling mesothelioma from adenocarcinoma needs a full immunohistochemical panel on adequate tissue (IMIG 2023 update), and any search for a primary waits for the paraffin report."
           }
         },
         {
@@ -3869,8 +3914,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "腹腔冲洗液细胞学常常分不清反应性间皮细胞、间皮瘤和腺癌，也不够做成套免疫组化；不取组织等于白做一次手术（IMIG 2017年更新的指南以组织学为诊断依据）。腹腔已经打开时，多取几块活检只多花几分钟。",
-            "en": "Washings cytology often cannot separate reactive mesothelial cells, mesothelioma and adenocarcinoma, and gives too little material for a full panel; taking no tissue wastes the operation (the IMIG 2017 update bases the diagnosis on histology). With the abdomen already open, several biopsies add only minutes."
+            "zh-CN": "腹腔冲洗液细胞学常常分不清反应性间皮细胞、间皮瘤和腺癌，也不够做成套免疫组化；不取组织等于白做一次手术（PSOGI/EURACAN 2021要求以组织而不是积液细胞学诊断腹膜间皮瘤）。腹腔已经打开时，多取几块活检只多花几分钟。",
+            "en": "Washings cytology often cannot separate reactive mesothelial cells, mesothelioma and adenocarcinoma, and gives too little material for a full panel; taking no tissue wastes the operation (PSOGI/EURACAN 2021 requires tissue, not effusion cytology, to diagnose peritoneal mesothelioma). With the abdomen already open, several biopsies add only minutes."
           }
         }
       ]
@@ -3878,8 +3923,8 @@
     {
       "id": "final-pathology",
       "prompt": {
-        "zh-CN": "术后病理：最终组织学结合免疫组化诊断为恶性间皮瘤，calretinin阳性、CK18阳性、vimentin阳性、CEA阴性；术中冰冻曾考虑转移性腺癌。你怎样看这两个结论？还缺什么？",
-        "en": "Final pathology: histology with immunostaining reports malignant mesothelioma — calretinin positive, CK18 positive, vimentin positive, CEA negative; the frozen section had suggested metastatic adenocarcinoma. How do you reconcile the two, and what is still missing?"
+        "zh-CN": "术后病理：最终组织学结合免疫组化诊断为恶性间皮瘤，calretinin阳性、CK18阳性、vimentin阳性、CEA阴性；术中冰冻曾考虑转移性腺癌。你怎样看这两个结论？下一步怎么做？",
+        "en": "Final pathology: histology with immunostaining reports malignant mesothelioma — calretinin positive, CK18 positive, vimentin positive, CEA negative; the frozen section had suggested metastatic adenocarcinoma. How do you weigh the two, and what do you do next?"
       },
       "kind": "single",
       "requires": {
@@ -3901,13 +3946,13 @@
         {
           "id": "final-report-complete-panel",
           "text": {
-            "zh-CN": "以石蜡病理为准，支持间皮瘤；补做WT1或D2-40等间皮标志物和claudin-4或MOC-31等癌标志物，请专家复核，并问石棉接触史",
-            "en": "Trust the paraffin report, which supports mesothelioma, but add a second mesothelial marker (WT1 or D2-40) and carcinoma markers (claudin-4 or MOC-31), get expert review and ask about asbestos"
+            "zh-CN": "以石蜡病理为准，支持间皮瘤；补做D2-40或CK5/6等间皮标志物和claudin-4或MOC-31等癌标志物，专家复核，问石棉接触史",
+            "en": "Trust the paraffin report, which supports mesothelioma, but add a second mesothelial marker (D2-40 or CK5/6) and carcinoma markers (claudin-4 or MOC-31), get expert review and ask about asbestos"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。最终诊断以石蜡切片和免疫组化为准，冰冻只是初步意见。国际间皮瘤兴趣小组（IMIG）2017年更新的病理诊断指南建议至少用两个间皮标志物和两个癌标志物；本例只有calretinin一个特异的间皮标志物和CEA一个癌标志物，CK18和vimentin都不特异，应当补齐，必要时用BAP1或CDKN2A确认恶性。间皮瘤与石棉接触有关，职业史关系到病因判断和职业病认定。",
-            "en": "Right. The final diagnosis rests on paraffin histology with immunostaining; the frozen section is a provisional opinion. The International Mesothelioma Interest Group's 2017 update recommends at least two mesothelial and two carcinoma markers; here calretinin is the only specific mesothelial marker and CEA the only carcinoma marker, while CK18 and vimentin are non-specific, so complete the panel, with BAP1 or CDKN2A testing where malignancy needs confirming. Mesothelioma is linked to asbestos, and his work history matters for the cause and for recognition as an occupational disease."
+            "zh-CN": "正确。最终诊断以石蜡切片和免疫组化为准，冰冻只是初步意见。国际间皮瘤兴趣小组（IMIG）2023年更新的病理诊断指南建议用两个间皮标志物和两个癌标志物组成免疫组化组合；本例只有calretinin一个特异的间皮标志物和CEA一个癌标志物，CK18和vimentin都不特异，应当补齐，必要时用BAP1或MTAP免疫组化（或CDKN2A荧光原位杂交）确认恶性。PSOGI/EURACAN 2021还要求报告写明组织学亚型和Ki-67指数，并由熟悉腹膜肿瘤的病理医生复核。间皮瘤与石棉接触有关，职业史关系到病因判断和职业病认定。",
+            "en": "Right. The final diagnosis rests on paraffin histology with immunostaining; the frozen section is a provisional opinion. The International Mesothelioma Interest Group's 2023 update advises an immunopanel of two mesothelial and two carcinoma markers; here calretinin is the only specific mesothelial marker and CEA the only carcinoma marker, while CK18 and vimentin are non-specific, so complete the panel, with BAP1 or MTAP immunostaining (or CDKN2A FISH) where malignancy needs confirming. PSOGI/EURACAN 2021 also asks for the histological subtype and the Ki-67 index in the report and for review by a pathologist expert in peritoneal disease. Mesothelioma is linked to asbestos, and his work history matters for the cause and for recognition as an occupational disease."
           }
         },
         {
@@ -3918,8 +3963,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "冰冻组织形态失真，只能给出初步判断，最终病理可以推翻它；石蜡切片加calretinin阳性、CEA阴性支持间皮瘤而不是腺癌（IMIG 2017年更新）。CEA阴性本身不能排除腺癌，正因如此才要补做更多癌标志物，而不是退回冰冻结论。",
-            "en": "Frozen tissue loses detail and gives a provisional reading that the final report can overturn; paraffin histology with calretinin positive and CEA negative supports mesothelioma over adenocarcinoma (IMIG 2017 update). A negative CEA alone does not exclude adenocarcinoma — which is why more carcinoma markers are needed, not a return to the frozen-section reading."
+            "zh-CN": "冰冻组织形态失真，只能给出初步判断，最终病理可以推翻它；石蜡切片加calretinin阳性、CEA阴性支持间皮瘤而不是腺癌（IMIG 2023年更新）。CEA阴性本身不能排除腺癌，正因如此才要补做更多癌标志物，而不是退回冰冻结论。",
+            "en": "Frozen tissue loses detail and gives a provisional reading that the final report can overturn; paraffin histology with calretinin positive and CEA negative supports mesothelioma over adenocarcinoma (IMIG 2023 update). A negative CEA alone does not exclude adenocarcinoma — which is why more carcinoma markers are needed, not a return to the frozen-section reading."
           }
         },
         {
@@ -3930,8 +3975,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "calretinin阳性、CEA阴性确实支持间皮瘤，但IMIG 2017年更新的指南要求至少两个间皮标志物加两个癌标志物，因为单个标志物在部分腺癌和其他肿瘤中也会阳性。必要时还要用BAP1或CDKN2A确认恶性，并请有经验的病理医生复核，治疗才有可靠依据。",
-            "en": "Calretinin positive and CEA negative do favour mesothelioma, but the IMIG 2017 update asks for at least two mesothelial and two carcinoma markers, because a single marker can be positive in some adenocarcinomas and other tumours. BAP1 or CDKN2A testing where malignancy is in question, and review by an experienced pathologist, give treatment a sound basis."
+            "zh-CN": "calretinin阳性、CEA阴性确实支持间皮瘤，但IMIG 2023年更新的指南建议用两个间皮标志物加两个癌标志物，因为单个标志物在部分腺癌和其他肿瘤中也会阳性。必要时还要用BAP1或MTAP免疫组化确认恶性，并请有经验的病理医生复核，治疗才有可靠依据。",
+            "en": "Calretinin positive and CEA negative do favour mesothelioma, but the IMIG 2023 update advises two mesothelial and two carcinoma markers, because a single marker can be positive in some adenocarcinomas and other tumours. BAP1 or MTAP immunostaining where malignancy is in question, and review by an experienced pathologist, give treatment a sound basis."
           }
         },
         {
@@ -3942,8 +3987,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "间皮瘤本身就常同时表达角蛋白和vimentin，这两项同时阳性分不出间皮瘤和肉瘤（IMIG 2017年更新）；calretinin阳性支持间皮来源。组织学亚型（上皮样、双相或肉瘤样）要由病理报告说明，本病例没有记录。",
-            "en": "Mesothelioma itself commonly co-expresses keratin and vimentin, so the pair cannot separate it from a sarcoma (IMIG 2017 update), and calretinin positivity supports a mesothelial origin. The histological subtype — epithelioid, biphasic or sarcomatoid — has to come from the pathology report, and this case does not record it."
+            "zh-CN": "间皮瘤本身就常同时表达角蛋白和vimentin，这两项同时阳性分不出间皮瘤和肉瘤（IMIG 2023年更新）；calretinin阳性支持间皮来源。组织学亚型（上皮样、双相或肉瘤样）要由病理报告说明，本病例没有记录。",
+            "en": "Mesothelioma itself commonly co-expresses keratin and vimentin, so the pair cannot separate it from a sarcoma (IMIG 2023 update), and calretinin positivity supports a mesothelial origin. The histological subtype — epithelioid, biphasic or sarcomatoid — has to come from the pathology report, and this case does not record it."
           }
         }
       ]
@@ -4289,8 +4334,8 @@
       "id": "rb-no-critical-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有在取得组织诊断之前用地塞米松退热，也没有凭冰冻结论切除肿块及受累肠管",
-        "en": "Gave no dexamethasone for the fever before the tissue diagnosis, and did not resect the mass and involved bowel on the strength of a frozen section"
+        "zh-CN": "没有用地塞米松退热，也没有凭冰冻结论切除肿块及受累肠管",
+        "en": "Gave no dexamethasone to bring down his fever, and did not resect the mass and involved bowel on the strength of a frozen section"
       },
       "weight": 4,
       "met": {
@@ -4371,8 +4416,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（SPIKES，结合Calgary–Cambridge的结构）：在术后病理出来后，选安静的地方、留足时间，问他想让谁在场；先问他已经知道什么、想知道多少——他说过“年纪大了，直说就行”，但仍要一步一步来。用通俗的话说明：手术看到肚子里长了东西，原来以为是别处转来的癌，最后的病理认为是腹膜上长出来的一种恶性肿瘤（间皮瘤），病理科还要加做几项染色把诊断做实；说明白细胞很高可能和这个肿瘤有关，同时还在排除感染和血液病。坦诚说明这次手术没能把肿块切掉、以后能做的治疗有限，按他的身体情况，大手术多半不合适，可以讨论药物治疗，也可以以控制发热、腹痛和腹胀为主；问清他最看重什么，把姑息治疗作为同样正当的选择，并说明无论怎么选都会继续照顾他。顺带、不带指责地问他做过什么工作、有没有接触过石棉，并说明这和病因、职业病认定有关。回应情绪，留出提问时间，用回授法确认理解，约好下次再谈并记录。不要给出本病例没有的生存期数字，不要把发热简单说成“肿瘤热”而停止排查，不要替他作决定，也不要只和家属谈而绕开他本人。",
-        "en": "Good performance (SPIKES within a Calgary–Cambridge structure): once the final pathology is back, a quiet place and enough time, asking whom he wants present; first asks what he already knows and how much he wants to know — he has said “just tell me straight”, but it still goes step by step. Explains in plain words that the operation found a growth inside his abdomen, first thought to be a cancer spread from elsewhere, which the final pathology reads as a cancer of the lining of the abdomen (mesothelioma), with a few more stains under way to make the diagnosis firm; that the very high white count may come from the tumour while infection and a blood disorder are still being ruled out. Is honest that the operation could not remove the mass and that treatment options are limited — at his age and in his condition a major operation is unlikely to suit him — and sets out drug treatment and care focused on fever, pain and swelling as real choices; asks what matters most to him, offers palliative care as an equally valid path, and says he will be looked after whatever he chooses. Asks, without blame, what work he did and whether he was ever around asbestos, explaining why it matters for the cause and for occupational-disease recognition. Responds to emotion, leaves time for questions, checks understanding by teach-back, agrees when to talk again and documents it. Does not quote survival figures the case does not record, does not dismiss the fever as “tumour fever” and stop looking, does not decide for him, and does not talk only to relatives around him."
+        "zh-CN": "良好表现（SPIKES，结合Calgary–Cambridge的结构）：在术后病理出来后，选安静的地方、留足时间，问他想让谁在场；先问他已经知道什么、想知道多少——他说过“年纪大了，直说就行”，但仍要一步一步来。用通俗的话说明：手术看到肚子里长了东西，原来以为是别处转来的癌，最后的病理认为是腹膜上长出来的一种恶性肿瘤（间皮瘤），病理科还要加做几项染色把诊断做实；说明白细胞很高可能和这个肿瘤有关，同时还在排除感染和血液病。坦诚说明这次手术没有切除肿块、以后能做的治疗有限，按他的身体情况，大手术多半不合适，可以讨论药物治疗，也可以以控制发热、腹痛和腹胀为主；问清他最看重什么，把姑息治疗作为同样正当的选择，并说明无论怎么选都会继续照顾他。顺带、不带指责地问他做过什么工作、有没有接触过石棉，并说明这和病因、职业病认定有关。回应情绪，留出提问时间，用回授法确认理解，约好下次再谈并记录。不要给出本病例没有的生存期数字，不要把发热简单说成“肿瘤热”而停止排查，不要替他作决定，也不要只和家属谈而绕开他本人。",
+        "en": "Good performance (SPIKES within a Calgary–Cambridge structure): once the final pathology is back, a quiet place and enough time, asking whom he wants present; first asks what he already knows and how much he wants to know — he has said “just tell me straight”, but it still goes step by step. Explains in plain words that the operation found a growth inside his abdomen, first thought to be a cancer spread from elsewhere, which the final pathology reads as a cancer of the lining of the abdomen (mesothelioma), with a few more stains under way to make the diagnosis firm; that the very high white count may come from the tumour while infection and a blood disorder are still being ruled out. Is honest that the mass was not removed at the operation and that treatment options are limited — at his age and in his condition a major operation is unlikely to suit him — and sets out drug treatment and care focused on fever, pain and swelling as real choices; asks what matters most to him, offers palliative care as an equally valid path, and says he will be looked after whatever he chooses. Asks, without blame, what work he did and whether he was ever around asbestos, explaining why it matters for the cause and for occupational-disease recognition. Responds to emotion, leaves time for questions, checks understanding by teach-back, agrees when to talk again and documents it. Does not quote survival figures the case does not record, does not dismiss the fever as “tumour fever” and stop looking, does not decide for him, and does not talk only to relatives around him."
       }
     }
   ],
@@ -4402,8 +4447,8 @@
         "en": "Nurse Lu (ward)"
       },
       "knowledge": {
-        "zh-CN": "病房护士。交班（ISBAR）：81岁男性，左下腹痛伴发热入院；入院前经抗感染治疗，尿路症状减轻，但腹痛和发热持续；白细胞升高。可以协助建立静脉通路和采血、留血培养和尿标本、测生命体征并做NEWS2评分、按医嘱给药、联系CT室、内镜室和放射科转运，以及术前准备。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到他的生命体征或体温数值时，直接说本病例没有记录。",
-        "en": "Ward nurse. Handover (ISBAR): 81-year-old man admitted with left lower abdominal pain and fever; before admission his urinary symptoms eased with antimicrobial treatment, but the pain and fever have continued; his white count is raised. Can help with IV access and bloods, blood cultures and urine samples, observations with a NEWS2 score, giving prescribed drugs, arranging transfer to CT, endoscopy and radiology, and preparing him for theatre. Reads orders back, reports only results that are back, never interprets or diagnoses, and says plainly that this case records none of his vital signs or temperature readings when asked."
+        "zh-CN": "病房护士。交班（ISBAR）：81岁男性，左下腹痛伴发热入院；入院前经抗感染治疗，尿路症状减轻，但腹痛和发热持续；白细胞升高。可以协助建立静脉通路和采血、留血培养和尿标本、测生命体征并做NEWS2评分、按医嘱给药、联系CT室、内镜室和放射科转运，以及术前准备。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到他的生命体征、体温数值、体重、用药或过敏史时，直接说没有记录可报，从不报数字。",
+        "en": "Ward nurse. Handover (ISBAR): 81-year-old man admitted with left lower abdominal pain and fever; before admission his urinary symptoms eased with antimicrobial treatment, but the pain and fever have continued; his white count is raised. Can help with IV access and bloods, blood cultures and urine samples, observations with a NEWS2 score, giving prescribed drugs, arranging transfer to CT, endoscopy and radiology, and preparing him for theatre. Reads orders back, reports only results that are back, never interprets or diagnoses, and, asked for his vital signs, temperature readings, weight, medicines or allergies, says plainly there is nothing recorded to report — never gives a number."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4415,8 +4460,8 @@
         "en": "Dr Tang (pathology consultant)"
       },
       "knowledge": {
-        "zh-CN": "病理科医生，只解读学员已经看过的病理结果。可以讲：冰冻切片的局限（组织冻存后形态失真，间皮瘤等腹膜原发肿瘤和转移性腺癌在冰冻上容易混淆）；国际间皮瘤兴趣小组2017年更新的病理诊断指南——至少两个间皮标志物（calretinin、WT1、D2-40、CK5/6）和两个癌标志物（如claudin-4、MOC-31、Ber-EP4、CEA），按鉴别诊断选择，必要时用BAP1免疫组化或CDKN2A检测区分恶性与反应性间皮增生；CK18和vimentin不特异；组织学亚型影响预后；较早的文献曾用nm23等标志物推断原发或转移，现在的诊断标准不依靠它。不提前给出决策答案，不补充本病例没有记录的染色、亚型或增殖指数。",
-        "en": "Pathologist who interprets only pathology the learner has already read. Can explain the limits of frozen sections (frozen tissue loses detail; mesothelioma and other primary peritoneal tumours are easily mistaken for metastatic adenocarcinoma); the International Mesothelioma Interest Group's 2017 update — at least two mesothelial markers (calretinin, WT1, D2-40, CK5/6) and two carcinoma markers (such as claudin-4, MOC-31, Ber-EP4, CEA) chosen for the differential, with BAP1 immunostaining or CDKN2A testing to separate malignant from reactive mesothelial proliferation; that CK18 and vimentin are non-specific; that the histological subtype matters for prognosis; and that markers such as nm23, used in older papers to argue primary versus metastatic origin, play no part in today's criteria. Never gives a decision's answer early, and adds no stain, subtype or proliferation index the case does not record."
+        "zh-CN": "病理科医生，只解读学员已经看过的病理结果。可以讲：冰冻切片的局限（组织冻存后形态失真，间皮瘤等腹膜原发肿瘤和转移性腺癌在冰冻上容易混淆）；国际间皮瘤兴趣小组2023年更新的病理诊断指南——一般用两个间皮标志物（calretinin、D2-40、CK5/6效果最好，另有WT1）和两个癌标志物（如claudin-4、MOC-31、Ber-EP4、CEA），按鉴别诊断选择，必要时用BAP1或MTAP免疫组化、CDKN2A荧光原位杂交区分恶性与反应性间皮增生；CK18和vimentin不特异；组织学亚型影响预后，PSOGI/EURACAN 2021要求报告写明亚型和Ki-67指数，并由熟悉腹膜肿瘤的病理医生复核；较早的文献曾用nm23等标志物推断原发或转移，现在的诊断标准不依靠它。不提前给出决策答案，不补充本病例没有记录的染色、亚型或增殖指数。",
+        "en": "Pathologist who interprets only pathology the learner has already read. Can explain the limits of frozen sections (frozen tissue loses detail; mesothelioma and other primary peritoneal tumours are easily mistaken for metastatic adenocarcinoma); the International Mesothelioma Interest Group's 2023 update — an immunopanel of two mesothelial markers (calretinin, D2-40 and CK5/6 perform best; WT1) and two carcinoma markers (such as claudin-4, MOC-31, Ber-EP4, CEA) chosen for the differential, with BAP1 or MTAP immunostaining or CDKN2A FISH to separate malignant from reactive mesothelial proliferation; that CK18 and vimentin are non-specific; that the histological subtype matters for prognosis, and PSOGI/EURACAN 2021 asks the report to give it with the Ki-67 index and requires review by a pathologist expert in peritoneal disease; and that markers such as nm23, used in older papers to argue primary versus metastatic origin, play no part in today's criteria. Never gives a decision's answer early, and adds no stain, subtype or proliferation index the case does not record."
       },
       "interprets": [
         "exploration",
@@ -4443,6 +4488,22 @@
         "cytokines"
       ],
       "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "孔医生（普外科会诊）",
+        "en": "Dr Kong (general surgery consultant)"
+      },
+      "knowledge": {
+        "zh-CN": "普外科医生，在病房会诊，也主刀手术探查。只解读学员已经看过的影像和手术记录。可以讲：腹腔感染要尽早控制感染源——美国外科感染学会（SIS）2024年更新的指南要求低危患者12小时内完成，合并脓毒性休克的高危患者6小时内；CT能显示有没有需要引流的积液或脓肿；肠外肿块在任何切除之前要先取得组织诊断。学员看过术中所见以后，可以说明肠系膜根部受累并有广泛结节时切除清除不了病灶，还会危及肠系膜上血管；减瘤手术加腹腔热灌注化疗只适合确诊后、病变可以切净、身体能承受大手术、在腹膜肿瘤专科中心治疗的患者（PSOGI/EURACAN 2021）。手术中他打电话报告术中所见和冰冻结果，问学员下一步怎么办，但不替学员回答。不提前给出决策答案，不说探查是腹腔镜还是开腹，不补充本病例没有记录的手术细节、结节部位或腹水情况。",
+        "en": "General surgeon who sees him on the ward and leads the exploration. Interprets only the imaging and the operative record the learner has already read. Can explain that an abdominal source of infection needs early control — the Surgical Infection Society's 2024 update asks for it within 12 hours in lower-risk patients and within 6 hours in higher-risk patients with septic shock; that CT shows whether there is a collection to drain; and that a mass outside the bowel needs a tissue diagnosis before any resection. Once the learner has read the operative findings, can explain that disease at the mesenteric root with widespread nodules cannot be cleared by resection, which would endanger the superior mesenteric vessels, and that cytoreductive surgery with HIPEC is only for patients with a confirmed diagnosis, resectable disease and the fitness for a major operation, treated at a specialist peritoneal centre (PSOGI/EURACAN 2021). From theatre he phones through the findings and the frozen section and asks the learner what to do next, without answering for them. Never gives a decision's answer early, never says whether the exploration was laparoscopic or open, and adds no operative detail, nodule site or fluid finding the case does not record."
+      },
+      "interprets": [
+        "abdo-imaging",
+        "exploration"
+      ],
+      "revealsDiagnosis": false
     }
   ],
   "debrief": {
@@ -4451,8 +4512,8 @@
       "en": "Debrief: fever, a mass outside the bowel and extreme neutrophilia — malignant peritoneal mesothelioma"
     },
     "conclusion": {
-      "zh-CN": "81岁男性，左下腹隐痛伴发热；入院前治疗后尿路症状好转，腹痛发热不退。查体腹部膨隆，左下腹压痛、反跳痛，无肌紧张，未触及包块，左肾区叩痛。白细胞由28.8升至33.3×10⁹/L，以成熟中性粒细胞为主。影像见左下腹7.1 cm×6.3 cm×9.9 cm囊实性、有血流的肿块，周围脂肪模糊，腹盆腔积液；结肠镜正常，小肠受外压而无外漏。两次血培养阴性，骨髓粒系增生活跃、无明显形态异常。探查见肠系膜根部肿块和广泛粟粒结节，冰冻考虑转移性腺癌，最终病理为恶性间皮瘤（calretinin、CK18、vimentin阳性，CEA阴性）；只取了组织。白细胞后来升至113.7×10⁹/L，抗菌无效，原团队考虑类白血病反应；患者离院，结局不详。今天的做法：先按腹腔感染留培养、静脉抗菌并做CT，用粗针活检取组织，以石蜡病理为准并按IMIG补齐染色，类白血病反应须排除慢性髓性白血病、慢性中性粒细胞白血病和感染后才能认定。",
-      "en": "An 81-year-old man had dull left lower abdominal pain and fever that outlasted treatment, though his urinary symptoms eased. His abdomen was distended, with left lower quadrant tenderness and rebound, no guarding or mass, and left renal-angle tenderness. White cells rose from 28.8 to 33.3 × 10⁹/L (mature neutrophils). Imaging: a 7.1 × 6.3 × 9.9 cm cystic-solid, vascular mass with abdominopelvic fluid; colonoscopy normal; small bowel compressed without leak. Two blood cultures were negative; the marrow showed active granulopoiesis. Exploration: a mesenteric-root mass with miliary nodules; frozen section suggested metastatic adenocarcinoma, final histology malignant mesothelioma (calretinin, CK18, vimentin positive; CEA negative); only tissue was taken. The count reached 113.7 × 10⁹/L on antibiotics; a leukaemoid reaction was considered. He left hospital; outcome unknown. Today: treat and image first, needle biopsy, a full IMIG panel, and a leukaemoid reaction proved by exclusion."
+      "zh-CN": "81岁男性，左下腹隐痛伴发热；入院前治疗后尿路症状好转，腹痛发热不退。查体腹部膨隆，左下腹压痛、反跳痛，无肌紧张，未触及明确包块，左肾区叩痛。白细胞由28.8升至33.3×10⁹/L，以成熟中性粒细胞为主。影像见左下腹7.1 cm×6.3 cm×9.9 cm囊实性、有血流的肿块，周围脂肪模糊，腹盆腔积液；结肠镜无明显异常，小肠受外压而无外漏。两次血培养阴性，骨髓粒系增生活跃、无明显形态异常。探查见肠系膜根部肿块和广泛粟粒结节，冰冻考虑转移性腺癌，最终病理为恶性间皮瘤（calretinin、CK18、vimentin阳性，CEA阴性）；只取了组织。白细胞后来升至113.7×10⁹/L，以中性粒细胞为主，抗菌无效，原团队考虑类白血病反应；患者离院，结局不详。今天的做法：先按腹腔感染留培养、静脉抗菌并做CT，用粗针活检取组织，以石蜡病理为准并按IMIG补齐染色，类白血病反应须排除慢性髓性白血病、慢性中性粒细胞白血病和感染后才能认定。",
+      "en": "An 81-year-old man had dull left lower abdominal pain and fever that outlasted treatment, though his urinary symptoms eased. His abdomen was distended, with left lower quadrant tenderness and rebound but no guarding; no definite mass was felt, and the left renal angle was tender to percussion. White cells rose from 28.8 to 33.3 × 10⁹/L (mature neutrophils). Imaging: a 7.1 × 6.3 × 9.9 cm cystic-solid mass in the left lower abdomen, vascular on ultrasound, with blurred surrounding fat and abdominopelvic fluid; colonoscopy showed no obvious abnormality; the small bowel was compressed from outside without leak. Two blood cultures were negative; the marrow showed active granulopoiesis without obvious atypia. Exploration: a mesenteric-root mass with widespread miliary nodules; frozen section suggested metastatic adenocarcinoma, final histology malignant mesothelioma (calretinin, CK18, vimentin positive; CEA negative); only tissue was taken. The count later reached 113.7 × 10⁹/L, mainly neutrophils, despite antibiotics; a leukaemoid reaction was considered. He left hospital; outcome unknown. Today: treat and image first, a core biopsy, a full IMIG panel, and a leukaemoid reaction proved by exclusion."
     },
     "keyReasoning": [
       {
@@ -4460,8 +4521,8 @@
         "en": "Urinary symptoms that eased while the pain and fever did not, with left lower quadrant rebound and a rising neutrophil count, move the problem out of the urinary tract: an abdominal source that needs control has to be excluded first."
       },
       {
-        "zh-CN": "一个近10 cm、却在膨隆的腹部摸不到的肿块，结肠镜正常、小肠只受外压而无外漏，位置就在肠外；鉴别诊断随之从结肠病变转向系膜和腹膜的肿瘤。",
-        "en": "A mass of almost 10 cm that could not be felt in a distended abdomen, with a normal colonoscopy and a small bowel compressed from outside without leak, lies outside the bowel — and the differential shifts from colonic disease to tumours of the mesentery and peritoneum."
+        "zh-CN": "一个近10 cm、却在膨隆的腹部摸不到的肿块，结肠镜无明显异常、小肠只受外压而无外漏，位置就在肠外；鉴别诊断随之从结肠病变转向系膜和腹膜的肿瘤。",
+        "en": "A mass of almost 10 cm that could not be felt in a distended abdomen, with a colonoscopy showing no obvious abnormality and a small bowel compressed from outside without leak, lies outside the bowel — and the differential shifts from colonic disease to tumours of the mesentery and peritoneum."
       },
       {
         "zh-CN": "肠系膜根部受累加广泛粟粒结节，意味着切除清除不了病灶，而且风险很大；冰冻切片只是初步判断，不能用来决定不可逆的手术。",
@@ -4516,20 +4577,20 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "入院处置：高龄、发热、左下腹局限性腹膜刺激征、白细胞28.8×10⁹/L，入院前治疗后不退——先按复杂性腹腔感染处理：用NEWS2等评分而不是单用qSOFA筛查脓毒症（SSC 2026），先留血、尿培养，再静脉覆盖肠道革兰阴性菌和厌氧菌，并尽早找到感染源加以控制（SIS 2017）；增强CT先于结肠镜（WSES 2020）。原报告的团队用了抗菌药，记录为无效；两次血培养阴性，但入院前已用过抗菌药，阴性结果不能完全排除感染。",
-        "en": "Admission: an older man with fever, localised left lower quadrant peritonism and white cells of 28.8 × 10⁹/L that persist after treatment elsewhere is managed first as a complicated intra-abdominal infection — screen with NEWS2 or similar rather than qSOFA alone (SSC 2026), take blood and urine cultures before IV cover of enteric Gram-negative and anaerobic bacteria, and find and control the source early (SIS 2017), with contrast CT before any colonoscopy (WSES 2020). The report's team gave antibiotics, recorded as ineffective; the two blood cultures were negative, but he had had antimicrobials before admission, so they do not fully exclude infection."
+        "zh-CN": "入院处置：高龄、发热、左下腹局限性腹膜刺激征、白细胞28.8×10⁹/L，入院前治疗后不退——先按复杂性腹腔感染处理：用NEWS2等评分而不是单用qSOFA筛查脓毒症（SSC 2026），先留血、尿培养，再静脉覆盖肠道革兰阴性菌和厌氧菌，并尽早控制感染源（SIS 2024：12小时内，合并脓毒性休克时6小时内）；影像首选增强CT（IDSA 2024），结肠镜等急性期过后再做（WSES 2020）。原报告的团队用了抗菌药，记录为无效；两次血培养阴性，但入院前已用过抗菌药，阴性结果不能完全排除感染。",
+        "en": "Admission: an older man with fever, localised left lower quadrant peritonism and white cells of 28.8 × 10⁹/L that persist after treatment elsewhere is managed first as a complicated intra-abdominal infection — screen with NEWS2 or similar rather than qSOFA alone (SSC 2026), take blood and urine cultures before IV cover of enteric Gram-negative and anaerobic bacteria, and control the source early (SIS 2024: within 12 hours, or 6 with septic shock), with contrast CT as the first imaging (IDSA 2024) and colonoscopy only once the acute episode has settled (WSES 2020). The report's team gave antibiotics, recorded as ineffective; the two blood cultures were negative, but he had had antimicrobials before admission, so they do not fully exclude infection."
       },
       {
-        "zh-CN": "定位与取材：结肠镜正常、小肠造影见外压而无外漏，肿块在肠外。系膜或腹膜肿块的鉴别包括淋巴瘤、胃肠间质瘤、肉瘤、腹膜原发肿瘤和转移瘤，治疗取决于组织学，所以首选影像引导下粗针活检（必要时腹腔镜），而不是只做细胞学，也不是先开腹切除（PSOGI/EURACAN 2021以足量活检的组织学为诊断依据）。原报告的团队选择了手术探查。",
-        "en": "Localisation and tissue: a normal colonoscopy and extrinsic compression without leak place the mass outside the bowel. A mesenteric or peritoneal mass may be lymphoma, GIST, sarcoma, a primary peritoneal tumour or a metastasis, and treatment depends on histology, so an image-guided core biopsy (or laparoscopy) comes first — not cytology alone and not a resection (PSOGI/EURACAN 2021 bases diagnosis on histology from adequate biopsies). The report's team chose a surgical exploration."
+        "zh-CN": "定位与取材：结肠镜无明显异常、小肠造影见外压而无外漏，肿块在肠外。系膜或腹膜肿块的鉴别包括淋巴瘤、胃肠间质瘤、肉瘤、腹膜原发肿瘤和转移瘤，治疗取决于组织学，所以首选影像引导下粗针活检（必要时腹腔镜），而不是只做细胞学，也不是先开腹切除（PSOGI/EURACAN 2021要求以粗针穿刺活检或探查性腹腔镜取得的组织诊断，而不是积液细胞学或细针穿刺材料）。原报告的团队选择了手术探查。",
+        "en": "Localisation and tissue: a colonoscopy without obvious abnormality and extrinsic compression without leak place the mass outside the bowel. A mesenteric or peritoneal mass may be lymphoma, GIST, sarcoma, a primary peritoneal tumour or a metastasis, and treatment depends on histology, so an image-guided core biopsy (or laparoscopy) comes first — not cytology alone and not a resection (PSOGI/EURACAN 2021 requires tissue from a core needle biopsy or exploratory laparoscopy, not effusion cytology or fine-needle material). The report's team chose a surgical exploration."
       },
       {
         "zh-CN": "冰冻与石蜡：本例冰冻考虑转移性腺癌，最终病理为恶性间皮瘤——间皮瘤与腺癌在冰冻上容易混淆。肠系膜根部受累、广泛粟粒结节时，只取足量组织、不切除是对的（原报告也只取了组织）；减瘤手术加腹腔热灌注化疗只适合确诊后、经过筛选、在有经验中心治疗的患者（PSOGI/EURACAN 2021）。",
         "en": "Frozen versus paraffin: here the frozen section suggested metastatic adenocarcinoma and the final histology gave malignant mesothelioma — the two are easily confused on frozen tissue. With the mesenteric root involved and widespread miliary nodules, taking generous tissue without resection was right (the report's team took tissue only); cytoreductive surgery with HIPEC is for selected patients with a confirmed diagnosis at experienced centres (PSOGI/EURACAN 2021)."
       },
       {
-        "zh-CN": "免疫组化标准：国际间皮瘤兴趣小组2017年更新的指南要求至少两个间皮标志物和两个癌标志物，必要时加BAP1或CDKN2A；本例只有calretinin（+）和CEA（−）两项特异指标，CK18和vimentin都不特异，按今天的标准应补做WT1、D2-40或CK5/6，以及claudin-4、MOC-31或Ber-EP4。同时采集职业性石棉接触史：石棉所致间皮瘤列入我国《职业病分类和目录》（2013），属于法定职业病。",
-        "en": "Immunostaining standard: the International Mesothelioma Interest Group's 2017 update asks for at least two mesothelial and two carcinoma markers, with BAP1 or CDKN2A where needed; here only calretinin (positive) and CEA (negative) are specific, CK18 and vimentin are not, so today the panel would add WT1, D2-40 or CK5/6 and claudin-4, MOC-31 or Ber-EP4. Take an occupational asbestos history too: asbestos-related mesothelioma is a statutory occupational disease in China (Classification and Catalogue of Occupational Diseases, 2013)."
+        "zh-CN": "免疫组化标准：国际间皮瘤兴趣小组2023年更新的指南建议用两个间皮标志物和两个癌标志物，怀疑恶性时加BAP1或MTAP免疫组化（或CDKN2A荧光原位杂交）；本例只有calretinin（+）和CEA（−）两项特异指标，CK18和vimentin都不特异，按今天的标准应补做D2-40或CK5/6，以及claudin-4、MOC-31或Ber-EP4。同时采集职业性石棉接触史：“石棉所致肺癌、间皮瘤”列入我国《职业病分类和目录》（2024年版，2025年8月起施行），属于法定职业病。",
+        "en": "Immunostaining standard: the International Mesothelioma Interest Group's 2023 update advises two mesothelial and two carcinoma markers, with BAP1 or MTAP immunostaining (or CDKN2A FISH) where malignancy is in doubt; here only calretinin (positive) and CEA (negative) are specific, CK18 and vimentin are not, so today the panel would add D2-40 or CK5/6 and claudin-4, MOC-31 or Ber-EP4. Take an occupational asbestos history too: asbestos-related mesothelioma is a statutory occupational disease in China (Classification and Catalogue of Occupational Diseases, 2024 edition, in force since August 2025)."
       },
       {
         "zh-CN": "极度中性粒细胞增多：白细胞28.8→33.3→113.7×10⁹/L，以成熟中性粒细胞为主，骨髓粒系增生活跃而无明显异常，培养阴性，抗菌无效——符合肿瘤相关的类白血病反应（常见定义为白细胞＞50×10⁹/L、非白血病所致；实体瘤可分泌G-CSF或IL-6）。它是排除性诊断：按WHO第5版（2022）查BCR::ABL1和CSF3R，排除隐匿感染和药物；不用羟基脲或白细胞单采，不盲目升级抗菌药（IDSA/SHEA 2016）。原团队只是“考虑”类白血病反应，没有记录细胞因子或克隆性检查。",
@@ -4543,13 +4604,15 @@
     "references": [
       "古丽米拉·达列力汗, 钦丹萍, 倪桂宝, 郑兰芝, 金素娟, 余建法, 黄宣. 第310例　腹腔孤立性占位—发热—白细胞持续升高. 中华医学杂志. 2014;94(6):467-469. doi:10.3760/cma.j.issn.0376-2491.2014.06.018. Available from: https://rs.yiigle.com/cmaid/138892",
       "Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2026. Crit Care Med. 2026. doi:10.1097/CCM.0000000000007075",
-      "Mazuski JE, Tessier JM, May AK, et al. The Surgical Infection Society revised guidelines on the management of intra-abdominal infection. Surg Infect (Larchmt). 2017;18(1):1-76. doi:10.1089/sur.2016.261",
-      "Sartelli M, Weber DG, Kluger Y, et al. 2020 update of the WSES guidelines for the management of acute colonic diverticulitis in the emergency setting. World J Emerg Surg. 2020;15(1):32.",
-      "Kusamura S, Kepenekian V, Villeneuve L, et al. Peritoneal mesothelioma: PSOGI/EURACAN clinical practice guidelines for diagnosis, treatment and follow-up. Eur J Surg Oncol. 2021;47(1):36-59.",
-      "Husain AN, Colby TV, Ordóñez NG, et al. Guidelines for pathologic diagnosis of malignant mesothelioma 2017 update of the consensus statement from the International Mesothelioma Interest Group. Arch Pathol Lab Med. 2018;142(1):89-108.",
+      "Huston JM, Barie PS, Dellinger EP, et al. The Surgical Infection Society guidelines on the management of intra-abdominal infection: 2024 update. Surg Infect (Larchmt). 2024;25(6):419-435. doi:10.1089/sur.2024.137",
+      "Bonomo RA, Chow AW, Edwards MS, et al. 2024 clinical practice guideline update by the Infectious Diseases Society of America on complicated intra-abdominal infections: risk assessment, diagnostic imaging, and microbiological evaluation in adults, children, and pregnant people. Clin Infect Dis. 2024;79(Suppl 3):S81-S87. doi:10.1093/cid/ciae346",
+      "Sartelli M, Weber DG, Kluger Y, et al. 2020 update of the WSES guidelines for the management of acute colonic diverticulitis in the emergency setting. World J Emerg Surg. 2020;15(1):32. doi:10.1186/s13017-020-00313-4",
+      "Kusamura S, Kepenekian V, Villeneuve L, et al. Peritoneal mesothelioma: PSOGI/EURACAN clinical practice guidelines for diagnosis, treatment and follow-up. Eur J Surg Oncol. 2021;47(1):36-59. doi:10.1016/j.ejso.2020.02.011",
+      "Husain AN, Chapel DB, Attanoos R, et al. Guidelines for pathologic diagnosis of mesothelioma: 2023 update of the consensus statement from the International Mesothelioma Interest Group. Arch Pathol Lab Med. 2024;148(11):1251-1271. doi:10.5858/arpa.2023-0304-RA",
       "Khoury JD, Solary E, Abla O, et al. The 5th edition of the World Health Organization Classification of Haematolymphoid Tumours: Myeloid and Histiocytic/Dendritic Neoplasms. Leukemia. 2022;36(7):1703-1719.",
       "Barlam TF, Cosgrove SE, Abbo LM, et al. Implementing an antibiotic stewardship program: guidelines by the Infectious Diseases Society of America and the Society for Healthcare Epidemiology of America. Clin Infect Dis. 2016;62(10):e51-e77.",
       "中华人民共和国卫生部. 糖皮质激素类药物临床应用指导原则. 卫办医政发〔2011〕23号. 2011.",
+      "国家卫生健康委员会, 人力资源社会保障部, 国家疾病预防控制局, 中华全国总工会. 职业病分类和目录. 国卫职健发〔2024〕39号. 2024.",
       "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
     ],
     "notice": {
@@ -5316,6 +5379,55 @@
         "text": "Is the car park free for visitors?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "So what brings you in today?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Have you been running a fever?",
+        "locale": "en",
+        "expect": [
+          "fever-detail"
+        ]
+      },
+      {
+        "text": "Where does it hurt the most?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "What did you do for a living?",
+        "locale": "en",
+        "expect": [
+          "asbestos"
+        ]
+      },
+      {
+        "text": "Does anyone live with you?",
+        "locale": "en",
+        "expect": [
+          "home-function"
+        ]
+      },
+      {
+        "text": "Have you been feeling tired or run down?",
+        "locale": "en",
+        "expect": [
+          "constitutional"
+        ]
+      },
+      {
+        "text": "肚子哪里最痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-site"
+        ]
       }
     ]
   }
