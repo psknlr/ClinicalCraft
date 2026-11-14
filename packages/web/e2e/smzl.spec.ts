@@ -7,7 +7,7 @@
  * evidence → evidence board decision → finish → debrief.
  */
 import { expect, test } from "@playwright/test";
-import { dispatch, enterCase, freshStart, shot, talkToPatient, useStation } from "./helpers.js";
+import { dispatch, enterCase, freshStart, replaySolution, shot, talkToPatient, useStation } from "./helpers.js";
 
 test.use({ locale: "zh-CN" });
 
@@ -120,6 +120,8 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
     { type: "ask", itemId: "spleen" },
     { type: "ask", itemId: "lung" },
     { type: "order", investigationId: "abdct" },
+    // a CT is done with the patient on the scanner: the acquisition the session records (EMBODIED §8.7)
+    { type: "acquire", investigationId: "abdct", collector: "radiographer", by: "system" },
     { type: "read", investigationId: "abdct" },
     { type: "order", investigationId: "biopsy" },
     { type: "read", investigationId: "biopsy" },
@@ -138,10 +140,7 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await shot(page, "board");
 
   // complete the remaining chapters via the reference path, then finish → debrief
-  await page.evaluate(() => {
-    const qa = (window as any).__QA__;
-    for (const a of qa.game.caseDef.solution) if (a.type !== "finish") qa.dispatch(a);
-  });
+  await replaySolution(page, { finish: false });
   await page.locator("#finish").click();
   await expect(page.locator('#panel .window[data-panel="debrief"]')).toBeVisible();
   await expect(page.locator(".assessment")).toBeVisible({ timeout: 60_000 });
