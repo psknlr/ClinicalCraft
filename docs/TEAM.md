@@ -116,8 +116,10 @@ holds a place, a staff id for the learner's body in a place (that place's member
 nothing (`null`, to be refused) for the colleague standing by and for any other body. **The operative field enforces
 the controls** (docs/PROCEDURE.md §3: `seatCheck` — a colleague's step needs the control it is worked with, and taking
 an instrument its control; `stepPartyRefusal` — a member the team scenario makes absent takes no part;
-`passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the operator, `normaliseStep`); the
-world's operations, the scope of practice, delegation and the policies below do not read them yet.
+`passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the operator, `normaliseStep`), and
+**so do the world's operations** (docs/EMBODIED.md §8.2: an operation's `control` is refused to a body that does not
+hold it, by `bodyControls`; §8.6: during the operation only a body holding `retract` checks the wound in the team's
+room); the scope of practice, delegation and the policies below do not read them yet.
 
 ### Places
 
@@ -466,8 +468,9 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   steps (an `operate` with no actor is the operator's step), so a session refuses a place and no front-end offers one.
   The join drives the record only — the world's device state machines (the count board) are not driven by it —, the
   Sign Out and the steps after the operation are the operator's, and a case served without its reference solution
-  offers no place. The controls are enforced in the operative field only (docs/PROCEDURE.md §3) — not in the world,
-  the scope of practice, delegation or these policies.
+  offers no place. The controls are enforced in the operative field (docs/PROCEDURE.md §3) and the world's operations
+  (docs/EMBODIED.md §8.2, §8.6: an operation's `control`, who checks the wound) — not in the scope of practice,
+  delegation or these policies.
   There is no place for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
 - **Only the duties above have policies.** `anaesthesia` is declared only. Relief colleagues are reached "by phone";
   nobody walks to fetch an instrument from another room.

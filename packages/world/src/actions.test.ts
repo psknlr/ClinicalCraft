@@ -386,7 +386,7 @@ describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
   it("names the holders and the position in both languages: the learner in a place as you, the colleague standing by", async () => {
     const zh = theatreWorld({ locale: "zh-CN" });
     operate(zh, OPEN);
-    expect((await search(zh, STAFF.circulating)).message).toBe("手术进行中检查术野需要「牵引显露」权限，由主刀医生、第一助手持有：林晓是巡回护士。");
+    expect((await search(zh, STAFF.circulating)).message).toBe("手术进行中检查术野需要「牵引显露」分工权限，由主刀医生、第一助手持有：林晓是巡回护士。");
     const seat = theatreWorld({ start: { type: "start", seat: "scrub-nurse" } });
     operate(seat, WHOLE_OPERATION.slice(0, 2)); // in the scrub nurse's place an instrument goes in only once passed
     const mine = await search(seat, A);

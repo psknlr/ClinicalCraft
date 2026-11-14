@@ -411,10 +411,7 @@ export class DeviceRules {
     const title = position ? t(POSITION_TITLES[position], L) : roleName(actor.role, L);
     const who = this.d.locator.name(actor.id);
     if (actor.id === standingBy(c.caseDef, s)) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.standingBy", L, { who, position: title }) };
-    const holders = listText(
-      this.holdersOf(control).map((p) => t(POSITION_TITLES[p], L)),
-      L,
-    );
+    const holders = listText(this.holdersOf(control).map((p) => t(POSITION_TITLES[p], L)), L);
     const message = worldMessage(actor.id === PRIMARY_ACTOR ? `${key}.self` : key, L, { ...vars, holders, who, position: title, control: t(CONTROL_TITLES[control], L) });
     return { code: "NOT_AUTHORIZED", message };
   }

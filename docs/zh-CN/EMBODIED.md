@@ -415,7 +415,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | 4. `expectedWorldVersion`（严格），然后 `expectedTargetVersion`（按实体） | `STALE_STATE` |
 | 5. 目标（`resolveId`：带前缀的 ID、不带前缀的别名、`patient`、`clinician`） | `TARGET_NOT_FOUND` |
 | 6. 目标的行为是否提供该操作 | `OPERATION_NOT_SUPPORTED`（消息按名称列出可用操作，从不列 ID） |
-| 7. 权限（§8.2）、可用性、占用、状态、前置条件 | `NOT_AUTHORIZED`、`DEVICE_UNAVAILABLE`、`DEVICE_BUSY`、`PRECONDITION_FAILED`、`HANDS_FULL`、`NOT_HOLDING` |
+| 7. 权限（§8.2：先看角色，再看操作所属的手术分工权限；手术进行中检查术野，§8.6）、可用性、占用、状态、前置条件 | `NOT_AUTHORIZED`、`DEVICE_UNAVAILABLE`、`DEVICE_BUSY`、`PRECONDITION_FAILED`、`HANDS_FULL`、`NOT_HOLDING` |
 | 8. 空间：从当前占地边界算起的距离、同一楼层、视线；同时涉及设备和患者的操作（有临床效果，或同时声明 `actorWithin` 与 `patientWithin`）：找一个同时满足所有站位规则——操作自身的和 §6 规则的——的位置，否则去取设备 | `NOT_IN_RANGE`、`NOT_VISIBLE`、`SPATIAL_REQUIREMENT_UNMET`（有路线时附 `hint`）；没有任何位置能同时满足时为 `PRECONDITION_FAILED` 并附取设备提示（`hint.then: move_to`） |
 | 9. 临床效果：选定病例条目、§6 规则，在 `ClinicalPort.invoke` 执行工具（钩子、预检、审批、引擎）期间锁定设备 | `SPATIAL_REQUIREMENT_UNMET`、`APPROVAL_DENIED`、`CLINICAL_REJECTED`、`CANCELLED`——都不提交状态迁移 |
 | 10. 提交：设备状态迁移与占用、物理效果、事件、时间、结果（被记录；由 `action.completed` 收尾） | — |
@@ -746,8 +746,13 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   （`reservation.changed`）；某个操作的临床工具执行期间或推车被推动时，设备在内存中
   被锁定（不持久化）。其他人会得到 `DEVICE_BUSY`，并被提示去最近的空闲替代设备；
   空间规则也会跳过该设备（`provider-busy`）。
-* `availableActions` 列出此刻该行动者可执行的操作——考虑状态、角色、可用性、占用、
-  前置条件——不考虑位置（那由 `inReach` 说明）；`inspect` 列出每个操作及其
+* **分工权限**：操作可以注明它所属的手术分工权限（`control`：docs/TEAM.md §1 的九项之一——装针或装钉仓为
+  `instruments`，腹腔镜主机的电源为 `equipment`，肺隔离为 `anaesthesia`）。只有持有该权限的身体才能执行它（§8.2）。
+  **只有当所有应当执行该操作的人都持有这项权限时，才给操作标注它**：其余的人一律被拒绝，所以若病例需要的某一步
+  落在不持有该权限的人身上——或者团队里还没有人执行这一步——病例就会卡在那里。如今由不持有该权限的身体完成的操作
+  不要标注：团队策略尚未操作的清点板，病房或复苏室里引流装置的操作（病房护士和复苏室护士不持有任何分工权限）。
+* `availableActions` 列出此刻该行动者可执行的操作——考虑状态、角色与分工权限、可用性、
+  占用、前置条件——不考虑其站在哪里（那由 `inReach` 说明）；`inspect` 列出每个操作及其
   `available` 和原因（包括空间原因）。
 * 职员的移动是确定性的路径跟随（不会每帧调用大模型）。
 
@@ -771,13 +776,13 @@ select: "item", item: <步骤>}`，步骤为 `baseline`、`cavity`、`closing`�
 
 ### 8.2 权限
 
-每个操作属于一个类别；每个角色拥有若干类别；操作自己的 `roles` 还可进一步收窄
-（`NOT_AUTHORIZED`；`authority.ts`）：
+每个操作属于一个类别；每个角色拥有若干类别；操作自己的 `roles` 还可进一步收窄，若操作注明了
+手术分工权限 `control`，再按它收窄（`NOT_AUTHORIZED`；`authority.ts`、`behaviors.ts`）：
 
 | 类别 | 操作 |
 |---|---|
 | `move` | navigate、approach、look_at、cancel |
-| `physical` | open / close（门、储物柜）、wash_hands、move_to、pick_up、put_down、equip、transport_patient、escort_patient、release_patient、reposition_patient、无临床效果的设备操作（prepare、connect、reset、cycle_nibp、监护仪的 read） |
+| `physical` | open / close（门、储物柜）、wash_hands、move_to、pick_up、put_down、equip、hand_over、search、transport_patient、escort_patient、release_patient、reposition_patient、无临床效果的设备操作（prepare、connect、reset、cycle_nibp、监护仪的 read） |
 | `secure` | lock、unlock |
 | `clinical` | 一切带临床效果的操作（工作站 order/read、设备 use、监护仪 attach、心电图 record…） |
 
@@ -791,9 +796,26 @@ clinical 类别只允许行动者*请求*临床效果；最终仍由会话的工
 执业范围设置、执业范围规则）决定。`transport_patient` 属于 physical，但收窄为临床
 团队和护工（前台接待不得推送患者：`NOT_AUTHORIZED`）。
 
-操作还可以注明它所属的手术**分工权限**（`control`：给持针器装针为 `instruments`，清点板为 `count`，腹腔镜
-主机的电源为 `equipment`；各项权限见 docs/TEAM.md §1）。目前它只是声明的内容：世界尚不检查它，收窄操作的
-仍只有上面的 `roles`。
+**分工权限。** 操作还可以注明它所属的手术分工权限（`control`，§8.1；各项权限见 docs/TEAM.md §1）。它紧接在角色
+之后检查（`DeviceRules.precheck`）：不持有该权限的身体被拒绝，`NOT_AUTHORIZED`，不附提示——走到哪里都换不来岗位——
+消息说明是什么操作、本次接诊中哪些岗位持有该权限（团队中持有它的成员的岗位；若无人持有，则是默认持有它的所有岗位），
+以及行动者是什么岗位：“击发闭合器由主刀医生负责：陈雨是洗手护士。”学员自己的身体读到“……你是洗手护士。”，学员担任
+其岗位而在旁待命的同事读到“陈雨在旁待命：由你担任洗手护士的岗位。”名称取自核心库的 `POSITION_TITLES` 与
+`CONTROL_TITLES`。
+
+谁持有哪些权限：由核心库的 `bodyControls`（世界用途）决定，`DeviceRules.controlsOf` 依据世界已经掌握的信息——病例与
+会话状态（`ClinicalView`）以及场馆——求出，并按状态的 `seq` 缓存。身体上不存储任何东西：`ActorState` 没有新字段，
+`clinicalcraft-world@1` 快照不变。
+- 学员的身体持有全部权限；担任团队中的岗位时，持有该岗位成员的权限；
+- 学员担任岗位期间，主刀同事的身体持有术者的权限；
+- 在旁待命的同事不持有任何权限；
+- 本次接诊团队中的成员持有自己的权限（其岗位的默认权限，或团队为其指定的 `controls`）；
+- 其他任何工作人员持有其岗位的默认权限（`staffPosition`：护工或病房护士没有任何权限）。
+
+`availableActions`、`inspect` 以及提示中给出的下一步（`firstStepTowards`）都走同一项检查，所以智能体和网页得到的
+选项正是世界允许的。没有 `control` 的操作与以前一样：只由 `roles` 收窄。术野的权限只给刷手上台的岗位，`equipment` /
+`anaesthesia` 只给其他岗位，所以无菌与非无菌两侧由标注本身区分；此人能否在无菌区工作（手卫生、手术衣、手套）仍由
+操作自己的前提条件判断。手术进行中谁可以检查患者的术野，见 §8.6 的规则。
 
 ### 8.3 执业范围
 
@@ -1026,6 +1048,13 @@ C 形臂（46 m）和 ICU 1 号床（38 m）。在那里 PE 接诊得 **100 %**�
   脚边。
 
 显现后的物品就是普通物品（`entity.concealed`，`concealed: false`；“你找到了……”）。
+
+**谁检查术野。** 手术进行中——从第一步被接受起，直到关闭或放弃转诊（`abandon-refer`）；中转开腹并不结束它，术野反而
+敞得更开——在病例团队所在的手术间里查找患者需要 `retract`（牵引显露）分工权限（§8.2）：由主刀医生和助手检查术野，学员
+担任第一或第二助手的岗位时也可以。护士、麻醉医生、护工、担任洗手护士岗位的学员以及在旁待命的同事都被拒绝，
+`NOT_AUTHORIZED`，不附提示：“手术进行中检查术野需要「牵引显露」分工权限，由主刀医生、第一助手持有：林晓是巡回护士。”
+（`DeviceRules.searchRefusal`）。在所站之处查找、查找其他东西、手术开始前或结束后，或患者不在团队的手术间时，一切
+照旧——巡回护士清点时的查找（`count.searchPlaces`）也不受影响。
 
 ## 9. 技能
 
@@ -1541,7 +1570,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 可见性（`VisibilityModel`） | yes（W1；门从不遮挡自己） | 单元测试：墙、窗、门、视野、部分遮挡、被挪动的推车、从交互点看关闭的门、楼层之间无视线 | 感知与空间场景；任何观察中都没有病例事实（10 个病例 × 2 种语言） | no——性能只测到 120 × 100 m 和两层 |
 | 导航（`GridAStarBackend`、`NavGrids`、入口图；目标代价上限 S7；多楼层行走被打断 C11） | yes（W1） | 单元测试：三个场馆中的真实路线、每个交互设备和每扇门、各类失败、门锁、区域、障碍、被挪动的推车、两层测试场馆、评审者构造的 DoS 目标被拒绝或 < 1 s、在楼梯路线的每个点停下的行走 | 已测量（§7）；导航场景 | no——更大的医院未测量；评估过的替代方案（导航网格）未采用（R12）。Perf |
 | 状态存储（`WorldStateStore`：行动者、版本、事件、幂等窗口、规范化快照） | yes（W2） | 单元测试：版本规则（含传感器更新）、动态信息、有界日志、快照一致性与拒绝 | `--continue` 恢复具身会话的位置；演示的轨迹重新生成时逐字节相同 | no——快照格式（`clinicalcraft-world@1`）没有迁移方案；会话记录是本地文件。Rel、Ops |
-| 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品（递交、佩戴）与 `nearbyState` 只存在于测试目录和内容包中 |
+| 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制；一个手术室测试目录，其操作注明手术分工权限（按岗位提供与拒绝、学员不担任岗位与担任岗位、在旁待命的同事、主刀同事、提示给出的下一步、`availableActions` 与动作总线的判定一致） | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品（递交、佩戴）与 `nearbyState` 只存在于测试目录和内容包中 |
 | 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、病历查阅在电子病历终端或床旁进行、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
 | 感知（`observe`、`find`、`inspect`、`roomInfo`、`canSee`；认知等级、下落、近期事件、区域名称、跨楼层可达性） | yes（W2；G13、线索说明 1–2、C16） | 单元测试：认知等级、上限、方位、线索、屏幕规则、不改变版本的记忆、下落及其快照、第二 / 第三人称事件、按名称的出口、楼上 ICU 可达并按路径排序；任何观察中都没有病例事实 | 感知 / 空间场景；在护士站执行 `/delegate staff:ed-nurse record_ecg`（综合医院与教学医院） | no——按 ID 导航去的是真实位置而非“认为的”位置（§14.3）；`find {}` 每次 7–12 ms。Perf |
 | 动作总线、运行时（`createWorldRuntime`）、世界轨迹 | yes（W2） | 在真实引擎上用模拟会话做的单元测试：提交顺序、幂等、过期版本、占用与执行中的锁、行走中和审批中取消、按行动者排队、可用性、权限、行走只计一次、场景控制、恢复、确定性、轨迹树 | 已接入智能体会话（CLI、MCP、基准测试、网页）；每个场景在各种子下都是确定的 | no——HTTP 服务自身不托管世界运行时（只转发桥接调用）。Rel |
@@ -1570,8 +1599,8 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 内容规模（病例索引、按病例懒加载的分块、分页带 ETag 的服务器 API、CLI 与 MCP 中的 `CaseLibrary`） | yes | 单元测试：索引器、病例存储、服务器内容 API、网页索引插件 | 用 100–1 000 个合成病例测量（§11） | no——大型病例目录下浏览器的启动与切换病例未测量；首次加载校验每个病例约 150–230 ms。Perf |
 | 术野模型（`procedure`、`operate`，见 docs/PROCEDURE.md）：解剖、区域、穿刺孔与器械、按术野判定的安全视野、由解剖导致的不安全操作与损伤、操作者视角（结构编号，从不显示胆管名称）、`observe_field` / `operate` 工具、`safetyGates`；同事握持某个孔的器械（`hand-over`、`delegate_task hold_traction`），离开手术台时牵引随之松开（`exposure-lost`）；按分工权限的同事（core `seatCheck`：每一步所需的分工权限、只有术者操作的器械；同事把器械置入空的观察孔或辅助孔、交接须经同意、同事最多握持两个孔、双手交叉只计术者、不安全操作与损伤记录由谁的步骤造成——`by`；任何人都可说出损伤，同事说出的记为其本人，识别只算术者本人说出的；团队情境中缺席的成员不参与）、镜头（`aim`、`zoom`；在镜头对准区域之外操作的计数、推近时的 `out-of-frame`、出血时撤出腹腔镜）、递器械（`pass`，只在洗手护士岗位上每件器械都须先递）、主刀同事的步骤记为术者的、前端可本地化的拒绝原因、步骤的 `ref`；网页中与手术室并列的腹腔镜画面，单一展示队列 | yes（术野轮次；助手与腹腔镜画面：2.5.0 建议；同事、镜头与递器械：手术岗位轮次） | core 单元测试：安全路径；对抗路径（习惯性牵拉、把胆总管误认为胆囊管并夹闭离断、未暂停即夹闭、声称但未真实建立的视野、出血处理、隐藏结构旁使用能量、胆囊撕破）；补救策略；可及性与布孔人体工学；确定性；交接规则、同事、同事说出的损伤、镜头与递器械（`approach.test.ts`，28 项）；岗位中的拒绝原因、ref、逐字不变的英文消息、在每种解剖变异中无论镜头如何操作参考路径的临床结局都相同（`team-field.test.ts`）；按分工权限的把关（`seats.test.ts`）；展示队列与显露窗口（网页 `scope-presenter.test.ts`）、岗位中的步骤逐帧重放（网页 `operative-playback.test.ts`）；SurgeryCraft `case126-release.test.ts` 与第四个浏览器演示 | 未验证：没有外科、麻醉或影像专家审核；唯一使用它的病例（SurgeryCraft cmcr-1654623）基于参考解剖 | no — 组织为规则状态，并非标定的力学模型；网页面板为第一版，尚无镜头步骤与递器械的控件，智能体的 `operate` 工具尚不接受对准区域与推近程度；镜头污染、旋转与水平线未建模。Rel, Val |
 | 手术团队（docs/TEAM.md；§8.5）：`case.team`，在 `start` 时选定且隐藏的团队情境，`TeamScheduler`（轮次，自主程度 auto / step / off），离线角色策略（巡回护士、洗手护士、清点、模拟术者），带复述确认的消息，记录真实发起人的动作回执，占用，恰好一次的动作 id，`team` 操作 / `team_event`，`team` 记录项与 `SessionSnapshot.team`（含团队情境的生命周期：pending / active / completed 及其设置事件），网页团队面板与团队时钟，统一的调度路径（学员的动作、外部智能体、示范接诊的每一步），按职责计分的 `bench team`（分配 / 激活 / 完成 / 上报 / 无效）；手术清点作为按物品身份记录的唯一病历记录（`SessionState.count`，§8.1 绑定到患者所在房间的记录看板） | yes（团队轮次） | core `team.test.ts`（一致性、与场馆相符、开始时选择）、`count.test.ts`（11 项：每种清点结局、6/5、假 5/5、有记录的转移、关闭被记录或被拒绝）；agent `team/policy.test.ts`（在手工构造的视图上验证 17 条规则）、`team/session-team.test.ts`、`session/identity.test.ts`；bench `team/score.test.ts`（职责）；SurgeryCraft `tools/case126-team.test.ts`（16 项：学员观看时两名护士传递器械、顶班、器械被挪动或缺失、术者不在台旁、两个请求争一把持针器只有一个占用者、传递中途保存 / 恢复只递交一次、学员与观察模式下每种清点结局、清点未解决时关闭、回复对象、点名同事、麻醉中不能说话）与 `tools/case126-count.test.ts`（11 项：术野、清点板、RF 检测棒、Sign Out、团队与评分在每种清点结局上一致；术前存档；无界面示范接诊） | `bench team` 在病例 126 上：11 / 11 个情境（激活 11、完成 11、恰当上报 2、无效 0），全部恰好一次；浏览器（2026-11-02，`serve` 下的病例 126，Chromium + SwiftShader）：团队时钟把一次持针器传递推进到“已亲眼核实”，自动存档保留了团队——清点记录、看板绑定与待初始化情境的重新加载尚未在浏览器中演示 | no — 规则策略，只覆盖两种职责与清点；没有语言模型驱动团队成员；只有一个病例；未经围术期护理人员审核。Rel |
-| 手术岗位、分工权限与学员岗位（docs/TEAM.md §1、docs/CHARACTERS.md §2）：岗位第一助手与第二助手（`assistant-surgeon` 为第一助手的旧称）；九项分工权限及各岗位的默认权限，扶镜随在场人员而定；职责 `assist`；团队成员的 `position` 与 `controls`；术者的 `standIn`（团队所在手术间的外科医生）；团队配置；评分细则的 `seats`；操作的 `control`；在 `start {seat, lineup}` 选定的岗位——主刀医生（不记为岗位：学员一如既往）与团队中的三个岗位，后者在尚未有任何动作的接诊开始时即沿参考路径加入至团队的阶段（`SessionState.seat`、`joined`；记为一个动作，`act-<joined.seq>`）；按岗位评估；core `engine/seats.ts`（解析函数）与团队检查；两名助手的岗位职责卡与着装，主刀医生与洗手护士的分工 | yes（core 词汇、解析与检查；术野的把关） | core `seats.test.ts`（31 项：默认权限、旧称、按职责优先级定岗位、按在场人员定扶镜、岗位、不带参考路径提供的病例、身体及其封闭的术野身份、术野与世界中的权限；按分工权限对每名成员、团队外或在册但本次不在团队中的同事、缺席的成员与接手者（会话也可收窄）的术野把关，主刀同事视为术者，递器械与条件中的 `by`）、`places.test.ts`（14 项及内置病例库：开始、尚未有动作的接诊、不带参考路径提供的病例、加入及记录重放得到同一状态、参考路径的检查、按岗位评估、每个内置病例的评估与以前相同）、`team.test.ts`（每条新规则一个失败用例、每个情境中的顶班同事、主刀同事在场馆中的岗位）；agent `characters.test.ts`（两张职责卡、标题取自 core、`positionOf`、主刀医生与洗手护士的分工）、`team/places.test.ts`（会话拒绝团队中的岗位，两种语言）、`action-ids.test.ts`（岗位的开始只有一个动作 id）；web `npc.test.ts`（每个岗位都有着装，刷手岗位穿无菌衣、戴手套） | 未验证：尚无内容声明主刀同事、团队配置、成员岗位或分工权限 | no — **分工权限只在术野中执行**（docs/PROCEDURE.md §3）：世界操作、执业范围、委派与手术团队都还不读取它；主刀同事尚未被驱动，会话也尚未把学员的岗位标在其步骤上（不带 actor 的 `operate` 属于术者），因此会话拒绝担任团队中的岗位（`permission_denied`），也没有前端提供岗位选择；加入只推进病历记录，不推进世界中设备的状态机（清点板）；Sign Out 及之后的步骤属于术者；不带参考路径提供的病例不提供团队岗位。Rel |
-| 藏匿物品与 `search`（§8.6） | yes（团队轮次） | world `conceal.test.ts`（不出现在观察、`find`、`canSee`、记忆与事件中；按 id 或作为目标都被拒绝；在伸手可及处显现，或从患者身上取出到手中；快照保留） | 病例 126 的清点情境（纱布在 Mayo 托盘下、在术野里、已离开手术间） | no — 只有情境能藏匿物品；接诊过程中没有东西会把物品藏起来。Rel |
+| 手术岗位、分工权限与学员岗位（docs/TEAM.md §1、docs/CHARACTERS.md §2）：岗位第一助手与第二助手（`assistant-surgeon` 为第一助手的旧称）；九项分工权限及各岗位的默认权限，扶镜随在场人员而定；职责 `assist`；团队成员的 `position` 与 `controls`；术者的 `standIn`（团队所在手术间的外科医生）；团队配置；评分细则的 `seats`；操作的 `control`，由世界执行（按分工权限限制的操作、谁检查术野：§8.2、§8.6）；在 `start {seat, lineup}` 选定的岗位——主刀医生（不记为岗位：学员一如既往）与团队中的三个岗位，后者在尚未有任何动作的接诊开始时即沿参考路径加入至团队的阶段（`SessionState.seat`、`joined`；记为一个动作，`act-<joined.seq>`）；按岗位评估；core `engine/seats.ts`（解析函数）与团队检查；两名助手的岗位职责卡与着装，主刀医生与洗手护士的分工 | yes（core 词汇、解析与检查；术野的把关；世界中按分工权限限制的操作与谁检查术野） | core `seats.test.ts`（31 项：默认权限、旧称、按职责优先级定岗位、按在场人员定扶镜、岗位、不带参考路径提供的病例、身体及其封闭的术野身份、术野与世界中的权限；按分工权限对每名成员、团队外或在册但本次不在团队中的同事、缺席的成员与接手者（会话也可收窄）的术野把关，主刀同事视为术者，递器械与条件中的 `by`）、`places.test.ts`（14 项及内置病例库：开始、尚未有动作的接诊、不带参考路径提供的病例、加入及记录重放得到同一状态、参考路径的检查、按岗位评估、每个内置病例的评估与以前相同）、`team.test.ts`（每条新规则一个失败用例、每个情境中的顶班同事、主刀同事在场馆中的岗位）；agent `characters.test.ts`（两张职责卡、标题取自 core、`positionOf`、主刀医生与洗手护士的分工）、`team/places.test.ts`（会话拒绝团队中的岗位，两种语言）、`action-ids.test.ts`（岗位的开始只有一个动作 id）；web `npc.test.ts`（每个岗位都有着装，刷手岗位穿无菌衣、戴手套）；world `behaviors.test.ts`（按岗位提供与拒绝操作——洗手护士装钉仓而不能击发、巡回护士开启主机、麻醉医生做肺隔离——，学员不担任岗位与担任岗位、在旁待命的同事、主刀同事、提示给出的下一步、`availableActions` 与动作总线的判定一致、快照往返逐字节相同）、`actions.test.ts`（两种语言的拒绝都说明持有者与岗位，不附提示；手术进行中——中转开腹之后也一样——检查术野，手术开始前、关闭或放弃之后、患者不在团队手术间时则不受限；在所站之处查找）、`i18n.test.ts` | 未验证：尚无内容声明主刀同事、团队配置、成员岗位或分工权限 | no — **分工权限在术野中**（docs/PROCEDURE.md §3）**与世界操作中**（§8.2、§8.6）**执行**，尚无内容给操作标注分工权限：执业范围、委派与手术团队都还不读取它；主刀同事尚未被驱动，会话也尚未把学员的岗位标在其步骤上（不带 actor 的 `operate` 属于术者），因此会话拒绝担任团队中的岗位（`permission_denied`），也没有前端提供岗位选择；加入只推进病历记录，不推进世界中设备的状态机（清点板）；Sign Out 及之后的步骤属于术者；不带参考路径提供的病例不提供团队岗位。Rel |
+| 藏匿物品与 `search`（§8.6） | yes（团队轮次） | world `conceal.test.ts`（不出现在观察、`find`、`canSee`、记忆与事件中；按 id 或作为目标都被拒绝；在伸手可及处显现，或从患者身上取出到手中；快照保留）；`actions.test.ts`（手术进行中检查术野属于主刀医生和助手，`retract`） | 病例 126 的清点情境（纱布在 Mayo 托盘下、在术野里、已离开手术间） | no — 只有情境能藏匿物品；接诊过程中没有东西会把物品藏起来。Rel |
 
 ### 14.3 已知局限
 

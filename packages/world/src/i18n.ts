@@ -192,8 +192,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   // a surgical control (EMBODIED §8.2) and the wound (§8.6): who holds it, and what the actor is — the learner as "you"
   "pre.control": { "zh-CN": "{operation}由{holders}负责：{who}是{position}。", en: "{operation} is for the {holders}: {who} is the {position}." },
   "pre.control.self": { "zh-CN": "{operation}由{holders}负责：你是{position}。", en: "{operation} is for the {holders}: you are the {position}." },
-  "pre.woundScrubbed": { "zh-CN": "手术进行中检查术野需要「{control}」权限，由{holders}持有：{who}是{position}。", en: "Checking the wound during the operation needs {control}, held by the {holders}: {who} is the {position}." },
-  "pre.woundScrubbed.self": { "zh-CN": "手术进行中检查术野需要「{control}」权限，由{holders}持有：你是{position}。", en: "Checking the wound during the operation needs {control}, held by the {holders}: you are the {position}." },
+  "pre.woundScrubbed": { "zh-CN": "手术进行中检查术野需要「{control}」分工权限，由{holders}持有：{who}是{position}。", en: "Checking the wound during the operation needs {control}, held by the {holders}: {who} is the {position}." },
+  "pre.woundScrubbed.self": { "zh-CN": "手术进行中检查术野需要「{control}」分工权限，由{holders}持有：你是{position}。", en: "Checking the wound during the operation needs {control}, held by the {holders}: you are the {position}." },
   "pre.standingBy": { "zh-CN": "{who}在旁待命：由你担任{position}的岗位。", en: "{who} stands by: you hold the {position}'s place." },
   "pre.notAtBedside": { "zh-CN": "「{target}」不在患者床旁——请先把它推到患者身边。", en: '"{target}" is not at the patient\'s bedside — wheel it to the patient first.' },
   "pre.notAtBedsideFixed": { "zh-CN": "「{target}」不在患者床旁，且无法移动。", en: '"{target}" is not at the patient\'s bedside and cannot be moved.' },
