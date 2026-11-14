@@ -15,3 +15,12 @@
 5. Second reviews (from 2026-11-14): review2.js over committed cases (args {cases:[id…]}); a case is done when its
    case-status.json entry has `roundsCommitted`; cases with rounds but none committed: start a new review2 run for
    them (the reviewer continues from ${SP}/work-<id>/review<round>.md notes and the uncommitted edits).
+
+## Since 2026-11-14 15:10: reauthor-v6 (author + review rounds in one lane)
+
+- New cases: author → review rounds 1..4 (at least 2; stop when a round finds no critical/major and all checks pass);
+  committed by commit-cases.py only when their rounds are complete. Committed cases: rounds from 2 (args-rounds.json).
+- After a limit or restart: `python3 -I plan-runs.py --split 2` rebuilds args-new-1/2.json and args-rounds.json from the
+  journals and the worktree (writes reports/<id>.json and earlier/<id>.json); relaunch reauthor-v6.js with each (rounds
+  items as {"id","mode":"rounds","from":N,"earlier":true}); restart loop.sh; record the runs in runs.json.
+- commit-cases.py (v4) skips a case an agent is working on (started, no result, transcript written < 30 min ago).

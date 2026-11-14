@@ -7,7 +7,7 @@ passing and is not yet committed, and (with --commit) commits the cases that pas
 usage: python3 -I commit-cases.py [--only id,id] [--skip-tests] [--commit]
 Prints a table; writes commit-ready.txt and commit-bullets.txt next to this script.
 """
-import collections, glob, json, os, re, subprocess, sys
+import collections, glob, json, os, re, subprocess, sys, time
 
 SP = os.path.dirname(os.path.abspath(__file__))
 WT = os.path.join(SP, "wt")
@@ -16,6 +16,40 @@ STATUS = os.path.join(SP, "case-status.json")
 
 
 MAX_ROUND = 4  # review2.js: rounds 2 .. 2 + maxRounds (default 2)
+
+
+INFLIGHT_MIN = 30  # an agent started without a result whose transcript changed this recently is still working
+
+
+def inflight():
+    """Case ids an agent is working on now: started in a journal, no result yet, its transcript written recently."""
+    now, busy = time.time(), set()
+    for p in glob.glob(os.path.join(WF, "*", "journal.jsonl")):
+        started, finished = {}, set()
+        for line in open(p):
+            try:
+                d = json.loads(line)
+            except ValueError:
+                continue
+            if d.get("type") == "started" and ":" in str(d.get("label", "")):
+                started[d.get("key")] = (d.get("agentId"), d["label"].split(":", 1)[1])
+            elif d.get("type") in ("result", "error", "failed"):
+                finished.add(d.get("key"))
+        for key, (agent_id, cid) in started.items():
+            if key in finished:
+                continue
+            t = os.path.join(os.path.dirname(p), f"agent-{agent_id}.jsonl")
+            if os.path.exists(t) and now - os.path.getmtime(t) < INFLIGHT_MIN * 60:
+                busy.add(cid)
+    return busy
+
+
+def head_version(cid):
+    """The case's version as committed at HEAD ('' if absent)."""
+    try:
+        return json.loads(git("show", f"HEAD:packages/content/cases/{cid}/case.json") or "{}").get("version", "")
+    except ValueError:
+        return ""
 
 
 def journals():
@@ -100,8 +134,12 @@ def main():
         for r, v in rs.items():
             s2[str(r)] = {"allChecksPass": bool(v["allChecksPass"]), "findings": dict(collections.Counter(f["severity"] for f in v["findings"]))}
     ready, ready2, rows = [], [], []
+    busy = inflight()
     for cid, rs in sorted(rounds.items()):
         if only and cid not in only:
+            continue
+        if cid in busy:
+            rows.append((cid, f"round {max(rs)} done; an agent is working on it", ""))
             continue
         if not dirty(cid):
             if rounds_complete(rs):
@@ -116,17 +154,32 @@ def main():
         res = {} if skip else checks(cid)
         ok = all(res.values())
         status[cid]["checks"] = res
-        desc = "; ".join(f"round {r}: " + ", ".join(f"{n} {k}" for k, n in sorted(collections.Counter(f["severity"] for f in rs[r]["findings"]).items())) for r in sorted(rs))
-        rows.append((cid, "PASS" if ok else "FAIL " + ",".join(k for k, x in res.items() if not x), desc))
-        if ok:
+        allr = dict(rs)
+        new_case = not head_version(cid).startswith("1.1")
+        if new_case and cid in reviews:
+            allr[1] = reviews[cid]
+        desc = "; ".join(f"round {r}: " + (", ".join(f"{n} {k}" for k, n in sorted(collections.Counter(f["severity"] for f in allr[r]["findings"]).items())) or "no findings") for r in sorted(allr))
+        rows.append((cid, ("PASS" if ok else "FAIL " + ",".join(k for k, x in res.items() if not x)) + (" (new)" if new_case else ""), desc))
+        if ok and new_case:
+            if 1 not in allr:
+                rows.append((cid, "new case without a first review result: not committed", ""))
+                continue
+            ready.append((cid, allr, desc))
+        elif ok:
             ready2.append((cid, rs, desc))
     for cid, v in sorted(reviews.items()):
         if only and cid not in only:
             continue
         if cid in rounds:
-            continue  # its first review is committed; later rounds are handled above
+            continue  # handled above (its later rounds, and a new case's first review with them)
+        if cid in busy:
+            rows.append((cid, "first review done; an agent is working on it", ""))
+            continue
         if not dirty(cid):
             status[cid]["committed"] = True
+            continue
+        if not head_version(cid).startswith("1.1"):
+            rows.append((cid, "first review done; waiting for review round 2 before the first commit", ""))
             continue
         sev = collections.Counter(f["severity"] for f in v["findings"])
         unfixed = [f for f in v["findings"] if f["severity"] in ("critical", "major") and not f["fixed"]]
@@ -139,38 +192,50 @@ def main():
         rows.append((cid, "PASS" if ok else "FAIL " + ",".join(k for k, x in res.items() if not x),
                      f"crit {sev['critical']} major {sev['major']} minor {sev['minor']}; unfixed crit/major {len(unfixed)}"))
         if ok:
-            ready.append((cid, sev, unfixed))
+            ready.append((cid, {1: v}, f"crit {sev['critical']} major {sev['major']} minor {sev['minor']}"))
     for r in rows:
         print(*r, sep=" | ")
     lines = []
-    for cid, sev, unfixed in ready:
+    for cid, allr, _ in ready:
         c = json.load(open(os.path.join(WT, "packages/content/cases", cid, "case.json")))
         title = c["title"]["en"] if isinstance(c.get("title"), dict) else str(c.get("title"))
+        per = "; ".join(f"round {r}: {sum(1 for f in allr[r]['findings'] if f['severity'] == 'critical')} critical, "
+                        f"{sum(1 for f in allr[r]['findings'] if f['severity'] == 'major')} major, "
+                        f"{sum(1 for f in allr[r]['findings'] if f['severity'] == 'minor')} minor" for r in sorted(allr))
         lines.append(f"- {cid}: {title} ({len(c.get('decisions', []))} decisions, {len(c.get('interventions', []))} interventions;\n"
-                     f"  review: {sev['critical']} critical, {sev['major']} major, {sev['minor']} minor findings"
-                     + (f", {len(unfixed)} critical/major answered with a reason" if unfixed else "") + ")")
+                     f"  reviews: {per})")
     open(os.path.join(SP, "commit-ready.txt"), "w").write("".join(cid + "\n" for cid, *_ in ready))
     open(os.path.join(SP, "commit-bullets.txt"), "w").write("\n".join(lines) + ("\n" if lines else ""))
     if commit and ready and not skip:
         n = len(ready)
-        crit = sum(s["critical"] for _, s, _ in ready); major = sum(s["major"] for _, s, _ in ready); minor = sum(s["minor"] for _, s, _ in ready)
+        tot = collections.Counter()
+        for _, allr, _ in ready:
+            for v in allr.values():
+                tot.update(f["severity"] for f in v["findings"])
+        multi = any(len(allr) > 1 for _, allr, _ in ready)
+        how = ("then reviewed in at least two rounds, each by a fresh independent reviewer (every patient fact traced\n"
+               "to 1.0.0 in both languages, every guideline statement looked up in its source's own text, the kit's\n"
+               "checklist of earlier reviews' findings, assessment replays), further rounds following while a round\n"
+               "found a critical or major issue, and fixed:\n\n") if multi else (
+               "then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,\n"
+               "current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:\n\n")
         msg = (f"CMCR 105: {n} more case{'s' if n > 1 else ''} re-authored and reviewed (1.1.0)\n\n"
                "Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),\n"
-               "then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,\n"
-               "current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:\n\n"
-               + "\n".join(lines) + "\n\n"
-               f"Reviews: {crit} critical, {major} major and {minor} minor findings; every critical and major one fixed or\n"
-               "answered with a reason. Each case passes strict validation (with the audit's safety lints),\n"
-               "verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration\n"
-               "in both languages.\n\n"
+               + how + "\n".join(lines) + "\n\n"
+               f"Reviews: {tot['critical']} critical, {tot['major']} major and {tot['minor']} minor findings; every critical and major\n"
+               "one fixed or answered with a reason in the case's README. Each case passes strict validation (with the\n"
+               "audit's safety lints), verification (100 %), scripts/case-check.ts, the collection contract and the\n"
+               "in-world demonstration in both languages.\n\n"
                "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n"
                "Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab\n")
         open(os.path.join(SP, "commit-msg.txt"), "w").write(msg)
         git("add", "--", *[f"packages/content/cases/{cid}" for cid, *_ in ready])
         out = subprocess.run(["git", "commit", "-q", "-F", os.path.join(SP, "commit-msg.txt")], cwd=WT, capture_output=True, text=True)
         print("commit:", out.returncode, out.stderr.strip()[:300], git("log", "--oneline", "-1").strip())
-        for cid, *_ in ready:
+        for cid, allr, _ in ready:
             status[cid]["committed"] = True
+            if len(allr) > 1:
+                status[cid]["roundsCommitted"] = max(allr)
     if commit and ready2 and not skip:
         n = len(ready2)
         tot = collections.Counter()

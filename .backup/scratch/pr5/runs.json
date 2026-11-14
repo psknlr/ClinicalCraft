@@ -200,11 +200,6 @@
    "status": "failed at the 5-hour limit 2026-11-14 ~07:37 (resets 08:50) after ~38 min; partial edits kept on disk (wave 2c: 61 files in trial; cases: 33632 draft; review2: 33790, 561144)"
   },
   {
-   "name": "review2-R2 (pending)",
-   "argsFile": "args-R2.json",
-   "plan": "20 committed cases + the 4 committed after the restart: start when wave 2c finishes (keep <= 8 agents)"
-  },
-  {
    "name": "audit-wave2c-c",
    "runId": "wf_041fc7f3-788",
    "task": "waclv0hba",
@@ -237,6 +232,54 @@
    "script": "pr5/review2.js",
    "argsFile": "args-R1.json",
    "started": "2026-11-14 09:36"
+  },
+  {
+   "name": "audit-wave2c-final (resume)",
+   "runId": "wf_041fc7f3-788",
+   "task": "wt41654wt",
+   "script": "audit2/wave2c.js",
+   "args": {
+    "base": "9b264e4"
+   },
+   "started": "2026-11-14 15:10",
+   "plan": "final check only (fix, verify, fix-2 cached)"
+  },
+  {
+   "name": "stopped by mistake (placeholder args)",
+   "runId": "wf_bc57fb66-466",
+   "task": "w8d8zle4c",
+   "script": "pr5/reauthor-v6.js",
+   "started": "2026-11-14 15:12",
+   "plan": "stopped at once; its two review3 agents re-run in rounds-R"
+  },
+  {
+   "name": "new-A (v6)",
+   "runId": "wf_31406a41-093",
+   "task": "wr3ymjae0",
+   "script": "pr5/reauthor-v6.js",
+   "argsFile": "args-new-1.json",
+   "started": "2026-11-14 15:17"
+  },
+  {
+   "name": "new-B (v6)",
+   "runId": "wf_729917f4-301",
+   "task": "w1k13i59a",
+   "script": "pr5/reauthor-v6.js",
+   "argsFile": "args-new-2.json",
+   "started": "2026-11-14 15:17"
+  },
+  {
+   "name": "rounds-R (v6)",
+   "runId": "wf_45c33efc-3ae",
+   "task": "weqls3boc",
+   "script": "pr5/reauthor-v6.js",
+   "argsFile": "args-rounds.json (earlier:true -> pr5/earlier/<id>.json)",
+   "started": "2026-11-14 15:20"
+  },
+  {
+   "name": "engine wave 3 (pending)",
+   "script": "audit3/wave3.js",
+   "plan": "after wave 2c is committed on audit-fixes: args {base:<wave 2c commit>, open:[wave 2c's open items]}"
   }
  ]
 }
