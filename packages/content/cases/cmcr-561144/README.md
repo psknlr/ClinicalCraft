@@ -21,8 +21,8 @@
 | Specialty | Critical care, anaesthesiology, thoracic surgery, neurology |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; foundation doctors and residents in surgery, anaesthesia and intensive care; ward and ICU nurses |
-| Review status | Editorial review 2026-10-30, independent review 2026-11-13 and review rounds 2 and 3 on 2026-11-14 (AI-assisted, against the guidance below; round 2 read the full texts of Moon 2019, ECHM 2016, the Pennsylvania advisory of 2012, WS/T 433—2023, the GMC/NMC candour guidance, Decree No. 701 and the AES 2016 algorithm; round 3 re-read them, re-checked that each is still the current edition and replayed the assessment) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an intensivist, a hyperbaric physician and an adult congenital cardiologist review it before teaching use |
-| Content | 15 history items (6 not recorded, 7 required) · 7 exam findings · 11 investigations (5 record reviews, 6 without any recorded result) · 19 interventions (6 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 13 rubric items (12 deterministic, weight 31; 1 examiner-judged; 3 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 56 test utterances |
+| Review status | Editorial review 2026-10-30, independent review 2026-11-13 and review rounds 2, 3 and 4 on 2026-11-14 (AI-assisted, against the guidance below; round 2 read the full texts of Moon 2019, ECHM 2016, the Pennsylvania advisory of 2012, WS/T 433—2023, the GMC/NMC candour guidance, Decree No. 701 and the AES 2016 algorithm; round 3 re-read them, re-checked that each is still the current edition and replayed the assessment; round 4 re-read them again, probed 111 new wordings and 40 plain orders through the agent's order resolver and replayed every scoring row) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an intensivist, a hyperbaric physician and an adult congenital cardiologist review it before teaching use |
+| Content | 15 history items (6 not recorded, 7 required) · 7 exam findings · 11 investigations (5 record reviews, 6 without any recorded result) · 19 interventions (6 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 13 rubric items (12 deterministic, weight 31; 1 examiner-judged; 3 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 63 test utterances |
 
 ## Learning outcomes
 
@@ -50,7 +50,7 @@ GLOSSARY §4). The six HUD `objectives` below are the in-game task list.
 
 ## Clinical summary (spoilers)
 
-A 51-year-old woman first sought care for hands that turn white and painful in the cold; on that assessment an
+A 51-year-old woman first sought care for hands that turned white and painful in the cold; on that assessment an
 atrial septal defect and pulmonary hypertension were found (an earlier echocardiogram records both). She underwent a
 thoracic sympathectomy (胸交感神经链切断术). On post-operative day 5 her right internal jugular central venous
 catheter was removed with her lying flat (平卧); the site was pressed for about 1 minute and covered with ordinary
@@ -188,7 +188,7 @@ after the collapse — a deliberate contrast. A harm text is shown to the learne
 decision (the early or upright removal before decision 1; head-down or sitting up before decision 2) do not state
 that decision's answer (review round 3).
 
-**Safety outcome.** IV thrombolysis (`alteplase`, high risk) is `critical: true`: given five days after intrathoracic
+**Safety outcome.** IV thrombolysis (`alteplase`, high risk) is `critical: true`: given five days after chest
 surgery, for gas rather than clot, it risks life-threatening bleeding at the operation site or in the brain, so
 giving it fails the run's safety outcome whatever the score, and the critical avoided-harm item `rb-no-harm` records
 it. Therapeutic heparin (moderate risk, contraindicated throughout) also costs `rb-no-harm` but, as a recoverable
@@ -407,7 +407,9 @@ the GMC/NMC candour guidance and Decree No. 701; what follows could not be read 
   WS/T 433—2023 §6.8.4; cite INS again only once its wording (position, Valsalva or breath-hold, petroleum-based dressing
   and its duration, time lying flat) has been read.
 * Moon and Mitchell 2025 (Undersea Hyperb Med 52(1):41-53; by its title the 15th edition's chapter 1, though the
-  front matter read here does not name that chapter's authors): its abstract restates the imaging, hypocapnia and oxygen-then-HBOT statements (cited beside Moon 2019); confirm
+  front matter read here does not name that chapter's authors, and the UHMS indications page (read 2026-11-14) lists the
+  15th-edition chapter "Air or Gas Embolism" under Richard E. Moon alone, with only its rationale public; its full text
+  is for members only): its abstract restates the imaging, hypocapnia and oxygen-then-HBOT statements (cited beside Moon 2019); confirm
   in its full text the statements still cited to the 2019 text alone — head-down no longer recommended, the recovery
   position, a chest tube before monoplace treatment, the adjunct classes (anticoagulants IIb, corticosteroids III), low-molecular-weight heparin as
   thromboprophylaxis after 24 hours' immobility (class I) and time to treatment.
@@ -433,12 +435,15 @@ the GMC/NMC candour guidance and Decree No. 701; what follows could not be read 
 * Corticosteroids: class III (level C) in Moon 2019's adjunct list; the case says only that they have no proven role.
 * Clinician input: an intensivist and a hyperbaric physician should review decisions 2–3 (positioning — the case follows
   Moon 2019's horizontal position, not the left side-lying head-down position of the 2012 Pennsylvania advisory — the
-  benzodiazepine step, pre-compression checks) and an adult congenital cardiologist decision 4.
+  benzodiazepine step, pre-compression checks) and an adult congenital cardiologist decision 4 — including the air
+  filters on her future lines: ESC 2020 ACHD states them ("use of an air filter in an intravenous line to prevent air
+  embolism") in its table of risk-reduction strategies for cyanotic congenital heart disease (Table 9), and she has an
+  ASD with pulmonary hypertension whose shunt direction is not recorded (review round 4).
 
 ## Matcher notes
 
-* 56 `extensions.testUtterances` (27 zh-CN, 29 en; 3 look-alike negatives), none equal to a canonical question or a
-  keyword; every required item is covered. `cases verify`: 56/56, no extra selections.
+* 63 `extensions.testUtterances` (31 zh-CN, 32 en; 4 look-alike negatives), none equal to a canonical question or a
+  keyword; every required item is covered. `cases verify`: 63/63, no extra selections.
 * **Plain openers (review round 2).** `scripts/case-check.ts` probes plain opening questions in the first phase; nine
   reached no item. `line-today` now carries them (en run together: `whathappened`, `whatstheproblem`, `beengoingon`,
   `goingon`, `howlong`, `whendiditstart`…; zh 怎么了, 这次怎么了, 哪里不舒服, 怎么回事, 有什么不舒服, 多久了,
@@ -470,6 +475,27 @@ the GMC/NMC candour guidance and Decree No. 701; what follows could not be read 
   `shakeher`; the non-rebreather: hyperbaric, chamber, 高压氧; the heparin trap: low molecular, LMWH, prophylaxis,
   enoxaparin…, 低分子, 预防), and five test utterances. All 87 + 17 now reach the intended item (or, for the
   prophylaxis order, no trap); the 134 probes of round 2 still do.
+* **New wordings and orders (review round 4).** 111 further probes (51 history, 24 examination, 36 intervention orders,
+  none used before; the reviewer's own scripts) and 40 plain orders run through the agent's order resolver
+  (the in-world and agent path, which picks one act) found: "What are you in for?", "Has a doctor spoken to you yet?",
+  拔管之前你还有什么不放心的, 她有没有长期吃的药, "Pinch her and see if she reacts" and 她能听见我说话吗 reaching nothing;
+  "How have you been getting on since the surgery?" and 手术以后恢复得怎么样 reaching `operation`, "Any reactions to
+  medicines in the past?" `medications`, "…ask me before I take the line out?" `neck-line`, 术后有没有放胸管 `line-today`,
+  and the look-alike 你住在哪里 `line-today`; the plain Chinese for the ICU transfer (转到重症监护室, 送重症监护室,
+  转入重症监护病房) resolving to the bedside monitor (`monitoring`), so the act that opens the ICU phase and closes the
+  first-aid window could not be ordered in ordinary words; and the case's own words for the seal, 用不透气的敷料封住穿刺点 —
+  the shared negation lexicon reads the 不 of 不透气 ("air-occlusive") as "do not", so the order was withheld
+  (`negated`) and the critical first-aid seal could not be given in the words decision 1 and the teaching points use.
+  Fixed in the case: keywords and exclusions (`line-today`, `operation`, `allergies`, `medications`, `ice`,
+  `relative-told`, `chest-after-surgery`, `relative-medicines`; examination: pinch, sternal rub, 听见, 掐), ICU-transfer
+  aliases 重症监护室, 重症监护病房, 转入重症 with 监护室/重症 excluded from the monitor, `remove-line` excluding 床头放低/头低/
+  head down (a zh order to tilt for the removal tied with the removal itself), `seal-site` aliases 不透气 and 拔管处 (an
+  item whose own alias holds the cue is not withheld; the longer 不透气敷料 aliases were tried and rejected because they
+  turned ward removal orders naming the dressing into the seal — with the chosen aliases those orders come back as a
+  question, never as the wrong act), a few aliases for orders the resolver could only guess ("shout for help", "speak
+  to the family", 导管拔了), and seven test utterances. All 111 probes and 40 orders now reach the intended item; the
+  probes of rounds 1-3 still do. The negation lexicon itself is shared code: the case reports the change (treat 不透 —
+  不透气, 不透水 — as no negation) rather than making it.
 * **Ward and ICU items must not compete:** `cases verify` ranks the expected item against items of every phase, so the
   ICU relative's medicine/allergy item answers only questions about *her* (zh keywords with 她; en run-together
   `shetakes`, `doesshehave`, `herallergies`…), and the ward `medications` and `allergies` items exclude 她 and those
@@ -488,7 +514,8 @@ the GMC/NMC candour guidance and Decree No. 701; what follows could not be read 
 * Interventions: "oxygen" reaches the non-rebreather, "lie flat"/"recovery position" the horizontal positioning,
   "head down"/"trendelenburg" the tilt, "tpa" the thrombolysis trap, "hbot"/"recompression" the chamber; "hyperbaric"
   never reaches the non-rebreather and a prophylactic low-molecular-weight heparin order never reaches the therapeutic
-  heparin trap (review round 3).
+  heparin trap (review round 3); 转到重症监护室 reaches the ICU transfer, not the monitor, and 不透气 dressings reach the
+  seal (review round 4).
 
 ## References
 
@@ -564,6 +591,20 @@ guidance (last updated 13 December 2024) and Decree No. 701 (Articles 13 and 17)
 candour revision, no eleventh ECHM consensus and no 16th edition of the UHMS manual were found, and ESC Congress 2026
 issued heart failure, CVD–CKD and cardiac rehabilitation guidelines only. Bothma and Schlimp 2014: the DOI resolves to
 the publisher, which refused access, so its attribution was narrowed (To verify).
+
+**Review round 4 (2026-11-14).** Re-read from the saved texts against every attributed statement: Feil 2012 (the removal
+list — Trendelenburg when possible, else supine; exit site below the heart; Valsalva as the last portion comes out, else
+during expiration; pressure one to five minutes; occlusive dressing at least 24 hours; flat 30 minutes — and the table,
+head elevated during removal 6 of 24), Moon 2019 (imaging, first aid, positioning, HBO2 and delay, the chest tube for a
+pneumothorax before monoplace treatment, Table 6, the adjunct classes, LMWH prophylaxis class I, hypocapnia), ECHM 2016
+("We recommend HBOT in the treatment of gas embolism (Type 1 recommendation, Level C evidence)") and the UHMS
+15th-edition front matter. Newly read: the ESC 2020 ACHD full text on the publisher's site (the air filter for
+intravenous lines in cyanotic patients, central catheters and paradoxical embolism, ASD closure safe below 5 WU and
+unlikely to help at 5 WU or more) and the UHMS indications page (15th-edition chapter by Richard E. Moon; rationale
+only). Currency searches: the ESC lists new adult congenital heart disease and pulmonary embolism guidelines as planned
+for 2028, so the 2019 PE, 2020 ACHD and 2022 PH guidelines remain current; the GMC/NMC candour guidance was last
+updated 13 December 2024. Still unreadable: the full texts of Moon and Mitchell 2025 (members only) and of Bothma and
+Schlimp 2014 (subscribers only).
 
 ## Changelog
 
@@ -655,6 +696,23 @@ the publisher, which refused access, so its attribution was narrowed (To verify)
   position (left side-lying, head-down) predates Moon 2019, whom the case follows. Re-measured: reference 31/31, do
   nothing 0/26, wrong first 58 %, every harm (now including the upright removal) costs points. No patient fact was
   added.
+* **Review round 4 (2026-11-14).** A fourth fresh review traced every string again in both languages against 1.0.0,
+  re-read the saved source texts, read the ESC 2020 ACHD full text, replayed every scoring row and probed 111 new
+  wordings plus 40 plain orders through the agent's resolver. Found and changed: the Chinese order for the case's own
+  air-occlusive seal (用不透气的敷料…) was withheld as a negation by the shared lexicon, so the critical first-aid seal
+  could not be given in the words the case teaches (`seal-site` aliases; the lexicon change is reported); the plain
+  Chinese for the ICU transfer resolved to the bedside monitor (aliases and exclusions); 12 further history and
+  examination wordings that reached nothing or the wrong item, a zh head-down order that tied with the removal and three orders the resolver
+  could only guess (keywords, exclusions, aliases, seven test utterances — 63 in all); the `collapse` description's
+  "began to convulse" / 开始抽搐, an order of signs 1.0.0 does not state (now listed with the other signs); "hands that
+  turn white" in the triage note, the nurse's handover, a source line and this guide's summary, a present habit for
+  1.0.0's past (now "turned"); the neck-site finding, which claimed ordinary tape on the site even after the learner
+  had sealed it (now the recorded fact: tape was put over it after the removal); the English first-minutes guidance's
+  missing "suddenly" (突然 in the Chinese); the report-like distractor's feedback dropping "about" from the minute of
+  pressure; and "intrathoracic surgery" in the safety outcome, an approach the record does not give (now "chest
+  surgery"). To verify now notes the UHMS chapter's authorship and the subgroup of ESC 2020's air-filter statement.
+  Scores unchanged (reference 31/31, do nothing 0/26, wrong first 58 %, every harm costs points). No patient fact was
+  added; what remains to verify is the source check against the full article and the clinician review listed above.
 * **Contract wording.** The English review note ends "The case is not yet reviewed by a licensed clinician." (the
   collection test matches the lower-case phrase); otherwise it is the standard's §6 text.
 
@@ -666,7 +724,7 @@ the publisher, which refused access, so its attribution was narrowed (To verify)
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-561144/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-561144 --lang en        # 60 steps · objectives 6/6 · decisions 5/5 · utterances 56/56 · rubric 31/31
+npm run -s cc -- cases verify cmcr-561144 --lang en        # 60 steps · objectives 6/6 · decisions 5/5 · utterances 63/63 · rubric 31/31
 npx tsx --conditions=source scripts/case-check.ts cmcr-561144                                  # PASS (depth floor, do nothing 0, wrong-first < reference, plain openers, patient voice)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-561144:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-561144:"  # demonstration, en + zh-CN
@@ -699,4 +757,4 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **复盘要点（PEARLS）。** 先谈她坐起时突然失去反应那一刻的感受；复述拔管方案和最初一分钟做了什么；分析：穿刺点与心脏的高低、吸气的作用、
 缺损伴肺高压增加了什么风险、普通胶布为何不够、CT阴性怎么办、为何纯氧和水平位、为何不再头低位、加压前要查什么、瞳孔体征能说明
 什么、家属问“是不是拔管出的事”怎么回答；总结下次拔颈部导管和遇到拔管后突然失去反应时怎么做。待核实：手术与超声心动图细节、拔管地点和
-方式、发病时体征、CT细节、高压氧方案、“左侧重瘫”原文、“约35天”的起算点（见上文 To verify）。本病例为人工智能辅助编写、经编辑审核（含2026-11-14第二、三轮审核）的教学材料，尚未经执业医师审核。
+方式、发病时体征、CT细节、高压氧方案、“左侧重瘫”原文、“约35天”的起算点（见上文 To verify）。本病例为人工智能辅助编写、经编辑审核（含2026-11-14第二、三、四轮审核）的教学材料，尚未经执业医师审核。

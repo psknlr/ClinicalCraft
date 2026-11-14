@@ -443,6 +443,13 @@
      "major": 11,
      "minor": 17
     }
+   },
+   "3": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 3,
+     "minor": 11
+    }
    }
   }
  },
@@ -508,6 +515,13 @@
  "cmcr-561144": {
   "allChecksPass": true,
   "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
   "committed": true,
   "reviewed": true,
   "rounds": {
@@ -526,8 +540,16 @@
      "major": 6,
      "minor": 11
     }
+   },
+   "4": {
+    "allChecksPass": true,
+    "findings": {
+     "major": 2,
+     "minor": 9
+    }
    }
-  }
+  },
+  "roundsCommitted": 4
  },
  "cmcr-598191": {
   "allChecksPass": true,
@@ -782,6 +804,20 @@
   "reviewed": true
  },
  "cmcr-860885": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "major": 5,
+   "minor": 11
+  },
+  "reviewed": true
  }
 }

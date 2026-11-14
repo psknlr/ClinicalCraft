@@ -764,10 +764,11 @@ reproduced verbatim on a secondary site — still taught without the guideline's
 
 - **Review round 3 (2026-11-14), fixes within 1.1.0.** (1) *Facts back to 1.0.0's level:* the BP and heart rate are
   1.0.0's "admission observations" (入院观测), no longer "on arrival" / 到院 (triage note, vital-signs finding, ECG note,
-  decision prompts, GTN and metoprolol harms, outcome record, conclusion, nurse, provenance, teaching point 1, this
-  guide); the unknowns no longer presuppose "five years of AF without anticoagulation" (1.0.0 records only that she took
+  decision prompts, GTN and metoprolol harms, decision 3's `defer-48h` feedback, outcome record, conclusion, nurse,
+  provenance, teaching point 1, this guide); the unknowns no longer presuppose "five years of AF without anticoagulation" (1.0.0 records only that she took
   no antithrombotic) nor an "arrival" ECG; the hold response no longer presupposes a restart; the persona's unrecorded
-  "weak voice" (有气无力) became speech broken by the pain; teaching point 5's CHA₂DS₂-VA "6" became "at least 6".
+  "weak voice" (有气无力) became speech broken by the pain; teaching point 5's CHA₂DS₂-VA "6" became "at least 6", and
+  teaching point 6 ties heparin cover for warfarin to her recent embolism instead of stating it as a general rule.
   (2) *Guidance:* learning outcome 1 credited "without letting her age delay it" to ESC 2023 ACS, whose older-adults
   text was not reachable — now to the Chinese STEMI guideline (2019), which says it; the tenecteplase dose text follows
   ESC 2023 §5.3.1.1 ("over 75"); the UFH GPI dose (50–70 U/kg) now cites the Chinese guideline that holds it (To verify

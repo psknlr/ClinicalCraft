@@ -1,6 +1,2 @@
-- cmcr-1068530: Right hip pain after bowel cancer surgery · 29-year-old woman (5 decisions, 18 interventions;
-  review: 2 critical, 2 major, 11 minor findings)
-- cmcr-33476: Sudden left-sided paralysis · 12-year-old boy (5 decisions, 14 interventions;
-  review: 1 critical, 1 major, 12 minor findings)
-- cmcr-33632: Recurrent haemoptysis · 12-year-old boy (5 decisions, 12 interventions;
-  review: 0 critical, 4 major, 11 minor findings)
+- cmcr-860885: Cold hands and feet and stiff fingers · girl aged 16 years 7 months (5 decisions, 18 interventions;
+  review: 0 critical, 5 major, 11 minor findings)

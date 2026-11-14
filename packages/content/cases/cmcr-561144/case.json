@@ -114,7 +114,7 @@
     },
     "triageNote": {
       "zh-CN": "51岁女性，胸交感神经链切断术后第5天，右颈内静脉中心静脉导管今天拔除。最初因双手遇冷发白、疼痛就诊，那次检查中发现过心脏问题。",
-      "en": "51-year-old woman, post-operative day 5 after a thoracic sympathectomy; her right internal jugular central line is due out today. She first presented with hands that turn white and painful in the cold, and a heart problem was found during that work-up."
+      "en": "51-year-old woman, post-operative day 5 after a thoracic sympathectomy; her right internal jugular central line is due out today. She first presented with hands that turned white and painful in the cold, and a heart problem was found during that work-up."
     },
     "tags": [
       {
@@ -216,8 +216,8 @@
         "en": "After the removal"
       },
       "description": {
-        "zh-CN": "导管拔出后约3分钟，她坐起来时突然呼之不应，呼吸短促，并开始抽搐。（之后的经过按原报告记录进行。）",
-        "en": "About 3 minutes after the line came out, as she sat up, she suddenly stopped responding, with short, rapid breaths, and began to convulse. (From here the case follows the report.)"
+        "zh-CN": "导管拔出后约3分钟，她坐起来时突然呼之不应，呼吸短促并抽搐。（之后的经过按原报告记录进行。）",
+        "en": "About 3 minutes after the line came out, as she sat up, she suddenly stopped responding, with short, rapid breaths and convulsions. (From here the case follows the report.)"
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -331,7 +331,9 @@
           "有什么不舒服",
           "多久了",
           "什么时候开始",
-          "情况怎么样"
+          "情况怎么样",
+          "恢复得怎么样",
+          "恢复得"
         ],
         "en": [
           "howareyou",
@@ -357,7 +359,10 @@
           "inhospital",
           "admitted",
           "herefor",
-          "whyareyouhere"
+          "whyareyouhere",
+          "areyouinfor",
+          "howhaveyoubeen",
+          "gettingon"
         ]
       },
       "excludeKeywords": {
@@ -386,7 +391,9 @@
           "两只手",
           "手指",
           "手冷",
-          "变色"
+          "变色",
+          "住在",
+          "住哪"
         ],
         "en": [
           "which operation",
@@ -480,7 +487,7 @@
       "speaker": "patient",
       "source": {
         "zh-CN": "报告事实（1.0.0版）：既往因双手遇冷发白疼痛就诊；患者口吻为教学改写",
-        "en": "Report fact (version 1.0.0): first sought care for hands that turn white and painful in the cold; her words are a teaching adaptation"
+        "en": "Report fact (version 1.0.0): first sought care for hands that turned white and painful in the cold; her words are a teaching adaptation"
       }
     },
     {
@@ -584,7 +591,8 @@
           "引流",
           "气短",
           "胸痛",
-          "脖子"
+          "脖子",
+          "恢复"
         ],
         "en": [
           "drain",
@@ -592,7 +600,9 @@
           "chest pain",
           "neck",
           "breath",
-          "tube"
+          "tube",
+          "howhaveyoubeen",
+          "gettingon"
         ]
       },
       "disclosure": "on-ask",
@@ -691,7 +701,8 @@
           "胸痛",
           "呼吸困难",
           "憋气",
-          "气胸"
+          "气胸",
+          "胸管"
         ],
         "en": [
           "chest drain",
@@ -750,7 +761,9 @@
           "胰岛素",
           "降糖药",
           "哪些药",
-          "什么药"
+          "什么药",
+          "长期吃",
+          "长期用药"
         ],
         "en": [
           "medicines",
@@ -777,7 +790,8 @@
           "hasshe",
           "herregular",
           "hermedic",
-          "hertablet"
+          "hertablet",
+          "reaction"
         ]
       },
       "disclosure": "unknown",
@@ -814,7 +828,9 @@
           "allergy",
           "allergies",
           "drug allergy",
-          "penicillin"
+          "penicillin",
+          "reaction",
+          "reactions"
         ]
       },
       "excludeKeywords": {
@@ -939,7 +955,8 @@
           "害怕",
           "想问",
           "紧张",
-          "怕不怕"
+          "怕不怕",
+          "不放心"
         ],
         "en": [
           "worried",
@@ -949,7 +966,9 @@
           "nervous",
           "afraid",
           "questions",
-          "scared"
+          "scared",
+          "askme",
+          "liketoask"
         ]
       },
       "disclosure": "on-ask",
@@ -1050,7 +1069,10 @@
           "goingon",
           "theytellyou",
           "didtheytell",
-          "understand"
+          "understand",
+          "spokentoyou",
+          "talkedtoyou",
+          "spoken to"
         ]
       },
       "disclosure": "on-ask",
@@ -1124,7 +1146,9 @@
           "她用什么药",
           "她过敏",
           "她对什么过敏",
-          "她吃药"
+          "她吃药",
+          "长期吃的药",
+          "长期用药"
         ],
         "en": [
           "shetakes",
@@ -1169,7 +1193,10 @@
           "睁眼",
           "睁开眼",
           "醒着",
-          "醒没醒"
+          "醒没醒",
+          "听见",
+          "听得见",
+          "掐"
         ],
         "en": [
           "responsive",
@@ -1185,7 +1212,10 @@
           "rouse",
           "open your eyes",
           "shout",
-          "shakeher"
+          "shakeher",
+          "pinch",
+          "painful stimulus",
+          "sternal rub"
         ]
       },
       "finding": {
@@ -1410,8 +1440,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "右颈内静脉拔管处用普通胶布覆盖。",
-        "en": "The right internal jugular exit site is covered with ordinary adhesive tape."
+        "zh-CN": "右颈内静脉拔管处：拔管后用普通胶布覆盖。",
+        "en": "The right internal jugular exit site: ordinary adhesive tape was put over it after the removal."
       },
       "abnormal": true,
       "required": true,
@@ -2180,7 +2210,10 @@
           "拔深静脉",
           "拔中心静脉导管",
           "拔掉管子",
-          "拔颈部导管"
+          "拔颈部导管",
+          "导管拔了",
+          "把导管拔掉",
+          "拔掉导管"
         ],
         "en": [
           "remove the line",
@@ -2242,6 +2275,18 @@
       "response": {
         "zh-CN": "导管已拔出。原报告记录：她平卧拔管，穿刺点按压约1分钟，用普通胶布覆盖；拔管后约3分钟她坐了起来。之后的经过按原报告进行。",
         "en": "The line is out. The report records that she lay flat for the removal, the site was pressed for about 1 minute and covered with ordinary adhesive tape, and about 3 minutes after the removal she sat up. The case follows the report from here."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "床头放低",
+          "放低床头",
+          "头低"
+        ],
+        "en": [
+          "head down",
+          "head-down",
+          "trendelenburg"
+        ]
       }
     },
     {
@@ -2421,7 +2466,9 @@
           "crash team",
           "rapid response",
           "call the team",
-          "senior help"
+          "senior help",
+          "shout for help",
+          "get help"
         ]
       },
       "dose": {
@@ -2461,7 +2508,9 @@
           "封闭敷料",
           "凡士林纱布",
           "压住针眼",
-          "密封伤口"
+          "密封伤口",
+          "不透气",
+          "拔管处"
         ],
         "en": [
           "seal the site",
@@ -2469,7 +2518,9 @@
           "press on the site",
           "seal the puncture",
           "petroleum gauze",
-          "cover the neck wound"
+          "cover the neck wound",
+          "air-occlusive dressing",
+          "airtight dressing"
         ]
       },
       "dose": {
@@ -2607,6 +2658,13 @@
       "response": {
         "zh-CN": "监护已连接。本病例没有记录她的心率、血压、呼吸频率和血氧饱和度。",
         "en": "The monitor is on. This case does not record her heart rate, blood pressure, respiratory rate or oxygen saturation."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "监护室",
+          "监护病房",
+          "重症"
+        ]
       }
     },
     {
@@ -2754,14 +2812,18 @@
           "转重症",
           "转监护室",
           "收入icu",
-          "送icu"
+          "送icu",
+          "重症监护室",
+          "重症监护病房",
+          "转入重症"
         ],
         "en": [
           "transfer to icu",
           "intensive care",
           "itu",
           "critical care",
-          "move to icu"
+          "move to icu",
+          "intensive care unit"
         ]
       },
       "dose": {
@@ -3019,7 +3081,10 @@
           "tellthefamily",
           "open disclosure",
           "apologise to the family",
-          "speak with the relative"
+          "speak with the relative",
+          "speak to the family",
+          "speak with the family",
+          "meet the family"
         ]
       },
       "dose": {
@@ -3233,7 +3298,7 @@
       },
       "guidance": {
         "zh-CN": "拔管后约3分钟，她坐起时突然失去反应；你就在她床旁，抢救车、氧气接口和监护仪都在。",
-        "en": "About 3 minutes after the removal, as she sat up, she stopped responding; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
+        "en": "About 3 minutes after the removal, as she sat up, she suddenly stopped responding; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
       },
       "completeWhen": {
         "all": [
@@ -3560,8 +3625,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "平卧拔管是对的，但只按压1分钟、用普通胶布贴，针道并没有封住；拔后很快坐起，穿刺点会高于心脏，颈静脉内压力可低于大气压，空气就可能经针道被吸入。应该用不透气的封闭敷料封住针道（宾夕法尼亚患者安全管理局，2012），拔管后再平卧一段时间。",
-            "en": "Lying flat for the pull is right, but a minute of pressure and ordinary tape leave the tract unsealed, and sitting up soon afterwards puts the site above the heart, where pressure in the neck vein can fall below atmospheric and draw air in through the tract. Seal the tract with an air-occlusive dressing (Pennsylvania Patient Safety Authority, 2012) and keep her lying down for a while after removal."
+            "zh-CN": "平卧拔管是对的，但只按压约1分钟、用普通胶布贴，针道并没有封住；拔后很快坐起，穿刺点会高于心脏，颈静脉内压力可低于大气压，空气就可能经针道被吸入。应该用不透气的封闭敷料封住针道（宾夕法尼亚患者安全管理局，2012），拔管后再平卧一段时间。",
+            "en": "Lying flat for the pull is right, but about a minute of pressure and ordinary tape leave the tract unsealed, and sitting up soon afterwards puts the site above the heart, where pressure in the neck vein can fall below atmospheric and draw air in through the tract. Seal the tract with an air-occlusive dressing (Pennsylvania Patient Safety Authority, 2012) and keep her lying down for a while after removal."
           }
         },
         {
@@ -4284,7 +4349,7 @@
       },
       "knowledge": {
         "zh-CN": "病房护士。交班（ISBAR）：51岁女性，胸交感神经链切断术后第5天；右颈内静脉中心静脉导管今天拔除；她最初因双手遇冷发白、疼痛来看病，检查中发现过心脏问题，此前的超声心动图报告在病历里。病房设备：床旁有氧气接口和监护仪，抢救车里有气道用物、吸引和静脉穿刺用物，快速血糖仪和心电图机在病房，输液泵在床旁；ICU有高压氧舱。可以按医嘱压住并封闭穿刺点、给氧、连接监护、测指尖血糖、建立静脉通路、呼叫急救团队、协助转运。复述医嘱，只报告已经发生的情况和已经出来的结果，不解读、不诊断；问到没有记录的内容（生命体征、血糖、由谁拔的管）就如实说没有记录。",
-        "en": "Ward nurse. Handover (ISBAR): a 51-year-old woman on post-operative day 5 after a thoracic sympathectomy; her right internal jugular central line is due out today; she first came with hands that turn white and painful in the cold, a heart problem was found during that work-up, and the earlier echocardiogram report is in the notes. Kit: the oxygen outlet and the monitor are at her bed, the crash cart holds airway, suction and cannulation kit, the glucometer and the ECG machine are on the ward, the infusion pump is at the bed; intensive care has a hyperbaric chamber. Can, on instruction, press and seal the puncture, give oxygen, attach the monitor, check a capillary glucose, place a cannula, call the emergency team and help with the transfer. Reads back orders and reports only what has happened and results that are back, never interprets or diagnoses, and says plainly when something is not recorded (vital signs, glucose, who removed the line)."
+        "en": "Ward nurse. Handover (ISBAR): a 51-year-old woman on post-operative day 5 after a thoracic sympathectomy; her right internal jugular central line is due out today; she first came with hands that turned white and painful in the cold, a heart problem was found during that work-up, and the earlier echocardiogram report is in the notes. Kit: the oxygen outlet and the monitor are at her bed, the crash cart holds airway, suction and cannulation kit, the glucometer and the ECG machine are on the ward, the infusion pump is at the bed; intensive care has a hyperbaric chamber. Can, on instruction, press and seal the puncture, give oxygen, attach the monitor, check a capillary glucose, place a cannula, call the emergency team and help with the transfer. Reads back orders and reports only what has happened and results that are back, never interprets or diagnoses, and says plainly when something is not recorded (vital signs, glucose, who removed the line)."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -5136,6 +5201,53 @@
         "expect": [
           "relative-worry"
         ]
+      },
+      {
+        "text": "What are you in for?",
+        "locale": "en",
+        "expect": [
+          "line-today"
+        ]
+      },
+      {
+        "text": "Any reactions to medicines in the past?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Has a doctor spoken to you yet?",
+        "locale": "en",
+        "expect": [
+          "relative-told"
+        ]
+      },
+      {
+        "text": "拔管之前你还有什么不放心的？",
+        "locale": "zh-CN",
+        "expect": [
+          "ice"
+        ]
+      },
+      {
+        "text": "术后有没有放胸管？",
+        "locale": "zh-CN",
+        "expect": [
+          "chest-after-surgery"
+        ]
+      },
+      {
+        "text": "她有没有长期吃的药？",
+        "locale": "zh-CN",
+        "expect": [
+          "relative-medicines"
+        ]
+      },
+      {
+        "text": "你住在哪里？",
+        "locale": "zh-CN",
+        "expect": []
       }
     ]
   }

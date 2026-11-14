@@ -4564,8 +4564,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。这是到院时就有低血压、造影仍为 TIMI 1 级血流的急性下壁心肌梗死，拖延开通只会让更多心肌坏死；直接 PCI 的意义就在于现在开通血管（ESC 2023 ACS）。糖蛋白 IIb/IIIa 受体拮抗剂留作无复流或血栓并发症时的补救，80 岁时出血风险尤其高。",
-            "en": "No. With TIMI 1 flow in an acute inferior infarct that arrived with hypotension, every hour of delay lets more muscle die; primary PCI means opening the artery now (ESC 2023 ACS). GP IIb/IIIa inhibitors are kept for bail-out in no-reflow or a thrombotic complication, and at 80 they carry a high bleeding risk."
+            "zh-CN": "不对。这是入院时就有低血压、造影仍为 TIMI 1 级血流的急性下壁心肌梗死，拖延开通只会让更多心肌坏死；直接 PCI 的意义就在于现在开通血管（ESC 2023 ACS）。糖蛋白 IIb/IIIa 受体拮抗剂留作无复流或血栓并发症时的补救，80 岁时出血风险尤其高。",
+            "en": "No. With TIMI 1 flow in an acute inferior infarct that was hypotensive on admission, every hour of delay lets more muscle die; primary PCI means opening the artery now (ESC 2023 ACS). GP IIb/IIIa inhibitors are kept for bail-out in no-reflow or a thrombotic complication, and at 80 they carry a high bleeding risk."
           }
         }
       ]
@@ -5248,8 +5248,8 @@
         "en": "Anticoagulation after an embolic infarct. ESC 2024 AF replaces CHA₂DS₂-VASc with CHA₂DS₂-VA and recommends oral anticoagulation from a score of 2 — she had at least 3 before this event (hypertension 1, age ≥ 75 2) and at least 4 after it (vascular disease 1 for the infarct) — at least 6 if the probable coronary embolism also counts as arterial thromboembolism (2). A DOAC is preferred to a vitamin K antagonist except with a mechanical valve or moderate–severe mitral stenosis, at its label dose (apixaban 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L — never for age alone); antiplatelets are no alternative (class III; ACTIVE W), and bleeding scores identify correctable risks rather than reasons to withhold."
       },
       {
-        "zh-CN": "抗栓方案的过去与现在。记录中的做法是华法林、肝素过渡到第 6 天 INR 2.3 时停用，再加阿司匹林（疗程未记录）——这是 2014 年报告中的方案。现在，没有机械瓣或中重度二尖瓣狭窄时首选 DOAC；没有支架就没有双联抗血小板；心肌梗死后若加一种抗血小板药（首选氯吡格雷）要限定疗程，12 个月后单用抗凝（ESC 2023 ACS；ESC 2024 AF）。DOAC 有禁忌时华法林仍然正确：目标 INR 2.0–3.0，肝素用到 INR 达标。",
-        "en": "The antithrombotic plan, then and now. The record shows warfarin, heparin until the INR reached 2.3 on day 6, plus aspirin for an unrecorded time — a regimen reported in 2014. Today, without a mechanical valve or moderate–severe mitral stenosis, a DOAC comes first; no stent means no dual antiplatelet therapy; if one antiplatelet (preferably clopidogrel) is added after the infarct it is time-limited, and the anticoagulant continues alone after 12 months (ESC 2023 ACS; ESC 2024 AF). Warfarin is still right when a DOAC is contraindicated: INR 2.0–3.0, with heparin until it is in range."
+        "zh-CN": "抗栓方案的过去与现在。记录中的做法是华法林、肝素过渡到第 6 天 INR 2.3 时停用，再加阿司匹林（疗程未记录）——这是 2014 年报告中的方案。现在，没有机械瓣或中重度二尖瓣狭窄时首选 DOAC；没有支架就没有双联抗血小板；心肌梗死后若加一种抗血小板药（首选氯吡格雷）要限定疗程，12 个月后单用抗凝（ESC 2023 ACS；ESC 2024 AF）。DOAC 有禁忌时华法林仍然正确：目标 INR 2.0–3.0；她刚发生栓塞、左心房回声考虑血栓，肝素要用到 INR 达标。",
+        "en": "The antithrombotic plan, then and now. The record shows warfarin, heparin until the INR reached 2.3 on day 6, plus aspirin for an unrecorded time — a regimen reported in 2014. Today, without a mechanical valve or moderate–severe mitral stenosis, a DOAC comes first; no stent means no dual antiplatelet therapy; if one antiplatelet (preferably clopidogrel) is added after the infarct it is time-limited, and the anticoagulant continues alone after 12 months (ESC 2023 ACS; ESC 2024 AF). Warfarin is still right when a DOAC is contraindicated: INR 2.0–3.0 — and, so soon after an embolic event with an atrial echo considered thrombus, with heparin until it is in range."
       }
     ],
     "references": [

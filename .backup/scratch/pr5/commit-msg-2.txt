@@ -1,0 +1,17 @@
+CMCR 105: 1 more case through a second independent review
+
+Each case, re-authored and reviewed once, was reviewed again by a fresh reviewer: every patient fact
+traced to 1.0.0 in both languages, every guideline statement looked up in its source's own text,
+the kit's checklist of the earlier reviews' findings, and assessment replays (harmful acts, option
+lengths, aliases, leaks, plain questions in both languages); a further round followed while a round
+found a critical or major issue. Findings by round (all critical and major ones fixed or answered
+with a reason in the case's README):
+
+- cmcr-561144: round 2: 4 critical, 14 major, 9 minor; round 3: 1 critical, 6 major, 11 minor; round 4: 2 major, 9 minor
+
+Totals: 5 critical, 22 major and 29 minor findings. Each case passes
+strict validation, verification (100 %), scripts/case-check.ts, the collection contract and the
+in-world demonstration in both languages.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab
