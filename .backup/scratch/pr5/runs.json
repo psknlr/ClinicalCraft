@@ -1,5 +1,5 @@
 {
- "note": "Since the container restart of 2026-11-13 ~16:50 UTC: stopped runs are NOT resumed (resume replays only a prefix); a new run gets the cases still to do (case-status.json + the journals, via commit-cases.py). At most 3 workflows (6 agents) at once. From 2026-11-14 06:10: reauthor-v5.js (two lanes per run sharing one queue: author -> review -> next), authors' reports for review-mode cases in pr5/reports/<id>.json. From 2026-11-14 06:58: review2.js (rounds 2..4 per committed case, 2 lanes); commit-cases.py commits later rounds apart once a case's rounds are complete.",
+ "note": "Since the container restart of 2026-11-13 ~16:50 UTC: stopped runs are NOT resumed (resume replays only a prefix); a new run gets the cases still to do (case-status.json + the journals, via commit-cases.py). At most 3 workflows (6 agents) at once. From 2026-11-14 06:10: reauthor-v5.js (two lanes per run sharing one queue: author -> review -> next), authors' reports for review-mode cases in pr5/reports/<id>.json. From 2026-11-14 06:58: review2.js (rounds 2..4 per committed case, 2 lanes); commit-cases.py commits later rounds apart once a case's rounds are complete. A second container restart came at ~06:58 right after 12 agents were started: keep <= 8 agents (4 workflows); resmon.sh logs memory/load each minute to pr5/resmon.log.",
  "runs": [
   {
    "name": "cases-A",
@@ -103,7 +103,8 @@
    "script": "pr5/reauthor-v5.js",
    "argsFile": "args-G.json",
    "started": "2026-11-14 06:12",
-   "plan": "2 reviews (1423436, 1653405), then 24 authors each reviewed"
+   "plan": "2 reviews (1423436, 1653405), then 24 authors each reviewed",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
   },
   {
    "name": "cases-H",
@@ -112,7 +113,8 @@
    "script": "pr5/reauthor-v5.js",
    "argsFile": "args-H.json",
    "started": "2026-11-14 06:12",
-   "plan": "2 reviews (70172, 1423444), then 24 authors each reviewed"
+   "plan": "2 reviews (70172, 1423444), then 24 authors each reviewed",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
   },
   {
    "name": "cases-I",
@@ -121,7 +123,8 @@
    "runId": "wf_00c50c1e-fe2",
    "task": "wa6m12lqm",
    "script": "pr5/reauthor-v5.js",
-   "started": "2026-11-14 06:52"
+   "started": "2026-11-14 06:52",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
   },
   {
    "name": "audit-wave2c",
@@ -132,7 +135,8 @@
     "base": "9b264e4"
    },
    "started": "2026-11-14 07:10",
-   "plan": "fix W1-W6 (world/web) and D1-D4 (dose/team) -> 2 verifiers (replay, regression) -> fix-2 -> final check"
+   "plan": "fix W1-W6 (world/web) and D1-D4 (dose/team) -> 2 verifiers (replay, regression) -> fix-2 -> final check",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
   },
   {
    "name": "review2-R1",
@@ -141,7 +145,8 @@
    "script": "pr5/review2.js",
    "argsFile": "args-R1.json",
    "started": "2026-11-14 06:58",
-   "plan": "21 committed cases: second review (+ up to 2 more rounds while a round finds critical/major)"
+   "plan": "21 committed cases: second review (+ up to 2 more rounds while a round finds critical/major)",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
   },
   {
    "name": "review2-R2",
@@ -150,7 +155,50 @@
    "script": "pr5/review2.js",
    "argsFile": "args-R2.json",
    "started": "2026-11-14 06:58",
-   "plan": "20 committed cases: second review (+ up to 2 more rounds)"
+   "plan": "20 committed cases: second review (+ up to 2 more rounds)",
+   "status": "lost in the container restart 2026-11-14 ~06:58 (just after 12 agents were running); nothing partial written"
+  },
+  {
+   "name": "audit-wave2c-b",
+   "runId": "wf_70cb6e7f-15e",
+   "task": "wx9j3k94o",
+   "script": "audit2/wave2c.js",
+   "args": {
+    "base": "9b264e4"
+   },
+   "started": "2026-11-14 07:00"
+  },
+  {
+   "name": "cases-J",
+   "runId": "wf_bbb60eac-d1e",
+   "task": "w90a927qe",
+   "script": "pr5/reauthor-v5.js",
+   "argsFile": "args-J.json",
+   "started": "2026-11-14 07:01",
+   "plan": "30 authors, each reviewed"
+  },
+  {
+   "name": "cases-K",
+   "runId": "wf_4a21c525-531",
+   "task": "wb4au3bc4",
+   "script": "pr5/reauthor-v5.js",
+   "argsFile": "args-K.json",
+   "started": "2026-11-14 07:01",
+   "plan": "30 authors, each reviewed"
+  },
+  {
+   "name": "review2-R1b",
+   "runId": "wf_26483868-7a5",
+   "task": "w5tjjfm08",
+   "script": "pr5/review2.js",
+   "argsFile": "args-R1.json",
+   "started": "2026-11-14 07:01",
+   "plan": "21 committed cases, rounds 2-4"
+  },
+  {
+   "name": "review2-R2 (pending)",
+   "argsFile": "args-R2.json",
+   "plan": "20 committed cases + the 4 committed after the restart: start when wave 2c finishes (keep <= 8 agents)"
   }
  ]
 }
