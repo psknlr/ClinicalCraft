@@ -197,7 +197,8 @@ export const BehaviorOperationSchema = z
     roles: z.array(ActorRoleSchema).min(1).optional(),
     /**
      * The surgical control the operation is part of (docs/TEAM.md §1: `retract` for a grasp, `instruments` for loading
-     * a needle). Declared for theatre operations only; the world does not check it yet (docs/EMBODIED.md §8.2).
+     * a needle): the world refuses it to a body that does not hold the control, right after `roles`
+     * (docs/EMBODIED.md §8.2). Tag a theatre operation only when everyone who should do it holds that control.
      */
     control: SurgicalControlSchema.optional(),
   })

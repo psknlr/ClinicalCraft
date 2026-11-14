@@ -2,13 +2,14 @@
  * Authority (EMBODIED §8): which operations an actor's role permits. Every
  * operation belongs to one class; a role holds a set of classes, and an
  * operation's own `roles` (catalog behaviour, built-in door keys) narrow it
- * further. Checked by the action bus right after the target is resolved
- * (`NOT_AUTHORIZED`), and by `availableActions`.
+ * further — then its surgical `control`, if it names one (`behaviors.ts`:
+ * `DeviceRules.controlsOf`). Checked by the action bus right after the
+ * target is resolved (`NOT_AUTHORIZED`), and by `availableActions`.
  *
  * | class      | operations                                                        |
  * |------------|-------------------------------------------------------------------|
  * | `move`     | navigate, approach, look_at, cancel                               |
- * | `physical` | open/close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, monitor read) |
+ * | `physical` | open/close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, hand_over, search, the patient's transport_patient / escort_patient / release_patient / reposition_patient, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, monitor read) |
  * | `secure`   | lock, unlock (doors)                                              |
  * | `clinical` | every operation with a clinical effect (workstation order/read, device use, monitor attach, ECG record…) |
  *

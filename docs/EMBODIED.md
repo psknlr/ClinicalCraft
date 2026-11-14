@@ -521,7 +521,7 @@ code path returns it.
 | 4. `expectedWorldVersion` (strict), then `expectedTargetVersion` (per entity) | `STALE_STATE` |
 | 5. target (`resolveId`: prefixed ids, unprefixed aliases, `patient`, `clinician`) | `TARGET_NOT_FOUND` |
 | 6. operation offered by the target's behaviour | `OPERATION_NOT_SUPPORTED` (the message lists the offered operations by name, never by id) |
-| 7. authority (§8.2), availability, reservation, state, preconditions | `NOT_AUTHORIZED`, `DEVICE_UNAVAILABLE`, `DEVICE_BUSY`, `PRECONDITION_FAILED`, `HANDS_FULL`, `NOT_HOLDING` |
+| 7. authority (§8.2: the role, then the operation's surgical control; a search of the wound during the operation, §8.6), availability, reservation, state, preconditions | `NOT_AUTHORIZED`, `DEVICE_UNAVAILABLE`, `DEVICE_BUSY`, `PRECONDITION_FAILED`, `HANDS_FULL`, `NOT_HOLDING` |
 | 8. spatial: range from the current footprint, same level, line of sight; an operation involving the device and the patient (a clinical effect, or both `actorWithin` and `patientWithin`): a spot where every placement rule holds — its own and the §6 policy's — else a fetch | `NOT_IN_RANGE`, `NOT_VISIBLE`, `SPATIAL_REQUIREMENT_UNMET` (+ `hint` when a route leads there); `PRECONDITION_FAILED` with a fetch hint (`hint.then: move_to`) when no spot can satisfy both |
 | 9. clinical effect: item selection, the §6 policy, the device locked while `ClinicalPort.invoke` runs the tool (hooks, precheck, approval, engine) | `SPATIAL_REQUIREMENT_UNMET`, `APPROVAL_DENIED`, `CLINICAL_REJECTED`, `CANCELLED` — none commits a transition |
 | 10. commit: device transition and reservation, physical effects, events, time, the result (recorded; `action.completed` closes it) | — |
@@ -963,10 +963,20 @@ reservation) replaces them — the built-in catalogs declare one for
   in memory (not persisted). Anyone else gets `DEVICE_BUSY` with a hint to
   the nearest free alternative, and the spatial policy skips the device
   (`provider-busy`).
+* **Controls**: an operation may name the surgical control it is part of
+  (`control`: one of docs/TEAM.md §1's nine — `instruments` for loading a
+  needle or a stapler reload, `equipment` for the tower's power,
+  `anaesthesia` for isolating a lung). Only a body that holds that control
+  does it (§8.2). **Tag an operation only when everyone who should do it
+  holds the control**: everyone else is refused, so a tag on a step the case
+  needs from someone who does not hold it — or that no member of the team
+  works yet — stops the case there. Leave untagged what a body without the
+  control does today (a count board no policy of the team works, the
+  learner's own bedside steps on a ward).
 * `availableActions` lists the operations valid now for the actor — state,
-  role, availability, reservation, preconditions — not position (`inReach`
-  says that); `inspect` lists every operation with `available` and the
-  reason (spatial included).
+  role and control, availability, reservation, preconditions — not where it
+  stands (`inReach` says that); `inspect` lists every operation with
+  `available` and the reason (spatial included).
 * Staff movement is deterministic path following (no LLM per frame).
 
 **Boards that show the case record** (`derived: "case-record"`, e.g. a WHO checklist board, a surgical count board, an
@@ -997,12 +1007,13 @@ a look of its own.
 ### 8.2 Authority
 
 Each operation has a class; a role holds classes; an operation's own
-`roles` narrow it further (`NOT_AUTHORIZED`; `authority.ts`):
+`roles` narrow it further, then its surgical `control` if it names one
+(`NOT_AUTHORIZED`; `authority.ts`, `behaviors.ts`):
 
 | class | operations |
 |---|---|
 | `move` | navigate, approach, look_at, cancel |
-| `physical` | open / close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, transport_patient, escort_patient, release_patient, reposition_patient, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, a monitor's read) |
+| `physical` | open / close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, hand_over, search, transport_patient, escort_patient, release_patient, reposition_patient, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, a monitor's read) |
 | `secure` | lock, unlock |
 | `clinical` | every operation with a clinical effect (workstation order/read, device use, monitor attach, ECG record…) |
 
@@ -1018,9 +1029,29 @@ still decides. `transport_patient` is physical but narrowed to the clinical
 team and porters (a receptionist may not wheel a patient:
 `NOT_AUTHORIZED`).
 
-An operation may also name the surgical **control** it is part of (`control`: `instruments` for loading a needle,
-`count` for a count board, `equipment` for the tower's power; the controls are docs/TEAM.md §1's). It is declared
-content for now: the world does not check it yet, so `roles` alone narrow an operation as above.
+**Controls.** An operation may also name the surgical control it is part of (`control`, §8.1; the controls are
+docs/TEAM.md §1's). It is checked right after the role (`DeviceRules.precheck`): a body that does not hold the control
+is refused `NOT_AUTHORIZED` with no hint — no walk gives anyone a position — and a message naming the operation, the
+positions that hold the control in this encounter (the team's members who do, else every position whose defaults do)
+and what the actor is: "Fire the stapler is for the operating surgeon: Chen Yu is the scrub nurse." The learner's own
+body reads "… you are the scrub nurse.", and the colleague standing by while the learner holds their place "Chen Yu
+stands by: you hold the scrub nurse's place." The names are core's `POSITION_TITLES` and `CONTROL_TITLES`.
+
+Whose controls: core's `bodyControls` (for the world), asked by `DeviceRules.controlsOf` from what the world already
+holds — the case and the session state (`ClinicalView`) and the facility — and memoised on the state's `seq`. Nothing
+is stored on a body: no `ActorState` field, the `clinicalcraft-world@1` snapshot unchanged.
+- the learner's body holds every control; in a place in the team, that place's member's;
+- the stand-in surgeon's body, while the learner holds a place, the surgeon's;
+- the colleague standing by, none;
+- a member of the team as it is, their own (their position's defaults, or the team's `controls` for them);
+- any other member of staff, their position's defaults (`staffPosition`: a porter or a ward nurse holds none).
+
+`availableActions`, `inspect` and the next step a hint names (`firstStepTowards`) ask the same check, so agents and the
+web are offered exactly what the world allows. An operation without `control` behaves as before: `roles` alone narrow
+it. The field's controls go only to scrubbed positions and `equipment` / `anaesthesia` only to the others, so the
+sterile and non-sterile sides follow from the tags; whether that person is ready to work at the sterile field (clean
+hands, gown, gloves) stays with the operation's own predicates. Who may search the patient's wound during the
+operation is §8.6's rule.
 
 ### 8.3 Scope of practice
 
@@ -1328,6 +1359,16 @@ it has a place, and snapshots and physics keep it. But no one perceives it:
   it, into the searcher's hand, or at their feet when both hands are full.
 
 A revealed item is an ordinary item again (`entity.concealed` with `concealed: false`; "You found …").
+
+**Who checks the wound.** While the operation is in progress — from its first accepted step until it is closed or
+abandoned (`abandon-refer`); a conversion to open does not end it, the wound is open all the more — a search of the
+patient in the case team's room takes the `retract` control (§8.2): the operating surgeon and the assistants check the
+wound, and the learner holding the first or the second assistant's place. A nurse, the anaesthetist, a porter, the
+learner in the scrub nurse's place and the colleague standing by are refused `NOT_AUTHORIZED` with no hint: "Checking
+the wound during the operation needs Traction, held by the operating surgeon, first assistant: Lin Xiao is the
+circulating nurse." (`DeviceRules.searchRefusal`). A search where one stands, of anything else, before or after the
+operation, or with the patient outside the team's room is unchanged — the circulating nurse's count searches
+(`count.searchPlaces`) included.
 
 ## 9. Skills
 
@@ -1968,7 +2009,7 @@ the measurements of §4, §7, §11).
 | Visibility (`VisibilityModel`) | yes (W1; a door never hides itself) | unit: walls, windows, doors, field of view, partial occlusion, displaced carts, closed doors seen from their interaction points, no sight between levels | perception and spatial scenarios; no case fact in any observation (10 cases × 2 languages) | no — Perf measured only up to 120 × 100 m and two levels |
 | Navigation (`GridAStarBackend`, `NavGrids`, portal graph; goal cost bound S7; interrupted multi-level walks C11) | yes (W1) | unit: real routes in the three facilities, every interactive placement and door, failures, locks, zones, obstacles, moved carts, a two-level fixture, the reviewer's DoS shapes refused or < 1 s, a walk stopped at every point of a stairs route | measured (§7); navigation scenarios | no — larger hospitals unmeasured; evaluated alternatives (navmesh) not adopted (R12). Perf |
 | State store (`WorldStateStore`: actors, versions, events, idempotency window, canonical snapshots) | yes (W2) | unit: version rules incl. sensor updates, dynamics, bounded log, snapshot identity and refusal | `--continue` restores an embodied session's place; the demonstration's trace is byte-identical when regenerated | no — the snapshot format (`clinicalcraft-world@1`) has no migration; transcripts are local files. Rel, Ops |
-| Device behaviours and authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog: operations per kind, predicates, the ECG state machine with reservation and durations, the derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions | interaction and recovery scenarios; the STEMI demonstration (ECG prepare / connect / record / reset, monitor attach) | no — only two catalog behaviours authored (`ecg-machine`, `patient-monitor`); handheld items (hand-over, worn items) and `nearbyState` exist only in test catalogs and content packs |
+| Device behaviours and authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog: operations per kind, predicates, the ECG state machine with reservation and durations, the derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions; a theatre test catalog whose operations name a surgical control (offered and refused by position, the learner without and in a place, the colleague standing by, the stand-in, the next step a hint names, `availableActions` equal to the action bus's verdicts) | interaction and recovery scenarios; the STEMI demonstration (ECG prepare / connect / record / reset, monitor attach) | no — only two catalog behaviours authored (`ecg-machine`, `patient-monitor`); handheld items (hand-over, worn items) and `nearbyState` exist only in test catalogs and content packs |
 | Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`): THE bedside rule, THE screen rule, vitals by screen / hands / chart, kind defaults, IV access as patient state, labs sampled at the patient, results never on the device, record reviews at a records terminal or the bedside, delivered drugs, busy devices, `patient-at-provider`, capability labels | yes (W2; reviews G4–G10, G8, C14) | every §6 row (ok, each failure reason, the hint that fixes it); the hint property over every item of the 10 cases (transports included); the bedside rule over every slot of the three hospitals; the device-operation convergence sweep (C7); screen rule ⇔ policy; lazy-hint budget | `cases verify --all`; the embodied autopilot over the library (40 / 40 at the clinical score); both benchmark agents with 0 accepted violations | no — validated on the 10 built-in cases and 3 facilities only; no review of the rules by clinical educators is recorded |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`; awareness, whereabouts, recent events, region names, cross-level reachability) | yes (W2; G13, lead notes 1–2, C16) | unit: awareness levels, bounds, bearings, cues, screen rules, memory without versions, whereabouts and their snapshot, second/third-person events, exits by name, the ICU upstairs reachable and path-sorted; no case fact in any observation | perception / spatial scenarios; `/delegate staff:ed-nurse record_ecg` from the nurse's post (general and teaching hospital) | no — navigation by id goes to the real place, not the believed one (§14.3); `find {}` costs 7–12 ms. Perf |
 | Action bus, runtime (`createWorldRuntime`), world traces | yes (W2) | unit over a fake session on the real engine: commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees | wired into the agent session (CLI, MCP, benchmark, web); every scenario deterministic across seeds | no — the HTTP server hosts no world runtime of its own (it only routes bridge calls). Rel |

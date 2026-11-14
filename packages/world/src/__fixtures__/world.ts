@@ -83,8 +83,11 @@ function actionFor(tool: string, args: Record<string, unknown>): ClinicalAction 
   }
 }
 
-export function clinicalHarness(caseDef: CaseDefinition): ClinicalHarness {
-  let state = reduce(caseDef, createSession(caseDef), { type: "start" }).state;
+/** `start`: the session's first action (default a plain start; a place in the team: `{ type: "start", seat }`, which must be accepted). */
+export function clinicalHarness(caseDef: CaseDefinition, start?: Extract<ClinicalAction, { type: "start" }>): ClinicalHarness {
+  const begun = reduce(caseDef, createSession(caseDef), start ?? { type: "start" });
+  if (start && begun.rejected) throw new Error(`start rejected: ${begun.rejected.message}`);
+  let state = begun.state;
   let seq = 0;
   const h: ClinicalHarness = {
     calls: [],
@@ -155,13 +158,24 @@ export interface TestWorld {
 /** A world for a built-in case in a facility (default: the case's own, its first accepting slot). */
 export function makeWorld(
   caseId: string,
-  opts: { facility?: FacilityDefinition | "clinic-v4" | "general-hospital"; slotId?: string; locale?: string; mover?: Mover; spawn?: Pose; catalogs?: EquipmentCatalog[]; extra?: Partial<WorldRuntimeOptions>; caseDef?: CaseDefinition } = {},
+  opts: {
+    facility?: FacilityDefinition | "clinic-v4" | "general-hospital";
+    slotId?: string;
+    locale?: string;
+    mover?: Mover;
+    spawn?: Pose;
+    catalogs?: EquipmentCatalog[];
+    extra?: Partial<WorldRuntimeOptions>;
+    caseDef?: CaseDefinition;
+    /** The session's first action (`clinicalHarness`): a place in the team is `{ type: "start", seat }`. */
+    start?: Extract<ClinicalAction, { type: "start" }>;
+  } = {},
 ): TestWorld {
   // `caseDef`: a variant of the built-in case (an added item), bound like the case itself
   const caseDef = opts.caseDef ?? loadCase(caseId);
   const facility = typeof opts.facility === "object" ? opts.facility : loadFacility(opts.facility ?? (caseDef.facility as "clinic-v4" | "general-hospital"));
   const slotId = opts.slotId ?? assignPatientSlot(facility, caseDef)!.id;
-  const harness = clinicalHarness(caseDef);
+  const harness = clinicalHarness(caseDef, opts.start);
   const { newId, now } = counters();
   const trace = new TraceRecorder({ episodeId: "ep-1", caseId, facilityId: facility.id, now, clock: () => harness.view.clock(), newId });
   const runtime = createWorldRuntime({

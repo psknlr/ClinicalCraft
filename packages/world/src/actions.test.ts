@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR, type WorldEvent } from "./contracts.js";
 import { hospitalWithTestItems, makeWorld, steppingMover, type TestWorld } from "./__fixtures__/world.js";
+import { abandonableCase, DEVICE, operate, STAFF, standBeside, THEATRE, theatreWorld, WHOLE_OPERATION } from "./__fixtures__/theatre.js";
 
 const A = PRIMARY_ACTOR;
 const N = "staff:ed-nurse";
@@ -328,5 +329,102 @@ describe("availability, authority, scenario controls", () => {
     expect(w.runtime.plan(A, { kind: "room", id: "ed-store" }).ok).toBe(true);
     expect(events.map((e) => e.type)).toEqual(["door.changed", "door.changed", "obstacle.changed", "obstacle.changed"]);
     expect(() => w.runtime.setDoor("eq:ct-scanner", { open: true })).toThrow();
+  });
+});
+
+describe("refusals by control name who holds it and what the actor is (EMBODIED §8.2)", () => {
+  const fire = async (w: TestWorld, actor: string) => {
+    standBeside(w, actor, DEVICE.stapler);
+    return w.act({ actorId: actor, operation: "fire", targetId: DEVICE.stapler });
+  };
+
+  it("NOT_AUTHORIZED with no hint, the holders and the actor's position in English and Chinese — the learner in a place as you", async () => {
+    const en = await fire(theatreWorld(), STAFF.scrub);
+    expect(en).toMatchObject({ status: "failed", errorCode: "NOT_AUTHORIZED", message: "Fire the stapler is for the operating surgeon: Chen Yu is the scrub nurse." });
+    expect(en.hint).toBeUndefined();
+    const zh = await fire(theatreWorld({ locale: "zh-CN" }), STAFF.scrub);
+    expect(zh).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "击发闭合器由主刀医生负责：陈雨是洗手护士。" });
+    expect(zh.hint).toBeUndefined();
+    // a non-sterile colleague at the equipment that is not theirs: the anaesthetist at the tower
+    const three = theatreWorld({ start: { type: "start", lineup: "three-surgeons" }, locale: "zh-CN" });
+    standBeside(three, STAFF.anaesthetist, DEVICE.tower);
+    expect((await three.act({ actorId: STAFF.anaesthetist, operation: "power_on", targetId: DEVICE.tower })).message).toBe("开机由巡回护士负责：王医生是麻醉医生。");
+    const seat = theatreWorld({ start: { type: "start", seat: "scrub-nurse" }, locale: "zh-CN" });
+    expect((await fire(seat, A)).message).toBe("击发闭合器由主刀医生负责：你是洗手护士。");
+    expect((await fire(seat, STAFF.scrub)).message).toBe("陈雨在旁待命：由你担任洗手护士的岗位。");
+  });
+});
+
+describe("who checks the wound during the operation (EMBODIED §8.6)", () => {
+  /** A body at the operating table (a sensor pose), searching the patient's wound (`wound`) or where it stands. */
+  const search = async (w: TestWorld, actor: string, wound = true) => {
+    standBeside(w, actor, w.patientId, 1.3);
+    return w.act({ actorId: actor, operation: "search", ...(wound ? { targetId: w.patientId } : {}) });
+  };
+  const OPEN = WHOLE_OPERATION.slice(0, 3); // the plan, the gas, the scope in
+
+  it("in the team's room while the operation is in progress: the surgeon and both assistants, never a nurse, the anaesthetist or a porter — after a conversion to open too", async () => {
+    const w = theatreWorld({ start: { type: "start", lineup: "three-surgeons" } });
+    operate(w, OPEN);
+    expect(w.runtime.patientPlace()!.room).toBe(THEATRE);
+    for (const who of [STAFF.circulating, STAFF.scrub, STAFF.anaesthetist, STAFF.porter]) {
+      const r = await search(w, who);
+      expect(r, who).toMatchObject({ status: "failed", errorCode: "NOT_AUTHORIZED" });
+      expect(r.hint, who).toBeUndefined();
+    }
+    expect((await search(w, STAFF.circulating)).message).toBe("Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant, second assistant: Lin Xiao is the circulating nurse.");
+    for (const who of [A, STAFF.first, STAFF.second]) expect((await search(w, who)).status, who).toBe("completed");
+    // converted to open, the wound is open all the more: the rule holds until the operation is closed or abandoned
+    operate(w, [{ op: "bailout", strategy: "convert-open" }]);
+    expect((await search(w, STAFF.circulating)).errorCode).toBe("NOT_AUTHORIZED");
+    expect((await search(w, STAFF.scrub)).errorCode).toBe("NOT_AUTHORIZED");
+    for (const who of [A, STAFF.first, STAFF.second]) expect((await search(w, who)).status, who).toBe("completed");
+    // a search where one stands — the drapes and the floor within reach, the count's searches — is never the wound's
+    for (const who of [STAFF.circulating, STAFF.scrub]) expect((await search(w, who, false)).status, who).toBe("completed");
+  });
+
+  it("names the holders and the position in both languages: the learner in a place as you, the colleague standing by", async () => {
+    const zh = theatreWorld({ locale: "zh-CN" });
+    operate(zh, OPEN);
+    expect((await search(zh, STAFF.circulating)).message).toBe("手术进行中检查术野需要「牵引显露」权限，由主刀医生、第一助手持有：林晓是巡回护士。");
+    const seat = theatreWorld({ start: { type: "start", seat: "scrub-nurse" } });
+    operate(seat, WHOLE_OPERATION.slice(0, 2)); // in the scrub nurse's place an instrument goes in only once passed
+    const mine = await search(seat, A);
+    expect(mine).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant: you are the scrub nurse." });
+    expect(mine.hint).toBeUndefined();
+    expect((await search(seat, STAFF.scrub)).message).toBe("Chen Yu stands by: you hold the scrub nurse's place.");
+    // the stand-in surgeon operates: theirs to check
+    expect((await search(seat, STAFF.standIn)).status).toBe("completed");
+    // the first assistant's place holds traction: the learner checks it
+    const first = theatreWorld({ start: { type: "start", seat: "first-assistant" } });
+    operate(first, OPEN);
+    expect((await search(first, A)).status).toBe("completed");
+  });
+
+  it("nothing changes before the operation, once it is closed or abandoned, or outside the team's room", async () => {
+    const w = theatreWorld();
+    expect(w.harness.state().procedure).toBeUndefined();
+    expect((await search(w, STAFF.circulating)).status).toBe("completed");
+    operate(w, WHOLE_OPERATION);
+    expect(w.harness.state().procedure!.closed).toBe(true);
+    expect((await search(w, STAFF.circulating)).status).toBe("completed");
+    // abandoned and referred
+    const a = theatreWorld({ caseDef: abandonableCase() });
+    operate(a, [...OPEN, { op: "bailout", strategy: "abandon-refer" }]);
+    expect((await search(a, STAFF.circulating)).status).toBe("completed");
+    // the operation in progress, but the patient taken out of the team's room
+    const r = theatreWorld();
+    operate(r, OPEN);
+    expect((await search(r, STAFF.circulating)).errorCode).toBe("NOT_AUTHORIZED");
+    expect(r.runtime.relocatePatient({ slot: "ward-1" })).toMatchObject({ ok: true, moved: true });
+    expect(r.runtime.patientPlace()!.room).not.toBe(THEATRE);
+    expect((await search(r, STAFF.circulating)).status).toBe("completed");
+  });
+
+  it("a case without a team keeps every search as it was", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    await toPatient(w, N);
+    expect(w.caseDef.team).toBeUndefined();
+    expect((await w.act({ actorId: N, operation: "search", targetId: w.patientId })).status).toBe("completed");
   });
 });

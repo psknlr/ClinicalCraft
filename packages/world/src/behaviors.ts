@@ -27,10 +27,31 @@
  * preconditions (PRECONDITION_FAILED). Ranges are measured from the
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
+ * An operation's surgical `control` is checked right after its roles: a
+ * body that does not hold it is refused NOT_AUTHORIZED (`controlsOf`).
  */
-import { COUNT_EFFECT_STEPS, evaluate, monitorAttached, NEARBY_STATE_RANGE, t, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
+import {
+  bodyControls,
+  CONTROL_TITLES,
+  COUNT_EFFECT_STEPS,
+  evaluate,
+  monitorAttached,
+  NEARBY_STATE_RANGE,
+  POSITION_TITLES,
+  standingBy,
+  t,
+  type CaseDefinition,
+  type ClinicalEffect,
+  type Condition,
+  type Controls,
+  type LocalizedText,
+  type StaffPosition,
+  type SurgicalControl,
+  type TeamChoice,
+} from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
-import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
+import { MAX_HELD, PRIMARY_ACTOR, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
+import { bodyPosition, controlHolders, holdsControl, operationInProgress, WOUND_CONTROL } from "./controls.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
 import { escortProblem } from "./escort.js";
 import type { Placed, WorldLocator } from "./locate.js";
@@ -56,6 +77,11 @@ export interface OperationSpec {
   reserve: boolean;
   release: boolean;
   roles?: readonly ActorRole[];
+  /**
+   * The surgical control the operation is part of (catalog `control`; docs/TEAM.md §1): only a body that holds it may
+   * do it (`DeviceRules.controlsOf`, checked right after `roles`). Absent: anyone the roles allow.
+   */
+  control?: SurgicalControl;
   effect?: BuiltinEffect;
   source: "builtin" | "catalog";
 }
@@ -214,6 +240,7 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
         if (o.to !== undefined) out.to = o.to;
         if (o.clinical) out.clinical = o.clinical;
         if (o.roles) out.roles = o.roles;
+        if (o.control) out.control = o.control;
         if (!o.clinical && named[id]) out.effect = named[id];
         return out;
       }),
@@ -310,9 +337,104 @@ export interface DeviceRulesDeps {
   busy?: (id: EntityId) => string | null;
 }
 
+/**
+ * What the controls depend on, and what was resolved from it: the case, the facility and the start's choices only —
+ * so one session state's `seq` (and those choices, should the view ever show another session) keeps them.
+ */
+interface ControlsMemo extends TeamChoice {
+  seq: number;
+  /** Body id → its controls. */
+  controls: Map<string, Controls>;
+  /** Control → the positions that hold it. */
+  holders: Map<SurgicalControl, StaffPosition[]>;
+}
+
 /** Device states, operations, preconditions and reach, evaluated against the physical and clinical state. */
 export class DeviceRules {
+  private memo: ControlsMemo | null = null;
+
   constructor(private readonly d: DeviceRulesDeps) {}
+
+  /** The controls memo of the session state now (a fresh one once an action is accepted). */
+  private controlsMemo(): ControlsMemo {
+    const s = this.d.clinical.state();
+    const m = this.memo;
+    if (m && m.seq === s.seq && m.seat === s.seat && m.lineup === s.lineup && m.teamScenario === s.teamScenario) return m;
+    return (this.memo = { seq: s.seq, seat: s.seat, lineup: s.lineup, teamScenario: s.teamScenario, controls: new Map(), holders: new Map() });
+  }
+
+  /**
+   * The surgical controls an actor's body holds in this encounter (core `bodyControls`, for the world: docs/TEAM.md
+   * §1): the learner's body every control — in a place, that place's; the stand-in's, while the learner holds a place,
+   * the surgeon's; the colleague standing by none; a member of the team their own; any other member of staff their
+   * position's defaults. Read from the case, the session state and the facility, memoised on the state's `seq`; never
+   * stored on the body.
+   */
+  controlsOf(actor: Pick<ActorState, "id">): Controls {
+    const memo = this.controlsMemo();
+    let hit = memo.controls.get(actor.id);
+    if (!hit) {
+      const c = this.d.clinical;
+      hit = bodyControls(c.caseDef, c.state(), this.d.locator.facility, actor.id, "world");
+      memo.controls.set(actor.id, hit);
+    }
+    return hit;
+  }
+
+  /** Whether an actor may do an operation by its control (no `control`: anyone its roles allow). */
+  private holdsControlOf(actor: Pick<ActorState, "id">, o: Pick<OperationSpec, "control">): boolean {
+    return !o.control || holdsControl(this.controlsOf(actor), o.control);
+  }
+
+  /** The positions that hold a control in this encounter (`controlHolders`), memoised with the controls. */
+  private holdersOf(control: SurgicalControl): StaffPosition[] {
+    const memo = this.controlsMemo();
+    let hit = memo.holders.get(control);
+    if (!hit) {
+      const c = this.d.clinical;
+      hit = controlHolders(c.caseDef, c.state(), control);
+      memo.holders.set(control, hit);
+    }
+    return hit;
+  }
+
+  /**
+   * A refusal by control: `NOT_AUTHORIZED` with no hint — no walk gives anyone a position. It names who holds the
+   * control and what the actor is: `key` for a member of staff, `<key>.self` for the learner's own body ("you are the
+   * scrub nurse"), and for the colleague standing by while the learner holds their place, `pre.standingBy`.
+   */
+  private controlRefusal(actor: ActorState, control: SurgicalControl, key: "pre.control" | "pre.woundScrubbed", vars: Record<string, string>): RuleFailure {
+    const L = this.d.locale;
+    const c = this.d.clinical;
+    const s = c.state();
+    const position = bodyPosition(c.caseDef, s, this.d.locator.facility, actor.id);
+    const title = position ? t(POSITION_TITLES[position], L) : roleName(actor.role, L);
+    const who = this.d.locator.name(actor.id);
+    if (actor.id === standingBy(c.caseDef, s)) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.standingBy", L, { who, position: title }) };
+    const holders = listText(
+      this.holdersOf(control).map((p) => t(POSITION_TITLES[p], L)),
+      L,
+    );
+    const message = worldMessage(actor.id === PRIMARY_ACTOR ? `${key}.self` : key, L, { ...vars, holders, who, position: title, control: t(CONTROL_TITLES[control], L) });
+    return { code: "NOT_AUTHORIZED", message };
+  }
+
+  /**
+   * Who may check the wound (docs/EMBODIED.md §8.6): a `search` of the patient (`targetId`) while the operation is in
+   * progress (`operationInProgress`: begun, neither closed nor abandoned — a conversion to open included) and the
+   * patient is in the case team's room takes the `retract` control — the surgeon and the assistants; never a nurse,
+   * the anaesthetist or a porter (`NOT_AUTHORIZED`, no hint). Null: nothing to refuse — a search where one stands, of
+   * anything else, in another room or at another time.
+   */
+  searchRefusal(actor: ActorState, targetId?: EntityId): RuleFailure | null {
+    const loc = this.d.locator;
+    const c = this.d.clinical;
+    const room = c.caseDef.team?.room;
+    if (!room || !targetId || targetId !== loc.patientId) return null;
+    if (loc.place(targetId)?.room !== room || !operationInProgress(c.state())) return null;
+    if (holdsControl(this.controlsOf(actor), WOUND_CONTROL)) return null;
+    return this.controlRefusal(actor, WOUND_CONTROL, "pre.woundScrubbed", {});
+  }
 
   /** Behaviour of an entity id (none for unknown ids, people, rooms). */
   spec(id: EntityId): BehaviorSpec {
@@ -487,8 +609,9 @@ export class DeviceRules {
 
   /**
    * First failing non-spatial check of an operation for an actor, in commit
-   * order: authority → availability → reservation → state → built-in
-   * preconditions → declared preconditions. Null when it may proceed.
+   * order: authority (the role, then the operation's control) → availability
+   * → reservation → state → built-in preconditions → declared preconditions.
+   * Null when it may proceed.
    */
   precheck(id: EntityId, o: OperationSpec, actor: ActorState): RuleFailure | null {
     const loc = this.d.locator;
@@ -499,6 +622,8 @@ export class DeviceRules {
       const roles = o.roles?.length ? [...o.roles] : rolesFor(operationClass(o.id, !!o.clinical));
       return { code: "NOT_AUTHORIZED", message: `${worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target, operation })} ${worldMessage("pre.role", L, { roles: listText(roles.map((r) => roleName(r, L)), L), operation })}` };
     }
+    // the surgical control the operation is part of (EMBODIED §8.2): a body that does not hold it never does it
+    if (o.control && !this.holdsControlOf(actor, o)) return this.controlRefusal(actor, o.control, "pre.control", { operation });
     const spec = this.spec(id);
     const state = this.state(id);
     if (!this.d.store.available(id) || (state !== null && spec.states[state]?.available === false)) return { code: "DEVICE_UNAVAILABLE", message: worldMessage("DEVICE_UNAVAILABLE", L, { target }) };
@@ -698,10 +823,10 @@ export class DeviceRules {
   /**
    * The first operation on a device's shortest way (by its state machine: physical operations, and the count record's
    * own entries — a count, a scan — never a checklist step or a treatment) from its states now to one of `wanted`,
-   * that `actor` may do; null when there is none.
+   * that `actor` may do — by its role and its control, as `precheck` asks; null when there is none.
    */
   firstStepTowards(id: EntityId, wanted: readonly string[], actor: ActorState): OperationSpec | null {
-    const ops = this.spec(id).operations.filter((o) => (!o.clinical || o.clinical.tool === "surgical_count") && !o.toolByParam && o.to !== undefined && permits(actor.role, o.id, o));
+    const ops = this.spec(id).operations.filter((o) => (!o.clinical || o.clinical.tool === "surgical_count") && !o.toolByParam && o.to !== undefined && permits(actor.role, o.id, o) && this.holdsControlOf(actor, o));
     const offered = (st: string, o: OperationSpec) => o.from === "*" || o.from.includes(st);
     const queue: { state: string; first: OperationSpec | null }[] = this.states(id).map((st) => ({ state: st, first: null }));
     const seen = new Set(queue.map((q) => q.state));
@@ -796,7 +921,10 @@ export class DeviceRules {
     return null;
   }
 
-  /** Operations valid now for this actor — state, role, availability, reservation and preconditions; not position (see `ObservedEntity.inReach`). */
+  /**
+   * Operations valid now for this actor — exactly those `precheck` lets through: role and control, availability,
+   * reservation, state and preconditions; not where the actor stands (see `ObservedEntity.inReach`).
+   */
   availableActions(id: EntityId, actor: ActorState): string[] {
     return this.spec(id)
       .operations.filter((o) => this.precheck(id, o, actor) === null)

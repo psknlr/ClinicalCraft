@@ -13,9 +13,11 @@
  *    (per entity, EMBODIED R4) → `STALE_STATE`;
  * 5. resolve target (`resolveId`) → `TARGET_NOT_FOUND`;
  * 6. operation — offered by the target's behaviour (`OPERATION_NOT_SUPPORTED`);
- * 7. authority (`NOT_AUTHORIZED`, see `authority.ts`), availability
- *    (`DEVICE_UNAVAILABLE`), reservation (`DEVICE_BUSY`), state and
- *    preconditions (`PRECONDITION_FAILED`, `HANDS_FULL`, `NOT_HOLDING`);
+ * 7. authority (`NOT_AUTHORIZED`: the role, see `authority.ts`, then the
+ *    operation's surgical control — and a search of the wound during the
+ *    operation, which takes `retract`: `DeviceRules.searchRefusal`),
+ *    availability (`DEVICE_UNAVAILABLE`), reservation (`DEVICE_BUSY`), state
+ *    and preconditions (`PRECONDITION_FAILED`, `HANDS_FULL`, `NOT_HOLDING`);
  * 8. spatial — range from the footprint, line of sight, same level
  *    (`NOT_IN_RANGE` / `NOT_VISIBLE` with a verified `hint` goal);
  * 9. clinical effect — the item is selected, the spatial policy is checked
@@ -476,6 +478,9 @@ export class ActionBus implements EffectsHost, TransportHost {
     }
     if (request.operation === "search") {
       if (!permits(actor.role, "search")) return failed("NOT_AUTHORIZED", worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName("search", L) }));
+      // the wound while the operation is in progress: the scrubbed surgeons' (EMBODIED §8.6) — no walk fixes a position
+      const wound = this.d.rules.searchRefusal(actor, targetId);
+      if (wound) return failed(wound.code, wound.message);
       return search(this, request, actor, targetId);
     }
     if (MOVE_OPS.includes(request.operation)) {

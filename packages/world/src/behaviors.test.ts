@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { behaviorOf, evaluatePredicate, isPlacementPredicate, type PredicateEnv } from "./behaviors.js";
-import { PRIMARY_ACTOR, type Pose, type WorldPredicate } from "./contracts.js";
-import { hospitalWithTestItems, makeWorld, type TestWorld } from "./__fixtures__/world.js";
+import { PRIMARY_ACTOR, type ActorState, type Pose, type WorldPredicate } from "./contracts.js";
+import { createWorldRuntime } from "./runtime.js";
+import { catalogs, hospitalWithTestItems, makeWorld, type TestWorld } from "./__fixtures__/world.js";
 import { loadFacility } from "./__fixtures__/content.js";
+import { DEVICE, STAFF, standBeside, theatreCatalog, theatreWorld } from "./__fixtures__/theatre.js";
 
 const A = PRIMARY_ACTOR;
 const ops = (w: TestWorld, id: string) => behaviorOf(w.runtime.entity(id)!).operations.map((o) => o.id);
@@ -315,5 +317,152 @@ describe("sinks, storage, handheld items, preconditions", () => {
     const me = w.runtime.actor(A)!.pose;
     expect(Math.hypot(at.x - me.x, at.z - me.z)).toBeLessThanOrEqual(3);
     expect(w.runtime.snapshot().entities["eq:pocket-glu-1"].data).toBeUndefined();
+  });
+});
+
+describe("operations restricted by a surgical control (EMBODIED §8.2)", () => {
+  /** Beside the device (a sensor pose), what the world offers this body there — and the code of each refusal. */
+  const offered = (w: TestWorld, actor: string, id: string) => {
+    standBeside(w, actor, id);
+    const seen = w.runtime.inspect(actor, id)!;
+    return { available: seen.availableActions, refused: Object.fromEntries(seen.operations.filter((o) => !o.available).map((o) => [o.op, o.code])) };
+  };
+  const act = async (w: TestWorld, actor: string, operation: string, id: string) => {
+    standBeside(w, actor, id);
+    return w.act({ actorId: actor, operation, targetId: id });
+  };
+
+  it("behaviorOf copies an operation's control beside its roles; an operation without one names none", () => {
+    const w = theatreWorld();
+    const controls = (id: string) => behaviorOf(w.runtime.entity(id)!).operations.map((o) => [o.id, o.control]);
+    expect(controls(DEVICE.stapler)).toEqual([
+      ["load", "instruments"],
+      ["fire", "operate"],
+    ]);
+    expect(controls(DEVICE.tower)).toEqual([
+      ["power_on", "equipment"],
+      ["power_off", "equipment"],
+    ]);
+    expect(controls(DEVICE.lung)).toEqual([
+      ["isolate", "anaesthesia"],
+      ["restore", "anaesthesia"],
+    ]);
+    expect(controls(DEVICE.camera)).toEqual([["balance", undefined]]);
+    for (const e of w.runtime.entities().filter((x) => x.kind === "equipment" && !x.type.startsWith("test-"))) {
+      for (const o of behaviorOf(e).operations) expect(o.control, `${e.id} ${o.id}`).toBeUndefined();
+    }
+  });
+
+  it("offered and refused by position: the scrub nurse loads the stapler and cannot fire it, the circulating nurse switches the tower on, the anaesthetist isolates the lung", async () => {
+    const w = theatreWorld();
+    // the scrub nurse: the instrument table, never the operator's step nor the equipment — the control comes before the state
+    expect(offered(w, STAFF.scrub, DEVICE.stapler)).toEqual({ available: ["load"], refused: { fire: "NOT_AUTHORIZED" } });
+    expect((await act(w, STAFF.scrub, "load", DEVICE.stapler)).status).toBe("completed");
+    const fire = await act(w, STAFF.scrub, "fire", DEVICE.stapler);
+    expect(fire).toMatchObject({ status: "failed", errorCode: "NOT_AUTHORIZED", message: "Fire the stapler is for the operating surgeon: Chen Yu is the scrub nurse." });
+    expect(fire.hint).toBeUndefined(); // no walk gives anyone a position
+    expect(w.runtime.stateOf(DEVICE.stapler)).toBe("loaded");
+    expect(offered(w, STAFF.scrub, DEVICE.tower)).toEqual({ available: [], refused: { power_on: "NOT_AUTHORIZED", power_off: "NOT_AUTHORIZED" } });
+    // the circulating nurse: the equipment outside the sterile field, never the instrument table
+    expect(offered(w, STAFF.circulating, DEVICE.tower)).toEqual({ available: ["power_on"], refused: { power_off: "PRECONDITION_FAILED" } });
+    expect((await act(w, STAFF.circulating, "power_on", DEVICE.tower)).status).toBe("completed");
+    expect(w.runtime.stateOf(DEVICE.tower)).toBe("on");
+    expect(offered(w, STAFF.circulating, DEVICE.stapler)).toEqual({ available: [], refused: { load: "NOT_AUTHORIZED", fire: "NOT_AUTHORIZED" } });
+    // the anaesthetist isolates the lung; an assistant never does
+    expect(offered(w, STAFF.anaesthetist, DEVICE.lung)).toEqual({ available: ["isolate"], refused: { restore: "PRECONDITION_FAILED" } });
+    expect((await act(w, STAFF.anaesthetist, "isolate", DEVICE.lung)).status).toBe("completed");
+    expect(offered(w, STAFF.first, DEVICE.lung)).toEqual({ available: [], refused: { isolate: "NOT_AUTHORIZED", restore: "NOT_AUTHORIZED" } });
+    expect((await act(w, STAFF.first, "restore", DEVICE.lung)).message).toBe("Ventilate both lungs is for the anaesthetist: Dr Abe is the first assistant.");
+    // a member of staff outside the team: their position's defaults (a porter holds none)
+    expect(offered(w, STAFF.porter, DEVICE.tower).available).toEqual([]);
+    expect((await act(w, STAFF.porter, "power_off", DEVICE.tower)).message).toBe("Switch off is for the circulating nurse: Li Qiang is the porter.");
+  });
+
+  it("the learner without a place holds every control; in a place, that place's; the colleague standing by, none", async () => {
+    // no place: the operator, who may also do the team's parts
+    const w = theatreWorld();
+    for (const [operation, id] of [
+      ["load", DEVICE.stapler],
+      ["fire", DEVICE.stapler],
+      ["power_on", DEVICE.tower],
+      ["isolate", DEVICE.lung],
+    ] as const) {
+      expect(offered(w, A, id).available, operation).toContain(operation);
+      expect((await act(w, A, operation, id)).status, operation).toBe("completed");
+    }
+    // the scrub nurse's place, taken in core (a session still refuses places): that place's controls
+    const s = theatreWorld({ start: { type: "start", seat: "scrub-nurse" } });
+    expect(s.harness.state().seat).toBe("scrub-nurse");
+    expect(offered(s, A, DEVICE.stapler)).toEqual({ available: ["load"], refused: { fire: "NOT_AUTHORIZED" } });
+    expect((await act(s, A, "load", DEVICE.stapler)).status).toBe("completed");
+    const fire = await act(s, A, "fire", DEVICE.stapler);
+    expect(fire).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Fire the stapler is for the operating surgeon: you are the scrub nurse." });
+    expect(fire.hint).toBeUndefined();
+    expect((await act(s, A, "power_on", DEVICE.tower)).message).toBe("Switch on is for the circulating nurse: you are the scrub nurse.");
+    // the scrub nurse whose place it is stands by: nothing
+    expect(offered(s, STAFF.scrub, DEVICE.stapler)).toEqual({ available: [], refused: { load: "NOT_AUTHORIZED", fire: "NOT_AUTHORIZED" } });
+    const standing = await act(s, STAFF.scrub, "fire", DEVICE.stapler);
+    expect(standing).toMatchObject({ errorCode: "NOT_AUTHORIZED", message: "Chen Yu stands by: you hold the scrub nurse's place." });
+    expect(standing.hint).toBeUndefined();
+    // the stand-in operates: the surgeon's controls — the stapler fired, never a reload loaded
+    expect(offered(s, STAFF.standIn, DEVICE.stapler)).toEqual({ available: ["fire"], refused: { load: "NOT_AUTHORIZED" } });
+    expect((await act(s, STAFF.standIn, "fire", DEVICE.stapler)).status).toBe("completed");
+    expect((await act(s, STAFF.standIn, "load", DEVICE.stapler)).message).toBe("Load a reload is for the scrub nurse: Dr Ito is the operating surgeon.");
+    // the first assistant's place: traction, suction (and the camera), never the instrument table or the operator's step
+    const f = theatreWorld({ start: { type: "start", seat: "first-assistant" } });
+    expect(offered(f, A, DEVICE.stapler)).toEqual({ available: [], refused: { load: "NOT_AUTHORIZED", fire: "NOT_AUTHORIZED" } });
+    expect((await act(f, A, "load", DEVICE.stapler)).message).toBe("Load a reload is for the scrub nurse: you are the first assistant.");
+    expect((await act(f, STAFF.first, "load", DEVICE.stapler)).message).toBe("Dr Abe stands by: you hold the first assistant's place.");
+  });
+
+  it("availableActions are exactly the operations the action bus lets through, for every body and device", async () => {
+    for (const start of [undefined, { type: "start", seat: "scrub-nurse" } as const, { type: "start", seat: "second-assistant", lineup: "three-surgeons" } as const]) {
+      const w = theatreWorld(start ? { start } : {});
+      for (const actor of [A, ...Object.values(STAFF)]) {
+        for (const id of Object.values(DEVICE)) {
+          standBeside(w, actor, id);
+          const seen = w.runtime.inspect(actor, id)!;
+          // standing beside it, nothing spatial is in the way: offered ⟺ precheck lets it through
+          expect(seen.availableActions, `${actor} ${id}`).toEqual(seen.operations.filter((o) => o.available).map((o) => o.op));
+          for (const row of seen.operations.filter((o) => !o.available)) {
+            const r = await w.act({ actorId: actor, operation: row.op, targetId: id });
+            expect([r.errorCode, r.message], `${actor} ${id} ${row.op}`).toEqual([row.code, row.reason]);
+          }
+        }
+      }
+    }
+  });
+
+  it("a hint's next step is one the actor may take: the tower switched on by the circulating nurse, never by the scrub nurse", async () => {
+    const w = theatreWorld();
+    const balance = async (actor: string) => {
+      standBeside(w, actor, DEVICE.camera);
+      return w.act({ actorId: actor, operation: "balance", targetId: DEVICE.camera });
+    };
+    const nurse = await balance(STAFF.circulating);
+    expect(nurse).toMatchObject({ errorCode: "PRECONDITION_FAILED", hint: { goal: { kind: "interact", id: DEVICE.tower }, then: { operation: "power_on", targetId: DEVICE.tower } } });
+    const scrub = await balance(STAFF.scrub);
+    expect(scrub).toMatchObject({ errorCode: "PRECONDITION_FAILED", hint: { goal: { kind: "interact", id: DEVICE.tower } } });
+    expect(scrub.hint!.then).toBeUndefined();
+    // the white balance names no control: once the tower is on, anyone its roles allow does it
+    standBeside(w, STAFF.circulating, DEVICE.tower);
+    expect((await w.act({ actorId: STAFF.circulating, operation: "power_on", targetId: DEVICE.tower })).status).toBe("completed");
+    expect((await balance(STAFF.scrub)).status).toBe("completed");
+  });
+
+  it("no position or control is stored on a body: a snapshot round trip stays byte-identical", async () => {
+    const w = theatreWorld();
+    standBeside(w, STAFF.scrub, DEVICE.stapler);
+    expect((await w.act({ actorId: STAFF.scrub, operation: "load", targetId: DEVICE.stapler })).status).toBe("completed");
+    expect((await w.act({ actorId: STAFF.scrub, operation: "fire", targetId: DEVICE.stapler })).errorCode).toBe("NOT_AUTHORIZED");
+    standBeside(w, STAFF.circulating, DEVICE.tower);
+    expect((await w.act({ actorId: STAFF.circulating, operation: "power_on", targetId: DEVICE.tower })).status).toBe("completed");
+    const snapshot = w.runtime.snapshot();
+    const fields: (keyof ActorState)[] = ["id", "role", "controller", "pose", "room", "task", "holding", "seen", "handsCleanUntil", "lastSeen"];
+    for (const a of snapshot.actors) for (const key of Object.keys(a)) expect(fields, `${a.id}.${key}`).toContain(key);
+    const restored = createWorldRuntime({ facility: w.facility, catalogs: [...catalogs(), theatreCatalog()], binding: { caseDef: w.caseDef, slotId: w.slotId, locale: "en" }, clinical: w.harness.view, port: w.harness.port, now: () => 0, newId: () => "x", snapshot });
+    expect(JSON.stringify(restored.snapshot())).toBe(JSON.stringify(snapshot));
+    // and the restored world still refuses by control
+    expect(restored.inspect(STAFF.scrub, DEVICE.stapler)!.operations.find((o) => o.op === "fire")).toMatchObject({ available: false, code: "NOT_AUTHORIZED" });
   });
 });

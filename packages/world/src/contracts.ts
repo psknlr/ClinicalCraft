@@ -28,6 +28,7 @@ import type {
   VitalsSnapshot,
   WorldPredicate as CoreWorldPredicate,
 } from "@clinicalcraft/core";
+import { LEARNER_BODY } from "@clinicalcraft/core";
 import type { WallSpec } from "./walls.js";
 
 /* ------------------------------------------------------------------ */
@@ -45,8 +46,11 @@ export type EntityId = string;
 /** An entity that can act: the learner's avatar (`actor:clinician`), other `actor:*` bodies, or staff (`staff:*`). */
 export type ActorId = string;
 
-/** The learner's avatar (controlled by the human in the browser, or by the clinician agent / autopilot / MCP client). */
-export const PRIMARY_ACTOR: ActorId = "actor:clinician";
+/**
+ * The learner's avatar (controlled by the human in the browser, or by the clinician agent / autopilot / MCP client):
+ * core's `LEARNER_BODY` (`actor:clinician`), one source for the world and the care team's resolvers.
+ */
+export const PRIMARY_ACTOR: ActorId = LEARNER_BODY;
 
 export type EntityKind = "patient" | "staff" | "actor" | "equipment" | "door" | "room" | "level" | "connector" | "item";
 

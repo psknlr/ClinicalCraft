@@ -32,6 +32,16 @@ describe("world strings", () => {
     }
   });
 
+  it("the refusals by control name the holders, the actor and the position — the learner's own as you, without a name", () => {
+    expect(placeholders(WORLD_MESSAGES["pre.control"]!.en)).toEqual(["holders", "operation", "position", "who"]);
+    expect(placeholders(WORLD_MESSAGES["pre.woundScrubbed"]!.en)).toEqual(["control", "holders", "position", "who"]);
+    for (const key of ["pre.control", "pre.woundScrubbed"]) {
+      const theirs = placeholders(WORLD_MESSAGES[key]!.en);
+      for (const lang of ["en", "zh-CN"] as const) expect(placeholders(WORLD_MESSAGES[`${key}.self`]![lang]), `${key}.self ${lang}`).toEqual(theirs.filter((p) => p !== "who"));
+    }
+    expect(placeholders(WORLD_MESSAGES["pre.standingBy"]!["zh-CN"])).toEqual(["position", "who"]);
+  });
+
   it("the new operation has a name in both languages", () => {
     expect(operationName("transport_patient", "en")).toBe("Transport the patient");
     expect(operationName("transport_patient", "zh-CN")).toBe("转运患者");
