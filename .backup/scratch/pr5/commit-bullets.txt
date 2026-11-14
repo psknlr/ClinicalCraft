@@ -1,6 +1,6 @@
-- cmcr-1233223: Dizziness for over a month · 26-year-old man (5 decisions, 10 interventions;
-  review: 1 critical, 6 major, 10 minor findings)
-- cmcr-138892: Left lower abdominal pain, fever and a rising white count · 81-year-old man (5 decisions, 15 interventions;
-  review: 1 critical, 7 major, 15 minor findings)
-- cmcr-44477: Years of thirst and heavy urination, now vomiting · 13-year-old boy (5 decisions, 17 interventions;
-  review: 0 critical, 6 major, 10 minor findings)
+- cmcr-1067477: Recurrent heavy bleeding after an induced birth · 31-year-old woman (5 decisions, 18 interventions;
+  review: 1 critical, 10 major, 9 minor findings)
+- cmcr-857933: Recurrent haemoptysis and progressive breathlessness · 42-year-old woman (4 decisions, 12 interventions;
+  review: 1 critical, 4 major, 9 minor findings, 1 critical/major answered with a reason)
+- cmcr-858035: Breathlessness, blood-streaked sputum and aching legs · 30-year-old woman (5 decisions, 15 interventions;
+  review: 0 critical, 3 major, 14 minor findings)

@@ -22,9 +22,9 @@ record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a respiratory physician (with haematology input) review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent review (2026-11-14), with some guideline statements still to be checked against the full texts (see To verify); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a respiratory physician (with haematology input) review it before teaching use |
 | phases | `admission` 入院评估 / Admission assessment → `procedure` 操作之后 / After the procedure → `treatment` 治疗决策 / Treatment decisions → `followup` 随访与记录的结局 / Follow-up and recorded outcome (outpatient) — all one-way, none learner-switchable |
-| content | 24 history items (11 recorded facts, 1 labelled teaching device, 12 unknown; 8 required) · 6 examination findings (all recorded, admission only) · 20 investigations (7 record reviews; 10 without a recorded result) · 12 interventions (5 contraindicated, 1 of them critical; 3 neutral) · 6 objectives · 4 decisions (19 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 37 test utterances |
+| content | 24 history items (11 recorded facts, 1 labelled teaching device, 12 unknown; 8 required) · 6 examination findings (all recorded, admission only) · 20 investigations (7 record reviews; 10 without a recorded result) · 12 interventions (5 contraindicated, 1 of them critical; 3 neutral) · 6 objectives · 4 decisions (19 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 53 test utterances |
 
 ## Learning outcomes
 
@@ -32,7 +32,7 @@ After the case the learner can:
 
 1. Localise airflow obstruction from the flow–volume loop and gas transfer, recognising a fixed upper-airway pattern
    with a preserved diffusing capacity as central-airway obstruction for imaging and endoscopy to confirm (ERS/ATS 2022).
-2. Arrange tissue sampling of a severely narrowed, bleeding airway safely — blood count, clotting and pregnancy status
+2. Arrange tissue sampling of a severely narrowed airway that has recently bled, safely — blood count, clotting and pregnancy status
    first, then general anaesthesia with the interventional team, a rigid bronchoscope, bleeding control and ECG
    monitoring (Chinese Thoracic Society consensus on benign central airway stenosis, 2017).
 3. Interpret Congo red and light-chain staining of an airway biopsy and state what else is needed before calling AL
@@ -73,8 +73,8 @@ typing, cardiac biomarkers or cardiac imaging beyond the LVEF are recorded.
 **Diagnosis.** Diffuse tracheobronchial amyloidosis (λ light-chain staining, i.e. probable AL type) with severe
 central-airway stenosis; systemic disease was not demonstrated, but the systemic assessment was incomplete.
 
-**Reported course.** Repeated rigid bronchoscopies with electrocautery and cryotherapy, a tracheostomy, and systemic
-drugs — named in 1.0.0's teaching text as combination chemotherapy with melphalan and thalidomide; regimen, doses and
+**Reported course.** Repeated rigid bronchoscopy, electrocautery and cryotherapy (whether the last two were given
+through the rigid bronchoscope is not recorded), a tracheostomy, and systemic drugs — named in 1.0.0's teaching text as combination chemotherapy with melphalan and thalidomide; regimen, doses and
 duration not recorded. The tracheostomy tube was removed after 7 months and FEV₁ rose to 1.71 L; at 11 months she had
 no breathlessness or haemoptysis and could manage light physical activity. What the 7 and 11 months are counted from
 is not recorded.
@@ -116,8 +116,9 @@ systemic drugs to the bronchoscopic treatment is the historical contrast the deb
   immunofixation and the marrow record with the treatment decision (1.0.0 bundled them with the biopsy); the urine,
   liver–renal, rhythm and LVEF results are repeated unchanged in `treatment` so that they can be re-read there (one
   set of results is recorded). No prompt, hint, order response or harm text states a later phase's result before its
-  record opens; the responses of the report's own treatments (recanalisation, tracheostomy, chemotherapy) say what the
-  report records, as STANDARD §2 asks, once the learner has chosen them.
+  record opens; the responses of the report's own treatments (recanalisation, tracheostomy, chemotherapy) say that the
+  report records them, as STANDARD §1.7 asks, once the learner has chosen them — without the outcome's timings or
+  values, which stay in the outcome record.
 
 ## Decisions and assessment
 
@@ -148,7 +149,7 @@ Every option has its own feedback of two to four sentences naming the guidance (
 decision opens before the record that would give its answer away: decision 1 before any tissue, decision 2 before the
 bronchoscopy record (which opens only after a committed act), decision 3 before the immunofixation and marrow records,
 decision 4 before the outcome. **Length cue:** measured with the generator — in no single-best decision is the key the
-uniquely longest option in either language (decision 1 key 39 of 35–42 zh characters and 133 of 111–143 en; decision 2
+uniquely longest option in either language (decision 1 key 39 of 35–42 zh characters and 133 of 111–142 en; decision 2
 58 of 44–60 and 219 of 189–220; decision 4 52 of 35–53 and 186 of 159–187).
 
 ### Rubric (11 deterministic items, total weight 26, + 1 examiner-judged)
@@ -222,7 +223,7 @@ function, **blood count and clotting**, electrolytes, **pregnancy test**, cardia
 `procedure`) bronchoscopy record, biopsy → **haematology referral** → `tissue-next-steps` (three options) → (phase
 `treatment`) immunofixation, bone marrow record, free light chains, tissue typing, cardiac biomarkers (no results
 recorded) → `treatment-plan` → **rigid bronchoscopic recanalisation** → (phase `followup`) her status → outcome record →
-finish. `cases verify` passes: objectives 6/6, decisions 4/4, utterances 37/37, rubric 26/26. It asks only what a
+finish. `cases verify` passes: objectives 6/6, decisions 4/4, utterances 53/53, rubric 26/26. It asks only what a
 clinician would ask a 42-year-old woman before a general anaesthetic and possible teratogenic drugs, and gives nothing
 while contraindicated.
 
@@ -276,7 +277,7 @@ The Empey index cannot be derived (no PEF).
 - **Analysis.**
   - "What does a fixed upper-airway pattern look like on the loop, and what did the normal diffusing capacity add?"
   - "Which diseases thicken and calcify the trachea? Which would you have tested for before a biopsy (tuberculosis)?"
-  - "If a flexible scope and a forceps biopsy meet a bleeding airway narrowed this far, what happens — and who
+  - "If a flexible scope and a forceps biopsy meet an airway narrowed this far that has recently bled, what happens — and who
     rescues her, with what, in the endoscopy suite?"
   - "Why did her rhythm record belong in the procedure plan, and why does an LVEF of 60 % not settle the heart
     question in amyloid?"
@@ -285,7 +286,7 @@ The Empey index cannot be derived (no PEF).
     more than a prescription?"
   - "The report combined rigid bronchoscopy, a tracheostomy and systemic drugs. Which one improved her FEV₁ from
     1.45 L to 1.71 L?"
-- **Summary.** "Three things you will do the next time a fixed central obstruction meets a bleeding airway."
+- **Summary.** "Three things you will do the next time a fixed central obstruction meets recent haemoptysis."
 
 ### Common learner errors and how the case surfaces them
 
@@ -326,7 +327,7 @@ today's first line (BSH 2015; EHA-ISA 2023) — each with "then and now".
   requirement and are made at her side; oxygen needs the bedside oxygen supply; medicines are delivered by the pharmacy.
   No IV access is modelled (no step needs it).
 - **Voice.** She is a conscious adult and answers for herself throughout; there is no companion and no non-verbal phase
-  (the tracheostomy's timing is not recorded, and at follow-up the tube is out).
+  (the tracheostomy's timing is not recorded, so no phase is staged around it).
 - `embodied-autopilot.test.ts` finishes the case in en and zh-CN with the clinical-mode score.
 
 ## Source and adaptation (fidelity limits)
@@ -350,8 +351,9 @@ again", `persona.concerns` and the `concerns` item) voices an ICE concern and ad
 **or** thalidomide" and once as "historical **combination** chemotherapy"; the case says "combination chemotherapy, with
 melphalan and thalidomide named; regimen, doses and duration not recorded". (2) The 7- and 11-month intervals have no
 recorded anchor, and when FEV₁ 1.71 L was measured is not clear. (3) 1.0.0's English said "without worse wheezing" where
-its Chinese says "没有夜里喘得更重" (breathing no worse at night); the case follows the Chinese. No other internal
-contradiction was found.
+its Chinese says "没有夜里喘得更重" (breathing no worse at night); the case follows the Chinese. (4) 1.0.0 lists rigid
+bronchoscopy, electrocautery and cryotherapy side by side ("多次硬镜、电烧与冷冻"); whether the last two were given through
+the rigid bronchoscope is not recorded, so the case keeps them as a list. No other internal contradiction was found.
 
 **Unknowns kept honest.** Vital signs and oxygen saturation; stridor, voice, exertion; the amount of bleeding; blood
 count, clotting, blood group, electrolytes; allergies, medicines, past history, tuberculosis, pregnancy, family history;
@@ -380,9 +382,10 @@ cardiology referral and teaching point 4).
 
 ## Matcher notes
 
-- **Phase twin.** `status-followup` (phase `followup`) supersedes `bleeding-recent` and `breathlessness-course`: at
-  follow-up "are you still coughing blood?" or "how's the breathing?" gets "I'm not short of breath now and I haven't
-  coughed up any blood…", never the admission answer, and asking it credits both.
+- **Phase twin.** `status-followup` (phase `followup`) supersedes `bleeding-recent`, `breathlessness-course` and
+  `bleeding-pattern`: at follow-up "are you still coughing blood?", "有咳血吗？" or "how's the breathing?" gets "I'm not
+  short of breath now and I haven't coughed up any blood…", never an admission answer, and asking it credits all three
+  (each is required earlier anyway, to leave the admission phase).
 - **Shared words separated with `excludeKeywords`:** `bleeding-pattern` vs recent and amount questions (最近, 近来, 这个月,
   多少 / recent, this month, how much); `bleeding-recent` vs amount; `breathlessness-course` vs lying flat, night and
   "now"; `rhythm-history` vs family, palpitations and dizziness; `palpitations-syncope` vs "told at a check-up";
@@ -392,38 +395,56 @@ cardiology referral and teaching point 4).
   selected `family` at 0.67 until 接触 was excluded).
 - **English keywords** avoid one-token wildcards: `broughtyouin`, `howmuchblood`, `howmuchcomesup`, `outofbreath`,
   `howareyounow` are written run together (the lint flagged the spaced forms).
-- **Corpus.** 37 test utterances (23 zh-CN, 14 en), written as learners speak; every required item and the phase twin are
-  covered. Four look-alike negatives (`expect: []`): "你家里人知道你住院了吗？" (family words; `concerns` scores 0.50, below
+- **Natural questions probed in the independent review (2026-11-14)**, among them: "What brings you in today?" and
+  "您怎么了？" reached nothing; "Are you coughing up blood?" scored 0.50 (below the 0.55 select band); "有没有咳血？" selected
+  `bleeding-amount` ("I couldn't say how much"); "喘得厉害吗？" reached nothing; "Have you had night sweats?" selected
+  `orthopnoea` (by "at night"); "喘气的时候有声音吗？" selected `voice`. Fixed with keywords (`bringsyouin`,
+  `whatstheproblem`, `whatsthematter`, 怎么了, 哪儿不舒服 for the presentation; "coughing up blood", 咳血, 咯血 for the
+  bleeding pattern, which now excludes 量, 又, 还咳, 现在, "still" and "lately"; "still coughing" for the recent
+  bleeding; 喘得厉害 for the breathlessness; "medical problems", 平时身体 for the earlier rhythm finding; 现在呼吸,
+  "walk further" for the follow-up status), exclusions (`orthopnoea`: sweat, 汗; `voice`: breath, 喘, 呼吸), the
+  `bleeding-amount` keyword 咳血量 → 咳血的量 (it matched any 咳血 at 0.67), and the third phase twin above. Night sweats
+  are not recorded and now reach no item (she says "I'm not sure, doctor.").
+- **Corpus.** 53 test utterances (31 zh-CN, 22 en), written as learners speak; every required item and the phase twin are
+  covered. Six look-alike negatives (`expect: []`): "你家里人知道你住院了吗？" (family words; `concerns` scores 0.50, below
   the 0.55 selection band), "医院的饭吃得惯吗？" (selected `weight-appetite` at 0.67 until its exclusions), "Is your family
-  coming to visit later?" and "Would you like a drink of water?". `cases verify` reports 37/37 with no extra selection.
+  coming to visit later?", "Would you like a drink of water?", "Any night sweats?" and "晚上睡觉出汗吗？" (both reached
+  `orthopnoea` before its exclusions). `cases verify` reports 53/53 with no extra selection ("有咳血吗？" lists its
+  follow-up twin in `alsoOk`).
 
 ## References
 
 1. 李楠, 王广发, 章巍, 张红, 张晓明. 腔内介入治疗弥漫性气管支气管淀粉样变性一例. 中华结核和呼吸杂志. 2013;36(7):540-542.
    doi:10.3760/cma.j.issn.1001-0939.2013.07.020. Available from: https://rs.yiigle.com/cmaid/857933
 2. Stanojevic S, Kaminsky DA, Miller MR, et al. ERS/ATS technical standard on interpretive strategies for routine lung
-   function tests. Eur Respir J. 2022;60(1):2101499.
+   function tests. Eur Respir J. 2022;60(1):2101499. doi:10.1183/13993003.01499-2021
 3. 中华医学会呼吸病学分会介入呼吸病学学组. 良性中心气道狭窄经支气管镜介入诊治专家共识. 中华结核和呼吸杂志. 2017;40(6):408-418.
 4. Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of
    America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults
-   and children. Clin Infect Dis. 2017;64(2):e1-e33.
+   and children. Clin Infect Dis. 2017;64(2):e1-e33. doi:10.1093/cid/ciw694
 5. Wechalekar AD, Gillmore JD, Bird J, et al. Guidelines on the management of AL amyloidosis. Br J Haematol.
-   2015;168(2):186-206.
+   2015;168(2):186-206. doi:10.1111/bjh.13155
 6. 中国系统性轻链型淀粉样变性协作组, 国家肾脏疾病临床医学研究中心, 国家血液系统疾病临床医学研究中心. 系统性轻链型淀粉样变性诊断和治疗指南
    （2021年修订）. 中华医学杂志. 2021;101(22):1646-1656.
 7. Wechalekar AD, Cibeira MT, Gibbs SD, et al. Guidelines for non-transplant chemotherapy for treatment of systemic AL
-   amyloidosis: EHA-ISA working group. Amyloid. 2023;30(1):3-17.
+   amyloidosis: EHA-ISA working group. Amyloid. 2023;30(1):3-17. doi:10.1080/13506129.2022.2093635
 8. Garcia-Pavia P, Rapezzi C, Adler Y, et al. Diagnosis and treatment of cardiac amyloidosis: a position statement of
    the ESC Working Group on Myocardial and Pericardial Diseases. Eur Heart J. 2021;42(16):1554-1568.
+   doi:10.1093/eurheartj/ehab072
 9. Zeppenfeld K, Tfelt-Hansen J, de Riva M, et al. 2022 ESC Guidelines for the management of patients with ventricular
    arrhythmias and the prevention of sudden cardiac death. Eur Heart J. 2022;43(40):3997-4126.
+   doi:10.1093/eurheartj/ehac262
 10. Mahmood S, Bridoux F, Venner CP, et al. Natural history and outcomes in localised immunoglobulin light-chain
-    amyloidosis: a long-term observational study. Lancet Haematol. 2015;2(6):e241-e250.
+    amyloidosis: a long-term observational study. Lancet Haematol. 2015;2(6):e241-e250. doi:10.1016/S2352-3026(15)00068-X
+11. US Food and Drug Administration. FDA public health notification: complications from metallic tracheal stents in
+    patients with benign airway disorders. 2005.
 
-The list has nine items after the article, one more than STANDARD §2 suggests, because the case spans respiratory
-medicine, haematology and cardiology and every guideline its feedback names is listed. **DOIs.** Only the source DOI is
-given — the one the source map (`scripts/cmcr-105-sources.json`) records as verified (`publisherCheckedAt` 2026-10-29).
-No other DOI is given: none could be verified in this session.
+The list has ten items after the article because the case spans respiratory medicine, haematology and cardiology and
+every guideline its feedback names is listed. **DOIs.** The source DOI is the one the source map
+(`scripts/cmcr-105-sources.json`) records as verified (`publisherCheckedAt` 2026-10-29). The independent review confirmed
+refs 2, 4, 5, 9 and 10 (title, journal, volume, issue, pages and DOI) on Crossref on 2026-11-14; refs 7 and 8 carry the
+DOIs the review of cmcr-639115 confirmed on Crossref. Refs 3 and 6 (Chinese journals whose DOIs are not in Crossref) and
+ref 11 (a regulatory notice) could not be confirmed and carry no DOI or URL.
 
 ### To verify
 
@@ -446,15 +467,18 @@ No other DOI is given: none could be verified in this session.
 - Histology: apple-green birefringence; how λ was detected (immunohistochemistry or immunofluorescence); κ staining;
   any typing (mass spectrometry, immunoelectron microscopy); when the immunofixation was done; serum protein
   electrophoresis, free light chains, fat-pad aspiration; why no marrow examination was done.
-- Treatment: number and timing of the rigid bronchoscopies; the electrocautery and cryotherapy details; when and why
+- Treatment: number and timing of the rigid bronchoscopies; the electrocautery and cryotherapy details (whether they
+  were given through the rigid bronchoscope); when and why
   the tracheostomy was done; **which systemic drugs were given** (1.0.0 names melphalan and thalidomide only in teaching
   text, as "or" and as "combination chemotherapy"), their doses, duration, any corticosteroid, adverse effects — 1.0.0's
   README says "historical drug doses are omitted from actionable options", implying the article gives them.
 - What the 7 and 11 months are counted from; when FEV₁ 1.71 L was measured; recurrence or follow-up after 11 months.
 - What the report's figure 1 shows (its title here is deliberately generic).
 
-**In the guidance (not verifiable in this session: the shared web-search budget was exhausted and PubMed Central was
-outside the session's network; citations below are from the authors' knowledge and must be checked):**
+**In the guidance (web search was unavailable to the author and to the independent review of 2026-11-14 — a shared
+budget was exhausted; the review confirmed the bibliographic records of refs 2, 4, 5, 9 and 10 on Crossref and reused
+cmcr-639115's confirmation of refs 7 and 8, but could not open the guideline texts; the statements below are from
+knowledge and must be checked):**
 
 - ERS/ATS 2022 (ref 2): its wording on upper/central airway obstruction and flow–volume loop patterns, and whether it
   asks for confirmation by imaging or endoscopy; volume, issue and article number.
@@ -462,9 +486,12 @@ outside the session's network; citations below are from the authors' knowledge a
   year, issue and pages, and the statements this case attributes to it — general anaesthesia with a rigid bronchoscope
   for severe stenosis, metallic stents avoided in benign disease where alternatives exist, resection only for short
   localised stenosis, bronchoscopic intervention for symptomatic severe stenosis. Whether a newer Chinese consensus
-  (benign or malignant central airway obstruction) supersedes it.
-- ATS/IDSA/CDC 2017 (ref 4): citation details; whether a newer WHO or Chinese tuberculosis diagnosis guideline should be
-  cited instead.
+  (benign or malignant central airway obstruction) supersedes it. Because none of these statements could be checked, the
+  review softened the Chinese texts' "要求" (requires) to "主张" (recommends), matching the English "manages".
+- ATS/IDSA/CDC 2017 (ref 4): its wording on smear microscopy, nucleic-acid amplification and culture, and on
+  bronchoscopic sampling when sputum is not diagnostic (the review rewrote the harm text, which had said treatment
+  "rests on" microbiological evidence: empirical treatment is reserved for a high clinical suspicion); whether a newer
+  WHO or Chinese tuberculosis diagnosis guideline should be cited instead.
 - BSH 2015 AL management (ref 5): that it has a localised AL section recommending local treatment and no systemic
   chemotherapy; whether a newer British guideline supersedes the 2015 pair (the 2015 diagnosis guideline by Gillmore et
   al. is not cited here).
@@ -474,16 +501,23 @@ outside the session's network; citations below are from the authors' knowledge a
   of systemic AL; citation details.
 - ESC 2021 position statement (ref 8) and ESC 2022 ventricular arrhythmias (ref 9): the diagnostic steps used here
   (biomarkers, strain echocardiography or CMR, TTR testing after ATTR typing; structural heart disease work-up in
-  frequent ectopy or non-sustained VT); citation details.
+  frequent ectopy or non-sustained VT). ESC 2022 is cited only for that work-up; continuous ECG monitoring with a
+  defibrillator during the anaesthetic is the case's own reasoning (the review removed its attribution to ESC 2022).
 - Mahmood et al. 2015 (ref 10): citation details; the case says only that localised AL "rarely" progresses (no figure is
   quoted).
 - Radiotherapy for tracheobronchial amyloidosis is taught as an option without a citation; candidate case series
   (Mayo Clinic: Kalra et al., Mayo Clin Proc 2001; Neben-Wittich et al., Chest 2007) must be verified before citing.
-- An "American Society of Hematology 2026 guidelines on diagnosis of light chain amyloidosis" is cited, with a PubMed
-  Central link, by the unrevised template case cmcr-639115; it could not be verified and is not cited here.
-- Principles used without a citation: asthma requires variable airflow limitation (GINA), the US FDA's 2005 notification
-  on metallic tracheal stents in benign airway disease, asking about pregnancy before anaesthesia (NICE NG45, 2016) and
-  thalidomide's pregnancy-prevention programme; and whether any cited guideline has a newer edition as of 2026-10.
+- ASH 2026 guidelines on diagnosis of light chain amyloidosis (Kukreti V, et al. Blood Adv. 2026;10(14):5113-5152;
+  doi:10.1182/bloodadvances.2025017073 — confirmed on Crossref on 2026-11-14; cited by the revised cmcr-639115) are the
+  newest international guidance on AL diagnosis. They are not cited here because their text could not be read: a
+  haematologist should check that decision 3 (typing, the clonal screen, marrow, organ assessment) agrees with them and
+  whether they should be cited beside the Chinese 2021 guideline.
+- US FDA 2005 public health notification (ref 11, added by the review from knowledge): its exact title, date and URL,
+  and its wording that metallic tracheal stents be used in benign airway disorders only after other options have been
+  explored.
+- Principles used without a citation: asthma requires variable airflow limitation (GINA), asking about pregnancy
+  before anaesthesia (NICE NG45, 2016) and thalidomide's pregnancy-prevention programme; and whether any cited
+  guideline has a newer edition as of 2026-11.
 
 ## Changelog
 
@@ -525,6 +559,20 @@ outside the session's network; citations below are from the authors' knowledge a
   article; the English last sentence reads "The case is not yet reviewed by a licensed clinician." because the collection
   contract matches that phrase case-sensitively); `sourceTextChecked: false`; the high-risk contraindicated
   interventions state `critical` (KIT §6); `license` in the collection's wording for a case with local media.
+- **Independent review (2026-11-14).** (1) Fact: the outcome record, the recanalisation response, the provenance notes
+  and the summaries bound electrocautery and cryotherapy to the rigid bronchoscope ("rigid bronchoscopies with
+  electrocautery and cryotherapy", "硬质支气管镜下电烧灼和冷冻"), where 1.0.0 lists them side by side ("多次硬镜、电烧与冷冻");
+  they are a list again, and the unknowns and the record's note name the technique as unrecorded. (2) Matcher: about
+  fifteen natural questions reached nothing or the wrong item (Matcher notes); keywords, exclusions and a third phase twin fix
+  them, with 16 more test utterances (53). (3) Guidance: ESC 2022 is no longer cited for peri-procedural ECG
+  monitoring; the tuberculosis harm no longer says treatment "rests on" microbiological evidence; the Chinese texts'
+  "要求" became "主张"; the US FDA 2005 notification supports the metallic-stent harm and feedback (ref 11); DOIs
+  confirmed on Crossref were added to refs 2, 4, 5 and 7–10. (4) Spoilers and wording: the tracheostomy response no
+  longer gives the 7-month decannulation before the outcome; the tuberculosis distractor no longer calls the disease
+  "healed" while treating it; "alongside" (a timing not recorded) became "as well as"; "正在出血" became "近期咯血"; the
+  metallic-stent feedback says her narrowing "can regrow"; the English conclusion names the systemic assessment and
+  "without chemotherapy", as the Chinese does. (5) Governance: the review notes say some guideline statements still need
+  checking; `reviewedAt` 2026-11-14; the validation path and the To-verify list corrected.
 
 ### 1.0.0 — 2026-10-28
 
@@ -535,13 +583,13 @@ outside the session's network; citations below are from the authors' knowledge a
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-857933/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-857933 --lang en                                                 # 78 steps · objectives 6/6 · decisions 4/4 · utterances 37/37 · rubric 26/26 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-857933                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
+npm run -s cc -- cases verify cmcr-857933 --lang en                                                 # 78 steps · objectives 6/6 · decisions 4/4 · utterances 53/53 · rubric 26/26 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-857933                                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-857933:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-857933:"  # in-world demonstration, en + zh-CN
 ```
 
-Run on 2026-11-13: all five pass.
+Run on 2026-11-14, after the independent review: all five pass.
 
 ## 中文摘要
 
@@ -551,14 +599,14 @@ Run on 2026-11-13: all five pass.
 右肺上叶节段性肺不张；肺功能为固定性上气道阻塞图形，FEV₁ 1.45 L（占预计值 55.7%），FEV₁/FVC 50.77%，弥散量占预计值
 89.4%；频发室早、短阵室速，LVEF 60%；尿蛋白阴性，肝肾功能正常。支气管镜见黏膜广泛增生、易出血，最窄处约为正常管径的
 10%；活检无定形物质刚果红阳性、λ 强阳性；血、尿免疫固定电泳无单克隆条带；未做骨髓检查。诊断：弥漫性气管支气管淀粉样变性
-伴严重中心气道狭窄。报告联合使用多次硬质支气管镜电烧灼和冷冻、气管切开和全身药物（1.0.0 版教学文本提及美法仑和沙利度胺，
+伴严重中心气道狭窄。报告联合使用多次硬质支气管镜、电烧灼和冷冻治疗，以及气管切开和全身药物（1.0.0 版教学文本提及美法仑和沙利度胺，
 方案未记录）；7 个月后拔除气切套管，FEV₁ 升至 1.71 L，11 个月时无憋气和咯血。本版依据 1.0.0 版提取的事实改写，尚未对照原文
 全文核对。
 
 **学习目标。**
 
 1. 从流量–容积环和弥散量定位阻塞：弥散正常的固定性上气道阻塞图形提示中心气道阻塞，需影像和内镜证实（ERS/ATS 2022）。
-2. 安全安排严重狭窄、出血气道的取材：先查血常规、凝血和妊娠状态，再全身麻醉、备硬质支气管镜、止血手段和心电监护（中华医学会
+2. 安全安排严重狭窄、近期咯血气道的取材：先查血常规、凝血和妊娠状态，再全身麻醉、备硬质支气管镜、止血手段和心电监护（中华医学会
    呼吸病学分会良性中心气道狭窄专家共识，2017）。
 3. 解读刚果红和轻链染色，说出判定局限性 AL 之前还需要的证据：质谱分型、免疫固定电泳加游离轻链、骨髓和器官评估（中国 AL
    指南，2021）。

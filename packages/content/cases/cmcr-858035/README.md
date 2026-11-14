@@ -88,9 +88,12 @@ and `provenance.notes` say so.
 | `workup` — opens when objectives 1–3 (history, examination, first tests) and decisions 1–2 are done | background history again, the further results, decisions 3–5, warfarin, plans | factor VIII/IX/XI, ANA/ANCA/complement, anticardiolipin | everything else above ("no result is recorded for this stage" for the blood count and clotting) |
 | `followup` — opens after all five decisions and objective 5 (the three reads and warfarin) | read the outcome | recorded treatment course and outcome | — |
 
-The work-up phase deliberately does **not** wait for the anticoagulant: a learner who answers decisions 1–2 but does
-not anticoagulate moves on, and the critical item records the miss (giving LMWH in the work-up phase is accepted but
-late). Present-state history items (cough, blood, breathlessness, course, chest pain, legs, fever, fainting) exist only
+The work-up phase does **not** wait for the anticoagulant: answering decisions 1–2 moves the case on. The critical
+item's time window is therefore set by the evidence, not by the phase: LMWH (or UFH) given once the blood count has
+been read in `admission` and before any of the further results (factor assays, autoantibodies, antibody tests) has been
+read counts as in time — so a learner who answers decision 2 and then gives the LMWH, as objective 4's guidance says,
+is not penalised — while an anticoagulant first given after reading those results counts as late and the critical item
+records the miss. Present-state history items (cough, blood, breathlessness, course, chest pain, legs, fever, fainting) exist only
 in `admission`; the case records nothing about how she felt later, so a "how are you now?" in `workup` gets the lay
 fallback.
 
@@ -137,15 +140,15 @@ limit of one per locale. The decision prompts use only evidence their `requires`
 | `rb-examination` | examination | 1 | general look, chest, legs, blood pressure |
 | `rb-first-tests` | investigations | 2 | CT, leg ultrasound, blood count, clotting read in `admission`; antibody tests sent in `admission`; renal function sent; echo or troponin/BNP sent |
 | `rb-aptt-reasoning` | diagnosis | 3 | `aptt-meaning` right first time |
-| `rb-anticoagulated-day-one` | management | 4 | **critical** — LMWH or UFH given while indicated: in `admission`, after the blood count (platelets) was read (`{intervened, whenIndicated: true}`); LMWH has `maxDoses: 2`, so a learner who gave the first dose before seeing the count can give the next one properly |
+| `rb-anticoagulated-day-one` | management | 4 | **critical** — LMWH or UFH given while indicated (`{intervened, whenIndicated: true}`): after the blood count (platelets) was read in `admission` and before any of the further results (factor assays, autoantibodies, antibody tests) was read in `workup`; LMWH has `maxDoses: 2`, so a learner who gave the first dose before seeing the count can give the next one properly |
 | `rb-first-day-choices` | management | 2 | `first-treatment` right first time; daily platelet counts ordered |
 | `rb-no-lysis` | safety | 3 | **critical** — no systemic thrombolysis; scored once decision 2 is attempted or lysis given |
 | `rb-safe-choices` | safety | 2 | no IVC filter, platelet transfusion, rivaroxaban, combined pill, LMWH+UFH stacking, or warfarin given outside its indication (no heparin cover, or no pregnancy test sent); scored once decision 2, 4 or 5 is attempted or any of these acts (or a heparin) is given |
 | `rb-cause` | diagnosis | 3 | factor assays, autoantibodies, antibody tests read in `workup`; `antibody-meaning` right first time; 12-week repeat planned |
 | `rb-long-term-and-family` | management | 3 | `long-term-anticoag` and `pregnancy-plan` right first time; warfarin given while indicated (heparin cover and a pregnancy test sent); contraception advice; specialist review |
-| `rb-communication` | communication | (judged) | Calgary–Cambridge explanation and planning: the clots and the "slow clotting" paradox, why injections today, the working diagnosis and the 12-week repeat, warfarin (INR, bleeding, interactions, why not a DOAC), the stillbirth acknowledged, contraception and planned pregnancy, teach-back and safety-netting |
+| `rb-communication` | communication | (judged) | Calgary–Cambridge explanation and planning, SPIKES for the news of a long-term condition: the clots and the "slow clotting" paradox, why injections today, the working diagnosis and the 12-week repeat, warfarin (INR, bleeding, interactions, why not a DOAC), the stillbirth acknowledged, contraception and planned pregnancy, teach-back and safety-netting |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (measured with the reducer on 2026-11-14)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -154,7 +157,8 @@ limit of one per locale. The decision prompts use only evidence their `requires`
 | wrong first answer at all five decisions, then right | 16/27 (59 %) | none | passed |
 | wrong first answer at `aptt-meaning`, `antibody-meaning`, `long-term-anticoag` or `pregnancy-plan` only | 24/27 (89 %) each | none | passed |
 | wrong first answer at `first-treatment` only | 25/27 (93 %) | none | passed |
-| LMWH only in the work-up phase (after the antibody result) | 23/27 (85 %) | `rb-anticoagulated-day-one` | passed |
+| decision 2 answered first, LMWH given right after it (the case is already in `workup`, no further result read yet) | 27/27 (100 %) | none | passed |
+| LMWH only after the further results were read (factor assays, autoantibodies, antibody tests) | 23/27 (85 %) | `rb-anticoagulated-day-one` | passed |
 | LMWH before the blood count was read (one dose) | 23/27 (85 %) | `rb-anticoagulated-day-one` | passed |
 | LMWH before the blood count, second dose after it | 27/27 (100 %) | none | passed |
 | UFH (anti-Xa monitored) instead of LMWH on day one | 27/27 (100 %) | none | passed |
@@ -174,8 +178,10 @@ limit of one per locale. The decision prompts use only evidence their `requires`
 
 - `rb-anticoagulated-day-one` — the missed life-saving act: bilateral PE with proximal DVT needs anticoagulation on the
   day it is found. The long APTT and the platelet count of 58 × 10⁹/L tempt learners to wait; the item is met only by an
-  anticoagulant given in the admission phase once the platelet count is known, so anticoagulation after the antibody
-  result counts as late. It never depends on an unrecorded finding.
+  anticoagulant given once the platelet count is known and before any of the further results is read, so
+  anticoagulation after the antibody result counts as late. The window is the evidence, not the phase: answering
+  decision 2 moves the case to `workup` at once, and a learner who then gives the LMWH (objective 4's guidance: answer
+  decisions 1 and 2, then give the treatment) is in time. It never depends on an unrecorded finding.
 - `rb-no-lysis` — the dangerous error avoided: systemic thrombolysis in a normotensive patient (130/80 mmHg) with
   thrombocytopenia and blood-streaked sputum (ESC 2019: no routine lysis in intermediate- or low-risk PE, class III).
 
@@ -219,14 +225,14 @@ All numbers and findings are those 1.0.0 extracted from the report; none is inve
 | no obvious cyanosis; clear breath sounds, no crackles | `exam[breathing]` | `exam[general]`, `exam[chest]` |
 | mild bilateral pitting oedema; BP 130/80 mmHg | `exam[legs-exam]` | `exam[legs-exam]`, `exam[bp]`, triage note |
 | CT: filling defects in both pulmonary arteries and the right lower pulmonary vein; the venous finding not independently re-reviewed | `investigations[clots]` | `investigations[ctpa]` (text and note) |
-| ultrasound: left superficial femoral (English text: "left femoral") and right popliteal vein thrombosis | `investigations[clots]` | `investigations[leg-us]` (both readings in the note) |
+| ultrasound: left superficial femoral (English text: "left femoral") and right popliteal vein thrombosis | `investigations[clots]` | `investigations[leg-us]` (the more specific Chinese reading, which "left femoral" does not contradict; both listed under "To verify") |
 | platelets 58 × 10⁹/L | `investigations[coag]` | `investigations[fbc]` (flag L: 1.0.0 calls it thrombocytopenia) |
 | APTT 71.6 s; INR normal | `investigations[coag]` | `investigations[coag]` (APTT flag H: 1.0.0 calls it prolonged) |
 | D-dimer 902 µg/L | `investigations[coag]` | `investigations[d-dimer]` (no flag: no reference range recorded) |
 | ANA panel, ANCA, complement and related tests unremarkable | `investigations[background]` | `investigations[autoimmune-screen]` |
 | factors VIII, IX, XI normal | `investigations[background]` | `investigations[factor-assays]` |
 | anticardiolipin 104 U/mL (reference 0–12); isotype, repeat at ≥ 12 weeks, LA, anti-β2GPI not provided | `investigations[antibody]` | `investigations[thrombophilia-antibodies]` (refLow 0, refHigh 12, flag H) |
-| heparin (LMWH in the Chinese text) then warfarin; steroids given at the same time, later tapered off | `investigations[followup]` | `investigations[course-outcome]` |
+| heparin (LMWH in the Chinese text) then warfarin; steroids given at the same time, later tapered off | `investigations[followup]` | `investigations[course-outcome]` ("heparin (low-molecular-weight heparin)": both readings side by side) |
 | CT at 3 months: clots resolved; platelets improved; no reported recurrence; length of follow-up unclear | `investigations[followup]` | `investigations[course-outcome]` |
 | diagnosis: primary antiphospholipid (antibody) syndrome | citation (article title), README | `course-outcome` note, debrief |
 
@@ -236,7 +242,10 @@ high ≥ 80) cannot be applied without the isotype and the assay. A platelet cou
 ACR/EULAR haematological range (20–130 × 10⁹/L) and above the ≥ 50 × 10⁹/L level for full-dose LMWH borrowed from
 ISTH SSC 2018. Her weight and renal function are not recorded, so every dose is printed as a formula (1 mg/kg, 80 U/kg,
 18 U/kg/h) and none is computed. The per-kg LMWH and UFH carry no `doseSpec`: a per-kg preset needs `patient.weightKg`
-(integrity warns otherwise) and inventing a weight is not allowed; alteplase carries `doseSpec` 100 mg IV.
+(integrity warns otherwise) and inventing a weight is not allowed; alteplase carries `doseSpec` 100 mg IV. **Inferences
+(derived, not new):** the CT is named "contrast-enhanced chest CT" because filling defects are a finding of a contrast
+study (its protocol is not recorded); "proximal deep-vein thrombosis" follows from the veins named (the superficial
+femoral vein is a deep vein despite its name); the flags L and H follow from 1.0.0's own words.
 
 ## Facilitator notes
 
@@ -306,9 +315,17 @@ isotype, lupus anticoagulant, anti-β2GPI, any repeat test, every dose and the I
 say; records say "No result is recorded for this test." No text claims the article lacks a detail.
 
 **Where 1.0.0 differs with itself (both readings kept, listed under "To verify").** (1) The reported anticoagulant: the
-Chinese text says low-molecular-weight heparin, the English says heparin. (2) The left leg vein: "股浅静脉" (superficial
-femoral vein) in Chinese, "left femoral" in English. (3) The obstetric item carried a recorded fact (one stillbirth, no
-miscarriage) but was flagged `unknown`; it is now an on-ask item whose gap (the gestation) is said in lay words.
+Chinese text says low-molecular-weight heparin, the English says heparin; the outcome record, the LMWH response and the
+debrief give both side by side — "heparin (low-molecular-weight heparin)" / "肝素（低分子肝素）" — without naming either
+text (no authoring language in a record). (2) The left leg vein: "股浅静脉" (superficial femoral vein) in Chinese, "left
+femoral" in English; the ultrasound record gives the more specific Chinese reading, which the English does not
+contradict. (3) The obstetric item carried a recorded fact (one stillbirth, no miscarriage) but was flagged `unknown`;
+it is now an on-ask item whose gap (the gestation) is said in lay words.
+
+**A precondition the case cannot show.** The pregnancy test has no recorded result in any phase, so the case accepts a
+test *sent* (with heparin on board) as the condition for warfarin (`indicatedWhen`); the warfarin response and the
+key's feedback say that in practice the first dose waits for a negative test. The report records warfarin without a
+pregnancy status.
 
 **Survey and template defects fixed.** Spoiler in the library summary ("thrombocytopenia and prolonged APTT … laboratory
 anticoagulant effects") replaced by a presentation-only summary; rheumatology removed from the specialty card; the
@@ -323,8 +340,12 @@ fifteen interventions and two critical items that are acts.
 
 ## Matcher notes
 
-The corpus has 38 utterances (35 positive, 3 look-alike negatives: occupation, address, pets), none a canonical
-question or a keyword, at least one for every required item. Stop-word phrases are written run together
+The corpus has 39 utterances (36 positive, 3 look-alike negatives: occupation, address, pets), none a canonical
+question or a keyword, at least one for every required item. The pleuritic question ("is the pain worse when you
+breathe in?", "does the pain get worse with a deep breath?") reaches the chest-pain item through two-word keywords
+(`pain breathing in`, `pain on a deep breath`, `hurts to breathe`, `pleuritic`); a bare "breathe in" or "deep breath"
+was tried and dropped because it pulled "do you get breathless?" onto the chest pain. Open questions ("what brings you
+in?", "哪里不舒服？") match no item by design: the runtime answers them with a volunteered fact. Stop-word phrases are written run together
 (`bringinganythingup`, `howlong`, `whendiditstart`, `sincewhen`, `howhasitchanged`, `whatisthepainlike`,
 `bloodinthephlegm`, `outofbreath`, `onyourmind`, `lookather`, `listentoherlungs`, `examineherlegs`,
 `takeherbloodpressure`). Exclusions keep neighbours apart: the cough item excludes blood and duration words; the blood
@@ -347,16 +368,18 @@ the echo; a bare "易栓症" / "thrombophilia" offers the antibody tests and the
 4. Tektonidou MG, Andreoli L, Limper M, et al. EULAR recommendations for the management of antiphospholipid syndrome in
    adults. Ann Rheum Dis. 2019;78(10):1296-1304. doi:10.1136/annrheumdis-2019-215213
 5. Barbhaiya M, Zuily S, Naden R, et al. 2023 ACR/EULAR antiphospholipid syndrome classification criteria. Ann Rheum
-   Dis. 2023;82(10):1258-1270.
+   Dis. 2023;82(10):1258-1270. doi:10.1136/ard-2023-224609
 6. Devreese KMJ, de Groot PG, de Laat B, et al. Guidance from the Scientific and Standardization Committee for lupus
    anticoagulant/antiphospholipid antibodies of the International Society on Thrombosis and Haemostasis: update of the
    guidelines for lupus anticoagulant detection and interpretation. J Thromb Haemost. 2020;18(11):2828-2839.
+   doi:10.1111/jth.15047
 7. Samuelson Bannow BT, Lee A, Khorana AA, et al. Management of cancer-associated thrombosis in patients with
-   thrombocytopenia: guidance from the SSC of the ISTH. J Thromb Haemost. 2018;16(6):1246-1249.
+   thrombocytopenia: guidance from the SSC of the ISTH. J Thromb Haemost. 2018;16(6):1246-1249. doi:10.1111/jth.14015
 8. Neunert C, Terrell DR, Arnold DM, et al. American Society of Hematology 2019 guidelines for immune thrombocytopenia.
-   Blood Adv. 2019;3(23):3829-3866.
+   Blood Adv. 2019;3(23):3829-3866. doi:10.1182/bloodadvances.2019000966
 9. Sammaritano LR, Bermas BL, Chakravarty EE, et al. 2020 American College of Rheumatology guideline for the management
    of reproductive health in rheumatic and musculoskeletal diseases. Arthritis Rheumatol. 2020;72(4):529-556.
+   doi:10.1002/art.41191
 
 **Guidance check (2026-11, web searches, secondary sources where noted).** Confirmed: ESC 2019 — LMWH preferred over
 UFH for initial parenteral treatment (class I), VKA overlap ≥ 5 days until the INR is 2.0–3.0, no NOACs in APS
@@ -372,6 +395,21 @@ ASH 2019 — observation rather than corticosteroids for newly diagnosed adult I
 minor mucocutaneous bleeding (strong recommendation, very low certainty); ACR 2020 — no combined oestrogen–progestin
 contraception with antiphospholipid antibodies (strong). The web search budget ran out before every item could be
 confirmed; the rest is listed below.
+
+**Independent review check (2026-11-14).** Read in the primary text: ASH 2019 recommendation 1b (PMC6963252) —
+"recommends against corticosteroids", strong recommendation, very low certainty (the case's wording holds); EULAR 2019
+(PMC11034817) — 4A VKA INR 2–3 after a first venous thrombosis, 4C long term when unprovoked, 4B no rivaroxaban in
+triple positivity, 5B INR 3–4 or LMWH (or LDA) for recurrence, 6B arterial events, 9A LDA plus prophylactic heparin
+for obstetric APS, 11 LDA plus therapeutic heparin in thrombotic APS, switch from VKA to heparin as soon as pregnancy
+is confirmed (ideally before week 6); 2023 ACR/EULAR full text, Table 3 — lupus anticoagulant single 1 / persistent 5
+points, solid-phase antibodies scored only when persistent (IgM 1, IgG moderate 4, IgG high 5, both high 7; moderate
+40–79, high ≥ 80 units), thrombocytopenia 20–130 × 10⁹/L 2 points, VTE without a high-risk profile 3 points, fetal
+death 16–34 weeks 1 point; ISTH SSC 2020 abstract — two test systems (dRVVT and APTT), three steps, timing and
+anticoagulated patients addressed. Secondary sources only: AHA/ACC 2026 (Circulation 2026;153(12):e977–e1051,
+published 19 February 2026) — LMWH over UFH (class 1, B-R), systemic lysis harmful in categories A–C2, warfarin in
+thrombotic APS with a DOAC considered only in low-risk single-positive APS without arterial events; ESC 2019 classes as
+quoted. The eight guideline DOIs were matched to their articles in Europe PMC; the source article's DOI is the one
+`scripts/cmcr-105-sources.json` verified with the publisher (2026-10-29).
 
 ### To verify
 
@@ -401,19 +439,28 @@ confirmed; the rest is listed below.
   lysis in non-high-risk PE and routine IVC filters) against the original text.
 - AHA/ACC 2026: the exact recommendation and class on warfarin versus DOACs in APS (secondary summaries say warfarin
   for thrombotic APS, a DOAC considered only in low-risk single-positive APS without arterial events).
-- 2023 ACR/EULAR: the high-titre boundary (≥ 80 or > 80 units — sources differ) and the exact wording of the
-  persistence rule; the points of the venous thromboembolism domain (not quoted in the case).
+- 2023 ACR/EULAR: the high-titre boundary — the article's Table 3 says ≥ 80 units, its Table 1 "> 80"; the case uses
+  ≥ 80.
 - ISTH SSC 2020: the exact wording on testing before anticoagulation and on testing patients on LMWH (the case says
   "ideally before anticoagulation, never delaying it" and "some reagents contain heparin neutralisers"), and on an
   unexplained prolonged APTT as an indication for testing.
 - ACR 2020: the contraceptive methods it recommends for antiphospholipid-antibody-positive women (the case names an
   intrauterine device or a progestogen-only pill) and its position on depot medroxyprogesterone.
-- The week by which warfarin should be changed to LMWH in pregnancy (the case says "as soon as pregnancy is confirmed").
 - Whether EULAR has updated its 2019 APS recommendations, whether the BSH 2024 APS guideline changes any point, and the
   current Chinese guidance (中华医学会呼吸病学分会《肺血栓栓塞症诊治与预防指南》2018 and successors; 中华医学会心血管病学分会
   《急性肺栓塞诊断和治疗指南2025》; Chinese APS consensus documents) — not cited because their content could not be
   checked here.
-- DOIs not given for references 5–9 (not verified with a publisher or Crossref lookup).
+
+**For a clinician of the specialty (respiratory medicine, haematology, rheumatology) to confirm before teaching use:**
+- Full-dose LMWH from day one at a platelet count of 58 × 10⁹/L with blood-streaked sputum, using the ≥ 50 × 10⁹/L
+  threshold borrowed from ISTH SSC 2018 (written for cancer-associated thrombosis), and daily platelet counts.
+- Treating her as having APS on one anticardiolipin result of unstated isotype, warfarin from the first days rather
+  than after confirmation, and no DOAC until single positivity is shown.
+- The stance on steroids for an APS-associated platelet count of 58 × 10⁹/L (ASH 2019 is written for immune
+  thrombocytopenia; her count was first found low years earlier).
+- The safety-outcome judgements: systemic thrombolysis `critical: true`; IVC filter, platelet transfusion, rivaroxaban
+  and the combined pill `critical: false`.
+- Lupus anticoagulant testing at ≥ 12 weeks while she takes warfarin (the method the laboratory should use).
 
 ## Changelog
 
@@ -438,6 +485,22 @@ confirmed; the rest is listed below.
 - Staff: attending, nurse, radiologist, haematologist, rheumatologist — knowledge without results. Debrief rewritten
   (conclusion, six key-reasoning steps, six dated teaching points, boundaries, seven unknowns, nine references).
 - Matcher corpus rewritten: 38 utterances. README rewritten to the facilitator-guide template with "To verify".
+- **Independent review (2026-11-14), applied within 1.1.0.** (1) *Critical act timing:* the LMWH/UFH window was the
+  `admission` phase, which ends the moment decision 2 is answered, so a learner who answered "LMWH today" and then gave
+  it — as objective 4's guidance says — missed the critical item (measured 23/27); the window is now "after the blood
+  count, before any further result is read" (27/27 for that path; late after the antibody result as before).
+  (2) *Authoring language in records:* "the Chinese / English text of this record" removed from the outcome record, the
+  ultrasound note, the LMWH response and the debrief; the heparin is given as "heparin (low-molecular-weight heparin)".
+  (3) *2023 ACR/EULAR:* feedback and the rheumatologist said every laboratory domain needs persistence; only the
+  solid-phase antibodies do (a single lupus anticoagulant scores 1 point, Table 3), now consistent with teaching point
+  3. (4) *Facts in the wording:* the chest pain is "dull" (钝痛, not 闷痛) and has "no clear relation" to breathing (not
+  "unrelated"); "a little white phlegm" (痰不多, not 咳得不算多); "a single antibody result on record" (not "tested
+  once"); the low platelets "first found years earlier" (not "long-standing"). (5) Smaller fixes: spoiler-free hints
+  for objectives 2 and 5, the warfarin response names the pregnancy-test precondition the case cannot show, IVC filters
+  also for recurrence despite anticoagulation (teaching point 2), "factor VIII, IX and XI" not "a deficiency",
+  SPIKES in the communication item, the pleuritic question reaches the chest-pain item (39 utterances), DOIs for
+  references 5–9, the "Scenario timeline and physiology" heading, the `scripts/case-check.ts` path, the guidance check
+  and a clinicians' list under "To verify".
 
 ### 1.0.0 — 2026-10-28
 
@@ -447,8 +510,8 @@ confirmed; the rest is listed below.
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-858035/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-858035 --lang en          # solution 71 steps · objectives 6/6 · decisions 5/5 · utterances 38/38 · rubric 27/27
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-858035          # depth floor, do-nothing 0, wrong-first 16/27 < 27/27
+npm run -s cc -- cases verify cmcr-858035 --lang en          # solution 71 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 27/27
+npx tsx --conditions=source scripts/case-check.ts cmcr-858035          # depth floor, do-nothing 0/22, wrong-first 59 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-858035:"   # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-858035:"   # in-world demonstration, en + zh-CN
 ```
@@ -485,8 +548,8 @@ CT 示血栓消失，血小板改善，无复发报告，随访时长不明。�
 **复盘要点。**
 
 - 狼疮抗凝物：试管里凝血慢，体内易栓；两种方法检测，最好抗凝前采血，但不为采血推迟治疗（ISTH SSC 2020）。
-- 确诊当天抗凝：低分子肝素优于普通肝素，中低危肺栓塞不溶栓，滤器只用于抗凝绝对禁忌；血小板 ≥ 50×10⁹/L 可用全量（ESC 2019；AHA/ACC 2026；ISTH SSC 2018）。
-- 分类不等于诊断：实验室领域要求持续阳性，IgG 计分高于 IgM，产科事件按孕周计分；本例孕周未记录（2023 ACR/EULAR）。
+- 确诊当天抗凝：低分子肝素优于普通肝素，中低危肺栓塞不溶栓，滤器只用于抗凝绝对禁忌或充分抗凝下仍复发；血小板 ≥ 50×10⁹/L 可用全量（ESC 2019；AHA/ACC 2026；ISTH SSC 2018）。关键项以“看过血小板、尚未读进一步检查结果”为时间窗：先答决策 2 再给低分子肝素仍算及时。
+- 分类不等于诊断：抗心磷脂抗体和抗β2GPI 只有持续阳性才计分（狼疮抗凝物一次阳性计 1 分），IgG 计分高于 IgM，产科事件按孕周计分；本例孕周未记录（2023 ACR/EULAR）。
 - 长期用华法林、无限期，不用直接口服抗凝药（ESC 2019；EULAR 2019；AHA/ACC 2026）；报告从肝素转华法林与现行做法一致。
 - 激素：报告与抗凝同时使用后逐渐停用；现行指南在血小板 ≥ 30×10⁹/L 且无明显出血时推荐观察（ASH 2019），单例报告不能说明血小板改善是激素的作用。
 - 生育计划是处方的一部分：妊娠试验、无雌激素避孕、孕期治疗剂量肝素加小剂量阿司匹林（ACR 2020；EULAR 2019）。

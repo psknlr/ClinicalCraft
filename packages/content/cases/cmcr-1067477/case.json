@@ -1700,12 +1700,12 @@
         "en": [
           "ultrasound",
           "pelvic ultrasound",
-          "scan",
           "uss",
           "transvaginal",
           "pelvic scan",
           "doppler",
-          "sonogram"
+          "sonogram",
+          "ultrasound scan"
         ]
       },
       "performedAt": "bedside",
@@ -2546,6 +2546,60 @@
       }
     },
     {
+      "id": "mri-pelvis",
+      "name": {
+        "zh-CN": "盆腔磁共振（MRI）",
+        "en": "MRI of the pelvis"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "盆腔mri",
+          "磁共振",
+          "核磁",
+          "核磁共振",
+          "mri检查"
+        ],
+        "en": [
+          "mri",
+          "mri pelvis",
+          "pelvic mri",
+          "mr pelvis",
+          "magnetic resonance"
+        ]
+      },
+      "performedAt": "provider",
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "after-evacuation": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "third-admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
       "id": "tissue-histology",
       "name": {
         "zh-CN": "组织病理检查",
@@ -3046,8 +3100,8 @@
         }
       },
       "harm": {
-        "zh-CN": "她已经再次清过宫：再刮一次，是在可能已经发炎甚至坏死的子宫壁上操作，穿孔和大出血的风险高，还可能造成宫腔粘连，并会耽误她需要的静脉抗菌药物和影像检查。RCOG绿顶指南第52号（2016）的清宫针对的是残留的胎盘组织，没有残留就不应反复刮宫；坏死组织要靠手术去除（IDSA 2014）。留在宫颈或阴道里的组织，应在窥器下用卵圆钳轻柔取出送病理，而不是再搔刮子宫壁。",
-        "en": "She has already had a repeat evacuation: curetting again works on a uterine wall that may be inflamed or even necrotic, with a high risk of perforation and major bleeding and a risk of adhesions, and it delays the IV antibiotics and imaging she needs. RCOG Green-top Guideline 52 (2016) evacuates retained placental tissue — it does not repeat curettage without it — and necrotic tissue needs removal at surgery (IDSA 2014). Tissue lying in the cervix or vagina is eased out with sponge forceps under a speculum for histology — the uterine wall is not curetted again."
+        "zh-CN": "她已经再次清过宫：再刮一次，是在可能已经发炎甚至坏死的子宫壁上操作，穿孔和大出血的风险高，还可能造成宫腔粘连，并会耽误她需要的静脉抗菌药物和影像检查。RCOG绿顶指南第52号（2016）中的清宫针对的是残留的胎盘组织；坏死组织要靠手术去除（IDSA 2014）。留在宫颈或阴道里的组织，应在窥器下用卵圆钳轻柔取出送病理，而不是再搔刮子宫壁。",
+        "en": "She has already had a repeat evacuation: curetting again works on a uterine wall that may be inflamed or even necrotic, with a high risk of perforation and major bleeding and a risk of adhesions, and it delays the IV antibiotics and imaging she needs. In RCOG Green-top Guideline 52 (2016) surgical evacuation is for retained placental tissue, and necrotic tissue needs removal at surgery (IDSA 2014). Tissue lying in the cervix or vagina is eased out with sponge forceps under a speculum for histology — the uterine wall is not curetted again."
       },
       "response": {
         "zh-CN": "清宫已完成，组织已送病理。原报告记录她曾再次清宫；本病例没有记录清宫时的所见和这次组织的病理。",
@@ -4898,7 +4952,8 @@
       },
       "interprets": [
         "pelvic-ultrasound",
-        "ct-pelvis"
+        "ct-pelvis",
+        "mri-pelvis"
       ],
       "revealsDiagnosis": false
     },
@@ -4943,7 +4998,7 @@
     },
     "conclusion": {
       "zh-CN": "31岁，孕28周多胎膜早破约10小时后引产；产后约2小时大出血并休克（血压40/20 mmHg），清宫、会阴裂伤缝合、输血和促宫缩后出血减少；引产后反复阴道大量出血3天转入：体温37.4 ℃，宫底平脐、收缩差（记录为“再次入院”时），宫腔内约28×18×36 mm不均质团块。再次清宫后宫腔已空，但子宫仍增大、回声不均，白细胞由13.04升至16.12×10⁹/L、中性粒细胞升高，CRP约14.52–15.82 mg/L，发热不明显。第三次入院再次大出血（血压53/34 mmHg，脉搏110次/分），宫颈阴道内团块70×62×51 mm；宫颈处组织病理为大片子宫肌层坏死伴炎性渗出。原报告先行宫腔镜下分离（发生穿孔）、宫底楔形切除（未见绒毛），再次大出血并发现感染后切除子宫（肌层坏死，皮下化脓性炎症，引流液培养阴性），之后治愈出院；诊断为坏死性子宫肌炎、子宫内膜炎及反复失血性休克。按现行指南：继发性产后出血从一开始就按可能感染处理（培养后静脉用抗菌药物），宫腔排空后仍异常时转向子宫壁并做影像，休克时以血制品复苏、1小时内用广谱抗菌药物，并以子宫切除去除坏死病灶，而不是继续宫腔操作或栓塞。",
-      "en": "A 31-year-old's membranes ruptured at just over 28 weeks and the birth was induced about 10 hours later. About 2 hours after the birth she bled heavily, with shock (BP 40/20 mmHg); evacuation, perineal repair, transfusion and uterotonics lessened the bleeding, and she was transferred with 3 days of recurrent heavy bleeding after the birth: temperature 37.4 °C, the fundus at the umbilicus and poorly contracted (recorded at the 'readmission'), a heterogeneous cavity mass of about 28 × 18 × 36 mm. After a repeat evacuation the cavity was empty, but the uterus stayed enlarged and heterogeneous; white cells rose from 13.04 to 16.12×10⁹/L with neutrophilia, CRP was about 14.52–15.82 mg/L and fever was not prominent. At a third admission she bled heavily again (BP 53/34 mmHg, pulse 110/min), with a 70 × 62 × 51 mm mass in the cervix and vagina; tissue from the cervix was extensive necrotic myometrium with inflammatory exudate. The report's team then attempted hysteroscopic separation (a perforation occurred) and a fundal wedge resection (no villi); after further heavy bleeding and the finding of infection the uterus was removed (myometrial necrosis again, suppurative subcutaneous inflammation, drainage cultures negative), and she recovered and was discharged. The report's diagnosis: necrotising myometritis, endometritis and recurrent haemorrhagic shock. Today: treat secondary PPH as possibly infected from the start (cultures, then IV antibiotics), image the uterine wall once the cavity is empty, resuscitate shock with blood products and give broad-spectrum antibiotics within the hour, and remove the necrotic uterus by hysterectomy rather than instrumenting or embolising it."
+      "en": "A 31-year-old's membranes ruptured at just over 28 weeks and the birth was induced about 10 hours later. About 2 hours after the birth she bled heavily, with shock (BP 40/20 mmHg); evacuation, perineal repair, transfusion and uterotonics lessened the bleeding, and she was transferred with 3 days of recurrent heavy bleeding after the birth: temperature 37.4 °C, the fundus at the umbilicus and poorly contracted (recorded at the 'readmission'), a heterogeneous cavity mass of about 28 × 18 × 36 mm. After a repeat evacuation the cavity was empty, but the uterus stayed enlarged and heterogeneous; white cells rose from 13.04 to 16.12×10⁹/L with neutrophilia, CRP was about 14.52–15.82 mg/L and fever was not prominent. At a third admission she bled heavily again (BP 53/34 mmHg, pulse 110/min), with a 70 × 62 × 51 mm mass in the cervix and vagina; tissue from the cervix was extensive necrotic myometrium with inflammatory exudate. The report records hysteroscopic separation, during which a perforation occurred, and a later fundal wedge resection (no villi); after further heavy bleeding and the finding of infection the uterus was removed (myometrial necrosis again, suppurative subcutaneous inflammation, drainage cultures negative), and she recovered and was discharged. The report's diagnosis: necrotising myometritis, endometritis and recurrent haemorrhagic shock. Today: treat secondary PPH as possibly infected from the start (cultures, then IV antibiotics), image the uterine wall once the cavity is empty, resuscitate shock with blood products and give broad-spectrum antibiotics within the hour, and remove the necrotic uterus by hysterectomy rather than instrumenting or embolising it."
     },
     "keyReasoning": [
       {

@@ -3019,8 +3019,8 @@
         "en": "There is no heparin cover yet: warfarin takes days to work and, because protein C falls first, can briefly raise the clotting risk on its own. ESC 2019 requires overlap with heparin for at least 5 days and until the INR is 2.0–3.0. Start the LMWH first."
       },
       "response": {
-        "zh-CN": "已开始华法林，肝素继续重叠。本病例记录此后改用华法林，但没有记录剂量、目标 INR 或 INR 数值。本病例没有记录妊娠试验结果；实际工作中，首剂华法林要等妊娠试验阴性之后。本病例不模拟其效果。",
-        "en": "Warfarin started, with the heparin continuing alongside. This case records the later change to warfarin but not the dose, the INR target or any INR value. No pregnancy test result is recorded in this case; in practice the first dose waits for a negative test. The case does not simulate the effect."
+        "zh-CN": "已开始华法林，肝素继续重叠。本病例记录此后改用华法林，但没有记录剂量、目标 INR 或 INR 数值，也没有妊娠试验结果——实际工作中，首剂华法林要等妊娠试验阴性之后；不模拟其效果。",
+        "en": "Warfarin started, with the heparin continuing alongside. This case records the later change to warfarin but not the dose, the INR target, any INR value or a pregnancy test result — in practice the first dose waits for a negative test; it does not simulate the effect."
       }
     },
     {

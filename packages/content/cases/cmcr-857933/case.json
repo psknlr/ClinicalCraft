@@ -42,12 +42,12 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——42岁女性；间断咯血 10 年（痰中带血，约每年 1 次），憋气半年、近 1 个月加重，近 1 个月再次咯血；能平卧，此次无发热，食欲和精神好、体重无明显变化；既往体检发现心律不齐、未治疗；不吸烟不饮酒，接触过含氯清洁剂；查体双肺呼吸音粗、无干湿啰音、叩诊清音、气管居中，无杵状指、下肢水肿或浅表淋巴结肿大；胸部 CT、肺功能、频发室早和短阵室速、LVEF 60%、尿蛋白阴性、肝肾功能正常；支气管镜所见、活检病理（刚果红阳性、λ 强阳性）、血尿免疫固定电泳无单克隆条带、未行骨髓检查；多次硬质支气管镜电烧灼和冷冻、气管切开、全身药物，7 个月后拔除气切套管、FEV₁ 升至 1.71 L，11 个月时无憋气和咯血——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；1.0.0 版没有记录的内容（生命体征、血氧、出血量、血常规和凝血、游离轻链、心脏标志物、组织分型、心脏影像细节、各项治疗的时间和细节）保持未知。两处只能保留原样、留待核对：全身药物只在 1.0.0 版的教学文本中提及美法仑和沙利度胺（“历史联合化疗”），方案、剂量和疗程没有记录；“7 个月”和“11 个月”从何时算起没有记录。原报告的图 1 已获准在本地展示，只附在病例结束后的结局记录中。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 42-year-old woman; intermittent haemoptysis for ten years (blood-streaked sputum, about once a year), breathlessness for six months, worse over the last month, with haemoptysis again in that month; able to lie flat, no fever this time, appetite and energy good, no clear weight change; an irregular heart rhythm found at an earlier check-up and never treated; no smoking or alcohol, exposure to chlorine-based cleaning products; on examination coarse breath sounds without wheezes or crackles, resonant percussion, a central trachea, no clubbing, leg oedema or enlarged superficial nodes; the chest CT, lung function, frequent ventricular premature beats with short runs of ventricular tachycardia, LVEF 60 %, negative urine protein and normal liver and renal function; the bronchoscopic findings, the biopsy (Congo red positive, strongly λ positive), serum and urine immunofixation without a monoclonal band, no bone marrow examination; repeated rigid bronchoscopy with electrocautery and cryotherapy, a tracheostomy and systemic drugs, decannulation after 7 months with FEV₁ rising to 1.71 L, and no breathlessness or haemoptysis at 11 months — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what 1.0.0 does not record (vital signs, oxygen saturation, the amount of bleeding, blood count and clotting, free light chains, cardiac biomarkers, tissue typing, cardiac imaging detail, the timing and detail of each treatment) stays unknown. Two points are kept as recorded and listed for checking: the systemic drugs are named only in 1.0.0's teaching text, as melphalan and thalidomide ('historical combination chemotherapy'), with no regimen, doses or duration; and what the 7 and 11 months are counted from is not recorded. The report's figure 1 is approved for local display and is attached only to the outcome record shown after the case."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——42岁女性；间断咯血 10 年（痰中带血，约每年 1 次），憋气半年、近 1 个月加重，近 1 个月再次咯血；能平卧，此次无发热，食欲和精神好、体重无明显变化；既往体检发现心律不齐、未治疗；不吸烟不饮酒，接触过含氯清洁剂；查体双肺呼吸音粗、无干湿啰音、叩诊清音、气管居中，无杵状指、下肢水肿或浅表淋巴结肿大；胸部 CT、肺功能、频发室早和短阵室速、LVEF 60%、尿蛋白阴性、肝肾功能正常；支气管镜所见、活检病理（刚果红阳性、λ 强阳性）、血尿免疫固定电泳无单克隆条带、未行骨髓检查；多次硬质支气管镜、电烧灼和冷冻治疗，以及气管切开和全身药物，7 个月后拔除气切套管、FEV₁ 升至 1.71 L，11 个月时无憋气和咯血——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；1.0.0 版没有记录的内容（生命体征、血氧、出血量、血常规和凝血、游离轻链、心脏标志物、组织分型、心脏影像细节、各项治疗的时间和细节）保持未知。两处只能保留原样、留待核对：全身药物只在 1.0.0 版的教学文本中提及美法仑和沙利度胺（“历史联合化疗”），方案、剂量和疗程没有记录；“7 个月”和“11 个月”从何时算起没有记录。原报告的图 1 已获准在本地展示，只附在病例结束后的结局记录中。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 42-year-old woman; intermittent haemoptysis for ten years (blood-streaked sputum, about once a year), breathlessness for six months, worse over the last month, with haemoptysis again in that month; able to lie flat, no fever this time, appetite and energy good, no clear weight change; an irregular heart rhythm found at an earlier check-up and never treated; no smoking or alcohol, exposure to chlorine-based cleaning products; on examination coarse breath sounds without wheezes or crackles, resonant percussion, a central trachea, no clubbing, leg oedema or enlarged superficial nodes; the chest CT, lung function, frequent ventricular premature beats with short runs of ventricular tachycardia, LVEF 60 %, negative urine protein and normal liver and renal function; the bronchoscopic findings, the biopsy (Congo red positive, strongly λ positive), serum and urine immunofixation without a monoclonal band, no bone marrow examination; repeated rigid bronchoscopy, electrocautery and cryotherapy, a tracheostomy and systemic drugs, decannulation after 7 months with FEV₁ rising to 1.71 L, and no breathlessness or haemoptysis at 11 months — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what 1.0.0 does not record (vital signs, oxygen saturation, the amount of bleeding, blood count and clotting, free light chains, cardiac biomarkers, tissue typing, cardiac imaging detail, the timing and detail of each treatment) stays unknown. Two points are kept as recorded and listed for checking: the systemic drugs are named only in 1.0.0's teaching text, as melphalan and thalidomide ('historical combination chemotherapy'), with no regimen, doses or duration; and what the 7 and 11 months are counted from is not recorded. The report's figure 1 is approved for local display and is attached only to the outcome record shown after the case."
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -59,11 +59,12 @@
         "中国系统性轻链型淀粉样变性诊断和治疗指南（2021年修订）",
         "EHA-ISA working group 2023 guidelines for non-transplant chemotherapy of systemic AL amyloidosis",
         "ESC Working Group on Myocardial and Pericardial Diseases 2021 position statement on cardiac amyloidosis",
-        "ESC 2022 ventricular arrhythmias and the prevention of sudden cardiac death"
+        "ESC 2022 ventricular arrhythmias and the prevention of sudden cardiac death",
+        "US FDA 2005 public health notification: complications from metallic tracheal stents in patients with benign airway disorders"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核和独立审核；部分归于指南的表述仍需对照指南全文核对（见导师指南）。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
+        "en": "AI-assisted teaching design with an editorial review and an independent review against the cited guidance; some statements attributed to the guidelines still need checking against their full texts (listed in the facilitator guide). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
       }
     }
   },
@@ -77,8 +78,8 @@
       "en": "Localise airflow obstruction from the flow–volume loop and gas transfer, recognising a fixed upper-airway pattern with a preserved diffusing capacity as central-airway obstruction for imaging and endoscopy to confirm (ERS/ATS 2022)."
     },
     {
-      "zh-CN": "安全地安排严重狭窄、正在出血的气道的取材：先查血常规、凝血和妊娠状态，再在全身麻醉下由介入呼吸团队备硬质支气管镜、止血手段和心电监护进行（中华医学会呼吸病学分会良性中心气道狭窄专家共识，2017）。",
-      "en": "Arrange tissue sampling of a severely narrowed, bleeding airway safely — blood count, clotting and pregnancy status first, then general anaesthesia with the interventional team, a rigid bronchoscope, bleeding control and ECG monitoring (Chinese Thoracic Society consensus on benign central airway stenosis, 2017)."
+      "zh-CN": "安全地安排严重狭窄、近期咯血的气道的取材：先查血常规、凝血和妊娠状态，再在全身麻醉下由介入呼吸团队备硬质支气管镜、止血手段和心电监护进行（中华医学会呼吸病学分会良性中心气道狭窄专家共识，2017）。",
+      "en": "Arrange tissue sampling of a severely narrowed airway that has recently bled, safely — blood count, clotting and pregnancy status first, then general anaesthesia with the interventional team, a rigid bronchoscope, bleeding control and ECG monitoring (Chinese Thoracic Society consensus on benign central airway stenosis, 2017)."
     },
     {
       "zh-CN": "解读气道活检的刚果红和轻链染色，并说出判定局限性 AL 淀粉样变之前还需要的证据：组织质谱分型、血尿免疫固定电泳加血清游离轻链、骨髓检查和器官评估（中国系统性轻链型淀粉样变性诊断和治疗指南，2021）。",
@@ -302,7 +303,10 @@
           "这次住院",
           "住进来",
           "为啥住院",
-          "什么毛病"
+          "什么毛病",
+          "怎么了",
+          "哪儿不舒服",
+          "看什么病"
         ],
         "en": [
           "broughtyouin",
@@ -310,7 +314,10 @@
           "what's wrong",
           "reason for admission",
           "into hospital",
-          "troubling you"
+          "troubling you",
+          "bringsyouin",
+          "whatstheproblem",
+          "whatsthematter"
         ]
       },
       "excludeKeywords": {
@@ -357,7 +364,10 @@
           "一年几次",
           "多久犯",
           "多长时间一次",
-          "咳血的样子"
+          "咳血的样子",
+          "咳血",
+          "咯血",
+          "咳出血"
         ],
         "en": [
           "blood streaked",
@@ -365,7 +375,9 @@
           "how often",
           "times a year",
           "blood in your phlegm",
-          "pattern of the bleeding"
+          "pattern of the bleeding",
+          "coughing up blood",
+          "coughed up blood"
         ]
       },
       "excludeKeywords": {
@@ -373,13 +385,21 @@
           "最近",
           "近来",
           "这个月",
-          "多少"
+          "多少",
+          "量",
+          "还咳",
+          "还在咳",
+          "又",
+          "现在"
         ],
         "en": [
           "recent",
           "this month",
           "how much",
-          "last month"
+          "last month",
+          "still",
+          "anymore",
+          "lately"
         ]
       },
       "disclosure": "on-ask",
@@ -418,7 +438,8 @@
           "lately",
           "again",
           "recent bleeding",
-          "last month"
+          "last month",
+          "still coughing"
         ]
       },
       "excludeKeywords": {
@@ -461,7 +482,7 @@
           "一大口",
           "咳出来多少",
           "能咳多少",
-          "咳血量",
+          "咳血的量",
           "满口",
           "多大量"
         ],
@@ -500,7 +521,10 @@
           "呼吸困难",
           "什么时候开始喘",
           "气不够用",
-          "喘了多久"
+          "喘了多久",
+          "喘得厉害",
+          "喘得重",
+          "喘气费劲"
         ],
         "en": [
           "breathless",
@@ -578,6 +602,14 @@
       "source": {
         "zh-CN": "原报告病历资料·现病史（夜间可平卧，无夜间加重）（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
         "en": "Case record in the report: history of the presenting illness (able to lie flat, no worse at night) (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "en": [
+          "sweat"
+        ],
+        "zh-CN": [
+          "汗"
+        ]
       }
     },
     {
@@ -742,6 +774,15 @@
       "source": {
         "zh-CN": "1.0.0 版没有记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "en": [
+          "breath"
+        ],
+        "zh-CN": [
+          "喘",
+          "呼吸"
+        ]
       }
     },
     {
@@ -843,7 +884,9 @@
           "早搏",
           "心脏病",
           "心电图异常",
-          "心跳不规律"
+          "心跳不规律",
+          "平时身体",
+          "以前身体"
         ],
         "en": [
           "heart problem",
@@ -852,7 +895,9 @@
           "skipped beats",
           "arrhythmia",
           "heart rhythm",
-          "beats irregularly"
+          "beats irregularly",
+          "medical problems",
+          "health problems"
         ]
       },
       "excludeKeywords": {
@@ -1325,7 +1370,9 @@
           "还咳血吗",
           "恢复得",
           "最近感觉",
-          "能干活"
+          "能干活",
+          "现在呼吸",
+          "呼吸怎么样"
         ],
         "en": [
           "howareyounow",
@@ -1333,7 +1380,9 @@
           "still breathless",
           "still bleeding",
           "these days",
-          "recovered"
+          "recovered",
+          "still coughing",
+          "walk further"
         ]
       },
       "disclosure": "on-ask",
@@ -1343,7 +1392,8 @@
       ],
       "supersedes": [
         "bleeding-recent",
-        "breathlessness-course"
+        "breathlessness-course",
+        "bleeding-pattern"
       ],
       "source": {
         "zh-CN": "原报告病历资料·治疗及随访（11 个月时无呼吸困难和咯血，可轻体力活动）（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
@@ -2865,15 +2915,15 @@
         "followup": {
           "available": true,
           "text": {
-            "zh-CN": "报告记录的治疗：多次硬质支气管镜下电烧灼和冷冻治疗，曾行气管切开，并使用全身药物（以联合化疗的形式，提及美法仑和沙利度胺；方案、剂量和疗程没有记录）。7 个月后拔除气管切开套管，FEV₁ 升至 1.71 L；11 个月时无呼吸困难和咯血，能从事轻体力活动。多种治疗同时进行，无法区分各自的效果。",
-            "en": "Treatment recorded in the report: repeated rigid bronchoscopies with electrocautery and cryotherapy, a tracheostomy, and systemic drugs (given as combination chemotherapy, with melphalan and thalidomide named; the regimen, doses and duration are not recorded). The tracheostomy tube was removed after 7 months and FEV₁ rose to 1.71 L; at 11 months she had no breathlessness or haemoptysis and could manage light physical activity. Because several treatments were combined, their separate effects cannot be told apart."
+            "zh-CN": "报告记录的治疗：多次硬质支气管镜、电烧灼和冷冻治疗，曾行气管切开，并使用全身药物（以联合化疗的形式，提及美法仑和沙利度胺；方案、剂量和疗程没有记录）。7 个月后拔除气管切开套管，FEV₁ 升至 1.71 L；11 个月时无呼吸困难和咯血，能从事轻体力活动。多种治疗同时进行，无法区分各自的效果。",
+            "en": "Treatment recorded in the report: repeated rigid bronchoscopy, electrocautery and cryotherapy, a tracheostomy, and systemic drugs (given as combination chemotherapy, with melphalan and thalidomide named; the regimen, doses and duration are not recorded). The tracheostomy tube was removed after 7 months and FEV₁ rose to 1.71 L; at 11 months she had no breathlessness or haemoptysis and could manage light physical activity. Because several treatments were combined, their separate effects cannot be told apart."
           },
           "figures": [
             "fig01"
           ],
           "note": {
-            "zh-CN": "本病例没有记录“7 个月”和“11 个月”从何时算起、各项治疗的先后和次数、气管切开的原因、并发症、心律失常的处理，以及 11 个月以后的情况。",
-            "en": "This case does not record what the 7 and 11 months are counted from, the order and number of the treatments, why the tracheostomy was done, complications, how the arrhythmia was managed, or anything after 11 months."
+            "zh-CN": "本病例没有记录“7 个月”和“11 个月”从何时算起、各项治疗的先后和次数、电烧灼和冷冻是否经硬质支气管镜进行、气管切开的原因、并发症、心律失常的处理，以及 11 个月以后的情况。",
+            "en": "This case does not record what the 7 and 11 months are counted from, the order and number of the treatments, whether the electrocautery and cryotherapy were given through the rigid bronchoscope, why the tracheostomy was done, complications, how the arrhythmia was managed, or anything after 11 months."
           },
           "source": {
             "zh-CN": "原报告辅助检查·治疗及随访（1.0.0 版结局记录；美法仑和沙利度胺见 1.0.0 版的决策文本）（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2989,7 +3039,7 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她的气管和多处大支气管广泛狭窄，流量–容积环为固定性上气道阻塞，近 1 个月还在咯血：镇静会削弱维持狭窄气道开放的自主呼吸，可弯曲镜本身可能堵住残余的管腔，活检引起的出血或水肿可在几分钟内造成窒息，而内镜室没有硬质支气管镜和喷射通气可以抢救。中华医学会呼吸病学分会 2017 年良性中心气道狭窄介入诊治专家共识要求严重中心气道狭窄在全身麻醉下、由备好硬质支气管镜的介入团队处理。",
+        "zh-CN": "她的气管和多处大支气管广泛狭窄，流量–容积环为固定性上气道阻塞，近 1 个月还在咯血：镇静会削弱维持狭窄气道开放的自主呼吸，可弯曲镜本身可能堵住残余的管腔，活检引起的出血或水肿可在几分钟内造成窒息，而内镜室没有硬质支气管镜和喷射通气可以抢救。中华医学会呼吸病学分会 2017 年良性中心气道狭窄介入诊治专家共识主张严重中心气道狭窄在全身麻醉下、由备好硬质支气管镜的介入团队处理。",
         "en": "Her trachea and multiple large bronchi are widely narrowed, the flow–volume loop shows a fixed upper-airway obstruction, and she has been bleeding this past month: sedation can remove the breathing effort that holds a narrowed airway open, the flexible scope itself may occlude what lumen remains, and bleeding or swelling after a biopsy can cause asphyxia within minutes, with no rigid bronchoscope or jet ventilation in the endoscopy suite to rescue her. The Chinese Thoracic Society consensus on bronchoscopic management of benign central airway stenosis (2017) manages severe central narrowing under general anaesthesia by an interventional team with a rigid bronchoscope ready."
       },
       "response": {
@@ -3037,8 +3087,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "结核病的治疗要以病原学或病理学证据为依据：痰涂片、培养和分子检测，怀疑气管支气管结核时取支气管镜标本（ATS/IDSA/CDC 2017 结核病诊断指南）。没有证据就开始数月的抗结核治疗，会带来肝毒性等风险，并推迟对管壁病变真正性质的诊断。",
-        "en": "Tuberculosis treatment rests on microbiological or histological evidence — sputum smear, culture and a molecular test, and bronchoscopic samples when tracheobronchial disease is suspected (ATS/IDSA/CDC tuberculosis diagnosis guideline, 2017). Months of empirical treatment expose her to hepatotoxicity and delay finding out what the wall disease really is."
+        "zh-CN": "结核病要靠标本诊断：痰涂片抗酸染色、核酸扩增检测和分枝杆菌培养，痰液不能明确时再取支气管镜标本（ATS/IDSA/CDC 2017 结核病诊断指南）。她病程十年、此次无发热，没有理由在留取标本之前就开始治疗；数月经验性四联抗结核治疗会带来肝毒性等风险，并推迟对管壁病变真正性质的诊断。",
+        "en": "Tuberculosis is diagnosed from samples — sputum smear microscopy, a nucleic-acid amplification test and mycobacterial culture, with bronchoscopic sampling when sputum does not give the answer (ATS/IDSA/CDC tuberculosis diagnosis guideline, 2017). Nothing in her ten-year course, without fever this time, calls for treatment before those samples are taken, and months of empirical four-drug treatment expose her to hepatotoxicity and delay finding out what the wall disease really is."
       },
       "response": {
         "zh-CN": "本病例没有记录抗结核治疗，也不模拟其效果。",
@@ -3309,8 +3359,8 @@
         ]
       },
       "response": {
-        "zh-CN": "已与介入团队预约。报告记录她接受了多次硬质支气管镜下电烧灼和冷冻治疗；本病例没有记录治疗次数、间隔和并发症，也不模拟其效果。",
-        "en": "Booked with the interventional team. The report records repeated rigid bronchoscopies with electrocautery and cryotherapy; this case does not record their number, intervals or complications and does not simulate their effect."
+        "zh-CN": "已与介入团队预约。报告记录她接受了多次硬质支气管镜、电烧灼和冷冻治疗；本病例没有记录治疗次数、间隔、具体方式和并发症，也不模拟其效果。",
+        "en": "Booked with the interventional team. The report records repeated rigid bronchoscopy, electrocautery and cryotherapy; this case does not record their number, intervals, technique or complications and does not simulate their effect."
       }
     },
     {
@@ -3343,8 +3393,8 @@
       "risk": "high",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "报告记录她在病程中做过气管切开，套管在 7 个月后拔除；本病例没有记录切开的时间和原因，不模拟其效果。气管切开只能绕过造口以上的气道。",
-        "en": "The report records a tracheostomy during her course, with the tube removed after 7 months; this case does not record when or why it was done and does not simulate its effect. A tracheostomy bypasses only the airway above the stoma."
+        "zh-CN": "报告记录她在病程中做过气管切开；本病例没有记录切开的时间和原因，不模拟其效果。气管切开只能绕过造口以上的气道。",
+        "en": "The report records a tracheostomy during her course; this case does not record when or why it was done and does not simulate its effect. A tracheostomy bypasses only the airway above the stoma."
       }
     },
     {
@@ -3468,8 +3518,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "非恶性气道狭窄放置金属支架是最后的手段：肉芽增生、支架断裂、移位和取出困难都很常见，2017 年良性中心气道狭窄专家共识主张有其他办法时不用（中华医学会呼吸病学分会）。她的狭窄范围广，病变还可能再长，长段支架代替不了分次再通。",
-        "en": "In non-malignant airway narrowing metallic stents are a last resort: granulation, fracture, migration and very difficult removal are common, and the Chinese Thoracic Society consensus on benign central airway stenosis (2017) avoids them where other options exist. Her narrowing is extensive and can regrow, so long stents cannot replace staged recanalisation."
+        "zh-CN": "非恶性气道狭窄放置金属支架是最后的手段：肉芽增生、支架断裂、移位和取出困难都很常见，美国 FDA 2005 年关于良性气道疾病使用金属气管支架的公共卫生通告要求先充分考虑其他办法，2017 年良性中心气道狭窄专家共识（中华医学会呼吸病学分会）也主张有其他办法时不用。她的狭窄范围广，病变还可能再长，长段支架代替不了分次再通。",
+        "en": "In non-malignant airway narrowing metallic stents are a last resort: granulation, fracture, migration and very difficult removal are common, so the US FDA's public health notification on metallic tracheal stents in benign airway disorders (2005) reserves them for when other options have been explored, as does the Chinese Thoracic Society consensus on benign central airway stenosis (2017). Her narrowing is extensive and can regrow, so long stents cannot replace staged recanalisation."
       },
       "response": {
         "zh-CN": "本病例没有记录支架置入，也不模拟其效果。",
@@ -3890,8 +3940,8 @@
         {
           "id": "tb-stenosis",
           "text": {
-            "zh-CN": "气管支气管结核愈合后的钙化性狭窄；先开始四联抗结核治疗，2 个月后复查胸部 CT",
-            "en": "Healed tracheobronchial tuberculosis with calcified stenosis; start four-drug anti-tuberculosis treatment and repeat the chest CT in two months"
+            "zh-CN": "气管支气管结核伴钙化性狭窄；先开始四联抗结核治疗，2 个月后复查胸部 CT",
+            "en": "Tracheobronchial tuberculosis with calcified stenosis; start four-drug anti-tuberculosis treatment and repeat the chest CT in two months"
           },
           "correct": false,
           "feedback": {
@@ -3948,8 +3998,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。CT 和肺功能提示的广泛中心气道狭窄意味着支气管镜本身就可能堵住残余管腔，活检后的出血或水肿可迅速造成窒息，所以操作要放在能立即建立并维持气道的条件下：全身麻醉、硬质支气管镜和喷射通气、止血手段，由介入团队和麻醉医生共同实施（中华医学会呼吸病学分会良性中心气道狭窄介入诊治专家共识，2017）。她有频发室早和短阵室速，术中要持续心电监护并备好除颤仪（ESC 2022 室性心律失常指南），活检前先核查血常规、凝血和妊娠状态。",
-            "en": "Correct. Widespread central narrowing on CT and lung function means the scope itself may occlude what lumen remains, and bleeding or swelling after a biopsy can quickly cause asphyxia, so the procedure belongs where the airway can be secured at once: general anaesthesia, a rigid bronchoscope with jet ventilation and bleeding control, run by the interventional team with an anaesthetist (Chinese Thoracic Society consensus on benign central airway stenosis, 2017). Her frequent ectopy and runs of VT call for continuous ECG monitoring with a defibrillator ready (ESC ventricular arrhythmia guideline, 2022), and the blood count, clotting and pregnancy status are checked before any biopsy."
+            "zh-CN": "正确。CT 和肺功能提示的广泛中心气道狭窄意味着支气管镜本身就可能堵住残余管腔，活检后的出血或水肿可迅速造成窒息，所以操作要放在能立即建立并维持气道的条件下：全身麻醉、硬质支气管镜和喷射通气、止血手段，由介入团队和麻醉医生共同实施（中华医学会呼吸病学分会良性中心气道狭窄介入诊治专家共识，2017）。她有频发室早和短阵室速（ESC 2022 室性心律失常指南要求查找其结构性心脏病病因），麻醉中要持续心电监护并备好除颤仪；活检前先核查血常规、凝血和妊娠状态。",
+            "en": "Correct. Widespread central narrowing on CT and lung function means the scope itself may occlude what lumen remains, and bleeding or swelling after a biopsy can quickly cause asphyxia, so the procedure belongs where the airway can be secured at once: general anaesthesia, a rigid bronchoscope with jet ventilation and bleeding control, run by the interventional team with an anaesthetist (Chinese Thoracic Society consensus on benign central airway stenosis, 2017). Her frequent ectopy and runs of VT, which the ESC ventricular arrhythmia guideline (2022) asks to be investigated for structural heart disease, call for continuous ECG monitoring with a defibrillator ready during the anaesthetic, and the blood count, clotting and pregnancy status are checked before any biopsy."
           }
         },
         {
@@ -3960,7 +4010,7 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对，这正是本例最危险的选择。镇静会削弱维持狭窄气道开放的自主呼吸，可弯曲镜进入严重狭窄段可能完全堵塞管腔，在这样狭窄的气道里钳夹活检引起的出血几分钟内就能致命，而内镜室没有硬质支气管镜和喷射通气可以抢救。2017 年良性中心气道狭窄介入诊治专家共识（中华医学会呼吸病学分会）要求这类狭窄在全身麻醉下、备好硬质支气管镜处理。",
+            "zh-CN": "不对，这正是本例最危险的选择。镇静会削弱维持狭窄气道开放的自主呼吸，可弯曲镜进入严重狭窄段可能完全堵塞管腔，在这样狭窄的气道里钳夹活检引起的出血几分钟内就能致命，而内镜室没有硬质支气管镜和喷射通气可以抢救。2017 年良性中心气道狭窄介入诊治专家共识（中华医学会呼吸病学分会）主张这类狭窄在全身麻醉下、备好硬质支气管镜处理。",
             "en": "No — this is the dangerous choice. Sedation can remove the breathing effort that keeps a narrowed airway open, a flexible scope pushed into a severe stenosis may occlude it completely, and bleeding from forceps biopsies in so narrow an airway can kill within minutes, with no rigid bronchoscope or jet ventilation in the endoscopy suite to rescue her. The Chinese Thoracic Society consensus on benign central airway stenosis (2017) manages such narrowing under general anaesthesia with a rigid bronchoscope ready."
           }
         },
@@ -4163,7 +4213,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "不对。这接近报告当年的做法——在支气管镜治疗之外还使用了全身药物——但她的记录里没有证据证明系统性 AL。化疗只用于确诊的系统性 AL，目前的一线方案是达雷妥尤单抗联合硼替佐米、环磷酰胺和地塞米松（EHA-ISA 2023），不是美法仑联合沙利度胺。美法仑有骨髓毒性，可致卵巢功能衰竭和继发白血病；沙利度胺致畸，可能怀孕的女性必须纳入妊娠预防计划。",
-            "en": "No. This is close to what the report's team did — systemic drugs alongside the bronchoscopic treatment — but nothing in her records establishes systemic AL. Chemotherapy is for proven systemic AL, where current first-line treatment is daratumumab with bortezomib, cyclophosphamide and dexamethasone (EHA-ISA 2023), not melphalan with thalidomide. Melphalan is myelotoxic and can cause ovarian failure and secondary leukaemia; thalidomide is teratogenic and needs a pregnancy-prevention programme in a woman who could become pregnant."
+            "en": "No. This is close to what the report records — systemic drugs as well as the bronchoscopic treatment — but nothing in her records establishes systemic AL. Chemotherapy is for proven systemic AL, where current first-line treatment is daratumumab with bortezomib, cyclophosphamide and dexamethasone (EHA-ISA 2023), not melphalan with thalidomide. Melphalan is myelotoxic and can cause ovarian failure and secondary leukaemia; thalidomide is teratogenic and needs a pregnancy-prevention programme in a woman who could become pregnant."
           }
         },
         {
@@ -4174,8 +4224,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。非恶性气道狭窄放置金属支架是最后的手段：肉芽增生、支架断裂、移位和取出困难都很常见，中华医学会呼吸病学分会良性中心气道狭窄专家共识（2017）主张有其他办法时不用。她的狭窄范围广，病变还会再长，支架代替不了分次再通。",
-            "en": "No. In non-malignant airway narrowing metallic stents are a last resort — granulation, fracture, migration and very difficult removal are common — and the Chinese Thoracic Society consensus on benign central airway stenosis (2017) avoids them where other options exist. Her narrowing is extensive and regrows, so stents cannot replace staged recanalisation."
+            "zh-CN": "不对。非恶性气道狭窄放置金属支架是最后的手段：肉芽增生、支架断裂、移位和取出困难都很常见，因此美国 FDA（2005 年良性气道疾病金属气管支架公共卫生通告）和中华医学会呼吸病学分会良性中心气道狭窄专家共识（2017）都主张其他办法用尽后才考虑。她的狭窄范围广，病变还可能再长，支架代替不了分次再通。",
+            "en": "No. In non-malignant airway narrowing metallic stents are a last resort — granulation, fracture, migration and very difficult removal are common — which is why the US FDA (2005 notification on metallic tracheal stents in benign airway disorders) and the Chinese Thoracic Society consensus on benign central airway stenosis (2017) keep them for when other options are exhausted. Her narrowing is extensive and can regrow, so stents cannot replace staged recanalisation."
           }
         },
         {
@@ -4565,8 +4615,8 @@
         "en": "Dr Yan (respiratory medicine attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“固定性上气道阻塞在流量–容积环上是什么形状？为什么它把问题指向中心气道？”“弥散量正常排除了什么？”“哪些疾病会让气管支气管壁增厚、钙化？”“镇静和一根支气管镜遇上一条严重狭窄、正在出血的气道，会发生什么？”“她的室性心律失常对操作安排意味着什么？”“这份病理证明了什么、没有证明什么？”“射血分数正常能排除心脏受累吗？”“什么证据才足以支持全身治疗？”。可以讲解 ERS/ATS 2022 肺功能解读、2017 年良性中心气道狭窄专家共识、中国 AL 淀粉样变指南（2021）、BSH 2015、EHA-ISA 2023、ESC 2021 心脏淀粉样变立场声明和 ESC 2022 室性心律失常指南的相关原则；学员读到结局记录之后，可以把报告的做法（多次硬质支气管镜治疗、气管切开和全身药物同时使用）与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（生命体征、血氧、出血量、血常规和凝血、游离轻链、心脏标志物、组织分型、骨髓、心脏影像细节、各项治疗的时间和全身药物的方案都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “What shape does a fixed upper-airway obstruction give the flow–volume loop, and why does it point to the central airway?”, “What does a normal diffusing capacity argue against?”, “Which diseases thicken and calcify the tracheobronchial wall?”, “What happens when sedation and a bronchoscope meet a severely narrowed, bleeding airway?”, “What does her ventricular arrhythmia mean for how the procedure is set up?”, “What does this biopsy prove, and what does it leave open?”, “Does a normal ejection fraction exclude cardiac involvement?”, “What evidence would justify systemic treatment?”. May explain the relevant principles of the ERS/ATS 2022 interpretive standard, the 2017 Chinese consensus on benign central airway stenosis, the Chinese AL guideline (2021), BSH 2015, EHA-ISA 2023, the ESC 2021 position statement on cardiac amyloidosis and ESC 2022 on ventricular arrhythmias, and — once the learner has read the outcome record — contrast the reported course (repeated rigid bronchoscopic treatment, a tracheostomy and systemic drugs together) with current practice. Never states the diagnosis or a decision's correct option before the learner commits, and adds nothing the case lacks (vital signs, oxygen saturation, the amount of bleeding, blood count and clotting, free light chains, cardiac biomarkers, tissue typing, marrow, cardiac imaging detail, the timing of each treatment and the drug regimen are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“固定性上气道阻塞在流量–容积环上是什么形状？为什么它把问题指向中心气道？”“弥散量正常排除了什么？”“哪些疾病会让气管支气管壁增厚、钙化？”“镇静和一根支气管镜遇上一条严重狭窄、近期咯血的气道，会发生什么？”“她的室性心律失常对操作安排意味着什么？”“这份病理证明了什么、没有证明什么？”“射血分数正常能排除心脏受累吗？”“什么证据才足以支持全身治疗？”。可以讲解 ERS/ATS 2022 肺功能解读、2017 年良性中心气道狭窄专家共识、中国 AL 淀粉样变指南（2021）、BSH 2015、EHA-ISA 2023、ESC 2021 心脏淀粉样变立场声明和 ESC 2022 室性心律失常指南的相关原则；学员读到结局记录之后，可以把报告的做法（多次硬质支气管镜治疗、气管切开和全身药物同时使用）与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（生命体征、血氧、出血量、血常规和凝血、游离轻链、心脏标志物、组织分型、骨髓、心脏影像细节、各项治疗的时间和全身药物的方案都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “What shape does a fixed upper-airway obstruction give the flow–volume loop, and why does it point to the central airway?”, “What does a normal diffusing capacity argue against?”, “Which diseases thicken and calcify the tracheobronchial wall?”, “What happens when sedation and a bronchoscope meet a severely narrowed airway that has recently bled?”, “What does her ventricular arrhythmia mean for how the procedure is set up?”, “What does this biopsy prove, and what does it leave open?”, “Does a normal ejection fraction exclude cardiac involvement?”, “What evidence would justify systemic treatment?”. May explain the relevant principles of the ERS/ATS 2022 interpretive standard, the 2017 Chinese consensus on benign central airway stenosis, the Chinese AL guideline (2021), BSH 2015, EHA-ISA 2023, the ESC 2021 position statement on cardiac amyloidosis and ESC 2022 on ventricular arrhythmias, and — once the learner has read the outcome record — contrast the reported course (repeated rigid bronchoscopic treatment, a tracheostomy and systemic drugs together) with current practice. Never states the diagnosis or a decision's correct option before the learner commits, and adds nothing the case lacks (vital signs, oxygen saturation, the amount of bleeding, blood count and clotting, free light chains, cardiac biomarkers, tissue typing, marrow, cardiac imaging detail, the timing of each treatment and the drug regimen are not recorded)."
       },
       "interprets": [
         "chest-ct",
@@ -4629,7 +4679,7 @@
     },
     "conclusion": {
       "zh-CN": "弥漫性气管支气管淀粉样变性伴严重中心气道狭窄。42岁女性，间断痰中带血 10 年、憋气半年并在近 1 个月加重；胸部 CT 示气管及多处大支气管管壁不规则增厚、钙化，管腔广泛不均匀狭窄；流量–容积环呈固定性上气道阻塞（FEV₁ 1.45 L，占预计值 55.7%；FEV₁/FVC 50.77%；弥散量占预计值 89.4%）。支气管镜见黏膜广泛增生、易出血，最窄处约为正常管径的 10%；活检刚果红阳性、λ 强阳性。血、尿免疫固定电泳无单克隆条带，尿蛋白阴性，肝肾功能正常，LVEF 60%；但没有做骨髓检查，频发室早和短阵室速的原因也没有记录。报告联合使用多次硬质支气管镜治疗、气管切开和全身药物：7 个月后拔除气切套管，FEV₁ 升至 1.71 L，11 个月时无憋气和咯血。现行做法：在全身麻醉、备好硬质支气管镜的条件下取材，完成分型和全身评估（游离轻链、骨髓、心脏标志物和心脏影像），局限性病变局部治疗，不用化疗。",
-      "en": "Diffuse tracheobronchial amyloidosis with severe central-airway stenosis. A 42-year-old woman with ten years of intermittent blood-streaked sputum and worsening breathlessness had thickened, calcified, widely narrowed tracheobronchial walls on CT and a fixed upper-airway pattern (FEV₁ 1.45 L, 55.7 % predicted; FEV₁/FVC 50.77 %; diffusing capacity 89.4 %). Bronchoscopy showed friable mucosal proliferation, narrowest at about 10 % of normal; the biopsy was Congo red positive and strongly λ positive. Immunofixation, urine protein, liver and renal tests and LVEF (60 %) were normal; no marrow examination or cause for her ventricular ectopy is recorded. The report combined rigid bronchoscopic treatment, a tracheostomy and systemic drugs; the tube came out after 7 months, FEV₁ rose to 1.71 L, and at 11 months she had no breathlessness or haemoptysis. Today: sample under general anaesthesia with rigid-bronchoscope backup, complete typing and staging, and treat localised disease locally."
+      "en": "Diffuse tracheobronchial amyloidosis with severe central-airway stenosis. A 42-year-old woman with ten years of intermittent blood-streaked sputum and worsening breathlessness had thickened, calcified, widely narrowed tracheobronchial walls on CT and a fixed upper-airway pattern (FEV₁ 1.45 L, 55.7 % predicted; FEV₁/FVC 50.77 %; diffusing capacity 89.4 %). Bronchoscopy showed friable mucosal proliferation, narrowest at about 10 % of normal; the biopsy was Congo red positive and strongly λ positive. Immunofixation, urine protein, liver and renal tests and LVEF (60 %) were normal; no marrow examination or cause for her ventricular ectopy is recorded. The report combined rigid bronchoscopic treatment, a tracheostomy and systemic drugs; the tube came out after 7 months, FEV₁ rose to 1.71 L, and at 11 months she had no breathlessness or haemoptysis. Today: sample under general anaesthesia with rigid-bronchoscope backup, complete typing and the systemic assessment (free light chains, marrow, cardiac biomarkers and imaging), and treat localised disease locally, without chemotherapy."
     },
     "keyReasoning": [
       {
@@ -4659,8 +4709,8 @@
         "en": "Read the flow–volume loop, not just FEV₁/FVC. A ratio of 50.77 % shows obstruction; the fixed upper-airway pattern — plateaus in both inspiration and expiration — with a preserved diffusing capacity (89.4 % of predicted) locates it in the central airway. The ERS/ATS 2022 interpretive standard treats this shape as a pointer for imaging and endoscopy to confirm, not as a diagnosis. Then and now: her CT and lung function already pointed at the tracheobronchial wall, and today's next step is to sample it safely."
       },
       {
-        "zh-CN": "严重中心气道狭窄要先保证气道再取材。管腔最窄处约 10%、黏膜易出血时，可弯曲镜和清醒镇静可能直接导致窒息；中华医学会呼吸病学分会 2017 年良性中心气道狭窄介入诊治专家共识主张在全身麻醉下、由介入团队备好硬质支气管镜和止血手段处理。合并频发室早和短阵室速时，术中持续心电监护、备好除颤（ESC 2022）。记录与现行做法：报告记录了多次硬质支气管镜治疗，但没有记录第一次检查是怎样做的。",
-        "en": "Secure the airway before sampling a severe central stenosis. With a lumen of about 10 % at its narrowest and friable mucosa, a flexible scope under conscious sedation can cause asphyxia; the Chinese Thoracic Society consensus on benign central airway stenosis (2017) manages such narrowing under general anaesthesia by an interventional team with a rigid bronchoscope and bleeding control ready, and frequent ectopy with runs of VT adds continuous ECG monitoring with a defibrillator (ESC 2022). Then and now: the report records repeated rigid bronchoscopic treatment but not how the first examination was done."
+        "zh-CN": "严重中心气道狭窄要先保证气道再取材。管腔最窄处约 10%、黏膜易出血时，可弯曲镜和清醒镇静可能直接导致窒息；中华医学会呼吸病学分会 2017 年良性中心气道狭窄介入诊治专家共识主张在全身麻醉下、由介入团队备好硬质支气管镜和止血手段处理。合并频发室早和短阵室速（按 ESC 2022 要查找结构性心脏病）时，麻醉中持续心电监护、备好除颤仪。记录与现行做法：报告记录了多次硬质支气管镜治疗；她第一次检查是怎样做的，本病例没有记录。",
+        "en": "Secure the airway before sampling a severe central stenosis. With a lumen of about 10 % at its narrowest and friable mucosa, a flexible scope under conscious sedation can cause asphyxia; the Chinese Thoracic Society consensus on benign central airway stenosis (2017) manages such narrowing under general anaesthesia by an interventional team with a rigid bronchoscope and bleeding control ready, and frequent ectopy with runs of VT, to be investigated for structural heart disease (ESC 2022), adds continuous ECG monitoring with a defibrillator during the anaesthetic. Then and now: the report records repeated rigid bronchoscopic treatment; how her first examination was done is not recorded in this case."
       },
       {
         "zh-CN": "刚果红阳性证明是淀粉样物质，λ 强阳性提示 AL λ 型，但类型最好用质谱（或免疫电镜）在组织中确认；免疫固定电泳阴性也不能排除克隆，AL 筛查要把血、尿免疫固定电泳和血清游离轻链合在一起看，并做骨髓检查（中国系统性轻链型淀粉样变性诊断和治疗指南，2021）。记录与现行做法：本例做了免疫固定电泳，但没有记录游离轻链和组织分型，也没有做骨髓检查。",
@@ -4701,8 +4751,8 @@
         "en": "Cardiac assessment: how the rhythm was recorded, the ectopic burden, NT-proBNP, troponin, wall thickness, strain and cardiac MRI; whether the arrhythmia was treated."
       },
       {
-        "zh-CN": "治疗细节：硬质支气管镜的次数和间隔、气管切开的时间和原因、全身药物的方案、剂量和疗程、并发症，以及“7 个月”和“11 个月”从何时算起。",
-        "en": "Treatment detail: the number and timing of the rigid bronchoscopies, when and why the tracheostomy was done, the systemic drug regimen, doses and duration, complications, and what the 7 and 11 months are counted from."
+        "zh-CN": "治疗细节：硬质支气管镜的次数和间隔、电烧灼和冷冻的具体方式、气管切开的时间和原因、全身药物的方案、剂量和疗程、并发症，以及“7 个月”和“11 个月”从何时算起。",
+        "en": "Treatment detail: the number and timing of the rigid bronchoscopies, how the electrocautery and cryotherapy were delivered, when and why the tracheostomy was done, the systemic drug regimen, doses and duration, complications, and what the 7 and 11 months are counted from."
       },
       {
         "zh-CN": "11 个月以后的复发情况和远期结局。",
@@ -4711,15 +4761,16 @@
     ],
     "references": [
       "李楠, 王广发, 章巍, 张红, 张晓明. 腔内介入治疗弥漫性气管支气管淀粉样变性一例. 中华结核和呼吸杂志. 2013;36(7):540-542. doi:10.3760/cma.j.issn.1001-0939.2013.07.020. Available from: https://rs.yiigle.com/cmaid/857933",
-      "Stanojevic S, Kaminsky DA, Miller MR, et al. ERS/ATS technical standard on interpretive strategies for routine lung function tests. Eur Respir J. 2022;60(1):2101499.",
+      "Stanojevic S, Kaminsky DA, Miller MR, et al. ERS/ATS technical standard on interpretive strategies for routine lung function tests. Eur Respir J. 2022;60(1):2101499. doi:10.1183/13993003.01499-2021",
       "中华医学会呼吸病学分会介入呼吸病学学组. 良性中心气道狭窄经支气管镜介入诊治专家共识. 中华结核和呼吸杂志. 2017;40(6):408-418.",
-      "Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults and children. Clin Infect Dis. 2017;64(2):e1-e33.",
-      "Wechalekar AD, Gillmore JD, Bird J, et al. Guidelines on the management of AL amyloidosis. Br J Haematol. 2015;168(2):186-206.",
+      "Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults and children. Clin Infect Dis. 2017;64(2):e1-e33. doi:10.1093/cid/ciw694",
+      "Wechalekar AD, Gillmore JD, Bird J, et al. Guidelines on the management of AL amyloidosis. Br J Haematol. 2015;168(2):186-206. doi:10.1111/bjh.13155",
       "中国系统性轻链型淀粉样变性协作组, 国家肾脏疾病临床医学研究中心, 国家血液系统疾病临床医学研究中心. 系统性轻链型淀粉样变性诊断和治疗指南（2021年修订）. 中华医学杂志. 2021;101(22):1646-1656.",
-      "Wechalekar AD, Cibeira MT, Gibbs SD, et al. Guidelines for non-transplant chemotherapy for treatment of systemic AL amyloidosis: EHA-ISA working group. Amyloid. 2023;30(1):3-17.",
-      "Garcia-Pavia P, Rapezzi C, Adler Y, et al. Diagnosis and treatment of cardiac amyloidosis: a position statement of the ESC Working Group on Myocardial and Pericardial Diseases. Eur Heart J. 2021;42(16):1554-1568.",
-      "Zeppenfeld K, Tfelt-Hansen J, de Riva M, et al. 2022 ESC Guidelines for the management of patients with ventricular arrhythmias and the prevention of sudden cardiac death. Eur Heart J. 2022;43(40):3997-4126.",
-      "Mahmood S, Bridoux F, Venner CP, et al. Natural history and outcomes in localised immunoglobulin light-chain amyloidosis: a long-term observational study. Lancet Haematol. 2015;2(6):e241-e250."
+      "Wechalekar AD, Cibeira MT, Gibbs SD, et al. Guidelines for non-transplant chemotherapy for treatment of systemic AL amyloidosis: EHA-ISA working group. Amyloid. 2023;30(1):3-17. doi:10.1080/13506129.2022.2093635",
+      "Garcia-Pavia P, Rapezzi C, Adler Y, et al. Diagnosis and treatment of cardiac amyloidosis: a position statement of the ESC Working Group on Myocardial and Pericardial Diseases. Eur Heart J. 2021;42(16):1554-1568. doi:10.1093/eurheartj/ehab072",
+      "Zeppenfeld K, Tfelt-Hansen J, de Riva M, et al. 2022 ESC Guidelines for the management of patients with ventricular arrhythmias and the prevention of sudden cardiac death. Eur Heart J. 2022;43(40):3997-4126. doi:10.1093/eurheartj/ehac262",
+      "Mahmood S, Bridoux F, Venner CP, et al. Natural history and outcomes in localised immunoglobulin light-chain amyloidosis: a long-term observational study. Lancet Haematol. 2015;2(6):e241-e250. doi:10.1016/S2352-3026(15)00068-X",
+      "US Food and Drug Administration. FDA public health notification: complications from metallic tracheal stents in patients with benign airway disorders. 2005."
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -4748,8 +4799,8 @@
       "en": "Cardiac assessment: how the rhythm was recorded, the ectopic burden, NT-proBNP, troponin, wall thickness, strain and cardiac MRI; whether the arrhythmia was treated."
     },
     {
-      "zh-CN": "治疗细节：硬质支气管镜的次数和间隔、气管切开的时间和原因、全身药物的方案、剂量和疗程、并发症，以及“7 个月”和“11 个月”从何时算起。",
-      "en": "Treatment detail: the number and timing of the rigid bronchoscopies, when and why the tracheostomy was done, the systemic drug regimen, doses and duration, complications, and what the 7 and 11 months are counted from."
+      "zh-CN": "治疗细节：硬质支气管镜的次数和间隔、电烧灼和冷冻的具体方式、气管切开的时间和原因、全身药物的方案、剂量和疗程、并发症，以及“7 个月”和“11 个月”从何时算起。",
+      "en": "Treatment detail: the number and timing of the rigid bronchoscopies, how the electrocautery and cryotherapy were delivered, when and why the tracheostomy was done, the systemic drug regimen, doses and duration, complications, and what the 7 and 11 months are counted from."
     },
     {
       "zh-CN": "11 个月以后的复发情况和远期结局。",
@@ -5378,6 +5429,117 @@
         "text": "Would you like a drink of water?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "What's the matter, then?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Are you coughing up any blood?",
+        "locale": "en",
+        "expect": [
+          "bleeding-pattern"
+        ]
+      },
+      {
+        "text": "How long have you been coughing up blood?",
+        "locale": "en",
+        "expect": [
+          "bleeding-pattern"
+        ]
+      },
+      {
+        "text": "Are you still coughing up blood?",
+        "locale": "en",
+        "expect": [
+          "bleeding-recent"
+        ]
+      },
+      {
+        "text": "Do you have any medical problems?",
+        "locale": "en",
+        "expect": [
+          "rhythm-history"
+        ]
+      },
+      {
+        "text": "Any night sweats?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Can you walk further now?",
+        "locale": "en",
+        "expect": [
+          "status-followup"
+        ]
+      },
+      {
+        "text": "您怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "有咳血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding-pattern"
+        ],
+        "alsoOk": [
+          "status-followup"
+        ]
+      },
+      {
+        "text": "咳血咳了几年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding-pattern"
+        ]
+      },
+      {
+        "text": "喘得厉害不厉害？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathlessness-course"
+        ]
+      },
+      {
+        "text": "喘气的时候有没有声音？",
+        "locale": "zh-CN",
+        "expect": [
+          "noisy-breathing"
+        ]
+      },
+      {
+        "text": "晚上睡觉出汗吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "平时身体怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "rhythm-history"
+        ]
+      },
+      {
+        "text": "现在呼吸怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-followup"
+        ]
       }
     ]
   }

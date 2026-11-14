@@ -21,27 +21,28 @@
 | Specialty | Obstetrics, critical care |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students, obstetric and gynaecology residents, ICU residents, midwives |
-| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an obstetrician, an intensivist and an infectious diseases physician review it before teaching use |
-| Content | 20 history items (8 not recorded, 7 required) · 6 exam findings · 18 investigations (4 record reviews, 9 without any recorded result) · 18 interventions (6 contraindicated in some or all phases) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 33; 1 examiner-judged; 3 critical) · 5 staff characters · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| Review status | Editorial review 2026-10-30 and an independent editorial review 2026-11-14 (both AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an obstetrician, an intensivist and an infectious diseases physician review it before teaching use |
+| Content | 20 history items (8 not recorded, 7 required) · 6 exam findings · 19 investigations (4 record reviews, 10 without any recorded result) · 18 interventions (6 contraindicated in some or all phases, 5 of them critical) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 33; 1 examiner-judged; 3 critical) · 5 staff characters · 6 learning outcomes · 6 teaching points · 45 test utterances |
 
 `infectious-disease` was removed from the 1.0.0 specialty list: on the library card it would point at the answer
-(STANDARD §6.7). The infection guidance (WHO 2015, SMFM 2023, SSC 2021, IDSA 2014) is still cited and taught.
+(STANDARD §1.14). The infection guidance (WHO 2015, SMFM 2023, SSC 2021, IDSA 2014) is still cited and taught.
 
 ## Learning outcomes
 
 By the end of the case the learner can:
 
 1. Work up secondary postpartum haemorrhage for retained tissue, endometritis, subinvolution and a placenta accreta
-   spectrum: take swabs and blood cultures, start IV antibiotics when endometritis is suspected (WHO 2015:
-   clindamycin with gentamicin), and have a senior obstetrician evacuate retained tissue under ultrasound guidance
-   (RCOG 2016).
-2. Read an empty cavity with a still enlarged, heterogeneous uterus and a rising white count and CRP as infection or
-   necrosis of the uterine wall even without a marked fever, image it, and stop blind curettage.
+   spectrum: take vaginal swabs (and blood cultures before antibiotics when infection is suspected), start IV
+   antibiotics when endometritis is suspected (WHO 2015: clindamycin with gentamicin), and have an experienced
+   obstetrician evacuate retained tissue (RCOG 2016), under ultrasound guidance given her previous uterine surgery.
+2. Read an empty cavity with a still enlarged, heterogeneous uterus and a white count rising with neutrophilia as
+   infection or necrosis of the uterine wall even without a marked fever, image it, and stop blind curettage.
 3. Run the obstetric major haemorrhage response for secondary PPH with shock (BP 53/34 mmHg): red cells and plasma
    early and fibrinogen kept above 2 g/L during ongoing bleeding (RCOG 2016); and explain why tranexamic acid is
    not started more than 3 hours after the birth (WHO 2017; WHO/FIGO/ICM 2025).
-4. When septic shock is possible, give broad-spectrum antibiotics including clindamycin within the hour (SSC 2021;
-   SMFM 2023) and achieve source control as soon as it is practical.
+4. When septic shock is possible, give broad-spectrum antibiotics within the hour (SSC 2021; SMFM 2023), adding
+   clindamycin when a necrotising or toxin-producing infection is possible (IDSA 2014), and achieve source control as
+   soon as it is practical.
 5. When tissue from the cervix is extensive necrotic myometrium, choose laparotomy and hysterectomy to remove the
    source (IDSA 2014) rather than hysteroscopic separation, uterus-sparing excision or uterine artery embolisation,
    explaining the risks and alternatives to her and obtaining her explicit consent (Civil Code of China, Article
@@ -60,18 +61,19 @@ A 31-year-old woman's membranes ruptured at just over 28 weeks and the birth was
 About 2 hours after the birth she began to bleed heavily, with dizziness, sweating, cold limbs, chest tightness,
 palpitations and breathlessness, and shock (BP 40/20 mmHg, a thready, rapid pulse); she had no fever or chills when
 the bleeding began. The unit that treated her evacuated the uterus, repaired a perineal tear, transfused her and gave
-uterotonics; the bleeding lessened but kept recurring, and after 3 days she was transferred. She had one previous
+uterotonics, after which the bleeding lessened; she was transferred with 3 days of recurrent heavy bleeding after the
+induced birth. She had one previous
 caesarean section and, after it, four induced abortions; she denies underlying illness and pregnancy complications
 such as gestational diabetes. On transfer her temperature was 37.4 °C; the fundus was at the umbilicus and poorly
 contracted (recorded at the "readmission"); ultrasound initially showed a heterogeneous mass of about
 28 × 18 × 36 mm in the cavity; the white count was 13.04×10⁹/L and coagulation was normal at one assessment.
 
 After a repeat evacuation the cavity was empty, but the uterus remained enlarged and heterogeneous; the white count
-rose to 16.12×10⁹/L with neutrophilia, CRP was about 14.52–15.82 mg/L, and fever was never prominent. At a third
+rose to 16.12×10⁹/L with neutrophilia, CRP was about 14.52–15.82 mg/L, and fever was not prominent. At a third
 admission she bled heavily again: BP 53/34 mmHg, pulse 110/min, pallor and cold limbs, with a 70 × 62 × 51 mm mass
 within the cervix and vagina. Tissue from the cervix was extensive necrotic myometrium with inflammatory exudate.
-The report's team then attempted hysteroscopic separation, during which a perforation occurred, and resected a wedge
-of the fundus (no villi); she bled heavily again, infection was found, and the uterus was removed (myometrial
+The report records hysteroscopic separation, during which a perforation occurred, and a later wedge resection of the
+fundus (no villi); she bled heavily again, infection was found, and the uterus was removed (myometrial
 necrosis again, with suppurative subcutaneous inflammation; drainage cultures negative). She recovered and was
 discharged. The report's diagnosis: necrotising myometritis, endometritis and recurrent haemorrhagic shock.
 
@@ -90,22 +92,24 @@ the report's recorded states and never simulates the learner's treatment. Every 
 | Phase | When | Entered when | What is there |
 |---|---|---|---|
 | `transfer` (initial) | arrival after 3 days of recurrent bleeding | start | her own history; temperature and fundus; the transferring unit's notes (BP 40/20 mmHg in the earlier shock); the first scan (cavity mass) and white count; coagulation "normal at one assessment"; unrecorded tests (crossmatch, cultures, swabs, renal function, hCG, CA-125); decision 1; antibiotics, oxytocin and the evacuation |
-| `after-evacuation` | after the repeat evacuation | objectives 1–3 done (decision 1 right **and** the evacuation done) | the post-evacuation scan, the later white count with neutrophilia, the CRP range, "no marked fever"; CT (no result); decision 2 |
-| `third-admission` | a later, third admission (interval not recorded) | objective 4 done (decision 2 right **and** IV antibiotics given) | heavy bleeding again, BP 53/34 mmHg, pulse 110/min, pallor, cold limbs, the cervical and vaginal mass; resuscitation; the tissue histology; decisions 3–5; consent, hysterectomy, post-operative care |
+| `after-evacuation` | after the repeat evacuation | objectives 1–3 done (decision 1 right **and** the evacuation done) | the post-evacuation scan, the later white count with neutrophilia, the CRP range, "no marked fever"; CT and MRI (no result); decision 2 |
+| `third-admission` | a later, third admission (interval not recorded) | objective 4 done (decision 2 right **and** an IV antibiotic regimen given: clindamycin with gentamicin, or the broad-spectrum one) | heavy bleeding again, BP 53/34 mmHg, pulse 110/min, pallor, cold limbs, the cervical and vaginal mass; resuscitation; the tissue histology; decisions 3–5; consent, hysterectomy, post-operative care |
 | `followup` | to discharge | all five decisions right | the outcome record (with the two approved figures), the operative histology, the drain cultures |
 
 Gating choices. The post-evacuation phase needs the evacuation, the report's own step and the guideline step for
 retained tissue. The third-admission phase needs IV antibiotics: the record does not say whether she had them, and
-the case does not let a learner reach the next catastrophic bleed without having started them (the "in time" score
-is therefore about the first answer and the cultures). From the third admission on the case follows the recorded
+the case does not let a learner reach the next catastrophic bleed without having started them — either regimen counts
+(the "in time" score is therefore about the first answer and the cultures). From the third admission on the case follows the recorded
 course whatever the learner did before. The acute third-admission acts (haemorrhage call, transfusion, escalation
 of antibiotics, removal of the tissue) count "in time" until the post-operative decision is attempted; consent
-counts only before the hysterectomy. A learner who skips them, reaches the outcome and re-selects the third-admission
-phase to do them earns no in-time credit (measured below). No prompt, hint, phase description or order response
-states the report's management before the follow-up record; the hysteroscopy, wedge-resection and hysterectomy
+counts only before the hysterectomy. Every phase is one-way, so a learner who leaves them until the outcome phase can
+still finish but earns no in-time credit (measured below). No prompt, hint, phase description, option feedback or order
+response states the report's management before the follow-up record; the hysteroscopy, wedge-resection and hysterectomy
 responses point to the outcome record without describing it. Intervention names and dose texts are visible from the
 start, so they name no diagnosis and no later finding ("Ease out tissue under a speculum", "Laparotomy with local
-excision, keeping the uterus").
+excision, keeping the uterus"). Later objectives are listed by title from the start (journal, CLI), so their titles
+name no later event either: chapter 4 is "Reassess her and start treatment", chapter 5 "Stabilise her and establish
+the cause".
 
 ## Decisions and assessment
 
@@ -114,8 +118,8 @@ excision, keeping the uterus").
 1. `obj-bleeding-story` — Take the history of the bleeding and the birth (onset, birth, shock symptoms, earlier treatment, uterine surgery, fever).
 2. `obj-transfer-findings` — Examine her uterus and read the transfer results (temperature, fundus; first scan and white count).
 3. `obj-transfer-plan` — Decide and act on the transfer findings (decision 1; the evacuation).
-4. `obj-after-evacuation` — Reassess her after the evacuation and start treatment (scan, white count, CRP, temperature; decision 2; IV antibiotics).
-5. `obj-third-admission` — Third admission: resuscitate first, then get a tissue diagnosis (her account, vital signs, colour and limbs, speculum; decision 3; haemorrhage call, transfusion, removal of the tissue; histology read).
+4. `obj-after-evacuation` — Reassess her and start treatment (after the evacuation: scan, white count, CRP, temperature; decision 2; an IV antibiotic regimen, either one).
+5. `obj-third-admission` — Stabilise her and establish the cause (third admission: her account, vital signs, colour and limbs, speculum; decision 3; haemorrhage call, transfusion, removal of the tissue; histology read).
 6. `obj-definitive-and-outcome` — Definitive treatment, the plan after it, and the reported outcome (decision 4, consent, hysterectomy, decision 5, outcome record).
 
 Hints are Socratic questions; none contains a key's text (`cases validate` checks it) and none states a result the
@@ -143,39 +147,53 @@ long or longer (measured by the authoring script and checked by `cases validate`
 | `rb-examination` | Examination | temperature and fundus at transfer; temperature after the evacuation; BP and pulse, colour and limbs, speculum at the third admission | 2 |
 | `rb-investigations` | Investigations | scans and white counts at transfer and after the evacuation, the CRP, the tissue histology; crossmatch **ordered at transfer** | 2 |
 | `rb-transfer-plan` | Diagnosis | decision 1 first time, and the evacuation done after the scan was read (`whenIndicated`) | 3 |
-| `rb-infection-recognised` | Diagnosis | decision 2 first time, IV antibiotics in the transfer or post-evacuation phase, blood cultures ordered before the third admission | 4 |
+| `rb-infection-recognised` | Diagnosis | decision 2 first time, IV antibiotics before the third admission (clindamycin with gentamicin in its window, or the broad-spectrum regimen), blood cultures ordered before the third admission | 4 |
 | `rb-haemorrhage-resuscitation` | Management · **critical** | haemorrhage protocol and transfusion during the acute third admission (`whenIndicated`) | 4 |
 | `rb-third-bleed` | Management | decision 3 first time, broad-spectrum antibiotics and removal of the tissue during the acute third admission | 3 |
 | `rb-source-control` | Management · **critical** | hysterectomy during the third admission (`whenIndicated`; contraindicated earlier) | 4 |
 | `rb-definitive-plan` | Management | decision 4 first time, and the consent talk before the hysterectomy | 3 |
-| `rb-avoided-harm` | Safety · **critical** | no repeat curettage, no hysteroscopic separation, no uterus-sparing excision, no embolisation; `scoredWhen` decision 2 or 4 attempted or any of the four done | 3 |
-| `rb-after-surgery` | Management | decision 5 first time, ICU admission, LMWH once indicated, psychological support | 2 |
-| `rb-communication` | Communication (examiner) | the pre-operative conversation about the hysterectomy (SPIKES and informed consent; her fertility; her own decision) | 1 |
+| `rb-avoided-harm` | Safety · **critical** | no curettage while it is contraindicated (after the transfer: `{"intervened": "evacuation", "valid": false}`), no hysteroscopic separation, no uterus-sparing excision, no embolisation; `scoredWhen` decision 2 or 4 attempted or any of the four done | 3 |
+| `rb-after-surgery` | Management | decision 5 first time, ICU admission, LMWH once indicated and none while bleeding is uncontrolled (`{"intervened": "lmwh", "valid": false}`), psychological support | 2 |
+| `rb-communication` | Communication (examiner) | the pre-operative conversation about the hysterectomy (Calgary–Cambridge explanation and planning, SPIKES and informed consent; her fertility; her own decision) | 1 |
 
-### How wrong choices score (measured 2026-10-30 with the core engine)
+### How wrong choices score (re-measured 2026-11-14 with the core engine)
 
-| Path | Score | Critical items missed | Flagged in the debrief |
-|---|---|---|---|
-| Reference `solution` | 33/33 (100 %) | none | none |
-| Start and do nothing | 0/30 (0 %) | `rb-haemorrhage-resuscitation`, `rb-source-control` | — (`rb-avoided-harm` not scored) |
-| Wrong first answer at every decision, then the key | 18/33 (55 %) | none | none |
-| Wrong first at decision 1, 3 or 4 only | 30/33 (91 %) | none | none |
-| Wrong first at decision 2 only | 29/33 (88 %) | none | none |
-| Wrong first at decision 5 only | 31/33 (94 %) | none | none |
-| Reference plus a repeat evacuation after the empty-cavity scan | 30/33 (91 %) | `rb-avoided-harm` | evacuation (contraindicated) |
-| Reference plus hysteroscopic separation, local excision or embolisation at the third admission | 30/33 (91 %) each | `rb-avoided-harm` | the act (contraindicated) |
-| Reference plus a hysterectomy at transfer | 26/33 (79 %) | `rb-source-control` | hysterectomy (contraindicated); the later one is refused (one dose) |
-| Acute third-admission acts done only after the outcome opened (phase re-selected) | 26/33 (79 %) | `rb-haemorrhage-resuscitation` | none |
-| Consent talk only after the hysterectomy | 30/33 (91 %) | none | none |
-| No blood cultures before the third admission | 29/33 (88 %) | none | none |
-| Unrecorded history questions not asked | 30/33 (91 %) | none | none |
-| Reference plus LMWH before the hysterectomy | 33/33 (100 %) | none | LMWH (contraindicated) |
-| Reference plus tranexamic acid at the third admission | 33/33 (100 %) | none | none (neutral; the response gives WHO's 3-hour limit) |
+| Path | Score | Critical items missed | Safety outcome | Flagged in the debrief |
+|---|---|---|---|---|
+| Reference `solution` | 33/33 (100 %) | none | passed | none |
+| Start and do nothing | 0/30 (0 %) | `rb-haemorrhage-resuscitation`, `rb-source-control` | passed | — (`rb-avoided-harm` not scored; the case cannot be finished) |
+| Wrong first answer at every decision, then the key | 18/33 (55 %) | none | passed | none |
+| Wrong first at decision 1, 3 or 4 only | 30/33 (91 %) | none | passed | none |
+| Wrong first at decision 2 only | 29/33 (88 %) | none | passed | none |
+| Wrong first at decision 5 only | 31/33 (94 %) | none | passed | none |
+| Reference plus a repeat evacuation after the post-evacuation scan, or at the third admission | 30/33 (91 %) | `rb-avoided-harm` | **failed** (`evacuation`) | evacuation (contraindicated) |
+| Reference plus hysteroscopic separation, local excision or embolisation at the third admission | 30/33 (91 %) each | `rb-avoided-harm` | **failed** (the act) | the act (contraindicated) |
+| Reference plus a hysterectomy at transfer or after the evacuation | 26/33 (79 %) | `rb-source-control` | **failed** (`hysterectomy`) | hysterectomy (contraindicated); the later one is refused (one dose) |
+| Acute third-admission acts left until the outcome phase | 26/33 (79 %) | `rb-haemorrhage-resuscitation` | passed | none |
+| Consent talk only after the hysterectomy | 30/33 (91 %) | none | passed | none |
+| No blood cultures before the third admission | 29/33 (88 %) | none | passed | none |
+| Unrecorded history questions not asked | 30/33 (91 %) | none | passed | none |
+| Reference plus LMWH before the hysterectomy | 31/33 (94 %) | none | passed (`critical: false`) | LMWH (contraindicated) |
+| Reference plus tranexamic acid at the third admission | 33/33 (100 %) | none | passed | none (neutral; the response gives WHO's 3-hour limit) |
+| The broad-spectrum regimen after the evacuation instead of clindamycin with gentamicin | 33/33 (100 %) | none | passed | none |
+| No IV antibiotics before the third admission | 19/33 when stopped | — | passed | the third admission stays locked until a regimen is started |
+| Crystalloid and no blood at the third admission | 29/33 when stopped | `rb-haemorrhage-resuscitation` | passed | the case cannot be finished until blood is given (objective 5) |
 
-Ordering cannot be scored by the condition language (CMCR_CASES "Known limits"): LMWH during active bleeding is
-flagged as a contraindicated act in the debrief but costs no marks. Tranexamic acid is neutral rather than
-contraindicated: WHO does not support starting it more than 3 hours after the birth, but no guidance seen calls it
-harmful days later; its response says so.
+LMWH given before the bleeding is controlled is scored by `{"intervened": "lmwh", "valid": false}` in
+`rb-after-surgery` (the condition counts only doses given while contraindicated): it costs 2 marks and is flagged in
+the debrief. Tranexamic acid is neutral rather than contraindicated: WHO does not support starting it more than
+3 hours after the birth, but no guidance seen calls it harmful days later; its response says so.
+
+**Safety outcome.** `evacuation` (contraindicated once the transfer phase is over: curettage of a wall that may be
+necrotic), `hysteroscopic-separation`, `wedge-resection` and `uae` (contraindicated throughout) and `hysterectomy`
+(contraindicated at transfer and after the evacuation, before necrosis is shown or treatment has failed) are
+`critical: true`: giving one while it is contraindicated fails the assessment's safety outcome (`safety.passed:
+false`) whatever the score, and every debrief and export shows it beside the score. The first four are also scored by
+the critical `rb-avoided-harm`; the premature hysterectomy costs the critical `rb-source-control` (the later one is
+refused: one dose). `lmwh` is explicitly `critical: false`: a prophylactic dose before haemostasis is a recoverable
+misjudgement, scored in `rb-after-surgery`. Its preset dose (`doseSpec` 20–80 mg SC, the RCOG 37a enoxaparin weight
+bands, because her weight is not recorded) means a tenfold order is challenged, not given; tranexamic acid has a 1 g IV
+preset.
 
 ## Reference path (`solution`)
 
@@ -240,7 +258,8 @@ with gentamicin 5 mg/kg IV once daily (WHO 2015 regimen; doses from standard pra
 4.5 g IV every 6 h with clindamycin 900 mg every 8 h, vancomycin if MRSA is a risk (IDSA 2014 principles); oxytocin
 5 units slow IV, then 40 units in 500 mL at 125 mL/h (RCOG 2016); fibrinogen kept above 2 g/L with cryoprecipitate
 (RCOG 2016); tranexamic acid 1 g IV over 10 minutes (neutral here); enoxaparin 40 mg SC daily for 50–90 kg
-(RCOG 2015). No weight is recorded, so no dose is computed.
+(RCOG 2015). No weight is recorded, so no dose is computed. Preset doses (`doseSpec`): enoxaparin 20–80 mg SC (the
+RCOG 37a bands from under 50 kg to 131–170 kg) and tranexamic acid 1 g IV.
 
 ## Facilitator notes
 
@@ -252,7 +271,8 @@ with gentamicin 5 mg/kg IV once daily (WHO 2015 regimen; doses from standard pra
    * "Bleeding three days after a birth: which causes did you list, and what in her history moved accreta up the list?"
    * "Her temperature was 37.4 °C and her white count 13.04 — why give antibiotics anyway, and after what?"
    * "After the evacuation the cavity was empty. What did the uterus itself tell you, and what imaging did you want?"
-   * "No marked fever, yet a rising white count and CRP: how do you weigh a single temperature against a trend?"
+   * "No marked fever, yet a white count rising from 13.04 to 16.12 with neutrophilia, and a CRP of about 14.52–15.82
+     mg/L: how do you weigh a single temperature against a trend?"
    * "At 53/34, what did you give first — and why not 30 mL/kg of crystalloid?"
    * "How did you handle the mass in the cervix, and why not a curette?"
    * "Why not embolise? What does embolisation do to an infected uterus?"
@@ -268,13 +288,13 @@ with gentamicin 5 mg/kg IV once daily (WHO 2015 regimen; doses from standard pra
 |---|---|---|
 | Treating 37.4 °C and a white count of 13.04 as "normal after a birth" and withholding antibiotics | decision 1 distractor; the third admission waits for IV antibiotics | `rb-transfer-plan`, `rb-infection-recognised` |
 | Evacuating without senior input or blood despite one caesarean and four terminations | decision 1 key and feedback (accreta risk) | `rb-transfer-plan` |
-| Anchoring on retained tissue — a third curettage | decision 2 distractor; evacuation contraindicated after the transfer | `rb-infection-recognised`, `rb-avoided-harm` (critical) |
+| Anchoring on retained tissue — a third curettage | decision 2 distractor; evacuation contraindicated after the transfer | `rb-infection-recognised`, `rb-avoided-harm` (critical); fails the safety outcome |
 | "No fever, no infection" — discharge on oral antibiotics | decision 2 and 4 distractors (feedback: trend over a single temperature) | `rb-infection-recognised`, `rb-definitive-plan` |
 | Crystalloid first and waiting for a haemoglobin in haemorrhagic shock | decision 3 distractor | `rb-third-bleed` |
-| Embolising an infected, necrosing uterus | decisions 1–4 distractors; `uae` contraindicated in every phase | `rb-avoided-harm` (critical) |
-| Curetting or hysteroscopically separating a necrotic wall (the report's course) | decision 3 and 4 distractors; acts contraindicated | `rb-avoided-harm` (critical) |
-| Keeping the uterus at all costs | decision 4 distractor (local excision); `wedge-resection` contraindicated | `rb-definitive-plan`, `rb-avoided-harm` |
-| Hysterectomy too early (at transfer or after the evacuation) | `hysterectomy` contraindicated in those phases | `rb-source-control` (critical) |
+| Embolising an infected, necrosing uterus | decisions 1–4 distractors; `uae` contraindicated in every phase | `rb-avoided-harm` (critical); fails the safety outcome |
+| Curetting or hysteroscopically separating a necrotic wall (the report's course) | decision 3 and 4 distractors; acts contraindicated | `rb-avoided-harm` (critical); fails the safety outcome |
+| Keeping the uterus at all costs | decision 4 distractor (local excision); `wedge-resection` contraindicated | `rb-definitive-plan`, `rb-avoided-harm`; fails the safety outcome |
+| Hysterectomy too early (at transfer or after the evacuation) | `hysterectomy` contraindicated in those phases | `rb-source-control` (critical); fails the safety outcome |
 | Consent from relatives, or consent after the operation | `consent-talk` counts only before the hysterectomy; examiner item | `rb-definitive-plan`, `rb-communication` |
 | Stopping antibiotics at once, or anticoagulating while she bleeds | decision 5 distractors; LMWH contraindicated before haemostasis | `rb-after-surgery` |
 | Inventing the unrecorded (haemoglobin, cultures, the baby) | unknown items, no-result records, `examNotRecorded` | — |
@@ -283,7 +303,7 @@ with gentamicin 5 mg/kg IV once daily (WHO 2015 regimen; doses from standard pra
 
 * **Where she is.** Obstetric ward bed (`inpatient`) at the start. The evacuation takes her to theatre
   (`destination: { setting: "operating-room" }`); the `after-evacuation` and `third-admission` phases bring her back
-  to a ward bed (`location: { setting: "inpatient" }`). The CT is done in the CT room (`performedAt: "provider"`:
+  to a ward bed (`location: { setting: "inpatient" }`). The CT and the MRI are done in their rooms (`performedAt: "provider"`:
   she is taken there; no result is recorded). The hysterectomy takes her to theatre and the ICU admission to an ICU
   bed. The harmful embolisation, if chosen, takes her to the angiography table (`{ capability: "fluoroscopy" }`).
 * **Kit.** IV access is a procedure (`iv-access`, crash or treatment cart); oxytocin needs the bedside infusion
@@ -314,7 +334,10 @@ resection (no villi), further bleeding and infection, the hysterectomy and its h
 recovery and discharge; the report's diagnosis.
 
 **Adapted for teaching.** Her lay words, her worries and her wishes about the treatment (labelled as part of the
-role; they add no fact); the staging into four phases; the transferring unit's notes as a record review; the first
+role; they add no fact); the staging into four phases; the transferring unit's notes as a record review (that the earlier
+treatment was given by the transferring unit is an inference: 1.0.0 says she was referred, "转诊", and first
+transferred in, "首次转入", after it; the 3 days of bleeding are counted from the induced birth, as the chief complaint
+counts them); the first
 scan dated "early in the course" and placed with the transfer; the first white count and the coagulation in the
 transfer phase and the later white count, the CRP and "no marked fever" after the evacuation (1.0.0 gives no times);
 the "readmission" uterine findings in the transfer phase (as 1.0.0 placed them); the mass in the cervix and vagina
@@ -417,14 +440,30 @@ Guidance details to confirm in the full texts (taken from abstracts and secondar
 * Civil Code of China (2020), Article 1219: wording confirmed from legal summaries; check the official text.
 * Clinical organisms: group A or B streptococci and E. coli in necrotising postpartum uterine infection, and
   afebrile, often fatal clostridial infection — from case reports and reviews (PMC6500617, PMC6083381).
+* Raised by the independent review (2026-11-14): RCOG 52's "blood cultures if pyrexial" (the case now says RCOG asks
+  for blood cultures when she is febrile, and takes them before antibiotics as sepsis practice — seen only in a
+  secondary summary); whether SMFM #67 recommends clindamycin (the case no longer attributes clindamycin to SMFM or SSC;
+  it cites IDSA 2014 for it); the LMWH preset range (20–80 mg SC across the RCOG 37a weight bands, her weight being
+  unrecorded); the source for "infection is a (relative) contraindication to uterine artery embolisation"; and the
+  safety-outcome judgements (`critical: true` for a repeat curettage after the transfer, hysteroscopic separation, local
+  excision, embolisation in every phase and a hysterectomy before the third admission) — clinician confirmation.
 * Clinician input: an obstetrician should review decisions 1, 4 and 5 (in particular the hysterectomy key and its
   window), an intensivist decision 3, and an infectious diseases physician the antibiotic regimens and the neutral
   scoring of tranexamic acid.
 
 ## Matcher notes
 
-* 39 `extensions.testUtterances` (21 zh-CN, 18 en; 3 look-alike negatives), none equal to a canonical question or a
-  keyword; every required item and both status items are covered. `cases verify`: 39/39, no extra selections.
+* 45 `extensions.testUtterances` (21 zh-CN, 24 en; 4 look-alike negatives), none equal to a canonical question or a
+  keyword; every required item and both status items are covered. `cases verify`: 45/45, no extra selections.
+* **Plain-word questions (independent review).** "What brings you in today?" reached nothing and "Any medical
+  problems?" tied two items below the selection threshold. Run-together keywords (`whatbringsyou`, `bringsyouin`,
+  `whatsthematter`) now take the first to the presenting complaint at transfer and to `status-third` at the third
+  admission; `pmh` has "medical problems" and "illnesses"; "Were you given blood?" reaches `earlier-treatment` and
+  "Have you been pregnant before?" `prior-uterine-surgery`. `broughtyouin` and "how many pregnancies" were tried and
+  dropped: each became a one-word wildcard ("Who brought you here?", "How many weeks pregnant were you?").
+* **Interventions.** The crystalloid alias "ringer" matched "ring forceps", so ordering removal of the cervical tissue
+  with ring forceps could start a fluid bolus: the alias is now "ringer's lactate", and the crystalloid item yields to
+  "forceps", "tissue" and "mass".
 * **Phase twins.** `status-after-evac` supersedes `bleeding-course` after the evacuation; `status-third` supersedes
   `status-after-evac` at the third admission. Present-tense items (`bleeding-onset`, `bleeding-course`, `fever`) are
   limited to the phases where they hold.
@@ -436,6 +475,9 @@ Guidance details to confirm in the full texts (taken from abstracts and secondar
 * English stop words collapse phrases ("this time" → "time", "bleeding again" → "bleeding"), and run-together
   keywords are prefix-matched by a long first word ("broughtyouin" by "brought"): such keywords were rewritten
   (`thistime`, `happenedagain`, `whendiditstart`) or dropped.
+* **Orders (independent review).** An orderable pelvic MRI (no result recorded) was added, because decision 2's key
+  names "contrast CT or MRI" and "MRI pelvis" matched nothing; the pelvic ultrasound lost its bare alias "scan", which
+  also matched "CT scan of the abdomen and pelvis".
 * **Orders.** Short aliases that are substrings of other words ("ct", "pt", "ir") were avoided ("ct scan", "aptt",
   "interventional radiology"). "Tissue histology" is the neutral name of the histology record; the outcome-phase
   records are record reviews.
@@ -453,7 +495,7 @@ Guidance details to confirm in the full texts (taken from abstracts and secondar
 4. 中华医学会妇产科学分会产科学组, 中华医学会围产医学分会. 产后出血预防与处理指南(2023). 中华妇产科杂志.
    2023;58(6):401-409.
 5. World Health Organization. WHO recommendations for prevention and treatment of maternal peripartum infections.
-   Geneva: World Health Organization; 2015. Available from: https://www.ncbi.nlm.nih.gov/books/NBK327079/
+   Geneva: World Health Organization; 2015. Available from: https://www.who.int/publications/i/item/9789241549363
 6. World Health Organization. WHO recommendation on tranexamic acid for the treatment of postpartum haemorrhage.
    Geneva: World Health Organization; 2017. Available from: https://www.who.int/publications/i/item/9789241550154
 7. Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of
@@ -472,12 +514,23 @@ Green-top Guideline No. 37a. London: RCOG; 2015 · 中华人民共和国民法�
 **How they were checked (2026-11-12).** doi.org, Crossref and publisher sites were not used directly; each item was
 confirmed by web search against indexing or publisher records: ref. 2 (WHO news release of 5 October 2025, NCBI
 Bookshelf NBK619233), ref. 3 (RCOG citation; PubMed listing BJOG 2017;124(5):e106-e149, PMID 27981719 as cited by a
-clinical reference), ref. 4 (Chinese reference listings; DOI not confirmed, so none given), ref. 5 (NCBI Bookshelf
-NBK327079, ISBN 978 92 4 154936 3), ref. 6 (WHO publication page, ISBN 978 92 4 155015 4), ref. 7 (SCCM guideline
+clinical reference), ref. 4 (Chinese reference listings; DOI not confirmed, so none given), ref. 5 (WHO publication page,
+ISBN 978 92 4 154936 3), ref. 6 (WHO publication page, ISBN 978 92 4 155015 4), ref. 7 (SCCM guideline
 page and journal listings giving the volume, pages and DOI), ref. 8 (UTMB and OUCI records, PMID 37236495), ref. 9
 (PubMed 24973422). The source article's DOI
 is the one verified in `scripts/cmcr-105-sources.json` (publisher check 2026-10-29). The 1.0.0 guideline URL for the
 WHO 2025 guideline could not be confirmed and was replaced by the Bookshelf record.
+
+**Independent review (2026-11-14).** Re-checked by web search: RCOG 2016 — a fibrinogen "greater than 2 g/l" is
+maintained during ongoing PPH (a new 2016 recommendation, grade C), and the secondary-PPH ultrasound wording "may help
+to exclude the presence of retained products of conception, although the diagnosis of retained products is
+unreliable" (quoted from the guideline by secondary sources); WHO 2017 — the GDG does not support starting TXA more
+than 3 hours after birth (WHO publication page), carried into the 2025 consolidated guideline; WHO/FIGO/ICM 2025 —
+NCBI Bookshelf NBK619233 (Geneva: WHO; 2025; launched 5 October 2025); WHO 2015 — clindamycin with gentamicin for
+postpartum endometritis (conditional, very low certainty), now cited through the WHO publication page because the
+Bookshelf id NBK327079 could not be confirmed; SMFM Consult Series #67 — its DOI resolves to the AJOG article (PII
+S0002937823003277). The search budget ran out before SMFM's recommendation wording, RCOG 37a and the Chinese 2023
+guideline could be re-read; they stay under "To verify".
 
 ## Changelog
 
@@ -515,6 +568,25 @@ against the full source article.
   `diagnosis`/`evidence`/`management` → `transfer-plan`, `post-evacuation`, `third-bleed`, `definitive-plan`,
   `after-surgery`.
 * **Figures.** The two approved figures move from unattached assets to the outcome record, with neutral titles.
+* **Independent review applied (2026-11-14).** *Safety outcome:* `critical: true` on the repeat evacuation,
+  hysteroscopic separation, local excision, embolisation and premature hysterectomy (the strict lint had five
+  warnings, and the collection contract failed); LMWH `critical: false` with a 20–80 mg SC preset, tranexamic acid a
+  1 g IV preset; the README's **Safety outcome.** and **安全结果。** paragraphs. *Facts:* the 3 days of bleeding are
+  counted from the induced birth, as the chief complaint counts them (the triage note, the transferring unit's notes,
+  decision 1's Chinese prompt, the midwife's handover and the Chinese conclusion had "此后…3天" / "recurred since");
+  no CRP trend is claimed (only a range is recorded: "rising/raised CRP" left learning outcome 2, three feedback texts
+  and key reasoning 3); "she has never had a marked fever" became "no marked fever is recorded so far"; the acting
+  notes no longer add laboured speech; the English conclusion now states what the Chinese one states, including the
+  pulse, the histology and the report's diagnosis. *Guidance:* learning outcome 1 attributes the experienced clinician
+  to RCOG 2016 and ultrasound guidance to her uterine surgery; RCOG's blood cultures "if febrile"; learning outcome 4
+  attributes clindamycin to IDSA 2014, not SSC/SMFM; every harm text names its guidance; WHO 2015 is cited through its
+  WHO page. *Validity:* chapters 4 and 5 no longer name the evacuation or the third admission (later chapters are
+  listed by title from the start); objective 4 and `rb-infection-recognised` accept either antibiotic regimen (the
+  broad-spectrum one, which decision 2's key names, left the third admission locked); LMWH before haemostasis now
+  costs marks (`valid: false`), and a repeat curettage is counted by `valid: false` rather than by a second dose.
+  *Spoilers:* decision 4's hysteroscopy feedback and the hysterectomy's response no longer describe the report's
+  operations before the outcome record. *Matcher and orders:* plain-word questions, the "ring forceps" collision, an
+  orderable pelvic MRI (no result) and the ultrasound's bare "scan" alias (Matcher notes). The attending is named as debriefing with PEARLS, and the communication item cites Calgary–Cambridge.
 * **Contract wording.** The English review note ends "The case is not yet reviewed by a licensed clinician." (the
   collection test matches the lower-case phrase); otherwise it is the standard's §6 text.
 
@@ -526,8 +598,8 @@ against the full source article.
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1067477/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1067477 --lang en        # 77 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 33/33
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1067477                   # PASS (depth floor, do nothing 0, wrong-first < reference)
+npm run -s cc -- cases verify cmcr-1067477 --lang en        # 77 steps · objectives 6/6 · decisions 5/5 · utterances 45/45 · rubric 33/33
+npx tsx --conditions=source scripts/case-check.ts cmcr-1067477                                    # PASS (depth floor, do nothing 0, wrong-first < reference)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1067477:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1067477:"  # demonstration, en + zh-CN
 ```
@@ -535,8 +607,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 ## 中文摘要
 
 **病例概要。** 31岁女性，孕28周多胎膜早破，约10小时后引产分娩；产后约2小时起阴道大量流血，伴头晕、大汗、手脚凉、
-胸闷、心慌气短，休克时血压40/20 mmHg、脉搏细数，最初出血时无发热、畏寒。外院行清宫、会阴裂伤缝合、输血和促宫缩治疗后
-出血减少，但此后反复阴道多量流血3天转入。既往剖宫产1次，之后人工流产4次；否认基础病和妊娠糖尿病等并发症。转入时体温
+胸闷、心慌气短，休克时血压40/20 mmHg、脉搏细数，最初出血时无发热、畏寒。转出医院行清宫、会阴裂伤缝合、输血和促宫缩治疗后
+出血减少；引产后反复阴道多量流血3天转入。既往剖宫产1次，之后人工流产4次；否认基础病和妊娠糖尿病等并发症。转入时体温
 37.4 ℃，宫底平脐、子宫收缩差（记录为“再次入院”时），超声见宫腔内约28×18×36 mm不均质团块，白细胞13.04×10⁹/L，凝血一度
 正常。再次清宫后宫腔无占位，但子宫仍增大、实质回声不均，白细胞升至16.12×10⁹/L、中性粒细胞升高，CRP约14.52–15.82 mg/L，
 发热不突出。第三次入院再次大量出血，血压53/34 mmHg、脉搏110次/分，面色苍白、四肢冷，宫颈阴道内团块70×62×51 mm；宫颈处
@@ -545,10 +617,10 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 本版患者事实全部沿用1.0.0版的提取，尚未对照原文全文核对。
 
 **学习目标。**
-1. 系统排查继发性产后出血的原因（宫腔残留、子宫内膜炎、复旧不良、胎盘植入），留培养后静脉用抗菌药物（WHO 2015），由高年资医生在超声引导下清宫（RCOG 2016）。
-2. 宫腔已空而子宫仍大、回声不均，白细胞和CRP上升时，即使不发热也判断为子宫壁感染或坏死，做影像，停止盲目刮宫。
+1. 系统排查继发性产后出血的原因（宫腔残留、子宫内膜炎、复旧不良、胎盘植入），留培养后静脉用抗菌药物（WHO 2015：克林霉素联合庆大霉素），由有经验的医生清宫（RCOG 2016），鉴于她的子宫手术史在超声引导下进行。
+2. 宫腔已空而子宫仍大、回声不均，白细胞上升伴中性粒细胞升高时，即使不发热也判断为子宫壁感染或坏死，做影像，停止盲目刮宫。
 3. 对伴休克的继发性产后出血启动大出血预案，早期输红细胞和血浆，纤维蛋白原>2 g/L（RCOG 2016）；说明分娩3小时后不再开始用氨甲环酸（WHO 2017；2025）。
-4. 可能脓毒性休克时1小时内给予含克林霉素的广谱抗菌药物（SSC 2021；SMFM 2023），尽快控制感染源。
+4. 可能脓毒性休克时1小时内给予广谱抗菌药物（SSC 2021；SMFM 2023），可能为坏死性或产毒素感染时加用克林霉素（IDSA 2014），尽快控制感染源。
 5. 宫颈处组织为大片坏死肌层时，选择开腹子宫切除（IDSA 2014），而不是宫腔镜分离、局部切除或栓塞，并按《民法典》第一千二百一十九条取得她本人的同意。
 6. 制定子宫切除后的计划：按培养继续抗感染，出血控制后低分子肝素至少10天（RCOG 2015），纠正贫血，心理支持和随访。
 
@@ -566,3 +638,5 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 仍反复出血时怎么做。待核实：几次入院的关系和间隔、完整血象和凝血、培养与抗菌药物、输血量、团块的发现与测量方式、组织“排出”
 还是“取出”、各次手术细节、宝宝情况，以及RCOG 52号和37a号指南、WHO 2015剂量、民法典原文等（见上文 To verify）。本病例为
 人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。
+
+**安全结果。** 转入阶段之后再次刮宫、宫腔镜下分离、保留子宫的局部切除、子宫动脉栓塞，以及第三次入院之前切除子宫，均标为 `critical: true`：在禁忌时实施，无论得分多少，安全结果都判为不通过；出血尚未控制时用低分子肝素是可纠正的失误（`critical: false`），扣分并在复盘中标出。

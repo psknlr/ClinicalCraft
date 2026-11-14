@@ -19,7 +19,22 @@
   "reviewed": true
  },
  "cmcr-1067477": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "critical": 1,
+   "major": 10,
+   "minor": 9
+  },
+  "reviewed": true
  },
  "cmcr-1067495": {
   "allChecksPass": true,
@@ -444,13 +459,42 @@
   "authored": true
  },
  "cmcr-857933": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "critical": 1,
+   "major": 4,
+   "minor": 9
+  },
+  "reviewed": true
  },
  "cmcr-857953": {
   "authored": true
  },
  "cmcr-858035": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "major": 3,
+   "minor": 14
+  },
+  "reviewed": true
  },
  "cmcr-859852": {
   "allChecksPass": true,
