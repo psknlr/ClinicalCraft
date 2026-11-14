@@ -7,18 +7,19 @@
  *   deterministically (first in precedence order wins, an issue for the rest);
  * - incremental validation: a case is validated (`parseCase`) the first time
  *   it is requested and the verdict is cached until its file changes; valid
- *   cases keep their public JSON (`solution` stripped) and strong ETag in a
- *   byte-bounded LRU;
+ *   cases keep their public JSON (`solution` stripped) — and the part of the
+ *   solution a place in the care team needs (`placePath`) — with strong ETags
+ *   in a byte-bounded LRU;
  * - paginated, filtered listings and the legacy index, serialised once per
  *   index generation and query, each with its strong ETag.
  */
 import { readFile } from "node:fs/promises";
 import { relative } from "node:path";
-import { parseCase } from "@clinicalcraft/core";
+import { parseCase, placePath } from "@clinicalcraft/core";
 import { caseIndexEntryOf, createLimiter, libraryOrder, type Limiter } from "@clinicalcraft/agent";
 import { CaseIndexer, contentHash, type CaseIndexSnapshot, type IndexedCaseFile, type LoadedContent } from "@clinicalcraft/agent/node";
 import type { CaseDefinition } from "@clinicalcraft/core";
-import { caseListing, hasSpoilers, learnerCase, legacyContentIndex, listingKey, publicCase, type ListingIssue, type ListingQuery } from "./content.js";
+import { caseListing, hasSpoilers, learnerCase, legacyContentIndex, listingKey, publicCase, type ListingIssue, type ListingQuery, type PlacePathBody } from "./content.js";
 import { strongEtag } from "./http.js";
 
 export interface CaseStoreOptions {
@@ -49,25 +50,43 @@ export interface CachedBody {
 }
 
 /**
- * A case's validation verdict. `body` / `etag`: the default (learner) form; `full` / `fullEtag`: the form with the
- * source (`?spoilers=1`) when it differs (a published or adapted case). Bodies may be evicted (rebuilt on demand).
+ * What is served of a valid case: its default (learner) form, the form with the source (`?spoilers=1`), or the part of
+ * its reference solution a place in the care team needs (`placePath`, `GET /api/content/cases/:id/place-path`).
  */
-type Verdict = { hash: string; ok: true; body?: string; etag: string; full?: string; fullEtag?: string } | { hash: string; ok: false; issues: { path: string; message: string }[] };
+export type CaseForm = "learner" | "full" | "places";
 
-/** The verdict of a valid case: both served forms. */
-function okVerdict(hash: string, def: CaseDefinition): Verdict {
+/**
+ * A case's validation verdict. `body` / `etag`: the default (learner) form; `full` / `fullEtag`: the form with the
+ * source (`?spoilers=1`) when it differs (a published or adapted case); `places` / `placesEtag`: its place path, once
+ * it was asked for. Bodies may be evicted together (rebuilt on demand).
+ */
+type Verdict =
+  | { hash: string; ok: true; body?: string; etag: string; full?: string; fullEtag?: string; places?: string; placesEtag?: string }
+  | { hash: string; ok: false; issues: { path: string; message: string }[] };
+
+/** The verdict of a valid case: its served forms — the place path too when `places` (it is built only when asked for). */
+function okVerdict(hash: string, def: CaseDefinition, places: boolean): Verdict {
   const body = JSON.stringify(learnerCase(def));
-  if (!hasSpoilers(def)) return { hash, ok: true, body, etag: strongEtag(body) };
+  const placesBody = places ? JSON.stringify({ id: def.id, path: placePath(def) } satisfies PlacePathBody) : undefined;
+  const common = { hash, ok: true as const, body, etag: strongEtag(body), ...(placesBody !== undefined ? { places: placesBody, placesEtag: strongEtag(placesBody) } : {}) };
+  if (!hasSpoilers(def)) return common;
   const full = JSON.stringify(publicCase(def));
-  return { hash, ok: true, body, etag: strongEtag(body), full, fullEtag: strongEtag(full) };
+  return { ...common, full, fullEtag: strongEtag(full) };
 }
 
-const bytesOf = (v: Verdict): number => (v.ok ? (v.body?.length ?? 0) + (v.full?.length ?? 0) : 0);
+/** Whether a cached valid case can serve a form now (its bodies present; the place path built). */
+const servable = (v: Extract<Verdict, { ok: true }>, form: CaseForm): boolean => v.body !== undefined && (form !== "places" || v.places !== undefined);
+
+const bytesOf = (v: Verdict): number => (v.ok ? (v.body?.length ?? 0) + (v.full?.length ?? 0) + (v.places?.length ?? 0) : 0);
 
 /** The served form of a cached valid case (its bodies present). */
-function served(v: Extract<Verdict, { ok: true }>, spoilers: boolean): CaseLoad {
-  return spoilers && v.full !== undefined ? { status: "ok", body: v.full, etag: v.fullEtag! } : { status: "ok", body: v.body!, etag: v.etag };
+function served(v: Extract<Verdict, { ok: true }>, form: CaseForm): CaseLoad {
+  if (form === "places") return { status: "ok", body: v.places!, etag: v.placesEtag! };
+  return form === "full" && v.full !== undefined ? { status: "ok", body: v.full, etag: v.fullEtag! } : { status: "ok", body: v.body!, etag: v.etag };
 }
+
+/** The form a request asks for: `true` (`?spoilers=1`) the full form, `false` the learner's (the older boolean signature). */
+const formOf = (form: CaseForm | boolean): CaseForm => (form === true ? "full" : form === false ? "learner" : form);
 
 /** Counters for diagnostics, tests and the content-scale benchmark. */
 export interface CaseStoreStats {
@@ -90,7 +109,7 @@ export class CaseStore {
   private readonly limit: Limiter;
   private lastRefresh = Number.NEGATIVE_INFINITY;
   private readonly verdicts = new Map<string, Verdict>();
-  private readonly loading = new Map<string, Promise<CaseLoad>>();
+  private readonly loading = new Map<string, Promise<Verdict | null>>();
   private readonly responses = new Map<string, CachedBody>();
   private readonly counters: CaseStoreStats = { validations: 0, cachedBytes: 0 };
 
@@ -162,20 +181,24 @@ export class CaseStore {
   /**
    * The ETag of a case known to be valid in its current version (also when
    * its body was evicted), so a revalidation can be answered without
-   * rebuilding it; null when unknown.
+   * rebuilding it; null when unknown. `form`: which served form (`true`: the
+   * full form, as `?spoilers=1`).
    */
-  async currentEtag(id: string, spoilers = false): Promise<string | null> {
+  async currentEtag(id: string, form: CaseForm | boolean = "learner"): Promise<string | null> {
     const file = (await this.index()).files.get(id);
     const known = this.verdicts.get(id);
     if (!file || !known?.ok || known.hash !== file.entry.contentHash) return null;
-    return spoilers ? (known.fullEtag ?? known.etag) : known.etag;
+    const f = formOf(form);
+    return f === "places" ? (known.placesEtag ?? null) : f === "full" ? (known.fullEtag ?? known.etag) : known.etag;
   }
 
   /**
    * A full public case: validated on first request, verdict cached until the file changes. By default its
-   * learner form (`learnerCase`: no source of a published case); `spoilers`: with it (`publicCase`).
+   * learner form (`learnerCase`: no source of a published case); `spoilers` (or `"full"`): with it (`publicCase`);
+   * `"places"`: the part of its reference solution a place in the care team needs (`placePath`).
    */
-  async load(id: string, spoilers = false): Promise<CaseLoad> {
+  async load(id: string, spoilers: CaseForm | boolean = "learner"): Promise<CaseLoad> {
+    const form = formOf(spoilers);
     const snapshot = await this.index();
     const file = snapshot.files.get(id);
     if (!file) return { status: "not-found" };
@@ -183,38 +206,42 @@ export class CaseStore {
     const known = this.verdicts.get(id);
     if (known && known.hash === hash) {
       if (!known.ok) return { status: "invalid", issues: known.issues };
-      if (known.body !== undefined) {
+      if (servable(known, form)) {
         // Most recently used last (LRU eviction order).
         this.verdicts.delete(id);
         this.verdicts.set(id, known);
-        return served(known, spoilers);
+        return served(known, form);
       }
     }
-    const key = `${id}\u0000${hash}`;
+    // the place path is built when it is first asked for, and kept from then on (with the case's other bodies)
+    const places = form === "places" || (known?.ok === true && known.hash === hash && known.placesEtag !== undefined);
+    const key = `${id}\u0000${hash}\u0000${places ? "places" : ""}`;
     let running = this.loading.get(key);
     if (!running) {
-      running = this.limit(() => this.validate(id, file)).finally(() => this.loading.delete(key));
+      running = this.limit(() => this.validate(id, file, places)).finally(() => this.loading.delete(key));
       this.loading.set(key, running);
     }
+    // the verdict as it was built (its bodies kept here even if the cache has evicted them since)
     const verdict = await running;
-    if (verdict.status !== "ok") return verdict;
-    const now = this.verdicts.get(id);
-    return now?.ok && now.body !== undefined ? served(now, spoilers) : verdict;
+    if (!verdict) return { status: "not-found" };
+    if (!verdict.ok) return { status: "invalid", issues: verdict.issues };
+    return served(verdict, form);
   }
 
-  private async validate(id: string, file: IndexedCaseFile): Promise<CaseLoad> {
+  /** Read and validate a case file (null: not found; `places`: build its place path too); the verdict is remembered. */
+  private async validate(id: string, file: IndexedCaseFile, places: boolean): Promise<Verdict | null> {
     if (this.preloaded) {
       // Validated when it was loaded.
       const def = this.preloaded.cases.get(id)?.def;
-      if (!def) return { status: "not-found" };
-      return this.remember(id, okVerdict(file.entry.contentHash, def));
+      if (!def) return null;
+      return this.remember(id, okVerdict(file.entry.contentHash, def, places));
     }
     let bytes: Buffer;
     try {
       bytes = await readFile(file.file);
     } catch {
       this.lastRefresh = Number.NEGATIVE_INFINITY; // gone: index again
-      return { status: "not-found" };
+      return null;
     }
     const hash = contentHash(bytes);
     // Changed since it was indexed: the next request re-indexes (its entry may differ).
@@ -233,26 +260,27 @@ export class CaseStore {
     }
     if (parsed.value.id !== id) {
       this.lastRefresh = Number.NEGATIVE_INFINITY;
-      return { status: "not-found" };
+      return null;
     }
-    return this.remember(id, okVerdict(hash, parsed.value));
+    return this.remember(id, okVerdict(hash, parsed.value, places));
   }
 
-  private remember(id: string, verdict: Verdict): CaseLoad {
+  /** Keep a verdict (and, for a valid case, its bodies within the byte budget); returns it. */
+  private remember(id: string, verdict: Verdict): Verdict {
     const old = this.verdicts.get(id);
     if (old?.ok && old.body !== undefined) this.counters.cachedBytes -= bytesOf(old);
     this.verdicts.delete(id);
     this.verdicts.set(id, verdict);
-    if (!verdict.ok) return { status: "invalid", issues: verdict.issues };
+    if (!verdict.ok) return verdict;
     this.counters.cachedBytes += bytesOf(verdict);
     // Evict the least recently used bodies (their verdicts stay; a body is rebuilt on demand).
     for (const [otherId, v] of this.verdicts) {
       if (this.counters.cachedBytes <= this.maxCachedBytes) break;
       if (otherId === id || !v.ok || v.body === undefined) continue;
       this.counters.cachedBytes -= bytesOf(v);
-      this.verdicts.set(otherId, { hash: v.hash, ok: true, etag: v.etag, ...(v.fullEtag ? { fullEtag: v.fullEtag } : {}) });
+      this.verdicts.set(otherId, { hash: v.hash, ok: true, etag: v.etag, ...(v.fullEtag ? { fullEtag: v.fullEtag } : {}), ...(v.placesEtag ? { placesEtag: v.placesEtag } : {}) });
     }
-    return { status: "ok", body: verdict.body!, etag: verdict.etag };
+    return verdict;
   }
 
   private cached(key: string, build: () => unknown): CachedBody {

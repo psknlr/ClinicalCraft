@@ -2,12 +2,16 @@
  * The shared case index (C1, docs/EMBODIED.md §11): one entry builder for the
  * web bundle, `clinicalcraft serve` and `clinicalcraft cases index`, read from
  * the raw case JSON without validating it. Its `capabilityNeeds` must decide
- * facility choice exactly as core's `caseCapabilityGaps` does on the full case.
+ * facility choice exactly as core's `caseCapabilityGaps` does on the full case,
+ * and its `seats` and `lineups` offer exactly the places core's `seatsOf` does.
  */
 import { readFileSync } from "node:fs";
-import { caseCapabilityGaps, facilityCapabilities, parseCase, type CaseDefinition, type Condition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
+import { caseCapabilityGaps, facilityCapabilities, parseCase, seatsOf, TEAM_PLACES, type CaseDefinition, type Condition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
-import { canCompleteWith, caseIndexEntry, CASE_INDEX_ENTRY_KEYS, compareLibraryOrder, libraryOrder, normalizeIndexEntry, type CaseIndexEntry } from "./library.js";
+import { LAP_CHOLE_SOLUTION, LAP_CHOLE_TEAM } from "../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
+import { LAP_CHOLE_SIT } from "../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js";
+import { PLACES_TEAM } from "../../core/src/engine/__fixtures__/team-places.js";
+import { canCompleteWith, caseIndexEntry, CASE_INDEX_ENTRY_KEYS, compareLibraryOrder, INDEX_PLACES, libraryOrder, normalizeIndexEntry, type CaseIndexEntry } from "./library.js";
 import { loadContent } from "./node/content.js";
 
 const content = await loadContent();
@@ -205,6 +209,81 @@ describe("capabilityNeeds (facility choice without the full case)", () => {
   });
 });
 
+describe("the places in the care team (the place picker without the full case)", () => {
+  const MINI = JSON.parse(readFileSync(new URL("../../core/src/engine/__fixtures__/mini-anaphylaxis.case.json", import.meta.url), "utf8")) as Record<string, unknown>;
+  /** What core offers a parsed case besides the operating surgeon's place, with a line-up or none. */
+  const offered = (c: CaseDefinition, lineup?: string) => seatsOf(c, lineup ? { lineup } : {}).filter((s) => s !== "surgeon");
+  /** The entry and core agree on a raw case (it must parse): its base team's places and every line-up's. */
+  const agree = (raw: Record<string, unknown>, label: string) => {
+    const parsed = parseCase(structuredClone(raw));
+    if (!parsed.ok) throw new Error(`${label}: ${JSON.stringify(parsed.issues.slice(0, 2))}`);
+    const entry = caseIndexEntry(raw, HASH)!;
+    expect(entry.seats, label).toEqual(offered(parsed.value));
+    expect(entry.lineups.map((l) => l.id), label).toEqual((parsed.value.team?.lineups ?? []).map((l) => l.id));
+    for (const l of entry.lineups) expect(l.seats, `${label} ${l.id}`).toEqual(offered(parsed.value, l.id));
+    return entry;
+  };
+
+  it("lists the places in the team in core's order (TEAM_PLACES)", () => {
+    expect([...INDEX_PLACES]).toEqual([...TEAM_PLACES]);
+  });
+
+  it("offers none for every built-in case (none has a team), as core does", () => {
+    for (const [id, raw] of raws) expect(agree(raw, id)).toMatchObject({ seats: [], lineups: [] });
+  });
+
+  it("offers the team fixtures' places, with each line-up's, as core does — and none where core offers none", () => {
+    const team = (t: unknown, extra: Record<string, unknown> = {}) => ({ ...structuredClone(MINI), team: structuredClone(t), ...extra });
+    expect(agree(team(PLACES_TEAM), "places")).toMatchObject({ seats: ["first-assistant", "scrub-nurse"], lineups: [{ id: "three-surgeons", name: { en: "Three surgeons" }, seats: ["first-assistant", "second-assistant", "scrub-nurse"] }] });
+    const lapChole = { ...structuredClone(LAP_CHOLE_SIT), team: structuredClone(LAP_CHOLE_TEAM), solution: structuredClone(LAP_CHOLE_SOLUTION) } as Record<string, unknown>;
+    expect(agree(lapChole, "lap-chole").seats).toEqual(["first-assistant", "scrub-nurse"]);
+    const members = PLACES_TEAM.members;
+    // no stand-in: the learner operates
+    expect(agree(team({ ...PLACES_TEAM, members: members.map((m) => (m.staff === "surgeon" ? { staff: "surgeon", duties: ["surgeon"] } : m)) }), "no stand-in")).toMatchObject({ seats: [], lineups: [{ seats: [] }] });
+    // served without its solution: the join cannot follow the reference path ...
+    expect(agree(team(PLACES_TEAM, { solution: [] }), "no solution").seats).toEqual([]);
+    // ... unless the case starts in the team's phase
+    expect(agree(team({ ...PLACES_TEAM, phases: ["arrival"] }, { solution: [] }), "starts in the team's phase").seats).toEqual(["first-assistant", "scrub-nurse"]);
+    // a position decides before the duties; the old assistant surgeon is the first assistant; duties by priority
+    const positioned = members.map((m) => (m.staff === "doc-1" ? { ...m, position: "assistant-surgeon" } : m.staff === "nurse-1" ? { ...m, duties: ["count", "instruments"] } : m));
+    expect(agree(team({ ...PLACES_TEAM, members: positioned }), "positions").seats).toEqual(["first-assistant", "scrub-nurse"]);
+    const noScrub = members.filter((m) => m.staff !== "nurse-2").map((m) => (m.staff === "doc-1" ? { ...m, position: "second-assistant" } : m));
+    expect(agree(team({ ...PLACES_TEAM, members: noScrub, lineups: [] }), "no scrub").seats).toEqual(["second-assistant"]);
+  });
+
+  it("agrees with core on generated teams: members, positions, stand-ins, phases, solutions and line-ups", () => {
+    let seed = 7;
+    const rnd = (n: number) => {
+      seed = (seed * 1103515245 + 12345) % 2147483648;
+      return Math.floor(seed / 65536) % n; // the high bits: an LCG's low bits repeat with a short period
+    };
+    const DUTIES = ["circulate", "instruments", "count", "assist", "anaesthesia"] as const;
+    const POSITIONS = [undefined, "first-assistant", "second-assistant", "assistant-surgeon", "scrub-nurse", "circulating-nurse", "anaesthetist"] as const;
+    let checked = 0;
+    let withPlaces = 0;
+    let widened = 0;
+    for (let round = 0; round < 120; round++) {
+      const others = Array.from({ length: 2 + rnd(4) }, (_, i) => {
+        const duties = [...new Set([DUTIES[rnd(DUTIES.length)]!, ...(rnd(3) === 0 ? [DUTIES[rnd(DUTIES.length)]!] : [])])];
+        const position = POSITIONS[rnd(POSITIONS.length)];
+        return { staff: `m-${round}-${i}`, duties, ...(position ? { position } : {}) };
+      });
+      const surgeon = { staff: "surgeon", duties: ["surgeon"], ...(rnd(4) ? { standIn: "doc-0" } : {}) };
+      const lineups = rnd(2) ? [{ id: `lineup-${round}`, name: { en: "L", "zh-CN": "L" }, provenance: "authored", members: [{ staff: `x-${round}`, duties: ["assist"], ...(rnd(2) ? { position: "second-assistant" } : {}) }] }] : [];
+      const raw = { ...structuredClone(MINI), team: { room: "consult", phases: [rnd(4) ? "observation" : "arrival"], members: [...others, surgeon], ...(lineups.length ? { lineups } : {}) }, ...(rnd(3) ? {} : { solution: [] }) };
+      if (!parseCase(structuredClone(raw)).ok) continue;
+      const entry = agree(raw, `round ${round}`);
+      checked++;
+      if (entry.seats.length) withPlaces++;
+      if (entry.lineups.some((l) => l.seats.length > entry.seats.length)) widened++;
+    }
+    // the generated teams bite: most parse, many offer places, and some line-ups offer more than the base team
+    expect(checked).toBeGreaterThan(60);
+    expect(withPlaces).toBeGreaterThan(15);
+    expect(widened).toBeGreaterThan(3);
+  });
+});
+
 describe("normalizeIndexEntry (entries from a server are untrusted)", () => {
   it("accepts a builder entry unchanged after a JSON round trip", () => {
     for (const raw of raws.values()) {
@@ -232,5 +311,25 @@ describe("normalizeIndexEntry (entries from a server are untrusted)", () => {
     })!;
     expect(e).toMatchObject({ id: "ok-case", title: { en: "<b>" }, difficulty: 5, objectives: 0, tags: [], contentHash: "" });
     expect(e.capabilityNeeds).toEqual([["ct"], { any: [["xray"]] }]);
+  });
+
+  it("offers no place an older server does not list, and keeps only the places in the team, each once, in order", () => {
+    expect(normalizeIndexEntry({ id: "old-server" })).toMatchObject({ seats: [], lineups: [] });
+    const e = normalizeIndexEntry({
+      id: "team-case",
+      seats: ["scrub-nurse", "surgeon", "first-assistant", "scrub-nurse", 3, "porter"],
+      lineups: [
+        { id: "three", name: { en: "Three surgeons", "zh-CN": ["x"] }, seats: ["second-assistant", "first-assistant"] },
+        { id: "../evil", name: "x", seats: ["first-assistant"] },
+        { id: "no-name", seats: "first-assistant" },
+        ...Array.from({ length: 30 }, (_, i) => ({ id: `l-${i}`, name: "L", seats: [] })),
+      ],
+    })!;
+    expect(e.seats).toEqual(["first-assistant", "scrub-nurse"]);
+    expect(e.lineups.slice(0, 2)).toEqual([
+      { id: "three", name: { en: "Three surgeons" }, seats: ["first-assistant", "second-assistant"] },
+      { id: "no-name", name: "no-name", seats: [] },
+    ]);
+    expect(e.lineups.length).toBeLessThanOrEqual(16);
   });
 });

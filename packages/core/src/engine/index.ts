@@ -47,6 +47,7 @@ export {
   type FieldGateRefusal,
   type TeamChoice,
 } from "./seats.js";
+export { placePath, withPlacePath } from "./place-path.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 

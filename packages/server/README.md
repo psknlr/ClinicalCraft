@@ -22,6 +22,7 @@ const server = await startServer({ port: 0, settings });   // → { url, port, h
 | `GET /api/content/index` | case, facility and catalog summaries (spoiler-free) |
 | `GET /api/content/cases?offset=&limit=&q=&specialty=&setting=&locale=` | the case index, paginated (`limit` ≤ 200) and filtered, in library order: `{total, offset, limit, items, issues, issueCount}` |
 | `GET /api/content/cases/:id` | one case, reference `solution` stripped; validated on its first request (422 `invalid_case` when it is not) |
+| `GET /api/content/cases/:id/place-path` | `{id, path}`: the part of the case's reference solution a place in its care team needs — its start, the actions a place's start applies to join the team at its phase, then the operator's operative steps the stand-in surgeon works from; nothing else of the solution (`path: []` for a case that offers no place in the team; docs/TEAM.md §1) |
 | `GET /api/content/facilities/:id`, `GET /api/content/catalogs/:id` | facility / catalog JSON |
 | `GET /api/providers` | provider templates + `configured: boolean` (never a key; base URLs without userinfo, query or fragment) |
 | `POST /api/llm/stream` | `{provider?, model?, request: ChatRequest}` → `text/event-stream` of `StreamEvent`s (upstream error text has keys and credentials masked) |

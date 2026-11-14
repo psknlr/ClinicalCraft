@@ -9,14 +9,14 @@
  * print opaque handles.
  *
  * Index (docs/EMBODIED.md §11): `caseIndexEntry` builds the metadata a
- * library needs — cards, filters and facility choice — from a case file's raw
- * JSON, without validating the whole case (that happens when the case is
- * loaded). The web bundle (build-time index), `clinicalcraft serve`
+ * library needs — cards, filters, facility choice and the places in the care
+ * team the picker offers — from a case file's raw JSON, without validating the
+ * whole case (that happens when the case is loaded). The web bundle (build-time index), `clinicalcraft serve`
  * (`GET /api/content/cases`) and `clinicalcraft cases index` use this one
  * builder. Isomorphic and dependency-free at runtime (type imports only), so
  * the web's Vite plugin can bundle it into its config.
  */
-import type { CaseDefinition, LocalizedText } from "@clinicalcraft/core";
+import type { CaseDefinition, LocalizedText, Place } from "@clinicalcraft/core";
 
 /* ------------------------------------------------------------------ */
 /* Library order                                                       */
@@ -69,8 +69,20 @@ export interface CaseReviewSummary {
 }
 
 /**
- * One case in the library index: exactly what the library cards, filters and
- * facility choice need. No patient data, answers, results or solution.
+ * A line-up the case's care team may take at the start (`start {lineup}`: assistants added to the team), as the
+ * library's place picker offers it: its id, its name and the places in the team it offers.
+ */
+export interface CaseLineupSummary {
+  id: string;
+  name: LocalizedText;
+  /** The places in the team the case offers with this line-up (as `CaseIndexEntry.seats`). */
+  seats: Place[];
+}
+
+/**
+ * One case in the library index: exactly what the library cards, filters,
+ * facility choice and place picker need. No patient data, answers, results or
+ * solution.
  */
 export interface CaseIndexEntry {
   /** Case id (ids name the diagnosis: front-ends that hide them show opaque handles). */
@@ -112,6 +124,14 @@ export interface CaseIndexEntry {
    * (`canCompleteWith`, the same verdict as core's `caseCapabilityGaps`).
    */
   capabilityNeeds: CapabilityNeed[];
+  /**
+   * The places in the care team a learner may take with the case's base team (docs/TEAM.md §1): core `seatsOf` without
+   * the operating surgeon's, which every case offers — [] for a case without a team, without a stand-in surgeon, or
+   * that cannot be joined at the team's phase. In-world only: the session refuses a place in a clinical encounter.
+   */
+  seats: Place[];
+  /** The line-ups the case's team may take at the start, each with the places it offers ([] without any). */
+  lineups: CaseLineupSummary[];
 }
 
 /** The keys of a `CaseIndexEntry`, in a stable order. */
@@ -136,6 +156,8 @@ export const CASE_INDEX_ENTRY_KEYS: readonly (keyof CaseIndexEntry)[] = [
   "review",
   "contentHash",
   "capabilityNeeds",
+  "seats",
+  "lineups",
 ];
 
 /** Ids a front-end may put in a URL or a file path (the case id schema, minus nothing it allows). */
@@ -177,6 +199,61 @@ function reviewOf(v: unknown): CaseReviewSummary | null {
   if (!status) return null;
   const reviewedAt = typeof r.reviewedAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(r.reviewedAt) ? r.reviewedAt : null;
   return { status, reviewedAt };
+}
+
+/* ---- places in the care team ---------------------------------------- */
+
+/**
+ * The places in a care team a learner may take besides the operating surgeon's, in their order (core `TEAM_PLACES`;
+ * library.test.ts keeps the two equal — this module imports no runtime value from core: the web's Vite config bundles it).
+ */
+export const INDEX_PLACES: readonly Place[] = ["first-assistant", "second-assistant", "scrub-nurse"];
+
+/** Each team duty's position, in the order duties decide a member's position (core `DUTY_PRIORITY`, `DUTY_POSITION`). */
+const DUTY_POSITIONS: readonly (readonly [string, string])[] = [
+  ["surgeon", "surgeon"],
+  ["anaesthesia", "anaesthetist"],
+  ["instruments", "scrub-nurse"],
+  ["assist", "first-assistant"],
+  ["circulate", "circulating-nurse"],
+  ["count", "circulating-nurse"],
+];
+
+/** A raw member's position as places read it (core `positionOfMember`, then `canonicalPosition`); null: none. */
+function memberPosition(m: Raw): string | null {
+  const duties = strings(m.duties);
+  const p = typeof m.position === "string" ? m.position : (DUTY_POSITIONS.find(([duty]) => duties.includes(duty))?.[1] ?? null);
+  return p === "assistant-surgeon" ? "first-assistant" : p;
+}
+
+/** Places in canonical order, each once — only the places in the team (`INDEX_PLACES`). */
+function placeList(v: unknown): Place[] {
+  return Array.isArray(v) ? INDEX_PLACES.filter((p) => v.includes(p)) : [];
+}
+
+/**
+ * The places in the team a raw case offers with the base team and, given, a line-up's assistants — core `seatsOf`
+ * (no team scenario) without the operating surgeon's: the surgeon member names a stand-in, the case can be joined at
+ * the team's phase (it starts in one of them, or it carries the reference solution the join follows: `canJoinTeam`) and
+ * the team has a member in the place.
+ */
+function placesOf(raw: Raw, lineup?: Raw): Place[] {
+  const team = obj(raw.team);
+  const members = Array.isArray(team.members) ? team.members.map(obj) : [];
+  if (typeof members.find((m) => m.staff === "surgeon")?.standIn !== "string") return [];
+  const initial = typeof raw.initialPhase === "string" ? raw.initialPhase : Array.isArray(raw.phases) ? obj(raw.phases[0]).id : undefined;
+  const joinable = (typeof initial === "string" && strings(team.phases).includes(initial)) || (Array.isArray(raw.solution) && raw.solution.length > 0);
+  if (!joinable) return [];
+  const added = lineup && Array.isArray(lineup.members) ? lineup.members.map(obj) : [];
+  const positions = new Set([...members, ...added].filter((m) => m.staff !== "surgeon").map(memberPosition));
+  return INDEX_PLACES.filter((p) => positions.has(p));
+}
+
+/** The team's line-ups (ids the case schema allows), each with its name and the places it offers. */
+function lineupsOf(raw: Raw): CaseLineupSummary[] {
+  const lineups = obj(raw.team).lineups;
+  if (!Array.isArray(lineups)) return [];
+  return lineups.map(obj).flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: localized(l.name) ?? l.id, seats: placesOf(raw, l) }] : []));
 }
 
 /* ---- capability needs ---------------------------------------------- */
@@ -357,6 +434,8 @@ export function caseIndexEntry(rawCase: unknown, contentHash: string): CaseIndex
     review: reviewOf(obj(raw.provenance).review),
     contentHash,
     capabilityNeeds: capabilityNeeds(raw),
+    seats: placesOf(raw),
+    lineups: lineupsOf(raw),
   };
 }
 
@@ -385,6 +464,9 @@ const safeStrings = (v: unknown, max = 64) =>
     .slice(0, max);
 
 const MAX_NEED_DEPTH = 12;
+
+/** Most line-ups an untrusted entry keeps. */
+const MAX_LINEUPS = 16;
 
 /** One need from untrusted JSON: leaves keep their strings, `all`/`any` their valid children; null when malformed or deeper than 12. */
 function safeNeed(v: unknown, depth: number): CapabilityNeed | null {
@@ -440,6 +522,14 @@ export function normalizeIndexEntry(value: unknown): CaseIndexEntry | null {
           .slice(0, 256)
           .map((n) => safeNeed(n, 0))
           .filter((n): n is CapabilityNeed => n !== null)
+      : [],
+    // an older server sends neither: no place is offered (the operating surgeon's always is)
+    seats: placeList(v.seats),
+    lineups: Array.isArray(v.lineups)
+      ? v.lineups
+          .slice(0, MAX_LINEUPS)
+          .map(obj)
+          .flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: safeLocalized(l.name) ?? l.id, seats: placeList(l.seats) }] : []))
       : [],
   };
 }

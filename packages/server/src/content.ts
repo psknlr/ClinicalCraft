@@ -3,9 +3,10 @@
  * index (`GET /api/content/cases`, entries from the shared builder
  * `caseIndexEntry`), the legacy library index (`GET /api/content/index`,
  * every locale of each localised field), full cases with the reference
- * `solution` removed, facilities and equipment catalogs.
+ * `solution` removed — and, beside a case, the part of it a place in the care
+ * team needs (core `placePath`) —, facilities and equipment catalogs.
  */
-import type { CaseDefinition, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
+import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
 import { citesSource, withoutSource, type CaseIndexEntry } from "@clinicalcraft/agent";
 import type { CaseIndexIssue, LoadedContent } from "@clinicalcraft/agent/node";
 
@@ -117,6 +118,15 @@ export function publicCase(c: CaseDefinition): Omit<CaseDefinition, "solution"> 
  */
 export function learnerCase(c: CaseDefinition): Omit<CaseDefinition, "solution"> {
   return withoutSource(publicCase(c));
+}
+
+/**
+ * `GET /api/content/cases/:id/place-path`: the case's id and its place path — core `placePath`: the part of its
+ * reference solution a place in the care team needs, served beside the case since the case is served without it.
+ */
+export interface PlacePathBody {
+  id: string;
+  path: ClinicalAction[];
 }
 
 /** True when the two forms of a case differ (a published or adapted case). */

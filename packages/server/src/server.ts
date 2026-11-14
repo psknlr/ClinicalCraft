@@ -244,6 +244,20 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       if (!get) return notAllowed("GET, HEAD");
       return sendJson(res, 200, providerList(settings, env));
     }
+    // Beside a case: the part of its reference solution a place in the care team needs (docs/TEAM.md §1).
+    if (area === "content" && kind === "cases" && id !== undefined && rest.length === 1 && rest[0] === "place-path") {
+      if (!get) return notAllowed("GET, HEAD");
+      const etag = await cases.currentEtag(id, "places");
+      if (etag && etagMatches(req.headers["if-none-match"], etag)) return sendCachedJson(req, res, "", etag);
+      const found = await cases.load(id, "places");
+      if (found.status === "ok") return sendCachedJson(req, res, found.body, found.etag);
+      if (found.status === "invalid") {
+        const first = found.issues[0];
+        const message = first ? `${first.path || "(root)"}: ${first.message}` : "-";
+        return sendJson(res, 422, { error: { code: "invalid_case", message: sm(L, "error.invalidCase", { id, message }), issues: found.issues } });
+      }
+      return sendError(res, 404, "not_found", sm(L, "error.unknownCase", { id }));
+    }
     if (area === "content" && kind && rest.length === 0) {
       if (!get) return notAllowed("GET, HEAD");
       // Library index (legacy shape: every case summary, facilities, catalogs).
@@ -263,9 +277,9 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
           // A published case's source (citation, DOI, references) only on request: `?spoilers=1` (the web asks, and
           // shows it once the case is complete).
           const spoilers = url.searchParams.get("spoilers") === "1";
-          const etag = await cases.currentEtag(id, spoilers);
+          const etag = await cases.currentEtag(id, spoilers ? "full" : "learner");
           if (etag && etagMatches(req.headers["if-none-match"], etag)) return sendCachedJson(req, res, "", etag);
-          const found = await cases.load(id, spoilers);
+          const found = await cases.load(id, spoilers ? "full" : "learner");
           if (found.status === "ok") return sendCachedJson(req, res, found.body, found.etag);
           if (found.status === "invalid") {
             const first = found.issues[0];
