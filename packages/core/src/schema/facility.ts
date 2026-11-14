@@ -200,9 +200,19 @@ export const SCREEN_KINDS = ["none", "vitals", "ecg", "xray", "ct", "pacs", "lab
 /** The screens that are a picture drawn once — what a state's look may switch between (`vitals` and `ecg` are the patient's own, live). */
 export const STATIC_SCREEN_KINDS = ["none", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
 
-/** How a manikin is covered when it lies on its side, and whether its chest moves (`EquipmentManikinSchema`). */
-export const MANIKIN_COVERS = ["clothes", "blanket", "drapes"] as const;
+/** How a manikin is placed, how it is covered, and whether its chest moves (`EquipmentManikinSchema`). */
+export const MANIKIN_POSTURES = ["standing", "sitting", "lying", "lateral", "prone"] as const;
+export const MANIKIN_COVERS = ["clothes", "blanket", "drapes", "towels"] as const;
 export const MANIKIN_BREATHING = ["none", "both", "one-lung"] as const;
+
+/**
+ * The covers a posture takes: on its side a manikin is in its `clothes`, under a `blanket` or under the `drapes`
+ * of an operation; lying flat — on its back or face down — in its `clothes` or under `towels`; standing or
+ * sitting, in its clothes.
+ */
+export function coversOf(posture: (typeof MANIKIN_POSTURES)[number]): readonly (typeof MANIKIN_COVERS)[number][] {
+  return posture === "lateral" ? ["clothes", "blanket", "drapes"] : posture === "lying" || posture === "prone" ? ["clothes", "towels"] : ["clothes"];
+}
 
 /** A layer of a model: lower-case letters, digits, `_` and `-` — a node of the GLB named `layer:<id>` (docs/BLENDER.md). */
 export const LayerIdSchema = z
@@ -217,7 +227,7 @@ export const LayerIdSchema = z
  */
 export const ManikinLookSchema = z
   .object({
-    posture: z.enum(["standing", "sitting", "lying", "lateral"]).optional(),
+    posture: z.enum(MANIKIN_POSTURES).optional(),
     sideUp: z.enum(["left", "right"]).optional(),
     cover: z.enum(MANIKIN_COVERS).optional(),
     flex: z.number().min(0).max(25).optional(),
@@ -352,18 +362,22 @@ export type EquipmentModel = z.infer<typeof EquipmentModelSchema>;
 export const EquipmentManikinSchema = z
   .object({
     /**
-     * How it is placed: `standing`, `sitting`, `lying` on its back — or `lateral`: on its side as for an operation
-     * on the chest (the arm underneath out in front on its board, the upper arm forward on a support, the leg
-     * underneath bent at hip and knee).
+     * How it is placed: `standing`, `sitting`, `lying` on its back; `lateral`: on its side as for an operation on
+     * the chest (the arm underneath out in front on its board, the upper arm forward on a support, the leg
+     * underneath bent at hip and knee); or `prone`: face down as on a treatment couch (the legs straight, the
+     * arms along the trunk, the palms up).
      */
-    posture: z.enum(["standing", "sitting", "lying", "lateral"]),
+    posture: z.enum(MANIKIN_POSTURES),
     /** `lateral`: the side that is up — the side operated on (default `left`). */
     sideUp: z.enum(["left", "right"]).optional(),
     /**
-     * `lateral`: what covers it. `clothes` (default): what its appearance says — its own clothes, or a hospital
-     * gown. `blanket`: undressed, a theatre cap over the hair, a blanket to the waist — on the table before the
-     * field is prepared. `drapes`: undressed and draped for an operation on the side of the chest that is up —
-     * the theatre cap, towels round the field, a sheet over the hips and the legs.
+     * What covers it (`coversOf`: the covers its posture takes). `clothes` (default): what its appearance says —
+     * its own clothes, or a hospital gown; lying on its back it is in bed under the covers. On its side
+     * (`lateral`) — `blanket`: undressed, a theatre cap over the hair, a blanket to the waist, on the table before
+     * the field is prepared; `drapes`: undressed and draped for an operation on the side of the chest that is up —
+     * the theatre cap, towels round the field, a sheet over the hips and the legs. Lying flat (`lying`, `prone`) —
+     * `towels`: undressed for a treatment of the body's surface, the skin and the feet bare, a towel over the hips
+     * and, on its back, another over the chest.
      */
     cover: z.enum(MANIKIN_COVERS).optional(),
     /** The earlier spelling of `cover: "drapes"` (kept for catalogs written with it). */
@@ -396,13 +410,16 @@ export const EquipmentManikinSchema = z
     appearance: AppearanceSchema.partial().optional(),
   })
   .strict()
-  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.cover === undefined && m.flex === 0 && m.breathing !== "one-lung"), {
-    message: "`sideUp`, `cover` (`draped`), `flex` and `breathing: \"one-lung\"` describe a manikin on its side (`posture: \"lateral\"`)",
+  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.flex === 0 && m.breathing !== "one-lung"), {
+    message: "`sideUp`, `draped`, `flex` and `breathing: \"one-lung\"` describe a manikin on its side (`posture: \"lateral\"`)",
+  })
+  .refine((m) => m.cover === undefined || coversOf(m.posture).includes(m.cover), {
+    message: "`cover`: on its side a manikin is in its clothes, under a blanket or under drapes; lying flat (`lying`, `prone`) in its clothes or under towels; standing or sitting in its clothes",
   })
   .refine((m) => m.cover === undefined || m.draped === undefined || m.draped === (m.cover === "drapes"), { message: "`draped` is the earlier spelling of `cover: \"drapes\"`: say one, or the same with both" });
 export type EquipmentManikin = z.infer<typeof EquipmentManikinSchema>;
 
-/** How a manikin on its side is covered: its `cover`, or what the earlier `draped` said (`clothes` when neither does). */
+/** How a manikin is covered: its `cover`, or what the earlier `draped` said (`clothes` when neither does). */
 export function manikinCover(m: Pick<EquipmentManikin, "cover" | "draped">): (typeof MANIKIN_COVERS)[number] {
   return m.cover ?? (m.draped ? "drapes" : "clothes");
 }

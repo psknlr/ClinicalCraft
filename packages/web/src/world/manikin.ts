@@ -1,12 +1,12 @@
 /**
  * A body drawn with equipment (`EquipmentType.manikin`, docs/FACILITIES.md): the patient simulator of a training
- * station, a manikin on a trolley. It is one of the world's own figures (`npc.ts` — the people of the world are
+ * station, a manikin on a trolley, a body on a treatment couch. It is one of the world's own figures (`npc.ts` — the people of the world are
  * drawn the same way) put where the type says, and it is nobody: no name tag, no aim target of its own (the aim
  * finds the equipment), no part in the world model. What it is like may follow the equipment's state (a state's
  * `look`: covered differently, its chest moving or still) — `live.ts` rebuilds or animates it.
  */
 import { Vector3 } from "three";
-import { manikinCover, type DrawnManikin, type EquipmentManikin } from "@clinicalcraft/core";
+import { coversOf, manikinCover, type DrawnManikin, type EquipmentManikin } from "@clinicalcraft/core";
 import { bendPoint } from "./figure/bend.js";
 import { DEG, rotateXZ } from "./geometry.js";
 import { buildPerson, PLAIN_WEAR, type AppearanceLike, type PersonOptions, type PersonRig } from "./npc.js";
@@ -18,17 +18,19 @@ import { buildPerson, PLAIN_WEAR, type AppearanceLike, type PersonOptions, type 
  */
 export function manikinFigure(m: DrawnManikin | EquipmentManikin, seed: string): { appearance: AppearanceLike; options: PersonOptions } {
   const lateral = m.posture === "lateral";
-  const cover = lateral ? manikinCover(m as EquipmentManikin) : "clothes";
+  const said = manikinCover(m as EquipmentManikin);
+  // (a cover its posture does not take is its own clothes)
+  const cover = coversOf(m.posture).includes(said) ? said : "clothes";
   return {
     appearance: { ...(m.appearance ?? {}) },
     options: {
       posture: m.posture,
       surfaceY: m.posture === "standing" ? undefined : (m.y ?? 0),
-      // undressed on the table, under a blanket or the drapes: nothing on but a theatre cap
-      wear: cover !== "clothes" ? { ...PLAIN_WEAR, cap: true } : PLAIN_WEAR,
+      // undressed on the operating table, under a blanket or the drapes: nothing on but a theatre cap
+      wear: lateral && cover !== "clothes" ? { ...PLAIN_WEAR, cap: true } : PLAIN_WEAR,
       seed: `manikin:${seed}`,
       asleep: !!m.asleep,
-      ...(lateral ? { up: m.sideUp ?? "left", cover, flex: m.flex ?? 0 } : {}),
+      ...(lateral ? { up: m.sideUp ?? "left", cover, flex: m.flex ?? 0 } : cover !== "clothes" ? { cover } : {}),
     },
   };
 }
@@ -51,19 +53,25 @@ export function buildManikin(m: DrawnManikin | EquipmentManikin, at: { x: number
 const BREATH_MS = 5000;
 const INSPIRATION = 1 / 3;
 
+/** How deep a body flat on a treatment couch breathes: the skin that is up — some 10 cm from the middle of the body — rises a millimetre. */
+const COUCH_BREATH = 0.01;
+
 /**
  * How far a manikin's chest is out at time `now` (ms): [depth, rise] for `setBreath` — nothing for one that does
  * not breathe; in and out with both lungs; and with one lung, on its side, the chest wall that is up all but
  * still (the lung under it is down) while the rest moves a little. The wall that is up rises by a millimetre at
  * most: what a model puts on that skin — marks, ports, dressings — does not move with it, and must not sink in.
+ * The same holds for a body flat on a treatment couch — face down, or on its back under towels — whose skin is
+ * what is treated: its back, or its front, rises by a millimetre.
  */
-export function breathOf(m: Pick<EquipmentManikin, "breathing" | "posture">, now: number, phase = 0): [number, number] {
+export function breathOf(m: Pick<EquipmentManikin, "breathing" | "posture" | "cover">, now: number, phase = 0): [number, number] {
   if (!m.breathing || m.breathing === "none") return [0, 0];
   const t = (((now / BREATH_MS + phase) % 1) + 1) % 1;
   // in over a third of the breath, out — quickly at first — over the rest
   const filled = t < INSPIRATION ? 0.5 - 0.5 * Math.cos((Math.PI * t) / INSPIRATION) : Math.exp(-4.2 * ((t - INSPIRATION) / (1 - INSPIRATION))) * (1 - (t - INSPIRATION) / (1 - INSPIRATION) * 0.02);
   const lateral = m.posture === "lateral";
   if (m.breathing === "one-lung") return [0.012 * filled, lateral ? 0.0015 * filled : 0];
+  if (m.posture === "prone" || (m.posture === "lying" && m.cover === "towels")) return [COUCH_BREATH * filled, 0];
   return [0.024 * filled, lateral ? 0.006 * filled : 0];
 }
 

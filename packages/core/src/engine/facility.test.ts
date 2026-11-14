@@ -483,6 +483,14 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(cover({ posture: "lateral", cover: "blanket" })).toBe("blanket");
     expect(cover({ posture: "lateral", cover: "drapes", draped: true })).toBe("drapes");
     expect(cover({ posture: "lateral", cover: "blanket", draped: true })).toBeNull();
+    // lying flat — on its back, or face down as on a treatment couch — it is in its clothes or under towels
+    expect(cover({ posture: "prone" })).toBe("clothes");
+    expect(cover({ posture: "prone", cover: "towels" })).toBe("towels");
+    expect(cover({ posture: "lying", cover: "towels" })).toBe("towels");
+    expect(cover({ posture: "lying", cover: "clothes" })).toBe("clothes");
+    raw.equipment[0].manikin = { posture: "prone", cover: "towels", breathing: "both", y: 0.62 };
+    const couch = parseCatalog(raw);
+    expect(couch.ok && couch.value.equipment[0].manikin).toEqual({ posture: "prone", cover: "towels", breathing: "both", flex: 0, asleep: false, x: 0, z: 0, y: 0.62, rot: 0 });
     for (const [bad, at] of [
       [{ posture: "lying", draped: true }, "equipment.0.manikin"],
       [{ posture: "lying", cover: "blanket" }, "equipment.0.manikin"],
@@ -492,7 +500,14 @@ describe("checkCatalogs: embodiment fields", () => {
       [{ posture: "sitting", flex: 9 }, "equipment.0.manikin"],
       [{ posture: "standing", sideUp: "right" }, "equipment.0.manikin"],
       [{ posture: "lateral", flex: 40 }, "equipment.0.manikin.flex"],
-      [{ posture: "prone" }, "equipment.0.manikin.posture"],
+      [{ posture: "kneeling" }, "equipment.0.manikin.posture"],
+      // a cover its posture does not take
+      [{ posture: "lateral", cover: "towels" }, "equipment.0.manikin"],
+      [{ posture: "prone", cover: "drapes" }, "equipment.0.manikin"],
+      [{ posture: "prone", cover: "blanket" }, "equipment.0.manikin"],
+      [{ posture: "sitting", cover: "towels" }, "equipment.0.manikin"],
+      [{ posture: "prone", sideUp: "left" }, "equipment.0.manikin"],
+      [{ posture: "prone", breathing: "one-lung" }, "equipment.0.manikin"],
       [{ posture: "lateral", hat: true }, "equipment.0.manikin"],
     ] as const) {
       raw.equipment[0].manikin = bad;

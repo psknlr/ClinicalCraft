@@ -414,7 +414,8 @@
                               "standing",
                               "sitting",
                               "lying",
-                              "lateral"
+                              "lateral",
+                              "prone"
                             ]
                           },
                           "sideUp": {
@@ -429,7 +430,8 @@
                             "enum": [
                               "clothes",
                               "blanket",
-                              "drapes"
+                              "drapes",
+                              "towels"
                             ]
                           },
                           "flex": {
@@ -700,7 +702,8 @@
                 "standing",
                 "sitting",
                 "lying",
-                "lateral"
+                "lateral",
+                "prone"
               ]
             },
             "sideUp": {
@@ -715,7 +718,8 @@
               "enum": [
                 "clothes",
                 "blanket",
-                "drapes"
+                "drapes",
+                "towels"
               ]
             },
             "draped": {
