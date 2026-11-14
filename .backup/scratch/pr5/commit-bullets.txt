@@ -1,8 +1,0 @@
-- cmcr-1069544: Upper abdominal pain, nausea and vomiting · 58-year-old woman (5 decisions, 17 interventions;
-  review: 2 critical, 6 major, 14 minor findings)
-- cmcr-1322371: Empty right hemiscrotum after a road crash · 30-year-old man (4 decisions, 15 interventions;
-  review: 3 critical, 8 major, 8 minor findings)
-- cmcr-33729: Progressive breathlessness and orthopnoea after fatigue · 57-year-old woman (5 decisions, 13 interventions;
-  review: 3 critical, 8 major, 10 minor findings)
-- cmcr-857347: Thirst, then vomiting and breathlessness · 25-year-old man (5 decisions, 20 interventions;
-  review: 3 critical, 6 major, 5 minor findings)
