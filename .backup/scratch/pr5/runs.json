@@ -1,5 +1,5 @@
 {
- "note": "Since the container restart of 2026-11-13 ~16:50 UTC: stopped runs are NOT resumed (resume replays only a prefix); a new run gets the cases still to do (case-status.json + the journals, via commit-cases.py). At most 3 workflows (6 agents) at once. From 2026-11-14 06:10: reauthor-v5.js (two lanes per run sharing one queue: author -> review -> next), authors' reports for review-mode cases in pr5/reports/<id>.json.",
+ "note": "Since the container restart of 2026-11-13 ~16:50 UTC: stopped runs are NOT resumed (resume replays only a prefix); a new run gets the cases still to do (case-status.json + the journals, via commit-cases.py). At most 3 workflows (6 agents) at once. From 2026-11-14 06:10: reauthor-v5.js (two lanes per run sharing one queue: author -> review -> next), authors' reports for review-mode cases in pr5/reports/<id>.json. From 2026-11-14 06:58: review2.js (rounds 2..4 per committed case, 2 lanes); commit-cases.py commits later rounds apart once a case's rounds are complete.",
  "runs": [
   {
    "name": "cases-A",
@@ -122,6 +122,35 @@
    "task": "wa6m12lqm",
    "script": "pr5/reauthor-v5.js",
    "started": "2026-11-14 06:52"
+  },
+  {
+   "name": "audit-wave2c",
+   "runId": "wf_68c0c758-eef",
+   "task": "wkqb9y3gb",
+   "script": "audit2/wave2c.js",
+   "args": {
+    "base": "9b264e4"
+   },
+   "started": "2026-11-14 07:10",
+   "plan": "fix W1-W6 (world/web) and D1-D4 (dose/team) -> 2 verifiers (replay, regression) -> fix-2 -> final check"
+  },
+  {
+   "name": "review2-R1",
+   "runId": "wf_562a064d-62d",
+   "task": "wasm1j3pg",
+   "script": "pr5/review2.js",
+   "argsFile": "args-R1.json",
+   "started": "2026-11-14 06:58",
+   "plan": "21 committed cases: second review (+ up to 2 more rounds while a round finds critical/major)"
+  },
+  {
+   "name": "review2-R2",
+   "runId": "wf_bc0bb482-71a",
+   "task": "wav2v7equ",
+   "script": "pr5/review2.js",
+   "argsFile": "args-R2.json",
+   "started": "2026-11-14 06:58",
+   "plan": "20 committed cases: second review (+ up to 2 more rounds)"
   }
  ]
 }

@@ -15,9 +15,12 @@ WF = "/root/.claude/projects/-home-user-ClinicalCraft/61c17a21-a923-5d20-a08c-1c
 STATUS = os.path.join(SP, "case-status.json")
 
 
+MAX_ROUND = 4  # review2.js: rounds 2 .. 2 + maxRounds (default 2)
+
+
 def journals():
-    """(author results, review results) by case id, from every journal of this session."""
-    authors, reviews = {}, {}
+    """(author results, first-review results, later review rounds {round: result}) by case id, from every journal."""
+    authors, reviews, rounds = {}, {}, {}
     for p in glob.glob(os.path.join(WF, "*", "journal.jsonl")):
         for line in open(p):
             try:
@@ -28,10 +31,24 @@ def journals():
             if d.get("type") != "result" or not isinstance(v, dict) or "caseId" not in v:
                 continue
             if "findings" in v and "allChecksPass" in v:
-                reviews[v["caseId"]] = v
+                if int(v.get("round") or 1) >= 2:
+                    rounds.setdefault(v["caseId"], {})[int(v["round"])] = v
+                else:
+                    reviews[v["caseId"]] = v
             elif "extraction" in v:
                 authors[v["caseId"]] = v
-    return authors, reviews
+    return authors, reviews, rounds
+
+
+def serious(v):
+    return sum(1 for f in v["findings"] if f["severity"] in ("critical", "major"))
+
+
+def rounds_complete(rs):
+    """A case's later rounds are complete when the last one found nothing critical or major with all checks passing,
+    or the last allowed round has run; before that another reviewer may still be editing the case."""
+    last = max(rs)
+    return (serious(rs[last]) == 0 and rs[last]["allChecksPass"]) or last >= MAX_ROUND
 
 
 def git(*args):
@@ -69,7 +86,7 @@ def checks(cid):
 def main():
     only = set(sys.argv[sys.argv.index("--only") + 1].split(",")) if "--only" in sys.argv else None
     skip, commit = "--skip-tests" in sys.argv, "--commit" in sys.argv
-    authors, reviews = journals()
+    authors, reviews, rounds = journals()
     status = json.load(open(STATUS)) if os.path.exists(STATUS) else {}
     for cid in authors:
         status.setdefault(cid, {})["authored"] = True
@@ -78,10 +95,36 @@ def main():
         s["reviewed"] = True
         s["allChecksPass"] = bool(v["allChecksPass"])
         s["findings"] = dict(collections.Counter(f["severity"] for f in v["findings"]))
-    ready, rows = [], []
+    for cid, rs in rounds.items():
+        s2 = status.setdefault(cid, {}).setdefault("rounds", {})
+        for r, v in rs.items():
+            s2[str(r)] = {"allChecksPass": bool(v["allChecksPass"]), "findings": dict(collections.Counter(f["severity"] for f in v["findings"]))}
+    ready, ready2, rows = [], [], []
+    for cid, rs in sorted(rounds.items()):
+        if only and cid not in only:
+            continue
+        if not dirty(cid):
+            if rounds_complete(rs):
+                status[cid]["roundsCommitted"] = max(rs)
+            continue
+        if not rounds_complete(rs):
+            rows.append((cid, f"round {max(rs)} done, another round running", ""))
+            continue
+        if not rs[max(rs)]["allChecksPass"]:
+            rows.append((cid, f"round {max(rs)} reports failing checks", ""))
+            continue
+        res = {} if skip else checks(cid)
+        ok = all(res.values())
+        status[cid]["checks"] = res
+        desc = "; ".join(f"round {r}: " + ", ".join(f"{n} {k}" for k, n in sorted(collections.Counter(f["severity"] for f in rs[r]["findings"]).items())) for r in sorted(rs))
+        rows.append((cid, "PASS" if ok else "FAIL " + ",".join(k for k, x in res.items() if not x), desc))
+        if ok:
+            ready2.append((cid, rs, desc))
     for cid, v in sorted(reviews.items()):
         if only and cid not in only:
             continue
+        if cid in rounds:
+            continue  # its first review is committed; later rounds are handled above
         if not dirty(cid):
             status[cid]["committed"] = True
             continue
@@ -128,8 +171,33 @@ def main():
         print("commit:", out.returncode, out.stderr.strip()[:300], git("log", "--oneline", "-1").strip())
         for cid, *_ in ready:
             status[cid]["committed"] = True
+    if commit and ready2 and not skip:
+        n = len(ready2)
+        tot = collections.Counter()
+        for _, rs, _ in ready2:
+            for v in rs.values():
+                tot.update(f["severity"] for f in v["findings"])
+        bullets = "\n".join(f"- {cid}: {desc}" for cid, _, desc in ready2)
+        msg = (f"CMCR 105: {n} more case{'s' if n > 1 else ''} through a second independent review\n\n"
+               "Each case, re-authored and reviewed once, was reviewed again by a fresh reviewer: every patient fact\n"
+               "traced to 1.0.0 in both languages, every guideline statement looked up in its source's own text,\n"
+               "the kit's checklist of the earlier reviews' findings, and assessment replays (harmful acts, option\n"
+               "lengths, aliases, leaks, plain questions in both languages); a further round followed while a round\n"
+               "found a critical or major issue. Findings by round (all critical and major ones fixed or answered\n"
+               "with a reason in the case's README):\n\n" + bullets + "\n\n"
+               f"Totals: {tot['critical']} critical, {tot['major']} major and {tot['minor']} minor findings. Each case passes\n"
+               "strict validation, verification (100 %), scripts/case-check.ts, the collection contract and the\n"
+               "in-world demonstration in both languages.\n\n"
+               "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n"
+               "Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab\n")
+        open(os.path.join(SP, "commit-msg-2.txt"), "w").write(msg)
+        git("add", "--", *[f"packages/content/cases/{cid}" for cid, *_ in ready2])
+        out = subprocess.run(["git", "commit", "-q", "-F", os.path.join(SP, "commit-msg-2.txt")], cwd=WT, capture_output=True, text=True)
+        print("commit (later rounds):", out.returncode, out.stderr.strip()[:300], git("log", "--oneline", "-1").strip())
+        for cid, rs, _ in ready2:
+            status[cid]["roundsCommitted"] = max(rs)
     json.dump(status, open(STATUS, "w"), indent=1, sort_keys=True)
-    print(f"{len(ready)} ready")
+    print(f"{len(ready)} ready; {len(ready2)} ready after later rounds")
 
 
 main()

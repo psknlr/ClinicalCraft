@@ -12,3 +12,6 @@
    copy `.backup/scratch/*` back to $SP; `npm install` in both worktrees; bpy: `python3.11 -m venv $SP/bpy-venv && $SP/bpy-venv/bin/pip install bpy==5.0.1`.
 4. Status: case-status.json; start new runs for what is not reviewed (reauthor-v5.js: two lanes, author -> review -> next; modes review/author, reportFile for an author report kept in pr5/reports), at most 3
    workflows; restart the 30-minute loop (loop.sh).
+5. Second reviews (from 2026-11-14): review2.js over committed cases (args {cases:[id…]}); a case is done when its
+   case-status.json entry has `roundsCommitted`; cases with rounds but none committed: start a new review2 run for
+   them (the reviewer continues from ${SP}/work-<id>/review<round>.md notes and the uncommitted edits).
