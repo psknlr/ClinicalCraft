@@ -26,12 +26,12 @@
   "estimatedMinutes": 40,
   "learningOutcomes": [
     {
-      "zh-CN": "说出本例中使全身型幼年特发性关节炎（JIA）诊断站不住脚的表现（起病时无皮疹、无浅表淋巴结肿大、血小板低至65×10⁹/L、乳酸脱氢酶1312 U/L、服激素期间再次发热），并在排除肿瘤、感染和巨噬细胞活化综合征之前不加强免疫抑制（EULAR/PReS 2024）。",
-      "en": "Name the features that make the systemic juvenile idiopathic arthritis (JIA) label unsafe here (no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, an LDH of 1312 U/L, fever returning on steroids) and hold further immunosuppression until malignancy, infection and macrophage activation are excluded (EULAR/PReS 2024)."
+      "zh-CN": "说出本例中使全身型幼年特发性关节炎（JIA）诊断站不住脚的表现（起病时无皮疹、无浅表淋巴结肿大、血小板低至65×10⁹/L、乳酸脱氢酶1312 U/L、服激素期间再次发热），并在排除肿瘤和感染之前不加强免疫抑制，巨噬细胞活化综合征要检查证实而不是假定（EULAR/PReS 2024）。",
+      "en": "Name the features that make the systemic juvenile idiopathic arthritis (JIA) label unsafe here (no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, an LDH of 1312 U/L, fever returning on steroids) and hold further immunosuppression until malignancy and infection are excluded, testing for macrophage activation rather than assuming it (EULAR/PReS 2024)."
     },
     {
-      "zh-CN": "解释为什么骨盆平片“未见明显破坏”和一次骨髓阴性都不能排除骨肿瘤，并依据MRI和增强CT所见判断需要取得组织（ESMO 2021）。",
-      "en": "Explain why pelvic radiographs without obvious destruction and one negative marrow do not exclude a bone tumour, and use the MRI and contrast-enhanced CT findings to decide that tissue is needed (ESMO 2021)."
+      "zh-CN": "解释为什么骨盆平片“未见明显破坏”和骨髓阴性都不能排除骨肿瘤，并依据MRI和增强CT所见判断需要取得组织（ESMO 2021）。",
+      "en": "Explain why pelvic radiographs without obvious destruction and a negative marrow do not exclude a bone tumour, and use the MRI and contrast-enhanced CT findings to decide that tissue is needed (ESMO 2021)."
     },
     {
       "zh-CN": "与儿童骨肉瘤专科团队一起规划可疑骨肉瘤的活检：先查血小板和凝血，穿刺道能随日后手术切除，标本同时送病理、分子检测和培养；并说明擅自切开切除的危害。",
@@ -147,8 +147,8 @@
       },
       "concerns": [],
       "actingNotes": {
-        "zh-CN": "扮演者：孩子3岁9个月，不回答病史问题。家长回答所有病史问题，只讲自己知道的：发热七十多天，起初38℃左右，后来最高39.5℃、一天好几次；慢慢出现轻度跛行、不愿走路，起初关节没有明显肿痛；外院按幼年特发性关节炎用激素后热退，继续口服期间又发热；来这儿之前诊断的是全身型幼年特发性关节炎；最近差不多一个月断断续续抗感染，烧还是加重；起病时没有皮疹、出血点、口腔溃疡或脱发；以前身体健康，没接触过结核、肝炎病人，疫苗按计划打；体重15.9公斤。激素的名字、剂量、疗程和现在怎么吃，用的是哪些抗生素，过敏、疼痛、体重变化、出血、大小便、家族史和接触史都说不上来，不要编。检查结果和诊断让医生说；后面阶段的结果不要提前说。",
-        "en": "For the actor: the child is 3 years 9 months old and does not answer history questions. Her parent answers every history question and says only what they know: fever for more than seventy days, about 38 °C at first and later up to 39.5 °C several times a day; a slight limp that came on gradually and reluctance to walk, with no obvious joint swelling or pain at first; steroids at another hospital for juvenile idiopathic arthritis settled the fever, which came back while she was still taking them by mouth; before coming here she was diagnosed with systemic juvenile idiopathic arthritis; on-and-off treatment for infection for about the last month while the fever still got worse; no rash, bleeding spots, mouth ulcers or hair loss at the start; previously healthy, no contact with TB or hepatitis, vaccinations on schedule; weight 15.9 kg. The steroid's name, dose, duration and how she takes it now, which antibiotics were used, allergies, pain, weight change, bleeding, bladder and bowels, family history and exposures are not known — never invent them. Results and the diagnosis are for the doctors; never mention a later phase's results early."
+        "zh-CN": "扮演者：孩子3岁9个月，不回答病史问题。家长回答所有病史问题，只讲自己知道的：发热七十多天，起初38℃左右，后来最高39.5℃、一天好几次；慢慢出现轻度跛行、不愿走路，起初关节没有明显肿痛；外院按幼年特发性关节炎用激素后热退，继续口服期间又发热；来这儿之前诊断的是全身型幼年特发性关节炎；最近差不多一个月断断续续抗感染，烧还是加重；起病时没有皮疹、出血点、口腔溃疡或脱发；以前身体健康，没接触过结核、肝炎病人，疫苗按计划打；体重15.9公斤。激素的名字、剂量、疗程和现在还吃不吃，用的是哪些抗生素，过敏、疼痛、体重变化、出血、大小便、家族史和接触史都说不上来，不要编。检查结果和诊断让医生说；后面阶段的结果不要提前说。",
+        "en": "For the actor: the child is 3 years 9 months old and does not answer history questions. Her parent answers every history question and says only what they know: fever for more than seventy days, about 38 °C at first and later up to 39.5 °C several times a day; a slight limp that came on gradually and reluctance to walk, with no obvious joint swelling or pain at first; steroids at another hospital for juvenile idiopathic arthritis settled the fever, which came back while she was still taking them by mouth; before coming here she was diagnosed with systemic juvenile idiopathic arthritis; on-and-off treatment for infection for about the last month while the fever still got worse; no rash, bleeding spots, mouth ulcers or hair loss at the start; previously healthy, no contact with TB or hepatitis, vaccinations on schedule; weight 15.9 kg. The steroid's name, dose, duration and whether she still takes it, which antibiotics were used, allergies, pain, weight change, bleeding, bladder and bowels, family history and exposures are not known — never invent them. Results and the diagnosis are for the doctors; never mention a later phase's results early."
       },
       "companion": {
         "role": "parent",
@@ -278,7 +278,7 @@
         "en": "What has brought Qinghe into hospital this time?"
       },
       "answer": {
-        "zh-CN": "她发烧七十多天了，后来走路慢慢有点跛。",
+        "zh-CN": "她发烧七十多天了，走路也慢慢有点跛了。",
         "en": "She's had a fever for more than seventy days, and bit by bit she's started to limp a little."
       },
       "keywords": {
@@ -440,7 +440,13 @@
           "吃激素",
           "用激素",
           "激素以后",
-          "退烧"
+          "退烧",
+          "吃什么药",
+          "用什么药",
+          "什么药",
+          "平时用药",
+          "在用的药",
+          "吃的药"
         ],
         "en": [
           "steroid",
@@ -450,7 +456,13 @@
           "methylprednisolone",
           "dexamethasone",
           "after the steroids",
-          "on steroids"
+          "on steroids",
+          "medicines",
+          "medication",
+          "medications",
+          "whatisshetaking",
+          "regular medicines",
+          "any treatment"
         ]
       },
       "excludeKeywords": {
@@ -459,13 +471,16 @@
           "吃多少",
           "多少毫克",
           "几片",
-          "多大量"
+          "多大量",
+          "过敏",
+          "还在吃"
         ],
         "en": [
           "dose",
           "milligram",
           "how much",
-          "tablets"
+          "tablets",
+          "allerg"
         ]
       },
       "disclosure": "on-ask",
@@ -524,8 +539,8 @@
         "en": "Which steroid was it, at what dose and for how long — and is she still taking it?"
       },
       "answer": {
-        "zh-CN": "药名和剂量我说不清楚，现在具体怎么吃的我也说不准，医生。",
-        "en": "I can't tell you the name or the dose, doctor, or exactly how she's taking it now."
+        "zh-CN": "药名、剂量和用了多久我都说不清楚，现在还吃不吃我也说不准，医生。",
+        "en": "I can't tell you the name, the dose or how long she's had it, doctor, or whether she's still on it now."
       },
       "keywords": {
         "zh-CN": [
@@ -540,7 +555,9 @@
           "现在还吃",
           "哪种激素",
           "激素叫什么",
-          "每天吃几片"
+          "每天吃几片",
+          "还在吃",
+          "还吃不吃"
         ],
         "en": [
           "dose",
@@ -558,10 +575,19 @@
         "zh-CN": [
           "发烧",
           "退烧",
-          "烧退"
+          "烧退",
+          "有效",
+          "管用",
+          "效果",
+          "好转"
         ],
         "en": [
-          "fever"
+          "fever",
+          "help",
+          "helped",
+          "work",
+          "better",
+          "settle"
         ]
       },
       "disclosure": "unknown",
@@ -630,7 +656,10 @@
           "输液",
           "打吊针",
           "头孢",
-          "青霉素"
+          "青霉素",
+          "感染过",
+          "有没有感染",
+          "感染"
         ],
         "en": [
           "antibiotics",
@@ -640,7 +669,9 @@
           "iv antibiotics",
           "penicillin",
           "cephalosporin",
-          "treated for infection"
+          "treated for infection",
+          "infections",
+          "any infection"
         ]
       },
       "disclosure": "on-ask",
@@ -715,6 +746,18 @@
       "source": {
         "zh-CN": "原报告（据1.0.0版提取）·病史：否认结核、肝炎接触",
         "en": "The report (as extracted in version 1.0.0) · history: contact with TB or hepatitis denied"
+      },
+      "excludeKeywords": {
+        "en": [
+          "had any infection",
+          "infections recently",
+          "antibiotic"
+        ],
+        "zh-CN": [
+          "抗感染",
+          "感染过",
+          "有没有感染"
+        ]
       }
     },
     {
@@ -2288,6 +2331,17 @@
       }
     }
   ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "radiographs",
+        "ifMatches": "chest|thorax|胸",
+        "remove": [
+          "radiographs"
+        ]
+      }
+    ]
+  },
   "interventions": [
     {
       "id": "oncology-referral",
@@ -2386,18 +2440,27 @@
         ]
       },
       "contraindicatedWhen": {
-        "not": {
-          "read": "fbc",
-          "phase": "workup"
-        }
+        "any": [
+          {
+            "not": {
+              "read": "fbc",
+              "phase": "workup"
+            }
+          },
+          {
+            "not": {
+              "intervened": "oncology-referral"
+            }
+          }
+        ]
       },
       "harm": {
-        "zh-CN": "她的血小板最低到过65×10⁹/L：在针进骨头之前，先知道当天的血小板和凝血情况（国家卫健委2019年规范把凝血功能列为治疗前应了解的检查），并让麻醉医生了解她的激素用药。",
-        "en": "Her platelet count has been as low as 65 × 10⁹/L: know today's count and clotting before a needle goes into bone (China's 2019 national guideline lists clotting among the tests to know before treatment), and let the anaesthetist know about her steroid treatment."
+        "zh-CN": "先转诊：ESMO 2021要求可疑骨肉瘤的活检由将来做根治手术的外科团队来做，或由介入放射科医生与该外科医生商定后进行。她的血小板最低到过65×10⁹/L：针进骨头之前先查血常规和凝血（国家卫健委2019年规范把凝血功能列为治疗前应了解的检查），并让麻醉医生了解她的激素用药。",
+        "en": "Refer her first: ESMO 2021 has the biopsy of a suspected bone sarcoma done by the surgical team who will resect it, or by an interventional radiologist after discussing it with that surgeon. And her platelet count has been as low as 65 × 10⁹/L: check her count and clotting before a needle goes into bone (China's 2019 national guideline lists clotting among the tests to know before treatment), and let the anaesthetist know about her steroid treatment."
       },
       "response": {
-        "zh-CN": "已按骨肉瘤团队的规划在影像引导下完成活检，组织已送病理、分子检测和培养。原报告记录做了右髂骨活检，但没有写明活检方式。",
-        "en": "Biopsy done with image guidance along the bone sarcoma team's plan; tissue sent for histology, molecular testing and culture. The report records a right iliac biopsy but not its approach."
+        "zh-CN": "已在影像引导下完成粗针活检，组织已送病理、分子检测和培养。原报告记录做了右髂骨活检，但没有写明活检方式和由谁规划。",
+        "en": "Image-guided core biopsy done; tissue sent for histology, molecular testing and culture. The report records a right iliac biopsy but not how it was taken or who planned it."
       },
       "requires": [],
       "effects": []
@@ -2463,8 +2526,8 @@
         "en": "A transfusion is given against a measured haemoglobin: BSH 2016 uses a threshold of 70 g/L in a stable child (70–80 g/L is reasonable in children with cancer) and a volume that brings it no more than 20 g/L above the threshold. Read her blood count first."
       },
       "response": {
-        "zh-CN": "已按当天的血红蛋白和体重（15.9 kg）开出红细胞。她在病程中是否输过血，病历没有记录。",
-        "en": "Red cells ordered against today's haemoglobin and her weight (15.9 kg). Whether she was transfused in her recorded course is not recorded."
+        "zh-CN": "已送配血并申请红细胞：只有当天血红蛋白低于阈值时才输，输注量按体重（15.9 kg）计算。她的病历没有记录当天的血红蛋白，也没有记录病程中是否输过血。",
+        "en": "Group and screen sent and red cells requested: they are to be given only if today's haemoglobin is below the threshold, in a volume worked out from her weight (15.9 kg). Today's haemoglobin is not recorded in her notes, nor whether she was transfused in her recorded course."
       },
       "effects": []
     },
@@ -2651,8 +2714,8 @@
         "en": "Raising the steroids before the cause is known treats a label. EULAR/PReS 2024 asks that malignancy, infection and other mimics be carefully considered before Still's disease (systemic JIA) is treated, and warns that glucocorticoids can be deleterious when it is misdiagnosed, particularly in malignancy. Pulsed steroids can blunt the fever and partly treat a leukaemia or lymphoma, delaying and blurring the diagnosis."
       },
       "response": {
-        "zh-CN": "已给药。这不在她记录的病程中；发热的原因仍然不明，现在用激素可能让之后的活检所见变得模糊。",
-        "en": "Given. It is not part of her recorded course; the cause of her fever is still unknown, and steroids now can blur what a biopsy would show."
+        "zh-CN": "已给药。这不在她记录的病程中。冲击治疗针对的是“关节炎”标签：取得组织之前，它会压住发热、让活检所见变得模糊；对骨肿瘤也没有治疗作用。",
+        "en": "Given. It is not part of her recorded course. A pulse treats the arthritis label: before tissue is taken it can blunt the fever and blur what a biopsy would show, and it treats no bone tumour."
       },
       "effects": []
     },
@@ -2700,8 +2763,8 @@
         "en": "EULAR/PReS 2024 starts an IL-1 or IL-6 inhibitor once the diagnosis of Still's disease is established (recommendation 7); hers is not, and malignancy and infection have not been excluded. IL-6 blockade also suppresses fever and CRP, the very signs you need to follow."
       },
       "response": {
-        "zh-CN": "已开始。这不在她记录的病程中；诊断仍未明确，现在她的发热和C反应蛋白更难解读了。",
-        "en": "Started. It is not part of her recorded course; the diagnosis is still open, and her fever and CRP are now harder to interpret."
+        "zh-CN": "已开始。这不在她记录的病程中；她的发热和C反应蛋白从此更难解读，而它针对的是证据并不支持的诊断标签。",
+        "en": "Started. It is not part of her recorded course; her fever and CRP are now harder to interpret, and it treats a label the evidence does not support."
       },
       "effects": []
     },
@@ -2801,8 +2864,8 @@
         "en": "She has already had about a month of intermittent anti-infective treatment while the fever got worse. ESPID 2017 asks for a blood culture before any antibiotic and notes that subacute osteomyelitis can be confused with malignancy and usually needs a biopsy for the diagnosis; another blind course lowers the yield of cultures and tissue and delays the diagnosis."
       },
       "response": {
-        "zh-CN": "已开始。诊断仍未明确，此后留取的培养更难长出细菌。",
-        "en": "Started. The diagnosis is still open, and cultures taken from now on are less likely to grow an organism."
+        "zh-CN": "已开始。她的病历没有记录再一个疗程的抗生素；此后留取的培养更难长出细菌。",
+        "en": "Started. A further course is not recorded in her notes; cultures taken from now on are less likely to grow an organism."
       },
       "effects": []
     }
@@ -2902,8 +2965,8 @@
         "en": "Next step"
       },
       "hint": {
-        "zh-CN": "在按带来的诊断处理之前，先想想这个诊断有什么依据，还有哪些病会有同样的表现。",
-        "en": "Before acting on the diagnosis she arrived with, ask what it rests on and what else could look like this."
+        "zh-CN": "先把病史和查体所见想清楚，再决定下一步。",
+        "en": "Weigh what her history and examination show before you choose the next step."
       },
       "guidance": {
         "zh-CN": "外院的诊断和激素治疗都在病史里。",
@@ -3105,8 +3168,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。全身型JIA是排除性诊断，而她并不符合：起病时发热只有38℃左右、没有皮疹，查体没有淋巴结肿大（ILAR标准要求在关节炎和发热之外，至少有皮疹、全身淋巴结肿大、肝脾肿大或浆膜炎之一；后两项她的病历没有记录），她还面色苍白、走路跛。NICE NG12（2015，2026年更新）要求对面色苍白或不明原因发热的儿童尽快查血常规；EULAR/PReS 2024要求认真考虑肿瘤、感染等其他诊断，因为误诊时激素和免疫调节药可能有害。血细胞低也要想到巨噬细胞活化综合征，要用铁蛋白、纤维蛋白原、甘油三酯和肝功能来查，而不是猜。激素也不要突然停：先问清剂量和疗程，再计划减量。",
-            "en": "Right. Systemic JIA is a diagnosis of exclusion, and hers does not fit: the fever was about 38 °C at the start with no rash, and she has no enlarged lymph nodes (ILAR needs, besides arthritis and fever, at least one of rash, generalised lymphadenopathy, liver or spleen enlargement or serositis — the last two are not recorded for her), and she is pale with a limp. NICE NG12 (2015, updated 2026) asks for a very urgent blood count in a child with pallor or unexplained fever, and EULAR/PReS 2024 asks that malignancy, infection and other mimics be carefully considered because steroids and immunomodulators can do harm when the diagnosis is wrong. Low counts also raise macrophage activation, which is tested with ferritin, fibrinogen, triglycerides and liver tests, not assumed. Do not stop her steroids abruptly either: find out the dose and duration and plan any reduction."
+            "zh-CN": "对。全身型JIA是排除性诊断，而她并不符合：起病时发热只有38℃左右、没有皮疹，查体没有淋巴结肿大（ILAR标准要求在关节炎和发热之外，至少有皮疹、全身淋巴结肿大、肝脾肿大或浆膜炎之一；后两项她的病历没有记录），她还面色苍白、走路跛。NICE NG12（2015，2026年更新）要求对面色苍白或不明原因发热的儿童尽快查血常规；EULAR/PReS 2024要求认真考虑肿瘤、感染等其他诊断，因为误诊时激素和免疫调节药可能有害。贫血、用着激素仍发热，也要想到巨噬细胞活化综合征，要用铁蛋白、纤维蛋白原、甘油三酯和肝功能来查，而不是猜。激素也不要突然停：先问清剂量和疗程，再计划减量。",
+            "en": "Right. Systemic JIA is a diagnosis of exclusion, and hers does not fit: the fever was about 38 °C at the start with no rash, and she has no enlarged lymph nodes (ILAR needs, besides arthritis and fever, at least one of rash, generalised lymphadenopathy, liver or spleen enlargement or serositis — the last two are not recorded for her), and she is pale with a limp. NICE NG12 (2015, updated 2026) asks for a very urgent blood count in a child with pallor or unexplained fever, and EULAR/PReS 2024 asks that malignancy, infection and other mimics be carefully considered because steroids and immunomodulators can do harm when the diagnosis is wrong. Anaemia with a fever that persists on steroids also raises macrophage activation, which is tested with ferritin, fibrinogen, triglycerides and liver tests, not assumed. Do not stop her steroids abruptly either: find out the dose and duration and plan any reduction."
           }
         },
         {
@@ -3124,20 +3187,20 @@
         {
           "id": "il-inhibitor-now",
           "text": {
-            "zh-CN": "按难治性全身型JIA处理：现在就开始IL-1或IL-6抑制剂，因为现行风湿病指南更推荐它而不是长期激素，两周后门诊复查疗效。",
-            "en": "Treat this as refractory systemic JIA: start an IL-1 or IL-6 inhibitor now, which current rheumatology guidance prefers to long-term steroids, and review the response in clinic in two weeks."
+            "zh-CN": "按难治性全身型JIA处理：现在就开始IL-1或IL-6抑制剂，因为现行风湿病指南更推荐它而不是长期激素；热退后逐渐减停口服激素，两周后在风湿门诊复查发热、关节和炎症指标。",
+            "en": "Treat this as refractory systemic JIA: start an IL-1 or IL-6 inhibitor now, which current rheumatology guidance prefers to long-term steroids, wean the oral steroid once the fever has settled, and review her fever, joints and inflammatory markers in the rheumatology clinic in two weeks."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "IL-1或IL-6阻断是全身型JIA确诊后的首选治疗（ACR 2021；EULAR/PReS 2024推荐7：“诊断确立后”）。她的诊断并未确立：分类所需的表现不全，血象也指向别处。IL-6阻断还会压低发热和C反应蛋白，而追踪感染或肿瘤恰恰要靠这些指标。",
-            "en": "IL-1 or IL-6 blockade is the preferred treatment once systemic JIA is established (ACR 2021; EULAR/PReS 2024 recommendation 7: “when the diagnosis is established”). Hers is not: the classification features are missing and her counts point elsewhere. IL-6 blockade also suppresses fever and CRP, the very signs you would use to follow an infection or a tumour."
+            "zh-CN": "IL-1或IL-6阻断是全身型JIA确诊后的首选治疗（ACR 2021；EULAR/PReS 2024推荐7：“诊断确立后”）。她的诊断并未确立：分类所需的表现不全，面色苍白和跛行也指向别处。IL-6阻断还会压低发热和C反应蛋白，而追踪感染或肿瘤恰恰要靠这些指标。",
+            "en": "IL-1 or IL-6 blockade is the preferred treatment once systemic JIA is established (ACR 2021; EULAR/PReS 2024 recommendation 7: “when the diagnosis is established”). Hers is not: the classification features are missing, and her pallor and limp point elsewhere. IL-6 blockade also suppresses fever and CRP, the very signs you would use to follow an infection or a tumour."
           }
         },
         {
           "id": "mas-ciclosporin-now",
           "text": {
-            "zh-CN": "按全身型JIA并发巨噬细胞活化综合征处理：不等其他检查，马上用环孢素加大剂量激素，因为巨噬细胞活化综合征可以在数小时内加重。",
-            "en": "Treat this as macrophage activation syndrome complicating systemic JIA: start ciclosporin with high-dose steroids straight away, before further tests, because it can worsen within hours."
+            "zh-CN": "她用着激素仍发热、面色苍白，按全身型JIA并发巨噬细胞活化综合征处理：不等其他检查，马上用环孢素加大剂量静脉激素，因为它可以在数小时内加重。",
+            "en": "Treat this as macrophage activation syndrome complicating systemic JIA, as the fever persists on steroids and she is pale: start ciclosporin with high-dose IV steroids straight away, before further tests, because it can worsen within hours."
           },
           "correct": false,
           "feedback": {
@@ -3186,13 +3249,13 @@
         {
           "id": "tissue-needed",
           "text": {
-            "zh-CN": "髂骨包块伴骨膜反应，在证实之前按骨肿瘤对待——她这个年龄要考虑转移性神经母细胞瘤、尤文肉瘤、淋巴瘤或朗格汉斯细胞组织细胞增生症；平片正常、一次骨髓阴性都排除不了，骨髓炎也仍有可能，需要组织。",
-            "en": "An iliac mass with periosteal reaction is a bone tumour until shown otherwise — at her age metastatic neuroblastoma, Ewing sarcoma, lymphoma or Langerhans cell histiocytosis; normal films and one marrow exclude none of them, osteomyelitis remains possible, and tissue is needed."
+            "zh-CN": "髂骨包块伴骨膜反应，在证实之前按骨肿瘤对待——她这个年龄要考虑转移性神经母细胞瘤、尤文肉瘤、淋巴瘤或朗格汉斯细胞组织细胞增生症；平片和骨髓都排除不了，骨髓炎也仍有可能，需要组织。",
+            "en": "An iliac mass with periosteal reaction is a bone tumour until shown otherwise — at her age metastatic neuroblastoma, Ewing sarcoma, lymphoma or Langerhans cell histiocytosis; neither the films nor the marrow excludes them, osteomyelitis remains possible, and tissue is needed."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。ESMO–EURACAN–GENTURIS–ERN PaedCan 2021以平片为第一步，但只要平片不能排除恶性病变，就要做包括整个间室的MRI；它还指出5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症。骨盆平片常常看不出肿瘤，一次骨髓阴性排除不了实体瘤，亚急性骨髓炎的表现也可以与肿瘤相同——ESPID 2017指出它可与恶性肿瘤混淆、通常需要活检确诊。下一步是取得组织。",
-            "en": "Right. ESMO–EURACAN–GENTURIS–ERN PaedCan 2021 makes radiographs the first test but asks for MRI of the whole compartment whenever they cannot exclude malignancy, and notes that under 5 years of age a destructive bone lesion is most often metastatic neuroblastoma or Langerhans cell histiocytosis. Pelvic films often miss a tumour, one negative marrow does not exclude a solid tumour, and subacute osteomyelitis can look the same — ESPID 2017 notes it can be confused with malignancy and usually needs a biopsy. The next step is tissue."
+            "zh-CN": "对。ESMO–EURACAN–GENTURIS–ERN PaedCan 2021以平片为第一步，但只要平片不能排除恶性病变，就要做包括整个间室的MRI；它还指出5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症。骨盆平片常常看不出肿瘤，骨髓阴性排除不了实体瘤，亚急性骨髓炎的表现也可以与肿瘤相同——ESPID 2017指出它可与恶性肿瘤混淆、通常需要活检确诊。下一步是取得组织。",
+            "en": "Right. ESMO–EURACAN–GENTURIS–ERN PaedCan 2021 makes radiographs the first test but asks for MRI of the whole compartment whenever they cannot exclude malignancy, and notes that under 5 years of age a destructive bone lesion is most often metastatic neuroblastoma or Langerhans cell histiocytosis. Pelvic films often miss a tumour, a negative marrow does not exclude a solid tumour, and subacute osteomyelitis can look the same — ESPID 2017 notes it can be confused with malignancy and usually needs a biopsy. The next step is tissue."
           }
         },
         {
@@ -3210,8 +3273,8 @@
         {
           "id": "pelvic-abscess",
           "text": {
-            "zh-CN": "MRI上弥散受限说明是脓液：这是骨盆骨髓炎合并脓肿，应安排引流和六周静脉抗生素，骨头不必再做活检。",
-            "en": "Restricted diffusion on MRI means pus: this is pelvic osteomyelitis with an abscess, so arrange drainage and six weeks of intravenous antibiotics, without a biopsy of the bone."
+            "zh-CN": "MRI上弥散受限说明是脓液，骨膜反应也符合骨感染：这是抗感染不彻底之后形成的骨盆骨髓炎合并脓肿，应在影像引导下穿刺引流脓液、送培养，再足量用满六周的静脉抗生素，骨头本身不必再做活检。",
+            "en": "Restricted diffusion on MRI means pus, and periosteal reaction is how bone infection looks: this is pelvic osteomyelitis with an abscess after a partly treated infection, so arrange image-guided drainage of the collection and six weeks of intravenous antibiotics, without a biopsy of the bone itself."
           },
           "correct": false,
           "feedback": {
@@ -3222,13 +3285,13 @@
         {
           "id": "anaemia-of-inflammation",
           "text": {
-            "zh-CN": "骨髓只有红系增生、没有肿瘤，说明贫血是炎症所致，肿瘤已经排除；六周后复查MRI，并继续目前的治疗。",
-            "en": "The marrow shows only erythroid hyperplasia and no tumour, which explains the anaemia as inflammation; malignancy is excluded, so repeat the MRI in six weeks and continue her current treatment."
+            "zh-CN": "骨髓只有红系增生、没有肿瘤，白血病和骨髓转移都不太可能，她的贫血其实是慢性炎症所致；肿瘤因此已经可以排除，继续目前的治疗，每周复查一次血常规和炎症指标，六周后再复查一次MRI即可。",
+            "en": "The marrow shows only erythroid hyperplasia and no tumour, which makes leukaemia and marrow spread unlikely and explains her anaemia as inflammation; malignancy is therefore excluded, so continue her current treatment, follow her blood counts every week and repeat the MRI in six weeks."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "红系增生只是一种反应，不是诊断；一次骨髓取材可能漏掉局灶病变，也说明不了骨盆的包块是什么。不对病灶本身取材，就谈不上排除肿瘤。",
-            "en": "Erythroid hyperplasia is a reaction, not a diagnosis; one marrow sample can miss focal disease and says nothing about what the pelvic mass is. Malignancy is not excluded until the lesion itself is sampled."
+            "zh-CN": "红系增生只是一种反应，不是诊断；骨髓取材可能漏掉局灶病变，也说明不了骨盆的包块是什么。不对病灶本身取材，就谈不上排除肿瘤。",
+            "en": "Erythroid hyperplasia is a reaction, not a diagnosis; a marrow sample can miss focal disease and says nothing about what the pelvic mass is. Malignancy is not excluded until the lesion itself is sampled."
           }
         }
       ]
@@ -3275,20 +3338,20 @@
         {
           "id": "repeat-marrow-only",
           "text": {
-            "zh-CN": "从对侧髂嵴再做一次骨髓穿刺；如果还是没有肿瘤，就不必对髂骨病灶活检，六周后复查MRI观察即可。",
-            "en": "Repeat the marrow aspirate from the other iliac crest; if it again shows no tumour, the iliac lesion needs no biopsy and can be watched with a repeat MRI in six weeks."
+            "zh-CN": "再做一次骨髓检查，这次从双侧髂嵴各做穿刺和活检；如果仍没有肿瘤，髂骨病灶就不必单独活检，六周后复查MRI观察即可。",
+            "en": "Repeat the marrow examination, this time with aspirates and trephines from both iliac crests; if they again show no tumour, the iliac lesion needs no biopsy of its own and can be watched with a repeat MRI in six weeks."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "第二次骨髓阴性同样排除不了实体骨肿瘤，也说明不了包块是什么；骨盆包块再等六周只会耽误时间。必须对病灶本身取材。",
-            "en": "A second negative marrow would not exclude a solid bone tumour either, nor say what the mass is; waiting six weeks with a pelvic mass loses time. The lesion itself has to be sampled."
+            "zh-CN": "再多的骨髓阴性结果也排除不了实体骨肿瘤，也说明不了包块是什么；骨盆包块再等六周只会耽误时间。必须对病灶本身取材。",
+            "en": "Further negative marrow samples would not exclude a solid bone tumour either, nor say what the mass is; waiting six weeks with a pelvic mass loses time. The lesion itself has to be sampled."
           }
         },
         {
           "id": "quick-fine-needle",
           "text": {
-            "zh-CN": "排进下一次放射科检查，从最近的路径做细针穿刺，不必和外科商量；单凭细胞学结果就足以开始治疗。",
-            "en": "Book a fine-needle aspirate by the shortest route at the next radiology list without involving the surgeons; cytology alone will be enough to start treatment."
+            "zh-CN": "排进下一次放射科检查，用镇静代替全麻，从最近的路径做细针穿刺，不必和外科商量；单凭细胞学结果就足以开始治疗。",
+            "en": "Book a fine-needle aspirate of the mass at the next radiology list, by the shortest route and under sedation rather than a general anaesthetic, without involving the surgeons; cytology alone will be enough to start treatment."
           },
           "correct": false,
           "feedback": {
@@ -3337,8 +3400,8 @@
         {
           "id": "incurable-palliate",
           "text": {
-            "zh-CN": "PET-CT已经证明每一处高摄取的骨都是转移，诊断时就已无法治愈；不需要再做检查，只向家属提供姑息治疗。",
-            "en": "PET-CT has proven a metastasis in every avid bone, so the disease is incurable at diagnosis; no further tests are needed, and the family should be offered palliative care alone."
+            "zh-CN": "PET-CT已经证明每一处高摄取的骨都是转移，诊断时就已无法治愈；不需要再做任何检查，也不必做化疗，只向家属提供姑息治疗和止痛药物，以后哪一处骨头疼了，再对那一处骨头做姑息性放疗。",
+            "en": "PET-CT has proven a metastasis in every avid bone, so the disease is incurable at diagnosis; no further tests are needed, and the family should be offered palliative care alone, with no chemotherapy and with radiotherapy only for any bone that later becomes painful."
           },
           "correct": false,
           "feedback": {
@@ -3361,8 +3424,8 @@
         {
           "id": "other-lesions-infection",
           "text": {
-            "zh-CN": "多处骨病灶但只有一处证实是肿瘤，说明其余病灶是多灶性骨髓炎：髂骨按尤文肉瘤治疗，其余部位用长疗程抗生素。",
-            "en": "Several avid bones with a tumour proven in only one suggest the other lesions are multifocal osteomyelitis: treat the ilium as Ewing sarcoma and give the other sites a long course of antibiotics."
+            "zh-CN": "多处骨病灶但只有一处证实是肿瘤，说明其余病灶是多灶性骨髓炎，这也能解释她长期发热：髂骨按尤文肉瘤治疗，其余部位用长疗程静脉抗生素。",
+            "en": "Several avid bones with a tumour proven in only one suggest the other lesions are multifocal osteomyelitis, which would also fit her long fever: treat the ilium as Ewing sarcoma and give the other sites a long course of intravenous antibiotics."
           },
           "correct": false,
           "feedback": {
@@ -3395,8 +3458,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。ESMO 2021：骨肉瘤应在专科中心治疗；尤文肉瘤先做诱导化疗（长春新碱、多柔比星、环磷酰胺或异环磷酰胺、依托泊苷），再做局部治疗，局部治疗的时机由多学科团队决定，之后巩固治疗，总疗程10–12个月；女性患者在有条件时应考虑生育力咨询（她尚未进入青春期，可考虑卵巢组织冻存）。",
-            "en": "Right. ESMO 2021: bone sarcoma is treated at reference centres; for Ewing sarcoma, induction chemotherapy (vincristine, doxorubicin, cyclophosphamide or ifosfamide, etoposide) comes first, then local therapy at a time the multidisciplinary team decides, then consolidation, 10–12 months in all; for girls a fertility consultation should be considered where available (she is prepubertal, so ovarian tissue cryopreservation)."
+            "zh-CN": "对。ESMO 2021：骨肉瘤应在专科中心治疗；尤文肉瘤先做诱导化疗（长春新碱、多柔比星、环磷酰胺或异环磷酰胺、依托泊苷），再做局部治疗，局部治疗的时机由多学科团队决定，之后巩固治疗，总疗程10–12个月；女性患者在有条件时应考虑生育力咨询（她尚未进入青春期，可考虑卵巢组织冻存）。化疗在融合基因结果和分期检查回报之后开始。",
+            "en": "Right. ESMO 2021: bone sarcoma is treated at reference centres; for Ewing sarcoma, induction chemotherapy (vincristine, doxorubicin, cyclophosphamide or ifosfamide, etoposide) comes first, then local therapy at a time the multidisciplinary team decides, then consolidation, 10–12 months in all; for girls a fertility consultation should be considered where available (she is prepubertal, so ovarian tissue cryopreservation). Chemotherapy starts once the fusion result and the staging tests are back."
           }
         },
         {
@@ -3414,8 +3477,8 @@
         {
           "id": "radiotherapy-alone",
           "text": {
-            "zh-CN": "对骨盆和每一处PET高摄取的骨做根治性放疗；她才三岁，多药化疗毒性太大，不值得冒这个险。",
-            "en": "Give radical radiotherapy to the pelvis and to every PET-avid bone, because at three years of age multi-agent chemotherapy is too toxic to be worth the risk for her."
+            "zh-CN": "对骨盆和每一处PET高摄取的骨做根治性放疗，作为唯一的治疗；她才三岁，多药化疗毒性太大，不值得冒险，放疗还能免去骨盆大手术。",
+            "en": "Give radical radiotherapy to the pelvis and to every PET-avid bone as her only treatment, because at three years of age multi-agent chemotherapy is too toxic to be worth the risk, and radiotherapy spares her a major pelvic operation."
           },
           "correct": false,
           "feedback": {
@@ -3426,8 +3489,8 @@
         {
           "id": "comfort-care-only",
           "text": {
-            "zh-CN": "诊断时多处骨病灶无法治愈，只提供舒适照护，让她免受化疗、手术和放疗的副作用。",
-            "en": "Offer comfort care only, because bone lesions in several places at diagnosis cannot be cured, and spare her the side effects of chemotherapy, surgery and radiotherapy."
+            "zh-CN": "诊断时多处骨病灶无法治愈，只提供舒适照护，由姑息治疗团队在家照顾，让她免受化疗、手术和放疗的副作用。",
+            "en": "Offer comfort care only, at home with the palliative care team, because bone lesions in several places at diagnosis cannot be cured, and spare her the side effects of chemotherapy, surgery and radiotherapy."
           },
           "correct": false,
           "feedback": {
@@ -3600,8 +3663,8 @@
       "id": "rb-imaging",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "把看似正常的平片、阴性的骨髓与MRI和CT放在一起解读，判断需要组织（第一次即答对）",
-        "en": "Read normal-looking films and a negative marrow against the MRI and CT and concluded that tissue was needed (first attempt)"
+        "zh-CN": "把未见明显破坏的平片、阴性的骨髓与MRI和CT放在一起解读，判断需要组织（第一次即答对）",
+        "en": "Read films without obvious destruction and a negative marrow against the MRI and CT and concluded that tissue was needed (first attempt)"
       },
       "weight": 3,
       "met": {
@@ -3796,8 +3859,8 @@
         "en": "Dr Cao (paediatric attending)"
       },
       "knowledge": {
-        "zh-CN": "儿科上级医师，用苏格拉底式提问带教、按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“全身型JIA这个诊断的依据是什么？她真正具备其中哪些表现？”“发热、跛行的孩子出现哪些表现时，你会在加用激素之前停下来？”“看似正常的骨盆平片和一次骨髓检查能排除什么、不能排除什么？”“骨盆包块该由谁来取组织？取之前要先查什么？”“没有融合基因结果的活检报告，按今天的标准能确定什么？”提醒学员在任何麻醉前先问清她的激素剂量和疗程，激素不能突然停。说明这份报告发表于2012年，早于把融合基因纳入诊断的2020年WHO分类。不提前透露诊断、决策答案或结局。她的生命体征、白细胞计数、铁蛋白、血涂片、凝血、培养、尿儿茶酚胺、胸部影像、激素种类和剂量、用过的抗生素、活检方式、融合基因状态和化疗方案都没有记录，不要替它补上。",
-        "en": "Paediatric attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “What does the systemic JIA label rest on, and which of its features does she actually have?”, “Which findings in a child with fever and a limp make you stop before giving more steroids?”, “What can a normal-looking pelvic film and one marrow sample exclude — and what not?”, “Who should take tissue from a pelvic mass, and what must be checked first?”, “By today's standard, what does a biopsy report without a fusion result establish?”. Reminds the learner to find out her steroid dose and duration before any anaesthetic, and that steroids are never stopped abruptly. Explains that the report was published in 2012, before the 2020 WHO classification made the fusion part of the diagnosis. Never reveals the diagnosis, a decision's answer or the outcome early. Her vital signs, white cell count, ferritin, blood film, clotting, cultures, urine catecholamines, chest imaging, the steroid and its dose, the antibiotics used, the biopsy approach, the fusion status and the chemotherapy regimen are not recorded, and the attending does not supply them."
+        "zh-CN": "儿科上级医师，用苏格拉底式提问带教、按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“全身型JIA这个诊断的依据是什么？她真正具备其中哪些表现？”“发热、跛行的孩子出现哪些表现时，你会在加用激素之前停下来？”“未见明显破坏的骨盆平片和阴性的骨髓检查能排除什么、不能排除什么？”“骨盆包块该由谁来取组织？取之前要先查什么？”“没有融合基因结果的活检报告，按今天的标准能确定什么？”提醒学员在任何麻醉前先问清她的激素剂量和疗程，激素不能突然停。说明这份报告发表于2012年，没有融合基因结果；而2020年WHO分类以FET–ETS融合来界定尤文肉瘤，并把形态相似的圆细胞肉瘤单列。不提前透露诊断、决策答案或结局。她的生命体征、白细胞计数、铁蛋白、血涂片、凝血、培养、尿儿茶酚胺、胸部影像、激素种类和剂量、用过的抗生素、活检方式、融合基因状态和化疗方案都没有记录，不要替它补上。",
+        "en": "Paediatric attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “What does the systemic JIA label rest on, and which of its features does she actually have?”, “Which findings in a child with fever and a limp make you stop before giving more steroids?”, “What can pelvic films without obvious destruction and a negative marrow exclude — and what not?”, “Who should take tissue from a pelvic mass, and what must be checked first?”, “By today's standard, what does a biopsy report without a fusion result establish?”. Reminds the learner to find out her steroid dose and duration before any anaesthetic, and that steroids are not stopped abruptly. Explains that the report was published in 2012 and gives no fusion result, whereas the 2020 WHO classification defines Ewing sarcoma by its FET–ETS fusion and sets look-alike round-cell sarcomas apart. Never reveals the diagnosis, a decision's answer or the outcome early. Her vital signs, white cell count, ferritin, blood film, clotting, cultures, urine catecholamines, chest imaging, the steroid and its dose, the antibiotics used, the biopsy approach, the fusion status and the chemotherapy regimen are not recorded, and the attending does not supply them."
       },
       "interprets": [
         "fbc",
@@ -3855,8 +3918,8 @@
       "en": "Debrief: prolonged fever, a limp and an arthritis label"
     },
     "conclusion": {
-      "zh-CN": "清和3岁9个月，发热七十多天——起初38℃左右，后来最高39.5℃、一天数次——逐渐出现轻度跛行，面色苍白。此前她被诊断为全身型幼年特发性关节炎，在外院用激素后热退，继续口服期间又发热；近一个月断断续续抗感染，发热仍加重。这个诊断并不吻合：起病时无皮疹，查体无浅表淋巴结肿大，血小板最低65×10⁹/L，血红蛋白55–80 g/L，乳酸脱氢酶1312 U/L。平片未见明显骨质破坏，但MRI示右髂骨及周围包块伴弥散受限，增强CT示包绕髂骨的肿块、骨膜反应和骶骨异常；一次骨髓检查为红系增生，未报告确诊的肿瘤浸润。右髂骨活检报告为尤文瘤，未给出融合基因结果；PET-CT示多部位骨病灶，考虑转移或多中心。确诊后她转血液科化疗，疗效和结局没有报告。今天的做法是：排除肿瘤、感染和巨噬细胞活化综合征之前不加强免疫抑制；任何取材之前先转诊儿童骨肉瘤专科团队；用融合基因检测确认诊断；完成分期；按现行方案治疗，治疗前先讨论生育力保存。",
-      "en": "Qinghe, aged 3 years 9 months, had fever for more than 70 days — about 38 °C at first, later up to 39.5 °C several times a day — a mild limp that came on gradually, and pallor. She had been diagnosed with systemic juvenile idiopathic arthritis and given steroids at another hospital; the fever settled and came back while she was still taking them by mouth, and on-and-off anti-infective treatment for about a month did not stop it worsening. The label did not fit: there was no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, haemoglobin 55–80 g/L and an LDH of 1312 U/L. Radiographs showed no obvious destruction, but MRI showed a mass in and around the right ilium with restricted diffusion, and contrast-enhanced CT a mass encasing the ilium with periosteal reaction and a sacral abnormality; one marrow examination showed erythroid hyperplasia without confirmed tumour. A right iliac biopsy was reported as Ewing tumour, without a fusion result, and PET-CT showed multiple bone lesions considered metastatic or multicentric. She was transferred to the haematology department for chemotherapy; her response and outcome are not reported. Today: hold immunosuppression until malignancy, infection and macrophage activation are excluded; refer to a paediatric bone sarcoma team before any tissue is taken; confirm the diagnosis with fusion testing; complete staging; and treat on a current protocol, with fertility preservation discussed first."
+      "zh-CN": "清和3岁9个月，发热七十多天——起初38℃左右，后来最高39.5℃、一天数次——逐渐出现轻度跛行，面色苍白。此前她被诊断为全身型幼年特发性关节炎，在外院用激素后热退，继续口服期间又发热；近一个月断断续续抗感染，发热仍加重。这个诊断并不吻合：起病时无皮疹，查体无浅表淋巴结肿大，血小板最低65×10⁹/L，血红蛋白55–80 g/L，乳酸脱氢酶1312 U/L。平片未见明显骨质破坏，但MRI示右髂骨及周围包块伴弥散受限，增强CT示包绕髂骨的肿块、骨膜反应和骶骨异常；骨髓检查为红系增生，未报告确诊的肿瘤浸润。右髂骨活检报告为尤文瘤，未给出融合基因结果；PET-CT示多部位骨病灶，考虑转移或多中心。确诊后她转血液科化疗，疗效和结局没有报告。今天的做法是：排除肿瘤和感染之前不加强免疫抑制，巨噬细胞活化综合征要检查证实而不是假定；任何取材之前先转诊儿童骨肉瘤专科团队；用融合基因检测确认诊断；完成分期；按现行方案治疗，治疗前先讨论生育力保存。",
+      "en": "Qinghe, aged 3 years 9 months, had fever for more than 70 days — about 38 °C at first, later up to 39.5 °C several times a day — a mild limp that came on gradually, and pallor. She had been diagnosed with systemic juvenile idiopathic arthritis and given steroids at another hospital; the fever settled and came back while she was still taking them by mouth, and on-and-off anti-infective treatment for about a month did not stop it worsening. The label did not fit: there was no rash at onset, no enlarged lymph nodes, platelets as low as 65 × 10⁹/L, haemoglobin 55–80 g/L and an LDH of 1312 U/L. Radiographs showed no obvious destruction, but MRI showed a mass in and around the right ilium with restricted diffusion, and contrast-enhanced CT a mass encasing the ilium with periosteal reaction and a sacral abnormality; the marrow showed erythroid hyperplasia without confirmed tumour. A right iliac biopsy was reported as Ewing tumour, without a fusion result, and PET-CT showed multiple bone lesions considered metastatic or multicentric. She was transferred to the haematology department for chemotherapy; her response and outcome are not reported. Today: hold further immunosuppression until malignancy and infection are excluded, and test for macrophage activation rather than assume it; refer to a paediatric bone sarcoma team before any tissue is taken; confirm the diagnosis with fusion testing; complete staging; and treat on a current protocol, with fertility preservation discussed first."
     },
     "keyReasoning": [
       {
@@ -3868,8 +3931,8 @@
         "en": "Low platelets, an LDH of 1312 U/L and a raised ESR and CRP in a limping child point to malignancy or infection rather than arthritis: test before treating, and treat macrophage activation only once it is shown."
       },
       {
-        "zh-CN": "骨盆平片看似正常、一次骨髓阴性，都排除不了骨盆肿瘤；MRI和CT显示髂骨包块伴骨膜反应，所以需要组织。",
-        "en": "Normal-looking pelvic films and one negative marrow do not exclude a pelvic tumour; MRI and CT showed an iliac mass with periosteal reaction, so tissue is needed."
+        "zh-CN": "骨盆平片未见明显破坏、骨髓阴性，都排除不了骨盆肿瘤；MRI和CT显示髂骨包块伴骨膜反应，所以需要组织。",
+        "en": "Pelvic films without obvious destruction and a negative marrow do not exclude a pelvic tumour; MRI and CT showed an iliac mass with periosteal reaction, so tissue is needed."
       },
       {
         "zh-CN": "可疑骨肉瘤的组织应由将来做切除的团队来取，或与他们商定后取；穿刺道要能切除，取材前要知道血小板和凝血。",
@@ -3920,8 +3983,8 @@
         "en": "Systemic JIA (Still's disease) is diagnosed only once its mimics are excluded. EULAR/PReS 2024 (recommendation 3) asks that malignancy, infection and other inflammatory and autoinflammatory diseases be carefully considered, and warns that glucocorticoids or immunomodulators can be deleterious when the disease is misdiagnosed, particularly in malignancy; ACR 2021 conditionally recommends against oral glucocorticoids as initial monotherapy for systemic JIA without macrophage activation. In the report, she was given steroids for the arthritis label before the bone lesion was biopsied."
       },
       {
-        "zh-CN": "发热、跛行儿童的肿瘤警示：NICE NG12（2015，2026年更新）对面色苍白、不明原因发热或持续/不明原因骨痛的儿童要求尽快查血常规（推荐1.10.3），对不明原因骨肿胀或骨痛要求尽快拍X线片（1.11.3）。被贴上“关节炎”标签的孩子出现血小板减少，应在排除白血病、神经母细胞瘤和骨肿瘤之前停止加强免疫抑制。",
-        "en": "Malignancy red flags in a child with fever and a limp: NICE NG12 (2015, updated 2026) asks for a very urgent blood count in children with pallor, unexplained fever or persistent or unexplained bone pain (recommendation 1.10.3), and a very urgent X-ray for unexplained bone swelling or pain (1.11.3). Thrombocytopenia in a child labelled with arthritis should stop any escalation of immunosuppression until leukaemia, neuroblastoma and bone tumours are excluded."
+        "zh-CN": "发热、跛行儿童的肿瘤警示：NICE NG12（2015，2026年更新）对面色苍白、不明原因发热或持续/不明原因骨痛的儿童要求尽快查血常规（推荐1.10.3），对不明原因骨肿胀或骨痛建议考虑尽快拍X线片（1.11.3）。被贴上“关节炎”标签的孩子出现血小板减少，应在排除白血病、神经母细胞瘤和骨肿瘤之前停止加强免疫抑制。",
+        "en": "Malignancy red flags in a child with fever and a limp: NICE NG12 (2015, updated 2026) asks for a very urgent blood count in children with pallor, unexplained fever or persistent or unexplained bone pain (recommendation 1.10.3), and suggests considering a very urgent X-ray for unexplained bone swelling or pain (1.11.3). Thrombocytopenia in a child labelled with arthritis should stop any escalation of immunosuppression until leukaemia, neuroblastoma and bone tumours are excluded."
       },
       {
         "zh-CN": "平片是第一步，不是最后一步。ESMO–EURACAN–GENTURIS–ERN PaedCan 2021要求平片不能排除恶性时做包括整个间室的MRI，认为MRI是骨盆肿瘤局部分期的最佳方法，并指出5岁以下儿童的破坏性骨病灶最常见的是转移性神经母细胞瘤或朗格汉斯细胞组织细胞增生症——3岁患尤文肉瘤并不常见，要靠活检来定。",
@@ -3932,8 +3995,8 @@
         "en": "Biopsy of a suspected bone sarcoma (ESMO 2021): refer to a reference centre with paediatric expertise; the biopsy is done by the surgical team who will resect the tumour, or by an interventional radiologist after discussing it with that surgeon, usually as an image-guided core biopsy; the tract is marked and later removed with the tumour; intralesional surgery is to be avoided in Ewing sarcoma. ESPID 2017 asks for a blood culture before any antibiotic and notes that subacute osteomyelitis can be confused with malignancy and usually needs a biopsy — so the biopsy also goes for culture."
       },
       {
-        "zh-CN": "过去与现在：这份2012年发表的报告仅凭病理诊断为“尤文瘤”，没有融合基因结果。ESMO 2021规定必须做分子确认（FET–ETS融合，通常为EWSR1–FLI1），WHO 2020分类把行为不同的CIC重排肉瘤和BCOR改变肉瘤单列；我国《儿童及青少年尤文肉瘤诊疗规范（2019年版）》也建议有条件时做EWSR1检测，以FISH为主，并尽量用PCR验证。",
-        "en": "Then and now: the report, published in 2012, diagnosed 'Ewing tumour' on histology without a fusion result. ESMO 2021 makes molecular confirmation mandatory (a FET–ETS fusion, usually EWSR1–FLI1), and the WHO 2020 classification places CIC-rearranged and BCOR-altered sarcomas, which behave differently, apart; China's 2019 national guideline for Ewing sarcoma in children and adolescents also recommends EWSR1 testing where available, by FISH and, where possible, confirmed by PCR."
+        "zh-CN": "过去与现在：这份2012年发表的报告仅凭病理诊断为“尤文瘤”，没有融合基因结果。ESMO 2021规定必须做分子确认（FET–ETS融合，通常为EWSR1–FLI1），WHO 2020分类把行为不同的CIC重排肉瘤和BCOR改变肉瘤单列；我国《儿童及青少年尤文肉瘤诊疗规范（2019年版）》也指出一般推荐用FISH检测EWSR1易位，因FISH可能假阴性，实验室条件允许时尽量用PCR验证。",
+        "en": "Then and now: the report, published in 2012, diagnosed 'Ewing tumour' on histology without a fusion result. ESMO 2021 makes molecular confirmation mandatory (a FET–ETS fusion, usually EWSR1–FLI1), and the WHO 2020 classification places CIC-rearranged and BCOR-altered sarcomas, which behave differently, apart; China's 2019 national guideline for Ewing sarcoma in children and adolescents notes that FISH is the usual test for the EWSR1 rearrangement and, because FISH can miss it, asks for PCR confirmation where the laboratory allows."
       },
       {
         "zh-CN": "分期与治疗（ESMO 2021）：胸部CT和PET-CT（或全身MRI），可疑病灶要活检（做了PET-CT时不强制要求骨髓活检）；先诱导化疗，再由多学科团队决定时机做局部治疗，之后巩固，总疗程10–12个月；多发骨转移的预后明显差于肺转移；女性患者治疗前在有条件时考虑生育力咨询（青春期前为卵巢组织冻存）。",
@@ -4618,6 +4681,48 @@
         "text": "有没有呕吐？",
         "locale": "zh-CN",
         "expect": []
+      },
+      {
+        "text": "What medicines is she on at the moment?",
+        "locale": "en",
+        "expect": [
+          "steroid-response"
+        ]
+      },
+      {
+        "text": "Has she had any infections recently?",
+        "locale": "en",
+        "expect": [
+          "anti-infection"
+        ]
+      },
+      {
+        "text": "Did the steroids help her at all?",
+        "locale": "en",
+        "expect": [
+          "steroid-response"
+        ]
+      },
+      {
+        "text": "孩子现在吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid-response"
+        ]
+      },
+      {
+        "text": "最近有没有感染过？",
+        "locale": "zh-CN",
+        "expect": [
+          "anti-infection"
+        ]
+      },
+      {
+        "text": "她现在还在吃激素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid-details"
+        ]
       }
     ]
   }

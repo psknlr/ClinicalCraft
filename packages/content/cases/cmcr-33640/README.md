@@ -54,8 +54,8 @@ was discharged improved. **The report's diagnosis, per its title: small-intestin
 
 What the case teaches against the record: the earlier labels do not explain a haemoglobin of 72.5 g/L; safety
 (access, crossmatch, a transfusion judged on the whole picture) comes before localisation; after negative upper and
-lower endoscopy the small bowel is next, with capsule endoscopy first-line; a capsule finding without bleeding or
-tissue is a probable, not proven, source; and the report's haemostatic drugs and acid suppression are historical
+lower endoscopy the small bowel is next, with capsule endoscopy first-line; a capsule finding without active bleeding
+or tissue is a probable, not proven, source; and the report's haemostatic drugs and acid suppression are historical
 practice whose effect cannot be judged from one case of intermittent bleeding.
 
 ## Scenario timeline and physiology
@@ -93,14 +93,14 @@ condition); titles and hints name no diagnosis and no option text.
 
 | id | Opens after | Key (why) | Distractors (why they tempt) |
 |---|---|---|---|
-| `first-priorities` | presentation, black stools, pallor asked; all five findings examined; blood count and occult blood read in `admission` | `blood-loss-first`: GI blood loss — circulation, cannula and crossmatch, no NSAIDs, then gastroscopy and colonoscopy (ACG 2015: the small bowel is considered once upper and lower endoscopy are negative) | `treat-labels` (the earlier diagnoses); `dietary-iron` (iron deficiency is common in children); `ct-angiography-now` (imaging feels decisive — but it finds only active bleeding, and the last recorded black stools were 20 days earlier) |
+| `first-priorities` | presentation, black stools, pallor asked; all five findings examined; blood count, occult blood and coagulation read in `admission` | `blood-loss-first`: GI blood loss — circulation, cannula and crossmatch, no NSAIDs, then gastroscopy and colonoscopy (ACG 2015: the small bowel is considered once upper and lower endoscopy are negative) | `treat-labels` (the earlier diagnoses); `dietary-iron` (iron deficiency is common in children); `ct-angiography-now` (imaging feels decisive — but CT angiography looks for active bleeding, ACG 2015 Rec 17, and the last recorded black stools were 20 days earlier) |
 | `transfusion` | decision 1; coagulation read in `admission` | `clinical-threshold`: judge the whole picture; blood ready; transfuse slowly by weight if he rebleeds, turns unstable or falls below 70 g/L with symptoms (WS/T 795—2022 §9.5.1: < 50 g/L transfuse, 50–70 g/L consider; §9.1.2 instability raises the threshold; §12.3 rate) | `transfuse-to-normal` (restore a "normal" Hb before endoscopy, quickly); `plasma-ratio` (fixed-ratio plasma and platelets — haemorrhagic-shock practice, §9.5.2); `no-blood` (chronic anaemia, iron only, no crossmatch) |
-| `next-test` | gastroscopy, colonoscopy, Meckel scan, small-bowel CT read in `workup` | `capsule`: small-bowel capsule endoscopy soon after the latest bleed; can he swallow it or is it placed endoscopically; no narrowing on CT; preparation by weight (ESGE 2022 MR1–MR2) | `gastritis-explains` (an abnormal finding is on record); `laparotomy` (everything else is negative — ACG 2015 reserves intraoperative enteroscopy); `angiography` (find and treat in one session — finds only active bleeding; ACG 2015 keeps emergency angiography for unstable massive bleeding) |
-| `after-capsule` | capsule read in `further-tests` | `probable-source`: probable, not proven; device-assisted enteroscopy to confirm and treat if he rebleeds or stays anaemic (ESGE 2022 MR5); iron; Hb follow-up and return advice; ask about nosebleeds, telangiectases and the family | `incidental` (nothing was bleeding; ESGE 2022 MR3 does not recommend routine second-look endoscopy); `resection` (multiple lesions from the upper to the terminal ileum); `settled` (images as proof; stop follow-up when stools are no longer black) |
+| `next-test` | gastroscopy, colonoscopy, Meckel scan, small-bowel CT read in `workup` | `capsule`: small-bowel capsule endoscopy soon after the latest bleed; can he swallow it or is it placed endoscopically; no narrowing on CT; preparation by weight (ESGE 2022 MR1–MR2) | `gastritis-explains` (an abnormal finding is on record); `laparotomy` (everything else is negative — ACG 2015 reserves intraoperative enteroscopy); `angiography` (find and treat in one session — it shows a bleeding point only while bleeding is brisk, about 0.5–1 mL/min; ACG 2015 keeps emergency angiography for unstable massive bleeding) |
+| `after-capsule` | capsule read in `further-tests` | `probable-source`: probable, not proven; device-assisted enteroscopy to confirm and treat if he rebleeds or stays anaemic (ESGE 2022 MR5; ACG 2015 Rec 23 ties endoscopic therapy to significant ongoing anaemia or active bleeding); iron; Hb follow-up and return advice; ask about nosebleeds, telangiectases and the family | `incidental` (nothing was bleeding; ESGE 2022 MR3 does not recommend routine second-look endoscopy); `resection` (multiple lesions from the upper to the terminal ileum); `settled` (images as proof; stop follow-up when stools are no longer black) |
 
 Every option has feedback of its own naming the guidance where one applies. Option ids name their content. Measured
 option lengths (characters, zh-CN / en): the key is the uniquely longest only in decision 1 (67 / 222); a distractor is
-longer in decision 2 (`transfuse-to-normal` 66 / 227 vs key 62 / 220), decision 3 (`gastritis-explains` 51 / 200 vs
+longer in decision 2 (`transfuse-to-normal` 66 / 227 vs key 62 / 220), decision 3 (`gastritis-explains` 51 / 196 vs
 49 / 186) and decision 4 (`incidental` 61 zh, `resection` 211 en vs 54 / 200).
 
 ### Rubric (13 deterministic items, weight 30, + 1 examiner-judged)
@@ -150,8 +150,10 @@ high, contraindicated throughout: in a child with intermittent bleeding and no r
 source is localised is irreversible harm that capsule endoscopy and enteroscopy make unnecessary (ACG 2015; ESGE 2022),
 so giving it fails the run's safety outcome whatever the score. `tranexamic-acid`, `ffp`, `ibuprofen` and
 `antibiotics` are contraindicated but explicitly `critical: false` (risk moderate): recoverable misjudgements without
-evidence of benefit (HALT-IT 2020 and ESGE 2021 for tranexamic acid; WS/T 795—2022 §9.5 for plasma; the ibuprofen UK
-SmPC for recurrent gastrointestinal haemorrhage; China's 2015 guiding principles for antibacterials) — each is listed
+evidence of benefit (HALT-IT 2020 and ESGE 2021 for tranexamic acid, whose only guideline place in GI bleeding — mild
+bleeding in confirmed HHT, HHT 2020 B5 — does not apply; WS/T 795—2022 §9.5 for plasma; the UK SmPC of a children's
+ibuprofen suspension for active or recurrent gastrointestinal haemorrhage; China's 2015 guiding principles for
+antibacterials) — each is listed
 as a safety event and costs `rb-no-unsupported-treatment`. Red-cell transfusion is deliberately not contraindicated:
 the report transfused, and the decision belongs to the clinical picture.
 
@@ -181,7 +183,7 @@ the four unsupported drugs and the laparotomy.
 | Capsule passed at 48 hours | 1.0.0 capsule record | it passed, so retention did not arise |
 | WHO 2024: anaemia < 115 g/L, severe < 80 g/L at 5–11 years | WHO 2024 guideline | 72.5 g/L = severe by these cut-offs |
 | WS/T 795—2022: non-life-threatening bleeding Hb < 50 g/L transfuse, 50–70 g/L consider | §9.5.1 (read in the standard's text) | 72.5 g/L is above the band; instability (§9.1.2), rebleeding and symptoms decide |
-| Red cells about 5 mL/(kg·h), ≤ 150 mL/h, slower first 15 min; small slow volumes in severe anaemia | WS/T 795—2022 §12.3.1–12.3.2 | weight not recorded: no volume can be computed |
+| Red cells about 5 mL/kg/h, ≤ 150 mL/h, slower first 15 min; small slow volumes in severe anaemia | WS/T 795—2022 §12.3.1–12.3.2 | weight not recorded: no volume can be computed |
 | SBCE ideally within 48 h of an overt bleed | ESGE 2022 MR2 | — |
 
 No dose is stated anywhere in the case: his weight is not recorded, every medicine is "dose by weight", and no
@@ -191,7 +193,7 @@ intervention carries a `doseSpec`. 1.0.0 had deliberately left out the report's 
 
 ### Debrief questions (PEARLS)
 
-- **Reactions** — How did it feel to be handed six months of "mesenteric lymphadenitis" and "gastritis"?
+- **Reactions** — How did it feel to be handed the labels "mesenteric lymphadenitis" and "superficial gastritis"?
 - **Description** — Walk me through what you knew on admission: which finding made you think of blood loss, and what did
   you put in place before anything else?
 - **Analysis** —
@@ -199,7 +201,7 @@ intervention carries a `doseSpec`. 1.0.0 had deliberately left out the report's 
     (WS/T 795—2022 §9.5.1; instability, a rebleed, symptoms.)
   - Gastroscopy showed superficial gastritis. Why is that not the answer?
   - The Meckel scan was negative. Does that exclude a Meckel's diverticulum? Where does ACG 2015 put the scan?
-  - What does the capsule prove, and what does it not? Why might the capsule see no bleeding?
+  - What does the capsule prove, and what does it not? Why might the capsule see no active bleeding?
   - The report gave acid suppression, haemostatic treatment and transfusion, and the bleeding stopped. Which of these
     worked — and how would you know?
   - Multiple small-bowel vascular lesions in a child: which three questions would you add to the history? (Nosebleeds,
@@ -299,6 +301,9 @@ record so it cannot reveal the capsule finding early.
   token are written run together (`whendiditstart`, `comeandgo`, `thrownup`…).
 - Interventions: `transfusion` excludes plasma/platelet words, so "输血浆" reaches `ffp`; generic "give …" aliases were
   removed so "give paracetamol" reaches `paracetamol`, not a blood product ("giveblood" is written run together).
+- Orders: an `orderMatching` rule keeps "小肠镜" / "enteroscopy" from retrieving the colonoscopy record (its alias 肠镜 is
+  a substring of 小肠镜); enteroscopy is the `dae-plan` intervention. The laparotomy carries `excludeKeywords`
+  (会诊, 意见 / review, consult, opinion), so asking for a surgical opinion no longer offers the operation as a candidate.
 - Corpus: 42 utterances (24 en, 18 zh-CN), 3 look-alike negatives, at least one for every required item; all pass
   `cases verify` with no extra selections.
 
@@ -311,8 +316,8 @@ record so it cannot reveal the capsule finding early.
    diagnosis and treatment of small-bowel disorders: ESGE Guideline – Update 2022. Endoscopy. 2023;55(1):58-95.
    doi:10.1055/a-1973-3796 (main recommendations MR1–MR6, MR9 checked in the published recommendation list).
 3. Gerson LB, Fidler JL, Cave DR, Leighton JA. ACG Clinical Guideline: Diagnosis and Management of Small Bowel Bleeding.
-   Am J Gastroenterol. 2015;110(9):1265-87. doi:10.1038/ajg.2015.246 (recommendation statements checked in two
-   independent summaries; full text paywalled — see To verify).
+   Am J Gastroenterol. 2015;110(9):1265-87. doi:10.1038/ajg.2015.246 (the definition and recommendations 9, 16, 17,
+   22, 23 and 28 checked in the full text, the ACG-hosted PDF, on 2026-11-14).
 4. 中华人民共和国国家卫生健康委员会. WS/T 795—2022 儿科输血指南. 2022 (§9.1, §9.5, §12.3 read in the standard's text).
 5. World Health Organization. Guideline on haemoglobin cutoffs to define anaemia in individuals and populations. 2024.
 6. HALT-IT Trial Collaborators. Lancet. 2020;395(10241):1927-36. doi:10.1016/S0140-6736(20)30848-5.
@@ -324,9 +329,11 @@ record so it cannot reveal the capsule finding early.
    (Rendu-Osler-Weber syndrome). Am J Med Genet. 2000;91(1):66-7. PMID 10751092.
 10. 《抗菌药物临床应用指导原则》修订工作组. 抗菌药物临床应用指导原则（2015年版）（国卫办医发〔2015〕43号附件）. 2015
     (basic principle 一 read in the NHC text).
-
-Also relevant, not used for any statement: the UK SmPC for ibuprofen 200 mg tablets (revised 26/06/2026; contraindications
-include recurrent peptic ulcer/haemorrhage and other active bleeding) — cited in the ibuprofen harm text.
+11. Faughnan ME, Mager JJ, Hetts SW, et al. Second International Guidelines for the Diagnosis and Management of
+    Hereditary Hemorrhagic Telangiectasia. Ann Intern Med. 2020;173(12):989-1001. doi:10.7326/M20-1443 (recommendations
+    B3, B5, B6 read in the guideline's text; cited in the tranexamic-acid harm and teaching point 5).
+12. Ibuprofen 100 mg/5 ml oral suspension (Fenpaed): summary of product characteristics. emc; revised 2024 Oct 28.
+    https://www.medicines.org.uk/emc/product/4573/smpc (section 4.3 read; cited in the ibuprofen harm text).
 
 ### To verify
 
@@ -337,7 +344,8 @@ include recurrent peptic ulcer/haemorrhage and other active bleeding) — cited 
    (the case stages them in a work-up phase); whether colonoscopy reached the terminal ileum; biopsies; scan
    pre-treatment; CT technique.
 3. The capsule report's exact wording (回肠上段至末段多发局灶血管增粗迂曲), how the capsule was taken, and the bowel
-   preparation's agent, volume and doses (1.0.0 calls it large-volume and adult-like).
+   preparation's agent, volume and doses (1.0.0 calls it large-volume and adult-like) and which test it preceded (1.0.0
+   discusses it with the capsule study, so the case attaches it to the capsule record).
 4. The earlier treatment: 抗感染 vs "antibiotics", 止血等 vs "haemostatic/supportive care"; drug names and doses.
 5. The in-hospital treatment: acid suppression, haemostatic drugs, the transfused component, volume, timing and the
    haemoglobin before it; any enteroscopy, surgery or histology; length of stay; follow-up.
@@ -349,8 +357,9 @@ include recurrent peptic ulcer/haemorrhage and other active bleeding) — cited 
 **Clinician review (paediatric gastroenterology, paediatric surgery, transfusion):**
 1. Decision 2: applying WS/T 795—2022 §9.5.1 (non-life-threatening bleeding) to a symptomatic 7-year-old at 72.5 g/L
    with HR 100/min and unknown blood pressure; whether the key's "below 70 g/L with symptoms" wording is right.
-2. ACG 2015 statements taken from summaries (small-bowel definition by the ampulla and ileocaecal valve; the Meckel
-   scan's place; emergency angiography; intraoperative enteroscopy; surgery) — confirm in the full text.
+2. ACG 2015 (now checked in its full text) is an adult guideline: confirm that the statements used here (the Meckel
+   scan's place, angiography, intraoperative enteroscopy, surgery, endoscopic therapy with significant ongoing anaemia)
+   carry over to a 7-year-old.
 3. ESGE 2022 is built mainly on adult evidence; check the 2026 Chinese paediatric consensus on small-bowel capsule
    endoscopy (Subspecialty Group of Gastroenterology, Society of Pediatrics, Chinese Medical Association, et al. [Expert
    consensus on the clinical use of small bowel capsule endoscopy in children (2026)]. Zhonghua Er Ke Za Zhi.
@@ -359,12 +368,12 @@ include recurrent peptic ulcer/haemorrhage and other active bleeding) — cited 
 4. WHO 2024 cut-offs were confirmed from a guideline summary; check the WHO document. Chinese textbooks grade
    anaemia differently (72.5 g/L would be moderate by the commonly taught 60–90 g/L band) — decide whether the zh text
    should show both.
-5. Tranexamic acid: HALT-IT is an adult trial and the HHT 2020 guideline (Faughnan, Ann Intern Med 2020) discusses
-   antifibrinolytics in HHT-related bleeding; confirm that "contraindicated, not critical" fits a child without an HHT
-   diagnosis.
+5. Tranexamic acid: HALT-IT is an adult trial, and the 2020 international HHT guideline (B5, read in its text) suggests
+   considering oral antifibrinolytics for mild HHT-related GI bleeding (weak, low-quality evidence); confirm that
+   "contraindicated, not critical" fits a child without an HHT diagnosis, including after the capsule finding.
 6. Laparotomy as the critical error: confirm with paediatric surgery (diagnostic laparoscopy for a suspected Meckel's
    diverticulum despite a negative scan is a different, debated question that the case does not score).
-7. The ibuprofen contraindication from the UK SmPC: confirm in the BNF for Children.
+7. The ibuprofen contraindication (UK SmPC of a children's suspension, revised 2024): confirm in the BNF for Children.
 
 ## Changelog
 
@@ -383,6 +392,15 @@ include recurrent peptic ulcer/haemorrhage and other active bleeding) — cited 
 - Guidance verified online on 2026-11-14: ESGE 2022, ACG 2015 (summaries), WS/T 795—2022, WHO 2024, HALT-IT 2020,
   ESGE 2021, China's 2015 antibacterial principles, Curaçao criteria 2000, ibuprofen SmPC.
 - Review status `editorial` (was `unreviewed`), three-plus named guidelines, `sourceTextChecked: false`.
+- Independent review (same day): removed what 1.0.0 does not record — "stigmata" beside the capsule's "no active
+  bleeding", "no bleeding" for "no active bleeding", the earlier labels placed before the black stools, and the earlier
+  anti-infective treatment strengthened from "no clear relief" to "failed"; decision 1 now opens only after the
+  coagulation result its prompt quotes has been read; the tranexamic-acid harm and teaching point 5 scoped to the
+  evidence (HALT-IT, ESGE 2021) with the 2020 HHT guideline's weak recommendation for mild HHT-related bleeding; the
+  ibuprofen contraindication cited from a verified paediatric SmPC (2024) instead of an unverifiable 2026 revision;
+  ACG 2015 statements checked in its full text; an order rule so that "小肠镜" no longer retrieves the colonoscopy
+  record; the laparotomy no longer offered for a surgical consult; wording (angiography's detection threshold, the
+  Meckel-scan qualifier, no authoring language in the teaching points, the persona's age).
 
 ### 1.0.0
 
@@ -418,7 +436,7 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **关键决策：** ① 首先怎么做——按消化道失血处理，先保安全再找来源；② 是否输血——看整体情况，Hb<50 g/L应输，50–70 g/L结合病情；
 ③ 上下消化道检查阴性后——小肠胶囊内镜；④ 胶囊结果——“很可能的”来源，再出血时小肠镜确认并治疗，补铁、随访血红蛋白。
 
-**复盘要点：** 72.5 g/L按WHO 2024为重度贫血，但输血不只看数字；浅表性胃炎和阴性梅克尔显像都不能结束检查；胶囊没看到出血也没取组织，
+**复盘要点：** 72.5 g/L按WHO 2024为重度贫血，但输血不只看数字；浅表性胃炎和阴性梅克尔显像都不能结束检查；胶囊没看到活动性出血，也没取组织，
 间歇性出血正好解释这一点；多发小肠血管病变要问流鼻血、皮肤口唇毛细血管扩张和家族史（库拉索标准）；原报告的抑酸、止血药是历史做法，
 单个病例不能证明哪种药起了作用。
 

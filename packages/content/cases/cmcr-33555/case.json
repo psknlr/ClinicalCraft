@@ -50,15 +50,15 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-11-13",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
       "guidelines": [
         "AAP 2022: clinical practice guideline revision — management of hyperbilirubinemia in the newborn infant 35 or more weeks of gestation (Pediatrics 2022;150(3):e2022058859)",
         "NICE CG98 (2010, last updated 2023): jaundice in newborn babies under 28 days",
-        "NICE NG143 (2019): fever in under 5s — assessment and initial management",
-        "NICE NG195 (2021, updated 2024): neonatal infection — antibiotics for prevention and treatment (blood culture before the first dose; a lumbar puncture only once airway, breathing, circulation, seizures and bleeding risk are stabilised)",
+        "NICE NG143 (2019, recommendations last updated 2021): fever in under 5s — assessment and initial management",
+        "NICE NG195 (2021, last updated May 2026): neonatal infection — antibiotics for prevention and treatment (blood culture before the first dose; a lumbar puncture only once airway, breathing, circulation, seizures and bleeding risk are stabilised)",
         "ILAE 2023: treatment of seizures in the neonate — guidelines and consensus-based recommendations (ILAE Task Force on Neonatal Seizures)",
         "Austin Health Clinical Toxicology Service: clozapine guideline (August 2024)",
         "AACT/EAPCCT 2005: position paper — single-dose activated charcoal",
@@ -82,8 +82,8 @@
   },
   "learningOutcomes": [
     {
-      "zh-CN": "对发热、意识障碍的8日龄新生儿完成第一个小时的处理：气道与监护、血糖、取血培养后立即静脉用覆盖脑膜炎剂量的抗生素（黄疸新生儿用头孢噻肟而非头孢曲松）并加用阿昔洛韦，在气道、抽搐和出血风险稳定之前推迟腰椎穿刺（NICE NG143，2019；NG195，2024年更新）。",
-      "en": "Run the first hour for a febrile, encephalopathic 8-day-old: airway and monitoring, glucose, a blood culture followed at once by IV antibiotics at meningitic doses (cefotaxime, not ceftriaxone, in a jaundiced newborn) with aciclovir, and a lumbar puncture deferred until his airway, seizures and bleeding risk are stabilised (NICE NG143, 2019; NG195, updated 2024)."
+      "zh-CN": "对发热、意识障碍的8日龄新生儿完成第一个小时的处理：气道与监护、血糖、取血培养后立即静脉用覆盖脑膜炎剂量的抗生素（黄疸新生儿用头孢噻肟而非头孢曲松）并加用阿昔洛韦，在气道、抽搐和出血风险稳定之前推迟腰椎穿刺（NICE NG143，2019；NG195，2026年更新）。",
+      "en": "Run the first hour for a febrile, encephalopathic 8-day-old: airway and monitoring, glucose, a blood culture followed at once by IV antibiotics at meningitic doses (cefotaxime, not ceftriaxone, in a jaundiced newborn) with aciclovir, and a lumbar puncture deferred until his airway, seizures and bleeding risk are stabilised (NICE NG143, 2019; NG195, updated 2026)."
     },
     {
       "zh-CN": "识别中晚期急性胆红素脑病的体征（尖声哭、肌张力增高），即使总胆红素低于换血阈值，也立即强光疗并紧急换血（AAP 2022；NICE CG98），同时判断胆红素水平与神经系统表现是否相称。",
@@ -94,8 +94,8 @@
       "en": "Take a targeted, repeated exposure history in unexplained neonatal encephalopathy — every medicine in the household, the mother's own treatment, anything given to the baby — and keep a drug or toxin on the differential until it is excluded."
     },
     {
-      "zh-CN": "解读换血后氯氮平浓度的回升（蛋白结合率高、组织分布广导致再分布），明白浓度只能证实暴露而不指导急性期处理（Austin Health 2024），对意识差的婴儿不洗胃、不用活性炭（AACT/EAPCCT 2005、2013）。",
-      "en": "Interpret a rise in clozapine levels after an exchange as redistribution from a highly protein-bound, tissue-distributed drug, use levels to confirm exposure rather than to direct acute care (Austin Health 2024), and avoid gastric lavage and activated charcoal in an obtunded infant (AACT/EAPCCT 2005, 2013)."
+      "zh-CN": "解读换血后氯氮平浓度的回升（蛋白结合率高、组织分布广导致的再分布；报告讨论的另一种可能是持续吸收），明白浓度只能证实暴露而不指导急性期处理（Austin Health 2024），对意识差的婴儿不洗胃、不用活性炭（AACT/EAPCCT 2005、2013）。",
+      "en": "Interpret a rise in clozapine levels after an exchange as redistribution from a highly protein-bound, tissue-distributed drug (with continuing absorption the other possibility the report discussed), use levels to confirm exposure rather than to direct acute care (Austin Health 2024), and avoid gastric lavage and activated charcoal in an obtunded infant (AACT/EAPCCT 2005, 2013)."
     },
     {
       "zh-CN": "对照护者承认给新生儿服用处方药的情况当天采取行动：儿童保护转介并依法强制报告（2020年修订的《未成年人保护法》；NICE CG89，2009），住院期间监督照护，不带指责地联系给母亲开氯氮平的医生。",
@@ -200,7 +200,7 @@
     },
     "nonVerbalReason": {
       "zh-CN": "8日龄新生儿，反应差，由家属代答病史",
-      "en": "an 8-day-old newborn, barely responsive; his relative answers for him"
+      "en": "an 8-day-old newborn, poorly responsive; his relative answers for him"
     }
   },
   "phases": [
@@ -223,8 +223,8 @@
         "en": "The course continues: the history taken again"
       },
       "description": {
-        "zh-CN": "按报告记录的病程，入院后已行换血；家属经反复追问，对家里用药和孩子发病前吃过什么作了补充。换血后复查的血液检查可以调阅。决策 3 和决策 4 作答后，病程推进到出院前。",
-        "en": "In the recorded course an exchange transfusion has now been done, and on repeated questioning the family has added to what they said about medicines at home and what he was given before he fell ill. Blood tests repeated after the exchange can be read. Once decisions 3 and 4 are answered, the case moves on to the days before discharge."
+        "zh-CN": "按报告记录的病程，入院后已行换血；家属经反复追问，对家里用药和孩子发病前吃过什么作了补充。换血后的血液检查可以调阅。决策 3 和决策 4 作答后，病程推进到出院前。",
+        "en": "In the recorded course an exchange transfusion has now been done, and on repeated questioning the family has added to what they said about medicines at home and what he was given before he fell ill. Blood tests taken after the exchange can be read. Once decisions 3 and 4 are answered, the case moves on to the days before discharge."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -325,7 +325,15 @@
           "因为什么来",
           "主要问题",
           "出什么事",
-          "怎么来医院"
+          "怎么来医院",
+          "有什么不舒服",
+          "多久了",
+          "多长时间了",
+          "什么时候开始的",
+          "病了几天",
+          "病了多久",
+          "怎么不好",
+          "这次的病"
         ],
         "en": [
           "whatshappened",
@@ -342,7 +350,18 @@
           "bringsyou",
           "whyishehere",
           "senttous",
-          "senthere"
+          "senthere",
+          "whendiditstart",
+          "whendiditallstart",
+          "whendidallthisstart",
+          "whendidthisstart",
+          "whendidthisallstart",
+          "hebeenunwell",
+          "hebeenill",
+          "beenlikethis",
+          "hisillness",
+          "thisillness",
+          "theillness"
         ]
       },
       "disclosure": "volunteer",
@@ -355,6 +374,18 @@
       "source": {
         "zh-CN": "报告记录（尚待对照原文核对）：主诉发热、抽搐1天；发病先烦躁、偶尔尖叫，之后发热并抽搐；此后反应差、吃奶差；家属口吻为改写",
         "en": "Recorded in the report (not yet checked against the full article): one day of fever and a seizure; irritability and occasional screaming first, then fever and a seizure; poor responsiveness and poor feeding since; the relative's wording is adapted"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "抽",
+          "黄",
+          "烧",
+          "热",
+          "奶",
+          "家里",
+          "妈妈",
+          "药"
+        ]
       }
     },
     {
@@ -393,11 +424,14 @@
       "excludeKeywords": {
         "zh-CN": [
           "多少度",
-          "几度"
+          "几度",
+          "黄"
         ],
         "en": [
           "how high",
-          "degrees"
+          "degrees",
+          "jaundice",
+          "yellow"
         ]
       },
       "disclosure": "on-ask",
@@ -553,8 +587,8 @@
         "en": "How alert has he been since the fit?"
       },
       "answer": {
-        "zh-CN": "抽是不抽了，可一直没缓过来，叫他也没什么反应。",
-        "en": "The fit stopped, but he never really came round — he hardly responded when we called him."
+        "zh-CN": "抽是不抽了，可反应还是不好。",
+        "en": "The fit stopped, but he still isn't responding the way he should."
       },
       "keywords": {
         "zh-CN": [
@@ -839,11 +873,11 @@
       "topic": "obstetric",
       "question": {
         "zh-CN": "他生下来需要抢救吗？",
-        "en": "Did he need any help to breathe when he was born?"
+        "en": "Did he need resuscitating when he was born?"
       },
       "answer": {
-        "zh-CN": "没有，生下来不需要抢救。",
-        "en": "No — he didn't need resuscitating when he was born."
+        "zh-CN": "生下来不需要抢救。",
+        "en": "He didn't need resuscitating when he was born."
       },
       "keywords": {
         "zh-CN": [
@@ -860,7 +894,9 @@
           "help to breathe",
           "asphyxia",
           "cried at birth",
-          "breathing at birth"
+          "breathing at birth",
+          "cry at birth",
+          "cry straight away"
         ]
       },
       "excludeKeywords": {
@@ -992,7 +1028,11 @@
           "尿量",
           "大便颜色",
           "拉屎",
-          "尿尿"
+          "尿尿",
+          "尿得",
+          "尿多",
+          "尿少",
+          "拉得"
         ],
         "en": [
           "nappies",
@@ -1063,7 +1103,9 @@
           "那边医院",
           "治什么病",
           "什么病",
-          "得过"
+          "得过",
+          "遗传",
+          "家族"
         ],
         "en": [
           "given him",
@@ -1117,7 +1159,11 @@
           "help him sleep",
           "make him sleepy",
           "settle him",
-          "drops"
+          "drops",
+          "swallowed tablets",
+          "swallowed pills",
+          "swallowedany",
+          "swallowedsomething"
         ]
       },
       "excludeKeywords": {
@@ -1134,7 +1180,8 @@
           "妈妈的药",
           "为什么",
           "为啥",
-          "原因"
+          "原因",
+          "什么时候"
         ],
         "en": [
           "anyone at home",
@@ -1147,7 +1194,8 @@
           "mum take",
           "mother take",
           "why",
-          "reason"
+          "reason",
+          "when"
         ]
       },
       "disclosure": "on-ask",
@@ -1268,7 +1316,8 @@
           "为什么",
           "为啥",
           "原因",
-          "谁在吃"
+          "谁在吃",
+          "什么时候"
         ],
         "en": [
           "howmuch",
@@ -1276,7 +1325,8 @@
           "dose",
           "quantity",
           "why",
-          "reason"
+          "reason",
+          "when"
         ]
       },
       "disclosure": "on-ask",
@@ -1393,6 +1443,22 @@
       "source": {
         "zh-CN": "本病例没有记录；家属如实说不知道",
         "en": "Not recorded in this case; the relative says honestly that they do not know"
+      },
+      "excludeKeywords": {
+        "en": [
+          "whatmedicine",
+          "whichmedicine",
+          "whatmedication",
+          "whichmedication",
+          "whatdrug",
+          "whichdrug",
+          "whattablets"
+        ],
+        "zh-CN": [
+          "给他",
+          "给孩子",
+          "喂"
+        ]
       }
     },
     {
@@ -1808,7 +1874,7 @@
       },
       "answer": {
         "zh-CN": "后来随访，医生说他长得和同龄的孩子没什么两样，发育也跟得上。随访了多久，我说不清。",
-        "en": "At his follow-up the doctors said his growth and development were no different from other babies his age. How long they followed him, I can't say exactly."
+        "en": "At his follow-up the doctors said his growth and development weren't noticeably different from other babies his age. How long they followed him, I can't say exactly."
       },
       "keywords": {
         "zh-CN": [
@@ -1903,7 +1969,11 @@
           "清醒程度",
           "昏迷",
           "gcs",
-          "格拉斯哥"
+          "格拉斯哥",
+          "叫得醒",
+          "叫醒",
+          "睁眼",
+          "反应怎么样"
         ],
         "en": [
           "consciousness",
@@ -1911,7 +1981,11 @@
           "gcs",
           "glasgow",
           "level of response",
-          "rousability"
+          "rousability",
+          "responsive",
+          "open his eyes",
+          "rouse",
+          "wake him"
         ]
       },
       "finding": {
@@ -1985,7 +2059,11 @@
           "四肢",
           "肌肉",
           "僵硬",
-          "姿势"
+          "姿势",
+          "胳膊腿",
+          "紧不紧",
+          "发硬",
+          "软不软"
         ],
         "en": [
           "tone",
@@ -1993,7 +2071,9 @@
           "limbs",
           "stiffness",
           "hypertonia",
-          "posture"
+          "posture",
+          "arms and legs",
+          "floppy"
         ]
       },
       "finding": {
@@ -2067,7 +2147,10 @@
           "黄染",
           "皮肤颜色",
           "发黄",
-          "肤色"
+          "肤色",
+          "黄不黄",
+          "多黄",
+          "有多黄"
         ],
         "en": [
           "skin",
@@ -2195,8 +2278,8 @@
     {
       "id": "bilirubin",
       "name": {
-        "zh-CN": "血清胆红素与白蛋白",
-        "en": "Serum bilirubin and albumin"
+        "zh-CN": "胆红素与白蛋白",
+        "en": "Bilirubin and albumin"
       },
       "category": "lab",
       "aliases": {
@@ -2208,7 +2291,8 @@
           "白蛋白",
           "黄疸指数",
           "肝功能",
-          "tsb"
+          "tsb",
+          "血清胆红素"
         ],
         "en": [
           "bilirubin",
@@ -2218,7 +2302,8 @@
           "conjugated bilirubin",
           "albumin",
           "liver function",
-          "lfts"
+          "lfts",
+          "serum bilirubin"
         ]
       },
       "requires": [
@@ -2296,7 +2381,6 @@
           "blood gas",
           "abg",
           "vbg",
-          "gas",
           "acid-base"
         ]
       },
@@ -2325,8 +2409,8 @@
     {
       "id": "electrolytes",
       "name": {
-        "zh-CN": "血电解质",
-        "en": "Serum electrolytes"
+        "zh-CN": "电解质",
+        "en": "Electrolytes"
       },
       "category": "lab",
       "aliases": {
@@ -2335,14 +2419,14 @@
           "血钠",
           "血钾",
           "血钙",
-          "血镁"
+          "血电解质"
         ],
         "en": [
           "electrolytes",
           "sodium",
           "potassium",
           "calcium",
-          "magnesium"
+          "serum electrolytes"
         ]
       },
       "requires": [
@@ -2428,10 +2512,12 @@
         "en": [
           "coagulation",
           "clotting",
-          "pt",
           "aptt",
           "inr",
-          "coag"
+          "coag",
+          "pt/inr",
+          "prothrombin time",
+          "clotting screen"
         ]
       },
       "requires": [
@@ -2582,16 +2668,14 @@
         "zh-CN": [
           "胸片",
           "胸部x线",
-          "x光",
           "胸部平片",
-          "拍片"
+          "胸部x光"
         ],
         "en": [
           "chest x-ray",
           "cxr",
           "chest film",
-          "chest radiograph",
-          "x-ray"
+          "chest radiograph"
         ]
       },
       "requires": [
@@ -2627,13 +2711,13 @@
       "aliases": {
         "zh-CN": [
           "血培养",
-          "细菌培养",
-          "培养"
+          "血液培养",
+          "血细菌培养"
         ],
         "en": [
           "blood culture",
-          "cultures",
-          "culture"
+          "blood cultures",
+          "culture of blood"
         ]
       },
       "requires": [
@@ -2758,17 +2842,15 @@
           "rh血型",
           "库姆斯",
           "抗人球蛋白",
-          "交叉配血",
           "溶血"
         ],
         "en": [
           "blood group",
           "blood type",
-          "dat",
           "coombs",
           "direct antiglobulin",
-          "crossmatch",
-          "group and save"
+          "dat test",
+          "antiglobulin test"
         ]
       },
       "requires": [
@@ -3016,7 +3098,6 @@
           "毒物筛查",
           "毒物检测",
           "药物筛查",
-          "尿毒物",
           "氯氮平浓度"
         ],
         "en": [
@@ -3024,8 +3105,6 @@
           "drug screen",
           "toxicology",
           "tox screen",
-          "serum levels",
-          "urine drug screen",
           "clozapine level"
         ]
       },
@@ -3210,8 +3289,8 @@
             "en": "The admission, discharge and follow-up (length of follow-up not stated)"
           },
           "text": {
-            "zh-CN": "报告记录的诊治与结局：在明确药物暴露之前，考虑高胆红素血症等因素行换血治疗，此后联合多项支持治疗（未逐项记录）。入院后经反复问诊得知，母亲服用氯氮平，并承认发病前曾给患儿服药；摄入量为家属推算，并非实测。氯氮平血药浓度换血后为 1777.1 µg/L，随后回升至 1997.5 µg/L，此后降至 539.0 µg/L 和 197 µg/L；报告讨论了药物再分布和持续吸收的可能，没有证实再次摄入。出院前神经行为评分37分。随访（时长未说明）称生长发育与同龄儿无明显差异。本病例的记录对是否再次换血及其时间交代不清，不作补充。本病例没有记录血氧饱和度、血常规、血型和直接抗人球蛋白试验、血培养、脑脊液、脑电图、心电图、磁共振、光疗、抗生素、听力评估或任何儿童保护处置。",
-            "en": "The report's course and outcome: an exchange transfusion was done before the drug exposure was established, with the hyperbilirubinaemia among the reasons, followed by several supportive measures (not itemised). Repeated questioning after admission established that his mother takes clozapine, and it was admitted that he had been given the drug before he fell ill; the amount was estimated by the family, not measured. The clozapine level was 1777.1 µg/L after the exchange, rose to 1997.5 µg/L and later fell to 539.0 µg/L and 197 µg/L; the report discussed redistribution and continuing absorption and did not establish a further dose. The pre-discharge neurobehavioural score was 37. At follow-up (length not stated) his growth and development were described as no different from his peers'. This case's record is unclear about whether a second exchange was done, and when; nothing is added. This case records no oxygen saturation, blood count, blood groups or direct antiglobulin test, blood culture, CSF, EEG, ECG, MRI, phototherapy, antibiotics, hearing assessment or any child-protection action."
+            "zh-CN": "报告记录的诊治与结局：在明确药物暴露之前，考虑高胆红素血症等因素行换血治疗，此后联合多项支持治疗（未逐项记录）。入院后经反复问诊得知，母亲服用氯氮平，并承认发病前曾给患儿服药；摄入量为家属推算，并非实测。氯氮平血药浓度换血后为 1777.1 µg/L，随后回升至 1997.5 µg/L，此后降至 539.0 µg/L 和 197 µg/L；报告讨论了药物再分布和持续吸收的可能，没有证实再次摄入。出院前神经行为评分37分。随访（时长未说明）称生长发育与同龄儿无明显差异。本病例的记录对是否再次换血及其时间交代不清。本病例没有记录血氧饱和度、血常规、血型和直接抗人球蛋白试验、血培养、脑脊液、脑电图、心电图、磁共振、光疗、抗生素、听力评估或任何儿童保护处置。",
+            "en": "The report's course and outcome: an exchange transfusion was done before the drug exposure was established, with the hyperbilirubinaemia among the reasons, followed by several supportive measures (not itemised). Repeated questioning after admission established that his mother takes clozapine, and it was admitted that he had been given the drug before he fell ill; the amount was estimated by the family, not measured. The clozapine level was 1777.1 µg/L after the exchange, rose to 1997.5 µg/L and later fell to 539.0 µg/L and 197 µg/L; the report discussed redistribution and continuing absorption and did not establish a further dose. The pre-discharge neurobehavioural score was 37. At follow-up (length not stated) his growth and development were described as not noticeably different from his peers'. This case's record is unclear about whether a second exchange was done, and when. This case records no oxygen saturation, blood count, blood groups or direct antiglobulin test, blood culture, CSF, EEG, ECG, MRI, phototherapy, antibiotics, hearing assessment or any child-protection action."
           },
           "source": {
             "zh-CN": "报告记录（尚待对照原文核对）：明确暴露前因高胆红素血症等行换血，后续联合多项支持措施；浓度一度回升后降至539.0和197 μg/L；出院前神经行为评分37分；随访生长发育与同龄儿无明显差异，时长未明确；是否再次换血的时序不清",
@@ -3439,7 +3518,7 @@
       },
       "harm": {
         "zh-CN": "不要用：他全身皮肤中重度黄染。头孢曲松可把胆红素从白蛋白上置换下来，欧盟产品说明书（4.3节）禁用于高胆红素血症新生儿；新生儿与含钙静脉液同用还有沉淀风险。改用头孢噻肟联合氨苄西林或阿莫西林（NICE NG143，2019：3月龄以下用三代头孢菌素并覆盖李斯特菌）。",
-        "en": "Do not use: he has moderate-to-severe jaundice. Ceftriaxone can displace bilirubin from albumin and its EU product information (section 4.3) contraindicates it in hyperbilirubinaemic newborns; in newborns it can also precipitate with calcium-containing IV fluids. Use cefotaxime with ampicillin or amoxicillin instead (NICE NG143, 2019: a third-generation cephalosporin with listeria cover under 3 months)."
+        "en": "Do not use: he has moderate-to-severe jaundice over the whole body. Ceftriaxone can displace bilirubin from albumin and its EU product information (section 4.3) contraindicates it in hyperbilirubinaemic newborns; in newborns it can also precipitate with calcium-containing IV fluids. Use cefotaxime with ampicillin or amoxicillin instead (NICE NG143, 2019: a third-generation cephalosporin with listeria cover under 3 months)."
       },
       "response": {
         "zh-CN": "已给药。本病例没有记录使用头孢曲松；不模拟其效果。",
@@ -3510,8 +3589,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "立即开始，不等胆红素结果：辐照度至少 30 µW/cm²/nm（460–490 nm），尽量增大照射面积；换血前、换血中和换血后持续进行（AAP 2022；NICE CG98）。",
-        "en": "Start at once, without waiting for the bilirubin result: irradiance at least 30 µW/cm²/nm in the 460–490 nm band over as much skin as possible; continue before, during and after any exchange transfusion (AAP 2022; NICE CG98)."
+        "zh-CN": "他的体征可能是胆红素脑病，在胆红素结果回报前就立即开始：辐照度至少 30 µW/cm²/nm（蓝绿光，约460–490 nm），尽量增大照射面积（AAP 2022的强光疗）；换血前、换血中和换血后持续进行（NICE CG98）。",
+        "en": "Start at once while the bilirubin is pending, as his signs may be those of bilirubin encephalopathy: at least 30 µW/cm²/nm in the blue-green band (about 460–490 nm) over as much skin as possible (AAP 2022's intensive phototherapy); keep it going before, during and after any exchange transfusion (NICE CG98)."
       },
       "requires": [
         "phototherapy"
@@ -3589,8 +3668,8 @@
         }
       },
       "harm": {
-        "zh-CN": "先看总胆红素和白蛋白结果：换血有严重风险，要依据测得的胆红素和体征决定，等待结果期间立即开始强光疗（AAP 2022；NICE CG98）。",
-        "en": "Read the total bilirubin and albumin first: an exchange carries serious risks and is decided on the measured level and the signs, with intensive phototherapy started at once while you wait (AAP 2022; NICE CG98)."
+        "zh-CN": "先看总胆红素和白蛋白结果：换血有严重风险，AAP 2022和NICE CG98都依据测得的胆红素和体征决定是否换血；等待结果期间继续强光疗。",
+        "en": "Read the total bilirubin and albumin first: an exchange carries serious risks, and AAP 2022 and NICE CG98 decide it on the measured level and the signs; keep intensive phototherapy going while you wait."
       },
       "response": {
         "zh-CN": "已换血。报告记录在这一阶段因高胆红素血症等原因做了换血；本病例不模拟其效果。",
@@ -3635,8 +3714,8 @@
         "phase": "after-exchange"
       },
       "harm": {
-        "zh-CN": "不推荐为降低血药浓度而再次换血：氯氮平与血浆蛋白高度结合（美国处方信息约97%），并广泛分布到组织，换血只能移走血管内的一小部分，组织中的药物随后回到血中，浓度回升——本例换血后就从 1777.1 升到 1997.5 µg/L。急性期处理依据临床状态而不是浓度（Austin Health 2024），再次换血只会增加导管、感染、电解质和血小板方面的风险；能支持再次换血的只有胆红素，而本病例没有记录换血后的胆红素。",
-        "en": "A further exchange to lower the drug level is not recommended: clozapine is highly protein-bound (about 97 % in its US prescribing information) and widely distributed into tissues, so an exchange removes only the small share in the circulation and drug returns from the tissues — here the level rose from 1777.1 to 1997.5 µg/L after the exchange. Acute care follows his clinical state, not the level (Austin Health 2024); a further exchange adds catheter, infection, electrolyte and platelet risks. Only the bilirubin could justify one, and no post-exchange bilirubin is recorded in this case."
+        "zh-CN": "不推荐为降低血药浓度而再次换血：氯氮平与血浆蛋白高度结合（美国处方信息约97%），并广泛分布到组织，换血只能移走血管内的一小部分，组织中的药物随后回到血中，浓度回升——本例换血后就从 1777.1 升到 1997.5 µg/L（报告讨论了再分布和持续吸收）。急性期处理依据临床状态而不是浓度（Austin Health 2024），再次换血只会增加导管、感染、电解质和血小板方面的风险；能支持再次换血的只有胆红素，而本病例没有记录换血后的胆红素。",
+        "en": "A further exchange to lower the drug level is not recommended: clozapine is highly protein-bound (about 97 % in its US prescribing information) and widely distributed into tissues, so an exchange removes only the small share in the circulation and drug returns from the tissues — here the level rose from 1777.1 to 1997.5 µg/L after the exchange (the report discussed redistribution and continuing absorption). Acute care follows his clinical state, not the level (Austin Health 2024); a further exchange adds catheter, infection, electrolyte and platelet risks. Only the bilirubin could justify one, and no post-exchange bilirubin is recorded in this case."
       },
       "response": {
         "zh-CN": "已再次换血。本病例的记录对是否再次换血及其时间交代不清；不模拟其效果。",
@@ -3677,8 +3756,8 @@
         "phase": "admission"
       },
       "harm": {
-        "zh-CN": "现在不做：他神志不清（记录的GCS为8分），抽搐后口中有少量口沫，血小板计数也不清楚。NICE NG195（2021，腰穿建议2024年更新）要求腰穿前先处理并稳定无保护的气道、呼吸受累、休克、未控制的抽搐和出血风险，出现可能提示颅内压增高的征象时不做腰穿；推迟腰穿不能推迟抗生素——先取血培养，然后立即用药。",
-        "en": "Not now: his consciousness is impaired (GCS recorded as 8), there is a little froth at his mouth after a seizure, and his platelet count is unknown. NICE NG195 (2021; lumbar puncture advice updated 2024) asks for an unprotected airway, respiratory compromise, shock, uncontrolled seizures and any bleeding risk to be treated and stabilised before a lumbar puncture, and for none to be done while signs suggest raised intracranial pressure; deferring the LP never defers the antibiotics — blood culture first, then treat at once."
+        "zh-CN": "现在不做：他神志不清（记录的GCS为8分），口中有少量口沫，血小板计数也不清楚。NICE NG195（2021，2026年最近更新；腰穿建议自2024年起）要求腰穿前先处理并稳定无保护的气道、呼吸受累、休克、未控制的抽搐和出血风险，出现可能提示颅内压增高的征象时不做腰穿；推迟腰穿不能推迟抗生素——先取血培养，然后立即用药。",
+        "en": "Not now: his consciousness is impaired (GCS recorded as 8), there is a little froth at his mouth, and his platelet count is unknown. NICE NG195 (2021, last updated 2026; its lumbar puncture advice dates from 2024) asks for an unprotected airway, respiratory compromise, shock, uncontrolled seizures and any bleeding risk to be treated and stabilised before a lumbar puncture, and for none to be done while signs suggest raised intracranial pressure; deferring the LP never defers the antibiotics — blood culture first, then treat at once."
       },
       "response": {
         "zh-CN": "已行腰椎穿刺。本病例没有记录腰椎穿刺或任何脑脊液结果；不模拟其效果。",
@@ -4085,7 +4164,7 @@
     {
       "id": "obj-examine",
       "title": {
-        "zh-CN": "在暖箱旁查体",
+        "zh-CN": "在床旁查体",
         "en": "Examine him at the cot side"
       },
       "short": {
@@ -4460,8 +4539,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。发热、意识障碍的8日龄新生儿要立即取血培养并用胃肠外抗生素——NICE NG143（2019）要求1月龄以下发热婴儿一律用，3月龄以下用三代头孢菌素加覆盖李斯特菌的药物，发热伴有提示单纯疱疹病毒脑炎的表现时考虑静脉用阿昔洛韦；NICE NG195（2024年更新）要求腰穿前先稳定无保护的气道、抽搐和出血风险，而抗生素不等腰穿。黄疸患儿出现尖声哭和肌张力增高，属于AAP 2022所列的急性胆红素脑病体征，强光疗应在结果回报前就开始；而原因如此不明的脑病，在病史问清之前要把药物暴露留在鉴别诊断里。",
-            "en": "Right. A febrile, encephalopathic 8-day-old needs a blood culture and parenteral antibiotics without delay — NICE NG143 (2019) gives them to every febrile infant under 1 month, with a third-generation cephalosporin and listeria cover under 3 months, and advises considering IV aciclovir when fever comes with signs suggesting herpes simplex encephalitis; NICE NG195 (updated 2024) asks for an unprotected airway, seizures and any bleeding risk to be stabilised before a lumbar puncture, and the antibiotics do not wait for it. A high-pitched cry and hypertonia in a jaundiced baby are AAP 2022 signs of acute bilirubin encephalopathy, so intensive phototherapy starts before the result, and an encephalopathy this unexplained keeps a drug exposure on the list until the history settles it."
+            "zh-CN": "对。发热、意识障碍的8日龄新生儿要立即取血培养并用胃肠外抗生素——NICE NG143（2019）要求1月龄以下发热婴儿一律用，3月龄以下用三代头孢菌素加覆盖李斯特菌的药物，发热伴有提示单纯疱疹病毒脑炎的表现（包括意识水平下降）时静脉用阿昔洛韦；NICE NG195（2026年更新）要求腰穿前先稳定无保护的气道、抽搐和出血风险，而抗生素不等腰穿。黄疸患儿出现尖声哭和肌张力增高，属于AAP 2022所列的急性胆红素脑病体征，强光疗应在结果回报前就开始；而原因如此不明的脑病，在病史问清之前要把药物暴露留在鉴别诊断里。",
+            "en": "Right. A febrile, encephalopathic 8-day-old needs a blood culture and parenteral antibiotics without delay — NICE NG143 (2019) gives them to every febrile infant under 1 month, with a third-generation cephalosporin and listeria cover under 3 months, and gives IV aciclovir when fever comes with signs suggesting herpes simplex encephalitis, decreased consciousness among them; NICE NG195 (updated 2026) asks for an unprotected airway, seizures and any bleeding risk to be stabilised before a lumbar puncture, and the antibiotics do not wait for it. A high-pitched cry and hypertonia in a jaundiced baby are AAP 2022 signs of acute bilirubin encephalopathy, so intensive phototherapy starts before the result, and an encephalopathy this unexplained keeps a drug exposure on the list until the history settles it."
           }
         },
         {
@@ -4484,8 +4563,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "先取脑脊液、后用药的想法有道理，但不能付出这样的代价：NICE NG195（2024年更新）要求腰穿前先稳定无保护的气道、未控制的抽搐和出血风险——他神志不清（记录GCS 8分）、口中有沫、血小板计数不明；应先取血培养，抗生素不能等腰穿。出现尖声哭和肌张力增高时，强光疗同样不该等化验结果（AAP 2022）。",
-            "en": "The aim — CSF before antibiotics — is sound, but not at this cost: NICE NG195 (updated 2024) asks for an unprotected airway, uncontrolled seizures and any bleeding risk to be stabilised before a lumbar puncture, and he is obtunded (GCS recorded as 8) with froth at his mouth and an unknown platelet count; the blood culture comes first and the antibiotics must not wait for the LP. With a high-pitched cry and hypertonia, intensive phototherapy should not wait for the laboratory either (AAP 2022)."
+            "zh-CN": "先取脑脊液、后用药的想法有道理，但不能付出这样的代价：NICE NG195（2026年更新）要求腰穿前先稳定无保护的气道、未控制的抽搐和出血风险——他神志不清（记录GCS 8分）、口中有沫、血小板计数不明；应先取血培养，抗生素不能等腰穿。尖声哭和肌张力增高属于AAP 2022所列的胆红素脑病体征，强光疗同样不该等化验结果。",
+            "en": "The aim — CSF before antibiotics — is sound, but not at this cost: NICE NG195 (updated 2026) asks for an unprotected airway, uncontrolled seizures and any bleeding risk to be stabilised before a lumbar puncture, and he is obtunded (GCS recorded as 8) with froth at his mouth and an unknown platelet count; the blood culture comes first and the antibiotics must not wait for the LP. And a high-pitched cry and hypertonia are signs of bilirubin encephalopathy in AAP 2022, so intensive phototherapy should not wait for the laboratory either."
           }
         },
         {
@@ -4775,8 +4854,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "胆红素损伤听神经时耳声发射可以正常，所以经历换血水平的高胆红素血症后，JCIH 2019要求9月龄前完成含ABR的诊断性听力评估。一次神经行为评分（记录没有写明所用量表）不能预测远期发育，而且回家要等决策 4 商定的儿童保护计划。",
-            "en": "Emissions can be normal when bilirubin has injured the auditory nerve, so after an exchange-level illness JCIH 2019 asks for diagnostic audiology, with ABR, by 9 months. A single neurobehavioural score, on a scale the record does not name, cannot predict later development, and going home waits for the safeguarding plan agreed in decision 4."
+            "zh-CN": "胆红素损伤听神经时耳声发射可以正常：JCIH 2019对新生儿重症监护的婴儿用自动听性脑干反应而不是耳声发射做听力筛查，换血后即使筛查通过，也要求9月龄前完成诊断性听力评估。一次神经行为评分（记录没有写明所用量表）不能预测远期发育，而且回家要等决策 4 商定的儿童保护计划。",
+            "en": "Emissions can be normal when bilirubin has injured the auditory nerve: JCIH 2019 screens babies in neonatal intensive care with automated ABR rather than emissions, and after an exchange transfusion asks for diagnostic audiology by 9 months even when the screen is passed. A single neurobehavioural score, on a scale the record does not name, cannot predict later development, and going home waits for the safeguarding plan agreed in decision 4."
           }
         },
         {
@@ -4787,8 +4866,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "浓度既不指导急性期处理，也不决定出院（Austin Health 2024），等待测不出只会延长住院而没有益处。胆红素对听力和运动的影响可能更晚才显现，这正是JCIH 2019把诊断性听力评估定在9月龄前、出院后还要继续随访的原因。",
-            "en": "Levels guide neither acute care nor discharge (Austin Health 2024), and waiting for an undetectable level prolongs the admission without benefit. Effects of bilirubin on hearing and movement may appear later, which is why JCIH 2019 sets diagnostic audiology by 9 months and why follow-up continues after he leaves."
+            "zh-CN": "浓度在急性中毒的处理中没有作用（Austin Health 2024）；出院取决于他的临床状态，等待测不出只会延长住院而没有益处。胆红素对听力和运动的影响可能更晚才显现，这正是JCIH 2019把诊断性听力评估定在9月龄前、出院后还要继续随访的原因。",
+            "en": "Levels have no role in managing acute poisoning (Austin Health 2024); discharge follows his clinical state, and waiting for an undetectable level prolongs the admission without benefit. Effects of bilirubin on hearing and movement may appear later, which is why JCIH 2019 sets diagnostic audiology by 9 months and why follow-up continues after he leaves."
           }
         },
         {
@@ -5040,8 +5119,8 @@
       "domain": "diagnosis",
       "weight": 3,
       "text": {
-        "zh-CN": "首次作答即把浓度回升解释为再分布，按临床状态而不是浓度处理（决策 3）",
-        "en": "Read the rise as redistribution and treated the baby rather than the level, at the first attempt (decision 3)"
+        "zh-CN": "首次作答即把浓度回升解释为再分布（或持续吸收）而不是又服了药，按临床状态而不是浓度处理（决策 3）",
+        "en": "Read the rise as redistribution (or continuing absorption) rather than a further dose, and treated the baby rather than the level, at the first attempt (decision 3)"
       },
       "met": {
         "decidedFirstTry": "level-rebound"
@@ -5174,8 +5253,8 @@
         "en": "Dr Song (neonatal attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：为什么发热、意识障碍的8日龄新生儿在一小时内要取血培养并用抗生素和阿昔洛韦，为什么腰穿要等气道、抽搐和出血风险稳定之后（NICE NG195，2024年更新），以及黄疸新生儿为什么用头孢噻肟而不用头孢曲松；哪些急性胆红素脑病体征无论数值多少都要求紧急换血（AAP 2022），这个胆红素水平能否解释这么重的表现；新生儿出现抽搐、意识障碍和口沫还可能是什么原因，怎样不带指责地询问家里的药，为什么第一次“说不上来”不等于“没有”；在学员得到家属的第二次说法和血药浓度之后，再讨论换血后浓度为什么回升、为什么浓度不指导急性期处理（Austin Health 2024）、为什么这么晚、意识这么差时不能洗胃或用活性炭、照护者的承认要求团队做什么、换血水平的病情需要怎样随访（JCIH 2019）。历史与现行：报告标题把救治成功归功于换血——引导学员思考，一个同时接受了多种治疗的病例能说明什么、不能说明什么。病例没有记录的内容（血氧饱和度、血常规、血型和抗人球蛋白试验、G6PD、血培养、脑脊液、脑电图、心电图、磁共振、外院所用的镇静药、给药的剂量和原因、家里由谁照顾孩子、各次浓度的采样时间、是否再次换血）不要替它补上。学员作答前，不点名任何药物为病因，不说出任何决策的正确选项，也不透露报告的处理和结局。",
-        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why a febrile, encephalopathic 8-day-old gets a blood culture, antibiotics and aciclovir within the hour, why the lumbar puncture waits until his airway, seizures and bleeding risk are stabilised (NICE NG195, updated 2024), and why cefotaxime rather than ceftriaxone in a jaundiced newborn; which signs of acute bilirubin encephalopathy call for an urgent exchange whatever the level (AAP 2022), and whether this level explains signs this severe; what else can cause a seizure, impaired consciousness and froth at the mouth in a newborn, how to ask about medicines at home without blame, and why a first 'I can't say' is not a no. Only once the learner has the family's second account and the drug levels: why a level rises after an exchange, why levels do not direct acute care (Austin Health 2024), why gastric lavage and charcoal have no place this late in an obtunded baby, what a carer's admission obliges the team to do, and what follow-up an exchange-level illness needs (JCIH 2019). Then and now: the report's title credits the exchange with the rescue — ask what one case with several treatments can and cannot show. Never supply what the case does not record (oxygen saturation, blood count, blood groups and DAT, G6PD, culture, CSF, EEG, ECG, MRI, the sedative given at the other hospital, the dose and reason for the drug, who cares for him at home, the timing of the levels, any second exchange). Before the learner commits, never name a drug as the cause, state any decision's correct option, or give the report's management and outcome."
+        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：为什么发热、意识障碍的8日龄新生儿在一小时内要取血培养并用抗生素和阿昔洛韦，为什么腰穿要等气道、抽搐和出血风险稳定之后（NICE NG195，2026年更新），以及黄疸新生儿为什么用头孢噻肟而不用头孢曲松；哪些急性胆红素脑病体征无论数值多少都要求紧急换血（AAP 2022），这个胆红素水平能否解释这么重的表现；新生儿出现抽搐、意识障碍和口沫还可能是什么原因，怎样不带指责地询问家里的药，为什么第一次“说不上来”不等于“没有”；在学员得到家属的第二次说法和血药浓度之后，再讨论换血后浓度为什么回升、为什么浓度不指导急性期处理（Austin Health 2024）、为什么这么晚、意识这么差时不能洗胃或用活性炭、照护者的承认要求团队做什么、换血水平的病情需要怎样随访（JCIH 2019）。历史与现行：报告标题把救治成功归功于换血——引导学员思考，一个同时接受了多种治疗的病例能说明什么、不能说明什么。病例没有记录的内容（血氧饱和度、血常规、血型和抗人球蛋白试验、G6PD、血培养、脑脊液、脑电图、心电图、磁共振、外院所用的镇静药、给药的剂量和原因、家里由谁照顾孩子、各次浓度的采样时间、是否再次换血）不要替它补上。学员作答前，不点名任何药物为病因，不说出任何决策的正确选项，也不透露报告的处理和结局。",
+        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why a febrile, encephalopathic 8-day-old gets a blood culture, antibiotics and aciclovir within the hour, why the lumbar puncture waits until his airway, seizures and bleeding risk are stabilised (NICE NG195, updated 2026), and why cefotaxime rather than ceftriaxone in a jaundiced newborn; which signs of acute bilirubin encephalopathy call for an urgent exchange whatever the level (AAP 2022), and whether this level explains signs this severe; what else can cause a seizure, impaired consciousness and froth at the mouth in a newborn, how to ask about medicines at home without blame, and why a first 'I can't say' is not a no. Only once the learner has the family's second account and the drug levels: why a level rises after an exchange, why levels do not direct acute care (Austin Health 2024), why gastric lavage and charcoal have no place this late in an obtunded baby, what a carer's admission obliges the team to do, and what follow-up an exchange-level illness needs (JCIH 2019). Then and now: the report's title credits the exchange with the rescue — ask what one case with several treatments can and cannot show. Never supply what the case does not record (oxygen saturation, blood count, blood groups and DAT, G6PD, culture, CSF, EEG, ECG, MRI, the sedative given at the other hospital, the dose and reason for the drug, who cares for him at home, the timing of the levels, any second exchange). Before the learner commits, never name a drug as the cause, state any decision's correct option, or give the report's management and outcome."
       },
       "interprets": [
         "glucose",
@@ -5211,8 +5290,8 @@
         "en": "Pharmacist Liang (clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "临床药师，只解读学员已经调阅或听到的资料。可以讲：头孢曲松可把胆红素从白蛋白上置换下来，欧盟产品说明书禁用于高胆红素血症新生儿，新生儿也不能与含钙液体同用——改用头孢噻肟联合氨苄西林或阿莫西林（NICE NG143，2019），剂量按新生儿处方集的脑膜炎剂量；阿昔洛韦20 mg/kg每8小时静脉滴注，注意补液和肾功能；苯巴比妥只用于发作（ILAE 2023一线），镇静药会加重意识差的孩子的呼吸抑制。只有在学员得到家属的第二次说法或血药浓度结果之后，才可以谈氯氮平：美国处方信息中蛋白结合率约97%，分布广，换血或透析清除很少，浓度会回升；浓度证实暴露，但在急性中毒处理中没有作用（Austin Health 2024）；成人参考值（AGNP 2017：350–600 µg/L，报警1000 µg/L）没有在新生儿中验证；没有解毒剂；活性炭主要在摄入后1小时内考虑，且只在气道受保护时使用（AACT/EAPCCT 2005）；服用氯氮平时一般不建议母乳喂养（BAP 2017；LactMed 2025年修订版认为宜选用其他药物）；骤停氯氮平有撤药性精神病和胆碱能反跳的风险（Blackman和Oloyede，2021）。在此之前不点名任何药物为病因。不替病例补充任何未记录的剂量、时间或数值。",
-        "en": "Clinical pharmacist who interprets only what the learner has already read or heard. Can explain: ceftriaxone can displace bilirubin from albumin, its EU product information contraindicates it in hyperbilirubinaemic newborns, and in newborns it must not meet calcium-containing fluids — cefotaxime with ampicillin or amoxicillin is used instead (NICE NG143, 2019), at the neonatal formulary's meningitic doses; aciclovir 20 mg/kg 8-hourly IV with attention to hydration and renal function; phenobarbital is for seizures (first-line, ILAE 2023), and sedatives add respiratory depression in an obtunded baby. Only once the learner has the family's second account or the drug-level result may clozapine be discussed: about 97 % protein-bound in its US prescribing information and widely distributed, so exchange or dialysis remove little and levels rebound; levels confirm the exposure but have no role in managing acute poisoning (Austin Health 2024); adult reference values (AGNP 2017: 350–600 µg/L, alert 1000 µg/L) are not validated in newborns; there is no antidote; activated charcoal is considered mainly in the first hour after an ingestion, and only with a protected airway (AACT/EAPCCT 2005); breastfeeding is generally avoided on clozapine (BAP 2017; LactMed, revised 2025, prefers other drugs); stopping clozapine abruptly risks withdrawal psychosis and cholinergic rebound (Blackman and Oloyede, 2021). Before that, never names a drug as the cause. Never supplies a dose, timing or value the case does not record."
+        "zh-CN": "临床药师，只解读学员已经调阅或听到的资料。可以讲：头孢曲松可把胆红素从白蛋白上置换下来，欧盟产品说明书禁用于高胆红素血症新生儿，新生儿也不能与含钙液体同用——改用头孢噻肟联合氨苄西林或阿莫西林（NICE NG143，2019），剂量按新生儿处方集的脑膜炎剂量；阿昔洛韦20 mg/kg每8小时静脉滴注，注意补液和肾功能；苯巴比妥只用于发作（ILAE 2023一线），镇静药会加重意识差的孩子的呼吸抑制。只有在学员得到家属的第二次说法或血药浓度结果之后，才可以谈氯氮平：美国处方信息中蛋白结合率约97%，分布广，换血或透析清除很少，浓度会回升；浓度证实暴露，但在急性中毒处理中没有作用（Austin Health 2024）；成人参考值（AGNP 2017：350–600 µg/L，报警1000 µg/L）没有在新生儿中验证；没有解毒剂；活性炭主要在摄入后1小时内考虑，且只在气道完整或已受保护时使用（AACT/EAPCCT 2005）；服用氯氮平时一般不建议母乳喂养（BAP 2017；LactMed 2025年修订版认为宜选用其他药物）；骤停氯氮平有撤药性精神病和胆碱能反跳的风险（Blackman和Oloyede，2021）。在此之前不点名任何药物为病因。不替病例补充任何未记录的剂量、时间或数值。",
+        "en": "Clinical pharmacist who interprets only what the learner has already read or heard. Can explain: ceftriaxone can displace bilirubin from albumin, its EU product information contraindicates it in hyperbilirubinaemic newborns, and in newborns it must not meet calcium-containing fluids — cefotaxime with ampicillin or amoxicillin is used instead (NICE NG143, 2019), at the neonatal formulary's meningitic doses; aciclovir 20 mg/kg 8-hourly IV with attention to hydration and renal function; phenobarbital is for seizures (first-line, ILAE 2023), and sedatives add respiratory depression in an obtunded baby. Only once the learner has the family's second account or the drug-level result may clozapine be discussed: about 97 % protein-bound in its US prescribing information and widely distributed, so exchange or dialysis remove little and levels rebound; levels confirm the exposure but have no role in managing acute poisoning (Austin Health 2024); adult reference values (AGNP 2017: 350–600 µg/L, alert 1000 µg/L) are not validated in newborns; there is no antidote; activated charcoal is considered mainly in the first hour after an ingestion, and only with an intact or protected airway (AACT/EAPCCT 2005); breastfeeding is generally avoided on clozapine (BAP 2017; LactMed, revised 2025, prefers other drugs); stopping clozapine abruptly risks withdrawal psychosis and cholinergic rebound (Blackman and Oloyede, 2021). Before that, never names a drug as the cause. Never supplies a dose, timing or value the case does not record."
       },
       "interprets": [
         "drug-levels"
@@ -5227,7 +5306,7 @@
     },
     "conclusion": {
       "zh-CN": "41+3周剖宫产、体重3.06 kg的8日龄男婴，入院前一天先烦躁、偶尔尖叫，随后发热（外院38.7℃）并抽搐1次（四肢发硬），外院镇静、吸氧后仍反应差。入院时神志不清（记录GCS 8分），刺激后尖声哭、时有呻吟、有少量口沫、四肢肌张力增高、全身中重度黄染；总胆红素334.7 µmol/L（间接322.2），白蛋白35.9 g/L，血糖5.7 mmol/L，CRP<5 mg/L，头颅超声未见明显异常，胸片报告新生儿肺炎。报告在明确暴露之前行换血；之后经反复问诊得知母亲服用氯氮平，并承认发病前曾给患儿服药。换血后氯氮平1777.1 µg/L，复查回升至1997.5 µg/L，此后降至539.0和197 µg/L；出院前神经行为评分37分，随访生长发育与同龄儿无明显差异。现行做法：不等腰穿即用抗生素；有胆红素脑病体征即紧急换血（AAP 2022）；氯氮平以支持治疗为主，不靠清除；对照护者给药当天转介儿童保护。",
-      "en": "An 8-day-old boy (41+3 weeks, caesarean, 3.06 kg) became irritable with occasional screaming the day before, then had a fever (38.7 °C) and one seizure with stiff limbs; after sedation and oxygen elsewhere he stayed poorly responsive. On admission: impaired consciousness (GCS recorded as 8), a high-pitched cry, groaning, a little froth at the mouth, hypertonia and moderate-to-severe jaundice; bilirubin 334.7 µmol/L, albumin 35.9 g/L, glucose 5.7 mmol/L, CRP <5 mg/L, no obvious abnormality on cranial ultrasound, a chest film read as neonatal pneumonia. The exchange preceded the diagnosis; repeated questioning then revealed his mother's clozapine and that he had been given it. Clozapine was 1777.1 then 1997.5 µg/L after the exchange, later 539.0 and 197 µg/L; his neurobehavioural score was 37; follow-up found development like his peers'. Today: antibiotics without awaiting an LP, urgent exchange for encephalopathy signs (AAP 2022), supportive care for clozapine and a child-protection referral."
+      "en": "An 8-day-old boy (41+3 weeks, caesarean, 3.06 kg) became irritable with occasional screaming the day before admission, then had a fever (38.7 °C at the other hospital) and one seizure with stiff limbs; after sedation and oxygen there he stayed poorly responsive. On admission: impaired consciousness (GCS recorded as 8), a high-pitched cry when stimulated, groaning at times, a little froth at the mouth, increased tone in all four limbs and moderate-to-severe jaundice over the whole body; total bilirubin 334.7 µmol/L (indirect 322.2), albumin 35.9 g/L, glucose 5.7 mmol/L, CRP <5 mg/L, no obvious abnormality on cranial ultrasound, a chest film reported as neonatal pneumonia. The report's exchange transfusion came before the exposure was established; repeated questioning then established that his mother takes clozapine and brought an admission that he had been given the drug before he fell ill. Clozapine was 1777.1 µg/L after the exchange, rose to 1997.5 µg/L on repeat, then fell to 539.0 and 197 µg/L; the pre-discharge neurobehavioural score was 37, and at follow-up his growth and development were described as not noticeably different from his peers'. Today: antibiotics without awaiting a lumbar puncture; an urgent exchange for signs of bilirubin encephalopathy (AAP 2022); supportive care for clozapine rather than removal; a same-day child-protection referral when a carer has given the drug."
     },
     "keyReasoning": [
       {
@@ -5252,8 +5331,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单个病例报告：不能证明换血能治疗氯氮平中毒，不能分清神经系统表现在胆红素、可能的感染和药物之间各占多少，也不知道给药剂量。本版的患者事实沿用1.0.0版的记录，尚未对照原文全文核对。报告的处理作为历史事实记录；决策、处置选项和评分依据现行指南设计，属于教学设计。",
-      "en": "A single case report: it cannot show that exchange transfusion treats clozapine poisoning, cannot apportion the neurological signs between bilirubin, possible infection and the drug, and does not give the dose taken. The patient facts in this version are those recorded in version 1.0.0 and have not yet been checked against the full article. The report's management is recorded as historical fact; the decisions, management options and scoring follow current guidance and are teaching design."
+      "zh-CN": "这是单个病例报告：不能证明换血能治疗氯氮平中毒，不能分清神经系统表现在胆红素、可能的感染和药物之间各占多少，给药量也只有家属的推算，并非实测。本版的患者事实沿用1.0.0版的记录，尚未对照原文全文核对。报告的处理作为历史事实记录；决策、处置选项和评分依据现行指南设计，属于教学设计。",
+      "en": "A single case report: it cannot show that exchange transfusion treats clozapine poisoning, cannot apportion the neurological signs between bilirubin, possible infection and the drug, and records only the family's estimate of the amount given, not a measured dose. The patient facts in this version are those recorded in version 1.0.0 and have not yet been checked against the full article. The report's management is recorded as historical fact; the decisions, management options and scoring follow current guidance and are teaching design."
     },
     "unknowns": [
       {
@@ -5287,11 +5366,11 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "第一个小时：发热、意识障碍的8日龄新生儿要立即取血培养并静脉用抗生素——NICE NG143（2019）要求1月龄以下发热婴儿一律用胃肠外抗生素，3月龄以下用三代头孢菌素加覆盖李斯特菌的药物，发热伴有提示单纯疱疹病毒脑炎的表现时考虑静脉用阿昔洛韦；黄疸新生儿用头孢噻肟，不用头孢曲松（欧盟产品说明书禁用于高胆红素血症新生儿）。NICE NG195（2021，2024年更新）要求腰穿前先处理并稳定无保护的气道、呼吸受累、休克、未控制的抽搐和出血风险，有可能提示颅内压增高的征象时不做腰穿；抗生素不等腰穿。CRP<5 mg/L不能排除早期感染。本病例没有记录血培养、脑脊液或抗生素。",
-        "en": "The first hour: a febrile, encephalopathic 8-day-old gets a blood culture and IV antibiotics at once — NICE NG143 (2019) gives parenteral antibiotics to every febrile infant under 1 month, with a third-generation cephalosporin and listeria cover under 3 months, and advises considering IV aciclovir when fever comes with signs suggesting herpes simplex encephalitis; cefotaxime, not ceftriaxone, in a jaundiced newborn (the EU product information contraindicates ceftriaxone in hyperbilirubinaemic newborns). NICE NG195 (2021, updated 2024) asks for an unprotected airway, respiratory compromise, shock, uncontrolled seizures and bleeding risk to be treated and stabilised before a lumbar puncture, and for none to be done while signs suggest raised intracranial pressure; the antibiotics do not wait. A CRP below 5 mg/L does not exclude early infection. This case records no culture, CSF or antibiotics."
+        "zh-CN": "第一个小时：发热、意识障碍的8日龄新生儿要立即取血培养并静脉用抗生素——NICE NG143（2019）要求1月龄以下发热婴儿一律用胃肠外抗生素，3月龄以下用三代头孢菌素加覆盖李斯特菌的药物，发热伴有提示单纯疱疹病毒脑炎的表现（包括意识水平下降）时静脉用阿昔洛韦；黄疸新生儿用头孢噻肟，不用头孢曲松（欧盟产品说明书禁用于高胆红素血症新生儿）。NICE NG195（2021，2026年最近更新）要求腰穿前先处理并稳定无保护的气道、呼吸受累、休克、未控制的抽搐和出血风险，有可能提示颅内压增高的征象时不做腰穿；抗生素不等腰穿。CRP<5 mg/L不能排除早期感染。本病例没有记录血培养、脑脊液或抗生素。",
+        "en": "The first hour: a febrile, encephalopathic 8-day-old gets a blood culture and IV antibiotics at once — NICE NG143 (2019) gives parenteral antibiotics to every febrile infant under 1 month, with a third-generation cephalosporin and listeria cover under 3 months, and gives IV aciclovir when fever comes with signs suggesting herpes simplex encephalitis, decreased consciousness among them; cefotaxime, not ceftriaxone, in a jaundiced newborn (the EU product information contraindicates ceftriaxone in hyperbilirubinaemic newborns). NICE NG195 (2021, last updated 2026) asks for an unprotected airway, respiratory compromise, shock, uncontrolled seizures and bleeding risk to be treated and stabilised before a lumbar puncture, and for none to be done while signs suggest raised intracranial pressure; the antibiotics do not wait. A CRP below 5 mg/L does not exclude early infection. This case records no culture, CSF or antibiotics."
       },
       {
-        "zh-CN": "胆红素脑病与换血：AAP 2022建议凡有中晚期急性胆红素脑病体征（肌张力增高、角弓反张、颈后仰、尖声哭、反复呼吸暂停）者紧急换血，只有在没有这些体征时才允许在强光疗下每2小时复查、暂缓换血；NICE CG98同样对有临床表现者做双倍血容量换血、不用白蛋白预充、全程光疗。本例8日龄时334.7 µmol/L（约19.6 mg/dL）、白蛋白35.9 g/L，低于NICE对38周以上、96小时以上婴儿450 µmol/L的换血线：今天决定换血的是体征而不是数值，而数值不高、体征很重的不相称正是另有原因的线索。",
+        "zh-CN": "胆红素脑病与换血：AAP 2022建议凡有中晚期急性胆红素脑病体征（肌张力增高、身体弓起、颈后仰、角弓反张、尖声哭、反复呼吸暂停）者紧急换血，只有在没有这些体征时才允许在强光疗下每2小时复查、暂缓换血；NICE CG98同样对有临床表现者做双倍血容量换血、不用白蛋白预充、全程光疗。本例8日龄时334.7 µmol/L（约19.6 mg/dL）、白蛋白35.9 g/L，低于NICE对38周以上、96小时以上婴儿450 µmol/L的换血线：今天决定换血的是体征而不是数值，而数值不高、体征很重的不相称正是另有原因的线索。",
         "en": "Bilirubin encephalopathy and exchange: AAP 2022 recommends an urgent exchange for signs of intermediate or advanced acute bilirubin encephalopathy — hypertonia, arching, retrocollis, opisthotonos, a high-pitched cry, recurrent apnoea — and permits deferring an exchange, with intensive phototherapy and two-hourly levels, only without them; NICE CG98 likewise exchanges for clinical signs, double-volume, without albumin priming and with phototherapy throughout. Here 334.7 µmol/L (about 19.6 mg/dL) at 8 days with albumin 35.9 g/L lay below NICE's 450 µmol/L exchange line for babies of 38 weeks or more aged 96 hours or older: today the signs, not the number, decide the exchange — and the mismatch between a modest level and severe signs was the clue that something else was going on."
       },
       {
@@ -5299,8 +5378,8 @@
         "en": "The medicine history: a newborn's encephalopathy is not explained until medicines at home have been asked about specifically, and more than once — here the history came only on repeated questioning after the exchange: a mother taking clozapine, and an admission that the baby had been given it. Ask open, non-judgemental questions about every medicine in the household, the mother's own treatment and anything given to quieten him or help him sleep; a first 'I can't say' is not a no. NICE CG89 (2009) lists poisoning among the alerting features of maltreatment."
       },
       {
-        "zh-CN": "氯氮平与清除：美国处方信息中氯氮平蛋白结合率约97%，分布广，换血只能清除很少一部分，浓度随后回升——本例换血后从1777.1升到1997.5 µg/L，报告讨论了再分布和持续吸收。浓度只证实暴露、不指导急性期处理（Austin Health 2024）；成人参考值（AGNP 2017：350–600 µg/L，报警1000 µg/L）未在新生儿中验证。处理以支持为主：气道、呼吸、循环、惊厥、心电图；对意识差、服药已久的婴儿，洗胃（AACT/EAPCCT 2013）和活性炭（2005：主要在摄入后1小时内，且只在气道受保护时）都不适用。报告标题把救治成功归功于换血，但一个为胆红素换血、又接受多项支持治疗的病例证明不了这一点。",
-        "en": "Clozapine and its removal: clozapine is about 97 % protein-bound in its US prescribing information and widely distributed, so an exchange removes little and the level rebounds — here from 1777.1 to 1997.5 µg/L after the exchange; the report discussed redistribution and continuing absorption. Levels confirm exposure but do not direct acute care (Austin Health 2024), and adult references (AGNP 2017: 350–600 µg/L, alert 1000 µg/L) are not validated in newborns. Care is supportive — airway, breathing, circulation, seizures, ECG; gastric lavage (AACT/EAPCCT 2013) and charcoal (2005: mainly in the first hour, and only with a protected airway) have no place in an obtunded infant long after ingestion. The report's title credits exchange transfusion with the rescue; one case exchanged for bilirubin and given several supportive treatments cannot show that."
+        "zh-CN": "氯氮平与清除：美国处方信息中氯氮平蛋白结合率约97%，分布广，换血只能清除很少一部分，浓度随后回升——本例换血后从1777.1升到1997.5 µg/L，报告讨论了再分布和持续吸收。浓度只证实暴露、不指导急性期处理（Austin Health 2024）；成人参考值（AGNP 2017：350–600 µg/L，报警1000 µg/L）未在新生儿中验证。处理以支持为主：气道、呼吸、循环、惊厥、心电图；对意识差、服药已久的婴儿，洗胃（AACT/EAPCCT 2013）和活性炭（2005：主要在摄入后1小时内，且只在气道完整或已受保护时）都不适用。报告标题把救治成功归功于换血，但一个部分因高胆红素血症而换血、又接受多项支持治疗的病例证明不了这一点。",
+        "en": "Clozapine and its removal: clozapine is about 97 % protein-bound in its US prescribing information and widely distributed, so an exchange removes little and the level rebounds — here from 1777.1 to 1997.5 µg/L after the exchange; the report discussed redistribution and continuing absorption. Levels confirm exposure but do not direct acute care (Austin Health 2024), and adult references (AGNP 2017: 350–600 µg/L, alert 1000 µg/L) are not validated in newborns. Care is supportive — airway, breathing, circulation, seizures, ECG; gastric lavage (AACT/EAPCCT 2013) and charcoal (2005: mainly in the first hour, and only with an intact or protected airway) have no place in an obtunded infant long after ingestion. The report's title credits exchange transfusion with the rescue; one case exchanged partly for its bilirubin and given several supportive treatments cannot show that."
       },
       {
         "zh-CN": "儿童保护：照护者承认给新生儿服用处方药，要当天处理——我国2020年修订、2021年6月1日施行的《未成年人保护法》和2020年的强制报告制度意见要求医疗机构发现疑似侵害立即向公安机关报告；住院期间监督照护；联系给母亲开氯氮平的医生（骤停氯氮平有撤药性精神病和胆碱能反跳风险，Blackman和Oloyede，2021）；不指责。本病例没有记录任何儿童保护处置。",
@@ -5308,15 +5387,15 @@
       },
       {
         "zh-CN": "随访与喂养：JCIH 2019把需要换血的高胆红素血症列为听力损失高危因素，即使筛查通过也要在9月龄前完成诊断性听力评估，因为胆红素可损伤听觉通路而耳声发射仍正常；神经发育要系统随访——出院前评分37分（记录没有写明量表）和随访时长不明的“与同龄儿无明显差异”都不能代替系统随访。母亲服用氯氮平期间一般不建议母乳喂养（BAP 2017；LactMed 2025年修订版认为宜选用其他药物）；本病例没有记录他的喂养方式。",
-        "en": "Follow-up and feeding: JCIH 2019 lists hyperbilirubinaemia with exchange transfusion as a risk indicator calling for diagnostic audiology by 9 months even after a passed screen, because bilirubin can injure the auditory pathway while otoacoustic emissions stay normal; neurodevelopment is followed in a structured way — a score of 37 before discharge, on a scale the record does not name, and 'no different from his peers' at a follow-up of unstated length cannot replace it. Breastfeeding is generally avoided while the mother takes clozapine (BAP 2017; LactMed, revised 2025, prefers other drugs); this case does not record how he was fed."
+        "en": "Follow-up and feeding: JCIH 2019 lists hyperbilirubinaemia with exchange transfusion as a risk indicator calling for diagnostic audiology by 9 months even after a passed screen, because bilirubin can injure the auditory pathway while otoacoustic emissions stay normal; neurodevelopment is followed in a structured way — a score of 37 before discharge, on a scale the record does not name, and 'not noticeably different from his peers' at a follow-up of unstated length cannot replace it. Breastfeeding is generally avoided while the mother takes clozapine (BAP 2017; LactMed, revised 2025, prefers other drugs); this case does not record how he was fed."
       }
     ],
     "references": [
       "黄雪美, 陈继昌, 韦拔, 蒋永江, 符婵, 谢玉泉. 换血疗法成功救治新生儿氯氮平中毒一例. 中华儿科杂志. 2013;51(5):392-393. doi:10.3760/cma.j.issn.0578-1310.2013.05.016. Available from: https://rs.yiigle.com/cmaid/33555",
       "Kemper AR, Newman TB, Slaughter JL, et al. Clinical practice guideline revision: management of hyperbilirubinemia in the newborn infant 35 or more weeks of gestation. Pediatrics. 2022;150(3):e2022058859. doi:10.1542/peds.2022-058859",
       "National Institute for Health and Care Excellence. Jaundice in newborn babies under 28 days. Clinical guideline CG98. London: NICE; 2010 [updated 2023 Oct 31].",
-      "National Institute for Health and Care Excellence. Fever in under 5s: assessment and initial management. NICE guideline NG143. London: NICE; 2019.",
-      "National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and treatment. NICE guideline NG195. London: NICE; 2021 [updated 2024].",
+      "National Institute for Health and Care Excellence. Fever in under 5s: assessment and initial management. NICE guideline NG143. London: NICE; 2019 [updated 2021 Nov 26].",
+      "National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and treatment. NICE guideline NG195. London: NICE; 2021 [updated 2026 May 13].",
       "Austin Health Clinical Toxicology Service. Clozapine guideline. Melbourne: Austin Health; 2024 Aug. Available from: https://www.austin.org.au/Assets/Files/Clozapine%20Guideline_AUG%202024.pdf",
       "Benson BE, Hoppu K, Troutman WG, et al. Position paper update: gastric lavage for gastrointestinal decontamination. Clin Toxicol (Phila). 2013;51(3):140-146. doi:10.3109/15563650.2013.770154",
       "全国人民代表大会常务委员会. 中华人民共和国未成年人保护法（2020年修订，2021年6月1日起施行）. / Standing Committee of the National People's Congress. Law of the People's Republic of China on the Protection of Minors (2020 revision, in force 1 June 2021).",
@@ -6083,7 +6162,89 @@
         "text": "Can you page the blood bank for me?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "How long has he been like this now?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has he been unwell?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "孩子有什么不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "这样多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did you first notice the jaundice?",
+        "locale": "en",
+        "expect": [
+          "jaundice-onset"
+        ]
+      },
+      {
+        "text": "家里有什么遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-history"
+        ]
+      },
+      {
+        "text": "What medicine does his mother take?",
+        "locale": "en",
+        "expect": [
+          "home-medicines-disclosed"
+        ]
+      },
+      {
+        "text": "什么时候给他吃的？",
+        "locale": "zh-CN",
+        "expect": [
+          "amount-given"
+        ]
       }
     ]
+  },
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "drug-levels",
+        "ifMatches": "urine|尿",
+        "remove": [
+          "drug-levels"
+        ]
+      }
+    ],
+    "exact": {
+      "dat": [
+        "blood-group-dat"
+      ],
+      "pt": [
+        "coagulation"
+      ],
+      "gas": [
+        "blood-gas"
+      ],
+      "gases": [
+        "blood-gas"
+      ]
+    },
+    "warnings": []
   }
 }

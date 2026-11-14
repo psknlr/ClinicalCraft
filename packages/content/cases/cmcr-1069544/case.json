@@ -69,8 +69,8 @@
     ],
     "license": "Educational paraphrase; the source publication retains its copyright.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——58岁女性；第一次发作（上腹持续胀痛伴恶心、呕吐 1 天；左上腹及脐周压痛、局部轻度肌紧张、反跳痛可疑、墨菲征阴性、颈部未触及包块；淀粉酶 1139 U/L、血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石）；出院后无症状、未服降压药时血压正常；约 20 个月后再次发作（突发上腹胀痛伴恶心、呕吐，8 小时后就诊；淀粉酶 1055.9 U/L、血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石）；颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤；术前一项 31 pmol/L 的结果被标为“甲状腺素”（可能为误标的 PTH）；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解；随访未诉不适（时长未记录）；报告的胰腺炎处置包括禁食和抗菌药物——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、病情严重程度、白蛋白与离子钙、胆囊影像、甘油三酯、参考区间、手术细节、随访时长）保持未知。保留的内部不一致：术前激素结果的项目名称（甲状腺素或 PTH）不作裁定，两种读法并列；第二次 CT 的结石侧别和数目没有写明。原报告图片因带有日期信息未获准展示。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 58-year-old woman; the first attack (a day of constant upper abdominal pain with nausea and vomiting; tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass; amylase 1139 U/L, calcium 2.76 mmol/L; CT pancreatitis and a left renal stone); no symptoms after discharge and a normal blood pressure off antihypertensives; a second attack about 20 months later (sudden upper abdominal pain with nausea and vomiting, presenting after 8 hours; amylase 1055.9 U/L, calcium 2.87 mmol/L; CT pancreatitis with renal stone(s) still seen); neck ultrasound/CT showing a lesion behind the lower pole of the left thyroid lobe; its removal (about 2 × 1.5 × 1 cm) with a histology of parathyroid adenoma; a pre-operative value of 31 pmol/L labelled 'thyroxine' (possibly a mislabelled PTH); post-operative PTH 3.8 pmol/L and calcium 2.18 mmol/L, staying normal, with transient limb numbness without tetany that settled on its own; no complaints at follow-up (length not recorded); and the report's care of the pancreatitis with fasting and antibiotics — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, severity, albumin and ionised calcium, gallbladder imaging, triglycerides, reference intervals, operative details, length of follow-up) stays unknown. Kept as recorded, not resolved: the analyte of the pre-operative hormone value (thyroxine or PTH) — both readings stand; the side and number of the stones on the second CT are not stated. The report's figure is withheld because it carries date information."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——58岁女性；第一次发作（上腹持续胀痛伴恶心、呕吐 1 天；左上腹及脐周压痛、局部轻度肌紧张、反跳痛可疑、墨菲征阴性、颈部未触及包块；淀粉酶 1139 U/L、血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石）；出院后饮食、大便正常，无腹痛腹胀、骨痛及腰背酸痛、多尿多饮，未服降压药时血压正常；约 20 个月后再次发作（突发上腹胀痛伴恶心、呕吐，8 小时后就诊；淀粉酶 1055.9 U/L、血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石）；颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤；术前一项 31 pmol/L 的结果被标为“甲状腺素”（可能为误标的 PTH）；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解；随访未诉不适（时长未记录）；报告的胰腺炎处置包括禁食和抗菌药物——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、病情严重程度、白蛋白与离子钙、胆囊影像、甘油三酯、参考区间、手术细节、随访时长）保持未知。保留的内部不一致：术前激素结果的项目名称（甲状腺素或 PTH）不作裁定，两种读法并列；第二次 CT 的结石侧别和数目没有写明。原报告图片因带有日期信息未获准展示。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 58-year-old woman; the first attack (a day of constant upper abdominal pain with nausea and vomiting; tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass; amylase 1139 U/L, calcium 2.76 mmol/L; CT pancreatitis and a left renal stone); after discharge, normal eating and bowels with no abdominal pain or bloating, bone or back ache, polyuria or polydipsia, and a normal blood pressure off antihypertensives; a second attack about 20 months later (sudden upper abdominal pain with nausea and vomiting, presenting after 8 hours; amylase 1055.9 U/L, calcium 2.87 mmol/L; CT pancreatitis with renal stone(s) still seen); neck ultrasound/CT showing a lesion behind the lower pole of the left thyroid lobe; its removal (about 2 × 1.5 × 1 cm) with a histology of parathyroid adenoma; a pre-operative value of 31 pmol/L labelled 'thyroxine' (possibly a mislabelled PTH); post-operative PTH 3.8 pmol/L and calcium 2.18 mmol/L, staying normal, with transient limb numbness without tetany or convulsions that settled on its own; no complaints at follow-up (length not recorded); and the report's care of the pancreatitis with fasting and antibiotics — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, severity, albumin and ionised calcium, gallbladder imaging, triglycerides, reference intervals, operative details, length of follow-up) stays unknown. Kept as recorded, not resolved: the analyte of the pre-operative hormone value (thyroxine or PTH) — both readings stand; the side and number of the stones on the second CT are not stated. The report's figure is withheld because it carries date information."
     },
     "review": {
       "status": "editorial",
@@ -152,8 +152,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演者：只演当前阶段，不提任何后来的事。第一次住院：躺在病床上，上腹胀痛、恶心，难受又着急。再次入院：又痛起来，失望地说“怎么又犯了”。手术之后：能平静交谈，只诉胳膊和腿发麻、没有抽搐。随访：状态良好。只回答被问到的内容；不提化验、影像或任何数字，不编造病史、用药、饮酒或过敏。",
-        "en": "For the actor: play only the current phase and never mention anything that comes later. First admission: lying in bed with a bloated upper abdominal pain and nausea, uncomfortable and anxious. Readmission: in pain again and dismayed that it has come back. After the operation: talks calmly, mentioning only that her arms and legs feel numb and that she has had no spasms. Follow-up: well. She answers only what she is asked, never mentions tests, scans or numbers, and never invents history, medicines, alcohol or allergies."
+        "zh-CN": "扮演者：只演当前阶段，不提任何后来的事。第一次住院：躺在病床上，上腹胀痛、恶心，难受又着急。再次入院：又痛起来，失望地说“怎么又犯了”。手术之后：能平静交谈，只诉胳膊和腿发麻、没有抽搐。随访：没有不适。只回答被问到的内容；不提化验、影像或任何数字，不编造病史、用药、饮酒或过敏。",
+        "en": "For the actor: play only the current phase and never mention anything that comes later. First admission: lying in bed with a bloated upper abdominal pain and nausea, uncomfortable and anxious. Readmission: in pain again and dismayed that it has come back. After the operation: talks calmly, mentioning only that her arms and legs feel numb and that she has had no spasms. Follow-up: no complaints. She answers only what she is asked, never mentions tests, scans or numbers, and never invents history, medicines, alcohol or allergies."
       }
     },
     "appearance": {
@@ -280,8 +280,8 @@
         "en": "What's brought you into hospital today?"
       },
       "answer": {
-        "zh-CN": "上腹这里胀着痛，还恶心、想吐。",
-        "en": "It's my upper belly — a bloated, aching pain — and I feel sick."
+        "zh-CN": "上腹这里一直胀着痛，还恶心、吐，已经一天了。",
+        "en": "It's my upper belly — a bloated, aching pain that hasn't let up for a day now — and I feel sick and I've been throwing up."
       },
       "keywords": {
         "zh-CN": [
@@ -292,7 +292,11 @@
           "住进来",
           "哪儿难受",
           "主要症状",
-          "因为什么"
+          "因为什么",
+          "怎么了",
+          "这次怎么了",
+          "怎么回事",
+          "肚子痛吗"
         ],
         "en": [
           "broughtyouin",
@@ -300,7 +304,10 @@
           "main problem",
           "whatsthematter",
           "whatbringsyou",
-          "reason for admission"
+          "reason for admission",
+          "whathappened",
+          "goingon",
+          "whatstheproblem"
         ]
       },
       "excludeKeywords": {
@@ -420,7 +427,11 @@
           "stabbing",
           "bloating",
           "sharp or dull",
-          "whatisitlike"
+          "whatisitlike",
+          "comeandgo",
+          "comesandgoes",
+          "constantpain",
+          "painconstant"
         ]
       },
       "excludeKeywords": {
@@ -462,7 +473,10 @@
           "具体位置",
           "哪一块",
           "部位",
-          "指给我看"
+          "指给我看",
+          "哪个地方痛",
+          "什么地方痛",
+          "哪儿痛"
         ],
         "en": [
           "whereexactly",
@@ -502,8 +516,8 @@
         "en": "Have you actually vomited — how often, and what came up?"
       },
       "answer": {
-        "zh-CN": "吐了。吐了几回、吐出来些什么，我说不上来。",
-        "en": "Yes, I've vomited. How many times, or what came up, I can't say exactly."
+        "zh-CN": "恶心，也吐了。吐了几回、吐出来些什么，我说不上来。",
+        "en": "Yes — I feel sick, and I've vomited. How many times, or what came up, I can't say exactly."
       },
       "keywords": {
         "zh-CN": [
@@ -513,7 +527,9 @@
           "吐的什么",
           "吐出来",
           "呕",
-          "吐了没有"
+          "吐了没有",
+          "恶心",
+          "想吐"
         ],
         "en": [
           "vomit",
@@ -521,7 +537,11 @@
           "throwingup",
           "threwup",
           "whatcameup",
-          "how often sick"
+          "how often sick",
+          "nauseous",
+          "nausea",
+          "feelsick",
+          "beensick"
         ]
       },
       "excludeKeywords": {
@@ -1121,7 +1141,9 @@
           "long-term illness",
           "medical history",
           "past illnesses",
-          "conditions"
+          "conditions",
+          "medicalproblems",
+          "healthproblems"
         ]
       },
       "excludeKeywords": {
@@ -1246,8 +1268,8 @@
         "en": "What's brought you back in this time?"
       },
       "answer": {
-        "zh-CN": "又是上腹胀着痛，这回是突然痛起来的，还恶心、吐。",
-        "en": "The same bloated pain in my upper belly — it came on suddenly this time — and I've been sick."
+        "zh-CN": "又是上腹胀着痛，是突然痛起来的，还恶心、吐。",
+        "en": "It's that bloated pain in my upper belly again — it came on suddenly — and I feel sick and I've been throwing up."
       },
       "keywords": {
         "zh-CN": [
@@ -1285,7 +1307,9 @@
           "since",
           "last stay",
           "back at all",
-          "how long"
+          "how long",
+          "start",
+          "when did"
         ]
       },
       "disclosure": "volunteer",
@@ -1308,7 +1332,7 @@
         "en": "How long had it been hurting when you came in this time?"
       },
       "answer": {
-        "zh-CN": "这次是突然痛起来的，痛了八个钟头才来。",
+        "zh-CN": "是突然痛起来的，痛了八个钟头才来。",
         "en": "It came on suddenly, and I came in after eight hours of it."
       },
       "keywords": {
@@ -1408,7 +1432,8 @@
           "recheck",
           "since you went home",
           "since your last",
-          "how have you been"
+          "how have you been",
+          "treatment"
         ]
       },
       "disclosure": "on-ask",
@@ -1781,7 +1806,9 @@
           "现在怎么样",
           "麻好了吗",
           "好了没有",
-          "复查"
+          "复查",
+          "还麻",
+          "现在还麻"
         ],
         "en": [
           "sincethen",
@@ -2069,8 +2096,8 @@
     {
       "id": "calcium",
       "name": {
-        "zh-CN": "血清钙",
-        "en": "Serum calcium"
+        "zh-CN": "血钙",
+        "en": "Calcium"
       },
       "category": "lab",
       "aliases": {
@@ -2101,13 +2128,13 @@
             "en": "First admission"
           },
           "text": {
-            "zh-CN": "血清钙 2.76 mmol/L（升高）。",
-            "en": "Serum calcium 2.76 mmol/L (raised)."
+            "zh-CN": "血钙 2.76 mmol/L（升高）。",
+            "en": "Calcium 2.76 mmol/L (raised)."
           },
           "values": [
             {
               "analyte": {
-                "zh-CN": "血清钙",
+                "zh-CN": "血钙",
                 "en": "Calcium"
               },
               "value": 2.76,
@@ -2120,8 +2147,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录白蛋白和离子钙，无法计算白蛋白校正钙；也没有记录参考区间。",
-            "en": "This case records no albumin or ionised calcium, so no albumin-adjusted calcium can be worked out; no reference interval is recorded."
+            "zh-CN": "本病例没有记录标本类型（血清或血浆）、白蛋白和离子钙，无法计算白蛋白校正钙；也没有记录参考区间。",
+            "en": "This case records no specimen type (serum or plasma), albumin or ionised calcium, so no albumin-adjusted calcium can be worked out; no reference interval is recorded."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：第一次发作：血钙 2.76 mmol/L（1.0.0 版称两次血钙均升高）（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2135,13 +2162,13 @@
             "en": "Readmission about 20 months later"
           },
           "text": {
-            "zh-CN": "血清钙 2.87 mmol/L（升高）。",
-            "en": "Serum calcium 2.87 mmol/L (raised)."
+            "zh-CN": "血钙 2.87 mmol/L（升高）。",
+            "en": "Calcium 2.87 mmol/L (raised)."
           },
           "values": [
             {
               "analyte": {
-                "zh-CN": "血清钙",
+                "zh-CN": "血钙",
                 "en": "Calcium"
               },
               "value": 2.87,
@@ -2175,7 +2202,7 @@
           "values": [
             {
               "analyte": {
-                "zh-CN": "血清钙",
+                "zh-CN": "血钙",
                 "en": "Calcium"
               },
               "value": 2.18,
@@ -2200,8 +2227,8 @@
     {
       "id": "hormone-assay",
       "name": {
-        "zh-CN": "血清激素测定",
-        "en": "Serum hormone assay"
+        "zh-CN": "激素测定",
+        "en": "Hormone assay"
       },
       "category": "lab",
       "aliases": {
@@ -2209,15 +2236,13 @@
           "甲状旁腺激素",
           "甲状旁腺素",
           "pth",
-          "ipth",
-          "激素水平"
+          "ipth"
         ],
         "en": [
           "pth",
           "parathyroid hormone",
           "parathormone",
-          "intact pth",
-          "hormone levels"
+          "intact pth"
         ]
       },
       "requires": [
@@ -2240,8 +2265,8 @@
         "recurrence": {
           "available": true,
           "date": {
-            "zh-CN": "第二次发作后（具体时间未记录）",
-            "en": "After the second attack (exact time not recorded)"
+            "zh-CN": "术前（具体时间未记录）",
+            "en": "Before the operation (exact time not recorded)"
           },
           "text": {
             "zh-CN": "激素结果：31 pmol/L，报告中该项目标为“甲状腺素”。",
@@ -2262,8 +2287,8 @@
             }
           ],
           "note": {
-            "zh-CN": "这一项目的名称有疑问：报告把它标为“甲状腺素”，但它也可能是标错名称的甲状旁腺激素（PTH）。本病例没有记录同一份标本的血钙、白蛋白、TSH 或参考区间。",
-            "en": "The analyte's name is in doubt: the report labels it 'thyroxine', but it may be a mislabelled parathyroid hormone (PTH). This case records no calcium, albumin, TSH or reference interval from the same sample."
+            "zh-CN": "这一项目的名称有疑问：报告把它标为“甲状腺素”，但它也可能是标错名称的甲状旁腺激素（PTH）。本病例没有记录标本类型、测定时间，也没有记录同一份标本的血钙、白蛋白、TSH 或参考区间。",
+            "en": "The analyte's name is in doubt: the report labels it 'thyroxine', but it may be a mislabelled parathyroid hormone (PTH). This case records neither the specimen type nor when it was taken, and no calcium, albumin, TSH or reference interval from the same sample."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：术前一项 31 pmol/L 的结果，项目被标为“甲状腺素”，原文可能误标；未作为已核实的 PTH 转写（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2295,8 +2320,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录这次测定距手术多久，也没有记录参考区间。",
-            "en": "This case does not record how long after the operation this was measured, or the reference interval."
+            "zh-CN": "本病例没有记录这次测定距手术多久、标本类型和参考区间。",
+            "en": "This case does not record how long after the operation this was measured, the specimen type or the reference interval."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：术后明确标注的 PTH 降至 3.8 pmol/L（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2452,7 +2477,8 @@
           "pathology",
           "pathology report",
           "histopathology",
-          "specimen"
+          "surgical specimen",
+          "resected specimen"
         ]
       },
       "requires": [
@@ -2521,7 +2547,7 @@
           },
           "text": {
             "zh-CN": "记录的病程：58岁女性，上腹持续胀痛伴恶心、呕吐 1 天入院。查体：左上腹及脐周压痛，局部轻度肌紧张，反跳痛可疑，墨菲征阴性，颈部未触及包块。淀粉酶 1139 U/L，血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石。出院后饮食、大便正常，无腹痛腹胀，无骨痛及腰背酸痛，无多尿多饮，未服降压药时血压亦正常。约 20 个月后再次突发上腹胀痛伴恶心、呕吐，8 小时后就诊：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石。颈部超声、CT 示左侧甲状腺下极后方病灶。报告中一项术前激素结果 31 pmol/L 标为“甲状腺素”（可能为误标的 PTH）。切除的病灶约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。术后 PTH（明确标注）降至 3.8 pmol/L、血钙降至 2.18 mmol/L，此后均维持正常；曾短暂四肢麻木，无抽搐，后自行缓解。随访未诉不适，随访时长未记录。报告对胰腺炎的处置包括禁食和抗菌药物；具体药物、剂量、疗程及用于哪一次发作，本病例没有记录。生命体征、病情严重程度、白蛋白、离子钙、胆囊影像、手术细节和各项参考区间均无记录。",
-            "en": "Recorded course: a 58-year-old woman was admitted after a day of constant upper abdominal pain with nausea and vomiting. Examination: tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass. Amylase 1139 U/L, calcium 2.76 mmol/L; CT: pancreatitis and a left renal stone. After discharge she ate normally with normal bowels, had no abdominal pain or bloating, no bone or back ache and no polyuria or polydipsia, and her blood pressure was normal without antihypertensive medicine. About 20 months later the pain returned suddenly with nausea and vomiting and she came in after 8 hours: amylase 1055.9 U/L, calcium 2.87 mmol/L; CT: pancreatitis with renal stone(s) still seen. Neck ultrasound/CT: a lesion behind the lower pole of the left thyroid lobe. A pre-operative hormone value of 31 pmol/L is labelled 'thyroxine' in the report (possibly a mislabelled PTH). The lesion, about 2 × 1.5 × 1 cm, was removed; histology: parathyroid adenoma. Afterwards the PTH (explicitly labelled) fell to 3.8 pmol/L and the calcium to 2.18 mmol/L, and both stayed normal; she had transient numbness of the limbs without tetany, which settled on its own. At follow-up she had no complaints; its length is not recorded. The report's care of the pancreatitis included fasting and antibiotics; this case does not record the agents, doses, duration or which attack they were given for. No vital signs, severity, albumin, ionised calcium, gallbladder imaging, operative details or reference intervals are recorded."
+            "en": "Recorded course: a 58-year-old woman was admitted after a day of constant upper abdominal pain with nausea and vomiting. Examination: tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass. Amylase 1139 U/L, calcium 2.76 mmol/L; CT: pancreatitis and a left renal stone. After discharge she ate normally with normal bowels, had no abdominal pain or bloating, no bone or back ache and no polyuria or polydipsia, and her blood pressure was normal without antihypertensive medicine. About 20 months later the pain returned suddenly with nausea and vomiting and she came in after 8 hours: amylase 1055.9 U/L, calcium 2.87 mmol/L; CT: pancreatitis with renal stone(s) still seen. Neck ultrasound/CT: a lesion behind the lower pole of the left thyroid lobe. A pre-operative hormone value of 31 pmol/L is labelled 'thyroxine' in the report (possibly a mislabelled PTH). The lesion, about 2 × 1.5 × 1 cm, was removed; histology: parathyroid adenoma. Afterwards the PTH (explicitly labelled) fell to 3.8 pmol/L and the calcium to 2.18 mmol/L, and both stayed normal; she had transient numbness of the limbs without tetany or convulsions, which settled on its own. At follow-up she had no complaints; its length is not recorded. The report's care of the pancreatitis included fasting and antibiotics; this case does not record the agents, doses, duration or which attack they were given for. No vital signs, severity, albumin, ionised calcium, gallbladder imaging, operative details or reference intervals are recorded."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：病例资料、治疗及随访（含历史处置：禁食和抗菌药物）（经 1.0.0 版提取，待对照原文全文核对）",
@@ -3036,6 +3062,14 @@
         "add": [
           "albumin-ionised"
         ]
+      },
+      {
+        "ifHas": "hormone-assay",
+        "ifMatches": "thyro|甲状腺|甲功|tsh|t3|t4",
+        "unlessMatches": "pth|parathyroid|parathormone|甲状旁腺",
+        "remove": [
+          "hormone-assay"
+        ]
       }
     ],
     "exact": {},
@@ -3272,7 +3306,7 @@
       },
       "harm": {
         "zh-CN": "ACG 2024 指南建议轻症急性胰腺炎在 24–48 小时内开始低脂经口饮食，而不是禁食到酶学恢复正常；长时间禁食没有证实的好处。",
-        "en": "ACG 2024 recommends a low-fat oral diet within 24–48 hours in mild acute pancreatitis rather than fasting until the enzymes normalise; prolonged fasting has no proven benefit."
+        "en": "ACG 2024 suggests a low-fat oral diet within 24–48 hours in mild acute pancreatitis rather than fasting until the enzymes normalise; prolonged fasting has no proven benefit."
       },
       "response": {
         "zh-CN": "本病例记录的历史处置中包括禁食（时长未记录）；本病例不模拟其效果。",
@@ -3400,8 +3434,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有胆管炎的急性胰腺炎首选内科治疗，而不是早期 ERCP（ACG 2024）。本病例没有任何指向胆管的记录（没有黄疸、胆红素或胆管表现的记录），而 ERCP 本身可引起胰腺炎、出血和穿孔，可能危及生命，病因却仍然没有找到。",
-        "en": "In acute pancreatitis without cholangitis, medical therapy is preferred to early ERCP (ACG 2024). Nothing recorded in this case points to the bile duct (no jaundice, bilirubin or duct finding is recorded), while ERCP itself can cause pancreatitis, bleeding and perforation, which can be life-threatening — and the cause would still be unfound."
+        "zh-CN": "即使是胆源性胰腺炎，没有胆管炎时 ACG 2024 也建议首选内科治疗，而不是早期 ERCP。本病例没有任何指向胆管的记录（没有黄疸、胆红素或胆管表现的记录），而 ERCP 本身可引起胰腺炎、出血和穿孔，可能危及生命，病因却仍然没有找到。",
+        "en": "Even in biliary pancreatitis, ACG 2024 prefers medical therapy to early ERCP when there is no cholangitis. Nothing recorded in this case points to the bile duct (no jaundice, bilirubin or duct finding is recorded), while ERCP itself can cause pancreatitis, bleeding and perforation, which can be life-threatening — and the cause would still be unfound."
       },
       "response": {
         "zh-CN": "本病例没有记录 ERCP；不模拟其效果。",
@@ -3636,8 +3670,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "穿刺不是这里的诊断步骤：诊断依靠血液生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——穿刺可能出血、造成粘连并使病灶组织种植，细胞学结果也常常不确定。",
-        "en": "A needle biopsy is not the diagnostic step here — the diagnosis is made in the blood (Fifth International Workshop 2022) — and AAES 2016 advises against pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases: it risks bleeding, scarring and seeding of the tissue, with cytology that is often inconclusive."
+        "zh-CN": "穿刺不是这里的诊断步骤：诊断依靠血液生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——这种穿刺很少有必要，还可能带来不良后果。文献报道的危害包括出血、腺体周围瘢痕使手术更困难，以及甲状旁腺组织种植。",
+        "en": "A needle biopsy is not the diagnostic step here — the diagnosis is made in the blood (Fifth International Workshop 2022) — and AAES 2016 does not recommend pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases: it is rarely necessary and can have undesirable consequences. The harms reported include bleeding, scarring around the gland that makes the operation harder, and seeding of parathyroid tissue."
       },
       "response": {
         "zh-CN": "本病例没有记录穿刺；不模拟其效果。",
@@ -3945,8 +3979,8 @@
         "en": "Cause and discharge"
       },
       "hint": {
-        "zh-CN": "这次发作的结果里，有没有哪一项是胰腺炎本身解释不了的？她离院之前要为它做些什么？",
-        "en": "Is there a result from this attack that the pancreatitis itself does not explain — and what must happen about it before she leaves?"
+        "zh-CN": "这次发作的结果里，有没有哪一项是发作本身解释不了的？她离院之前要为它做些什么？",
+        "en": "Is there a result from this attack that the attack itself does not explain — and what must happen about it before she leaves?"
       },
       "guidance": {
         "zh-CN": "在会诊板上解释这次的结果，然后决定她出院前要安排什么。",
@@ -4237,7 +4271,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "她上腹持续胀痛 1 天，伴恶心。查体左上腹及脐周压痛、局部轻度肌紧张；淀粉酶 1139 U/L；CT 报告为胰腺炎。她的生命体征和病情严重程度没有记录。哪一个方案最适合她最初几天的处理？",
-        "en": "She has had a day of constant upper abdominal pain with nausea. Her abdomen is tender in the left upper quadrant and around the umbilicus with mild guarding; amylase 1139 U/L; the CT report reads pancreatitis. Her vital signs and severity are not recorded. Which plan fits her first days of care?"
+        "en": "She has had a day of constant upper abdominal pain with nausea. Her abdomen is tender in the left upper quadrant and around the umbilicus with mild local guarding; amylase 1139 U/L; the CT report reads pancreatitis. Her vital signs and severity are not recorded. Which plan fits her first days of care?"
       },
       "requires": {
         "all": [
@@ -4273,8 +4307,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ACG 2024 指南建议用乳酸钠林格液适度补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg——并按反应反复评估；轻症在 24–48 小时内开始低脂经口饮食；不预防性使用抗菌药物；IAP 2025 指南的建议相同。她的生命体征和严重程度没有记录，所以补液速度按心率、血压和尿量调整，而不是给一个固定的量。",
-            "en": "Correct. ACG 2024 suggests lactated Ringer's at a moderately aggressive rate — 1.5 mL/kg/h, with a 10 mL/kg bolus only for hypovolaemia — reassessed against her response, a low-fat oral diet within 24–48 hours in mild disease, and no prophylactic antibiotics; IAP 2025 recommends the same. Her vital signs and severity are not recorded, so the rate is titrated to her pulse, blood pressure and urine output rather than to a fixed volume."
+            "zh-CN": "正确。ACG 2024 指南建议用乳酸钠林格液适度补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg——并按反应反复评估；轻症在 24–48 小时内开始低脂经口饮食；不预防性使用抗菌药物；IAP 2025 指南同样建议乳酸钠林格液 1.5 mL/(kg·h)（仅低血容量时追加液体）、尽早低脂经口进食、不预防性使用抗菌药物。她的生命体征和严重程度没有记录，所以补液速度按心率、血压和尿量调整，而不是给一个固定的量。",
+            "en": "Correct. ACG 2024 suggests lactated Ringer's at a moderately aggressive rate — 1.5 mL/kg/h, with a 10 mL/kg bolus only for hypovolaemia — reassessed against her response, a low-fat oral diet within 24–48 hours in mild disease, and no prophylactic antibiotics; IAP 2025 likewise recommends lactated Ringer's at 1.5 mL/kg/h (a bolus only for hypovolaemia), early low-fat oral feeding and no antibiotic prophylaxis. Her vital signs and severity are not recorded, so the rate is titrated to her pulse, blood pressure and urine output rather than to a fixed volume."
           }
         },
         {
@@ -4286,7 +4320,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "这是旧做法。ACG 2024 指南建议轻症急性胰腺炎在 24–48 小时内开始低脂经口饮食，而不是禁食到酶学恢复；即使是重症也不建议预防性使用抗菌药物，因为没有证实的获益，反而有风险。报告中的处置正包括禁食和抗菌药物——那是记录的事实，不是今天的标准。",
-            "en": "Historical, not current. ACG 2024 recommends a low-fat oral diet within 24–48 hours in mild acute pancreatitis rather than fasting until the enzymes settle, and advises against prophylactic antibiotics even in severe disease, for want of benefit and because of their risks. The report's own care included fasting and antibiotics — a fact of the record, not today's standard."
+            "en": "Historical, not current. ACG 2024 suggests a low-fat oral diet within 24–48 hours in mild acute pancreatitis rather than fasting until the enzymes settle, and advises against prophylactic antibiotics even in severe disease, for want of benefit and because of their risks. The report's own care included fasting and antibiotics — a fact of the record, not today's standard."
           }
         },
         {
@@ -4297,8 +4331,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "有害。这是 WATERFALL 试验（NEJM 2022）积极补液组的方案（20 mL/kg 后 3 mL/(kg·h)），比适度补液导致更多液体过负荷，却没有改善结局，试验因此提前终止；ACG 2024 和 IAP 2025 指南现在建议适度、目标导向的补液。不看她的实际反应、固定大量补液更不可取。",
-            "en": "Harmful. This is the aggressive arm of the WATERFALL trial (NEJM 2022) — 20 mL/kg, then 3 mL/kg/h — which caused more fluid overload than moderate resuscitation without better outcomes, so the trial was stopped early; ACG 2024 and IAP 2025 now advise moderate, goal-directed fluids. A fixed high volume that ignores how she responds is worse still."
+            "zh-CN": "有害。这是 WATERFALL 试验（NEJM 2022）积极补液组的补液量（20 mL/kg 后 3 mL/(kg·h)）；即使按患者的反应调整，该组也比适度补液导致更多液体过负荷，却没有改善结局，试验因此提前终止；ACG 2024 和 IAP 2025 指南现在建议适度、目标导向的补液。不看她的实际反应、固定大量补液更不可取。",
+            "en": "Harmful. These are the volumes of the WATERFALL trial's aggressive arm (NEJM 2022) — 20 mL/kg, then 3 mL/kg/h — which, even adjusted to each patient's response, caused more fluid overload than moderate resuscitation without better outcomes, so the trial was stopped early; ACG 2024 and IAP 2025 now advise moderate, goal-directed fluids. A fixed high volume that ignores how she responds is worse still."
           }
         },
         {
@@ -4309,8 +4343,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有指征。ACG 2024 指南指出，没有胆管炎的急性胰腺炎首选内科治疗，而不是早期 ERCP。这里没有任何指向胆管的记录——墨菲征阴性，也没有黄疸、胆红素或胆管表现的记录——而 ERCP 本身可引起胰腺炎、出血和穿孔。",
-            "en": "Not indicated. ACG 2024 prefers medical therapy to early ERCP in acute pancreatitis without cholangitis. Nothing recorded here points to the bile duct — Murphy's sign is negative and no jaundice, bilirubin or duct finding is recorded — and ERCP can itself cause pancreatitis, bleeding and perforation."
+            "zh-CN": "没有指征。即使是胆源性胰腺炎，没有胆管炎时 ACG 2024 指南也建议首选内科治疗，而不是早期 ERCP。这里没有任何指向胆管的记录——墨菲征阴性，也没有黄疸、胆红素或胆管表现的记录——而 ERCP 本身可引起胰腺炎、出血和穿孔。",
+            "en": "Not indicated. Even in biliary pancreatitis, ACG 2024 prefers medical therapy to early ERCP when there is no cholangitis. Nothing recorded here points to the bile duct — Murphy's sign is negative and no jaundice, bilirubin or duct finding is recorded — and ERCP can itself cause pancreatitis, bleeding and perforation."
           }
         }
       ]
@@ -4342,7 +4376,7 @@
         {
           "id": "repeat-with-paired-pth",
           "text": {
-            "zh-CN": "发作期血钙通常会降，此时升高不寻常；又有肾结石，应复查白蛋白校正钙并同步测 PTH",
+            "zh-CN": "发作期血钙通常下降，升高不寻常；合并肾结石，现在或出院后不久复查校正钙并同步测 PTH",
             "en": "Unusual in an attack, which tends to lower it: with a kidney stone, repeat an albumin-adjusted calcium with a paired PTH, now or soon after discharge"
           },
           "correct": true,
@@ -4405,8 +4439,8 @@
       "id": "recurrence-cause",
       "kind": "single",
       "prompt": {
-        "zh-CN": "第一次发作约 20 个月后，她又突然上腹胀痛入院：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎和肾结石。两次发作之间她一直很好——没有骨痛和腰背酸痛，也没有多尿多饮。第一次发作时血钙为 2.76 mmol/L。要查清病因，下一步怎么做？",
-        "en": "About 20 months after the first attack she is back with sudden upper abdominal pain: amylase 1055.9 U/L, calcium 2.87 mmol/L, and the CT shows pancreatitis again with renal stone(s) still seen. Between the attacks she was well — no bone or back ache, no polyuria or polydipsia. At the first attack her calcium was 2.76 mmol/L. What is the next step to establish the cause?"
+        "zh-CN": "第一次发作约 20 个月后，她又突然上腹胀痛入院：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎和肾结石。第一次出院后，她饮食、大便正常，没有腹痛腹胀、骨痛和腰背酸痛，也没有多尿多饮。第一次发作时血钙为 2.76 mmol/L。要查清病因，下一步怎么做？",
+        "en": "About 20 months after the first attack she is back with sudden upper abdominal pain: amylase 1055.9 U/L, calcium 2.87 mmol/L, and the CT shows pancreatitis again with renal stone(s) still seen. After the first discharge she had eaten normally with normal bowels, with no abdominal pain or bloating, no bone or back ache and no polyuria or polydipsia. At the first attack her calcium was 2.76 mmol/L. What is the next step to establish the cause?"
       },
       "requires": {
         "all": [
@@ -4574,8 +4608,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这不是诊断步骤。诊断靠生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——穿刺可能出血、造成粘连并使甲状旁腺组织种植，细胞学也常难以区分甲状旁腺与甲状腺组织。",
-            "en": "Not a diagnostic step. The diagnosis is biochemical (Fifth International Workshop 2022), and AAES 2016 advises against pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases: it risks bleeding, scarring and seeding of parathyroid tissue, and cytology often cannot tell parathyroid from thyroid."
+            "zh-CN": "这不是诊断步骤。诊断靠生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——这种穿刺很少有必要，还可能带来不良后果；文献报道的危害包括出血、使手术更困难的瘢痕，以及甲状旁腺组织种植。",
+            "en": "Not a diagnostic step. The diagnosis is biochemical (Fifth International Workshop 2022), and AAES 2016 does not recommend pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases — it is rarely necessary and can have undesirable consequences; the harms reported include bleeding, scarring that makes the operation harder and seeding of parathyroid tissue."
           }
         },
         {
@@ -4907,8 +4941,8 @@
       "domain": "safety",
       "weight": 2,
       "text": {
-        "zh-CN": "没有预防性使用抗菌药物、强制禁食、大量快速补液、细针穿刺、以西那卡塞代替手术或持续静脉补钙，也没有在血钙升高时补钙",
-        "en": "Gave no prophylactic antibiotic, enforced fasting, aggressive fluids, needle biopsy, cinacalcet in place of surgery or continuous IV calcium, and no calcium while her calcium was raised"
+        "zh-CN": "没有预防性使用抗菌药物、强制禁食、大量快速补液、细针穿刺、以西那卡塞代替手术或持续静脉补钙，也没有在血钙升高时补钙，第一次住院出院时也没有什么都不安排就让她回家",
+        "en": "Gave no prophylactic antibiotic, enforced fasting, aggressive fluids, needle biopsy, cinacalcet in place of surgery or continuous IV calcium, no calcium while her calcium was raised, and did not send her home from the first admission with nothing planned"
       },
       "met": {
         "not": {
@@ -4934,6 +4968,9 @@
             {
               "intervened": "oral-calcium",
               "valid": false
+            },
+            {
+              "intervened": "routine-discharge"
             }
           ]
         }
@@ -4970,6 +5007,9 @@
           {
             "intervened": "oral-calcium",
             "valid": false
+          },
+          {
+            "intervened": "routine-discharge"
           }
         ]
       }
@@ -5094,8 +5134,8 @@
       "en": "Debrief: the raised calcium behind two attacks of pancreatitis"
     },
     "conclusion": {
-      "zh-CN": "58岁女性约 20 个月内两次急性胰腺炎：第一次上腹持续胀痛伴恶心、呕吐 1 天，淀粉酶 1139 U/L，CT 示胰腺炎及左肾结石，血钙 2.76 mmol/L；第二次突然起病，淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎和肾结石。两次之间她没有症状，未服降压药时血压正常。颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。唯一的术前激素结果 31 pmol/L 标为“甲状腺素”；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解，随访未诉不适。诊断：甲状旁腺腺瘤所致原发性甲旁亢，以反复急性胰腺炎为表现。现行做法：第一次发作就追查血钙，先用 PTH 确诊，再定位和手术。",
-      "en": "A 58-year-old woman had two attacks of acute pancreatitis about 20 months apart: first a day of constant upper abdominal pain and vomiting (amylase 1139 U/L; CT pancreatitis and a left kidney stone; calcium 2.76 mmol/L), then a sudden recurrence (amylase 1055.9 U/L; calcium 2.87 mmol/L; CT pancreatitis, renal stone(s) still seen). In between she had no symptoms, and her blood pressure was normal without antihypertensive medicine. Neck ultrasound/CT showed a lesion behind the lower pole of the left thyroid lobe; it was removed (about 2 × 1.5 × 1 cm): a parathyroid adenoma. The only pre-operative hormone value, 31 pmol/L, is labelled 'thyroxine'. After surgery the PTH was 3.8 pmol/L and the calcium 2.18 mmol/L, both staying normal; transient limb numbness without tetany settled by itself, and she had no complaints at follow-up. Diagnosis: primary hyperparathyroidism (parathyroid adenoma) presenting as recurrent acute pancreatitis. Today: pursue the calcium at the first attack, prove PTH-dependence before any scan, then operate."
+      "zh-CN": "58岁女性两次急性胰腺炎，相隔约 20 个月：第一次上腹持续胀痛伴恶心、呕吐 1 天，淀粉酶 1139 U/L，CT 示胰腺炎及左肾结石，血钙 2.76 mmol/L；第二次突然起病，淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎和肾结石。第一次出院后她饮食、大便正常，无腹痛腹胀、骨痛及腰背酸痛、多尿多饮，未服降压药时血压正常。颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。记录中唯一的术前激素结果 31 pmol/L 标为“甲状腺素”；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解，随访未诉不适。诊断：甲状旁腺腺瘤所致原发性甲旁亢，以反复急性胰腺炎为表现。现行做法：第一次发作就追查血钙，先用 PTH 确诊，再定位和手术。",
+      "en": "A 58-year-old woman had two attacks of acute pancreatitis about 20 months apart: first a day of constant upper abdominal pain with nausea and vomiting (amylase 1139 U/L; CT pancreatitis and a left kidney stone; calcium 2.76 mmol/L), then a sudden recurrence (amylase 1055.9 U/L; calcium 2.87 mmol/L; CT pancreatitis, renal stone(s) still seen). After the first discharge she ate normally with normal bowels and had no abdominal pain or bloating, bone or back ache, polyuria or polydipsia, and her blood pressure was normal without antihypertensive medicine. Neck ultrasound/CT showed a lesion behind the lower pole of the left thyroid lobe; it was removed (about 2 × 1.5 × 1 cm): a parathyroid adenoma. The only recorded pre-operative hormone value, 31 pmol/L, is labelled 'thyroxine'. After surgery the PTH was 3.8 pmol/L and the calcium 2.18 mmol/L, both staying normal; transient limb numbness without tetany or convulsions settled by itself, and she had no complaints at follow-up. Diagnosis: primary hyperparathyroidism (parathyroid adenoma) presenting as recurrent acute pancreatitis. Today: pursue the calcium at the first attack, prove PTH-dependence before any scan, then operate."
     },
     "keyReasoning": [
       {
@@ -5111,12 +5151,12 @@
         "en": "A second attack with calcium 2.87 mmol/L and stones still on CT makes hyperparathyroidism the leading suspect — to be proved in the blood, not on a scan; gallstones, alcohol and triglycerides are not recorded either way and still need screening."
       },
       {
-        "zh-CN": "唯一的术前激素结果标着“甲状腺素”：在检验科确认或复查配对 PTH 之前，它不能作为手术的依据。",
-        "en": "The only pre-operative hormone value carries a thyroxine label: until the laboratory confirms it or a paired PTH is repeated, it cannot carry the decision to operate."
+        "zh-CN": "记录中唯一的术前激素结果标着“甲状腺素”：在检验科确认或复查配对 PTH 之前，它不能作为手术的依据。",
+        "en": "The only recorded pre-operative hormone value carries a thyroxine label: until the laboratory confirms it or a paired PTH is repeated, it cannot carry the decision to operate."
       },
       {
-        "zh-CN": "腺瘤切除后 PTH（3.8 pmol/L）和血钙（2.18 mmol/L）下降并伴短暂麻木，是预料中的快速变化：需要有针对性地复查，而不是反射性静脉补钙；是否治愈要几个月后判断。",
-        "en": "After the adenoma is removed, the fall in PTH (3.8 pmol/L) and calcium (2.18 mmol/L) with transient numbness is the expected rapid shift: it calls for a measured check, not reflex IV calcium, and cure is judged months later."
+        "zh-CN": "腺瘤切除后 PTH（3.8 pmol/L）和血钙（2.18 mmol/L）下降是预料中的快速变化；术后的短暂麻木（与这两次测定的先后没有记录）需要有针对性地复查，而不是反射性静脉补钙；是否治愈要几个月后判断。",
+        "en": "After the adenoma is removed, the fall in PTH (3.8 pmol/L) and calcium (2.18 mmol/L) is the expected rapid shift; her transient numbness after the operation (its timing against those values is not recorded) calls for a measured check, not reflex IV calcium, and cure is judged months later."
       }
     ],
     "teachingPoints": [
@@ -5964,6 +6004,55 @@
         "text": "Any twitching around your face?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "您这是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "有没有觉得恶心想吐？",
+        "locale": "zh-CN",
+        "expect": [
+          "nausea-vomiting"
+        ]
+      },
+      {
+        "text": "具体是哪个地方痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "site"
+        ]
+      },
+      {
+        "text": "So what happened?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Do you feel nauseous at all?",
+        "locale": "en",
+        "expect": [
+          "nausea-vomiting"
+        ]
+      },
+      {
+        "text": "What treatment did they give you last time?",
+        "locale": "en",
+        "expect": [
+          "last-treatment"
+        ]
+      },
+      {
+        "text": "Any other medical problems I should know about?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
       }
     ]
   }

@@ -1,0 +1,4 @@
+- cmcr-33638: Persistent jaundice and pale stools · 2-month-old boy (5 decisions, 12 interventions;
+  review: 0 critical, 4 major, 16 minor findings)
+- cmcr-33640: Recurrent abdominal pain and black stools · boy aged 7 years 5 months (4 decisions, 14 interventions;
+  review: 3 critical, 5 major, 8 minor findings)

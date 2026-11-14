@@ -81,7 +81,8 @@
         "ACG 2015: diagnosis and management of small bowel bleeding",
         "WS/T 795—2022 儿科输血指南 (paediatric transfusion, National Health Commission of China)",
         "WHO 2024: haemoglobin cut-offs to define anaemia",
-        "ESGE 2021: non-variceal upper gastrointestinal haemorrhage (tranexamic acid recommendation)"
+        "ESGE 2021: non-variceal upper gastrointestinal haemorrhage (tranexamic acid recommendation)",
+        "HHT 2020: Second International Guidelines for hereditary haemorrhagic telangiectasia (GI bleeding, recommendation B5)"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，教学使用前请儿科消化专科医生审核。病例事实取自1.0.0版的提取，尚未对照原文全文核对。",
@@ -126,7 +127,7 @@
     "persona": {
       "personality": {
         "zh-CN": "7岁多的男孩，半年来肚脐周围一阵阵地疼，这两个月拉过几次黑便；看上去面色发白。能指出哪里疼，回答简单的问题。",
-        "en": "A boy of seven and a half who has had bouts of pain around his navel for six months and black stools in the past two months; he looks pale. He can point to where it hurts and answer simple questions."
+        "en": "A boy of 7 years 5 months who has had bouts of pain around his navel for six months and black stools in the past two months; he looks pale. He can point to where it hurts and answer simple questions."
       },
       "speechStyle": {
         "zh-CN": "孩子说短句、用小孩的说法；家属用日常口语讲经过，不用医学术语，不知道的就直说。",
@@ -2624,7 +2625,7 @@
       "risk": "moderate",
       "maxDoses": 2,
       "response": {
-        "zh-CN": "红细胞按体重输注，全程直接观察：WS/T 795—2022建议一般按5 mL/(kg·h)（不超过150 mL/h），开始15分钟更慢；严重贫血时少量、缓慢输注。输后复查血红蛋白。",
+        "zh-CN": "红细胞按体重输注，全程直接观察：WS/T 795—2022建议一般按5 mL/kg/h（不超过150 mL/h），开始15分钟更慢；严重贫血时少量、缓慢输注。输后复查血红蛋白。",
         "en": "Red cells are given by weight under direct observation: WS/T 795—2022 suggests about 5 mL/kg/h (no more than 150 mL/h), slower for the first 15 minutes, and smaller, slower volumes when anaemia is severe. Recheck the haemoglobin afterwards."
       }
     },
@@ -2702,8 +2703,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有止血药被证明对这种出血有益。成人消化道出血的HALT-IT试验（2020）显示氨甲环酸不降低出血死亡、反而增加静脉血栓；ESGE 2021不推荐在急性非静脉曲张性上消化道出血中使用氨甲环酸；儿童小肠出血没有试验支持。应该去找出血来源并处理它。",
-        "en": "No haemostatic drug has been shown to help this kind of bleeding. In adults with gastrointestinal bleeding the HALT-IT trial (2020) found that tranexamic acid did not reduce deaths from bleeding and increased venous thromboembolism; ESGE 2021 does not recommend it in acute non-variceal upper gastrointestinal bleeding; no trial supports it for small-bowel bleeding in children. Find and treat the source instead."
+        "zh-CN": "氨甲环酸既不能找到也不能处理出血来源。成人急性消化道出血的HALT-IT试验（2020）显示氨甲环酸不降低出血死亡、反而增加静脉血栓；ESGE 2021不推荐在急性非静脉曲张性上消化道出血中使用；儿童小肠出血没有试验支持。2020年国际遗传性出血性毛细血管扩张症（HHT）指南建议对已确诊HHT的轻度消化道出血考虑口服抗纤溶药（弱推荐、低质量证据）——那是确诊后的专科决定，本例并没有这一诊断。应该去找出血来源并处理它。",
+        "en": "Tranexamic acid neither finds nor treats the source. In adults with acute gastrointestinal bleeding the HALT-IT trial (2020) found that it did not reduce deaths from bleeding and increased venous thromboembolism; ESGE 2021 does not recommend it in acute non-variceal upper gastrointestinal bleeding; no trial supports it for small-bowel bleeding in children. The 2020 international guideline on hereditary haemorrhagic telangiectasia (HHT) suggests considering oral antifibrinolytics for mild GI bleeding in confirmed HHT (weak recommendation, low-quality evidence) — a specialist decision after that diagnosis, which has not been made here. Find and treat the source instead."
       },
       "response": {
         "zh-CN": "已给氨甲环酸。病史里提到之前用过止血治疗（药名没有记录），只好了一小段时间。",
@@ -2746,8 +2747,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "他的凝血功能正常，也没有失血性休克的记录。血浆用于纠正凝血因子缺乏；WS/T 795—2022只在失血性休克时建议早期输注血浆和血小板（9.5.2），非致命性出血只涉及红细胞（9.5.1）。输血浆只增加输血风险，没有益处。",
-        "en": "His coagulation is normal and no haemorrhagic shock is recorded. Plasma corrects clotting-factor deficiency; WS/T 795—2022 advises early plasma and platelets only in haemorrhagic shock (9.5.2), and for non-life-threatening bleeding addresses red cells alone (9.5.1). Plasma here adds transfusion risk without benefit."
+        "zh-CN": "他的凝血功能正常，也没有失血性休克的记录。血浆用于纠正凝血因子缺乏；WS/T 795—2022对出血患儿：失血性休克时建议早期输注血浆和血小板（9.5.2），无生命危险的出血只涉及红细胞（9.5.1）。输血浆只增加输血风险，没有益处。",
+        "en": "His coagulation is normal and no haemorrhagic shock is recorded. Plasma corrects clotting-factor deficiency; for bleeding children, WS/T 795—2022 advises early plasma and platelets in haemorrhagic shock (9.5.2), while for non-life-threatening bleeding it addresses red cells alone (9.5.1). Plasma here adds transfusion risk without benefit."
       },
       "response": {
         "zh-CN": "已输血浆。血浆用于纠正凝血因子缺乏——请对照他的凝血结果。",
@@ -2791,8 +2792,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "非甾体抗炎药损伤胃肠黏膜、影响血小板功能。布洛芬的英国产品说明书（SmPC，2026年修订）将活动性出血和反复胃肠道出血列为禁忌，而他已有两轮黑便。他的腹痛每次几分钟自行缓解；确需止痛时用对乙酰氨基酚。",
-        "en": "NSAIDs injure the gut lining and impair platelet function. Ibuprofen's UK product information (SmPC, revised 2026) lists active bleeding and recurrent gastrointestinal haemorrhage as contraindications, and he has had black stools on two occasions. His pain settles by itself within minutes; if he needs analgesia, use paracetamol."
+        "zh-CN": "非甾体抗炎药损伤胃肠黏膜、影响血小板功能。英国儿童布洛芬口服混悬液的产品说明书（SmPC，2024年修订）将活动性或反复（两次及以上）的消化性溃疡/胃肠道出血列为禁忌，而他已有两轮黑便。他的腹痛每次几分钟自行缓解；确需止痛时用对乙酰氨基酚。",
+        "en": "NSAIDs injure the gut lining and impair platelet function. The UK product information for children's ibuprofen oral suspension (SmPC, revised 2024) contraindicates it in active or recurrent peptic ulcer or gastrointestinal haemorrhage (two or more distinct episodes), and he has had black stools on two occasions. His pain settles by itself within minutes; if he needs analgesia, use paracetamol."
       },
       "response": {
         "zh-CN": "已给布洛芬。本病例没有记录他用过布洛芬。",
@@ -2873,8 +2874,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有任何记录提示细菌感染——起病时不发热，之前的抗感染治疗也没有缓解腹痛；反复黑便和血红蛋白下降指向的是失血。《抗菌药物临床应用指导原则（2015年版）》：诊断为细菌性感染者方有指征应用抗菌药物；缺乏感染的临床或实验室证据、诊断不能成立者，无应用抗菌药物指征。",
-        "en": "Nothing recorded points to a bacterial infection — there was no fever at onset, and the earlier anti-infective treatment did not relieve the pain — while the recurrent black stools and falling haemoglobin point to blood loss. China's 2015 guiding principles for clinical antibacterial use: antibacterials are indicated only for a diagnosed bacterial infection, and not where clinical or laboratory evidence of infection is lacking."
+        "zh-CN": "没有任何记录提示细菌感染——起病时不发热，之前抗感染治疗后腹痛也没有明显减轻；反复黑便和血红蛋白下降指向的是失血。《抗菌药物临床应用指导原则（2015年版）》：诊断为细菌性感染者方有指征应用抗菌药物；缺乏感染的临床或实验室证据、诊断不能成立者，无应用抗菌药物指征。",
+        "en": "Nothing recorded points to a bacterial infection — there was no fever at onset, and the earlier anti-infective treatment did not clearly relieve the pain — while the recurrent black stools and falling haemoglobin point to blood loss. China's 2015 guiding principles for clinical antibacterial use: antibacterials are indicated only for a diagnosed bacterial infection, and not where clinical or laboratory evidence of infection is lacking."
       },
       "response": {
         "zh-CN": "已开始抗生素。本病例中，最初的抗感染治疗没有明显减轻腹痛。",
@@ -2902,6 +2903,17 @@
           "intraoperative enteroscopy",
           "operate to find the source",
           "surgical exploration"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "会诊",
+          "意见"
+        ],
+        "en": [
+          "review",
+          "consult",
+          "opinion"
         ]
       },
       "dose": {
@@ -3091,6 +3103,16 @@
       }
     }
   ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "小肠镜|小肠内镜|enteroscop",
+        "remove": [
+          "colonoscopy"
+        ]
+      }
+    ]
+  },
   "objectives": [
     {
       "id": "obj-story",
@@ -3406,12 +3428,16 @@
           {
             "read": "fob",
             "phase": "admission"
+          },
+          {
+            "read": "coagulation",
+            "phase": "admission"
           }
         ]
       },
       "need": {
-        "zh-CN": "先问清病史，完成查体（面色、心率、心脏、腹部和脾脏），并调阅入院血常规和便潜血。",
-        "en": "Take the history, examine him (colour, heart rate, heart, abdomen and spleen) and read the admission blood count and occult blood first."
+        "zh-CN": "先问清病史，完成查体（面色、心率、心脏、腹部和脾脏），并调阅入院血常规、便潜血和凝血结果。",
+        "en": "Take the history, examine him (colour, heart rate, heart, abdomen and spleen) and read the admission blood count, occult blood and coagulation first."
       },
       "options": [
         {
@@ -3434,8 +3460,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这些诊断出现在黑便之前，解释不了72.5 g/L的血红蛋白。之前的抗感染治疗没有缓解腹痛，记录中也没有感染的证据；抑酸回答不了血从哪里来。",
-            "en": "Those labels came before the black stools and cannot explain a haemoglobin of 72.5 g/L. Anti-infective treatment already failed to relieve the pain and nothing recorded points to infection; acid suppression does not answer where the blood is coming from."
+            "zh-CN": "这些诊断解释不了黑便和72.5 g/L的血红蛋白。之前抗感染治疗后腹痛没有明显减轻，记录中也没有感染的证据；抑酸回答不了血从哪里来。",
+            "en": "Those labels cannot explain black stools and a haemoglobin of 72.5 g/L. The earlier anti-infective treatment did not clearly relieve the pain and nothing recorded points to infection; acid suppression does not answer where the blood is coming from."
           }
         },
         {
@@ -3495,7 +3521,7 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。WS/T 795—2022：非致命性出血时，血红蛋白<50 g/L应输红细胞，50–70 g/L结合具体病情考虑；危重患儿循环不稳时适当提高阈值。他已是重度贫血（WHO 2024），又反复出血，血必须备好；一旦输注，按体重、开始15分钟更慢，之后约5 mL/(kg·h)（第12.3条）。",
+            "zh-CN": "正确。WS/T 795—2022：无生命危险的出血时，血红蛋白<50 g/L应输红细胞，50–70 g/L结合具体病情考虑；危重患儿循环不稳时适当提高阈值。他已是重度贫血（WHO 2024），又反复出血，血必须备好；一旦输注，按体重、开始15分钟更慢，之后约5 mL/kg/h（第12.3条）。",
             "en": "Right. WS/T 795—2022: in non-life-threatening bleeding, transfuse red cells below 50 g/L and consider them at 50–70 g/L by the clinical picture, raising the threshold for a critically ill child whose circulation is unstable. He is severely anaemic (WHO 2024) and bleeding recurrently, so blood must be ready; when given, it runs by weight, slower for 15 minutes and then about 5 mL/kg/h (12.3)."
           }
         },
@@ -3584,8 +3610,8 @@
         {
           "id": "gastritis-explains",
           "text": {
-            "zh-CN": "把浅表性胃炎当作出血来源：继续抑酸，停止其他检查，等黑便停了带口服铁剂出院，之后定期门诊随访就可以了。",
-            "en": "Accept the superficial gastritis as the source: continue acid suppression, stop the work-up and discharge him on oral iron once the black stools have settled, with routine clinic follow-up afterwards."
+            "zh-CN": "把浅表性胃炎当作出血来源：抑酸治疗，停止其他检查，等黑便停了带口服铁剂出院，之后定期门诊随访就可以了。",
+            "en": "Accept the superficial gastritis as the source: give acid suppression, stop the work-up and discharge him on oral iron once the black stools have settled, with routine clinic follow-up afterwards."
           },
           "correct": false,
           "feedback": {
@@ -3613,8 +3639,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "导管造影只能发现正在活动的出血。ACG 2015把急诊造影留给循环不稳的大量显性出血；在两次出血之间、病情稳定的孩子身上，它多半找不到来源，还带来动脉穿刺、造影剂和辐射的风险。",
-            "en": "Catheter angiography finds only active bleeding. ACG 2015 keeps emergency angiography for unstable, massive overt bleeding; in a stable child between bleeds it is likely to miss the source and carries arterial-access, contrast and radiation risk."
+            "zh-CN": "导管造影只有在出血较快（约0.5–1 mL/min，ACG 2015）时才能显示出血点。ACG 2015把急诊造影留给循环不稳的大量显性出血；在两次出血之间、病情稳定的孩子身上，它多半找不到来源，还带来动脉穿刺、造影剂和辐射的风险。",
+            "en": "Catheter angiography shows a bleeding point only while it bleeds briskly (about 0.5–1 mL/min, ACG 2015). ACG 2015 keeps emergency angiography for unstable, massive overt bleeding; in a stable child between bleeds it is likely to miss the source and carries arterial-access, contrast and radiation risk."
           }
         }
       ]
@@ -3643,8 +3669,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。没有看到活动性出血或出血征象，也没有组织学，这些病变能解释间歇性出血，但不是确证。ESGE 2022推荐用器械辅助小肠镜确认并可治疗胶囊发现的病变；同时补铁、复查血红蛋白、交代返院指征，可以及早发现再出血。还要问流鼻血、皮肤口唇毛细血管扩张和家族史（均未记录）。",
-            "en": "Right. With no active bleeding, stigmata or tissue, the lesions are a likely explanation for intermittent bleeding but not proof. ESGE 2022 recommends device-assisted enteroscopy to confirm and possibly treat capsule findings; meanwhile iron, haemoglobin checks and return advice catch a rebleed early. Ask too about nosebleeds, telangiectases on the skin or lips, and the family (none is recorded)."
+            "zh-CN": "正确。没有看到活动性出血，也没有组织学，这些病变能解释间歇性出血，但不是确证。ESGE 2022推荐用器械辅助小肠镜确认并可治疗胶囊发现的病变，ACG 2015把内镜治疗用于伴明显持续贫血或活动性出血者；同时补铁、复查血红蛋白、交代返院指征，可以及早发现再出血。还要问流鼻血、皮肤口唇毛细血管扩张和家族史（均未记录）。",
+            "en": "Right. With no active bleeding seen and no tissue, the lesions are a likely explanation for intermittent bleeding but not proof. ESGE 2022 recommends device-assisted enteroscopy to confirm and possibly treat capsule findings, and ACG 2015 ties endoscopic therapy to significant ongoing anaemia or active bleeding; meanwhile iron, haemoglobin checks and return advice catch a rebleed early. Ask too about nosebleeds, telangiectases on the skin or lips, and the family (none is recorded)."
           }
         },
         {
@@ -4006,8 +4032,8 @@
         "en": "Explained the findings, the uncertainty and the plan to Zhiyuan and his relative, and checked understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "优秀表现（Calgary–Cambridge：收集信息—解释—共同计划）：用家属听得懂的话说明黑便意味着肠道里在出血，以及孩子为什么脸色发白、乏力；用孩子能听懂的话告诉知远胶囊是个小相机，会随大便排出；坦诚说明胶囊看到的是“很可能的”出血原因，但当时没有看到出血，也没有取组织；讲清后续计划：补铁、复查血红蛋白、再出现黑便、面色苍白或头晕时去哪里、找谁，再出血时可能要做小肠镜；主动问流鼻血和家里人的出血情况；用回授法请家属复述何时必须返院。不要承诺“已经治好”——长期转归没有记录。",
-        "en": "Good performance (Calgary–Cambridge: gather, explain, plan together): tells the relative in plain words that black stools mean bleeding inside the gut and why he has been pale and tired; tells Zhiyuan at his level that the capsule is a tiny camera that comes out in his poo; is honest that the capsule showed a likely cause but saw no bleeding and took no tissue; sets out the plan — iron, haemoglobin checks, where to go and whom to call if the stools turn black again or he looks pale or dizzy, and enteroscopy if he bleeds again; asks about nosebleeds and bleeding in the family; uses teach-back so the relative can say when to come back. Avoid promising a cure: the long-term course is not recorded."
+        "zh-CN": "优秀表现（Calgary–Cambridge：收集信息—解释—共同计划）：用家属听得懂的话说明黑便意味着肠道里在出血，以及孩子为什么脸色发白、乏力；用孩子能听懂的话告诉知远胶囊是个小相机，会随大便排出；坦诚说明胶囊看到的是“很可能的”出血原因，但当时没有看到活动性出血，也没有取组织；讲清后续计划：补铁、复查血红蛋白、再出现黑便、面色苍白或头晕时去哪里、找谁，再出血时可能要做小肠镜；主动问流鼻血和家里人的出血情况；用回授法请家属复述何时必须返院。不要承诺“已经治好”——长期转归没有记录。",
+        "en": "Good performance (Calgary–Cambridge: gather, explain, plan together): tells the relative in plain words that black stools mean bleeding inside the gut and why he has been pale and tired; tells Zhiyuan at his level that the capsule is a tiny camera that comes out in his poo; is honest that the capsule showed a likely cause but saw no active bleeding and took no tissue; sets out the plan — iron, haemoglobin checks, where to go and whom to call if the stools turn black again or he looks pale or dizzy, and enteroscopy if he bleeds again; asks about nosebleeds and bleeding in the family; uses teach-back so the relative can say when to come back. Avoid promising a cure: the long-term course is not recorded."
       }
     }
   ],
@@ -4073,8 +4099,8 @@
       "en": "Debrief: recurrent black stools and small-bowel vascular lesions"
     },
     "conclusion": {
-      "zh-CN": "7岁5个月男孩，脐周阵发痛半年（每次数分钟自行缓解），两个月前黑便2次、20天前又2次，黑便时面色苍白、乏力；起病时无发热、咳嗽、呕吐、腹泻和黑便。此前被诊断为肠系膜淋巴结炎和浅表性胃炎；抗感染治疗后腹痛无明显减轻，止血等治疗后短暂好转。入院时贫血貌，心率100次/分，心尖区Ⅱ级收缩期杂音，腹软无压痛，脾肋下1 cm；血红蛋白由130.5、74降至72.5 g/L，便潜血阳性，凝血正常。结肠镜未见异常，胃镜示浅表性胃炎，异位胃黏膜显像阴性，小肠CT成像未见明显狭窄、扩张或软组织块影。胶囊内镜见回肠上段至末段多发局灶性血管增粗、迂曲，未见活动性出血，胶囊48小时排出，未取组织。经抑酸、止血和输血等治疗，腹痛、黑便停止，好转出院；原报告标题的诊断为小肠毛细血管扩张症，长期随访未记录。按现行指南，还应：输血按整体情况决定（WS/T 795—2022），胶囊内镜作为小肠一线检查（ESGE 2022），再出血时以器械辅助小肠镜确认和治疗，并随访血红蛋白、补铁。",
-      "en": "A boy of 7 years 5 months had six months of bouts of pain around the navel, each lasting minutes and settling by itself, and black stools twice two months earlier and twice more 20 days earlier, with pallor and fatigue at those times; when the pain began there was no fever, cough, vomiting, diarrhoea or black stools. Earlier labels were mesenteric lymphadenitis and superficial gastritis; anti-infective treatment did not clearly relieve the pain, and later haemostatic and other treatment helped only briefly. On admission he looked anaemic, with a heart rate of 100/min, a grade II apical systolic murmur, a soft non-tender abdomen and the spleen 1 cm below the costal margin; haemoglobin had fallen from 130.5 g/L earlier, through 74 g/L, to 72.5 g/L, faecal occult blood was positive and coagulation normal. Colonoscopy showed no abnormality, gastroscopy superficial gastritis; the ectopic gastric mucosa scan was negative and small-bowel CT showed no obvious narrowing, dilatation or soft-tissue mass. Capsule endoscopy showed multiple focal thickened, tortuous vessels from the upper to the terminal ileum without active bleeding; the capsule passed after 48 hours and no tissue was taken. After acid suppression, haemostatic treatment and transfusion, among others, the pain and black stools stopped and he was discharged improved; the report's title names the diagnosis small-intestinal capillary telangiectasia, and no long-term follow-up is recorded. Today's practice adds a transfusion decided on the whole picture (WS/T 795—2022), capsule endoscopy as the first-line small-bowel test (ESGE 2022), device-assisted enteroscopy to confirm and treat if he bleeds again, and iron and haemoglobin follow-up."
+      "zh-CN": "7岁5个月男孩，脐周阵发痛半年（每次数分钟自行缓解），两个月前黑便2次、20天前又2次，黑便时面色苍白、乏力；起病时无发热、咳嗽、呕吐、腹泻和黑便。此前被诊断为肠系膜淋巴结炎和浅表性胃炎；抗感染治疗后腹痛无明显减轻，止血等治疗后短暂好转。入院时贫血貌，心率100次/分，心尖区Ⅱ级收缩期杂音，腹软无压痛，脾肋下1 cm；血红蛋白由130.5、74降至72.5 g/L，便潜血阳性，凝血正常。结肠镜未见异常，胃镜示浅表性胃炎，异位胃黏膜显像阴性，小肠CT成像未见明显狭窄、扩张或软组织块影。胶囊内镜见回肠上段至末段多发局灶性血管增粗、迂曲，未见活动性出血，胶囊48小时排出，未取组织。经抑酸、止血和输血等治疗，腹痛、黑便停止，好转出院；原报告标题的诊断为小肠毛细血管扩张症，长期随访未记录。对照现行指南：输血按整体情况决定（WS/T 795—2022），胶囊内镜作为小肠一线检查（ESGE 2022），再出血时以器械辅助小肠镜确认和治疗，并随访血红蛋白、补铁。",
+      "en": "A boy of 7 years 5 months had six months of bouts of pain around the navel, each lasting minutes and settling by itself, and black stools twice two months earlier and twice more 20 days earlier, with pallor and fatigue at those times; when the pain began there was no fever, cough, vomiting, diarrhoea or black stools. Earlier labels were mesenteric lymphadenitis and superficial gastritis; anti-infective treatment did not clearly relieve the pain, and later haemostatic and other treatment helped only briefly. On admission he looked anaemic, with a heart rate of 100/min, a grade II apical systolic murmur, a soft non-tender abdomen and the spleen 1 cm below the costal margin; haemoglobin had fallen from 130.5 g/L earlier, through 74 g/L, to 72.5 g/L, faecal occult blood was positive and coagulation normal. Colonoscopy showed no abnormality, gastroscopy superficial gastritis; the ectopic gastric mucosa scan was negative and small-bowel CT showed no obvious narrowing, dilatation or soft-tissue mass. Capsule endoscopy showed multiple focal thickened, tortuous vessels from the upper to the terminal ileum without active bleeding; the capsule passed after 48 hours and no tissue was taken. After acid suppression, haemostatic treatment and transfusion, among others, the pain and black stools stopped and he was discharged improved; the report's title names the diagnosis small-intestinal capillary telangiectasia, and no long-term follow-up is recorded. Measured against today's guidance: a transfusion decided on the whole picture (WS/T 795—2022), capsule endoscopy as the first-line small-bowel test (ESGE 2022), device-assisted enteroscopy to confirm and treat if he bleeds again, and iron and haemoglobin follow-up."
     },
     "keyReasoning": [
       {
@@ -4090,8 +4116,8 @@
         "en": "With only superficial gastritis on gastroscopy and a negative colonoscopy, ectopic gastric mucosa scan and small-bowel CT, the source points to the small bowel; without obstruction, the next test is capsule endoscopy."
       },
       {
-        "zh-CN": "胶囊看到病变但没看到出血、也没取组织：它是“很可能的”来源；间歇性出血正好解释了检查时为什么没有出血。",
-        "en": "The capsule saw lesions but no bleeding and took no tissue: a probable source, and intermittent bleeding explains why nothing was bleeding during the study."
+        "zh-CN": "胶囊看到病变，但没看到活动性出血，也没取组织：它是“很可能的”来源；间歇性出血正好解释了检查时为什么没有出血。",
+        "en": "The capsule saw lesions but no active bleeding and took no tissue: a probable source, and intermittent bleeding explains why nothing was bleeding during the study."
       },
       {
         "zh-CN": "黑便停了不等于病好了：再出血的风险、补铁和血红蛋白随访、再出血时的小肠镜预案都还在。",
@@ -4100,24 +4126,24 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "贫血分级与输血：7岁时血红蛋白72.5 g/L，按WHO 2024年标准（5–11岁<80 g/L）为重度贫血。我国WS/T 795—2022《儿科输血指南》：非致命性出血时，Hb<50 g/L应输红细胞，50–70 g/L结合具体病情考虑（第9.5.1条）；危重患儿循环不稳时适当提高阈值（第9.1条）；红细胞一般约5 mL/(kg·h)、不超过150 mL/h，开始15分钟更慢，严重贫血时少量、缓慢、多次输注（第12.3条）。原报告输了血，但血液成分、输血时间、输注量和输血前的血红蛋白都没有记录。",
+        "zh-CN": "贫血分级与输血：7岁时血红蛋白72.5 g/L，按WHO 2024年标准（5–11岁<80 g/L）为重度贫血。我国WS/T 795—2022《儿科输血指南》：无生命危险的出血时，Hb<50 g/L应输红细胞，50–70 g/L结合具体病情考虑（第9.5.1条）；危重患儿循环不稳时适当提高阈值（第9.1条）；红细胞一般约5 mL/kg/h、不超过150 mL/h，开始15分钟更慢，严重贫血时少量、缓慢、多次输注（第12.3条）。原报告输了血，但血液成分、输血时间、输注量和输血前的血红蛋白都没有记录。",
         "en": "Grading and transfusion: a haemoglobin of 72.5 g/L at 7 years is severe anaemia by the WHO 2024 cut-offs (< 80 g/L at 5–11 years). China's paediatric transfusion standard WS/T 795—2022 transfuses red cells for non-life-threatening bleeding below 50 g/L and considers them at 50–70 g/L by the clinical picture (9.5.1), raising the threshold for a critically ill child whose circulation is unstable (9.1); red cells run at about 5 mL/kg/h, no more than 150 mL/h, slower for the first 15 minutes, and in small, slow, repeated volumes when anaemia is severe (12.3). The report transfused, but the blood component, timing, volume and the haemoglobin beforehand are not recorded."
       },
       {
-        "zh-CN": "怎样找小肠出血：ACG 2015把出血来源位于十二指肠乳头以远、回盲瓣以近定义为小肠出血，胃镜和结肠镜阴性后才考虑它。ESGE 2022推荐胶囊内镜为疑似小肠出血的一线检查，显性出血后尽早（最好48小时内）完成，并以器械辅助小肠镜确认和治疗胶囊发现的病变；不推荐在胶囊前常规做“二次内镜”。儿童还要确认能否吞服（否则内镜下放置）、排除梗阻（本例CT未见狭窄），肠道准备按体重开具——1.0.0版把原报告的肠道准备描述为成人样大容量清肠，不能照搬。",
-        "en": "Finding a small-bowel source: ACG 2015 defines small-bowel bleeding as a source beyond the ampulla of Vater and before the ileocaecal valve, considered once gastroscopy and colonoscopy are negative. ESGE 2022 recommends capsule endoscopy as the first-line test for suspected small-bowel bleeding, as soon as possible after an overt bleed (ideally within 48 hours), and device-assisted enteroscopy to confirm and treat its findings, and does not recommend routine second-look endoscopy before the capsule. In a child, also check he can swallow it (or place it endoscopically), exclude obstruction (CT showed no narrowing here) and prescribe preparation by weight — 1.0.0 describes the report's preparation as a large-volume, adult-style one, which is not to be copied."
+        "zh-CN": "怎样找小肠出血：ACG 2015把出血来源位于十二指肠乳头以远、回盲瓣以近定义为小肠出血，胃镜和结肠镜阴性后才考虑它。ESGE 2022推荐胶囊内镜为疑似小肠出血的一线检查，显性出血后尽早（最好48小时内）完成，并以器械辅助小肠镜确认和治疗胶囊发现的病变；不推荐在胶囊前常规做“二次内镜”。儿童还要确认能否吞服（否则内镜下放置）、排除梗阻（本例CT未见狭窄），肠道准备按体重开具——原报告用的是成人样大容量清肠，不能照搬。",
+        "en": "Finding a small-bowel source: ACG 2015 defines small-bowel bleeding as a source beyond the ampulla of Vater and before the ileocaecal valve, considered once gastroscopy and colonoscopy are negative. ESGE 2022 recommends capsule endoscopy as the first-line test for suspected small-bowel bleeding, as soon as possible after an overt bleed (ideally within 48 hours), and device-assisted enteroscopy to confirm and treat its findings, and does not recommend routine second-look endoscopy before the capsule. In a child, also check he can swallow it (or place it endoscopically), exclude obstruction (CT showed no narrowing here) and prescribe preparation by weight — the report's preparation was a large-volume, adult-style one, which is not to be copied."
       },
       {
-        "zh-CN": "梅克尔憩室与阴性显像：梅克尔憩室是儿童小肠出血的经典原因，异位胃黏膜显像阴性只能降低、不能排除这一可能；ACG 2015把年轻患者的梅克尔显像放在胶囊内镜和小肠影像都正常之后。本例显像阴性，胶囊发现了另一种解释。",
-        "en": "Meckel's diverticulum and a negative scan: a Meckel's diverticulum is the classic cause of small-bowel bleeding in children, and a negative ectopic gastric mucosa scan lowers but does not exclude it; ACG 2015 places the Meckel scan for younger patients after a normal capsule study and small-bowel imaging. Here the scan was negative and the capsule found another explanation."
+        "zh-CN": "梅克尔憩室与阴性显像：梅克尔憩室是儿童小肠出血的经典原因，异位胃黏膜显像阴性只能降低、不能排除这一可能；ACG 2015建议：年轻患者仍有显性出血、而胶囊内镜和小肠影像都正常时，再做梅克尔显像。本例显像阴性，胶囊发现了另一种解释。",
+        "en": "Meckel's diverticulum and a negative scan: a Meckel's diverticulum is the classic cause of small-bowel bleeding in children, and a negative ectopic gastric mucosa scan lowers but does not exclude it; ACG 2015 places the Meckel scan for younger patients with ongoing overt bleeding after a normal capsule study and small-bowel imaging. Here the scan was negative and the capsule found another explanation."
       },
       {
-        "zh-CN": "胶囊发现的证据强度与后续：没有活动性出血、没有出血征象、没有组织学时，血管病变是“很可能的”来源。孩子身上出现多发小肠血管病变，要问流鼻血、皮肤和口唇的毛细血管扩张及家族史——遗传性出血性毛细血管扩张症的库拉索标准（2000）四项中具备三项可确诊，本例这些都没有记录。随访：补铁、复查血红蛋白、交代返院指征，再出血时器械辅助小肠镜确认并治疗。",
-        "en": "How far a capsule finding goes, and what follows: without active bleeding, stigmata or histology, vascular lesions are a probable source. Multiple small-bowel vascular lesions in a child call for questions about nosebleeds, telangiectases on the skin and lips and the family — the Curaçao criteria (2000) for hereditary haemorrhagic telangiectasia make the diagnosis definite with three of four — none of which is recorded here. Follow-up: iron, haemoglobin checks, clear return advice, and device-assisted enteroscopy to confirm and treat if he bleeds again."
+        "zh-CN": "胶囊发现的证据强度与后续：没有活动性出血、没有组织学时，血管病变是“很可能的”来源。孩子身上出现多发小肠血管病变，要问流鼻血、皮肤和口唇的毛细血管扩张及家族史——遗传性出血性毛细血管扩张症的库拉索标准（2000）四项中具备三项可确诊，本例这些都没有记录。随访：补铁、复查血红蛋白、交代返院指征，再出血时器械辅助小肠镜确认并治疗。",
+        "en": "How far a capsule finding goes, and what follows: without active bleeding or histology, vascular lesions are a probable source. Multiple small-bowel vascular lesions in a child call for questions about nosebleeds, telangiectases on the skin and lips and the family — the Curaçao criteria (2000) for hereditary haemorrhagic telangiectasia make the diagnosis definite with three of four — none of which is recorded here. Follow-up: iron, haemoglobin checks, clear return advice, and device-assisted enteroscopy to confirm and treat if he bleeds again."
       },
       {
-        "zh-CN": "原报告做法与现行证据：原报告用了抑酸、止血和输血等，之后腹痛、黑便停止。出血本身是间歇性的，这一结果不能证明哪种药起了作用。抑酸针对消化性病变；止血药缺乏证据——成人消化道出血的HALT-IT试验（2020）显示氨甲环酸不降低出血死亡、增加静脉血栓，ESGE 2021不推荐用于急性非静脉曲张性上消化道出血；新鲜冰冻血浆用于凝血因子缺乏，他的凝血正常。",
-        "en": "The report's practice against today's evidence: the report gave acid suppression, haemostatic treatment and transfusion, among others, after which the pain and black stools stopped. The bleeding was intermittent anyway, so this cannot show which drug worked. Acid suppression treats peptic lesions; haemostatic drugs lack evidence — in adults with gastrointestinal bleeding HALT-IT (2020) found that tranexamic acid did not reduce deaths from bleeding and increased venous thromboembolism, and ESGE 2021 does not recommend it in acute non-variceal upper gastrointestinal bleeding; plasma treats clotting-factor deficiency, and his coagulation was normal."
+        "zh-CN": "原报告做法与现行证据：原报告用了抑酸、止血和输血等，之后腹痛、黑便停止。出血本身是间歇性的，这一结果不能证明哪种药起了作用。抑酸针对消化性病变；急性消化道出血时止血药缺乏获益证据——成人HALT-IT试验（2020）显示氨甲环酸不降低出血死亡、增加静脉血栓，ESGE 2021不推荐用于急性非静脉曲张性上消化道出血（2020年国际HHT指南对口服抗纤溶药的弱推荐，针对的是已确诊HHT的轻度消化道出血）；新鲜冰冻血浆用于凝血因子缺乏，他的凝血正常（原报告输注的血液成分未记录）。",
+        "en": "The report's practice against today's evidence: the report gave acid suppression, haemostatic treatment and transfusion, among others, after which the pain and black stools stopped. The bleeding was intermittent anyway, so this cannot show which drug worked. Acid suppression treats peptic lesions; haemostatic drugs lack evidence of benefit in acute gastrointestinal bleeding — in adults HALT-IT (2020) found that tranexamic acid did not reduce deaths from bleeding and increased venous thromboembolism, and ESGE 2021 does not recommend it in acute non-variceal upper gastrointestinal bleeding (the 2020 international HHT guideline's weak suggestion of oral antifibrinolytics concerns mild bleeding in confirmed HHT); plasma treats clotting-factor deficiency, and his coagulation was normal (the component the report transfused is not recorded)."
       }
     ],
     "boundaries": {
@@ -4156,6 +4182,8 @@
       "Gralnek IM, Stanley AJ, Morris AJ, Camus M, Lau J, Lanas A, et al. Endoscopic diagnosis and management of nonvariceal upper gastrointestinal hemorrhage (NVUGIH): European Society of Gastrointestinal Endoscopy (ESGE) Guideline - Update 2021. Endoscopy. 2021;53(3):300-32. doi:10.1055/a-1369-5274",
       "Friedlander JA, Liu QY, Sahn B, Kooros K, Walsh CM, Kramer RE, et al. NASPGHAN Capsule Endoscopy Clinical Report. J Pediatr Gastroenterol Nutr. 2017;64(3):485-94. doi:10.1097/MPG.0000000000001413",
       "Shovlin CL, Guttmacher AE, Buscarini E, Faughnan ME, Hyland RH, Westermann CJ, et al. Diagnostic criteria for hereditary hemorrhagic telangiectasia (Rendu-Osler-Weber syndrome). Am J Med Genet. 2000;91(1):66-7. PMID: 10751092",
+      "Faughnan ME, Mager JJ, Hetts SW, Palda VA, Lang-Robertson K, Buscarini E, et al. Second International Guidelines for the Diagnosis and Management of Hereditary Hemorrhagic Telangiectasia. Ann Intern Med. 2020;173(12):989-1001. doi:10.7326/M20-1443",
+      "Ibuprofen 100 mg/5 ml oral suspension (Fenpaed): summary of product characteristics [Internet]. Electronic medicines compendium (emc); revised 2024 Oct 28. Available from: https://www.medicines.org.uk/emc/product/4573/smpc",
       "《抗菌药物临床应用指导原则》修订工作组. 抗菌药物临床应用指导原则（2015年版）（国卫办医发〔2015〕43号附件）. 北京: 国家卫生和计划生育委员会; 2015."
     ],
     "notice": {

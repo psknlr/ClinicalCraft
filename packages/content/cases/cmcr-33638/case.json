@@ -7,8 +7,8 @@
     "en": "Persistent jaundice and pale stools · 2-month-old boy"
   },
   "summary": {
-    "zh-CN": "2月龄男婴自生后第3天起黄疸持续加深，此前住院用药一周无效。由家属陪同收入儿科病房，需要查明原因并决定下一步。",
-    "en": "A two-month-old boy has been jaundiced since his third day of life, deepening despite a week of medicine during an earlier admission. He is admitted to the children's ward with a relative to find the cause and decide what comes next."
+    "zh-CN": "2月龄男婴自生后第3天起出现黄疸并逐渐加深，此前住院用药一周黄疸未见好转。由家属陪同收入儿科病房，需要查明原因并决定下一步。",
+    "en": "A two-month-old boy has been jaundiced since his third day of life, the yellow gradually deepening; a week of medicine during an earlier admission did not improve it. He is admitted to the children's ward with a relative to find the cause and decide what comes next."
   },
   "specialty": [
     "pediatrics",
@@ -58,7 +58,7 @@
         "NASPGHAN/ESPGHAN 2017: Guideline for the evaluation of cholestatic jaundice in infants (Fawaz et al., J Pediatr Gastroenterol Nutr 2017)",
         "National Health Commission of China 2025: 先天性胆道闭锁诊疗指南（2025版） — Guidelines for the diagnosis and treatment of congenital biliary atresia (J Clin Hepatol 2025)",
         "APPSPGHAN 2024: Update on the diagnosis and management of neonatal intrahepatic cholestasis caused by citrin deficiency (Inui et al., J Pediatr Gastroenterol Nutr 2024)",
-        "GeneReviews: Citrin deficiency (Saheki and Song, updated 2017), with Okano et al. 2019 on current treatment of NICCD",
+        "GeneReviews: Citrin deficiency (Song, Oishi and Saheki, revised 2025), with Okano et al. 2019 on current treatment of NICCD",
         "Konakion MM Paediatric summary of product characteristics (revised 2024): vitamin K in infants with cholestasis"
       ],
       "notes": {
@@ -85,8 +85,8 @@
       "en": "Read raised citrulline and ammonia with an AFP of 451055 ng/mL as pointing to citrin deficiency (confirmed by SLC25A13 testing) while explaining why extrahepatic ducts that MRCP cannot show still demand cholangiography — the two diseases can coexist."
     },
     {
-      "zh-CN": "说明为什么复合杂合的SLC25A13结果和无乳糖、富含MCT配方奶带来的代谢改善（Inui等，2024）不能解释持续的胆汁淤积，并且不等基因结果就安排腹腔镜或开腹胆道造影（国家卫健委2025年版：生后45天内最佳，超过90天效果不佳）。",
-      "en": "Explain why a compound heterozygous SLC25A13 result and a metabolic response to a lactose-free, MCT-enriched formula (Inui et al., 2024) do not explain persistent cholestasis, and arrange laparoscopic or open cholangiography without waiting for the gene result (NHC 2025: best within 45 days of life, poor after 90)."
+      "zh-CN": "说明为什么复合杂合的SLC25A13结果和无乳糖、富含MCT配方奶带来的代谢改善（Inui等，2024）不能解释持续的胆汁淤积，并且不等基因结果就安排腹腔镜或开腹胆道造影（国家卫健委2025年版：不能排除胆道闭锁时生后45天内行胆道造影；Kasai手术45天内最佳，超过90天效果不佳）。",
+      "en": "Explain why a compound heterozygous SLC25A13 result and a metabolic response to a lactose-free, MCT-enriched formula (Inui et al., 2024) do not explain persistent cholestasis, and arrange laparoscopic or open cholangiography without waiting for the gene result (NHC 2025: cholangiography within 45 days of life when atresia cannot be excluded; Kasai best within 45 days, poor after 90)."
     },
     {
       "zh-CN": "避免对这个婴儿看似合理却有害的做法：光疗退黄、按尿素循环障碍停奶并输高浓度葡萄糖、凝血未纠正就在病房肝穿刺、出院等待。",
@@ -462,7 +462,7 @@
       },
       "answer": {
         "zh-CN": "精神和胃口都正常。母乳和奶粉混着喂，还没有加辅食。",
-        "en": "He's lively and his appetite's normal. He has some breast milk and some formula, and no solids yet."
+        "en": "He's alert and his appetite's normal. He has some breast milk and some formula, and no solids yet."
       },
       "keywords": {
         "zh-CN": [
@@ -476,7 +476,9 @@
           "精神",
           "辅食",
           "吃得怎么样",
-          "混合喂养"
+          "混合喂养",
+          "精神好",
+          "有精神"
         ],
         "en": [
           "feeding",
@@ -491,7 +493,9 @@
           "lively",
           "in himself",
           "solids",
-          "weaning"
+          "weaning",
+          "alert",
+          "alertness"
         ]
       },
       "excludeKeywords": {
@@ -772,7 +776,10 @@
           "生下来多重",
           "几斤",
           "孕周",
-          "出生情况"
+          "出生情况",
+          "出生时",
+          "生的时候",
+          "生产时"
         ],
         "en": [
           "full term",
@@ -786,7 +793,11 @@
           "birth weight",
           "weighed at birth",
           "howwasheborn",
-          "born early"
+          "born early",
+          "at birth",
+          "his birth",
+          "the birth",
+          "whenhewasborn"
         ]
       },
       "excludeKeywords": {
@@ -2088,8 +2099,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已送检。结果在病例的下一阶段可以查看（送检和报告的具体时间没有记录）。",
-            "en": "Sent. The result can be read in the next part of the case (when it was sent and reported is not recorded)."
+            "zh-CN": "这一阶段还没有结果：到病例的下一阶段再开具一次即可查看（送检和报告的具体时间没有记录）。",
+            "en": "No result at this stage: order it again in the next part of the case to read it (when it was sent and reported is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2166,8 +2177,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已送检。结果在病例的下一阶段可以查看（送检和报告的具体时间没有记录）。",
-            "en": "Sent. The result can be read in the next part of the case (when it was sent and reported is not recorded)."
+            "zh-CN": "这一阶段还没有结果：到病例的下一阶段再开具一次即可查看（送检和报告的具体时间没有记录）。",
+            "en": "No result at this stage: order it again in the next part of the case to read it (when it was sent and reported is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2227,8 +2238,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已送检。结果在病例的下一阶段可以查看（送检和报告的具体时间没有记录）。",
-            "en": "Sent. The result can be read in the next part of the case (when it was sent and reported is not recorded)."
+            "zh-CN": "这一阶段还没有结果：到病例的下一阶段再开具一次即可查看（送检和报告的具体时间没有记录）。",
+            "en": "No result at this stage: order it again in the next part of the case to read it (when it was sent and reported is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2297,8 +2308,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已申请。报告在病例的下一阶段可以查看（检查的具体时间没有记录）。",
-            "en": "Requested. The report can be read in the next part of the case (when it was done is not recorded)."
+            "zh-CN": "这一阶段还没有报告：到病例的下一阶段再申请一次即可查看（检查的具体时间没有记录）。",
+            "en": "No report at this stage: request it again in the next part of the case to read it (when it was done is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2350,8 +2361,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已申请。报告在病例的下一阶段可以查看（检查的具体时间没有记录）。",
-            "en": "Requested. The report can be read in the next part of the case (when it was done is not recorded)."
+            "zh-CN": "这一阶段还没有报告：到病例的下一阶段再申请一次即可查看（检查的具体时间没有记录）。",
+            "en": "No report at this stage: request it again in the next part of the case to read it (when it was done is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2405,8 +2416,8 @@
         "arrival": {
           "available": false,
           "text": {
-            "zh-CN": "已送检。结果在病例的后面阶段回报（报告所需时间没有记录）。",
-            "en": "Sent. The result comes back in a later part of the case (the turnaround is not recorded)."
+            "zh-CN": "这一阶段还没有结果：结果在病例的后面阶段回报，到时再开具一次即可查看（报告所需时间没有记录）。",
+            "en": "No result at this stage: it comes back in a later part of the case — order it again there to read it (the turnaround is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2416,8 +2427,8 @@
         "workup": {
           "available": false,
           "text": {
-            "zh-CN": "已送检。结果在病例的后面阶段回报（报告所需时间没有记录）。",
-            "en": "Sent. The result comes back in a later part of the case (the turnaround is not recorded)."
+            "zh-CN": "这一阶段还没有结果：结果在病例的后面阶段回报，到时再开具一次即可查看（报告所需时间没有记录）。",
+            "en": "No result at this stage: it comes back in a later part of the case — order it again there to read it (the turnaround is not recorded)."
           },
           "source": {
             "zh-CN": "教学安排：结果在后面的阶段查看",
@@ -2610,7 +2621,12 @@
           "腹腔镜探查",
           "胆道探查",
           "kasai手术",
-          "葛西手术"
+          "葛西手术",
+          "kasai手术加肝活检",
+          "术中肝活检",
+          "手术中取肝活检",
+          "腹腔镜下肝活检",
+          "开腹探查"
         ],
         "en": [
           "paediatric surgery",
@@ -2622,12 +2638,19 @@
           "intraoperative cholangiogram",
           "laparoscopy",
           "kasai",
-          "refer to surgery"
+          "refer to surgery",
+          "kasai operation",
+          "kasai portoenterostomy",
+          "kasai with liver biopsy",
+          "liver biopsy at operation",
+          "operative liver biopsy",
+          "surgical liver biopsy",
+          "liver biopsy at laparoscopy"
         ]
       },
       "dose": {
-        "zh-CN": "电话请小儿外科当天会诊，交代胆红素结果、影像和凝血情况；在维生素K纠正凝血并复查后，尽快行腹腔镜或开腹胆道造影并取肝活检，如证实胆道闭锁，同次手术行Kasai手术。",
-        "en": "Phone paediatric surgery for a same-day review, giving the bilirubin results, the imaging and the clotting; once vitamin K has corrected the clotting and it has been rechecked, cholangiography (laparoscopic or open) with a liver biopsy as soon as possible, and a Kasai operation at the same sitting if atresia is confirmed."
+        "zh-CN": "电话请小儿外科当天会诊，交代胆红素和凝血结果以及已有的影像；在维生素K纠正凝血并复查后，尽快行腹腔镜或开腹胆道造影并取肝活检，如证实胆道闭锁，同次手术行Kasai手术。",
+        "en": "Phone paediatric surgery for a same-day review, giving the bilirubin and clotting results and any imaging; once vitamin K has corrected the clotting and it has been rechecked, cholangiography (laparoscopic or open) with a liver biopsy as soon as possible, and a Kasai operation at the same sitting if atresia is confirmed."
       },
       "requires": [],
       "scope": "medical",
@@ -2686,8 +2709,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "在营养师和遗传代谢科指导下改用无乳糖、富含MCT的配方奶，同时补充脂溶性维生素（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024）。",
-        "en": "A lactose-free, MCT-enriched formula as the dietitian and the metabolic team advise, with fat-soluble vitamins (Inui et al., APPSPGHAN expert review, 2024)."
+        "zh-CN": "在营养师和遗传代谢科指导下改用无乳糖、富含MCT的配方奶，同时补充脂溶性维生素（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024；GeneReviews，2025年修订）。",
+        "en": "A lactose-free, MCT-enriched formula as the dietitian and the metabolic team advise, with fat-soluble vitamins (Inui et al., APPSPGHAN expert review, 2024; GeneReviews, revised 2025)."
       },
       "requires": [],
       "risk": "none",
@@ -2734,12 +2757,21 @@
         "zh-CN": [
           "静脉",
           "维生素k1",
-          "植物甲萘醌"
+          "植物甲萘醌",
+          "肌注",
+          "肌内",
+          "肌肉注射",
+          "注射"
         ],
         "en": [
           "iv vitamin k",
           "phytomenadione",
-          "konakion"
+          "konakion",
+          "intramuscular",
+          "injection",
+          "inject",
+          "im vitamin k",
+          "vitamin k im"
         ]
       },
       "dose": {
@@ -2976,8 +3008,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "光疗只降低非结合胆红素。黄疸持续两个月、大便颜色变浅的婴儿要先按胆汁淤积评估：NASPGHAN/ESPGHAN 2017指南规定直接胆红素>17 μmol/L即为病理性，需要诊断评估，而不是退黄治疗。对胆汁淤积的婴儿，光疗没有益处，还可能引起“青铜症”（皮肤灰褐色），更会拖延胆道闭锁的评估。",
-        "en": "Phototherapy lowers only unconjugated bilirubin. An infant jaundiced for two months with pale stools is assessed for cholestasis first: NASPGHAN/ESPGHAN 2017 holds a direct bilirubin above 17 µmol/L to be pathological and in need of a diagnostic evaluation, not treatment of the jaundice. In a cholestatic infant phototherapy brings no benefit, can cause bronze baby syndrome, and delays the evaluation for biliary atresia."
+        "zh-CN": "光疗只降低非结合胆红素。黄疸持续两个月、大便颜色变浅的婴儿要先按胆汁淤积评估：NASPGHAN/ESPGHAN 2017指南规定直接胆红素>17 μmol/L即为病理性，需要进行诊断评估（推荐3）。对胆汁淤积的婴儿，光疗没有益处，还可能引起“青铜症”（皮肤灰褐色），更会拖延胆道闭锁的评估。",
+        "en": "Phototherapy lowers only unconjugated bilirubin. An infant jaundiced for two months with pale stools is assessed for cholestasis first: NASPGHAN/ESPGHAN 2017 holds a direct bilirubin above 17 µmol/L to be pathological and to warrant diagnostic evaluation (recommendation 3). In a cholestatic infant phototherapy brings no benefit, can cause bronze baby syndrome, and delays the evaluation for biliary atresia."
       },
       "response": {
         "zh-CN": "已开始光疗。本病例没有记录光疗，也不模拟它的效果。",
@@ -3113,8 +3145,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "吃奶好的胆汁淤积婴儿血氨升高，可能是citrin缺陷所致，而citrin缺陷不能按经典尿素循环障碍处理：高浓度葡萄糖输注可能加重高氨血症并诱发肝衰竭（GeneReviews，Saheki和Song，2017年更新；Okano等，2019），停奶禁蛋白还会让本已胆汁淤积的婴儿营养不良。citrin缺陷婴儿的治疗是无乳糖、富含MCT的配方奶和脂溶性维生素（Inui等，2024）。",
-        "en": "Raised ammonia in a cholestatic infant who is feeding well can come from citrin deficiency, which is not managed like a classic urea-cycle disorder: high-concentration glucose infusion can worsen hyperammonaemia and may precipitate liver failure (GeneReviews, Saheki and Song, updated 2017; Okano et al., 2019), and stopping milk and protein leaves a cholestatic infant malnourished. Infants with citrin deficiency are given a lactose-free, MCT-enriched formula and fat-soluble vitamins (Inui et al., 2024)."
+        "zh-CN": "吃奶好的胆汁淤积婴儿血氨升高，可能是citrin缺陷所致，而citrin缺陷不能按经典尿素循环障碍处理：GeneReviews（Song、Oishi和Saheki，2025年修订）把葡萄糖、甘油和果糖输注（有脑水肿风险）以及低蛋白、高碳水化合物饮食列为需要避免的情况，Okano等（2019）也指出应避免持续输注高浓度葡萄糖的静脉营养。停奶禁蛋白还会让本已胆汁淤积的婴儿营养不良。citrin缺陷婴儿的治疗是无乳糖、富含MCT的配方奶和脂溶性维生素（Inui等，2024；GeneReviews，2025）。",
+        "en": "Raised ammonia in a cholestatic infant who is feeding well can come from citrin deficiency, which is not managed like a classic urea-cycle disorder: GeneReviews (Song, Oishi and Saheki, revised 2025) lists glucose, glycerol and fructose infusions (for the risk of brain oedema) and low-protein, high-carbohydrate diets among what to avoid, and Okano et al. 2019 warn against continuous high-glucose intravenous feeding. Stopping milk and protein also leaves a cholestatic infant malnourished. Infants with citrin deficiency are given a lactose-free, MCT-enriched formula and fat-soluble vitamins (Inui et al., 2024; GeneReviews, 2025)."
       },
       "response": {
         "zh-CN": "本病例没有记录这种处理，也不模拟其后果。",
@@ -3345,8 +3377,8 @@
         "en": "Genetic result"
       },
       "hint": {
-        "zh-CN": "分别来自父母的两个变异意味着什么？它能解释你看到的全部情况吗？",
-        "en": "What do two variants, one from each parent, mean — and do they explain everything you have seen?"
+        "zh-CN": "基因结果对他和他的父母意味着什么？它能解释你看到的全部情况吗？",
+        "en": "What does the genetic result mean for him and for his parents — and does it explain everything you have seen?"
       },
       "guidance": {
         "zh-CN": "查看基因结果和病程记录，再看看他，作答决策4。",
@@ -3557,13 +3589,13 @@
         {
           "id": "two-processes",
           "text": {
-            "zh-CN": "可能是两种病并存：瓜氨酸、血氨和AFP指向citrin缺陷，送SLC25A13基因检测；但它解释不了看不到的肝外胆管和极小的胆囊，胆道闭锁仍需胆道造影排除",
-            "en": "Two disorders may coexist: citrulline, ammonia and AFP point to citrin deficiency (send SLC25A13 testing), but it cannot explain unseen extrahepatic ducts and a tiny gallbladder — atresia still needs cholangiography"
+            "zh-CN": "两种病要一起追查：瓜氨酸、血氨和AFP指向citrin缺陷，送SLC25A13基因检测；但它解释不了看不到的肝外胆管和极小的胆囊，胆道闭锁仍需胆道造影排除",
+            "en": "Two disorders to pursue together: citrulline, ammonia and AFP point to citrin deficiency (send SLC25A13 testing), but it cannot explain unseen extrahepatic ducts and a tiny gallbladder — atresia still needs cholangiography"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。citrin缺陷在小婴儿中的典型表现是胆汁淤积、高氨血症和高瓜氨酸血症，由SLC25A13基因检测确诊（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024）。但一个诊断不能排除另一个：超声上胆囊异常或缺如是必须评估胆道闭锁的危险信号，而NASPGHAN/ESPGHAN 2017引用的研究中MRCP的特异度只有36%。国家卫健委2025年版指南把citrin缺陷列为需与胆道闭锁鉴别的疾病；本例两个问题都需要回答。",
-            "en": "Right. Citrin deficiency typically presents in young infants with cholestasis, hyperammonaemia and hypercitrullinaemia and is confirmed by SLC25A13 testing (Inui et al., APPSPGHAN expert review 2024). But one diagnosis does not exclude another: an abnormal or absent gallbladder on ultrasound is a red flag that mandates evaluation for biliary atresia, and MRCP had a specificity of only 36 % in the study NASPGHAN/ESPGHAN 2017 cites. The 2025 Chinese national guideline lists citrin deficiency among the conditions to tell from atresia; here both questions need an answer."
+            "zh-CN": "正确。citrin缺陷在小婴儿中的典型表现是胆汁淤积、高氨血症和高瓜氨酸血症，由SLC25A13基因检测确诊（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024）。但一个诊断不能排除另一个：本例超声本身就提示胆道闭锁可能，MRCP又见胆囊极小、胆管未显示；NASPGHAN/ESPGHAN 2017把超声上胆囊异常或缺如列为必须评估胆道闭锁的危险信号，而它引用的研究中MRCP的特异度只有36%。国家卫健委2025年版指南把citrin缺陷列为需与胆道闭锁鉴别的疾病；本例两个问题都需要回答。",
+            "en": "Right. Citrin deficiency typically presents in young infants with cholestasis, hyperammonaemia and hypercitrullinaemia and is confirmed by SLC25A13 testing (Inui et al., APPSPGHAN expert review 2024). But one diagnosis does not exclude another: here the ultrasound itself raised atresia and MRCP showed a very small gallbladder with the ducts unseen; NASPGHAN/ESPGHAN 2017 counts an abnormal or absent gallbladder on ultrasound among the red flags that mandate evaluation for biliary atresia, and MRCP had a specificity of only 36 % in the study it cites. The 2025 Chinese national guideline lists citrin deficiency among the conditions to tell from atresia; here both questions need an answer."
           }
         },
         {
@@ -3574,8 +3606,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "NICCD确实会引起胆汁淤积，所以这个想法很诱人；但看不到肝总管和胆总管、胆囊极小，正是胆道闭锁的表现，影像检查也不能排除它（NASPGHAN/ESPGHAN 2017，推荐6–8）。等基因结果、试用配方奶要耽误几周，而Kasai术后胆汁引流成功率在生后60天内约70%，90天后不到25%。",
-            "en": "NICCD does cause cholestasis, which is why this is tempting, but common hepatic and common bile ducts that cannot be seen, with a tiny gallbladder, are what biliary atresia looks like, and imaging cannot exclude it (NASPGHAN/ESPGHAN 2017, recommendations 6–8). Waiting for the gene result and a formula trial costs weeks when Kasai drainage falls from about 70 % within 60 days of life to under 25 % after 90."
+            "zh-CN": "NICCD确实会引起胆汁淤积，所以这个想法很诱人；但看不到肝总管和胆总管、胆囊极小，正是胆道闭锁的表现，影像检查也不能排除它（NASPGHAN/ESPGHAN 2017，推荐6和8）。等基因结果、试用配方奶要耽误几周，而Kasai术后胆汁引流成功率在生后60天内约70%，90天后不到25%。",
+            "en": "NICCD does cause cholestasis, which is why this is tempting, but common hepatic and common bile ducts that cannot be seen, with a tiny gallbladder, are what biliary atresia looks like, and imaging cannot exclude it (NASPGHAN/ESPGHAN 2017, recommendations 6 and 8). Waiting for the gene result and a formula trial costs weeks when Kasai drainage falls from about 70 % within 60 days of life to under 25 % after 90."
           }
         },
         {
@@ -3586,8 +3618,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "MRCP不能证明胆道闭锁（NASPGHAN/ESPGHAN 2017，推荐8）；胆道造影加组织学检查才是金标准（推荐10；国家卫健委2025年版指南写明为腹腔镜或开腹胆道探查）。忽视代谢表现同样不安全：citrin缺陷会改变他的喂养和围手术期补液，因为高浓度葡萄糖可能加重高氨血症（GeneReviews 2017；Okano等，2019）。",
-            "en": "MRCP cannot prove biliary atresia (NASPGHAN/ESPGHAN 2017, recommendation 8); cholangiography with histology is the gold standard (recommendation 10; the 2025 Chinese guideline names laparoscopic or open exploration). Ignoring the metabolic picture is unsafe too: citrin deficiency changes his feeds and his peri-operative fluids, because high-concentration glucose can worsen hyperammonaemia (GeneReviews 2017; Okano et al. 2019)."
+            "zh-CN": "MRCP不能证明胆道闭锁（NASPGHAN/ESPGHAN 2017，推荐8）；胆道造影加组织学检查才是金标准（推荐10；国家卫健委2025年版指南写明为腹腔镜或开腹胆道探查）。忽视代谢表现同样不安全：citrin缺陷会改变他的喂养和围手术期补液，因为GeneReviews（2025年修订）把葡萄糖输注列为citrin缺陷需要避免的情况，Okano等（2019）也指出应避免持续输注高浓度葡萄糖的静脉营养。",
+            "en": "MRCP cannot prove biliary atresia (NASPGHAN/ESPGHAN 2017, recommendation 8); cholangiography with histology is the gold standard (recommendation 10; the 2025 Chinese guideline names laparoscopic or open exploration). Ignoring the metabolic picture is unsafe too: citrin deficiency changes his feeds and his peri-operative fluids, because GeneReviews (revised 2025) lists glucose infusions among what to avoid in it and Okano et al. 2019 warn against continuous high-glucose intravenous feeding."
           }
         },
         {
@@ -3598,8 +3630,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "citrin缺陷不能按经典尿素循环障碍处理：高浓度葡萄糖输注可能加重高氨血症并诱发肝衰竭（GeneReviews 2017；Okano等，2019），患儿应改用无乳糖、富含MCT的配方奶，而不是禁蛋白（Inui等，2024）。把胆管问题搁置，也会耗掉Kasai手术所依赖的时间。",
-            "en": "Citrin deficiency is not managed like a classic urea-cycle disorder: high-concentration glucose can worsen hyperammonaemia and may precipitate liver failure (GeneReviews 2017; Okano et al. 2019), and infants are given a lactose-free, MCT-enriched formula rather than being starved of protein (Inui et al. 2024). Setting the bile-duct question aside also spends the time a Kasai operation depends on."
+            "zh-CN": "citrin缺陷不能按经典尿素循环障碍处理：GeneReviews（2025年修订）把葡萄糖输注和低蛋白、高碳水化合物饮食列为需要避免的情况，Okano等（2019）也指出应避免持续输注高浓度葡萄糖的静脉营养；患儿应改用无乳糖、富含MCT的配方奶，而不是禁蛋白（Inui等，2024）。把胆管问题搁置，也会耗掉Kasai手术所依赖的时间。",
+            "en": "Citrin deficiency is not managed like a classic urea-cycle disorder: GeneReviews (revised 2025) lists glucose infusions and low-protein, high-carbohydrate diets among what to avoid, Okano et al. 2019 warn against continuous high-glucose intravenous feeding, and infants are given a lactose-free, MCT-enriched formula rather than being starved of protein (Inui et al. 2024). Setting the bile-duct question aside also spends the time a Kasai operation depends on."
           }
         }
       ]
@@ -3766,8 +3798,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SPIKES提供了谈话的结构——环境、了解家属的认识、他们想知道多少、用通俗的话告知、回应情绪、共同制定计划——回授法确认他们真正听懂了。家属需要坦诚的信息：Kasai手术是保留自体肝的最好机会，而且越早越好（国家卫健委2025年版：生后45天内最佳，超过90天效果不佳；不做的话，胆道闭锁患儿通常难以依靠自体肝活过1岁），很多孩子以后仍需肝移植；citrin缺陷是常染色体隐性遗传，以后每次怀孕有1/4的机会。",
-            "en": "Right. SPIKES gives the structure — setting, their perception, how much they want to know, knowledge in plain words, empathy, a shared plan — and teach-back confirms what they have taken in. They need an honest account: a Kasai operation offers the best chance of keeping his own liver and works best early (NHC 2025: best within 45 days, poor after 90; without it, infants with atresia rarely live beyond a year on their own liver), many children still need a transplant later, and citrin deficiency is autosomal recessive, with a 1 in 4 chance in each future pregnancy."
+            "zh-CN": "正确。SPIKES提供了谈话的结构——环境、了解家属的认识、他们想知道多少、用通俗的话告知、回应情绪、共同制定计划——回授法确认他们真正听懂了。家属需要坦诚的信息：Kasai手术是保留自体肝的最好机会，而且越早越好（国家卫健委2025年版：生后45天内最佳，超过90天效果不佳；未及时做Kasai手术的话，胆道闭锁患儿通常难以依靠自体肝活过1岁），很多孩子以后仍需肝移植；citrin缺陷是常染色体隐性遗传，以后每次怀孕有1/4的机会。",
+            "en": "Right. SPIKES gives the structure — setting, their perception, how much they want to know, knowledge in plain words, empathy, a shared plan — and teach-back confirms what they have taken in. They need an honest account: a Kasai operation offers the best chance of keeping his own liver and works best early (NHC 2025: best within 45 days, poor after 90; without a timely Kasai, infants with atresia rarely live beyond a year on their own liver), many children still need a transplant later, and citrin deficiency is autosomal recessive, with a 1 in 4 chance in each future pregnancy."
           }
         },
         {
@@ -3802,8 +3834,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "直接肝移植适用于就诊过晚、已有失代偿肝硬化或肝衰竭的婴儿（国家卫健委2025年版指南列出的指征包括失代偿期肝硬化、肝衰竭、门静脉高压导致的反复消化道出血）；其他情况首先做Kasai手术——NASPGHAN/ESPGHAN 2017引用的法国大宗病例中，约三分之一的孩子10年时仍保留自体肝。用误导性的说法引导家属，不是共同决策。",
-            "en": "A primary transplant is for infants who present late with decompensated cirrhosis or liver failure (the 2025 Chinese guideline's indications include decompensated cirrhosis, liver failure and recurrent bleeding from portal hypertension); otherwise the Kasai operation comes first, and about a third of children in the large French series NASPGHAN/ESPGHAN 2017 quotes still had their own liver at ten years. Steering a family with a misleading account of the options is not shared decision-making."
+            "zh-CN": "直接肝移植适用于就诊过晚、已有失代偿肝硬化或肝衰竭的婴儿（国家卫健委2025年版指南列出的指征包括失代偿期肝硬化、肝衰竭、门静脉高压导致的反复消化道出血）；其他情况首先做Kasai手术——NASPGHAN/ESPGHAN 2017引用的法国大宗病例中，全部患儿约三分之一10年时仍保留自体肝，手术越晚比例越低。用误导性的说法引导家属，不是共同决策。",
+            "en": "A primary transplant is for infants who present late with decompensated cirrhosis or liver failure (the 2025 Chinese guideline's indications include decompensated cirrhosis, liver failure and recurrent bleeding from portal hypertension); otherwise the Kasai operation comes first: in the large French series NASPGHAN/ESPGHAN 2017 quotes, about a third of all the children still had their own liver at ten years, fewer the later the operation. Steering a family with a misleading account of the options is not shared decision-making."
           }
         }
       ]
@@ -3994,8 +4026,8 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "首次作答即选择尽快行胆道造影，并在此阶段送检基因、调整喂养",
-        "en": "Chose prompt cholangiography at the first attempt, and sent the gene test and changed the feeds at this stage"
+        "zh-CN": "首次作答即选择尽快行胆道造影，并及早送检基因、调整喂养",
+        "en": "Chose prompt cholangiography at the first attempt, sent the gene test early and changed the feeds"
       },
       "met": {
         "all": [
@@ -4003,8 +4035,16 @@
             "decidedFirstTry": "path"
           },
           {
-            "ordered": "genetics",
-            "phase": "workup"
+            "any": [
+              {
+                "ordered": "genetics",
+                "phase": "arrival"
+              },
+              {
+                "ordered": "genetics",
+                "phase": "workup"
+              }
+            ]
           },
           {
             "intervened": "niccd-formula"
@@ -4217,8 +4257,8 @@
         "en": "Dr Shao (metabolic and genetic medicine consultant)"
       },
       "knowledge": {
-        "zh-CN": "遗传代谢科会诊医生，只解读学员已经看过的血氨、氨基酸、甲胎蛋白和基因结果。可以讲：citrin缺陷是SLC25A13基因的常染色体隐性遗传病，小婴儿表现为胆汁淤积、高氨血症、高瓜氨酸血症和脂肪肝（Inui等，2024）；分别来自父母的两个变异即复合杂合，可以确诊；治疗是无乳糖、富含MCT的配方奶和脂溶性维生素，多数在1岁左右恢复，少数进展需肝移植（Okano等，2019；Inui等，2024）；高浓度葡萄糖输注可能加重高氨血症并诱发肝衰竭（GeneReviews 2017；Okano等，2019）；父母再生育时每胎患病机会1/4。强调代谢诊断不能排除胆道闭锁。不提前给出决策答案或结局。",
-        "en": "Metabolic and genetic medicine consultant who interprets only the ammonia, amino acids, AFP and genetic results the learner has read. Can explain that citrin deficiency is an autosomal recessive SLC25A13 disease presenting in young infants with cholestasis, hyperammonaemia, hypercitrullinaemia and fatty liver (Inui et al. 2024); that two variants, one from each parent, are compound heterozygosity and confirm it; that treatment is a lactose-free, MCT-enriched formula with fat-soluble vitamins, most infants recovering by about a year and a few progressing to need a transplant (Okano et al. 2019; Inui et al. 2024); that high-concentration glucose infusion can worsen hyperammonaemia and precipitate liver failure (GeneReviews 2017; Okano et al. 2019); and that each future pregnancy has a 1 in 4 chance. Stresses that a metabolic diagnosis does not exclude biliary atresia. Never gives a decision's answer or the outcome early."
+        "zh-CN": "遗传代谢科会诊医生，只解读学员已经看过的血氨、氨基酸、甲胎蛋白和基因结果。可以讲：citrin缺陷是SLC25A13基因的常染色体隐性遗传病，小婴儿表现为胆汁淤积、高氨血症、高瓜氨酸血症和脂肪肝（Inui等，2024）；分别来自父母的两个变异即复合杂合，可以确诊；治疗是无乳糖、富含MCT的配方奶和脂溶性维生素，多数在1岁左右恢复，少数进展需肝移植（Okano等，2019；Inui等，2024）；应避免葡萄糖、甘油和果糖输注（有脑水肿风险）及低蛋白、高碳水化合物饮食（GeneReviews，2025年修订），也应避免持续输注高浓度葡萄糖的静脉营养（Okano等，2019）；父母再生育时每胎患病机会1/4。强调代谢诊断不能排除胆道闭锁。不提前给出决策答案或结局。",
+        "en": "Metabolic and genetic medicine consultant who interprets only the ammonia, amino acids, AFP and genetic results the learner has read. Can explain that citrin deficiency is an autosomal recessive SLC25A13 disease presenting in young infants with cholestasis, hyperammonaemia, hypercitrullinaemia and fatty liver (Inui et al. 2024); that two variants, one from each parent, are compound heterozygosity and confirm it; that treatment is a lactose-free, MCT-enriched formula with fat-soluble vitamins, most infants recovering by about a year and a few progressing to need a transplant (Okano et al. 2019; Inui et al. 2024); that glucose, glycerol and fructose infusions (for the risk of brain oedema) and low-protein, high-carbohydrate diets are to be avoided (GeneReviews, revised 2025), as is continuous high-glucose intravenous feeding (Okano et al. 2019); and that each future pregnancy has a 1 in 4 chance. Stresses that a metabolic diagnosis does not exclude biliary atresia. Never gives a decision's answer or the outcome early."
       },
       "interprets": [
         "ammonia",
@@ -4312,12 +4352,12 @@
         "en": "Making the diagnosis (NASPGHAN/ESPGHAN 2017, recommendations 6–10): ultrasound may show an absent or abnormal gallbladder, suggestive but not diagnostic of atresia; scintigraphy and MRCP have limited specificity (36 % for 3D MRCP in the study cited); liver biopsy is the most supportive test; intraoperative cholangiography with histology of the duct remnant is the gold standard — laparoscopic or open exploration in the 2025 Chinese guideline."
       },
       {
-        "zh-CN": "citrin缺陷（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024；Okano等，2019）：SLC25A13基因的常染色体隐性遗传病，小婴儿表现为胆汁淤积、高氨血症、高瓜氨酸血症和脂肪肝，由基因检测确诊；用无乳糖、富含MCT的配方奶和脂溶性维生素治疗，多数在1岁左右肝功能恢复，少数需肝移植。高浓度葡萄糖输注可能加重高氨血症（GeneReviews 2017；Okano等，2019）——它不能按经典尿素循环障碍处理。",
-        "en": "Citrin deficiency (Inui et al., APPSPGHAN expert review 2024; Okano et al. 2019): an autosomal recessive SLC25A13 disease presenting in young infants with cholestasis, hyperammonaemia, hypercitrullinaemia and fatty liver, confirmed by genetic testing; treated with a lactose-free, MCT-enriched formula and fat-soluble vitamins, most recovering liver function by about a year and a few needing a transplant. High-concentration glucose infusion can worsen hyperammonaemia (GeneReviews 2017; Okano et al. 2019) — it is not managed like a classic urea-cycle disorder."
+        "zh-CN": "citrin缺陷（Inui等，亚太儿科胃肠肝病营养学会专家意见，2024；Okano等，2019；GeneReviews，2025年修订）：SLC25A13基因的常染色体隐性遗传病，小婴儿表现为胆汁淤积、高氨血症、高瓜氨酸血症和脂肪肝，由基因检测确诊；用无乳糖、富含MCT的配方奶和脂溶性维生素治疗，多数在1岁左右肝功能恢复，少数需肝移植。它不能按经典尿素循环障碍处理：GeneReviews把葡萄糖、甘油和果糖输注（有脑水肿风险）以及低蛋白、高碳水化合物饮食列为需要避免的情况，Okano等也指出应避免持续输注高浓度葡萄糖的静脉营养。",
+        "en": "Citrin deficiency (Inui et al., APPSPGHAN expert review 2024; Okano et al. 2019; GeneReviews, revised 2025): an autosomal recessive SLC25A13 disease presenting in young infants with cholestasis, hyperammonaemia, hypercitrullinaemia and fatty liver, confirmed by genetic testing; treated with a lactose-free, MCT-enriched formula and fat-soluble vitamins, most recovering liver function by about a year and a few needing a transplant. It is not managed like a classic urea-cycle disorder: GeneReviews lists glucose, glycerol and fructose infusions (risk of brain oedema) and low-protein, high-carbohydrate diets among what to avoid, and Okano et al. warn against continuous high-glucose intravenous feeding."
       },
       {
-        "zh-CN": "维生素K（Konakion MM Paediatric说明书，2024年修订；NASPGHAN/ESPGHAN 2017）：胆汁淤积的婴儿口服维生素K吸收不良，必须肌注或静脉注射；治疗维生素K缺乏首剂1 mg静脉注射，再按临床和凝血决定是否追加。NASPGHAN/ESPGHAN 2017指出，注射维生素K后仍不纠正、且与肝损伤不相称的严重凝血障碍，提示妊娠期同种免疫性肝病、代谢病或败血症。任何活检或手术前都要先纠正。",
-        "en": "Vitamin K (Konakion MM Paediatric SmPC, revised 2024; NASPGHAN/ESPGHAN 2017): infants with cholestasis must have vitamin K by intramuscular or intravenous injection because oral absorption is impaired; deficiency is treated with 1 mg IV first, further doses following the clinical picture and the clotting. NASPGHAN/ESPGHAN 2017 notes that a severe coagulopathy unresponsive to parenteral vitamin K and out of proportion to the liver injury may indicate gestational alloimmune liver disease, metabolic disease or sepsis. Correct it before any biopsy or operation."
+        "zh-CN": "维生素K（Konakion MM Paediatric说明书，2024年修订；NASPGHAN/ESPGHAN 2017）：胆汁淤积的婴儿口服维生素K吸收不良，必须肌注或静脉注射；说明书治疗维生素K缺乏性出血首剂1 mg静脉注射，再按临床和凝血决定是否追加，本例对他延长的凝血时间采用这一静脉剂量。NASPGHAN/ESPGHAN 2017指出，注射维生素K后仍不纠正、且与肝损伤不相称的严重凝血障碍，提示妊娠期同种免疫性肝病、代谢病或败血症。任何活检或手术前都要先纠正。",
+        "en": "Vitamin K (Konakion MM Paediatric SmPC, revised 2024; NASPGHAN/ESPGHAN 2017): infants with cholestasis must have vitamin K by intramuscular or intravenous injection because oral absorption is impaired; the SmPC treats vitamin K deficiency bleeding with 1 mg IV first, further doses following the clinical picture and the clotting, and the case gives that IV dose for his prolonged clotting. NASPGHAN/ESPGHAN 2017 notes that a severe coagulopathy unresponsive to parenteral vitamin K and out of proportion to the liver injury may indicate gestational alloimmune liver disease, metabolic disease or sepsis. Correct it before any biopsy or operation."
       },
       {
         "zh-CN": "一个诊断不等于全部答案（本报告，2013；国家卫健委2025年版）：中国2025年版指南把citrin缺陷列为需与胆道闭锁鉴别的疾病，本例说明两者也可以并存。能解释一部分表现的诊断，不应结束对其余表现的追查。",
@@ -4330,7 +4370,7 @@
       "中华人民共和国国家卫生健康委员会. 先天性胆道闭锁诊疗指南（2025版）. 临床肝胆病杂志. 2025;41(9):1759-1761. doi:10.12449/JCH250908",
       "Inui A, Ko JS, Chongsrisawat V, Sibal A, Hardikar W, Chang MH, et al. Update on the diagnosis and management of neonatal intrahepatic cholestasis caused by citrin deficiency: expert review on behalf of the Asian Pan-Pacific Society for Pediatric Gastroenterology, Hepatology, and Nutrition. J Pediatr Gastroenterol Nutr. 2024;78(2):178-187. doi:10.1002/jpn3.12042",
       "Okano Y, Ohura T, Sakamoto O, Inui A. Current treatment for citrin deficiency during NICCD and adaptation/compensation stages: strategy to prevent CTLN2. Mol Genet Metab. 2019;127(3):175-183. doi:10.1016/j.ymgme.2019.06.004",
-      "Saheki T, Song YZ. Citrin deficiency. In: Adam MP, Feldman J, Mirzaa GM, et al., editors. GeneReviews. Seattle (WA): University of Washington, Seattle; 2005 [updated 2017 Aug 10]. Available from: https://www.ncbi.nlm.nih.gov/books/NBK1181/",
+      "Song YZ, Oishi K, Saheki T. Citrin deficiency. 2005 Sep 16 [updated 2025 Mar 20]. In: Adam MP, Bick S, Mirzaa GM, Wallace SE, Amemiya A, editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-2026. Available from: https://www.ncbi.nlm.nih.gov/books/NBK1181/",
       "Konakion MM Paediatric 2 mg/0.2 ml solution for injection: summary of product characteristics. Text revised 2024 Feb 5. Available from: https://www.medicines.org.uk/emc/product/9754/smpc",
       "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
     ],
@@ -4922,6 +4962,20 @@
         "expect": []
       },
       {
+        "text": "孩子平时有精神吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "他出生的时候顺利吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
         "text": "What brings you in today?",
         "locale": "en",
         "expect": [
@@ -5098,6 +5152,20 @@
         "text": "Did you drive here today?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "Is he alert in himself?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Were there any problems around his birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
       }
     ]
   }

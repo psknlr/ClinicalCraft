@@ -29,8 +29,9 @@ article text is available. Everything listed under "To verify" is part of that p
 
 1. Name the features that make the systemic JIA label unsafe here (no rash at onset, no enlarged lymph nodes,
    platelets as low as 65 × 10⁹/L, an LDH of 1312 U/L, fever returning on steroids) and hold further
-   immunosuppression until malignancy, infection and macrophage activation are excluded (EULAR/PReS 2024).
-2. Explain why pelvic radiographs without obvious destruction and one negative marrow do not exclude a bone
+   immunosuppression until malignancy and infection are excluded, testing for macrophage activation rather than
+   assuming it (EULAR/PReS 2024).
+2. Explain why pelvic radiographs without obvious destruction and a negative marrow do not exclude a bone
    tumour, and use the MRI and contrast-enhanced CT findings to decide that tissue is needed (ESMO 2021).
 3. Plan the biopsy of a suspected bone sarcoma with a paediatric bone sarcoma team — platelets and clotting first,
    a tract the later resection can remove, samples for histology, molecular testing and culture — and explain the
@@ -113,7 +114,8 @@ No objective holds a condition that can become false for good (no phase leaf, no
    and high-dose steroids for presumed MAS before the tests that would show it.
 2. **`imaging-meaning` — the results together** (workup). Key: `tissue-needed` — an iliac mass with periosteal
    reaction is a bone tumour until shown otherwise; at her age metastatic neuroblastoma, Ewing sarcoma, lymphoma or
-   Langerhans cell histiocytosis; normal films and one marrow exclude none of them; osteomyelitis remains possible.
+   Langerhans cell histiocytosis; neither the films without obvious destruction nor the marrow excludes them;
+   osteomyelitis remains possible.
    Why: ESMO 2021 (MRI whenever radiographs cannot exclude malignancy; under 5 years a destructive lesion is most often
    metastatic neuroblastoma or LCH); ESPID 2017 (subacute osteomyelitis can mimic malignancy and usually needs a
    biopsy). Distractors: reactive change of JIA, a pelvic abscess to drain without bone tissue, anaemia of
@@ -121,8 +123,8 @@ No objective holds a condition that can become false for good (no phase leaf, no
 3. **`tissue-route` — how tissue is obtained** (workup). Key: `sarcoma-team-core-biopsy` — refer to the paediatric
    oncology and bone sarcoma team first; an image-guided core biopsy along a tract the resection can remove, after
    platelets and clotting, with samples for histology, molecular tests and culture. Why: ESMO 2021 biopsy principles.
-   Distractors: open excision or curettage by the local team, a second marrow only, a fine-needle aspirate by the
-   shortest route without the surgeon.
+   Distractors: open excision or curettage by the local team, further marrow samples only, a fine-needle aspirate
+   by the shortest route without the surgeon.
 4. **`what-is-proven` — what the biopsy and PET-CT establish** (diagnosis). Key: `confirm-fusion-complete-staging`
    — Ewing sarcoma with multiple bone lesions is likely, but an EWSR1 (FET)–ETS fusion is still needed and staging
    needs a chest CT and a biopsy of any lesion that would change the plan. Why: ESMO 2021 (molecular confirmation
@@ -130,12 +132,14 @@ No objective holds a condition that can become false for good (no phase leaf, no
    so palliation only; histology enough and PET settles the stage; the other lesions multifocal osteomyelitis.
 5. **`treatment-plan` — what happens next** (diagnosis). Key: `protocol-chemo-mdt` — a paediatric oncology team on a
    current Ewing protocol, chemotherapy first, local control of the pelvis decided by the sarcoma team, fertility
-   preservation discussed before treatment. Why: ESMO 2021 (induction, local therapy timed by the MDT, consolidation,
-   10–12 months; fertility consultation for girls); NHC 2019 (80–90 % relapse with local treatment alone).
+   preservation discussed before treatment; chemotherapy starts once the fusion result and staging are back. Why:
+   ESMO 2021 (induction, local therapy timed by the MDT, consolidation, 10–12 months; fertility consultation for
+   girls); NHC 2019 (80–90 % relapse with local treatment alone).
    Distractors: resection first, radiotherapy alone, comfort care only.
 
 Each option has its own feedback; option ids name the content; no key is the uniquely longest option in either
-language (measured).
+language, and the key's length rank varies between decisions (third, fourth, second, third and second longest in
+both languages, measured), so neither "the longest" nor "one of the two longest" finds the keys.
 
 ### Rubric (13 deterministic items, weight 36, + 1 examiner-judged)
 
@@ -165,7 +169,7 @@ language (measured).
 | A wrong first answer at every decision, then the right one | 21/36 (58 %) | none | passed |
 | A wrong first answer at one decision only (any of the five) | 33/36 (92 %) | none | passed |
 | Reference + methylprednisolone pulse on admission | 32/36 (89 %) | `rb-no-critical-harm` | **failed** |
-| Reference + methylprednisolone pulse after the biopsy report is read | 32/36 (89 %) | `rb-no-critical-harm` | passed (no longer contraindicated) |
+| Reference + methylprednisolone pulse after the biopsy report is read | 32/36 (89 %) | `rb-no-critical-harm` | passed (it no longer hides the diagnosis, so it is not contraindicated then; it still costs the critical rubric item) |
 | Reference + IL-1/IL-6 inhibitor on admission | 34/36 (94 %) | none | passed |
 | Reference + open excision before the planned biopsy | 32/36 (89 %) | `rb-no-critical-harm` | **failed** |
 | Open excision instead of the planned biopsy | 28/36 (78 %) | `rb-biopsy-in-time`, `rb-no-critical-harm` | **failed** |
@@ -173,7 +177,7 @@ language (measured).
 | Reference + transfusion before the blood count is read | 34/36 (94 %) | none | passed |
 | Reference + transfer for chemotherapy before the biopsy (the later transfer is refused: one only) | 33/36 (92 %) | none | passed |
 | Biopsy on admission, before the blood count is read (the later one is refused) | 30/36 (83 %) | `rb-biopsy-in-time` | passed |
-| No referral to the sarcoma team, or the referral only after the biopsy | 30/36 (83 %) | `rb-biopsy-in-time` | passed |
+| No referral to the sarcoma team, or the referral only after the biopsy (the biopsy is then contraindicated) | 30/36 (83 %) | `rb-biopsy-in-time` | passed |
 
 Contraindicated acts are listed as safety events in every debrief.
 
@@ -186,16 +190,17 @@ contraindicated: an unplanned intralesional procedure contaminates the surroundi
 resection with clear margins (ESMO 2021). Giving either while contraindicated fails the assessment's safety outcome
 (`safety.passed: false`) whatever the score. `il-blockade` is high risk and explicitly `critical: false`: starting an
 IL-1/IL-6 inhibitor before the diagnosis delays it and blunts fever and CRP, a serious but recoverable misjudgement.
-`planned-biopsy` (before the count is read), `rbc-transfusion` (before the count is read), `transfer-oncology`
-(before the biopsy report) and `empirical-antibiotics` (before cultures and the biopsy) are moderate risk and
-`critical: false`; each costs marks.
+`planned-biopsy` (before the count is read or before the referral), `rbc-transfusion` (before the count is read),
+`transfer-oncology` (before the biopsy report) and `empirical-antibiotics` (before cultures and the biopsy) are
+moderate risk and `critical: false`; each costs marks.
 
 ## Reference path (`solution`)
 
 70 steps: start → ask all 20 history items → examine all six findings → order blood film, blood culture,
 ferritin/triglycerides/liver enzymes (`mas-screen`), urine catecholamine metabolites and clotting →
 decision 1 (`investigate-before-escalating`) → read the nine workup records → decision 2 (`tissue-needed`) →
-refer to the oncology and bone sarcoma team → transfuse against today's haemoglobin → decision 3
+refer to the oncology and bone sarcoma team → request red cells against today's haemoglobin (a conditional order:
+today's value is not recorded) → decision 3
 (`sarcoma-team-core-biopsy`) → planned biopsy → read the biopsy report and PET-CT → order fusion testing and chest
 CT → decision 4 (`confirm-fusion-complete-staging`) → family meeting, fertility discussion, transfer →
 decision 5 (`protocol-chemo-mdt`) → read the outcome record → finish. `cases verify` gives no contraindicated act,
@@ -248,8 +253,8 @@ wrong-step medicines are named without doses.
 |---|---|
 | Accepting the label and escalating steroids | Decision 1 distractor; `methylpred-pulse` is a critical safety failure before the biopsy report, and the attending asks what the label rests on |
 | Starting a biologic because guidelines prefer it to steroids | Decision 1 distractor; `il-blockade` costs `rb-no-blind-treatment`; feedback cites EULAR/PReS 2024 recommendation 7 ("when the diagnosis is established") |
-| Reassured by normal-looking films or one negative marrow | Decision 2 distractors |
-| Biopsy by whoever is available, or excision for "diagnosis and treatment" | Decision 3 distractors; `open-excision` fails the safety outcome; a biopsy without the referral, before the count is read or without clotting sent misses the critical `rb-biopsy-in-time` |
+| Reassured by films without obvious destruction or a negative marrow | Decision 2 distractors |
+| Biopsy by whoever is available, or excision for "diagnosis and treatment" | Decision 3 distractors; `open-excision` fails the safety outcome; a biopsy without the referral or before the count is read is contraindicated, and like one without clotting sent it misses the critical `rb-biopsy-in-time` |
 | Repeating blind antibiotics | `empirical-antibiotics` costs marks before cultures and the biopsy |
 | Treating PET avidity as histology, or histology as complete | Decision 4 distractors |
 | Surgery first, radiotherapy alone, or comfort care only | Decision 5 distractors |
@@ -321,7 +326,10 @@ the parent as speaker (1.0.0 records only a companion of role "parent"); the att
 consultant and their words; today's tests, which have no recorded result; the referral, planned biopsy, transfusion,
 family meeting and fertility discussion as acts of today's practice (the report records a right iliac biopsy, a
 PET-CT and the transfer for chemotherapy, not who planned the biopsy or how it was taken); the wrong-step
-interventions and their narrated consequences.
+interventions and their narrated consequences. The biopsy's preconditions are modelled as acts the engine can see:
+reading her recorded blood counts (no count of the day is recorded) and sending clotting (no result is recorded);
+the red-cell order is conditional on a haemoglobin of the day that the case does not record, and its response says
+so.
 
 **Privacy.** No dates, hospitals, cities or names; bilingual pseudonym 孔清和 / Kong Qinghe, unique in the library.
 
@@ -333,14 +341,19 @@ interventions and their narrated consequences.
 - Look-alikes separated with `excludeKeywords`: fever pattern against steroid, antibiotic and rash questions
   (`fever-course`); the steroid response against the dose (`steroid-response` / `steroid-details`); the weight against
   weight loss (`weight` / `weight-loss-sweats`); night pain against joint pain (`night-pain` / `limp`); transfusion
-  against transfer (`rbc-transfusion` / `transfer-oncology`).
+  against transfer (`rbc-transfusion` / `transfer-oncology`); "Is she still on the steroids?" / 她还在吃激素吗 reach
+  the unknown details, "Did the steroids help?" the response; "Has she had any infections?" / 最近有没有感染过 reach
+  the anti-infective treatment, not the TB and hepatitis contact.
+- "What medicines is she on?", "Any regular medicines?", 孩子现在吃什么药, 平时在用什么药 reach `steroid-response` (the
+  parent knows about the steroid course); they reached nothing before the review, and the parent said "I'm not sure".
 - Multi-word keywords that the normaliser would reduce to one word are written run together ("whatbringsyou").
 - Orders: "CT" alone matches nothing (pelvis or chest must be named); "clotting screen" reaches only the coagulation
   screen (a run-together "NGS" alias was removed because it matched inside "clottingscreen"); ANA, bone scan,
-  urinalysis are not in the case.
-- Corpus: 46 utterances (26 en, 20 zh-CN), 4 look-alike negatives ("Does she have a cough?", "Has she been
+  urinalysis are not in the case. A chest X-ray is not in the case either: an `orderMatching` rule keeps "chest
+  X-ray", "CXR", 胸片 and 胸部X光 off the pelvic radiographs record (they matched it through "x-ray" before).
+- Corpus: 52 utterances (29 en, 23 zh-CN), 4 look-alike negatives ("Does she have a cough?", "Has she been
   vomiting?", 她咳嗽吗？, 有没有呕吐？), at least one paraphrase for every required item; none repeats a canonical
-  question or a keyword. `cases verify`: 46/46.
+  question or a keyword. `cases verify`: 52/52.
 
 ## References
 
@@ -377,11 +390,12 @@ resecting team or an interventional radiologist after discussion; tract marked a
 mandatory [V, A]; marrow not mandated with PET-CT [V, C]; intralesional surgery to be avoided; induction, local
 therapy timed by the MDT, consolidation, 10–12 months; fertility consultation for female patients; multiple bone
 metastases poorer than lung metastases; under 10 % survival without systemic treatment); EULAR/PReS 2024
-(recommendations 1, 3, 6, 7 and 10, the text on glucocorticoids in misdiagnosis, Table 2 with the ILAR and PRINTO
+(overarching principle D and recommendations 1, 3, 6, 7, 10 and 11, the text on glucocorticoids in misdiagnosis, Table 2 with the ILAR and PRINTO
 criteria, supplementary tables 1–2); ACR 2021 (recommendations for systemic JIA without MAS); NICE NG12 (PDF, last
 updated 15 April 2026: recommendations 1.10.2, 1.10.3, 1.11.2, 1.11.3, 1.12.1); ESPID 2017 (blood culture before
 antibiotics; subacute osteomyelitis confused with malignancy); BSH 2016 (thresholds and the volume formula); NHC 2019
-(clotting function known before treatment; EWSR1 testing where available by FISH with PCR confirmation; 80–90 %
+(clotting function known before treatment; FISH for the EWSR1 rearrangement, with PCR verification where the
+laboratory allows; 80–90 %
 relapse with local treatment alone). DOIs were
 checked against Crossref. The WHO 2020 classification statements were checked in secondary sources and in ESMO
 2021's text, not in the WHO volume itself.
@@ -408,9 +422,11 @@ For a clinician of the specialty (paediatric oncology, with paediatric rheumatol
 
 11. The key of decision 1 (hold escalation; MAS work-up alongside the malignancy work-up) and the attending's advice
     not to stop steroids abruptly.
-12. Whether `methylpred-pulse` should stay critical after the biopsy report (it is not contraindicated then) and
+12. Whether `methylpred-pulse` should stay critical after the biopsy report (it is not contraindicated then, though it
+    still costs the critical rubric item) and
     whether `il-blockade` is rightly non-critical.
-13. The biopsy preconditions in `planned-biopsy` (count read, clotting sent, referral first) and the transfusion
+13. The biopsy preconditions in `planned-biopsy` (count read, clotting sent, referral first: contraindicated without
+    the count or the referral) and the transfusion
     thresholds quoted from BSH 2016 for a child with cancer.
 14. The teaching that Ewing sarcoma at 3 years is uncommon and that neuroblastoma and LCH lead the differential under
     5 years (ESMO 2021 wording), and the absence of any survival figure for her.
@@ -428,7 +444,8 @@ For a clinician of the specialty (paediatric oncology, with paediatric rheumatol
   results establish, the treatment plan), each with its own feedback and named guidance, opening before the result
   that answers it.
 - Ten interventions: the report's management (biopsy, transfer for chemotherapy), today's steps (referral to a bone
-  sarcoma team before any tissue, transfusion against a measured haemoglobin, fertility discussion, family meeting)
+  sarcoma team before any tissue, a red-cell order conditional on today's haemoglobin, fertility discussion, family
+  meeting)
   and the tempting wrong ones (steroid pulse, IL-1/IL-6 inhibitor, unplanned excision, blind antibiotics), each wrong
   one with a harm text naming its guidance; `methylpred-pulse` and `open-excision` are `critical: true`.
 - Safety fixes: in 1.0.0 the only teaching on steroids came after the biopsy result (management decision feedback);
@@ -440,6 +457,18 @@ For a clinician of the specialty (paediatric oncology, with paediatric rheumatol
   PaedCan 2021, WHO 2020, NHC 2019, ESPID 2017, BSH 2016 and SPIKES, each checked in its own text.
 - Debrief: conclusion, five key reasoning steps, six teaching points (all dated and attributed), seven unknowns;
   attending (Socratic, PEARLS), nurse (ISBAR) and paediatric oncology consultant; 46-utterance matcher corpus.
+- Independent review (same day), fixes: "one marrow" and "normal(-looking) films" replaced by the recorded wording
+  (a marrow without confirmed tumour; films without obvious destruction) in the learning outcomes, decision 2,
+  rubric, attending, conclusion and key reasoning; the Chinese presenting-complaint answer no longer adds an order
+  (后来); macrophage activation is tested and treated, not a condition to "exclude" before immunosuppression
+  (EULAR/PReS 2024 principle D, recommendation 11), in the first learning outcome and the conclusion; the red-cell
+  response no longer claims a haemoglobin of the day; distractors rewritten to the key's length so that the key is
+  not always the second-longest option; matcher gaps closed (medicines, infections, "still on the steroids") with
+  six new utterances (52 in all); a chest X-ray no longer returns the pelvic films; the biopsy is contraindicated
+  without the referral and its response no longer claims the team's plan; the steroid pulse, IL inhibitor and
+  antibiotic responses are true in every phase; the steroid-details answer no longer presumes she still takes them;
+  NHC 2019 (FISH, PCR where the laboratory allows), NICE NG12 1.11.3 ("consider") and WHO 2020 wording corrected;
+  the admission feedback no longer mentions counts not yet read; a less leading hint for the first objective.
 
 ### 1.0.0
 
@@ -454,7 +483,7 @@ Run from the worktree root (all passed on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-44939/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44939 --lang en             # 70 steps · objectives 6/6 · decisions 5/5 · utterances 46/46 · rubric 36/36 (100 %)
+npm run -s cc -- cases verify cmcr-44939 --lang en             # 70 steps · objectives 6/6 · decisions 5/5 · utterances 52/52 · rubric 36/36 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44939   # depth floor, do-nothing 0/30, wrong-first 58 % < 100 %, patient voice
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44939:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44939:"  # in-world demonstration, en + zh-CN
@@ -472,8 +501,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 疗效、生存和功能结局没有报告。本版事实沿用1.0.0版的提取内容，尚未对照原文全文核对。
 
 **学习目标。**
-1. 说出使全身型JIA诊断站不住脚的表现，并在排除肿瘤、感染和巨噬细胞活化综合征之前不加强免疫抑制（EULAR/PReS 2024）。
-2. 解释骨盆平片阴性和一次骨髓阴性为什么排除不了骨肿瘤，并依据MRI和增强CT判断需要组织（ESMO 2021）。
+1. 说出使全身型JIA诊断站不住脚的表现，并在排除肿瘤和感染之前不加强免疫抑制，巨噬细胞活化综合征要检查证实（EULAR/PReS 2024）。
+2. 解释骨盆平片未见明显破坏和骨髓阴性为什么排除不了骨肿瘤，并依据MRI和增强CT判断需要组织（ESMO 2021）。
 3. 与儿童骨肉瘤团队规划活检：先查血小板和凝血，穿刺道可随日后手术切除，标本送病理、分子检测和培养；说明擅自切除的危害。
 4. 判断“尤文瘤、无融合基因”的活检和未逐个取材的PET-CT能确定什么，说出还需要的分子确认（WHO 2020、ESMO 2021）和分期。
 5. 概述今天的治疗路径（按方案化疗、多学科团队决定局部治疗时机、治疗前讨论生育力保存），并与原报告对比。
@@ -481,15 +510,15 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **关键决策。** ① 入院时：把全身型JIA当作未经证实的诊断，暂不加强激素和免疫抑制，先查肿瘤、感染和巨噬细胞活化综合征（干扰项：
 激素冲击加甲氨蝶呤、立即用IL-1/IL-6抑制剂、按巨噬细胞活化综合征直接用环孢素）；② 综合解读：髂骨包块伴骨膜反应在证实前按骨肿瘤
-对待，平片正常和一次骨髓阴性都排除不了，需要组织（干扰项：JIA反应性改变、脓肿引流、炎症性贫血）；③ 取材：先转诊儿童肿瘤及
+对待，平片未见明显破坏、骨髓阴性都排除不了，需要组织（干扰项：JIA反应性改变、脓肿引流、炎症性贫血）；③ 取材：先转诊儿童肿瘤及
 骨肉瘤团队，查血小板和凝血后做规划好的影像引导粗针活检（干扰项：本院切开切除、只复查骨髓、细针穿刺）；④ 结果能确定什么：
 尤文肉瘤伴多发骨病灶很可能，但还需EWSR1（FET）–ETS融合确认、胸部CT和对关键病灶活检（干扰项：直接姑息、病理已足够、其余为骨髓炎）；
-⑤ 治疗：儿童肿瘤团队按现行方案先化疗，再由骨肉瘤团队决定局部治疗，治疗前讨论生育力保存（干扰项：先手术、单纯放疗、只做舒适照护）。
-关键项：经转诊、看过血常规并送检凝血之后按规划完成活检；避免激素冲击和擅自切除。
+⑤ 治疗：融合基因结果和分期回报后，儿童肿瘤团队按现行方案先化疗，再由骨肉瘤团队决定局部治疗，治疗前讨论生育力保存（干扰项：先手术、单纯放疗、只做舒适照护）。
+关键项：经转诊、看过血常规并送检凝血之后按规划完成活检（未转诊或未看血常规即活检判为禁忌）；避免激素冲击和擅自切除。
 
 **复盘要点（PEARLS）。** 先谈感受；复述入院时已知的信息；分析：这个“关节炎”标签有什么依据、缺了什么，激素退热说明不了什么；
 血小板低、乳酸脱氢酶高在跛行的幼儿意味着什么，巨噬细胞活化综合征要怎样查；平片阴性为什么不能终止检查；活检该由谁、怎样做，
-先切除会怎样；没有融合基因结果的“尤文瘤”今天能确定什么（ESMO 2021、WHO 2020；我国2019年规范也建议有条件时做EWSR1检测）；
+先切除会怎样；没有融合基因结果的“尤文瘤”今天能确定什么（ESMO 2021、WHO 2020；我国2019年规范推荐用FISH检测EWSR1易位、实验室条件允许时用PCR验证）；
 怎样告诉家长。最后总结：遇到“不太对劲”的风湿标签时，下次先做什么。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经
 执业医师审核。
 

@@ -1,13 +1,15 @@
-CMCR 105: 1 more case re-authored and reviewed (1.1.0)
+CMCR 105: 2 more cases re-authored and reviewed (1.1.0)
 
 Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-860885: Cold hands and feet and stiff fingers · girl aged 16 years 7 months (5 decisions, 18 interventions;
-  review: 0 critical, 5 major, 11 minor findings)
+- cmcr-33638: Persistent jaundice and pale stools · 2-month-old boy (5 decisions, 12 interventions;
+  review: 0 critical, 4 major, 16 minor findings)
+- cmcr-33640: Recurrent abdominal pain and black stools · boy aged 7 years 5 months (4 decisions, 14 interventions;
+  review: 3 critical, 5 major, 8 minor findings)
 
-Reviews: 0 critical, 5 major and 11 minor findings; every critical and major one fixed or
+Reviews: 3 critical, 9 major and 24 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

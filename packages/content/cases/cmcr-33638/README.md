@@ -27,7 +27,7 @@ Everything listed under "To verify" belongs to that pass.
 | What the learner can do | Take the history from the relative, examine him, order and read 15 investigations (2 record reviews), give 12 interventions (4 of them harmful), answer 5 decisions, talk with the family, read the outcome |
 | Review status | `editorial`, 2026-11-14 — AI-assisted teaching design with an editorial review against the cited guidance; **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a paediatric hepatologist, a paediatric surgeon and a metabolic specialist review it before teaching use |
 | Phases | `arrival` 入院：2月龄，黄疸约2个月 / Admission: two months old, jaundiced for about two months → `workup` 进一步检查：代谢指标与肝胆影像 / Further tests: metabolic markers and liver and bile-duct imaging → `confirmation` 基因结果回报与此后的病程 / The genetic result and his course since → `outcome` 再次入院与报告的结局 / Later readmission and the reported outcome — none learner-switchable |
-| Content | 22 history items (8 required, 9 unknown; the relative answers) · 6 exam findings · 15 investigations (2 record reviews; 13 with no result or a "sent" placeholder in one or more phases) · 12 interventions (4 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 34; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 52 test utterances · 2 approved figures (outcome record) |
+| Content | 22 history items (8 required, 9 unknown; the relative answers) · 6 exam findings · 15 investigations (2 record reviews; 13 with no result or a "not yet" placeholder in one or more phases) · 12 interventions (4 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 34; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 56 test utterances · 2 approved figures (outcome record) |
 
 ## Learning outcomes
 
@@ -42,7 +42,8 @@ Everything listed under "To verify" belongs to that pass.
    two diseases can coexist.
 4. Explain why a compound heterozygous SLC25A13 result and a metabolic response to a lactose-free, MCT-enriched formula
    (Inui et al., 2024) do not explain persistent cholestasis, and arrange laparoscopic or open cholangiography without
-   waiting for the gene result (NHC 2025: best within 45 days of life, poor after 90).
+   waiting for the gene result (NHC 2025: cholangiography within 45 days of life when atresia cannot be excluded; Kasai
+   best within 45 days, poor after 90).
 5. Avoid the plausible but harmful steps: phototherapy, a urea-cycle regimen that stops milk and runs
    high-concentration glucose, a ward liver biopsy before the clotting is corrected, discharge to wait.
 6. Counsel the family with SPIKES and teach-back about cholangiography and a possible Kasai operation and about the
@@ -80,13 +81,16 @@ no vital sign is recorded. Phases advance by themselves when their `enterWhen` h
 
 | Phase | Opens when | What is in it |
 |---|---|---|
-| `arrival` | start | History from the relative (20 items), examination (5 findings), the first bloods: liver function with split bilirubin, GGT and albumin, and the clotting screen (results here); glucose, FBC, thyroid, TORCH and hepatitis B markers (no result recorded); metabolic tests and imaging can be ordered (a "sent" placeholder — their results open in `workup`). Decision 1. Interventions: vitamin K, stool card, surgical referral |
-| `workup` | decision 1 answered | Ammonia, amino acids, AFP, abdominal ultrasound, MRCP (results); the gene test can be sent (placeholder). Decisions 2 and 3. Interventions: formula, fat-soluble vitamins, metabolic consultation, family meeting |
+| `arrival` | start | History from the relative (20 items), examination (5 findings), the first bloods: liver function with split bilirubin, GGT and albumin, and the clotting screen (results here); glucose, FBC, thyroid, TORCH and hepatitis B markers (no result recorded); metabolic tests and imaging can be ordered (a placeholder: their results are read by ordering them again in `workup`). Decision 1. Interventions: vitamin K, stool card, surgical referral |
+| `workup` | decision 1 answered | Ammonia, amino acids, AFP, abdominal ultrasound, MRCP (results); the gene test can be sent (placeholder; read by ordering it again in `confirmation`). Decisions 2 and 3. Interventions: formula, fat-soluble vitamins, metabolic consultation, family meeting |
 | `confirmation` | decisions 2 and 3 answered | The SLC25A13 result; the progress note (ammonia improved, jaundice persisted); skin re-examined (still jaundiced); the relative's question about an operation. Decisions 4 and 5; genetic counselling; family meeting |
 | `outcome` | all five decisions answered | The later-admission record (laparoscopy, biopsy, Kasai not accepted, outcome unknown, the report's conclusion) with the two approved figures |
 
 The first bloods are shown on admission as a teaching device: the day each sample was taken is not recorded (the
-result's note says so). The later records cannot be ordered before their phase (`availability.earliestPhase`).
+result's note says so). The later records cannot be ordered before their phase (`availability.earliestPhase`). An
+order belongs to the phase it is placed in (the engine reads a phase's result only from an order placed in that phase),
+so a test sent early shows a placeholder that tells the learner to order it again in the phase whose result it is; the
+reference path does exactly that. Sending the gene test on admission is credited like sending it in `workup`.
 
 ## Decisions and assessment
 
@@ -129,7 +133,7 @@ distractor at least as long as the key in zh-CN and en).
 | `rb-first-steps` | diagnosis | 3 | decision 1 right first time |
 | `rb-vitamin-k` | management | 4 | **critical** — `{"intervened": "vitamin-k-iv", "whenIndicated": true}`: given in `arrival` or `workup` and before the genetic result is read |
 | `rb-reconcile` | diagnosis | 3 | decision 2 right first time |
-| `rb-path` | management | 3 | decision 3 right first time; gene test sent in `workup`; formula changed |
+| `rb-path` | management | 3 | decision 3 right first time; gene test sent in `arrival` or `workup` (before its result phase); formula changed |
 | `rb-referral` | management | 4 | **critical** — `{"intervened": "surgery-referral", "whenIndicated": true}`: same window as vitamin K |
 | `rb-gene-meaning` | diagnosis | 3 | decision 4 right first time; genetic result read in `confirmation` |
 | `rb-family` | management | 2 | decision 5 right first time; family meeting; genetic counselling |
@@ -160,6 +164,9 @@ The objectives that require these acts carry no timing, so a late learner can st
 | Surgical referral only after the genetic result is read | 30/34 (88 %) | `rb-referral` · passed |
 | Surgical referral never made | stops at 30/34 (88 %): the case cannot be finished (`obj-workup`) | `rb-referral` |
 | Surgical referral in `workup` instead of `arrival` | 34/34 (100 %) | none · passed |
+| Gene test sent in `arrival` instead of `workup` | 34/34 (100 %) | none · passed |
+| Gene test first sent in `confirmation` | 31/34 (91 %) (`rb-path`) | none · passed |
+| Vitamin K ordered as "1 mg IM" | not given: the route conflicts with the 1 mg IV preset (dose error kept, safety outcome passes); the case waits for the IV dose. A free-text "vitamin K IM" is offered the IV item rather than read as the oral supplement | `rb-vitamin-k` until then |
 | Vitamin K ordered as "10 mg IV" (a tenfold error against the 1 mg preset) | not given; the dose error is kept and the safety outcome **fails**; the case cannot finish until vitamin K is given at the right dose | `rb-vitamin-k` until then |
 
 Each contraindicated act appears as a safety event in every debrief. The stool card, metabolic consultation and
@@ -289,7 +296,7 @@ check against the full article is pending (`sourceTextChecked: false`).
 | Father hepatitis B positive | `history.family-hbv`; `hbv-serology` note |
 | Mother and older sister healthy; no known inherited disease | `history.family-health` |
 | Hepatitis B vaccine given | `history.hbv-vaccine` |
-| Allergies, operations, regular medicines, previous health, exposures, baseline function, the family's concerns, other admissions: not recorded | `history.allergies`, `history.medicines`, `history.previous-tests` (unknown); the rest by `fallbackUnknown`; `unknowns`. The two `ice` items (`concerns`, `concerns-operation`) are labelled teaching devices that restate recorded facts and add none |
+| Allergies, operations, regular medicines, previous health, exposures, baseline function, the family's concerns, other admissions: not recorded | `history.allergies`, `history.medicines`, `history.previous-tests` (unknown); the rest by `fallbackUnknown`; `unknowns`. The two `ice` items are labelled teaching devices: `concerns` restates the recorded course; `concerns-operation` is a scripted question for the family conversation (the family's view of the gene result and its link to their later decision are not recorded) |
 | Skin and sclerae jaundiced; responds well; weight 5.2 kg; abdomen full; liver and spleen each 2.5 cm below the costal margin | `exam.skin-eyes`, `exam.responsiveness`, `exam.weight`, `exam.abdomen-look`, `exam.liver-spleen`; `patient.weightKg` |
 | TB/DB 188.0/110.4 µmol/L, GGT 152 U/L, albumin 23.6 g/L, PT 21.3 s, APTT 79 s | `investigations.lft`, `investigations.coag` (`arrival`) |
 | Ammonia 156 µmol/L; citrulline 354.86 µmol/L, several amino acids raised; AFP 451055 ng/mL | `investigations.ammonia`, `amino-acids`, `afp` (`workup`) |
@@ -314,9 +321,10 @@ are "no result recorded"; (4) 1.0.0's README says weights were "not reconstructe
 
 **Teaching devices (labelled, not facts of the report):** the present admission "to the children's ward today" with a
 relative (1.0.0's setting is inpatient; where and why he was admitted is not recorded); the first bloods shown as the
-admission results (sampling day not recorded); "sent / requested" placeholders for tests whose results open in a later
-phase; the relative's identity (not recorded) and the two `ice` items (worry; the question about an operation); the
-staff; the stool card, vitamin K, referral, formula and every other intervention (their responses say the case does not
+admission results (sampling day not recorded); "not yet" placeholders for tests whose results open in a later
+phase (read by ordering the test again there); the relative's identity (not recorded) and the two `ice` items (worry; the question about an operation), with
+decision 5's framing that the family "know the gene test has found a cause" (a scripted starting point for the
+conversation, not a recorded attitude; the reasons for not accepting a Kasai operation are not recorded); the staff; the stool card, vitamin K, referral, formula and every other intervention (their responses say the case does not
 record them); the order of the nutritional treatment and the gene result (not recorded — the progress note says so).
 
 **Privacy.** Pseudonyms only (宋知远 / Song Zhiyuan, unique in the library); no hospital, city or calendar date. The two
@@ -334,8 +342,14 @@ labels; checksums match), shown only in the outcome record.
   `family-hbv` vs `hbv-vaccine`; `family-health` vs `consanguinity`.
 - `concerns-operation` (confirmation) supersedes `concerns`, so "what worries you?" in the third phase reaches the
   question about an operation.
-- 52 test utterances (26 per language), all paraphrases, 4 look-alike negatives; one for every required item;
-  `cases verify` 52/52 with no extra-selection warning.
+- "Is he alert?" reaches `feeding` (alertness and appetite are recorded together) and "any problems at birth?"
+  reaches `birth` (review fix: both reached nothing, so the relative would have said "not sure" about recorded facts).
+- Interventions: operative wording ("Kasai with liver biopsy", "腹腔镜下肝活检", "liver biopsy at operation") resolves
+  to `surgery-referral`, never to the critical `ward-biopsy`; a bare "liver biopsy" / "percutaneous liver biopsy" /
+  "肝活检" still resolves to `ward-biopsy`. "Vitamin K IM" or "肌注维生素K" is not read as the oral `fat-soluble-vitamins`
+  (`excludeKeywords`): the learner is offered the IV item.
+- 56 test utterances (28 per language), all paraphrases, 4 look-alike negatives; one for every required item;
+  `cases verify` 56/56 with no extra-selection warning.
 
 ## References
 
@@ -352,8 +366,9 @@ labels; checksums match), shown only in the outcome record.
    doi:10.1002/jpn3.12042
 5. Okano Y, Ohura T, Sakamoto O, Inui A. Current treatment for citrin deficiency during NICCD and adaptation/compensation
    stages: strategy to prevent CTLN2. Mol Genet Metab. 2019;127(3):175-183. doi:10.1016/j.ymgme.2019.06.004
-6. Saheki T, Song YZ. Citrin deficiency. In: Adam MP, et al., editors. GeneReviews. Seattle (WA): University of
-   Washington, Seattle; 2005 [updated 2017 Aug 10]. https://www.ncbi.nlm.nih.gov/books/NBK1181/
+6. Song YZ, Oishi K, Saheki T. Citrin deficiency. 2005 Sep 16 [updated 2025 Mar 20]. In: Adam MP, Bick S, Mirzaa GM,
+   Wallace SE, Amemiya A, editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-2026.
+   https://www.ncbi.nlm.nih.gov/books/NBK1181/
 7. Konakion MM Paediatric 2 mg/0.2 ml solution for injection: summary of product characteristics. Text revised
    2024 Feb 5. https://www.medicines.org.uk/emc/product/9754/smpc
 8. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news.
@@ -363,9 +378,15 @@ labels; checksums match), shown only in the outcome record.
 the 60/90-day drainage figures, the "above 6 weeks" expedite statement, red flags, MRCP/scintigraphy/biopsy figures,
 the coagulopathy statement); the NHC 2025 biliary-atresia guideline (full PDF, text and Figure 1); the Konakion MM
 Paediatric SmPC (posology, cholestasis route, anaphylactoid reactions); Inui et al. 2024 and Okano et al. 2019
-(abstracts); the GeneReviews 2017 statements on glucose infusion, glycerol and the natural history through ClinGen's
-actionability report (the NCBI page was behind a CAPTCHA). Bibliographic details of references 2, 4 and 5 were checked
-in Europe PMC.
+(abstracts); GeneReviews in its 2025 revision (Song, Oishi and Saheki, updated 2025 Mar 20), through its summary in
+Europe PMC (PMID 20301360) — the NCBI page was behind a browser check. The review replaced the 2017 version (Saheki
+and Song) the first draft cited through ClinGen's actionability report: the case now credits GeneReviews only with
+what the 2025 summary says (avoid glucose, glycerol and fructose infusions for the risk of brain oedema, and
+low-protein, high-carbohydrate diets; NICCD treated with a lactose-free, MCT-enriched formula and fat-soluble
+vitamins) and Okano et al. 2019 with its abstract (avoid continuous high-glucose intravenous hyperalimentation).
+Bibliographic details of references 2, 4, 5 and 6 were checked in Europe PMC (reference 6's revision date also in
+MedlinePlus). The independent review re-read NASPGHAN/ESPGHAN 2017 (full PDF), the NHC 2025 guideline (journal PDF),
+the SmPC (emc, revised 2024-02-05) and the Inui and Okano abstracts against every statement credited to them.
 
 ### To verify
 
@@ -392,9 +413,11 @@ in Europe PMC.
    is corrected (the case marks a ward biopsy as contraindicated because no corrected clotting is on record).
 2. Vitamin K 1 mg IV as the preset (the SmPC's treatment dose); local practice may differ (IM, weight-based, repeat).
 3. `discharge-review` as a critical (not merely moderate) error, and `ucd-regimen` as non-critical.
-4. The citrin-deficiency statements: avoidance of high-concentration glucose in NICCD (GeneReviews 2017 and Okano 2019
-   as quoted by ClinGen — check GeneReviews' own text); whether breastfeeding should stop on a lactose-free formula
-   (the case names the formula only); AFP as a supporting feature of NICCD (taught without a guideline name).
+4. The citrin-deficiency statements: avoidance of glucose infusions in NICCD (GeneReviews 2025 summary and Okano 2019
+   abstract — check both full texts, and whether the 2025 chapter still says a high-glucose infusion may exacerbate
+   hyperammonaemia or precipitate liver failure, as the 2017 version did); whether breastfeeding should stop on a
+   lactose-free formula (the case names the formula only); AFP as a supporting feature of NICCD (taught without a
+   guideline name).
 5. Phototherapy and bronze baby syndrome in conjugated jaundice (taught without a guideline name).
 6. Inui et al. 2024 was read in its abstract only; confirm the statements credited to it against the full text.
 
@@ -417,9 +440,19 @@ in Europe PMC.
 - **Staging.** Four phases: admission (history, examination, first bloods), further tests (metabolic and imaging),
   genetic result and course, outcome; the outcome record and figures open only after all five decisions.
 - **Guidance.** NASPGHAN/ESPGHAN 2017, the NHC 2025 Chinese biliary-atresia guideline, the APPSPGHAN 2024 NICCD review,
-  Okano 2019, GeneReviews 2017 and the Konakion SmPC (2024), each statement checked in its own text (see scope above).
+  Okano 2019, GeneReviews (its 2025 revision since the review) and the Konakion SmPC (2024), each statement checked in
+  its own text (see scope above).
 - **Other.** Specialty ids (`pediatrics`, `hepatology`, `pediatric-surgery`); figures retitled and kept in the outcome
   record; matcher corpus of 52 paraphrases; README rewritten as the 16-part facilitator guide.
+- **Independent review (2026-11-14).** GeneReviews cited in its 2025 revision (the 2017 update was superseded) and
+  credited only with what it says; `rb-path` credits a gene test sent on admission (it cost 3 points); operative
+  biopsy and Kasai wording resolve to the surgical referral, not the critical ward biopsy, and an IM vitamin K order is
+  no longer read as the oral supplement; placeholders say that an early order is repeated in the phase whose result it
+  is; the decision 4 objective hint no longer states the genetic result; "is he alert?" and "problems at birth?" reach
+  their recorded answers; guideline wording corrected (NASPGHAN/ESPGHAN recommendation 3 and 6/8 attributions, the NHC
+  2025 cholangiography and timely-Kasai statements, the ultrasound red flag not recorded for this baby, the French
+  cohort figure as a cohort figure); summary and feeding answer kept to 1.0.0's wording; decision 2's key no longer the
+  only hedged option; 56 paraphrases.
 
 ### 1.0.0
 
@@ -433,7 +466,7 @@ Run from the worktree root (all passed on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-33638/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33638 --lang en        # 75 steps · objectives 6/6 · decisions 5/5 · utterances 52/52 · rubric 34/34 (100 %)
+npm run -s cc -- cases verify cmcr-33638 --lang en        # 75 steps · objectives 6/6 · decisions 5/5 · utterances 56/56 · rubric 34/34 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33638   # depth floor; do nothing 0/30; wrong first 59 % < 100 %; openers reach the presenting complaint
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33638:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33638:"   # in-world demonstration, en + zh-CN
@@ -455,8 +488,8 @@ citrin缺陷；营养治疗后血氨改善，但黄疸持续。再次入院腹�
 2. 胆汁淤积婴儿PT、APTT延长先按维生素K缺乏处理：立即注射维生素K（1 mg静脉注射，Konakion MM Paediatric说明书2024年版），
    任何活检或手术前复查凝血。
 3. 把瓜氨酸和血氨升高、AFP 451055 ng/mL解读为指向citrin缺陷，并说明MRCP看不到肝外胆管仍需胆道造影——两种病可以并存。
-4. 说明复合杂合结果和代谢改善不能解释持续的胆汁淤积，不等基因结果就安排胆道造影（国家卫健委2025年版：生后45天内最佳，
-   超过90天效果不佳）。
+4. 说明复合杂合结果和代谢改善不能解释持续的胆汁淤积，不等基因结果就安排胆道造影（国家卫健委2025年版：不能排除胆道闭锁时
+   生后45天内行胆道造影；Kasai手术45天内最佳，超过90天效果不佳）。
 5. 避免光疗、按尿素循环障碍停奶输高糖、凝血未纠正时病房肝穿刺、出院等待。
 6. 用SPIKES和回授法与家属讨论胆道造影和Kasai手术，并说明常染色体隐性遗传（每次怀孕1/4）。
 
