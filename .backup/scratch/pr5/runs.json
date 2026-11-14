@@ -1,8 +1,65 @@
 {
   "note": "Since the container restart of 2026-11-13 ~16:50 UTC: stopped runs are NOT resumed (resume replays only a prefix); a new run gets the cases still to do (case-status.json + the journals, via commit-cases.py). At most 3 workflows (6 agents) at once.",
   "runs": [
-    {"name": "cases-A", "runId": "wf_c1ff6b6c-564", "task": "wj3e1e8ou", "script": "pr5/reauthor-v4.js", "argsFile": "args-A.json", "started": "2026-11-13 17:00", "plan": "16 reviews, then 32 authors (each then reviewed)"},
-    {"name": "cases-B", "runId": "wf_76eaa65c-a4c", "task": "w21xj92i7", "script": "pr5/reauthor-v4.js", "argsFile": "args-B.json", "started": "2026-11-13 17:00", "plan": "16 reviews, then 32 authors (each then reviewed)"},
-    {"name": "audit-wave2", "runId": "wf_732115bd-43c", "task": "wbw8cp98e", "script": "audit2/wave2.js", "args": {"base": "a833280"}, "started": "2026-11-13 17:00"}
+    {
+      "name": "cases-A",
+      "runId": "wf_c1ff6b6c-564",
+      "task": "wj3e1e8ou",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-A.json",
+      "started": "2026-11-13 17:00",
+      "plan": "16 reviews, then 32 authors (each then reviewed)",
+      "status": "stopped at the 5-hour limit 2026-11-13 ~17:45 (cases-A/B: 4 reviews done and committed in 9758d80; wave 2: the re-review done)"
+    },
+    {
+      "name": "cases-B",
+      "runId": "wf_76eaa65c-a4c",
+      "task": "w21xj92i7",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-B.json",
+      "started": "2026-11-13 17:00",
+      "plan": "16 reviews, then 32 authors (each then reviewed)",
+      "status": "stopped at the 5-hour limit 2026-11-13 ~17:45 (cases-A/B: 4 reviews done and committed in 9758d80; wave 2: the re-review done)"
+    },
+    {
+      "name": "audit-wave2",
+      "runId": "wf_732115bd-43c",
+      "task": "wbw8cp98e",
+      "script": "audit2/wave2.js",
+      "args": {
+        "base": "a833280"
+      },
+      "started": "2026-11-13 17:00",
+      "status": "stopped at the 5-hour limit 2026-11-13 ~17:45 (cases-A/B: 4 reviews done and committed in 9758d80; wave 2: the re-review done)"
+    },
+    {
+      "name": "cases-C",
+      "runId": "wf_9760190c-323",
+      "task": "wyosfi3k6",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-C.json",
+      "started": "2026-11-14 01:05",
+      "plan": "14 reviews, then 32 authors"
+    },
+    {
+      "name": "cases-D",
+      "runId": "wf_04adeb01-7da",
+      "task": "wg736lola",
+      "script": "pr5/reauthor-v4.js",
+      "argsFile": "args-D.json",
+      "started": "2026-11-14 01:05",
+      "plan": "14 reviews, then 32 authors"
+    },
+    {
+      "name": "audit-wave2 (resumed)",
+      "runId": "wf_732115bd-43c",
+      "task": "wralwfa2u",
+      "script": "audit2/wave2.js",
+      "args": {
+        "base": "a833280"
+      },
+      "started": "2026-11-14 01:05",
+      "plan": "re-review cached; implementation agents continue from their uncommitted work"
+    }
   ]
 }
