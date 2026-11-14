@@ -155,8 +155,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "急诊阶段：她意识不清，不能说话，由陪同者回答。病房阶段起：她已清醒，用自己的话回答，只说问到的内容，不增减数字和时间；问到病历里没有的事，就说说不上来，不要编。开始去氨加压素以后：她觉得头晕。",
-        "en": "Emergency department: she is unconscious and cannot speak; her companion answers. From the ward phase on: she is awake and answers in her own words, only what is asked, never adding or changing numbers or times; for anything not in her record she says she is not sure and invents nothing. After desmopressin is started: she feels dizzy."
+        "zh-CN": "急诊阶段：她意识不清，不能说话，由陪同者回答。病房阶段起：她已清醒，用自己的话回答，只说问到的内容，不增减数字和时间；问到病历里没有的事，就说说不上来，不要编。用去氨加压素期间（第三阶段）：她觉得头晕。",
+        "en": "Emergency department: she is unconscious and cannot speak; her companion answers. From the ward phase on: she is awake and answers in her own words, only what is asked, never adding or changing numbers or times; for anything not in her record she says she is not sure and invents nothing. On desmopressin (the third phase): she feels dizzy."
       },
       "companion": {
         "role": "carer",
@@ -2405,7 +2405,7 @@
           "available": true,
           "text": {
             "zh-CN": "经治疗后已恢复意识（具体时间没有记录）。约十天后血糖已控制，但钠又升至162 mmol/L，尿量8.4 L/日。因尿量与血糖的变化不相称，又追问了她的饮水情况。",
-            "en": "She regained consciousness after treatment (when is not recorded). About ten days later her glucose was controlled, but her sodium had risen again to 162 mmol/L, with a urine output of 8.4 L a day. Because the urine output did not fit the change in her glucose, she was asked about her drinking again."
+            "en": "She regained consciousness after treatment (when is not recorded). About ten days later her glucose was controlled, but her sodium had risen again to 162 mmol/L, with a urine output of 8.4 L a day. Because the urine output did not fit the change in her glucose, further history of her drinking was taken."
           },
           "values": [
             {

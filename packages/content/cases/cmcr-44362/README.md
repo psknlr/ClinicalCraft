@@ -14,7 +14,7 @@
 | The patient | Chen Qinghe (pseudonym), a 9-year-old boy weighing 19.5 kg, admitted with a relative whose relationship to him is not recorded; swelling of several limb joints, first noticed three years ago and worse every year |
 | What the learner can do | Take the history from the relative (the boy answers questions put to him), examine digits, large joints, heart and neck veins; check for tamponade at the bedside; order echocardiography, ECG, chest X-ray, troponin and NT-proBNP, other blood tests, a cardiac MRI, a pelvic radiograph, a urine glycosaminoglycan screen, a knee aspiration and a gene test; read the chart's records at a terminal; call cardiology, rehabilitation, clinical genetics and orthopaedics; talk with the family; answer five decisions |
 | Languages | Simplified Chinese and English (same facts, same teaching) |
-| Review status | Editorial review (AI-assisted) against the cited guidance, with independent review rounds 1 and 2 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
+| Review status | Editorial review (AI-assisted) against the cited guidance, with independent review rounds 1, 2 and 3 on 2026-11-14 (see Changelog); **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
 
 ## Learning outcomes
 
@@ -26,9 +26,9 @@
    check for tamponade at the bedside at once and complete the initial assessment ESC 2025 recommends
    (echocardiography, ECG, chest X-ray and biomarkers — troponin, CRP, NT-proBNP) during this admission, not as an
    outpatient.
-3. Manage a moderate pericardial effusion without tamponade or evidence of inflammation: no drainage and no
-   anti-inflammatory drugs, cardiology review with cardiac MRI and repeat echocardiography, and the indications for
-   drainage (ESC 2025).
+3. Manage a moderate pericardial effusion in which neither tamponade nor pericardial inflammation is established: no
+   drainage and no anti-inflammatory drugs, cardiology review with cardiac MRI and repeat echocardiography, and the
+   indications for drainage (ESC 2025).
 4. Name the features of CACP syndrome, its gene (PRG4) and its inheritance (autosomal recessive), separate a
    clinical from a molecular diagnosis, and give the family the recurrence risk (1 in 4 for each child when both
    parents carry a variant).
@@ -60,11 +60,13 @@ had not clearly improved.
 
 What the case teaches: the heart comes first (bedside tamponade check and echocardiography on the day of admission);
 painless swelling with camptodactyly and repeatedly negative inflammatory tests is a non-inflammatory arthropathy, not
-JIA; a moderate effusion without tamponade or evidence of inflammation is watched (cardiology review, cardiac MRI, repeat
-echocardiography), not drained or treated with anti-inflammatory drugs; the clinical label needs PRG4 testing and genetic counselling; and care is rehabilitation with hip, orthopaedic
-and cardiac follow-up — never immunosuppression. The report's own choice (no specific medication, functional
-exercise) matches today's approach; what today's care adds is the molecular diagnosis, counselling, hip imaging, cardiac
-MRI and a cardiology follow-up plan, none of which the case records.
+JIA; a moderate effusion in which neither tamponade nor pericardial inflammation is established (a rub is one
+criterion, not a diagnosis; his CRP is not raised) is watched (cardiology review, cardiac MRI, repeat
+echocardiography), not drained or treated with anti-inflammatory drugs; the clinical label needs PRG4 testing and
+genetic counselling; and care is rehabilitation with hip, orthopaedic and cardiac follow-up — never immunosuppression.
+The report's own choice (no specific medication, functional exercise) matches today's approach; what today's care adds
+is the molecular diagnosis, counselling, hip imaging, cardiac MRI and a cardiology follow-up plan, none of which the
+case records.
 
 ## Scenario timeline and physiology
 
@@ -109,7 +111,7 @@ any decision in either language (measured).
 | `effusion-plan` | echocardiogram read **and** the inflammatory-markers record read in work-up | no drainage; keep checking for tamponade; paediatric cardiology review, cardiac MRI (ESC 2025: recommended, I B, when suspected pericarditis cannot be confirmed on clinical criteria) and repeat echoes at set intervals while the cause is sought; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer (ESC 2025 §11.7.4–11.7.5, pericardiocentesis I C) | echo-guided drainage today; three months of NSAID plus colchicine; prednisolone with weekly echo; no cardiac follow-up because LV function is normal |
 | `joint-pattern` | all four work-up records and the echocardiogram read | a non-inflammatory genetic arthropathy, CACP first; JIA only once that is excluded (ILAR 2004); pelvic radiograph and PRG4 test next (Offiah 2005; Albuhairan 2013) | RF-negative polyarticular JIA with methotrexate; systemic JIA with steroids and an IL-1/IL-6 inhibitor; "no active disease, no further tests" |
 | `genetics` | diagnosis record read (diagnosis phase) | autosomal recessive (Marcelino 1999): unrelated parents and no affected relatives do not contradict it; counselling and PRG4 testing, then the parents; 1 in 4 for each child when both carry a variant (ACMG/AMP 2015 classification) | de novo, no risk, no test; dominant with a 1 in 2 risk; X-linked via the mother; "the clinical label is enough" |
-| `joint-care` | diagnosis record read | no steroid, methotrexate or biologic; physiotherapy and occupational therapy; pelvic radiograph and orthopaedic follow-up of the hips; review shared with cardiology (Kisla Ekinci 2021; ACR/AF 2019; ACR 2021; Bahabri 1998) | treat-to-target polyarticular JIA (methotrexate, TNF inhibitor, joint injections); long-term oral prednisolone with calcium and vitamin D; "genetic, so nothing helps — no rehabilitation, no follow-up" |
+| `joint-care` | diagnosis record read | no steroid, methotrexate or biologic; physiotherapy and occupational therapy; pelvic radiograph and orthopaedic follow-up of the hips; review shared with cardiology (Kisla Ekinci 2021; ACR 2026 JIA guidelines; Bahabri 1998) | treat-to-target polyarticular JIA (methotrexate, TNF inhibitor, joint injections); long-term oral prednisolone with calcium and vitamin D; "genetic, so nothing helps — no rehabilitation, no follow-up" |
 
 Decisions never lock once open: a learner who answers wrongly can answer again, and the rubric scores the first
 attempt (`decidedFirstTry`).
@@ -198,7 +200,7 @@ intervention is given while contraindicated, and no safety-critical gate is left
 | JIA: onset before the 16th birthday, ≥ 6 weeks; systemic arthritis: fever ≥ 2 weeks, daily for ≥ 3 days; polyarthritis: ≥ 5 joints in the first 6 months | ILAR (Petty 2004) | Decision 3 and decision 1 feedback |
 | Recurrence 1 in 4 per child when both parents carry a variant | Autosomal recessive inheritance (Marcelino 1999) | Decision 4 |
 | PRG4 on chromosome 1 (1q31.1) | NCBI Gene (PRG4, Gene ID 10216); Bahabri 1998 mapped the locus to 1q25–31 | Decision 4, X-linked distractor feedback |
-| Oral glucocorticoid bridging < 3 months (not used); chronic low-dose glucocorticoids strongly recommended against | ACR/AF 2019 | Harm texts (prednisolone) |
+| Children on long-term oral glucocorticoids: growth (height and weight) checked at least twice a year, bone health at least once a year (strong); oral glucocorticoids as an adjunct to initial therapy for polyarthritis conditionally recommended against | ACR 2026 JIA guidelines (summary posted 13 May 2026) | Prednisolone harm text, decision 5 feedback |
 
 No drug dose is stated anywhere in the case: the report records none and the wrong steps are named without doses.
 
@@ -231,7 +233,7 @@ No drug dose is stated anywhere in the case: the report records none and the wro
 | Taking normal neck veins as "no tamponade" | Decision 1 feedback; the critical `rb-tamponade-check` needs the bedside check on admission |
 | Reading the rub as acute pericarditis and starting an NSAID (or aspirin) with colchicine | Decision 1 and 2 distractors; the intervention's harm text (ESC 2025 Table 4 and §11.7.4; §12.2.2 for aspirin in children) and `rb-no-immunosuppression` |
 | Draining a moderate effusion "before it tamponades", or reading normal left ventricular function as "no tamponade" | Decision 2 distractor and its feedback (ESC 2025 Table 17: the echocardiographic signs of tamponade); pericardiocentesis is `critical: true` and fails the safety outcome |
-| Calling it RF-negative polyarticular JIA and starting methotrexate | Decision 3 and 5 distractors; methotrexate's harm text (ILAR 2004, ACR/AF 2019) |
+| Calling it RF-negative polyarticular JIA and starting methotrexate | Decision 3 and 5 distractors; methotrexate's harm text (ILAR 2004, ACR 2026) |
 | Explaining camptodactyly away as old arthritic contractures | Decision 3 distractor and key reasoning |
 | Reassuring the family that unrelated parents mean no risk | Decision 4 distractors (de novo, dominant, X-linked, "label is enough") |
 | "Genetic, so nothing to do" | Decision 5 distractor `nothing-helps`; the plan objective needs the physiotherapy referral |
@@ -331,7 +333,7 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
   ("髋关节片", "髋关节X线") from also ordering the joint-imaging record ("关节片", "关节X线") unless another joint is named;
   `prednisolone` has excludeKeywords so that a joint injection ("关节腔注射激素", "steroid injection into the knees")
   reaches the intra-articular item, and `digits` excludes wrists, ankles, elbows and knees.
-- `extensions.testUtterances`: 56 paraphrases (28 zh-CN, 28 en; three look-alike negatives), at least one for every
+- `extensions.testUtterances`: 64 paraphrases (32 zh-CN, 32 en; three look-alike negatives), at least one for every
   required item; all pass with no unexpected match (`cases verify`). Review round 1 also probed about 60 fresh history
   phrasings, 15 examination requests, 24 orders and 28 interventions (including negated orders) in both languages.
 - Review round 2 probed 72 further history phrasings, 19 examination requests, 34 orders and 39 interventions
@@ -345,6 +347,18 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
   anti-inflammatory wrong step and a negated aspirin order withholds. Two probes are accepted as they are: "observe him
   closely" gives the bedside tamponade check (the author's "obs"/"vital signs" aliases), and an off-topic "where is the
   canteen?" (医院食堂在哪儿？) reaches the presenting complaint.
+- Review round 3 probed 65 further history phrasings, 20 examination requests, 34 orders and 28 interventions in both
+  languages (`work-cmcr-44362/r3-probe.ts`) and fixed what they found: plain Chinese openers (孩子有什么问题、
+  孩子的情况怎么样) reached the siblings item through 孩子, and 他有什么问题, 说说他的情况, "Tell me about his joints."
+  and "Has it been getting worse?" reached nothing (now presentation keywords); "aspirate the pericardial effusion" gave
+  the NSAID-or-aspirin step, because "aspirate" shares its first five letters with the alias "aspirin" and the agent
+  acts on a single hit scoring 0.55 or more (now pericardial-aspiration aliases on pericardiocentesis and an
+  `excludeKeywords` "aspirat" on the anti-inflammatory step); "anti-inflammatories", "born", 几岁会走路 and the
+  family's own ideas ("What do you think might be causing this?", 您觉得是什么原因) reached nothing or the wrong item;
+  orders for ANA (an `orderMatching.exact` entry, since "ana" occurs inside other words), 抗核抗体, 胸部X光,
+  髋关节X光 or "x-ray both hips" and 抽膝关节积液 ordered nothing. Two compound English questions stay ambiguous by
+  design: "Did the swelling stop him walking at first?" (presentation first, early movement second) and "Has he ever
+  hurt his joints?" (pain first: "hurt" is pain or injury).
 
 ## References
 
@@ -354,47 +368,56 @@ native resolution and shows no identifying text, dates or faces (`scripts/cmcr-1
    pericarditis. Eur Heart J. 2025;46(40):3952-4041. doi:10.1093/eurheartj/ehaf192
 3. Petty RE, Southwood TR, Manners P, et al. International League of Associations for Rheumatology classification of
    juvenile idiopathic arthritis: second revision, Edmonton, 2001. J Rheumatol. 2004;31(2):390-392.
-4. Ringold S, Angeles-Han ST, Beukelman T, et al. 2019 American College of Rheumatology/Arthritis Foundation
-   guideline for the treatment of juvenile idiopathic arthritis: therapeutic approaches for non-systemic
-   polyarthritis, sacroiliitis, and enthesitis. Arthritis Care Res (Hoboken). 2019;71(6):717-734.
-   doi:10.1002/acr.23870
-5. Onel KB, Horton DB, Lovell DJ, et al. 2021 American College of Rheumatology guideline for the treatment of
-   juvenile idiopathic arthritis: recommendations for nonpharmacologic therapies, medication monitoring,
-   immunizations, and imaging. Arthritis Rheumatol. 2022;74(4):570-585. doi:10.1002/art.42036
-6. Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint
+4. American College of Rheumatology. 2026 American College of Rheumatology (ACR) juvenile idiopathic arthritis (JIA)
+   guidelines: summary [Internet]. Atlanta (GA): American College of Rheumatology; 2026 May 13 [cited 2026 Nov 14].
+   Available from: https://rheumatology.org/juvenile-idiopathic-arthritis-guideline
+5. Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint
    consensus recommendation of the American College of Medical Genetics and Genomics and the Association for
    Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30
-7. Marcelino J, Carpten JD, Suwairi WM, et al. CACP, encoding a secreted proteoglycan, is mutated in
+6. Marcelino J, Carpten JD, Suwairi WM, et al. CACP, encoding a secreted proteoglycan, is mutated in
    camptodactyly-arthropathy-coxa vara-pericarditis syndrome. Nat Genet. 1999;23(3):319-322. doi:10.1038/15496
-8. Bahabri SA, Suwairi WM, Laxer RM, et al. The camptodactyly-arthropathy-coxa vara-pericarditis syndrome: clinical
+7. Bahabri SA, Suwairi WM, Laxer RM, et al. The camptodactyly-arthropathy-coxa vara-pericarditis syndrome: clinical
    features and genetic mapping to human chromosome 1. Arthritis Rheum. 1998;41(4):730-735. PMID: 9550484
-9. Offiah AC, Woo P, Prieur AM, Hasson N, Hall CM. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome versus
+8. Offiah AC, Woo P, Prieur AM, Hasson N, Hall CM. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome versus
    juvenile idiopathic arthropathy. AJR Am J Roentgenol. 2005;185(2):522-529. doi:10.2214/ajr.185.2.01850522
-10. Albuhairan I, Al-Mayouf SM. Camptodactyly-arthropathy-coxavara-pericarditis syndrome in Saudi Arabia: clinical
-    and molecular genetic findings in 22 patients. Semin Arthritis Rheum. 2013;43(2):292-296.
-    doi:10.1016/j.semarthrit.2012.11.004
-11. Kisla Ekinci RM, Balci S, Dogan H, et al. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome resembling
+9. Albuhairan I, Al-Mayouf SM. Camptodactyly-arthropathy-coxavara-pericarditis syndrome in Saudi Arabia: clinical
+   and molecular genetic findings in 22 patients. Semin Arthritis Rheum. 2013;43(2):292-296.
+   doi:10.1016/j.semarthrit.2012.11.004
+10. Kisla Ekinci RM, Balci S, Dogan H, et al. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome resembling
     juvenile idiopathic arthritis: a single-center experience from southern Turkey. Mol Syndromol.
     2021;12(2):112-117. doi:10.1159/000513111
 
 **How each statement was checked (2026-11-14).** ESC 2025 in its own text (the guideline PDF): the class I
-initial-assessment recommendation and the class I pericardiocentesis indications (recommendation tables), the class III
-statement on corticosteroids as first option without a specific indication, Table 4 (diagnostic criteria),
-§11.7.4 (therapy aimed at the cause; no anti-inflammatory treatment without pericardial inflammation — a text
-statement, not a numbered recommendation), §11.7.5 (6-monthly follow-up), §11.8.1 (Beck's triad, pulsus paradoxus,
-last-drop phenomenon) and §12.2.2 (corticosteroids restricted in children). ILAR 2004 in the article's PDF. ACR/AF
-2019 and ACR 2021 in their full texts (PMC6561125, PMC10127939). Marcelino 1999, Bahabri 1998, Offiah 2005 and
-Albuhairan 2013 in their PubMed abstracts; Kisla Ekinci 2021 in its full text (PMC8114071). DOIs resolved by Crossref
-(Marcelino's by PubMed). Review round 1 (2026-11-14) re-read every statement in the same sources and added three from
-ESC 2025's own text: CMR is recommended in suspected pericarditis when a diagnosis cannot be made using clinical
-criteria (class I, level B; also Recommendation Table 1, I B); the initial assessment's "biomarkers" include
-high-sensitivity troponin, CRP and NT-proBNP (Recommendation Table 1, footnote c); and §11.8.1 lists diminished heart
-sounds among the classical signs of tamponade. Review round 2 (2026-11-14) re-read every attributed statement in the
-same sources (the ESC 2025 PDF; the ILAR 2004 PDF; the ACR/AF 2019 and ACR 2021 full texts; the PubMed abstracts; the
-Kisla Ekinci full text), re-resolved all eleven DOIs by Crossref, and checked that ACMG/AMP 2015 is still the published
-variant standard (the ACMG/AMP/CAP/ClinGen sequence variant classification v4.0 was still in pilot in 2026); it added
-ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include left ventricular systolic function) and
-§12.2.2's note that most paediatricians avoid aspirin.
+initial-assessment recommendation and the class I pericardiocentesis indications (recommendation tables), the class
+III statement on corticosteroids as first option without a specific indication, Table 4 (diagnostic criteria), §11.7.4
+(therapy aimed at the cause; no anti-inflammatory treatment without pericardial inflammation — a text statement, not a
+numbered recommendation), §11.7.5 (6-monthly follow-up), §11.8.1 (Beck's triad, pulsus paradoxus, last-drop
+phenomenon) and §12.2.2 (corticosteroids restricted in children). ILAR 2004 in the article's PDF. ACR/AF 2019 and ACR
+2021 in their full texts (PMC6561125, PMC10127939). Marcelino 1999, Bahabri 1998, Offiah 2005 and Albuhairan 2013 in
+their PubMed abstracts; Kisla Ekinci 2021 in its full text (PMC8114071). DOIs resolved by Crossref (Marcelino's by
+PubMed). Review round 1 (2026-11-14) re-read every statement in the same sources and added three from ESC 2025's own
+text: CMR is recommended in suspected pericarditis when a diagnosis cannot be made using clinical criteria (class I,
+level B; also Recommendation Table 1, I B); the initial assessment's "biomarkers" include high-sensitivity troponin,
+CRP and NT-proBNP (Recommendation Table 1, footnote c); and §11.8.1 lists diminished heart sounds among the classical
+signs of tamponade. Review round 2 (2026-11-14) re-read every attributed statement in the same sources (the ESC 2025
+PDF; the ILAR 2004 PDF; the ACR/AF 2019 and ACR 2021 full texts; the PubMed abstracts; the Kisla Ekinci full text),
+re-resolved all eleven DOIs by Crossref, and checked that ACMG/AMP 2015 is still the published variant standard (the
+ACMG/AMP/CAP/ClinGen sequence variant classification v4.0 was still in pilot in 2026); it added ESC 2025 Table 17
+(echocardiographic signs of tamponade, which do not include left ventricular systolic function) and §12.2.2's note
+that most paediatricians avoid aspirin. Review round 3 (2026-11-14) re-read the ESC 2025 statements in the guideline's
+own text (Table 4; Recommendation Tables 1 and 3; §11.7.3–§11.8.2 with Table 17; Table 19; §12.2.2), ILAR 2004 in its
+PDF and the CACP sources in their abstracts or full text, and checked each guideline's currency: the ACR posted its
+2026 JIA guidelines on 13 May 2026 (a summary of recommendations on rheumatology.org; four manuscripts: non-systemic
+JIA, systemic JIA, uveitis, and nonpharmacologic management, medication monitoring and imaging). For polyarthritis
+they make DMARDs the first-line therapy (strong), with methotrexate the first conventional DMARD and a TNF inhibitor
+the first biologic (conditional), intra-articular glucocorticoids an adjunct to initial therapy (conditional) and oral
+glucocorticoids not recommended as such an adjunct (conditional); they conditionally recommend physical and
+occupational therapy, and physical activity, regardless of drug therapy; and for children on long-term glucocorticoids
+they strongly recommend checking growth at least twice a year and bone health at least yearly. The 2019 strong
+recommendation against adding chronic low-dose glucocorticoids, which the case had quoted as current, is not among
+them, so every ACR statement now quotes the 2026 summary in its own words and ACR/AF 2019 and ACR 2021 are no longer
+cited. The full 2026 manuscripts were not located (no DOI found; see To verify). ACMG/AMP 2015 is still the published
+variant standard (v4.0 still "forthcoming" in 2026).
 
 ### To verify
 
@@ -429,6 +452,12 @@ ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include le
 4. General paediatrics: whether his weight of 19.5 kg at 9 years warrants comment once his height is known.
 5. Clinical genetics (currency): when the ACMG/AMP/CAP/ClinGen sequence variant classification v4.0 is published,
    replace the ACMG/AMP 2015 citation (decision 4 feedback, geneticist's brief, teaching point 4, references).
+6. Paediatric rheumatology (currency): the case quotes the 2026 ACR JIA guidelines from the ACR's summary of
+   recommendations (13 May 2026). When the four manuscripts are published, check each quoted statement (DMARDs
+   first-line; methotrexate and a TNF inhibitor first; intra-articular glucocorticoids as an adjunct; oral
+   glucocorticoids not as an adjunct; physical and occupational therapy and physical activity; growth and bone
+   monitoring on long-term glucocorticoids) against their text and cite them in place of the summary (prednisolone,
+   methotrexate, TNF inhibitor and joint-injection harms; decision 5 feedback; teaching point 5; references).
 
 ## Changelog
 
@@ -440,7 +469,7 @@ ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include le
   item that was a decision. Now: 22 history items in the relative's and the boy's voice (10 unknown, said plainly);
   four examination findings; 16 investigations (six records, ten orderable tests); 12 interventions (today's steps
   and six tempting wrong ones with harm texts naming their guidance); five decisions at the real decision points;
-  15 rubric items with three critical items that are acts done in time; four staff; 11 references.
+  15 rubric items with three critical items that are acts done in time; four staff; 10 references.
 - **Safety fixes.** 1.0.0 recorded a pericardial rub and slightly muffled heart sounds but taught nothing about tamponade or
   the timing of the echocardiogram: the bedside tamponade check and the echo order on the day of admission are now
   timed critical acts, and an unindicated pericardiocentesis fails the safety outcome. Immunosuppressive and
@@ -448,7 +477,8 @@ ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include le
   harm texts. The genetic teaching gives the recurrence risk and the test that would confirm the clinical label.
 - **Staging.** Four phases: admission (history, examination, the heart), results, diagnosis and plan, outcome; the
   outcome record and figure open only after all five decisions and the physiotherapy referral.
-- **Guidance.** ESC 2025 myocarditis and pericarditis, ILAR 2004, ACR/AF 2019, ACR 2021 (nonpharmacologic),
+- **Guidance.** ESC 2025 myocarditis and pericarditis, ILAR 2004, the 2026 ACR JIA guidelines (ACR/AF 2019 and ACR
+  2021 until review round 3),
   ACMG/AMP 2015, and the CACP literature (Marcelino 1999, Bahabri 1998, Offiah 2005, Albuhairan 2013, Kisla Ekinci
   2021), each statement checked in its own text (see References).
 - **Other.** Title and summary rewritten as presenting complaint · age and sex; figure retitled without spoiler and
@@ -485,6 +515,25 @@ ESC 2025 Table 17 (echocardiographic signs of tamponade, which do not include le
   closing round 1's open minor; a Chinese teaching point weakened "pathognomonic". Scores unchanged (reference 39/39,
   doing nothing 0/33, wrong first everywhere 62 %, each harm 36/39, the needle fails the safety outcome); 56
   utterances. Still to verify: the source pass and the clinician review (see To verify).
+- **Review round 3 (2026-11-14).** A third independent review re-traced every patient fact in both languages (no
+  added, changed or dropped fact found), re-read each attributed statement in its source and checked each guideline's
+  currency, replayed the assessment and probed the matcher with fresh phrasings. Fixed: ACR/AF 2019 and ACR 2021 were
+  cited as current although the ACR posted its 2026 JIA guidelines on 13 May 2026, and the 2019 strong recommendation
+  against chronic low-dose glucocorticoids that the case quoted is not among the 2026 recommendations (every ACR
+  statement now quotes the 2026 summary: DMARDs first-line, oral glucocorticoids conditionally not recommended as an
+  adjunct, intra-articular glucocorticoids as an adjunct, physical and occupational therapy and physical activity
+  regardless of drug therapy, growth and bone monitoring on long-term glucocorticoids; review guidelines and
+  references updated, now 10 references); plain Chinese openers (孩子有什么问题、孩子的情况怎么样) reached the
+  siblings item and other plain openers reached nothing; "aspirate the pericardial effusion" resolved to the
+  NSAID-or-aspirin step ("aspirate" matched the alias "aspirin"); other matcher gaps (anti-inflammatories, born,
+  几岁会走路, the family's own ideas; ANA, 抗核抗体, X光 films, a knee-effusion tap); learning outcome 3, key reasoning
+  step 4 and this guide called the effusion one "without tamponade or evidence of inflammation", although a rub (an
+  ESC 2025 criterion of pericarditis) is recorded and tamponade is neither shown nor excluded (now: neither tamponade
+  nor pericardial inflammation is established); the genetics feedback and the geneticist's brief said parental
+  testing shows "that" one variant came from each parent (now "whether"); the steroid item's reply named
+  prednisolone although the order may be an IV methylprednisolone pulse. Scores unchanged (reference 39/39, doing
+  nothing 0/33, wrong first everywhere 62 %, each harm 36/39, the needle fails the safety outcome); 64 utterances.
+  Still to verify: the source pass, the clinician review and the 2026 ACR manuscripts (see To verify).
 
 ### 1.0.0
 
@@ -494,11 +543,11 @@ on 2026-10-29.
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-14, again after review rounds 1 and 2):
+Run from the worktree root (all passed on 2026-11-14, again after review rounds 1, 2 and 3):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-44362/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 56/56 · rubric 39/39 (100 %)
+npm run -s cc -- cases verify cmcr-44362 --lang en        # 69 steps · objectives 6/6 · decisions 5/5 · utterances 64/64 · rubric 39/39 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44362   # depth floor; do nothing 0/33; wrong first 62 % < 100 %; openers reach the presenting complaint
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44362:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44362:"   # in-world demonstration, en + zh-CN
@@ -515,7 +564,7 @@ npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-44362" 
 没有PRG4基因结果，也没有髋内翻的明确测量；未用特殊药物，建议功能锻炼；随访时关节畸形没有明显改善，随访时长未记录。
 
 **学习目标：** 区分非炎症性关节病和炎症性关节炎（ILAR 2004：JIA是排除性诊断）；听到心包摩擦音时，入院当天就在床旁评估压塞，
-并按ESC 2025完成超声心动图、心电图、胸片和生物标志物（肌钙蛋白、CRP、NT-proBNP）等初始评估；对没有压塞和炎症证据的中等量
+并按ESC 2025完成超声心动图、心电图、胸片和生物标志物（肌钙蛋白、CRP、NT-proBNP）等初始评估；对既未确立压塞、也未确立心包炎症的中等量
 积液不引流、不用抗炎药，安排心脏科评估、心脏磁共振和随访；说出CACP的组成、
 PRG4基因和常染色体隐性遗传，给出再发风险；为非炎症性的遗传性关节病制订不用免疫抑制的康复和随访计划；用SPIKES和复述法与
 家属沟通。
@@ -527,8 +576,8 @@ PRG4基因和常染色体隐性遗传，给出再发风险；为非炎症性的�
 
 **复盘要点：** 心脏优先：颈静脉不怒张不能排除压塞；无痛肿胀、屈曲指加反复阴性的炎症检查，提示非炎症性关节病而不是JIA；
 没有炎症证据时不推荐抗炎治疗，心包穿刺只用于有指征时；临床诊断需要分子诊断和遗传咨询来证实；原报告不用特殊药物、建议功能
-锻炼，与今天的做法一致，今天还要补上基因检测、遗传咨询、髋关节影像和心脏科随访。本病例的事实沿用1.0.0版的提取，尚未对照
-原文全文核对；2026-11-14完成两轮独立审核（见更新记录），尚未经执业医师审核。
+锻炼，与今天的做法一致（2026年ACR JIA指南：不论是否用药，都有条件地推荐物理治疗和作业治疗），今天还要补上基因检测、遗传咨询、髋关节影像和心脏科随访。本病例的事实沿用1.0.0版的提取，尚未对照
+原文全文核对；2026-11-14完成三轮独立审核（见更新记录），尚未经执业医师审核。
 
 **安全结果。** 唯一的`critical: true`处置是无指征的床旁心包穿刺引流：给予即判定安全结果不合格；激素、甲氨蝶呤、TNF抑制剂、
 关节腔注射和NSAID（或阿司匹林）加秋水仙碱均为`critical: false`：给了其中任何一项，就失去安全项的3分，但不判定安全结果不合格。

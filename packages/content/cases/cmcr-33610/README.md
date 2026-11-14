@@ -22,9 +22,9 @@ unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five phases, no simulated time) |
 | languages | `zh-CN` (source language; the report is in Chinese), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and one independent review round (round 1, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14) and two independent review rounds (rounds 1 and 2, 2026-11-14: see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use |
 | phases | `admission` 入院：病史与查体 / Admission: history and examination → `workup` 第一批检查结果 / The first results → `search` 继续查找来源 / Looking further for the source → `theatre` 手术与病理 / Operation and histology → `followup` 报告记录的随访结局 / The reported follow-up — all one-way, none learner-switchable |
-| content | 20 history items (8 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 61 test utterances |
+| content | 20 history items (8 recorded facts, 1 labelled teaching device, 11 unknown; 7 required) · 2 exam findings · 12 investigations (7 record reviews; 5 orderable tests, 3 of them without a recorded result) · 11 interventions (7 indicated, among them the report's operation, whose branch before the airway assessment is critical; 4 harmful, 1 of them critical) · 6 objectives · 5 decisions (20 options) · 14 rubric items (13 deterministic, weight 32; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 69 test utterances |
 
 ## Learning outcomes
 
@@ -78,7 +78,7 @@ radiograph without abnormality; because of these results the MRI was not repeate
 for residual disease. The fall in β-hCG and the slowing of virilisation after resection support hCG from the tumour as
 the driver, but with the grade unrecorded and AFP not carried over, the case does not claim more. A testosterone of
 8.49 nmol/L at one year is still unexplained in the record (LH, FSH and bone age at follow-up are not recorded): central
-puberty secondary to the long androgen exposure, or residual tumour, are the questions a facilitator can raise.
+puberty secondary to the androgen exposure, or residual tumour, are the questions a facilitator can raise.
 
 ## Scenario timeline and physiology
 
@@ -94,8 +94,8 @@ evolves with time. Phases advance by themselves when their condition holds; none
 | `followup` 报告记录的随访结局 | all five decisions answered correctly | the report's one-year follow-up record (and the one-year β-hCG and chest radiograph in their own records) |
 
 Records of the first work-up stay readable in later phases (dated "At the first work-up (earlier record)"). Before its
-phase, the β-hCG/AFP and chest-imaging orders return "No result for this test is recorded at this stage."; the work-up
-records cannot be retrieved before the `workup` phase ("does not exist yet").
+phase, the β-hCG/AFP and chest-imaging orders return "No result for this test is recorded at this stage."; in `theatre`
+they show the search-phase result again (dated "Earlier record"); the work-up records cannot be retrieved before the `workup` phase ("does not exist yet").
 
 ## Decisions and assessment
 
@@ -162,7 +162,7 @@ distractor); `cases validate --strict` reports none.
 | `rb-aftercare` | management | 3 | decision 5 right first time and the follow-up plan written |
 | `rb-ks-care` | management | 2 | genetic counselling and learning support referrals |
 | `rb-no-harm` | safety | 2 | no GnRH analogue, no chemotherapy, no discharge before the follow-up plan; counts once decision 1 is attempted or any of them is given (`scoredWhen`) |
-| `rb-communication` | communication | (judged) | Calgary–Cambridge; privacy and chaperone (AAP 2025); SPIKES for the karyotype and the mass; the anaesthetic risk explained; the boy involved at his level; teach-back |
+| `rb-communication` | communication | (judged) | Calgary–Cambridge; privacy and chaperone (AAP 2025, abstract); SPIKES for the karyotype and the mass; the anaesthetic risk explained; the boy involved at his level; teach-back |
 
 ### How wrong choices score (measured with core `assess` on 2026-11-14)
 
@@ -187,10 +187,11 @@ distractor); `cases validate --strict` reports none.
 | no MDT referral, or the referral only after the operation | 29/32 (91 %) | passed | none |
 | no adrenal androgens ordered | 30/32 (94 %) | passed | none |
 | no operation | the case stops in `theatre` (29/32 at that point) | passed | — |
+| "Give him a general anaesthetic for the CT" typed after decision 3, before the assessment (reaches `sedation`) | 28/32 (88 %) | **failed** | `rb-airway-first` |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. Sedation given before the
 tumour search is decided (phases `admission` and `workup`), or after the airway assessment, is not contraindicated and
-costs nothing; once decision 3 sends the learner looking for a mediastinal tumour, sedation (for the chest CT too)
+costs nothing; once decision 3 sends the learner looking for a mediastinal tumour, sedation or an anaesthetic for a scan (for the chest CT too)
 waits for the assessment. An assessment counts only in its window (from decision 3 until the operation), so one made
 on admission neither earns the critical item nor makes a later anaesthetic or sedation safe; it may be repeated
 (`maxDoses: 2`). Discharge after the follow-up plan is appropriate and costs nothing. The communication item is judged by the examiner and is outside these
@@ -204,13 +205,14 @@ be credited in hindsight) and `rb-airway-first` (the dangerous error: an anaesth
 mediastinal mass before the airway and circulation are assessed). Both are acts; neither reads a final-phase record.
 
 **Safety outcome.** `resection` and `sedation` are `critical: true`: an operation under general anaesthesia given before
-the airway and circulation assessment, or sedation given once a mediastinal tumour is being sought (decision 3
+the airway and circulation assessment, or sedation or an anaesthetic for a scan or procedure given once a mediastinal tumour is being sought (decision 3
 answered) and before that assessment, risks airway or circulatory collapse (SPA case guide 2024), so either fails the assessment's safety outcome
 (`safety.passed: false`) whatever the score, and every debrief and export shows it. `chemo-now` (`risk: "high"`) is
 `critical: false`: starting chemotherapy without histology is a serious misjudgement, but one the tumour board and the
 next clinician stop before harm is done; `gnrha` and `discharge-now` (`risk: "moderate"`) are `critical: false` as
-recoverable misjudgements. The reference path makes no critical or dose error (no dose presets are needed: no
-high-alert medicine is used, and the harmful drug items stand for a class or a protocol).
+recoverable misjudgements. The reference path makes no critical or dose error (no dose presets are needed: the
+reference path gives no medicine, no item belongs to the engine's high-alert classes — insulins, potassium, heparins,
+opioids, thrombolytics — and the drug traps stand for a class or a protocol without a dose).
 
 ## Reference path (`solution`)
 
@@ -222,7 +224,7 @@ vaccinations, headache/vision/thirst, breathing, testicles, abdomen, the parent'
 counselling, learning support → `source-search` → (phase `search`) **β-hCG/AFP**, **chest imaging** → MDT referral →
 **airway assessment** → `mass-plan` → (phase `theatre`, in the operating room) **operation** (back to the ward) →
 operation and histology record → follow-up plan → `aftercare` → (phase `followup`) follow-up record → finish.
-`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 61/61, safety passed.
+`cases verify` passes: objectives 6/6, decisions 5/5, rubric 32/32, utterances 69/69, safety passed.
 
 ## Clinical numbers check
 
@@ -390,7 +392,17 @@ already-completed reviews with generic names ("Subsequent chest and tumour evide
 - Exclusions added in review round 1: early puberty ⟂ birth ("born early"); testicles ⟂ tummy; body odour reaches
   nothing (not recorded); the growth/skin/hair examination ⟂ genital words, and "private parts" reaches the genital
   examination.
-- 61 test utterances (31 zh-CN, 30 en; 6 negatives), one at least for every required item; `cases verify` 61/61.
+- Review round 2: round 1's one-word aliases "anaesthetist"/"anesthetist" on the airway assessment matched every order
+  containing "anaesthetic" or "anaesthetise" ("Give him a general anaesthetic for the CT" and "Operate under general
+  anaesthetic" earned the assessment) — they are phrases now ("ask the anaesthetist", "anaesthetist review"); `sedation`
+  covers an anaesthetic for a scan or procedure (name and aliases: "general anaesthetic for the CT", "GA for the CT",
+  全麻下做CT…); `resection` excludes consult, review, biopsy and sedation words (refer, consult, opinion, biopsy,
+  sedate, midazolam; 会诊, 转诊, 活检, 镇静…), so "Thoracic surgery consult", "Refer to cardiothoracic surgery" and 请胸外科会诊
+  reach the MDT referral instead of the operation. "Needle biopsy" reaches nothing; "CT-guided biopsy" reaches
+  sedation/anaesthesia for a procedure. History: "Which happened first…" / 先是…还是先… reach `sequence`, the father's
+  puberty ("…his dad…", 他爸爸小时候…) reaches `family-puberty`, "late walker" reaches `development`, 怎么发现的 the
+  presenting complaint and 他现在多重 the growth item; "Examine his abdomen" no longer returns the growth/skin/hair finding.
+- 69 test utterances (35 zh-CN, 34 en; 7 negatives), one at least for every required item; `cases verify` 69/69.
 
 ## References
 
@@ -430,7 +442,11 @@ evaluation, risk, huddle, general-anaesthesia and off-site passages. AAP 2025: t
 the statement's abstract only — the full text could not be reached (the publisher's site refused automated access and
 there is no PMC copy) — so the case names it as the abstract's wherever it cites it, and the learning outcome teaches
 the point without the name. Review round 1 (2026-11-14) re-read every one of these passages in the source's own text
-and found them as cited (the AAP abstract aside).
+and found them as cited (the AAP abstract aside). Review round 2 (2026-11-14) read them again and found them as cited, except that
+the ESPE/LWPES consensus does not say that a GnRH analogue makes a later stimulation test uninterpretable (decision 1's
+feedback had put that clause under its name; it is now the case's own sentence). Currency, checked online the same day:
+the PDQ page still reads "Updated: November 5, 2024"; the SPA guide on the society's site is the 2024-08-28 revision;
+no EAA Klinefelter update was found; the AAP statement's full text is still unreachable (publisher 403, no PMC copy).
 
 ### To verify
 
@@ -515,6 +531,22 @@ and found them as cited (the AAP abstract aside).
   and listed under To verify; the SPA guide's date corrected (revised 2024-08-28). Voice: the AFP note no longer
   mentions checking the article; the airway response and the nurse's handover say "does not record" instead of
   "records no"; the KS feedback says "from mid-puberty" (EAA 2021); decision 1's prompt and hint no longer cue "no drug".
+- **Review round 2 (2026-11-14), independent reviewer.** Guidance: decision 1's GnRH-analogue feedback put "giving one
+  first makes the later stimulation test uninterpretable" under the ESPE/LWPES consensus's colon; the consensus does not
+  say it (checked in its full text), so it is now the case's own sentence; every other cited passage holds and every
+  source is the current version. Assessment: the airway assessment's one-word "anaesthetist" aliases sent orders to
+  anaesthetise him ("Give him a general anaesthetic for the CT", "Operate under general anaesthetic") to the
+  assessment, crediting the critical act; consult requests ("Thoracic surgery consult", "Refer to cardiothoracic
+  surgery") and "needle biopsy" performed the operation — fixed with phrases and exclusions, and `sedation` now names
+  sedation or an anaesthetic for a scan or procedure (name, dose text, harm and response in both languages). Records: in
+  `theatre` the chest imaging and β-hCG/AFP records said "no result at this stage", hiding the pre-operative CT and
+  β-hCG (the engine reads the current phase first) — they now show the earlier result; the AFP note no longer says "this
+  case shows no AFP value" (in-world: "no AFP value is given"); the debrief boundaries, provenance note and attending
+  call it a *usable* AFP value, since the report does hold AFP results. Facts and words: the patient tag "Growth spurt"
+  is "Accelerated growth" (生长加速); 1.0.0's unknown baseline activities are listed among the unknowns; the README's
+  "long androgen exposure" lost "long" (not in 1.0.0); the rubric table names the AAP abstract; the 中文摘要's learning
+  outcomes keep "assay-specific" and "no testosterone before puberty". Matcher: eight history phrasings and three
+  examination requests that reached the wrong item or none (see Matcher notes); eight utterances added (69).
 
 ### 1.0.0 — 2026-10-28
 
@@ -526,14 +558,14 @@ and found them as cited (the AAP abstract aside).
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-33610/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 56 steps · objectives 6/6 · decisions 5/5 · utterances 61/61 · rubric 32/32 (100 %)
+npm run -s cc -- cases verify cmcr-33610 --lang en                                                 # 56 steps · objectives 6/6 · decisions 5/5 · utterances 69/69 · rubric 32/32 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33610                                       # depth floor, openers, do-nothing 0/30, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33610:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33610:"  # in-world demonstration, en + zh-CN
 npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-33610"                  # every act possible in the general hospital (KIT §3.19)
 ```
 
-Measured on 2026-11-14 after review round 1: all six pass.
+Measured on 2026-11-14 after review round 2: all six pass.
 
 ## 中文摘要
 
@@ -549,12 +581,12 @@ Measured on 2026-11-14 after review round 1: all six pass.
 **学习目标。**
 
 1. 对照睾丸大小与男性化程度，在评估性腺轴的同时想到外周来源，诊断前不用抑制青春期的药物。
-2. 把睾酮与激发后LH峰值0.1 IU/L（低于ESPE/LWPES 2009提出的约3.3–5.0 IU/L青春期前上限）一起解读为促性腺激素非依赖性性早熟，
+2. 把睾酮与激发后LH峰值0.1 IU/L（低于ESPE/LWPES 2009提出的约3.3–5.0 IU/L青春期前上限，该上限与测定方法有关）一起解读为促性腺激素非依赖性性早熟，
    说明GnRH类似物为何无效。
 3. 不因47,XXY过早下结论，查找分泌hCG的生殖细胞肿瘤（β-hCG、AFP，首先纵隔影像：EAA 2021指出这类肿瘤主要在纵隔，NCI PDQ 2024把
    Klinefelter综合征列为其危险因素）。
 4. 前纵隔肿物在任何镇静或全麻前评估气道和循环受压并多学科讨论（SPA 2024），再完整切除。
-5. 制定术后随访：标志物和影像（NCI PDQ 2024），睾酮、LH、生长和骨龄，Klinefelter综合征的遗传咨询和学习支持（EAA 2021）。
+5. 制定术后随访：标志物和影像（NCI PDQ 2024），睾酮、LH、生长和骨龄，Klinefelter综合征的遗传咨询和学习支持，青春期前不用睾酮（EAA 2021）。
 6. 在解释、征得同意并与家长和孩子商定陪检的情况下检查儿童外生殖器，分阶段向孩子和家长说明结果。
 
 **关键决策。**
@@ -577,8 +609,8 @@ Measured on 2026-11-14 after review round 1: all six pass.
 遇到睾丸与男性化不相称的男孩时怎么做。评分：确定性总分32分；两项关键项（不在核型处停下、实际申请β-hCG/AFP和胸部影像；麻醉
 或镇静前先完成气道和循环评估）；沟通项由考官评判。
 
-**安全结果。** `resection`（未评估气道和循环就在全麻下手术）和`sedation`（决定查找纵隔肿瘤后、完成气道和循环评估之前镇静）标为
+**安全结果。** `resection`（未评估气道和循环就在全麻下手术）和`sedation`（决定查找纵隔肿瘤后、完成气道和循环评估之前为检查或操作镇静或麻醉）标为
 `critical: true`，
 任一发生时无论得分多少，安全结果都判为不通过（`safety.passed: false`）；`chemo-now`、`gnrha`和`discharge-now`标为`critical: false`，
 属于可被纠正的判断失误。本病例经人工智能辅助编辑审核，并于2026-11-14完成第一轮独立复审（修正了一处改变事实的随访表述、气道评估与镇静的
-评分窗口和若干匹配问题；AAP 2025仅核对了摘要）；尚未经执业医师审核；待核实事项见上文“To verify”。
+评分窗口和若干匹配问题；AAP 2025仅核对了摘要），同日完成第二轮独立复审（改正了一处把非指南内容归于ESPE/LWPES共识的表述、把“全麻下做CT”记作气道评估和把外科会诊记作手术的匹配错误，以及记录和措辞上的若干问题）；尚未经执业医师审核；待核实事项见上文“To verify”。

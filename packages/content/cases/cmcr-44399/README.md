@@ -22,10 +22,10 @@ record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then an independent review round 1 (AI-assisted, 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then independent review rounds 1 and 2 (AI-assisted, both 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
 | the patient | a 9-year-old boy (9 years 3 months, 36 kg), awake but listless, who says a few words himself; a parent of unrecorded sex gives the history |
 | phases | `arrival` 到院：服药后约四小时 / Arrival → `results` 入院化验结果回报 / Admission results back → `two-hours` 入院约两小时 / About two hours after admission → `course` 治疗过程中 / Later in his treatment → `outcome` 住院经过与随访 / Hospital course and follow-up — all one-way, none learner-switchable |
-| content | 22 history items (10 recorded facts, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 57 matcher test utterances |
+| content | 24 history items (12 recorded facts — `blackout` also says what is not recorded —, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 73 matcher test utterances |
 | what the learner can do | take the history from the parent and the boy; examine him; order an ECG, a bedside glucose, the cholinesterase and electrolytes (staged: back in the next phase), a blood gas and a chest film (no result recorded); read the observation chart and, at the end, the hospital-course record; monitor, cannulate, give atropine and fluids, call the poisons service, arrange a monitored bed, stop the drug, report the error and teach back; answer five decisions |
 
 ## Learning outcomes
@@ -36,8 +36,8 @@ By the end of the case the learner can:
    intended quarter tablet (3.75 mg) and state the size of the error (60-fold).
 2. Recognise a cholinergic crisis from a neostigmine (carbamate cholinesterase inhibitor) overdose by its muscarinic
    and nicotinic signs, and explain why 4-mm pupils and a heart rate of 72/min do not exclude it.
-3. Plan the first hour: continuous cardiorespiratory monitoring, IV atropine titrated to the signs (FDA neostigmine
-   prescribing information, revised 2015), poisons-service advice, and no further gut decontamination four hours after
+3. Plan the first hour: continuous cardiorespiratory monitoring, IV atropine for the muscarinic signs (FDA neostigmine
+   prescribing information, revised 2020), titrated to effect, poisons-service advice, and no further gut decontamination four hours after
    the tablets (AACT/EAPCCT 2013, 2005).
 4. Interpret a cholinesterase of 1790 U/L, sinus rhythm and a sodium of 126.7 mmol/L for what each can and cannot show,
    and act on them: isotonic maintenance fluid (AAP 2018) and no suxamethonium if he needs intubation.
@@ -71,7 +71,7 @@ lies ahead (bradycardia, secretions, respiratory-muscle weakness).
 **Today's management, taught against the report.** Continuous cardiorespiratory monitoring from arrival; IV atropine
 titrated to heart rate, secretions, sweating and the chest, repeated for the slow rate; poisons-service advice; a
 monitored bed; no further gut decontamination four hours out (no second lavage, no charcoal); isotonic maintenance
-fluid for the low sodium; no further anticholinesterase, and no suxamethonium if he needs intubation; then, before
+fluid for a sodium of 126.7 mmol/L; no further anticholinesterase, and no suxamethonium if he needs intubation; then, before
 discharge, stop the drug and question its indication, report and disclose the error, and teach back a written dose in
 mg and tablets. **What the report records:** a lavage locally before transfer; antagonist treatment and monitoring;
 atropine with continuous monitoring; treatment stopped on day 5; discharge on day 6. The atropine doses and timing,
@@ -85,7 +85,7 @@ results belong to the phase in which they existed, and nothing physiological is 
 | phase | opens when | what the learner meets |
 |---|---|---|
 | `arrival` (initial) | start | the parent's history and the boy's own words; the admission examination; the ECG (sinus rhythm) and the observation chart (heart rate 72/min; nothing else charted); bloods can be sent but the cholinesterase and electrolytes are "not back yet"; glucose, blood gas and chest film have no recorded result; decisions 1 (toxidrome) and 2 (first hour) |
-| `results` | decisions 1 and 2 answered | the cholinesterase (1790 U/L) and electrolytes (Na 126.7, K 3.79 mmol/L) — re-order to read the staged result; the admission ECG again; decision 3 (results) |
+| `results` | decisions 1 and 2 answered | the cholinesterase (1790 U/L) and electrolytes (Na 126.7, K 3.79 mmol/L) — re-order to read the staged result; the admission ECG again; the boy says his tummy still hurts; decision 3 (results) |
 | `two-hours` | decision 3 answered | the nurse calls the learner back: reassessment and observation chart show the heart rate at its lowest 47/min with continuing abdominal pain and moist skin; the boy says it still hurts; decision 4 (the slow rate) |
 | `course` | decision 4 answered | the observation chart: improvement under antagonist treatment and monitoring, cholinesterase rising (values not recorded); the boy feels better; decision 5 (before discharge, select all) |
 | `outcome` (`learnerSwitchable: false`) | all five decisions answered | the hospital-course record (atropine and continuous monitoring, gradual resolution, treatment stopped day 5, discharge day 6, no complaints and a normal cholinesterase five days after discharge) and the post-discharge cholinesterase |
@@ -105,12 +105,13 @@ after admission, and records no times for the results.
 | `obj-first-hour` | Make the first hour safe / 保障第一个小时的安全 | decision 2 answered + monitoring started (any time) |
 | `obj-results` | Interpret the admission results / 解读入院检查结果 | cholinesterase and electrolytes read in `results` + decision 3 |
 | `obj-watch` | Keep reassessing and act on what you find / 持续评估，发现变化及时处理 | decision 4 answered + atropine given (any time) |
-| `obj-home` | Plan a safe discharge and review the outcome / 安排安全出院并核对转归 | decision 5 answered + outcome record read |
+| `obj-home` | Close the error chain and review the outcome / 切断差错链并核对转归 | decision 5 answered + outcome record read |
 
 No `completeWhen` holds a condition that can become permanently false (no phase leaf, no `whenIndicated`, no
 `decidedFirstTry`, no history item limited to early phases); the contract's late-learner replay (orders and
 interventions done late) and review round 1's replay of a learner who never asks the opening question confirm the case
-can always be finished.
+can always be finished. Objective titles are listed from the start, so none names a diagnosis, a key or the outcome
+(review round 2 retitled `obj-home`, whose "plan a safe discharge" told from the start that he would go home).
 
 ### Decisions
 
@@ -121,13 +122,13 @@ Options appear shuffled as letters; ids name the content. Every option has its o
    vomiting, abdominal pain; moist skin and increased bowel sounds on arrival) and nicotinic ones (twitching) about 20
    minutes after a cholinesterase inhibitor; neither miosis nor bradycardia is needed. Distractors: `no-poisoning`
    (brisk 4-mm pupils and the lavage "clear" him — AACT/EAPCCT 2013: studies have failed to show that lavage improves
-   outcome), `myasthenic-crisis` (the eye symptoms as myasthenia, more drug needed — FDA label 2015: the crises can be
+   outcome), `myasthenic-crisis` (the eye symptoms as myasthenia, more drug needed — FDA label, revised 2020: the crises can be
    hard to tell apart and more neostigmine in a cholinergic crisis could have grave consequences; no myasthenia is
    recorded), `sepsis-cns` (fever explains it — not the drooling and twitching 20 minutes after 15 tablets).
 2. **`first-hour` — the plan for the first hour** (after decision 1 and the pre-transfer question). Key
    **`monitor-antidote`**: resuscitation bay on continuous ECG, SpO₂ and blood pressure with close checks of breathing
    and strength, IV access and bloods, titrated IV atropine, the poisons service, no further gut decontamination (FDA
-   label 2015: support ventilation, monitor cardiac function, immediate atropine in a cholinergic crisis; AACT/EAPCCT
+   label, revised 2020: support ventilation, monitor cardiac function, immediate atropine in a cholinergic crisis; AACT/EAPCCT
    2013 and 2005). Distractors: `relavage-charcoal` (a second lavage and charcoal, then routine ward observations),
    `ward-observation` (four-hourly observations; atropine only below 60/min), `await-enzyme` (atropine held for the
    cholinesterase; antiemetic; no monitor).
@@ -141,8 +142,8 @@ Options appear shuffled as letters; ids name the content. Every option has its o
    `pesticide-exposure` (the level is "too low" for tablets).
 4. **`slow-rate` — the heart rate of 47/min at about two hours** (after the reassessment or the two-hour chart). Key
    **`atropine-titrate`**: assess airway, breathing and perfusion; repeat IV atropine on the monitor, titrated to rate,
-   secretions and chest; CPR if the rate stays below 60/min with poor perfusion despite oxygen and ventilation (FDA label
-   2015: bradycardia is a muscarinic effect of overdose that may be managed with atropine or glycopyrrolate; AHA/AAP 2025
+   secretions and chest; CPR if the rate stays below 60/min with poor perfusion despite oxygen and ventilation (FDA label,
+   revised 2020: bradycardia is a muscarinic effect of overdose that may be managed with atropine or glycopyrrolate; AHA/AAP 2025
    PALS, as its writing group restated it in 2026: atropine for bradycardia with cardiopulmonary compromise from
    increased vagal tone; oxygenation, ventilation and CPR below 60/min with poor perfusion are taught as standard
    paediatric bradycardia care, without the guideline's name, because the Part 8 text and the algorithm could not be
@@ -178,7 +179,7 @@ No key is the uniquely longest option of its decision in either language (strict
 | `rb-discharge` | management | 2 | decision 5 right first time |
 | `rb-communication` | communication | 1 | examiner-judged (Calgary–Cambridge; teach-back; no promise beyond the record) — not in the deterministic total |
 
-### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14)
+### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14; re-measured after review round 2, unchanged)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -218,8 +219,8 @@ a decision alone.
 **repeat gastric lavage** (contraindicated throughout: AACT/EAPCCT 2013 — not routinely, if at all; contraindicated with
 an unprotected airway or where it adds aspiration risk; aspiration pneumonia and arrhythmia among its complications — in
 a child four hours out who vomited, drooled and cannot stand unaided), **further neostigmine** (contraindicated
-throughout: FDA label 2015 — more anticholinesterase in a cholinergic crisis could have grave consequences) and
-**discharge or an unmonitored bed before the outcome phase** (FDA label 2015 — ventilation support and cardiac
+throughout: FDA label, revised 2020 — more anticholinesterase in a cholinergic crisis could have grave consequences) and
+**discharge or an unmonitored bed before the outcome phase** (FDA label, revised 2020 — ventilation support and cardiac
 monitoring after an overdose; a cholinergic crisis can kill through the respiratory muscles, and his heart rate later
 fell to 47/min). Activated charcoal four hours out and hypotonic maintenance fluid are `risk: moderate`,
 `critical: false` — recoverable, low-value or harmful choices that cost `rb-low-value`, not the safety outcome. Atropine
@@ -227,13 +228,13 @@ is `risk: moderate` with no contraindication in this case.
 
 ## Reference path (`solution`)
 
-72 steps, static clock: start → 20 history questions to the parent and the boy (presenting complaint, medicine and
-tablets, onset, clinic visit, the prescription's purpose, pre-transfer care, fits/rash/diarrhoea, breathing, earlier
+74 steps, static clock: start → 21 history questions to the parent and the boy (presenting complaint, medicine and
+tablets, onset, clinic visit, the prescription's purpose, pre-transfer care, fits/coma/rash/diarrhoea, fainting, breathing, earlier
 weakness, tablets left, how the dose was explained, allergies, regular medicines, past health, vaccinations, family,
 weight, fever now, worries, the boy's own words) → examine conscious level, skin, muscles and standing, pupils, heart
 rate, abdomen → **monitoring**, **IV access** → order and read the ECG, glucose, cholinesterase and electrolytes (both
 "not back yet") and the observation chart → **decision 1** → **atropine**, **poisons service**, **stop neostigmine** →
-**decision 2** → `results`: re-order and read the cholinesterase, electrolytes and ECG → **isotonic fluid**, **monitored
+**decision 2** → `results`: re-order and read the cholinesterase, electrolytes and ECG, ask the boy → **isotonic fluid**, **monitored
 bed** → **decision 3** → `two-hours`: reassess, read the chart, ask the boy → **atropine** (repeat) → **decision 4** →
 `course`: read the chart and the cholinesterase, ask the boy → **report and disclose**, **discharge teaching by
 teach-back** → **decision 5** → `outcome`: read the hospital-course record and the cholinesterase → finish. It gives no
@@ -254,7 +255,7 @@ intervention while contraindicated, has no dose error and ends with the safety o
 | sodium 126.7 mmol/L; potassium 3.79 mmol/L | 1.0.0 initial investigations | reference ranges not recorded; 126.7 is below the 135 mmol/L that AAP 2018 uses to define hyponatraemia |
 | heart rate at its lowest 47/min about 2 h after admission | 1.0.0 subsequent monitored changes | **derived:** about 6 h after the tablets (used in decision 4's lavage feedback) |
 | treatment stopped day 5; discharged day 6; no complaints and normal cholinesterase 5 days after discharge | 1.0.0 outcome | value not recorded |
-| atropine 50 micrograms/kg IV, max 3 mg, doubled every 5 min while ineffective | Perth Children's Hospital monograph (reviewed Aug 2024), cholinergic crisis | **derived:** 1.8 mg at 36 kg (below the 3 mg cap); not a dose the report records |
+| atropine 50 micrograms/kg IV, max 3 mg, doubled every 5 min while ineffective | Perth Children's Hospital monograph (reviewed Aug 2024; next review Aug 2027), its dosing for a cholinergic crisis from organophosphates or nerve agents — applied here to a carbamate drug overdose, as the dose text and teaching point say | **derived:** 1.8 mg at 36 kg (below the 3 mg cap on the 50-microgram/kg dose); not a dose the report records |
 | atropine 20 micrograms/kg, max 600 micrograms, repeat once | same monograph, bradycardia with haemodynamic compromise | **derived:** 0.72 mg at 36 kg, capped at 0.6 mg (taught in a teaching point only, which states the cap: "600 micrograms, not 720, at 36 kg") |
 | atropine 0.02 mg/kg, minimum 0.1 mg | AHA/AAP 2025 PALS, as restated by its writing group (2026) | 0.02 × 36 = 0.72 mg is **not** a dose to give: a single dose is capped (600 micrograms in the PCH bradycardia dose above; 0.5 mg in AHA's algorithm as a search engine indexes it, not verified in its text). The case states no PALS dose in mg |
 | activated charcoal 0.5–1 g/kg (ages 1–12) | AACT/EAPCCT 2005 (quoting USP DI 2003) | **derived:** 18–36 g; offered only as a harmful option |
@@ -278,8 +279,8 @@ medicine; charcoal is a range with two routes; the neostigmine option names alte
   - "At two hours his heart rate was 47/min. Why atropine rather than adrenaline here? What would make you start CPR?"
   - "Carbamate inhibition reverses on its own (ATSDR 2023), yet his treatment was stopped only on day 5: what might
     explain a course of days? (The report's explanation is not recorded — keep it a question.)"
-  - "Why was a 9-year-old with fever, cough and watering, light-sensitive eyes given neostigmine at all? Who should
-    answer that question?"
+  - "Why was a 9-year-old with fever, cough and watering, light-sensitive eyes that he would not open given
+    neostigmine at all? Who should answer that question?"
 - **Summary.** "What three things would you hand over about him?" "What will you say to the parent before discharge,
   and how will you check it landed?"
 
@@ -331,11 +332,11 @@ cholinesterase; atropine with continuous monitoring, gradual resolution, treatme
 **Extraction map (every 1.0.0 fact → its 1.1.0 home).** Age, sex, weight → `patient`, history `weight`, triage note;
 chief complaint → `patient.chiefComplaint`, history `presenting`; drug, strength, instruction, misreading, 15 tablets →
 history `medicine-taken`; onset and symptoms → history `onset`; clinic visit → history `clinic-visit`; lavage,
-transfer, admission time → history `lavage-transfer`; no seizure/coma/rash/diarrhoea → history `associated`;
+transfer, admission time → history `lavage-transfer`; no seizure/coma/rash/diarrhoea → history `associated` (and the no-coma half of `blackout`);
 admission examination → exam `general`, `skin`, `neuromuscular`, `pupils`, `heart-rate`, `abdomen` (and the heart rate
 on the `obs-record` chart); initial investigations → `cholinesterase` and `electrolytes` (`results` phase) and `ecg`
 (`arrival`, `results`); subsequent monitored changes → exam `reassess-2h` and `obs-record` (`two-hours`), `obs-record`
-and `cholinesterase` (`course`), the boy's `child-now-2h` and `child-course`; treatment and outcome → `outcome` record
+and `cholinesterase` (`course`), the boy's `child-now-2h` and `child-course` (and the continuing pain of `child-now-results`, from 1.0.0's 仍腹痛 at two hours); treatment and outcome → `outcome` record
 and `cholinesterase` (`outcome`); 1.0.0's unknowns (bottle check, continuous waveforms, long-term follow-up) →
 `unknowns`, history `tablets-left`. 1.0.0's allergy, family, surgery, medication, past-health, vaccination, function,
 expectations and other-admission slots stay unknown (merged into fewer, natural questions).
@@ -344,7 +345,8 @@ expectations and other-admission slots stay unknown (merged into fewer, natural 
 `setting: "emergency"`); the five phases, with the bloods staged to come back in `results` and the nurse's call at two
 hours; the parent at the bedside and the parent's two voiced worries (`ice` item and `persona.concerns`: "Is he going
 to be all right?", "How was that medicine supposed to be given?"); the boy's few words ("My tummy hurts… my arms and
-legs are twitching…", "It still hurts…", "I feel better.") voicing recorded symptoms; the observation chart that repeats
+legs are twitching…" on arrival only, "My tummy still hurts…" when the results are back, "It still hurts…", "I feel
+better.") voicing recorded symptoms — twitching is recorded only on the admission examination, so he does not report it later; the observation chart that repeats
 the recorded heart rates and says what is not charted; the orderable tests with no recorded result (glucose, blood
 gas, chest film) and the "no result is recorded" entries for later phases; the staff; the decisions, options, feedback and rubric; the 14
 interventions, whose responses say what the record does or does not hold; the order warning that only one,
@@ -371,7 +373,10 @@ lead set is not recorded.
   stopped" and lists it as unknown.
 - **Reported versus absent:** 1.0.0's English says no seizure, coma, rash or diarrhoea "was reported"; its Chinese says
   there was none. The parent denies exactly these four ("no coma" / 没昏迷过 — not "never passed out", which would also
-  deny a brief faint that 1.0.0 does not mention).
+  deny a brief faint that 1.0.0 does not mention). Questions about fainting, passing out or being unconscious (晕过去,
+  昏过去, 不省人事) reach a separate item, `blackout`, in which the parent says there was no coma and that a briefer
+  black-out is not known (review round 2: until then those questions reached `associated`, whose answer opened with a
+  blanket "No —" / "都没有").
 
 **Privacy.** Pseudonymous patient (魏清和 / Wei Qinghe, unique in the library and distinct from the cmcr-20 cases);
 an unnamed parent; no hospitals, places, dates or identifiers; relative time only. No figure of the report is approved
@@ -391,22 +396,37 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
 - Review round 1 probed 117 further natural questions and examination requests (en and zh-CN, `arrival` and
   `two-hours`): 116 reach the intended item; "How did you give him the medicine?" reaches the dose story
   (`medicine-taken`), an acceptable answer.
+- Review round 2 probed 114 more (session selection: hits ≥ 0.55 within 0.25 of the best, else the offline re-rank):
+  24 reached the wrong item or none and 5 more than one. The worst: every "stomach" question ("Has he got a stomach
+  ache?", "Is his stomach sore?") reached the lavage answer through the keyword "stomach" (now "stomach washed", "pump
+  his stomach", with "ache"/"pain"/"sore" excluded); "What seems to be the trouble?", "Was he sick afterwards?",
+  "Is he in pain?", 今天为什么带孩子来, 一片是多少毫克, 大便稀不稀 reached nothing; allergy and other-medicine questions
+  also selected `medicine-taken` (now excluded there). After the fixes 112 of 114 reach the intended item and the two
+  others get acceptable answers ("How long ago did he take them?" → the opening answer's "about four hours ago"; "Who
+  gave him the tablets?" → the dose story, which does not say who). The engine prefix-matches tokens of 6 or more
+  letters, so a run-together keyword that starts with such a word ("prescribedfor") matches any "prescribed…": run-
+  together keywords here start with a short or stop word ("thetrouble", "whyheneeded", "inthefamily").
 - Orders: `matchOrders` matches an alias anywhere inside the order, so no alias may be a fragment of common words — the
   cholinesterase's "che"/"CHE" was removed in review round 1 (it made "check the obs" order the cholinesterase and
   "chest x-ray" or "check his glucose" ambiguous with it). A plain isotonic order ("normal saline with dextrose") now
-  resolves to the isotonic item, not the hypotonic trap.
-- The boy's three items share his phrases and are phase twins (`supersedes`), so "How are you feeling?" reaches the
-  version for the current phase.
-- The corpus has 57 utterances (33 en, 24 zh-CN), eight of them negatives (`expect: []`) — four off-topic, four
-  history-like questions the record cannot answer ("Does he like school?", "Is he right- or left-handed?", 他上几年级了？,
-  他有兄弟姐妹吗？) — and one or more for every required item; `cases verify` passes 57/57.
+  resolves to the isotonic item, not the hypotonic trap; review round 2 found that "0.9% saline with 5% dextrose" (the
+  case's own composition) still resolved to the trap through its alias "dextrose saline", and gave the hypotonic item
+  exclusions for "0.9%", "isotonic", Plasma-Lyte, Hartmann's/Ringer's, 生理盐水 and 等张 (and the isotonic item those
+  aliases). Repeat-lavage orders in plain Chinese (再洗一次胃, 洗一下胃) now reach the harmful item; negated ones withhold it.
+- The boy's four items share his phrases and are phase twins (`supersedes`: `child-now` → `child-now-results` →
+  `child-now-2h` → `child-course`), so "How are you feeling?" reaches the version for the current phase.
+- The corpus has 73 utterances (43 en, 30 zh-CN), nine of them negatives (`expect: []`) — four off-topic, five
+  history-like questions the record cannot answer ("Does he like school?", "Is he right- or left-handed?", "Has he passed
+  any urine today?", 他上几年级了？, 他有兄弟姐妹吗？) — and one or more for every required item, with review round 2's
+  regressions (fainting, stomach ache, "the trouble", allergies, phlegm, the written dose, 毫克, 大便稀…); `cases verify`
+  passes 73/73.
 - Cholinesterase orders naming a specific enzyme (plasma, red-cell, pseudo-, butyryl-, acetyl-; 血浆, 红细胞, 全血) reach
   the one record with a notice that its assay is not recorded.
 
 ## References
 
 1. 贲英姿, 沈莉, 康云峰. 儿童误服新斯的明中毒一例. 中华儿科杂志. 2011;49(9):707-708. doi:10.3760/cma.j.issn.0578-1310.2011.09.016. Available from: https://rs.yiigle.com/cmaid/44399
-2. US Food and Drug Administration. Neostigmine methylsulfate injection, NDA 203629: prescribing information, 5.5 Cholinergic crisis and 10 Overdosage. Revised January 2015. Available from: https://www.accessdata.fda.gov/drugsatfda_docs/nda/2015/203629Orig1s000Lbl.pdf
+2. US Food and Drug Administration. Neostigmine methylsulfate injection, NDA 203629: prescribing information, 5.5 Cholinergic crisis and 10 Overdosage. Revised March 2020 (approved February 2021; sections 5.5 and 10 unchanged from the January 2015 label). Available from: https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/203629s003lbl.pdf
 3. Benson BE, Hoppu K, Troutman WG, Bedry R, Erdman A, Höjer J, et al. Position paper update: gastric lavage for gastrointestinal decontamination. Clin Toxicol (Phila). 2013;51(3):140-6. doi:10.3109/15563650.2013.770154
 4. Chyka PA, Seger D, Krenzelok EP, Vale JA; American Academy of Clinical Toxicology; European Association of Poisons Centres and Clinical Toxicologists. Position paper: single-dose activated charcoal. Clin Toxicol (Phila). 2005;43(2):61-87. doi:10.1081/clt-200051867
 5. Feld LG, Neuspiel DR, Foster BA, Leu MG, Garber MD, Austin K, et al. Clinical practice guideline: maintenance intravenous fluids in children. Pediatrics. 2018;142(6):e20183083. doi:10.1542/peds.2018-3083
@@ -439,6 +459,20 @@ Publication No. 23-0075, March 2024; Tool 5, teach-back). The PALS 2025 Part 8 t
 bradycardia algorithm (cpr.heart.org) still could not be opened, so the case attributes to PALS only what the writing
 group's letter states. All cited DOIs resolve (doi.org).
 
+**Re-checked in review round 2 (2026-11-14), in each source's own text (fresh downloads):** the FDA label: the
+January 2015 label the case cited is the original approval; Drugs@FDA lists a later approved label for NDA 203629
+(supplement 3, approved 4 February 2021, "Revised: 3/2020") whose §5.5 and §10 hold the same sentences, as does the
+current DailyMed label (effective 15 October 2024), so every citation now names the March 2020 revision; the label
+recommends atropine and says muscarinic symptoms "may be managed by the use of additional atropine or glycopyrrolate"
+— the titration itself is taught from the PCH monograph, not credited to the label. The PCH monograph (last reviewed
+August 2024, next review August 2027) lists its 50-microgram/kg doubling regimen under "Cholinergic crisis
+(organophosphate poisoning, chemical nerve agent toxicity)": the dose text and teaching point now say that the case
+applies it to a carbamate drug overdose. The PALS writing group's letter (posted 30 April 2026), the AACT/EAPCCT 2013 and
+2005 papers, AAP 2018 (KAS 1A; "serum sodium concentration <135 mEq/L"), Quelicin §5.8–5.9 (current Hospira label on
+DailyMed), ATSDR's pralidoxime page (last reviewed 26 June 2023) and the AHRQ toolkit (3rd edition, March 2024) hold
+the statements the case attributes to them. The PALS 2025 Part 8 text and AHA's algorithm still return 403 and the
+Part 8 article is not in PMC.
+
 ### To verify
 
 **In the source article (the facts 1.0.0 gives, and what it leaves out):**
@@ -454,12 +488,16 @@ group's letter states. All cited DOIs resolve (doi.org).
   respiratory support.
 - The atropine doses, route, timing (before or after the slow heart rate) and endpoints; any glycopyrrolate or
   pralidoxime; what exactly was stopped on day 5; any fluids given and any repeat sodium.
-- Whether the report's "no coma" (昏迷) also excludes any shorter loss of consciousness (the case keeps "no coma").
+- Whether the report's "no coma" (昏迷) also excludes any shorter loss of consciousness (the case keeps "no coma"; its
+  `blackout` item says a briefer black-out is not known).
+- Whether the twitching persisted after the admission examination (the case has the boy report only the tummy pain
+  once the results are back, from 1.0.0's 仍腹痛 at two hours).
 - Any follow-up after the record five days after discharge; the authors' discussion and their references.
 
 **For a clinician of the specialty (paediatric emergency medicine or clinical toxicology):**
 - The atropine starting dose for a neostigmine overdose with these signs: the case uses the PCH cholinergic-crisis
-  regimen (50 micrograms/kg, max 3 mg, doubling), whose listed examples are organophosphates and nerve agents; confirm,
+  regimen (50 micrograms/kg, max 3 mg, doubling), which PCH lists for organophosphate and nerve-agent poisoning (the
+  case says it applies it to a carbamate drug overdose); confirm,
   or prefer a lower starting dose (such as PCH's 20 micrograms/kg bradycardia dose) titrated upward.
 - The PALS 2025 bradycardia statements: the case cites the writing group's letter for atropine in bradycardia from
   increased vagal tone (0.02 mg/kg, minimum 0.1 mg); the algorithm points it teaches (oxygenation and ventilation first,
@@ -486,13 +524,13 @@ group's letter states. All cited DOIs resolve (doi.org).
 - **Template defects replaced.** Three decisions of three options → five decisions at the real decision points (the
   toxidrome, the first hour, the results, the slow heart rate, discharge), 4–5 options each with their own feedback; no
   interventions → 14 (the report's monitoring and atropine, today's steps, five harmful or low-value options); 15
-  generic history slots with "the source does not provide" answers → 22 items in lay voice; the hindsight critical item
+  generic history slots with "the source does not provide" answers → 22 items in lay voice (24 after review round 2); the hindsight critical item
   (a decision) → two critical acts done in time and a critical avoided-harm item; stock objectives and rubric texts →
   case-specific ones; a debrief with dated, guideline-attributed teaching points; 43 genuine matcher paraphrases (57 after
-  review round 1).
+  review round 1, 73 after review round 2).
 - **Safety and teaching fixes.** 1.0.0's management key praised "individualised antagonism" without saying what to do
   and offered no act; the case now keys continuous monitoring, titrated atropine and no further decontamination, makes
-  more neostigmine, a repeat lavage and early discharge critical errors, and teaches the low sodium (isotonic fluid),
+  more neostigmine, a repeat lavage and early discharge critical errors, and teaches the sodium of 126.7 mmol/L (isotonic fluid),
   suxamethonium avoidance and closing the error chain (stop the drug, report, teach back). 1.0.0 cited only the FDA
   label; the case now cites nine sources, each checked in its own text where it could be reached.
 - **Fixes made to an earlier, unreleased draft of 1.1.0.** The atropine dose follows the PCH monograph (the draft's
@@ -517,6 +555,21 @@ group's letter states. All cited DOIs resolve (doi.org).
   atropine response no longer tells, before decisions 2 and 4, that the record used atropine; a distractor no longer
   presumes he is still vomiting; the restart feedback no longer credits the FDA label with "the prescriber must
   justify"; the monitoring item's window is worded as the phases it covers; the fever item answers about the eyes too.
+- **Review round 2 (2026-11-14): a second independent AI-assisted review** re-traced every patient-fact string in both
+  languages, re-read each cited source in a fresh download and replayed the assessment with its own probes. Fixed:
+  questions about fainting or passing out ("Has he passed out?", 有没有昏过去, 不省人事, and the English canonical question
+  "been unconscious") still reached `associated`, whose answer opened with a blanket "No —" / "都没有", so the parent
+  still denied a loss of consciousness 1.0.0 does not record (critical; now a `blackout` item: no coma, a briefer
+  black-out not known; `associated` asks about a coma and lists its four negatives without a blanket "no"); the FDA label
+  was cited as its superseded January 2015 revision (now the current March 2020 revision, same text); PCH's
+  organophosphate/nerve-agent atropine regimen was presented as its dose for any cholinergic crisis (now labelled as
+  applied to this carbamate overdose); "0.9% saline with 5% dextrose" resolved to the hypotonic trap; 24 of 114 new
+  natural questions reached the wrong item or none (every "stomach" question reached the lavage answer). Also: the
+  boy no longer reports twitching once the results are back (recorded only on the admission examination); `obj-home`
+  no longer tells from the start that he goes home; the triage note says the same in both languages; "which parent"
+  gave the tablets is unknown, not whether a parent did; the drug-indication feedback keeps "reluctant to open the
+  eyes"; the conclusion gives the sodium value instead of calling it low; LO 3 credits the FDA label only with
+  atropine; the anticholinesterase response is neutral (pyridostigmine reaches the same harmful item).
 
 ### 1.0.0 — 2026-10-28
 
@@ -528,13 +581,15 @@ group's letter states. All cited DOIs resolve (doi.org).
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-44399/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 72 steps · objectives 6/6 · decisions 5/5 · utterances 57/57 · rubric 36/36 (100 %)
+npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 74 steps · objectives 6/6 · decisions 5/5 · utterances 73/73 · rubric 36/36 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44399                                       # reference 100 % · do nothing 0/32 · wrong first 61 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44399:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44399:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-14 (after review round 1's fixes): all five pass.
+Measured on 2026-11-14 (after review round 2's fixes): all five pass, and so does
+`npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-44399"` (every act possible in the general
+hospital).
 
 ## 中文摘要
 
@@ -545,13 +600,13 @@ Measured on 2026-11-14 (after review round 1's fixes): all five pass.
 126.7 mmol/L，钾3.79 mmol/L，心电图窦性心律。入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿。此后在拮抗和监测治疗下好转，
 胆碱酯酶逐渐上升；用阿托品并持续监测，症状逐渐消退，第5天停药，第6天出院，出院后5天无不适、胆碱酯酶正常。诊断：新斯的明
 （氨基甲酸酯类胆碱酯酶抑制剂）60倍过量引起的胆碱能危象。阿托品剂量、开药理由以及心率以外的生命体征均无记录。本版依据1.0.0版
-提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一轮独立复核（人工智能辅助，见更新记录）。
+提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一、二轮独立复核（人工智能辅助，见更新记录）。
 
 **学习目标。**
 
 1. 根据片剂规格和片数算出225 mg（6.25 mg/kg），与医嘱3.75 mg比较，说出60倍的差错。
 2. 根据毒蕈碱样和烟碱样表现识别胆碱能危象，说明瞳孔4 mm、心率72次/分不能排除。
-3. 安排第一个小时：持续监护、滴定静脉阿托品（美国FDA说明书，2015年修订）、中毒咨询，服药4小时后不再去污（AACT/EAPCCT
+3. 安排第一个小时：持续监护、针对毒蕈碱样表现静脉用阿托品（美国FDA说明书，2020年修订）并按效果滴定、中毒咨询，服药4小时后不再去污（AACT/EAPCCT
    2013、2005）。
 4. 解读胆碱酯酶、窦性心律和血钠126.7 mmol/L的意义与局限：等张维持液（AAP 2018），需插管时避免琥珀胆碱。
 5. 把入院约两小时心率降至47次/分识别为毒蕈碱样作用，在监护下重复、滴定阿托品（AHA/AAP 2025 PALS：迷走张力增高引起的心动过缓用
@@ -567,8 +622,8 @@ Measured on 2026-11-14 (after review round 1's fixes): all five pass.
   复苏。
 - 决策5（出院前，多选）：停用新斯的明并追问指征；书面用法写明毫克和片数并用回授法核实；上报并坦诚告知差错。
 
-**复盘要点。** 洗胃与活性炭的“当时与现在”（AACT/EAPCCT 2013、2005）；胆碱能危象与肌无力危象（美国FDA说明书，2015年修订）；
-儿童阿托品的两种剂量（珀斯儿童医院用药专论，2024年审核；AHA/AAP 2025 PALS）；低钠与等张维持液（AAP 2018）；胆碱酯酶能说明
+**复盘要点。** 洗胃与活性炭的“当时与现在”（AACT/EAPCCT 2013、2005）；胆碱能危象与肌无力危象（美国FDA说明书，2020年修订）；
+儿童阿托品的两种剂量（珀斯儿童医院用药专论，2024年审核——其有机磷和神经毒剂剂量借用于本例；AHA/AAP 2025 PALS）；低钠与等张维持液（AAP 2018）；胆碱酯酶能说明
 什么（ATSDR 2023；琥珀胆碱说明书）；切断差错链与回授法（AHRQ 2024）。
 
 **安全结果。** 再次洗胃、再给新斯的明、在结局阶段之前出院或撤离监护为`critical: true`，一旦执行，无论得分多少本次安全结果

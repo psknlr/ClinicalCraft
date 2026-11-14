@@ -52,8 +52,8 @@
       "guidelines": [
         "ESC 2025 Guidelines for the management of myocarditis and pericarditis",
         "ILAR classification of juvenile idiopathic arthritis, second revision (Edmonton 2001; published 2004)",
-        "ACR/Arthritis Foundation 2019 guideline for JIA: non-systemic polyarthritis, sacroiliitis and enthesitis",
-        "ACR 2021 guideline for JIA: nonpharmacologic therapies, medication monitoring, immunizations and imaging (published 2022)",
+        "ACR 2026 JIA guidelines: non-systemic JIA (polyarthritis, oligoarthritis, enthesitis, dactylitis, TMJ arthritis, deprescribing); summary posted 13 May 2026",
+        "ACR 2026 JIA guidelines: nonpharmacologic management, medication monitoring and imaging; summary posted 13 May 2026",
         "ACMG/AMP 2015 standards and guidelines for the interpretation of sequence variants"
       ],
       "notes": {
@@ -76,8 +76,8 @@
       "en": "Recognise slightly muffled heart sounds with a pericardial rub as signs of pericardial involvement, possibly with fluid: check for tamponade at the bedside at once (heart rate, blood pressure, pulsus paradoxus, breathing, neck veins) and complete the initial assessment ESC 2025 recommends (echocardiography, ECG, chest X-ray and biomarkers — troponin, CRP, NT-proBNP) during this admission, not as an outpatient."
     },
     {
-      "zh-CN": "对没有心脏压塞、没有炎症证据的中等量心包积液作出处理：不引流、不用抗炎药，请心脏科评估，做心脏磁共振并定期复查超声心动图，说明需要引流的指征（ESC 2025）。",
-      "en": "Manage a moderate pericardial effusion without tamponade or evidence of inflammation: no drainage and no anti-inflammatory drugs, cardiology review with cardiac MRI and repeat echocardiography, and state the indications for drainage (ESC 2025)."
+      "zh-CN": "对既未确立心脏压塞、也未确立心包炎症的中等量心包积液作出处理：不引流、不用抗炎药，请心脏科评估，做心脏磁共振并定期复查超声心动图，说明需要引流的指征（ESC 2025）。",
+      "en": "Manage a moderate pericardial effusion in which neither tamponade nor pericardial inflammation is established: no drainage and no anti-inflammatory drugs, cardiology review with cardiac MRI and repeat echocardiography, and state the indications for drainage (ESC 2025)."
     },
     {
       "zh-CN": "说出CACP综合征的组成、致病基因（PRG4）和遗传方式（常染色体隐性），区分临床诊断与分子诊断，并给家庭说明再发风险（父母都携带时每个孩子1/4）。",
@@ -305,7 +305,15 @@
           "什么毛病",
           "越来越",
           "加重",
-          "一年比一年"
+          "一年比一年",
+          "孩子有什么问题",
+          "他有什么问题",
+          "孩子是什么问题",
+          "他是什么问题",
+          "孩子的情况",
+          "他的情况",
+          "说说情况",
+          "讲讲情况"
         ],
         "en": [
           "whatbringsyou",
@@ -335,7 +343,11 @@
           "howdiditstart",
           "howdiditallstart",
           "puffy",
-          "sincewhen"
+          "sincewhen",
+          "tellmeabout",
+          "gettingworse",
+          "gotworse",
+          "worseeveryyear"
         ]
       },
       "excludeKeywords": {
@@ -632,7 +644,10 @@
           "治疗",
           "治关节的药",
           "吃过药",
-          "什么药"
+          "什么药",
+          "消炎药",
+          "止痛药",
+          "止疼药"
         ],
         "en": [
           "treatment",
@@ -643,7 +658,10 @@
           "injections",
           "drugs",
           "given anything",
-          "taking anything"
+          "taking anything",
+          "anti-inflammatories",
+          "painkillers",
+          "ibuprofen"
         ]
       },
       "excludeKeywords": {
@@ -1094,7 +1112,11 @@
           "发育",
           "说话",
           "小时候",
-          "早产"
+          "早产",
+          "几岁会",
+          "学会走路",
+          "几岁走路",
+          "怀孕"
         ],
         "en": [
           "birth",
@@ -1103,7 +1125,10 @@
           "milestones",
           "talk",
           "premature",
-          "baby"
+          "baby",
+          "born",
+          "pregnancy",
+          "newborn"
         ]
       },
       "excludeKeywords": {
@@ -1330,7 +1355,8 @@
           "出生",
           "一开始",
           "刚开始",
-          "刚肿"
+          "刚肿",
+          "几岁"
         ],
         "en": [
           "milestone",
@@ -1368,7 +1394,10 @@
           "想知道",
           "最怕",
           "怕什么",
-          "怕的"
+          "怕的",
+          "您觉得",
+          "觉得是什么",
+          "您认为"
         ],
         "en": [
           "worry",
@@ -1379,7 +1408,9 @@
           "questionsforus",
           "scared",
           "frightened",
-          "fear"
+          "fear",
+          "causing",
+          "whatdoyouthink"
         ]
       },
       "disclosure": "on-ask",
@@ -1794,7 +1825,10 @@
           "胸片",
           "胸部X线",
           "胸部平片",
-          "X线胸片"
+          "X线胸片",
+          "胸部X光",
+          "X光胸片",
+          "胸透"
         ],
         "en": [
           "chest x-ray",
@@ -2109,14 +2143,16 @@
           "自身抗体",
           "抗体检查",
           "风湿抗体",
-          "RF检测"
+          "RF检测",
+          "抗核抗体"
         ],
         "en": [
           "rheumatoid factor",
           "autoantibodies",
           "autoantibody",
           "antibody tests",
-          "rf test"
+          "rf test",
+          "antinuclear"
         ]
       },
       "requires": [
@@ -2527,7 +2563,11 @@
           "髋部片",
           "髋关节平片",
           "骨盆正位",
-          "骨盆平片"
+          "骨盆平片",
+          "髋关节X光",
+          "骨盆X光",
+          "髋部X光",
+          "双髋X"
         ],
         "en": [
           "pelvic x-ray",
@@ -2541,7 +2581,11 @@
           "x-ray of the pelvis",
           "hips x-ray",
           "ap pelvis",
-          "pelvic film"
+          "pelvic film",
+          "x-ray both hips",
+          "x-ray of both hips",
+          "x-ray his hips",
+          "x-rays of his hips"
         ]
       },
       "requires": [
@@ -2600,7 +2644,11 @@
           "滑液",
           "关节腔穿刺",
           "膝关节穿刺",
-          "抽关节液"
+          "抽关节液",
+          "抽膝关节积液",
+          "抽关节积液",
+          "关节积液化验",
+          "关节积液穿刺"
         ],
         "en": [
           "joint aspiration",
@@ -3181,7 +3229,9 @@
           "心包引流",
           "抽心包积液",
           "心包积液穿刺",
-          "穿刺引流心包"
+          "穿刺引流心包",
+          "抽吸心包积液",
+          "心包积液抽吸"
         ],
         "en": [
           "pericardiocentesis",
@@ -3189,7 +3239,12 @@
           "pericardial drain",
           "pericardial tap",
           "tap the pericardium",
-          "drain the pericardium"
+          "drain the pericardium",
+          "aspirate the pericardial effusion",
+          "pericardial aspiration",
+          "aspirate the pericardium",
+          "needle the pericardium",
+          "pericardial puncture"
         ]
       },
       "dose": {
@@ -3254,12 +3309,12 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "激素治疗的是炎症；这里没有任何记录能确立炎症性关节炎——肿胀不疼，没有发热和皮疹——在原因明确之前用激素还会干扰诊断。长期激素会抑制生长、削弱骨骼、增加感染风险：ESC 2025不推荐在没有特定指征时把激素作为心包炎的首选治疗（III类），并指出儿童更要严格限制激素（生长受损）；即使是确诊的多关节型JIA，ACR/AF 2019也强烈不建议加用长期小剂量口服激素。",
-        "en": "Steroids treat inflammation; nothing recorded here establishes an inflammatory arthritis — the swelling is painless, with no fever or rash — and a steroid started before the cause is known blurs the work-up. Long-term steroids impair growth, weaken bone and raise infection risk: ESC 2025 does not recommend corticosteroids as the first option for pericarditis without a specific indication (class III) and restricts them in children even more than in adults because of growth impairment, and even in established polyarticular JIA the ACR/AF 2019 guideline strongly recommends against adding long-term low-dose oral glucocorticoids."
+        "zh-CN": "激素治疗的是炎症；这里没有任何记录能确立炎症性关节炎——肿胀不疼，没有发热和皮疹——在原因明确之前用激素还会干扰诊断。长期激素会抑制生长、削弱骨骼、增加感染风险：ESC 2025不推荐在没有特定指征时把激素作为心包炎的首选治疗（III类），并指出儿童更要严格限制激素（生长受损）；即使是确诊的多关节型JIA，2026年ACR JIA指南也以改善病情药为一线治疗，并有条件地不建议把口服激素作为初始治疗的辅助用药。",
+        "en": "Steroids treat inflammation; nothing recorded here establishes an inflammatory arthritis — the swelling is painless, with no fever or rash — and a steroid started before the cause is known blurs the work-up. Long-term steroids impair growth, weaken bone and raise infection risk: ESC 2025 does not recommend corticosteroids as the first option for pericarditis without a specific indication (class III) and restricts them in children even more than in adults because of growth impairment, and even for established polyarticular JIA the 2026 ACR JIA guidelines make DMARDs the first-line therapy and conditionally recommend against oral glucocorticoids as an adjunct to initial therapy."
       },
       "response": {
-        "zh-CN": "已开始泼尼松龙（见安全提示）。本病例不模拟它的作用。",
-        "en": "Prednisolone started (see the safety note). The case does not simulate its effect."
+        "zh-CN": "已开始激素治疗（见安全提示）。本病例不模拟它的作用。",
+        "en": "Steroid treatment started (see the safety note). The case does not simulate its effect."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -3317,8 +3372,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "甲氨蝶呤是炎症性关节炎（如多关节型JIA，ACR/AF 2019）的改善病情药，而按ILAR分类标准（2001年修订、2004年发表），JIA只能在排除其他已知病因后诊断。在炎症性关节炎没有确立时用药，会带来肝毒性、骨髓抑制和感染风险，却没有可以期待的获益。",
-        "en": "Methotrexate is a disease-modifying drug for inflammatory arthritis such as polyarticular JIA (ACR/AF 2019), and JIA can be diagnosed only after other known causes are excluded (ILAR, Edmonton 2001, published 2004). Started before an inflammatory arthritis is established, it brings liver toxicity, marrow suppression and infection risk without an expected benefit."
+        "zh-CN": "甲氨蝶呤是炎症性关节炎的改善病情药（2026年ACR JIA指南把它作为多关节型JIA首选的传统改善病情药），而按ILAR分类标准（2001年修订、2004年发表），JIA只能在排除其他已知病因后诊断。在炎症性关节炎没有确立时用药，会带来肝毒性、骨髓抑制和感染风险，却没有可以期待的获益。",
+        "en": "Methotrexate is a disease-modifying drug for inflammatory arthritis (for polyarticular JIA, the first conventional DMARD in the 2026 ACR JIA guidelines), and JIA can be diagnosed only after other known causes are excluded (ILAR, Edmonton 2001, published 2004). Started before an inflammatory arthritis is established, it brings liver toxicity, marrow suppression and infection risk without an expected benefit."
       },
       "response": {
         "zh-CN": "已开始甲氨蝶呤（见安全提示）。本病例不模拟它的作用。",
@@ -3365,8 +3420,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ACR/AF 2019把生物制剂用于确诊且有活动性的多关节型JIA；这里炎症性关节炎没有确立（ILAR，2004：先排除其他病因）。TNF抑制剂带来严重感染（包括结核再激活）的风险，却没有可以期待的获益。",
-        "en": "ACR/AF 2019 places biologics in the treatment of established, active polyarticular JIA; no inflammatory arthritis is established here (ILAR 2004: other causes first). A TNF inhibitor brings a risk of serious infection, including tuberculosis reactivation, without an expected benefit."
+        "zh-CN": "2026年ACR JIA指南把生物制剂（首选TNF抑制剂）用于确诊的多关节型JIA；这里炎症性关节炎没有确立（ILAR，2004：先排除其他病因）。TNF抑制剂带来严重感染（包括结核再激活）的风险，却没有可以期待的获益。",
+        "en": "The 2026 ACR JIA guidelines use biologics (a TNF inhibitor first) to treat established polyarticular JIA; no inflammatory arthritis is established here (ILAR 2004: other causes first). A TNF inhibitor brings a risk of serious infection, including tuberculosis reactivation, without an expected benefit."
       },
       "response": {
         "zh-CN": "已用TNF抑制剂（见安全提示）。本病例不模拟它的作用。",
@@ -3420,8 +3475,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "关节腔内注射激素是炎症性关节炎（JIA）的辅助治疗（ACR/AF 2019）；这里炎症性关节炎没有确立，注射需要镇静、有关节感染风险，却没有可以期待的获益。",
-        "en": "Intra-articular steroid is an adjunct treatment for inflammatory arthritis (JIA; ACR/AF 2019); with no inflammatory arthritis established it adds sedation and a risk of joint infection without an expected benefit."
+        "zh-CN": "关节腔内注射激素是炎症性关节炎的辅助治疗（对多关节型JIA，2026年ACR JIA指南有条件地推荐它作为初始治疗的辅助）；这里炎症性关节炎没有确立，注射需要镇静、有关节感染风险，却没有可以期待的获益。",
+        "en": "Intra-articular steroid is an adjunct treatment for inflammatory arthritis (for polyarticular JIA the 2026 ACR JIA guidelines conditionally recommend it as an adjunct to initial therapy); with no inflammatory arthritis established it adds sedation and a risk of joint infection without an expected benefit."
       },
       "response": {
         "zh-CN": "已做关节腔注射（见安全提示）。本病例不模拟它的作用。",
@@ -3478,6 +3533,15 @@
       "response": {
         "zh-CN": "已开始抗炎药和秋水仙碱（见安全提示）。本病例不模拟它们的作用。",
         "en": "Anti-inflammatory drug and colchicine started (see the safety note). The case does not simulate their effect."
+      },
+      "excludeKeywords": {
+        "en": [
+          "aspirat"
+        ],
+        "zh-CN": [
+          "穿刺",
+          "抽吸"
+        ]
       }
     }
   ],
@@ -4034,8 +4098,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。CACP由PRG4（编码润滑素；1999年发现时称为CACP基因）的双等位致病变异引起，呈常染色体隐性遗传（Marcelino等，1999）；隐性病常常没有家族史，非近亲父母的孩子也可以是复合杂合子。变异按ACMG/AMP 2015标准判读，检测父母可以确认两个变异分别来自父母双方。基因确诊能结束诊断上的反复，避免误用免疫抑制治疗，也让家庭得到准确的再发风险。",
-            "en": "Right. CACP is caused by biallelic disease-causing variants in PRG4 (which encodes lubricin; named the CACP gene when it was found) and is autosomal recessive (Marcelino et al., 1999); recessive disorders often have no family history, and a child of unrelated parents can be a compound heterozygote. Variants are classified with the ACMG/AMP 2015 standards, and testing the parents shows that one variant came from each. A molecular diagnosis ends the diagnostic uncertainty, guards against needless immunosuppression and gives the family an accurate recurrence risk."
+            "zh-CN": "正确。CACP由PRG4（编码润滑素；1999年发现时称为CACP基因）的双等位致病变异引起，呈常染色体隐性遗传（Marcelino等，1999）；隐性病常常没有家族史，非近亲父母的孩子也可以是复合杂合子。变异按ACMG/AMP 2015标准判读，检测父母可以确认两个变异是否分别来自父母双方。基因确诊能结束诊断上的反复，避免误用免疫抑制治疗，也让家庭得到准确的再发风险。",
+            "en": "Right. CACP is caused by biallelic disease-causing variants in PRG4 (which encodes lubricin; named the CACP gene when it was found) and is autosomal recessive (Marcelino et al., 1999); recessive disorders often have no family history, and a child of unrelated parents can be a compound heterozygote. Variants are classified with the ACMG/AMP 2015 standards, and testing the parents shows whether one variant came from each. A molecular diagnosis ends the diagnostic uncertainty, guards against needless immunosuppression and gives the family an accurate recurrence risk."
           }
         },
         {
@@ -4112,8 +4176,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。CACP是缺乏润滑素（PRG4蛋白）造成的非炎症性关节病；在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）。目前没有针对CACP的指南，保持关节功能主要靠康复——ACR 2021年JIA指南同样有条件地推荐物理治疗和作业治疗，不论是否用药——再加上髋关节影像和骨科、心脏科的随访；髋部病变可能随时间进展（Bahabri等，1998）。",
-            "en": "Right. CACP is a non-inflammatory arthropathy caused by lack of lubricin (the PRG4 protein); in a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one of them also given intra-articular steroid (Kisla Ekinci et al., 2021). There is no CACP guideline: function is kept mainly by rehabilitation — the ACR 2021 JIA guideline likewise conditionally recommends physical and occupational therapy whatever the drug treatment — with hip imaging and orthopaedic and cardiac follow-up, since hip disease may progress over time (Bahabri et al., 1998)."
+            "zh-CN": "正确。CACP是缺乏润滑素（PRG4蛋白）造成的非炎症性关节病；在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）。目前没有针对CACP的指南，保持关节功能主要靠康复——2026年ACR JIA指南同样有条件地推荐物理治疗、作业治疗和体力活动，不论是否用药——再加上髋关节影像和骨科、心脏科的随访；髋部病变可能随时间进展（Bahabri等，1998）。",
+            "en": "Right. CACP is a non-inflammatory arthropathy caused by lack of lubricin (the PRG4 protein); in a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one of them also given intra-articular steroid (Kisla Ekinci et al., 2021). There is no CACP guideline: function is kept mainly by rehabilitation — the 2026 ACR JIA guidelines likewise conditionally recommend physical and occupational therapy, and physical activity, whatever the drug treatment — with hip imaging and orthopaedic and cardiac follow-up, since hip disease may progress over time (Bahabri et al., 1998)."
           }
         },
         {
@@ -4124,8 +4188,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是多关节型JIA的路径（ACR/AF 2019），但他的关节病不是炎症性的。先按JIA治疗的CACP患儿用甲氨蝶呤加TNF抑制剂都没有效果（Kisla Ekinci等，2021），却要承担肝毒性、感染和反复镇静注射的风险。",
-            "en": "That is the polyarticular JIA pathway (ACR/AF 2019), but his arthropathy is not inflammatory. Children with CACP first treated as JIA did not respond to methotrexate with a TNF inhibitor (Kisla Ekinci et al., 2021), and they bring liver toxicity, infection and repeated sedated injections."
+            "zh-CN": "这是多关节型JIA的路径（2026年ACR JIA指南），但他的关节病不是炎症性的。先按JIA治疗的CACP患儿用甲氨蝶呤加TNF抑制剂都没有效果（Kisla Ekinci等，2021），却要承担肝毒性、感染和反复镇静注射的风险。",
+            "en": "That is the polyarticular JIA pathway (2026 ACR JIA guidelines), but his arthropathy is not inflammatory. Children with CACP first treated as JIA did not respond to methotrexate with a TNF inhibitor (Kisla Ekinci et al., 2021), and they bring liver toxicity, infection and repeated sedated injections."
           }
         },
         {
@@ -4136,8 +4200,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有可治疗的炎症，激素改善不了非炎症性关节病；长期激素会抑制生长、加重骨质稀疏（他的手足已有骨质稀疏）、增加感染风险。即使是确诊的多关节型JIA，ACR/AF 2019也强烈不建议加用长期小剂量口服激素。",
-            "en": "With no inflammation to treat, steroids cannot help a non-inflammatory arthropathy; long-term steroids stunt growth, worsen osteopenia (his hands and feet already show it) and raise infection risk. Even for established polyarticular JIA, ACR/AF 2019 strongly recommends against adding long-term low-dose oral glucocorticoids."
+            "zh-CN": "没有可治疗的炎症，激素改善不了非炎症性关节病；长期激素会抑制生长、加重骨质稀疏（他的手足已有骨质稀疏）、增加感染风险。即使是确诊的多关节型JIA，2026年ACR JIA指南也有条件地不建议把口服激素作为初始治疗的辅助用药；对长期用激素的孩子，指南强烈建议每年至少两次监测生长、每年至少一次评估骨骼健康。",
+            "en": "With no inflammation to treat, steroids cannot help a non-inflammatory arthropathy; long-term steroids stunt growth, worsen osteopenia (his hands and feet already show it) and raise infection risk. Even for established polyarticular JIA, the 2026 ACR JIA guidelines conditionally recommend against oral glucocorticoids as an adjunct to initial therapy, and for a child on long-term steroids they strongly recommend checking growth at least twice a year and bone health at least once a year."
           }
         },
         {
@@ -4148,8 +4212,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有药能逆转，不等于无事可做。康复是保持关节活动度和日常功能的主要手段（ACR 2021年JIA指南有条件地推荐物理治疗和作业治疗，CACP没有专门指南）；髋关节需要影像和骨科随访，中等量心包积液需要心脏科定期随访（ESC 2025）。",
-            "en": "No drug reverses it, but that is not nothing to do. Rehabilitation is the main way to keep range of motion and daily function (the ACR 2021 JIA guideline conditionally recommends physical and occupational therapy; CACP has no guideline of its own); his hips need imaging and orthopaedic follow-up, and the moderate pericardial effusion needs regular cardiology review (ESC 2025)."
+            "zh-CN": "没有药能逆转，不等于无事可做。康复是保持关节活动度和日常功能的主要手段（2026年ACR JIA指南有条件地推荐物理治疗和作业治疗，CACP没有专门指南）；髋关节需要影像和骨科随访，中等量心包积液需要心脏科定期随访（ESC 2025）。",
+            "en": "No drug reverses it, but that is not nothing to do. Rehabilitation is the main way to keep range of motion and daily function (the 2026 ACR JIA guidelines conditionally recommend physical and occupational therapy; CACP has no guideline of its own); his hips need imaging and orthopaedic follow-up, and the moderate pericardial effusion needs regular cardiology review (ESC 2025)."
           }
         }
       ]
@@ -4529,8 +4593,8 @@
         "en": "Clinical geneticist"
       },
       "knowledge": {
-        "zh-CN": "被请会诊时到场，只讲方法和原则，不替团队下诊断。说明怎样选检测（单基因、基因包或外显子组）、检测能说明什么和不能说明什么（变异按ACMG/AMP 2015标准分为致病、可能致病、意义不明、可能良性和良性）；常染色体隐性遗传时，携带者父母通常健康、家里常常没有类似的人，父母不是近亲也可以各带一个变异；父母都是携带者时，每个孩子有1/4的机会患病；找到孩子的变异后检测父母，确认两个变异分别来自父母双方；检测前后都要做遗传咨询并取得同意。本病例没有记录这个孩子的任何基因检测结果，也没有记录遗传咨询。",
-        "en": "Comes when asked to review and talks about methods and principles only, never making the team's diagnosis. Explains how a test is chosen (a single gene, a panel or an exome), what a result can and cannot show (variants classed under the ACMG/AMP 2015 standards as pathogenic, likely pathogenic, of uncertain significance, likely benign or benign); that in autosomal recessive inheritance carrier parents are usually well, there is often nobody similar in the family, and unrelated parents can each carry a variant; that when both parents carry one, each child has a 1 in 4 chance of being affected; that once the child's variants are found the parents are tested to show one came from each; and that counselling and consent come before and after testing. No gene-test result of any kind and no genetic counselling are recorded for this boy."
+        "zh-CN": "被请会诊时到场，只讲方法和原则，不替团队下诊断。说明怎样选检测（单基因、基因包或外显子组）、检测能说明什么和不能说明什么（变异按ACMG/AMP 2015标准分为致病、可能致病、意义不明、可能良性和良性）；常染色体隐性遗传时，携带者父母通常健康、家里常常没有类似的人，父母不是近亲也可以各带一个变异；父母都是携带者时，每个孩子有1/4的机会患病；找到孩子的变异后检测父母，确认两个变异是否分别来自父母双方；检测前后都要做遗传咨询并取得同意。本病例没有记录这个孩子的任何基因检测结果，也没有记录遗传咨询。",
+        "en": "Comes when asked to review and talks about methods and principles only, never making the team's diagnosis. Explains how a test is chosen (a single gene, a panel or an exome), what a result can and cannot show (variants classed under the ACMG/AMP 2015 standards as pathogenic, likely pathogenic, of uncertain significance, likely benign or benign); that in autosomal recessive inheritance carrier parents are usually well, there is often nobody similar in the family, and unrelated parents can each carry a variant; that when both parents carry one, each child has a 1 in 4 chance of being affected; that once the child's variants are found the parents are tested to see whether one came from each; and that counselling and consent come before and after testing. No gene-test result of any kind and no genetic counselling are recorded for this boy."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4559,8 +4623,8 @@
         "en": "Flexed fingers and toes that spare the thumbs and great toes are a sign to name, not to explain away as old arthritic contractures."
       },
       {
-        "zh-CN": "没有压塞、没有炎症证据的中等量积液，要观察和找原因，而不是引流或抗炎治疗。",
-        "en": "A moderate effusion without tamponade or evidence of inflammation is watched and its cause sought — not drained, not treated with anti-inflammatories."
+        "zh-CN": "既未确立压塞、也未确立心包炎症的中等量积液（摩擦音只是一项标准，不等于诊断；他的CRP不高），要观察、做心脏磁共振并找原因，而不是引流或抗炎治疗。",
+        "en": "A moderate effusion in which neither tamponade nor pericardial inflammation is established — a rub is one criterion, not a diagnosis, and his CRP is not raised — is watched, imaged with cardiac MRI and its cause sought: not drained, not treated with anti-inflammatories."
       },
       {
         "zh-CN": "关节、手指和心包放在一起，指向一个遗传病（CACP）；临床诊断还需要分子诊断和遗传咨询来证实。",
@@ -4619,16 +4683,15 @@
         "en": "CACP is autosomal recessive, caused by biallelic disease-causing variants in PRG4, the lubricin gene (Marcelino et al., 1999). The report's diagnosis was clinical, without a PRG4 result; today a gene test (variants classed by the ACMG/AMP 2015 standards), parental testing and counselling before and after the test confirm it: when both parents carry a variant each child has a 1 in 4 chance, and unrelated parents with no affected relatives do not exclude a recessive disorder."
       },
       {
-        "zh-CN": "治疗：没有药物被证明能改善CACP的关节病。在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）；即使是确诊的多关节型JIA，ACR/AF 2019指南也强烈不建议加用长期小剂量口服激素。原报告未用特殊药物、建议功能锻炼，与今天一致；ACR 2021年JIA指南有条件地推荐物理治疗和作业治疗，不论是否同时用药；髋部病变可能随时间进展（Bahabri等，1998），所以要拍髋关节片并由骨科随访。",
-        "en": "Treatment: no drug has been shown to help the arthropathy of CACP. In a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one also given intra-articular steroid (Kisla Ekinci et al., 2021), and even in established polyarticular JIA the ACR/AF 2019 guideline strongly recommends against adding long-term low-dose oral glucocorticoids. The report's choice — no specific medication, functional exercise — matches today's; the ACR 2021 JIA guideline conditionally recommends physical and occupational therapy regardless of drug treatment, and hip disease may progress over time (Bahabri et al., 1998), so the hips are imaged and followed by orthopaedics."
+        "zh-CN": "治疗：没有药物被证明能改善CACP的关节病。在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）；即使是确诊的多关节型JIA，2026年ACR JIA指南也以改善病情药为一线治疗，并有条件地不建议把口服激素作为初始治疗的辅助用药。原报告未用特殊药物、建议功能锻炼，与今天一致；同一套2026年指南有条件地推荐物理治疗、作业治疗和体力活动，不论是否同时用药；髋部病变可能随时间进展（Bahabri等，1998），所以要拍髋关节片并由骨科随访。",
+        "en": "Treatment: no drug has been shown to help the arthropathy of CACP. In a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one also given intra-articular steroid (Kisla Ekinci et al., 2021), and even in established polyarticular JIA the 2026 ACR JIA guidelines make DMARDs the first-line therapy and conditionally recommend against oral glucocorticoids as an adjunct to initial therapy. The report's choice — no specific medication, functional exercise — matches today's; the same 2026 guidelines conditionally recommend physical and occupational therapy, and physical activity, regardless of drug treatment, and hip disease may progress over time (Bahabri et al., 1998), so the hips are imaged and followed by orthopaedics."
       }
     ],
     "references": [
       "李小琳, 刘玉玲, 付四毛. 屈曲指－关节炎－髋内翻－心包炎综合征一例. 中华儿科杂志. 2011;49(6):471-473. doi:10.3760/cma.j.issn.0578-1310.2011.06.018. Available from: https://rs.yiigle.com/cmaid/44362",
       "Schulz-Menger J, Collini V, Gröschel J, et al. 2025 ESC Guidelines for the management of myocarditis and pericarditis. Eur Heart J. 2025;46(40):3952-4041. doi:10.1093/eurheartj/ehaf192",
       "Petty RE, Southwood TR, Manners P, et al. International League of Associations for Rheumatology classification of juvenile idiopathic arthritis: second revision, Edmonton, 2001. J Rheumatol. 2004;31(2):390-392.",
-      "Ringold S, Angeles-Han ST, Beukelman T, et al. 2019 American College of Rheumatology/Arthritis Foundation guideline for the treatment of juvenile idiopathic arthritis: therapeutic approaches for non-systemic polyarthritis, sacroiliitis, and enthesitis. Arthritis Care Res (Hoboken). 2019;71(6):717-734. doi:10.1002/acr.23870",
-      "Onel KB, Horton DB, Lovell DJ, et al. 2021 American College of Rheumatology guideline for the treatment of juvenile idiopathic arthritis: recommendations for nonpharmacologic therapies, medication monitoring, immunizations, and imaging. Arthritis Rheumatol. 2022;74(4):570-585. doi:10.1002/art.42036",
+      "American College of Rheumatology. 2026 American College of Rheumatology (ACR) juvenile idiopathic arthritis (JIA) guidelines: summary [Internet]. Atlanta (GA): American College of Rheumatology; 2026 May 13 [cited 2026 Nov 14]. Available from: https://rheumatology.org/juvenile-idiopathic-arthritis-guideline",
       "Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30",
       "Marcelino J, Carpten JD, Suwairi WM, et al. CACP, encoding a secreted proteoglycan, is mutated in camptodactyly-arthropathy-coxa vara-pericarditis syndrome. Nat Genet. 1999;23(3):319-322. doi:10.1038/15496",
       "Bahabri SA, Suwairi WM, Laxer RM, et al. The camptodactyly-arthropathy-coxa vara-pericarditis syndrome: clinical features and genetic mapping to human chromosome 1. Arthritis Rheum. 1998;41(4):730-735. PMID: 9550484",
@@ -5385,6 +5448,62 @@
         "expect": [
           "concerns"
         ]
+      },
+      {
+        "text": "Tell me about his joints.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Were there any problems when he was born?",
+        "locale": "en",
+        "expect": [
+          "birth-development"
+        ]
+      },
+      {
+        "text": "Has he had anti-inflammatories for this?",
+        "locale": "en",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "What do you think might be causing this?",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "孩子主要有什么问题？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "说说他的情况吧。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "几岁会走路的？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth-development"
+        ]
+      },
+      {
+        "text": "您觉得是什么原因？",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
       }
     ]
   },
@@ -5398,6 +5517,19 @@
         ]
       }
     ],
-    "exact": {}
+    "exact": {
+      "ANA": [
+        "antibody-tests"
+      ],
+      "ANA test": [
+        "antibody-tests"
+      ],
+      "查ANA": [
+        "antibody-tests"
+      ],
+      "ANA检测": [
+        "antibody-tests"
+      ]
+    }
   }
 }

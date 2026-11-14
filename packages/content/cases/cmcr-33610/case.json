@@ -43,8 +43,8 @@
     ],
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编（原文为中文）。本版（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容——8岁4个月男孩，阴茎增大、声音变粗6个月；生长、发育、出生、手术和家族史；发育体征和外生殖器检查；睾酮与GnRH激发试验、骨龄、垂体MRI、肾上腺和睾丸等影像、两次核型；前上纵隔肿物与β-hCG；肿物切除与病理；一年随访——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（各项结果在哪个阶段出现）、决策、处置选项、评分、医护角色以及家长说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、基础LH、肾上腺激素、AFP数值、肿物的影像方式、症状、麻醉和手术细节、病理分级、远期结局）保持未知。1.0.0版中英文之间的几处出入作为原样保留并列入README的“To verify”。本病例没有图片。",
-      "en": "Adapted from a single published case report (written in Chinese). Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a boy of 8 years 4 months with six months of penile enlargement and a deepening voice; his growth, development, birth, operation and family history; the pubertal and genital examination; testosterone with a GnRH stimulation test, bone age, pituitary MRI, adrenal, testicular and other imaging and two karyotypes; the anterosuperior mediastinal mass and β-hCG; the resection and histology; the one-year follow-up — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (which result opens in which phase), decisions, intervention options, scoring, staff and the parent's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, basal LH, adrenal steroids, the AFP value, the imaging modality of the mass, symptoms, anaesthetic and surgical details, histological grade, long-term outcome) stays unknown. The few differences between the Chinese and English text of 1.0.0 are kept and listed under \"To verify\" in the README. The case has no figures."
+      "zh-CN": "依据单篇已发表病例报告改编（原文为中文）。本版（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容——8岁4个月男孩，阴茎增大、声音变粗6个月；生长、发育、出生、手术和家族史；发育体征和外生殖器检查；睾酮与GnRH激发试验、骨龄、垂体MRI、肾上腺和睾丸等影像、两次核型；前上纵隔肿物与β-hCG；肿物切除与病理；一年随访——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（各项结果在哪个阶段出现）、决策、处置选项、评分、医护角色以及家长说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、基础LH、肾上腺激素、可用的AFP数值、肿物的影像方式、症状、麻醉和手术细节、病理分级、远期结局）保持未知。1.0.0版中英文之间的几处出入作为原样保留并列入README的“To verify”。本病例没有图片。",
+      "en": "Adapted from a single published case report (written in Chinese). Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a boy of 8 years 4 months with six months of penile enlargement and a deepening voice; his growth, development, birth, operation and family history; the pubertal and genital examination; testosterone with a GnRH stimulation test, bone age, pituitary MRI, adrenal, testicular and other imaging and two karyotypes; the anterosuperior mediastinal mass and β-hCG; the resection and histology; the one-year follow-up — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (which result opens in which phase), decisions, intervention options, scoring, staff and the parent's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, basal LH, adrenal steroids, a usable AFP value, the imaging modality of the mass, symptoms, anaesthetic and surgical details, histological grade, long-term outcome) stays unknown. The few differences between the Chinese and English text of 1.0.0 are kept and listed under \"To verify\" in the README. The case has no figures."
     },
     "review": {
       "status": "editorial",
@@ -61,8 +61,8 @@
         "AAP policy statement: Use of chaperones for the pediatric and adolescent encounter (Pediatrics 2025; checked in its abstract only)"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过一轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance and one independent editorial review round (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过两轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance and two independent editorial review rounds (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
       }
     }
   },
@@ -125,7 +125,7 @@
       },
       {
         "zh-CN": "生长加速",
-        "en": "Growth spurt"
+        "en": "Accelerated growth"
       }
     ],
     "persona": {
@@ -312,7 +312,8 @@
           "变粗",
           "声音",
           "变声",
-          "下面变大"
+          "下面变大",
+          "怎么发现"
         ],
         "en": [
           "what brings",
@@ -348,7 +349,9 @@
           "哪个先",
           "体味",
           "狐臭",
-          "气味"
+          "气味",
+          "先是",
+          "还是先"
         ],
         "en": [
           "grow",
@@ -362,7 +365,9 @@
           "came first",
           "odour",
           "odor",
-          "smell"
+          "smell",
+          "happened first",
+          "which was first"
         ]
       },
       "disclosure": "volunteer",
@@ -395,7 +400,9 @@
           "长了多少",
           "增重",
           "瘦了",
-          "变瘦"
+          "变瘦",
+          "多重",
+          "体重多少"
         ],
         "en": [
           "grown",
@@ -408,7 +415,9 @@
           "heavier",
           "put on",
           "gained",
-          "lost weight"
+          "lost weight",
+          "how heavy",
+          "weigh now"
         ]
       },
       "excludeKeywords": {
@@ -489,7 +498,12 @@
           "relatives",
           "odour",
           "odor",
-          "smell"
+          "smell",
+          "dad",
+          "mum",
+          "mother",
+          "parents",
+          "brother"
         ]
       },
       "required": true,
@@ -517,7 +531,9 @@
           "先后",
           "顺序",
           "先出现",
-          "第一个变化"
+          "第一个变化",
+          "先是",
+          "还是先"
         ],
         "en": [
           "came first",
@@ -525,7 +541,10 @@
           "whichfirst",
           "inwhatorder",
           "sequence",
-          "earliest sign"
+          "earliest sign",
+          "happened first",
+          "what came first",
+          "whichwasfirst"
         ]
       },
       "disclosure": "unknown",
@@ -570,7 +589,11 @@
           "development",
           "developmental delay",
           "slow to develop",
-          "behind"
+          "behind",
+          "walker",
+          "walking",
+          "talking",
+          "first words"
         ]
       },
       "excludeKeywords": {
@@ -580,14 +603,24 @@
           "学习",
           "成绩",
           "同学",
-          "上学"
+          "上学",
+          "爸爸",
+          "父亲",
+          "妈妈",
+          "母亲",
+          "家里人"
         ],
         "en": [
           "six months",
           "recently",
           "school",
           "classmates",
-          "learning"
+          "learning",
+          "dad",
+          "father",
+          "mum",
+          "mother",
+          "family"
         ]
       },
       "required": true,
@@ -816,7 +849,9 @@
           "几岁发育",
           "爸爸发育",
           "父亲青春期",
-          "家里人发育"
+          "家里人发育",
+          "爸爸小时候",
+          "父亲小时候"
         ],
         "en": [
           "puberty early",
@@ -825,7 +860,9 @@
           "dad's puberty",
           "start puberty",
           "started puberty",
-          "very early"
+          "very early",
+          "went through puberty",
+          "go through puberty"
         ]
       },
       "disclosure": "unknown",
@@ -839,14 +876,19 @@
           "早产",
           "生的时候",
           "走路",
-          "说话"
+          "说话",
+          "体味",
+          "气味"
         ],
         "en": [
           "born",
           "birth",
           "premature",
           "walk",
-          "talk"
+          "talk",
+          "smell",
+          "odour",
+          "odor"
         ]
       }
     },
@@ -1287,7 +1329,11 @@
           "发育分期",
           "Tanner分期",
           "查体",
-          "体格检查"
+          "体格检查",
+          "查个体",
+          "检查身体",
+          "后背",
+          "背上"
         ],
         "en": [
           "height",
@@ -1301,7 +1347,8 @@
           "pubertal stage",
           "secondary sexual",
           "examine him",
-          "examination"
+          "examination",
+          "his back"
         ]
       },
       "finding": {
@@ -1326,7 +1373,15 @@
           "睾丸",
           "阴囊",
           "下面",
-          "下体"
+          "下体",
+          "肚子",
+          "腹部",
+          "听诊",
+          "听听",
+          "血压",
+          "视野",
+          "脖子",
+          "颈部"
         ],
         "en": [
           "genital",
@@ -1334,7 +1389,16 @@
           "testes",
           "testicle",
           "scrotum",
-          "private"
+          "private",
+          "abdomen",
+          "abdominal",
+          "tummy",
+          "belly",
+          "listen",
+          "auscultat",
+          "blood pressure",
+          "visual field",
+          "neck"
         ]
       }
     },
@@ -1424,7 +1488,8 @@
           "stimulation test",
           "lhrh test",
           "lh and fsh",
-          "lh/fsh"
+          "lh/fsh",
+          "lhrh stimulation"
         ]
       },
       "requires": [
@@ -1624,7 +1689,9 @@
           "骨龄",
           "骨龄片",
           "手腕片",
-          "左手片"
+          "左手片",
+          "手腕X线",
+          "腕骨片"
         ],
         "en": [
           "bone age",
@@ -1772,7 +1839,8 @@
           "pituitary mri",
           "pituitary scan",
           "sella mri",
-          "mri pituitary"
+          "mri pituitary",
+          "mri of the pituitary"
         ]
       },
       "requires": [
@@ -1871,7 +1939,8 @@
           "睾丸B超",
           "睾丸超声",
           "阴囊超声",
-          "肾上腺超声"
+          "肾上腺超声",
+          "阴囊B超"
         ],
         "en": [
           "adrenal ultrasound",
@@ -2330,8 +2399,8 @@
         },
         "search": {
           "text": {
-            "zh-CN": "β-hCG 16.0 IU/L（当地参考上限5.3）。AFP：报告中有AFP结果，但其中部分单位有疑问，本病例不显示AFP数值。",
-            "en": "β-hCG 16.0 IU/L (upper limit of the local reference range 5.3). AFP: the report gives AFP results, some with questionable units; this case shows no AFP value."
+            "zh-CN": "β-hCG 16.0 IU/L（当地参考上限5.3）。AFP：有结果记录，但部分单位存疑，未给出AFP数值。",
+            "en": "β-hCG 16.0 IU/L (upper limit of the local reference range 5.3). AFP: results are on file, some with questionable units; no AFP value is given."
           },
           "source": {
             "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：前上纵隔肿物，β-hCG 16.0 IU/L（当地上限5.3）；原文部分AFP单位异常，未改写为标准值",
@@ -2355,20 +2424,39 @@
           }
         },
         "theatre": {
-          "available": false,
           "text": {
-            "zh-CN": "这一阶段没有这项检查的结果记录。",
-            "en": "No result for this test is recorded at this stage."
+            "zh-CN": "β-hCG 16.0 IU/L（当地参考上限5.3）。AFP：有结果记录，但部分单位存疑，未给出AFP数值。",
+            "en": "β-hCG 16.0 IU/L (upper limit of the local reference range 5.3). AFP: results are on file, some with questionable units; no AFP value is given."
           },
           "source": {
-            "zh-CN": "分阶段呈现：这一阶段没有结果",
-            "en": "Staged evidence: no result at this stage"
+            "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：前上纵隔肿物，β-hCG 16.0 IU/L（当地上限5.3）；原文部分AFP单位异常，未改写为标准值",
+            "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): with the anterosuperior mediastinal mass, β-hCG 16.0 IU/L (local upper limit 5.3); questionable AFP units in the source were not normalised"
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "β-hCG",
+                "en": "β-hCG"
+              },
+              "value": 16.0,
+              "unit": "IU/L",
+              "refHigh": 5.3,
+              "flag": "H"
+            }
+          ],
+          "note": {
+            "zh-CN": "标本类型，以及这次采血与胸部影像和手术的先后顺序，均未记录。这一阶段没有其他结果记录。",
+            "en": "The specimen and the timing of this sample relative to the chest imaging and the operation are not recorded. No other result is recorded at this stage."
+          },
+          "date": {
+            "zh-CN": "既往记录",
+            "en": "Earlier record"
           }
         },
         "followup": {
           "text": {
-            "zh-CN": "一年随访时β-hCG 0.7 IU/L。本病例不显示AFP数值。",
-            "en": "At one year of follow-up: β-hCG 0.7 IU/L. No AFP value is shown in this case."
+            "zh-CN": "一年随访时β-hCG 0.7 IU/L。AFP：未给出数值。",
+            "en": "At one year of follow-up: β-hCG 0.7 IU/L. AFP: no value is given."
           },
           "source": {
             "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：一年随访β-hCG 0.7 IU/L",
@@ -2415,7 +2503,8 @@
           "ct chest",
           "chest mri",
           "mediastinum",
-          "ct thorax"
+          "ct thorax",
+          "x-ray of the chest"
         ]
       },
       "requires": [
@@ -2461,14 +2550,21 @@
           }
         },
         "theatre": {
-          "available": false,
           "text": {
-            "zh-CN": "这一阶段没有这项检查的结果记录。",
-            "en": "No result for this test is recorded at this stage."
+            "zh-CN": "前上纵隔肿物。",
+            "en": "A mass in the anterosuperior mediastinum."
           },
           "source": {
-            "zh-CN": "分阶段呈现：这一阶段没有结果",
-            "en": "Staged evidence: no result at this stage"
+            "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：前上纵隔肿物",
+            "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): anterosuperior mediastinal mass"
+          },
+          "note": {
+            "zh-CN": "检查方式、肿物在影像上的大小、与气管和大血管的关系以及有无积液，均未记录。这一阶段没有其他影像记录。",
+            "en": "The modality, the size of the mass on imaging, its relation to the trachea and great vessels, and any effusion are not recorded. No other imaging is recorded at this stage."
+          },
+          "date": {
+            "zh-CN": "既往记录",
+            "en": "Earlier record"
           }
         },
         "followup": {
@@ -2508,7 +2604,9 @@
           "pathology",
           "operation record",
           "operative note",
-          "histopathology"
+          "histopathology",
+          "operation note",
+          "op note"
         ]
       },
       "requires": [
@@ -2819,7 +2917,10 @@
           "肿瘤科会诊",
           "外科会诊",
           "胸外科会诊",
-          "肿瘤会诊"
+          "肿瘤会诊",
+          "心胸外科会诊",
+          "转胸外科",
+          "请外科看看"
         ],
         "en": [
           "mdt",
@@ -2828,7 +2929,18 @@
           "tumor board",
           "oncology referral",
           "surgical referral",
-          "thoracic surgery referral"
+          "thoracic surgery referral",
+          "refer to surgery",
+          "refer to the surgeons",
+          "refer to thoracic surgery",
+          "refer to cardiothoracic surgery",
+          "cardiothoracic surgeons",
+          "cardiothoracic referral",
+          "thoracic surgery consult",
+          "surgical consult",
+          "surgical opinion",
+          "surgical review",
+          "ask the surgeons"
         ]
       },
       "excludeKeywords": {
@@ -2898,8 +3010,12 @@
           "tracheal compression",
           "assess his airway",
           "assess the airway",
-          "anaesthetist",
-          "anesthetist"
+          "ask the anaesthetist",
+          "ask the anesthetist",
+          "anaesthetist review",
+          "anaesthetist to see him",
+          "call the anaesthetist",
+          "echo"
         ]
       },
       "requires": [],
@@ -2985,6 +3101,39 @@
       "response": {
         "zh-CN": "手术已完成，所见和切除物见“手术及病理记录”。",
         "en": "The operation has been done; what was found and removed is in the operation and histology record."
+      },
+      "excludeKeywords": {
+        "en": [
+          "refer",
+          "consult",
+          "opinion",
+          "review",
+          "see him",
+          "biopsy",
+          "for the ct",
+          "for the scan",
+          "assess",
+          "airway",
+          "sedat",
+          "midazolam",
+          "chloral",
+          "premed"
+        ],
+        "zh-CN": [
+          "会诊",
+          "转诊",
+          "转介",
+          "看看",
+          "活检",
+          "穿刺",
+          "做CT",
+          "做检查",
+          "评估",
+          "气道",
+          "镇静",
+          "咪达唑仑",
+          "水合氯醛"
+        ]
       }
     },
     {
@@ -3025,8 +3174,8 @@
     {
       "id": "sedation",
       "name": {
-        "zh-CN": "镇静后做检查或操作（水合氯醛或咪达唑仑）",
-        "en": "Sedate him for a scan or procedure (chloral hydrate or midazolam)"
+        "zh-CN": "镇静或全身麻醉下做检查或操作（水合氯醛、咪达唑仑或全麻）",
+        "en": "Sedate or anaesthetise him for a scan or procedure (chloral hydrate, midazolam or a general anaesthetic)"
       },
       "kind": "medication",
       "aliases": {
@@ -3035,19 +3184,31 @@
           "水合氯醛",
           "咪达唑仑",
           "镇静后检查",
-          "打镇静"
+          "打镇静",
+          "全麻下做CT",
+          "全麻下做检查",
+          "麻醉下做CT",
+          "麻醉下做检查"
         ],
         "en": [
           "sedate",
           "sedation",
           "chloral hydrate",
           "midazolam",
-          "sedate him for the ct"
+          "sedate him for the ct",
+          "general anaesthetic for the scan",
+          "general anaesthetic for the ct",
+          "general anesthetic for the ct",
+          "ct under general anaesthesia",
+          "anaesthetise him for the ct",
+          "anaesthetise him for the scan",
+          "ga for the ct",
+          "put him to sleep for the scan"
         ]
       },
       "dose": {
-        "zh-CN": "口服水合氯醛或静脉咪达唑仑（本病例不给出剂量）。",
-        "en": "Oral chloral hydrate or IV midazolam (no dose is given in this case)."
+        "zh-CN": "口服水合氯醛、静脉咪达唑仑或全身麻醉（本病例不给出剂量）。",
+        "en": "Oral chloral hydrate, IV midazolam or a general anaesthetic (no dose is given in this case)."
       },
       "requires": [
         "medications"
@@ -3074,12 +3235,12 @@
         ]
       },
       "harm": {
-        "zh-CN": "在评估气道和循环、多学科定出方案之前给前纵隔肿物的孩子镇静，可能导致气道或循环塌陷，在影像室等手术室以外的地方尤其危险。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：即使没有呼吸道症状，这样的孩子也可能在全麻诱导时塌陷；要避免过度镇静和肌张力丧失、保留自主呼吸，并先进行多学科讨论；在手术室以外操作时，一旦硬质支气管镜或ECMO不能迅速启动，就可能变得极其危险。",
-        "en": "Sedating a child with an anterior mediastinal mass before the airway and circulation are assessed and a team plan is agreed risks airway or circulatory collapse, above all off-site in a scanner. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): such children can collapse on induction even without respiratory symptoms; avoid oversedation and loss of muscle tone, keep spontaneous ventilation and hold a multidisciplinary huddle first; procedures off-site can become prohibitively dangerous if rigid bronchoscopy or ECMO cannot be started quickly."
+        "zh-CN": "在评估气道和循环、多学科定出方案之前给前纵隔肿物的孩子镇静或麻醉，可能导致气道或循环塌陷，在影像室等手术室以外的地方尤其危险。SPA病例指南《前纵隔肿物患者的麻醉》（2024）：即使没有呼吸道症状，这样的孩子也可能在全麻诱导时塌陷；要避免过度镇静和肌张力丧失、保留自主呼吸，并先进行多学科讨论；在手术室以外操作时，一旦硬质支气管镜或ECMO不能迅速启动，就可能变得极其危险。",
+        "en": "Sedating or anaesthetising a child with an anterior mediastinal mass before the airway and circulation are assessed and a team plan is agreed risks airway or circulatory collapse, above all off-site in a scanner. SPA case guide, Anesthesia for patients with anterior mediastinal mass (2024): such children can collapse on induction even without respiratory symptoms; avoid oversedation and loss of muscle tone, keep spontaneous ventilation and hold a multidisciplinary huddle first; procedures off-site can become prohibitively dangerous if rigid bronchoscopy or ECMO cannot be started quickly."
       },
       "response": {
-        "zh-CN": "已镇静。报告没有记录他做任何检查时是否用过镇静。",
-        "en": "Sedation given. The report does not record whether he was sedated for any scan."
+        "zh-CN": "已执行。报告没有记录他做任何检查时是否用过镇静或麻醉。",
+        "en": "Done. The report does not record whether he was sedated or anaesthetised for any scan."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -3100,7 +3261,18 @@
           "anesthetic assessment",
           "airway",
           "before any sedation",
-          "before sedation"
+          "before sedation",
+          "anaesthetist review",
+          "ask the anaesthetist",
+          "before the general",
+          "before any general",
+          "before a general",
+          "before general",
+          "before anaesth",
+          "before the anaesth",
+          "before any anaesth",
+          "before an anaesth",
+          "echo"
         ]
       }
     },
@@ -3528,8 +3700,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。中枢性性早熟要有LH的证据（基础或激发后LH达到青春期水平），不能只凭体征；他的睾丸只有5–6 mL，与阴毛Ⅲ–Ⅳ期不相称，提示可能是外周来源。ESPE/LWPES共识（2009）：GnRH类似物是中枢性性早熟的标准治疗，用于其他情况不能常规推荐；先用药还会让随后的激发试验无法解读。",
-            "en": "No. Central precocious puberty needs LH evidence (a pubertal basal or stimulated LH), not signs alone, and testes of 5–6 mL beside stage III–IV pubic hair point towards a peripheral source. ESPE/LWPES consensus (2009): GnRH analogues are the standard treatment of central precocious puberty and cannot be suggested routinely for other conditions; giving one first also makes the later stimulation test uninterpretable."
+            "zh-CN": "不对。中枢性性早熟要有LH的证据（基础或激发后LH达到青春期水平），不能只凭体征；他的睾丸只有5–6 mL，与阴毛Ⅲ–Ⅳ期不相称，提示可能是外周来源。ESPE/LWPES共识（2009）：GnRH类似物是中枢性性早熟的标准治疗，用于其他情况不能常规推荐。此外，先用药还会让随后的激发试验无法解读。",
+            "en": "No. Central precocious puberty needs LH evidence (a pubertal basal or stimulated LH), not signs alone, and testes of 5–6 mL beside stage III–IV pubic hair point towards a peripheral source. ESPE/LWPES consensus (2009): GnRH analogues are the standard treatment of central precocious puberty and cannot be suggested routinely for other conditions. Giving one first would also make the later stimulation test uninterpretable."
           }
         },
         {
@@ -4178,8 +4350,8 @@
         "en": "Dr Cen (paediatric endocrinology attending)"
       },
       "knowledge": {
-        "zh-CN": "这是一例历史病例教学，按时间推进：入院病史与查体、第一批检查、结果解读、进一步寻找来源、处理新的发现、随访。用苏格拉底式提问引导：睾丸大小和男性化程度相称吗？在用任何药之前要先证明什么？LH对GnRH的反应说明性腺轴处于什么状态？一个遗传学结果能解释全部表现吗？任何镇静或麻醉之前要先评估什么、和谁一起决定？复盘按PEARLS进行（反应、描述、分析、总结）。不提前透露检查结果、诊断或结局；病历没有记录的内容（生命体征、基础LH、17-羟孕酮、AFP数值、手术方式、病理分级、麻醉经过）不要替它补上。",
-        "en": "This is a historical teaching case that moves through time: admission history and examination, the first tests, reading the results, looking further for the source, acting on what is found, and follow-up. Use Socratic questions: are the testes in proportion to the virilisation? What must be shown before any drug is started? What does the LH response to GnRH say about the axis? Can one genetic result explain everything? What needs assessing, and with whom, before any sedation or anaesthetic? Debrief with PEARLS (reactions, description, analysis, summary). Do not reveal results, the diagnosis or the outcome early, and do not supply what the notes do not record (vital signs, basal LH, 17-OHP, the AFP value, the surgical approach, the histological grade, the anaesthetic course)."
+        "zh-CN": "这是一例历史病例教学，按时间推进：入院病史与查体、第一批检查、结果解读、进一步寻找来源、处理新的发现、随访。用苏格拉底式提问引导：睾丸大小和男性化程度相称吗？在用任何药之前要先证明什么？LH对GnRH的反应说明性腺轴处于什么状态？一个遗传学结果能解释全部表现吗？任何镇静或麻醉之前要先评估什么、和谁一起决定？复盘按PEARLS进行（反应、描述、分析、总结）。不提前透露检查结果、诊断或结局；病历没有记录的内容（生命体征、基础LH、17-羟孕酮、可用的AFP数值、手术方式、病理分级、麻醉经过）不要替它补上。",
+        "en": "This is a historical teaching case that moves through time: admission history and examination, the first tests, reading the results, looking further for the source, acting on what is found, and follow-up. Use Socratic questions: are the testes in proportion to the virilisation? What must be shown before any drug is started? What does the LH response to GnRH say about the axis? Can one genetic result explain everything? What needs assessing, and with whom, before any sedation or anaesthetic? Debrief with PEARLS (reactions, description, analysis, summary). Do not reveal results, the diagnosis or the outcome early, and do not supply what the notes do not record (vital signs, basal LH, 17-OHP, a usable AFP value, the surgical approach, the histological grade, the anaesthetic course)."
       },
       "interprets": [
         "gnrh-test",
@@ -4254,8 +4426,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单个病例报告：不能据此估计Klinefelter综合征男孩发生纵隔肿瘤的概率，也不能比较不同的手术或随访方式。报告的处理作为历史事实记录；决策、处置选项和评分依据现行指南设计，属于教学设计。病历没有记录生命体征、基础LH、肾上腺激素、AFP数值、肿物的影像方式及其与气道的关系、手术方式、病理分级和一年以后的经过。",
-      "en": "This is a single case report: it cannot estimate how often boys with Klinefelter syndrome develop mediastinal tumours, nor compare operations or follow-up schedules. The report's management is recorded as historical fact; the decisions, intervention options and scoring follow current guidance and are teaching design. The notes record no vital signs, basal LH, adrenal steroids, AFP value, imaging modality or airway relation of the mass, surgical approach, histological grade or course beyond one year."
+      "zh-CN": "这是单个病例报告：不能据此估计Klinefelter综合征男孩发生纵隔肿瘤的概率，也不能比较不同的手术或随访方式。报告的处理作为历史事实记录；决策、处置选项和评分依据现行指南设计，属于教学设计。病历没有记录生命体征、基础LH、肾上腺激素、可用的AFP数值、肿物的影像方式及其与气道的关系、手术方式、病理分级和一年以后的经过。",
+      "en": "This is a single case report: it cannot estimate how often boys with Klinefelter syndrome develop mediastinal tumours, nor compare operations or follow-up schedules. The report's management is recorded as historical fact; the decisions, intervention options and scoring follow current guidance and are teaching design. The notes record no vital signs, basal LH, adrenal steroids, a usable AFP value, imaging modality or airway relation of the mass, surgical approach, histological grade or course beyond one year."
     },
     "unknowns": [
       {
@@ -4279,8 +4451,8 @@
         "en": "The post-operative course; where the \"one year\" of follow-up is counted from; LH/FSH, bone age and growth at follow-up; puberty, growth, fertility and Klinefelter care beyond one year."
       },
       {
-        "zh-CN": "用药、过敏、疫苗、外源性激素接触、家族中的青春期发育年龄、各项体征出现的先后顺序，以及陪同家长是父亲还是母亲。",
-        "en": "Medicines, allergies, vaccinations, contact with outside hormones, the age of puberty in relatives, the order in which the signs appeared, and whether the parent with him is his mother or father."
+        "zh-CN": "用药、过敏、疫苗、外源性激素接触、平时的日常活动、家族中的青春期发育年龄、各项体征出现的先后顺序，以及陪同家长是父亲还是母亲。",
+        "en": "Medicines, allergies, vaccinations, contact with outside hormones, his usual daily activities, the age of puberty in relatives, the order in which the signs appeared, and whether the parent with him is his mother or father."
       }
     ],
     "teachingPoints": [
@@ -4345,8 +4517,8 @@
       "en": "The post-operative course; where the \"one year\" of follow-up is counted from; LH/FSH, bone age and growth at follow-up; puberty, growth, fertility and Klinefelter care beyond one year."
     },
     {
-      "zh-CN": "用药、过敏、疫苗、外源性激素接触、家族中的青春期发育年龄、各项体征出现的先后顺序，以及陪同家长是父亲还是母亲。",
-      "en": "Medicines, allergies, vaccinations, contact with outside hormones, the age of puberty in relatives, the order in which the signs appeared, and whether the parent with him is his mother or father."
+      "zh-CN": "用药、过敏、疫苗、外源性激素接触、平时的日常活动、家族中的青春期发育年龄、各项体征出现的先后顺序，以及陪同家长是父亲还是母亲。",
+      "en": "Medicines, allergies, vaccinations, contact with outside hormones, his usual daily activities, the age of puberty in relatives, the order in which the signs appeared, and whether the parent with him is his mother or father."
     }
   ],
   "assets": [],
@@ -5021,6 +5193,60 @@
       {
         "text": "他身上有没有体味？",
         "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "Which happened first, the voice or the penis?",
+        "locale": "en",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "先是声音变粗，还是先阴茎变大？",
+        "locale": "zh-CN",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "How old was his dad when he went through puberty?",
+        "locale": "en",
+        "expect": [
+          "family-puberty"
+        ]
+      },
+      {
+        "text": "他爸爸小时候发育早吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-puberty"
+        ]
+      },
+      {
+        "text": "Was he a late walker?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "你们是怎么发现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "他现在多重？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Has he started to smell like an adult?",
+        "locale": "en",
         "expect": []
       }
     ]
