@@ -434,7 +434,8 @@ session's precheck makes), the instrument vocabulary (`INSTRUMENT_OPS`, `colleag
 operator holds, into the place, when its instrument's control is the place's; a colleague hands theirs over
 themselves), **Hand back**, **Hand to …** (members of the team as it is whose controls cover the port; operating, the
 operator's own ports — "Take back" a colleague's), an insert into an empty port (a colleague's only the laparoscope
-into a camera port, a grasper or the suction into an assist port, by control) and its withdrawal. In the scrub nurse's
+into a camera port, a grasper or the suction into an assist port, by control) and its withdrawal; a colleague has two
+hands (`COLLEAGUE_PORTS`), so a place holding two ports is offered no third, nor is anyone handed one. In the scrub nurse's
 place, where every instrument is passed first, an insert with no pass waiting becomes **Ask for the …** — the team's
 ask (`team ask {field: {op: "pass"}}`) of the member who passes. `controlsForPlace` gives the actions through a port
 the learner holds: traction, suction and irrigation by control, never the operator's own steps. **The camera block**
