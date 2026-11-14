@@ -319,14 +319,45 @@ describe("crossed hands and whose step it was", () => {
     expect(assess(team, r.s).procedure).toMatchObject({ unsafe: [{ code: "excessive-traction", by: "doc-1" }], injuries: [{ kind: "perforation", by: "doc-1" }] });
   });
 
-  it("anyone in the room may say an injury aloud: no control needed, recorded with who said it", () => {
+  it("anyone in the room may say an injury aloud: no control needed, recorded with who said it — crediting nobody else", () => {
     const r = at(team, [...IN, TAKE("doc-1", "B"), BY("doc-1", { ...NECK_OP, force: "excessive" }), BY("anaes-1", { op: "recognise", injury: "perforation" })]);
     expect(r.rejected).toEqual([]);
-    expect(r.p.injuries[0]).toMatchObject({ kind: "perforation", recognised: true, recognisedBy: "anaes-1" });
-    expect(r.p.counters.falseAlarms).toBe(0);
-    // said by the operator first, it is the operator's
+    // the anaesthetist said it first; the operator has not: it is not the operator's recognition
+    expect(r.p.injuries[0]).toMatchObject({ kind: "perforation", recognised: false, recognisedBy: "anaes-1" });
+    expect(evaluate(team, r.s, { procedure: { injury: "any", recognised: false } })).toBe(true);
+    expect(evaluate(team, r.s, { procedure: { injury: "perforation", recognised: true } })).toBe(false);
+    // said by the operator too, it is recognised — and the anaesthetist still said it first
+    const both = at(team, [...IN, TAKE("doc-1", "B"), BY("doc-1", { ...NECK_OP, force: "excessive" }), BY("anaes-1", { op: "recognise", injury: "perforation" }), OP({ op: "recognise", injury: "perforation" })]);
+    expect(both.p.injuries[0]).toMatchObject({ recognised: true, recognisedBy: "anaes-1" });
+    // said by the operator first, it is the operator's alone
     const mine = at(team, [...IN, OP({ ...NECK_OP, force: "excessive" }), OP({ op: "recognise", injury: "perforation" }), BY("nurse-2", { op: "recognise", injury: "perforation" })]);
+    expect(mine.p.injuries[0]).toMatchObject({ recognised: true });
     expect(mine.p.injuries[0]!.recognisedBy).toBeUndefined();
+  });
+
+  it("a colleague's word is not the operator's: going on to clip after only a colleague said it is continuing after an injury", () => {
+    // ready to clip the cystic duct; then the operator's own traction tears the gallbladder
+    const ready = [...REFERENCE_OPS.slice(0, 22).map(OP), OP({ ...NECK_OP, force: "excessive" })];
+    const CLIP = OP(REFERENCE_OPS[22]!);
+    expect(REFERENCE_OPS[22]).toMatchObject({ op: "clip", handle: "T2" });
+    const continued = (r: { p: { unsafe: { code: string }[] } }) => r.p.unsafe.some((u) => u.code === "continued-after-injury");
+    const heard = at(team, [...ready, BY("anaes-1", { op: "recognise", injury: "perforation" }), CLIP]);
+    expect(heard.rejected).toEqual([]);
+    expect(continued(heard)).toBe(true);
+    const said = at(team, [...ready, OP({ op: "recognise", injury: "perforation" }), CLIP]);
+    expect(said.rejected).toEqual([]);
+    expect(continued(said)).toBe(false);
+  });
+
+  it("a colleague's false alarm is recorded as theirs, never on the operator's count", () => {
+    const r = at(team, [...IN, BY("nurse-1", { op: "recognise", injury: "bile-duct-injury" }), OP({ op: "recognise", injury: "bleeding" })]);
+    expect(r.rejected).toEqual([]);
+    expect(r.p.colleagueFalseAlarms).toEqual([{ injury: "bile-duct-injury", by: "nurse-1", at: expect.any(Number) }]);
+    expect(r.p.counters.falseAlarms).toBe(1);
+    expect(assess(team, r.s).procedure).toMatchObject({ counters: { falseAlarms: 1 }, colleagueFalseAlarms: [{ injury: "bile-duct-injury", by: "nurse-1" }] });
+    // with none, nothing is recorded
+    expect(at(team, [...IN, OP({ op: "recognise", injury: "bleeding" })]).p.colleagueFalseAlarms).toBeUndefined();
+    expect(assess(team, at(team, IN).s).procedure).not.toHaveProperty("colleagueFalseAlarms");
   });
 });
 
@@ -360,18 +391,25 @@ describe("the camera: aimed and zoomed by its holder", () => {
   it("aim is refused without the scope, with the field closed and at an unknown region; a close view needs an aim", () => {
     const r = at(team, [...OPEN, OP(AIM("cystic-plate")), OP(SCOPE_IN), OP({ op: "desufflate" }), OP(AIM("cystic-plate")), OP({ op: "insufflate", pressure: 12 }), OP(AIM("nowhere")), OP(ZOOM("close")), OP(AIM()), OP(ZOOM("close"))]);
     expect(r.rejected).toEqual([
-      { op: "aim", code: "requirements-unmet", message: 'No instrument is in port "A".' },
-      { op: "aim", code: "requirements-unmet", message: "The field is not in view: insufflate and put the laparoscope in." },
-      { op: "aim", code: "unknown-id", message: 'There is no region "nowhere".' },
+      { op: "aim", code: "requirements-unmet", reason: "no-instrument", message: 'No instrument is in port "A".' },
+      { op: "aim", code: "requirements-unmet", reason: "field-closed", message: "The field is not in view: insufflate and put the laparoscope in." },
+      { op: "aim", code: "unknown-id", reason: "unknown-region", message: 'There is no region "nowhere".' },
       { op: "zoom", code: "requirements-unmet", reason: "aim-first", message: "Aim the camera first: a close view needs a region to look at." },
       { op: "zoom", code: "requirements-unmet", reason: "aim-first", message: "Aim the camera first: a close view needs a region to look at." },
     ]);
-    // only the laparoscope aims, and only from the camera port
-    expect(at(team, [...IN, OP({ op: "aim", port: "B", at: "cystic-plate" })]).rejected[0]!.message).toBe('The grasper in port "B" cannot aim.');
+    // only the laparoscope aims, and only from the camera port of the plan
+    expect(at(team, [...IN, OP({ op: "aim", port: "B", at: "cystic-plate" })]).rejected).toEqual([{ op: "aim", code: "invalid", reason: "instrument-cannot", message: 'The grasper in port "B" cannot aim.' }]);
+    expect(at(team, [...IN, OP({ op: "zoom", port: "Z", level: "wide" })]).rejected).toEqual([{ op: "zoom", code: "unknown-id", reason: "unknown-port", message: 'There is no port "Z" in the chosen plan.' }]);
     const wide: ProcedureDefinition = { ...team.procedure!, portPlans: team.procedure!.portPlans.map((p) => ({ ...p, ports: p.ports.map((x) => ({ ...x, sizeMm: 10 })) })) };
     let s = createProcedureState();
     for (const op of [REFERENCE_OPS[0]!, REFERENCE_OPS[1]!, { op: "insert", port: "B", instrument: "laparoscope" }] as ProcedureOp[]) s = operate(wide, s, op, 0).state;
     expect(operate(wide, s, { op: "aim", port: "B", at: "cystic-plate" }, 0).rejected).toEqual({ code: "invalid", message: 'Port "B" is a working port: the laparoscope is aimed from the camera port.', reason: { key: "camera-port", params: { port: "B", role: "working" } } });
+    // no picture (the tower off): the reason says so, the engine's sentence as it was
+    const dark = operate(team.procedure!, { ...at(team, IN).p, supply: { image: false, gas: true } }, { op: "aim", port: "A", at: "cystic-plate" }, 0).rejected;
+    expect(dark?.reason).toEqual({ key: "no-picture", params: {} });
+    expect(dark?.message).toMatch(/^There is no picture: /);
+    // the params a front-end fills its sentence with
+    expect(operate(team.procedure!, at(team, IN).p, { op: "aim", port: "B" }, 0).rejected?.reason).toEqual({ key: "instrument-cannot", params: { instrument: "grasper", op: "aim", port: "B" } });
   });
 
   it("the operator's work off the aim is counted and signalled — never a colleague's, never without an aim; out of frame only when close", () => {
@@ -454,7 +492,7 @@ describe("the scrub nurse passes", () => {
     ]);
     expect(r.rejected).toEqual([
       { op: "pass", code: "invalid", reason: "colleague-only", message: "The operator does not pass instruments: the scrub nurse passes them." },
-      { op: "pass", code: "unknown-id", message: "No lap-us is on the instrument table." },
+      { op: "pass", code: "unknown-id", reason: "not-on-table", message: "No lap-us is on the instrument table." },
       { op: "pass", code: "invalid", reason: "pass-self", message: "nurse-2 cannot pass the grasper to themselves." },
       { op: "pass", code: "invalid", reason: "pass-waiting", message: "The grasper has already been passed to the operator: it is waiting to go in." },
       { op: "pass", code: "invalid", reason: "needs-control", message: "doc-1 cannot pass the hook: it needs the instruments control, which doc-1 does not hold." },

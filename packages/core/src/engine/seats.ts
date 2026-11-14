@@ -267,15 +267,33 @@ export function memberControls(c: CaseDefinition, choice: TeamChoice, ref: strin
 }
 
 /**
+ * A staff member's first listing in the case team, present in this encounter or not: the members, the line-ups'
+ * assistants, the team scenarios' relief colleagues, the cover (undefined: the team never lists them).
+ */
+function listing(c: CaseDefinition, ref: string): TeamMember | undefined {
+  const team = c.team;
+  if (!team) return undefined;
+  const all = [...team.members, ...(team.lineups ?? []).flatMap((l) => l.members), ...(team.scenarios ?? []).flatMap((x) => x.relief ?? []), ...(team.cover ?? [])];
+  return all.find((m) => m.staff === ref);
+}
+
+/**
  * What a step's actor may work in the operative field: the operator — no actor, the `surgeon` token, the stand-in while
  * the learner holds a place — is unrestricted; a member of the team as it is holds their controls (`memberControls`);
- * a colleague outside it, traction and suction (`LEGACY_COLLEAGUE`); a body with no part in the field (`refOfBody`'s
- * `null`), nothing.
+ * a colleague outside it, traction and suction (`LEGACY_COLLEAGUE`) — only those their own controls allow when the case
+ * team lists them but they are not in it this encounter (a line-up not chosen, a scenario's relief or absent member, the
+ * cover: an absent scrub nurse holds none, as present); a body with no part in the field (`refOfBody`'s `null`), nothing.
  */
 export function fieldControls(c: CaseDefinition, s: TeamChoice, ref?: string | null): Controls {
   if (ref === null) return [];
   if (ref === undefined || ref === SURGEON || ref === operatorOf(c, s)) return "all";
-  return memberControls(c, s, ref) ?? [...LEGACY_COLLEAGUE];
+  const own = memberControls(c, s, ref);
+  if (own) return own;
+  const listed = listing(c, ref);
+  if (!listed) return [...LEGACY_COLLEAGUE];
+  const p = canonicalOf(listed);
+  const theirs = listed.controls ?? (p ? DEFAULT_CONTROLS[p] : []);
+  return ordered(LEGACY_COLLEAGUE.filter((x) => theirs.includes(x)));
 }
 
 /**
@@ -352,16 +370,29 @@ export interface FieldGateRefusal {
 
 const refusal = (code: FieldGateRefusal["code"], message: string, key: FieldRefusal, params: Record<string, string>): FieldGateRefusal => ({ code, message, reason: { key, params } });
 
+/** The staff the encounter's team scenario makes absent (away: they take no part). */
+function absentIn(c: CaseDefinition, s: TeamChoice): ReadonlySet<string> {
+  const scenario = s.teamScenario ? (c.team?.scenarios ?? []).find((x) => x.id === s.teamScenario) : undefined;
+  return new Set(scenario?.absent ?? []);
+}
+
 /**
- * Whom a (normalised) step hands to or passes to must be someone of the team as it is: a pass's `to` always, and a
- * hand-over's `to` while the learner holds a place (otherwise a colleague outside the team may still take a port handed
- * to them, as always). Null: nothing to refuse.
+ * Whom a (normalised) step names must be able to take part. Nobody the encounter's team scenario makes absent does a
+ * step or is handed or passed anything, with a place or without (`member-absent`). Whom a step hands to or passes to
+ * must be someone of the team as it is: a pass's `to` always, and a hand-over's `to` while the learner holds a place
+ * (otherwise a colleague outside the team may still take a port handed to them, as always; `unknown-member`). `actor`:
+ * the colleague doing the step (absent: the operator). Null: nothing to refuse.
  */
-export function stepPartyRefusal(c: CaseDefinition, s: TeamChoice, op: ProcedureOp): FieldGateRefusal | null {
-  if ((op.op !== "pass" && op.op !== "hand-over") || op.to === undefined) return null;
+export function stepPartyRefusal(c: CaseDefinition, s: TeamChoice, op: ProcedureOp, actor?: string): FieldGateRefusal | null {
+  const to = op.op === "pass" || op.op === "hand-over" ? op.to : undefined;
+  const away = absentIn(c, s);
+  for (const who of [actor, to]) {
+    if (who !== undefined && away.has(who)) return refusal("invalid", `${who} is absent in this encounter (team scenario "${s.teamScenario}"): they take no part in the operation.`, "member-absent", { who });
+  }
+  if (to === undefined) return null;
   if (op.op === "hand-over" && s.seat === undefined) return null;
-  if (effectiveTeam(c, s).some((m) => m.staff === op.to)) return null;
-  return refusal("unknown-id", `There is no "${op.to}" in the team.`, "unknown-member", { who: op.to });
+  if (effectiveTeam(c, s).some((m) => m.staff === to)) return null;
+  return refusal("unknown-id", `There is no "${to}" in the team.`, "unknown-member", { who: to });
 }
 
 /** The control a colleague works an instrument with: the laparoscope the camera, a grasper traction, the suction suction; null for every other instrument — the operator's own. */
@@ -433,15 +464,23 @@ function doing(op: ProcedureOp, instrument: InstrumentId | null | undefined, tak
  * The control gate of the operative field (docs/PROCEDURE.md §3; the reducer asks it before the physics, and it only
  * refuses): an operator's step (no `actor`) is free; a colleague's step that only the operator does is left to the field,
  * which says so itself ("Only the operator does …"); any other step of a colleague needs the control it is worked with
- * (`fieldControlFor`) — their own (`fieldControls`), or `controls` when a session narrows them (a colleague outside the
- * team, by their facility position) — and putting in, taking out or handing on an instrument only the operator works is
- * refused. A hand-over to a colleague also needs the one who takes it to hold that instrument's control. `s.procedure`:
- * the field the step is asked of (the port's instrument). Null: nothing to refuse.
+ * (`fieldControlFor`), and putting in, taking out or handing on an instrument only the operator works is refused. A
+ * hand-over to a colleague also needs the one who takes it to hold that instrument's control. Whose controls: each
+ * colleague's own (`fieldControls`), or `controlsOf` when a session narrows them — for the actor and for the one who
+ * takes a port alike (a colleague outside the team, by their facility position: `bodyControls`). `s.procedure`: the field
+ * the step is asked of (the port's instrument). Null: nothing to refuse.
  */
-export function seatCheck(c: CaseDefinition, s: TeamChoice & Pick<SessionState, "procedure">, op: ProcedureOp, actor?: string, controls?: Controls): FieldGateRefusal | null {
+export function seatCheck(
+  c: CaseDefinition,
+  s: TeamChoice & Pick<SessionState, "procedure">,
+  op: ProcedureOp,
+  actor?: string,
+  controlsOf?: (ref: string) => Controls,
+): FieldGateRefusal | null {
+  const controls = (ref: string): Controls => controlsOf?.(ref) ?? fieldControls(c, s, ref);
   const port = "port" in op ? s.procedure?.ports.find((p) => p.site === op.port) : undefined;
   const instrument = "instrument" in op ? op.instrument : port?.instrument;
-  const own = actor === undefined ? "all" : (controls ?? fieldControls(c, s, actor));
+  const own = actor === undefined ? "all" : controls(actor);
   // the operator's own step — whoever operates is unrestricted
   if (actor !== undefined && own !== "all") {
     const need = fieldControlFor(op, port?.instrument);
@@ -459,7 +498,7 @@ export function seatCheck(c: CaseDefinition, s: TeamChoice & Pick<SessionState, 
   // the one who takes an instrument holds its control
   if (op.op === "hand-over" && op.to !== undefined && op.to !== actor && port?.instrument) {
     const need = instrumentControl(port.instrument);
-    const theirs = fieldControls(c, s, op.to);
+    const theirs = controls(op.to);
     if (need === null) return refusal("invalid", `The ${port.instrument} is the operator's own instrument: ${op.to} cannot take it.`, "needs-control", { who: op.to, control: "operate", op: op.op, instrument: port.instrument, port: port.site });
     if (!holds(theirs, need)) return refusal("invalid", `${op.to} cannot take the ${port.instrument} in port "${port.site}": it needs the ${need} control, which ${op.to} does not hold.`, "needs-control", { who: op.to, control: need, op: op.op, instrument: port.instrument, port: port.site });
   }

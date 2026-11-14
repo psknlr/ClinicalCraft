@@ -30,6 +30,9 @@ describe("the operative field's words", () => {
     }
     expect(rt("en", "op.reason.port-held", { holder: "Dr Mori", instrument: "grasper", port: "B" })).toBe("Dr Mori holds the grasper in port B: ask for it back first.");
     expect(rt("zh-CN", "op.reason.pass-first", { instrument: "抓钳", to: "术者" })).toBe("抓钳还没有递给术者：在洗手护士岗位上，每件器械都要先递再置入。");
+    // two ports at most is a colleague's rule: the operator works three in the reference plan
+    expect(rt("en", "op.reason.hands-full", { who: "Dr Mori", ports: "A, D" })).toBe("Dr Mori already holds two ports (A, D): a colleague holds at most two.");
+    expect(rt("zh-CN", "op.reason.hands-full", { who: "森医生", ports: "A, D" })).toBe("森医生已握持两个孔（A, D）：同事最多握持两个孔。");
   });
 
   it("call a port's role the assist port, never the assistant", () => {

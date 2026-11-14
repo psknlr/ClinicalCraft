@@ -421,8 +421,9 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
 
 /**
  * One step of the operation (docs/PROCEDURE.md §5): the field changes only here. The step comes normalised (`reduce`:
- * the stand-in surgeon is the operator, a `to` the operator no `to`); the gates only refuse — someone the step names
- * must be of the team as it is, a colleague needs the control the step is worked with (`seatCheck`), and in the scrub
+ * the stand-in surgeon is the operator, a `to` the operator no `to`); the gates only refuse — nobody the team scenario
+ * makes absent takes part and someone the step hands or passes to must be of the team as it is (`stepPartyRefusal`), a
+ * colleague needs the control the step is worked with (`seatCheck`), and in the scrub
  * nurse's place every instrument is passed before it goes in (`passingRequired`) — and then the field's own physics,
  * whose every change depends only on the state, the op and the actor (the web's playback replays it so). Closure reads
  * the count (docs/TEAM.md §4.3): while it is not settled, closure is refused (`team.count.closure: "refuse"`) or carried
@@ -436,7 +437,7 @@ function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
   // the operation's first step: it opens with the equipment as recorded so far (a fault before it stays a fault)
   const field = procedureStateOf(ctx.s);
-  const gate = stepPartyRefusal(ctx.c, ctx.s, a.op) ?? seatCheck(ctx.c, { ...ctx.s, procedure: field }, a.op, a.actor);
+  const gate = stepPartyRefusal(ctx.c, ctx.s, a.op, a.actor) ?? seatCheck(ctx.c, { ...ctx.s, procedure: field }, a.op, a.actor);
   if (gate) return rejected(gate.code, gate.message, gate.reason);
   if (a.op.op === "insert" && passingRequired(ctx.c, ctx.s) && waitingPass(field, a.op.instrument, a.actor) < 0) {
     const to = a.actor ?? "the operator";

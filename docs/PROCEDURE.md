@@ -126,7 +126,7 @@ frame for frame. Its rules for colleagues hold for anyone named as `actor`:
 
 - A colleague does `hand-over`, `retract`, `release`, `withdraw`, `suction`, `irrigate`, `aim`, `zoom`, `pass`,
   `recognise` and a restricted `insert` (`COLLEAGUE_OPS`); every other step is the operator's ("Only the operator does
-  "dissect": … assists (…)", reason `operator-only`).
+  "dissect": … assists (…)", the parentheses listing `COLLEAGUE_OPS` in that order; reason `operator-only`).
 - A colleague puts an instrument in only into an **empty port nobody holds**: the laparoscope into a camera port, a
   grasper or the suction into an assist port (`port-occupied`, `port-role`); they hold it then. So a camera holder puts
   the scope back after taking it out, and an assistant puts their own grasper into an assist port (four-port
@@ -144,9 +144,11 @@ The **gate** (the reducer, `engine/seats.ts`) is asked first, and only refuses:
    §1), or the token `surgeon` — is no actor, and a `hand-over` or `pass` `to` them has no `to` (back to the operator).
    The record's `procedure.step` (and an `action.rejected`) carries the step so: the stand-in's steps are the
    operator's, as every reference step is.
-2. **Whom a step names**: a pass's `to`, and a hand-over's while the learner holds a place, must be someone of the team
-   as it is (`effectiveTeam`: base members, the chosen line-up, the scenario's relief, less the absent;
-   `unknown-member`, `unknown-id`). Without a place a colleague outside the team still takes a port handed to them.
+2. **Whom a step names** (`stepPartyRefusal`): nobody the encounter's team scenario makes absent does a step or is
+   handed or passed anything, with a place or without (`invalid`, `member-absent`: away, they take no part). A pass's
+   `to`, and a hand-over's while the learner holds a place, must be someone of the team as it is (`effectiveTeam`: base
+   members, the chosen line-up, the scenario's relief, less the absent; `unknown-member`, `unknown-id`). Without a
+   place a colleague outside the team still takes a port handed to them.
 3. **Controls** (`seatCheck`): a colleague's step needs the control it is worked with (`fieldControlFor`): `aim` and
    `zoom` the `camera`; `retract` and `release` `retract`; `suction` and `irrigate` `suction`; `pass` `instruments`;
    putting in, taking out or handing on an instrument its own control (`instrumentControl`: the laparoscope `camera`,
@@ -156,19 +158,26 @@ The **gate** (the reducer, `engine/seats.ts`) is asked first, and only refuses:
    does is left to the physics, which says so itself; a port with nothing in it too ("nothing to hand over"). Refused
    `invalid`, reason `needs-control`. Whose controls: `fieldControls` (docs/TEAM.md §1) — the operator every one, a
    member of the team as it is their own, a colleague outside the team traction and suction (`LEGACY_COLLEAGUE`: no
-   camera); a session may narrow that set by a colleague's facility position (`seatCheck`'s `controls`).
+   camera), and only those their own position or controls allow when the case team lists them but they are not in it
+   this encounter (a line-up not chosen, a scenario's relief or absent member, the cover: a scrub nurse or an
+   anaesthetist none, a second assistant traction and suction) — never more than they hold when present. A session may
+   narrow a colleague's set by their facility position (`seatCheck`'s `controlsOf`, asked for the actor and for the one
+   who takes a port alike).
 4. **Passes**: in the scrub nurse's place (`passingRequired`) every insert — the operator's too — needs a pass of
    that instrument to the one who inserts it (`requirements-unmet`, `pass-first`). Nowhere else is a pass needed: a
    reference solution, `cases verify`, the benchmarks and the demonstration need none.
 
 A refusal carries a **reason** where this layer or the colleague rules give one — `reason: {key, params}` on the
 reducer's result and on the `action.rejected` event (`FIELD_REFUSALS`: `operator-only`, `port-held`, `not-handed`,
-`take-from-colleague`, `hands-full`, `needs-control`, `unknown-member`, `holds-already`, `not-a-party`,
-`port-occupied`, `port-role`, `camera-port`, `aim-first`, `colleague-only`, `pass-self`, `pass-waiting`, `pass-first`;
-params are staff ids, ports, instruments and ops) — which a front-end says in the learner's language with names; the
-English `message` stays the engine's, word for word. An `operate` action's `ref` (a short lower-case token) is
-informational: no rule reads it, and an accepted step records it in `ProcedureState.refs` (so a team member's progress
-is read from the record; docs/TEAM.md).
+`take-from-colleague`, `hands-full`, `needs-control`, `unknown-member`, `member-absent`, `holds-already`,
+`not-a-party`, `port-occupied`, `port-role`, `camera-port`, `aim-first`, `unknown-port`, `no-instrument`,
+`instrument-cannot`, `field-closed`, `no-picture`, `unknown-region`, `colleague-only`, `not-on-table`, `pass-self`,
+`pass-waiting`, `pass-first`; params are staff ids, ports, instruments, regions and ops) — which a front-end says in the
+learner's language with names; the English `message` stays the engine's. Every refusal of the camera's steps and of a
+pass carries one; the older steps' own refusals (an unknown port for a dissection, an instrument that cannot reach…)
+say the English only. An `operate` action's `ref` (a short lower-case token) is informational: no rule reads it, and
+an accepted step records it in `ProcedureState.refs` (so a team member's progress is read from the record;
+docs/TEAM.md).
 
 For now the learner is the operator in a session: no session offers a place in the team yet (docs/TEAM.md §1), and
 an `operate` with no `actor` is the learner's step as the operator, as it always was.
@@ -315,10 +324,14 @@ Major bleeding cannot be controlled laparoscopically in this model: it needs `ba
 `identify … as "uncertain"` records that the operator sees a structure and cannot name it: it stays
 unidentified for an irreversible step (`irreversible-on-unidentified`).
 
-`recognise` names an injury aloud: it marks matching injuries recognised, and counts a false alarm
-otherwise. Anyone in the room may say it — no control is needed —, and a colleague who says it first is recorded with
-it (`recognisedBy`); it credits nobody else. `image` (cholangiography through a free, clipped, undivided cystic duct, or ultrasound)
-makes duct injuries visible and shows the ducts by name.
+`recognise` names an injury aloud. The operator's marks matching injuries recognised (`recognised`: what the
+`{injury, recognised}` conditions, the safety gates and `continued-after-injury` read), and counts a false alarm
+otherwise (`counters.falseAlarms`). Anyone else in the room may say it too — no control is needed —, and it credits
+nobody else: a colleague's word is recorded with who said it — `recognisedBy` on an injury nobody had said aloud yet,
+or a false alarm of theirs in `colleagueFalseAlarms` (`{injury, by, at}`) — and the injury stays unrecognised until the
+operator says it (going on to an irreversible step before that is still `continued-after-injury`). `image`
+(cholangiography through a free, clipped, undivided cystic duct, or ultrasound) makes duct injuries visible and shows
+the ducts by name.
 
 Bail-outs work as follows:
 
@@ -440,10 +453,10 @@ instructor mode may show more, as long as it is never what a benchmark agent rec
 
 ## 8. Assessment and safety gates
 
-`assess` adds `procedure` (unsafe acts, injuries with whether each was recognised — with `by` for a colleague's step
-and `recognisedBy` for a colleague who said it first —, safety pauses with claims against the field, and counters)
-for the debrief. A case's `safetyGates` are conditions
-no score compensates:
+`assess` adds `procedure` (unsafe acts, injuries with whether the operator recognised each — with `by` for a
+colleague's step and `recognisedBy` for a colleague who said it first —, safety pauses with claims against the field,
+the counters, and a colleague's false alarms, `colleagueFalseAlarms`) for the debrief. A case's `safetyGates` are
+conditions no score compensates:
 
 - `safety-critical` gates set the verdict and cap the reported percentage (default 40). The uncapped
   figure stays in `score.uncapped`.

@@ -430,16 +430,20 @@ export type ProcedureSignal =
  * - `hands-full` {who, ports}: a colleague holds two ports already;
  * - `needs-control` {who, control, op, instrument, port}: a control the colleague does not hold (`control` `operate`:
  *   an instrument only the operator works);
- * - `unknown-member` {who}: a `to` who is not in the team as it is;
+ * - `unknown-member` {who}: a `to` who is not in the team as it is; `member-absent` {who}: an actor or a `to` the
+ *   encounter's team scenario makes absent — away, they take no part;
  * - `holds-already` {who, instrument, port} and `not-a-party` {instrument, port}: a hand-over to the one who has it,
  *   or by someone who neither holds nor takes it;
  * - `port-occupied` {port, instrument} and `port-role` {port, role, instrument}: a colleague puts an instrument only
  *   into an empty port of its kind (the laparoscope into a camera port, a grasper or the suction into an assist port);
  * - `camera-port` {port, role}: the camera's steps are worked from the camera port; `aim-first` {port}: a close view
- *   needs an aim;
- * - `colleague-only` {op}: a step the operator leaves to a colleague (a pass); `pass-self` {who, instrument};
- *   `pass-waiting` {instrument, to}: passed already, waiting to go in; `pass-first` {instrument, to}: in the scrub
- *   nurse's place every instrument is passed before it goes in (`to` empty: the operator).
+ *   needs an aim; `unknown-port` {port}, `no-instrument` {port}, `instrument-cannot` {instrument, op, port},
+ *   `field-closed` {} (no pneumoperitoneum or no laparoscope), `no-picture` {} (the camera or the light source is not
+ *   working) and `unknown-region` {region}: the camera's steps refused as any step on a port is;
+ * - `colleague-only` {op}: a step the operator leaves to a colleague (a pass); `not-on-table` {instrument}: a pass
+ *   of what is not on the instrument table; `pass-self` {who, instrument}; `pass-waiting` {instrument, to}: passed
+ *   already, waiting to go in; `pass-first` {instrument, to}: in the scrub nurse's place every instrument is passed
+ *   before it goes in (`to` empty: the operator).
  */
 export const FIELD_REFUSALS = [
   "operator-only",
@@ -449,13 +453,21 @@ export const FIELD_REFUSALS = [
   "hands-full",
   "needs-control",
   "unknown-member",
+  "member-absent",
   "holds-already",
   "not-a-party",
   "port-occupied",
   "port-role",
   "camera-port",
   "aim-first",
+  "unknown-port",
+  "no-instrument",
+  "instrument-cannot",
+  "field-closed",
+  "no-picture",
+  "unknown-region",
   "colleague-only",
+  "not-on-table",
   "pass-self",
   "pass-waiting",
   "pass-first",
@@ -494,14 +506,21 @@ export interface Injury {
   at: number;
   /** Seen in the field (bile, bleeding) — an occluded duct is not until imaged. */
   visible: boolean;
+  /** The operator said it aloud (`recognise` with no actor): what the gates and `continued-after-injury` read. */
   recognised: boolean;
   /** `major`: needs an open repair or a specialist; `minor`: manageable laparoscopically. */
   severity: "minor" | "major";
   /** The colleague whose step caused it (a staff id: excessive traction by an assistant); absent: the operator's. */
   by?: string;
-  /** The colleague who said it aloud first (anyone in the room may); absent: the operator, or not yet said. */
+  /**
+   * The colleague who said it aloud before anyone else did (anyone in the room may); absent: nobody, or the operator
+   * first. It credits nobody else: `recognised` stays the operator's own word.
+   */
   recognisedBy?: string;
 }
+
+/** What a `recognise` names aloud. */
+export type SaidInjury = Extract<ProcedureOp, { op: "recognise" }>["injury"];
 
 /** The camera's view (`aim`, `zoom`): the region it is aimed at (null: the whole field) and how close it looks. */
 export interface CameraView {
@@ -600,9 +619,14 @@ export interface ProcedureState {
   /** The `ref` of every accepted `operate` action that carried one, in order (informational, never read by a rule; absent until the first). */
   refs?: string[];
   /**
+   * A colleague's false alarms, in order: an injury they said aloud that the field does not have (`by` their staff id,
+   * `at` the clock); absent: none. The operator's own are counted in `counters.falseAlarms`.
+   */
+  colleagueFalseAlarms?: { injury: SaidInjury; by: string; at: number }[];
+  /**
    * `colleague`: the steps a colleague did themselves (absent: none) — the operator's are `steps - colleague`;
-   * `offView`: the operator's tissue steps in a region the camera was not aimed at (absent: none). Crossed hands count
-   * the operator's own steps only.
+   * `offView`: the operator's tissue steps in a region the camera was not aimed at (absent: none). Crossed hands and
+   * false alarms count the operator's own steps only.
    */
   counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number; colleague?: number; offView?: number };
 }

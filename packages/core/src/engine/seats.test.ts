@@ -22,8 +22,9 @@ import {
   type StaffPosition,
 } from "../schema/positions.js";
 import type { ProcedureOp } from "../schema/procedure.js";
+import type { ClinicalAction, SessionState } from "../schema/session.js";
 import { PLACES_TEAM, placesCase } from "./__fixtures__/team-places.js";
-import { lapCholeTeamCase } from "./procedure/__fixtures__/lap-chole-team.js";
+import { LAP_CHOLE_TEAM, lapCholeTeamCase, REFERENCE_OPS } from "./procedure/__fixtures__/lap-chole-team.js";
 import { COLLEAGUE_OPS, createProcedureState, operate } from "./procedure/index.js";
 import { createSession, reduce } from "./reducer.js";
 import {
@@ -346,8 +347,8 @@ describe("the operative field's gate by control (seatCheck)", () => {
     dissect: { op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false },
   });
   /** What the gate says to each step: "ok", or the control it lacks (`operate`: an instrument only the operator works). */
-  const verdicts = (choice: TeamChoice, actor: string, controls?: Controls) =>
-    Object.fromEntries(Object.entries(steps(actor)).map(([name, op]) => [name, seatCheck(k, { ...choice, procedure: field }, op, actor, controls)?.reason.params.control ?? "ok"]));
+  const verdicts = (choice: TeamChoice, actor: string, controlsOf?: (ref: string) => Controls) =>
+    Object.fromEntries(Object.entries(steps(actor)).map(([name, op]) => [name, seatCheck(k, { ...choice, procedure: field }, op, actor, controlsOf)?.reason.params.control ?? "ok"]));
   const ALL_OK = Object.fromEntries(Object.keys(steps("x")).map((name) => [name, "ok"]));
   const CAMERA = { aim: "camera", zoom: "camera", "scope in": "camera" };
   const RETRACT = { retract: "retract", release: "retract", "grasper in": "retract", "take the grasper": "retract" };
@@ -394,11 +395,11 @@ describe("the operative field's gate by control (seatCheck)", () => {
     const r = reduce(k, s, { type: "operate", op: steps("x").dissect!, actor: "or-7.assistant" });
     expect(r.rejected).toEqual({
       code: "invalid",
-      message: 'Only the operator does "dissect": or-7.assistant assists (hand-over, retract, release, withdraw, suction, irrigate).',
+      message: 'Only the operator does "dissect": or-7.assistant assists (hand-over, retract, release, withdraw, suction, irrigate, aim, zoom, pass, recognise, insert).',
       reason: { key: "operator-only", params: { op: "dissect", actor: "or-7.assistant" } },
     });
     // a session narrows a colleague's controls (by their facility position): the narrower set is the one asked
-    expect(verdicts({}, "or-7.assistant", [])).toEqual({ ...ALL_OK, pass: "instruments", ...OPERATOR, ...CAMERA, ...RETRACT, ...SUCTION });
+    expect(verdicts({}, "or-7.assistant", () => [])).toEqual({ ...ALL_OK, pass: "instruments", ...OPERATOR, ...CAMERA, ...RETRACT, ...SUCTION });
   });
 
   it("a hand-over to a taker without the control is refused, whoever hands it", () => {
@@ -409,6 +410,67 @@ describe("the operative field's gate by control (seatCheck)", () => {
     // nothing in the port: the field's own refusal ("nothing to hand over")
     const empty = operate(k.procedure!, field, { op: "withdraw", port: "B" }, 0).state;
     expect(seatCheck(k, { procedure: empty }, { op: "hand-over", port: "B", to: "nurse-2" }, "nurse-2")).toBeNull();
+  });
+
+  it("a colleague the team lists but who is not in it this encounter holds only what their own position allows", () => {
+    const covered = lapCholeTeamCase({ team: { ...structuredClone(LAP_CHOLE_TEAM), cover: [{ staff: "anaes-9", duties: ["anaesthesia"] }] } });
+    const away: TeamChoice = { teamScenario: "scrub-break" };
+    // listed, not in the team as it is: never more than present — the scrub nurse on a break, the relief of a scenario
+    // not chosen, the cover anaesthetist none; the second assistant of a line-up not chosen traction and suction
+    expect(fieldControls(k, away, "nurse-2")).toEqual([]);
+    expect(fieldControls(k, {}, "nurse-9")).toEqual([]);
+    expect(fieldControls(covered, {}, "anaes-9")).toEqual([]);
+    expect(fieldControls(k, {}, "doc-2")).toEqual(["retract", "suction"]);
+    // never listed: a colleague outside the team, as always
+    expect(fieldControls(k, {}, "or-7.assistant")).toEqual(["retract", "suction"]);
+    // their bodies ask the field the same
+    for (const [c, choice, ref] of [[k, away, "nurse-2"], [k, {}, "nurse-9"], [covered, {}, "anaes-9"], [k, {}, "doc-2"]] as [CaseDefinition, TeamChoice, string][]) {
+      expect(bodyControls(c, choice, null, `staff:${ref}`, "field"), ref).toEqual(fieldControls(c, choice, ref));
+    }
+    // so none of them takes the grasper but the second assistant
+    const take = (c: CaseDefinition, choice: TeamChoice, to: string) => seatCheck(c, { ...choice, procedure: field }, { op: "hand-over", port: "B", to }, to)?.reason ?? null;
+    expect(take(k, away, "nurse-2")).toMatchObject({ key: "needs-control", params: { who: "nurse-2", control: "retract" } });
+    expect(take(k, {}, "nurse-9")).toMatchObject({ key: "needs-control", params: { who: "nurse-9", control: "retract" } });
+    expect(take(covered, {}, "anaes-9")).toMatchObject({ key: "needs-control", params: { who: "anaes-9", control: "retract" } });
+    expect(take(k, {}, "doc-2")).toBeNull();
+  });
+
+  it("nobody the team scenario makes absent does a step or is handed or passed anything, with a place or without", () => {
+    const theatre = (start: Record<string, unknown>) => {
+      let s = reduce(k, createSession(k), { type: "start", ...start } as ClinicalAction).state;
+      if (s.phase !== "theatre") s = reduce(k, s, { type: "set-phase", phase: "theatre" }).state;
+      for (const op of REFERENCE_OPS.slice(0, 5)) s = reduce(k, s, { type: "operate", op }).state;
+      expect(s.procedure!.ports.map((p) => p.instrument)).toEqual(["laparoscope", "grasper", "maryland"]);
+      return s;
+    };
+    const step = (s: SessionState, op: ProcedureOp, actor?: string) => reduce(k, s, { type: "operate", op, ...(actor ? { actor } : {}) });
+    const onBreak = theatre({ team: "scrub-break" });
+    expect(step(onBreak, { op: "hand-over", port: "B", to: "nurse-2" }).rejected).toEqual({
+      code: "invalid",
+      message: 'nurse-2 is absent in this encounter (team scenario "scrub-break"): they take no part in the operation.',
+      reason: { key: "member-absent", params: { who: "nurse-2" } },
+    });
+    for (const op of [{ op: "recognise", injury: "bleeding" }, { op: "pass", instrument: "hook" }, { op: "hand-over", port: "B", to: "nurse-2" }] as ProcedureOp[]) {
+      expect(step(onBreak, op, "nurse-2").rejected?.reason, op.op).toEqual({ key: "member-absent", params: { who: "nurse-2" } });
+    }
+    expect(step(onBreak, { op: "pass", instrument: "hook", to: "nurse-2" }, "nurse-9").rejected?.reason?.key).toBe("member-absent");
+    // the relief scrub nurse passes in her place
+    expect(step(onBreak, { op: "pass", instrument: "hook" }, "nurse-9").rejected).toBeUndefined();
+    // the second assistant called away from a three-surgeon line-up takes no port, though the position holds traction
+    const called = theatre({ lineup: "three-surgeons", team: "second-away" });
+    expect(step(called, { op: "hand-over", port: "B", to: "doc-2" }, "doc-2").rejected?.reason).toEqual({ key: "member-absent", params: { who: "doc-2" } });
+    // nobody away: as before
+    expect(step(theatre({ lineup: "three-surgeons" }), { op: "hand-over", port: "B", to: "doc-2" }, "doc-2").rejected).toBeUndefined();
+  });
+
+  it("a session narrows the one who takes a port as it narrows the actor (a colleague outside the team, by position)", () => {
+    const toOutsider: ProcedureOp = { op: "hand-over", port: "B", to: "or-7.circulating" };
+    // the field alone cannot see an outsider's position: traction and suction
+    expect(seatCheck(k, { procedure: field }, toOutsider)).toBeNull();
+    // the session knows them: a circulating nurse holds no traction
+    const known = (ref: string): Controls => (ref === "or-7.circulating" ? [] : fieldControls(k, {}, ref));
+    expect(seatCheck(k, { procedure: field }, toOutsider, undefined, known)?.reason).toEqual({ key: "needs-control", params: { who: "or-7.circulating", control: "retract", op: "hand-over", instrument: "grasper", port: "B" } });
+    expect(seatCheck(k, { procedure: field }, { ...toOutsider, to: "doc-1" }, undefined, known)).toBeNull();
   });
 
   it("the stand-in surgeon is the operator in a place: the actor and a `to` naming them are left out", () => {

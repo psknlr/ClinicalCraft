@@ -3,8 +3,9 @@
  * the operator — the step recorded without an actor, a `to` naming them without a `to`; whom a step names must be of the
  * team as it is; passes are needed in the scrub nurse's place only, and refused there with their reason; refusals carry
  * a structured reason on the result and on `action.rejected`; a step's `ref` is recorded when the step is accepted,
- * never when it is refused; the English messages the field said before stay as they were, byte for byte; and the
- * reference path reaches the same clinical outcome whatever the camera does — with no place, with the operating
+ * never when it is refused; the English messages the field said before stay as they were, byte for byte — but for the
+ * list in "Only the operator does …", which names the colleague's steps as they are now (`COLLEAGUE_OPS`) after the same
+ * prefix; and the reference path reaches the same clinical outcome whatever the camera does — with no place, with the operating
  * surgeon's, with a colleague holding and aiming the camera — in every anatomical variant.
  */
 import { describe, expect, it } from "vitest";
@@ -73,10 +74,10 @@ describe("in a place the stand-in surgeon is the operator", () => {
     const placed = all(k, theatre(k, { seat: "first-assistant" }), REFERENCE_OPS.slice(0, 5).map((op) => ({ op, actor: "doc-0" })));
     expect(step(k, placed, { op: "hand-over", port: "B", to: "or-7.assistant" }).rejected?.reason).toEqual({ key: "unknown-member", params: { who: "or-7.assistant" } });
     expect(step(k, placed, { op: "hand-over", port: "B", to: "doc-1" }).rejected).toBeUndefined();
-    // the relief of the scenario is of the team; the colleague they relieve is not
+    // the relief of the scenario is of the team; the colleague they relieve is away, and takes no part
     const relief = all(k, reduce(k, reduce(k, createSession(k), { type: "start", team: "scrub-break" }).state, { type: "set-phase", phase: "theatre" }).state, open);
     expect(step(k, relief, { op: "pass", instrument: "hook" }, "nurse-9").rejected).toBeUndefined();
-    expect(step(k, relief, { op: "pass", instrument: "hook", to: "nurse-2" }, "nurse-9").rejected?.code).toBe("unknown-id");
+    expect(step(k, relief, { op: "pass", instrument: "hook", to: "nurse-2" }, "nurse-9").rejected?.reason).toEqual({ key: "member-absent", params: { who: "nurse-2" } });
   });
 });
 
@@ -134,7 +135,7 @@ describe("the English messages stay as they were", () => {
   const ACCESS = REFERENCE_OPS.slice(0, 5).map((op) => ({ op }));
   const AS = "or-7.assistant";
 
-  it("the hand-over and holding refusals, word for word, now with their reasons", () => {
+  it("the hand-over and holding refusals, word for word, now with their reasons (a colleague's steps listed as they are)", () => {
     const s = all(c, theatre(c), ACCESS);
     const held = all(c, s, [{ op: { op: "hand-over", port: "B", to: AS }, actor: AS }]);
     const said = (r: ReduceResult) => [r.rejected?.message, r.rejected?.reason?.key];
@@ -152,7 +153,7 @@ describe("the English messages stay as they were", () => {
     ]).toEqual([
       ['or-7.assistant holds the grasper in port "B": ask them to hand it back first.', "port-held"],
       ['Port "C" is the operator\'s: it has not been handed to or-7.assistant.', "not-handed"],
-      ['Only the operator does "dissect": or-7.assistant assists (hand-over, retract, release, withdraw, suction, irrigate).', "operator-only"],
+      ['Only the operator does "dissect": or-7.assistant assists (hand-over, retract, release, withdraw, suction, irrigate, aim, zoom, pass, recognise, insert).', "operator-only"],
       ['No instrument is in port "B": there is nothing to hand over.', undefined],
       ['or-7.assistant already holds the grasper in port "B".', "holds-already"],
       ['The operator already holds the grasper in port "B".', "holds-already"],

@@ -106,16 +106,18 @@ present decides who holds the camera, never the learner's place.
 The resolvers (core `engine/seats.ts`) read only the case and the start's choices — the facility only for a staff
 member outside the team: `memberPosition`, `staffPosition` (for role cards and dress: the team's position, the
 facility's, the duties, the facility role's default), `memberControls`, `fieldControls` (the operative field: whoever
-operates is unrestricted, a member holds their controls, a colleague outside the team traction and suction),
-`bodyControls` (a body, in the field or in the world), `seatsOf`, `canJoinTeam`, `seatMember`, `operatorOf`,
+operates is unrestricted, a member holds their controls, a colleague outside the team traction and suction — only
+those their own position allows when the team lists them but they are not in it this encounter: a line-up not chosen,
+a scenario's relief or absent member, the cover), `bodyControls` (a body, in the field or in the world), `seatsOf`,
+`canJoinTeam`, `seatMember`, `operatorOf`,
 `standingBy`, `memberBody` and `refOfBody`. `refOfBody` is closed: a call with no body is the learner's body; it answers
 the operator (no actor) for the learner's body while the learner operates and for the stand-in's while the learner
 holds a place, a staff id for the learner's body in a place (that place's member) and for any other staff body, and
 nothing (`null`, to be refused) for the colleague standing by and for any other body. **The operative field enforces
 the controls** (docs/PROCEDURE.md §3: `seatCheck` — a colleague's step needs the control it is worked with, and taking
-an instrument its control; `passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the
-operator, `normaliseStep`); the world's operations, the scope of practice, delegation and the policies below do not
-read them yet.
+an instrument its control; `stepPartyRefusal` — a member the team scenario makes absent takes no part;
+`passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the operator, `normaliseStep`); the
+world's operations, the scope of practice, delegation and the policies below do not read them yet.
 
 ### Places
 

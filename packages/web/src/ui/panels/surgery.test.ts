@@ -271,6 +271,8 @@ describe("labels of the engine's values", () => {
       const k = `surgery.reason.${key}` as keyof typeof SURGERY_ZH;
       expect(blanks(SURGERY_ZH[k]), key).toEqual(blanks(SURGERY_EN[k]));
     }
+    // two ports at most is a colleague's rule, never everyone's (the operator works three)
+    expect([SURGERY_EN["surgery.reason.hands-full"], SURGERY_ZH["surgery.reason.hands-full"]]).toEqual(["{who} already holds two ports ({ports}): a colleague holds at most two.", "{who}已握持两个孔（{ports}）：同事最多握持两个孔。"]);
     // a port's role: the assist port, never "assistant" (the assistant is a person)
     expect([SURGERY_EN["surgery.role.assist"], SURGERY_ZH["surgery.role.assist"]]).toEqual(["assist", "辅助孔"]);
     setLocale("en");

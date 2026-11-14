@@ -211,6 +211,7 @@ function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport[
     injuries: p.injuries.map((i) => ({ kind: i.kind, structure: i.structure, recognised: i.recognised, severity: i.severity, ...(i.by ? { by: i.by } : {}), ...(i.recognisedBy ? { recognisedBy: i.recognisedBy } : {}) })),
     pauses: p.pauses.map((x) => ({ view: x.view, at: x.at, achieved: x.achieved, claimsMatchField: claimsMatchField(def, x) })),
     counters: { ...p.counters },
+    ...(p.colleagueFalseAlarms ? { colleagueFalseAlarms: p.colleagueFalseAlarms.map((a) => ({ ...a })) } : {}),
   };
 }
 
