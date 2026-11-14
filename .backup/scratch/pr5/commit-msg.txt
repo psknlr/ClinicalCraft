@@ -1,17 +1,19 @@
-CMCR 105: 3 more cases re-authored and reviewed (1.1.0)
+CMCR 105: 4 more cases re-authored and reviewed (1.1.0)
 
 Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-1067477: Recurrent heavy bleeding after an induced birth · 31-year-old woman (5 decisions, 18 interventions;
-  review: 1 critical, 10 major, 9 minor findings)
-- cmcr-857933: Recurrent haemoptysis and progressive breathlessness · 42-year-old woman (4 decisions, 12 interventions;
-  review: 1 critical, 4 major, 9 minor findings, 1 critical/major answered with a reason)
-- cmcr-858035: Breathlessness, blood-streaked sputum and aching legs · 30-year-old woman (5 decisions, 15 interventions;
-  review: 0 critical, 3 major, 14 minor findings)
+- cmcr-33666: Intermittent periumbilical pain and a very high platelet count · 5-year-old girl (5 decisions, 13 interventions;
+  review: 0 critical, 5 major, 15 minor findings)
+- cmcr-33789: Loss of consciousness after chest tightness · 66-year-old woman (5 decisions, 16 interventions;
+  review: 1 critical, 8 major, 10 minor findings)
+- cmcr-639083: Low blood glucose · 11-hour-old girl (5 decisions, 19 interventions;
+  review: 1 critical, 6 major, 11 minor findings)
+- cmcr-857953: Recurrent blood-streaked sputum and fever · 55-year-old woman (5 decisions, 14 interventions;
+  review: 2 critical, 6 major, 6 minor findings)
 
-Reviews: 2 critical, 17 major and 32 minor findings; every critical and major one fixed or
+Reviews: 4 critical, 25 major and 42 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

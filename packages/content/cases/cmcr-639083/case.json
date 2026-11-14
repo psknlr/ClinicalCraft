@@ -332,7 +332,10 @@
           "几个小时",
           "发现血糖低",
           "什么时候开始低",
-          "怎么回事"
+          "怎么回事",
+          "怎么了",
+          "哪里不好",
+          "开始低"
         ],
         "en": [
           "first found",
@@ -341,7 +344,13 @@
           "hours old",
           "picked up",
           "first noticed",
-          "whatshappened"
+          "whatshappened",
+          "bringsyouin",
+          "the matter",
+          "whatswrong",
+          "whathappened",
+          "start",
+          "began"
         ]
       },
       "excludeKeywords": {
@@ -979,6 +988,17 @@
       "source": {
         "zh-CN": "教学设计：家属的担忧为角色设定，不含病历事实",
         "en": "Teaching device: the relative's worry is part of the role and adds no clinical fact"
+      },
+      "excludeKeywords": {
+        "en": [
+          "when",
+          "start",
+          "began"
+        ],
+        "zh-CN": [
+          "什么时候",
+          "开始"
+        ]
       }
     },
     {
@@ -1001,7 +1021,10 @@
           "还低吗",
           "这几天",
           "好点没有",
-          "用了什么药"
+          "用了什么药",
+          "用了药",
+          "好些",
+          "管用"
         ],
         "en": [
           "since the medicines",
@@ -1172,8 +1195,8 @@
         "en": "What else has been arranged and tested for her since then?"
       },
       "answer": {
-        "zh-CN": "后来她转了院。医生给她和她爸妈都查了基因，还给她做了一个专门的扫描。",
-        "en": "She was transferred to another hospital later on. They did gene tests on her and on her mum and dad, and she had a special scan."
+        "zh-CN": "后来她转过院。她查过基因，她爸妈也查了，她还做过一个专门的扫描。",
+        "en": "At some point she was moved to another hospital. She's had gene tests — her mum and dad too — and a special scan."
       },
       "keywords": {
         "zh-CN": [
@@ -1309,7 +1332,9 @@
           "现在怎么样",
           "复查",
           "后来怎么样",
-          "恢复"
+          "恢复",
+          "孩子怎么样",
+          "现在好吗"
         ],
         "en": [
           "since the operation",
@@ -1317,7 +1342,9 @@
           "howisshenow",
           "check-up",
           "afterwards",
-          "recovered"
+          "recovered",
+          "howisshedoing",
+          "doing now"
         ]
       },
       "excludeKeywords": {
@@ -3774,7 +3801,7 @@
           "correct": true,
           "feedback": {
             "zh-CN": "正确。2024年国际高胰岛素血症指南：低血糖（<2.8 mmol/L）时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、注射胰高血糖素后血糖升高≥1.7 mmol/L提示高胰岛素血症，胰岛素可测得是支持证据。本例胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸和胰高血糖素反应没有记录，血氨因单位存疑无法判读。采样日龄不详，过渡期低血糖也会有同样的表现：PES 2015在生后48小时以后评估，2024年国际指南要求生后72小时内采的标本在72小时后复查，所以关键在于低血糖是否持续到过渡期之后。",
-            "en": "Right. By the 2024 international hyperinsulinism guideline, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucose rise ≥ 1.7 mmol/L after glucagon during hypoglycaemia (< 2.8 mmol/L) indicate hyperinsulinism, and measurable insulin supports it. Here insulin was 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids and a glucagon response are not recorded, and the ammonia cannot be read because its unit is doubtful. Her age at sampling is unknown, and transitional hypoglycaemia looks the same: PES 2015 evaluates after 48 hours and the 2024 guideline repeats a sample taken before 72 hours, so what counts is whether the lows persist beyond that window."
+            "en": "Right. By the 2024 international hyperinsulinism guideline, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucose rise ≥ 1.7 mmol/L after glucagon during hypoglycaemia (< 2.8 mmol/L) indicate hyperinsulinism, and measurable insulin supports it. Here insulin was 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids and a glucagon response are not recorded, and the ammonia cannot be read because its unit is doubtful. Her age at sampling is unknown, and transitional hypoglycaemia looks the same: PES 2015 evaluates after 48 hours, and the 2024 guideline asks for a sample taken before 72 hours to be repeated after 72 hours, so what counts is whether the lows persist beyond that window."
           }
         },
         {
@@ -4520,7 +4547,7 @@
       },
       {
         "zh-CN": "关键标本的判读（2024年国际高胰岛素血症指南）：血糖<2.8 mmol/L时β-羟丁酸<1.8 mmol/L、游离脂肪酸<1.7 mmol/L、胰高血糖素反应≥1.7 mmol/L提示胰岛素过多，胰岛素可测得是支持证据。本例血糖1.8 mmol/L、胰岛素11 μU/mL、C肽0.74 nmol/L、β-羟丁酸0.5 mmol/L；游离脂肪酸、皮质醇、生长激素和胰高血糖素反应没有记录，血氨单位存疑。过渡期低血糖可有相同表现——PES 2015在生后48小时以后评估，2024年国际指南要求72小时内采的标本在72小时后复查——所以要看低血糖是否持续。",
-        "en": "Reading the critical sample (2024 international hyperinsulinism guideline): at a glucose < 2.8 mmol/L, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucagon response ≥ 1.7 mmol/L indicate insulin excess, and measurable insulin supports it. Here glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids, cortisol, growth hormone and a glucagon response are not recorded, and the ammonia unit is doubtful. Transitional hypoglycaemia can look the same — PES 2015 evaluates after 48 hours, and the 2024 guideline repeats a sample taken before 72 hours — so persistence is what counts."
+        "en": "Reading the critical sample (2024 international hyperinsulinism guideline): at a glucose < 2.8 mmol/L, β-hydroxybutyrate < 1.8 mmol/L, free fatty acids < 1.7 mmol/L and a glucagon response ≥ 1.7 mmol/L indicate insulin excess, and measurable insulin supports it. Here glucose 1.8 mmol/L, insulin 11 µU/mL, C-peptide 0.74 nmol/L and β-hydroxybutyrate 0.5 mmol/L; free fatty acids, cortisol, growth hormone and a glucagon response are not recorded, and the ammonia unit is doubtful. Transitional hypoglycaemia can look the same — PES 2015 evaluates after 48 hours, and the 2024 guideline asks for a sample taken before 72 hours to be repeated after 72 hours — so persistence is what counts."
       },
       {
         "zh-CN": "二氮嗪的安全使用：一线药物（2024年国际指南），5–15 mg/(kg·d)分2–3次、从低端起、合用噻嗪类利尿剂并监测水钠潴留、肺动脉高压和中性粒细胞（PES 2020）；FDA 2015年警示先天性心脏病是二氮嗪相关肺动脉高压的危险因素，她有房间隔缺损和动脉导管未闭。疗效用院内监护下的禁食试验判断，绝不在家禁食。奥曲肽是二线药物，新生儿有坏死性小肠结肠炎的报道（Laje 2010）。报告记录用过两药仍频繁低血糖；本病例没有收录剂量，是否合用利尿剂也没有记录。",
@@ -5218,6 +5245,34 @@
         "locale": "en",
         "expect": [
           "pancreas-function"
+        ]
+      },
+      {
+        "text": "What brings you in with her today?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "孩子这是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "用了药以后血糖好些了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-medical"
+        ]
+      },
+      {
+        "text": "So how is she doing now?",
+        "locale": "en",
+        "expect": [
+          "status-outcome"
         ]
       },
       {

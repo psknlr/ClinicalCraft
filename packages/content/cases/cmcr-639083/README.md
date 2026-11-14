@@ -25,7 +25,7 @@ when the article text is available. Everything listed under "To verify" belongs 
 | Learner level | Final-year students, paediatric and neonatal residents; neonatal nurses for the first two phases |
 | Review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent AI-assisted review with fixes (2026-11-14); **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a neonatologist and a paediatric endocrinologist review it before teaching use |
 | Phases | `first-low` 生后11小时：第一次血糖偏低 / 11 hours old: the first low glucose → `recurrent` 此后：低血糖反复出现 / Afterwards: the lows keep coming back → `medical` 药物治疗期间 / On medical treatment → `localisation` 转诊与专科检查 / Referral and specialist tests → `outcome` 报告记录的转归与随访 / The recorded outcome and follow-up — none learner-switchable |
-| Content | 23 history items (6 required, 10 unknown; the relative answers) · 1 examination finding (the only one 1.0.0 records) · 16 investigations (4 record reviews; 8 results with no record) · 19 interventions (5 always contraindicated, 3 contraindicated in the wrong order; 5 marked `critical`) · 6 objectives · 5 decisions (20 options) · 13 rubric items (12 deterministic, weight 31; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| Content | 23 history items (6 required, 10 unknown; the relative answers) · 1 examination finding (the only one 1.0.0 records) · 16 investigations (4 record reviews; 8 results with no record) · 19 interventions (5 always contraindicated, 3 contraindicated in the wrong order; 5 marked `critical`) · 6 objectives · 5 decisions (20 options) · 13 rubric items (12 deterministic, weight 31; 1 examiner-judged; 2 critical) · 5 staff · 6 learning outcomes · 6 teaching points · 42 test utterances |
 
 ## Learning outcomes
 
@@ -375,10 +375,18 @@ stays 0.4583 days: the schema has no hour unit, and the core formatter shows "11
 
 ## Matcher notes
 
-* 38 `extensions.testUtterances` (19 zh-CN, 19 en), written as a learner would type them; none equals a keyword or a
+* 42 `extensions.testUtterances` (21 zh-CN, 21 en), written as a learner would type them; none equals a keyword or a
   canonical question; 2 look-alike negatives (a home address, parking). Every required item (onset, recurrence,
-  birth, mother's glucose, family, the treatment status) has at least one paraphrase; `cases verify` passes 38/38
+  birth, mother's glucose, family, the treatment status) has at least one paraphrase; `cases verify` passes 42/42
   with no extra selections in both languages.
+* Probed in the independent review (2026-11-14) with the core matcher, phase by phase: "What brings you in today?",
+  "What's the matter with her?", "What happened?" and "孩子怎么了？" reached no item, "When did the low sugar start?"
+  ranked the worry item `ice-first` above `onset`, "用了药血糖好些了吗？" missed the required `status-medical`, and
+  "How is she doing now?" / "现在孩子怎么样？" missed `status-outcome`. Fixed with keywords (`onset`: bringsyouin, the
+  matter, whatswrong, whathappened, start, began, 怎么了, 哪里不好, 开始低; `status-medical`: 用了药, 好些, 管用;
+  `status-outcome`: howisshedoing, doing now, 孩子怎么样, 现在好吗) and `ice-first` excluding when/start/began/什么时候/开始;
+  four of these questions are now in the corpus. "Any allergies?" reaches no item and gets the relative's "I'm not
+  sure, doctor." (allergies are not recorded).
 * `cases verify` scores every history item whatever its phase, so keywords are kept apart: the onset and recurrence
   items exclude words about signs (抖, 抽, jitter, fits), which go to `symptoms`; feeding and signs exclude each other;
   `newborn-medicines` excludes the mother, vaccines and side-effect words; `maternal-glucose` excludes family and
@@ -529,11 +537,11 @@ management reduces neonatal hypoglycaemia and hypoglycaemic brain injury. Ref. 9
 * **Card and voice.** Title "Low blood glucose · 11-hour-old girl"; spoiler-free summary distinct from the triage
   note; 3 patient tags; specialty adds `genetics`; the relative named in character; persona fields written as actor
   briefs; no authoring language in anything the carer says.
-* **Corpus and schema.** 38 paraphrased utterances with negatives; `sourceTextChecked: false` added.
+* **Corpus and schema.** 38 paraphrased utterances with negatives (42 after the review); `sourceTextChecked: false` added.
 * **Media.** `fig01`, `fig02` kept (approved, unattached), retitled.
 * **Independent review (2026-11-14), fixes.** Safety outcome: `critical: true` on the five high-risk interventions
-  that can be contraindicated (the strict lint warned on all five and the collection contract failed), and a
-  **Safety outcome.** paragraph. Assessment: an operation before the PET report has been read now loses the critical
+  that can be contraindicated (the strict lint warned on all five and the collection contract failed), and a **Safety
+  outcome.** paragraph. Assessment: an operation before the PET report has been read now loses the critical
   `rb-no-harm` (`valid: false`), which holds exactly the critical acts; empirical hydrocortisone, diazoxide before the
   critical sample has been read and octreotide before diazoxide lose the new `rb-drug-safety` (the earlier guide said
   the rubric could not express "A before B"; `valid: false` does); scores re-measured (31). Guidance: the PET
@@ -541,13 +549,16 @@ management reduces neonatal hypoglycaemia and hypoglycaemic brain injury. Ref. 9
   show diffuse disease, not "if the genetics suggest focal disease") in decision 4, teaching point 4 and the
   consultant's brief; testing both parents is tied to the guideline's paternal-inheritance statement; the transitional
   window cites the 2024 guideline's retest after 72 hours beside PES 2015's 48 hours; "focal disease is cured" became
-  "can be cured (> 95 % in some series)"; the discharge trap cites the 2024 guideline's section 4.1; the
-  results-first distractor cites BAPM 2024's practice point 21; the communication item adds SPIKES for the news of an
-  operation; references 7 (day) and 9 (DOI) completed. Facts: the relative no longer says "took blood" for the gene
-  tests (the specimen is not recorded); the hydrocortisone harm no longer shows the ACTH result before it is read; the
-  English conclusion now also gives the post-meal glucose (as the Chinese does); key reasoning 5 marks the new paternal
-  variant as an explanation the record cannot prove. In-world: the responses of the operation, octreotide and the
-  follow-up plan point to the records instead of quoting the recorded histology, failure and follow-up early.
+  "can be cured (> 95 % in some series)"; the discharge trap cites the 2024 guideline's section 4.1; the results-first
+  distractor cites BAPM 2024's practice point 21; the communication item adds SPIKES for the news of an operation;
+  references 7 (day) and 9 (DOI) completed. Facts: the relative no longer says "took blood" for the gene tests (the
+  specimen is not recorded) or implies that the tests followed the transfer (their order is not recorded); the
+  hydrocortisone harm no longer shows the ACTH result before it is read; the English conclusion now also gives the
+  post-meal glucose (as the Chinese does); key reasoning 5 marks the new paternal variant as an explanation the record
+  cannot prove. In-world: the responses of the operation, octreotide and the follow-up plan point to the records
+  instead of quoting the recorded histology, failure and follow-up early. Matcher: the presenting complaint in plain
+  words, a timing question about the lows, the treatment status in everyday Chinese and "how is she doing now" reached
+  the wrong item or none; keywords added and four questions added to the corpus (42 utterances).
 
 ### 1.0.0 — 2026-10-28
 
@@ -560,7 +571,7 @@ Run from the worktree root (all passed on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-639083/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-639083 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 38/38 · rubric 31/31
+npm run -s cc -- cases verify cmcr-639083 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 42/42 · rubric 31/31
 npx tsx --conditions=source scripts/case-check.ts cmcr-639083        # depth floor, do-nothing 0, wrong-first 52 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-639083:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-639083:"   # in-world demonstration, en + zh-CN

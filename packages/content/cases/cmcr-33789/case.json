@@ -7,8 +7,8 @@
     "en": "Loss of consciousness after chest tightness · 66-year-old woman"
   },
   "summary": {
-    "zh-CN": "一位住院中的女性胸闷后倒下、心脏骤停，抢救后仍未清醒：读懂一份不同寻常的心电图，决定再灌注与复苏后处理，并陪家属面对此后的病程。",
-    "en": "An inpatient collapses into cardiac arrest after chest tightness and stays unconscious after resuscitation: make sense of an unusual ECG, decide on reperfusion and post-arrest care, and stay with her family through what follows."
+    "zh-CN": "一位住院中的女性胸闷后很快呼之不应、心脏骤停，抢救后仍未清醒：读懂一份不同寻常的心电图，决定先做什么、再做什么，并陪家属面对此后的病程。",
+    "en": "An inpatient stops responding soon after chest tightness, goes into cardiac arrest and stays unconscious after resuscitation: make sense of an unusual ECG, decide what she needs first and what comes next, and stay with her family through what follows."
   },
   "specialty": [
     "cardiology",
@@ -29,16 +29,16 @@
       "en": "Recognise mirror-image dextrocardia at the bedside (a right-sided apex beat, faint heart sounds) and confirm it on the chest film; add a mirror-image ECG (arm electrodes swapped, chest electrodes mirrored onto the right chest) without letting it delay reperfusion."
     },
     {
-      "zh-CN": "对院内心脏骤停复苏后心电图仍有 ST 段抬高的患者，无论是否昏迷都立即启动直接 PCI 策略；能在诊断后 120 分钟内完成 PCI 时不选溶栓，并说明 PCI 前全量溶栓的危害（ESC 2023 ACS；ASSENT-4 PCI）。",
-      "en": "Start a primary PCI strategy at once for a patient resuscitated from an in-hospital cardiac arrest whose ECG still shows ST elevation, comatose or not, choosing PCI over fibrinolysis whenever it can be done within 120 minutes of diagnosis and explaining the harm of full-dose lysis before PCI (ESC 2023 ACS; ASSENT-4 PCI)."
+      "zh-CN": "对院内心脏骤停复苏后心电图仍有 ST 段抬高的患者，立即启动直接 PCI 策略——把昏迷纳入获益与风险的权衡，但不把早期昏迷当作治疗徒劳的证据；能在诊断后 120 分钟内完成 PCI 时不选溶栓，并说明 PCI 前全量溶栓的危害（ESC 2023 ACS；ASSENT-4 PCI）。",
+      "en": "Start a primary PCI strategy at once for a patient resuscitated from an in-hospital cardiac arrest whose ECG still shows ST elevation — weighing her coma, but not mistaking an early coma for futility — choosing PCI over fibrinolysis whenever it can be done within 120 minutes of diagnosis and explaining the harm of full-dose lysis before PCI (ESC 2023 ACS; ASSENT-4 PCI)."
     },
     {
-      "zh-CN": "给予复苏后的首要处置：确保气道并控制通气（SpO₂ 94%–98%、PaCO₂ 正常），平均动脉压 ≥ 65 mmHg，贴好除颤电极，持续监测核心体温并主动预防发热（> 37.7 ℃）至少 72 小时（ERC–ESICM 2025 复苏后治疗指南；ESC 2023 ACS）。",
-      "en": "Deliver the first post-resuscitation priorities — a secured airway with controlled ventilation (SpO₂ 94–98 %, a normal PaCO₂), a mean arterial pressure of at least 65 mmHg, defibrillator pads in place, continuous core-temperature monitoring and active prevention of fever (> 37.7 °C) for at least 72 hours (ERC–ESICM 2025 post-resuscitation care; ESC 2023 ACS)."
+      "zh-CN": "给予复苏后的首要处置：确保气道并控制通气（SpO₂ 94%–98%、PaCO₂ 正常），平均动脉压 > 60–65 mmHg，贴好除颤电极，持续监测核心体温，在她仍昏迷期间主动预防发热、把体温控制在 37.5 ℃ 及以下 36–72 小时（ERC–ESICM 2025 复苏后治疗指南）。",
+      "en": "Deliver the first post-resuscitation priorities — a secured airway with controlled ventilation (SpO₂ 94–98 %, a normal PaCO₂), a mean arterial pressure above 60–65 mmHg, defibrillator pads in place, continuous core-temperature monitoring and active prevention of fever, targeting 37.5 °C or less for 36–72 hours while she remains comatose (ERC–ESICM 2025 post-resuscitation care)."
     },
     {
-      "zh-CN": "从造影中找出罪犯血管——有新鲜血栓的闭塞血管，而不是导联名称所指的那支——急诊手术只处理罪犯病变，把左主干和前降支病变留给心脏团队，并说明为何不常规使用 IABP（ESC 2023 ACS）。",
-      "en": "Identify the culprit artery on the angiogram — the occluded vessel with fresh thrombus, not the one the lead names suggest — treat only the culprit in the emergency procedure, leave the left main and LAD disease to a Heart Team, and explain why an IABP is not routine (ESC 2023 ACS)."
+      "zh-CN": "从造影中找出罪犯血管——有血栓的闭塞血管，而不是导联名称所指的那支——对血流动力学不稳定的患者，急诊手术只处理罪犯病变，把左主干和前降支病变留给心脏团队，并说明为何不常规使用 IABP（ESC 2023 ACS）。",
+      "en": "Identify the culprit artery on the angiogram — the occluded vessel with thrombus, not the one the lead names suggest — treat only the culprit in the emergency procedure of a patient who is not haemodynamically stable, leave the left main and LAD disease to a Heart Team, and explain why an IABP is not routine (ESC 2023 ACS)."
     },
     {
       "zh-CN": "说明心脏骤停后早期双侧瞳孔散大、对光反射消失为什么不能用来决定治疗，并把多模式神经预后评估安排在复苏后至少 72 小时、排除镇静等干扰之后（ERC–ESICM 2025）。",
@@ -74,7 +74,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -87,7 +87,7 @@
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. Not yet reviewed by a licensed clinician."
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
       }
     }
   },
@@ -121,8 +121,8 @@
         "en": "Unconscious after resuscitation"
       },
       {
-        "zh-CN": "倒下前胸闷",
-        "en": "Chest tightness before the collapse"
+        "zh-CN": "呼之不应前先有胸闷",
+        "en": "Chest tightness before she stopped responding"
       }
     ],
     "persona": {
@@ -305,7 +305,11 @@
           "发生了什么",
           "什么情况",
           "怎么倒下的",
-          "为什么抢救"
+          "为什么抢救",
+          "说说经过",
+          "讲讲经过",
+          "事情经过",
+          "发病经过"
         ],
         "en": [
           "whathappened",
@@ -315,7 +319,8 @@
           "what went wrong",
           "the story",
           "howdidthishappen",
-          "howdidsheendup"
+          "howdidsheendup",
+          "brings her"
         ]
       },
       "excludeKeywords": {
@@ -330,7 +335,8 @@
           "家里",
           "过敏",
           "担心",
-          "住院"
+          "住院",
+          "在哪"
         ],
         "en": [
           "after",
@@ -341,7 +347,9 @@
           "family",
           "allerg",
           "worr",
-          "admitted"
+          "admitted",
+          "next",
+          "where"
         ]
       },
       "disclosure": "volunteer",
@@ -514,7 +522,8 @@
           "醒过",
           "醒了吗",
           "抢救过来",
-          "救回来"
+          "救回来",
+          "后来呢"
         ],
         "en": [
           "after she stopped",
@@ -708,10 +717,11 @@
         ],
         "en": [
           "now",
-          "worr"
+          "worr",
+          "blood pressure"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -721,8 +731,8 @@
       "id": "other-symptoms",
       "topic": "ros",
       "question": {
-        "zh-CN": "倒下之前，她有没有说喘不上气、心慌或者头晕？",
-        "en": "Before she collapsed, did she mention breathlessness, palpitations or dizziness?"
+        "zh-CN": "叫不应之前，她有没有说喘不上气、心慌或者头晕？",
+        "en": "Before she stopped responding, did she mention breathlessness, palpitations or dizziness?"
       },
       "answer": {
         "zh-CN": "这个我不清楚，医生。",
@@ -751,7 +761,7 @@
           "vomit"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -788,7 +798,7 @@
           "which ward"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -843,7 +853,7 @@
           "situs"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -882,7 +892,7 @@
           "back to front"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -908,7 +918,9 @@
           "血脂",
           "胆固醇",
           "慢性病",
-          "基础病"
+          "基础病",
+          "以前有什么病",
+          "既往史"
         ],
         "en": [
           "blood pressure",
@@ -918,7 +930,8 @@
           "cholesterol",
           "lipids",
           "long-term conditions",
-          "medical history"
+          "medical history",
+          "past medical history"
         ]
       },
       "excludeKeywords": {
@@ -931,10 +944,11 @@
           "tablet",
           "medicine",
           "medication",
-          "allerg"
+          "allerg",
+          "take"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -972,7 +986,9 @@
           "warfarin",
           "anticoagul",
           "aspirin",
-          "regular meds"
+          "regular meds",
+          "thin the blood",
+          "doesshetake"
         ]
       },
       "excludeKeywords": {
@@ -983,7 +999,7 @@
           "allerg"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "required": true,
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -1017,7 +1033,7 @@
           "reaction to"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "required": true,
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -1072,7 +1088,7 @@
           "after the stent"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "required": true,
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -1106,7 +1122,7 @@
           "drinker"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -1140,7 +1156,8 @@
           "parents",
           "siblings",
           "runs in the family",
-          "sudden death"
+          "sudden death",
+          "inthefamily"
         ]
       },
       "excludeKeywords": {
@@ -1160,7 +1177,7 @@
           "call"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -1198,10 +1215,19 @@
           "beforeallthis"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药"
+        ],
+        "en": [
+          "medic",
+          "tablet"
+        ]
       }
     },
     {
@@ -1237,7 +1263,7 @@
           "wanted"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -1271,10 +1297,11 @@
           "howlongcpr",
           "minutes of cpr",
           "restart",
-          "longwerethey"
+          "longwerethey",
+          "how long was the resus"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
@@ -2451,7 +2478,10 @@
           "source": {
             "zh-CN": "原报告病例资料、治疗及随访部分（经 1.0.0 版提取，待对照原文全文核对）",
             "en": "Case presentation, treatment and follow-up in the report (as extracted for version 1.0.0; check against the full article pending)"
-          }
+          },
+          "figures": [
+            "fig01"
+          ]
         }
       }
     }
@@ -2506,8 +2536,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "由有经验的医生行气管插管（或用呼气末二氧化碳波形确认已有导管的位置）；呼吸机按 SpO₂ 94%–98%、PaCO₂ 正常（4.5–6.0 kPa，35–45 mmHg）调节。",
-        "en": "Tracheal intubation by an experienced operator (or confirm an existing tube with waveform capnography); set the ventilator for SpO₂ 94–98 % and a normal PaCO₂ (4.5–6.0 kPa, 35–45 mmHg)."
+        "zh-CN": "由有经验的医生行气管插管（或用呼气末二氧化碳波形确认已有导管的位置）；呼吸机按 SpO₂ 94%–98%、PaCO₂ 正常（4.7–6.0 kPa，35–45 mmHg）调节。",
+        "en": "Tracheal intubation by an experienced operator (or confirm an existing tube with waveform capnography); set the ventilator for SpO₂ 94–98 % and a normal PaCO₂ (4.7–6.0 kPa, 35–45 mmHg)."
       },
       "requires": [
         "airway",
@@ -2637,8 +2667,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "持续监测核心体温（膀胱或食管温度），对仍昏迷的患者用体表或血管内控温设备主动预防发热（> 37.7 ℃），至少持续 72 小时。",
-        "en": "Monitor core temperature continuously (bladder or oesophageal) and, while she remains comatose, actively prevent fever (> 37.7 °C) with a surface or intravascular device for at least 72 hours."
+        "zh-CN": "持续监测核心体温（膀胱或食管温度），对仍昏迷的患者用体表或血管内控温设备主动预防发热，目标体温 ≤ 37.5 ℃，持续 36–72 小时。",
+        "en": "Monitor core temperature continuously (bladder or oesophageal) and, while she remains comatose, actively prevent fever — a target of 37.5 °C or less — with a surface or intravascular device for 36–72 hours."
       },
       "requires": [],
       "risk": "low",
@@ -2857,6 +2887,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2907,8 +2938,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "复苏后心电图仍有 ST 段抬高时，ESC 2023 ACS 推荐直接 PCI 策略，昏迷本身不是推迟的理由；神经预后要到复苏后至少 72 小时才能可靠评估（ERC–ESICM 2025），等到那时，闭塞的血管早已错过开通的时机。",
-        "en": "With ST elevation on the ECG after resuscitation, ESC 2023 ACS recommends a primary PCI strategy, and coma alone is no reason to defer it; the neurological outlook cannot be judged reliably until at least 72 hours after ROSC (ERC–ESICM 2025), long after an occluded artery should have been opened."
+        "zh-CN": "复苏后心电图仍有 ST 段抬高时，ESC 2023 ACS 推荐直接 PCI 策略；昏迷要纳入获益与风险的权衡，但早期昏迷不能证明治疗徒劳——神经预后要到复苏后至少 72 小时才能可靠评估（ERC–ESICM 2025），等到那时，闭塞的血管早已错过开通的时机。",
+        "en": "With ST elevation on the ECG after resuscitation, ESC 2023 ACS recommends a primary PCI strategy; her coma enters the benefit–risk judgement, but an early coma cannot establish futility — the neurological outlook cannot be judged reliably until at least 72 hours after ROSC (ERC–ESICM 2025), long after an occluded artery should have been opened."
       },
       "response": {
         "zh-CN": "已安排收入重症监护室。本病例不模拟这一选择之后的经过；接下来的记录按实际病程展开。",
@@ -2945,6 +2976,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3034,13 +3066,14 @@
         "fluoroscopy"
       ],
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "刚复苏、四肢冰冷发绀、神经结局未知的患者，急诊手术应只处理罪犯病变：ESC 2023 ACS 对心源性休克推荐首次手术仅处理罪犯血管（CULPRIT-SHOCK 试验，2017），其余病变是否及如何血运重建（PCI 或旁路手术）应在她稳定后由心脏团队决定。在急诊手术中同期处理非罪犯病变，只会增加造影剂用量、手术时间和并发症。",
-        "en": "Just after resuscitation, with cold, cyanosed limbs and an unknown neurological outcome, the emergency procedure should treat the culprit only: ESC 2023 ACS recommends culprit-only PCI at the first procedure in cardiogenic shock (CULPRIT-SHOCK, 2017), and whether and how the remaining disease is revascularised (PCI or bypass surgery) is a Heart Team decision once she is stable. Treating non-culprit lesions in the emergency procedure only adds contrast, time and complications."
+        "zh-CN": "她刚复苏、仍昏迷，四肢冰冷发绀，血压没有记录，不能按病情稳定处理，也不能排除休克：对心源性休克，ESC 2023 ACS 推荐首次手术仅处理罪犯血管（CULPRIT-SHOCK 试验，2017；该试验中同期多支血管 PCI 使 30 天死亡或需要肾脏替代治疗的比例更高）。完全血运重建（首次 PCI 时或 45 天内完成）适用于稳定的患者；左主干狭窄 70% 合并前降支弥漫病变用 PCI 还是旁路手术，应在她稳定后由心脏团队决定。",
+        "en": "She has just been resuscitated, is comatose and has cold, cyanosed limbs with no recorded blood pressure, so she cannot be treated as stable and shock cannot be excluded: in cardiogenic shock ESC 2023 ACS recommends PCI of the culprit only at the index procedure (CULPRIT-SHOCK, 2017, in which immediate multivessel PCI raised death or renal replacement therapy at 30 days). Complete revascularisation — at the index PCI or within 45 days — is for stable patients, and how a 70 % left main with diffuse LAD disease is treated (PCI or bypass surgery) is a Heart Team decision once she is stable."
       },
       "response": {
         "zh-CN": "所有严重病变已同期处理。本病例没有这样做的记录，不模拟其效果。",
@@ -3167,8 +3200,8 @@
     {
       "id": "obj-collapse-story",
       "title": {
-        "zh-CN": "了解她倒下前后的经过",
-        "en": "Find out what happened before and after she collapsed"
+        "zh-CN": "了解她发病前后的经过",
+        "en": "Find out what happened before and after she stopped responding"
       },
       "short": {
         "zh-CN": "经过",
@@ -3290,20 +3323,20 @@
     {
       "id": "obj-ecg-reperfusion",
       "title": {
-        "zh-CN": "读懂心电图，决定再灌注并付诸行动",
-        "en": "Read the ECG, decide on reperfusion and act on it"
+        "zh-CN": "读懂心电图，决定下一步并付诸行动",
+        "en": "Read the ECG, decide what comes next and act on it"
       },
       "short": {
-        "zh-CN": "心电图与再灌注",
-        "en": "ECG and reperfusion"
+        "zh-CN": "心电图与下一步",
+        "en": "ECG and next steps"
       },
       "hint": {
-        "zh-CN": "这份心电图和你摸到的心尖搏动对得上吗？要看清损伤到底在哪里还需要什么？她昏迷不醒，这会改变再灌注的决定吗？",
-        "en": "Does this tracing fit the apex beat you felt? What more would show where the injury really is — and does her coma change the reperfusion decision?"
+        "zh-CN": "这份心电图和你摸到的心尖搏动对得上吗？要弄清问题到底出在哪里，还需要什么？她昏迷不醒，这会改变你接下来的决定吗？",
+        "en": "Does this tracing fit the apex beat you felt? What more would show where the problem really lies — and does her coma change what you do next?"
       },
       "guidance": {
-        "zh-CN": "推来心电图机记录 12 导联心电图并在床旁阅读，作答决策 2 和决策 3；然后付诸行动——打电话或下医嘱，启动你选择的再灌注方案。行动之后，病例进入下一阶段。",
-        "en": "Bring the ECG machine, record and read a 12-lead ECG at the bedside, answer decisions 2 and 3, then act — make the call or the order that starts your reperfusion plan. The case moves on once you have acted."
+        "zh-CN": "推来心电图机记录 12 导联心电图并在床旁阅读，作答决策 2 和决策 3；然后付诸行动——打电话或下医嘱，启动你选择的方案。行动之后，病例进入下一阶段。",
+        "en": "Bring the ECG machine, record and read a 12-lead ECG at the bedside, answer decisions 2 and 3, then act — make the call or the order that starts the plan you chose. The case moves on once you have acted."
       },
       "completeWhen": {
         "all": [
@@ -3532,8 +3565,8 @@
     {
       "id": "d-priorities",
       "prompt": {
-        "zh-CN": "她住院期间胸闷后倒下、心跳呼吸骤停，经抢救和 4 次电击后仍呼之不应。现在：意识不清，自主呼吸微弱，双肺呼吸音低伴干、湿啰音，双侧瞳孔散大、对光反射消失，四肢冰冷发绀。接下来几分钟里你先做什么？",
-        "en": "An inpatient, she collapsed into a cardiac and respiratory arrest after chest tightness and is still unresponsive after resuscitation with four shocks. Now she is unconscious and breathing only weakly, with reduced breath sounds, wheeze and crackles in both lungs, both pupils dilated without a light reaction, and cold, cyanosed limbs. What do you do first, in the next few minutes?"
+        "zh-CN": "她住院期间胸闷后很快呼之不应、心跳呼吸骤停，经抢救和 4 次电击后仍呼之不应。现在：意识不清，自主呼吸微弱，双肺呼吸音低伴干、湿啰音，双侧瞳孔散大、对光反射消失，四肢冰冷发绀。接下来几分钟里你先做什么？",
+        "en": "An inpatient, she stopped responding soon after chest tightness, had a cardiac and respiratory arrest and is still unresponsive after resuscitation with four shocks. Now she is unconscious and breathing only weakly, with reduced breath sounds, wheeze and crackles in both lungs, both pupils dilated without a light reaction, and cold, cyanosed limbs. What do you do first, in the next few minutes?"
       },
       "kind": "single",
       "requires": {
@@ -3570,8 +3603,8 @@
           "id": "secure-airway-ecg",
           "correct": true,
           "text": {
-            "zh-CN": "确保气道、控制通气（SpO₂ 94%–98%，PaCO₂ 正常），平均动脉压 ≥ 65 mmHg，贴除颤电极，立即做 12 导联心电图",
-            "en": "Secure the airway (intubate or confirm an existing tube), ventilate to SpO₂ 94–98 % and a normal PaCO₂, keep the mean pressure at 65 mmHg or more, apply pads and record a 12-lead ECG now"
+            "zh-CN": "确保气道、控制通气（SpO₂ 94%–98%，PaCO₂ 正常），平均动脉压 > 60–65 mmHg，贴除颤电极，立即做 12 导联心电图",
+            "en": "Secure the airway (intubate or confirm an existing tube), ventilate to SpO₂ 94–98 % and a normal PaCO₂, keep the mean pressure above 60–65 mmHg, apply pads and record a 12-lead ECG now"
           },
           "feedback": {
             "zh-CN": "正确。昏迷且呼吸微弱的复苏后患者需要确切的气道和受控通气；ERC–ESICM 2025 复苏后治疗指南建议避免低氧和高氧（SpO₂ 94%–98%）、维持正常 PaCO₂、避免低血压，并尽早记录 12 导联心电图寻找冠状动脉原因。她发病前胸闷、骤停时需要电击，心电图是下一项决定性检查；心律可能再次恶化，所以先贴好除颤电极。",
@@ -3610,8 +3643,8 @@
             "en": "Send her for a CT head first to explain the coma and the pupils (a brain haemorrhage, say), and let the result decide whether cardiac tests such as an ECG or angiography are needed"
           },
           "feedback": {
-            "zh-CN": "不对。发病前胸闷、骤停时需要反复电击，首先要找的是冠状动脉原因，而心电图几分钟就能完成；先送 CT 会让一个刚复苏、气道未确保的患者离开抢救单元，推迟可能的再灌注。ERC–ESICM 2025 把头颅 CT 留给没有明确心脏原因、或提示神经系统病因的患者。",
-            "en": "No. Chest tightness before the arrest and the need for repeated shocks put a coronary cause first, and an ECG takes minutes; sending her to CT moves a newly resuscitated patient with an unsecured airway out of the resuscitation area and delays any reperfusion. ERC–ESICM 2025 keeps brain CT for patients without an evident cardiac cause or with features of a neurological one."
+            "zh-CN": "不对。发病前胸闷、骤停时需要反复电击，首先要找的是冠状动脉原因，而心电图几分钟就能完成；先送 CT 会让一个刚复苏、气道未确保的患者离开抢救单元，推迟可能的再灌注。ERC–ESICM 2025 只在骤停前的表现提示非冠状动脉原因时先做 CT——她骤停前的胸闷指向心脏——心电图有明确 ST 段抬高时则优先造影。",
+            "en": "No. Chest tightness before the arrest and the need for repeated shocks put a coronary cause first, and an ECG takes minutes; sending her to CT moves a newly resuscitated patient with an unsecured airway out of the resuscitation area and delays any reperfusion. ERC–ESICM 2025 puts CT first only when the features before the arrest suggest a non-coronary cause — hers, chest tightness, point to the heart — and prioritises angiography once the ECG shows clear ST elevation."
           }
         },
         {
@@ -3662,7 +3695,7 @@
           "correct": true,
           "text": {
             "zh-CN": "急性 ST 段抬高型心肌梗死导致室性心律失常和心脏骤停；心尖搏动在右侧提示右位心，按标准导联判断的梗死部位还不可靠",
-            "en": "An acute ST-elevation myocardial infarction causing ventricular arrhythmia and the arrest; the right-sided apex beat suggests dextrocardia, so the territory read from standard leads is not yet reliable"
+            "en": "An acute STEMI causing ventricular arrhythmia and the arrest; the right-sided apex beat suggests dextrocardia, so the territory read from standard leads is not yet reliable"
           },
           "feedback": {
             "zh-CN": "正确。发病前胸闷、骤停时需要电击、复苏后心电图 ST 段抬高并有室速，应按 ST 段抬高型心肌梗死处理（ESC 2023 ACS）。心尖搏动在右侧是体征：电极接错能改变心电图，却不能把心尖移到右边；镜像右位心时标准胸导联位于心脏的对侧，按导联名称推断梗死部位并不可靠。",
@@ -3689,8 +3722,8 @@
             "en": "A primary brain event such as a subarachnoid haemorrhage, causing the coma, the dilated pupils and the arrest, with the ST elevation and arrhythmia as secondary neurogenic changes"
           },
           "feedback": {
-            "zh-CN": "不对。蛛网膜下腔出血确实可引起 ST 段改变和心律失常，但她是先胸闷、后倒下，骤停时需要电击；复苏后早期的瞳孔改变也不能定位病因。ERC–ESICM 2025 在心电图指向冠状动脉原因时先处理心脏，只有找不到心脏原因时才优先做头颅 CT。",
-            "en": "No. A subarachnoid haemorrhage can cause ST change and arrhythmia, but she had chest tightness first, then collapsed and needed shocks, and pupils early after ROSC do not localise the cause. ERC–ESICM 2025 puts the cardiac work-up first when the ECG points to a coronary cause, and brain CT first only when no cardiac cause is evident."
+            "zh-CN": "不对。蛛网膜下腔出血确实可引起 ST 段改变和心律失常，但她是先胸闷、后呼之不应，骤停时需要电击；复苏后早期的瞳孔改变也不能定位病因。ERC–ESICM 2025 在心电图有明确 ST 段抬高时优先冠状动脉造影，只有骤停前的表现提示非冠状动脉原因时才先做 CT。",
+            "en": "No. A subarachnoid haemorrhage can cause ST change and arrhythmia, but she had chest tightness first, then stopped responding and needed shocks, and pupils early after ROSC do not localise the cause. ERC–ESICM 2025 prioritises coronary angiography when the ECG shows clear ST elevation, and puts CT first only when the features before the arrest suggest a non-coronary cause."
           }
         },
         {
@@ -3746,8 +3779,8 @@
             "en": "Activate the catheter laboratory now for angiography and primary PCI, with aspirin and heparin; add a mirror-image ECG and warn the team about her anatomy, letting neither delay her"
           },
           "feedback": {
-            "zh-CN": "正确。ESC 2023 ACS 对复苏后心电图持续 ST 段抬高的患者推荐直接 PCI 策略，昏迷不是推迟的理由；能在诊断后 120 分钟内完成 PCI 时，直接 PCI 优于溶栓；阿司匹林负荷（静脉 75–250 mg 或经胃管 150–300 mg），PCI 时普通肝素 70–100 U/kg。镜像导联心电图和提前告知解剖异常有助于定位和操作，但都不应拖住导管室。",
-            "en": "Correct. ESC 2023 ACS recommends a primary PCI strategy for persistent ST elevation after resuscitated cardiac arrest, and coma is no reason to defer it; primary PCI is preferred to fibrinolysis when it can be done within 120 minutes of diagnosis, with an aspirin load (75–250 mg IV, or 150–300 mg by nasogastric tube) and unfractionated heparin 70–100 U/kg at PCI. The mirror-image ECG and the warning about her anatomy help localisation and the procedure, but neither should hold up the laboratory."
+            "zh-CN": "正确。ESC 2023 ACS 对复苏后心电图持续 ST 段抬高的患者推荐直接 PCI 策略，并把神经系统状况放在“是否徒劳”的权衡里——而在这么早的时候，她的昏迷和瞳孔都不能证明治疗徒劳；能在诊断后 120 分钟内完成 PCI 时，直接 PCI 优于溶栓；阿司匹林负荷（静脉 75–250 mg 或经胃管 150–300 mg），PCI 时普通肝素 70–100 U/kg（给药前先向家属问过抗凝药、过敏和近期出血）。镜像导联心电图和提前告知解剖异常有助于定位和操作，但都不应拖住导管室。",
+            "en": "Correct. ESC 2023 ACS recommends a primary PCI strategy for persistent ST elevation after resuscitated cardiac arrest, weighing neurological status against futility — and this early, her coma and pupils cannot show futility; primary PCI is preferred to fibrinolysis when it can be done within 120 minutes of diagnosis, with an aspirin load (75–250 mg IV, or 150–300 mg by nasogastric tube) and unfractionated heparin 70–100 U/kg at PCI, once her relative has been asked about anticoagulants, allergy and recent bleeding. The mirror-image ECG and the warning about her anatomy help localisation and the procedure, but neither should hold up the laboratory."
           }
         },
         {
@@ -3770,8 +3803,8 @@
             "en": "Admit her to intensive care for post-arrest care and temperature control, and decide on angiography once she wakes and her outlook is clear, sparing a badly brain-injured patient a futile procedure"
           },
           "feedback": {
-            "zh-CN": "不对。昏迷不是等待的理由：ESC 2023 ACS 对复苏后持续 ST 段抬高者推荐直接 PCI 策略，而神经预后要到复苏后至少 72 小时才能可靠评估（ERC–ESICM 2025）。等到那时再造影，闭塞血管早已错过挽救心肌的时机，持续缺血还可能再诱发室性心律失常。",
-            "en": "No. Coma is no reason to wait: ESC 2023 ACS recommends a primary PCI strategy for persistent ST elevation after resuscitation, and the neurological outlook cannot be judged reliably until at least 72 hours after ROSC (ERC–ESICM 2025). By then the occluded artery has long passed the point of saving muscle, and ongoing ischaemia can trigger further ventricular arrhythmia."
+            "zh-CN": "不对。ESC 2023 ACS 对复苏后持续 ST 段抬高者推荐直接 PCI 策略，并在获益与风险的权衡中考虑神经系统状况，但早期昏迷不能证明治疗徒劳：神经预后要到复苏后至少 72 小时才能可靠评估（ERC–ESICM 2025）。等到那时再造影，闭塞血管早已错过挽救心肌的时机，持续缺血还可能再诱发室性心律失常。",
+            "en": "No. ESC 2023 ACS recommends a primary PCI strategy for persistent ST elevation after resuscitation and weighs neurological status in the benefit–risk judgement, but an early coma cannot show futility: the neurological outlook cannot be judged reliably until at least 72 hours after ROSC (ERC–ESICM 2025). By then the occluded artery has long passed the point of saving muscle, and ongoing ischaemia can trigger further ventricular arrhythmia."
           }
         },
         {
@@ -3831,8 +3864,8 @@
             "en": "Treat the thrombotic occlusion of the proximal RCA as the culprit and open and stent it now; leave the left main and LAD disease for a Heart Team decision once she is stable"
           },
           "feedback": {
-            "zh-CN": "正确。罪犯病变是有新鲜血栓、完全闭塞的血管，而不是狭窄最重或导联名称所指的那支；前降支仍有 TIMI 3 级血流。刚复苏、四肢冰冷发绀、神经结局未知时，急诊手术只处理罪犯病变（ESC 2023 ACS 对心源性休克推荐首次只做罪犯血管 PCI，依据 CULPRIT-SHOCK 试验，2017），左主干和前降支病变由心脏团队在她稳定后决定。记录中的团队也对右冠状动脉置入了支架。",
-            "en": "Correct. The culprit is the vessel completely occluded with fresh thrombus, not the tightest narrowing or the one the lead names suggest — the LAD still has TIMI 3 flow. Just after an arrest, with cold, cyanosed limbs and an unknown neurological outcome, the emergency procedure treats the culprit only (ESC 2023 ACS recommends culprit-only PCI at the first procedure in cardiogenic shock, after CULPRIT-SHOCK, 2017), and the left main and LAD go to a Heart Team once she is stable. The recorded team stented the RCA as well."
+            "zh-CN": "正确。罪犯病变是完全闭塞并有血栓的血管，而不是狭窄最重或导联名称所指的那支；前降支仍有 TIMI 3 级血流。她刚经历骤停、仍昏迷，四肢冰冷发绀，血压没有记录，不能算血流动力学稳定，也不能排除心源性休克：对心源性休克，ESC 2023 ACS 推荐首次手术只做罪犯血管 PCI（CULPRIT-SHOCK 试验，2017），完全血运重建（首次 PCI 时或 45 天内完成）则适用于稳定的患者——所以左主干和前降支病变由心脏团队在她稳定后决定。记录中的团队也对右冠状动脉置入了支架。",
+            "en": "Correct. The culprit is the vessel completely occluded with thrombus, not the tightest narrowing or the one the lead names suggest — the LAD still has TIMI 3 flow. Just after an arrest, comatose, with cold, cyanosed limbs and no recorded blood pressure, she cannot be counted as haemodynamically stable and shock cannot be excluded: in cardiogenic shock ESC 2023 ACS recommends PCI of the culprit only at the index procedure (CULPRIT-SHOCK, 2017), while complete revascularisation (at the index PCI or within 45 days) is for stable patients — so the left main and LAD go to a Heart Team once she is stable. The recorded team stented the RCA as well."
           }
         },
         {
@@ -3855,8 +3888,8 @@
             "en": "Complete revascularisation in one sitting: open the RCA, then treat the left main and LAD in the same procedure, so she leaves the laboratory with every severe lesion treated"
           },
           "feedback": {
-            "zh-CN": "不对。刚复苏、四肢冰冷发绀、神经结局未知时，同期处理左主干和前降支会增加造影剂用量、手术时间和并发症；ESC 2023 ACS 对心源性休克推荐首次只处理罪犯血管（CULPRIT-SHOCK，2017），左主干病变用 PCI 还是旁路手术，应由心脏团队在她稳定后决定。",
-            "en": "No. Just after resuscitation, with cold, cyanosed limbs and an unknown neurological outcome, treating the left main and LAD in the same sitting adds contrast, time and complications; ESC 2023 ACS recommends culprit-only PCI at the first procedure in cardiogenic shock (CULPRIT-SHOCK, 2017), and whether the left main is treated by PCI or bypass is a Heart Team decision once she is stable."
+            "zh-CN": "不对。对血流动力学稳定的患者，完全血运重建是可选的做法（ESC 2023 ACS：首次 PCI 时或 45 天内完成）；但她刚复苏、仍昏迷，四肢冰冷发绀，血压没有记录，不能排除休克——而在心源性休克中，同期处理非罪犯病变使 30 天死亡或需要肾脏替代治疗的比例更高（CULPRIT-SHOCK，2017）。左主干病变用 PCI 还是旁路手术，应由心脏团队在她稳定后决定。",
+            "en": "No. Complete revascularisation is an option for a stable patient (ESC 2023 ACS: at the index PCI or within 45 days), but she has just been resuscitated, is comatose and has cold, cyanosed limbs with no recorded blood pressure, so shock cannot be excluded — and in shock, immediate PCI of the non-culprit lesions raised death or renal replacement therapy at 30 days (CULPRIT-SHOCK, 2017). Whether the left main is treated by PCI or bypass is a Heart Team decision once she is stable."
           }
         },
         {
@@ -4016,8 +4049,8 @@
       "domain": "history",
       "weight": 1,
       "text": {
-        "zh-CN": "抗栓治疗前询问长期用药（抗凝药）、药物和造影剂过敏、近期出血/手术/卒中，以及以前是否知道心脏位置异常",
-        "en": "Before antithrombotic treatment, asked about regular medicines (anticoagulants), drug and contrast allergy, recent bleeding, surgery or stroke, and whether an abnormal heart position was already known"
+        "zh-CN": "向家属询问长期用药（抗凝药）、药物和造影剂过敏、近期出血/手术/卒中，以及以前是否知道心脏位置异常",
+        "en": "Asked her relative about regular medicines (anticoagulants), drug and contrast allergy, recent bleeding, surgery or stroke, and whether an abnormal heart position was already known"
       },
       "met": {
         "all": [
@@ -4301,8 +4334,8 @@
         "en": "Dr Pei (emergency medicine attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“一个呼吸微弱、叫不醒的复苏后患者，第一步该保证什么？”“此刻的瞳孔散大能说明什么、不能说明什么？什么时候才能可靠判断脑功能？”“心尖搏动在右边，你的心电图还能按导联名称读吗？电极接反和右位心怎么区分？”“她昏迷，这会改变要不要急诊造影吗？为什么不先溶栓？”“造影上哪一处病变能解释这次骤停？急诊手术该在哪里停？”“血管开通了，为什么她的肾脏和凝血还在恶化？家属问‘她还能醒吗’，你怎么回答？”。可以讲解 ESC 2023 ACS、ERC–ESICM 2025 复苏后治疗和 ERC 2025 高级生命支持的相关原则；学员读到相应记录之后，可以对照记录的病程（先溶栓、后支架和 IABP，术后多器官衰竭、停止抢救并离院）与现行做法。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（生命体征、骤停心律和抢救时长、心电图导联放置、化验数值、溶栓药物与剂量、IABP 指征、谁决定停止抢救，以及离院后的情况都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “In a weakly breathing patient who will not wake after an arrest, what do you secure first?”, “What can her dilated pupils tell you at this point, and what can they not — and when can the brain be judged?”, “With the apex beat on the right, can you read this ECG by its lead names? How do you tell swapped electrodes from dextrocardia?”, “Does her coma change whether she goes for emergency angiography? Why not lyse first?”, “Which lesion on the angiogram explains the arrest, and where should the emergency procedure stop?”, “The artery is open — why are her kidneys and clotting still failing, and what do you say when her relative asks ‘Will she wake up?’”. May explain the relevant principles of ESC 2023 ACS, ERC–ESICM 2025 post-resuscitation care and ERC 2025 advanced life support, and — once the learner has read the records — contrast the recorded course (thrombolysis first, then a stent and an IABP; multi-organ failure; resuscitation stopped and discharge) with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (vital signs, the arrest rhythm and its duration, the ECG electrode placement, laboratory values, the lytic drug and dose, the reason for the IABP, who decided to stop resuscitation and what happened after she left are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“一个呼吸微弱、叫不醒的复苏后患者，第一步该保证什么？”“此刻的瞳孔散大能说明什么、不能说明什么？什么时候才能可靠判断脑功能？”“心尖搏动在右边，你的心电图还能按导联名称读吗？电极接反和右位心怎么区分？”“她昏迷，这会改变要不要急诊造影吗？溶栓还是去导管室，为什么？”“造影上哪一处病变能解释这次骤停？急诊手术该在哪里停？”“血管开通了，为什么她的肾脏和凝血还在恶化？家属问‘她还能醒吗’，你怎么回答？”。可以讲解 ESC 2023 ACS、ERC–ESICM 2025 复苏后治疗和 ERC 2025 高级生命支持的相关原则；学员读到相应记录之后，可以对照记录的病程（先溶栓、后支架和 IABP，术后多器官衰竭、停止抢救并离院）与现行做法。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（生命体征、骤停心律和抢救时长、心电图导联放置、化验数值、溶栓药物与剂量、IABP 指征、谁决定停止抢救，以及离院后的情况都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “In a weakly breathing patient who will not wake after an arrest, what do you secure first?”, “What can her dilated pupils tell you at this point, and what can they not — and when can the brain be judged?”, “With the apex beat on the right, can you read this ECG by its lead names? How do you tell swapped electrodes from dextrocardia?”, “Does her coma change whether she goes for emergency angiography? Lysis or the catheter laboratory — which, and why?”, “Which lesion on the angiogram explains the arrest, and where should the emergency procedure stop?”, “The artery is open — why are her kidneys and clotting still failing, and what do you say when her relative asks ‘Will she wake up?’”. May explain the relevant principles of ESC 2023 ACS, ERC–ESICM 2025 post-resuscitation care and ERC 2025 advanced life support, and — once the learner has read the records — contrast the recorded course (thrombolysis first, then a stent and an IABP; multi-organ failure; resuscitation stopped and her leaving hospital) with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (vital signs, the arrest rhythm and its duration, the ECG electrode placement, laboratory values, the lytic drug and dose, the reason for the IABP, who decided to stop resuscitation and what happened after she left are not recorded)."
       },
       "interprets": [
         "ecg",
@@ -4321,8 +4354,8 @@
         "en": "Dr Lu (interventional cardiologist)"
       },
       "knowledge": {
-        "zh-CN": "介入心内科医生，接到导管室呼叫后参与。只解读学员已经读过的心电图、胸片和造影记录：标准导联下右位心的心电图特点（I 导联 P 波、QRS 波和 T 波倒置，aVR 直立，胸导联 R 波由 V1 到 V6 逐渐变小）以及与左右上肢电极接反的区别（接反时胸导联 R 波递增正常，而且电极不会改变心尖的位置）；镜像导联心电图怎样记录（左右上肢电极互换，胸导联移到右胸对称位置）；镜像解剖下造影体位和导管旋转方向要反过来；为什么有新鲜血栓的闭塞血管才是罪犯病变、急诊手术为什么只处理罪犯病变、为什么不常规使用 IABP（IABP-SHOCK II），以及左主干病变为什么要交给心脏团队。不报告学员尚未读到的结果；不编造术后 TIMI 血流、支架数目和类型、左心室功能、IABP 的指征，或这次造影与溶栓的先后（都没有记录）。",
-        "en": "Interventional cardiologist who joins once the catheter laboratory is called. Interprets only the ECG, chest film and angiogram report the learner has read: the standard-lead ECG of dextrocardia (inverted P, QRS and T in lead I, an upright aVR, R waves shrinking from V1 to V6) and how it differs from swapped arm electrodes (normal chest-lead R-wave progression, and no electrode moves the apex beat); how to record a mirror-image ECG (arm electrodes swapped, chest electrodes mirrored onto the right chest); why mirror-image anatomy reverses the angiographic projections and the catheter turns; why the occluded vessel with fresh thrombus is the culprit, why the emergency procedure treats only the culprit, why an IABP is not routine (IABP-SHOCK II), and why the left main goes to the Heart Team. Never reports a result the learner has not read, and never invents post-PCI TIMI flow, stent number or type, left-ventricular function, the reason for the IABP, or whether this angiogram came before or after the thrombolysis (none is recorded)."
+        "zh-CN": "介入心内科医生，接到导管室呼叫后参与。只解读学员已经读过的心电图、胸片和造影记录：标准导联下右位心心电图的一般特点（I 导联 P 波、QRS 波和 T 波倒置，aVR 直立，胸导联 R 波由 V1 到 V6 逐渐变小；她这份心电图有没有这些表现没有记录）以及与左右上肢电极接反的区别（接反时胸导联 R 波递增正常，而且电极不会改变心尖的位置）；镜像导联心电图怎样记录（左右上肢电极互换，胸导联移到右胸对称位置）；镜像解剖下造影体位和导管旋转方向要反过来；为什么有血栓的闭塞血管才是罪犯病变、对不稳定的患者急诊手术为什么只处理罪犯病变、为什么不常规使用 IABP（IABP-SHOCK II），以及左主干病变为什么要交给心脏团队。不报告学员尚未读到的结果；不编造术后 TIMI 血流、支架数目和类型、左心室功能、IABP 的指征，或这次造影与溶栓的先后（都没有记录）。",
+        "en": "Interventional cardiologist who joins once the catheter laboratory is called. Interprets only the ECG, chest film and angiogram report the learner has read: the standard-lead ECG of dextrocardia in general (inverted P, QRS and T in lead I, an upright aVR, R waves shrinking from V1 to V6 — which of these her own tracing showed is not recorded) and how it differs from swapped arm electrodes (normal chest-lead R-wave progression, and no electrode moves the apex beat); how to record a mirror-image ECG (arm electrodes swapped, chest electrodes mirrored onto the right chest); why mirror-image anatomy reverses the angiographic projections and the catheter turns; why the occluded vessel with thrombus is the culprit, why in a patient who is not stable the emergency procedure treats only the culprit, why an IABP is not routine (IABP-SHOCK II), and why the left main goes to the Heart Team. Never reports a result the learner has not read, and never invents post-PCI TIMI flow, stent number or type, left-ventricular function, the reason for the IABP, or whether this angiogram came before or after the thrombolysis (none is recorded)."
       },
       "interprets": [
         "ecg",
@@ -4357,12 +4390,12 @@
       "en": "Debrief: a post-arrest infarction in a mirror-image heart — from the ECG to the catheter laboratory and the family conversation"
     },
     "conclusion": {
-      "zh-CN": "66岁女性住院期间胸闷后很快呼之不应、心跳呼吸骤停，经抢救和 4 次电击后仍昏迷：自主呼吸弱，双瞳孔散大、对光反射消失，四肢冰冷发绀，心尖搏动在右侧，心音低弱。急诊心电图示阵发性房颤、室速和前壁导联 ST 段抬高；胸片为镜像右位心、心影增大。造影：右冠状动脉近段血栓性完全闭塞（罪犯病变），左主干狭窄 70%，前降支弥漫病变最重 85%、TIMI 3 级血流。记录中的团队先溶栓，后行右冠状动脉支架并置入 IABP；术后 ST 段回落，但出现无尿、酸中毒加重和 DIC，停止进一步抢救，PCI 后约 10 小时离院，此后结局不明。诊断：镜像右位心患者的急性 ST 段抬高型心肌梗死并发院内心脏骤停。按现行指南（ESC 2023 ACS；ERC–ESICM 2025）：确保气道，不因昏迷推迟、立即对罪犯血管行直接 PCI，有条件行 PCI 时不溶栓，主动预防发热，复苏后至少 72 小时再判断脑功能，并如实与家属沟通。",
-      "en": "A 66-year-old inpatient developed chest tightness, stopped responding and arrested; after resuscitation with four shocks she stayed unconscious, breathing weakly, with dilated unreactive pupils, cold cyanosed limbs, a right-sided apex beat and faint heart sounds. The ECG showed paroxysmal AF, VT and anterior-lead ST elevation; the chest film, mirror-image dextrocardia and cardiomegaly. Angiography: thrombotic proximal RCA occlusion (the culprit), left main 70 %, LAD to 85 % with TIMI 3 flow. Diagnosis: acute STEMI with an in-hospital arrest in mirror-image dextrocardia. The team gave thrombolysis, then stented the RCA with an IABP; the ST elevation fell, but anuria, worsening acidosis and DIC followed, resuscitation was stopped and she left about 10 hours after PCI, fate unknown. Today (ESC 2023 ACS; ERC–ESICM 2025): secure the airway, culprit PCI at once despite coma, no lysis where PCI is available, prevent fever, judge the brain after 72 hours, and talk honestly with the family."
+      "zh-CN": "66岁女性住院期间胸闷后很快呼之不应、心跳呼吸骤停，经抢救和 4 次电击后仍昏迷：自主呼吸弱，双瞳孔散大、对光反射消失，四肢冰冷发绀，心尖搏动在右侧，心音低弱。急诊心电图示阵发性房颤、室速和前壁导联 ST 段抬高；胸片为镜像右位心、心影增大。造影：右冠状动脉近段完全闭塞伴局部血栓（罪犯病变），左主干狭窄 70%，前降支弥漫病变最重 85%、TIMI 3 级血流。记录中的团队先溶栓，后行右冠状动脉支架并置入 IABP；术后 ST 段回落，但出现无尿、酸中毒加重和 DIC，停止进一步抢救，PCI 后约 10 小时离院，此后结局不明。诊断：镜像右位心患者的急性 ST 段抬高型心肌梗死并发院内心脏骤停。按现行指南（ESC 2023 ACS；ERC–ESICM 2025）：确保气道，立即对罪犯血管行直接 PCI（早期昏迷不能说明治疗徒劳），能及时行 PCI 时不溶栓，主动预防发热，复苏后至少 72 小时再判断脑功能，并如实与家属沟通。",
+      "en": "A 66-year-old inpatient developed chest tightness, stopped responding and arrested; after resuscitation with four shocks she stayed unconscious, breathing weakly, with dilated unreactive pupils, cold cyanosed limbs, a right-sided apex beat and faint heart sounds. The ECG showed paroxysmal AF, VT and anterior-lead ST elevation; the chest film, mirror-image dextrocardia and cardiomegaly. Angiography: complete proximal RCA occlusion with thrombus (the culprit), left main 70 %, LAD to 85 % with TIMI 3 flow. Diagnosis: acute STEMI with an in-hospital arrest in mirror-image dextrocardia. The team gave thrombolysis, then stented the RCA with an IABP; the ST elevation fell, but anuria, worsening acidosis and DIC followed, resuscitation was stopped and she left about 10 hours after PCI, fate unknown. Today (ESC 2023 ACS; ERC–ESICM 2025): secure the airway, culprit PCI at once (an early coma does not make it futile), no lysis where timely PCI is available, prevent fever, judge the brain no earlier than 72 hours, and talk honestly with the family."
     },
     "keyReasoning": [
       {
-        "zh-CN": "胸闷之后倒下、需要电击的院内心脏骤停，首先要找冠状动脉原因；确保气道和通气之后，下一项检查就是心电图。",
+        "zh-CN": "胸闷之后很快呼之不应、需要电击的院内心脏骤停，首先要找冠状动脉原因；确保气道和通气之后，下一项检查就是心电图。",
         "en": "An in-hospital arrest that needed shocks, after chest tightness, puts a coronary cause first; once the airway and ventilation are secured, the ECG is the next test."
       },
       {
@@ -4370,8 +4403,8 @@
         "en": "A right-sided apex beat (with faint heart sounds) means the heart itself is on the right — no electrode error moves the apex — so localising by lead names is unreliable."
       },
       {
-        "zh-CN": "复苏后 ST 段抬高、发病前有胸闷，就要急诊造影，与是否昏迷无关；此刻的瞳孔对预后没有可靠的分量。",
-        "en": "ST elevation after ROSC preceded by chest tightness means emergency angiography whatever her level of consciousness; her pupils at this stage carry no reliable prognostic weight."
+        "zh-CN": "复苏后 ST 段抬高、发病前有胸闷，就要急诊造影；昏迷要纳入获益与风险的权衡，但在这么早的时候，昏迷和瞳孔都不能说明治疗徒劳。",
+        "en": "ST elevation after ROSC preceded by chest tightness means emergency angiography; her coma counts in the benefit–risk judgement, but this early neither it nor her pupils can show that treatment would be futile."
       },
       {
         "zh-CN": "造影上，有血栓的右冠状动脉近段完全闭塞才是罪犯病变；左主干 70% 和前降支 85%（TIMI 3 级血流）是留待以后处理的非罪犯病变。",
@@ -4426,16 +4459,16 @@
         "en": "A right-sided apex beat at the bedside should prompt the thought of dextrocardia and a check of the ECG. On standard leads, mirror-image dextrocardia shows inverted P, QRS and T in lead I, an upright aVR and R waves shrinking from V1 to V6; swapped arm electrodes change only the limb leads, leave a normal chest-lead progression and cannot move the apex. Add a mirror-image ECG (arm electrodes swapped, chest electrodes mirrored onto the right chest): standard chest electrodes on the left lie over the morphological right ventricle, so 'anterior' ST elevation may reflect right-ventricular injury — consistent with this patient's proximal RCA occlusion, though the case does not record how the leads were placed. Then and now: whether a mirror-image ECG was taken is not recorded, and taking one must never delay reperfusion."
       },
       {
-        "zh-CN": "复苏后心电图持续 ST 段抬高，就按 ST 段抬高型心肌梗死启动直接 PCI 策略，昏迷不是推迟的理由（ESC 2023 ACS）；能在诊断后 120 分钟内完成 PCI 时，直接 PCI 优于溶栓；阿司匹林负荷（静脉 75–250 mg 或经胃管 150–300 mg），PCI 时普通肝素 70–100 U/kg。中国 STEMI 指南（2019）同样以直接 PCI 为首选再灌注方式。记录与现行做法：记录中的团队先给溶栓、后行右冠状动脉支架，选择溶栓的原因和预计的 PCI 延误都没有记录；为等待导管室而先给全量溶栓、随后立即 PCI，在 ASSENT-4 PCI 试验（2006）中增加了不良事件和卒中。",
-        "en": "Persistent ST elevation after resuscitation calls for a primary PCI strategy, and coma is no reason to defer it (ESC 2023 ACS); primary PCI is preferred to fibrinolysis whenever it can be done within 120 minutes of diagnosis, with an aspirin load (75–250 mg IV, or 150–300 mg by nasogastric tube) and unfractionated heparin 70–100 U/kg at PCI. The Chinese STEMI guideline (2019) likewise makes primary PCI the preferred reperfusion. Then and now: the recorded team gave thrombolysis and then stented the RCA, and why lysis was chosen and the expected delay to PCI are not recorded; full-dose lysis given while waiting for an immediate PCI increased adverse events and strokes in ASSENT-4 PCI (2006)."
+        "zh-CN": "复苏后心电图持续 ST 段抬高，就按 ST 段抬高型心肌梗死启动直接 PCI 策略（ESC 2023 ACS；该指南在权衡获益与风险时考虑神经系统状况，但早期昏迷和尚不能解读的瞳孔并不能证明治疗徒劳）；能在诊断后 120 分钟内完成 PCI 时，直接 PCI 优于溶栓；阿司匹林负荷（静脉 75–250 mg 或经胃管 150–300 mg），PCI 时普通肝素 70–100 U/kg。中国 STEMI 指南（2019）同样以直接 PCI 为首选再灌注方式。记录与现行做法：记录中的团队先给溶栓、后行右冠状动脉支架，选择溶栓的原因和预计的 PCI 延误都没有记录；为等待导管室而先给全量溶栓、随后立即 PCI，在 ASSENT-4 PCI 试验（2006）中增加了不良事件和卒中。",
+        "en": "Persistent ST elevation after resuscitation calls for a primary PCI strategy (ESC 2023 ACS, which weighs neurological status against futility — and an early coma, with pupils that cannot yet be interpreted, does not establish futility); primary PCI is preferred to fibrinolysis whenever it can be done within 120 minutes of diagnosis, with an aspirin load (75–250 mg IV, or 150–300 mg by nasogastric tube) and unfractionated heparin 70–100 U/kg at PCI. The Chinese STEMI guideline (2019) likewise makes primary PCI the preferred reperfusion. Then and now: the recorded team gave thrombolysis and then stented the RCA, and why lysis was chosen and the expected delay to PCI are not recorded; full-dose lysis given while waiting for an immediate PCI increased adverse events and strokes in ASSENT-4 PCI (2006)."
       },
       {
-        "zh-CN": "复苏后仍昏迷的患者，ERC–ESICM 2025 的首要处置是：确保气道并控制通气（SpO₂ 94%–98%，PaCO₂ 正常，避免高氧和过度通气），避免低血压（平均动脉压 ≥ 65 mmHg），尽早记录 12 导联心电图，持续监测核心体温并主动预防发热（> 37.7 ℃）至少 72 小时；ESC 2023 ACS 同样建议对复苏后仍无反应者进行体温管理。记录与现行做法：本例的气道处理、通气、血压和体温都没有记录。",
-        "en": "For a patient who stays comatose after ROSC, ERC–ESICM 2025 puts first: a secured airway with controlled ventilation (SpO₂ 94–98 %, a normal PaCO₂, no hyperoxaemia or hyperventilation), no hypotension (mean arterial pressure at least 65 mmHg), an early 12-lead ECG, and continuous core-temperature monitoring with active prevention of fever (> 37.7 °C) for at least 72 hours; ESC 2023 ACS likewise recommends temperature control for patients who remain unresponsive after ROSC. Then and now: her airway management, ventilation, blood pressure and temperature are not recorded."
+        "zh-CN": "复苏后仍昏迷的患者，ERC–ESICM 2025 的首要处置是：确保气道并控制通气（SpO₂ 94%–98%，PaCO₂ 正常，避免高氧和过度通气），避免低血压（平均动脉压 > 60–65 mmHg），尽早记录 12 导联心电图，持续监测核心体温并主动预防发热，目标体温 ≤ 37.5 ℃，持续 36–72 小时；ESC 2023 ACS 成文于这次更新之前，把需要预防的发热定义为 > 37.7 ℃。记录与现行做法：本例的气道处理、通气、血压和体温都没有记录。",
+        "en": "For a patient who stays comatose after ROSC, ERC–ESICM 2025 puts first: a secured airway with controlled ventilation (SpO₂ 94–98 %, a normal PaCO₂, no hyperoxaemia or hyperventilation), no hypotension (a mean arterial pressure above 60–65 mmHg), an early 12-lead ECG, and continuous core-temperature monitoring with active prevention of fever, targeting 37.5 °C or less for 36–72 hours; ESC 2023 ACS, written before this update, defines the fever to prevent as above 37.7 °C. Then and now: her airway management, ventilation, blood pressure and temperature are not recorded."
       },
       {
-        "zh-CN": "罪犯病变看的是血管闭塞和新鲜血栓，而不是狭窄程度或导联名称：本例前降支最重 85% 但仍有 TIMI 3 级血流，右冠状动脉近段完全闭塞伴血栓。对复苏后、灌注不良的患者，急诊手术只处理罪犯病变——ESC 2023 ACS 对心源性休克推荐首次只做罪犯血管 PCI（CULPRIT-SHOCK，2017），左主干病变交给心脏团队；并且不常规使用 IABP（IABP-SHOCK II，2012）。记录与现行做法：记录中的团队对右冠状动脉置入支架并使用了 IABP，IABP 的指征没有记录。",
-        "en": "The culprit is defined by occlusion and fresh thrombus, not by the degree of narrowing or the lead names: here the LAD's worst lesion was 85 % with TIMI 3 flow, while the proximal RCA was completely occluded with thrombus. After an arrest, with poor perfusion, the emergency procedure treats the culprit only — ESC 2023 ACS recommends culprit-only PCI at the first procedure in cardiogenic shock (CULPRIT-SHOCK, 2017), with the left main left to the Heart Team — and routine IABP is not recommended (IABP-SHOCK II, 2012). Then and now: the recorded team stented the RCA and used an IABP whose indication is not recorded."
+        "zh-CN": "罪犯病变看的是血管闭塞和血栓，而不是狭窄程度或导联名称：本例前降支最重 85% 但仍有 TIMI 3 级血流，右冠状动脉近段完全闭塞伴血栓。ESC 2023 ACS 对稳定的患者推荐完全血运重建（首次 PCI 时或 45 天内），对心源性休克则推荐首次手术只做罪犯血管 PCI（CULPRIT-SHOCK，2017）；她刚经历骤停、灌注不良、血压没有记录，不能算稳定，所以急诊手术只处理罪犯病变，左主干病变交给心脏团队。没有机械并发症的心源性休克不常规使用 IABP（IABP-SHOCK II，2012）。记录与现行做法：记录中的团队对右冠状动脉置入支架并使用了 IABP，IABP 的指征没有记录。",
+        "en": "The culprit is defined by occlusion and thrombus, not by the degree of narrowing or the lead names: here the LAD's worst lesion was 85 % with TIMI 3 flow, while the proximal RCA was completely occluded with thrombus. ESC 2023 ACS recommends complete revascularisation (at the index PCI or within 45 days) for stable patients, but PCI of the culprit only at the index procedure in cardiogenic shock (CULPRIT-SHOCK, 2017); just after an arrest, with poor perfusion and no recorded blood pressure, she is not stable, so the emergency procedure treats the culprit and the left main goes to the Heart Team. Routine IABP is not recommended in shock without a mechanical complication (IABP-SHOCK II, 2012). Then and now: the recorded team stented the RCA and used an IABP whose indication is not recorded."
       },
       {
         "zh-CN": "复苏后早期的瞳孔散大、对光反射消失不能用来决定治疗：ERC–ESICM 2025 要求在复苏后至少 72 小时、排除镇静等干扰后进行多模式预后评估（如 ≥ 72 小时双侧瞳孔和角膜反射消失、体感诱发电位 N20 消失、高度恶性脑电图、神经元特异性烯醇化酶升高、弥漫性缺氧性脑损伤影像）。因多器官衰竭（本例的无尿、酸中毒加重和 DIC）而限制治疗是另一类决定，可以更早作出，但要依据她的意愿与家属共同商定（KDIGO 2012 指南把危及生命的酸碱和容量紊乱列为紧急肾脏替代治疗的指征）。记录与现行做法：本例在 PCI 后约 10 小时停止抢救并离院，由谁、因何决定没有记录。",
@@ -4445,12 +4478,12 @@
     "references": [
       "沈剑耀, 王翔, 任品芳, 张志诚. 镜像右位心急性前壁心肌梗死行急诊介入治疗一例. 中华心血管病杂志. 2014;42(4):343-344. doi:10.3760/cma.j.issn.0253-3758.2014.04.016. Available from: https://rs.yiigle.com/cmaid/33789",
       "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826. doi:10.1093/eurheartj/ehad191",
-      "Nolan JP, Sandroni C, et al. European Resuscitation Council and European Society of Intensive Care Medicine guidelines 2025: post-resuscitation care. Intensive Care Med. 2025;51(12):2213-2288. doi:10.1007/s00134-025-08117-3",
+      "Nolan JP, Sandroni C, Cariou A, et al. European Resuscitation Council and European Society of Intensive Care Medicine guidelines 2025: post-resuscitation care. Intensive Care Med. 2025;51(12):2213-2288. doi:10.1007/s00134-025-08117-3",
       "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2025 adult advanced life support. Resuscitation. 2025;215(Suppl 1):110769. doi:10.1016/j.resuscitation.2025.110769",
       "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 急性ST段抬高型心肌梗死诊断和治疗指南(2019). 中华心血管病杂志. 2019;47(10):766-783.",
       "ASSENT-4 PCI investigators. Primary versus tenecteplase-facilitated percutaneous coronary intervention in patients with ST-segment elevation acute myocardial infarction (ASSENT-4 PCI): randomised trial. Lancet. 2006;367(9510):569-578. doi:10.1016/S0140-6736(06)68147-6",
-      "Thiele H, Akin I, Sandri M, et al. PCI strategies in patients with acute myocardial infarction and cardiogenic shock. N Engl J Med. 2017;377(25):2419-2432.",
-      "Thiele H, Zeymer U, Neumann FJ, et al. Intraaortic balloon support for myocardial infarction with cardiogenic shock. N Engl J Med. 2012;367(14):1287-1296.",
+      "Thiele H, Akin I, Sandri M, et al. PCI strategies in patients with acute myocardial infarction and cardiogenic shock. N Engl J Med. 2017;377(25):2419-2432. doi:10.1056/NEJMoa1710261",
+      "Thiele H, Zeymer U, Neumann FJ, et al. Intraaortic balloon support for myocardial infarction with cardiogenic shock. N Engl J Med. 2012;367(14):1287-1296. doi:10.1056/NEJMoa1208410",
       "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO clinical practice guideline for acute kidney injury. Kidney Int Suppl. 2012;2(1):1-138. doi:10.1038/kisup.2012.1"
     ],
     "notice": {
@@ -4498,8 +4531,8 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-33789/fig01.png",
       "title": {
-        "zh-CN": "原文配图 1（影像；经隐私审核获准，病例完成后供复盘）",
-        "en": "Source figure 1 (imaging; approved in the privacy review, for the review after the case)"
+        "zh-CN": "原文配图 1（内容未在此描述；随记录的结局展示）",
+        "en": "Report figure 1 (its content is not described here; shown with the recorded outcome)"
       },
       "credit": {
         "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
@@ -4808,10 +4841,10 @@
         ]
       },
       {
-        "text": "从发病到现在大概多久了？",
+        "text": "能说说经过吗？",
         "locale": "zh-CN",
         "expect": [
-          "onset"
+          "presenting"
         ]
       },
       {
@@ -4843,10 +4876,10 @@
         ]
       },
       {
-        "text": "一共电了几次？",
+        "text": "她以前有什么病？",
         "locale": "zh-CN",
         "expect": [
-          "resus"
+          "risk-factors"
         ]
       },
       {
@@ -4857,17 +4890,17 @@
         ]
       },
       {
-        "text": "当时有没有出冷汗？",
+        "text": "那后来呢？",
         "locale": "zh-CN",
         "expect": [
-          "appearance"
+          "arrest"
         ]
       },
       {
-        "text": "她胸口那种难受，会往胳膊或者后背窜吗？",
-        "locale": "zh-CN",
+        "text": "Does she take anything to thin the blood?",
+        "locale": "en",
         "expect": [
-          "chest-character"
+          "medications"
         ]
       },
       {
@@ -4878,10 +4911,10 @@
         ]
       },
       {
-        "text": "她本来是因为啥住的院？",
-        "locale": "zh-CN",
+        "text": "Any heart disease in the family?",
+        "locale": "en",
         "expect": [
-          "reason-admitted"
+          "family"
         ]
       },
       {
@@ -4955,10 +4988,10 @@
         ]
       },
       {
-        "text": "心肺复苏一共做了多久？",
-        "locale": "zh-CN",
+        "text": "What happened next?",
+        "locale": "en",
         "expect": [
-          "cpr-duration"
+          "arrest"
         ]
       },
       {

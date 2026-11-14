@@ -16,7 +16,7 @@
 | Specialties | respiratory medicine, infectious disease, allergy and immunology |
 | Languages | Simplified Chinese and English |
 | Structure | 5 phases · 23 history items (9 required, 9 not recorded) · 3 examination findings · 16 investigations · 14 interventions · 5 decisions · 6 objectives · 12 rubric items (2 critical) · 5 staff |
-| Review status | editorial (2026-10-30): AI-assisted teaching design reviewed against the cited guidance; patient facts as extracted for 1.0.0, not yet checked against the full article; not reviewed by a licensed clinician |
+| Review status | editorial (2026-10-30; independent review 2026-11-14): AI-assisted teaching design reviewed against the cited guidance; patient facts as extracted for 1.0.0, not yet checked against the full article; not reviewed by a licensed clinician |
 | Source | 牟向东, 章巍, 曹菊, 陈建, 聂立功, 熊焰, 高莉, 王广发. 肺放线菌病一例. 中华结核和呼吸杂志. 2013;36(8):617-619. doi:10.3760/cma.j.issn.1001-0939.2013.08.018 (DOI verified 2026-10-29) |
 
 ## Learning outcomes
@@ -65,7 +65,7 @@ excluded, and get tissue by bronchoscopy; characterise the colonies with special
 assess the allergy labels (penicillin is the drug of choice), start an active non-β-lactam meanwhile (a tetracycline),
 treat for months, and switch class rather than stop when adverse effects appear.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
 All phases use a static clock: nothing deteriorates, and no physiology is modelled. Every phase after the first opens
 on its own once its gate holds, and the learner cannot go back to the admission phase.
@@ -73,7 +73,7 @@ on its own once its gate holds, and the learner cannot go back to the admission 
 | Phase | Opens when | What the learner meets | Records with a result in this phase |
 |---|---|---|---|
 | `admission` — Admission: fever and another bout of blood-streaked sputum | start | the patient on the ward: history (the six years, this flare, the antibiotics, the lobectomy, diabetes, the allergy labels), temperature, BP, chest auscultation | chest CT reports (first CT and the repeat after antibiotics); placeholders for the tests sent now (sputum, molecular test, bronchoscopy arranged); "no result recorded" for blood count/CRP, glucose/HbA1c, blood cultures, HIV, PET-CT, CT-guided biopsy and the old lobectomy report |
-| `workup` — First test results | objectives 1–2 complete (history, examination, CT read; decision 1 right; sputum smear/culture and bronchoscopy ordered in `admission`) | the sputum results, the first bronchoscopy and its biopsy | sputum smear and culture (negative), first bronchoscopy, biopsy pathology; "no result recorded" for the molecular test, lavage cultures and PET-CT |
+| `workup` — First test results | objectives 1–2 complete (history, examination, CT read; decision 1 right; sputum smear/culture, the molecular test and bronchoscopy ordered in `admission`) | the sputum results, the first bronchoscopy and its biopsy | sputum smear and culture (negative), first bronchoscopy, biopsy pathology; "no result recorded" for the molecular test, lavage cultures and PET-CT |
 | `relapse` — Relapse after the antibiotics stopped | objective 3 complete (first results read; decision 2 right) | the mass back with infiltrates; the repeat bronchoscopy | relapse CT, repeat bronchoscopy, specimen pathology, specialist review (only once decision 3 is right) |
 | `treatment` — On treatment | objective 4 complete (decisions 3–4 right; doxycycline or minocycline started) | the recorded course: minocycline stopped for pigmentation and gastrointestinal effects | ECG ("no result recorded") |
 | `followup` — Recorded course and outcome | all five decisions right and objective 5 complete (a macrolide started) | the recorded treatment and outcome | recorded course and outcome, with the approved figure group |
@@ -89,16 +89,17 @@ bronchoscopy "after the recurrence". 1.0.0 does not date any of these events aga
 | # | Objective | Completes when |
 |---|---|---|
 | 1 | `obj-bedside` Take the six-year story, examine her and read the CT | the six-year course, this flare, earlier antibiotics, moxifloxacin, lobectomy, long-term illnesses and allergies asked; temperature, BP and chest examined; chest CT read in `admission` |
-| 2 | `obj-first-plan` Choose the first tests and send them | decision 1 right; sputum smear/culture and bronchoscopy ordered in `admission` |
+| 2 | `obj-first-plan` Choose the first tests and send them | decision 1 right; sputum smear/culture, the rapid molecular test and bronchoscopy ordered in `admission` (in any order) |
 | 3 | `obj-first-results` Interpret the first results | sputum, bronchoscopy and biopsy read in `workup`; decision 2 right |
-| 4 | `obj-relapse-cause` Find the cause of the relapse and start treatment | relapse CT, repeat bronchoscopy, specimen pathology and specialist review read; decisions 3–4 right; doxycycline or minocycline given |
-| 5 | `obj-intolerance` Manage the drug intolerance | the minocycline question asked; decision 5 right; a macrolide given |
+| 4 | `obj-relapse-cause` Identify the cause and start a treatment she can take | relapse CT, repeat bronchoscopy, specimen pathology and specialist review read; decisions 3–4 right; doxycycline or minocycline given |
+| 5 | `obj-intolerance` Review her treatment | the minocycline question asked; decision 5 right; a macrolide given |
 | 6 | `obj-recorded-course` Compare your plan with the recorded course | the outcome record read in `followup` |
 
 Objectives 1–2 contain first-phase conditions (`{"read": …, "phase": "admission"}`, `{"ordered": …, "phase": "admission"}`),
 which the next phase waits for, so a learner cannot leave the admission phase without them and no objective can become
-impossible to complete (the collection's late-learner check passes). Titles name no diagnosis or drug; hints are
-questions and contain no option text.
+impossible to complete (the collection's late-learner check passes). Titles name no diagnosis, drug or later event
+(the journal lists later objectives by title from the start, so no title announces the relapse or the intolerance);
+hints are questions and contain no option text.
 
 ### Decisions
 
@@ -122,12 +123,12 @@ is open at the start; none is gated on a history item the case does not record.
 | `rb-history-course` | history | 2 | six-year course, earlier antibiotics, this flare, moxifloxacin course and breathlessness asked (the follow-up twin credits the first and third) |
 | `rb-history-background` | history | 2 | lobectomy, diabetes, TB contacts, allergies and the allergy reactions asked (TB contacts and the reactions are not recorded — asking is the competency) |
 | `rb-examination` | examination | 1 | temperature, BP and chest auscultation examined |
-| `rb-diagnostic-sampling` | investigations | 3 | **critical** — sputum smear/culture, the rapid molecular test and bronchoscopy ordered in `admission` |
+| `rb-diagnostic-sampling` | investigations | 3 | **critical** — sputum smear/culture, the rapid molecular test and bronchoscopy ordered in `admission` (the phase waits for all three) |
 | `rb-first-workup` | diagnosis | 3 | `initial-workup` right first time and airborne precautions given while indicated (before the negative sputum results are read) |
-| `rb-first-results` | diagnosis | 3 | `first-results` right first time and the pathology discussion (special stains) requested |
+| `rb-first-results` | diagnosis | 3 | `first-results` right first time and the pathology discussion (special stains) requested while indicated — after the first biopsy is read and before the relapse pathology is |
 | `rb-diagnosis` | diagnosis | 3 | relapse CT, repeat bronchoscopy and specimen pathology read; `granule-diagnosis` right first time |
 | `rb-antibiotic-plan` | management | 3 | `antibiotic-plan` right first time; allergy assessment requested; doxycycline (or minocycline, validly) given |
-| `rb-intolerance` | management | 2 | `after-intolerance` right first time; a macrolide given; CT reviews planned |
+| `rb-intolerance` | management | 2 | `after-intolerance` right first time; a macrolide given; CT reviews planned while indicated (after decision 4, before the outcome phase) |
 | `rb-no-unassessed-beta-lactam` | safety | 4 | **critical** — no benzylpenicillin and no ceftriaxone; scored once decision 4 is attempted or either drug is given |
 | `rb-no-masking-or-futile-steps` | safety | 2 | no moxifloxacin, no empirical TB treatment, no metronidazole, no minocycline after it was stopped, no surgical referral; scored once decision 1 or 4 is attempted or any of these is done |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: her fear explored; why tests, isolation and bronchoscopy (consent) rather than another short course; after the diagnosis, a plain explanation (a chronic bacterial infection, not cancer or TB), why months of treatment, the allergy labels, adverse effects to report, teach-back, no blame for earlier courses |
@@ -144,20 +145,25 @@ is open at the start; none is gated on a history item the case does not record.
 | reference path + IV benzylpenicillin (on admission or after decision 4) | 24/28 (86 %) | `rb-no-unassessed-beta-lactam` | **not passed** (critical intervention) |
 | reference path + IV ceftriaxone after decision 4 | 24/28 (86 %) | `rb-no-unassessed-beta-lactam` | **not passed** (critical intervention) |
 | reference path + moxifloxacin, empirical TB treatment, metronidazole, restarted minocycline or a surgical referral (each alone) | 26/28 (93 %) | none | passed |
-| reference path without the rapid molecular test on admission | 25/28 (89 %) | `rb-diagnostic-sampling` | passed |
+| reference path with the rapid molecular test ordered last (after the smear/culture and the bronchoscopy) | 28/28 (100 %) | none | passed |
+| reference path without the rapid molecular test | stays in `admission` (10/24 there) | `rb-diagnostic-sampling` | passed |
 | reference path without airborne precautions, or with them only after the sputum results were read | 25/28 (89 %) | none | passed |
-| reference path without the pathology discussion, or without the allergy assessment | 25/28 (89 %) | none | passed |
+| reference path without the pathology discussion, or with it only after the relapse pathology was read | 25/28 (89 %) | none | passed |
+| reference path without the allergy assessment | 25/28 (89 %) | none | passed |
+| reference path with the CT reviews planned only in the outcome phase | 26/28 (93 %) | none | passed |
 | minocycline instead of doxycycline after decision 4 (the report's drug) | 28/28 (100 %) | none | passed |
 
-A learner who never orders the sputum smear/culture and the bronchoscopy in the admission phase cannot leave it, and a
-learner who never starts a tetracycline or a macrolide cannot reach the next phase; both are the acts the case is
-built on.
+A learner who never orders the sputum smear/culture, the molecular test and the bronchoscopy in the admission phase
+cannot leave it (the order in which they are placed does not matter), and a learner who never starts a tetracycline
+after decision 4, or a macrolide after decision 5, cannot reach the next phase; these are the acts the case is built
+on.
 
 ### Critical items
 
 - `rb-diagnostic-sampling` (an act): mycobacterial testing and tissue before any further antibiotic — sputum smear and
-  culture, the rapid molecular test and the bronchoscopy, all ordered in the admission phase. Gated on the admission
-  phase, so ordering them later does not count.
+  culture, the rapid molecular test and the bronchoscopy, all ordered in the admission phase. A gated act: the
+  admission phase is not left until all three are ordered, so their order does not matter and none can be credited
+  later.
 - `rb-no-unassessed-beta-lactam` (an avoided act): no penicillin or cephalosporin while both allergy labels are of
   unknown type. It counts once decision 4 is attempted or either drug is given, so doing nothing does not earn it.
 
@@ -237,8 +243,9 @@ computed; doses are printed as the usual adult doses or as protocol references.
   the case does not hold.
 - **A fluoroquinolone before TB testing** — the moxifloxacin intervention is contraindicated (ISTC 2014) and costs
   `rb-no-masking-or-futile-steps`.
-- **Skipping the molecular test** — `rb-diagnostic-sampling` is critical and needs it in the admission phase.
-- **Ignoring the colonies** — `rb-first-results` needs the pathology discussion as well as decision 2.
+- **Skipping the molecular test** — the admission phase waits for it, with the smear/culture and the bronchoscopy
+  (`rb-diagnostic-sampling` is critical); a learner who forgets it stays on the ward until it is ordered.
+- **Ignoring the colonies** — `rb-first-results` needs the pathology discussion, in time, as well as decision 2.
 - **Nocardia or fungus** — the near-miss options of decision 3 turn on the negative modified acid-fast stain and the
   sulphur granules.
 - **Blind β-lactam** — benzylpenicillin or ceftriaxone is a critical safety failure; the nurse questions such orders.
@@ -355,19 +362,23 @@ phase selects one.
    2023;16(4):490-500. doi:10.1016/j.jiph.2023.02.004
 9. Könönen E, Wade WG. Actinomyces and related organisms in human infections. Clin Microbiol Rev. 2015;28(2):419-442.
    doi:10.1128/CMR.00100-14
+10. Fabre V. Actinomyces [Internet]. Johns Hopkins ABX Guide. Baltimore (MD): Johns Hopkins University; [updated 2023
+    Feb 8; cited 2026 Nov 14]. Available from:
+    https://www.hopkinsguides.com/hopkins/view/Johns_Hopkins_ABX_Guide/540005/all/Actinomyces
+11. Trubiano JA, Vogrin S, Chua KYL, et al. Development and validation of a penicillin allergy clinical decision rule.
+    JAMA Intern Med. 2020;180(5):745-752. doi:10.1001/jamainternmed.2020.0403 (PEN-FAST)
 
-These nine are `debrief.references`. Further guidance the case was checked against (`provenance.review.guidelines`)
-and used outside the debrief — the airborne-precaution dose text and the pharmacist's brief:
+These eleven are `debrief.references`. Further guidance the case was checked against (`provenance.review.guidelines`)
+and used outside the debrief — the airborne-precaution dose text (CDC 2005 is also named in the first teaching point):
 
 - Jensen PA, Lambert LA, Iademarco MF, Ridzon R; CDC. Guidelines for preventing the transmission of Mycobacterium
   tuberculosis in health-care settings, 2005. MMWR Recomm Rep. 2005;54(RR-17):1-141.
-- Trubiano JA, Vogrin S, Chua KYL, et al. Development and validation of a penicillin allergy clinical decision rule.
-  JAMA Intern Med. 2020;180(5):745-752. doi:10.1001/jamainternmed.2020.0403 (PEN-FAST)
 - 国家卫生健康委员会办公厅. β内酰胺类抗菌药物皮肤试验指导原则（2021年版）. 2021.
 - 中华人民共和国国家卫生和计划生育委员会. WS 288—2017 肺结核诊断. 2017. (Its 2017 revision added molecular tests to
   the bacteriological criteria for confirming pulmonary TB.)
 
-The DOIs above were confirmed by web search on 2026-11-13 (publisher, PubMed or index pages); the WHO, ISTC, CDC and
+The DOIs above were confirmed by web search on 2026-11-13 (publisher, PubMed or index pages) and again against
+Crossref (title, volume, issue, pages) in the independent review of 2026-11-14; the WHO, ISTC, CDC, Johns Hopkins and
 Chinese documents carry no DOI.
 
 ### To verify
@@ -390,20 +401,38 @@ Details to look for in the source article:
 - The amount of blood in the sputum; chest pain, night sweats, weight loss; dental health, alcohol, TB contacts,
   family history.
 
-Guidance details to confirm against the full texts:
-- ACCP 2013: the wording and grade of the recommendation on bronchoscopy for central lesions (the pooled 88 %
-  sensitivity for central endobronchial cancer is confirmed); whether a newer CHEST guideline supersedes it.
-- ISTC 2014: the standard number and exact wording of the statement that fluoroquinolones should be avoided as a trial
-  when TB is possible (confirmed only through a secondary table); the wording on empirical treatment of smear-negative
-  disease.
-- WHO 2025 Module 3: the exact recommendation on rapid molecular tests as the initial test.
-- ATS/IDSA/CDC 2017: the grade of the NAAT recommendation and the three-specimen statement.
-- CDC 2005: the criteria for discontinuing airborne precautions (three negative smears; timing and early-morning
-  specimen).
-- Valour 2014 and Könönen and Wade 2015 (full texts): the statements that metronidazole and fluoroquinolones are not
-  reliably active against Actinomyces; the place of tetracyclines and macrolides (and the limited data for
-  azithromycin) as alternatives; the benzylpenicillin dose of 18–24 million units a day for 2–6 weeks (confirmed here
-  only from clinical reference summaries); culture conditions.
+Guidance details checked in the independent review (2026-11-14), and what remains:
+- ACCP 2013: the pooled 88 % sensitivity of bronchoscopy for central endobronchial cancer and the higher pneumothorax
+  rate of transthoracic needle biopsy are in the guideline's abstract (PubMed 23649436). Remaining: the wording and
+  grade of the recommendation on further sampling after a non-diagnostic bronchoscopy; whether a newer CHEST guideline
+  supersedes it.
+- ISTC 2014 (3rd edition, full text read): Standard 3 (two smears or one Xpert MTB/RIF; Xpert first in the seriously
+  ill) and Standard 5 (smear- and Xpert-negative: culture, and empirical treatment for strong clinical evidence after
+  specimens for culture are taken). The fluoroquinolone point is in the Standard 5 rationale — fluoroquinolones are
+  bactericidal for M. tuberculosis, and empiric fluoroquinolone monotherapy has delayed TB treatment and bred
+  resistance; the explicit "they should be avoided" of an antibiotic trial is the wording of the earlier editions, so
+  the case now quotes the 2014 caution.
+- WHO 2025 Module 3 (4th edition, April 2025, confirmed): the exact recommendation on rapid molecular tests as the
+  initial test.
+- ATS/IDSA/CDC 2017: AFB smear microscopy and the NAAT on the initial specimen are conditional ("we suggest")
+  recommendations; three specimens is described as US normative practice — the case says "advises" and "suggests".
+- CDC 2005 (through a state reproduction of MMWR RR-17): airborne precautions until three negative sputum smears, at
+  least one early-morning, or another diagnosis; confirm against the MMWR text.
+- Valour 2014 (full text read): penicillin G 18–24 million units a day IV for 2–6 weeks, then oral penicillin V or
+  amoxicillin for 6–12 months; about 3 months after optimal resection; metronidazole inactive; fluoroquinolones
+  "usually considered to be inactive" (limited data); doxycycline "considered to have a poor activity" on Actinomyces,
+  with clinical successes reported; macrolides and clindamycin used successfully; no doses for the alternatives. The
+  tetracycline dose (doxycycline 100 mg twice daily for 6–12 months) is the Johns Hopkins ABX Guide's alternative
+  regimen, which also lists azithromycin and clarithromycin under limited data and metronidazole and fluoroquinolones
+  as not active. Könönen and Wade 2015: intrinsic resistance to metronidazole; Actinomyces regarded as insignificant
+  commensals; prolonged incubation.
+- Boot 2023: the full text was not accessible to the review; its abstract supports the diagnostic features
+  (acid-fast-negative ray-like organisms, sulphur granules) and "prolonged antibiotics, with surgery in severe cases".
+- Doses that no cited actinomycosis source states and a clinician should confirm: minocycline 100 mg twice daily (the
+  US label's maintenance dose, after 200 mg initially, where it lists actinomycosis when penicillin is
+  contraindicated), clarithromycin 500 mg twice daily, and the distractor doses (ceftriaxone 2 g daily, metronidazole
+  500 mg three times daily, moxifloxacin 400 mg daily) — usual adult doses. For a clinician of the specialty: whether
+  a tetracycline (rather than clindamycin or a macrolide) is the interim drug of choice in view of Valour's caution.
 - 2021 NHC skin-test guidance: what it says about patients with a penicillin or cephalosporin history of unknown type.
 
 ## Changelog
@@ -426,9 +455,21 @@ Guidance details to confirm against the full texts:
 - Rubric rebuilt (12 items, two act-based critical items, avoided-harm items with `scoredWhen`, case-specific judge
   guidance); `rb-unknown` and the hindsight critical item removed.
 - Staff: attending, nurse, radiologist, pathologist, pharmacist with case-specific knowledge.
-- Debrief: conclusion, key reasoning, six teaching points (five dated), boundaries, eight unknowns, nine references.
-- Provenance: review status editorial with eight named guidelines; `extensions.sourceTextChecked: false`.
+- Debrief: conclusion, key reasoning, six teaching points (five dated), boundaries, eight unknowns, eleven references
+  (two of them added in the independent review below).
+- Provenance: review status editorial with nine named guidelines (the Johns Hopkins ABX Guide added in the review);
+  `extensions.sourceTextChecked: false`.
 - This facilitator guide rewritten to the library template.
+- **Independent review (2026-11-14).** Two details 1.0.0 does not record removed: "which she tolerated" (moxifloxacin,
+  a decision-4 distractor) and "sent with them" for the other negative infection tests (1.0.0: the other listed
+  tests). The admission phase now waits for the rapid molecular test as well, so the critical sampling item no longer
+  depends on the order in which the three tests are placed. The pathology discussion and the CT plan are credited only
+  while they still matter (`whenIndicated`). ISTC 2014 is quoted for what its 3rd edition says (a caution that
+  empiric fluoroquinolones delay TB treatment and breed resistance), and ISTC and WHO are attributed separately; the
+  doxycycline alternative and its dose are now sourced (Johns Hopkins ABX Guide 2023, added with PEN-FAST to the
+  references), with Valour's caution on doxycycline. Objective titles no longer announce the relapse and the
+  intolerance; the attending discusses the recorded azithromycin only after decision 5. zh and en aligned in two
+  distractors and the conclusion; the old lobectomy report's text is in-world.
 
 ### 1.0.0 — 2026-10-28
 
@@ -441,7 +482,7 @@ From the worktree root:
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-857953/case.json --strict --lang en
 npm run -s cc -- cases verify cmcr-857953 --lang en
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-857953
+npx tsx --conditions=source scripts/case-check.ts cmcr-857953
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-857953:"
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-857953:"
 ```
@@ -452,10 +493,10 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **学习目标：** 对反复发作、抗菌后好转的中央型肺门肿块建立鉴别诊断；再次抗菌前先送痰抗酸涂片、培养和快速分子检测，排除结核前不用氟喹诺酮类做试验性治疗，中央型病灶首选支气管镜取材（ATS/IDSA/CDC 2017、WHO 2025、ISTC 2014、ACCP 2013）；理解一次活检阴性不能排除肿瘤，用革兰、银染、抗酸和弱抗酸染色区分放线菌、诺卡菌、真菌和分枝杆菌；对反应不明的青霉素和头孢类过敏标签做结构化评估并转诊（AAAAI/ACAAI 2022），评估前用非β-内酰胺类替代药；制定以月计的疗程，不良反应时换药而不是停药；向患者解释并用回授法确认理解。
 
-**关键决策：** ① 入院时：送3份痰查抗酸涂片、培养和快速分子检测，做支气管镜活检加灌洗，排除结核前空气传播隔离（干扰项：用完莫西沙星后复查CT、按旧标签重启抗结核、先做CT引导穿刺、先做PET-CT）。② 首轮结果：一次活检阴性不能排除肿瘤，请病理科对菌团加做特殊染色，CT随访、复发早复查支气管镜。③ 复发后：硫磺颗粒、革兰和银染阳性、两种抗酸染色阴性——肺放线菌病（近似项：诺卡菌病）。④ 起始治疗：记录过敏标签并转诊评估（青霉素是首选），在此之前口服多西环素100 mg每日2次（或米诺环素），疗程以月计。⑤ 米诺环素不耐受：换用大环内酯类（原报告为阿奇霉素），先查QTc，继续数月并推进过敏评估。
+**关键决策：** ① 入院时：送3份痰查抗酸涂片、培养和快速分子检测，做支气管镜活检加灌洗，排除结核前空气传播隔离；三项检查都开出后才进入下一阶段，先后顺序不影响评分（干扰项：用完莫西沙星后复查CT、按旧标签重启抗结核、先做CT引导穿刺、先做PET-CT）。② 首轮结果：一次活检阴性不能排除肿瘤，请病理科对菌团加做特殊染色，CT随访、复发早复查支气管镜。③ 复发后：硫磺颗粒、革兰和银染阳性、两种抗酸染色阴性——肺放线菌病（近似项：诺卡菌病）。④ 起始治疗：记录过敏标签并转诊评估（青霉素是首选），在此之前口服多西环素100 mg每日2次（或米诺环素），疗程以月计。⑤ 米诺环素不耐受：换用大环内酯类（原报告为阿奇霉素），先查QTc，继续数月并推进过敏评估。
 
 **复盘要点：** 抗菌后缩小不等于治愈，莫西沙星可掩盖结核；中央型病灶靠支气管镜取材，首次未确诊要再取；坏死组织中的菌团要鉴定；弱抗酸染色阴性和硫磺颗粒把放线菌与诺卡菌分开；反应不明的过敏标签既不能忽视也不能永久接受，评估之后才可能回到青霉素；放线菌病的疗程以月计，按症状和CT停药。
 
 **安全结果。** 在过敏标签评估之前给静脉青霉素或头孢曲松，属于本例的严重安全错误（`critical: true`），无论得分多少，安全结果都判为未通过；经验性抗结核、莫西沙星、甲硝唑、再用米诺环素和贸然转外科是可纠正的错误（`critical: false`），只扣相应分数。
 
-**待核实（中文提示）：** 各次检查与入院、与莫西沙星疗程的先后；入院其他生命体征和血液检查；CT细节；痰检份数与种类；首次标本是否做特殊染色；“两次标本”具体所指；过敏反应类型；药物剂量和疗程；随访时长。详见上文英文“To verify”清单。
+**待核实（中文提示）：** 各次检查与入院、与莫西沙星疗程的先后；入院其他生命体征和血液检查；CT细节；痰检份数与种类；首次标本是否做特殊染色；“两次标本”具体所指；过敏反应类型；药物剂量和疗程；随访时长。另请临床医师确认：所引放线菌文献未给出的剂量（米诺环素100 mg每日2次、克拉霉素500 mg每日2次及干扰项剂量），以及在Valour 2014认为多西环素活性较差的情况下，是否仍以四环素类作为过渡用药。详见上文英文“To verify”清单。

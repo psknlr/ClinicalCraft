@@ -158,7 +158,7 @@ only an order placed in `seizure` (`{"ordered": …, "phase": "seizure"}`), so n
 hindsight. A head CT in `seizure` meets the critical item (CT first where MRI cannot be done promptly); the MRI
 is still read to open the outcome.
 
-### How wrong choices score (measured 2026-10-30 with core `assess`)
+### How wrong choices score (measured 2026-10-30 with core `assess`; every row re-measured 2026-11-14 after the review, unchanged)
 
 | Path | Score | Critical items missed / safety outcome |
 |---|---|---|
@@ -349,11 +349,6 @@ read as JAK2 V617F (c.1849G>T); "输抗感染药" as IV anti-infective treatment
 history as before admission; the 10 days of the chief complaint as admission on day 10 of the pain; 1.0.0's
 "极高" as the HH flag on both platelet counts.
 
-**Inferences (derived from 1.0.0, not new facts; each is under "To verify").** "G/T heterozygous at V617" is
-read as JAK2 V617F (c.1849G>T); "输抗感染药" as IV anti-infective treatment, and its place in the presenting
-history as before admission; the 10 days of the chief complaint as admission on day 10 of the pain; 1.0.0's
-"极高" as the HH flag on both platelet counts.
-
 **Contradictions and ambiguities kept, not resolved.**
 * The two counts have no dates; the triage note gives 1905 × 10⁹/L as an earlier result ("曾"), and 1.0.0 calls
   the change after antibiotics "not material" although the platelets fell from 1905 to 1497 (−21 %). The case
@@ -362,8 +357,6 @@ history as before admission; the 10 days of the chief complaint as admission on 
   day 2" and "day 15".
 * "增强MRI" names no region or sequences; the case calls the study "Urgent MRI with contrast" and says the
   sequences are not recorded.
-* 1.0.0 words the trephine "骨髓增生性改变" in Chinese (which can also be read as "hyperplastic") and
-  "myeloproliferative changes" in English; each language keeps its own wording in the record.
 * 1.0.0 words the trephine "骨髓增生性改变" in Chinese (which can also be read as "hyperplastic") and
   "myeloproliferative changes" in English; each language keeps its own wording in the record.
 * Reticulin keeps the report's "±" notation; no fibrosis grade is assigned.
@@ -560,19 +553,6 @@ and product-information records and is named in the text without a reference ent
   MRI is "contrast-enhanced", region and sequences unrecorded.
 * **Corpus and schema.** 40 paraphrased utterances with negatives; extensions unified (`sourceDoi`,
   `doiVerifiedAt`, `sourceTextChecked: false`, `embodied.ivAccessInSitu: false`).
-
-* **Independent review (2026-11-14).** Decision 4 keys one first-line drug, hydroxyurea or pegylated
-  interferon-α, chosen with paediatric haematology (it had keyed interferon first in a young child, which the
-  paediatric review the case cites does not support); aspirin waits for an adequate VWF activity (ristocetin
-  cofactor above 30 %, Stockklausner et al. 2021) rather than for both VWF and a fall in the count; learning
-  outcome 4 no longer implies the report started three drugs at once; the day-15 count no longer appears in a
-  work-up-phase feedback; the debrief keeps "among others", the PT, the runny nose and "no further abdominal
-  pain" (not "pain-free"), and the recorded counts (1905 and 1497, not "near 2000"); harm texts for heparin,
-  antibiotics and levetiracetam name their guidance (Tefferi 2024; Start smart then focus, UKHSA 2023; NICE NG217,
-  2022); WHO 2022 is cited for what it defines, not for treatment order; the trephine keeps 1.0.0's Chinese
-  wording; the outcome record no longer puts the derived V617F label in the report's words; the zh judge
-  guidance no longer gives the relative a sex; the family advice adds live-vaccine caution; THROMKID-Plus is
-  labelled a study-group review; the attending names the report's drugs only at the debrief.
 
 * **Independent review (2026-11-14).** Decision 4 keys one first-line drug, hydroxyurea or pegylated
   interferon-α, chosen with paediatric haematology (it had keyed interferon first in a young child, which the

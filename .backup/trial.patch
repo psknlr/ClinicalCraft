@@ -15922,6 +15922,29 @@ index 746895c..e3d9664 100644
 +    return { id: "team", kicker: tr(theatre ? "team.kicker" : "team.kickerCare"), title: tr(theatre ? "team.title" : "team.titleCare"), body, variant: "wide", update: render };
    };
  }
+diff --git a/packages/web/src/ui/panels/trace-labels.test.ts b/packages/web/src/ui/panels/trace-labels.test.ts
+index 8a76c7f..c2ef2ac 100644
+--- a/packages/web/src/ui/panels/trace-labels.test.ts
++++ b/packages/web/src/ui/panels/trace-labels.test.ts
+@@ -81,6 +81,18 @@ describe("trace labels", () => {
+     expect(traceLabel("verification", "patient home", ctx)).toBe("Patient back in their bed space");
+   });
+ 
++  it("names the steps of an item kept in custody (EMBODIED §8.1): the hand-over, its receipt, the confirmation, a colleague's delivery", () => {
++    setLocale("zh-CN");
++    expect(traceLabel("interaction", "hand_over", ctx)).toBe("递给");
++    expect(traceLabel("interaction", "confirm_receipt", ctx)).toBe("确认签收");
++    expect(traceLabel("state_change", "item.held,item.handoff", ctx)).toBe("拿起或放下物品、交接记录");
++    expect(traceLabel("plan", "delegate:deliver_item", ctx)).toBe("委派：把物品送交给某人");
++    setLocale("en");
++    expect(traceLabel("interaction", "confirm_receipt", ctx)).toBe("Confirm receipt");
++    expect(traceLabel("state_change", "item.held,item.handoff", ctx)).toBe("Item carried, Hand-over receipt");
++    expect(traceLabel("plan", "delegate:deliver_item", ctx)).toBe("Delegate: Take an item to someone and hand it over");
++  });
++
+   it("keeps a name it does not know as it is", () => {
+     setLocale("zh-CN");
+     expect(traceLabel("interaction", "juggle", ctx)).toBe("juggle");
 diff --git a/packages/web/src/ui/panels/treat-row.ts b/packages/web/src/ui/panels/treat-row.ts
 index 09ee8cc..bc0880a 100644
 --- a/packages/web/src/ui/panels/treat-row.ts
