@@ -104,6 +104,8 @@ export type Structure = z.infer<typeof StructureSchema>;
 
 /** A named pull direction in the patient frame, or a vector. Named directions combine ("cephalad", "patient-left"). */
 export const DirectionNameSchema = z.enum(["cephalad", "caudal", "patient-left", "patient-right", "anterior", "posterior"]);
+/** A named direction in the patient's terms (a traction's pull, a direction read out). */
+export type DirectionName = z.infer<typeof DirectionNameSchema>;
 export const DirectionSchema = z.union([Vec3Schema, z.array(DirectionNameSchema).min(1)]);
 export type Direction = z.infer<typeof DirectionSchema>;
 

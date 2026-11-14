@@ -8,12 +8,13 @@
  *
  * Tags are snake_case so the JSON wire format is stable across languages.
  */
-import type { ActionReceipt, TeamMessage, TeamTask } from "./session/team/types.js";
+import type { ActionReceipt, FieldAsk, TeamMessage, TeamTask } from "./session/team/types.js";
 import type {
   AssessmentReport,
   ClinicalAction,
   DomainEvent,
   ObjectiveProgress,
+  Place,
   SessionState,
   VitalsSnapshot,
 } from "@clinicalcraft/core";
@@ -111,11 +112,15 @@ export type Op =
    * `rounds`), `pause` (autonomy `step`: the team waits for `step`), `resume` (autonomy `auto`: the team acts after
    * each of the learner's acts), `surgeon` (who answers as the surgeon: the learner, or the simulated surgeon of
    * observer mode), `reply` (the learner, as the surgeon, answers a team message: a read-back, a confirmation, a
-   * decline), `need` (the learner says what they need: the team takes it from there). Answered by `team_event`s.
+   * decline), `need` (the learner says what they need: the team takes it from there; `for` a member of the team),
+   * `ask` (the learner asks a member, `to`, for something in the operative field — `field`: traction, letting go, the
+   * camera, its aim or zoom, a pass —, a closed loop: they read it back, the learner confirms with `reply`, they act and
+   * report), `count` (the learner holding the count says it: the items are what the team in the room can account for,
+   * never typed). Answered by `team_event`s.
    */
   | {
       type: "team";
-      action: "step" | "run" | "pause" | "resume" | "surgeon" | "reply" | "need";
+      action: "step" | "run" | "pause" | "resume" | "surgeon" | "reply" | "need" | "ask" | "count";
       rounds?: number;
       surgeon?: "learner" | "simulated";
       message?: string;
@@ -123,6 +128,10 @@ export type Op =
       text?: string;
       item?: string;
       for?: string;
+      /** `ask`: the member asked (their staff id, or `staff:<id>`). */
+      to?: string;
+      /** `ask`: what is asked of the operative field. */
+      field?: FieldAsk;
     }
   /**
    * The staff's own clock (docs/TEAM.md §5, "working on their own"): one round of what staff do without being asked —
@@ -265,6 +274,11 @@ export type EventMsg =
        * step), the stand-in surgeon's (their call-out before a critical step). Absent: the caller's own (the learner's).
        */
       actorId?: string;
+      /**
+       * The stand-in surgeon's call-out (agent `team`): the critical step said aloud before it is done, in the session's
+       * language ("Clipping the cystic duct." / "正在夹闭胆囊管。") — approving is "No objection", denying is "Stop".
+       */
+      callout?: string;
       tool: string;
       args: unknown;
       risk: RiskLevel;
@@ -319,4 +333,5 @@ export type TeamEvent =
   | { kind: "message"; message: TeamMessage }
   | { kind: "receipt"; receipt: ActionReceipt }
   | { kind: "task"; task: TeamTask }
-  | { kind: "status"; round: number; autonomy: "auto" | "step" | "off"; surgeon: "learner" | "simulated" };
+  /** `seat` / `lineup`: the learner's place in the team and the line-up chosen at the start (absent: none). */
+  | { kind: "status"; round: number; autonomy: "auto" | "step" | "off"; surgeon: "learner" | "simulated"; seat?: Place; lineup?: string };

@@ -34,7 +34,7 @@ import {
   type SessionState,
 } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { BUILTIN_AGENTS, mergeAgentProfiles } from "../agents/builtin.js";
+import { BUILTIN_AGENTS, mergeAgentProfiles, TEAM_PROFILE } from "../agents/builtin.js";
 import { narrateAction } from "../agents/offline.js";
 import { npcDisplayName, type PromptContext } from "../agents/prompts.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
@@ -169,6 +169,8 @@ export class SessionKernel {
       npc: { utterance: () => this.currentUtterance },
     });
     this.profiles = new Map(mergeAgentProfiles(BUILTIN_AGENTS, opts.agents).map((p) => [p.name, p]));
+    // the care team's caller: always the built-in one (a profile of that name cannot widen what the team may do)
+    this.profiles.set(TEAM_PROFILE.name, { ...TEAM_PROFILE, tools: [...TEAM_PROFILE.tools] });
     const builtinNames = new Set(BUILTIN_COMMANDS.map((c) => c.name));
     const disabled = new Set((opts.disabledCommands ?? []).map((n) => n.toLowerCase()));
     this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...(opts.commands ?? []).filter((c) => !builtinNames.has(c.name))];
@@ -220,7 +222,7 @@ export class SessionKernel {
 
   /** Names of the agents a learner can talk to in this case. */
   availableAgents(): string[] {
-    return [...this.profiles.keys()].filter((name) => name !== "companion" || this.caseDef.patient.persona.companion !== undefined);
+    return [...this.profiles.keys()].filter((name) => name !== TEAM_PROFILE.name && (name !== "companion" || this.caseDef.patient.persona.companion !== undefined));
   }
 
   /** Tools available to an agent under the current scope and deny rules. */
@@ -291,6 +293,24 @@ export class SessionKernel {
     this.emit(id, { type: "agent_message", turnId, ...line });
     this.emit(id, { type: "turn_complete", turnId, agent, lastMessage: line.text || null, durationMs: Math.max(0, this.now() - started) });
     if (!this.openTurns.has(String(agent))) this.emit(id, { type: "turn_phase", turnId, agent, phase: "idle" });
+  }
+
+  /**
+   * Work done outside any model turn in a turn of its own (the care team's step in the operative field, agent `team`):
+   * turn_started (synthetic) → whatever `run` emits under that turn id (tool calls, an approval's phases) → turn_complete
+   * → turn_phase idle (skipped while another turn of the agent is still running), whatever happens — so a front-end
+   * that follows each agent's phase sees it end after every call (`agentDriving`, the team's and the staff's clocks).
+   */
+  async inTurn<T>(id: string, agent: AgentRole, run: (turnId: string) => Promise<T>): Promise<T> {
+    const turnId = this.newId();
+    const started = this.now();
+    this.emit(id, { type: "turn_started", turnId, agent, synthetic: true });
+    try {
+      return await run(turnId);
+    } finally {
+      this.emit(id, { type: "turn_complete", turnId, agent, lastMessage: null, durationMs: Math.max(0, this.now() - started) });
+      if (!this.openTurns.has(String(agent))) this.emit(id, { type: "turn_phase", turnId, agent, phase: "idle" });
+    }
   }
 
   /** `session_configured`: the session as it is now configured. */

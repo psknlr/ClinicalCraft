@@ -4,12 +4,36 @@
  * whom, the outcome and the world version after it), what each member is doing (tasks) and what each member
  * knows (observations with an evidence reference). Plain JSON: the whole state is a checkpoint.
  */
-import type { TeamDuty, TeamNeed } from "@clinicalcraft/core";
+import type { DirectionName, InstrumentId, ProcedureOp, ProcedureOpType, TeamDuty, TeamNeed, ZoomLevel } from "@clinicalcraft/core";
 import type { NavGoal } from "@clinicalcraft/world";
 import type { Bilingual } from "./i18n.js";
 
-/** A member's body: `staff:<id>`, or the surgeon's (the learner's avatar). */
+/**
+ * A member's body (core `memberBody`): `staff:<id>`; the learner's avatar for the learner's own member — the surgeon
+ * while the learner operates, the place's member while they hold a place in the team —; the stand-in's staff body for
+ * the surgeon while the learner holds a place.
+ */
 export type MemberId = string;
+
+/**
+ * What can be asked of a colleague in the operative field (docs/TEAM.md §4.4, `team ask`): hold traction with the
+ * instrument in a port (`traction`: `port`, `structure`, `direction`, `force`), let go (`release`: a `port`, or all they
+ * hold), take the camera (`camera`: the camera `port`), aim it (`aim`: a `region`, and a `zoom`), go closer or wider
+ * (`zoom`), pass an instrument (`pass`: `instrument`).
+ */
+export type FieldAskOp = "traction" | "release" | "camera" | "aim" | "zoom" | "pass";
+
+/** A request about the operative field, as it is said and read back (`TeamMessage.about.field`, `TeamTask.field`). */
+export interface FieldAsk {
+  op: FieldAskOp;
+  port?: string;
+  structure?: string;
+  direction?: DirectionName[];
+  force?: "gentle" | "firm" | "excessive";
+  region?: string;
+  zoom?: ZoomLevel;
+  instrument?: InstrumentId;
+}
 
 export type MessageKind =
   /** Ask a colleague to do something (an instrument for someone). */
@@ -40,7 +64,9 @@ export interface TeamMessage {
    * What it is about: the need, the item type, the person it is for; a decline's reason code; a count (`count` of
    * `of` accounted for, by item: the `ids` counted at `stage`, what was `missing` or not in the count —
    * `unexpected`), a hold on closure (`hold`), a recount asked for (`recount`), an item set aside off the field
-   * (`setAside`: not in the count).
+   * (`setAside`: not in the count); a request about the operative field (`field`: traction, letting go, the camera, a
+   * pass — read back and confirmed like any request); the call-out before the stand-in's critical step (`callout`: the
+   * step and the handle it is done to).
    */
   about: {
     need?: string;
@@ -56,6 +82,8 @@ export interface TeamMessage {
     setAside?: string[];
     hold?: boolean;
     recount?: boolean;
+    field?: FieldAsk;
+    callout?: { op: ProcedureOpType; handle: string };
   };
   room: string;
   patient: string | null;
@@ -79,7 +107,10 @@ export interface ActionReceipt {
   /** The stable action id (a retried id returns the recorded result: exactly once). */
   id: string;
   actor: MemberId;
+  /** A world operation (`navigate`, `hand_over`…), or `operate`: a step in the operative field (`step`). */
   operation: string;
+  /** `operate`: the step, as it was asked of the field (its `op`). */
+  step?: ProcedureOpType;
   target?: string;
   /** Who it was for (a hand-over's recipient). */
   recipient?: MemberId;
@@ -123,9 +154,11 @@ export interface TeamTask {
   /**
    * `supply`: see that someone gets an item (the circulator's); `deliver`: take an item to someone (the scrub
    * nurse's); `count`: a count (the counter's); `check`: a count discrepancy seen through — hold, search, recount
-   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's).
+   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's); `assist`: a request about the
+   * operative field seen through — read back, walked to the table, the port taken, the step done, reported (an
+   * assistant's, the scrub nurse's pass; `field`); `operate`: the operator's own plan (the stand-in surgeon's; `cursor`).
    */
-  kind: "supply" | "deliver" | "count" | "check" | "wound";
+  kind: "supply" | "deliver" | "count" | "check" | "wound" | "assist" | "operate";
   need: string;
   /** Equipment type id. */
   item: string;
@@ -155,6 +188,10 @@ export interface TeamTask {
   count?: CountCheck;
   /** Where the world pointed after a refusal for reach or sight (walk there, then act again). */
   goal?: NavGoal;
+  /** `assist`: what was asked of the operative field (the request's `about.field`). */
+  field?: FieldAsk;
+  /** `operate`: where the operator's plan has got to (the next reference step). */
+  cursor?: number;
   /** Why it ended this way (declined, escalated): a short code, and what was said. */
   reason?: string;
   reasonText?: Bilingual;
@@ -257,10 +294,15 @@ export interface TeamCheckpoint {
   surgeon: SurgeonMode;
 }
 
-/** What a member decides to do this round (at most one). */
+/**
+ * What a member decides to do this round (at most one): say something; act in the world (`act`, the action bus); take
+ * a step in the operative field (`operate`: the `operate` tool with the member's own body, through the team's caller —
+ * carried out once, under the task's next action id); or change their own tasks.
+ */
 export type Proposal =
   | { kind: "say"; to: MemberId; message: Pick<TeamMessage, "thread" | "kind" | "text" | "about" | "evidence"> & { replyTo?: string }; patch?: TaskPatch[] }
   | { kind: "act"; task: string; operation: string; targetId?: string; goal?: NavGoal; parameters?: Record<string, unknown>; recipient?: MemberId; patch?: TaskPatch[] }
+  | { kind: "operate"; task: string; op: ProcedureOp; patch?: TaskPatch[] }
   | { kind: "update"; patch: TaskPatch[] };
 
 /** A change to the task list: a new task, or fields of an existing one. */

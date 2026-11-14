@@ -41,10 +41,11 @@ export function embodiedHost(k: SessionKernel): EmbodiedHost {
 
 /**
  * Run a tool through a caller's tool path with an acting body (embodied mode: world operations' clinical
- * effects, skill steps, delegated staff): the learner's (`runTool`) or a model agent's
- * (`executeToolCall` with its allow-list, hooks and approval gate). Never a shortcut.
+ * effects, skill steps, delegated staff, the care team's own steps in the operative field — caller `team`): the
+ * learner's (`runTool`) or a model agent's (`executeToolCall` with its allow-list, hooks and approval gate). Never a
+ * shortcut.
  */
-async function runToolAs(k: SessionKernel, caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: ToolPathExtra & { actorId: ActorId }): Promise<SkillToolCall> {
+export async function runToolAs(k: SessionKernel, caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: ToolPathExtra & { actorId: ActorId }): Promise<SkillToolCall> {
   const id = caller.submission ?? k.currentSubmission;
   const signal = caller.signal ?? k.ops.activeSignal;
   // A skill or delegated step is a learner tool whoever the caller is (review S2): checked before anything else.

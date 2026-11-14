@@ -264,6 +264,24 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
 /** Names of the built-in agents. */
 export const BUILTIN_AGENT_NAMES: readonly string[] = BUILTIN_AGENTS.map((a) => a.name);
 
+/**
+ * The care team's caller (docs/TEAM.md §4.5): the profile under which a team member's own step in the operative field
+ * runs through the tool path — `operate` with the member's body, and `observe_field` — so hooks, deny rules, the scope of
+ * practice, the spatial gate and the approval gate all apply to it. It is no one to talk to and runs no model: never in
+ * the roster a learner addresses, never overridden by a user or project profile of the same name.
+ */
+export const TEAM_PROFILE: AgentProfile = Object.freeze(
+  profile({
+    name: "team",
+    description: "The care team's own steps in the operative field (an assistant's traction or camera, the scrub nurse's pass, the stand-in surgeon's steps): not a conversation partner",
+    role: "npc",
+    tools: ["operate", "observe_field"],
+    maxToolRounds: 0,
+    prompt: "",
+    injectMemory: false,
+  }),
+);
+
 /** A fresh copy of a built-in profile (or undefined). */
 export function builtinAgent(name: string): AgentProfile | undefined {
   const found = BUILTIN_AGENTS.find((a) => a.name === name);

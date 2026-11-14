@@ -35,6 +35,9 @@ export const PERMISSION_RULE_IDS = {
   auto: "mode.auto",
   default: "mode.default",
   strict: "mode.strict",
+  /** The care team's caller (docs/TEAM.md §4.5): the stand-in surgeon's call-out asks; every other team step is allowed. */
+  teamCallout: "team.callout",
+  teamStep: "team.step",
 } as const;
 
 const SCOPE_RANK: Record<PracticeScope, number> = { "history-only": 0, workup: 1, full: 2 };
@@ -276,6 +279,19 @@ function modeDecision(
         ? result("allow", PERMISSION_RULE_IDS.default, say("perm.defaultAllow"))
         : result("ask", PERMISSION_RULE_IDS.default, say("perm.defaultAsk"), offerSession);
   }
+}
+
+/**
+ * The care team's rung (docs/TEAM.md §4.5), on the ladder's own answer for a call of the team's caller (`team`): a
+ * refusal by the practice scope, a deny rule or plan mode stands; the stand-in surgeon's call-out (`callout`: their
+ * clip, division, coagulation or bail-out) asks in every approval mode but bypass, never for the session; every other
+ * step of the team — an assistant's traction or camera, the scrub nurse's pass — is allowed, never asked about.
+ */
+export function teamPermission(check: PermissionCheck, mode: ApprovalMode, callout: boolean, locale?: string): PermissionCheck {
+  if (check.decision === "deny") return check;
+  if (callout && mode !== "bypass") return { ...check, decision: "ask", ruleId: PERMISSION_RULE_IDS.teamCallout, reason: rt(locale, "perm.team.callout"), allowSession: false };
+  if (check.decision === "allow") return check;
+  return { ...check, decision: "allow", ruleId: callout ? PERMISSION_RULE_IDS.bypass : PERMISSION_RULE_IDS.teamStep, reason: rt(locale, callout ? "perm.bypass" : "perm.team.step", { label: "operate" }), allowSession: false };
 }
 
 /** In-memory "approved for session" rules (Grok CLI "don't ask again this session"). */

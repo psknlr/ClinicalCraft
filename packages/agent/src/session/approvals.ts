@@ -10,6 +10,8 @@ export interface ApprovalAsk {
   agent: AgentRole | "learner";
   /** The body that would act (embodied mode: a colleague's `staff:<id>`, the stand-in surgeon's); absent: the caller's own. */
   actorId?: string;
+  /** The stand-in surgeon's call-out (the care team's caller): the critical step said aloud, in the session's language. */
+  callout?: string;
   tool: string;
   args: unknown;
   risk: RiskLevel;

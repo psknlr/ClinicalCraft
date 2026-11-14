@@ -46,6 +46,67 @@ const PHRASES = {
   "why.handsFull": { en: "{for}'s hands are full", "zh-CN": "{for}手里拿满了" },
   "why.failed": { en: "{to} couldn't pass it", "zh-CN": "{to}没能递过去" },
   "why.nobody": { en: "nobody is free to bring it", "zh-CN": "没有人能去拿" },
+  // the operative field asked of a colleague (docs/TEAM.md §4.4): the request, its read-back, the report, a decline
+  "ask.traction": { en: "{to}, please hold the {instrument} in port {port}, pulling {structure} {direction}{force}.", "zh-CN": "{to}，请拉住 {port} 孔的{instrument}，把{structure}向{direction}牵拉{force}。" },
+  "ask.release": { en: "{to}, please let go of port {port}.", "zh-CN": "{to}，请松开 {port} 孔。" },
+  "ask.releaseAll": { en: "{to}, please let go.", "zh-CN": "{to}，请松手。" },
+  "ask.camera": { en: "{to}, take the camera, please.", "zh-CN": "{to}，请扶镜。" },
+  "ask.aim": { en: "{to}, camera on {region}, please.", "zh-CN": "{to}，镜头对准{region}。" },
+  "ask.aimClose": { en: "{to}, camera on {region}, close up, please.", "zh-CN": "{to}，镜头对准{region}并推近。" },
+  "ask.closer": { en: "{to}, closer, please.", "zh-CN": "{to}，推近。" },
+  "ask.wider": { en: "{to}, wider, please.", "zh-CN": "{to}，拉远。" },
+  "ask.pass": { en: "{to}, {instrument}, please.", "zh-CN": "{to}，请递{instrument}。" },
+  "readback.traction": { en: "The {instrument} in port {port}, pulling {structure} {direction}{force} — confirm?", "zh-CN": "{port} 孔的{instrument}，把{structure}向{direction}牵拉{force}——确认吗？" },
+  "readback.release": { en: "Letting go of port {port} — confirm?", "zh-CN": "松开 {port} 孔——确认吗？" },
+  "readback.releaseAll": { en: "Letting go of everything I hold — confirm?", "zh-CN": "我手上的全部松开——确认吗？" },
+  "readback.camera": { en: "I take the camera in port {port} — confirm?", "zh-CN": "我来扶 {port} 孔的镜头——确认吗？" },
+  "readback.cameraAny": { en: "I take the camera — confirm?", "zh-CN": "我来扶镜——确认吗？" },
+  "readback.aim": { en: "Camera on {region} — confirm?", "zh-CN": "镜头对准{region}——确认吗？" },
+  "readback.aimClose": { en: "Camera on {region}, close up — confirm?", "zh-CN": "镜头对准{region}并推近——确认吗？" },
+  "readback.closer": { en: "Closer — confirm?", "zh-CN": "推近——确认吗？" },
+  "readback.wider": { en: "Wider — confirm?", "zh-CN": "拉远——确认吗？" },
+  "readback.pass": { en: "{instrument} to {for} — confirm?", "zh-CN": "{instrument}递给{for}——确认吗？" },
+  "report.holding": { en: "Holding.", "zh-CN": "拉住了。" },
+  "report.camera": { en: "I have the camera.", "zh-CN": "镜头我扶好了。" },
+  "report.aimed": { en: "Camera on {region}.", "zh-CN": "镜头已对准{region}。" },
+  "report.closer": { en: "Closer.", "zh-CN": "已推近。" },
+  "report.wider": { en: "Wider.", "zh-CN": "已拉远。" },
+  "report.passed": { en: "Passed.", "zh-CN": "递好了。" },
+  "report.lettingGo": { en: "Letting go now.", "zh-CN": "我松手了。" },
+  "decline.noControl": { en: "I don't hold the {control} control{instead}.", "zh-CN": "我没有{control}的分工权限{instead}。" },
+  "decline.operatorInstrument": { en: "The {instrument} in port {port} is the operator's own instrument.", "zh-CN": "{port} 孔的{instrument}是术者自己的器械。" },
+  "decline.notTraction": { en: "The {instrument} in port {port} is not for traction.", "zh-CN": "{port} 孔的{instrument}不能用来牵引。" },
+  "decline.portHeld": { en: "{holder} holds port {port}: they hand it over themselves.", "zh-CN": "{port} 孔由{holder}握持：需由其本人交出。" },
+  "decline.noPort": { en: "There is no port {port}.", "zh-CN": "没有 {port} 孔。" },
+  "decline.emptyPort": { en: "There is no instrument in port {port} to hold.", "zh-CN": "{port} 孔里没有可以握持的器械。" },
+  "decline.notCameraPort": { en: "Port {port} is not the camera port.", "zh-CN": "{port} 孔不是观察孔。" },
+  "decline.noField": { en: "There is no operative field to work in yet.", "zh-CN": "还没有可以操作的术野。" },
+  "decline.nothingHeld": { en: "I'm not holding anything.", "zh-CN": "我手上没有握持器械。" },
+  "decline.failed": { en: "I couldn't do it: {reason}.", "zh-CN": "没能做到：{reason}。" },
+  // the stand-in surgeon's call-out before a critical step (docs/TEAM.md §4.5): approved "No objection", denied "Stop"
+  "callout.clip": { en: "Clipping {structure}.", "zh-CN": "正在夹闭{structure}。" },
+  "callout.divide": { en: "Dividing {structure}.", "zh-CN": "正在离断{structure}。" },
+  "callout.coagulate": { en: "Coagulating {structure}.", "zh-CN": "正在电凝{structure}。" },
+  "callout.bailout": { en: "Bail-out: {strategy}.", "zh-CN": "补救策略：{strategy}。" },
+  // clauses (filled into the sentences above; never capitalised)
+  "clause.the": { en: "the {name}", "zh-CN": "{name}" },
+  "clause.learner": { en: "the {position} (you)", "zh-CN": "{position}（你）" },
+  "clause.instead": { en: ": ask {who}", "zh-CN": "：请找{who}" },
+  "clause.or": { en: " or ", "zh-CN": "或" },
+  "clause.and": { en: " and ", "zh-CN": "、" },
+  "clause.force.gentle": { en: ", gently", "zh-CN": "，轻柔一些" },
+  "clause.force.excessive": { en: ", hard", "zh-CN": "，用力" },
+  "clause.dir.cephalad": { en: "cephalad", "zh-CN": "头侧" },
+  "clause.dir.caudal": { en: "caudally", "zh-CN": "尾侧" },
+  "clause.dir.patient-left": { en: "to the patient's left", "zh-CN": "患者左侧" },
+  "clause.dir.patient-right": { en: "to the patient's right", "zh-CN": "患者右侧" },
+  "clause.dir.anterior": { en: "anteriorly", "zh-CN": "腹侧" },
+  "clause.dir.posterior": { en: "posteriorly", "zh-CN": "背侧" },
+  "clause.bailout.call-help": { en: "calling for senior help", "zh-CN": "呼叫上级医师" },
+  "clause.bailout.subtotal-fenestrating": { en: "subtotal cholecystectomy (fenestrating)", "zh-CN": "胆囊次全切除（开窗式）" },
+  "clause.bailout.subtotal-reconstituting": { en: "subtotal cholecystectomy (reconstituting)", "zh-CN": "胆囊次全切除（重建式）" },
+  "clause.bailout.convert-open": { en: "converting to open", "zh-CN": "中转开腹" },
+  "clause.bailout.abandon-refer": { en: "abandoning and referring", "zh-CN": "终止手术并转诊" },
 } as const;
 
 export type TeamPhrase = keyof typeof PHRASES;
@@ -55,8 +116,20 @@ export function phrase(key: TeamPhrase, params: Params = {}): Bilingual {
   const fill = (text: string, lang: "en" | "zh-CN") => text.replace(/\{(\w+)\}/g, (m, name: string) => params[name]?.[lang] ?? m);
   const p = PHRASES[key];
   const en = fill(p.en, "en");
-  // a sentence starts with a capital ("The surgeon needs…"); a clause (`why.*`) is left as it is
-  return { en: key.startsWith("why.") ? en : en.charAt(0).toUpperCase() + en.slice(1), "zh-CN": fill(p["zh-CN"], "zh-CN") };
+  // a sentence starts with a capital ("The surgeon needs…"); a clause (`why.*`, `clause.*`) is left as it is
+  const clause = key.startsWith("why.") || key.startsWith("clause.");
+  return { en: clause ? en : en.charAt(0).toUpperCase() + en.slice(1), "zh-CN": fill(p["zh-CN"], "zh-CN") };
+}
+
+/** Bilingual values joined as a list ("A, B or C" / "A、B或C"; `last`: the last joiner). */
+export function joinBoth(values: readonly Bilingual[], last: "or" | "and" = "and"): Bilingual {
+  const join = (lang: "en" | "zh-CN") => {
+    const xs = values.map((v) => v[lang]);
+    if (xs.length <= 1) return xs[0] ?? "";
+    const sep = lang === "en" ? ", " : "、";
+    return `${xs.slice(0, -1).join(sep)}${PHRASES[`clause.${last}`][lang]}${xs.at(-1)}`;
+  };
+  return { en: join("en"), "zh-CN": join("zh-CN") };
 }
 
 /** A name in both languages from a localized value (strings stand for both). */
