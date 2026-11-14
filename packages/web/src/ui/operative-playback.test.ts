@@ -5,13 +5,17 @@
  * exposure window are apart); several steps committed at once (an accelerated demonstration) are shown one by one,
  * each clip on its own, and the last frame is the session's own field; a refused step is a frame of its own and keeps
  * its time; a first look shows the field as it is. In a place in the team, a colleague's insert, the camera's aim, a
- * pass and the stand-in surgeon's steps (recorded as the operator's) replay frame for frame as the session has them.
+ * pass and the stand-in surgeon's steps (recorded as the operator's) replay frame for frame as the session has them;
+ * the learner's own steps in their place are "you", and a refusal's frame says why in the learner's words.
  */
-import { createSession, observeField, reduce, type ClinicalAction, type DomainEvent, type ProcedureOp, type ProcedureState, type SessionState } from "@clinicalcraft/core";
+import { createSession, observeField, reduce, type ClinicalAction, type DomainEvent, type FacilityDefinition, type ProcedureOp, type ProcedureState, type SessionState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
+import { setLocale } from "../i18n/index.js";
+import { learnerField, partyName, refusalWords } from "./field-names.js";
 import { lapCholeCase, lapCholeTeamCase } from "./panels/__fixtures__/lap-chole-sit.js";
 import { lapScene } from "./panels/surgery-scene.js";
-import { OperativePlayback, type OperativeEvent } from "./operative-playback.js";
+import { OperativePlayback, type OperativeEvent, type PlaybackItem } from "./operative-playback.js";
+import { frameCaption } from "./scope-dock.js";
 
 const c = lapCholeCase();
 const def = c.procedure!;
@@ -351,5 +355,99 @@ describe("a place in the team, frame by frame", () => {
     expect(frames[1]!.state).toEqual(frames[0]!.state);
     expect(observeField(tdef, frames[4]!.state).camera).toEqual({ port: "A", at: "hepatocystic-triangle", zoom: "wide", holder: "doc-1" });
     expect(p.frame().state).toBe(s.procedure);
+  });
+});
+
+describe("the learner's own place, frame by frame", () => {
+  /** The theatre's people, by name (the facility's staff the words read). */
+  const facility = {
+    staff: [
+      { id: "doc-0", role: "attending", position: "surgeon", name: { en: "Dr Ito", "zh-CN": "伊藤医生" } },
+      { id: "doc-1", role: "attending", position: "first-assistant", name: { en: "Dr Abe", "zh-CN": "阿部医生" } },
+      { id: "nurse-2", role: "nurse", position: "scrub-nurse", name: { en: "Chen Yu", "zh-CN": "陈雨" } },
+    ],
+  } as unknown as FacilityDefinition;
+
+  it("the stand-in's normalised steps and the learner's colleague steps replay; a refusal's frame says why — in English and in Chinese", () => {
+    const k = lapCholeTeamCase();
+    const tdef = k.procedure!;
+    // the first assistant's place: the stand-in (doc-0) operates; the learner's own steps carry their place's member (doc-1)
+    let s = reduce(k, createSession(k), { type: "start", seat: "first-assistant" }).state;
+    const steps: { op: ProcedureOp; actor: string; ref?: string }[] = [
+      { op: { op: "plan-ports", plan: "three-port-left" }, actor: "doc-0", ref: "standin:0" },
+      { op: { op: "insufflate", pressure: 12 }, actor: "doc-0", ref: "standin:1" },
+      { op: { op: "insert", port: "A", instrument: "laparoscope" }, actor: "doc-0", ref: "standin:2" },
+      { op: { op: "insert", port: "B", instrument: "grasper" }, actor: "doc-0", ref: "standin:3" },
+      { op: { op: "insert", port: "C", instrument: "maryland" }, actor: "doc-0", ref: "standin:4" },
+      // the learner takes the grasper and pulls
+      { op: { op: "hand-over", port: "B", to: "doc-1" }, actor: "doc-1" },
+      { op: { op: "retract", port: "B", structure: "gallbladder-fundus", direction: ["cephalad"], force: "firm" }, actor: "doc-1" },
+      // refused: the Maryland is the operator's own; port C has not been handed to the learner
+      { op: { op: "hand-over", port: "C", to: "doc-1" }, actor: "doc-1" },
+      { op: { op: "suction", port: "C" }, actor: "doc-1" },
+      // the stand-in goes on
+      { op: { op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false }, actor: "doc-0", ref: "standin:6" },
+    ];
+    const events: OperativeEvent[] = [];
+    const fields: ProcedureState[] = [];
+    for (const x of steps) {
+      const r = reduce(k, s, { type: "operate", op: x.op, actor: x.actor, by: "agent", ...(x.ref ? { ref: x.ref } : {}) } as ClinicalAction);
+      for (const e of r.events) if (e.type === "procedure.step" || (e.type === "action.rejected" && e.action === "operate")) events.push(e);
+      s = r.state;
+      fields.push(structuredClone(s.procedure!));
+    }
+    // as the session records them: the stand-in's steps the operator's, the learner's their place's member's
+    expect(events.map((e) => `${e.type === "procedure.step" ? e.op : `refused ${e.detail?.op}`}:${e.actor ?? "operator"}`)).toEqual([
+      "plan-ports:operator",
+      "insufflate:operator",
+      "insert:operator",
+      "insert:operator",
+      "insert:operator",
+      "hand-over:doc-1",
+      "retract:doc-1",
+      "refused hand-over:doc-1",
+      "refused suction:doc-1",
+      "dissect:operator",
+    ]);
+
+    const clock = manualTimers();
+    const p = new OperativePlayback(clock.timers);
+    p.attach("first-assistant", tdef);
+    p.sync(events.slice(0, 1), fields[0]!);
+    const shown: PlaybackItem[] = [];
+    const states: ProcedureState[] = [];
+    p.subscribe(() => {
+      const f = p.frame();
+      shown.push(f.item!);
+      states.push(f.state!);
+    });
+    p.sync(events, s.procedure!);
+    for (let i = 0; i < 40; i++) clock.advance(2000);
+    // every frame is the field the session had after that event: the refusals' the field before them
+    expect(shown.map((x) => `${x.kind}:${x.operation}:${x.actor ?? "operator"}`)).toEqual(events.slice(1).map((e) => `${e.type === "procedure.step" ? "step" : "rejected"}:${e.type === "procedure.step" ? e.op : e.detail?.op}:${e.actor ?? "operator"}`));
+    states.forEach((st, i) => expect(st, `${i}`).toEqual(fields[i + 1]));
+    expect(p.frame().state).toBe(s.procedure);
+    expect(s.procedure!.refs).toEqual(["standin:0", "standin:1", "standin:2", "standin:3", "standin:4", "standin:6"]);
+
+    // the captions: the learner's own step is "you"; a refusal says why, with the people named as the learner reads them
+    const words = learnerField(k, facility, () => s);
+    const caption = (x: PlaybackItem) => frameCaption(x, (id) => partyName(words, id), (r) => refusalWords(words, r))!.text;
+    const retract = shown.find((x) => x.operation === "retract")!;
+    const refused = shown.filter((x) => x.kind === "rejected");
+    expect(refused.map((x) => x.reason?.key)).toEqual(["needs-control", "not-handed"]);
+    // the engine's own message stays word for word on the frame
+    expect(refused[1]!.rejectionReason).toBe('Port "C" is the operator\'s: it has not been handed to doc-1.');
+    setLocale("en");
+    expect(caption(retract)).toBe("Step 7 · retract (you)");
+    expect(refused.map(caption)).toEqual([
+      "Not done: You do not hold the Operate control that this needs. — the field is unchanged",
+      "Not done: Port C is the operator's: it has not been handed to you. — the field is unchanged",
+    ]);
+    expect(caption(shown.find((x) => x.operation === "dissect")!)).toBe("Step 8 · dissect");
+    setLocale("zh-CN");
+    expect(caption(retract)).toBe("第 7 步 · 牵拉（你）");
+    expect(refused.map(caption)).toEqual(["未执行：你没有这一步所需的“主刀操作”分工权限。——术野没有变化", "未执行：C 孔属于术者：尚未交给你。——术野没有变化"]);
+    // a refusal the field gives no reason for keeps the engine's words
+    expect(frameCaption({ ...refused[0]!, reason: undefined }, (id) => id, (r) => refusalWords(words, r))!.text).toContain(refused[0]!.rejectionReason!);
   });
 });

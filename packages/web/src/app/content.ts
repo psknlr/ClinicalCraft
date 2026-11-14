@@ -10,13 +10,31 @@
  * page's lifetime — so the UI offers a reload for it). Cases offered
  * by `clinicalcraft serve` join the index from its paginated listing
  * (`GET /api/content/cases`) and load from `/api/content/cases/:id`; an
- * older server without the listing has its cases fetched in full.
+ * older server without the listing has its cases fetched in full. A server
+ * case comes without its reference solution: a start in a place in its care
+ * team fetches beside it what that start needs (`placeReady`:
+ * `GET /api/content/cases/:id/place-path`).
  * Facilities, room templates and equipment catalogs stay bundled (small;
  * the world needs them at once); facilities that place room templates are
  * compiled here (`compileFacility`), so the world only sees flat facilities.
  */
 import { canCompleteWith, caseIndexEntry, compareLibraryOrder, createLimiter, libraryOrder, mapLimit, normalizeIndexEntry, type CaseIndexEntry } from "@clinicalcraft/agent";
-import { compileFacility, facilityCapabilities, parseCase, parseCatalog, parseFacility, parseRoomTemplate, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type RoomTemplate } from "@clinicalcraft/core";
+import {
+  canJoinTeam,
+  ClinicalActionSchema,
+  compileFacility,
+  facilityCapabilities,
+  parseCase,
+  parseCatalog,
+  parseFacility,
+  parseRoomTemplate,
+  withPlacePath,
+  type CaseDefinition,
+  type ClinicalAction,
+  type EquipmentCatalog,
+  type FacilityDefinition,
+  type RoomTemplate,
+} from "@clinicalcraft/core";
 import { CASE_FOLDERS, CASE_INDEX, CASE_INDEX_ISSUES } from "virtual:clinicalcraft/case-index";
 
 const caseModules = import.meta.glob("../../../content/cases/*/case.json", { import: "default" }) as Record<string, () => Promise<unknown>>;
@@ -419,4 +437,54 @@ export async function loadServerContent(index: ContentIndex, get: JsonGetter, fe
   const cases = await fetchAll("cases", ids(listing.cases).filter((id) => !known.has(id)));
   added += index.addServerContent({ cases, facilities: [], catalogs: [] });
   return added;
+}
+
+/** Most actions a place path may carry (a case's reference solution is far shorter). */
+const MAX_PLACE_PATH = 5000;
+
+/**
+ * The place path a server sent for a case (`{id, path}`, untrusted): every action valid, or null — never a path for
+ * another case, and never part of one (a path with an action dropped would join the team along another path).
+ */
+export function placePathOf(body: unknown, id: string): ClinicalAction[] | null {
+  const b = body && typeof body === "object" ? (body as { id?: unknown; path?: unknown }) : null;
+  if (!b || b.id !== id || !Array.isArray(b.path) || b.path.length > MAX_PLACE_PATH) return null;
+  const path: ClinicalAction[] = [];
+  for (const a of b.path) {
+    const r = ClinicalActionSchema.safeParse(a);
+    if (!r.success) return null;
+    path.push(r.data as ClinicalAction);
+  }
+  return path;
+}
+
+/**
+ * `GET /api/content/cases/:id/place-path` from `clinicalcraft serve`: the part of a case's reference solution a place
+ * in its care team needs. Throws with the server's message or the HTTP status.
+ */
+export async function fetchPlacePath(id: string, timeoutMs = 20_000): Promise<unknown> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(`/api/content/cases/${encodeURIComponent(id)}/place-path`, { signal: ctrl.signal, headers: { accept: "application/json" } });
+    const json = (res.headers.get("content-type") ?? "").includes("json") ? ((await res.json().catch(() => null)) as { error?: { message?: unknown } } | null) : null;
+    if (res.ok && json && typeof json === "object") return json;
+    throw new Error(typeof json?.error?.message === "string" ? json.error.message : `HTTP ${res.status}`);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * A case ready for a start in a place in its care team (docs/TEAM.md §1): a bundled case carries its reference
+ * solution; a case `clinicalcraft serve` sends comes without it, and a place joins the team along it — so its place
+ * path is fetched beside it (`fetchPath`, default `fetchPlacePath`) and put in as its solution (core `withPlacePath`):
+ * core's own start then joins exactly as it does for the full case, and the stand-in surgeon works from the same
+ * operative steps. Never the rest of the solution. A case that can be joined already, or has no team, is as it is.
+ */
+export async function placeReady(def: CaseDefinition, fetchPath: (id: string) => Promise<unknown> = fetchPlacePath): Promise<CaseDefinition> {
+  if (!def.team || canJoinTeam(def)) return def;
+  const path = placePathOf(await fetchPath(def.id), def.id);
+  if (!path) throw new Error(`the server sent no place path for case "${def.id}"`);
+  return withPlacePath(def, path);
 }

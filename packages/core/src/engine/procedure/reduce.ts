@@ -246,10 +246,19 @@ function framed(x: Step, region: string | undefined, structure?: string): void {
  * A colleague puts an instrument in: only into an empty port nobody holds, and only the laparoscope into a camera
  * port or a grasper or the suction into an assist port; they hold it then, with at most two ports in their hands.
  */
+/**
+ * Whether a colleague may put an instrument into a port of this role: the laparoscope into a camera port, a grasper or
+ * the suction into an assist port — never into a working port (the operator's). The field refuses any other
+ * (`port-role`); a front-end offers a colleague only these.
+ */
+export function colleaguePortFits(role: PortState["role"], instrument: InstrumentId): boolean {
+  return role === "camera" ? instrument === "laparoscope" : role === "assist" && (instrument === "grasper" || instrument === "suction");
+}
+
 function colleagueInsert(x: Step, p: PortState, instrument: InstrumentId): void {
   if (p.holder) mine(x, p);
   if (p.instrument) reject("invalid", `Port "${p.site}" already has the ${p.instrument} in it: a colleague puts an instrument only into an empty port.`, why("port-occupied", { port: p.site, instrument: p.instrument }));
-  const fits = p.role === "camera" ? instrument === "laparoscope" : p.role === "assist" && (instrument === "grasper" || instrument === "suction");
+  const fits = colleaguePortFits(p.role, instrument);
   if (!fits) reject("invalid", `A colleague puts the laparoscope only into a camera port, and a grasper or the suction only into an assist port: port "${p.site}" is a ${p.role} port.`, why("port-role", { port: p.site, role: p.role, instrument }));
   handsFree(x, x.actor!);
 }

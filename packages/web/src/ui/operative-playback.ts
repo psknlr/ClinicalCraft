@@ -14,7 +14,7 @@
  * restored with steps still queued never shows a pneumoperitoneum the session does not have.
  * No DOM, no three.js: timers are injected.
  */
-import { operate, type DomainEvent, type ProcedureDefinition, type ProcedureSignal, type ProcedureState, type ProcedureSupply } from "@clinicalcraft/core";
+import { operate, type DomainEvent, type ProcedureDefinition, type ProcedureSignal, type ProcedureState, type ProcedureSupply, type RefusalReason } from "@clinicalcraft/core";
 
 export type StepEvent = Extract<DomainEvent, { type: "procedure.step" }>;
 export type RejectedEvent = Extract<DomainEvent, { type: "action.rejected" }>;
@@ -28,13 +28,20 @@ export interface PlaybackItem {
   id: string;
   /** Its place in the record's operative events (1-based). */
   sequence: number;
-  /** A colleague who did it (staff id); null: the operator. */
+  /**
+   * A colleague who did it (staff id: the learner's own steps in a place carry their place's member); null: the
+   * operator — the learner operating, or the stand-in surgeon while the learner holds a place (the record's normalised
+   * actor).
+   */
   actor: string | null;
   operation: string;
   /** What it acted on: a structure, a region, a handle, a port. */
   target: string | null;
   accepted: boolean;
+  /** A refusal: the engine's message, word for word. */
   rejectionReason?: string;
+  /** A refusal: why, as the field gives it (`action.rejected.reason`) — the views say it in the learner's words. */
+  reason?: RefusalReason;
   /** Simulated minute. */
   at: number;
   /** The field's step count after it (a refusal leaves it as it was). */
@@ -188,7 +195,7 @@ export class OperativePlayback {
   private itemOf(e: OperativeEvent, sequence: number, before: ProcedureState, after: ProcedureState): PlaybackItem {
     if (e.type === "procedure.step")
       return { kind: "step", id: e.id ?? `op-${e.step ?? sequence}`, sequence, actor: e.actor ?? null, operation: e.op, target: targetOf(e.detail as Record<string, unknown> | undefined), accepted: true, at: e.at ?? 0, revision: after.counters.steps, signals: [...e.signals], before, after };
-    return { kind: "rejected", id: `rejected-${this.rejections}`, sequence, actor: e.actor ?? null, operation: e.detail?.op ?? "?", target: targetOf(e.detail as Record<string, unknown> | undefined), accepted: false, rejectionReason: e.message, at: e.at ?? 0, revision: before.counters.steps, signals: [], before, after: before };
+    return { kind: "rejected", id: `rejected-${this.rejections}`, sequence, actor: e.actor ?? null, operation: e.detail?.op ?? "?", target: targetOf(e.detail as Record<string, unknown> | undefined), accepted: false, rejectionReason: e.message, ...(e.reason ? { reason: e.reason } : {}), at: e.at ?? 0, revision: before.counters.steps, signals: [], before, after: before };
   }
 
   /** Show the next frame now (null: nothing waiting) — the timers call it; tests may too. */

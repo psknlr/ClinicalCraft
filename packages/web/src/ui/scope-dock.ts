@@ -9,24 +9,41 @@
  * size, so the dock steps aside. Only the operator's `FieldView` is drawn — never a structure's name, an injury the
  * field does not show, or a score.
  */
-import { observeField, procedureFor, t } from "@clinicalcraft/core";
-import type { App } from "../app/context.js";
+import { observeField, procedureFor, t, type RefusalReason } from "@clinicalcraft/core";
+import type { App, Game } from "../app/context.js";
 import type { LaparoscopeApi } from "../contracts.js";
 import { createLaparoscope } from "../laparoscopy/index.js";
 import { getLocale, tr } from "../i18n/index.js";
 import { h, mount, prefersReducedMotion } from "./dom.js";
+import { learnerField, partyName, refusalWords } from "./field-names.js";
 import type { PlaybackItem } from "./operative-playback.js";
 import { openFieldText } from "./open-field.js";
 import { identifyChoices, label, labelList } from "./panels/surgery-controls.js";
 import { lapScene } from "./panels/surgery-scene.js";
 
-/** The caption of a frame: the step (with who did it and what it signalled) or the refusal and its reason. */
-export function frameCaption(item: PlaybackItem | null, staffName: (id: string) => string): { text: string; status: "step" | "rejected"; op: string; id: string } | null {
+/**
+ * The caption of a frame: the step (with who did it and what it signalled) or the refusal and its reason — said in the
+ * learner's words when the field gives one (`reasonWords`), else the engine's message. Who did a step: `staffName` of
+ * its actor — the learner's own step in a place is "you".
+ */
+export function frameCaption(
+  item: PlaybackItem | null,
+  staffName: (id: string) => string,
+  reasonWords?: (reason: RefusalReason | undefined) => string | null,
+): { text: string; status: "step" | "rejected"; op: string; id: string } | null {
   if (!item) return null;
-  if (item.kind === "rejected") return { text: tr("scope.rejected", { message: item.rejectionReason ?? "" }), status: "rejected", op: item.operation, id: item.id };
+  if (item.kind === "rejected") return { text: tr("scope.rejected", { message: reasonWords?.(item.reason) ?? item.rejectionReason ?? "" }), status: "rejected", op: item.operation, id: item.id };
   const who = item.actor ? tr("scope.by", { who: staffName(item.actor) }) : "";
   const signals = item.signals.length ? ` · ${labelList("signal", item.signals)}` : "";
   return { text: `${tr("scope.step", { n: item.revision, op: label("op", item.operation) })}${who}${signals}`, status: "step", op: item.operation, id: item.id };
+}
+
+/**
+ * The field's people as the learner reads them in a game (`field-names.ts`): the learner — operating, or their place's
+ * member — is "you", anyone else by name (core `memberBody`, A19).
+ */
+export function fieldWordsOf(game: Game) {
+  return learnerField(game.caseDef, game.facility, () => game.session.store.snapshot?.state ?? game.session.session.state);
 }
 
 export class ScopeDock {
@@ -116,7 +133,8 @@ export class ScopeDock {
     this.el.dataset.step = String(p.counters.steps);
     this.el.dataset.frame = item?.id ?? "";
     const lines = [];
-    const cap = frameCaption(item, (id) => this.staffName(id));
+    const words = game ? fieldWordsOf(game) : null;
+    const cap = frameCaption(item, (id) => (words ? partyName(words, id) : id), (r) => (words ? refusalWords(words, r) : null));
     if (cap) lines.push(h("div", { class: ["lap-line", cap.status === "rejected" ? "bad" : ""], dataset: { status: cap.status, op: cap.op, id: cap.id } }, cap.text));
     // the window over a region being dissected that the traction no longer holds open, in words
     if (v.inView && v.specimen === "in-situ")
@@ -125,11 +143,6 @@ export class ScopeDock {
     const pending = this.app.playback.pending();
     if (pending) lines.push(h("div", { class: "lap-line muted" }, tr("scope.queue", { n: pending })));
     mount(this.caption, lines);
-  }
-
-  private staffName(id: string): string {
-    const staff = this.app.game?.facility.staff.find((s) => s.id === id);
-    return staff ? t(staff.name, getLocale()) : id;
   }
 
   /** Release the view (a new game builds a fresh one). */

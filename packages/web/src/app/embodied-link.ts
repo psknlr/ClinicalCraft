@@ -117,6 +117,20 @@ export class EmbodiedLink {
     this.o.app.session.submit({ type: "world_pose", actorId: PRIMARY_ACTOR, pose: { x: p.x, y: p.y, z: p.z, yaw: p.yaw, pitch: p.pitch, level: p.level } });
   }
 
+  /**
+   * The world put the learner's body somewhere itself — a place in the care team taken: the body joins the team at the
+   * operating table through the world's pose (docs/TEAM.md §1) — and the first-person view follows it there. Called
+   * once, right after that start (a resume restores the body and the view from the save); never while the world's
+   * Mover drives the avatar. False: nothing to follow (no world, no renderer, no pose).
+   */
+  followWorldPose(): boolean {
+    const api = this.o.renderer();
+    const pose = this.world?.actor(PRIMARY_ACTOR)?.pose;
+    if (this.disposed || !api || !pose || this.o.mover.isMoving(PRIMARY_ACTOR)) return false;
+    api.teleport(pose.x, pose.z, pose.yaw, pose.level);
+    return true;
+  }
+
   /** The player toggled a door with E: the world's door state follows the scene. */
   onDoor(doorId: string, open: boolean): void {
     const world = this.world;

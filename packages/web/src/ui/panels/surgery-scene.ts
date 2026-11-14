@@ -20,6 +20,9 @@ export const WINDOW_OPEN: Record<FieldView["regions"][number]["exposure"], numbe
 /** Thinnest tube drawn (m): a 1 mm artery stays visible at 15 cm. */
 const MIN_TUBE_RADIUS = 0.0012;
 
+/** How far a close view brings the scope towards what it is aimed at: this share of the way from the port. */
+export const CLOSE_SHARE = 0.55;
+
 const sub = (a: Vec3, b: Vec3): LapVec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const add = (a: Vec3, b: Vec3): LapVec3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 const scale = (a: Vec3, k: number): LapVec3 => [a[0] * k, a[1] * k, a[2] * k];
@@ -93,13 +96,25 @@ function covering(def: ProcedureDefinition): Set<string> {
   return new Set(def.anatomy.flatMap((s) => (s.in ? [s.in] : [])));
 }
 
+/**
+ * Where the scope looks from and at (docs/PROCEDURE.md §3, the camera's view): from its port at the operation's target —
+ * the whole field —, or, aimed at a region (`FieldView.camera.at`), at that region's centre; a close view brings the
+ * scope nearer to it (`CLOSE_SHARE` of the way).
+ */
+function sceneCamera(def: ProcedureDefinition, scopeAt: Vec3, field: FieldView): NonNullable<LapSceneSpec["camera"]> {
+  const region = field.camera?.at ? def.regions.find((r) => r.id === field.camera!.at) : undefined;
+  const target: LapVec3 = region ? [...region.centre] : [...def.target];
+  const at: LapVec3 = region && field.camera?.zoom === "close" ? add(scopeAt, scale(sub(target, scopeAt), CLOSE_SHARE)) : [...scopeAt];
+  return { at, target, up: viewUp(at, target) };
+}
+
 /** The laparoscopic picture for the field now (`field` = `observeField(def, state)`). */
 export function lapScene(def: ProcedureDefinition, state: ProcedureState, field: FieldView): LapSceneSpec {
   const sites = new Map(def.portSites.map((s) => [s.id, s]));
   const scope = scopePort(state);
   const scopeAt = scope ? sites.get(scope.site)?.at : undefined;
   const live = field.inView && !!scopeAt;
-  const camera = live && scopeAt ? { at: [...scopeAt] as LapVec3, target: [...def.target] as LapVec3, up: viewUp(scopeAt, def.target) } : null;
+  const camera = live && scopeAt ? sceneCamera(def, scopeAt, field) : null;
   const displace = retractionField(def, state);
   const moved = (st: Structure): LapVec3[] => st.points.map((p) => add(p, displace(st, p)));
   const specimenParts = new Set([def.specimen, ...def.anatomy.filter((x) => x.parent === def.specimen).map((x) => x.id)]);

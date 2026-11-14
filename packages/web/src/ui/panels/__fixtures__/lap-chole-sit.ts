@@ -239,11 +239,14 @@ export function lapCholeCase(): CaseDefinition {
 
 /**
  * The fixture with a theatre team (as core's `lap-chole-team.ts`, docs/TEAM.md §1): the circulating nurse `nurse-1`, the
- * scrub nurse `nurse-2`, the first assistant `doc-1` (who holds the camera: no second assistant), the anaesthetist
- * `anaes-1`, and the surgeon, whose stand-in `doc-0` operates while the learner holds a place; the reference path goes
- * into the theatre, where the team works — the place a learner takes joins there.
+ * scrub nurse `nurse-2`, the first assistant `doc-1` (who holds the camera while no second assistant is present), the
+ * anaesthetist `anaes-1`, and the surgeon, whose stand-in `doc-0` operates while the learner holds a place; the line-up
+ * `three-surgeons` adds the second assistant `doc-2`; team scenarios `scrub-break` (the scrub nurse away, `nurse-9`
+ * relieving) and `second-away`. The reference path goes into the theatre, where the team works — the place a learner
+ * takes joins there. `extra` replaces top-level fields.
  */
-export function lapCholeTeamCase(): CaseDefinition {
+export function lapCholeTeamCase(extra: Record<string, unknown> = {}): CaseDefinition {
+  const L2 = (en: string) => ({ en, "zh-CN": en });
   const team = {
     room: "theatre-1",
     phases: ["theatre"],
@@ -254,8 +257,13 @@ export function lapCholeTeamCase(): CaseDefinition {
       { staff: "anaes-1", duties: ["anaesthesia"] },
       { staff: "surgeon", duties: ["surgeon"], standIn: "doc-0" },
     ],
+    lineups: [{ id: "three-surgeons", name: L2("Three surgeons"), provenance: "authored", members: [{ staff: "doc-2", duties: ["assist"], position: "second-assistant" }] }],
+    scenarios: [
+      { id: "scrub-break", name: L2("Scrub nurse on a break"), summary: L2("The scrub nurse is on a break; a colleague relieves her."), provenance: "authored", absent: ["nurse-2"], relief: [{ staff: "nurse-9", duties: ["instruments"] }] },
+      { id: "second-away", name: L2("Second assistant away"), summary: L2("The second assistant has been called away."), provenance: "authored", absent: ["doc-2"] },
+    ],
   };
-  const parsed = parseCase({ ...structuredClone(LAP_CHOLE_SIT), team, solution: [{ type: "start" }, { type: "set-phase", phase: "theatre" }] });
+  const parsed = parseCase({ ...structuredClone(LAP_CHOLE_SIT), team, solution: [{ type: "start" }, { type: "set-phase", phase: "theatre" }], ...extra });
   if (!parsed.ok) throw new Error(`fixture invalid: ${JSON.stringify(parsed.issues.slice(0, 3))}`);
   return parsed.value;
 }

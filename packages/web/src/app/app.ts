@@ -5,8 +5,8 @@
  * this object; the world only talks to it through `WorldCallbacks`.
  */
 import { encounterClockRuns } from "./clocks.js";
-import type { Op } from "@clinicalcraft/agent";
-import { historyVoice, procedureFor, procedureStateOf, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import type { AgentEvent, Op } from "@clinicalcraft/agent";
+import { historyVoice, POSITION_TITLES, procedureFor, procedureStateOf, regionAt, t, type CaseDefinition, type ClinicalAction, type Place } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -35,10 +35,11 @@ import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/
 import { Toaster, type ToastLevel } from "../ui/toast.js";
 import { ActionFeedback } from "../ui/feedback.js";
 import { playSound } from "./audio.js";
-import { fetchServerCase, loadContent, loadServerContent, type ContentIndex } from "./content.js";
+import { fetchServerCase, loadContent, loadServerContent, placeReady, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
+import { placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
 import { BrowserCamera, BrowserMover } from "./embodied.js";
@@ -739,10 +740,36 @@ export class ClinicalCraftApp implements App {
   /* ---------------------------------------------------------------- */
 
   /**
-   * The team scenario a facilitator chose for the next new encounter (`?team=<scenario id>`, or `__QA__.start`'s
-   * `team`): set at `start` when the case has it (docs/TEAM.md §6), otherwise the encounter starts without one.
+   * The start's choices for the next new encounter (docs/EMBODIED.md §2.1): a team scenario a facilitator chose
+   * (`?team=<scenario id>`, set at `start` when the case has it — docs/TEAM.md §6), a place in the care team and a
+   * line-up (`?seat=`, `?lineup=`, the intro's picker, or `__QA__.start`'s). A place is sent whenever the case has a team:
+   * the session says whether it can be taken.
    */
-  private teamScenario: string | null = new URLSearchParams(location.search).get("team");
+  startChoice: StartChoice = startChoiceFromSearch(location.search);
+
+  /** The last start in a place the session refused, with its words (shown under the intro's picker until the next start). */
+  placeRefusal: { caseId: string; seat: Place; text: string } | null = null;
+
+  /**
+   * The intro's picker chose a place in the team or a line-up (null, "" or the operating surgeon's: no place; null or "":
+   * the case's own team).
+   */
+  chooseStart(choice: { seat?: string | null; lineup?: string | null }): void {
+    if (choice.seat !== undefined) this.startChoice.seat = placeOf(choice.seat);
+    if (choice.lineup !== undefined) this.startChoice.lineup = choice.lineup || null;
+  }
+
+  /**
+   * A start in a place in the team, before the encounter is entered (docs/TEAM.md §1): run to its end, so a refusal —
+   * in-world mode, a setting that would stop the stand-in surgeon, the engine's own — is known and shown as the session
+   * words it, and the notices it gave (joining the team at the table) can follow the welcome.
+   */
+  private async startInPlace(game: Game, start: StartAction): Promise<{ ok: true; notices: { title: string; body: string }[] } | { ok: false; words: string }> {
+    const events: AgentEvent[] = await game.session.session.run({ type: "clinical_action", action: start });
+    const said = events.map((e) => e.msg);
+    if (game.session.session.state.seat === start.seat) return { ok: true, notices: said.flatMap((m) => (m.type === "notification" ? [{ title: m.title, body: m.body }] : [])) };
+    return { ok: false, words: said.flatMap((m) => (m.type === "error" || m.type === "warning" ? [m.message] : [])).join("\n") };
+  }
 
   async startCase(caseId: string, facilityId: string, resume: boolean): Promise<void> {
     if (this.starting) return;
@@ -755,7 +782,20 @@ export class ClinicalCraftApp implements App {
         else this.toast(tr("library.loadFailed"), loaded.issues.join("\n") || caseId, "critical");
         return;
       }
-      const caseDef = loaded.def;
+      this.placeRefusal = null;
+      // a place in the care team joins the team along the case's reference path: a case served without it (`clinicalcraft
+      // serve`) gets its place path fetched beside it — for a new start in a place, or a saved encounter in one
+      const prior = resume ? this.saves.caseSave(caseId) : null;
+      const seat = prior ? savedPlace(prior.snapshot.actions).seat : startAction(loaded.def, this.startChoice).seat;
+      let caseDef: CaseDefinition = loaded.def;
+      if (seat) {
+        try {
+          caseDef = await placeReady(loaded.def);
+        } catch (err) {
+          this.toast(tr("intro.place.pathFailed"), err instanceof Error ? err.message : String(err), "critical");
+          return;
+        }
+      }
       if (this.game) await this.endGame(true);
       const save = resume ? this.saves.caseSave(caseId) : null;
       const facility = this.content.facilities.get(save?.facilityId ?? facilityId) ?? this.content.facilities.get(facilityId);
@@ -858,6 +898,23 @@ export class ClinicalCraftApp implements App {
       this.lastTalk = {
         agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
+      const start = !session.session.state.started && !session.session.state.finished ? startAction(caseDef, this.startChoice) : null;
+      let notices: { title: string; body: string }[] = [];
+      if (start?.seat) {
+        // a place in the team: the session accepts the start or says why not — refused, nothing is entered and the
+        // intro shows its words
+        const outcome = await this.startInPlace(game, start);
+        if (!outcome.ok) {
+          await this.endGame(false);
+          this.placeRefusal = { caseId, seat: start.seat, text: outcome.words };
+          this.toast(tr("intro.place.refused", { place: t(POSITION_TITLES[start.seat], getLocale()) }), outcome.words, "warning", "place-refused");
+          return;
+        }
+        notices = outcome.notices;
+        // the learner's body joined the team at the operating table (the world's pose): the first-person view follows
+        // it, once — a resume restores the body and the view from the save, never moving them again
+        embodied?.followWorldPose();
+      }
       this.storeOff.push(
         session.store.onEntry((e) => this.onEntry(e)),
         session.store.onChange(() => {
@@ -865,11 +922,9 @@ export class ClinicalCraftApp implements App {
           this.refresh();
         }),
       );
-      if (!session.session.state.started && !session.session.state.finished) {
-        const team = this.teamScenario && caseDef.team?.scenarios.some((x) => x.id === this.teamScenario) ? this.teamScenario : null;
-        session.act(team ? { type: "start", team } : { type: "start" });
-      }
+      if (start && !start.seat) session.act(start);
       this.enter(!!save);
+      for (const n of notices) this.toast(n.title, n.body);
     } catch (err) {
       console.error(err);
       this.toast(tr("toast.error"), err instanceof Error ? err.message : String(err), "critical");
@@ -1177,10 +1232,11 @@ export class ClinicalCraftApp implements App {
       say: (text: string, to = "patient", staff?: string) => app.say(text, to, staff ?? null),
       /** Deterministic engine action without the approval gate (test set-up only). */
       dispatch: (action: ClinicalAction) => app.game?.session.session.dispatch(action) ?? null,
-      start: (caseId: string, facilityId?: string, resume = false, team?: string) => {
+      /** Start (or resume) a case: `team` a team scenario, `seat` a place in the care team, `lineup` a line-up ("" or absent: none). */
+      start: (caseId: string, facilityId?: string, resume = false, team?: string, seat?: string, lineup?: string) => {
         const card = app.content.cards.find((c) => c.id === caseId);
         const fid = facilityId ?? (card ? app.content.defaultFacility(card)?.id : undefined) ?? "general-hospital";
-        if (team !== undefined) app.teamScenario = team || null;
+        app.startChoice = withStartArgs(app.startChoice, team, seat, lineup);
         return app.startCase(caseId, fid, resume);
       },
       /** Load a full case (its lazy chunk, or the server document); resolves true when it is valid. */

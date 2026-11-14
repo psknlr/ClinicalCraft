@@ -3,7 +3,9 @@
  * cards (title, specialty, difficulty dots, setting, minutes, provenance,
  * locales, saved progress), specialty/setting filters and search, the
  * facility selector (case default preselected; clinic-v4 only for
- * outpatient cases), the case's clinical review status (on every card and
+ * outpatient cases), the place in the care team and the team's line-up (in-world
+ * mode, a case that offers places: docs/EMBODIED.md §2.1), the case's clinical
+ * review status (on every card and
  * the selected case) and its learning outcomes (a closed disclosure with the
  * full case's text: they usually name the diagnosis, so the index carries a
  * count only — docs/GLOSSARY.md §4), the teaching-case
@@ -15,6 +17,7 @@
 import { specialtyLabel as sharedSpecialtyLabel } from "@clinicalcraft/core";
 import type { ClinicalCraftApp } from "../app/app.js";
 import type { CaseCard } from "../app/content.js";
+import { placePicker, savedPlace } from "../app/places.js";
 import { statusLabel } from "../app/llm.js";
 import { caseDisclaimer, ct, getLocale, reviewLine, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
@@ -242,6 +245,7 @@ export class Intro {
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
       this.embodimentRow(card),
+      this.placeRows(card),
       h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
       this.outcomesDisclosure(card),
       this.caseStatusLine(card),
@@ -298,6 +302,9 @@ export class Intro {
         app.prefs.update((s) => {
           s.agent.embodiment = checked ? "embodied" : "clinical";
         });
+        // a place in the team needs in-world mode: off, the learner operates; the picker follows the switch
+        if (!checked) app.chooseStart({ seat: null });
+        this.renderKeeping("#embodied-toggle");
       },
     });
     const saved = app.saves.caseSave(card.id);
@@ -308,6 +315,77 @@ export class Intro {
       h("label", { for: "embodied-toggle" }, toggle, h("span", null, tr("intro.embodied"))),
       h("small", null, tr("intro.embodiedHint")),
       savedMode ? h("small", { class: "embodied-saved", id: "embodied-saved" }, tr("intro.embodiedSaved", { mode: tr(savedMode) })) : null,
+    );
+  }
+
+  /** Re-render, the keyboard focus kept on the control that changed (`selector`). */
+  private renderKeeping(selector: string): void {
+    this.render();
+    this.root.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
+  }
+
+  /**
+   * A place in the care team and the team's line-up (docs/EMBODIED.md §2.1, docs/TEAM.md §1): shown in in-world mode for
+   * a case that offers places — the operating surgeon's (you may also do the team's parts) first, the default; the
+   * places the chosen line-up offers after it. A saved encounter's own place is said under them, read-only (continuing
+   * keeps it; the choice is a new encounter's), and a start the session refused says why, in its words.
+   */
+  private placeRows(card: CaseCard): HTMLElement | null {
+    const app = this.app;
+    const picker = placePicker(card, app.preferredEmbodiment() === "embodied", app.startChoice);
+    const saved = app.saves.caseSave(card.id);
+    const was = saved ? savedPlace(saved.snapshot.actions) : null;
+    const lineupName = (id: string | null) => {
+      const l = id ? card.lineups.find((x) => x.id === id) : undefined;
+      if (!l) return tr("intro.lineup.base");
+      const tag = trMaybe(`intro.lineup.tag.${l.provenance}`, "");
+      return tag ? `${ct(l.name)} (${tag})` : ct(l.name);
+    };
+    const savedLine =
+      was && (was.seat || was.lineup)
+        ? h("small", { id: "place-saved", class: "embodied-saved", dataset: { seat: was.seat ?? "", lineup: was.lineup ?? "" } }, tr("intro.place.saved", { place: [tr(was.seat ? `place.${was.seat}` : "place.surgeon"), ...(was.lineup ? [lineupName(was.lineup)] : [])].join(" · ") }))
+        : null;
+    const refusal = app.placeRefusal?.caseId === card.id ? app.placeRefusal : null;
+    const refused = refusal
+      ? h("p", { id: "place-refused", class: "place-refused", role: "alert", dataset: { seat: refusal.seat } }, h("b", null, tr("intro.place.refused", { place: tr(`place.${refusal.seat}`) })), h("span", null, refusal.text))
+      : null;
+    if (!picker) return savedLine || refused ? h("div", { class: "place-rows", id: "place-rows" }, savedLine, refused) : null;
+    const lineup = picker.lineups.length
+      ? h(
+          "select",
+          {
+            id: "lineup-select",
+            "aria-label": tr("intro.lineup.label"),
+            onchange: (e: Event) => {
+              app.chooseStart({ lineup: (e.target as HTMLSelectElement).value || null });
+              this.renderKeeping("#lineup-select");
+            },
+          },
+          h("option", { value: "", selected: !picker.lineup }, lineupName(null)),
+          picker.lineups.map((l) => h("option", { value: l.id, selected: l.id === picker.lineup }, lineupName(l.id))),
+        )
+      : null;
+    const place = h(
+      "select",
+      {
+        id: "place-select",
+        "aria-label": tr("intro.place.label"),
+        onchange: (e: Event) => {
+          app.chooseStart({ seat: (e.target as HTMLSelectElement).value || null });
+          this.renderKeeping("#place-select");
+        },
+      },
+      h("option", { value: "", selected: !picker.seat }, tr("place.surgeon")),
+      picker.places.map((p) => h("option", { value: p, selected: p === picker.seat }, tr(`place.${p}`))),
+    );
+    return h(
+      "div",
+      { class: "place-rows", id: "place-rows" },
+      lineup ? h("label", { class: "facility-row", id: "lineup-row" }, h("span", null, tr("intro.lineup.label")), lineup) : null,
+      h("label", { class: "facility-row", id: "place-row" }, h("span", null, tr("intro.place.label")), place),
+      h("small", { class: "facility-note" }, tr("intro.place.hint")),
+      savedLine,
+      refused,
     );
   }
 

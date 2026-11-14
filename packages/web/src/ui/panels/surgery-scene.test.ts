@@ -1,13 +1,13 @@
 /**
  * The laparoscopic picture derived from the field (`lapScene`): nothing before the scope is in; the scope
- * at its port looking at the target; organs, tissue over the regions, instruments; ducts and vessels by
+ * at its port looking at the target — or at the region it is aimed at, nearer in a close view; organs, tissue over the regions, instruments; ducts and vessels by
  * handle only — no structure id or name of a tube anywhere in the description; retraction, clips,
  * division, blood and bile as the field shows them.
  */
 import { createSession, observeField, reduce, t, type ClinicalAction, type ProcedureOp, type SessionState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { lapCholeCase } from "./__fixtures__/lap-chole-sit.js";
-import { lapScene, PULL_M, sceneKey, TISSUE_OPACITY } from "./surgery-scene.js";
+import { CLOSE_SHARE, lapScene, PULL_M, sceneKey, TISSUE_OPACITY } from "./surgery-scene.js";
 
 const c = lapCholeCase();
 const def = c.procedure!;
@@ -64,6 +64,25 @@ describe("the laparoscopic picture", () => {
     expect(sp.organs.find((o) => o.id === "liver")!.seeThrough).toBe(true);
     expect(sp.organs.find((o) => o.id === "gallbladder")!.seeThrough).toBe(false);
     expect(sp.organs.find((o) => o.id === "gallbladder")!.tint).toBe("gallbladder");
+  });
+
+  it("looks at the region the camera is aimed at, nearer in a close view — and from the port at the target again for the whole field", () => {
+    const port = def.portSites.find((p) => p.id === "A")!.at;
+    // the gallbladder bed: its centre is not the operation's target (the triangle's is)
+    const region = def.regions.find((r) => r.id === "gallbladder-bed")!;
+    const dist = (a: readonly number[], b: readonly number[]) => Math.hypot(a[0]! - b[0]!, a[1]! - b[1]!, a[2]! - b[2]!);
+    const aimed = scene(run([...ACCESS, { op: "aim", port: "A", at: region.id }]));
+    expect(aimed.camera).toMatchObject({ at: port, target: region.centre });
+    expect(aimed.camera!.target).not.toEqual(def.target);
+    const close = scene(run([...ACCESS, { op: "aim", port: "A", at: region.id }, { op: "zoom", port: "A", level: "close" }]));
+    expect(close.camera!.target).toEqual(region.centre);
+    expect(dist(close.camera!.at, region.centre)).toBeLessThan(dist(port, region.centre));
+    expect(dist(close.camera!.at, region.centre)).toBeCloseTo(dist(port, region.centre) * (1 - CLOSE_SHARE), 6);
+    // back to the whole field: the picture as it always was
+    const whole = scene(run([...ACCESS, { op: "aim", port: "A", at: region.id }, { op: "zoom", port: "A", level: "close" }, { op: "aim", port: "A" }]));
+    expect(whole.camera).toEqual(scene(run(ACCESS)).camera);
+    // the same organs, tissue and instruments whatever the camera looks at
+    expect([close.organs, close.tissue, close.shafts]).toEqual([scene(run(ACCESS)).organs, scene(run(ACCESS)).tissue, scene(run(ACCESS)).shafts]);
   });
 
   it("names ducts and vessels by handle only — never by id or name", () => {

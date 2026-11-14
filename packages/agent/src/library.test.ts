@@ -234,7 +234,7 @@ describe("the places in the care team (the place picker without the full case)",
 
   it("offers the team fixtures' places, with each line-up's, as core does — and none where core offers none", () => {
     const team = (t: unknown, extra: Record<string, unknown> = {}) => ({ ...structuredClone(MINI), team: structuredClone(t), ...extra });
-    expect(agree(team(PLACES_TEAM), "places")).toMatchObject({ seats: ["first-assistant", "scrub-nurse"], lineups: [{ id: "three-surgeons", name: { en: "Three surgeons" }, seats: ["first-assistant", "second-assistant", "scrub-nurse"] }] });
+    expect(agree(team(PLACES_TEAM), "places")).toMatchObject({ seats: ["first-assistant", "scrub-nurse"], lineups: [{ id: "three-surgeons", name: { en: "Three surgeons" }, provenance: "authored", seats: ["first-assistant", "second-assistant", "scrub-nurse"] }] });
     const lapChole = { ...structuredClone(LAP_CHOLE_SIT), team: structuredClone(LAP_CHOLE_TEAM), solution: structuredClone(LAP_CHOLE_SOLUTION) } as Record<string, unknown>;
     expect(agree(lapChole, "lap-chole").seats).toEqual(["first-assistant", "scrub-nurse"]);
     const members = PLACES_TEAM.members;
@@ -319,7 +319,7 @@ describe("normalizeIndexEntry (entries from a server are untrusted)", () => {
       id: "team-case",
       seats: ["scrub-nurse", "surgeon", "first-assistant", "scrub-nurse", 3, "porter"],
       lineups: [
-        { id: "three", name: { en: "Three surgeons", "zh-CN": ["x"] }, seats: ["second-assistant", "first-assistant"] },
+        { id: "three", name: { en: "Three surgeons", "zh-CN": ["x"] }, provenance: "authored", seats: ["second-assistant", "first-assistant"] },
         { id: "../evil", name: "x", seats: ["first-assistant"] },
         { id: "no-name", seats: "first-assistant" },
         ...Array.from({ length: 30 }, (_, i) => ({ id: `l-${i}`, name: "L", seats: [] })),
@@ -327,8 +327,8 @@ describe("normalizeIndexEntry (entries from a server are untrusted)", () => {
     })!;
     expect(e.seats).toEqual(["first-assistant", "scrub-nurse"]);
     expect(e.lineups.slice(0, 2)).toEqual([
-      { id: "three", name: { en: "Three surgeons" }, seats: ["first-assistant", "second-assistant"] },
-      { id: "no-name", name: "no-name", seats: [] },
+      { id: "three", name: { en: "Three surgeons" }, provenance: "authored", seats: ["first-assistant", "second-assistant"] },
+      { id: "no-name", name: "no-name", provenance: "", seats: [] },
     ]);
     expect(e.lineups.length).toBeLessThanOrEqual(16);
   });

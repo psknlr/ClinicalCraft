@@ -75,6 +75,8 @@ export interface CaseReviewSummary {
 export interface CaseLineupSummary {
   id: string;
   name: LocalizedText;
+  /** Where the line-up comes from (its `provenance`: "authored", "published-case"…; "" when it says none): the picker says so. */
+  provenance: string;
   /** The places in the team the case offers with this line-up (as `CaseIndexEntry.seats`). */
   seats: Place[];
 }
@@ -226,6 +228,11 @@ function memberPosition(m: Raw): string | null {
   return p === "assistant-surgeon" ? "first-assistant" : p;
 }
 
+/** A provenance tag as an index carries it (a short lower-case word; "" otherwise). */
+function provenanceTag(v: unknown): string {
+  return typeof v === "string" && /^[a-z][a-z-]{0,39}$/.test(v) ? v : "";
+}
+
 /** Places in canonical order, each once — only the places in the team (`INDEX_PLACES`). */
 function placeList(v: unknown): Place[] {
   return Array.isArray(v) ? INDEX_PLACES.filter((p) => v.includes(p)) : [];
@@ -253,7 +260,7 @@ function placesOf(raw: Raw, lineup?: Raw): Place[] {
 function lineupsOf(raw: Raw): CaseLineupSummary[] {
   const lineups = obj(raw.team).lineups;
   if (!Array.isArray(lineups)) return [];
-  return lineups.map(obj).flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: localized(l.name) ?? l.id, seats: placesOf(raw, l) }] : []));
+  return lineups.map(obj).flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: localized(l.name) ?? l.id, provenance: provenanceTag(l.provenance), seats: placesOf(raw, l) }] : []));
 }
 
 /* ---- capability needs ---------------------------------------------- */
@@ -529,7 +536,7 @@ export function normalizeIndexEntry(value: unknown): CaseIndexEntry | null {
       ? v.lineups
           .slice(0, MAX_LINEUPS)
           .map(obj)
-          .flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: safeLocalized(l.name) ?? l.id, seats: placeList(l.seats) }] : []))
+          .flatMap((l) => (typeof l.id === "string" && SAFE_CASE_ID.test(l.id) ? [{ id: l.id, name: safeLocalized(l.name) ?? l.id, provenance: provenanceTag(l.provenance), seats: placeList(l.seats) }] : []))
       : [],
   };
 }

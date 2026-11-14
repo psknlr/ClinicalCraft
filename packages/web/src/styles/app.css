@@ -2597,6 +2597,28 @@ details.topic .question {
 .embodied-row .embodied-saved {
   color: #6e5718;
 }
+/* a place in the care team and the team's line-up (in-world mode, a case that offers places) */
+.place-rows {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.place-rows .facility-note {
+  margin-top: 0;
+}
+.place-rows .embodied-saved {
+  font-size: 11px;
+  color: #6e5718;
+}
+.place-refused {
+  margin: 0;
+  font-size: 11px;
+  color: var(--danger);
+}
+.place-refused span {
+  display: block;
+  white-space: pre-line;
+}
 
 /* ================================================================ */
 /* Responsive                                                        */

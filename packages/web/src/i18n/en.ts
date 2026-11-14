@@ -2,6 +2,7 @@
  * English UI strings — exactly the keys of zh-CN.ts (type-checked).
  */
 import { SURGERY_EN } from "./surgery.js";
+import { POSITIONS_EN } from "./positions.js";
 import { TEAM_EN } from "./team.js";
 import type { Messages } from "./zh-CN.js";
 
@@ -1179,6 +1180,9 @@ const en: Messages = {
   /* ---------------- laparoscopic surgery (i18n/surgery.ts) ---------------- */
   ...SURGERY_EN,
   ...TEAM_EN,
+
+  /* ---------------- places in the care team (i18n/positions.ts) ---------------- */
+  ...POSITIONS_EN,
 };
 
 export default en;

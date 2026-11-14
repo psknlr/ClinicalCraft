@@ -22,6 +22,8 @@ export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export { PLACE_ROLE, scopeActorOf } from "./scope-actor.js";
+// the operative field in words, for a front-end naming its people as the learner reads them (docs/PROCEDURE.md §7)
+export { controlName, nameOfRef, reasonText, regionText, runtimeReasonWords, shownRef, type FieldContext, type ReasonWords } from "./field-words.js";
 export * from "./world.js";
 export { isLearnerTool, LEARNER_CLINICAL_TOOLS, LEARNER_TOOL_NAMES, LEARNER_TOOLS } from "./learner.js";
 export * from "./world-format.js";

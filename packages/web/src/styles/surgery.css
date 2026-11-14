@@ -277,6 +277,28 @@
   border-left: 3px solid #e7c36b;
   padding-left: 8px;
 }
+/* the window by place: who holds a port, your place, and the operator's own steps shown read-only */
+.lap-holder {
+  margin: 2px 0 4px;
+  color: #b0c4a4;
+}
+.lap-port[data-holder="you"] .lap-holder {
+  color: #e7c36b;
+}
+.lap-place p {
+  margin: 2px 0;
+}
+.lap-readonly {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.lap-readonly button,
+.lap-readonly input,
+.lap-readonly select {
+  opacity: 0.55;
+}
 
 /* debrief */
 .assessment .operation {

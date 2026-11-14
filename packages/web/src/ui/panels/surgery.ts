@@ -8,8 +8,17 @@
  * transcript, the demonstration and the in-world rules apply alike); nothing changes here until the
  * session says so, and a refused step shows the engine's message. The safety verdict, injuries the field
  * does not show and unsafe acts wait for the debrief.
+ *
+ * By place (docs/PROCEDURE.md §7): holding a place in the care team, the window offers what that place may do —
+ * core's offers (`surgery-controls.ts`: `portsForPlace`, `controlsForPlace`, `cameraOffer`, `tableOffer`): who holds
+ * each port ("you", a colleague by name and position), Take / Hand back / Hand to by the controls, an insert (or, in the
+ * scrub nurse's place, a request for the pass), the actions through the ports the place holds, the camera block (aim at
+ * a region, closer / wider — the camera holder's) and the instrument table (passing, for the place that holds it). The
+ * operator's own steps (the plan, the pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in
+ * view, read-only. Saying an injury aloud is anyone's.
  */
-import { observeField, portReport, procedureFor, procedureStateOf, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState } from "@clinicalcraft/core";
+import { bodyControls, LEARNER_BODY, observeField, portReport, POSITION_TITLES, procedureFor, procedureStateOf, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState, type SessionState } from "@clinicalcraft/core";
+import type { FieldContext } from "@clinicalcraft/agent";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { App, Game } from "../../app/context.js";
 import type { LaparoscopeApi } from "../../contracts.js";
@@ -19,8 +28,10 @@ import { h, mount, prefersReducedMotion, type Child } from "../dom.js";
 import { focusKey, type PanelView } from "../panel.js";
 import {
   activePort,
-  controlsFor,
+  cameraOffer,
+  controlsForPlace,
   DIRECTION_NAMES,
+  holderOf,
   directionText,
   dissectOp,
   ENERGY_INSTRUMENTS,
@@ -33,17 +44,24 @@ import {
   label,
   labelList,
   lastStep,
+  learnerRef,
+  portsForPlace,
   retractOp,
   safetyPauseOp,
   selectedHandle,
   surgeryOffered,
+  tableOffer,
   toggleDirection,
   type DirectionName,
+  type FieldSeat,
   type Force,
   type HandleControl,
+  type Holder,
+  type PortOffer,
 } from "./surgery-controls.js";
 import { lapScene } from "./surgery-scene.js";
-import { frameCaption } from "../scope-dock.js";
+import { fieldWordsOf, frameCaption } from "../scope-dock.js";
+import { partyName, partyWords, refusalWords } from "../field-names.js";
 import { convertedToOpen, openFieldText } from "../open-field.js";
 
 /** Injuries the operator can say aloud (the `recognise` op). */
@@ -83,6 +101,13 @@ interface Draft {
   revise: string | null;
   /** The learner's last submission: its id, op and how many steps the field had taken then. */
   sent: { id: string; op: ProcedureOp; steps: number } | null;
+  /** Per port: the member chosen to hand it to. */
+  handTo: Record<string, string>;
+  /** The region chosen for the camera to look at. */
+  aimAt: string;
+  /** The instrument table: the instrument chosen to pass and to whom ("": the operator). */
+  passInstrument: string;
+  passTo: string;
 }
 
 const button = (text: string, attrs: Record<string, unknown>, onclick: () => void): HTMLButtonElement => h("button", { type: "button", ...attrs, onclick }, text);
@@ -120,7 +145,15 @@ export function surgeryPanel(app: App): () => PanelView {
       orbit: false,
       revise: null,
       sent: null,
+      handTo: {},
+      aimAt: "",
+      passInstrument: "",
+      passTo: "",
     };
+    /** What the learner's place may do in the field now (core's offers: `surgery-controls.ts`). */
+    const seat = (): FieldSeat => ({ c, s: session() as SessionState, facility: game.facility });
+    /** The field's people in the learner's words ("you"; anyone else by name). */
+    const words: FieldContext = fieldWordsOf(game);
 
     const canvas = h("canvas", { class: "lap-canvas", id: "lap-canvas", "aria-label": tr("surgery.screen") });
     const labels = h("div", { class: "lap-labels" });
@@ -152,10 +185,7 @@ export function surgeryPanel(app: App): () => PanelView {
       const step = lastStep(store.domainEvents("procedure.step"));
       // the frame the one playback shows (the scope dock shows the same): a step, or a refusal with its reason
       const frame = app.playback.frame().item;
-      const caption = frameCaption(frame, (sid) => {
-        const staff = game.facility.staff.find((x) => x.id === sid);
-        return staff ? t(staff.name, L) : sid;
-      });
+      const caption = frameCaption(frame, (sid) => partyName(words, sid), (r) => refusalWords(words, r));
       if (caption) lines.push(h("div", { class: ["lap-line", caption.status === "rejected" ? "bad" : ""], dataset: { status: caption.status === "rejected" ? "frame-rejected" : "frame", op: caption.op, id: caption.id } }, caption.text));
       if (app.playback.pending()) lines.push(h("div", { class: "lap-line muted" }, tr("scope.queue", { n: app.playback.pending() })));
       if (waiting && failed !== undefined) lines.push(h("div", { class: "lap-line bad", dataset: { status: "rejected" } }, tr("surgery.status.rejected", { message: failed })));
@@ -182,7 +212,31 @@ export function surgeryPanel(app: App): () => PanelView {
 
     const section = (title: string, id: string, ...children: Child[]) => h("section", { class: "lap-section", id }, h("h4", null, title), children);
 
-    const planSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+    /**
+     * The operator's own steps, in view while the learner holds a place in the team: shown, never sent from here (a
+     * disabled fieldset — every control in it is inert, the field's state still reads).
+     */
+    const readOnly = (on: boolean, ...children: Child[]): Child[] => (on ? [h("fieldset", { class: "lap-readonly", disabled: true, dataset: { readonly: "operator" } }, h("p", { class: "small muted" }, tr("surgery.readonly")), children)] : children);
+
+    /** A holder in the learner's words: "you", the operator or a colleague by name and position. */
+    const holderText = (holder: Holder): string => partyWords(words, holder.kind === "you" ? (learnerRef(seat()) ?? undefined) : holder.kind === "colleague" ? holder.ref : undefined);
+
+    /** Holding a place: which, the controls it holds in the field, and who operates. */
+    const placeHeader = (): HTMLElement | null => {
+      const s = session() as SessionState;
+      if (!s.seat) return null;
+      const controls = bodyControls(c, s, game.facility, LEARNER_BODY, "field");
+      const list = controls === "all" ? [] : controls.map((x) => tr(`control.${x}`));
+      const place = t(POSITION_TITLES[s.seat], L);
+      return h(
+        "div",
+        { class: "lap-section lap-place", id: "lap-place", dataset: { seat: s.seat } },
+        h("p", { class: "small" }, list.length ? tr("surgery.place.you", { place, controls: joinList(list) }) : tr("surgery.place.youNone", { place })),
+        h("p", { class: "small muted" }, tr("surgery.place.operator", { name: partyName(words, undefined) })),
+      );
+    };
+
+    const planSection = (def: ProcedureDefinition, v: FieldView, place: boolean): HTMLElement => {
       if (v.plan) {
         const plan = def.portPlans.find((x) => x.id === v.plan);
         return section(tr("surgery.plan.title"), "lap-plan", h("p", { class: "small" }, tr("surgery.plan.chosen", { name: plan ? ct(plan.name) : v.plan })));
@@ -191,7 +245,7 @@ export function surgeryPanel(app: App): () => PanelView {
         tr("surgery.plan.title"),
         "lap-plan",
         h("p", { class: "small muted" }, tr("surgery.plan.note")),
-        def.portPlans.map((plan) => {
+        readOnly(place, def.portPlans.map((plan) => {
           const r = portReport(def, plan);
           return h(
             "div",
@@ -223,11 +277,11 @@ export function surgeryPanel(app: App): () => PanelView {
             h("p", { class: r.warnings.length ? "small warn" : "small muted" }, r.warnings.length ? labelList("warn", r.warnings) : tr("surgery.plan.noWarnings")),
             button(tr("surgery.plan.choose"), { dataset: { op: "plan-ports", plan: plan.id } }, () => send({ op: "plan-ports", plan: plan.id })),
           );
-        }),
+        })),
       );
     };
 
-    const pneumoSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+    const pneumoSection = (def: ProcedureDefinition, v: FieldView, place: boolean): HTMLElement => {
       const input = h("input", { type: "number", id: "lap-pressure", min: "1", max: "30", step: "1", value: String(d.pressure), "aria-label": tr("surgery.pneumo.pressure") });
       input.addEventListener("change", () => {
         const n = Number(input.value);
@@ -237,39 +291,120 @@ export function surgeryPanel(app: App): () => PanelView {
         tr("surgery.pneumo.title"),
         "lap-pneumo",
         h("p", { class: "small" }, tr("surgery.pneumo.now", { state: v.insufflated ? `${v.pressure} mmHg` : tr("surgery.pneumo.off") }), " · ", h("span", { class: "muted" }, tr("surgery.pneumo.hint", { usual: def.insufflation.usual, max: def.insufflation.max }))),
-        h(
-          "div",
-          { class: "lap-row" },
-          h("label", { class: "small", for: "lap-pressure" }, tr("surgery.pneumo.pressure")),
-          input,
-          button(tr("surgery.pneumo.insufflate"), { dataset: { op: "insufflate" } }, () => send({ op: "insufflate", pressure: d.pressure })),
-          button(tr("surgery.pneumo.desufflate"), { dataset: { op: "desufflate" } }, () => send({ op: "desufflate" })),
-        ),
+        place
+          ? null
+          : h(
+              "div",
+              { class: "lap-row" },
+              h("label", { class: "small", for: "lap-pressure" }, tr("surgery.pneumo.pressure")),
+              input,
+              button(tr("surgery.pneumo.insufflate"), { dataset: { op: "insufflate" } }, () => send({ op: "insufflate", pressure: d.pressure })),
+              button(tr("surgery.pneumo.desufflate"), { dataset: { op: "desufflate" } }, () => send({ op: "desufflate" })),
+            ),
       );
     };
 
-    const portsSection = (def: ProcedureDefinition, v: FieldView): HTMLElement =>
-      section(
-        tr("surgery.ports.title"),
-        "lap-ports",
-        v.ports.map((port) => {
-          const site = def.portSites.find((s) => s.id === port.port);
-          const scope = port.role === "camera" && def.instruments.some((i) => i.id === "laparoscope");
-          const chosen = d.instrument[port.port] ?? (scope ? "laparoscope" : (def.instruments.find((i) => i.id !== "laparoscope") ?? def.instruments[0]).id);
-          const select = h(
+    /** Hand a port on: a member of the team whose controls cover its instrument, chosen, then handed over. */
+    const handToRow = (offer: PortOffer): HTMLElement | null => {
+      if (!offer.handTo.length) return null;
+      if (!offer.handTo.some((x) => x.to === d.handTo[offer.port])) d.handTo[offer.port] = offer.handTo[0]!.to;
+      const who = h(
+        "select",
+        { dataset: { handTo: offer.port }, "aria-label": `${tr("surgery.port.name", { site: offer.port })} · ${tr("surgery.port.handTo")}` },
+        offer.handTo.map((x) => h("option", { value: x.to, selected: x.to === d.handTo[offer.port] }, partyWords(words, x.to))),
+      );
+      who.addEventListener("change", () => (d.handTo[offer.port] = who.value));
+      return h(
+        "div",
+        { class: "lap-row" },
+        h("span", { class: "small" }, tr("surgery.port.handTo")),
+        who,
+        button(tr("surgery.port.handToGo"), { dataset: { op: "hand-over", port: offer.port, to: "chosen" } }, () => send(offer.handTo.find((x) => x.to === d.handTo[offer.port])?.op ?? null)),
+      );
+    };
+
+    /** The operating learner's row of a port: the instrument, what to put in (as always), withdraw — and take back a port a colleague holds. */
+    const operatorPortRow = (def: ProcedureDefinition, port: FieldView["ports"][number], offer: PortOffer): HTMLElement => {
+      const scope = port.role === "camera" && def.instruments.some((i) => i.id === "laparoscope");
+      const chosen = d.instrument[port.port] ?? (scope ? "laparoscope" : (def.instruments.find((i) => i.id !== "laparoscope") ?? def.instruments[0]).id);
+      const colleague = offer.holder.kind === "colleague";
+      const select = colleague
+        ? null
+        : h(
             "select",
             { dataset: { portInstrument: port.port }, "aria-label": `${tr("surgery.port.name", { site: port.port })} · ${tr("surgery.port.instrument")}` },
             def.instruments.map((i) => h("option", { value: i.id, selected: i.id === chosen }, label("instrument", i.id))),
           );
-          select.addEventListener("change", () => (d.instrument[port.port] = select.value as InstrumentId));
+      select?.addEventListener("change", () => (d.instrument[port.port] = select.value as InstrumentId));
+      return h(
+        "div",
+        { class: "lap-row" },
+        h("span", { class: "lap-inst" }, port.instrument ? label("instrument", port.instrument) : tr("surgery.port.empty")),
+        select,
+        select ? button(tr("surgery.port.insert"), { dataset: { op: "insert", port: port.port } }, () => send({ op: "insert", port: port.port, instrument: (d.instrument[port.port] ?? chosen) as InstrumentId })) : null,
+        offer.withdraw ? button(tr("surgery.port.withdraw"), { dataset: { op: "withdraw", port: port.port } }, () => send(offer.withdraw)) : null,
+        offer.take ? button(tr("surgery.port.takeBack"), { dataset: { op: "hand-over", port: port.port, to: "operator" } }, () => send(offer.take)) : null,
+      );
+    };
+
+    /** A place's row of a port: what the place may put in (or ask to be passed), take, hand back, withdraw. */
+    const placePortRow = (port: FieldView["ports"][number], offer: PortOffer): HTMLElement => {
+      const chosen = offer.insert.includes(d.instrument[port.port] as InstrumentId) ? (d.instrument[port.port] as InstrumentId) : offer.insert[0];
+      const select =
+        offer.insert.length > 1
+          ? h(
+              "select",
+              { dataset: { portInstrument: port.port }, "aria-label": `${tr("surgery.port.name", { site: port.port })} · ${tr("surgery.port.instrument")}` },
+              offer.insert.map((i) => h("option", { value: i, selected: i === chosen }, label("instrument", i))),
+            )
+          : null;
+      select?.addEventListener("change", () => (d.instrument[port.port] = select.value as InstrumentId));
+      return h(
+        "div",
+        { class: "lap-row" },
+        h("span", { class: "lap-inst" }, port.instrument ? label("instrument", port.instrument) : tr("surgery.port.empty")),
+        select,
+        chosen
+          ? button(offer.insert.length > 1 ? tr("surgery.port.insert") : `${tr("surgery.port.insert")} · ${label("instrument", chosen)}`, { dataset: { op: "insert", port: port.port } }, () =>
+              send({ op: "insert", port: port.port, instrument: (offer.insert.includes(d.instrument[port.port] as InstrumentId) ? d.instrument[port.port] : chosen) as InstrumentId }),
+            )
+          : null,
+        // every instrument passed first (the scrub nurse's place) and none waiting: asked of whoever passes (the team's ask)
+        offer.askFor.map((a) =>
+          button(tr("surgery.port.askFor", { instrument: label("instrument", a.instrument) }), { dataset: { op: "ask-pass", port: port.port, instrument: a.instrument }, title: tr("surgery.port.askForTitle", { who: partyName(words, a.to) }) }, () => {
+            app.submit({ type: "team", action: "ask", to: a.to, field: { op: "pass", instrument: a.instrument } });
+          }),
+        ),
+        offer.take ? button(tr("surgery.port.take"), { dataset: { op: "hand-over", port: port.port, to: "me" }, title: tr("surgery.port.takeTitle", { port: port.port, instrument: port.instrument ? label("instrument", port.instrument) : "" }) }, () => send(offer.take)) : null,
+        offer.handBack ? button(tr("surgery.port.handBack"), { dataset: { op: "hand-over", port: port.port, to: "operator" }, title: tr("surgery.port.handBackTitle", { port: port.port, instrument: port.instrument ? label("instrument", port.instrument) : "" }) }, () => send(offer.handBack)) : null,
+        offer.withdraw ? button(tr("surgery.port.withdraw"), { dataset: { op: "withdraw", port: port.port } }, () => send(offer.withdraw)) : null,
+      );
+    };
+
+    /**
+     * The ports (docs/PROCEDURE.md §7): each port's site, role and size, who holds it — in a place always ("you", the
+     * operator, a colleague by name and position); operating, a colleague holding one —, and what the learner may do
+     * with it: core's offers for their place (`portsForPlace`).
+     */
+    const portsSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+      const f = seat();
+      const place = typeof learnerRef(f) === "string";
+      const offers = portsForPlace(f, def, v);
+      return section(
+        tr("surgery.ports.title"),
+        "lap-ports",
+        v.ports.map((port) => {
+          const offer = offers.find((o) => o.port === port.port)!;
+          const site = def.portSites.find((s) => s.id === port.port);
           const radio = h("input", { type: "radio", name: "lap-port", checked: d.port === port.port, dataset: { activePort: port.port }, "aria-label": tr("surgery.port.use") });
           radio.addEventListener("change", () => {
             d.port = port.port;
             rerender();
           });
+          const showHolder = !!port.instrument && (place || offer.holder.kind === "colleague");
           return h(
             "div",
-            { class: ["lap-port", d.port === port.port && "active"], dataset: { port: port.port } },
+            { class: ["lap-port", d.port === port.port && "active"], dataset: { port: port.port, holder: port.instrument ? offer.holder.kind : "" } },
             h(
               "label",
               { class: "lap-port-head" },
@@ -277,10 +412,13 @@ export function surgeryPanel(app: App): () => PanelView {
               h("b", null, tr("surgery.port.name", { site: port.port })),
               h("small", null, ` ${site ? ct(site.name) : ""} · ${label("role", port.role)} · ${port.sizeMm} mm${port.hand ? ` · ${label("hand", port.hand)}` : ""}`),
             ),
-            h("div", { class: "lap-row" }, h("span", { class: "lap-inst" }, port.instrument ? label("instrument", port.instrument) : tr("surgery.port.empty")), select, button(tr("surgery.port.insert"), { dataset: { op: "insert", port: port.port } }, () => send({ op: "insert", port: port.port, instrument: (d.instrument[port.port] ?? chosen) as InstrumentId })), port.instrument ? button(tr("surgery.port.withdraw"), { dataset: { op: "withdraw", port: port.port } }, () => send({ op: "withdraw", port: port.port })) : null),
+            showHolder ? h("div", { class: "small lap-holder" }, tr("surgery.port.heldBy", { who: holderText(offer.holder) })) : null,
+            place ? placePortRow(port, offer) : operatorPortRow(def, port, offer),
+            handToRow(offer),
           );
         }),
       );
+    };
 
     const retractBlock = (port: string, v: FieldView): HTMLElement => {
       if (!v.organs.length) return h("p", { class: "small muted" }, tr("surgery.retract.noneInView"));
@@ -353,14 +491,68 @@ export function surgeryPanel(app: App): () => PanelView {
       );
     };
 
-    const actionsSection = (v: FieldView): HTMLElement => {
+    /**
+     * The camera block (docs/PROCEDURE.md §3, "the camera's view"): where the camera looks and who holds it; aiming at a
+     * region of the case, the whole field, following the work, closer and wider — for the camera holder, or the operator
+     * while nobody holds the camera port (`cameraOffer`). A close view needs an aim. Orbit and Reset stay the view's own.
+     */
+    const cameraBlock = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+      const cam = cameraOffer(seat(), v);
+      if (!cam) return h("div", { class: "lap-block", id: "lap-camera" }, h("h5", null, tr("surgery.camera.title")), h("p", { class: "small muted" }, tr("surgery.camera.noScope")));
+      const regionName = (id: string) => {
+        const r = v.regions.find((x) => x.id === id) ?? def.regions.find((x) => x.id === id);
+        return r ? ct(r.name) : id;
+      };
+      const aim = cam.at ? tr("surgery.camera.at", { region: regionName(cam.at) }) : tr("surgery.camera.whole");
+      const now = h("p", { class: "small", id: "lap-camera-now", dataset: { at: cam.at ?? "", zoom: cam.zoom, holder: cam.holder.kind } }, tr("surgery.camera.now", { port: cam.port, aim, zoom: tr(`surgery.camera.zoom.${cam.zoom}`), who: holderText(cam.holder) }));
+      if (!cam.aims) return h("div", { class: "lap-block", id: "lap-camera" }, h("h5", null, tr("surgery.camera.title")), now, h("p", { class: "small muted" }, tr("surgery.camera.notYours", { who: holderText(cam.holder) })));
+      const regions = def.regions.map((r) => r.id);
+      if (!regions.includes(d.aimAt)) d.aimAt = cam.at ?? v.working ?? regions[0] ?? "";
+      const pick = h("select", { id: "lap-aim-region", "aria-label": tr("surgery.camera.region") }, regions.map((id) => h("option", { value: id, selected: id === d.aimAt }, regionName(id))));
+      pick.addEventListener("change", () => (d.aimAt = pick.value));
+      const closer = cam.zoom === "wide";
+      return h(
+        "div",
+        { class: "lap-block", id: "lap-camera" },
+        h("h5", null, tr("surgery.camera.title")),
+        now,
+        h(
+          "div",
+          { class: "lap-row" },
+          h("label", { class: "small", for: "lap-aim-region" }, tr("surgery.camera.region")),
+          pick,
+          button(tr("surgery.camera.aim"), { dataset: { op: "aim", port: cam.port }, disabled: !d.aimAt }, () => send({ op: "aim", port: cam.port, at: d.aimAt })),
+        ),
+        h(
+          "div",
+          { class: "lap-row" },
+          button(tr("surgery.camera.overview"), { dataset: { op: "aim", port: cam.port, at: "" }, disabled: cam.at === null }, () => send({ op: "aim", port: cam.port })),
+          v.working ? button(tr("surgery.camera.follow", { region: regionName(v.working) }), { dataset: { op: "aim", port: cam.port, at: v.working, follow: "true" }, disabled: cam.at === v.working }, () => send({ op: "aim", port: cam.port, at: v.working! })) : null,
+          closer
+            ? button(tr("surgery.camera.closer"), { dataset: { op: "zoom", port: cam.port, level: "close" }, disabled: cam.at === null, title: cam.at === null ? tr("surgery.camera.aimFirst") : "" }, () => send({ op: "zoom", port: cam.port, level: "close" }))
+            : button(tr("surgery.camera.wider"), { dataset: { op: "zoom", port: cam.port, level: "wide" } }, () => send({ op: "zoom", port: cam.port, level: "wide" })),
+        ),
+      );
+    };
+
+    /**
+     * What the learner may do through the active port: operating, what its instrument does (as always); in a place, what
+     * the place may do through a port it holds (`controlsForPlace`) — the camera's steps in the camera block.
+     */
+    const actionsSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+      const f = seat();
+      const place = typeof learnerRef(f) === "string";
       const port = v.ports.find((p) => p.port === d.port) ?? null;
       const instrument = port?.instrument ?? null;
       const title = port ? tr("surgery.actions.title", { port: tr("surgery.port.name", { site: port.port }), instrument: instrument ? label("instrument", instrument) : tr("surgery.port.empty") }) : tr("surgery.actions.none");
-      const controls = controlsFor(instrument);
+      // a port someone else holds offers nothing here: they work it (the operating learner takes it back first)
+      const controls = port ? controlsForPlace(f, port) : [];
+      const holder = port ? holderOf(f, port.holder) : null;
       const body: Child[] = [];
       if (!port || !instrument) body.push(h("p", { class: "small muted" }, tr("surgery.actions.none")));
+      else if (instrument === "laparoscope" && port.role === "camera") body.push(cameraBlock(def, v));
       else if (instrument === "laparoscope") body.push(h("p", { class: "small muted" }, tr("surgery.actions.scope")));
+      else if (!controls.length) body.push(h("p", { class: "small muted", dataset: { offer: "none" } }, holder && holder.kind !== "you" ? tr("surgery.port.heldBy", { who: holderText(holder) }) : tr("surgery.actions.none")));
       else {
         if (controls.includes("retract")) body.push(retractBlock(port.port, v));
         if (controls.includes("dissect")) body.push(dissectBlock(port.port, instrument, v));
@@ -374,7 +566,9 @@ export function surgeryPanel(app: App): () => PanelView {
         if (controls.includes("bag")) simple.push(button(tr("surgery.bag"), { dataset: { op: "bag" } }, () => send({ op: "bag", port: port.port })));
         if (simple.length) body.push(h("div", { class: "lap-row" }, simple));
       }
-      if (port && v.specimen === "bagged") body.push(h("div", { class: "lap-row" }, button(tr("surgery.port.extract"), { dataset: { op: "extract" } }, () => send({ op: "extract", port: port.port }))));
+      if (port && v.specimen === "bagged" && !place) body.push(h("div", { class: "lap-row" }, button(tr("surgery.port.extract"), { dataset: { op: "extract" } }, () => send({ op: "extract", port: port.port }))));
+      // the tractions held: released by the one who holds the port (in a place, the place's own)
+      const held = place ? v.retractions.filter((r) => v.ports.find((p) => p.port === r.port)?.holder === learnerRef(f)) : v.retractions;
       if (v.retractions.length)
         body.push(
           h(
@@ -382,14 +576,48 @@ export function surgeryPanel(app: App): () => PanelView {
             { class: "lap-held small" },
             v.retractions.map((r) => {
               const name = v.organs.find((o) => o.id === r.structure)?.name;
-              return h("li", null, tr("surgery.held", { structure: name ? ct(name) : r.structure, port: r.port, direction: directionText(r.direction), force: label("force", r.force) }), " ", button(tr("surgery.release"), { dataset: { op: "release", structure: r.structure } }, () => send({ op: "release", structure: r.structure })));
+              return h("li", null, tr("surgery.held", { structure: name ? ct(name) : r.structure, port: r.port, direction: directionText(r.direction), force: label("force", r.force) }), " ", held.includes(r) ? button(tr("surgery.release"), { dataset: { op: "release", structure: r.structure } }, () => send({ op: "release", structure: r.structure })) : null);
             }),
           ),
         );
       return section(title, "lap-actions", body);
     };
 
-    const structuresSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+    /**
+     * The instrument table (docs/PROCEDURE.md §7): what is on it, what was passed and waits to go in — and, for the place
+     * holding the instrument table (the scrub nurse's), passing an instrument to whoever will put it in (`tableOffer`).
+     */
+    const tableSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+      const table = tableOffer(seat(), def, v);
+      const passes = table.passed.map((q) => tr("surgery.table.passItem", { instrument: label("instrument", q.instrument), to: partyName(words, q.to), by: partyName(words, q.by) }));
+      const rows: Child[] = [
+        h("p", { class: "small" }, tr("surgery.table.on", { list: joinList(table.instruments.map((i) => label("instrument", i))) })),
+        h("p", { class: "small", id: "lap-passed", dataset: { passed: String(table.passed.length) } }, passes.length ? tr("surgery.table.passed", { list: joinList(passes) }) : tr("surgery.table.none")),
+      ];
+      if (table.pass) {
+        if (!table.instruments.includes(d.passInstrument as InstrumentId)) d.passInstrument = table.instruments[0] ?? "";
+        const recipients = table.pass.to.map((x) => x ?? "");
+        if (!recipients.includes(d.passTo)) d.passTo = recipients[0] ?? "";
+        const what = h("select", { id: "lap-pass-instrument", "aria-label": tr("surgery.table.instrument") }, table.instruments.map((i) => h("option", { value: i, selected: i === d.passInstrument }, label("instrument", i))));
+        what.addEventListener("change", () => (d.passInstrument = what.value));
+        const to = h("select", { id: "lap-pass-to", "aria-label": tr("surgery.table.to") }, recipients.map((x) => h("option", { value: x, selected: x === d.passTo }, partyWords(words, x || undefined))));
+        to.addEventListener("change", () => (d.passTo = to.value));
+        rows.push(
+          h(
+            "div",
+            { class: "lap-row" },
+            h("label", { class: "small", for: "lap-pass-instrument" }, tr("surgery.table.instrument")),
+            what,
+            h("label", { class: "small", for: "lap-pass-to" }, tr("surgery.table.to")),
+            to,
+            button(tr("surgery.table.pass"), { dataset: { op: "pass" }, disabled: !d.passInstrument }, () => send({ op: "pass", instrument: d.passInstrument as InstrumentId, ...(d.passTo ? { to: d.passTo } : {}) })),
+          ),
+        );
+      }
+      return section(tr("surgery.table.title"), "lap-table", rows);
+    };
+
+    const structuresSection = (def: ProcedureDefinition, v: FieldView, place: boolean): HTMLElement => {
       const choices = identifyChoices(def, L, tr("surgery.identify.uncertain"));
       if (!choices.some((x) => x.id === d.identifyAs)) d.identifyAs = choices[0]?.id ?? "";
       const nameOf = (id: string) => choices.find((x) => x.id === id)?.name ?? id;
@@ -419,7 +647,7 @@ export function surgeryPanel(app: App): () => PanelView {
               }),
             )
           : h("p", { class: "small muted" }, tr("surgery.tubes.none")),
-        handle
+        handle && !place
           ? h(
               "div",
               { class: "lap-block", id: "lap-identify-block" },
@@ -434,13 +662,13 @@ export function surgeryPanel(app: App): () => PanelView {
       );
     };
 
-    const pauseSection = (def: ProcedureDefinition, v: FieldView): HTMLElement | null => {
+    const pauseSection = (def: ProcedureDefinition, v: FieldView, place: boolean): HTMLElement | null => {
       if (!def.views.length) return null;
       return section(
         tr("surgery.pause.title"),
         "lap-pause",
         h("p", { class: "small notice-inline" }, tr("surgery.pause.note")),
-        def.views.map((view) => {
+        readOnly(place, def.views.map((view) => {
           const ticked = (d.claims[view.id] ??= new Set());
           const counts = (d.counts[view.id] ??= {});
           return h(
@@ -460,7 +688,7 @@ export function surgeryPanel(app: App): () => PanelView {
             }),
             button(tr("surgery.pause.go", { view: ct(view.name) }), { dataset: { op: "safety-pause", view: view.id } }, () => send(safetyPauseOp(def, view.id, ticked, counts))),
           );
-        }),
+        })),
         h("p", { class: "small muted" }, tr("surgery.pause.count", { n: v.pauses })),
       );
     };
@@ -518,16 +746,20 @@ export function surgeryPanel(app: App): () => PanelView {
       return rows;
     };
 
-    const eventsSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
+    const eventsSection = (def: ProcedureDefinition, v: FieldView, place: boolean): HTMLElement => {
       const injury = h("select", { id: "lap-injury", "aria-label": tr("surgery.recognise.label") }, INJURIES.map((i) => h("option", { value: i, selected: i === d.injury }, label("injury", i))));
       injury.addEventListener("change", () => (d.injury = injury.value as Draft["injury"]));
       return section(
         tr("surgery.events.title"),
         "lap-events",
+        // saying an injury aloud is anyone's in the room (no control)
         h("div", { class: "lap-row" }, h("label", { class: "small", for: "lap-injury" }, tr("surgery.recognise.label")), injury, button(tr("surgery.recognise.go"), { dataset: { op: "recognise" } }, () => send({ op: "recognise", injury: d.injury }))),
-        h("div", { class: "lap-row" }, button(tr("surgery.inspect"), { dataset: { op: "inspect" } }, () => send({ op: "inspect" }))),
-        def.bailouts.length ? bailoutControls(def, v) : null,
-        h("div", { class: "lap-row" }, button(tr("surgery.close"), { class: "danger", dataset: { op: "close" } }, () => send({ op: "close" }))),
+        readOnly(
+          place,
+          h("div", { class: "lap-row" }, button(tr("surgery.inspect"), { dataset: { op: "inspect" } }, () => send({ op: "inspect" }))),
+          def.bailouts.length ? bailoutControls(def, v) : null,
+          h("div", { class: "lap-row" }, button(tr("surgery.close"), { class: "danger", dataset: { op: "close" } }, () => send({ op: "close" }))),
+        ),
       );
     };
 
@@ -548,6 +780,9 @@ export function surgeryPanel(app: App): () => PanelView {
         return;
       }
       const { p, v } = f;
+      // holding a place in the team, the port to work with is at first one the place holds
+      const me = learnerRef(seat());
+      if (d.port === null && typeof me === "string") d.port = v.ports.find((x) => x.holder === me)?.port ?? null;
       d.port = activePort(v, d.port);
       d.handle = selectedHandle(v, d.handle);
       drawFrame();
@@ -562,7 +797,24 @@ export function surgeryPanel(app: App): () => PanelView {
         mount(side, h("p", { class: "notice", id: "surgery-phase" }, tr("surgery.notThisPhase")));
         return;
       }
-      mount(side, planSection(def, v), v.plan ? [pneumoSection(def, v), portsSection(def, v), actionsSection(v), structuresSection(def, v), pauseSection(def, v), eventsSection(def, v)] : null);
+      // holding a place in the team: what the place may do, the operator's own steps in view, read-only
+      const place = typeof me === "string";
+      mount(
+        side,
+        placeHeader(),
+        planSection(def, v, place),
+        v.plan
+          ? [
+              pneumoSection(def, v, place),
+              portsSection(def, v),
+              actionsSection(def, v),
+              place || v.passed.length ? tableSection(def, v) : null,
+              structuresSection(def, v, place),
+              pauseSection(def, v, place),
+              eventsSection(def, v, place),
+            ]
+          : null,
+      );
     };
 
     /** Re-render after a local change, keeping the keyboard focus on "the same" control. */

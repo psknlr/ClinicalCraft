@@ -6,6 +6,7 @@
  * are trusted markup (our own <kbd>/<br>), never case or model text.
  */
 import { SURGERY_ZH } from "./surgery.js";
+import { POSITIONS_ZH } from "./positions.js";
 import { TEAM_ZH } from "./team.js";
 
 const zh = {
@@ -1182,6 +1183,9 @@ const zh = {
   /* ---------------- laparoscopic surgery (i18n/surgery.ts) ---------------- */
   ...SURGERY_ZH,
   ...TEAM_ZH,
+
+  /* ---------------- places in the care team (i18n/positions.ts) ---------------- */
+  ...POSITIONS_ZH,
 } as const;
 
 export default zh;

@@ -121,26 +121,49 @@ const SUBJECT: Readonly<Partial<Record<string, string>>> = {
 const PEOPLE: ReadonlySet<string> = new Set(["who", "holder", "actor", "to"]);
 
 /**
- * A refusal's reason in the caller's language, with the people's names (`op.reason.<key>`; the one it is said to as
- * "you"); null for a key the field does not give — the caller keeps its generic lead-in then.
+ * How a refusal's reason is worded (`reasonText`): its sentence for a reason key — `<key>`, or `<key>.you` said to the
+ * one it is about — with its blanks filled (its template when given no blanks), and the words for the values it names.
+ * The runtime's own (`op.reason.<key>` in the session's language) unless a front-end brings its own templates.
  */
-export function reasonText(ctx: FieldContext, reason: RefusalReason | undefined): string | null {
+export interface ReasonWords {
+  sentence(key: string, params?: Record<string, string>): string;
+  op(value: string): string;
+  /** An instrument, or a port's role. */
+  label(value: string): string;
+  control(value: string): string;
+}
+
+/** The runtime's words for a refusal's reason, in a language (`op.reason.<key>`, `op.noun.<op>`, the procedure's labels). */
+export function runtimeReasonWords(locale: string): ReasonWords {
+  return {
+    sentence: (key, params) => rt(locale, `op.reason.${key}` as RuntimeKey, params),
+    op: (value) => rt(locale, `op.noun.${value}` as RuntimeKey),
+    label: (value) => procedureLabel(locale, value),
+    control: (value) => controlName(locale, value),
+  };
+}
+
+/**
+ * A refusal's reason in the caller's language, with the people's names (`op.reason.<key>`; the one it is said to as
+ * "you"); null for a key the field does not give — the caller keeps its generic lead-in then. `words`: a front-end's
+ * own templates for the same sentences (the web's `surgery.reason.<key>`), the people still named here.
+ */
+export function reasonText(ctx: FieldContext, reason: RefusalReason | undefined, words: ReasonWords = runtimeReasonWords(ctx.locale)): string | null {
   if (!reason || !(FIELD_REFUSALS as readonly string[]).includes(reason.key)) return null;
-  const L = ctx.locale;
   const params: Record<string, string> = {};
   for (const [k, v] of Object.entries(reason.params)) {
     if (PEOPLE.has(k)) params[k] = nameOfRef(ctx, v);
-    else if (k === "control") params[k] = controlName(L, v);
-    else if (k === "op") params[k] = rt(L, `op.noun.${v}` as RuntimeKey);
-    else if ((k === "instrument" || k === "role") && v) params[k] = procedureLabel(L, v);
+    else if (k === "control") params[k] = words.control(v);
+    else if (k === "op") params[k] = words.op(v);
+    else if ((k === "instrument" || k === "role") && v) params[k] = words.label(v);
     else params[k] = v;
   }
   const subject = SUBJECT[reason.key];
   const you = subject !== undefined && subject in reason.params && isAddressee(ctx, reason.params[subject]);
-  const key = `op.reason.${reason.key}${you ? ".you" : ""}` as RuntimeKey;
-  const text = rt(L, key, params);
+  const key = `${reason.key}${you ? ".you" : ""}`;
+  const text = words.sentence(key, params);
   // the learner named by their place at the head of a sentence ("The first assistant (the learner) holds …")
-  const lead = /^\{(\w+)\}/u.exec(rt(L, key))?.[1];
+  const lead = /^\{(\w+)\}/u.exec(words.sentence(key))?.[1];
   const learner = lead !== undefined && PEOPLE.has(lead) && lead in reason.params && !isAddressee(ctx, reason.params[lead]) && partyBody(ctx, reason.params[lead]) === LEARNER_BODY;
   return learner ? text.charAt(0).toUpperCase() + text.slice(1) : text;
 }
