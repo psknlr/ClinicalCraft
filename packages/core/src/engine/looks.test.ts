@@ -92,6 +92,27 @@ describe("lookOf: what is drawn in a state", () => {
     expect(lookOf(t, "closed").manikin!.breathing).toBe("both");
   });
 
+  it("on a treatment couch a state turns the body over and uncovers it; a cover its posture does not take is its clothes", () => {
+    // a couch whose body lies on its back in its clothes, is undressed under towels for the front, and is turned face down for the back
+    const t = type({ manikin: { posture: "lying", breathing: "both", y: 0.62 } });
+    t.behavior!.states = {
+      ready: { name: { "zh-CN": "就绪", en: "Ready" } },
+      front: { name: { "zh-CN": "仰卧", en: "On the back" }, look: { manikin: { cover: "towels" } } },
+      back: { name: { "zh-CN": "俯卧", en: "Face down" }, look: { manikin: { posture: "prone", cover: "towels" } } },
+      up: { name: { "zh-CN": "坐起", en: "Sitting up" }, look: { manikin: { posture: "sitting", cover: "towels" } } },
+      side: { name: { "zh-CN": "侧卧", en: "On the side" }, look: { manikin: { posture: "lateral", sideUp: "right", cover: "towels" } } },
+    } as never;
+    expect(lookOf(t, "ready").manikin).toMatchObject({ posture: "lying", cover: "clothes", breathing: "both" });
+    expect(lookOf(t, "front").manikin).toMatchObject({ posture: "lying", cover: "towels" });
+    expect(lookOf(t, "back").manikin).toMatchObject({ posture: "prone", cover: "towels", breathing: "both", y: 0.62 });
+    // sitting up, or on its side, it is not under towels (the checks say so when a catalog is validated: this is what is drawn)
+    expect(lookOf(t, "up").manikin).toMatchObject({ posture: "sitting", cover: "clothes" });
+    expect(lookOf(t, "side").manikin).toMatchObject({ posture: "lateral", sideUp: "right", cover: "clothes" });
+    // turned over is another figure; covered differently is another figure
+    expect(sameFigure(lookOf(t, "front").manikin, lookOf(t, "back").manikin)).toBe(false);
+    expect(sameFigure(lookOf(t, "ready").manikin, lookOf(t, "front").manikin)).toBe(false);
+  });
+
   it("the earlier `draped` is the drapes; a state says how it is covered with `cover`", () => {
     const old = EquipmentManikinSchema.parse({ posture: "lateral", draped: true });
     expect(drawnManikin(old)).toMatchObject({ cover: "drapes" });
@@ -179,9 +200,12 @@ describe("a state's look in a catalog", () => {
       s.behavior.states.closed.look.manikin = { posture: "lateral", cover: "drapes" }; // turned onto its side in this state: fine
     });
     expect(lying).toEqual([
-      ["behavior.states.lung-down.look.manikin", "error", expect.stringMatching(/cover, breathing "one-lung": only a manikin on its side/)],
+      ["behavior.states.lung-down.look.manikin", "error", expect.stringMatching(/breathing "one-lung": only a manikin on its side has it; cover "drapes": its posture takes "clothes", "towels" \(posture "lying" in this state\)/)],
       ["behavior.states.explored.look.manikin", "error", expect.stringMatching(/only a manikin on its side/)],
     ]);
+    // a cover the posture of that state does not take: towels are for one lying flat, not for one on its side
+    expect(withStation((s) => (s.behavior.states.closed.look.manikin = { cover: "towels" })).map((i) => i.slice(0, 2))).toEqual([["behavior.states.closed.look.manikin", "error"]]);
+    expect(withStation((s) => (s.behavior.states.closed.look.manikin = { posture: "prone", cover: "towels" }))).toEqual([]);
     // turned onto its back in a state, it cannot stay flexed over the table's break
     expect(withStation((s) => (s.behavior.states.closed.look.manikin = { posture: "lying", flex: 5 })).map((i) => i.slice(0, 2))).toEqual([["behavior.states.closed.look.manikin", "error"]]);
   });

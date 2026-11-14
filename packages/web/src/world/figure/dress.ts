@@ -482,6 +482,47 @@ export function addBlanket(sc: Sculpt, sk: Skeleton, f: Frame, lift: number): vo
   );
 }
 
+/** The towels of a treatment couch. */
+export const TREATMENT_TOWEL = "#f3f1ea";
+
+/**
+ * A towel across someone lying flat on a couch, from `from` up to `to` (heights of a standing adult): over the
+ * hips, or over the chest. The figure is built upright and laid down by its rig — `face` 1: on its back, +Z up
+ * out of the couch; −1: on its front, −Z up. It falls over the body and its ends lie on the couch either side.
+ */
+export function addTowel(sc: Sculpt, sk: Skeleton, f: Frame, face: 1 | -1, from: number, to: number, colour: string = TREATMENT_TOWEL): void {
+  // what the body lies on: under its back, or under its chest
+  const [, chestFront, chestBack] = trunkAt(1.3, f);
+  const floor = -(face === 1 ? chestBack : chestFront) + 0.012;
+  const caps: Capsule[] = [];
+  for (let y = Math.max(0.78, from - 0.04); y < to + 0.04; y += 0.035) {
+    const [rx, fr, bk] = trunkAt(y, f);
+    const top = face === 1 ? fr : bk;
+    const r = Math.min(rx * 0.5, (fr + bk) / 2);
+    caps.push([-(rx - r), y, rx - r, y, top - r, r]);
+  }
+  for (const s of [-1, 1]) {
+    const leg = sk.legs[0];
+    const a = limbPoint(leg, 0), k = limbPoint(leg, 1);
+    // (the thigh is thickest a third of the way down)
+    const m = limbPoint(leg, 0.4);
+    caps.push([s * a.x, a.y, s * m.x, m.y, face * a.z, 0.094 * f.limb, face * m.z, 0.094 * f.limb], [s * m.x, m.y, s * k.x, k.y, face * m.z, 0.094 * f.limb, face * k.z, 0.068 * f.limb]);
+  }
+  // (as wide as the body and a hand's breadth more either side: the arms beside it stay clear)
+  const half = trunkAt(HIP, f)[0] + 0.06;
+  const nx = 21, ny = Math.max(6, Math.round((to - from) / 0.022));
+  const h = drape(nx, ny, -half, half, from, to, floor, caps, 0.007);
+  const base = rgb(colour);
+  sc.sheet(
+    nx,
+    ny,
+    (i, j) => [-half + (2 * half * i) / (nx - 1), from + ((to - from) * j) / (ny - 1), face * h[j]![i]!],
+    // terry cloth: the faintest ribs along it, a little darker where it lies in a hollow
+    (x, y, z) => ({ rgb: shade(base, 0.965 + 0.035 * Math.sin(x * 260) + 0.3 * Math.min(0.05, Math.max(0, face * z - floor) * 0.2)), gloss: 0 }),
+    { thickness: 0.007, flip: face === -1 },
+  );
+}
+
 /** The blue of a theatre drape and the green of the towels round a field. */
 export const THEATRE_DRAPE = "#3f84b6";
 export const THEATRE_TOWEL = "#4e9a86";

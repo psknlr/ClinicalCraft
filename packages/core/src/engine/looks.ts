@@ -4,7 +4,7 @@
  * manikin is. Pure, for the renderer, the previewer and the checks alike. A look decides nothing: the state
  * does, whoever brought it about, and the look follows it.
  */
-import { manikinCover, MANIKIN_BREATHING, MANIKIN_COVERS, type EquipmentManikin, type EquipmentType, type Placement } from "../schema/facility.js";
+import { coversOf, manikinCover, MANIKIN_BREATHING, MANIKIN_COVERS, type EquipmentManikin, type EquipmentType, type Placement } from "../schema/facility.js";
 
 /** A manikin as it is drawn: the type's, with what a state changes, its cover said one way and its breathing said. */
 export interface DrawnManikin extends Omit<EquipmentManikin, "cover" | "draped" | "breathing"> {
@@ -50,7 +50,8 @@ export function drawnManikin(m: EquipmentManikin | undefined): DrawnManikin | nu
 /**
  * What is drawn in `state` (null, or a state without a look: the type as it is, none of its model's layers).
  * A state's manikin changes are laid over the type's manikin; one that is no longer on its side loses what only
- * a body on its side has (the side that is up, its cover, the table's flex, one-lung breathing).
+ * a body on its side has (the side that is up, the table's flex, one-lung breathing), and a cover the posture it
+ * is now in does not take (`coversOf`) is its own clothes.
  */
 export function lookOf(type: Looked, state: string | null): ResolvedLook {
   const look = (state !== null ? type.behavior?.states[state]?.look : undefined) ?? {};
@@ -60,10 +61,11 @@ export function lookOf(type: Looked, state: string | null): ResolvedLook {
     for (const [k, v] of Object.entries(look.manikin)) if (v !== undefined) (merged as unknown as Record<string, unknown>)[k] = v;
     if (merged.posture !== "lateral") {
       delete merged.sideUp;
-      merged.cover = "clothes";
       merged.flex = 0;
       if (merged.breathing === "one-lung") merged.breathing = "both";
     }
+    // a cover the posture it is now in does not take: its own clothes
+    if (!coversOf(merged.posture).includes(merged.cover)) merged.cover = "clothes";
     manikin = merged;
   }
   return { layers: [...(look.layers ?? [])], screen: look.screen ?? type.screen, manikin };
