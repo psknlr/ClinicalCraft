@@ -18,11 +18,12 @@ import type { BenchAgent, ProviderTap } from "./agents/types.js";
 import { Auditor, type AuditResult } from "./audit.js";
 import { benchEnvironment, type BenchEnvironment } from "./environment.js";
 import { bm } from "./i18n.js";
+import { suiteCoverage, type SuiteCoverage } from "./coverage.js";
 import { computeMetrics, metricsByCategory, type Metrics, type RunFacts } from "./metrics.js";
 import { evaluatePredicates, type FinalView, type PredicateClass } from "./predicates.js";
 import type { Budget } from "./pricing.js";
 import { RunRecorder, type RecordedCall, type RecordedRefusal } from "./recorder.js";
-import { BENCH_CATEGORIES, type BenchCategory, type BenchScenario } from "./schema.js";
+import { BENCH_CATEGORIES, BENCH_SPLITS, type BenchCategory, type BenchScenario, type BenchSplit } from "./schema.js";
 import { AnswerStore, applySetup, attachApprover, createBenchSession, type SubmittedAnswer } from "./session.js";
 
 export const BENCH_REPORT_FORMAT = "clinicalcraft-bench-report@1" as const;
@@ -34,11 +35,15 @@ export interface BenchRun {
   caseId: string;
   facilityId: string | null;
   locale: string;
+  /** The scenario's split: `dev`, or `test` (held out). */
+  split: BenchSplit;
   seed: number;
   success: boolean;
-  /** `completed`: the agent stopped by itself · `limit`: a limit stopped it · `error`: setup or runtime failure · `skipped`: not run (budget). */
+  /** `completed`: the agent stopped by itself · `limit`: a limit stopped it · `error`: setup or runtime failure · `skipped`: not run (budget, or a held-out scenario this agent may not run). */
   status: "completed" | "limit" | "error" | "skipped";
   limit?: "timeout" | "maxToolCalls" | "maxSimMinutes" | "budget";
+  /** Why a skipped run was not run: the budget was spent, or the scenario is held out from this agent (the scripted control has no plan for it). */
+  skip?: "budget" | "held-out";
   error?: string;
   predicates: { kind: string; class: PredicateClass; ok: boolean; detail: string }[];
   calls: RecordedCall[];
@@ -91,19 +96,40 @@ export function benchSafety(report: Pick<AssessmentReport, "safety">): BenchSafe
   };
 }
 
+/**
+ * What the agent of a report is (EMBODIED §13.4): a `control` (the reference solver and the scripted plan replay known
+ * solutions — they validate the infrastructure and are never a model's result) or a `model` (a live model, `llm`).
+ */
+export type BenchAgentRole = "control" | "model";
+
+/** The role of an agent kind: only `llm` is a model; every other agent is a control. */
+export function agentRole(kind: string): BenchAgentRole {
+  return kind === "llm" ? "model" : "control";
+}
+
 export interface BenchReport {
   format: typeof BENCH_REPORT_FORMAT;
   suite: string;
-  agent: { kind: string; provider: string | null; model: string | null; syntheticTokens: boolean };
+  agent: { kind: string; provider: string | null; model: string | null; syntheticTokens: boolean; role: BenchAgentRole };
+  /** The splits whose scenarios this report ran (`--split`). */
+  splits: BenchSplit[];
   seeds: number[];
   startedAt: string;
   finishedAt: string;
   wallMs: number;
   environment: BenchEnvironment;
   disclaimer: { en: string; "zh-CN": string };
-  scenarios: { id: string; category: BenchCategory; caseId: string; facilityId: string | null; locale: string; title: BenchScenario["title"]; deterministic: boolean | null }[];
+  scenarios: { id: string; category: BenchCategory; caseId: string; facilityId: string | null; locale: string; split: BenchSplit; title: BenchScenario["title"]; deterministic: boolean | null }[];
   runs: BenchRun[];
-  metrics: { overall: Metrics; byCategory: Partial<Record<BenchCategory, Metrics>>; byEvidence: Partial<Record<BenchRun["evidence"], Metrics>> };
+  metrics: {
+    overall: Metrics;
+    byCategory: Partial<Record<BenchCategory, Metrics>>;
+    byEvidence: Partial<Record<BenchRun["evidence"], Metrics>>;
+    /** Apart by split: the held-out (`test`) scenarios are never pooled with `dev` in one figure. */
+    bySplit: Partial<Record<BenchSplit, Metrics>>;
+  };
+  /** The case and scenario denominators, the splits and the coverage by kind (`suiteCoverage`). */
+  coverage: SuiteCoverage;
   budget?: { maxTokens: number | null; maxUsd: number | null; usedTokens: number; costUsd: number | null; skipped: number };
 }
 
@@ -134,6 +160,7 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
     caseId: scenario.caseId,
     facilityId: scenario.facilityId ?? null,
     locale: scenario.locale,
+    split: scenario.split ?? "dev",
     seed,
   };
   const empty = {
@@ -149,9 +176,11 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
     audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] },
     safety: { passed: null, criticalFailures: [], doseErrors: [] },
   };
+  // a held-out scenario this agent may not run (the scripted control has no plan for it): not run, counted nowhere
+  if (agent.skips?.(scenario)) return { ...base, ...empty, success: false, status: "skipped", skip: "held-out", wallMs: 0 };
   if (o.budget?.exhausted()) {
     o.budget.skipped++;
-    return { ...base, ...empty, success: false, status: "skipped", limit: "budget", wallMs: 0 };
+    return { ...base, ...empty, success: false, status: "skipped", limit: "budget", skip: "budget", wallMs: 0 };
   }
   const tap: ProviderTap = {};
   let session: Awaited<ReturnType<typeof createBenchSession>> | null = null;
@@ -266,6 +295,16 @@ export function metricsByEvidence(runs: readonly BenchRun[]): Partial<Record<Ben
   return out;
 }
 
+/** The runs' metrics apart by split (held-out `test` scenarios never pooled with `dev`). */
+export function metricsBySplit(runs: readonly BenchRun[]): Partial<Record<BenchSplit, Metrics>> {
+  const out: Partial<Record<BenchSplit, Metrics>> = {};
+  for (const sp of BENCH_SPLITS) {
+    const subset = runs.filter((r) => (r.split ?? "dev") === sp);
+    if (subset.length) out[sp] = computeMetrics(subset.map(runFacts));
+  }
+  return out;
+}
+
 /** The facts a metric needs from a run. */
 export function runFacts(run: BenchRun): RunFacts {
   return {
@@ -313,14 +352,20 @@ export async function runSuite(o: RunSuiteOptions): Promise<BenchReport> {
   const scenarios = o.scenarios.map((s) => {
     const own = runs.filter((r) => r.scenarioId === s.id && r.status !== "skipped" && r.trace.digest);
     const digests = new Set(own.map((r) => r.trace.digest));
-    return { id: s.id, category: s.category, caseId: s.caseId, facilityId: own[0]?.facilityId ?? s.facilityId ?? null, locale: s.locale, title: s.title, deterministic: own.length > 1 ? digests.size === 1 : null };
+    return { id: s.id, category: s.category, caseId: s.caseId, facilityId: own[0]?.facilityId ?? s.facilityId ?? null, locale: s.locale, split: s.split ?? "dev", title: s.title, deterministic: own.length > 1 ? digests.size === 1 : null };
   });
+  const coverage = suiteCoverage(
+    o.scenarios,
+    runs.map((r) => ({ scenarioId: r.scenarioId, success: r.success, skipped: r.status === "skipped" })),
+    (id) => o.content.cases.get(id)?.def ?? null,
+  );
   const live = o.agent.kind === "llm";
   const n = o.scenarios.length;
   const report: BenchReport = {
     format: BENCH_REPORT_FORMAT,
     suite: o.suite,
-    agent: { kind: o.agent.kind, provider: o.agent.provider, model: o.agent.model, syntheticTokens: o.agent.syntheticTokens === true },
+    agent: { kind: o.agent.kind, provider: o.agent.provider, model: o.agent.model, syntheticTokens: o.agent.syntheticTokens === true, role: agentRole(o.agent.kind) },
+    splits: BENCH_SPLITS.filter((sp) => o.scenarios.some((s) => (s.split ?? "dev") === sp)),
     seeds: [...o.seeds],
     startedAt: started.toISOString(),
     finishedAt: new Date().toISOString(),
@@ -332,7 +377,8 @@ export async function runSuite(o: RunSuiteOptions): Promise<BenchReport> {
     },
     scenarios,
     runs,
-    metrics: { ...metricsByCategory(runs.map(runFacts), BENCH_CATEGORIES), byEvidence: metricsByEvidence(runs) },
+    metrics: { ...metricsByCategory(runs.map(runFacts), BENCH_CATEGORIES), byEvidence: metricsByEvidence(runs), bySplit: metricsBySplit(runs) },
+    coverage,
   };
   if (o.budget) {
     const b = o.budget;

@@ -53,6 +53,15 @@ describe("trace labels", () => {
     expect(traceLabel("interaction", "attach", ctx)).toBe("Attach the bedside monitor");
     expect(traceLabel("clinical_action", "intervene", ctx)).toBe("Treat");
     expect(traceLabel("state_change", "actor.moved,entity.state", ctx)).toBe("Moved, Device state changed");
+    // the spans of the audit's rounds (re-review): asking where a thing is, learning it, a study done, a specimen taken
+    expect(traceLabel("clinical_action", "ask_whereabouts", ctx)).toBe("Ask where it is");
+    expect(traceLabel("observation", "whereabouts", ctx)).toBe("Learned where it is");
+    expect(traceLabel("verification", "acquired", ctx)).toBe("Study done at its device");
+    expect(traceLabel("clinical_action", "acquire", ctx)).toBe("Study done at its device");
+    expect(traceLabel("interaction", "collect", ctx)).toBe("Collect the specimen");
+    setLocale("zh-CN");
+    expect(["ask_whereabouts", "whereabouts", "acquire", "collect"].map((n) => traceLabel("observation", n, ctx))).toEqual(["询问在哪里", "得知下落", "在设备上完成检查", "采集标本"]);
+    expect(traceLabel("verification", "acquired", ctx)).toBe("已在设备上完成检查");
   });
 
   it("names a step by its tool and the case item, a delegation by its task, a skill by its own name", () => {
@@ -79,6 +88,18 @@ describe("trace labels", () => {
     expect(traceLabel("interaction", "transport_patient", ctx)).toBe("Transport the patient");
     expect(traceLabel("plan", "transport_patient home", ctx)).toBe("Take the patient back to their bed space");
     expect(traceLabel("verification", "patient home", ctx)).toBe("Patient back in their bed space");
+  });
+
+  it("names the steps of an item kept in custody (EMBODIED §8.1): the hand-over, its receipt, the confirmation, a colleague's delivery", () => {
+    setLocale("zh-CN");
+    expect(traceLabel("interaction", "hand_over", ctx)).toBe("递给");
+    expect(traceLabel("interaction", "confirm_receipt", ctx)).toBe("确认签收");
+    expect(traceLabel("state_change", "item.held,item.handoff", ctx)).toBe("拿起或放下物品、交接记录");
+    expect(traceLabel("plan", "delegate:deliver_item", ctx)).toBe("委派：把物品送交给某人");
+    setLocale("en");
+    expect(traceLabel("interaction", "confirm_receipt", ctx)).toBe("Confirm receipt");
+    expect(traceLabel("state_change", "item.held,item.handoff", ctx)).toBe("Item carried, Hand-over receipt");
+    expect(traceLabel("plan", "delegate:deliver_item", ctx)).toBe("Delegate: Take an item to someone and hand it over");
   });
 
   it("keeps a name it does not know as it is", () => {

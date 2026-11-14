@@ -14,9 +14,10 @@
  *   changes. A device's version is therefore untouched by anyone walking.
  * - Sensor updates of human-driven bodies (`sensorPose`, ~10 Hz) bump only
  *   the actor's own version — never the global version, never another entity.
- * - Memory (`remember`), current tasks (`setTask`), events, results and
- *   transient in-flight locks bump nothing: read-only tools stay idempotent
- *   with respect to every version.
+ * - Memory (`remember`; `miss` and `tell`: what an actor knows of where
+ *   things are), current tasks (`setTask`), events, results and transient
+ *   in-flight locks bump nothing: read-only tools stay idempotent with
+ *   respect to every version.
  *
  * Snapshots (`WorldStateSnapshot`) are canonical JSON: keys sorted at every
  * level, actors sorted by id, `seen` sorted — so the same history gives the
@@ -32,6 +33,7 @@ import {
   type EntityId,
   type EntityRuntimeState,
   type Pose,
+  type MissedPlace,
   type SeenPlace,
   type Vec3,
   type WorldActionResult,
@@ -65,6 +67,24 @@ export interface WorldStateStoreOptions {
   maxEvents?: number;
   /** Idempotency window: results kept by action id (default 128). */
   maxResults?: number;
+  /**
+   * Told of every change of what an actor knows of where a thing is that matters for a search (EMBODIED §4, audit
+   * P1-8): it learned a thing is missing, saw a missing thing again, or was told where it is. The runtime records it
+   * in the trace. Memory only: nothing else listens.
+   */
+  onWhereabouts?: (change: WhereaboutsChange) => void;
+}
+
+/** A change of what an actor knows of where a thing is (`WorldStateStoreOptions.onWhereabouts`). */
+export interface WhereaboutsChange {
+  actorId: ActorId;
+  entityId: EntityId;
+  /** `absent`: looked where it believed it was, not there; `seen`: a missing thing seen again; `told`: a colleague said where it is. */
+  change: "absent" | "seen" | "told";
+  /** Where it is now believed to be (`seen`, `told`), or where it was looked for (`absent`). */
+  place: { level: string; x: number; z: number };
+  /** `told`: the colleague. */
+  by?: ActorId;
 }
 
 /** Deep copy with object keys sorted at every level and `undefined` members dropped (canonical JSON form). */
@@ -104,6 +124,7 @@ export class WorldStateStore implements WorldDynamics {
   private readonly registry: SemanticRegistry;
   private readonly maxEvents: number;
   private readonly maxResults: number;
+  private readonly onWhereabouts: ((change: WhereaboutsChange) => void) | null;
 
   constructor(opts: WorldStateStoreOptions) {
     this.facilityId = opts.facility.id;
@@ -111,6 +132,7 @@ export class WorldStateStore implements WorldDynamics {
     this.registry = opts.registry;
     this.maxEvents = opts.maxEvents ?? 256;
     this.maxResults = opts.maxResults ?? 128;
+    this.onWhereabouts = opts.onWhereabouts ?? null;
     if (opts.snapshot) this.load(opts.snapshot);
     else this.init(opts.facility, opts.spawn ?? spawnPose(opts.facility));
   }
@@ -141,6 +163,7 @@ export class WorldStateStore implements WorldDynamics {
     const seen = [...new Set(a.seen)].sort();
     const actor: ActorState = { ...a, seen, holding: [...a.holding] };
     if (a.lastSeen) actor.lastSeen = Object.fromEntries(Object.entries(a.lastSeen).map(([id, p]) => [id, { ...p }]));
+    if (a.missed) actor.missed = Object.fromEntries(Object.entries(a.missed).map(([id, p]) => [id, { ...p }]));
     this.actorMap.set(a.id, actor);
     this.memory.set(a.id, new Set(seen));
   }
@@ -286,7 +309,8 @@ export class WorldStateStore implements WorldDynamics {
 
   /**
    * Remember entities seen by an actor (EMBODIED R7 "remembered"). Memory is
-   * epistemic, not physical: no version changes. Returns the newly remembered ids (sorted).
+   * epistemic, not physical: no version changes. A missing thing seen again is
+   * no longer missing (`onWhereabouts` `seen`). Returns the newly remembered ids (sorted).
    */
   remember(actorId: ActorId, ids: Iterable<EntityId>, placeOf?: (id: EntityId) => SeenPlace | null): EntityId[] {
     const a = this.actorMap.get(actorId);
@@ -297,7 +321,15 @@ export class WorldStateStore implements WorldDynamics {
       if (id === actorId) continue;
       // where a movable thing was seen (lead note 1): updated at every sighting
       const where = placeOf?.(id);
-      if (where) (a.lastSeen ??= {})[id] = { ...where };
+      if (where) {
+        const { toldBy: _told, ...seen } = where;
+        void _told;
+        (a.lastSeen ??= {})[id] = seen;
+        if (a.missed?.[id]) {
+          this.unmiss(a, id);
+          this.onWhereabouts?.({ actorId, entityId: id, change: "seen", place: { level: seen.level, x: seen.x, z: seen.z } });
+        }
+      }
       if (set.has(id)) continue;
       set.add(id);
       added.push(id);
@@ -306,9 +338,40 @@ export class WorldStateStore implements WorldDynamics {
     return added.sort();
   }
 
-  /** Where an actor last saw a movable thing (null: never seen, or it does not move). */
+  /** Where an actor last saw a movable thing — or was told it is (`toldBy`) — (null: never seen, or it does not move). */
   lastSeen(actorId: ActorId, id: EntityId): SeenPlace | null {
     return this.actorMap.get(actorId)?.lastSeen?.[id] ?? null;
+  }
+
+  /** Where an actor looked for a thing and did not find it (null: it does not know it to be missing). */
+  missed(actorId: ActorId, id: EntityId): MissedPlace | null {
+    return this.actorMap.get(actorId)?.missed?.[id] ?? null;
+  }
+
+  /**
+   * The actor went where it believed a thing was and it is not there (audit P1-8): it is missing for that actor
+   * until it sees it again or is told where it is. Memory only (no version).
+   */
+  miss(actorId: ActorId, id: EntityId, where: MissedPlace): void {
+    const a = this.actorMap.get(actorId);
+    if (!a) return;
+    (a.missed ??= {})[id] = { ...where };
+    this.onWhereabouts?.({ actorId, entityId: id, change: "absent", place: { level: where.level, x: where.x, z: where.z } });
+  }
+
+  /** A colleague (`place.toldBy`) told the actor where a thing is: believed there, no longer missing. Memory only. */
+  tell(actorId: ActorId, id: EntityId, place: SeenPlace & { toldBy: ActorId }): void {
+    const a = this.actorMap.get(actorId);
+    if (!a || id === actorId) return;
+    (a.lastSeen ??= {})[id] = { ...place };
+    this.unmiss(a, id);
+    this.onWhereabouts?.({ actorId, entityId: id, change: "told", place: { level: place.level, x: place.x, z: place.z }, by: place.toldBy });
+  }
+
+  private unmiss(a: ActorState, id: EntityId): void {
+    if (!a.missed?.[id]) return;
+    delete a.missed[id];
+    if (!Object.keys(a.missed).length) delete a.missed;
   }
 
   /**

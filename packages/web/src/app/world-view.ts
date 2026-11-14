@@ -3,6 +3,7 @@
  * model (docs/EMBODIED.md §6) — never a rule of the web's own:
  *
  *   patientMonitor  the world's patient monitor where the patient is now (a bed space's linked one, else one at the bedside)
+ *   screenSlot      whose vitals a device's live screen in the 3D world shows now (THE screen rule, the device's side)
  *   bedsideCaps     the personal kit + the world's bedside providers + delivered capabilities
  *   screen          can the learner read that monitor's screen (the vitals check holds THROUGH it)?
  *   screenKey       the same for the HUD: THE screen rule (`WorldRuntime.screenInView`), cheap at 10 Hz
@@ -53,6 +54,9 @@ export class WorldView {
   /** Plans of `verdict` for the pose and world version in `planKey`. */
   private readonly plans = new Map<string, NavPlan>();
   private planKey = "";
+  /** `screenSlot` answers for the world version and patient place in `screensKey`. */
+  private readonly screens = new Map<string, string | null>();
+  private screensKey = "";
 
   constructor(private readonly o: WorldViewOptions) {}
 
@@ -113,6 +117,30 @@ export class WorldView {
       message: worldMessage("spatial.monitor-not-in-view", L, { monitor: name, range: metres(POLICY_RANGES.screen) }),
       hint: { goal: { kind: "interact", id: monitorId }, label: worldMessage("hint.provider", L, { provider: name }) },
     };
+  }
+
+  /**
+   * The patient slot whose vitals the live screen of a placement shows now (the 3D world asks each time it draws one):
+   * the world's answer — THE screen rule, the device's side (`WorldRuntime.screenPatient`: the patient's monitor;
+   * another device in service at the bedside, by the patient's bed, in use) — wherever the device was wheeled, the
+   * patient wherever they were taken; null: nobody. Answers are kept while the world's version and the patient's
+   * place stand (a cart moved or a device's state changes the version; a patient walking beside someone, the place).
+   */
+  screenSlot(placementId: string): string | null {
+    const world = this.o.world();
+    if (!world || !this.o.slotId) return null;
+    const p = world.patientPlace();
+    const key = `${world.version}|${p ? `${p.level},${p.x},${p.z}` : "-"}`;
+    if (key !== this.screensKey) {
+      this.screensKey = key;
+      this.screens.clear();
+    }
+    let slot = this.screens.get(placementId);
+    if (slot === undefined) {
+      slot = world.screenPatient(`eq:${placementId}`) === `patient:${this.o.slotId}` ? this.o.slotId : null;
+      this.screens.set(placementId, slot);
+    }
+    return slot;
   }
 
   /**

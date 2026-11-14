@@ -15,17 +15,18 @@
  * `patient.moved` event with the route (the browser animates it).
  */
 import { capabilityLabels } from "@clinicalcraft/core";
-import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
-import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
+import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES, TRAVEL_MONITOR_CAPABILITY } from "./capabilities.js";
+import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientLeg, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, TravelMode, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
 import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
 import { endEscortIfUnable } from "./escort.js";
+import { closeStretch, legEnd, placeEnd, receiverAt, travelMode, withLeg, type JourneyHost } from "./journey.js";
 import { listText, metres, worldMessage } from "./i18n.js";
 import { levelElevation } from "./levels.js";
 import { freeCellNear, patientProviders, resolveTarget, sameTarget, trolleySpot, type PatientTarget, type TargetDeps, type WalkProblem } from "./patient.js";
 import { footprintArea, type Area } from "./raster.js";
 
 /** The bus side transports need: the patient's body as last stamped on the grids, the transport in progress. */
-export interface TransportHost extends EffectsHost {
+export interface TransportHost extends JourneyHost {
   /** What the grids hold of the patient's body (`refreshPatient` compares the body now with it). */
   patientStamp: { key: string; posture: BodyPosture | null; body: { level: string; area: Area } | null };
   /** The transport walking now (`PatientPlace.transit`), or null. */
@@ -141,12 +142,78 @@ function equipmentArea(host: EffectsHost, id: EntityId): { level: string; area: 
 
 const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
 
+/** Park a portable device beside the patient's body (a free spot near it; none: back where it is kept), re-stamping the grids. */
+function placeBeside(host: TransportHost, id: EntityId, near: { level: string; area: Area }): void {
+  const { store, mover, facility, registry } = host.d;
+  const e = registry.entity(id);
+  const at = host.d.patient.equipmentAt(id);
+  if (!e || !at) return;
+  const before = equipmentArea(host, id);
+  const spot = trolleySpot(targetDeps(host), id, near.level, near.area);
+  const position = spot ? { x: spot.x, y: levelElevation(facility, near.level), z: spot.z, level: near.level, rot: at.rot } : undefined;
+  store.patchEntity(id, { position });
+  const after = equipmentArea(host, id);
+  for (const a of [before, after]) if (a) host.invalidate({ level: a.level, ...grow(a.area, 0.6) });
+  mover.placeEntity?.(id, position ?? { x: e.position.x, y: e.position.y, z: e.position.z, level: e.level, rot: e.rot });
+}
+
+/** How many legs of the patient's journey the world keeps (`PatientPlaceState.legs`, oldest dropped). */
+export { MAX_PATIENT_LEGS } from "./journey.js";
+
+/** How a leg of the patient's journey began (`commitPatient` records the leg when it ends). */
+export interface Departure {
+  /** Simulated minute of departure. */
+  at: number;
+  /** The role of the body that took them (null: the team, a transfer). */
+  role: string | null;
+  /** The monitor that travels with them, or null. */
+  monitor: EntityId | null;
+  status: PatientLeg["status"];
+  /** A transport (a body took them) or a relocation (a phase or an intervention: no journey). */
+  kind: "transport" | "relocation";
+  /** How they travelled (a relocation: null) and on what (`PatientLeg.mode`, `vehicle`). */
+  mode: TravelMode | null;
+  vehicle: EntityId | null;
+  /** A relocation's cause, when given. */
+  cause?: PatientLeg["cause"];
+}
+
+/**
+ * The monitor that travels with the patient on this transport (`parameters.monitor`, EMBODIED §8.7): `true` — a
+ * portable device providing cardiac monitoring at the patient's bedside now, in service and free (a defibrillator's
+ * monitor on its cart, put on the bed for the journey); an id or alias — that device, under the same conditions. Null
+ * when none is asked for; an error message when one was asked for and none can come.
+ */
+function travellingMonitor(host: TransportHost, request: WorldActionRequest, actor: ActorState): { id: EntityId | null } | { error: string } {
+  const asked = request.parameters?.monitor;
+  if (asked === undefined || asked === false || asked === null) return { id: null };
+  const { registry, locator, store, locale: L } = host.d;
+  const free = (id: EntityId) => {
+    const rt = store.entity(id);
+    const holder = rt?.reservedBy ?? rt?.heldBy ?? host.busy.get(id) ?? null;
+    return !holder || holder === actor.id;
+  };
+  const usable = (id: EntityId) => {
+    const e = registry.entity(id);
+    const p = locator.place(id);
+    return !!e && e.kind === "equipment" && !!e.portable && locator.capabilities(id).includes(TRAVEL_MONITOR_CAPABILITY) && !!p && locator.atBedside(p) && free(id);
+  };
+  const patient = locator.patientId ? locator.name(locator.patientId) : "—";
+  if (typeof asked === "string" && asked.trim()) {
+    const id = registry.resolveId(asked.trim()) ?? asked.trim();
+    return usable(id) ? { id } : { error: worldMessage("pre.monitorUnusable", L, { monitor: registry.entity(id) ? locator.name(id) : asked.trim(), patient }) };
+  }
+  const id = registry.ofKind("equipment").find((e) => usable(e.id))?.id ?? null;
+  return id ? { id } : { error: worldMessage("pre.noTravelMonitor", L, { patient }) };
+}
+
 /**
  * Commit the patient's new place: the trolley (parked beside a provider, carrying the patient at a spot,
- * or home again with the patient in a bed space), home, the grids where bodies and beds were and are, the
- * event. Returns the events.
+ * or home again with the patient in a bed space), the monitor that travelled with them (beside them now), home, the
+ * grids where bodies and beds were and are, the leg of the journey (`PatientPlaceState.legs`), the event. Returns the
+ * events.
  */
-export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number): WorldEvent[] {
+export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): WorldEvent[] {
   const { store, patient: body, facility, mover } = host.d;
   const id = body.id!;
   const st = body.state()!;
@@ -164,6 +231,27 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
     trolley: st.trolley,
     support,
   };
+  // the leg of the journey, recorded on arrival (or where it stopped): who took them, from where, when, with what monitor
+  // — how (P2-11: on their bed, a trolley, on foot; a relocation: no journey) and who took over on arrival (below)
+  const relocation = departure.kind === "relocation";
+  const leg: PatientLeg = {
+    by,
+    role: departure.role,
+    from: { slot: from.slot, provider: from.provider, room: from.room },
+    to: legEnd(host, target.slot ? { slot: target.slot, provider: target.provider, spot: null } : next),
+    departedAt: departure.at,
+    arrivedAt: host.d.clinical.clock(),
+    monitor: departure.monitor,
+    status: departure.status,
+    kind: departure.kind,
+    mode: departure.mode,
+    vehicle: departure.vehicle,
+    distance: relocation ? 0 : Math.round(distance * 100) / 100,
+    receivedBy: null,
+    receivedRole: null,
+    ...(departure.cause ? { cause: { ...departure.cause } } : {}),
+  };
+  next.legs = withLeg(st, leg);
   /** Trolley moves: a position, or undefined (back where it is kept). */
   const moves: { id: EntityId; position: { x: number; y: number; z: number; level: string; rot: number } | undefined }[] = [];
   if (target.slot) {
@@ -204,10 +292,20 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
   const newBody = body.body();
   if (newBody) touched.push(newBody);
   for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
+  // the monitor that travelled with them waits beside them where they are now (back where it is kept if no room)
+  const now = body.place();
+  if (departure.monitor && now) placeBeside(host, departure.monitor, { level: now.level, area: footprintArea({ position: { x: now.x, z: now.z }, footprint: { w: now.footprint.w, d: now.footprint.d } }) });
   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
+  // the handover (P2-11): a transport that arrived is taken over by a colleague at the bedside there, if one is — the
+  // leg is completed before the commit's events go out (it is the object just stored)
+  const receiver = !relocation && departure.status === "arrived" ? receiverAt(host, by) : null;
+  if (receiver) Object.assign(leg, { receivedBy: receiver.id, receivedRole: receiver.role });
+  // whoever wheeled them knows where the bed and the monitor that came along are now (audit P1-8)
+  host.learnWhere(by, [...moves.map((m) => m.id), ...(departure.monitor ? [departure.monitor] : [])]);
   const to = body.place()!;
   const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
   if (escorted) events.push(host.emit({ type: "patient.escort", entityId: id, escort: null, actorId: null }));
+  events.push(host.emit({ type: "patient.arrived", entityId: id, leg: { ...leg, from: { ...leg.from }, to: { ...leg.to } } }));
   return events;
 }
 
@@ -247,10 +345,21 @@ export async function transportPatient(host: TransportHost, request: WorldAction
     return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${why}`, { hint: null });
   }
   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
+  // a monitor asked to travel with them (high acuity): one at their bedside, or the transport does not set off
+  const monitor = travellingMonitor(host, request, actor);
+  if ("error" in monitor) return failed("PRECONDITION_FAILED", monitor.error, { hint: null });
   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal: target.stand, role: actor.role, accessibleOnly: true });
   if (!plan.ok) return failed(plan.code, plan.message, { hint: null });
+  // walking with someone until now: that walk ends here, where this transport picks them up (its own leg)
+  const walkedWith = closeStretch(host, "arrived", "end");
+  const departedAt = host.d.clinical.clock();
+  const mode = travelMode(host, trolley);
+  const departure = (status: Departure["status"]): Departure => ({ at: departedAt, role: actor.role, monitor: monitor.id, status, kind: "transport", mode, vehicle: trolley });
+  // the journey sets off (P2-11): who holds them in transit, how, with which monitor, from where to where
+  const setOff = host.emit({ type: "patient.departed", entityId: patientId, kind: "transport", by: actor.id, role: actor.role, mode, vehicle: trolley, monitor: monitor.id, from: placeEnd(host), to: legEnd(host, target.slot ? { slot: target.slot, provider: target.provider, spot: null } : { slot: null, provider: target.provider, spot: target.spot }), at: departedAt });
   host.busy.set(patientId, actor.id);
   if (trolley) host.busy.set(trolley, actor.id);
+  if (monitor.id) host.busy.set(monitor.id, actor.id);
   // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
   host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
   host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
@@ -277,6 +386,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
     host.transitStop = null;
     host.busy.delete(patientId);
     if (trolley) host.busy.delete(trolley);
+    if (monitor.id) host.busy.delete(monitor.id);
   }
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (collapsed) {
@@ -286,22 +396,29 @@ export async function transportPatient(host: TransportHost, request: WorldAction
     const stop = stopTarget(host, now.pose, null);
     // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
     const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
-    const events = [...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked)];
+    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
     const message = `${worldMessage(`pre.cannotWalk.${collapsed}`, L, { patient: name })} ${worldMessage("pre.stoppedEnRoute", L, { patient: name, place: stop.name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`;
     return { status: "failed", errorCode: "PRECONDITION_FAILED", message, events, hint: null, ...base };
   }
   if (walk.interrupted) {
     const now = host.d.store.actor(actor.id)!;
     const stop = stopTarget(host, now.pose, trolley);
-    const events = [...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked)];
+    const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
     return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
   }
-  const events = [...walk.events, ...commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked)];
-  return { status: "completed", message: worldMessage("ok.transported", L, { patient: name, place: target.name, distance: metres(walk.walked) }), events, ...base };
+  const events = [...walkedWith, setOff, ...walk.events, ...commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked, departure("arrived"))];
+  const transported = worldMessage("ok.transported", L, { patient: name, place: target.name, distance: metres(walk.walked) });
+  // the monitor parked beside them — or, with no room there, back where it is kept: said so (re-review P2-11)
+  const besideThem = monitor.id ? !!host.d.store.entity(monitor.id)?.position : false;
+  const monitored = monitor.id ? ` ${worldMessage(besideThem ? "ok.monitorTravelled" : "ok.monitorReturned", L, { monitor: locator.name(monitor.id) })}` : "";
+  // the handover, in words (P2-11): who took over where they arrived
+  const leg = body.state()?.legs?.at(-1);
+  const handed = leg?.receivedBy ? ` ${worldMessage("ok.receivedBy", L, { patient: name, receiver: locator.name(leg.receivedBy) })}` : "";
+  return { status: "completed", message: `${transported}${monitored}${handed}`, events, ...base };
 }
 
 /** `WorldRuntime.relocatePatient` (see the module docs). */
-export function relocatePatient(host: TransportHost, dest: PatientDestination): PatientRelocation {
+export function relocatePatient(host: TransportHost, dest: PatientDestination, cause?: PatientLeg["cause"]): PatientRelocation {
   const { patient: body, backend, locale: L, locator, store } = host.d;
   const id = body.id;
   const st = body.state();
@@ -323,7 +440,10 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination): 
   const p = body.place()!;
   const from: Pose = { x: p.x, y: p.y, z: p.z, yaw: 0, pitch: 0, level: p.level };
   const plan = backend.plan({ actorId: id, from, goal: target.stand, role: "nurse", accessibleOnly: true, ignoreObstacles: true });
-  commitPatient(host, target, trolley, "set", null, plan.ok ? plan.path : [], plan.ok ? plan.length : 0);
+  const now = host.d.clinical.clock();
+  // a walk with someone ends where the team takes over (its own leg)
+  closeStretch(host, "arrived", "end");
+  commitPatient(host, target, trolley, "set", null, plan.ok ? plan.path : [], plan.ok ? plan.length : 0, { at: now, role: null, monitor: null, status: "arrived", kind: "relocation", mode: null, vehicle: null, ...(cause ? { cause } : {}) });
   return { ok: true, moved: true, place: body.place()!, name: target.name, message: worldMessage("relocate.done", L, { patient: name, place: target.name }) };
 }
 

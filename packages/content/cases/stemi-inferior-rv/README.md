@@ -169,8 +169,9 @@ play out. In the audit's replay (nitroglycerin after the IV line) the score stay
 named first and the safety outcome failed. Free-text orders are checked against the preset doses (`doseSpec`):
 aspirin 150–325 mg (the loading doses of the guidelines its text cites — ESC and Chinese 150–300 mg, ACC/AHA
 162–325 mg — around its 300 mg), ticagrelor 180 mg, clopidogrel 600 mg (PO), UFH 70–100 units/kg, enoxaparin
-0.5 mg/kg and morphine 2–4 mg (IV, through his 78 kg). "Aspirin 150 mg", "162 mg" and "325 mg" are given; "aspirin
-3000 mg" is not (a dose error to review: nine times the top of the range); "300 g" is a critical dose error. The
+0.5 mg/kg and morphine 2–4 mg (IV, through his 78 kg), and the arrest-dose adrenaline 1 mg IV. "Aspirin 150 mg",
+"162 mg" and "325 mg" are given; "aspirin 3000 mg" is not — a critical dose error: nine times the top of the range,
+but twenty times its bottom (a tenfold slip of any dose the range allows is critical); "300 g" is one too. The
 statin and ondansetron items have none: they also answer for "a statin" and "an antiemetic", and the dose check
 compares amounts, not drugs, so rosuvastatin 20 mg (high-intensity) would read as half the atorvastatin dose.
 
@@ -411,6 +412,9 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
   the infusions and the deliberate errors (nitroglycerin, metoprolol, tenecteplase: given whatever dose is written,
   so the consequence plays out) have none, nor do the statin and ondansetron items, which also answer for other drugs
   of their class ("a statin", "an antiemetic") whose usual doses the amount-only dose check would read as dose errors.
+- **Arrest-dose adrenaline preset (follow-up review of the audit fixes, 2026-11-13):** `doseSpec` 1 mg IV, the dose
+  its text states. IV adrenaline is a high-alert medicine (`cases validate` now asks for its preset): "adrenaline
+  10 mg IV" was given with its dose unchecked; it is now a critical dose error, not given.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

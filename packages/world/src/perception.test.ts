@@ -299,6 +299,8 @@ describe("G13: recent events are the observer's own, its delegates' and what it 
     expect(stay).toMatchObject({ status: "completed", moved: { displacement: 0, alreadyAtDestination: true } });
     expect((await w.act({ actorId: N, operation: "move_to", targetId: "eq:resus1-ecg", goal: { kind: "room", id: "ed-cubicle-1" } })).status).toBe("completed");
     expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.moved")).toEqual([]);
+    // the clinician asks where it is (a believed place is no destination, audit P1-8), then goes to it
+    expect(w.runtime.askWhereabouts(A, "eq:resus1-ecg", N)).toMatchObject({ answeredBy: N, updated: true });
     expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:resus1-ecg" })).status).toBe("completed");
     expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.moved").map((e) => e.summary)).toEqual([expect.stringMatching(/ECG/)]);
   });

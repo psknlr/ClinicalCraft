@@ -17,7 +17,9 @@
  *
  * Portable equipment adds, whatever its behaviour: carts `move_to` (wheel it
  * to a goal; the actor walks, the cart is parked next to them), handheld
- * items `pick_up` / `put_down` / `equip` (at most `MAX_HELD` in hand).
+ * items `pick_up` / `put_down` / `equip` (at most `MAX_HELD` in hand) /
+ * `hand_over`, and an item kept in custody (`custody`) `confirm_receipt` —
+ * its receiver confirms the receipt of a hand-over (`hand.ts`).
  *
  * Built-in effects attach by operation name to catalog behaviours too: a
  * monitor's `read` shows the screen. Predicates: `actorWithin` /
@@ -30,7 +32,7 @@
  */
 import { COUNT_EFFECT_STEPS, evaluate, monitorAttached, NEARBY_STATE_RANGE, t, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
-import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
+import { MAX_HELD, RANGES, type ActionHint, type ActorId, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type EntityRuntimeState, type HandoffReceipt, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
 import { escortProblem } from "./escort.js";
 import type { Placed, WorldLocator } from "./locate.js";
@@ -39,7 +41,7 @@ import type { Area } from "./raster.js";
 import type { WorldStateStore } from "./state.js";
 
 /** Built-in effects of operations (beyond a declarative state transition). */
-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "hand-over" | "transport" | "escort" | "release" | "reposition";
+export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "hand-over" | "confirm-receipt" | "transport" | "escort" | "release" | "reposition";
 
 /** One operation an entity offers (built-in or from the catalog). */
 export interface OperationSpec {
@@ -65,7 +67,7 @@ export interface BehaviorSpec {
   /** Where the state comes from: stored in the world, the door record, derived from the engine, or none. */
   stateSource: "stored" | "door" | "derived" | "none";
   initial: string | null;
-  states: Record<string, { name?: LocalizedText; available?: boolean; when?: Condition }>;
+  states: Record<string, { name?: LocalizedText; available?: boolean; when?: Condition; live?: boolean }>;
   /** `monitor-attachment`: the patient's monitor; `case-record`: a board that shows the case record (WHO checklist). */
   derived?: "monitor-attachment" | "case-record";
   operations: OperationSpec[];
@@ -222,6 +224,8 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
   } else spec = BUILTIN_BEHAVIORS[e.interaction] ?? NO_BEHAVIOR;
   if (type.portable === "cart") spec = { ...spec, operations: [...spec.operations, op("move_to", { effect: "move-to" })] };
   if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" }), op("hand_over", { effect: "hand-over" })] };
+  // an item kept in custody changes hands against a receipt its receiver confirms (audit 2026-11-12 P2-12)
+  if (type.portable === "handheld" && type.custody) spec = { ...spec, operations: [...spec.operations, op("confirm_receipt", { effect: "confirm-receipt" })] };
   cache.set(type, spec);
   return spec;
 }
@@ -275,6 +279,16 @@ export function areaDistance(a: Area, b: Area): number {
 /** Handheld items an actor has in hand (carried, not worn): at most `MAX_HELD` (`HANDS_FULL`). */
 export function itemsInHand(actor: Pick<ActorState, "holding">, store: Pick<WorldStateStore, "entity">): EntityId[] {
   return actor.holding.filter((h) => !store.entity(h)?.data?.equipped);
+}
+
+/**
+ * THE custody rule (EMBODIED §8.1, audit 2026-11-12 P2-12): the receipt of an item that awaits this actor's
+ * confirmation — the actor holds the item and its last hand-over names them, not yet confirmed — or null. Only the
+ * receiver confirms, with the item in hand (`confirm_receipt`); nobody confirms a receipt for someone else.
+ */
+export function awaitingConfirmation(state: Pick<EntityRuntimeState, "heldBy" | "receipts"> | null | undefined, actorId: ActorId): HandoffReceipt | null {
+  const last = state?.heldBy === actorId ? state.receipts?.at(-1) : undefined;
+  return last && last.to === actorId && last.confirmedAt === null ? last : null;
 }
 
 /** Does the predicate depend on where the acting actor stands (`actorWithin` / `patientWithin`, at any depth)? */
@@ -610,6 +624,15 @@ export class DeviceRules {
       case "hand-over":
         if (s?.heldBy !== actor.id) return { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
         return s.data?.equipped ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.handOverWorn", L, { target }) } : null;
+      case "confirm-receipt": {
+        // THE custody rule (`awaitingConfirmation`): the receiver confirms, with the item in hand — else why not
+        if (s?.heldBy !== actor.id) return { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
+        if (awaitingConfirmation(s, actor.id)) return null;
+        const last = s.receipts?.at(-1);
+        return last?.to === actor.id && last.confirmedAt !== null
+          ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.receiptConfirmed", L, { target, at: last.confirmedAt }) }
+          : { code: "PRECONDITION_FAILED", message: worldMessage("pre.noReceipt", L, { target }) };
+      }
       case "put-down":
         return s?.heldBy === actor.id ? null : { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
       case "equip":
@@ -726,8 +749,8 @@ export class DeviceRules {
    * reach; `put_down` / `equip` need nothing. Null when satisfied.
    */
   spatial(id: EntityId, o: OperationSpec, actor: ActorState): RuleFailure | null {
-    // the item travels with its holder; a hand-over measures the recipient (`hand.ts`)
-    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over") return null;
+    // the item travels with its holder; a hand-over measures the recipient (`hand.ts`); a receipt is confirmed in hand
+    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over" || o.effect === "confirm-receipt") return null;
     const loc = this.d.locator;
     const place = loc.place(id);
     if (!place) return null;

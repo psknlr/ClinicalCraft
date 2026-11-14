@@ -2,15 +2,17 @@
  * Success predicates — every kind, true and false, evaluated on the final
  * authoritative state of a real run (STEMI, general hospital: the reference
  * solver washes its hands, walks to the bedside past a locked door, is
- * refused a CT order at the bedside (imaging is ordered at the radiology
- * console; lab tests are ordered right there, G9) and the ECG cart the nurse holds, attaches
+ * refused a CT report at the bedside (an imaging report is read at the
+ * radiology console — the study itself may be ordered at the bedside and is
+ * done with the patient on the scanner, EMBODIED §8.7) and the ECG cart the nurse holds, attaches
  * the monitor and answers), plus edge cases on a hand-built view (audit
- * violations, a held item, hand hygiene expiry, refusal targets).
+ * violations, a held item, hand hygiene expiry, refusal targets, a study's
+ * stages and the patient's journeys).
  */
 import { describe, expect, it } from "vitest";
 import { loadContent } from "@clinicalcraft/agent/node";
-import { createSession as createEngineState } from "@clinicalcraft/core";
-import type { WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
+import { createSession as createEngineState, type OrderRecord } from "@clinicalcraft/core";
+import type { PatientLeg, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
 import { createReferenceAgent } from "./agents/reference.js";
 import type { AuditResult } from "./audit.js";
 import { evaluatePredicate, footprintDistance, predicateClass, type FinalView } from "./predicates.js";
@@ -48,7 +50,7 @@ const EXPECTED: [BenchPredicate, boolean][] = [
   [{ answerEquals: ["eq:resus2-ecg", "resus1-ecg"] }, true],
   [{ answerEquals: "eq:resus2-ecg" }, false],
   [{ refusedWith: "SPATIAL_REQUIREMENT_UNMET" }, true],
-  [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "order_test" } }, true],
+  [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "read_result" } }, true],
   [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "examine" } }, false],
   [{ refusedWith: { code: "DEVICE_BUSY", tool: "interact_object", target: "eq:resus1-ecg" } }, true],
   [{ refusedWith: { code: "DEVICE_BUSY", target: "eq:resus2-ecg" } }, false],
@@ -58,6 +60,8 @@ const EXPECTED: [BenchPredicate, boolean][] = [
   [{ toolCalledAtMostTimes: { tool: "submit_answer", max: 1 } }, true],
   [{ toolCalledAtMostTimes: { tool: "navigate_to", max: 0 } }, false],
   [{ caseFinished: true }, false],
+  [{ studyStages: { investigation: "ct-aortogram" } }, false],
+  [{ world: { kind: "patientTransit" } }, false],
 ];
 
 function scenario(predicates: BenchPredicate[]): BenchScenario {
@@ -85,7 +89,7 @@ function scenario(predicates: BenchPredicate[]): BenchScenario {
         { op: "find", query: { interaction: "sink", limit: 1 }, save: "sink" },
         { op: "interact", target: "@sink", operation: "wash_hands" },
         { op: "navigate", goal: { kind: "interact", id: "patient:resus-1" } },
-        { op: "attempt", action: { type: "order", investigationId: "ct-aortogram" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
+        { op: "attempt", action: { type: "read", investigationId: "ct-aortogram" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
         { op: "interact", target: "eq:resus1-ecg", operation: "connect", expect: "DEVICE_BUSY" },
         { op: "clinical", action: { type: "intervene", interventionId: "cardiac-monitoring" } },
         { op: "answer", entity: "eq:resus1-ecg" },
@@ -200,6 +204,52 @@ describe("predicates on hand-built views", () => {
     expect(predicateClass({ world: { kind: "doorState", door: "d" } })).toBe("interaction");
     expect(predicateClass({ refusedWith: "DEVICE_BUSY" })).toBe("safety");
     expect(predicateClass({ toolCalledAtMostTimes: { tool: "submit_answer", max: 1 } })).toBe("other");
+    expect(predicateClass({ studyStages: { investigation: "ctpa" } })).toBe("clinical");
+    expect(predicateClass({ world: { kind: "patientTransit", monitored: true } })).toBe("safety");
+  });
+
+  it("studyStages: each stage of a study done at a device, in order; patientTransit: every journey monitored and held by a role (EMBODIED §8.7)", () => {
+    const pe = content.cases.get("pulmonary-embolism-postop")!.def;
+    const turnaround = pe.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes;
+    const ward = { slot: "ward-1", provider: null, room: "ward" };
+    const ct = { slot: null, provider: "eq:ct-scanner", room: "rad-ct" };
+    const leg = (from: PatientLeg["from"], to: PatientLeg["to"], departedAt: number, arrivedAt: number, patch: Partial<PatientLeg> = {}): PatientLeg => ({ by: "actor:clinician", role: "clinician", from, to, departedAt, arrivedAt, monitor: "eq:ward-defibrillator", status: "arrived", ...patch });
+    const legs = [leg(ward, ct, 2, 2.4), leg(ct, ward, 2.4, 2.8)];
+    const order: OrderRecord = {
+      key: "ctpa@ward", investigationId: "ctpa", phase: "ward", orderedAt: 1, seq: 3, by: "learner", modality: ["ct"],
+      acquired: { at: 2.4, seq: 5, collector: "radiographer", where: "eq:ct-scanner" }, readyAt: 2.4 + turnaround,
+      reviewed: { at: 33, seq: 7, by: "learner" }, next: { type: "intervene", id: "consult-pert", at: 34, seq: 8 },
+    };
+    const peView = (orders: OrderRecord[], clock: number, journeys: PatientLeg[]): FinalView => {
+      const base = view({ clock });
+      const world = { ...(base.world as object), entities: () => [{ id: "patient:ward-1", kind: "patient" }] } as unknown as WorldRuntime;
+      const snapshot = { entities: { "patient:ward-1": { patient: { legs: journeys } } } } as unknown as WorldStateSnapshot;
+      return { ...base, caseDef: pe, state: { ...createEngineState(pe), clock, orders }, world, snapshot };
+    };
+    const stages = (o: OrderRecord, clock = 40, journeys = legs) => evaluatePredicate(peView([o], clock, journeys), { studyStages: { investigation: "ctpa" } });
+    expect(stages(order)).toMatchObject({ ok: true, class: "clinical" });
+    expect(stages(order).detail).toMatch(/ordered 1 by learner → departed 2 → arrived 2.4 → acquired 2.4 by radiographer at eq:ct-scanner → released 32.4 → reviewed 33 by learner → then intervene consult-pert 34/);
+    // a stage missing, or out of order, fails and says which
+    expect(stages({ ...order, acquired: undefined, readyAt: undefined, reviewed: undefined, next: undefined }).detail).toMatch(/not acquired/);
+    expect(stages({ ...order, acquired: { at: 1, seq: 3, implied: true }, readyAt: 1 + turnaround }).detail).toMatch(/acquired at the order/);
+    expect(stages(order, 40, []).detail).toMatch(/no journey to eq:ct-scanner/);
+    expect(stages({ ...order, orderedAt: 2.2 }).detail).toMatch(/left for the device before the order/);
+    expect(stages({ ...order, readyAt: 2.4 }).detail).toMatch(/not at the acquisition \+ turnaround/);
+    expect(stages(order, 30).detail).toMatch(/not released yet/);
+    expect(stages({ ...order, reviewed: undefined, next: undefined }).detail).toMatch(/not reviewed/);
+    expect(stages({ ...order, next: undefined }).detail).toMatch(/no resulting action/);
+    expect(evaluatePredicate(peView([], 40, legs), { studyStages: { investigation: "ctpa" } }).detail).toMatch(/not ordered/);
+    // the journeys: each one monitored, each one held by a clinician or a nurse
+    const transit = (journeys: PatientLeg[], w: { monitored?: boolean; roles?: string[] }) => evaluatePredicate(peView([order], 40, journeys), { world: { kind: "patientTransit", ...w } });
+    expect(transit(legs, { monitored: true, roles: ["clinician", "nurse"] })).toMatchObject({ ok: true, class: "safety" });
+    expect(transit(legs, {}).detail).toMatch(/ward-1 → eq:ct-scanner 2–2.4 by actor:clinician \(clinician\), with eq:ward-defibrillator/);
+    expect(transit([legs[0]!, leg(ct, ward, 2.4, 2.8, { monitor: null })], { monitored: true }).ok).toBe(false);
+    expect(transit([legs[0]!, leg(ct, ward, 2.4, 2.8, { by: "staff:porter", role: "porter" })], { roles: ["clinician", "nurse"] }).ok).toBe(false);
+    expect(transit([leg(ward, ct, 2, 2.4, { by: null, role: null })], { roles: ["clinician"] }).ok).toBe(false);
+    // a relocation (the team's transfer by a phase or an intervention) is no journey: not judged (EMBODIED §8.4, P2-11)
+    const icu = { slot: "icu-1", provider: null, room: "icu" };
+    expect(transit([...legs, leg(ward, icu, 40, 40, { by: null, role: null, monitor: null, kind: "relocation", mode: null, cause: { intervention: "transfer-hdu" } })], { monitored: true, roles: ["clinician", "nurse"] }).ok).toBe(true);
+    expect(transit([], {})).toMatchObject({ ok: false, detail: "the patient never travelled" });
   });
 
   it("footprintDistance: 0 inside the footprint, edge distance outside", () => {

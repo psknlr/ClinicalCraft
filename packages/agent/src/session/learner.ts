@@ -258,6 +258,17 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // what a colleague passed on (`ask` via "team", docs/TEAM.md) is recorded by the session when they pass it on —
+    // never claimed by a learner: it would skip the rule of who can answer
+    if (requested.type === "ask" && requested.via === "team") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.relayOwned") }), code: "permission_denied" });
+      return null;
+    }
+    // a study done on the patient at a device is done when the world has them there (docs/EMBODIED.md §8.7), never typed in
+    if (requested.type === "acquire") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "acquire.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
     // entered in their name
     // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it

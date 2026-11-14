@@ -334,7 +334,7 @@ function resultsCommand(host: CommandHost): void {
     rows.push([investigationName(c, o.order.investigationId, L), o.order.investigationId, `${phaseLabel(c, o.order.phase, L)} (${o.order.phase})`, orderStatusText(c, o, L)]);
   }
   host.output(table(rows, { header: true }), {
-    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
+    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, acquired: o.acquired, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
   });
 }
 

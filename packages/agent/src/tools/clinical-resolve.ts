@@ -27,6 +27,7 @@ import {
   type MatchHit,
   type orderStatus,
   type ReduceResult,
+  type OrderRecord,
   type RejectionCode,
   type SessionState,
 } from "@clinicalcraft/core";
@@ -93,17 +94,25 @@ export function readPhase(s: SessionState, investigationId: string, phaseArg?: s
 }
 
 /** The one status of an ordered result, for every role (access to its content is decided separately). */
-export type ResultStatus = "read" | "no-record" | "ready" | "pending";
+export type ResultStatus = "read" | "no-record" | "not-acquired" | "ready" | "pending";
 
 /**
  * The status of an order's result, the same for the clinician, the nurse and every consultant: read; "no record"
- * (the case has no result for it in that phase — it will never come back); ready (back, not yet reviewed); or
- * pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read results only).
+ * (the case has no result for it in that phase — it will never come back); not acquired (in-world: ordered, the
+ * patient not yet at the device the study is done at, docs/EMBODIED.md §8.7 — no result exists); ready (back, not yet
+ * reviewed); or pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read
+ * results only).
  */
 export function resultStatus(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number]): ResultStatus {
   if (o.read) return "read";
   if (resultFor(c, o.order.investigationId, o.order.phase) === null) return "no-record";
+  if (!o.acquired) return "not-acquired";
   return o.ready ? "ready" : "pending";
+}
+
+/** The device an order's study is done at, in words ("a CT scanner" / "CT扫描"): its `modality` capabilities. */
+export function modalityText(order: Pick<OrderRecord, "modality">, locale: string): string {
+  return joinList(locale, capabilityLabels(order.modality ?? [], locale));
 }
 
 /** Learner-facing status of an order (`resultStatus` in words). */
@@ -113,10 +122,12 @@ export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderSta
       return rt(locale, "label.read");
     case "no-record":
       return rt(locale, "label.noRecord");
+    case "not-acquired":
+      return rt(locale, "label.atModality", { modality: modalityText(o.order, locale) });
     case "ready":
       return rt(locale, "label.ready");
     case "pending":
-      return rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
+      return rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt ?? o.order.orderedAt, locale, "ceil") });
   }
 }
 
@@ -321,20 +332,53 @@ export function withoutDoses(text: string): string {
   return `${out}${nfkc.slice(at)}`.replace(/\s+/g, " ").trim();
 }
 
+/** A diluent's name: what a drug is made up in ("in 50 mL normal saline", "加生理盐水至50毫升"), never the item ordered. */
+const VEHICLE = /saline|sodium chloride|\bnacl\b|\bn\.?s\b|glucose|dextrose|\bwater\b|生理盐水|氯化钠|盐水|葡萄糖|注射用水/iu;
+
+/** Does an order's dose words hold a diluent's name — a drug made up in it (core `readOrder` spans)? */
+function madeUpInVehicle(query: string): boolean {
+  const nfkc = query.normalize("NFKC");
+  return readOrder(nfkc).spans.some(([start, end]) => VEHICLE.test(nfkc.slice(start, end)));
+}
+
+/**
+ * Is this item a diluent (saline, glucose, water) that the words name only inside a preparation ("insulin 50 units in
+ * 50 mL saline", "胰岛素50单位加生理盐水至50毫升", "0.9% NaCl 1000 mL with KCl 40 mmol")? Then it is how a drug is made
+ * up, never an order of its own.
+ */
+export function diluentOnlyInPreparation(c: Pick<CaseDefinition, "interventions">, id: string, words: string): boolean {
+  const iv = c.interventions.find((i) => i.id === id);
+  if (!iv || !(typeof iv.name === "string" ? [iv.name] : Object.values(iv.name)).some((name) => VEHICLE.test(name))) return false;
+  const nfkc = words.normalize("NFKC");
+  const spans = readOrder(nfkc).spans;
+  const hits = [...nfkc.matchAll(new RegExp(VEHICLE.source, "giu"))];
+  return hits.length > 0 && hits.every((m) => spans.some(([a, b]) => m.index >= a && m.index < b));
+}
+
 /**
  * A free-text intervention query (see `resolveIntervention`). The order's dose
  * is not the item's name: words that name no single item ("adrenaline 0.5 mg
  * i.m." matches as weakly as the bare drug) are tried again without their
  * doses (`withoutDoses`), and that reading is taken when it names one item —
  * one of the first reading's candidates. Words that name an item with its dose
- * ("0.9% sodium chloride 500 mL") resolve as written. The dose itself is still
- * read from the whole order and checked (`writtenOrder`, docs/PROTOCOL.md §3.2).
+ * ("0.9% sodium chloride 500 mL") resolve as written — but a drug made up in a
+ * diluent ("insulin 50 units in 50 mL normal saline at 5.5 mL/h") is the drug,
+ * not the diluent: the reading without the preparation is taken when it names
+ * one item. The dose itself is still read from the order and checked
+ * (`writtenOrder`, docs/PROTOCOL.md §3.2).
  */
 function interventionQuery(c: CaseDefinition, query: string, locale: string): Resolution {
   const r = interventionWords(c, query, locale);
-  if (r.kind !== "none" && r.kind !== "ambiguous") return r;
   const words = withoutDoses(query);
-  if (!words || words === query.normalize("NFKC").replace(/\s+/g, " ").trim()) return r;
+  const changed = !!words && words !== query.normalize("NFKC").replace(/\s+/g, " ").trim();
+  if (r.kind === "id" && changed && madeUpInVehicle(query)) {
+    const drug = interventionWords(c, words, locale);
+    if (drug.kind === "id") return drug;
+    // the diluent a drug is made up in is never the item ordered ("胰岛素50单位加生理盐水至50毫升": insulin — which one?)
+    if (diluentOnlyInPreparation(c, r.id, query)) return drug;
+  }
+  if (r.kind !== "none" && r.kind !== "ambiguous") return r;
+  if (!changed) return r;
   const bare = interventionWords(c, words, locale);
   return bare.kind === "id" && (r.kind === "none" || r.ids.includes(bare.id)) ? bare : r;
 }

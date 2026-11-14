@@ -1,15 +1,17 @@
 /**
  * `clinicalcraft bench` — the embodied agent benchmark (docs/EMBODIED.md §13):
  *
- *   bench list [--suite embodied-v1] [--json]
+ *   bench list [--suite embodied-v1] [--split dev|test|all] [--json]
  *   bench run --suite embodied-v1 --agent reference|scripted-llm|llm [--provider p --model m --live --max-tokens N --max-usd X]
- *             [--seeds 1-5] [--scenario ids] [--category cats] [--out dir] [--traces] [--require pct]
+ *             [--seeds 1-5] [--scenario ids] [--category cats] [--split dev|test|all] [--out dir] [--traces] [--require pct]
  *   bench demo --case stemi-inferior-rv [--lang zh-CN|en] [--out dir]
  *   bench grounding [--suite grounding-v1] [--split dev|test|all] [--track …] [--case …] [--locale …] [--tag …] [--out dir] [--compare report.json]
  *
  * Runs use the built-in content only (reproducible). `reference` and
- * `scripted-llm` validate the infrastructure and must score 100 % (the
- * default `--require`); `llm` calls a real model: opt-in with `--live`, a
+ * `scripted-llm` are controls: they validate the infrastructure, are never
+ * a model's result, and must score 100 % (the default `--require`; the
+ * scripted control does not run held-out `test` scenarios — they carry no
+ * plan); `llm` calls a real model: opt-in with `--live`, a
  * spending cap (`--max-tokens`; `--max-usd` only with a catalogue price), a
  * configured key, never in CI. Any accepted action that violated the spatial
  * policy or the approval gate fails the run whatever the agent.
@@ -23,6 +25,7 @@ import {
   bm,
   Budget,
   BENCH_CATEGORIES,
+  BENCH_SPLITS,
   createLlmAgent,
   createReferenceAgent,
   createScriptedAgent,
@@ -94,11 +97,19 @@ async function suiteOrFail(ctx: CliContext, args: ParsedArgs): Promise<{ suite: 
   return { suite, scenarios: loaded.scenarios };
 }
 
+/** The scenarios of a `--split` (`dev`, `test`: held out, `all` — the default). */
+function bySplit(ctx: CliContext, args: ParsedArgs, scenarios: readonly BenchScenario[]): BenchScenario[] {
+  const split = flagString(args, "split") ?? "all";
+  if (split !== "all" && !(BENCH_SPLITS as readonly string[]).includes(split)) throw new UsageError(ctx.t("argv.choice", { flag: "--split", value: split, choices: [...BENCH_SPLITS, "all"].join(" | ") }));
+  return split === "all" ? [...scenarios] : scenarios.filter((s) => s.split === split);
+}
+
 /** `bench list` */
 export async function benchList(ctx: CliContext, args: ParsedArgs): Promise<number> {
-  const { suite, scenarios } = await suiteOrFail(ctx, args);
+  const { suite, scenarios: all } = await suiteOrFail(ctx, args);
+  const scenarios = bySplit(ctx, args, all);
   if (flagBool(args, "json")) {
-    ctx.print(JSON.stringify(scenarios.map((s) => ({ id: s.id, category: s.category, caseId: s.caseId, facilityId: s.facilityId ?? null, locale: s.locale, title: s.title })), null, 2));
+    ctx.print(JSON.stringify(scenarios.map((s) => ({ id: s.id, category: s.category, caseId: s.caseId, facilityId: s.facilityId ?? null, locale: s.locale, split: s.split, title: s.title })), null, 2));
     return EXIT.ok;
   }
   ctx.print(ctx.out.bold(bm(ctx.locale, "cli.list.header", { suite, n: scenarios.length })));
@@ -107,7 +118,7 @@ export async function benchList(ctx: CliContext, args: ParsedArgs): Promise<numb
     if (!own.length) continue;
     ctx.print("");
     ctx.print(ctx.out.cyan(bm(ctx.locale, `category.${c}` as BenchMessageKey)));
-    for (const s of own) ctx.print(`  ${s.id.padEnd(46)} ${ctx.out.dim(`${s.caseId} · ${s.locale}`)}  ${t(s.title, ctx.locale)}`);
+    for (const s of own) ctx.print(`  ${s.id.padEnd(46)} ${ctx.out.dim(`${s.caseId} · ${s.locale}${s.split === "test" ? ` · ${bm(ctx.locale, "report.split.test")}` : ""}`)}  ${t(s.title, ctx.locale)}`);
   }
   return EXIT.ok;
 }
@@ -159,7 +170,7 @@ export async function benchRun(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const seeds = parseSeeds(seedsText);
   if (!seeds) throw new UsageError(bm(L, "cli.badSeeds", { value: seedsText }));
   const { suite, scenarios } = await suiteOrFail(ctx, args);
-  const picked = selectScenarios(ctx, args, scenarios);
+  const picked = selectScenarios(ctx, args, bySplit(ctx, args, scenarios));
   let agent: BenchAgent;
   let budget: Budget | undefined;
   if (kind === "llm") ({ agent, budget } = await liveAgent(ctx, args));
@@ -194,13 +205,21 @@ export async function benchRun(ctx: CliContext, args: ParsedArgs): Promise<numbe
   await writeFile(mdPath, reportMarkdown(report, L), "utf8");
   const m = report.metrics.overall;
   const verdict = reportPasses(report, required);
-  const rate = `${verdict.successPercent.toFixed(1)} %`;
-  ctx.print(bm(L, "cli.run.summary", { agent: agent.kind, success: m.taskSuccess.k, runs: m.taskSuccess.n, rate, unsafe: `${m.safetyNotPassed.k}/${m.safetyNotPassed.n}`, spatial: `${m.spatialViolations.k}/${m.spatialViolations.n}`, unauthorised: `${m.unauthorisedAcceptance.k}/${m.unauthorisedAcceptance.n}` }));
+  // every run skipped (the scripted control on the held-out split): no rate is measured, so none is below what is required
+  const none = m.taskSuccess.n === 0;
+  const rate = none ? bm(L, "cli.run.noRuns") : `${verdict.successPercent.toFixed(1)} %`;
+  const role = bm(L, report.agent.role === "model" ? "report.agentRole.model" : "report.agentRole.control");
+  ctx.print(bm(L, "cli.run.summary", { agent: agent.kind, role, success: m.taskSuccess.k, runs: m.taskSuccess.n, rate, unsafe: `${m.safetyNotPassed.k}/${m.safetyNotPassed.n}`, spatial: `${m.spatialViolations.k}/${m.spatialViolations.n}`, unauthorised: `${m.unauthorisedAcceptance.k}/${m.unauthorisedAcceptance.n}` }));
+  const cov = report.coverage;
+  if (cov.mostFrequent) {
+    const skipped = report.runs.filter((r) => r.status === "skipped").length;
+    ctx.print(bm(L, "cli.run.coverage", { scenarios: cov.scenarios, cases: cov.cases, caseId: cov.mostFrequent.caseId, top: cov.mostFrequent.scenarios, share: (cov.mostFrequent.share * 100).toFixed(1), dev: cov.splits.dev, test: cov.splits.test, skipped }));
+  }
   ctx.print(bm(L, "cli.run.written", { md: ctx.show(mdPath), json: ctx.show(jsonPath) }));
   if (traces) ctx.print(bm(L, "cli.run.traces", { dir: ctx.show(join(outDir, "traces")) }));
   if (verdict.violations) ctx.printErr(ctx.err.red(bm(L, "cli.run.violations")));
-  if (required !== null && verdict.successPercent + 1e-9 < required) ctx.printErr(ctx.err.red(bm(L, "cli.run.below", { rate, required: `${required} %` })));
-  return verdict.ok ? EXIT.ok : EXIT.error;
+  if (!none && required !== null && verdict.successPercent + 1e-9 < required) ctx.printErr(ctx.err.red(bm(L, "cli.run.below", { rate, required: `${required} %` })));
+  return verdict.ok || (none && !verdict.violations) ? EXIT.ok : EXIT.error;
 }
 
 /** `bench demo` */

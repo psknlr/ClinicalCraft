@@ -938,7 +938,8 @@
               "enum": [
                 "button",
                 "free-text",
-                "agent"
+                "agent",
+                "team"
               ]
             },
             "by": {
@@ -995,6 +996,55 @@
             },
             "at": {
               "type": "string"
+            },
+            "modality": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "minItems": 1,
+              "maxItems": 8
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "acquire"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "collector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "where": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
             },
             "by": {
               "type": "string",
@@ -1145,6 +1195,10 @@
                   "type": "object",
                   "properties": {
                     "amount": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "upTo": {
                       "type": "number",
                       "exclusiveMinimum": 0
                     },
@@ -3475,6 +3529,30 @@
               {
                 "type": "object",
                 "properties": {
+                  "studyStages": {
+                    "type": "object",
+                    "properties": {
+                      "investigation": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "phase": {
+                        "$ref": "#/definitions/Id"
+                      }
+                    },
+                    "required": [
+                      "investigation"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "studyStages"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
                   "world": {
                     "anyOf": [
                       {
@@ -3700,6 +3778,32 @@
                             "type": "string",
                             "minLength": 1,
                             "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "patientTransit"
+                          },
+                          "monitored": {
+                            "type": "boolean"
+                          },
+                          "roles": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 160
+                            },
+                            "minItems": 1,
+                            "maxItems": 8
                           }
                         },
                         "required": [
@@ -4397,6 +4501,14 @@
             "plan"
           ],
           "additionalProperties": false
+        },
+        "split": {
+          "type": "string",
+          "enum": [
+            "dev",
+            "test"
+          ],
+          "default": "dev"
         },
         "tags": {
           "type": "array",

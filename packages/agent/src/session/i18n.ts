@@ -14,6 +14,7 @@ import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
 import { SAFETY_EN, SAFETY_ZH } from "./i18n-safety.js";
+import { IMAGING_EN, IMAGING_ZH } from "./i18n-imaging.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -393,6 +394,7 @@ const EN = {
   "action.rejected": "Not possible: {message}",
   "action.cancelled": "Action cancelled.",
   "action.flagOwned": "The flag \"{flag}\" is set by the simulation (treatments and scenario events), not directly.",
+  "action.relayOwned": "What a colleague passes on is recorded when they pass it on, not entered by hand: ask the patient, someone with them or a colleague yourself.",
   "action.hookInputInvalid": "A PreToolUse hook changed the {tool} input to something invalid: {errors}",
   "action.hookInputUnresolved": "A PreToolUse hook changed the {tool} input, but it does not name one case item: {detail}",
   "submission.cancelled": "Cancelled before it started ({reason}).",
@@ -496,6 +498,7 @@ const EN = {
   ...COUNT_EN,
   ...STUDIES_EN,
   ...SAFETY_EN,
+  ...IMAGING_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -846,6 +849,7 @@ const ZH: Record<RuntimeKey, string> = {
   "action.rejected": "无法执行：{message}",
   "action.cancelled": "操作已取消。",
   "action.flagOwned": "标记“{flag}”由模拟（处置与情景事件）设置，不能直接设置。",
+  "action.relayOwned": "同事转达的信息在他们转达时才记录，不能手工录入：请自己问患者、陪同者或同事。",
   "action.hookInputInvalid": "PreToolUse 钩子把 {tool} 的输入改成了无效内容：{errors}",
   "action.hookInputUnresolved": "PreToolUse 钩子修改了 {tool} 的输入，但它不对应唯一的病例项目：{detail}",
   "submission.cancelled": "尚未开始即已取消（{reason}）。",
@@ -944,6 +948,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...COUNT_ZH,
   ...STUDIES_ZH,
   ...SAFETY_ZH,
+  ...IMAGING_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

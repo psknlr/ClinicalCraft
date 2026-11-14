@@ -84,6 +84,12 @@
   "scripted": {
     "plan": [
       {
+        "tool": "ask_whereabouts",
+        "args": {
+          "target": "eq:resus1-ecg"
+        }
+      },
+      {
         "tool": "navigate_to",
         "args": {
           "goal": {

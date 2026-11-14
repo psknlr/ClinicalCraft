@@ -197,8 +197,15 @@ export interface WorldOptions {
   settings: () => WorldSettings;
   saved?: WorldSave | null;
   callbacks: WorldCallbacks;
-  /** Live vitals for a patient slot (drawn on monitor screens linked to the slot). */
+  /** Live vitals of the patient of a slot (drawn on the live screens — `vitals` / `ecg` — that show that slot's patient). */
   vitals?: (slotId: string) => VitalsSnapshot | null;
+  /**
+   * Which patient slot the live screen of a placement shows now, asked each time it is drawn (EMBODIED §6, THE
+   * screen rule — the world model's `screenPatient`: what the device is connected to where it stands now, a cart
+   * wheeled from another bed included): a slot id, or null — nobody ("no patient"). `undefined` (or no function):
+   * no world model to ask (clinical mode, the harness), and nothing moves — the bed space it was built beside.
+   */
+  screenSlot?: (placementId: string) => string | null | undefined;
   /**
    * Equipment GLB/glTF models (EMBODIED §11, docs/ASSETS.md): `baseUrl` of relative model URIs
    * (default "/local-assets/"), `dracoPath` to load DRACO-compressed models; `false` draws voxel parts only.

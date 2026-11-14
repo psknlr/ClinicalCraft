@@ -14,13 +14,13 @@
  * side), and its click shows the way. "Sent" is said once the engine has the
  * order, never for a refused one.
  */
-import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
+import { awaitingAcquisition, matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type OrderRecord, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import type { Verdict } from "../../app/embodied-link.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
-import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
+import { atModality, capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
 import { carryRow } from "./hands.js";
 import { treatRow } from "./treat-row.js";
 import type { ReportBack } from "./report.js";
@@ -67,8 +67,14 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
     submission = app.act({ type: "order", investigationId: inv.id, ...(placementId ? { at: placementId } : {}) });
     const simulatedWait = game.caseDef.clock.mode === "simulated" && inv.turnaroundMinutes > 0;
     if (simulatedWait) {
-      // "sent, result in about N min" once the engine has the order — never for one that was refused
-      if (submission) whenOrdered(game, key, submission, () => app.toast(ct(inv.name), tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }), "info", `order-${inv.id}`));
+      // "sent, result in about N min" once the engine has the order — never for one that was refused; an in-world
+      // study done at a device: "ordered — the patient must go to …" (its result's clock starts there)
+      if (submission)
+        whenOrdered(game, key, submission, () => {
+          const placed = (game.session.store.snapshot?.state ?? game.session.session.state).orders.find((o) => o.key === key);
+          const notDone = atModality(placed);
+          app.toast(ct(inv.name), notDone !== null ? tr("orders.atModalityName", { name: ct(inv.name), modality: notDone }) : tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }), "info", `order-${inv.id}`);
+        });
       return;
     }
     // Risky orders wait for the approval dialog; the report opens from the evidence grid afterwards.
@@ -99,13 +105,25 @@ export function refusedCandidate(game: Game, inv: Investigation, v: Verdict): HT
   );
 }
 
-/** Embodied: the world's verdict on ordering — or, once ordered in this phase, reading — a test from here. */
+/**
+ * Embodied: the world's verdict on ordering — or, once ordered in this phase, reading — a test from here. A study
+ * ordered and waiting for the patient at its device (EMBODIED §8.7) has nothing to be done here: its button says so
+ * and shows the way there (`testButton`).
+ */
 export function testVerdict(game: Game, inv: Investigation): Verdict | null {
   const emb = game.embodied;
   if (!emb) return null;
   const s = game.session.store.snapshot?.state ?? game.session.session.state;
-  const ordered = s.orders.some((o) => o.key === `${inv.id}@${s.phase}`);
-  return emb.verdict(ordered ? { type: "read", investigationId: inv.id, phase: s.phase } : { type: "order", investigationId: inv.id });
+  const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
+  if (order && awaitingAcquisition(order)) return { kind: "ok" };
+  return emb.verdict(order ? { type: "read", investigationId: inv.id, phase: s.phase } : { type: "order", investigationId: inv.id });
+}
+
+/** A study ordered and not done yet: the world's words and the way to take the patient to its device (EMBODIED §8.7). */
+function showAcquisitionWay(app: App, game: Game, order: OrderRecord, back: ReportBack): void {
+  const v = game.embodied?.verdict({ type: "acquire", investigationId: order.investigationId, phase: order.phase });
+  if (v?.kind === "refused") game.embodied!.explain(v);
+  else app.open("report", { investigationId: order.investigationId, phase: order.phase, back });
 }
 
 /** The order / open button of a test (its label says what a click does). */
@@ -123,15 +141,27 @@ export function testButton(app: App, game: Game, inv: Investigation, placementId
   if (record?.kind === "not-yet")
     return h("button", { type: "button", class: ["candidate", "no-record", "not-yet"], disabled: true, dataset: { investigation: inv.id, record: "not-yet" } }, h("span", null, tr("orders.notYet", { name })));
   // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
-  // "Open" only once the test has been ordered.
-  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
+  // "Open" only once the test has been ordered; ordered and not done yet (in-world: the patient must go to the
+  // device) — the way there.
+  const notDone = atModality(order);
+  const label =
+    notDone !== null
+      ? tr("orders.atModalityName", { name, modality: notDone })
+      : order && left > 0
+        ? tr("orders.pending", { name, min: left })
+        : !hasRecord
+          ? tr("orders.noRecord", { name })
+          : order
+            ? tr("orders.open", { name })
+            : tr("orders.order", { name });
   return h(
     "button",
     {
       type: "button",
       class: ["candidate", !hasRecord ? "no-record" : ""],
-      dataset: { investigation: inv.id, ...(record ? { record: record.kind } : {}) },
+      dataset: { investigation: inv.id, ...(record ? { record: record.kind } : {}), ...(notDone !== null ? { stage: "ordered" } : {}) },
       onclick: () => {
+        if (notDone !== null && order) return showAcquisitionWay(app, game, order, back);
         const before = game.session.store.snapshot?.state ?? game.session.session.state;
         for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");
         orderAndOpen(app, game, inv, placementId, back);

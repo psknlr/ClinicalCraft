@@ -511,6 +511,13 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(held.issues.map((i) => i.message)).toEqual(expect.arrayContaining([expect.stringMatching(/a body is not carried in a hand/)]));
   });
 
+  it("keeps only handheld items in custody (a receipt at every hand-over, audit 2026-11-12 P2-12)", () => {
+    const fixed = withType({ custody: true });
+    expect(fixed.issues.map((i) => [i.path.slice(fixed.prefix.length + 1), i.severity, i.message])).toEqual([["custody", "warning", expect.stringMatching(/not handheld/)]]);
+    const carried = withType({ custody: true, portable: "handheld", solid: false, footprint: { w: 0.14, d: 0.04, h: 0.04 } });
+    expect(carried.issues.filter((i) => i.path.endsWith(".custody") || i.path.endsWith(".portable"))).toEqual([]);
+  });
+
   it("the built-in catalogs' behaviours and portable flags are consistent", () => {
     const content = new URL("../../../content/", import.meta.url);
     const read = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, content), "utf8"));
@@ -531,7 +538,14 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(monitor.behavior!.operations.attach.clinical).toEqual({ tool: "intervene", select: "monitoring" });
     expect(Object.keys(monitor.behavior!.operations)).toEqual(["attach", "read", "cycle_nibp"]);
     for (const id of ["defibrillator", "crash-cart", "pocus-cart", "ultrasound-machine", "glucometer-station", "oxygen-cylinder"]) expect(equipment.get(id)?.portable).toBe("cart");
-    // nothing wall-mounted or fixed became portable
-    for (const e of equipment.values()) if (e.portable) expect(e.solid && !e.tags.includes("wall")).toBe(true);
+    // nothing wall-mounted or fixed became a cart
+    for (const e of equipment.values()) if (e.portable === "cart") expect(e.solid && !e.tags.includes("wall")).toBe(true);
+    // the handheld items are carried by hand and kept in custody (audit 2026-11-12 P2-12): no collider, a receipt at each hand-over
+    const handheld = [...equipment.values()].filter((e) => e.portable === "handheld");
+    expect(handheld.map((e) => [e.id, e.solid, e.custody])).toEqual([
+      ["specimen-tube", false, true],
+      ["medication-box", false, true],
+    ]);
+    expect(equipment.get("specimen-tube")!.behavior!.operations.collect).toMatchObject({ from: ["empty"], to: "collected", requires: [{ state: "held" }, { handsClean: true }, { patientWithin: 1.5 }] });
   });
 });

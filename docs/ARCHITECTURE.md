@@ -173,9 +173,11 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     `AssessmentReport.safety.passed` is false, the score unchanged; a
     content lint warns while a high-risk intervention with a
     `contraindicatedWhen` leaves it unset), `interventions[].doseSpec`
-    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute}` — the preset dose
-    an order's stated dose is compared with; a range spans the doses the
-    case's cited guidance allows) and `errorRecovery`
+    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute, maintenance?,
+    bolus?}` — the preset dose an order's stated dose is compared with; a
+    range spans the doses the case's cited guidance allows; `maintenance` is
+    the infusion's rate beside a bolus, `bolus` the part given first of a dose
+    given in parts, each `{amount, upTo?, unit}`) and `errorRecovery`
     (`{interventions: id[], rationale}` — the interventions the reference
     `solution` deliberately gives while contraindicated, to teach error
     recognition and recovery; `verifyCase` accepts those and no others, and
@@ -303,7 +305,8 @@ availableDecisions(c, s): { decision: Decision; unlocked: boolean; decided: bool
 presentedOptions(c, decision): Option[]                 // options in presentation order: a deterministic shuffle seeded by case + decision id (every front-end; ids unchanged)
 resultFor(c, investigationId, phase): Result | null     // null = no record in that phase
 resultKey(investigationId, phase): string               // `${id}@${phase}`
-orderStatus(c, s): { order: OrderRecord; ready: boolean; read: boolean }[]
+orderStatus(c, s): { order: OrderRecord; acquired: boolean; ready: boolean; read: boolean }[]   // acquired: false while an in-world study waits for the patient at its device (PROTOCOL §3.3)
+awaitingAcquisition(order): boolean                     // ordered with a `modality`, not yet acquired: no result exists
 vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute); only `shownVitals` (§3.2)
 shownVitals(c, s, minute?): Set<VitalKey>; alarmingVitals(c, s, minute?): Set<VitalKey>   // what the bedside shows / may alarm on at that minute (§3.2)
 monitorAttached(c, s, minute?): boolean; monitorAttachedAt(c, s): number | null   // the bedside monitor (`physiology.monitor`, §3.2); 0 = from the start
@@ -346,14 +349,17 @@ ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behin
 
 // doses (PROTOCOL §3.2; engine/dose.ts, engine/dose-read.ts)
 readOrder(text): OrderReading                           // every dose an order states (figures, Chinese numerals, English words; a volume through a
-                                                        // stated strength; a preparation not the dose), its route, and the first dose it cannot read
-                                                        // (`unclear`: unreadable | range | no-unit)
-parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, unit} and/or {route}
-checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: given (the dose read) | query (reason: unreadable,
-                                                        // range, no-unit, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
-compareDose(ordered, preset: DoseSpec, weightKg?): { equivalent: boolean; ratio: number | null; conflicts: ("amount" | "route" | "unit")[] }
-doseErrorSeverity(ratio, conflicts, intervention): "warning" | "critical"   // critical: ratio ≥ 10 or ≤ 0.1 (TENFOLD) for any medicine; for a critical
-                                                        // or high-risk intervention also ratio ≥ 2 (TWOFOLD) or another route
+                                                        // stated strength; a preparation not the dose; a cap `max`, a time `over`), its route, and the
+                                                        // doses it cannot read (`unclears`, the first `unclear`: unreadable | range | no-unit | unit | count)
+parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, upTo?, unit} and/or {route}
+checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: each dose against its part (`maintenance`, `bolus`):
+                                                        // given (the dose read) | query (reason: unreadable, range, no-unit, unit, count, several,
+                                                        // partial, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
+compareDose(ordered, preset, weightKg?): { equivalent: boolean; ratio: number | null; far: number | null; conflicts: ("amount" | "route" | "unit")[] }
+doseErrorSeverity(ratio, conflicts, intervention, far?): "warning" | "critical"   // critical: ten times or a tenth of any dose the preset allows
+                                                        // (TENFOLD, `far`); for a critical, high-risk or high-alert one also ratio ≥ 2 (TWOFOLD) or another route
+isHighAlert(intervention): boolean                      // ISMP by the name: insulin, potassium, anticoagulants, opioids, thrombolytics; IV adrenaline,
+                                                        // noradrenaline, magnesium, sedatives… (engine/high-alert.ts; severity and the content lint)
 doseMentions(text), doseRoute(text), formatDose(dose), WEIGHT_BASED_TOLERANCE
 safetyPassed({criticalFailures, doseErrors, verdict?}): boolean   // AssessmentReport.safety.passed — asked without `verdict` to leave a hidden gate out
 
@@ -441,7 +447,9 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by
   `clock.actionCosts[type]` (order/read/ask/examine/intervene/answer), results
-  are ready at `orderedAt + turnaroundMinutes`; `advance-time` moves the
+  are ready at the acquisition + `turnaroundMinutes` (the acquisition is the
+  order's own unless an in-world order waits for the patient at a device —
+  PROTOCOL §3.3); `advance-time` moves the
   clock. After every clock change: fire due scenario events (by `atMinute` or
   `when`), record `trendStops` for trends whose `until` became true, emit
   `result.ready` for results whose readiness crossed, apply automatic phase
@@ -457,12 +465,20 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   revealed.
 * `examine` — same pattern for `examined`.
 * `order` — key `${id}@${phase}`; duplicates emit `order.duplicate` (no state
-  change). Records `readyAt`.
+  change). Records `by`, `seq` and the acquisition implied at the order with
+  `readyAt` — or, with `modality` (in-world: a study done on the patient at a
+  device), no acquisition and no `readyAt` yet (PROTOCOL §3.3).
+* `acquire` — the acquisition of an order placed with `modality` (the session
+  records it with the patient on the device): `acquired {at, seq, collector?,
+  where?}` and `readyAt`; event `order.acquired`. Rejected `not-ordered`
+  without the order; already acquired (or implied at the order): unchanged.
 * `read` — phase defaults to current. Rejected `not-ordered` if no order with
-  that key, `not-ready` if turnaround not elapsed, `no-record` if
+  that key, `not-ready` if not acquired or the turnaround has not elapsed, `no-record` if
   `resultFor` is null (still counts as "read" for the V4 "no record" notice?
   **No**: a missing result cannot be read; the UI shows "no record" from
-  `resultFor` before ordering). Adds key to `seen`.
+  `resultFor` before ordering). Adds key to `seen`; the first read is the
+  order's review (`reviewed`), and the next management act after it its
+  resulting action (`next`, `RESULTING_ACTS`).
 * `set-phase` — unknown phase → `unknown-id`; `learnerSwitchable: false` →
   `phase-locked` until the phase's `enterWhen` holds (the case has reached it:
   a learner who looked back at an earlier phase can return).
@@ -475,9 +491,10 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
   is recorded. An order as written (`ordered: {text, dose?}`) is checked
   against the intervention's preset (`doseSpec`) by `checkOrder`, which reads
-  the words itself (`readOrder`; the client's `dose` only where the words state
-  it): a dose it cannot read or compare (a fraction, "0。5 mg", a range, no
-  unit, a volume without its strength, a rate for a single dose) →
+  the words itself (`readOrder`; the client's `dose` only for a route the
+  words name): a dose it cannot read or compare (a fraction, "0。5 mg", a range
+  across the preset's ends, two doses that disagree, a part of a dose given in
+  parts, no unit, a volume without its strength, a rate for a single dose) →
   `dose-unclear`, nothing recorded; a conflicting amount or route is accepted
   but **not given**: a `DoseErrorRecord` is appended to `doseErrors` and
   `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
@@ -978,8 +995,12 @@ spoken by the patient — those come from engine actions.
   (the default) the panels ask the world instead of deciding by rules of
   their own: the monitor panel and the HUD vitals strip show the live screen
   only while the world's vitals check holds through that monitor, rows show
-  the world's verdict before a click ("Go there" / the act to do first), and
-  lab tests are ordered from the patient's Tests tab (EMBODIED §2.1).
+  the world's verdict before a click ("Go there" / the act to do first),
+  lab tests are ordered from the patient's Tests tab, a live screen drawn in
+  the world shows the patient the world says its device is connected to now
+  (`WorldRuntime.screenPatient`: a cart wheeled from another bed included),
+  and the place beside the map and the badge are one lookup of the avatar's
+  position (the world's `regionLookup`) (EMBODIED §2.1, §6).
 * **cli** — `clinicalcraft` REPL (plain text → current interlocutor,
   `@nurse …` addressing, `/commands`; `--embodied` adds `/look`, `/go`,
   `/use`, `/transport`…), `exec`/`-p` headless with

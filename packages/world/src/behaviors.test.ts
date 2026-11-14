@@ -32,7 +32,8 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
     expect(doors.length).toBeGreaterThan(5);
     for (const d of doors) expect(ops(w, d.id)).toEqual(["open", "close", "lock", "unlock"]); // a door never offers order
     for (const e of w.runtime.entities().filter((x) => x.kind === "equipment")) {
-      expect(ops(w, e.id).includes("pick_up"), e.id).toBe(false); // no handheld items in the built-in catalogs
+      // the built-in handheld items (the ED desk's specimen tube and medication box, audit P2-12) — nothing else
+      expect(ops(w, e.id).includes("pick_up"), e.id).toBe(e.portable === "handheld");
       expect(ops(w, e.id).includes("move_to"), e.id).toBe(e.portable === "cart");
     }
     const cabinet = w.runtime.entities().find((e) => e.type === "cabinet")!;

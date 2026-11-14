@@ -1860,6 +1860,8 @@
     {"id": "ed-case-board", "type": "evidence-board", "x": 16.525, "z": -16, "rot": 90, "room": "ed-station", "label": {"zh-CN": "急诊病例讨论板", "en": "ED Case Board"}},
     {"id": "ed-tube-station", "type": "pneumatic-tube-station", "x": 16.425, "z": -9.6, "rot": 90, "room": "ed-station", "label": {"zh-CN": "气动物流站 · 送检验科", "en": "Pneumatic Tube · to Lab"}},
     {"id": "ed-station-sink", "type": "sink", "x": 16.5, "z": -6, "rot": 90, "room": "ed-station"},
+    {"id": "ed-specimen-tube", "type": "specimen-tube", "x": 20.2, "z": -7.9, "y": 0.76, "rot": 0, "room": "ed-station"},
+    {"id": "ed-medication-box", "type": "medication-box", "x": 21.05, "z": -7.9, "y": 0.76, "rot": 0, "room": "ed-station"},
     {"id": "resus1-bed", "type": "hospital-bed", "x": 31, "z": -17.325, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救床 1", "en": "Resus Bed 1"}},
     {"id": "resus1-monitor", "type": "patient-monitor", "x": 29.65, "z": -19.475, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救监护仪 1", "en": "Resus Monitor 1"}},
     {"id": "resus1-oxygen", "type": "oxygen-outlet", "x": 31.25, "z": -19.7, "rot": 0, "room": "ed-resus"},
@@ -2122,6 +2124,7 @@
     {
       "id": "ed-nurse",
       "role": "nurse",
+      "position": "ward-nurse",
       "name": {
         "zh-CN": "林晓",
         "en": "Lin Xiao"

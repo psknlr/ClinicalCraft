@@ -4,7 +4,7 @@
  */
 import type { CaseDefinition, Objective } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
-import { evaluate, isOrderReady } from "./conditions.js";
+import { awaitingAcquisition, evaluate, isOrderReady } from "./conditions.js";
 import { createRng, seedFrom } from "./random.js";
 import type { DecisionAvailability, ObjectiveProgress, OrderStatus } from "./types.js";
 
@@ -51,9 +51,12 @@ export function availableDecisions(c: CaseDefinition, s: SessionState): Decision
   }));
 }
 
-/** Orders in placement order with readiness (turnaround elapsed) and read status. */
+/**
+ * Orders in placement order with their acquisition (an in-world study done at a device waits for the patient there),
+ * readiness (acquired, turnaround elapsed) and read status.
+ */
 export function orderStatus(c: CaseDefinition, s: SessionState): OrderStatus[] {
-  return s.orders.map((order) => ({ order, ready: isOrderReady(c, s, order), read: s.seen.includes(order.key) }));
+  return s.orders.map((order) => ({ order, acquired: !awaitingAcquisition(order), ready: isOrderReady(c, s, order), read: s.seen.includes(order.key) }));
 }
 
 /**

@@ -13,7 +13,10 @@
  *   the run the acting body is read from the trace (the `clinical_action`
  *   span whose `clinicalEventIds` holds the event's `ev-<seq>`). An accepted
  *   act whose acting body did not satisfy the requirement, or that no span
- *   attributes, is a violation. It must be 0.
+ *   attributes, is a violation. It must be 0. An acquisition the session
+ *   records itself (`order.acquired`: a study done on the patient at a
+ *   device, EMBODIED §8.7) is judged on the world as it was, not on a body:
+ *   the patient must have been on the device.
  * - **Authorisation audit.** Every accepted gated clinical act is re-checked
  *   with the permission ladder (`checkPermission`, the session's mode, scope
  *   and rules): `deny` → unauthorised; `ask` → authorised only by an approval
@@ -40,6 +43,8 @@ export interface SpatialAuditEntry {
   checks: Record<ActorId, { ok: boolean; reason?: string }>;
   /** The acting body according to the trace (null: no span attributes the event). */
   actor: ActorId | null;
+  /** An act the session records itself (an acquisition): the requirement checked on the world, not on a body. */
+  system?: { ok: boolean; reason?: string };
   violation: boolean;
 }
 
@@ -76,6 +81,8 @@ export function actionOfEvent(event: DomainEvent): ClinicalAction | null {
       return { type: "order", investigationId: event.investigationId };
     case "result.read":
       return { type: "read", investigationId: event.investigationId, phase: event.phase };
+    case "order.acquired":
+      return { type: "acquire", investigationId: event.investigationId, phase: event.phase };
     case "intervention.applied":
       return { type: "intervene", interventionId: event.interventionId };
     case "decision.answered":
@@ -100,6 +107,8 @@ function intentOf(action: ClinicalAction): ClinicalIntent | null {
       return { tool: "order_test", kind: "order", investigationId: action.investigationId, itemId: action.investigationId };
     case "read":
       return { tool: "read_result", kind: "read", investigationId: action.investigationId, itemId: action.investigationId };
+    case "acquire":
+      return { tool: "order_test", kind: "acquire", investigationId: action.investigationId, itemId: action.investigationId };
     case "intervene":
       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
     default:
@@ -217,6 +226,12 @@ export class Auditor {
     const s = this.session;
     const slot = s.facility ? assignPatientSlot(s.facility, s.caseDef) : null;
     const requirement = this.policy.requirementFor(intent, { caseDef: s.caseDef, slotId: slot?.id ?? null, locale: s.settings.locale });
+    if (intent.kind === "acquire") {
+      // the session's own record: the patient on the device as the world has them now, whoever stands where
+      const check = world.checkSpatial(PRIMARY_ACTOR, intent);
+      this.spatial.push({ ev, type: event.type, intent, requirement: requirement.kind, checks: {}, actor: null, system: check.ok ? { ok: true } : { ok: false, reason: check.reason }, violation: false });
+      return;
+    }
     const checks: SpatialAuditEntry["checks"] = {};
     if (requirement.kind !== "anywhere") {
       const caps = requiredCapabilities(requirement);
@@ -249,6 +264,7 @@ export class Auditor {
       for (const ev of span.refs.clinicalEventIds ?? []) if (!actorOf.has(ev)) actorOf.set(ev, span.actorId);
     }
     const spatial = this.spatial.map((entry) => {
+      if (entry.system) return { ...entry, violation: !entry.system.ok };
       if (entry.requirement === "anywhere") return { ...entry, actor: actorOf.get(entry.ev) ?? null, violation: false };
       const actor = actorOf.get(entry.ev) ?? null;
       const verdict = actor ? entry.checks[actor] : undefined;

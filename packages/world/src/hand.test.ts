@@ -121,6 +121,8 @@ async function take(w: TestWorld, id: string, actorId = A) {
 }
 
 async function stepTo(w: TestWorld, actorId: string, toId: string) {
+  // someone out of view is sought where one believes they are (audit 2026-11-12 P1-8): ask them where they are first
+  w.runtime.askWhereabouts(actorId, toId, toId);
   const r = await w.act({ actorId, operation: "navigate", goal: { kind: "entity", id: toId, range: 1 } });
   expect(r.status, r.message).toBe("completed");
 }

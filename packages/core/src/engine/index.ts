@@ -14,10 +14,10 @@ export { verifyCase } from "./verify.js";
 export * from "./procedure/index.js";
 
 // session lifecycle
-export { createSession, reduce, replay } from "./reducer.js";
+export { createSession, reduce, replay, RESULTING_ACTS } from "./reducer.js";
 
 // queries
-export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
+export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, awaitingAcquisition, activeHolds, type ConditionRef } from "./conditions.js";
 export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
 export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
@@ -88,6 +88,7 @@ export {
 // doses: an order's stated dose against an intervention's preset (docs/PROTOCOL.md §3.2)
 export { checkOrder, compareDose, doseErrorSeverity, formatDose, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
 export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS, type DoseMention, type OrderReading, type UnclearDose, type UnclearDoseReason } from "./dose-read.js";
+export { isHighAlert } from "./high-alert.js";
 
 // assessment
 export { assess, countCriticalAlarms, safetyPassed } from "./assessment.js";

@@ -10,7 +10,7 @@ import { compileFacility, FacilitySchema, RoomTemplateSchema, type FacilityDefin
 import { describe, expect, it } from "vitest";
 import { inCar, type ElevatorStop } from "./elevator.js";
 import { STAIRWELL_VIEW_RANGE, WorldLevels } from "./levels.js";
-import { regionAt, roomAt } from "./region.js";
+import { placeAt, roomAt } from "./region.js";
 import { FLIGHT_APPROACH, flightEnds, routeLegs } from "./route.js";
 
 const content = fileURLToPath(new URL("../../../content/", import.meta.url));
@@ -74,13 +74,13 @@ describe("regions per level", () => {
     // CT on the ground floor, the operating theatre above it
     expect(roomAt(th, -20, -6, "L0")?.id).toBe("ct");
     expect(roomAt(th, -20, -6, "L1")?.id).toBe("theatre");
-    expect(regionAt(th, -20, -6, "en", "L1").roomId).toBe("theatre");
+    expect(placeAt(th, -20, -6, "en", "L1").roomId).toBe("theatre");
     // without a level: the smallest room at the point on any level (the single-level behaviour)
     expect(roomAt(th, 5.8, 3.2)?.kind).toBe("elevator");
   });
   it("is unchanged for a single-level facility", () => {
     const r = gh.rooms[0];
-    expect(regionAt(gh, r.rect.x, r.rect.z, "en")).toEqual(regionAt(gh, r.rect.x, r.rect.z, "en", "L0"));
+    expect(placeAt(gh, r.rect.x, r.rect.z, "en")).toEqual(placeAt(gh, r.rect.x, r.rect.z, "en", "L0"));
   });
 });
 

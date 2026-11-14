@@ -13,6 +13,9 @@ export const ROLE_NAMES: Record<string, Pair> = {
   clinician: { "zh-CN": "医生", en: "Clinician" },
   nurse: { "zh-CN": "护士", en: "Nurse" },
   radiologist: { "zh-CN": "放射科医生", en: "Radiologist" },
+  radiographer: { "zh-CN": "放射技师", en: "Radiographer" },
+  endoscopist: { "zh-CN": "内镜医师", en: "Endoscopist" },
+  "interventional-cardiologist": { "zh-CN": "心血管介入医师", en: "Interventional cardiologist" },
   pathologist: { "zh-CN": "病理科医生", en: "Pathologist" },
   "lab-tech": { "zh-CN": "检验技师", en: "Lab technician" },
   attending: { "zh-CN": "上级医师", en: "Attending" },
@@ -115,6 +118,7 @@ export const OPERATION_NAMES: Record<string, Pair> = {
   put_down: { "zh-CN": "放下", en: "Put down" },
   equip: { "zh-CN": "佩戴", en: "Equip" },
   hand_over: { "zh-CN": "递给", en: "Hand over" },
+  confirm_receipt: { "zh-CN": "确认签收", en: "Confirm receipt" },
   transport_patient: { "zh-CN": "转运患者", en: "Transport the patient" },
   escort_patient: { "zh-CN": "请患者跟着走", en: "Ask the patient to walk with you" },
   release_patient: { "zh-CN": "请患者在此等候", en: "Ask the patient to wait here" },
@@ -205,6 +209,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.handOverWorn": { "zh-CN": "「{target}」正穿戴着，先脱下（放下）再递给别人。", en: '"{target}" is being worn: take it off (put it down) before handing it to someone.' },
   "pre.handOverTo": { "zh-CN": "「{target}」不是在场的人，东西只能递给人。", en: '"{target}" is not a person here: items are handed to people.' },
   "pre.handOverSelf": { "zh-CN": "「{target}」已经在你手里。", en: '"{target}" is already in your hands.' },
+  "pre.noReceipt": { "zh-CN": "「{target}」没有递给你、等你签收的交接记录。", en: 'No hand-over of "{target}" to you awaits your confirmation.' },
+  "pre.receiptConfirmed": { "zh-CN": "「{target}」的交接已于第 {at} 分钟签收。", en: 'The hand-over of "{target}" was already confirmed at minute {at}.' },
   "pre.recipientHandsFull": { "zh-CN": "{holder}两手都占着（最多拿 {max} 件）。", en: "{holder}'s hands are full (at most {max} items in hand)." },
   "pre.nearbyState": { "zh-CN": "{operation}需要附近的「{device}」处于{states}状态（现在是{state}）。", en: '{operation} needs the nearby "{device}" to be {states} (it is {state}).' },
   "pre.nearbyStateNone": { "zh-CN": "{operation}需要 {distance} 米内有一台「{device}」，附近没有。", en: '{operation} needs a "{device}" within {distance} m; there is none nearby.' },
@@ -239,6 +245,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.cannotWalk.unresponsive": { "zh-CN": "{patient}无法回应，不能跟你走。", en: "{patient} cannot respond and cannot walk with you." },
   "pre.trolleyOutOfService": { "zh-CN": "{trolley}已停用，不能用它转运{patient}：需要一张可用的推床或病床——先推一张来（或请护工带来），再转运。", en: "{trolley} is out of service, so {patient} cannot be taken on it: a usable trolley or bed is needed — bring one (or ask a porter for one) first." },
   "pre.stoppedEnRoute": { "zh-CN": "已在{place}停下，让{patient}就地安全躺下。", en: "Stopped in {place} and laid {patient} down safely where they were." },
+  "pre.noTravelMonitor": { "zh-CN": "{patient}床旁没有可随行的便携监护设备（如带监护的除颤仪）：先推一台到床旁，再带着它转运。", en: "No portable monitor at {patient}'s bedside to take along (a defibrillator with its monitor): wheel one to the bedside first, then take it with you." },
+  "pre.monitorUnusable": { "zh-CN": "{monitor}不能随{patient}转运：它须是在用的便携心电监护设备，就在床旁，且没有别人在用。", en: "{monitor} cannot go with {patient}: it must be a portable cardiac monitor in service, at the bedside, and not in use by someone else." },
   "pre.needsTrolley": { "zh-CN": "转运{patient}需要推床或病床，身边没有：先推一张来（或请护工带来），再转运。", en: "Taking {patient} anywhere needs a trolley or a bed, and none is at hand: bring one (or ask a porter for one) first." },
   "pre.cannotWalk.unwell": { "zh-CN": "{patient}情况不稳定，现在不宜走动。", en: "{patient} is too unwell to walk now." },
   "pre.cannotStand.lying": { "zh-CN": "{patient}现在需要卧床，不能站起来。", en: "{patient} has to stay lying down and cannot stand up." },
@@ -259,6 +267,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "ok.interrupted": { "zh-CN": "移动被中断，停在 {distance} 米处。", en: "Movement interrupted after {distance} m." },
   "ok.done": { "zh-CN": "已完成：{operation}（{target}）。", en: "Done: {operation} ({target})." },
   "ok.handedOver": { "zh-CN": "已把「{target}」递给{recipient}。", en: 'Handed "{target}" to {recipient}.' },
+  "ok.handedOverReceipt": { "zh-CN": "已把「{target}」递给{recipient}，交接已记录，待{recipient}签收。", en: 'Handed "{target}" to {recipient}: the hand-over is recorded, for {recipient} to confirm.' },
+  "ok.receiptConfirmed": { "zh-CN": "已签收「{target}」：{giver}于第 {at} 分钟递交。", en: 'Receipt confirmed: "{target}" from {giver}, handed over at minute {at}.' },
   "ok.searchFound": { "zh-CN": "仔细找了一遍伸手可及的地方，找到了：{found}。", en: "Searched everything within reach and found: {found}." },
   "ok.searchNothing": { "zh-CN": "仔细找了一遍伸手可及的地方，什么也没找到。", en: "Searched everything within reach: nothing there." },
   "ok.state": { "zh-CN": "已完成：{operation}（{target}），当前{state}。", en: "Done: {operation} ({target}); it is now {state}." },
@@ -267,6 +277,9 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "ok.screen": { "zh-CN": "「{target}」屏幕：{screen}", en: '"{target}" screen: {screen}' },
   "ok.moved": { "zh-CN": "已把「{target}」推到 {place}（{distance} 米）。", en: 'Moved "{target}" to {place} ({distance} m).' },
   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
+  "ok.receivedBy": { "zh-CN": "由{receiver}在那里接手{patient}。", en: "{receiver} took over {patient} there." },
+  "ok.monitorTravelled": { "zh-CN": "{monitor}随行监护。", en: "{monitor} went with them, monitoring." },
+  "ok.monitorReturned": { "zh-CN": "{monitor}随行监护；到达后旁边没有地方放，已推回原处。", en: "{monitor} went with them, monitoring; there was no room for it beside them on arrival, so it went back to where it is kept." },
   "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
   "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
   "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
@@ -338,7 +351,36 @@ export const WHEREABOUTS: Record<string, Pair> = {
   "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
   "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
   "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
+  // what an actor knows after looking, or asking (audit 2026-11-12 P1-8)
+  "whereabouts.told": { "zh-CN": "{who}说在{where}", en: "{who} said it is in {where}" },
+  "whereabouts.missing": { "zh-CN": "你去{where}找过，不在那里——下落不明", en: "not in {where} when you looked — whereabouts unknown" },
+  "nav.absent.last-seen": { "zh-CN": "{target}不在{where}（你上次在那里见到）。请在周围找找，或问问同事。", en: "{target} is not in {where}, where you last saw it. Look around, or ask a colleague." },
+  "nav.absent.told": { "zh-CN": "{target}不在{where}（{who}说在那里）。请在周围找找，或问问别的同事。", en: "{target} is not in {where}, where {who} said it was. Look around, or ask another colleague." },
+  "nav.absent.usual": { "zh-CN": "{target}不在{where}（通常放在那里）。请在周围找找，或问问同事。", en: "{target} is not in {where}, where it is usually kept. Look around, or ask a colleague." },
+  "nav.unknown": { "zh-CN": "你不知道{target}现在在哪里：你去{where}找过，不在那里。请在周围找找，或问问同事。", en: "You do not know where {target} is now: it was not in {where} when you looked. Look around, or ask a colleague." },
+  "pre.believedElsewhere": { "zh-CN": "「{target}」不在你身边：你以为它在{where}。", en: '"{target}" is not within your reach here: you believe it is in {where}.' },
+  "nav.inView": { "zh-CN": "{target}不在你以为的{where}；你在那里看到了它，就走了过去。", en: "{target} was not in {where}, where you expected it; you saw it from there and went to it." },
+  "ask.knows": { "zh-CN": "{who}：{target}在{where}。", en: "{who}: {target} is in {where}." },
+  "ask.doesNotKnow": { "zh-CN": "{who}不知道{target}现在在哪里（{what}）。", en: "{who} does not know where {target} is now ({what})." },
+  "ask.never": { "zh-CN": "没见过", en: "never seen it" },
+  "ask.theyLooked": { "zh-CN": "对方去{where}找过，不在那里", en: "not in {where} when they looked" },
+  "ask.nobody": { "zh-CN": "问过的同事都不知道{target}现在在哪里（{asked}）。", en: "Nobody you asked knows where {target} is now ({asked})." },
+  "ask.alreadyLooked": { "zh-CN": "{who}说在{where}——你已经去那里找过了。", en: "{who} says {where} — where you have already looked." },
 };
+
+/** How the patient travelled on a leg of a journey (`TravelMode`, audit 2026-11-12 P2-11). */
+export const TRAVEL_MODE_NAMES: Record<string, Pair> = {
+  walk: { "zh-CN": "步行", en: "on foot" },
+  bed: { "zh-CN": "推病床", en: "on their bed" },
+  trolley: { "zh-CN": "推平车", en: "on a trolley" },
+  wheelchair: { "zh-CN": "坐轮椅", en: "in a wheelchair" },
+};
+
+/** Localised travel mode ("推病床" / "on their bed"); unknown modes are returned as is. */
+export function travelModeName(mode: string, locale: string): string {
+  const m = TRAVEL_MODE_NAMES[mode];
+  return m ? t(m, locale) : mode;
+}
 
 /** One-line event summaries (WorldEventSummary). */
 export const EVENT_SUMMARIES: Record<string, Pair> = {
@@ -352,6 +394,8 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "entity.found": { "zh-CN": "{actor}找到了{target}", en: "{actor} found {target}" },
   "item.held": { "zh-CN": "{actor}拿起了{target}", en: "{actor} picked up {target}" },
   "item.dropped": { "zh-CN": "{actor}放下了{target}", en: "{actor} put down {target}" },
+  "item.handoff": { "zh-CN": "{actor}把{target}递交给{receiver}，待签收", en: "{actor} handed {target} to {receiver}, to be confirmed" },
+  "item.receipt": { "zh-CN": "{actor}签收了{giver}递交的{target}", en: "{actor} confirmed receipt of {target} from {giver}" },
   "door.changed": { "zh-CN": "{target}：{state}", en: "{target}: {state}" },
   "reservation.changed": { "zh-CN": "{target}由{actor}占用", en: "{target} reserved by {actor}" },
   "reservation.released": { "zh-CN": "{target}已释放", en: "{target} released" },
@@ -370,6 +414,8 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "self.discovered": { "zh-CN": "你注意到 {count} 个新对象", en: "You noticed {count} new thing(s)" },
   "self.held": { "zh-CN": "你拿起了{target}", en: "You picked up {target}" },
   "self.dropped": { "zh-CN": "你放下了{target}", en: "You put down {target}" },
+  "self.handoff": { "zh-CN": "你把{target}递交给{receiver}，待签收", en: "You handed {target} to {receiver}, to be confirmed" },
+  "self.receipt": { "zh-CN": "你签收了{giver}递交的{target}", en: "You confirmed receipt of {target} from {giver}" },
   "self.found": { "zh-CN": "你找到了{target}", en: "You found {target}" },
   "self.reserved": { "zh-CN": "{target}由你占用", en: "{target} reserved by you" },
   "self.hygiene": { "zh-CN": "你完成了手卫生", en: "You cleaned your hands" },
@@ -382,6 +428,12 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "patient.escort": { "zh-CN": "{patient}跟着{actor}走", en: "{patient} walks with {actor}" },
   "self.escort": { "zh-CN": "{patient}跟着你走", en: "{patient} walks with you" },
   "patient.stays": { "zh-CN": "{patient}停下来等候", en: "{patient} stopped and waits" },
+  // the stages of a journey (audit 2026-11-12 P2-11)
+  "patient.departed": { "zh-CN": "{actor}带{patient}出发（{mode}）", en: "{actor} set off with {patient} ({mode})" },
+  "self.departed": { "zh-CN": "你带{patient}出发（{mode}）", en: "You set off with {patient} ({mode})" },
+  "patient.arrived": { "zh-CN": "{patient}到达{place}", en: "{patient} arrived at {place}" },
+  "patient.handedOver": { "zh-CN": "{patient}到达{place}，由{receiver}接手", en: "{patient} arrived at {place}; {receiver} took over" },
+  "patient.stoppedAt": { "zh-CN": "{patient}停在{place}", en: "{patient} stopped at {place}" },
 };
 
 /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */

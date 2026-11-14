@@ -7,6 +7,9 @@
 export const TEAM_ZH = {
   "team.kicker": "CARE TEAM / 手术团队",
   "team.title": "手术团队",
+  "team.kickerCare": "CARE TEAM / 医护团队",
+  "team.titleCare": "医护团队",
+  "team.learnerAs": "我来当{name}",
   "team.hud": "团队",
   "team.hudTitle": "打开手术团队面板：团队自主协作时说了什么、做了什么",
   "team.none": "本病例没有能自主协作的手术团队。",
@@ -64,6 +67,9 @@ export const TEAM_ZH = {
 export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   "team.kicker": "CARE TEAM",
   "team.title": "Care team",
+  "team.kickerCare": "CARE TEAM",
+  "team.titleCare": "Care team",
+  "team.learnerAs": "I answer as {name}",
   "team.hud": "Team",
   "team.hudTitle": "Open the care team panel: what the team said and did on its own",
   "team.none": "This case has no care team that works on its own.",

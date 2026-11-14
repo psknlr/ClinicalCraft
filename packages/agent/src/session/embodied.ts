@@ -25,13 +25,15 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { assignPatientSlot, awaitingAcquisition, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
+  acquisitionStaff,
   behaviorOf,
   createWorldRuntime,
   operationName,
   PRIMARY_ACTOR,
   rhythmAtBedside,
+  roleName,
   type ActionHint,
   type ActorId,
   type CameraSensor,
@@ -61,7 +63,7 @@ import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment }
 import { strArg } from "../tools/clinical.js";
 import { learnerVitals } from "../tools/format.js";
 import type { ScopeActor } from "../tools/scope.js";
-import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
+import { actionIntent, spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
 import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
 import { createWorldTools, DELEGATION_TASKS, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
@@ -174,6 +176,9 @@ function carryOf(snapshot: WorldStateSnapshot | undefined): number {
 
 type Listener = (event: WorldEvent, version: number) => void;
 
+/** What moved the patient without a journey: the phase entered or the intervention given (`PatientLeg.cause`). */
+type RelocationCause = { phase: string } | { intervention: string };
+
 export class EmbodiedSession {
   readonly trace: SessionTrace;
   readonly slotId: string | null;
@@ -200,8 +205,8 @@ export class EmbodiedSession {
   private readonly noteCaptures = new Set<string[]>();
   /** `transport_patient` actions in flight: a relocation clinical state asks for meanwhile waits for them. */
   private transporting = 0;
-  /** Relocations deferred while a transport was in flight. */
-  private readonly deferred: PatientDestination[] = [];
+  /** Relocations deferred while a transport was in flight (with what caused each: the leg records it). */
+  private readonly deferred: { destination: PatientDestination; cause?: RelocationCause }[] = [];
   private readonly facade: WorldRuntime;
   readonly view: ClinicalView;
   readonly port: ClinicalPort;
@@ -374,6 +379,10 @@ export class EmbodiedSession {
       roomInfo: (actorId, roomId) => w().roomInfo(actorId, roomId),
       canSee: (actorId, id) => w().canSee(actorId, id),
       regionName: (at, locale) => w().regionName(at, locale),
+      whereabouts: (actorId, id) => w().whereabouts(actorId, id),
+      askWhereabouts: (askerId, id, colleagueId) => w().askWhereabouts(askerId, id, colleagueId),
+      receipts: (id) => w().receipts(id),
+      receiptsToConfirm: (actorId) => w().receiptsToConfirm(actorId),
       plan: (actorId, goal) => w().plan(actorId, goal),
       checkSpatial: (actorId, intent, opts) => w().checkSpatial(actorId, intent, opts),
       recordBound: (id) => w().recordBound(id),
@@ -387,9 +396,10 @@ export class EmbodiedSession {
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
       screenInView: (actorId) => w().screenInView(actorId),
-      relocatePatient: (destination) => {
+      screenPatient: (id) => w().screenPatient(id),
+      relocatePatient: (destination, cause) => {
         let r: PatientRelocation | undefined;
-        self.control(() => (r = w().relocatePatient(destination)));
+        self.control(() => (r = w().relocatePatient(destination, cause)));
         return r!;
       },
       refreshPatient: () => {
@@ -470,6 +480,8 @@ export class EmbodiedSession {
       }
       // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
       this.count.afterAct(request, result);
+      // the patient brought to the device a study waits for: it is done there now (EMBODIED §8.7)
+      this.acquirePending();
       this.traceEngineChanges(actionId, actorId);
       this.host.emit({ type: "world_action_result", result }, caller.submission);
       if (inner.version !== before) this.record();
@@ -619,11 +631,11 @@ export class EmbodiedSession {
     const c = this.host.caseDef;
     if (event.type === "intervention.applied") {
       const destination = c.interventions.find((i) => i.id === event.interventionId)?.destination;
-      if (destination) this.relocate(destination);
+      if (destination) this.relocate(destination, { intervention: event.interventionId });
       if (this.inner.refreshPatient()) this.record();
     } else if (event.type === "phase.changed") {
       const location = c.phases.find((p) => p.id === event.to)?.location;
-      if (location) this.relocate(location);
+      if (location) this.relocate(location, { phase: event.to });
     }
   }
 
@@ -632,23 +644,57 @@ export class EmbodiedSession {
    * outcome — moved, or no such place here — is appended to the outputs of the tool calls running now and sent as
    * a notification; already there: nothing to say.
    */
-  private relocate(destination: PatientDestination): void {
+  private relocate(destination: PatientDestination, cause?: RelocationCause): void {
     if (this.transporting > 0) {
-      this.deferred.push(destination);
+      this.deferred.push({ destination, ...(cause ? { cause } : {}) });
       return;
     }
-    const r = this.inner.relocatePatient(destination);
+    // a relocation, no journey (EMBODIED §8.4): its leg names what moved the patient
+    const r = this.inner.relocatePatient(destination, cause);
     if (r.ok && !r.moved) {
       this.record();
       return;
     }
     this.record();
+    // a transfer that brought the patient to the device a study waits for: it is done there now (EMBODIED §8.7)
+    if (r.ok) this.acquirePending();
     for (const lines of this.noteCaptures) lines.push(r.message);
     this.host.emit({ type: "notification", level: r.ok ? "info" : "warning", title: rt(this.host.locale(), "world.relocated"), body: r.message });
   }
 
   private flushRelocations(): void {
-    for (const destination of this.deferred.splice(0)) this.relocate(destination);
+    for (const d of this.deferred.splice(0)) this.relocate(d.destination, d.cause);
+  }
+
+  /**
+   * The device a study is done on the patient at, by its capabilities — the world's rule (the acquisition's
+   * requirement, EMBODIED §8.7); null when the study is acquired at the order. The kernel records an in-world order
+   * with it (`order.modality`).
+   */
+  modalityOf(investigationId: string): string[] | null {
+    const r = this.inner.checkSpatial(PRIMARY_ACTOR, actionIntent({ type: "acquire", investigationId })!).requirement;
+    return r.kind === "patient-at-provider" ? [...r.capabilities] : null;
+  }
+
+  /**
+   * Studies waiting for the patient at their device (EMBODIED §8.7): each one the world has the patient on the device
+   * for now is acquired there — by the department's staff (`acquisitionStaff`), at that device — through the engine
+   * (`acquire`, by the system): its result's clock starts now. Called after every world action, a transfer, and an
+   * in-world order.
+   */
+  acquirePending(): void {
+    const s = this.host.state();
+    if (!s.started || s.finished) return;
+    for (const o of s.orders) {
+      if (!awaitingAcquisition(o)) continue;
+      const check = this.inner.checkSpatial(PRIMARY_ACTOR, actionIntent({ type: "acquire", investigationId: o.investigationId })!);
+      if (!check.ok) continue;
+      const where = check.satisfiedBy[0];
+      const inv = this.host.caseDef.investigations.find((i) => i.id === o.investigationId);
+      const words = inv ? [inv.id, ...(typeof inv.name === "string" ? [inv.name] : Object.values(inv.name))] : [];
+      const collector = acquisitionStaff(o.modality ?? [], { ...(inv?.category ? { category: inv.category } : {}), words });
+      this.host.dispatch({ type: "acquire", investigationId: o.investigationId, phase: o.phase, collector, ...(where ? { where } : {}), by: "system" });
+    }
   }
 
   /** A tool whose call may relocate the patient: the relocation's line is appended to its output. */
@@ -1059,7 +1105,8 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   const staff = r.staffId ? (world.entity(r.staffId) ? t(world.entity(r.staffId)!.name, locale) : r.staffId) : r.role;
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
-  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : "delegate.param.target") });
+  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : r.task === "deliver_item" ? "delegate.param.item" : "delegate.param.target") });
+  if (r.message === "no-recipient") return rt(locale, "delegate.needTarget", { task, param: rt(locale, "delegate.param.to") });
   if (r.message === "target-not-intervention") {
     const id = world.resolveId(r.asked ?? "");
     const e = id ? world.entity(id) : null;
@@ -1073,6 +1120,11 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   if (r.delivered) {
     const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
     lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));
+  }
+  // an item kept in custody handed over: against a receipt, for its receiver to confirm (EMBODIED §8.1)
+  if (r.receipt) {
+    const to = world.entity(r.receipt.to) ? nameOf(world, r.receipt.to, locale) : roleName(world.actor(r.receipt.to)?.role ?? "clinician", locale);
+    lines.push(rt(locale, "delegate.receipt", { item: nameOf(world, r.receipt.item, locale), to, at: r.receipt.at }));
   }
   r.steps.forEach((s, i) => {
     const words = stepWords(s, locale, world, caseDef);

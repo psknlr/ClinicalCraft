@@ -867,6 +867,7 @@ function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
   });
   if (e.portable === "cart" && (!e.solid || e.tags.includes("wall"))) issues.push(warn(`${path}.portable`, `"${e.id}" is a portable cart but wall-mounted (${!e.solid ? "solid: false" : 'tag "wall"'})`));
   if (e.portable === "handheld" && (w > 1 || d > 1 || e.footprint.h > 1.5)) issues.push(warn(`${path}.portable`, `"${e.id}" is too large (${w}×${d}×${e.footprint.h}) to be handheld`));
+  if (e.custody && e.portable !== "handheld") issues.push(warn(`${path}.custody`, `"${e.id}" is kept in custody but not handheld: only an item carried by hand is handed over against a receipt`));
   if (e.model && !/\.(glb|gltf)(\.gz)?([?#].*)?$/i.test(e.model.uri)) issues.push(warn(`${path}.model.uri`, `model "${e.model.uri}" is not a .glb/.gltf file`));
   if (e.manikin) {
     // a body drawn with the equipment belongs on it: inside the footprint, no higher than the equipment is

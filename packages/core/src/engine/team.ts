@@ -53,12 +53,28 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     });
     s.relief.forEach((r, j) => {
       if (members.has(r.staff)) issues.push(err([...at, "relief", j, "staff"], `"${r.staff}" is already a member of the team`));
-      if (r.duties.includes("surgeon") || r.duties.includes("circulate")) issues.push(err([...at, "relief", j, "duties"], `a relief colleague brings instruments or counts (not "surgeon" or "circulate")`));
+      if (r.duties.includes("surgeon") || r.duties.includes("circulate")) issues.push(err([...at, "relief", j, "duties"], `a relief colleague brings instruments, counts or holds information (not "surgeon" or "circulate")`));
+    });
+    // information to get to someone: a fact the case records, held by a member or a relief colleague (docs/TEAM.md §4.5)
+    const informs = new Set<string>();
+    const history = new Set(c.history.map((h) => h.id));
+    const interventions = new Set(c.interventions.map((iv) => iv.id));
+    s.inform.forEach((n, j) => {
+      const here = [...at, "inform", j];
+      if (informs.has(n.id) || needs.has(n.id)) issues.push(err([...here, "id"], `duplicate need id "${n.id}"`));
+      informs.add(n.id);
+      if (!history.has(n.history)) issues.push(err([...here, "history"], `unknown history item "${n.history}" (the information is a fact the case records)`));
+      if (!known(n.heldBy) || n.heldBy === "surgeon") issues.push(err([...here, "heldBy"], `"${n.heldBy}" is not a member or relief colleague who could hold it`));
+      if (!known(n.for)) issues.push(err([...here, "for"], `"${n.for}" is not a member of the team`));
+      if (n.heldBy === n.for) issues.push(err([...here, "heldBy"], `"${n.heldBy}" already holds what they need`));
+      if (n.noticedBy && !members.has(n.noticedBy)) issues.push(err([...here, "noticedBy"], `"${n.noticedBy}" is not a member of the team`));
+      if (n.blocks && !interventions.has(n.blocks)) issues.push(err([...here, "blocks"], `unknown intervention "${n.blocks}"`));
     });
     if (s.expect?.delivered !== undefined && s.needs.length === 0) issues.push(err([...at, "expect", "delivered"], `nothing is needed in team scenario "${s.id}" (no need to deliver)`));
+    if (s.expect?.informed !== undefined && s.inform.length === 0) issues.push(err([...at, "expect", "informed"], `no information is needed in team scenario "${s.id}" (no inform)`));
     if (s.expect?.count && !team.count) issues.push(err([...at, "expect", "count"], `the team keeps no count (team.count)`));
     // a control scenario (nothing set up) is fine when the team keeps a count: it measures false holds
-    if (s.needs.length === 0 && s.items.length === 0 && s.absent.length === 0 && !team.count) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no item moved, nobody absent)`));
+    if (s.needs.length === 0 && s.inform.length === 0 && s.items.length === 0 && s.absent.length === 0 && !team.count) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no information, no item moved, nobody absent)`));
   });
   c.solution.forEach((a, i) => {
     if (a.type === "start" && a.team !== undefined && !scenarios.has(a.team)) issues.push(err(["solution", i, "team"], `unknown team scenario "${a.team}"`));
@@ -77,7 +93,8 @@ export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, cat
     if (m.staff === "surgeon") return;
     const s = staff.get(m.staff);
     if (!s) issues.push(err(["team", "members", i, "staff"], `facility "${f.id}" has no staff "${m.staff}"`));
-    else if (s.room !== team.room) issues.push(err(["team", "members", i, "staff"], `"${m.staff}" works in "${s.room}", not in the team's room "${team.room}"`));
+    // the member who circulates may be posted nearby (the ED nurse at the station): she comes to the team's room first
+    else if (s.room !== team.room && !m.duties.includes("circulate")) issues.push(err(["team", "members", i, "staff"], `"${m.staff}" works in "${s.room}", not in the team's room "${team.room}"`));
   });
   const types = new Map(catalogs.flatMap((cat) => cat.equipment.map((e) => [e.id, e] as const)));
   const placements = new Map(f.placements.map((p) => [p.id, p]));

@@ -263,7 +263,7 @@ export class AgentTurns {
     // a named colleague is consulted, never the teaching preceptor: no scored hint in their turn (a hint is asked for
     // explicitly — /hint, request_hint)
     const own = voice ? k.toolsFor(profile.name).filter((tool) => tool.name !== "give_hint") : k.toolsFor(profile.name);
-    const tools = who ? [...own, staffTaskTool(k, id, who)] : own;
+    const tools = who ? [...own, staffTaskTool(k, id, who, utterance)] : own;
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
     // a misconception in the message this colleague must correct (authored; checked on the reply below)
     if (due.length > 0) parts.push({ type: "text", text: `<must_correct>\nThe message contains a misconception you must correct explicitly in this reply, before anything else:\n${due.map((c) => `- ${t(c.say, k.locale)}`).join("\n")}\n</must_correct>` });

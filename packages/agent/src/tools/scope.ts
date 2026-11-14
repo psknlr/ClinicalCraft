@@ -14,9 +14,9 @@
  * | role | delegable tasks | clinical tools with their body | interventions |
  * |---|---|---|---|
  * | clinician (the learner's avatar), attending | all (with hold_traction / release_traction: an assistant at the operating table) | all | all |
- * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow, CTG — not an EEG), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
+ * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, deliver_item, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow, CTG — not an EEG), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
  * | paramedic | as a nurse | as a nurse | as a nurse + airway |
- * | porter | fetch_equipment, transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
+ * | porter | fetch_equipment, deliver_item (a specimen to the laboratory), transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
  * | receptionist | fetch_equipment | — (no clinical class) | — |
  * | lab-tech, pharmacist, radiologist, pathologist | fetch_equipment | check_vitals, read_result | — (no patient interventions) |
  *
@@ -44,7 +44,7 @@ export interface RoleScope {
   readonly investigations: "*" | "bedside";
 }
 
-const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"] as const;
+const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "deliver_item", "give_intervention", "transport_patient"] as const;
 /** A doctor also assists at the operating table: takes an instrument in a port and keeps its traction (PROCEDURE.md §3). */
 const ALL_TASKS = [...CARE_TASKS, "hold_traction", "release_traction"] as const;
 const FULL: RoleScope = { tasks: ALL_TASKS, tools: "*", interventionKinds: "*", ivAccess: true, nursing: true, investigations: "*" };
@@ -57,8 +57,8 @@ const NURSE: RoleScope = {
   investigations: "bedside",
 };
 const FETCH_ONLY: RoleScope = { tasks: ["fetch_equipment"], tools: [], interventionKinds: [], ivAccess: false, nursing: false, investigations: "bedside" };
-/** A porter fetches equipment and wheels patients (`transport_patient`, EMBODIED §8) — nothing clinical. */
-const PORTER: RoleScope = { ...FETCH_ONLY, tasks: ["fetch_equipment", "transport_patient"] };
+/** A porter fetches equipment, carries an item to someone (a specimen to the laboratory) and wheels patients (`transport_patient`, EMBODIED §8) — nothing clinical. */
+const PORTER: RoleScope = { ...FETCH_ONLY, tasks: ["fetch_equipment", "deliver_item", "transport_patient"] };
 const SERVICE: RoleScope = { tasks: ["fetch_equipment"], tools: ["check_vitals", "read_result"], interventionKinds: [], ivAccess: false, nursing: false, investigations: "bedside" };
 
 /** Role → scope of practice (see the module table). */

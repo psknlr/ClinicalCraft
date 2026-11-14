@@ -25,7 +25,7 @@ import {
   type Resolution,
 } from "../tools/clinical.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
-import { writtenOrder } from "../tools/dose-order.js";
+import { itemOrder } from "../tools/dose-order.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
 
@@ -70,6 +70,7 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return {};
     case "study":
       return action.study.op === "order" ? { code: action.study.code, ...(action.study.indication ? { indication: action.study.indication } : {}) } : {};
+    case "acquire":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
@@ -163,10 +164,10 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
       const r = resolveIntervention(c, input, L);
       if (r.kind !== "id") return refuse(r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
       // The order as written: kept as the action states it (its dose as read) while the hook left the words alone,
-      // else read again from the words the input now holds (`writtenOrder`, as the tool reads them).
+      // else read again from the words the input now holds (`itemOrder`, as the tool reads them: this item's clause).
       const asGiven = actionToolArgs(c, action, L);
       const { ordered: _ordered, ...rest } = action;
-      const ordered = sameValue(input.query, asGiven.query) && sameValue(input.dose, asGiven.dose) ? action.ordered : writtenOrder(input);
+      const ordered = sameValue(input.query, asGiven.query) && sameValue(input.dose, asGiven.dose) ? action.ordered : itemOrder(c, input, r.id, L);
       return { ok: true, action: { ...rest, interventionId: r.id, ...(ordered ? { ordered } : {}) } };
     }
     case "answer": {
@@ -206,6 +207,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "note":
     case "count":
     case "study":
+    case "acquire":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":

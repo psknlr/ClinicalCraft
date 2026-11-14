@@ -370,6 +370,14 @@ export class SessionKernel {
   dispatch(action: ClinicalAction, id: string): ReduceResult {
     // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
     if (action.type === "operate") syncProcedureSupply(this, id);
+    // in-world, a study done on the patient at a device is acquired there, not at the order (docs/EMBODIED.md §8.7):
+    // the world's rule alone names the device, and the order is recorded with it (a replay reads it from the record) —
+    // a modality a caller sent is never taken (text mode: none; in-world: the world's)
+    if (action.type === "order") {
+      const { modality: _sent, ...order } = action;
+      const modality = this.embodied?.modalityOf(action.investigationId);
+      action = modality ? { ...order, modality } : order;
+    }
     const result = reduce(this.caseDef, this.state, action);
     const accepted = !result.rejected;
     // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end
@@ -388,6 +396,8 @@ export class SessionKernel {
     }
     // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
     if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");
+    // in-world: ordered with the patient already on its device, the study is done now
+    if (accepted && action.type === "order" && action.modality) this.embodied?.acquirePending();
     if (accepted) {
       this.emitSnapshot(id);
       if (action.type === "note") {

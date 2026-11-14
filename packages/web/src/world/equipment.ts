@@ -409,7 +409,9 @@ export function buildPlacements(ctx: BuildContext): void {
           ctx.ownedTextures.push(sc.texture);
           continue;
         }
-        // vitals source: slot whose monitor is this placement, else the nearest slot in the same room within 4 m
+        // the bed space it is built beside: the slot whose monitor this placement is, else the nearest slot in the same
+        // room within 4 m — what it shows only without a world model (clinical mode: nothing moves). With one, the
+        // frame loop asks what the device is connected to where it stands now (`screenSource`, THE screen rule)
         let slotId: string | null = null;
         if (screenKind === "vitals" || screenKind === "ecg") {
           const linked = f.patientSlots.find((s) => s.monitor === p.id);

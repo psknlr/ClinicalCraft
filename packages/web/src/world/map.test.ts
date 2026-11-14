@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildRules, canPlace, cellKey, checkerMaterial, validBlocks, zoneCells } from "./buildzone.js";
 import { drawMap, fitLabel, mapProjection, MIN_LABEL_PX, splitLabel, type MapData } from "./map.js";
-import { regionAt, roomAt } from "./region.js";
+import { placeAt, roomAt } from "./region.js";
 import { groundMaterial, groundRange, V4_STREAM_OFFSETS, v4Stream } from "./terrain.js";
 
 describe("map projection", () => {
@@ -96,13 +96,15 @@ describe("regions", () => {
     buildZone: { rect: { x: 23.5, z: 1.5, w: 15, d: 15 } },
     outdoorRegion: { "zh-CN": "疗愈花园", en: "Healing Garden" },
   } as never;
-  it("smallest room wins, then building, build zone, outdoor", () => {
+  it("the world's region lookup: smallest room wins, then the building's corridor, then the outdoors", () => {
     expect(roomAt(f, 0, -12)?.id).toBe("conference");
-    expect(regionAt(f, 0, -12, "zh-CN")).toEqual({ name: "会诊区", roomId: "conference" });
-    expect(regionAt(f, 0, 0, "en")).toEqual({ name: "Corridor", roomId: "corridor" });
-    expect(regionAt(f, -8, 3, "en")).toEqual({ name: "Clinic", roomId: null });
-    expect(regionAt(f, 23, 2, "zh-CN").name).toBe("建造园地");
-    expect(regionAt(f, 0, 25, "zh-CN").name).toBe("疗愈花园");
+    expect(placeAt(f, 0, -12, "zh-CN")).toEqual({ name: "会诊区", roomId: "conference" });
+    expect(placeAt(f, 0, 0, "en")).toEqual({ name: "Corridor", roomId: "corridor" });
+    // in the building but in no room: its corridor, as the world (and so the in-world badge) names it
+    expect(placeAt(f, -8, 3, "en")).toEqual({ name: "a corridor of Clinic", roomId: null });
+    // the build zone is outdoors: the facility's outdoor region (the map still labels the zone)
+    expect(placeAt(f, 23, 2, "zh-CN")).toEqual({ name: "疗愈花园", roomId: null });
+    expect(placeAt(f, 0, 25, "zh-CN").name).toBe("疗愈花园");
   });
 });
 

@@ -18,6 +18,9 @@
  * - `look` {id, range = 15}: a cell within range with line of sight; faces it.
  * - `any` {goals}: the satisfiable sub-goal with the shortest travel time.
  *
+ * A goal on an entity in `NavRequest.believed` resolves at that place (where the
+ * planning actor believes it is, audit 2026-11-12 P1-8) instead of where it is.
+ *
  * Planning respects the actor's role (access zones; connector `roles`),
  * locked doors and dynamic obstacles. Failures are diagnosed by relaxing
  * them: ACCESS_DENIED (passable without the zone/connector restriction;
@@ -178,7 +181,7 @@ export class GridAStarBackend implements NavigationBackend {
     const resolved: Target[] = [];
     let failure: Failure | null = null;
     for (const leaf of leaves) {
-      const r = this.resolve(leaf, from);
+      const r = this.resolve(leaf, from, request.believed);
       if ("code" in r) failure ??= r;
       else resolved.push(...r);
     }
@@ -213,13 +216,13 @@ export class GridAStarBackend implements NavigationBackend {
 
   /* ---------------- goal resolution ---------------- */
 
-  private resolve(goal: NavGoal, from: Pose): Target[] | Failure {
+  private resolve(goal: NavGoal, from: Pose, believed?: NavRequest["believed"]): Target[] | Failure {
     switch (goal.kind) {
       case "any": {
         const out: Target[] = [];
         let failure: Failure | null = null;
         for (const sub of goal.goals) {
-          const r = this.resolve(sub, from);
+          const r = this.resolve(sub, from, believed);
           if ("code" in r) failure ??= r;
           else out.push(...r);
         }
@@ -251,7 +254,7 @@ export class GridAStarBackend implements NavigationBackend {
         return [this.roomTarget(goal, room.id)];
       }
       default: {
-        const target = this.locate(goal.id);
+        const target = this.locate(goal.id, believed);
         if (!target) return this.fail(goal, "TARGET_NOT_FOUND", { target: goal.id });
         const g = this.grids.grid(target.level);
         if (!g) return this.fail(goal, "TARGET_NOT_FOUND", { target: target.name }, { reason: "unknown-level", level: target.level });
@@ -334,11 +337,15 @@ export class GridAStarBackend implements NavigationBackend {
     return out;
   }
 
-  /** Where an entity is now: registry entity (displaced carts moved), actors and walking staff from `actorPose`. */
-  private locate(idOrAlias: string): Located | null {
-    const pose = this.dynamics.actorPose?.(idOrAlias);
+  /**
+   * Where an entity is now: registry entity (displaced carts moved), actors and walking staff from `actorPose` — or,
+   * in `believed`, where the planning actor believes it is (audit P1-8).
+   */
+  private locate(idOrAlias: string, believed?: NavRequest["believed"]): Located | null {
     const id = this.registry.resolveId(idOrAlias);
     const e = id ? this.registry.entity(id) : null;
+    const belief = believed?.[id ?? idOrAlias];
+    const pose = belief ? { ...belief, yaw: 0, pitch: 0 } : this.dynamics.actorPose?.(idOrAlias);
     const actorPose = pose ?? (id ? this.dynamics.actorPose?.(id) : null);
     if (actorPose && (!e || e.kind === "staff" || idOrAlias.startsWith("actor:"))) {
       return { id: e?.id ?? idOrAlias, level: actorPose.level, position: { x: actorPose.x, z: actorPose.z }, footprint: { w: BODY_FOOTPRINT.standing.w, d: BODY_FOOTPRINT.standing.d }, reach: e?.reach ?? RANGES.talk, kind: e?.kind ?? "actor", name: e ? t(e.name, this.locale) : idOrAlias, soft: true };
@@ -347,7 +354,7 @@ export class GridAStarBackend implements NavigationBackend {
     // the patient's body where it is now (a bed space, a provider: EMBODIED §8)
     const body = this.dynamics.placeOf?.(e.id);
     if (body) return { id: e.id, level: body.level, position: { x: body.x, z: body.z }, footprint: { ...body.footprint }, reach: e.reach, kind: e.kind, name: t(e.name, this.locale), soft: false };
-    const moved = (this.dynamics.displaced?.() ?? []).find((d) => d.id === e.id)?.position;
+    const moved = belief ?? (this.dynamics.displaced?.() ?? []).find((d) => d.id === e.id)?.position;
     let position: Vec2 = { x: e.position.x, z: e.position.z };
     let level = e.level;
     let footprint = { w: e.footprint?.w ?? 0.2, d: e.footprint?.d ?? 0.2 };

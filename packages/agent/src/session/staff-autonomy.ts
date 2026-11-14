@@ -7,19 +7,23 @@
  *   patient, reported and reviewed (`SessionStudies`);
  * - traction: a colleague holding a port who is no longer at the table has let go (`assist.ts`);
  * - alarms: the responsible anaesthetist of an anaesthetised patient recognises a new critical alarm, goes to the
- *   patient and says so — the response the simulation authors, no drug or treatment of their own.
+ *   patient and says so — the response the simulation authors, no drug or treatment of their own;
+ * - receipts: a colleague handed an item kept in custody (a specimen, a medication box) checks it and signs for it
+ *   with their own act (`confirm_receipt`; docs/EMBODIED.md §8.1, audit 2026-11-12 P2-12).
  * `states()` is each staff member's role state, derived from the authoritative record and the world (so a reload
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
 import { anaesthetised, capabilityLabel, openAlarm, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, roleName } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
 import { positionOf, roleCardOf } from "../characters/roles.js";
 import { wordLine } from "../characters/voice.js";
 import { characterModel } from "./character-models.js";
+import { staffAgent } from "./staff-voice.js";
 import { idleSupplier, syncProcedureSupply } from "./procedure-supply.js";
 import { rt } from "./i18n.js";
+import type { ClinicalCaller } from "./embodied-types.js";
 import type { SessionKernel } from "./kernel.js";
 
 /** One staff member's state as the session knows it. */
@@ -62,6 +66,7 @@ export class StaffAutonomy {
       dropTractionAwayFromTable(k, id);
       // equipment failing or brought in changes what the operator sees, whoever is looking
       syncProcedureSupply(k, id);
+      await this.confirmReceipts(id, signal);
       await this.readyEquipment(id, signal);
       if (k.studies.available()) await k.studies.afterLearner(id, signal);
       await this.answerAlarm(id, signal);
@@ -170,6 +175,38 @@ export class StaffAutonomy {
     const text = await this.line(staffId, name, rt(L, "staff.alarm.answered", { vitals }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient", [`critical alarm: ${vitals}`, "you are at the patient, checking"], signal, "at-patient");
     k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
     k.conversations.addDialogue({ who: "attending", speaker: name, text });
+  }
+
+  /**
+   * Whoever was handed an item kept in custody signs for it (docs/EMBODIED.md §8.1, audit 2026-11-12 P2-12): each
+   * member of staff with a receipt to confirm — the world says which (`receiptsToConfirm`, THE custody rule) — confirms
+   * it with their own act — the world's `confirm_receipt`, its rule and its record — and says so in their own voice.
+   * The learner (or an agent driving the clinician) confirms their own receipts; nobody confirms one for someone else.
+   */
+  private async confirmReceipts(id: string, signal: AbortSignal): Promise<void> {
+    const k = this.k;
+    const e = k.embodied;
+    if (!e) return;
+    const w = e.world();
+    const L = k.locale;
+    for (const a of w.actors()) {
+      if (!a.id.startsWith("staff:")) continue;
+      for (const last of w.receiptsToConfirm(a.id)) {
+        const item = last.item;
+        const agent = staffAgent(a.role) as ClinicalCaller["agent"];
+        const r = await e.act({ agent, submission: id, signal }, { actorId: a.id, operation: "confirm_receipt", targetId: item }, signal);
+        if (signal.aborted) return;
+        if (r.status !== "completed") continue;
+        const staffId = a.id.slice("staff:".length);
+        const staff = k.facility?.staff.find((s) => s.id === staffId);
+        const name = staff ? t(staff.name, L) : staffId;
+        const thing = w.entity(item) ? t(w.entity(item)!.name, L) : item;
+        const giver = last.from === PRIMARY_ACTOR ? rt(L, "staff.receipt.you") : w.entity(last.from) ? t(w.entity(last.from)!.name, L) : roleName(w.actor(last.from)?.role ?? "clinician", L);
+        const text = await this.line(staffId, name, rt(L, "staff.receipt.confirmed", { item: thing, from: giver }), "you have just been handed an item kept in custody, checked it and signed for it", [`item: ${thing}`, `handed over by: ${giver}`], signal);
+        k.speakLine(id, { agent, speaker: name, text, grounded: [], staffId });
+        k.conversations.addDialogue({ who: agent, speaker: name, text });
+      }
+    }
   }
 
   /** A staff line: the template, or the speaker's own words when characters are model-driven and grounded. */

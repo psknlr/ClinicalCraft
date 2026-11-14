@@ -67,6 +67,29 @@ export function bindingPosture(binding: EncounterBinding, f: Pick<FacilityDefini
 const unprefixed = (id: string) => id.slice(id.indexOf(":") + 1);
 
 /**
+ * THE room lookup of the world (`SemanticRegistry.roomAt`): the smallest room containing (x, z) on `level` — edges
+ * inclusive, the one listed first on a tie — or null (outdoors, between rooms, off the plan). Built once per
+ * facility. The registry (an actor's or a placement's room), the locator's region names (`regionLookup`) and the
+ * web's HUD all use this one function.
+ */
+export function roomLookup(f: Pick<FacilityDefinition, "rooms" | "levels">): (level: string, x: number, z: number) => string | null {
+  const rooms = f.rooms.map((r) => ({ room: r, level: roomLevel(f, r) }));
+  return (level, x, z) => {
+    let best: string | null = null;
+    let area = Infinity;
+    for (const { room, level: l } of rooms) {
+      if (l !== level || Math.abs(x - room.rect.x) > room.rect.w / 2 || Math.abs(z - room.rect.z) > room.rect.d / 2) continue;
+      const a = room.rect.w * room.rect.d;
+      if (a < area) {
+        area = a;
+        best = room.id;
+      }
+    }
+    return best;
+  };
+}
+
+/**
  * Build the registry. `binding` places the case's patient in its slot (no
  * patient entity without one); `collision` supplies the door records.
  * Equipment of unknown types is left out (as the renderer leaves it out).
@@ -83,19 +106,7 @@ export function buildRegistry(
   const ground = defaultLevelId(f);
   const elevation = (level: string) => levelElevation(f, level);
   const rooms = f.rooms.map((r) => ({ room: r, level: roomLevel(f, r) }));
-  const roomAt = (level: string, x: number, z: number): string | null => {
-    let best: string | null = null;
-    let area = Infinity;
-    for (const { room, level: l } of rooms) {
-      if (l !== level || Math.abs(x - room.rect.x) > room.rect.w / 2 || Math.abs(z - room.rect.z) > room.rect.d / 2) continue;
-      const a = room.rect.w * room.rect.d;
-      if (a < area) {
-        area = a;
-        best = room.id;
-      }
-    }
-    return best;
-  };
+  const roomAt = roomLookup(f);
   const buildingHeight = (roomId: string, level: string) => {
     const room = f.rooms.find((r) => r.id === roomId);
     const building = room?.building ? f.buildings.find((b) => b.id === room.building) : undefined;

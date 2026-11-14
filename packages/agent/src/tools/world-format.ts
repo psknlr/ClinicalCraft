@@ -31,17 +31,21 @@ function cuesText(cues: Record<string, string> | undefined, locale: string): str
 /** One entity line (`- name [id] · 2.1 m ahead · state · in reach · can: …`). */
 export function entityLine(e: ObservedEntity, locale: string, actorLevel: string): string {
   const direction = e.level !== actorLevel ? rt(locale, "dir.otherLevel", { level: e.level }) : directionText(e.bearing, locale);
-  // a movable thing not perceived: where it is believed to be ("usually kept in …", "last seen in …")
+  // a movable thing not perceived: where it is believed to be ("usually kept in …", "last seen in …", "… said it is
+  // in …") or that it is missing ("not in … when you looked — whereabouts unknown", EMBODIED §4)
   const where = e.lastKnown ? (isZh(locale) ? `（${e.lastKnown.label}）` : ` (${e.lastKnown.label})`) : null;
   const awareness = where ?? (e.awareness === "remembered" ? rt(locale, "world.entity.awareness.remembered") : e.awareness === "mapped" ? rt(locale, "world.entity.awareness.mapped") : "");
   const cues = cuesText(e.cues, locale);
+  // missing: no distance or direction to where it was looked for, no state, nothing to do with it (EMBODIED §4)
+  if (e.lastKnown?.kind === "missing") return rt(locale, "world.entity.missing", { name: e.name, id: e.id }) + awareness;
   return (
     rt(locale, "world.entity", {
       name: e.name,
       id: e.id,
       distance: round1(e.distance),
       direction,
-      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) : "",
+      // a carried item seen in someone else's hands: whose (audit 2026-11-12 P2-12)
+      state: e.state ? rt(locale, "world.entity.state", { state: e.state }) + (e.holder ? rt(locale, "world.entity.holder", { holder: e.holder.name }) : "") : "",
       reach: e.inReach ? rt(locale, "world.entity.inReach") : "",
       actions: e.availableActions.length ? rt(locale, "world.entity.actions", { actions: e.availableActions.join(", ") }) : "",
       cues: cues ? rt(locale, "world.entity.cues", { cues }) : "",

@@ -24,7 +24,7 @@ import {
 } from "@clinicalcraft/core";
 import { isZh, joinList, rt } from "../session/i18n.js";
 import { actorFor, lockedDecisionLabel, rejectedOutput, resolveIntervention, strArg, type ToolArgs } from "./clinical.js";
-import { resultStatus } from "./clinical-resolve.js";
+import { modalityText, resultStatus } from "./clinical-resolve.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { holdLines, objectiveRequirementLines } from "./requirements.js";
 import { clockTime, formatResult, interventionLabel, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
@@ -153,9 +153,11 @@ export function obtainedResultsText(ctx: Pick<ToolContext, "caseDef" | "locale" 
       lines.push(
         status === "no-record"
           ? rt(L, "tool.results.noRecord", { name, phase })
-          : status === "ready"
-            ? rt(L, "tool.results.ready", { name, phase })
-            : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt, L, "ceil") }),
+          : status === "not-acquired"
+            ? rt(L, "tool.results.atModality", { name, phase, modality: modalityText(o.order, L) })
+            : status === "ready"
+              ? rt(L, "tool.results.ready", { name, phase })
+              : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt ?? o.order.orderedAt, L, "ceil") }),
       );
       data.push({ investigationId: id, phase: o.order.phase, ready: status === "ready", read: false, status });
     }

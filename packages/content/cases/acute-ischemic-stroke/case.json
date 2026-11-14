@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-ischemic-stroke",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "title": {
     "zh-CN": "右侧无力伴言语困难 · 67岁男性",
     "en": "Right-sided weakness and difficulty speaking · 67-year-old man"
@@ -4512,7 +4512,7 @@
         "zh-CN": "阿替普酶 0.9 mg/kg（最大90 mg），按他的体重计算——其中10%于1分钟内静推，其余于60分钟内静脉泵入",
         "en": "Alteplase 0.9 mg/kg (max 90 mg) by his weight — 10% as an IV bolus over 1 minute, the rest infused over 60 minutes"
       },
-      "doseSpec": { "amount": 0.9, "unit": "mg/kg", "route": "IV" },
+      "doseSpec": { "amount": 0.9, "unit": "mg/kg", "route": "IV", "bolus": { "amount": 0.09, "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit": "mg/kg/h" } },
       "requires": [
         "medications",
         "infusion-pump",
@@ -6954,6 +6954,118 @@
       }
     }
   ],
+  "team": {
+    "room": "ed-resus",
+    "phases": [
+      "ed"
+    ],
+    "waitRounds": 3,
+    "members": [
+      {
+        "staff": "ed-nurse",
+        "duties": [
+          "circulate"
+        ]
+      },
+      {
+        "staff": "surgeon",
+        "duties": [
+          "surgeon"
+        ],
+        "name": {
+          "zh-CN": "医生",
+          "en": "the doctor"
+        }
+      }
+    ],
+    "scenarios": [
+      {
+        "id": "anticoagulants-from-triage",
+        "name": {
+          "zh-CN": "抗凝用药情况在分诊护士那里",
+          "en": "The anticoagulant history is with the triage nurse"
+        },
+        "summary": {
+          "zh-CN": "妻子在门口回答了分诊护士杨洁关于抗凝药的问题，随后去办理挂号；床旁的医生还没有问过。在确认他没有使用抗凝药（或凝血结果回报）之前不能溶栓。头颅CT判读后，抢救室护士林晓需要通过电话从杨洁那里拿到答案，转告医生，并让医生复述确认。基准测试核查：谁去问的、谁回答的、谁在何时收到，以及医生接下来做了什么。",
+          "en": "His wife answered the triage nurse, Yang Jie, at the door about blood thinners and then went to register him; the doctor at the bedside has not asked. Thrombolysis cannot go ahead until it is known that he takes no anticoagulant (or the coagulation screen is back). Once the CT head has been read, the resus nurse, Lin Xiao, has to get the answer from Yang Jie by phone and tell the doctor, who reads it back. The benchmark checks who asked, who answered, who received it and when, and what the doctor did next."
+        },
+        "provenance": "authored",
+        "inform": [
+          {
+            "id": "anticoagulant-history",
+            "history": "anticoagulants",
+            "name": {
+              "zh-CN": "他的抗凝和抗血小板用药情况",
+              "en": "his anticoagulant and antiplatelet history"
+            },
+            "heldBy": "triage-nurse",
+            "for": "surgeon",
+            "blocks": "tenecteplase",
+            "when": {
+              "read": "ct-head"
+            }
+          }
+        ],
+        "relief": [
+          {
+            "staff": "triage-nurse",
+            "duties": [
+              "inform"
+            ]
+          }
+        ],
+        "expect": {
+          "informed": true
+        }
+      },
+      {
+        "id": "anticoagulants-triage-away",
+        "name": {
+          "zh-CN": "掌握情况的分诊护士不在",
+          "en": "The triage nurse who has it is away"
+        },
+        "summary": {
+          "zh-CN": "同上，但杨洁已经去休息了，没有别人听到过这个回答。抢救室护士拿不到答案，立即向医生说明并给出原因；溶栓仍需等待：医生直接询问他的妻子。",
+          "en": "As above, but Yang Jie has gone on her break and nobody else heard the answer. The resus nurse cannot get it and tells the doctor at once, with the reason; thrombolysis still waits — the doctor asks his wife directly."
+        },
+        "provenance": "authored",
+        "inform": [
+          {
+            "id": "anticoagulant-history",
+            "history": "anticoagulants",
+            "name": {
+              "zh-CN": "他的抗凝和抗血小板用药情况",
+              "en": "his anticoagulant and antiplatelet history"
+            },
+            "heldBy": "triage-nurse",
+            "for": "surgeon",
+            "blocks": "tenecteplase",
+            "when": {
+              "read": "ct-head"
+            }
+          }
+        ],
+        "absent": [
+          "triage-nurse"
+        ],
+        "relief": [
+          {
+            "staff": "triage-nurse",
+            "duties": [
+              "inform"
+            ]
+          }
+        ],
+        "expect": {
+          "informed": false
+        }
+      }
+    ],
+    "note": {
+      "zh-CN": "急诊抢救室的团队：抢救室护士在床旁协调，学员是负责的医生。团队情境（`?team=` / `start {team}`）只用于引导教学和团队协作基准测试；单人接诊不选情境，团队不会自行行动。",
+      "en": "The ED resus team: the resus nurse coordinates at the bedside; the learner is the doctor in charge. Team scenarios (`?team=` / `start {team}`) are for facilitated teaching and the team benchmark; played alone, with no scenario, the team does nothing on its own."
+    }
+  },
   "debrief": {
     "title": {
       "zh-CN": "左侧大脑中动脉M1段闭塞所致急性缺血性卒中（心源性栓塞，心房颤动）",

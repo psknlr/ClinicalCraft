@@ -623,3 +623,45 @@ def diagnostic_wall_set(k: Kit, eq):
     k.cyl((0.365, 1.625, -0.061), 0.0058, 0.034, "chrome", axis="z", seg=10)
     k.ball((0.365, 1.625, -0.043), 0.0078, "chrome", seg=8)
     stethoscope(k, (0.365, 1.398, -0.062), (0.365, 1.172, -0.062))
+
+
+# ------------------------------------------------------------------------------------------------
+# handheld items kept in custody (audit 2026-11-12 P2-12)
+# ------------------------------------------------------------------------------------------------
+
+@builder("specimen-tube")
+def specimen_tube(k: Kit, eq):
+    """Blood specimen tube lying on its side: the clear tube with its round bottom and the red
+    screw cap (serum, the ISO 6710 colour code; the tube rests on the cap's rim). Layers for its
+    looks: `sample` — the blood in it, `label` — the patient label wrapped round it, with its
+    barcode (drawn once it is filled and labelled at the bedside)."""
+    r, y = 0.0065, 0.0082
+    # the tube: clear, round-bottomed, open end under the cap
+    k.lathe([(0.0, -0.0665), (0.0038, -0.0655), (0.0058, -0.0628), (r, -0.0592), (r, 0.041)], (0, y, 0), "glass", axis="x", seg=16)
+    # the cap: its grip ribs and the flat top
+    k.lathe([(0.0068, 0.0385), (0.0082, 0.0395), (0.0082, 0.0605), (0.0076, 0.0622), (0.0, 0.0624)], (0, y, 0), "ambulance-red", axis="x", seg=16)
+    for i in range(8):
+        a = 2 * math.pi * i / 8
+        k.box((0.05, y + 0.0083 * math.sin(a), 0.0083 * math.cos(a)), (0.018, 0.0012, 0.0012), "ambulance-red", rot=(math.degrees(a), 0, 0))
+    with k.layer("sample"):
+        k.lathe([(0.0, -0.0645), (0.0034, -0.0636), (0.0052, -0.061), (0.0056, -0.0585), (0.0056, 0.0335), (0.0, 0.0337)], (0, y, 0), "clin-blood-bag", axis="x", seg=12)
+    with k.layer("label"):
+        # wrapped over the top and the front, a window left underneath to see the blood
+        k.revolve([(0.0067, -0.043), (0.0071, -0.043), (0.0071, 0.033), (0.0067, 0.033)], (0, y, 0), "paper", axis="x", a0=-30, a1=200, seg=24)
+        for i in range(11):
+            k.box((-0.036 + 0.0024 * i + (0.0007 if i % 3 == 0 else 0), y + 0.0072, -0.0012), (0.0008 if i % 2 else 0.0014, 0.0004, 0.0062), "black")
+        k.box((0.008, y + 0.0072, 0.0004), (0.022, 0.0004, 0.0016), "coal")
+        k.box((0.006, y + 0.0072, -0.0026), (0.018, 0.0004, 0.0012), "coal")
+
+
+@builder("medication-box")
+def medication_box(k: Kit, eq):
+    """Medication box lying flat: the white carton with its end flaps and the maker's blue band,
+    and the pharmacy label on the lid (patient, drug, dose)."""
+    k.box((0, 0.0225, 0), (0.12, 0.045, 0.07), "white", r=0.0018, seg=1)
+    for x in (-0.0605, 0.0605):
+        k.box((x, 0.0225, 0), (0.0012, 0.041, 0.066), "plastic", r=0.0004, seg=1)
+    k.box((0.038, 0.0226, 0), (0.022, 0.0454, 0.0704), "blue")
+    k.box((-0.015, 0.0454, 0), (0.06, 0.0009, 0.046), "paper")
+    for i, (w, z) in enumerate(((0.044, -0.014), (0.036, -0.005), (0.04, 0.004), (0.026, 0.013))):
+        k.box((-0.019 + (0.004 if i else 0), 0.046, z), (w, 0.0004, 0.0024 if i == 0 else 0.0016), "coal" if i else "ambulance-red")

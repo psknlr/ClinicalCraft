@@ -6,10 +6,11 @@
  */
 import { encounterClockRuns } from "./clocks.js";
 import type { Op } from "@clinicalcraft/agent";
-import { historyVoice, procedureFor, procedureStateOf, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { historyVoice, procedureFor, procedureStateOf, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
+import { placeAt } from "../world/region.js";
 import { throttleFrame } from "../ui/dom.js";
 import { Hud } from "../ui/hud.js";
 import { Intro } from "../ui/intro.js";
@@ -142,6 +143,8 @@ export class ClinicalCraftApp implements App {
       () => this.prefs.world(),
       this.callbacks(),
       (slotId) => this.vitalsFor(slotId),
+      // embodied: whose vitals a live screen shows is the world model's answer (THE screen rule) — a moved cart's too
+      (placementId) => this.game?.embodied?.screenSlot(placementId),
     );
     this.hud = new Hud(dom.hud, this);
     // the laparoscopic picture beside the theatre, above any window (below an approval)
@@ -892,14 +895,16 @@ export class ClinicalCraftApp implements App {
       this.focusWorld();
     }
     const p = this.playerPos();
-    // multi-level facility: the region on the avatar's level (the world adds the level's name indoors)
+    // multi-level facility: the region on the avatar's level (the world adds the level's name indoors) — the world's
+    // region lookup, as every later report (the place beside the map and the in-world badge are one lookup)
     const level = api && api.levels().length > 1 ? api.position.level : undefined;
+    const where = placeAt(game.facility, p.x, p.z, getLocale(), level);
     this.hud.onMove({
       x: p.x,
       z: p.z,
       yaw: api?.position.yaw ?? 0,
-      region: regionAt(game.facility, p.x, p.z, getLocale(), level),
-      roomId: null,
+      region: where.name,
+      roomId: where.roomId,
       moving: false,
       ...(level ? { level } : {}),
     });

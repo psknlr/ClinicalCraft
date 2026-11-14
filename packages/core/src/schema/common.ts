@@ -343,10 +343,35 @@ export const DOSE_ROUTES = ["IM", "IV", "IO", "SC", "PO", "SL", "PR", "IN", "INH
 export type DoseRoute = (typeof DOSE_ROUTES)[number];
 export const DoseRouteSchema = z.enum(DOSE_ROUTES);
 
+/** A rate's unit: so much per hour or per minute. */
+const isRateUnit = (unit: string) => /\/(?:h|min)$/u.test(unit);
+
+/**
+ * One part of a preset given as a bolus and an infusion (`DoseSpec.bolus`, `DoseSpec.maintenance`): an amount, or a
+ * range up to `upTo`, in its unit.
+ */
+export const DosePartSchema = z
+  .object({
+    amount: z.number().positive(),
+    upTo: z.number().positive().optional(),
+    unit: DoseUnitSchema,
+  })
+  .strict()
+  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the part's range: it cannot be below amount", path: ["upTo"] });
+export type DosePart = z.infer<typeof DosePartSchema>;
+
 /**
  * An intervention's preset dose, machine-readable (`interventions[].doseSpec`; the learner reads the `dose` text):
  * what giving it gives. `upTo` is the top of a range the dose may take, in the same unit (labetalol 10–20 mg:
- * `{ "amount": 10, "upTo": 20, "unit": "mg", "route": "IV" }`). An order's dose is checked against it (`compareDose`).
+ * `{ "amount": 10, "upTo": 20, "unit": "mg", "route": "IV" }`). An order's dose is checked against it (`checkOrder`).
+ *
+ * A dose given as a bolus and then an infusion states both parts. `maintenance` is the infusion's rate (heparin
+ * 80 units/kg IV, then 18 units/kg/h: `{ "amount": 70, "upTo": 80, "unit": "unit/kg", "route": "IV", "maintenance":
+ * { "amount": 18, "unit": "unit/kg/h" } }`): an order may state the bolus, the rate or both, each checked against its
+ * own part. When the bolus and the infusion are one dose given in two parts, `bolus` is the part given first and
+ * `amount` the whole (alteplase 0.9 mg/kg, a tenth as a bolus, the rest over an hour: `{ "amount": 0.9, "unit":
+ * "mg/kg", "route": "IV", "bolus": { "amount": 0.09, "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit":
+ * "mg/kg/h" } }`): the whole, or both parts, are given; a part alone is asked about ("is that the whole dose?").
  */
 export const DoseSpecSchema = z
   .object({
@@ -354,23 +379,36 @@ export const DoseSpecSchema = z
     upTo: z.number().positive().optional(),
     unit: DoseUnitSchema,
     route: DoseRouteSchema.optional(),
+    maintenance: DosePartSchema.optional(),
+    bolus: DosePartSchema.optional(),
   })
   .strict()
-  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the dose's range: it cannot be below amount", path: ["upTo"] });
+  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the dose's range: it cannot be below amount", path: ["upTo"] })
+  .refine((d) => d.maintenance == null || (isRateUnit(d.maintenance.unit) && !isRateUnit(d.unit)), {
+    message: "maintenance is the rate of the infusion that goes with a single dose: a unit per hour or minute, beside a dose that is not itself a rate",
+    path: ["maintenance"],
+  })
+  .refine((d) => d.bolus == null || (d.bolus.unit === d.unit && !isRateUnit(d.unit) && (d.bolus.upTo ?? d.bolus.amount) < d.amount), {
+    message: "bolus is the part of the dose given first: in the dose's own unit (not a rate) and less than the whole dose",
+    path: ["bolus"],
+  });
 export type DoseSpec = z.infer<typeof DoseSpecSchema>;
 
 /**
- * The dose an order states, as read from what was written (`parseDose`): an amount with its unit, a route, or both —
- * `{ "amount": 5, "unit": "mg", "route": "IM" }`, `{ "route": "IV" }`.
+ * The dose an order states, as read from what was written (`parseDose`): an amount with its unit (a range ordered as
+ * `amount`–`upTo`), a route, or both — `{ "amount": 5, "unit": "mg", "route": "IM" }`, `{ "amount": 2, "upTo": 3,
+ * "unit": "mg" }`, `{ "route": "IV" }`.
  */
 export const OrderedDoseSchema = z
   .object({
     amount: z.number().positive().optional(),
+    upTo: z.number().positive().optional(),
     unit: DoseUnitSchema.optional(),
     route: DoseRouteSchema.optional(),
   })
   .strict()
   .refine((d) => (d.amount == null) === (d.unit == null), "an amount needs its unit, and a unit its amount")
+  .refine((d) => d.upTo == null || (d.amount != null && d.upTo > d.amount), "upTo is the top of an ordered range: above its amount")
   .refine((d) => d.amount != null || d.route != null, "a dose states an amount, a route or both");
 export type OrderedDose = z.infer<typeof OrderedDoseSchema>;
 

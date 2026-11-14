@@ -12,7 +12,7 @@
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
 > 临床医生智能体还能做示范接诊。内置 135 个中英双语教学病例（原有 10 例，以及中华病例说 125 例：原选 20 例、新增 105 例；新增病例正在依据原文重写，尚不可用于教学）、3 个场馆（含两层的教学医院）、
-> 103 种设备（每种都有三维模型，体素部件为后备），以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 103 种设备（每种都有三维模型，体素部件为后备），以及 46 个具身智能体基准场景（其中 2 个为留出场景）；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
 > Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
@@ -101,10 +101,12 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   while the learner watches, with the same tools and approvals (`/autopilot`,
   `exec --autopilot`, `eval`); in embodied mode it walks, fetches equipment
   and transports the patient.
-- **Embodied benchmark.** `clinicalcraft bench`: 41 reproducible scenarios
-  judged only from the final engine and world state, with spatial and
-  authorisation audits and Wilson 95 % intervals; a reference demonstration
-  of the full STEMI encounter.
+- **Embodied benchmark.** `clinicalcraft bench`: 46 reproducible scenarios
+  (2 held out) judged only from the final engine and world state, with
+  spatial and authorisation audits and Wilson 95 % intervals, reports that
+  label the reference and scripted agents as controls and state the case and
+  scenario denominators apart; a reference demonstration of the full STEMI
+  encounter.
 - **Any model, or none.** 13 networked provider templates over two wires (the
   official Anthropic SDK and OpenAI-compatible Chat Completions), per-agent
   model/effort, a server-side key proxy for the browser, and a fully
@@ -397,11 +399,12 @@ production-ready, and no live model has been run through these tools yet):
   [MCP](#mcp-let-claude-code-codex-or-grok-cli-play-the-clinician)).
 
 **The embodied benchmark** — `clinicalcraft bench` measures embodied agents
-headless and reproducibly: 41 scenarios in
+headless and reproducibly: 46 scenarios in
 `packages/content/bench/embodied-v1` (perception, spatial reasoning,
 navigation, device interaction, clinical workflows — one per built-in case
-plus the full STEMI encounter —, recovery, multi-agent delegation and
-safety), fixed seeds, a fresh session per run, success judged only from the
+plus five whole encounters: STEMI, septic shock, DKA, and the held-out
+asthma and anaphylaxis —, recovery, multi-agent delegation and safety; 2
+held out, never used to tune an agent), fixed seeds, a fresh session per run, success judged only from the
 final engine and world state (never from what the agent says), with
 independent spatial-rule and authorisation audits and Wilson 95 % intervals.
 
@@ -412,9 +415,13 @@ npm run -s cc -- bench run --suite embodied-v1 --agent scripted-llm   # must be 
 npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --live --max-tokens 2000000 --scenario workflow-pe-ctpa --seeds 1
 ```
 
-`reference` and `scripted-llm` validate the infrastructure, not clinical
-reasoning, and run in CI (123 / 123 runs each, no accepted spatial or
-authorisation violation). A live model (`--agent llm`) runs only with
+`reference` and `scripted-llm` are controls: they validate the
+infrastructure, not clinical reasoning, every report labels them so, and
+they run in CI (138 / 138 and 132 / 132 runs — the scripted control does not
+run the held-out scenarios — with no accepted spatial or authorisation
+violation). Each report states its denominators apart: the cases covered,
+the scenarios per case (24 of the 46 use the STEMI case), the splits and the
+coverage of history-taking, time-critical emergencies and team coordination. A live model (`--agent llm`) runs only with
 `--live` and a spending cap (`--max-tokens`; `--max-usd` only for a model
 with a catalogue price), needs a configured API key and refuses to run in
 CI; no live run has been recorded yet. Reports: `bench-report.json` +

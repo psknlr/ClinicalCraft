@@ -52,6 +52,8 @@ export interface DecisionAvailability {
 /** An order with its readiness/read state. */
 export interface OrderStatus {
   order: OrderRecord;
+  /** Acquired (implied at the order, or the patient was at the device: docs/EMBODIED.md §8.7). */
+  acquired: boolean;
   ready: boolean;
   read: boolean;
 }
@@ -187,7 +189,11 @@ export interface AssessmentReport {
   history: { asked: number; required: number; requiredAsked: number; missingRequired: string[] };
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */
-  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
+  /**
+   * `essentialMissing`: essential investigations not done (an in-world study ordered but never acquired at its device
+   * counts as not done); `notAcquired`: order keys of in-world studies ordered whose patient never got to the device.
+   */
+  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[]; notAcquired?: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
   safety: {
     contraindicated: { interventionId: string; at: number }[];

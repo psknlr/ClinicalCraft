@@ -344,6 +344,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   count: null,
   // a learner orders a study with order_study; its acquisition, report and review are the hospital's
   study: "order_study",
+  // an in-world study is acquired when the world has the patient on its device (the session records it), never by hand
+  acquire: null,
   anaesthesia: null,
   "alarm-response": null,
   "procedure-supply": null,

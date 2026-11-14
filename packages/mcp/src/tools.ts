@@ -127,6 +127,8 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   get_visible_objects: { title: "What is in view", ...READ_ONLY },
   get_room_info: { title: "Room information", ...READ_ONLY },
   get_action_feedback: { title: "Action feedback", ...READ_ONLY },
+  // asking a colleague changes only what the body knows (its memory), never the encounter
+  ask_whereabouts: { title: "Ask where something is", ...READ_ONLY },
   navigate_to: { title: "Walk to", ...RECORDS },
   approach_object: { title: "Approach", ...RECORDS },
   look_at: { title: "Look at", ...RECORDS },

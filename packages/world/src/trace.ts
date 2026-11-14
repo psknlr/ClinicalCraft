@@ -9,8 +9,11 @@
  *
  * `recordActionSpans` writes the spans of one world action: a root span
  * (`navigation` for navigate / approach / look_at / move_to, else
- * `interaction`) and children — `clinical_action` when a clinical tool ran,
- * `state_change` when the action committed physical changes.
+ * `interaction`; `data.belief` when the walk went where a thing was believed
+ * to be — audit P1-8; `data.receipt` when it handed over an item kept in
+ * custody or confirmed its receipt — audit P2-12) and children —
+ * `clinical_action` when a clinical tool ran, `state_change` when the action
+ * committed physical changes.
  */
 import type { ActorId, EntityId, EpisodeTrace, TraceSink, TraceSpan, TraceSpanKind, WorldActionRequest, WorldActionResult, WorldEvent } from "./contracts.js";
 
@@ -98,7 +101,7 @@ export class TraceRecorder implements TraceSink {
 export const NAVIGATION_OPERATIONS: readonly string[] = ["navigate", "approach", "look_at", "move_to"];
 
 /** Event types that are physical state changes (a `state_change` span). */
-const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "entity.state", "entity.moved", "item.held", "door.changed", "reservation.changed", "hygiene"];
+const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "entity.state", "entity.moved", "item.held", "item.handoff", "door.changed", "reservation.changed", "hygiene"];
 
 /** Timing of one action (injected clocks). */
 export interface ActionTiming {
@@ -120,6 +123,10 @@ export function recordActionSpans(sink: TraceSink, request: WorldActionRequest, 
   if (request.targetId) data.targetId = request.targetId;
   if (result.navigation) data.navigation = { length: result.navigation.length, travelSeconds: result.navigation.travelSeconds, replans: result.navigation.replans, arrivalError: result.navigation.arrivalError, ok: result.navigation.ok, ...(result.navigation.code ? { code: result.navigation.code } : {}) };
   if (result.elapsedSeconds !== undefined) data.elapsedSeconds = result.elapsedSeconds;
+  // a walk to where a thing was believed to be (audit P1-8): the stale belief and what was found there
+  if (result.belief) data.belief = { ...result.belief };
+  // who handed what to whom, when — and its confirmation by the receiver (audit P2-12)
+  if (result.receipt) data.receipt = { id: result.receipt.id, item: result.receipt.item, state: result.receipt.state, from: result.receipt.from, to: result.receipt.to, room: result.receipt.room, at: result.receipt.at, confirmedAt: result.receipt.confirmedAt };
   const root = sink.add({ parentId, kind: NAVIGATION_OPERATIONS.includes(request.operation) ? "navigation" : "interaction", name: request.operation, actorId: request.actorId, ...timing, worldVersion: result.worldVersion, ok, refs, data });
   const out = [root];
   if (result.clinical) {

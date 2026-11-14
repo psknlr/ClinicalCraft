@@ -22,7 +22,8 @@ export interface PendingEvent {
 export function pendingEvents(c: CaseDefinition, s: SessionState): PendingEvent[] {
   const out: PendingEvent[] = [];
   for (const o of s.orders) {
-    if (o.readyAt <= s.clock + 1e-9) continue;
+    // an order waiting for its acquisition (the patient at the device) is waiting on that, not on time
+    if (o.readyAt == null || o.readyAt <= s.clock + 1e-9) continue;
     const inv = c.investigations.find((x) => x.id === o.investigationId);
     out.push({ kind: "result", id: o.key, at: o.readyAt, name: inv?.name ?? o.investigationId });
   }

@@ -111,6 +111,64 @@ describe("care team · in its facility", () => {
   });
 });
 
+describe("care team · information a colleague holds (docs/TEAM.md §4.5)", () => {
+  const informScenario = (inform: Json, extra: Json = {}) => ({
+    id: "allergy-history",
+    name: L("Allergy history"),
+    summary: L("The triage nurse heard the allergy history; the surgeon has not asked."),
+    provenance: "authored",
+    inform: [inform],
+    relief: [{ staff: "triage", duties: ["inform"] }],
+    expect: { informed: true },
+    ...extra,
+  });
+  const good = { id: "allergies-held", history: "allergies", heldBy: "triage", for: "surgeon", blocks: "epi", when: { asked: "trigger" } };
+
+  it("a fact the case records, held by a member or relief colleague, for a member, holding up an intervention", () => {
+    expect(checkTeamDefinition(withTeam({ ...TEAM, scenarios: [informScenario(good)] }))).toEqual([]);
+  });
+
+  it("an unknown history item or intervention, a holder nobody knows, information for a stranger, an expectation with nothing to inform", () => {
+    const c = withTeam({
+      ...TEAM,
+      scenarios: [
+        informScenario({ ...good, history: "nope", heldBy: "ghost", for: "stranger", blocks: "nothing" }),
+        { ...TEAM.scenarios[0], id: "plain", expect: { informed: true } },
+        informScenario({ ...good, heldBy: "surgeon" }, { id: "self" }),
+      ],
+    });
+    const messages = checkTeamDefinition(c).map((i) => i.message);
+    expect(messages).toEqual(
+      expect.arrayContaining([
+        'unknown history item "nope" (the information is a fact the case records)',
+        '"ghost" is not a member or relief colleague who could hold it',
+        '"stranger" is not a member of the team',
+        'unknown intervention "nothing"',
+        'no information is needed in team scenario "plain" (no inform)',
+        '"surgeon" is not a member or relief colleague who could hold it',
+      ]),
+    );
+  });
+
+  it("the member who circulates may be posted in another room (she comes to the team's room); the others may not", () => {
+    const { f, catalogs } = facility();
+    const raw = structuredClone(f);
+    raw.staff.find((x) => x.id === "nurse-1")!.room = "bay-1";
+    expect(teamFacilityIssues(withTeam(), raw, catalogs)).toEqual([]);
+    raw.staff.find((x) => x.id === "nurse-2")!.room = "bay-1";
+    expect(teamFacilityIssues(withTeam(), raw, catalogs).map((i) => i.message)).toEqual(['"nurse-2" works in "bay-1", not in the team\'s room "consult"']);
+  });
+
+  it("relayed by the team, a history item is recorded as known to the clinician (`ask` via the team)", () => {
+    const c = withTeam();
+    const started = reduce(c, createSession(c), { type: "start" }).state;
+    const r = reduce(c, started, { type: "ask", itemId: "allergies", via: "team", by: "system" });
+    expect(r.rejected).toBeUndefined();
+    expect(r.state.asked).toContain("allergies");
+    expect(r.events).toContainEqual(expect.objectContaining({ type: "history.asked", itemId: "allergies", via: "team" }));
+  });
+});
+
 describe("care team · the scenario is chosen at start", () => {
   it("recorded as hidden state; an unknown one is refused", () => {
     const c = withTeam();

@@ -118,7 +118,7 @@ describe("S3: the spatial gate refuses a clinical act outside the acting body's 
     expect(checkClinicalScope({ role: "nurse" }, "order_test", "eeg", withTraces, "en").ok).toBe(false);
     expect(checkClinicalScope({ role: "clinician" }, "order_test", "eeg", withTraces, "en").ok).toBe(true);
     // porters fetch equipment and wheel patients to a study and back (EMBODIED §8, G8); the front desk only fetches
-    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment", "transport_patient"]);
+    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment", "deliver_item", "transport_patient"]);
     expect(SCOPE_OF_PRACTICE.receptionist.tasks).toEqual(["fetch_equipment"]);
     for (const role of ["nurse", "paramedic", "clinician", "attending"] as const) expect(SCOPE_OF_PRACTICE[role].tasks, role).toContain("transport_patient");
     expect(checkTaskScope({ role: "porter" }, "transport_patient", septic, "en").ok).toBe(true);

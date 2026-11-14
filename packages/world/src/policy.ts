@@ -9,7 +9,8 @@
  * | `ask_patient` (and the companion) | `near-patient` 3 m + line of sight |
  * | `examine` | `at-patient` 1.5 m; a finding needing capabilities beyond the personal kit: `bedside-provider` (those capabilities at the bedside + actor within 1.5 m of the patient) |
  * | `check_vitals` | `any-of`: `monitor-screen` (the patient's attached monitor, 6 m, line of sight from its own room — never through a window) · `at-patient` 1.5 m (observations by hand) · `at-provider` `records` (the chart) |
- * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`): `all-of` `patient-at-provider` · `at-provider` (the scanner or a console) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
+ * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`; `studyDevice`): wherever a clinician orders — `any-of` `at-patient` (the ward) · `at-provider` `records` (an order-entry terminal) · `at-provider` (the device or its console); its acquisition is a separate act (below) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
+ * | acquisition of an ordered study (`acquire`, EMBODIED §8.7) | a study done on the patient at a fixed device: `patient-at-provider` (the patient on the device) — the session records it when this holds; any other test: anywhere (acquired at the order) |
  * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise `at-provider` (the report at a console — never the patient) |
  * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
@@ -55,7 +56,7 @@
  * actor where it stood when checked; `ok`, `code` and `requirement` are
  * eager. A UI that only asks whether an act can be done here pays no flood.
  */
-import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition } from "@clinicalcraft/core";
+import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition, type Investigation } from "@clinicalcraft/core";
 import { RANGES, type ActionHint, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
 import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES, PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 import { ivAccessIntervention, ivAccessInSitu } from "./clinical.js";
@@ -112,6 +113,15 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
     this.performed = new Set(opts.patientPerformedCapabilities ?? PATIENT_PERFORMED_CAPABILITIES);
   }
 
+  /**
+   * The capabilities of the fixed device a study is done on the patient at (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT,
+   * MRI…) — empty when none: a mobile unit comes to the bed (`performedAt: "bedside"`), a record review, any other test.
+   */
+  studyDevice(inv: Pick<Investigation, "requires" | "performedAt">): string[] {
+    if (inv.performedAt === "bedside" || inv.performedAt === "records") return [];
+    return inv.requires.filter((r) => !kit.has(r) && this.onDevice.has(r));
+  }
+
   requirementFor(intent: ClinicalIntent, binding: EncounterBinding): SpatialRequirement {
     const c: CaseDefinition = binding.caseDef;
     const atPatient: SpatialRequirement = { kind: "at-patient", range: POLICY_RANGES.contact };
@@ -127,21 +137,30 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
       case "vitals":
         return { kind: "any-of", options: [{ kind: "monitor-screen", range: POLICY_RANGES.screen }, { kind: "at-patient", range: POLICY_RANGES.contact, why: "observations" }, chart] };
       case "order":
-      case "read": {
+      case "read":
+      case "acquire": {
         const inv = intent.investigationId ? c.investigations.find((x) => x.id === intent.investigationId) : undefined;
+        // the acquisition (EMBODIED §8.7): a study done on the patient at a fixed device needs them on it; anything
+        // else is acquired at the order
+        if (intent.kind === "acquire") {
+          const device = inv ? this.studyDevice(inv) : [];
+          return device.length ? { kind: "patient-at-provider", capabilities: device } : ANYWHERE;
+        }
         // a record review: an existing report retrieved from the chart — at a records terminal, or the notes at
         // the bedside; never a transport, a sample or a device, whatever `requires` says
         if (inv?.performedAt === "records") return { kind: "any-of", options: [chart, { kind: "at-patient", range: POLICY_RANGES.contact, why: "notes" }] };
         if (!inv || inv.requires.length === 0) return ANYWHERE;
         const caps = inv.requires.filter((r) => !kit.has(r));
         if (!caps.length) return atPatient;
-        // a study done on the patient at a fixed device, or a test the patient performs at a station: the patient is
-        // brought there (G8) — then ordered at the device or its console, the patient-performed one with them
-        const onPatient = inv.performedAt === "bedside" ? [] : caps.filter((r) => this.onDevice.has(r) || this.performed.has(r));
-        if (intent.kind === "order" && onPatient.length) {
-          const there: SpatialRequirement = { kind: "patient-at-provider", capabilities: onPatient };
-          const by: SpatialRequirement = onPatient.every((r) => this.performed.has(r)) ? { kind: "any-of", options: [atPatient, { kind: "at-provider", capabilities: caps }] } : { kind: "at-provider", capabilities: caps };
-          return { kind: "all-of", options: [there, by] };
+        // a study done on the patient at a fixed device: ordered wherever a clinician orders — at the patient (the
+        // ward), at an order-entry (records) terminal, at the device or its console; the patient goes there for the
+        // acquisition, not for the order
+        if (intent.kind === "order" && this.studyDevice(inv).length) return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps }] };
+        // a test the patient performs at a station: the patient is brought there (G8) — then ordered with them
+        const performed = inv.performedAt === "bedside" ? [] : caps.filter((r) => this.performed.has(r));
+        if (intent.kind === "order" && performed.length) {
+          const there: SpatialRequirement = { kind: "patient-at-provider", capabilities: performed };
+          return { kind: "all-of", options: [there, { kind: "any-of", options: [atPatient, { kind: "at-provider", capabilities: caps }] }] };
         }
         if (caps.every((r) => this.bedside.has(r))) {
           if (intent.kind === "read") return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps, fixedOnly: true, providerKinds: ["workstation"] }] };
@@ -221,6 +240,12 @@ export interface SpatialCheckerDeps {
   clinical: ClinicalView;
   /** In-flight device locks of the action bus (a device running someone's operation is busy). */
   busy?: (id: EntityId) => ActorId | null;
+  /**
+   * Where an actor believes a movable thing is when that is not where it is (EMBODIED §4, audit P1-8): the place it
+   * would walk to (`Perception.belief`), `null` for a thing it knows to be missing, `undefined` when it walks to the
+   * thing itself. Hints are ranked by it, as the walk that follows one would go.
+   */
+  believed?: (actor: ActorState, id: EntityId) => Placed | null | undefined;
 }
 
 const round2 = (v: number) => (Number.isFinite(v) ? Math.round(v * 100) / 100 : null);
@@ -649,7 +674,11 @@ export class SpatialChecker {
   }
 
   /** [tier, metres, id]: tier 0 = reachable (walking metres, other levels through the connectors), 1 = not computed, 2 = unreachable (straight-line metres). */
-  private rank(actor: ActorState, p: Placed): [number, number, string] {
+  private rank(actor: ActorState, truth: Placed): [number, number, string] {
+    // where the actor would walk to: where it believes the thing is (a thing it knows to be missing: last of all)
+    const believed = this.d.believed?.(actor, truth.id);
+    if (believed === null) return [3, Infinity, truth.id];
+    const p = believed ?? truth;
     const path = this.d.reach.pathDistance(actor, p);
     const straight = Math.hypot(p.position.x - actor.pose.x, p.position.z - actor.pose.z);
     if (path !== null && Number.isFinite(path)) return [0, path, p.id];

@@ -8,13 +8,15 @@
  * the facility's bedside capabilities (FACILITIES.md).
  *
  * `ordered`: the learner's words when the row was found by an order that
- * states a dose ("adrenaline 5 mg"). The row shows the dose read from them
- * and "Give" sends them as the action's `ordered`: the engine checks that dose
- * against the preset — one that differs is read back by the nurse and not
- * given (docs/PROTOCOL.md §3.2). Without it the row gives the preset it shows.
+ * states a dose ("adrenaline 5 mg") — the words that order this row's item
+ * (its own clause when they order several: "salbutamol 2.5 mg + ipratropium
+ * 250 micrograms"). The row shows the dose read from them and "Give" sends
+ * them as the action's `ordered`: the engine checks that dose against the
+ * preset — one that differs is read back by the nurse and not given
+ * (docs/PROTOCOL.md §3.2). Without it the row gives the preset it shows.
  */
-import { doseText, writtenOrder } from "@clinicalcraft/agent";
-import { readOrder, type Intervention, type WrittenOrder } from "@clinicalcraft/core";
+import { doseText, itemOrder } from "@clinicalcraft/agent";
+import { readOrder, type CaseDefinition, type Intervention, type WrittenOrder } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { missingCaps } from "../../app/stations.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -23,13 +25,14 @@ import { capList, riskBadge } from "./common.js";
 import { offered, onlyDistance } from "./verdicts.js";
 
 /**
- * The order a treatment search states (agent `writtenOrder`): its words and the dose read from them when they state
- * an amount ("adrenaline 5 mg", "肾上腺素0.5毫克肌注", "肌注肾上腺素五毫克") or a dose that cannot be read ("0。5mg", "1/2 mg",
- * "0.5–1 mg", "adrenaline 0.5" — the engine asks about it, never gives the preset instead) — the rows it finds give
- * it; else none (a search by name, or by route alone, chooses from the list and gives the preset shown).
+ * The order a treatment search states for one item it found (agent `itemOrder`: the words, or the clause that names the
+ * item when they order several) and the dose read from them, when they state an amount ("adrenaline 5 mg",
+ * "肾上腺素0.5毫克肌注", "肌注肾上腺素五毫克", a range "morphine 2–3 mg") or a dose that cannot be read ("0。5mg", "1/2 mg",
+ * "adrenaline 0.5" — the engine asks about it, never gives the preset instead) — the row gives it; else none (a search
+ * by name, or by route alone, chooses from the list and gives the preset shown).
  */
-export function searchOrder(text: string): WrittenOrder | undefined {
-  const written = writtenOrder({ query: text });
+export function searchOrder(c: CaseDefinition, text: string, interventionId: string, locale: string): WrittenOrder | undefined {
+  const written = itemOrder(c, { query: text }, interventionId, locale);
   return written && (written.dose?.amount != null || readOrder(written.text).unclear != null) ? written : undefined;
 }
 

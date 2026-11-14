@@ -75,7 +75,9 @@ describe("bench run", () => {
     for (const agent of ["reference", "scripted-llm"]) {
       const r = await run(["bench", "run", "--agent", agent, "--scenario", "perception-ecg-at-stemi-bedside,recovery-ecg-device-busy", "--category", "perception,recovery", "--seeds", "1-2", "--out", `out/${agent}`, "--traces", "--lang", "en"], box);
       expect(r.code, r.stderr).toBe(0);
-      expect(r.stdout).toContain(`${agent}: 4/4 runs succeeded (100.0 %)`);
+      // a control, never a model result; the denominators apart (audit 2026-11-12, P1-10)
+      expect(r.stdout).toContain(`${agent} (control): 4/4 runs succeeded (100.0 %)`);
+      expect(r.stdout).toContain("2 scenario(s) in 1 case(s) (most frequent: stemi-inferior-rv, 2 = 100.0 %); dev 2 · held-out 0; 0 run(s) skipped");
       const report = JSON.parse(readFileSync(join(box.cwd, "out", agent, "bench-report.json"), "utf8")) as { agent: { kind: string }; seeds: number[]; runs: unknown[]; environment: { node: string; cpus: number } };
       expect(report).toMatchObject({ agent: { kind: agent }, seeds: [1, 2] });
       expect(report.runs).toHaveLength(4);
@@ -83,6 +85,14 @@ describe("bench run", () => {
       expect(readFileSync(join(box.cwd, "out", agent, "bench-report.md"), "utf8")).toContain("Wilson 95 %");
       expect(existsSync(join(box.cwd, "out", agent, "traces", "recovery-ecg-device-busy.s2.jsonl"))).toBe(true);
     }
+  });
+
+  it("the scripted control on the held-out split: no runs, reported as such — never 0 % below what is required (re-review)", { timeout: T }, async () => {
+    const box = sandbox();
+    const r = await run(["bench", "run", "--agent", "scripted-llm", "--split", "test", "--seeds", "1", "--out", "out/held", "--lang", "en"], box);
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stdout).toContain("scripted-llm (control): 0/0 runs succeeded (no runs (n = 0): no rate is measured)");
+    expect(r.stderr).not.toContain("below the required");
   });
 
   it("usage errors: seeds, scenario, category, agent", { timeout: T }, async () => {

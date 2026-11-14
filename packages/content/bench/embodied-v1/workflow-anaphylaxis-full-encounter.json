@@ -1,0 +1,71 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-anaphylaxis-full-encounter",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "完整的具身严重过敏反应接诊：从花园到急诊",
+    "en": "Full embodied anaphylaxis encounter: from the garden to the ED"
+  },
+  "instruction": {
+    "zh-CN": "从花园一直处理到急诊处置：完成每一个学习目标，然后结束病例。",
+    "en": "Manage this patient from the garden to her disposition in the emergency department: complete every objective, then finish the case."
+  },
+  "caseId": "anaphylaxis-garden",
+  "locale": "zh-CN",
+  "split": "test",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "objective": "obj-recognise"
+          },
+          {
+            "objective": "obj-first-line"
+          },
+          {
+            "objective": "obj-support"
+          },
+          {
+            "objective": "obj-secondary"
+          },
+          {
+            "objective": "obj-disposition"
+          }
+        ]
+      }
+    },
+    {
+      "caseFinished": true
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 400,
+    "maxTurns": 10,
+    "timeoutMs": 600000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "solve-case"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": []
+  },
+  "tags": [
+    "time-critical"
+  ]
+}

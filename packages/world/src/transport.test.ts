@@ -10,6 +10,7 @@ import { PRIMARY_ACTOR, type PatientPlace, type WorldEvent } from "./contracts.j
 import { loadFacility } from "./__fixtures__/content.js";
 import { makeWorld, steppingMover, type TestWorld } from "./__fixtures__/world.js";
 import { createWorldRuntime } from "./runtime.js";
+import { acquisitionStaff } from "./capabilities.js";
 
 /** Walk the clinician to the patient's side. */
 async function toPatient(w: TestWorld, actorId = PRIMARY_ACTOR) {
@@ -463,11 +464,17 @@ describe("the patient's posture and body follow clinical state", () => {
   });
 });
 
-describe("the policy: a study done on the patient at a fixed device needs the patient there (G8)", () => {
-  it("a CT is refused at the console while the patient is in the ward: the hint takes the patient there", async () => {
+describe("the policy: a study done on the patient at a fixed device needs the patient there for the scan (G8, audit P1-7)", () => {
+  const ORDER = { tool: "order_test", kind: "order", investigationId: "ctpa" } as const;
+  const ACQUIRE = { tool: "order_test", kind: "acquire", investigationId: "ctpa" } as const;
+
+  it("a CT is ordered from the ward or at the console while the patient is in the ward; the scan waits for them on the scanner, and its hint takes them there", async () => {
     const w = makeWorld("pulmonary-embolism-postop");
+    await toPatient(w);
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER)).toMatchObject({ ok: true, satisfiedBy: [w.patientId] });
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
-    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER)).toMatchObject({ ok: true, satisfiedBy: ["eq:radiology-console"] });
+    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE);
     expect(check.ok).toBe(false);
     if (check.ok) return;
     expect(check.reason).toBe("patient-not-at-provider");
@@ -476,29 +483,64 @@ describe("the policy: a study done on the patient at a fixed device needs the pa
     expect(check.message).not.toMatch(/transport_patient|move_to/);
   });
 
-  it("with the patient on the scanner: ordered at the scanner or at the console; the report is read without the patient", async () => {
+  it("with the patient on the scanner: the scan can be done there (the scanner), the order placed anywhere; the report is read without the patient", async () => {
     const w = makeWorld("pulmonary-embolism-postop");
     await toPatient(w);
     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
-    const atScanner = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
-    expect(atScanner.ok && atScanner.satisfiedBy.includes("eq:ct-scanner")).toBe(true);
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE)).toMatchObject({ ok: true, satisfiedBy: ["eq:ct-scanner"] });
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER).ok).toBe(true);
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
-    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" }).ok).toBe(true);
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ORDER).ok).toBe(true);
+    // the acquisition is about the patient, not where the clinician stands
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE).ok).toBe(true);
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: w.patientId } });
     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home" } });
+    expect(w.runtime.checkSpatial(PRIMARY_ACTOR, ACQUIRE).ok).toBe(false);
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
     expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "read_result", kind: "read", investigationId: "ctpa" }).ok).toBe(true);
   });
 
-  it("satisfiedBy names first what the clinician acts through where they stand, then the device the patient is at", async () => {
+  it("each journey is recorded: who took the patient, from where to where, departure and arrival, no monitor unless one travelled", async () => {
     const w = makeWorld("pulmonary-embolism-postop");
     await toPatient(w);
     await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
-    await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:radiology-console" } });
-    const atConsole = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ctpa" });
-    // a consumer operating the first device (the offline autopilot, the bench reference) orders at the console it
-    // stands at instead of walking on to the scanner
-    expect(atConsole).toMatchObject({ ok: true, satisfiedBy: ["eq:radiology-console", "eq:ct-scanner"] });
+    await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home" } });
+    const legs = w.runtime.snapshot().entities[w.patientId]?.patient?.legs ?? [];
+    expect(legs).toHaveLength(2);
+    expect(legs[0]).toMatchObject({ by: PRIMARY_ACTOR, role: "clinician", from: { slot: "ward-1", room: "ward" }, to: { slot: null, provider: "eq:ct-scanner", room: "rad-ct" }, monitor: null, status: "arrived" });
+    expect(legs[1]).toMatchObject({ by: PRIMARY_ACTOR, from: { provider: "eq:ct-scanner" }, to: { slot: "ward-1", room: "ward" }, monitor: null, status: "arrived" });
+    for (const leg of legs) expect(leg.arrivedAt).toBeGreaterThanOrEqual(leg.departedAt);
+    // a transfer by the team: nobody named, no time of its own
+    w.runtime.relocatePatient({ slot: "icu-1" });
+    const transfer = w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1);
+    expect(transfer).toMatchObject({ by: null, role: null, to: { slot: "icu-1" }, monitor: null });
+    expect(transfer!.arrivedAt).toBe(transfer!.departedAt);
+  });
+
+  it("a monitor travels with the patient when asked: the portable one at the bedside goes along and waits beside them; none at the bedside — the transport does not set off", async () => {
+    const w = makeWorld("pulmonary-embolism-postop");
+    await toPatient(w);
+    // the ward's defibrillator (its monitor) stands at the bedside: it goes on the bed for the journey
+    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
+    expect(r.status, r.message).toBe("completed");
+    expect(r.message).toMatch(/monitoring/);
+    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner" });
+    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
+    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: "eq:ward-defibrillator", to: { provider: "eq:ct-scanner" } });
+    // and back with it, named
+    const back = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: "eq:ward-defibrillator" } });
+    expect(back.status, back.message).toBe("completed");
+    expect(w.runtime.atBedside("eq:ward-defibrillator")).toBe(true);
+    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: "eq:ward-defibrillator", to: { slot: "ward-1" } });
+    // to the CT without it: at the scanner no portable monitor stands by, so a monitored journey back cannot set off
+    expect((await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } })).status).toBe("completed");
+    const refused = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: true } });
+    expect(refused).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(refused.message).toMatch(/portable monitor/);
+    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner" });
+    const named = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home", monitor: "eq:ward-defibrillator" } });
+    expect(named).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
   });
 
   it("a peak flow is no longer done at the triage station with the child left in the resus bay", async () => {
@@ -536,5 +578,15 @@ describe("the policy: a study done on the patient at a fixed device needs the pa
     w.runtime.relocatePatient({ capability: "fluoroscopy" });
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:cathlab-c-arm" } });
     expect(w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "coronary-angiography" }).ok).toBe(true);
+  });
+});
+
+describe("who does a study at its device (EMBODIED §8.7)", () => {
+  it("a radiographer at a scanner, an endoscopist at a tower, an interventional cardiologist for a coronary procedure at a C-arm (re-review)", () => {
+    expect(acquisitionStaff(["ct"], { category: "imaging", words: ["ctpa", "CT pulmonary angiography"] })).toBe("radiographer");
+    expect(acquisitionStaff(["endoscopy"])).toBe("endoscopist");
+    expect(acquisitionStaff(["fluoroscopy"], { category: "procedure", words: ["coronary-angiography", "Coronary angiography (primary PCI)", "冠状动脉造影（直接PCI）"] })).toBe("interventional-cardiologist");
+    // a C-arm's imaging that is no procedure on the heart's vessels: the radiographer
+    expect(acquisitionStaff(["fluoroscopy"], { category: "imaging", words: ["barium swallow"] })).toBe("radiographer");
   });
 });

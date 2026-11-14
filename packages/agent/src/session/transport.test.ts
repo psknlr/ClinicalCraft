@@ -6,7 +6,7 @@
  * charged), no such place in the facility, the posture an intervention authors, delegation sentences in words.
  */
 import { describe, expect, it } from "vitest";
-import { type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
+import { assess, evaluate, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal, type WorldActionResult } from "@clinicalcraft/world";
 import { builtinContent, command, makeEmbodiedSession } from "../__fixtures__/embodied.js";
 import { makeSession, msgsOf, type TestSession } from "../__fixtures__/harness.js";
@@ -49,34 +49,150 @@ describe("transport_patient: a learner tool", () => {
 });
 
 describe("a CTPA: the patient taken to the scanner and back (PE, general hospital)", () => {
-  it("refused in the ward with the way (and the tool) to bring the patient; wheeled there (travel charged once), ordered at the scanner, wheeled back", async () => {
+  it("ordered at the bedside — not done until she is on the scanner (audit P1-7); wheeled there (travel charged once): done on arrival; wheeled back", async () => {
     const transcript = new MemoryTranscript();
     const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", transcript, settingsPatch: { approvalMode: "bypass" } });
     await t.session.run({ type: "clinical_action", action: { type: "start" } });
     const w = t.session.world()!;
-    const refused = await command(t, "order", "ctpa");
-    expect(refused.ok).toBe(false);
-    // the learner sentence has no tool id; the model line says what to call there
-    expect(refused.text).toMatch(/take the patient there/i);
-    expect(refused.text).toMatch(/transport_patient \{"destination":"eq:ct-scanner"\}/);
     // away from the patient: refused with the way to them
     const away = await command(t, "transport", "eq:ct-scanner");
     expect(away.ok).toBe(false);
     expect(w.patientPlace()).toMatchObject({ slot: "ward-1" });
     expect((await walk(t, { kind: "interact", id: "patient:ward-1" })).status).toBe("completed");
+    // ordered from the ward: recorded with its device, not done — the learner sentence has no tool id, the model line
+    // says what to call there
+    const ordered = await command(t, "order", "ctpa");
+    expect(ordered.ok, ordered.text).toBe(true);
+    expect(ordered.text.split("\n")[0]).toMatch(/Not done yet — the patient must go to a CT scanner/);
+    expect(ordered.text.split("\n")[0]).not.toMatch(/transport_patient|eq:/);
+    expect(ordered.text).toMatch(/transport_patient \{"destination":"eq:ct-scanner"\}/);
+    const order = () => t.session.state.orders.find((o) => o.investigationId === "ctpa")!;
+    expect(order()).toMatchObject({ modality: ["ct"], by: "learner" });
+    expect(order().acquired).toBeUndefined();
+    const listed = await command(t, "results");
+    expect(listed.text).toMatch(/ordered — the patient must go to a CT scanner/);
     const before = travel(transcript).length;
     const there = await command(t, "transport", "eq:ct-scanner");
     expect(there.ok, there.text).toBe(true);
     expect(there.text).toMatch(/CT/);
     expect(travel(transcript).length).toBe(before + 1);
     expect(w.patientPlace()).toMatchObject({ provider: "eq:ct-scanner", posture: "lying", trolley: "eq:ward-bed-1" });
-    const ordered = await command(t, "order", "ctpa");
-    expect(ordered.ok, ordered.text).toBe(true);
+    // done on arrival, by the department, at the scanner: the result's clock starts there
+    expect(order().acquired).toMatchObject({ at: t.session.state.clock, collector: "radiographer", where: "eq:ct-scanner" });
+    expect(order().readyAt).toBe(order().acquired!.at + t.session.caseDef.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
+    const acquire = transcript.ofType("action").map((i) => i.payload.action).find((a) => a.type === "acquire");
+    expect(acquire).toMatchObject({ type: "acquire", investigationId: "ctpa", by: "system" });
     const back = await command(t, "transport", "home");
     expect(back.ok, back.text).toBe(true);
     expect(w.patientPlace()).toMatchObject({ slot: "ward-1", provider: null });
     // the patient's monitor follows the patient
     expect(w.patientMonitor()).toBe("eq:ward-monitor-1");
+    // a learner never enters an acquisition
+    const typed = await t.session.run({ type: "clinical_action", action: { type: "acquire", investigationId: "ctpa" } });
+    expect(msgsOf(typed, "error")[0]).toMatchObject({ code: "permission_denied" });
+    await t.session.close();
+  });
+
+  it("ordered with the patient already on the scanner: done at once; text mode keeps the acquisition implied at the order", async () => {
+    const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await walk(t, { kind: "interact", id: "patient:ward-1" });
+    expect((await command(t, "transport", "eq:ct-scanner")).ok).toBe(true);
+    const ordered = await command(t, "order", "ctpa");
+    expect(ordered.ok, ordered.text).toBe(true);
+    // done as the order arrives — she is on the table: at the order's minute, released a turnaround later (as an order
+    // in text mode)
+    const o = t.session.state.orders.find((x) => x.investigationId === "ctpa")!;
+    expect(o.acquired).toMatchObject({ at: o.orderedAt, where: "eq:ct-scanner", collector: "radiographer" });
+    expect(o.acquired!.seq).toBe(o.seq! + 1);
+    expect(o.readyAt).toBe(o.orderedAt + t.session.caseDef.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
+    await t.session.close();
+    const text = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", clinical: true, settingsPatch: { approvalMode: "bypass" } });
+    await text.session.run({ type: "clinical_action", action: { type: "start" } });
+    expect((await command(text, "order", "ctpa")).ok).toBe(true);
+    const implied = text.session.state.orders.find((x) => x.investigationId === "ctpa")!;
+    expect(implied.modality).toBeUndefined();
+    expect(implied.acquired).toMatchObject({ implied: true, at: implied.orderedAt });
+    await text.session.close();
+  });
+
+  it("the audit's replay (P1-7): ordered at minute 1, neither done nor released at minute 30 on the ward; then each stage recorded, in order", async () => {
+    const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", settingsPatch: { approvalMode: "bypass" } });
+    const c = t.session.caseDef;
+    const w = t.session.world()!;
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    expect((await walk(t, { kind: "interact", id: "patient:ward-1" })).status).toBe("completed");
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 1 - t.session.state.clock } });
+    expect(t.session.state.clock).toBe(1);
+    expect((await command(t, "order", "ctpa")).ok).toBe(true);
+    const order = () => t.session.state.orders.find((o) => o.investigationId === "ctpa")!;
+    expect(order()).toMatchObject({ orderedAt: 1, by: "learner", modality: ["ct"] });
+    expect((await command(t, "give", "monitoring")).ok).toBe(true);
+    // the patient stays on the ward: at minute 30 nothing is done, nothing released, nothing to read at the console
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 30 - t.session.state.clock } });
+    expect(t.session.state.clock).toBe(30);
+    expect(w.patientPlace()).toMatchObject({ slot: "ward-1" });
+    expect(order().acquired).toBeUndefined();
+    expect(order().readyAt).toBeUndefined();
+    expect((await command(t, "results")).text).toMatch(/ordered — the patient must go to a CT scanner/);
+    // read at the bedside: the study is not done — said there, never "go to the console" (re-review)
+    const early = await command(t, "read", "ctpa");
+    expect(early.ok).toBe(false);
+    expect(early.text).toMatch(/has been ordered but not done: the patient must go to a CT scanner/);
+    expect(early.text).not.toMatch(/Radiology Order & Reading Console/);
+    expect((await walk(t, { kind: "interact", id: "eq:radiology-console" })).status).toBe("completed");
+    const read = await command(t, "read", "ctpa");
+    expect(read.ok).toBe(false);
+    expect(read.text).toMatch(/has been ordered but not done: the patient must go to a CT scanner/);
+    expect(w.patientPlace()).toMatchObject({ slot: "ward-1" });
+    expect(order().acquired).toBeUndefined();
+    const report = assess(c, t.session.state).investigations;
+    expect(report.essentialMissing).toContain("ctpa");
+    expect(report.notAcquired).toEqual(["ctpa@ward"]);
+    expect(evaluate(c, t.session.state, { ordered: "ctpa" })).toBe(false);
+    // there and back with the portable monitor at the bedside: done on arrival, released a turnaround later
+    expect((await walk(t, { kind: "interact", id: "patient:ward-1" })).status).toBe("completed");
+    expect((await command(t, "transport", "eq:ct-scanner monitor")).ok).toBe(true);
+    const there = w.snapshot().entities["patient:ward-1"]?.patient?.legs?.at(-1);
+    expect(there).toMatchObject({ by: PRIMARY_ACTOR, role: "clinician", to: { provider: "eq:ct-scanner" }, monitor: "eq:ward-defibrillator", status: "arrived" });
+    expect(order().acquired).toMatchObject({ at: there!.arrivedAt, collector: "radiographer", where: "eq:ct-scanner" });
+    expect(order().readyAt).toBe(there!.arrivedAt + c.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
+    expect((await command(t, "transport", "home monitor")).ok).toBe(true);
+    expect(w.patientPlace()).toMatchObject({ slot: "ward-1" });
+    // the review at the console once released, then the resulting action
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: order().readyAt! - t.session.state.clock } });
+    expect((await walk(t, { kind: "interact", id: "eq:radiology-console" })).status).toBe("completed");
+    expect((await command(t, "read", "ctpa")).ok).toBe(true);
+    expect((await command(t, "give", "consult-pert")).ok).toBe(true);
+    const o = order();
+    expect(o.reviewed).toMatchObject({ by: "learner" });
+    expect(o.next).toMatchObject({ type: "intervene", id: "consult-pert" });
+    const stages = [o.orderedAt, there!.departedAt, there!.arrivedAt, o.acquired!.at, o.readyAt!, o.reviewed!.at, o.next!.at];
+    expect([...stages].sort((a, b) => a - b)).toEqual(stages);
+    expect(o.readyAt! - o.acquired!.at).toBe(30);
+    const seqs = [o.seq!, o.acquired!.seq, o.reviewed!.seq, o.next!.seq];
+    expect([...seqs].sort((a, b) => a - b)).toEqual(seqs);
+    await t.session.close();
+  });
+
+  it("a caller's modality is never taken: text mode records none, in-world the world's (re-review); a team relay is never a learner's", async () => {
+    const text = await makeSession({ caseDef: (await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop" })).session.caseDef, settingsPatch: { approvalMode: "bypass" } });
+    await text.session.run({ type: "clinical_action", action: { type: "start" } });
+    await text.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ctpa", modality: ["ct"] } });
+    const plain = text.session.state.orders.find((o) => o.investigationId === "ctpa")!;
+    expect(plain.modality).toBeUndefined();
+    expect(plain.readyAt).toBeDefined();
+    await text.session.close();
+    const t = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await walk(t, { kind: "interact", id: "patient:ward-1" });
+    await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ctpa", modality: ["mri"] } });
+    expect(t.session.state.orders.find((o) => o.investigationId === "ctpa")!.modality).toEqual(["ct"]);
+    // what a colleague passed on is the session's to record
+    const item = t.session.caseDef.history[0]!.id;
+    const relay = await t.session.run({ type: "clinical_action", action: { type: "ask", itemId: item, via: "team" } });
+    expect(msgsOf(relay, "error")[0]).toMatchObject({ code: "permission_denied" });
+    expect(t.session.state.asked).not.toContain(item);
     await t.session.close();
   });
 

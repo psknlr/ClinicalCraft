@@ -11,7 +11,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadContent } from "@clinicalcraft/agent/node";
-import { BENCH_CATEGORIES, BENCH_SCENARIO_SCHEMA_ID, parseScenario, type BenchScenario } from "./schema.js";
+import { scenarioCoverage, suiteCoverage } from "./coverage.js";
+import { BENCH_CATEGORIES, BENCH_SCENARIO_SCHEMA_ID, COVERAGE_KINDS, parseScenario, type BenchScenario } from "./schema.js";
 import { benchRoot, DEFAULT_SUITE, listSuites, loadSuite, scenarioRefIssues } from "./suites.js";
 
 const content = await loadContent({ dirs: [] });
@@ -40,10 +41,11 @@ describe(`suite ${DEFAULT_SUITE}`, () => {
     expect(s.suite).toBe(DEFAULT_SUITE);
     expect(raw.$schema).toBe("../../schemas/bench-scenario.schema.json");
     expect(scenarioRefIssues(s, content)).toEqual([]);
-    // Bilingual task text; a reference solution and a scripted plan.
+    // Bilingual task text; a reference solution; a scripted plan — none for a held-out (test) scenario.
     for (const text of [s.title, s.instruction]) expect(typeof text === "object" && text["zh-CN"] && text.en, s.id).toBeTruthy();
     expect(s.reference.steps.length).toBeGreaterThan(0);
-    expect(s.scripted.plan.length).toBeGreaterThan(0);
+    if (s.split === "test") expect(s.scripted.plan).toEqual([]);
+    else expect(s.scripted.plan.length).toBeGreaterThan(0);
   });
 
   it("loads without issues: ≥ 24 scenarios, unique ids, every category, both languages", () => {
@@ -82,6 +84,38 @@ describe(`suite ${DEFAULT_SUITE}`, () => {
     expect(byId.get("safety-deny-rule-via-device")!.setup.permissions?.deny?.length).toBeGreaterThan(0);
   });
 
+  it("has complete diagnostic-and-treatment sequences beyond the STEMI case, in both splits (audit 2026-11-12, P1-10)", () => {
+    // a whole case worked from arrival to disposition: every objective, the case finished
+    const full = suite.scenarios.filter((s) => s.reference.steps.some((x) => x.op === "solve-case") && s.predicates.some((p) => "caseFinished" in p));
+    const others = full.filter((s) => s.caseId !== "stemi-inferior-rv");
+    expect(others.length).toBeGreaterThanOrEqual(3);
+    expect(new Set(others.map((s) => s.caseId)).size).toBeGreaterThanOrEqual(2);
+    for (const s of full) {
+      const objectives = content.cases.get(s.caseId)!.def.objectives.map((o) => o.id);
+      const needed = s.predicates.flatMap((p) => ("clinical" in p && "all" in p.clinical ? p.clinical.all.flatMap((c) => ("objective" in c ? [c.objective] : [])) : []));
+      expect(needed.sort(), s.id).toEqual([...objectives].sort());
+    }
+    // a held-out split: scenarios no tuning and no scripted plan may use
+    const heldOut = suite.scenarios.filter((s) => s.split === "test");
+    expect(heldOut.length).toBeGreaterThanOrEqual(2);
+    expect(heldOut.every((s) => s.scripted.plan.length === 0)).toBe(true);
+    expect(full.filter((s) => s.split === "dev").length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("reports its coverage: case and scenario denominators apart, history-taking, time-critical and team scenarios", () => {
+    const cov = suiteCoverage(suite.scenarios, [], (id) => content.cases.get(id)?.def ?? null);
+    expect(cov.scenarios).toBe(suite.scenarios.length);
+    expect(cov.cases).toBe(suiteCaseIds.length);
+    expect(cov.perCase.reduce((n, c) => n + c.scenarios, 0)).toBe(cov.scenarios);
+    expect(cov.mostFrequent?.caseId).toBe("stemi-inferior-rv");
+    expect(cov.splits.dev + cov.splits.test).toBe(cov.scenarios);
+    for (const kind of COVERAGE_KINDS) expect(cov.byKind.find((k) => k.kind === kind)!.scenarios.length, kind).toBeGreaterThan(0);
+    const kinds = (id: string) => scenarioCoverage(suite.scenarios.find((s) => s.id === id)!, content.cases.get(suite.scenarios.find((s) => s.id === id)!.caseId)!.def);
+    expect(kinds("workflow-sepsis-full-encounter")).toEqual(["history-taking", "time-critical"]);
+    expect(kinds("multi-agent-delegate-ecg")).toContain("team");
+    expect(kinds("perception-ecg-at-stemi-bedside")).toEqual([]);
+  });
+
   it("has clinical workflows covering exactly its fixed ten-case cohort", () => {
     const workflows = suite.scenarios.filter((s) => s.category === "clinical-workflow");
     expect([...new Set(workflows.map((s) => s.caseId))].sort()).toEqual(suiteCaseIds);
@@ -115,6 +149,10 @@ describe("schema rules", () => {
     expect(issues({ reference: { steps: [{ op: "answer" }] } }).join()).toMatch(/exactly one of `entity` and `from`/);
     expect(issues({ reference: { steps: [{ op: "clinical", action: { type: "start" } }] } }).join()).toMatch(/starts the case/);
     expect(issues({ extra: true }).join()).toMatch(/Unrecognized key/);
+    // a held-out scenario carries no scripted plan (nothing tuned may use it)
+    expect(issues({ split: "test" }).join()).toMatch(/held-out/);
+    expect(issues({ split: "test", scripted: { plan: [] } })).toEqual([]);
+    expect(issues({ split: "holdout" }).join()).toMatch(/split/);
   });
 
   it("submit_answer exists only in answer tasks", () => {

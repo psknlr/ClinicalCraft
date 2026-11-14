@@ -1,8 +1,9 @@
 /**
  * Patient transport in the 3D world (review G8, docs/EMBODIED.md §8) and truthful posture (G12): in the
- * general hospital, the post-operative PE patient is wheeled on her ward bed to the CT scanner — the bed is
- * pushed in front of the avatar with her lying on it, then drawn where the world parks it, her on the scanner
- * table — the CTPA is ordered there, and she is wheeled back to her bed space. Sitting her up (an authored
+ * general hospital, the CTPA is ordered at the post-operative PE patient's bedside — not done until she is on
+ * the scanner (§8.7) —, she is wheeled on her ward bed to the CT scanner — the bed is pushed in front of the
+ * avatar with her lying on it, then drawn where the world parks it, her on the scanner table, where the scan is
+ * done —, and she is wheeled back to her bed space. Sitting her up (an authored
  * `posture`) changes the posture of the drawn patient. Assertions read the authoritative state (__QA__: the
  * world model, the renderer's records), not the pixels.
  */
@@ -25,17 +26,21 @@ const drawnBed = (page: Page) =>
 test.describe("patient transport (en)", () => {
   test.use({ locale: "en-US" });
 
-  test("(k) PE: the patient NPC is wheeled on her bed to the CT scanner, the CTPA ordered there, and wheeled back", async ({ page }) => {
+  test("(k) PE: the CTPA ordered at the bedside, the patient NPC wheeled on her bed to the CT scanner for it, and wheeled back", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await freshStart(page);
     await enterCase(page, CASE);
     await embodiedSetup(page, { bypassApprovals: true });
-    // the CTPA is refused in the ward: the world says to take her there
+    // the CTPA is ordered at her bedside; the scan waits for her on the scanner: the world says to take her there
     await toPatientSide(page);
+    await page.evaluate(() => (window as any).__QA__.act({ type: "order", investigationId: "ctpa" }));
+    const ctpa = () => page.evaluate(() => (window as any).__QA__.session.state.orders.find((o: any) => o.investigationId === "ctpa") ?? null);
+    await expect.poll(async () => (await ctpa())?.modality ?? null, { timeout: 60_000 }).toEqual(["ct"]);
+    expect((await ctpa())?.acquired ?? null).toBeNull();
     const refused = await page.evaluate(() => {
       const w = (window as any).__QA__.worldModel;
-      const c = w.checkSpatial("actor:clinician", { tool: "order_test", kind: "order", investigationId: "ctpa" });
+      const c = w.checkSpatial("actor:clinician", { tool: "order_test", kind: "acquire", investigationId: "ctpa" });
       return { ok: c.ok, reason: c.reason, then: c.hint?.then ?? null };
     });
     expect(refused).toEqual({ ok: false, reason: "patient-not-at-provider", then: { operation: "transport_patient", targetId: PATIENT, parameters: { destination: "eq:ct-scanner" } } });
@@ -66,10 +71,9 @@ test.describe("patient transport (en)", () => {
     await placeAvatar(page, atCt.x + 2.6, atCt.z + 3.2, { x: atCt.x, z: atCt.z });
     await shot(page, "transport-at-ct");
 
-    // the CTPA, ordered with her on the table (the learner's act: a short step if needed)
+    // the scan was done on arrival, on the scanner: its result is released a turnaround later
+    expect((await ctpa())?.acquired).toMatchObject({ where: "eq:ct-scanner", collector: "radiographer" });
     await toPatientSide(page);
-    await page.evaluate(() => (window as any).__QA__.act({ type: "order", investigationId: "ctpa" }));
-    await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.orders.map((o: any) => o.investigationId)), { timeout: 60_000 }).toContain("ctpa");
 
     // and back to her bed space: the bed goes home with her on it
     const back = await page.evaluate((patient) => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: patient, parameters: { destination: "home" } }), PATIENT);
