@@ -22,10 +22,10 @@ record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then independent review rounds 1, 2 and 3 (AI-assisted, all 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-11-14), then independent review rounds 1, 2, 3 and 4 (AI-assisted, all 2026-11-14; see the changelog); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric emergency physician or clinical toxicologist review it before teaching use (see "To verify") |
 | the patient | a 9-year-old boy (9 years 3 months, 36 kg), awake but listless, who says a few words himself; a parent of unrecorded sex gives the history |
 | phases | `arrival` 到院：服药后约四小时 / Arrival → `results` 入院化验结果回报 / Admission results back → `two-hours` 入院约两小时 / About two hours after admission → `course` 治疗过程中 / Later in his treatment → `outcome` 住院经过与随访 / Hospital course and follow-up — all one-way, none learner-switchable |
-| content | 24 history items (12 recorded facts — `blackout` also says what is not recorded —, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 85 matcher test utterances |
+| content | 24 history items (12 recorded facts — `blackout` also says what is not recorded —, 1 labelled teaching device, 11 unknown; 8 required) · 7 exam findings (6 on admission, 1 at two hours) · 8 investigations (2 record reviews; 3 orderable tests with no recorded result) · 14 interventions (5 harmful — 3 `critical: true`, 2 `critical: false`) · 5 decisions · 6 objectives · 15 rubric items (14 deterministic, total weight 36, + 1 examiner-judged) · 99 matcher test utterances |
 | what the learner can do | take the history from the parent and the boy; examine him; order an ECG, a bedside glucose, the cholinesterase and electrolytes (staged: back in the next phase), a blood gas and a chest film (no result recorded); read the observation chart and, at the end, the hospital-course record; monitor, cannulate, give atropine and fluids, call the poisons service, arrange a monitored bed, stop the drug, report the error and teach back; answer five decisions |
 
 ## Learning outcomes
@@ -179,7 +179,7 @@ No key is the uniquely longest option of its decision in either language (strict
 | `rb-discharge` | management | 2 | decision 5 right first time |
 | `rb-communication` | communication | 1 | examiner-judged (Calgary–Cambridge; teach-back; no promise beyond the record) — not in the deterministic total |
 
-### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14; re-measured after review rounds 2 and 3, unchanged)
+### How wrong choices score (measured with core `reduce`/`assess` on 2026-11-14; re-measured after review rounds 2, 3 and 4, unchanged)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -376,7 +376,10 @@ lead set is not recorded.
   deny a brief faint that 1.0.0 does not mention). Questions about fainting, passing out or being unconscious (晕过去,
   昏过去, 不省人事) reach a separate item, `blackout`, in which the parent says there was no coma and that a briefer
   black-out is not known (review round 2: until then those questions reached `associated`, whose answer opened with a
-  blanket "No —" / "都没有").
+  blanket "No —" / "都没有"). Every answer that states these negatives is bounded by the tablets in both languages ("since
+  the tablets" / 吃药以后): review round 4 found the Chinese `associated` answer ("没抽过，没昏迷过，没出疹子，也没拉肚子") and
+  both `blackout` answers ("He hasn't been in a coma." / "昏迷是没有的") without the bound, so 他以前抽过风吗？ or "Has he ever
+  fainted?" got a lifelong negative.
 
 **Privacy.** Pseudonymous patient (魏清和 / Wei Qinghe, unique in the library and distinct from the cmcr-20 cases);
 an unnamed parent; no hospitals, places, dates or identifiers; relative time only. No figure of the report is approved
@@ -392,7 +395,8 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
   timing; `medicine-taken` yields to the bottle ("bring", 带来, 还剩), the purpose and what is left, and (review round 1)
   to regular medicines ("regular", 平时), care before arrival ("before coming", 来之前), how the dose was given ("written",
   "label", 写在, 口头) and what happened afterwards ("what happened after", "after he took"); `clinic-visit` yields to
-  "still"/"now"; `regular-medicines` yields to neostigmine questions; `associated` (fits) yields to "fit and well".
+  "still"/"now"; `regular-medicines` yields to neostigmine questions; `associated` (fits) yields to "fit and well" and,
+  in Chinese, to questions about his earlier life or usual habits (以前, 平时, 容易: review round 4).
 - Review round 1 probed 117 further natural questions and examination requests (en and zh-CN, `arrival` and
   `two-hours`): 116 reach the intended item; "How did you give him the medicine?" reaches the dose story
   (`medicine-taken`), an acceptable answer.
@@ -425,6 +429,31 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
   unmonitored bed), and negated orders (no charcoal, 不要洗胃, 暂时不要出院, 不要再吃新斯的明了) withhold. Round 1's and round 2's probe
   sets give the same results as before. Glycopyrrolate (which the FDA label names beside atropine for muscarinic
   effects) and oxygen are not offered as acts: an order for either is not given.
+- Review round 4 probed 91 more history questions (session selection, by phase), 37 examination requests, 89 orders and
+  30 negated or refusing orders. History: 17 reached the wrong item, none or only a clarifying question (three of them
+  questions about his earlier life that reached the after-the-tablets negatives); after the fixes 86 of 91 reach the intended
+  item and the five others get fitting answers (a clarifying question for "Did he have a temperature before all this?";
+  the parent's "not sure" for questions about his life before the tablets — 他以前抽过风吗？, 以前有没有出过疹子？,
+  他平时容易拉肚子吗？ — and "Did he collapse?"; "Does he have epilepsy?" / 孩子有没有癫痫？ now reach the past-health
+  answer). Fixed: "Does he have any medical problems?"
+  reached the opening answer; "How much was he supposed to have?", "What made you bring him to hospital?" and "What time
+  did you give him the tablets?" reached nothing or a clarifying question; "Have you got the rest of the tablets with
+  you?" and "Why was he on neostigmine?" reached the dose story; "Does anyone in the family have myasthenia?" reached
+  his own earlier weakness and "droopy eyes" the clinic visit; 为什么要给他吃新斯的明 reached the dose story, 为什么会给他吃15片
+  the prescription's purpose; 最怕 and 孩子之前有没有生病 reached nothing. The Chinese questions about his earlier life reached
+  the after-the-tablets negatives, which (in Chinese, and in both languages for `blackout`) had dropped "since the
+  tablets" — see "Reported versus absent". Examination: 让他自己站一下 found nothing, "Count his breathing rate" gave the
+  heart rate (not recorded: now the not-recorded answer), 再评估一下 asked for confirmation. Orders: post-posed refusals
+  gave the harmful item — 新斯的明不要再吃了 and 新斯的明别吃了 the critical `neostigmine-dose`, 出院还不行 the critical
+  `early-discharge`, "Lavage isn't indicated" the critical `repeat-lavage` — because the engine's negation reading leaves
+  the drug or act outside the refusal in these forms (a refusal ending in 吃: the scope of 新斯的明不要再吃了 is only 再吃了,
+  while 新斯的明不要再用了 or 活性炭不要给 are read; 还不行; the contraction "isn't indicated", while "is not indicated" is
+  read; reported centrally) and because the stop item's exclusion 再吃 (meant for restarts) also caught 不要再吃; the harmful items now carry refusal words as exclusions (不要再, 别吃, 别再, 不能再, 不用再, 别给, 不要给, 不吃了,
+  不行, 还不能, 先不, 不需要, 没必要, 不用, 不必; discontinue, cease, avoid, contraindicated, not indicated, not needed, no need,
+  not ready, not yet), and all 30 such orders withhold (restarts — 继续吃, 再吃一片, 让他再吃, "Continue", "Resume",
+  "Restart" — still reach `neostigmine-dose`). "Discontinue the neostigmine" withheld the drug but never stopped it: the
+  stop item's exclusion "continue" is a substring of "discontinue" (removed). "Complete a Datix", 用错药/坦白 and "Check the
+  observations" now reach their items.
 - Orders: `matchOrders` matches an alias anywhere inside the order, so no alias may be a fragment of common words — the
   cholinesterase's "che"/"CHE" was removed in review round 1 (it made "check the obs" order the cholinesterase and
   "chest x-ray" or "check his glucose" ambiguous with it). A plain isotonic order ("normal saline with dextrose") now
@@ -432,14 +461,22 @@ for display (no entry in `scripts/cmcr-105-media-review.json`), so the case has 
   case's own composition) still resolved to the trap through its alias "dextrose saline", and gave the hypotonic item
   exclusions for "0.9%", "isotonic", Plasma-Lyte, Hartmann's/Ringer's, 生理盐水 and 等张 (and the isotonic item those
   aliases). Repeat-lavage orders in plain Chinese (再洗一次胃, 洗一下胃) now reach the harmful item; negated ones withhold it.
+  Review round 4: the outcome record's aliases "follow-up"/随访 made every follow-up test ambiguous with it ("follow-up
+  cholinesterase", 随访胆碱酯酶; now "follow-up record"/随访记录), and two order rules drop a candidate the words only seem
+  to name: a "BMP" (chemistry panel; the glucose alias "bm" is inside it) orders the electrolytes, and 心电监护 or "cardiac
+  monitoring" typed as a test no longer orders an ECG (monitoring is an act, `/give`).
 - The boy's four items share his phrases and are phase twins (`supersedes`: `child-now` → `child-now-results` →
   `child-now-2h` → `child-course`), so "How are you feeling?" reaches the version for the current phase.
-- The corpus has 85 utterances (52 en, 33 zh-CN), ten of them negatives (`expect: []`) — four off-topic, six
+- The corpus has 99 utterances (60 en, 39 zh-CN), twelve of them negatives (`expect: []`) — four off-topic, eight
   history-like questions the record cannot answer ("Does he like school?", "Is he right- or left-handed?", "Has he passed
-  any urine today?", 他上几年级了？, 他有兄弟姐妹吗？, 孩子喜欢吃什么？) — and one or more for every required item, with review
+  any urine today?", 他上几年级了？, 他有兄弟姐妹吗？, 孩子喜欢吃什么？, 他以前抽过风吗？, 他平时容易拉肚子吗？) — and one or more for
+  every required item, with review
   round 2's regressions (fainting, stomach ache, "the trouble", allergies, phlegm, the written dose, 毫克, 大便稀…) and
   round 3's (throwing up, "become unwell", what the tablets were for, "the runs", other tablets, the bottle, the written
-  instructions, when he took them, "buddy", 家里有人…肌无力, 几点吃的); `cases verify` passes 85/85.
+  instructions, when he took them, "buddy", 家里有人…肌无力, 几点吃的) and round 4's (medical problems, what he was supposed
+  to have, the rest of the tablets, why he was on neostigmine, myasthenia in the family, what made them bring him, what
+  time he was given them, bringing tablets back up, 为什么要给他吃新斯的明, 为什么会给他吃15片, 最怕, 之前有没有生病);
+  `cases verify` passes 99/99.
 - Cholinesterase orders naming a specific enzyme (plasma, red-cell, pseudo-, butyryl-, acetyl-; 血浆, 红细胞, 全血) reach
   the one record with a notice that its assay is not recorded.
 
@@ -509,6 +546,16 @@ current Quelicin label (Hospira, DailyMed August 2026: §5.8, §5.9) and the AHR
 the statements attributed to them. The PALS 2025 Part 8 text (ahajournals.org, cpr.heart.org, including the
 algorithm's accessible long description) still returns 403 and is not in Europe PMC or PMC.
 
+**Re-checked in review round 4 (2026-11-14):** Drugs@FDA again lists supplement 3 (approved 4 February 2021) as the
+latest label of NDA 203629; its §10 (fresh download) holds every sentence the case attributes to the label — the case
+quotes §10's "cholinergic crisis calls for the prompt withdrawal of all drugs of this type", not §5.5, which reads
+"withdrawal of all anticholinergic medication". The PALS writing group's letter (fresh download, posted 30 April 2026)
+keeps the 0.02 mg/kg standard dose and the 0.1 mg minimum for bradycardia with cardiopulmonary compromise from increased
+vagal tone or AV block and says the recommendation is unchanged since 2005; the Part 8 text and AHA's algorithm PDF
+still return 403, and the article (PMID 41122885) is not open in Europe PMC or deposited in PMC. The PCH monograph,
+the AACT/EAPCCT 2013 and 2005 papers, AAP 2018, ATSDR's pralidoxime page and the Quelicin label hold the attributed
+statements in the publisher texts earlier rounds saved; no AAP reaffirmation of the 2018 guideline was found.
+
 ### To verify
 
 **In the source article (the facts 1.0.0 gives, and what it leaves out):**
@@ -566,7 +613,7 @@ algorithm's accessible long description) still returns 403 and is not in Europe 
   generic history slots with "the source does not provide" answers → 22 items in lay voice (24 after review round 2); the hindsight critical item
   (a decision) → two critical acts done in time and a critical avoided-harm item; stock objectives and rubric texts →
   case-specific ones; a debrief with dated, guideline-attributed teaching points; 43 genuine matcher paraphrases (57 after
-  review round 1, 73 after review round 2, 85 after review round 3).
+  review round 1, 73 after review round 2, 85 after review round 3, 99 after review round 4).
 - **Safety and teaching fixes.** 1.0.0's management key praised "individualised antagonism" without saying what to do
   and offered no act; the case now keys continuous monitoring, titrated atropine and no further decontamination, makes
   more neostigmine, a repeat lavage and early discharge critical errors, and teaches the sodium of 126.7 mmol/L (isotonic fluid),
@@ -624,6 +671,24 @@ algorithm's accessible long description) still returns 403 and is not in Europe 
   the FDA label's sentence; the label's muscarinic symptoms "may appear" with overdose (was "overdose brings"); the
   hypotonic option names the same fluids in both languages. Replays unchanged: reference 100 %, do nothing 0/32, wrong
   first 61 %, each critical harm fails the safety outcome while contraindicated.
+- **Review round 4 (2026-11-14): a fourth independent AI-assisted review** re-traced every patient-fact string in both
+  languages, re-read the cited sources (fresh downloads of the FDA label, Drugs@FDA and the PALS writing group's letter;
+  the publisher texts earlier rounds saved for the others), re-ran the replays and probed 91 history questions, 37
+  examination requests and 119 orders in the session's own resolvers. Fixed: the parent's negatives had lost their bound
+  in Chinese (`associated`: "没抽过，没昏迷过，没出疹子，也没拉肚子") and in both languages for `blackout` ("He hasn't been in a
+  coma." / "昏迷是没有的"), and 他以前抽过风吗？, 以前有没有出过疹子？ or "Has he ever fainted?" reached them, so the parent denied
+  lifelong what 1.0.0 records only after the tablets (critical; now "since the tablets" / 吃药以后, and questions about his
+  earlier life get "not sure"); refusals worded after the drug or act (新斯的明不要再吃了, 新斯的明别吃了, 出院还不行, "Lavage
+  isn't indicated") gave the critical harmful item and failed the safety outcome on a safe order, and "Discontinue the
+  neostigmine" could never stop the drug (major; exclusions on the harmful items, the stop item's "continue" exclusion
+  removed, the engine's negation reading reported centrally); 17 of 91 new questions and several orders and examination
+  requests reached the wrong item or none (major; 14 regression utterances, 99 in all; order rules for "BMP" and
+  心电监护; the outcome record no longer captures "follow-up" tests). Also: a first-hour feedback no longer names "the
+  bradycardia" before it is recorded; the Chinese skin manoeuvre says look and feel, like the English; the acting notes
+  no longer have the boy report twitching in every phase (it is recorded only on the admission examination); the
+  English summary says "from another hospital", like the Chinese. Replays unchanged: reference 100 %, do nothing 0/32,
+  wrong first 61 %, each critical harm fails the safety outcome while contraindicated. Still to verify: the PALS 2025
+  Part 8 text and algorithm (403 again), AAP 2018's reaffirmation, and everything under "To verify".
 
 ### 1.0.0 — 2026-10-28
 
@@ -635,13 +700,13 @@ algorithm's accessible long description) still returns 403 and is not in Europe 
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-44399/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 74 steps · objectives 6/6 · decisions 5/5 · utterances 85/85 · rubric 36/36 (100 %)
+npm run -s cc -- cases verify cmcr-44399 --lang en                                                 # 74 steps · objectives 6/6 · decisions 5/5 · utterances 99/99 · rubric 36/36 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-44399                                       # reference 100 % · do nothing 0/32 · wrong first 61 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44399:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44399:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-14 (after review round 3's fixes): all five pass, and so does
+Measured on 2026-11-14 (after review round 4's fixes): all five pass, and so does
 `npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "cmcr-44399"` (every act possible in the general
 hospital).
 
@@ -654,7 +719,7 @@ hospital).
 126.7 mmol/L，钾3.79 mmol/L，心电图窦性心律。入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿。此后在拮抗和监测治疗下好转，
 胆碱酯酶逐渐上升；用阿托品并持续监测，症状逐渐消退，第5天停药，第6天出院，出院后5天无不适、胆碱酯酶正常。诊断：新斯的明
 （氨基甲酸酯类胆碱酯酶抑制剂）60倍过量引起的胆碱能危象。阿托品剂量、开药理由以及心率以外的生命体征均无记录。本版依据1.0.0版
-提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一至第三轮独立复核（人工智能辅助，见更新记录）。
+提取的事实改写，尚未对照原文全文核对，也尚未经执业医师审核；2026-11-14已完成第一至第四轮独立复核（人工智能辅助，见更新记录）。
 
 **学习目标。**
 

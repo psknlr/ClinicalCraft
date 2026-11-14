@@ -61,8 +61,8 @@
         "AAP policy statement: Use of chaperones for the pediatric and adolescent encounter (Pediatrics 2025; checked in its abstract only)"
       ],
       "notes": {
-        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过三轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance and three independent editorial review rounds (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核，并经过四轮独立编辑复审（2026-11-14）。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由儿科内分泌、儿童肿瘤和儿科麻醉的临床医生审核。",
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance and four independent editorial review rounds (2026-11-14). The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician — have a paediatric endocrinologist, a paediatric oncologist and a paediatric anaesthetist review it before teaching use."
       }
     }
   },
@@ -313,7 +313,10 @@
           "声音",
           "变声",
           "下面变大",
-          "怎么发现"
+          "怎么发现",
+          "孩子的情况",
+          "说说情况",
+          "讲讲情况"
         ],
         "en": [
           "what brings",
@@ -359,7 +362,8 @@
           "爸爸",
           "父亲",
           "家里人",
-          "家族"
+          "家族",
+          "行为"
         ],
         "en": [
           "grow",
@@ -381,7 +385,9 @@
           "family",
           "relatives",
           "father",
-          "dad"
+          "dad",
+          "behaviour",
+          "behavior"
         ]
       },
       "disclosure": "volunteer",
@@ -564,7 +570,8 @@
           "勃起",
           "遗精",
           "梦遗",
-          "青春期"
+          "青春期",
+          "晨勃"
         ],
         "en": [
           "other changes",
@@ -596,7 +603,8 @@
           "气味",
           "脾气",
           "情绪",
-          "心情"
+          "心情",
+          "行为"
         ],
         "en": [
           "came first",
@@ -612,7 +620,9 @@
           "parents",
           "brother",
           "mood",
-          "temper"
+          "temper",
+          "behaviour",
+          "behavior"
         ]
       },
       "required": true,
@@ -785,6 +795,19 @@
       "source": {
         "zh-CN": "1.0.0版提取的报告事实（尚待对照原文核对）：学习较差，与同学交流困难",
         "en": "Report fact as extracted for 1.0.0 (not yet checked against the full article): poor learning and difficulty communicating with classmates"
+      },
+      "excludeKeywords": {
+        "en": [
+          "taller",
+          "shorter",
+          "height",
+          "grow"
+        ],
+        "zh-CN": [
+          "个子",
+          "身高",
+          "长高"
+        ]
       }
     },
     {
@@ -891,7 +914,7 @@
         "en": "How is the health of the family — has anyone had anything similar?"
       },
       "answer": {
-        "zh-CN": "我们两口子不是近亲，身体都好；他弟弟长个子和下面都没发现异常。",
+        "zh-CN": "我们俩不是近亲，身体都好；他弟弟长个子和下面都没发现异常。",
         "en": "We're not related to each other and we're both healthy. His younger brother's growth and genitals haven't shown anything abnormal."
       },
       "keywords": {
@@ -1285,6 +1308,15 @@
       "source": {
         "zh-CN": "1.0.0版未记录：保持未知，不补写",
         "en": "Not recorded in 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "en": [
+          "blood"
+        ],
+        "zh-CN": [
+          "血尿",
+          "尿血"
+        ]
       }
     },
     {
@@ -1502,7 +1534,9 @@
           "his back",
           "spots",
           "pimples",
-          "his face"
+          "his face",
+          "how tall",
+          "tall"
         ]
       },
       "finding": {
@@ -1545,7 +1579,10 @@
           "下面长",
           "听一下",
           "听",
-          "蛋蛋"
+          "蛋蛋",
+          "乳房",
+          "乳腺",
+          "乳晕"
         ],
         "en": [
           "genital",
@@ -1564,7 +1601,10 @@
           "visual field",
           "neck",
           "down below",
-          "willy"
+          "willy",
+          "breast",
+          "gynaecomastia",
+          "gynecomastia"
         ]
       }
     },
@@ -3143,7 +3183,8 @@
           "肿瘤会诊",
           "心胸外科会诊",
           "转胸外科",
-          "请外科看看"
+          "请外科看看",
+          "肿瘤科"
         ],
         "en": [
           "mdt",
@@ -3163,7 +3204,12 @@
           "surgical consult",
           "surgical opinion",
           "surgical review",
-          "ask the surgeons"
+          "ask the surgeons",
+          "oncology",
+          "oncologist",
+          "oncologists",
+          "ask oncology",
+          "oncology review"
         ]
       },
       "excludeKeywords": {
@@ -3260,6 +3306,22 @@
       "response": {
         "zh-CN": "已请麻醉科评估并安排相应检查。报告没有记录他有无气道或循环受压的症状、气道测量、心脏超声或麻醉经过，因此没有这些结果可供调阅。",
         "en": "Anaesthesia review and the tests are requested. The report does not record whether he had symptoms of airway or circulatory compression, nor any airway measurement, echocardiogram or anaesthetic course, so no such result can be shown."
+      },
+      "excludeKeywords": {
+        "en": [
+          "local anaesth",
+          "local anesth",
+          "anaesthetic cream",
+          "anesthetic cream",
+          "intubat",
+          "chemo"
+        ],
+        "zh-CN": [
+          "局部麻醉",
+          "局麻",
+          "插管",
+          "化疗"
+        ]
       }
     },
     {
@@ -3283,7 +3345,6 @@
           "excision",
           "remove the mass",
           "operate",
-          "book surgery",
           "surgery for the mass",
           "thoracic surgery",
           "thoracotomy",
@@ -3291,7 +3352,9 @@
           "remove the tumour",
           "remove the tumor",
           "excise the mass",
-          "take him to theatre"
+          "take him to theatre",
+          "book him for surgery",
+          "book the operation"
         ]
       },
       "requires": [
@@ -3345,7 +3408,9 @@
           "sedat",
           "midazolam",
           "chloral",
-          "premed"
+          "premed",
+          "appointment",
+          "outpatient"
         ],
         "zh-CN": [
           "会诊",
@@ -3377,14 +3442,23 @@
           "复查计划",
           "长期随访",
           "出院计划",
-          "定期复查"
+          "定期复查",
+          "门诊随访",
+          "门诊复查",
+          "安排随访"
         ],
         "en": [
           "follow-up plan",
           "surveillance",
           "long-term follow-up",
           "discharge plan",
-          "review plan"
+          "review plan",
+          "clinic follow-up",
+          "follow up in clinic",
+          "follow-up in clinic",
+          "outpatient follow-up",
+          "outpatient appointment",
+          "arrange follow-up"
         ]
       },
       "requires": [],
@@ -3416,7 +3490,9 @@
           "全麻下做CT",
           "全麻下做检查",
           "麻醉下做CT",
-          "麻醉下做检查"
+          "麻醉下做检查",
+          "给他全麻",
+          "给他麻醉"
         ],
         "en": [
           "sedate",
@@ -3431,7 +3507,9 @@
           "anaesthetise him for the ct",
           "anaesthetise him for the scan",
           "ga for the ct",
-          "put him to sleep for the scan"
+          "put him to sleep for the scan",
+          "anaesthetise him",
+          "anesthetize him"
         ]
       },
       "dose": {
@@ -3479,7 +3557,13 @@
           "镇静前",
           "镇静之前",
           "陪检",
-          "征得同意"
+          "征得同意",
+          "清醒",
+          "非镇静",
+          "免镇静",
+          "无镇静",
+          "局麻",
+          "局部麻醉"
         ],
         "en": [
           "anaesthetic review",
@@ -3500,7 +3584,13 @@
           "before the anaesth",
           "before any anaesth",
           "before an anaesth",
-          "echo"
+          "echo",
+          "without",
+          "awake",
+          "unsedated",
+          "un-sedated",
+          "local anaesth",
+          "local anesth"
         ]
       }
     },
@@ -3554,6 +3644,11 @@
       "response": {
         "zh-CN": "已开出。报告没有记录使用过GnRH类似物。",
         "en": "Prescribed. The report does not record any GnRH analogue."
+      },
+      "excludeKeywords": {
+        "en": [
+          "without"
+        ]
       }
     },
     {
@@ -3593,7 +3688,7 @@
         "iv-access"
       ],
       "risk": "high",
-      "critical": false,
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3605,27 +3700,46 @@
       "response": {
         "zh-CN": "已开始。报告没有记录任何化疗。",
         "en": "Started. The report does not record any chemotherapy."
+      },
+      "excludeKeywords": {
+        "en": [
+          "without",
+          "only if",
+          "if needed",
+          "if malignant",
+          "if histology",
+          "if the histology",
+          "consider"
+        ],
+        "zh-CN": [
+          "如果",
+          "必要时",
+          "考虑",
+          "视病理"
+        ]
       }
     },
     {
       "id": "discharge-now",
       "name": {
-        "zh-CN": "现在出院，门诊常规随访",
-        "en": "Discharge now with routine clinic follow-up"
+        "zh-CN": "现在让他出院回家",
+        "en": "Discharge him home now"
       },
       "kind": "disposition",
       "aliases": {
         "zh-CN": [
           "出院",
           "回家",
-          "门诊随访",
-          "办出院"
+          "办出院",
+          "出院回家",
+          "让他回家"
         ],
         "en": [
           "discharge",
           "send him home",
           "go home",
-          "clinic follow-up"
+          "discharge home",
+          "home today"
         ]
       },
       "requires": [],
@@ -3638,12 +3752,27 @@
         }
       },
       "harm": {
-        "zh-CN": "在查明病因、写好随访计划之前出院，可能漏掉需要处理的病因。男孩性早熟更常有可查的病因：ESPE/LWPES共识（2009）引用的报道中，无神经系统表现的中枢性性早熟男孩有40%存在未被怀疑的颅内病变，因此所有中枢性性早熟男孩都应做头颅MRI；促性腺激素非依赖性的表现则必须找到雄激素的来源。",
-        "en": "Discharging him before the cause is found and a follow-up plan is written risks missing a cause that needs treatment. Precocious puberty in boys more often has a cause to find: the ESPE/LWPES consensus (2009) cites unsuspected intracranial pathology in 40 % of boys with central precocious puberty and no neurological findings, and advises a head MRI for every boy with central precocious puberty; a gonadotropin-independent picture needs the source of the androgen found."
+        "zh-CN": "在查明病因、写好随访计划之前出院，可能漏掉需要处理的病因。男孩性早熟更常有可查的病因：ESPE/LWPES共识（2009）引用的报道中，无神经系统表现的中枢性性早熟男孩有40%存在未被怀疑的颅内病变，因此所有中枢性性早熟男孩都应做头颅MRI。促性腺激素非依赖性的表现则必须找到雄激素的来源。",
+        "en": "Discharging him before the cause is found and a follow-up plan is written risks missing a cause that needs treatment. Precocious puberty in boys more often has a cause to find: the ESPE/LWPES consensus (2009) cites unsuspected intracranial pathology in 40 % of boys with central precocious puberty and no neurological findings, and advises a head MRI for every boy with central precocious puberty. A gonadotropin-independent picture needs the source of the androgen found."
       },
       "response": {
         "zh-CN": "出院手续已办。报告没有记录出院时间和出院时的安排。",
         "en": "Discharge arranged. The report does not record when he was discharged or the plan he went home with."
+      },
+      "excludeKeywords": {
+        "en": [
+          "without",
+          "follow-up plan",
+          "follow up in",
+          "clinic",
+          "outpatient",
+          "appointment"
+        ],
+        "zh-CN": [
+          "随访",
+          "复查",
+          "门诊"
+        ]
       }
     }
   ],
@@ -3702,8 +3831,8 @@
         "en": "Examine"
       },
       "hint": {
-        "zh-CN": "检查外生殖器前先解释，征得家长和孩子的同意，请陪检人员在场；把睾丸大小和男性化程度放在一起比较。",
-        "en": "Before the genital examination explain it, get his parent's and his own agreement and have a chaperone present; compare the size of the testes with the degree of virilisation."
+        "zh-CN": "检查外生殖器前先解释，征得家长和孩子的同意，请陪检人员在场；每项发现都记下测量值。",
+        "en": "Before the genital examination explain it, get his parent's and his own agreement and have a chaperone present; record each finding with its measurement."
       },
       "guidance": {
         "zh-CN": "到床旁检查。",
@@ -3807,8 +3936,8 @@
         "en": "Act"
       },
       "hint": {
-        "zh-CN": "任何镇静或麻醉之前，先想清楚还需要评估什么、和谁一起决定。",
-        "en": "Before any sedation or anaesthetic, think about what still needs assessing and who should decide with you."
+        "zh-CN": "处理新的发现之前，先想清楚每一种下一步做法可能给他带来什么。",
+        "en": "Before you act on the new finding, think through what each possible next step could do to him."
       },
       "guidance": {
         "zh-CN": "和团队一起制定方案。",
@@ -3851,8 +3980,8 @@
         "en": "Follow-up"
       },
       "hint": {
-        "zh-CN": "一次正常的结果不等于结束：随访什么、多久、由谁负责？",
-        "en": "One normal result is not the end: what to follow, for how long and by whom?"
+        "zh-CN": "术后要随访什么、随访多久、由谁负责？",
+        "en": "After the operation, what should be followed, for how long and by whom?"
       },
       "guidance": {
         "zh-CN": "决策都完成后，会打开报告记录的随访结局。",
@@ -4141,7 +4270,7 @@
           "id": "assess-then-resect",
           "text": {
             "zh-CN": "提交肿瘤、外科和麻醉多学科讨论；任何镇静或全麻前先评估气道和循环受压（症状、胸部CT看气管和大血管、必要时心脏超声），据此定麻醉方案，尽量保留自主呼吸；再完整切除送全面病理，术前留β-hCG和AFP基线。",
-            "en": "Take him to an oncology, surgery and anaesthesia team; before any sedation or anaesthetic, assess airway and circulatory compression (symptoms, chest CT of the airway and vessels, echo if needed) and plan the anaesthetic on it, keeping spontaneous breathing; then resect completely for full histology, with baseline β-hCG and AFP."
+            "en": "Take him to an oncology, surgery and anaesthesia team; before any sedation or anaesthetic, assess airway and circulatory compression (symptoms, chest CT of the airway and vessels, echo if needed) and plan the anaesthetic on it, keeping spontaneous breathing where possible; then resect completely for full histology, with baseline β-hCG and AFP."
           },
           "correct": true,
           "feedback": {
@@ -4613,8 +4742,8 @@
         "en": "Dr Shao (paediatric anaesthesia)"
       },
       "knowledge": {
-        "zh-CN": "儿科麻醉医生，负责镇静和全麻前的评估。对任何可能压迫气道或大血管的颈部或胸部肿物：先问咳嗽、气促、喘鸣、声音嘶哑和平卧时呼吸困难（气道受压），以及晕厥、心动过速、颈静脉怒张和上腔静脉综合征（心血管受压）；需要近期的胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声（准备镇静或麻醉时门槛要低）；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸、避免肌松，手术室备好硬质支气管镜，高危时准备ECMO；需要肿瘤、影像、外科、重症和麻醉的多学科讨论（SPA病例指南2024）。只知道学员告诉或给他看的这个孩子的情况，不补充病历中没有的症状或检查结果。",
-        "en": "Paediatric anaesthetist who assesses children before sedation or general anaesthesia. For any neck or chest mass that could compress the airway or great vessels: asks about cough, breathlessness, stridor, hoarseness and trouble breathing lying flat (airway compression), and about fainting, a fast heart rate, distended neck veins and superior vena cava syndrome (cardiovascular compression); needs recent chest CT for compression of the airway, great vessels and heart, and a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion (a very low threshold when sedation or anaesthesia is planned); knows collapse can occur on induction even without symptoms; avoids general anaesthesia where possible and otherwise keeps spontaneous breathing and avoids paralysis, with a rigid bronchoscope in theatre and ECMO ready for high-risk cases; wants a multidisciplinary huddle with oncology, radiology, surgery and critical care (SPA case guide 2024). Knows only what the learner tells or shows about this boy and adds no symptom or result his notes do not hold."
+        "zh-CN": "儿科麻醉医生，负责镇静和全麻前的评估。对可能压迫气道、心脏或大血管的前纵隔肿物：先问咳嗽、气促、喘鸣、声音嘶哑和平卧时呼吸困难（气道受压），以及晕厥、心动过速、颈静脉怒张和上腔静脉综合征（心血管受压）；需要近期的胸部CT评估气道、大血管和心脏受压，CT显示心脏或大血管受压、或有心包积液时做经胸心脏超声（准备镇静或麻醉时门槛要低）；即使没有症状也可能在全麻诱导时塌陷；尽量避免全麻，必须全麻时保留自主呼吸、避免肌松，手术室备好硬质支气管镜，高危时准备ECMO；需要肿瘤、影像、外科、重症和麻醉的多学科讨论（SPA病例指南2024）。只知道学员告诉或给他看的这个孩子的情况，不补充病历中没有的症状或检查结果。",
+        "en": "Paediatric anaesthetist who assesses children before sedation or general anaesthesia. For an anterior mediastinal mass, which can compress the airway, heart or great vessels: asks about cough, breathlessness, stridor, hoarseness and trouble breathing lying flat (airway compression), and about fainting, a fast heart rate, distended neck veins and superior vena cava syndrome (cardiovascular compression); needs recent chest CT for compression of the airway, great vessels and heart, and a transthoracic echocardiogram if CT shows compression of the heart or great vessels or a pericardial effusion (a very low threshold when sedation or anaesthesia is planned); knows collapse can occur on induction even without symptoms; avoids general anaesthesia where possible and otherwise keeps spontaneous breathing and avoids paralysis, with a rigid bronchoscope in theatre and ECMO ready for high-risk cases; wants a multidisciplinary huddle with oncology, radiology, surgery and critical care (SPA case guide 2024). Knows only what the learner tells or shows about this boy and adds no symptom or result his notes do not hold."
       },
       "interprets": [
         "chest-imaging"
@@ -5602,6 +5731,37 @@
         "text": "脾气有没有变化？",
         "locale": "zh-CN",
         "expect": []
+      },
+      {
+        "text": "Is he taller than his classmates now?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Has his behaviour changed?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Any blood in his urine?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "有没有晨勃？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty-signs"
+        ]
+      },
+      {
+        "text": "说说孩子的情况吧",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
       }
     ]
   }

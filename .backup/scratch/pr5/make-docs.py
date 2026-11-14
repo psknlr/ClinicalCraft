@@ -35,6 +35,10 @@ for p in sorted(glob.glob(os.path.join(WF, "*", "journal.jsonl")), key=os.path.g
         v = d.get("result")
         if d.get("type") == "result" and isinstance(v, dict) and "caseId" in v and "findings" in v and "allChecksPass" in v:
             rounds[v["caseId"]][int(v.get("round") or 1)] = v
+# Rounds finished by single agents after their run was stopped (manual/<case>-r<N>.result.json).
+for p in sorted(glob.glob(os.path.join(SP, "manual", "*.result.json"))):
+    v = json.load(open(p))
+    rounds[v["caseId"]][int(v["round"])] = v
 status = json.load(open(os.path.join(SP, "case-status.json")))
 # The pilots' first reviews (2026-10-30) ran before these journals: case-status.json and their READMEs record them.
 pilot_first = sorted(cid for cid in included if 1 not in rounds.get(cid, {}) and status.get(cid, {}).get("reviewed"))

@@ -571,16 +571,17 @@ no EAA Klinefelter update was found; the AAP statement's full text is still unre
   the class round 1 had corrected in this README; 1.0.0's reason is all four one-year results (slowed virilisation,
   testosterone 8.49 nmol/L, β-hCG 0.7 IU/L, chest radiograph without abnormality), now listed in both languages, and the
   sentence no longer presents the unrecorded grade as the reason for surveillance. Assessment: common Chinese
-  examination requests ("量一下体温", "检查一下体格", "看一下面部", "下面检查一下身高") performed the genital examination and
-  closed the chaperone act's window — fixed in the keywords; a name-and-age item answers "How old is he?" (the parent
-  had said "I'm not sure, doctor."); 28 further history, examination, order and intervention phrasings fixed (Matcher
-  notes; 18 utterances added, 87). Guidance: NCI PDQ (live page, last updated 2024-11-05) and EAA 2021 (self-archived
-  full text) re-read for every attributed passage and found as cited; the AAP 2025 full text is still unreachable. Words:
-  the Chinese of NCI PDQ's three-year marker sentence is descriptive (都会) like the source; two objective hints no
-  longer cue a key ("what would starting treatment now do…", "can one genetic result explain everything…"); the
-  SPIKES example now warns before the news; the airway assessment's response no longer speaks of "this case"; the
-  adrenal/testicular record's English name keeps 1.0.0's "other" (等); decision 3's guidance attribution covers the
-  mediastinal point only; the timeline says an early β-hCG or chest-imaging order is placed again in `search`.
+  examination requests ("量一下体温", "检查一下体格", "看一下面部", "下面检查一下身高") performed the genital
+  examination and closed the chaperone act's window — fixed in the keywords; a name-and-age item answers "How old is
+  he?" (the parent had said "I'm not sure, doctor."); 28 further history, examination, order and intervention phrasings
+  fixed (Matcher notes; 18 utterances added, 87). Guidance: NCI PDQ (live page, last updated 2024-11-05) and EAA 2021
+  (self-archived full text) re-read for every attributed passage and found as cited; the AAP 2025 full text is still
+  unreachable. Words: the Chinese of NCI PDQ's three-year marker sentence is descriptive (都会) like the source; three
+  objective hints no longer cue a key ("what would starting treatment now do…", "can one genetic result explain
+  everything…", "one normal result is not the end"); the SPIKES example now warns before the news; the airway
+  assessment's response no longer speaks of "this case"; the adrenal/testicular record's English name keeps 1.0.0's
+  "other" (等); decision 3's guidance attribution covers the mediastinal point only; the timeline says an early β-hCG or
+  chest-imaging order is placed again in `search`.
 
 ### 1.0.0 — 2026-10-28
 

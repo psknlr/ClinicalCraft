@@ -8,7 +8,7 @@
   },
   "summary": {
     "zh-CN": "9岁男孩，家里给他服药后约20分钟开始腹痛、出汗、肌肉抖动，从外院转来急诊。",
-    "en": "A 9-year-old boy whose abdominal pain, sweating and muscle twitching began about 20 minutes after his family gave him a medicine is transferred to the emergency department."
+    "en": "A 9-year-old boy whose abdominal pain, sweating and muscle twitching began about 20 minutes after his family gave him a medicine is transferred from another hospital to the emergency department."
   },
   "specialty": [
     "pediatrics",
@@ -158,8 +158,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "家长回答病史；直接问孩子的问题由孩子自己回答，只说肚子疼、手脚在抖这样的感受。孩子清醒但没精神，不能自己站起来。家长能讲清楚：药是新斯的明，每片15毫克，医嘱每次四分之一片，家里当成了四分之一瓶，给他吃了15片。是哪位家长喂的药、在什么地方、医嘱是写的还是口头交代的、洗胃是什么时候做的，都没有记录，不要编。病历里没有的事（来院前呼吸怎么样、过敏、以前的病、预防接种、瓶里还剩几片、现在还烧不烧、这个药是治什么的）如实说不知道。",
-        "en": "The parent answers the history; questions put to the boy he answers himself, only with how he feels (tummy pain, arms and legs twitching). He is awake but listless and cannot stand up without help. The parent can explain the tablets plainly: neostigmine, 15 mg each, a dose of a quarter of a tablet each time that the family took to mean a quarter of the bottle, so he was given 15 tablets. Which parent gave them, where, whether the instruction was written or spoken and when the lavage was done are not known — never invent them. Anything his notes do not hold (his breathing before arrival, allergies, earlier illnesses, vaccinations, how many tablets are left, whether he is still feverish, what the medicine was for) is honestly not known."
+        "zh-CN": "家长回答病史；直接问孩子的问题由孩子自己回答，只说他在这一阶段台词里的感受（到院时：肚子疼、手脚在抖；之后只说那一阶段台词里的话）。孩子清醒但没精神，不能自己站起来。家长能讲清楚：药是新斯的明，每片15毫克，医嘱每次四分之一片，家里当成了四分之一瓶，给他吃了15片。是哪位家长喂的药、在什么地方、医嘱是写的还是口头交代的、洗胃是什么时候做的，都没有记录，不要编。病历里没有的事（来院前呼吸怎么样、过敏、以前的病、预防接种、瓶里还剩几片、现在还烧不烧、这个药是治什么的）如实说不知道。",
+        "en": "The parent answers the history; questions put to the boy he answers himself, only with how he feels in his own lines for the phase (on arrival: tummy pain, arms and legs twitching; later only what those lines say). He is awake but listless and cannot stand up without help. The parent can explain the tablets plainly: neostigmine, 15 mg each, a dose of a quarter of a tablet each time that the family took to mean a quarter of the bottle, so he was given 15 tablets. Which parent gave them, where, whether the instruction was written or spoken and when the lavage was done are not known — never invent them. Anything his notes do not hold (his breathing before arrival, allergies, earlier illnesses, vaccinations, how many tablets are left, whether he is still feverish, what the medicine was for) is honestly not known."
       },
       "companion": {
         "role": "parent",
@@ -352,7 +352,10 @@
           "abdominal pain",
           "inpain",
           "howlongago",
-          "thetrouble"
+          "thetrouble",
+          "whatmadeyoubring",
+          "whydidyoubring",
+          "bringhimin"
         ]
       },
       "excludeKeywords": {
@@ -364,7 +367,9 @@
           "二十分钟",
           "吃药以后多久",
           "眼睛",
-          "药后多"
+          "药后多",
+          "拉肚子",
+          "平时"
         ],
         "en": [
           "tablets",
@@ -376,7 +381,9 @@
           "bottle",
           "packet",
           "broughtthe",
-          "broughthis"
+          "broughthis",
+          "medical problem",
+          "health problem"
         ]
       },
       "disclosure": "volunteer",
@@ -419,7 +426,10 @@
           "什么名字",
           "毫克",
           "规格",
-          "医嘱"
+          "医嘱",
+          "15片",
+          "吃这么多",
+          "这么多片"
         ],
         "en": [
           "which medicine",
@@ -436,7 +446,10 @@
           "howmanypills",
           "didyougivehim",
           "medicine called",
-          "milligram"
+          "milligram",
+          "supposedtohave",
+          "supposedtotake",
+          "meanttohave"
         ]
       },
       "excludeKeywords": {
@@ -454,7 +467,9 @@
           "怎么交代",
           "为什么给他开",
           "开新斯的明",
-          "过敏"
+          "过敏",
+          "为什么要给他吃",
+          "为什么要吃"
         ],
         "en": [
           "left in",
@@ -492,7 +507,12 @@
           "usuallytake",
           "whendidhetake",
           "whattime",
-          "sincethetablets"
+          "sincethetablets",
+          "the rest",
+          "with you",
+          "whywasheon",
+          "howlongago",
+          "rash"
         ]
       },
       "disclosure": "volunteer",
@@ -553,7 +573,8 @@
           "throwingup",
           "longaftertaking",
           "become unwell",
-          "unwell since"
+          "unwell since",
+          "backup"
         ]
       },
       "disclosure": "on-ask",
@@ -585,7 +606,9 @@
           "流泪",
           "怕光",
           "之前生什么病",
-          "开了什么药"
+          "开了什么药",
+          "之前有没有生病",
+          "之前生病"
         ],
         "en": [
           "clinic",
@@ -615,7 +638,8 @@
           "phlegm",
           "sincethetablets",
           "afterthetablets",
-          "aftertaking"
+          "aftertaking",
+          "droopy"
         ]
       },
       "disclosure": "on-ask",
@@ -647,7 +671,9 @@
           "为什么给他吃",
           "为什么吃这个药",
           "为什么给他开",
-          "开新斯的明"
+          "开新斯的明",
+          "为什么要给他吃",
+          "为什么要吃"
         ],
         "en": [
           "what was it for",
@@ -666,13 +692,22 @@
           "isneostigminefor",
           "thepillsfor",
           "whydidtheyprescribe",
-          "whydidtheygive"
+          "whydidtheygive",
+          "whywasheon"
         ]
       },
       "disclosure": "unknown",
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知，不补写",
         "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "15片",
+          "这么多",
+          "几片",
+          "多少片"
+        ]
       }
     },
     {
@@ -717,7 +752,9 @@
           "local hospital",
           "washout",
           "whendidhetake",
-          "whattimedidhetake"
+          "whattimedidhetake",
+          "whattimedidyougive",
+          "whendidyougive"
         ]
       },
       "disclosure": "on-ask",
@@ -744,7 +781,7 @@
         "en": "Since the tablets, has he had a fit, gone into a coma, or had a rash or diarrhoea?"
       },
       "answer": {
-        "zh-CN": "没抽过，没昏迷过，没出疹子，也没拉肚子。",
+        "zh-CN": "吃药以后没抽过，没昏迷过，没出疹子，也没拉肚子。",
         "en": "No fits, no coma, no rash and no diarrhoea since the tablets."
       },
       "keywords": {
@@ -777,7 +814,10 @@
       },
       "excludeKeywords": {
         "zh-CN": [
-          "平时身体"
+          "平时身体",
+          "以前",
+          "平时",
+          "容易"
         ],
         "en": [
           "fit and well",
@@ -799,8 +839,8 @@
         "en": "Since the tablets, has he fainted or blacked out at all?"
       },
       "answer": {
-        "zh-CN": "昏迷是没有的。有没有一下子晕过去，我说不准。",
-        "en": "He hasn't been in a coma. Whether he blacked out for a moment, I honestly can't say."
+        "zh-CN": "吃药以后没有昏迷过。有没有一下子晕过去，我说不准。",
+        "en": "He hasn't been in a coma since the tablets. Whether he blacked out for a moment, I honestly can't say."
       },
       "keywords": {
         "zh-CN": [
@@ -902,7 +942,8 @@
           "eyelids",
           "myasthenia",
           "everbeenweak",
-          "muscle weakness before"
+          "muscle weakness before",
+          "droopy"
         ]
       },
       "disclosure": "unknown",
@@ -916,6 +957,12 @@
           "家人",
           "家族",
           "亲戚"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "anyone in",
+          "anyone else"
         ]
       }
     },
@@ -947,7 +994,10 @@
           "remaining tablets",
           "brought the medicine",
           "the box",
-          "packet"
+          "packet",
+          "the rest of the tablets",
+          "rest of the medicine",
+          "therestofthe"
         ]
       },
       "disclosure": "unknown",
@@ -1038,7 +1088,10 @@
           "allergic",
           "allergies",
           "allergy",
-          "drug allergy"
+          "drug allergy",
+          "rashwith",
+          "reaction to medicines",
+          "reactiontoa"
         ]
       },
       "disclosure": "unknown",
@@ -1117,7 +1170,11 @@
           "以前身体",
           "做过手术",
           "大病",
-          "平时身体"
+          "平时身体",
+          "癫痫",
+          "哮喘",
+          "慢性病",
+          "基础病"
         ],
         "en": [
           "illnesses before",
@@ -1129,7 +1186,12 @@
           "fit and well",
           "fitandwell",
           "normally healthy",
-          "usually well"
+          "usually well",
+          "medical problems",
+          "health problems",
+          "medical conditions",
+          "epilepsy",
+          "asthma"
         ]
       },
       "disclosure": "unknown",
@@ -1300,7 +1362,9 @@
           "最担心",
           "顾虑",
           "害怕",
-          "有什么想问"
+          "有什么想问",
+          "最怕",
+          "怕的是"
         ],
         "en": [
           "worries",
@@ -1365,6 +1429,12 @@
       "source": {
         "zh-CN": "1.0.0 版：腹痛、肌肉震颤（主诉，持续至入院）及入院查体四肢肌肉震颤；孩子的话为教学改写",
         "en": "Version 1.0.0: abdominal pain and muscle twitching (the chief complaint, present on admission) and limb twitching on the admission examination; the boy's words are a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "拉肚子",
+          "平时"
+        ]
       }
     },
     {
@@ -1412,7 +1482,13 @@
       "speaker": "patient",
       "supersedes": [
         "child-now"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "拉肚子",
+          "平时"
+        ]
+      }
     },
     {
       "id": "child-now-2h",
@@ -1461,6 +1537,12 @@
       "source": {
         "zh-CN": "1.0.0 版“监测后的变化”：入院约两小时仍腹痛；孩子的话为教学改写",
         "en": "Version 1.0.0 'subsequent monitored changes': abdominal pain continuing about two hours after admission; the boy's words are a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "拉肚子",
+          "平时"
+        ]
       }
     },
     {
@@ -1508,6 +1590,12 @@
       "source": {
         "zh-CN": "1.0.0 版“监测后的变化”：拮抗和监测治疗下症状改善；孩子的话为教学改写",
         "en": "Version 1.0.0 'subsequent monitored changes': symptoms improved under antagonist treatment and monitoring; the boy's words are a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "拉肚子",
+          "平时"
+        ]
       }
     }
   ],
@@ -1566,7 +1654,7 @@
       "id": "skin",
       "system": "skin",
       "maneuver": {
-        "zh-CN": "看皮肤",
+        "zh-CN": "看看、摸摸他的皮肤",
         "en": "Look at and feel his skin"
       },
       "keywords": {
@@ -1620,7 +1708,10 @@
           "手脚",
           "抖不抖",
           "能不能站",
-          "站得起来"
+          "站得起来",
+          "站一下",
+          "自己站",
+          "站站"
         ],
         "en": [
           "muscles",
@@ -1686,6 +1777,17 @@
       "source": {
         "zh-CN": "1.0.0 版入院查体记录",
         "en": "Version 1.0.0 admission examination record"
+      },
+      "excludeKeywords": {
+        "en": [
+          "tendon",
+          "knee jerk",
+          "ankle jerk"
+        ],
+        "zh-CN": [
+          "腱反射",
+          "膝反射"
+        ]
       }
     },
     {
@@ -1722,6 +1824,16 @@
       "source": {
         "zh-CN": "1.0.0 版入院查体记录",
         "en": "Version 1.0.0 admission examination record"
+      },
+      "excludeKeywords": {
+        "en": [
+          "breathing",
+          "respiratory",
+          "resp rate"
+        ],
+        "zh-CN": [
+          "呼吸"
+        ]
       }
     },
     {
@@ -1777,7 +1889,9 @@
           "重新评估",
           "生命体征",
           "皮肤",
-          "肚子"
+          "肚子",
+          "再评估",
+          "评估一下"
         ],
         "en": [
           "heart rate",
@@ -2019,7 +2133,9 @@
           "u and e",
           "renal profile",
           "chemistry",
-          "lytes"
+          "lytes",
+          "bmp",
+          "basic metabolic panel"
         ]
       },
       "requires": [
@@ -2310,7 +2426,8 @@
           "nursing observations",
           "monitoring record",
           "vital signs chart",
-          "nursing notes"
+          "nursing notes",
+          "observations"
         ]
       },
       "requires": [
@@ -2377,7 +2494,7 @@
         "zh-CN": [
           "出院小结",
           "住院经过",
-          "随访",
+          "随访记录",
           "转归",
           "出院记录",
           "后来怎么样"
@@ -2385,7 +2502,7 @@
         "en": [
           "discharge summary",
           "hospital course",
-          "follow-up",
+          "follow-up record",
           "outcome",
           "what happened next",
           "discharge letter"
@@ -2416,7 +2533,26 @@
     }
   ],
   "orderMatching": {
-    "rules": [],
+    "rules": [
+      {
+        "ifHas": "glucose",
+        "ifMatches": "bmp|basicmetabolic",
+        "unlessMatches": "glucose|sugar|血糖",
+        "add": [],
+        "remove": [
+          "glucose"
+        ]
+      },
+      {
+        "ifHas": "ecg",
+        "ifMatches": "监护|monitor",
+        "unlessMatches": "心电图|导联|ecg|ekg|tracing|electrocardiogram|12",
+        "add": [],
+        "remove": [
+          "ecg"
+        ]
+      }
+    ],
     "exact": {},
     "warnings": [
       {
@@ -2802,7 +2938,9 @@
           "核对药瓶",
           "停药",
           "把药瓶带来",
-          "带药瓶来"
+          "带药瓶来",
+          "新斯的明别吃",
+          "新斯的明停了"
         ],
         "en": [
           "stop neostigmine",
@@ -2812,7 +2950,10 @@
           "keep the bottle",
           "check the bottle",
           "bring the bottle",
-          "bring in the bottle"
+          "bring in the bottle",
+          "discontinue neostigmine",
+          "discontinue the neostigmine",
+          "cease neostigmine"
         ]
       },
       "excludeKeywords": {
@@ -2820,12 +2961,12 @@
           "继续",
           "恢复",
           "再吃",
-          "重新开始"
+          "重新开始",
+          "接着吃"
         ],
         "en": [
           "restart",
           "resume",
-          "continue",
           "give more"
         ]
       },
@@ -2860,7 +3001,9 @@
           "坦诚沟通",
           "说明差错",
           "告知差错",
-          "用药差错"
+          "用药差错",
+          "用错药",
+          "坦白"
         ],
         "en": [
           "incident report",
@@ -2873,7 +3016,9 @@
           "what went wrong",
           "explain the error",
           "abouttheerror",
-          "aboutthemistake"
+          "aboutthemistake",
+          "datix",
+          "medication error report"
         ]
       },
       "dose": {
@@ -2979,6 +3124,24 @@
       "response": {
         "zh-CN": "已再次洗胃。病历中没有再次洗胃的记录，本病例不模拟其后果。",
         "en": "A second lavage is done. Nothing like it is in his record, and the case does not simulate what follows."
+      },
+      "excludeKeywords": {
+        "en": [
+          "not indicated",
+          "isn't indicated",
+          "not needed",
+          "isn't needed",
+          "no need",
+          "contraindicated",
+          "unnecessary"
+        ],
+        "zh-CN": [
+          "不需要",
+          "没必要",
+          "不用",
+          "不必",
+          "禁忌"
+        ]
       }
     },
     {
@@ -3022,6 +3185,24 @@
       "response": {
         "zh-CN": "已给予活性炭。病历中没有使用活性炭的记录，本病例不模拟其效果。",
         "en": "Charcoal given. Nothing like it is in his record, and its effect is not simulated."
+      },
+      "excludeKeywords": {
+        "en": [
+          "not indicated",
+          "isn't indicated",
+          "not needed",
+          "isn't needed",
+          "no need",
+          "contraindicated",
+          "unnecessary"
+        ],
+        "zh-CN": [
+          "不需要",
+          "没必要",
+          "不用",
+          "不必",
+          "禁忌"
+        ]
       }
     },
     {
@@ -3118,7 +3299,11 @@
           "复述",
           "小结",
           "监护病房",
-          "重症"
+          "重症",
+          "不行",
+          "还不能",
+          "不能出院",
+          "先不"
         ],
         "en": [
           "teach",
@@ -3129,7 +3314,9 @@
           "instructions",
           "monitored",
           "hdu",
-          "picu"
+          "picu",
+          "not ready",
+          "not yet"
         ]
       },
       "dose": {
@@ -3183,13 +3370,27 @@
           "停用",
           "停掉",
           "不再",
-          "停药"
+          "停药",
+          "不要再",
+          "别吃",
+          "别再",
+          "不要吃",
+          "不能再",
+          "不用再",
+          "别给",
+          "不要给",
+          "不吃了"
         ],
         "en": [
           "stop",
           "withhold",
           "no more",
-          "hold"
+          "hold",
+          "discontinue",
+          "cease",
+          "avoid",
+          "contraindicated",
+          "not indicated"
         ]
       },
       "dose": {
@@ -3592,7 +3793,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "AACT/EAPCCT 2013：洗胃不应常规进行，在增加误吸风险时禁用；AACT/EAPCCT 2005：活性炭可在服药后1小时内考虑，且气道必须完好或已受保护。他服药后吐过、流过口水，现在不能自行站立；普通病房的常规观察也发现不了美国FDA说明书提醒的心动过缓和呼吸肌无力。",
-            "en": "AACT/EAPCCT 2013: no routine lavage, and none where it adds aspiration risk; AACT/EAPCCT 2005: charcoal may be considered up to one hour after ingestion, and only with an intact or protected airway. He vomited and drooled after the tablets and cannot stand without help, and routine ward observations would miss the bradycardia and respiratory weakness the FDA label warns of."
+            "en": "AACT/EAPCCT 2013: no routine lavage, and none where it adds aspiration risk; AACT/EAPCCT 2005: charcoal may be considered up to one hour after ingestion, and only with an intact or protected airway. He vomited and drooled after the tablets and cannot stand without help, and routine ward observations would miss bradycardia or respiratory weakness, both of which the FDA label warns of."
           }
         },
         {
@@ -5281,6 +5482,100 @@
         "locale": "en",
         "expect": [
           "child-now"
+        ]
+      },
+      {
+        "text": "Does he have any medical problems?",
+        "locale": "en",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "How much was he supposed to have?",
+        "locale": "en",
+        "expect": [
+          "medicine-taken"
+        ]
+      },
+      {
+        "text": "Have you got the rest of the tablets with you?",
+        "locale": "en",
+        "expect": [
+          "tablets-left"
+        ]
+      },
+      {
+        "text": "Why was he on neostigmine?",
+        "locale": "en",
+        "expect": [
+          "prescription-reason"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have myasthenia?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "What made you bring him to hospital?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "What time did you give him the tablets?",
+        "locale": "en",
+        "expect": [
+          "lavage-transfer"
+        ]
+      },
+      {
+        "text": "Did he bring any of the tablets back up?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "他以前抽过风吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "他平时容易拉肚子吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "为什么要给他吃新斯的明？",
+        "locale": "zh-CN",
+        "expect": [
+          "prescription-reason"
+        ]
+      },
+      {
+        "text": "为什么会给他吃15片？",
+        "locale": "zh-CN",
+        "expect": [
+          "medicine-taken"
+        ]
+      },
+      {
+        "text": "您现在最怕的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "ice"
+        ]
+      },
+      {
+        "text": "孩子之前有没有生病？",
+        "locale": "zh-CN",
+        "expect": [
+          "clinic-visit"
         ]
       }
     ]
