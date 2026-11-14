@@ -3,6 +3,7 @@
  */
 import type { FlagSpec, Localized, ParsedArgs } from "./argv.js";
 import { casesIndex, casesList, casesNew, casesSchema, casesShow, casesValidate, casesVerify } from "./cases.js";
+import { casesSafetyReview } from "./safety-review.js";
 import { configGet, configPath, configSet } from "./config.js";
 import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
@@ -70,6 +71,8 @@ export const EXEC: CommandSpec = {
 };
 
 const SUITE: FlagSpec = { name: "suite", type: "string", valueName: "<id>", description: { en: "Scenario suite (default embodied-v1)", zh: "场景测试集（默认 embodied-v1）" } };
+/** `--split` of the embodied suite: `dev`, `test` (held out: never used to tune an agent), or `all`. */
+const BENCH_SPLIT: FlagSpec = { name: "split", type: "string", valueName: "<split>", choices: ["dev", "test", "all"], description: { en: "dev | test (held out) | all (default all)", zh: "dev | test（留出）| all（默认 all）" } };
 
 /** `bench`: the embodied agent benchmark (docs/EMBODIED.md §13). */
 export const BENCH: CommandSpec = {
@@ -77,16 +80,17 @@ export const BENCH: CommandSpec = {
   summary: { en: "Embodied agent benchmark: scenario suites, reference / scripted / live agents, reports, demonstration", zh: "具身智能体基准测试：场景测试集、参考/脚本/真实模型智能体、报告与演示" },
   defaultSubcommand: "list",
   subcommands: [
-    { name: "list", aliases: ["ls"], summary: { en: "List the scenarios of a suite", zh: "列出测试集中的场景" }, flags: [SUITE, JSON_FLAG], run: benchList },
+    { name: "list", aliases: ["ls"], summary: { en: "List the scenarios of a suite", zh: "列出测试集中的场景" }, flags: [SUITE, BENCH_SPLIT, JSON_FLAG], run: benchList },
     {
       name: "run",
       summary: { en: "Run a suite → bench-report.json + bench-report.md (Wilson 95 % intervals)", zh: "运行测试集 → bench-report.json 与 bench-report.md（Wilson 95% 置信区间）" },
       flags: [
         SUITE,
-        { name: "agent", type: "string", valueName: "<kind>", choices: ["reference", "scripted-llm", "llm"], description: { en: "reference | scripted-llm (infrastructure validation) | llm (a real model; needs --live)", zh: "reference | scripted-llm（验证基础设施）| llm（真实模型；需 --live）" } },
+        { name: "agent", type: "string", valueName: "<kind>", choices: ["reference", "scripted-llm", "llm"], description: { en: "reference | scripted-llm (controls: infrastructure validation, never a model result) | llm (a real model; needs --live)", zh: "reference | scripted-llm（对照：验证基础设施，不是模型结果）| llm（真实模型；需 --live）" } },
         { name: "seeds", type: "string", valueName: "<list>", description: { en: "Run seeds, e.g. 1-5 or 1,2,7 (default 1-3)", zh: "运行种子，如 1-5 或 1,2,7（默认 1-3）" } },
         { name: "scenario", type: "list", valueName: "<ids>", description: { en: "Only these scenarios", zh: "只运行这些场景" } },
         { name: "category", type: "list", valueName: "<names>", description: { en: "Only these categories", zh: "只运行这些类别" } },
+        BENCH_SPLIT,
         { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default bench-results)", zh: "报告目录（默认 bench-results）" } },
         { name: "traces", type: "boolean", description: { en: "Also write every run's episode trace (traces/*.jsonl)", zh: "同时写出每次运行的轨迹（traces/*.jsonl）" } },
         { name: "require", type: "number", valueName: "<percent>", description: { en: "Minimum task success rate (default 100 for reference / scripted-llm)", zh: "最低任务成功率（reference / scripted-llm 默认 100）" } },
@@ -228,6 +232,20 @@ export const ROOT: CommandSpec = {
           summary: { en: "Replay the reference solution and the utterance corpus", zh: "重放参考解法并运行问句语料回归" },
           flags: [ALL, JSON_FLAG, QUIET],
           run: casesVerify,
+        },
+        {
+          name: "safety-review",
+          summary: {
+            en: "Safety-review worksheet: every critical intervention and high-risk drug with its contraindication and harm, and empty columns for independent clinician and nurse verdicts",
+            zh: "安全审核表：列出每个严重安全相关干预和高风险药物及其禁忌条件与危害，并留出专科医师和护士独立意见的空栏",
+          },
+          flags: [
+            { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases (default: the whole library)", zh: "只列这些病例（默认：整个病例库）" } },
+            { name: "format", type: "string", valueName: "<format>", choices: ["md", "json"], description: { en: "md (default) | json", zh: "md（默认）| json" } },
+            { name: "out", type: "string", valueName: "<file>", description: { en: "Write it to a file (default: print it)", zh: "写入文件（默认：直接输出）" } },
+          ],
+          run: casesSafetyReview,
+          examples: ["clinicalcraft cases safety-review --format md --out safety-review.md", "clinicalcraft cases safety-review --case acute-ischemic-stroke --format json"],
         },
         {
           name: "new",

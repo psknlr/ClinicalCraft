@@ -26,6 +26,7 @@ import { append, clear, clockLabel, h } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
 import { surgeryOffered } from "./panels/surgery-controls.js";
 import { nameLabel } from "./panels/trace-labels.js";
+import { placeTexts, type Where } from "./place.js";
 
 interface SlotDef {
   key: "talk" | "journal" | "map" | "wood" | "stone" | "glass" | "lamp" | "inventory" | "help";
@@ -71,6 +72,11 @@ export class Hud {
   private externalKey = "";
   /** Embodied: whether the strip last showed the monitor's screen as readable (re-rendered when it changes). */
   private screenKey = "";
+  /**
+   * Where the player is, as last reported (`onMove`): THE region lookup of the world at the avatar's position — the
+   * one lookup the place beside the map and the in-world badge both show (audit 2026-11-12 P2-15).
+   */
+  private where: Where | null = null;
   private disclaimerTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -202,6 +208,7 @@ export class Hud {
     );
     this.renderHotbar();
     this.setSaved(this.savedState);
+    this.renderPlace();
     this.update();
   }
 
@@ -282,8 +289,10 @@ export class Hud {
   }
 
   onMove(info: MoveInfo): void {
-    this.el.region.textContent = info.levelName ? `${info.region} · ${info.levelName}` : info.region;
+    this.where = { region: info.region, ...(info.levelName ? { levelName: info.levelName } : {}) };
     this.el.coords.textContent = `X ${Math.round(info.x)} · Z ${Math.round(info.z)}`;
+    // the place beside the map and the badge: one lookup, rendered together
+    this.renderPlace();
     this.renderEmbodiment();
     // embodied: walking in or out of view of the monitor's screen changes what the strip may show
     const game = this.app.game;
@@ -504,9 +513,18 @@ export class Hud {
   }
 
   /**
-   * The embodiment badge: embodied — the place where the world model has the learner's body (it must match
-   * the scene: the avatar is the world's input device), "walking…" while the world moves it; clinical mode
-   * says so. Clicking it opens the settings ("In-world mode").
+   * The place beside the map: where the player is (`where`, the world's region lookup) and, in a multi-level
+   * facility, the level indoors. The badge shows the same place.
+   */
+  private renderPlace(): void {
+    const text = placeTexts(this.where, null).region;
+    if (this.el.region && this.el.region.textContent !== text) this.el.region.textContent = text;
+  }
+
+  /**
+   * The embodiment badge: embodied — the place where the learner's body is (`where`: the same lookup of the same
+   * position as the place beside the map; the world model has the body there, the avatar being its input device),
+   * "walking…" while the world moves it; clinical mode says so. Clicking it opens the settings ("In-world mode").
    */
   private renderEmbodiment(): void {
     const b = this.el.embodiment;
@@ -515,15 +533,13 @@ export class Hud {
     b.hidden = !game;
     if (!game) return;
     const emb = game.embodied;
-    let text: string;
+    // the same place as beside the map: one lookup (`placeTexts`)
+    const text = placeTexts(this.where, emb ? { walking: emb.walking } : null).badge;
     let cls: string;
     if (emb) {
-      const walking = emb.walking;
-      text = walking ? tr("emb.badgeWalking") : tr("emb.badge", { place: emb.placeLabel() ?? tr("emb.outside") });
-      cls = `embodiment-badge mode-embodied${walking ? " walking" : ""}`;
+      cls = `embodiment-badge mode-embodied${emb.walking ? " walking" : ""}`;
       b.title = tr("emb.badgeTitle");
     } else {
-      text = tr("emb.badgeClinical");
       cls = "embodiment-badge mode-clinical";
       b.title = tr("emb.badgeClinicalTitle");
     }

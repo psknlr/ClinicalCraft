@@ -10,7 +10,8 @@ with a `team` names the room, the members and their duties. In the case's team p
 - **verifies** results with their own eyes.
 
 Authored **team scenarios** set up initial conditions (a need, a colleague on a break, an instrument somewhere else,
-a swab out of sight) and never the steps.
+a swab out of sight, information only one colleague holds) and never the steps. The team is an operating room's in
+SurgeryCraft's Case 126 and an emergency room's in the built-in `acute-ischemic-stroke` (§4.5).
 
 This is the contract (code: `packages/agent/src/session/team/`, `packages/core/src/schema/team.ts`,
 `packages/core/src/engine/team.ts`, `packages/world/src/conceal.ts`, `packages/bench/src/team/`,
@@ -33,6 +34,7 @@ nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点)
     { "staff": "or-7.scrub-nurse", "duties": ["instruments", "count"] },
     { "staff": "or-7.anaesthetist", "duties": ["anaesthesia"] },
     { "staff": "surgeon", "duties": ["surgeon"] }      // the learner (or the simulated surgeon, observer mode)
+    // optional "name": what the team calls a member aloud — { "en": "the doctor", "zh-CN": "医生" } in an ED team
   ],
   "cover": [                             // optional: who takes over a member's duty when they must leave (§5)
     { "staff": "l1-anaesthetist", "duties": ["anaesthesia"] }
@@ -48,27 +50,34 @@ nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点)
 ```
 
 Duties:
-- `circulate`: the circulating nurse. She notices needs, chooses whom to ask, verifies and escalates; she also
-  searches the room when the count is short.
+- `circulate`: the circulating nurse (in an emergency room, the nurse coordinating at the bedside). She notices needs,
+  chooses whom to ask, verifies and escalates; she also searches the room when the count is short. She may be posted
+  in another room of the facility (the ED nurse at the station): with something to do she first walks to the team's
+  room (`team.join.<staff>.<n>`, a receipt like any act).
 - `instruments`: the scrub nurse. She locates, carries and hands over instruments.
 - `count`: the member who counts.
-- `surgeon`: the surgeon.
+- `surgeon`: the clinician in charge — the learner: the operating surgeon in an operating room, the doctor in an ED
+  team (a member's `name` says what the team calls them).
 - `anaesthesia`: the room's anaesthetist. No team policy acts on it; asked to leave the room while the patient is
   under anaesthesia, they hand over first (§5, "leaving an anaesthetised patient").
+- `inform`: a colleague who holds information the team needs (the triage nurse who heard it from the family): asked
+  for it, they report it back (§4.5). Any member holding information does the same, whatever their duty.
 
 `checkTeamDefinition` (part of `checkCaseIntegrity`) checks the team on its own:
 - known phases;
 - each member listed once, with exactly one surgeon;
 - somebody circulates;
 - needs are for members;
+- information needs (`inform`, §4.5) name a history item the case records, a holder who is a member or relief
+  colleague (never the person it is for), a member it is for, and an intervention of the case it holds up;
 - absent members are members, and the surgeon is never absent;
 - relief and cover colleagues are not members (and nobody covers the surgeon);
 - the solution's `start {team}` names a scenario;
-- `expect` matches what is set up.
+- `expect` matches what is set up (`delivered` needs a need, `informed` an information need, `count` a count).
 
 `teamFacilityIssues` (run by `cases validate`) checks the team against its facility:
 - the room exists;
-- the members are staff of that room;
+- the members are staff of that room (the member who circulates may be posted in another room: she comes to it);
 - relief and cover colleagues exist;
 - the needed items and the counted item are handheld types;
 - the count's search places and the scenarios' placements exist.
@@ -116,12 +125,15 @@ Everything is plain JSON (`TeamState`), saved as a whole: `TeamCheckpoint`, form
   - the **true initiator** (the colleague who set the task in motion; the act is done `onBehalfOf` them);
   - the outcome and code, the world version, the minute and the simulated seconds.
 - **Tasks**, per member: `supply` (see that someone gets an item), `deliver`, `count`, `check` (a count discrepancy
-  seen through), `wound` (the simulated surgeon checks the wound). Each has a status, the round it last changed, the
+  seen through), `wound` (the simulated surgeon checks the wound), `inform` (see that information a colleague holds
+  reaches the person who needs it, read back: who holds it, what it holds up, the fact as reported, and when the case
+  recorded it as known — `relayed`). Each has a status, the round it last changed, the
   colleagues already asked, the act counter, whether the result was verified, and the reason.
 - **Claims** map an item to the task carrying it. Two tasks never carry one item: the first claim holds.
 - **The count's record** (`CountLedger`): the baseline, when the count fell due, when a hold was asked for, when it
   was settled, the outcome, the holds asked for, and whether closure began on a hold.
-- **Observations**, per member, each with an evidence reference.
+- **Observations**, per member, each with an evidence reference (`info`: information the member holds — the scenario's
+  holder learned it before; `inform`: an information need noticed).
 
 Saving: `SessionSnapshot.team`, and a `team` transcript item after each change. Restoring:
 `SessionOptions.embodied.team`, applied together with the world snapshot it acted in. A restored session resumes
@@ -213,7 +225,7 @@ searcher's hand, recorded as recovered.
 - **Learner mode** (default): the learner answers with the `team reply` op or the panel's buttons: Read back, Wound
   checked, Understood. They search with their own world action ("Check the wound", "Search within reach").
 - **Observer mode** (`team surgeon simulated`): a simulated surgeon answers instead:
-  - reads a hold back;
+  - reads a hold back, and information told to them (§4.5);
   - checks the wound (`search` of the patient);
   - takes out what it finds;
   - reports "Wound checked.";
@@ -221,12 +233,44 @@ searcher's hand, recorded as recovered.
 
   The learner watches.
 
+### 4.5 Information a colleague holds
+
+A scenario's `inform` routes one fact **the case records** — a history item's recorded answer, never a new fact —
+through the team (the built-in `acute-ischemic-stroke`: his wife's answer about blood thinners, heard by the triage
+nurse at the door):
+
+```jsonc
+"inform": [{
+  "id": "anticoagulant-history",
+  "history": "anticoagulants",          // the case's history item: its recorded answer is the information
+  "name": { "en": "his anticoagulant and antiplatelet history", "zh-CN": "他的抗凝和抗血小板用药情况" },
+  "heldBy": "triage-nurse",             // a member, or a relief colleague (by phone) — they learned it before
+  "for": "surgeon",                     // who needs it
+  "blocks": "tenecteplase",             // the act it holds up until it is supplied or escalated
+  "when": { "read": "ct-head" }         // when the need arises (default: as soon as the team works)
+}]
+```
+
+| step | who | what is recorded |
+|---|---|---|
+| the need, noticed once `when` holds | the circulating nurse (or `noticedBy`) | an `inform` task; a `notice` to the person: who holds it, and that the act it `blocks` waits ("IV tenecteplase waits until it's confirmed.") |
+| asked | the circulating nurse → the holder (in the room aloud, or by phone) | a `request` about `info` — **who ordered** the task |
+| supplied | the holder → the circulating nurse | a `report` carrying the fact as the case records it — **who performed** it; a holder who does not have it declines (`not-known`) |
+| told | the circulating nurse → the person, once they are in the room (`waiting` until then) | a `report` with the fact |
+| read back, confirmed | the person reads it back (the simulated surgeon; the learner from the Team panel); the circulating nurse confirms a read-back about the same item and says it again after a wrong one | **who received** it and when: only now is it recorded in the case as known to them — `ask` with `via: "team"` (docs/PROTOCOL.md), so the case's own rules (thrombolysis contraindicated until the anticoagulant history is known) see it |
+| escalated | the circulating nurse → the person, with the reason | the holder away (`holder-absent`, at once: nobody else knows it), no answer within `waitRounds` (`no-answer`), not known, the person not in the room for `waitRounds × 4`, or no read-back for `waitRounds × 4`; "… still waits." when it blocks an act |
+
+Only the one named holder is asked: rerouting cannot help, so an unanswered request is escalated rather than passed
+on. What the person does next — the change in management — is theirs: in learner mode the learner's, in the team
+benchmark the clinician's path continued (§7).
+
 ## 5. In the session
 
 | piece | what it is |
 |---|---|
 | `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need; the team takes it from there). A case without a team: `error` `no_team` |
-| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again |
+| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again; information told to the learner is read back from the Team panel ("Read back"), and only that records it in the case (§4.5) |
+| a team with nothing to do | without a scenario, a count or anything asked of it (`TeamScheduler.hasWork`), the team takes no round after the learner's acts: a case played alone is as it was without a team (the in-world demonstration and `cases verify` of `acute-ischemic-stroke` are unchanged by its team) |
 | one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
 | `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon) |
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |
@@ -234,7 +278,7 @@ searcher's hand, recorded as recovered.
 | browser | the HUD's **Team** button (in the team's phases) opens the panel: pace (Auto / Step / Next step), the surgeon (I am the surgeon / Observe), Search within reach / Check the wound, what was said (lines to the learner marked, with their answers), the tasks (with "seen to be done"), the count. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, whichever panel is open, and stops only with the encounter's explicit pause |
 | anaesthesia responsibility | continuous (`SessionState.anaesthesia`, core `engine/anaesthesia.ts`): the responsible anaesthetist is the team's `anaesthesia` member until a hand-over moves it. While the patient is under anaesthesia (`patient.nonVerbalWhen`) the responsible anaesthetist never leaves the patient's room by **any** path — a walk, a request to fetch, a delegated task, the team's own move, a learner's world action on their body: every one goes through `EmbodiedSession.act`, which refuses a movement whose destination is outside the patient's room (`NOT_AUTHORIZED`, "Continuous anaesthesia responsibility is required. Arrange relief before leaving the patient."); within the room they move freely, and moving with the patient (a transport) is staying |
 | leaving an anaesthetised patient | asked to go out of the room (back to a post elsewhere, to show the way), the responsible anaesthetist first asks a colleague from `team.cover` (else the team's own anaesthetist) — `anaesthesia request-relief`; the colleague walks to the patient with their own body and the world confirms them there — `relief-arrived`; the structured hand-over is accepted — `handover {from, to, airway, ventilation, haemodynamics, drugs, unresolved}`, taken from the record (airway interventions, the vitals now, the drugs given, open holds), said in the new anaesthetist's voice; responsibility is transferred, and only then does the first one go. The new anaesthetist is bound by the same rule at once. Nobody to take over, or they cannot come: the anaesthetist stays and says why. Before induction or after emergence they just go (`staff-requests.ts`, `handover.ts`). A learner's `anaesthesia` action is refused (`permission_denied`) |
-| staff working on their own | `StaffAutonomy` (`session/staff-autonomy.ts`): one round of what every staff member does without being told each step — the circulating nurse's work on a new investigation (device fetched and reserved, acquired at the patient, reported, reviewed: docs/STUDIES.md), a colleague holding a port who is no longer at the table letting go (`assist.ts`), the operation's equipment checked against the room and, once the operation has begun, a device it lacks that is only switched off switched on by the circulating nurse (docs/PROCEDURE.md "Equipment"), and the responsible anaesthetist of an anaesthetised patient answering a **new** critical alarm. Each alarm is an episode in the record (`SessionState.alarms`, the `alarm-response` action by the system): **detected**; the anaesthetist goes to the patient with their own body; only once the world has them within reach is it **arrived** and said ("Alarm: SBP 72 — I'm at the patient and checking it."); a walk that fails (a locked door, no route) is **blocked** with its reason and said once per reason ("Alarm: SBP 72 — I can't get to the patient: <reason> I need someone at the bedside now."), and the walk is tried again every round until it succeeds; an alarm no longer critical is **cleared** (a recurrence is a new episode). A save and resume replays the episodes: a blocked responder keeps trying, an arrival already said is never said again. With model-driven characters the anaesthetist's words carry the record's place (docs/CHARACTERS.md §4): a blocked responder's line that claims the bedside is refused and the template that states the record is said. No drug or treatment of their own: what follows is the case's or the operator's. The round runs after every act of the learner and on the **staff's own clock**: Op `staff_step`, which the browser sends every `STAFF_STEP_MS` while the encounter runs, whatever the learner is looking at — so work goes on off-screen (in a case whose clock moves only with what is done, what needs time waits for the clock). `ClinicalSession.staffStates(): RoleState[]` — each staff member's goal, current task, place (room, x, z, level), responsibility (`anaesthesia`, `port B`, an order, a team task), held items, reservations, pending requests and what blocks them, **derived** from the record and the world, so a reload agrees by construction |
+| staff working on their own | `StaffAutonomy` (`session/staff-autonomy.ts`): one round of what every staff member does without being told each step — the circulating nurse's work on a new investigation (device fetched and reserved, acquired at the patient, reported, reviewed: docs/STUDIES.md), a colleague holding a port who is no longer at the table letting go (`assist.ts`), the operation's equipment checked against the room and, once the operation has begun, a device it lacks that is only switched off switched on by the circulating nurse (docs/PROCEDURE.md "Equipment"), the responsible anaesthetist of an anaesthetised patient answering a **new** critical alarm, and a colleague handed an item kept in custody (a specimen, a medication box) signing for it with their own act — `confirm_receipt` — and saying so (docs/EMBODIED.md §8.1, audit 2026-11-12 P2-12). Each alarm is an episode in the record (`SessionState.alarms`, the `alarm-response` action by the system): **detected**; the anaesthetist goes to the patient with their own body; only once the world has them within reach is it **arrived** and said ("Alarm: SBP 72 — I'm at the patient and checking it."); a walk that fails (a locked door, no route) is **blocked** with its reason and said once per reason ("Alarm: SBP 72 — I can't get to the patient: <reason> I need someone at the bedside now."), and the walk is tried again every round until it succeeds; an alarm no longer critical is **cleared** (a recurrence is a new episode). A save and resume replays the episodes: a blocked responder keeps trying, an arrival already said is never said again. With model-driven characters the anaesthetist's words carry the record's place (docs/CHARACTERS.md §4): a blocked responder's line that claims the bedside is refused and the template that states the record is said. No drug or treatment of their own: what follows is the case's or the operator's. The round runs after every act of the learner and on the **staff's own clock**: Op `staff_step`, which the browser sends every `STAFF_STEP_MS` while the encounter runs, whatever the learner is looking at — so work goes on off-screen (in a case whose clock moves only with what is done, what needs time waits for the clock). `ClinicalSession.staffStates(): RoleState[]` — each staff member's goal, current task, place (room, x, z, level), responsibility (`anaesthesia`, `port B`, an order, a team task), held items, reservations, pending requests and what blocks them, **derived** from the record and the world, so a reload agrees by construction |
 | model-driven members | with `characters.engine: "llm"` (docs/CHARACTERS.md) each member decides each round with their own model, from their role card and what they perceive: the policy's move (`act`, in their own words — and the only option when it is owed: a closed-loop reply or the count), `wait` (never twice in a row on one move), `notice` a colleague, or `escalate` their own stuck task; a line is said only when grounded, and the rules decide whenever the model is missing, slow or off-script (`TeamHost.decide`, `ModelTeamMind`) |
 | saves | the web's save keeps `team` with the world (`persistence.ts`); a resume restores both. The scenario's lifecycle is saved with it — `pending` (the team's phases not begun, nothing set up in the world), `active` (set up once: `setup {round, at, worldVersion}`), `completed` — so a save before the operation sets the scenario up when the operation begins, exactly as a run never interrupted, and a save after it never sets anything up twice; holds, requests, hand-overs and item positions are in the checkpoint and the world snapshot |
 
@@ -250,7 +294,8 @@ searcher's hand, recorded as recovered.
   "relief": [{ "staff": "or-6.scrub-nurse", "duties": ["instruments"] }],
   "items": [{ "placement": "or-7-swab-5", "beside": "or-7.mayo", "concealed": true }],   // or beside "patient", "inside": true
   // a documented transfer off the field: { "placement": …, "beside": …, "transfer": { "to": { … }, "reason": { … } } }
-  "expect": { "count": "reconciled" }          // the team benchmark's ground truth (delivered: true | false; count)
+  // information only one colleague holds: "inform": [ … ] (§4.5)
+  "expect": { "count": "reconciled" }          // the team benchmark's ground truth (delivered | informed: true | false; count)
 }
 ```
 
@@ -269,20 +314,33 @@ A scenario is chosen at `start` (`{ "type": "start", "team": "swab-on-floor" }`)
 - five of five made up with OR 6's swab while the fifth is in the wound;
 - a swab sent with the specimen, documented (the positive control: no hold).
 
+The built-in `acute-ischemic-stroke` (1.1.4) has an emergency team — the ED nurse coordinating at the bedside, the
+learner as the doctor in charge — and two scenarios on one information handoff (§4.5): his anticoagulant history held
+by the triage nurse (`anticoagulants-from-triage`, expected `informed`), and the same with her on a break
+(`anticoagulants-triage-away`, expected escalated).
+
 ## 7. The team benchmark
 
 `clinicalcraft bench team [--case ids] [--scenario ids] [--out dir]` runs every team scenario of the cases that have
 them, headless, in **observer mode**:
-1. the case is replayed (its reference solution) up to the moment the scenario is about: the team's phase, or the
-   count falling due for a count scenario;
-2. the surgeon's body goes to the table;
-3. the team then works alone (`team run`) until what was set in motion has ended.
+1. the case is replayed (its reference solution) up to the moment the scenario is about: the team's phase, the count
+   falling due for a count scenario, every information need's `when`. The team waits meanwhile (paused). The history
+   a scenario routes through the team is not asked by the replayed clinician; a study the path orders in-world is
+   done with the patient on its device (wheeled there and back, as the in-world demonstration does) and read once its
+   turnaround has passed;
+2. the surgeon's body goes to the table (the patient);
+3. the team then works alone (`team run`) until what was set in motion has ended;
+4. after an information handoff the clinician's path goes on — what the team escalated they take themselves first,
+   what it supplied they never ask again — up to the act the information held up, so the run records what they did
+   next.
 
 The score comes from the session's own record (the team checkpoint, the case's count record, what bodies hold), never
 from the team's say-so, checked against the scenario's `expect`. Its denominator is the scenario's **obligations**,
 enumerated by id at the start (`obligations`): every need — its recipient, the physical outcome (they hold an item of
-the type, one no other need was credited with), whether the circulating nurse verified it — and the count, when the
-scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
+the type, one no other need was credited with), whether the circulating nurse verified it —, every information need —
+the physical outcome is the case recording it as known to its recipient, verified by their read-back, and the
+**handoff**: who asked the holder, who supplied it, who received it and when, the first act after it and when the act
+it held up was given — and the count, when the scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
 `unfinished` when the run stopped — a run with an unfinished obligation never passes, however many rounds it ran. A
 scenario is `activated` when it was set up in the world and its work began; one assigned and never activated is
 **invalid** (nothing about the team can be concluded from it). The report publishes the denominators apart: scenarios
@@ -296,7 +354,8 @@ The report (`team-report.json`, `team-report.md`) gives, per scenario:
 | count: outcome · holds · detection latency | correct / reconciled / unresolved; holds on closure asked for; rounds from the count falling due to the hold |
 | false hold | a hold when every item was there (the control) |
 | obligations: met / escalated / unfinished / failed | the scenario's obligations as they ended |
-| inappropriate progression | closure began while the count was not settled (the count record's unsafe progression; `closedOnHold`) |
+| inappropriate progression | closure began while the count was not settled (the count record's unsafe progression; `closedOnHold`); an act given before the information it waited for |
+| information: asked by → supplied by → received by · then · held-up act | the handoff of each information need, with the simulated minute of each (the report's "Information handoffs") |
 | exactly once | no action id carried out twice; no more hand-overs than needs |
 | rounds · messages · acts · seconds | the work it took (simulated seconds) |
 
@@ -325,12 +384,22 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
 - SurgeryCraft `tools/case126-count.test.ts`: the field, the board, the RF wand, the Sign Out, the team and the score
   agree on every count ending; a save before the operation activates the same obligations as a run never interrupted;
   the headless autopilot works the assigned scenario.
+- `bench/src/team/inform.test.ts`: the stroke case is a built-in team case; both scenarios pass with the handoff
+  recorded (asked → supplied → received, then tenecteplase only after the read-back; escalated at once when the holder
+  is away, then the history taken directly); an act before the information fails the run; played alone the team takes
+  no round. `agent/src/session/team/policy.test.ts` ("information a colleague holds"): every step of §4.5 on hand-built
+  views. `core/src/engine/team.test.ts`: the information checks, the circulator posted elsewhere, `ask` via the team.
 - `bench team` over Case 126: 11 / 11 (11 activated, 11 completed, 2 appropriately escalated, 0 invalid).
+- `bench team` over the built-in content (2026-11-14): 2 / 2 — `acute-ischemic-stroke` (2 activated, 2 completed,
+  1 appropriately escalated, 0 invalid; 2 obligations, 0 unfinished).
 
 ## 9. Limits (stated as they are)
 
-- The policies are **rules**, written for the instrument handoff and the count. No language model drives a team
-  member, and no live model has been asked to work with this team.
+- The policies are **rules**, written for the instrument handoff, the count and passing on one fact. No language
+  model drives a team member, and no live model has been asked to work with this team.
+- **Information is one recorded fact per need**, passed on word for word: the holder's knowledge is the scenario's
+  set-up, a read-back is checked by what it is about (the history item), not by its words, and nobody mishears.
+  In the benchmark, what the clinician does next is the case's reference path continued, not a decision.
 - **Time is logical.** A round is not a clock interval, and a member does one thing per round.
 - **Perception stands in for a glance round the room.** Verification uses what the body perceives (line of sight
   within 8 m counts, whatever the facing); a count is what the team in the room can account for (every item in the

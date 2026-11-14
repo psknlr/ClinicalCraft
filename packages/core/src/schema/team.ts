@@ -11,11 +11,14 @@ import { ProvenanceTagSchema } from "./procedure.js";
  */
 
 /**
- * What a member is there for: `circulate` (the circulating nurse: notices needs, asks the right colleague,
- * verifies what happened, escalates); `instruments` (the scrub nurse: the sterile instruments — locates,
- * carries and hands them over); `count` (the surgical count); `surgeon`; `anaesthesia`.
+ * What a member is there for: `circulate` (the circulating nurse — in an emergency room the nurse coordinating at
+ * the bedside: notices needs, asks the right colleague, verifies what happened, escalates); `instruments` (the scrub
+ * nurse: the sterile instruments — locates, carries and hands them over); `count` (the surgical count); `surgeon`
+ * (the clinician in charge: the learner, the operating surgeon in an operating room); `anaesthesia`; `inform` (a
+ * colleague who holds information the team needs — the triage nurse who heard it from the family: asked for it, they
+ * report it back).
  */
-export const TeamDutySchema = z.enum(["circulate", "instruments", "count", "surgeon", "anaesthesia"]);
+export const TeamDutySchema = z.enum(["circulate", "instruments", "count", "surgeon", "anaesthesia", "inform"]);
 export type TeamDuty = z.infer<typeof TeamDutySchema>;
 
 /** A staff id of the facility without its prefix (`or-7.scrub-nurse`), or `surgeon`: the operating surgeon (the learner, or a simulated surgeon in observer mode). */
@@ -25,6 +28,8 @@ export const TeamMemberSchema = z
   .object({
     staff: MemberRef,
     duties: z.array(TeamDutySchema).min(1),
+    /** What the team calls this member aloud (default: their name; the learner: "the surgeon" — "the doctor" in an ED team). */
+    name: LocalizedTextSchema.optional(),
   })
   .strict();
 export type TeamMember = z.infer<typeof TeamMemberSchema>;
@@ -47,6 +52,34 @@ export const TeamNeedSchema = z
   .strict();
 export type TeamNeed = z.infer<typeof TeamNeedSchema>;
 
+/**
+ * Information the team has to get to someone (docs/TEAM.md §4.5): a fact the case records — a history item's
+ * recorded answer, never a new one — held by one named member, who learned it (the triage nurse heard it from his
+ * wife). The member who circulates asks the holder; the holder reports back; the circulator tells the person who
+ * needs it, who reads it back (check-back); only then is it recorded in the case as known to them. Until then, or
+ * until it is escalated with the reason, what it `blocks` waits.
+ */
+export const TeamInformSchema = z
+  .object({
+    id: IdSchema,
+    /** The case's history item whose recorded answer is the information (only facts the case records). */
+    history: IdSchema,
+    /** What the team calls it aloud ("his anticoagulant status"; default: the history item's question). */
+    name: LocalizedTextSchema.optional(),
+    /** Who holds it: a member, or a colleague of the scenario's `relief` (reached by phone). */
+    heldBy: MemberRef,
+    /** Who needs it: `surgeon` (the clinician in charge) or a member's staff id. */
+    for: MemberRef,
+    /** The member who notices it is needed (default: the member who circulates). */
+    noticedBy: MemberRef.optional(),
+    /** The case's intervention it holds up: not to be given until the information is supplied or escalated. */
+    blocks: IdSchema.optional(),
+    /** When the need arises (a CT read: thrombolysis is being considered); default: as soon as the team works. */
+    when: ConditionSchema.optional(),
+  })
+  .strict();
+export type TeamInform = z.infer<typeof TeamInformSchema>;
+
 /** A team scenario: initial conditions and perturbations, never the steps (authored teaching / benchmark material). */
 export const TeamScenarioSchema = z
   .object({
@@ -56,6 +89,8 @@ export const TeamScenarioSchema = z
     summary: LocalizedTextSchema,
     provenance: ProvenanceTagSchema,
     needs: z.array(TeamNeedSchema).default([]),
+    /** Information to get to someone, held by one named member (`TeamInformSchema`). */
+    inform: z.array(TeamInformSchema).default([]),
     /** Members not available (on a break, scrubbed out): present in the facility, not answering in the room. */
     absent: z.array(MemberRef).default([]),
     /** Colleagues outside the room the team may call on when a member is unavailable (staff id → duties). */
@@ -63,12 +98,14 @@ export const TeamScenarioSchema = z
     /**
      * What should come of it (the team benchmark's ground truth; never shown to the team): `delivered` — every need
      * ends with the person holding the item, verified (false: it ends escalated, with the reason); `count` — the
-     * count's outcome.
+     * count's outcome; `informed` — every information need ends with the person who needed it reading it back,
+     * confirmed, and recorded in the case (false: it ends escalated, with the reason).
      */
     expect: z
       .object({
         delivered: z.boolean().optional(),
         count: z.enum(["correct", "reconciled", "unresolved"]).optional(),
+        informed: z.boolean().optional(),
       })
       .strict()
       .optional(),

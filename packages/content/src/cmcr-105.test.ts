@@ -1,6 +1,7 @@
 /**
- * Content contract for the 105 additional CMCR cases (tag `cmcr-105`): the collection is pinned to its source map;
- * every case meets the clinical content standard (docs/CASE_AUTHORING.md §9) at the depth of the original selection
+ * Content contract for the additional CMCR cases (tag `cmcr-105`): the collection is pinned to its source map of 105
+ * reports, of which those listed as awaiting re-authoring have no case in the library (their 1.0.0 template drafts did
+ * not meet the content standard and are kept outside it); every case in the library meets the clinical content standard (docs/CASE_AUTHORING.md §9) at the depth of the original selection
  * (cmcr-20.test.ts), with assessment that cannot be gamed (doing nothing earns 0, a wrong first answer costs marks,
  * critical items are acts) and an honest statement of what has been checked against the source; and the collection
  * is not a template — no teaching text is shared by more than two cases.
@@ -27,8 +28,13 @@ import { stepsThatTrapALateLearner } from "./__fixtures__/completable.js";
 /** The source map decides the collection: a DOI is either verified or pending, with the string as supplied and why. */
 const source = JSON.parse(readFileSync(new URL("../../../scripts/cmcr-105-sources.json", import.meta.url), "utf8")) as {
   cases: { id: string; articleId: string; url: string; verifiedDoi?: string; doiPendingVerification?: string; doiPendingReason?: string; sourceTextSha256: string }[];
+  /** Reports whose case is not in the library yet: the template draft awaits re-authoring (where, and why: `note`). */
+  awaitingReauthoring?: { note: string; ids: string[] };
 };
-const expected = source.cases.map((s) => s.id).sort();
+const awaiting = new Set(source.awaitingReauthoring?.ids ?? []);
+/** The source-map entries whose case is in the library. */
+const inLibrary = source.cases.filter((s) => !awaiting.has(s.id));
+const expected = inLibrary.map((s) => s.id).sort();
 /** DOIs that could not be confirmed (doi.org and Crossref unreachable; each one's reason is in the source map). */
 const PENDING_DOIS = ["cmcr-1068587", "cmcr-1068618", "cmcr-1322371", "cmcr-1551889"];
 /** Every case folder of the library, and the collection tags a CMCR case carries exactly one of. */
@@ -97,12 +103,18 @@ const ageInYears = (c: CaseDefinition): number => {
 };
 
 describe("CMCR additional 105 source reports", () => {
-  it("takes its 105 distinct reports from the source map: each one a case tagged for this collection, and no other case so tagged", () => {
-    expect(new Set(expected).size).toBe(105);
+  it("takes its 105 distinct reports from the source map: each one a case tagged for this collection or awaiting re-authoring, and no other case so tagged", () => {
+    expect(new Set(source.cases.map((s) => s.id)).size).toBe(105);
+    for (const id of awaiting) expect(source.cases.some((s) => s.id === id), id).toBe(true);
+    if (source.awaitingReauthoring) expect(source.awaitingReauthoring.note.length, "awaitingReauthoring.note").toBeGreaterThan(40);
     for (const entry of source.cases) {
       expect(entry.id).toBe(`cmcr-${entry.articleId}`);
       expect(entry.url, entry.id).toBe(`https://rs.yiigle.com/cmaid/${entry.articleId}`);
       expect(entry.sourceTextSha256, entry.id).toMatch(/^[a-f0-9]{64}$/);
+      if (awaiting.has(entry.id)) {
+        expect(caseIds, `${entry.id} awaits re-authoring and has no case folder`).not.toContain(entry.id);
+        continue;
+      }
       const c = raw(entry.id);
       expect(c.id).toBe(entry.id);
       expect(c.tags, entry.id).toContain("cmcr-105");
@@ -111,9 +123,9 @@ describe("CMCR additional 105 source reports", () => {
   });
 
   it("puts every CMCR case in exactly one collection, so no case escapes both collection contracts", () => {
-    // This file pins the 105 to the source map; cmcr-20.test.ts pins the original 20 to its own id list.
+    // This file pins the additional cases to the source map; cmcr-20.test.ts pins the original 20 to its own id list.
     const cmcr = caseIds.filter((id) => id.startsWith("cmcr-") || raw(id).tags.some((tag: string) => tag.startsWith("cmcr")));
-    expect(cmcr.length).toBeGreaterThanOrEqual(125);
+    expect(cmcr.length).toBeGreaterThanOrEqual(20 + expected.length);
     for (const id of cmcr) expect(raw(id).tags.filter((tag: string) => COLLECTION_TAGS.includes(tag)), id).toHaveLength(1);
   });
 
@@ -123,7 +135,7 @@ describe("CMCR additional 105 source reports", () => {
     for (const locale of LOCALES) {
       const marker = locale === "zh-CN" ? /（化名）$/ : /\(pseudonym\)$/;
       const usedBefore = new Set(original20.map((name) => name[locale]));
-      expect(new Set(names.map((name) => name[locale])).size).toBe(105);
+      expect(new Set(names.map((name) => name[locale])).size).toBe(expected.length);
       for (const name of names) {
         expect(name[locale]).toMatch(marker);
         expect(usedBefore.has(name[locale])).toBe(false);
@@ -136,7 +148,7 @@ describe("CMCR additional 105 source reports", () => {
     const pending = source.cases.filter((entry) => !entry.verifiedDoi);
     expect(verified).toHaveLength(105 - PENDING_DOIS.length);
     expect(pending.map((entry) => entry.id).sort()).toEqual(PENDING_DOIS);
-    for (const entry of verified) {
+    for (const entry of verified.filter((e) => !awaiting.has(e.id))) {
       // A bare DOI: one ending in punctuation is ambiguous (the pending cmcr-1068587 and cmcr-1068618).
       expect(entry.verifiedDoi, entry.id).toMatch(WELL_FORMED_DOI);
       expect(entry.verifiedDoi, entry.id).not.toMatch(/[.,;:]$/);
@@ -150,6 +162,7 @@ describe("CMCR additional 105 source reports", () => {
     for (const entry of pending) {
       expect(entry.doiPendingVerification, entry.id).toBeTruthy();
       expect(entry.doiPendingReason, entry.id).toBeTruthy();
+      if (awaiting.has(entry.id)) continue;
       const c = raw(entry.id);
       expect(c.provenance, entry.id).not.toHaveProperty("doi");
       expect(c.extensions.sourceDoiPendingVerification, entry.id).toBe(entry.doiPendingVerification);
@@ -201,7 +214,7 @@ describe("CMCR additional 105 source reports", () => {
     expect(stocky).toEqual([]);
   });
 
-  for (const entry of source.cases) it(`${entry.id}: grounded, evidence-gated, bilingual, deep enough to teach and completable in its facility`, () => {
+  for (const entry of inLibrary) it(`${entry.id}: grounded, evidence-gated, bilingual, deep enough to teach and completable in its facility`, () => {
     const c = load(entry.id);
     const at = (what: string) => `${entry.id} ${what}`;
     // Every content-standard lint (neutral option ids, no length cue, no authoring language, gates, matcher corpus…).

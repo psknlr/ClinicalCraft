@@ -329,6 +329,9 @@
             "handheld"
           ]
         },
+        "custody": {
+          "type": "boolean"
+        },
         "reach": {
           "type": "number",
           "exclusiveMinimum": 0,
@@ -414,7 +417,8 @@
                               "standing",
                               "sitting",
                               "lying",
-                              "lateral"
+                              "lateral",
+                              "prone"
                             ]
                           },
                           "sideUp": {
@@ -429,7 +433,8 @@
                             "enum": [
                               "clothes",
                               "blanket",
-                              "drapes"
+                              "drapes",
+                              "towels"
                             ]
                           },
                           "flex": {
@@ -453,6 +458,9 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "live": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
@@ -700,7 +708,8 @@
                 "standing",
                 "sitting",
                 "lying",
-                "lateral"
+                "lateral",
+                "prone"
               ]
             },
             "sideUp": {
@@ -715,7 +724,8 @@
               "enum": [
                 "clothes",
                 "blanket",
-                "drapes"
+                "drapes",
+                "towels"
               ]
             },
             "draped": {

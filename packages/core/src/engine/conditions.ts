@@ -40,9 +40,21 @@ export function resultFor(c: CaseDefinition, investigationId: string, phase: str
   return Object.prototype.hasOwnProperty.call(investigation.results, phase) ? investigation.results[phase] : null;
 }
 
-/** True when the order's result can be read: static clock, or turnaround elapsed. */
+/**
+ * Is the order's study still waiting for its acquisition — placed with a `modality` (in-world mode: done on the
+ * patient at that device, docs/EMBODIED.md §8.7) and the patient not yet there? Its result does not exist yet.
+ */
+export function awaitingAcquisition(order: Pick<OrderRecord, "modality" | "acquired">): boolean {
+  return !!order.modality?.length && !order.acquired;
+}
+
+/**
+ * True when the order's result can be read: it was acquired (implied at the order unless it waits for the patient
+ * at a device), and on a simulated clock its turnaround after the acquisition has elapsed.
+ */
 export function isOrderReady(c: CaseDefinition, s: SessionState, order: OrderRecord): boolean {
-  return c.clock.mode === "static" || s.clock >= order.readyAt;
+  if (awaitingAcquisition(order)) return false;
+  return c.clock.mode === "static" || (order.readyAt != null && s.clock >= order.readyAt);
 }
 
 function inRange(value: number, range: { gte?: number; lte?: number }): boolean {
@@ -116,7 +128,9 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
  * Evaluate a condition against a session.
  *
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
- * without `phase` match any phase. `asked` also holds when an item that
+ * without `phase` match any phase. `ordered` holds for a test ordered and done: an in-world study waiting for the
+ * patient at its device (`awaitingAcquisition`, docs/EMBODIED.md §8.7) stays outstanding until it was acquired there
+ * (text mode: acquired at the order). `asked` also holds when an item that
  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
  * recorded attempt (rejected answers are not attempts). `elapsedSince` measures from the last time the
  * intervention was given (`lastGiven`) and is false while it never was; `examined` with `afterLast` holds when the
@@ -129,7 +143,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("always" in cond) return cond.always;
   if ("asked" in cond) return historyCredited(c, s, cond.asked);
   if ("examined" in cond) return s.examined.includes(cond.examined) && (cond.afterLast == null || examinedAfterLast(s, cond.examined, cond.afterLast));
-  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase));
+  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase) && !awaitingAcquisition(o));
   if ("read" in cond) return wasRead(s, cond.read, cond.phase);
   if ("resultReady" in cond) return resultReady(c, s, cond.resultReady, cond.phase);
   if ("decided" in cond) return Object.prototype.hasOwnProperty.call(s.decisions, cond.decided);

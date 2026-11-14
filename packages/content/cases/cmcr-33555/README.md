@@ -1,4 +1,4 @@
-# cmcr-33555 — Fever and a seizure, then hard to rouse · 8-day-old boy
+# cmcr-33555 — Fever and a seizure, then poorly responsive · 8-day-old boy
 
 > **Facilitator guide — contains spoilers.** Learners open the case from the case library, where the title, summary,
 > chief complaint, tags, triage note and specialty line name neither the cause nor the drug. The baby (谢知远 / Xie
@@ -14,7 +14,10 @@ lumbar puncture (NICE NG195; the meningitis guideline NG240 excludes babies up t
 interventions are `critical`, and fixed the points listed in the *Changelog*. A second independent AI-assisted review on
 2026-11-14 traced every patient fact again in both languages, re-read the cited guidance in its own text where it
 could be reached, replayed the assessment and the order entry, and fixed what it found (see the *Changelog*); it was
-not a clinician review.
+not a clinician review. A third independent AI-assisted review (round 3, 2026-11-14) traced every patient fact again,
+read the cited NICE guidelines, the JCIH statement, the Austin Health guideline, LactMed's summary and the PRC law in
+their own text, replayed the assessment, probed 205 history and examination phrasings, 47 intervention orders and 171
+order-entry queries in both languages, and fixed what it found (see the *Changelog*); it was not a clinician review either.
 
 ## Case card
 
@@ -27,8 +30,8 @@ not a clinician review.
 | Specialty | Neonatology, neurology (1.0.0's `clinical-toxicology` dropped: it named the answer on the library card) |
 | Languages | zh-CN (source language), en |
 | Learner level | Neonatal and paediatric trainees, final-year students; neonatal nurses for the communication and safeguarding items |
-| Review status | Editorial review 2026-10-30 and independent reviews 2026-11-13 and 2026-11-14 (all AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; facts not yet checked against the full article. Have a neonatologist and a paediatric safeguarding lead review it before teaching use |
-| Content | 29 history items (12 unknown, 9 required; the relative answers) · 7 examination findings · 18 investigations (3 record reviews; 7 without a recorded result) · 18 interventions (4 always harmful, 3 conditionally contraindicated, 4 scored inside a time window; 3 `critical`) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 32; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 key reasoning steps · 6 teaching points · 54 test utterances |
+| Review status | Editorial review 2026-10-30 and independent reviews 2026-11-13, 2026-11-14 (round 2) and 2026-11-14 (round 3) (all AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; facts not yet checked against the full article. Have a neonatologist and a paediatric safeguarding lead review it before teaching use |
+| Content | 29 history items (12 unknown, 9 required; the relative answers) · 7 examination findings · 18 investigations (3 record reviews; 7 without a recorded result) · 18 interventions (4 always harmful, 3 conditionally contraindicated, 4 scored inside a time window; 3 `critical`) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 32; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 key reasoning steps · 6 teaching points · 66 test utterances |
 
 ## Learning outcomes
 
@@ -50,9 +53,10 @@ By the end of the case the learner can:
 5. Act on the same day when a carer admits giving a newborn a prescription drug: a child-protection referral with the
    statutory report (China's 2020 revision of the Law on the Protection of Minors; NICE CG89, 2009), supervised care,
    and the doctors who prescribe the mother's clozapine involved without blame.
-6. Plan follow-up after exchange-level hyperbilirubinaemia — diagnostic audiology including auditory brainstem
-   response by 9 months (JCIH 2019) and structured neurodevelopmental follow-up — and explain that breastfeeding is
-   generally not advised while the mother takes clozapine (BAP 2017; LactMed, revised 2025).
+6. Plan follow-up after exchange-level hyperbilirubinaemia — diagnostic audiology by 9 months (JCIH 2019), with an
+   auditory brainstem response test because emissions can be normal after bilirubin injury, and structured
+   neurodevelopmental follow-up — and explain that breastfeeding is generally not advised while the mother takes
+   clozapine (BAP 2017; LactMed, revised 2025, prefers other drugs).
 
 These are `learningOutcomes` in `case.json`; they name the drug, so front-ends show them before play only behind the
 closed **Learning outcomes (6) · may reveal the diagnosis** disclosure and list them in every debrief.
@@ -99,7 +103,7 @@ the phase descriptions tell the learner what moves time on, without naming an an
 
 | Phase | Time | Entered when | What is there |
 |---|---|---|---|
-| `admission` (initial) | arrival from the referring hospital, day 8 | start | the relative's history (medicines at home: "I can't say just now"); the admission examination; glucose, bilirubin with albumin, blood gas, electrolytes, renal function, clotting, CRP, cranial ultrasound and chest film reports; blood culture, blood count, blood groups with DAT, G6PD, EEG and drug screen (no result recorded); decisions 1 (`first-hour`) and 2 (`bilirubin-escalation`); the **windows** in which antibiotics (after a culture ordered here), intensive phototherapy and the exchange (after the bilirubin is read) count as given in time |
+| `admission` (initial) | arrival from the referring hospital, day 8 | start | the relative's history (medicines at home: "I can't say just now"); the admission examination; glucose, bilirubin with albumin, blood gas, electrolytes, renal function, clotting, CRP, cranial ultrasound and chest film reports; blood culture, blood count, blood groups with DAT, G6PD, EEG, MRI and drug screen (no result recorded); decisions 1 (`first-hour`) and 2 (`bilirubin-escalation`); the **windows** in which antibiotics (after a culture ordered here), intensive phototherapy and the exchange (after the bilirubin is read) count as given in time |
 | `after-exchange` | after the exchange transfusion (timing not recorded) | decision 1 answered and objective 4 complete (admission results read, decision 2 answered, **exchange done**) | the relative's second account (mother's clozapine, the admission, the family's estimate of the amount); post-exchange clozapine 1777.1 → 1997.5 µg/L; ECG (no result recorded); decisions 3 (`level-rebound`) and 4 (`safeguarding`); the safeguarding referral's window opens |
 | `before-discharge` | later in the admission (dates not recorded) | as above, and decisions 3 and 4 answered | later clozapine 539.0 and 197 µg/L; the pre-discharge neurobehavioural score (37); decision 5 (`discharge-plan`); the referral's window closes when this phase ends |
 | `outcome` | the admission, discharge and follow-up | all five decisions answered | the report's course and outcome; the relative's follow-up account (`status-followup`, which supersedes `presentation`) |
@@ -173,7 +177,7 @@ deliberate drug exposure. Each act counts only inside its window (`indicatedWhen
 be met in hindsight (after the post-exchange levels or the outcome record). `rb-no-harm` counts only once a harm was
 possible, so doing nothing earns 0.
 
-### How wrong choices score (measured 2026-11-14 after the second review's fixes, engine replay)
+### How wrong choices score (measured 2026-11-14 after the third review's fixes, engine replay; unchanged since round 2)
 
 | Path | Score | Critical items missed | Safety outcome | Notes |
 |---|---:|---|---|---|
@@ -196,12 +200,14 @@ possible, so doing nothing earns 0.
 | Gastric lavage and charcoal after the disclosure | 29/32 (91 %) | — | **failed** (`gastric-lavage`, `activated-charcoal`) | `critical: true`; `rb-no-harm` lost once |
 | The report's recorded steps only (exchange; correct decisions) | 14/32 (44 %) | all three | passed | no culture, antibiotics, phototherapy, referral or follow-up recorded; cannot finish until they are done |
 
-Contraindicated actions are named in the debrief but, as everywhere in the library, do not lower the score by
-themselves; the harms that matter most are scored through `rb-no-harm` and the windows of the critical items, and the
-critical ones fail the safety outcome whatever the score.
+A harmful act costs what the rubric gives it: `rb-no-harm` names the always-harmful acts and scores the first-hour
+lumbar puncture with `{"intervened": "lumbar-puncture", "valid": false}` (an act given while it is contraindicated),
+the critical items' windows (`whenIndicated`) withhold credit from an act given outside them, and a `critical: true`
+intervention fails the safety outcome whatever the score. Each harmful act in the table was replayed on 2026-11-14:
+every one lowers the score, and the three critical ones also fail the safety outcome.
 
 **Safety outcome.** `sedation`, `gastric-lavage` and `activated-charcoal` are `critical: true`: a sedative to quieten
-an obtunded newborn (GCS recorded as 8, froth at the mouth, an unprotected airway), or gastric lavage or charcoal by
+an obtunded newborn (GCS recorded as 8, a little froth at the mouth, an unprotected airway), or gastric lavage or charcoal by
 gastric tube with that airway unprotected, more than a day after any ingestion, risks respiratory arrest or aspiration
 for no benefit, so any of
 them fails the assessment's safety outcome (`safety.passed: false`) whatever the score. `exchange-transfusion` (done
@@ -222,7 +228,7 @@ ultrasound and chest film reports → decision 2 → exchange transfusion (phase
 (medicines, what was given, the amount, why — unknown, the mother's illness — unknown) → post-exchange drug levels →
 ECG → decision 3 → safeguarding referral → conversation with the mother and her doctors → decision 4 (phase 3) → later
 drug levels → neurobehavioural assessment → follow-up plan → decision 5 (phase 4) → the outcome record → the relative's
-follow-up account → finish. `cases verify`: objectives 6/6, decisions 5/5, utterances 54/54, rubric 32/32. The
+follow-up account → finish. `cases verify`: objectives 6/6, decisions 5/5, utterances 66/66, rubric 32/32. The
 demonstration asks only questions a clinician would put to the relative of an 8-day-old (1.0.0 asked about his
 operations, vaccinations, activities and previous health), and it defers the lumbar puncture.
 
@@ -317,7 +323,8 @@ pending: none of these has been compared with the full article.
 * **Waiting for a number before phototherapy, or exchanging without one** — the phototherapy window is the admission
   phase; the exchange is contraindicated until the bilirubin is read (`maxDoses: 1`).
 * **Ceftriaxone in a jaundiced newborn** — a trap intervention with its SmPC contraindication; the antibiotics item's
-  dose text says why.
+  dose text says why, and its harm text says why NICE NG254's ceftriaxone regimen for community-acquired sepsis (over
+  40 weeks' corrected age, no IV calcium; jaundice not mentioned) does not settle it for this baby.
 * **Accepting "I can't say" as "no"** — the second account is only reachable by asking again in phase 2; decision 3
   and objective 5 need it.
 * **Chasing the level** — decision 3 `repeat-exchange-level` and `levels-guide-care`; the repeat exchange is
@@ -380,8 +387,9 @@ medicines (the record says the history was not provided promptly) and the phase-
 ICE item that touches only the recorded fever and jaundice); the staff (Dr Song, Nurse Zhou, Pharmacist Liang); the four
 phases (the exchange's timing, the repeat questioning and every sampling time are unrecorded; the phases are staging);
 the neonatal intensive care unit as the place of admission (1.0.0: "inpatient"); the decisions, interventions, dose
-formulas, rubric and feedback (current guidance); the "Admission examination" label on the recorded findings; the
-order of the reference path.
+formulas, rubric and feedback (current guidance); the "Admission examination" label on the recorded findings and the
+date "after admission (time of sampling not recorded)" on the admission-phase results (1.0.0 records no sampling time;
+its "workup" phase was template staging); the order of the reference path.
 
 **Inconsistencies and ambiguities kept, not resolved.**
 
@@ -462,9 +470,9 @@ the matcher corpus — and the spoiler/specialty findings; no case-specific audi
 
 ## Matcher notes
 
-* 54 `extensions.testUtterances` (27 zh-CN, 27 en; 2 look-alike negatives; 2 with `alsoOk: ["fever"]` because the
+* 66 `extensions.testUtterances` (33 zh-CN, 33 en; 2 look-alike negatives; 2 with `alsoOk: ["fever"]` because the
   question names the fever: "Which came first, the screaming or the temperature?"). None equals a canonical question or
-  a keyword; every required item has a paraphrase; `cases verify` 54/54 with no extra selections. Every canonical
+  a keyword; every required item has a paraphrase; `cases verify` 66/66 with no extra selections. Every canonical
   question selects its own item alone in every phase where it is offered (re-probed 2026-11-13 and 2026-11-14 with the patient
   pipeline's rule — hits ≥ 0.55 within 0.25 of the best; the review found 23 phase/question pairs that also selected
   another item and fixed them with the exclusions below).
@@ -499,6 +507,30 @@ the matcher corpus — and the spoiler/specialty findings; no case-specific audi
   (magnesium is not recorded as part of it); "abdominal x-ray" reached the chest film (`x-ray`, x光, 拍片 removed);
   "septic screen" reached the clotting screen (`pt`), "gastric aspirate" the blood gas (`gas`) and "update bloods" the
   DAT (`dat`) — those three short forms are now `orderMatching.exact` entries, so they work only when typed alone.
+* **Review round 3 (2026-11-14).** 205 further phrasings were probed with the pipeline's selection (135 written by a
+  stopped first attempt of this round, 70 new): 54 reached nothing or the wrong item, among them the opener "What made
+  you bring him here?", "When did he first become unwell?", "Is anyone in the house on tablets?" (a required item),
+  "Did his arms and legs go rigid?", 就抽了一次吗？, 他生病几天了？, "Did someone give him his mother's tablets?",
+  给他吃了几片？ (it reached the disclosure, not the amount), 他是不是吃了妈妈的药？ and 妈妈为什么要吃这个药？ (both reached
+  the household medicines through the superseded twin), the follow-up questions "How is he getting on now?" and "How
+  has he done since discharge?", and the examination requests "Is he awake?", "Take his observations", "Listen to how he
+  cries", 他清醒吗？, GCS多少？, 他身体硬不硬？, 嘴边有没有白沫？ and 全身黄得厉害吗？. Keywords (run together where a
+  phrase would reduce to one word: `bringhimhere`, `howishegettingon`, `likethisinthefamily`, `howwasheborn`,
+  `beforethefever`, `sincedischarge`…) and exclusions (dose and "why" words off both household-medicine items, 给了
+  off `seizure`, 吃奶 off `given-anything`, "weeks" off `pregnancy-labour`, "before the fever" off `fever`) fix all 205;
+  twelve regression utterances (66). Intervention orders: 47 plain and negated orders in both languages ("Give
+  cefotaxime and amoxicillin", 照蓝光, 再换一次血, "Don't do a lumbar puncture yet", 不要给他镇静…) resolve to the
+  intended item or withhold it; "No ceftriaxone, give cefotaxime and ampicillin" returns nothing, because the
+  antibiotics item's exclusion of "ceftriaxone" also fires in a negated clause — the exclusion stays (without it
+  "ceftriaxone with ampicillin" became ambiguous between the trap and the key), and the engine behaviour is reported
+  for integration.
+* **Order entry (round 3).** Aliases are matched in the query with its spaces removed, so words joined across a space
+  formed other aliases: "bilirubin recheck", "bilirubin result" or "bilirubin/albumin ratio" also ordered the clotting
+  screen ("…in r…" holds `inr`), "TSB measurement" ordered glucose (`bm`) and "lab glucose" the blood gas (`abg`);
+  three `orderMatching` rules remove them unless the query names that test. "Transcutaneous", "free" or "unbound"
+  bilirubin no longer return the laboratory bilirubin record (a rule), and "platelet count", "reticulocyte count",
+  "white cell count", "haematocrit", "venous gas", "capillary gas" and "U&E", which reached nothing, now reach the blood
+  count (scored in `rb-investigations`), the blood gas and the electrolyte and renal summaries (aliases).
 * **The medicine lemma.** The matcher folds medicine/medicines/meds/medication into one lemma, so a two-word keyword
   such as "any medicine" is a wildcard on any medicine question. Keywords pair the lemma with a second content word
   ("medicines at home", "family medication", "given any medicine") and the household item excludes words about the
@@ -529,17 +561,19 @@ the matcher corpus — and the spoiler/specialty findings; no case-specific audi
    guideline NG143. London: NICE; 2019 [updated 2021 Nov 26].
 5. National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and treatment.
    NICE guideline NG195. London: NICE; 2021 [updated 2026 May 13].
-6. Austin Health Clinical Toxicology Service. Clozapine guideline. Melbourne: Austin Health; 2024 Aug. Available from:
+6. National Institute for Health and Care Excellence. Suspected sepsis in under 16s: recognition, diagnosis and early
+   management. NICE guideline NG254. London: NICE; 2025 Nov 19.
+7. Austin Health Clinical Toxicology Service. Clozapine guideline. Melbourne: Austin Health; 2024 Aug. Available from:
    https://www.austin.org.au/Assets/Files/Clozapine%20Guideline_AUG%202024.pdf
-7. Benson BE, Hoppu K, Troutman WG, et al. Position paper update: gastric lavage for gastrointestinal decontamination.
+8. Benson BE, Hoppu K, Troutman WG, et al. Position paper update: gastric lavage for gastrointestinal decontamination.
    Clin Toxicol (Phila). 2013;51(3):140-146. doi:10.3109/15563650.2013.770154
-8. 全国人民代表大会常务委员会. 中华人民共和国未成年人保护法（2020年修订，2021年6月1日起施行）. / Standing Committee of the
-   National People's Congress. Law of the People's Republic of China on the Protection of Minors (2020 revision, in
-   force 1 June 2021).
-9. Joint Committee on Infant Hearing. Year 2019 position statement: principles and guidelines for early hearing
+9. 全国人民代表大会常务委员会. 中华人民共和国未成年人保护法（2020年修订，2021年6月1日起施行；2024年4月26日修正）. /
+   Standing Committee of the National People's Congress. Law of the People's Republic of China on the Protection of
+   Minors (2020 revision, in force 1 June 2021; amended 26 April 2024).
+10. Joint Committee on Infant Hearing. Year 2019 position statement: principles and guidelines for early hearing
    detection and intervention programs. J Early Hear Detect Interv. 2019;4(2):1-44. doi:10.15142/fptk-b748
 
-These are `debrief.references` (the article and eight guidelines). Further sources cited by name and year in the case
+These are `debrief.references` (the article and nine guidelines). Further sources cited by name and year in the case
 text (in `provenance.review.guidelines` where they are guidance):
 
 * Pressler RM, Abend NS, Auvin S, et al. Treatment of seizures in the neonate: guidelines and consensus-based
@@ -552,7 +586,7 @@ text (in `provenance.review.guidelines` where they are guidance):
 * Hiemke C, Bergemann N, Clement HW, et al. Consensus guidelines for therapeutic drug monitoring in
   neuropsychopharmacology: update 2017. Pharmacopsychiatry. 2018;51(1-02):9-62.
 * National Institute for Health and Care Excellence. Child maltreatment: when to suspect maltreatment in under 18s.
-  Clinical guideline CG89. London: NICE; 2009.
+  Clinical guideline CG89. London: NICE; 2009 [updated 2025 Dec 3].
 * 最高人民检察院, 国家监察委员会, 教育部, 公安部, 民政部, 司法部, 国家卫生健康委员会, 共青团中央, 全国妇联.
   关于建立侵害未成年人案件强制报告制度的意见（试行）. 2020年5月7日.
 * Clozapine. In: Drugs and Lactation Database (LactMed) [Internet]. Bethesda (MD): National Institute of Child Health
@@ -567,8 +601,6 @@ text (in `provenance.review.guidelines` where they are guidance):
 * US prescribing information for clozapine (Clozaril): about 97 % bound to serum proteins.
 * NICE NG240 (2024), the meningitis guideline, is not cited for this baby: it excludes babies up to and including 28
   days' corrected gestational age and refers them to NG195.
-* NICE NG254 (2025), suspected sepsis in under 16s, to which NG195 sends babies with late-onset infection admitted from
-  home: not cited in the case (see *To verify*).
 * American Academy of Pediatrics. Red Book (HSV chapter, as summarised in secondary sources): aciclovir 60 mg/kg/day IV
   in three doses for neonatal HSV disease; HSV to be considered in neonates with fever, behaviour change or seizures.
 
@@ -611,7 +643,30 @@ contraindicated, owing to the risk of infant agranulocytosis and seizures"); JCI
 "Hyperbilirubinemia with exchange transfusion regardless of length of stay — by 9 months", for infants who pass the
 screen) and the JCIH FAQ (2024: automated ABR "is the recommended screening technology for all infants receiving care in
 an NICU"); the 2020 mandatory-reporting opinion (articles 2–4 as reproduced in the press: report to the police;
-hospitals and clinics named). Could not be confirmed verbatim (publisher, NICE and NCBI pages refused automated access):
+hospitals and clinics named). Read in their own text in round 3 (2026-11-14, the publishers' pages): NICE NG143 (last updated 26 November 2021:
+1.5.6 parenteral antibiotics for every febrile infant under 1 month; 1.5.7 a third-generation cephalosporin, "for
+example cefotaxime or ceftriaxone", plus listeria cover under 3 months; IV aciclovir with signs suggesting herpes
+simplex encephalitis, decreased consciousness among them); NICE NG195 (published 20 April 2021, last updated 13 May
+2026: 1.13.1 blood culture before the first dose; antibiotics within 1 hour of the decision; 1.14.2 treat and stabilise
+an unprotected airway, respiratory compromise, shock, uncontrolled seizures and bleeding risk before a lumbar puncture;
+1.14.3 none with signs that might indicate raised intracranial pressure; babies with late-onset infection admitted from
+home are treated by NICE NG254 1.8.6–1.8.7); NICE NG254 (19 November 2025: 1.8.6 ceftriaxone 50 mg/kg once daily for
+community-acquired sepsis under 28 days if over 40 weeks' corrected age and not on IV calcium, otherwise cefotaxime;
+1.8.7 listeria cover under 3 months; jaundice is not mentioned); NICE CG98 (last updated 31 October 2023: 1.9.2
+double-volume exchange for the level and/or clinical features of acute bilirubin encephalopathy; 1.9.3 no
+single-volume exchange, albumin priming, routine IV calcium or pause in phototherapy; 1.9.4 bilirubin within 2 hours;
+350/450 µmol/L at 96 hours or more); NICE CG89 (last updated 3 December 2025; 1.2.6 unchanged); the JCIH 2019
+statement's text ("the sole use of AABR for hearing screening is recommended for infants who have received care in the
+NICU"; hyperbilirubinaemia requiring exchange transfusion is followed up regardless of the length of NICU stay;
+diagnostic follow-up by 9 months — Table 1 itself is an image and was read by round 2); the Austin Health clozapine
+guideline (Version 3, August 2024, one page read in full: "Measurement of clozapine concentrations has no role in acute
+poisoning"; intubation for significant CNS depression with an unprotected airway; bone marrow suppression "not
+features of acute overdose"; no enhanced-elimination section); LactMed's clozapine summary (revision 15 July 2025, via
+its Europe PMC record: other agents preferred; breastfeeding "not contraindicated" but advised against by some sources;
+if it continues, watch for sedation and check the infant's white cells); the PRC Minors Protection Law article 11
+(current text, unchanged by the amendment of 26 April 2024, which changed article 9 only); the EU ceftriaxone SmPC
+section 4.3 (EMA's Rocephin annex: full-term neonates with hyperbilirubinaemia, jaundice, hypoalbuminaemia or acidosis,
+or needing IV calcium). Could still not be confirmed verbatim (publisher and NCBI pages refused automated access):
 
 * AAP 2022: the urgent exchange for signs of intermediate or advanced acute bilirubin encephalopathy and its deferral
   only without those signs once the level is below the exchange threshold were read in Guideline Central's verbatim
@@ -619,37 +674,19 @@ hospitals and clinics named). Could not be confirmed verbatim (publisher, NICE a
   about 460–490 nm) and the IVIG–necrotising enterocolitis association in secondary sources only; the threshold values
   for ≥ 40 weeks with neurotoxicity risk factors at ≥ 96 h are not quoted. Neither AAP 2022 nor NICE CG98 was found to
   say "start phototherapy before the bilirubin result": the case now teaches that as reasoning, without a guideline name.
-* NICE CG98 (last updated 31 October 2023): the exchange recommendations (double-volume for clinical features of acute
-  bilirubin encephalopathy; no single-volume exchange, albumin priming or routine IV calcium; phototherapy continued;
-  bilirubin within 2 hours) and the 350/450 µmol/L lines at ≥ 96 h were seen in search extracts of NICE's pages.
-* NICE NG143 (recommendations last updated 26 November 2021): "Give intravenous aciclovir to children with fever and
-  symptoms and signs suggestive of herpes simplex encephalitis" and "Consider herpes simplex encephalitis" with focal
-  signs, focal seizures or decreased consciousness, and the under-3-months regimen (a third-generation cephalosporin
-  plus listeria cover), seen in search extracts; the case had said NG143 "advises considering" aciclovir and now says it
-  gives it.
-* NICE NG195 (2021, last updated 13 May 2026, which restructured and renumbered it): the lumbar-puncture advice from
-  2024 (treat and stabilise an unprotected airway, respiratory compromise, shock, uncontrolled seizures and bleeding risk
-  first; no LP with signs that may indicate raised intracranial pressure) was read in the UK Government Web Archive copy
-  on 2026-11-13 and in search extracts on 2026-11-14 — confirm its current wording and numbers. NG195 sends babies with
-  late-onset infection admitted from home to NICE NG254 (November 2025), whose recommendation 1.8.6 (seen in search
-  extracts) uses ceftriaxone 50 mg/kg once daily for community-acquired sepsis in babies under 28 days and cefotaxime at
-  40 weeks' corrected gestational age or less or with an IV calcium infusion; the extract did not name jaundice. The
-  case keys cefotaxime because the EU ceftriaxone SmPC contraindicates ceftriaxone in hyperbilirubinaemic newborns: a
-  neonatologist should confirm the regimen for a jaundiced 8-day-old transferred from another hospital.
-* Austin Health clozapine guideline (2024): "Measurement of clozapine concentrations has no role in acute poisoning" and
-  "Patients with significant CNS depression and an unprotected airway should be intubated" were confirmed in search
-  extracts; the PDF refused automated access, and its enhanced-elimination section was not read. The case no longer
-  credits it with saying that levels do not guide discharge.
+  Since round 3 the case no longer credits the irradiance figure or the IVIG–necrotising enterocolitis association to
+  AAP 2022 (AAP's FAQ and its technical report's abstract mention the NEC concern).
+* NICE NG254's regimen (ceftriaxone over 40 weeks' corrected age) against the EU SmPC's contraindication in jaundiced
+  full-term neonates: the case keys cefotaxime with ampicillin or amoxicillin; a neonatologist should confirm the
+  regimen for a jaundiced 8-day-old transferred from another hospital.
 * AGNP: the 2011 edition's own table gives clozapine 350–600 ng/mL with a laboratory alert level of 1000 ng/mL; the
   2017 update's values were seen in secondary sources only.
-* LactMed's clozapine record (last revision 15 July 2025): other agents preferred, breastfeeding not contraindicated but
-  advised against by some sources, and if it continues a watch for sedation and periodic infant white-cell counts —
-  search extracts only (NCBI's browser check).
-* The current US clozapine label's protein-binding figure (≈ 97 % in the labels found); the EU ceftriaxone SmPC
-  section 4.3 wording.
+* The current US clozapine label's protein-binding figure (≈ 97 % in the labels found); BAP 2017's clozapine sentence
+  (read by round 2; its mirrors refused access in round 3; no newer BAP perinatal guidance was found).
 * For a clinician: a neonatologist should confirm the three `critical` interventions (a sedative, gastric lavage,
   charcoal) and the two `critical: false` ones (an exchange before the bilirubin is read; a second exchange for the
-  drug level), and whether giving phenobarbital with no recurrence (a conditional plan the case leaves unscored) should
+  drug level), whether ceftriaxone in this jaundiced newborn (a moderate-risk, non-critical trap) should also be
+  `critical`, and whether giving phenobarbital with no recurrence (a conditional plan the case leaves unscored) should
   cost something.
 
 ## Changelog
@@ -715,23 +752,48 @@ hospitals and clinics named). Could not be confirmed verbatim (publisher, NICE a
   * this guide: review status, *To verify* (now under *References*, with what was read in the guidance's own text),
     the measured scores (unchanged), the counts and the validation results.
 
+* Review round 3 (2026-11-14, AI-assisted; a first attempt of this round stopped before applying its fixes, which were
+  checked and completed): every patient fact traced again to 1.0.0 in both languages, the cited guidance read in its own
+  text where it could be reached, the assessment and order entry replayed. Fixes:
+  * facts: "hard to rouse", "hard to wake", 叫不太醒 and the constancy 一直 (title, summary, chief complaint, opening line,
+    acting notes, the presenting answer, decision 1, this guide's title and 中文摘要) now say what 1.0.0 records —
+    poorly responsive, still (反应差、反应仍不好、仍); decision 1's English prompt, the presenting item's source note and
+    the provenance no longer date the poor feeding to after the fit ("since then"); the conclusion keeps the poor feeding
+    in both languages; "a little" froth restored in the sedation harm, decision 1's near-miss feedback, a key reasoning
+    step, the attending's brief and the safety-outcome paragraph; the family "estimated" the amount (not "could only
+    guess"); decision 5 no longer dates the exchange to day 8; decision 2's feedback no longer cites a chest film the
+    learner may not have read; phase 2's description no longer tells the learner that he was given something;
+  * guidance: Austin Health 2024 credited only with what it says (levels have no role; intubation) — the bilirubin
+    clause is the case's own; the charcoal distractor now proposes the single dose its feedback answers; JCIH 2019
+    credited with the 9-month assessment and the ABR given its own reason; LactMed credited with preferring other drugs;
+    the irradiance figure and the IVIG–necrotising enterocolitis association no longer credited to AAP 2022; the
+    ceftriaxone harm says why NICE NG254's ceftriaxone regimen does not settle it for a jaundiced newborn (NG254 added to
+    the guidance and references); the blood-count distractor cites the Austin guideline (bone marrow suppression is not
+    a feature of acute overdose); CG89 and the Minors Protection Law cited in their current editions (updated December
+    2025; amended April 2024, article 11 unchanged);
+  * assessment: 54 of 205 natural history and examination phrasings that reached nothing or the wrong item, and the
+    order-entry collisions and gaps in *Matcher notes*, fixed; twelve regression utterances (66); scores unchanged
+    (measured);
+  * this guide: the out-of-date line that contraindicated acts "do not lower the score by themselves" replaced; the
+    "after admission" result dates labelled as staging; review status, counts, *To verify* and validation updated.
+
 ### 1.0.0 — 2026-10-28
 
 * Template version (three decisions, no interventions, a critical item met by a first-try decision).
 
 ## Validation
 
-Run from the worktree root (2026-11-14, after the second review's fixes):
+Run from the worktree root (2026-11-14, after the third review's fixes):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-33555/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33555 --lang en                                                 # 90 steps · objectives 6/6 · decisions 5/5 · utterances 54/54 · rubric 32/32 (100 %)
+npm run -s cc -- cases verify cmcr-33555 --lang en                                                 # 90 steps · objectives 6/6 · decisions 5/5 · utterances 66/66 · rubric 32/32 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33555                                       # depth floor, plain openers, do-nothing 0, wrong-first < reference, patient voice
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33555:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33555:"  # in-world demonstration, en + zh-CN
 ```
 
-Results on 2026-11-14: all five pass (validate 0/0; verify 100 % with 54/54 utterances; case-check PASS with do-nothing
+Results on 2026-11-14, after the third review's fixes: all five pass (validate 0/0; verify 100 % with 66/66 utterances; case-check PASS with do-nothing
 0/29 and wrong-first 50 %; the contract test for `cmcr-33555:`; the demonstration in en and zh-CN). Before the second
 review's fixes the case-check failed: the plain openers "When did it start?" and "有什么不舒服？" reached no history item.
 The collection-wide "is not a template" test still fails on the template cases not yet re-authored; none of its shared
@@ -739,9 +801,9 @@ texts comes from this case.
 
 ## 中文摘要
 
-**病例概要。** 41+3周剖宫产、出生时无需复苏、体重3.06 kg的8日龄男婴，入院前一天先烦躁、偶尔尖叫，随后发热（外院38.7℃）并抽搐1次（四肢发硬），外院镇静、吸氧后抽搐停止，但一直反应差、吃奶差。入院时体温37.5℃、心率150次/分、呼吸40次/分、血压68/45 mmHg；神志不清（记录GCS 8分），刺激后哭声尖，时有呻吟，有少量口沫，四肢肌张力增高，全身中重度黄染。总胆红素334.7 µmol/L（直接12.5、间接322.2），白蛋白35.9 g/L，血糖5.7 mmol/L，CRP<5 mg/L，超敏CRP<0.5 mg/L；血气、电解质、凝血、肾功能概述无明显异常；头颅超声未见明显异常，胸片报告新生儿肺炎。报告在明确暴露之前因高胆红素血症等行换血；经反复问诊得知母亲服用氯氮平，并承认发病前曾给患儿服药（量为家属推算）。换血后氯氮平血药浓度1777.1 µg/L，复查回升至1997.5 µg/L，此后降至539.0和197 µg/L；报告讨论了再分布和持续吸收。出院前神经行为评分37分，随访（时长未说明）生长发育与同龄儿无明显差异。是否再次换血记录不清。本版患者事实沿用1.0.0版，尚未对照原文全文核对；尚未经执业医师审核。
+**病例概要。** 41+3周剖宫产、出生时无需复苏、体重3.06 kg的8日龄男婴，入院前一天先烦躁、偶尔尖叫，随后发热（外院38.7℃）并抽搐1次（四肢发硬），外院镇静、吸氧后抽搐停止，但仍反应差、吃奶差。入院时体温37.5℃、心率150次/分、呼吸40次/分、血压68/45 mmHg；神志不清（记录GCS 8分），刺激后哭声尖，时有呻吟，有少量口沫，四肢肌张力增高，全身中重度黄染。总胆红素334.7 µmol/L（直接12.5、间接322.2），白蛋白35.9 g/L，血糖5.7 mmol/L，CRP<5 mg/L，超敏CRP<0.5 mg/L；血气、电解质、凝血、肾功能概述无明显异常；头颅超声未见明显异常，胸片报告新生儿肺炎。报告在明确暴露之前因高胆红素血症等行换血；经反复问诊得知母亲服用氯氮平，并承认发病前曾给患儿服药（量为家属推算）。换血后氯氮平血药浓度1777.1 µg/L，复查回升至1997.5 µg/L，此后降至539.0和197 µg/L；报告讨论了再分布和持续吸收。出院前神经行为评分37分，随访（时长未说明）生长发育与同龄儿无明显差异。是否再次换血记录不清。本版患者事实沿用1.0.0版，尚未对照原文全文核对；经三轮独立的人工智能辅助审核（第三轮于2026年11月14日），尚未经执业医师审核。
 
-**学习目标。** ①发热、意识障碍新生儿第一个小时的处理：取血培养后立即用覆盖脑膜炎剂量的抗生素（黄疸新生儿用头孢噻肟，不用头孢曲松）并加用阿昔洛韦，气道、抽搐和出血风险稳定之前推迟腰穿（NICE NG143 2019、NG195 2026年更新）；②识别中晚期急性胆红素脑病体征，无论数值都强光疗加紧急换血（AAP 2022、NICE CG98），并判断数值与体征是否相称；③针对性、反复地追问家中用药和给孩子吃过的东西；④理解换血后氯氮平浓度回升（再分布，也可能有持续吸收），浓度不指导急性期处理（Austin Health 2024），不洗胃、不用活性炭（AACT/EAPCCT 2005、2013）；⑤照护者承认给药时当天转介儿童保护并依法强制报告（2020年修订《未成年人保护法》；NICE CG89）；⑥9月龄前完成含ABR的诊断性听力评估（JCIH 2019）和系统的神经发育随访，服用氯氮平期间一般不建议母乳喂养（BAP 2017；LactMed 2025）。
+**学习目标。** ①发热、意识障碍新生儿第一个小时的处理：取血培养后立即用覆盖脑膜炎剂量的抗生素（黄疸新生儿用头孢噻肟，不用头孢曲松）并加用阿昔洛韦，气道、抽搐和出血风险稳定之前推迟腰穿（NICE NG143 2019、NG195 2026年更新）；②识别中晚期急性胆红素脑病体征，无论数值都强光疗加紧急换血（AAP 2022、NICE CG98），并判断数值与体征是否相称；③针对性、反复地追问家中用药和给孩子吃过的东西；④理解换血后氯氮平浓度回升（再分布，也可能有持续吸收），浓度不指导急性期处理（Austin Health 2024），不洗胃、不用活性炭（AACT/EAPCCT 2005、2013）；⑤照护者承认给药时当天转介儿童保护并依法强制报告（2020年修订《未成年人保护法》；NICE CG89）；⑥9月龄前完成诊断性听力评估（JCIH 2019）并做ABR检查，系统随访神经发育；服用氯氮平期间一般不建议母乳喂养（BAP 2017；LactMed 2025年修订版认为宜选用其他药物）。
 
 **关键决策。** 决策 1 第一个小时（同时覆盖感染（抗生素加阿昔洛韦）、胆红素脑病和未问清的用药史，推迟腰穿）；决策 2 胆红素（有脑病体征即紧急换血，同时继续找第二个原因）；决策 3 浓度回升（再分布，处理孩子而不是数字，不为清除药物再次换血）；决策 4 儿童保护（当天转介并依法报告，监督照护，联系给母亲开氯氮平的医生，不带指责）；决策 5 出院与随访（儿童保护计划落实后出院，ABR诊断性听力评估，神经发育随访）。三个关键项均为限时的处置：入院阶段取血培养后用抗生素；入院阶段强光疗并在读到胆红素后换血；住院期间完成儿童保护转介。
 

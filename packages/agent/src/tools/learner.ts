@@ -23,6 +23,7 @@ export const WORLD_TOOL_NAMES = [
   "get_visible_objects",
   "get_room_info",
   "get_action_feedback",
+  "ask_whereabouts",
   "navigate_to",
   "approach_object",
   "look_at",

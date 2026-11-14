@@ -11,7 +11,7 @@
  * | come here / to the bedside         | they walk to the learner (a `follow` goal) or to the patient |
  * | go back                            | they walk back to their post |
  * | show me the way to …               | they say where it is and walk there (the learner follows) |
- * | where is …?                        | an answer from the hospital's public directory as they know it (a room, its distance) — never a case fact |
+ * | where is …?                        | an answer from what they know (EMBODIED §4: a place on the hospital map; a cart or a colleague where they last saw it or left it — or "I don't know where it is now", never where it really is), its distance; the learner then knows it too (`askWhereabouts`) — never a case fact |
  *
  * Leaving an anaesthetised patient: an anaesthetist (team duty `anaesthesia`) asked to go out of the patient's room
  * (back to a post elsewhere, to show the way) while the patient is under anaesthesia first calls a colleague who
@@ -407,10 +407,26 @@ export class StaffRequests {
     }
     const place = this.find(who, phrase);
     if (!place) return null;
-    const ent = world.entity(place.id);
+    // what the colleague knows of where it is (EMBODIED §4, audit P1-8): a thing that moves only where they saw it or
+    // left it — then the learner knows it too —, else they say they do not know where it is now
+    const answer = place.kind === "room" ? null : world.askWhereabouts(PRIMARY_ACTOR, place.id, who.actor.id);
+    const theirs = answer?.whereabouts ?? null;
+    if (answer && !answer.answeredBy) {
+      // what they do know: where it is usually kept, where they looked, where they last saw it (the learner looked there)
+      const what =
+        theirs?.kind === "usual" && theirs.label
+          ? theirs.label
+          : theirs?.kind === "missing" && theirs.missed
+            ? rt(L, "req.whereLooked", { where: world.regionName(theirs.missed) })
+            : theirs?.place
+              ? rt(L, "req.whereLastThere", { where: world.regionName(theirs.place) })
+              : rt(L, "req.whereNeverSeen");
+      return rt(L, "req.whereUnknown", { place: place.name, what });
+    }
     const me = world.actor(PRIMARY_ACTOR);
-    const room = this.roomOf(place);
-    if (me && ent && me.room && me.room === ent.room) return rt(L, "req.whereHere", { place: place.name, room });
+    const room = theirs?.place ? world.regionName(theirs.place) : this.roomOf(place);
+    const roomId = theirs ? theirs.room : (world.entity(place.id)?.room ?? null);
+    if (me && me.room && me.room === roomId) return rt(L, "req.whereHere", { place: place.name, room });
     const goal: NavGoal = place.kind === "room" ? { kind: "room", id: place.id.replace(/^room:/, "") } : { kind: "interact", id: place.id };
     const plan = world.plan(PRIMARY_ACTOR, goal);
     const metres = plan.ok ? Math.max(1, Math.round(plan.length)) : null;

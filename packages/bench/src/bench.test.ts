@@ -64,7 +64,7 @@ describe("three scenarios per agent kind", () => {
     expect(busy.calls.at(-1)).toMatchObject({ tool: "interact_object", ok: true });
     const perception = report.runs.find((r) => r.scenarioId === "perception-ecg-at-stemi-bedside")!;
     expect(perception.answer).toEqual({ raw: "eq:resus1-ecg", resolved: "eq:resus1-ecg" });
-    expect(report.agent).toEqual({ kind: "reference", provider: null, model: null, syntheticTokens: false });
+    expect(report.agent).toEqual({ kind: "reference", provider: null, model: null, syntheticTokens: false, role: "control" });
     expect(report.metrics.overall.avgInputTokens).toBe(0);
   });
 
@@ -180,5 +180,46 @@ describe("reports", () => {
     }
     expect(en).toMatch(/Wilson 95 %/);
     expect(zh).toMatch(/[一-鿿]/);
+  });
+
+  it("labels the controls as never a model result, and the live model apart", { timeout: T }, async () => {
+    const control = await suiteReport(createReferenceAgent(), THREE.slice(0, 1));
+    expect(control.agent.role).toBe("control");
+    expect(reportMarkdown(control, "en")).toMatch(/Control run — not a model result/);
+    expect(reportMarkdown(control, "en")).toContain("`reference` (control)");
+    expect(reportMarkdown(control, "zh-CN")).toMatch(/对照运行 —— 不是模型结果/);
+    const live = await suiteReport(fakeLiveAgent(THREE.slice(0, 1)), THREE.slice(0, 1), [1], new Budget({ maxTokens: 10_000_000 }));
+    expect(live.agent.role).toBe("model");
+    expect(reportMarkdown(live, "en")).toMatch(/Live-model run/);
+    expect(reportMarkdown(live, "en")).not.toMatch(/Control run/);
+  });
+
+  it("states case and scenario denominators apart, and the held-out split apart (audit 2026-11-12, P1-10, P2-14)", { timeout: T }, async () => {
+    const heldOut = suite.scenarios.filter((s) => s.split === "test").slice(0, 1);
+    expect(heldOut).toHaveLength(1);
+    const picked = [...THREE, ...heldOut];
+    // the scripted control has no plan for a held-out scenario: it does not run it, and the run counts nowhere
+    const scripted = await suiteReport(createScriptedAgent(), picked);
+    const skipped = scripted.runs.find((r) => r.scenarioId === heldOut[0]!.id)!;
+    expect(skipped).toMatchObject({ status: "skipped", skip: "held-out", split: "test", success: false });
+    expect(scripted.metrics.overall.taskSuccess).toMatchObject({ k: 3, n: 3 });
+    expect(reportPasses(scripted, 100).ok).toBe(true);
+    expect(scripted.metrics.bySplit.dev?.taskSuccess).toMatchObject({ k: 3, n: 3 });
+    expect(scripted.metrics.bySplit.test?.runs ?? 0).toBe(0);
+    // the reference control proves the held-out scenario solvable (no tuning: it replays the case's own solution)
+    const reference = await suiteReport(createReferenceAgent(), heldOut);
+    expect(reference.runs[0]).toMatchObject({ success: true, split: "test" });
+    expect(reference.metrics.bySplit.test?.taskSuccess).toMatchObject({ k: 1, n: 1 });
+    // the denominators
+    const cov = scripted.coverage;
+    expect(cov).toMatchObject({ scenarios: 4, cases: new Set(picked.map((s) => s.caseId)).size, splits: { dev: 3, test: 1 } });
+    expect(cov.mostFrequent).toMatchObject({ caseId: "stemi-inferior-rv", scenarios: 2, share: 0.5 });
+    const md = reportMarkdown(scripted, "en");
+    expect(md).toContain("## Coverage (denominators apart)");
+    expect(md).toMatch(/The most frequent case, `stemi-inferior-rv`, has 2 of the 4 scenarios \(50\.0 %\)/);
+    expect(md).toContain("## By split (held-out scored apart)");
+    expect(md).toMatch(/1 held-out run\(s\) were not run by this agent/);
+    for (const kind of ["History-taking", "Clinical workflows of cases tagged time-critical", "Team coordination"]) expect(md).toContain(`| ${kind} |`);
+    expect(reportMarkdown(scripted, "zh-CN")).toContain("## 覆盖范围（分母分开列出）");
   });
 });

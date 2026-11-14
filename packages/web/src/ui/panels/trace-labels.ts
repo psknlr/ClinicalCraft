@@ -87,6 +87,7 @@ function stepLabel(name: string, ctx: TraceLabelContext): string {
 function verificationLabel(name: string, ctx: TraceLabelContext): string {
   if (name === "monitor attached") return tr("trace.verify.monitorAttached");
   if (name === "patient home") return tr("trace.verify.patientHome");
+  if (name === "acquired") return tr("trace.verify.acquired");
   const m = /^(ordered|intervened|at bedside) (.+)$/.exec(name);
   if (m) {
     const key = m[1] === "ordered" ? "trace.verify.ordered" : m[1] === "intervened" ? "trace.verify.intervened" : "trace.verify.atBedside";

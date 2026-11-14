@@ -103,9 +103,12 @@ describe("static clock (V4 behaviour)", () => {
   it("actions cost nothing and results are ready immediately", () => {
     const { state, events } = play(V4, [{ type: "start" }, { type: "ask", itemId: "pain" }, { type: "order", investigationId: "cbc" }, { type: "read", investigationId: "cbc" }]);
     expect(state.clock).toBe(0);
-    expect(state.orders).toEqual([{ key: "cbc@pre", investigationId: "cbc", phase: "pre", orderedAt: 0, readyAt: 0 }]);
+    // text mode: the acquisition implied at the order, recorded as such; the read is the review
+    expect(state.orders).toEqual([
+      { key: "cbc@pre", investigationId: "cbc", phase: "pre", orderedAt: 0, readyAt: 0, seq: 3, acquired: { at: 0, seq: 3, implied: true }, reviewed: { at: 0, seq: 4 } },
+    ]);
     expect(types(events)).toEqual(["session.started", "history.asked", "order.placed", "result.ready", "result.read"]);
-    expect(orderStatus(V4, state)).toEqual([{ order: state.orders[0], ready: true, read: true }]);
+    expect(orderStatus(V4, state)).toEqual([{ order: state.orders[0], acquired: true, ready: true, read: true }]);
   });
 
   it("advance-time still moves the clock explicitly", () => {

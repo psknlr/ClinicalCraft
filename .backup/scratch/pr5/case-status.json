@@ -102,6 +102,14 @@
      "major": 7,
      "minor": 15
     }
+   },
+   "3": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 1,
+     "major": 2,
+     "minor": 15
+    }
    }
   }
  },
@@ -339,6 +347,14 @@
      "major": 8,
      "minor": 17
     }
+   },
+   "3": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 1,
+     "major": 9,
+     "minor": 10
+    }
    }
   }
  },
@@ -557,6 +573,12 @@
    "minor": 11
   },
   "reviewed": true
+ },
+ "cmcr-44362": {
+  "authored": true
+ },
+ "cmcr-44399": {
+  "authored": true
  },
  "cmcr-44477": {
   "allChecksPass": true,

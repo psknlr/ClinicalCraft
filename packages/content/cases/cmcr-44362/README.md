@@ -1,115 +1,464 @@
-# cmcr-44362 — Progressive painless joint swelling
+# cmcr-44362 — Swollen joints for three years · 9-year-old boy
 
-> Spoilers: facilitator guide. Source diagnosis and outcome follow.
+> Spoilers: this is the facilitator guide. The diagnosis, the decisions' keys and the report's outcome follow.
+> Version 1.1.0 was re-authored from the facts version 1.0.0 extracted from the source article; the check of those
+> facts against the full article is still pending (see "Source and adaptation" and "To verify").
 
 ## Case card
 
 | Field | Value |
 |---|---|
-| Setting / facility | inpatient / general-hospital |
-| Difficulty / time | 4/5; approximately 30 minutes |
-| Specialties | Paediatrics, Rheumatology, Cardiology |
-| Languages | Simplified Chinese and English |
-| Review status | Unreviewed AI-assisted draft; no clinician review claimed |
+| Setting / facility | Inpatient, children's ward of the general hospital (`general-hospital`); static clock |
+| Level / time | Difficulty 4/5; about 40 minutes; senior medical students, paediatric residents, rheumatology and cardiology trainees |
+| Specialties | Paediatrics, rheumatology, cardiology, clinical genetics |
+| The patient | Chen Qinghe (pseudonym), a 9-year-old boy weighing 19.5 kg, admitted with a relative whose relationship to him is not recorded; swelling of several limb joints, first noticed three years ago and worse every year |
+| What the learner can do | Take the history from the relative (the boy answers questions put to him), examine digits, large joints, heart and neck veins; check for tamponade at the bedside; order echocardiography, ECG, chest X-ray, blood tests, a pelvic radiograph, a urine glycosaminoglycan screen, a knee aspiration and a gene test; read the chart's records at a terminal; call cardiology, rehabilitation, clinical genetics and orthopaedics; talk with the family; answer five decisions |
+| Languages | Simplified Chinese and English (same facts, same teaching) |
+| Review status | Editorial review (AI-assisted) against the cited guidance; **not yet reviewed by a licensed clinician**; facts not yet checked against the full source article (`extensions.sourceTextChecked: false`) |
 
 ## Learning outcomes
 
-1. Compare inflammatory and non-inflammatory swelling.
-2. Integrate digit morphology and pericardial findings.
-3. Identify gaps in genetic diagnosis.
-4. Discuss safety in avoiding excessive immunotherapy.
+1. Distinguish a non-inflammatory arthropathy from inflammatory arthritis using the history (painless, no fever or
+   rash, worse every year), the examination (flexed fingers and toes sparing the thumbs and great toes, joint
+   contractures) and repeatedly negative inflammatory and autoantibody tests, and explain from the ILAR
+   classification (2004) why JIA is a diagnosis of exclusion.
+2. Recognise slightly muffled heart sounds with a pericardial rub as pericardial involvement, possibly with fluid:
+   check for tamponade at the bedside at once and complete the initial assessment ESC 2025 recommends
+   (echocardiography, ECG, chest X-ray, inflammatory markers) during this admission, not as an outpatient.
+3. Manage a moderate pericardial effusion without signs of tamponade or inflammation: no drainage and no
+   anti-inflammatory drugs, cardiology review with repeat echocardiography, and the indications for drainage
+   (ESC 2025).
+4. Name the features of CACP syndrome, its gene (PRG4) and its inheritance (autosomal recessive), separate a
+   clinical from a molecular diagnosis, and give the family the recurrence risk (1 in 4 for each child when both
+   parents carry a variant).
+5. Plan care for a non-inflammatory genetic arthropathy: no steroids, methotrexate or biologics; rehabilitation, hip
+   imaging and orthopaedic follow-up, with shared cardiology follow-up.
+6. Explain the working diagnosis, what is still unproven and the plan in words the boy and his relative understand
+   (Calgary–Cambridge; SPIKES for the diagnosis), answer the worry about steroids, and check understanding with
+   teach-back.
 
-## Clinical summary
+## Clinical summary (spoilers)
 
-The report made a clinical CACP diagnosis without molecular or complete hip confirmation. Swelling is not synonymous with inflammatory arthritis. Camptodactyly and effusion provide multisystem clues. Genetic labels require explicit evidence levels.
+A 9-year-old boy (19.5 kg) had swelling of several limb joints first noticed three years earlier and worse every
+year. It was painless, there was no fever or rash, and at first his movement was not clearly restricted. Earlier
+ESR and rheumatism-related tests had been negative and he had had no specific treatment. His parents are not
+consanguineous, no similar illness was reported in the family, his vaccinations followed the schedule and he had no
+tuberculosis contact.
+
+On examination the fingers and toes other than the thumbs and great toes were flexed; elbow and knee flexion and
+extension were restricted; the elbows, knees, ankles and wrists were swollen and deformed; the heart sounds were
+slightly muffled with a pericardial rub over the precordium; there was no jugular venous distension.
+
+ESR, CRP, rheumatoid factor and multiple autoantibodies were repeatedly negative; liver and renal function and
+ferritin were normal. Imaging showed osteopenia of the hands and feet, soft-tissue swelling at the knees and elbows,
+and knee and suprapatellar effusion; no explicit measurement of coxa vara is recorded. Echocardiography showed a
+moderate pericardial effusion with normal left ventricular systolic function. The team diagnosed
+**camptodactyly–arthropathy–coxa vara–pericarditis (CACP) syndrome** clinically, without a PRG4 result. No specific
+medication was given and functional exercise was advised; at follow-up, of unrecorded length, the joint deformities
+had not clearly improved.
+
+What the case teaches: the heart comes first (bedside tamponade check and echocardiography on the day of admission);
+painless swelling with camptodactyly and repeatedly negative inflammatory tests is a non-inflammatory arthropathy, not
+JIA; a moderate effusion without tamponade or inflammation is watched, not drained or treated with anti-inflammatory
+drugs; the clinical label needs PRG4 testing and genetic counselling; and care is rehabilitation with hip, orthopaedic
+and cardiac follow-up — never immunosuppression. The report's own choice (no specific medication, functional
+exercise) matches today's approach; what today's care adds is the molecular diagnosis, counselling, hip imaging and a
+cardiology follow-up plan, none of which the case records.
 
 ## Scenario timeline and physiology
 
-Initial history and examination unlock the early work-up. The differential decision unlocks the subsequent corroborating reports; the management decision unlocks the historical outcome. All four phases use a static clock. No continuous physiology or invented treatment response is modelled.
+Static clock (`clock.mode: "static"`), no physiology model: no vital sign is invented and no treatment response is
+simulated. Phases advance by themselves when their condition holds; the learner cannot jump ahead to a phase that
+has not opened.
+
+| Phase | Opens when | What exists in it |
+|---|---|---|
+| `admission` — Day of admission: history and examination | start | History (the relative; the boy for the pain question), examination of digits, large joints, heart and neck veins; bedside tamponade check; echocardiography, ECG and chest X-ray can be ordered (the echo result exists from this phase; ECG and chest X-ray have no recorded result); decision 1 |
+| `work-up` — In hospital: the results are back | the history and examination objectives are complete **and** decision 1 is answered | Records of inflammatory markers, antibodies, liver and renal function with ferritin, and joint imaging (read at a records terminal); FBC, urine GAG screen, knee aspiration (no recorded result); an echo not yet requested can still be ordered (a step late); decisions 2 and 3 |
+| `diagnosis` — Diagnosis and long-term plan | objective 4 (records read, decisions 2 and 3 answered) | The team's diagnosis record; pelvic radiograph and gene test can be ordered (no recorded result); referrals and the family conversation; decisions 4 and 5 |
+| `outcome` — Reported treatment and follow-up | all five decisions answered **and** the plan objective (diagnosis record read, physiotherapy referral made) | The report's treatment and follow-up record, with the figure |
+
+The echocardiogram is staged as available from the day of admission because a learner who hears a rub should
+request it then; when the report's echocardiogram was actually done is not recorded (a labelled teaching device).
 
 ## Decisions and assessment
 
-- **diagnosis:** How should the early evidence reshape the differential? Options: Compare non-inflammatory arthropathy with inflammatory arthritis (supported: Persistent painless swelling and repeatedly normal inflammatory markers support considering a non-inflammatory mechanism.) Any polyarticular swelling proves juvenile idiopathic arthritis (distractor: Morphology, inflammatory evidence and other organ findings require integration.) Normal tests mean there is no joint disease (distractor: Contractures and imaging abnormalities remain evidence of disease.)
-- **evidence:** Which conclusion is supported by the subsequent records? Options: Camptodactyly, non-inflammatory arthropathy and pericardial effusion suggest CACP without molecular confirmation (supported: The combined phenotype supports the report without inventing hip measurements or PRG4 variants.) Negative family history proves a de novo PRG4 mutation (distractor: No family molecular data establish that mechanism.) Moderate effusion means tamponade is established (distractor: Complete clinical or echocardiographic evidence of tamponade is absent.)
-- **management:** What should a safe subsequent plan include? Options: Genetic/rheumatology reassessment, functional rehabilitation and effusion monitoring while avoiding unsupported immunosuppression (supported: Aetiological classification affects long-term medication and pericardial risk requires actual clinical assessment.) Use long-term high-dose steroids as inflammatory arthritis (distractor: Inflammatory evidence is lacking and treatment may cause avoidable harm.) Ignore contractures and effusion because there is no pain (distractor: Absence of pain does not remove functional or cardiac risks.)
+### Objectives (HUD chapters)
 
-- rb-history (history, weight 2): Establish presenting symptoms and course.
-- rb-context (history, weight 1): Elicit associated symptoms and relevant background.
-- rb-unknown (safety, weight 1): Establish the evidence boundary for allergy information.
-- rb-examination (examination, weight 1): Review signs relevant to the presentation.
-- rb-workup (investigations, weight 2): Review the key early investigations.
-- rb-differential (diagnosis, weight 3): Integrate the early evidence correctly on the first attempt.
-- rb-confirmation (investigations, weight 2): Review subsequent corroborating evidence.
-- rb-evidence (diagnosis, weight 3): State the strength and limits of subsequent evidence correctly on the first attempt.
-- rb-safety (safety, weight 4): Clarify the non-inflammatory phenotype and monitor pericardial risk before unsupported immunosuppression — critical item.
-- rb-outcome (management, weight 1): Review reported treatment and outcome.
-- rb-communication (communication, weight 1): Explain evidence and uncertainty clearly.
+1. `obj-story` — Hear the three-year story (presentation, pain, fever or rash, earlier tests and treatment, family
+   history, consanguinity).
+2. `obj-examine` — Examine him from his fingers to his heart (digits, large joints, heart, neck veins).
+3. `obj-heart` — Act on what you hear in his chest (decision 1 answered and echocardiography ordered — in any phase,
+   so a learner who orders it late can still finish).
+4. `obj-results` — Put the results together (the four work-up records read in their phase, decisions 2 and 3).
+5. `obj-plan` — Check the diagnosis and plan ahead (diagnosis record read, decisions 4 and 5, physiotherapy referral).
+6. `obj-outcome` — Compare with the report's treatment and follow-up (the outcome record).
 
-Decisions use first-attempt scoring, so later correction completes the pathway without restoring first-attempt points. The communication item requires examiner judgement. Measured reference and wrong-path scores appear in Validation below.
+No objective holds a condition that can become permanently false (no phase leaf, no `whenIndicated`, no
+`decidedFirstTry`); the contract's late-learner replay finishes the case whatever act is done late.
 
-## Reference path
+### Decisions
 
-Start → ask all 15 history items → examine 2 findings → read 2 early records → differential decision → read 1 subsequent records → evidence decision → management decision → read outcome → finish. The executable path is the case's solution array.
+Options appear as letters in shuffled order; every option has its own feedback; keys are not the longest option in
+any decision in either language (measured).
+
+| id | opens after | key | distractors (why they tempt) |
+|---|---|---|---|
+| `heart-today` | heart auscultated and neck veins examined (admission) | echocardiography and an ECG today, bedside tamponade checks now and repeated until the effusion is known, no anti-inflammatory or steroid yet (ESC 2025 initial assessment, class I; tamponade is a clinical diagnosis, Beck's triad may be absent with slow fluid) | NSAID and colchicine first with echo after a week (a rub "means pericarditis"); bedside pericardiocentesis today (fear of night-time tamponade); IV methylprednisolone as systemic-JIA serositis; outpatient echo in a few weeks (normal neck veins look reassuring) |
+| `effusion-plan` | echocardiogram read **and** the inflammatory-markers record read in work-up | no drainage now; keep checking for tamponade; paediatric cardiology review with repeat echo at set intervals; seek the cause; drain only for tamponade, symptoms despite treatment, or suspected infection or cancer (ESC 2025 §11.7.4–11.7.5, pericardiocentesis I C) | echo-guided drainage today; three months of NSAID plus colchicine; prednisolone with weekly echo; no cardiac follow-up because LV function is normal |
+| `joint-pattern` | all four work-up records and the echocardiogram read | a non-inflammatory genetic arthropathy, CACP first; JIA only once that is excluded (ILAR 2004); pelvic radiograph and PRG4 test next (Offiah 2005; Albuhairan 2013) | RF-negative polyarticular JIA with methotrexate; systemic JIA with steroids and an IL-1/IL-6 inhibitor; "no active disease, no further tests" |
+| `genetics` | diagnosis record read (diagnosis phase) | autosomal recessive (Marcelino 1999): unrelated parents and no affected relatives do not contradict it; counselling and PRG4 testing, then the parents; 1 in 4 for each child when both carry a variant (ACMG/AMP 2015 classification) | de novo, no risk, no test; dominant with a 1 in 2 risk; X-linked via the mother; "the clinical label is enough" |
+| `joint-care` | diagnosis record read | no steroid, methotrexate or biologic; physiotherapy and occupational therapy; pelvic radiograph and orthopaedic follow-up of the hips; review shared with cardiology (Kisla Ekinci 2021; ACR/AF 2019; ACR 2021; Bahabri 1998) | treat-to-target polyarticular JIA (methotrexate, TNF inhibitor, joint injections); long-term oral prednisolone with calcium and vitamin D; "genetic, so nothing helps — no rehabilitation, no follow-up" |
+
+Decisions never lock once open: a learner who answers wrongly can answer again, and the rubric scores the first
+attempt (`decidedFirstTry`).
+
+### Rubric (14 deterministic items, 39 points, + 1 examiner-judged)
+
+| id | Domain | Item | Weight |
+|---|---|---|---|
+| `rb-history` | History | the three-year story, earlier tests and treatment, family history and consanguinity, and when the fingers began to bend and heart symptoms (both unknown to the relative) | 3 |
+| `rb-exam` | Examination | digits, large joints, heart, neck veins | 2 |
+| `rb-echo-admission` | Investigations | echocardiography **ordered in the admission phase** (`{"ordered": "echo", "phase": "admission"}`) — **critical** | 3 |
+| `rb-tamponade-check` | Management | bedside tamponade check **given on admission** (`whenIndicated`, window = admission phase) — **critical** | 3 |
+| `rb-heart-first-try` | Management | decision 1, first attempt | 2 |
+| `rb-records` | Investigations | the four work-up records read in their phase | 2 |
+| `rb-effusion-first-try` | Management | decision 2, first attempt | 3 |
+| `rb-pattern-first-try` | Diagnosis | decision 3, first attempt | 4 |
+| `rb-confirming-tests` | Investigations | pelvic radiograph and gene test ordered | 2 |
+| `rb-genetics-first-try` | Diagnosis | decision 4, first attempt | 3 |
+| `rb-joint-plan-first-try` | Management | decision 5, first attempt | 3 |
+| `rb-team` | Management | cardiology, rehabilitation, clinical genetics and orthopaedics involved | 3 |
+| `rb-no-needle` | **Safety** | no pericardiocentesis (scored once decision 1 is attempted or the needle is given) — **critical** | 3 |
+| `rb-no-immunosuppression` | **Safety** | no prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID with colchicine (scored once decision 1 is attempted or one of them is given) | 3 |
+| `rb-communication` | Communication (examiner) | the working diagnosis, what is unproven and the plan, the steroid worry, SPIKES for the diagnosis, teach-back, when to return | 1 |
+
+The three critical items are acts done in time — an order placed on the day of admission, a bedside check given
+while its window held, and a needle not put in — never a decision alone, and none can be earned in hindsight: an
+echo ordered or a tamponade check done in the work-up phase does not count.
+
+### How wrong choices score (measured 2026-11-14 with core `assess`, `work-cmcr-44362/replay.ts`)
+
+| Path | Score | Critical items missed | Safety outcome |
+|---|---|---|---|
+| Reference path | 39/39 (100 %) | none | pass |
+| Doing nothing (start, finish) | 0/33; cannot finish (objectives incomplete) | echo, tamponade check | pass |
+| First answer wrong at every decision, then the key | 24/39 (62 %) | none | pass |
+| Wrong first at `heart-today` (any distractor) | 37/39 (95 %) | none | pass |
+| Wrong first at `effusion-plan` / `genetics` / `joint-care` | 36/39 (92 %) | none | pass |
+| Wrong first at `joint-pattern` | 35/39 (90 %) | none | pass |
+| Reference + prednisolone, methotrexate, TNF inhibitor, joint injection or NSAID with colchicine (each alone) | 36/39 (92 %) | none | pass (each is `critical: false`) |
+| Reference + pericardiocentesis (on admission, or in work-up after the echo) | 36/39 (92 %) | `rb-no-needle` | **fail** (`critical: true`) |
+| Echo ordered late (work-up) | 36/39 (92 %) | `rb-echo-admission` | pass |
+| Tamponade check late (work-up) or never | 36/39 (92 %) | `rb-tamponade-check` | pass |
+| Minimal gated path (required history only, echo late, no tamponade check, no referrals but physiotherapy) | 25/39 (64 %) | echo, tamponade check | pass |
+
+Skipping ahead is refused: the diagnosis record cannot be read before it exists (`not-ordered` until its phase),
+decision 3 cannot be answered before its records are read (`requirements-unmet`), and the outcome phase cannot be
+selected (`phase-locked`). Every harmful intervention has a harm text naming its guidance and costs its safety item;
+the needle also fails the safety outcome.
+
+**Safety outcome.** One intervention is `critical: true`: bedside pericardiocentesis with drainage
+(`contraindicatedWhen: always`, `risk: "high"`) — an invasive cardiac procedure in a child with no recorded sign of
+tamponade, no suspicion of bacterial or neoplastic pericarditis and no symptomatic effusion despite treatment (ESC
+2025 indications, class I); giving it fails the run's safety outcome whatever the score, and it also misses the
+critical `rb-no-needle`. The TNF inhibitor is the other `risk: "high"` intervention and is explicitly
+`critical: false`, like long-term prednisolone, weekly methotrexate, intra-articular triamcinolone and NSAID with
+colchicine (all `risk: "moderate"`): each is a wrong but recoverable decision in this case — one dose or start that
+the next clinician stops — so each costs `rb-no-immunosuppression` (3 points) without failing the safety outcome. No
+intervention carries a dose preset: none states a dose, so a preset would invent one; methotrexate, a high-alert
+medicine in many hospital lists, appears only as a wrong step without a dose.
+
+## Reference path (`solution`)
+
+Start → ask all 22 history items (the relative answers; the boy answers the pain question; ten answers are
+"I'm not sure, doctor") → examine digits, large joints, heart and neck veins → bedside tamponade check → order and
+read the echocardiogram, ECG and chest X-ray (the last two have no recorded result) → decision 1
+(`echo-today-tamponade-check`) → *work-up*: order and read the inflammatory-markers, antibody, organ-function and
+joint-imaging records, FBC and urine GAG screen (no recorded result) → cardiology review → decision 2
+(`watch-repeat-echo`) → decision 3 (`non-inflammatory-genetic`) → *diagnosis*: read the diagnosis record; order and
+read the pelvic radiograph and gene test (no recorded result) → genetics referral, physiotherapy and occupational
+therapy, orthopaedic review, family conversation → decision 4 (`recessive-test-counsel`) → decision 5
+(`rehab-no-immunosuppression`) → *outcome*: read the report's treatment and follow-up → finish. 65 steps; no
+intervention is given while contraindicated, and no safety-critical gate is left holding.
 
 ## Clinical numbers check
 
-- Repeated inflammatory and immune tests: ESR, CRP, RF and multiple autoantibodies were repeatedly negative; liver/renal function and ferritin were normal.
-- Joint imaging records: Hand/foot osteopenia, knee/elbow soft-tissue swelling and knee/suprapatellar effusion were recorded; no explicit coxa-vara measurement was provided.
-- Echocardiogram and diagnostic record: Moderate pericardial effusion with normal left ventricular systolic function; CACP syndrome was diagnosed clinically without a PRG4 result.
+| Number | Where it comes from | Use in the case / derived value |
+|---|---|---|
+| Age 9 years, male | 1.0.0 `patient` | Title, persona; swelling noticed three years earlier, i.e. at about 6 years (derived) |
+| Weight 19.5 kg | 1.0.0 `patient.weightKg` (when measured is not recorded) | Triage note, nurse's handover, growth answer; height is not recorded, so no BMI or growth centile is derived — the attending asks for both on a growth chart. No weight-based dose is used anywhere |
+| Swelling noticed 3 years ago, worse every year | 1.0.0 history | Presenting complaint; ILAR's 6-week and onset-before-16 criteria are met by duration and age, which is why exclusion, not duration, decides |
+| ESR, CRP, RF, multiple autoantibodies: "repeatedly negative"; liver and renal function, ferritin: "normal" | 1.0.0 record | No values, number of tests, dates or reference ranges are recorded; the records say so |
+| Moderate pericardial effusion; normal LV systolic function | 1.0.0 echocardiography record | No depth in mm, distribution, tamponade signs or date are recorded |
+| Pulsus paradoxus ≥ 10 mmHg inspiratory fall in systolic pressure | ESC 2025 §11.8.1 | Bedside tamponade check (no value is recorded for this boy) |
+| Follow-up about every 6 months for an asymptomatic effusion of at least moderate size | ESC 2025 §11.7.5 | Decision 2 feedback; cardiology knowledge |
+| JIA: onset before the 16th birthday, ≥ 6 weeks; systemic arthritis: fever ≥ 2 weeks, daily for ≥ 3 days; polyarthritis: ≥ 5 joints in the first 6 months | ILAR (Petty 2004) | Decision 3 and decision 1 feedback |
+| Recurrence 1 in 4 per child when both parents carry a variant | Autosomal recessive inheritance (Marcelino 1999) | Decision 4 |
+| PRG4 on chromosome 1 (1q31.1) | NCBI Gene (PRG4, Gene ID 10216); Bahabri 1998 mapped the locus to 1q25–31 | Decision 4, X-linked distractor feedback |
+| Oral glucocorticoid bridging < 3 months (not used); chronic low-dose glucocorticoids strongly recommended against | ACR/AF 2019 | Harm texts (prednisolone) |
 
-Source values and units are retained. Missing reference intervals, weights and timing are not reconstructed. Historical drug doses are omitted from actionable options.
+No drug dose is stated anywhere in the case: the report records none and the wrong steps are named without doses.
 
 ## Facilitator notes
 
-- Reactions: Which feature made you most uncertain?
-- Description: Reconstruct the presenting complaint and order of the available records.
-- Analysis: Swelling is not synonymous with inflammatory arthritis. Camptodactyly and effusion provide multisystem clues. Genetic labels require explicit evidence levels.
-- Summary: Clarify the non-inflammatory phenotype and monitor pericardial risk before unsupported immunosuppression
+### Debrief questions (PEARLS)
 
-Common errors are the case-specific distractors above. Ask the learner to identify the evidence that defeats each one, then use teach-back to distinguish a working diagnosis from confirmation.
+- **Reactions.** How did it feel to be handed a three-year story with "all the tests negative"?
+- **Description.** What did you find at the bedside, and what did you do about the heart before anything else?
+- **Analysis.**
+  - What does a pericardial rub mean, and what more does ESC 2025 need for a definite pericarditis (a clinical
+    presentation with more than one additional criterion)? Which of those does this boy have recorded?
+  - Normal neck veins: why do they not exclude tamponade (slow "medical" tamponade, Beck's triad absent, the
+    last-drop phenomenon), and what else did you check?
+  - Painless swelling, camptodactyly sparing thumbs and great toes, negative ESR/CRP/RF/autoantibodies and an
+    effusion: what single cause explains all of them? Why is JIA a diagnosis of exclusion under ILAR?
+  - What does a negative family history and unrelated parents tell you — and not tell you — about a recessive
+    disorder? What would you tell the family about future children?
+  - The report gave no specific medication and advised exercise. Which of today's steps would you add, and why?
+- **Summary.** Name the one act you would never skip on day one in a child with a rub, and the one drug class you
+  would not start for this arthropathy.
+
+### Common learner errors and how the case surfaces them
+
+| Error | How the case surfaces it |
+|---|---|
+| Treating the joints first and leaving the heart for later (outpatient echo) | Decision 1 distractor `outpatient-echo`; an echo ordered in work-up misses the critical `rb-echo-admission` |
+| Taking normal neck veins as "no tamponade" | Decision 1 feedback; the critical `rb-tamponade-check` needs the bedside check on admission |
+| Reading the rub as acute pericarditis and starting NSAID with colchicine | Decision 1 and 2 distractors; the intervention's harm text (ESC 2025 Table 4 and §11.7.4) and `rb-no-immunosuppression` |
+| Draining a moderate effusion "before it tamponades" | Decision 2 distractor; pericardiocentesis is `critical: true` and fails the safety outcome |
+| Calling it RF-negative polyarticular JIA and starting methotrexate | Decision 3 and 5 distractors; methotrexate's harm text (ILAR 2004, ACR/AF 2019) |
+| Explaining camptodactyly away as old arthritic contractures | Decision 3 distractor and key reasoning |
+| Reassuring the family that unrelated parents mean no risk | Decision 4 distractors (de novo, dominant, X-linked, "label is enough") |
+| "Genetic, so nothing to do" | Decision 5 distractor `nothing-helps`; the plan objective needs the physiotherapy referral |
 
 ## Embodied mode
 
-This is record review in in-world mode. Every investigation is an existing report with performedAt records, requires records and risk none. No transport to diagnostic equipment or new invasive procedure is required. History and examination occur at the bedside; results can be read there or at a records terminal. No physical treatment actions are authored.
+- **Bedside:** history (the relative answers; the boy, who can speak, answers questions put to him — the pain item
+  has `speaker: "patient"`), examination, the tamponade check (`kind: "monitoring"`, a nursing-scope act), the ECG and
+  the echocardiogram (`performedAt: "bedside"`, `requires: ["echocardiography"]`: a portable echo comes to the ward).
+- **Provider:** chest X-ray and pelvic radiograph (`performedAt: "provider"`: the boy is taken to X-ray). Blood and
+  urine tests go to the laboratories; the knee aspiration (`risk: "low"`) has no recorded result.
+- **Records:** the inflammatory-markers, antibody, organ-function and joint-imaging records, the diagnosis record and
+  the report's treatment and follow-up are existing reports (`requires: ["records"]`, `performedAt: "records"`,
+  `risk: "none"`), read at a records terminal or in the notes at the bedside; nobody is moved and nothing is sampled.
+- **Non-verbal handling:** none needed (no `nonVerbalWhen`); the companion answers history because the case is a
+  child's (`answersHistory: true`); the companion has no `presentation`, since who the relative is is not recorded.
+- **Facility and capabilities:** general hospital; every test, intervention and record is reachable there
+  (`caseCapabilityGaps` empty); the in-world demonstration replays the reference path in both languages.
 
-## Fidelity limits
+## Source and adaptation (fidelity limits)
 
-PRG4 testing, explicit hip measurements and long-term functional/cardiac outcomes are lacking. Names, hospitals and calendar dates are removed. Dialogue, questions and scoring are educational adaptation. No new negative findings are inferred. Approved source media are available locally for completed-case review; unapproved originals remain outside the app.
+**Source.** 李小琳, 刘玉玲, 付四毛. 屈曲指－关节炎－髋内翻－心包炎综合征一例. 中华儿科杂志 2011;49(6):471-473,
+doi:10.3760/cma.j.issn.0578-1310.2011.06.018 (DOI verified by publisher metadata on 2026-10-29;
+https://rs.yiigle.com/cmaid/44362).
 
-## Source and adaptation
+**What this version rests on.** The patient facts of 1.1.0 are the facts version 1.0.0 extracted from the article;
+the full article was not available to this re-authoring, so the check against it is still pending
+(`extensions.sourceTextChecked: false`; review notes say so in both languages). Nothing was added; what 1.0.0 did not
+record stays unknown and is said so in the relative's words ("I'm not sure, doctor") or in a record's note.
 
-The original publication supplies the clinical events and measurements. AI-assisted educational adaptation supplies bilingual dialogue, staging, distractors, feedback and assessment. These are not additional patient encounters. Companion roles are teaching conventions and do not establish that any particular person attended the original encounter. Historical prescriptions are not present-day treatment recommendations. DOI verification establishes source identity, not clinical peer review of this adaptation.
+**Extraction summary (every 1.0.0 fact and where it is now).**
+
+| 1.0.0 fact | 1.1.0 location |
+|---|---|
+| 9-year-old boy, 19.5 kg; inpatient | `patient` (age, sex, weightKg), title, triage note, `history.growth` (weight only), nurse's handover |
+| Limb joint swelling noticed 3 years ago, worse each year ("multiple swollen joints for three years") | `history.presentation`, chief complaint, opening line, summary, triage note |
+| No joint pain | `history.pain` (the boy's own answer) |
+| No fever or rash | `history.fever-rash` |
+| Early on, movement not clearly restricted | `history.early-movement` |
+| Earlier ESR and rheumatism-related tests negative; no specific treatment | `history.previous-tests`, `history.previous-treatment` |
+| Parents not consanguineous; no similar illness in the family | `history.consanguinity`, `history.family-history` |
+| Vaccinated per schedule; no tuberculosis contact | `history.vaccines`, `history.tb-contact` |
+| Digits other than thumbs and great toes flexed | `exam.digits` |
+| Elbow and knee movement restricted; elbows, knees, ankles, wrists swollen and deformed | `exam.large-joints` |
+| Slightly muffled heart sounds; pericardial rub (zh: over the precordium); no jugular venous distension | `exam.heart`, `exam.neck-veins` |
+| ESR, CRP, RF, multiple autoantibodies repeatedly negative; liver and renal function and ferritin normal | `investigations.inflammation-tests`, `antibody-tests`, `organ-tests` (work-up) |
+| Hand and foot osteopenia; knee and elbow soft-tissue swelling; knee and suprapatellar effusion; no explicit coxa vara measurement | `investigations.joint-imaging` (work-up); the missing hip measurement also in `diagnosis-record` |
+| Moderate pericardial effusion, normal LV systolic function | `investigations.echo` (admission and work-up results) |
+| Clinical diagnosis of CACP syndrome, no PRG4 result | `investigations.diagnosis-record` (diagnosis phase) |
+| No specific medication; functional exercise advised; deformity not clearly improved at follow-up of unstated length | `investigations.followup` (outcome phase), conclusion |
+| Figure fig01 (cropped limb imaging and echocardiograms; approved in the media review) | `assets.fig01`, attached to the outcome record only |
+| Unknowns: PRG4 testing, explicit hip measurements, long-term functional and cardiac outcomes | `unknowns`, `debrief.unknowns`, record notes |
+
+**Inferences (derived, not new facts).** The age at which the swelling was first noticed (about 6 years) is derived
+from the age and the 3-year history and appears only in the numbers check. Reading "repeatedly negative" ESR and CRP as
+"not raised" is the teaching's reading of 1.0.0's wording; the records keep 1.0.0's words.
+
+**Contradictions and gaps kept.** 1.0.0's generic template slot for vaccinations answered "not provided" while its
+infection-history item recorded vaccination according to the schedule; the generic slot was a template default, not a
+reading of the article, so 1.1.0 keeps the recorded statement and lists the point under To verify. The rub's location
+("over the precordium", 心前区) is in 1.0.0's Chinese text only; 1.1.0 gives it in both languages and lists it under To
+verify. Whether the inflammatory and antibody tests were done before or during this admission, and when the
+echocardiogram was done, are not recorded; the records say so and give no date.
+
+**Template defects replaced (STANDARD §6.2).** Three decisions of three options; no interventions; 15 generic
+history slots answered in authoring language ("the source does not provide…"); a companion named "Companion
+(educational role)"; a critical item that was a decision (`decidedFirstTry` of the management decision); a
+four-item learning-outcome list without standards; three references.
+
+**Teaching devices (labelled, not facts of the report).** The relative who brings him and answers the history
+(relationship unrecorded, so named neutrally); the boy answering the pain question; the relative's worry about
+steroids (role design, `history.concerns` and persona); the staff (attending, ward nurse, paediatric cardiologist,
+clinical geneticist) and their words; the four phases and their gates; the echocardiogram staged as available on the
+day of admission; tests a learner may order that the report does not record (ECG, chest X-ray, FBC, urine GAG screen,
+knee aspiration, pelvic radiograph, gene test), each answering "No result is recorded for this test."; the
+interventions, decisions and scoring.
+
+**Privacy.** Pseudonym (陈清和 / Chen Qinghe); no dates, hospitals, cities or identifiers; the figure was reviewed at
+native resolution and shows no identifying text, dates or faces (`scripts/cmcr-105-media-review.json`).
 
 ## Matcher notes
 
-The bilingual corpus uses paraphrases of topic labels rather than canonical questions. All required history items have paraphrases. Unexpected matches must be fixed in keywords, not hidden with unrelated accepted answers.
+- One `presenting-complaint` item (`presentation`), available on admission, answers the plain openers in both
+  languages ("What brings you in today?", "What happened?", "What's the problem?", "Tell me what's been going on.",
+  "How long has this been going on?", "When did it start?"; 这次怎么了、哪里不舒服、怎么回事、有什么不舒服、多久了、
+  什么时候开始的) — probed with `matchHistory` in the first phase (`work-cmcr-44362/probe.ts`).
+- Keywords written run together where a phrase would collapse to one stop-word-free token ("whendiditstart",
+  "atthestart", "uptodate", "seenadoctor"); "tall" was dropped from the growth item because "at all" contains it.
+- Look-alikes separated by `excludeKeywords`: presentation vs early movement (move/活动), finger onset vs birth
+  (birth words removed from the finger item), morning stiffness vs early movement, heart symptoms vs early movement and
+  bruising, daily life vs milestones, past illness vs earlier tests.
+- `extensions.testUtterances`: 42 paraphrases (21 zh-CN, 21 en; three look-alike negatives), at least one for every
+  required item; all pass with no unexpected match (`cases verify`).
 
 ## References
 
-- 李小琳, 刘玉玲, 付四毛. 屈曲指－关节炎－髋内翻－心包炎综合征一例. 中华儿科杂志. 2011;49(06):471-473. doi: 10.3760/cma.j.issn.0578-1310.2011.06.018.
-- https://rs.yiigle.com/cmaid/44362
-- https://doi.org/10.3760/cma.j.issn.0578-1310.2011.06.018
+1. 李小琳, 刘玉玲, 付四毛. 屈曲指－关节炎－髋内翻－心包炎综合征一例. 中华儿科杂志. 2011;49(6):471-473.
+   doi:10.3760/cma.j.issn.0578-1310.2011.06.018. Available from: https://rs.yiigle.com/cmaid/44362
+2. Schulz-Menger J, Collini V, Gröschel J, et al. 2025 ESC Guidelines for the management of myocarditis and
+   pericarditis. Eur Heart J. 2025;46(40):3952-4041. doi:10.1093/eurheartj/ehaf192
+3. Petty RE, Southwood TR, Manners P, et al. International League of Associations for Rheumatology classification of
+   juvenile idiopathic arthritis: second revision, Edmonton, 2001. J Rheumatol. 2004;31(2):390-392.
+4. Ringold S, Angeles-Han ST, Beukelman T, et al. 2019 American College of Rheumatology/Arthritis Foundation
+   guideline for the treatment of juvenile idiopathic arthritis: therapeutic approaches for non-systemic
+   polyarthritis, sacroiliitis, and enthesitis. Arthritis Care Res (Hoboken). 2019;71(6):717-734.
+   doi:10.1002/acr.23870
+5. Onel KB, Horton DB, Lovell DJ, et al. 2021 American College of Rheumatology guideline for the treatment of
+   juvenile idiopathic arthritis: recommendations for nonpharmacologic therapies, medication monitoring,
+   immunizations, and imaging. Arthritis Rheumatol. 2022;74(4):570-585. doi:10.1002/art.42036
+6. Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint
+   consensus recommendation of the American College of Medical Genetics and Genomics and the Association for
+   Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30
+7. Marcelino J, Carpten JD, Suwairi WM, et al. CACP, encoding a secreted proteoglycan, is mutated in
+   camptodactyly-arthropathy-coxa vara-pericarditis syndrome. Nat Genet. 1999;23(3):319-322. doi:10.1038/15496
+8. Bahabri SA, Suwairi WM, Laxer RM, et al. The camptodactyly-arthropathy-coxa vara-pericarditis syndrome: clinical
+   features and genetic mapping to human chromosome 1. Arthritis Rheum. 1998;41(4):730-735. PMID: 9550484
+9. Offiah AC, Woo P, Prieur AM, Hasson N, Hall CM. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome versus
+   juvenile idiopathic arthropathy. AJR Am J Roentgenol. 2005;185(2):522-529. doi:10.2214/ajr.185.2.01850522
+10. Albuhairan I, Al-Mayouf SM. Camptodactyly-arthropathy-coxavara-pericarditis syndrome in Saudi Arabia: clinical
+    and molecular genetic findings in 22 patients. Semin Arthritis Rheum. 2013;43(2):292-296.
+    doi:10.1016/j.semarthrit.2012.11.004
+11. Kisla Ekinci RM, Balci S, Dogan H, et al. Camptodactyly-arthropathy-coxa vara-pericarditis syndrome resembling
+    juvenile idiopathic arthritis: a single-center experience from southern Turkey. Mol Syndromol.
+    2021;12(2):112-117. doi:10.1159/000513111
 
-**Source verification:** Publisher identity and DOI 10.3760/cma.j.issn.0578-1310.2011.06.018 verified on 2026-10-29: https://rs.yiigle.com/cmaid/44362. Current guidance was checked only to the scope explicitly listed in provenance.review.guidelines; independent clinical review remains required. No clinician review is claimed.
+**How each statement was checked (2026-11-14).** ESC 2025 in its own text (the guideline PDF): the class I
+initial-assessment recommendation and the class I pericardiocentesis indications (recommendation tables), the class III
+statement on corticosteroids as first option without a specific indication, Table 4 (diagnostic criteria),
+§11.7.4 (therapy aimed at the cause; no anti-inflammatory treatment without pericardial inflammation — a text
+statement, not a numbered recommendation), §11.7.5 (6-monthly follow-up), §11.8.1 (Beck's triad, pulsus paradoxus,
+last-drop phenomenon) and §12.2.2 (corticosteroids restricted in children). ILAR 2004 in the article's PDF. ACR/AF
+2019 and ACR 2021 in their full texts (PMC6561125, PMC10127939). Marcelino 1999, Bahabri 1998, Offiah 2005 and
+Albuhairan 2013 in their PubMed abstracts; Kisla Ekinci 2021 in its full text (PMC8114071). DOIs resolved by Crossref
+(Marcelino's by PubMed).
+
+### To verify
+
+**For the source pass (against the full article):**
+
+1. Every 1.0.0 fact in the extraction table above, in particular the weight (19.5 kg) and when it was measured, the
+   wording "noticed three years ago, worse every year", "early movement not clearly restricted", and that earlier
+   tests were ESR and rheumatism-related tests.
+2. Which fingers and toes, and which joints, were flexed, restricted, swollen or deformed; the location of the rub
+   (心前区 in 1.0.0's Chinese only); "slightly" muffled heart sounds.
+3. Which autoantibodies were tested; the values, number and dates of the inflammatory tests and whether some were
+   before this admission.
+4. The modality of the joint imaging; whether the hips were imaged and what they showed (1.0.0: no explicit coxa
+   vara measurement).
+5. The echocardiogram: date, effusion size, any tamponade signs; any repeat study, ECG or chest X-ray.
+6. Whether any gene test, family examination or genetic counselling was done.
+7. Any medication before or during the admission (the report says no specific medication), any pericardial
+   drainage, and the length and findings of follow-up, including the effusion.
+8. The vaccination statement (1.0.0's generic slot contradicted its recorded statement).
+9. That fig01 (limb imaging and echocardiograms) belongs with the outcome record and reveals nothing earlier.
+
+**For a clinician of the specialty to confirm:**
+
+1. Paediatric cardiology: echocardiography on the day of admission as the standard taught for a rub with muffled
+   heart sounds; pericardiocentesis as this case's critical error; the follow-up interval (ESC 2025's 6-monthly
+   advice for asymptomatic effusions of at least moderate size is general guidance, and the pericardial disease of
+   CACP may differ); whether cardiac MRI belongs in the work-up.
+2. Paediatric rheumatology: the keyed reading of the arthropathy; prednisolone, methotrexate, TNF inhibitor, joint
+   injection and NSAID with colchicine scored as non-critical harms; the knee aspiration scored neutral.
+3. Clinical genetics: the testing strategy (single gene, panel or exome) and the counselling content of decision 4.
+4. General paediatrics: whether his weight of 19.5 kg at 9 years warrants comment once his height is known.
 
 ## Changelog
 
-- 2026-10-28 — Initial de-identified educational adaptation; historical results separated from present-day decision teaching, staged records and explicit uncertainty added.
+### 1.1.0 — 2026-11-14 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
+
+- **Template defects replaced.** 1.0.0 had three decisions of three options, no interventions, 15 history items
+  (10 of them generic "the source does not provide" slots in authoring language), a companion called "Companion
+  (educational role)", a title and summary that hinted at the diagnosis's category, three references, and a critical
+  item that was a decision. Now: 22 history items in the relative's and the boy's voice (10 unknown, said plainly);
+  four examination findings; 14 investigations (six records, eight orderable tests); 12 interventions (today's steps
+  and six tempting wrong ones with harm texts naming their guidance); five decisions at the real decision points;
+  15 rubric items with three critical items that are acts done in time; four staff; 11 references.
+- **Safety fixes.** 1.0.0 recorded a pericardial rub and slightly muffled heart sounds but taught nothing about tamponade or
+  the timing of the echocardiogram: the bedside tamponade check and the echo order on the day of admission are now
+  timed critical acts, and an unindicated pericardiocentesis fails the safety outcome. Immunosuppressive and
+  anti-inflammatory treatment of a non-inflammatory arthropathy and effusion is now a scored harm with guideline
+  harm texts. The genetic teaching gives the recurrence risk and the test that would confirm the clinical label.
+- **Staging.** Four phases: admission (history, examination, the heart), results, diagnosis and plan, outcome; the
+  outcome record and figure open only after all five decisions and the physiotherapy referral.
+- **Guidance.** ESC 2025 myocarditis and pericarditis, ILAR 2004, ACR/AF 2019, ACR 2021 (nonpharmacologic),
+  ACMG/AMP 2015, and the CACP literature (Marcelino 1999, Bahabri 1998, Offiah 2005, Albuhairan 2013, Kisla Ekinci
+  2021), each statement checked in its own text (see References).
+- **Other.** Title and summary rewritten as presenting complaint · age and sex; figure retitled without spoiler and
+  kept in the outcome record; matcher corpus of 42 paraphrases; README rewritten as the 16-part facilitator guide.
+
+### 1.0.0
+
+Template version (2026-10-28): the published report's facts paraphrased into a generic structure (four phases, three
+decisions, 15 history slots, no interventions), one locally approved figure and a DOI verified by publisher metadata
+on 2026-10-29.
 
 ## Validation
 
-Passed strict validation with zero errors and zero warnings on 2026-10-28. Reference replay: 4/4 objectives, 3/3 decisions, score 20/20 (100%). Bilingual matcher: 40/40 passed, zero unexpected matches. Wrong-first-then-correct replay: 10/20 (50%), critical safety item remains missed; no rejected actions. Late-background regression: required history then all examination, followed by all optional history in workup, passes with zero rejections. Communication remains examiner-judged and is excluded from the deterministic score. Root integration separately checks media and full in-world presentation.
+Run from the worktree root (all passed on 2026-11-14):
+
+```sh
+npm run -s cc -- cases validate packages/content/cases/cmcr-44362/case.json --strict --lang en   # 0 errors, 0 warnings
+npm run -s cc -- cases verify cmcr-44362 --lang en        # 65 steps · objectives 6/6 · decisions 5/5 · utterances 42/42 · rubric 39/39 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-44362   # depth floor; do nothing 0/33; wrong first 62 % < 100 %; openers reach the presenting complaint
+npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-44362:"              # collection contract
+npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44362:"   # in-world demonstration, en + zh-CN
+```
 
 ## 中文摘要
 
-**病例概要：** 报告临床诊断CACP综合征，分子及完整髋关节确认仍缺失。
+**病例概要：** 9岁男孩（化名陈清和），体重19.5 kg。三年前发现四肢多处关节肿胀，一年比一年重，不疼，没有发热和皮疹，
+早期活动还不明显受限；以前查过血沉和风湿相关指标，均为阴性，没有做过特殊治疗；父母非近亲，家族中没有类似疾病。查体：
+除拇指和拇趾外各指趾屈曲，肘、膝屈伸受限，肘、膝、踝、腕肿胀畸形；心音稍钝，心前区可闻心包摩擦音，无颈静脉怒张。
+血沉、CRP、类风湿因子和多项自身抗体反复阴性，肝肾功能和铁蛋白正常；影像见手足骨质稀疏、膝肘软组织肿胀、膝关节及髌上囊
+积液；超声心动图示中等量心包积液、左室收缩功能正常。团队临床诊断为CACP综合征（屈曲指—关节病—髋内翻—心包炎综合征），
+没有PRG4基因结果，也没有髋内翻的明确测量；未用特殊药物，建议功能锻炼；随访时关节畸形没有明显改善，随访时长未记录。
 
-**学习目标：** 比较炎症性与非炎症性肿胀。；整合手足形态与心包表现。；辨认遗传诊断证据缺口。；讨论避免过度免疫治疗的安全性。
+**学习目标：** 区分非炎症性关节病和炎症性关节炎（ILAR 2004：JIA是排除性诊断）；听到心包摩擦音时，入院当天就在床旁评估压塞，
+并按ESC 2025完成超声心动图等初始评估；对没有压塞和炎症的中等量积液不引流、不用抗炎药，安排心脏科随访；说出CACP的组成、
+PRG4基因和常染色体隐性遗传，给出再发风险；为非炎症性的遗传性关节病制订不用免疫抑制的康复和随访计划；用SPIKES和复述法与
+家属沟通。
 
-**关键决策：** 这些早期资料首先要求怎样调整鉴别？ 后续资料能支持哪一项结论？ 安全的后续计划应包括什么？
+**关键决策：** ① 入院当天的心脏处理（超声心动图和心电图、床旁评估压塞、暂不用抗炎药和激素）；② 中等量心包积液的计划
+（暂不引流，心脏科评估并定期复查，找原因）；③ 关节病的判读（非炎症性的遗传性关节病，首先考虑CACP，JIA要先排除它）；
+④ 遗传方式与检测（常染色体隐性，遗传咨询和PRG4检测，父母都携带时每个孩子1/4）；⑤ 关节的长期计划（不用激素、甲氨蝶呤
+或生物制剂；物理治疗和作业治疗、骨盆片和骨科随访、心脏科共同随访）。
 
-**复盘要点：** 关节肿胀不等于炎症性关节炎；屈曲指与心包积液提供跨系统线索；遗传标签需要明确证据层级。尚待核对：缺乏PRG4检测、明确髋测量和长期功能心脏结局。本稿尚未经执业医师审核。
+**复盘要点：** 心脏优先：颈静脉不怒张不能排除压塞；无痛肿胀、屈曲指加反复阴性的炎症检查，提示非炎症性关节病而不是JIA；
+没有炎症证据时不推荐抗炎治疗，心包穿刺只用于有指征时；临床诊断需要分子诊断和遗传咨询来证实；原报告不用特殊药物、建议功能
+锻炼，与今天的做法一致，今天还要补上基因检测、遗传咨询、髋关节影像和心脏科随访。本病例的事实沿用1.0.0版的提取，尚未对照
+原文全文核对；尚未经执业医师审核。
 
-### Local source media review
-
-1 individually approved local asset(s) are linked for the completed-case review. They are not attached to early-stage reports because a composite can contain later findings. Original image bytes are unchanged; the findings remain available as authored text. The privacy decision and checksum are recorded in `scripts/cmcr-105-media-review.json`. Full source PDFs without explicit approval are not displayed.
+**安全结果。** 唯一的`critical: true`处置是无指征的床旁心包穿刺引流：给予即判定安全结果不合格；激素、甲氨蝶呤、TNF抑制剂、
+关节腔注射和NSAID加秋水仙碱均为`critical: false`，各扣去安全项3分。

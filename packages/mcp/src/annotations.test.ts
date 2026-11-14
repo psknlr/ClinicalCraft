@@ -35,7 +35,7 @@ async function call(s: McpServer, method: string, params?: unknown): Promise<any
 }
 
 // Embodied mode (PROTOCOL §12): perception only reads; walking and operating change the world.
-const WORLD_READ_ONLY = ["find_entities", "find_objects", "get_action_feedback", "get_agent_state", "get_nearby_objects", "get_room_info", "get_visible_objects", "inspect_object", "observe_world"];
+const WORLD_READ_ONLY = ["ask_whereabouts", "find_entities", "find_objects", "get_action_feedback", "get_agent_state", "get_nearby_objects", "get_room_info", "get_visible_objects", "inspect_object", "observe_world"];
 // the operative field: looking only reads; a step acts on the patient
 // new investigations: their status and reports only read
 const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "list_options", "list_studies", "observe_field", "read_study", ...WORLD_READ_ONLY].sort();
@@ -49,9 +49,9 @@ describe("tools/list annotations", () => {
     const s = server();
     await call(s, "initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } });
     const { tools } = (await call(s, "tools/list")) as { tools: McpToolSpec[] };
-    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + the new investigations' 4 + 17 world
-    // tools (get_camera_frame needs a browser: never listed headless).
-    expect(tools.length).toBe(41);
+    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + the new investigations' 4 + 18 world
+    // tools (get_camera_frame needs a browser: never listed headless; ask_whereabouts: EMBODIED §4).
+    expect(tools.length).toBe(42);
     expect(tools.map((t) => t.name)).not.toContain("get_camera_frame");
     for (const name of ["navigate_to", "interact_object"]) expect(tools.find((t) => t.name === name)!.annotations.readOnlyHint, name).toBe(false);
     for (const tool of tools) {

@@ -8,6 +8,7 @@ import { caseIds, catalogs, loadCase, makeWorld, type TestWorld } from "./__fixt
 const A = PRIMARY_ACTOR;
 const order = (investigationId: string): ClinicalIntent => ({ tool: "order_test", kind: "order", investigationId });
 const read = (investigationId: string): ClinicalIntent => ({ tool: "read_result", kind: "read", investigationId });
+const acquire = (investigationId: string): ClinicalIntent => ({ tool: "order_test", kind: "acquire", investigationId });
 const intervene = (interventionId: string): ClinicalIntent => ({ tool: "intervene", kind: "intervene", interventionId });
 const examine = (findingId: string): ClinicalIntent => ({ tool: "examine", kind: "examine", findingId });
 const ASK: ClinicalIntent = { tool: "ask_patient", kind: "ask" };
@@ -84,18 +85,28 @@ describe("DefaultSpatialPolicy: the requirement of each clinical action (EMBODIE
     for (const cap of ["ecg-12lead", "point-of-care", "ultrasound", "peak-flow", "scale", "eeg", "fetal-monitor"]) expect(BEDSIDE_CAPABILITIES).toContain(cap);
   });
 
-  it("studies on the patient at a fixed device: the patient brought there, then ordered at the device or its console; the report read anywhere it is shown (G8)", () => {
-    // CT, fluoroscopy: the patient at the scanner / on the cath-lab table, ordered there or at the console
-    expect(req(order("ct-aortogram"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["ct"] }, { kind: "at-provider", capabilities: ["ct"] }] });
-    expect(req(order("coronary-angiography"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["fluoroscopy"] }, { kind: "at-provider", capabilities: ["fluoroscopy"] }] });
+  it("studies on the patient at a fixed device: ordered wherever a clinician orders, acquired with the patient on the device; the report read anywhere it is shown (G8, audit P1-7)", () => {
+    // CT, fluoroscopy: ordered at the patient (the ward), an order-entry terminal, the device or its console
+    const anywhereOrdered = (caps: string[]) => ({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: caps }] });
+    expect(req(order("ct-aortogram"))).toEqual(anywhereOrdered(["ct"]));
+    expect(req(order("coronary-angiography"))).toEqual(anywhereOrdered(["fluoroscopy"]));
+    // the acquisition (EMBODIED §8.7): the patient on the scanner / on the cath-lab table
+    expect(req(acquire("ct-aortogram"))).toEqual({ kind: "patient-at-provider", capabilities: ["ct"] });
+    expect(req(acquire("coronary-angiography"))).toEqual({ kind: "patient-at-provider", capabilities: ["fluoroscopy"] });
     expect(req(read("ct-aortogram"))).toEqual({ kind: "at-provider", capabilities: ["ct"] }); // the report: never the patient
-    // a portable film (performedAt "bedside") moves nobody
+    // a portable film (performedAt "bedside") moves nobody: acquired at the order
     expect(req(order("cxr-portable"))).toEqual({ kind: "at-provider", capabilities: ["xray"] });
+    expect(req(acquire("cxr-portable"))).toEqual({ kind: "anywhere" });
+    // anything not done on the patient at a device is acquired at the order
+    expect(req(acquire("hs-troponin"))).toEqual({ kind: "anywhere" });
+    expect(req(acquire("ecg-12lead"))).toEqual({ kind: "anywhere" });
     // a patient-performed test: the patient at the station, ordered with them or at the station
     const asthma = of("pediatric-asthma");
     expect(req(order("pef"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["peak-flow"] }, { kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, { kind: "at-provider", capabilities: ["peak-flow"] }] }] });
-    // a fixed X-ray machine without the portable flag: the patient goes to X-ray
-    expect(req(order("cxr"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["xray"] }, { kind: "at-provider", capabilities: ["xray"] }] });
+    expect(req(acquire("pef"), asthma)).toEqual({ kind: "anywhere" }); // performed with the patient there: acquired at the order
+    // a fixed X-ray machine without the portable flag: the patient goes to X-ray for the film, not for the order
+    expect(req(order("cxr"), asthma)).toEqual({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: ["xray"] }] });
+    expect(req(acquire("cxr"), asthma)).toEqual({ kind: "patient-at-provider", capabilities: ["xray"] });
     expect(PATIENT_AT_PROVIDER_CAPABILITIES).toEqual(["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"]);
     expect(PATIENT_PERFORMED_CAPABILITIES).toEqual(["peak-flow", "scale"]);
   });

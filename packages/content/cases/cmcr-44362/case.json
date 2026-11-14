@@ -2559,8 +2559,8 @@
     {
       "id": "followup",
       "name": {
-        "zh-CN": "原报告：处理与随访",
-        "en": "Reported treatment and follow-up"
+        "zh-CN": "处理与随访记录",
+        "en": "Treatment and follow-up record"
       },
       "category": "record",
       "aliases": {
@@ -2593,8 +2593,8 @@
             "en": "From the admission to follow-up (length of follow-up not recorded)"
           },
           "text": {
-            "zh-CN": "原报告的处理：未用特殊药物，建议功能锻炼。随访时关节畸形没有明显改善；随访时长未记录。",
-            "en": "The report's management: no specific medication was given, and functional exercise was advised. At follow-up the joint deformities had not clearly improved; the length of follow-up is not recorded."
+            "zh-CN": "处理：未用特殊药物，建议功能锻炼。随访时关节畸形没有明显改善；随访时长未记录。",
+            "en": "Management: no specific medication was given, and functional exercise was advised. At follow-up the joint deformities had not clearly improved; the length of follow-up is not recorded."
           },
           "figures": [
             "fig01"
@@ -2913,8 +2913,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有指征：没有记录到心脏压塞的表现（无颈静脉怒张）。ESC 2025指南只推荐在心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液时，在超声、CT或X线透视引导下行心包穿刺（I类）。没有指征、没有影像引导的穿刺可刺伤心肌或冠状动脉，引起气胸和心律失常。",
-        "en": "No indication: no sign of tamponade is recorded (no jugular venous distension). ESC 2025 recommends pericardiocentesis, guided by echocardiography, CT or fluoroscopy, only for cardiac tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). A needle without an indication or imaging guidance can lacerate the heart or a coronary artery and cause pneumothorax and arrhythmia."
+        "zh-CN": "没有指征：没有记录到心脏压塞的表现（无颈静脉怒张）。ESC 2025指南推荐在心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液时，在超声、CT或X线透视引导下行心包穿刺（I类）——他没有这些情况。没有指征、没有影像引导的穿刺可刺伤心肌或冠状动脉，引起气胸和心律失常。",
+        "en": "No indication: no sign of tamponade is recorded (no jugular venous distension). ESC 2025 recommends pericardiocentesis, guided by echocardiography, CT or fluoroscopy, for cardiac tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I) — none of which applies to him. A needle without an indication or imaging guidance can lacerate the heart or a coronary artery and cause pneumothorax and arrhythmia."
       },
       "response": {
         "zh-CN": "这是一次没有指征的有创操作（见安全提示）。本病例不模拟它的后果；本病例也没有记录任何心包穿刺或引流。",
@@ -3444,8 +3444,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。心音变钝加心包摩擦音提示心包受累并有积液。ESC 2025建议，所有怀疑心包炎的患者都要做完整的初始评估——病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；超声心动图是发现和测量积液、判断血流动力学影响以及随访的主要工具。心脏压塞是临床诊断：积液缓慢积聚时Beck三联征可以缺如，没有颈静脉怒张不能排除，要结合心率、血压和奇脉，并由超声证实。",
-            "en": "Right. Muffled heart sounds with a rub point to pericardial involvement with fluid. ESC 2025 recommends a complete initial evaluation — history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I) — for everyone with suspected pericarditis, and echocardiography is the main tool to find and size an effusion, judge its haemodynamic effect and follow it. Tamponade is a clinical diagnosis: Beck's triad may be missing when fluid gathers slowly, so normal neck veins do not exclude it — add heart rate, blood pressure and pulsus paradoxus, with echo confirmation."
+            "zh-CN": "正确。心音稍钝加心包摩擦音提示心包受累，可能已有积液。ESC 2025建议，所有怀疑心包炎的患者都要做完整的初始评估——病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；超声心动图是发现和测量积液、判断血流动力学影响以及随访的主要工具。心脏压塞是临床诊断：积液缓慢积聚时Beck三联征可以缺如，没有颈静脉怒张不能排除，要结合心率、血压和奇脉，并由超声证实。",
+            "en": "Right. Slightly muffled heart sounds with a rub point to pericardial involvement, possibly with fluid. ESC 2025 recommends a complete initial evaluation — history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I) — for everyone with suspected pericarditis, and echocardiography is the main tool to find and size an effusion, judge its haemodynamic effect and follow it. Tamponade is a clinical diagnosis: Beck's triad may be missing when fluid gathers slowly, so normal neck veins do not exclude it — add heart rate, blood pressure and pulsus paradoxus, with echo confirmation."
           }
         },
         {
@@ -3456,8 +3456,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "先治疗、后成像，顺序颠倒了。ESC 2025要求怀疑心包疾病时先做包括超声心动图在内的完整评估，积液的大小和对心脏的影响决定下一步；抗炎治疗只用于有心包炎症证据（CRP升高或影像学炎症）的积液，并且要针对病因。",
-            "en": "Treatment before imaging is the wrong order. ESC 2025 asks for a complete evaluation including echocardiography first when pericardial disease is suspected, and the effusion's size and effect decide what follows; anti-inflammatory treatment is for an effusion with evidence of pericardial inflammation (raised CRP or inflammation on imaging), aimed at its cause."
+            "zh-CN": "先治疗、后成像，顺序颠倒了。ESC 2025要求怀疑心包炎时先做包括超声心动图在内的完整评估，积液的大小和对心脏的影响决定下一步；没有心包炎症证据（CRP不高、影像上也没有炎症）时不推荐抗炎治疗，积液要针对病因处理。",
+            "en": "Treatment before imaging is the wrong order. ESC 2025 asks for a complete evaluation including echocardiography first when pericarditis is suspected, and the effusion's size and effect decide what follows; without evidence of pericardial inflammation (no raised CRP and none on imaging) it does not recommend anti-inflammatory treatment, and an effusion is treated by its cause."
           }
         },
         {
@@ -3468,8 +3468,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有穿刺指征：他没有颈静脉怒张，没有记录到压塞的表现，积液也还没有成像。ESC 2025只推荐在心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液时，做影像引导下的心包穿刺；盲目穿刺可能刺伤心肌或冠状动脉。",
-            "en": "No indication for a needle: his neck veins are not distended, no sign of tamponade is recorded, and the effusion has not been imaged. ESC 2025 recommends image-guided pericardiocentesis only for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; a blind needle can lacerate the heart or a coronary artery."
+            "zh-CN": "没有穿刺指征：他没有颈静脉怒张，没有记录到压塞的表现，积液也还没有成像。ESC 2025推荐影像引导下心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液——他一样都没有；盲目穿刺可能刺伤心肌或冠状动脉。",
+            "en": "No indication for a needle: his neck veins are not distended, no sign of tamponade is recorded, and the effusion has not been imaged. ESC 2025 recommends image-guided pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy — none of which he has; a blind needle can lacerate the heart or a coronary artery."
           }
         },
         {
@@ -3493,7 +3493,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "心音稍钝加心包摩擦音，这次住院就要做超声心动图，测量积液并判断有没有压塞：ESC 2025建议所有怀疑心包炎的患者在初始评估时就做超声心动图。颈静脉不怒张不能排除压塞：缓慢积聚的积液可以积得很多，ESC 2025称压塞是“最后一滴”现象，再多一点就可能失代偿。",
-            "en": "Muffled heart sounds with a rub need echocardiography during this admission to size the effusion and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Normal neck veins do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
+            "en": "Slightly muffled heart sounds with a rub need echocardiography during this admission to size the effusion and look for tamponade: ESC 2025 recommends it in the initial assessment of everyone with suspected pericarditis. Normal neck veins do not exclude tamponade: a slowly gathering effusion can grow large, and ESC 2025 calls tamponade a last-drop phenomenon — a little more fluid can tip him over."
           }
         }
       ]
@@ -3538,8 +3538,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ESC 2025：积液的治疗应尽量针对病因；没有心包炎症（CRP不高、影像无炎症证据）时不推荐抗炎治疗；心包穿刺只用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液。随访主要看症状、超声心动图上积液大小的变化和血流动力学，以及CRP；若没有症状，至少中等量的积液合理的随访间隔约为6个月，最好在专科中心，出现气短、乏力或胸痛时要及时就诊。",
-            "en": "Right. ESC 2025: treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP, no inflammation on imaging) anti-inflammatory treatment is not recommended; pericardiocentesis is for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy. Follow-up rests on symptoms, focused echo for size and haemodynamics, and CRP; if he has no symptoms, review about every 6 months for an effusion of at least moderate size, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain."
+            "zh-CN": "正确。ESC 2025：积液的治疗应尽量针对病因；没有心包炎症（CRP不高、影像无炎症证据）时不推荐抗炎治疗；推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；原因仍不清楚时，可以用心脏磁共振评估心包有无炎症。随访主要看症状、超声心动图上积液大小的变化和血流动力学，以及CRP；若没有症状，至少中等量的积液合理的随访间隔约为6个月，最好在专科中心，出现气短、乏力或胸痛时要及时就诊。",
+            "en": "Right. ESC 2025: treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP, no inflammation on imaging) anti-inflammatory treatment is not recommended; pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy, and cardiac MRI can look for pericardial inflammation if the cause stays unclear. Follow-up rests on symptoms, focused echo for size and haemodynamics, and CRP; if he has no symptoms, review about every 6 months for an effusion of at least moderate size, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain."
           }
         },
         {
@@ -3550,8 +3550,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有引流指征：没有记录到压塞的表现，左室收缩功能正常。ESC 2025的心包穿刺指征是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；没有这些情况时宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
-            "en": "No indication for drainage: no sign of tamponade is recorded and left ventricular systolic function is normal. ESC 2025 indications are tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; without them, conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
+            "zh-CN": "没有引流指征：没有记录到压塞的表现，左室收缩功能正常。ESC 2025推荐心包穿刺的情况是心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液；他没有这些情况，宜保守处理并用超声随访，穿刺本身有心肌损伤、气胸和感染的风险。",
+            "en": "No indication for drainage: no sign of tamponade is recorded and left ventricular systolic function is normal. ESC 2025 recommends pericardiocentesis for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy; he has none of these, so conservative care with echo follow-up is preferred, and the procedure itself risks myocardial injury, pneumothorax and infection."
           }
         },
         {
@@ -3562,8 +3562,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "抗炎治疗只用于伴有心包炎症（CRP升高或影像学炎症）的积液；没有炎症时ESC 2025不推荐抗炎治疗，而是针对病因处理。对原因未明的积液开几个月NSAID和秋水仙碱，带来胃肠和肾脏风险，却没有可以期待的获益。",
-            "en": "Anti-inflammatory treatment is for an effusion with pericardial inflammation — raised CRP or inflammation on imaging; without it, ESC 2025 does not recommend it and asks for the cause to be treated. Months of NSAID and colchicine for an effusion of unknown cause bring gastrointestinal and renal risks without an expected benefit."
+            "zh-CN": "没有心包炎症（CRP不高、影像上也没有炎症）时，ESC 2025不推荐抗炎治疗，而是针对病因处理。对原因未明的积液开几个月NSAID和秋水仙碱，带来胃肠和肾脏风险，却没有可以期待的获益。",
+            "en": "Without pericardial inflammation — no raised CRP and none on imaging — ESC 2025 does not recommend anti-inflammatory treatment and asks for the cause to be treated. Months of NSAID and colchicine for an effusion of unknown cause bring gastrointestinal and renal risks without an expected benefit."
           }
         },
         {
@@ -3788,8 +3788,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。CACP是缺乏润滑素（PRG4蛋白）造成的非炎症性关节病；在一个3例的病例系列中，先按JIA治疗的患儿用了甲氨蝶呤、关节腔激素和TNF抑制剂，都没有达到缓解（Kisla Ekinci等，2021）。目前没有针对CACP的指南，保持关节功能主要靠康复——ACR 2021年JIA指南同样有条件地推荐物理治疗和作业治疗，不论是否用药——再加上髋关节影像和骨科、心脏科的随访。",
-            "en": "Right. CACP is a non-inflammatory arthropathy caused by lack of lubricin (the PRG4 protein); in a three-patient series, children first treated as JIA received methotrexate, intra-articular steroid and TNF inhibitors without reaching remission (Kisla Ekinci et al., 2021). There is no CACP guideline: function is kept mainly by rehabilitation — the ACR 2021 JIA guideline likewise conditionally recommends physical and occupational therapy whatever the drug treatment — with hip imaging and orthopaedic and cardiac follow-up."
+            "zh-CN": "正确。CACP是缺乏润滑素（PRG4蛋白）造成的非炎症性关节病；在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）。目前没有针对CACP的指南，保持关节功能主要靠康复——ACR 2021年JIA指南同样有条件地推荐物理治疗和作业治疗，不论是否用药——再加上髋关节影像和骨科、心脏科的随访；髋部病变可能随时间进展（Bahabri等，1998）。",
+            "en": "Right. CACP is a non-inflammatory arthropathy caused by lack of lubricin (the PRG4 protein); in a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one of them also given intra-articular steroid (Kisla Ekinci et al., 2021). There is no CACP guideline: function is kept mainly by rehabilitation — the ACR 2021 JIA guideline likewise conditionally recommends physical and occupational therapy whatever the drug treatment — with hip imaging and orthopaedic and cardiac follow-up, since hip disease may progress over time (Bahabri et al., 1998)."
           }
         },
         {
@@ -3800,8 +3800,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是多关节型JIA的路径（ACR/AF 2019），但他的关节病不是炎症性的。先按JIA治疗的CACP患儿用这些药没有达到缓解（Kisla Ekinci等，2021），却要承担肝毒性、感染和反复镇静注射的风险。",
-            "en": "That is the polyarticular JIA pathway (ACR/AF 2019), but his arthropathy is not inflammatory. Children with CACP first treated as JIA did not reach remission on these drugs (Kisla Ekinci et al., 2021), and they bring liver toxicity, infection and repeated sedated injections."
+            "zh-CN": "这是多关节型JIA的路径（ACR/AF 2019），但他的关节病不是炎症性的。先按JIA治疗的CACP患儿用甲氨蝶呤加TNF抑制剂都没有效果（Kisla Ekinci等，2021），却要承担肝毒性、感染和反复镇静注射的风险。",
+            "en": "That is the polyarticular JIA pathway (ACR/AF 2019), but his arthropathy is not inflammatory. Children with CACP first treated as JIA did not respond to methotrexate with a TNF inhibitor (Kisla Ekinci et al., 2021), and they bring liver toxicity, infection and repeated sedated injections."
           }
         },
         {
@@ -4190,8 +4190,8 @@
         "en": "Paediatric cardiologist"
       },
       "knowledge": {
-        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合一项以上附加标准；诊断不能靠临床标准确定时，心脏磁共振可以评估心包炎症。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
-        "en": "Comes when asked to review. From the ESC 2025 myocarditis and pericarditis guidelines: suspected pericarditis needs an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I); a pericardial rub is one additional criterion, and a definite diagnosis needs a clinical presentation (such as chest pain) with more than one additional criterion; cardiac MRI can assess pericardial inflammation when clinical criteria cannot settle the diagnosis. Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly; pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg; tamponade is a last-drop phenomenon. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended. Pericardiocentesis (echocardiography-, CT- or fluoroscopy-guided) is for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). For an asymptomatic effusion of at least moderate size a reasonable follow-up is about every 6 months, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain. Corticosteroids are restricted in children even more than in adults (growth impairment). Interprets the echocardiogram only once the learner has read it; its record gives no effusion depth, distribution or echocardiographic signs of tamponade."
+        "zh-CN": "被请会诊时到场。依据ESC 2025心肌炎和心包炎指南：怀疑心包炎时，初始评估包括病史、查体、胸片、生物标志物、心电图和超声心动图（I类）；心包摩擦音是心包炎的附加标准之一，确诊要有临床表现（如胸痛）并符合一项以上附加标准；诊断不能靠临床标准确定时，心脏磁共振可以评估心包炎症。心脏压塞是临床诊断，由超声心动图证实；积液缓慢积聚时Beck三联征可以缺如；奇脉是吸气时收缩压下降至少10 mmHg；压塞是“最后一滴”现象。积液应尽量针对病因治疗；没有心包炎症（既没有CRP升高，影像也没有炎症证据）时不推荐抗炎治疗。心包穿刺（超声、CT或X线透视引导）推荐用于心脏压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）。无症状、至少中等量的积液，合理的随访约每6个月一次，最好在专科中心，出现气短、乏力或胸痛要及时就诊。儿童更要严格限制激素（生长受损）。学员拿到超声心动图结果后才解读；该记录没有积液深度、分布或压塞的超声表现。",
+        "en": "Comes when asked to review. From the ESC 2025 myocarditis and pericarditis guidelines: suspected pericarditis needs an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I); a pericardial rub is one additional criterion, and a definite diagnosis needs a clinical presentation (such as chest pain) with more than one additional criterion; cardiac MRI can assess pericardial inflammation when clinical criteria cannot settle the diagnosis. Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly; pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg; tamponade is a last-drop phenomenon. Treat an effusion's cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended. Pericardiocentesis (echocardiography-, CT- or fluoroscopy-guided) is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I). For an asymptomatic effusion of at least moderate size a reasonable follow-up is about every 6 months, ideally in a specialised centre, with advice to return for breathlessness, fatigue or chest pain. Corticosteroids are restricted in children even more than in adults (growth impairment). Interprets the echocardiogram only once the learner has read it; its record gives no effusion depth, distribution or echocardiographic signs of tamponade."
       },
       "interprets": [
         "echo"
@@ -4287,16 +4287,16 @@
         "en": "ESC 2025 myocarditis and pericarditis guidelines: everyone with suspected pericarditis gets an initial assessment with history, examination, chest X-ray, biomarkers, ECG and echocardiography (class I). Tamponade is a clinical diagnosis confirmed by echocardiography; Beck's triad may be missing when fluid gathers slowly, pulsus paradoxus is an inspiratory fall in systolic pressure of at least 10 mmHg, and tamponade is a last-drop phenomenon — so his normal neck veins are no reason to defer the echocardiogram to the clinic."
       },
       {
-        "zh-CN": "ESC 2025对心包积液：尽量针对病因治疗；没有心包炎症（既没有CRP升高、影像也没有炎症证据）时不推荐抗炎治疗；心包穿刺（影像引导）用于压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）；无症状、至少中等量的积液约每6个月随访一次，最好在专科中心。原报告没有记录心脏科随访或复查的超声心动图——这是今天要补上的。",
-        "en": "ESC 2025 on pericardial effusion: treat the cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended; image-guided pericardiocentesis is for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I); an asymptomatic effusion of at least moderate size is followed about every 6 months, ideally in a specialised centre. The report records no cardiology follow-up or repeat echocardiogram — today's care adds them."
+        "zh-CN": "ESC 2025对心包积液：尽量针对病因治疗；没有心包炎症（既没有CRP升高、影像也没有炎症证据）时不推荐抗炎治疗；心包穿刺（影像引导）推荐用于压塞、怀疑细菌性或肿瘤性心包炎，或经药物治疗仍有症状的中到大量积液（I类）；无症状、至少中等量的积液约每6个月随访一次，最好在专科中心。原报告没有记录心脏科随访或复查的超声心动图——这是今天要补上的。",
+        "en": "ESC 2025 on pericardial effusion: treat the cause wherever possible; without pericardial inflammation (no raised CRP and no imaging evidence) anti-inflammatory treatment is not recommended; image-guided pericardiocentesis is recommended for tamponade, suspected bacterial or neoplastic pericarditis, or a symptomatic moderate-to-large effusion despite medical therapy (class I); an asymptomatic effusion of at least moderate size is followed about every 6 months, ideally in a specialised centre. The report records no cardiology follow-up or repeat echocardiogram — today's care adds them."
       },
       {
         "zh-CN": "CACP是常染色体隐性遗传，由PRG4（润滑素）的双等位致病变异引起（Marcelino等，1999）。原报告是临床诊断、没有PRG4结果；今天应做基因检测（变异按ACMG/AMP 2015标准判读），再检测父母，并在检测前后做遗传咨询：父母都携带时每个孩子有1/4的机会患病；父母不是近亲、家里没有类似的人，并不能排除隐性遗传病。",
         "en": "CACP is autosomal recessive, caused by biallelic disease-causing variants in PRG4, the lubricin gene (Marcelino et al., 1999). The report's diagnosis was clinical, without a PRG4 result; today a gene test (variants classed by the ACMG/AMP 2015 standards), parental testing and counselling before and after the test confirm it: when both parents carry a variant each child has a 1 in 4 chance, and unrelated parents with no affected relatives do not exclude a recessive disorder."
       },
       {
-        "zh-CN": "治疗：没有药物被证明能改善CACP的关节病。先按JIA治疗的患儿，用甲氨蝶呤、关节腔激素和TNF抑制剂都没有达到缓解（Kisla Ekinci等，2021）；即使是确诊的多关节型JIA，ACR/AF 2019指南也强烈不建议加用长期小剂量口服激素。原报告未用特殊药物、建议功能锻炼，与今天一致；ACR 2021年JIA指南有条件地推荐物理治疗和作业治疗，不论是否同时用药；髋部病变可能随时间进展（Bahabri等，1998），所以要拍髋关节片并由骨科随访。",
-        "en": "Treatment: no drug has been shown to help the arthropathy of CACP. Children first treated as JIA did not reach remission on methotrexate, intra-articular steroid and TNF inhibitors (Kisla Ekinci et al., 2021), and even in established polyarticular JIA the ACR/AF 2019 guideline strongly recommends against adding long-term low-dose oral glucocorticoids. The report's choice — no specific medication, functional exercise — matches today's; the ACR 2021 JIA guideline conditionally recommends physical and occupational therapy regardless of drug treatment, and hip disease may progress over time (Bahabri et al., 1998), so the hips are imaged and followed by orthopaedics."
+        "zh-CN": "治疗：没有药物被证明能改善CACP的关节病。在一个3例的病例系列中，先按JIA治疗的2例患儿用甲氨蝶呤加TNF抑制剂（其中1例还用了关节腔激素）都没有效果（Kisla Ekinci等，2021）；即使是确诊的多关节型JIA，ACR/AF 2019指南也强烈不建议加用长期小剂量口服激素。原报告未用特殊药物、建议功能锻炼，与今天一致；ACR 2021年JIA指南有条件地推荐物理治疗和作业治疗，不论是否同时用药；髋部病变可能随时间进展（Bahabri等，1998），所以要拍髋关节片并由骨科随访。",
+        "en": "Treatment: no drug has been shown to help the arthropathy of CACP. In a three-patient series, the two children first treated as JIA did not respond to methotrexate with a TNF inhibitor, one also given intra-articular steroid (Kisla Ekinci et al., 2021), and even in established polyarticular JIA the ACR/AF 2019 guideline strongly recommends against adding long-term low-dose oral glucocorticoids. The report's choice — no specific medication, functional exercise — matches today's; the ACR 2021 JIA guideline conditionally recommends physical and occupational therapy regardless of drug treatment, and hip disease may progress over time (Bahabri et al., 1998), so the hips are imaged and followed by orthopaedics."
       }
     ],
     "references": [

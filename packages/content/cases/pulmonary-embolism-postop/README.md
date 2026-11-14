@@ -220,8 +220,9 @@ against the preset doses (`doseSpec`), through her 70 kg: the UFH bolus 70–80 
 fixed 5,000 units its text also gives — 71 units/kg at 70 kg), treatment enoxaparin 1–1.5 mg/kg SC (1 mg/kg twice
 daily, or 1.5 mg/kg once daily — the two regimens of ESC 2019), prophylactic enoxaparin 40 mg SC, morphine 2.5 mg IV
 and paracetamol 1 g IV. "IV heparin 80000 units bolus" (fourteen times the bolus) is not given: a critical dose
-error that fails the safety outcome. An order for the UFH infusion rate alone ("heparin 18 units/kg/h") is asked
-about — the preset is the bolus its text gives first; "80 units/kg bolus, then 18 units/kg/h" is given.
+error that fails the safety outcome. The UFH preset also states the infusion (18 units/kg/h): the bolus, the rate
+alone ("heparin 18 units/kg/h") or both ("80 units/kg bolus, then 18 units/kg/h") are given, each part checked
+against its own — "5,000 units bolus, then 180 units/kg/h" is a critical dose error.
 
 ## Reference path (`solution`)
 
@@ -472,6 +473,10 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
   "IV heparin 80000 units" is a critical dose error, not given. The enoxaparin aliases "enoxaparin 40", "enoxaparin
   70" (and 依诺肝素40, 依诺肝素70) now carry their unit ("40 mg"): typed as an order, a number without its unit is
   asked about.
+- **Bolus and infusion (follow-up review of the audit fixes, 2026-11-13):** the UFH preset also states its infusion
+  (`maintenance` 18 units/kg/h, the rate its dose text gives): an order of the bolus, of the infusion's rate or of both
+  is checked part by part — "heparin infusion 18 units/kg/h" is given (it was asked about), a tenfold rate beside a
+  right bolus is a critical dose error.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

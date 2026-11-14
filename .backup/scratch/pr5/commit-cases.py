@@ -114,6 +114,8 @@ def checks(cid):
     res["contract"] = rc == 0
     rc, _ = run(f'npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "{cid}:"')
     res["in-world"] = rc == 0
+    rc, out = run(f'npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "{cid}"')
+    res["spatial-policy"] = rc == 0 and "passed" in out
     return res
 
 

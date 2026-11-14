@@ -3324,9 +3324,11 @@
         "en": "ERCP with sphincterotomy within 24 hours, to 'clear the bile duct and drain the pancreatic duct'."
       },
       "requires": [
-        "endoscopy",
-        "fluoroscopy"
+        "endoscopy"
       ],
+      "destination": {
+        "capability": "endoscopy"
+      },
       "risk": "high",
       "critical": false,
       "contraindicatedWhen": {

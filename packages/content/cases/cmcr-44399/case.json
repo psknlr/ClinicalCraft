@@ -77,7 +77,7 @@
         "ClinicalCraft editorial review (AI-assisted)"
       ],
       "guidelines": [
-        "FDA prescribing information, neostigmine methylsulfate injection (Bloxiverz), sections 5.5 and 10 (revised January 2015)",
+        "FDA-approved prescribing information, neostigmine methylsulfate injection (NDA 203629), sections 5.5 and 10 (revised January 2015)",
         "AACT/EAPCCT position paper update: gastric lavage for gastrointestinal decontamination (2013)",
         "AACT/EAPCCT position paper: single-dose activated charcoal (2005)",
         "AAP clinical practice guideline: maintenance intravenous fluids in children (2018)",
@@ -317,19 +317,23 @@
           "发生了什么"
         ],
         "en": [
-          "what brings you in",
-          "brought him in",
-          "what's the problem",
-          "what is the problem",
+          "whatbringsyouin",
+          "broughthimin",
+          "whatstheproblem",
+          "whatistheproblem",
           "what's wrong",
-          "what is wrong",
+          "whatiswrong",
           "tell me what's been going on",
           "what's been going on",
-          "how long has this been going on",
-          "when did it start",
-          "since when",
+          "howlonghasthisbeengoingon",
+          "whendiditstart",
+          "sincewhen",
           "main problem",
-          "what happened"
+          "what happened",
+          "whatsgoingon",
+          "goingonwithhim",
+          "howlonghashebeen",
+          "beenlikethis"
         ]
       },
       "excludeKeywords": {
@@ -389,13 +393,15 @@
           "which medicine",
           "what medicine",
           "what drug",
-          "what did he take",
-          "how many tablets",
-          "how much did he take",
+          "what tablets",
+          "swallow",
+          "whatdidhetake",
+          "howmanytablets",
+          "howmuchdidhetake",
           "neostigmine",
           "name of the medicine",
           "the dose",
-          "how many pills"
+          "howmanypills"
         ]
       },
       "excludeKeywords": {
@@ -403,13 +409,16 @@
           "还剩",
           "剩多少",
           "治什么",
-          "为什么开"
+          "为什么开",
+          "带来"
         ],
         "en": [
           "left in",
           "remaining",
           "what was it for",
-          "why was it"
+          "why was it",
+          "bring",
+          "brought the bottle"
         ]
       },
       "disclosure": "volunteer",
@@ -497,7 +506,7 @@
           "eyes",
           "watering",
           "light",
-          "what was he being treated for",
+          "whatwashebeingtreatedfor",
           "what else was prescribed"
         ]
       },
@@ -545,7 +554,7 @@
           "why neostigmine",
           "reason for the medicine",
           "what for",
-          "why was it prescribed",
+          "whywasitprescribed",
           "meant to treat"
         ]
       },
@@ -702,7 +711,7 @@
           "droopy eyelids",
           "eyelids",
           "myasthenia",
-          "ever been weak",
+          "everbeenweak",
           "muscle weakness before"
         ]
       },
@@ -769,11 +778,11 @@
           "医生怎么说的"
         ],
         "en": [
-          "how were you told",
+          "howwereyoutold",
           "written down",
           "label",
           "instructions",
-          "told to you",
+          "toldtoyou",
           "explained the dose",
           "packet"
         ]
@@ -1101,10 +1110,10 @@
         ],
         "en": [
           "champ",
-          "how are you feeling",
-          "how do you feel",
+          "howareyoufeeling",
+          "howdoyoufeel",
           "does your tummy hurt",
-          "are you sore",
+          "areyousore",
           "how are you doing"
         ]
       },
@@ -1143,11 +1152,11 @@
         ],
         "en": [
           "champ",
-          "how are you feeling",
-          "how do you feel",
+          "howareyoufeeling",
+          "howdoyoufeel",
           "still hurt",
           "does your tummy hurt",
-          "are you sore",
+          "areyousore",
           "how are you doing",
           "tummy"
         ]
@@ -1190,8 +1199,8 @@
           "champ",
           "feeling better",
           "any better",
-          "how are you feeling",
-          "how do you feel",
+          "howareyoufeeling",
+          "howdoyoufeel",
           "still hurt",
           "how are you doing"
         ]
@@ -1232,7 +1241,7 @@
           "alert",
           "general appearance",
           "responsive",
-          "how does he look",
+          "howdoeshelook",
           "listless"
         ]
       },
@@ -1465,7 +1474,7 @@
           "pulse",
           "reassess",
           "re-examine",
-          "check him again",
+          "checkhimagain",
           "vital signs",
           "obs",
           "skin",
@@ -2158,7 +2167,7 @@
       },
       "response": {
         "zh-CN": "已接上监护，并定时评估呼吸和肌力。除病历中记录的心率外，监护读数没有记录。",
-        "en": "He is on the monitor, and his breathing and strength are checked regularly. Beyond the heart rates in his chart, no monitor readings are recorded."
+        "en": "He is on the monitor, and his breathing and strength are checked regularly. Beyond the heart rate charted, no monitor readings are recorded."
       }
     },
     {
@@ -2307,8 +2316,8 @@
         ]
       },
       "response": {
-        "zh-CN": "已静脉注射阿托品。每次给药后复查心率、出汗、分泌物和肺部；阿托品不能逆转肌肉震颤和无力。病历中他实际用过的阿托品剂量和时间没有记录。",
-        "en": "Atropine given IV. Reassess his heart rate, sweating, secretions and chest after each dose; atropine does not reverse the twitching or the weakness. The doses and times of the atropine he actually received are not recorded."
+        "zh-CN": "已静脉注射阿托品。每次给药后复查心率、出汗、分泌物和肺部；阿托品不能逆转肌肉震颤，也不能逆转肌无力。病历中没有记录阿托品的剂量和用药时间。",
+        "en": "Atropine given IV. Reassess his heart rate, sweating, secretions and chest after each dose; atropine does not reverse the twitching or any muscle weakness. His chart records no doses or times of atropine."
       }
     },
     {
@@ -2464,7 +2473,7 @@
           "stop neostigmine",
           "stop the neostigmine",
           "withhold neostigmine",
-          "no more neostigmine",
+          "nomoreneostigmine",
           "keep the bottle",
           "check the bottle"
         ]
@@ -2785,8 +2794,8 @@
     {
       "id": "neostigmine-dose",
       "name": {
-        "zh-CN": "给予新斯的明（恢复原处方剂量，或为肌无力加量）",
-        "en": "Give neostigmine (restart the prescribed dose, or more for the weakness)"
+        "zh-CN": "给予新斯的明（恢复原处方剂量，或因他站不起来而加量）",
+        "en": "Give neostigmine (restart the prescribed dose, or more because he cannot stand)"
       },
       "kind": "medication",
       "aliases": {
@@ -2822,8 +2831,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "新斯的明口服，按原处方每次四分之一片（15 mg片，即3.75 mg），或为肌无力加量。",
-        "en": "Neostigmine by mouth: the prescribed quarter of a 15 mg tablet (3.75 mg) per dose, or more for the weakness."
+        "zh-CN": "新斯的明口服，按原处方每次四分之一片（15 mg片，即3.75 mg），或因他站不起来而加量。",
+        "en": "Neostigmine by mouth: the prescribed quarter of a 15 mg tablet (3.75 mg) per dose, or more because he cannot stand."
       },
       "requires": [
         "medications"
@@ -2835,8 +2844,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "美国FDA新斯的明说明书（2015年修订）：胆碱能危象和肌无力危象可能难以区分，而在胆碱能危象时增加新斯的明或同类药物的剂量可能造成严重后果——胆碱能危象需要立即停用所有这类药物，并建议立即使用阿托品。他吃下15片约20分钟后开始肌肉抖动，同时出汗、流涎、呕吐，到院时不能自行站立；病历中没有重症肌无力，也没有记录这个药的用药指征。",
-        "en": "FDA neostigmine prescribing information (revised 2015): a cholinergic crisis can be hard to tell from a myasthenic crisis, and more neostigmine or another drug of its class in a cholinergic crisis could have grave consequences — the crisis calls for prompt withdrawal of all drugs of this type, and immediate atropine is recommended. His twitching began about 20 minutes after 15 tablets, with sweating, drooling and vomiting, and on arrival he could not stand without help; no myasthenia and no reason for the drug are recorded."
+        "zh-CN": "美国FDA新斯的明说明书（2015年修订）：胆碱能危象和肌无力危象可能难以区分，而在胆碱能危象时增加新斯的明或同类药物的剂量可能造成严重后果——胆碱能危象需要立即停用所有这类药物，并建议立即使用阿托品。他吃下15片约20分钟后出现肌肉抖动、出汗、流涎和呕吐，到院时不能自行站立；病历中没有重症肌无力，也没有记录这个药的用药指征。",
+        "en": "FDA neostigmine prescribing information (revised 2015): a cholinergic crisis can be hard to tell from a myasthenic crisis, and more neostigmine or another drug of its class in a cholinergic crisis could have grave consequences — the crisis calls for prompt withdrawal of all drugs of this type, and immediate atropine is recommended. Twitching, sweating, drooling and vomiting began about 20 minutes after 15 tablets, and on arrival he could not stand without help; no myasthenia and no reason for the drug are recorded."
       },
       "response": {
         "zh-CN": "已给予新斯的明。病历中没有这样的处理，本病例不模拟其后果。",
@@ -3134,8 +3143,8 @@
         {
           "id": "cholinergic-crisis",
           "text": {
-            "zh-CN": "新斯的明过量引起的胆碱能危象：毒蕈碱样作用过强，加上烟碱样的肌肉震颤，瞳孔和心率看上去正常也不能排除",
-            "en": "A cholinergic crisis from the neostigmine overdose: muscarinic excess plus nicotinic twitching, not excluded by pupils and a heart rate that look normal"
+            "zh-CN": "新斯的明过量引起的胆碱能危象：毒蕈碱样和烟碱样表现都有，瞳孔和心率看上去正常也不能排除",
+            "en": "A cholinergic crisis from the neostigmine overdose: muscarinic and nicotinic signs that normal-looking pupils and heart rate do not exclude"
           },
           "correct": true,
           "feedback": {
@@ -3146,8 +3155,8 @@
         {
           "id": "no-poisoning",
           "text": {
-            "zh-CN": "没有明显中毒：瞳孔4 mm、对光反射敏捷，可以排除胆碱酯酶受抑制，而且当地洗胃已经把药片洗出来了",
-            "en": "No significant poisoning: brisk 4-mm pupils rule out cholinesterase inhibition, and the lavage locally will have removed the tablets"
+            "zh-CN": "没有明显中毒：瞳孔4 mm、对光反射敏捷，可以排除胆碱酯酶受抑制，而且当地洗胃已经把药片都洗出来了",
+            "en": "No significant poisoning: brisk 4-mm pupils rule out cholinesterase inhibition, and the lavage done locally will have removed the tablets anyway"
           },
           "correct": false,
           "feedback": {
@@ -3163,8 +3172,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "美国FDA新斯的明说明书（2015年修订）提醒：胆碱能危象和肌无力危象可能很难区分，而在胆碱能危象时加用新斯的明可能造成严重后果。病历中没有重症肌无力；他是在吃下15片后出现症状，同时出汗、流涎和呕吐。",
-            "en": "The FDA neostigmine prescribing information (revised 2015) warns that cholinergic and myasthenic crises can be hard to tell apart — and that more neostigmine in a cholinergic crisis could have grave consequences. No myasthenia is recorded; his symptoms followed 15 tablets, with sweating, drooling and vomiting."
+            "zh-CN": "美国FDA新斯的明说明书（2015年修订）提醒：胆碱能危象和肌无力危象可能很难区分，而在胆碱能危象时加用新斯的明可能造成严重后果。病历中没有重症肌无力；他是在吃下15片后出现症状的，其中包括出汗、流涎和呕吐。",
+            "en": "The FDA neostigmine prescribing information (revised 2015) warns that cholinergic and myasthenic crises can be hard to tell apart — and that more neostigmine in a cholinergic crisis could have grave consequences. No myasthenia is recorded; his symptoms, sweating, drooling and vomiting among them, followed 15 tablets."
           }
         },
         {
@@ -3206,25 +3215,25 @@
         {
           "id": "monitor-antidote",
           "text": {
-            "zh-CN": "放在抢救区持续监测心电、血氧和血压，频繁评估呼吸、分泌物和肌力；开通静脉并抽血；按毒蕈碱样表现滴定静脉阿托品；联系中毒咨询；不再做胃肠道去污",
-            "en": "Resuscitation bay on continuous ECG, SpO₂ and blood pressure with frequent checks of breathing, secretions and strength; IV access and bloods; IV atropine titrated to his muscarinic signs; poisons service; no further gut decontamination"
+            "zh-CN": "放在抢救区持续监测心电、血氧和血压，密切观察呼吸和肌力；开通静脉并抽血；滴定静脉阿托品；联系中毒咨询；不再做胃肠道去污",
+            "en": "Resuscitation bay on continuous ECG, SpO₂ and blood pressure, with close checks of breathing and strength; IV access and bloods; titrated IV atropine; poisons service; no further gut decontamination"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。美国FDA新斯的明说明书（2015年修订）：过量时要支持通气直到自主呼吸足够并监测心脏功能，胆碱能危象时建议立即使用阿托品。AACT/EAPCCT立场声明：洗胃不应常规进行（2013）；活性炭只在服药后1小时内考虑，且气道必须完好或已受保护（2005）。持续监护才能及时发现变化。",
-            "en": "Right. FDA neostigmine prescribing information (revised 2015): after an overdose, support ventilation until spontaneous breathing is adequate and monitor cardiac function; immediate atropine is recommended in a cholinergic crisis. AACT/EAPCCT position papers: no routine lavage (2013); charcoal considered only up to one hour after ingestion and only with an intact or protected airway (2005). Continuous monitoring is what will catch a change."
+            "zh-CN": "正确。美国FDA新斯的明说明书（2015年修订）：过量时要支持通气直到自主呼吸足够并监测心脏功能，胆碱能危象时建议立即使用阿托品。AACT/EAPCCT立场声明：洗胃不应常规进行（2013）；活性炭可在服药后1小时内考虑，且气道必须完好或已受保护（2005）。持续监护才能及时发现变化。",
+            "en": "Right. FDA neostigmine prescribing information (revised 2015): after an overdose, support ventilation until spontaneous breathing is adequate and monitor cardiac function; immediate atropine is recommended in a cholinergic crisis. AACT/EAPCCT position papers: no routine lavage (2013); charcoal may be considered up to one hour after ingestion, and only with an intact or protected airway (2005). Continuous monitoring is what will catch a change."
           }
         },
         {
           "id": "relavage-charcoal",
           "text": {
-            "zh-CN": "再洗一次胃，然后经胃管给活性炭，因为新斯的明口服吸收差，胃里可能还有药片；之后转到普通病房按常规观察",
-            "en": "Repeat the gastric lavage, then give activated charcoal down the tube because oral neostigmine is poorly absorbed and tablets may remain; then routine observations on the general ward"
+            "zh-CN": "再洗一次胃，然后经胃管给活性炭，因为新斯的明口服吸收差，胃里可能还剩有没吸收的药片；之后转到普通病房，按常规的时间间隔观察",
+            "en": "Repeat the gastric lavage, then give activated charcoal down the tube because oral neostigmine is poorly absorbed and tablets may still be in his stomach; then routine observations on the general ward"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "AACT/EAPCCT 2013：洗胃不应常规进行，在增加误吸风险时禁用；AACT/EAPCCT 2005：活性炭只在服药后1小时内考虑，且气道必须完好或已受保护。他服药后吐过、流过口水，现在不能自行站立；普通病房的常规观察也发现不了美国FDA说明书提醒的心动过缓和呼吸肌无力。",
-            "en": "AACT/EAPCCT 2013: no routine lavage, and none where it adds aspiration risk; AACT/EAPCCT 2005: charcoal is considered only up to one hour after ingestion and only with an intact or protected airway. He vomited and drooled after the tablets and cannot stand without help, and routine ward observations would miss the bradycardia and respiratory weakness the FDA label warns of."
+            "zh-CN": "AACT/EAPCCT 2013：洗胃不应常规进行，在增加误吸风险时禁用；AACT/EAPCCT 2005：活性炭可在服药后1小时内考虑，且气道必须完好或已受保护。他服药后吐过、流过口水，现在不能自行站立；普通病房的常规观察也发现不了美国FDA说明书提醒的心动过缓和呼吸肌无力。",
+            "en": "AACT/EAPCCT 2013: no routine lavage, and none where it adds aspiration risk; AACT/EAPCCT 2005: charcoal may be considered up to one hour after ingestion, and only with an intact or protected airway. He vomited and drooled after the tablets and cannot stand without help, and routine ward observations would miss the bradycardia and respiratory weakness the FDA label warns of."
           }
         },
         {
@@ -3280,8 +3289,8 @@
         {
           "id": "confirms-keep-watching",
           "text": {
-            "zh-CN": "结果证实了胆碱酯酶受抑制，但说明不了接下来有多危险：继续监护，按体征而不是按数值治疗，用等张液并复查血钠；需要插管时避免琥珀胆碱",
-            "en": "They confirm the inhibition but not how dangerous it will be: keep him monitored, treat the signs not the level, recheck the sodium on isotonic fluid, and avoid suxamethonium if he needs intubation"
+            "zh-CN": "结果证实了抑制，但预示不了接下来的危险：继续监护，按体征而不是按数值治疗，用等张液并复查血钠，需要插管时避免琥珀胆碱",
+            "en": "They confirm the inhibition but not the danger ahead: keep him monitored, treat the signs not the level, give isotonic fluid and recheck the sodium, and avoid suxamethonium if he needs intubation"
           },
           "correct": true,
           "feedback": {
@@ -3292,8 +3301,8 @@
         {
           "id": "level-guides-atropine",
           "text": {
-            "zh-CN": "胆碱酯酶水平说明他需要多少解毒药：一直给阿托品，直到胆碱酯酶回到参考范围，然后停止监护，转普通病房继续恢复",
-            "en": "The level shows how much antidote he needs: give atropine until the cholinesterase is back in the reference range, then stop the monitoring and move him to the general ward to recover"
+            "zh-CN": "胆碱酯酶水平说明他需要多少解毒药：一直给阿托品，直到胆碱酯酶回到参考范围以内，然后停止监护，转到普通病房继续恢复",
+            "en": "The level shows how much antidote he needs: keep giving atropine until the cholinesterase is back in the reference range, then stop the monitoring and move him to the general ward to finish recovering"
           },
           "correct": false,
           "feedback": {
@@ -3304,7 +3313,7 @@
         {
           "id": "ecg-clears-heart",
           "text": {
-            "zh-CN": "窦性心律、血钾3.79 mmol/L，说明他的心脏没有危险：可以转到没有监护的普通病房，血钠等明天早上常规抽血再说",
+            "zh-CN": "窦性心律、血钾3.79 mmol/L，说明他的心脏没有危险：可以转到没有监护的普通病房，血钠等明天早上常规抽血时再复查",
             "en": "Sinus rhythm and a potassium of 3.79 mmol/L show that his heart is not at risk: he can go to a general ward without a monitor, and the sodium can wait for tomorrow's routine bloods"
           },
           "correct": false,
@@ -3353,20 +3362,20 @@
         {
           "id": "atropine-titrate",
           "text": {
-            "zh-CN": "立即评估气道、呼吸和灌注；静脉注射阿托品并重复，按心率、分泌物和肺部滴定；保持监护，联系PICU和中毒咨询；如经供氧和通气后心率仍低于60次/分且灌注差，开始心肺复苏",
-            "en": "Check airway, breathing and perfusion now; give IV atropine, repeated and titrated to heart rate, secretions and a clear chest; stay on the monitor; call PICU and the poisons service; CPR if under 60/min with poor perfusion despite oxygen and ventilation"
+            "zh-CN": "立即评估气道、呼吸和灌注；在监护下重复静脉注射阿托品，按心率、分泌物和肺部滴定；经供氧和通气后心率仍低于60次/分且灌注差就开始心肺复苏",
+            "en": "Assess airway, breathing and perfusion now; repeat IV atropine on the monitor, titrated to his rate, secretions and chest; start CPR if he stays under 60/min with poor perfusion despite oxygen and ventilation"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。这是持续过量引起的毒蕈碱样心率减慢：美国FDA新斯的明说明书（2015年修订）把心动过缓列为过量的毒蕈碱样表现，可用阿托品处理。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品；PALS心动过缓流程先保证氧合和通气，在此基础上心率仍低于60次/分且灌注差就开始心肺复苏。",
-            "en": "Right. This is muscarinic slowing from the ongoing overdose: the FDA neostigmine prescribing information (revised 2015) lists bradycardia among the muscarinic effects of overdose and manages it with atropine. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone; the PALS bradycardia algorithm secures oxygenation and ventilation first and starts CPR if the rate stays below 60/min with poor perfusion despite them."
+            "zh-CN": "正确。这是持续过量引起的毒蕈碱样心率减慢：美国FDA新斯的明说明书（2015年修订）把心动过缓列为过量的毒蕈碱样表现之一，并指出这些表现可用阿托品或格隆溴铵处理。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品；PALS心动过缓流程先保证氧合和通气，在此基础上心率仍低于60次/分且灌注差就开始心肺复苏。",
+            "en": "Right. This is muscarinic slowing from the ongoing overdose: the FDA neostigmine prescribing information (revised 2015) lists bradycardia among the muscarinic effects of overdose and says they may be managed with atropine or glycopyrrolate. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone; the PALS bradycardia algorithm secures oxygenation and ventilation first and starts CPR if the rate stays below 60/min with poor perfusion despite them."
           }
         },
         {
           "id": "adrenaline-pacing",
           "text": {
-            "zh-CN": "马上开始肾上腺素静脉输注并准备经皮起搏，因为儿童心动过缓流程把肾上腺素放在首位，阿托品对这个年龄的孩子帮助不大",
-            "en": "Start an adrenaline infusion and prepare transcutaneous pacing straight away, because the paediatric bradycardia algorithm puts adrenaline first and atropine adds little at his age"
+            "zh-CN": "马上开始肾上腺素静脉输注并准备经皮起搏，因为儿童心动过缓流程把肾上腺素放在首位，阿托品对这个年龄的孩子帮助不大，中毒引起的心动过缓也一样",
+            "en": "Start an adrenaline infusion and prepare transcutaneous pacing straight away, because the paediatric bradycardia algorithm puts adrenaline first and atropine adds little at his age, even in a poisoning like this one"
           },
           "correct": false,
           "feedback": {
@@ -3394,7 +3403,7 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "他是否在睡觉没有记录；心率减慢同时仍有腹痛和皮肤潮湿，而他到院时是72次/分、又有明确的过量服药史——在胆碱能危象中，这是需要立即用阿托品处理的毒蕈碱样作用（美国FDA新斯的明说明书，2015年修订），不是可以观察的数字。血压根本没有记录，没有记录不等于正常。",
+            "zh-CN": "他是否在睡觉没有记录；心率减慢时仍有腹痛和皮肤潮湿，而他到院时是72次/分、又有明确的过量服药史——在胆碱能危象中，这是需要立即用阿托品处理的毒蕈碱样作用（美国FDA新斯的明说明书，2015年修订），不是可以观察的数字。血压根本没有记录，没有记录不等于正常。",
             "en": "Whether he is asleep is not recorded; the slowing comes with continuing abdominal pain and moist skin in a boy who was at 72/min on arrival after a known overdose — in a cholinergic crisis that is a muscarinic effect to treat now with atropine (FDA neostigmine prescribing information, revised 2015), not a number to watch. No blood pressure is recorded at all, and an unrecorded value is not a normal one."
           }
         }
@@ -3685,17 +3694,20 @@
         "all": [
           {
             "not": {
-              "intervened": "repeat-lavage"
+              "intervened": "repeat-lavage",
+              "valid": false
             }
           },
           {
             "not": {
-              "intervened": "early-discharge"
+              "intervened": "early-discharge",
+              "valid": false
             }
           },
           {
             "not": {
-              "intervened": "neostigmine-dose"
+              "intervened": "neostigmine-dose",
+              "valid": false
             }
           }
         ]
@@ -3703,13 +3715,16 @@
       "scoredWhen": {
         "any": [
           {
-            "intervened": "repeat-lavage"
+            "intervened": "repeat-lavage",
+            "valid": false
           },
           {
-            "intervened": "early-discharge"
+            "intervened": "early-discharge",
+            "valid": false
           },
           {
-            "intervened": "neostigmine-dose"
+            "intervened": "neostigmine-dose",
+            "valid": false
           },
           {
             "attempted": "toxidrome"
@@ -3735,12 +3750,14 @@
         "all": [
           {
             "not": {
-              "intervened": "activated-charcoal"
+              "intervened": "activated-charcoal",
+              "valid": false
             }
           },
           {
             "not": {
-              "intervened": "hypotonic-fluids"
+              "intervened": "hypotonic-fluids",
+              "valid": false
             }
           }
         ]
@@ -3748,10 +3765,12 @@
       "scoredWhen": {
         "any": [
           {
-            "intervened": "activated-charcoal"
+            "intervened": "activated-charcoal",
+            "valid": false
           },
           {
-            "intervened": "hypotonic-fluids"
+            "intervened": "hypotonic-fluids",
+            "valid": false
           },
           {
             "attempted": "first-hour"
@@ -3818,8 +3837,8 @@
         "en": "Dr Fang (paediatric emergency attending)"
       },
       "knowledge": {
-        "zh-CN": "儿科急诊主治医师，采用苏格拉底式提问并用PEARLS复盘，只追问学员已经掌握的信息。要引导学员说出：剂量计算（15 × 15 mg = 225 mg，每公斤6.25 mg，是医嘱四分之一片3.75 mg的60倍）；哪些是毒蕈碱样表现（出汗、流涎、呕吐、腹痛、肠鸣音增强、皮肤潮湿）、哪些是烟碱样表现（肌肉震颤；不能自行站立可能与肌无力有关）；为什么瞳孔4 mm、心率72次/分不能排除胆碱能危象；胆碱能危象与肌无力危象的区别，为什么再给新斯的明很危险（美国FDA说明书，2015年修订）；为什么服药4小时后不再洗胃或用活性炭（AACT/EAPCCT 2013、2005）；为什么阿托品治不了无力，所以要盯住呼吸；胆碱酯酶能说明什么、不能说明什么；血钠与等张补液（AAP 2018）；为什么避免琥珀胆碱；差错是怎么发生的、回授法如何堵住漏洞。绝不提前透露他之后的病程或结局。血压、呼吸频率、血氧、体温、肺部体征和阿托品剂量都没有记录，不要替它补上。",
-        "en": "Paediatric emergency attending; a Socratic teacher who debriefs with PEARLS and asks only about information the learner already has. Reasoning to draw out: the dose arithmetic (15 × 15 mg = 225 mg, 6.25 mg/kg — 60 times the intended quarter tablet of 3.75 mg); which signs are muscarinic (sweating, drooling, vomiting, abdominal pain, increased bowel sounds, moist skin) and which nicotinic (twitching; not standing unaided may reflect weakness); why 4-mm pupils and a heart rate of 72/min do not exclude a cholinergic crisis; how a cholinergic crisis differs from a myasthenic one and why more neostigmine is dangerous (FDA prescribing information, revised 2015); why no further lavage or charcoal four hours out (AACT/EAPCCT 2013, 2005); why atropine does not treat the weakness, so his breathing is watched; what the cholinesterase can and cannot tell; the sodium and isotonic fluid (AAP 2018); why suxamethonium is avoided; how the dosing error happened and how teach-back closes the gap. Never reveals what happens later in his stay or the outcome. His blood pressure, breathing rate, oxygen saturation, temperature, chest findings and the atropine doses used are not recorded — never supply them."
+        "zh-CN": "儿科急诊主治医师，采用苏格拉底式提问并用PEARLS复盘，只追问学员已经掌握的信息。要引导学员说出：剂量计算（15 × 15 mg = 225 mg，每公斤6.25 mg，是医嘱四分之一片3.75 mg的60倍）；哪些是毒蕈碱样表现（出汗、流涎、呕吐、腹痛、肠鸣音增强、皮肤潮湿）、哪些是烟碱样表现（肌肉震颤；不能自行站立可能与肌无力有关）；为什么瞳孔4 mm、心率72次/分不能排除胆碱能危象；胆碱能危象与肌无力危象的区别，为什么再给新斯的明很危险（美国FDA说明书，2015年修订）；为什么服药4小时后不再洗胃或用活性炭（AACT/EAPCCT 2013、2005）；为什么阿托品治不了无力，所以要盯住呼吸；胆碱酯酶能说明什么、不能说明什么；血钠与等张补液（AAP 2018）；为什么避免琥珀胆碱；差错是怎么发生的、回授法如何堵住漏洞。绝不提前透露他之后的病程或结局。血压、呼吸频率、血氧、体温、肺部体征和任何治疗的剂量都没有记录，不要替它补上。",
+        "en": "Paediatric emergency attending; a Socratic teacher who debriefs with PEARLS and asks only about information the learner already has. Reasoning to draw out: the dose arithmetic (15 × 15 mg = 225 mg, 6.25 mg/kg — 60 times the intended quarter tablet of 3.75 mg); which signs are muscarinic (sweating, drooling, vomiting, abdominal pain, increased bowel sounds, moist skin) and which nicotinic (twitching; not standing unaided may reflect weakness); why 4-mm pupils and a heart rate of 72/min do not exclude a cholinergic crisis; how a cholinergic crisis differs from a myasthenic one and why more neostigmine is dangerous (FDA prescribing information, revised 2015); why no further lavage or charcoal four hours out (AACT/EAPCCT 2013, 2005); why atropine does not treat the weakness, so his breathing is watched; what the cholinesterase can and cannot tell; the sodium and isotonic fluid (AAP 2018); why suxamethonium is avoided; how the dosing error happened and how teach-back closes the gap. Never reveals what happens later in his stay or the outcome. His blood pressure, breathing rate, oxygen saturation, temperature, chest findings and any treatment doses are not recorded — never supply them."
       },
       "interprets": [
         "ecg",
@@ -3848,8 +3867,8 @@
         "en": "Dr Lu (clinical toxicologist, poisons service)"
       },
       "knowledge": {
-        "zh-CN": "中毒咨询的临床毒理医师，只解读学员已经看到的结果。可以解释：新斯的明是季铵类氨基甲酸酯胆碱酯酶抑制剂，难以进入脑内，作用以外周的毒蕈碱样和烟碱样表现为主；口服吸收差，所以口服剂量远大于注射剂量；过量的毒蕈碱样表现可用阿托品或格隆溴铵处理（美国FDA说明书，2015年修订）；阿托品按心率、分泌物、出汗和肺部滴定，可能需要反复给，不能逆转烟碱样无力，呼吸变弱时要支持通气；ATSDR（胆碱酯酶抑制剂环境医学案例，2023年审核）：氨基甲酸酯与胆碱酯酶的结合会自行水解、不发生老化，解磷定在氨基甲酸酯中毒时并非禁忌，是否加用由中毒咨询决定；服药4小时后不再做胃肠道去污（AACT/EAPCCT 2013、2005）；胆碱酯酶低、体内有新斯的明时避免琥珀胆碱。绝不透露之后的病程或结局；他实际用过的剂量没有记录。",
-        "en": "Clinical toxicologist on the poisons service, who interprets only results the learner has read. Can explain: neostigmine is a quaternary carbamate cholinesterase inhibitor that enters the brain poorly, so its effects are mainly peripheral, muscarinic and nicotinic; it is poorly absorbed by mouth, which is why oral doses are far larger than injected ones; the muscarinic effects of overdose may be managed with atropine or glycopyrrolate (FDA prescribing information, revised 2015); atropine is titrated to heart rate, secretions, sweating and the chest, may need repeating, and does not reverse nicotinic weakness, so ventilation is supported if breathing weakens; ATSDR (Case Studies in Environmental Medicine, cholinesterase inhibitors, reviewed 2023): the carbamate–cholinesterase bond hydrolyses on its own and does not age, and pralidoxime is not contraindicated in carbamate poisoning — whether to add it is a poisons-service decision; no further gut decontamination four hours out (AACT/EAPCCT 2013, 2005); suxamethonium is avoided with a low cholinesterase and neostigmine on board. Never reveals later events or the outcome; the doses he actually received are not recorded."
+        "zh-CN": "中毒咨询的临床毒理医师，只解读学员已经看到的结果。可以解释：新斯的明是季铵类氨基甲酸酯胆碱酯酶抑制剂，难以进入脑内，作用以外周的毒蕈碱样和烟碱样表现为主；口服吸收差，所以口服剂量远大于注射剂量；过量的毒蕈碱样表现可用阿托品或格隆溴铵处理（美国FDA说明书，2015年修订）；阿托品按心率、分泌物、出汗和肺部滴定，可能需要反复给，不能逆转烟碱样无力，呼吸变弱时要支持通气；ATSDR（胆碱酯酶抑制剂环境医学案例，2023年审核）：氨基甲酸酯与胆碱酯酶的结合会自行水解、不发生老化，解磷定在氨基甲酸酯中毒时并非禁忌，是否加用由中毒咨询决定；服药4小时后不再做胃肠道去污（AACT/EAPCCT 2013、2005）；胆碱酯酶低、体内有新斯的明时避免琥珀胆碱。绝不透露之后的病程或结局；任何治疗的剂量都没有记录。",
+        "en": "Clinical toxicologist on the poisons service, who interprets only results the learner has read. Can explain: neostigmine is a quaternary carbamate cholinesterase inhibitor that enters the brain poorly, so its effects are mainly peripheral, muscarinic and nicotinic; it is poorly absorbed by mouth, which is why oral doses are far larger than injected ones; the muscarinic effects of overdose may be managed with atropine or glycopyrrolate (FDA prescribing information, revised 2015); atropine is titrated to heart rate, secretions, sweating and the chest, may need repeating, and does not reverse nicotinic weakness, so ventilation is supported if breathing weakens; ATSDR (Case Studies in Environmental Medicine, cholinesterase inhibitors, reviewed 2023): the carbamate–cholinesterase bond hydrolyses on its own and does not age, and pralidoxime is not contraindicated in carbamate poisoning — whether to add it is a poisons-service decision; no further gut decontamination four hours out (AACT/EAPCCT 2013, 2005); suxamethonium is avoided with a low cholinesterase and neostigmine on board. Never reveals later events or the outcome; no treatment doses are recorded."
       },
       "interprets": [
         "cholinesterase",
@@ -3865,8 +3884,8 @@
       "en": "Debrief: neostigmine overdose and cholinergic crisis after a 60-fold dosing error"
     },
     "conclusion": {
-      "zh-CN": "9岁男孩（36 kg）因发热、咳嗽两天就诊，就诊时流泪、畏光、不愿睁眼，除抗感染外被开了新斯的明（每片15 mg）。家长把“每次四分之一片”误当成“四分之一瓶”，给他吃了15片——225 mg，6.25 mg/kg，是医嘱剂量（3.75 mg）的60倍。约20分钟后出现腹痛、出汗、流涎、呕吐和四肢、下颌肌肉抖动；服药后没有抽搐、昏迷、皮疹或腹泻。当地洗胃后转院，服药约四小时入院：清醒但萎靡，皮肤潮湿，不能自行站立，四肢肌肉震颤，瞳孔4 mm、对光反射敏捷，心率72次/分，肠鸣音增强。胆碱酯酶1790 U/L（参考5000–12000），钠126.7 mmol/L，钾3.79 mmol/L，心电图窦性心律。入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿。此后在拮抗和监测治疗下症状改善、胆碱酯酶逐渐上升；用阿托品并持续监测，症状逐渐消退，第5天停药，第6天出院，出院后5天无不适、胆碱酯酶正常。这是氨基甲酸酯类胆碱酯酶抑制剂过量引起的胆碱能危象：诊断靠床旁表现，瞳孔正常大小和到院时72次/分的心率不能排除；危险在后面——心动过缓、分泌物和呼吸肌无力——所以要持续监护、按体征滴定静脉阿托品、联系中毒咨询，服药4小时后不再去污，用等张液纠正低钠，不再给任何抗胆碱酯酶药，并用毫克和片数写明的书面用法加回授法切断差错链。阿托品的剂量、首剂时间和开药理由都没有记录。",
-      "en": "A 9-year-old boy (36 kg) with two days of fever and cough, and tearing, photophobia and reluctance to open his eyes at the clinic, was prescribed neostigmine 15 mg tablets alongside anti-infective treatment. His parent read 'a quarter of a tablet each time' as a quarter of the bottle and gave him 15 tablets — 225 mg, 6.25 mg/kg, 60 times the intended 3.75 mg. About 20 minutes later came abdominal pain, sweating, salivation, vomiting and twitching of the limbs and jaw; there was no seizure, coma, rash or diarrhoea. After a gastric lavage locally he was transferred and admitted about four hours after the tablets: alert but lethargic, moist skin, unable to stand unaided, limb twitching, pupils 4 mm reacting briskly to light, heart rate 72/min and increased bowel sounds. The cholinesterase was 1790 U/L (reference 5000–12000), sodium 126.7 mmol/L and potassium 3.79 mmol/L, and the ECG showed sinus rhythm. About two hours after admission his heart rate reached a lowest 47/min, with continuing abdominal pain and moist skin. Under antagonist treatment and monitoring his symptoms then improved and the cholinesterase rose gradually; with atropine and continuous monitoring the symptoms gradually resolved, treatment was stopped on day 5, he was discharged on day 6, and five days after discharge he had no complaints and a normal cholinesterase. This is a cholinergic crisis from a carbamate cholinesterase inhibitor. The diagnosis is made at the bedside; normal-sized pupils and an arrival heart rate of 72/min do not exclude it; and the danger lies ahead — bradycardia, secretions and respiratory weakness. Today's care is continuous monitoring, IV atropine titrated to the signs, poisons-service advice, no further gut decontamination four hours out, isotonic fluid for the low sodium, no further anticholinesterase, and closing the error chain with a written dose in mg and tablets checked by teach-back. The atropine doses, the timing of the first dose and the reason for the prescription are not recorded."
+      "zh-CN": "9岁男孩（36 kg）因发热、咳嗽两天就诊，就诊时流泪、畏光、不愿睁眼，除抗感染外被开了新斯的明（每片15 mg）。家长把“每次四分之一片”误当成“四分之一瓶”，给他吃了15片——225 mg，6.25 mg/kg，是医嘱剂量（3.75 mg）的60倍。约20分钟后出现腹痛、出汗、流涎、呕吐和四肢、下颌肌肉抖动；服药后没有抽搐、昏迷、皮疹或腹泻。当地洗胃后转院，服药约四小时入院：清醒但萎靡，皮肤潮湿，不能自行站立，四肢肌肉震颤，瞳孔4 mm、对光反射敏捷，心率72次/分，肠鸣音增强。胆碱酯酶1790 U/L（参考5000–12000），钠126.7 mmol/L，钾3.79 mmol/L，心电图窦性心律。入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿。此后在拮抗和监测治疗下症状改善、胆碱酯酶逐渐上升；用阿托品并持续监测，症状逐渐消退，第5天停药，第6天出院，出院后5天无不适、胆碱酯酶正常。这是氨基甲酸酯类胆碱酯酶抑制剂过量引起的胆碱能危象：诊断靠床旁表现，瞳孔正常大小和到院时72次/分的心率不能排除；危险在后面——心动过缓、分泌物和呼吸肌无力——所以要持续监护、按体征滴定静脉阿托品、联系中毒咨询，服药4小时后不再去污，低钠时用等张维持液并复查血钠，不再给任何抗胆碱酯酶药，并用毫克和片数写明的书面用法加回授法切断差错链。阿托品的剂量、首剂时间和开药理由都没有记录。",
+      "en": "A 9-year-old boy (36 kg) with two days of fever and cough, and tearing, photophobia and reluctance to open his eyes at the clinic, was prescribed neostigmine 15 mg tablets alongside anti-infective treatment. His parent read 'a quarter of a tablet each time' as a quarter of the bottle and gave him 15 tablets — 225 mg, 6.25 mg/kg, 60 times the intended 3.75 mg. About 20 minutes later came abdominal pain, sweating, salivation, vomiting and twitching of the limbs and jaw; there was no seizure, coma, rash or diarrhoea. After a gastric lavage locally he was transferred and admitted about four hours after the tablets: alert but lethargic, moist skin, unable to stand unaided, limb twitching, pupils 4 mm reacting briskly to light, heart rate 72/min and increased bowel sounds. The cholinesterase was 1790 U/L (reference 5000–12000), sodium 126.7 mmol/L and potassium 3.79 mmol/L, and the ECG showed sinus rhythm. About two hours after admission his heart rate reached a lowest 47/min, with continuing abdominal pain and moist skin. Under antagonist treatment and monitoring his symptoms then improved and the cholinesterase rose gradually; with atropine and continuous monitoring the symptoms gradually resolved, treatment was stopped on day 5, he was discharged on day 6, and five days after discharge he had no complaints and a normal cholinesterase. This is a cholinergic crisis from a carbamate cholinesterase inhibitor. The diagnosis is made at the bedside; normal-sized pupils and an arrival heart rate of 72/min do not exclude it; and the danger lies ahead — bradycardia, secretions and respiratory weakness. Today's care is continuous monitoring, IV atropine titrated to the signs, poisons-service advice, no further gut decontamination four hours out, isotonic maintenance fluid and a repeat sodium for the low sodium, no further anticholinesterase, and closing the error chain with a written dose in mg and tablets checked by teach-back. The atropine doses, the timing of the first dose and the reason for the prescription are not recorded."
     },
     "keyReasoning": [
       {
@@ -3874,8 +3893,8 @@
         "en": "The dose: 15 × 15 mg = 225 mg (6.25 mg/kg), 60 times the intended quarter tablet of 3.75 mg — a fraction read against the wrong whole."
       },
       {
-        "zh-CN": "模式：服用胆碱酯酶抑制剂后约20分钟出现毒蕈碱样（出汗、流涎、呕吐、腹痛，到院时皮肤潮湿、肠鸣音增强）和烟碱样（四肢和下颌肌肉抖动，不能自行站立）表现，就是胆碱能危象；瞳孔4 mm、对光反射敏捷和72次/分的心率都不能排除它。",
-        "en": "The pattern: muscarinic features (sweating, salivation, vomiting, abdominal pain; moist skin and increased bowel sounds on arrival) and nicotinic ones (twitching of the limbs and jaw; unable to stand unaided) about 20 minutes after a cholinesterase inhibitor make a cholinergic crisis; brisk 4-mm pupils and a heart rate of 72/min do not exclude it."
+        "zh-CN": "模式：服用胆碱酯酶抑制剂后约20分钟出现毒蕈碱样（出汗、流涎、呕吐、腹痛）和烟碱样（四肢和下颌肌肉抖动）表现，到院时皮肤潮湿、肠鸣音增强、四肢肌肉震颤、不能自行站立，就是胆碱能危象；瞳孔4 mm、对光反射敏捷和72次/分的心率都不能排除它。",
+        "en": "The pattern: muscarinic features (sweating, salivation, vomiting, abdominal pain) and nicotinic ones (twitching of the limbs and jaw) about 20 minutes after a cholinesterase inhibitor, then moist skin, increased bowel sounds, limb twitching and inability to stand unaided on arrival, make a cholinergic crisis; brisk 4-mm pupils and a heart rate of 72/min do not exclude it."
       },
       {
         "zh-CN": "时机：服药约四小时、已洗过胃，要做的事在前面而不在胃里——持续监护、按体征滴定静脉阿托品、联系中毒咨询；不再洗胃，也不用活性炭（AACT/EAPCCT 2013、2005）。",
@@ -3886,7 +3905,7 @@
         "en": "The results: a cholinesterase of 1790 U/L confirms the inhibition but does not grade it; sinus rhythm is a snapshot; a sodium of 126.7 mmol/L calls for isotonic maintenance fluid and a recheck."
       },
       {
-        "zh-CN": "变化：入院约两小时心率降到47次/分，同时仍腹痛、皮肤潮湿——毒蕈碱样作用在表现出来，需要在监护下重复、滴定阿托品，并准备好PALS步骤。",
+        "zh-CN": "变化：入院约两小时心率最低47次/分，仍腹痛、皮肤潮湿——毒蕈碱样作用在表现出来，需要在监护下重复、滴定阿托品，并准备好PALS步骤。",
         "en": "The change: a heart rate of 47/min about two hours after admission, with continuing abdominal pain and moist skin, is the muscarinic toxicity declaring itself — repeated, titrated atropine under monitoring, with the PALS steps ready."
       },
       {
@@ -3926,16 +3945,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "洗胃与活性炭：当时与现在。他在转院前已在当地洗胃（时间和液体没有记录）。AACT/EAPCCT 2013年立场声明更新：洗胃不应常规进行，甚至根本不应进行；气道未受保护或增加误吸风险时禁用；并发症包括吸入性肺炎、喉痉挛、心律失常以及水和电解质紊乱。AACT/EAPCCT 2005年立场声明：单剂活性炭只在服药后1小时内考虑，且气道必须完好或已受保护。服药约四小时、吐过、不能自行站立的孩子，再洗胃或用活性炭都只增加风险。",
-        "en": "Lavage and charcoal, then and now. He had a lavage locally before transfer (its timing and fluid are not recorded). AACT/EAPCCT 2013 position paper update: gastric lavage should not be performed routinely, if at all; it is contraindicated with an unprotected airway or where it adds aspiration risk; its complications include aspiration pneumonia, laryngospasm, arrhythmia and fluid and electrolyte imbalance. AACT/EAPCCT 2005: single-dose charcoal is considered only up to one hour after ingestion and only with an intact or protected airway. Four hours out, in a child who has vomited and cannot stand unaided, a second lavage or charcoal adds only risk."
+        "zh-CN": "洗胃与活性炭：当时与现在。他在转院前已在当地洗胃（时间和液体没有记录）。AACT/EAPCCT 2013年立场声明更新：洗胃不应常规进行，甚至根本不应进行；气道未受保护或增加误吸风险时禁用；并发症包括吸入性肺炎、喉痉挛、心律失常以及水和电解质紊乱。AACT/EAPCCT 2005年立场声明：单剂活性炭可在服药后1小时内考虑（1小时后的获益不能排除），除非气道完好或已受保护，否则禁用。服药约四小时、吐过、不能自行站立的孩子，再洗胃或用活性炭都只增加风险。",
+        "en": "Lavage and charcoal, then and now. He had a lavage locally before transfer (its timing and fluid are not recorded). AACT/EAPCCT 2013 position paper update: gastric lavage should not be performed routinely, if at all; it is contraindicated with an unprotected airway or where it adds aspiration risk; its complications include aspiration pneumonia, laryngospasm, arrhythmia and fluid and electrolyte imbalance. AACT/EAPCCT 2005: single-dose charcoal may be considered up to one hour after ingestion (benefit later cannot be excluded) and is contraindicated unless the airway is intact or protected. Four hours out, in a child who has vomited and cannot stand unaided, a second lavage or charcoal adds only risk."
       },
       {
-        "zh-CN": "新斯的明过量：胆碱能危象还是肌无力危象。美国FDA新斯的明注射液说明书（2015年修订）：过量时出现毒蕈碱样表现（恶心、呕吐、腹泻、出汗、支气管和唾液分泌增加、心动过缓），可用阿托品或格隆溴铵处理；要支持通气直到自主呼吸足够，并监测心脏功能；胆碱能危象以肌无力加重为特点，累及呼吸肌时可致死；与肌无力危象难以区分时，再加用新斯的明可能造成严重后果——胆碱能危象需要停用所有这类药物，并建议立即用阿托品。说明书针对注射剂型；口服过量的处理原则相同。",
-        "en": "Neostigmine overdose: cholinergic or myasthenic crisis. FDA prescribing information for neostigmine methylsulfate injection (revised 2015): overdose brings muscarinic symptoms (nausea, vomiting, diarrhoea, sweating, increased bronchial and salivary secretions, bradycardia) that may be managed with atropine or glycopyrrolate; ventilation is supported until spontaneous breathing is adequate and cardiac function is monitored; a cholinergic crisis is marked by increasing weakness that can kill through the respiratory muscles; and because it can be hard to tell from a myasthenic crisis, more neostigmine could have grave consequences — the crisis calls for withdrawal of all drugs of this type, with immediate atropine. The label is for the injection; the principles carry over to an oral overdose."
+        "zh-CN": "新斯的明过量：胆碱能危象还是肌无力危象。美国FDA新斯的明注射液说明书（2015年修订）：过量时出现毒蕈碱样表现（恶心、呕吐、腹泻、出汗、支气管和唾液分泌增加、心动过缓），可用阿托品或格隆溴铵处理；要支持通气直到自主呼吸足够，并监测心脏功能；胆碱能危象以肌无力加重为特点，累及呼吸肌时可致死；与肌无力危象难以区分时，再加用新斯的明可能造成严重后果——胆碱能危象需要停用所有这类药物，并建议立即用阿托品。说明书针对注射剂型；本病例把其中的过量处理原则用于这次口服过量。",
+        "en": "Neostigmine overdose: cholinergic or myasthenic crisis. FDA prescribing information for neostigmine methylsulfate injection (revised 2015): overdose brings muscarinic symptoms (nausea, vomiting, diarrhoea, sweating, increased bronchial and salivary secretions, bradycardia) that may be managed with atropine or glycopyrrolate; ventilation is supported until spontaneous breathing is adequate and cardiac function is monitored; a cholinergic crisis is marked by increasing weakness that can kill through the respiratory muscles; and because it can be hard to tell from a myasthenic crisis, more neostigmine could have grave consequences — the crisis calls for withdrawal of all drugs of this type, with immediate atropine. The label is for the injection; the case applies its overdose principles to this oral overdose."
       },
       {
-        "zh-CN": "儿童阿托品：两种剂量，两个目的。珀斯儿童医院阿托品用药专论（2024年审核）：胆碱能危象50 μg/kg静脉注射（单次最大3 mg），无效时每5分钟加倍直至出现阿托品效应——36 kg约1.8 mg；伴血流动力学受损的心动过缓20 μg/kg（最大600 μg），必要时重复一次。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品0.02 mg/kg（可重复，最小剂量0.1 mg，PALS写作组2026年说明）。报告中他用过的阿托品剂量没有记录。",
-        "en": "Atropine in children: two doses, two purposes. Perth Children's Hospital atropine monograph (reviewed 2024): for a cholinergic crisis, 50 micrograms/kg IV (maximum 3 mg per dose), doubled every 5 minutes while ineffective until the atropine effect is evident — about 1.8 mg at 36 kg; for bradycardia with haemodynamic compromise, 20 micrograms/kg (maximum 600 micrograms), repeated once if needed. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone at 0.02 mg/kg, which may be repeated, with a minimum dose of 0.1 mg (as its writing group restated in 2026). The doses he actually received are not recorded."
+        "zh-CN": "儿童阿托品：两种剂量，两个目的。珀斯儿童医院阿托品用药专论（2024年审核）：胆碱能危象50 μg/kg静脉注射（单次最大3 mg），无效时每5分钟加倍直至出现阿托品效应——36 kg约1.8 mg；伴血流动力学受损的心动过缓20 μg/kg（最大600 μg），必要时重复一次。AHA/AAP 2025 PALS对迷走张力增高引起、伴心肺功能受损的心动过缓推荐阿托品，标准剂量0.02 mg/kg、最小剂量0.1 mg（PALS写作组2026年说明）。报告中他用过的阿托品剂量没有记录。",
+        "en": "Atropine in children: two doses, two purposes. Perth Children's Hospital atropine monograph (reviewed 2024): for a cholinergic crisis, 50 micrograms/kg IV (maximum 3 mg per dose), doubled every 5 minutes while ineffective until the atropine effect is evident — about 1.8 mg at 36 kg; for bradycardia with haemodynamic compromise, 20 micrograms/kg (maximum 600 micrograms), repeated once if needed. AHA/AAP 2025 PALS recommends atropine for bradycardia with cardiopulmonary compromise from increased vagal tone at a standard dose of 0.02 mg/kg with a minimum of 0.1 mg (as its writing group restated in 2026). The doses he actually received are not recorded."
       },
       {
         "zh-CN": "低钠与补液。钠126.7 mmol/L低于AAP 2018年儿童静脉维持液指南界定低钠血症的135 mmol/L；该指南（关键行动声明1A，证据质量A，强推荐）要求28天至18岁需要维持液的患儿使用含适量氯化钾和葡萄糖的等张液。他吐过、出过汗、洗过胃；报告没有记录他用过什么液体，也没有复查血钠。",
@@ -3952,7 +3971,7 @@
     ],
     "references": [
       "贲英姿, 沈莉, 康云峰. 儿童误服新斯的明中毒一例. 中华儿科杂志. 2011;49(9):707-708. doi:10.3760/cma.j.issn.0578-1310.2011.09.016. Available from: https://rs.yiigle.com/cmaid/44399",
-      "US Food and Drug Administration. Bloxiverz (neostigmine methylsulfate injection) prescribing information: 5.5 Cholinergic crisis; 10 Overdosage. Revised January 2015. Available from: https://www.accessdata.fda.gov/drugsatfda_docs/nda/2015/203629Orig1s000Lbl.pdf",
+      "US Food and Drug Administration. Neostigmine methylsulfate injection, NDA 203629: prescribing information, 5.5 Cholinergic crisis and 10 Overdosage. Revised January 2015. Available from: https://www.accessdata.fda.gov/drugsatfda_docs/nda/2015/203629Orig1s000Lbl.pdf",
       "Benson BE, Hoppu K, Troutman WG, Bedry R, Erdman A, Höjer J, et al. Position paper update: gastric lavage for gastrointestinal decontamination. Clin Toxicol (Phila). 2013;51(3):140-6. doi:10.3109/15563650.2013.770154",
       "Chyka PA, Seger D, Krenzelok EP, Vale JA; American Academy of Clinical Toxicology; European Association of Poisons Centres and Clinical Toxicologists. Position paper: single-dose activated charcoal. Clin Toxicol (Phila). 2005;43(2):61-87. doi:10.1081/clt-200051867",
       "Feld LG, Neuspiel DR, Foster BA, Leu MG, Garber MD, Austin K, et al. Clinical practice guideline: maintenance intravenous fluids in children. Pediatrics. 2018;142(6):e20183083. doi:10.1542/peds.2018-3083",

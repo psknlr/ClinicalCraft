@@ -89,7 +89,10 @@ docs/FACILITIES.md "Equipment models"):
   `.glb` (a `.gltf` with external buffers or images is not served).
 * **Built-in models.** Every built-in equipment type ships a model
   (`packages/content/assets/models`, MIT, built from the types' voxel parts by
-  `scripts/blender/build.py`: docs/BLENDER.md; a unit test keeps it so). Both
+  `scripts/blender/build.py`: docs/BLENDER.md; a unit test keeps it so) — the
+  handheld items too (audit 2026-11-12 P2-12): the medication box, and the blood
+  specimen tube, the first built-in model with layers for its looks (`sample`
+  and `label`, drawn once it is filled and labelled at the bedside). Both
   `clinicalcraft serve` and the Vite dev server search the built-in content's
   `assets/` last, so a local or pack copy overrides one; a unit test checks
   that every built-in model is pinned, cleared and passes the inspector. The

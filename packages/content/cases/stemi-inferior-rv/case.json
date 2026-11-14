@@ -5393,6 +5393,7 @@
         "zh-CN": "肾上腺素 1 mg 静脉推注（可电击心律：ERC流程于第3次电击后、AHA流程于第2次电击后给予，此后每3–5分钟）",
         "en": "Adrenaline 1 mg IV (shockable rhythm: after the 3rd shock in the ERC algorithm or the 2nd shock in the AHA algorithm, then every 3–5 min)"
       },
+      "doseSpec": { "amount": 1, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

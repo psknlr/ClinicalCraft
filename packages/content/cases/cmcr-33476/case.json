@@ -2856,6 +2856,9 @@
       "requires": [
         "fluoroscopy"
       ],
+      "destination": {
+        "capability": "fluoroscopy"
+      },
       "risk": "high",
       "critical": true,
       "maxDoses": 1,

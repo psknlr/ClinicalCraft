@@ -58,6 +58,27 @@ export const RHYTHM_CAPABILITIES: readonly string[] = ["cardiac-monitor", "ecg-1
  */
 export const PATIENT_AT_PROVIDER_CAPABILITIES: readonly string[] = ["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"];
 
+/**
+ * Who does a study on the patient at a fixed device (EMBODIED §8.7): the department's own staff — an endoscopist at an
+ * endoscopy tower; an interventional cardiologist for a procedure on the heart's vessels at a C-arm (coronary
+ * angiography, PCI: `study` — the investigation's category and its names); otherwise a radiographer (a scanner, an
+ * X-ray machine, a C-arm's imaging). The acquisition records them by role.
+ */
+export function acquisitionStaff(capabilities: readonly string[], study?: { category?: string; words?: readonly string[] }): string {
+  if (capabilities.includes("endoscopy")) return "endoscopist";
+  if (capabilities.includes("fluoroscopy") && study?.category === "procedure" && study.words?.some((w) => CORONARY.test(w))) return "interventional-cardiologist";
+  return "radiographer";
+}
+
+/** A procedure on the heart's own vessels, by its names (en + zh-CN). */
+const CORONARY = /coronary|cardiac\s+cath|\bpci\b|冠状动脉|冠脉|心导管/iu;
+
+/**
+ * The capability of a monitor that can travel with the patient (EMBODIED §8.7): a portable device providing it at the
+ * bedside (a defibrillator's monitor) goes with them on a transport asked to take one (`transport_patient {monitor}`).
+ */
+export const TRAVEL_MONITOR_CAPABILITY = "cardiac-monitor";
+
 /** Capabilities of patient-performed tests at a fixed station (peak flow, weight): the patient goes to the station. */
 export const PATIENT_PERFORMED_CAPABILITIES: readonly string[] = ["peak-flow", "scale"];
 
@@ -66,3 +87,12 @@ export const TABLE_CAPABILITIES: readonly string[] = ["ct", "mri", "pet-ct", "xr
 
 /** Equipment types a patient is wheeled on: the bed travels with them (a hospital bed, a stretcher). */
 export const TROLLEY_TYPES: readonly string[] = ["hospital-bed", "stretcher"];
+
+/**
+ * How a patient wheeled on equipment of a type travels (`PatientLeg.mode`, audit 2026-11-12 P2-11): on their bed, on a
+ * trolley (a stretcher), in a wheelchair. Another trolley type travels as a trolley; on foot is `walk`.
+ */
+export const TRAVEL_MODES: Readonly<Record<string, "bed" | "trolley" | "wheelchair">> = { "hospital-bed": "bed", stretcher: "trolley", wheelchair: "wheelchair" };
+
+/** Roles that take over a patient brought to them (the handover of a transport, `PatientLeg.receivedBy`). */
+export const RECEIVING_ROLES: readonly string[] = ["clinician", "attending", "nurse", "paramedic", "radiologist"];

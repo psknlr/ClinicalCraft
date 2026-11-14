@@ -438,6 +438,9 @@ the 15-day rule in Article 21 of the 2011 Measures; and the WHO page that dates 
   appears in learner-facing teaching points; the WHO-UMC document is cited as WHO 2013 (not 2018); the wording on
   antibiotic prophylaxis and mortality and the timing of tube feeding follow the IAP 2025 text; two dose texts that the
   treatment list shows from the start no longer name the diagnosis; one decision-3 distractor is hedged like the key.
+- Integration (2026-11-14): `urgent-ercp` names where it is done (`destination` {"capability": "endoscopy"}: the endoscopy
+  suite) and needs that suite alone (the hospital's fluoroscopy is in the cath lab, and no room holds both), so the act can
+  be carried out in the 3D world, where every act of a case must be possible in its own facility.
 
 ### 1.0.0 — 2026-10-28
 

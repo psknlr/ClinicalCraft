@@ -142,6 +142,13 @@ exploration the pilot authors needed; it does not replace STANDARD.md.
     enoxaparin ordered in anti-Xa IU (4000 IU) against a doseSpec in mg; a per-kg rate written "U/(kg·h)",
     "单位/(kg·h)" or "单位/(kg·小时)" (write "0.1 U/kg/h" / "0.1 单位/kg/h" in the case's own texts); 不透气 /
     不透水 read as a negation. Name such a gap in your report; the integration fixes the engine.
+19. **An act the 3D world cannot carry out** (since 2026-11-14 the audit's spatial policy is merged): every
+    intervention, investigation and exam item of a case must be possible in the case's own facility. A procedure
+    that needs a fixed room the patient is not in — theatre (`surgery`), the cath lab (`fluoroscopy`), the CT room
+    (`ct`), the endoscopy suite (`endoscopy`) — names its `destination` (CASE_AUTHORING: `{ "roomKind":
+    "operating-room" }` or `{ "capability": "fluoroscopy" }`), tempting wrong acts included; no room holds both
+    endoscopy and fluoroscopy, so an ERCP needs the endoscopy suite alone. Run, besides STANDARD §5:
+    `npx vitest run --maxWorkers=1 packages/world/src/policy.test.ts -t "<case id>"`.
 
 ## 4. Practicalities
 

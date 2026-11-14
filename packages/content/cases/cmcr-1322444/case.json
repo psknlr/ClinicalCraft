@@ -3066,6 +3066,9 @@
       "requires": [
         "fluoroscopy"
       ],
+      "destination": {
+        "capability": "fluoroscopy"
+      },
       "scope": "medical",
       "risk": "high",
       "critical": true,

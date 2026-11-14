@@ -178,7 +178,9 @@ function dropCollider(host: PortableHost, rec: PortableRecord): void {
 /**
  * Draw a portable placement at a spot of the world model (`null`: hidden —
  * carried by someone; `"home"`: back where it was authored). Its collider,
- * aim target, map/locate position and live screens follow.
+ * aim target, map/locate position and live screens follow — where they are
+ * drawn; whose vitals they show is the world model's answer where the cart
+ * stands now (the frame loop's `screenSource`), never the bed it was built by.
  */
 export function placePortable(host: PortableHost, rec: PortableRecord, at: { x: number; y: number; z: number; level: string; rot?: number } | "home" | null): void {
   // never moved: it is drawn at home in the static batches already

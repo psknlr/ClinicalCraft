@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `acute-ischemic-stroke` · v1.1.3 |
+| Case | `acute-ischemic-stroke` · v1.1.4 |
 | Setting | Emergency department, resus bay 1 (`emergency`); later the neuro-angiography suite |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 4 / 5 |
@@ -260,12 +260,14 @@ nifedipine**. Giving one fails the assessment's safety outcome (`safety.passed: 
 every debrief and export shows it beside the score, and the effects still play out. `transfer-angio` and
 `sich-protocol` are `critical: false` (recoverable misjudgements). Preset doses (`doseSpec`), compared with an
 order's dose through his 80 kg: tenecteplase 0.25–0.28 mg/kg (20 mg by 0.25 mg/kg; 22.5 mg, the US label's
-weight-band dose for 80–< 90 kg, within 10 %) and alteplase 0.9 mg/kg (72 mg). "Tenecteplase 20 mg" and "22.5 mg"
-are given; "25 mg" (the ≥ 90 kg dose) is not — the nurse reads it back, a dose error to review that does not fail
-safety; "50 mg" (twice the dose of a thrombolytic) and "200 mg" are critical dose errors that fail it. An alteplase
-order may give the total ("72 mg", "0.9 mg/kg") or its parts ("7.2 mg bolus, then 64.8 mg over 60 minutes": the
-parts add up to the preset). A volume without its strength ("tenecteplase 4 mL") is asked about: not given, no dose
-error.
+weight-band dose for 80–< 90 kg, within 10 %) and alteplase 0.9 mg/kg (72 mg), given in two parts — a 0.09 mg/kg
+(7.2 mg) bolus, the rest at 0.81 mg/kg/h (64.8 mg/h). "Tenecteplase 20 mg" and "22.5 mg" are given; "25 mg" (the
+≥ 90 kg dose) is not — the nurse reads it back, a dose error to review that does not fail safety; "50 mg" (twice the
+dose of a thrombolytic) and "200 mg" are critical dose errors that fail it. An alteplase order may give the total
+("72 mg", "0.9 mg/kg"), its parts with or without their total ("7.2 mg bolus, then 64.8 mg over 60 minutes (total
+72 mg)") or the bolus with the rate ("7.2 mg bolus, infusion 64.8 mg/h"); the bolus alone is asked about ("is that the
+whole dose?"), never a dose error. A volume without its strength ("tenecteplase 4 mL") is asked about: not given, no
+dose error.
 
 ### How wrong choices score
 
@@ -407,6 +409,24 @@ done on the patient at the CT scanner: in embodied mode the patient is wheeled t
 trolley and back (the autopilot does both scans in one trip: 36.6 m there, 37.8 m back, 0.16 min each
 way; in `teaching-hospital` the porter does it). Scores are unchanged (100 in both modes).
 
+**The care team (`team`, docs/TEAM.md §4.5).** The resus room has a care team: the ED nurse, Lin Xiao, coordinates
+at the bedside (duty `circulate`; posted at the ED nurse station, she comes to resus when there is work) and the
+learner is the doctor in charge (the team calls them "the doctor" / 医生). Two authored team scenarios route one fact
+the case records — his wife's answer to the anticoagulant question (`anticoagulants`) — through the team: the triage
+nurse, Yang Jie, heard it at the door (a relief colleague with duty `inform`, reached by phone). Once the CT head has
+been read the need arises; until the doctor has read the answer back, IV tenecteplase waits (`blocks`):
+
+| scenario | set-up | expected |
+|---|---|---|
+| `anticoagulants-from-triage` | Yang Jie holds it | asked by the resus nurse, answered by Yang Jie, told to the doctor, read back, confirmed and recorded in the case (`ask` `via: "team"`): `informed` |
+| `anticoagulants-triage-away` | Yang Jie on her break (`absent`) | escalated at once with the reason ("Yang Jie isn't available. IV tenecteplase still waits."): the doctor asks his wife directly |
+
+`clinicalcraft bench team --case acute-ischemic-stroke` runs both in observer mode and records who asked, who
+supplied it, who received it and when, and what the doctor did next (tenecteplase given only after the read-back).
+Played alone, with no scenario chosen at `start`, the team takes no round: the single-learner path, `cases verify`
+and the in-world demonstration are unchanged. A facilitator chooses a scenario with `?team=<id>` in the browser; the
+learner reads the information back from the Team panel.
+
 ## Fidelity limits
 
 * Antihypertensive effects persist once given (no titration off, no infusion-rate changes); repeat
@@ -519,6 +539,15 @@ journal, volume and pages); none was added from memory.
 
 ## Changelog
 
+### 1.1.4 — 2026-11-13 (clinical and gameplay audit of 2026-11-12: the team handoff, P1-9)
+
+* **A care team with an information handoff.** The audit found that no built-in case exercised the full team
+  handoff (`bench team` found no eligible case). The case now has a `team` in the resus room — the ED nurse
+  coordinating, the learner as the doctor in charge — and two team scenarios in which his anticoagulant history (the
+  wife's recorded answer, no new fact) is held by the triage nurse and thrombolysis waits for it: supplied (asked,
+  answered, told, read back, confirmed, recorded) or escalated with the reason when she is away. `bench team` runs
+  both (2 / 2). The single-learner path is unchanged: no scenario, no team round; `cases verify` 100 %.
+
 ### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
 
 * **A second thrombolytic is a critical safety failure (audit P0-1).** The audit gave alteplase straight after
@@ -538,6 +567,10 @@ journal, volume and pages); none was added from memory.
   read as their total. A conflicting thrombolytic dose is not given; it fails the safety outcome when it is tenfold
   or at least twice the preset (a thrombolytic is high-risk), otherwise it is a dose error to review ("tenecteplase
   25 mg").
+* Alteplase's preset states its two parts (follow-up review of the audit fixes, 2026-11-13): `bolus` 0.09 mg/kg
+  (7.2 mg) and `maintenance` 0.81 mg/kg/h (64.8 mg/h) beside the 0.9 mg/kg whole. The whole, its parts with or without
+  their stated total ("…, total 72 mg", which was refused as a tenfold error) or the bolus with the rate are given; the
+  bolus alone ("alteplase 7.2 mg IV bolus") is asked about ("is that the whole dose?"), never a dose error.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 
@@ -629,3 +662,9 @@ NIHSS ≥ 6、ASPECTS ≥ 6、6小时内、发病前mRS 0–1。
 算起；房颤患者必须点名询问抗凝药，确认未用即不必等凝血结果；192/104 mmHg是可纠正的障碍而非禁忌，忌舌下含服
 硝苯地平；CTA证实大血管闭塞后立即桥接取栓，不等溶栓效果；溶栓后24小时不用抗栓药、吞咽筛查前禁食禁水。最后请学员
 总结下次卒中急救中会保持和改进的做法。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。
+
+**团队协作（信息交接，1.1.4）。** 抢救室有一个医护团队：急诊护士林晓在床旁协调，学员是负责的医生。两个团队情境把病例
+已记录的一条事实——妻子关于抗凝药的回答——交给团队传递：分诊护士杨洁在门口听到了这个回答（电话联系）。头颅CT判读后
+需求出现；医生复述确认之前，替奈普酶静脉溶栓需等待。`anticoagulants-from-triage`：抢救室护士去问、杨洁回答、转告医生、
+医生复述、护士确认并记入病例；`anticoagulants-triage-away`：杨洁在休息，护士立即上报并说明原因，医生直接询问妻子。
+`clinicalcraft bench team` 记录谁去问、谁提供、谁在何时接收，以及医生接下来做了什么。单人接诊不选情境时团队不行动。

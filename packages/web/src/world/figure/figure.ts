@@ -4,16 +4,18 @@
  * about its joint (`head`) — plus the see-through parts on the head (`clear`: lenses, an oxygen mask). Skin
  * vertices are remembered per geometry for the flush of distress. Someone on their side (`lateral`) may be
  * undressed under a blanket, or draped for an operation on the chest (`cover`: bare skin; towels round the field
- * and a sheet over hips and legs), and bent over the break of a flexed table (`flex`).
+ * and a sheet over hips and legs), and bent over the break of a flexed table (`flex`). Someone lying flat — on
+ * their back, or face down (`prone`) — may be undressed under towels for a treatment of the body's surface
+ * (`cover` `towels`: bare skin, bare feet, a towel over the hips, and over the chest of someone on their back).
  */
 import { Matrix4, Vector3, type BufferGeometry } from "three";
 import { frameOf, LATERAL, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type Posture, type Skeleton, type Stature } from "./anatomy.js";
 import { bendGeometry, bendPoint, type SideBend } from "./bend.js";
-import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
+import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, trunkAt, type Fit, type ShoeKind } from "./body.js";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
 import { addHair, coversEars, type HairStyle } from "./hair.js";
 import { addHead, irisFor, SKIN_GLOW } from "./head.js";
-import { addBlanket, addChestDetails, addCoat, addFieldTowels, addLap, addSideCloth, addSlingStrap, addSterileGown, COAT_FIT, neckline, SIDE_BLANKET, THORACIC_SHEET } from "./dress.js";
+import { addBlanket, addChestDetails, addCoat, addFieldTowels, addLap, addSideCloth, addSlingStrap, addSterileGown, addTowel, COAT_FIT, neckline, SIDE_BLANKET, THORACIC_SHEET } from "./dress.js";
 import { addAccessory, addTheatreCap, addSurgicalMask, type Accessory } from "./extras.js";
 import { paint, rgb, Sculpt, sweepEnd, type Paint, type Ranges, type V3 } from "./sculpt.js";
 import { STERILE_GOWN, THEATRE_CAP, type Wear } from "./wear.js";
@@ -40,9 +42,10 @@ export interface FigureSpec {
   up?: "left" | "right";
   /**
    * On their side, what covers them (`dress.ts`): their own `clothes` (default); undressed under a `blanket` to
-   * the waist; or undressed under the `drapes` of an operation on the side of the chest that is up.
+   * the waist; or undressed under the `drapes` of an operation on the side of the chest that is up. Lying flat
+   * (on their back, or face down): their own `clothes` (default) or undressed under `towels`.
    */
-  cover?: "clothes" | "blanket" | "drapes";
+  cover?: "clothes" | "blanket" | "drapes" | "towels";
   /** On their side: how far each half of a flexed table goes down from the break under the chest (radians; default 0). */
   flex?: number;
 }
@@ -96,14 +99,18 @@ export function buildFigure(spec: FigureSpec): Figure {
   const f = frameOf(spec.build, spec.stature, spec.feminine);
   const wear = spec.wear;
   const gown = spec.gown;
-  const lying = spec.posture === "lying", sitting = spec.posture === "sitting", lateral = spec.posture === "lateral";
+  const lying = spec.posture === "lying", sitting = spec.posture === "sitting", lateral = spec.posture === "lateral", prone = spec.posture === "prone";
   const up = spec.up === "right" ? -1 : 1;
-  const cover = lateral ? (spec.cover ?? "clothes") : "clothes";
-  // (undressed: bare skin on the trunk and the arms, nothing drawn below the ankles under the cloth)
+  // (a cover a posture does not take is its own clothes: towels are for someone lying flat, the others for someone on their side)
+  const towels = (lying || prone) && spec.cover === "towels";
+  const cover = lateral && spec.cover !== "towels" ? (spec.cover ?? "clothes") : towels ? "towels" : "clothes";
+  // (undressed: bare skin on the trunk and the limbs; under a blanket or a sheet nothing is drawn below the ankles)
   const undressed = cover !== "clothes";
-  const sling = spec.accessory === "sling" && !lateral;
+  const sling = spec.accessory === "sling" && !lateral && !prone;
   const pose: ArmPose = wear.hands === "clasped" && spec.posture === "standing" ? "clasped" : "relaxed";
-  const sk = skeletonOf(spec.posture, f, spec.seat / f.scale, sling ? ["sling", pose] : pose, up);
+  // on a treatment couch: under the chest of someone face down; under the back of someone on theirs, under towels
+  const couch = prone ? trunkAt(1.3, f)[1] - 0.012 : towels ? -(trunkAt(1.3, f)[2] - 0.012) : 0.1;
+  const sk = skeletonOf(spec.posture, f, spec.seat / f.scale, sling ? ["sling", pose] : pose, up, couch);
   const lift = sk.lift;
 
   const skin: Paint = { rgb: rgb(spec.skin), gloss: 0.14, glow: SKIN_GLOW };
@@ -169,7 +176,7 @@ export function buildFigure(spec: FigureSpec): Figure {
         wrist.push(v.x, v.y, v.z);
       }
       const handPaint = wear.gloves ? glove : skin;
-      const handPose = pose === "clasped" ? HAND_CLASPED : sitting || lying || slung ? HAND_FLAT : HAND_RELAXED;
+      const handPose = pose === "clasped" ? HAND_CLASPED : sitting || (lying && !towels) || slung ? HAND_FLAT : HAND_RELAXED;
       const hand = () => body.within(frame, () => void addHand(body, handPaint, handPose, { girth: 0.96 + 0.04 * f.limb, gloved: wear.gloves, wrist }));
       if (wear.gloves) hand();
       else body.tagged("skin", hand);
@@ -195,19 +202,26 @@ export function buildFigure(spec: FigureSpec): Figure {
           body.sweep(limbStations(leg, 1.5, 1.62, (t) => trouserRadii(f, 0.014)(t), 0.075), { rgb: rgb(wear.stripe), gloss: 0.25 }, { seg: 12, start: "flat", end: "flat" });
           body.sweep(limbStations(leg, 1.54, 1.58, (t) => trouserRadii(f, 0.0155)(t), 0.075), { rgb: rgb("#d5d9da"), gloss: 0.7 }, { seg: 12, start: "flat", end: "flat" });
         }
-        // the ankle between hem and shoe: a sock
-        body.sweep(limbStations(leg, 1.8, 2, legRadii(f, 0.002), 0.075), shoeKind === "bare" ? skin : paint("#3a3f45"), { seg: 10, start: "open", end: "open" });
+        // the ankle between hem and shoe: a sock (bare on a treatment couch, as the foot is)
+        body.sweep(limbStations(leg, 1.8, 2, legRadii(f, 0.002), 0.075), shoeKind === "bare" || prone ? skin : paint("#3a3f45"), { seg: 10, start: "open", end: "open" });
       }
-      // in bed the feet are under the covers, on the table under the sheet
-      const shoe = () => body.within(footFrame(leg), () => addShoe(body, shoeKind, shoeUpper, shoeSole, f.limb));
-      if (lying || undressed) return;
-      if (shoeKind === "bare") body.tagged("skin", shoe);
+      // in bed the feet are under the covers, on the table under the sheet; on a treatment couch they are bare
+      const barefoot = towels || prone;
+      const footKind: ShoeKind = barefoot ? "bare" : shoeKind;
+      const shoe = () => body.within(footFrame(leg), () => addShoe(body, footKind, footKind === "bare" ? skin : shoeUpper, shoeSole, f.limb));
+      if (!barefoot && (lying || undressed)) return;
+      if (footKind === "bare") body.tagged("skin", shoe);
       else shoe();
     });
   }
-  if (lying) addBlanket(chest, sk, f, lift);
+  if (lying && !towels) addBlanket(chest, sk, f, lift);
+  if (towels) {
+    // a towel over the hips (it lies on the hips and the thighs: it does not breathe), and over the chest of someone on their back
+    addTowel(body, sk, f, prone ? -1 : 1, 0.715, prone ? 0.985 : 1.0);
+    if (lying) addTowel(chest, sk, f, 1, 1.2, 1.375);
+  }
   // the cloth over the hips and the legs of someone on their side lies on the legs: it does not breathe
-  if (undressed) addSideCloth(body, sk, f, up, cover === "drapes" ? THORACIC_SHEET : SIDE_BLANKET);
+  if (undressed && !towels) addSideCloth(body, sk, f, up, cover === "drapes" ? THORACIC_SHEET : SIDE_BLANKET);
 
   /* ---------------- the head ---------------- */
   const head = new Sculpt();

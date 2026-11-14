@@ -6,9 +6,9 @@
  * P0-3, P1-5). A repeat IM adrenaline dose counts only when it is due: at least 5 minutes after the last dose, after a
  * reassessment made since that dose, while she is still compromised (P1-4).
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { assess, createSession, evaluate, parseCase, reduce, verifyCase, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { assess, checkContentStandard, checkOrder, createSession, evaluate, isHighAlert, parseCase, reduce, verifyCase, type CaseDefinition, type ClinicalAction, type DoseRoute, type SessionState } from "@clinicalcraft/core";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -163,5 +163,59 @@ describe("anaphylaxis-garden: a repeat dose counts only when it is due (P1-4)", 
     expect(v.ok).toBe(true);
     expect([v.assessment.score.earned, v.assessment.score.possible]).toEqual([19, 19]);
     expect(v.assessment.safety.passed).toBe(true);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The first set's follow-ups: every preset of the built-in cases      */
+/* ------------------------------------------------------------------ */
+
+/** The built-in cases outside the CMCR 105 collection (re-authored elsewhere): the 30 whose presets this audit set. */
+const BUILT_IN = readdirSync(new URL("../cases/", import.meta.url))
+  .filter((id) => !(JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")) as Json).tags?.includes("cmcr-105"))
+  .sort();
+const ROUTE_WORDS: Record<DoseRoute, string> = { IM: "IM", IV: "IV", IO: "IO", SC: "SC", PO: "PO", SL: "SL", PR: "PR", IN: "intranasal", INH: "inhaled", TOP: "topical" };
+
+describe("every preset of the built-in cases, ordered as written (re-review of the first set)", () => {
+  it("covers the 30 built-in cases, with no dose lint left", () => {
+    expect(BUILT_IN).toHaveLength(30);
+    for (const id of BUILT_IN) expect(checkContentStandard(load(id)).filter((i) => i.path.endsWith(".doseSpec")), id).toEqual([]);
+  });
+
+  it("the preset as an order is given; ten times it is a critical dose error; a high-alert medicine at three times it is critical", () => {
+    let presets = 0;
+    for (const id of BUILT_IN) {
+      const c = load(id);
+      for (const iv of c.interventions) {
+        const spec = iv.doseSpec;
+        if (!spec) continue;
+        presets++;
+        const route = spec.route ? ` ${ROUTE_WORDS[spec.route]}` : "";
+        const order = (amount: string) => checkOrder({ text: `${amount} ${spec.unit}${route}` }, iv, c.patient.weightKg);
+        const label = `${id}/${iv.id}`;
+        expect(order(String(spec.amount)), label).toMatchObject({ outcome: "given", checked: true });
+        if (spec.upTo != null) expect(order(`${spec.amount}–${spec.upTo}`), `${label} range`).toMatchObject({ outcome: "given" });
+        expect(order(String((spec.upTo ?? spec.amount) * 10)), `${label} ×10`).toMatchObject({ outcome: "conflict", severity: "critical" });
+        // a tenth of a dose given in parts is its bolus — asked about ("is that the whole dose?"); a hundredth is critical
+        expect(order(String(spec.amount / 10)), `${label} ÷10`).toMatchObject(spec.bolus ? { outcome: "query", reason: "partial" } : { outcome: "conflict", severity: "critical" });
+        if (spec.bolus) expect(order(String(spec.amount / 100)), `${label} ÷100`).toMatchObject({ outcome: "conflict", severity: "critical" });
+        if (isHighAlert(iv) || iv.critical === true || iv.risk === "high") expect(order(String((spec.upTo ?? spec.amount) * 3)), `${label} ×3`).toMatchObject({ outcome: "conflict", severity: "critical" });
+        // an infusion's rate alone: given beside a bolus, asked about as part of a dose given in parts
+        if (spec.maintenance) {
+          const rate = checkOrder({ text: `${spec.maintenance.amount} ${spec.maintenance.unit}` }, iv, c.patient.weightKg);
+          expect(rate, `${label} rate`).toMatchObject(spec.bolus ? { outcome: "query", reason: "partial" } : { outcome: "given" });
+        }
+      }
+    }
+    expect(presets).toBeGreaterThanOrEqual(30);
+  });
+
+  it("the cases whose items run as a bolus and an infusion state both parts: PE heparin, stroke alteplase", () => {
+    expect(load("pulmonary-embolism-postop").interventions.find((i) => i.id === "ufh")?.doseSpec?.maintenance).toEqual({ amount: 18, unit: "unit/kg/h" });
+    expect(load("acute-ischemic-stroke").interventions.find((i) => i.id === "alteplase")?.doseSpec).toMatchObject({ bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } });
+    // the STEMI cardiac-arrest adrenaline (IV adrenaline is high-alert) now has a preset: ten milligrams is not given
+    const stemi = load("stemi-inferior-rv");
+    expect(checkOrder({ text: "adrenaline 10 mg IV" }, stemi.interventions.find((i) => i.id === "adrenaline")!, stemi.patient.weightKg)).toMatchObject({ outcome: "conflict", severity: "critical" });
+    expect(checkOrder({ text: "adrenaline 1 mg IV" }, stemi.interventions.find((i) => i.id === "adrenaline")!, stemi.patient.weightKg)).toMatchObject({ outcome: "given" });
   });
 });

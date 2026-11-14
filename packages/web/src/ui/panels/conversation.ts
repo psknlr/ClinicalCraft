@@ -479,12 +479,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
           result.append(h("div", { class: "empty" }, tr("treat.noMatch")));
           return;
         }
-        // words that state a dose are an order: the rows found give it as written, its dose checked against the
-        // dose prepared (docs/PROTOCOL.md §3.2) — never silently the preset
-        const ordered = searchOrder(text);
+        // words that state a dose are an order: each row found gives the words that order its item (its own clause
+        // when they order several), its dose checked against the dose prepared (docs/PROTOCOL.md §3.2) — never
+        // silently the preset
         for (const hit of hits.slice(0, 4)) {
           const iv = c.interventions.find((x) => x.id === hit.id);
-          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full", ordered));
+          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full", searchOrder(c, text, iv.id, getLocale())));
         }
       };
       wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("treat.find"))), result);

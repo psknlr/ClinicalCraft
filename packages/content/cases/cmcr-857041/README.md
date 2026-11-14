@@ -551,7 +551,7 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-857041/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-857041 --lang en          # solution 66 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 27/27
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-857041          # depth floor, do-nothing 0, wrong-first 14/27 < 27/27
+npx tsx --conditions=source scripts/case-check.ts cmcr-857041          # depth floor, do-nothing 0, wrong-first 14/27 < 27/27
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-857041:"   # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-857041:"   # in-world demonstration, en + zh-CN
 ```

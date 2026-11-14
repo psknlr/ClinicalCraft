@@ -337,6 +337,27 @@ describe("content standard lints: critical interventions and preset doses", () =
     expect(lints(named(["adrenaline 0.5", "adrenaline 0.3–0.5 mg", "adrenaline 0.5 mL"])).map((i) => i.message)).toEqual([expect.stringContaining('"adrenaline 0.5", "adrenaline 0.3–0.5 mg", "adrenaline 0.5 mL" — typed as an order it would not be given')]);
   });
 
+  it("a capped dose per kg: the capped absolute preset §6 asks for is the text's dose; a per-kg preset over the cap is not (re-review)", () => {
+    const capped = (spec: Json) => build((j) => ((j.patient.weightKg = 62), Object.assign(iv(j, "epi"), { dose: both("Adrenaline 0.01 mg/kg IM (max 0.5 mg)", "肾上腺素0.01 mg/kg肌注（最大0.5 mg）"), doseSpec: spec })));
+    expect(lints(capped({ amount: 0.5, unit: "mg", route: "IM" })).filter((i) => i.path === "interventions.0.doseSpec" && /dose text states/.test(i.message))).toEqual([]);
+    expect(lints(capped({ amount: 0.01, unit: "mg/kg", route: "IM" })).map((i) => i.message)).toContainEqual(expect.stringMatching(/^the preset dose of "epi" \(0\.01 mg\/kg IM\) is not what its dose text states \(en: 0\.01 mg\/kg max 0\.5 mg;/));
+  });
+
+  it("a preset given as a bolus and an infusion: the rate its text states is the preset's maintenance", () => {
+    const ufh = (maintenance: Json) => build((j) => ((j.patient.weightKg = 70), Object.assign(iv(j, "beta-blocker"), { name: both("IV heparin", "静脉肝素"), dose: both("UFH 80 U/kg IV bolus, then 18 U/kg/h", "普通肝素80 U/kg静推，随后18 U/kg/h泵入"), doseSpec: { amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance } })));
+    expect(lints(ufh({ amount: 18, unit: "unit/kg/h" })).filter((i) => i.path.endsWith("doseSpec"))).toEqual([]);
+    expect(lints(ufh({ amount: 1.8, unit: "unit/kg/h" })).map((i) => i.message)).toContainEqual(expect.stringContaining("(en: then 18 unit/kg/h; zh-CN: then 18 unit/kg/h)"));
+  });
+
+  it("high-alert by ISMP class: IV adrenergic agonists, magnesium and sedatives need a preset too; IM adrenaline does not (re-review)", () => {
+    const drug = (name: Json, dose: Json) => build((j) => Object.assign(iv(j, "chlorphenamine"), { name, dose }));
+    const at2 = (c: CaseDefinition) => lints(c).filter((i) => i.path === "interventions.2.doseSpec").map((i) => i.message);
+    expect(at2(drug(both("Adrenaline (epinephrine) 1 mg IV", "肾上腺素 1 mg 静推"), both("Adrenaline 1 mg IV", "肾上腺素1 mg静推")))).toEqual([expect.stringContaining('add "doseSpec": {"amount":1,"unit":"mg","route":"IV"}')]);
+    expect(at2(drug(both("Magnesium sulfate IV", "硫酸镁静滴"), both("Magnesium sulfate 2 g IV over 20 min", "硫酸镁2 g静滴，20分钟以上")))).toHaveLength(1);
+    expect(at2(drug(both("IV midazolam", "静注咪达唑仑"), both("Midazolam 2 mg IV", "咪达唑仑2 mg静注")))).toHaveLength(1);
+    expect(at2(drug(both("Adrenaline IM", "肾上腺素肌注"), both("Adrenaline 0.5 mg IM", "肾上腺素0.5 mg肌注")))).toEqual([]);
+  });
+
   it("a critical intervention is not low- or no-risk", () => {
     const low = build((j) => Object.assign(iv(j, "beta-blocker"), { risk: "low" }));
     expect(at(low, "interventions.3.risk").map((i) => [i.severity, i.message])).toEqual([
@@ -355,7 +376,10 @@ describe("content standard lints: critical interventions and preset doses", () =
       ],
     ]);
     // one range: still one dose; without a route the warning asks for one
-    expect(lints(opioid(both("Morphine 2–4 mg, titrated", "吗啡2–4 mg滴定"))).map((i) => i.message)).toEqual([expect.stringContaining('add "doseSpec": {"amount":2,"upTo":4,"unit":"mg"} (with its "route")')]);
+    expect(lints(opioid(both("Morphine 2–4 mg, repeat once", "吗啡2–4 mg，可重复一次"))).map((i) => i.message)).toEqual([expect.stringContaining('add "doseSpec": {"amount":2,"upTo":4,"unit":"mg"} (with its "route")')]);
+    // a dose titrated to effect: no single preset says it (re-review: a titration step would read as a dose error)
+    expect(lints(opioid(both("Morphine 2–4 mg, titrated", "吗啡2–4 mg滴定")))).toEqual([]);
+    expect(lints(opioid(both("Morphine 2.5 mg IV, adjusted to response", "吗啡2.5 mg静注，按反应调整")))).toEqual([]);
     // a bolus then an infusion, alternatives, a schedule of doses: no single preset says it — exempt
     expect(lints(opioid(both("Heparin 80 units/kg IV bolus, then 18 units/kg/h", "肝素80 U/kg静推，随后18 U/kg/h泵入")))).toEqual([]);
     expect(lints(opioid(both("Morphine 2.5 mg IV or 5 mg IM", "吗啡2.5 mg静注或5 mg肌注")))).toEqual([]);

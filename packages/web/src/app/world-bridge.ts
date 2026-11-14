@@ -91,6 +91,8 @@ export class WorldHost {
     private readonly settings: () => WorldSettings,
     private readonly callbacks: WorldCallbacks,
     private readonly vitals: (slotId: string) => VitalsSnapshot | null,
+    /** Which slot a live screen shows now (`WorldOptions.screenSlot`: the world model's answer; undefined: none to ask). */
+    private readonly screenSlot: (placementId: string) => string | null | undefined = () => undefined,
   ) {}
 
   static keyOf(spec: WorldSpec): string {
@@ -113,6 +115,7 @@ export class WorldHost {
         saved,
         callbacks: this.callbacks,
         vitals: (slotId) => this.vitals(slotId),
+        screenSlot: (placementId) => this.screenSlot(placementId),
         // equipment models are served files (`/local-assets/models/…`): the single-file build draws voxels
         ...(STANDALONE ? { models: false as const } : {}),
       });

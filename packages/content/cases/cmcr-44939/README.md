@@ -469,6 +469,8 @@ For a clinician of the specialty (paediatric oncology, with paediatric rheumatol
   antibiotic responses are true in every phase; the steroid-details answer no longer presumes she still takes them;
   NHC 2019 (FISH, PCR where the laboratory allows), NICE NG12 1.11.3 ("consider") and WHO 2020 wording corrected;
   the admission feedback no longer mentions counts not yet read; a less leading hint for the first objective.
+- Integration (2026-11-14): `open-excision` names where it is done (`destination` {"roomKind": "operating-room"}: the operating theatre), so
+  the act can be carried out in the 3D world, where every act of a case must be possible in its own facility.
 
 ### 1.0.0
 

@@ -16,14 +16,14 @@
  * awareness), what was said to them and their own tasks. The scenario's hidden set-up (where an item really
  * is, who is on a break) reaches the policies only through the world.
  */
-import { compareCount, countLedger, countStatus, t, type CaseTeam, type Condition, type CountRecord, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
+import { compareCount, countLedger, countStatus, t, type CaseTeam, type Condition, type CountRecord, type TeamInform, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, RANGES, type ActorState, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg } from "../../protocol.js";
 import type { SurgicalCount } from "../count.js";
 import { both, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterAct, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
 import { validTeamCheckpoint } from "./checkpoint.js";
-import { TEAM_STATE_VERSION, type ActionReceipt, type KnownNeed, type MemberId, type MemberState, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
+import { TEAM_STATE_VERSION, type ActionReceipt, type KnownInform, type KnownNeed, type MemberId, type MemberState, type Observation, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
 /** What the scheduler needs from the session. */
 export interface TeamHost {
@@ -47,6 +47,15 @@ export interface TeamHost {
   count(): SurgicalCount | null;
   /** The case's count record now. */
   record(): CountRecord | undefined;
+  /** A history item of the case (docs/TEAM.md §4.5): what the team calls it (its question) and its recorded answer. */
+  history?(id: string): { question: Bilingual; answer: Bilingual } | null;
+  /** What the team calls an intervention of the case. */
+  interventionName?(id: string): Bilingual | null;
+  /**
+   * Record in the case that a history item's answer reached `to` through the team (the read-back confirmed): the
+   * clinician in charge knows it now (engine `ask` with `via: "team"`). True when recorded.
+   */
+  relay?(history: string, to: MemberId): boolean;
 }
 
 /** Closure has begun (the count's hold is broken when this holds before the count is settled). */
@@ -144,6 +153,36 @@ export class TeamScheduler {
       const by = this.noticer(need);
       if (by) this.observe(by, "need", need.id, `${need.for} needs ${need.item}`);
     }
+    this.prepareInforms();
+  }
+
+  /**
+   * Information the scenario routes through the team (docs/TEAM.md §4.5): the member who holds it knows it from the
+   * start (they learned it before: an `info` observation of the history item); the need is noticed once its `when`
+   * holds (thrombolysis being considered), by the member who circulates (or `noticedBy`).
+   */
+  private prepareInforms(): void {
+    const informs = this.scenario?.inform ?? [];
+    if (!informs.length) return;
+    for (const n of informs) {
+      const holder = this.member(memberActor(n.heldBy));
+      if (holder && !holder.memory.some((o) => o.kind === "info" && o.ref === n.history)) this.observe(holder, "info", n.history, `holds ${n.history}`);
+    }
+    const posted = (this.state.informed ??= []);
+    for (const n of informs) {
+      if (posted.includes(n.id) || (n.when && !this.host.holds(n.when))) continue;
+      posted.push(n.id);
+      const by = n.noticedBy ? this.member(memberActor(n.noticedBy)) : this.circulator();
+      if (by) this.observe(by, "inform", n.id, `${n.for} needs ${n.history} (held by ${n.heldBy})`);
+    }
+  }
+
+  /** Information needs a member noticed that no task of theirs covers yet. */
+  private pendingInforms(m: MemberState): KnownInform[] {
+    const noticed = new Set(m.memory.filter((o) => o.kind === "inform").map((o) => o.ref));
+    return (this.scenario?.inform ?? [])
+      .filter((n) => noticed.has(n.id) && !this.state.tasks.some((t) => t.owner === m.id && t.kind === "inform" && t.need === n.id))
+      .map((n: TeamInform) => ({ need: n, forId: memberActor(n.for), holderId: memberActor(n.heldBy), noticedBy: m.id }));
   }
 
   /** Post a need now (a request made in the room: "I need a needle holder"). */
@@ -197,13 +236,20 @@ export class TeamScheduler {
     return n;
   }
 
-  /** Something was set in motion, and all of it ended: every posted need's supply task, and the count once due. */
+  /** Something was set in motion, and all of it ended: every posted need's supply task, every information need's task, and the count once due. */
   settled(): boolean {
     const posted = this.state.posted;
+    const informed = this.state.informed ?? [];
     const ledger = this.state.count;
     const needsDone = posted.every((need) => this.state.tasks.some((t) => t.kind === "supply" && t.need === need && TERMINAL.has(t.status)));
+    const informsDone = informed.every((need) => this.state.tasks.some((t) => t.kind === "inform" && t.need === need && TERMINAL.has(t.status)));
     const countDone = !ledger || ledger.dueRound === undefined || ledger.settledRound !== undefined;
-    return (posted.length > 0 || ledger?.dueRound !== undefined) && needsDone && countDone;
+    return (posted.length > 0 || informed.length > 0 || ledger?.dueRound !== undefined) && needsDone && informsDone && countDone;
+  }
+
+  /** Could anything set the team to work now: a scenario assigned, a count to keep, or something asked of it? */
+  hasWork(): boolean {
+    return this.state.scenario !== null || !!this.config.count || this.state.posted.length > 0 || (this.state.informed?.length ?? 0) > 0;
   }
 
   /** One round: each awakened member proposes and carries out at most one thing. True when something was said or done. */
@@ -214,6 +260,11 @@ export class TeamScheduler {
     let busy = false;
     for (const member of this.order()) {
       if (signal.aborted) break;
+      // the member who circulates, posted outside the team's room (the ED nurse at the station), comes to it first
+      if (this.outside(member)) {
+        busy = (await this.join(member, signal)) || busy;
+        continue;
+      }
       const view = this.view(member);
       const rules = propose(view);
       const p = this.host.decide ? await this.host.decide(member, view, rules, signal) : rules;
@@ -224,6 +275,45 @@ export class TeamScheduler {
     if (this.state.lifecycle === "active" && this.settled()) this.state.lifecycle = "completed";
     this.host.emit({ type: "team_event", event: { kind: "status", round: this.state.round, autonomy: this.autonomy, surgeon: this.surgeon } });
     return busy;
+  }
+
+  /** A member who circulates whose body is outside the team's room (not a relief colleague, not on a break). */
+  private outside(member: MemberState): boolean {
+    if (!member.duties.includes("circulate") || member.relief || member.absent) return false;
+    const room = this.host.world().actor(member.id)?.room;
+    return room !== this.config.room;
+  }
+
+  /**
+   * Walk to the team's room, under a stable action id (`team.join.<staff>.<n>`), with a receipt like any act. True when
+   * the walk was done (a refused walk is tried again in a later round, not again and again in this one).
+   */
+  private async join(member: MemberState, signal: AbortSignal): Promise<boolean> {
+    const n = this.state.receipts.filter((r) => r.actor === member.id && r.task === "join").length + 1;
+    const actionId = `team.join.${member.staff}.${n}`;
+    const w = this.host.world();
+    let r: WorldActionResult | null = this.state.completed.includes(actionId) ? w.feedback(actionId) : null;
+    r ??= await this.host.act({ actionId, actorId: member.id, operation: "navigate", goal: { kind: "room", id: this.config.room }, onBehalfOf: member.id }, signal);
+    if (r.status === "completed" && !this.state.completed.includes(actionId)) this.state.completed.push(actionId);
+    const receipt: ActionReceipt = {
+      id: actionId,
+      actor: member.id,
+      operation: "navigate",
+      target: `room:${this.config.room}`,
+      initiator: member.id,
+      outcome: r.status === "completed" ? "completed" : r.status === "cancelled" ? "cancelled" : "failed",
+      ...(r.errorCode ? { code: r.errorCode } : {}),
+      message: r.message.split("\n")[0] ?? "",
+      worldVersion: w.version,
+      at: this.host.clock(),
+      ...(r.elapsedSeconds ? { seconds: r.elapsedSeconds } : {}),
+      round: this.state.round,
+      task: "join",
+    };
+    this.state.receipts.push(receipt);
+    this.observe(member, "receipt", receipt.id, `navigate ${receipt.outcome}`);
+    this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
+    return r.status === "completed";
   }
 
   /** The count's timing: when it fell due; closure on an open count (read from the case's count record: its unsafe progression). */
@@ -266,7 +356,7 @@ export class TeamScheduler {
       const unread = m.inbox.map((id) => this.state.messages.findIndex((x) => x.id === id)).filter((i) => i >= 0);
       if (unread.length) return [0, Math.min(...unread), m.id];
       if (this.state.tasks.some((t) => t.owner === m.id && !TERMINAL.has(t.status))) return [1, 0, m.id];
-      if (this.pendingNeeds(m).length || this.countDue(m)) return [2, 0, m.id];
+      if (this.pendingNeeds(m).length || this.pendingInforms(m).length || this.countDue(m)) return [2, 0, m.id];
       return [3, 0, m.id];
     };
     return this.state.members
@@ -406,6 +496,11 @@ export class TeamScheduler {
         const task = this.task(patch.id);
         if (task) {
           Object.assign(task, patch.set);
+          // information read back and confirmed: recorded in the case as known to the person (once), at that minute
+          if (task.kind === "inform" && task.status === "done" && task.verified && !task.relayed) {
+            const at = this.host.clock();
+            if (this.host.relay?.(task.item, task.for)) task.relayed = { at, round: this.state.round };
+          }
           this.emitTask(task);
         }
       }
@@ -521,6 +616,10 @@ export class TeamScheduler {
       inbox: me.inbox.map((id) => this.state.messages.find((m) => m.id === id)!).filter(Boolean),
       tasks: this.state.tasks.filter((t) => t.owner === me.id),
       needs: this.pendingNeeds(me),
+      informs: this.pendingInforms(me),
+      // what this member learned before (the scenario's holder): the case's recorded answer, never a new fact
+      knows: (info) => (me.memory.some((o) => o.kind === "info" && o.ref === info) ? (this.host.history?.(info)?.answer ?? null) : null),
+      actName: (id) => this.host.interventionName?.(id) ?? both(id),
       colleagues,
       items,
       heldBy: (who, type) => {
@@ -533,7 +632,7 @@ export class TeamScheduler {
       // the world's own measure (to the person's footprint), as a hand-over checks it
       near: (who) => (w.find(me.id, { kind: ["actor", "staff"], maxDistance: RANGES.contact + 1 }).find((e) => e.id === who)?.distance ?? Infinity) <= RANGES.contact,
       claims: this.state.claims,
-      name: (who) => (who === PRIMARY_ACTOR ? SURGEON_NAME : both(w.entity(who)?.name ?? who)),
+      name: (who) => this.memberName(who),
       itemName: (type) => this.itemName(type),
       newId: (prefix) => `${prefix}-${++this.state.seq}`,
     };
@@ -551,7 +650,7 @@ export class TeamScheduler {
     return this.state.tasks.find((t) => t.id === id);
   }
 
-  private observe(m: MemberState, kind: "need" | "message" | "receipt" | "seen" | "holder", ref: string, fact: string): void {
+  private observe(m: MemberState, kind: Observation["kind"], ref: string, fact: string): void {
     m.memory.push({ id: `obs-${++this.state.seq}`, round: this.state.round, at: this.host.clock(), kind, ref, fact });
   }
 
@@ -559,8 +658,22 @@ export class TeamScheduler {
     this.host.emit({ type: "team_event", event: { kind: "task", task: structuredClone(task) } });
   }
 
-  /** What the team calls an item type aloud: a need's `name`, else the type's name without its details. */
+  /**
+   * What the team calls a member aloud: the case team's `name` for them ("the doctor" in an ED team), else the
+   * learner as "the surgeon" and anyone else by their name.
+   */
+  memberName(id: MemberId): Bilingual {
+    const ref = id === PRIMARY_ACTOR ? "surgeon" : id.startsWith("staff:") ? id.slice("staff:".length) : id;
+    const named = [...this.config.members, ...(this.scenario?.relief ?? [])].find((m) => m.staff === ref)?.name;
+    if (named) return both(named);
+    if (id === PRIMARY_ACTOR) return SURGEON_NAME;
+    return both(this.host.world().entity(id)?.name ?? id);
+  }
+
+  /** What the team calls an item type aloud: a need's `name`, else the type's name without its details; information: its `name`, else the history item's question. */
   private itemName(type: string): Bilingual {
+    const info = this.scenario?.inform?.find((n) => n.history === type);
+    if (info) return info.name ? both(info.name) : (this.host.history?.(type)?.question ?? both(type));
     const named = this.needs().find((n) => n.item === type && n.name);
     if (named?.name) return both(named.name);
     const e = this.host.world().entities().find((x) => x.equipmentType?.id === type);
@@ -569,7 +682,7 @@ export class TeamScheduler {
   }
 
   private displayName(id: MemberId): string {
-    if (id === PRIMARY_ACTOR) return t(SURGEON_NAME, this.host.locale);
+    if (id === PRIMARY_ACTOR) return t(this.memberName(id), this.host.locale);
     const e = this.host.world().entity(id);
     return e ? t(e.name, this.host.locale) : id;
   }
