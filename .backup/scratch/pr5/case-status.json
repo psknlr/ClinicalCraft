@@ -160,7 +160,22 @@
   "reviewed": true
  },
  "cmcr-1322444": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "critical": 3,
+   "major": 7,
+   "minor": 11
+  },
+  "reviewed": true
  },
  "cmcr-138892": {
   "allChecksPass": true,
@@ -585,7 +600,21 @@
   "reviewed": true
  },
  "cmcr-44939": {
-  "authored": true
+  "allChecksPass": true,
+  "authored": true,
+  "checks": {
+   "case-check": true,
+   "contract": true,
+   "in-world": true,
+   "validate": true,
+   "verify": true
+  },
+  "committed": true,
+  "findings": {
+   "major": 7,
+   "minor": 13
+  },
+  "reviewed": true
  },
  "cmcr-561144": {
   "allChecksPass": true,

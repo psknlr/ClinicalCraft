@@ -89,8 +89,8 @@
       "en": "Start single antiplatelet therapy once imaging has excluded haemorrhage, explain why an unruptured aneurysm is no reason to withhold it (ESO 2022), and reject anticoagulation, intracranial stenting as a first treatment and long-term dual antiplatelet therapy (AHA/ASA 2021)."
     },
     {
-      "zh-CN": "通过神经血管多学科团队处理青年人颅内椎动脉动脉瘤：明确性质、影像随访，只在增大、形态改变或出血时干预，绝不依据过时的造影决定治疗。",
-      "en": "Manage an intracranial vertebral artery aneurysm in a young adult through a neurovascular team — characterise it, follow it with imaging and repair it only for growth, change or bleeding — and never plan treatment on an outdated angiogram."
+      "zh-CN": "通过神经血管多学科团队处理青年人颅内椎动脉动脉瘤：明确性质、影像随访，权衡修复的利弊（增大时应修复），绝不依据过时的造影决定治疗。",
+      "en": "Manage an intracranial vertebral artery aneurysm in a young adult through a neurovascular team — characterise it, follow it with imaging and weigh repair against its risks, growth calling for repair — and never plan treatment on an outdated angiogram."
     },
     {
       "zh-CN": "把基底动脉主干闭塞、后交通动脉侧支供血和动脉瘤不再显影的复查造影解读为病变进展而非痊愈，只对新发急性缺损应用急性再灌注标准（AHA/ASA 2026）。",
@@ -175,7 +175,7 @@
         "en": "On admission"
       },
       "description": {
-        "zh-CN": "他因反复头痛、眩晕和走路不稳住院，接受进一步检查。",
+        "zh-CN": "他因3个月来反复头痛、眩晕和走路不稳住院，接受进一步检查。",
         "en": "He has been admitted for further assessment after three months of recurrent headache, dizziness and unsteady walking."
       },
       "learnerSwitchable": false
@@ -357,7 +357,7 @@
         "repeat"
       ],
       "source": {
-        "zh-CN": "报告（1.0.0版摘录）：主诉（头痛、眩晕和行走不稳反复三个月）与起病（三个月前头痛、眩晕、走路不稳伴左侧肢体无力）",
+        "zh-CN": "报告（1.0.0版摘录）：主诉（头痛、眩晕和行走不稳反复三个月）与起病（三个月前头痛、眩晕、走路不稳伴左侧肢体无力）；他的口吻为教学改写",
         "en": "Report (version 1.0.0 extract): chief complaint (recurrent headache, dizziness and unsteady gait for three months) and onset (headache, dizziness, gait instability and left-sided limb weakness three months earlier); his words are a teaching adaptation"
       }
     },
@@ -2639,6 +2639,20 @@
           "antiplatelet therapy"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "氯吡格雷",
+          "波立维",
+          "双抗",
+          "双联"
+        ],
+        "en": [
+          "clopidogrel",
+          "plavix",
+          "dual antiplatelet",
+          "two antiplatelet"
+        ]
+      },
       "dose": {
         "zh-CN": "阿司匹林100 mg口服，每日1次",
         "en": "Aspirin 100 mg orally once daily"
@@ -2676,11 +2690,84 @@
       },
       "harm": {
         "zh-CN": "还没有看过他的脑部影像：他有头痛，颅内出血尚未排除。AHA/ASA 2021指南先用CT或MRI确认缺血性脑血管病（1类推荐），再按非心源性卒中开始抗血小板治疗（1类推荐）。",
-        "en": "His brain imaging has not been reviewed: he has headaches, and intracranial haemorrhage has not been excluded. AHA/ASA 2021 confirms ischaemic cerebrovascular disease on CT or MRI first (COR 1) and then starts antiplatelet therapy for non-cardioembolic stroke (COR 1)."
+        "en": "His brain imaging has not been reviewed: he has headaches, and intracranial haemorrhage has not been excluded. AHA/ASA 2021 recommends CT or MRI to confirm ischaemic cerebrovascular disease (COR 1) and antiplatelet therapy for a non-cardioembolic stroke (COR 1)."
       },
       "response": {
         "zh-CN": "已开始服用阿司匹林；本病例不模拟其效果。",
         "en": "Aspirin started; the case does not simulate its effect."
+      }
+    },
+    {
+      "id": "clopidogrel",
+      "name": {
+        "zh-CN": "氯吡格雷（抗血小板）",
+        "en": "Clopidogrel (antiplatelet)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "氯吡格雷",
+          "波立维",
+          "硫酸氢氯吡格雷"
+        ],
+        "en": [
+          "clopidogrel",
+          "plavix"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "阿司匹林",
+          "双抗",
+          "双联"
+        ],
+        "en": [
+          "aspirin",
+          "dual antiplatelet",
+          "two antiplatelet"
+        ]
+      },
+      "dose": {
+        "zh-CN": "氯吡格雷75 mg口服，每日1次",
+        "en": "Clopidogrel 75 mg orally once daily"
+      },
+      "doseSpec": {
+        "amount": 75,
+        "unit": "mg",
+        "route": "PO"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "critical": false,
+      "indicatedWhen": {
+        "all": [
+          {
+            "read": "mri-brain",
+            "phase": "work-up"
+          },
+          {
+            "not": {
+              "read": "repeat-angiography",
+              "phase": "repeat"
+            }
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "mri-brain",
+          "phase": "work-up"
+        }
+      },
+      "harm": {
+        "zh-CN": "还没有看过他的脑部影像：他有头痛，颅内出血尚未排除。AHA/ASA 2021指南推荐先用CT或MRI确认缺血性脑血管病（1类推荐）；确认之后，氯吡格雷75 mg/d与阿司匹林同为非心源性卒中的一线单药抗血小板选择（1类推荐）。",
+        "en": "His brain imaging has not been reviewed: he has headaches, and intracranial haemorrhage has not been excluded. AHA/ASA 2021 recommends CT or MRI to confirm ischaemic cerebrovascular disease (COR 1); once it is confirmed, clopidogrel 75 mg daily is, like aspirin, a first-line single antiplatelet drug after a non-cardioembolic stroke (COR 1)."
+      },
+      "response": {
+        "zh-CN": "已开始服用氯吡格雷；本病例不模拟其效果。",
+        "en": "Clopidogrel started; the case does not simulate its effect."
       }
     },
     {
@@ -2936,8 +3023,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "静脉溶栓用于发病数小时内的急性缺血性卒中：AHA/ASA 2026指南推荐在发病4.5小时内进行（灌注影像显示可挽救脑组织时可延至9小时），《脑血管病防治指南（2024年版）》为4.5小时内、或结合多模影像评估至24小时。他这次住院的记录中没有任何在时间窗内的急性缺损，溶栓只会带来出血风险而没有获益。",
-        "en": "Thrombolysis treats an acute ischaemic stroke within hours of onset: AHA/ASA 2026 recommends it within 4.5 hours (up to 9 hours only when perfusion imaging shows salvageable tissue), and the 2024 Chinese national cerebrovascular disease guideline uses 4.5 hours, or up to 24 hours with multimodal imaging. Nothing in this admission records an acute deficit inside such a window, so it would add bleeding risk with no benefit."
+        "zh-CN": "静脉溶栓用于发病数小时内的急性缺血性卒中：AHA/ASA 2026指南推荐在发病4.5小时内进行（1类）；超过4.5小时或发病时间不明时，只有经影像筛选才考虑——灌注影像显示可挽救脑组织时至9小时（2a类），无法取栓、伴可挽救脑组织的大血管闭塞至24小时（2b类）。《脑血管病防治指南（2024年版）》为4.5小时内、或结合多模影像评估至24小时。他这次住院的记录中没有任何在时间窗内的急性缺损，溶栓只会带来出血风险而没有获益。",
+        "en": "Thrombolysis treats an acute ischaemic stroke within hours of onset: AHA/ASA 2026 recommends it within 4.5 hours (COR 1); later, or with an unknown onset, only when imaging selects the patient — to 9 hours with salvageable tissue on perfusion imaging (COR 2a), or to 24 hours for a large-vessel occlusion with salvageable tissue that cannot have thrombectomy (COR 2b). The 2024 Chinese national cerebrovascular disease guideline uses 4.5 hours, or up to 24 hours with multimodal imaging. Nothing in this admission records an acute deficit inside such a window, so it would add bleeding risk with no benefit."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -2986,8 +3073,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "血管内治疗针对造成功能缺损的急性大动脉闭塞，而且要在时间窗内（AHA/ASA 2026指南）；以支架作为颅内动脉狭窄的首选治疗是有害的（AHA/ASA 2021指南，3类：有害）。他没有任何记录在案的新发急性缺损，手术只会让他承担围手术期卒中和死亡的风险，而没有预期获益。",
-        "en": "Endovascular treatment is for an acute large-artery occlusion causing a deficit, inside its time window (AHA/ASA 2026), and stenting an intracranial stenosis as the first treatment is harmful (AHA/ASA 2021, COR 3: Harm). No new acute deficit is recorded for him, so the procedure would expose him to periprocedural stroke and death with no expected benefit."
+        "zh-CN": "血管内治疗针对造成功能缺损的急性大动脉闭塞，而且要在时间窗内（AHA/ASA 2026指南）；即使是50%–99%的症状性颅内大动脉狭窄，AHA/ASA 2021指南也把球囊扩张和支架作为初始治疗列为有害（3类：有害），而他的狭窄程度和性质都没有明确。他没有任何记录在案的新发急性缺损，手术只会让他承担围手术期卒中和死亡的风险，而没有预期获益。",
+        "en": "Endovascular treatment is for an acute large-artery occlusion causing a deficit, inside its time window (AHA/ASA 2026); and even for a symptomatic 50–99% stenosis of a major intracranial artery, AHA/ASA 2021 rates angioplasty and stenting as an initial treatment as harmful (COR 3: Harm) — the degree and nature of his stenoses are not established. No new acute deficit is recorded for him, so the procedure would expose him to periprocedural stroke and death with no expected benefit."
       },
       "response": {
         "zh-CN": "已安排血管内治疗。",
@@ -3084,8 +3171,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "栓塞应由神经血管团队依据当前影像决定：ESO 2022指南建议在多学科团队中评估未破裂动脉瘤、影像随访、增大时再修复，并权衡破裂风险与治疗风险；颅内动脉夹层出血后ESO 2021指南建议尽早修复，而仅表现为头痛者，其专家建议除非增大或出现压迫，否则不做修复。他没有记录出血、增大或压迫，病变性质也未明确；与他现在的血管已不相符的旧造影不能作为治疗依据。",
-        "en": "Embolisation is a neurovascular team's decision on current imaging: ESO 2022 suggests assessing an unruptured aneurysm in a multidisciplinary setting, monitoring it and repairing it if it grows, weighing rupture risk against treatment risk; for an intracranial dissection, ESO 2021 suggests early repair after a bleed, and its experts advise against repairing a headache-only one unless it grows or compresses. No bleeding, growth or compression is recorded for him and the lesion's nature is not established, and an angiogram that no longer matches his arteries is no basis for treatment."
+        "zh-CN": "栓塞应由神经血管团队依据当前影像决定：ESO 2022指南建议在多学科团队中评估未破裂动脉瘤、影像随访、增大时再修复，并权衡破裂风险与治疗风险；颅内动脉夹层出血后ESO 2021指南建议尽早修复，而仅表现为头痛者，其专家建议除非增大或出现压迫，否则不做修复。他没有记录出血、增大或压迫，病变性质也未明确。",
+        "en": "Embolisation is a neurovascular team's decision on current imaging: ESO 2022 suggests assessing an unruptured aneurysm in a multidisciplinary setting, monitoring it and repairing it if it grows, weighing rupture risk against treatment risk; for an intracranial dissection, ESO 2021 suggests early repair after a bleed, and its experts advise against repairing a headache-only one unless it grows or compresses. No bleeding, growth or compression is recorded for him, and the lesion's nature is not established."
       },
       "response": {
         "zh-CN": "已安排栓塞治疗。",
@@ -3290,12 +3377,12 @@
     {
       "id": "obj-prevention",
       "title": {
-        "zh-CN": "制定二级预防方案",
-        "en": "Plan his secondary prevention"
+        "zh-CN": "制定治疗方案",
+        "en": "Plan his treatment"
       },
       "short": {
-        "zh-CN": "预防",
-        "en": "Prevention"
+        "zh-CN": "治疗",
+        "en": "Treatment"
       },
       "hint": {
         "zh-CN": "什么能防止他再次卒中？开始之前要确认什么？造影上的异常该由谁、依据什么影像来决定？",
@@ -3314,7 +3401,14 @@
             "decided": "aneurysm-plan"
           },
           {
-            "intervened": "aspirin"
+            "any": [
+              {
+                "intervened": "aspirin"
+              },
+              {
+                "intervened": "clopidogrel"
+              }
+            ]
           },
           {
             "intervened": "neurovascular-mdt"
@@ -3343,12 +3437,12 @@
     {
       "id": "obj-repeat-outcome",
       "title": {
-        "zh-CN": "解读再次造影并回顾结局",
-        "en": "Interpret the repeat angiogram and review the outcome"
+        "zh-CN": "解读后续结果并回顾结局",
+        "en": "Interpret the later results and review the outcome"
       },
       "short": {
-        "zh-CN": "再次造影与结局",
-        "en": "Repeat and outcome"
+        "zh-CN": "后续结果",
+        "en": "Later results"
       },
       "hint": {
         "zh-CN": "两次造影之间发生了什么变化？一个不再显影的病变就等于好了吗？最后把原报告的治疗和你的方案比一比。",
@@ -3566,7 +3660,7 @@
       "id": "antithrombotic",
       "prompt": {
         "zh-CN": "MRI：右侧小脑梗死。首次DSA：左椎动脉颅内段5×2 mm动脉瘤；右小脑上/后下动脉起始段及左大脑后动脉狭窄。你现在开始哪种二级预防治疗？",
-        "en": "MRI: right cerebellar infarct. First DSA: a 5×2 mm aneurysm of the intracranial left vertebral artery; stenosis at the origins of the right superior/posterior inferior cerebellar arteries and of the left posterior cerebral artery. Which secondary-prevention treatment do you start now?"
+        "en": "MRI: right cerebellar infarct. First DSA: a 5×2 mm aneurysm of the intracranial left vertebral artery; stenosis at the origins of the right superior/posterior inferior cerebellar arteries; stenosis of the left posterior cerebral artery. Which secondary-prevention treatment do you start now?"
       },
       "kind": "single",
       "requires": {
@@ -3594,8 +3688,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。CT或MRI确认缺血性卒中且无出血后，AHA/ASA 2021指南推荐非心源性卒中首选抗血小板而非抗凝（1类），可用阿司匹林50–325 mg/d或氯吡格雷75 mg/d（1类）；《脑血管病防治指南（2024年版）》也以阿司匹林或氯吡格雷单药为首选。ESO 2022指南不建议因未破裂动脉瘤停用为其他适应证（如卒中预防）服用的阿司匹林。加用氯吡格雷90天只适用于近期（30天内）70%–99%的颅内动脉狭窄——他的狭窄程度没有记录。",
-            "en": "Right. Once CT or MRI has confirmed an ischaemic stroke without haemorrhage, AHA/ASA 2021 recommends antiplatelet therapy rather than anticoagulation for non-cardioembolic stroke (COR 1) — aspirin 50–325 mg daily or clopidogrel 75 mg (COR 1); the 2024 Chinese national cerebrovascular disease guideline also names aspirin or clopidogrel alone as first choice. ESO 2022 does not suggest stopping aspirin taken for another indication, such as stroke prevention, because of an unruptured aneurysm. Adding clopidogrel for 90 days applies only to a recent (≤ 30 days) 70–99% intracranial stenosis — the degree of his stenoses is not recorded."
+            "zh-CN": "正确。CT或MRI确认缺血性卒中且无出血后，AHA/ASA 2021指南推荐非心源性卒中首选抗血小板而非抗凝（1类），可用阿司匹林50–325 mg/d或氯吡格雷75 mg/d（1类）；《脑血管病防治指南（2024年版）》也以阿司匹林或氯吡格雷单药为首选。ESO 2022指南不建议因未破裂动脉瘤停用为其他适应证（如卒中预防）服用的阿司匹林。短期双联抗血小板的适应证更窄，他的记录都不能确立：发病7天内开始、持续21–90天的近期轻型卒中或高危TIA（1类），或近期（30天内）70%–99%颅内动脉狭窄所致卒中、最长90天（2a类）——他梗死的时间和狭窄的程度都没有记录。",
+            "en": "Right. Once CT or MRI has confirmed an ischaemic stroke without haemorrhage, AHA/ASA 2021 recommends antiplatelet therapy rather than anticoagulation for non-cardioembolic stroke (COR 1) — aspirin 50–325 mg daily or clopidogrel 75 mg (COR 1); the 2024 Chinese national cerebrovascular disease guideline also names aspirin or clopidogrel alone as first choice. ESO 2022 does not suggest stopping aspirin taken for another indication, such as stroke prevention, because of an unruptured aneurysm. Short-term dual antiplatelet therapy has narrower indications that his record does not establish: a recent minor stroke or high-risk TIA, started within 7 days of onset and given for 21–90 days (COR 1), or a recent (≤ 30 days) stroke from a 70–99% intracranial stenosis, for up to 90 days (COR 2a) — the timing of his infarct and the degree of his stenoses are not recorded."
           }
         },
         {
@@ -3639,8 +3733,8 @@
     {
       "id": "aneurysm-plan",
       "prompt": {
-        "zh-CN": "首次DSA显示左椎动脉颅内段5×2 mm动脉瘤，同时后循环其他动脉有狭窄，并有小脑梗死。现在你怎么处理这个动脉瘤？",
-        "en": "The first DSA shows a 5×2 mm aneurysm of the intracranial left vertebral artery, alongside stenoses in other posterior arteries and a cerebellar infarct. How do you manage the aneurysm now?"
+        "zh-CN": "首次DSA显示左椎动脉颅内段5×2 mm动脉瘤，后循环其他动脉有狭窄；MRI示小脑梗死。现在你怎么处理这个动脉瘤？",
+        "en": "The first DSA shows a 5×2 mm aneurysm of the intracranial left vertebral artery and stenoses in other posterior-circulation arteries; the MRI shows a cerebellar infarct. How do you manage the aneurysm now?"
       },
       "kind": "single",
       "requires": {
@@ -3663,13 +3757,13 @@
         {
           "id": "mdt-characterise-monitor",
           "text": {
-            "zh-CN": "神经血管团队评估：结合其他动脉判断其性质（夹层性或囊状），继续抗血小板，复查血管影像，增大、改变或出血时才处理",
-            "en": "Neurovascular team review: characterise it (dissecting or saccular) with his other arteries, keep antiplatelet therapy and repeat vessel imaging; repair only for growth, change or bleeding"
+            "zh-CN": "神经血管团队评估：结合其他动脉判断性质（夹层或囊状），继续抗血小板，复查血管影像；团队权衡是否修复，增大时修复",
+            "en": "Neurovascular team review: characterise it (dissecting or saccular) with his other arteries, keep antiplatelets and repeat vessel imaging; the team weighs repair, and growth calls for it"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。如为囊状动脉瘤，ESO 2022指南建议在多学科团队中评估、影像随访观察是否增大、增大时修复；5×2 mm的病变出现在伴缺血表现和多处狭窄的年轻人身上，也可能是夹层性的——ESO 2021指南指出，未破裂颅内动脉夹层是否修复缺乏证据，专家对仅表现为头痛者建议除非随访中增大或出现压迫，否则不做血管内或手术治疗。抗血小板治疗继续。",
-            "en": "Right. If it is saccular, ESO 2022 suggests assessment in a multidisciplinary setting, imaging follow-up for growth and repair if it grows. A 5×2 mm lesion in a young man with ischaemia and stenoses elsewhere may instead be dissecting: ESO 2021 found no evidence to guide repair of an unruptured intracranial dissection, and its experts advised against endovascular or surgical treatment of the headache-only form unless it enlarges on follow-up or compresses. Antiplatelet therapy continues."
+            "zh-CN": "正确。如为囊状动脉瘤，ESO 2022指南建议由多学科团队评估——权衡其大小、部位、形态和他的其他危险因素与修复本身的风险——影像随访观察是否增大，增大时修复；5×2 mm的病变出现在伴缺血表现和多处狭窄的年轻人身上，也可能是夹层性的——ESO 2021指南指出，未破裂颅内动脉夹层是否修复缺乏证据，专家对仅表现为头痛者建议除非随访中增大或出现压迫，否则不做血管内或手术治疗。抗血小板治疗继续。",
+            "en": "Right. If it is saccular, ESO 2022 suggests assessment in a multidisciplinary setting that weighs its size, site and shape and his other risk factors against the risks of repair, imaging follow-up for growth, and repair if it grows. A 5×2 mm lesion in a young man with ischaemia and stenoses elsewhere may instead be dissecting: ESO 2021 found no evidence to guide repair of an unruptured intracranial dissection, and its experts advised against endovascular or surgical treatment of the headache-only form unless it enlarges on follow-up or compresses. Antiplatelet therapy continues."
           }
         },
         {
@@ -3692,8 +3786,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "颅内椎动脉开颅手术有损伤后组颅神经和脑干的实际风险；把抗血小板治疗推迟到术后，会让刚发生梗死的后循环失去保护。记录中没有出血、增大或压迫，没有需要紧急修复的理由。",
-            "en": "Open surgery on the intracranial vertebral artery carries a real risk of lower cranial nerve and brainstem injury, and deferring antiplatelet therapy until afterwards leaves a recently infarcted posterior circulation unprotected. Nothing recorded — no bleeding, growth or compression — calls for urgent repair."
+            "zh-CN": "颅内椎动脉开颅手术有损伤后组颅神经和脑干的实际风险；把抗血小板治疗推迟到术后，会让已经发生过梗死的后循环失去保护。记录中没有出血、增大或压迫，没有需要紧急修复的理由。",
+            "en": "Open surgery on the intracranial vertebral artery carries a real risk of lower cranial nerve and brainstem injury, and deferring antiplatelet therapy until afterwards leaves a posterior circulation that has already infarcted unprotected. Nothing recorded — no bleeding, growth or compression — calls for urgent repair."
           }
         },
         {
@@ -3729,8 +3823,8 @@
         {
           "id": "occlusion-not-cure",
           "text": {
-            "zh-CN": "不是痊愈：它在新发现的基底动脉闭塞旁不再显影。立即复查——有新缺损走急性卒中流程，否则继续抗血小板和随访",
-            "en": "Not a cure: it stops filling beside a newly documented basilar occlusion. Re-examine him now: a new deficit means the acute stroke pathway; if none, continue antiplatelet therapy and follow-up"
+            "zh-CN": "不是痊愈：不显影与新发现的基底动脉闭塞同时出现。立即复查——有新缺损走急性卒中流程，否则继续抗血小板和随访",
+            "en": "Not a cure: it stops filling alongside a newly documented basilar occlusion. Re-examine him now: a new deficit means the acute stroke pathway; if none, continue antiplatelets and follow-up"
           },
           "correct": true,
           "feedback": {
@@ -3753,13 +3847,13 @@
         {
           "id": "reperfuse-now",
           "text": {
-            "zh-CN": "基底动脉闭塞无论何时发现都是急症：立即静脉溶栓，并直接送介入室做基底动脉取栓和支架置入",
-            "en": "A basilar occlusion is an emergency whenever it is found: give IV thrombolysis now and take him straight to the angiography suite for basilar thrombectomy and stenting"
+            "zh-CN": "新发现的基底动脉闭塞就是卒中急症：立即静脉溶栓，并直接送介入室做基底动脉取栓和支架置入",
+            "en": "A newly found basilar occlusion is a stroke emergency: give IV thrombolysis now and take him straight to the angiography suite for basilar thrombectomy and stenting"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "AHA/ASA 2026指南推荐发病4.5小时内静脉溶栓（灌注影像支持时至9小时），基底动脉闭塞在发病24小时内、NIHSS≥10且PC-ASPECTS≥6时取栓。这里没有任何证据表明是急性事件——没有记录新的缺损，闭塞时间不明，且已有侧支供血——两者都只会让他承担出血和操作风险而没有预期获益。",
-            "en": "AHA/ASA 2026 recommends IV thrombolysis within 4.5 hours of onset (to 9 hours with perfusion imaging) and thrombectomy for a basilar occlusion within 24 hours with NIHSS ≥ 10 and PC-ASPECTS ≥ 6. Nothing here establishes an acute event — no recorded new deficit, an occlusion of unknown age, collateral supply already present — so both expose him to haemorrhage and procedural risk with no expected benefit."
+            "zh-CN": "AHA/ASA 2026指南推荐发病4.5小时内静脉溶栓，超过此时间只在影像筛选合格时考虑（至9小时；无法取栓的大血管闭塞至24小时），基底动脉闭塞在发病24小时内、NIHSS≥10且PC-ASPECTS≥6时取栓。这里没有任何证据表明是急性事件——没有记录新的缺损，闭塞时间不明，且已有侧支供血——两者都只会让他承担出血和操作风险而没有预期获益。",
+            "en": "AHA/ASA 2026 recommends IV thrombolysis within 4.5 hours of onset — later only with imaging selection (to 9 hours, or to 24 hours for a large-vessel occlusion that cannot have thrombectomy) — and thrombectomy for a basilar occlusion within 24 hours with NIHSS ≥ 10 and PC-ASPECTS ≥ 6. Nothing here establishes an acute event — no recorded new deficit, an occlusion of unknown age, collateral supply already present — so both expose him to haemorrhage and procedural risk with no expected benefit."
           }
         },
         {
@@ -3969,13 +4063,21 @@
       "domain": "management",
       "weight": 4,
       "text": {
-        "zh-CN": "看过头颅MRI之后、看到再次造影之前开始阿司匹林",
-        "en": "Started aspirin after reading the brain MRI and before the repeat angiography result"
+        "zh-CN": "看过头颅MRI之后、看到再次造影之前开始单药抗血小板（阿司匹林或氯吡格雷）",
+        "en": "Started a single antiplatelet drug (aspirin or clopidogrel) after reading the brain MRI and before the repeat angiography result"
       },
       "critical": true,
       "met": {
-        "intervened": "aspirin",
-        "whenIndicated": true
+        "any": [
+          {
+            "intervened": "aspirin",
+            "whenIndicated": true
+          },
+          {
+            "intervened": "clopidogrel",
+            "whenIndicated": true
+          }
+        ]
       }
     },
     {
@@ -4059,8 +4161,8 @@
       "domain": "safety",
       "weight": 2,
       "text": {
-        "zh-CN": "没有抗凝，没有在多学科决定之前做栓塞，也没有在看过脑部影像之前给阿司匹林",
-        "en": "Gave no anticoagulation, no embolisation ahead of a team decision, and no aspirin before the brain imaging had been read"
+        "zh-CN": "没有抗凝，没有在多学科决定之前做栓塞，也没有在看过脑部影像之前给抗血小板药",
+        "en": "Gave no anticoagulation, no embolisation ahead of a team decision, and no antiplatelet drug before the brain imaging had been read"
       },
       "met": {
         "not": {
@@ -4073,6 +4175,10 @@
             },
             {
               "intervened": "aspirin",
+              "valid": false
+            },
+            {
+              "intervened": "clopidogrel",
               "valid": false
             }
           ]
@@ -4094,6 +4200,10 @@
           },
           {
             "intervened": "aspirin",
+            "valid": false
+          },
+          {
+            "intervened": "clopidogrel",
             "valid": false
           }
         ]
@@ -4127,8 +4237,8 @@
         "en": "Explained the diagnosis, the uncertain cause, the treatment plan and the warning signs in words he understands, and checked understanding by teach-back"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评价与这位19岁患者的谈话：开场先问他已经知道什么、最担心什么（他想知道为什么这么年轻会这样、会不会再犯）；用通俗的话说明：小脑有一处小的中风，后循环几支血管有狭窄，还有一个小的动脉瘤；同型半胱氨酸偏高是线索之一，但还不能解释全部，病因还要继续查；为什么每天吃阿司匹林，为什么单靠维生素不能预防再次中风；动脉瘤为什么先由专科团队评估、定期复查，而不是马上手术。讲清警示症状：突然剧烈头痛，或突发口角歪斜、一侧无力、说话不清、看东西重影、走路明显不稳，要立即打急救电话。复查造影显示基底动脉闭塞时，按SPIKES告知这一坏消息：先了解他的认知，说明侧支供血和目前的不确定性，不作虚假保证。不评判地询问吸烟、饮酒和毒品（都没有记录）。最后请他复述关键内容以确认理解。本病例没有记录与他的谈话。",
-        "en": "Judge the conversation with this 19-year-old by Calgary–Cambridge: open by asking what he already understands and what worries him most (why this is happening at his age and whether it will happen again); explain in plain words a small stroke in the cerebellum, narrowing in several arteries at the back of the brain and a small aneurysm; that the raised homocysteine is one clue but does not explain everything, so the search for the cause goes on; why he takes aspirin every day and why vitamins alone cannot prevent another stroke; and why the aneurysm is assessed by a specialist team and watched rather than operated on now. Teach the warning signs — a sudden severe headache, or sudden facial droop, one-sided weakness, slurred speech, double vision or much worse balance — and to call an ambulance at once. When the repeat angiogram shows the basilar occlusion, break the news with SPIKES: find out what he knows, explain the collateral supply and the uncertainty, no false reassurance. Ask about smoking, alcohol and drugs without judgement (none is recorded). Close with teach-back. This case does not record a conversation with him."
+        "zh-CN": "按Calgary–Cambridge评价与这位19岁患者的谈话：开场先问他已经知道什么、最担心什么（他想知道为什么这么年轻会这样、会不会再犯）；用通俗的话说明：小脑有一处梗死（中风），后循环不止一支血管有狭窄，还有一个5×2毫米的小动脉瘤；同型半胱氨酸偏高是线索之一，但还不能解释全部，病因还要继续查；为什么每天吃抗血小板药（阿司匹林或氯吡格雷），为什么单靠维生素不能预防再次中风；动脉瘤为什么先由专科团队评估、定期复查，而不是马上手术。讲清警示症状：突然剧烈头痛，或突发口角歪斜、一侧无力、说话不清、看东西重影、走路明显不稳，要立即打急救电话。复查造影显示基底动脉闭塞时，按SPIKES告知这一坏消息：先了解他的认知，说明侧支供血和目前的不确定性，不作虚假保证。不评判地询问吸烟、饮酒和毒品（都没有记录）。最后请他复述关键内容以确认理解。本病例没有记录与他的谈话。",
+        "en": "Judge the conversation with this 19-year-old by Calgary–Cambridge: open by asking what he already understands and what worries him most (why this is happening at his age and whether it will happen again); explain in plain words a stroke in the cerebellum, narrowing in more than one artery at the back of the brain and a small (5 by 2 mm) aneurysm; that the raised homocysteine is one clue but does not explain everything, so the search for the cause goes on; why he takes an antiplatelet drug (aspirin or clopidogrel) every day and why vitamins alone cannot prevent another stroke; and why the aneurysm is assessed by a specialist team and watched rather than operated on now. Teach the warning signs — a sudden severe headache, or sudden facial droop, one-sided weakness, slurred speech, double vision or much worse balance — and to call an ambulance at once. When the repeat angiogram shows the basilar occlusion, break the news with SPIKES: find out what he knows, explain the collateral supply and the uncertainty, no false reassurance. Ask about smoking, alcohol and drugs without judgement (none is recorded). Close with teach-back. This case does not record a conversation with him."
       }
     }
   ],
@@ -4172,7 +4282,7 @@
       },
       "knowledge": {
         "zh-CN": "神经介入医生，只解读学员已经看过的造影。可以讲：囊状与夹层性（梭形）颅内动脉瘤的区别，以及三维造影和血管壁磁共振如何帮助区分；为什么一个5×2 mm的病变出现在伴多处狭窄的年轻人身上，要考虑夹层或其他动脉病变；神经血管团队评估未破裂动脉瘤要权衡的因素（年龄、大小、部位、形态、是否增大；ESO 2022），以及为什么不因此停用为卒中预防服用的阿司匹林；ESO 2021动脉夹层指南的建议和专家共识（伴缺血的颅内夹层倾向抗血小板；出血后尽早修复；仅头痛者除非增大或压迫不做修复）；为什么支架不是颅内动脉狭窄的首选治疗（AHA/ASA 2021）；学员看过再次造影后，可以讲AHA/ASA 2026关于急性基底动脉闭塞取栓的标准。不说出任何决策的答案，不补充病例没有记录的测量值（狭窄程度、动脉瘤形态、检查日期）。",
-        "en": "Neurointerventional neurosurgeon who interprets only angiograms the learner has read. Can explain: saccular versus dissecting (fusiform) intracranial aneurysms and how 3D angiography and vessel-wall MRI help tell them apart; why a 5×2 mm lesion beside multiple stenoses in a young man raises the question of a dissection or another arteriopathy; what a neurovascular team weighs for an unruptured aneurysm (age, size, site, shape, growth; ESO 2022) and why aspirin taken for stroke prevention is not stopped because of one; the ESO 2021 dissection guideline's suggestions and expert consensus (antiplatelets favoured for an intracranial dissection with ischaemia; early repair after a bleed; no repair of a headache-only one unless it grows or compresses); why stenting is not the first treatment of an intracranial stenosis (AHA/ASA 2021); and, once the learner has read the repeat angiogram, the AHA/ASA 2026 criteria for thrombectomy in an acute basilar occlusion. Never gives a decision's answer and adds no measurement the case does not record (stenosis degrees, the aneurysm's shape, dates)."
+        "en": "Neurointerventional neurosurgeon who interprets only angiograms the learner has read. Can explain: saccular versus dissecting (fusiform) intracranial aneurysms and how 3D angiography and vessel-wall MRI help tell them apart; why a 5×2 mm lesion found alongside multiple stenoses in a young man raises the question of a dissection or another arteriopathy; what a neurovascular team weighs for an unruptured aneurysm (age, size, site, shape, growth; ESO 2022) and why aspirin taken for stroke prevention is not stopped because of one; the ESO 2021 dissection guideline's suggestions and expert consensus (antiplatelets favoured for an intracranial dissection with ischaemia; early repair after a bleed; no repair of a headache-only one unless it grows or compresses); why stenting is not the first treatment of an intracranial stenosis (AHA/ASA 2021); and, once the learner has read the repeat angiogram, the AHA/ASA 2026 criteria for thrombectomy in an acute basilar occlusion. Never gives a decision's answer and adds no measurement the case does not record (stenosis degrees, the aneurysm's shape, dates)."
       },
       "interprets": [
         "first-dsa",
@@ -4189,7 +4299,7 @@
     },
     "conclusion": {
       "zh-CN": "19岁男性，反复头痛、眩晕、走路不稳3个月：起病时左侧肢体无力，一个多月后再次走路不稳，在当地治疗，当时未复查CT或MRI；入院时仍轻度走路不稳，神志清楚、言语流利，颅神经和肌力正常，右侧协调运动较差。MRI示右侧小脑梗死；首次DSA示左椎动脉颅内段5×2 mm动脉瘤，右小脑上/后下动脉起始段及左大脑后动脉狭窄。同型半胱氨酸先为18.7 µmol/L、后为29 µmol/L，血脂正常；既往无高血压、高脂血症，否认遗传病和中枢神经系统感染史。再次造影示基底动脉主干闭塞，双侧大脑后动脉由后交通动脉供血，原动脉瘤不再显影。原报告给予叶酸、甲钴胺及维生素B1/B6，两个月随访无明显症状，仍在随访；没有记录抗栓治疗。今天的做法：影像确认梗死、排除出血后开始单药抗血小板；按青年卒中全面查找病因（动脉、心脏、代谢、炎症和感染）；查明同型半胱氨酸升高的原因，而不是靠维生素预防复发（AHA/ASA 2021：无效）；动脉瘤由神经血管团队依据当前影像决定；把动脉瘤不显影与新发现的基底动脉闭塞一起解读为病变进展，而不是痊愈。",
-      "en": "A 19-year-old man had three months of recurrent headache, dizziness and unsteady walking, with left-sided limb weakness at onset and unsteadiness again more than a month later, treated locally without a repeat CT or MRI. On admission he was still mildly unsteady, alert with fluent speech, with normal cranial nerves and power and poorer right-sided coordination. MRI showed a right cerebellar infarct; the first DSA, a 5×2 mm aneurysm of the intracranial left vertebral artery with stenosis at the origins of the right superior/posterior inferior cerebellar arteries and of the left posterior cerebral artery. Homocysteine was 18.7 then 29 µmol/L and lipids normal; he had no history of hypertension or hyperlipidaemia and denied hereditary disease and CNS infection. Repeat angiography showed the basilar trunk occluded, both posterior cerebral arteries supplied through the posterior communicating arteries and the aneurysm no longer opacifying. The report gave folate, mecobalamin and vitamins B1/B6; at two months he had no prominent symptoms and follow-up continued; no antithrombotic treatment is recorded. Today: start a single antiplatelet drug once imaging confirms the infarct without haemorrhage; search for the cause of a young stroke (arteries, heart, metabolic, inflammatory and infective causes); find the cause of the raised homocysteine rather than relying on vitamins to prevent recurrence (AHA/ASA 2021: not effective); decide on the aneurysm in a neurovascular team on current imaging; and read an aneurysm that stops filling beside a newly documented basilar occlusion as progression, not cure."
+      "en": "A 19-year-old man had three months of recurrent headache, dizziness and unsteady walking, with left-sided limb weakness at onset and unsteadiness again more than a month later, treated locally without a repeat CT or MRI. On admission he was still mildly unsteady, alert with fluent speech, with normal cranial nerves and power and poorer right-sided coordination. MRI showed a right cerebellar infarct; the first DSA, a 5×2 mm aneurysm of the intracranial left vertebral artery with stenosis at the origins of the right superior/posterior inferior cerebellar arteries and stenosis of the left posterior cerebral artery. Homocysteine was 18.7 then 29 µmol/L and lipids normal; he had no history of hypertension or hyperlipidaemia and denied hereditary disease and CNS infection. Repeat angiography showed the basilar trunk occluded, both posterior cerebral arteries supplied through the posterior communicating arteries and the aneurysm no longer opacifying. The report gave folate, mecobalamin and vitamins B1/B6; at two months he had no prominent symptoms and follow-up continued; no antithrombotic treatment is recorded. Today: start a single antiplatelet drug once imaging confirms the infarct without haemorrhage; search for the cause of a young stroke (arteries, heart, metabolic, inflammatory and infective causes); find the cause of the raised homocysteine rather than relying on vitamins to prevent recurrence (AHA/ASA 2021: not effective); decide on the aneurysm in a neurovascular team on current imaging; and read an aneurysm that stops filling alongside a newly documented basilar occlusion as progression, not cure."
     },
     "keyReasoning": [
       {
@@ -4209,12 +4319,12 @@
         "en": "Prevention cannot wait for the cause: once imaging shows an infarct without haemorrhage, a single antiplatelet drug is the cornerstone; an unruptured aneurysm does not change that, while anticoagulation, first-line intracranial stenting and long-term dual therapy only add harm."
       },
       {
-        "zh-CN": "动脉瘤由神经血管团队依据当前影像决定——明确性质、随访观察，只在增大、改变或出血时修复。",
-        "en": "The aneurysm is a neurovascular team decision on current imaging — characterise it, follow it, and repair it only for growth, change or bleeding."
+        "zh-CN": "动脉瘤由神经血管团队依据当前影像决定——明确性质、影像随访，权衡修复的利弊；增大时应修复。",
+        "en": "The aneurysm is a neurovascular team decision on current imaging — characterise it, follow it with imaging and weigh repair against its risks; growth calls for repair."
       },
       {
-        "zh-CN": "再次造影上，动脉瘤不显影与基底动脉主干闭塞及侧支供血出现在同一次检查中：病变进展了，病灶并没有愈合；只有新的急性缺损才需要考虑急性再灌注。",
-        "en": "On the repeat angiogram the aneurysm stops filling on the same study that shows a basilar trunk occlusion with collateral supply: the disease has progressed, the lesion has not healed, and only a new acute deficit would bring acute reperfusion into question."
+        "zh-CN": "再次造影上，动脉瘤不显影与基底动脉主干闭塞及侧支供血出现在同一次检查中：病变进展了，不显影也不能证明病灶已经愈合；只有新的急性缺损才需要考虑急性再灌注。",
+        "en": "On the repeat angiogram the aneurysm stops filling on the same study that shows a basilar trunk occlusion with collateral supply: the disease has progressed, non-filling is no proof that the lesion has healed, and only a new acute deficit would bring acute reperfusion into question."
       }
     ],
     "boundaries": {
@@ -4265,8 +4375,8 @@
         "en": "Work-up of a stroke in a young adult (AHA/ASA 2021 diagnostic evaluation): brain CT or MRI, an ECG, basic bloods (blood count, clotting, glucose, HbA1c, creatinine, lipids) and MRA or CTA of the intracranial and vertebrobasilar arteries; while the cause is not found (cryptogenic stroke), echocardiography with or without contrast, rhythm monitoring and, as indicated, tests for hypercoagulable states, infections that cause vasculitis (HIV, syphilis), drug use, systemic inflammation and inherited diseases. The cystathionine β-synthase deficiency guideline (Morris 2017) adds: exclude B12 and folate deficiency and renal impairment before calling a raised homocysteine inherited."
       },
       {
-        "zh-CN": "急性再灌注只针对急性事件（AHA/ASA 2026急性缺血性卒中指南）：发病4.5小时内静脉溶栓（灌注影像支持时至9小时），基底动脉闭塞在24小时内、NIHSS≥10且PC-ASPECTS≥6时取栓。后来的造影上发现的基底动脉闭塞，闭塞时间不明且已有侧支，需要的是床旁重新评估，而不是条件反射式的溶栓或支架。",
-        "en": "Acute reperfusion is for acute events (AHA/ASA 2026 acute ischaemic stroke guideline): IV thrombolysis within 4.5 hours of onset (to 9 hours with perfusion imaging), thrombectomy for a basilar occlusion within 24 hours with NIHSS ≥ 10 and PC-ASPECTS ≥ 6. A basilar occlusion found on a later angiogram, of unknown age and with collateral filling, calls for a bedside reassessment — not reflex thrombolysis or stenting."
+        "zh-CN": "急性再灌注只针对急性事件（AHA/ASA 2026急性缺血性卒中指南）：发病4.5小时内静脉溶栓（1类）；超过4.5小时只在影像筛选合格时考虑——灌注影像显示可挽救脑组织时至9小时（2a类），无法取栓、伴可挽救脑组织的大血管闭塞至24小时（2b类）；基底动脉闭塞在24小时内、NIHSS≥10且PC-ASPECTS≥6时取栓（1类）。后来的造影上发现的基底动脉闭塞，闭塞时间不明且已有侧支，需要的是床旁重新评估，而不是条件反射式的溶栓或支架。",
+        "en": "Acute reperfusion is for acute events (AHA/ASA 2026 acute ischaemic stroke guideline): IV thrombolysis within 4.5 hours of onset (COR 1), later only with imaging selection — to 9 hours with salvageable tissue on perfusion imaging (COR 2a), to 24 hours for a large-vessel occlusion with salvageable tissue that cannot have thrombectomy (COR 2b) — and thrombectomy for a basilar occlusion within 24 hours with NIHSS ≥ 10 and PC-ASPECTS ≥ 6 (COR 1). A basilar occlusion found on a later angiogram, of unknown age and with collateral filling, calls for a bedside reassessment — not reflex thrombolysis or stenting."
       },
       {
         "zh-CN": "不显影不等于愈合：动脉瘤与新发现的动脉闭塞同时出现、不再显影时，可能是血栓形成或失去了流入血流，之后还可能再通。每一次造影都要结合整个循环和上一次检查来读，绝不依据已与血管现状不符的影像安排手术。",
