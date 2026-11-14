@@ -7,8 +7,9 @@
  * own (spoken through the profile of their role), and its state is saved (`team` transcript items,
  * `SessionSnapshot.team`) and restored mid-task.
  */
-import { evaluate, standInOf, t, type ProcedureOp, type TeamNeed } from "@clinicalcraft/core";
+import { evaluate, memberBody, standInOf, t, type ProcedureOp, type RefusalReason, type TeamNeed } from "@clinicalcraft/core";
 import type { Op } from "../../protocol.js";
+import { reasonText } from "../../tools/field-words.js";
 import { spatialCodeOf } from "../../tools/spatial.js";
 import type { NavGoal } from "@clinicalcraft/world";
 import { runToolAs } from "../embodied-wiring.js";
@@ -107,13 +108,19 @@ export class SessionTeam {
       runToolAs(k, { agent: TEAM_CALLER, submission: id, turnId, ...(signal ? { signal } : {}) }, "operate", { ...op } as Record<string, unknown>, { actorId: member, stepRef: ref, addressee: PRIMARY_ACTOR }),
     );
     if (call.ok) return { status: "completed", message: call.output.output };
-    const d = call.output.data as { code?: string; hint?: { goal?: NavGoal } | null; rejected?: { code?: string } } | undefined;
+    const d = call.output.data as { code?: string; hint?: { goal?: NavGoal } | null; rejected?: { code?: string; reason?: RefusalReason }; refusal?: RefusalReason } | undefined;
     const cancelled = call.status === "cancelled" || call.status === "interrupted";
+    // the field's reason (a refusal by control, or the field's own), in both languages as the learner is told it
+    const refusal = d?.refusal ?? d?.rejected?.reason;
+    const said = (locale: string) => reasonText({ caseDef: k.caseDef, facility: k.facility, locale, state: () => k.state, actorId: member, addressee: PRIMARY_ACTOR }, refusal);
+    const en = said("en");
+    const zh = said("zh-CN");
     return {
       status: cancelled ? "cancelled" : "failed",
       code: spatialCodeOf(call.output) ?? d?.code ?? d?.rejected?.code ?? call.status.toUpperCase(),
       message: call.output.output,
       ...(d?.hint?.goal ? { hint: d.hint.goal } : {}),
+      ...(en && zh ? { reason: { en, "zh-CN": zh } } : {}),
     };
   }
 
@@ -209,12 +216,14 @@ export class SessionTeam {
         const world = k.embodied!.world();
         if (!item || !world.entities().some((e) => e.equipmentType?.id === item)) return this.invalid(id, `no equipment of type "${item}" in this hospital`);
         const forRef = typeof op.for === "string" && op.for.trim() ? op.for.trim().replace(/^staff:/u, "") : "surgeon";
-        // whom it is for: a member of the team (the surgeon by default)
-        if (!s.state.members.some((m) => m.staff === forRef)) {
+        // whom it is for: the surgeon (by default; whoever operates, a member of the team or not), or a member of the team
+        // by the body their reference works with (core `memberBody`: the stand-in's own id is the surgeon in a place)
+        const body = memberBody(k.caseDef, k.state, forRef);
+        if (forRef !== "surgeon" && !s.state.members.some((m) => m.id === body)) {
           k.emit(id, { type: "error", message: rt(k.locale, "team.unknownMember", { who: forRef }), code: "invalid_op" });
           return;
         }
-        const need: TeamNeed = { id: `asked-${s.state.posted.length + 1}`, item, for: forRef };
+        const need: TeamNeed = { id: `asked-${s.state.posted.length + 1}`, item, for: body === memberBody(k.caseDef, k.state, "surgeon") ? "surgeon" : forRef };
         s.postNeed(need);
         if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
         break;
@@ -229,7 +238,7 @@ export class SessionTeam {
         if ("refused" in r) {
           if (r.refused === "observer") return this.observing(id);
           const who = "to" in r ? t(k.embodied!.world().entity(r.to)?.name ?? r.to.replace(/^staff:/u, ""), k.locale) : to;
-          const key = r.refused === "unknown" ? "team.unknownMember" : r.refused === "self" ? "team.ask.self" : r.refused === "absent" ? "team.ask.absent" : "team.ask.operator";
+          const key = r.refused === "unknown" ? "team.unknownMember" : r.refused === "self" ? "team.ask.self" : r.refused === "absent" ? "team.ask.absent" : r.refused === "away" ? "team.ask.away" : "team.ask.operator";
           k.emit(id, { type: "error", message: rt(k.locale, key, { who }), code: r.refused === "unknown" ? "invalid_op" : "permission_denied" });
           return;
         }
@@ -243,6 +252,7 @@ export class SessionTeam {
           if (r.refused === "observer") return this.observing(id);
           if (r.refused === "none") return void k.emit(id, { type: "error", message: rt(k.locale, "team.count.none"), code: "invalid_op" });
           if (r.refused === "notDue") return void k.emit(id, { type: "warning", message: rt(k.locale, "team.count.notDue") });
+          if (r.refused === "said") return void k.emit(id, { type: "warning", message: rt(k.locale, "team.count.said") });
           const counters = ("counters" in r ? r.counters : []).map((x: string) => t(k.embodied!.world().entity(x)?.name ?? x, k.locale)).join(", ");
           k.emit(id, { type: "error", message: rt(k.locale, "team.count.notYours", { who: counters || "—" }), code: "permission_denied" });
           return;

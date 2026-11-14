@@ -156,7 +156,8 @@ export interface TeamTask {
    * nurse's); `count`: a count (the counter's); `check`: a count discrepancy seen through — hold, search, recount
    * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's); `assist`: a request about the
    * operative field seen through — read back, walked to the table, the port taken, the step done, reported (an
-   * assistant's, the scrub nurse's pass; `field`); `operate`: the operator's own plan (the stand-in surgeon's; `cursor`).
+   * assistant's, the scrub nurse's pass; `field`) — or the camera holder's own following of the work (`followed`);
+   * `operate`: the operator's own plan (the stand-in surgeon's; `cursor`).
    */
   kind: "supply" | "deliver" | "count" | "check" | "wound" | "assist" | "operate";
   need: string;
@@ -190,6 +191,12 @@ export interface TeamTask {
   goal?: NavGoal;
   /** `assist`: what was asked of the operative field (the request's `about.field`). */
   field?: FieldAsk;
+  /**
+   * `assist`, the camera holder's own task of following the work (need `field:follow`; docs/TEAM.md §4.4): the
+   * operator's working region and the camera's aim when they last looked — the work moved on since, they aim there; the
+   * camera aimed elsewhere since (someone asked for it), it stays there until the work moves on.
+   */
+  followed?: { working: string | null; at: string | null };
   /** `operate`: where the operator's plan has got to (the next reference step). */
   cursor?: number;
   /** Why it ended this way (declined, escalated): a short code, and what was said. */

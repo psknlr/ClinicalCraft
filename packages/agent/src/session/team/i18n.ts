@@ -82,7 +82,12 @@ const PHRASES = {
   "decline.notCameraPort": { en: "Port {port} is not the camera port.", "zh-CN": "{port} 孔不是观察孔。" },
   "decline.noField": { en: "There is no operative field to work in yet.", "zh-CN": "还没有可以操作的术野。" },
   "decline.nothingHeld": { en: "I'm not holding anything.", "zh-CN": "我手上没有握持器械。" },
+  "decline.aimFirst": { en: "A close view needs something to look at: tell me where to aim the camera first.", "zh-CN": "推近需要先对准一个部位：请先告诉我镜头对准哪里。" },
+  "decline.unknownRegion": { en: "There is no region {region}.", "zh-CN": "没有 {region} 这个区域。" },
   "decline.failed": { en: "I couldn't do it: {reason}.", "zh-CN": "没能做到：{reason}。" },
+  // the learner's own answer to a read-back, when they give no words of their own (`team reply` confirm / decline)
+  "reply.confirm": { en: "Yes — go ahead.", "zh-CN": "对，开始吧。" },
+  "reply.decline": { en: "No — not now.", "zh-CN": "先不用。" },
   // the stand-in surgeon's call-out before a critical step (docs/TEAM.md §4.5): approved "No objection", denied "Stop"
   "callout.clip": { en: "Clipping {structure}.", "zh-CN": "正在夹闭{structure}。" },
   "callout.divide": { en: "Dividing {structure}.", "zh-CN": "正在离断{structure}。" },
@@ -92,6 +97,7 @@ const PHRASES = {
   "clause.the": { en: "the {name}", "zh-CN": "{name}" },
   "clause.learner": { en: "the {position} (you)", "zh-CN": "{position}（你）" },
   "clause.instead": { en: ": ask {who}", "zh-CN": "：请找{who}" },
+  "clause.yours": { en: ": you do", "zh-CN": "：你有" },
   "clause.or": { en: " or ", "zh-CN": "或" },
   "clause.and": { en: " and ", "zh-CN": "、" },
   "clause.force.gentle": { en: ", gently", "zh-CN": "，轻柔一些" },

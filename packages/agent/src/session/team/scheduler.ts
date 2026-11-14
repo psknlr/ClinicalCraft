@@ -18,6 +18,7 @@
  */
 import {
   bodyControls,
+  cameraPort,
   compareCount,
   countLedger,
   countStatus,
@@ -45,19 +46,24 @@ import type { EventMsg, TeamEvent } from "../../protocol.js";
 import { checkTaskScope, THEATRE_TASK_CONTROL } from "../../tools/scope.js";
 import { scopeActorOf } from "../../tools/scope-actor.js";
 import type { SurgicalCount } from "../count.js";
-import { afterFieldWalk, afterOperate } from "./assistant.js";
+import { afterFieldWalk, afterOperate, followStep } from "./assistant.js";
 import { askText } from "./asks.js";
 import { both, phrase, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterAct, learnerCount, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
 import { validTeamCheckpoint } from "./checkpoint.js";
 import { TEAM_STATE_VERSION, type ActionReceipt, type FieldAsk, type KnownNeed, type MemberId, type MemberState, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
-/** How a step in the operative field went (`TeamHost.operate`): the tool's outcome, with where the world points after a refusal for reach. */
+/**
+ * How a step in the operative field went (`TeamHost.operate`): the tool's outcome, with where the world points after a
+ * refusal for reach, and the field's reason for a refusal in both languages, as the learner is told it (when the field
+ * gives one: the member says it in their decline).
+ */
 export interface OperateOutcome {
   status: "completed" | "failed" | "cancelled";
   code?: string;
   message: string;
   hint?: NavGoal;
+  reason?: Bilingual;
 }
 
 /** What the scheduler needs from the session. */
@@ -323,13 +329,17 @@ export class TeamScheduler {
     ledger.settledRound = this.state.round;
   }
 
-  /** Awake members in order: answering, then work under way, then noticing; oldest message; stable id. */
+  /**
+   * Awake members in order: answering, then work under way, then noticing — a need, the count due, the work to follow
+   * with the camera they hold; oldest message; stable id.
+   */
   private order(): MemberState[] {
+    const following = this.following();
     const rank = (m: MemberState): [number, number, string] => {
       const unread = m.inbox.map((id) => this.state.messages.findIndex((x) => x.id === id)).filter((i) => i >= 0);
       if (unread.length) return [0, Math.min(...unread), m.id];
       if (this.state.tasks.some((t) => t.owner === m.id && !TERMINAL.has(t.status))) return [1, 0, m.id];
-      if (this.pendingNeeds(m).length || this.countDue(m)) return [2, 0, m.id];
+      if (this.pendingNeeds(m).length || this.countDue(m) || following(m)) return [2, 0, m.id];
       return [3, 0, m.id];
     };
     return this.state.members
@@ -343,6 +353,26 @@ export class TeamScheduler {
   /** The count is due and this member counts and has not counted yet. */
   private countDue(m: MemberState): boolean {
     return m.duties.includes("count") && this.state.count?.dueRound !== undefined && !this.state.tasks.some((t) => t.owner === m.id && t.kind === "count");
+  }
+
+  /**
+   * Who holds the camera with the work to follow (`followStep`, the same rule their policy follows: the field as the
+   * record has it now and their own tasks) — read once a round, and only while a colleague holds the camera port and
+   * the work has a region.
+   */
+  private following(): (m: MemberState) => boolean {
+    const c = this.host.caseDef;
+    const s = this.host.state();
+    const def = procedureFor(c, s);
+    const procedure = s.procedure;
+    if (!def || !procedure || !procedure.working || !cameraPort(procedure)?.holder) return () => false;
+    let field: FieldView | null = null;
+    return (m) => {
+      const ref = refOfBody(c, s, m.id);
+      if (typeof ref !== "string" || ref !== cameraPort(procedure)?.holder) return false;
+      field ??= observeField(def, procedure);
+      return followStep(field, ref, this.state.tasks.filter((t) => t.owner === m.id)) !== null;
+    };
   }
 
   /** Needs a member noticed that no task of theirs covers yet. */
@@ -546,9 +576,11 @@ export class TeamScheduler {
 
   /**
    * The surgeon (the learner) answers a message said to them — a read-back, a confirmation or a decline, recorded
-   * like any member's. A message said to someone else is theirs to answer (refused: `notYours`). A read-back is about
-   * what it names: an instrument named (`item`, or in its words) other than the one asked for reads back nothing —
-   * the request is not read back, and the sender asks again.
+   * like any member's: in their own words (`text`), else a confirmation says "Yes — go ahead.", a decline "No — not
+   * now.", anything else repeats what it answers. A message said to someone else is theirs to answer (refused:
+   * `notYours`); observing, nothing is answered (`observer`). A read-back is about what it names: an instrument named
+   * (`item`, or in its words) other than the one asked for reads back nothing — the request is not read back, and the
+   * sender asks again.
    */
   reply(messageId: string, kind: TeamMessage["kind"], text?: string, item?: string): { message: TeamMessage } | { refused: "unknown" } | { refused: "notYours"; to: MemberId } | { refused: "observer" } {
     // observing: the learner's part is played for them (the simulated surgeon answers)
@@ -557,7 +589,8 @@ export class TeamScheduler {
     if (!to) return { refused: "unknown" };
     if (to.to !== PRIMARY_ACTOR) return { refused: "notYours", to: to.to };
     const surgeon = this.learnerMember();
-    const said: Bilingual = text ? { en: text, "zh-CN": text } : to.text;
+    // the learner's own words; without them a confirmation or a decline says so ("Yes — go ahead."), anything else repeats what it answers
+    const said: Bilingual = text ? { en: text, "zh-CN": text } : kind === "confirm" ? phrase("reply.confirm") : kind === "decline" ? phrase("reply.decline") : to.text;
     // the reply is about the same thing (item, person); a count — its items, what was set aside — is only ever the counter's to report
     const { count: _count, of: _of, ids: _ids, stage: _stage, setAside: _setAside, ...about } = to.about;
     const named = item?.trim() || (text ? this.itemNamedIn(text) : null);
@@ -577,9 +610,9 @@ export class TeamScheduler {
    * from the learner's own member (`about.field`), in both languages; the member reads it back, the learner confirms it
    * (`reply`), the member acts and reports — or declines at once, saying why. Refused: observing, nobody of that name in
    * the team (`to`: their staff id, or `staff:<id>`), the learner's own member, one away this encounter, the one who
-   * operates.
+   * operates, one who is not in the team's room now (a relief colleague is called by phone: asked all the same).
    */
-  ask(to: string, field: FieldAsk): { message: TeamMessage } | { refused: "observer" } | { refused: "unknown" | "self" | "absent" | "operator"; to: string } {
+  ask(to: string, field: FieldAsk): { message: TeamMessage } | { refused: "observer" } | { refused: "unknown" | "self" | "absent" | "operator" | "away"; to: string } {
     if (this.surgeon === "simulated") return { refused: "observer" };
     const ref = to.replace(/^staff:/u, "");
     // by staff id, as the facility names them, or by body (the stand-in is the surgeon member's body)
@@ -588,6 +621,8 @@ export class TeamScheduler {
     if (target.id === PRIMARY_ACTOR) return { refused: "self", to: target.id };
     if (target.absent) return { refused: "absent", to: target.id };
     if (target.id === this.surgeonBody()) return { refused: "operator", to: target.id };
+    // said aloud in the room: one who is not there would never hear it (the same rule `send` delivers by)
+    if (!target.relief && this.host.world().actor(target.id)?.room !== this.config.room) return { refused: "away", to: target.id };
     const me = this.learnerMember();
     const v = this.view(me);
     if (this.state.lifecycle === "completed") this.state.lifecycle = "active";
@@ -599,9 +634,10 @@ export class TeamScheduler {
    * The learner who holds the count says it (`team count`): exactly what the simulated counter's policy would say in
    * their place (`learnerCount`), from the same `CountView` — a recount asked of them, else the count once due — and the
    * items are the view's, what the team in the room can account for: never typed. Refused: observing, no count kept, the
-   * count not theirs (`counters`: whose it is), nothing to count now.
+   * count not theirs (`counters`: whose it is); nothing to count now — the count not due yet (`notDue`), or said already
+   * with no recount asked for (`said`).
    */
-  count(): { message: TeamMessage } | { refused: "observer" | "none" | "notDue" } | { refused: "notYours"; counters: MemberId[] } {
+  count(): { message: TeamMessage } | { refused: "observer" | "none" | "notDue" | "said" } | { refused: "notYours"; counters: MemberId[] } {
     if (this.surgeon === "simulated") return { refused: "observer" };
     if (!this.config.count || !this.host.count() || !this.record()) return { refused: "none" };
     const me = this.learnerMember();
@@ -609,7 +645,7 @@ export class TeamScheduler {
     this.prepare();
     this.watchCount();
     const p = learnerCount(this.view(me));
-    if (!p || p.kind !== "say") return { refused: "notDue" };
+    if (!p || p.kind !== "say") return { refused: this.state.count?.dueRound !== undefined && this.state.tasks.some((t) => t.owner === me.id && t.kind === "count") ? "said" : "notDue" };
     this.apply(me, p.patch ?? []);
     this.send(me, p);
     return { message: this.state.messages.at(-1)! };

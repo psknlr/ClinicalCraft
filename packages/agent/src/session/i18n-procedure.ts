@@ -68,8 +68,11 @@ export const PROCEDURE_EN = {
   "team.ask.self": "That is your own place in the team: ask a colleague.",
   "team.ask.absent": "{who} is not here in this encounter.",
   "team.ask.operator": "{who} is operating: ask a colleague at the table.",
+  "team.ask.away": "{who} is not in the theatre now: ask a colleague at the table.",
   "team.count.none": "This team keeps no count.",
   "team.count.notDue": "The count is not due yet.",
+  "team.count.said": "You have said the count: there is nothing more to count until a recount is asked for.",
+  "team.profileReserved": "The agent profile named “team” is not used: “team” is the care team's own caller (its members' steps in the operative field), not someone to talk to. Rename the profile to talk to it.",
   "team.count.notYours": "The count is not yours to say: {who} counts.",
 } as const;
 
@@ -135,8 +138,11 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "team.ask.self": "这是你自己在团队中的岗位：请向同事提出。",
   "team.ask.absent": "{who}本次不在场。",
   "team.ask.operator": "{who}正在主刀：请向手术台旁的同事提出。",
+  "team.ask.away": "{who}现在不在手术间：请向手术台旁的同事提出。",
   "team.count.none": "本团队不做清点。",
   "team.count.notDue": "还没到清点的时候。",
+  "team.count.said": "清点你已经报过了：要求复点时再清点。",
+  "team.profileReserved": "名为“team”的智能体配置未被使用：“team”是手术团队成员在术野中操作时所用的调用方，不是对话对象。请为该配置改名后再与其对话。",
   "team.count.notYours": "清点不由你报：由{who}清点。",
 };
 
