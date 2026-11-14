@@ -270,7 +270,8 @@
           "胃疼",
           "为什么住院",
           "怎么了",
-          "什么问题"
+          "什么问题",
+          "怎么回事"
         ],
         "en": [
           "brought you",
@@ -284,7 +285,10 @@
           "into hospital",
           "what happened",
           "seems to be the trouble",
-          "whatstheproblem"
+          "whatstheproblem",
+          "bringsyou",
+          "whatbrings",
+          "goingon"
         ]
       },
       "excludeKeywords": {
@@ -339,7 +343,7 @@
       },
       "answer": {
         "zh-CN": "最后一次吃药以后大概两个钟头开始疼的，到住进来有半天了。",
-        "en": "It started about two hours after I took my last tablet — that was about half a day before I came in."
+        "en": "It started about two hours after I last took my medicine — that was about half a day before I came in."
       },
       "keywords": {
         "zh-CN": [
@@ -463,8 +467,8 @@
         "en": "Apart from the pain, what else have you noticed — and what have you been bringing up?"
       },
       "answer": {
-        "zh-CN": "肚子胀。吐出来的都是胃里吃下去的东西。",
-        "en": "My tummy feels bloated. What I bring up is just food from my stomach."
+        "zh-CN": "肚子胀。吐出来的是胃里吃下去的东西。",
+        "en": "My tummy feels bloated. What I bring up is food from my stomach."
       },
       "keywords": {
         "zh-CN": [
@@ -498,7 +502,9 @@
         "en": [
           "blood",
           "black",
-          "coffee"
+          "coffee",
+          "brings you",
+          "brought you"
         ]
       },
       "disclosure": "on-ask",
@@ -2321,8 +2327,8 @@
     {
       "id": "ct-abdomen",
       "name": {
-        "zh-CN": "腹部增强 CT",
-        "en": "Contrast-enhanced CT of the abdomen"
+        "zh-CN": "腹部 CT",
+        "en": "CT of the abdomen"
       },
       "category": "imaging",
       "aliases": {
@@ -2376,8 +2382,8 @@
         "outcome": {
           "available": true,
           "text": {
-            "zh-CN": "记录的病程写明 CT 显示改善；做 CT 的日期、所见（包括有无坏死）以及与哪一次影像检查比较，都没有记录。",
-            "en": "The recorded course states that CT showed improvement; the date of the CT, its findings (including any necrosis) and the earlier imaging it was compared with are not recorded."
+            "zh-CN": "记录的病程写明 CT 显示改善；做 CT 的日期、是否增强、所见（包括有无坏死）以及与哪一次影像检查比较，都没有记录。",
+            "en": "The recorded course states that CT showed improvement; the date of the CT, whether contrast was given, its findings (including any necrosis) and the earlier imaging it was compared with are not recorded."
           },
           "source": {
             "zh-CN": "原报告治疗及随访部分（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2806,8 +2812,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "立即停用；在病历、医嘱系统和过敏/药物不良反应栏注明“塞来昔布——可疑致急性胰腺炎”，避免任何人再开给她。",
-        "en": "Stop it now, and record 'celecoxib — suspected cause of acute pancreatitis' in her notes, the prescribing system and the allergy/adverse-reaction field so that no one prescribes it again."
+        "zh-CN": "立即停用；在病历、医嘱系统和过敏/药物不良反应栏注明塞来昔布为这次发病的可疑药物，避免任何人再开给她。",
+        "en": "Stop it now, and record celecoxib as the suspected cause of this illness in her notes, the prescribing system and the allergy/adverse-reaction field so that no one prescribes it again."
       },
       "requires": [],
       "risk": "none",
@@ -2907,8 +2913,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "不必等胰酶恢复正常：一旦不再呕吐、有食欲、疼痛减轻，就从普通低脂固体饮食开始（ACG 2024；IAP 2025）；72 小时仍不能经口进食，改为经鼻胃管或鼻空肠管肠内营养（IAP 2025）。",
-        "en": "Do not wait for the enzymes to normalise: once she stops vomiting, has an appetite and the pain is easing, start a regular low-fat solid diet (ACG 2024; IAP 2025); if she still cannot eat by 72 hours, start nasogastric or nasojejunal tube feeding (IAP 2025)."
+        "zh-CN": "不必等胰酶恢复正常：一旦不再呕吐、有食欲、疼痛减轻，就从普通低脂固体饮食开始（ACG 2024；IAP 2025）；如果不能耐受经口进食，改为经鼻胃管或鼻空肠管肠内营养，最好在起病后 72 小时内开始（IAP 2025）。",
+        "en": "Do not wait for the enzymes to normalise: once she stops vomiting, has an appetite and the pain is easing, start a regular low-fat solid diet (ACG 2024; IAP 2025); if she cannot tolerate food by mouth, start nasogastric or nasojejunal tube feeding, preferably within 72 hours of onset (IAP 2025)."
       },
       "requires": [],
       "risk": "none",
@@ -3141,8 +3147,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "IAP 2025 认为一般急性胰腺炎可以用阿片类或 NSAID 镇痛，但她可疑的致病药本身就是 NSAID（塞来昔布，选择性 COX-2 抑制剂），其他 NSAID——尤其是同为 COX-2 抑制剂的帕瑞昔布——是否有同样风险并不清楚；现在给药既有复发风险，也会干扰关联性评价，而急性胰腺炎合并低血容量时 NSAID 还可能损伤肾脏。她疼痛剧烈，阿片类药物镇痛效果更好（IAP 2025），可以完全避开这个问题。",
-        "en": "IAP 2025 accepts opioids or NSAIDs for pancreatitis pain in general, but her suspected cause is itself an NSAID (celecoxib, a selective COX-2 inhibitor), and whether other NSAIDs — above all another COX-2 inhibitor such as parecoxib — carry the same risk is not known: giving one now risks a recurrence and muddies the causality assessment, and in pancreatitis with hypovolaemia an NSAID can also harm the kidneys. Her pain is severe, opioids relieve it better (IAP 2025), and they avoid the question altogether."
+        "zh-CN": "IAP 2025 认为一般急性胰腺炎可以用阿片类或 NSAID 镇痛，但她可疑的致病药本身就是 NSAID（塞来昔布，选择性 COX-2 抑制剂），其他 NSAID——尤其是同为 COX-2 抑制剂的帕瑞昔布——是否有同样风险并不清楚；现在给药既有复发风险，也会干扰关联性评价，而急性胰腺炎合并低血容量时 NSAID 还可能损伤肾脏。疼痛剧烈时阿片类药物镇痛效果更好（IAP 2025），而且可以完全避开这个问题。",
+        "en": "IAP 2025 accepts opioids or NSAIDs for pancreatitis pain in general, but her suspected cause is itself an NSAID (celecoxib, a selective COX-2 inhibitor), and whether other NSAIDs — above all another COX-2 inhibitor such as parecoxib — carry the same risk is not known: giving one now risks a recurrence and muddies the causality assessment, and in pancreatitis with hypovolaemia an NSAID can also harm the kidneys. Opioids give better relief when pain is severe (IAP 2025), and they avoid the question altogether."
       },
       "response": {
         "zh-CN": "已给静脉 NSAID。本病例不模拟这一选择之后的经过。",
@@ -3180,8 +3186,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "从入院起静脉使用碳青霉烯类（如亚胺培南），预防胰腺感染。",
-        "en": "A carbapenem such as imipenem IV from admission, to prevent pancreatic infection."
+        "zh-CN": "从入院起静脉使用碳青霉烯类（如亚胺培南），预防感染。",
+        "en": "A carbapenem such as imipenem IV from admission, to prevent infection."
       },
       "requires": [
         "medications",
@@ -3192,8 +3198,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有感染证据时不应预防性使用抗生素：IAP 2025（强推荐，高质量证据）、ACG 2024、AGA 2018、NICE NG104（2018）和中国 2021 指南都不推荐。预防用药不能减少感染性坏死或死亡，却增加耐药、艰难梭菌和真菌感染的风险。只有确证胰外感染或高度怀疑感染性坏死时才用抗生素，CRP、白细胞或降钙素原升高本身不是用药指征（IAP 2025）。",
-        "en": "Antibiotics without evidence of infection are not recommended: IAP 2025 (strong recommendation, high-quality evidence), ACG 2024, AGA 2018, NICE NG104 (2018) and the 2021 Chinese guideline all advise against prophylaxis. It does not reduce infected necrosis or death, and it adds resistance, C. difficile and fungal infection. Antibiotics are for proven extrapancreatic infection or strongly suspected infected necrosis — never for a raised CRP, white count or procalcitonin alone (IAP 2025)."
+        "zh-CN": "没有感染证据时不应预防性使用抗生素：IAP 2025（强推荐，高质量证据）、ACG 2024、AGA 2018、NICE NG104（2018）和中国 2021 指南都不推荐。预防用药不能减少感染性坏死，随机对照试验也未显示能降低死亡率，却增加耐药、艰难梭菌和真菌感染的风险。只有确证胰外感染或高度怀疑感染性坏死时才用抗生素，CRP、白细胞或降钙素原升高本身不是用药指征（IAP 2025）。",
+        "en": "Antibiotics without evidence of infection are not recommended: IAP 2025 (strong recommendation, high-quality evidence), ACG 2024, AGA 2018, NICE NG104 (2018) and the 2021 Chinese guideline all advise against prophylaxis. It does not reduce infected necrosis, randomised trials show no survival benefit, and it adds resistance, C. difficile and fungal infection. Antibiotics are for proven extrapancreatic infection or strongly suspected infected necrosis — never for a raised CRP, white count or procalcitonin alone (IAP 2025)."
       },
       "response": {
         "zh-CN": "已开始抗生素。本病例不模拟这一选择之后的经过；记录的病程没有逐项列出所用药物。",
@@ -3866,13 +3872,13 @@
         {
           "id": "occult-stones-ercp",
           "text": {
-            "zh-CN": "仍按胆源性处理：超声容易漏掉小结石，应在这次住院期间做 ERCP 和括约肌切开，把胆管清理干净",
-            "en": "Still biliary: ultrasound often misses small stones, so ERCP with sphincterotomy should clear the bile duct during this admission, before she goes home"
+            "zh-CN": "多半仍是胆源性：超声容易漏掉小结石，应在这次住院期间做 ERCP 和括约肌切开，把胆管清理干净",
+            "en": "Probably biliary after all: ultrasound often misses small stones, so ERCP with sphincterotomy should clear the bile duct during this admission"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。ERCP 是治疗胆管炎或影像证实的胆管结石的手段，不是用来寻找隐匿结石的检查，还会带来术后胰腺炎的风险（IAP 2025；ACG 2024）。怀疑微结石时，应在恢复后复查超声并做超声内镜（IAP 2025）；ALT 正常也不支持胆源性。",
-            "en": "No. ERCP treats cholangitis or a duct stone shown on imaging; it is not a test for hidden stones, and it carries the risk of post-ERCP pancreatitis (IAP 2025; ACG 2024). If microlithiasis is suspected, the next steps are a repeat ultrasound and EUS after recovery (IAP 2025), and a normal ALT argues against a biliary cause."
+            "zh-CN": "不对。ERCP 是治疗胆管炎或影像证实的胆管结石的手段，不是用来寻找隐匿结石的检查，还会带来术后胰腺炎的风险（IAP 2025；ACG 2024）。怀疑微结石时，应在恢复后复查超声并做超声内镜（IAP 2025）；ALT 只有 13 U/L，也不支持胆源性。",
+            "en": "No. ERCP treats cholangitis or a duct stone shown on imaging; it is not a test for hidden stones, and it carries the risk of post-ERCP pancreatitis (IAP 2025; ACG 2024). If microlithiasis is suspected, the next steps are a repeat ultrasound and EUS after recovery (IAP 2025), and an ALT of 13 U/L argues against a biliary cause."
           }
         },
         {
@@ -3916,8 +3922,8 @@
     {
       "id": "supportive-care",
       "prompt": {
-        "zh-CN": "她患急性胰腺炎，严重程度暂时无法分级，仍在疼痛、呕吐。接下来几天的处理，哪一套最合适？",
-        "en": "She has acute pancreatitis whose severity cannot yet be graded, and she is still in pain and vomiting. Which plan for the next few days is right?"
+        "zh-CN": "她患急性胰腺炎，严重程度暂时无法分级；入院时持续腹痛、呕吐。接下来几天的处理，哪一套最合适？",
+        "en": "She has acute pancreatitis whose severity cannot yet be graded; she was admitted with constant pain and vomiting. Which plan for the next few days is right?"
       },
       "kind": "single",
       "requires": {
@@ -3955,8 +3961,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对——这是过去的做法。禁食到胰酶正常没有益处（IAP 2025；ACG 2024；NICE NG104 2018）；预防性碳青霉烯既不能预防感染性坏死，也不能降低死亡率，不被推荐（IAP 2025；AGA 2018）；过去因担心吗啡引起奥迪括约肌痉挛而偏用哌替啶，缺乏临床依据：阿片类药物是胰腺炎疼痛的合适选择，并未增加并发症（Cochrane 系统评价 2013）。",
-            "en": "No — this is the regimen of an earlier era. Fasting until the enzymes normalise has no benefit (IAP 2025; ACG 2024; NICE NG104 2018); prophylactic carbapenems neither prevent infected necrosis nor reduce deaths and are not recommended (IAP 2025; AGA 2018); and the old preference for pethidine over morphine, for fear of sphincter of Oddi spasm, has no clinical basis — opioids are an appropriate choice for pancreatitis pain, with no excess of complications (Cochrane review 2013)."
+            "zh-CN": "不对——这是过去的做法。禁食到胰酶正常没有益处（IAP 2025；ACG 2024；NICE NG104 2018）；预防性碳青霉烯不能预防感染性坏死，随机对照试验也未显示能降低死亡率，不被推荐（IAP 2025；AGA 2018）；过去因担心吗啡引起奥迪括约肌痉挛而偏用哌替啶，缺乏临床依据：阿片类药物是胰腺炎疼痛的合适选择，并未增加并发症（Cochrane 系统评价 2013）。",
+            "en": "No — this is the regimen of an earlier era. Fasting until the enzymes normalise has no benefit (IAP 2025; ACG 2024; NICE NG104 2018); prophylactic carbapenems do not prevent infected necrosis, show no survival benefit in randomised trials and are not recommended (IAP 2025; AGA 2018); and the old preference for pethidine over morphine, for fear of sphincter of Oddi spasm, has no clinical basis — opioids are an appropriate choice for pancreatitis pain, with no excess of complications (Cochrane review 2013)."
           }
         },
         {
@@ -3979,8 +3985,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。她仍在疼痛、呕吐，严重程度还无法分级，最初 48 小时需要住院补液和监测——器官衰竭往往在这段时间显现（修订版亚特兰大分类 2012；IAP 2025）。IAP 2025 的出院标准是病情稳定、能耐受饮食、只需要少量或不需要非阿片类镇痛；淀粉酶水平也不能决定什么时候进食。",
-            "en": "No. Still in pain and vomiting, with severity not yet graded, she needs inpatient fluids and monitoring through the first 48 hours, when organ failure declares itself (Revised Atlanta 2012; IAP 2025). IAP 2025 discharges stable patients who tolerate a diet and need little or no non-opioid analgesia, and the amylase does not decide when she eats."
+            "zh-CN": "不对。她因腹痛、呕吐入院，严重程度还无法分级，最初 48 小时需要住院补液和监测——器官衰竭往往在这段时间显现（修订版亚特兰大分类 2012；IAP 2025）。IAP 2025 的出院标准是病情稳定、能耐受饮食、只需要少量或不需要非阿片类镇痛；淀粉酶水平也不能决定什么时候进食。",
+            "en": "No. Admitted in pain and vomiting, with severity not yet graded, she needs inpatient fluids and monitoring through the first 48 hours, when organ failure declares itself (Revised Atlanta 2012; IAP 2025). IAP 2025 discharges stable patients who tolerate a diet and need little or no non-opioid analgesia, and the amylase does not decide when she eats."
           }
         }
       ]
@@ -4039,8 +4045,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。新用一种药 2 周后发病，常见病因已经排除，末次服药后几小时起病——在证明不是之前，就应按可疑不良反应处理；不记录，就等于让别人以后再开给她。标注为“可疑”本身就保留了不确定性，她仍有其他止痛药可用。",
-            "en": "No. An attack two weeks into a new drug, with the common causes excluded and onset hours after a dose, is a suspected reaction until shown otherwise; leaving it unrecorded invites someone to prescribe it again. A label that says 'suspected' keeps the uncertainty honest, and other analgesics remain open to her."
+            "zh-CN": "不对。服用一种药 2 周后发病，常见病因已经排除，末次服药后几小时起病——在证明不是之前，就应按可疑不良反应处理；不记录，就等于让别人以后再开给她。标注为“可疑”本身就保留了不确定性，她仍有其他止痛药可用。",
+            "en": "No. An attack after two weeks of a drug, with the common causes excluded and onset hours after a dose, is a suspected reaction until shown otherwise; leaving it unrecorded invites someone to prescribe it again. A label that says 'suspected' keeps the uncertainty honest, and other analgesics remain open to her."
           }
         },
         {
@@ -4488,8 +4494,8 @@
         "en": "The cause is sought in a fixed order — gallstones (imaging, ALT), alcohol, triglycerides, calcium, drugs — and a drug becomes the probable cause only once the others are excluded; here the calcium value and microlithiasis remain open."
       },
       {
-        "zh-CN": "今天的支持治疗是中等速度的目标导向补液、阿片类镇痛、尽早经口进食、不预防性用抗生素；过去的禁食、碳青霉烯和只用哌替啶不再照搬。",
-        "en": "Supportive care today is moderate goal-directed fluids, opioid analgesia, early oral feeding and no prophylactic antibiotics; the fasting, carbapenems and pethidine-only analgesia of earlier practice are not copied."
+        "zh-CN": "今天的支持治疗是中等速度的目标导向补液、阿片类镇痛、尽早经口进食、不预防性用抗生素；禁食到胰酶正常、常规预防性使用碳青霉烯、偏用哌替啶，都已不是今天的做法。",
+        "en": "Supportive care today is moderate goal-directed fluids, opioid analgesia, early oral feeding and no prophylactic antibiotics; it no longer includes fasting until the enzymes normalise, routine carbapenem prophylaxis or a preference for pethidine."
       },
       {
         "zh-CN": "停药、记录和上报可疑药物都不必等到证实；对可能很严重的反应，绝不通过再激发来确认。",
@@ -4528,24 +4534,24 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "诊断与严重程度：典型上腹痛、血脂肪酶或淀粉酶超过正常上限 3 倍、典型影像，三项满足两项即可诊断（IAP 2025；中国 2021 指南）。严重程度按修订版亚特兰大分类（2012）：轻症无器官衰竭和并发症；中度重症为短暂（<48 小时）器官衰竭或局部、全身并发症；重症为持续（>48 小时）器官衰竭，用改良 Marshall 评分判断；CRP 和 SIRS 只能预测（IAP 2025）。当时与现在：报告给出了胰酶、CRP 和影像，却没有生命体征、氧合和尿量，所以她的严重程度无法分级——1.0.0 版也把严重程度评估列为缺失。",
-        "en": "Diagnosis and severity: two of typical upper abdominal pain, a serum lipase or amylase above three times the upper limit of normal, and characteristic imaging (IAP 2025; Chinese guideline 2021). Severity follows the Revised Atlanta classification (2012): mild without organ failure or complications, moderately severe with transient (< 48 h) organ failure or local or systemic complications, severe with persistent (> 48 h) organ failure scored by the modified Marshall system; CRP and SIRS only predict it (IAP 2025). Then and now: her report gives enzymes, CRP and imaging but no vital signs, oxygenation or urine output, so her severity cannot be graded — 1.0.0 also lists the severity assessment as missing."
+        "zh-CN": "诊断与严重程度：典型上腹痛、血脂肪酶或淀粉酶超过正常上限 3 倍、典型影像，三项满足两项即可诊断（IAP 2025；中国 2021 指南）。严重程度按修订版亚特兰大分类（2012）：轻症无器官衰竭和并发症；中度重症为短暂（<48 小时）器官衰竭或局部、全身并发症；重症为持续（>48 小时）器官衰竭，用改良 Marshall 评分判断；CRP 和 SIRS 只能预测（IAP 2025）。当时与现在：报告给出了胰酶、CRP 和影像，却没有生命体征、氧合和尿量，所以她的严重程度无法分级，病例中也没有完整的严重程度评估记录。",
+        "en": "Diagnosis and severity: two of typical upper abdominal pain, a serum lipase or amylase above three times the upper limit of normal, and characteristic imaging (IAP 2025; Chinese guideline 2021). Severity follows the Revised Atlanta classification (2012): mild without organ failure or complications, moderately severe with transient (< 48 h) organ failure or local or systemic complications, severe with persistent (> 48 h) organ failure scored by the modified Marshall system; CRP and SIRS only predict it (IAP 2025). Then and now: her report gives enzymes, CRP and imaging but no vital signs, oxygenation or urine output, so her severity cannot be graded, and no complete severity assessment is recorded."
       },
       {
         "zh-CN": "影像：每位患者都做腹部超声找胆结石；CT 只用于诊断不明或治疗无效，评估严重度最好在起病后 72–96 小时（IAP 2025）；首次“特发性”发作后，依次复查超声、超声内镜（查微结石）、MRI/MRCP（IAP 2025）。当时与现在：她做了超声和 MRCP，CT 显示改善；没有记录超声内镜，所以微结石并未排除，“药物性”的结论仍是排除性的。",
         "en": "Imaging: an abdominal ultrasound for every patient, looking for gallstones; CT only for diagnostic doubt or failure to improve, a severity CT ideally 72–96 hours after onset (IAP 2025); after a first unexplained attack, a repeat ultrasound, then EUS for microlithiasis, then MRI/MRCP (IAP 2025). Then and now: she had ultrasound and MRCP, and a CT that showed improvement; no EUS is recorded, so microlithiasis was not excluded and the drug attribution remains one of exclusion."
       },
       {
-        "zh-CN": "今天的支持治疗：乳酸林格液中等速度 1.5 mL/kg/h，只在低血容量时推注（IAP 2025；ACG 2024）——WATERFALL 试验（2022）显示积极补液使液体过负荷从 6.3% 增至 20.5% 而无获益；2021 年中国指南写于该试验之前，建议 5–10 mL/(kg·h)。不再呕吐就开始低脂固体饮食（ACG 2024：轻症 24–48 小时内），不预防性使用抗生素（IAP 2025 强推荐）。阿片类药物是合适的镇痛选择，并未增加并发症（Cochrane 2013）。当时与现在：报告只写了“多项支持治疗”而没有列出，1.0.0 版称之为“多药方案”——无论其中有什么，禁食到胰酶正常、预防性碳青霉烯和只用哌替啶都属于过去的做法。",
-        "en": "Supportive care today: Ringer's lactate at a moderate 1.5 mL/kg/h, with boluses only for hypovolaemia (IAP 2025; ACG 2024) — the WATERFALL trial (2022) found aggressive fluids raised fluid overload from 6.3 % to 20.5 % without benefit; the 2021 Chinese guideline, written before it, advised 5–10 mL/kg/h. A low-fat solid diet once vomiting stops (ACG 2024: within 24–48 hours in mild disease), and no antibiotic prophylaxis (IAP 2025, strong). Opioids are an appropriate choice for the pain, without more complications (Cochrane 2013). Then and now: the report records 'several supportive treatments' without listing them, and 1.0.0 called them a multi-drug regimen — whatever it held, fasting until the enzymes normalise, prophylactic carbapenems and pethidine-only analgesia belong to earlier practice."
+        "zh-CN": "今天的支持治疗：乳酸林格液中等速度 1.5 mL/kg/h，只在低血容量时推注（IAP 2025；ACG 2024）——WATERFALL 试验（2022）显示积极补液使液体过负荷从 6.3% 增至 20.5% 而无获益；2021 年中国指南写于该试验之前，建议 5–10 mL/(kg·h)。不再呕吐就开始低脂固体饮食（ACG 2024：轻症 24–48 小时内），不预防性使用抗生素（IAP 2025 强推荐）。阿片类药物是合适的镇痛选择，并未增加并发症（Cochrane 2013）。当时与现在：报告只写了“多项支持治疗”而没有逐项列出，所以无法判断她当时的治疗与今天的做法有何异同；禁食到胰酶正常、常规预防性使用碳青霉烯和只用哌替啶镇痛都属于过去的做法。",
+        "en": "Supportive care today: Ringer's lactate at a moderate 1.5 mL/kg/h, with boluses only for hypovolaemia (IAP 2025; ACG 2024) — the WATERFALL trial (2022) found aggressive fluids raised fluid overload from 6.3 % to 20.5 % without benefit; the 2021 Chinese guideline, written before it, advised 5–10 mL/kg/h. A low-fat solid diet once vomiting stops (ACG 2024: within 24–48 hours in mild disease), and no antibiotic prophylaxis (IAP 2025, strong). Opioids are an appropriate choice for the pain, without more complications (Cochrane 2013). Then and now: the report records 'several supportive treatments' without listing them, so how her care compares with today's cannot be judged; fasting until the enzymes normalise, routine carbapenem prophylaxis and pethidine-only analgesia belong to earlier practice."
       },
       {
         "zh-CN": "药物关联性：药物性胰腺炎是排除性诊断，其证据分级依靠病例报告，最强的一级来自再次用药后复发的报告（Badalov 2007）；塞来昔布相关胰腺炎自 2000 年起有病例报告。关联性用 WHO-UMC 标准或 Naranjo 量表（1981）评价：本例时间关系合理、常见病因已排除、停药后好转，可评为“很可能”（计入已发表的病例报告时，Naranjo 约 5–7 分），但不会是“肯定”，因为不做再激发。当时与现在：报告的标题称为塞来昔布“致”急性胰腺炎；它所记录的证据支持的是“很可能”。",
         "en": "Drug causality: drug-induced pancreatitis is a diagnosis of exclusion whose evidence grades rest on case reports, the strongest being a reported recurrence on re-exposure (Badalov 2007); celecoxib-associated pancreatitis has been reported since 2000. Causality is rated with the WHO-UMC criteria or the Naranjo scale (1981): a plausible time course, the common causes excluded and recovery after withdrawal make this case 'probable' (Naranjo about 5–7 when the published case reports are counted), never 'certain', because no rechallenge is done. Then and now: the report's title calls it celecoxib-induced; the evidence it records supports 'probable'."
       },
       {
-        "zh-CN": "上报与沟通：疑似不良反应要记录、要上报，不必先证实——《药品管理法》（2019）第八十一条要求医疗机构报告疑似不良反应，2011 年《药品不良反应报告和监测管理办法》规定新的或严重的不良反应在 15 日内上报；按国际定义（ICH E2A，1994），导致住院的不良反应属于严重不良反应。要明确、书面地告诉患者避免哪个药，并为她今后的止痛另作安排。当时与现在：1.0.0 版没有记录这次反应是否上报。",
-        "en": "Reporting and communication: a suspected reaction is recorded and reported without waiting for proof — China's Drug Administration Law (2019, Article 81) obliges medical institutions to report suspected reactions, and the 2011 Measures set 15 days for new or serious ones; a reaction that leads to admission is serious by the international definition (ICH E2A, 1994). Tell the patient plainly, and in writing, which drug to avoid, and plan her future pain relief. Then and now: 1.0.0 does not record whether this reaction was reported."
+        "zh-CN": "上报与沟通：疑似不良反应要记录、要上报，不必先证实——《药品管理法》（2019）第八十一条要求医疗机构报告疑似不良反应，2011 年《药品不良反应报告和监测管理办法》规定新的或严重的不良反应在 15 日内上报；按国际定义（ICH E2A，1994），导致住院的不良反应属于严重不良反应。要明确、书面地告诉患者避免哪个药，并为她今后的止痛另作安排。当时与现在：病例没有记录这次反应当时是否上报。",
+        "en": "Reporting and communication: a suspected reaction is recorded and reported without waiting for proof — China's Drug Administration Law (2019, Article 81) obliges medical institutions to report suspected reactions, and the 2011 Measures set 15 days for new or serious ones; a reaction that leads to admission is serious by the international definition (ICH E2A, 1994). Tell the patient plainly, and in writing, which drug to avoid, and plan her future pain relief. Then and now: the case does not record whether this reaction was reported."
       }
     ],
     "references": [
@@ -4562,7 +4568,7 @@
       "Badalov N, Baradarian R, Iswara K, Li J, Steinberg W, Tenner S. Drug-induced acute pancreatitis: an evidence-based review. Clin Gastroenterol Hepatol. 2007;5(6):648-661. doi:10.1016/j.cgh.2006.11.023",
       "Carrillo-Jimenez R, Nurnberger M. Celecoxib-induced acute pancreatitis and hepatitis: a case report. Arch Intern Med. 2000;160:553-4.",
       "Naranjo CA, Busto U, Sellers EM, Sandor P, Ruiz I, Roberts EA, et al. A method for estimating the probability of adverse drug reactions. Clin Pharmacol Ther. 1981;30(2):239-245. doi:10.1038/clpt.1981.154",
-      "Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Uppsala: UMC; 2018.",
+      "World Health Organization; Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Geneva: WHO; 2013. Available from: https://www.who.int/publications/m/item/WHO-causality-assessment",
       "ICH Harmonised Tripartite Guideline. Clinical safety data management: definitions and standards for expedited reporting E2A. Geneva: ICH; 1994.",
       "中华人民共和国药品管理法（2019年修订）. 第八十一条.",
       "中华人民共和国卫生部. 药品不良反应报告和监测管理办法（卫生部令第81号）. 2011."
@@ -5352,6 +5358,47 @@
       {
         "text": "What colour is your car?",
         "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "So what brings you in to hospital?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Tell me what's been going on with you.",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "这是怎么回事啊？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Have you had any headaches lately?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Did you drive yourself here today?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "最近头疼吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "膝盖或者髋关节疼不疼？",
+        "locale": "zh-CN",
         "expect": []
       }
     ]

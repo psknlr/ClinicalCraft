@@ -55,6 +55,7 @@
         "国家卫生健康委 原发性肝癌诊疗指南（2024年版）",
         "ESMO–EURACAN–GENTURIS 2021 soft tissue and visceral sarcomas",
         "NICE NG89 (2018, updated 2019) venous thromboembolism in over 16s",
+        "ASH 2018 VTE prophylaxis for hospitalized and nonhospitalized medical patients",
         "European Liver Transplant Registry 2013: hepatic angiosarcoma and liver transplantation"
       ],
       "notes": {
@@ -244,6 +245,9 @@
           },
           {
             "decided": "bleed-plan"
+          },
+          {
+            "asked": "blood-thinners"
           }
         ]
       }
@@ -279,7 +283,12 @@
           "肚子胀",
           "腹胀",
           "恶心",
-          "难受"
+          "难受",
+          "肚子大",
+          "肚子鼓",
+          "鼓起来",
+          "腹部膨隆",
+          "胀气"
         ],
         "en": [
           "whatbringsyou",
@@ -296,7 +305,14 @@
           "feel sick",
           "nausea",
           "nauseous",
-          "tummy"
+          "tummy",
+          "distension",
+          "distended",
+          "swollen",
+          "swelling",
+          "abdomen",
+          "stomach",
+          "belly"
         ]
       },
       "excludeKeywords": {
@@ -312,7 +328,7 @@
           "黄",
           "疼",
           "痛",
-          "大",
+          "大便",
           "担心"
         ],
         "en": [
@@ -329,7 +345,11 @@
           "hurt",
           "sore",
           "worr",
-          "bowel"
+          "bowel",
+          "leg",
+          "ankle",
+          "feet",
+          "foot"
         ]
       },
       "disclosure": "volunteer",
@@ -2483,6 +2503,12 @@
           },
           {
             "not": {
+              "read": "pet-ct",
+              "phase": "imaging"
+            }
+          },
+          {
+            "not": {
               "ordered": "fbc"
             }
           },
@@ -2494,8 +2520,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "现在不能这样做。肝穿刺属于高出血风险操作（SIR 2019：INR ≤ 1.5–1.8、血小板 ≥ 50×10⁹/L），《原发性肝癌诊疗指南（2024年版）》要求穿刺前检查血小板和出凝血功能；BSG 2020 要求先复核影像、规划穿刺路径。在多期增强影像以及血常规、凝血结果都还没有的时候穿刺一个 12 cm 的不均匀肿块，可能引发无法控制的出血。",
-        "en": "Not like this. A liver biopsy is a high-bleeding-risk procedure (SIR 2019: INR ≤ 1.5–1.8, platelets ≥ 50 × 10⁹/L); the 2024 Chinese primary liver cancer guideline requires the platelet count and clotting before a liver lesion is sampled, and BSG 2020 asks for the imaging to be reviewed and the route planned first. Sampling a 12 cm heterogeneous mass before further imaging, or before the blood count and clotting are known, risks a bleed that cannot be controlled."
+        "zh-CN": "现在不能这样做。肝穿刺属于高出血风险操作（SIR 2019：INR ≤ 1.5–1.8、血小板 ≥ 50×10⁹/L），《原发性肝癌诊疗指南（2024年版）》要求穿刺前检查血小板和出凝血功能；BSG 2020 要求先复核影像、规划穿刺路径。在还没有看过进一步影像的结果、或者还不知道血常规和凝血结果的时候，穿刺一个 12 cm 的不均匀肿块，可能引发无法控制的出血。",
+        "en": "Not like this. A liver biopsy is a high-bleeding-risk procedure (SIR 2019: INR ≤ 1.5–1.8, platelets ≥ 50 × 10⁹/L); the 2024 Chinese primary liver cancer guideline requires the platelet count and clotting before a liver lesion is sampled, and BSG 2020 asks for the imaging to be reviewed and the route planned first. Sampling a 12 cm heterogeneous mass before the further imaging has been read, or before the blood count and clotting are known, risks a bleed that cannot be controlled."
       },
       "response": {
         "zh-CN": "肝右叶肿块的穿刺组织已送病理。本病例没有记录穿刺路径、针型和穿刺后的情况；不模拟其效果。",
@@ -2586,8 +2612,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "现在不适合她。NICE NG89（2018，2019 更新）要求先权衡血栓风险和出血风险，再决定是否药物预防。她的血小板和凝血还不清楚，肝穿刺即将进行或刚刚做过（BSG 2020：预防剂量低分子肝素须在穿刺前 12 小时停用），肝内的肿块还可能出血：改用机械性预防，并每天重新评估。",
-        "en": "Not for her now. NICE NG89 (2018, updated 2019) asks for her VTE risk to be weighed against her bleeding risk before any drug prophylaxis. Her platelet count and clotting are unknown, a liver biopsy is coming or has just been done (BSG 2020 stops prophylactic LMWH 12 hours before it), and the liver masses may bleed: use mechanical prophylaxis and reassess daily."
+        "zh-CN": "现在不适合她。NICE NG89（2018，2019 更新）要求先权衡血栓风险和出血风险，再决定是否药物预防。她的血小板和凝血还不清楚，肝穿刺即将进行或刚刚做过（BSG 2020：预防剂量低分子肝素须在穿刺前 12 小时停用），肝内的肿块还可能出血：改用机械性预防（ASH 2018：出血风险不可接受时），并每天重新评估。",
+        "en": "Not for her now. NICE NG89 (2018, updated 2019) asks for her VTE risk to be weighed against her bleeding risk before any drug prophylaxis. Her platelet count and clotting are unknown, a liver biopsy is coming or has just been done (BSG 2020 stops prophylactic LMWH 12 hours before it), and the liver masses may bleed: use mechanical prophylaxis (ASH 2018: when the bleeding risk is unacceptable) and reassess daily."
       },
       "response": {
         "zh-CN": "已注射。",
@@ -2772,8 +2798,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "电话通知介入放射科：说明 PET/CT 提示瘤内出血、肝穿刺已计划或刚完成；一旦腹痛加重、心率加快、血压或血红蛋白下降，立即复苏、交叉配血，并行急诊血管造影和经导管动脉栓塞。",
-        "en": "Phone interventional radiology: the PET/CT read bleeding inside the tumour and a liver biopsy is planned or done; if her pain worsens, her pulse rises or her blood pressure or haemoglobin falls, resuscitate, cross-match and proceed to urgent angiography and transarterial embolisation."
+        "zh-CN": "电话通知介入放射科：说明 PET/CT 提示瘤内出血、肝穿刺已计划或刚完成；一旦出现腹痛或疼痛加重、心率加快、血压或血红蛋白下降，立即复苏、交叉配血，并行急诊血管造影和经导管动脉栓塞。",
+        "en": "Phone interventional radiology: the PET/CT read bleeding inside the tumour and a liver biopsy is planned or done; if she develops abdominal pain or it worsens, her pulse rises or her blood pressure or haemoglobin falls, resuscitate, cross-match and proceed to urgent angiography and transarterial embolisation."
       },
       "requires": [],
       "risk": "none",
@@ -2829,8 +2855,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "穿刺后卧床观察至少 3 小时：按本院流程定时测脉搏、血压和疼痛评分，有变化时急查血红蛋白；不当天离院。",
-        "en": "Bed rest and observation for at least 3 hours after the biopsy: pulse, blood pressure and pain at the intervals the local protocol sets, an urgent haemoglobin if anything changes; not a day case."
+        "en": "Bed rest and observation for at least 3 hours after the biopsy, and longer here as malignancy is strongly suspected: pulse, blood pressure and pain at the intervals the local protocol sets, and an urgent haemoglobin if anything changes.",
+        "zh-CN": "穿刺后卧床观察至少 3 小时；高度怀疑恶性，观察时间应更长：按本院流程定时测脉搏、血压和疼痛评分，有变化时急查血红蛋白。"
       },
       "requires": [],
       "risk": "none",
@@ -3337,6 +3363,27 @@
       "requires": {
         "all": [
           {
+            "asked": "bloating"
+          },
+          {
+            "asked": "duration"
+          },
+          {
+            "asked": "pattern"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "jaundice"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "cancer-history"
+          },
+          {
             "examined": "liver-edge"
           },
           {
@@ -3353,8 +3400,8 @@
         ]
       },
       "need": {
-        "zh-CN": "请先检查她的肝脏，并查看腹部超声和肿瘤标志物结果。",
-        "en": "First examine her liver and read the ultrasound and tumour-marker results."
+        "zh-CN": "请先问清她的病史、检查她的肝脏，并查看腹部超声和肿瘤标志物结果。",
+        "en": "First take her history, examine her liver and read the ultrasound and tumour-marker results."
       },
       "options": [
         {
@@ -3377,8 +3424,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "还不行。最终很可能需要组织诊断，但在断层影像之前穿刺一个 12 cm 的不均匀肿块，就不知道它的血供、有没有出过血、哪部分是有活性的肿瘤，而且她的血小板和凝血都还不清楚。BSG 2020 和《原发性肝癌诊疗指南（2024年版）》要求先复核影像、检查血小板和凝血；ESMO–EURACAN–GENTURIS 2021 把穿刺放在影像检查和多学科讨论之后。",
-            "en": "Not yet. Tissue will probably be needed, but sampling a 12 cm heterogeneous mass before cross-sectional imaging means not knowing its blood supply, whether it has bled or which part is viable — and her platelet count and clotting are unknown. BSG 2020 and the 2024 Chinese primary liver cancer guideline ask for the imaging to be reviewed and platelets and clotting checked first; ESMO–EURACAN–GENTURIS 2021 places the biopsy after imaging and multidisciplinary discussion."
+            "zh-CN": "还不行。最终很可能需要组织诊断，但在断层影像之前穿刺一个 12 cm 的不均匀肿块，就不知道它的血供、有没有出过血、哪部分是有活性的肿瘤，而且她的血小板和凝血都还不清楚。BSG 2020 和《原发性肝癌诊疗指南（2024年版）》要求先复核影像、检查血小板和凝血；ACG 2024 建议对性质不明的肝占位先做多期增强 CT 或 MRI。",
+            "en": "Not yet. Tissue will probably be needed, but sampling a 12 cm heterogeneous mass before cross-sectional imaging means not knowing its blood supply, whether it has bled or which part is viable — and her platelet count and clotting are unknown. BSG 2020 and the 2024 Chinese primary liver cancer guideline ask for the imaging to be reviewed and platelets and clotting checked first, and ACG 2024 recommends multiphasic CT or MRI for a liver lesion of uncertain cause."
           }
         },
         {
@@ -3443,8 +3490,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。FDG 摄取反映的是葡萄糖代谢，而不是组织学：癌、肉瘤、淋巴瘤和部分感染都可以高摄取，所以这项检查支持恶性、显示病变范围，但不能分型。ESMO–EURACAN–GENTURIS 2021 把 FDG PET/CT 作为解决疑难问题的工具，诊断仍依靠粗针穿刺。报告考虑瘤内出血，这一点对下一步很重要：说明这是一个脆弱、富血供的肿瘤。",
-            "en": "Correct. FDG uptake measures glucose metabolism, not histology: carcinomas, sarcomas, lymphomas and some infections can all be FDG-avid, so the scan supports malignancy and maps its extent but cannot type it. ESMO–EURACAN–GENTURIS 2021 uses FDG-PET/CT as a problem-solving tool, with the diagnosis resting on core biopsy. The reading of haemorrhage inside the tumour matters for the next step: it marks a fragile, vascular tumour."
+            "zh-CN": "正确。FDG 摄取反映的是葡萄糖代谢，而不是组织学：癌、肉瘤、淋巴瘤和部分感染都可以高摄取，所以这项检查支持恶性、显示病变范围，但不能分型。《原发性肝癌诊疗指南（2024年版）》用 PET/CT 做分期，影像不典型的肝占位则靠穿刺活检明确诊断。报告考虑瘤内出血，这一点对下一步很重要：说明这是一个脆弱、富血供的肿瘤。",
+            "en": "Correct. FDG uptake measures glucose metabolism, not histology: carcinomas, sarcomas, lymphomas and some infections can all be FDG-avid, so the scan supports malignancy and maps its extent but cannot type it. The 2024 Chinese guideline uses PET/CT for staging and turns to biopsy for a liver lesion without typical imaging features. The reading of haemorrhage inside the tumour matters for the next step: it marks a fragile, vascular tumour."
           }
         },
         {
@@ -3455,8 +3502,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。没有哪个 SUV 数值能对应某种肿瘤类型，癌、肉瘤和淋巴瘤的摄取互相重叠；中心摄取缺损只说明中央没有代谢，这里报告考虑的是瘤内出血。没有病理就治疗，可能用错方案；诊断要靠影像之后的粗针穿刺（ESMO–EURACAN–GENTURIS 2021；2024 年版中国指南）。",
-            "en": "No. No SUV value is specific to a tumour type: uptake overlaps across carcinomas, sarcomas and lymphomas, and a cold centre only says the middle is not metabolising — and here the report reads haemorrhage within the tumour. Treating without histology risks the wrong treatment; the diagnosis rests on core biopsy after imaging (ESMO–EURACAN–GENTURIS 2021; 2024 Chinese guideline)."
+            "zh-CN": "不对。没有哪个 SUV 数值能对应某种肿瘤类型，癌、肉瘤和淋巴瘤的摄取互相重叠；中心摄取缺损只说明中央没有代谢，这里报告考虑的是瘤内出血。没有病理就治疗，可能用错方案；诊断要靠影像之后的粗针穿刺（2024 年版中国指南）。",
+            "en": "No. No SUV value is specific to a tumour type: uptake overlaps across carcinomas, sarcomas and lymphomas, and a cold centre only says the middle is not metabolising — and here the report reads haemorrhage within the tumour. Treating without histology risks the wrong treatment; the diagnosis rests on core biopsy after imaging (2024 Chinese guideline)."
           }
         },
         {
@@ -3503,13 +3550,13 @@
         {
           "id": "planned-core-biopsy",
           "text": {
-            "zh-CN": "影像引导下经正常肝组织穿刺病灶活跃的边缘，术前查血小板、凝血和抗栓药并备血，术后观察",
+            "zh-CN": "影像引导下经正常肝组织穿刺病灶活跃的边缘，术前查血小板、凝血和抗栓药并备血",
             "en": "Image-guided core biopsy of a lesion's viable edge through normal liver, after platelets, clotting and blood thinners are checked and blood is grouped"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ESMO–EURACAN–GENTURIS 2021：在影像检查和多学科讨论之后，多条粗针穿刺（≥ 14–16 G）。BSG 2020：局灶病变在影像引导下穿刺，病灶穿刺要求 INR < 2.0，术后至少观察 3 小时，高度怀疑恶性时不做日间穿刺；SIR 2019 把它列为高出血风险操作（INR ≤ 1.5–1.8，血小板 ≥ 50×10⁹/L）。《原发性肝癌诊疗指南（2024年版）》要求先查血小板和凝血，穿刺路径经过正常肝组织、取影像上活跃的肿瘤。影像已提示瘤内出血，要备好血，并让介入科待命。",
-            "en": "Correct. ESMO–EURACAN–GENTURIS 2021: multiple core biopsies (≥ 14–16 G) after imaging and multidisciplinary discussion. BSG 2020: image guidance for focal lesions, an INR below 2.0 for a lesional biopsy, at least 3 hours of observation and no day-case biopsy when malignancy is strongly suspected; SIR 2019 classes it as high bleeding risk (INR ≤ 1.5–1.8, platelets ≥ 50 × 10⁹/L). The 2024 Chinese guideline asks for platelets and clotting first and a route through normal liver to the active tumour. With bleeding already read inside the tumour, have blood and interventional radiology ready."
+            "en": "Correct. BSG 2020: image guidance for every focal lesion, an 18 G core for a solid lesion, an INR below 2.0 for a lesional biopsy and at least 3 hours of observation — longer when malignancy is strongly suspected, as its authors' 2020 amendment advises. SIR 2019 classes it as high bleeding risk (INR ≤ 1.5–1.8, platelets ≥ 50 × 10⁹/L). The 2024 Chinese guideline asks for platelets and clotting first, 18 G or 16 G cores and a route through normal liver to the active tumour. With bleeding already read inside the tumour, have blood and interventional radiology ready.",
+            "zh-CN": "正确。BSG 2020：局灶病变一律影像引导，实性病灶用 18 G 粗针，病灶穿刺要求 INR < 2.0，术后至少观察 3 小时；按其作者 2020 年的修订，高度怀疑恶性时应考虑延长观察。SIR 2019 把它列为高出血风险操作（INR ≤ 1.5–1.8，血小板 ≥ 50×10⁹/L）。《原发性肝癌诊疗指南（2024年版）》要求先查血小板和凝血，用 18 G 或 16 G 空芯针，穿刺路径经过正常肝组织、取影像上活跃的肿瘤。影像已提示瘤内出血，要备好血，并让介入科待命。"
           }
         },
         {
@@ -3520,8 +3567,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。最大肿块中心摄取稀疏、没有代谢活性，PET/CT 又考虑瘤内出血，从那里抽到的多半是血和坏死物，单靠细胞学也常常无法给肿瘤分型。ESMO–EURACAN–GENTURIS 2021 要求取多条粗针组织；2024 年版中国指南要求穿刺影像上活跃的肿瘤部分。",
-            "en": "No. The cold centre of the largest mass is not metabolically active, and the PET/CT reads haemorrhage within the tumour: an aspirate from there is likely to be blood and necrotic debris, and cytology alone often cannot type the tumour. ESMO–EURACAN–GENTURIS 2021 asks for multiple cores; the 2024 Chinese guideline targets the active tumour seen on imaging."
+            "zh-CN": "不对。最大肿块中心摄取稀疏、没有代谢活性，PET/CT 又考虑瘤内出血，从那里抽到的多半是血和坏死物，单靠细胞学也常常无法给肿瘤分型。BSG 2020 对实性病灶用 18 G 粗针取组织；2024 年版中国指南用 18 G 或 16 G 空芯针，穿刺影像上活跃的肿瘤部分。",
+            "en": "No. The cold centre of the largest mass is not metabolically active, and the PET/CT reads haemorrhage within the tumour: an aspirate from there is likely to be blood and necrotic debris, and cytology alone often cannot type the tumour. BSG 2020 takes an 18 G core from a solid lesion, and the 2024 Chinese guideline takes 18 G or 16 G cores from the active tumour seen on imaging."
           }
         },
         {
@@ -3634,13 +3681,13 @@
         {
           "id": "escalation-plan",
           "text": {
-            "zh-CN": "现在就商定方案：监测生命体征和血红蛋白、备血、介入科随时准备栓塞、机械性血栓预防，并与她本人讨论治疗限度",
-            "en": "Agree a plan now: observations and haemoglobin, blood available, radiology ready to embolise, mechanical VTE prophylaxis, and treatment limits discussed with her"
+            "en": "Agree a plan now: observations and haemoglobin, blood available, radiology ready to embolise, mechanical VTE prophylaxis, treatment limits agreed with her",
+            "zh-CN": "现在商定：监测生命体征和血红蛋白、备血、介入栓塞待命、机械性血栓预防、与她谈治疗限度"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。肝血管肉瘤本身就可能出血或破裂，穿刺又增加了风险（2016 年韩国多中心研究：33 例穿刺中 3 例严重出血）。ACG 2024 对肝腺瘤破裂先稳定血流动力学，再行栓塞和/或切除；对出血的多灶性肿瘤，要准备好的是栓塞——在出血发生之前就定好叫谁、做什么。NICE NG89（2018，2019 更新）：权衡血栓和出血风险——这里选机械性预防。治疗限度和抢救意愿要用通俗的话与她本人讨论。",
-            "en": "Correct. Hepatic angiosarcoma can bleed or rupture on its own, and a biopsy adds a further risk (severe bleeding after 3 of 33 biopsies in a Korean multicentre series, 2016). ACG 2024 manages a ruptured liver adenoma by haemodynamic stabilisation followed by embolisation and/or resection; for a bleeding multifocal tumour, embolisation is the step to have ready — decide who is called and what is done before it happens. NICE NG89 (2018, updated 2019): weigh clots against bleeding — here, mechanical prophylaxis. Limits of treatment and resuscitation are discussed with her, in plain words."
+            "zh-CN": "正确。肝血管肉瘤本身就可能出血或破裂，穿刺又增加了风险（2016 年韩国多中心研究：33 例穿刺中 3 例严重出血）。ACG 2024 对肝腺瘤破裂先稳定血流动力学，再行栓塞和/或切除；对出血的多灶性肿瘤，要准备好的是栓塞——在出血发生之前就定好叫谁、做什么。NICE NG89（2018，2019 更新）要求在药物预防之前权衡血栓和出血风险；ASH 2018 建议出血风险不可接受时采用机械性预防——本例正是如此。治疗限度和抢救意愿要用通俗的话与她本人讨论。",
+            "en": "Correct. Hepatic angiosarcoma can bleed or rupture on its own, and a biopsy adds a further risk (severe bleeding after 3 of 33 biopsies in a Korean multicentre series, 2016). ACG 2024 manages a ruptured liver adenoma by haemodynamic stabilisation followed by embolisation and/or resection; for a bleeding multifocal tumour, embolisation is the step to have ready — decide who is called and what is done before it happens. NICE NG89 (2018, updated 2019) weighs clots against bleeding before any drug prophylaxis, and ASH 2018 recommends mechanical prophylaxis when the bleeding risk is unacceptable — as here. Limits of treatment and resuscitation are discussed with her, in plain words."
           }
         },
         {
@@ -3651,14 +3698,14 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。NICE NG89（2018，2019 更新）要求在药物预防之前权衡血栓风险和出血风险；肿瘤内已有出血、又刚做过肝穿刺，出血风险占上风。应采用机械性预防，并每天重新评估。",
-            "en": "No. NICE NG89 (2018, updated 2019) asks for her VTE risk to be weighed against her bleeding risk before any drug prophylaxis; with haemorrhage inside the tumour and a fresh liver biopsy, the bleeding risk prevails. Use mechanical prophylaxis and reassess each day."
+            "zh-CN": "不对。NICE NG89（2018，2019 更新）要求在药物预防之前权衡血栓风险和出血风险；肿瘤内已有出血、又刚做过肝穿刺，出血风险占上风。应采用机械性预防（ASH 2018），并每天重新评估。",
+            "en": "No. NICE NG89 (2018, updated 2019) asks for her VTE risk to be weighed against her bleeding risk before any drug prophylaxis; with haemorrhage inside the tumour and a fresh liver biopsy, the bleeding risk prevails. Use mechanical prophylaxis (ASH 2018) and reassess each day."
           }
         },
         {
           "id": "surgery-first",
           "text": {
-            "zh-CN": "把急诊开腹肝切除作为任何出血的首选处理，并提前预约手术室，以免耽误手术",
+            "zh-CN": "把急诊开腹肝切除作为任何出血的首选处理，并提前预约好手术室，以免到时耽误手术",
             "en": "Plan emergency laparotomy and liver resection as the first response to any bleed, and book theatre time in advance so that surgery is not delayed"
           },
           "correct": false,
@@ -3670,7 +3717,7 @@
         {
           "id": "family-only",
           "text": {
-            "zh-CN": "不和她本人谈出血和抢救的问题，改为私下和家属商定方案，免得她难受",
+            "zh-CN": "和她本人谈话时不提出血和抢救，改为私下和家属商定方案，让她免受这份痛苦",
             "en": "Leave bleeding and resuscitation out of conversations with her, and settle the plan quietly with her family instead so that she is spared the distress"
           },
           "correct": false,
@@ -3801,8 +3848,8 @@
       "id": "rb-next-step",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即选择先明确性质和分期、再考虑取材，并申请了多期增强 CT 或 MRI",
-        "en": "Chose characterisation and staging before any sampling at the first attempt, and requested multiphase CT or MRI"
+        "zh-CN": "首次作答即选择先明确性质和分期、再考虑取材，并及时申请了多期增强 CT 或 MRI",
+        "en": "Chose characterisation and staging before any sampling at the first attempt, and requested multiphase CT or MRI in time"
       },
       "weight": 3,
       "met": {
@@ -3811,7 +3858,16 @@
             "decidedFirstTry": "next-step"
           },
           {
-            "ordered": "ct-mri"
+            "any": [
+              {
+                "ordered": "ct-mri",
+                "phase": "admission"
+              },
+              {
+                "ordered": "ct-mri",
+                "phase": "imaging"
+              }
+            ]
           }
         ]
       }
@@ -3832,8 +3888,8 @@
       "id": "rb-tissue-plan",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即定好取材方案，提交多学科讨论，并做了血型鉴定备血",
-        "en": "Planned the sampling at the first attempt, took her to the multidisciplinary meeting and had her blood grouped"
+        "zh-CN": "首次作答即定好取材方案，提交多学科讨论，并及时做了血型鉴定备血",
+        "en": "Planned the sampling at the first attempt, took her to the multidisciplinary meeting and had her blood grouped in time"
       },
       "weight": 3,
       "met": {
@@ -3842,10 +3898,20 @@
             "decidedFirstTry": "tissue-plan"
           },
           {
-            "intervened": "hpb-mdt"
+            "intervened": "hpb-mdt",
+            "whenIndicated": true
           },
           {
-            "ordered": "group-save"
+            "any": [
+              {
+                "ordered": "group-save",
+                "phase": "admission"
+              },
+              {
+                "ordered": "group-save",
+                "phase": "imaging"
+              }
+            ]
           }
         ]
       }
@@ -3854,8 +3920,8 @@
       "id": "rb-safe-biopsy",
       "domain": "management",
       "text": {
-        "zh-CN": "穿刺时机和准备正确：在进一步影像之后，并先送检了血常规和凝血",
-        "en": "Took the biopsy at the right time and prepared: after the further imaging, with the blood count and clotting sent first"
+        "zh-CN": "穿刺时机和准备正确：看过进一步影像之后，并先送检了血常规和凝血",
+        "en": "Took the biopsy at the right time and prepared: after reading the further imaging, with the blood count and clotting sent first"
       },
       "weight": 4,
       "critical": true,
@@ -3953,8 +4019,8 @@
       "id": "rb-no-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有做有害的事：没有在进一步影像之前、或未查血常规和凝血就穿刺，没有重复穿刺，没有药物性血栓预防，没有盲目输血浆，也没有转诊肝移植",
-        "en": "Did nothing harmful: no biopsy before the further imaging or without the blood count and clotting, no repeat biopsy, no drug prophylaxis, no blind plasma and no transplant referral"
+        "zh-CN": "没有做有害的事：没有在看过进一步影像之前、或未查血常规和凝血就穿刺，没有重复穿刺，没有药物性血栓预防，没有盲目输血浆，也没有转诊肝移植",
+        "en": "Did nothing harmful: no biopsy before the further imaging was read or without the blood count and clotting, no repeat biopsy, no drug prophylaxis, no blind plasma and no transplant referral"
       },
       "weight": 3,
       "critical": true,
@@ -4043,8 +4109,8 @@
         "en": "Dr Qiao (hepatology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经得到的资料提问。入院时：“肝脏质硬、表面不平、有压痛，加上一个月的腹胀——哪些情况都说得通？各自靠什么来想到？”“肿瘤标志物能告诉你什么、不能告诉你什么？”超声之后、穿刺之前：“为什么先做多期增强 CT 或 MRI？”“FDG 摄取衡量的是什么？”“大肿块中心摄取稀疏提示什么，会怎样改变你的计划？”“针进这个肝脏之前你必须知道什么？出血时要有什么准备好？”病理之后：“对这种病，能提供什么、不能提供什么？”“需要请谁参与？”“你打算怎样和她谈？”复盘时按 PEARLS：“她死亡的时间先后说明了什么，又不能说明什么？”可以讲解 ACG 2024、BSG 2020、SIR 2019、《原发性肝癌诊疗指南（2024年版）》、ESMO–EURACAN–GENTURIS 2021、NICE NG89 和欧洲肝移植登记（2013）的相关原则，并把原报告的做法与现行做法对照。在学员作答之前不说出诊断或任何决策的正确选项；不补充病例里没有的数据（生命体征、血常规、凝血、肝肾功能、穿刺方式和出血的经过都没有记录）。",
-        "en": "A Socratic teacher who asks only about what the learner already has. On admission: “A hard, irregular, tender liver and a month of bloating — which processes fit, and what makes you think of each?”; “What can tumour markers tell you, and what can they not?” After the ultrasound and before the biopsy: “Why multiphase CT or MRI first?”; “What does FDG uptake measure?”; “What does low uptake in the centre of a large mass suggest, and how does it change your plan?”; “What must you know before a needle goes into this liver, and what must be ready if it bleeds?” After the histology: “What can and cannot be offered for this disease?”; “Who needs to be involved?”; “How will you talk with her about it?” At the debrief, in PEARLS order: “What does the timing of her death tell you, and what can it not?” Can explain ACG 2024, BSG 2020, SIR 2019, the 2024 Chinese primary liver cancer guideline, ESMO–EURACAN–GENTURIS 2021, NICE NG89 and the European Liver Transplant Registry (2013), and contrast them with what the report records. Never names the diagnosis or a keyed option before the learner commits, and never supplies data the case lacks (vital signs, blood count, clotting, liver and renal function, how the biopsy was done and the course of the bleeding are not recorded)."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经得到的资料提问。入院时：“肝脏质硬、表面不平、有压痛，加上一个月的腹胀——哪些情况都说得通？各自靠什么来想到？”“肿瘤标志物能告诉你什么、不能告诉你什么？”超声之后、穿刺之前：“为什么先做多期增强 CT 或 MRI？”“FDG 摄取衡量的是什么？”“大肿块中心摄取稀疏提示什么，会怎样改变你的计划？”“针进这个肝脏之前你必须知道什么？出血时要有什么准备好？”病理之后：“对这种病，能提供什么、不能提供什么？”“需要请谁参与？”“你打算怎样和她谈？”复盘时按 PEARLS：“她死亡的时间先后说明了什么，又不能说明什么？”可以讲解 ACG 2024、BSG 2020、SIR 2019、《原发性肝癌诊疗指南（2024年版）》、ESMO–EURACAN–GENTURIS 2021、NICE NG89、ASH 2018 和欧洲肝移植登记（2013）的相关原则，并把原报告的做法与现行做法对照。在学员作答之前不说出诊断或任何决策的正确选项；不补充病例里没有的数据（生命体征、血常规、凝血、肝肾功能、穿刺方式和出血的经过都没有记录）。",
+        "en": "A Socratic teacher who asks only about what the learner already has. On admission: “A hard, irregular, tender liver and a month of bloating — which processes fit, and what makes you think of each?”; “What can tumour markers tell you, and what can they not?” After the ultrasound and before the biopsy: “Why multiphase CT or MRI first?”; “What does FDG uptake measure?”; “What does low uptake in the centre of a large mass suggest, and how does it change your plan?”; “What must you know before a needle goes into this liver, and what must be ready if it bleeds?” After the histology: “What can and cannot be offered for this disease?”; “Who needs to be involved?”; “How will you talk with her about it?” At the debrief, in PEARLS order: “What does the timing of her death tell you, and what can it not?” Can explain ACG 2024, BSG 2020, SIR 2019, the 2024 Chinese primary liver cancer guideline, ESMO–EURACAN–GENTURIS 2021, NICE NG89, ASH 2018 and the European Liver Transplant Registry (2013), and contrast them with what the report records. Never names the diagnosis or a keyed option before the learner commits, and never supplies data the case lacks (vital signs, blood count, clotting, liver and renal function, how the biopsy was done and the course of the bleeding are not recorded)."
       },
       "interprets": [
         "abd-us",
@@ -4106,8 +4172,8 @@
         "en": "Dr Fan (interventional radiology)"
       },
       "knowledge": {
-        "zh-CN": "介入放射科医生。穿刺之前：在知道血小板、INR 和抗栓药情况之后（SIR 2019 列为高出血风险；BSG 2020），影像引导、同轴技术，经正常肝组织穿刺活跃的肿瘤，避开中心出血区和包膜，备血，术后观察；担心出血时可以封堵针道，但 BSG 2020 指出没有试验证明其获益。一旦出血：先复苏，再行急诊血管造影和经导管动脉栓塞。如实说明本病例没有记录穿刺方式和任何出血后的处理；不说出诊断。",
-        "en": "Interventional radiologist. Before a biopsy: once the platelets, INR and antithrombotics are known (SIR 2019: high bleeding risk; BSG 2020), an image-guided coaxial core biopsy through normal liver into viable tumour, away from the haemorrhagic centre and the capsule, with blood grouped and observation afterwards; the tract can be plugged when bleeding is a concern, though BSG 2020 notes no trial has shown a benefit. If she bleeds: resuscitation first, then urgent angiography and transarterial embolisation. Says plainly that how the biopsy was done and any treatment of bleeding are not recorded for this case, and does not name the diagnosis."
+        "zh-CN": "介入放射科医生。穿刺之前：在知道血小板、INR 和抗栓药情况之后（SIR 2019 列为高出血风险；BSG 2020），影像引导、同轴技术，经正常肝组织穿刺活跃的肿瘤，避开中心出血区和包膜，备血，术后观察；担心出血时可以封堵针道，但 BSG 2020 指出尚无随机试验评估其获益。一旦出血：先复苏，再行急诊血管造影和经导管动脉栓塞。如实说明本病例没有记录穿刺方式和任何出血后的处理；不说出诊断。",
+        "en": "Interventional radiologist. Before a biopsy: once the platelets, INR and antithrombotics are known (SIR 2019: high bleeding risk; BSG 2020), an image-guided coaxial core biopsy through normal liver into viable tumour, away from the haemorrhagic centre and the capsule, with blood grouped and observation afterwards; the tract can be plugged when bleeding is a concern, though BSG 2020 notes that no randomised trial has tested its benefit. If she bleeds: resuscitation first, then urgent angiography and transarterial embolisation. Says plainly that how the biopsy was done and any treatment of bleeding are not recorded for this case, and does not name the diagnosis."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4184,12 +4250,12 @@
         "en": "Characterise before you sample. ACG 2024 (focal liver lesions) recommends multiphasic contrast-enhanced CT or MRI — late arterial, portal venous and delayed phases — for any liver lesion of uncertain cause, and the 2024 Chinese primary liver cancer guideline turns to biopsy for a liver lesion that lacks typical imaging features. This case records an ultrasound and a PET/CT but no multiphase CT or MRI: today the multiphase study comes first, with PET/CT for staging and problem-solving (ESMO–EURACAN–GENTURIS 2021)."
       },
       {
-        "zh-CN": "肝穿刺是高出血风险操作。SIR 2019：INR ≤ 1.5–1.8、血小板 ≥ 50×10⁹/L（慢性肝病另有阈值）；BSG 2020：局灶病变影像引导，病灶穿刺 INR < 2.0，INR ≤ 2.0 时不输新鲜冰冻血浆纠正，术后至少观察 3 小时，高度怀疑恶性时不做日间穿刺；2024 年版中国指南：术前查血小板和出凝血功能，路径经过正常肝组织。本例这些数值一个都没有记录——这本身就是教训。",
-        "en": "A liver biopsy is a high-bleeding-risk procedure. SIR 2019: INR ≤ 1.5–1.8 and platelets ≥ 50 × 10⁹/L (other thresholds in chronic liver disease); BSG 2020: image guidance for focal lesions, INR < 2.0 for a lesional biopsy, no FFP to correct an INR ≤ 2.0, at least 3 hours of observation and no day-case biopsy when malignancy is strongly suspected; the 2024 Chinese guideline: platelets and clotting first and a route through normal liver. None of these values is recorded for this patient — which is itself the lesson."
+        "zh-CN": "肝穿刺是高出血风险操作。SIR 2019：INR ≤ 1.5–1.8、血小板 ≥ 50×10⁹/L（慢性肝病另有阈值）；BSG 2020：局灶病变影像引导，病灶穿刺 INR < 2.0，INR ≤ 2.0 时不输新鲜冰冻血浆纠正，术后至少观察 3 小时，高度怀疑恶性时应考虑延长观察（作者 2020 年修订）；2024 年版中国指南：术前查血小板和出凝血功能，路径经过正常肝组织。本例这些数值一个都没有记录——这本身就是教训。",
+        "en": "A liver biopsy is a high-bleeding-risk procedure. SIR 2019: INR ≤ 1.5–1.8 and platelets ≥ 50 × 10⁹/L (other thresholds in chronic liver disease); BSG 2020: image guidance for focal lesions, INR < 2.0 for a lesional biopsy, no FFP to correct an INR ≤ 2.0, and at least 3 hours of observation, longer when malignancy is strongly suspected (as its authors amended it in 2020); the 2024 Chinese guideline: platelets and clotting first and a route through normal liver. None of these values is recorded for this patient — which is itself the lesson."
       },
       {
-        "zh-CN": "肝血管肉瘤会出血。它罕见（不足原发性肝恶性肿瘤的 1%，ACG 2024）、富血供、容易自发出血；2016 年韩国多中心研究中，33 例经皮穿刺有 3 例严重出血，没有与穿刺相关的死亡。穿刺仍是确诊的途径——但要有计划，备好血和栓塞。",
-        "en": "Hepatic angiosarcoma bleeds. It is rare (under 1 % of primary liver malignancies, ACG 2024), hypervascular and prone to spontaneous haemorrhage; in a Korean multicentre series (2016) severe bleeding followed 3 of 33 percutaneous biopsies, with no biopsy-related deaths. Biopsy is still the route to the diagnosis — but planned, with blood and embolisation ready."
+        "zh-CN": "肝血管肉瘤会出血。它罕见（不足原发性肝恶性肿瘤的 1%，ACG 2024），起源于血管内皮细胞，质脆，容易自发出血；2016 年韩国多中心研究中，33 例经皮穿刺有 3 例严重出血，没有与穿刺相关的死亡。穿刺仍是确诊的途径——但要有计划，备好血和栓塞。",
+        "en": "Hepatic angiosarcoma bleeds. It is rare (under 1 % of primary liver malignancies, ACG 2024), a tumour of blood-vessel cells, fragile and prone to spontaneous haemorrhage; in a Korean multicentre series (2016) severe bleeding followed 3 of 33 percutaneous biopsies, with no biopsy-related deaths. Biopsy is still the route to the diagnosis — but planned, with blood and embolisation ready."
       },
       {
         "zh-CN": "不做肝移植，很少能手术。欧洲肝移植登记（2013）中，肝血管肉瘤移植后平均生存约 7 个月，被视为绝对禁忌；ACG 2024 只在可行时主张切除，并建议转介肉瘤专科中心。多灶病变时，ESMO–EURACAN–GENTURIS 2021 推荐姑息性全身治疗：蒽环类为标准一线，血管肉瘤也可选紫杉类。",
@@ -4200,8 +4266,8 @@
         "en": "Causation and candour. A death a few days after a biopsy invites the conclusion that the biopsy caused it; here the PET/CT before the biopsy already read haemorrhage inside the tumour, and the record does not establish the cause. Say what is known and what is not — to the family and in the morbidity review — without blame and without false reassurance."
       },
       {
-        "zh-CN": "出血风险决定其他一切。NICE NG89（2018，2019 更新）要求在药物性血栓预防之前权衡血栓和出血风险——这里应采用机械性预防；已知会出血的肿瘤需要事先商定的预案（观察、备血、介入放射科），以及按 SPIKES（2000）与她本人坦诚讨论治疗限度。",
-        "en": "Bleeding risk shapes everything else. NICE NG89 (2018, updated 2019) weighs VTE against bleeding risk before any drug prophylaxis — here mechanical prophylaxis; and a tumour known to bleed calls for an agreed plan (observation, blood, interventional radiology) and an honest conversation with her about the limits of treatment, using SPIKES (2000)."
+        "zh-CN": "出血风险决定其他一切。NICE NG89（2018，2019 更新）要求在药物性血栓预防之前权衡血栓和出血风险，ASH 2018 建议出血风险不可接受时采用机械性预防——本例正是如此；已知会出血的肿瘤需要事先商定的预案（观察、备血、介入放射科），以及按 SPIKES（2000）与她本人坦诚讨论治疗限度。",
+        "en": "Bleeding risk shapes everything else. NICE NG89 (2018, updated 2019) weighs VTE against bleeding risk before any drug prophylaxis, and ASH 2018 recommends mechanical prophylaxis when the bleeding risk is unacceptable — as here; and a tumour known to bleed calls for an agreed plan (observation, blood, interventional radiology) and an honest conversation with her about the limits of treatment, using SPIKES (2000)."
       }
     ],
     "references": [
@@ -4214,6 +4280,7 @@
       "Orlando G, Adam R, Mirza D, et al. Hepatic hemangiosarcoma: an absolute contraindication to liver transplantation—the European Liver Transplant Registry experience. Transplantation. 2013;95(6):872-877. doi:10.1097/TP.0b013e318281b902",
       "Kang TW, Lee MW, Choi D, et al. Safety of percutaneous biopsy for hepatic angiosarcoma: results of a multicenter Korean survey. J Vasc Interv Radiol. 2016;27(6):846-851. doi:10.1016/j.jvir.2016.01.148",
       "National Institute for Health and Care Excellence. Venous thromboembolism in over 16s: reducing the risk of hospital-acquired deep vein thrombosis or pulmonary embolism (NG89). London: NICE; 2018 (updated 2019). Available from: https://www.nice.org.uk/guidance/ng89",
+      "Schünemann HJ, Cushman M, Burnett AE, et al. American Society of Hematology 2018 guidelines for management of venous thromboembolism: prophylaxis for hospitalized and nonhospitalized medical patients. Blood Adv. 2018;2(22):3198-3225. doi:10.1182/bloodadvances.2018022954",
       "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
     ],
     "notice": {
@@ -4889,6 +4956,27 @@
         ]
       },
       {
+        "text": "Any abdominal distension?",
+        "locale": "en",
+        "expect": [
+          "bloating"
+        ]
+      },
+      {
+        "text": "Is your belly swollen?",
+        "locale": "en",
+        "expect": [
+          "bloating"
+        ]
+      },
+      {
+        "text": "肚子大了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bloating"
+        ]
+      },
+      {
         "text": "I'm going to order some blood tests now.",
         "locale": "en",
         "expect": []
@@ -4906,6 +4994,11 @@
       {
         "text": "好的，谢谢您的配合。",
         "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "Are your ankles swollen?",
+        "locale": "en",
         "expect": []
       }
     ]

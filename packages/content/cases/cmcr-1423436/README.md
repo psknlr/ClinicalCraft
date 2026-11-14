@@ -26,7 +26,7 @@ does not record stays unknown.
 | the patient | a 43-year-old woman, half a day of constant dull upper abdominal pain through to the left back with vomiting, after two weeks of self-taken celecoxib for shoulder pain |
 | what the learner can do | take her history, examine her abdomen, order the tests the general hospital provides (bloods, ECG, portable chest film, pregnancy test, ultrasound/MRCP, CT, EUS), give or withhold 16 interventions (10 of today's care, 6 tempting wrong or historical steps), answer five decisions on the case board, read the course record |
 | phases | `admission` 收入病房 / Arrival on the ward → `results` 检查结果回报 / The results are back → `outcome` 此后的病程与结局 / Her course and outcome — all one-way, none learner-switchable |
-| content | 25 history items (11 with recorded facts, 1 labelled teaching device, 13 unknown; 8 required) · 2 exam findings · 14 investigations (1 record review; 6 with no recorded result) · 16 interventions (6 contraindicated, 1 of them critical) · 6 objectives · 5 decisions (22 options) · 15 rubric items (14 deterministic, weight 38; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 59 test utterances |
+| content | 25 history items (11 with recorded facts, 1 labelled teaching device, 13 unknown; 8 required) · 2 exam findings · 14 investigations (1 record review; 6 with no recorded result) · 16 interventions (6 contraindicated, 1 of them critical) · 6 objectives · 5 decisions (22 options) · 15 rubric items (14 deterministic, weight 38; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 66 test utterances |
 
 ## Learning outcomes
 
@@ -218,7 +218,7 @@ blood count, ECG, erect chest film, pregnancy test and ultrasound/MRCP; read the
 `first-plan` → (phase `results`) order and read enzymes, CRP, liver tests, triglycerides, kidney function/electrolytes,
 ultrasound/MRCP and calcium → `diagnosis-severity` → `cause` → early-feeding plan, ADR report, counselling →
 `supportive-care` → `drug-safety` → (phase `outcome`) course and outcome record, "How are you feeling now?", enzymes'
-course → finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 38/38, utterances 59/59; the reference
+course → finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 38/38, utterances 66/66; the reference
 path gives nothing while it is contraindicated.
 
 ## Clinical numbers check
@@ -241,7 +241,7 @@ path gives nothing while it is contraindicated.
 | 5–10 mL/kg/h | `aggressive-fluids`, TP 3 | Chinese guideline 2021 Rec 8 | quoted as the pre-WATERFALL position |
 | 48 h; modified Marshall ≥ 2 | decision 2, `obs-monitoring` | Revised Atlanta 2012; IAP 2025 | — |
 | CT at least 72–96 h after onset | decisions 1–2, TP 2 | IAP 2025 Rec 7 | — |
-| oral diet within 24–48 h (mild); tube feeding if no oral intake by 72 h | `early-feeding`, decision 4 | ACG 2024; IAP 2025 Recs 22–23 | — |
+| oral diet within 24–48 h (mild); tube feeding, preferably within 72 h of onset, if she cannot take food by mouth | `early-feeding`, decision 4 | ACG 2024; IAP 2025 Recs 22–23 | — |
 | Naranjo about 5–7 (probable) | TP 4 | Naranjo 1981 | previous reports +1 (case reports since 2000), after the drug +2, improved on withdrawal +1, rechallenge 0, alternative causes 0 (microlithiasis and calcium open) or +2, objective evidence +1 → 5–7; 4–6 if the case reports are not counted |
 | 15 days | `adr-report`, decision 5 | 2011 ADR reporting Measures | new or serious reactions |
 
@@ -249,7 +249,7 @@ path gives nothing while it is contraindicated.
 
 ### Debrief questions (PEARLS)
 
-- **Reactions:** "How did it feel to be told the cause might be the tablets she chose to take?"
+- **Reactions:** "How did it feel to tell her that the painkiller she chose to take was the probable cause?"
 - **Description:** "Walk us through the first hour: what did you send, what did you start, and what did you stop?"
 - **Analysis:**
   - "With no reference ranges, how did you know the criteria were met?" (pain + imaging = two of three)
@@ -257,7 +257,7 @@ path gives nothing while it is contraindicated.
     or urine output are recorded)
   - "Which causes did the results exclude, and which did they not?" (calcium value, microlithiasis)
   - "Why moderate fluids and early food, when the old teaching was 'drip and suck'?" (WATERFALL 2022; IAP 2025; ACG 2024)
-  - "She asks to take the tablets again 'just to see'. What do you say?" (never rechallenge; WHO-UMC probable)
+  - "She asks whether she could take the painkiller again 'just to see'. What do you say?" (never rechallenge; WHO-UMC probable)
 - **Summary:** "What will you write in her notes and on the report form, and what will you tell her to show her next
   doctor?"
 
@@ -332,13 +332,21 @@ cited for "unnecessary fasting" without the vomiting caveat it states.
 
 ## Matcher notes
 
-59 test utterances (zh-CN and en): at least one paraphrase for each of the 8 required items (the eight are covered
-2–4 times), one or two for every other askable item, and 4 look-alike negatives that must select nothing. Collisions
-fixed during authoring: "Apart from the pain…" reached `presenting` (now excluded there by 除了/别的/其他 and "apart
+66 test utterances (zh-CN and en): at least two paraphrases for each of the 8 required items (the presenting complaint
+seven times, with the plain openers), two for every other askable item, and 8 negatives that must select nothing — 4
+look-alikes (other pains: headaches, knees and hips; "drive", which shares its first letters with "drink") and 4
+off-topic remarks. Collisions fixed during authoring: "Apart from the pain…" reached `presenting` (now excluded there by 除了/别的/其他 and "apart
 from"); "ease" in `pain-pattern` matched "dis*ease*" (removed); "how much" reached `celecoxib-dose` from urine and alcohol
 questions (excluded); "ever had" and 类似 reached `previous-episodes` from ulcer and family questions (excluded).
-Multi-word English keywords that reduce to one stem are written run together (`whatsthetrouble`, `onyourmind`). The
-outcome question (`outcome-feel`) is available only in `outcome`. `cases verify`: utterances 59/59, no extra hits.
+Fixed in the independent review: the plain opener "What brings you in today?" reached `associated` through "bringing
+up" (now `bringsyou` and `whatbrings` in `presenting`, and "brings you" / "brought you" excluded from `associated`);
+怎么回事 reached `shoulder` through its canonical question (now a `presenting` keyword); "Tell me what's been going on"
+reached nothing (`goingon` in `presenting`; "How long has this been going on?" still reaches `onset`, because
+`presenting` excludes "how long"). Multi-word English keywords that reduce to one stem are written run together
+(`whatsthetrouble`, `onyourmind`): the matcher also matches a phrase of four letters or more that the utterance
+contains once its spaces are removed. The outcome question (`outcome-feel`) is available only in `outcome`.
+`cases verify`: utterances 66/66, no extra hits; every plain opener of `scripts/case-check.ts` reaches `presenting` or
+`onset` in `admission`.
 
 ## References
 
@@ -355,7 +363,7 @@ outcome question (`outcome-feel`) is available only in `outcome`. `cases verify`
 11. Badalov N, Baradarian R, Iswara K, et al. Drug-induced acute pancreatitis: an evidence-based review. Clin Gastroenterol Hepatol. 2007;5(6):648-661. doi:10.1016/j.cgh.2006.11.023
 12. Carrillo-Jimenez R, Nurnberger M. Celecoxib-induced acute pancreatitis and hepatitis: a case report. Arch Intern Med. 2000;160:553-4.
 13. Naranjo CA, Busto U, Sellers EM, et al. A method for estimating the probability of adverse drug reactions. Clin Pharmacol Ther. 1981;30(2):239-245. doi:10.1038/clpt.1981.154
-14. Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Uppsala: UMC; 2018.
+14. World Health Organization; Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Geneva: WHO; 2013. Available from: https://www.who.int/publications/m/item/WHO-causality-assessment
 15. ICH. Clinical safety data management: definitions and standards for expedited reporting (E2A). 1994.
 16. 中华人民共和国药品管理法（2019年修订）第八十一条；中华人民共和国卫生部. 药品不良反应报告和监测管理办法（卫生部令第81号）. 2011.
 
@@ -367,7 +375,12 @@ secondary sources; AGA 2018, NICE NG104 (no prophylactic antimicrobials; not nil
 as vomiting; enteral nutrition within 72 h in severe or moderately severe AP), WATERFALL, the two Cochrane reviews,
 Revised Atlanta, Naranjo, WHO-UMC "probable" (no rechallenge required), ICH E2A's definition of serious, Article 81 of
 the Drug Administration Law and the 15-day rule of the 2011 Measures from publisher, registry or official-document
-pages; the 2021 Chinese guideline's recommendations 1, 8–12 and 15 from a full-text reprint.
+pages; the 2021 Chinese guideline's recommendations 1, 8–12 and 15 from a full-text reprint. The independent review
+(2026-11-14) re-read in the IAP 2025 full text recommendations 1–3, 7, 10–15, 17–19, 22–29 and 82 and the remarks on
+ALT > 150 U/L, CRP > 150 mg/L (sensitivity 53 %) and antibiotic prophylaxis (no reduction of infected necrosis; no
+mortality difference in a meta-analysis restricted to RCTs); NICE NG104 1.2.2 (not nil by mouth without a clear reason,
+for example vomiting) and 1.2.5; the 2021 Chinese guideline's recommendations 8, 9, 11, 12 and 15 from its reprint;
+the 15-day rule in Article 21 of the 2011 Measures; and the WHO page that dates the WHO-UMC document 5 June 2013.
 
 ### To verify
 
@@ -392,8 +405,8 @@ pages; the 2021 Chinese guideline's recommendations 1, 8–12 and 15 from a full
   AP pain in general; cross-reactivity between celecoxib and other NSAIDs is not established);
 - `urgent-ercp` as high-risk but not safety-critical, and `celecoxib-again` as the case's single critical error;
 - the Naranjo range (5–7) and whether the published celecoxib case reports count as "previous conclusive reports";
-- whether the 2021 Chinese guideline (中国实用外科杂志 2021;41(7):735-742; also published in 中华外科杂志 2021;59(7)) should
-  be cited in its 中华外科杂志 version; and the year of the WHO-UMC document;
+- whether the 2021 Chinese guideline is rightly cited as 中国实用外科杂志 2021;41(7):735-742 (the range its reprint gives;
+  one citing paper gives 739-746), or should be cited in its 中华外科杂志 2021;59(7) version;
 - whether the 2011 Measures are still the operative reporting rule alongside the 2019 Drug Administration Law and the
   2021 pharmacovigilance practice standard, and whether the reaction counts as "serious" under the Chinese definition.
 
@@ -416,6 +429,15 @@ pages; the 2021 Chinese guideline's recommendations 1, 8–12 and 15 from a full
 - **Other:** the pseudonym changed (1.0.0's was a public figure's name); the title no longer names the analgesic
   exposure; the tags no longer hint at a drug cause; 1.0.0's unverifiable "individually read / values retained"
   author checks removed; references expanded to 17 with DOIs checked; README rewritten as the facilitator guide.
+- **Independent review (2026-11-14):** three statements 1.0.0 does not record were removed — that her pain was severe
+  (`iv-nsaid` harm), that celecoxib was a new drug for her (decision 5 feedback) and that she was still vomiting when
+  the results came back (decision 4 prompt and feedback); "just food" in her answer about the vomit (it implied no
+  blood, against the unknown in `gi-bleed`), "tablet" and the CT's "contrast-enhanced" label now match the record; the
+  plain openers reach the presenting complaint ("What brings you in today?" had reached `associated`, 怎么回事
+  `shoulder`, "Tell me what's been going on" nothing) and four look-alike negatives were added; "1.0.0" no longer
+  appears in learner-facing teaching points; the WHO-UMC document is cited as WHO 2013 (not 2018); the wording on
+  antibiotic prophylaxis and mortality and the timing of tube feeding follow the IAP 2025 text; two dose texts that the
+  treatment list shows from the start no longer name the diagnosis; one decision-3 distractor is hedged like the key.
 
 ### 1.0.0 — 2026-10-28
 
@@ -430,7 +452,7 @@ Run from the worktree root (all pass on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1423436/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1423436 --lang en                                                 # objectives 6/6 · decisions 5/5 · utterances 59/59 · rubric 38/38 (100 %)
+npm run -s cc -- cases verify cmcr-1423436 --lang en                                                 # objectives 6/6 · decisions 5/5 · utterances 66/66 · rubric 38/38 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-1423436                                       # reference 100 % · do nothing 0/31 · wrong first at every decision 61 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1423436:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1423436:"  # in-world demonstration, en + zh-CN
@@ -458,5 +480,5 @@ MRCP 示胰腺弥漫性增大伴周围渗出，未见胆囊结石及胆胰管异
 （《药品管理法》2019 第八十一条）。
 
 **安全结果。** 唯一标为 `critical: true` 的干预是再次给予塞来昔布（无论用于止痛还是“验证”），一旦给予，无论得分多少本次安全结果都判为
-未通过；急诊 ERCP 属高风险但明确标为非致命性错误（`critical: false`），静脉 NSAID、预防性抗生素、禁食到胰酶正常和积极补液为可纠正的
+未通过；急诊 ERCP 属高风险，但明确标为不构成严重安全失误（`critical: false`），静脉 NSAID、预防性抗生素、禁食到胰酶正常和积极补液为可纠正的
 错误，均显示其危害并扣除 `rb-no-harm`。
