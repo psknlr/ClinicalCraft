@@ -1,0 +1,47 @@
+Audit 2026-11-12, second set: imaging stages, believed whereabouts, journeys, handoffs, live screens, benchmark denominators
+
+The external audit's world, team, benchmark and web findings (P1-7 to P2-15), and the follow-up review of the dose
+fixes of the first set. Each was reproduced first, fixed on the session's single tool path or as a world rule, and
+replayed by two adversarial reviews (world lens, team-dose lens), whose critical and major findings were fixed and
+verified by a third agent.
+
+- P1-7 imaging studies stage by stage: a study on a device is ordered wherever a clinician orders, acquired with the
+  patient on the device (`acquire`, recorded by the session; implied at the order in text mode), released a
+  turnaround after acquisition, then reviewed and acted on (OrderRecord, PROTOCOL §3.1). "Ordered — the patient must
+  go to …" is a state of its own in the tools, /results, the nurse and the web; reading a study not yet done says so
+  before the spatial gate; a client-supplied modality is replaced by the world's rule.
+- P1-8 going where one believes a thing is: approach by id or name goes to the believed place, absence is learned on
+  arrival, search and ask_whereabouts; refusals name the believed room, never the true distance or point; a
+  human-driven body's sensor poses are remembered; recovery scenario recovery-ecg-cart-moved-out-of-sight.
+- P1-9 a colleague holding information: an information-handoff team scenario in acute-ischemic-stroke (1.1.4),
+  escalation with its reason in both languages (TEAM.md).
+- P1-10 benchmark denominators: cases, scenarios per case and the most frequent case's share stated apart; the
+  controls labelled as controls; a held-out `test` split that carries no scripted plan and is reported apart; four
+  full non-cardiac encounters (sepsis, DKA; asthma and anaphylaxis held out).
+- P2-11 the patient's journeys in the event log: walks with someone, transports with their handover and the monitor
+  that travelled, relocations (`PatientPlaceState.legs`); a follower step must be walkable — a sensor jump no longer
+  moves the patient or records a leg (residual: the live spot still follows the walker's pose, EMBODIED §14.3).
+- P2-12 handheld items and handoffs: specimen tube and medication box in the default catalog (custody, Blender
+  models), a HandoffReceipt the receiver confirms, the holder named to observers, delegate_task deliver_item, staff
+  signing in their own voice and "Sign for it" in the browser.
+- P2-13 live screens: whose vitals a device's screen shows is a world rule (screenPatient) asked on every draw: a
+  moved cart no longer shows the bed it was built beside; an ECG cart is live only when connected.
+- P2-14 coverage by kind (history-taking, time-critical, team) and `cases safety-review`, a bilingual worksheet that
+  records no verdict.
+- P2-15 the map's place and the badge are one lookup of the avatar's position.
+- Dose follow-ups: loading then maintenance ("aspirin 300 mg now, then 75 mg daily"), bolus and infusion presets
+  (`maintenance`; UFH in pulmonary-embolism-postop), split regimens checked part by part (alteplase), ranges read end
+  for end, clause-by-clause reading of preparations ("NaCl 1000 mL with KCl 40 mmol at 500 mL/h"), the reader no
+  longer skipping the only dose ("potassium 40 IV" and "ceftriaxone 20G IV" are asked; "adrenaline up to 5 mg IM" is
+  a critical dose error), a model-voiced colleague checks the learner's own words, and the arrest-dose adrenaline
+  preset in stemi-inferior-rv.
+
+Checks on this tree: typecheck; vitest (all packages; content's only failures are the cmcr-105 contract of the
+cases still being re-authored on the PR #5 line); in-world demonstration 142/142 (every built-in case, en and
+zh-CN); validate --all (0 errors), verify --all 135/135, facilities 22/22, JSON Schemas in step; bench reference
+138/138 and scripted-llm 132/132 (6 held-out runs skipped), 0 safety, spatial or authorisation violations; bench
+team 2/2 in both languages; bench demo unchanged but for its timestamp; e2e live-screens, place-labels, transport,
+escort, embodied-mobile, embodied.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab

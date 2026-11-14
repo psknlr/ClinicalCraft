@@ -320,11 +320,11 @@
           "whatswrong",
           "what's wrong",
           "howlong",
-          "since when",
+          "sincewhen",
           "main problem",
           "broughthimin",
           "presenting complaint",
-          "what happened",
+          "whathappened",
           "goingon",
           "bringsyou",
           "broughtyou",
@@ -345,7 +345,9 @@
           "吐",
           "过敏",
           "一周",
-          "一个月"
+          "一个月",
+          "出生",
+          "生下来"
         ],
         "en": [
           "operation",
@@ -353,7 +355,10 @@
           "sick",
           "allerg",
           "this week",
-          "a month"
+          "a month",
+          "birth",
+          "born",
+          "baby"
         ]
       },
       "disclosure": "volunteer",
@@ -401,7 +406,11 @@
           "see two",
           "eyes",
           "eye problems",
-          "his eyes"
+          "his eyes",
+          "see clearly",
+          "see properly",
+          "see well",
+          "seeing properly"
         ]
       },
       "speaker": "patient",
@@ -787,7 +796,9 @@
           "吐不吐",
           "以前得过",
           "既往",
-          "病史"
+          "病史",
+          "以前身体",
+          "平时身体"
         ],
         "en": [
           "usually sick",
@@ -800,7 +811,9 @@
           "since the operation",
           "medical history",
           "past history",
-          "health problems"
+          "health problems",
+          "health before",
+          "past health"
         ]
       },
       "excludeKeywords": {
@@ -906,7 +919,12 @@
           "以前得过",
           "既往",
           "病史",
-          "生过病"
+          "生过病",
+          "出生",
+          "生下来",
+          "小时候",
+          "以前身体",
+          "平时身体"
         ],
         "en": [
           "operation",
@@ -921,20 +939,25 @@
           "past history",
           "previous illnesses",
           "health problems",
-          "been ill before"
+          "been ill before",
+          "since birth",
+          "birth",
+          "born",
+          "baby",
+          "health before",
+          "past health"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "吐",
-          "以后",
+          "手术以后",
           "家族",
           "家里"
         ],
         "en": [
           "vomit",
           "sick",
-          "since",
           "family"
         ]
       },
@@ -2836,8 +2859,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "治疗剂量注射给药，先于任何含葡萄糖的液体：首选静脉（无法建立静脉通路时肌注），每日分次重复。EFNS 2010给出的成人方案为200 mg、每日3次、首选静脉；儿童剂量依据儿科处方集按体重和年龄计算，并与药师核对——他还没有称体重，不要让计算拖延首剂。床旁备好过敏反应急救用品。",
-        "en": "A treatment dose by injection, before any glucose-containing fluid: IV preferred (IM if IV access fails), repeated through the day. EFNS 2010 gives the adult regimen as 200 mg three times daily, preferably IV; a child's dose is worked out by weight and age from the paediatric formulary and checked with the pharmacist — he has not been weighed yet, and the calculation must not delay the first dose. Have anaphylaxis treatment to hand."
+        "zh-CN": "治疗剂量注射给药，先于任何含葡萄糖的液体：首选静脉（无法建立静脉通路时肌注），每日分次重复。EFNS 2010给出的成人方案为200 mg、每日3次、首选静脉；儿童剂量依据儿科处方集按体重和年龄计算，并与药师核对——他的体重还不清楚，不要让计算拖延首剂。床旁备好过敏反应急救用品。",
+        "en": "A treatment dose by injection, before any glucose-containing fluid: IV preferred (IM if IV access fails), repeated through the day. EFNS 2010 gives the adult regimen as 200 mg three times daily, preferably IV; a child's dose is worked out by weight and age from the paediatric formulary and checked with the pharmacist — his weight is not yet known, and the calculation must not delay the first dose. Have anaphylaxis treatment to hand."
       },
       "requires": [
         "iv-access",
@@ -2933,7 +2956,12 @@
           "10%葡萄糖",
           "5%葡萄糖",
           "糖水",
-          "含糖液体"
+          "含糖液体",
+          "葡萄糖氯化钠",
+          "葡萄糖盐水",
+          "糖盐水",
+          "葡萄糖生理盐水",
+          "含糖的维持液"
         ],
         "en": [
           "glucose infusion",
@@ -2941,19 +2969,31 @@
           "glucose drip",
           "10% glucose",
           "5% glucose",
-          "dextrose saline"
+          "dextrose saline",
+          "glucose saline",
+          "dextrose in normal saline",
+          "saline with dextrose"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
-          "生理盐水",
           "不含糖",
-          "无糖"
+          "无糖",
+          "不含葡萄糖",
+          "不要葡萄糖",
+          "不用葡萄糖",
+          "不输葡萄糖",
+          "别输葡萄糖"
         ],
         "en": [
-          "saline",
-          "sodium chloride",
-          "glucose-free"
+          "glucose-free",
+          "glucose free",
+          "without glucose",
+          "without dextrose",
+          "no glucose",
+          "no dextrose",
+          "not glucose",
+          "not dextrose"
         ]
       },
       "dose": {
@@ -2992,23 +3032,51 @@
           "0.9%氯化钠",
           "等渗液",
           "盐水",
-          "不含糖的液体"
+          "不含糖的液体",
+          "不含葡萄糖的液体",
+          "无糖液体"
         ],
         "en": [
           "saline",
           "normal saline",
           "0.9% sodium chloride",
           "isotonic fluid",
-          "glucose-free fluid"
+          "glucose-free fluid",
+          "fluid without glucose",
+          "saline without glucose"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
-          "葡萄糖"
+          "葡萄糖氯化钠",
+          "葡萄糖盐水",
+          "糖盐水",
+          "葡萄糖生理盐水",
+          "5%葡萄糖",
+          "10%葡萄糖",
+          "输葡萄糖",
+          "加葡萄糖",
+          "含糖的维持",
+          "输含糖",
+          "葡萄糖维持"
         ],
         "en": [
-          "glucose",
-          "dextrose"
+          "dextrose saline",
+          "glucose saline",
+          "dextrose in",
+          "glucose in",
+          "with dextrose",
+          "with glucose",
+          "and dextrose",
+          "and glucose",
+          "5% dextrose",
+          "10% dextrose",
+          "5% glucose",
+          "10% glucose",
+          "glucose infusion",
+          "glucose drip",
+          "dextrose infusion",
+          "dextrose drip"
         ]
       },
       "dose": {
@@ -3349,16 +3417,16 @@
     {
       "id": "obj-reserves",
       "title": {
-        "zh-CN": "了解他平时的进食和既往情况",
-        "en": "Find out how he usually eats and what he has had before"
+        "zh-CN": "了解他的既往情况和日常生活",
+        "en": "Find out about his past health and everyday life"
       },
       "short": {
         "zh-CN": "既往",
         "en": "Background"
       },
       "hint": {
-        "zh-CN": "在这6天之前很久，可能有什么一直在悄悄影响他？",
-        "en": "Long before these six days, what might have been quietly wearing him down?"
+        "zh-CN": "在这6天之前很久，他的过去或日常生活中有什么可能与现在有关？",
+        "en": "Long before these six days, what in his past or his daily life could matter now?"
       },
       "guidance": {
         "zh-CN": "问一问他出生以来的情况、平时的胃口和身体。",
@@ -3645,8 +3713,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "外院按脑炎治疗3天已经毫无起色，继续原方案、等结果只会延长延误。脑炎解释不了膝反射消失和腓肠肌压痛，也解释不了他的营养风险；ABN/BPAIIG 2012儿童脑炎指南建议治疗无好转的患儿转入儿童神经专科，并允许在作出其他诊断后停用阿昔洛韦。对一个有营养风险、出现眼征和嗜睡的孩子，先给维生素B1。",
-            "en": "Three days of encephalitis treatment elsewhere have already failed, and continuing the same plan while waiting for results only extends the delay. Encephalitis does not explain absent knee reflexes, calf tenderness or his nutritional risk; the ABN/BPAIIG 2012 guideline on encephalitis in children advises transfer to a paediatric neurology unit when a child fails to improve, and lets aciclovir stop once an alternative diagnosis has been made. In a child with nutritional risk, eye signs and drowsiness, give thiamine first."
+            "zh-CN": "外院按脑炎治疗3天已经毫无起色，继续原方案、等结果只会延长延误。脑炎解释不了膝反射消失和腓肠肌压痛，也解释不了他的营养风险；ABN/BPAIIG 2012儿童脑炎指南建议治疗无好转的患儿转入儿童神经专科，并允许在作出其他诊断后停用阿昔洛韦——在此之前可以同时使用，但不能代替维生素B1。对一个有营养风险、出现眼征和嗜睡的孩子，先给维生素B1。",
+            "en": "Three days of encephalitis treatment elsewhere have already failed, and continuing the same plan while waiting for results only extends the delay. Encephalitis does not explain absent knee reflexes, calf tenderness or his nutritional risk; the ABN/BPAIIG 2012 guideline on encephalitis in children advises transfer to a paediatric neurology unit when a child fails to improve, and lets aciclovir stop once an alternative diagnosis has been made — until then it may run alongside, but never instead of thiamine. In a child with nutritional risk, eye signs and drowsiness, give thiamine first."
           }
         },
         {
@@ -3678,8 +3746,8 @@
     {
       "id": "thiamine-regimen",
       "prompt": {
-        "zh-CN": "你按维生素B1缺乏处理这个反复呕吐、还没有称过体重的9岁孩子。维生素B1怎么给？",
-        "en": "You are treating suspected thiamine deficiency in a 9-year-old with recurrent vomiting who has not yet been weighed. How do you give the thiamine?"
+        "zh-CN": "你按维生素B1缺乏处理这个反复呕吐、体重还不清楚的9岁孩子。维生素B1怎么给？",
+        "en": "You are treating suspected thiamine deficiency in a 9-year-old with recurrent vomiting whose weight is not yet known. How do you give the thiamine?"
       },
       "kind": "single",
       "requires": {
@@ -3812,8 +3880,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。EFNS 2010指南建议在饮酒和不饮酒的患者中都用MRI来支持诊断。典型部位是丘脑内侧、乳头体、顶盖和导水管周围区域；基底节等不典型部位主要见于与饮酒无关的患者（Zuccoli和Pipitone 2009）——他的豆状核信号就属于这一类；但MRI正常也不能排除诊断。脑脊液正常、新斯的明试验阴性使感染和重症肌无力的可能变小，但不是不可能。EAN/PNS 2023指南建议用电生理检查支持吉兰-巴雷综合征的诊断，而早期脑脊液蛋白仍可正常：若治疗后无力不见好转，应做神经传导检查。",
-            "en": "Right. The EFNS 2010 guideline uses MRI to support the diagnosis in people who drink and in those who do not. The typical sites are the medial thalami, mammillary bodies, tectal plate and periaqueductal area; atypical sites such as the basal ganglia are reported mainly in patients without alcohol use (Zuccoli and Pipitone 2009) — his lentiform signal is one — and a normal MRI would not have excluded it. A normal CSF and a negative neostigmine test make infection and myasthenia less likely, not impossible. The EAN/PNS 2023 guideline advises electrodiagnostic testing to support Guillain–Barré syndrome, whose CSF protein can still be normal early: if his weakness does not improve on treatment, he needs nerve conduction studies."
+            "zh-CN": "正确。EFNS 2010指南建议在饮酒和不饮酒的患者中都用MRI来支持诊断。典型部位是丘脑内侧、乳头体、顶盖和导水管周围区域（Zuccoli和Pipitone 2009）；基底节等不典型部位是不饮酒患者的特点（Zuccoli等 2009）——他的豆状核信号就属于这一类；但MRI正常也不能排除诊断。脑脊液正常、新斯的明试验阴性使感染和重症肌无力的可能变小，但不是不可能。EAN/PNS 2023指南建议用电生理检查支持吉兰-巴雷综合征的诊断，而早期脑脊液蛋白仍可正常，所以现在就安排神经传导检查，不要等着看双腿是否恢复：吉兰-巴雷综合征的免疫球蛋白治疗有时间窗。",
+            "en": "Right. The EFNS 2010 guideline uses MRI to support the diagnosis in people who drink and in those who do not. The typical sites are the medial thalami, mammillary bodies, tectal plate and periaqueductal area (Zuccoli and Pipitone 2009); atypical sites such as the basal ganglia characterise patients without alcohol use (Zuccoli et al. 2009) — his lentiform signal is one — and a normal MRI would not have excluded it. A normal CSF and a negative neostigmine test make infection and myasthenia less likely, not impossible. The EAN/PNS 2023 guideline advises electrodiagnostic testing to support Guillain–Barré syndrome, whose CSF protein can still be normal early, so arrange nerve conduction studies now rather than waiting to see whether his legs recover: IVIG for Guillain–Barré syndrome is time-limited."
           }
         },
         {
@@ -3848,8 +3916,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这两个结论都说得太满。EAN/PNS 2023指南靠电生理检查而不是正常的脑脊液来支持吉兰-巴雷综合征的诊断——早期脑脊液蛋白可以正常——并建议怀疑米勒-费希尔综合征时检测抗GQ1b抗体；新斯的明试验阴性也不能完全排除重症肌无力。目前的诊断是有力的临床判断，要用治疗反应来检验；若无力不见好转，仍需做神经传导和抗神经节苷脂抗体检查。",
-            "en": "That overstates both results. The EAN/PNS 2023 guideline relies on electrodiagnostic testing, not a normal CSF, to support Guillain–Barré syndrome — CSF protein can be normal early — and advises anti-GQ1b antibody testing when Miller Fisher syndrome is suspected; a negative neostigmine test does not fully exclude myasthenia either. The diagnosis is a strong clinical judgement to be tested by his response; if the weakness does not improve, nerve conduction studies and anti-ganglioside antibodies are still needed."
+            "zh-CN": "这两个结论都说得太满。EAN/PNS 2023指南靠电生理检查而不是正常的脑脊液来支持吉兰-巴雷综合征的诊断——早期脑脊液蛋白可以正常——并建议怀疑米勒-费希尔综合征时考虑检测抗GQ1b抗体；新斯的明试验阴性也不能完全排除重症肌无力。目前的诊断是有力的临床判断，要用治疗反应来检验；神经传导和抗神经节苷脂抗体检查仍应完成，若无力不见好转则更有必要。",
+            "en": "That overstates both results. The EAN/PNS 2023 guideline relies on electrodiagnostic testing, not a normal CSF, to support Guillain–Barré syndrome — CSF protein can be normal early — and suggests considering anti-GQ1b antibodies when Miller Fisher syndrome is suspected; a negative neostigmine test does not fully exclude myasthenia either. The diagnosis is a strong clinical judgement to be tested by his response, and nerve conduction studies and anti-ganglioside antibodies still belong in the work-up — all the more if the weakness does not improve."
           }
         },
         {
@@ -3896,8 +3964,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。在称体重、弄清摄入量之前，无法给他的再喂养风险分级，所以先按有风险处理。ASPEN 2020再喂养综合征共识：有风险的儿童在开始喂养或输含葡萄糖液体之前补充硫胺素，喂养前查钾、镁、磷并在最初3天反复监测，热量从低于目标量开始逐步增加。镁是硫胺素依赖酶的辅因子，低镁会削弱硫胺素的疗效。他咽反射稍弱，经口进食前先做吞咽筛查。",
-            "en": "Right. His refeeding risk cannot be graded until he is weighed and his intake is known, so treat him as at risk. The ASPEN 2020 consensus on refeeding syndrome: in an at-risk child give thiamine before feeds or dextrose-containing fluid, check potassium, magnesium and phosphate before feeding and repeatedly over the first 3 days, and start below the energy goal and build up gradually. Magnesium is a cofactor for thiamine-dependent enzymes, so a low magnesium blunts the response to thiamine. With a slightly weak gag, his swallow is screened before anything by mouth."
+            "zh-CN": "正确。在称体重、弄清摄入量之前，无法给他的再喂养风险分级，而他已有硫胺素缺乏的表现，所以按高风险处理。ASPEN 2020再喂养综合征共识：喂养前查钾、镁、磷，高风险儿童在最初3天每12小时复查；在开始喂养或输含葡萄糖液体之前补充硫胺素；起始营养量不超过目标量的40%–50%，再逐步增加。镁是硫胺素依赖酶的辅因子，低镁会削弱硫胺素的疗效。他咽反射稍弱，经口进食前先做吞咽筛查。",
+            "en": "Right. His refeeding risk cannot be graded until he is weighed and his intake is known, and he already shows signs of thiamine deficiency, so treat him as high risk. The ASPEN 2020 consensus on refeeding syndrome: check potassium, magnesium and phosphate before feeding and, in a high-risk child, every 12 hours over the first 3 days; give thiamine before feeds or dextrose-containing fluid; and start nutrition at no more than 40–50% of the goal, building up gradually. Magnesium is a cofactor for thiamine-dependent enzymes, so a low magnesium blunts the response to thiamine. With a slightly weak gag, his swallow is screened before anything by mouth."
           }
         },
         {
@@ -3962,20 +4030,20 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。没有测得维生素B1，诊断应如实写成临床诊断：眼征、嗜睡、营养风险、MRI表现和治疗后迅速好转共同支持它，但不是实验室确诊。好转期间继续治疗，能进食且不吐后改口服。他长期呕吐和偏食的原因（包括新生儿期肠道手术后的情况）需要外科、消化科和营养师评估：EFNS 2010要求在一切可能导致硫胺素缺乏的情况下都想到韦尼克脑病，而他的这些情况仍然存在。记忆和学习也需要随访。",
-            "en": "Right. With no level measured, write it honestly as a clinical diagnosis: eye signs, drowsiness, nutritional risk, the MRI and a quick response support it, but it is not laboratory-proven. Keep treating while he improves, by mouth once he eats without vomiting. The cause of his long-standing vomiting and selective eating — including the after-effects of his neonatal bowel operation — needs surgical, gastroenterology and dietetic review: EFNS 2010 asks for Wernicke encephalopathy to be suspected in every condition that can lead to thiamine deficiency, and his still can. His memory and learning need follow-up too."
+            "zh-CN": "正确。没有测得维生素B1，诊断应如实写成临床诊断：眼征、嗜睡、营养风险、MRI表现和治疗1周时的好转共同支持它，但不是实验室确诊。好转期间继续治疗，能进食且不吐后改口服。他长期呕吐和偏食的原因（包括新生儿期肠道手术后的情况）需要外科、消化科和营养师评估：EFNS 2010要求在一切可能导致硫胺素缺乏的情况下都想到韦尼克脑病，而他的这些情况仍可能导致缺乏。记忆和学习也需要随访。",
+            "en": "Right. With no level measured, write it honestly as a clinical diagnosis: eye signs, drowsiness, nutritional risk, the MRI and the improvement by one week support it, but it is not laboratory-proven. Keep treating while he improves, by mouth once he eats without vomiting. The cause of his long-standing vomiting and selective eating — including the after-effects of his neonatal bowel operation — needs surgical, gastroenterology and dietetic review: EFNS 2010 asks for Wernicke encephalopathy to be suspected in every condition that can lead to thiamine deficiency, and his still can. His memory and learning need follow-up too."
           }
         },
         {
           "id": "stop-and-discharge",
           "text": {
-            "zh-CN": "治疗反应已经证实了诊断，1周的注射也已经补足了体内储备：停用维生素B1，恢复普通饮食后出院，不需要专门的随访安排",
-            "en": "The response proves the diagnosis and a week of injections has refilled his stores: stop the thiamine, discharge him on an ordinary diet and arrange no particular follow-up"
+            "zh-CN": "临床诊断，治疗反应有力支持但未测水平：1周的注射已补足体内储备，可停用维生素B1，恢复普通饮食出院，症状复发时再复诊",
+            "en": "A clinical diagnosis, well supported by the response though never measured: a week of injections has refilled his stores, so stop the thiamine, discharge him on an ordinary diet and see him again only if he relapses"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "1周的好转只是开始：下肢肌力还在恢复，导致缺乏的原因（长期呕吐、偏食）也还在，停药可能导致再次缺乏——好转期间应继续治疗，并处理病因。“证实”也说过了头：没有测得水平，这是建立在EFNS 2010指南所依据的临床表现和MRI之上的有力临床诊断，不是实验室证据。",
-            "en": "A week's improvement is only the start: his legs are still recovering and the causes — long-standing vomiting and selective eating — are still there, so stopping invites relapse; keep treating while he improves and deal with the cause. And “proves” overstates it: with no level measured, this is a strong clinical diagnosis built on the clinical picture and the MRI that the EFNS 2010 guideline relies on, not laboratory proof."
+            "zh-CN": "把它称为临床诊断是对的，但处理不对。1周的好转只是开始：下肢还在恢复，导致缺乏的长期呕吐和偏食也还没有处理，现在停药可能再次缺乏。好转期间继续治疗，能进食且不吐后改口服（ASPEN 2020对有硫胺素缺乏表现的患者继续补充5–7天或更久），出院前查找病因。",
+            "en": "Calling it a clinical diagnosis is right; the plan is not. A week's improvement is only the start: his legs were still recovering, and nothing has yet been done about what made him deficient — the long-standing vomiting and selective eating — so stopping now invites relapse. Keep treating while he improves, by mouth once he eats without vomiting (ASPEN 2020 continues thiamine for 5–7 days or longer when there are signs of thiamine deficiency), and look for the cause before he goes home."
           }
         },
         {
@@ -3986,8 +4054,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "硫胺素主要在小肠（空肠）吸收，部分结肠切除本身并不能解释吸收不良——除非当年手术也涉及小肠，而这一点没有记录。更直接的原因是多年间断呕吐和偏食，这些都还需要查明和处理。EFNS 2010指南特别提到的手术情形是减重手术，它绕过了吸收硫胺素的上段肠道。把那次手术当作已证实的病因可能漏掉可治疗的问题，而治疗反应只能支持诊断，证明不了具体机制。",
-            "en": "Thiamine is absorbed mainly in the small intestine (jejunum), so a partial colon resection does not by itself explain malabsorption — unless the operation also involved his small bowel, which is not recorded. The more direct causes are years of intermittent vomiting and selective eating, which still need finding and treating. The surgical setting the EFNS 2010 guideline singles out is bariatric surgery, which bypasses the upper gut where thiamine is absorbed. Calling his operation a proven cause could miss something treatable, and a response supports the diagnosis without proving a mechanism."
+            "zh-CN": "硫胺素主要在小肠（空肠）吸收，部分结肠切除本身并不能解释吸收不良——除非当年手术也涉及小肠，而这一点没有记录。更可能的直接原因是多年间断呕吐和偏食，其背后的原因还需要查明和处理。EFNS 2010指南特别提到的手术情形是减重手术，它绕过了吸收硫胺素的上段肠道。把那次手术当作已证实的病因可能漏掉可治疗的问题，而治疗反应只能支持诊断，证明不了具体机制。",
+            "en": "Thiamine is absorbed mainly in the small intestine (jejunum), so a partial colon resection does not by itself explain malabsorption — unless the operation also involved his small bowel, which is not recorded. More likely direct causes are years of intermittent vomiting and selective eating, whose own cause still needs finding and treating. The surgical setting the EFNS 2010 guideline singles out is bariatric surgery, which bypasses the upper gut where thiamine is absorbed. Calling his operation a proven cause could miss something treatable, and a response supports the diagnosis without proving a mechanism."
           }
         },
         {
@@ -3998,8 +4066,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "眼征先好转、下肢恢复较慢，正是硫胺素缺乏常见的恢复顺序：周围神经的修复需要更长时间。停用维生素B1会打断恢复；EAN/PNS 2023指南的免疫球蛋白治疗针对吉兰-巴雷综合征，而这里的病程和治疗反应并不支持它。若数周后无力仍无进展，再做神经传导检查。",
-            "en": "Eye signs improving before the legs is the usual order of recovery in thiamine deficiency: peripheral nerves take longer to repair. Stopping thiamine would interrupt that recovery, and the EAN/PNS 2023 guideline's IVIG is for Guillain–Barré syndrome, which this course and response do not support. If the weakness stalled over the following weeks, nerve conduction studies would be the next step."
+            "zh-CN": "眼征先好转、下肢恢复较慢，正是硫胺素缺乏常见的恢复顺序：周围神经的修复需要更长时间。停用维生素B1会打断恢复；EAN/PNS 2023指南的免疫球蛋白治疗针对吉兰-巴雷综合征，而这里的病程和治疗反应并不支持它。如果无力停滞不前，应由神经传导检查来判断，而不是凭恢复的先后顺序。",
+            "en": "Eye signs improving before the legs is the usual order of recovery in thiamine deficiency: peripheral nerves take longer to repair. Stopping thiamine would interrupt that recovery, and the EAN/PNS 2023 guideline's IVIG is for Guillain–Barré syndrome, which this course and response do not support. If his weakness stalled, nerve conduction studies — not the order of recovery — would settle the question."
           }
         }
       ]
@@ -4334,8 +4402,8 @@
         "en": "Nurse Bai (ward nurse)"
       },
       "knowledge": {
-        "zh-CN": "病房护士，接收这个孩子入院。交班（ISBAR）：9岁男孩，头晕、复视、双下肢进行性无力6天，现在不能行走，精神越来越差、嗜睡；外院按脑炎治疗3天没有好转；有家属陪同。体重和生命体征没有交过来。可以协助建立静脉通路和采血、测床旁血糖、称体重、做吞咽筛查和定时神经系统观察；在维生素B1给上之前，会提醒学员先别挂含葡萄糖的液体；经口喂食前会建议先做吞咽筛查。",
-        "en": "Ward nurse admitting the boy. Handover (ISBAR): 9-year-old boy with six days of dizziness, double vision and progressive weakness of both legs, now unable to walk and increasingly listless and sleepy; three days of treatment for presumed encephalitis at another hospital have not helped; a relative is with him. No weight or observations have been handed over. Can place a cannula and take bloods, check a bedside glucose, weigh him, screen his swallow and do regular neurological observations; until thiamine has been given, reminds the learner not to hang a glucose-containing drip yet; suggests a swallow screen before anything by mouth."
+        "zh-CN": "病房护士，接收这个孩子入院。交班（ISBAR）：9岁男孩，头晕、复视、双下肢进行性无力6天，现在不能行走，精神越来越差、嗜睡；外院按脑炎治疗3天没有好转；有家属陪同。体重和生命体征没有交过来。可以建立静脉通路和采血、测床旁血糖、称体重、做吞咽筛查和定时神经系统观察。每一条药物或输液医嘱执行前都会复述核对；结果出来了才转告，解读和诊断留给医生；病历里没有的内容（体重、之前用药的剂量）会直接说明没有记录。",
+        "en": "Ward nurse admitting the boy. Handover (ISBAR): a 9-year-old boy with six days of dizziness, double vision and progressive weakness of both legs, now unable to walk and increasingly listless and sleepy; three days of treatment for presumed encephalitis at another hospital have not helped; a relative is with him. No weight or observations have been handed over. Can place a cannula and take bloods, check a bedside glucose, weigh him, screen his swallow and do regular neurological observations. Repeats each drug or fluid order back before it is given, passes on results only once they are back, leaves interpretation and diagnosis to the doctors, and says so at once when something — his weight, the doses of his earlier medicines — is not in the notes."
       },
       "interprets": [
         "capillary-glucose",
@@ -4378,8 +4446,8 @@
       "en": "Debrief: vitamin B1 deficiency in a 9-year-old — Wernicke encephalopathy beyond alcohol"
     },
     "conclusion": {
-      "zh-CN": "9岁男孩头晕、复视、双下肢进行性无力6天，精神越来越差、嗜睡，已不能行走；外院按脑炎治疗3天（用过甘露醇和抗病毒药）无好转。他出生第4天因肠闭锁行部分结肠切除，此后间断呕吐，发病前一周每天呕吐一次，不爱吃肉。查体：双侧上睑下垂，眼球内收、外展受限，水平及垂直眼震；双下肢肌力Ⅲ级，膝反射未引出，病理征阴性，腓肠肌压痛；咽反射稍弱，指鼻试验稳准。MRI示双侧丘脑、豆状核及穹隆对称性异常信号，FLAIR高信号，豆状核DWI稍高；脑脊液常规、生化正常，血常规和肌酶无明显异常，新斯的明试验阴性，维生素B1无法定量。给予维生素B1（剂量和途径未记录）后1周，复视、头晕和眼球运动改善，能走数米；1个月时双下肢肌力Ⅴ级，MRI报告正常。现行答案：临床诊断韦尼克脑病，可能合并硫胺素缺乏性周围神经病；一经怀疑即在任何葡萄糖之前注射治疗剂量的维生素B1，不等化验（EFNS 2010），在监测下逐步恢复营养（ASPEN 2020），并查找病因。",
-      "en": "A 9-year-old boy had six days of dizziness, double vision and progressive leg weakness, grew increasingly listless and sleepy, and could no longer walk; three days of treatment for presumed encephalitis elsewhere (mannitol and an antiviral were used) had not helped. He had vomited on and off since a partial colectomy for intestinal atresia on day 4 of life, once a day in the week before onset, and he did not like meat. He had bilateral ptosis, restricted adduction and abduction, horizontal and vertical nystagmus, leg power grade III, absent knee reflexes with no pathological reflexes, calf tenderness, a slightly weak gag and accurate finger–nose testing. MRI showed symmetrical thalamic, lentiform and fornix signal, high on FLAIR; the CSF, blood count and muscle enzymes showed no obvious abnormality, the neostigmine test was negative and vitamin B1 could not be measured. One week after vitamin B1 (dose and route not recorded) his double vision, dizziness and eye movements had improved and he could walk a few metres; at one month his leg power was grade V and the MRI was reported normal. Today's answer: a clinical diagnosis of Wernicke encephalopathy, probably with a thiamine-deficiency neuropathy, treated on suspicion with injected thiamine before any glucose (EFNS 2010), with monitored refeeding (ASPEN 2020) and a search for the cause."
+      "zh-CN": "9岁男孩头晕、复视、双下肢进行性无力6天，精神越来越差、嗜睡，已不能行走；外院按脑炎治疗3天无好转，此前用过甘露醇和抗病毒药。他出生第4天因肠闭锁行部分结肠切除，此后间断呕吐，发病前一周每天呕吐一次，不爱吃肉。查体：双侧上睑下垂，眼球内收、外展受限，水平及垂直眼震；双下肢肌力Ⅲ级，膝反射未引出，病理征阴性，腓肠肌压痛；咽反射稍弱，指鼻试验稳准。MRI示双侧丘脑、豆状核及穹隆对称性异常信号，FLAIR高信号，豆状核DWI稍高；脑脊液常规、生化正常，血常规和肌酶无明显异常，新斯的明试验阴性，维生素B1无法定量。给予维生素B1（剂量和途径未记录）后1周，复视、头晕和眼球运动改善，能走数米；1个月时双下肢肌力Ⅴ级，MRI报告正常。现行答案：临床诊断韦尼克脑病，可能合并硫胺素缺乏性周围神经病；一经怀疑即在任何葡萄糖之前注射治疗剂量的维生素B1，不等化验（EFNS 2010），在监测下逐步恢复营养（ASPEN 2020），并查找病因。",
+      "en": "A 9-year-old boy had six days of dizziness, double vision and progressive leg weakness, grew increasingly listless and sleepy, and could no longer walk; three days of treatment for presumed encephalitis elsewhere had not helped, and he had received mannitol and an antiviral medicine. He had vomited on and off since a partial colectomy for intestinal atresia on day 4 of life, once a day in the week before onset, and he did not like meat. He had bilateral ptosis, restricted adduction and abduction, horizontal and vertical nystagmus, leg power grade III, absent knee reflexes with no pathological reflexes, calf tenderness, a slightly weak gag and accurate finger–nose testing. MRI showed symmetrical thalamic, lentiform and fornix signal, high on FLAIR, with slightly high lentiform DWI signal; the CSF, blood count and muscle enzymes showed no obvious abnormality, the neostigmine test was negative and vitamin B1 could not be measured. One week after vitamin B1 (dose and route not recorded) his double vision, dizziness and eye movements had improved and he could walk a few metres; at one month his leg power was grade V and the MRI was reported normal. Today's answer: a clinical diagnosis of Wernicke encephalopathy, probably with a thiamine-deficiency neuropathy, treated on suspicion with injected thiamine before any glucose (EFNS 2010), with monitored refeeding (ASPEN 2020) and a search for the cause."
     },
     "keyReasoning": [
       {
@@ -4447,20 +4515,20 @@
         "en": "Treat on suspicion (EFNS 2010): thiamine before any carbohydrate, at a treatment dose, preferably IV (adults 200 mg three times daily); measure blood thiamine on a sample taken just before the first dose where the test exists, but never wait for it. Children's doses are extrapolated by weight — weigh the child and check with the pharmacist. The three days of encephalitis treatment before admission, and the unrecorded vitamin B1 dose and route, are this boy's history; current practice gives the first dose at the bedside."
       },
       {
-        "zh-CN": "MRI是支持而不是裁决（EFNS 2010）：指南建议在饮酒和不饮酒的患者中都用MRI来支持诊断。典型病灶在丘脑内侧、乳头体、顶盖和导水管周围区域，基底节等不典型部位主要见于与饮酒无关的患者（Zuccoli和Pipitone 2009）——他的丘脑、豆状核和穹隆信号与此相符，1个月时MRI报告已正常。MRI正常永远不能排除诊断。",
-        "en": "MRI supports, it does not decide (EFNS 2010): the guideline recommends MRI to support the diagnosis in people who drink and in those who do not. Typical lesions lie in the medial thalami, mammillary bodies, tectal plate and periaqueductal area, while atypical sites such as the basal ganglia are reported mainly without alcohol (Zuccoli and Pipitone 2009) — his thalamic, lentiform and fornix signal fits, and the scan was reported normal at one month. A normal MRI never rules it out."
+        "zh-CN": "MRI是支持而不是裁决（EFNS 2010）：指南建议在饮酒和不饮酒的患者中都用MRI来支持诊断。典型病灶在丘脑内侧、乳头体、顶盖和导水管周围区域（Zuccoli和Pipitone 2009），基底节等不典型部位则是不饮酒患者的特点（Zuccoli等 2009）——他的丘脑、豆状核和穹隆信号与此相符，1个月时MRI报告已正常。MRI正常永远不能排除诊断。",
+        "en": "MRI supports, it does not decide (EFNS 2010): the guideline recommends MRI to support the diagnosis in people who drink and in those who do not. Typical lesions lie in the medial thalami, mammillary bodies, tectal plate and periaqueductal area (Zuccoli and Pipitone 2009), while atypical sites such as the basal ganglia characterise patients without alcohol use (Zuccoli et al. 2009) — his thalamic, lentiform and fornix signal fits, and the scan was reported normal at one month. A normal MRI never rules it out."
       },
       {
-        "zh-CN": "鉴别与正常结果排除不了什么（EAN/PNS 2023；ABN/BPAIIG 2012）：眼肌麻痹加腱反射消失也是米勒-费希尔综合征的特征，指南建议此时检测抗GQ1b抗体；支持吉兰-巴雷综合征诊断的是电生理检查，而不是正常的脑脊液——早期脑脊液蛋白可以正常；免疫球蛋白用于起病2周内不能独立行走的吉兰-巴雷综合征。新斯的明试验阴性使重症肌无力的可能变小；按ABN/BPAIIG 2012，免疫功能正常的儿童作出其他诊断后即可停用阿昔洛韦。",
-        "en": "Mimics, and what normal results cannot exclude (EAN/PNS 2023; ABN/BPAIIG 2012): ophthalmoplegia with areflexia also marks Miller Fisher syndrome, for which the guideline advises anti-GQ1b antibodies, and electrodiagnostic testing — not a normal CSF, whose protein can be normal early — supports Guillain–Barré syndrome; IVIG is for Guillain–Barré syndrome that stops a patient walking unaided within 2 weeks of onset. A negative neostigmine test makes myasthenia less likely; the ABN/BPAIIG 2012 guideline lets aciclovir stop in an immunocompetent child once an alternative diagnosis is made."
+        "zh-CN": "鉴别与正常结果排除不了什么（EAN/PNS 2023；ABN/BPAIIG 2012）：眼肌麻痹加腱反射消失也是米勒-费希尔综合征的特征，指南建议此时考虑检测抗GQ1b抗体；支持吉兰-巴雷综合征诊断的是电生理检查，而不是正常的脑脊液——早期脑脊液蛋白可以正常；免疫球蛋白用于起病2周内不能独立行走的吉兰-巴雷综合征。新斯的明试验阴性使重症肌无力的可能变小；按ABN/BPAIIG 2012，免疫功能正常的儿童作出其他诊断后即可停用阿昔洛韦。",
+        "en": "Mimics, and what normal results cannot exclude (EAN/PNS 2023; ABN/BPAIIG 2012): ophthalmoplegia with areflexia also marks Miller Fisher syndrome, for which the guideline suggests considering anti-GQ1b antibodies, and electrodiagnostic testing — not a normal CSF, whose protein can be normal early — supports Guillain–Barré syndrome; IVIG is for Guillain–Barré syndrome that stops a patient walking unaided within 2 weeks of onset. A negative neostigmine test makes myasthenia less likely; the ABN/BPAIIG 2012 guideline lets aciclovir stop in an immunocompetent child once an alternative diagnosis is made."
       },
       {
-        "zh-CN": "安全地恢复喂养（ASPEN 2020）。没有体重和摄入量，无法给他的再喂养风险分级，所以先按有风险处理：ASPEN对有风险的儿童在开始喂养或输含葡萄糖液体之前补充硫胺素，喂养前查钾、镁、磷并在最初3天反复监测，热量从低于目标量开始逐步增加。镁是硫胺素依赖酶的辅因子，低镁要纠正。咽反射稍弱时，经口进食前先做吞咽筛查。",
-        "en": "Refeed safely (ASPEN 2020). His refeeding risk cannot be graded without a weight or an intake, so treat him as at risk: ASPEN gives an at-risk child thiamine before feeds or dextrose-containing fluid, checks potassium, magnesium and phosphate before feeding and repeatedly over the first 3 days, and starts energy below goal, building up gradually. Magnesium is a cofactor for thiamine-dependent enzymes, so correct a low level. With a slightly weak gag, screen the swallow before anything by mouth."
+        "zh-CN": "安全地恢复喂养（ASPEN 2020）。没有体重和摄入量，无法给他的再喂养风险分级，而他已有硫胺素缺乏的表现，所以按高风险处理：ASPEN要求喂养前查钾、镁、磷，高风险儿童在最初3天每12小时复查一次，在开始喂养或输含葡萄糖液体之前补充硫胺素，起始营养量不超过目标量的40%–50%，再逐步增加。镁是硫胺素依赖酶的辅因子，低镁要纠正。咽反射稍弱时，经口进食前先做吞咽筛查。",
+        "en": "Refeed safely (ASPEN 2020). His refeeding risk cannot be graded without a weight or an intake, and he already shows signs of thiamine deficiency, so treat him as high risk: ASPEN checks potassium, magnesium and phosphate before feeding and, in a high-risk child, every 12 hours for the first 3 days, gives thiamine before feeds or dextrose-containing fluid, and starts nutrition at no more than 40–50% of the goal, building up gradually. Magnesium is a cofactor for thiamine-dependent enzymes, so correct a low level. With a slightly weak gag, screen the swallow before anything by mouth."
       },
       {
-        "zh-CN": "如实命名诊断并处理病因：没有测得水平，这是由治疗反应支持的临床诊断，不是实验室确诊。硫胺素主要在空肠吸收，部分结肠切除本身证明不了吸收不良（是否累及小肠没有记录）；多年间断呕吐和偏食是更直接的原因，需要外科、消化科和营养师评估，并随访神经功能、记忆和学习。",
-        "en": "Name the diagnosis honestly and treat the cause: with no level measured, this is a clinical diagnosis supported by the response, not laboratory proof. Thiamine is absorbed mainly in the jejunum, so a partial colectomy alone does not prove malabsorption (whether his small bowel was involved is not recorded); years of intermittent vomiting and selective eating are the more direct causes and need surgical, gastroenterology and dietetic review, with follow-up of nerve function, memory and learning."
+        "zh-CN": "如实命名诊断并处理病因：没有测得水平，这是由治疗反应支持的临床诊断，不是实验室确诊。硫胺素主要在空肠吸收，部分结肠切除本身证明不了吸收不良（是否累及小肠没有记录）；多年间断呕吐和偏食更可能是直接原因，其背后的原因需要外科、消化科和营养师评估，并随访神经功能、记忆和学习。",
+        "en": "Name the diagnosis honestly and treat the cause: with no level measured, this is a clinical diagnosis supported by the response, not laboratory proof. Thiamine is absorbed mainly in the jejunum, so a partial colectomy alone does not prove malabsorption (whether his small bowel was involved is not recorded); years of intermittent vomiting and selective eating are the more likely direct causes, and their own cause needs surgical, gastroenterology and dietetic review, with follow-up of nerve function, memory and learning."
       }
     ],
     "references": [
@@ -4468,6 +4536,7 @@
       "Galvin R, Bråthen G, Ivashynka A, Hillbom M, Tanasescu R, Leone MA. EFNS guidelines for diagnosis, therapy and prevention of Wernicke encephalopathy. Eur J Neurol. 2010;17(12):1408-1418. doi:10.1111/j.1468-1331.2010.03153.x",
       "Sechi G, Serra A. Wernicke's encephalopathy: new clinical settings and recent advances in diagnosis and management. Lancet Neurol. 2007;6(5):442-455. doi:10.1016/S1474-4422(07)70104-7",
       "Zuccoli G, Pipitone N. Neuroimaging findings in acute Wernicke's encephalopathy: review of the literature. AJR Am J Roentgenol. 2009;192(2):501-508. doi:10.2214/AJR.07.3959",
+      "Zuccoli G, Santa Cruz D, Bertolini M, Rovira A, Gallucci M, Carollo C, et al. MR imaging findings in 56 patients with Wernicke encephalopathy: nonalcoholics may differ from alcoholics. AJNR Am J Neuroradiol. 2009;30(1):171-176. doi:10.3174/ajnr.A1280",
       "da Silva JSV, Seres DS, Sabino K, Adams SC, Berdahl GJ, Citty SW, et al. ASPEN consensus recommendations for refeeding syndrome. Nutr Clin Pract. 2020;35(2):178-195. doi:10.1002/ncp.10474",
       "van Doorn PA, Van den Bergh PYK, Hadden RDM, Avau B, Vankrunkelsven P, Attarian S, et al. European Academy of Neurology/Peripheral Nerve Society guideline on diagnosis and treatment of Guillain-Barré syndrome. Eur J Neurol. 2023;30(12):3646-3674. doi:10.1111/ene.16073",
       "Kneen R, Michael BD, Menson E, Mehta B, Easton A, Hemingway C, et al. Management of suspected viral encephalitis in children - Association of British Neurologists and British Paediatric Allergy, Immunology and Infection Group national guidelines. J Infect. 2012;64(5):449-477. doi:10.1016/j.jinf.2011.11.013"
@@ -5240,6 +5309,50 @@
         "locale": "en",
         "expect": [
           "status-month1"
+        ]
+      },
+      {
+        "text": "他出生以后身体有过什么问题吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neonatal-surgery"
+        ]
+      },
+      {
+        "text": "Did anything happen around the time he was born?",
+        "locale": "en",
+        "expect": [
+          "neonatal-surgery"
+        ]
+      },
+      {
+        "text": "他以前身体怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "neonatal-surgery",
+          "vomiting-chronic"
+        ]
+      },
+      {
+        "text": "How was his health before all this?",
+        "locale": "en",
+        "expect": [
+          "neonatal-surgery",
+          "vomiting-chronic"
+        ]
+      },
+      {
+        "text": "Can he see properly?",
+        "locale": "en",
+        "expect": [
+          "double-vision"
+        ]
+      },
+      {
+        "text": "Since when has he been like this?",
+        "locale": "en",
+        "expect": [
+          "presentation"
         ]
       },
       {

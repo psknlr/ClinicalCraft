@@ -55,7 +55,8 @@ haemorrhage a few days later**; no resuscitation details are given, and nothing 
   in angiosarcoma) or best supportive care; no transplantation (European Liver Transplant Registry 2013) and no curative
   resection for multifocal disease.
 - A bleeding plan (embolisation first, ACG 2024 by analogy with a ruptured adenoma), mechanical rather than drug VTE
-  prophylaxis (NICE NG89), and an honest conversation with her about the limits of treatment (SPIKES).
+  prophylaxis (NICE NG89 weighs the risks; ASH 2018 recommends mechanical prophylaxis when the bleeding risk is
+  unacceptable), and an honest conversation with her about the limits of treatment (SPIKES).
 - The death cannot be attributed to the biopsy from the record: haemorrhage was read in the tumour before it, and this
   kind of tumour can bleed on its own.
 
@@ -68,15 +69,15 @@ that open on the learner's decisions and acts.
 | Phase | Opens when | What exists in it |
 |---|---|---|
 | `admission` — On admission: history, examination and first tests | at the start (the first phase; it cannot be selected again once left) | Her history (22 items, 8 required); the two recorded liver findings; the ultrasound and tumour-marker results (recorded); blood count, clotting, liver and renal tests, hepatitis serology, group and screen and multiphase CT/MRI (orderable, **no result recorded**); PET/CT orderable but “no result at this point” |
-| `imaging` — Further imaging | decision 1 (`next-step`) decided | The 18F-FDG PET/CT result (recorded, dated “before the biopsy”); multiphase CT/MRI still has no recorded result (a note says the case records a PET/CT instead); the biopsy, the MDT and the interventional-radiology plan become indicated |
+| `imaging` — Further imaging | decision 1 (`next-step`) decided | The 18F-FDG PET/CT result (recorded, dated “before the biopsy”); multiphase CT/MRI still has no recorded result (a note says the case records a PET/CT instead); the biopsy (once the PET/CT has been read and the blood count and clotting sent), the MDT and the interventional-radiology plan become indicated |
 | `diagnosis` — After the biopsy: the histology and the plan | decision 3 (`tissue-plan`) decided **and** the biopsy (`core-biopsy`) given | The histopathology record (needle biopsy of the right-lobe mass: angiosarcoma; no individual immunostains recorded); immunohistochemistry orderable (no result); the referrals and the goals-of-care conversation become indicated |
-| `outcome` — Recorded outcome (`learnerSwitchable: false`) | all five decisions decided | The recorded course (death from intrahepatic haemorrhage a few days later) with the two approved figures; the patient is non-verbal here (`nonVerbalWhen: {phase: "outcome"}`: “this phase reviews the course recorded after the biopsy”) |
+| `outcome` — Recorded outcome (`learnerSwitchable: false`) | all five decisions decided **and** the blood-thinner question asked | The recorded course (death from intrahepatic haemorrhage a few days later) with the two approved figures; the patient is non-verbal here (`nonVerbalWhen: {phase: "outcome"}`: “this phase reviews the course recorded after the biopsy”) |
 
 Results belong to the phase in which they existed: the ultrasound and markers on admission, the PET/CT from `imaging`
 (it preceded the biopsy), the histology from `diagnosis`, the outcome only in `outcome`. Every `read` that gates a
 decision, an objective or a rubric item names its phase. Acts scored “in time” (`whenIndicated`) carry an `indicatedWhen`
 that is false once the outcome record has been read, so returning to `diagnosis` after reading the outcome earns nothing
-(measured below).
+(measured below); the MDT, the group and screen and the multiphase CT/MRI likewise count only in their window.
 
 ## Decisions and assessment
 
@@ -92,22 +93,29 @@ that is false once the outcome record has been read, so returning to `diagnosis`
 | 6 | Compare your plan with what happened | outcome read in `outcome` |
 
 No `completeWhen` holds a condition that can become permanently false (no phase leaf, no `whenIndicated`, no
-`decidedFirstTry`); the contract's late-learner test confirms the case can always be finished.
+`decidedFirstTry`). Questions need care: in `outcome` she is non-verbal and no history item is listed, and the web board
+offers no way back (every phase is `learnerSwitchable: false`). So decision 1 waits for the seven questions of
+objective 1 (its prompt states their answers) and `outcome` waits for the blood-thinner question of objective 4. The
+contract's late-learner test re-times orders and interventions; the review re-timed every question and examination
+without a phase switch: none now leaves the case unfinishable (before the review, eight questions did).
 
 ### Decisions (key and why)
 
-1. **`next-step` — after the examination, ultrasound and markers: the best next step.** Key `characterise-and-stage`:
+1. **`next-step` — after the history, examination, ultrasound and markers: the best next step** (it waits for the
+   seven questions of objective 1, whose answers its prompt states). Key `characterise-and-stage`:
    multiphase contrast CT or MRI and staging, with blood count, clotting and liver tests, before any biopsy is planned
    (ACG 2024 rec. 1; SIR 2019; BSG 2020). Distractors: `biopsy-today` (sampling before imaging and before platelets and
    clotting are known), `markers-locate-primary` (CA125/CA19-9 do not locate a primary; chemotherapy without histology),
    `afp-reassures` (a normal AFP does not exclude malignancy), `abscess-drainage` (no fever; solid masses).
 2. **`pet-reading` — what the PET/CT establishes.** Key `malignant-bleeding-untyped`: probably a metabolically active
    malignant tumour with bleeding inside it, but FDG uptake cannot type it; tissue is still needed and the bleeding makes
-   sampling riskier (ESMO–EURACAN–GENTURIS 2021: PET/CT as a problem-solving tool). Distractors: `suv-diagnostic`,
+   sampling riskier (2024 Chinese guideline: PET/CT for staging, a biopsy for a liver lesion without typical imaging
+   features). Distractors: `suv-diagnostic`,
    `hcc-excluded`, `abscess-cavity`.
 3. **`tissue-plan` — how to obtain tissue.** Key `planned-core-biopsy`: image-guided core biopsy of the viable edge of a
-   lesion through normal liver, after platelets, clotting and blood thinners are checked and blood is grouped, with
-   observation afterwards (ESMO–EURACAN–GENTURIS 2021; BSG 2020; SIR 2019; 2024 Chinese guideline). Distractors:
+   lesion through normal liver, after platelets, clotting and blood thinners are checked and blood is grouped; the
+   feedback adds at least 3 hours of observation, longer when malignancy is strongly suspected (BSG 2020 with its
+   authors' 2020 amendment; SIR 2019; 2024 Chinese guideline). Distractors:
    `centre-aspirate` (FNA of the cold, haemorrhagic centre), `blind-bedside` (no image guidance), `skip-bloods`.
 4. **`after-histology` — the overall plan after the histology.** Key `sarcoma-team-plan`: immunostains on the existing
    core, sarcoma-team review, systemic therapy if she is fit, otherwise best supportive care (ACG 2024; ESMO–EURACAN–
@@ -115,11 +123,13 @@ No `completeWhen` holds a condition that can become permanently false (no phase 
    disease, no cure), `rebiopsy-first` (a second pass for tissue the block already holds).
 5. **`bleed-plan` — the plan for the coming days.** Key `escalation-plan`: observations and haemoglobin, blood available,
    interventional radiology ready to embolise, mechanical VTE prophylaxis and limits of treatment discussed with her
-   (Kang 2016; ACG 2024; NICE NG89; SPIKES). Distractors: `routine-enoxaparin`, `surgery-first`, `family-only`.
+   (Kang 2016; ACG 2024; NICE NG89 and ASH 2018; SPIKES). Distractors: `routine-enoxaparin`, `surgery-first`,
+   `family-only`.
 
 Each option has feedback of its own that names its guidance. No decision is open at the start; each opens before the
-result that answers it (decision 1 before the PET/CT, 2 and 3 before the histology, 4 and 5 before the outcome). The keyed
-option is the uniquely longest option only in decision 5 (in both languages; the lint allows one).
+result that answers it (decision 1 before the PET/CT, 2 and 3 before the histology, 4 and 5 before the outcome). No keyed
+option is the uniquely longest in either language. Feedback shown before the histology cites no sarcoma guideline:
+ESMO–EURACAN–GENTURIS 2021 appears only from decision 4 on.
 
 ### Rubric (13 deterministic items, total weight 33, + 1 examiner-judged)
 
@@ -129,15 +139,15 @@ option is the uniquely longest option only in decision 5 (in both languages; the
 | `rb-background` | history | 1 | asked cancer history, liver history, blood thinners, bleeding tendency, alcohol, work exposures |
 | `rb-exam` | examination | 2 | both liver findings examined |
 | `rb-first-tests` | investigations | 2 | ultrasound and markers read on admission; blood count, clotting, liver tests, hepatitis serology ordered |
-| `rb-next-step` | diagnosis | 3 | decision 1 right at the first attempt **and** multiphase CT/MRI ordered |
+| `rb-next-step` | diagnosis | 3 | decision 1 right at the first attempt **and** multiphase CT/MRI ordered in `admission` or `imaging` |
 | `rb-pet` | diagnosis | 3 | decision 2 right at the first attempt |
-| `rb-tissue-plan` | management | 3 | decision 3 right at the first attempt, MDT and group and screen |
-| `rb-safe-biopsy` | management | 4 | **critical** — `{intervened: core-biopsy, whenIndicated: true}`: the biopsy in `imaging`, after the blood count and clotting were ordered |
+| `rb-tissue-plan` | management | 3 | decision 3 right at the first attempt, the MDT in its window (`whenIndicated`) and group and screen ordered in `admission` or `imaging` |
+| `rb-safe-biopsy` | management | 4 | **critical** — `{intervened: core-biopsy, whenIndicated: true}`: the biopsy in `imaging`, after the PET/CT was read there and the blood count and clotting were ordered |
 | `rb-after-biopsy` | management | 2 | post-biopsy observation and the interventional-radiology plan, both given in their window (before the outcome is read) |
 | `rb-histology-plan` | management | 3 | decision 4 right at the first attempt, immunohistochemistry ordered, referral to the specialist (sarcoma) oncology team (`oncology-referral`) in `diagnosis` |
 | `rb-bleed-plan` | management | 3 | decision 5 right at the first attempt and mechanical VTE prophylaxis before the outcome |
 | `rb-goals` | management | 2 | goals-of-care conversation and palliative referral in `diagnosis`, before the outcome is read |
-| `rb-no-harm` | safety | 3 | **critical** — none of: a biopsy outside its window (on admission, or before the blood count and clotting), a repeat biopsy, drug VTE prophylaxis, blind plasma, a transplant referral. `scoredWhen`: any decision attempted or any of these acts |
+| `rb-no-harm` | safety | 3 | **critical** — none of: a biopsy outside its window (on admission, before the PET/CT is read, or before the blood count and clotting), a repeat biopsy, drug VTE prophylaxis, blind plasma, a transplant referral. `scoredWhen`: any decision attempted or any of these acts |
 | `rb-communication` | communication | 1 (judged) | Calgary–Cambridge; consent for the biopsy with its bleeding risk and teach-back; SPIKES for the diagnosis; limits of treatment agreed with her, without false reassurance or invented numbers |
 
 ### How wrong choices score (measured with core `assess` on 2026-11-14)
@@ -149,6 +159,7 @@ option is the uniquely longest option only in decision 5 (in both languages; the
 | Wrong first answer at all five decisions, then right | 18/33 (55 %) | none | pass |
 | Wrong first answer at any one decision only | 30/33 (91 %) each | none | pass |
 | Biopsy on admission, before the further imaging (bloods sent) | 26/33 (79 %) | `rb-safe-biopsy`, `rb-no-harm` | **fail** (`core-biopsy` is critical) |
+| Biopsy in `imaging` before the PET/CT is read (bloods sent) | 26/33 (79 %) | `rb-safe-biopsy`, `rb-no-harm` | **fail** |
 | Biopsy before the blood count and clotting are sent (sent afterwards) | 26/33 (79 %) | `rb-safe-biopsy`, `rb-no-harm` | **fail** |
 | Biopsy and the bloods never sent | 24/33 (73 %); the case cannot be finished (objective 4) | `rb-safe-biopsy`, `rb-no-harm` | **fail** |
 | Reference path plus a repeat biopsy | 30/33 (91 %) | `rb-no-harm` | **fail** (`repeat-biopsy` is critical) |
@@ -157,25 +168,29 @@ option is the uniquely longest option only in decision 5 (in both languages; the
 | Reference path plus a transplant referral after the histology | 30/33 (91 %) | `rb-no-harm` | pass |
 | Reference path without the interventional-radiology plan | 31/33 (94 %) | none | pass |
 | …with the plan made only after reading the outcome (back in `diagnosis`) | 31/33 (94 %) | none | pass — no hindsight credit |
+| Reference path with the MDT only after reading the outcome (back in `diagnosis`) | 30/33 (91 %) | none | pass — no hindsight credit |
+| Reference path with the multiphase CT/MRI ordered only after the outcome | 30/33 (91 %) | none | pass — no hindsight credit |
 | Reference path without the goals-of-care talk and palliative referral | 31/33 (94 %) | none | pass |
 | Reference path without post-biopsy observation | 31/33 (94 %) | none | pass |
 | Reference path without the MDT and group and screen | 30/33 (91 %) | none | pass |
 | Reference path without mechanical prophylaxis | 30/33 (91 %) | none | pass |
 | Reference path without the multiphase CT/MRI order | 30/33 (91 %) | none | pass |
 | Only the eight required history questions | 32/33 (97 %) | none | pass |
+| Blood thinners never asked | 32/33 (97 %) so far; `outcome` does not open until she is asked (objective 4) | none | pass |
 
 ### Critical items
 
 - `rb-safe-biopsy` — the act done in time: the biopsy is the report's own step and the only way to the diagnosis, so
-  every learner who finishes takes it; what is scored is that it was taken **after** the further imaging and **after**
-  the blood count and clotting were sent (`indicatedWhen: {phase: "imaging"}` with the `contraindicatedWhen` below). A
+  every learner who finishes takes it; what is scored is that it was taken **after** the further imaging had been read
+  and **after** the blood count and clotting were sent (`indicatedWhen: {phase: "imaging"}`; contraindicated on
+  admission, before the PET/CT is read in `imaging`, or before the blood count and clotting are ordered). A
   biopsy cannot be repeated (`maxDoses: 1`), so an early or unprepared biopsy cannot be redeemed later.
 - `rb-no-harm` — the avoided harms, with `scoredWhen` listing every harmful act and the decisions that expose them, so
   doing nothing does not earn it.
 
 **Safety outcome.** `core-biopsy` and `repeat-biopsy` are `critical: true` (both `risk: "high"`): a biopsy of a large,
-heterogeneous, haemorrhagic liver tumour taken on admission before the further imaging, or before the blood count and
-clotting are sent, and any second biopsy once the diagnosis is made, can cause a haemorrhage that cannot be controlled —
+heterogeneous, haemorrhagic liver tumour taken before the further imaging has been read (on admission, or in `imaging`
+before the PET/CT is read), or before the blood count and clotting are sent, and any second biopsy once the diagnosis is made, can cause a haemorrhage that cannot be controlled —
 giving either while contraindicated fails the assessment's safety outcome whatever the score. `lmwh-prophylaxis` and
 `blind-ffp` (`risk: "moderate"`) are explicitly `critical: false`: drug prophylaxis while the bleeding risk prevails and
 plasma without a measured INR are recoverable misjudgements that the next clinician stops; they cost `rb-no-harm`. The
@@ -214,8 +229,8 @@ The path is safe: no intervention is given while contraindicated, no dose error,
 | SUVmax 7.1; largest lesion about 11.2 × 10.6 × 7.9 cm | `pet-ct`, prompt 2 | 1.0.0 PET/CT | — |
 | “a few days later” (death) | `outcome` | 1.0.0 outcome | the starting day is not recorded |
 | INR ≤ 1.5–1.8; platelets ≥ 50 × 10⁹/L (transfuse below 50) | harm and feedback texts, teaching point 2 | SIR 2019 Part II (high-risk procedures; chronic liver disease: INR < 2.5, platelets > 30 × 10⁹/L) | — |
-| INR < 2.0 for a lesional biopsy; no FFP for INR ≤ 2.0; observation ≥ 3 hours; prophylactic LMWH stopped 12 hours before | feedback, harm texts, `post-biopsy-obs` dose, teaching point 2 | BSG/RCR/RCPath 2020 | — |
-| 16–18 G cores | `core-biopsy` dose | 2024 Chinese guideline (18 G or 16 G); ESMO–EURACAN–GENTURIS 2021 (≥ 14–16 G) | — |
+| INR < 2.0 for a lesional biopsy; 18 G core for a solid lesion; no FFP for INR ≤ 2.0; observation ≥ 3 hours (longer when malignancy is strongly suspected: the authors' 2020 amendment); prophylactic LMWH stopped 12 hours before | feedback, harm texts, `post-biopsy-obs` dose, teaching point 2 | BSG/RCR/RCPath 2020 | — |
+| 16–18 G cores | `core-biopsy` dose, decision 3 feedback | 2024 Chinese guideline (18 G or 16 G); BSG 2020 (18 G for a solid lesion); ESMO–EURACAN–GENTURIS 2021 (≥ 14–16 G) | — |
 | about 7 months mean survival after transplantation, none beyond 23 months | `transplant-referral` harm, decision 4 feedback, teaching point 4 | Orlando 2013 (ELTR: 7.2 ± 2.6 months; 17 of 22 died of recurrence) | “about 7 months” rounds 7.2 |
 | severe bleeding after 3 of 33 biopsies; no biopsy-related deaths | decision 5 feedback, teaching point 3 | Kang 2016 (9.1 %) | — |
 | under 1 % of primary liver malignancies | teaching point 3 | ACG 2024 | — |
@@ -249,7 +264,7 @@ No dose is stated except where the cited guidance states it; the enoxaparin and 
 | Error | How the case surfaces it |
 |---|---|
 | Reassured by a normal AFP, or treating raised CA125/CA19-9 as locating a primary | Decision 1 distractors `afp-reassures`, `markers-locate-primary`; decision 2 `hcc-excluded` |
-| Biopsy first, imaging later | `biopsy-today` (decision 1); `core-biopsy` on admission is contraindicated and critical |
+| Biopsy first, imaging later | `biopsy-today` (decision 1); `core-biopsy` before the PET/CT is read (on admission or in `imaging`) is contraindicated and critical |
 | Treating PET/CT as a histological diagnosis | `suv-diagnostic` (decision 2) |
 | Sampling the necrotic, haemorrhagic centre, or sampling blind | `centre-aspirate`, `blind-bedside` (decision 3) |
 | Skipping platelets and clotting “to save time” | `skip-bloods` (decision 3); `core-biopsy` before the blood count and clotting is contraindicated and critical; objective 4 cannot finish without them |
@@ -266,7 +281,7 @@ The six teaching points (`debrief.teachingPoints`) are dated and guideline-attri
 (ACG 2024; 2024 Chinese guideline; ESMO–EURACAN–GENTURIS 2021); a liver biopsy is a high-bleeding-risk procedure (SIR
 2019; BSG 2020; 2024 Chinese guideline); hepatic angiosarcoma bleeds (ACG 2024; Kang 2016); no transplant and rarely
 surgery (ELTR 2013; ACG 2024; ESMO–EURACAN–GENTURIS 2021); causation and candour; bleeding risk shapes everything else
-(NICE NG89; SPIKES 2000). Where the report's practice differs from today's (no multiphase CT or MRI recorded; the biopsy's
+(NICE NG89; ASH 2018; SPIKES 2000). Where the report's practice differs from today's (no multiphase CT or MRI recorded; the biopsy's
 preparation and the post-biopsy course not recorded), the points say so rather than presenting the report as current.
 
 ## Embodied mode
@@ -282,8 +297,8 @@ preparation and the post-biopsy course not recorded), the points say so rather t
   by phone or referral. Nursing scope: mechanical prophylaxis and post-biopsy observation can be delegated to the nurse;
   the goals-of-care conversation is a doctor's act.
 - **Spoilers.** Everything a learner can see before the histology — the summary, triage note, opening line, objective
-  titles and hints, record and figure names, intervention names and the options of decisions 1–3 — avoids the
-  diagnosis; the referral is named “specialist oncology team” until the histology says which.
+  titles and hints, record and figure names, intervention names and the options and feedback of decisions 1–3 (which
+  cite no sarcoma guideline) — avoids the diagnosis; the referral is named “specialist oncology team” until the histology says which.
 - **Grounding.** The patient, the nurse and the doctors say only what the case holds. Asked for vital signs, the blood
   count, clotting, her medicines or allergies, they say plainly that nothing is recorded; examinations the case does not
   hold return `examNotRecorded` (“do not assume it is normal”).
@@ -342,9 +357,12 @@ hold later findings.
 
 ## Matcher notes
 
-- 51 test utterances (`extensions.testUtterances`), both languages, every required item covered, none a canonical
-  question or one of its item's keywords; four look-alike negatives (“I'm going to order some blood tests now.”, “我们等会儿
-  去做个检查。”, thanks in both languages) select nothing. `cases verify`: 51/51.
+- 55 test utterances (`extensions.testUtterances`), both languages, every required item covered, none a canonical
+  question or one of its item's keywords; five look-alike negatives (“I'm going to order some blood tests now.”, “我们等会儿
+  去做个检查。”, thanks in both languages, “Are your ankles swollen?”) select nothing. `cases verify`: 55/55.
+- The presenting complaint is reached in its clinical words too (“Any abdominal distension?”, “Is your belly swollen?”,
+  “肚子大了吗？”) and by plain openers (“What happened?”, “怎么回事？”); leg or ankle swelling, operations and ulcers are
+  excluded from it, and `大便` (not `大`) sends bowel questions away from it.
 - Multi-word English keywords that reduce to one token are written run together (`whatbringsyou`, `comeandgo`,
   `whendiditstart`…), as the lint asks.
 - Routing worth knowing: “feel sick” goes to the presenting complaint, “been sick/thrown up” to `vomiting`; “blood-thinning
@@ -365,14 +383,22 @@ hold later findings.
 7. Orlando G, Adam R, Mirza D, et al. Hepatic hemangiosarcoma: an absolute contraindication to liver transplantation—the European Liver Transplant Registry experience. Transplantation. 2013;95(6):872-877. doi:10.1097/TP.0b013e318281b902
 8. Kang TW, Lee MW, Choi D, et al. Safety of percutaneous biopsy for hepatic angiosarcoma: results of a multicenter Korean survey. J Vasc Interv Radiol. 2016;27(6):846-851. doi:10.1016/j.jvir.2016.01.148
 9. National Institute for Health and Care Excellence. Venous thromboembolism in over 16s: reducing the risk of hospital-acquired deep vein thrombosis or pulmonary embolism (NG89). London: NICE; 2018 (updated 2019). Available from: https://www.nice.org.uk/guidance/ng89
-10. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
+10. Schünemann HJ, Cushman M, Burnett AE, et al. American Society of Hematology 2018 guidelines for management of venous thromboembolism: prophylaxis for hospitalized and nonhospitalized medical patients. Blood Adv. 2018;2(22):3198-3225. doi:10.1182/bloodadvances.2018022954
+11. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
 
 Guidance checked online on 2026-11-14: ACG 2024 (recommendation 1, recommendation 8 on ruptured adenoma, key concept 40
-and the angiosarcoma text), BSG 2020 (image guidance, INR < 2.0 for lesional biopsy, no FFP at INR ≤ 2.0, platelets
-< 50 × 10⁹/L → transvenous where possible, ≥ 3 h observation, no day case when malignancy is strongly suspected, LMWH
-stop times), SIR 2019 Part II (high-risk thresholds, via a published summary and the citation record), the 2024 Chinese
+and the angiosarcoma text), BSG 2020 (image guidance, INR < 2.0 for lesional biopsy, 18 G for a solid lesion, no FFP at INR ≤ 2.0,
+platelets < 50 × 10⁹/L → transvenous where possible, ≥ 3 h observation, LMWH stop times; its authors' 2020 letter,
+posted with the guideline on the BSG site, replaced “patients with a strong suspicion of malignancy should not be
+biopsied as a day case” with a longer post-biopsy observation; the BSG reviewed the guideline in December 2024 and it
+remains valid), SIR 2019 Part II (high-risk thresholds, via a published summary and the citation record), the 2024 Chinese
 guideline's biopsy section, ESMO–EURACAN–GENTURIS 2021 (biopsy after imaging and MDT; anthracyclines [I, A]; taxanes in
-angiosarcoma [III, B]; PET/CT [IV, A]), NICE NG89 (1.1.3, 1.1.8, 1.4.6, 1.7.1), the ELTR 2013 and Kang 2016 abstracts.
+angiosarcoma [III, B]; PET/CT [IV, A]), NICE NG89 (1.1.3, 1.1.8, 1.4.6, 1.7.1; it makes no mechanical-prophylaxis recommendation for acutely ill medical
+patients, so the keyed mechanical prophylaxis rests on ASH 2018, whose strong recommendation is mechanical prophylaxis
+when the bleeding risk is unacceptable), the ELTR 2013, Kang 2016 and ASH 2018 abstracts. Reviewed again on 2026-11-14
+by an independent reviewer (BSG 2020 full text and amending letter, ACG 2024 full text, ESMO–EURACAN–GENTURIS 2021
+preprint, NICE NG89 PDF, the 2024 Chinese guideline, the ELTR, Kang and ASH abstracts; the guideline and study DOIs in Europe PMC, the Chinese guideline's in
+the journal index).
 The source DOI is the one `scripts/cmcr-105-sources.json` verified.
 
 ### To verify
@@ -405,6 +431,8 @@ The source DOI is the one `scripts/cmcr-105-sources.json` verified.
 4. The use of the 2024 Chinese primary liver cancer guideline (an HCC guideline) for the biopsy of a liver lesion of
    unknown type, and of ACG 2024's ruptured-adenoma recommendation by analogy for tumour bleeding.
 5. The SIR 2019 thresholds as quoted (taken from a published summary of Part II; the full text was not accessible).
+6. Mechanical prophylaxis (intermittent pneumatic compression) as the keyed VTE prophylaxis on the strength of ASH 2018,
+   NICE NG89 having no mechanical-prophylaxis recommendation for acutely ill medical patients.
 
 ## Changelog
 
@@ -426,6 +454,23 @@ The source DOI is the one `scripts/cmcr-105-sources.json` verified.
   ESMO–EURACAN–GENTURIS 2021, NICE NG89, ELTR 2013, Kang 2016, SPIKES), the tests a clinician would order now with
   honest “No result is recorded for this test.” results, the attending, nurse, radiologist, pathologist and
   interventional radiologist, a judged communication item, dated teaching points, six learning outcomes and this guide.
+- **Independent review (2026-11-14), fixes within 1.1.0.** (1) *Finishability:* a web learner who answered the five
+  decisions before taking the history (or before asking about blood thinners) was moved into `outcome`, where she is
+  non-verbal and no question is listed, and could never finish (eight questions trapped the learner when re-timed
+  without a phase switch); decision 1 now waits for the seven questions its prompt states, and `outcome` for the
+  blood-thinner question. (2) *Critical item without its precondition:* a biopsy in `imaging` before the PET/CT was
+  read earned 33/33 with `rb-safe-biopsy` met; `core-biopsy` is now contraindicated (critical) until the PET/CT has been
+  read in `imaging` (26/33, safety outcome fails). (3) *Withdrawn guidance:* “no day-case biopsy when malignancy is
+  strongly suspected” (BSG 2020) was replaced by its authors in 2020 with a longer observation; feedback, teaching
+  point 2, the observation order and this guide now say so. (4) *Misattributed guidance:* the keyed mechanical
+  prophylaxis cited only NICE NG89, which has no such recommendation for medical inpatients; ASH 2018 (strong:
+  mechanical prophylaxis when bleeding risk is unacceptable) is added. (5) *Matcher:* “Any abdominal distension?” and
+  “Is your abdomen swollen?” reached no item and “肚子大了吗？” reached `pain`; keywords fixed and four test utterances added,
+  plus the plain openers the updated `case-check` asks for. (6) Minor: decision 5's key shortened (it was the uniquely
+  longest option, by ten characters in Chinese); decision 3's Chinese key no longer adds an observation clause the
+  English lacks; no hindsight credit for the MDT, group and screen or multiphase CT/MRI; no sarcoma guideline cited in
+  feedback before the histology; “hypervascular” (ACG 2024 describes mostly hypoenhancing lesions) replaced; the
+  bleeding plan no longer presupposes abdominal pain; BSG's wording on tract plugging quoted exactly.
 - **Other.** New pseudonym (严淑芳 / Yan Shufang); a spoiler-free summary and triage note; figures retitled and moved to
   the outcome record; `authorChecks` (which claimed individual reading of the source) removed;
   `extensions.sourceTextChecked: false`.
@@ -442,7 +487,7 @@ From the worktree root, measured on 2026-11-14:
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1653405/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1653405 --lang en                                                 # 61 steps · 6/6 objectives · 5/5 decisions · 51/51 utterances · 33/33 (100 %)
+npm run -s cc -- cases verify cmcr-1653405 --lang en                                                 # 61 steps · 6/6 objectives · 5/5 decisions · 55/55 utterances · 33/33 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-1653405                                       # reference 100 % · do nothing 0/30 · wrong first at every decision 55 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1653405:"              # collection contract: pass
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1653405:"  # in-world demonstration, en + zh-CN: pass
@@ -469,9 +514,9 @@ FDG PET/CT；把肝占位穿刺当作高出血风险操作来计划；说明多�
 
 **复盘要点：** 先定性、再取材（ACG 2024；《原发性肝癌诊疗指南（2024年版）》）；肝穿刺是高出血风险操作（SIR 2019；BSG
 2020）；肝血管肉瘤容易出血（ACG 2024；Kang 2016）；不做肝移植（欧洲肝移植登记 2013），多灶病变给予姑息性全身治疗
-（ESMO–EURACAN–GENTURIS 2021）；药物预防前先权衡出血风险（NICE NG89）；时间先后不等于因果，对家属和在病例讨论中都要坦诚说
+（ESMO–EURACAN–GENTURIS 2021）；药物预防前先权衡出血风险（NICE NG89），出血风险不可接受时用机械性预防（ASH 2018）；时间先后不等于因果，对家属和在病例讨论中都要坦诚说
 明已知和未知。
 
-**安全结果。** `core-biopsy`（在进一步影像之前、或未送检血常规和凝血就穿刺）和 `repeat-biopsy`（确诊后再次穿刺）标记为
+**安全结果。** `core-biopsy`（在看过进一步影像之前、或未送检血常规和凝血就穿刺）和 `repeat-biopsy`（确诊后再次穿刺）标记为
 `critical: true`，在禁忌时实施即判定安全结果不通过；依诺肝素预防和未测 INR 输血浆为 `critical: false`（可纠正的判断失误），但
 都会使“没有做有害的事”这一关键评分项失分。

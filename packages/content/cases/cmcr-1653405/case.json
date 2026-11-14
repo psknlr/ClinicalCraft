@@ -288,7 +288,9 @@
           "肚子鼓",
           "鼓起来",
           "腹部膨隆",
-          "胀气"
+          "胀气",
+          "怎么回事",
+          "出什么事"
         ],
         "en": [
           "whatbringsyou",
@@ -311,8 +313,9 @@
           "swollen",
           "swelling",
           "abdomen",
-          "stomach",
-          "belly"
+          "belly",
+          "whathappened",
+          "goingon"
         ]
       },
       "excludeKeywords": {
@@ -349,7 +352,10 @@
           "leg",
           "ankle",
           "feet",
-          "foot"
+          "foot",
+          "operation",
+          "surgery",
+          "ulcer"
         ]
       },
       "disclosure": "volunteer",

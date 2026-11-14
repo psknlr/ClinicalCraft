@@ -26,8 +26,8 @@
   "estimatedMinutes": 45,
   "learningOutcomes": [
     {
-      "zh-CN": "根据上运动神经元体征（肌张力增高、腱反射亢进、Babinski征和Hoffmann征）及括约肌和感觉症状定位脊髓病，与腰椎间盘问题相区分，并开出颈、胸段脊髓MRI（NICE NG59，2016）。",
-      "en": "Localise a myelopathy from upper motor neurone signs (tone, reflexes, Babinski and Hoffmann signs) with sphincter and sensory symptoms, tell it apart from a lumbar disc problem, and order MRI of the cervical and thoracic cord (NICE NG59, 2016)."
+      "zh-CN": "根据上运动神经元体征（肌张力增高、腱反射亢进、Babinski征和Hoffmann征）及括约肌和感觉症状定位脊髓病，与腰椎间盘问题相区分——把腰痛当作非特异性腰痛之前要先排除特殊原因（NICE NG59，2016）——并开出颈、胸段脊髓MRI。",
+      "en": "Localise a myelopathy from upper motor neurone signs (tone, reflexes, Babinski and Hoffmann signs) with sphincter and sensory symptoms, tell it apart from a lumbar disc problem — specific causes are excluded before back pain is called non-specific (NICE NG59, 2016) — and order MRI of the cervical and thoracic cord."
     },
     {
       "zh-CN": "从肾性糖尿、低分子量蛋白尿（α1微球蛋白）、NAG升高、低磷和低尿酸识别近端肾小管广泛功能障碍，并说明为什么肌酐会低估这种损伤（EASL 2025）。",
@@ -82,7 +82,7 @@
         "EASL 2025 Clinical Practice Guidelines on the management of hepatitis B virus infection (J Hepatol 2025;83(2):502–583)",
         "中华医学会肝病学分会、中华医学会感染病学分会《慢性乙型肝炎防治指南（2022年版）》（中华肝脏病杂志 2022;30(12):1309–1331）",
         "Gilead Sciences: HEPSERA (adefovir dipivoxil) prescribing information, revised 12/2018",
-        "Bristol-Myers Squibb: BARACLUDE (entecavir) prescribing information, 2019",
+        "Bristol-Myers Squibb: BARACLUDE (entecavir) prescribing information, revised 08/2026",
         "Gilead Sciences: VEMLIDY (tenofovir alafenamide) prescribing information, revised 03/2024",
         "EASL 2018 Clinical Practice Guidelines for the management of patients with decompensated cirrhosis (J Hepatol 2018;69(2):406–460): HRS-AKI criteria",
         "NICE NG59 (2016): Low back pain and sciatica in over 16s — assessment and management",
@@ -178,8 +178,8 @@
         "en": "Admission: back pain and failing walking"
       },
       "description": {
-        "zh-CN": "他刚住进病房，躺在床上。腰痛、行走越来越困难已有一年半。",
-        "en": "He has just been admitted and is lying in a ward bed. His back pain and walking have been getting worse for a year and a half."
+        "zh-CN": "他刚住进病房，躺在床上。腰痛已有一年半，走路越来越困难。",
+        "en": "He has just been admitted and is lying in a ward bed. He has had back pain for a year and a half, and his walking has been getting harder."
       },
       "learnerSwitchable": false
     },
@@ -267,18 +267,28 @@
           "主要症状",
           "怎么了",
           "不舒服",
-          "什么毛病"
+          "什么毛病",
+          "怎么回事",
+          "走路怎么样",
+          "走路",
+          "行走"
         ],
         "en": [
-          "whats wrong",
+          "whatswrong",
           "whatbringsyou",
           "broughtyouin",
           "main problem",
-          "the trouble",
+          "seems to be the trouble",
+          "whatsthetrouble",
           "complaint",
           "what happened",
           "bothering you",
-          "why are you here"
+          "why are you here",
+          "whatsbeengoingon",
+          "whatsgoingon",
+          "your walking",
+          "how far can you walk",
+          "trouble walking"
         ]
       },
       "disclosure": "volunteer",
@@ -291,6 +301,33 @@
       "source": {
         "zh-CN": "1.0.0版报告事实：腰痛、腿麻，走路像踩棉花；患者口吻为教学改写",
         "en": "Report fact (version 1.0.0): back pain, numb legs, walking like stepping on cotton; his words are a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "多久",
+          "多长时间",
+          "什么时候",
+          "几年",
+          "家里",
+          "家族",
+          "手",
+          "小便",
+          "大便",
+          "胸口"
+        ],
+        "en": [
+          "how long",
+          "when did",
+          "since when",
+          "at home",
+          "family",
+          "arms",
+          "hands",
+          "fingers",
+          "bladder",
+          "bowel",
+          "chest"
+        ]
       }
     },
     {
@@ -452,12 +489,15 @@
         "zh-CN": [
           "骨头",
           "髋",
-          "肋"
+          "肋",
+          "脖子",
+          "颈"
         ],
         "en": [
           "hips",
           "ribs",
-          "bone pain"
+          "bone pain",
+          "neck"
         ]
       },
       "disclosure": "on-ask",
@@ -1430,6 +1470,24 @@
       "source": {
         "zh-CN": "1.0.0版报告事实：膝反射亢进",
         "en": "Report fact (version 1.0.0): brisk knee reflexes"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "踝",
+          "跟腱",
+          "肱二头",
+          "肱三头",
+          "桡骨膜",
+          "下颌"
+        ],
+        "en": [
+          "ankle",
+          "achilles",
+          "biceps",
+          "triceps",
+          "supinator",
+          "jaw"
+        ]
       }
     },
     {
@@ -1857,6 +1915,112 @@
             "zh-CN": "扫描已在入院时完成；请在病历中查看脊柱MRI报告。",
             "en": "The scan was done on admission; read the spine MRI report in his notes."
           }
+        }
+      }
+    },
+    {
+      "id": "lumbar-mri",
+      "name": {
+        "zh-CN": "腰椎MRI",
+        "en": "MRI of the lumbar spine"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腰椎mri",
+          "腰椎核磁",
+          "腰椎磁共振",
+          "腰骶mri",
+          "腰椎间盘mri"
+        ],
+        "en": [
+          "lumbar mri",
+          "mri lumbar",
+          "lumbar spine mri",
+          "l-spine mri",
+          "lumbosacral mri"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "low-value",
+      "results": {
+        "admission": {
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版未记录：保持未知，不作补充",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          },
+          "available": false
+        },
+        "workup": {
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版未记录：保持未知，不作补充",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          },
+          "available": false
+        }
+      }
+    },
+    {
+      "id": "brain-mri",
+      "name": {
+        "zh-CN": "头颅MRI",
+        "en": "MRI of the brain"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "头颅mri",
+          "头部核磁",
+          "颅脑mri",
+          "脑部mri",
+          "头颅磁共振"
+        ],
+        "en": [
+          "brain mri",
+          "mri brain",
+          "head mri",
+          "mri head",
+          "cranial mri"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "neutral",
+      "results": {
+        "admission": {
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版未记录：保持未知，不作补充",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          },
+          "available": false
+        },
+        "workup": {
+          "text": {
+            "zh-CN": "该检查没有记录结果。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版未记录：保持未知，不作补充",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          },
+          "available": false
         }
       }
     },
@@ -2570,6 +2734,34 @@
       }
     }
   ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "spine-mri",
+        "ifMatches": "腰|lumb|l-?spine",
+        "unlessMatches": "颈|胸|全|whole|entire|cervical|thoracic|neck|cord|脊髓",
+        "remove": [
+          "spine-mri"
+        ],
+        "add": [
+          "lumbar-mri"
+        ]
+      },
+      {
+        "ifHas": "spine-mri",
+        "ifMatches": "头|颅|脑|brain|head|cranial",
+        "unlessMatches": "颈|胸|腰|脊|spin|cord|cervical|thoracic|lumb|whole",
+        "remove": [
+          "spine-mri"
+        ],
+        "add": [
+          "brain-mri"
+        ]
+      }
+    ],
+    "exact": {},
+    "warnings": []
+  },
   "interventions": [
     {
       "id": "switch-to-entecavir",
@@ -2759,6 +2951,50 @@
       "effects": []
     },
     {
+      "id": "neurology-consult",
+      "kind": "consult",
+      "name": {
+        "zh-CN": "请神经内科会诊脊髓病变",
+        "en": "Ask neurology to review the spinal cord problem"
+      },
+      "aliases": {
+        "zh-CN": [
+          "神经内科会诊",
+          "请神经内科",
+          "神经科会诊",
+          "神经内科医生",
+          "脊髓病会诊"
+        ],
+        "en": [
+          "neurology",
+          "neurologist",
+          "neurology review",
+          "neuro team"
+        ]
+      },
+      "risk": "none",
+      "requires": [],
+      "dose": {
+        "zh-CN": "说明他的上运动神经元体征、小便失禁和胸部紧束感，商定脊髓病的进一步评估（颈髓影像、维生素B12、铜、感染血清学）和随访。",
+        "en": "Describe his upper motor neurone signs, the incontinence and the tight, bound chest, and agree the further myelopathy work-up (cervical cord imaging, B12, copper, infection serology) and follow-up."
+      },
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "admission"
+          },
+          {
+            "phase": "workup"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "神经内科医生会来看他，和你一起梳理脊髓病的检查。本病例没有记录当时是否请过神经内科。",
+        "en": "The neurologist will come and go through the myelopathy work-up with you. This case does not record whether a neurologist saw him."
+      },
+      "effects": []
+    },
+    {
       "id": "hepatology-consult",
       "name": {
         "zh-CN": "请肝病科会诊抗病毒方案",
@@ -2801,7 +3037,15 @@
         "zh-CN": "肝病科医生会来看他，和你一起核对换药方案。本病例没有记录当时请过哪些科会诊。",
         "en": "The hepatologist will see him and go through the switch with you. This case does not record which teams were consulted."
       },
-      "effects": []
+      "effects": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "神经"
+        ],
+        "en": [
+          "neuro"
+        ]
+      }
     },
     {
       "id": "nephrology-consult",
@@ -2838,7 +3082,15 @@
         "zh-CN": "肾内科医生会来看他。本病例没有记录当时请过哪些科会诊。",
         "en": "The nephrologist will see him. This case does not record which teams were consulted."
       },
-      "effects": []
+      "effects": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "神经"
+        ],
+        "en": [
+          "neuro"
+        ]
+      }
     },
     {
       "id": "pharmacist-review",
@@ -3668,25 +3920,43 @@
             "asked": "presenting"
           },
           {
+            "asked": "duration"
+          },
+          {
             "asked": "numbness-spread"
           },
           {
             "asked": "bladder"
           },
           {
+            "asked": "chest-band"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
             "examined": "leg-tone"
+          },
+          {
+            "examined": "knee-reflexes"
           },
           {
             "examined": "plantars"
           },
           {
             "examined": "hoffmann"
+          },
+          {
+            "examined": "power"
+          },
+          {
+            "examined": "gait"
           }
         ]
       },
       "need": {
-        "zh-CN": "先问清症状的经过（包括小便），并查肌张力、Babinski征和Hoffmann征。",
-        "en": "First take the story (including his bladder) and examine tone, the plantar responses and the Hoffmann sign."
+        "zh-CN": "先问清完整经过——时间、麻木怎么扩散、小便、胸口的感觉和之前的治疗——并做完神经系统查体（肌张力、反射、病理征、肌力和步态）。",
+        "en": "First take the whole story — timing, the spread of the numbness, the bladder, the chest and the treatment so far — and finish the neurological examination (tone, reflexes, plantars, Hoffmann, power and gait)."
       },
       "options": [
         {
@@ -3817,8 +4087,8 @@
         {
           "id": "light-chain-first",
           "text": {
-            "zh-CN": "服药五年多都没出过事，不太可能是阿德福韦酯：先按骨髓瘤轻链所致肾小管病处理，血液科结果回来前抗病毒药不变",
-            "en": "Adefovir is unlikely after five uneventful years: treat this as a myeloma light-chain tubulopathy, and keep the antiviral unchanged until the haematology tests are back"
+            "zh-CN": "已经连着服药五年多，不太可能是阿德福韦酯：先按骨髓瘤轻链所致肾小管病处理，血液科结果回来前抗病毒药不变",
+            "en": "Adefovir is unlikely after more than five years on it: treat this as a myeloma light-chain tubulopathy, and keep the antiviral unchanged until the haematology tests are back"
           },
           "correct": false,
           "feedback": {
@@ -3831,8 +4101,8 @@
     {
       "id": "antiviral-plan",
       "prompt": {
-        "zh-CN": "肾小管损伤最可能与阿德福韦酯有关。他有乙肝肝硬化和静脉曲张；HBV DNA还没有查，以前用过哪些乙肝药也不清楚。他的抗病毒治疗怎么办？",
-        "en": "The tubular injury is most likely from adefovir. He has hepatitis B cirrhosis with varices; his HBV DNA has not been measured, and which hepatitis B drugs he had before is unknown. What do you do with his antiviral treatment?"
+        "zh-CN": "肾小管损伤最可能与阿德福韦酯有关。他有乙肝肝硬化和静脉曲张；目前没有HBV DNA结果，以前用过哪些乙肝药也不清楚。他的抗病毒治疗怎么办？",
+        "en": "The tubular injury is most likely from adefovir. He has hepatitis B cirrhosis with varices; no HBV DNA result is available, and which hepatitis B drugs he had before is unknown. What do you do with his antiviral treatment?"
       },
       "kind": "single",
       "requires": {
@@ -3858,8 +4128,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。EASL 2025指南在低磷血症和肾功能不全时优先推荐丙酚替诺福韦，恩替卡韦为替代；从阿德福韦酯换药时，只有既往没有用过拉米夫定才推荐恩替卡韦。我国2022年指南建议，已用阿德福韦酯或TDF的患者出现肾脏或骨骼疾病时改用恩替卡韦或TAF。换药不能留空档。恩替卡韦空腹服用，代偿期0.5 mg、失代偿期1 mg，肌酐清除率<50 mL/min时调整（说明书）；TAF说明书不推荐用于Child-Pugh B、C级肝硬化——所以肝功能和既往用药决定选哪种药、用多大剂量。",
-            "en": "Right. EASL 2025 prefers tenofovir alafenamide in hypophosphataemia and renal insufficiency, with entecavir as the alternative, and after adefovir recommends entecavir only if lamivudine was not used before; the Chinese 2022 guideline advises changing adefovir or TDF to entecavir or TAF when kidney or bone disease develops. Switch without a gap. Entecavir is taken on an empty stomach, 0.5 mg in compensated and 1 mg in decompensated disease, adjusted below a creatinine clearance of 50 mL/min (label); the TAF label does not recommend it in Child-Pugh B or C cirrhosis — so his liver function and earlier drugs decide the drug and the dose."
+            "zh-CN": "正确。EASL 2025指南在低磷血症和肾功能不全时优先推荐丙酚替诺福韦，恩替卡韦为替代；从阿德福韦酯换药时，只有既往没有用过拉米夫定才推荐恩替卡韦。我国2022年指南建议，已用阿德福韦酯或TDF的患者出现肾脏或骨骼疾病时改用恩替卡韦或TAF。换药不能留空档。恩替卡韦空腹服用，代偿期0.5 mg、失代偿期1 mg，肌酐清除率<50 mL/min时调整（说明书）；TAF说明书不推荐用于Child-Pugh B、C级肝硬化——所以肝功能和既往用药决定选哪种药、用多大剂量。本病例没有记录他是否用过拉米夫定，也没有Child-Pugh分级：两者都要当天从既往处方和肝功能检查中查清；原报告选用的是恩替卡韦。",
+            "en": "Right. EASL 2025 prefers tenofovir alafenamide in hypophosphataemia and renal insufficiency, with entecavir as the alternative, and after adefovir recommends entecavir only if lamivudine was not used before; the Chinese 2022 guideline advises changing adefovir or TDF to entecavir or TAF when kidney or bone disease develops. Switch without a gap. Entecavir is taken on an empty stomach, 0.5 mg in compensated and 1 mg in decompensated disease, adjusted below a creatinine clearance of 50 mL/min (label); the TAF label does not recommend it in Child-Pugh B or C cirrhosis — so his liver function and earlier drugs decide the drug and the dose. Neither his lamivudine history nor his Child-Pugh class is recorded here: both must be sought the same day, from his earlier prescriptions and his liver tests; the report chose entecavir."
           }
         },
         {
@@ -3935,8 +4205,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "骨痛伴低磷提示骨软化症——矿化障碍，双膦酸盐治不了。唑来膦酸（5 mg，用于骨质疏松）说明书把低钙血症和肌酐清除率<35 mL/min列为禁忌；他的总钙1.97 mmol/L而白蛋白未知，肾脏也已受损。应先纠正低磷和维生素D，再评估骨骼。",
-            "en": "Bone pain with a low phosphate suggests osteomalacia — a mineralisation defect a bisphosphonate does not treat. The zoledronic acid (Reclast) label contraindicates it in hypocalcaemia and with a creatinine clearance below 35 mL/min; his total calcium is 1.97 mmol/L with the albumin unknown, and his kidneys are injured. Correct the phosphate and vitamin D first, then reassess the bones."
+            "zh-CN": "服用阿德福韦酯者腰痛伴低磷，提示骨软化症——矿化障碍，双膦酸盐治不了。唑来膦酸（5 mg，用于骨质疏松）说明书把低钙血症和肌酐清除率<35 mL/min列为禁忌；他的总钙1.97 mmol/L而白蛋白未知，肾脏也已受损。应先纠正低磷和维生素D，再评估骨骼。",
+            "en": "Back pain with a low phosphate in a man on adefovir suggests osteomalacia — a mineralisation defect a bisphosphonate does not treat. The zoledronic acid (Reclast) label contraindicates it in hypocalcaemia and with a creatinine clearance below 35 mL/min; his total calcium is 1.97 mmol/L with the albumin unknown, and his kidneys are injured. Correct the phosphate and vitamin D first, then reassess the bones."
           }
         },
         {
@@ -4358,11 +4628,14 @@
       "domain": "management",
       "weight": 1,
       "text": {
-        "zh-CN": "请肝病科、肾内科和临床药师参与，落实防跌倒措施，并向他解释换药、确认他能复述",
-        "en": "Brought in hepatology, nephrology and the pharmacist, put falls precautions in place, and explained the switch to him with teach-back"
+        "zh-CN": "请神经内科、肝病科、肾内科和临床药师参与，落实防跌倒措施，并向他解释换药、确认他能复述",
+        "en": "Brought in neurology, hepatology, nephrology and the pharmacist, put falls precautions in place, and explained the switch to him with teach-back"
       },
       "met": {
         "all": [
+          {
+            "intervened": "neurology-consult"
+          },
           {
             "intervened": "hepatology-consult"
           },
@@ -4497,8 +4770,8 @@
         "en": "Dr Qiu (hepatology, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "肝病科医生，只解读学员已经看过的资料。可以讲：EASL 2025乙肝指南——低磷血症、肾功能不全或有TDF肾毒性危险因素时优先用丙酚替诺福韦，恩替卡韦为替代；从阿德福韦酯换药时，只有没用过拉米夫定才首选恩替卡韦；进展期肝病在HBsAg消失前不应停药；达到病毒学应答前每3–6个月查HBV DNA。我国2022年指南——用阿德福韦酯或TDF的患者出现肾脏或骨骼疾病时改用恩替卡韦或TAF，并定期查肌酐和血磷。说明书——阿德福韦酯停药后肝炎加重最多25%，肝硬化者失代偿风险更高；恩替卡韦空腹，代偿期0.5 mg、失代偿期1 mg，肌酐清除率<50 mL/min时调整；丙酚替诺福韦25 mg随餐，不推荐用于Child-Pugh B、C级。会问学员：他以前用过拉米夫定吗？肝硬化是代偿还是失代偿？——这两点本病例都没有记录，需要查。不说出诊断，不透露结局；HBV DNA、肝功能、Child-Pugh分级和阿德福韦酯剂量都没有记录，不要补上。",
-        "en": "Hepatologist who interprets only what the learner has already read. Can explain: the EASL 2025 hepatitis B guideline — tenofovir alafenamide is preferred in hypophosphataemia, renal insufficiency or other risk factors for TDF nephrotoxicity, with entecavir as the alternative; after adefovir, entecavir is first choice only if lamivudine was never used; NAs should not be stopped in advanced liver disease before HBsAg loss; HBV DNA every 3–6 months until a virological response. The Chinese 2022 guideline — patients on adefovir or TDF who develop kidney or bone disease change to entecavir or TAF, with regular creatinine and phosphate checks. The labels — hepatitis flares in up to 25 % after stopping adefovir, with a higher risk of decompensation in cirrhosis; entecavir on an empty stomach, 0.5 mg compensated or 1 mg decompensated, adjusted below a creatinine clearance of 50 mL/min; TAF 25 mg with food, not recommended in Child-Pugh B or C. Asks the learner: has he had lamivudine before, and is the cirrhosis compensated? — neither is recorded in this case and both need finding out. Does not state the diagnosis or reveal the outcome; HBV DNA, liver function, the Child-Pugh class and the adefovir dose are not recorded — do not supply them."
+        "zh-CN": "肝病科医生，只解读学员已经看过的资料。可以讲：EASL 2025乙肝指南——低磷血症、肾功能不全或有TDF肾毒性危险因素时优先用丙酚替诺福韦，恩替卡韦为替代；从阿德福韦酯换药时，只有没用过拉米夫定才可选恩替卡韦，因为用过拉米夫定后恩替卡韦更容易耐药；进展期肝病在HBsAg消失前不应停药；达到病毒学应答前每3–6个月查HBV DNA。我国2022年指南——用阿德福韦酯或TDF的患者出现肾脏或骨骼疾病时改用恩替卡韦或TAF，并定期查肌酐和血磷。说明书——阿德福韦酯停药后肝炎加重最多25%，肝硬化者失代偿风险更高；恩替卡韦空腹，代偿期0.5 mg、失代偿期1 mg，肌酐清除率<50 mL/min时调整；丙酚替诺福韦25 mg随餐，不推荐用于Child-Pugh B、C级。会问学员：他以前用过拉米夫定吗？肝硬化是代偿还是失代偿？——这两点本病例都没有记录，需要查。不说出诊断，不透露结局；HBV DNA、肝功能、Child-Pugh分级和阿德福韦酯剂量都没有记录，不要补上。",
+        "en": "Hepatologist who interprets only what the learner has already read. Can explain: the EASL 2025 hepatitis B guideline — tenofovir alafenamide is preferred in hypophosphataemia, renal insufficiency or other risk factors for TDF nephrotoxicity, with entecavir as the alternative; after adefovir, entecavir is an option only if lamivudine was never used, because entecavir meets more resistance after lamivudine; NAs should not be stopped in advanced liver disease before HBsAg loss; HBV DNA every 3–6 months until a virological response. The Chinese 2022 guideline — patients on adefovir or TDF who develop kidney or bone disease change to entecavir or TAF, with regular creatinine and phosphate checks. The labels — hepatitis flares in up to 25 % after stopping adefovir, with a higher risk of decompensation in cirrhosis; entecavir on an empty stomach, 0.5 mg compensated or 1 mg decompensated, adjusted below a creatinine clearance of 50 mL/min; TAF 25 mg with food, not recommended in Child-Pugh B or C. Asks the learner: has he had lamivudine before, and is the cirrhosis compensated? — neither is recorded in this case and both need finding out. Does not state the diagnosis or reveal the outcome; HBV DNA, liver function, the Child-Pugh class and the adefovir dose are not recorded — do not supply them."
       },
       "interprets": [
         "hbv-dna",
@@ -4614,7 +4887,7 @@
         "en": "Adefovir's label (Hepsera, revised 2018) lists postmarketing Fanconi syndrome, proximal renal tubulopathy, hypophosphataemia and osteomalacia presenting as bone pain, and describes nephrotoxicity of delayed onset; EASL 2025 no longer recommends adefovir first line. In this patient it came to light after five and a half years of continuous treatment."
       },
       {
-        "zh-CN": "换药，绝不停药：EASL 2025指南在低磷血症、肾功能不全或其他肾脏危险因素时优先推荐丙酚替诺福韦，恩替卡韦为替代（从阿德福韦酯换药时，只有没用过拉米夫定才首选恩替卡韦），并建议进展期肝病在HBsAg消失前不停药；我国2022年指南建议已用阿德福韦酯或TDF者出现肾脏或骨骼疾病时改用恩替卡韦或TAF。原报告把阿德福韦酯换成了恩替卡韦。",
+        "zh-CN": "换药，绝不停药：EASL 2025指南在低磷血症、肾功能不全或其他肾脏危险因素时优先推荐丙酚替诺福韦，恩替卡韦为替代（从阿德福韦酯换药时，只有没用过拉米夫定才可选恩替卡韦），并建议进展期肝病在HBsAg消失前不停药；我国2022年指南建议已用阿德福韦酯或TDF者出现肾脏或骨骼疾病时改用恩替卡韦或TAF。原报告把阿德福韦酯换成了恩替卡韦。",
         "en": "Switch, never stop: EASL 2025 prefers tenofovir alafenamide in hypophosphataemia, renal insufficiency or other renal risk, with entecavir as the alternative (after adefovir, entecavir only if lamivudine was never used), and advises against stopping NAs in advanced liver disease before HBsAg loss; the Chinese 2022 guideline advises changing adefovir or TDF to entecavir or TAF when kidney or bone disease develops. The report changed adefovir to entecavir."
       },
       {
@@ -4630,9 +4903,9 @@
       "李璐, 宋红松, 蔡晧东. 阿德福韦酯相关范科尼综合征合并脊髓病及周围神经病. 药物不良反应杂志. 2014;16(1):52-53. doi:10.3760/cma.j.issn.1008-5734.2014.01.018. Available from: https://rs.yiigle.com/cmaid/1423444",
       "European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol. 2025;83(2):502-583. doi:10.1016/j.jhep.2025.03.018",
       "中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.",
-      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines for the management of patients with decompensated cirrhosis. J Hepatol. 2018;69(2):406-460.",
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines for the management of patients with decompensated cirrhosis. J Hepatol. 2018;69(2):406-460. doi:10.1016/j.jhep.2018.03.024",
       "Gilead Sciences. HEPSERA (adefovir dipivoxil) tablets, for oral use: prescribing information. Foster City (CA): Gilead Sciences; revised 2018 Dec.",
-      "Bristol-Myers Squibb. BARACLUDE (entecavir) tablets and oral solution: prescribing information. Princeton (NJ): Bristol-Myers Squibb; 2019.",
+      "Bristol-Myers Squibb. BARACLUDE (entecavir) tablets and oral solution: prescribing information. Princeton (NJ): Bristol-Myers Squibb; revised 2026 Aug.",
       "Gilead Sciences. VEMLIDY (tenofovir alafenamide) tablets, for oral use: prescribing information. Foster City (CA): Gilead Sciences; revised 2024 Mar.",
       "National Institute for Health and Care Excellence. Low back pain and sciatica in over 16s: assessment and management (NICE guideline NG59). London: NICE; 2016.",
       "National Institute for Health and Care Excellence. Falls: assessment and prevention in older people and in people 50 and over at higher risk (NICE guideline NG249). London: NICE; 2025.",
@@ -4790,6 +5063,10 @@
     {
       "type": "intervene",
       "interventionId": "falls-prevention"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "neurology-consult"
     },
     {
       "type": "answer",
@@ -5270,6 +5547,34 @@
         "locale": "en",
         "expect": [
           "worries"
+        ]
+      },
+      {
+        "text": "Tell me about your walking.",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "What's been going on lately?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "您现在走路怎么样了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "到底是怎么回事？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
         ]
       },
       {

@@ -93,7 +93,8 @@
     "base": "a833280"
    },
    "started": "2026-11-14 04:06",
-   "plan": "handheld + web (continue), then two review lenses, fix, verify"
+   "plan": "handheld + web (continue), then two review lenses, fix, verify",
+   "status": "completed 2026-11-14 06:45: verify 'ready' with 6 minor findings (wave 2c fixes them)"
   },
   {
    "name": "cases-G",
@@ -114,9 +115,13 @@
    "plan": "2 reviews (70172, 1423444), then 24 authors each reviewed"
   },
   {
-   "name": "cases-I (reserved)",
+   "name": "cases-I",
    "argsFile": "args-I.json",
-   "plan": "12 authors, start when audit wave2b finishes"
+   "plan": "12 authors, each reviewed",
+   "runId": "wf_00c50c1e-fe2",
+   "task": "wa6m12lqm",
+   "script": "pr5/reauthor-v5.js",
+   "started": "2026-11-14 06:52"
   }
  ]
 }

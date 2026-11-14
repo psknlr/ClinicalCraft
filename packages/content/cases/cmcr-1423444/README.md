@@ -13,10 +13,10 @@ adaptation" and "To verify").
 |---|---|
 | Setting | Inpatient ward of the general hospital (`general-hospital`); static clock, no physiology model |
 | Level | Senior medical student, foundation doctor or resident in internal medicine, neurology, nephrology or hepatology; difficulty 4/5 |
-| Time | About 45 minutes (22 history items, 6 examination manoeuvres, 16 investigations, 15 interventions, 5 decisions) |
+| Time | About 45 minutes (22 history items, 6 examination manoeuvres, 18 investigations, 16 interventions, 5 decisions) |
 | The patient | Mr Shi Zhiyuan (施知远, pseudonym), 63, lying in a ward bed, alert and able to answer for himself throughout |
 | Specialties | Neurology, nephrology, hepatology, clinical pharmacology |
-| What the learner can do | Take the history from him; examine tone, reflexes, plantar and Hoffmann responses, power and gait; order blood, urine, MRI and further tests; read the reports at the records terminal; prescribe, switch or stop medicines; ask hepatology, nephrology and the clinical pharmacist; put falls precautions in place; explain the plan to him; report the reaction; answer five decisions on the case board; read the reported course at the end |
+| What the learner can do | Take the history from him; examine tone, reflexes, plantar and Hoffmann responses, power and gait; order blood, urine, MRI and further tests; read the reports at the records terminal; prescribe, switch or stop medicines; ask neurology, hepatology, nephrology and the clinical pharmacist; put falls precautions in place; explain the plan to him; report the reaction; answer five decisions on the case board; read the reported course at the end |
 | Review status | Editorial (AI-assisted); not yet reviewed by a licensed clinician; facts not yet checked against the full article |
 
 ## Learning outcomes
@@ -24,8 +24,8 @@ adaptation" and "To verify").
 By the end the learner can:
 
 1. Localise a myelopathy from upper motor neurone signs (tone, reflexes, Babinski and Hoffmann signs) with sphincter
-   and sensory symptoms, tell it apart from a lumbar disc problem, and order MRI of the cervical and thoracic cord
-   (NICE NG59, 2016).
+   and sensory symptoms, tell it apart from a lumbar disc problem — specific causes are excluded before back pain is
+   called non-specific (NICE NG59, 2016) — and order MRI of the cervical and thoracic cord.
 2. Recognise a generalised proximal tubulopathy from renal glycosuria, low-molecular-weight proteinuria (alpha-1
    microglobulin), a raised NAG, hypophosphataemia and hypouricaemia, and explain why creatinine underestimates it
    (EASL 2025).
@@ -72,7 +72,7 @@ response model, and no vital sign, monitor or treatment effect is simulated. Thr
 
 | Phase | Opens when | What is there |
 |---|---|---|
-| `admission` — Admission: back pain and failing walking | At the start | History from Mr Shi; the neurological examination; orders for MRI, blood and urine (their results are "sent"/"requested" here); decision 1 (`lesion-site`); falls precautions |
+| `admission` — Admission: back pain and failing walking | At the start | History from Mr Shi; the neurological examination; orders for MRI, blood and urine (their results are "sent"/"requested" here); decision 1 (`lesion-site`); falls precautions and the neurology consult |
 | `workup` — The work-up results | Objectives `obj-story`, `obj-exam` and `obj-localise` complete: the required history asked, all six manoeuvres done, decision 1 answered, and the spine MRI, blood chemistry and urine tests ordered | Blood chemistry and urine results; the spine MRI report and the neurophysiology report (records); the further tests (all without recorded results); decisions 2–5; the treatment, consults, explanation and report |
 | `followup` — The course the report records | All five decisions answered (flat `all` of `decided`) | The outcome record (`outcome`); not learner-switchable |
 
@@ -99,13 +99,15 @@ No `completeWhen` holds a condition that can become permanently false (no phase 
 
 ### Decisions
 
-1. **`lesion-site` (admission).** Opens after the presenting story, the spread of the numbness and the bladder are
-   asked and tone, plantars and Hoffmann are examined. Key `cord-mri-and-bloods`: a cord lesion at neck level or above
+1. **`lesion-site` (admission).** Opens once everything its prompt states has been gathered: the presenting
+   story, duration, spread of the numbness, bladder, chest and earlier treatment asked, and all six manoeuvres done. Key `cord-mri-and-bloods`: a cord lesion at neck level or above
    with motor and sensory tracts involved — urgent MRI of the cervical and thoracic cord with blood and urine tests
    for metabolic and drug causes. Distractors: lumbar disc → lumbar MRI and an epidural injection (lower motor neurone
    signs expected; NICE NG59 2016 does not recommend spinal injections for back pain); peripheral neuropathy → outpatient
    nerve conduction (cannot give UMN signs or incontinence); hepatic myelopathy labelled without tests (a diagnosis of
-   exclusion, usually with little sensory or sphincter involvement). The MRI report in the next phase answers it.
+   exclusion, usually with little sensory or sphincter involvement). The MRI report in the next phase answers it. A
+   lumbar or brain MRI request is an order of its own (`lumbar-mri`, `brain-mri`, no recorded result, routed by
+   `orderMatching`), so it never stands in for the cord MRI.
 2. **`tubular-pattern` (workup).** Opens once the blood chemistry and urine results of this phase are read and the
    medicine history asked. Key `proximal-tubulopathy-drug`: proximal tubule failure (Fanconi syndrome), most likely
    from adefovir — renal glycosuria at a fasting glucose of 4.5 mmol/L, tubular proteinuria, a raised NAG, low
@@ -120,7 +122,9 @@ No `completeWhen` holds a condition that can become permanently false (no phase 
    develops); entecavir 0.5 mg compensated / 1 mg decompensated on an empty stomach, adjusted below a creatinine
    clearance of 50 mL/min; TAF not recommended in Child-Pugh B or C. Distractors: pause all antivirals until the
    kidneys recover (flare risk: up to 25 % exacerbations after stopping, higher decompensation risk in cirrhosis,
-   deaths — label 2018; EASL 2025); keep adefovir at a renally adjusted interval; switch to TDF.
+   deaths — label 2018; EASL 2025); keep adefovir at a renally adjusted interval; switch to TDF. Neither his
+   lamivudine history nor his Child-Pugh class is recorded; the key's feedback says both must be sought the same day.
+   The reference path follows the report's entecavir; tenofovir alafenamide scores the same.
 4. **`bone-plan` (workup).** Key `oral-phosphate-active-d`: oral phosphate in divided doses with active vitamin D,
    after albumin-adjusted calcium, magnesium, ALP, PTH and vitamin D, and X-rays of painful bones. Distractors:
    zoledronic acid for presumed osteoporosis (osteomalacia is a mineralisation defect; the Reclast label contraindicates
@@ -151,7 +155,7 @@ language (measured at authoring: the longest distractor equals or exceeds the ke
 | `rb-switch-in-time` **critical** | management | 4 | entecavir or TAF given `whenIndicated` (in `workup`, after the blood and urine results, before the outcome) |
 | `rb-bone` | management | 2 | `decidedFirstTry: bone-plan` + phosphate with active vitamin D + bone profile ordered |
 | `rb-causality` | management | 2 | `decidedFirstTry: causality-followup` + reaction reported |
-| `rb-team-and-safety` | management | 1 | hepatology, nephrology, pharmacist, falls precautions, explanation with teach-back |
+| `rb-team-and-safety` | management | 1 | neurology, hepatology, nephrology, pharmacist, falls precautions, explanation with teach-back |
 | `rb-no-harm` **critical** | safety | 3 | none of the six harmful interventions given; `scoredWhen` = decision 1 or 3 attempted, or any of the six given |
 | `rb-communication` | communication | 1 (judged) | Calgary–Cambridge explanation with teach-back (examiner-judged, no `met`) |
 
@@ -172,6 +176,9 @@ language (measured at authoring: the longest distractor equals or exceeds the ke
 | Reference plus more massage and spinal manipulation | 31/34 (91 %) | `rb-no-harm` | passes (flagged) |
 | Switch made only after reading the outcome record | 30/34 (88 %) | `rb-switch-in-time` | passes |
 | Tenofovir alafenamide instead of entecavir | 34/34 (100 %) | none | passes |
+| Switch given on admission, before any result | 30/34 (88 %) | `rb-switch-in-time` | passes |
+| A lumbar MRI ordered first, then the cord MRI | 34/34 (100 %) | none | passes (the work-up still waits for the cord MRI) |
+| Reference without the neurology consult | 33/34 (97 %) | none | passes |
 
 **Safety outcome.** Two interventions are `critical: true` (risk high): stopping adefovir with no replacement
 (`stop-all-antivirals`) — in cirrhosis a withdrawal flare can cause decompensation and death (Hepsera label 2018;
@@ -185,13 +192,13 @@ each is flagged in the debrief and costs the critical avoided-harm item `rb-no-h
 ## Reference path (`solution`)
 
 Start; ask all 22 history items (the eight required ones first among them); examine tone, knee reflexes, plantars,
-Hoffmann, power and gait; put falls precautions in place; answer decision 1 (`cord-mri-and-bloods`); order the spine
+Hoffmann, power and gait; put falls precautions in place; ask neurology; answer decision 1 (`cord-mri-and-bloods`); order the spine
 MRI, blood chemistry and urine tests — the `workup` phase opens; retrieve and read the chemistry, urine, MRI report and
 neurophysiology report; answer decision 2; order urine phosphate excretion, blood gas, B12/copper, HIV/syphilis/HTLV-1
 serology, protein electrophoresis with free light chains and a bladder scan; ask nephrology, hepatology and the
 pharmacist; order HBV DNA and liver function/clotting/platelets; answer decision 3; switch adefovir to entecavir; order
 the bone profile and X-rays of the pelvis and painful bones; answer decision 4; start oral phosphate with active vitamin D; explain the plan with teach-back;
-report the reaction; answer decision 5 — the `followup` phase opens; read the outcome record; finish. 66 steps; it
+report the reaction; answer decision 5 — the `followup` phase opens; read the outcome record; finish. 67 steps; it
 gives nothing while contraindicated and has no dose error.
 
 ## Clinical numbers check
@@ -210,7 +217,7 @@ gives nothing while contraindicated and has no dose error.
 | Urine alpha-1 microglobulin 257.8 mg/L (ref 0–12.8) | `urine-tubular` | 1.0.0 | ≈ 20 × the upper reference limit |
 | Urine NAG 90 U/L (ref 2–20) | `urine-tubular` | 1.0.0 | 4.5 × the upper reference limit |
 | Walking normal at 5 months; phosphate improved within weeks | `outcome` (followup) | 1.0.0 | — |
-| Entecavir 0.5 mg / 1 mg once daily; adjust below CrCl 50 mL/min | intervention `switch-to-entecavir`, decision 3 | Baraclude label (2019) | Not the patient's dose — the report's entecavir dose is not recorded |
+| Entecavir 0.5 mg / 1 mg once daily; adjust below CrCl 50 mL/min | intervention `switch-to-entecavir`, decision 3 | Baraclude label (revised 08/2026) | Not the patient's dose — the report's entecavir dose is not recorded |
 | TAF 25 mg once daily with food | intervention `switch-to-taf` (`doseSpec` 25 mg PO) | Vemlidy label (2024) | Not recommended in Child-Pugh B or C |
 | Up to 25 % hepatitis exacerbations after stopping adefovir | harm text, decision 3 feedback | Hepsera label (2018), §5.1 | Trial data (ALT ≥ 10 × ULN) |
 | HBV DNA every 3–6 months until response | decision 5 feedback | EASL 2025 | — |
@@ -242,7 +249,7 @@ none is supplied.
 
 | Error | Where it shows |
 |---|---|
-| Accepting "disc disease" and ordering lumbar imaging, an epidural or more manipulation | Decision 1 distractor; `epidural-injection` (critical) and `spinal-manipulation` interventions; `rb-no-harm` |
+| Accepting "disc disease" and ordering lumbar imaging, an epidural or more manipulation | Decision 1 distractor; a lumbar MRI order returns the lumbar study (`lumbar-mri`, no recorded result, low value) and the work-up still waits for the cord MRI; `epidural-injection` (critical) and `spinal-manipulation` interventions; `rb-no-harm` |
 | Skipping the Hoffmann sign or the bladder question | Decision 1 gate; `rb-symptom-story`, `rb-neuro-exam` |
 | Reading creatinine 119 μmol/L as "kidneys fine" | Decision 2 feedback; nephrology consultant |
 | Diagnosing diabetes from glycosuria | Decision 2 distractor (fasting glucose 4.5 mmol/L) |
@@ -257,7 +264,8 @@ none is supplied.
 
 In in-world mode (实景模式) the patient lies in a general-hospital ward bed and answers for himself in every phase (no
 `nonVerbalWhen`, no companion). History and examination happen at the bedside. Blood and urine are sent from the ward;
-the spine MRI is done in radiology (`mri`, the patient is taken there for the admission order); the bladder scan is at
+the spine MRI is done in radiology (`mri`, the patient is taken there for the admission order), and a lumbar or brain
+MRI request is an order of its own (`lumbar-mri`, `brain-mri`, no recorded result); the bladder scan is at
 the bedside; the MRI report, the neurophysiology report and the outcome are records read at the records terminal
 (`requires: ["records"]`, `performedAt: "records"`, risk none). The general hospital has no neurophysiology
 capability, so the neurophysiology study exists only as its report. Medicines need `medications`; the consults, falls
@@ -313,8 +321,60 @@ generic adefovir label).
 
 **Labelled teaching devices.** The ward and its staff (Dr Fang, Nurse Tang, Dr Qiu, Dr Yan, Pharmacist Wen — all
 pseudonyms) and their dialogue; the three phases and which tests are ordered and reported in each; the "pending"
-results in the admission phase; the falls, consult, explanation and reporting steps; Mr Shi's stated worries (they add
-no clinical fact); every decision, distractor, intervention and score.
+results in the admission phase; the falls, consult (neurology, hepatology, nephrology, pharmacist), explanation and
+reporting steps; the lumbar and brain MRI orders, which have no recorded result; Mr Shi's stated worries (they add no
+clinical fact); every decision, distractor, intervention and score.
+
+## Matcher notes
+
+51 bilingual test utterances (`extensions.testUtterances`), at least one paraphrase for each of the eight required
+items, all 22 history items covered, and three look-alike negatives (a home address, a football team, a taxi). None
+repeats a canonical question or a keyword. Exclusions keep apart the timing (`duration`) and the site of the numbness,
+the prior treatment and the antiviral history, the bladder and the bowels, current and previous medicines, and daily
+life and the daily tablets. English multi-word keywords that reduce to one token are written run together
+(`whatbringsyou`, `wheredoesithurt`). The presenting complaint is reached by plain openers and walking questions ("Tell
+me what's been going on", "怎么回事", "Tell me about your walking", "走路怎么样") and excludes timing, family, hands,
+bladder, bowel and chest words, so those questions reach their own items; the back pain excludes the neck (a neck-pain
+question gets "not sure", not the low-back answer); the knee-reflex finding excludes other named reflexes (ankle,
+biceps…), which stay unrecorded; the renal and liver consults exclude "neuro"/"神经", which reach the neurology consult.
+Orders: `orderMatching` routes lumbar and brain MRI requests to their own orders, never to the cord MRI. Measured:
+`cases verify` 51/51.
+
+## References
+
+1. 李璐, 宋红松, 蔡晧东. 阿德福韦酯相关范科尼综合征合并脊髓病及周围神经病. 药物不良反应杂志. 2014;16(1):52-53.
+   doi:10.3760/cma.j.issn.1008-5734.2014.01.018. Available from: https://rs.yiigle.com/cmaid/1423444
+2. European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B
+   virus infection. J Hepatol. 2025;83(2):502-583. doi:10.1016/j.jhep.2025.03.018
+3. 中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.
+4. European Association for the Study of the Liver. EASL Clinical Practice Guidelines for the management of patients
+   with decompensated cirrhosis. J Hepatol. 2018;69(2):406-460. doi:10.1016/j.jhep.2018.03.024
+5. Gilead Sciences. HEPSERA (adefovir dipivoxil) tablets, for oral use: prescribing information. Foster City (CA):
+   Gilead Sciences; revised 2018 Dec.
+6. Bristol-Myers Squibb. BARACLUDE (entecavir) tablets and oral solution: prescribing information. Princeton (NJ):
+   Bristol-Myers Squibb; revised 2026 Aug.
+7. Gilead Sciences. VEMLIDY (tenofovir alafenamide) tablets, for oral use: prescribing information. Foster City (CA):
+   Gilead Sciences; revised 2024 Mar.
+8. National Institute for Health and Care Excellence. Low back pain and sciatica in over 16s: assessment and
+   management (NICE guideline NG59). London: NICE; 2016.
+9. National Institute for Health and Care Excellence. Falls: assessment and prevention in older people and in people 50
+   and over at higher risk (NICE guideline NG249). London: NICE; 2025.
+10. Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Uppsala: WHO
+    Collaborating Centre for International Drug Monitoring. Available from: https://who-umc.org/
+11. 中华人民共和国卫生部. 药品不良反应报告和监测管理办法（卫生部令第81号）. 2011.
+
+Checked online on 2026-11-14: the EASL 2025 statements (TAF preferred over TDF in hypophosphataemia and renal
+insufficiency with ETV as alternative; ETV after adefovir only without previous lamivudine; creatinine alone may not
+reflect tubular damage; no NA discontinuation in advanced liver disease before HBsAg loss; HBV DNA every 3–6 months)
+and its citation; the Chinese 2022 guideline's recommendation 28 and its advice to change adefovir/TDF to ETV/TAF and
+to monitor creatinine and phosphate; the Hepsera label (12/2018) sections 5.1, 5.2 and 6.4; the Baraclude and Vemlidy
+dosing (Baraclude revised 08/2026, dosing unchanged); NICE NG59 recommendation 1.3.1 and the manual-therapy
+recommendation (amended in 2026; check its current wording); NICE NG249 (April 2025); the EASL 2018 HRS-AKI criteria;
+the WHO-UMC "probable" category; the Reclast contraindications; the 2011 ADR provisions (Ministry of Health Order No.
+81). Re-checked in the independent review (2026-11-14): the EASL 2025, Chinese 2022 and Hepsera statements against
+their full texts; the Baraclude label of 08/2026; the EASL 2018 DOI; NICE NG59's 2026 amendment (manual therapy still
+only within a package that includes exercise; injections unchanged); NICE NG249 (inpatients 65 and over, or 50–64 at
+higher risk).
 
 ### To verify
 
@@ -345,46 +405,13 @@ What a clinician of the specialties should confirm:
 - Neurology: the localisation teaching (Hoffmann signs, cervical imaging), the myelopathy differential (hepatic,
   nutritional, infective) and the causality framing; the critical status of the epidural injection.
 
-## Matcher notes
+Citations to re-check:
 
-47 bilingual test utterances (`extensions.testUtterances`), at least one paraphrase for each of the eight required
-items, all 22 history items covered, and three look-alike negatives (a home address, a football team, a taxi). None
-repeats a canonical question or a keyword. Exclusions keep apart the timing (`duration`) and the site of the numbness,
-the prior treatment and the antiviral history, the bladder and the bowels, current and previous medicines, and daily
-life and the daily tablets. English multi-word keywords that reduce to one token are written run together
-(`whatbringsyou`, `wheredoesithurt`). Measured: `cases verify` 47/47.
-
-## References
-
-1. 李璐, 宋红松, 蔡晧东. 阿德福韦酯相关范科尼综合征合并脊髓病及周围神经病. 药物不良反应杂志. 2014;16(1):52-53.
-   doi:10.3760/cma.j.issn.1008-5734.2014.01.018. Available from: https://rs.yiigle.com/cmaid/1423444
-2. European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B
-   virus infection. J Hepatol. 2025;83(2):502-583. doi:10.1016/j.jhep.2025.03.018
-3. 中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.
-4. European Association for the Study of the Liver. EASL Clinical Practice Guidelines for the management of patients
-   with decompensated cirrhosis. J Hepatol. 2018;69(2):406-460.
-5. Gilead Sciences. HEPSERA (adefovir dipivoxil) tablets, for oral use: prescribing information. Foster City (CA):
-   Gilead Sciences; revised 2018 Dec.
-6. Bristol-Myers Squibb. BARACLUDE (entecavir) tablets and oral solution: prescribing information. Princeton (NJ):
-   Bristol-Myers Squibb; 2019.
-7. Gilead Sciences. VEMLIDY (tenofovir alafenamide) tablets, for oral use: prescribing information. Foster City (CA):
-   Gilead Sciences; revised 2024 Mar.
-8. National Institute for Health and Care Excellence. Low back pain and sciatica in over 16s: assessment and
-   management (NICE guideline NG59). London: NICE; 2016.
-9. National Institute for Health and Care Excellence. Falls: assessment and prevention in older people and in people 50
-   and over at higher risk (NICE guideline NG249). London: NICE; 2025.
-10. Uppsala Monitoring Centre. The use of the WHO-UMC system for standardised case causality assessment. Uppsala: WHO
-    Collaborating Centre for International Drug Monitoring. Available from: https://who-umc.org/
-11. 中华人民共和国卫生部. 药品不良反应报告和监测管理办法（卫生部令第81号）. 2011.
-
-Checked online on 2026-11-14: the EASL 2025 statements (TAF preferred over TDF in hypophosphataemia and renal
-insufficiency with ETV as alternative; ETV after adefovir only without previous lamivudine; creatinine alone may not
-reflect tubular damage; no NA discontinuation in advanced liver disease before HBsAg loss; HBV DNA every 3–6 months)
-and its citation; the Chinese 2022 guideline's recommendation 28 and its advice to change adefovir/TDF to ETV/TAF and to
-monitor creatinine and phosphate; the Hepsera label (12/2018) sections 5.1, 5.2 and 6.4; the Baraclude and Vemlidy
-dosing; NICE NG59 recommendation 1.3.1 and the manual-therapy recommendation (amended in 2026; check its current
-wording); NICE NG249 (April 2025); the EASL 2018 HRS-AKI criteria; the WHO-UMC "probable" category; the Reclast
-contraindications; the 2011 ADR provisions (Ministry of Health Order No. 81).
+- The 中华肝脏病杂志 2022;30(12):1309-1331 page range and its DOI (the text read was the 实用肝脏病杂志 2023 reprint).
+- NICE NG59's current wording after its 2026 amendment (the manual-therapy recommendation).
+- The current Vemlidy revision (Gilead's prescribing information reads 03/2024; a 2025 revision may exist — the adult
+  dosing quoted here did not change).
+- The year of the WHO-UMC causality document.
 
 ## Changelog
 
@@ -405,6 +432,21 @@ contraindications; the 2011 ADR provisions (Ministry of Health Order No. 81).
   and WHO-UMC; the 1.0.0 citation of a generic 2013 adefovir label replaced by the Hepsera label (2018).
 - Staff added: internal medicine attending (Socratic, PEARLS), ward nurse (ISBAR), hepatology, nephrology, clinical
   pharmacist.
+- **Independent review applied (2026-11-14).** Facts: the admission phase said the back pain had been getting worse —
+  1.0.0 records progression only for the walking; a decision 2 distractor called the years on adefovir "uneventful"
+  against the recorded symptoms; a decision 4 feedback said "bone pain" where only back pain is recorded. Validity: any
+  MRI request (lumbar, brain) resolved to the cord MRI and earned the critical imaging item — lumbar and brain MRI are
+  now orders of their own (`orderMatching`); a neurology consult request reached the nephrology consult —
+  `neurology-consult` added (also in `rb-team-and-safety` and the reference path; now 18 investigations and 16
+  interventions); decision 1 opens only once
+  everything its prompt states has been gathered; plain openers and walking questions reach the presenting complaint
+  (the `case-check` openers failed), a neck-pain question no longer gets the low-back answer and an ankle-reflex request
+  no longer returns the knee reflexes. Guidance: learning outcome 1 no longer attributes the cord MRI to NICE NG59
+  (which asks that specific causes be excluded); entecavir after adefovir is "an option only without previous
+  lamivudine" rather than "first choice" (EASL 2025); decision 3 says no HBV DNA result is available rather than "not
+  measured", and its key's feedback says the lamivudine history and Child-Pugh class must be sought the same day; the
+  Baraclude label cited in its 08/2026 revision (dosing unchanged) and the EASL 2018 DOI added; "To verify" moved under
+  the references with the citations still to re-check.
 
 ### 1.0.0 — 2026-10-28
 
@@ -419,7 +461,7 @@ Run from the worktree root (all pass on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1423444/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1423444 --lang en                                               # 66 steps, objectives 6/6, decisions 5/5, utterances 47/47, rubric 34/34 (100 %)
+npm run -s cc -- cases verify cmcr-1423444 --lang en                                               # 67 steps, objectives 6/6, decisions 5/5, utterances 51/51, rubric 34/34 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-1423444                                     # reference 100 %, do nothing 0/31, wrong first 62 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1423444:"            # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1423444:"  # in-world demonstration, en + zh-CN
