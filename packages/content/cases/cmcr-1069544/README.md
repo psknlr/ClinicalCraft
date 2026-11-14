@@ -21,9 +21,9 @@ teaching roles. Hospitals and calendar dates are removed. What 1.0.0 does not re
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a gastroenterologist, endocrinologist or endocrine surgeon review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent AI-assisted review (2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a gastroenterologist, endocrinologist or endocrine surgeon review it before teaching use |
 | phases | `first-attack` 第一次住院 / First admission → `recurrence` 约 20 个月后再次入院 / Readmission about 20 months later → `post-op` 手术之后 / After the operation → `followup` 记录的结局 / Recorded outcome — all one-way, none learner-switchable |
-| content | 32 history items (13 recorded facts, 1 labelled teaching device, 18 unknown; 10 required; 6 phase twins) · 4 examination findings (all first admission) · 16 investigations (4 record reviews; 9 without a recorded result) · 17 interventions (7 harmful, 1 of them `critical`; 1 wrong disposition) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 27; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 38 test utterances |
+| content | 32 history items (13 recorded facts, 1 labelled teaching device, 18 unknown; 10 required; 6 phase twins) · 4 examination findings (all first admission) · 16 investigations (4 record reviews; 9 without a recorded result) · 17 interventions (7 always harmful, 1 of them `critical`; oral calcium harmful while the calcium is raised; 1 wrong disposition) · 6 objectives · 5 decisions (24 options) · 13 rubric items (12 deterministic, weight 29; 1 examiner-judged; 3 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 39 test utterances |
 
 The card no longer names the cause: 1.0.0's title ("Recurrent upper abdominal pain with elevated calcium on two
 occasions") and summary named the key clue (governance survey: spoiler finding for this case), and `endocrinology`
@@ -35,9 +35,9 @@ After the case the learner can:
 
 1. Manage the first days of acute pancreatitis to the current standard — lactated Ringer's at a moderate, goal-directed
    rate, early low-fat oral feeding, no prophylactic antibiotics, ERCP only for cholangitis — and contrast it with
-   fasting and antibiotics (ACG 2024).
+   fasting and antibiotics (ACG 2024; IAP 2025).
 2. Screen every attack of pancreatitis for its cause, and treat a raised calcium during an attack as a red flag that needs
-   a repeat albumin-adjusted calcium with a paired PTH (IAP/APA 2013; NICE NG132, 2019).
+   a repeat albumin-adjusted calcium with a paired PTH (IAP 2025; NICE NG132, 2019).
 3. Establish primary hyperparathyroidism biochemically before any localisation scan, and explain why imaging can neither
    make nor exclude the diagnosis (Fifth International Workshop on primary hyperparathyroidism, 2022).
 4. Resolve a result whose analyte label is in doubt (here 31 pmol/L labelled "thyroxine") with the laboratory, or repeat
@@ -52,8 +52,8 @@ After the case the learner can:
 
 A 58-year-old woman is admitted after a day of constant, distending upper abdominal pain with nausea and vomiting. She
 is tender in the left upper quadrant and around the umbilicus with mild local guarding; rebound is equivocal, Murphy's
-sign negative, and no neck mass is felt. Amylase is 1139 U/L, calcium 2.76 mmol/L, and the CT shows pancreatitis and a
-stone in the left kidney. After discharge she is well — normal eating and bowels, no abdominal pain or bloating, no bone
+sign negative, and no neck mass is felt. Amylase is 1139 U/L (specimen and reference interval not recorded), calcium
+2.76 mmol/L, and the CT shows pancreatitis and a stone in the left kidney. After discharge she is well — normal eating and bowels, no abdominal pain or bloating, no bone
 or back ache, no polyuria or polydipsia — and her blood pressure is normal without antihypertensive medicine. About 20
 months later the pain returns suddenly with nausea and vomiting, and she presents after 8 hours: amylase 1055.9 U/L,
 calcium 2.87 mmol/L, CT pancreatitis with renal stone(s) still seen. Neck ultrasound/CT shows a lesion behind the lower
@@ -105,12 +105,15 @@ learner can always finish (the contract's late-learner check passes).
 
 - **1 `attack-care`** (single; needs the presenting complaint, onset, abdominal examination, and the amylase and CT of
   `first-attack`). Key: `ringer-moderate-early-diet` — lactated Ringer's at a moderate, goal-directed rate, analgesia,
-  a low-fat diet once tolerated, no prophylactic antibiotic. Distractors: `fast-with-carbapenem` (the historical care:
-  nil by mouth until the amylase normalises, prophylactic carbapenem), `aggressive-resuscitation` (WATERFALL's aggressive
-  arm), `urgent-ercp-then-fasting` (no cholangitis).
+  a low-fat diet once tolerated, no prophylactic antibiotic. Distractors: `fast-with-carbapenem` (the old approach: nil
+  by mouth until the amylase normalises and a prophylactic carbapenem — the report records only that its care included
+  fasting and antibiotics, with no agent or duration), `aggressive-resuscitation` (WATERFALL's aggressive arm, here
+  without reassessment), `urgent-ercp-then-fasting` (no cholangitis).
 - **2 `calcium-meaning`** (single; needs the calcium and CT of `first-attack`). Key: `repeat-with-paired-pth` — unusual in
   an attack, which tends to lower calcium; with a kidney stone, repeat an albumin-adjusted calcium with a paired PTH, now
-  or soon after discharge. Distractors: `haemoconcentration`, `pancreatitis-releases-calcium` (wrong physiology),
+  or soon after discharge (IAP 2025 statement 62; NICE NG132 1.1.4–1.1.6); its feedback adds that the attack's standard
+  care, lactated Ringer's included, is unchanged at this level (IAP 2025 statement 63 switches to isotonic saline only
+  above about 3.5 mmol/L or with altered consciousness). Distractors: `haemoconcentration`, `pancreatitis-releases-calcium` (wrong physiology),
   `stone-explains-calcium` (cause and effect reversed), `zoledronate-now` (treats the number, blurs the repeat).
 - **3 `recurrence-cause`** (single; needs decision 2, the readmission onset, the earlier attack, the interval history and
   the amylase, calcium and CT of `recurrence`). Key: `biochemistry-before-scans` — PTH with a paired adjusted calcium,
@@ -118,23 +121,27 @@ learner can always finish (the contract's late-learner check passes).
   excludes" the diagnosis), `ercp-sphincterotomy` (idiopathic label too early), `presumed-gallstones` (cholecystectomy
   without gallstones), `recheck-above-three` (an invented 3.0 mmol/L bar).
 - **4 `pre-op-plan`** (single; needs decision 3, the hormone result and the neck imaging of `recurrence`). Key:
-  `confirm-then-refer` — check with the laboratory what the 31 pmol/L measured and repeat an intact PTH with a paired
-  calcium; if raised, refer to an experienced parathyroid surgeon. Distractors: `operate-on-imaging` (take the label on
+  `confirm-then-refer` — ask the laboratory what the 31 pmol/L measured and repeat an intact PTH with a paired calcium;
+  if that confirms the diagnosis (a raised or inappropriately normal PTH with the raised calcium), refer to an
+  experienced parathyroid surgeon. Distractors: `operate-on-imaging` (take the label on
   trust because the imaging is concordant — the tempting near-miss), `thyroxine-explains`, `needle-biopsy-first`,
   `cinacalcet-and-watch`.
 - **5 `post-op-plan`** (select all; needs decision 4, the post-operative symptoms and spasm question, and the histology,
-  calcium and hormone of `post-op`). Keys: `recheck-adjusted-calcium`, `treat-by-severity` (oral calcium for mild
-  symptoms; IV calcium gluconate for adjusted calcium < 1.9 mmol/L or symptoms below the reference range),
-  `cure-check-and-stones`. Distractors: `continuous-iv-calcium`, `lifelong-calcitriol`.
+  calcium and hormone of `post-op`). Keys: `recheck-adjusted-calcium`, `treat-by-severity` (IV calcium gluconate for
+  an adjusted calcium < 1.9 mmol/L or for symptoms — paraesthesiae included — with a calcium below the reference range,
+  as the Society for Endocrinology guidance defines severe hypocalcaemia; otherwise oral calcium), `cure-check-and-stones`.
+  Distractors: `continuous-iv-calcium` (before any repeat calcium), `lifelong-calcitriol`.
 
-Every option has its own feedback naming ACG 2024, IAP/APA 2013, WATERFALL (NEJM 2022), NICE NG132 (2019), the Fifth
+Every option has its own feedback naming ACG 2024, IAP 2025, WATERFALL (NEJM 2022), NICE NG132 (2019), the Fifth
 International Workshop (2022), AAES 2016 or the Society for Endocrinology emergency guidance (2016). Option ids name
-their content. **No length cue:** in no single-best decision is the key the uniquely longest option, in either language
-(measured on 2026-11-13: decision 1 key 41 of 40–57 characters in zh-CN, 133 of 117–146 in en; decision 2 key 41 of
-34–44 and 149 of 122–153; decision 3 key 46 of 27–50 and 146 of 109–147; decision 4 key 60 of 38–61 and 166 of
-139–168). Prompts state only what each decision's `requires` guarantees; locked decisions show only a neutral `need`.
+their content. **No length cue:** in no single-best decision is the key the uniquely longest option, in either language,
+and in the select-all decision 5 the three keys are not the three longest options (measured on 2026-11-14, characters:
+decision 1 key 41 of 40–57 in zh-CN, 133 of 117–138 in en; decision 2 key 41 of 34–44 and 149 of 122–153; decision 3
+key 46 of 27–50 and 146 of 109–147; decision 4 key 57 of 38–59 and 163 of 139–168; decision 5 keys 56, 54 and 31
+against distractors of 39 and 40 in zh-CN, 108, 156 and 121 against 154 and 136 in en). Prompts state only what each
+decision's `requires` guarantees; locked decisions show only a neutral `need`.
 
-### Rubric (11 deterministic items, total weight 27, + 1 examiner-judged)
+### Rubric (12 deterministic items, total weight 29, + 1 examiner-judged)
 
 | id | domain | weight | met when |
 |---|---|---:|---|
@@ -147,35 +154,38 @@ their content. **No length cue:** in no single-best decision is the key the uniq
 | `rb-calcium-pursued` | investigations | 4 | **critical** — hormone assay ordered in `first-attack` **or** the follow-up recheck arranged in `first-attack` (`whenIndicated`) |
 | `rb-biochemistry-first` | diagnosis | 3 | decision 3 right first time |
 | `rb-verified-referral` | safety | 4 | **critical** — decision 4 right first time **and** the surgical referral made in `recurrence` after the laboratory query (`whenIndicated`) |
-| `rb-avoided-harm` | safety | 2 | none of prophylactic antibiotics, nil by mouth, aggressive fluids, urgent ERCP, needle biopsy, cinacalcet, IV calcium infusion; scored once decision 1, 4 or 5 is attempted or any of the seven is given |
+| `rb-avoided-harm` | safety | 2 | none of prophylactic antibiotics, nil by mouth, aggressive fluids, needle biopsy, cinacalcet, IV calcium infusion, nor oral calcium given while the calcium is raised (`valid: false`); scored once decision 1, 4 or 5 is attempted or any of these is given |
+| `rb-no-ercp` | safety | 2 | **critical** — no urgent ERCP (no cholangitis, no biliary finding recorded); scored once decision 1 or 3 is attempted or the ERCP is given |
 | `rb-recovery` | management | 2 | decision 5 right first time and the follow-up plan made |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: explains pancreatitis and why the calcium must be followed; answers her fear of recurrence honestly; explains the blood-test-first diagnosis, the unclear label and the operation, with consent; after surgery explains the numbness, what to report and the cure check; teach-back; invents nothing |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (measured with the reducer on 2026-11-14, after the independent review)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
-| reference path (`solution`) | 27/27 (100 %) | none | pass |
+| reference path (`solution`) | 29/29 (100 %) | none | pass |
 | start and do nothing | 0/25 | `rb-calcium-pursued`, `rb-verified-referral` | pass |
-| wrong first answer at all five decisions, then right | 12/27 (44 %) | `rb-verified-referral` | pass |
-| wrong first answer at decision 1, 2 or 3 only | 24/27 (89 %) | none | pass |
-| wrong first answer at decision 4 only | 23/27 (85 %) | `rb-verified-referral` | pass |
-| wrong first answer at decision 5 only | 25/27 (93 %) | none | pass |
-| routine discharge instead of pursuing the calcium (no PTH, no follow-up) | 23/27 (85 %) | `rb-calcium-pursued` | pass |
-| PTH sent at the first attack, no follow-up arranged (or the reverse) | 27/27 (100 %) | none | pass |
-| surgical referral without the laboratory query | 23/27 (85 %) | `rb-verified-referral` | pass |
-| referral first, laboratory query after | 23/27 (85 %) | `rb-verified-referral` | pass |
-| reference path plus urgent ERCP | 25/27 (93 %) | none | **fail** |
-| reference path plus prophylactic antibiotics, nil by mouth, aggressive fluids or IV calcium infusion (each) | 25/27 (93 %) | none | pass |
-| needle biopsy or cinacalcet before decision 4, then the rest of the reference path | 21/27 (78 %) | `rb-verified-referral` | pass |
-| cinacalcet instead of the surgical referral | 21/27 (78 %) | `rb-verified-referral` | pass |
-| no cause screen (gallbladder ultrasound, triglycerides, liver tests) | 25/27 (93 %) | none | pass |
-| no fluids or early feeding | 24/27 (89 %) | none | pass |
-| no follow-up plan after the operation | 25/27 (93 %) | none | pass |
+| wrong first answer at all five decisions, then right | 14/29 (48 %) | `rb-verified-referral` | pass |
+| wrong first answer at decision 1, 2 or 3 only | 26/29 (90 %) | none | pass |
+| wrong first answer at decision 4 only | 25/29 (86 %) | `rb-verified-referral` | pass |
+| wrong first answer at decision 5 only | 27/29 (93 %) | none | pass |
+| routine discharge instead of pursuing the calcium (no PTH, no follow-up) | 25/29 (86 %) | `rb-calcium-pursued` | pass |
+| PTH sent at the first attack, no follow-up arranged (or the reverse) | 29/29 (100 %) | none | pass |
+| surgical referral without the laboratory query | 25/29 (86 %) | `rb-verified-referral` | pass |
+| referral first, laboratory query after | 25/29 (86 %) | `rb-verified-referral` | pass |
+| reference path plus urgent ERCP | 27/29 (93 %) | `rb-no-ercp` | **fail** |
+| reference path plus prophylactic antibiotics, nil by mouth, aggressive fluids or IV calcium infusion (each) | 27/29 (93 %) | none | pass |
+| reference path plus oral calcium during the first attack (calcium raised) | 27/29 (93 %) | none | pass |
+| needle biopsy or cinacalcet before decision 4, then the rest of the reference path | 23/29 (79 %) | `rb-verified-referral` | pass |
+| cinacalcet instead of the surgical referral | 23/29 (79 %) | `rb-verified-referral` | pass |
+| no cause screen (gallbladder ultrasound, triglycerides, liver tests) | 27/29 (93 %) | none | pass |
+| no fluids or early feeding | 26/29 (90 %) | none | pass |
+| no follow-up plan after the operation | 27/29 (93 %) | none | pass |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. The harmful interventions
-are contraindicated (named in the debrief's safety list, each with its own harm text); the avoided-harm item counts only
-once a harm was possible (`scoredWhen`), so doing nothing earns 0. **Known limits:** (1) a needle biopsy or cinacalcet
+are contraindicated (named in the debrief's safety list, each with its own harm text); the two avoided-harm items count
+only once a harm was possible (`scoredWhen`), so doing nothing earns 0. Oral calcium may be given twice (`maxDoses` 2),
+so a dose given wrongly during an attack does not block the indicated one after the operation. **Known limits:** (1) a needle biopsy or cinacalcet
 given before decision 4 completes objective 5 as soon as decision 4 is right, so the operation phase opens and a later
 referral no longer counts as made in time — the diversion is what costs the critical item, and the debrief shows both;
 (2) the rubric's conditions carry no time within a phase, so the order of fluids, feeding and decision 1 inside the first
@@ -184,17 +194,20 @@ admission is not scored — debrief it from the transcript.
 ### Critical items
 
 `rb-calcium-pursued` (the missed act that matters most in this report: acting on a raised calcium during the first attack
-— it can only be met in `first-attack`, before any confirming record) and `rb-verified-referral` (the dangerous shortcut:
+— it can only be met in `first-attack`, before any confirming record), `rb-verified-referral` (the dangerous shortcut:
 sending her to surgery on imaging and an unverified "thyroxine" label — met only by a referral made in `recurrence` after
-the laboratory query). Both are acts; neither reads a final-phase record.
+the laboratory query) and `rb-no-ercp` (the avoided dangerous act: an urgent ERCP with no indication). All three are acts
+or avoided acts; none reads a final-phase record. As in the reviewed exemplars, `rb-verified-referral` also asks for
+decision 4 right at the first attempt.
 
 **Safety outcome.** `urgent-ercp` is `critical: true` (risk high): an ERCP without cholangitis or any recorded biliary
 finding — Murphy's sign negative, no jaundice or duct finding recorded — exposes her to post-ERCP pancreatitis, bleeding
 and perforation while the documented cause (the calcium) goes unexplained; giving it fails the assessment's safety
-outcome (`safety.passed: false`) whatever the score. No other intervention is high-risk: prophylactic antibiotics,
-aggressive fluids, a needle biopsy, cinacalcet and an IV calcium infusion are moderate-risk, recoverable misjudgements
-(contraindicated, scored by `rb-avoided-harm`), and the premature surgical referral is a low-risk act whose cost is the
-critical rubric item `rb-verified-referral`.
+outcome (`safety.passed: false`) whatever the score, and misses the critical avoided-harm item `rb-no-ercp`. No other
+intervention is high-risk: prophylactic antibiotics, aggressive fluids, a needle biopsy, cinacalcet and an IV calcium
+infusion are moderate-risk, recoverable misjudgements, and nil by mouth and oral calcium while the calcium is raised are
+low-risk ones (contraindicated, scored by `rb-avoided-harm`); the premature surgical referral is a low-risk act whose
+cost is the critical rubric item `rb-verified-referral`.
 
 ## Reference path (`solution`)
 
@@ -210,7 +223,7 @@ albumin/ionised calcium → decision 3 → hormone result, renal function, vitam
 the laboratory and repeat the PTH** → decision 4 → **surgical referral** → (phase `post-op`) numbness, spasms, perioral
 tingling, voice → histology, calcium, PTH, albumin/ionised calcium → oral calcium → follow-up plan → decision 5 → (phase
 `followup`) how she has been → outcome record → finish. `cases verify` passes: objectives 6/6, decisions 5/5,
-utterances 38/38, rubric 27/27.
+utterances 39/39, rubric 29/29.
 
 ## Clinical numbers check
 
@@ -222,7 +235,7 @@ is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 | 58-year-old woman | `patient.age`, `sex` | `patient`; title |
 | first attack: persistent upper abdominal distending pain with nausea and vomiting, admitted after one day | `chiefComplaint`, `history.pain`, `persona.openingLine` | `chiefComplaint` (lay); `triageNote`; history `presenting`, `onset`, `character`, `site`, `nausea-vomiting` (phase `first-attack`); decision 1 prompt |
 | left upper and periumbilical tenderness, mild local guarding, equivocal rebound, Murphy's sign negative; no palpable neck mass ("first" examination) | `exam.abdomen` (phase `initial`) | exam `abdomen-palpation`, `rebound`, `murphy`, `neck` (phase `first-attack`) |
-| amylase 1139 U/L; calcium 2.76 mmol/L; CT pancreatitis and left renal stone | `investigations.episodes` | `amylase`, `calcium` (flag H), `abdominal-ct` — results `first-attack` |
+| amylase 1139 U/L (specimen not stated); calcium 2.76 mmol/L; CT pancreatitis and left renal stone | `investigations.episodes` | `amylase` (named "Amylase", its note recording that the specimen is not recorded), `calcium` (flag H), `abdominal-ct` — results `first-attack` |
 | after the first discharge: normal eating and bowels, no abdominal pain or distension, no bone pain or back ache, no polyuria or polydipsia | `history.interval` | `history.interval-well` (phase `recurrence`) |
 | blood pressure normal without antihypertensive medicine after the first discharge | `history.blood-pressure` | `history.bp-interval` (phase `recurrence`) |
 | about 20 months later: sudden upper abdominal distending pain, nausea and vomiting; presented after 8 hours | `history.recurrence` | phase `recurrence` description; history `presenting-again`, `onset-again`, `last-attack` |
@@ -243,14 +256,20 @@ attack"), the operation date relative to the second admission, when the post-ope
 (before or after the numbness), and the length of follow-up. **Derived values:** none — no albumin is recorded, so no
 albumin-adjusted calcium can be calculated, and no reference interval is recorded, so no fold-of-normal is stated for
 any value (the case reads 2.76 and 2.87 mmol/L as raised because 1.0.0 calls them so; it flags neither amylase value).
+Neither is the amylase's specimen recorded (1.0.0 says "amylase", not "serum amylase"), so the case does not claim that
+it exceeds three times the upper limit: pain with the CT establishes the pancreatitis.
 
 **Guidance numbers used in teaching text** (formulas; no patient value is needed, and no weight is recorded): lactated
 Ringer's 1.5 mL/kg/h with 10 mL/kg boluses only for hypovolaemia; WATERFALL's aggressive arm 20 mL/kg then 3 mL/kg/h;
-low-fat oral diet within 24–48 hours in mild disease (ACG 2024); PTH measured once the albumin-adjusted calcium is
-≥ 2.6 mmol/L on two occasions, with a paired adjusted calcium (NICE NG132 1.1.5, 2019); IV calcium gluconate for an
-adjusted calcium < 1.9 mmol/L or symptoms below the reference range — 10–20 mL of 10 % in 50–100 mL of 5 % glucose over
-10 minutes with ECG monitoring, then 100 mL of 10 % in 1 L at 50–100 mL/h (Society for Endocrinology 2016); calcium
-3–6 months after surgery to confirm success (NICE NG132) and cure defined as normocalcaemia beyond 6 months (AAES 2016).
+low-fat oral diet within 24–48 hours in mild disease (ACG 2024; IAP 2025 recommendations 10, 11 and 22); isotonic saline
+instead of lactated Ringer's in hyperparathyroid pancreatitis only with a calcium > 14 mg/dL or altered sensorium (IAP
+2025 statement 63; 14 mg/dL ÷ 4.008 = 3.49 mmol/L, quoted as "about 3.5 mmol/L" — her recorded 2.76 and 2.87 mmol/L
+are 11.1 and 11.5 mg/dL); calcium repeated at least once when ≥ 2.6 mmol/L, PTH measured once the albumin-adjusted
+calcium is ≥ 2.6 mmol/L on two occasions, with a concurrent adjusted calcium (NICE NG132 1.1.4–1.1.6, 2019); IV calcium
+gluconate for an adjusted calcium < 1.9 mmol/L or symptoms at any level below the reference range — 10–20 mL of 10 % in
+50–100 mL of 5 % glucose over 10 minutes with ECG monitoring, followed by 100 mL of 10 % in 1 L at 50–100 mL/h (Society
+for Endocrinology 2016); calcium 3–6 months after surgery to confirm success (NICE NG132 1.4.11) and cure defined as
+normal calcium homeostasis lasting at least 6 months (AAES 2016, recommendation 15-1a).
 
 ## Facilitator notes
 
@@ -259,9 +278,12 @@ adjusted calcium < 1.9 mmol/L or symptoms below the reference range — 10–20 
 1. **Reactions.** "How did it feel to plan a discharge with one result you could not explain?"
 2. **Description.** "In two sentences: what established the pancreatitis, and what made it unusual?"
 3. **Analysis.**
-   - "Which two findings already made the diagnosis of the first attack? Did you need the CT for that — and what else did
-     the CT give you?"
+   - "Which findings made the diagnosis of the first attack — and what else did the CT give you?" (pain with the CT
+     establishes it; the amylase's specimen and reference interval are not recorded, so do not let the group claim it was
+     three times the upper limit)
    - "Which way would you expect an attack to move the calcium? What did 2.76 mmol/L with a kidney stone tell you?"
+   - "Her pancreatitis came with a raised calcium. Would you still give lactated Ringer's, and when would you not?"
+     (IAP 2025: standard care, isotonic saline instead only above about 3.5 mmol/L or with altered consciousness)
    - "The report's care was fasting and antibiotics. What would you do differently today, and why?"
    - "At the second attack, what did you want in the blood before any scan? What can a scan never tell you?"
    - "The only hormone value said 'thyroxine'. What could that mean, and what would you have done before the operation?"
@@ -311,8 +333,9 @@ say that the cause was found after the second attack, and that today's standard 
   nurse (梁护士 / Nurse Liang, handover in ISBAR from the triage facts), the attending and the endocrinologist.
 - **She speaks throughout** (a conscious adult answers for herself; no companion). Examination findings exist only in
   `first-attack`; any other manoeuvre, and any examination in a later phase, answers with `examNotRecorded`.
-- **Measured (offline demonstration, 2026-11-13).** `embodied-autopilot.test.ts -t "cmcr-1069544:"` passes in en and
-  zh-CN: every objective done, in-world score equal to the clinical score (27/27), no "cannot do this".
+- **Measured (offline demonstration, 2026-11-14, after the independent review).** `embodied-autopilot.test.ts -t
+  "cmcr-1069544:"` passes in en and zh-CN: every objective done, in-world score equal to the clinical score (29/29), no
+  "cannot do this".
 
 ## Source and adaptation (fidelity limits)
 
@@ -348,8 +371,9 @@ the case uses it without attaching it to either attack. 1.0.0's template texts w
 does not provide that information", and the "first episode" history items were available in the first phase although
 they described the interval and the recurrence.
 
-**Unknowns kept honest.** Vital signs, severity and organ function; lipase, liver tests, triglycerides, blood count,
-renal function; albumin and ionised calcium; gallbladder imaging; alcohol, medicines, smoking, family and past history,
+**Unknowns kept honest.** Vital signs, severity and organ function; the amylase's specimen and reference interval
+(the record is named "Amylase", not "serum amylase"); lipase, liver tests, triglycerides, blood count, renal function;
+albumin and ionised calcium; gallbladder imaging; alcohol, medicines, smoking, family and past history,
 allergies; whether the first calcium was pursued; the hormone value's analyte, timing, pair and reference interval; TSH;
 vitamin D, urine calcium, bone density; operative details and timing; the post-operative sampling times; the length of
 follow-up. Record-facing texts say "No result is recorded for this test" or "This case does not record whether this was
@@ -385,14 +409,19 @@ false`; `embodied.ivAccessInSitu: false`; no `sourceTextSha256` until the source
   探视).
 - **English keywords** avoid one-token wildcards: run-together forms where a phrase would reduce to one token
   (`howmanydays`, `whatcameup`, `toyourback`, `sincewhen`, `sinceyourlaststay`, `likethisbefore`, `whatdidtheygive`,
-  `howareyounow`…). Every canonical question selects its own item first in its own phase (checked for both languages on
-  2026-11-13; the offline demonstration asks these questions).
+  `howareyounow`…). Every canonical question selects its own item first in each of its phases (checked for both
+  languages with core `matchHistory` on 2026-11-14, after the spasm and blood-pressure questions were reworded; the
+  offline demonstration asks these questions).
 - **Order entry.** `orderMatching.rules` send CT or ultrasound queries naming the neck or thyroid (颈, 甲状腺) to the neck
   imaging report, urine-calcium queries to `urine-calcium`, and ionised, adjusted or corrected calcium to
-  `albumin-ionised`.
-- **Corpus.** 38 test utterances (23 zh-CN, 15 en), written as learners speak; every required item and every phase twin
-  is covered. Three look-alike negatives (`expect: []`):
-  "你家里人知道你住院了吗？", "你吃过午饭了吗？" and "Is your family coming in to visit today?". `cases verify` reports 38/38.
+  `albumin-ionised`. The hormone assay answers to PTH names only (甲状旁腺激素, PTH, iPTH, parathyroid hormone…) and to
+  the neutral "hormone levels": thyroid tests (TSH, free T4, 甲功) are deliberately not its aliases, so ordering thyroid
+  function at the first attack is never credited as sending a PTH (`rb-calcium-pursued`).
+- **Spasms.** The `spasms` item asks about cramps or spasms of the hands or feet only, matching what is recorded (无抽搐);
+  facial twitching is not recorded and gets her "I'm not sure" (no item matches it).
+- **Corpus.** 39 test utterances (23 zh-CN, 16 en), written as learners speak; every required item and every phase twin
+  is covered. Four negatives (`expect: []`): the look-alikes "你家里人知道你住院了吗？", "你吃过午饭了吗？" and "Is your
+  family coming in to visit today?", and "Any twitching around your face?" (unrecorded). `cases verify` reports 39/39.
 
 ## References
 
@@ -402,24 +431,35 @@ false`; `embodied.ivAccessInSitu: false`; no `sourceTextSha256` until the source
    statement and guidelines from the Fifth International Workshop. J Bone Miner Res. 2022;37(11):2293-2314.
    doi:10.1002/jbmr.4677
 3. Wilhelm SM, Wang TS, Ruan DT, et al. The American Association of Endocrine Surgeons guidelines for definitive
-   management of primary hyperparathyroidism. JAMA Surg. 2016;151(10):959-968.
+   management of primary hyperparathyroidism. JAMA Surg. 2016;151(10):959-968. doi:10.1001/jamasurg.2016.2310
 4. National Institute for Health and Care Excellence. Hyperparathyroidism (primary): diagnosis, assessment and initial
    management. NICE guideline NG132. London: NICE; 2019.
 5. Tenner S, Vege SS, Sheth SG, et al. American College of Gastroenterology guidelines: management of acute pancreatitis.
    Am J Gastroenterol. 2024;119(3):419-437. doi:10.14309/ajg.0000000000002645
-6. Working Group IAP/APA Acute Pancreatitis Guidelines. IAP/APA evidence-based guidelines for the management of acute
-   pancreatitis. Pancreatology. 2013;13(4):e1-15. doi:10.1016/j.pan.2013.07.063
+6. IAP/APA/EPC/IPC/JPS Working Group. International Association of Pancreatology revised guidelines on acute
+   pancreatitis 2025: supported and endorsed by the American Pancreatic Association, European Pancreatic Club, Indian
+   Pancreas Club, and Japan Pancreas Society. Pancreatology. 2025;25(6):770-814. doi:10.1016/j.pan.2025.04.020
 7. de-Madaria E, Buxbaum JL, Maisonneuve P, et al. Aggressive or moderate fluid resuscitation in acute pancreatitis. N Engl
    J Med. 2022;387(11):989-1000. doi:10.1056/NEJMoa2202884
-8. Society for Endocrinology Clinical Committee. Society for Endocrinology endocrine emergency guidance: emergency
-   management of acute hypocalcaemia in adult patients. Endocr Connect. 2016;5:G7-G8. doi:10.1530/EC-16-0056
+8. Turner J, Gittoes N, Selby P; Society for Endocrinology Clinical Committee. Society for Endocrinology endocrine
+   emergency guidance: emergency management of acute hypocalcaemia in adult patients. Endocr Connect. 2016;5(5):G7-G8.
+   doi:10.1530/EC-16-0056
 9. 中华医学会外科学分会胰腺外科学组. 中国急性胰腺炎诊治指南（2021）. 中国实用外科杂志. 2021;41(7):735-742.
 
-**DOIs and checks (2026-10-30 authoring, guidance searched on 2026-11-13).** The source DOI is the one the source map
-records as verified (`publisherCheckedAt` 2026-10-29). The citations of refs 2, 5, 6, 7 and 8 and their DOIs were
-confirmed by web search (journal, volume, pages, DOI); ref 3's citation was confirmed but its DOI was not, so none is
-given; ref 4 is cited by its guideline number; ref 9's journal, volume and pages were confirmed by search. The recommendations quoted were checked against search summaries of the
-primary texts (not the full texts, which were not reachable from this session); the details still open are listed below.
+**DOIs and checks (2026-10-30 authoring; independent review 2026-11-14).** The source DOI is the one the source map
+records as verified (`publisherCheckedAt` 2026-10-29). The review replaced the 2013 IAP/APA guideline, which the IAP's
+2025 revision (ref 6) supersedes and which now has statements of its own on pancreatitis with hyperparathyroidism
+(61–63). Checked in the primary texts on 2026-11-14: ACG 2024 (PMC full text: recommendations 3–5, 8, 10 and 11; the
+1.5 mL/kg/h rate and 10 mL/kg bolus; idiopathic pancreatitis defined after a work-up that includes calcium); IAP 2025
+(publisher's PDF: statements 2, 61–63, recommendations 3, 10, 11, 19, 22 and 28); NICE NG132 (PDF: 1.1.1, 1.1.3–1.1.10,
+1.3.1, 1.4.11–1.4.12, 1.5.1); the Fifth International Workshop (open-access PDF: imaging "not recommended for diagnostic
+purposes", surgery for all symptomatic patients, an experienced parathyroid surgeon, pancreatitis among the classic
+manifestations, cinacalcet for those not having surgery); AAES 2016 (PDF: recommendation 4-4 on parathyroid fine-needle
+aspiration, 15-1a on cure; DOI confirmed); the Society for Endocrinology hypocalcaemia guidance (its text as reproduced
+by an NHS trust: severe = below 1.9 mmol/L and/or symptomatic at any level below the reference range, paraesthesiae
+listed among the symptoms, the bolus and infusion; authors and issue confirmed by search; a 2019 addendum,
+doi:10.1530/EC-16-0056a, adds calcium chloride equivalence). Refs 7 and 9 were confirmed by search (journal, volume,
+pages, DOI); ref 4 is cited by its guideline number.
 
 ### To verify
 
@@ -446,22 +486,18 @@ primary texts (not the full texts, which were not reachable from this session); 
   for which attack (1.0.0 notes that the historical doses were omitted).
 - Follow-up: its length, later calcium and PTH, the stones, bone density.
 - The withheld figure `fig01` (a CT composite per the media review): what it shows, and whether its legend adds findings.
+- The amylase: its specimen (blood or urine) and the laboratory's reference interval (1.0.0 says only "amylase"; the case
+  therefore never says it exceeded three times the upper limit).
 
-**In the guidance (primary texts not reachable from this session; checked through search summaries):**
+**In the guidance (most primary texts checked on 2026-11-14 — see above; what a clinician should still confirm):**
 
-- ACG 2024: the exact wording and grading for moderately aggressive fluids (1.5 mL/kg/h; 10 mL/kg boluses in
-  hypovolaemia), lactated Ringer's, early low-fat oral feeding within 24–48 hours in mild disease, prophylactic
-  antibiotics in severe disease, and ERCP without cholangitis; whether it also lists calcium in the aetiology work-up.
-- IAP/APA 2013: the aetiology recommendation (liver enzymes, calcium, triglycerides at the first attack; EUS after a
-  negative biliary work-up) and the issue/supplement details of the citation.
-- NICE NG132 (2019): recommendation 1.1.5 thresholds (adjusted calcium ≥ 2.6 mmol/L twice, or ≥ 2.5 mmol/L twice with
-  suspicion), the referral criteria for surgery (end-organ disease including renal stones; whether a calcium threshold
-  such as 2.85 mmol/L applies — not used in the case), and the 3–6-month post-operative calcium.
-- Fifth International Workshop (2022): the statements that imaging is for surgical planning, not diagnosis; surgery for
-  all symptomatic patients; the place of cinacalcet; its genetic-testing criteria (not used in the case).
-- AAES 2016: the definition of cure (normocalcaemia beyond 6 months) and its wording on pre-operative needle biopsy of a
-  suspected parathyroid lesion (the case attributes no needle-biopsy statement to AAES); its DOI.
-- Society for Endocrinology 2016: the severity thresholds and doses quoted (and its 2019 addendum on calcium chloride).
+- Society for Endocrinology 2016: the wording in the journal version itself (the review read the guidance's text as an
+  NHS trust reproduces it, February 2013 version; the thresholds and doses match the 2019 addendum's reprint).
+- IAP 2025 statement 63: whether a clinician of the specialty would apply the saline-not-Ringer's switch only above
+  14 mg/dL, as written, and how the case's teaching of it reads to a gastroenterologist.
+- The judgement calls of the teaching design: oral calcium for post-operative paraesthesia with a calcium the report
+  calls normal (the guidance's "mild" category is asymptomatic, so this is practice, not a quoted threshold), and the
+  examiner's view that an unindicated urgent ERCP is this case's critical error.
 - Chinese AP guideline (2021): its recommendations on fluids, feeding and prophylactic antibiotics (cited, not quoted);
   whether a current Chinese guideline on primary hyperparathyroidism should be added (none was confirmed in this session).
 - The physiology statements used in teaching (an attack of pancreatitis tends to lower serum calcium; a low magnesium
@@ -510,6 +546,29 @@ primary texts (not the full texts, which were not reachable from this session); 
   article; not reviewed by a licensed clinician — the English last sentence reads "The case is not yet reviewed by a
   licensed clinician." because the collection contract matches that phrase case-sensitively); `sourceTextChecked: false`;
   `sourceDoi` + `doiVerifiedAt` replace `sourceDoiVerification`.
+- **Independent review (2026-11-14).** *Facts:* the amylase record no longer says "serum" — 1.0.0 records "amylase"
+  without a specimen — and its note says the specimen is not recorded; the staff's and the guide's question "which two
+  findings made the diagnosis — did you need the CT?" (which leaned on an amylase threshold the case cannot establish)
+  now asks which findings made it and what else the CT gave; this guide no longer attributes "until the amylase
+  normalises" or a carbapenem to the report's care (1.0.0 records only fasting and antibiotics); her answers no longer
+  say she had the earlier pain "once" (zh-CN), that she took no blood-pressure tablets at all (1.0.0: normal *without*
+  them), or deny facial twitching (unrecorded; the spasm question now asks only what 无抽搐 records); the conclusion says
+  "no complaints at follow-up", as recorded. *Guidance:* IAP/APA 2013 replaced by the IAP's 2025 revision, which asks
+  for a PTH when an attack comes with a raised calcium and switches from lactated Ringer's to isotonic saline only above
+  about 3.5 mmol/L (14 mg/dL) or with altered consciousness — both now taught; decision 3's ERCP feedback cites ACG
+  2024's definition of idiopathic pancreatitis and IAP 2025's ultrasound–EUS–MRI sequence instead of the early-ERCP
+  recommendation; WATERFALL quoted for its aggressive arm without claiming the distractor is "exactly" it; the post-op
+  key now follows the Society for Endocrinology definition (IV calcium for an adjusted calcium below 1.9 mmol/L or
+  symptoms, paraesthesiae included, with a calcium below the reference range; otherwise oral) and no longer calls
+  "mild symptoms" the guidance's oral category; the needle-biopsy texts cite AAES 2016 recommendation 4-4; cinacalcet's
+  harm attributes renal stones to NICE NG132 and pancreatitis to the Fifth Workshop; references gain the AAES DOI and the
+  Society for Endocrinology authors. *Assessment:* a third critical item, `rb-no-ercp`, holds the critical
+  intervention (as in the reviewed exemplars); oral calcium given while the calcium is raised now costs
+  `rb-avoided-harm` (`valid: false`) and no longer blocks the indicated post-operative dose (`maxDoses` 2); thyroid
+  tests are no longer aliases of the hormone assay, so they cannot earn the critical "PTH at the first attack"; decision
+  4's key reads "if that confirms it" (a raised *or inappropriately normal* PTH confirms it); the length cue of the
+  select-all decision 5 (its keys were the three longest options in English) and of decision 4 in zh-CN removed;
+  `reviewedAt` 2026-11-14; one more test utterance (39).
 
 ### 1.0.0 — 2026-10-28
 
@@ -520,18 +579,18 @@ primary texts (not the full texts, which were not reachable from this session); 
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1069544/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1069544 --lang en                                                 # 106 steps · objectives 6/6 · decisions 5/5 · utterances 38/38 · rubric 27/27 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1069544                       # depth floor, do-nothing 0, wrong-first 44 % < 100 %
+npm run -s cc -- cases verify cmcr-1069544 --lang en                                                 # 106 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 29/29 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-1069544                                       # depth floor, do-nothing 0/25, wrong-first 48 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1069544:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1069544:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-13: all five pass.
+Measured on 2026-11-14, after the independent review: all five pass.
 
 ## 中文摘要
 
 **病例概要。** 58岁女性，上腹持续胀痛伴恶心、呕吐 1 天入院；左上腹及脐周压痛、局部轻度肌紧张、反跳痛可疑、墨菲征阴性，颈部未触及
-包块；淀粉酶 1139 U/L，血钙 2.76 mmol/L（升高），CT 示胰腺炎及左肾结石。出院后无症状，未服降压药时血压正常。约 20 个月后再次
+包块；淀粉酶 1139 U/L（标本类型和参考区间未记录），血钙 2.76 mmol/L（升高），CT 示胰腺炎及左肾结石。出院后无症状，未服降压药时血压正常。约 20 个月后再次
 突发上腹胀痛伴恶心、呕吐，8 小时后就诊：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎及肾结石。颈部超声及 CT 示左甲状腺
 下极后方病灶，切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。唯一的术前激素结果 31 pmol/L 被标为“甲状腺素”（可能为误标的 PTH，
 两种读法并列，不作裁定）；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解，随访未诉不适
@@ -540,8 +599,8 @@ Measured on 2026-11-13: all five pass.
 
 **学习目标。**
 
-1. 按现行标准处理急性胰腺炎最初几天（乳酸钠林格液目标导向适度补液、尽早低脂饮食、不预防性使用抗菌药物、仅胆管炎时 ERCP），并与禁食加抗菌药物对照（ACG 2024）。
-2. 对每次发作做病因筛查，把发作期血钙升高视为危险信号：复查白蛋白校正钙并同步测 PTH（IAP/APA 2013；NICE NG132，2019）。
+1. 按现行标准处理急性胰腺炎最初几天（乳酸钠林格液目标导向适度补液、尽早低脂饮食、不预防性使用抗菌药物、仅胆管炎时 ERCP），并与禁食加抗菌药物对照（ACG 2024；IAP 2025）。
+2. 对每次发作做病因筛查，把发作期血钙升高视为危险信号：复查白蛋白校正钙并同步测 PTH（IAP 2025；NICE NG132，2019）。
 3. 先用生化确诊原发性甲旁亢，再做定位影像，说明影像为何不能确诊或排除（第五届国际研讨会，2022）。
 4. 遇到项目名称存疑的结果，先与检验科核实或复查，再用它做手术等决定。
 5. 把伴肾结石和反复胰腺炎的原发性甲旁亢转诊给有经验的甲状旁腺外科医生，说明为何不选西那卡塞或细针穿刺（AAES 2016；NICE NG132，2019）。
@@ -549,12 +608,12 @@ Measured on 2026-11-13: all five pass.
 
 **关键决策。**
 
-- 决策 1（最初几天的处理）：乳酸钠林格液目标导向适度补液、镇痛、能耐受即低脂饮食、不预防性用抗菌药物；干扰项为报告式的禁食加碳青霉烯类、WATERFALL 试验中的大量快速补液，以及没有胆管炎的急诊 ERCP。
-- 决策 2（血钙的意义）：发作期血钙通常下降，2.76 mmol/L 合并肾结石不寻常，应复查白蛋白校正钙并同步测 PTH；干扰项为血液浓缩、“胰腺炎释放钙”、结石导致高钙、立即用唑来膦酸。
+- 决策 1（最初几天的处理）：乳酸钠林格液目标导向适度补液、镇痛、能耐受即低脂饮食、不预防性用抗菌药物；干扰项为旧式的禁食到淀粉酶恢复正常加预防性碳青霉烯类（报告只记录了禁食和抗菌药物，未记录药物和时长）、WATERFALL 试验积极补液组式的大量快速补液，以及没有胆管炎的急诊 ERCP。
+- 决策 2（血钙的意义）：发作期血钙通常下降，2.76 mmol/L 合并肾结石不寻常，应复查白蛋白校正钙并同步测 PTH（IAP 2025；NICE NG132）；在这个水平发作的常规处理（包括乳酸钠林格液）不变，IAP 2025 只在血钙高于约 3.5 mmol/L 或意识改变时改用等渗盐水；干扰项为血液浓缩、“胰腺炎释放钙”、结石导致高钙、立即用唑来膦酸。
 - 决策 3（再次发作后的下一步）：先用血液检查确立病因（PTH 与校正钙同步、肌酐、维生素 D、尿钙），之后再定位；干扰项为先做影像、ERCP 加括约肌切开、按胆结石切胆囊、血钙超过 3.0 mmol/L 才查。
-- 决策 4（术前方案）：向检验科核实“甲状腺素 31 pmol/L”测的是什么并复查 PTH，确认升高后转诊有经验的甲状旁腺外科医生；干扰项为凭影像直接手术、按甲亢处理、先细针穿刺、西那卡塞观察。
-- 决策 5（术后计划，多选）：复查校正钙或离子钙及血镁并检查 Chvostek 征和 Trousseau 征；按严重程度处理（静脉补钙只用于校正钙低于 1.9 mmol/L 或钙低于参考区间且有症状）；术后 3–6 个月复查确认治愈并随访结石；不选持续静滴葡萄糖酸钙，也不选终身骨化三醇。
+- 决策 4（术前方案）：向检验科核实“甲状腺素 31 pmol/L”测的是什么并复查完整 PTH（同步测血钙），确诊（PTH 升高或与血钙不相称地正常）后转诊有经验的甲状旁腺外科医生；干扰项为凭影像直接手术、按甲亢处理、先细针穿刺（AAES 2016 不建议）、西那卡塞观察。
+- 决策 5（术后计划，多选）：复查校正钙或离子钙及血镁并检查 Chvostek 征和 Trousseau 征；按严重程度处理（校正钙低于 1.9 mmol/L，或钙低于参考区间且有症状——包括感觉异常——时静脉补葡萄糖酸钙，否则口服钙剂）；术后 3–6 个月复查确认治愈并随访结石；不选不复查就持续静滴葡萄糖酸钙，也不选终身骨化三醇。
 
-**安全结果。** `urgent-ercp` 标为 `critical: true`：没有胆管炎、也没有任何胆管证据时行急诊 ERCP，可引起胰腺炎、出血和穿孔，而真正的病因（血钙）仍未解释；一旦给予，无论得分多少，安全结果都判为不通过。
+**安全结果。** `urgent-ercp` 标为 `critical: true`：没有胆管炎、也没有任何胆管证据时行急诊 ERCP，可引起胰腺炎、出血和穿孔，而真正的病因（血钙）仍未解释；一旦给予，无论得分多少，安全结果都判为不通过，并同时失去关键评分项 `rb-no-ercp`。
 
-**复盘要点（PEARLS）。** 先谈面对一个解释不了的结果仍要安排出院时的感受；用两句话说清诊断依据和不寻常之处；分析两项依据即可诊断胰腺炎、发作期血钙为何应当下降、报告中的禁食和抗菌药物与现行做法的差别、为何先查血再做影像、标为“甲状腺素”的结果该怎么办、为何不选西那卡塞、穿刺或 ERCP、术后麻木查什么以及何时静脉补钙、如何确认治愈；总结下次遇到胰腺炎合并高血钙时怎么做。评分：确定性总分 27 分，两项关键项（第一次住院就追查血钙；向检验科核实后才转诊外科），沟通项由考官评判。记录中的处置（禁食、抗菌药物、第二次发作后才发现病灶）只作历史对照；第一次出院后是否追查血钙没有记录，不要说成“漏诊”。本病例经人工智能辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。
+**复盘要点（PEARLS）。** 先谈面对一个解释不了的结果仍要安排出院时的感受；用两句话说清诊断依据和不寻常之处；分析哪些依据可以诊断胰腺炎（腹痛加 CT；淀粉酶的标本类型和参考区间没有记录，不要说它超过正常上限三倍）、发作期血钙为何应当下降、血钙升高时是否仍用乳酸钠林格液、报告中的禁食和抗菌药物与现行做法的差别、为何先查血再做影像、标为“甲状腺素”的结果该怎么办、为何不选西那卡塞、穿刺或 ERCP、术后麻木查什么以及何时静脉补钙、如何确认治愈；总结下次遇到胰腺炎合并高血钙时怎么做。评分：确定性总分 29 分，三项关键项（第一次住院就追查血钙；向检验科核实后才转诊外科；没有无指征的急诊 ERCP），沟通项由考官评判。记录中的处置（禁食、抗菌药物、第二次发作后才发现病灶）只作历史对照；第一次出院后是否追查血钙没有记录，不要说成“漏诊”。本病例经人工智能辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。

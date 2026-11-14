@@ -22,9 +22,9 @@ calendar dates are removed. What 1.0.0 does not record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist or infectious diseases physician review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30; independent review 2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist or infectious diseases physician review it before teaching use |
 | phases | `admission` 入院评估 / Admission assessment → `workup` 检查回报 / The results come back → `course` 治疗经过与转院 / Treatment course and transfer → `followup` 转院之后的记录 / The record after the transfer — all one-way, none learner-switchable |
-| content | 26 history items (13 recorded facts, 1 labelled teaching device, 12 unknown; 10 required) · 6 examination findings (4 abnormal, 2 pertinent negatives; all from the admission examination) · 13 investigations (2 record reviews; 3 staged tests with recorded results; 8 without a recorded result) · 13 interventions (4 always harmful, 1 harmful before the cultures) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 3 critical) · 5 staff · 6 learning outcomes · 5 teaching points · 40 test utterances |
+| content | 26 history items (13 recorded facts, 1 labelled teaching device, 12 unknown; 10 required) · 6 examination findings (4 abnormal, 2 pertinent negatives; all from the admission examination) · 13 investigations (2 record reviews; 3 staged tests with recorded results; 8 without a recorded result) · 13 interventions (4 always harmful, 1 harmful before the cultures; 3 critical for the safety outcome) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 3 critical) · 5 staff · 6 learning outcomes · 5 teaching points · 47 test utterances |
 
 ## Learning outcomes
 
@@ -36,10 +36,11 @@ After the case the learner can:
    echocardiography (ESC 2023 endocarditis).
 2. Apply the 2023 Duke-ISCVID criteria: the same organism in all three culture sets and a vegetation on echocardiography are
    two major criteria, enough for a definite diagnosis even without any fever.
-3. Plan treatment for Granulicatella (formerly nutritionally variant streptococcal) endocarditis in a patient whose
-   penicillin allergy is of unknown type — IV vancomycin 30 mg/kg/day in 2 doses, adjusted to levels and renal function,
-   for 6 weeks from the first negative culture, with gentamicin for at least the first 2 weeks — while clarifying the
-   reaction (ESC 2023 endocarditis; AAAAI/ACAAI 2022 drug allergy).
+3. Plan treatment for Granulicatella (formerly nutritionally variant streptococcal) endocarditis on a valve with no
+   recorded surgery, in a patient whose penicillin allergy is of unknown type — IV vancomycin 30 mg/kg/day in 2 doses,
+   adjusted to levels and renal function, for 6 weeks from the first negative culture, without the aminoglycoside that
+   ESC 2023 adds only for a prosthetic valve — while clarifying the reaction so that a beta-lactam can be used once it is
+   safe (ESC 2023 endocarditis; AAAAI/ACAAI 2022 drug allergy).
 4. Judge the indication for and timing of surgery when left-sided endocarditis causes severe aortic regurgitation with heart
    failure: urgent surgery within 3–5 days through the Endocarditis Team, emergency surgery within 24 hours for refractory
    pulmonary oedema or cardiogenic shock, a vegetation of 10 mm or more adding to the case for early surgery (ESC 2023
@@ -75,8 +76,8 @@ regurgitation**, and things worsened afterwards (what was done after that scan i
 ***Granulicatella adiacens*** (the report's name: 苛养颗粒链球菌), with **satellitism**. **Susceptibilities:** vancomycin and
 some other agents susceptible; erythromycin and clindamycin resistant; no MICs.
 
-**Echocardiogram at this presentation:** aortic-valve vegetations, the largest about **25 mm**, with prolapse and **severe
-regurgitation**; **LVEF 48 %**; enlarged left heart.
+**Echocardiogram at this presentation** (1.0.0 does not say whether transthoracic or transoesophageal): aortic-valve
+vegetations, the largest about **25 mm**, with prolapse and **severe regurgitation**; **LVEF 48 %**; enlarged left heart.
 
 **Diagnosis.** Definite infective endocarditis of the aortic valve (two major criteria: the organism in all three sets and
 a vegetation) caused by *Granulicatella adiacens*, a former "nutritionally variant streptococcus", in a woman who was
@@ -89,13 +90,15 @@ another hospital her antibiotic treatment was interrupted**; sudden, progressive
 report considers valve destruction, embolism or acute left heart failure as possible mechanisms; none was confirmed.
 Whether a cardiac surgeon assessed her, whether surgery was offered or done, and why she was transferred are not recorded.
 
-**Today's answer** (ESC 2023 endocarditis): three culture sets before any antibiotic; definite IE by two major criteria
-whatever the temperature; vancomycin for 6 weeks from the first negative culture with gentamicin for at least the first 2
-(penicillin allergy of unknown type); urgent valve surgery within 3–5 days through the Endocarditis Team because of heart
-failure from severe regurgitation (emergency within 24 hours if refractory pulmonary oedema or shock); and no gap in IV
-therapy at the transfer.
+**Today's answer** (ESC 2023 endocarditis): three culture sets, 30 minutes apart, before any antibiotic; a transthoracic
+and then, once it is safe for her, a transoesophageal echocardiogram; definite IE by two major criteria whatever the
+temperature; vancomycin alone for 6 weeks from the first negative culture while the penicillin allergy is clarified
+(ESC 2023 adds an aminoglycoside for these organisms only on a prosthetic valve, and a beta-lactam is preferred once it
+is safe); urgent valve surgery within 3–5 days through the Endocarditis Team because of heart failure from severe
+regurgitation (emergency within 24 hours if refractory pulmonary oedema or shock); and no gap in IV therapy at the
+transfer.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology (staged evidence by phase)
 
 - **Static clock, no physiology** (the collection contract: `clock.mode: "static"`, no `physiology`). Results are immediate;
   interventions are scored for appropriateness but change nothing — the course is the recorded one. No vital signs are
@@ -107,8 +110,9 @@ therapy at the transfer.
     function, CRP/ESR, ECG, chest film and TOE answer honestly that no result is recorded.
   - `workup` — opens once `obj-bedside` (history and examination) and `obj-before-treatment` (earlier echo read, allergies
     asked, decision 1, blood cultures and echocardiogram ordered in `admission`) are done. The **culture result**
-    (*G. adiacens* in all three sets, critical), the **susceptibilities** and the **transthoracic echocardiogram** come
-    back; decisions 2–4, the antibiotics, the Endocarditis Team and the surgical decision.
+    (*G. adiacens* in all three sets, critical), the **susceptibilities** and the **echocardiogram** come back (the
+    learner's echo request returns the study recorded at this presentation, whose modality is not recorded);
+    decisions 2–4, the antibiotics, the Endocarditis Team and the surgical decision.
   - `course` — opens once `obj-results` (the three reads, decisions 2 and 3 and an antibiotic act) and `obj-surgery`
     (decision 4 and a committed act: the urgent referral or the deferral) are done. On vancomycin-based treatment the
     **repeat cultures are negative** and she feels better; she is to be transferred. Phase twin `status-course`, decision
@@ -149,7 +153,9 @@ are not forced: they can still be missed.
 
 - **1 `first-steps`** (single; needs the presenting history, onset, breathlessness, back pain, earlier treatment, fever,
   dental treatment, the four key examinations and the earlier echo report). Key: `cultures-then-echo` — three culture sets
-  by separate venepunctures before any antibiotic, and an urgent transthoracic echo (TOE if inconclusive). Distractors:
+  by separate venepunctures before any antibiotic, then an urgent transthoracic echo and a transoesophageal study once it
+  is safe for her (ESC 2023 recommends TOE even when the transthoracic study is positive; the feedback names its
+  preconditions: swallowing problems or oesophageal disease, platelets and clotting, lying on her side). Distractors:
   `antibiotics-first` (empirical IV antibiotics, cultures once the first dose runs), `await-fever` (hold the cultures until
   38 °C; diuretic and an outpatient echo), `single-set-markers` (one set with CRP and procalcitonin), `spine-first` (lumbosacral
   MRI to settle the spondyloarthritis question — the anchoring error of her earlier care).
@@ -158,11 +164,15 @@ are not forced: they can still be missed.
   satellitism read as mixed growth), `spa-aortitis` (spondyloarthritis with aortic root disease — a real association, which
   makes it a near-miss), `nbte` (sterile thrombus, transient bacteraemia after dental work).
 - **3 `regimen`** (single; needs decision 2, the susceptibilities and the allergy question). Key: `vancomycin-six-weeks` —
-  IV vancomycin for 6 weeks from the first negative culture with gentamicin for at least the first 2 weeks, dosed by levels
-  and renal function. Distractors: `penicillin-four-weeks` (ignores the allergy; too short), `ceftriaxone-two-weeks` (the
-  2-week regimen of uncomplicated oral-streptococcal NVE), `vancomycin-four-weeks` (right drug, wrong duration and start
-  date, no aminoglycoside), `oral-clindamycin-home` (resistant; oral; home treatment with a surgical indication). The
-  recorded "vancomycin-based" treatment matches the key's drug; its duration and companion drugs are not recorded.
+  IV vancomycin alone for 6 weeks from the first negative culture, dosed by levels and renal function, while the
+  penicillin reaction is clarified. ESC 2023 (§7.5) recommends penicillin G, ceftriaxone or vancomycin for 6 weeks for
+  Granulicatella and Abiotrophia and adds an aminoglycoside for at least the first 2 weeks only "in case of PVE"; no valve
+  surgery is recorded, so the empirical gentamicin is not continued, and a beta-lactam is preferred once the reaction
+  proves non-anaphylactic. Distractors: `penicillin-four-weeks` (ignores the allergy; too short),
+  `ceftriaxone-two-weeks` (the 2-week regimen of uncomplicated oral-streptococcal NVE), `vancomycin-four-weeks`
+  (vancomycin with gentamicin for 4 weeks from the first dose — the oral-streptococcal course in a beta-lactam allergy),
+  `oral-clindamycin-home` (resistant; oral; home treatment with a surgical indication). The recorded "vancomycin-based"
+  treatment matches the key's drug; its duration and companion drugs are not recorded.
 - **4 `surgery-timing`** (single; needs decision 2, the echo, the presenting history and the neck-vein and lung examinations).
   Key: `urgent-surgery` — within 3–5 days through the Endocarditis Team, within 24 hours if refractory pulmonary oedema or
   shock. Distractors: `after-the-course` (6 weeks first, then elective replacement), `medical-until-shock`,
@@ -174,10 +184,10 @@ are not forced: they can still be missed.
 
 Every option has its own feedback naming ESC 2023 endocarditis, the 2023 Duke-ISCVID criteria, the AAAAI/ACAAI 2022 drug
 allergy parameter or WHO 2019 medication safety in transitions of care, with the reason. Option ids name their content.
-**No length cue:** measured on 2026-10-30, the key is the uniquely longest option in no decision, in either locale
-(key length against the distractors' range, zh-CN then en): decision 1 48 against 40–51 and 169 against 141–173; decision 2
-44 against 36–49 and 121 against 118–138; decision 3 50 against 36–50 (tied with `ceftriaxone-two-weeks`) and 148 against
-113–151; decision 4 48 against 34–52 and 157 against 116–178; decision 5 47 against 36–48 and 152 against 134–166. Each key
+**No length cue:** re-measured on 2026-11-14, the key is the uniquely longest option in no decision, in either locale
+(key length against the distractors' range, zh-CN then en): decision 1 46 against 40–51 and 159 against 141–173; decision 2
+44 against 36–49 and 121 against 118–138; decision 3 49 against 40–50 and 150 against 118–151; decision 4 48 against 34–52
+and 157 against 116–178; decision 5 47 against 36–48 and 152 against 134–166. Each key
 gives an act or reading with its reason in the same form as its distractors.
 
 ### Rubric (11 deterministic items, total weight 30, + 1 examiner-judged)
@@ -197,29 +207,30 @@ gives an act or reading with its reason in the same form as its distractors.
 | `rb-avoided-harm` | safety | 2 | no benzylpenicillin, oral clindamycin or deferral of surgery; scored once decision 3 or 4 is attempted or any of the three is given |
 | `rb-communication` | communication | (judged) | SPIKES with Calgary–Cambridge explanation and planning: the seriousness, the advice for urgent surgery, completing the course through any transfer, teach-back, no false reassurance |
 
-### How wrong choices score (measured with the reducer on 2026-10-30)
+### How wrong choices score (measured with the reducer on 2026-11-14)
 
-| path | deterministic score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 30/30 (100 %) | none |
-| start and do nothing | 0/28 | all three |
-| wrong first answer at all five decisions, then right | 14/30 (47 %) | `rb-urgent-surgery`, `rb-transfer-continuity` |
-| wrong first answer at decision 1 only | 28/30 (93 %) | none |
-| wrong first answer at decision 2 only | 27/30 (90 %) | none |
-| wrong first answer at decision 3 only | 27/30 (90 %) | none |
-| wrong first answer at decision 4 only | 26/30 (87 %) | `rb-urgent-surgery` |
-| wrong first answer at decision 5 only | 26/30 (87 %) | `rb-transfer-continuity` |
-| vancomycin with gentamicin given before the blood cultures, then the rest of the reference path | 26/30 (87 %) | `rb-cultures-before-antibiotics` |
-| benzylpenicillin instead of vancomycin with gentamicin | 24/30 (80 %) | `rb-cultures-before-antibiotics` |
-| reference path plus benzylpenicillin, or plus oral clindamycin | 28/30 (93 %) | none (`rb-avoided-harm` lost) |
-| deferral of surgery instead of the urgent referral | 24/30 (80 %) | `rb-urgent-surgery` |
-| … and the urgent referral made only in the `course` phase | 24/30 (80 %) | `rb-urgent-surgery` |
-| reference path without the Endocarditis Team request | 26/30 (87 %) | `rb-urgent-surgery` |
-| stopping the antibiotics instead of the handover | 26/30 (87 %) | `rb-transfer-continuity` |
-| the handover plus stopping the antibiotics | 26/30 (87 %) | `rb-transfer-continuity` |
-| reference path without the allergy clarification | 27/30 (90 %) | none |
-| reference path without asking about recent antibiotics and the type of reaction | 28/30 (93 %) | none |
-| reference path without the leg and skin examination | 28/30 (93 %) | none |
+| path | deterministic score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 30/30 (100 %) | none | passed |
+| start and do nothing | 0/28 | all three | passed (nothing given) |
+| wrong first answer at all five decisions, then right | 14/30 (47 %) | `rb-urgent-surgery`, `rb-transfer-continuity` | passed |
+| wrong first answer at decision 1 only | 28/30 (93 %) | none | passed |
+| wrong first answer at decision 2 only | 27/30 (90 %) | none | passed |
+| wrong first answer at decision 3 only | 27/30 (90 %) | none | passed |
+| wrong first answer at decision 4 only | 26/30 (87 %) | `rb-urgent-surgery` | passed |
+| wrong first answer at decision 5 only | 26/30 (87 %) | `rb-transfer-continuity` | passed |
+| vancomycin with gentamicin given before the blood cultures, then the rest of the reference path | 26/30 (87 %) | `rb-cultures-before-antibiotics` | **failed** (`vancomycin-gentamicin`) |
+| benzylpenicillin instead of vancomycin with gentamicin | 24/30 (80 %) | `rb-cultures-before-antibiotics` | **failed** (`benzylpenicillin`) |
+| reference path plus benzylpenicillin | 28/30 (93 %) | none (`rb-avoided-harm` lost) | **failed** (`benzylpenicillin`) |
+| reference path plus oral clindamycin | 28/30 (93 %) | none (`rb-avoided-harm` lost) | passed |
+| deferral of surgery instead of the urgent referral | 24/30 (80 %) | `rb-urgent-surgery` | passed |
+| … and the urgent referral made only in the `course` phase | 24/30 (80 %) | `rb-urgent-surgery` | passed |
+| reference path without the Endocarditis Team request | 26/30 (87 %) | `rb-urgent-surgery` | passed |
+| stopping the antibiotics instead of the handover | 26/30 (87 %) | `rb-transfer-continuity` | **failed** (`stop-antibiotics`) |
+| the handover plus stopping the antibiotics | 26/30 (87 %) | `rb-transfer-continuity` | **failed** (`stop-antibiotics`) |
+| reference path without the allergy clarification | 27/30 (90 %) | none | passed |
+| reference path without asking about recent antibiotics and the type of reaction | 28/30 (93 %) | none | passed |
+| reference path without the leg and skin examination | 28/30 (93 %) | none | passed |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs marks. The four always-harmful
 interventions are `contraindicated` (named in the debrief's safety list with their harm texts); vancomycin with gentamicin
@@ -241,22 +252,37 @@ recorded course: treatment interrupted at a transfer). All three are acts; none 
 Three critical items are at the top of the standard's range: each marks one of the case's three distinct lethal errors,
 in three different phases.
 
+**Safety outcome.** Three interventions are marked `critical: true`, so giving one while it is contraindicated fails the
+run's safety outcome whatever the score: `vancomycin-gentamicin` before the admission cultures have been ordered
+(moderate risk; the case's central error — an antibiotic first can leave a slow-growing, fastidious organism
+unidentified for good, an irreversible loss of the diagnosis and of the basis for the course), `benzylpenicillin` (high
+risk; a penicillin for a patient who reports a penicillin allergy whose reaction nobody has clarified risks anaphylaxis)
+and `stop-antibiotics` (high risk; stopping IV treatment of active endocarditis with an unresolved surgical indication at
+a transfer — the break in the recorded course that preceded her death). `oral-clindamycin` and `defer-surgery` (moderate
+risk, always contraindicated) stay non-critical: a resistant oral drug or an elective plan is a misjudgement that the
+next clinician can still correct, and both are scored instead (`rb-avoided-harm`; the missing referral in
+`rb-urgent-surgery`). `benzylpenicillin` sits in the non-critical `rb-avoided-harm` because the rubric already holds the
+standard's maximum of three critical items; the safety outcome carries its weight.
+
 ## Reference path (`solution`)
 
-73 steps, static clock: start → the history (presenting problem, lying flat, onset, breathlessness, back pain, earlier
+71 steps, static clock: start → the history (presenting problem, lying flat, onset, breathlessness, back pain, earlier
 treatment, fever, cough, weight and sweats, dental treatment, past illnesses, heart history, earlier scan, medicines,
 recent antibiotics, allergies and the reaction, exercise tolerance, chest pain and palpitations, neurological symptoms,
 bladder and bowels, skin signs, family, smoking and alcohol, her worry) → examination (colour, neck veins, heart, lungs,
 legs, skin) → **earlier echo report** → `first-steps` → **IV cannula** → **blood cultures** (admission) → blood count, renal
 function, ECG, chest film (no result recorded) → **allergy clarification** → **vancomycin with gentamicin** → **IV
 furosemide** → **echocardiogram request** (completes `obj-before-treatment`: the results phase opens) → (`workup`)
-cultures, susceptibilities, transthoracic echo, TOE (no result recorded) → `diagnosis` → `regimen` → `surgery-timing` →
+cultures, susceptibilities, echo → `diagnosis` → `regimen` → `surgery-timing` →
 **Endocarditis Team** → **dental review** → **urgent valve surgery referral** (completes `obj-surgery`: the course phase
 opens) → (`course`) her status → repeat cultures → `transfer-plan` → **transfer handover** → (`followup`) outcome record →
-finish. `cases verify` passes: objectives 6/6, decisions 5/5, utterances 40/40, rubric 30/30. The demonstration starts the
-antibiotics right after the cultures, as an empirical non-beta-lactam regimen, because she has heart failure and a
-suspected vegetation; giving them after the results instead is also credited (the antibiotic's `indicatedWhen` is "after
-the admission cultures").
+finish. `cases verify` passes: objectives 6/6, decisions 5/5, utterances 47/47, rubric 30/30. The demonstration starts the
+antibiotics right after the cultures, with ESC 2023's empirical regimen for native-valve endocarditis in a penicillin
+allergy (vancomycin with gentamicin, class IIb), because she has heart failure and a suspected vegetation; once the
+organism is known the regimen is narrowed (decision 3). Giving them after the results instead is also credited (the
+antibiotic's `indicatedWhen` is "after the admission cultures"). No TOE is ordered: ESC 2023 recommends it even after a
+positive transthoracic study, but its preconditions (swallowing problems or oesophageal disease, platelets and clotting,
+whether she can lie on her side) are not recorded, so the feedback names them instead of the path performing it.
 
 ## Clinical numbers check
 
@@ -281,7 +307,7 @@ is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 | possible aortic vegetation and moderate regurgitation before presentation, later worsening | `investigations.previous-echo` | `investigations.previous-echo` (record review, `admission`); `history.prior-scan` (that a scan was done) |
 | pre-antibiotic cultures: 3 sets, same organism, VITEK 2 *G. adiacens*, satellitism | `investigations.cultures` | `investigations.blood-cultures` result `workup` (critical) |
 | vancomycin and others susceptible; erythromycin, clindamycin resistant; no MICs | `investigations.susceptibility` | `investigations.susceptibility` result `workup` (`values` as text, R flagged `A`) |
-| aortic vegetations up to about 25 mm, prolapse, severe regurgitation, LVEF 48 %, left-heart enlargement | `investigations.echo` | `investigations.tte` result `workup` (`values`: about 25 mm; 48 %) |
+| aortic vegetations up to about 25 mm, prolapse, severe regurgitation, LVEF 48 %, left-heart enlargement | `investigations.echo` | `investigations.tte` ("Echocardiogram") result `workup` (`values`: about 25 mm; 48 %; the modality is not recorded and the result says so) |
 | cultures cleared and short-term improvement on vancomycin-based care | `investigations.outcome` | `investigations.blood-cultures` result `course`; `history.status-course`; phase `course` description; decision 5 prompt |
 | antibiotics interrupted after transfer; abrupt progressive dyspnoea and death; valve destruction, embolism or acute left heart failure considered, not confirmed | `investigations.outcome` | `investigations.outcome` (`followup` only) |
 | full MICs, allergy phenotype, terminal mechanism, surgical assessment absent | `unknowns` | 8 `unknowns`; 12 unknown history items; 8 `available: false` tests; `examNotRecorded` |
@@ -293,11 +319,12 @@ recorded: any interval in days, the time from transfer to the interruption, to t
 values:** none — 1.0.0 gives no weight, creatinine, haemoglobin or vital sign from which to derive one, so no dose is
 computed.
 
-**Guidance numbers used in teaching text** (doses as formulas): three culture sets before antibiotics; vancomycin
-30 mg/kg/day IV in 2 doses (levels and renal function); gentamicin 3 mg/kg/day IV once daily; benzylpenicillin 12–18
+**Guidance numbers used in teaching text** (doses as formulas): three culture sets, 30 minutes apart, before
+antibiotics; vancomycin 30 mg/kg/day IV in 2 doses (levels and renal function); gentamicin 3 mg/kg/day IV once daily (the
+empirical regimen only); benzylpenicillin 12–18
 million units/day in 4–6 doses (harmful option); clindamycin 600 mg three times daily (harmful option); ceftriaxone 2 g once
-daily (distractor); 6 weeks for Granulicatella/Abiotrophia with an aminoglycoside for at least 2 weeks, counted from the
-first negative culture; the 2-week regimen only for uncomplicated oral-streptococcal NVE; urgent surgery within 3–5 days,
+daily (distractor); 6 weeks for Granulicatella/Abiotrophia, with an aminoglycoside for at least the first 2 weeks only on
+a prosthetic valve, counted from the first negative culture; valve replacement in about 50 %; the 2-week regimen only for uncomplicated oral-streptococcal NVE; urgent surgery within 3–5 days,
 emergency within 24 hours; vegetation ≥ 10 mm; partial oral therapy only after ≥ 10 days of IV therapy in stable patients
 without a surgical lesion (ESC 2023 endocarditis); furosemide 20–40 mg IV or 1–2 times the oral dose; oxygen only if
 SpO₂ < 90 % or PaO₂ < 60 mmHg (ESC 2021 heart failure); 38 °C as the fever threshold of the criteria.
@@ -319,7 +346,8 @@ SpO₂ < 90 % or PaO₂ < 60 mmHg (ESC 2021 heart failure); 38 °C as the fever 
    - "What does satellitism tell the laboratory — and you?"
    - "She is allergic to penicillin, but nobody knows what the reaction was. Which drugs does that rule out today, and how
      would you find out more?"
-   - "Why 6 weeks, and from which day? Why not the 2-week streptococcal course?"
+   - "Why 6 weeks, and from which day? Why not the 2-week streptococcal course — and why is the empirical gentamicin not
+     continued once the organism is known?"
    - "Can antibiotics close a leaking aortic valve? What would make surgery urgent, and what would make it an emergency?"
    - "Her cultures turned negative and she felt better. What does that prove, and what does it not?" (1.0.0's own lesson:
      culture clearance, structural recovery and cure are different things)
@@ -342,6 +370,7 @@ do not let the group attribute her death to the interruption alone (outcome 5 is
 | Calling an oral organism with satellitism a contaminant | `contaminant` feedback | `rb-diagnosis` |
 | Giving a penicillin despite the allergy | `penicillin-four-weeks` feedback; `benzylpenicillin` contraindicated | `rb-regimen`, `rb-avoided-harm` |
 | The short streptococcal course; counting from the first dose | `ceftriaxone-two-weeks`, `vancomycin-four-weeks` feedback | `rb-regimen` |
+| Continuing the empirical gentamicin on a valve with no recorded surgery | `vancomycin-four-weeks` and key feedback | `rb-regimen` |
 | An oral, resistant drug to go home | `oral-clindamycin-home` feedback; `oral-clindamycin` contraindicated | `rb-regimen`, `rb-avoided-harm` |
 | Waiting for the end of the course, for shock or for sterile cultures before surgery | `after-the-course`, `medical-until-shock`, `sterile-cultures-first` feedback; `defer-surgery` contraindicated | `rb-urgent-surgery` (critical), `rb-avoided-harm` |
 | Choosing surgery but never making the referral | no `urgent-valve-surgery` in `workup` | `rb-urgent-surgery` (critical) |
@@ -352,10 +381,12 @@ do not let the group attribute her death to the interruption alone (outcome 5 is
 ### Teaching points for the debrief
 
 The five `debrief.teachingPoints`: (1) think of endocarditis without fever — three culture sets before antibiotics, then
-TTE, TOE when needed (ESC 2023; 2023 Duke-ISCVID), then and now: the earlier scan's possible vegetation; (2) two major
+TTE and TOE, recommended even when the TTE is positive, once its preconditions are checked (ESC 2023; 2023 Duke-ISCVID),
+then and now: the earlier scan's possible vegetation; (2) two major
 criteria are enough — the organism in three separate sets and a vegetation; satellitism marks a nutritionally variant
-streptococcus; (3) treat Granulicatella as a harder organism — 6 weeks with an aminoglycoside for at least 2, vancomycin
-in an unclarified penicillin allergy, counted from the first negative culture (ESC 2023; AAAAI/ACAAI 2022), then and now:
+streptococcus; (3) treat Granulicatella as a harder organism — 6 weeks, an aminoglycoside only on a prosthetic valve,
+vancomycin in an unclarified penicillin allergy and a beta-lactam once it is safe, counted from the first negative
+culture (ESC 2023; AAAAI/ACAAI 2022), then and now:
 vancomycin-based treatment, resistance ruling out erythromycin and clindamycin; (4) a damaged valve needs surgery, not the
 end of the course — urgent within 3–5 days, emergency within 24 hours, vegetation ≥ 10 mm (ESC 2023), then and now: no
 surgical assessment recorded, a short-lived improvement; (5) a transfer must not break the treatment (ESC 2023; WHO 2019),
@@ -383,7 +414,7 @@ then and now: antibiotics interrupted after transfer, then death of unconfirmed 
   kit; she gives no number and no result that is not back. The pharmacist and the infectious diseases physician interpret only
   the cultures and susceptibilities the learner has read; the cardiac surgeon only the two echo reports and the TOE; none
   reads the outcome record.
-- **Measured (offline demonstration, 2026-10-30).** `embodied-autopilot.test.ts -t "cmcr-33729:"` passes in en and zh-CN:
+- **Measured (offline demonstration, 2026-11-14).** `embodied-autopilot.test.ts -t "cmcr-33729:"` passes in en and zh-CN:
   every objective done, in-world score equal to the clinical score, no "cannot do this".
 
 ## Source and adaptation (fidelity limits)
@@ -398,7 +429,9 @@ cultures cleared and short-lived improvement on vancomycin-based treatment; anti
 progressive breathlessness and death with unconfirmed possible mechanisms.
 
 **Adapted for teaching.** The ward setting and the four phases with their staging (the cultures and the echo requested in
-`admission` and resulted in `workup`; the repeat cultures and the transfer in `course`; none of these times is recorded);
+`admission` and resulted in `workup`; the repeat cultures and the transfer in `course`; none of these times is recorded;
+the learner's echo request — transthoracic first — returns the echocardiogram recorded at this presentation, whose
+modality 1.0.0 does not give, and its result says so);
 the patient's dialogue (lay rewording of the recorded facts; "the nerve was inflamed, pulpitis" for 牙髓炎); the staff; the
 five decisions, their options and feedback; the 13 interventions (their responses say the case does not record whether they
 were done, except the vancomycin-based treatment, which is recorded without doses); the rubric; the tests a learner would
@@ -416,7 +449,10 @@ date: 1.0.0's English puts it "years earlier", its Chinese does not; the case gi
 "initially there was no fever": whether fever appeared later is not recorded, so the patient says "at the start" and the
 unknowns list her later temperature. (5) "治疗效果不好" / "treatment helped little" follows the back pain: the case attaches it
 to the earlier treatment in general. (6) "之后加重" after the earlier echo is read as "things worsened afterwards", not as a
-measured progression of the regurgitation. All six are under "To verify".
+measured progression of the regurgitation. (7) "可能主动脉瓣赘生物及中度返流" / "possible aortic vegetation and moderate
+regurgitation" for the earlier echo does not name the regurgitant valve: its record says "with moderate regurgitation".
+(8) "双下肢无水肿，无瘀点瘀斑" does not say whether "no petechiae or bruising" refers to the legs or to the whole skin: the
+skin finding names no site. All eight are under "To verify".
 
 **Unknowns kept honest.** Vital signs and weight; the blood tests, ECG and chest film; the reaction to penicillin; regular
 medicines and any antibiotic before the cultures; the regimen's doses, companion drugs and dates; MICs; TOE, spinal and brain
@@ -426,8 +462,8 @@ done; it does not simulate its effect" — never that the article lacks somethin
 
 **Figures and privacy.** The report's only figure (`fig01.png`, an ultrasound panel) is **withheld** in
 `scripts/cmcr-105-media-review.json` ("Ultrasound panel carries hospital and calendar acquisition date/time."); `assets` is
-empty and the echo is taught from the written report. Which examination the figure shows is not stated in the review, so the
-echo result says only "the report's ultrasound figure … is withheld". The pseudonym 李清和 / Li Qinghe is kept from 1.0.0; no
+empty and the echo is taught from the written report. Which examination the figure shows is not stated in the review; the
+withheld figure is mentioned here and in the provenance notes, not in the in-world echo record. The pseudonym 李清和 / Li Qinghe is kept from 1.0.0; no
 hospital, date, initials or occupation appear.
 
 **Survey findings applied.** No case audit covered this case. The critic's gap 9 named it among the adult cases ending in
@@ -465,9 +501,16 @@ and the act is scored; identical key reasoning and teaching points without dated
 - **Order entry.** `orderMatching.rules` send any echo query with 既往 / 以前 / 之前 / 入院前 / 外院 / previous / prior / earlier /
   old / outside / before to the earlier echo record, any with 经食管 / 食道 / toe / tee / transoesophageal to the TOE, and any
   culture query with 药敏 / 耐药 / susceptib / sensitiv / resist to the susceptibility test.
-- **Corpus.** 40 test utterances (26 zh-CN, 14 en), written as learners speak; every required item and the phase twin are
+- **Independent review (2026-11-14).** Probing 66 natural questions found plain ones that reached nothing or the wrong
+  item: "What brings you in today?" and "这次怎么了？" (now `presenting`: `whatbringsyou`, `bringsyouin`, 怎么了);
+  questions about the recorded transfusion, meningitis and anaemia (now `pmh`: transfusion, meningitis, anaemia, 输血,
+  脑膜炎, 贫血); "Any chest pain?" tying `cough` with `chest-symptoms` (`cough` now excludes pain and palpitations);
+  "Do you inject drugs?" reaching `allergies` (now `social`); "How are you feeling now?" (now `breathless-now`, whose
+  course twin is `status-course`). Orders and treatments: `stop-antibiotics` excludes gentamicin / 庆大, so "stop the
+  gentamicin" never stops all antibiotics; "以前的超声" now reaches the earlier echo record.
+- **Corpus.** 47 test utterances (28 zh-CN, 19 en), written as learners speak; every required item and the phase twin are
   covered. Three look-alike negatives (`expect: []`) share everyday words with real questions: "您家住得离医院远吗？", "do you
-  live nearby?" and "who drove you in today?". `cases verify` reports 40/40 with no extra selections.
+  live nearby?" and "who drove you in today?". `cases verify` reports 47/47 with no extra selections.
 
 ## References
 
@@ -490,10 +533,9 @@ and the act is scored; identical key reasoning and teaching points without dated
    application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
 
 **DOIs.** The source DOI is the one the source map (`scripts/cmcr-105-sources.json`) records as verified
-(`publisherCheckedAt` 2026-10-29). The DOIs of refs 2, 3, 5 and 8 are the strings other library cases already cite
-(cmcr-33716, cmcr-1653413 and the editorial reviews of 2026-10-28/29); they were **not re-verified in this session**: the
-session's web-search budget was used up and the publisher and PubMed hosts were not reachable from it. Refs 4, 6 and 7 carry
-no DOI because none could be verified.
+(`publisherCheckedAt` 2026-10-29). The independent review (2026-11-14) confirmed ref 2's DOI on the guideline's own pages
+and ref 3's on a copy of the paper; the DOIs of refs 5 and 8 are the strings other library cases already cite and were not
+re-verified. Refs 4, 6 and 7 carry no DOI because none was verified.
 
 ### To verify
 
@@ -505,15 +547,17 @@ no DOI because none could be verified.
 - Whether fever appeared later ("一开始一直没有发热"), her temperature and other vital signs on admission, and her weight.
 - What the treatment for spondyloarthritis and iron-deficiency anaemia was (drugs, doses — NSAIDs, glucocorticoids, iron,
   any antibiotic) and which treatment "helped little"; whether spinal imaging was ever done (spondylodiscitis).
-- The earlier echocardiogram: when and where, its measurements, and what was done in response; what "之后加重" refers to.
-- The echo at this presentation: that the prolapse and severe regurgitation are aortic; the mitral valve (the apical
-  systolic murmur); perivalvular extension; chamber sizes; pulmonary pressure; whether TOE was done; what `fig01` shows and
-  whether its legend adds findings.
+- The earlier echocardiogram: when and where, which valve the moderate regurgitation refers to, its measurements, and
+  what was done in response; what "之后加重" refers to.
+- The echo at this presentation: whether it was transthoracic or transoesophageal; that the prolapse and severe
+  regurgitation are aortic; the mitral valve (the apical systolic murmur); perivalvular extension; chamber sizes;
+  pulmonary pressure; whether a TOE was done; what `fig01` shows and whether its legend adds findings.
 - The cultures: draw times and intervals, time to positivity, media, how satellitism was shown; whether any antibiotic
   preceded them; the full susceptibility panel (penicillin, ceftriaxone), the method and any MIC.
 - Laboratory values (haemoglobin, iron studies, white cells, CRP/ESR, procalcitonin, renal function, natriuretic peptide,
   urinalysis, rheumatoid factor), ECG and chest film.
 - The type and date of the penicillin reaction.
+- Whether "no petechiae or bruising" (双下肢无水肿，无瘀点瘀斑) describes the legs or the whole skin.
 - The regimen behind "万古霉素等" (companion drugs, doses, levels, start date), the date of the first negative culture and
   the days of treatment before the transfer.
 - Whether the Endocarditis Team or a cardiac surgeon assessed her and whether surgery was offered, declined or judged
@@ -525,30 +569,39 @@ no DOI because none could be verified.
 - The authors' discussion (nutritionally variant streptococci, the afebrile course, the earlier diagnoses), which 1.0.0 does
   not represent.
 
-**In the guidance (the primary texts were not reachable from this session):**
+**In the guidance (re-checked online on 2026-11-14 in the independent review; what is still open):**
 
-- ESC 2023 endocarditis: the Granulicatella/Abiotrophia recommendation (penicillin G, ceftriaxone or vancomycin for 6 weeks
-  with an aminoglycoside for at least the first 2; the statement on prolonged course, large vegetations, complications and
-  valve replacement); vancomycin 30 mg/kg/day in 2 doses and its level targets; gentamicin 3 mg/kg/day once daily;
-  benzylpenicillin 12–18 million units/day; the criteria of the 2-week regimen; duration counted from the first negative
-  culture; the blood-culture recommendation (three sets, separate venepunctures, spacing); TOE when TTE is inconclusive and
-  for local complications; the surgery table (emergency < 24 h, urgent 3–5 days; heart failure and vegetation ≥ 10 mm rows
-  and their classes); the Endocarditis Team / Heart Valve Centre recommendation; the partial-oral-therapy criteria (≥ 10 days
-  IV, stability, no surgical lesion) and OPAT; spinal imaging for back pain (the case cites no class); the empirical regimen
-  for community-acquired native-valve IE with a beta-lactam allergy (the reference path's empirical vancomycin with
-  gentamicin is teaching design).
-- 2023 Duke-ISCVID: that Granulicatella and Abiotrophia are listed among the typical organisms; the definition of separate
-  blood culture sets.
-- ESC 2021 heart failure: initial IV furosemide 20–40 mg in loop-naive patients (1–2 times the oral dose otherwise); oxygen if
-  SpO₂ < 90 % or PaO₂ < 60 mmHg; whether the 2023 focused update changes either.
-- AAAAI/ACAAI 2022 drug allergy: cephalosporins after non-severe, non-immediate penicillin reactions versus anaphylaxis or
-  severe cutaneous reactions; the de-labelling pathway.
-- WHO 2019 Medication safety in transitions of care: the document number and the recommendations cited (structured handover,
-  medicines reconciliation).
-- 中华医学会心血管病学分会 2014 consensus: title, volume, issue and pages, and whether a newer Chinese endocarditis guideline
-  supersedes it as of 2026-10.
-- The DOIs of refs 2, 3, 5 and 8, and DOIs for refs 4, 6 and 7; whether newer editions (an ESC heart-failure guideline after
+- ESC 2023 endocarditis — **read in the published text:** §7.5 (Granulicatella and Abiotrophia: penicillin G, ceftriaxone
+  or vancomycin for 6 weeks, an aminoglycoside for at least the first 2 weeks "in case of PVE"; large vegetations > 10 mm
+  and valve replacement around 50 %); Recommendation Table 7 (vancomycin 30 mg/kg/day in 2 doses; penicillin G 12–18
+  million U/day in 4–6 doses; ceftriaxone 2 g/day; gentamicin 3 mg/kg/day in 1 dose; the 2-week regimen only for
+  non-complicated NVE with normal renal function; with a penicillin allergy, desensitisation, or a cephalosporin after a
+  non-anaphylactic reaction, otherwise vancomycin, a beta-lactam being superior to a glycopeptide); Recommendation
+  Table 10 (community-acquired NVE with a penicillin allergy: cefazolin or vancomycin with gentamicin may be considered);
+  three sets at 30-minute intervals before antibiotics, from a peripheral vein; duration counted from the first day of
+  effective therapy (the first negative culture); TOE recommended in suspected IE even when the TTE is positive (except
+  isolated right-sided native-valve IE with a good-quality TTE); surgery timing (emergency within 24 h, urgent within
+  3–5 days) and the heart-failure and vegetation ≥ 10 mm rows; oral or outpatient therapy only after ≥ 10 days of
+  appropriate IV therapy in stable patients without an abscess or a valve lesion needing surgery; diagnosis and
+  management of complicated IE in a Heart Valve Centre with an Endocarditis Team; MRI or PET/CT for suspected
+  spondylodiscitis. **Still open:** vancomycin level targets (the case quotes none).
+- 2023 Duke-ISCVID: Granulicatella and Abiotrophia among the typical organisms — confirmed by comparative studies of the
+  criteria, not yet in the primary text; the definition of separate blood culture sets.
+- ESC 2021 heart failure (not re-checked): initial IV furosemide 20–40 mg in loop-naive patients (1–2 times the oral dose
+  otherwise); oxygen if SpO₂ < 90 % or PaO₂ < 60 mmHg; whether the 2023 focused update changes either.
+- AAAAI/ACAAI 2022 drug allergy: secondary summaries confirm a cephalosporin with a dissimilar side chain without testing
+  after a non-anaphylactic penicillin reaction and, as a conditional suggestion, after anaphylaxis; the primary wording
+  for severe cutaneous reactions and the de-labelling pathway are still to check.
+- WHO 2019 Medication safety in transitions of care (not re-checked): the document number and the recommendations cited
+  (structured handover, medicines reconciliation).
+- 中华医学会心血管病学分会 2014 consensus: the citation (Chin J Cardiol 2014;42(10):806-816) is confirmed by citing articles;
+  whether a newer Chinese endocarditis guideline supersedes it is open.
+- The DOIs of refs 5 and 8, and DOIs for refs 4, 6 and 7; whether newer editions (an ESC heart-failure guideline after
   2021, an AHA endocarditis statement after 2015) change any statement used here.
+
+**For a clinician of the specialty (cardiology, infectious diseases):** whether to continue the empirical gentamicin for a
+native-valve Granulicatella infection, where guidance differs (ESC 2023 adds an aminoglycoside only on a prosthetic
+valve); when a TOE is safe for a patient who cannot lie flat.
 
 ## Changelog
 
@@ -590,6 +643,22 @@ no DOI because none could be verified.
   clinician." because the collection contract matches that phrase case-sensitively); six named guidelines;
   `sourceTextChecked: false`; `authorChecks` and `sourceTextSha256` removed until the source pass; `sourceDoi` +
   `doiVerifiedAt` added; the citation without double spaces or the zero-padded issue.
+- **Independent review applied (2026-11-14).** *Regimen:* ESC 2023 §7.5 adds an aminoglycoside for Granulicatella only
+  "in case of PVE", so the key, learning outcome 3, teaching point 3, the conclusion, the pharmacist's brief and the
+  `vancomycin-four-weeks` distractor no longer teach 2 weeks of gentamicin for a valve with no recorded surgery; the key
+  names vancomycin alone while the reaction is clarified, and its feedback adds ESC 2023's preference for a beta-lactam
+  once it is safe. *Allergy:* the pharmacist's brief no longer attributes to AAAAI/ACAAI 2022 the avoidance of every
+  beta-lactam after anaphylaxis. *TOE:* ESC 2023 recommends it even when the TTE is positive — the key, its feedback,
+  teaching point 1 and the surgeon's brief now say so with its preconditions, and the reference path no longer orders a
+  TOE whose preconditions the case cannot show. *Oral step-down:* the oral clindamycin harm and feedback give ESC 2023's
+  criteria instead of "IV bactericidal therapy only". *Facts:* the recorded echo is no longer called transthoracic (the
+  test is named "Echocardiogram" and its result says the modality is not recorded); "without benefit"/"无效" → "with
+  little effect"/"效果不佳"; "a few" kept with the crackles and "about" with the 25 mm; the earlier echo's regurgitation is
+  no longer assigned to the aortic valve; "near the tailbone" → "the very bottom of my back". *Safety outcome:*
+  `critical` set on `vancomycin-gentamicin` (before the cultures), `benzylpenicillin` and `stop-antibiotics` — strict
+  validation had warned twice and the collection contract failed on it — and the Safety outcome paragraph added.
+  *Matcher:* keywords and seven test utterances for plain questions that reached nothing (Matcher notes). *Records:* the
+  withheld-figure remark moved out of the in-world echo record.
 
 ### 1.0.0 — 2026-10-28
 
@@ -600,13 +669,14 @@ no DOI because none could be verified.
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-33729/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33729 --lang en                                                 # 73 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-33729                       # depth floor, do-nothing 0, wrong-first 47 % < 100 %
+npm run -s cc -- cases verify cmcr-33729 --lang en                                                 # 71 steps · objectives 6/6 · decisions 5/5 · utterances 47/47 · rubric 30/30 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-33729                                       # depth floor, do-nothing 0, wrong-first 47 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33729:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33729:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-10-30: all five pass.
+Measured on 2026-11-14, after the independent review's fixes: all five pass (before them, strict validation reported two
+warnings — `critical` unset on two high-risk interventions — and the collection contract failed on the same lint).
 
 ## 中文摘要
 
@@ -624,8 +694,8 @@ Measured on 2026-10-30: all five pass.
 
 1. 在没有发热的患者中识别亚急性感染性心内膜炎，在任何抗菌药之前分别穿刺采集 3 套血培养，并尽快完成经胸超声心动图（ESC 2023）。
 2. 按 2023 年 Duke-ISCVID 标准归类：3 套血培养生长同一种细菌加赘生物，两项主要标准即可确诊，不需要发热。
-3. 为青霉素过敏类型不明的患者制订颗粒链菌心内膜炎方案：万古霉素 30 mg/kg/d、分 2 次，从首次转阴算起 6 周，至少前 2 周联用
-   庆大霉素，并问清过敏反应（ESC 2023；AAAAI/ACAAI 2022）。
+3. 为青霉素过敏类型不明的患者制订颗粒链菌心内膜炎方案：万古霉素 30 mg/kg/d、分 2 次，从首次转阴算起 6 周，不加 ESC 2023
+   只用于人工瓣膜感染的氨基糖苷类；同时问清过敏反应，确认安全后改用 β-内酰胺类（ESC 2023；AAAAI/ACAAI 2022）。
 4. 判断重度主动脉瓣反流合并心衰时的手术指征与时机：心内膜炎团队安排 3–5 天内限期手术，难治性肺水肿或休克时 24 小时内急诊
    手术；≥ 10 mm 赘生物支持早期手术（ESC 2023）。
 5. 区分血培养转阴、症状好转、瓣膜结构恢复与治愈，转院时保证静脉治疗不中断并做结构化交接（WHO 2019）。
@@ -633,12 +703,13 @@ Measured on 2026-10-30: all five pass.
 
 **关键决策。**
 
-- 决策 1（治疗之前）：先分别穿刺采集 3 套血培养、之后才用抗菌药，同时尽快做经胸超声，必要时经食管超声；干扰项为先用抗菌药、
+- 决策 1（治疗之前）：先分别穿刺采集 3 套血培养、之后才用抗菌药，尽快做经胸超声，条件允许时再做经食管超声（ESC 2023 即使
+  经胸超声阳性也推荐；先问吞咽困难和食管疾病、查凝血）；干扰项为先用抗菌药、
   等发热再抽血培养、只抽 1 套加炎症指标、先做腰骶椎磁共振。决策 1 答对并采集血培养、申请超声之后，检查结果才回报。
 - 决策 2（诊断）：两项主要标准确定感染性心内膜炎；干扰项为“无发热只能算可能”、污染、脊柱关节炎累及主动脉根部、非细菌性血栓性
   心内膜炎。
-- 决策 3（抗菌方案）：万古霉素 6 周（从首次转阴算起），至少前 2 周联用庆大霉素；干扰项为青霉素加庆大霉素 4 周、头孢曲松 2 周短
-  疗程、单用万古霉素 4 周从第一剂算起、口服克林霉素回家治疗。
+- 决策 3（抗菌方案）：单用万古霉素 6 周（从首次转阴算起；ESC 2023 只对人工瓣膜感染加用氨基糖苷类，过敏反应查清、确认安全后
+  改用 β-内酰胺类）；干扰项为青霉素加庆大霉素 4 周、头孢曲松 2 周短疗程、万古霉素加庆大霉素 4 周从第一剂算起、口服克林霉素回家治疗。
 - 决策 4（手术）：心内膜炎团队安排 3–5 天内的限期手术，病情恶化时 24 小时内急诊；干扰项为疗程结束后择期换瓣、休克时才手术、
   等血培养转阴再手术、仅凭赘生物大小今晚急诊。必须在检查回报阶段实际转诊，才算关键项达成。
 - 决策 5（转院）：静脉治疗一剂不漏的结构化交接；干扰项为血培养转阴即停药、转院途中改口服、只写诊断的出院小结。
@@ -651,3 +722,5 @@ Measured on 2026-10-30: all five pass.
 队、转诊心外科；首次作答即选治疗不中断的转院方案并完成交接、没有停药），沟通项由考官评判。记录中的处置（以万古霉素为主的治疗、
 转院后抗菌治疗中断）只作为历史对照，不代表现行推荐；不要把死亡单纯归因于治疗中断。本病例经人工智能辅助编辑审核，尚未经执业医
 师审核；待核实事项见上文 “To verify”。
+
+**安全结果。** 三项处置标记为关键（critical）：血培养之前给万古霉素联合庆大霉素、青霉素过敏反应未查清时给青霉素 G、转院时停用静脉抗菌药——任何一项在禁忌时实施，无论得分多少，本次运行的安全结果都判为未通过；口服克林霉素和推迟到疗程结束后再手术属于可以纠正的错误，只在评分中扣分。

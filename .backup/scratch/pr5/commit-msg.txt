@@ -4,16 +4,16 @@ Each re-authored from the facts its 1.0.0 recorded (the full source articles are
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-33666: Intermittent periumbilical pain and a very high platelet count · 5-year-old girl (5 decisions, 13 interventions;
-  review: 0 critical, 5 major, 15 minor findings)
-- cmcr-33789: Loss of consciousness after chest tightness · 66-year-old woman (5 decisions, 16 interventions;
-  review: 1 critical, 8 major, 10 minor findings)
-- cmcr-639083: Low blood glucose · 11-hour-old girl (5 decisions, 19 interventions;
-  review: 1 critical, 6 major, 11 minor findings)
-- cmcr-857953: Recurrent blood-streaked sputum and fever · 55-year-old woman (5 decisions, 14 interventions;
-  review: 2 critical, 6 major, 6 minor findings)
+- cmcr-1069544: Upper abdominal pain, nausea and vomiting · 58-year-old woman (5 decisions, 17 interventions;
+  review: 2 critical, 6 major, 14 minor findings)
+- cmcr-1322371: Empty right hemiscrotum after a road crash · 30-year-old man (4 decisions, 15 interventions;
+  review: 3 critical, 8 major, 8 minor findings)
+- cmcr-33729: Progressive breathlessness and orthopnoea after fatigue · 57-year-old woman (5 decisions, 13 interventions;
+  review: 3 critical, 8 major, 10 minor findings)
+- cmcr-857347: Thirst, then vomiting and breathlessness · 25-year-old man (5 decisions, 20 interventions;
+  review: 3 critical, 6 major, 5 minor findings)
 
-Reviews: 4 critical, 25 major and 42 minor findings; every critical and major one fixed or
+Reviews: 11 critical, 28 major and 37 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

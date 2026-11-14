@@ -21,9 +21,9 @@ while the ketoacidosis is treated.
 | Specialties | emergency medicine, endocrinology, respiratory medicine |
 | Patient | 孔予宁（化名）/ Kong Yuning (pseudonym), 25-year-old man; answers for himself (no companion) |
 | Phases | 4: `ed` → `ct-review` → `ward` → `followup` (static clock, no physiology model) |
-| Content | 25 history items (8 required, 15 unknown), 5 examination findings, 15 investigations, 20 interventions (2 `critical`), 5 decisions, 12 rubric items (3 critical), 4 staff, 40 matcher utterances |
+| Content | 25 history items (8 required, 15 unknown), 5 examination findings, 15 investigations, 20 interventions (2 `critical`), 5 decisions, 12 rubric items (3 critical), 4 staff, 45 matcher utterances |
 | Languages | Simplified Chinese (source language) and English |
-| Review status | `editorial` (AI-assisted, 2026-10-30) against the cited guidance; patient facts not yet checked against the full source article; **not yet reviewed by a licensed clinician** |
+| Review status | `editorial` (AI-assisted, 2026-10-30; independent review 2026-11-14) against the cited guidance; patient facts not yet checked against the full source article; **not yet reviewed by a licensed clinician** |
 | Version | 1.1.0 (see Changelog) |
 
 ## Learning outcomes
@@ -33,7 +33,7 @@ while the ketoacidosis is treated.
 2. Use Winter's formula to recognise maximal respiratory compensation in severe metabolic acidosis, and explain why
    Kussmaul breathing is not an indication for NIV (BTS/ICS 2016) and why sedation or under-set ventilation is dangerous.
 3. Start first-hour treatment — isotonic fluid, a fixed-rate insulin infusion of 0.1 units/kg/h, potassium replacement
-   at 3.5–5.5 mmol/L and no bicarbonate at pH 7.0 or above — and adapt fluids and monitoring to a glucose-corrected
+   at 3.5–5.5 mmol/L once he is passing urine, and no bicarbonate at pH 7.0 or above — and adapt fluids and monitoring to a glucose-corrected
    sodium of about 118–121 mmol/L (2024 consensus; JBDS-IP 2023; European hyponatraemia guideline 2014).
 4. Recognise crepitus at the neck and chest after vomiting as air escaping from the chest, keep the patient nil by mouth
    and request CT for a possible oesophageal perforation (WSES 2019) before considering endoscopy.
@@ -48,7 +48,7 @@ Front-ends show these before play only on request (they name the diagnosis) and 
 ## Clinical summary (spoilers)
 
 **Diagnosis:** diabetic ketoacidosis (new-onset diabetes) complicated by spontaneous pneumomediastinum and subcutaneous
-emphysema, with coffee-ground vomiting, a severe hyponatraemia and raised creatinine.
+emphysema, with coffee-ground vomiting, a profound hyponatraemia (< 125 mmol/L) and a raised creatinine.
 
 - **History:** over a month of dry mouth and heavy drinking; about 10 kg lost over the past month; three days of poor
   appetite, weakness, nausea and coffee-ground vomiting; marked breathlessness from the day before admission. No previous
@@ -66,18 +66,19 @@ emphysema, with coffee-ground vomiting, a severe hyponatraemia and raised creati
   air had largely resorbed within about a week; laboratory values later recovered; discharge after about two weeks; no
   recurrence over two years of follow-up.
 - **Today's answer:** severe DKA by bicarbonate with JBDS level-2 markers → HDU; isotonic fluid, fixed-rate insulin
-  0.1 units/kg/h, potassium in the fluids from the start (K⁺ 3.8 mmol/L), no bicarbonate (pH 7.10 ≥ 7.0), corrected
+  0.1 units/kg/h, potassium in the fluids once he is passing urine (K⁺ 3.8 mmol/L, creatinine 217 µmol/L; JBDS gives none
+  in the first resuscitation litre), no bicarbonate (pH 7.10 ≥ 7.0), corrected
   sodium tracked (≈ 118–121 mmol/L, effective osmolality ≈ 250 mOsm/kg: hypotonic) with neurological observations at
   age 25; protect the respiratory compensation (no NIV, no intubation, no sedation); nil by mouth, CT before endoscopy and a thoracic
   surgical review until oesophageal rupture is excluded; conservative care of the pneumomediastinum, drainage only for
   compromise; basal insulin before the infusion stops, autoantibody-based classification, education.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology (staged evidence by phase)
 
 | Phase | Opens when | What the learner can get | Records staged here |
 |---|---|---|---|
 | `ed` — arrival in the ED resus area | start | history (25 items), examination (5 findings), bedside and laboratory tests, all first-hour treatment, the CT request | glucose, urinalysis, arterial gas, electrolytes and renal function; placeholders ("no result is recorded") for blood ketones, FBC, ECG, chest X-ray, HbA1c, C-peptide and islet autoantibodies; the CT request (report not back yet) |
-| `ct-review` — the chest CT report | objectives 1–4 complete (story and examination; why he breathes like this; the first-hour treatment given; the examination findings acted on, including nil by mouth and the CT request) | the CT report in the records; repeat bedside and laboratory tests | chest CT report; "no repeat result is recorded" for glucose, urine ketones, gas and electrolytes, and placeholders for the other tests |
+| `ct-review` — the chest CT report | objectives 1–4 complete (story and examination; why he breathes like this; the first-hour treatment given; the examination findings acted on, including nil by mouth and the CT request) | the CT report in the records; repeat bedside and laboratory tests | chest CT report; "the CT has been done" for a repeat CT request; "no repeat result is recorded" for glucose, urine ketones, gas and electrolytes, and placeholders for the other tests |
 | `ward` — later in the admission (location: ward) | objectives 1–5 complete (CT read, decision 4 right) | gastroscopy at the endoscopy suite, the step-down plan | gastroscopy; placeholders for C-peptide and islet autoantibodies; the same repeat-test placeholders; no repeat CT recorded |
 | `followup` — recorded course and outcome | objectives 1–5 and decision 5 | the outcome record (with the approved figure) | reported course and outcome |
 
@@ -95,15 +96,16 @@ so no placeholder can open a decision or score an item.
 
 | # | objective | completes when |
 |---|---|---|
-| 1 | `obj-story-exam` Take his story and examine his breathing, neck and chest wall | presenting complaint, breathlessness onset, thirst, weight loss, vomiting and what came up asked; vital signs, breathing, neck, chest and abdominal wall, lungs examined |
+| 1 | `obj-story-exam` Take his story and examine him | presenting complaint, breathlessness onset, thirst, weight loss, vomiting and what came up asked; vital signs, breathing, neck, chest and abdominal wall, lungs examined |
 | 2 | `obj-why-breathing` Find what is driving his breathing | glucose, urinalysis and arterial gas read (`ed`); `acid-base` right |
 | 3 | `obj-first-hour` Start the first hour of treatment | electrolytes read (`ed`); `first-hour` right; isotonic fluid, insulin infusion and potassium given |
 | 4 | `obj-air-plan` Act on what the examination found | `air-leak-plan` right; nil by mouth; CT requested |
 | 5 | `obj-ct` Read the chest CT and adjust the plan | CT report read (`ct-review`); `ct-reading` right |
 | 6 | `obj-step-down` Plan the step-down and discharge, then review the outcome | gastroscopy read (`ward`); `discharge-plan` right; outcome record read |
 
-Titles name no finding or diagnosis ("Act on what the examination found"); hints are Socratic and state no result the
-learner has not obtained ("If your hands found something unexpected at his neck or chest wall, what is the most dangerous
+Titles name no finding or diagnosis ("Act on what the examination found"), and neither a title nor a hint says where the
+examination will find something (the guidance, shown on request, lists the manoeuvres); hints are Socratic and state no
+result the learner has not obtained ("If the examination found something unexpected, what is the most dangerous
 explanation after days of vomiting?"). No completion condition can become permanently false (no phase leaf, no
 `whenIndicated`, no `decidedFirstTry`), so a learner who acts late can still finish (contract check).
 
@@ -119,8 +121,9 @@ explanation after days of vomiting?"). No completion condition can become perman
   thoracic surgical review. Distractors: `blame-kussmaul` (alveolar rupture assumed, no imaging), `scope-first` (urgent
   gastroscopy before CT), `bilateral-drains` (drains for "bilateral pneumothoraces" without imaging).
 - **3 `first-hour`** (single; needs decision 1, the electrolytes and vital signs). Key: `fluid-insulin-potassium` —
-  isotonic fluid, fixed-rate insulin 0.1 units/kg/h, potassium in the fluids from the start, hourly glucose and ketones,
-  close sodium checks and a high-dependency bed. Distractors: `bicarbonate-first`, `insulin-hold-potassium` ("3.8 is
+  isotonic fluid, fixed-rate insulin 0.1 units/kg/h, potassium in the fluids once he is passing urine (JBDS-IP 2023 gives
+  none with the first resuscitation litre; his creatinine is 217 µmol/L and his urine output is not recorded), hourly
+  glucose and ketones, close sodium checks and a high-dependency bed. Distractors: `bicarbonate-first`, `insulin-hold-potassium` ("3.8 is
   normal"), `hypotonic-fluid` (0.45 % saline "because he must be hyperosmolar").
 - **4 `ct-reading`** (single; needs decisions 2 and 3 and the CT report). Key: `conservative-watch` — spontaneous
   pneumomediastinum likeliest; stay nil by mouth with gastric decompression, continue DKA treatment, watch the airway,
@@ -132,7 +135,8 @@ explanation after days of vomiting?"). No completion condition can become perman
 
 Every option has its own feedback (2–4 sentences, naming the guidance and year). Option ids name content, never
 correctness; in no single-best decision is the key the longest option in either language (measured: the key is shorter
-than the longest distractor in all four).
+than the longest distractor in all four), and in the select-all decision the three keys are not the three longest
+options (in English a distractor is the longest; in Chinese a distractor ties a key).
 
 ### Rubric (11 deterministic items, total weight 31, + 1 examiner-judged)
 
@@ -151,7 +155,7 @@ than the longest distractor in all four).
 | `rb-no-positive-pressure` | safety | 3 | **critical** — no NIV and no intubation; scored once decision 1 or 4 was attempted or either was given (`scoredWhen`) |
 | `rb-communication` | communication | 1 | examiner-judged (Calgary–Cambridge; case-specific guidance) |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (re-measured with the reducer on 2026-11-14, after the independent review)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -194,23 +198,27 @@ of induction and a ventilator that cannot match his own minute ventilation remov
 7.10. The other high-risk step, `sodium-bicarbonate`, is explicitly `critical: false` (not indicated at pH 7.10, harmful
 but recoverable with monitoring), as are the moderate-risk `friii` and `potassium-replacement` before the potassium is
 known (a process error, recoverable once the level is measured — his was 3.8 mmol/L), `half-normal-saline` and
-`metformin-only`. Neither insulin item nor potassium has a dose preset (`doseSpec`): the insulin rate is per kilogram and
-his weight is not recorded, and potassium is prescribed as a concentration in the fluid (40 mmol/L), which a preset cannot
-express.
+`metformin-only`. Neither insulin item nor potassium has a dose preset (`doseSpec`): the insulin infusion is dosed per
+kilogram as a schedule (0.1 units/kg/h, reduced to 0.05 units/kg/h once the glucose is below 14 mmol/L) and his weight is
+not recorded, so a per-kg preset could not be compared with an order in absolute units (`cases validate` requires
+`patient.weightKg` for one, and none may be invented); potassium is prescribed as a concentration in the fluid
+(40 mmol/L), which a preset cannot express.
 
 ## Reference path (`solution`)
 
-79 steps, static clock: start → presenting complaint, breathlessness onset, thirst, weight loss, appetite and energy,
+77 steps, static clock: start → presenting complaint, breathlessness onset, thirst, weight loss, appetite and energy,
 vomiting, what came up → vital signs, breathing, neck, chest and abdominal wall, lungs → **monitoring**, **IV cannula
 and bloods** → glucose, urinalysis, blood ketones (no result recorded), **arterial gas**, **electrolytes**, ECG and FBC (no
 results recorded) → `acid-base` → previous diabetes, other illness, medicines, allergies → **isotonic fluid** →
-`first-hour` → **insulin infusion**, **potassium**, monitoring plan, HDU referral → the rest of the history (pain, neck,
+`first-hour` → monitoring plan (urine output among it) and HDU referral → **insulin infusion**, **potassium** (once he
+is passing urine) → the rest of the history (pain, neck,
 swallowing, abdomen, urine, fever and cough, injury, drowsiness, smoking and alcohol, drugs, family, operations, home,
 his worry) → `air-leak-plan` → IV PPI, chest X-ray and HbA1c (no results recorded), thoracic surgical review, **nil by
 mouth**, **CT request** → (phase `ct-review`) CT report → gastric decompression → `ct-reading` → (phase `ward`)
-gastroscopy, C-peptide and islet autoantibodies (no results recorded), basal insulin, diabetes education →
+gastroscopy, islet autoantibodies (no result recorded; no C-peptide, which is not tested within 2 weeks of a
+hyperglycaemic emergency), basal insulin, diabetes education →
 `discharge-plan` → (phase `followup`) outcome record → finish. `cases verify`: objectives 6/6, decisions 5/5, rubric
-31/31 (100 %), utterances 40/40. It gives no intervention while contraindicated, and replays as the in-world
+31/31 (100 %), utterances 45/45. It gives no intervention while contraindicated, and replays as the in-world
 demonstration (示范接诊) in both languages.
 
 ## Clinical numbers check
@@ -245,7 +253,8 @@ and are labelled as such.
 - Winter's formula: expected PaCO₂ = 1.5 × 3.1 + 8 ± 2 = 12.65 ± 2 ≈ 10.7–14.7 mmHg; recorded 10 mmHg = at/just below the
   lower limit (maximal compensation; PaCO₂ 10 mmHg ≈ 1.3 kPa).
 - Glucose-corrected sodium: (26.3 − 5.6) / 5.6 = 3.7 steps → +1.6 per step ≈ 117.9 mmol/L; +2.4 per step ≈ 120.9 mmol/L
-  (the case rounds to "about 118–121 mmol/L").
+  (the case rounds to "about 118–121 mmol/L"). The 2024 consensus states the 1.6 factor (per 5.6 mmol/L of glucose);
+  the 2014 European guideline's own formula adds 2.4 mmol/L per 5.5 mmol/L above 5.5 mmol/L, ≈ 121.1 mmol/L.
 - Effective osmolality: 2 × 112 + 26.3 ≈ 250 mOsm/kg (hypotonic; urea not recorded, so total osmolality cannot be
   calculated).
 - Anion gap: not calculable (no chloride recorded).
@@ -255,8 +264,8 @@ and are labelled as such.
 - Unit conversions for reference only: glucose 26.3 mmol/L ≈ 474 mg/dL; creatinine 217 µmol/L ≈ 2.45 mg/dL.
 
 No reference range, weight, blood pressure, saturation, chloride, urea, ketone, haemoglobin or repeat value was
-reconstructed. The insulin dose is given as a formula (0.1 units/kg/h) because his weight is not recorded, so it has no
-machine-readable preset; potassium is written as a concentration in the fluid (40 mmol/L), which a preset cannot express.
+reconstructed. The insulin dose is given as a formula (0.1 units/kg/h, then 0.05 units/kg/h below a glucose of
+14 mmol/L) because his weight is not recorded, so it has no machine-readable preset; potassium is written as a concentration in the fluid (40 mmol/L), which a preset cannot express.
 
 ## Facilitator notes
 
@@ -269,7 +278,8 @@ machine-readable preset; potassium is written as a concentration in the fluid (4
 - **Analysis:**
   - By Winter's formula, what PaCO₂ goes with a bicarbonate of 3.1 mmol/L — and what would happen to his pH if he were
     sedated or put on a ventilator at a "normal" rate?
-  - Why is a potassium of 3.8 mmol/L not reassuring in this acidosis? What did you need before the insulin started?
+  - Why is a potassium of 3.8 mmol/L not reassuring in this acidosis? What did you need before the insulin started — and,
+    with a creatinine of 217 µmol/L, what did you check before the potassium went into the fluid?
   - Sodium 112 with glucose 26.3: what is the corrected sodium and the effective osmolality — is he hyperosmolar or
     hypotonic, and what does that mean for the fluid and for a 25-year-old's brain?
   - After days of vomiting, crepitus in the neck: what is the one diagnosis you could not afford to miss, and why does
@@ -288,6 +298,7 @@ machine-readable preset; potassium is written as a concentration in the fluid (4
 | Reading the breathing as respiratory failure and reaching for NIV or intubation | decision 1 distractor `added-respiratory-acidosis`; `niv` and `rsi-intubation` are contraindicated and **critical** (safety outcome fails); `rb-no-positive-pressure` (critical) |
 | Starting insulin (or potassium) before the potassium result | `friii` and `potassium-replacement` contraindicated until the electrolytes are read; `rb-dka-acts` (critical) lost |
 | Calling K⁺ 3.8 "normal" and leaving potassium out | decision 3 distractor `insulin-hold-potassium` |
+| Potassium into the first resuscitation litre, or without checking that he is passing urine (creatinine 217 µmol/L) | decision 3 key and feedback (JBDS-IP 2023), the potassium item's dose text and the preceptor's question; not scored separately, because his urine output is not recorded |
 | Bicarbonate for pH 7.10 | decision 3 distractor; `sodium-bicarbonate` contraindicated; `rb-first-hour-plan` lost |
 | Treating the high glucose as "hyperosmolar" and giving 0.45 % saline | decision 3 distractor `hypotonic-fluid`; `half-normal-saline` contraindicated; `rb-first-hour-plan` lost |
 | Blaming the crepitus on Kussmaul breathing without imaging; feeding him | decision 2 distractor `blame-kussmaul`; the CT stage does not open without nil by mouth and a CT request; `rb-air-acts` (critical) |
@@ -320,7 +331,8 @@ only for compromise); the step-down and classification (2024 consensus, ADA Stan
   potassium), `medications`, `cardiac-monitor`, `oxygen`, `suction` (nasogastric tube), `niv` and `ventilator` (the resus
   ventilator) and `airway` (the crash cart) — only for the contraindicated NIV and intubation steps —, `point-of-care`, `lab-*`, `ecg-12lead`, `xray`, `ct`, `endoscopy`, `records`; all are
   provided by the general hospital (`caseCapabilityGaps` is empty).
-- **Voice and scope:** he is a conscious adult and answers for himself (no companion; `nonVerbalWhen` not set). Nil by
+- **Voice and scope:** he answers for himself (no companion; `nonVerbalWhen` not set) — the history-taking is the
+  case's staging; his conscious level is not recorded. Nil by
   mouth and the nasogastric tube are within nursing scope; NIV and intubation are medical acts.
 - **Monitor:** no physiology model; the triage note gives the heart and respiratory rates, and the monitoring response
   says no other reading is recorded.
@@ -359,7 +371,7 @@ seven `unknowns` list the rest.
 rubric, objectives; the staff (Nurse Wen, Dr Long, Dr Bai, Dr Ji); the patient's voiced worry ("Is this something
 serious?") and his acting notes; the ED resus and ward locations.
 
-**Survey findings applied (survey.json; template defects and governance):** the 1.0.0 triage note named the answer
+**Collection survey findings applied (template defects and governance):** the 1.0.0 triage note named the answer
 ("Assess the metabolic crisis alongside the source of thoracic air") — replaced by a handover of the presenting facts;
 the specialty id `respiratory` → canonical `respiratory-medicine`; the template's generic history slots (vaccinations
 for an adult, "other admissions", record-facing answers such as "the source case does not provide that information" in
@@ -377,9 +389,9 @@ imaging before endoscopy.
 
 ## Matcher notes
 
-- 40 test utterances (21 Chinese, 19 English), written as learners speak — colloquial ("Been really thirsty lately?"),
+- 45 test utterances (24 Chinese, 21 English), written as learners speak — colloquial ("Been really thirsty lately?"),
   abbreviated ("how long have u had the dry mouth"), British lay words ("Are you weeing more than usual?") — including
-  three look-alike negatives (sleep, travel, eyesight) that must select nothing. `cases verify`: 40/40, no extra
+  three look-alike negatives (sleep, travel, eyesight) that must select nothing. `cases verify`: 45/45, no extra
   selections.
 - Keywords that would reduce to one token are written run together (`whatbringsyou`, `outofbreath`, `whatcameup`,
   `whosathome`).
@@ -387,6 +399,12 @@ imaging before endoscopy.
   what you brought up?" reaches `vomit-look`); `vomiting` ignores questions about colour, blood and appearance;
   `abdominal-pain` ignores chest, neck and back; `diabetes-before` ignores family words (→ `family-diabetes`);
   `medicines` ignores allergy and street-drug words; `thirst` ignores alcohol.
+- Probed in the independent review (2026-11-14) with the core matcher, question by question, in both languages: "有没有吐？"
+  (a required item), "How long have you been unwell?" / "这次病了多久？", "Are you eating?" / "吃饭怎么样？" and "Examine his
+  abdomen" / "Feel his tummy" reached nothing or the wrong item; keywords and five utterances were added, with exclusions
+  that keep look-alikes apart (`appetite-energy` ignores 吐/vomit/stick, so "吐的东西什么颜色？" and "Does food stick when
+  you eat?" stay with `vomit-look` and `swallowing`; `neck-palpation` ignores abdomen words). "What did you bring up?"
+  still reaches nothing: a "bring up" keyword pulled "What brings you in?" to `vomit-look`, so it was left out.
 - Every required item (presenting, breath-onset, thirst, weight-loss, vomiting, vomit-look, diabetes-before, allergies)
   has at least one paraphrase; no utterance equals a canonical question or a keyword.
 
@@ -403,23 +421,49 @@ imaging before endoscopy.
 9. American Diabetes Association Professional Practice Committee. 16. Diabetes care in the hospital: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S339-S355. doi:10.2337/dc26-S016
 
 Checked by web search on 2026-11-13 (search summaries; the publisher and PMC pages could not be opened from this
-session): the WSES 2019 citation and DOI, and its recommendation of CT for a suspected perforation (Grade 1B, stated in
-its foreign-body section); the BTS/ICS 2016 threshold for NIV (pH < 7.35 with pCO₂ > 6.5 kPa despite optimal medical
+session): the WSES 2019 citation and DOI, and its recommendation of CT for a suspected perforation (Grade 1B in its
+foreign-body section; the perforation section's own statement, read in the independent review below, is Grade 1C); the BTS/ICS 2016 threshold for NIV (pH < 7.35 with pCO₂ > 6.5 kPa despite optimal medical
 therapy, Grade A); the 2024 consensus diagnostic criteria (urine ketones 2+ or more accepted), its potassium rules
 (insulin delayed below 3.5 mmol/L with replacement at 10 mmol/h; replacement below 5.0 mmol/L, aiming at 4–5 mmol/L),
 dextrose below 250 mg/dL and the resolution criteria; the JBDS severity markers for level-2 care (among them a
 bicarbonate below 5 mmol/L and a pulse over 100/min), its 40 mmol/L of potassium at 3.5–5.5 mmol/L and its more cautious
 fluids at 18–25 years; the 10 mmol/L limit in the first 24 hours of the 2014 European hyponatraemia guideline; the ADA
 Standards of Care 2026 section 2 citation and its autoantibody recommendation for adults whose features overlap with
-type 1 diabetes (recommendation 2.8 since 2024). References 2, 3 and 9 also stand as checked in `dka-adult` (the 2024
+type 1 diabetes (numbered 2.10 in the 2026 edition). References 2, 3 and 9 also stand as checked in `dka-adult` (the 2024
 consensus severity bands and the 1–2 h overlap; JBDS 02; the 2026 hospital chapter's citation). Reference 6 is cited
 without a DOI because the DOI was not confirmed.
+
+**Independent review (2026-11-14): guidance read in full.** The 2024 consensus (its Diabetologia copy,
+doi:10.1007/s00125-024-06183-8): potassium replacement started below 5.0 mmol/L, aiming at 4–5 mmol/L, with 20–30 mmol per
+litre of fluid sufficient for most patients; below 3.5 mmol/L, 10 mmol/h with insulin delayed; isotonic saline or a
+balanced crystalloid at 500–1000 mL/h for the first 2–4 h in adults *without renal or cardiac compromise*; bicarbonate only
+below pH 7.0; Table 2's severity bands (moderate pH 7.0–7.25, bicarbonate 10 to < 15; severe pH < 7.0, bicarbonate < 10,
+suggested care in the ICU; not every variable need be met); a 1.6 mmol/L sodium rise per 5.6 mmol/L fall in glucose;
+0.05 U/kg/h with dextrose once the glucose is below 13.9 mmol/L; resolution at ketones < 0.6 mmol/L with venous pH ≥ 7.3
+or bicarbonate ≥ 18 mmol/L; basal insulin 1–2 h before the infusion stops. JBDS 02 (revised March 2023): the severity
+markers (bicarbonate < 5.0 mmol/L, pulse > 100/min, among others) that prompt referral to a Level 2/HDU bed; **no
+potassium with the initial resuscitation fluid** (pre-renal kidney injury), then 40 mmol/L while the potassium is below
+5.5 mmol/L **and the person is passing urine**; more cautious fluids at 18–25 years; the infusion reduced to
+0.05 units/kg/h below 14 mmol/L; bicarbonate may delay the fall in ketones; in a new diagnosis, basal insulin
+0.25 units/kg once daily alongside the infusion. The 2014 European hyponatraemia guideline: 6.2.1.1 (correct the measured
+sodium for the glucose; 2.4 mmol/L per 5.5 mmol/L above 5.5 mmol/L), 6.1.1.3 ("profound" hyponatraemia < 125 mmol/L),
+7.4.1.4 (no rise of more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after). WSES 2019, perforation
+section (PMC6544956): contrast-enhanced CT and CT oesophagography are the imaging of choice (1C); diagnostic endoscopy
+helps when the CT is doubtful (1C), with the risk of enlarging the perforation; non-operative care with nil by mouth,
+broad-spectrum antibiotics and a PPI (1C) and an endoscopically placed nasogastric tube (2A); CO₂ insufflation appears only
+in its trauma section, and the case does not attribute it to WSES. ADA Standards of Care 2026, section 2 (PMC12690183;
+S27–S49 confirmed): recommendation 2.10 (islet autoantibodies in adults whose features overlap with type 1 diabetes,
+grade E) and "do not test C-peptide within 2 weeks of a hyperglycemic emergency"; section 16's citation (S339–S355) was
+confirmed in a secondary listing. BTS/ICS 2016 recommendation 25 (NIV when pH < 7.35 and pCO₂ > 6.5 kPa persist or
+develop despite optimal medical therapy, grade A) was read in its BMJ Open Respiratory Research copy.
 
 ### To verify
 
 **In the source article** (the facts a source pass must check or restore):
 
-- The full admission observations: blood pressure, temperature, oxygen saturation, conscious level (GCS) and weight.
+- The full admission observations: blood pressure, temperature, oxygen saturation, conscious level (GCS) and weight
+  (with a weight, the insulin infusion could carry a per-kg preset dose), and his urine output on admission and during
+  treatment (the condition for potassium in the fluid).
 - The admission laboratory panel: chloride (anion gap), urea, osmolality, blood β-hydroxybutyrate, lactate, haemoglobin
   and white count, amylase/lipase, HbA1c — and any repeat values during treatment.
 - The sodium of 112 mmol/L: its unit, whether a corrected value is reported, and the method (lipaemia, direct electrode).
@@ -441,14 +485,18 @@ without a DOI because the DOI was not confirmed.
 
 **In the guidance** (statements this pass could not confirm online):
 
-- WSES 2019 esophageal emergencies: the perforation section's own statements and grades on CT with water-soluble oral
-  contrast, flexible endoscopy after CT and CO₂ insufflation, and the criteria for non-operative care.
-- The 2024 consensus: the amount of potassium per litre of fluid (20–30 mmol/L according to `dka-adult`) and the
-  first-hour fluid volume; its bicarbonate threshold (pH < 7.0) was confirmed through secondary summaries only.
-- The 2014 European hyponatraemia guideline: its wording on correcting the measured sodium for glucose (the case uses the
-  1.6 and 2.4 mmol/L factors) and how its correction limits apply while insulin lowers the glucose.
-- ADA Standards of Care 2026: the 2026 number and wording of the autoantibody recommendation, the timing of C-peptide
-  after ketoacidosis, and section 16's wording on correction insulin alone.
+- WSES 2019: its perforation section says "CT oesophagography" without naming the contrast, and mentions CO₂
+  insufflation only for trauma; the case teaches water-soluble contrast and CO₂ insufflation as general practice, not as
+  WSES statements — a surgeon should confirm both.
+- Potassium with a creatinine of 217 µmol/L: the case keys JBDS-IP 2023's rule (none in the first resuscitation litre,
+  then 40 mmol/L once he is passing urine) beside the 2024 consensus's (replacement below 5.0 mmol/L, which names no
+  urine condition); an endocrinologist or acute physician should confirm the keyed plan.
+- Fluids: the 2024 consensus's 500–1000 mL/h applies to adults without renal or cardiac compromise; whether a creatinine of
+  217 µmol/L of unknown chronicity counts as compromise is a clinical judgement the case leaves to the learner.
+- The 2014 European hyponatraemia guideline: how its correction limits apply while insulin lowers the glucose (the case
+  applies the 10 mmol/L limit to the glucose-corrected sodium, an inference).
+- ADA Standards of Care 2026, section 16: the exact 2026 wording on correction insulin alone (confirmed only through
+  secondary summaries).
 - BTS/ICS 2016: the DOI.
 - Intubation in DKA: no society guideline on ventilator targets was found; the `rsi-intubation` harm text rests on
   physiology (induction apnoea, matching his minute ventilation, positive pressure with mediastinal air).
@@ -488,6 +536,28 @@ without a DOI because the DOI was not confirmed.
   `rb-first-hour-plan` and `rb-step-down`); the reported diagnosis added to the outcome record; "no repeat result is
   recorded" placeholders in the later phases for the tests a learner would repeat (so a re-check is answered, not
   rejected); the WSES DOI added after verification; the score table re-measured.
+- **Independent review (2026-11-14).** Against the 1.0.0 facts, the standard and guidance read in full (above):
+  - Potassium keyed as JBDS-IP 2023 gives it — none in the first resuscitation litre, then 40 mmol/L while he is passing
+    urine — instead of "from the start", which no cited guideline says; his creatinine (217 µmol/L) and unrecorded urine
+    output named in the key, its feedback, the potassium dose text, a reasoning step, a teaching point, a learning
+    outcome and the preceptor's questions; the reference path sets the monitoring plan (urine output) before insulin and
+    potassium; the consensus's 20–30 mmol per litre added.
+  - The insulin infusion's dose text states the guideline schedule (0.1, then 0.05 units/kg/h below 14 mmol/L; JBDS-IP
+    2023, 2024 consensus) and its zh rate as "单位/kg/h" (the dose reader took "单位/(kg·h)" for an absolute dose):
+    the new high-alert lint had failed `cases validate --strict`; no per-kg preset, since his weight is not recorded.
+  - Wording that added to the facts: the conclusion's "crepitus from neck to abdominal wall" (now neck, front of the chest
+    and abdominal wall); "dry all the time", "no strength at all", "nothing wrong with my lungs before" (1.0.0: no
+    chronic lung disease); the persona's weight loss "for over a month" (1.0.0: over the past month); "the gastroscopy
+    later in the admission" (1.0.0: after the CT); responses implying he was nil by mouth or had no hypotonic fluid.
+  - "Severe" hyponatraemia renamed "profound" (< 125 mmol/L), as the 2014 European guideline the case cites names it;
+    bicarbonate's slower ketone clearance attributed to JBDS-IP 2023; the consensus's ICU suggestion for severe DKA;
+    C-peptide timing (not within 2 weeks of a hyperglycaemic emergency) and C-peptide taken out of the reference path;
+    the consensus's fluid rate limited to adults without renal compromise; urine output added to the unknowns.
+  - The first objective's title and two hints no longer say where the examination finds something; the select-all
+    decision's keys are no longer its three longest options (English); a placeholder for a repeat CT request.
+  - Matcher: five gaps found by probing plain questions fixed, with five new utterances (45).
+  - README: the WSES grade and ADA recommendation number corrected, guidance read in full listed, "To verify" narrowed
+    to what is still open, the case-check path and validation results updated.
 
 ### 1.0.0 — 2026-10-28
 
@@ -497,13 +567,13 @@ Initial de-identified adaptation from a fill-in template (three decisions, no in
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-857347/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-857347 --lang en                                                 # 79 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 31/31 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-857347                       # depth floor, do-nothing 0, wrong-first 55 % < 100 %
+npm run -s cc -- cases verify cmcr-857347 --lang en                                                 # 77 steps · objectives 6/6 · decisions 5/5 · utterances 45/45 · rubric 31/31 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-857347                                      # depth floor, do-nothing 0, wrong-first 55 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-857347:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-857347:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-13 for version 1.1.0: all five pass.
+Measured on 2026-11-14 for version 1.1.0, after the independent review: all five pass.
 
 ## 中文摘要
 
@@ -518,8 +588,8 @@ Measured on 2026-11-13 for version 1.1.0: all five pass.
 
 1. 根据血糖、酮体和血气诊断酮症酸中毒并分级，决定治疗地点（2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识；JBDS-IP 2023）。
 2. 用 Winter 公式识别最大呼吸代偿，说明深快呼吸不是无创通气的指征（BTS/ICS 2016），镇静或通气不足为何危险。
-3. 开始第一个小时的治疗：等渗液、0.1 单位/(kg·h) 固定速率胰岛素、血钾 3.5–5.5 mmol/L 时补钾、pH ≥ 7.0 不用碳酸氢钠，
-   并按校正后约 118–121 mmol/L 的血钠调整液体和监测（2014 年欧洲低钠血症指南）。
+3. 开始第一个小时的治疗：等渗液、0.1 单位/(kg·h) 固定速率胰岛素、血钾 3.5–5.5 mmol/L 且有尿时补钾、pH ≥ 7.0 不用碳酸氢钠，
+   并按校正后约 118–121 mmol/L 的血钠调整液体和监测（2024 年共识；JBDS-IP 2023；2014 年欧洲低钠血症指南）。
 4. 识别呕吐后颈胸部握雪感提示的胸腔内漏气：让患者禁食，先行 CT 排查食管穿孔（WSES 2019），再考虑内镜。
 5. 解读纵隔气肿而无裂口的 CT：保守处理并持续观察，颈部引流只用于积气危及气道、呼吸或循环时。
 6. 制订停用静脉胰岛素和出院的计划：纠正标准、停泵前 1–2 小时给基础胰岛素、以胰岛自身抗体分型、教育与生病期间规则
@@ -531,7 +601,8 @@ Measured on 2026-11-13 for version 1.1.0: all five pass.
   酸中毒、需要通气支持”“原发性呼吸性碱中毒”“乳酸酸中毒或饥饿性酮症”。
 - 决策 2（颈胸部握雪感）：立即禁食，尽快颈胸部 CT（疑食管破裂时加口服水溶性造影剂），请胸外科会诊；干扰项为“只怪深快呼吸、
   不做影像”“先做胃镜”“双侧盲目置管”。
-- 决策 3（第一个小时）：等渗液、固定速率胰岛素、从一开始补钾、每小时监测、转入高依赖病房；干扰项为“先用碳酸氢钠”“钾 3.8 正常、
+- 决策 3（第一个小时）：等渗液、固定速率胰岛素、确认有尿后尽早补钾（JBDS：首袋复苏液不加钾；他的肌酐 217 µmol/L）、每小时监测、
+  转入高依赖病房；干扰项为“先用碳酸氢钠”“钾 3.8 正常、
   先不补”“0.45% 低渗盐水”。
 - 决策 4（CT）：最可能是自发性纵隔气肿，继续禁食和胃肠减压、治疗酮症酸中毒、观察气道，必要时复查影像；干扰项包括急诊开胸、
   “没看到裂口就可以进食”、CPAP，以及把报告中的颈部引流推广为常规。
@@ -544,4 +615,4 @@ Measured on 2026-11-13 for version 1.1.0: all five pass.
 最不能漏的是什么、为什么先 CT 后胃镜、一次没看到裂口的 CT 能排除什么、什么时候才需要颈部引流、一次发作能否确定糖尿病类型；
 总结下次遇到又吐又喘、血糖很高的年轻人时要做和不做的事。评分：确定性总分 31 分，三项关键项（在急诊、看到血钾之后开始补液、
 胰岛素和补钾；在急诊就禁食并申请 CT；不给无创通气、不插管），沟通项由考官评判。记录中的处置（胃肠减压、颈部引流、CT 之后的胃镜）只作为历史对照。
-本病例经人工智能辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。
+本病例经人工智能辅助编辑审核（2026-11-14 独立复核），尚未经执业医师审核；待核实事项见上文 “To verify”。

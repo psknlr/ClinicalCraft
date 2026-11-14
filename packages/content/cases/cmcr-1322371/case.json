@@ -31,28 +31,28 @@
   ],
   "learningOutcomes": [
     {
-      "zh-CN": "对骨盆或会阴挤压伤患者，在二次评估及此后的全面复查（三次评估）中检查阴囊、双侧腹股沟和会阴（事先取得同意并有陪同者在场），并把空虚的半侧阴囊加上会阴部睾丸大小的肿物按睾丸脱位处理，直到排除为止（ATLS 第 11 版，2025）。",
-      "en": "Examine the scrotum, both groins and the perineum — with consent and a chaperone — in the secondary survey and at the later head-to-toe re-examination (tertiary survey) after any pelvic or perineal crush, and treat an empty hemiscrotum with a testis-sized perineal mass as testicular dislocation until proven otherwise (ATLS, 11th edition, 2025)."
+      "zh-CN": "对骨盆或会阴挤压伤患者，在二次评估中检查阴囊、双侧腹股沟和会阴（会阴和外生殖器属于二次评估的内容，ATLS 第 11 版，2025），此后从头到脚全面复查（三次评估）时再查一遍，并事先取得同意、有陪同者在场；把空虚的半侧阴囊加上会阴部睾丸大小的肿物按睾丸脱位处理，直到排除为止——睾丸脱位最常见于道路交通伤（EAU 泌尿系创伤指南 2026）。",
+      "en": "Examine the scrotum, both groins and the perineum — with consent and a chaperone — in the secondary survey, to which the perineum and genitalia belong (ATLS, 11th edition, 2025), and again at the later head-to-toe re-examination (tertiary survey) after any pelvic or perineal crush; treat an empty hemiscrotum with a testis-sized perineal mass as testicular dislocation, most common after road traffic accidents (EAU Guidelines on Urological Trauma 2026), until proven otherwise."
     },
     {
       "zh-CN": "在对肿物做任何穿刺、切开或挤压之前，先申请阴囊及会阴超声（含彩色多普勒），并沿精索追踪来确定每一枚睾丸属于哪一侧，而不是按它所在的位置判断（AUA 泌尿系创伤指南 2020；EAU 泌尿系创伤指南 2026）。",
       "en": "Request scrotal and perineal ultrasound with colour Doppler before any needle, incision or pressure on the mass, and identify each testis by tracing its spermatic cord rather than by where it lies (AUA Urotrauma Guideline 2020; EAU Guidelines on Urological Trauma 2026)."
     },
     {
-      "zh-CN": "为跨越中线的交叉脱位制订及时的切开复位方案——每枚睾丸回到各自的阴囊、两侧都固定、修补阴囊中隔——并说明为什么报告中相隔 12 天的手术时机和床旁把睾丸推进最近一侧阴囊都不能当作默认做法（EAU 泌尿系创伤指南 2026）。",
-      "en": "Plan prompt open reduction for a crossed dislocation — each testis returned to its own hemiscrotum, both fixed, the septum repaired — and explain why the reported 12-day interval and a bedside push into the nearest hemiscrotum are not safe defaults (EAU Guidelines on Urological Trauma 2026)."
+      "zh-CN": "为跨越中线的交叉脱位制订复位并固定两侧睾丸的方案：在他能耐受麻醉时尽早切开手术，每枚睾丸回到各自的阴囊、两侧都固定、中隔有破口就修补，因为越过中线的睾丸无法用手法送回自己一侧（EAU 泌尿系创伤指南 2026：手法复位后二期睾丸固定，无法手法复位时立即行睾丸固定术）；并说明为什么报告中相隔 12 天的手术时机和床旁把睾丸推进最近一侧阴囊都不能当作默认做法。",
+      "en": "Plan reduction and fixation of both testes for a crossed dislocation — by open operation as soon as he is fit, each testis returned to its own hemiscrotum, both fixed and any septal tear repaired, since a testis that has crossed the midline cannot be put back on its own side by hand (EAU Guidelines on Urological Trauma 2026: manual replacement and secondary orchidopexy, immediate orchidopexy when manual reposition cannot be performed) — and explain why the reported 12-day interval and a bedside push into the nearest hemiscrotum are not safe defaults."
     },
     {
       "zh-CN": "区分术中所见的睾丸存活与此后的生精及内分泌功能，如实告诉患者这对生育意味着什么、还有什么尚不知道。",
       "en": "Distinguish testicular viability at operation from later sperm production and endocrine function, and tell the patient honestly what it means for his fertility and what is still unknown."
     },
     {
-      "zh-CN": "按 WHO 实验室手册（第 6 版，2021）解读修复后 1.5 个月的精液分析：采样时间与生精周期的关系、诊断死精子症需要存活率检测、形态学的评判方法；并安排 3 个月或更晚复查。",
-      "en": "Interpret a semen analysis taken 1.5 months after the repair against the WHO laboratory manual (6th edition, 2021) — timing against the cycle of sperm production, a vitality test before any diagnosis of necrozoospermia, the morphology method — and plan a repeat at three months or later."
+      "zh-CN": "解读修复后 1.5 个月的精液分析：采样时间与生精周期的关系，以及按 WHO 实验室手册（第 6 版，2021）诊断死精子症需要存活率检测、形态学的评判方法；并安排 3 个月或更晚复查（EAU 2025：首次分析异常时至少连续查两次）。",
+      "en": "Interpret a semen analysis taken 1.5 months after the repair — its timing against the cycle of sperm production and, against the WHO laboratory manual (6th edition, 2021), the vitality test needed before any diagnosis of necrozoospermia and the morphology method — and plan a repeat at three months or later (EAU 2025: at least two consecutive analyses when the first is abnormal)."
     },
     {
-      "zh-CN": "在多发伤和多次手术的背景下解读轻度升高的催乳素、雌二醇和孕酮：先排除药物、应激等继发原因并在恢复后复查，而不是立即做垂体 MRI 或用药（美国内分泌学会 2011）。",
-      "en": "Interpret mildly raised prolactin, oestradiol and progesterone after major trauma and several operations — exclude medicines, stress and other secondary causes and repeat after recovery — rather than ordering pituitary MRI or treatment at once (Endocrine Society 2011)."
+      "zh-CN": "在多发伤和多次手术的背景下解读高于报告参考范围的催乳素、雌二醇和孕酮：对催乳素先排除药物等继发原因，并在没有过度静脉穿刺应激的情况下采血（美国内分泌学会 2011），恢复后复查整组激素，而不是立即做垂体 MRI 或用药。",
+      "en": "Interpret prolactin, oestradiol and progesterone reported above range after major trauma and several operations — for prolactin, exclude medicines and other secondary causes on a sample taken without undue venepuncture stress (Endocrine Society 2011), and repeat the panel after recovery — rather than ordering pituitary MRI or treatment at once."
     }
   ],
   "provenance": {
@@ -312,7 +312,8 @@
           "请我们来",
           "叫我们来",
           "叫我过来",
-          "找我们来"
+          "找我们来",
+          "怎么了"
         ],
         "en": [
           "whatswrong",
@@ -322,7 +323,8 @@
           "beengoingon",
           "asked to see you",
           "asked me to come",
-          "come and see you"
+          "come and see you",
+          "seems to be the trouble"
         ]
       },
       "excludeKeywords": {
@@ -511,7 +513,7 @@
         "en": "What injuries did you get in the crash?"
       },
       "answer": {
-        "zh-CN": "医生说我当时休克了。右小臂、骨盆、右大腿和右小腿都骨折了，右脚被压得稀烂。",
+        "zh-CN": "医生说我当时休克了。右小臂、骨盆、右大腿和右小腿都骨折了，右脚伤得稀烂。",
         "en": "They told me I was in shock. I broke my right forearm, my pelvis, my right thigh bone and the bones of my lower right leg, and my right foot was badly mangled."
       },
       "keywords": {
@@ -720,7 +722,9 @@
           "受伤后",
           "出事以后",
           "住院",
-          "这次"
+          "这次",
+          "手术后",
+          "术后"
         ],
         "en": [
           "since",
@@ -1573,8 +1577,8 @@
             "en": "Imaging after the injury: undisplaced fractures of the right pubic body, the right inferior pubic ramus and both acetabula; further fractures of the right limbs."
           },
           "note": {
-            "zh-CN": "本病例没有记录这些影像的检查方式和日期、其他骨折的影像细节，也没有记录影像上能否看到阴囊或会阴。原报告唯一的图（CT 图像）带有日期信息，未获准展示。",
-            "en": "This case does not record the modality or date of these studies, the imaging details of the other fractures, or whether the scrotum or perineum can be seen on them. The report's only figure (CT images) carries date metadata and is withheld."
+            "zh-CN": "本病例没有记录这些影像的检查方式和日期、其他骨折的影像细节，也没有记录影像上能否看到阴囊或会阴。",
+            "en": "This case does not record the modality or date of these studies, the imaging details of the other fractures, or whether the scrotum or perineum can be seen on them."
           },
           "source": {
             "zh-CN": "原报告病例资料：既往影像：右耻骨体、耻骨下支及双侧髋臼无移位骨折，并有其他右侧肢体骨折（经 1.0.0 版提取，待对照原文全文核对）",
@@ -1592,8 +1596,8 @@
             "en": "Imaging after the injury: undisplaced fractures of the right pubic body, the right inferior pubic ramus and both acetabula; further fractures of the right limbs."
           },
           "note": {
-            "zh-CN": "本病例没有记录这些影像的检查方式和日期、其他骨折的影像细节，也没有记录影像上能否看到阴囊或会阴。原报告唯一的图（CT 图像）带有日期信息，未获准展示。",
-            "en": "This case does not record the modality or date of these studies, the imaging details of the other fractures, or whether the scrotum or perineum can be seen on them. The report's only figure (CT images) carries date metadata and is withheld."
+            "zh-CN": "本病例没有记录这些影像的检查方式和日期、其他骨折的影像细节，也没有记录影像上能否看到阴囊或会阴。",
+            "en": "This case does not record the modality or date of these studies, the imaging details of the other fractures, or whether the scrotum or perineum can be seen on them."
           },
           "source": {
             "zh-CN": "原报告病例资料：既往影像：右耻骨体、耻骨下支及双侧髋臼无移位骨折，并有其他右侧肢体骨折（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2646,8 +2650,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "把复位和固定推迟数周，会让移位的睾丸在异常位置被纤维组织固定、复位更难，异位的睾丸持续受压、受热，扭转或缺血也可能被漏掉。脱位的睾丸要复位并固定（EAU 泌尿系创伤指南 2026）；现行做法是在他全身情况允许时尽早完成，而不是定一个固定的等待期。",
-        "en": "Putting reduction and fixation off for weeks lets fibrous tissue fix a displaced testis in the wrong place and makes reduction harder, keeps an ectopic testis compressed and warm, and can let torsion or ischaemia go unnoticed. A dislocated testis is reduced and fixed (EAU Guidelines on Urological Trauma 2026); current practice does it as soon as his general condition allows, not after a fixed wait."
+        "zh-CN": "把复位和固定推迟数周，会让移位的睾丸在异常位置被纤维组织固定、复位更难，异位的睾丸持续受压、受热，扭转或缺血也可能被漏掉。脱位的睾丸无法手法复位时，应立即行睾丸固定术（EAU 泌尿系创伤指南 2026）；对他来说，就是在全身情况允许时尽早手术，而不是定一个固定的等待期。",
+        "en": "Putting reduction and fixation off for weeks lets fibrous tissue fix a displaced testis in the wrong place and makes reduction harder, keeps an ectopic testis compressed and warm, and can let torsion or ischaemia go unnoticed. When a dislocated testis cannot be reduced by hand, immediate orchidopexy is indicated (EAU Guidelines on Urological Trauma 2026); for him that means as soon as his general condition allows, not after a fixed wait."
       },
       "response": {
         "zh-CN": "已记录推迟的决定。本病例不模拟推迟会带来什么；要继续，需要预约手术。",
@@ -2689,8 +2693,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "超声之前，没人知道这个肿物是什么、如果是睾丸又是哪一侧的、血供是否完好、有无破裂，盲目挤压可能加重损伤或拧转精索。如果会阴部这枚其实是越过中线的左侧睾丸，把它推进右侧阴囊就是放错了边，精索横跨中线，另一侧也没有处理，两侧都没有固定。复位之后要固定睾丸（EAU 泌尿系创伤指南 2026），越过中线的睾丸无法靠床旁推挤回到自己一侧。",
-        "en": "Before the ultrasound nobody knows what the mass is, which side a testis would belong to, or whether it is perfused or ruptured, and blind pressure can add injury or twist the cord. If the perineal testis turns out to be the left one, crossed over, pushing it into the right hemiscrotum puts it on the wrong side with its cord across the midline, leaves the other side untreated and fixes neither. Reduction is followed by fixation (EAU Guidelines on Urological Trauma 2026), and a testis that has crossed the midline cannot be pushed back to its own side at the bedside."
+        "zh-CN": "超声之前，没人知道这个肿物是什么、如果是睾丸又是哪一侧的、血供是否完好、有无破裂，盲目挤压可能加重损伤或拧转精索。如果会阴部这枚其实是越过中线的左侧睾丸，把它推进右侧阴囊就是放错了边，精索横跨中线，另一侧也没有处理，两侧都没有固定。手法复位之后要做睾丸固定，无法手法复位时应立即行睾丸固定术（EAU 泌尿系创伤指南 2026）：越过中线的睾丸无法靠床旁推挤回到自己一侧。",
+        "en": "Before the ultrasound nobody knows what the mass is, which side a testis would belong to, or whether it is perfused or ruptured, and blind pressure can add injury or twist the cord. If the perineal testis turns out to be the left one, crossed over, pushing it into the right hemiscrotum puts it on the wrong side with its cord across the midline, leaves the other side untreated and fixes neither. Manual replacement is followed by orchidopexy, and immediate orchidopexy is indicated when manual reposition cannot be performed (EAU Guidelines on Urological Trauma 2026): a testis that has crossed the midline cannot be pushed back to its own side at the bedside."
       },
       "response": {
         "zh-CN": "本病例没有记录任何床旁复位；不模拟其效果。",
@@ -2732,8 +2736,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "空虚的半侧阴囊旁出现光滑、有压痛、睾丸大小的肿物，首先要想到它可能就是那枚睾丸：穿刺可能刺破白膜，引起出血和感染，甚至失去这枚睾丸，还会耽误本应先做的超声。阴囊钝性伤先做超声（AUA 泌尿系创伤指南 2020）。",
-        "en": "A smooth, tender, testis-sized mass next to an empty hemiscrotum may be the missing testis: a needle can breach the tunica albuginea, cause bleeding and infection, cost him the testis, and delays the ultrasound that should come first. Blunt scrotal injury is assessed with ultrasound (AUA Urotrauma Guideline 2020)."
+        "zh-CN": "空虚的半侧阴囊旁出现光滑、有压痛、睾丸大小的肿物，首先要想到它可能就是那枚睾丸：穿刺可能刺破白膜，引起出血和感染，甚至失去这枚睾丸，还会耽误本应先做的超声。睾丸创伤先做超声（EAU 泌尿系创伤指南 2026；AUA 泌尿系创伤指南 2020）。",
+        "en": "A smooth, tender, testis-sized mass next to an empty hemiscrotum may be the missing testis: a needle can breach the tunica albuginea, cause bleeding and infection, cost him the testis, and delays the ultrasound that should come first. In testicular trauma ultrasound comes first (EAU Guidelines on Urological Trauma 2026; AUA Urotrauma Guideline 2020)."
       },
       "response": {
         "zh-CN": "本病例没有记录任何穿刺；不模拟其效果。",
@@ -2774,8 +2778,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "切开一个可能是睾丸的肿物，可能直接伤到睾丸，引起出血和感染；没有发热或感染扩散的记录，在弄清它是什么之前不能当作脓肿处理。先做超声（AUA 泌尿系创伤指南 2020）。",
-        "en": "Cutting into a mass that may be a testis can injure the testis directly and cause bleeding and infection; no fever or spreading infection is recorded, and it must not be treated as an abscess before anyone knows what it is. Image it first (AUA Urotrauma Guideline 2020)."
+        "zh-CN": "切开一个可能是睾丸的肿物，可能直接伤到睾丸，引起出血和感染；没有发热或感染扩散的记录，在弄清它是什么之前不能当作脓肿处理。先做超声（EAU 泌尿系创伤指南 2026；AUA 泌尿系创伤指南 2020）。",
+        "en": "Cutting into a mass that may be a testis can injure the testis directly and cause bleeding and infection; no fever or spreading infection is recorded, and it must not be treated as an abscess before anyone knows what it is. Image it first (EAU Guidelines on Urological Trauma 2026; AUA Urotrauma Guideline 2020)."
       },
       "response": {
         "zh-CN": "本病例没有记录任何切开；不模拟其效果。",
@@ -2814,6 +2818,7 @@
       ],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2905,8 +2910,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "在刚复位固定的睾丸上取活检，会再添一处损伤，而且回答不了他关心的生育问题：生精情况要用按 WHO 标准做的精液分析来判断（WHO 实验室手册第 6 版，2021），时间放在修复后一个完整的生精周期——约 3 个月——之后。",
-        "en": "A biopsy adds a fresh injury to testes that have just been reduced and fixed, and it would not answer his question about fertility: sperm production is judged by a semen analysis done to WHO standards (WHO laboratory manual, 6th edition, 2021), timed after a full cycle of sperm production — about three months — has passed since the repair."
+        "zh-CN": "在刚复位固定的睾丸上取活检，会再添一处损伤，而且这不是判断他生育能力的方法：生精情况要用按 WHO 标准做的精液分析来判断（WHO 实验室手册第 6 版，2021），时间放在修复后一个完整的生精周期——约 3 个月——之后。",
+        "en": "A biopsy adds a fresh injury to testes that have just been reduced and fixed, and it is not how his fertility is judged: sperm production is judged by a semen analysis done to WHO standards (WHO laboratory manual, 6th edition, 2021), timed after a full cycle of sperm production — about three months — has passed since the repair."
       },
       "response": {
         "zh-CN": "本病例没有记录任何活检；不模拟其效果。",
@@ -3037,8 +3042,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "催乳素只是轻度升高，而且是在多发伤和多次手术之后测的，应激、疼痛和不少药物都会让它升高。美国内分泌学会（2011）要求先排除药物、应激等继发原因，再考虑垂体影像或治疗；对他来说，下一步是恢复后复查。",
-        "en": "The prolactin is only mildly raised, and it was measured after major trauma and several operations, when stress, pain and many medicines raise it. The Endocrine Society (2011) asks for medicines, stress and other secondary causes to be excluded before pituitary imaging or treatment; for him the next step is a repeat once he has recovered."
+        "zh-CN": "催乳素高于报告的参考范围，但它是在多发伤和多次手术之后测的，应激、疼痛和不少药物都会让它升高，而他的睾酮、LH、FSH 都正常。美国内分泌学会（2011）要求先排除药物等继发原因，再考虑垂体检查或治疗；对他来说，下一步是恢复后复查，而不是用多巴胺激动剂。",
+        "en": "The prolactin is above the report's range, but it was measured after major trauma and several operations, when stress, pain and many medicines raise it, and his testosterone, LH and FSH are normal. The Endocrine Society (2011) asks for medicines and other secondary causes to be excluded before the pituitary is investigated or treated; for him the next step is a repeat once he has recovered, not a dopamine agonist."
       },
       "response": {
         "zh-CN": "本病例没有记录卡麦角林；不模拟其效果。",
@@ -3080,8 +3085,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "辅助生殖应建立在时机恰当、项目完整的精液分析之上：诊断死精子症需要存活率检测，修复后约 3 个月之内的标本反映不了恢复后的生精情况，单次分析也不足以判断不育（WHO 实验室手册第 6 版，2021）。先规范复查。",
-        "en": "Assisted reproduction rests on a properly timed, complete semen analysis: necrozoospermia needs a vitality test, a sample taken within about three months of the repair does not show settled sperm production, and a single analysis does not establish infertility (WHO laboratory manual, 6th edition, 2021). Repeat it properly first."
+        "zh-CN": "辅助生殖应建立在时机恰当、项目完整的精液分析之上：诊断死精子症需要存活率检测（WHO 实验室手册第 6 版，2021），修复后约 3 个月之内的标本反映不了恢复后的生精情况，异常的分析要先复查再下结论（EAU 男性不育 2025 年更新：至少连续查两次）。先规范复查。",
+        "en": "Assisted reproduction rests on a properly timed, complete semen analysis: necrozoospermia needs a vitality test (WHO laboratory manual, 6th edition, 2021), a sample taken within about three months of the repair does not show settled sperm production, and an abnormal analysis is repeated before anything is concluded (EAU 2025 male infertility update: at least two consecutive analyses). Repeat it properly first."
       },
       "response": {
         "zh-CN": "本病例没有记录任何辅助生殖转诊；不模拟其效果。",
@@ -3439,8 +3444,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。会阴受压的车祸伤后，空虚的半侧阴囊加上会阴部光滑、有压痛、睾丸大小的肿物，首先要按睾丸脱位处理，直到排除。超声加彩色多普勒能找到睾丸、显示血流，并发现破裂或扭转；AUA 泌尿系创伤指南（2020）支持对怀疑睾丸破裂的阴囊钝性伤做超声，EAU 泌尿系创伤指南（2026）把睾丸脱位列为睾丸创伤的一种。在弄清之前，任何针、刀或挤压都可能伤到睾丸。",
-            "en": "Right. After a crush with the legs apart, an empty hemiscrotum with a smooth, tender, testis-sized perineal mass is a dislocated testis until proven otherwise. Ultrasound with colour Doppler finds the testis, shows its blood flow and picks up rupture or torsion; the AUA Urotrauma Guideline (2020) supports ultrasound for blunt scrotal injury with suspected rupture, and the EAU Guidelines on Urological Trauma (2026) treat dislocation as a form of testicular trauma. Until then a needle, a blade or a push can injure the testis."
+            "zh-CN": "正确。两腿叉开、被挤在座位与仪表台之间的车祸伤后，空虚的半侧阴囊加上会阴部光滑、有压痛、睾丸大小的肿物，首先要按睾丸脱位处理，直到排除。超声加彩色多普勒能找到睾丸、显示血流，并发现破裂或扭转：EAU 泌尿系创伤指南（2026）要求睾丸创伤做超声，彩色多普勒可评估血流，并指出睾丸脱位最常见于道路交通伤；AUA 泌尿系创伤指南（2020）支持对怀疑睾丸破裂的阴囊钝性伤做超声。在弄清之前，任何针、刀或挤压都可能伤到睾丸。",
+            "en": "Right. After a crush with the legs apart, an empty hemiscrotum with a smooth, tender, testis-sized perineal mass is a dislocated testis until proven otherwise. Ultrasound with colour Doppler finds the testis, shows its blood flow and picks up rupture or torsion: the EAU Guidelines on Urological Trauma (2026) ask for ultrasound in testicular trauma, colour Doppler adding perfusion, and note that dislocation is most common after road traffic accidents; the AUA Urotrauma Guideline (2020) supports ultrasound for blunt scrotal injury with suspected rupture. Until then a needle, a blade or a push can injure the testis."
           }
         },
         {
@@ -3451,8 +3456,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。血肿解释不了右侧阴囊为什么空了，回缩的睾丸也不会跑到肛门旁边——而那里恰好有一个光滑、睾丸大小的肿物。观察一周，会让一枚可能移位、受压甚至扭转的睾丸继续拖下去；现在就该做超声（AUA 泌尿系创伤指南 2020）。",
-            "en": "No. A haematoma does not explain why the right hemiscrotum is empty, and a retracted testis does not end up beside the anus — which is exactly where a smooth, testis-sized mass lies. A week of watching leaves a testis that may be displaced, compressed or twisted where it is; the ultrasound is needed now (AUA Urotrauma Guideline 2020)."
+            "zh-CN": "不对。血肿解释不了右侧阴囊为什么空了，回缩的睾丸也不会跑到肛门旁边——而那里恰好有一个光滑、睾丸大小的肿物。观察一周，会让一枚可能移位、受压甚至扭转的睾丸继续拖下去；现在就该做超声（EAU 泌尿系创伤指南 2026；AUA 泌尿系创伤指南 2020）。",
+            "en": "No. A haematoma does not explain why the right hemiscrotum is empty, and a retracted testis does not end up beside the anus — which is exactly where a smooth, testis-sized mass lies. A week of watching leaves a testis that may be displaced, compressed or twisted where it is; the ultrasound is needed now (EAU Guidelines on Urological Trauma 2026; AUA Urotrauma Guideline 2020)."
           }
         },
         {
@@ -3487,8 +3492,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。骨盆骨折时要警惕尿道损伤，但他能自己解小便（正是小便时发现的问题），尿外渗也解释不了右侧阴囊为什么空了。造影只会推迟他真正需要的阴囊及会阴超声（AUA 泌尿系创伤指南 2020）。",
-            "en": "No. Urethral injury is worth thinking of with pelvic fractures, but he is passing urine (that is how he noticed the problem), and leaking urine does not explain the empty hemiscrotum. A urethrogram would only delay the scrotal and perineal ultrasound he needs (AUA Urotrauma Guideline 2020)."
+            "zh-CN": "不对。骨盆骨折时要警惕尿道损伤，但他能自己解小便（正是小便时发现的问题），首次尿常规阴性，尿外渗也解释不了右侧阴囊为什么空了。EAU 泌尿系创伤指南（2026）要求外生殖器创伤查尿常规，有肉眼血尿时做逆行尿道造影——本例没有肉眼血尿的记录。应先做阴囊及会阴超声。",
+            "en": "No. Urethral injury is worth thinking of with pelvic fractures, but he passes urine himself (that is how he noticed the problem), his first urinalysis was negative, and leaking urine does not explain the empty hemiscrotum. In genital trauma the EAU Guidelines on Urological Trauma (2026) ask for a urinalysis, and for a retrograde urethrogram when there is visible haematuria — none is recorded here. The scrotal and perineal ultrasound comes first."
           }
         }
       ]
@@ -3519,13 +3524,13 @@
         {
           "id": "open-reduction-both-sides",
           "text": {
-            "zh-CN": "能耐受麻醉就尽早手术：沿精索辨认，每枚睾丸回到各自的阴囊，两侧都固定并修补中隔；确认坏死才切除",
-            "en": "Operate as soon as he is fit for anaesthesia: identify each testis by its cord, return each to its own hemiscrotum, fix both and repair the septum; remove a testis only if it is dead"
+            "zh-CN": "能耐受麻醉就尽早手术：沿精索辨认，每枚睾丸回到各自的阴囊，两侧都固定，中隔有破口就修补；确认坏死才切除",
+            "en": "Operate as soon as he is fit for anaesthesia: identify each testis by its cord, return each to its own hemiscrotum, fix both and repair any septal tear; remove a testis only if it is dead"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。这是交叉脱位：凭精索判断，会阴部的是左侧睾丸，左侧阴囊里的是右侧睾丸，床旁无法把它们各自送回原位。复位之后要固定睾丸（EAU 泌尿系创伤指南 2026）；交叉的病例需要切开探查、分别复位、两侧固定并修补中隔，时机取决于他何时能安全麻醉（先核对用药——包括有无抗凝预防——和凝血功能），而不是一个固定的等待期。知情同意要写明：只有术中确认睾丸无法存活时才切除。",
-            "en": "Right. This is a crossed dislocation: by its cord, the perineal testis is the left one and the testis in the left hemiscrotum is the right one, and neither can be put back on its own side at the bedside. Reduction is followed by fixation (EAU Guidelines on Urological Trauma 2026); a crossed case needs open exploration, each testis returned to its own side, both fixed and the septum repaired, timed by when he can safely have an anaesthetic (his medicines, including any thromboprophylaxis, and his clotting checked first) rather than by a set wait. The consent covers orchidectomy only if a testis proves non-viable."
+            "zh-CN": "正确。这是交叉脱位：凭精索判断，会阴部的是左侧睾丸，左侧阴囊里的是右侧睾丸，无法用手法把它们各自送回原位。EAU 泌尿系创伤指南（2026）对睾丸脱位采用手法复位加二期睾丸固定，无法手法复位时立即行睾丸固定术——本例正是如此：切开探查、分别复位、两侧固定，中隔有破口就修补，时机取决于他何时能安全麻醉（先核对用药——包括有无抗凝预防——和凝血功能），而不是一个固定的等待期。知情同意要写明：只有术中确认睾丸无法存活时才切除。",
+            "en": "Right. This is a crossed dislocation: by its cord, the perineal testis is the left one and the testis in the left hemiscrotum is the right one, and neither can be put back on its own side by hand. The EAU Guidelines on Urological Trauma (2026) treat dislocation by manual replacement and secondary orchidopexy, and by immediate orchidopexy when manual reposition cannot be performed — as here: open exploration, each testis returned to its own side, both fixed and any septal tear repaired, timed by when he can safely have an anaesthetic (his medicines, including any thromboprophylaxis, and his clotting checked first) rather than by a set wait. The consent covers orchidectomy only if a testis proves non-viable."
           }
         },
         {
@@ -3536,20 +3541,20 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。凭精索判断，会阴部这枚是左侧睾丸：推进右侧阴囊就是放错了边，精索要横跨中线，左侧阴囊里的右侧睾丸也没有处理，两侧都没有固定。复位之后要固定（EAU 泌尿系创伤指南 2026），越过中线的交叉脱位要靠手术完成。",
-            "en": "No. By its cord, the perineal testis is the left one: pushing it into the right hemiscrotum puts it on the wrong side with its cord across the midline, does nothing about the right testis in the left hemiscrotum, and fixes neither. Reduction is followed by fixation (EAU Guidelines on Urological Trauma 2026), and a dislocation that has crossed the midline needs an operation."
+            "zh-CN": "不对。凭精索判断，会阴部这枚是左侧睾丸：推进右侧阴囊就是放错了边，精索要横跨中线，左侧阴囊里的右侧睾丸也没有处理，两侧都没有固定。即使手法复位成功，之后也要做睾丸固定；手法无法把睾丸送回自己一侧时，应立即行睾丸固定术（EAU 泌尿系创伤指南 2026）：越过中线的交叉脱位要靠手术完成。",
+            "en": "No. By its cord, the perineal testis is the left one: pushing it into the right hemiscrotum puts it on the wrong side with its cord across the midline, does nothing about the right testis in the left hemiscrotum, and fixes neither. Even a successful manual replacement is followed by orchidopexy, and when manual reposition cannot put a testis back on its own side, immediate orchidopexy is indicated (EAU Guidelines on Urological Trauma 2026): a dislocation that has crossed the midline needs an operation."
           }
         },
         {
           "id": "defer-until-fractures-settle",
           "text": {
-            "zh-CN": "两枚睾丸回声均匀、看来完好，先让骨折和全身情况稳定下来，约两周后再择期手术复位并固定",
-            "en": "Both testes look intact on the scan, so let his fractures and general condition settle first and reduce and fix them electively in about two weeks"
+            "zh-CN": "超声已经找到了两枚睾丸，先让骨折和全身情况稳定下来，约两周后再择期手术复位并固定",
+            "en": "The scan has found both testes, so let his fractures and general condition settle first and reduce and fix them electively in about two weeks"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。回声均匀不等于血流正常——两侧都没有血流记录；拖上几周，会让移位的睾丸在错误的位置被纤维组织固定，异位的睾丸持续受压、受热，扭转也可能被漏掉。脱位的睾丸要复位并固定（EAU 泌尿系创伤指南 2026），时机是他能安全麻醉之时，越早越好。记录中的手术在伤后第 25 天、会诊后 12 天进行：这是历史经过，不是可以照搬的等待期。",
-            "en": "No. Homogeneous echoes are not proof of blood flow — none is recorded for either testis — and weeks of delay let fibrous tissue fix the displaced testes in the wrong place, keep the ectopic testis compressed and warm, and can hide torsion. A dislocated testis is reduced and fixed (EAU Guidelines on Urological Trauma 2026), as soon as he can safely have an anaesthetic. In the record the operation came on day 25, 12 days after the consultation: history, not an interval to copy."
+            "zh-CN": "不对。找到睾丸并不说明血供正常——两侧都没有血流记录，回声均匀也只记录了会阴部那一枚；拖上几周，会让移位的睾丸在错误的位置被纤维组织固定，异位的睾丸持续受压、受热，扭转也可能被漏掉。脱位的睾丸无法手法复位时，应立即行睾丸固定术（EAU 泌尿系创伤指南 2026）：对他来说，就是能安全麻醉时尽早手术。记录中的手术在伤后第 25 天、会诊后 12 天进行：这是历史经过，不是可以照搬的等待期。",
+            "en": "No. Finding the testes says nothing about their blood supply — no flow is recorded for either, and homogeneous echoes only for the perineal one — and weeks of delay let fibrous tissue fix the displaced testes in the wrong place, keep the ectopic testis compressed and warm, and can hide torsion. When a dislocated testis cannot be reduced by hand, immediate orchidopexy is indicated (EAU Guidelines on Urological Trauma 2026): for him, as soon as he can safely have an anaesthetic. In the record the operation came on day 25, 12 days after the consultation: history, not an interval to copy."
           }
         },
         {
@@ -3572,8 +3577,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。超声已经回答了解剖问题：两枚睾丸的位置都靠追踪精索确定了。再做 MRI、等到出院后的门诊，只会让移位和粘连继续加重；他需要复位并固定（EAU 泌尿系创伤指南 2026），在能耐受麻醉时尽早手术完成。",
-            "en": "No. The ultrasound has already answered the anatomical question: tracing the cords placed both testes. An MRI and a clinic decision after discharge only let the displacement and the adhesions set in; he needs reduction and fixation (EAU Guidelines on Urological Trauma 2026), in an operation as soon as he is fit for it."
+            "zh-CN": "不对。超声已经回答了解剖问题：两枚睾丸的位置都靠追踪精索确定了。再做 MRI、等到出院后的门诊，只会让移位和粘连继续加重；无法手法复位的睾丸需要立即行睾丸固定术（EAU 泌尿系创伤指南 2026），在能耐受麻醉时尽早手术完成。",
+            "en": "No. The ultrasound has already answered the anatomical question: tracing the cords placed both testes. An MRI and a clinic decision after discharge only let the displacement and the adhesions set in; a testis that cannot be reduced by hand needs immediate orchidopexy (EAU Guidelines on Urological Trauma 2026), in an operation as soon as he is fit for it."
           }
         }
       ]
@@ -3612,8 +3617,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。术中颜色正常（必要时切开白膜看是否出血）说明睾丸存活，但移位、受压、局部温度升高、创伤和全身疾病都可能影响生精，而一个完整的生精和输送周期约需 3 个月。WHO 实验室手册（第 6 版，2021）的参考值是可育男性的第 5 百分位，单次分析不足以判断不育；EAU 男性不育 2025 年更新要求对有生育问题的男性做全面的泌尿男科评估。如实告诉他：现在的发现令人鼓舞，但结论要等复查。",
-            "en": "Right. Normal colour at operation (and bleeding when the tunica is incised, if tested) shows the testes are alive, but displacement, pressure, warmth, the injury and his illness can all affect sperm production, and a full cycle of production and transit takes about three months. The WHO laboratory manual (6th edition, 2021) gives its reference values as 5th centiles of fertile men, and one analysis does not establish infertility; the EAU 2025 male infertility update asks for a full urological assessment of men with fertility problems. Tell him honestly: encouraging, but the answer comes from the later test."
+            "zh-CN": "正确。术中颜色正常（必要时切开白膜看是否出血）说明睾丸存活，但移位、受压、局部温度升高、创伤和全身疾病都可能影响生精，而一个完整的生精和输送周期约需 3 个月。WHO 实验室手册（第 6 版，2021）的参考值是可育男性的第 5 百分位，并不是可育与不育的分界；EAU 男性不育 2025 年更新要求对有生育问题的男性做全面的泌尿男科评估，首次分析异常时至少连续查两次。如实告诉他：现在的发现令人鼓舞，但结论要等复查。",
+            "en": "Right. Normal colour at operation (and bleeding when the tunica is incised, if tested) shows the testes are alive, but displacement, pressure, warmth, the injury and his illness can all affect sperm production, and a full cycle of production and transit takes about three months. The WHO laboratory manual (6th edition, 2021) gives its reference values as 5th centiles of fertile men, not limits between fertile and infertile; the EAU 2025 male infertility update asks for a full urological assessment of men with fertility problems and at least two consecutive analyses when the first is abnormal. Tell him honestly: encouraging, but the answer comes from the later test."
           }
         },
         {
@@ -3636,8 +3641,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。术中两侧睾丸的形态和颜色都正常，没有任何依据说他已经不育；在做过规范的精液分析之前就谈供精，会给他不必要的打击（WHO 实验室手册第 6 版，2021：单次分析尚不足以判断不育，何况还一次都没有做）。",
-            "en": "No. Both testes were normal in shape and colour at operation, and nothing supports telling him he is infertile; raising donor sperm before any proper semen analysis deals him a needless blow (WHO laboratory manual, 6th edition, 2021: even one analysis does not establish infertility, and none has been done)."
+            "zh-CN": "不对。术中两侧睾丸的形态和颜色都正常，没有任何依据说他已经不育；在做过规范的精液分析之前就谈供精，会给他不必要的打击（EAU 男性不育 2025 年更新：首次分析异常时至少连续查两次——何况现在一次都还没有做）。",
+            "en": "No. Both testes were normal in shape and colour at operation, and nothing supports telling him he is infertile; raising donor sperm before any proper semen analysis deals him a needless blow (EAU 2025 male infertility update: at least two consecutive analyses when the first is abnormal — and none has been done yet)."
           }
         },
         {
@@ -3660,8 +3665,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。在刚复位固定的睾丸上取活检会再添一处损伤，而且回答不了生育问题；生精情况用按 WHO 标准做的精液分析来判断（WHO 实验室手册第 6 版，2021），时间放在修复后约 3 个月或更晚。",
-            "en": "No. A biopsy adds fresh injury to testes that have just been reduced and fixed, and it does not answer the fertility question; sperm production is judged by a semen analysis to WHO standards (WHO laboratory manual, 6th edition, 2021), about three months or more after the repair."
+            "zh-CN": "不对。在刚复位固定的睾丸上取活检会再添一处损伤，而且这不是回答生育问题的方法；生精情况用按 WHO 标准做的精液分析来判断（WHO 实验室手册第 6 版，2021），时间放在修复后约 3 个月或更晚。",
+            "en": "No. A biopsy adds fresh injury to testes that have just been reduced and fixed, and it is not how the fertility question is answered; sperm production is judged by a semen analysis to WHO standards (WHO laboratory manual, 6th edition, 2021), about three months or more after the repair."
           }
         }
       ]
@@ -3704,8 +3709,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。一个完整的生精和输送周期约 3 个月，修复后 1.5 个月的标本反映的仍是受伤、移位和手术期间的状态。WHO 实验室手册（第 6 版，2021）：浓度的第 5 百分位为 16 × 10⁶/mL，正常形态为 4%，按严格标准 85% 的正常形态极不寻常，方法需要核实；“死精”只能靠存活率检测（如伊红染色）成立。多发伤、多次手术后轻度升高的激素，应先排除药物、应激等继发原因，恢复后复查（美国内分泌学会 2011）。",
-            "en": "Right. A full cycle of sperm production and transit takes about three months, so a sample 1.5 months after the repair still reflects the injury, the displacement and the operations. WHO laboratory manual (6th edition, 2021): the 5th centiles are 16 × 10⁶/mL for concentration and 4 % for normal forms, so 85 % normal forms would be exceptional under strict criteria and the method needs checking, and dead sperm can only be established by a vitality test such as eosin staining. Mildly raised hormones after major trauma and several operations call for medicines, stress and other secondary causes to be excluded and a repeat after recovery (Endocrine Society 2011)."
+            "zh-CN": "正确。一个完整的生精和输送周期约 3 个月，修复后 1.5 个月的标本反映的仍是受伤、移位和手术期间的状态。WHO 实验室手册（第 6 版，2021）：浓度的第 5 百分位为 16 × 10⁶/mL，正常形态为 4%，按严格标准 85% 的正常形态极不寻常，方法需要核实；“死精”只能靠存活率检测（如伊红染色）成立。多发伤、多次手术后高于参考范围的激素要放在这个背景下看：催乳素应先排除药物等继发原因（美国内分泌学会 2011），恢复后复查整组激素。",
+            "en": "Right. A full cycle of sperm production and transit takes about three months, so a sample 1.5 months after the repair still reflects the injury, the displacement and the operations. WHO laboratory manual (6th edition, 2021): the 5th centiles are 16 × 10⁶/mL for concentration and 4 % for normal forms, so 85 % normal forms would be exceptional under strict criteria and the method needs checking, and dead sperm can only be established by a vitality test such as eosin staining. Hormones above range after major trauma and several operations are read in that context: for prolactin, medicines and other secondary causes come first (Endocrine Society 2011), and the panel is repeated after recovery."
           }
         },
         {
@@ -3716,8 +3721,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。本病例没有记录精子存活率或活力，“死精”的诊断缺少依据；标本采于修复后 1.5 个月，还不到一个完整的生精周期，浓度也高于 WHO 2021 的第 5 百分位。在规范复查之前转诊辅助生殖为时过早（WHO 实验室手册第 6 版，2021）。",
-            "en": "No. This case records no vitality or motility, so the necrospermia diagnosis has nothing to stand on; the sample came 1.5 months after the repair, short of a full cycle of sperm production, and the concentration is above the WHO 2021 5th centile. Referral for assisted reproduction before a proper repeat is premature (WHO laboratory manual, 6th edition, 2021)."
+            "zh-CN": "不对。本病例没有记录精子存活率或活力，“死精”的诊断缺少依据；标本采于修复后 1.5 个月，还不到一个完整的生精周期，浓度也高于 WHO 2021 的第 5 百分位。在规范复查之前转诊辅助生殖为时过早（WHO 实验室手册第 6 版，2021；EAU 男性不育 2025 年更新）。",
+            "en": "No. This case records no vitality or motility, so the necrospermia diagnosis has nothing to stand on; the sample came 1.5 months after the repair, short of a full cycle of sperm production, and the concentration is above the WHO 2021 5th centile. Referral for assisted reproduction before a proper repeat is premature (WHO laboratory manual, 6th edition, 2021; EAU 2025 male infertility update)."
           }
         },
         {
@@ -3728,8 +3733,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。浓度高于第 5 百分位并不等于一份正常的精液分析：活力和存活率缺失，正常形态的数据存疑，而且标本采得太早。WHO 2021 的参考值是可育男性的第 5 百分位，不是诊断界值；应在 3 个月或更晚完整复查，同时复查激素（WHO 实验室手册第 6 版，2021）。",
-            "en": "No. A concentration above the 5th centile is not a normal analysis: motility and vitality are missing, the normal-forms figure is doubtful and the sample was taken too early. WHO 2021 reference values are 5th centiles of fertile men, not diagnostic cut-offs; repeat a complete analysis at three months or later, with the hormones (WHO laboratory manual, 6th edition, 2021)."
+            "zh-CN": "不对。浓度高于第 5 百分位并不等于一份正常的精液分析：活力和存活率缺失，正常形态的数据存疑，而且标本采得太早。WHO 2021 的参考值是可育男性的第 5 百分位，不是诊断界值（WHO 实验室手册第 6 版，2021）；应在 3 个月或更晚完整复查，同时复查激素（EAU 男性不育 2025 年更新：首次异常时至少查两次）。",
+            "en": "No. A concentration above the 5th centile is not a normal analysis: motility and vitality are missing, the normal-forms figure is doubtful and the sample was taken too early. WHO 2021 reference values are 5th centiles of fertile men, not diagnostic cut-offs (WHO laboratory manual, 6th edition, 2021); repeat a complete analysis at three months or later, with the hormones (EAU 2025 male infertility update: at least two analyses when the first is abnormal)."
           }
         },
         {
@@ -3740,8 +3745,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。多发伤和多次手术之后，应激、疼痛和许多药物都可能让催乳素轻度升高，而他的睾酮、LH、FSH 都正常。美国内分泌学会（2011）要求先排除药物和其他继发原因，再考虑垂体影像或治疗；正确的做法是恢复后复查，而不是立即做 MRI、用卡麦角林。",
-            "en": "No. After major trauma and several operations, stress, pain and many medicines can raise prolactin a little, and his testosterone, LH and FSH are normal. The Endocrine Society (2011) asks for medicines and other secondary causes to be excluded before pituitary imaging or treatment; repeat the tests after recovery rather than ordering an MRI and cabergoline now."
+            "zh-CN": "不对。多发伤和多次手术之后，应激、疼痛和许多药物都可能让催乳素升高，而他的睾酮、LH、FSH 都正常。美国内分泌学会（2011）要求先排除药物和其他继发原因，再考虑垂体影像或治疗；正确的做法是恢复后复查，而不是立即做 MRI、用卡麦角林。",
+            "en": "No. After major trauma and several operations, stress, pain and many medicines can raise prolactin, and his testosterone, LH and FSH are normal. The Endocrine Society (2011) asks for medicines and other secondary causes to be excluded before pituitary imaging or treatment; repeat the tests after recovery rather than ordering an MRI and cabergoline now."
           }
         }
       ]
@@ -3780,8 +3785,8 @@
       "id": "rb-background-before-theatre",
       "domain": "history",
       "text": {
-        "zh-CN": "手术前询问伤前睾丸情况、子女与生育打算、目前用药和过敏史",
-        "en": "Before planning an operation, asked about his testes before the injury, children and plans, current medicines and allergies"
+        "zh-CN": "询问伤前睾丸情况、子女与生育打算、目前用药和过敏史",
+        "en": "Asked about his testes before the injury, children and plans, current medicines and allergies"
       },
       "weight": 1,
       "met": {
@@ -4152,13 +4157,13 @@
       "en": "Debrief: an empty hemiscrotum after polytrauma — recognising crossed testicular dislocation, timing the repair and judging fertility"
     },
     "conclusion": {
-      "zh-CN": "30岁男性，卡车前排两腿叉开睡着、未系安全带，撞车时被夹在座位与仪表台之间：创伤性休克，右前臂、骨盆、右股骨和右胫腓骨骨折，右足严重毁损，伤后当天右小腿截肢，第 8 天右前臂及右股骨近端骨折固定。伤后第 13 天，他小便时发现右侧阴囊空虚；肛门右前外侧皮肤青紫，其下有光滑、有压痛、睾丸大小的肿块。超声沿精索追踪：右侧睾丸在左侧阴囊，左侧睾丸在肛门右前方软组织（约 3.5 cm × 1.7 cm，距皮肤约 0.34 cm）。伤后第 25 天探查见阴囊中隔破裂和纤维索带，两侧睾丸、附睾形态颜色正常，松解后两侧复位固定并修补中隔。术后 1.5 个月勃起正常，精液量 3.2 mL、浓度 17.5 × 10⁶/mL、正常形态 85%，报告诊断“外伤后死精”（没有活力和存活率记录）；孕酮、催乳素、雌二醇高于参考范围，睾酮、LH、FSH 正常。诊断：创伤性睾丸交叉脱位。按现行做法：二次评估中检查会阴；先做超声（含多普勒）再处理肿物；在他能耐受麻醉时尽早切开复位、两侧固定并修补中隔，而不是等待 12 天；修复后约 3 个月或更晚按 WHO 2021 标准复查精液，激素在恢复后复查。远期结局没有记录。",
-      "en": "A 30-year-old man, asleep and unbelted with his legs apart in the front of a truck, was crushed between the seat and the dashboard: traumatic shock, pelvic and right-limb fractures, a right lower-leg amputation that day. On day 13 he found his right hemiscrotum empty; a smooth, tender, testis-sized mass lay under bruised perineal skin. Tracing the cords, ultrasound put the right testis in the left hemiscrotum and the left testis anterior-right of the anus (about 3.5 × 1.7 cm, 0.34 cm deep). On day 25 exploration found a torn septum and fibrous bands, both testes normal in shape and colour; both were reduced and fixed and the septum repaired. At 1.5 months: normal erections; semen 3.2 mL, 17.5 × 10⁶/mL, 85 % normal forms, labelled post-traumatic necrospermia, no vitality recorded. Diagnosis: traumatic crossed testicular dislocation. Today: scan before touching the mass, reduce and fix both testes once he is fit, judge fertility at three months or later (WHO 2021)."
+      "zh-CN": "30岁男性，卡车前排两腿叉开睡着、未系安全带，撞车时被夹在座位与仪表台之间：创伤性休克，右前臂、骨盆、右股骨和右胫腓骨骨折，右足严重毁损，休克纠正后伤后当天右小腿截肢，第 8 天右前臂及右股骨近端骨折固定。伤后第 13 天，他小便时发现右侧阴囊空虚；查体右侧阴囊空虚，肛门右前外侧皮肤青紫，其下有光滑、有压痛、睾丸大小的肿块。超声沿精索追踪：右侧睾丸在左侧阴囊，左侧睾丸在肛门右前方软组织（约 3.5 cm × 1.7 cm，距皮肤约 0.34 cm）。伤后第 25 天探查见阴囊中隔破裂和纤维索带，两侧睾丸和附睾形态、颜色正常，松解后两侧复位固定并修补中隔。术后 1.5 个月勃起正常，精液量 3.2 mL、浓度 17.5 × 10⁶/mL、正常形态 85%，报告诊断“外伤后死精”（没有活力和存活率记录）；孕酮、催乳素、雌二醇高于参考范围，睾酮、LH、FSH 正常。诊断：创伤性睾丸交叉脱位。按现行做法：二次评估中检查会阴；先做超声（含多普勒）再处理肿物；在他能耐受麻醉时尽早手术，复位并固定两侧睾丸、修补中隔，而不是等待 12 天；修复后约 3 个月或更晚按 WHO 2021 标准复查精液，激素在恢复后复查。远期结局没有记录。",
+      "en": "A 30-year-old man, asleep and unbelted with his legs apart in the front of a truck, was crushed between the seat and the dashboard: traumatic shock, fractures of the right forearm, pelvis, right femur and right tibia and fibula, and a severely mangled right foot; once the shock was corrected his right lower leg was amputated that day, and the right forearm and proximal femoral fractures were fixed on day 8. On day 13, passing urine, he found his right hemiscrotum empty; on examination the right hemiscrotum was empty, and under bruised skin anterolateral to the anus on the right lay a smooth, tender, testis-sized mass. Tracing the cords, ultrasound put the right testis in the left hemiscrotum and the left testis in the soft tissue anterior-right of the anus (about 3.5 × 1.7 cm, about 0.34 cm beneath the skin). On day 25 exploration found a torn scrotal septum and fibrous bands, both testes and epididymides normal in shape and colour; the bands were released, both testes reduced and fixed and the septum repaired. 1.5 months after the operation: normal erections; semen volume 3.2 mL, concentration 17.5 × 10⁶/mL, normal forms 85 %, the report's diagnosis post-traumatic necrospermia with no motility or vitality recorded; progesterone, prolactin and oestradiol above the reference ranges, testosterone, LH and FSH normal. Diagnosis: traumatic crossed testicular dislocation. Today: examine the perineum in the secondary survey; scan (with Doppler) before touching the mass; operate as soon as he can have an anaesthetic, reducing and fixing both testes and repairing the septum, not after a 12-day wait; judge fertility on a semen analysis to WHO 2021 standards at three months or later, and repeat the hormones after recovery. The long-term outcome is not recorded."
     },
     "keyReasoning": [
       {
-        "zh-CN": "车祸时两腿叉开、会阴被挤在座位与仪表台之间，十几天后出现空虚的半侧阴囊和会阴部光滑、有压痛、睾丸大小的肿物：首先要想到睾丸被挤出了阴囊。",
-        "en": "A crush with the legs apart against the dashboard, then an empty hemiscrotum and a smooth, tender, testis-sized perineal mass: the first thought is a testis forced out of the scrotum."
+        "zh-CN": "车祸时两腿叉开、被挤在座位与仪表台之间，伤后第 13 天发现半侧阴囊空虚，会阴部有光滑、有压痛、睾丸大小的肿物：首先要想到睾丸被挤出了阴囊。",
+        "en": "Crushed with the legs apart between the seat and the dashboard, then on day 13 an empty hemiscrotum and a smooth, tender, testis-sized perineal mass: the first thought is a testis forced out of the scrotum."
       },
       {
         "zh-CN": "这个肿物在被确认之前，不能穿刺、切开或挤压；超声能找到两枚睾丸，并显示它们是否完整。",
@@ -4217,39 +4222,39 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "会阴和外生殖器属于二次评估的内容（ATLS 第 11 版，2025），骨盆或会阴挤压伤后，在病情稳定时还要从头到脚再查一遍（三次评估）。记录与现行做法：本例的阴囊空虚是伤后第 13 天由他本人在小便时发现的，入院时是否检查过会阴没有记录。会阴受压的车祸伤后出现空虚的半侧阴囊，应按睾丸脱位处理，直到排除为止。",
+        "zh-CN": "会阴和外生殖器属于二次评估的内容（ATLS 第 11 版，2025），骨盆或会阴挤压伤后，在病情稳定时还要从头到脚再查一遍（三次评估）。记录与现行做法：本例的阴囊空虚是伤后第 13 天由他本人在小便时发现的，入院时是否检查过会阴没有记录。两腿叉开受挤压的车祸伤后发现半侧阴囊空虚，应按睾丸脱位处理，直到排除为止。",
         "en": "The perineum and genitalia belong to the secondary survey (ATLS, 11th edition, 2025), and after a pelvic or perineal crush a head-to-toe re-examination once he is stable (the tertiary survey) looks again. Then and now: here the empty hemiscrotum was found on day 13 by the patient himself while passing urine, and whether the perineum was examined on admission is not recorded. After a crush with the legs apart, an empty hemiscrotum is a dislocation until proven otherwise."
       },
       {
-        "zh-CN": "先影像，后动手：AUA 泌尿系创伤指南（2020）支持对怀疑睾丸破裂的阴囊钝性伤做超声，EAU 泌尿系创伤指南（2026）在睾丸创伤中专门讨论睾丸脱位。超声加彩色多普勒可以定位睾丸、显示血流、发现破裂或扭转；本例的超声沿精索确定了两枚睾丸的侧别，但没有血流记录——今天应当要求做多普勒。",
-        "en": "Image before you act: the AUA Urotrauma Guideline (2020) supports ultrasound for blunt scrotal injury with suspected rupture, and the EAU Guidelines on Urological Trauma (2026) deal with testicular dislocation within testicular trauma. Ultrasound with colour Doppler locates the testes, shows their perfusion and picks up rupture or torsion; this scan assigned each testis by its cord but records no blood flow — today, ask for Doppler."
+        "zh-CN": "先影像，后动手：EAU 泌尿系创伤指南（2026）要求睾丸创伤做超声，彩色多普勒可评估血流，并指出睾丸脱位最常见于道路交通伤；AUA 泌尿系创伤指南（2020）支持对怀疑睾丸破裂的阴囊钝性伤做超声。超声加彩色多普勒可以定位睾丸、显示血流、发现破裂或扭转；本例的超声沿精索确定了两枚睾丸的侧别，但没有血流记录——今天应当要求做多普勒。",
+        "en": "Image before you act: the EAU Guidelines on Urological Trauma (2026) ask for ultrasound in testicular trauma, colour Doppler adding perfusion, and note that dislocation is most common after road traffic accidents; the AUA Urotrauma Guideline (2020) supports ultrasound for blunt scrotal injury with suspected rupture. Ultrasound with colour Doppler locates the testes, shows their perfusion and picks up rupture or torsion; this scan assigned each testis by its cord but records no blood flow — today, ask for Doppler."
       },
       {
-        "zh-CN": "复位之后要固定（EAU 泌尿系创伤指南 2026）。越过中线的交叉脱位无法在床旁复位：要切开探查、松解，把每枚睾丸放回自己一侧，两侧固定并修补中隔，并在他能安全麻醉时尽早进行，与骨科、麻醉科协调。记录与现行做法：本例在伤后第 25 天、会诊后 12 天手术，术中已有纤维索带；这是历史经过，不是可以照搬的等待期，延迟的原因没有记录。",
-        "en": "Reduction is followed by fixation (EAU Guidelines on Urological Trauma 2026). A crossed dislocation cannot be reduced at the bedside: explore, release, return each testis to its own side, fix both and repair the septum, as soon as he can safely have an anaesthetic, with the orthopaedic and anaesthetic teams. Then and now: here the operation came on day 25, 12 days after the consultation, when fibrous bands had already formed — history, not an interval to copy; the reason for the delay is not recorded."
+        "zh-CN": "EAU 泌尿系创伤指南（2026）对睾丸脱位采用手法复位加二期睾丸固定，无法手法复位时立即行睾丸固定术。越过中线的交叉脱位无法在床旁复位：要切开探查、松解，把每枚睾丸放回自己一侧，两侧固定，中隔有破口就修补，并在他能安全麻醉时尽早进行，与骨科、麻醉科协调。记录与现行做法：本例在伤后第 25 天、会诊后 12 天手术，术中已有纤维索带；这是历史经过，不是可以照搬的等待期，延迟的原因没有记录。",
+        "en": "The EAU Guidelines on Urological Trauma (2026) treat testicular dislocation by manual replacement and secondary orchidopexy, and by immediate orchidopexy when manual reposition cannot be performed. A crossed dislocation cannot be reduced at the bedside: explore, release, return each testis to its own side, fix both and repair any septal tear, as soon as he can safely have an anaesthetic, with the orthopaedic and anaesthetic teams. Then and now: here the operation came on day 25, 12 days after the consultation, when fibrous bands had already formed — history, not an interval to copy; the reason for the delay is not recorded."
       },
       {
         "zh-CN": "存活在术中判断：颜色正常（切开白膜后有出血）的睾丸应保留并固定；探查后修复、只把无法挽救的睾丸切除，正是 AUA 泌尿系创伤指南（2020）处理睾丸破裂的思路。但存活不等于生精正常：移位、受压、局部温度升高、创伤和全身疾病都可能影响生精。要如实告诉患者，并安排修复后约 3 个月或更晚的精液分析和睾丸大小随访。",
         "en": "Viability is judged at operation: a testis normal in colour (and bleeding when the tunica is incised) is kept and fixed; explore and repair, keeping orchidectomy for a testis that cannot be saved, is the logic of the AUA Urotrauma Guideline (2020) for testicular rupture. But alive is not the same as making sperm normally: displacement, pressure, warmth, the injury and his illness can all impair it. Tell him so honestly, and plan a semen analysis about three months or more after the repair, with testicular size at follow-up."
       },
       {
-        "zh-CN": "按 WHO 实验室手册（第 6 版，2021）读精液分析：可育男性的第 5 百分位为精液量 1.4 mL、精子浓度 16 × 10⁶/mL、精子总数 39 × 10⁶、总活力 42%、前向运动 30%、正常形态 4%，这些是参照点而不是诊断界值，单次分析也不足以判断不育。死精子症要靠存活率检测才能成立；一个生精周期约 3 个月，修复后 1.5 个月的标本反映的仍是受伤和手术期间的状态。记录与现行做法：报告在术后 1.5 个月诊断“外伤后死精”，本病例没有活力和存活率的记录，正常形态 85%（按严格标准极不寻常）的评判方法也没有记录。",
-        "en": "Read semen analysis against the WHO laboratory manual (6th edition, 2021): the 5th centiles in fertile men are volume 1.4 mL, concentration 16 × 10⁶/mL, total number 39 × 10⁶, total motility 42 %, progressive motility 30 % and normal forms 4 % — reference points, not diagnostic cut-offs, and one analysis does not establish infertility. Necrozoospermia needs a vitality test, and a cycle of sperm production takes about three months, so a sample 1.5 months after the repair still reflects the injury and the operations. Then and now: the report called it post-traumatic necrospermia at 1.5 months, this case records no motility or vitality, and the method behind 85 % normal forms — exceptional under strict criteria — is not recorded."
+        "zh-CN": "按 WHO 实验室手册（第 6 版，2021）读精液分析：可育男性的第 5 百分位为精液量 1.4 mL、精子浓度 16 × 10⁶/mL、精子总数 39 × 10⁶、总活力 42%、前向运动 30%、正常形态 4%，这些是参照点，不是可育与不育的分界；异常的分析要复查（EAU 男性不育 2025 年更新：至少连续查两次）。死精子症要靠存活率检测才能成立；一个生精周期约 3 个月，修复后 1.5 个月的标本反映的仍是受伤和手术期间的状态。记录与现行做法：报告在术后 1.5 个月诊断“外伤后死精”，本病例没有活力和存活率的记录，正常形态 85%（按严格标准极不寻常）的评判方法也没有记录。",
+        "en": "Read semen analysis against the WHO laboratory manual (6th edition, 2021): the 5th centiles in fertile men are volume 1.4 mL, concentration 16 × 10⁶/mL, total number 39 × 10⁶, total motility 42 %, progressive motility 30 % and normal forms 4 % — reference points, not limits between fertile and infertile men, and an abnormal analysis is repeated (EAU 2025 male infertility update: at least two consecutive analyses). Necrozoospermia needs a vitality test, and a cycle of sperm production takes about three months, so a sample 1.5 months after the repair still reflects the injury and the operations. Then and now: the report called it post-traumatic necrospermia at 1.5 months, this case records no motility or vitality, and the method behind 85 % normal forms — exceptional under strict criteria — is not recorded."
       },
       {
-        "zh-CN": "激素要结合背景解读：多发伤和多次手术之后，催乳素、雌二醇和孕酮的轻度变化很难单独解释，应激、疼痛和许多药物都可能让催乳素升高。美国内分泌学会（2011）要求先排除药物和其他继发原因，再考虑垂体影像或治疗；他的睾酮、LH、FSH 都正常，下一步是恢复后复查，而不是垂体 MRI 和卡麦角林。",
-        "en": "Read hormones in context: after major trauma and several operations, small changes in prolactin, oestradiol and progesterone are hard to interpret on their own, and stress, pain and many medicines can raise prolactin. The Endocrine Society (2011) asks for medicines and other secondary causes to be excluded before pituitary imaging or treatment; with normal testosterone, LH and FSH, his next step is a repeat after recovery, not a pituitary MRI and cabergoline."
+        "zh-CN": "激素要结合背景解读：多发伤和多次手术之后，高于报告参考范围（范围本身没有记录）的催乳素、雌二醇和孕酮很难单独解释，应激、疼痛和许多药物都可能让催乳素升高。对催乳素，美国内分泌学会（2011）要求在没有过度静脉穿刺应激的情况下采血，并先排除药物和其他继发原因，再考虑垂体检查或治疗；他的睾酮、LH、FSH 都正常，下一步是恢复后复查，而不是垂体 MRI 和卡麦角林。",
+        "en": "Read hormones in context: after major trauma and several operations, prolactin, oestradiol and progesterone above the report's ranges (the ranges themselves not recorded) are hard to interpret on their own, and stress, pain and many medicines can raise prolactin. For prolactin, the Endocrine Society (2011) asks for a sample taken without undue venepuncture stress and for medicines and other secondary causes to be excluded before the pituitary is investigated or treated; with normal testosterone, LH and FSH, his next step is a repeat after recovery, not a pituitary MRI and cabergoline."
       }
     ],
     "references": [
       "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 等. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(6):426-429. Available from: https://rs.yiigle.com/cmaid/1322371",
       "https://rs.yiigle.com/cmaid/1322371",
-      "European Association of Urology. EAU Guidelines on Urological Trauma. Arnhem: EAU Guidelines Office; 2026. Available from: https://uroweb.org/guidelines/urological-trauma",
-      "Morey AF, Broghammer JA, Hollowell CMP, McKibben MJ, Souter L. Urotrauma Guideline 2020: AUA Guideline. J Urol. 2021;205(1):30-35.",
+      "Waterloos M, Campos-Juanatey F, Hallscheidt P, Mayer EK, Ochoa DC, Preto M, et al. EAU Guidelines on Urological Trauma (limited update March 2026). Arnhem: EAU Guidelines Office; 2026. Available from: https://uroweb.org/guidelines/urological-trauma",
+      "Morey AF, Broghammer JA, Hollowell CMP, McKibben MJ, Souter L. Urotrauma Guideline 2020: AUA Guideline. J Urol. 2021;205(1):30-35. doi:10.1097/JU.0000000000001408",
       "American College of Surgeons Committee on Trauma. Advanced Trauma Life Support (ATLS). 11th ed. Chicago (IL): American College of Surgeons; 2025.",
       "World Health Organization. WHO laboratory manual for the examination and processing of human semen. 6th ed. Geneva: World Health Organization; 2021.",
-      "European Association of Urology Guidelines on Male Sexual and Reproductive Health: 2025 Update on Male Infertility. Eur Urol. 2025. PMID: 40118737.",
-      "Melmed S, Casanueva FF, Hoffman AR, Kleinberg DL, Montori VM, Schlechte JA, et al. Diagnosis and treatment of hyperprolactinemia: an Endocrine Society clinical practice guideline. J Clin Endocrinol Metab. 2011;96(2):273-288."
+      "Minhas S, Boeri L, Capogrosso P, Cocci A, Corona G, Dinkelman-Smit M, et al. European Association of Urology Guidelines on Male Sexual and Reproductive Health: 2025 Update on Male Infertility. Eur Urol. 2025;87(5):601-616. doi:10.1016/j.eururo.2025.02.026",
+      "Melmed S, Casanueva FF, Hoffman AR, Kleinberg DL, Montori VM, Schlechte JA, et al. Diagnosis and treatment of hyperprolactinemia: an Endocrine Society clinical practice guideline. J Clin Endocrinol Metab. 2011;96(2):273-288. doi:10.1210/jc.2010-1692"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -4558,6 +4563,20 @@
       },
       {
         "text": "So what's been going on today — why did they ask me to come and see you?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "你这是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "What seems to be the trouble today?",
         "locale": "en",
         "expect": [
           "presenting"

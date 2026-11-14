@@ -32,8 +32,8 @@
       "en": "Apply the 2023 Duke-ISCVID criteria: the same organism in all three culture sets and a vegetation on echocardiography are two major criteria, enough for a definite diagnosis even without any fever."
     },
     {
-      "zh-CN": "为青霉素过敏类型不明的患者制订颗粒链菌（原称营养变异链球菌）心内膜炎的方案：静脉万古霉素 30 mg/kg/d、分 2 次，按血药浓度和肾功能调整，从首次血培养转阴算起用 6 周，至少前 2 周联用庆大霉素；同时问清过敏反应的类型（ESC 2023 心内膜炎指南；AAAAI/ACAAI 2022 药物过敏实践参数）。",
-      "en": "Plan treatment for Granulicatella (formerly nutritionally variant streptococcal) endocarditis in a patient whose penicillin allergy is of unknown type — IV vancomycin 30 mg/kg/day in 2 doses, adjusted to levels and renal function, for 6 weeks from the first negative culture, with gentamicin for at least the first 2 weeks — while clarifying the reaction (ESC 2023 endocarditis; AAAAI/ACAAI 2022 drug allergy)."
+      "zh-CN": "为青霉素过敏类型不明、没有瓣膜手术记录的颗粒链菌（原称营养变异链球菌）心内膜炎患者制订方案：静脉万古霉素 30 mg/kg/d、分 2 次，按血药浓度和肾功能调整，从首次血培养转阴算起用 6 周，不加 ESC 2023 只用于人工瓣膜感染的氨基糖苷类；同时问清过敏反应的类型，确认安全后改用 β-内酰胺类（ESC 2023 心内膜炎指南；AAAAI/ACAAI 2022 药物过敏实践参数）。",
+      "en": "Plan treatment for Granulicatella (formerly nutritionally variant streptococcal) endocarditis on a valve with no recorded surgery, in a patient whose penicillin allergy is of unknown type — IV vancomycin 30 mg/kg/day in 2 doses, adjusted to levels and renal function, for 6 weeks from the first negative culture, without the aminoglycoside that ESC 2023 adds only for a prosthetic valve — while clarifying the reaction so that a beta-lactam can be used once it is safe (ESC 2023 endocarditis; AAAAI/ACAAI 2022 drug allergy)."
     },
     {
       "zh-CN": "判断左心感染性心内膜炎合并重度主动脉瓣反流和心衰时的手术指征与时机：由心内膜炎团队安排 3–5 天内的限期手术，难治性肺水肿或心源性休克时 24 小时内急诊手术；≥ 10 mm 的赘生物进一步支持早期手术（ESC 2023 心内膜炎指南）。",
@@ -69,11 +69,11 @@
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
       "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——57岁女性，乏力、纳差数月，后来腰骶部剧痛、腿活动不便，曾按脊柱关节炎和缺铁性贫血治疗、效果不佳，近来气短加重、不能平卧，起初无发热、咳嗽、咳痰；多年前因贫血输过血，患过已治愈的脑膜炎，此前因牙髓炎做过牙科处理，对青霉素过敏；入院查体所见；就诊前超声心动图提示主动脉瓣可能有赘生物、中度反流，此后病情加重；抗菌药使用前 3 套血培养均生长苛养颗粒链球菌（VITEK 2 鉴定，可见卫星现象）及其药敏；本次超声心动图；以万古霉素为主的治疗后血培养转阴、症状短期改善；转院后抗菌治疗中断，随后突发进行性气短并死亡，可能机制未经证实——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（入院评估、检查回报、治疗经过与转院、结局）、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、体重、化验、心电图、胸片、经食管超声、脊柱和头颅影像、抗菌药剂量与开始时间、过敏反应类型、是否做过手术评估、转院原因、中断时长和死亡机制）保持未知。1.0.0 版的几处含糊之处（“瓣脱垂及重度反流”所指的瓣膜、“此前”看牙的时间、脑膜炎的时间、“起初”无发热之后是否发热、疗效不佳指的是哪项治疗）保留并列入导师指南的待核实清单。原报告唯一的一幅超声图带有医院和采集日期，未获准展示。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 57-year-old woman with months of fatigue and poor appetite, then severe lumbosacral pain with limited leg movement, treated as spondyloarthritis and iron-deficiency anaemia with little effect, and recently worsening breathlessness until she could not lie flat, with no fever, cough or sputum at first; a transfusion for anaemia years earlier, meningitis that resolved, dental treatment for pulpitis before this illness and a penicillin allergy; the admission examination; an echocardiogram before this presentation raising a possible aortic-valve vegetation with moderate regurgitation, followed by deterioration; three pre-antibiotic blood culture sets growing Granulicatella adiacens (VITEK 2, with satellitism) and its susceptibilities; the echocardiogram at this presentation; cultures clearing and a short-lived improvement on vancomycin-based treatment; antibiotic treatment interrupted after transfer to another hospital, then sudden progressive breathlessness and death of unconfirmed mechanism — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (admission, results, treatment course and transfer, outcome), decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, weight, blood tests, ECG, chest film, transoesophageal echo, spinal and brain imaging, antibiotic doses and start date, the type of allergic reaction, any surgical assessment, the reason for the transfer, the length of the interruption, the mechanism of death) stays unknown. Points where the 1.0.0 text is ambiguous (which valve the 'prolapse and severe regurgitation' refers to, when the dental treatment and the meningitis were, whether fever appeared after the 'initial' afebrile period, which treatment 'helped little') are kept and listed in the facilitator guide's 'To verify'. The report's only figure, an ultrasound panel, carries the hospital and the acquisition date and is withheld."
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 57-year-old woman with months of fatigue and poor appetite, then severe lumbosacral pain with limited leg movement, treated as spondyloarthritis and iron-deficiency anaemia with little effect, and recently worsening breathlessness until she could not lie flat, with no fever, cough or sputum at first; a transfusion for anaemia years earlier, meningitis that resolved, dental treatment for pulpitis beforehand and a penicillin allergy; the admission examination; an echocardiogram before this presentation raising a possible aortic-valve vegetation with moderate regurgitation, followed by deterioration; three pre-antibiotic blood culture sets growing Granulicatella adiacens (VITEK 2, with satellitism) and its susceptibilities; the echocardiogram at this presentation; cultures clearing and a short-lived improvement on vancomycin-based treatment; antibiotic treatment interrupted after transfer to another hospital, then sudden progressive breathlessness and death of unconfirmed mechanism — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (admission, results, treatment course and transfer, outcome), decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, weight, blood tests, ECG, chest film, transoesophageal echo, spinal and brain imaging, antibiotic doses and start date, the type of allergic reaction, any surgical assessment, the reason for the transfer, the length of the interruption, the mechanism of death) stays unknown. Points where the 1.0.0 text is ambiguous (which valve the 'prolapse and severe regurgitation' refers to, when the dental treatment and the meningitis were, whether fever appeared after the 'initial' afebrile period, which treatment 'helped little') are kept and listed in the facilitator guide's 'To verify'. The report's only figure, an ultrasound panel, carries the hospital and the acquisition date and is withheld."
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -293,7 +293,9 @@
           "为什么来",
           "来住院",
           "主要问题",
-          "什么情况"
+          "什么情况",
+          "怎么了",
+          "这次怎么"
         ],
         "en": [
           "broughtyouin",
@@ -301,7 +303,9 @@
           "main problem",
           "what's wrong",
           "reason for admission",
-          "troubling you"
+          "troubling you",
+          "bringsyouin",
+          "whatbringsyou"
         ]
       },
       "excludeKeywords": {
@@ -351,7 +355,8 @@
           "躺着喘",
           "睡觉的时候",
           "枕头",
-          "坐起来"
+          "坐起来",
+          "现在感觉"
         ],
         "en": [
           "lie flat",
@@ -360,7 +365,8 @@
           "pillows",
           "sleep propped",
           "flat in bed",
-          "sit up to breathe"
+          "sit up to breathe",
+          "feeling now"
         ]
       },
       "excludeKeywords": [],
@@ -513,8 +519,8 @@
         "en": "Have you had pain anywhere over these months?"
       },
       "answer": {
-        "zh-CN": "后来腰底下、靠近尾巴骨那一块痛得很厉害，腿也不好活动。",
-        "en": "Later my lower back, down near the tailbone, got really painful, and my legs were hard to move."
+        "zh-CN": "后来后腰最下面那一块痛得很厉害，腿也不好活动。",
+        "en": "Later the very bottom of my back got really painful, and my legs were hard to move."
       },
       "keywords": {
         "zh-CN": [
@@ -585,7 +591,9 @@
           "按什么病",
           "诊断过",
           "之前的治疗",
-          "医生怎么说"
+          "医生怎么说",
+          "治疗效果",
+          "缺铁"
         ],
         "en": [
           "seenadoctor",
@@ -594,7 +602,9 @@
           "diagnosed with",
           "previous care",
           "whatdidtheysay",
-          "other doctors"
+          "other doctors",
+          "iron tablets",
+          "did the treatment help"
         ]
       },
       "excludeKeywords": {
@@ -695,7 +705,17 @@
           "chesty"
         ]
       },
-      "excludeKeywords": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "胸痛",
+          "胸口痛",
+          "心慌"
+        ],
+        "en": [
+          "pain",
+          "palpitation"
+        ]
+      },
       "disclosure": "on-ask",
       "required": false,
       "phases": [
@@ -986,7 +1006,11 @@
           "住过院",
           "老毛病",
           "慢性病",
-          "以前生过病"
+          "以前生过病",
+          "输血",
+          "输过血",
+          "脑膜炎",
+          "贫血"
         ],
         "en": [
           "serious illness",
@@ -994,7 +1018,12 @@
           "medical history",
           "beeninhospital",
           "long-term conditions",
-          "health problems"
+          "health problems",
+          "transfusion",
+          "meningitis",
+          "anaemia",
+          "anemia",
+          "medical problems"
         ]
       },
       "excludeKeywords": {
@@ -1171,7 +1200,7 @@
       ],
       "source": {
         "zh-CN": "原报告病例资料·此前因牙髓炎行牙科处理（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
-        "en": "Case presentation in the report: dental treatment for pulpitis before this illness (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
+        "en": "Case presentation in the report: dental treatment for pulpitis beforehand (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     },
     {
@@ -1430,14 +1459,19 @@
           "吸烟",
           "喝酒",
           "饮酒",
-          "烟酒"
+          "烟酒",
+          "吸毒",
+          "注射毒品"
         ],
         "en": [
           "smoke",
           "smoking",
           "alcohol",
           "drink",
-          "cigarettes"
+          "cigarettes",
+          "inject drugs",
+          "injecting",
+          "recreational drugs"
         ]
       },
       "excludeKeywords": [],
@@ -1795,7 +1829,9 @@
           "以前的彩超",
           "外院超声",
           "入院前超声",
-          "旧的心超"
+          "旧的心超",
+          "以前的超声",
+          "以前做的超声"
         ],
         "en": [
           "previous echo",
@@ -1820,8 +1856,8 @@
             "en": "Before this presentation (exact time not recorded)"
           },
           "text": {
-            "zh-CN": "此次就诊前的超声心动图：主动脉瓣可能有赘生物，主动脉瓣中度反流。",
-            "en": "Echocardiogram before this presentation: a possible vegetation on the aortic valve, with moderate aortic regurgitation."
+            "zh-CN": "此次就诊前的超声心动图：主动脉瓣可能有赘生物，伴中度反流。",
+            "en": "Echocardiogram before this presentation: a possible vegetation on the aortic valve, with moderate regurgitation."
           },
           "note": {
             "zh-CN": "病历还写明，此后病情加重。本病例没有记录这次检查的日期和地点、其他测量值，也没有记录当时据此采取了什么处理。",
@@ -2014,8 +2050,8 @@
     {
       "id": "tte",
       "name": {
-        "zh-CN": "经胸超声心动图",
-        "en": "Transthoracic echocardiogram"
+        "zh-CN": "超声心动图",
+        "en": "Echocardiogram"
       },
       "category": "imaging",
       "aliases": {
@@ -2086,8 +2122,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录反流的定量指标、有无瓣周脓肿、二尖瓣和右心的情况以及肺动脉压。原报告有一幅超声图，因带有医院名称和采集日期，未获准展示。",
-            "en": "This case does not record the regurgitation measurements, whether there is a perivalvular abscess, the mitral valve, the right heart or the pulmonary pressure. The report's ultrasound figure carries the hospital name and the acquisition date and is withheld."
+            "zh-CN": "本病例没有记录这次检查是经胸还是经食管超声，也没有记录反流的定量指标、有无瓣周脓肿、二尖瓣和右心的情况以及肺动脉压。",
+            "en": "This case does not record whether this study was transthoracic or transoesophageal, the regurgitation measurements, whether there is a perivalvular abscess, the mitral valve, the right heart or the pulmonary pressure."
           },
           "source": {
             "zh-CN": "原报告病例资料·超声心动图（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2766,14 +2802,15 @@
         ]
       },
       "dose": {
-        "zh-CN": "万古霉素 30 mg/kg/d 静脉滴注，分 2 次，按血药浓度和肾功能调整；庆大霉素 3 mg/kg/d 静脉，每日 1 次，监测肾功能和血药浓度。3 套血培养抽完之后才开始；疗程待病原明确后确定，从首次血培养转阴之日算起。",
-        "en": "Vancomycin 30 mg/kg/day IV in 2 divided doses, adjusted to drug levels and renal function; gentamicin 3 mg/kg/day IV once daily, monitoring renal function and levels. Start only after the three culture sets are drawn; the duration is set once the organism is known and counted from the first negative culture."
+        "zh-CN": "万古霉素 30 mg/kg/d 静脉滴注，分 2 次，按血药浓度和肾功能调整；庆大霉素 3 mg/kg/d 静脉，每日 1 次，监测肾功能和血药浓度——这是 ESC 2023 对青霉素过敏的自体瓣膜心内膜炎的经验性方案。3 套血培养抽完之后才开始；病原明确后改为针对性治疗，疗程从首次血培养转阴之日算起。",
+        "en": "Vancomycin 30 mg/kg/day IV in 2 divided doses, adjusted to drug levels and renal function, with gentamicin 3 mg/kg/day IV once daily, monitoring renal function and levels — ESC 2023's empirical regimen for native-valve endocarditis with a penicillin allergy. Start only after the three culture sets are drawn; narrow it to targeted therapy once the organism is identified, and count the course from the first negative culture."
       },
       "requires": [
         "medications",
         "iv-access"
       ],
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 1,
       "indicatedWhen": {
         "ordered": "blood-cultures",
@@ -2790,8 +2827,8 @@
         "en": "An antibiotic before any blood culture has been drawn: a slow-growing, fastidious organism may never grow afterwards, leaving the diagnosis and the length of treatment without a basis (ESC 2023 endocarditis: three culture sets by separate venepunctures before antibiotics)."
       },
       "response": {
-        "zh-CN": "万古霉素和庆大霉素已开始静脉输注。本病例记录的是以万古霉素为主的治疗，没有记录联用的药物、剂量和开始时间；不模拟其效果。",
-        "en": "Vancomycin and gentamicin are running. This case records vancomycin-based treatment but not the companion drugs, the doses or the start date; it does not simulate the effect."
+        "zh-CN": "万古霉素和庆大霉素已开始静脉输注。本病例记录的是以万古霉素为主的治疗，没有记录联用的药物、剂量和开始时间；不模拟其效果。病原明确后要重新审定方案。",
+        "en": "Vancomycin and gentamicin are running. This case records vancomycin-based treatment but not the companion drugs, the doses or the start date; it does not simulate the effect. The regimen is reviewed once the organism is identified."
       }
     },
     {
@@ -2836,6 +2873,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2885,8 +2923,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "感染性心内膜炎需要按药敏选择、足疗程的静脉杀菌治疗，口服克林霉素两样都做不到（ESC 2023 心内膜炎指南）。",
-        "en": "Endocarditis needs a full course of IV bactericidal therapy matched to the susceptibility report; oral clindamycin provides neither (ESC 2023 endocarditis)."
+        "zh-CN": "药敏报告这株细菌对克林霉素耐药；她也不符合口服治疗的条件：ESC 2023 心内膜炎指南只对已接受至少 10 天恰当静脉治疗、临床稳定、没有脓肿也没有需要手术的瓣膜病变的患者考虑改为口服。",
+        "en": "The laboratory reported this isolate resistant to clindamycin, and she is no candidate for oral treatment: ESC 2023 endocarditis considers a switch to oral antibiotics only after at least 10 days of appropriate IV therapy in a clinically stable patient with no abscess and no valve lesion needing surgery."
       },
       "response": {
         "zh-CN": "本病例没有记录使用克林霉素，不模拟其效果。",
@@ -3197,6 +3235,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3208,6 +3247,14 @@
       "response": {
         "zh-CN": "抗菌药已停用。本病例不模拟这一选择之后的经过；接下来的记录按实际病程展开。",
         "en": "The antibiotics are stopped. This case does not simulate what would follow; the records that follow show the course as it happened."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "庆大"
+        ],
+        "en": [
+          "gentamicin"
+        ]
       }
     }
   ],
@@ -3610,13 +3657,13 @@
         {
           "id": "cultures-then-echo",
           "text": {
-            "zh-CN": "先分别穿刺采集 3 套血培养，之后才用抗菌药；同时尽快做经胸超声心动图，不能明确时加做经食管超声",
-            "en": "Three blood culture sets by separate venepunctures before any antibiotic, and an urgent transthoracic echocardiogram, with a transoesophageal study if it is inconclusive"
+            "zh-CN": "先分别穿刺采集 3 套血培养，之后才用抗菌药；尽快做经胸超声心动图，条件允许时再做经食管超声",
+            "en": "Three blood culture sets by separate venepunctures before any antibiotic, then an urgent transthoracic echo, and a transoesophageal one once it is safe for her"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。反流性杂音、心衰、贫血和几个月的非特异症状，加上入院前超声提示的可疑赘生物，即使没有发热也必须按感染性心内膜炎检查（ESC 2023 心内膜炎指南）。在任何抗菌药之前分别穿刺采集至少 3 套血培养，生长缓慢、培养条件苛刻的细菌才有机会长出来；经胸超声是首选影像，结果不明确或怀疑瓣周并发症时加做经食管超声。",
-            "en": "Correct. Regurgitant murmurs, heart failure, anaemia and months of non-specific symptoms, with an earlier scan raising a possible vegetation, call for an endocarditis work-up even without fever (ESC 2023 endocarditis). At least three culture sets by separate venepunctures before any antibiotic give a slow-growing, fastidious organism its chance to grow; transthoracic echocardiography comes first, adding a transoesophageal study when it is inconclusive or a perivalvular complication is suspected."
+            "zh-CN": "正确。反流性杂音、心衰、贫血和几个月的非特异症状，加上入院前超声提示的可疑赘生物，即使没有发热也必须按感染性心内膜炎检查（ESC 2023 心内膜炎指南）。在任何抗菌药之前分别穿刺采集至少 3 套血培养、每套间隔 30 分钟，生长缓慢、培养条件苛刻的细菌才有机会长出来。经胸超声是首选影像；对疑似左心感染性心内膜炎，即使经胸超声已见赘生物，ESC 2023 也推荐加做经食管超声，了解瓣周有无蔓延——做之前要问有没有吞咽困难或食管疾病、查血小板和凝血，并等她能侧卧耐受（否则在手术室麻醉下进行）。",
+            "en": "Correct. Regurgitant murmurs, heart failure, anaemia and months of non-specific symptoms, with an earlier scan raising a possible vegetation, call for an endocarditis work-up even without fever (ESC 2023 endocarditis). At least three culture sets by separate venepunctures, 30 minutes apart, before any antibiotic give a slow-growing, fastidious organism its chance to grow. Transthoracic echocardiography comes first; ESC 2023 also recommends a transoesophageal study in suspected left-sided endocarditis even when the transthoracic one shows a vegetation, to look for perivalvular extension — after asking about swallowing problems or oesophageal disease, checking platelets and clotting, and once she can lie on her side for it (otherwise in theatre, under anaesthesia)."
           }
         },
         {
@@ -3672,8 +3719,8 @@
     {
       "id": "diagnosis",
       "prompt": {
-        "zh-CN": "结果回报：抗菌药使用前的 3 套血培养均生长同一种细菌，VITEK 2 鉴定为苛养颗粒链球菌，可见卫星现象。经胸超声心动图：主动脉瓣赘生物最大约 25 mm，伴瓣膜脱垂及重度反流，LVEF 48%，左心增大。她一开始一直没有发热。你的诊断是什么？",
-        "en": "The results: the three culture sets taken before antibiotics all grew the same organism, identified by VITEK 2 as Granulicatella adiacens, with satellitism. Transthoracic echocardiogram: aortic-valve vegetations up to about 25 mm, with prolapse and severe regurgitation, LVEF 48 %, enlarged left heart. She had no fever at the start. What is your diagnosis?"
+        "zh-CN": "结果回报：抗菌药使用前的 3 套血培养均生长同一种细菌，VITEK 2 鉴定为苛养颗粒链球菌，可见卫星现象。本次超声心动图：主动脉瓣赘生物最大约 25 mm，伴瓣膜脱垂及重度反流，LVEF 48%，左心增大。她一开始一直没有发热。你的诊断是什么？",
+        "en": "The results: the three culture sets taken before antibiotics all grew the same organism, identified by VITEK 2 as Granulicatella adiacens, with satellitism. Echocardiogram at this presentation: aortic-valve vegetations up to about 25 mm, with prolapse and severe regurgitation, LVEF 48 %, enlarged left heart. She had no fever at the start. What is your diagnosis?"
       },
       "kind": "single",
       "requires": {
@@ -3692,8 +3739,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先调阅本阶段的血培养和经胸超声心动图结果。",
-        "en": "First read this phase's blood cultures and transthoracic echocardiogram."
+        "zh-CN": "先调阅本阶段的血培养和超声心动图结果。",
+        "en": "First read this phase's blood cultures and echocardiogram."
       },
       "options": [
         {
@@ -3740,8 +3787,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。脊柱关节炎确实可以累及主动脉根部、造成主动脉瓣反流，但解释不了 3 套血培养生长同一种细菌和 25 mm 的赘生物；腰背痛和贫血本身就可能是心内膜炎的表现（ESC 2023 心内膜炎指南）。把阳性血培养当作无关的一过性菌血症，会漏掉真正的诊断。",
-            "en": "No. Spondyloarthritis can involve the aortic root and cause aortic regurgitation, but it cannot explain the same organism in three sets and a 25-mm vegetation; the back pain and the anaemia may themselves be features of endocarditis (ESC 2023 endocarditis). Writing off positive cultures as a passing bacteraemia misses the diagnosis."
+            "zh-CN": "不对。脊柱关节炎确实可以累及主动脉根部、造成主动脉瓣反流，但解释不了 3 套血培养生长同一种细菌和约 25 mm 的赘生物；腰背痛和贫血本身就可能是心内膜炎的表现（ESC 2023 心内膜炎指南）。把阳性血培养当作无关的一过性菌血症，会漏掉真正的诊断。",
+            "en": "No. Spondyloarthritis can involve the aortic root and cause aortic regurgitation, but it cannot explain the same organism in three sets and a vegetation of about 25 mm; the back pain and the anaemia may themselves be features of endocarditis (ESC 2023 endocarditis). Writing off positive cultures as a passing bacteraemia misses the diagnosis."
           }
         },
         {
@@ -3787,13 +3834,13 @@
         {
           "id": "vancomycin-six-weeks",
           "text": {
-            "zh-CN": "静脉万古霉素，从首次血培养转阴算起用 6 周，至少前 2 周联用庆大霉素，按血药浓度和肾功能调整剂量",
-            "en": "IV vancomycin for 6 weeks from the first negative culture, with gentamicin for at least the first 2 weeks, doses guided by levels and renal function"
+            "zh-CN": "单用静脉万古霉素，从首次血培养转阴算起 6 周，按血药浓度和肾功能调整剂量，同时问清青霉素过敏反应",
+            "en": "IV vancomycin alone for 6 weeks from the first negative culture, doses guided by levels and renal function, while her penicillin reaction is clarified"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ESC 2023 心内膜炎指南对颗粒链菌和乏养菌（原称营养变异链球菌）推荐青霉素 G、头孢曲松或万古霉素治疗 6 周，至少前 2 周联用氨基糖苷类——这类细菌病程迁延，赘生物大，并发症和需要换瓣的比例高。她的青霉素过敏类型不明，万古霉素（30 mg/kg/d，分 2 次）避开了这个问题；庆大霉素 3 mg/kg/d、每日 1 次，需监测肾功能和血药浓度。疗程从首次血培养转阴之日算起。",
-            "en": "Correct. ESC 2023 endocarditis recommends penicillin G, ceftriaxone or vancomycin for 6 weeks, with an aminoglycoside for at least the first 2 weeks, for Granulicatella and Abiotrophia (the former nutritionally variant streptococci), which run a prolonged course with large vegetations and high rates of complications and valve replacement. With a penicillin allergy of unknown type, vancomycin (30 mg/kg/day in 2 doses) avoids the question; gentamicin 3 mg/kg/day once daily needs renal and level monitoring. The course is counted from the first negative culture."
+            "zh-CN": "正确。颗粒链菌和乏养菌（原称营养变异链球菌）病程迁延、赘生物大，约半数最终需要换瓣；ESC 2023 心内膜炎指南推荐青霉素 G、头孢曲松或万古霉素治疗 6 周，只有人工瓣膜感染才加用氨基糖苷类、至少用前 2 周——她没有瓣膜手术的记录，经验性使用的庆大霉素不再继续。青霉素过敏类型不明时，万古霉素（30 mg/kg/d，分 2 次，按血药浓度和肾功能调整）可以在问清过敏反应期间安全使用；如果证实不是严重速发型（过敏性休克样）反应，头孢曲松等头孢菌素更好，因为 β-内酰胺类的疗效优于糖肽类（ESC 2023）。疗程从首次血培养转阴之日算起。",
+            "en": "Correct. For Granulicatella and Abiotrophia (the former nutritionally variant streptococci), which run a prolonged course with large vegetations and end in valve replacement in about half of cases, ESC 2023 endocarditis recommends penicillin G, ceftriaxone or vancomycin for 6 weeks and adds an aminoglycoside for at least the first 2 weeks only on a prosthetic valve — no valve surgery is recorded for her, so the empirical gentamicin is not continued. With a penicillin allergy of unknown type, vancomycin (30 mg/kg/day in 2 doses, guided by levels and renal function) is safe while the reaction is clarified; if it proves non-anaphylactic, a cephalosporin such as ceftriaxone is preferable, because a beta-lactam works better than a glycopeptide (ESC 2023). The course is counted from the first negative culture."
           }
         },
         {
@@ -3816,20 +3863,20 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。2 周短疗程只用于对青霉素高度敏感的口腔链球菌所致、无并发症、肾功能正常的自体瓣膜心内膜炎（ESC 2023 心内膜炎指南）；颗粒链菌感染合并重度反流、心衰和 25 mm 赘生物，需要 6 周。青霉素过敏者能否用头孢类，也要先弄清过敏反应的类型。",
-            "en": "No. The 2-week course is only for uncomplicated native-valve endocarditis from highly penicillin-susceptible oral streptococci with normal renal function (ESC 2023 endocarditis); Granulicatella with severe regurgitation, heart failure and a 25-mm vegetation needs 6 weeks. Whether a cephalosporin is safe for her also depends on what her penicillin reaction was."
+            "zh-CN": "不对。2 周短疗程只用于对青霉素高度敏感的口腔链球菌所致、无并发症、肾功能正常的自体瓣膜心内膜炎（ESC 2023 心内膜炎指南）；颗粒链菌感染合并重度反流、心衰和约 25 mm 的赘生物，需要 6 周。青霉素过敏者能否用头孢类，也要先弄清过敏反应的类型。",
+            "en": "No. The 2-week course is only for uncomplicated native-valve endocarditis from highly penicillin-susceptible oral streptococci with normal renal function (ESC 2023 endocarditis); Granulicatella with severe regurgitation, heart failure and a vegetation of about 25 mm needs 6 weeks. Whether a cephalosporin is safe for her also depends on what her penicillin reaction was."
           }
         },
         {
           "id": "vancomycin-four-weeks",
           "text": {
-            "zh-CN": "单用静脉万古霉素 4 周，从第一剂算起，不加氨基糖苷类，以保护她的肾功能",
-            "en": "IV vancomycin alone for 4 weeks counted from the first dose, with no aminoglycoside, so as to protect her kidneys"
+            "zh-CN": "静脉万古霉素联合庆大霉素 4 周，从第一剂算起——不能用 β-内酰胺类时口腔链球菌的常规疗程",
+            "en": "IV vancomycin with gentamicin for 4 weeks counted from the first dose, the course for oral streptococci when a beta-lactam cannot be used"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。万古霉素选对了，但疗程和算法错了：这类细菌需要 6 周，至少前 2 周联用氨基糖苷类，并且从首次血培养转阴之日算起，而不是从第一剂算起（ESC 2023 心内膜炎指南）。保护肾功能靠监测肾功能和血药浓度，而不是缩短疗程。",
-            "en": "No. Vancomycin is the right drug, but the course is wrong: these organisms need 6 weeks with an aminoglycoside for at least the first 2, counted from the first negative culture, not from the first dose (ESC 2023 endocarditis). The kidneys are protected by monitoring renal function and drug levels, not by shortening the course."
+            "zh-CN": "不对。万古霉素 4 周是普通口腔链球菌在 β-内酰胺过敏时的疗程；颗粒链菌需要 6 周，而且从首次血培养转阴之日算起，而不是从第一剂算起。ESC 2023 心内膜炎指南只对人工瓣膜感染加用氨基糖苷类：对她的瓣膜，万古霉素再加庆大霉素只会徒增指南并不要求承担的肾毒性。",
+            "en": "No. Four weeks of vancomycin is the course for ordinary oral streptococci in a beta-lactam allergy; Granulicatella needs 6 weeks, counted from the first negative culture rather than the first dose. And ESC 2023 adds an aminoglycoside only on a prosthetic valve: on her valve, gentamicin beside vancomycin adds kidney toxicity that the guidance does not ask for (ESC 2023 endocarditis)."
           }
         },
         {
@@ -3840,8 +3887,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。药敏报告这株细菌对克林霉素耐药；何况心内膜炎需要足疗程的静脉杀菌治疗，口服抑菌药不能替代（ESC 2023 心内膜炎指南）。回家完成治疗只适用于病情稳定、没有手术指征的患者，她不符合。",
-            "en": "No. The laboratory reported this organism resistant to clindamycin, and endocarditis needs a full course of IV bactericidal therapy that an oral bacteriostatic drug cannot replace (ESC 2023 endocarditis). Finishing treatment at home is for stable patients without a surgical indication, which she is not."
+            "zh-CN": "不对。药敏报告这株细菌对克林霉素耐药；而且只有在恰当的静脉治疗至少 10 天、临床稳定、没有脓肿也没有需要手术的瓣膜病变时，才考虑改为口服（ESC 2023 心内膜炎指南）——她有心衰，也有手术指征。",
+            "en": "No. The laboratory reported this organism resistant to clindamycin, and a switch to oral treatment is considered only after at least 10 days of appropriate IV therapy in a clinically stable patient with no abscess and no valve lesion needing surgery (ESC 2023 endocarditis) — she has heart failure and a surgical indication."
           }
         }
       ]
@@ -3849,8 +3896,8 @@
     {
       "id": "surgery-timing",
       "prompt": {
-        "zh-CN": "入院时她不能平卧，颈静脉充盈，双肺底有湿啰音；经胸超声：主动脉瓣赘生物最大约 25 mm，伴瓣膜脱垂及重度反流，LVEF 48%，左心增大。诊断为确定的感染性心内膜炎。本病例没有记录她的生命体征。瓣膜怎么处理，什么时候处理？",
-        "en": "On admission she could not lie flat, her neck veins were distended and there were crackles at both lung bases; the echo shows aortic-valve vegetations up to about 25 mm with prolapse and severe regurgitation, LVEF 48 % and an enlarged left heart. The diagnosis is definite endocarditis. No vital signs are recorded. What do you do about the valve, and when?"
+        "zh-CN": "入院时她不能平卧，颈静脉充盈，双肺底少许湿啰音；超声心动图：主动脉瓣赘生物最大约 25 mm，伴瓣膜脱垂及重度反流，LVEF 48%，左心增大。诊断为确定的感染性心内膜炎。本病例没有记录她的生命体征。瓣膜怎么处理，什么时候处理？",
+        "en": "On admission she could not lie flat, her neck veins were distended and there were a few crackles at both lung bases; the echo shows aortic-valve vegetations up to about 25 mm with prolapse and severe regurgitation, LVEF 48 % and an enlarged left heart. The diagnosis is definite endocarditis. No vital signs are recorded. What do you do about the valve, and when?"
       },
       "kind": "single",
       "requires": {
@@ -3874,8 +3921,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先作出诊断（决策 2），并调阅本阶段的经胸超声心动图。",
-        "en": "First make the diagnosis (decision 2) and read this phase's transthoracic echocardiogram."
+        "zh-CN": "先作出诊断（决策 2），并调阅本阶段的超声心动图。",
+        "en": "First make the diagnosis (decision 2) and read this phase's echocardiogram."
       },
       "options": [
         {
@@ -3910,8 +3957,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。药物只能暂时缓解急性重度主动脉瓣反流造成的充血，瓣膜不会因此关紧；有心衰症状就应限期手术，而不是等到休克（ESC 2023 心内膜炎指南）。到休克时再手术，风险要高得多。",
-            "en": "No. Drugs only buy time against the congestion of acute severe aortic regurgitation; the valve will not close again. Symptoms of heart failure already call for urgent surgery, not shock (ESC 2023 endocarditis), and operating once she is in shock carries a far higher risk."
+            "zh-CN": "不对。药物只能暂时缓解重度主动脉瓣反流造成的充血，瓣膜不会因此关紧；有心衰症状就应限期手术，而不是等到休克（ESC 2023 心内膜炎指南）。到休克时再手术，风险要高得多。",
+            "en": "No. Drugs only buy time against the congestion of severe aortic regurgitation; the valve will not close again. Symptoms of heart failure already call for urgent surgery, not shock (ESC 2023 endocarditis), and operating once she is in shock carries a far higher risk."
           }
         },
         {
@@ -3929,8 +3976,8 @@
         {
           "id": "emergency-for-size",
           "text": {
-            "zh-CN": "今晚急诊手术：25 mm 的赘生物本身就要求 24 小时内手术，不必考虑她的心衰程度",
-            "en": "Emergency surgery tonight: a 25-mm vegetation by itself sets a 24-hour deadline, whatever the degree of her heart failure"
+            "zh-CN": "今晚急诊手术：约 25 mm 的赘生物本身就要求 24 小时内手术，不必考虑她的心衰程度",
+            "en": "Emergency surgery tonight: a vegetation of about 25 mm by itself sets a 24-hour deadline, whatever the degree of her heart failure"
           },
           "correct": false,
           "feedback": {
@@ -4056,8 +4103,8 @@
       "id": "rb-history-risks",
       "domain": "history",
       "text": {
-        "zh-CN": "在任何抗菌药之前询问看牙或其他操作、近期抗生素、药物过敏以及过敏反应的类型",
-        "en": "Before any antibiotic, asked about dental work or other procedures, recent antibiotics, drug allergies and the type of allergic reaction"
+        "zh-CN": "询问看牙或其他操作、近期抗生素、药物过敏以及过敏反应的类型",
+        "en": "Asked about dental work or other procedures, recent antibiotics, drug allergies and the type of allergic reaction"
       },
       "weight": 2,
       "met": {
@@ -4112,8 +4159,8 @@
       "id": "rb-records",
       "domain": "investigations",
       "text": {
-        "zh-CN": "调阅入院前的超声报告，结果回报后读取血培养、药敏和经胸超声心动图",
-        "en": "Read the earlier echocardiogram report, then the blood cultures, susceptibilities and transthoracic echocardiogram once they came back"
+        "zh-CN": "调阅入院前的超声报告，结果回报后读取血培养、药敏和本次超声心动图",
+        "en": "Read the earlier echocardiogram report, then the blood cultures, susceptibilities and this admission's echocardiogram once they came back"
       },
       "weight": 2,
       "met": {
@@ -4187,8 +4234,8 @@
       "id": "rb-regimen",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选择不含 β-内酰胺的 6 周方案，并核实了青霉素过敏史",
-        "en": "Chose the 6-week regimen without a beta-lactam at the first attempt and clarified the penicillin allergy"
+        "zh-CN": "首次作答即选择单用万古霉素 6 周的方案，并核实了青霉素过敏史",
+        "en": "Chose 6 weeks of vancomycin alone at the first attempt and clarified the penicillin allergy"
       },
       "weight": 3,
       "met": {
@@ -4348,8 +4395,8 @@
         "en": "Pharmacist Wen (clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "临床药师，只解读学员已经读过的血培养和药敏结果，并就用药提供建议：万古霉素 30 mg/kg/d、分 2 次，按血药浓度和肾功能调整；庆大霉素 3 mg/kg/d、每日 1 次，与万古霉素合用要监测肾毒性和血药浓度；本病例没有记录体重和肌酐，所以算不出具体剂量。药物过敏：先问清药物、反应表现、时间和处理；青霉素类的非严重、非速发型反应之后，头孢类通常可以耐受，严重速发型反应或严重皮肤反应之后，在过敏评估前避免所有 β-内酰胺类（AAAAI/ACAAI 2022）。转院：核对用药，交接已用天数（从首次血培养转阴算起）、最近的血药浓度和下一剂的时间。不报告学员尚未读到的结果。",
-        "en": "Clinical pharmacist who interprets only the blood cultures and susceptibilities the learner has read and advises on the drugs: vancomycin 30 mg/kg/day in 2 doses, adjusted to levels and renal function; gentamicin 3 mg/kg/day once daily, watching nephrotoxicity and levels when combined with vancomycin; no weight or creatinine is recorded, so no dose can be calculated. Drug allergy: first establish the drug, the reaction, when it happened and how it was treated; after a non-severe, non-immediate reaction to a penicillin a cephalosporin is usually tolerated, while after a severe immediate reaction or a severe skin reaction all beta-lactams are avoided until an allergy assessment (AAAAI/ACAAI 2022). Transfer: reconcile the medicines and hand over the days completed (counted from the first negative culture), the latest levels and the time of the next dose. Never reports a result the learner has not read."
+        "zh-CN": "临床药师，只解读学员已经读过的血培养和药敏结果，并就用药提供建议：万古霉素 30 mg/kg/d、分 2 次，按血药浓度和肾功能调整；庆大霉素 3 mg/kg/d、每日 1 次，只作为病原明确前的经验性覆盖，与万古霉素合用要监测肾毒性和血药浓度——ESC 2023 只对人工瓣膜的颗粒链菌感染加用氨基糖苷类；本病例没有记录体重和肌酐，所以算不出具体剂量。药物过敏：先问清药物、反应表现、时间和处理。ESC 2023 推荐脱敏，或在非过敏性休克样反应后改用头孢菌素，否则用万古霉素，并指出 β-内酰胺类疗效更好；AAAAI/ACAAI 2022 实践参数支持在非过敏性休克样的青霉素反应后不经试验直接使用侧链不同的头孢菌素，即使有过敏性休克史也建议可以考虑，但发生过严重迟发型皮肤反应（如 Stevens–Johnson 综合征或 DRESS）的患者，没有过敏专科意见不用任何 β-内酰胺类。转院：核对用药，交接已用天数（从首次血培养转阴算起）、最近的血药浓度和下一剂的时间。不报告学员尚未读到的结果。",
+        "en": "Clinical pharmacist who interprets only the blood cultures and susceptibilities the learner has read and advises on the drugs: vancomycin 30 mg/kg/day in 2 doses, adjusted to levels and renal function; gentamicin 3 mg/kg/day once daily only as empirical cover until the organism is known, watching nephrotoxicity and levels beside vancomycin — ESC 2023 adds an aminoglycoside for Granulicatella only on a prosthetic valve; no weight or creatinine is recorded, so no dose can be calculated. Drug allergy: first establish the drug, the reaction, when it happened and how it was treated. ESC 2023 recommends desensitisation, or a cephalosporin after a non-anaphylactic reaction, and otherwise vancomycin, a beta-lactam being the better drug; the AAAAI/ACAAI 2022 parameter supports a cephalosporin with a different side chain without testing after a non-anaphylactic penicillin reaction and suggests it even after anaphylaxis, but after a severe delayed skin reaction (such as Stevens–Johnson syndrome or DRESS) no beta-lactam is given without an allergist. Transfer: reconcile the medicines and hand over the days completed (counted from the first negative culture), the latest levels and the time of the next dose. Never reports a result the learner has not read."
       },
       "interprets": [
         "blood-cultures",
@@ -4380,8 +4427,8 @@
         "en": "Dr Chu (cardiac surgery)"
       },
       "knowledge": {
-        "zh-CN": "心外科医生，只解读学员已经读过的超声报告，并讲解 ESC 2023 心内膜炎指南的手术原则：感染导致重度瓣膜反流并出现心衰症状时为什么需要 3–5 天内的限期手术，什么情况下改为 24 小时内急诊手术，≥ 10 mm 的赘生物怎样增加栓塞风险；术前用经食管超声了解瓣周有无脓肿，头颅影像排除会影响手术时机的栓塞或出血，并处理口腔等感染灶。本病例没有记录经食管超声、头颅影像、手术评估或手术，绝不编造术中所见或手术结果；不报告学员尚未读到的结果。",
-        "en": "Cardiac surgeon who interprets only the echo reports the learner has read and explains the surgical principles of ESC 2023 endocarditis: why severe regurgitation from endocarditis with symptoms of heart failure calls for urgent surgery within 3–5 days, what makes it an emergency within 24 hours, and how a vegetation of 10 mm or more adds embolic risk; before surgery, a transoesophageal echo for perivalvular abscess, brain imaging for emboli or bleeding that would change the timing, and treatment of a source such as the teeth. This case records no transoesophageal echo, brain imaging, surgical assessment or operation: never invents operative findings or results, and never reports a result the learner has not read."
+        "zh-CN": "心外科医生，只解读学员已经读过的超声报告，并讲解 ESC 2023 心内膜炎指南的手术原则：感染导致重度瓣膜反流并出现心衰症状时为什么需要 3–5 天内的限期手术，什么情况下改为 24 小时内急诊手术，≥ 10 mm 的赘生物怎样增加栓塞风险；术前用经食管超声了解瓣周有无脓肿（先问有无吞咽困难或食管疾病、查凝血；她不能平卧时，可能要到手术室麻醉下再做），头颅影像排除会影响手术时机的栓塞或出血，并处理口腔等感染灶。本病例没有记录经食管超声、头颅影像、手术评估或手术，绝不编造术中所见或手术结果；不报告学员尚未读到的结果。",
+        "en": "Cardiac surgeon who interprets only the echo reports the learner has read and explains the surgical principles of ESC 2023 endocarditis: why severe regurgitation from endocarditis with symptoms of heart failure calls for urgent surgery within 3–5 days, what makes it an emergency within 24 hours, and how a vegetation of 10 mm or more adds embolic risk; before surgery, a transoesophageal echo for perivalvular abscess (after asking about swallowing problems or oesophageal disease and checking clotting; while she cannot lie flat it may have to wait for theatre, under anaesthesia), brain imaging for emboli or bleeding that would change the timing, and treatment of a source such as the teeth. This case records no transoesophageal echo, brain imaging, surgical assessment or operation: never invents operative findings or results, and never reports a result the learner has not read."
       },
       "interprets": [
         "previous-echo",
@@ -4397,25 +4444,25 @@
       "en": "Debrief: afebrile subacute endocarditis, a damaged aortic valve and treatment interrupted at transfer"
     },
     "conclusion": {
-      "zh-CN": "57岁女性，乏力、纳差数月，后来腰骶部剧痛、腿活动不便，按脊柱关节炎和缺铁性贫血治疗无效；此前因牙髓炎看过牙，对青霉素过敏，起初没有发热；近来气短加重至不能平卧。查体皮肤黏膜苍白、颈静脉充盈、双肺底湿啰音，心尖部收缩期 3/6 级杂音和舒张期叹气样杂音；入院前超声已提示主动脉瓣可能有赘生物。抗菌药前 3 套血培养均为苛养颗粒链球菌（卫星现象；万古霉素敏感，红霉素、克林霉素耐药），超声见主动脉瓣赘生物最大约 25 mm、瓣膜脱垂伴重度反流、LVEF 48%：确定的主动脉瓣感染性心内膜炎合并心衰。以万古霉素为主的治疗后血培养转阴、短期好转；转院后抗菌治疗中断，随后突发进行性气短并死亡，机制未证实。按现行指南（ESC 2023）：抗菌药前采集血培养，万古霉素从首次转阴算起用 6 周、至少前 2 周联用庆大霉素，由心内膜炎团队安排限期手术，转院时治疗不断档。",
-      "en": "A 57-year-old woman had months of fatigue, poor appetite and severe lumbosacral pain, treated as spondyloarthritis and iron-deficiency anaemia without benefit, then breathlessness to the point of orthopnoea. She had had dental treatment for pulpitis, was allergic to penicillin and had no fever at first; she was pale, with distended neck veins, basal crackles and systolic and diastolic murmurs, and an earlier echo had raised a possible aortic vegetation. All three pre-antibiotic culture sets grew Granulicatella adiacens; echocardiography showed aortic vegetations up to about 25 mm, prolapse, severe regurgitation and LVEF 48 %: definite aortic-valve endocarditis with heart failure. On vancomycin-based treatment the cultures cleared and she improved briefly; after transfer the antibiotics were interrupted, and sudden progressive breathlessness and death followed. Today (ESC 2023): cultures before antibiotics, 6 weeks of vancomycin with gentamicin, urgent surgery and no gap at transfer."
+      "zh-CN": "57岁女性，乏力、纳差数月，后来腰骶部剧痛、腿活动不便，按脊柱关节炎和缺铁性贫血治疗，效果不佳；此前因牙髓炎看过牙，对青霉素过敏，起初没有发热；近来气短加重至不能平卧。查体皮肤黏膜苍白、颈静脉充盈、双肺底少许湿啰音，心尖部收缩期 3/6 级杂音和舒张期叹气样杂音；入院前超声已提示主动脉瓣可能有赘生物。抗菌药前 3 套血培养均为苛养颗粒链球菌（卫星现象；万古霉素敏感，红霉素、克林霉素耐药），超声见主动脉瓣赘生物最大约 25 mm、瓣膜脱垂伴重度反流、LVEF 48%：确定的主动脉瓣感染性心内膜炎合并心衰。以万古霉素为主的治疗后血培养转阴、短期好转；转院后抗菌治疗中断，随后突发进行性气短并死亡，机制未证实。按现行指南（ESC 2023）：抗菌药前采集血培养，万古霉素从首次转阴算起用 6 周（没有瓣膜手术记录，不加氨基糖苷类），由心内膜炎团队安排限期手术，转院时治疗不断档。",
+      "en": "A 57-year-old woman had months of fatigue, poor appetite and severe lumbosacral pain, treated as spondyloarthritis and iron-deficiency anaemia with little effect, then breathlessness to the point of orthopnoea. She had had dental treatment for pulpitis, was allergic to penicillin and had no fever at first; she was pale, with distended neck veins, a few basal crackles and systolic and diastolic murmurs, and an earlier echo had raised a possible aortic vegetation. All three pre-antibiotic culture sets grew Granulicatella adiacens; echocardiography showed aortic vegetations up to about 25 mm, prolapse, severe regurgitation and LVEF 48 %: definite aortic-valve endocarditis with heart failure. On vancomycin-based treatment the cultures cleared and she improved briefly; after transfer the antibiotics were interrupted, and sudden progressive breathlessness and death followed. Today (ESC 2023): cultures before antibiotics, 6 weeks of vancomycin with no aminoglycoside on a valve without recorded surgery, urgent surgery and no gap at transfer."
     },
     "keyReasoning": [
       {
         "zh-CN": "几个月的乏力、纳差、贫血和治不好的腰骶痛，加上舒张期杂音和心衰，又有看牙的经历——一个统一的诊断比三个互不相关的诊断更可能。",
-        "en": "Months of fatigue, poor appetite, anaemia and back pain that would not settle, then a diastolic murmur and heart failure after dental treatment: one unifying diagnosis is likelier than three unrelated ones."
+        "en": "Months of fatigue, poor appetite, anaemia and back pain that would not settle, then a diastolic murmur and heart failure, with dental treatment in her history: one unifying diagnosis is likelier than three unrelated ones."
       },
       {
         "zh-CN": "入院前超声提示的可疑赘生物，把怀疑变成了必须马上完成的检查：先抽血培养，再用抗菌药，同时做超声心动图。",
         "en": "The earlier scan's possible vegetation turns suspicion into a work-up that cannot wait: cultures first, antibiotics after, and an echocardiogram alongside."
       },
       {
-        "zh-CN": "3 套血培养生长同一种口腔来源的细菌、25 mm 的赘生物伴重度反流：两项主要标准，无论发不发热都已确定；卫星现象指向营养变异的颗粒链菌。",
-        "en": "The same oral organism in three sets and a 25-mm vegetation with severe regurgitation are two major criteria — definite with or without fever; satellitism points to a nutritionally variant Granulicatella."
+        "zh-CN": "3 套血培养生长同一种口腔来源的细菌、约 25 mm 的赘生物伴重度反流：两项主要标准，无论发不发热都已确定；卫星现象指向营养变异的颗粒链菌。",
+        "en": "The same oral organism in three sets and a vegetation of about 25 mm with severe regurgitation are two major criteria — definite with or without fever; satellitism points to a nutritionally variant Granulicatella."
       },
       {
-        "zh-CN": "端坐呼吸、颈静脉充盈和湿啰音，加上重度主动脉瓣反流、LVEF 48% 和左心增大，说明心衰来自受损的瓣膜：手术是治疗的一部分，抗菌药关不上漏的瓣膜。",
-        "en": "Orthopnoea, distended neck veins and crackles, with severe aortic regurgitation, LVEF 48 % and an enlarged left heart, mean heart failure from a damaged valve: surgery is part of the treatment, because antibiotics cannot close a leaking valve."
+        "zh-CN": "端坐呼吸、颈静脉充盈和双肺底少许湿啰音，加上重度主动脉瓣反流、LVEF 48% 和左心增大，说明心衰来自受损的瓣膜：手术是治疗的一部分，抗菌药关不上漏的瓣膜。",
+        "en": "Orthopnoea, distended neck veins and a few basal crackles, with severe aortic regurgitation, LVEF 48 % and an enlarged left heart, mean heart failure from a damaged valve: surgery is part of the treatment, because antibiotics cannot close a leaking valve."
       },
       {
         "zh-CN": "血培养转阴和症状好转说明感染在控制之中，并不说明瓣膜已经修好或疗程已经完成；转院正是计划最容易断掉的时刻。",
@@ -4462,16 +4509,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "不发热也要想到心内膜炎。亚急性感染性心内膜炎常以乏力、纳差、贫血、骨骼肌肉痛和心衰起病，发热只是次要标准（2023 年 Duke-ISCVID 标准）。在任何抗菌药之前分别穿刺采集至少 3 套血培养，再做经胸超声，不明确或怀疑瓣周并发症时加做经食管超声（ESC 2023 心内膜炎指南）。记录与现行做法：她入院前的超声已经提示可疑赘生物，本病例没有记录当时据此做了什么；她抗菌药前的 3 套血培养全部阳性。",
-        "en": "Think of endocarditis without fever. Subacute infective endocarditis often presents with fatigue, poor appetite, anaemia, musculoskeletal pain and heart failure, and fever is only a minor criterion (2023 Duke-ISCVID criteria). Take at least three culture sets by separate venepunctures before any antibiotic, then a transthoracic echo, adding a transoesophageal study when it is inconclusive or a perivalvular complication is suspected (ESC 2023 endocarditis). Then and now: her earlier scan had already raised a possible vegetation, and this case does not record what followed; all three of her pre-antibiotic culture sets were positive."
+        "zh-CN": "不发热也要想到心内膜炎。亚急性感染性心内膜炎常以乏力、纳差、贫血、骨骼肌肉痛和心衰起病，发热只是次要标准（2023 年 Duke-ISCVID 标准）。在任何抗菌药之前分别穿刺采集至少 3 套血培养、每套间隔 30 分钟；再做经胸超声，即使已见赘生物也推荐在问过吞咽困难和食管疾病、查过凝血之后加做经食管超声，了解瓣周有无蔓延（ESC 2023 心内膜炎指南）。记录与现行做法：她入院前的超声已经提示可疑赘生物，本病例没有记录当时据此做了什么；她抗菌药前的 3 套血培养全部阳性。",
+        "en": "Think of endocarditis without fever. Subacute infective endocarditis often presents with fatigue, poor appetite, anaemia, musculoskeletal pain and heart failure, and fever is only a minor criterion (2023 Duke-ISCVID criteria). Take at least three culture sets by separate venepunctures, 30 minutes apart, before any antibiotic; then a transthoracic echo and, recommended even when it shows a vegetation, a transoesophageal study for perivalvular extension once swallowing problems, oesophageal disease and clotting have been checked (ESC 2023 endocarditis). Then and now: her earlier scan had already raised a possible vegetation, and this case does not record what was done about it; all three of her pre-antibiotic culture sets were positive."
       },
       {
         "zh-CN": "两项主要标准即可确诊。同一种细菌在 3 套独立血培养中生长（2023 年 Duke-ISCVID 标准把颗粒链菌和乏养菌列为典型致病菌），加上超声所见赘生物，就是确定的感染性心内膜炎；卫星现象提示营养变异链球菌，不是污染或混合生长。",
         "en": "Two major criteria are enough. The same organism in three separate culture sets (the 2023 Duke-ISCVID criteria list Granulicatella and Abiotrophia among the typical organisms) and a vegetation on echo make endocarditis definite; satellitism marks a nutritionally variant streptococcus, not contamination or mixed growth."
       },
       {
-        "zh-CN": "颗粒链菌要按更难治的细菌对待。ESC 2023 心内膜炎指南推荐青霉素 G、头孢曲松或万古霉素治疗 6 周，至少前 2 周联用氨基糖苷类；青霉素过敏类型不明时，用万古霉素 30 mg/kg/d、分 2 次（按血药浓度和肾功能调整），庆大霉素 3 mg/kg/d、每日 1 次，同时问清过敏反应（AAAAI/ACAAI 2022）。疗程从首次血培养转阴算起。记录与现行做法：她接受的是以万古霉素为主的治疗；对红霉素、克林霉素耐药，也排除了这两种口服药。",
-        "en": "Treat Granulicatella as a harder organism. ESC 2023 endocarditis recommends penicillin G, ceftriaxone or vancomycin for 6 weeks with an aminoglycoside for at least the first 2; with a penicillin allergy of unknown type, vancomycin 30 mg/kg/day in 2 doses (adjusted to levels and renal function) and gentamicin 3 mg/kg/day once daily, while the reaction is clarified (AAAAI/ACAAI 2022). The course is counted from the first negative culture. Then and now: she received vancomycin-based treatment; resistance to erythromycin and clindamycin rules out those two oral options."
+        "zh-CN": "颗粒链菌要按更难治的细菌对待。ESC 2023 心内膜炎指南推荐青霉素 G、头孢曲松或万古霉素治疗 6 周，只有人工瓣膜感染才加用氨基糖苷类、至少用前 2 周；青霉素过敏类型不明时，用万古霉素 30 mg/kg/d、分 2 次（按血药浓度和肾功能调整），同时问清过敏反应，确认安全后改用 β-内酰胺类（AAAAI/ACAAI 2022）。疗程从首次血培养转阴算起。记录与现行做法：她接受的是以万古霉素为主的治疗；对红霉素、克林霉素耐药，也排除了这两种口服药。",
+        "en": "Treat Granulicatella as a harder organism. ESC 2023 endocarditis recommends penicillin G, ceftriaxone or vancomycin for 6 weeks and adds an aminoglycoside for at least the first 2 weeks only on a prosthetic valve; with a penicillin allergy of unknown type, vancomycin 30 mg/kg/day in 2 doses (adjusted to levels and renal function) while the reaction is clarified, and a beta-lactam once it proves safe (AAAAI/ACAAI 2022). The course is counted from the first negative culture. Then and now: she received vancomycin-based treatment; resistance to erythromycin and clindamycin rules out those two oral options."
       },
       {
         "zh-CN": "瓣膜受损要手术，不能等疗程结束。ESC 2023 心内膜炎指南：重度反流合并心衰症状是 3–5 天内限期手术的指征，难治性肺水肿或心源性休克需 24 小时内急诊手术；≥ 10 mm 的赘生物增加栓塞风险。由心内膜炎团队在有心外科的中心决定。记录与现行做法：本病例没有记录任何手术评估；抗菌治疗后的好转只是短暂的。",
@@ -4771,15 +4818,6 @@
     {
       "type": "read",
       "investigationId": "tte",
-      "phase": "workup"
-    },
-    {
-      "type": "order",
-      "investigationId": "toe"
-    },
-    {
-      "type": "read",
-      "investigationId": "toe",
       "phase": "workup"
     },
     {
@@ -5137,6 +5175,55 @@
         "text": "who drove you in today?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "这回是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Have you ever needed a blood transfusion?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "以前输过血没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Did you ever have meningitis?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Any chest pain at all?",
+        "locale": "en",
+        "expect": [
+          "chest-symptoms"
+        ]
+      },
+      {
+        "text": "Have you ever injected drugs?",
+        "locale": "en",
+        "expect": [
+          "social"
+        ]
       }
     ]
   }

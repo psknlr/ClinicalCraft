@@ -12059,7 +12059,7 @@ index 8471c3a..193c6ce 100644
      if (!each.length || each.some((x) => x.mentions.length !== 1)) return [];
      const { mentions, route } = each[0]!;
 diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
-index 421130d..ab396e5 100644
+index 421130d..5dbac65 100644
 --- a/packages/core/src/engine/dose-read.ts
 +++ b/packages/core/src/engine/dose-read.ts
 @@ -2,16 +2,25 @@
@@ -12095,7 +12095,7 @@ index 421130d..ab396e5 100644
   */
  import type { DoseQuantity, DoseRoute, DoseUnit, OrderedDose } from "../schema/common.js";
  
-@@ -22,10 +31,17 @@ export interface DoseMention {
+@@ -22,10 +31,22 @@ export interface DoseMention {
    unit: DoseUnit;
    /** A volume the order converts through the strength it states ("0.5 mL of 1 mg/mL" → 0.5 mg): the volume as written. */
    volume?: { amount: number; unit: DoseUnit };
@@ -12103,6 +12103,11 @@ index 421130d..ab396e5 100644
 +  over?: number;
 +  /** The cap the order states with a dose per kg ("0.01 mg/kg, max 0.5 mg"): never more than this, absolute. */
 +  max?: { amount: number; unit: DoseUnit };
++  /**
++   * A later dose of the order, after "then" and at a frequency ("300 mg now, then 75 mg daily", "180mg负荷，随后90mg每日
++   * 两次"): what it continues with, not this order's dose (`checkOrder` checks it only for more than the preset).
++   */
++  then?: true;
  }
  
 -/** Why a dose the words state cannot be read: a number that cannot be read, a range, no unit. */
@@ -12115,13 +12120,48 @@ index 421130d..ab396e5 100644
  
  /** A dose the words state that cannot be read, and the words. */
  export interface UnclearDose {
-@@ -43,7 +59,12 @@ export interface OrderReading {
+@@ -33,6 +54,30 @@ export interface UnclearDose {
+   words: string;
+ }
+ 
++/** A measurement that is also a medicine: a number after its name may be a lab value, or that medicine's dose. */
++export type LabAnalyte = "potassium" | "sodium" | "glucose" | "lactate";
++
++/**
++ * A number with no unit after the name of a measurement that is also a medicine ("potassium 40 IV", "K+ 4", "血糖25"):
++ * a lab value — or the medicine's dose with its unit left out. `checkOrder` asks about it when the order is for that
++ * medicine.
++ */
++export interface LabNumber {
++  analyte: LabAnalyte;
++  words: string;
++}
++
++/**
++ * A dose that is not a single dose: a daily total ("20 g/day", "每日2g", "50 mg/kg/day") or a dose per m² of body
++ * surface. `checkOrder` compares a daily total that is the order's only dose (a once-daily dose) and asks about the rest.
++ */
++export interface DoseTotal {
++  amount: number;
++  unit: DoseUnit;
++  per: "day" | "m2";
++  words: string;
++}
++
+ /** What an order's words say about its dose (`readOrder`). */
+ export interface OrderReading {
+   /** Every dose stated, in order (volumes converted through a stated strength; a preparation that is not the dose left out). */
+@@ -43,7 +88,16 @@ export interface OrderReading {
    routes: DoseRoute[];
    /** The first dose stated that cannot be read; null when none. */
    unclear: UnclearDose | null;
 -  /** Where the doses (and preparations) stand in `text.normalize("NFKC")`: [start, end) — what `withoutDoses` removes. */
 +  /** Every dose stated that cannot be read, in order. */
 +  unclears: UnclearDose[];
++  /** Numbers with no unit after a measurement that is also a medicine ("potassium 40"), in order. */
++  labNumbers: LabNumber[];
++  /** Daily totals and doses per m², in order: never in `mentions`. */
++  totals: DoseTotal[];
 +  /**
 +   * Where the doses, preparations and the words that only qualify them stand in `text.normalize("NFKC")`: [start, end)
 +   * — what `withoutDoses` removes.
@@ -12129,7 +12169,7 @@ index 421130d..ab396e5 100644
    spans: [number, number][];
  }
  
-@@ -67,9 +88,19 @@ interface Num {
+@@ -67,9 +121,19 @@ interface Num {
  const ARABIC = /(?<![\d.])(?:[1-9]\d{0,2}(?:,\d{3})+(?:\.\d+)?(?!\d)|\d+(?:[.,]\d+)?|\.\d+)/gu;
  /** Five, or five thousand? A dot with exactly three digits after a non-zero integer part ("5.000", "12.500"). */
  const AMBIGUOUS_THOUSANDS = /^[1-9]\d{0,2}\.\d{3}$/;
@@ -12150,7 +12190,7 @@ index 421130d..ab396e5 100644
  
  /** A Chinese numeral's value ("零点五" 0.5, "十五" 15, "两千" 2000, "八十万" 800000, "半" 0.5); null when malformed. */
  function chineseValue(text: string): number | null {
-@@ -103,8 +134,10 @@ const EN_SMALL: Record<string, number> = {
+@@ -103,8 +167,10 @@ const EN_SMALL: Record<string, number> = {
    thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30,
    forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90,
  };
@@ -12162,7 +12202,7 @@ index 421130d..ab396e5 100644
  function englishNumbers(s: string): Num[] {
    const words = [...s.matchAll(/[a-z]+/gu)].map((m) => ({ w: m[0], start: m.index, end: m.index + m[0].length }));
    const joined = (i: number) => i > 0 && /^[\s-]+$/u.test(s.slice(words[i - 1]!.end, words[i]!.start));
-@@ -119,6 +152,10 @@ function englishNumbers(s: string): Num[] {
+@@ -119,6 +185,10 @@ function englishNumbers(s: string): Num[] {
        if (end !== first.end) i++;
        continue;
      }
@@ -12173,7 +12213,7 @@ index 421130d..ab396e5 100644
      if (!(first.w in EN_SMALL) && first.w !== "point") continue;
      let total = 0;
      let current = 0;
-@@ -160,30 +197,41 @@ function englishNumbers(s: string): Num[] {
+@@ -160,30 +230,42 @@ function englishNumbers(s: string): Num[] {
  const arabicValue = (x: string) => Number(/^[1-9]\d{0,2}(?:,\d{3})+(?:\.\d+)?$/u.test(x) ? x.replace(/,/gu, "") : x.replace(",", "."));
  
  /**
@@ -12195,8 +12235,9 @@ index 421130d..ab396e5 100644
      const before = s[start - 1] ?? "";
 -    // a word's digits ("co2", "q4h", "x2"), a ratio's or a fraction's second number, a percentage's part
 -    if (/[a-z:/]/u.test(before)) continue;
-+    // a word's digits ("co2", "q4h", "x2"), a ratio's or a fraction's second number, a count, a broken number's half
-+    if (NOT_ALONE.test(before)) continue;
++    // a word's digits ("co2", "q4h", "x2"), a ratio's or a fraction's second number, a count, a broken number's half —
++    // but a drug's name written onto its dose ("adrenaline5mg", "KCl400mmol/h") is a dose: a unit follows the digits
++    if (NOT_ALONE.test(before) && !(/[a-z]/u.test(before) && before !== "x" && unitAt(s, end) != null)) continue;
      const after = s.slice(end);
      // a ratio ("1:1000", "10:30"): not an amount
      if (/^\s*:\s*\d/u.test(after)) continue;
@@ -12223,7 +12264,7 @@ index 421130d..ab396e5 100644
      if (scale) {
        value *= scale[1] === "万" ? 10_000 : 1000;
        end += scale[0].length;
-@@ -206,18 +254,32 @@ function numbers(s: string): Num[] {
+@@ -206,20 +288,35 @@ function numbers(s: string): Num[] {
  
  /** Unit words, longest alternatives first; the quantity each means (litres become millilitres, decilitres too). */
  const UNIT_WORDS: [RegExp, DoseQuantity | "L" | "dL"][] = [
@@ -12258,9 +12299,13 @@ index 421130d..ab396e5 100644
 +/** A rate in words after the unit: "5.5 units hourly", "an hour" ("every hour" is a repeated dose, not a rate). */
 +const RATE_WORDS = /^\s*(?:hourly|an?\s+(hour|minute))(?![a-z])/u;
  /** A dose per body-surface area (mg/m²) or a daily total (50 mg/kg/day — but "500 mg每日1次" is 500 mg once a day). */
- const NOT_A_DOSE = new RegExp(String.raw`^(?:${PER}m2|\s*(?:/|per\s+)\s*(?:d|days?|天|日))(?![a-z])`, "u");
+-const NOT_A_DOSE = new RegExp(String.raw`^(?:${PER}m2|\s*(?:/|per\s+)\s*(?:d|days?|天|日))(?![a-z])`, "u");
++const PER_AREA = new RegExp(String.raw`^${PER}m2(?![a-z])`, "u");
++const PER_DAY = /^\s*(?:\/|per\s+)\s*(?:d|days?|天|日)(?![a-z])/u;
  /** Per volume: a strength ("1 mg/mL", "40 mmol/L", "50 units/50 mL"). */
-@@ -230,19 +292,27 @@ interface UnitHere {
+ const PER_VOLUME = /^\s*(?:\/|per\s+|每)\s*(\d+(?:[.,]\d+)?)?\s*(ml|毫升|l|升|dl)(?![a-z])/u;
+ 
+@@ -230,19 +327,29 @@ interface UnitHere {
    scale: number;
    perKg: boolean;
    time: "" | "/h" | "/min";
@@ -12273,10 +12318,13 @@ index 421130d..ab396e5 100644
    perMl?: number;
    /** The strength's volume was a number ("50 units/50 mL"): so much in so many mL — also a preparation. */
    perCount?: true;
+-  /** A dose per area, a daily total or a gas flow in litres per minute: no dose of this kind. */
 +  /** Per decilitre: a laboratory value (glucose 450 mg/dL), never a drug's strength. */
 +  perDl?: true;
-   /** A dose per area, a daily total or a gas flow in litres per minute: no dose of this kind. */
++  /** A gas flow in litres per minute: no dose. */
    notDose?: true;
++  /** A daily total ("50 mg/kg/day") or a dose per m²: not a single dose (`DoseTotal`). */
++  per?: "day" | "m2";
  }
  
 +/** Where the word after a number starts: past spaces and a "个". */
@@ -12290,7 +12338,7 @@ index 421130d..ab396e5 100644
    for (const [pattern, quantity] of UNIT_WORDS) {
      const m = pattern.exec(rest);
      if (!m) continue;
-@@ -251,26 +321,39 @@ function unitAt(s: string, pos: number): UnitHere | null {
+@@ -251,26 +358,44 @@ function unitAt(s: string, pos: number): UnitHere | null {
      if (/[a-z]/u.test(rest[length] ?? "")) continue;
      // a decilitre is only ever a strength's denominator
      if (quantity === "dL") return null;
@@ -12334,14 +12382,21 @@ index 421130d..ab396e5 100644
 +        }
 +      }
      }
-     // a dose per area or a daily total; litres per minute is a gas flow (oxygen 15 L/min), not a dose
-     if (NOT_A_DOSE.test(rest.slice(length)) || (quantity === "L" && unit.time === "/min")) unit.notDose = true;
+-    // a dose per area or a daily total; litres per minute is a gas flow (oxygen 15 L/min), not a dose
+-    if (NOT_A_DOSE.test(rest.slice(length)) || (quantity === "L" && unit.time === "/min")) unit.notDose = true;
 -    unit.end = pos + lead + length;
++    // a dose per area or a daily total (with what says so); litres per minute is a gas flow (oxygen 15 L/min), not a dose
++    const area = PER_AREA.exec(rest.slice(length));
++    const day = area ? null : PER_DAY.exec(rest.slice(length));
++    if (area || day) {
++      unit.per = area ? "m2" : "day";
++      length += (area ?? day)![0].length;
++    } else if (quantity === "L" && unit.time === "/min") unit.notDose = true;
 +    unit.end = at + length;
      return unit;
    }
    return null;
-@@ -284,9 +367,17 @@ const unitOf = (u: Pick<UnitHere, "quantity" | "perKg" | "time">): DoseUnit => `
+@@ -284,9 +409,17 @@ const unitOf = (u: Pick<UnitHere, "quantity" | "perKg" | "time">): DoseUnit => `
  
  /** A range between two numbers ("0.5–1", "2 to 3", "2至3"). */
  const RANGE_SEP = /^\s*(?:-|–|—|~|～|to|至|到)\s*/u;
@@ -12361,7 +12416,7 @@ index 421130d..ab396e5 100644
  /** What joins a volume to what it holds ("0.9% NaCl 1000 mL with KCl 40 mmol", "NS 500ml+氯化钾10mmol"). */
  const HOLDS_JOIN = /^\s*(?:with|containing|含|加|\+)\s*(?:[a-z\u4e00-\u9fff]+\s*)?/u;
  /** A strength written as a ratio: 1:1000 or 1/1000 (1 mg/mL), 1 in 10,000 (0.1 mg/mL). */
-@@ -298,19 +389,55 @@ const PLACEHOLDER_UNIT = /(?:^|[\s(])(?:x|y|n|\?|some|few|several)\s*(?:mg|mcg|
+@@ -298,19 +431,79 @@ const PLACEHOLDER_UNIT = /(?:^|[\s(])(?:x|y|n|\?|some|few|several)\s*(?:mg|mcg|
  /** After a number with no unit: what lets it stand for a dose (the end, punctuation, a route, "now"). */
  const BARE_AFTER =
    /^\s*(?:$|[,，;；)）]|\.(?!\d)|(?:i\.?m|i\.?v|im|iv|io|sc|sq|po|sl|pr|inh|neb)\b|(?:intramuscular|intravenous|subcutaneous|oral|now|stat|immediately)\b|肌注|肌内|静推|静注|静滴|静脉|皮下|口服|舌下|雾化|吸入|立即|马上|立刻)/u;
@@ -12369,12 +12424,25 @@ index 421130d..ab396e5 100644
 -const BARE_BEFORE = /(?:bed|room|bay|cubicle|no\.?|number|#|第|床)\s*$/u;
 +/**
 + * Before a number that is not a dose: a place or a count ("bed 3", "resus 2", "3号床", "第2", "×2"), a vital sign or a
-+ * score ("HR 130", "sats are 88", "GCS 14", "心率130"), a laboratory value ("K+ 3.8", "血糖25"), an age ("she is 30").
++ * score ("HR 130", "sats are 88", "GCS 14", "T: 38.5", "心率130"), a laboratory value that is no medicine ("Hb 70",
++ * "pH 7.1"), an age ("she is 30"). A single letter counts only with a colon or an equals sign after it ("P: 120"):
++ * "vitamin K 10", "factor X 5" are doses with their unit left out.
 + */
 +const BARE_BEFORE = new RegExp(
-+  String.raw`(?:(?<![a-z])(?:bed|room|bay|cubicle|resus(?:citation)?(?:\s+(?:room|bay))?|trolley|no\.?|number|hr|heart\s+rate|pulse(?:\s+rate)?|p|pr|bp|sbp|dbp|map|spo2|sp02|sats?|saturations?|rr|resp(?:iratory)?\s+rate|gcs|t|temp(?:erature)?|news2?|score|pain(?:\s+score)?|vas|nrs|aged?|she\s+is|he\s+is|k\+?|potassium|na\+?|sodium|glucose|bg|cbg|bm|lactate|ph|hb|x)(?:\s+(?:are|is|was|of|now))?|#|第|床|室|号|心率|脉搏|血压|收缩压|舒张压|血氧|饱和度|呼吸|体温|评分|年龄|岁|血钾|血糖|血钠|乳酸|[×*])\s*[:=：]?\s*$`,
++  String.raw`(?:(?<![a-z])(?:(?:bed|room|bay|cubicle|resus(?:citation)?(?:\s+(?:room|bay))?|trolley|no\.?|number|hr|heart\s+rate|pulse(?:\s+rate)?|pr|bp|sbp|dbp|map|spo2|sp02|sats?|saturations?|rr|resp(?:iratory)?\s+rate|gcs|temp(?:erature)?|news2?|score|pain(?:\s+score)?|vas|nrs|aged?|she\s+is|he\s+is|ph|hb)(?:\s+(?:are|is|was|of|now))?\s*[:=：]?|[tp]\s*[:=：])|#|第|床|室|号|心率|脉搏|血压|收缩压|舒张压|血氧|饱和度|呼吸|体温|评分|年龄|岁|[×*])\s*$`,
 +  "u",
 +);
++/**
++ * Before a number: the name of a measurement that is also a medicine ("potassium 3.2", "K+ 4", "K: 3.8", "glucose 25",
++ * "血钾3.2", "血糖25") — a lab value, or that medicine's dose with its unit left out (`LabNumber`).
++ */
++const ANALYTE_BEFORE: readonly [LabAnalyte, RegExp][] = [
++  ["potassium", /(?:(?<![a-z])(?:k\+|k(?=\s*[:=：])|potassium)(?:\s+(?:level|is|was|of|now))*|血钾|钾离子)\s*[:=：为是]?\s*$/u],
++  ["sodium", /(?:(?<![a-z])(?:na\+|na(?=\s*[:=：])|sodium)(?:\s+(?:level|is|was|of|now))*|血钠|钠离子)\s*[:=：为是]?\s*$/u],
++  ["glucose", /(?:(?<![a-z])(?:glucose|blood\s+(?:glucose|sugar)|sugar|bg|cbg|bm)(?:\s+(?:level|is|was|of|now))*|血糖)\s*[:=：为是]?\s*$/u],
++  ["lactate", /(?:(?<![a-z])lactate(?:\s+(?:level|is|was|of|now))*|乳酸)\s*[:=：为是]?\s*$/u],
++];
++const analyteBefore = (before: string): LabAnalyte | null => ANALYTE_BEFORE.find(([, re]) => re.test(before))?.[0] ?? null;
 +/** Before a clock time: "at 1430", "by 0900" (three or four digits), or a time with its word after ("at 3 pm", "3点"). */
 +const CLOCK_BEFORE = /(?<![a-z])(?:at|@|by|until|from)\s*$/u;
 +const CLOCK_AFTER = /^\s*(?:am|pm|o'?clock|点|时)(?![a-z])/u;
@@ -12386,9 +12454,12 @@ index 421130d..ab396e5 100644
 +/** Before a dose: its cap ("max 0.5 mg", "maximum of 25 mg", "(max. 90 mg)", "not exceeding", "最大25mg", "不超过"). */
 +const CAP_BEFORE =
 +  /(?:max(?:imum)?\.?(?:\s+(?:of|dose(?:\s+of)?))?|up\s+to(?:\s+a\s+max(?:imum)?(?:\s+of)?)?|not\s+(?:to\s+)?exceed(?:ing)?|no\s+more\s+than|最大(?:剂量|量)?(?:为|是)?|不超过|不得超过|最多|上限(?:为)?|极量(?:为)?)\s*[:：]?\s*[~≈约]?\s*$/u;
-+/** A cannula's gauge (14–27), not grams: "18G", "16 g venflon", "18G留置针", "via the 18 g". */
-+const GAUGE_AFTER = /^\s*(?:gauge|cannulae?|venflons?|needles?|catheters?|access|lines?|留置针|套管针|针头)/u;
-+const GAUGE_BEFORE = /(?:via|through|thru|insert(?:ed)?|place(?:d)?|经|置入)\s*(?:an?\s+|the\s+)?$/u;
++/**
++ * A cannula's gauge (14–27), not grams — only with words that say so: "18G cannula", "16 g venflon", "18G留置针", "via
++ * the 18 g", "IV access: 18G". "20G" alone is asked about (grams, or a gauge?).
++ */
++const GAUGE_AFTER = /^\s*(?:gauge|cannulae?|cannulas|venflons?|needles?|catheters?|access|lines?|留置针|套管针|针头)/u;
++const GAUGE_BEFORE = /(?:via|through|thru|insert(?:ed)?|place(?:d)?|cannulae?|cannulas|venflons?|access|lines?|经|置入|留置针|套管针)\s*(?:an?\s+|the\s+)?[:：]?\s*$/u;
 +const GAUGES = new Set([14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27]);
 +/** A measurement per volume after a laboratory name ("K+ 3.8 mmol/L", "glucose 25 mmol/L", "血糖25mmol/L"): not a strength. */
 +const LAB_BEFORE =
@@ -12401,6 +12472,14 @@ index 421130d..ab396e5 100644
 +const COMBINATION = /^\s*\/\s*(\d+(?:[.,]\d+)?)/u;
 +/** A combination product's name before its strengths ("piperacillin/tazobactam", "piperacillin–tazobactam", "哌拉西林/他唑巴坦"). */
 +const COMBINATION_NAME = /[a-z\u4e00-\u9fff]\s*[/+–-]\s*[a-z\u4e00-\u9fff]/u;
++/** What moves an order on to a later dose: "then", "followed by", "随后", "之后"… */
++const THEN = /(?<![a-z])(?:then|followed\s+by|thereafter|after\s+that|subsequently)(?![a-z])|随后|之后|然后|接着|继以|续以|以后/u;
++/**
++ * A frequency: "daily", "twice daily", "bd", "tds", "every 20 minutes", "q4h", "prn", "每日两次", "每8小时", "一日三次",
++ * "必要时" — a dose at one is a regimen's maintenance or repeat, not the dose given now.
++ */
++const FREQUENCY =
++  /(?<![a-z])(?:(?:once|twice|three\s+times|four\s+times)\s+(?:a\s+)?(?:day|daily)|daily|nightly|b\.?i?\.?d\.?|t\.?[id]\.?[sd]\.?|q\.?[id]\.?[sd]\.?|nocte|mane|o\.d\.|every\s+(?:\d+(?:[.,]\d+)?\s*(?:(?:-|–|to)\s*\d+\s*)?)?(?:h|hrs?|hours?|min(?:ute)?s?|days?|morning|evening|night)|q\s*\d+\s*(?:h|hrs?|min)|prn|p\.r\.n\.|as\s+(?:needed|required)|if\s+(?:needed|required))(?![a-z])|每\s*(?:日|天|晚|早|\d+\s*(?:小时|分钟|天|日)|[一二两三四五六七八九十]+\s*(?:小时|分钟|天|日))|(?:一日|一天|日)\s*[一二两三四\d]\s*次|必要时|按需/u;
 +/** How long a dose is given over: "over 60 min", "over 2 hours", "over an hour", "over half an hour". */
 +const OVER_EN = /\bover\s+(?:(\d+(?:[.,]\d+)?)|(an?|one)|(half\s+an?))\s*(min(?:ute)?s?|h(?:ou)?rs?|hours?|h)(?![a-z])/gu;
 +/** "在60分钟内", "60分钟内泵入", "60分钟泵入", "20分钟以上" (never "每60分钟", every 60 minutes). */
@@ -12422,7 +12501,7 @@ index 421130d..ab396e5 100644
    ["IN", /\bintranasal(?:ly)?\b|鼻内|滴鼻|鼻喷/u],
    ["INH", /\binhal(?:e|ed|ation|er)?\b|\bnebuli[sz](?:e|ed|er|ation)?\b|\bnebs?\b|\binh\b|雾化|吸入/u],
    ["TOP", /\btopical(?:ly)?\b|外用|外涂/u],
-@@ -331,11 +458,19 @@ interface Found {
+@@ -331,11 +524,19 @@ interface Found {
    quantity: DoseQuantity;
    perKg: boolean;
    time: "" | "/h" | "/min";
@@ -12444,12 +12523,14 @@ index 421130d..ab396e5 100644
   */
  export function readOrder(text: string): OrderReading {
    const nfkc = text.normalize("NFKC");
-@@ -346,11 +481,17 @@ export function readOrder(text: string): OrderReading {
+@@ -346,11 +547,19 @@ export function readOrder(text: string): OrderReading {
    const found: Found[] = [];
    const taken: [number, number][] = [];
    const spans: [number, number][] = [];
 -  let unclear: (UnclearDose & { at: number }) | null = null;
 +  const unclears: (UnclearDose & { at: number })[] = [];
++  const labNumbers: LabNumber[] = [];
++  const totals: (Found & { per: DoseTotal["per"] })[] = [];
 +  const asWritten = original(text, nfkc);
    const note = (reason: UnclearDoseReason, start: number, end: number) => {
 -    if (!unclear || start < unclear.at) unclear = { reason, words: nfkc.slice(start, end).trim(), at: start };
@@ -12464,7 +12545,7 @@ index 421130d..ab396e5 100644
  
    // strengths written as a ratio: 1:1000 is 1 g in 1000 mL
    for (const m of s.matchAll(RATIO)) {
-@@ -366,24 +507,77 @@ export function readOrder(text: string): OrderReading {
+@@ -366,24 +575,93 @@ export function readOrder(text: string): OrderReading {
      const next = nums[i + 1];
      const sep = RANGE_SEP.exec(s.slice(n.end));
      if (next && sep && n.end + sep[0].length === next.start) upTo = next;
@@ -12478,6 +12559,8 @@ index 421130d..ab396e5 100644
 -      if (n.arabic && !n.bad && !last.bad && BARE_AFTER.test(s.slice(last.end)) && !BARE_BEFORE.test(s.slice(0, n.start))) note("no-unit", n.start, last.end);
        if (upTo) i++;
 +      const after = s.slice(leadAt(s, last.end));
++      const analyte = analyteBefore(before);
++      const notDose = BARE_BEFORE.test(before) || analyte != null;
 +      // a unit no preset is counted in ("200 mEq/h", "5 ng"): a dose that cannot be checked
 +      const foreign = FOREIGN_UNIT.exec(after);
 +      if (foreign) {
@@ -12489,16 +12572,20 @@ index 421130d..ab396e5 100644
 +      }
 +      // a count of tablets, ampoules or puffs ("一支", "2 tablets")
 +      const count = COUNT_WORDS.exec(after);
-+      if (count && !/^\s*[x×*]/u.test(after.slice(count[0].length)) && !BARE_BEFORE.test(before)) {
++      if (count && !/^\s*[x×*]/u.test(after.slice(count[0].length)) && !notDose) {
 +        const end = leadAt(s, last.end) + count[0].length;
 +        taken.push([n.start, end]);
 +        note("count", n.start, end);
 +        continue;
 +      }
 +      // an Arabic number (or range) with no unit, where a dose would stand ("adrenaline 0.5 IM", "0.5-1 IM") — not a
-+      // place, count, vital sign, score, age or clock time
++      // place, count, vital sign, score, age or clock time; after a measurement that is also a medicine ("potassium
++      // 40 IV"), a lab value or that medicine's dose (`LabNumber`: asked when the order is for it)
 +      const clock = CLOCK_BEFORE.test(before) && (/^\d{3,4}$/u.test(s.slice(n.start, n.end)) || CLOCK_AFTER.test(s.slice(last.end)));
-+      if (n.arabic && !n.bad && !last.bad && !clock && BARE_AFTER.test(s.slice(last.end)) && !BARE_BEFORE.test(before)) note("no-unit", n.start, last.end);
++      if (n.arabic && !n.bad && !last.bad && !clock && BARE_AFTER.test(s.slice(last.end)) && !BARE_BEFORE.test(before)) {
++        if (analyte) labNumbers.push({ analyte, words: asWritten(n.start, last.end).trim() });
++        else note("no-unit", n.start, last.end);
++      }
        continue;
      }
      if (upTo) i++;
@@ -12512,12 +12599,14 @@ index 421130d..ab396e5 100644
 -    const amount = n.value * unit.scale;
 -    const top = upTo ? upTo.value * unit.scale : undefined;
 -    if (!(amount > 0) || (top != null && !(top > amount))) continue;
-+    // a cannula's gauge ("via the 18G", "18G cannula"), not grams; a bare capital G with any other number is not read
-+    if (unit.quantity === "g" && unit.word === "g" && !unit.perKg && !unit.time && unit.perMl == null && !upTo) {
++    // a cannula's gauge ("via the 18G", "18G cannula"), not grams — only where the words say so; a capital G
++    // otherwise ("20G", "2G") is not read: grams, or a gauge?
++    if (unit.quantity === "g" && unit.word === "g" && !unit.perKg && !unit.time && unit.perMl == null && !unit.per && !upTo) {
 +      const capital = sameLength && nfkc[unit.at] === "G";
-+      if (GAUGES.has(n.value) && (capital || GAUGE_AFTER.test(s.slice(unit.end)) || GAUGE_BEFORE.test(before))) continue;
++      if (GAUGES.has(n.value) && (GAUGE_AFTER.test(s.slice(unit.end)) || GAUGE_BEFORE.test(before))) continue;
 +      if (capital) {
 +        note("unreadable", n.start, unit.end);
++        spans.push([n.start, unit.end]);
 +        continue;
 +      }
 +    }
@@ -12530,10 +12619,18 @@ index 421130d..ab396e5 100644
 +      note("unreadable", n.start, unit.end);
 +      continue;
 +    }
-+    // a cap: the most of a dose per kg ("0.01 mg/kg, max 0.5 mg") — not a dose
-+    if (CAP_BEFORE.test(before) && unit.perMl == null) {
++    // a cap after a dose: the most of a dose per kg ("0.01 mg/kg, max 0.5 mg"), or of a titration ("2.5 mg IV, max
++    // 10 mg") — not a dose. A cap with no dose before it ("up to 5 mg", "最多5mg") is the order's dose: read on.
++    if (CAP_BEFORE.test(before) && unit.perMl == null && (found.length > 0 || preparations.length > 0)) {
 +      const capped = found.at(-1);
 +      if (capped && capped.perKg && !unit.perKg && capped.time === unit.time && capped.quantity === unit.quantity && top == null) capped.max = { amount: tidy(amount), quantity: unit.quantity };
++      spans.push([n.start, unit.end]);
++      continue;
++    }
++    // a daily total or a dose per m² ("20 g/day", "50 mg/kg/day", "每日2g", "1.5 g/m2"): not a single dose (`DoseTotal`)
++    const perDay = !unit.per && !unit.perKg && !unit.time && PREFIX_PER_DAY.test(before);
++    if (unit.per || perDay) {
++      totals.push({ start: n.start, end: unit.end, amount: tidy(amount), ...(top != null ? { upTo: tidy(top) } : {}), quantity: unit.quantity, perKg: unit.perKg, time: unit.time, per: unit.per ?? "day" });
 +      spans.push([n.start, unit.end]);
 +      continue;
 +    }
@@ -12549,7 +12646,7 @@ index 421130d..ab396e5 100644
      if (top != null) note("range", n.start, unit.end);
      if (unit.perMl != null) {
        // "1 mg/mL" is a strength; "50 units/50 mL" also holds a dose (the preparation)
-@@ -392,8 +586,49 @@ export function readOrder(text: string): OrderReading {
+@@ -392,8 +670,48 @@ export function readOrder(text: string): OrderReading {
        spans.push([n.start, unit.end]);
        continue;
      }
@@ -12585,7 +12682,7 @@ index 421130d..ab396e5 100644
 +      amount *= Number(timesAfter[1]);
 +      end += times;
 +    } else if (timesBefore?.[1]) amount *= Number(/\d+/u.exec(timesBefore[0])![0]);
-+    // so much per kg, per hour or minute, or a day's total, in Chinese word order before the number
++    // so much per kg, per hour or minute, in Chinese word order before the number (a day's total is read above)
 +    let perKg = unit.perKg;
 +    let time = unit.time;
 +    if (!perKg && !time) {
@@ -12594,14 +12691,13 @@ index 421130d..ab396e5 100644
 +      if (pk) perKg = true;
 +      const t = pk?.[1] ?? pt?.[1];
 +      if (t) time = /^(?:h|小时)$/u.test(t) ? "/h" : "/min";
-+      if (!pk && !pt && PREFIX_PER_DAY.test(before)) continue;
 +    }
 +    const dose: Found = { start: n.start, end, amount: tidy(amount), ...(top != null ? { upTo: tidy(top) } : {}), quantity: unit.quantity, perKg, time };
 +    spans.push([n.start, end]);
      // a preparation: what is made up in a volume ("50 units in 50 mL", "50U+NS至50ml"), or a volume and what it holds
      const absolute = !dose.perKg && !dose.time && dose.upTo == null;
      if (absolute && dose.quantity !== "mL") {
-@@ -405,13 +640,21 @@ export function readOrder(text: string): OrderReading {
+@@ -405,13 +723,21 @@ export function readOrder(text: string): OrderReading {
          if (ml > 0) {
            strengths.push({ quantity: dose.quantity, perMl: dose.amount / ml });
            preparations.push(dose);
@@ -12625,7 +12721,7 @@ index 421130d..ab396e5 100644
        const join = HOLDS_JOIN.exec(s.slice(dose.end));
        const held = join && nums.find((x) => x.start === dose.end + join[0].length && !x.bad);
        const heldUnit = held && unitAt(s, held.end);
-@@ -425,6 +668,14 @@ export function readOrder(text: string): OrderReading {
+@@ -425,6 +751,14 @@ export function readOrder(text: string): OrderReading {
            continue;
          }
        }
@@ -12640,7 +12736,7 @@ index 421130d..ab396e5 100644
      }
      found.push(dose);
    }
-@@ -434,43 +685,86 @@ export function readOrder(text: string): OrderReading {
+@@ -434,43 +768,86 @@ export function readOrder(text: string): OrderReading {
      if (!isTaken(m.index)) note("unreadable", m.index - s.slice(Math.max(0, m.index - 3), m.index).match(/[几若干多少数个]*$/u)![0].length, m.index + m[0].length);
    }
    for (const m of s.matchAll(PLACEHOLDER_UNIT)) if (!isTaken(m.index + m[0].length - 1)) note("unreadable", m.index, m.index + m[0].length);
@@ -12735,7 +12831,7 @@ index 421130d..ab396e5 100644
   */
  export function doseMentions(text: string): DoseMention[] {
    return readOrder(text).mentions;
-@@ -481,17 +775,17 @@ export function doseRoute(text: string): DoseRoute | null {
+@@ -481,17 +858,17 @@ export function doseRoute(text: string): DoseRoute | null {
    return readOrder(text).route;
  }
  

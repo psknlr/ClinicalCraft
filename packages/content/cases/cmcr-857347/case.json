@@ -51,7 +51,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -84,8 +84,8 @@
       "en": "Use Winter's formula to recognise maximal respiratory compensation in severe metabolic acidosis, and explain why Kussmaul breathing is not an indication for NIV (BTS/ICS 2016) and why sedation or under-set ventilation is dangerous."
     },
     {
-      "zh-CN": "开始第一个小时的治疗——等渗液、0.1 单位/(kg·h) 的固定速率胰岛素、血钾 3.5–5.5 mmol/L 时补钾、pH ≥ 7.0 不用碳酸氢钠——并按校正后约 118–121 mmol/L 的血钠调整液体和监测（2024 年共识；JBDS-IP 2023；2014 年欧洲低钠血症指南）。",
-      "en": "Start first-hour treatment — isotonic fluid, a fixed-rate insulin infusion of 0.1 units/kg/h, potassium replacement at 3.5–5.5 mmol/L and no bicarbonate at pH 7.0 or above — and adapt fluids and monitoring to a glucose-corrected sodium of about 118–121 mmol/L (2024 consensus; JBDS-IP 2023; European hyponatraemia guideline 2014)."
+      "zh-CN": "开始第一个小时的治疗——等渗液、0.1 单位/(kg·h) 的固定速率胰岛素、血钾 3.5–5.5 mmol/L 且有尿时补钾、pH ≥ 7.0 不用碳酸氢钠——并按校正后约 118–121 mmol/L 的血钠调整液体和监测（2024 年共识；JBDS-IP 2023；2014 年欧洲低钠血症指南）。",
+      "en": "Start first-hour treatment — isotonic fluid, a fixed-rate insulin infusion of 0.1 units/kg/h, potassium replacement at 3.5–5.5 mmol/L once he is passing urine, and no bicarbonate at pH 7.0 or above — and adapt fluids and monitoring to a glucose-corrected sodium of about 118–121 mmol/L (2024 consensus; JBDS-IP 2023; European hyponatraemia guideline 2014)."
     },
     {
       "zh-CN": "识别呕吐后颈胸部握雪感提示的胸腔内漏气，让患者禁食，先行 CT 排查食管穿孔（WSES 2019），再考虑内镜。",
@@ -136,8 +136,8 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "25岁男性，口干、消瘦了一个多月，这几天又吐又喘，人很难受，也有些害怕。问到什么答什么，只说自己清楚的事；不清楚的就直说说不上来，从不猜。",
-        "en": "A 25-year-old man who has been thirsty and losing weight for over a month and is now vomiting and fighting for breath — wretched and a little frightened. He answers what he is asked, says only what he knows, and when he does not know he says so rather than guess."
+        "zh-CN": "25岁男性，口干一个多月，这一个月瘦了不少，这几天又吐又喘，人很难受，也有些害怕。问到什么答什么，只说自己清楚的事；不清楚的就直说说不上来，从不猜。",
+        "en": "A 25-year-old man who has been thirsty for over a month, has lost weight over the past month and is now vomiting and fighting for breath — wretched and a little frightened. He answers what he is asked, says only what he knows, and when he does not know he says so rather than guess."
       },
       "speechStyle": {
         "zh-CN": "口语、短句，一句话要分几口气说完；不用医学术语。",
@@ -218,8 +218,8 @@
         "en": "Later in the admission"
       },
       "description": {
-        "zh-CN": "本阶段在病房进行：申请并阅读住院期间的胃镜检查，为停用静脉胰岛素和出院做计划。",
-        "en": "This stage takes place on the ward: order and read the gastroscopy done during his admission, and plan the step-down from intravenous insulin and his discharge."
+        "zh-CN": "本阶段在病房进行：申请并阅读 CT 之后所做的胃镜检查，为停用静脉胰岛素和出院做计划。",
+        "en": "This stage takes place on the ward: order and read the gastroscopy done after the CT, and plan the step-down from intravenous insulin and his discharge."
       },
       "learnerSwitchable": false,
       "location": {
@@ -407,8 +407,8 @@
         "en": "How long have you had the dry mouth and the extra drinking?"
       },
       "answer": {
-        "zh-CN": "一个多月了，嘴里老是干，水比平时喝得多得多。",
-        "en": "Over a month now — my mouth's dry all the time and I've been drinking far more than usual."
+        "zh-CN": "一个多月了，嘴里发干，水比平时喝得多得多。",
+        "en": "Over a month now — my mouth's been dry and I've been drinking far more than usual."
       },
       "keywords": {
         "zh-CN": [
@@ -418,7 +418,10 @@
           "多饮",
           "老想喝水",
           "嘴干",
-          "渴不渴"
+          "渴不渴",
+          "病了多久",
+          "不舒服多久",
+          "什么时候开始不舒服"
         ],
         "en": [
           "thirsty",
@@ -426,7 +429,10 @@
           "dry mouth",
           "drinking more",
           "extra drinking",
-          "polydipsia"
+          "polydipsia",
+          "unwell",
+          "been ill",
+          "poorly"
         ]
       },
       "excludeKeywords": {
@@ -500,7 +506,7 @@
       },
       "answer": {
         "zh-CN": "这三天不想吃东西，浑身没劲。",
-        "en": "For three days I haven't felt like eating, and I've had no strength at all."
+        "en": "For three days I haven't felt like eating, and I've had no energy."
       },
       "keywords": {
         "zh-CN": [
@@ -510,7 +516,10 @@
           "没劲",
           "乏力",
           "没力气",
-          "精神"
+          "精神",
+          "吃饭",
+          "吃东西",
+          "饭量"
         ],
         "en": [
           "appetite",
@@ -518,16 +527,24 @@
           "tired",
           "weak",
           "fatigue",
-          "no strength"
+          "no strength",
+          "eating",
+          "food intake"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "吞",
-          "咽"
+          "咽",
+          "吐"
         ],
         "en": [
-          "swallow"
+          "swallow",
+          "vomit",
+          "brought up",
+          "bring up",
+          "stick",
+          "stuck"
         ]
       },
       "disclosure": "on-ask",
@@ -559,7 +576,10 @@
           "恶心",
           "想吐",
           "反胃",
-          "吐过"
+          "吐过",
+          "有没有吐",
+          "吐没吐",
+          "吐不吐"
         ],
         "en": [
           "vomit",
@@ -626,7 +646,8 @@
           "colour of the vomit",
           "blood in the vomit",
           "vomited blood",
-          "brought up"
+          "brought up",
+          "came up"
         ]
       },
       "disclosure": "on-ask",
@@ -762,7 +783,9 @@
           "swallowing",
           "food sticking",
           "painful swallowing",
-          "dysphagia"
+          "dysphagia",
+          "food stick",
+          "food gets stuck"
         ]
       },
       "disclosure": "unknown",
@@ -1040,7 +1063,7 @@
       },
       "answer": {
         "zh-CN": "都没有，血压不高，肺也没什么老毛病。",
-        "en": "No — no blood pressure problems, and nothing wrong with my lungs before."
+        "en": "No — no blood pressure problems, and no long-term trouble with my lungs."
       },
       "keywords": {
         "zh-CN": [
@@ -1499,6 +1522,17 @@
           "trachea"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "belly"
+        ]
+      },
       "finding": {
         "zh-CN": "颈部皮下可触及握雪感（捻发感）。",
         "en": "Crepitus under the skin of the neck — a crackling feel under the fingers."
@@ -1527,7 +1561,11 @@
           "摸胸口",
           "腹壁",
           "按压胸壁",
-          "皮下"
+          "皮下",
+          "腹部",
+          "摸肚子",
+          "腹部触诊",
+          "查腹部"
         ],
         "en": [
           "palpate the chest",
@@ -1535,7 +1573,13 @@
           "feel the chest",
           "abdominal wall",
           "subcutaneous",
-          "crepitus"
+          "crepitus",
+          "abdomen",
+          "examine the abdomen",
+          "feel the abdomen",
+          "palpate the abdomen",
+          "tummy",
+          "belly"
         ]
       },
       "finding": {
@@ -2261,6 +2305,17 @@
             "en": "Case presentation in the report: chest CT (report in the next stage) (as extracted for version 1.0.0; check against the full article pending)"
           }
         },
+        "ct-review": {
+          "available": false,
+          "text": {
+            "zh-CN": "CT 已经做完，报告在他的病历中（胸部 CT 报告）。",
+            "en": "The CT has been done; its report is in his records (chest CT report)."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料·胸部 CT（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation in the report: chest CT (as extracted for version 1.0.0; check against the full article pending)"
+          }
+        },
         "ward": {
           "available": false,
           "text": {
@@ -2355,8 +2410,8 @@
         "ed": {
           "available": false,
           "text": {
-            "zh-CN": "此时没有胃镜检查的记录；病历中的胃镜是在住院后期做的。",
-            "en": "No gastroscopy is recorded at this stage; the one in his record was done later in the admission."
+            "zh-CN": "此时没有胃镜检查的记录；病历中的胃镜是在 CT 之后做的。",
+            "en": "No gastroscopy is recorded at this stage; the one in his record was done after the CT."
           },
           "source": {
             "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -2366,8 +2421,8 @@
         "ct-review": {
           "available": false,
           "text": {
-            "zh-CN": "此时没有胃镜检查的记录；病历中的胃镜是在住院后期做的。",
-            "en": "No gastroscopy is recorded at this stage; the one in his record was done later in the admission."
+            "zh-CN": "此时没有胃镜检查的记录；病历中的胃镜是在 CT 之后做的。",
+            "en": "No gastroscopy is recorded at this stage; the one in his record was done after the CT."
           },
           "source": {
             "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
@@ -2754,8 +2809,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9% 氯化钠或平衡晶体液：无低血压时第 1 小时约 1 L，此后按方案每小时 500–1,000 mL 共 2–4 小时，再按血压、尿量和血钠调整；18–25 岁患者补液宜稳，并做神经系统观察。",
-        "en": "0.9 % sodium chloride or a balanced crystalloid: about 1 L in the first hour if there is no hypotension, then 500–1,000 mL/h for 2–4 hours by protocol, adjusted to blood pressure, urine output and sodium; in adults aged 18–25, replace fluid steadily with neurological observations."
+        "zh-CN": "0.9% 氯化钠或平衡晶体液：无低血压时第 1 小时约 1 L，此后按方案并根据血压、尿量和血钠调整——2024 年共识最初 2–4 小时每小时 500–1,000 mL 的速度适用于无肾脏或心脏损害的成人，而他的肌酐为 217 µmol/L；18–25 岁患者补液宜稳，并做神经系统观察。",
+        "en": "0.9 % sodium chloride or a balanced crystalloid: about 1 L in the first hour if there is no hypotension, then by protocol, adjusted to blood pressure, urine output and sodium — the 2024 consensus's 500–1,000 mL/h for the first 2–4 hours is for adults without renal or cardiac compromise, and his creatinine is 217 µmol/L; in adults aged 18–25, replace fluid steadily with neurological observations."
       },
       "requires": [
         "iv-access"
@@ -2807,8 +2862,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "常规（可溶性）胰岛素经注射泵静脉输注，固定速率 0.1 单位/(kg·h)（无法称重时按估计体重），不推注负荷量；血钾已知且 ≥ 3.5 mmol/L 时开始；血糖降到 14 mmol/L 以下时加 10% 葡萄糖，胰岛素持续到酮症酸中毒纠正。",
-        "en": "Soluble (regular) insulin by syringe pump at a fixed 0.1 units/kg/h (by estimated weight if he cannot be weighed), no loading bolus; start once the potassium is known to be at least 3.5 mmol/L; add 10 % glucose when the glucose falls below 14 mmol/L and continue the insulin until the ketoacidosis has resolved."
+        "zh-CN": "常规（可溶性）胰岛素经注射泵静脉输注，固定速率 0.1 单位/kg/h（按估计体重：本病例没有记录他的体重），不推注负荷量；血钾已知且 ≥ 3.5 mmol/L 时开始；血糖降到 14 mmol/L 以下时加 10% 葡萄糖，并把速率减至 0.05 单位/kg/h（JBDS-IP 2023；2024 年共识），胰岛素持续到酮症酸中毒纠正。",
+        "en": "Soluble (regular) insulin IV by syringe pump at a fixed 0.1 units/kg/h (by estimated weight: his weight is not recorded), no loading bolus; start once the potassium is known to be at least 3.5 mmol/L; when the glucose falls below 14 mmol/L, add 10 % glucose and reduce the rate to 0.05 units/kg/h (JBDS-IP 2023; 2024 consensus), continuing the insulin until the ketoacidosis has resolved."
       },
       "requires": [
         "infusion-pump",
@@ -2861,8 +2916,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "补液中加入氯化钾，浓度 40 mmol/L（血钾 3.5–5.5 mmol/L 时，JBDS-IP 2023；2024 年共识在血钾低于 5.0 mmol/L 时即补钾、目标 4–5 mmol/L，高于 5.0 mmol/L 时不补），经输液泵输注并持续心电监护；开始后 1–2 小时复查血钾；尿量少或肾功能受损时先请上级医师评估。绝不静脉推注。",
-        "en": "Potassium chloride added to the IV fluid at 40 mmol/L while potassium is 3.5–5.5 mmol/L (JBDS-IP 2023; the 2024 consensus replaces potassium whenever it is below 5.0 mmol/L, aiming at 4–5 mmol/L, and gives none above 5.0 mmol/L), by volumetric pump on continuous ECG monitoring; recheck potassium 1–2 hours after starting, and ask a senior first if urine output is low or kidney function is impaired. Never as an IV push."
+        "zh-CN": "补液中加入氯化钾，浓度 40 mmol/L（血钾 3.5–5.5 mmol/L 且有尿时；首袋复苏液不加钾，JBDS-IP 2023；2024 年共识在血钾低于 5.0 mmol/L 时即补钾、目标 4–5 mmol/L，高于 5.0 mmol/L 时不补），经输液泵输注并持续心电监护；开始后 1–2 小时复查血钾。他的肌酐 217 µmol/L：先确认有尿，无尿时请上级医师评估。绝不静脉推注。",
+        "en": "Potassium chloride added to the IV fluid at 40 mmol/L while potassium is 3.5–5.5 mmol/L and he is passing urine, none in the first resuscitation litre (JBDS-IP 2023; the 2024 consensus replaces potassium whenever it is below 5.0 mmol/L, aiming at 4–5 mmol/L, and gives none above 5.0 mmol/L), by volumetric pump on continuous ECG monitoring; recheck potassium 1–2 hours after starting. His creatinine is 217 µmol/L: confirm that he is passing urine first, and ask a senior if he is not. Never as an IV push."
       },
       "requires": [
         "medications",
@@ -2924,8 +2979,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "监测计划已下达。本病例没有记录治疗期间的任何复查数值，也不模拟。",
-        "en": "The monitoring plan is in place. This case records no repeat values during treatment and does not simulate them."
+        "zh-CN": "监测计划已下达。本病例没有记录治疗期间的任何复查数值和尿量，也不模拟。",
+        "en": "The monitoring plan is in place. This case records no repeat values or urine output during treatment and does not simulate them."
       }
     },
     {
@@ -3004,8 +3059,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "已执行禁食禁水。本病例没有记录他何时开始禁食；报告记录了胃肠减压。",
-        "en": "He is nil by mouth. This case does not record when that started; the report records gastric decompression."
+        "zh-CN": "已执行禁食禁水。本病例没有记录他是否及何时禁食；报告记录了胃肠减压。",
+        "en": "He is nil by mouth. This case does not record whether or when he was kept nil by mouth; the report records gastric decompression."
       }
     },
     {
@@ -3238,8 +3293,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识只在 pH < 7.0 时才考虑碳酸氢钠；pH 在此之上时它不能加快恢复，却会在胰岛素起效后加重低钾、增加钠负荷，并可能延缓酮体清除。补液和胰岛素本身就能纠正酸中毒；还没看血气时，先测 pH。",
-        "en": "The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus considers bicarbonate only below pH 7.0; above that it does not speed recovery, but deepens hypokalaemia once insulin acts, adds a sodium load and may slow ketone clearance. Fluids and insulin correct the acidosis — and if the gas has not been read, measure the pH first."
+        "zh-CN": "2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识只在 pH < 7.0 时才考虑碳酸氢钠；pH 在此之上时它不能加快恢复，却会在胰岛素起效后加重低钾、增加钠负荷，并可能延缓酮体清除（JBDS-IP 2023）。补液和胰岛素本身就能纠正酸中毒；还没看血气时，先测 pH。",
+        "en": "The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus considers bicarbonate only below pH 7.0; above that it does not speed recovery, but deepens hypokalaemia once insulin acts, adds a sodium load and may slow ketone clearance (JBDS-IP 2023). Fluids and insulin correct the acidosis — and if the gas has not been read, measure the pH first."
       },
       "response": {
         "zh-CN": "已给予。本病例没有记录是否用过碱剂；不模拟其效果。",
@@ -3287,8 +3342,8 @@
         "en": "Hypotonic fluid is not the starting fluid in DKA (the 2024 consensus starts with isotonic fluid). It is most dangerous when the sodium is low: it pushes sodium and osmolality lower still and adds to the risk of cerebral oedema in young adults aged 18–25. Read the sodium and its glucose-corrected value before choosing the fluid."
       },
       "response": {
-        "zh-CN": "正在输注。本病例没有记录用过低渗液；不模拟其效果。",
-        "en": "Running. This case records no hypotonic fluid; it does not simulate the effect."
+        "zh-CN": "正在输注。本病例没有记录他用过哪些液体；不模拟其效果。",
+        "en": "Running. This case does not record which fluids he was given; it does not simulate the effect."
       }
     },
     {
@@ -3383,7 +3438,7 @@
       },
       "harm": {
         "zh-CN": "本病例没有记录任何需要建立人工气道的情况（意识下降、PaCO₂ 回升提示的呼吸肌衰竭或低氧血症），而他靠自己的呼吸把 PaCO₂ 压到 10 mmHg，以对抗 3.1 mmol/L 的碳酸氢根。诱导时的呼吸暂停会让 PaCO₂ 在几分钟内上升，本已 7.10 的 pH 会急剧下降；呼吸机很难达到他自己的分钟通气量，诱导药物可能让脱水的患者血压骤降，他近几天呕吐、诱导时容易误吸，正压通气还可能把纵隔内的气体变成张力性气胸。应治疗酸中毒、让他保持自主呼吸；真的需要建立气道时，由上级麻醉和重症医生决定，并把呼吸机设置到与他自己的通气相匹配。",
-        "en": "Nothing recorded here calls for an airway — no fall in consciousness, no exhaustion with a rising PaCO₂, no hypoxaemia — while his own breathing holds the PaCO₂ at 10 mmHg against a bicarbonate of 3.1 mmol/L. The apnoea of induction lets the PaCO₂ climb within minutes and the pH, already 7.10, falls steeply; a ventilator rarely matches his own minute ventilation, induction drugs can drop a dehydrated patient's blood pressure, he has been vomiting (aspiration at induction), and positive pressure can turn the air in his mediastinum into a tension pneumothorax. Treat the acidosis and let him keep breathing for himself; if an airway ever becomes necessary it is a senior anaesthetic and critical-care decision, with the ventilator set to match his own breathing."
+        "en": "Nothing recorded here calls for an airway — no fall in consciousness, no exhaustion with a rising PaCO₂ and no hypoxaemia is recorded — while his own breathing holds the PaCO₂ at 10 mmHg against a bicarbonate of 3.1 mmol/L. The apnoea of induction lets the PaCO₂ climb within minutes and the pH, already 7.10, falls steeply; a ventilator rarely matches his own minute ventilation, induction drugs can drop a dehydrated patient's blood pressure, he has been vomiting (aspiration at induction), and positive pressure can turn the air in his mediastinum into a tension pneumothorax. Treat the acidosis and let him keep breathing for himself; if an airway ever becomes necessary it is a senior anaesthetic and critical-care decision, with the ventilator set to match his own breathing."
       },
       "response": {
         "zh-CN": "已插管并开始机械通气。本病例没有记录他用过任何通气支持；不模拟其效果。",
@@ -3518,16 +3573,16 @@
     {
       "id": "obj-story-exam",
       "title": {
-        "zh-CN": "问清病程，检查他的呼吸、颈部和胸壁",
-        "en": "Take his story and examine his breathing, neck and chest wall"
+        "zh-CN": "问清病程并为他查体",
+        "en": "Take his story and examine him"
       },
       "short": {
         "zh-CN": "病史与查体",
         "en": "History and examination"
       },
       "hint": {
-        "zh-CN": "一个多月的口干、消瘦和几天的呕吐，与今天的呼吸有什么联系？听诊之外，用手摸一摸颈部和胸壁，可能发现听诊器发现不了的东西吗？",
-        "en": "How do a month of thirst and weight loss and days of vomiting connect with how he is breathing today — and what might your hands find at his neck and chest wall that a stethoscope would miss?"
+        "zh-CN": "一个多月的口干、消瘦和几天的呕吐，与今天的呼吸有什么联系？听诊之外，用手触诊，可能发现听诊器发现不了的东西吗？",
+        "en": "How do a month of thirst and weight loss and days of vomiting connect with how he is breathing today — and what might your hands find that a stethoscope would miss?"
       },
       "guidance": {
         "zh-CN": "到床旁问清口干、消瘦、呕吐和气促的经过，测生命体征，观察呼吸，触诊颈部、胸壁和腹壁，听诊双肺。",
@@ -3709,8 +3764,8 @@
         "en": "Examination findings"
       },
       "hint": {
-        "zh-CN": "如果你的手在颈部或胸壁摸到了意料之外的东西，在几天的呕吐之后，最危险的解释是什么？在排除它之前，什么是他不能有的？",
-        "en": "If your hands found something unexpected at his neck or chest wall, what is the most dangerous explanation after days of vomiting — and what must he not have until it is excluded?"
+        "zh-CN": "如果查体发现了意料之外的情况，在几天的呕吐之后，最危险的解释是什么？在排除它之前，什么是他不能有的？",
+        "en": "If the examination found something unexpected, what is the most dangerous explanation after days of vomiting — and what must he not have until it is excluded?"
       },
       "guidance": {
         "zh-CN": "在会诊板作答决策 2，然后执行你的计划：相应的医嘱、影像申请和会诊。",
@@ -4037,13 +4092,13 @@
         {
           "id": "fluid-insulin-potassium",
           "text": {
-            "zh-CN": "等渗液补液，固定速率静脉胰岛素 0.1 单位/(kg·h)，从一开始就在补液中加钾；每小时测血糖和血酮，密切复查血钠，转入高依赖病房",
-            "en": "Isotonic fluid, a fixed-rate insulin infusion of 0.1 units/kg/h and potassium in the fluids from the start, with hourly glucose and ketones, close sodium checks and a high-dependency bed"
+            "zh-CN": "等渗液补液，固定速率静脉胰岛素 0.1 单位/(kg·h)，确认有尿后即在补液中加钾；每小时测血糖和血酮，密切复查血钠，转入高依赖病房",
+            "en": "Isotonic fluid, a fixed-rate insulin infusion of 0.1 units/kg/h and potassium in the fluids once he is passing urine, with hourly glucose and ketones, close sodium checks and a high-dependency bed"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024 年共识与 JBDS-IP 2023 一致：先用等渗液，固定速率胰岛素 0.1 单位/(kg·h)，并从一开始就在补液中加钾（JBDS：血钾 3.5–5.5 mmol/L 时浓度 40 mmol/L；共识：血钾低于 5.0 mmol/L 即补，目标 4–5 mmol/L），因为胰岛素一起效血钾就会快速下降。HCO₃⁻ < 5 mmol/L 和心率 > 100 次/分都是 JBDS 提示需要 2 级（HDU）监护的指标，他两项都有。血钠 112 mmol/L 经血糖校正后约 118–121 mmol/L，仍是严重低钠；他 25 岁，属于 JBDS 要求补液更谨慎的 18–25 岁年龄段，所以补液要稳，并监测血钠和神经系统体征。",
-            "en": "Correct. The 2024 consensus and JBDS-IP 2023 agree on isotonic fluid first and a fixed-rate infusion at 0.1 units/kg/h, with potassium in the fluid from the start (JBDS: 40 mmol/L while it is 3.5–5.5 mmol/L; the consensus replaces it below 5.0 mmol/L, aiming at 4–5 mmol/L), because it falls fast once insulin acts. A bicarbonate below 5 mmol/L and a pulse above 100/min are JBDS markers for level-2 (HDU) care, and he has both. His sodium of 112 mmol/L corrects to about 118–121 mmol/L for the glucose — still severe hyponatraemia — and at 25 he is in the 18–25 age band for which JBDS advises more cautious fluid replacement, so replace fluid steadily and watch the sodium and his neurology."
+            "zh-CN": "正确。2024 年共识与 JBDS-IP 2023 一致：先用等渗液，固定速率胰岛素 0.1 单位/(kg·h)，并尽早补钾，因为胰岛素一起效血钾就会快速下降：共识在血钾低于 5.0 mmol/L 时即补（每升液体 20–30 mmol，目标 4–5 mmol/L）；JBDS 在首袋复苏液中不加钾（常有肾前性急性肾损伤），此后血钾 3.5–5.5 mmol/L 且有尿时按 40 mmol/L 加入补液。他的肌酐 217 µmol/L，加钾前先确认有尿。HCO₃⁻ < 5 mmol/L 和心率 > 100 次/分都是 JBDS 提示需要 2 级（HDU）监护的指标，他两项都有。血钠 112 mmol/L 经血糖校正后约 118–121 mmol/L，仍属重度低钠血症（< 125 mmol/L）；他 25 岁，属于 JBDS 要求补液更谨慎的 18–25 岁年龄段，所以补液要稳，并监测血钠和神经系统体征。",
+            "en": "Correct. The 2024 consensus and JBDS-IP 2023 agree on isotonic fluid first and a fixed-rate infusion at 0.1 units/kg/h, and on early potassium, because it falls fast once insulin acts: the consensus replaces it below 5.0 mmol/L (20–30 mmol per litre of fluid, aiming at 4–5 mmol/L), while JBDS gives none with the first resuscitation litre (pre-renal kidney injury is common) and then 40 mmol/L while it is 3.5–5.5 mmol/L and he is passing urine. With a creatinine of 217 µmol/L, confirm that he is passing urine before the potassium goes in. A bicarbonate below 5 mmol/L and a pulse above 100/min are JBDS markers for level-2 (HDU) care, and he has both. His sodium of 112 mmol/L corrects to about 118–121 mmol/L for the glucose — still a profound hyponatraemia (below 125 mmol/L) — and at 25 he is in the 18–25 age band for which JBDS advises more cautious fluid replacement, so replace fluid steadily and watch the sodium and his neurology."
           }
         },
         {
@@ -4054,8 +4109,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。2024 年共识只在 pH < 7.0 时考虑碳酸氢钠，他的 pH 是 7.10。碳酸氢钠不能加快恢复，却会在胰岛素起效后加重低钾（他的钾只有 3.8 mmol/L）、增加钠负荷，并可能延缓酮体清除；推迟胰岛素只会让酮症酸中毒持续更久。",
-            "en": "No. The 2024 consensus considers bicarbonate only below pH 7.0; his is 7.10. It does not speed recovery, but once insulin acts it deepens hypokalaemia — his potassium is only 3.8 mmol/L — adds a sodium load and may slow ketone clearance, and holding insulin back only prolongs the ketoacidosis."
+            "zh-CN": "不对。2024 年共识只在 pH < 7.0 时考虑碳酸氢钠，他的 pH 是 7.10。碳酸氢钠不能加快恢复，却会在胰岛素起效后加重低钾（他的钾只有 3.8 mmol/L）、增加钠负荷，并可能延缓酮体清除（JBDS-IP 2023）；推迟胰岛素只会让酮症酸中毒持续更久。",
+            "en": "No. The 2024 consensus considers bicarbonate only below pH 7.0; his is 7.10. It does not speed recovery, but once insulin acts it deepens hypokalaemia — his potassium is only 3.8 mmol/L — adds a sodium load and may slow ketone clearance (JBDS-IP 2023), and holding insulin back only prolongs the ketoacidosis."
           }
         },
         {
@@ -4066,8 +4121,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。酮症酸中毒时全身的钾是缺失的，3.8 mmol/L 只是酸中毒把钾移出细胞的结果，胰岛素和补液会让它迅速下降。JBDS-IP 2023 在血钾 3.5–5.5 mmol/L 时就在补液中加钾，2024 年共识在血钾低于 5.0 mmol/L 时即开始补钾；等低于 3.5 再补，会在治疗途中遇到危险的低钾。",
-            "en": "No. Total-body potassium is depleted in DKA; 3.8 mmol/L reflects potassium shifted out of the cells by the acidosis, and insulin and fluid will bring it down fast. JBDS-IP 2023 adds potassium to the fluid while it is 3.5–5.5 mmol/L and the 2024 consensus starts replacement below 5.0 mmol/L; waiting for it to fall below 3.5 meets dangerous hypokalaemia midway through treatment."
+            "zh-CN": "不对。酮症酸中毒时全身的钾是缺失的，3.8 mmol/L 只是酸中毒把钾移出细胞的结果，胰岛素和补液会让它迅速下降。JBDS-IP 2023 在血钾 3.5–5.5 mmol/L 且有尿时就在补液中加钾，2024 年共识在血钾低于 5.0 mmol/L 时即开始补钾；等低于 3.5 再补，会在治疗途中遇到危险的低钾。",
+            "en": "No. Total-body potassium is depleted in DKA; 3.8 mmol/L reflects potassium shifted out of the cells by the acidosis, and insulin and fluid will bring it down fast. JBDS-IP 2023 adds potassium to the fluid while it is 3.5–5.5 mmol/L and he is passing urine, and the 2024 consensus starts replacement below 5.0 mmol/L; waiting for it to fall below 3.5 meets dangerous hypokalaemia midway through treatment."
           }
         },
         {
@@ -4176,8 +4231,8 @@
       "id": "discharge-plan",
       "kind": "multiple",
       "prompt": {
-        "zh-CN": "住院后期的胃镜：见咖啡渣样物和十二指肠充血，未发现明显的食管或胃壁穿孔。为他停用静脉胰岛素和出院做计划，应包括哪些？（多选）",
-        "en": "Later in the admission, gastroscopy shows coffee-ground material and duodenal congestion, with no obvious perforation of the oesophagus or stomach wall. What should the plan for coming off the insulin infusion and for discharge include? (Select all that apply.)"
+        "zh-CN": "CT 之后的胃镜：见咖啡渣样物和十二指肠充血，未发现明显的食管或胃壁穿孔。为他停用静脉胰岛素和出院做计划，应包括哪些？（多选）",
+        "en": "The gastroscopy done after the CT shows coffee-ground material and duodenal congestion, with no obvious perforation of the oesophagus or stomach wall. What should the plan for coming off the insulin infusion and for discharge include? (Select all that apply.)"
       },
       "requires": {
         "all": [
@@ -4218,8 +4273,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。年轻、一个月体重下降约 10 kg、以酮症酸中毒起病提示 1 型糖尿病，但酮症倾向的 2 型糖尿病也可以这样起病。ADA 2026 糖尿病诊疗标准（第 2 部分）建议，成人表现与 1 型糖尿病重叠（发病年龄较轻、非刻意的体重下降、酮症酸中毒）时，用标准化的胰岛自身抗体检测来分型；C 肽在急性期过后再测更可靠。本病例没有记录他的抗体、C 肽或最终分型。",
-            "en": "Include. Youth, about 10 kg lost in a month and a ketoacidotic onset point to type 1 diabetes, but ketosis-prone type 2 diabetes can begin the same way. The ADA Standards of Care 2026 (section 2) advise standardised islet autoantibody tests to classify diabetes in adults whose features overlap with type 1 diabetes (younger age, unintentional weight loss, ketoacidosis), and C-peptide is more informative once the acute illness has passed. This case records no antibodies, C-peptide or final type."
+            "zh-CN": "应选。年轻、一个月体重下降约 10 kg、以酮症酸中毒起病提示 1 型糖尿病，但酮症倾向的 2 型糖尿病也可以这样起病。ADA 2026 糖尿病诊疗标准（第 2 部分）建议，成人表现与 1 型糖尿病重叠（发病年龄较轻、非刻意的体重下降、酮症酸中毒）时，用标准化的胰岛自身抗体检测来分型；高血糖危象后 2 周内不宜检测 C 肽。本病例没有记录他的抗体、C 肽或最终分型。",
+            "en": "Include. Youth, about 10 kg lost in a month and a ketoacidotic onset point to type 1 diabetes, but ketosis-prone type 2 diabetes can begin the same way. The ADA Standards of Care 2026 (section 2) advise standardised islet autoantibody tests to classify diabetes in adults whose features overlap with type 1 diabetes (younger age, unintentional weight loss, ketoacidosis), and not to test C-peptide within 2 weeks of a hyperglycaemic emergency. This case records no antibodies, C-peptide or final type."
           }
         },
         {
@@ -4238,7 +4293,7 @@
           "id": "metformin-switch",
           "text": {
             "zh-CN": "成年人最常见的是 2 型糖尿病：出院前停用胰岛素，改为二甲双胍口服，门诊再根据血糖决定是否重新使用胰岛素",
-            "en": "Type 2 diabetes is the commonest kind in adults: stop insulin before discharge, switch to metformin tablets and decide in clinic whether he needs insulin again"
+            "en": "Type 2 diabetes is the commonest kind in adults: stop insulin before discharge, switch to metformin tablets and decide in clinic, from his glucose readings, whether he needs insulin again"
           },
           "correct": false,
           "feedback": {
@@ -4591,8 +4646,8 @@
         "en": "Dr Long (emergency medicine attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“他的呼吸是在帮他还是在害他？”“按 Winter 公式，这个 HCO₃⁻ 对应的 PaCO₂ 应该是多少？”“开胰岛素之前你要先看到哪个结果？”“钾 3.8 在这种酸中毒里算安全吗？胰岛素起效后会怎样？”“钠和血糖一起看，他是高渗还是低渗？”“呕吐几天后颈部有握雪感，最不能漏的是什么？哪项检查先做？”“CT 没看到裂口，能完全放心吗？”“什么情况下才需要颈部引流？”“停静脉胰岛素前要先做什么？”。可以讲解 2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识、JBDS-IP 2023、2014 年欧洲低钠血症指南、WSES 2019 食管急症指南和 BTS/ICS 2016 无创通气指南的相关原则；学员读到相应记录后，可以对照记录的处理（补液、胰岛素、胃肠减压、颈部引流）与现行做法。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（血压、体温、血氧、意识状态、体重、氯和阴离子间隙、血酮、血红蛋白、胸片、治疗方案和剂量、引流指征都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Is his breathing helping him or harming him?”, “By Winter's formula, what PaCO₂ goes with this bicarbonate?”, “Which result must you see before insulin starts?”, “Is a potassium of 3.8 safe in acidosis like this — what happens once insulin acts?”, “Reading the sodium with the glucose, is he hyperosmolar or hypotonic?”, “Crepitus in the neck after days of vomiting — what must not be missed, and which test comes first?”, “No tear on CT — can you relax completely?”, “When would the neck need draining?”, “What must be on board before the insulin infusion stops?”. May explain the relevant principles of the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, JBDS-IP 2023, the 2014 European hyponatraemia guideline, the WSES 2019 oesophageal emergency guidelines and the BTS/ICS 2016 NIV guideline, and — once the learner has read the records — contrast the recorded management (fluids, insulin, gastric decompression, cervical drainage) with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, saturation, conscious level, weight, chloride and anion gap, blood ketones, haemoglobin, chest film, treatment regimens and doses, and the reason for drainage are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“他的呼吸是在帮他还是在害他？”“按 Winter 公式，这个 HCO₃⁻ 对应的 PaCO₂ 应该是多少？”“开胰岛素之前你要先看到哪个结果？”“钾 3.8 在这种酸中毒里算安全吗？胰岛素起效后会怎样？加钾前要先确认什么？”“钠和血糖一起看，他是高渗还是低渗？”“呕吐几天后颈部有握雪感，最不能漏的是什么？哪项检查先做？”“CT 没看到裂口，能完全放心吗？”“什么情况下才需要颈部引流？”“停静脉胰岛素前要先做什么？”。可以讲解 2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识、JBDS-IP 2023、2014 年欧洲低钠血症指南、WSES 2019 食管急症指南和 BTS/ICS 2016 无创通气指南的相关原则；学员读到相应记录后，可以对照记录的处理（补液、胰岛素、胃肠减压、颈部引流）与现行做法。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（血压、体温、血氧、意识状态、体重、尿量、氯和阴离子间隙、血酮、血红蛋白、胸片、治疗方案和剂量、引流指征都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Is his breathing helping him or harming him?”, “By Winter's formula, what PaCO₂ goes with this bicarbonate?”, “Which result must you see before insulin starts?”, “Is a potassium of 3.8 safe in acidosis like this — what happens once insulin acts, and what must you confirm before the potassium goes in?”, “Reading the sodium with the glucose, is he hyperosmolar or hypotonic?”, “Crepitus in the neck after days of vomiting — what must not be missed, and which test comes first?”, “No tear on CT — can you relax completely?”, “When would the neck need draining?”, “What must be on board before the insulin infusion stops?”. May explain the relevant principles of the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, JBDS-IP 2023, the 2014 European hyponatraemia guideline, the WSES 2019 oesophageal emergency guidelines and the BTS/ICS 2016 NIV guideline, and — once the learner has read the records — contrast the recorded management (fluids, insulin, gastric decompression, cervical drainage) with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, saturation, conscious level, weight, urine output, chloride and anion gap, blood ketones, haemoglobin, chest film, treatment regimens and doses, and the reason for drainage are not recorded)."
       },
       "interprets": [
         "blood-gas",
@@ -4645,7 +4700,7 @@
     },
     "conclusion": {
       "zh-CN": "25岁男性，既往无糖尿病，诊断为糖尿病酮症酸中毒合并自发性纵隔气肿和皮下气肿。口干多饮一个多月，一个月内体重下降约 10 kg，近 3 天乏力、恶心、呕吐咖啡渣样物，入院前 1 天明显气促；心率 120 次/分，呼吸深快 40 次/分，颈部、前胸和腹壁有握雪感，双肺呼吸音低。血糖 26.3 mmol/L、尿酮 14.4 mmol/L、pH 7.10、HCO₃⁻ 3.1 mmol/L、PaCO₂ 10 mmHg——呼吸代偿已到极限；钠 112 mmol/L（经血糖校正后约 118–121 mmol/L），钾 3.8 mmol/L，肌酐 217 µmol/L。CT 示纵隔及皮下积气，未见明确撕裂；之后的胃镜未见明显穿孔。经补液、胰岛素、胃肠减压和颈部引流后好转，积气约 1 周基本吸收，住院约 2 周出院，随访 2 年未复发。现行做法：在高依赖病房等渗补液、固定速率胰岛素并尽早补钾，不用碳酸氢钠，不用无创通气或插管；禁食，先 CT 后胃镜；引流只用于积气危及气道、呼吸或循环时。",
-      "en": "Diabetic ketoacidosis with spontaneous pneumomediastinum and subcutaneous emphysema in a 25-year-old new to diabetes: over a month of thirst, about 10 kg lost in a month, three days of weakness, nausea and coffee-ground vomiting, a day of marked breathlessness. Heart rate 120/min, deep breathing at 40/min, crepitus from neck to abdominal wall, reduced breath sounds. Glucose 26.3 mmol/L, urine ketones 14.4 mmol/L, pH 7.10, bicarbonate 3.1 mmol/L, PaCO₂ 10 mmHg (maximal compensation); sodium 112 mmol/L (118–121 corrected), potassium 3.8 mmol/L, creatinine 217 µmol/L. CT: mediastinal and subcutaneous air, no definite tear; later gastroscopy: no obvious perforation. He improved with fluids, insulin, gastric decompression and cervical drainage: air largely gone in a week, discharged at about two weeks, no recurrence in two years. Today: HDU, isotonic fluid, fixed-rate insulin and early potassium, no bicarbonate, no NIV or intubation; nil by mouth, CT first; drainage only for compromise."
+      "en": "Diabetic ketoacidosis with spontaneous pneumomediastinum and subcutaneous emphysema in a 25-year-old new to diabetes: over a month of thirst, about 10 kg lost in a month, three days of weakness, nausea and coffee-ground vomiting, a day of marked breathlessness. Heart rate 120/min, deep breathing at 40/min, crepitus at the neck, front of the chest and abdominal wall, breath sounds reduced on both sides. Glucose 26.3 mmol/L, urine ketones 14.4 mmol/L, pH 7.10, bicarbonate 3.1 mmol/L, PaCO₂ 10 mmHg (maximal compensation); sodium 112 mmol/L (118–121 corrected), potassium 3.8 mmol/L, creatinine 217 µmol/L. CT: mediastinal and subcutaneous air, no definite tear; later gastroscopy: no obvious perforation. He improved with fluids, insulin, gastric decompression and cervical drainage: air largely gone in a week, discharged at about two weeks, no recurrence in two years. Today: HDU, isotonic fluid, fixed-rate insulin and early potassium, no bicarbonate, no NIV or intubation; nil by mouth, CT first; drainage only for compromise."
     },
     "keyReasoning": [
       {
@@ -4661,8 +4716,8 @@
         "en": "Crepitus at the neck, chest wall and abdominal wall means air is escaping from inside the chest; with days of vomiting and coffee-ground material, nothing goes by mouth until imaging has excluded oesophageal rupture."
       },
       {
-        "zh-CN": "在严重酸中毒时，钾 3.8 mmol/L 并不让人放心：胰岛素一起效就会下降，所以从一开始补钾；钠 112 mmol/L 用血糖校正后仍约 118–121 mmol/L，属于严重低钠，只能用等渗液，并要随着血糖下降追踪血钠。",
-        "en": "A potassium of 3.8 mmol/L is not reassuring in severe acidosis — insulin will drive it down, so replace it from the start; a sodium of 112 mmol/L is still about 118–121 after glucose correction, a severe hyponatraemia that rules out hypotonic fluid and must be followed as the glucose falls."
+        "zh-CN": "在严重酸中毒时，钾 3.8 mmol/L 并不让人放心：胰岛素一起效就会下降，所以要尽早补钾——他的肌酐 217 µmol/L，确认有尿后即在补液中加钾；钠 112 mmol/L 用血糖校正后仍约 118–121 mmol/L，属于重度低钠血症，只能用等渗液，并要随着血糖下降追踪血钠。",
+        "en": "A potassium of 3.8 mmol/L is not reassuring in severe acidosis — insulin will drive it down, so replace it early, in the fluid once he is passing urine (his creatinine is 217 µmol/L); a sodium of 112 mmol/L is still about 118–121 after glucose correction, a profound hyponatraemia that rules out hypotonic fluid and must be followed as the glucose falls."
       },
       {
         "zh-CN": "CT 显示纵隔积气但没有裂口：最可能是呕吐和深快呼吸引起的肺泡破裂；保守处理并继续观察，因为一次阴性的 CT 不能完全排除小的穿孔。",
@@ -4675,8 +4730,8 @@
     },
     "unknowns": [
       {
-        "zh-CN": "到院时的血压、体温、经皮血氧饱和度和意识状态（GCS），以及他的体重。",
-        "en": "His blood pressure, temperature, oxygen saturation and conscious level (GCS) on arrival, and his weight."
+        "zh-CN": "到院时的血压、体温、经皮血氧饱和度和意识状态（GCS），以及他的体重和尿量。",
+        "en": "His blood pressure, temperature, oxygen saturation and conscious level (GCS) on arrival, his weight, and his urine output."
       },
       {
         "zh-CN": "其余化验：血 β-羟丁酸、氯（阴离子间隙）、尿素和血浆渗透压、乳酸、血常规（血红蛋白）、淀粉酶或脂肪酶，以及治疗期间的任何复查值。",
@@ -4705,16 +4760,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "诊断与分级。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识：血糖 ≥ 11.1 mmol/L（或已知糖尿病）、酮症（β-羟丁酸 ≥ 3.0 mmol/L，或尿酮 ++ 及以上）、pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L。按 pH 他在中度区间（7.0–7.25），按 HCO₃⁻ 在重度区间（< 10 mmol/L）；JBDS-IP 2023 把 HCO₃⁻ < 5 mmol/L 和心率 > 100 次/分列为需要 2 级（HDU）监护的指标，他两项都有。报告与现行做法：本病例既没有记录他在哪里接受治疗，也没有血酮数值。",
-        "en": "Diagnose and grade. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus: glucose ≥ 11.1 mmol/L (or known diabetes), ketosis (β-hydroxybutyrate ≥ 3.0 mmol/L or urine ketones 2+ or more) and pH < 7.3 and/or bicarbonate < 18 mmol/L. His pH sits in the moderate band (7.0–7.25) and his bicarbonate in the severe band (< 10 mmol/L), and JBDS-IP 2023 lists a bicarbonate below 5 mmol/L and a pulse above 100/min — he has both — as markers for level-2 (HDU) care. Then and now: this case records neither where he was treated nor any blood ketone value."
+        "zh-CN": "诊断与分级。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识：血糖 ≥ 11.1 mmol/L（或已知糖尿病）、酮症（β-羟丁酸 ≥ 3.0 mmol/L，或尿酮 ++ 及以上）、pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L。按 pH 他在中度区间（7.0–7.25），按 HCO₃⁻ 在重度区间（< 10 mmol/L；共识建议重度者在 ICU 治疗）；JBDS-IP 2023 把 HCO₃⁻ < 5 mmol/L 和心率 > 100 次/分列为需要 2 级（HDU）监护的指标，他两项都有。报告与现行做法：本病例既没有记录他在哪里接受治疗，也没有血酮数值。",
+        "en": "Diagnose and grade. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus: glucose ≥ 11.1 mmol/L (or known diabetes), ketosis (β-hydroxybutyrate ≥ 3.0 mmol/L or urine ketones 2+ or more) and pH < 7.3 and/or bicarbonate < 18 mmol/L. His pH sits in the moderate band (7.0–7.25) and his bicarbonate in the severe band (< 10 mmol/L; the consensus suggests intensive care for severe DKA), and JBDS-IP 2023 lists a bicarbonate below 5 mmol/L and a pulse above 100/min — he has both — as markers for level-2 (HDU) care. Then and now: this case records neither where he was treated nor any blood ketone value."
       },
       {
         "zh-CN": "保护代偿。Winter 公式（预计 PaCO₂ = 1.5 × HCO₃⁻ + 8 ± 2）给出约 10.7–14.7 mmHg，他的 10 mmHg 已到极限。无创通气用于高碳酸血症性呼吸衰竭（BTS/ICS 2016：pH < 7.35 且 PaCO₂ > 6.5 kPa），不用于代谢性酸中毒的代偿；镇静，或分钟通气量低于他自己的机械通气，都会去掉这份代偿，使 pH 骤降；他近几天呕吐、纵隔有气，正压面罩还会增加误吸和张力性气胸的风险。",
         "en": "Protect the compensation. Winter's formula (expected PaCO₂ = 1.5 × HCO₃⁻ + 8 ± 2) gives about 10.7–14.7 mmHg, and his 10 mmHg is at the limit. NIV treats hypercapnic respiratory failure (BTS/ICS 2016: pH < 7.35 with PaCO₂ > 6.5 kPa), not the compensation of a metabolic acidosis; sedation, or mechanical ventilation at a lower minute volume than he generates himself, removes the compensation and the pH falls sharply, and after days of vomiting, with air in his mediastinum, a positive-pressure mask adds aspiration and tension pneumothorax."
       },
       {
-        "zh-CN": "第一个小时：等渗液（无低血压时首小时约 1 L），固定速率静脉胰岛素 0.1 单位/(kg·h)、不推注；血钾 3.5–5.5 mmol/L 时补液中钾浓度 40 mmol/L（JBDS-IP 2023；2024 年共识在血钾低于 5.0 mmol/L 时即补钾，目标 4–5 mmol/L），< 3.5 mmol/L 时先补钾、推迟胰岛素；pH ≥ 7.0 不用碳酸氢钠（2024 年共识）；血糖 < 14 mmol/L 时加 10% 葡萄糖，胰岛素继续。报告与现行做法：报告记录了补液和胰岛素，但本病例没有记录方案、补钾，也没有记录是否用过碱剂。",
-        "en": "The first hour: isotonic fluid (about 1 L in the first hour without hypotension) and a fixed-rate insulin infusion at 0.1 units/kg/h with no bolus; potassium at 40 mmol/L in the fluid while it is 3.5–5.5 mmol/L (JBDS-IP 2023; the 2024 consensus replaces it below 5.0 mmol/L, aiming at 4–5 mmol/L), and potassium first with insulin delayed below 3.5 mmol/L; no bicarbonate at pH 7.0 or above (2024 consensus); 10 % glucose once the glucose falls below 14 mmol/L, with the insulin continued. Then and now: the report records fluids and insulin, but this case does not record the regimen, any potassium, or whether alkali was given."
+        "zh-CN": "第一个小时：等渗液（无低血压时首小时约 1 L），固定速率静脉胰岛素 0.1 单位/(kg·h)、不推注；血钾 3.5–5.5 mmol/L 且有尿时补液中钾浓度 40 mmol/L，首袋复苏液不加钾（JBDS-IP 2023；2024 年共识在血钾低于 5.0 mmol/L 时即补钾，每升液体 20–30 mmol，目标 4–5 mmol/L），< 3.5 mmol/L 时先补钾、推迟胰岛素；pH ≥ 7.0 不用碳酸氢钠（2024 年共识）；血糖 < 14 mmol/L 时加 10% 葡萄糖，胰岛素继续（两者现均建议减至 0.05 单位/(kg·h)）。报告与现行做法：报告记录了补液和胰岛素，但本病例没有记录方案、补钾，也没有记录是否用过碱剂。",
+        "en": "The first hour: isotonic fluid (about 1 L in the first hour without hypotension) and a fixed-rate insulin infusion at 0.1 units/kg/h with no bolus; potassium at 40 mmol/L in the fluid while it is 3.5–5.5 mmol/L and he is passing urine, none in the first resuscitation litre (JBDS-IP 2023; the 2024 consensus replaces it below 5.0 mmol/L with 20–30 mmol per litre, aiming at 4–5 mmol/L), and potassium first with insulin delayed below 3.5 mmol/L; no bicarbonate at pH 7.0 or above (2024 consensus); 10 % glucose once the glucose falls below 14 mmol/L, with the insulin continued (both now advise reducing it to 0.05 units/kg/h). Then and now: the report records fluids and insulin, but this case does not record the regimen, any potassium, or whether alkali was given."
       },
       {
         "zh-CN": "把钠和血糖放在一起读。钠 112 mmol/L、血糖 26.3 mmol/L：按血糖每高出 5.6 mmol/L 钠加 1.6 mmol/L 校正约为 118 mmol/L，按加 2.4 约为 121 mmol/L；有效渗透压约 250 mOsm/kg——除非是检验误差（脂血标本用间接电极法测定可出现假性低钠，血气分析仪的直接电极法可以鉴别），他处于低渗状态。只用等渗液，大约每 2 小时查钠并计算校正钠（血糖下降时实测钠会上升），校正钠在第 1 个 24 小时的上升控制在约 10 mmol/L 以内（2014 年欧洲低钠血症指南）。他 25 岁，正处于 JBDS 要求补液更谨慎、警惕脑水肿的 18–25 岁年龄段。本病例只记录了到院时的一次血钠。",
@@ -4747,8 +4802,8 @@
   },
   "unknowns": [
     {
-      "zh-CN": "到院时的血压、体温、经皮血氧饱和度和意识状态（GCS），以及他的体重。",
-      "en": "His blood pressure, temperature, oxygen saturation and conscious level (GCS) on arrival, and his weight."
+      "zh-CN": "到院时的血压、体温、经皮血氧饱和度和意识状态（GCS），以及他的体重和尿量。",
+      "en": "His blood pressure, temperature, oxygen saturation and conscious level (GCS) on arrival, his weight, and his urine output."
     },
     {
       "zh-CN": "其余化验：血 β-羟丁酸、氯（阴离子间隙）、尿素和血浆渗透压、乳酸、血常规（血红蛋白）、淀粉酶或脂肪酶，以及治疗期间的任何复查值。",
@@ -4952,19 +5007,19 @@
     },
     {
       "type": "intervene",
-      "interventionId": "friii"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "potassium-replacement"
-    },
-    {
-      "type": "intervene",
       "interventionId": "monitoring-plan"
     },
     {
       "type": "intervene",
       "interventionId": "hdu-referral"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "friii"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "potassium-replacement"
     },
     {
       "type": "ask",
@@ -5090,15 +5145,6 @@
     {
       "type": "read",
       "investigationId": "gastroscopy",
-      "phase": "ward"
-    },
-    {
-      "type": "order",
-      "investigationId": "c-peptide"
-    },
-    {
-      "type": "read",
-      "investigationId": "c-peptide",
       "phase": "ward"
     },
     {
@@ -5425,6 +5471,41 @@
         "text": "Any problems with your eyesight?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "这两天有没有吐过？",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "How long have you been unwell?",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "这次不舒服多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Have you been eating much?",
+        "locale": "en",
+        "expect": [
+          "appetite-energy"
+        ]
+      },
+      {
+        "text": "这几天吃饭吃得怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "appetite-energy"
+        ]
       }
     ]
   }

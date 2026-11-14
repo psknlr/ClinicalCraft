@@ -24,12 +24,12 @@
   "estimatedMinutes": 35,
   "learningOutcomes": [
     {
-      "zh-CN": "按现行标准处理急性胰腺炎的最初几天——乳酸钠林格液目标导向适度补液、尽早低脂经口饮食、不预防性使用抗菌药物、仅在胆管炎时行 ERCP——并与禁食加抗菌药物的旧做法对照（ACG 2024）。",
-      "en": "Manage the first days of acute pancreatitis to the current standard — lactated Ringer's at a moderate, goal-directed rate, early low-fat oral feeding, no prophylactic antibiotics, ERCP only for cholangitis — and contrast it with fasting and antibiotics (ACG 2024)."
+      "zh-CN": "按现行标准处理急性胰腺炎的最初几天——乳酸钠林格液目标导向适度补液、尽早低脂经口饮食、不预防性使用抗菌药物、仅在胆管炎时行 ERCP——并与禁食加抗菌药物的旧做法对照（ACG 2024；IAP 2025）。",
+      "en": "Manage the first days of acute pancreatitis to the current standard — lactated Ringer's at a moderate, goal-directed rate, early low-fat oral feeding, no prophylactic antibiotics, ERCP only for cholangitis — and contrast it with fasting and antibiotics (ACG 2024; IAP 2025)."
     },
     {
-      "zh-CN": "对每一次胰腺炎发作做病因筛查，把发作期的血钙升高识别为危险信号：复查白蛋白校正钙并同步测 PTH（IAP/APA 2013；NICE NG132，2019）。",
-      "en": "Screen every attack of pancreatitis for its cause, and treat a raised calcium during an attack as a red flag that needs a repeat albumin-adjusted calcium with a paired PTH (IAP/APA 2013; NICE NG132, 2019)."
+      "zh-CN": "对每一次胰腺炎发作做病因筛查，把发作期的血钙升高识别为危险信号：复查白蛋白校正钙并同步测 PTH（IAP 2025；NICE NG132，2019）。",
+      "en": "Screen every attack of pancreatitis for its cause, and treat a raised calcium during an attack as a red flag that needs a repeat albumin-adjusted calcium with a paired PTH (IAP 2025; NICE NG132, 2019)."
     },
     {
       "zh-CN": "在任何定位影像之前用生化检查确立原发性甲状旁腺功能亢进症，并说明影像为何既不能确诊也不能排除它（第五届原发性甲旁亢国际研讨会，2022）。",
@@ -74,7 +74,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -83,7 +83,7 @@
         "AAES 2016 primary hyperparathyroidism (definitive management)",
         "NICE NG132 (2019) primary hyperparathyroidism",
         "ACG 2024 acute pancreatitis",
-        "IAP/APA 2013 acute pancreatitis",
+        "IAP 2025 revised guidelines on acute pancreatitis (Pancreatology)",
         "Society for Endocrinology 2016 emergency guidance: acute hypocalcaemia in adults"
       ],
       "notes": {
@@ -1367,7 +1367,7 @@
         "en": "Has this happened to you before?"
       },
       "answer": {
-        "zh-CN": "有。大概二十个月前也这样痛过一回，那次住了院。",
+        "zh-CN": "有。大概二十个月前也这样痛过，那次住了院。",
         "en": "Yes — about twenty months ago I had the same pain and was admitted."
       },
       "keywords": {
@@ -1486,12 +1486,12 @@
       "id": "bp-interval",
       "topic": "pmh",
       "question": {
-        "zh-CN": "这段时间血压怎么样？还吃降压药吗？",
-        "en": "How has your blood pressure been — are you still on tablets for it?"
+        "zh-CN": "这段时间血压怎么样？吃降压药吗？",
+        "en": "How has your blood pressure been — do you take tablets for it?"
       },
       "answer": {
-        "zh-CN": "上次出院以后我没吃降压药，血压也是正常的。",
-        "en": "After I went home last time I didn't take any blood-pressure tablets, and it was normal even without them."
+        "zh-CN": "上次出院以后，不吃降压药的时候血压也是正常的。",
+        "en": "Since I went home last time it's been normal, even without blood-pressure tablets."
       },
       "keywords": {
         "zh-CN": [
@@ -1658,8 +1658,8 @@
       "id": "spasms",
       "topic": "ros",
       "question": {
-        "zh-CN": "有没有抽筋、手脚抽搐，或者脸上肌肉跳？",
-        "en": "Any cramps or spasms in your hands, or twitching in your face?"
+        "zh-CN": "手脚有没有抽筋、抽搐过？",
+        "en": "Have you had any cramps or spasms in your hands or feet?"
       },
       "answer": {
         "zh-CN": "没有，没抽搐过。",
@@ -1671,13 +1671,11 @@
           "抽搐",
           "痉挛",
           "手抽",
-          "肌肉跳",
           "手脚抽"
         ],
         "en": [
           "cramps",
           "spasms",
-          "twitching",
           "tetany",
           "cramping",
           "fits"
@@ -1975,8 +1973,8 @@
     {
       "id": "amylase",
       "name": {
-        "zh-CN": "血清淀粉酶",
-        "en": "Serum amylase"
+        "zh-CN": "淀粉酶",
+        "en": "Amylase"
       },
       "category": "lab",
       "aliases": {
@@ -2007,8 +2005,8 @@
             "en": "First admission"
           },
           "text": {
-            "zh-CN": "血清淀粉酶 1139 U/L。",
-            "en": "Serum amylase 1139 U/L."
+            "zh-CN": "淀粉酶 1139 U/L。",
+            "en": "Amylase 1139 U/L."
           },
           "values": [
             {
@@ -2025,8 +2023,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录参考区间、采血时间和脂肪酶。",
-            "en": "This case records no reference interval, sampling time or lipase."
+            "zh-CN": "本病例没有记录标本类型（血或尿）、参考区间、采血时间和脂肪酶。",
+            "en": "This case records no specimen type (blood or urine), reference interval, sampling time or lipase."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：第一次发作：淀粉酶 1139 U/L（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2040,8 +2038,8 @@
             "en": "Readmission about 20 months later"
           },
           "text": {
-            "zh-CN": "血清淀粉酶 1055.9 U/L。",
-            "en": "Serum amylase 1055.9 U/L."
+            "zh-CN": "淀粉酶 1055.9 U/L。",
+            "en": "Amylase 1055.9 U/L."
           },
           "values": [
             {
@@ -2058,8 +2056,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录参考区间和采血时间。",
-            "en": "This case records no reference interval or sampling time."
+            "zh-CN": "本病例没有记录标本类型（血或尿）、参考区间和采血时间。",
+            "en": "This case records no specimen type (blood or urine), reference interval or sampling time."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：第二次发作：淀粉酶 1055.9 U/L（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2212,9 +2210,6 @@
           "甲状旁腺素",
           "pth",
           "ipth",
-          "甲功",
-          "甲状腺功能",
-          "游离甲状腺素",
           "激素水平"
         ],
         "en": [
@@ -2222,10 +2217,6 @@
           "parathyroid hormone",
           "parathormone",
           "intact pth",
-          "thyroid function",
-          "free t4",
-          "ft4",
-          "tsh",
           "hormone levels"
         ]
       },
@@ -2529,7 +2520,7 @@
             "en": "From the first attack to follow-up (length of follow-up not recorded)"
           },
           "text": {
-            "zh-CN": "记录的病程：58岁女性，上腹持续胀痛伴恶心、呕吐 1 天入院。查体：左上腹及脐周压痛，局部轻度肌紧张，反跳痛可疑，墨菲征阴性，颈部未触及包块。血清淀粉酶 1139 U/L，血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石。出院后饮食、大便正常，无腹痛腹胀，无骨痛及腰背酸痛，无多尿多饮，未服降压药时血压亦正常。约 20 个月后再次突发上腹胀痛伴恶心、呕吐，8 小时后就诊：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石。颈部超声、CT 示左侧甲状腺下极后方病灶。报告中一项术前激素结果 31 pmol/L 标为“甲状腺素”（可能为误标的 PTH）。切除的病灶约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。术后 PTH（明确标注）降至 3.8 pmol/L、血钙降至 2.18 mmol/L，此后均维持正常；曾短暂四肢麻木，无抽搐，后自行缓解。随访未诉不适，随访时长未记录。报告对胰腺炎的处置包括禁食和抗菌药物；具体药物、剂量、疗程及用于哪一次发作，本病例没有记录。生命体征、病情严重程度、白蛋白、离子钙、胆囊影像、手术细节和各项参考区间均无记录。",
+            "zh-CN": "记录的病程：58岁女性，上腹持续胀痛伴恶心、呕吐 1 天入院。查体：左上腹及脐周压痛，局部轻度肌紧张，反跳痛可疑，墨菲征阴性，颈部未触及包块。淀粉酶 1139 U/L，血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石。出院后饮食、大便正常，无腹痛腹胀，无骨痛及腰背酸痛，无多尿多饮，未服降压药时血压亦正常。约 20 个月后再次突发上腹胀痛伴恶心、呕吐，8 小时后就诊：淀粉酶 1055.9 U/L，血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石。颈部超声、CT 示左侧甲状腺下极后方病灶。报告中一项术前激素结果 31 pmol/L 标为“甲状腺素”（可能为误标的 PTH）。切除的病灶约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。术后 PTH（明确标注）降至 3.8 pmol/L、血钙降至 2.18 mmol/L，此后均维持正常；曾短暂四肢麻木，无抽搐，后自行缓解。随访未诉不适，随访时长未记录。报告对胰腺炎的处置包括禁食和抗菌药物；具体药物、剂量、疗程及用于哪一次发作，本病例没有记录。生命体征、病情严重程度、白蛋白、离子钙、胆囊影像、手术细节和各项参考区间均无记录。",
             "en": "Recorded course: a 58-year-old woman was admitted after a day of constant upper abdominal pain with nausea and vomiting. Examination: tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass. Amylase 1139 U/L, calcium 2.76 mmol/L; CT: pancreatitis and a left renal stone. After discharge she ate normally with normal bowels, had no abdominal pain or bloating, no bone or back ache and no polyuria or polydipsia, and her blood pressure was normal without antihypertensive medicine. About 20 months later the pain returned suddenly with nausea and vomiting and she came in after 8 hours: amylase 1055.9 U/L, calcium 2.87 mmol/L; CT: pancreatitis with renal stone(s) still seen. Neck ultrasound/CT: a lesion behind the lower pole of the left thyroid lobe. A pre-operative hormone value of 31 pmol/L is labelled 'thyroxine' in the report (possibly a mislabelled PTH). The lesion, about 2 × 1.5 × 1 cm, was removed; histology: parathyroid adenoma. Afterwards the PTH (explicitly labelled) fell to 3.8 pmol/L and the calcium to 2.18 mmol/L, and both stayed normal; she had transient numbness of the limbs without tetany, which settled on its own. At follow-up she had no complaints; its length is not recorded. The report's care of the pancreatitis included fasting and antibiotics; this case does not record the agents, doses, duration or which attack they were given for. No vital signs, severity, albumin, ionised calcium, gallbladder imaging, operative details or reference intervals are recorded."
           },
           "source": {
@@ -3367,8 +3358,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "WATERFALL 试验（NEJM 2022）中正是这一方案，比适度补液导致更多液体过负荷却没有改善结局，试验因此提前终止；ACG 2024 指南建议适度、目标导向的补液。",
-        "en": "In the WATERFALL trial (NEJM 2022) this regimen caused more fluid overload than moderate resuscitation without better outcomes, and the trial was stopped early; ACG 2024 suggests moderate, goal-directed fluids."
+        "zh-CN": "WATERFALL 试验（NEJM 2022）的积极补液组（20 mL/kg 后 3 mL/(kg·h)）比适度补液导致更多液体过负荷，却没有改善结局，试验因此提前终止；ACG 2024 和 IAP 2025 指南建议适度、目标导向的补液（1.5 mL/(kg·h)）。",
+        "en": "In the WATERFALL trial (NEJM 2022) the aggressive arm (20 mL/kg, then 3 mL/kg/h) caused more fluid overload than moderate resuscitation without better outcomes, and the trial was stopped early; ACG 2024 and IAP 2025 advise moderate, goal-directed fluids (1.5 mL/kg/h)."
       },
       "response": {
         "zh-CN": "本病例没有记录这样的补液方案；不模拟其效果。",
@@ -3498,8 +3489,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "每一次首发的胰腺炎都要查找病因（IAP/APA 2013）；发作期血钙升高尤其不寻常，NICE NG132（2019）要求复查并同步测 PTH。什么都不安排就出院，这次发作中没有解释的结果就没人追查，病因可能一直留着。",
-        "en": "Every first attack of pancreatitis needs its cause sought (IAP/APA 2013), and a raised calcium during an attack is unusual enough that NICE NG132 (2019) asks for a repeat with a paired PTH. Discharging her with nothing planned leaves any unexplained result of this attack unanswered, and the cause in place."
+        "zh-CN": "每一次胰腺炎发作都要查找病因（IAP 2025）；发作伴血钙升高时应测 PTH（IAP 2025），并复查白蛋白校正钙、与 PTH 同步测定（NICE NG132，2019）。什么都不安排就出院，这次发作中没有解释的结果就没人追查，病因可能一直留着。",
+        "en": "Every attack of pancreatitis needs its cause sought (IAP 2025), and an attack with a raised calcium calls for a PTH (IAP 2025), with a repeat albumin-adjusted calcium measured alongside it (NICE NG132, 2019). Discharging her with nothing planned leaves any unexplained result of this attack unanswered, and the cause in place."
       },
       "response": {
         "zh-CN": "她出院回家，没有安排进一步检查。接下来的记录按实际病程展开。",
@@ -3645,8 +3636,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "穿刺不是这里的诊断步骤：诊断依靠血液生化（第五届国际研讨会，2022）。对甲状腺旁的病灶穿刺可能出血、造成粘连并使病灶组织种植扩散，细胞学结果也常常不确定；只在少数诊断不清的病例中选择性使用。",
-        "en": "A needle biopsy is not the diagnostic step here — the diagnosis is made in the blood (Fifth International Workshop 2022) — and biopsying a lesion beside the thyroid risks bleeding, scarring and seeding of its tissue, with cytology that is often inconclusive; it is kept for selected, unclear cases."
+        "zh-CN": "穿刺不是这里的诊断步骤：诊断依靠血液生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——穿刺可能出血、造成粘连并使病灶组织种植，细胞学结果也常常不确定。",
+        "en": "A needle biopsy is not the diagnostic step here — the diagnosis is made in the blood (Fifth International Workshop 2022) — and AAES 2016 advises against pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases: it risks bleeding, scarring and seeding of the tissue, with cytology that is often inconclusive."
       },
       "response": {
         "zh-CN": "本病例没有记录穿刺；不模拟其效果。",
@@ -3686,8 +3677,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "西那卡塞能降低升高的血钙，但不能去除病因，只用于不能或不愿接受根治手术的患者；肾结石或胰腺炎这类并发症本身就是根治手术的指征（第五届国际研讨会 2022；NICE NG132，2019）。",
-        "en": "Cinacalcet lowers a raised calcium but removes no cause; it is for people who cannot or will not have the definitive operation, and complications such as kidney stones or pancreatitis are themselves an indication for that operation (Fifth International Workshop 2022; NICE NG132, 2019)."
+        "zh-CN": "西那卡塞能降低升高的血钙，但不能去除病因，只用于手术不成功、不适合或拒绝手术的患者（NICE NG132，2019）。肾结石属于靶器官受累，本身就是转诊甲状旁腺外科的指征（NICE NG132，2019）；有症状的病例都应手术，胰腺炎是其典型表现之一（第五届国际研讨会 2022）。",
+        "en": "Cinacalcet lowers a raised calcium but removes no cause; it is for people whose surgery has failed, is unsuitable or has been declined (NICE NG132, 2019). Kidney stones are end-organ disease and themselves an indication for referral to a parathyroid surgeon (NICE NG132, 2019), and all symptomatic disease — pancreatitis is among its classic manifestations — should be offered surgery (Fifth International Workshop 2022)."
       },
       "response": {
         "zh-CN": "本病例没有记录西那卡塞；不模拟其效果。",
@@ -3729,8 +3720,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "英国内分泌学会急诊指南（2016）只在校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状时静脉补钙（10% 葡萄糖酸钙 10–20 mL 加入 5% 葡萄糖 50–100 mL，10 分钟内推注，心电监护下，之后视情况持续滴注）。她的记录中没有达到这一标准的结果：应先复查校正钙或离子钙；血钙升高时补钙更是有害。",
-        "en": "Society for Endocrinology emergency guidance (2016) keeps IV calcium for an adjusted calcium below 1.9 mmol/L, or for symptoms with a calcium below the reference range (10–20 mL of 10 % calcium gluconate in 50–100 mL of 5 % glucose over 10 minutes with ECG monitoring, then an infusion if needed). Nothing in her record meets that threshold: recheck an adjusted or ionised calcium first — and while the calcium is raised, giving calcium is harmful."
+        "zh-CN": "英国内分泌学会急诊指南（2016）只在校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状时静脉补钙，而且先用 10% 葡萄糖酸钙 10–20 mL 加入 5% 葡萄糖 50–100 mL，10 分钟内推注（心电监护下），之后再持续滴注。她的记录中没有达到这一标准的结果：应先复查校正钙或离子钙；血钙升高时补钙更是有害。",
+        "en": "Society for Endocrinology emergency guidance (2016) keeps IV calcium for an adjusted calcium below 1.9 mmol/L, or for symptoms with a calcium below the reference range — and then starts with 10–20 mL of 10 % calcium gluconate in 50–100 mL of 5 % glucose over 10 minutes with ECG monitoring, followed by an infusion. Nothing in her record meets that threshold: recheck an adjusted or ionised calcium first — and while the calcium is raised, giving calcium is harmful."
       },
       "response": {
         "zh-CN": "本病例没有记录静脉补钙；不模拟其效果。",
@@ -3766,7 +3757,7 @@
         "medications"
       ],
       "risk": "low",
-      "maxDoses": 1,
+      "maxDoses": 2,
       "indicatedWhen": {
         "phase": "post-op"
       },
@@ -4282,15 +4273,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ACG 2024 指南建议用乳酸钠林格液适度补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg——并按反应反复评估；轻症在 24–48 小时内开始低脂经口饮食；不预防性使用抗菌药物。她的生命体征和严重程度没有记录，所以补液速度按心率、血压和尿量调整，而不是给一个固定的量。",
-            "en": "Correct. ACG 2024 suggests lactated Ringer's at a moderately aggressive rate — 1.5 mL/kg/h, with a 10 mL/kg bolus only for hypovolaemia — reassessed against her response, a low-fat oral diet within 24–48 hours in mild disease, and no prophylactic antibiotics. Her vital signs and severity are not recorded, so the rate is titrated to her pulse, blood pressure and urine output rather than to a fixed volume."
+            "zh-CN": "正确。ACG 2024 指南建议用乳酸钠林格液适度补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg——并按反应反复评估；轻症在 24–48 小时内开始低脂经口饮食；不预防性使用抗菌药物；IAP 2025 指南的建议相同。她的生命体征和严重程度没有记录，所以补液速度按心率、血压和尿量调整，而不是给一个固定的量。",
+            "en": "Correct. ACG 2024 suggests lactated Ringer's at a moderately aggressive rate — 1.5 mL/kg/h, with a 10 mL/kg bolus only for hypovolaemia — reassessed against her response, a low-fat oral diet within 24–48 hours in mild disease, and no prophylactic antibiotics; IAP 2025 recommends the same. Her vital signs and severity are not recorded, so the rate is titrated to her pulse, blood pressure and urine output rather than to a fixed volume."
           }
         },
         {
           "id": "fast-with-carbapenem",
           "text": {
-            "zh-CN": "禁食到淀粉酶恢复正常，静脉补液、镇痛，同时预防性使用碳青霉烯类，防止坏死组织感染",
-            "en": "Nil by mouth until the amylase is back to normal, with IV fluids and analgesia, and a prophylactic carbapenem to prevent infection of the necrosis"
+            "zh-CN": "禁食到淀粉酶恢复正常，静脉补液、镇痛，同时预防性使用碳青霉烯类，预防胰腺坏死感染",
+            "en": "Nil by mouth until the amylase is back to normal, with IV fluids and analgesia, and a prophylactic carbapenem to prevent infected necrosis"
           },
           "correct": false,
           "feedback": {
@@ -4306,8 +4297,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "有害。WATERFALL 试验（NEJM 2022）中正是这一方案，比适度补液导致更多液体过负荷，却没有改善结局，试验因此提前终止；ACG 2024 指南现在建议适度、目标导向的补液。固定的大剂量补液不看她的实际反应。",
-            "en": "Harmful. In the WATERFALL trial (NEJM 2022) exactly this regimen caused more fluid overload than moderate resuscitation without better outcomes, and the trial was stopped early; ACG 2024 now suggests moderate, goal-directed fluids. A fixed high volume ignores how she actually responds."
+            "zh-CN": "有害。这是 WATERFALL 试验（NEJM 2022）积极补液组的方案（20 mL/kg 后 3 mL/(kg·h)），比适度补液导致更多液体过负荷，却没有改善结局，试验因此提前终止；ACG 2024 和 IAP 2025 指南现在建议适度、目标导向的补液。不看她的实际反应、固定大量补液更不可取。",
+            "en": "Harmful. This is the aggressive arm of the WATERFALL trial (NEJM 2022) — 20 mL/kg, then 3 mL/kg/h — which caused more fluid overload than moderate resuscitation without better outcomes, so the trial was stopped early; ACG 2024 and IAP 2025 now advise moderate, goal-directed fluids. A fixed high volume that ignores how she responds is worse still."
           }
         },
         {
@@ -4356,8 +4347,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。胰腺炎发作通常使血钙下降，2.76 mmol/L 是一个信号，合并肾结石更提示存在高钙状态。IAP/APA 2013 指南把血钙列入每位患者的病因筛查；NICE NG132（2019）要求白蛋白校正钙 ≥ 2.6 mmol/L 时复查，并同步测 PTH 和校正钙；她的白蛋白没有记录。她第一次出院后是否做过这些，本病例没有记录。",
-            "en": "Correct. An attack of pancreatitis usually lowers the calcium, so 2.76 mmol/L is a signal, and with a renal stone it points to a hypercalcaemic state. IAP/APA 2013 puts calcium in every patient's aetiology screen, and NICE NG132 (2019) repeats an albumin-adjusted calcium of 2.6 mmol/L or above and measures PTH with a paired adjusted calcium; her albumin is not recorded. Whether this was done after her first discharge is not recorded."
+            "zh-CN": "正确。胰腺炎发作通常使血钙下降，2.76 mmol/L 是一个信号，合并肾结石更提示存在高钙状态。IAP 2025 指南把血钙列入每位患者的病因筛查，发作伴血钙升高时要求测 PTH；NICE NG132（2019）要求白蛋白校正钙 ≥ 2.6 mmol/L 时复查，并在测 PTH 时同步测校正钙。她的白蛋白没有记录，第一次出院后是否做过这些，本病例也没有记录。在这个水平，发作的常规处理（包括乳酸钠林格液）不变：IAP 2025 只在血钙高于约 3.5 mmol/L（14 mg/dL）或意识改变时改用等渗盐水。",
+            "en": "Correct. An attack of pancreatitis usually lowers the calcium, so 2.76 mmol/L is a signal, and with a renal stone it points to a hypercalcaemic state. IAP 2025 puts calcium in every patient's aetiology screen and asks for a PTH when an attack comes with a raised calcium; NICE NG132 (2019) repeats an albumin-adjusted calcium of 2.6 mmol/L or above and measures PTH with a concurrent adjusted calcium. Her albumin is not recorded, and whether this was done after her first discharge is not recorded. At this level the standard care of the attack, lactated Ringer's included, is unchanged: IAP 2025 switches to isotonic saline only above about 3.5 mmol/L (14 mg/dL) or with altered consciousness."
           }
         },
         {
@@ -4380,8 +4371,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "生理机制错了。急性胰腺炎时，钙在发炎组织的脂肪坏死处被结合，血钙下降——低钙是病情严重的标志之一——所以血钙升高需要单独解释。IAP/APA 2013 指南把血钙列入每位患者的病因筛查。",
-            "en": "Wrong physiology. In acute pancreatitis calcium is bound up in the fat necrosis of the inflamed tissue and the blood level falls — a low calcium is a marker of severity — so a high value needs its own explanation. IAP/APA 2013 includes calcium in every patient's aetiology screen."
+            "zh-CN": "生理机制错了。急性胰腺炎时，钙在发炎组织的脂肪坏死处被结合，血钙下降——低钙是病情严重的标志之一——所以血钙升高需要单独解释。IAP 2025 指南把血钙列入每位患者的病因筛查。",
+            "en": "Wrong physiology. In acute pancreatitis calcium is bound up in the fat necrosis of the inflamed tissue and the blood level falls — a low calcium is a marker of severity — so a high value needs its own explanation. IAP 2025 includes calcium in every patient's aetiology screen."
           }
         },
         {
@@ -4404,8 +4395,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "只处理了数字，没有处理病因。双膦酸盐用于严重或有症状的高钙血症；在这个水平，治疗胰腺炎的补液已经足够，同时应同步测 PTH 查找病因（NICE NG132，2019）；现在用药反而会干扰你需要的复查结果。",
-            "en": "Treats a number, not the cause. A bisphosphonate is for severe or symptomatic hypercalcaemia; at this level the fluids she is already getting for the pancreatitis are enough while the cause is sought with a paired PTH (NICE NG132, 2019), and giving it now would blur the very repeat you need."
+            "zh-CN": "只处理了数字，没有处理病因。双膦酸盐用于严重或有症状的高钙血症——IAP 2025 指南只在血钙高于约 3.5 mmol/L（14 mg/dL）或意识改变时才紧急降钙；在这个水平，治疗胰腺炎的补液已经足够，同时应同步测 PTH 查找病因（NICE NG132，2019）；现在用药反而会干扰你需要的复查结果。",
+            "en": "Treats a number, not the cause. A bisphosphonate is for severe or symptomatic hypercalcaemia — IAP 2025 lowers the calcium urgently only above about 3.5 mmol/L (14 mg/dL) or with altered consciousness — so at this level the fluids she is already getting for the pancreatitis are enough while the cause is sought with a paired PTH (NICE NG132, 2019), and giving it now would blur the very repeat you need."
           }
         }
       ]
@@ -4482,8 +4473,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "过早且有风险。血钙 2.87 mmol/L 伴肾结石还没有解释，她的胰腺炎不能称为特发性；ACG 2024 指南在没有胆管炎时首选内科治疗而不是 ERCP，括约肌切开本身还可能引起胰腺炎、出血和穿孔。",
-            "en": "Premature and risky. Her pancreatitis is not idiopathic while a calcium of 2.87 mmol/L with renal stones is unexplained; ACG 2024 prefers medical therapy to ERCP when there is no cholangitis, and sphincterotomy carries its own risk of pancreatitis, bleeding and perforation."
+            "zh-CN": "过早且有风险。血钙 2.87 mmol/L 伴肾结石还没有解释，她的胰腺炎不能称为特发性——ACG 2024 指南要在包括血钙在内的初步检查都阴性后才称为特发性；即便如此，IAP 2025 指南也是先复查超声、再做超声内镜、再做磁共振，而不是 ERCP——括约肌切开本身还可能引起胰腺炎、出血和穿孔。",
+            "en": "Premature and risky. Her pancreatitis is not idiopathic while a calcium of 2.87 mmol/L with renal stones is unexplained — ACG 2024 calls pancreatitis idiopathic only once an initial work-up that includes calcium is negative, and even then IAP 2025 looks with a repeat ultrasound, then EUS, then MRI, not ERCP — and sphincterotomy carries its own risk of pancreatitis, bleeding and perforation."
           }
         },
         {
@@ -4494,8 +4485,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有依据。没有任何胆结石的记录，而一个有记录的代谢线索正等着确认；按假定的胆源性病因手术，真正的病因仍然留着。IAP/APA 2013 指南要在包括血钙在内的病因筛查完成之后，才把胰腺炎称为特发性。",
-            "en": "Unsupported. No gallstones are documented, and a documented metabolic clue is waiting to be confirmed; operating on a presumed biliary cause leaves the real one in place. IAP/APA 2013 calls a pancreatitis idiopathic only after the aetiology screen, calcium included, is complete."
+            "zh-CN": "没有依据。没有任何胆结石的记录，而一个有记录的代谢线索正等着确认；按假定的胆源性病因手术，真正的病因仍然留着。ACG 2024 指南要在包括血钙在内的初步检查都阴性之后，才把胰腺炎称为特发性；IAP 2025 指南要求发作伴血钙升高时测 PTH。",
+            "en": "Unsupported. No gallstones are documented, and a documented metabolic clue is waiting to be confirmed; operating on a presumed biliary cause leaves the real one in place. ACG 2024 calls a pancreatitis idiopathic only once an initial work-up that includes calcium is negative, and IAP 2025 measures PTH when an attack comes with a raised calcium."
           }
         },
         {
@@ -4542,8 +4533,8 @@
         {
           "id": "confirm-then-refer",
           "text": {
-            "zh-CN": "向检验科核实 31 pmol/L 测的是什么，复查完整 PTH 并同步测血钙；PTH 升高再转诊有经验的甲状旁腺外科医生",
-            "en": "Check with the laboratory what the 31 pmol/L measured and repeat an intact PTH with a paired calcium; if it is raised, refer her to an experienced parathyroid surgeon"
+            "zh-CN": "向检验科核实 31 pmol/L 测的是什么，复查完整 PTH 并同步测血钙；确诊后再转诊有经验的甲状旁腺外科医生",
+            "en": "Ask the laboratory what the 31 pmol/L measured and repeat an intact PTH with a paired calcium; if that confirms it, refer her to an experienced parathyroid surgeon"
           },
           "correct": true,
           "feedback": {
@@ -4583,8 +4574,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这不是诊断步骤。诊断靠生化（第五届国际研讨会，2022）；对疑似甲状旁腺病灶穿刺可能出血、造成粘连并使甲状旁腺组织种植，细胞学也常难以区分甲状旁腺与甲状腺组织，只用于少数诊断不清的病例。",
-            "en": "Not a diagnostic step. The diagnosis is biochemical (Fifth International Workshop 2022), and needle biopsy of a suspected parathyroid lesion risks bleeding, scarring and seeding of parathyroid tissue, with cytology that often cannot tell parathyroid from thyroid; it is kept for selected, unclear cases."
+            "zh-CN": "这不是诊断步骤。诊断靠生化（第五届国际研讨会，2022）；AAES 2016 指南不建议术前对甲状旁腺病灶做细针穿刺，只在少数特殊、疑难的病例中考虑——穿刺可能出血、造成粘连并使甲状旁腺组织种植，细胞学也常难以区分甲状旁腺与甲状腺组织。",
+            "en": "Not a diagnostic step. The diagnosis is biochemical (Fifth International Workshop 2022), and AAES 2016 advises against pre-operative parathyroid fine-needle aspiration except in unusual, difficult cases: it risks bleeding, scarring and seeding of parathyroid tissue, and cytology often cannot tell parathyroid from thyroid."
           }
         },
         {
@@ -4653,13 +4644,13 @@
         {
           "id": "treat-by-severity",
           "text": {
-            "zh-CN": "按严重程度处理：症状轻时口服钙剂；校正钙低于 1.9 mmol/L，或钙低于参考区间且有症状时，静脉补葡萄糖酸钙",
-            "en": "Treat by severity: oral calcium for mild symptoms; IV calcium gluconate for an adjusted calcium below 1.9 mmol/L, or for symptoms with a calcium below the reference range"
+            "zh-CN": "按严重程度处理：校正钙低于 1.9 mmol/L，或钙低于参考区间且有症状时，静脉补葡萄糖酸钙；否则口服钙剂",
+            "en": "By severity: IV calcium gluconate for an adjusted calcium below 1.9 mmol/L, or for symptoms with a calcium below the reference range; otherwise oral calcium"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。英国内分泌学会急诊指南（2016）把校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状列为急症：10% 葡萄糖酸钙 10–20 mL 加入 5% 葡萄糖 50–100 mL，10 分钟内推注，心电监护下，之后持续滴注。症状轻者口服补钙并复查血钙。",
-            "en": "Include. The Society for Endocrinology emergency guidance (2016) treats an adjusted calcium below 1.9 mmol/L, or symptoms with a calcium below the reference range, as an emergency: 10–20 mL of 10 % calcium gluconate in 50–100 mL of 5 % glucose over 10 minutes with ECG monitoring, then an infusion. Milder symptoms are managed by mouth with a repeat calcium."
+            "zh-CN": "应选。英国内分泌学会急诊指南（2016）把校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状（包括感觉异常）列为急症：10% 葡萄糖酸钙 10–20 mL 加入 5% 葡萄糖 50–100 mL，10 分钟内推注，心电监护下，之后持续滴注。没有症状且高于 1.9 mmol/L 的低钙口服补钙即可，该指南也指出选择性甲状旁腺切除术后的低钙通常短暂而轻微。她的血钙报告称在正常范围，所以在等待复查校正钙期间口服补钙适合她的麻木。",
+            "en": "Include. The Society for Endocrinology emergency guidance (2016) treats an adjusted calcium below 1.9 mmol/L, or symptoms — paraesthesiae included — with a calcium below the reference range, as an emergency: 10–20 mL of 10 % calcium gluconate in 50–100 mL of 5 % glucose over 10 minutes with ECG monitoring, followed by an infusion. Asymptomatic hypocalcaemia above 1.9 mmol/L is treated by mouth, and the guidance notes that hypocalcaemia after a selective parathyroidectomy is usually transient and mild. Her calcium is one the report calls normal, so oral calcium while the repeat adjusted calcium is awaited fits her numbness."
           }
         },
         {
@@ -4677,25 +4668,25 @@
         {
           "id": "continuous-iv-calcium",
           "text": {
-            "zh-CN": "立即开始持续静脉滴注葡萄糖酸钙，并让她一直住院，直到麻木完全消失",
-            "en": "Start a continuous IV calcium gluconate infusion now and keep her in hospital until the numbness has gone"
+            "zh-CN": "不等复查血钙，立即开始持续静脉滴注葡萄糖酸钙，并让她一直住院，直到麻木完全消失",
+            "en": "Start a continuous IV calcium gluconate infusion straight away, before any repeat calcium, and keep her in hospital until the numbness has completely gone"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不选。她的血钙 2.18 mmol/L，报告称在正常范围，也没有抽搐：达不到英国内分泌学会急诊指南（2016）静脉补钙的标准。不复查校正钙就持续静滴，可能矫枉过正造成高钙，还白白延长住院。",
-            "en": "Exclude. Her calcium is 2.18 mmol/L, which the report calls normal, and she has no spasms: nothing here meets the Society for Endocrinology (2016) thresholds for IV calcium. An infusion without a repeat adjusted calcium risks overshooting into hypercalcaemia and keeps her in hospital for no gain."
+            "zh-CN": "不选。麻木是一种症状，但她的血钙 2.18 mmol/L 报告称在正常范围，并不低于参考区间，她也没有抽搐：达不到英国内分泌学会急诊指南（2016）静脉补钙的标准。不复查校正钙就持续静滴，可能矫枉过正造成高钙，还白白延长住院。",
+            "en": "Exclude. Her numbness is a symptom, but her calcium of 2.18 mmol/L is one the report calls normal — not below the reference range — and she has had no spasms, so nothing here meets the Society for Endocrinology (2016) criteria for IV calcium. An infusion started before a repeat adjusted calcium risks overshooting into hypercalcaemia and keeps her in hospital for no gain."
           }
         },
         {
           "id": "lifelong-calcitriol",
           "text": {
-            "zh-CN": "开始终身服用骨化三醇，因为颈部手术后这么快出现麻木，说明已经是永久性甲状旁腺功能减退",
-            "en": "Start calcitriol for life, because numbness this soon after neck surgery means permanent hypoparathyroidism"
+            "zh-CN": "现在就开始终身服用骨化三醇，因为颈部手术后出现麻木，说明其余甲状旁腺已经永久受损",
+            "en": "Start lifelong calcitriol now, because numbness after a neck operation means her remaining parathyroid glands have been damaged for good"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不选。术后最初几天血钙下降得快，被抑制的其余甲状旁腺还在恢复，短暂症状是可以预料的；她的 PTH 3.8 pmol/L，报告称在正常范围，没有任何永久性甲旁减的证据。结局要在几个月后用血钙判断（NICE NG132，2019）。",
-            "en": "Exclude. In the first days the calcium falls quickly while the suppressed remaining glands recover, so transient symptoms are expected; her PTH is 3.8 pmol/L, which the report calls normal, and nothing points to permanent hypoparathyroidism. The outcome is judged with a calcium months later (NICE NG132, 2019)."
+            "zh-CN": "不选。腺瘤切除后，被抑制的其余甲状旁腺恢复期间血钙可能下降，出现短暂症状是可以预料的；她的 PTH 3.8 pmol/L，报告称在正常范围，没有任何永久性甲旁减的证据。结局要在几个月后用血钙判断（NICE NG132，2019）。",
+            "en": "Exclude. After an adenoma is removed the calcium can fall while the suppressed remaining glands recover, so transient symptoms are expected; her PTH is 3.8 pmol/L, which the report calls normal, and nothing points to permanent hypoparathyroidism. The outcome is judged with a calcium months later (NICE NG132, 2019)."
           }
         }
       ]
@@ -4916,8 +4907,8 @@
       "domain": "safety",
       "weight": 2,
       "text": {
-        "zh-CN": "没有预防性使用抗菌药物、强制禁食、大量快速补液、急诊 ERCP、细针穿刺、以西那卡塞代替手术或持续静脉补钙",
-        "en": "Gave no prophylactic antibiotic, enforced fasting, aggressive fluids, urgent ERCP, needle biopsy, cinacalcet in place of surgery or continuous IV calcium"
+        "zh-CN": "没有预防性使用抗菌药物、强制禁食、大量快速补液、细针穿刺、以西那卡塞代替手术或持续静脉补钙，也没有在血钙升高时补钙",
+        "en": "Gave no prophylactic antibiotic, enforced fasting, aggressive fluids, needle biopsy, cinacalcet in place of surgery or continuous IV calcium, and no calcium while her calcium was raised"
       },
       "met": {
         "not": {
@@ -4932,9 +4923,6 @@
               "intervened": "aggressive-fluids"
             },
             {
-              "intervened": "urgent-ercp"
-            },
-            {
               "intervened": "needle-biopsy"
             },
             {
@@ -4942,6 +4930,10 @@
             },
             {
               "intervened": "iv-calcium-infusion"
+            },
+            {
+              "intervened": "oral-calcium",
+              "valid": false
             }
           ]
         }
@@ -4967,9 +4959,6 @@
             "intervened": "aggressive-fluids"
           },
           {
-            "intervened": "urgent-ercp"
-          },
-          {
             "intervened": "needle-biopsy"
           },
           {
@@ -4977,6 +4966,38 @@
           },
           {
             "intervened": "iv-calcium-infusion"
+          },
+          {
+            "intervened": "oral-calcium",
+            "valid": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-no-ercp",
+      "domain": "safety",
+      "weight": 2,
+      "critical": true,
+      "text": {
+        "zh-CN": "既无胆管炎也无胆管证据时，没有安排急诊 ERCP",
+        "en": "Did not send her for an urgent ERCP without cholangitis or any biliary finding"
+      },
+      "met": {
+        "not": {
+          "intervened": "urgent-ercp"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "attack-care"
+          },
+          {
+            "attempted": "recurrence-cause"
+          },
+          {
+            "intervened": "urgent-ercp"
           }
         ]
       }
@@ -5035,8 +5056,8 @@
         "en": "Dr Du (gastroenterology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只就学员已经掌握的信息提问，例如：“哪两项依据已经足以诊断这次发作？CT 是不是必需的？”“急性发作通常会把血钙往哪个方向推？”“在说‘特发性’之前，你已经排除了什么？”“手术之前，血里必须证实什么？扫描永远回答不了什么？”“一项结果的名称可能写错时，你在行动之前要做什么？”“颈部手术后发麻：查什么？什么阈值才需要静脉补钙？”可讲解 ACG 2024 和 IAP/APA 2013 关于最初几天处理和病因筛查的要点、NICE NG132（2019）和第五届国际研讨会（2022）关于生化诊断的要点、AAES 2016 关于手术与治愈的定义，以及英国内分泌学会急诊指南（2016）关于低钙血症的处理；学员读过相应记录后，可对照报告中的处置（禁食和抗菌药物；颈部病灶在第二次发作后才发现，第一次出院后是否追查血钙没有记录）与现行做法。学员作答之前不说出诊断或任何决策的答案，也不补充本病例没有的信息：生命体征、两次发作的严重程度、白蛋白或离子钙、胆囊影像、甘油三酯、脂肪酶、激素结果的参考区间、手术细节和随访时长都没有记录。",
-        "en": "Socratic preceptor (PEARLS) who asks only about what the learner already has, e.g. 'Which two findings already make the diagnosis of this attack — did you need the CT for it?', 'Which way would you expect an acute attack to push the calcium?', 'Before you call it idiopathic, what have you excluded?', 'Before an operation, what has to be proved in the blood, and what can a scan never tell you?', 'If a result may carry the wrong name, what do you do before acting on it?', 'Numbness after neck surgery: what do you check, and at what threshold does calcium go into a vein?'. May explain ACG 2024 and IAP/APA 2013 on the first days of care and the aetiology screen, NICE NG132 (2019) and the Fifth International Workshop (2022) on the biochemical diagnosis, AAES 2016 on surgery and the definition of cure, and the Society for Endocrinology emergency guidance (2016) on hypocalcaemia — and, once the learner has read the records, contrast the reported care (fasting and antibiotics; the neck lesion found only after the second attack, with no record of whether the calcium was pursued after the first discharge) with current practice. Never states the diagnosis or a decision's answer before the learner commits, and adds nothing the case lacks: vital signs, the severity of either attack, albumin or ionised calcium, gallbladder imaging, triglycerides, lipase, the hormone value's reference interval, the operative details and the length of follow-up are not recorded."
+        "zh-CN": "苏格拉底式带教（PEARLS），只就学员已经掌握的信息提问，例如：“哪些依据能诊断这次发作？CT 还告诉了你什么？”“急性发作通常会把血钙往哪个方向推？”“在说‘特发性’之前，你已经排除了什么？”“手术之前，血里必须证实什么？扫描永远回答不了什么？”“一项结果的名称可能写错时，你在行动之前要做什么？”“颈部手术后发麻：查什么？什么阈值才需要静脉补钙？”可讲解 ACG 2024 和 IAP 2025 关于最初几天处理、病因筛查以及血钙升高时测 PTH 的要点、NICE NG132（2019）和第五届国际研讨会（2022）关于生化诊断的要点、AAES 2016 关于手术与治愈的定义，以及英国内分泌学会急诊指南（2016）关于低钙血症的处理；学员读过相应记录后，可对照报告中的处置（禁食和抗菌药物；颈部病灶在第二次发作后才发现，第一次出院后是否追查血钙没有记录）与现行做法。学员作答之前不说出诊断或任何决策的答案，也不补充本病例没有的信息：生命体征、两次发作的严重程度、白蛋白或离子钙、胆囊影像、甘油三酯、脂肪酶、激素结果的参考区间、手术细节和随访时长都没有记录。",
+        "en": "Socratic preceptor (PEARLS) who asks only about what the learner already has, e.g. 'Which findings make the diagnosis of this attack, and what else did the CT tell you?', 'Which way would you expect an acute attack to push the calcium?', 'Before you call it idiopathic, what have you excluded?', 'Before an operation, what has to be proved in the blood, and what can a scan never tell you?', 'If a result may carry the wrong name, what do you do before acting on it?', 'Numbness after neck surgery: what do you check, and at what threshold does calcium go into a vein?'. May explain ACG 2024 and IAP 2025 on the first days of care, the aetiology screen and the PTH a raised calcium calls for, NICE NG132 (2019) and the Fifth International Workshop (2022) on the biochemical diagnosis, AAES 2016 on surgery and the definition of cure, and the Society for Endocrinology emergency guidance (2016) on hypocalcaemia — and, once the learner has read the records, contrast the reported care (fasting and antibiotics; the neck lesion found only after the second attack, with no record of whether the calcium was pursued after the first discharge) with current practice. Never states the diagnosis or a decision's answer before the learner commits, and adds nothing the case lacks: vital signs, the severity of either attack, albumin or ionised calcium, gallbladder imaging, triglycerides, lipase, the hormone value's reference interval, the operative details and the length of follow-up are not recorded."
       },
       "interprets": [
         "amylase",
@@ -5074,7 +5095,7 @@
     },
     "conclusion": {
       "zh-CN": "58岁女性约 20 个月内两次急性胰腺炎：第一次上腹持续胀痛伴恶心、呕吐 1 天，淀粉酶 1139 U/L，CT 示胰腺炎及左肾结石，血钙 2.76 mmol/L；第二次突然起病，淀粉酶 1055.9 U/L，血钙 2.87 mmol/L，CT 仍见胰腺炎和肾结石。两次之间她没有症状，未服降压药时血压正常。颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤。唯一的术前激素结果 31 pmol/L 标为“甲状腺素”；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解，随访未诉不适。诊断：甲状旁腺腺瘤所致原发性甲旁亢，以反复急性胰腺炎为表现。现行做法：第一次发作就追查血钙，先用 PTH 确诊，再定位和手术。",
-      "en": "A 58-year-old woman had two attacks of acute pancreatitis about 20 months apart: first a day of constant upper abdominal pain and vomiting (amylase 1139 U/L; CT pancreatitis and a left kidney stone; calcium 2.76 mmol/L), then a sudden recurrence (amylase 1055.9 U/L; calcium 2.87 mmol/L; CT pancreatitis, renal stone(s) still seen). In between she was well, her blood pressure normal off tablets. Neck ultrasound/CT showed a lesion behind the lower pole of the left thyroid lobe; it was removed (about 2 × 1.5 × 1 cm): a parathyroid adenoma. The only pre-operative hormone value, 31 pmol/L, is labelled 'thyroxine'. After surgery the PTH was 3.8 pmol/L and the calcium 2.18 mmol/L, both staying normal; transient limb numbness without tetany settled by itself, and she was well at follow-up. Diagnosis: primary hyperparathyroidism (parathyroid adenoma) presenting as recurrent acute pancreatitis. Today: pursue the calcium at the first attack, prove PTH-dependence before any scan, then operate."
+      "en": "A 58-year-old woman had two attacks of acute pancreatitis about 20 months apart: first a day of constant upper abdominal pain and vomiting (amylase 1139 U/L; CT pancreatitis and a left kidney stone; calcium 2.76 mmol/L), then a sudden recurrence (amylase 1055.9 U/L; calcium 2.87 mmol/L; CT pancreatitis, renal stone(s) still seen). In between she had no symptoms, and her blood pressure was normal without antihypertensive medicine. Neck ultrasound/CT showed a lesion behind the lower pole of the left thyroid lobe; it was removed (about 2 × 1.5 × 1 cm): a parathyroid adenoma. The only pre-operative hormone value, 31 pmol/L, is labelled 'thyroxine'. After surgery the PTH was 3.8 pmol/L and the calcium 2.18 mmol/L, both staying normal; transient limb numbness without tetany settled by itself, and she had no complaints at follow-up. Diagnosis: primary hyperparathyroidism (parathyroid adenoma) presenting as recurrent acute pancreatitis. Today: pursue the calcium at the first attack, prove PTH-dependence before any scan, then operate."
     },
     "keyReasoning": [
       {
@@ -5100,12 +5121,12 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "急性胰腺炎的最初几天（ACG 2024）：乳酸钠林格液适度、目标导向补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg；WATERFALL 试验（NEJM 2022）中 20 mL/kg 加 3 mL/(kg·h) 的方案带来更多液体过负荷却无获益而提前终止——轻症 24–48 小时内低脂经口饮食，不预防性使用抗菌药物，只在胆管炎时行早期 ERCP。过去与现在：报告中的处置包括禁食和抗菌药物。",
-        "en": "The first days of acute pancreatitis (ACG 2024): lactated Ringer's at a moderate, goal-directed rate — 1.5 mL/kg/h, with 10 mL/kg boluses only for hypovolaemia; the WATERFALL trial (NEJM 2022) stopped early when 20 mL/kg plus 3 mL/kg/h caused more fluid overload without benefit — a low-fat oral diet within 24–48 hours in mild disease, no prophylactic antibiotics, and early ERCP only with cholangitis. Then and now: the report's care included fasting and antibiotics."
+        "zh-CN": "急性胰腺炎的最初几天（ACG 2024；IAP 2025）：乳酸钠林格液适度、目标导向补液——1.5 mL/(kg·h)，仅在低血容量时追加 10 mL/kg；WATERFALL 试验（NEJM 2022）中 20 mL/kg 加 3 mL/(kg·h) 的方案带来更多液体过负荷却无获益而提前终止——轻症 24–48 小时内低脂经口饮食，不预防性使用抗菌药物，只在胆管炎时行早期 ERCP。甲旁亢相关的胰腺炎同样按常规处理，但血钙高于约 3.5 mmol/L（14 mg/dL）或意识改变时，IAP 2025 改用等渗盐水，而不用含钙的乳酸钠林格液。过去与现在：报告中的处置包括禁食和抗菌药物。",
+        "en": "The first days of acute pancreatitis (ACG 2024; IAP 2025): lactated Ringer's at a moderate, goal-directed rate — 1.5 mL/kg/h, with 10 mL/kg boluses only for hypovolaemia; the WATERFALL trial (NEJM 2022) stopped early when 20 mL/kg plus 3 mL/kg/h caused more fluid overload without benefit — a low-fat oral diet within 24–48 hours in mild disease, no prophylactic antibiotics, and early ERCP only with cholangitis. Pancreatitis from hyperparathyroidism gets the same care, but above about 3.5 mmol/L (14 mg/dL) or with altered consciousness IAP 2025 uses isotonic saline instead of calcium-containing lactated Ringer's. Then and now: the report's care included fasting and antibiotics."
       },
       {
-        "zh-CN": "每一次首发都要查病因：饮酒和用药史、胆囊超声、肝功能、甘油三酯和血钙（IAP/APA 2013）。发作期血钙通常下降，升高就是危险信号；NICE NG132（2019）要求白蛋白校正钙 ≥ 2.6 mmol/L 时复查，并同步测 PTH。过去与现在：她第一次的 2.76 mmol/L 是否追查过没有记录，病因在第二次发作后才找到。",
-        "en": "Every first attack needs its cause sought: alcohol and drug history, gallbladder ultrasound, liver tests, triglycerides and calcium (IAP/APA 2013). Calcium usually falls in an attack, so a raised value is a red flag; NICE NG132 (2019) repeats an albumin-adjusted calcium of 2.6 mmol/L or above and measures PTH with a paired adjusted calcium. Then and now: whether her 2.76 mmol/L was pursued is not recorded; the cause was found after the second attack."
+        "zh-CN": "每一次发作都要查病因：饮酒和用药史、胆囊超声、肝功能、甘油三酯和血钙（IAP 2025）。发作期血钙通常下降，升高就是危险信号：IAP 2025 要求测 PTH，NICE NG132（2019）要求白蛋白校正钙 ≥ 2.6 mmol/L 时复查，并在测 PTH 时同步测校正钙。过去与现在：她第一次的 2.76 mmol/L 是否追查过没有记录，病因在第二次发作后才找到。",
+        "en": "Every attack needs its cause sought: alcohol and drug history, gallbladder ultrasound, liver tests, triglycerides and calcium (IAP 2025). Calcium usually falls in an attack, so a raised value is a red flag: IAP 2025 asks for a PTH, and NICE NG132 (2019) repeats an albumin-adjusted calcium of 2.6 mmol/L or above and measures PTH with a concurrent adjusted calcium. Then and now: whether her 2.76 mmol/L was pursued is not recorded; the cause was found after the second attack."
       },
       {
         "zh-CN": "原发性甲旁亢是生化诊断——血钙升高，同时 PTH 升高或与血钙不相称地正常（第五届国际研讨会 2022；NICE NG132，2019）；PTH 偏低就要找别的病因。超声、CT 或 MIBI 只为外科医生定位，既不能确诊也不能排除。项目名称存疑的结果——这里标为“甲状腺素”的 31 pmol/L——要先与检验科核实或复查，才能用来做决定。",
@@ -5157,12 +5178,12 @@
     "references": [
       "谢钧韬, 叶建宇, 尹耀新, 欧希, 易辛, 刘吉奎. 以急性胰腺炎为首发表现的甲状旁腺腺瘤一例. 中华普通外科学文献（电子版）. 2010;4(1):66-67. doi:10.3760/cma.j.issn.1674-0793.2010.01.120. Available from: https://rs.yiigle.com/cmaid/1069544",
       "Bilezikian JP, Khan AA, Silverberg SJ, et al. Evaluation and management of primary hyperparathyroidism: summary statement and guidelines from the Fifth International Workshop. J Bone Miner Res. 2022;37(11):2293-2314. doi:10.1002/jbmr.4677",
-      "Wilhelm SM, Wang TS, Ruan DT, et al. The American Association of Endocrine Surgeons guidelines for definitive management of primary hyperparathyroidism. JAMA Surg. 2016;151(10):959-968.",
+      "Wilhelm SM, Wang TS, Ruan DT, et al. The American Association of Endocrine Surgeons guidelines for definitive management of primary hyperparathyroidism. JAMA Surg. 2016;151(10):959-968. doi:10.1001/jamasurg.2016.2310",
       "National Institute for Health and Care Excellence. Hyperparathyroidism (primary): diagnosis, assessment and initial management. NICE guideline NG132. London: NICE; 2019.",
       "Tenner S, Vege SS, Sheth SG, et al. American College of Gastroenterology guidelines: management of acute pancreatitis. Am J Gastroenterol. 2024;119(3):419-437. doi:10.14309/ajg.0000000000002645",
-      "Working Group IAP/APA Acute Pancreatitis Guidelines. IAP/APA evidence-based guidelines for the management of acute pancreatitis. Pancreatology. 2013;13(4):e1-15. doi:10.1016/j.pan.2013.07.063",
+      "IAP/APA/EPC/IPC/JPS Working Group. International Association of Pancreatology revised guidelines on acute pancreatitis 2025: supported and endorsed by the American Pancreatic Association, European Pancreatic Club, Indian Pancreas Club, and Japan Pancreas Society. Pancreatology. 2025;25(6):770-814. doi:10.1016/j.pan.2025.04.020",
       "de-Madaria E, Buxbaum JL, Maisonneuve P, et al. Aggressive or moderate fluid resuscitation in acute pancreatitis. N Engl J Med. 2022;387(11):989-1000. doi:10.1056/NEJMoa2202884",
-      "Society for Endocrinology Clinical Committee. Society for Endocrinology endocrine emergency guidance: emergency management of acute hypocalcaemia in adult patients. Endocr Connect. 2016;5:G7-G8. doi:10.1530/EC-16-0056",
+      "Turner J, Gittoes N, Selby P; Society for Endocrinology Clinical Committee. Society for Endocrinology endocrine emergency guidance: emergency management of acute hypocalcaemia in adult patients. Endocr Connect. 2016;5(5):G7-G8. doi:10.1530/EC-16-0056",
       "中华医学会外科学分会胰腺外科学组. 中国急性胰腺炎诊治指南（2021）. 中国实用外科杂志. 2021;41(7):735-742."
     ],
     "notice": {
@@ -5928,7 +5949,7 @@
         ]
       },
       {
-        "text": "Any cramping in your hands or twitching in your face?",
+        "text": "Have your hands gone into spasm at all?",
         "locale": "en",
         "expect": [
           "spasms"
@@ -5936,6 +5957,11 @@
       },
       {
         "text": "Is your family coming in to visit today?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Any twitching around your face?",
         "locale": "en",
         "expect": []
       }

@@ -22,31 +22,37 @@ does not record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a urologist or trauma surgeon review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30) and an independent AI-assisted review with fixes (2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a urologist or trauma surgeon review it before teaching use |
 | phases | `consult` 伤后第 13 天 · 病房会诊 / Day 13 · ward consultation → `imaging` 伤后第 13 天 · 超声 / Day 13 · ultrasound → `theatre` 手术探查 / Exploration in theatre (day 25) → `postop` 术后复查 / Post-operative review (1.5 months after the operation) → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
-| content | 21 history items (8 recorded facts, 2 labelled teaching devices, 11 unknown; 8 required) · 3 examination findings (all that 1.0.0 records) · 13 investigations (8 record reviews; 5 with no recorded result) · 15 interventions (8 harmful) · 6 objectives · 4 decisions (19 options) · 12 rubric items (11 deterministic, weight 25; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| content | 21 history items (8 recorded facts, 2 labelled teaching devices, 11 unknown; 8 required) · 3 examination findings (all that 1.0.0 records) · 13 investigations (8 record reviews; 5 with no recorded result) · 15 interventions (8 harmful) · 6 objectives · 4 decisions (19 options) · 12 rubric items (11 deterministic, weight 25; 1 examiner-judged; 2 critical) · 1 critical intervention (`excise-perineal-mass`) · 4 staff · 6 learning outcomes · 6 teaching points · 41 test utterances |
 
 ## Learning outcomes
 
 After the case the learner can:
 
-1. Examine the scrotum, both groins and the perineum — with consent and a chaperone — in the secondary survey and at the
-   later head-to-toe re-examination (tertiary survey) after any pelvic or perineal crush, and treat an empty hemiscrotum
-   with a testis-sized perineal mass as testicular dislocation until proven otherwise (ATLS, 11th edition, 2025).
+1. Examine the scrotum, both groins and the perineum — with consent and a chaperone — in the secondary survey, to which
+   the perineum and genitalia belong (ATLS, 11th edition, 2025), and again at the later head-to-toe re-examination
+   (tertiary survey) after any pelvic or perineal crush; treat an empty hemiscrotum with a testis-sized perineal mass as
+   testicular dislocation, most common after road traffic accidents (EAU Guidelines on Urological Trauma 2026), until
+   proven otherwise.
 2. Request scrotal and perineal ultrasound with colour Doppler before any needle, incision or pressure on the mass, and
    identify each testis by tracing its spermatic cord rather than by where it lies (AUA Urotrauma Guideline 2020; EAU
    Guidelines on Urological Trauma 2026).
-3. Plan prompt open reduction for a crossed dislocation — each testis returned to its own hemiscrotum, both fixed, the
-   septum repaired — and explain why the reported 12-day interval and a bedside push into the nearest hemiscrotum are not
-   safe defaults (EAU Guidelines on Urological Trauma 2026).
+3. Plan reduction and fixation of both testes for a crossed dislocation — by open operation as soon as he is fit, each
+   testis returned to its own hemiscrotum, both fixed and any septal tear repaired, since a testis that has crossed the
+   midline cannot be put back on its own side by hand (EAU Guidelines on Urological Trauma 2026: manual replacement and
+   secondary orchidopexy, immediate orchidopexy when manual reposition cannot be performed) — and explain why the
+   reported 12-day interval and a bedside push into the nearest hemiscrotum are not safe defaults.
 4. Distinguish testicular viability at operation from later sperm production and endocrine function, and tell the patient
    honestly what it means for his fertility and what is still unknown.
-5. Interpret a semen analysis taken 1.5 months after the repair against the WHO laboratory manual (6th edition, 2021) —
-   timing against the cycle of sperm production, a vitality test before any diagnosis of necrozoospermia, the morphology
-   method — and plan a repeat at three months or later.
-6. Interpret mildly raised prolactin, oestradiol and progesterone after major trauma and several operations — exclude
-   medicines, stress and other secondary causes and repeat after recovery — rather than ordering pituitary MRI or
-   treatment at once (Endocrine Society 2011).
+5. Interpret a semen analysis taken 1.5 months after the repair — its timing against the cycle of sperm production and,
+   against the WHO laboratory manual (6th edition, 2021), the vitality test needed before any diagnosis of
+   necrozoospermia and the morphology method — and plan a repeat at three months or later (EAU 2025: at least two
+   consecutive analyses when the first is abnormal).
+6. Interpret prolactin, oestradiol and progesterone reported above range after major trauma and several operations — for
+   prolactin, exclude medicines and other secondary causes on a sample taken without undue venepuncture stress
+   (Endocrine Society 2011), and repeat the panel after recovery — rather than ordering pituitary MRI or treatment at
+   once.
 
 These are the case's `learningOutcomes` (shown before play only on request; listed in every debrief). The six HUD
 `objectives` below are the in-game task list.
@@ -76,16 +82,19 @@ forms 85 %; the report's diagnosis is post-traumatic necrospermia (外伤后死�
 this case. Progesterone 0.98 ng/mL, prolactin 17.38 ng/mL and oestradiol 88 pg/mL above the report's reference ranges
 (ranges not recorded); testosterone, LH and FSH normal. No long-term outcome is recorded.
 
-**Diagnosis.** Traumatic crossed (transseptal) testicular dislocation after a perineal crush.
+**Diagnosis.** Traumatic crossed testicular dislocation (the right testis in the left hemiscrotum, the left testis in the
+right perineum, the scrotal septum torn) after being crushed between the seat and the dashboard with the legs apart.
 
 **Today's answer.** Examine the perineum and genitalia in the secondary survey and again at the tertiary survey; treat an
 empty hemiscrotum with a perineal mass as a dislocation until proven otherwise; scan (with colour Doppler) before any
 needle, blade or push; identify each testis by its cord; operate as soon as he is fit for anaesthesia — each testis to its
-own side, both fixed, the septum repaired — rather than after a 12-day wait; keep orchidectomy for a testis that proves
+own side, both fixed, the septum repaired — rather than after a 12-day wait (EAU 2026: manual replacement and secondary
+orchidopexy, immediate orchidopexy when manual reposition cannot be performed, as for a testis that has crossed the
+midline); keep orchidectomy for a testis that proves
 non-viable; judge fertility on a complete WHO 2021 semen analysis at three months or later, and repeat the hormones after
 recovery.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
 - **Static clock, no physiology** (the collection contract: `clock.mode: "static"`, no `physiology`). Results are
   immediate; interventions are scored for appropriateness but change nothing — the course is the recorded one.
@@ -136,13 +145,14 @@ counselling are required by no objective: the rubric scores them, with their tim
   `fracture-haematoma-observe` (haematoma, testis retracted into the inguinal canal, re-examine in a week),
   `pre-existing-outpatient` (undescended or retractile testis, clinic after discharge), `abscess-drain` (aspirate or incise
   at the bedside, IV antibiotics), `urethral-injury-first` (retrograde urethrogram first).
-- **2 `repair-plan`** (single; needs decision 1 and the imaging-phase scan). Key: `open-reduction-both-sides` — operate as
-  soon as he is fit for anaesthesia (the feedback adds: check his medicines, including any thromboprophylaxis, and his
-  clotting first): identify each testis by its cord, return each to its own hemiscrotum, fix both and
-  repair the septum; remove a testis only if it is dead. Distractors: `bedside-push-right` (manual reduction of the perineal
-  testis into the right hemiscrotum, operate only if it will not go), `defer-until-fractures-settle` (elective repair in
-  about two weeks — the shape of the recorded course; its feedback names the day-25 operation), `remove-perineal-testis`,
-  `mri-then-clinic`.
+- **2 `repair-plan`** (single; needs decision 1 and the imaging-phase scan). Key: `open-reduction-both-sides` — operate
+  as soon as he is fit for anaesthesia (the feedback adds: check his medicines, including any thromboprophylaxis, and
+  his clotting first): identify each testis by its cord, return each to its own hemiscrotum, fix both and repair any
+  septal tear; remove a testis only if it is dead (the feedback quotes the EAU 2026 rule: manual replacement and
+  secondary orchidopexy, immediate orchidopexy when manual reposition cannot be performed). Distractors:
+  `bedside-push-right` (manual reduction of the perineal testis into the right hemiscrotum, operate only if it will not
+  go), `defer-until-fractures-settle` (elective repair in about two weeks — the shape of the recorded course; its
+  feedback names the day-25 operation), `remove-perineal-testis`, `mri-then-clinic`.
 - **3 `viable-or-functional`** (single; needs decision 2, the operative findings and the operation). Key:
   `viable-not-proven-functional` — alive is not proof of normal sperm production: semen analysis about three months or more
   after the repair, repeated if abnormal, testicular size at follow-up. Distractors: `colour-means-fertile`,
@@ -154,8 +164,8 @@ counselling are required by no objective: the rubric scores them, with their tim
 
 Every option has its own feedback naming the AUA Urotrauma Guideline (2020), the EAU Guidelines on Urological Trauma
 (2026), the WHO laboratory manual (6th edition, 2021), the EAU 2025 male infertility update or the Endocrine Society
-(2011). Option ids name their content. **No length cue** (measured on 2026-10-30, characters per option): decision 1 key
-61 of 44–64 (zh-CN), 219 of 167–226 (en); decision 2 key 47 of 42–55, 182 of 146–199; decision 3 key 48 of 39–53, 172 of
+(2011). Option ids name their content. **No length cue** (measured on 2026-11-14, characters per option): decision 1 key
+61 of 44–64 (zh-CN), 219 of 167–226 (en); decision 2 key 51 of 40–55, 187 of 141–199; decision 3 key 48 of 39–53, 172 of
 145–180; decision 4 key 56 of 46–56, 202 of 161–205 — in no decision is the key the uniquely longest option.
 
 ### Rubric (11 deterministic items, total weight 25, + 1 examiner-judged)
@@ -163,7 +173,7 @@ Every option has its own feedback naming the AUA Urotrauma Guideline (2020), the
 | id | domain | weight | met when |
 |---|---|---:|---|
 | `rb-injury-history` | history | 2 | presenting, discovery, crash mechanism, injuries, operations asked |
-| `rb-background-before-theatre` | history | 1 | testes before the crash, children and plans, medicines, allergies asked (all unknown — asking is the competency) |
+| `rb-background-before-theatre` | history | 1 | testes before the crash, children and plans, medicines, allergies asked (all unknown — asking is the competency; `asked` takes no phase, so "before theatre" in the id is the intent, not a timed check, and the item text no longer claims it) |
 | `rb-chaperoned-examination` | examination | 3 | consent and chaperone **before** the first genital examination (`whenIndicated`), the three findings examined, the tertiary survey done |
 | `rb-first-look` | diagnosis | 3 | `first-look` right first time |
 | `rb-records-and-scan` | investigations | 2 | injury imaging and first urinalysis read; scan requested in `consult` and read in `imaging` |
@@ -175,29 +185,29 @@ Every option has its own feedback naming the AUA Urotrauma Guideline (2020), the
 | `rb-no-overtreatment` | safety | 1 | no ICSI referral, cabergoline or pituitary MRI; scored once decision 4 is attempted or any of the three is done |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: consent and chaperone for the intimate examination; a plain account of the crossed dislocation; consent including orchidectomy only if a testis is dead; honest answer if he asks why it was found only now; honest fertility counselling after the operation and after the 1.5-month results; teach-back |
 
-### How wrong choices score (measured with the reducer on 2026-10-30)
+### How wrong choices score (measured with core `assess` on 2026-11-14)
 
-| path | deterministic score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 25/25 (100 %) | none |
-| start and do nothing | 0/21 | `rb-prompt-open-repair` (the two avoided-harm items are not scored) |
-| wrong first answer at all four decisions, then right | 14/25 (56 %) | `rb-prompt-open-repair` |
-| wrong first answer at decision 1 only | 22/25 (88 %) | none |
-| wrong first answer at decision 2 only | 21/25 (84 %) | `rb-prompt-open-repair` |
-| wrong first answer at decision 3 only | 23/25 (92 %) | none |
-| wrong first answer at decision 4 only | 23/25 (92 %) | none |
-| reference path + needle aspiration of the mass before decision 1 | 22/25 (88 %) | `rb-no-unindicated-procedure` |
-| reference path + bedside push into the right hemiscrotum after the scan | 22/25 (88 %) | `rb-no-unindicated-procedure` |
-| deferral first, theatre booked later (the shape of the recorded course) | 21/25 (84 %) | `rb-prompt-open-repair` |
-| reference path + excision of the perineal testis in theatre | 22/25 (88 %) | `rb-no-unindicated-procedure` |
-| reference path + testicular biopsy in theatre | 22/25 (88 %) | `rb-no-unindicated-procedure` |
-| consent and chaperone only after the examination | 22/25 (88 %) | none (`rb-chaperoned-examination` lost) |
-| no tertiary survey | 22/25 (88 %) | none (`rb-chaperoned-examination` lost) |
-| liaison with orthopaedics and anaesthesia only after the operative record | 23/25 (92 %) | none (`rb-theatre` lost) |
-| fertility counselling only after reading the 1.5-month semen analysis | 23/25 (92 %) | none (`rb-viability-counselling` lost) |
-| reference path + cabergoline, an ICSI referral or a pituitary MRI after the results | 24/25 (96 %) | none (`rb-no-overtreatment` lost) |
-| reference path without the four background questions | 24/25 (96 %) | none |
-| never requesting the ultrasound in the consultation | — | the case stays in `consult` (the scan request opens the next stage) and cannot be finished |
+| path | deterministic score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 25/25 (100 %) | none | passed |
+| start and do nothing | 0/21 | `rb-prompt-open-repair` (the two avoided-harm items are not scored) | passed |
+| wrong first answer at all four decisions, then right | 14/25 (56 %) | `rb-prompt-open-repair` | passed |
+| wrong first answer at decision 1 only | 22/25 (88 %) | none | passed |
+| wrong first answer at decision 2 only | 21/25 (84 %) | `rb-prompt-open-repair` | passed |
+| wrong first answer at decision 3 only | 23/25 (92 %) | none | passed |
+| wrong first answer at decision 4 only | 23/25 (92 %) | none | passed |
+| reference path + needle aspiration of the mass before decision 1 | 22/25 (88 %) | `rb-no-unindicated-procedure` | passed (contraindicated, not critical) |
+| reference path + bedside push into the right hemiscrotum after the scan | 22/25 (88 %) | `rb-no-unindicated-procedure` | passed (contraindicated, not critical) |
+| deferral first, theatre booked later (the shape of the recorded course) | 21/25 (84 %) | `rb-prompt-open-repair` | passed (contraindicated, not critical) |
+| reference path + excision of the perineal testis in theatre | 22/25 (88 %) | `rb-no-unindicated-procedure` | **failed** — critical safety failure (`excise-perineal-mass`) |
+| reference path + testicular biopsy in theatre | 22/25 (88 %) | `rb-no-unindicated-procedure` | passed (contraindicated, not critical) |
+| consent and chaperone only after the examination | 22/25 (88 %) | none (`rb-chaperoned-examination` lost) | passed |
+| no tertiary survey | 22/25 (88 %) | none (`rb-chaperoned-examination` lost) | passed |
+| liaison with orthopaedics and anaesthesia only after the operative record | 23/25 (92 %) | none (`rb-theatre` lost) | passed |
+| fertility counselling only after reading the 1.5-month semen analysis | 23/25 (92 %) | none (`rb-viability-counselling` lost) | passed |
+| reference path + cabergoline, an ICSI referral or a pituitary MRI after the results | 24/25 (96 %) | none (`rb-no-overtreatment` lost) | passed |
+| reference path without the four background questions | 24/25 (96 %) | none (`rb-background-before-theatre` lost) | passed |
+| never requesting the ultrasound in the consultation | — | the case stays in `consult` (the scan request opens the next stage) and cannot be finished | — |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. The eight harmful
 interventions are always `contraindicated` (named in the debrief's safety list, each with its own harm text); the
@@ -214,6 +224,19 @@ that has not been identified or shown to be dead) and `rb-prompt-open-repair` (t
 booking prompt open reduction with fixation of both testes on day 13, before any operative record). Both are acts; neither
 reads a final-phase record.
 
+**Safety outcome.** One intervention is marked `critical: true`: `excise-perineal-mass` (removing the perineal testis —
+an orchidectomy), the case's only `risk: "high"` intervention. It is always contraindicated here: nothing shows either
+testis is dead (the scan records homogeneous echoes for the perineal testis; both testes and epididymides are normal in
+shape and colour at operation), and removing a viable testis cannot be undone, so giving it fails the run's safety
+outcome whatever the score (measured: reference path + excision in theatre, 22/25, safety outcome failed) and also loses
+the critical avoided-harm item `rb-no-unindicated-procedure`. The other contraindicated acts are `risk: "moderate"`
+(aspiration, incision and drainage, the bedside push, deferral, biopsy, cabergoline) or `"low"` (the ICSI referral) and
+are deliberately not critical: each is a recoverable misjudgement that shows its harm text in the debrief and is scored
+by the rubric (the needle, blade, push and biopsy by the critical item `rb-no-unindicated-procedure`, the deferral by
+the timed booking in `rb-prompt-open-repair`, the over-treatment by `rb-no-overtreatment`). No medication is given on
+the reference path and none carries a preset (`doseSpec`): cabergoline's dose text belongs to a contraindicated option
+and the case has no high-alert medicine. The reference path passes the safety outcome.
+
 ## Reference path (`solution`)
 
 57 steps, static clock: start → the 18 day-13 history questions (presenting, discovery, crash mechanism, seat belt,
@@ -226,7 +249,7 @@ blood count, clotting and group and save (no result recorded) → **book theatre
 **release, reduction and orchidopexy** → **fertility counselling** → `viable-or-functional` (phase `postop`) → erections,
 his question about the report → semen analysis, sex hormones → **repeat analysis arranged** → `six-week-results` (phase
 `followup`) → outcome record → finish. `cases verify` passes: objectives 6/6, decisions 4/4, rubric 25/25, utterances
-39/39.
+41/41.
 
 ## Clinical numbers check
 
@@ -272,8 +295,8 @@ operation; the hormones are listed with them but their sampling time is not reco
 16 × 10⁶/mL, total number 39 × 10⁶, total motility 42 %, progressive motility 30 %, normal forms 4 % (reference points,
 not diagnostic cut-offs); a cycle of sperm production and transit of about three months (hence a repeat analysis at three
 months or later); cabergoline 0.25–0.5 mg once or twice a week (dose text of a contraindicated option). No weight is
-recorded and no weight-based dose is used. The WHO 2021 vitality 5th centile is deliberately not quoted (not confirmed in
-this session).
+recorded and no weight-based dose is used. The WHO 2021 vitality 5th centile (54 %, confirmed in Table 11.2 of the EAU
+Sexual and Reproductive Health guideline, limited update March 2025) is not used in the case's teaching text.
 
 ## Facilitator notes
 
@@ -312,26 +335,28 @@ Source and adaptation).
 | Chasing a urethral injury first | `urethral-injury-first` feedback; retrograde urethrogram is a low-value test with no result | `rb-first-look` |
 | Naming the side by position, pushing the perineal testis into the right hemiscrotum | `bedside-push-right` feedback; `bedside-closed-reduction` contraindicated | `rb-prompt-open-repair`, `rb-no-unindicated-procedure` |
 | Waiting for the fractures to settle (the recorded course) | `defer-until-fractures-settle` feedback; `defer-repair` contraindicated and later booking not in time | `rb-prompt-open-repair` (critical) |
-| Removing the perineal testis | `remove-perineal-testis` feedback; `excise-perineal-mass` contraindicated | `rb-prompt-open-repair`, `rb-no-unindicated-procedure` |
+| Removing the perineal testis | `remove-perineal-testis` feedback; `excise-perineal-mass` contraindicated and `critical` — the safety outcome fails | `rb-prompt-open-repair`, `rb-no-unindicated-procedure` |
 | "Normal colour, so fertile" — or the opposite, "probably sterile" | decision 3 feedback | `rb-viability-counselling` |
 | A semen test before discharge, or a biopsy to "settle it" | `semen-before-discharge`, `biopsy-both` feedback; `testicular-biopsy` contraindicated | `rb-viability-counselling`, `rb-no-unindicated-procedure` |
 | Accepting "necrospermia" without a vitality test; ICSI referral | `necrozoospermia-icsi` feedback; `icsi-referral` contraindicated | `rb-results-reading`, `rb-no-overtreatment` |
 | Reading the concentration as a normal result | `normal-discharge` feedback | `rb-results-reading` |
-| Pituitary MRI and cabergoline for a mild prolactin rise | `prolactin-mri-cabergoline` feedback; `cabergoline` contraindicated; pituitary MRI low-value | `rb-results-reading`, `rb-no-overtreatment` |
+| Pituitary MRI and cabergoline for a prolactin above the report's range | `prolactin-mri-cabergoline` feedback; `cabergoline` contraindicated; pituitary MRI low-value | `rb-results-reading`, `rb-no-overtreatment` |
 | Inventing vital signs, a left-hemiscrotal finding, Doppler flow or a reason for the delay | unknown history items, `examNotRecorded`, notes on the results, the staff briefs | — |
 
 ### Teaching points for the debrief
 
 The six `debrief.teachingPoints`: (1) the perineum and genitalia belong to the secondary survey (ATLS 11th edition, 2025),
 re-examine at the tertiary survey — here found by the patient on day 13, the admission examination not recorded; (2)
-image before you act — ultrasound with colour Doppler (AUA 2020; EAU 2026 deals with dislocation within testicular
-trauma), the scan here named the sides by the cords but records no flow; (3) reduction is followed by fixation (EAU
-2026), a crossed dislocation needs open reduction as soon as he is fit — the recorded day-25 operation with fibrous bands
-is history, not an interval to copy; (4) viability is judged at operation, explore-and-repair with orchidectomy only for the
+image before you act — ultrasound with colour Doppler (EAU 2026: ultrasound in testicular trauma, Doppler for
+perfusion, dislocation most common after road crashes; AUA 2020), the scan here named the sides by the cords but records no
+flow; (3) EAU 2026: manual replacement and secondary orchidopexy, immediate orchidopexy when manual reposition cannot be
+performed — a crossed dislocation needs open reduction as soon as he is fit; the recorded day-25 operation with fibrous
+bands is history, not an interval to copy; (4) viability is judged at operation, explore-and-repair with orchidectomy only for the
 unsalvageable testis (the AUA 2020 logic for rupture), but alive is not the same as making sperm; (5) WHO 2021 5th
-centiles, vitality for necrozoospermia, a cycle of about three months — the report's 1.5-month "necrospermia" and the
-unexplained 85 % normal forms; (6) hormones in context (Endocrine Society 2011) — repeat after recovery, no reflex MRI or
-cabergoline.
+centiles (not limits between fertile and infertile men), vitality for necrozoospermia, a cycle of about three months, an
+abnormal analysis repeated (EAU 2025: at least two) — the report's 1.5-month "necrospermia" and the unexplained 85 % normal
+forms; (6) hormones in context — for prolactin, secondary causes first (Endocrine Society 2011); repeat after recovery, no
+reflex MRI or cabergoline.
 
 ## Embodied mode
 
@@ -357,7 +382,7 @@ cabergoline.
   operation he can talk briefly, which is when the counselling happens. A conscious adult answers for himself; there is no
   companion.
 - **Fidelity limit.** The 3D patient model shows neither the amputation nor the fracture fixation.
-- **Measured (offline demonstration, 2026-10-30).** `embodied-autopilot.test.ts -t "cmcr-1322371:"` passes: in en and
+- **Measured (offline demonstration, 2026-11-14, after the review fixes).** `embodied-autopilot.test.ts -t "cmcr-1322371:"` passes: in en and
   zh-CN the demonstration finishes the case in the general hospital with the in-world score equal to the clinical-mode
   score.
 
@@ -411,7 +436,8 @@ recorded for this test" or "This case does not record …" — never that the ar
 **Figures and privacy.** The report's only figure (`fig01.png`, CT panels per `scripts/cmcr-105-media-review.json`) is
 **withheld** — "The CT panels retain calendar-date metadata along their upper-left edges, with additional small overlay
 text not fully legible at native resolution." 1.0.0 records no CT finding, so the case states no CT finding either: the
-injury-imaging note says the figure is withheld and that the modality of the recorded imaging is not recorded. `assets` is
+injury-imaging note says only that the modality of the recorded imaging is not recorded. That the figure exists and is
+withheld is an authoring fact, kept in `provenance.notes` and here — not in a record the learner reads. `assets` is
 empty. The pseudonym 韩知远 / Han Zhiyuan is kept from 1.0.0; no hospital, date, initials or occupation appear.
 
 **Survey findings applied** (`survey/survey.json` audit of this case, written without the source; every safety and
@@ -420,7 +446,7 @@ validity finding the recorded facts support):
 - *Critical — the keyed plan made fixation conditional on failed reduction and credited EAU with a position on
   self-reduction:* decision 2 now keys open exploration with each testis returned to its own side, fixation of both and
   septal repair, as soon as he is fit; "self-reduction" is gone from options, rubric and feedback; EAU is cited only for what
-  could be confirmed (see To verify).
+  could be confirmed (the 2026 wording was confirmed in the independent review, 2026-11-14).
 - *The plan was asked in hindsight with straw-man distractors:* decision 2 is asked on day 13, after the scan and before any
   operative record, with the realistic errors (bedside push, deferral — the shape of the recorded course — orchidectomy, MRI
   and clinic); the critical item is now an act (the booking, timed) and an avoided-harm act item.
@@ -462,32 +488,36 @@ source pass (STANDARD §6.6).
   `haveababy`, `anythingtoask`).
 - **Order entry.** `orderMatching.rules` send ultrasound queries mentioning the abdomen (腹 / abdom / FAST) to the abdominal
   record only, and MRI or imaging queries naming the pituitary (垂体 / 鞍 / pituit / sella) to the pituitary MRI only.
-- **Corpus.** 39 test utterances (20 zh-CN, 19 en), written as learners speak; every required item and the phase twin are
+- **Corpus.** 41 test utterances (21 zh-CN, 20 en), written as learners speak; every required item and the phase twin are
   covered. Three **look-alike negatives** (`expect: []`) share words with real questions but ask for something the case does
   not hold: "Was anyone else in the truck hurt?", "跟你一起的司机伤得重不重？" and "Has your family been in to visit?".
-  `cases verify` reports 39/39 with no extra selections.
+  `cases verify` reports 41/41 with no extra selections.
 
 ## References
 
 1. 王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 等. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(6):426-429. Available
    from: https://rs.yiigle.com/cmaid/1322371
-2. European Association of Urology. EAU Guidelines on Urological Trauma. Arnhem: EAU Guidelines Office; 2026. Available
-   from: https://uroweb.org/guidelines/urological-trauma
+2. Waterloos M, Campos-Juanatey F, Hallscheidt P, Mayer EK, Ochoa DC, Preto M, et al. EAU Guidelines on Urological
+   Trauma (limited update March 2026). Arnhem: EAU Guidelines Office; 2026. Available from:
+   https://uroweb.org/guidelines/urological-trauma
 3. Morey AF, Broghammer JA, Hollowell CMP, McKibben MJ, Souter L. Urotrauma Guideline 2020: AUA Guideline. J Urol.
-   2021;205(1):30-35.
+   2021;205(1):30-35. doi:10.1097/JU.0000000000001408
 4. American College of Surgeons Committee on Trauma. Advanced Trauma Life Support (ATLS). 11th ed. Chicago (IL): American
    College of Surgeons; 2025.
 5. World Health Organization. WHO laboratory manual for the examination and processing of human semen. 6th ed. Geneva:
    World Health Organization; 2021.
-6. European Association of Urology Guidelines on Male Sexual and Reproductive Health: 2025 Update on Male Infertility. Eur
-   Urol. 2025. PMID: 40118737.
+6. Minhas S, Boeri L, Capogrosso P, Cocci A, Corona G, Dinkelman-Smit M, et al. European Association of Urology
+   Guidelines on Male Sexual and Reproductive Health: 2025 Update on Male Infertility. Eur Urol. 2025;87(5):601-616.
+   doi:10.1016/j.eururo.2025.02.026
 7. Melmed S, Casanueva FF, Hoffman AR, Kleinberg DL, Montori VM, Schlechte JA, et al. Diagnosis and treatment of
    hyperprolactinemia: an Endocrine Society clinical practice guideline. J Clin Endocrinol Metab. 2011;96(2):273-288.
+   doi:10.1210/jc.2010-1692
 
 `debrief.references` also carries the bare publisher URL (https://rs.yiigle.com/cmaid/1322371) as its own entry, as the
-collection contract requires for a case whose DOI is pending. **DOIs:** none is asserted. The source's DOI string is pending
-in the source map; the guideline DOIs could not be confirmed in this session (doi.org, Crossref, uroweb.org and the EAU
-document host were unreachable, and the session's web-search budget ran out), so they are omitted.
+collection contract requires for a case whose DOI is pending. **DOIs:** the source's DOI string is pending in
+the source map and is not asserted. The DOIs of references 3, 6 and 7 were confirmed on PubMed in the independent review
+(2026-11-14: PMID 33053308, 40118737 and 21296991); the EAU trauma guideline is cited by its 2026 PDF (limited update March
+2026, panel chair M. Waterloos), read in full for this review.
 
 ### To verify
 
@@ -526,29 +556,36 @@ document host were unreachable, and the session's web-search budget ran out), so
   trailing ".1"); the author list as printed; short section quotations for each history item, finding and result to
   replace the 1.0.0-based source notes.
 
-**In the guidance (the primary texts were not reachable from this session):**
+**In the guidance.** Confirmed in the independent review (2026-11-14), so no longer open: the EAU Guidelines on Urological
+Trauma 2026 (limited update March 2026) — §4.5.2.e "Traumatic dislocation of the testicle rarely occurs and is most common
+in victims of road traffic accidents", §4.5.3.b "Ultrasound should be performed to determine intra- and/or extra-testicular
+haematoma, testicular contusion, or rupture" with colour Doppler for perfusion, §4.5.4.b.1 "Traumatic dislocation of the
+testis is treated by manual replacement and secondary orchidopexy. If primary manual reposition cannot be performed,
+immediate orchidopexy is indicated" (no strength rating is attached to that text); the WHO 2021 5th centiles quoted in the
+case and the EAU 2025 recommendation "Perform at least two consecutive semen analyses if the baseline analysis was
+abnormal" (Strong), both in the EAU Sexual and Reproductive Health guideline (limited update March 2025: Table 11.2 in
+§11.3.2, the recommendation in §11.3.7), which also states that the 5th centile "does not represent a limit between fertile and infertile men" and that the
+6th edition recommends Tygerberg strict criteria and vitality only when more than 60 % of spermatozoa are immotile; the
+citations of the AUA 2020 amendment, the EAU 2025 male infertility update and the Endocrine Society 2011 guideline (PubMed).
+Still open:
 
-- EAU Guidelines on Urological Trauma 2026: the exact wording, section number (the 2026 contents list a testicular
-  dislocation subsection — 4.5.4.b.1 according to a search summary) and strength rating for the treatment of testicular
-  dislocation (long-standing wording recalled as "manual replacement and secondary orchidopexy; immediate orchidopexy when
-  manual reposition is not possible" — **not confirmed**); its imaging and exploration recommendations for blunt scrotal
-  trauma. The case says only "reduction is followed by fixation" and that the guideline deals with dislocation within
-  testicular trauma.
-- AUA Urotrauma Guideline 2020: the exact statements on ultrasound for blunt scrotal injury with suspected rupture and on
-  exploration with repair or orchiectomy; the case paraphrases them.
-- ATLS 11th edition (2025): the title of the student manual and its wording on examining the perineum and genitalia in the
-  secondary survey and on the tertiary survey.
-- WHO 2021 manual: the vitality 5th centile (not quoted), the necrozoospermia definition and recommended vitality tests, and
-  any statement on repeating an analysis.
-- EAU male infertility update 2025 (Eur Urol 2025, PMID 40118737): author list, volume and pages; whether the full 2026 EAU
-  Sexual and Reproductive Health guideline supersedes it; its recommendations on repeating abnormal semen analyses.
-- Endocrine Society 2011 hyperprolactinaemia guideline: citation details (recalled, not re-checked in this session) and the
-  wording on excluding medicines and other secondary causes before imaging or treatment; whether a newer consensus (e.g.
-  the Pituitary Society) should be cited alongside it.
+- AUA Urotrauma Guideline 2020: the exact wording and grade of Statement 30a (ultrasonography for blunt scrotal injury
+  suggestive of testicular rupture) and of the statement on exploration with repair or orchiectomy — the full text is
+  behind the AUA login; the PubMed abstract confirms only what 30a and 30b cover. The case paraphrases them.
+- ATLS 11th edition (2025): the manual's wording on examining the perineum and genitalia in the secondary survey and on the
+  tertiary survey (the 11th edition's launch in 2025 is confirmed; the manual itself was not available).
+- WHO 2021 manual (primary text, not only the EAU summary): the necrozoospermia definition and the vitality tests named
+  (eosin–nigrosin, hypo-osmotic swelling).
+- Timing of a repeat semen analysis: the case teaches "about three months or later" from the duration of sperm production
+  and transit; a guideline that states the interval (for example NICE CG156: a repeat confirmatory test ideally 3 months
+  after the first, seen here only in secondary summaries) could be cited once its primary text is checked.
+- Endocrine Society 2011: the exact recommendation wording (excluding medication use, renal failure, hypothyroidism and
+  parasellar tumours; a sample without excessive venepuncture stress) from the primary text, and whether a newer
+  consensus (e.g. the Pituitary Society) should be cited alongside it.
 - Whether a current Chinese guideline (for example the 中国泌尿外科和男科疾病诊断治疗指南) covers genital trauma or testicular
   dislocation, for a Chinese reference.
 - The cabergoline starting dose in the dose text of the contraindicated option (0.25–0.5 mg once or twice a week),
-  recalled rather than re-checked in this session.
+  recalled rather than checked against a primary source.
 
 ## Changelog
 
@@ -588,6 +625,25 @@ document host were unreachable, and the session's web-search budget ran out), so
   article; not reviewed by a licensed clinician — the English last sentence reads "The case is not yet reviewed by a
   licensed clinician." because the collection contract matches that phrase case-sensitively); `sourceTextChecked: false`;
   the DOI kept pending; 1.0.0's `sourceDoiVerification` block dropped.
+- **Independent review (2026-11-14), fixes.** Safety outcome: `excise-perineal-mass` (orchidectomy of a testis not shown
+  to be dead; the only high-risk intervention) is now `critical: true` — `cases validate --strict` warned and the
+  collection contract failed while it was unset — and this guide gains its **Safety outcome.** paragraph, a safety column
+  in the score table and the 中文摘要 sentence. Facts: the severity words "mildly raised" / "轻度升高" / "small changes" for
+  the hormones are gone (1.0.0 records the values as above the report's ranges, the ranges unrecorded); the zh key
+  reasoning and two zh feedback texts no longer say the perineum was compressed or that the empty hemiscrotum "appeared"
+  (出现) about two weeks later — it was noticed on day 13; a lay answer no longer adds a crushing mechanism for the foot
+  (压得稀烂 → 伤得稀烂); the injury-imaging note no longer tells the learner that the report's figure is a CT and is
+  withheld; a decision-2 distractor no longer claims both testes have homogeneous echoes (recorded for the perineal one
+  only). Guidance: the EAU 2026 wording (manual replacement and secondary orchidopexy; immediate orchidopexy when manual
+  reposition cannot be performed; ultrasound in testicular trauma) replaces "reduction is followed by fixation" and the
+  learning outcome that credited EAU with ruling out a bedside push; ATLS is cited only for the secondary survey; "one
+  analysis does not establish infertility" is attributed to the EAU 2025 recommendation of at least two analyses, not to
+  the WHO manual; the Endocrine Society 2011 guideline is cited for prolactin only; the urethrogram distractor cites the
+  EAU rule on urinalysis and visible haematuria. Teaching and validity: the decision-2 key and the plan texts repair "any
+  septal tear" (the septum is described only at operation); the background-questions rubric text no longer claims a
+  timing its rule cannot check; the debrief conclusion in English now states what the Chinese states; references in
+  Vancouver form with DOIs confirmed on PubMed; matcher: "What seems to be the trouble today?" and "怎么了？" reach the
+  presenting complaint (two new test utterances, 41 in all), and "手术后…" no longer reaches the pre-crash surgery item. Scores unchanged.
 
 ### 1.0.0 — 2026-10-28
 
@@ -598,13 +654,13 @@ document host were unreachable, and the session's web-search budget ran out), so
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1322371/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1322371 --lang en                                                 # 57 steps · objectives 6/6 · decisions 4/4 · utterances 39/39 · rubric 25/25 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1322371                       # depth floor, do-nothing 0, wrong-first 56 % < 100 %
+npm run -s cc -- cases verify cmcr-1322371 --lang en                                                 # 57 steps · objectives 6/6 · decisions 4/4 · utterances 41/41 · rubric 25/25 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-1322371                                      # depth floor, do-nothing 0, wrong-first 56 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1322371:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1322371:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-10-30: all five pass.
+Measured on 2026-11-14, after the independent review's fixes: all five pass.
 
 ## 中文摘要
 
@@ -619,20 +675,23 @@ Measured on 2026-10-30: all five pass.
 
 **学习目标。**
 
-1. 骨盆或会阴挤压伤后，在二次评估和三次评估中检查阴囊、腹股沟和会阴（取得同意、有陪同者在场），把空虚的半侧阴囊加会阴部睾丸
-   大小的肿物按睾丸脱位处理，直到排除（ATLS 第 11 版，2025）。
+1. 骨盆或会阴挤压伤后，在二次评估中检查阴囊、腹股沟和会阴（ATLS 第 11 版，2025），三次评估时再查一遍（取得同意、有陪同者在场）；
+   把空虚的半侧阴囊加会阴部睾丸大小的肿物按睾丸脱位处理，直到排除——睾丸脱位最常见于道路交通伤（EAU 2026）。
 2. 在任何穿刺、切开或挤压之前申请阴囊及会阴超声（含彩色多普勒），沿精索判断睾丸侧别（AUA 2020；EAU 2026）。
-3. 对交叉脱位制订及时的切开复位方案：各回各侧、两侧固定、修补中隔；说明报告中相隔 12 天的手术和床旁推入最近一侧都不可照搬
-   （EAU 2026）。
+3. 对交叉脱位制订复位并固定两侧睾丸的方案：能耐受麻醉就尽早切开手术，各回各侧、两侧固定、中隔有破口就修补，因为越过中线的
+   睾丸无法用手法送回自己一侧（EAU 2026：手法复位后二期睾丸固定，无法手法复位时立即行睾丸固定术）；说明报告中相隔 12 天的手术
+   和床旁推入最近一侧都不可照搬。
 4. 区分术中存活与生精及内分泌功能，如实进行生育咨询。
-5. 按 WHO 2021（第 6 版）解读修复后 1.5 个月的精液分析（生精周期、死精子症需存活率检测、形态学方法），安排 3 个月或更晚复查。
-6. 结合多发伤和多次手术的背景解读轻度升高的催乳素、雌二醇和孕酮，先排除继发原因、恢复后复查（美国内分泌学会 2011）。
+5. 解读修复后 1.5 个月的精液分析：采样时间与生精周期的关系，以及按 WHO 2021（第 6 版）死精子症需存活率检测、形态学方法；安排 3 个月或更晚
+   复查（EAU 2025：首次异常时至少查两次）。
+6. 结合多发伤和多次手术的背景解读高于报告参考范围的催乳素、雌二醇和孕酮：催乳素先排除药物等继发原因（美国内分泌学会 2011），
+   恢复后复查整组激素，不立即做垂体 MRI 或用药。
 
 **关键决策。**
 
 - 决策 1（查体后、影像前）：按创伤性睾丸脱位处理，急查阴囊及会阴超声（含彩色多普勒），查清前不穿刺、不切开、不挤压；干扰项为
   骨折血肿观察、原有隐睾门诊随诊、脓肿穿刺引流、先做逆行尿道造影。
-- 决策 2（伤后第 13 天，读完超声）：能耐受麻醉就尽早手术，沿精索辨认、各回各侧、两侧固定、修补中隔，确认坏死才切除；干扰项为
+- 决策 2（伤后第 13 天，读完超声）：能耐受麻醉就尽早手术，沿精索辨认、各回各侧、两侧固定、中隔有破口就修补，确认坏死才切除；干扰项为
   床旁把会阴部睾丸推进右侧阴囊、等骨折稳定约两周后再手术（与记录病程相似，记录中的手术在伤后第 25 天）、切除会阴部睾丸、先做
   MRI 出院后门诊再定。决策 2 首次答对并在读完超声、没有先推迟的情况下预约手术，才算完成关键行动。
 - 决策 3（术中所见之后）：睾丸存活不等于生精正常，修复后约 3 个月或更晚查精液分析，随访睾丸大小；干扰项为颜色正常即可放心、多半
@@ -647,3 +706,5 @@ Measured on 2026-10-30: all five pass.
 （没有对睾丸做穿刺、切开、床旁挤压、切除或活检；首次作答即选择尽早切开复位并按时预约手术），沟通项由考官评判。记录中的处置
 （第 13 天才发现、第 25 天手术、术后 1.5 个月诊断“死精”）只作为历史对照，不代表现行推荐。本病例经人工智能辅助编辑审核，尚未经
 执业医师审核；待核实事项见上文 “To verify”。
+
+**安全结果。** 唯一标记为`critical: true`的干预是“切除会阴部肿物（睾丸切除）”：本例中始终禁忌——没有任何证据表明睾丸已坏死，而切除一枚存活的睾丸无法挽回——一旦执行，无论得分多少，本次运行的安全结果都判为未通过；其余禁忌操作（穿刺、切开引流、床旁推挤复位、推迟手术、活检、卡麦角林、转诊 ICSI）属可纠正的判断失误，不标为关键，会显示危害说明并失去相应评分；参考路径的安全结果为通过。
