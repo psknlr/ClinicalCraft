@@ -235,6 +235,9 @@
           },
           {
             "intervened": "bone-agent"
+          },
+          {
+            "objective": "obj-treatment"
           }
         ]
       }
@@ -394,7 +397,9 @@
           "负重",
           "放射",
           "往哪里疼",
-          "多疼"
+          "多疼",
+          "疼得厉害",
+          "痛得厉害"
         ],
         "en": [
           "whatisthepainlike",
@@ -1272,6 +1277,15 @@
       "source": {
         "zh-CN": "1.0.0版没有记录：保持未知（尚未对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (not yet checked against the full article)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "肠"
+        ],
+        "en": [
+          "bowel",
+          "stoma"
+        ]
       }
     },
     {
@@ -2177,8 +2191,8 @@
             "en": "Report's case record: treatment and course (as extracted for version 1.0.0; not yet checked against the full article)"
           },
           "note": {
-            "zh-CN": "未记录：骨保护药物的名称和剂量；放疗的分次、照射野和日期；两个剂量栏各对应哪个部位；住院期间用过的止痛药。",
-            "en": "Not recorded: the bone-protective drug and its dose; the radiotherapy fractions, fields and dates; which dose entry belongs to which site; the analgesics she received in hospital."
+            "zh-CN": "未记录：骨保护药物的名称和剂量；放疗的分次、照射野和日期；两个剂量栏各对应哪个部位；住院期间是否用过止痛药、用的是哪些。",
+            "en": "Not recorded: the bone-protective drug and its dose; the radiotherapy fractions, fields and dates; which dose entry belongs to which site; whether she received analgesics in hospital, and which."
           }
         },
         "outcome": {
@@ -2192,8 +2206,8 @@
             "en": "Report's case record: treatment and course (as extracted for version 1.0.0; not yet checked against the full article)"
           },
           "note": {
-            "zh-CN": "未记录：骨保护药物的名称和剂量；放疗的分次、照射野和日期；两个剂量栏各对应哪个部位；住院期间用过的止痛药。",
-            "en": "Not recorded: the bone-protective drug and its dose; the radiotherapy fractions, fields and dates; which dose entry belongs to which site; the analgesics she received in hospital."
+            "zh-CN": "未记录：骨保护药物的名称和剂量；放疗的分次、照射野和日期；两个剂量栏各对应哪个部位；住院期间是否用过止痛药、用的是哪些。",
+            "en": "Not recorded: the bone-protective drug and its dose; the radiotherapy fractions, fields and dates; which dose entry belongs to which site; whether she received analgesics in hospital, and which."
           }
         }
       },
@@ -2526,8 +2540,7 @@
           "node biopsy",
           "core biopsy",
           "supraclavicular biopsy",
-          "lymph node biopsy",
-          "fna"
+          "lymph node biopsy"
         ]
       },
       "requires": [
@@ -2749,14 +2762,12 @@
       "aliases": {
         "zh-CN": [
           "甲氧基肾上腺素",
-          "儿茶酚胺",
           "嗜铬细胞瘤筛查",
           "MN",
           "NMN"
         ],
         "en": [
           "metanephrines",
-          "catecholamines",
           "phaeochromocytoma screen",
           "pheochromocytoma screen",
           "normetanephrine"
@@ -3104,8 +3115,8 @@
         }
       },
       "response": {
-        "zh-CN": "已开具规律镇痛，每天评估疼痛。她实际用过的止痛药和剂量没有记录。",
-        "en": "Regular analgesia is charted and her pain will be reviewed daily. The drugs and doses she actually received are not recorded."
+        "zh-CN": "已开具规律镇痛，每天评估疼痛。她实际是否用过止痛药、用了哪些、剂量多少，都没有记录。",
+        "en": "Regular analgesia is charted and her pain will be reviewed daily. Whether she actually received analgesics, and which drugs and doses, is not recorded."
       }
     },
     {
@@ -3407,6 +3418,9 @@
       "indicatedWhen": {
         "any": [
           {
+            "phase": "admission"
+          },
+          {
             "phase": "workup"
           },
           {
@@ -3530,11 +3544,35 @@
       "critical": false,
       "effects": [],
       "indicatedWhen": {
-        "phase": "later"
+        "all": [
+          {
+            "any": [
+              {
+                "phase": "later"
+              },
+              {
+                "phase": "outcome"
+              }
+            ]
+          },
+          {
+            "not": {
+              "read": "outcome-record",
+              "phase": "outcome"
+            }
+          }
+        ]
       },
       "contraindicatedWhen": {
         "not": {
-          "phase": "later"
+          "any": [
+            {
+              "phase": "later"
+            },
+            {
+              "phase": "outcome"
+            }
+          ]
         }
       },
       "harm": {
@@ -3575,7 +3613,24 @@
       "risk": "none",
       "effects": [],
       "indicatedWhen": {
-        "phase": "later"
+        "all": [
+          {
+            "any": [
+              {
+                "phase": "later"
+              },
+              {
+                "phase": "outcome"
+              }
+            ]
+          },
+          {
+            "not": {
+              "read": "outcome-record",
+              "phase": "outcome"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "你与她一起梳理这个决定，并记录了谈话。没有记录决策能力评估的结论，也没有记录她拒绝的原因。",
@@ -3615,7 +3670,24 @@
       "risk": "none",
       "effects": [],
       "indicatedWhen": {
-        "phase": "later"
+        "all": [
+          {
+            "any": [
+              {
+                "phase": "later"
+              },
+              {
+                "phase": "outcome"
+              }
+            ]
+          },
+          {
+            "not": {
+              "read": "outcome-record",
+              "phase": "outcome"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "放疗科已收到请求，将提供她的治疗总结；本病例没有记录放疗科给出的剂量。",
@@ -3664,8 +3736,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ESE/ENSAT 2023（R.6.3.5）：只有在已排除嗜铬细胞瘤、影像不能确定为良性、且病理结果会改变处理时才考虑肾上腺活检。本例一条都不满足：没有甲氧基肾上腺素类结果，淋巴结和骨病灶已决定分期，锁骨上淋巴结才是可及的取材目标。误穿未识别的嗜铬细胞瘤可诱发高血压危象。",
-        "en": "ESE/ENSAT 2023 (R.6.3.5): an adrenal biopsy is considered only when phaeochromocytoma has been excluded, the lesion is not benign on imaging and the histology would change management. None holds: no metanephrine result is recorded, her nodal and bone disease already defines the stage, and the supraclavicular node is the accessible target. Puncturing an unsuspected phaeochromocytoma can cause a hypertensive crisis."
+        "zh-CN": "ESE/ENSAT 2023（R.6.3.5）：三条同时满足才考虑肾上腺活检——病灶无激素分泌（尤其已排除嗜铬细胞瘤）、影像不能确定为良性、病理结果会改变处理。本例只满足第二条：没有甲氧基肾上腺素类结果，淋巴结和骨病灶已决定分期，锁骨上淋巴结才是可及的取材目标。误穿未识别的嗜铬细胞瘤可诱发高血压危象。",
+        "en": "ESE/ENSAT 2023 (R.6.3.5): an adrenal biopsy is considered only when the lesion is hormonally inactive (in particular, phaeochromocytoma has been excluded), it is not conclusively benign on imaging and the histology would change management. Only the second holds here: no metanephrine result is recorded, her nodal and bone disease already defines the stage, and the supraclavicular node is the accessible target. Puncturing an unsuspected phaeochromocytoma can cause a hypertensive crisis."
       },
       "response": {
         "zh-CN": "申请已送至介入放射科。",
@@ -3702,7 +3774,14 @@
       "critical": true,
       "effects": [],
       "contraindicatedWhen": {
-        "phase": "later"
+        "any": [
+          {
+            "phase": "later"
+          },
+          {
+            "phase": "outcome"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "已知L3、L5转移的患者新出现排尿困难，是脊髓或马尾可能受压的症状。NICE NG234（2023）：按肿瘤急症处理，立即联系MSCC协调员，尽快且一定在24小时内完成MRI；常规门诊预约可能导致永久性截瘫和膀胱功能丧失。",
@@ -4047,8 +4126,8 @@
         "en": "What relieves bone pain best, which imaging guides the local treatment, what must be checked before a drug that protects the skeleton, who else should be involved, and what does she need to know before she goes home?"
       },
       "guidance": {
-        "zh-CN": "开具检查、治疗和会诊，然后作答第4项决策。",
-        "en": "Order the imaging, give the treatments and referrals, then answer decision 4."
+        "zh-CN": "开具检查、治疗和会诊，并作答第4项决策：本章完成后进入数月后的复诊。",
+        "en": "Order the imaging, give the treatments and referrals, and answer decision 4: the later visit opens once this chapter is complete."
       },
       "completeWhen": {
         "all": [
@@ -4350,8 +4429,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。从最容易取材的病灶取组织——可触及的锁骨上淋巴结，超声引导下穿刺——先查血小板和凝血。它能证实复发（并排除第二原发癌）；转移灶组织是治疗预测性生物标志物检测的首选标本，没有时原发灶组织也可接受（ASCP/CAP/AMP/ASCO 2017）；MMR状态、RAS和BRAF决定全身治疗方案。肾上腺方面，ESE/ENSAT 2023建议对有肾上腺外恶性肿瘤、肾上腺病灶性质不明者测定甲氧基肾上腺素类以排除嗜铬细胞瘤（R.6.3.1），病灶性质不会改变处理时以影像随访代替活检（R.6.3.4）。",
-            "en": "Right. Take tissue from the most accessible lesion — the palpable supraclavicular node, under ultrasound — after checking platelets and clotting. It confirms recurrence (and excludes a second cancer), and metastatic tissue is the preferred specimen for treatment-predictive biomarkers, with the primary acceptable when it is not available (ASCP/CAP/AMP/ASCO 2017); MMR status, RAS and BRAF guide systemic treatment. For the adrenal, ESE/ENSAT 2023 recommends metanephrines to exclude phaeochromocytoma in a patient with an extra-adrenal cancer and an indeterminate adrenal lesion (R.6.3.1), and imaging follow-up rather than biopsy when its nature would not change management (R.6.3.4)."
+            "zh-CN": "正确。从最容易取材的病灶取组织——可触及的锁骨上淋巴结，超声引导下穿刺——先查血小板和凝血。它能证实复发（或发现另一种肿瘤）；转移灶组织是治疗预测性生物标志物检测的首选标本，没有时原发灶组织也可接受（ASCP/CAP/AMP/ASCO 2017）；MMR状态、RAS和BRAF决定全身治疗方案。肾上腺方面，ESE/ENSAT 2023建议对有肾上腺外恶性肿瘤、肾上腺病灶性质不明者测定甲氧基肾上腺素类以排除嗜铬细胞瘤（R.6.3.1），病灶性质不会改变处理时以影像随访代替活检（R.6.3.4）。",
+            "en": "Right. Take tissue from the most accessible lesion — the palpable supraclavicular node, under ultrasound — after checking platelets and clotting. It confirms the recurrence (or shows a different cancer), and metastatic tissue is the preferred specimen for treatment-predictive biomarkers, with the primary acceptable when it is not available (ASCP/CAP/AMP/ASCO 2017); MMR status, RAS and BRAF guide systemic treatment. For the adrenal, ESE/ENSAT 2023 recommends metanephrines to exclude phaeochromocytoma in a patient with an extra-adrenal cancer and an indeterminate adrenal lesion (R.6.3.1), and imaging follow-up rather than biopsy when its nature would not change management (R.6.3.4)."
           }
         },
         {
@@ -4362,8 +4441,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对，而且不安全。ESE/ENSAT 2023（R.6.3.5）只有在已排除嗜铬细胞瘤、影像不能确定为良性、且病理结果会改变处理时才考虑肾上腺活检，本例一条都不满足：淋巴结和骨病灶已经决定了分期，锁骨上淋巴结更容易取材；而且家族性腺瘤性息肉病患者肾上腺肿块的发生率是一般人群的2–3倍（EHTG–ESCP 2024），“饱满”的肾上腺未必是转移。误穿未识别的嗜铬细胞瘤可诱发高血压危象。",
-            "en": "No — and unsafe. ESE/ENSAT 2023 (R.6.3.5) considers adrenal biopsy only when phaeochromocytoma has been excluded, the lesion is not benign on imaging and the histology would change management; none is met here. Her nodal and bone lesions already define the stage and the supraclavicular node is far easier to reach; and adrenal masses are 2–3 times more common in familial adenomatous polyposis than in the general population (EHTG–ESCP 2024), so a 'bulky' adrenal is not necessarily metastatic. Puncturing an unsuspected phaeochromocytoma can trigger a hypertensive crisis."
+            "zh-CN": "不对，而且不安全。ESE/ENSAT 2023（R.6.3.5）要求病灶无激素分泌（已排除嗜铬细胞瘤）、影像不能确定为良性、且病理结果会改变处理，三条都满足才考虑肾上腺活检；本例嗜铬细胞瘤尚未排除，病理也不会改变处理：淋巴结和骨病灶已经决定了分期，锁骨上淋巴结更容易取材；而且家族性腺瘤性息肉病患者肾上腺肿块的发生率是一般人群的2–3倍（EHTG–ESCP 2024），“饱满”的肾上腺未必是转移。误穿未识别的嗜铬细胞瘤可诱发高血压危象。",
+            "en": "No — and unsafe. ESE/ENSAT 2023 (R.6.3.5) considers adrenal biopsy only when the lesion is hormonally inactive (phaeochromocytoma excluded), not conclusively benign on imaging and the histology would change management; here phaeochromocytoma has not been excluded and the histology would not change management. Her nodal and bone lesions already define the stage and the supraclavicular node is far easier to reach; and adrenal masses are 2–3 times more common in familial adenomatous polyposis than in the general population (EHTG–ESCP 2024), so a 'bulky' adrenal is not necessarily metastatic. Puncturing an unsuspected phaeochromocytoma can trigger a hypertensive crisis."
           }
         },
         {
@@ -4434,8 +4513,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ESMO 2020骨健康指南：外照射放疗是局限性中重度骨痛的首选治疗，疼痛性、无并发症的骨转移推荐单次8 Gy [I, A]；对有临床意义骨转移、预计生存≥3个月的实体瘤患者推荐唑来膦酸或地舒单抗 [I, B]，用药前先做口腔检查 [III, A]，并补充钙和维生素D [I, A]。NICE NG234（2023）对无脊髓压迫、表现为非机械性疼痛的脊柱转移给予单次8 Gy放疗（1.10.2），建议1周内做MRI以指导治疗（1.5.3），并要求让脊柱转移患者知道出现新症状时该联系谁（1.2.2）。",
-            "en": "Right. ESMO 2020 bone health: external beam radiotherapy is the treatment of choice for localised moderate-to-severe bone pain, and a single 8 Gy fraction is recommended for painful uncomplicated bone metastases [I, A]; zoledronate or denosumab for solid tumours with clinically significant bone metastases and a life expectancy of at least 3 months [I, B], after a dental evaluation [III, A] and with calcium and vitamin D [I, A]. NICE NG234 (2023) offers single-fraction 8 Gy for spinal metastases without cord compression causing non-mechanical pain (1.10.2), an MRI within a week to guide treatment (1.5.3), and asks that people with spinal metastases know whom to contact if new symptoms appear (1.2.2)."
+            "zh-CN": "正确。ESMO 2020骨健康指南：外照射放疗是局限性中重度骨痛的首选治疗，疼痛性、无并发症的骨转移推荐单次8 Gy [I, A]；对有临床意义骨转移、预计生存≥3个月的实体瘤患者推荐唑来膦酸或地舒单抗 [I, B]，用药前先做口腔检查 [III, A]，并补充钙和维生素D [I, A]。NICE NG234（2023）对无脊髓压迫、表现为非机械性疼痛的脊柱转移给予单次8 Gy放疗（1.10.2），建议1周内做MRI以指导治疗（1.5.3），放疗前向她说明肿瘤及其治疗对今后生育的可能影响（1.10.1），并要求让脊柱转移患者知道出现新症状时该联系谁（1.2.2）。",
+            "en": "Right. ESMO 2020 bone health: external beam radiotherapy is the treatment of choice for localised moderate-to-severe bone pain, and a single 8 Gy fraction is recommended for painful uncomplicated bone metastases [I, A]; zoledronate or denosumab for solid tumours with clinically significant bone metastases and a life expectancy of at least 3 months [I, B], after a dental evaluation [III, A] and with calcium and vitamin D [I, A]. NICE NG234 (2023) offers single-fraction 8 Gy for spinal metastases without cord compression causing non-mechanical pain (1.10.2), an MRI within a week to guide treatment (1.5.3) and, before radiotherapy, an explanation of how the cancer and its treatment may affect future fertility (1.10.1), and asks that people with spinal metastases know whom to contact if new symptoms appear (1.2.2)."
           }
         },
         {
@@ -4446,8 +4525,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。骨改良药物在数月内减少骨相关事件，并不是控制已有疼痛的手段。ESMO 2020把放疗作为局限性中重度骨痛的首选治疗；把放疗留作后备，会让疼痛的负重关节和两个腰椎病灶得不到治疗。",
-            "en": "No. Bone-modifying agents reduce skeletal events over months; they are not the treatment for established pain. ESMO 2020 makes radiotherapy the treatment of choice for localised moderate-to-severe bone pain, and holding it back leaves a painful weight-bearing joint and two lumbar vertebrae untreated."
+            "zh-CN": "不对。骨改良药物能减少骨相关事件，也能缓解骨痛，但ESMO 2020把放疗作为局限性中重度骨痛的首选治疗；把放疗留作后备3个月，会让疼痛的负重关节和两个腰椎病灶迟迟得不到放疗。",
+            "en": "No. Bone-modifying agents reduce skeletal events and can also ease bone pain, but ESMO 2020 makes radiotherapy the treatment of choice for localised moderate-to-severe bone pain; holding it back for three months leaves a painful weight-bearing joint and two lumbar vertebrae without it."
           }
         },
         {
@@ -4731,6 +4810,10 @@
             "any": [
               {
                 "ordered": "mri-spine",
+                "phase": "admission"
+              },
+              {
+                "ordered": "mri-spine",
                 "phase": "workup"
               },
               {
@@ -4895,8 +4978,16 @@
       "met": {
         "all": [
           {
-            "read": "treatment-record",
-            "phase": "later"
+            "any": [
+              {
+                "read": "treatment-record",
+                "phase": "later"
+              },
+              {
+                "read": "treatment-record",
+                "phase": "outcome"
+              }
+            ]
           },
           {
             "intervened": "rt-summary",
@@ -4953,8 +5044,8 @@
         "en": "Dr Liang (medical oncology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已获得的资料提问，例如：“哪些发现让你不再考虑单纯的肌肉骨骼原因？”“你会从哪个病灶取材？为什么不是肾上腺？”“任何人给肾上腺肿块进针之前，必须先排除什么？”“父母和姐姐肠镜正常，为什么不能回答遗传问题？”“应该先检测谁的DNA？结果对她姐姐有什么影响？”“单次8 Gy与长程放疗相比各有什么特点？”“用骨改良药物前要查什么？”“已知L3、L5转移的女性新出现排尿困难意味着什么？要多快行动？”“有人要给她再次放疗之前，治疗记录里的哪一项必须先核实？”“她说不住院——下一步怎么做？”。可以讲解BSG/ACPGBI/UKCGG 2020、EHTG–ESCP 2024、ESE/ENSAT 2023、ESMO 2020骨健康、NICE NG234（2023）和ASCO 2024姑息治疗指南的相关原则。在学员作答前不说出诊断或任何决策的正确选项；不补充记录中没有的内容（息肉数量、骨保护药物、真实放疗剂量、她拒绝的原因、生存情况均未记录）。用PEARLS框架复盘。",
-        "en": "Socratic teacher who asks only about what the learner has already found, e.g. “Which findings move you away from a simple musculoskeletal cause?”, “Which lesion would you sample, and why not the adrenal?”, “What must be excluded before anyone puts a needle in an adrenal mass?”, “Why do her parents' and sister's normal colonoscopies not settle the hereditary question?”, “Whose DNA should be tested first, and what does a result change for her sister?”, “What does a single 8 Gy fraction offer compared with a longer course?”, “What do you check before a bone-modifying agent?”, “What does new difficulty passing urine mean in a woman with L3 and L5 metastases, and how fast must you act?”, “Before anyone irradiates her again, what in her treatment record must be checked first?”, “She has said no to admission — what is your next step?”. May explain the relevant principles of BSG/ACPGBI/UKCGG 2020, EHTG–ESCP 2024, ESE/ENSAT 2023, ESMO 2020 bone health, NICE NG234 (2023) and ASCO 2024 palliative care. Never states the diagnosis or a decision's correct option before the learner commits, and adds nothing the record lacks (the number of polyps, the bone-protective drug, the real radiotherapy doses, her reasons for declining and her survival are not recorded). Debriefs with PEARLS."
+        "zh-CN": "苏格拉底式带教，只围绕学员已获得的资料提问，例如：“哪些发现让你不再考虑单纯的肌肉骨骼原因？”“你会从哪个病灶取材？为什么选它？”“任何人给肾上腺肿块进针之前，必须先排除什么？”“父母和姐姐肠镜正常，为什么不能回答遗传问题？”“应该先检测谁的DNA？结果对她姐姐有什么影响？”“单次8 Gy与长程放疗相比各有什么特点？”“用骨改良药物前要查什么？”“已知L3、L5转移的女性新出现排尿困难意味着什么？要多快行动？”“有人要给她再次放疗之前，治疗记录里的哪一项必须先核实？”“她说不住院——下一步怎么做？”。可以讲解BSG/ACPGBI/UKCGG 2020、EHTG–ESCP 2024、ESE/ENSAT 2023、ESMO 2020骨健康、NICE NG234（2023）和ASCO 2024姑息治疗指南的相关原则。在学员作答前不说出诊断或任何决策的正确选项；不补充记录中没有的内容（息肉数量、骨保护药物、真实放疗剂量、她拒绝的原因、生存情况均未记录）。用PEARLS框架复盘。",
+        "en": "Socratic teacher who asks only about what the learner has already found, e.g. “Which findings move you away from a simple musculoskeletal cause?”, “Which lesion would you sample, and why that one?”, “What must be excluded before anyone puts a needle in an adrenal mass?”, “Why do her parents' and sister's normal colonoscopies not settle the hereditary question?”, “Whose DNA should be tested first, and what does a result change for her sister?”, “What does a single 8 Gy fraction offer compared with a longer course?”, “What do you check before a bone-modifying agent?”, “What does new difficulty passing urine mean in a woman with L3 and L5 metastases, and how fast must you act?”, “Before anyone irradiates her again, what in her treatment record must be checked first?”, “She has said no to admission — what is your next step?”. May explain the relevant principles of BSG/ACPGBI/UKCGG 2020, EHTG–ESCP 2024, ESE/ENSAT 2023, ESMO 2020 bone health, NICE NG234 (2023) and ASCO 2024 palliative care. Never states the diagnosis or a decision's correct option before the learner commits, and adds nothing the record lacks (the number of polyps, the bone-protective drug, the real radiotherapy doses, her reasons for declining and her survival are not recorded). Debriefs with PEARLS."
       },
       "interprets": [
         "resection-pathology",
@@ -5052,8 +5143,8 @@
         "en": "A biopsy of any metastatic site; an MRI of the spine; adrenal biochemistry, CT density and FDG uptake; SUV values and sizes of the lesions."
       },
       {
-        "zh-CN": "骨保护药物的名称和剂量；放疗的真实剂量、分次、照射野和日期（记录为4000 Gy和5000 Gy，各对应哪个部位不清楚）；用过的止痛药。",
-        "en": "The bone-protective drug and dose; the true radiotherapy doses, fractions, fields and dates (recorded as 4000 Gy and 5000 Gy, with the site of each not stated); the analgesics she received."
+        "zh-CN": "骨保护药物的名称和剂量；放疗的真实剂量、分次、照射野和日期（记录为4000 Gy和5000 Gy，各对应哪个部位不清楚）；是否用过止痛药、用的是哪些。",
+        "en": "The bone-protective drug and dose; the true radiotherapy doses, fractions, fields and dates (recorded as 4000 Gy and 5000 Gy, with the site of each not stated); whether she received analgesics, and which."
       },
       {
         "zh-CN": "她拒绝化疗和住院的原因；数月后水肿和排尿困难的原因；当时的神经系统检查；此后的病程和生存情况。",
@@ -5074,16 +5165,16 @@
         "en": "Genetics: colorectal cancer at 30 or younger and 10 or more adenomas before 60 are indications for germline panel testing (BSG/ACPGBI/UKCGG 2020, Table 2); test the affected person first. With 15–30% of APC variants de novo (EHTG–ESCP 2024) and MUTYH polyposis recessive, normal family colonoscopies do not reassure; until a family variant is known, first-degree relatives of someone with clinical FAP have 5-yearly colonoscopy from 12–14 until polyposis appears or national screening age (BSG 2020). Then and now: the report gives a clinical and pathological FAP diagnosis with no germline result."
       },
       {
-        "zh-CN": "疼痛性骨转移：无并发症时单次8 Gy放疗 [I, A]；预计生存≥3个月的实体瘤患者用唑来膦酸或地舒单抗 [I, B]，用药前做口腔检查 [III, A]，并补充钙和维生素D [I, A]（ESMO 2020骨健康指南）。脊柱转移：1周内MRI指导治疗，并让她知道出现新症状时该联系谁（NICE NG234 2023）。记录与现行做法：报告记录了骨保护和髋部、腰椎放疗，但没有记录药物、口腔检查和放疗分次。",
-        "en": "Painful bone metastases: a single 8 Gy fraction when uncomplicated [I, A]; zoledronate or denosumab for solid tumours with a life expectancy of 3 months or more [I, B], after a dental evaluation [III, A] and with calcium and vitamin D [I, A] (ESMO 2020 bone health). Spinal metastases: an MRI within a week to guide treatment, and she must know whom to contact if new symptoms appear (NICE NG234 2023). Then and now: the report records bone protection and radiotherapy to the hip and lumbar spine, but not the drug, a dental check or the fractionation."
+        "zh-CN": "疼痛性骨转移：无并发症时单次8 Gy放疗 [I, A]；预计生存≥3个月的实体瘤患者用唑来膦酸或地舒单抗 [I, B]，用药前做口腔检查 [III, A]，并补充钙和维生素D [I, A]（ESMO 2020骨健康指南）。脊柱转移：1周内MRI指导治疗，放疗前说明对今后生育的影响，并让她知道出现新症状时该联系谁（NICE NG234 2023）。记录与现行做法：报告记录了骨保护和髋部、腰椎放疗，但没有记录药物、口腔检查和放疗分次。",
+        "en": "Painful bone metastases: a single 8 Gy fraction when uncomplicated [I, A]; zoledronate or denosumab for solid tumours with a life expectancy of 3 months or more [I, B], after a dental evaluation [III, A] and with calcium and vitamin D [I, A] (ESMO 2020 bone health). Spinal metastases: an MRI within a week to guide treatment, the effect on future fertility explained before radiotherapy, and she must know whom to contact if new symptoms appear (NICE NG234 2023). Then and now: the report records bone protection and radiotherapy to the hip and lumbar spine, but not the drug, a dental check or the fractionation."
       },
       {
         "zh-CN": "转移性脊髓压迫：肿瘤患者出现膀胱或直肠功能障碍，就是脊髓压迫的症状——立即联系MSCC协调员、尽快且一定在24小时内MRI、有神经症状或体征时地塞米松16 mg（NICE NG234 2023，1.3.2、1.5.2、1.8.1）。再次放疗前必须考虑既往疗程的总生物等效剂量（1.10.10）；记录为4000 Gy和5000 Gy的数字无法据此评估，必须向放疗科核实，不能凭猜测换算。",
         "en": "Metastatic spinal cord compression: bladder or bowel dysfunction in a person with cancer is a symptom of cord compression — contact the MSCC coordinator immediately, MRI as soon as possible and always within 24 hours, dexamethasone 16 mg for neurological symptoms or signs (NICE NG234 2023, 1.3.2, 1.5.2, 1.8.1). Further radiotherapy must take account of the total biological equivalent dose of the previous course (1.10.10) — impossible from entries of 4000 Gy and 5000 Gy, which must be checked with the radiotherapy department, never converted on a guess."
       },
       {
-        "zh-CN": "拒绝治疗不等于拒绝照护：针对具体决定评估决策能力（推定有能力；决定不明智不等于没有能力——以英国《2005年精神能力法》为例），商定她能接受的方案并交代返诊指征，在抗肿瘤治疗之外（或代替它）尽早提供专科姑息治疗（ASCO 2024）。",
-        "en": "Declining treatment is not declining care: assess capacity for the specific decision (capacity is presumed, and an unwise decision is not incapacity — Mental Capacity Act 2005 as one legal model), negotiate what she will accept, safety-net, and offer early specialist palliative care alongside, or instead of, anticancer treatment (ASCO 2024)."
+        "zh-CN": "拒绝治疗不等于拒绝照护：针对具体决定评估决策能力（推定有能力；决定不明智不等于没有能力——以英国《2005年精神能力法》为例），商定她能接受的方案并交代返诊指征，并持续提供早期专科姑息治疗——ASCO 2024建议晚期肿瘤患者尽早接受，并与抗肿瘤治疗同步进行——无论她是否接受抗肿瘤治疗。",
+        "en": "Declining treatment is not declining care: assess capacity for the specific decision (capacity is presumed, and an unwise decision is not incapacity — Mental Capacity Act 2005 as one legal model), negotiate what she will accept, safety-net, and keep offering early specialist palliative care — ASCO 2024 recommends it early in advanced cancer, alongside anticancer treatment — whether or not she accepts that treatment."
       }
     ],
     "references": [
@@ -5122,8 +5213,8 @@
       "en": "A biopsy of any metastatic site; an MRI of the spine; adrenal biochemistry, CT density and FDG uptake; SUV values and sizes of the lesions."
     },
     {
-      "zh-CN": "骨保护药物的名称和剂量；放疗的真实剂量、分次、照射野和日期（记录为4000 Gy和5000 Gy，各对应哪个部位不清楚）；用过的止痛药。",
-      "en": "The bone-protective drug and dose; the true radiotherapy doses, fractions, fields and dates (recorded as 4000 Gy and 5000 Gy, with the site of each not stated); the analgesics she received."
+      "zh-CN": "骨保护药物的名称和剂量；放疗的真实剂量、分次、照射野和日期（记录为4000 Gy和5000 Gy，各对应哪个部位不清楚）；是否用过止痛药、用的是哪些。",
+      "en": "The bone-protective drug and dose; the true radiotherapy doses, fractions, fields and dates (recorded as 4000 Gy and 5000 Gy, with the site of each not stated); whether she received analgesics, and which."
     },
     {
       "zh-CN": "她拒绝化疗和住院的原因；数月后水肿和排尿困难的原因；当时的神经系统检查；此后的病程和生存情况。",

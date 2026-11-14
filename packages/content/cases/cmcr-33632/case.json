@@ -364,7 +364,8 @@
           "amount",
           "volume",
           "breath",
-          "long-term"
+          "long-term",
+          "other"
         ]
       },
       "disclosure": "volunteer",
@@ -5385,6 +5386,13 @@
         "locale": "en",
         "expect": [
           "presenting"
+        ]
+      },
+      {
+        "text": "Has he had any other illnesses?",
+        "locale": "en",
+        "expect": [
+          "eczema"
         ]
       },
       {

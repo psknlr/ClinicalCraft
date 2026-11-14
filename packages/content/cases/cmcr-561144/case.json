@@ -30,7 +30,7 @@
       "en": "Remove an internal jugular line safely — site below the heart, out during a breath-hold with a Valsalva manoeuvre, pressure to haemostasis, an air-occlusive dressing (kept sealed for 24 hours under China's WS/T 433—2023), a period lying flat (Pennsylvania Patient Safety Authority 2012) — and treat an intracardiac shunt with pulmonary hypertension as a reason for extra care."
     },
     {
-      "zh-CN": "当拔管后数分钟内出现意识丧失和抽搐时，在床旁识别脑气体栓塞而不等待影像（Moon，UHMS 2019），并与惊厥性晕厥、缺血性卒中、肺栓塞和首次癫痫发作相鉴别。",
+      "zh-CN": "当拔管后数分钟内出现呼之不应和抽搐时，在床旁识别脑气体栓塞而不等待影像（Moon，UHMS 2019），并与惊厥性晕厥、缺血性卒中、肺栓塞和首次癫痫发作相鉴别。",
       "en": "Recognise cerebral gas embolism at the bedside when unresponsiveness and seizures follow line removal within minutes, without waiting for imaging (Moon, UHMS 2019), and tell it apart from convulsive syncope, ischaemic stroke, pulmonary embolism and a first epileptic seizure."
     },
     {
@@ -352,7 +352,12 @@
           "whendiditstart",
           "whendidthisstart",
           "bothering",
-          "line coming out today"
+          "line coming out today",
+          "brings",
+          "inhospital",
+          "admitted",
+          "herefor",
+          "whyareyouhere"
         ]
       },
       "excludeKeywords": {
@@ -434,7 +439,7 @@
       },
       "answer": {
         "zh-CN": "我两只手遇冷会发白、发疼，是为这个来看的病。",
-        "en": "My hands go white and painful in the cold — that's what I came about."
+        "en": "My hands would go white and painful in the cold — that's what I came about."
       },
       "keywords": {
         "zh-CN": [
@@ -586,7 +591,8 @@
           "breathless",
           "chest pain",
           "neck",
-          "breath"
+          "breath",
+          "tube"
         ]
       },
       "disclosure": "on-ask",
@@ -696,7 +702,9 @@
           "pneumothorax",
           "collapsed lung",
           "drain",
-          "shortness of breath"
+          "shortness of breath",
+          "chest tube",
+          "tube in your chest"
         ]
       },
       "excludeKeywords": {
@@ -940,7 +948,8 @@
           "concerns",
           "nervous",
           "afraid",
-          "questions"
+          "questions",
+          "scared"
         ]
       },
       "disclosure": "on-ask",
@@ -1013,8 +1022,8 @@
         "en": "What have you been told so far?"
       },
       "answer": {
-        "zh-CN": "只说拔了她脖子上的管子以后，她一坐起来就突然叫不醒，还抽了，现在插着管子，在帮她呼吸。别的我们还不知道。",
-        "en": "Only that after the line in her neck came out she sat up and suddenly couldn't be woken, and had a fit, and that she now has a breathing tube in and they're helping her breathe. That's all we know."
+        "zh-CN": "只说拔了她脖子上的管子以后，她坐起来的时候突然叫不醒了，还抽了，现在插着管子，在帮她呼吸。别的我们还不知道。",
+        "en": "Only that after the line in her neck came out, as she sat up, she suddenly couldn't be woken and had a fit, and that she now has a breathing tube in and they're helping her breathe. That's all we know."
       },
       "keywords": {
         "zh-CN": [
@@ -1040,7 +1049,8 @@
           "whathappened",
           "goingon",
           "theytellyou",
-          "didtheytell"
+          "didtheytell",
+          "understand"
         ]
       },
       "disclosure": "on-ask",
@@ -1081,7 +1091,9 @@
           "worry",
           "afraid",
           "concerns",
-          "frightened"
+          "frightened",
+          "scared",
+          "fear"
         ]
       },
       "disclosure": "on-ask",
@@ -1155,7 +1167,9 @@
           "昏迷",
           "gcs",
           "睁眼",
-          "睁开眼"
+          "睁开眼",
+          "醒着",
+          "醒没醒"
         ],
         "en": [
           "responsive",
@@ -1169,7 +1183,9 @@
           "awake",
           "hearme",
           "rouse",
-          "open your eyes"
+          "open your eyes",
+          "shout",
+          "shakeher"
         ]
       },
       "finding": {
@@ -1200,7 +1216,11 @@
           "气促",
           "呼吸频率",
           "看呼吸",
-          "呼吸怎么样"
+          "呼吸怎么样",
+          "喘得",
+          "喘吗",
+          "喘不喘",
+          "气喘"
         ],
         "en": [
           "breathing",
@@ -1268,6 +1288,11 @@
       "source": {
         "zh-CN": "报告事实（1.0.0版）：发病时抽搐",
         "en": "Report fact (version 1.0.0): convulsions during the event"
+      },
+      "excludeKeywords": {
+        "en": [
+          "shakeher"
+        ]
       }
     },
     {
@@ -1285,7 +1310,10 @@
           "股动脉",
           "大动脉",
           "心跳",
-          "循环"
+          "循环",
+          "有脉",
+          "没脉",
+          "摸到脉"
         ],
         "en": [
           "pulse",
@@ -1748,7 +1776,7 @@
             "en": "No result is recorded for this test."
           },
           "note": {
-            "zh-CN": "昏迷、抽搐的患者都要查血糖；本病例没有这个数值，不能当作正常。",
+            "zh-CN": "呼之不应或抽搐的患者都要查血糖；本病例没有这个数值，不能当作正常。",
             "en": "Every unresponsive or convulsing patient needs a glucose; this case has no value, and it must not be assumed normal."
           },
           "source": {
@@ -2176,13 +2204,40 @@
         "decided": "line-removal"
       },
       "contraindicatedWhen": {
-        "not": {
-          "decided": "line-removal"
-        }
+        "any": [
+          {
+            "not": {
+              "decided": "line-removal"
+            }
+          },
+          {
+            "all": [
+              {
+                "intervened": "sit-up"
+              },
+              {
+                "not": {
+                  "inOrder": [
+                    "sit-up",
+                    "lie-flat"
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "inOrder": [
+                    "sit-up",
+                    "head-down-tilt"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "harm": {
-        "zh-CN": "还没定好拔管方法就拔了：她有房间隔缺损和肺动脉高压，进入静脉的空气可能进入动脉。拔颈部导管前要先定好体位、屏气、按压、封闭敷料和拔后平卧的时间（宾夕法尼亚患者安全管理局，2012）。",
-        "en": "You took the line out before settling how: with an atrial septal defect and pulmonary hypertension, air entering her veins could reach her arteries. Plan the position, breath-hold, pressure, air-occlusive dressing and time lying flat before a neck line comes out (Pennsylvania Patient Safety Authority, 2012)."
+        "zh-CN": "还没定好拔管方法就拔了，或者让她坐着拔：她有房间隔缺损和肺动脉高压，进入静脉的空气可能进入动脉；坐位时穿刺点高于心脏——宾夕法尼亚患者安全管理局2012年的分析中，拔管时头部抬高是最常报告的相关因素。颈部导管要先定好拔管方法再拔。",
+        "en": "You took the line out before its removal was planned, or with her sitting up: with an atrial septal defect and pulmonary hypertension, air entering her veins could reach her arteries, and sitting up puts the puncture above the heart — removal with the head elevated was the factor most often reported in the Pennsylvania Patient Safety Authority's 2012 analysis. A neck line comes out only once its removal has been planned."
       },
       "response": {
         "zh-CN": "导管已拔出。原报告记录：她平卧拔管，穿刺点按压约1分钟，用普通胶布覆盖；拔管后约3分钟她坐了起来。之后的经过按原报告进行。",
@@ -2233,8 +2288,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "她失去反应以后不再推荐头低位：浮力对动脉内气泡的走向影响很小，头低位还可能加重脑水肿；让她保持水平位（Moon，UHMS 2019）。",
-        "en": "Head-down after the collapse is no longer recommended: buoyancy does little to steer bubbles in the arteries, and head-down can worsen cerebral oedema; keep her horizontal (Moon, UHMS 2019)."
+        "zh-CN": "她失去反应以后不再推荐头低位：头低位并无帮助，还可能加重脑水肿；让她保持水平位（Moon，UHMS 2019）。",
+        "en": "Once she has stopped responding, head-down is no longer recommended: it does not help and can worsen cerebral oedema; keep her horizontal (Moon, UHMS 2019)."
       },
       "response": {
         "zh-CN": "床已调成头低位。",
@@ -2265,7 +2320,8 @@
           "supine",
           "horizontal",
           "recovery position",
-          "onherside"
+          "onherside",
+          "ontoherside"
         ]
       },
       "dose": {
@@ -2289,7 +2345,7 @@
       },
       "response": {
         "zh-CN": "她已放平。本病例没有记录发病后她的体位是怎样调整的。",
-        "en": "She is lying flat. This case does not record how she was positioned after the collapse."
+        "en": "She is lying flat. This case does not record how she was positioned after the event."
       }
     },
     {
@@ -2335,8 +2391,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "导管拔出后针道还没封好就让她坐起，穿刺点会高于心脏，颈静脉内压力可低于大气压，空气可经针道被吸入（宾夕法尼亚患者安全管理局，2012）；她失去反应以后应保持水平位（Moon，UHMS 2019）。",
-        "en": "Sitting her up with the tract unsealed puts the puncture above the heart, where pressure in the neck vein can fall below atmospheric and draw air in through the tract (Pennsylvania Patient Safety Authority, 2012); after the collapse, keep her horizontal (Moon, UHMS 2019)."
+        "zh-CN": "导管拔出后就让她坐起，穿刺点会高于心脏，而针道可能还没有闭合——拔管后应平卧约30分钟（宾夕法尼亚患者安全管理局，2012）；她失去反应以后应保持水平位（Moon，UHMS 2019）。",
+        "en": "Sitting her up after the removal puts the puncture above the heart while the tract may still be open — she should lie flat for about 30 minutes after a removal (Pennsylvania Patient Safety Authority, 2012); once she has stopped responding, keep her horizontal (Moon, UHMS 2019)."
       },
       "response": {
         "zh-CN": "她坐了起来。",
@@ -2437,7 +2493,7 @@
       },
       "response": {
         "zh-CN": "穿刺点已按压并封闭。原报告记录拔管后用的是普通胶布；本病例没有记录发病后穿刺点是否重新封闭；不模拟其效果。",
-        "en": "The site is pressed and sealed. The report records ordinary adhesive tape after the removal; this case does not record whether the site was re-sealed after the collapse, and does not simulate the effect."
+        "en": "The site is pressed and sealed. The report records ordinary adhesive tape after the removal; this case does not record whether the site was re-sealed after the event, and does not simulate the effect."
       }
     },
     {
@@ -2491,6 +2547,18 @@
       "response": {
         "zh-CN": "已高流量吸氧。原报告记录她发病后接受了吸氧；本病例没有记录给氧方式、流量和血氧饱和度。",
         "en": "High-flow oxygen is on. The report records that she was given oxygen; this case does not record the device, the flow or her oxygen saturation."
+      },
+      "excludeKeywords": {
+        "en": [
+          "hyperbaric",
+          "chamber",
+          "recompress"
+        ],
+        "zh-CN": [
+          "高压氧",
+          "高压舱",
+          "进舱"
+        ]
       }
     },
     {
@@ -2913,6 +2981,20 @@
       "response": {
         "zh-CN": "已给药。",
         "en": "Given."
+      },
+      "excludeKeywords": {
+        "en": [
+          "low molecular",
+          "lmwh",
+          "prophyla",
+          "enoxaparin",
+          "dalteparin",
+          "tinzaparin"
+        ],
+        "zh-CN": [
+          "低分子",
+          "预防"
+        ]
       }
     },
     {
@@ -3150,8 +3232,8 @@
         "en": "Is the neck puncture sealed? Are her position and the oxygen she is breathing right? Who needs to be at the bedside now?"
       },
       "guidance": {
-        "zh-CN": "拔管后约3分钟，她坐起时出事；你就在她床旁，抢救车、氧气接口和监护仪都在。",
-        "en": "About 3 minutes after the removal, as she sat up, she collapsed; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
+        "zh-CN": "拔管后约3分钟，她坐起时突然失去反应；你就在她床旁，抢救车、氧气接口和监护仪都在。",
+        "en": "About 3 minutes after the removal, as she sat up, she stopped responding; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
       },
       "completeWhen": {
         "all": [
@@ -3704,7 +3786,7 @@
       "id": "route",
       "prompt": {
         "zh-CN": "急诊头颅CT示颅内空气栓塞；此前的超声心动图示房间隔缺损和肺动脉高压。导管在右颈内静脉，出事时她右侧瞳孔对光反射迟钝。空气最可能是怎样到达脑部的？这对她以后的治疗意味着什么？",
-        "en": "The emergency head CT shows intracranial air embolism; the earlier echo showed an atrial septal defect with pulmonary hypertension. The line was in the right internal jugular vein, and at the collapse her right pupil reacted sluggishly. How did the air most likely reach her brain, and what follows for her care?"
+        "en": "The emergency head CT shows intracranial air embolism; the earlier echo showed an atrial septal defect with pulmonary hypertension. The line was in the right internal jugular vein, and during the event her right pupil reacted sluggishly. How did the air most likely reach her brain, and what follows for her care?"
       },
       "kind": "single",
       "requires": {
@@ -3761,8 +3843,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "右侧瞳孔反射迟钝是一个局灶体征，但说明不了气体是怎么到达的：经分流进入动脉的气体和沿静脉逆行的气体都可能造成这种表现（Bothma与Schlimp，2014）；一个体征不能区分两条路径。缺损伴肺动脉高压对她今后的任何输液、置管和操作都仍然重要。",
-            "en": "A sluggish right pupil is a focal sign, but it says nothing about how the gas got there: gas reaching the brain through the arteries after crossing the shunt could produce it as well as gas rising in the veins (Bothma and Schlimp, 2014); one sign cannot tell the routes apart. The defect with pulmonary hypertension still matters for every future line, infusion and procedure."
+            "zh-CN": "右侧瞳孔反射迟钝是一个局灶体征，但说明不了气体是怎么到达的：经分流进入动脉的气体可以引起局灶体征（Moon，UHMS 2019），沿静脉逆行的气体——即Bothma与Schlimp（2014）所说的逆行性脑静脉气体栓塞——也可以；一个体征不能区分两条路径。缺损伴肺动脉高压对她今后的任何输液、置管和操作都仍然重要。",
+            "en": "A sluggish right pupil is a focal sign, but it says nothing about how the gas got there: arterial gas that crossed the shunt can cause focal signs (Moon, UHMS 2019), and so can gas that rose up the veins — the retrograde cerebral venous gas embolism described by Bothma and Schlimp (2014); one sign cannot tell the routes apart. The defect with pulmonary hypertension still matters for every future line, infusion and procedure."
           }
         },
         {
@@ -3804,8 +3886,8 @@
         {
           "id": "candour-meeting",
           "text": {
-            "zh-CN": "尽快和上级医生在安静处与家属谈：如实说明空气很可能是拔管时经颈部针眼进入的，道歉，解释高压氧和不确定的预后，记录谈话并上报不良事件",
-            "en": "Meet the family soon, with the senior doctor, somewhere quiet: say plainly that air most likely entered through the neck puncture at the removal, apologise, explain hyperbaric oxygen and the uncertain outlook, record it and report the incident"
+            "zh-CN": "尽快和上级医生在安静处与家属谈：如实说明空气很可能是拔管后经颈部针眼进入的，道歉，解释高压氧和不确定的预后，记录谈话并上报不良事件",
+            "en": "Meet the family soon, with the senior doctor, somewhere quiet: say plainly that air most likely entered through the neck puncture after the removal, apologise, explain hyperbaric oxygen and the uncertain outlook, record it and report the incident"
           },
           "correct": true,
           "feedback": {
@@ -3933,7 +4015,7 @@
       "weight": 2,
       "text": {
         "zh-CN": "她失去反应时，在床旁评估意识、呼吸、抽搐、大动脉搏动、瞳孔和颈部穿刺处，并查了指尖血糖",
-        "en": "When she collapsed, assessed her responsiveness, breathing, convulsions, central pulse, pupils and the neck puncture at the bedside, and checked a capillary glucose"
+        "en": "When she stopped responding, assessed her responsiveness, breathing, convulsions, central pulse, pupils and the neck puncture at the bedside, and checked a capillary glucose"
       },
       "met": {
         "all": [
@@ -3981,7 +4063,7 @@
       "critical": true,
       "text": {
         "zh-CN": "她失去反应后、转入ICU之前，就在原床位呼救、封闭穿刺点、让她放平，并给予高流量纯氧",
-        "en": "Before she was moved to intensive care, at the bed where she collapsed: called for help, sealed the puncture, laid her flat and gave high-flow 100 % oxygen"
+        "en": "Before she was moved to intensive care, at the bed where she stopped responding: called for help, sealed the puncture, laid her flat and gave high-flow 100 % oxygen"
       },
       "met": {
         "all": [
@@ -4088,8 +4170,8 @@
       "domain": "safety",
       "weight": 2,
       "text": {
-        "zh-CN": "定好拔管方法后才拔管，高压氧治疗前没有让她坐起，她失去反应后也没有采用头低位",
-        "en": "Took the line out only once its removal was planned, did not sit her up before hyperbaric oxygen, and did not tilt her head-down once she had stopped responding"
+        "zh-CN": "定好拔管方法后才拔管、没有让她坐着拔，拔管后到高压氧治疗前没有让她坐起，她失去反应后也没有采用头低位",
+        "en": "Took the line out only once its removal was planned and not with her sitting up, did not sit her up after it before hyperbaric oxygen, and did not tilt her head-down once she had stopped responding"
       },
       "met": {
         "not": {
@@ -4169,8 +4251,8 @@
         "en": "Told the family honestly and in plain words what happened, what is being done and how uncertain the outlook is, and checked they understood"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge框架、告知坏消息的SPIKES步骤和职业坦诚义务评价与家属的谈话：开始——介绍自己和在场的上级医生、护士，确认对方是她的家属，安排安静的地方；了解——先问家属已经知道什么、最担心什么（“还能醒过来吗？是不是拔管出的事？”）；说明——用通俗的话讲：拔管时空气很可能经颈部针眼进入血管、到了脑部，这是一种拔管并发症；明确表示歉意，不推卸、不责怪她坐起；讲清正在做的治疗——纯氧和高压氧——为什么要做、怎么做、有哪些风险（耳部和鼻窦气压伤、氧中毒抽搐、加压前要排除气胸），并征求家属同意；如实说明预后不确定，不作虚假保证，也不说“没希望”；回应情绪，留出提问的时间；请家属复述关键内容以确认理解；告知已上报不良事件、医院会调查并改进，约定下次沟通的时间和联系人。本病例没有记录医生与家属谈了什么。",
-        "en": "Judge the conversation with the family against the Calgary–Cambridge guide, SPIKES for breaking bad news and the duty of candour. Initiating: introduce yourself and the senior doctor and nurse present, confirm who the relative is, find a quiet place. Gathering: ask first what they already know and what they fear ('Will she wake up? Did taking the line out cause this?'). Explaining: in plain words — air most likely got into the vein through the neck puncture when the line came out and travelled to the brain, a complication of the removal; apologise clearly, with no excuses and no blaming her for sitting up; explain the treatment — oxygen and hyperbaric oxygen — why, what it involves and its risks (ear and sinus barotrauma, oxygen-toxicity seizures, the pneumothorax check before compression), and seek the family's agreement; say honestly that the outlook is uncertain, with no false reassurance and no 'there is no hope'. Respond to emotion and leave time for questions; check understanding by teach-back; say the incident has been reported and will be reviewed, and agree when and with whom they will next talk. This case does not record what the family was told."
+        "zh-CN": "按Calgary–Cambridge框架、告知坏消息的SPIKES步骤和职业坦诚义务评价与家属的谈话：开始——介绍自己和在场的上级医生、护士，确认对方是她的家属，安排安静的地方；了解——先问家属已经知道什么、最担心什么（“还能醒过来吗？是不是拔管出的事？”）；说明——用通俗的话讲：拔管后空气很可能经颈部针眼进入血管、到了脑部，这是一种拔管并发症；明确表示歉意，不推卸、不责怪她坐起；讲清正在做的治疗——纯氧和高压氧——为什么要做、怎么做、有哪些风险（耳部和鼻窦气压伤、氧中毒抽搐、加压前要排除气胸），并征求家属同意；如实说明预后不确定，不作虚假保证，也不说“没希望”；回应情绪，留出提问的时间；请家属复述关键内容以确认理解；告知已上报不良事件、医院会调查并改进，约定下次沟通的时间和联系人。本病例没有记录医生与家属谈了什么。",
+        "en": "Judge the conversation with the family against the Calgary–Cambridge guide, SPIKES for breaking bad news and the duty of candour. Initiating: introduce yourself and the senior doctor and nurse present, confirm who the relative is, find a quiet place. Gathering: ask first what they already know and what they fear ('Will she wake up? Did taking the line out cause this?'). Explaining: in plain words — air most likely got into the vein through the neck puncture after the line came out and travelled to the brain, a complication of the removal; apologise clearly, with no excuses and no blaming her for sitting up; explain the treatment — oxygen and hyperbaric oxygen — why, what it involves and its risks (ear and sinus barotrauma, oxygen-toxicity seizures, the pneumothorax check before compression), and seek the family's agreement; say honestly that the outlook is uncertain, with no false reassurance and no 'there is no hope'. Respond to emotion and leave time for questions; check understanding by teach-back; say the incident has been reported and will be reviewed, and agree when and with whom they will next talk. This case does not record what the family was told."
       }
     }
   ],
@@ -4182,8 +4264,8 @@
         "en": "Dr Meng (intensive care attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“拔颈部导管时，穿刺点和心脏的高低有什么意义？为什么要在屏气并向下用力时拔？”“她有房间隔缺损和肺动脉高压，拔管时你会多想到什么？”“她坐起来的那一刻改变了什么？”“这个时间点突然呼之不应、抽搐，你首先想到什么，还要排除什么？为什么不先送CT？”“为什么要纯氧？为什么现在不推荐头低位？”“加压前必须排除什么？她5天前做的是什么手术？”“右侧瞳孔反射迟钝能不能证明空气走的是哪条路？”“家属问‘是不是拔管出的事’，你怎么回答？”。可以讲宾夕法尼亚患者安全管理局通报（2012）、WS/T 433—2023（穿刺点密闭24小时）、Moon（UHMS 2019）及其与Mitchell的2025年更新版、UHMS适应证手册（2023）、ECHM 2016、AES 2016和职业坦诚义务的相关原则。病例结束后按PEARLS框架复盘。她双手遇冷发白疼痛，又有肺动脉高压：可以提出肺动脉高压的原因（与分流有关，还是结缔组织病等其他原因）需要专科评估，但本病例没有记录相关检查，不能断定。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；生命体征、血糖、CT细节、超声心动图数值和高压氧方案都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'When a neck line comes out, why does it matter where the puncture is relative to the heart? Why pull it while she holds her breath and bears down?', 'She has an atrial septal defect and pulmonary hypertension — what extra worry does that add to the removal?', 'What changed at the moment she sat up?', 'Unresponsive and convulsing at this moment — what comes first to mind, what else must be excluded, and why not go to CT first?', 'Why 100 % oxygen, and why is head-down no longer advised?', 'What must be excluded before compression, and what operation did she have 5 days ago?', 'Can a sluggish right pupil prove which route the air took?', 'Her relative asks whether taking the line out caused this — what do you say?'. May explain the relevant principles of the Pennsylvania Patient Safety Authority advisory (2012), WS/T 433—2023 (the 24-hour seal), Moon (UHMS 2019) and its 2025 update with Mitchell, the UHMS Indications Manual (2023), ECHM 2016, AES 2016 and the duty of candour. Debriefs with PEARLS once the case is over. Her cold, white, painful hands with pulmonary hypertension: may point out that the cause of the pulmonary hypertension (shunt-related, or another cause such as a connective-tissue disease) needs specialist assessment, but the case records no such work-up, so nothing may be asserted. The report's management is a historical record shown at the end of the case and compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; vital signs, glucose, CT details, echo measurements and the hyperbaric regimen are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“拔颈部导管时，穿刺点和心脏的高低有什么意义？为什么要在屏气并向下用力时拔？”“她有房间隔缺损和肺动脉高压，拔管时你会多想到什么？”“坐起来改变了什么？”“这个时间点突然呼之不应、抽搐，你首先想到什么，还要排除什么？为什么不先送CT？”“为什么要纯氧？为什么现在不推荐头低位？”“加压前必须排除什么？她5天前做的是什么手术？”“右侧瞳孔反射迟钝能不能证明空气走的是哪条路？”“家属问‘是不是拔管出的事’，你怎么回答？”。可以讲宾夕法尼亚患者安全管理局通报（2012；用于拔管方法——其对疑似空气栓塞取左侧卧头低位的建议早于Moon 2019，后者已不再推荐头低位）、WS/T 433—2023（穿刺点密闭24小时）、Moon（UHMS 2019）及其与Mitchell的2025年更新版、UHMS适应证手册（2023）、ECHM 2016、AES 2016和职业坦诚义务的相关原则。病例结束后按PEARLS框架复盘。她双手遇冷发白疼痛，又有肺动脉高压：可以提出肺动脉高压的原因（与分流有关，还是结缔组织病等其他原因）需要专科评估，但本病例没有记录相关检查，不能断定。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；生命体征、血糖、CT细节、超声心动图数值和高压氧方案都没有记录，不要替它补上。",
+        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'When a neck line comes out, why does it matter where the puncture is relative to the heart? Why pull it while she holds her breath and bears down?', 'She has an atrial septal defect and pulmonary hypertension — what extra worry does that add to the removal?', 'What did sitting up change?', 'Unresponsive and convulsing at this moment — what comes first to mind, what else must be excluded, and why not go to CT first?', 'Why 100 % oxygen, and why is head-down no longer advised?', 'What must be excluded before compression, and what operation did she have 5 days ago?', 'Can a sluggish right pupil prove which route the air took?', 'Her relative asks whether taking the line out caused this — what do you say?'. May explain the relevant principles of the Pennsylvania Patient Safety Authority advisory (2012; for the removal technique — its advice to put a patient with suspected air embolism head-down on the left side predates Moon 2019, which no longer recommends head-down), WS/T 433—2023 (the 24-hour seal), Moon (UHMS 2019) and its 2025 update with Mitchell, the UHMS Indications Manual (2023), ECHM 2016, AES 2016 and the duty of candour. Debriefs with PEARLS once the case is over. Her cold, white, painful hands with pulmonary hypertension: may point out that the cause of the pulmonary hypertension (shunt-related, or another cause such as a connective-tissue disease) needs specialist assessment, but the case records no such work-up, so nothing may be asserted. The report's management is a historical record shown at the end of the case and compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; vital signs, glucose, CT details, echo measurements and the hyperbaric regimen are not recorded — do not supply them."
       },
       "interprets": [
         "echo-earlier",
@@ -4248,7 +4330,7 @@
     },
     "conclusion": {
       "zh-CN": "51岁女性，双手遇冷发白疼痛，检查中发现房间隔缺损和肺动脉高压；胸交感神经链切断术后第5天拔除右颈内静脉导管：平卧拔管，按压约1分钟，普通胶布覆盖。拔管后约3分钟，她坐起时突然呼之不应、呼吸短促并抽搐；大动脉搏动可触及，双侧瞳孔等大，右侧对光反射迟钝。给氧后气管插管，急诊头颅CT示颅内空气栓塞——中心静脉导管拔除后的脑空气栓塞。原报告记录呼吸支持、高压氧和康复治疗；次日神志转清但左侧重度偏瘫，约第35天能独立行走。现行做法：拔颈部导管时穿刺点低于心脏、屏气拔出、封闭敷料并平卧一段时间；出现这样的情况按气体栓塞处理，不等CT——封闭穿刺点、水平位、纯氧、保护气道——排除气胸后尽快高压氧。",
-      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes after the removal, as she sat up, she suddenly became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism — cerebral air embolism after line removal. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time flat; treat such a collapse as gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
+      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes after the removal, as she sat up, she suddenly became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism — cerebral air embolism after line removal. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time flat; treat such an event as gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
     },
     "keyReasoning": [
       {
@@ -4279,7 +4361,7 @@
     "unknowns": [
       {
         "zh-CN": "任何阶段的生命体征（心率、血压、血氧饱和度、呼吸频率、体温）以及出事时的格拉斯哥评分和血糖。",
-        "en": "Vital signs at any stage (heart rate, blood pressure, oxygen saturation, respiratory rate, temperature), and the Glasgow score and glucose at the collapse."
+        "en": "Vital signs at any stage (heart rate, blood pressure, oxygen saturation, respiratory rate, temperature), and the Glasgow score and glucose during the event."
       },
       {
         "zh-CN": "超声心动图的细节：缺损的类型和大小、分流方向、肺动脉压力、检查日期，以及是否做过发泡试验或其他动态分流检查。",
@@ -4351,7 +4433,7 @@
   "unknowns": [
     {
       "zh-CN": "任何阶段的生命体征（心率、血压、血氧饱和度、呼吸频率、体温）以及出事时的格拉斯哥评分和血糖。",
-      "en": "Vital signs at any stage (heart rate, blood pressure, oxygen saturation, respiratory rate, temperature), and the Glasgow score and glucose at the collapse."
+      "en": "Vital signs at any stage (heart rate, blood pressure, oxygen saturation, respiratory rate, temperature), and the Glasgow score and glucose during the event."
     },
     {
       "zh-CN": "超声心动图的细节：缺损的类型和大小、分流方向、肺动脉压力、检查日期，以及是否做过发泡试验或其他动态分流检查。",
@@ -5016,6 +5098,41 @@
       {
         "text": "你们最怕的是什么？",
         "locale": "zh-CN",
+        "expect": [
+          "relative-worry"
+        ]
+      },
+      {
+        "text": "What brings you in?",
+        "locale": "en",
+        "expect": [
+          "line-today"
+        ]
+      },
+      {
+        "text": "Why are you in hospital at the moment?",
+        "locale": "en",
+        "expect": [
+          "line-today"
+        ]
+      },
+      {
+        "text": "Did you have a tube in your chest after surgery?",
+        "locale": "en",
+        "expect": [
+          "chest-after-surgery"
+        ]
+      },
+      {
+        "text": "What do you understand about her condition?",
+        "locale": "en",
+        "expect": [
+          "relative-told"
+        ]
+      },
+      {
+        "text": "What do you fear most for her?",
+        "locale": "en",
         "expect": [
           "relative-worry"
         ]

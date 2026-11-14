@@ -25,8 +25,8 @@
   "estimatedMinutes": 40,
   "learningOutcomes": [
     {
-      "zh-CN": "根据Ⅱ、Ⅲ、aVF 导联及右胸导联 V3R–V5R 的 ST 段抬高，识别下壁 ST 段抬高型心肌梗死合并右心室受累（第五版心肌梗死通用定义，2026；中国 STEMI 指南 2019：≥ 0.1 mV，尤其 V4R），并且不因高龄推迟、立即启动直接 PCI（ESC 2023 ACS）。",
-      "en": "Recognise inferior STEMI with right-ventricular involvement from ST elevation in II, III and aVF and in the right-sided leads V3R–V5R (Fifth Universal Definition of MI, 2026; Chinese STEMI guideline 2019: ≥ 0.1 mV, above all in V4R), and start immediate primary PCI without letting her age delay it (ESC 2023 ACS)."
+      "zh-CN": "根据Ⅱ、Ⅲ、aVF 导联及右胸导联 V3R–V5R 的 ST 段抬高，识别下壁 ST 段抬高型心肌梗死合并右心室受累（第五版心肌梗死通用定义，2026；中国 STEMI 指南 2019：≥ 0.1 mV，尤其 V4R），立即启动直接 PCI（ESC 2023 ACS），不因高龄推迟（中国 STEMI 指南 2019：再灌注治疗不存在年龄限制）。",
+      "en": "Recognise inferior STEMI with right-ventricular involvement from ST elevation in II, III and aVF and in the right-sided leads V3R–V5R (Fifth Universal Definition of MI, 2026; Chinese STEMI guideline 2019: ≥ 0.1 mV, above all in V4R), and start immediate primary PCI (ESC 2023 ACS) without letting her age delay it (no age limit on reperfusion: Chinese STEMI guideline 2019)."
     },
     {
       "zh-CN": "对右心室受累、收缩压 < 90 mmHg 且双肺清晰的患者，不用硝酸酯（ESC 2023 ACS）、利尿剂和其他扩血管药（中国 STEMI 指南 2019）以及静脉 β 受体阻滞剂，暂停降压药，以小剂量分次补液维持右心室前负荷，每次补液后复评。",
@@ -71,8 +71,8 @@
     ],
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——80岁女性，高血压 10 年、心房颤动 5 年，服用培哚普利和氨氯地平、未用抗栓药；胸痛 6 小时不缓解，面色苍白、大汗，到院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音；Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV、V3R–V5R 抬高 0.1 mV；急诊造影右冠状动脉远段大量血栓、TIMI 1 级，抽吸后管壁光滑无明显狭窄，血管内超声内膜完整、无斑块破裂，未放支架；术后第 3 天超声心动图左心房增大、游离壁回声考虑血栓，下壁和后壁运动减弱，LVEF 55%；肌钙蛋白 I 94.12 μg/L、BNP 3981.2 ng/L、入院 INR 1.1、肌酐 57.3 μmol/L；华法林加过渡期肝素和阿司匹林，第 6 天 INR 2.3 后停肝素；前 10 天有心衰症状，随后改善——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（心电图节律、其他生命体征、体重、瓣膜、超声心动图的检查方式、其他冠状动脉、药物剂量、远期结局）保持未知。保留的内部不一致：血栓位于右冠状动脉远段而右胸导联 ST 段抬高；1.0.0 中文写“前 10 天有心衰症状，随后改善并加用相应药物”，英文写“约 10 天”且未提加药。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — an 80-year-old woman with ten years of hypertension and five of atrial fibrillation, taking perindopril and amlodipine and no antithrombotic; six hours of unrelieved chest pain with pallor and heavy sweating; BP 88/62 mmHg and heart rate 62/min on arrival, lungs without wheeze or crackles; ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R; emergency angiography with heavy distal right coronary thrombus and TIMI 1 flow, a smooth vessel without significant stenosis after aspiration, IVUS with an intact intima and no plaque rupture, and no stent; on day 3 after the procedure an enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis and LVEF 55%; troponin I 94.12 μg/L, BNP 3981.2 ng/L, admission INR 1.1 and creatinine 57.3 μmol/L; warfarin with transitional heparin and aspirin, heparin stopped at INR 2.3 on day 6; heart-failure symptoms in the first 10 days, then improvement — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worries (teaching devices that add no clinical fact) are teaching design; what is not recorded (the ECG rhythm, other vital signs, weight, valves, whether the echocardiogram was transthoracic or transoesophageal, the other coronary arteries, drug doses, the long-term outcome) stays unknown. Inconsistencies kept: a distal right coronary thrombus with right-sided ST elevation; 1.0.0's Chinese text says heart-failure symptoms in the first 10 days, then improvement with the corresponding medicines added, while its English says about ten days and omits the medicines."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——80岁女性，高血压 10 年、心房颤动 5 年，服用培哚普利和氨氯地平、未用抗栓药；胸痛 6 小时不缓解，面色苍白、大汗，入院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音；Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV、V3R–V5R 抬高 0.1 mV；急诊造影右冠状动脉远段大量血栓、TIMI 1 级，抽吸后管壁光滑无明显狭窄，血管内超声内膜完整、无斑块破裂，未放支架；术后第 3 天超声心动图左心房增大、游离壁回声考虑血栓，下壁和后壁运动减弱，LVEF 55%；肌钙蛋白 I 94.12 μg/L、BNP 3981.2 ng/L、入院 INR 1.1、肌酐 57.3 μmol/L；华法林加过渡期肝素和阿司匹林，第 6 天 INR 2.3 后停肝素；前 10 天有心衰症状，随后改善——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（心电图节律、其他生命体征、体重、瓣膜、超声心动图的检查方式、其他冠状动脉、药物剂量、远期结局）保持未知。保留的内部不一致：血栓位于右冠状动脉远段而右胸导联 ST 段抬高；1.0.0 中文写“前 10 天有心衰症状，随后改善并加用相应药物”，英文写“约 10 天”且未提加药。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — an 80-year-old woman with ten years of hypertension and five of atrial fibrillation, taking perindopril and amlodipine and no antithrombotic; six hours of unrelieved chest pain with pallor and heavy sweating; BP 88/62 mmHg and heart rate 62/min on admission, lungs without wheeze or crackles; ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R; emergency angiography with heavy distal right coronary thrombus and TIMI 1 flow, a smooth vessel without significant stenosis after aspiration, IVUS with an intact intima and no plaque rupture, and no stent; on day 3 after the procedure an enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis and LVEF 55%; troponin I 94.12 μg/L, BNP 3981.2 ng/L, admission INR 1.1 and creatinine 57.3 μmol/L; warfarin with transitional heparin and aspirin, heparin stopped at INR 2.3 on day 6; heart-failure symptoms in the first 10 days, then improvement — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worries (teaching devices that add no clinical fact) are teaching design; what is not recorded (the ECG rhythm, other vital signs, weight, valves, whether the echocardiogram was transthoracic or transoesophageal, the other coronary arteries, drug doses, the long-term outcome) stays unknown. Inconsistencies kept: a distal right coronary thrombus with right-sided ST elevation; 1.0.0's Chinese text says heart-failure symptoms in the first 10 days, then improvement with the corresponding medicines added, while its English says about ten days and omits the medicines."
     },
     "review": {
       "status": "editorial",
@@ -112,8 +112,8 @@
       "en": "My chest has hurt for six hours and it won't stop"
     },
     "triageNote": {
-      "zh-CN": "80岁女性，胸痛 6 小时不缓解，面色苍白、大汗。到院血压 88/62 mmHg，心率 62 次/分。已安置在急诊抢救区。",
-      "en": "80-year-old woman with six hours of chest pain that has not eased; pale and sweating heavily. On arrival BP 88/62 mmHg, heart rate 62/min. Now in the ED resus bay."
+      "zh-CN": "80岁女性，胸痛 6 小时不缓解，面色苍白、大汗。入院时血压 88/62 mmHg，心率 62 次/分。已安置在急诊抢救区。",
+      "en": "80-year-old woman with six hours of chest pain that has not eased; pale and sweating heavily. Admission observations: BP 88/62 mmHg, heart rate 62/min. Now in the ED resus bay."
     },
     "tags": [
       {
@@ -139,8 +139,8 @@
         "en": "An 80-year-old woman whose chest has hurt for six hours without letup, in pain and frightened. She tries to answer whatever she is asked, in few words; she says what she knows and owns up plainly to what she doesn't, never guessing."
       },
       "speechStyle": {
-        "zh-CN": "口语、短句，说话有气无力，不用医学名词；药名只说得出常吃的那两种。",
-        "en": "Plain, short sentences in a weak voice, no medical words; the only drug names she knows are her two regular tablets."
+        "zh-CN": "口语、短句，疼得说话断断续续，不用医学名词；药名只说得出常吃的那两种。",
+        "en": "Plain, short sentences broken by the pain, no medical words; the only drug names she knows are her two regular tablets."
       },
       "healthLiteracy": "medium",
       "affect": "frightened",
@@ -377,7 +377,10 @@
           "whatistheproblem",
           "tellmeaboutthepain",
           "tellmeaboutthispain",
-          "tellmeaboutyourpain"
+          "tellmeaboutyourpain",
+          "seems to be the problem",
+          "the problem today",
+          "come to hospital"
         ]
       },
       "excludeKeywords": {
@@ -455,7 +458,8 @@
           "comeon",
           "cameon",
           "suddenly",
-          "sudden"
+          "sudden",
+          "when did the pain start"
         ]
       },
       "excludeKeywords": {
@@ -522,7 +526,8 @@
           "settled",
           "right now",
           "constant",
-          "gone away"
+          "gone away",
+          "let up"
         ]
       },
       "excludeKeywords": {
@@ -532,7 +537,11 @@
         ],
         "en": [
           "sweat",
-          "clammy"
+          "clammy",
+          "make it better",
+          "makes it better",
+          "make it worse",
+          "makes it worse"
         ]
       },
       "disclosure": "on-ask",
@@ -568,7 +577,11 @@
           "大汗",
           "除了胸口痛",
           "别的症状",
-          "其他症状"
+          "其他症状",
+          "很多汗",
+          "汗多",
+          "一身汗",
+          "流汗"
         ],
         "en": [
           "anything else",
@@ -655,7 +668,9 @@
         "en": [
           "how long",
           "spread",
-          "still"
+          "still",
+          "how heavy",
+          "weigh"
         ]
       },
       "disclosure": "unknown",
@@ -701,7 +716,9 @@
           "shoulder",
           "wheredoesithurt",
           "wherethepain",
-          "showmewhere"
+          "showmewhere",
+          "move anywhere",
+          "go anywhere"
         ]
       },
       "disclosure": "on-ask",
@@ -787,6 +804,18 @@
           "activity",
           "asleep",
           "exercise"
+        ]
+      },
+      "excludeKeywords": {
+        "en": [
+          "when did",
+          "for a living",
+          "your job",
+          "occupation"
+        ],
+        "zh-CN": [
+          "工作",
+          "职业"
         ]
       },
       "disclosure": "unknown",
@@ -960,7 +989,9 @@
           "atrial fibrillation",
           "irregular heartbeat",
           "heart problems",
-          "heart condition"
+          "heart condition",
+          "illnesses",
+          "other illnesses"
         ]
       },
       "excludeKeywords": {
@@ -977,7 +1008,9 @@
           "parents",
           "controlled",
           "tablets",
-          "medicines"
+          "medicines",
+          "offer",
+          "suggest"
         ]
       },
       "disclosure": "on-ask",
@@ -1142,7 +1175,8 @@
           "worry",
           "scared",
           "afraid",
-          "suggest"
+          "suggest",
+          "offer"
         ]
       },
       "disclosure": "on-ask",
@@ -1303,7 +1337,8 @@
           "blood in your urine",
           "blood in your stool",
           "vomited blood",
-          "vomiting blood"
+          "vomiting blood",
+          "bled"
         ]
       },
       "excludeKeywords": {
@@ -1388,7 +1423,8 @@
           "weight",
           "kilos",
           "stone",
-          "pounds"
+          "pounds",
+          "how heavy"
         ]
       },
       "disclosure": "unknown",
@@ -1460,7 +1496,15 @@
           "look after you",
           "carer",
           "athomewithyou",
-          "wholiveswithyou"
+          "wholiveswithyou",
+          "live with"
+        ]
+      },
+      "excludeKeywords": {
+        "en": [
+          "for a living",
+          "your job",
+          "occupation"
         ]
       },
       "disclosure": "unknown",
@@ -1589,6 +1633,14 @@
           "any pain today"
         ]
       },
+      "excludeKeywords": {
+        "en": [
+          "make it better",
+          "makes it better",
+          "make it worse",
+          "makes it worse"
+        ]
+      },
       "disclosure": "on-ask",
       "phases": [
         "day3"
@@ -1705,8 +1757,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "到院时血压 88/62 mmHg，心率 62 次/分。",
-        "en": "On arrival: blood pressure 88/62 mmHg, heart rate 62/min."
+        "zh-CN": "入院时血压 88/62 mmHg，心率 62 次/分。",
+        "en": "On admission: blood pressure 88/62 mmHg, heart rate 62/min."
       },
       "abnormal": true,
       "required": true,
@@ -1890,8 +1942,8 @@
             "en": "12-lead ECG: ST elevation of 0.15–0.2 mV in leads II, III and aVF."
           },
           "note": {
-            "zh-CN": "本病例没有记录这份心电图的心律、PR 间期与房室传导、对应导联的 ST 段压低或后壁导联（V7–V9）；心率 62 次/分与到院血压一起记录。",
-            "en": "This case does not record the rhythm, the PR interval and AV conduction, reciprocal ST depression or the posterior leads (V7–V9) for this tracing; the heart rate of 62/min is recorded with the arrival observations."
+            "zh-CN": "本病例没有记录这份心电图的心律、PR 间期与房室传导、对应导联的 ST 段压低或后壁导联（V7–V9）；心率 62 次/分与入院血压一起记录。",
+            "en": "This case does not record the rhythm, the PR interval and AV conduction, reciprocal ST depression or the posterior leads (V7–V9) for this tracing; the heart rate of 62/min is recorded with the admission observations."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：心电图（Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV）（待对照原文全文核对）",
@@ -1957,6 +2009,50 @@
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：心电图（V3R–V5R 导联 ST 段抬高 0.1 mV）（待对照原文全文核对）",
             "en": "Report fact as extracted for version 1.0.0: ECG (ST elevation 0.1 mV in V3R–V5R) (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "posterior-leads",
+      "name": {
+        "zh-CN": "后壁导联心电图（V7–V9）",
+        "en": "Posterior chest leads (V7–V9)"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "后壁导联",
+          "正后壁导联",
+          "v7",
+          "v8",
+          "v9"
+        ],
+        "en": [
+          "posterior leads",
+          "posterior ecg",
+          "v7",
+          "v8",
+          "v9"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "performedAt": "bedside",
+      "turnaroundMinutes": 5,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
           }
         }
       }
@@ -2555,6 +2651,61 @@
       }
     },
     {
+      "id": "oct",
+      "name": {
+        "zh-CN": "光学相干断层成像（OCT）",
+        "en": "Optical coherence tomography (OCT)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "oct",
+          "光学相干断层成像",
+          "光学相干断层扫描"
+        ],
+        "en": [
+          "oct",
+          "optical coherence tomography",
+          "intracoronary oct"
+        ]
+      },
+      "requires": [
+        "fluoroscopy"
+      ],
+      "performedAt": "provider",
+      "turnaroundMinutes": 10,
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "cath-lab": {
+          "available": false,
+          "text": {
+            "zh-CN": "此时还没有光学相干断层成像结果记录。",
+            "en": "No optical coherence tomography result is recorded at this point."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "post-aspiration": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "note": {
+            "zh-CN": "本病例记录的腔内影像检查是血管内超声（IVUS）。",
+            "en": "The intravascular imaging this case records is IVUS."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
       "id": "echo",
       "name": {
         "zh-CN": "超声心动图",
@@ -2697,12 +2848,12 @@
         "followup": {
           "available": true,
           "date": {
-            "zh-CN": "到院至住院头 10 天",
-            "en": "From arrival to the first 10 days of the admission"
+            "zh-CN": "入院至住院头 10 天",
+            "en": "From admission through the first 10 days"
           },
           "text": {
-            "zh-CN": "记录的病程：80岁女性，高血压 10 年、心房颤动 5 年，服用培哚普利和氨氯地平，未用抗栓药。胸痛 6 小时不缓解伴面色苍白、大汗就诊，到院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 导联抬高 0.1 mV；入院 INR 1.1，肌酐 57.3 μmol/L。急诊冠状动脉造影见右冠状动脉远段大量血栓、TIMI 血流 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声示内膜完整、无斑块破裂，未置入支架。肌钙蛋白 I 94.12 μg/L（参考 0–0.04），BNP 3981.2 ng/L（两者采血时间未记录）。术后第 3 天超声心动图：左心房增大，游离壁回声考虑血栓，下壁、后壁运动减弱，LVEF 55%。治疗：华法林加过渡期肝素，并用阿司匹林；第 6 天 INR 达 2.3 后停用肝素。前 10 天有心衰症状，随后好转，并加用了相应药物（药名未记录）。报告题目将本例归为心房颤动患者左心房血栓脱落所致急性心肌梗死；栓子迁移没有被直接观察到。本病例没有记录药物剂量、INR 目标、阿司匹林疗程、出院方案，以及远期栓塞和出血结局。",
-            "en": "Recorded course: an 80-year-old woman with ten years of hypertension and five of atrial fibrillation, taking perindopril and amlodipine and no antithrombotic, presented after six hours of unrelieved chest pain with pallor and heavy sweating; on arrival BP 88/62 mmHg, heart rate 62/min, lungs without wheeze or crackles. ECG: ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R; admission INR 1.1, creatinine 57.3 μmol/L. Emergency angiography showed heavy thrombus in the distal right coronary artery with TIMI 1 flow; after thrombus aspiration the vessel wall was smooth without significant stenosis, IVUS showed an intact intima without plaque rupture, and no stent was placed. Troponin I 94.12 μg/L (reference 0–0.04) and BNP 3981.2 ng/L (sampling times not recorded). Echocardiogram on day 3 after the procedure: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Treatment: warfarin with heparin during the transition, and aspirin; heparin was stopped on day 6 once the INR reached 2.3. Heart-failure symptoms during the first 10 days then improved; the corresponding medicines were added (not named). The report's title attributes the infarct to dislodged left atrial thrombus in AF; the embolus's migration was not directly observed. This case does not record the drug doses, the INR target, how long aspirin was given, the discharge regimen, or later embolic and bleeding outcomes."
+            "zh-CN": "记录的病程：80岁女性，高血压 10 年、心房颤动 5 年，服用培哚普利和氨氯地平，未用抗栓药。胸痛 6 小时不缓解伴面色苍白、大汗就诊，入院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 导联抬高 0.1 mV；入院 INR 1.1，肌酐 57.3 μmol/L。急诊冠状动脉造影见右冠状动脉远段大量血栓、TIMI 血流 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声示内膜完整、无斑块破裂，未置入支架。肌钙蛋白 I 94.12 μg/L（参考 0–0.04），BNP 3981.2 ng/L（两者采血时间未记录）。术后第 3 天超声心动图：左心房增大，游离壁回声考虑血栓，下壁、后壁运动减弱，LVEF 55%。治疗：华法林加过渡期肝素，并用阿司匹林；第 6 天 INR 达 2.3 后停用肝素。前 10 天有心衰症状，随后好转，并加用了相应药物（药名未记录）。报告题目将本例归为心房颤动患者左心房血栓脱落所致急性心肌梗死；栓子迁移没有被直接观察到。本病例没有记录药物剂量、INR 目标、阿司匹林疗程、出院方案，以及远期栓塞和出血结局。",
+            "en": "Recorded course: an 80-year-old woman with ten years of hypertension and five of atrial fibrillation, taking perindopril and amlodipine and no antithrombotic, presented after six hours of unrelieved chest pain with pallor and heavy sweating; on admission BP 88/62 mmHg, heart rate 62/min, lungs without wheeze or crackles. ECG: ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R; admission INR 1.1, creatinine 57.3 μmol/L. Emergency angiography showed heavy thrombus in the distal right coronary artery with TIMI 1 flow; after thrombus aspiration the vessel wall was smooth without significant stenosis, IVUS showed an intact intima without plaque rupture, and no stent was placed. Troponin I 94.12 μg/L (reference 0–0.04) and BNP 3981.2 ng/L (sampling times not recorded). Echocardiogram on day 3 after the procedure: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Treatment: warfarin with heparin during the transition, and aspirin; heparin was stopped on day 6 once the INR reached 2.3. Heart-failure symptoms during the first 10 days then improved; the corresponding medicines were added (not named). The report's title attributes the infarct to dislodged left atrial thrombus in AF; the embolus's migration was not directly observed. This case does not record the drug doses, the INR target, how long aspirin was given, the discharge regimen, or later embolic and bleeding outcomes."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的报告事实：治疗、病程与题目（华法林、过渡期肝素、阿司匹林；第 6 天 INR 2.3 停肝素；前 10 天心衰症状）（待对照原文全文核对）",
@@ -2716,6 +2867,12 @@
     "rules": [
       {
         "ifHas": "right-chest-leads",
+        "remove": [
+          "ecg"
+        ]
+      },
+      {
+        "ifHas": "posterior-leads",
         "remove": [
           "ecg"
         ]
@@ -2737,6 +2894,13 @@
         "ifHas": "ivus",
         "remove": [
           "angiography"
+        ]
+      },
+      {
+        "ifHas": "oct",
+        "remove": [
+          "angiography",
+          "ivus"
         ]
       }
     ],
@@ -2781,7 +2945,7 @@
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": {
-        "always": true
+        "phase": "ed"
       },
       "response": {
         "zh-CN": "监护已接上，电极片已贴好。本病例没有记录她的监护读数和心律，也不模拟。",
@@ -2882,8 +3046,22 @@
       "risk": "low",
       "maxDoses": 1,
       "indicatedWhen": {
-        "read": "ecg",
-        "phase": "ed"
+        "all": [
+          {
+            "read": "ecg",
+            "phase": "ed"
+          },
+          {
+            "any": [
+              {
+                "phase": "ed"
+              },
+              {
+                "phase": "cath-lab"
+              }
+            ]
+          }
+        ]
       },
       "response": {
         "zh-CN": "阿司匹林已嚼服。本病例没有记录到院时是否给过阿司匹林负荷量；不模拟其效果。",
@@ -2979,8 +3157,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "PCI 开始时普通肝素 70–100 U/kg 静脉推注（拟用 GP IIb/IIIa 受体拮抗剂时 50–70 U/kg），术中按活化凝血时间追加。",
-        "en": "UFH 70–100 U/kg as an IV bolus at the start of PCI (50–70 U/kg if a GP IIb/IIIa inhibitor will be used), topped up in the laboratory by the activated clotting time."
+        "zh-CN": "PCI 开始时普通肝素 70–100 U/kg 静脉推注（ESC 2023 ACS）；拟联用 GP IIb/IIIa 受体拮抗剂时为 50–70 U/kg（中国 STEMI 指南 2019）；术中按活化凝血时间追加。",
+        "en": "UFH 70–100 U/kg as an IV bolus at the start of PCI (ESC 2023 ACS), or 50–70 U/kg if a GP IIb/IIIa inhibitor will be used (Chinese STEMI guideline 2019), topped up in the laboratory by the activated clotting time."
       },
       "requires": [
         "medications",
@@ -2989,7 +3167,21 @@
       "risk": "moderate",
       "maxDoses": 1,
       "indicatedWhen": {
-        "intervened": "activate-cath-lab"
+        "all": [
+          {
+            "intervened": "activate-cath-lab"
+          },
+          {
+            "any": [
+              {
+                "phase": "ed"
+              },
+              {
+                "phase": "cath-lab"
+              }
+            ]
+          }
+        ]
       },
       "response": {
         "zh-CN": "肝素已推注。本病例没有记录是否做过这一步；不模拟其效果。",
@@ -3212,11 +3404,18 @@
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": {
-        "always": true
+        "any": [
+          {
+            "phase": "ed"
+          },
+          {
+            "phase": "cath-lab"
+          }
+        ]
       },
       "response": {
-        "zh-CN": "两种药都已在医嘱上暂停。本病例没有记录这一步，也没有记录何时恢复用药；不模拟其效果。",
-        "en": "Both are held on the drug chart. This case does not record this step or when they were restarted; it does not simulate its effect."
+        "zh-CN": "两种药都已在医嘱上暂停。本病例没有记录这一步，也没有记录是否及何时恢复用药；不模拟其效果。",
+        "en": "Both are held on the drug chart. This case does not record this step, or whether and when they were restarted; it does not simulate its effect."
       }
     },
     {
@@ -3256,8 +3455,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她到院收缩压 88 mmHg，硝酸酯属于禁忌（ESC 2023 ACS）。下壁心肌梗死常累及右心室，右心室靠前负荷维持输出，硝酸酯扩张静脉、减少回心血量，可使血压骤然大幅下降——用任何扩血管药之前先记录 V3R/V4R。硝酸酯只缓解症状，不能开通闭塞的血管。本病例此后没有记录血压，没有哪个时点能证明用药已经安全。",
-        "en": "Her arrival systolic pressure was 88 mmHg, which rules out a nitrate (ESC 2023 ACS). Inferior infarction often involves the right ventricle, whose output depends on preload; a nitrate's venodilation can drop the pressure suddenly and steeply — record V3R/V4R before any vasodilator. Nitrates ease symptoms; they do not open the artery. No later blood pressure is recorded in this case, so no point is documented at which it became safe."
+        "zh-CN": "她入院收缩压 88 mmHg，硝酸酯属于禁忌（ESC 2023 ACS）。下壁心肌梗死常累及右心室，右心室靠前负荷维持输出，硝酸酯扩张静脉、减少回心血量，可使血压骤然大幅下降——用任何扩血管药之前先记录 V3R/V4R。硝酸酯只缓解症状，不能开通闭塞的血管。本病例此后没有记录血压，没有哪个时点能证明用药已经安全。",
+        "en": "Her admission systolic pressure was 88 mmHg, which rules out a nitrate (ESC 2023 ACS). Inferior infarction often involves the right ventricle, whose output depends on preload; a nitrate's venodilation can drop the pressure suddenly and steeply — record V3R/V4R before any vasodilator. Nitrates ease symptoms; they do not open the artery. No later blood pressure is recorded in this case, so no point is documented at which it became safe."
       },
       "response": {
         "zh-CN": "本病例没有记录是否用过硝酸酯；不模拟其效果。",
@@ -3358,8 +3557,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ESC 2023 ACS 只在没有急性心力衰竭征象、收缩压 > 120 mmHg 的直接 PCI 患者中考虑就诊时静脉使用 β 受体阻滞剂。她到院收缩压 88 mmHg、心率 62 次/分；下壁梗死多在右冠状动脉供血区，可伴心动过缓和房室传导阻滞，静脉 β 受体阻滞剂会同时加重低血压和心动过缓。",
-        "en": "ESC 2023 ACS considers IV beta-blockers at presentation only for primary-PCI patients with no signs of acute heart failure and a systolic pressure above 120 mmHg. Her arrival pressure was 88 mmHg with a rate of 62/min, and an inferior infarct — usually right-coronary territory — can bring bradycardia and AV block, which IV beta-blockade deepens along with the hypotension."
+        "zh-CN": "ESC 2023 ACS 只在没有急性心力衰竭征象、收缩压 > 120 mmHg 的直接 PCI 患者中考虑就诊时静脉使用 β 受体阻滞剂。她入院收缩压 88 mmHg、心率 62 次/分；下壁梗死多在右冠状动脉供血区，可伴心动过缓和房室传导阻滞，静脉 β 受体阻滞剂会同时加重低血压和心动过缓。",
+        "en": "ESC 2023 ACS considers IV beta-blockers at presentation only for primary-PCI patients with no signs of acute heart failure and a systolic pressure above 120 mmHg. Her admission pressure was 88 mmHg with a rate of 62/min, and an inferior infarct — usually right-coronary territory — can bring bradycardia and AV block, which IV beta-blockade deepens along with the hypotension."
       },
       "response": {
         "zh-CN": "本病例没有记录是否用过 β 受体阻滞剂；不模拟其效果。",
@@ -3392,8 +3591,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "替奈普酶按体重分档单次静脉推注；≥ 75 岁者用半量。",
-        "en": "Tenecteplase as a single weight-banded IV bolus, halved from the age of 75."
+        "zh-CN": "替奈普酶按体重分档单次静脉推注；年龄 > 75 岁者用半量。",
+        "en": "Tenecteplase as a single weight-banded IV bolus, at half dose over the age of 75."
       },
       "requires": [
         "medications",
@@ -4120,8 +4319,8 @@
     {
       "id": "reperfusion",
       "prompt": {
-        "zh-CN": "80岁女性，胸痛 6 小时仍未缓解，面色苍白、大汗；到院血压 88/62 mmHg，心率 62 次/分。12 导联心电图：Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV。本院设有心导管室。你的再灌注计划是什么？",
-        "en": "An 80-year-old woman with six hours of unrelieved chest pain, pale and sweating; on arrival BP 88/62 mmHg, heart rate 62/min. Her 12-lead ECG shows ST elevation of 0.15–0.2 mV in II, III and aVF. This hospital has a catheter laboratory. What is your reperfusion plan?"
+        "zh-CN": "80岁女性，胸痛 6 小时仍未缓解，面色苍白、大汗；入院血压 88/62 mmHg，心率 62 次/分。12 导联心电图：Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV。本院设有心导管室。你的再灌注计划是什么？",
+        "en": "An 80-year-old woman with six hours of unrelieved chest pain, pale and sweating; admission BP 88/62 mmHg, heart rate 62/min. Her 12-lead ECG shows ST elevation of 0.15–0.2 mV in II, III and aVF. This hospital has a catheter laboratory. What is your reperfusion plan?"
       },
       "kind": "single",
       "requires": {
@@ -4214,8 +4413,8 @@
     {
       "id": "rv-haemodynamics",
       "prompt": {
-        "zh-CN": "右胸导联 V3R–V5R ST 段抬高 0.1 mV；到院血压 88/62 mmHg，双肺未闻及干、湿啰音。导管室正在准备。护士问要不要给她舌下含服硝酸甘油止痛，以及要不要照常给她吃培哚普利和氨氯地平。你怎么处理？",
-        "en": "The right-sided leads show ST elevation of 0.1 mV in V3R–V5R; her arrival BP was 88/62 mmHg and there are no wheezes or crackles over her lungs. The catheter laboratory is getting ready. The nurse asks whether she should give sublingual GTN for the pain, and her usual perindopril and amlodipine. What do you do?"
+        "zh-CN": "右胸导联 V3R–V5R ST 段抬高 0.1 mV；入院血压 88/62 mmHg，双肺未闻及干、湿啰音。导管室正在准备。护士问要不要给她舌下含服硝酸甘油止痛，以及要不要照常给她吃培哚普利和氨氯地平。你怎么处理？",
+        "en": "The right-sided leads show ST elevation of 0.1 mV in V3R–V5R; her admission BP was 88/62 mmHg and there are no wheezes or crackles over her lungs. The catheter laboratory is getting ready. The nurse asks whether she should give sublingual GTN for the pain, and her usual perindopril and amlodipine. What do you do?"
       },
       "kind": "single",
       "requires": {
@@ -4409,8 +4608,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。抽吸后管壁光滑、腔内影像未见斑块破裂，加上未抗凝的房颤，可满足 Shibata 等（2015）标准中的 1 项主要和 1 项次要标准，即“很可能”的冠状动脉栓塞；影像上找到栓子来源即可达到“确诊”。没有病变就没有支架指征，也就免去了联合抗栓治疗。IVUS 不能完全排除斑块侵蚀，分辨率更高的 OCT 更合适（ESC 2023 ACS）。",
-            "en": "Correct. A smooth wall after aspiration, imaging without plaque rupture and untreated AF can meet one major and one minor Shibata criterion (2015) — probable coronary embolism — and an embolic source on imaging would make it definite. No lesion means no indication for a stent, which spares her combined antithrombotic therapy. IVUS cannot fully exclude plaque erosion; OCT, with its finer resolution, is better suited (ESC 2023 ACS)."
+            "zh-CN": "正确。抽吸后管壁光滑、腔内影像未见斑块破裂，加上未抗凝的房颤，可满足 Shibata 等（2015）标准中的 1 项主要和 1 项次要标准，即“很可能”的冠状动脉栓塞；影像上找到栓子来源即可达到“确诊”。没有病变就没有支架指征，也就免去了联合抗栓治疗。IVUS 不能完全排除斑块侵蚀：OCT 分辨率更高，ESC 2023 ACS 对不确定的罪犯病变首选 OCT。",
+            "en": "Correct. A smooth wall after aspiration, imaging without plaque rupture and untreated AF can meet one major and one minor Shibata criterion (2015) — probable coronary embolism — and an embolic source on imaging would make it definite. No lesion means no indication for a stent, which spares her combined antithrombotic therapy. IVUS cannot fully exclude plaque erosion: OCT resolves the wall more finely, and ESC 2023 ACS prefers it for an ambiguous culprit lesion."
           }
         },
         {
@@ -4633,8 +4832,8 @@
       "id": "rb-ecg-right-leads",
       "domain": "investigations",
       "text": {
-        "zh-CN": "到院即记录并阅读 12 导联心电图和右胸导联",
-        "en": "Recorded and read the 12-lead ECG and the right-sided leads on arrival"
+        "zh-CN": "在急诊即记录并阅读 12 导联心电图和右胸导联",
+        "en": "Recorded and read the 12-lead ECG and the right-sided leads in the ED"
       },
       "weight": 2,
       "met": {
@@ -4722,8 +4921,8 @@
       "id": "rb-ed-support",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即定下保护右心室前负荷的方案并落实：上监护、暂停降压药、谨慎补液、给予阿司匹林负荷，在启动导管室之后才转运，且术前不开始口服抗凝",
-        "en": "Set a preload-protecting plan at the first attempt and acted on it: monitoring, antihypertensives held, cautious fluid, an aspirin load, the transfer only after the activation call, and no oral anticoagulant before the procedure"
+        "zh-CN": "首次作答即定下保护右心室前负荷的方案，并在开通血管之前落实：上监护、暂停降压药、谨慎补液、给予阿司匹林负荷，在启动导管室之后才转运，且不开始口服抗凝",
+        "en": "Set a preload-protecting plan at the first attempt and acted on it before the artery was opened: monitoring, antihypertensives held, cautious fluid, an aspirin load, the transfer only after the activation call, and no oral anticoagulant"
       },
       "weight": 2,
       "met": {
@@ -4732,16 +4931,20 @@
             "decidedFirstTry": "rv-haemodynamics"
           },
           {
-            "intervened": "cardiac-monitoring"
+            "intervened": "cardiac-monitoring",
+            "whenIndicated": true
           },
           {
-            "intervened": "hold-antihypertensives"
+            "intervened": "hold-antihypertensives",
+            "whenIndicated": true
           },
           {
-            "intervened": "fluid-challenge"
+            "intervened": "fluid-challenge",
+            "whenIndicated": true
           },
           {
-            "intervened": "aspirin-load"
+            "intervened": "aspirin-load",
+            "whenIndicated": true
           },
           {
             "not": {
@@ -4770,8 +4973,8 @@
       "id": "rb-cath-strategy",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选择选择性抽吸、在决定支架前先行腔内影像，并给予 PCI 用肝素",
-        "en": "Chose selective aspiration with imaging before any stent decision at the first attempt, and gave heparin for the procedure"
+        "zh-CN": "首次作答即选择选择性抽吸、在决定支架前先行腔内影像，并在操作开始时推注肝素",
+        "en": "Chose selective aspiration with imaging before any stent decision at the first attempt, and gave the heparin bolus at the start of the procedure"
       },
       "weight": 2,
       "met": {
@@ -4787,7 +4990,8 @@
             "phase": "post-aspiration"
           },
           {
-            "intervened": "ufh-pci"
+            "intervened": "ufh-pci",
+            "whenIndicated": true
           }
         ]
       }
@@ -4891,8 +5095,8 @@
         "en": "Nurse Qian"
       },
       "knowledge": {
-        "zh-CN": "到院交班（ISBAR）：80岁女性，胸痛 6 小时不缓解，面色苍白、大汗；到院血压 88/62 mmHg，心率 62 次/分；已在急诊抢救区。抢救区床旁有监护除颤仪、心电图机（可加做右胸导联）、抢救车（留置针、常用急救药）和氧气；导管室和介入医生一个电话即可启动，转运时带监护和除颤仪。复述医嘱并完成护理范围内的操作；只报告已经出来的结果，不解读、不诊断。收缩压低于 90 mmHg 时，给硝酸甘油之前会先提出疑问、请医生确认。被问到体重、呼吸频率、血氧饱和度或体温时，如实说没有记录可报，绝不编造数字；既往病史和平时用药请医生直接问患者本人。",
-        "en": "Handover on arrival (ISBAR): 80-year-old woman, six hours of unrelieved chest pain, pale and sweating heavily; on arrival BP 88/62 mmHg, heart rate 62/min; now in the ED resus bay. At the bedside: a monitor-defibrillator, the ECG machine (right-sided leads possible), the crash cart (cannulas, emergency drugs) and oxygen; the catheter laboratory and interventional cardiologist are one call away, and the transfer goes on the monitor with the defibrillator. Reads orders back and carries out nursing-scope tasks; reports only results that are back, never interprets or diagnoses. With a systolic pressure under 90 mmHg she questions a GTN order before giving it and asks the doctor to confirm. Asked for weight, respiratory rate, oxygen saturation or temperature, says plainly that nothing is recorded to report — never makes up a number; for her past illnesses and regular medicines she suggests asking the patient herself."
+        "zh-CN": "到院交班（ISBAR）：80岁女性，胸痛 6 小时不缓解，面色苍白、大汗；入院血压 88/62 mmHg，心率 62 次/分；已在急诊抢救区。抢救区床旁有监护除颤仪、心电图机（可加做右胸导联）、抢救车（留置针、常用急救药）和氧气；导管室和介入医生一个电话即可启动，转运时带监护和除颤仪。复述医嘱并完成护理范围内的操作；只报告已经出来的结果，不解读、不诊断。收缩压低于 90 mmHg 时，给硝酸甘油之前会先提出疑问、请医生确认。被问到体重、呼吸频率、血氧饱和度或体温时，如实说没有记录可报，绝不编造数字；既往病史和平时用药请医生直接问患者本人。",
+        "en": "Handover on arrival (ISBAR): 80-year-old woman, six hours of unrelieved chest pain, pale and sweating heavily; admission BP 88/62 mmHg, heart rate 62/min; now in the ED resus bay. At the bedside: a monitor-defibrillator, the ECG machine (right-sided leads possible), the crash cart (cannulas, emergency drugs) and oxygen; the catheter laboratory and interventional cardiologist are one call away, and the transfer goes on the monitor with the defibrillator. Reads orders back and carries out nursing-scope tasks; reports only results that are back, never interprets or diagnoses. With a systolic pressure under 90 mmHg she questions a GTN order before giving it and asks the doctor to confirm. Asked for weight, respiratory rate, oxygen saturation or temperature, says plainly that nothing is recorded to report — never makes up a number; for her past illnesses and regular medicines she suggests asking the patient herself."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4959,8 +5163,8 @@
       "en": "Debrief: a hypotensive inferior infarct, a thrombus in the catheter laboratory and anticoagulation in AF"
     },
     "conclusion": {
-      "zh-CN": "80岁女性，高血压 10 年、房颤 5 年，服培哚普利和氨氯地平，未用抗栓药；胸痛 6 小时不缓解，面色苍白、大汗，到院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 抬高 0.1 mV：下壁 ST 段抬高型心肌梗死合并右心室受累和低血压。急诊造影示右冠状动脉远段大量血栓、TIMI 1 级；抽吸后管壁光滑、无明显狭窄，IVUS 内膜完整、无斑块破裂，未放支架。术后第 3 天超声见左心房增大、游离壁回声考虑血栓，下壁和后壁运动减弱，LVEF 55%。肌钙蛋白 I 94.12 μg/L、BNP 3981.2 ng/L（采血时间均未记录）。诊断：未抗凝房颤患者左心房血栓栓塞冠状动脉所致急性心肌梗死——以左心房回声为栓子来源时按 Shibata 标准可确诊，但栓子迁移本身未被直接观察到。记录中用华法林加肝素过渡（第 6 天 INR 2.3 停肝素）并加阿司匹林，前 10 天心衰症状随后好转。按现行指南：立即直接 PCI，不用硝酸酯，选择性抽吸加腔内影像，不放支架，按说明书剂量使用 DOAC。",
-      "en": "An 80-year-old woman with 10 years of hypertension and 5 of AF, on perindopril and amlodipine, no antithrombotic, had 6 h of unrelieved chest pain, pallor and heavy sweating; BP 88/62 mmHg, HR 62/min, no wheeze or crackles. ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R: inferior STEMI with RV involvement and hypotension. Angiography: heavy distal RCA thrombus, TIMI 1 flow; after aspiration a smooth wall, no significant stenosis, IVUS an intact intima, no plaque rupture; no stent. Day-3 echo: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Troponin I 94.12 μg/L and BNP 3981.2 ng/L (sampling times not recorded). Diagnosis: MI from coronary embolism of left atrial thrombus in untreated AF — definite by the Shibata criteria once the atrial echo is taken as its source, though the migration itself was not observed. Recorded care: warfarin, heparin until INR 2.3 on day 6, aspirin; heart-failure symptoms in the first 10 days then improved. Today: immediate primary PCI, no nitrate, selective aspiration with imaging, no stent, a label-dose DOAC."
+      "zh-CN": "80岁女性，高血压 10 年、房颤 5 年，服培哚普利和氨氯地平，未用抗栓药；胸痛 6 小时不缓解，面色苍白、大汗，入院血压 88/62 mmHg、心率 62 次/分，双肺未闻及干湿啰音。心电图Ⅱ、Ⅲ、aVF 导联 ST 段抬高 0.15–0.2 mV，V3R–V5R 抬高 0.1 mV：下壁 ST 段抬高型心肌梗死合并右心室受累和低血压。急诊造影示右冠状动脉远段大量血栓、TIMI 1 级；抽吸后管壁光滑、无明显狭窄，IVUS 内膜完整、无斑块破裂，未放支架。术后第 3 天超声见左心房增大、游离壁回声考虑血栓，下壁和后壁运动减弱，LVEF 55%。肌钙蛋白 I 94.12 μg/L、BNP 3981.2 ng/L（采血时间均未记录）。诊断：未抗凝房颤患者左心房血栓栓塞冠状动脉所致急性心肌梗死——以左心房回声为栓子来源时按 Shibata 标准可确诊，但栓子迁移本身未被直接观察到。记录中用华法林加肝素过渡（第 6 天 INR 2.3 停肝素）并加阿司匹林，前 10 天心衰症状随后好转。按现行指南：立即直接 PCI，不用硝酸酯，选择性抽吸加腔内影像，不放支架，按说明书剂量使用 DOAC。",
+      "en": "An 80-year-old woman with 10 years of hypertension and 5 of AF, on perindopril and amlodipine, no antithrombotic, had 6 h of unrelieved chest pain, pallor and heavy sweating; admission BP 88/62 mmHg, HR 62/min, no wheeze or crackles. ST elevation of 0.15–0.2 mV in II, III and aVF and 0.1 mV in V3R–V5R: inferior STEMI with RV involvement and hypotension. Angiography: heavy distal RCA thrombus, TIMI 1 flow; after aspiration a smooth wall, no significant stenosis, IVUS an intact intima, no plaque rupture; no stent. Day-3 echo: enlarged left atrium with a free-wall echo considered thrombus, inferior and posterior hypokinesis, LVEF 55%. Troponin I 94.12 μg/L and BNP 3981.2 ng/L (sampling times not recorded). Diagnosis: MI from coronary embolism of left atrial thrombus in untreated AF — definite by the Shibata criteria once the atrial echo is taken as its source, though the migration itself was not observed. Recorded care: warfarin, heparin until INR 2.3 on day 6, aspirin; heart-failure symptoms in the first 10 days then improved. Today: immediate primary PCI, no nitrate, selective aspiration with imaging, no stent, a label-dose DOAC."
     },
     "keyReasoning": [
       {
@@ -4990,16 +5194,16 @@
     },
     "unknowns": [
       {
-        "zh-CN": "到院心电图的心律、PR 间期与房室传导，以及对应导联的 ST 段压低和后壁导联。",
-        "en": "The rhythm, PR interval and AV conduction on the arrival ECG, and any reciprocal ST depression or posterior-lead changes."
+        "zh-CN": "所记录心电图的描记时间、心律、PR 间期与房室传导，以及对应导联的 ST 段压低和后壁导联。",
+        "en": "The time of the recorded ECG, its rhythm, PR interval and AV conduction, and any reciprocal ST depression or posterior-lead changes."
       },
       {
         "zh-CN": "呼吸频率、血氧饱和度、体温、体重和身高；颈静脉压、心音与杂音、脉律、外周灌注和神经系统查体。",
         "en": "Respiratory rate, oxygen saturation, temperature, weight and height; jugular venous pressure, heart sounds and murmurs, pulse rhythm, peripheral perfusion and the neurological examination."
       },
       {
-        "zh-CN": "卒中或短暂性脑缺血发作、糖尿病、出血史、肝肾疾病、过敏史、吸烟饮酒和居家情况——以及房颤 5 年为什么一直没有抗凝。",
-        "en": "Stroke or TIA, diabetes, bleeding history, kidney or liver disease, allergies, smoking, alcohol and home circumstances — and why five years of AF went without anticoagulation."
+        "zh-CN": "卒中或短暂性脑缺血发作、糖尿病、出血史、肝肾疾病、过敏史、吸烟饮酒和居家情况——以及患房颤以来是否用过抗凝药、为什么没有在用抗栓药。",
+        "en": "Stroke or TIA, diabetes, bleeding history, kidney or liver disease, allergies, smoking, alcohol and home circumstances — and whether she had ever been anticoagulated for her AF, and why she was taking no antithrombotic."
       },
       {
         "zh-CN": "培哚普利和氨氯地平的剂量，以及到院前和急诊期间的处理（抗血小板负荷、肝素、补液、血管活性药）。",
@@ -5024,8 +5228,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "下壁 ST 段抬高型心肌梗死中的右心室受累。每例下壁 STEMI 都要记录右胸导联（ESC 2023 ACS；中国 STEMI 指南 2019）：右胸导联 ST 段抬高提示右心室梗死（第五版心肌梗死通用定义，ESC/ACC/AHA/WHF 2026，未另设界值；中国指南以 ≥ 0.1 mV、尤其 V4R 为界，2018 年第四版通用定义曾以 V3R/V4R ≥ 0.05 mV 为界）。收缩压 < 90 mmHg、双肺清晰时，右心室依赖前负荷：低血压或右心室梗死时不用硝酸酯（ESC 2023 ACS），要维持右心室前负荷、避免利尿剂和扩血管药（中国 STEMI 指南 2019），暂停降压药，小剂量分次补液并复评，警惕心动过缓和房室传导阻滞，尽快再灌注。记录与现行做法：记录给出了到院血压、右胸导联和双肺未闻及干湿啰音，但没有记录急诊期间的处理。",
-        "en": "Right-ventricular involvement in inferior STEMI. Record the right-sided leads in every inferior STEMI (ESC 2023 ACS; Chinese STEMI guideline 2019): ST elevation there indicates RV infarction (Fifth Universal Definition of MI, ESC/ACC/AHA/WHF 2026, which sets no separate cut-point; the Chinese guideline takes ≥ 0.1 mV, above all in V4R, and the Fourth Universal Definition of 2018 took ≥ 0.05 mV in V3R/V4R). With a systolic pressure below 90 mmHg and clear lungs the right ventricle is preload-dependent: no nitrate with hypotension or RV infarction (ESC 2023 ACS); keep the preload up and avoid diuretics and vasodilators (Chinese STEMI guideline 2019); hold antihypertensives, give small fluid boluses with reassessment, watch for bradycardia and AV block, and reperfuse at once. Then and now: the record gives the arrival pressure, the right-sided leads and lungs without wheeze or crackles, but no ED treatment."
+        "zh-CN": "下壁 ST 段抬高型心肌梗死中的右心室受累。每例下壁 STEMI 都要记录右胸导联（ESC 2023 ACS；中国 STEMI 指南 2019）：右胸导联 ST 段抬高提示右心室梗死（第五版心肌梗死通用定义，ESC/ACC/AHA/WHF 2026，未另设界值；中国指南以 ≥ 0.1 mV、尤其 V4R 为界，2018 年第四版通用定义曾以 V3R/V4R ≥ 0.05 mV 为界）。收缩压 < 90 mmHg、双肺清晰时，右心室依赖前负荷：低血压或右心室梗死时不用硝酸酯（ESC 2023 ACS），要维持右心室前负荷、避免利尿剂和扩血管药（中国 STEMI 指南 2019），暂停降压药，小剂量分次补液并复评，警惕心动过缓和房室传导阻滞，尽快再灌注。记录与现行做法：记录给出了入院血压、右胸导联和双肺未闻及干湿啰音，但没有记录急诊期间的处理。",
+        "en": "Right-ventricular involvement in inferior STEMI. Record the right-sided leads in every inferior STEMI (ESC 2023 ACS; Chinese STEMI guideline 2019): ST elevation there indicates RV infarction (Fifth Universal Definition of MI, ESC/ACC/AHA/WHF 2026, which sets no separate cut-point; the Chinese guideline takes ≥ 0.1 mV, above all in V4R, and the Fourth Universal Definition of 2018 took ≥ 0.05 mV in V3R/V4R). With a systolic pressure below 90 mmHg and clear lungs the right ventricle is preload-dependent: no nitrate with hypotension or RV infarction (ESC 2023 ACS); keep the preload up and avoid diuretics and vasodilators (Chinese STEMI guideline 2019); hold antihypertensives, give small fluid boluses with reassessment, watch for bradycardia and AV block, and reperfuse at once. Then and now: the record gives the admission pressure, the right-sided leads and lungs without wheeze or crackles, but no ED treatment."
       },
       {
         "zh-CN": "80 岁同样直接 PCI。ESC 2023 ACS：发病 12 小时内的 STEMI，能在诊断后 120 分钟内完成时直接 PCI 优于溶栓；阿司匹林 150–300 mg 负荷，PCI 时普通肝素 70–100 U/kg；再灌注不等肌钙蛋白。预计需要口服抗凝时（如未抗凝的房颤），P2Y12 受体抑制剂选氯吡格雷（负荷 300–600 mg）。中国 STEMI 指南（2019）的优先次序相同，并指出再灌注治疗不存在年龄限制，尤其是直接 PCI。",
@@ -5040,8 +5244,8 @@
         "en": "Coronary embolism. The Shibata criteria (2015): major — angiographic coronary embolism and thrombosis without atherosclerotic components, simultaneous emboli in several coronary sites, concomitant systemic embolism without a left-ventricular thrombus from the infarct; minor — < 25 % stenosis outside the culprit lesion, an embolic source on TTE, TEE, CT or MRI, embolic risk factors such as AF. Definite with ≥ 2 major, 1 major + ≥ 2 minor or 3 minor; probable with 1 major + 1 minor or 2 minor; AF is the commonest cause. Most AF thrombi form in the left atrial appendage, which transthoracic echo easily misses, and an echo on the free wall is atypical (this case does not record whether its echo was transthoracic or transoesophageal) — a transoesophageal echo, CT or cardiac MRI, or shrinkage on repeat imaging under anticoagulation, separates thrombus from myxoma; look for emboli elsewhere too."
       },
       {
-        "zh-CN": "栓塞性心肌梗死后的抗凝。ESC 2024 AF 以 CHA₂DS₂-VA 取代 CHA₂DS₂-VASc：评分 ≥ 2 分推荐口服抗凝——她在这次事件前至少 3 分（高血压 1 分、年龄 ≥ 75 岁 2 分），事件后至少 4 分（心肌梗死计血管疾病 1 分）；若把这次很可能的冠状动脉栓塞也计为动脉血栓栓塞（2 分），则为 6 分。除机械瓣或中重度二尖瓣狭窄外，DOAC 优于维生素 K 拮抗剂，按说明书剂量（阿哌沙班满足年龄 ≥ 80 岁、体重 ≤ 60 kg、肌酐 ≥ 133 μmol/L 中两项时用 2.5 mg 每日 2 次——不能只因高龄减量）；抗血小板药不能替代抗凝（Ⅲ类；ACTIVE W），出血评分用来发现可纠正的出血危险因素，而不是拒绝抗凝的理由。",
-        "en": "Anticoagulation after an embolic infarct. ESC 2024 AF replaces CHA₂DS₂-VASc with CHA₂DS₂-VA and recommends oral anticoagulation from a score of 2 — she had at least 3 before this event (hypertension 1, age ≥ 75 2) and at least 4 after it (vascular disease 1 for the infarct) — 6 if the probable coronary embolism also counts as arterial thromboembolism (2). A DOAC is preferred to a vitamin K antagonist except with a mechanical valve or moderate–severe mitral stenosis, at its label dose (apixaban 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L — never for age alone); antiplatelets are no alternative (class III; ACTIVE W), and bleeding scores identify correctable risks rather than reasons to withhold."
+        "zh-CN": "栓塞性心肌梗死后的抗凝。ESC 2024 AF 以 CHA₂DS₂-VA 取代 CHA₂DS₂-VASc：评分 ≥ 2 分推荐口服抗凝——她在这次事件前至少 3 分（高血压 1 分、年龄 ≥ 75 岁 2 分），事件后至少 4 分（心肌梗死计血管疾病 1 分）；若把这次很可能的冠状动脉栓塞也计为动脉血栓栓塞（2 分），则至少 6 分。除机械瓣或中重度二尖瓣狭窄外，DOAC 优于维生素 K 拮抗剂，按说明书剂量（阿哌沙班满足年龄 ≥ 80 岁、体重 ≤ 60 kg、肌酐 ≥ 133 μmol/L 中两项时用 2.5 mg 每日 2 次——不能只因高龄减量）；抗血小板药不能替代抗凝（Ⅲ类；ACTIVE W），出血评分用来发现可纠正的出血危险因素，而不是拒绝抗凝的理由。",
+        "en": "Anticoagulation after an embolic infarct. ESC 2024 AF replaces CHA₂DS₂-VASc with CHA₂DS₂-VA and recommends oral anticoagulation from a score of 2 — she had at least 3 before this event (hypertension 1, age ≥ 75 2) and at least 4 after it (vascular disease 1 for the infarct) — at least 6 if the probable coronary embolism also counts as arterial thromboembolism (2). A DOAC is preferred to a vitamin K antagonist except with a mechanical valve or moderate–severe mitral stenosis, at its label dose (apixaban 2.5 mg twice daily with two of age ≥ 80, weight ≤ 60 kg and creatinine ≥ 133 μmol/L — never for age alone); antiplatelets are no alternative (class III; ACTIVE W), and bleeding scores identify correctable risks rather than reasons to withhold."
       },
       {
         "zh-CN": "抗栓方案的过去与现在。记录中的做法是华法林、肝素过渡到第 6 天 INR 2.3 时停用，再加阿司匹林（疗程未记录）——这是 2014 年报告中的方案。现在，没有机械瓣或中重度二尖瓣狭窄时首选 DOAC；没有支架就没有双联抗血小板；心肌梗死后若加一种抗血小板药（首选氯吡格雷）要限定疗程，12 个月后单用抗凝（ESC 2023 ACS；ESC 2024 AF）。DOAC 有禁忌时华法林仍然正确：目标 INR 2.0–3.0，肝素用到 INR 达标。",
@@ -5067,16 +5271,16 @@
   },
   "unknowns": [
     {
-      "zh-CN": "到院心电图的心律、PR 间期与房室传导，以及对应导联的 ST 段压低和后壁导联。",
-      "en": "The rhythm, PR interval and AV conduction on the arrival ECG, and any reciprocal ST depression or posterior-lead changes."
+      "zh-CN": "所记录心电图的描记时间、心律、PR 间期与房室传导，以及对应导联的 ST 段压低和后壁导联。",
+      "en": "The time of the recorded ECG, its rhythm, PR interval and AV conduction, and any reciprocal ST depression or posterior-lead changes."
     },
     {
       "zh-CN": "呼吸频率、血氧饱和度、体温、体重和身高；颈静脉压、心音与杂音、脉律、外周灌注和神经系统查体。",
       "en": "Respiratory rate, oxygen saturation, temperature, weight and height; jugular venous pressure, heart sounds and murmurs, pulse rhythm, peripheral perfusion and the neurological examination."
     },
     {
-      "zh-CN": "卒中或短暂性脑缺血发作、糖尿病、出血史、肝肾疾病、过敏史、吸烟饮酒和居家情况——以及房颤 5 年为什么一直没有抗凝。",
-      "en": "Stroke or TIA, diabetes, bleeding history, kidney or liver disease, allergies, smoking, alcohol and home circumstances — and why five years of AF went without anticoagulation."
+      "zh-CN": "卒中或短暂性脑缺血发作、糖尿病、出血史、肝肾疾病、过敏史、吸烟饮酒和居家情况——以及患房颤以来是否用过抗凝药、为什么没有在用抗栓药。",
+      "en": "Stroke or TIA, diabetes, bleeding history, kidney or liver disease, allergies, smoking, alcohol and home circumstances — and whether she had ever been anticoagulated for her AF, and why she was taking no antithrombotic."
     },
     {
       "zh-CN": "培哚普利和氨氯地平的剂量，以及到院前和急诊期间的处理（抗血小板负荷、肝素、补液、血管活性药）。",
@@ -5826,6 +6030,91 @@
         "expect": [
           "onset"
         ]
+      },
+      {
+        "text": "What seems to be the problem?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did your chest pain start?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Has the pain let up at all?",
+        "locale": "en",
+        "expect": [
+          "pain-now"
+        ]
+      },
+      {
+        "text": "Who do you live with?",
+        "locale": "en",
+        "expect": [
+          "home"
+        ]
+      },
+      {
+        "text": "Does the pain move anywhere?",
+        "locale": "en",
+        "expect": [
+          "site-radiation"
+        ]
+      },
+      {
+        "text": "Have you ever bled from your stomach?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Do you know how heavy you are?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "您是做什么工作的？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "What do you do for a living?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "Why have you come to hospital?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Any other illnesses?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "出了很多汗吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "sweating"
+        ]
+      },
+      {
+        "text": "Does anything make it better or worse?",
+        "locale": "en",
+        "expect": []
       }
     ]
   }

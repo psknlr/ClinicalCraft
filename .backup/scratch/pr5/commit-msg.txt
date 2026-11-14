@@ -1,19 +1,17 @@
-CMCR 105: 4 more cases re-authored and reviewed (1.1.0)
+CMCR 105: 3 more cases re-authored and reviewed (1.1.0)
 
 Each re-authored from the facts its 1.0.0 recorded (the full source articles are not yet available),
 then reviewed independently (every patient fact traced to 1.0.0; clinical accuracy against named,
 current guidance, citations checked online; assessment validity; voice, privacy, spoilers) and fixed:
 
-- cmcr-1423436: Upper abdominal pain and vomiting · 43-year-old woman (5 decisions, 16 interventions;
-  review: 3 critical, 3 major, 12 minor findings)
-- cmcr-1423444: Back pain and progressive difficulty walking · 63-year-old man (5 decisions, 16 interventions;
-  review: 1 critical, 5 major, 9 minor findings)
-- cmcr-1653405: Recurrent abdominal distension and nausea · 69-year-old woman (5 decisions, 12 interventions;
-  review: 0 critical, 5 major, 12 minor findings)
-- cmcr-70172: Double vision, dizziness and progressive leg weakness · 9-year-old boy (5 decisions, 13 interventions;
-  review: 0 critical, 6 major, 9 minor findings)
+- cmcr-1068530: Right hip pain after bowel cancer surgery · 29-year-old woman (5 decisions, 18 interventions;
+  review: 2 critical, 2 major, 11 minor findings)
+- cmcr-33476: Sudden left-sided paralysis · 12-year-old boy (5 decisions, 14 interventions;
+  review: 1 critical, 1 major, 12 minor findings)
+- cmcr-33632: Recurrent haemoptysis · 12-year-old boy (5 decisions, 12 interventions;
+  review: 0 critical, 4 major, 11 minor findings)
 
-Reviews: 4 critical, 19 major and 42 minor findings; every critical and major one fixed or
+Reviews: 3 critical, 7 major and 34 minor findings; every critical and major one fixed or
 answered with a reason. Each case passes strict validation (with the audit's safety lints),
 verification (100 %), scripts/case-check.ts, the collection contract and the in-world demonstration
 in both languages.

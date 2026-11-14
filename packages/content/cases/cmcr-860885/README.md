@@ -106,20 +106,25 @@ No objective holds a condition that can become permanently false (no phase leaf,
 
 ### Decisions
 
-Options are shown as letters in shuffled order; option ids name the content. Only decision 5 has a key that is the
-uniquely longest option (one per language is allowed).
+Options are shown as letters in shuffled order; option ids name the content. Only decision 5's key is the uniquely
+longest option, and only in Chinese (one per language is allowed); in English the keys rank 2nd to 4th by length. Each
+key states its reason in one clause, as the distractors do, so neither length nor form gives a key away. Every prompt
+states only what the decision's `requires` guarantees the learner has already elicited or read.
 
-1. **`digit-first`** (admission; opens after the thumb is examined and the sore asked about) — what to do today for a
-   dry 1 × 2 cm necrotic thumb, a cyanosed toe, pale nail beds and positive Raynaud's. **Key `iv-prostanoid-urgent`:**
-   treat it as critical digital ischaemia today — warmth, protection, analgesia, IV iloprost with a PDE5 inhibitor,
-   urgent rheumatology, first tests sent. Why: BSR 2024 (new necrosis = emergency, assessment preferably within 48 h);
-   EULAR 2023 (PDE5i and/or IV iloprost for digital ulcers); SHARE 2021 (iloprost for ischaemic digits). Distractors:
-   `amputate-today` (irreversible, premature), `pulse-steroids` (no recorded vasculitis; delays vasodilators),
-   `clinic-review` (nifedipine is right for Raynaud's but a necrotic digit is not stable).
-2. **`pattern`** (work-up; opens after the antibodies and enzymes of this stage are read) — **key `u1rnp-overlap`:**
-   secondary Raynaud's from an anti-U1-RNP overlap — an MCTD pattern with scleroderma features; repeat the CK with a
-   reference range and look at lungs, heart, oesophagus and muscle. Distractors: `primary-raynaud`, `lupus` (anti-Sm,
-   dsDNA negative; complement normal), `juvenile-dm` (no rash or weakness recorded; uncertain CK).
+1. **`digit-first`** (admission; opens after the sore is asked about and the thumb, toes, nail beds and finger colour
+   are examined) — what to do today for a dry 1 × 2 cm necrotic thumb, a cyanosed toe, pale nail beds and positive
+   Raynaud's. **Key `iv-prostanoid-urgent`:** treat it as critical digital ischaemia today, as new necrosis cannot wait
+   for a diagnosis — warmth, protection, analgesia, IV iloprost with a PDE5 inhibitor, urgent rheumatology review. Why:
+   BSR 2024 (new necrosis = emergency, urgent clinical assessment preferably within 48 h; IV prostanoids for rescue);
+   EULAR 2023 (PDE5i and/or IV iloprost for digital ulcers); SHARE 2021 (iloprost for ischaemic digits). The act
+   (`iv-iloprost`, "IV prostanoid infusion (iloprost)") also accepts the IV prostanoid a unit uses, such as alprostadil
+   (前列地尔). Distractors: `amputate-today` (irreversible, premature), `pulse-steroids` (no recorded vasculitis; delays
+   vasodilators), `clinic-review` (nifedipine is right for Raynaud's but a necrotic digit is not stable).
+2. **`pattern`** (work-up; opens after the antibodies, muscle enzymes and blood count/CRP of this stage are read) —
+   **key `u1rnp-overlap`:** secondary Raynaud's, since necrosis and sclerodactyly rule out the primary form — an
+   anti-U1-RNP overlap (MCTD pattern) with scleroderma features; repeat the CK with a reference range and look at lungs,
+   heart, oesophagus and muscle. Distractors: `primary-raynaud`, `lupus` (anti-Sm, dsDNA negative; complement normal),
+   `juvenile-dm` (no rash or weakness recorded; uncertain CK).
 3. **`organ-screen`** (work-up) — **key `full-screen`:** lung function with DLCO and HRCT, echocardiogram with
    NT-proBNP, blood pressure, kidney function and urine, oesophagus (SHARE 2021; ESC/ERS 2022; EULAR 2023 for blood
    pressure on glucocorticoids). Distractors: `cxr-only` (insensitive; ACR/CHEST 2023, adults, advises against CXR
@@ -133,7 +138,8 @@ uniquely longest option (one per language is allowed).
 5. **`before-rituximab`** (course) — **key `screen-vaccinate`:** HBsAg and anti-HBc, hepatitis C, HIV, IGRA, baseline
    immunoglobulins, pregnancy test and contraception, due non-live vaccines ≥ 2 weeks ahead, no live vaccine (rituximab
    label; EULAR 2022; EULAR/PReS 2021; ACR 2022). Distractors: `live-vaccines-first`, `screen-if-abnormal`,
-   `cxr-for-tb`.
+   `cxr-for-tb` (a chest X-ray alone, hepatitis tests sent with the first infusion: EULAR 2022 pairs the film with an
+   IGRA, and HBV status must be known before the first dose).
 
 Every option carries its own feedback with the guidance that decides it; the decision that answers each is revealed
 only later (the course phase holds the report's diagnosis and treatment record; the outcome phase what followed
@@ -148,7 +154,7 @@ rituximab).
 | `rb-safety-history` | history | 1 | medicines, allergies, vaccines, hepatitis/TB, periods asked |
 | `rb-examination` | examination | 2 | all seven findings examined |
 | `rb-digit-first` | management | 3 | `decidedFirstTry` digit-first |
-| `rb-digit-rescue` | management | 4 | **critical** — IV iloprost and warmth/protection given while `indicatedWhen` (admission or work-up) held |
+| `rb-digit-rescue` | management | 4 | **critical** — an IV prostanoid (iloprost; alprostadil accepted) and warmth/protection given while `indicatedWhen` (admission or work-up) held |
 | `rb-first-tests` | investigations | 2 | antibodies, muscle enzymes, blood count/CRP and kidney function/urinalysis ordered |
 | `rb-pattern` | diagnosis | 3 | `decidedFirstTry` pattern |
 | `rb-organ-screen` | investigations | 3 | `decidedFirstTry` organ-screen; chest CT and echo ordered; lung function read |
@@ -156,7 +162,7 @@ rituximab).
 | `rb-before-rtx` | management | 3 | `decidedFirstTry` before-rituximab; immunoglobulins ordered; non-live vaccines given before rituximab |
 | `rb-screen-escalation` | management | 4 | **critical** — rituximab or mycophenolate given in the course phase after the infection screen was ordered (`whenIndicated`) |
 | `rb-no-harm` | safety | 4 | **critical** — none of amputation now, discharge to clinic, high-dose steroids for months, a live vaccine, or rituximab while contraindicated (`valid: false`); `scoredWhen` lists every one of them and the decisions that expose them |
-| `rb-adolescent` | management | 2 | confidential talk about periods, sex and contraception; pregnancy test ordered |
+| `rb-adolescent` | management | 2 | confidential talk about periods, sex and contraception; pregnancy test ordered; and no methotrexate, cyclophosphamide or mycophenolate given before it (each is contraindicated until then: `valid: false`) |
 | `rb-communication` | communication | 2 | examiner-judged (Calgary–Cambridge, SPIKES where news is hard, HEADSS, teach-back; guidance specific to her fear of losing the thumb) |
 
 ### How wrong choices score (measured 2026-11-14 with core `assess`)
@@ -170,8 +176,11 @@ rituximab).
 | Reference path + amputating the thumb now | 33/37 (89 %) | `rb-no-harm` | **fails** (critical intervention) |
 | Reference path + discharge to clinic, + high-dose steroids for months, or + a live vaccine (each alone) | 33/37 (89 %) | `rb-no-harm` | passes (non-critical) |
 | Rituximab given before the infection screen is ordered | 26/37 (70 %) | `rb-screen-escalation`, `rb-no-harm` | **fails** (critical intervention) |
-| IV iloprost left out, or given only in the course phase | 33/37 (89 %) | `rb-digit-rescue` | passes |
+| IV prostanoid left out (sildenafil or nifedipine alone), or given only in the course phase | 33/37 (89 %) | `rb-digit-rescue` | passes |
 | Mycophenolate instead of rituximab (after screening and a pregnancy test) | 37/37 (100 %) | none | passes |
+| Mycophenolate instead of rituximab, no pregnancy test | 31/37 (84 %) | `rb-screen-escalation` (`rb-adolescent` also lost) | passes |
+| IV cyclophosphamide on admission before a pregnancy test, or methotrexate before it (test sent later) | 35/37 (95 %) | none (`rb-adolescent` lost) | passes (non-critical) |
+| Decision 1 answered before the toes, nail beds and finger colour are examined | refused (`requirements-unmet`) | — | — |
 
 **Safety outcome.** Two interventions are `critical: true`, so giving them while contraindicated fails the run's
 safety outcome whatever the score: **`amputation-now`** (always contraindicated — amputating a dry, uninfected necrotic
@@ -181,9 +190,11 @@ hepatitis B into fulminant hepatitis; rituximab boxed warning, EULAR 2022). Thre
 explicitly `critical: false`, recoverable misjudgements that the next clinician corrects and that cost the critical
 avoided-harm item but not the safety outcome: **`discharge-gloves`** (moderate risk; delays urgent care), **`steroid-escalation`**
 (moderate; harm accrues over months and can be reversed by tapering) and **`live-vaccine`** (moderate; avoided in
-immunosuppressed children, EULAR/PReS 2021, ACR 2022). `cyclophosphamide` is high-risk but has no contraindication in
-this case (it is the report's treatment; the case records it as given); no intervention has a fixed dose in the case
-or its guidance, so none carries a `doseSpec`, and none is a high-alert medicine.
+immunosuppressed children, EULAR/PReS 2021, ACR 2022). The teratogens are contraindicated until a pregnancy test is
+ordered and cost `rb-adolescent`, not the safety outcome: **`cyclophosphamide`** (high-risk, explicitly `critical:
+false` — a serious but correctable omission in a girl whose periods and contraception are not recorded; its label asks
+for pregnancy status before the first dose), `methotrexate` and `mycophenolate` (moderate). No intervention has a fixed
+dose in the case or its guidance, so none carries a `doseSpec`, and none is a high-alert medicine.
 
 ## Reference path (`solution`)
 
@@ -227,6 +238,7 @@ or its guidance, so none carries a `doseSpec`, and none is a high-alert medicine
 | 48 hours | decision 1, harms, teaching | BSR 2024 DU recommendation i | guideline threshold, not a case fact |
 | At least 6 months (monitoring) | decision 3, teaching | SHARE 2021 assessment recommendation 6 | guideline |
 | At least 2 weeks (vaccine → rituximab) | decision 5, vaccines | ACR 2022 summary table | guideline |
+| 8–10 days (second pregnancy test on mycophenolate) | `mycophenolate` harm | mycophenolate (CellCept) label / REMS | label, not a case fact |
 
 No dose appears in the case: 1.0.0 recorded none, and the cited guidance states none for this patient (her weight is
 not recorded); intervention texts give route, titration principle and monitoring only.
@@ -258,7 +270,7 @@ not recorded); intervention texts give route, titration principle and monitoring
 | Screening the lungs with a chest X-ray, or waiting for the CRP | Decision 3 distractors; the CT and lung function in the course phase show the restrictive impairment and the interstitial changes |
 | Escalating steroids for months, or stopping treatment | Decision 4 distractors; `steroid-escalation` costs `rb-no-harm` |
 | Rituximab without hepatitis B screening; live vaccines first | `rituximab` is contraindicated (critical) until the infection screen is ordered; decision 5; `live-vaccine` costs `rb-no-harm` |
-| Forgetting she is an adolescent girl about to receive teratogenic drugs | `rb-adolescent`; methotrexate and mycophenolate are "indicated" only after a pregnancy test is ordered |
+| Forgetting she is an adolescent girl about to receive teratogenic drugs | `rb-adolescent`; methotrexate, cyclophosphamide and mycophenolate are contraindicated until a pregnancy test is ordered, so giving one first loses the item even if the test is sent later |
 
 Teach-back: ask the learner to explain to her, in plain words, why the thumb needs a drip today and why she needs a
 blood test for hepatitis before the new medicine.
@@ -298,7 +310,7 @@ blood test for hepatitis before the new medicine.
 | Right-hand ulcer for 1 month | `presenting`, `hand-sore`, chief complaint, triage |
 | Skin of both hands and forearms tight (zh 越来越紧, "getting tighter") | `tight-skin` |
 | Fingers and elbows bend but do not fully extend | `straightening`; exam `joints` |
-| No joint swelling (history); finger and elbow joints not swollen (exam) | `joint-swelling` (limited to fingers and elbows); exam `joints` |
+| No joint swelling (history); finger and elbow joints not swollen (exam) | `joint-swelling` ("none of my joints are swollen"; fingers and elbows do not straighten fully); exam `joints` |
 | Finger extension limited; recent necrotic area on the right thumb (triage) | `triageNote` |
 | Hand skin tight and firm; Raynaud's positive; pale nail beds; dry 1 × 2 cm necrotic area right thumb; left fourth toe cyanosed | exam `hand-skin`, `raynaud`, `nail-beds`, `thumb`, `toe` |
 | Calcinosis and partial depigmentation at finger joints (en "fingers"), elbows, knees | exam `calcinosis` |
@@ -342,7 +354,10 @@ re-ordering per phase; the dialogue in her own words; her worries (ICE: losing t
 anxious affect; the staff (Dr Shen, Nurse Tang, Dr Gao, Dr Lu) and their briefs; the 18 interventions offered (the
 report's glucocorticoids, immunoglobulin, cyclophosphamide, methotrexate and rituximab are recorded as given, the
 others are today's options or tempting errors — the case does not record that she received iloprost, sildenafil,
-nifedipine, a surgical review, vaccines or screening); decisions, options, feedback and scoring.
+nifedipine, a surgical review, vaccines or screening); decisions, options, feedback and scoring. Because the case holds
+no result for the infection screen or the pregnancy test, the engine gates rituximab and the teratogens on the *order*;
+in practice the results (and antiviral prophylaxis if HBsAg or anti-HBc is positive) come before the first dose, as the
+decision 5 key and its feedback say.
 
 **Privacy:** pseudonym 余予宁 / Yu Yuning (pseudonym); no hospital, city, date or identifier.
 
@@ -358,8 +373,15 @@ nifedipine, a surgical review, vaccines or screening); decisions, options, feedb
 - Symptom questions that 1.0.0 does not answer (colour change, pain, toes, breathing, swallowing, weakness, rash, dry
   eyes, fever) reach their own unknown items, so the patient says she is not sure rather than falling back.
 - Weakness words (没劲, 无力, weak) are excluded from `straightening`; "胳膊腿有没有没劲" reaches `muscle-weakness`.
-- `extensions.testUtterances`: 59 utterances (zh-CN and en), one or more for every required item, three look-alike
-  negatives (`expect: []`); `cases verify` passes 59/59 with no extra selections.
+- Review probes (2026-11-14) closed gaps where she would have contradicted or added to the record: "Do you get mouth
+  ulcers?" no longer reaches the hand sore ("It's been there a month"); "脚也凉吗？" reaches `cold-hands` instead of "not
+  sure"; in the outcome phase "Has the treatment helped?", "How is your thumb?" and "拇指好了吗？" reach
+  `since-rituximab`; "puffy hands" no longer ties with breathing; "查看双手" reaches the hand examination; a bare
+  "x-ray" (a hand X-ray) no longer orders the chest film; debridement (清创) reaches the hand-surgery review and never
+  the amputation; 前列地尔/alprostadil, epoprostenol and "prostaglandin" reach the IV prostanoid (English "alprostadil"
+  had offered IVIG); 美罗华 reaches rituximab.
+- `extensions.testUtterances`: 62 utterances (zh-CN and en), one or more for every required item, three look-alike
+  negatives (`expect: []`); `cases verify` passes 62/62 with no extra selections.
 
 ## References
 
@@ -401,6 +423,15 @@ paediatric glucocorticoid note), EULAR 2023 (Table 1), SHARE 2021 (Tables 1–2 
 recommendations), ACR/CHEST 2023 screening (scope, recommendations, MCTD with SSc features), ACR 2022 vaccination
 (guideline summary tables), EULAR/PReS 2021 and EULAR 2022 (abstracts), ACR 2020 (abstract and the ACR release on
 GnRH-agonist co-therapy), the rituximab and methotrexate US labels, and the Japanese 2019 MCTD criteria (abstract).
+Re-checked by the independent review (2026-11-14): BSR 2024 DU recommendation i says "urgent clinical assessment"
+(not rheumatological), ii sildenafil first-line, iii IV prostanoids may be considered, iv antiplatelet therapy with local
+necrosis, vi debridement; SHARE 2021 Tables 1–2 (capillaroscopy and ANA in *isolated* Raynaud's); EULAR 2023 Table 1
+(skin: methotrexate, MMF or rituximab; ILD: MMF, cyclophosphamide or rituximab); ESC/ERS 2022 (CTD with SSc overlap:
+annual PAH risk evaluation may be considered, IIb C); ACR/CHEST 2023 (MCTD with SSc features screened at presentation);
+EULAR 2022's recommendation list (HIV screening before bDMARDs, HCV considered, TB screening typically with a chest
+X-ray, IGRA preferred to the skin test); the EULAR/PReS 2021 abstract; the ACR 2022 summary tables; the cyclophosphamide
+and mycophenolate (CellCept) US labels (pregnancy status before the first dose; for mycophenolate a test immediately
+before and 8–10 days later); ACR 2020 contraception statements (secondary summaries).
 
 ### To verify
 
@@ -430,9 +461,17 @@ GnRH-agonist co-therapy), the rituximab and methotrexate US labels, and the Japa
   ACR/CHEST 2023 ILD screening (excludes paediatric SARDs), ESC/ERS 2022 PAH screening, EULAR 2023 SSc treatment.
 - Rituximab as the keyed escalation (with mycophenolate accepted) for refractory MCTD with scleroderma features, ILD
   considered and digital necrosis; whether tocilizumab or IVIG should be named.
-- The classification of `steroid-escalation`, `live-vaccine` and `discharge-gloves` as non-critical and of
-  `amputation-now` and rituximab-before-screening as critical.
-- The ACR 2020 GnRH-agonist recommendation wording (checked against the ACR release, not the full text).
+- The classification of `steroid-escalation`, `live-vaccine`, `discharge-gloves` and cyclophosphamide before a
+  pregnancy test as non-critical, and of `amputation-now` and rituximab-before-screening as critical.
+- Accepting alprostadil (前列地尔), the IV prostanoid of Chinese practice, or epoprostenol as the keyed rescue alongside
+  iloprost (BSR 2024 speaks of IV prostanoids; EULAR 2023 and SHARE 2021 name iloprost).
+- Antiplatelet therapy (BSR 2024 DU recommendation iv, "particularly if local necrosis"; less of a role in juvenile SSc)
+  is not offered as an intervention: whether it belongs in the rescue.
+- The engine gates rituximab on the order of the infection screen and the teratogens on the order of a pregnancy test,
+  because the case holds no results; confirm that the teaching (results, and antiviral prophylaxis if HBV markers are
+  positive, before the first dose) is clear enough at the bedside.
+- The ACR 2020 GnRH-agonist recommendation wording (checked against the ACR release, not the full text) and its
+  contraception statements used in the teratogen harms (checked against secondary summaries).
 
 ## Changelog
 
@@ -459,6 +498,18 @@ GnRH-agonist co-therapy), the rituximab and methotrexate US labels, and the Japa
   ACR/CHEST 2023, EULAR 2022, EULAR/PReS 2021, ACR 2022, ACR 2020, Japanese 2019 criteria); attending, nurse, hand
   surgeon and respiratory consultant; 59-utterance matcher corpus; this facilitator guide.
 - **Review status:** editorial (AI-assisted); `extensions.sourceTextChecked: false`.
+- **Independent review (2026-11-14), fixes:** no patient fact was found added or changed; one answer that called her
+  elbows stiff now keeps to the record ("none of my joints are swollen — my fingers and elbows just don't straighten
+  all the way"). Assessment: decision 1 now opens only after the toes, nail beds and finger colour are examined and
+  decision 2 only after the blood count/CRP is read, so no prompt states a finding the learner has not elicited; the
+  keys carry a one-clause reason like the distractors (every key had been the only option without one) and vary in
+  length rank; methotrexate, cyclophosphamide (`critical: false`) and mycophenolate are contraindicated until a
+  pregnancy test is ordered, with harms naming their labels and ACR 2020, so `rb-adolescent` ("a pregnancy test before
+  teratogenic drugs") can no longer be earned after the fact and IV cyclophosphamide on admission now costs marks; the
+  critical rescue act accepts the IV prostanoid of Chinese practice (前列地尔/alprostadil). Guidance wording: BSR 2024
+  "urgent clinical assessment"; SHARE 2021 "isolated Raynaud's"; EULAR 2023's separate skin and ILD lists; EULAR 2022's
+  chest X-ray alongside an IGRA. Matcher: the gaps listed under Matcher notes (mouth ulcers, cold feet, outcome
+  questions, puffy hands, hand examination, hand X-ray, debridement, brand names); 62 test utterances.
 
 ### 1.0.0
 
@@ -473,7 +524,7 @@ Run from the worktree root on 2026-11-14:
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-860885/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-860885 --lang en                                                 # 95 steps · objectives 6/6 · decisions 5/5 · utterances 59/59 · rubric 37/37 (100 %)
+npm run -s cc -- cases verify cmcr-860885 --lang en                                                 # 95 steps · objectives 6/6 · decisions 5/5 · utterances 62/62 · rubric 37/37 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-860885                                       # reference 100 % · do nothing 0/33 · wrong first 59 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-860885:"              # passes
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-860885:"  # passes (en + zh-CN)
@@ -503,4 +554,5 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 仍有间质改变的原因也没有记录。
 
 **安全结果。** 入院即截除坏死拇指（`amputation-now`）和未送感染筛查就用利妥昔单抗（`rituximab`）为危急安全错误，
-会使本次安全结果判为不通过；让她出院等门诊、长期大剂量激素和接种活疫苗为非危急的错误，扣除避免伤害项的分数。
+会使本次安全结果判为不通过；让她出院等门诊、长期大剂量激素和接种活疫苗为非危急的错误，扣除避免伤害项的分数；未送妊娠
+试验就用甲氨蝶呤、环磷酰胺或吗替麦考酚酯也是非危急的错误，扣除“单独谈话并在致畸药物前做妊娠试验”一项（`rb-adolescent`）的分数。

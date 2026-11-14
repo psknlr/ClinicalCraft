@@ -372,7 +372,11 @@
           "怕冷",
           "肢端凉",
           "发凉",
-          "手凉"
+          "手凉",
+          "脚凉",
+          "脚也凉",
+          "脚冰",
+          "手脚冷"
         ],
         "en": [
           "cold hands",
@@ -589,8 +593,8 @@
         "en": "Are any of your joints swollen?"
       },
       "answer": {
-        "zh-CN": "手指和胳膊肘不肿，就是僵、伸不到头。",
-        "en": "My fingers and elbows aren't swollen — they're just stiff and don't straighten all the way."
+        "zh-CN": "关节都不肿，就是手指和胳膊肘伸不到头。",
+        "en": "None of my joints are swollen — my fingers and elbows just don't straighten all the way."
       },
       "keywords": {
         "zh-CN": [
@@ -616,8 +620,8 @@
         "course"
       ],
       "source": {
-        "zh-CN": "报告病例资料·1.0.0版病史记录无关节肿胀；查体指、肘关节无肿胀（1.0.0版提取，待对照原文核对）；她的话为改写",
-        "en": "The report's case data · 1.0.0's history records no joint swelling; on examination the finger and elbow joints are not swollen (extracted for version 1.0.0; not yet checked against the full article); her words are adapted"
+        "zh-CN": "报告病例资料·1.0.0版病史记录无关节肿胀；查体指、肘关节伸展受限但无肿胀（1.0.0版提取，待对照原文核对）；她的话为改写",
+        "en": "The report's case data · 1.0.0's history records no joint swelling; on examination finger and elbow extension is limited without swelling (extracted for version 1.0.0; not yet checked against the full article); her words are adapted"
       }
     },
     {
@@ -715,12 +719,16 @@
         "zh-CN": [
           "疼不疼",
           "疼吗",
-          "痛吗"
+          "痛吗",
+          "嘴",
+          "口腔",
+          "口疮"
         ],
         "en": [
           "hurt",
           "pain",
-          "painful"
+          "painful",
+          "mouth"
         ]
       },
       "disclosure": "on-ask",
@@ -841,6 +849,14 @@
           "wheeze",
           "outofbreath",
           "breath"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "puffy",
+          "swell",
+          "swollen"
         ]
       },
       "disclosure": "unknown",
@@ -1161,7 +1177,10 @@
           "还凉",
           "好点没有",
           "好一点",
-          "用了以后"
+          "用了以后",
+          "手现在",
+          "现在手",
+          "现在怎么样"
         ],
         "en": [
           "better",
@@ -1181,12 +1200,17 @@
       "excludeKeywords": {
         "zh-CN": [
           "过敏",
-          "疫苗"
+          "疫苗",
+          "新药",
+          "后来那个"
         ],
         "en": [
           "allerg",
           "vaccine",
-          "jab"
+          "jab",
+          "newer",
+          "new medicine",
+          "new drug"
         ]
       },
       "disclosure": "on-ask",
@@ -1518,7 +1542,13 @@
           "新药",
           "后来",
           "最近怎么样",
-          "这一年"
+          "这一年",
+          "拇指",
+          "好转",
+          "效果",
+          "有用",
+          "治疗后",
+          "好点"
         ],
         "en": [
           "howareyourhandsnow",
@@ -1527,7 +1557,26 @@
           "since the newer",
           "newer medicine",
           "better now",
-          "this year"
+          "this year",
+          "thumb",
+          "helped",
+          "treatment",
+          "any better",
+          "improved",
+          "difference"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "疫苗",
+          "感染"
+        ],
+        "en": [
+          "allerg",
+          "vaccine",
+          "jab",
+          "infection"
         ]
       },
       "disclosure": "on-ask",
@@ -1554,7 +1603,11 @@
           "手部皮肤",
           "摸皮肤",
           "皮肤硬",
-          "皮肤厚"
+          "皮肤厚",
+          "双手",
+          "看手",
+          "检查手",
+          "看看手"
         ],
         "en": [
           "skin",
@@ -3522,14 +3575,13 @@
         "zh-CN": [
           "胸片",
           "胸部x线",
-          "x光",
           "胸部平片"
         ],
         "en": [
           "chest x-ray",
           "cxr",
           "chest film",
-          "x-ray"
+          "chest xray"
         ]
       },
       "requires": [
@@ -3747,8 +3799,8 @@
     {
       "id": "iv-iloprost",
       "name": {
-        "zh-CN": "静脉滴注伊洛前列素（前列环素类似物）",
-        "en": "IV iloprost infusion (prostacyclin analogue)"
+        "zh-CN": "静脉滴注前列腺素类药物（伊洛前列素）",
+        "en": "IV prostanoid infusion (iloprost)"
       },
       "kind": "medication",
       "aliases": {
@@ -3757,7 +3809,12 @@
           "前列环素",
           "前列环素类似物",
           "静脉扩血管",
-          "扩血管输液"
+          "扩血管输液",
+          "前列地尔",
+          "前列腺素",
+          "前列腺素e1",
+          "依前列醇",
+          "静脉前列腺素"
         ],
         "en": [
           "iloprost",
@@ -3765,12 +3822,17 @@
           "prostacyclin analogue",
           "iv prostanoid",
           "prostanoid",
-          "iv vasodilator"
+          "iv vasodilator",
+          "alprostadil",
+          "epoprostenol",
+          "prostaglandin",
+          "prostaglandin e1",
+          "pge1"
         ]
       },
       "dose": {
-        "zh-CN": "按体重以纳克/千克/分计算，从低速开始，每日持续静滴数小时，按耐受情况（头痛、潮红、低血压）逐步调整，连用数天；按本院方案配制，输注期间监测血压。她的体重本病例没有记录。",
-        "en": "Weight-based in nanograms per kg per minute: start at a low rate, infuse over several hours a day and titrate to tolerance (headache, flushing, hypotension) on several consecutive days; made up per the unit's protocol, with blood pressure checks during the infusion. Her weight is not recorded."
+        "zh-CN": "伊洛前列素，或本院使用的其他静脉前列腺素类药物（如前列地尔），按各自方案给药：伊洛前列素按体重以纳克/千克/分计算，从低速开始，每日持续静滴数小时，按耐受情况（头痛、潮红、低血压）逐步调整，连用数天；输注期间监测血压。她的体重本病例没有记录。",
+        "en": "Iloprost, or the IV prostanoid the unit uses (such as alprostadil), by its own protocol: iloprost is weight-based in nanograms per kg per minute, started at a low rate, infused over several hours a day and titrated to tolerance (headache, flushing, hypotension) on several consecutive days, with blood pressure checks during the infusion. Her weight is not recorded."
       },
       "requires": [
         "medications",
@@ -3788,8 +3850,8 @@
         ]
       },
       "response": {
-        "zh-CN": "伊洛前列素已开始静脉滴注，护士在监测血压。本病例没有记录她当时是否用过前列环素类药物；不模拟用药后的变化。",
-        "en": "The iloprost infusion is running and the nurse is checking her blood pressure. This case does not record whether she received a prostanoid at the time; it does not simulate the effect."
+        "zh-CN": "静脉前列腺素类药物已开始滴注，护士在监测血压。本病例没有记录她当时是否用过前列腺素类药物；不模拟用药后的变化。",
+        "en": "The IV prostanoid infusion is running and the nurse is checking her blood pressure. This case does not record whether she received a prostanoid at the time; it does not simulate the effect."
       }
     },
     {
@@ -3898,14 +3960,18 @@
           "手外科",
           "整形外科",
           "外科会诊",
-          "手外科会诊"
+          "手外科会诊",
+          "清创",
+          "坏死组织清创"
         ],
         "en": [
           "hand surgery",
           "plastic surgery",
           "surgical review",
           "hand surgeon",
-          "surgical opinion"
+          "surgical opinion",
+          "debride",
+          "debridement"
         ]
       },
       "excludeKeywords": {
@@ -3970,12 +4036,14 @@
       "excludeKeywords": {
         "zh-CN": [
           "会诊",
-          "评估"
+          "评估",
+          "清创"
         ],
         "en": [
           "review",
           "assess",
-          "opinion"
+          "opinion",
+          "debride"
         ]
       },
       "dose": {
@@ -3990,8 +4058,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "干性坏死、没有记录感染时，截指不是第一步：先保暖、止痛、保持干燥，并用扩血管药挽救尚有血供的组织，让坏死自行分界；现在手术会切在缺血的组织上，伤口可能长不好，失去的往往比需要的更多，而且无法挽回。BSR 2024把严重指端血管病变伴新发组织坏死列为急症，需要风湿科紧急评估（最好在48小时内）；外科手术在严重缺血或难治性溃疡中可以有作用，但要与外科共同决定，而不是入院当天就截。",
-        "en": "With dry necrosis and no recorded infection, amputation is not the first step: warmth, pain relief, keeping it dry and a vasodilator salvage what still has a blood supply while the necrosis demarcates; operating now cuts through ischaemic tissue that may not heal and can lose more than was needed — irreversibly. BSR 2024 treats severe digital vasculopathy with new tissue necrosis as an emergency for urgent rheumatological assessment, preferably within 48 hours, and gives surgery a role in critical ischaemia or refractory ulceration — a decision taken with the surgeons, not on the day of admission."
+        "zh-CN": "干性坏死、没有记录感染时，截指不是第一步：先保暖、止痛、保持干燥，并用扩血管药挽救尚有血供的组织，让坏死自行分界；现在手术会切在缺血的组织上，伤口可能长不好，失去的往往比需要的更多，而且无法挽回。BSR 2024把严重指端血管病变伴新发组织坏死列为急症，需要紧急临床评估（最好在48小时内）；外科手术在严重缺血或难治性溃疡中可以有作用，但要与外科共同决定，而不是入院当天就截。",
+        "en": "With dry necrosis and no recorded infection, amputation is not the first step: warmth, pain relief, keeping it dry and a vasodilator salvage what still has a blood supply while the necrosis demarcates; operating now cuts through ischaemic tissue that may not heal and can lose more than was needed — irreversibly. BSR 2024 treats severe digital vasculopathy with new tissue necrosis as an emergency requiring urgent clinical assessment, preferably within 48 hours, and gives surgery a role in critical ischaemia or refractory ulceration — a decision taken with the surgeons, not on the day of admission."
       },
       "response": {
         "zh-CN": "已提出手术申请。本病例不模拟这一选择之后的经过；之后的记录按实际病程展开。",
@@ -4254,6 +4322,15 @@
       "response": {
         "zh-CN": "已开始每周一次的甲氨蝶呤。本病例记录她用过甲氨蝶呤，但没有记录剂量和开始时间；不模拟其效果。",
         "en": "Weekly methotrexate started. This case records that she received methotrexate but not its dose or when it began; it does not simulate the effect."
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "ordered": "hcg"
+        }
+      },
+      "harm": {
+        "zh-CN": "未排除妊娠就用甲氨蝶呤：它可致流产和畸形，因此说明书要求首剂前确认是否怀孕；ACR 2020（风湿病生殖健康指南）强烈推荐不打算怀孕者采取有效避孕，并在任何受孕前停用甲氨蝶呤。她的月经和避孕情况都没有记录：应先单独、保密地谈，并做妊娠试验。",
+        "en": "Methotrexate before pregnancy has been excluded: it can cause miscarriage and malformations, so its label asks for pregnancy status to be verified before the first dose, and ACR 2020 (reproductive health in rheumatic disease) strongly recommends effective contraception for those not seeking pregnancy and stopping methotrexate before any conception. Her periods and contraception are not recorded: a confidential talk and a pregnancy test come first."
       }
     },
     {
@@ -4367,9 +4444,19 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": false,
       "response": {
         "zh-CN": "环磷酰胺已开始输注。本病例记录她用过环磷酰胺，但没有记录剂量、途径、疗程和时间；不模拟其效果。",
         "en": "The cyclophosphamide infusion has started. This case records that she received cyclophosphamide but not the dose, route, number of courses or timing; it does not simulate the effect."
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "ordered": "hcg"
+        }
+      },
+      "harm": {
+        "zh-CN": "未排除妊娠就用环磷酰胺：它致畸，还会损伤卵巢，因此说明书要求首剂前确认是否怀孕；ACR 2020强烈推荐在任何受孕前停用，并有条件推荐绝经前女性每月静脉冲击时同时使用GnRH激动剂。她的月经和避孕情况都没有记录：应先单独、保密地谈，并做妊娠试验。",
+        "en": "Cyclophosphamide before pregnancy has been excluded: it is teratogenic and can damage the ovaries, so its label asks for pregnancy status to be verified before the first dose; ACR 2020 strongly recommends stopping it before any conception and conditionally recommends a GnRH agonist alongside monthly IV pulses in premenopausal women. Her periods and contraception are not recorded: a confidential talk and a pregnancy test come first."
       }
     },
     {
@@ -4502,13 +4589,16 @@
           "利妥昔单抗",
           "抗cd20单抗",
           "b细胞清除",
-          "rtx"
+          "rtx",
+          "美罗华"
         ],
         "en": [
           "rituximab",
           "anti-cd20",
           "b-cell depletion",
-          "rtx"
+          "rtx",
+          "mabthera",
+          "rituxan"
         ]
       },
       "dose": {
@@ -4590,6 +4680,15 @@
       "response": {
         "zh-CN": "已开始吗替麦考酚酯。本病例记录的治疗中没有吗替麦考酚酯，之后的记录按实际病程展开；不模拟其效果。",
         "en": "Mycophenolate started. Mycophenolate is not among the treatments this case records, and the records that follow show the course as it happened; it does not simulate the effect."
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "ordered": "hcg"
+        }
+      },
+      "harm": {
+        "zh-CN": "未排除妊娠就用吗替麦考酚酯：它可致流产和畸形，因此说明书要求开始前即刻妊娠试验阴性、8～10天后再查一次；ACR 2020有条件推荐用药期间单用宫内节育器或同时采用两种其他避孕方法。她的月经和避孕情况都没有记录：应先单独、保密地谈，并做妊娠试验。",
+        "en": "Mycophenolate before pregnancy has been excluded: it causes miscarriage and malformations, so its label asks for a negative pregnancy test immediately before starting and another 8–10 days later, and ACR 2020 conditionally recommends an IUD alone or two other methods of contraception while it is taken. Her periods and contraception are not recorded: a confidential talk and a pregnancy test come first."
       }
     }
   ],
@@ -4920,20 +5019,29 @@
             "examined": "thumb"
           },
           {
+            "examined": "toe"
+          },
+          {
+            "examined": "raynaud"
+          },
+          {
+            "examined": "nail-beds"
+          },
+          {
             "asked": "hand-sore"
           }
         ]
       },
       "need": {
-        "zh-CN": "先问清破口的经过，并检查拇指。",
-        "en": "Ask about the sore and examine the thumb first."
+        "zh-CN": "先问清破口的经过，并检查拇指、脚趾、甲床和手指的颜色。",
+        "en": "Ask about the sore and examine the thumb, the toes, the nail beds and the colour of the fingers first."
       },
       "options": [
         {
           "id": "iv-prostanoid-urgent",
           "text": {
-            "zh-CN": "按严重指端缺血当天处理：保暖、保护拇指、止痛，院内开始静脉伊洛前列素并加用PDE5抑制剂，请风湿科紧急会诊，同时送检",
-            "en": "Treat it as critical digital ischaemia today: keep her warm, protect the thumb and relieve pain, start IV iloprost in hospital with a PDE5 inhibitor, ask rheumatology to see her urgently and send the first tests"
+            "zh-CN": "新发坏死不能等病因查清，今天按严重指端缺血处理：保暖、护指、止痛，院内静滴伊洛前列素并加PDE5抑制剂，请风湿科急会诊",
+            "en": "Treat it as critical digital ischaemia today, as new necrosis cannot wait for a diagnosis: warmth, thumb protection and pain relief, IV iloprost in hospital with a PDE5 inhibitor, and urgent rheumatology review"
           },
           "correct": true,
           "feedback": {
@@ -5014,19 +5122,31 @@
                 "phase": "course"
               }
             ]
+          },
+          {
+            "any": [
+              {
+                "read": "blood-count-crp",
+                "phase": "work-up"
+              },
+              {
+                "read": "blood-count-crp",
+                "phase": "course"
+              }
+            ]
           }
         ]
       },
       "need": {
-        "zh-CN": "先调阅这一阶段的抗体和肌酶结果。",
-        "en": "Read the antibody and muscle-enzyme results of this stage first."
+        "zh-CN": "先调阅这一阶段的抗体、肌酶和血常规/CRP结果。",
+        "en": "Read the antibody, muscle-enzyme and blood count/CRP results of this stage first."
       },
       "options": [
         {
           "id": "u1rnp-overlap",
           "text": {
-            "zh-CN": "抗U1-RNP重叠病引起的继发性雷诺，即以硬皮病样表现为主的混合结缔组织病模式；带参考区间复查CK，并马上评估肺、心、食管和肌肉",
-            "en": "Secondary Raynaud's from an anti-U1-RNP overlap — a mixed connective tissue disease pattern with scleroderma features; repeat the CK with its reference range and look now at the lungs, heart, oesophagus and muscle"
+            "zh-CN": "坏死和硬指说明不是原发性雷诺：抗U1-RNP重叠病，以硬皮病样表现为主的混合结缔组织病模式；带参考区间复查CK，查肺、心、食管和肌肉",
+            "en": "Secondary Raynaud's, since necrosis and sclerodactyly rule out the primary form: an anti-U1-RNP overlap (MCTD pattern) with scleroderma features; repeat the CK with a range and assess lungs, heart, gut and muscle"
           },
           "correct": true,
           "feedback": {
@@ -5042,8 +5162,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "原发性雷诺不会造成组织坏死、硬指或钙质沉着，ANA 1:10000合并抗nRNP阳性也不是偶然发现。SHARE 2021要求所有雷诺患儿查甲襞毛细血管镜和ANA，正是为了发现这样的继发病因；等一年会让她的器官受累无人筛查。",
-            "en": "Primary Raynaud's does not cause tissue loss, sclerodactyly or calcinosis, and an ANA of 1:10000 with anti-nRNP is no incidental finding. SHARE 2021 asks for capillaroscopy and ANA in every child with Raynaud's precisely to find a secondary cause like this one; waiting a year leaves her organs unscreened."
+            "zh-CN": "原发性雷诺不会造成组织坏死、硬指或钙质沉着，ANA 1:10000合并抗nRNP阳性也不是偶然发现。SHARE 2021要求即使是孤立性雷诺的患儿也查甲襞毛细血管镜和ANA，就是为了发现这样的继发病因；等一年会让她的器官受累无人筛查。",
+            "en": "Primary Raynaud's does not cause tissue loss, sclerodactyly or calcinosis, and an ANA of 1:10000 with anti-nRNP is no incidental finding. SHARE 2021 asks for capillaroscopy and ANA even in children with isolated Raynaud's, so that a secondary cause like this one is found; waiting a year leaves her organs unscreened."
           }
         },
         {
@@ -5090,8 +5210,8 @@
         {
           "id": "full-screen",
           "text": {
-            "zh-CN": "查含DLCO的肺功能和高分辨率CT看间质性肺病，超声心动图加NT-proBNP看肺动脉高压，测血压，查肾功能和尿常规，评估食管",
-            "en": "Lung function with DLCO and a high-resolution CT for lung disease, an echocardiogram with NT-proBNP for pulmonary hypertension, blood pressure, kidney function and urine, and the oesophagus"
+            "zh-CN": "现在筛查，因为这些并发症会悄悄进展：含DLCO的肺功能和高分辨率CT、超声心动图加NT-proBNP、血压、肾功能和尿常规、食管",
+            "en": "Screen now, as these complications progress silently: lung function with DLCO, a high-resolution CT, an echocardiogram with NT-proBNP, blood pressure, kidney function, urine and the oesophagus"
           },
           "correct": true,
           "feedback": {
@@ -5119,8 +5239,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "在硬皮病谱系疾病中，CRP和补体不能反映器官受累；间质性肺病和肺动脉高压可以在炎症指标正常时悄悄进展。等三个月会失去日后治疗决策所需的基线（SHARE 2021）。",
-            "en": "CRP and complement do not measure organ involvement in scleroderma-spectrum disease; ILD and pulmonary hypertension progress silently with normal inflammatory markers. Waiting three months loses the baseline that later treatment decisions need (SHARE 2021)."
+            "zh-CN": "在硬皮病谱系疾病中，CRP和补体不能反映器官受累；间质性肺病和肺动脉高压可以在炎症指标正常时悄悄进展。等三个月会失去基线，而SHARE 2021要求至少每6个月复查的肺功能、心超和肾功能正要与基线比较。",
+            "en": "CRP and complement do not measure organ involvement in scleroderma-spectrum disease; ILD and pulmonary hypertension progress silently with normal inflammatory markers. Waiting three months loses the baseline against which SHARE 2021's lung, heart and kidney checks, at least every 6 months, are read."
           }
         },
         {
@@ -5183,13 +5303,13 @@
         {
           "id": "add-rituximab",
           "text": {
-            "zh-CN": "在专科团队主持下升级治疗：完成感染筛查后加用利妥昔单抗清除B细胞，继续扩血管和伤口护理，并按固定间隔复查皮肤、手指和肺",
-            "en": "Escalate under the specialist team: add B-cell depletion with rituximab once she has been screened for infection, keep the vasodilator and wound care going, and review her skin, digits and lungs at set intervals"
+            "zh-CN": "四种药都没有明显效果，应升级：感染筛查后加用利妥昔单抗，继续扩血管和伤口护理，定期复查皮肤、手指和肺",
+            "en": "Escalate, as four agents have not clearly helped: add rituximab once she is screened for infection, keep the vasodilator and wound care going, and review her skin, digits and lungs regularly"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SHARE 2021建议严重或难治的青少年系统性硬化症考虑生物制剂，尤其是托珠单抗或利妥昔单抗；EULAR 2023把利妥昔单抗与吗替麦考酚酯、环磷酰胺并列用于皮肤纤维化和间质性肺病，因此吗替麦考酚酯也是合理的选择。先做感染筛查（首先是乙肝），扩血管和手指护理继续——免疫抑制治疗不了血管病变。",
-            "en": "Right. For severe or refractory juvenile SSc, SHARE 2021 advises considering a biological agent, in particular tocilizumab or rituximab, and EULAR 2023 lists rituximab for SSc skin fibrosis and ILD alongside mycophenolate and cyclophosphamide — so mycophenolate is a reasonable alternative. Infection screening comes first (hepatitis B above all), and the vasodilator and digital care continue: immunosuppression does not treat the vasculopathy."
+            "zh-CN": "正确。SHARE 2021建议严重或难治的青少年系统性硬化症考虑生物制剂，尤其是托珠单抗或利妥昔单抗；EULAR 2023把利妥昔单抗和吗替麦考酚酯都列为皮肤纤维化（另有甲氨蝶呤）和间质性肺病（另有环磷酰胺）的用药，因此吗替麦考酚酯也是合理的选择。先做感染筛查（首先是乙肝），扩血管和手指护理继续——免疫抑制治疗不了血管病变。",
+            "en": "Right. For severe or refractory juvenile SSc, SHARE 2021 advises considering a biological agent, in particular tocilizumab or rituximab, and EULAR 2023 lists rituximab, like mycophenolate, both for SSc skin fibrosis (with methotrexate) and for ILD (with cyclophosphamide) — so mycophenolate is a reasonable alternative. Infection screening comes first (hepatitis B above all), and the vasodilator and digital care continue: immunosuppression does not treat the vasculopathy."
           }
         },
         {
@@ -5284,13 +5404,13 @@
         {
           "id": "cxr-for-tb",
           "text": {
-            "zh-CN": "拍胸片排除结核，输注前用对乙酰氨基酚、抗组胺药和糖皮质激素预处理；肝炎检查可以在首次输注后再做，因为再激活要几个月才会出现",
-            "en": "A chest X-ray to rule out TB and premedication with paracetamol, an antihistamine and a glucocorticoid; hepatitis tests can follow the first infusion, since any reactivation takes months to appear"
+            "zh-CN": "拍胸片排除结核，输注前用对乙酰氨基酚、抗组胺药和糖皮质激素预处理；乙肝、丙肝和HIV检查随首次输注送检，第二次输注前再看结果",
+            "en": "A chest X-ray to rule out TB, premedication with paracetamol, an antihistamine and a glucocorticoid, and the hepatitis B, hepatitis C and HIV tests sent with the first infusion, their results checked before the second"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "胸片不能筛查潜伏结核（EULAR 2022优先推荐IGRA）；乙肝状态必须在首次输注前明确——再激活要靠事先决定的抗病毒预防来避免，而不是事后发现。",
-            "en": "A chest X-ray does not screen for latent TB (EULAR 2022 prefers an IGRA), and hepatitis B status must be known before the first infusion: reactivation is prevented with antiviral prophylaxis decided in advance, not caught afterwards."
+            "zh-CN": "单靠胸片不能排除潜伏结核——EULAR 2022在胸片之外优先推荐IGRA，而不是结核菌素皮试；乙肝状态必须在首次输注前明确：再激活要靠事先决定的抗病毒预防来避免，而不是等到第二次输注时才发现。",
+            "en": "A chest X-ray alone cannot exclude latent TB — EULAR 2022 pairs it with an IGRA, preferred over the skin test — and hepatitis B status must be known before the first infusion: reactivation is prevented with antiviral prophylaxis decided in advance, not discovered at the second dose."
           }
         }
       ]
@@ -5442,8 +5562,8 @@
       "weight": 4,
       "critical": true,
       "text": {
-        "zh-CN": "在前两个阶段、病因尚未明确时就开始静脉伊洛前列素，并让手指保暖、干燥、受保护，同时止痛",
-        "en": "Started IV iloprost and kept the digit warm, dry and protected with pain relief in the first two stages, before the cause was settled"
+        "zh-CN": "在前两个阶段、病因尚未明确时就开始静脉前列腺素类药物（伊洛前列素），并让手指保暖、干燥、受保护，同时止痛",
+        "en": "Started an IV prostanoid (iloprost) and kept the digit warm, dry and protected with pain relief in the first two stages, before the cause was settled"
       },
       "met": {
         "all": [
@@ -5677,6 +5797,24 @@
           },
           {
             "ordered": "hcg"
+          },
+          {
+            "not": {
+              "any": [
+                {
+                  "intervened": "methotrexate",
+                  "valid": false
+                },
+                {
+                  "intervened": "cyclophosphamide",
+                  "valid": false
+                },
+                {
+                  "intervened": "mycophenolate",
+                  "valid": false
+                }
+              ]
+            }
           }
         ]
       }
@@ -6762,6 +6900,27 @@
         "text": "今天外面下雨了吗？",
         "locale": "zh-CN",
         "expect": []
+      },
+      {
+        "text": "脚是不是也凉？",
+        "locale": "zh-CN",
+        "expect": [
+          "cold-hands"
+        ]
+      },
+      {
+        "text": "现在大拇指怎么样了？",
+        "locale": "zh-CN",
+        "expect": [
+          "since-rituximab"
+        ]
+      },
+      {
+        "text": "Did that newer treatment help at all?",
+        "locale": "en",
+        "expect": [
+          "since-rituximab"
+        ]
       }
     ]
   }

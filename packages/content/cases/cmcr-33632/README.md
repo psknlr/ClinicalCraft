@@ -19,8 +19,9 @@
 
 ## Learning outcomes
 
-1. Take a focused history of recurrent haemoptysis (duration, episodes, volume, earlier work-up) and order SpO₂, a
-   blood count, clotting, group and save, sputum microbiology and contrast CT with vascular reconstruction on admission.
+1. Take a focused history of recurrent haemoptysis (duration, episodes, volume, earlier work-up) and plan his
+   admission: SpO₂ measured at once, a blood count, clotting, group and save, sputum microbiology and contrast CT with
+   vascular reconstruction.
 2. Explain why absent cyanosis does not establish normal oxygenation, and measure SpO₂ in a child with clubbing and a
    possible right-to-left shunt.
 3. Recognise the STAT3 hyper-IgE syndrome pattern — eczema from soon after birth, a suppurative infection needing
@@ -29,7 +30,7 @@
 4. Faced with a CT showing enhancing vessels within lung nodules, avoid biopsy and refer for angiography of the
    pulmonary and bronchial arteries with embolisation, checking platelets and giving antibiotic cover first.
 5. Apply the Woellner diagnostic guidelines (2010) to confirm the diagnosis with STAT3 sequencing and parental testing,
-   and explain a new dominant variant to the family.
+   and explain to the family a dominant variant that most likely arose in him.
 6. Agree a discharge plan with the family: anti-staphylococcal prophylaxis, antibiotic cover for dental and invasive
    procedures, a written bleeding plan, genetic counselling and help with costs.
 
@@ -125,7 +126,7 @@ either language (in `family-plan` the zh-CN key ties with `stop-if-dry` at 53 ch
 | `rb-syndrome` | diagnosis | 3 | decision 2 right first time |
 | `rb-results` | investigations | 2 | all six admission records read in `workup` |
 | `rb-vascular` | management | 3 | decision 3 right first time |
-| `rb-ir-referral` | management | 3 | **critical** — interventional-radiology referral given while indicated: after the CT has been read in `workup` and before the outcome phase |
+| `rb-ir-referral` | management | 3 | **critical** — interventional-radiology referral given while indicated: after the CT has been read in `workup` and before decision 5 (the discharge plan) is answered; that answer opens the outcome, so the window stays shut even if the learner later goes back to an earlier phase |
 | `rb-confirm` | diagnosis | 2 | decision 4 right first time |
 | `rb-plan` | management | 3 | decision 5 right first time |
 | `rb-care-bundle` | management | 2 | large-bleed plan, air-free IV lines, co-trimoxazole, procedure antibiotic cover and genetic counselling given |
@@ -136,7 +137,9 @@ either language (in `family-plan` the zh-CN key ties with `stop-if-dry` at 53 ch
 **Critical items are acts done in time**, never a decision alone: SpO₂ measured on admission (an `ordered` leaf bound
 to the `admission` phase — the learner who moves on to the results without measuring misses it for good, though the
 case can still be finished), the interventional-radiology referral inside its window (`indicatedWhen` = CT read in
-`workup` and not yet `outcome`, scored with `whenIndicated`), and the biopsy avoided. Decisions are scored with
+`workup` and `family-plan` not yet decided, scored with `whenIndicated`: a locked phase can be selected again while its
+`enterWhen` holds, so a window that only excluded the `outcome` phase reopened when the learner went back to
+`confirmation` after reading the follow-up), and the biopsy avoided. Decisions are scored with
 `decidedFirstTry`, so a wrong first answer costs marks for good.
 
 ### How wrong choices score (measured 2026-11-14 with core `assess`)
@@ -153,6 +156,7 @@ case can still be finished), the interventional-radiology referral inside its wi
 | SpO₂ measured only after the results open (`workup`) | 32/35 (91 %) | `rb-spo2` | pass |
 | SpO₂ never measured | finish refused (`obj-bedside`) until it is ordered | `rb-spo2` | pass |
 | Interventional-radiology referral only after the outcome opens | 32/35 (91 %) | `rb-ir-referral` | pass |
+| Interventional-radiology referral only after reading the follow-up, back in `confirmation` | 32/35 (91 %) | `rb-ir-referral` | pass |
 | Interventional-radiology referral only before the CT is read | 32/35 (91 %) | `rb-ir-referral` | pass |
 
 **Safety outcome.** `lung-biopsy` is `critical: true`: needling a lesion that enhances like a blood vessel risks
@@ -228,6 +232,7 @@ No dose is given anywhere in the case: co-trimoxazole is weight-based and the we
 | Telling the family that negative parents mean no risk | `offspring-safe` in decision 5; the communication item asks for a no-blame explanation and the 50 % risk to his children |
 | Ending follow-up because he has stopped bleeding | `stop-if-dry` in decision 5 — set before the six-month follow-up (no further bleeding) is shown |
 | A plan the family cannot pay for | decision 5's key includes help with costs; the social-work intervention; the outcome record shows that the operation did not happen for financial reasons |
+| Ordering "angiography" as a test instead of referring | the angiography test returns no result, with a note that interventional radiology does it on referral; only the referral (`ir-referral`, in its window) earns `rb-ir-referral` |
 
 ## Embodied mode
 
@@ -242,6 +247,10 @@ No dose is given anywhere in the case: co-trimoxazole is weight-based and the we
   `blood-bank`, `lab-microbiology`, `lab-serology`, `echocardiography`, `fluoroscopy` (catheter angiography), `xray`,
   `ct`, `surgery` and `medications`; `caseCapabilityGaps` is empty and the in-world demonstration replays the reference
   path in zh-CN and en.
+- **What the treatment list shows from admission.** The treat tab lists every intervention's name and dose text from
+  the start, so none of them names a later result: the biopsy and the resection read "a lung lesion" (not the CT's
+  right-lung nodules), and the interventional-radiology request asks for platelets and clotting without quoting the
+  clotting record.
 
 ## Source and adaptation (fidelity limits)
 
@@ -347,8 +356,16 @@ record.
   blood does he cough up?", "每次咳多少" → `bleed-pattern`; "What did they find last time he was in hospital?" →
   `prior-admission`; "Has he had an abscess in his neck?" / "脖子上长过脓肿吗" → `neck-infection`; "Any abscesses?" /
   "身上长过脓肿吗" → `skin-abscesses`; "Has he had any operations?" / "做过手术吗" → `neck-infection` first.
-- `extensions.testUtterances`: 58 paraphrases in both languages, none identical to a canonical question, at least one
-  for every required history item, and three look-alike negatives (`expect: []`). `cases verify` passes 58/58.
+- The independent review's probes (2026-11-14) found past-history openers reaching nothing — "Any past medical
+  history?", "以前得过什么病吗？", "平时身体怎么样？" made the parent answer "I'm not sure", although his history is
+  recorded — so `eczema` (the first thing the parent tells) carries those openers, with family words excluded; and
+  "家里有人得过结核吗？" reaching `family` ("nothing special runs in the family", which would deny an unrecorded TB
+  exposure), so `family` excludes TB and cough words and the question reaches `tb-contact`. Also: chest infections →
+  `pneumonia` (not the neck operation), school → `development`, bruising or bleeding easily → `nosebleeds` (unknown),
+  breathlessness while coughing blood → `breathless`, "Tell me about this illness" → `presenting`, "any other
+  illnesses" → `eczema`.
+- `extensions.testUtterances`: 67 paraphrases in both languages, none identical to a canonical question, at least one
+  for every required history item, and three look-alike negatives (`expect: []`). `cases verify` passes 67/67.
 
 ## References
 
@@ -438,7 +455,18 @@ so none is cited.
   contradictions between the zh and en texts are kept and listed; the record names no longer reveal the diagnosis (the
   genetic record is "Family genetic test").
 - **Added.** Staged records by phase, the outcome phase waiting for every decision, the source figure on the outcome
-  record only, the attending, nurse, radiologist and immunologist, 58 matcher utterances, the facilitator guide.
+  record only, the attending, nurse, radiologist and immunologist, the matcher utterances, the facilitator guide.
+- **Independent review (2026-11-14), fixes.** The interventional-radiology referral (critical) could be credited after
+  the follow-up had been read, by going back to `confirmation`: its window now closes when the discharge plan is
+  decided. Intervention names and dose texts, listed from admission, no longer reveal later results (the biopsy and
+  resection named the right-lung nodules; the IR request quoted the clotting record). Past-history openers reached no
+  item (the parent said "I'm not sure" about a recorded history) and a family TB question reached the family history;
+  both now reach the right item, with nine more utterances (67). De novo is taught as "most likely" (parentage
+  confirmation is not recorded); the attending never gives a decision's answer; a feedback line no longer says the CT
+  "would find a vascular source"; decision 2's unlock hint no longer names the neck operation; a distractor no longer
+  speaks of "the largest" nodule (sizes are not recorded); a harm text no longer credits AAAAI/ACAAI with "lifelong"
+  care; learning outcomes 1 and 5 reworded to match (the admission plan; a most-likely-new variant); the angiography
+  test points to the IR referral.
 
 ### 1.0.0
 
@@ -452,7 +480,7 @@ Run from the worktree root on 2026-11-14:
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-33632/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33632 --lang en                                                 # 68 steps, objectives 6/6, decisions 5/5, utterances 58/58, rubric 35/35 (100 %)
+npm run -s cc -- cases verify cmcr-33632 --lang en                                                 # 68 steps, objectives 6/6, decisions 5/5, utterances 67/67, rubric 35/35 (100 %)
 npx tsx --conditions=source scripts/case-check.ts cmcr-33632                                       # reference 100 %, do nothing 0/30, wrong first at every decision 60 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33632:"              # collection contract: pass
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33632:"  # in-world demonstration, en + zh-CN: pass

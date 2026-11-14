@@ -69,8 +69,8 @@
     ],
     "license": "Educational adaptation written for ClinicalCraft; copyright in the publication remains with its holders.",
     "notes": {
-      "zh-CN": "依据中华儿科杂志2013年发表的单篇病例报告改编。本版（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容——12岁男孩，突发左侧肢体瘫痪6小时，发病前无外伤，发病时呼吸急促，最初左上下肢无力、右侧能动；左侧中枢性面舌瘫、左上下肢肌力0级、Babinski征阳性、右侧肌力正常；左桡动脉未触及、双股动脉搏动差、下肢皮温低，右侧血压110/70 mmHg、左侧测不出；呼吸40次/分、双肺广泛湿啰音；头颅MRI及血管成像示双侧多发脑异常信号（右侧为主）、右大脑中动脉中远段狭窄闭塞、左锁骨下动脉闭塞；下肢血管检查示双下肢重度缺血频谱、左腘静脉及股腘动脉血栓，后续血管成像示多处动脉闭塞；超声心动图示左房面房间隔及二尖瓣附近5.5 cm×3.5 cm有蒂团块（蒂约1.6 cm），舒张期部分突入二尖瓣口，轻中度反流；住院第3天双侧小腿明显肿痛；先行支持、抗凝等治疗，住院40天后出院，约1个月后切除左房肿物，病理为左房黏液瘤（各栓塞物成分未提供）；此后左上肢恢复，左下肢肌力近端Ⅴ-级、远端Ⅲ级，超声未见复发——尚未对照原文全文核对。患者为化名，医院和日期已去除。分阶段设计、各阶段的时间安排、决策、处置选项、评分、医护人员和家属说出的担心（教学设定，不增加临床事实）均为教学设计；未记录的内容（其他生命体征、意识和言语、化验、心电图、胸片、影像时间与细节、治疗药物与剂量、手术细节、随访时长）保持未知。1.0.0版中英文有几处不一致（小腿“明显”肿痛、抗凝与抗栓、血管成像与血管造影、超声与超声心动图、Ⅴ-级与接近Ⅴ级），均按原样保留并列入待核实。",
-      "en": "Adapted from a single case report published in the Chinese Journal of Pediatrics in 2013. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 12-year-old boy with six hours of sudden left-sided paralysis, no injury beforehand and fast breathing at onset, at first weakness of the left arm and leg with the right side still moving; a left central facial and tongue palsy, power grade 0 in the left limbs, a positive Babinski sign and normal power on the right; no palpable left radial pulse, poor femoral pulses, cool legs, a blood pressure of 110/70 mmHg on the right and unmeasurable on the left; a respiratory rate of 40/min with widespread crackles over both lungs; brain MRI and vascular imaging with multiple abnormal signals on both sides (predominantly right), mid-to-distal right middle cerebral artery stenosis/occlusion and left subclavian occlusion; lower-limb vascular studies with severe ischaemic waveforms in both legs and thrombus in the left popliteal vein and the femoropopliteal artery, and later vascular imaging with multiple arterial occlusions; an echocardiogram with a pedunculated 5.5 × 3.5 cm mass (stalk about 1.6 cm) on the left-atrial side of the atrial septum near the mitral valve, partly prolapsing into the mitral orifice in diastole, with mild-to-moderate regurgitation; both calves obviously swollen and painful on hospital day 3; supportive and anticoagulant treatment first, discharge after 40 days in hospital and resection of the left atrial mass about a month later, with pathology of left atrial myxoma (the composition of the individual emboli not provided); afterwards recovery of the left arm, left-leg power V− proximally and III distally, and no recurrence on ultrasound — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and dates are removed. The phases and their timing, the decisions, intervention options, scoring, staff and the relative's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (other vital signs, conscious level and speech, laboratory results, ECG, chest X-ray, the timing and detail of the imaging, the drugs and doses, the operation, the length of follow-up) stays unknown. Where version 1.0.0's Chinese and English differ (the calves 'obviously' swollen, anticoagulant or antithrombotic, vascular imaging or angiography, ultrasound or echocardiography, grade V− or near grade V), both readings are kept and listed under To verify."
+      "zh-CN": "依据中华儿科杂志2013年发表的单篇病例报告改编。本版（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容——12岁男孩，突发左侧肢体瘫痪6小时，发病前无外伤，发病时呼吸急促，最初左上下肢无力、右侧能动；左侧中枢性面舌瘫、左上下肢肌力0级、Babinski征阳性、右侧肌力正常；左桡动脉未触及、双股动脉搏动差、下肢皮温低，右侧血压110/70 mmHg、左侧测不出；呼吸40次/分、双肺广泛湿啰音；头颅MRI及血管成像示双侧多发脑异常信号（右侧为主）、右大脑中动脉中远段狭窄闭塞、左锁骨下动脉闭塞；下肢血管检查示双下肢重度缺血频谱、左腘静脉及股腘动脉血栓，后续血管成像示多处动脉闭塞；超声心动图示左房面房间隔及二尖瓣附近5.5 cm×3.5 cm有蒂团块（蒂约1.6 cm），舒张期部分突入二尖瓣口，轻中度反流；住院第3天双侧小腿明显肿痛；先行支持、抗凝等治疗，住院40天后出院，约1个月后切除左房肿物，病理为左房黏液瘤（各栓塞物成分未提供）；此后左上肢恢复，左下肢肌力近端Ⅴ-级、远端Ⅲ级，超声未见复发——尚未对照原文全文核对。患者为化名，医院和日期已去除。分阶段设计、各阶段的时间安排、决策、处置选项、评分、医护人员角色，以及孩子和家属说出的担心（教学设定，不增加临床事实）均为教学设计；未记录的内容（其他生命体征、意识和言语、化验、心电图、胸片、影像时间与细节、治疗药物与剂量、手术细节、随访时长）保持未知。1.0.0版中英文有几处不一致（小腿“明显”肿痛、抗凝与抗栓、血管成像与血管造影、超声与超声心动图、Ⅴ-级与接近Ⅴ级），均按原样保留并列入待核实。",
+      "en": "Adapted from a single case report published in the Chinese Journal of Pediatrics in 2013. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 12-year-old boy with six hours of sudden left-sided paralysis, no injury beforehand and fast breathing at onset, at first weakness of the left arm and leg with the right side still moving; a left central facial and tongue palsy, power grade 0 in the left limbs, a positive Babinski sign and normal power on the right; no palpable left radial pulse, poor femoral pulses, cool legs, a blood pressure of 110/70 mmHg on the right and unmeasurable on the left; a respiratory rate of 40/min with widespread crackles over both lungs; brain MRI and vascular imaging with multiple abnormal signals on both sides (predominantly right), mid-to-distal right middle cerebral artery stenosis/occlusion and left subclavian occlusion; lower-limb vascular studies with severe ischaemic waveforms in both legs and thrombus in the left popliteal vein and the femoropopliteal artery, and later vascular imaging with multiple arterial occlusions; an echocardiogram with a pedunculated 5.5 × 3.5 cm mass (stalk about 1.6 cm) near the left-atrial face of the atrial septum and the mitral valve, partly prolapsing into the mitral orifice in diastole, with mild-to-moderate regurgitation; both calves obviously swollen and painful on hospital day 3; supportive and anticoagulant treatment first, discharge after 40 days in hospital and resection of the left atrial mass about a month later, with pathology of left atrial myxoma (the composition of the individual emboli not provided); afterwards recovery of the left arm, left-leg power V− proximally and III distally, and no recurrence on ultrasound — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and dates are removed. The phases and their timing, the decisions, intervention options, scoring, staff, and the boy's and the relative's voiced worries (a teaching device that adds no clinical fact) are teaching design; what is not recorded (other vital signs, conscious level and speech, laboratory results, ECG, chest X-ray, the timing and detail of the imaging, the drugs and doses, the operation, the length of follow-up) stays unknown. Where version 1.0.0's Chinese and English differ (the calves 'obviously' swollen, anticoagulant or antithrombotic, vascular imaging or angiography, ultrasound or echocardiography, grade V− or near grade V), both readings are kept and listed under To verify."
     },
     "review": {
       "status": "editorial",
@@ -535,7 +535,8 @@
           "calves",
           "swollen",
           "swelling",
-          "legs hurt"
+          "legs hurt",
+          "chest"
         ]
       },
       "disclosure": "on-ask",
@@ -757,6 +758,22 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知，不补写（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown, nothing added (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "小腿",
+          "腿",
+          "胸",
+          "撞"
+        ],
+        "en": [
+          "chest",
+          "calf",
+          "calves",
+          "leg",
+          "hit his head",
+          "bang"
+        ]
       }
     },
     {
@@ -1355,7 +1372,7 @@
       },
       "answer": {
         "zh-CN": "两边小腿……明显又肿又疼。",
-        "en": "Both my calves… they're obviously swollen and sore."
+        "en": "Both my calves… they're swollen and sore — you can see it."
       },
       "keywords": {
         "zh-CN": [
@@ -1863,7 +1880,7 @@
           "available": true,
           "text": {
             "zh-CN": "左房面房间隔及二尖瓣附近见5.5 cm×3.5 cm有蒂团块，蒂约1.6 cm；舒张期团块部分突入二尖瓣口；轻中度反流。",
-            "en": "A pedunculated mass, 5.5 × 3.5 cm, on the left-atrial side of the atrial septum near the mitral valve; stalk about 1.6 cm; in diastole part of the mass protrudes into the mitral orifice; mild-to-moderate regurgitation."
+            "en": "A pedunculated mass, 5.5 × 3.5 cm, near the left-atrial face of the atrial septum and the mitral valve; stalk about 1.6 cm; in diastole part of the mass protrudes into the mitral orifice; mild-to-moderate regurgitation."
           },
           "values": [
             {
@@ -1892,8 +1909,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有写明是哪个瓣膜反流，也没有记录二尖瓣压差、左房大小、心室功能、肺动脉压，以及是否做了发泡试验。",
-            "en": "This case does not state which valve the regurgitation was at, and does not record the mitral gradient, the left atrial size, ventricular function, pulmonary pressure, or whether a bubble study was done."
+            "zh-CN": "本病例没有写明是哪个瓣膜反流、蒂附着在哪里，也没有记录二尖瓣压差、左房大小、心室功能、肺动脉压，以及是否做了发泡试验。",
+            "en": "This case does not state which valve the regurgitation was at or where the stalk is attached, and does not record the mitral gradient, the left atrial size, ventricular function, pulmonary pressure, or whether a bubble study was done."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的病例资料·超声心动图（待对照原文全文核对）",
@@ -2069,12 +2086,12 @@
         "operation": {
           "available": true,
           "text": {
-            "zh-CN": "手术切除标本病理诊断：左房黏液瘤。各处栓塞物的组织成分没有提供。",
-            "en": "Pathology of the surgically resected specimen: left atrial myxoma. The tissue composition of the individual emboli is not provided."
+            "zh-CN": "手术切除标本病理诊断：左房黏液瘤。",
+            "en": "Pathology of the surgically resected specimen: left atrial myxoma."
           },
           "note": {
-            "zh-CN": "本病例没有记录手术日期和方式、标本的大体和镜下所见及切缘。",
-            "en": "This case does not record the date or approach of the operation, the gross and microscopic description, or the margins."
+            "zh-CN": "本病例没有记录各处栓塞物的组织成分，也没有记录手术日期和方式、标本的大体和镜下所见及切缘。",
+            "en": "This case does not record the tissue composition of any of the emboli, the date or approach of the operation, the gross and microscopic description, or the margins."
           },
           "source": {
             "zh-CN": "1.0.0 版提取的病例资料·术后病理（待对照原文全文核对）",
@@ -2197,9 +2214,7 @@
           "肝肾功能",
           "电解质",
           "纤维蛋白原",
-          "CRP",
-          "血型",
-          "交叉配血"
+          "CRP"
         ],
         "en": [
           "fbc",
@@ -2213,8 +2228,7 @@
           "electrolytes",
           "renal function",
           "liver function",
-          "crp",
-          "group and save"
+          "crp"
         ]
       },
       "requires": [
@@ -2373,14 +2387,12 @@
         "zh-CN": [
           "肌酸激酶",
           "CK",
-          "肌酶",
-          "肌红蛋白"
+          "肌酶"
         ],
         "en": [
           "ck",
           "creatine kinase",
-          "cpk",
-          "myoglobin"
+          "cpk"
         ]
       },
       "requires": [
@@ -2605,8 +2617,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "在右上肢放置外周静脉留置针，同时留取血标本。",
-        "en": "A peripheral cannula in the right arm, drawing blood samples at the same time."
+        "zh-CN": "在右上肢放置外周静脉留置针（避开缺血的左上肢），便于采血和输液。",
+        "en": "A peripheral cannula in the right arm (not the ischaemic left arm), ready for blood samples and infusions."
       },
       "requires": [
         "iv-access"
@@ -2624,8 +2636,8 @@
         ]
       },
       "response": {
-        "zh-CN": "留置针已放好，血标本已送检。本病例没有记录这一步。",
-        "en": "The cannula is in and the blood samples are on their way. This step is not recorded in the case."
+        "zh-CN": "留置针已放好，可以采血和输液。本病例没有记录这一步。",
+        "en": "The cannula is in, ready for samples and infusions. This step is not recorded in the case."
       }
     },
     {
@@ -2749,17 +2761,6 @@
       ],
       "risk": "high",
       "critical": true,
-      "indicatedWhen": {
-        "all": [
-          {
-            "read": "brain-mri",
-            "phase": "first-results"
-          },
-          {
-            "ordered": "bloods"
-          }
-        ]
-      },
       "contraindicatedWhen": {
         "not": {
           "read": "brain-mri",
@@ -2862,8 +2863,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "近两个月内确定的脑血管事件（包括TIA）是急性肢体缺血溶栓的绝对禁忌（ESVS 2020，表5）；他正处在急性卒中期，溶栓可能引起颅内出血。儿童急性肢体缺血以肝素为主，保守治疗无效时才考虑溶栓或开放手术（ESVS 2020）。",
-        "en": "An established cerebrovascular event (including a TIA) within the last two months is an absolute contraindication to thrombolysis for acute limb ischaemia (ESVS 2020, Table 5); with an acute stroke it risks bleeding into the brain. In children, heparin is the mainstay for acute limb ischaemia, with thrombolysis or open surgery considered only when it fails (ESVS 2020)."
+        "zh-CN": "近两个月内确定的脑血管事件（包括TIA）是急性肢体缺血溶栓的绝对禁忌（ESVS 2020，表5）；他正处在急性卒中期，溶栓可能引起颅内出血。ESVS 2020指出儿童急性肢体缺血以肝素为主，无效时才考虑溶栓或开放手术；但心脏团块来源的栓子可能是瘤体组织，肝素和溶栓药都溶不掉，受威胁的肢体是否需要切开取栓，由血管外科判断。",
+        "en": "An established cerebrovascular event (including a TIA) within the last two months is an absolute contraindication to thrombolysis for acute limb ischaemia (ESVS 2020, Table 5); with an acute stroke it risks bleeding into the brain. For children ESVS 2020 makes heparin the mainstay of acute limb ischaemia, with thrombolysis or open surgery considered if it fails; but emboli from a cardiac mass may be tumour tissue that neither heparin nor a thrombolytic dissolves, so whether a threatened limb needs an embolectomy is for the vascular surgeons to judge."
       },
       "response": {
         "zh-CN": "导管溶栓的申请已发出。本病例没有记录这项治疗，也不模拟其效果。",
@@ -3331,13 +3332,13 @@
         {
           "id": "left-heart-emboli",
           "text": {
-            "zh-CN": "同一来源的栓子从左心同时堵住了几处动脉——脑、左上肢和双下肢；双肺湿啰音提示这个病变还在阻碍左心充盈",
-            "en": "Emboli from one source in the left heart blocking several arteries at once — brain, left arm and both legs — with the crackles suggesting the same lesion obstructs left-heart filling"
+            "zh-CN": "同一来源的栓子从左心同时堵住了几处动脉——脑、左上肢和双下肢；双肺湿啰音提示同一个左心问题已经引起肺淤血",
+            "en": "Emboli from one source in the left heart blocking several arteries at once — brain, left arm and both legs — with the crackles suggesting the same problem is congesting the lungs"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。几处供血区域同时缺血——右侧大脑半球（左侧偏瘫、面舌瘫）、左上肢（脉搏消失、血压测不出）和双下肢——最符合同一来源的栓塞，突然起病、发病前无外伤也支持这一点；快速呼吸加双肺湿啰音提示左心充盈受阻、肺静脉淤血。下一步用超声心动图找来源，用头颅和血管影像看脑（AHA/ASA 2019 声明：卒中患儿通常都做超声心动图）。",
-            "en": "Right. Ischaemia in several territories at once — the right hemisphere (left hemiplegia, facial and tongue palsy), the left arm (no pulse, no measurable pressure) and both legs — fits emboli from a single source, and the sudden onset without injury supports it; fast breathing with crackles over both lungs suggests impaired left-heart filling with pulmonary venous congestion. Echocardiography looks for the source and brain and vessel imaging for the damage (the AHA/ASA 2019 statement: children with stroke typically have an echocardiogram)."
+            "zh-CN": "对。几处供血区域同时缺血——右侧大脑半球（左侧偏瘫、面舌瘫）、左上肢（脉搏消失、血压测不出）和双下肢——最符合同一来源的栓塞，突然起病、发病前无外伤也支持这一点；快速呼吸加双肺湿啰音提示同一个左心问题引起了肺静脉淤血（他有面舌瘫，误吸也要考虑）。下一步用超声心动图找来源，用头颅和血管影像看脑（AHA/ASA 2019 声明：卒中患儿通常都做超声心动图）。",
+            "en": "Right. Ischaemia in several territories at once — the right hemisphere (left hemiplegia, facial and tongue palsy), the left arm (no pulse, no measurable pressure) and both legs — fits emboli from a single source, and the sudden onset without injury supports it; fast breathing with crackles over both lungs suggests pulmonary venous congestion from the same left-heart problem (with a facial and tongue palsy, aspiration is the other cause to weigh). Echocardiography looks for the source and brain and vessel imaging for the damage (the AHA/ASA 2019 statement: children with stroke typically have an echocardiogram)."
           }
         },
         {
@@ -3418,8 +3419,8 @@
         {
           "id": "image-call-support",
           "text": {
-            "zh-CN": "1小时内完成头颅和血管影像（首选MRI/MRA，做不到就做CT/CTA），立即请儿童卒中团队评估能否取栓；吸氧使SpO₂ > 92%，查血糖，抽血含凝血，禁食，请血管外科急会诊；不溶栓，排除出血前不用抗栓药",
-            "en": "Brain and vessel imaging within the hour (MRI/MRA, or CT/CTA if MRI cannot be done promptly) and the paediatric stroke team called now about thrombectomy; oxygen to SpO₂ > 92%, glucose, bloods with clotting, nil by mouth and an urgent vascular review — no thrombolysis, and no antithrombotic until haemorrhage is excluded"
+            "zh-CN": "1小时内完成头颅和血管影像，立即请儿童卒中团队评估能否取栓；吸氧使SpO₂ > 92%，查血糖，抽血含凝血，禁食，请血管外科急会诊；不溶栓，排除出血前不用抗栓药",
+            "en": "Brain and vessel imaging within the hour and the paediatric stroke team called now about thrombectomy; oxygen to SpO₂ > 92%, glucose, bloods with clotting, nil by mouth and an urgent vascular review — no thrombolysis, and no antithrombotic until haemorrhage is excluded"
           },
           "correct": true,
           "feedback": {
@@ -3430,8 +3431,8 @@
         {
           "id": "alteplase-now",
           "text": {
-            "zh-CN": "他的神经缺损很重，立即静脉阿替普酶溶栓，随后做头颅影像；同时吸氧、查血糖，请血管外科看发凉的下肢",
-            "en": "IV alteplase now because his deficit is disabling, with brain imaging straight after; oxygen, a glucose check and a vascular surgical review of the cold legs alongside"
+            "zh-CN": "他的神经缺损很重，时间就是大脑：立即静脉阿替普酶溶栓，随后做头颅和血管影像；同时吸氧使SpO₂ > 92%，查血糖，抽血含凝血，禁食，请血管外科看发凉的下肢",
+            "en": "IV alteplase now because his deficit is disabling and every minute counts, with brain and vessel imaging straight after; oxygen to SpO₂ > 92%, a glucose check, bloods with clotting, nil by mouth and a vascular surgical review of the cold legs alongside"
           },
           "correct": false,
           "feedback": {
@@ -3442,8 +3443,8 @@
         {
           "id": "heparin-first",
           "text": {
-            "zh-CN": "左上肢无脉、下肢发凉，先按急性肢体缺血立即给肝素，再在1小时内做头颅影像，同时吸氧和查血糖",
-            "en": "Heparin now for the pulseless arm and cold legs, as acute limb ischaemia guidance advises, then brain imaging within the hour, with oxygen and a glucose check"
+            "zh-CN": "左上肢无脉、下肢发凉，按急性肢体缺血指南立即给肝素，再在1小时内做头颅和血管影像；同时吸氧使SpO₂ > 92%，查血糖，抽血含凝血，禁食，并通知卒中团队和血管外科",
+            "en": "Heparin now for the pulseless arm and cold legs, as acute limb ischaemia guidance advises, then brain and vessel imaging within the hour; oxygen to SpO₂ > 92%, a glucose check, bloods with clotting, nil by mouth, and the stroke team and vascular surgeons called alongside"
           },
           "correct": false,
           "feedback": {
@@ -3454,8 +3455,8 @@
         {
           "id": "aspirin-routine-mri",
           "text": {
-            "zh-CN": "已经过了治疗时间窗：收入病房，给阿司匹林5 mg/kg，吸氧并做神经系统观察，排到下一次常规MRI检查",
-            "en": "Beyond any treatment window, so admit him to the ward with aspirin 5 mg/kg, oxygen and neurological observations, and book an MRI on the next routine list"
+            "zh-CN": "发病已约6小时，所有治疗时间窗都已过去：收入病房，给阿司匹林5 mg/kg，吸氧使SpO₂ > 92%，查血糖，抽血含凝血，禁食并做神经系统观察，排到下一次常规MRI检查",
+            "en": "Beyond any treatment window at six hours, so admit him to the ward with aspirin 5 mg/kg, oxygen to SpO₂ > 92%, a glucose check, bloods with clotting, nil by mouth and neurological observations, and book an MRI on the next routine list"
           },
           "correct": false,
           "feedback": {
@@ -3466,8 +3467,8 @@
         {
           "id": "breathing-first",
           "text": {
-            "zh-CN": "先处理呼吸：静脉呋塞米加无创通气，等双肺情况稳定后再做头颅影像",
-            "en": "Treat the breathing first with IV furosemide and non-invasive ventilation, and image the brain once his lungs have settled"
+            "zh-CN": "先处理呼吸：静脉呋塞米加无创通气，同时查血糖、抽血含凝血、禁食，等双肺情况稳定后再做头颅和血管影像、通知卒中团队",
+            "en": "Treat the breathing first with IV furosemide and non-invasive ventilation, with a glucose check, bloods with clotting and nil by mouth meanwhile, then image the brain and vessels and call the stroke team once his lungs have settled"
           },
           "correct": false,
           "feedback": {
@@ -3482,7 +3483,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "超声心动图：左房面房间隔及二尖瓣附近5.5 cm×3.5 cm有蒂团块，蒂约1.6 cm，舒张期部分突入二尖瓣口，轻中度反流。头颅影像：双侧多发脑异常信号，以右侧为主。这个团块下一步怎么处理？",
-        "en": "Echocardiography: a pedunculated 5.5 × 3.5 cm mass on the left-atrial side of the atrial septum near the mitral valve, stalk about 1.6 cm, partly protruding into the mitral orifice in diastole, with mild-to-moderate regurgitation. Brain imaging: multiple abnormal signals on both sides, predominantly right. What is the plan for the mass?"
+        "en": "Echocardiography: a pedunculated 5.5 × 3.5 cm mass near the left-atrial face of the atrial septum and the mitral valve, stalk about 1.6 cm, partly protruding into the mitral orifice in diastole, with mild-to-moderate regurgitation. Brain imaging: multiple abnormal signals on both sides, predominantly right. What is the plan for the mass?"
       },
       "requires": {
         "all": [
@@ -3493,12 +3494,16 @@
           {
             "read": "brain-mri",
             "phase": "first-results"
+          },
+          {
+            "read": "limb-vascular",
+            "phase": "first-results"
           }
         ]
       },
       "need": {
-        "zh-CN": "先在本阶段调阅超声心动图和头颅MRI及血管成像的报告。",
-        "en": "First read the echocardiogram and the brain MRI and vascular imaging reports in this phase."
+        "zh-CN": "先在本阶段调阅超声心动图、头颅MRI及血管成像和下肢血管检查的报告。",
+        "en": "First read this phase's reports: the echocardiogram, the brain MRI and vascular imaging, and the lower-limb vascular studies."
       },
       "options": [
         {
@@ -3509,8 +3514,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。附着在房间隔上、带蒂、可活动并突入二尖瓣口的左房团块，一边在反复把栓子送往全身，一边可能突然堵住二尖瓣口——双肺湿啰音提示它已在阻碍左心充盈。AHA/ASA 2021二级预防指南（成人；2a类推荐，C-LD）认为卒中后切除左侧心脏肿瘤可以获益，并指出开胸手术是唯一确立的治疗；一篇2022年的综述认为心脏黏液瘤需要及时诊断和手术切除（Griborio-Guzman 2022）。体外循环需要全身肝素化，所以时机要和卒中团队根据出血和梗死大小一起定。抗凝针对的是血栓（肢体、静脉、团块表面），挡不住瘤体碎片，也不能代替切除。",
-            "en": "Right. A pedunculated, mobile mass on the septum that prolapses into the mitral orifice keeps showering emboli and can suddenly block the valve — the crackles suggest it already impedes left-heart filling. The AHA/ASA 2021 secondary-prevention guideline (adults; class 2a, LOE C-LD) holds that resecting a left-sided cardiac tumour after stroke can be beneficial and that open-heart surgery is the only established treatment; a 2022 review holds that a cardiac myxoma calls for prompt diagnosis and surgical resection (Griborio-Guzman 2022). Bypass needs full heparinisation, so its timing is set with the stroke team from any haemorrhage and the size of the infarcts. Anticoagulation acts on thrombus — limbs, veins, the surface of the mass — not on tumour fragments, and does not replace excision."
+            "zh-CN": "对。带蒂、舒张期突入二尖瓣口的左房团块，已经把栓子送到了几处供血区域，还可能继续脱落，也可能突然堵住二尖瓣口——双肺湿啰音提示它已在阻碍左心充盈。AHA/ASA 2021二级预防指南（成人；2a类推荐，C-LD）认为卒中后切除左侧心脏肿瘤可以获益，并指出开胸手术是唯一确立的治疗；一篇2022年的综述认为心脏黏液瘤需要及时诊断和手术切除（Griborio-Guzman 2022）。体外循环需要全身肝素化，所以时机要和卒中团队根据出血和梗死大小一起定。抗凝针对的是血栓（肢体、静脉、团块表面），挡不住瘤体碎片，也不能代替切除。",
+            "en": "Right. A pedunculated left-atrial mass that moves into the mitral orifice in diastole has already sent emboli to several territories and can send more, and it can suddenly block the valve — the crackles suggest it already impedes left-heart filling. The AHA/ASA 2021 secondary-prevention guideline (adults; class 2a, LOE C-LD) holds that resecting a left-sided cardiac tumour after stroke can be beneficial and that open-heart surgery is the only established treatment; a 2022 review holds that a cardiac myxoma calls for prompt diagnosis and surgical resection (Griborio-Guzman 2022). Bypass needs full heparinisation, so its timing is set with the stroke team from any haemorrhage and the size of the infarcts. Anticoagulation acts on thrombus — limbs, veins, the surface of the mass — not on tumour fragments, and does not replace excision."
           }
         },
         {
@@ -3521,8 +3526,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。带蒂、附着在房间隔上的团块是心脏肿瘤的典型表现，而不是血栓；抗凝挡不住瘤体碎片，等两周还要承担再次栓塞和二尖瓣口被堵的风险（AHA/ASA 2021：手术是唯一确立的治疗）。",
-            "en": "No. A pedunculated mass attached to the septum has the hallmarks of a cardiac tumour rather than thrombus; anticoagulation does not stop tumour fragments, and two weeks of waiting carries the risks of further emboli and of the mitral orifice being blocked (AHA/ASA 2021: surgery is the only established treatment)."
+            "zh-CN": "不对。带蒂、舒张期突入二尖瓣口的左房团块是心脏肿瘤的典型表现，而不是血栓；抗凝挡不住瘤体碎片，等两周还要承担再次栓塞和二尖瓣口被堵的风险（AHA/ASA 2021：手术是唯一确立的治疗）。",
+            "en": "No. A pedunculated left-atrial mass that prolapses into the mitral orifice has the hallmarks of a cardiac tumour rather than a thrombus; anticoagulation does not stop tumour fragments, and two weeks of waiting carries the risks of further emboli and of the mitral orifice being blocked (AHA/ASA 2021: surgery is the only established treatment)."
           }
         },
         {
@@ -3641,8 +3646,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。他刚发生急性卒中，近两个月内的脑血管事件是溶栓的绝对禁忌（ESVS 2020，表5）；儿童急性肢体缺血以肝素为主，无效时由血管外科考虑手术。",
-            "en": "No. He has just had an acute stroke, and a cerebrovascular event within two months is an absolute contraindication to thrombolysis (ESVS 2020, Table 5); in children, heparin is the mainstay for acute limb ischaemia, with surgery considered by the vascular team if it fails."
+            "zh-CN": "不对。他刚发生急性卒中，近两个月内的脑血管事件是溶栓的绝对禁忌（ESVS 2020，表5）；左房团块来源的栓子可能是瘤体组织，本来也溶不掉；抗凝还是手术取栓，由血管外科权衡。",
+            "en": "No. He has just had an acute stroke, and a cerebrovascular event within two months is an absolute contraindication to thrombolysis (ESVS 2020, Table 5); emboli from the left-atrial mass may be tumour tissue that would not dissolve anyway, so the vascular surgeons weigh anticoagulation against an operation such as an embolectomy."
           }
         }
       ]
@@ -3719,8 +3724,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。黏液瘤切除后仍可能复发，年轻患者和Carney综合征尤其如此，需要定期做超声心动图随访（Correa 2015）；他的卒中和肢体问题也还需要康复和随访。",
-            "en": "No. Myxomas can recur after excision, particularly in the young and in Carney complex, so regular echocardiographic follow-up is needed (Correa 2015); his stroke and his limbs also need rehabilitation and follow-up."
+            "zh-CN": "不对。黏液瘤切除后仍可能复发——Carney综合征患者大多要因复发再次手术（Correa 2015）——所以需要定期做超声心动图随访；他的卒中和肢体问题也还需要康复和随访。",
+            "en": "No. Myxomas can recur after excision — in Carney complex most patients need further operations for recurrences (Correa 2015) — so regular echocardiographic follow-up is needed; his stroke and his limbs also need rehabilitation and follow-up."
           }
         }
       ]
@@ -3988,8 +3993,8 @@
       "weight": 4,
       "critical": true,
       "text": {
-        "zh-CN": "没有在时间窗外溶栓、没有在排除出血前抗凝、没有在卒中后做下肢溶栓，也没有给缺血的腿加压",
-        "en": "Avoided thrombolysis outside its window, anticoagulation before haemorrhage was excluded, leg thrombolysis after a stroke and compression of ischaemic legs"
+        "zh-CN": "没有在时间窗外溶栓、没有在读到头颅影像之前抗凝、没有在卒中后做下肢溶栓，也没有给缺血的腿加压",
+        "en": "Avoided thrombolysis outside its window, anticoagulation before the brain imaging had been read, leg thrombolysis after a stroke and compression of ischaemic legs"
       },
       "met": {
         "not": {
@@ -4089,8 +4094,8 @@
         "en": "Dr Qiu (cardiac surgeon)"
       },
       "knowledge": {
-        "zh-CN": "心脏外科医生。只在学员读过相应报告之后解读超声心动图、病理和随访记录：一个附着在房间隔上、带蒂、舒张期突入二尖瓣口的左房团块意味着什么（反复栓塞、突然堵住二尖瓣口）；切除这类团块需要体外循环，而体外循环要全身肝素化，所以手术时机要和卒中团队根据有无出血和梗死大小一起定；AHA/ASA 2021指南认为卒中后切除左侧心脏肿瘤可以获益，开胸手术是唯一确立的治疗。本病例没有记录手术日期以外的手术细节（入路、所见、切缘），她不补充。",
-        "en": "Cardiac surgeon. Interprets the echocardiogram, the pathology and the follow-up record only once the learner has read them: what a pedunculated left-atrial mass attached to the septum and prolapsing into the mitral orifice in diastole implies (repeated emboli, sudden blockage of the mitral orifice); that removing it needs cardiopulmonary bypass with full heparinisation, so the timing is agreed with the stroke team from any haemorrhage and the size of the infarcts; and that the AHA/ASA 2021 guideline holds resection of a left-sided cardiac tumour after stroke beneficial, with open-heart surgery the only established treatment. The case records no detail of the operation beyond its timing (approach, findings, margins), and she adds none."
+        "zh-CN": "心脏外科医生。只在学员读过相应报告之后解读超声心动图、病理和随访记录：一个位于左房面房间隔及二尖瓣附近、带蒂、舒张期突入二尖瓣口的左房团块意味着什么（再次栓塞、突然堵住二尖瓣口），蒂附着在哪里本病例没有写明；切除这类团块需要体外循环，而体外循环要全身肝素化，所以手术时机要和卒中团队根据有无出血和梗死大小一起定；AHA/ASA 2021指南认为卒中后切除左侧心脏肿瘤可以获益，开胸手术是唯一确立的治疗。本病例没有记录手术日期以外的手术细节（入路、所见、切缘），她不补充。",
+        "en": "Cardiac surgeon. Interprets the echocardiogram, the pathology and the follow-up record only once the learner has read them: what a pedunculated left-atrial mass near the septum and the mitral valve that prolapses into the mitral orifice in diastole implies (further emboli, sudden blockage of the mitral orifice) — where its stalk is attached is not recorded; that removing it needs cardiopulmonary bypass with full heparinisation, so the timing is agreed with the stroke team from any haemorrhage and the size of the infarcts; and that the AHA/ASA 2021 guideline holds resection of a left-sided cardiac tumour after stroke beneficial, with open-heart surgery the only established treatment. The case records no detail of the operation beyond its timing (approach, findings, margins), and she adds none."
       },
       "interprets": [
         "echo",
@@ -4106,8 +4111,8 @@
         "en": "Dr Fang (vascular surgeon)"
       },
       "knowledge": {
-        "zh-CN": "血管外科医生。只在学员读过相应报告之后解读下肢血管检查和后续血管成像。她按ESVS 2020的思路讲：儿童急性肢体缺血以肝素为主（但这个孩子要等头颅影像排除出血），保守治疗无效时才考虑溶栓或手术，而近两个月内的脑血管事件是溶栓的绝对禁忌；肢体缺血后小腿肿痛要先排除骨筋膜室综合征——临床检查、拿不准时测压、确诊后2小时内切开减压；缺血的腿不能加压。本病例没有记录她或其他人对他的四肢做过什么检查和处理，她不补充。",
-        "en": "Vascular surgeon. Interprets the lower-limb vascular studies and the later vascular imaging only once the learner has read them. She reasons along ESVS 2020: in children, heparin is the mainstay for acute limb ischaemia (in this boy only once brain imaging has excluded haemorrhage), thrombolysis or surgery come in only when that fails, and a cerebrovascular event within two months is an absolute contraindication to thrombolysis; swollen, painful calves after limb ischaemia are compartment syndrome until shown otherwise — clinical examination, pressures if unsure, fasciotomy within two hours of the diagnosis; ischaemic legs are never compressed. The case records no examination or treatment of his limbs by her or anyone else, and she adds none."
+        "zh-CN": "血管外科医生。只在学员读过相应报告之后解读下肢血管检查和后续血管成像。她按ESVS 2020的思路讲：儿童急性肢体缺血以肝素为主（但这个孩子要等头颅影像排除出血），无效时再考虑溶栓或手术——不过心脏团块来源的栓子可能是瘤体组织，肝素溶不掉，所以她会尽早判断受威胁的肢体是否需要切开取栓；近两个月内的脑血管事件是溶栓的绝对禁忌；肢体缺血后小腿肿痛要先排除骨筋膜室综合征——临床检查、拿不准时测压、确诊后2小时内切开减压；缺血的腿不能加压。本病例没有记录她或其他人对他的四肢做过什么检查和处理，她不补充。",
+        "en": "Vascular surgeon. Interprets the lower-limb vascular studies and the later vascular imaging only once the learner has read them. She reasons along ESVS 2020: in children, heparin is the mainstay for acute limb ischaemia (in this boy only once brain imaging has excluded haemorrhage), with thrombolysis or surgery if that fails — but emboli from a cardiac mass may be tumour tissue that heparin cannot dissolve, so she judges early whether a threatened limb needs an embolectomy; a cerebrovascular event within two months is an absolute contraindication to thrombolysis; swollen, painful calves after limb ischaemia are compartment syndrome until shown otherwise — clinical examination, pressures if unsure, fasciotomy within two hours of the diagnosis; ischaemic legs are never compressed. The case records no examination or treatment of his limbs by her or anyone else, and she adds none."
       },
       "interprets": [
         "limb-vascular",
@@ -4123,7 +4128,7 @@
     },
     "conclusion": {
       "zh-CN": "12岁男孩突发左侧肢体瘫痪约6小时就诊，发病前没有外伤，发病时呼吸很急。查体：左侧中枢性面舌瘫，左上下肢肌力0级，Babinski征阳性；呼吸40次/分，双肺广泛湿啰音；左桡动脉未触及，双侧股动脉搏动差，下肢皮温低；右侧血压110/70 mmHg，左侧测不出。头颅MRI及血管成像示双侧多发脑异常信号（右侧为主）、右大脑中动脉中远段狭窄闭塞和左锁骨下动脉闭塞；下肢血管检查示双下肢重度缺血频谱、左腘静脉及股腘动脉血栓，后续血管成像见多处动脉闭塞；超声心动图示左房面房间隔及二尖瓣附近5.5 cm×3.5 cm有蒂团块，舒张期部分突入二尖瓣口。住院第3天双侧小腿明显肿痛。他先接受支持、抗凝等治疗，住院40天后出院，约1个月后切除左房肿物，病理为左房黏液瘤。此后左上肢恢复，左下肢肌力近端Ⅴ-级、远端Ⅲ级，超声未见复发。按今天的做法：1小时内完成脑和血管影像并请卒中团队（6小时已不能溶栓，但仍可评估取栓），排除出血后再抗凝，当天请心脏外科、由卒中团队定手术时机，小腿肿痛先排查骨筋膜室综合征，切除后随访复发并评估Carney综合征。",
-      "en": "A 12-year-old boy presented about six hours after the sudden onset of left-sided paralysis, with no injury beforehand and very fast breathing at onset. He had a left central facial and tongue palsy, power grade 0 in the left arm and leg and a positive Babinski sign; a respiratory rate of 40/min with widespread crackles over both lungs; no palpable left radial pulse, poor femoral pulses on both sides and cool legs; and a blood pressure of 110/70 mmHg on the right that could not be measured on the left. Brain MRI and vascular imaging showed multiple abnormal signals on both sides, predominantly right, with mid-to-distal right middle cerebral artery stenosis/occlusion and left subclavian occlusion; the lower-limb studies showed severe ischaemic waveforms in both legs and thrombus in the left popliteal vein and the femoropopliteal artery, and later imaging multiple arterial occlusions. Echocardiography found a pedunculated 5.5 × 3.5 cm mass on the left-atrial side of the septum near the mitral valve, partly prolapsing into the mitral orifice in diastole. On day 3 both calves were obviously swollen and painful. He was given supportive and anticoagulant treatment, among others, first, was discharged after 40 days in hospital, and the mass was resected about a month later: left atrial myxoma. His left arm recovered; left-leg power was V− proximally and III distally; ultrasound showed no recurrence. Today: brain and vessel imaging within the hour with the stroke team called (too late for thrombolysis at six hours, not for a thrombectomy assessment), anticoagulation once haemorrhage is excluded, cardiac surgery the same day with the timing set by the brain, compartment syndrome first when the calves swell, and follow-up for recurrence with an assessment for Carney complex."
+      "en": "A 12-year-old boy presented about six hours after the sudden onset of left-sided paralysis, with no injury beforehand and very fast breathing at onset. He had a left central facial and tongue palsy, power grade 0 in the left arm and leg and a positive Babinski sign; a respiratory rate of 40/min with widespread crackles over both lungs; no palpable left radial pulse, poor femoral pulses on both sides and cool legs; and a blood pressure of 110/70 mmHg on the right that could not be measured on the left. Brain MRI and vascular imaging showed multiple abnormal signals on both sides, predominantly right, with mid-to-distal right middle cerebral artery stenosis/occlusion and left subclavian occlusion; the lower-limb studies showed severe ischaemic waveforms in both legs and thrombus in the left popliteal vein and the femoropopliteal artery, and later imaging multiple arterial occlusions. Echocardiography found a pedunculated 5.5 × 3.5 cm mass near the left-atrial face of the septum and the mitral valve, partly prolapsing into the mitral orifice in diastole. On day 3 both calves were obviously swollen and painful. He was given supportive and anticoagulant treatment, among others, first, was discharged after 40 days in hospital, and the mass was resected about a month later: left atrial myxoma. His left arm recovered; left-leg power was V− proximally and III distally; ultrasound showed no recurrence. Today: brain and vessel imaging within the hour with the stroke team called (too late for thrombolysis at six hours, not for a thrombectomy assessment), anticoagulation once haemorrhage is excluded, cardiac surgery the same day with the timing set by the brain, compartment syndrome first when the calves swell, and follow-up for recurrence with an assessment for Carney complex."
     },
     "keyReasoning": [
       {
@@ -4139,8 +4144,8 @@
         "en": "The limbs want heparin, the brain may bleed: when each organ's guidance pulls a different way, the imaging that excludes haemorrhage comes first and the teams decide together."
       },
       {
-        "zh-CN": "突入二尖瓣口的有蒂团块同时解释了栓塞和肺部湿啰音；抗凝只能管血栓，挡不住瘤体碎片，只有切除才能去掉来源，而时机取决于脑。",
-        "en": "A pedunculated mass prolapsing into the mitral orifice explains both the emboli and the crackles; anticoagulation only touches thrombus, not tumour fragments, so only excision removes the source — at a time the brain allows."
+        "zh-CN": "突入二尖瓣口的有蒂团块可以同时解释栓塞和肺部湿啰音；抗凝只能管血栓，挡不住瘤体碎片，只有切除才能去掉来源，而时机取决于脑。",
+        "en": "A pedunculated mass prolapsing into the mitral orifice can explain both the emboli and the crackles; anticoagulation only touches thrombus, not tumour fragments, so only excision removes the source — at a time the brain allows."
       },
       {
         "zh-CN": "缺血肢体在第3天又肿又痛：先当骨筋膜室综合征处理，因为它几小时就能毁掉小腿；已知的腘静脉血栓是第二个、较慢的问题。",
@@ -4157,8 +4162,8 @@
         "en": "Hyperacute treatment in children — the AHA/ASA 2026 guideline's first recommendations for children: IV alteplase may be considered within 4.5 hours for disabling deficits from 28 days to 18 years; thrombectomy by experienced neurointerventionalists for large-vessel occlusion at 6 years or older within 6 hours, or up to 24 hours with salvageable brain on imaging. At about six hours he was beyond thrombolysis; the evidence for thrombectomy is strongest in proximal occlusions such as the intracranial carotid or the M1 segment, so a mid-to-distal MCA occlusion is a case-by-case call for the stroke team. Then and now: these recommendations postdate the report, and no hyperacute treatment is recorded."
       },
       {
-        "zh-CN": "抗栓治疗与器官之间的冲突。AHA/ASA 2019声明：心源性卒中患儿通常首选抗凝，很大的急性梗死是相对禁忌；RCPCH 2017：病因在心脏时，由血液科、神经科和心脏科共同在抗血小板与抗凝之间选择；ESVS 2020：急性肢体缺血用肝素，在儿童是主要治疗。先用影像排除出血，再抗凝治疗血栓——同时明白肿瘤来源的栓子可以是血栓，也可以是瘤体碎片（AHA/ASA 2021），抗凝只对前者起作用。当年与现在：报告记录了抗凝等治疗，没有记录药物、剂量和开始时间。",
-        "en": "Antithrombotic choice and the conflict between organs. AHA/ASA 2019 statement: anticoagulation is usually preferred for cardioembolic stroke in children, with very large acute infarcts a relative contraindication; RCPCH 2017: when the cause is cardiac, haematology, neurology and cardiology choose between antiplatelet and anticoagulant together; ESVS 2020: heparin for acute limb ischaemia, the mainstay in children. Imaging excludes haemorrhage first, then anticoagulation treats thrombus — knowing that emboli from a tumour may be thrombus or tumour fragments (AHA/ASA 2021), and anticoagulation acts only on the first. Then and now: the report records anticoagulant treatment, not the drug, dose or start."
+        "zh-CN": "抗栓治疗与器官之间的冲突。AHA/ASA 2019声明：心源性卒中患儿通常首选抗凝，很大的急性梗死是相对禁忌；RCPCH 2017：病因在心脏时，由血液科、神经科和心脏科共同在抗血小板与抗凝之间选择；ESVS 2020：急性肢体缺血用肝素，在儿童是主要治疗——但瘤体组织的栓子溶不掉，受威胁的肢体可能需要切开取栓，由血管外科判断。先用影像排除出血，再抗凝治疗血栓——同时明白肿瘤来源的栓子可以是血栓，也可以是瘤体碎片（AHA/ASA 2021），抗凝只对前者起作用。当年与现在：报告记录了抗凝等治疗，没有记录药物、剂量和开始时间。",
+        "en": "Antithrombotic choice and the conflict between organs. AHA/ASA 2019 statement: anticoagulation is usually preferred for cardioembolic stroke in children, with very large acute infarcts a relative contraindication; RCPCH 2017: when the cause is cardiac, haematology, neurology and cardiology choose between antiplatelet and anticoagulant together; ESVS 2020: heparin for acute limb ischaemia, the mainstay in children — though emboli of tumour tissue do not dissolve, so a threatened limb may need an embolectomy, the vascular surgeons' call. Imaging excludes haemorrhage first, then anticoagulation treats thrombus — knowing that emboli from a tumour may be thrombus or tumour fragments (AHA/ASA 2021), and anticoagulation acts only on the first. Then and now: the report records anticoagulant treatment, not the drug, dose or start."
       },
       {
         "zh-CN": "卒中后的心脏肿瘤。AHA/ASA 2021二级预防指南（成人；2a类推荐，C-LD）：卒中或TIA后发现左侧心脏肿瘤，切除可以获益，开胸手术是唯一确立的治疗；一篇2022年的综述认为心脏黏液瘤需要及时诊断和手术切除（Griborio-Guzman 2022）。体外循环需要全身肝素化，时机由心脏外科和卒中团队根据出血与梗死大小一起定。当年与现在：他住院40天后出院、约1个月后才切除团块——今天这样长的间隔需要写明理由。",
@@ -4195,8 +4200,8 @@
         "en": "The treatment in detail: the antithrombotic drug, dose, start and monitoring, what the supportive treatment was, any treatment of the limbs, what was found or done for the calves on day 3, the reasons for operating after discharge, and the date and approach of the operation."
       },
       {
-        "zh-CN": "超声心动图上团块以外的情况：哪个瓣膜反流、左房大小、心室功能和肺动脉压。",
-        "en": "The echocardiogram beyond the mass: which valve regurgitated, the left atrial size, ventricular function and pulmonary pressure."
+        "zh-CN": "超声心动图上团块以外的情况：蒂附着在哪里、哪个瓣膜反流、左房大小、心室功能和肺动脉压。",
+        "en": "The echocardiogram beyond the mass: where the stalk is attached, which valve regurgitated, the left atrial size, ventricular function and pulmonary pressure."
       },
       {
         "zh-CN": "病史：以前的心脏情况、既往疾病和手术、用药、过敏、家族史、疫苗、发育和上学情况、发病时有没有人在场、有没有抽搐或头痛，以及皮肤表现、是否评估过Carney综合征和遗传学检测。",
@@ -4242,8 +4247,8 @@
       "en": "The treatment in detail: the antithrombotic drug, dose, start and monitoring, what the supportive treatment was, any treatment of the limbs, what was found or done for the calves on day 3, the reasons for operating after discharge, and the date and approach of the operation."
     },
     {
-      "zh-CN": "超声心动图上团块以外的情况：哪个瓣膜反流、左房大小、心室功能和肺动脉压。",
-      "en": "The echocardiogram beyond the mass: which valve regurgitated, the left atrial size, ventricular function and pulmonary pressure."
+      "zh-CN": "超声心动图上团块以外的情况：蒂附着在哪里、哪个瓣膜反流、左房大小、心室功能和肺动脉压。",
+      "en": "The echocardiogram beyond the mass: where the stalk is attached, which valve regurgitated, the left atrial size, ventricular function and pulmonary pressure."
     },
     {
       "zh-CN": "病史：以前的心脏情况、既往疾病和手术、用药、过敏、家族史、疫苗、发育和上学情况、发病时有没有人在场、有没有抽搐或头痛，以及皮肤表现、是否评估过Carney综合征和遗传学检测。",

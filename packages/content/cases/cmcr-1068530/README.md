@@ -68,8 +68,13 @@ their `enterWhen` holds; none can be switched to by hand.
 | 1 `admission` — Admission assessment (ward) | Start | Her history; four examination findings; the earlier colonoscopy and resection pathology at the ward station. Decision 1 (hip pain) opens once her hip pain, what was found and the chemotherapy have been asked about, all four examinations done and the pathology read; decision 2 (hereditary) once the pathology is read and her bowel and family history asked. |
 | 2 `workup` — Work-up | Decision 1 answered correctly | The PET-CT report (done before admission; staged here as teaching design). Decision 3 (tissue and adrenal). Bloods, the node biopsy, tumour biomarkers, metanephrines, germline panel and imaging can be ordered; none has a recorded result. |
 | 3 `treatment` — Inpatient care | Decisions 2 and 3 answered correctly | The recorded diagnosis (FAP, no germline result); her wish not to have more chemotherapy; decision 4 (bone care). Analgesia, spine MRI, radiotherapy, dental review, bone-modifying agent, oncology, palliative care, warning-sign advice. |
-| 4 `later` — Seen again months later (clinic) | Decision 4 answered correctly, radiotherapy referred and the bone-modifying agent given | The patient moves to the outpatient slot. New swelling and urinary difficulty, her refusal of admission, the inpatient treatment record (dose entries "4000 Gy", "5000 Gy"). Decision 5. |
+| 4 `later` — Seen again months later (clinic) | The inpatient chapter (objective 5) complete: decision 4 answered correctly and every inpatient step done — analgesia, spine MRI ordered, radiotherapy referral, dental review, bone-modifying agent, oncology, palliative care, warning signs | The patient moves to the outpatient slot. New swelling and urinary difficulty, her refusal of admission, the inpatient treatment record (dose entries "4000 Gy", "5000 Gy"). Decision 5. |
 | 5 `outcome` — Reported outcome | All five decisions answered correctly, admission advised and the urgent MSCC referral made **during the later visit** (`whenIndicated`) | The follow-up record: admission advised and declined; nothing later recorded. Not switchable. |
+
+The admission ends only when its chapter is complete, so answering decision 4 early, or giving the bone-modifying
+agent before the MRI order or the warning-sign advice, does not move her on mid-plan. The later visit's other acts
+(capacity discussion, dexamethasone, the radiotherapy treatment summary) count while the visit lasts — until the
+follow-up record is read — so they still count when the outcome phase has opened because decision 5 was answered first.
 
 ## Decisions and assessment
 
@@ -79,7 +84,7 @@ their `enterWhen` holds; none can be switched to by hand.
 2. **Examine her and read her earlier records** — the four examination findings and the pathology record.
 3. **Make sense of her pain and her family history** — decisions 1 and 2 and the genetics referral.
 4. **Confirm the diagnosis safely** — read the PET-CT; order blood count, clotting, node biopsy, tumour biomarkers and metanephrines; decision 3.
-5. **Treat her pain and plan her care** — decision 4; analgesia, spine MRI, radiotherapy, dental review, bone-modifying agent, oncology, palliative care, warning signs.
+5. **Treat her pain and plan her care** — decision 4; analgesia, spine MRI, radiotherapy, dental review, bone-modifying agent, oncology, palliative care, warning signs. The later visit opens once this chapter is complete.
 6. **See her again when things change** — decision 5; advise admission; the urgent MSCC referral; the capacity discussion; read the follow-up record.
 
 No objective holds a condition that can become permanently false (no phase leaf, no `whenIndicated`, no
@@ -109,7 +114,8 @@ No objective holds a condition that can become permanently false (no phase leaf,
    analgesia, radiotherapy to the painful sites (single 8 Gy if uncomplicated), a bone-modifying agent after a dental
    check, and cord compression warning signs. Why: ESMO 2020 bone health (EBRT for localised moderate-to-severe pain and
    single 8 Gy [I, A]; zoledronate or denosumab with life expectancy ≥ 3 months [I, B]; dental evaluation [III, A];
-   calcium and vitamin D [I, A]); NICE NG234 2023 (1.10.2, 1.5.3, 1.2.2). Distractors: bone agent alone; long-course
+   calcium and vitamin D [I, A]); NICE NG234 2023 (1.10.2, 1.5.3, 1.10.1 on future fertility before
+   radiotherapy, 1.2.2). Distractors: bone agent alone; long-course
    radiotherapy to every PET-avid site; prophylactic acetabular surgery first; opioids alone waiting for chemotherapy.
 5. **`new-symptoms` — the later visit** (clinic). Key `urgent-mri-and-capacity`: possible cord or cauda equina
    compression; advise admission for a whole-spine MRI within 24 hours; if she still declines, check capacity, agree
@@ -131,12 +137,12 @@ languages).
 | `rb-records` | investigations | 1 | pathology and PET-CT read |
 | `rb-hereditary` | management | 2 | decision 2 right first time + genetics referral |
 | `rb-tissue` | investigations | 3 | decision 3 right first time + blood count, clotting, node biopsy, tumour biomarkers, metanephrines ordered |
-| `rb-bone` | management | 3 | decision 4 right first time + analgesia + spine MRI ordered in work-up or inpatient care + radiotherapy referral + bone-modifying agent given while indicated (after the dental review and bone bloods) |
+| `rb-bone` | management | 3 | decision 4 right first time + analgesia + spine MRI ordered during the admission (phases 1–3) + radiotherapy referral + bone-modifying agent given while indicated (after the dental review and bone bloods) |
 | `rb-supportive` | management | 2 | palliative care + oncology review + warning-sign advice during the admission |
 | `rb-urgent` | management | 3 | **critical** — at the later visit, admission advised and the urgent MSCC referral made, both while indicated |
-| `rb-refusal` | management | 2 | decision 5 right first time + capacity discussion and dexamethasone at the later visit |
-| `rb-safety` | safety | 3 | **critical** — none of: adrenal biopsy; routine review given while contraindicated (later visit); diuretic; admission against her refusal; discharge from follow-up; dexamethasone given while contraindicated. Scored once decision 3 or 5 is attempted or any of these acts is given. |
-| `rb-rt-dose` | safety | 2 | treatment record read at the later visit + radiotherapy summary requested then |
+| `rb-refusal` | management | 2 | decision 5 right first time + capacity discussion and dexamethasone at the later visit (before the follow-up record is read) |
+| `rb-safety` | safety | 3 | **critical** — none of: adrenal biopsy; routine review given while contraindicated (from the later visit on); diuretic; admission against her refusal; discharge from follow-up; dexamethasone given while contraindicated (before the later visit). Scored once decision 3 or 5 is attempted or any of these acts is given. |
+| `rb-rt-dose` | safety | 2 | treatment record read at the later visit + radiotherapy summary requested before the follow-up record is read |
 | `rb-outcome` | investigations | 1 | follow-up record read |
 | `rb-communication` | communication | 1 | examiner-judged (SPIKES for the news of spread; teach-back; exploring her refusal; no unrecorded prognosis) |
 
@@ -160,7 +166,12 @@ languages).
 | Reference path without the urgent MSCC referral (or without advising admission) | 24/28 when it stops | `rb-urgent` | passed; the outcome phase never opens, so the case cannot be finished until the act is done at the visit |
 | Reference path without the radiotherapy summary request | 26/28 (93 %) | none | passed |
 | Reference path without dexamethasone at the later visit | 26/28 (93 %) | none | passed |
-| Reference path without the inpatient spine MRI | 25/28 at the end of the path | none | passed; objective 5 waits for an MRI order |
+| Decision 4 answered first, then the inpatient steps (bone-modifying agent before the MRI order and the warning signs) | 28/28 (100 %) | none | passed — the later visit waits for objective 5 |
+| Spine MRI order, warning-sign advice or the oncology and palliative care referrals left until after decision 4 | 28/28 (100 %) | none | passed |
+| Inpatient MRI order, warning-sign advice or dental review never done | stays in inpatient care | — | the later visit does not open until the step is done (objective 5); then the case goes on as usual |
+| Decision 5 answered first, then admission advice and the MSCC referral (the outcome phase opens), then dexamethasone, the capacity discussion and the radiotherapy summary | 28/28 (100 %) | none | passed — the visit's acts count until the follow-up record is read |
+| Capacity discussion, dexamethasone and radiotherapy summary only after reading the follow-up record | 24/28 (86 %) | none | passed; `rb-refusal` and `rb-rt-dose` lost (not credited in hindsight) |
+| Routine review booked after the outcome phase has opened | 25/28 (89 %) | `rb-safety` | **failed** (critical intervention) |
 
 Decisions are scored with `decidedFirstTry`, so guessing costs the item. The repository check
 (`scripts/case-check.ts`) reports: reference 100 %, do nothing 0/25, wrong first at every decision 54 %.
@@ -178,12 +189,12 @@ run's safety outcome whatever the score. **CT-guided adrenal biopsy** (`adrenal-
 contraindicated here): ESE/ENSAT 2023 R.6.3.5 allows adrenal biopsy only when phaeochromocytoma has been excluded, the
 lesion is not benign on imaging and histology would change management; no metanephrine result exists, her nodal and
 bone disease already defines the stage, and puncturing an unsuspected phaeochromocytoma can cause a hypertensive crisis.
-**A routine clinic review for the new symptoms** (`routine-review`, risk moderate, contraindicated at the later visit):
+**A routine clinic review for the new symptoms** (`routine-review`, risk moderate, contraindicated from the later visit on):
 new bladder symptoms with lumbar metastases are an oncological emergency (NICE NG234 2023); a four-week wait risks
 permanent paralysis and loss of bladder function. The same booking during the admission is not contraindicated. Marked
 explicitly `critical: false` (recoverable misjudgements that cost `rb-safety` or another item): the **bone-modifying
 agent** before the dental review and bloods (ESMO 2020; osteonecrosis of the jaw and hypocalcaemia are risks the next
-step can still mitigate), **dexamethasone** outside the later visit (no neurological symptom or sign recorded; NICE NG234
+step can still mitigate), **dexamethasone** before the later visit (no neurological symptom or sign recorded; NICE NG234
 1.8.1, 1.8.3), a **diuretic** for the swelling (NICE NG158: assess for DVT first), **admission against her refusal**
 (MCA 2005 as one legal model) and **discharge from follow-up** (ASCO 2024; NICE NG234 1.2.2). The reference path gives
 nothing while contraindicated and has no dose error (`cases verify`).
@@ -255,7 +266,9 @@ No vital sign, blood value or reference range is recorded or invented.
 - **"The family is clear, so it is sporadic"** — decision 2 distractor; feedback cites EHTG–ESCP 2024 and BSG 2020.
 - **Testing relatives before the patient** — decision 2 distractor.
 - **Starting a bone-modifying agent before the dental check and bloods** — `bone-agent` is contraindicated until both are done; `rb-bone` is lost.
-- **Steroids "for pain" during the admission** — `dexamethasone` outside the later visit costs `rb-safety`.
+- **Dexamethasone 16 mg "for cord compression" during the admission**, when no neurological symptom or sign is
+  recorded (NICE NG234 1.8.1; without them, 1.8.3 considers steroids only for severe pain or a haematological
+  malignancy, neither recorded) — `dexamethasone` before the later visit costs `rb-safety`.
 - **A routine appointment for new bladder symptoms** — the critical `routine-review` at the later visit fails the safety outcome.
 - **A diuretic for the swelling** — costs `rb-safety`; feedback: DVT assessment (NICE NG158) and spinal imaging first.
 - **Overriding or abandoning her** — admission against her refusal and discharge from follow-up both cost `rb-safety`.
@@ -278,7 +291,8 @@ the report records with what today's guidance asks for.
   records terminal (`requires: ["records"]`, `performedAt: "records"`, risk none). History and examination are at the
   bedside. Blood tests go to the laboratory; the node biopsy to histopathology; tumour biomarkers and the germline panel
   to the molecular laboratory; metanephrines to the endocrine laboratory; the MRI needs the patient taken to the scanner
-  (she cannot walk: a bed or trolley); bladder scan and leg vein ultrasound use the ultrasound machine.
+  (she is lying in the case, `posture: "lying"`, so the world moves her on her bed or a trolley — whether she can walk is
+  not recorded); bladder scan and leg vein ultrasound use the ultrasound machine.
 - **The urgent referral at the later visit** is a consult, so it needs no transport; the MRI order itself remains
   available.
 - **Non-verbal handling:** none needed; she speaks for herself. No companion is recorded.
@@ -320,7 +334,8 @@ the report records with what today's guidance asks for.
   diagnosis record in phase 3; the treatment record at the later visit; the follow-up record last); the clinic setting
   of the later visit (1.0.0 does not say where she was seen); placing her refusal of further chemotherapy in the
   inpatient phase (1.0.0 does not say when she declined); her refusal of admission spoken by her; the four staff and
-  their knowledge; the responses of the learner's own acts (referrals accepted; nothing they produce is recorded).
+  their knowledge; the responses of the learner's own acts (referrals accepted; nothing they produce is recorded); the
+  later visit opening when the inpatient chapter is complete.
 - **Privacy:** pseudonym only (周知远 / Zhou Zhiyuan); no dates, hospitals, cities or identifiers. No figure is approved
   for display (`assets: []`).
 - **Version 1.0.0's teaching errors replaced:** a hindsight critical item (the safety decision answered after reading the
@@ -338,7 +353,10 @@ the report records with what today's guidance asks for.
 - Collisions fixed while probing: "chemotherapy" contains "mother" (the family item uses "mum", "mom", "dad"); bowel
   history excludes the operation, findings, follow-up and chemotherapy words; the new-symptoms item yields timing
   questions to `new-onset`; the reasons for declining chemotherapy and admission exclude each other; "Are you pregnant?"
-  reaches no item (the fallback "That I couldn't tell you, doctor.").
+  reaches no item (the fallback "That I couldn't tell you, doctor."); "疼得厉害吗" reaches the hip-pain detail; "How are
+  your bowels working now?" no longer reaches the work and smoking item.
+- Order aliases name only the test itself: "fna" (fine-needle aspiration is not a core biopsy) and "catecholamines" /
+  "儿茶酚胺" (not metanephrines) were removed in review.
 - Unknown items answer in her voice; none uses authoring language.
 
 ## References
@@ -379,8 +397,9 @@ recommendation was checked online in the guideline's summary.
 7. The diagnosis of FAP (clinical and pathological) and whether any genetic test is reported.
 8. The treatment: the bone-protective drug; radiotherapy sites and the dose entries "4000 Gy" and "5000 Gy" (units,
    site of each, fractionation); pain relief in hospital then persistence; when she declined further chemotherapy.
-9. The later course: oedema of the legs and vulva, difficulty passing urine, how long after the admission, where she
-   was seen, admission advised and declined; any later outcome.
+9. The later course: oedema of the legs and vulva (下肢 does not say whether one leg or both; the case's "legs" /
+   "lower limbs" must be checked), difficulty passing urine, how long after the admission, where she was seen,
+   admission advised and declined; any later outcome.
 
 **A clinician of the specialty should confirm:**
 
@@ -392,10 +411,18 @@ recommendation was checked online in the guideline's summary.
    acid decalcification of bone samples can compromise molecular tests (RAS, BRAF, MSI).
 4. The use of the Mental Capacity Act 2005 as a legal model in a case from China; local law on refusal of admission.
 5. Edition currency: BSG/ACPGBI/UKCGG 2020 and ESMO 2020 bone health remain the latest editions found on 2026-11-14;
-   the 2026 ESMO metastatic colorectal cancer guideline could not be read and is not cited — confirm that its biomarker
-   recommendations agree with ASCP/CAP/AMP/ASCO 2017 as taught.
+   the 2026 ESMO metastatic colorectal cancer guideline (Cremolini et al., Ann Oncol 2026) could not be read and is not
+   cited — confirm that its biomarker recommendations agree with ASCP/CAP/AMP/ASCO 2017 as taught, and whether HER2
+   testing (recommended by ESMO for RAS wild-type metastatic disease, per secondary summaries of the 2023 edition) should
+   be added to the tissue plan.
 6. That a core biopsy (rather than fine-needle aspiration) of the supraclavicular node is the preferred sample for
    biomarkers in this setting.
+7. Dexamethasone during the admission scored as unindicated: no neurological symptom or sign is recorded and NG234 1.8.3
+   considers steroids then only for severe pain (not recorded); ESMO 2020's prophylactic dexamethasone against a
+   radiotherapy pain flare [II, B] is a different, lower-dose use the case does not model.
+8. Not modelled as an act: NG234 1.3.3 (seek advice through the MSCC coordinator within 24 hours when a person with
+   cancer presents with pain features of spinal metastases — her lumbar tenderness on admission); the case teaches the
+   MRI within a week (1.5.3) and the warning signs instead.
 
 ## Changelog
 
@@ -419,6 +446,17 @@ recommendation was checked online in the guideline's summary.
   statement checked in the guideline's own text; review guidelines listed (eight).
 - **Facts.** Unchanged in substance; Chinese/English differences of 1.0.0 kept in neutral wording and listed under To
   verify; "puberty" not used (1.0.0 says adolescence); "scars" not "surgical scars".
+- **Independent review (2026-11-14).** Phase timing: the later visit now opens only when the inpatient chapter
+  (objective 5) is complete, and the later visit's acts (capacity discussion, dexamethasone, radiotherapy summary; the
+  routine-review trap) keep their window until the follow-up record is read — before, answering decision 4 or 5 before
+  acting moved her on mid-plan and cost up to 7 points, and dexamethasone given after the automatic flip to the outcome
+  phase was scored as an unindicated steroid, failing the critical `rb-safety`. ESE/ENSAT R.6.3.5 applied correctly
+  (the adrenal is not conclusively benign, so one criterion holds; phaeochromocytoma not excluded and histology would
+  not change management). NG234 1.10.1 (fertility before radiotherapy) added to the bone-care teaching; the
+  bone-agent-alone feedback no longer says bone-modifying agents do not treat pain (ESMO 2020: they relieve bone pain;
+  radiotherapy is the treatment of choice for localised pain); ASCO 2024 credited only with what it says; "excludes a second cancer" corrected; no presupposed analgesics; aliases that named
+  another test removed; the attending's prompt no longer gives decision 3 away; the README no longer says she cannot
+  walk (not recorded).
 
 ### 1.0.0 — 2026-10-28
 
@@ -442,9 +480,9 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 **病例概要：** 29岁女性（化名周知远），青春期起反复腹痛、腹泻、便血十几年（1.0.0版英文为17年），全结肠多发息肉伴直肠中高分化
 腺癌（淋巴结6/27阳性），行直肠及全结肠切除、回肠造口和12次FOLFOX6化疗；父母及姐姐肠镜无明显异常。右髋痛3个月入院：左锁骨上
-约1 cm质硬淋巴结，右髋及腰椎轻压痛；PET-CT示淋巴结及右髋臼、L3、L5转移，左肾上腺饱满；临床及病理诊断家族性腺瘤性息肉病，
-无胚系检测结果。骨保护及髋部、腰椎放疗（剂量栏记为4000 Gy和5000 Gy）后住院时疼痛缓解、之后持续，拒绝进一步化疗；数月后下肢
-及外阴水肿、排尿困难，建议住院仍拒绝，之后结局未记录。事实来自1.0.0版提取，尚未对照原文全文核对；尚未经执业医师审核。
+约1 cm质硬淋巴结，右髋及腰椎轻压痛；PET-CT示盆壁、腹膜后及左锁骨上淋巴结和右髋臼、L3、L5异常摄取，考虑转移，左肾上腺饱满、
+不除外转移；临床及病理诊断家族性腺瘤性息肉病，无胚系检测结果。骨保护及髋部、腰椎放疗（剂量栏记为4000 Gy和5000 Gy）后住院时
+疼痛缓解、之后持续，拒绝进一步化疗；数月后下肢及外阴水肿、排尿困难，建议住院仍拒绝，之后结局未记录。事实来自1.0.0版提取，尚未对照原文全文核对；尚未经执业医师审核。
 
 **学习目标：** 按转移复发评估肿瘤治疗后的新发骨痛；从可及的淋巴结取材并检测MMR、RAS、BRAF；肾上腺先查甲氧基肾上腺素类、
 不做活检；先为患者本人做胚系检测并安排家属随访；疼痛性骨转移的放疗、骨改良药物和口腔检查；排尿困难按可能的脊髓压迫24小时内
