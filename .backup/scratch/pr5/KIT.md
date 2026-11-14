@@ -91,6 +91,48 @@ exploration the pilot authors needed; it does not replace STANDARD.md.
    the 2021 edition makes. Verify the edition online; cite the edition that says it.
 10. **Matcher gaps.** The chief complaint asked in plain words ("Are your legs swollen?", "What brings you in?")
     reaching the wrong item or none. Probe the natural questions and test them in `testUtterances`.
+    Give the case ONE history item with topic `presenting-complaint`, available in the first phase, whose answer
+    says what brought the patient (or carer) in and since when, in their words; give it the plain openers as keywords
+    in both languages ("what brings you in", "what happened", "what's the problem", "tell me what's been going on",
+    "how long", "when did it start"; 怎么了, 这次怎么了, 哪里不舒服, 怎么回事, 有什么不舒服, 多久了, 什么时候开始的).
+    Probe them with `matchHistory` in the first phase (the reviews found them reaching nothing in 44 of 45 cases).
+
+### The second round of reviews (2026-11-14): the most frequent critical and major findings
+
+11. **Specificity added to a record or a fact.** "Serum amylase" where 1.0.0 says "amylase" (blood and urine
+    amylase have different reference intervals); "transthoracic echocardiogram" where it says "echocardiography";
+    "they took blood for gene tests" where only the result is recorded; "fresh thrombus" for "thrombus". Keep
+    1.0.0's level of specificity in record names, results and teaching, and say in the result's note what is not
+    recorded (specimen, modality, approach, side); the more specific names may stay in `aliases` for ordering.
+12. **A recorded fact widened, narrowed or graded in another voice.** The patient's words, the persona and both
+    languages must cover exactly what 1.0.0 records: "no chronic lung disease" is not "nothing wrong with my lungs
+    before"; "treatment helped little" is not "no effect"; "dry mouth for a month" is not "dry all the time";
+    "fatigue" is not "no strength at all"; "crepitus at the neck, anterior chest and abdominal wall" is not "from
+    neck to abdominal wall"; "a few bibasal crackles" keeps "a few"; "became unresponsive soon after chest
+    tightness" does not add a fall (倒下); "严重毁损" does not add a crush (压得稀烂). A value above a reference range
+    that 1.0.0 does not give is "above the report's reference range" — never "mildly" or "markedly" raised.
+13. **An order or a simultaneity 1.0.0 does not state.** "the other tests sent with them", "later in the
+    admission", "after the transfer they took blood…", "three drugs started at once". State a sequence only when
+    1.0.0 states it; otherwise the note says the timing is not recorded.
+14. **A guideline credited with a statement it does not make** (the most frequent major finding). Examples the
+    reviews caught: ATLS for a diagnostic rule it does not hold; the Endocrine Society 2011 hyperprolactinaemia
+    guideline for other hormones; the WHO laboratory manual for a clinical rule the EAU guideline holds; ESC 2023
+    ACS for "coma is no reason to defer PCI"; ERC–ESICM 2025 quoted with the wrong fever threshold (it targets
+    ≤ 37.5 °C); ESC 2023 endocarditis's aminoglycoside (prosthetic-valve IE only) applied to a native valve; IAP/APA
+    2013 cited as current (superseded by the 2025 revised international acute-pancreatitis guidelines). Find the
+    statement in the guideline's own text (not its abstract or a secondary summary) for the patient's subgroup
+    before you attribute it; if you cannot, teach it without a guideline name or name the source that holds it, and
+    list it under To verify.
+15. **Assessment gaps the checks do not catch.** (a) In a select-all decision the keys must not be exactly the
+    longest options: measure the character lengths in both languages. (b) A record's aliases must not name another
+    test (thyroid-function aliases on a parathyroid-hormone assay let the wrong order earn a critical item).
+    (c) Every harmful act with a harm text must cost something: replay the reference path plus that act and check
+    that the score falls or the safety outcome fails. (d) No `validate --strict` warning may remain: a warning fails
+    STANDARD §5 (the "high-risk intervention … does not say whether giving it then is a critical safety failure"
+    warning reached three reviews; KIT §6). (e) At least one history item with disclosure `unknown` (STANDARD 1.4).
+16. **Leaks of later results.** A work-up feedback quoting a value only the follow-up record holds; objective
+    titles (the journal lists later objectives by title from the start) that name the decision or the diagnosis
+    ("decide on reperfusion"); the response of an act available before a decision that states its answer.
 
 ## 4. Practicalities
 
@@ -100,6 +142,12 @@ exploration the pilot authors needed; it does not replace STANDARD.md.
   takes ~2 s; `cases verify <id>` ~3 s; `scripts/case-check.ts` ~5 s; the contract and in-world tests ~30-90 s each.
 - The in-world demonstration (`embodied-autopilot.test.ts -t "<id>:"`) replays your `solution` in the general
   hospital: every test, intervention and record must be reachable there (`caseCapabilityGaps`).
+- **Before you finish, sweep for §3's most frequent findings** (2, 11-13): grep your case.json and README for words
+  of degree (mild, slight, marked, severe, fresh, all the time, constantly, never, completely; 轻度, 明显, 新鲜, 一直,
+  老是, 完全), of time and order (then, after, later, with, at the same time, since; 后, 随后, 之后, 同时), of extent
+  (from … to, whole, both, all; 全, 双, 均) and of specificity (serum, transthoracic, venous, arterial, blood, left,
+  right; 血清, 经胸, 静脉, 动脉, 左, 右), and check each against 1.0.0; then re-read the English and Chinese
+  conclusions side by side: the same facts, no more, no fewer.
 - **Token economy** (your context is what the run costs; a whole case.json is ~150 KB): never `cat` a whole case.json
   or README — print the part you need (`python3 -I -c "import json;d=json.load(open('…/case.json'));print(json.dumps(d['rubric'],ensure_ascii=False,indent=1))"`,
   `grep -n`, `sed -n a,bp`); pipe long command output through `| tail -25` or `| grep -E "✗|error|warning|Tests "`; do

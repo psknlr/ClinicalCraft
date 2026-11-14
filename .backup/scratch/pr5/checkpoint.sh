@@ -22,7 +22,7 @@ add_file() { # <source file> <path in the snapshot>
 }
 add_file "$P/trial.patch" .backup/trial.patch
 echo "$TRIALHEAD" > "$P/trial-head.txt"; add_file "$P/trial-head.txt" .backup/trial-head.txt
-for f in "$P"/*.md "$P"/*.js "$P"/*.py "$P"/*.sh "$P"/*.json "$P"/*.txt "$SP"/audit2/*.js "$SP"/audit2/*.txt; do
+for f in "$P"/*.md "$P"/*.js "$P"/*.py "$P"/*.sh "$P"/*.json "$P"/*.txt "$P"/reports/*.json "$SP"/audit2/*.js "$SP"/audit2/*.txt; do
   [ -f "$f" ] || continue
   case "$f" in *trial.patch|*trial-head.txt) continue;; esac
   rel=${f#"$SP"/}; add_file "$f" ".backup/scratch/$rel"

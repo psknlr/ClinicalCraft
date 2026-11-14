@@ -1,0 +1,110 @@
+{
+ "cases": [
+  {
+   "id": "cmcr-1423436",
+   "mode": "review",
+   "reportFile": "/tmp/claude-0/-home-user-ClinicalCraft/61c17a21-a923-5d20-a08c-1c8a508459b0/scratchpad/pr5/reports/cmcr-1423436.json"
+  },
+  {
+   "id": "cmcr-1653405",
+   "mode": "review",
+   "reportFile": "/tmp/claude-0/-home-user-ClinicalCraft/61c17a21-a923-5d20-a08c-1c8a508459b0/scratchpad/pr5/reports/cmcr-1653405.json"
+  },
+  {
+   "id": "cmcr-1068530",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-33476",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-33640",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-44939",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-44362",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-857339",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-33797",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-561086",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-485237",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-33564",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-861099",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-655489",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-44471",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-44475",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-70003",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-561190",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-857802",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-1068573",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-1068618",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-635024",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-44509",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-635201",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-598450",
+   "mode": "author"
+  },
+  {
+   "id": "cmcr-1423453",
+   "mode": "author"
+  }
+ ]
+}

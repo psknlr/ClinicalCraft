@@ -1,17 +1,34 @@
 /**
  * Per-case quality check for a re-authored case (CASE_AUTHORING §9): the depth floor, the reference path at 100 %,
- * doing nothing scoring 0, a wrong first answer scoring below the reference, and no authoring language in a
- * person's voice. Prints the measured scores the facilitator guide's "How wrong choices score" table quotes.
+ * doing nothing scoring 0, a wrong first answer scoring below the reference, no authoring language in a person's
+ * voice, and a presenting complaint that plain opening questions reach in the first phase, in both languages.
+ * Prints the measured scores the facilitator guide's "How wrong choices score" table quotes.
  *
  *   npx tsx --conditions=source scripts/case-check.ts <case-id> [<case-id> …]
  *
  * Exit code 1 if any check fails. The collection contracts (packages/content/src/cmcr-*.test.ts) hold the full set.
  */
 import { readFileSync } from "node:fs";
-import { assess, createSession, parseCase, reduce, verifyCase, type CaseDefinition } from "@clinicalcraft/core";
+import { assess, createSession, matchHistory, parseCase, reduce, verifyCase, type CaseDefinition } from "@clinicalcraft/core";
 
 /** Authoring language that must never reach a patient's or carer's mouth, a persona or a triage note. */
 const META = /原报告|原病历|原文|源病例|原始资料|原病例资料|source (report|notes?|record|case)|the report (does not|doesn't|did not)|educational role/i;
+
+/** Plain opening questions a learner asks first; each must reach a history item in the case's first phase. */
+const OPENERS: [locale: string, question: string][] = [
+  ["en", "What brings you in today?"],
+  ["en", "What happened?"],
+  ["en", "What's the problem?"],
+  ["en", "Tell me what's been going on."],
+  ["en", "How long has this been going on?"],
+  ["en", "When did it start?"],
+  ["zh-CN", "这次怎么了？"],
+  ["zh-CN", "哪里不舒服？"],
+  ["zh-CN", "怎么回事？"],
+  ["zh-CN", "有什么不舒服？"],
+  ["zh-CN", "多久了？"],
+  ["zh-CN", "什么时候开始的？"],
+];
 
 /** Every string of a value, recursively. */
 function strings(x: unknown, out: string[] = []): string[] {
@@ -62,6 +79,12 @@ function check(id: string): { problems: string[]; lines: string[] } {
   for (const h of c.history) for (const s of strings(h.answer)) if (META.test(s)) problems.push(`history ${h.id}: authoring language "${s.slice(0, 60)}"`);
   for (const s of strings(c.patient.persona)) if (META.test(s)) problems.push(`persona: authoring language "${s.slice(0, 60)}"`);
   for (const s of strings(c.patient.triageNote)) if (META.test(s)) problems.push(`triage note: authoring language "${s.slice(0, 60)}"`);
+
+  const first = c.phases[0]?.id;
+  if (!c.history.some((h) => h.topic === "presenting-complaint" && (!h.phases || (first !== undefined && h.phases.includes(first)))))
+    problems.push(`no history item with topic "presenting-complaint" available in the first phase (${first})`);
+  const missed = OPENERS.filter(([locale, q]) => matchHistory(c, q, locale, { phase: first }).length === 0).map(([, q]) => q);
+  if (missed.length) problems.push(`plain openers that reach no history item in the first phase: ${missed.join(" | ")}`);
 
   const verified = verifyCase(c);
   const reference = verified.assessment?.score.percent ?? 0;

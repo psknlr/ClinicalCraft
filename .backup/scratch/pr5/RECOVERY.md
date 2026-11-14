@@ -10,5 +10,5 @@
    `git -C $SP/pr5/wt checkout <checkpoint> -- packages/content/cases scripts/case-check.ts && git -C $SP/pr5/wt reset -q`;
    `git worktree add -b audit-fixes $SP/pr5/trial <trial head>`; `git -C $SP/pr5/trial apply --binary <(git show <checkpoint>:.backup/trial.patch)`;
    copy `.backup/scratch/*` back to $SP; `npm install` in both worktrees; bpy: `python3.11 -m venv $SP/bpy-venv && $SP/bpy-venv/bin/pip install bpy==5.0.1`.
-4. Status: case-status.json; start new runs for what is not reviewed (reauthor-v4.js, modes review/author), at most 3
+4. Status: case-status.json; start new runs for what is not reviewed (reauthor-v5.js: two lanes, author -> review -> next; modes review/author, reportFile for an author report kept in pr5/reports), at most 3
    workflows; restart the 30-minute loop (loop.sh).
