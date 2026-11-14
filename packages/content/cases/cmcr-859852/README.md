@@ -22,9 +22,9 @@ not record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five record phases spanning several admissions, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a respiratory physician and a rheumatologist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review (2026-10-30) and an independent review (2026-11-14) against the cited guidance; the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a respiratory physician and a rheumatologist review it before teaching use |
 | phases | `admission` 入院评估 / Admission assessment → `first-course` 首轮抗感染治疗之后 / After the first anti-infective course → `biopsy` 第二次住院 / Second admission → `recurrence` 数年后复发 / Recurrence years later → `followup` 记录的结局 / Recorded outcome — all one-way, none learner-switchable |
-| content | 25 history items (12 recorded facts, 1 labelled teaching device, 12 unknown; 10 required; 4 phase twins) · 2 exam findings (as recorded) · 13 investigations (3 record reviews; 7 with no recorded result) · 10 interventions (2 always contraindicated, 2 conditionally contraindicated, 1 neutral) · 6 objectives · 5 decisions (25 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 key reasoning steps · 6 teaching points · 8 unknowns · 40 test utterances |
+| content | 25 history items (12 recorded facts, 1 labelled teaching device, 12 unknown; 10 required; 4 phase twins) · 2 exam findings (as recorded) · 14 investigations (3 record reviews; 8 with no recorded result) · 10 interventions (2 always contraindicated, 2 conditionally contraindicated, 1 neutral) · 6 objectives · 5 decisions (25 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 key reasoning steps · 6 teaching points · 8 unknowns · 40 test utterances |
 
 ## Learning outcomes
 
@@ -41,11 +41,12 @@ After the case the learner can:
    rheumatoid factor and joint deformity, as a rheumatoid nodule — and name what must still be excluded before calling
    it: mycobacteria, fungi and vasculitis.
 4. Plan treatment for rheumatoid lung nodules: a glucocorticoid only as a short bridge, tapered and stopped as fast as
-   feasible, with a csDMARD started alongside (EULAR 2022 and its 2025 update); hepatitis B and latent TB screening
-   before starting, Pneumocystis prophylaxis at high doses (EULAR 2022 infection screening and prophylaxis) and a
+   feasible, with a csDMARD started alongside and chosen with her lung nodules in mind (EULAR 2022 and its 2025
+   update); hepatitis B and latent TB screening before starting, Pneumocystis prophylaxis at high doses (EULAR 2022 infection screening and prophylaxis) and a
    fracture-risk assessment for long-term use (ACR 2022 glucocorticoid-induced osteoporosis).
 5. Treat a recurrence after irregular immunotherapy as a possible new infection in an immunosuppressed host: re-sample
-   before restarting the glucocorticoid, then restart a DMARD she can keep taking and address adherence.
+   before restarting the glucocorticoid, then choose with rheumatology a DMARD she can keep taking, and address
+   adherence.
 6. Explain why a single report in which the antibiotics and a glucocorticoid were changed together at a recurrence
    cannot show which treatment worked.
 
@@ -77,16 +78,18 @@ treatment had little effect** (the English 1.0.0 text: imaging did not improve).
 a glucocorticoid added, the blood-streaked sputum resolved and the cavity walls thinned; she was discharged on oral
 prednisone.** Longer-term follow-up is not recorded.
 
-**Diagnosis.** Pulmonary rheumatoid (necrobiotic) nodules with cavitation in long-standing, untreated seropositive
-rheumatoid arthritis — a diagnosis of exclusion, with tuberculous, fungal and vasculitic mimics to be excluded on the
-tissue (the report records no special stains or cultures).
+**Diagnosis.** Pulmonary rheumatoid (necrobiotic) nodules with cavitation in long-standing, inconsistently treated
+seropositive rheumatoid arthritis — supported by the record, and a diagnosis of exclusion, with tuberculous, fungal and
+vasculitic mimics to be excluded on the tissue (the report records no special stains or cultures).
 
 **Today's answer.** Infection first (airborne precautions; sputum AFB smear, culture and a nucleic-acid amplification
 test — ATS/IDSA/CDC 2017; WHO 2019); tissue when sputum is negative and the course is equivocal, with stains and cultures
-and a clotting screen first; a glucocorticoid only after that, as a short bridge with a csDMARD (EULAR 2022 and its 2025
-update; ACR 2021), after hepatitis B and latent-TB screening with Pneumocystis prophylaxis and bone protection where the
+and a clotting screen first; a glucocorticoid only after that (once the specimen's stains are negative), as a short
+bridge with a csDMARD chosen with her nodules in mind — methotrexate can accelerate nodulosis, in the lung too (EULAR
+2022 and its 2025 update; ACR 2021), after hepatitis B and latent-TB screening with Pneumocystis prophylaxis and bone protection where the
 thresholds are met (EULAR 2022 infections; ACR 2022 GIOP); and at a recurrence in an immunosuppressed host, re-sampling
-before stepping treatment up, with adherence addressed. The recorded course — a biopsy before the glucocorticoid — is
+before stepping treatment up (airborne precautions again until the results are back), with adherence addressed. The
+recorded course — a biopsy before the glucocorticoid — is
 consistent with this on the decisive step; isolation, the screening, prophylaxis, maintenance DMARD and re-sampling at
 the recurrence are not recorded.
 
@@ -109,12 +112,12 @@ the recurrence are not recorded.
     results** (staged here; 1.0.0 gives no timing). Decision 2 and a committed act.
   - `biopsy` — opens once `obj-relapse-tissue` is done (her status, the sputum read, decision 2 right and a committed
     act: the biopsy request, an anti-TB trial, a glucocorticoid, a pulse or an antibiotic change): the **pathology
-    report from her second admission**. Decisions 3 and 4; the screening, glucocorticoid, prophylaxis and rheumatology
-    orders.
+    report from her second admission** and the specimen's acid-fast and fungal stains and cultures (no result
+    recorded). Decisions 3 and 4; the screening, glucocorticoid, prophylaxis and rheumatology orders.
   - `recurrence` — opens once `obj-biopsy-plan` (the biopsy read and decisions 3 and 4) is done; its description tells
     that the glucocorticoid after the biopsy was followed by improved imaging. Her account (twins `status-recurrence`
     and `immunotherapy-adherence`), the **chest imaging record** (earlier improvement; no improvement after 12 days of
-    anti-infectives), repeat sampling (no results recorded), decision 5.
+    anti-infectives), airborne precautions again and repeat sampling (no results recorded), decision 5.
   - `followup` — opens once decision 5 is right (and the earlier objectives done): the **reported course and outcome**
     record with the approved figure group `fig01`, and her status at discharge (twin `status-outcome`).
 - No prompt, hint, order response or harm text states a later phase's result before its record opens. Two wrong
@@ -130,11 +133,13 @@ the recurrence are not recorded.
 | 1 | `obj-cough-story` Take the story of her ten-year cough and blood-streaked sputum | presenting complaint, duration, blood amount, bleeding elsewhere, RA history, TB/diabetes, medicines asked |
 | 2 | `obj-admission-findings` Examine her and read the admission records | lungs and hands examined; chest imaging, blood count/CRP/ESR, RF/autoantibodies read (phase `admission`) |
 | 3 | `obj-first-steps` Decide what to exclude first, and act on it | `first-priority` right **and** one committed act (admission sputum order, isolation, antibiotics, glucocorticoid, pulse, anti-TB trial) |
-| 4 | `obj-relapse-tissue` Reassess the relapse after a brief response | her status asked; sputum read (phase `first-course`); `tissue-next` right; one committed act (biopsy request, anti-TB trial, glucocorticoid, pulse, antibiotic change) |
-| 5 | `obj-biopsy-plan` Interpret the pathology and plan treatment | pathology read (phase `biopsy`); `biopsy-reading` and `treatment-plan` right |
-| 6 | `obj-recurrence-course` Manage the recurrence years later and review the outcome | recurrence and adherence asked; imaging read (phase `recurrence`); `recurrence-plan` right; outcome read |
+| 4 | `obj-relapse-tissue` Reassess her after the first treatment | her status asked; sputum read (phase `first-course`); `tissue-next` right; one committed act (biopsy request, anti-TB trial, glucocorticoid, pulse, antibiotic change) |
+| 5 | `obj-biopsy-plan` Make the diagnosis and plan treatment | pathology read (phase `biopsy`); `biopsy-reading` and `treatment-plan` right |
+| 6 | `obj-recurrence-course` Follow her later course and review the outcome | recurrence and adherence asked; imaging read (phase `recurrence`); `recurrence-plan` right; outcome read |
 
-Titles name tasks, not findings; hints are Socratic questions ("which treatable and transmissible cause of cavities must
+Titles name tasks, not findings: the journal lists later objectives by title from the start, so no title names a later
+result (the independent review renamed three that did — the relapse, the pathology, the recurrence). Hints are Socratic
+questions ("which treatable and transmissible cause of cavities must
 be excluded — and how do you protect others on the ward until you know?") that contain no option text (lint). The
 committed-act gates follow cmcr-1653411's reperfusion objective: the next part of the record opens only once the learner
 has acted, and which act is the learner's choice, so the critical acts are not forced and can still be missed.
@@ -156,8 +161,11 @@ has acted, and which act is the learner's choice, so the critical acts are not f
   (necrobiotic) nodules, provided the tissue's acid-fast and fungal stains and cultures are negative and there is no
   vasculitis. Distractors: `tuberculous-granuloma`, `anca-negative-gpa`, `caplan-syndrome` (dust exposure not
   recorded), `necrotic-metastases`.
-- **4 `treatment-plan`** (select all; needs decision 3). Keys: `glucocorticoid-bridge`, `csdmard-rheumatology`,
-  `screen-and-protect`. Distractors: `resect-nodules`, `long-term-antibiotics`.
+- **4 `treatment-plan`** (select all; needs decision 3). Keys: `glucocorticoid-bridge` (once the specimen's stains are
+  negative), `csdmard-rheumatology` (the agent chosen with her nodules in mind — methotrexate can accelerate
+  nodulosis), `screen-and-protect`. Distractors: `resect-nodules`, `long-term-antibiotics`. The case records no stain
+  result (`biopsy-stains` answers "No result is recorded for this test."); the reference path requests the stains before
+  the glucocorticoid, and `rb-biopsy-reading` scores the request.
 - **5 `recurrence-plan`** (single; needs decision 4, the recurrence and adherence answers and the recurrence imaging).
   Key: `resample-then-restart` — re-send sputum for mycobacteria and fungi (bronchoscopy if unhelpful), then restart
   the glucocorticoid with a DMARD she can keep taking. Distractors: `escalate-anti-infectives`, `pulse-no-tests`,
@@ -168,8 +176,10 @@ Every option has its own feedback (2–4 sentences) naming ATS/IDSA/CDC 2017, WH
 the EULAR 2025 update, ACR 2021 or ACR 2022 where one applies, and the reason; two distractors in decision 3 (Caplan
 syndrome, metastases) argue from the case's own findings because no guideline addresses them. Option ids name their
 content. **No length cue:** the key is the uniquely longest option only in decision 3, in both languages (measured
-2026-11-13: decision 1 key 48 of 39–57 characters in zh-CN and 156 of 133–160 in en; decision 2 key 44 of 38–45 and
-154 of 133–155; decision 5 key 46 of 31–46 and 135 of 115–142). The 1.0.0 decisions (ids `supported` /
+2026-11-14: decision 1 key 48 of 39–57 characters in zh-CN and 156 of 133–160 in en; decision 2 key 44 of 38–45 and
+154 of 133–155; decision 5 key 46 of 31–46 and 135 of 115–142). In the select-all decision 4 the keys are not the three
+longest options in either language (zh-CN keys 43, 34 and 31 characters, distractors 33 and 32; en keys 137, 125 and 79,
+distractors 119 and 117); before the independent review the zh-CN keys were exactly the three longest. The 1.0.0 decisions (ids `supported` /
 `alternative-N`, the key the longest, a hindsight "how should the response be interpreted?" decision as the only
 critical item) are all replaced.
 
@@ -184,13 +194,13 @@ critical item) are all replaced.
 | `rb-first-priority` | diagnosis | 3 | `first-priority` right first time |
 | `rb-tb-workup` | safety | 4 | **critical** — sputum for mycobacteria **ordered in phase `admission`** and airborne precautions given **while indicated** (before the first-course sputum result is read) |
 | `rb-tissue` | management | 3 | `tissue-next` right first time, biopsy requested while indicated (after the sputum result, clotting ordered first) and no diagnostic anti-TB trial |
-| `rb-biopsy-reading` | diagnosis | 3 | `biopsy-reading` right first time |
+| `rb-biopsy-reading` | diagnosis | 3 | `biopsy-reading` right first time and the specimen's stains and cultures ordered in phase `biopsy` |
 | `rb-treatment-plan` | management | 3 | `treatment-plan` right first time; glucocorticoid given while indicated and not contraindicated; IGRA and HBV serology ordered; companion prophylaxis; rheumatology/DMARD |
 | `rb-no-unsafe-steroid` | safety | 4 | **critical** — no glucocorticoid given while contraindicated (`valid: false`: before the first-course sputum results and the biopsy are read, or at the recurrence before fresh sputum is sent) and no pulse; scored once decision 1 is attempted or either is given |
 | `rb-recurrence` | management | 3 | `recurrence-plan` right first time, sputum re-sent in phase `recurrence`, discharge plan made |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge, written for the case: infection first and why isolation, why no steroid yet, biopsy purpose, risks and consent, the result and what remains uncertain, taper and adherence without blame, the lung-cancer worry answered honestly |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (measured with the reducer on 2026-11-14)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -207,6 +217,7 @@ critical item) are all replaced.
 | pulse methylprednisolone added at the recurrence | 24/28 (86 %) | `rb-no-unsafe-steroid` | **failed** (`pulse-methylprednisolone`) |
 | diagnostic anti-TB trial added after the relapse | 25/28 (89 %) | none (`rb-tissue` lost) | passed (contraindicated step shown in the debrief) |
 | biopsy requested before the clotting screen | 25/28 (89 %) | none (`rb-tissue` lost) | passed (contraindicated step shown) |
+| the specimen's stains and cultures not requested | 25/28 (89 %) | none (`rb-biopsy-reading` lost) | passed |
 | no IGRA / hepatitis B screening and no companion prophylaxis | 25/28 (89 %) | none (`rb-treatment-plan` lost) | passed |
 | no glucocorticoid at all | 25/28 (89 %) | none (`rb-treatment-plan` lost) | passed |
 | no discharge plan | 25/28 (89 %) | none (`rb-recurrence` lost) | passed |
@@ -238,16 +249,17 @@ not safety failures.
 
 ## Reference path (`solution`)
 
-76 steps, static clock: start → the presenting history (presenting complaint, duration, pattern, blood amount, bleeding
+79 steps, static clock: start → the presenting history (presenting complaint, duration, pattern, blood amount, bleeding
 elsewhere), the screening questions (fevers and sweats, weight, breathlessness, chest pain, joints), RA history, TB and
 diabetes, TB contact, medicines, allergies, smoking, dust exposure, operations, family, daily life, her worry →
 **auscultate the lungs**, **examine the hands** → chest imaging, blood count/CRP/ESR, RF/autoantibodies (`admission`) →
 **airborne precautions** → **sputum for mycobacteria** (result in the next phase), sputum culture, renal panel and
 urinalysis, anti-CCP (no results recorded) → empirical antibacterial treatment → `first-priority` → (phase
 `first-course`) her status → **sputum results** (negative) → **clotting screen** (no result recorded) → **biopsy
-request** → `tissue-next` → (phase `biopsy`) **pathology report** → `biopsy-reading` → **IGRA and hepatitis B
+request** → `tissue-next` → (phase `biopsy`) **pathology report** → **the specimen's stains and cultures** (no result recorded) →
+`biopsy-reading` → **IGRA and hepatitis B
 serology** (no results recorded) → **glucocorticoid** → **companion prophylaxis** → **rheumatology / csDMARD** →
-`treatment-plan` → (phase `recurrence`) her account and adherence → **chest imaging** → **sputum re-sent**, sputum
+`treatment-plan` → (phase `recurrence`) her account and adherence → **airborne precautions** again → **chest imaging** → **sputum re-sent**, sputum
 culture, bronchoscopy request (no results recorded) → **glucocorticoid** (after re-sampling) → **discharge plan** →
 `recurrence-plan` → (phase `followup`) her status → outcome record → finish. `cases verify` passes: objectives 6/6,
 decisions 5/5, rubric 28/28, utterances 40/40. The acts come before each decision because answering the decision that
@@ -295,8 +307,9 @@ from which to derive one.
 
 **Guidance numbers used in teaching text** (no patient value is needed): sputum AFB smears (usually three), mycobacterial
 culture and a NAAT on the first specimen (ATS/IDSA/CDC 2017); Pneumocystis prophylaxis considered above 15–30 mg
-prednisolone equivalent a day for more than 2–4 weeks (EULAR 2022 infections, wording from secondary summaries — see To
-verify); fracture-risk assessment for ≥ 2.5 mg a day beyond 3 months, treatment at medium or higher risk (ACR 2022);
+prednisolone equivalent a day for more than 2–4 weeks (EULAR 2022 infections: the abstract's "seems to be beneficial in
+patients treated with daily doses >15-30 mg of prednisolone or equivalent for >2-4 weeks"; recommendation 8: "should be
+considered … in whom high doses of glucocorticoids are used"); fracture-risk assessment for ≥ 2.5 mg a day beyond 3 months, treatment at medium or higher risk (ACR 2022);
 methylprednisolone pulses 500–1000 mg IV daily for 3 days (named as the tempting wrong step, not a recommendation).
 No glucocorticoid dose is given for her: no guideline sets one for rheumatoid lung nodules, and the report's doses are
 not recorded.
@@ -320,6 +333,8 @@ not recorded.
    - "The biopsy shows necrosis ringed by palisading epithelioid cells. Which three or four conditions can do that,
      and what would you ask the pathologist to add?"
    - "What did you screen for and prevent before long-term prednisone?"
+   - "Methotrexate is the usual anchor in RA. Would you start it in her, with cavitating lung nodules?" (it can
+     accelerate nodulosis, in the lung too — the choice is made with rheumatology)
    - "Years later she relapsed after taking her treatment on and off. Flare or new infection — how do you tell?"
    - "The team changed the antibiotics and added a glucocorticoid at the same time, and she got better. Which worked?"
    - "How did you explain the isolation, the biopsy and the steroid plan to her — and her fear of lung cancer?"
@@ -340,7 +355,8 @@ was — none is recorded.
 | "Antibiotics failed, so it is inflammation" | `empirical-prednisone` feedback; `glucocorticoid` contraindicated | `rb-tissue`, `rb-no-unsafe-steroid` |
 | Biopsy without a clotting screen | `biopsy-referral` contraindicated until clotting is ordered; key text names it | `rb-tissue` |
 | Calling palisading necrosis TB, GPA or metastases; Caplan without an exposure history | decision 3 feedback | `rb-biopsy-reading` |
-| Accepting rheumatoid nodules without stains and cultures | decision 3 key text and feedback; pathologist's brief | `rb-biopsy-reading` |
+| Accepting rheumatoid nodules without stains and cultures | decision 3 key text and feedback; decision 4 key; pathologist's brief; the `biopsy-stains` record | `rb-biopsy-reading` |
+| Methotrexate by reflex for cavitating lung nodules | `csdmard-rheumatology` and decision 5 feedback; the rheumatologist's brief | debrief (teaching point 4) |
 | Steroids without a DMARD, screening or prophylaxis | decision 4 keys and feedback | `rb-treatment-plan` |
 | Pulse steroids for a "flare", or steroids at the recurrence before re-sampling | `pulse-no-tests`, `change-antibiotics-add-steroid` feedback; both interventions critical when contraindicated | `rb-recurrence`, `rb-no-unsafe-steroid`, safety outcome |
 | Crediting one drug for the improvement | key reasoning 6, teaching point 6, outcome 6 | debrief |
@@ -351,9 +367,10 @@ was — none is recorded.
 The six `debrief.teachingPoints`: (1) exclude TB before treating inflammation — sputum tests and isolation from day one
 (ATS/IDSA/CDC 2017; WHO 2019; WS 288—2017), then and now; (2) tissue when sputum is negative and the course equivocal,
 with stains, cultures and a clotting screen (ATS/IDSA/CDC 2017) — the recorded team's decisive step; (3) a rheumatoid
-nodule is a diagnosis of exclusion — this report records no special stains or cultures; (4) glucocorticoid as a bridge,
-a DMARD as the road (EULAR 2022 and its 2025 update; ACR 2021 on methotrexate in lung disease and with subcutaneous
-nodules), then and now;
+nodule is a diagnosis of exclusion — this report records no special stains or cultures, so ask for them before the
+glucocorticoid; (4) glucocorticoid as a bridge, a DMARD as the road (EULAR 2022 and its 2025 update; ACR 2021 on
+methotrexate in lung disease and with subcutaneous nodules; methotrexate can accelerate nodulosis, in the lung too), then
+and now;
 (5) screen and protect before immunosuppression (EULAR 2022 infections; ACR 2022 GIOP); (6) at a recurrence sample
 first and tackle adherence — and two treatments changed at once credit neither.
 
@@ -364,7 +381,8 @@ first and tackle adherence — and two treatments changed at once credit neither
   `destination`. The three record reviews (`chest-imaging`, `lung-biopsy`, `outcome`) need only `records`: the nurses'
   station terminal or the notes at the bedside. The blood tests and sputum samples are taken at the patient and read at
   a records terminal (`lab-hematology`, `lab-chemistry`, `lab-serology`, `lab-microbiology`, `lab-urinalysis`); the
-  bronchoscopy request needs the endoscopy suite (`endoscopy`, `performedAt: "provider"`, risk moderate) and returns
+  request for the specimen's stains and cultures goes to the pathology lab (`histopathology`) and returns "no result
+  recorded"; the bronchoscopy request needs the endoscopy suite (`endoscopy`, `performedAt: "provider"`, risk moderate) and returns
   "no result recorded". The biopsy itself is not performed in the world: the request is a consult (`biopsy-referral`),
   and its pathology is the record of the next phase.
 - **Staff.** 葛护士 / Nurse Ge gives the admission handover (ISBAR, from the triage facts), knows where the isolation
@@ -379,7 +397,7 @@ first and tackle adherence — and two treatments changed at once credit neither
 - **She can speak throughout** (a conscious adult answers for herself; no companion). Two examination findings are
   recorded (lungs on admission; hands in the first three phases); every other manoeuvre answers with `examNotRecorded`
   ("No finding is recorded for this examination in this case; do not take it as normal").
-- **Measured (offline demonstration, 2026-11-13).** `embodied-autopilot.test.ts -t "cmcr-859852:"` passes (en and
+- **Measured (offline demonstration, 2026-11-14).** `embodied-autopilot.test.ts -t "cmcr-859852:"` passes (en and
   zh-CN): every objective done, in-world score equal to the clinical score, no "cannot do this".
 
 ## Source and adaptation (fidelity limits)
@@ -399,19 +417,21 @@ pathology at the second admission, the recurrence imaging with its "earlier" lin
 beyond 1.0.0's sequence); the patient's dialogue (lay rewording of the recorded facts); the staff; the five decisions,
 their options and feedback; the ten interventions (their responses say the case does not record whether they were done,
 except the anti-infective course and the biopsy, which the record holds); the rubric; the unrecorded tests a learner
-would order (clotting, IGRA, hepatitis B serology, sputum culture, bronchoscopy, anti-CCP, renal panel) as honest
-`available: false` records. **Labelled teaching device:** her voiced worry ("Is it lung cancer?",
+would order (clotting, IGRA, hepatitis B serology, sputum culture, bronchoscopy, anti-CCP, renal panel, the biopsy specimen's
+stains and cultures) as honest `available: false` records. **Labelled teaching device:** her voiced worry ("Is it lung cancer?",
 `persona.concerns` and the `concerns` item) adds no clinical fact; 1.0.0 records no concerns. Unknown history items
 answer with the lay unknown ("这个我说不上来，医生。" / "I'm not sure, doctor."); for a conscious adult asked whether she
 smokes this is an artefact of the record, not a persona trait — say so if learners remark on it.
 
 **Contradictions and open readings kept.** (1) The 12-day anti-infective course at the recurrence: the Chinese 1.0.0 text
 says "效果不佳" (little effect), the English says imaging did not improve; the case gives both, labelled, in the recurrence
-imaging record and the outcome note. (2) **The admission sequence.** 1.0.0 frames the encounter at 74 (ten years of
-symptoms, worse for 15 days, with the "initial" CT) as the start of the course, followed by the first anti-infective
-course, the biopsy at the "second admission" and a recurrence "years later"; a case report of this kind may instead give
-the age and the chief complaint of the latest admission, with the earlier admissions in the history. The case follows
-1.0.0's framing, never states her age at the later admissions or the intervals, and lists the point under To verify.
+imaging record and the outcome note. (2) **The admission sequence.** 1.0.0 gives the encounter at 74 (ten years of
+symptoms, worse for 15 days) with the "initial" CT and the "second-admission" biopsy among the records already read at
+that encounter, and narrates the course from the first anti-infective treatment to a recurrence "years later"; it never
+says at which admission she was 74, and a case report of this kind may give the age and the chief complaint of the latest
+admission, with the earlier admissions in the history. The case stages the encounter at 74 as her first admission (a
+labelled teaching choice), never states her age at the later admissions or the intervals, and lists the point under To
+verify.
 (3) "免疫治疗 / immunotherapy" is kept as recorded (no drug is named); the case never calls it a DMARD or a biologic.
 The 1.0.0 README's statements that "Images and PDFs await privacy review and are not embedded", that "safety weighs 4
 and is critical" (a hindsight appraisal decision) and that "each source case was read and checked" are not carried over.
@@ -458,7 +478,9 @@ false`; the unverifiable `authorChecks` booleans and `sourceTextSha256` removed 
   family, TB, diabetes, medicines and current joint symptoms; `tb-diabetes` vs contacts (家里, 邻居, "been around",
   "near anyone"); `tb-contact` vs "have you ever had"; `family` vs TB, contacts and "does your family know / is your
   family visiting"; `joints-now` vs diagnosis and medicines; `breathless` vs pain; `medications` vs allergies;
-  `glucocorticoid` vs pulse (冲击); `empirical-antibacterial` vs change, switch, escalate and anti-TB.
+  `glucocorticoid` vs pulse (冲击); `empirical-antibacterial` vs change, switch, escalate and anti-TB. The
+  `biopsy-stains` order (特殊染色, 六胺银染色, "special stains", "grocott stain", "tissue culture"…) shares no alias with
+  the sputum test's 抗酸染色 / "acid-fast", so the two orders stay apart.
 - **English keywords** avoid one-token wildcards: run-together forms (`broughtyouin`, `comeandgo`, `howmuchblood`,
   `offyourfood`, `didithelp`, `howmanyyears`, `whendiditstart`, `howhaveyoubeen`, `liveswithyou`, `nearanyone`,
   `whohadtb`) after `cases validate --strict` flagged five phrases that reduced to one token.
@@ -476,15 +498,16 @@ false`; the unverifiable `authorChecks` booleans and `sourceTextSha256` removed 
    doi:10.3760/cma.j.issn.1001-0939.2014.02.028. Available from: https://rs.yiigle.com/cmaid/859852
 2. Lewinsohn DM, Leonard MK, LoBue PA, et al. Official American Thoracic Society/Infectious Diseases Society of
    America/Centers for Disease Control and Prevention clinical practice guidelines: diagnosis of tuberculosis in adults
-   and children. Clin Infect Dis. 2017;64(2):e1-e33.
+   and children. Clin Infect Dis. 2017;64(2):e1-e33. doi:10.1093/cid/ciw694
 3. World Health Organization. WHO guidelines on tuberculosis infection prevention and control, 2019 update. Geneva:
    World Health Organization; 2019.
 4. 中华人民共和国国家卫生和计划生育委员会. 肺结核诊断（WS 288—2017）. 2017.
 5. Smolen JS, Landewé RBM, Bergstra SA, et al. EULAR recommendations for the management of rheumatoid arthritis with
    synthetic and biological disease-modifying antirheumatic drugs: 2022 update. Ann Rheum Dis. 2023;82(1):3-18.
    doi:10.1136/ard-2022-223356
-6. Smolen JS, et al. EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic
-   disease-modifying antirheumatic drugs: 2025 update. Ann Rheum Dis. 2026.
+6. Smolen JS, Edwards CJ, Konzett V, et al. EULAR recommendations for the management of rheumatoid arthritis with
+   synthetic and biologic disease-modifying antirheumatic drugs: 2025 update. Ann Rheum Dis. 2026;85(6):991-1009.
+   doi:10.1016/j.ard.2026.01.023
 7. Fraenkel L, Bathon JM, England BR, et al. 2021 American College of Rheumatology guideline for the treatment of
    rheumatoid arthritis. Arthritis Care Res (Hoboken). 2021;73(7):924-939. doi:10.1002/acr.24596
 8. Fragoulis GE, Nikiphorou E, Dey M, et al. 2022 EULAR recommendations for screening and prophylaxis of chronic and
@@ -493,17 +516,28 @@ false`; the unverifiable `authorChecks` booleans and `sourceTextSha256` removed 
 9. Humphrey MB, Russell L, Danila MI, et al. 2022 American College of Rheumatology guideline for the prevention and
    treatment of glucocorticoid-induced osteoporosis. Arthritis Rheumatol. 2023;75(12):2088-2102. doi:10.1002/art.42646
 
-**DOIs and checks (2026-11-13).** The source DOI is the one the source map records as verified (`publisherCheckedAt`
-2026-10-29). Web searches in this session confirmed the EULAR 2022 RA update (doi 10.1136/ard-2022-223356, and its
-glucocorticoid wording "tapered and discontinued as rapidly as clinically feasible"), the ACR 2022 GIOP guideline (doi
-10.1002/art.42646; scope ≥ 2.5 mg a day for > 3 months), the ACR 2021 RA guideline (doi 10.1002/acr.24596; methotrexate
-conditionally preferred in mild, stable lung disease and with subcutaneous nodules, a switch if those nodules
-progress — no statement on rheumatoid lung nodules as such), the existence of
-the EULAR 2025 RA update (published online in 2026; methotrexate the anchor, glucocorticoid as short-term bridging) and
-the EULAR 2022 infection recommendations (doi 10.1136/ard-2022-223335; latent TB screening "could be considered" before
-glucocorticoids and csDMARDs, IGRA preferred; HBV status before antirheumatic drugs; the Pneumocystis threshold from two
-secondary summaries). Refs 2–4 are cited from the editor's knowledge without a DOI; the search budget ran out before they
-could be re-checked.
+**DOIs and checks.** The source DOI is the one the source map records as verified (`publisherCheckedAt` 2026-10-29). The
+editorial pass (2026-11-13) confirmed the EULAR 2022 RA update (doi 10.1136/ard-2022-223356; glucocorticoids "tapered
+and discontinued as rapidly as clinically feasible") and the ACR 2022 GIOP and ACR 2021 RA DOIs. The independent review
+(2026-11-14) checked the rest online: the **EULAR 2025 RA update** in full bibliographic detail (Leiden repository
+record: Smolen, Edwards, Konzett et al.; 85(6):991-1009; doi 10.1016/j.ard.2026.01.023; abstract: "Initially, MTX
+ideally in combination with short-term GCs is recommended"; 5 overarching principles, 9 recommendations); the **EULAR
+2022 infection recommendations** in the accepted manuscript (Table 1: overarching principle A, the infection risk
+"considered and discussed … prior to treatment with csDMARDs, tsDMARDs, bDMARDs, immunosuppressants and/or
+glucocorticoids and reassessed periodically"; recommendation 1, latent TB screening before b/tsDMARDs and, in patients at
+increased risk, to be considered before csDMARDs, immunosuppressants and glucocorticoids; 2, IGRA over TST where
+available; 4, hepatitis B screening for all patients considered for csDMARDs, b/tsDMARDs, immunosuppressants and
+glucocorticoids; 8, Pneumocystis prophylaxis to be considered with high-dose glucocorticoids; the abstract's > 15–30 mg
+for > 2–4 weeks; 82(6):742-753 in Europe PMC); **ATS/IDSA/CDC 2017** (Clin Infect Dis 64(2):e1-e33, doi
+10.1093/cid/ciw694, in Europe PMC; the full text: three specimens the normative practice, culture the gold standard, a
+NAAT on the initial respiratory specimen); **WHO 2019** recommendation 2 (respiratory isolation or separation of people
+with presumed or demonstrated infectious TB), reissued with formatting changes only as the consolidated Module 1 (2022);
+**WS 288—2017** (issued 2017-11-09, in force 2018-05-01; confirmed cases include molecular and pathological evidence);
+**ACR 2021** (methotrexate conditionally recommended in mild, stable airway or parenchymal lung disease and with
+subcutaneous nodules, an alternative DMARD if the nodules worsen — in secondary summaries); **ACR 2022 GIOP** (adults on
+≥ 2.5 mg a day for > 3 months; drug treatment at medium, high or very high fracture risk; calcium and vitamin D for
+all). That methotrexate can accelerate nodulosis, the lungs included, rests on a published review of case reports; no
+guideline addresses rheumatoid lung nodules as such.
 
 ### To verify
 
@@ -530,24 +564,27 @@ could be re-checked.
 - Long-term follow-up and outcome; what `fig01` shows and whether its legend adds findings.
 - That blood-streaked sputum was present at the recurrence (inferred from "血痰消失").
 
-**In the guidance (primary texts not reachable from this session; web-search budget exhausted):**
+**In the guidance (checked online on 2026-11-14 — see "DOIs and checks" above; still open):**
 
-- ATS/IDSA/CDC 2017: the exact recommendations on the number of sputum specimens, NAAT on the initial specimen, culture
-  as the reference standard and smear-negative disease; its DOI.
-- WHO: whether the 2019 IPC guideline is superseded by the consolidated Module 1 (infection prevention and control) and
-  whether the current Module 3 (diagnosis) edition should be cited for rapid molecular tests as the initial test.
-- WS 288—2017: the wording of confirmed and clinically diagnosed pulmonary TB; the publisher or journal reprint.
-- EULAR 2025 RA update: full citation (authors, volume, pages; a DOI 10.1016/j.ard.2026.01.023 appeared in one search
-  summary but could not be confirmed) and the exact glucocorticoid and methotrexate wording.
-- EULAR 2022 infections: volume and pages (82(6):742-753 cited from memory) and the exact Pneumocystis, latent-TB and
-  hepatitis B wording (the threshold > 15–30 mg/day for > 2–4 weeks comes from secondary summaries).
-- ACR 2021 RA: pages (73(7):924-939 cited from memory) and the exact wording of the lung-disease and subcutaneous-nodule
-  statements (the case applies neither to her lung nodules directly).
-- ACR 2022 GIOP: the calcium and vitamin D wording in the 2022 version.
+- EULAR 2025 RA update: only the abstract was read; check the full text's glucocorticoid (bridging, taper) and
+  methotrexate wording against the case's teaching.
+- ACR 2021 RA: the verbatim lung-disease and subcutaneous-nodule recommendations (read in secondary summaries) and the
+  pages (73(7):924-939).
+- WHO: whether the current Module 3 (diagnosis) edition should also be cited for a rapid molecular test as the initial
+  test.
+- WS 288—2017: the verbatim wording of confirmed and clinically diagnosed pulmonary TB (the standard's preface and
+  summaries were read).
 - The fluoroquinolone caution in the antibacterial dose text is stated as pharmacology, not attributed; check whether the
   Chinese CAP guideline (2016) or a TB guideline states it, and cite it if so.
 - Chinese RA guidance (中国类风湿关节炎诊疗指南, 2018, and any later update) and Chinese expert guidance on RA lung
   involvement were not cited because they could not be verified in this session.
+
+**For a respiratory physician and a rheumatologist to confirm:** the two critical interventions (a glucocorticoid before
+the sputum results and the histology, or before re-sampling at the recurrence; a pulse at any point) and airborne
+precautions on admission as a critical act; whether requesting the specimen's stains should also gate the glucocorticoid
+(it is scored in `rb-biopsy-reading`, not a contraindication); the diagnostic anti-TB trial as always contraindicated in
+this case; the DMARD choice for cavitating rheumatoid lung nodules (methotrexate-associated accelerated nodulosis); and
+the prophylaxis thresholds as applied to her.
 
 ## Changelog
 
@@ -593,15 +630,29 @@ could be re-checked.
   licensed clinician." because the collection contract matches that phrase case-sensitively); `sourceTextChecked: false`;
   `authorChecks` and `sourceTextSha256` removed until the source pass; `sourceDoi` + `doiVerifiedAt` added; the figure
   title no longer says "source".
+- **Independent review (2026-11-14), fixes.** The pulse's name no longer states a dose range the order reader cannot
+  check (strict validation and the collection contract failed on it). The EULAR 2025 RA update is cited in full (it was
+  unconfirmed) and the ATS/IDSA/CDC 2017 DOI added, with the guidance checks recorded under References. Decision 4's
+  feedback no longer says infection is "excluded" while the specimen's stains and cultures are unrecorded: its key, the
+  glucocorticoid's dose text and the reference path now ask for them (new `biopsy-stains` record, no result recorded,
+  scored in `rb-biopsy-reading`). The zh-CN length cue in decision 4 (the keys were exactly the three longest options)
+  is removed by rewriting the two distractors. Three objective titles that named later results (the relapse, the
+  pathology, the recurrence) are neutral. The DMARD teaching gains the methotrexate-nodulosis caveat (1.0.0's
+  "medication-associated nodules"). The zh-CN conclusion and summary no longer state the diagnosis as proven, and the
+  English conclusion keeps the relapse a week later. The persona's "worn down" / "tired" (an unrecorded symptom) became
+  an emotional state; the GPA feedback says haematuria is patient-reported (no urinalysis is recorded); the key feedback
+  keeps the record's "epithelioid cells"; the library summary no longer cues tissue; airborne precautions again at the
+  recurrence; the provenance note and "Source and adaptation" describe 1.0.0's admission sequence exactly; the case-check
+  path under Validation corrected.
 
 ## Validation
 
-From the worktree root (measured 2026-11-13):
+From the worktree root (measured 2026-11-14, after the independent review's fixes):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-859852/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-859852 --lang en                                                 # 76 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 28/28 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-859852                       # PASS: depth floor, do nothing 0, wrong-first 46 % < 100 %
+npm run -s cc -- cases verify cmcr-859852 --lang en                                                 # 79 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 28/28 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-859852                                      # PASS: depth floor, do nothing 0/24, wrong-first 46 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-859852:"              # collection contract for this case
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-859852:"  # in-world demonstration, en + zh-CN
 ```
@@ -614,8 +665,8 @@ its shared texts involves this case, and 0 of this case's 25 questions are stock
 **病例概要：** 74岁女性，反复咳嗽、痰中带血 10 年，近 15 天加重；15 年前诊断类风湿关节炎，一直未系统治疗，无结核和糖尿病史。
 查体双肺小水泡音、双手掌指关节尺侧偏斜。首次胸部 CT 示双肺多发大小不等的结节伴大小不等的空洞；血红蛋白 95 g/L，C 反应蛋白
 95 mg/L，血沉 90 mm/h，类风湿因子 2010 IU/mL，所查 ANA 谱和 ANCA 阴性；多次痰结核检查阴性。首轮抗感染后短暂好转，一周后加重；
-第二次住院肺活检（右下叶结节）见中央急性炎性坏死伴少许纤维素样物质、周围类上皮细胞栅栏状排列、间质淋巴细胞浸润，诊断为类风湿
-（坏死性）肺结节伴空洞。加用激素后影像改善；数年后在免疫治疗用药不规律之后复发，抗感染 12 天效果不佳（1.0.0 英文本：影像未改善），
+第二次住院肺活检（右下叶结节）见中央急性炎性坏死伴少许纤维素样物质、周围类上皮细胞栅栏状排列、间质淋巴细胞浸润，支持类风湿
+（坏死性）肺结节伴空洞（未记录特殊染色和培养）。加用激素后影像改善；数年后在免疫治疗用药不规律之后复发，抗感染 12 天效果不佳（1.0.0 英文本：影像未改善），
 调整抗生素并加用激素后血痰消失、空洞壁变薄，口服泼尼松出院。长期随访未记录。患者事实均沿用 1.0.0 版，尚未对照原文全文核对。
 
 **学习目标：**
@@ -623,17 +674,17 @@ its shared texts involves this case, and 0 of this case's 25 questions are stock
 - 对类风湿关节炎患者的双肺多发空洞结节伴痰中带血，在任何免疫抑制之前先按感染处理：隔离并送检痰抗酸涂片、分枝杆菌培养和核酸扩增检测（ATS/IDSA/CDC 2017；WHO 2019）。
 - 痰检阴性、抗感染后短暂好转又加重时，查过血小板和凝血后取组织，同时送染色和培养，而不是升级抗生素、诊断性抗结核或经验性激素。
 - 把“中央坏死、周围类上皮细胞栅栏状排列”判读为类风湿结节，并说出定论前必须排除的分枝杆菌、真菌和血管炎。
-- 激素只作短期桥接，联用改善病情抗风湿药（EULAR 2022 及 2025 更新；ACR 2021）；用药前筛查乙肝和潜伏结核，按阈值预防肺孢子菌、评估骨折风险（EULAR 2022 感染建议；ACR 2022）。
+- 激素只作短期桥接，联用结合肺结节选择的改善病情抗风湿药（EULAR 2022 及 2025 更新；ACR 2021）；用药前筛查乙肝和潜伏结核，按阈值预防肺孢子菌、评估骨折风险（EULAR 2022 感染建议；ACR 2022）。
 - 用药不规律后的复发先重新取样再加强治疗，并解决依从性。
 - 说明同时调整抗生素和激素的单例报告为什么无法判断哪一种治疗有效。
 
 **关键决策：** ① 首要处理：先排除感染（隔离 + 痰分枝杆菌检查），结果出来前不用激素；② 痰检阴性、短暂好转后加重：查凝血后活检，送病理、染色和培养；
-③ 病理判读：类风湿（坏死性）结节，前提是染色和培养阴性、无血管炎；④ 治疗方案（多选）：激素桥接并减量、改善病情抗风湿药、用药前筛查和伴随预防；
+③ 病理判读：类风湿（坏死性）结节，前提是染色和培养阴性、无血管炎，并申请标本的特殊染色和培养；④ 治疗方案（多选）：标本染色阴性后激素桥接并减量、结合肺结节选择改善病情抗风湿药（甲氨蝶呤可加速结节形成）、用药前筛查和伴随预防；
 ⑤ 数年后复发：先重新送检痰（必要时支气管镜），再恢复激素并换用能坚持的改善病情药。决策 1 和决策 5 各有一个选项是记录中团队当时的做法（先抗感染；同时换抗生素加激素），作为“接近但非最佳”的干扰项。
 
-**复盘要点：** 先排除结核再谈炎症，入院当天隔离并送检；痰检阴性时取组织，染色和培养与组织学同等重要；类风湿结节是排除性诊断；激素是桥、改善病情药是路；
+**复盘要点：** 先排除结核再谈炎症，入院当天隔离并送检；痰检阴性时取组织，染色和培养与组织学同等重要；类风湿结节是排除性诊断；激素是桥、改善病情药是路（甲氨蝶呤可加速肺内结节形成，选药要与风湿免疫科商量）；
 免疫抑制前先筛查并预防；复发时先取样，两种治疗同时改变则无法归功于任何一种。
 
 **安全结果。** 在痰检结果和组织学之前（或复发时重新送检之前）使用激素，以及任何时候使用甲泼尼龙冲击，都属于本例的严重安全错误（`critical: true`），无论得分多少，安全结果均判为不通过。
 
-审核状态：编辑审核（人工智能辅助，2026-10-30），患者事实尚未对照原文全文核对，尚未经执业医师审核。
+审核状态：编辑审核（2026-10-30）和独立审核（2026-11-14），均为人工智能辅助；患者事实尚未对照原文全文核对，尚未经执业医师审核。

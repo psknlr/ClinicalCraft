@@ -1,8 +1,23 @@
 diff --git a/docs/ARCHITECTURE.md b/docs/ARCHITECTURE.md
-index b408d2e..7d3abc2 100644
+index b408d2e..79e339b 100644
 --- a/docs/ARCHITECTURE.md
 +++ b/docs/ARCHITECTURE.md
-@@ -303,7 +303,8 @@ availableDecisions(c, s): { decision: Decision; unlocked: boolean; decided: bool
+@@ -173,9 +173,11 @@ JSON Schema exported to `packages/content/schemas/` for editors).
+     `AssessmentReport.safety.passed` is false, the score unchanged; a
+     content lint warns while a high-risk intervention with a
+     `contraindicatedWhen` leaves it unset), `interventions[].doseSpec`
+-    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute}` — the preset dose
+-    an order's stated dose is compared with; a range spans the doses the
+-    case's cited guidance allows) and `errorRecovery`
++    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute, maintenance?,
++    bolus?}` — the preset dose an order's stated dose is compared with; a
++    range spans the doses the case's cited guidance allows; `maintenance` is
++    the infusion's rate beside a bolus, `bolus` the part given first of a dose
++    given in parts, each `{amount, upTo?, unit}`) and `errorRecovery`
+     (`{interventions: id[], rationale}` — the interventions the reference
+     `solution` deliberately gives while contraindicated, to teach error
+     recognition and recovery; `verifyCase` accepts those and no others, and
+@@ -303,7 +305,8 @@ availableDecisions(c, s): { decision: Decision; unlocked: boolean; decided: bool
  presentedOptions(c, decision): Option[]                 // options in presentation order: a deterministic shuffle seeded by case + decision id (every front-end; ids unchanged)
  resultFor(c, investigationId, phase): Result | null     // null = no record in that phase
  resultKey(investigationId, phase): string               // `${id}@${phase}`
@@ -12,7 +27,33 @@ index b408d2e..7d3abc2 100644
  vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute); only `shownVitals` (§3.2)
  shownVitals(c, s, minute?): Set<VitalKey>; alarmingVitals(c, s, minute?): Set<VitalKey>   // what the bedside shows / may alarm on at that minute (§3.2)
  monitorAttached(c, s, minute?): boolean; monitorAttachedAt(c, s): number | null   // the bedside monitor (`physiology.monitor`, §3.2); 0 = from the start
-@@ -441,7 +442,9 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
+@@ -346,14 +349,17 @@ ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behin
+ 
+ // doses (PROTOCOL §3.2; engine/dose.ts, engine/dose-read.ts)
+ readOrder(text): OrderReading                           // every dose an order states (figures, Chinese numerals, English words; a volume through a
+-                                                        // stated strength; a preparation not the dose), its route, and the first dose it cannot read
+-                                                        // (`unclear`: unreadable | range | no-unit)
+-parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, unit} and/or {route}
+-checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: given (the dose read) | query (reason: unreadable,
+-                                                        // range, no-unit, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
+-compareDose(ordered, preset: DoseSpec, weightKg?): { equivalent: boolean; ratio: number | null; conflicts: ("amount" | "route" | "unit")[] }
+-doseErrorSeverity(ratio, conflicts, intervention): "warning" | "critical"   // critical: ratio ≥ 10 or ≤ 0.1 (TENFOLD) for any medicine; for a critical
+-                                                        // or high-risk intervention also ratio ≥ 2 (TWOFOLD) or another route
++                                                        // stated strength; a preparation not the dose; a cap `max`, a time `over`), its route, and the
++                                                        // doses it cannot read (`unclears`, the first `unclear`: unreadable | range | no-unit | unit | count)
++parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, upTo?, unit} and/or {route}
++checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: each dose against its part (`maintenance`, `bolus`):
++                                                        // given (the dose read) | query (reason: unreadable, range, no-unit, unit, count, several,
++                                                        // partial, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
++compareDose(ordered, preset, weightKg?): { equivalent: boolean; ratio: number | null; far: number | null; conflicts: ("amount" | "route" | "unit")[] }
++doseErrorSeverity(ratio, conflicts, intervention, far?): "warning" | "critical"   // critical: ten times or a tenth of any dose the preset allows
++                                                        // (TENFOLD, `far`); for a critical, high-risk or high-alert one also ratio ≥ 2 (TWOFOLD) or another route
++isHighAlert(intervention): boolean                      // ISMP by the name: insulin, potassium, anticoagulants, opioids, thrombolytics; IV adrenaline,
++                                                        // noradrenaline, magnesium, sedatives… (engine/high-alert.ts; severity and the content lint)
+ doseMentions(text), doseRoute(text), formatDose(dose), WEIGHT_BASED_TOLERANCE
+ safetyPassed({criticalFailures, doseErrors, verdict?}): boolean   // AssessmentReport.safety.passed — asked without `verdict` to leave a hidden gate out
+ 
+@@ -441,7 +447,9 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
  * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
    immediately). Simulated clock: each action advances `clock` by
    `clock.actionCosts[type]` (order/read/ask/examine/intervene/answer), results
@@ -23,7 +64,7 @@ index b408d2e..7d3abc2 100644
    clock. After every clock change: fire due scenario events (by `atMinute` or
    `when`), record `trendStops` for trends whose `until` became true, emit
    `result.ready` for results whose readiness crossed, apply automatic phase
-@@ -457,12 +460,20 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
+@@ -457,12 +465,20 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
    revealed.
  * `examine` — same pattern for `examined`.
  * `order` — key `${id}@${phase}`; duplicates emit `order.duplicate` (no state
@@ -47,11 +88,127 @@ index b408d2e..7d3abc2 100644
  * `set-phase` — unknown phase → `unknown-id`; `learnerSwitchable: false` →
    `phase-locked` until the phase's `enterWhen` holds (the case has reached it:
    a learner who looked back at an earlier phase can return).
+@@ -475,9 +491,10 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
+   intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
+   is recorded. An order as written (`ordered: {text, dose?}`) is checked
+   against the intervention's preset (`doseSpec`) by `checkOrder`, which reads
+-  the words itself (`readOrder`; the client's `dose` only where the words state
+-  it): a dose it cannot read or compare (a fraction, "0。5 mg", a range, no
+-  unit, a volume without its strength, a rate for a single dose) →
++  the words itself (`readOrder`; the client's `dose` only for a route the
++  words name): a dose it cannot read or compare (a fraction, "0。5 mg", a range
++  across the preset's ends, two doses that disagree, a part of a dose given in
++  parts, no unit, a volume without its strength, a rate for a single dose) →
+   `dose-unclear`, nothing recorded; a conflicting amount or route is accepted
+   but **not given**: a `DoseErrorRecord` is appended to `doseErrors` and
+   `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
 diff --git a/docs/CASE_AUTHORING.md b/docs/CASE_AUTHORING.md
-index 990656d..e7ce6be 100644
+index 990656d..bdc8583 100644
 --- a/docs/CASE_AUTHORING.md
 +++ b/docs/CASE_AUTHORING.md
-@@ -783,7 +783,11 @@ never leave it to a guess:
+@@ -399,7 +399,20 @@ solution is sent to the browser).
+   needs `patient.weightKg` (`cases validate` warns otherwise): an order in
+   absolute units is converted through it and may differ by up to 10 %
+   (rounding); when a cap applies to this patient ("max 90 mg"), author the
+-  capped absolute dose.
++  capped absolute dose — the lint reads the text's own cap ("0.9 mg/kg (max
++  90 mg)" at 120 kg is 90 mg), and an order's "0.01 mg/kg, max 0.5 mg" is
++  capped the same way.
++  * **A bolus and an infusion** state both parts. `maintenance` is the
++    infusion's rate beside the bolus (PE heparin: `"doseSpec": { "amount": 70,
++    "upTo": 80, "unit": "unit/kg", "route": "IV", "maintenance": { "amount":
++    18, "unit": "unit/kg/h" } }`): an order may give the bolus, the rate or
++    both, each checked against its own part. When the two are one dose given
++    in parts, `bolus` is the part given first and `amount` the whole (stroke
++    alteplase: `"amount": 0.9, "unit": "mg/kg", "bolus": { "amount": 0.09,
++    "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit": "mg/kg/h" }`):
++    the whole, its parts or the bolus with the rate are given; a part alone is
++    asked about ("is that the whole dose?"), never a tenfold dose error. The
++    lint checks the rate the text states against `maintenance`.
+   * **A preset spans every dose the case's cited guidance allows** — `amount`
+     to `upTo` (labetalol 10–20 mg: `"amount": 10, "upTo": 20`), around the
+     dose the text gives: aspirin 300 mg with ESC, Chinese and ACC/AHA loading
+@@ -409,15 +422,17 @@ solution is sent to the browser).
+     the README, and never invent a dose the case does not support: a single
+     preset that refuses a guideline-concordant dose delays a time-critical
+     drug and teaches nothing. (The tenfold check counts from the range's
+-    nearer end, so keep a range no wider than the guidance.)
++    farther end — ten times its lowest dose is tenfold — and the twofold check
++    from its nearer end, so keep a range no wider than the guidance.)
+   * **No preset for an item that stands for a class** — an item whose
+     aliases name other drugs ("steroids" for hydrocortisone, dexamethasone and
+-    methylprednisolone; "an antiemetic") or other measures (an inhaler in
+-    puffs): the check compares amounts, not drugs, so another member's usual
+-    dose would read as a dose error. Nor for an error the learner must be able
+-    to make whatever dose they write (a potassium chloride push), or a text that
+-    gives a bolus then an infusion, a schedule or alternatives no single preset
+-    says — split the item when each dose matters.
++    methylprednisolone; "an antiemetic", "an inotrope") or other measures (an
++    inhaler in puffs): the check compares amounts, not drugs, so another
++    member's usual dose would read as a dose error. Nor for an error the
++    learner must be able to make whatever dose they write (a potassium
++    chloride push), a dose titrated to effect, or a text that gives a schedule
++    or alternatives no single preset says — split the item when each dose
++    matters (a bolus then an infusion is one preset with its `maintenance`).
+   * **Names and aliases** that state a dose state the preset's, as one dose
+     with its unit ("IM adrenaline 300 micrograms (0.3 mL of 1 mg/mL)",
+     "enoxaparin 40 mg" — not "enoxaparin 40"): typed as an order, a name is
+@@ -427,27 +442,37 @@ solution is sent to the browser).
+     ("five milligrams"); a volume through the strength the order states
+     ("0.5 mL of 1:1000" is 0.5 mg); a syringe or a bag with its rate as the
+     rate it delivers ("insulin 50 units in 50 mL at 5.5 mL/h" is
+-    5.5 units/h); a dose in parts as their total — and compares it after unit
+-    conversion: 500 microgram is 0.5 mg; a bolus never a rate. An equivalent
+-    dose is given. A dose it cannot read (a fraction, "0。5 mg", a range, a
+-    number with no unit) or compare (a volume without its strength, a dose
+-    per kg without the weight, a rate for a single dose) is **asked about**:
+-    nothing given, no dose error. Another amount or route is **not given**:
+-    the session records a **dose error** (the order as written, the dose
+-    read, the preset, the ratio) for the debrief. It is critical — the safety
+-    outcome fails — when the ratio is ≥ 10 or ≤ 0.1, and for a `critical` or
+-    `risk: "high"` intervention also when the order is at least twice the
+-    preset or by another route; every other dose error (a rounding or
+-    weight-band difference, an under-dose that is not tenfold) is a warning
+-    to review. An order without a dose gives the preset, as does a choice
++    5.5 units/h); the usual spellings of units and rates ("gm", "I.U.",
++    "U/(kg·h)", "每小时5.5单位"); a range end for end; a total stated beside
++    its parts — and compares it after unit conversion: 500 microgram is
++    0.5 mg; a bolus never a rate. A weight, a cannula's gauge, a lab value or
++    a vital sign beside the dose is no dose. An equivalent dose, or a range
++    within the preset's, is given. A dose it cannot read (a fraction,
++    "0。5 mg", "50 000 units", mEq, a range across the preset's ends, two doses
++    that disagree, a number with no unit) or compare (a volume without its
++    strength, a dose per kg without the weight, a rate for a single dose) is
++    **asked about**: nothing given, no dose error. Another amount or route is
++    **not given**: the session records a **dose error** (the order as
++    written, the dose read, the preset, the ratio) for the debrief. It is
++    critical — the safety outcome fails — when the order is ten times, or a
++    tenth of, any dose the preset allows (the farther end of a range), and
++    for a `critical`, `risk: "high"` or high-alert intervention (an insulin,
++    potassium, an anticoagulant, an opioid, a thrombolytic; IV adrenaline or
++    noradrenaline, magnesium, a sedative…) also when the order is at least
++    twice the preset or by another route; every other dose error (a rounding
++    or weight-band difference, an under-dose that is not tenfold) is a
++    warning to review. An order without a dose gives the preset, as does a choice
+     from a list. Write each dose a learner may choose as its own intervention
+     only when it changes the clinical course (IM vs IV-bolus adrenaline);
+     otherwise one intervention with its preset is enough — a wrong dose is
+     caught as a dose error.
+-  * **High-alert medicines** (an insulin, potassium, a heparin, an opioid, a
+-    thrombolytic) whose `dose` text states exactly one dose — one amount or one
+-    range — need a preset (`cases validate` warns, naming the preset to add,
+-    §9.8): their tenfold errors are the ones that kill.
++  * **High-alert medicines** (ISMP's: an insulin, potassium, an
++    anticoagulant, an opioid, a thrombolytic; given IV, adrenaline,
++    noradrenaline, phenylephrine, vasopressin, magnesium sulfate, a sedative, a
++    neuromuscular blocker, an antiarrhythmic, digoxin) whose `dose` text states
++    exactly one dose — one amount or one range — and is not titrated need a
++    preset (`cases validate` warns, naming the preset to add, §9.8): their
++    tenfold errors are the ones that kill.
+ 
+ ### 6.1 Operations (`procedure`, `safetyGates`)
+ 
+@@ -783,7 +808,11 @@ never leave it to a guess:
  * A study done **on the patient at a fixed device** (`ct`, `mri`, a fixed
    `xray`, `fluoroscopy`, `pet-ct`, `endoscopy`) or a **patient-performed test**
    at a station (`peak-flow`, `scale`) needs the patient brought there in
@@ -64,8 +221,18 @@ index 990656d..e7ce6be 100644
    A film taken with a portable machine at the bedside says so: investigation
    `performedAt: "bedside"` (default `"provider"`) — e.g. the resus "portable
    CXR" — and then needs nobody moved.
+@@ -996,7 +1025,7 @@ wrong for a case, say so in the README rather than bending the text to it.
+ | a test utterance is not one of its expected item's keywords (compared the same way) | `extensions.testUtterances.<i>` |
+ | every specialty id is canonical — one id per discipline, US spelling (`CANONICAL_SPECIALTIES` in `packages/core/src/specialties.ts`, labelled in `SPECIALTY_LABELS`); a synonym's warning names its replacement (`SPECIALTY_SYNONYMS`). Paediatric scheme: the age group is `pediatrics` (`neonatology` for a newborn) and a child's organ specialty is the adult id beside it (`["pediatrics", "neurology"]`, not `paediatric-neurology`); `pediatric-surgery` and `neonatology` are disciplines of their own | `specialty.<i>` |
+ | a `risk: "high"` intervention with a `contraindicatedWhen` states whether giving it then is a critical safety failure: `critical: true` or `critical: false` (§6) | `interventions.<i>.critical` |
+-| a preset dose states the dose its `dose` text states, in every locale: the text's first dose — a single dose within `amount`–`upTo` (a preset may span the doses the cited guidance allows around it), a range end for end, through `patient.weightKg` for a dose per kg; a unit that cannot be compared is a mismatch — and its route when the text names exactly one (§6) | `interventions.<i>.doseSpec` |
++| a preset dose states the dose its `dose` text states, in every locale: the text's first dose — a single dose within `amount`–`upTo` (a preset may span the doses the cited guidance allows around it), a range end for end, through `patient.weightKg` for a dose per kg and capped by the text's own "max" (the capped absolute dose §6 asks for); a unit that cannot be compared is a mismatch — its route when the text names exactly one, and the first rate it states against the preset's `maintenance` (§6) | `interventions.<i>.doseSpec` |
+ | a name or alias that states a dose, typed as an order, is given: the preset's dose, one dose with its unit — not another dose, a range, a number without its unit or a volume without its strength (the nurse would refuse or ask; §6) | `interventions.<i>.doseSpec` |
+-| a high-alert medication (an insulin, potassium, a heparin, an opioid, a thrombolytic, by its name) whose `dose` text states exactly one dose (one amount or one range, in every locale) has a `doseSpec`; the warning names the preset to add, as the text states it. A text with several doses — a bolus then an infusion, a schedule, alternatives — is exempt (split the item if each dose matters), as is an item contraindicated always (§6) | `interventions.<i>.doseSpec` |
++| a high-alert medication (core `isHighAlert`, by its name: an insulin, potassium, an anticoagulant, an opioid, a thrombolytic; IV or IO adrenaline, noradrenaline, phenylephrine, vasopressin, magnesium sulfate, a sedative, a neuromuscular blocker, an antiarrhythmic, digoxin, milrinone) whose `dose` text states exactly one dose (one amount or one range, in every locale) has a `doseSpec`; the warning names the preset to add, as the text states it. A text with several doses — a bolus then an infusion, a schedule, alternatives — or a dose titrated to effect ("titrated", "adjusted to response", "滴定") is exempt (give a bolus its `maintenance`, or split the item if each dose matters), as is an item contraindicated always (§6) | `interventions.<i>.doseSpec` |
+ | a `critical` intervention is not `risk: "none"` or `"low"` (§6) | `interventions.<i>.risk` |
 diff --git a/docs/EMBODIED.md b/docs/EMBODIED.md
-index 49c1de6..71b6cd4 100644
+index 49c1de6..762a61f 100644
 --- a/docs/EMBODIED.md
 +++ b/docs/EMBODIED.md
 @@ -633,7 +633,8 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
@@ -172,7 +339,7 @@ index 49c1de6..71b6cd4 100644
 +**In-world mode.** The kernel records an order of such a study with the device the world's rule names
 +(`order.modality`, from the acquisition's requirement: `EmbodiedSession.modalityOf`); a replay reads it from the
 +record. Until the patient is on the device the study is **ordered, not done**: no result exists (`isOrderReady` is
-+false, a read is refused "not acquired", `wait` and `pendingEvents` do not wait for it), and every surface says so as
++false, a read is refused "not acquired", nothing waits for it — `pendingEvents`, the walkthrough's waits), and every surface says so as
 +a state of its own — "ordered — the patient must go to a CT scanner" / "已开单——患者需要去CT扫描" (`/results`,
 +`case_status`, the nurse's summary, the web's test buttons, evidence cards and report panel) —; the order's output
 +adds the way there (the acquisition's hint: go to the patient, then `transport_patient`). The requirement lists keep
@@ -287,12 +454,12 @@ index 49c1de6..71b6cd4 100644
  | World bridge: MCP ⇄ live browser world (`WorldSessionRouter`; ops `external_tool_call` / `external_tool_cancel`; `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`; the web switch, badge and labelled approvals) | yes (A8, A8b; hardening S5, S9, S10, S11) | router over HTTP (token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation, expiry and heartbeats, DELETE, re-delivery, limits, CORS, shutdown); session ops; the browser client against a real server in Node and against a fake server; MCP attach over stdio with a stubbed server; the review reproductions as regression tests; web `ExternalControl` / `BrowserMover` in hidden tabs; Playwright `external-agent.spec.ts` (en + zh-CN) | end to end with real processes (`world-attach.e2e.test.ts`: `serve` + a headless embodied STEMI session through the client + `mcp --attach` over stdio; a decoy session of another token holder never reached); Playwright: a served build, the switch, `mcp --attach` paired by the id and key read from the badge, the ECG through the cart, an approval clicked in the labelled dialog, a hidden tab's walk, a denial, disconnect → `session_closed`, a resumed encounter starting off | no — hardened against the review's reproductions, never independently audited; plain HTTP (terminate TLS in front of `serve`); one shared server token, no user accounts; the registry is in memory (a restart drops live sessions until the browser re-registers); 16 live sessions, 4 per client. Sec, Rel, Dep, Ops |
  | Embodied benchmark (`@clinicalcraft/bench`: scenario schema, suite `embodied-v1` with 41 scenarios in 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, Wilson intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`) | yes (A7; transport scenarios FX-T) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent with a fake provider); a broken agent that only claims success scores 0; limits, budget, live-agent refusals; CLI | `reference` and `scripted-llm`: 123 / 123 runs each, 0 accepted spatial or authorisation violations, every trace identical across seeds (local run and CI); the live-run refusals | no — **no live-model run recorded: model competence is unmeasured**; 23 of the 41 scenarios use the STEMI case and none a CMCR case; one acting agent (the clinician) per run |
  | Patient transport (G8, FX-T: `transport_patient` operation, learner tool, `/transport`, `delegate_task … transport_patient`; relocations by authored `destination` / phase `location`; `patient-at-provider`; the bedside, the patient's monitor and the screen follow the patient; web: the bed pushed with the patient on it, `placePatient`; IX: an ambulatory patient walks upright and lies down only on arrival, never lying without a trolley) | yes (FX-T, IX) | world `transport.test.ts` (IX: the SMZL outpatient walks to the CT and back, a sitting outpatient without a trolley walks, an interrupted walk leaves them standing), `nav/backend.test.ts` (`ignoreObstacles`: through an obstacle, never a locked door), the hint property with transports, operability with the peak-flow station; agent `session/transport.test.ts`; autopilot transports (PE: the clinician; stroke in `teaching-hospital`: the porter); bench `workflow-pe-ctpa-transport`; web unit and e2e `transport.spec.ts` | the 10 cases × 2 languages in their own facility at the clinical-mode score; the teaching hospital's porter transports | no — team relocations are not animated in the browser (§14.3) |
-+| A study done on the patient at a device, stage by stage (§8.7, audit 2026-11-12 P1-7): ordered wherever a clinician orders, acquired with the patient on the device (`acquire`, recorded by the session; text mode: implied at the order), released a turnaround after the acquisition, the review and the resulting action recorded; "ordered — the patient must go to …" as a state of its own (tools, `/results`, the nurse, the web); the patient's journeys (`PatientPlaceState.legs`: who held responsibility in transit, departure, arrival, the monitor that travelled — `transport_patient {monitor}`) | yes | core `acquisition.test.ts` (the audit's replay: a CTPA ordered at minute 1 is neither acquired nor released at minute 30 on the ward; with a transport the stages in order; text mode unchanged); world `policy.test.ts`, `transport.test.ts` (ordered from the ward, acquired on the scanner, the journeys, a monitor taken along or refused); agent `session/transport.test.ts` (ordered at the bedside and done on arrival, or at the order's minute with the patient already on the scanner; never entered by a learner); bench `predicates.test.ts`, `audit-acquisition.test.ts`, `workflow-pe-ctpa-transport` | `cases verify --all` (text mode); the in-world demonstration of every built-in case in both languages at the clinical-mode score; both benchmark agents 123 / 123 | no — the scan takes no time of its own (it is in the turnaround); who stays with a patient waiting at a device is not recorded (only the journeys are); the travelling monitor is a record, not physiology; no review by clinical educators |
++| A study done on the patient at a device, stage by stage (§8.7, audit 2026-11-12 P1-7): ordered wherever a clinician orders, acquired with the patient on the device (`acquire`, recorded by the session; text mode: implied at the order), released a turnaround after the acquisition, the review and the resulting action recorded; "ordered — the patient must go to …" as a state of its own (tools, `/results`, the nurse, the web); the patient's journeys (`PatientPlaceState.legs`: who held responsibility in transit, departure, arrival, the monitor that travelled — `transport_patient {monitor}`) | yes | core `acquisition.test.ts` (the audit's replay: a CTPA ordered at minute 1 is neither acquired nor released at minute 30 on the ward; with a transport the stages in order; text mode unchanged); world `policy.test.ts`, `transport.test.ts` (ordered from the ward, acquired on the scanner, the journeys, a monitor taken along or refused); agent `session/transport.test.ts` (ordered at the bedside and done on arrival, or at the order's minute with the patient already on the scanner; never entered by a learner); web `ui/panels/orders-not-done.test.ts` (the test button and evidence card, en + zh-CN); bench `predicates.test.ts`, `audit-acquisition.test.ts`, `workflow-pe-ctpa-transport` | `cases verify --all` (text mode); the in-world demonstration of every built-in case in both languages at the clinical-mode score; both benchmark agents 123 / 123 | no — the scan takes no time of its own (it is in the turnaround); who stays with a patient waiting at a device is not recorded (only the journeys are); the travelling monitor is a record, not physiology; no review by clinical educators |
  | Interaction round (IX): free text to the patient held to conversation range; walking with the patient (`escort_patient` / `release_patient`, a derived place, positioned studies); repositioning (`reposition_patient`, the case's positioning treatment first); requests in words to everyone (zh-CN + en: the patient's movement and posture; every colleague's tasks within their scope, come, go back, show the way, where is …, refusals in their own voice); a model-voiced colleague's `do_task`; colleagues by name (`user_message.staff`, `staffId` on the events, their own conversation and persona; role-true offline replies); web: the companion drawn and speaking, speech animating the one who spoke, body language, the patient drawn walking on the walker's path, sentence chips per role, action-required feedback that stays | yes (IX) | world `posture.test.ts` (lie down, sit up, stand, lapse on clinical positioning, who cannot, where not, snapshots), `escort.test.ts` (follow, sensor poses, studies need positioning, home, range, who cannot walk in both languages, roles, wait, clinical state ends it, snapshots, recent events); agent `movement-intents.test.ts` and `staff-intents.test.ts` (requests and look-alike history questions, both languages), `staff-talk.test.ts` (a nurse by name attaches the monitor, gives the aspirin, records the ECG in Chinese; the receptionist refuses and names who can; a treatment the case lacks is talk; come, go back, where is, show the way; lie down / stand up; PE's positioning scored; an imposed posture kept; "Can you lie flat?" answered; a scripted model nurse acting through `do_task`, none in clinical mode; role-true offline replies), `embodied-talk.test.ts` (refused from the entrance with nothing credited, the companion, clinical mode unchanged, follow / wait / come with me to the CT / back to bed / a nurse by name takes the patient, colleagues' voices and conversations, the receptionist's identity prompt); web `trail.test.ts`, `talk.test.ts` (speaker resolution, per-colleague windows, the UI's sentences parse), `feedback.test.ts`, `embodied-world.test.ts` (a question from the entrance is not sent; "Please follow me." drawn following); e2e `escort.spec.ts` (the companion speaks with their own mouth, follow and wait, SMZL walked upright to the CT, a nurse answering a chip in her own voice and walking over while the receptionist refuses, the patient lying down when asked), `embodied-review.spec.ts` (the delegate chip said to Lin Xiao, her answer) | the web e2e `escort.spec.ts` in Chromium + SwiftShader; the whole vitest suite; the infrastructure benchmark agents and the embodied autopilot unchanged (their reference paths use no free text to the patient and no escort) | no — the phrase set is fixed (no model interprets requests); the companion has no body in the world model; no live model has been asked to move a patient in words; not reviewed by clinical educators |
  | Truthful bystander cues (G12): posture from clinical state (authored `posture`), oxygen accessory from the authored `device`, a patient who cannot speak (`patient.nonVerbalWhen` → `cannotSpeak`) | yes (FX-T; cannot speak: the content-standard round) | core `transport-fields.test.ts`, `cues.test.ts`, `nonverbal.test.ts`; world perception / posture / `speech` cue; agent anaphylaxis posture, `session/nonverbal.test.ts`; web e2e (sitting up changes the drawn patient) | the 10 cases' authored fields (`cases verify --all`) | no — Rel, Perf (§14.4) |
  | Screen rule, learner text, lazy hints (extra review items 1–5) | yes (FX-T round) | `screen-rule.test.ts` (read ⇔ policy over sampled points; the reviewer's spots), world `i18n.test.ts` (no raw tool id; both languages, same placeholders), unsupported operations named, `hint-cost.test.ts` (budget, identical results), delegation sentences | web e2e (out of view, "Go there") | no — ranking a hint still costs a reachability flood per new cell (≈ 1.3–1.8 s for 60 cold cells), paid only when read. Perf |
 diff --git a/docs/GLOSSARY.md b/docs/GLOSSARY.md
-index 7046dad..831ac4f 100644
+index 7046dad..9580919 100644
 --- a/docs/GLOSSARY.md
 +++ b/docs/GLOSSARY.md
 @@ -159,6 +159,9 @@ developer documents use.
@@ -305,8 +472,21 @@ index 7046dad..831ac4f 100644
  | walk with the patient | walk with the patient; said: "Please follow me." / "Please wait here." | 带患者走动；说：“请跟我来。” / “请在这里等一下。” | `escort_patient` / `release_patient`, `PatientPlace.escort` (the technical name *escort* stays out of learner text) |
  | come with me to … | said: "Please come with me to the CT scanner." | 说：“请跟我去CT扫描仪。” | a movement request → `transport_patient` (typed or a chip; understood in both languages) |
  | change position | said: "Please lie down." / "Please sit up." / "Please stand up." | 说：“请躺下。” / “请坐起来。” / “请站起来。” | the case's positioning intervention for that posture, else `reposition_patient` |
+@@ -199,9 +202,10 @@ developer documents use.
+ | not scored | not scored ("the situation this item scores did not arise") | 未计分（“本次接诊中没有出现该项评分的情形”） | `rubric[].scoredWhen`, rubric result `scored: false` | an avoided-harm item counts only once the harm was possible |
+ | safety outcome; passed / not passed | safety: passed / not passed | 安全性：通过 / 未通过 | `AssessmentReport.safety.passed` | shown beside the score on every debrief and export, never folded into it; a run that did not pass is never called passed, whatever its percentage |
+ | critical safety failure | critical safety failure | 严重安全失误 | `interventions[].critical`, `safety.criticalFailures` | the case's dangerous error, made: a critical intervention given while contraindicated. Not "critical item" (关键项), which is a rubric item missed |
+-| dose error; critical dose error | dose error; critical dose error ("not given: the dose ordered differs from the preset") | 剂量错误；严重剂量错误（“未给药：医嘱剂量与预设剂量不符”） | `dose.error`, `safety.doseErrors`, `severity` | the order is not carried out; critical when tenfold (×10 or ÷10), and on a critical or high-risk drug also at twice the preset or more or by another route; any other is a dose error to review (待复盘) that never fails the safety outcome |
+-| dose not clear | the dose in the order is not clear ("I need the dose clearly", "as a number with its unit") | 剂量不明确（“我需要把剂量确认清楚”，“用数字加单位”） | rejection `dose-unclear`, `checkOrder` `query`, `data.doseQuery` | a dose that cannot be read (a fraction, "0。5 mg", a range, no unit) or compared (no strength, no weight, a rate for a single dose): the nurse asks, nothing is given, no dose error |
++| dose error; critical dose error | dose error; critical dose error ("not given: the dose ordered differs from the preset") | 剂量错误；严重剂量错误（“未给药：医嘱剂量与预设剂量不符”） | `dose.error`, `safety.doseErrors`, `severity` | the order is not carried out; critical when tenfold (×10 or ÷10 of any dose the preset allows), and on a critical, high-risk or high-alert drug (高警示药品, ISMP) also at twice the preset or more or by another route; any other is a dose error to review (待复盘) that never fails the safety outcome |
++| dose not clear | the dose in the order is not clear ("I need the dose clearly", "as a number with its unit") | 剂量不明确（“我需要把剂量确认清楚”，“用数字加单位”） | rejection `dose-unclear`, `checkOrder` `query`, `data.doseQuery` | a dose that cannot be read (a fraction, "0。5 mg", "50 000", mEq, a range across the preset's ends, two doses that disagree, no unit) or compared (no strength, no weight, a rate for a single dose), or a part of a dose given in parts ("is that the whole dose?" / “这是全部剂量吗？”): the nurse asks, nothing is given, no dose error |
+ | the order as written; the dose read from it; the preset dose | as ordered; read as; preset dose | 医嘱原文；识别剂量；预设剂量 | `ordered.text`, `ordered.dose`, `doseSpec` | the debrief shows all three apart |
++| a bolus, then an infusion; given in parts | "70–80 units/kg IV, then 18 units/kg/h"; "(… as a bolus, the rest at …)" | 随后……；先推注……，其余以……输注 | `doseSpec.maintenance`, `doseSpec.bolus` | a preset's two parts, each checked against what an order states for it |
+ | error recognition and recovery | error recognition and recovery (teaching) | 错误识别与补救（教学） | `errorRecovery` | a reference path that makes an error on purpose, declared; facilitator-facing |
+ | debrief | debrief | 复盘 | `/debrief`, `debrief` | the method is debriefing (引导性反馈), here PEARLS |
+ | key reasoning, teaching points, evidence boundaries, unknowns, references | key reasoning, teaching points, evidence boundaries, unknowns, references | 关键推理、教学要点、证据边界、仍未知的信息、参考文献 | `debrief.*` | |
 diff --git a/docs/PROTOCOL.md b/docs/PROTOCOL.md
-index 13e7111..d1830ab 100644
+index 13e7111..8feadef 100644
 --- a/docs/PROTOCOL.md
 +++ b/docs/PROTOCOL.md
 @@ -114,8 +114,8 @@ All tools validate input against `inputSchema` (hand-written validation or zod;
@@ -320,7 +500,25 @@ index 13e7111..d1830ab 100644
  | `retrieve_report` | workup | no | none | `{query}` | the published case's record of that kind (a study profile's `historical`, else a record review by name): `order`+`read` of it, labelled "Published source record", or "Historical material unavailable" when the source has none, or "Record not yet created" (`data.source: "not-yet"`, no text) when the document is written later in the encounter — a phase not yet reached is never searched (core `recordAvailability`); never orders a new study (docs/STUDIES.md §2) |
  | `order_study` | workup | no | none | `{code?, query?, indication?, priority?, lead_placement?, reviewer?, request_key?}` | `study {op: "order"}` (idempotent by `request_key`: "already ordered", nothing new); output = the order and who will acquire it, or why it waits; a cholangiogram is refused (`data.code` `OPERATIVE_STUDY`: done at the table); offered only in a case with test profiles (docs/STUDIES.md) |
  | `read_study` | workup | yes | none | `{code?, query?}` | the order's status, or its released report labelled "Simulated investigation" with the collector, the lead placement, the generator and the reviewer |
-@@ -166,6 +166,39 @@ The engine contract (core `schema/session.ts`, `engine/dose.ts`, `engine/dose-re
+@@ -154,18 +154,52 @@ NPC-only tools: `do_task {task, target?, params?}` (embodied mode; a staff agent
+ 
+ The engine contract (core `schema/session.ts`, `engine/dose.ts`, `engine/dose-read.ts`, `engine/assessment.ts`; authoring rules in CASE_AUTHORING §6–§7):
+ 
+-* **The order as written.** `ClinicalAction {type: "intervene", interventionId, ordered?: {text, dose?: {amount?, unit?, route?}}}` — `text` the order as the learner wrote it (1–1000 characters), `dose` what a client read from it: an `amount` with its `unit` (both or neither), a `route`, or both. Units: `g`, `mg`, `microgram`, `mL`, `unit`, `mmol`, each optionally `/kg` and then `/h` or `/min` (`DOSE_UNITS`: `mg/kg`, `unit/kg/h`, `microgram/kg/min`); routes `IM`, `IV`, `IO`, `SC`, `PO`, `SL`, `PR`, `IN`, `INH`, `TOP` (`DOSE_ROUTES`). A front-end or tool sends `ordered` only for words — a choice from a list or an id sends none.
+-* **The engine reads the words itself** (core `readOrder`, `parseDose`; zh-CN and en). Numbers in figures ("0.5", "0,5", "5,000", "40万"), in Chinese numerals ("五", "零点五", "两千", "八十万", with "个" before the unit: "5个毫克") and in English words ("five", "zero point five", "half a"); a number word counts only before a unit. A volume is read as what it holds when the order states the strength ("0.5 mL of 1 mg/mL", "1:1000 0.5 mL" → 0.5 mg); a preparation ("insulin 50 units in 50 mL", "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol") is how the drug is made up, not the dose, so "… at 5.5 mL/h" is 5.5 units/h — alone, a preparation is the dose it holds. A concentration, a percentage, a ratio, a daily total, a dose per m² or a gas flow ("oxygen 15 L/min") is not a dose; a route named twice differently is no route. What it **cannot read** is never guessed: a fraction ("1/2 mg"), a number broken by a Chinese full stop or enumeration comma ("0。5 mg"), "5.000" (five, or five thousand?), a unit with no number ("几毫克", "x mg"), a range ("0.5–1 mg": which?) and a number with no unit ("adrenaline 0.5 IM"). The client's `ordered.dose` is believed only where the words state it — a dose the words do not state, or none, never hides the dose written (`checkOrder`).
+-* **The dose against the preset.** When the intervention has a `doseSpec` (`{amount, upTo?, unit, route?}`) the reducer checks the order (`checkOrder(ordered, intervention, patient.weightKg)`, through `compareDose`): g / mg / microgram convert into one another, per minute into per hour, a dose per kg into an absolute one through the weight (then within 10 %); a volume, units and mmol compare only with themselves (a volume through a stated strength), a bolus never with a rate; an amount within `[amount, upTo]` is the preset's. A dose given in parts ("alteplase 7.2 mg bolus then 64.8 mg over 60 min") is read as their total, and an order that gives a dose in the preset's form beside another ("heparin 80 units/kg bolus then 18 units/kg/h" against a bolus preset) as that dose. The outcomes:
++* **The order as written.** `ClinicalAction {type: "intervene", interventionId, ordered?: {text, dose?: {amount?, upTo?, unit?, route?}}}` — `text` the order as the learner wrote it (1–1000 characters), `dose` what a client read from it: an `amount` with its `unit` (both or neither; a range ordered as `amount`–`upTo`), a `route`, or both. Units: `g`, `mg`, `microgram`, `mL`, `unit`, `mmol`, each optionally `/kg` and then `/h` or `/min` (`DOSE_UNITS`: `mg/kg`, `unit/kg/h`, `microgram/kg/min`); routes `IM`, `IV`, `IO`, `SC`, `PO`, `SL`, `PR`, `IN`, `INH`, `TOP` (`DOSE_ROUTES`). A front-end or tool sends `ordered` only for words — a choice from a list or an id sends none.
++* **The engine reads the words itself** (core `readOrder`, `parseDose`; zh-CN and en). Numbers in figures ("0.5", "0,5", "5,000", "40万", "50k"), in Chinese numerals ("五", "零点五", "两千", "八十万", with "个" before the unit: "5个毫克") and in English words ("five", "zero point five", "half a", "a milligram"); a number word counts only before a unit. Units in their usual spellings ("mcg", "microg", "µg", "gm", "I.U.", "mmols", "毫克"); a dose per kg and per time however written ("0.1 units/kg/h", "0.1U/(kg·h)", "0.1 U·kg⁻¹·h⁻¹", "5.5 units hourly", "每小时5.5单位", "每千克体重40毫克"). A volume is read as what it holds when the order states the strength ("0.5 mL of 1 mg/mL", "1:1000 0.5 mL" → 0.5 mg); a preparation ("insulin 50 units in 50 mL", "50U+NS 50ml", "0.9% NaCl 1000 mL with KCl 40 mmol") is how the drug is made up, not the dose, so "… at 5.5 mL/h" is 5.5 units/h — alone, a preparation is the dose it holds, and "over 2 hours" after it is how long it runs ("KCl 40 mmol in 1 L over 2 hours" is 20 mmol/h against a rate). A combination's strengths are its total ("piperacillin/tazobactam 4 g/0.5 g" is 4.5 g), so many tablets of a dose theirs ("90mg×2片" is 180 mg), and "max 0.5 mg" after a dose per kg is its cap ("0.01 mg/kg, max 0.5 mg" is 0.5 mg at 62 kg). A concentration, a percentage, a ratio, a daily total, a dose per m², a gas flow ("oxygen 15 L/min"), a cap, a diluent ("with 2.5 mL saline"), a body weight ("62千克", "62 kg"), a cannula's gauge ("via the 18G"), a lab value ("K+ 3.8 mmol/L", "glucose 450 mg/dL"), a vital sign, score, age, place or clock time ("HR 130", "GCS 14", "bed 3", "at 1430") or a count ("×2") is not a dose; a route named twice differently is no route, and "PR 120" is a pulse rate. What it **cannot read** is never guessed (`readOrder` `unclears`, quoting the words as written): a fraction ("1/2 mg", "½ mg"), a number broken by a Chinese full stop, an enumeration comma, a middle dot or a space after its point ("0。5 mg", "0·5 mg", "0. 5 mg"), "5.000" or "50 000" (five, or five thousand?), zero, a bare capital G ("2G": grams, or a gauge?), a repeat that may be a total ("81 mg x 4", "5 x 0.1 mg"), "0.5 mg/5 mg" after a single drug's name, a unit with no number ("几毫克", "x mg"), a unit no preset is counted in ("200 mEq/h", "500 ng": `unit`), a count of tablets, ampoules or puffs ("一支", "2 tablets": `count`), a range ("0.5–1 mg", compared end for end below) and a number with no unit ("adrenaline 0.5 IM"). The words are the order: a client's `ordered.dose` adds only a route the words name (a choice between "IV or IM") — a dose the words do not state, or a choice among two they do, never decides the dose (`checkOrder`).
++* **The dose against the preset.** When the intervention has a `doseSpec` (`{amount, upTo?, unit, route?, maintenance?, bolus?}`) the reducer checks the order (`checkOrder(ordered, intervention, patient.weightKg)`, through `compareDose`): g / mg / microgram convert into one another, per minute into per hour, a dose per kg into an absolute one through the weight (then within 10 %; an order's own cap after that); a volume, units and mmol compare only with themselves (a volume through a stated strength), a bolus never with a rate; an amount within `[amount, upTo]` is the preset's. Each dose the words state is checked against its part: a single dose against `amount`–`upTo`, a rate against `maintenance` — the infusion that goes with a bolus (PE heparin: 70–80 units/kg IV, then 18 units/kg/h) — or against the preset when it is itself a rate (an amount over a stated time as its rate). A range is compared end for end: within the preset it is given ("morphine 2–3 mg" against 2–4 mg), wholly above or below it a dose error ("adrenaline 5–10 mg" against 0.3–0.5 mg), across its ends asked about. Several doses that disagree ("0.5 mg, sorry, 5 mg"; two drugs' doses in one order) are asked about (`several`), never the first given — unless one is a total stated beside the parts that add up to it ("7.2 mg bolus, then 64.8 mg over 60 min (total 72 mg)"). A dose given in parts states the part given first (`bolus`; `amount` is then the whole — stroke alteplase: 0.9 mg/kg, a 0.09 mg/kg bolus, the rest at 0.81 mg/kg/h): the whole, its parts adding up to it (the first its bolus), or the bolus with the rate are given; a part alone is asked about (`partial`: "is that the whole dose?"), never a tenfold dose error. An order that gives a dose in the preset's form beside a rate the preset has no part for ("heparin 80 units/kg bolus then 18 units/kg/h" against a bolus alone) is that dose. The outcomes:
+   - **Given** — the dose read is the preset's, or the order states none: given as before, and the `InterventionRecord` keeps `ordered` with the dose the engine read (the order as written and the dose read, apart from the dose given — the preset).
+-  - **Asked about** — the words state a dose it cannot read (above), or one it cannot compare with the preset: a volume or another measure without its strength, a dose per kg without the patient's weight, a rate for a single dose or the reverse (`checkOrder` `query`, `reason`: `unreadable` · `range` · `no-unit` · `strength` · `weight` · `rate`). The action is **rejected** with the code `dose-unclear`: nothing is given, nothing recorded, no dose error — the nurse asks for the dose as a number with its unit.
+-  - **A dose error** — the amount or the route conflicts: **nothing is given** — no record, no effect, no flag, no dose of `maxDoses` used — and the action is still accepted (its time passes, like the nurse's query): the session state gains a `DoseErrorRecord` in `SessionState.doseErrors` (`{interventionId, at, seq, text, ordered, preset, ratio, conflicts, severity}`; `ratio` = ordered ÷ preset after conversion, to the nearer end of a range, null without a comparable amount) and the event `{type: "dose.error", interventionId, text, ordered, preset, ratio, conflicts, severity}` is emitted. `severity` (`doseErrorSeverity`): `"critical"` when the ratio is ≥ 10 or ≤ 0.1 (`TENFOLD`) for any medicine, and for an intervention that is `critical` or `risk: "high"` also when the order is at least twice the preset (ratio ≥ 2, `TWOFOLD`) or its route conflicts; every other conflict is a `"warning"` — a rounding or weight-band difference, an under-dose of a high-risk drug that is not tenfold — which is not given and stays for the debrief but never fails the safety outcome. A tool reports a dose error as not given — never "Given" — with what was written, the dose read and the preset.
++  - **Asked about** — the words state a dose it cannot read (above), or one it cannot compare with the preset: a volume or another measure without its strength, a dose per kg without the patient's weight, a rate for a single dose or the reverse (`checkOrder` `query`, `reason`: `unreadable` · `range` (across the preset's ends) · `no-unit` · `unit` · `count` · `several` · `partial` · `strength` · `weight` · `rate`). The action is **rejected** with the code `dose-unclear`: nothing is given, nothing recorded, no dose error — the nurse asks for the dose as a number with its unit (for a part of a dose given in parts: "is that the whole dose?").
++  - **A dose error** — the amount or the route conflicts: **nothing is given** — no record, no effect, no flag, no dose of `maxDoses` used — and the action is still accepted (its time passes, like the nurse's query): the session state gains a `DoseErrorRecord` in `SessionState.doseErrors` (`{interventionId, at, seq, text, ordered, preset, ratio, conflicts, severity}`; `ratio` = ordered ÷ preset after conversion, to the nearer end of a range, null without a comparable amount) and the event `{type: "dose.error", interventionId, text, ordered, preset, ratio, conflicts, severity}` is emitted. `severity` (`doseErrorSeverity`): `"critical"` when the order is ten times, or a tenth of, any dose the preset allows (`TENFOLD`; measured from a range's farther end — `compareDose` `far` —, so "aspirin 3000 mg" against 150–325 mg is critical though 9.2 times its top) for any medicine, and for an intervention that is `critical`, `risk: "high"` or a high-alert medicine (core `isHighAlert`, ISMP by its name: insulins, potassium, anticoagulants, opioids and thrombolytics by any route; adrenaline, noradrenaline, phenylephrine, vasopressin, magnesium sulfate, sedation agents, neuromuscular blockers, antiarrhythmics, digoxin and milrinone IV or IO) also when the order is at least twice the preset (ratio ≥ 2 from the range's nearer end, `TWOFOLD`) or its route conflicts; every other conflict is a `"warning"` — a rounding or weight-band difference, an under-dose of a high-risk drug that is not tenfold — which is not given and stays for the debrief but never fails the safety outcome. A tool reports a dose error as not given — never "Given" — with what was written, the dose read and the preset.
+   - **Unchecked** — the intervention has no `doseSpec`: given as before, the dose the words state kept in `ordered` (the tool says it was not checked).
+-* **Orders in the runtime** (`tools/dose-order.ts`). The `intervene` tool sends `ordered` for words only: `query` and `dose` as written (`writtenOrder`: the `dose` argument's amount and route first, else the whole order's); an id alone sends none. The words name the item and the dose is read apart: words that name no single item are tried again without their doses (`withoutDoses`: "adrenaline 0.5 mg i.m." → "adrenaline i.m.") and that reading is taken when it names one of their candidates, so a dose never decides which item an order names — words that name an item by its own dose ("0.9% sodium chloride 500 mL") resolve as written. `/give <words>` is the order in words, `/give <id> <dose…>` an id with its dose as written; in the web's treatment search, words that state an amount — or a dose that cannot be read — are the order (`searchOrder`: each row found shows the dose read — on a treatment without a preset, that it is not checked — or that it is not clear, and gives the words), while a row chosen from the list gives the preset it shows. A learner `clinical_action` with `ordered` reaches the hooks and the gate as `{intervention_id, query: ordered.text}` (`actionToolArgs`) and keeps its `ordered` unless a hook rewrites the words (then read again, `actionFromToolInput`). A dose error is answered by the nurse in the learner's language, closing the loop — "Nurse: “Before I give intramuscular adrenaline, let me read it back: you ordered 5 mg IM; the dose for this is 0.3–0.5 mg IM. Can you confirm the dose?”" (for a single preset: "what I have prepared is …"; a dose per kg with what it comes to for this patient, "0.9 mg/kg IV (72 mg)") then "Not given: the dose ordered differs from the preset dose (10 times the top of the preset range). Order it again with the dose you mean." (`doseChallengeText`); a dose that is asked about likewise — "Nurse: “Before I give …, I need the dose clearly: I can't read the dose in “0。5mg”. …”" then "Not given: the dose in the order is not clear. …" (`doseQueryChallengeText`; the tool's `data.doseQuery`). A `clinical_action` gets either as an `agent_message` of the nurse. A verbal order to a colleague in the world ("give aspirin 300 g", EMBODIED §8.4) carries its words as `give_intervention` `params.order` — the clause of the request that names the item ("paracetamol 1 g now, then ceftriaxone 2 g IV" gives ceftriaxone its own "ceftriaxone 2 g IV", `orderClause`); a request of several orders none of which names the item alone is answered "One order at a time, please…" — (`params.dose` for a model's `delegate_task`); a dose error ends the task with the delegation's `doseError`, a dose that is not clear with its `doseQuery`, and the colleague reads the order back, or asks, in their own voice. The approval summary names the dose as the engine will read it ("Give … — 5 mg IM as ordered?"; "— as written “…” (the dose is not clear)?").
++* **Orders in the runtime** (`tools/dose-order.ts`). The `intervene` tool sends `ordered` for words only: `query` and `dose` as written (`writtenOrder`: the `dose` argument's amount and route first, else the whole order's) — and of those, the words that order this item (`itemOrder`): an order that names several items is read clause by clause, as a spoken request is (`orderClause`, splitting at "then", ";", "+", "&", "and", "plus", "with", "和", "及", "与", "联合", "加"… but never inside a dose or a preparation such as "50U+NS 50ml"), so "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化" gives ipratropium "异丙托溴铵250微克雾化"; the tool's reply names the other items, which are given on their own orders ("Your order also names …", `otherOrdersText`) — never silently dropped. An id alone sends none. The words name the item and the dose is read apart: words that name no single item are tried again without their doses (`withoutDoses`: "adrenaline 0.5 mg i.m." → "adrenaline i.m.") and that reading is taken when it names one of their candidates, so a dose never decides which item an order names — words that name an item by its own dose ("0.9% sodium chloride 500 mL") resolve as written, but a drug made up in a diluent ("insulin 50 units in 50 mL normal saline at 5.5 mL/h") names the drug. `/give <words>` is the order in words, `/give <id> <dose…>` an id with its dose as written; in the web's treatment search, words that state an amount — or a dose that cannot be read — are the order, each row found given the words that order its item (`searchOrder(case, words, id, locale)`: it shows the dose read — on a treatment without a preset, that it is not checked — or that it is not clear, and gives the words), while a row chosen from the list gives the preset it shows. A learner `clinical_action` with `ordered` reaches the hooks and the gate as `{intervention_id, query: ordered.text}` (`actionToolArgs`) and keeps its `ordered` unless a hook rewrites the words (then read again, `actionFromToolInput`). A dose error is answered by the nurse in the learner's language, closing the loop — "Nurse: “Before I give intramuscular adrenaline, let me read it back: you ordered 5 mg IM; the dose for this is 0.3–0.5 mg IM. Can you confirm the dose?”" (for a single preset: "what I have prepared is …"; a dose per kg with what it comes to for this patient, "0.9 mg/kg IV (72 mg)") then "Not given: the dose ordered differs from the preset dose (10 times the top of the preset range). Order it again with the dose you mean." (`doseChallengeText`); a dose that is asked about likewise — "Nurse: “Before I give …, I need the dose clearly: I can't read the dose in “0。5mg”. …”" then "Not given: the dose in the order is not clear. …" (`doseQueryChallengeText`; the tool's `data.doseQuery`); a part of a dose given in parts — "Nurse: “Before I give IV alteplase, let me check: you ordered 7.2 mg IV, which is only part of the dose. Is that the whole dose? The dose for this is 0.9 mg/kg IV (72 mg) (0.09 mg/kg (7.2 mg) as a bolus, the rest at 0.81 mg/kg/h (64.8 mg/h)).”" then "Not given: the order is for part of the dose. …". A `clinical_action` gets either as an `agent_message` of the nurse. A verbal order to a colleague in the world ("give aspirin 300 g", EMBODIED §8.4) carries its words as `give_intervention` `params.order` — the clause of the request that names the item ("paracetamol 1 g now, then ceftriaxone 2 g IV" gives ceftriaxone its own "ceftriaxone 2 g IV", `orderClause`); a request of several orders none of which names the item alone is answered "One order at a time, please…" — (`params.dose` for a model's `delegate_task`); a dose error ends the task with the delegation's `doseError`, a dose that is not clear with its `doseQuery`, and the colleague reads the order back, or asks, in their own voice. The approval summary names the dose as the engine will read it ("Give … — 5 mg IM as ordered?"; "— as written “…” (the dose is not clear)?").
+ * **Critical safety failures.** An intervention with `critical: true` given while its `contraindicatedWhen` holds is applied as before (its effects and `harm`: the learner meets the consequence) and its `intervention.applied` event carries `critical: true` (an invalid checklist attempt gives nothing and is never one).
  * **Time since a dose.** The condition leaf `{elapsedSince: {intervened, gte?, lte?}}` — minutes since the intervention was last given (`lastGiven`), false while never given; a settle-time condition that waits on it is evaluated at the exact minute its `gte` is reached. `{examined, afterLast}` holds when the finding's latest examination came after the intervention was last given (by action sequence; `SessionState.lastExamined`) — the reassessment a repeat dose needs, which a dose given since undoes.
  * **The safety outcome.** `AssessmentReport.safety` = `{contraindicated: [{interventionId, at}], criticalAlarms, gates?, verdict?, passed, criticalFailures: [{interventionId, at, harm?}], doseErrors: [{interventionId, at, text, ordered, preset, ratio, conflicts, severity}]}`. `passed` (core `safetyPassed`) is false when there is a critical failure, a critical dose error or a safety-critical gate; the numeric `score` is computed as before and never folded into it. **Every debrief and export** (web, CLI `/assess` / `/debrief` / `exec --assess` and `stream-json` `result`, MCP `get_debrief`, the embodied and operative benchmark reports) shows the safety outcome beside the score, lists the critical failures (with `harm`) and the dose errors (the order as written, the dose read, the preset, the ratio), and never presents a run whose `passed` is false as passed — whatever its percentage. The words (agent `safety.ts`: `safetyHeadline`, `safetySummary`, `safetyLines`; zh-CN and en, docs/GLOSSARY.md): "Safety: passed", "Safety: passed (dose errors: 1 to review)", "Safety: not passed — critical safety failures: 1; critical dose errors: 1", then "⚠ Critical safety failure: <item> given while contraindicated (minute n) — <harm>" and "⚠ Critical dose error: <item> — as ordered “…”, read as …; preset dose … — 10 times the preset dose; not given (minute n)". For a case with an operation, a front-end that holds the score back until the case is finished holds the operation's gates back too (`safetySummary(…, {gates: false})`: `passed` without the gate's verdict) — a gate mid-case would tell the operator that a hidden view or injury holds (PROCEDURE §7); the critical failures and dose errors, which the learner made, show at once. Where: the CLI assessment (the line after the score), `/debrief` (and `data.safety`), `exec`'s text summary and its `result.safety` (`{passed, critical_failures, dose_errors}`), the `eval` report's safety column and its progress line, `sessions show` (the web's uploaded transcripts included: the server stores them as sent), `cases verify` (the reference path's `safety` in `--json`, `{passed, criticalFailures, doseErrors}`, and a note on its line when it did not pass); MCP `get_debrief` (after the score), the transcript resource's `assessment` (`safety`) and the state resource (`doseErrors`); the web debrief (a safety tile beside the score, an alert naming each failure and dose error), its conversation (a dose error's read-back, or the nurse's question, where the treatment would have been) and its learning record (`outcome: {score, safety}`, `doseErrors`, and each intervention given on an order written in words with its `ordered` and the dose given, `administered: {dose, text}` — agent `administeredDose`, the preset); the examiner's prompt and offline narrative; the embodied benchmark (`BenchRun.safety` — a run whose safety did not pass is never a task success —, metrics and both reports, EMBODIED §13.3) and the operative benchmark (`OperativeRun.safety`, the same rule; its metrics and report, BENCHMARK_OPERATIVE §4). The team benchmark reports none: it scores the team's obligations on a session whose clinical actions are the case's reference path, which `cases verify` already holds to a passed safety outcome.
  
@@ -342,7 +540,8 @@ index 13e7111..d1830ab 100644
 +* **The release** — `readyAt` = the acquisition + the investigation's `turnaroundMinutes` (simulated clock; a static
 +  clock: the acquisition), `result.ready` at that minute. While the acquisition is outstanding `readyAt` is absent
 +  and no result exists: `isOrderReady` is false, `read` is rejected `not-ready` ("has not been acquired"),
-+  `pendingEvents` / `nextEvent` and `wait` do not count it, and `order.placed` carries `modality` instead of `readyAt`.
++  nothing waits for it (`pendingEvents` / `nextEvent`, a walkthrough's wait before a read: `minutesUntilReadable`),
++  and `order.placed` carries `modality` instead of `readyAt`.
 +* **The review** — `reviewed {at, seq, by?}`: the first read of the result (a later read is not a new review).
 +* **The resulting action** — `next {type, id?, at, seq}`: the first act committed after the review that changes
 +  management (`RESULTING_ACTS`: `intervene`, `order`, `answer`, `hold`, `release-hold`, `operate`, a `study` order; not
@@ -360,7 +559,7 @@ index 13e7111..d1830ab 100644
  ## 4. Agent loop (`runAgentTurn`)
  
  ```
-@@ -280,9 +313,9 @@ Offline responders implement the same contract deterministically (matchers + cas
+@@ -280,9 +314,9 @@ Offline responders implement the same contract deterministically (matchers + cas
  
  ## 9. Slash commands (built-in)
  
@@ -372,7 +571,7 @@ index 13e7111..d1830ab 100644
  
  Router: input starting with `/` → command; `@role text` → message to role (Chinese role names such as `@护士 …`, `@上级 …` — also without a space — resolve through `ADDRESS_ALIASES`, as do `/talk 护士` and `/consult 上级 …`); otherwise → current interlocutor (default `patient`; in Chinese the REPL prompt, `/talk` and `/status` name it by role — `[患者] ›`, "患者（patient）" — with the id `@`/`/talk` take, `agentLabel`). `/board` lists every decision by its number in case order ("- Decision 2: <prompt> (open)"), a locked one only by number and what it needs (never its prompt or options; its "not yet available" label is not followed by "(locked)"), and options by letter in `presentedOptions` order (`[A] <text>`), never decisions or options by their authored ids; `/answer <decision> <letter|number…>` follows them: the decision by its number ("2", "D2", "Decision 2", "决策 2", or an exact id), the options by letter in any case (full-width too) or by number, read by the tool's one tokenizer ("A,C", "A、C", "A C" and the CLI's own "A+C" are two options; a list marker's "A." or "B)" is the letter); a decision with no option after it ("/answer 1", "/answer Decision 1") prints the usage line; the tool gets the decision's number and the letters (a token naming no option as typed, so the refusal lists every option by letter), and a reference naming no decision is answered with the decisions' numbers. REPL Tab completion after `/answer` offers the numbers of the decisions open now, never their ids, and the CLI's tool lines name a decision by its number too (`⏺ answer_decision(2: B)`, also for the demonstration's walkthrough, which passes ids); `/phase` lists only phases the learner can reach or has worked in (REPL Tab completion offers the same phases, and only the current phase's examinations). `/status` and `/case` name the case by its title, never its id (ids name the diagnosis). `/exam`, `/order`, `/read` and `/give` word an unresolved query for the learner ("Did you mean “…”? Type /exam <id> to do it.", numbered choices, "Nothing in this case matches …", "Nothing done: “…” says not to do something (not given: …)") instead of the model-facing tool text. A front-end may declare `disabledCommands` (e.g. the web's `quit`, `export`, `lang`, `approval`… — it handles them in its own UI): they are left out of `/help` and refused.
  
-@@ -296,7 +329,7 @@ Embodied mode: a `world` item (`{snapshot: WorldStateSnapshot & {elapseCarry?}}`
+@@ -296,7 +330,7 @@ Embodied mode: a `world` item (`{snapshot: WorldStateSnapshot & {elapseCarry?}}`
  
  * **CLI** (`@clinicalcraft/cli`, bin `clinicalcraft`): `play [case]` (default), `exec <prompt>` / `-p <prompt>` with `--case`, `--autopilot`, `--output-format text|json|stream-json` (stream-json = one AgentEvent per line + final `{"type":"result","subtype":"success"|"error_max_turns"|"error_during_execution"|"error_incomplete", "assessment":…, "usage":…}`), `--max-turns`, `--input-format text|stream-json` (Op JSON lines on stdin, incl. `approval_response`), `--to <agent>`, `--assess`, `-q`, `-o <file>`, `--approval`, `--scope`, `--provider`, `--model`, `--base-url`, `--facility`, `--max-tool-rounds`, `--allowed-tools`/`--disallowed-tools`, `--ephemeral`, `--embodied` (`play`, `exec`, `eval`: settings `embodiment: "embodied"`, §12), `--trace <file>` (`exec`: the episode trace as JSON Lines — a header `{format, episodeId, caseId, facilityId, embodiment}`, then one span per line; header only in clinical mode), `--profile`, `--lang`, `--resume`, `--continue`, `--approve-high-risk` (headless approvals, `headlessDecision`: `default|strict|plan` deny every approval request; `auto` approves low/moderate-risk requests and denies — never silently approves — `tool.always-ask`, `rule.ask` and high-risk ones with a reason naming `--approve-high-risk`, which makes `auto` approve them too; `bypass` approves every request that still arises — unsafe, for benchmarks; an `--autopilot` run that ends with objectives open is `"subtype":"error_incomplete"`; exit 0/1/2/3/4 = ok/error/usage/max turns/autopilot incomplete; a `--provider` whose API key is missing is an error for `play`, `exec`, `eval` and `mcp`, never a silent offline fallback; a mid-case assessment counts the essential tests not yet obtained instead of naming them; the banner, status line, `/status` and `eval` reports show the model actually called (provider defaults and overrides resolved); the status line names the room the learner's body is in (embodied: "@ Resuscitation Room" / "位置：抢救室") and world actions print as `⤷ …` / `✗ … [CODE]` lines; `play`/`exec` index the case library (no validation of other cases) and parse + validate only the case being started (`CaseLibrary`; an invalid case is a usage error naming its problems, `cases.invalidCase`), the picker lists index entries; the status line's vitals read "no monitor · triage HR … BP …" / "未接监护 · 分诊手测 …" before the case's monitor is attached (only the spot checks, never a live value) and "---" for what a monitor cannot read in an arrest; text output is terminal-sanitised — `sanitizeTerminal` (from @clinicalcraft/agent) strips C0/C1 controls and escape sequences from model, case and provider text, keeping `\n`/`\t`; case text — `cases show`/`list`/`validate`, the picker and the REPL banner — loses colour codes too, since only the CLI's own palette may colour output; an unsupported configured `locale` is reported on stderr (`settings.badLocale`) and the next settings layer's language applies); `cases list|index|show|validate|verify|new|schema [case|facility|catalog|template|skill]` (`cases list`: a review column and, for an editorial review, a line saying it is not a clinician's; `--json` adds `learningOutcomes` and `review` for authors and facilitators; `cases show`: the review status, notes and reviewers, and — under a heading that warns they may name the diagnosis — the learning outcomes and the guidance checked; `cases index [--json]`: the library index — `CaseIndexEntry`s in library order, the builder `clinicalcraft serve` and the web bundle use, read without validating the cases, with `review` `{status, reviewedAt}` and `learningOutcomeCount` but never the outcomes' text; unreadable files, invalid JSON and duplicate ids are reported on stderr; the `play` banner gives the review line and the number of learning outcomes the debrief will list); `facilities list|validate|compile <id|file> [--out file]` (`compile`: the flat facility a front-end loads, room templates expanded); `assets inspect <file.glb> [--type <equipment type>] [--draco] [--json]` (a GLB/glTF model without a renderer; with `--type`, checked against that type's catalog `model` reference — exit 1 on a check error or an unreadable file, 2 for a missing file, an unknown type or a type without a `model` reference; docs/ASSETS.md); `providers list|test|models`; `config get|set|path`; `trust [--revoke|--list]` (trust the project's `.clinicalcraft` settings: hooks and provider/server keys; pinned to their contents); `sessions list [--web]|show`; `serve` (access token from `--token` — warned about, the process list shows it —, `--token-file <path>`, `CLINICALCRAFT_SERVER_TOKEN` or `server.token`, at least 16 characters); `mcp` (the session flags; `--embodied` makes `start_case` embodied by default; `--attach <url> --world-session <id> --attach-key-file <path> [--token-file <path>] [--timeout <sec>]`: act in a learner's live browser session through `serve`, §13.7 — the session id and key are required, from the flags or `CLINICALCRAFT_WORLD_SESSION` / `CLINICALCRAFT_ATTACH_KEY`, else a usage error (exit 2); the session flags do not apply then — a usage error); `import-v4 <html|.part01|.zip…>`; `eval --cases … --provider … --model …` (autopilot benchmark → markdown/JSON report); `bench list [--suite] [--json]`, `bench run --suite embodied-v1 --agent reference|scripted-llm|llm [--seeds 1-3] [--scenario …] [--category …] [--out dir] [--traces] [--require pct]` (the embodied agent benchmark, docs/EMBODIED.md §13 → `bench-report.json` + `bench-report.md`; exit 1 below `--require` — default 100 for `reference` / `scripted-llm` — or on any accepted spatial / authorisation violation; `llm` needs `--live` and a cap — `--max-tokens`, or `--max-usd` for a model with a catalogue price —, a configured key, and refuses when `CI` is set) and `bench demo --case <id> [--facility] [--out dir]` (the reference demonstration → `trace.jsonl` + `demo.md`; exit 1 unless the authoritative state confirms every step).
  * **Server** (`@clinicalcraft/server`): `startServer({port?, host?, token?, staticDir?, settings, contentDirs?, builtinContent? = true, contentRevalidateMs? = 1000, contentConcurrency? = 16, env?, cwd?, assetDirs?, maxBodyBytes?}) → Promise<{url, port, host, close}>` (`createRequestHandler` for embedding). Routes: `GET /api/health` (`{status, name, version, provider, locale, auth, connectOrigins, worldBridge}` — `worldBridge: true`: the world-bridge routes of §13 exist; `locale` is always a supported language (settings reject others); `connectOrigins` = the origins the served CSP's `connect-src` allows for direct mode: provider templates plus `baseUrl`s from the server's settings; a custom direct base URL elsewhere must be configured on the server or use proxy mode — `connect-src` is never widened), `GET /api/content/index` (unchanged shape: `{cases: CaseSummary[] sorted by id, facilities, catalogs}`; built from the case index, so a listed case may still fail validation), `GET /api/content/cases?offset=0&limit=50&q=&specialty=&setting=&locale=` (the case index: `{total, offset, limit, items: CaseIndexEntry[], issues, issueCount}` — `limit` 1–200 (larger is clamped), `q` = words that must all occur in a title, summary, specialty, tag or setting in any locale — never the id, which names the diagnosis —, `specialty`/`setting` comma-separated (any), `locale` `zh-CN`|`en` (cases offered in it); stable order = `libraryOrder`, `total` after filtering; `issues` (≤ 100): `{code: unreadable|invalid-json|missing-id|duplicate-id, severity, id, dir (index of the content directory, 0 = built-in), file (relative), usedDir?, usedFile?}` — no absolute paths; malformed parameters → 400 `bad_request`), `GET /api/content/cases/:id` (solution stripped; a published or adapted case's source — `provenance.citation`, `doi`, `authors`, `notes` and `debrief.references` — left out unless `?spoilers=1`, which the web asks for and shows only once the case is complete (`learnerCase`); each form has its own ETag; validated with `parseCase` on its first request — the verdict is cached until the file changes —, an invalid case is 422 `invalid_case` with `issues`), `GET /api/content/facilities/:id`, `GET /api/content/catalogs/:id` (all content responses carry a strong `ETag` — SHA-256 of the body — and `Cache-Control: private, no-cache`; `If-None-Match` (weak comparison, `*` too) → `304` without a body; errors stay `no-store`; cases are indexed with `CaseIndexer` over the built-in and `contentDirs` directories — re-stat'ed at most every `contentRevalidateMs`, only changed files re-read, bounded concurrency — and never all validated up front; serialised listings are cached per index generation and query, valid case bodies in a 64 MiB LRU: `CaseStore`), `GET /local-assets/*` (local-only assets, see docs/ASSETS.md; passive types only — png, jpg/jpeg, webp, gif, pdf, json, gz, glb, mp3, mp4, webm — each non-PDF sandboxed by its own CSP; anything else, SVG/HTML/XML/scripts included, is 404 JSON like an asset that is not installed), `GET /api/providers` (templates + `configured: boolean`, never keys; `baseUrl` without userinfo, query or fragment — `publicBaseUrl`), `POST /api/llm/stream` (body `{provider, model, request: ChatRequest}` → `text/event-stream` of `data: StreamEvent` lines, `event: done` at end; error messages pass `redactSecrets` with the key, header values, URL credentials and the server environment's secrets — `proxySecrets`), `POST /api/transcripts/:sessionId` (append JSONL items to `<sessions>/web/<id>.jsonl`; at most 16 MiB per file and 500 files — `transcriptQuota` — else 413 `transcript_quota`; an empty upload creates no file and reserves no slot), the world bridge `/api/world/sessions[/:id[/commands|results|heartbeat|call|cancel]]` (§13: live browser sessions an external agent acts in; the server's auth plus, for the browser's channel, a per-session secret; option `worldSessions` sets its timing and limits). Loopback only unless `token` is set (required for any non-loopback host; accepted as `Authorization: Bearer`, `?token=` — which also sets an `HttpOnly` cookie; a page visit (not `/api/*` or `/local-assets/*`) is then answered `302` to the same URL without the token — or that cookie; a failing request is logged by path only, never its query string); a loopback-only server rejects non-loopback `Host` headers (DNS rebinding); cross-origin API calls are refused except from the Vite dev server (`localhost`/`127.0.0.1` ports 5173–5199). Default port 5178.
@@ -381,7 +580,7 @@ index 13e7111..d1830ab 100644
  * **Web**: the case library is an index bundled at build time (`virtual:clinicalcraft/case-index`, built from packages/content by `src/build/case-index-plugin.ts` with `caseIndexEntry` — nothing generated into the repository); each full case is its own lazy chunk, loaded when a case is selected or started (`ContentIndex.loadCase`: validated with `parseCase`, LRU of 24, 4 at a time, status idle/loading/ready/invalid/failed shown under the selected case — a failed server case can be retried in place, a failed bundled chunk needs a page reload, since browsers keep a failed `import()` for the page's lifetime); facility choice uses the entries' `capabilityNeeds`. Served by `clinicalcraft serve`: facilities and catalogs from `GET /api/content/index`, cases from `GET /api/content/cases` (index entries; a case is fetched from `/api/content/cases/:id` when it is needed, revalidated by ETag); a server without that listing has its new cases fetched in full. Runs `ClinicalSession` in the browser with `resolveProvider` from the settings panel: offline (default), proxy (when served by `clinicalcraft serve`), or direct (user key; Anthropic with `dangerouslyAllowBrowser`, OpenAI-compatible fetch). Declares the `walk_to` dynamic tool. A custom direct-mode base URL is checked against the page's `connect-src` (`checkDirectBaseUrl` in `ui/panels/pause.ts`): when served, the health check's `connectOrigins` (plus the page's own origin); otherwise the page's CSP meta tag, if any. A blocked origin gets a bilingual notice under the field: configure that base URL on the server (`providers.<id>.baseUrl`) and restart it, or use proxy mode.
  
  ## 12. Embodied mode (docs/EMBODIED.md R3, R8, R9, §4–§10)
-@@ -347,7 +380,7 @@ The same encounter with a body: the session runs a headless world (`@clinicalcra
+@@ -347,7 +381,7 @@ The same encounter with a body: the session runs a headless world (`@clinicalcra
  | `navigate_to` | no | `{target?, goal?, range?}` | target: `"patient"`, an entity id or unprefixed alias, a room id or a name; `goal`: a `NavGoal` (a refusal's `hint.goal` as is); specifier: the target / goal id |
  | `approach_object` / `look_at` | no | `{target}` | best interaction point / a spot with line of sight, facing it |
  | `interact_object` | no | `{target, operation, parameters?, expected_version?}` | doors, workstations (`order`/`read` {investigation}), monitors (`attach`, `read`, `cycle_nibp`), ECG carts (`prepare`/`connect`/`record`/`reset`), devices (`use` {investigation\|intervention}), carts (`move_to` {goal}), sinks, items; specifier `"<operation> <target>"`; a clinical effect runs through ClinicalPort.invoke |
@@ -390,7 +589,7 @@ index 13e7111..d1830ab 100644
  | `cancel_action` | no | `{actor?}` | stops a walk or a pending operation |
  | `delegate_task` | no (scope workup, risk low) | `{role, task, target?, params?}` | §12.7 |
  | `execute_skill` | no (risk and always-ask: those of the most dangerous act its steps can do; `high-risk` safety only raises them) | `{skill_id?, skill?, params?}` | §12.6 |
-@@ -375,11 +408,11 @@ Review rules (S2, S8, G1, C8–C10):
+@@ -375,11 +409,11 @@ Review rules (S2, S8, G1, C8–C10):
  
  ### 12.7 Delegation (`delegate_task`)
  
@@ -746,7 +945,7 @@ index 3aa2ce2..cdc9090 100644
  ## Failures
  
 diff --git a/docs/zh-CN/EMBODIED.md b/docs/zh-CN/EMBODIED.md
-index 6a5c744..7bf6493 100644
+index 6a5c744..b9ad554 100644
 --- a/docs/zh-CN/EMBODIED.md
 +++ b/docs/zh-CN/EMBODIED.md
 @@ -497,7 +497,8 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
@@ -842,7 +1041,7 @@ index 6a5c744..7bf6493 100644
 +
 +**实景模式。** 内核按世界规则所指的设备记录这类检查的医嘱（`order.modality`，取自采集的要求：
 +`EmbodiedSession.modalityOf`）；回放从记录中读取它。患者躺上设备之前，检查处于**已开单、尚未完成**：
-+结果不存在（`isOrderReady` 为 false，阅读被拒绝“尚未采集”，`wait` 与 `pendingEvents` 不会等它），各个界面
++结果不存在（`isOrderReady` 为 false，阅读被拒绝“尚未采集”，任何等待都不针对它——`pendingEvents`、示范流程的等待），各个界面
 +都把它作为一个独立状态显示——“已开单——患者需要去CT扫描” / "ordered — the patient must go to a CT scanner"
 +（`/results`、`case_status`、护士的小结、网页的检查按钮、资料卡片和报告面板）——；开单的输出附上去路
 +（采集的提示：先到患者处，再 `transport_patient`）。要求清单会一直把它列为未完成：条件叶 `ordered` 只对已完成
@@ -947,7 +1146,7 @@ index 6a5c744..7bf6493 100644
  | 世界桥接：MCP ⇄ 实时浏览器世界（`WorldSessionRouter`；op `external_tool_call` / `external_tool_cancel`；`connectWorldBridge`；`WorldAttachClient`；`clinicalcraft mcp --attach`、`list_live_sessions`；网页开关、徽标与标注的审批） | yes（A8、A8b；加固 S5、S9、S10、S11） | 经 HTTP 的路由器测试（令牌、通道密钥、注册校验与上限、路由、确认、去重与冲突、超时、取消、过期与心跳、DELETE、重投递、各类限制、CORS、关闭）；会话 op；浏览器客户端在 Node 中对真实服务器以及对模拟服务器的测试；用桩服务器经 stdio 测试 MCP 连接模式；评审中的复现用例作为回归测试；网页 `ExternalControl` / `BrowserMover` 在隐藏标签页中的测试；Playwright `external-agent.spec.ts`（en + zh-CN） | 用真实进程端到端（`world-attach.e2e.test.ts`：`serve` + 经客户端的无界面具身 STEMI 会话 + 经 stdio 的 `mcp --attach`；另一令牌持有者注册的诱饵会话从未被触达）；Playwright：构建后的页面、开关、凭徽标中读到的 ID 与密钥配对的 `mcp --attach`、经推车完成心电图、在标注的对话框中点击审批、隐藏标签页中的行走、一次拒绝、断开 → `session_closed`、恢复的接诊从关闭状态开始 | no——针对评审复现用例做了加固，但从未独立审计；明文 HTTP（应在 `serve` 前终结 TLS）；一个共享的服务器令牌，没有用户账户；注册表在内存中（服务器重启会丢失实时会话，直到浏览器重新注册）；最多 16 个实时会话、每个客户端 4 个。Sec、Rel、Dep、Ops |
  | 具身基准测试（`@clinicalcraft/bench`：场景 schema、含 8 个类别 41 个场景的 `embodied-v1`、隔离的确定性运行、记录器、空间 / 授权 / 安全审计、基于权威状态的谓词、Wilson 区间、JSON + Markdown 报告；智能体 `reference`、`scripted-llm`、`llm`） | yes（A7；转运场景来自 FX-T） | 每个场景文件都能通过校验（schema + 引用）；每种谓词在真实运行中都测过真与假；对照 Newcombe 1998 验证 Wilson；3 个场景 × 每种智能体（`llm` 智能体配模拟提供方）；只声称成功的出错智能体得 0 分；限制、预算、真实智能体的拒绝；CLI | `reference` 与 `scripted-llm`：各 123 / 123 次运行，0 个被接受的空间或授权违规，每个轨迹在各种子下都相同（本地运行与 CI）；真实运行的拒绝 | no——**没有记录过真实模型运行：模型能力尚未测量**；41 个场景中 23 个使用 STEMI 病例，没有一个使用中华病例说病例；每次运行只有一个行动的智能体（临床医生） |
  | 患者转运（G8、FX-T：`transport_patient` 世界操作、学员工具、`/transport`、`delegate_task … transport_patient`；按标注的 `destination` / 阶段 `location` 转移；`patient-at-provider`；床旁、患者的监护仪和屏幕都随患者移动；网页：推着躺有患者的床、`placePatient`；IX：能走动的患者直立行走、到达后才躺下，没有推床时从不躺着移动） | yes（FX-T、IX） | 世界 `transport.test.ts`（IX：SMZL 门诊患者步行往返 CT，没有推床的坐位门诊患者步行，中途停下的步行让患者站着）、`nav/backend.test.ts`（`ignoreObstacles`：可穿过障碍，从不穿过上锁的门）、含转运的提示性质测试、峰流速测定站的可操作性；智能体 `session/transport.test.ts`；示范接诊转运（PE：临床医生；`teaching-hospital` 中的卒中：护工）；基准 `workflow-pe-ctpa-transport`；网页单元测试与 e2e `transport.spec.ts` | 10 个病例 × 2 种语言在各自场馆中达到临床模式得分；教学医院的护工转运 | no——团队转移在浏览器中不播放动画（§14.3） |
-+| 在设备上为患者完成的检查，逐个阶段（§8.7，2026-11-12 审计 P1-7）：临床医生能开单的地方都可开单，患者在设备上时采集（`acquire`，由会话记录；文字模式：开单即隐含采集），采集后经周转时间发出报告，阅读与随后的处置都有记录；“已开单——患者需要去……”作为独立状态显示（工具、`/results`、护士、网页）；患者的行程（`PatientPlaceState.legs`：途中由谁负责、出发、到达、随行的监护设备——`transport_patient {monitor}`） | yes | core `acquisition.test.ts`（审计的复现：第 1 分钟开出的 CTPA，患者留在病房，到第 30 分钟既未采集也未发出；有转运时各阶段依次发生；文字模式不变）；世界 `policy.test.ts`、`transport.test.ts`（从病房开单、在扫描仪上采集、行程、带上或无法带上监护设备）；智能体 `session/transport.test.ts`（床旁开单、到达即完成，或患者已在扫描仪上时按开单那一分钟；学员从不手工录入）；基准 `predicates.test.ts`、`audit-acquisition.test.ts`、`workflow-pe-ctpa-transport` | `cases verify --all`（文字模式）；所有内置病例的具身示范接诊在两种语言下达到临床模式得分；两个基准智能体 123 / 123 | no——扫描本身不单独耗时（含在周转时间里）；患者在设备处等待时由谁陪同没有记录（只记录行程）；随行监护只是记录，不影响生理；没有临床教师审阅 |
++| 在设备上为患者完成的检查，逐个阶段（§8.7，2026-11-12 审计 P1-7）：临床医生能开单的地方都可开单，患者在设备上时采集（`acquire`，由会话记录；文字模式：开单即隐含采集），采集后经周转时间发出报告，阅读与随后的处置都有记录；“已开单——患者需要去……”作为独立状态显示（工具、`/results`、护士、网页）；患者的行程（`PatientPlaceState.legs`：途中由谁负责、出发、到达、随行的监护设备——`transport_patient {monitor}`） | yes | core `acquisition.test.ts`（审计的复现：第 1 分钟开出的 CTPA，患者留在病房，到第 30 分钟既未采集也未发出；有转运时各阶段依次发生；文字模式不变）；世界 `policy.test.ts`、`transport.test.ts`（从病房开单、在扫描仪上采集、行程、带上或无法带上监护设备）；智能体 `session/transport.test.ts`（床旁开单、到达即完成，或患者已在扫描仪上时按开单那一分钟；学员从不手工录入）；网页 `ui/panels/orders-not-done.test.ts`（检查按钮与资料卡片，en + zh-CN）；基准 `predicates.test.ts`、`audit-acquisition.test.ts`、`workflow-pe-ctpa-transport` | `cases verify --all`（文字模式）；所有内置病例的具身示范接诊在两种语言下达到临床模式得分；两个基准智能体 123 / 123 | no——扫描本身不单独耗时（含在周转时间里）；患者在设备处等待时由谁陪同没有记录（只记录行程）；随行监护只是记录，不影响生理；没有临床教师审阅 |
  | 交互轮次（IX）：对患者说的自由文本受交谈距离约束；带患者走动（`escort_patient` / `release_patient`、推导出的位置、检查须就位）；改变体位（`reposition_patient`，优先使用病例的体位处置）；对每个人的话语请求（zh-CN + en：患者的移动与体位；每位同事执业范围内的任务、过来、回岗、带路、某处在哪里，用自己的声音拒绝）；由模型扮演的同事的 `do_task`；点名与同事交谈（`user_message.staff`、事件上的 `staffId`、各自的对话与身份；符合角色的离线回答）；网页：画出并会说话的陪同者、说话动画属于真正说话的人、肢体语言、患者沿带路人的路线行走、按角色提供的句子按钮、要求行动的反馈保持显示 | yes（IX） | 世界 `posture.test.ts`（躺下、坐起、站起、临床体位处置使其失效、谁不能、哪里不能、快照）、`escort.test.ts`（跟随、传感器位姿、检查须就位、回床位、距离、两种语言下不能走动的原因、角色、等候、临床状态结束跟随、快照、最近事件）；智能体 `movement-intents.test.ts` 与 `staff-intents.test.ts`（请求与形似的病史问题，两种语言）、`staff-talk.test.ts`（点名护士上监护、给阿司匹林、用中文做心电图；导诊拒绝并说明谁可以；病例没有的处置是交谈；过来、回岗、某处在哪里、带路；躺下 / 站起；PE 的体位处置计分；保持规定的体位；“Can you lie flat?”得到回答；脚本模型扮演的护士通过 `do_task` 行动，临床模式下没有该工具；符合角色的离线回答）、`embodied-talk.test.ts`（在入口处被拒且不计分、陪同者、临床模式不变、跟随 / 等候 / 跟我去 CT / 回病床 / 点名护士送患者、同事各自的声音与对话、前台人员的身份提示）；网页 `trail.test.ts`、`talk.test.ts`（说话人解析、按同事分开的窗口、界面句子可被解析）、`feedback.test.ts`、`embodied-world.test.ts`（在入口处的问题不会发出；“请跟我来。”后画出跟随）；e2e `escort.spec.ts`（陪同者用自己的嘴说话、跟随与等候、SMZL 直立步行到 CT、护士用自己的声音回应按钮请求并走过来而导诊拒绝、患者被请求时躺下）、`embodied-review.spec.ts`（对林晓说出的委派按钮、她的回答） | 网页 e2e `escort.spec.ts`（Chromium + SwiftShader）；完整 vitest 套件；基础设施基准智能体与具身示范接诊不受影响（其参考路径不对患者说自由文本、不让患者跟随） | no——短语集合固定（没有模型解释请求）；陪同者在世界模型中没有身体；没有让真实大模型用话语移动患者；未经临床教师评审 |
  | 真实的旁观者线索（G12）：体位来自临床状态（标注的 `posture`），吸氧附件来自标注的 `device`，无法说话的患者（`patient.nonVerbalWhen` → `cannotSpeak`） | yes（FX-T；无法说话：内容标准轮次） | core `transport-fields.test.ts`、`cues.test.ts`、`nonverbal.test.ts`；世界感知 / 体位 / `speech` 线索；智能体严重过敏反应体位、`session/nonverbal.test.ts`；网页 e2e（坐起会改变画出的患者） | 10 个病例中标注的字段（`cases verify --all`） | no——Rel、Perf（§14.4） |
  | 屏幕规则、学员文字、惰性提示（额外评审项 1–5） | yes（FX-T 轮） | `screen-rule.test.ts`（读屏 ⇔ 空间规则，抽样点；评审者选的位置）、世界 `i18n.test.ts`（无原始工具 ID；两种语言、占位符一致）、按名称列出不支持的操作、`hint-cost.test.ts`（预算、结果一致）、委派语句 | 网页 e2e（看不到屏幕、“前往”） | no——对提示排序仍要为每个新栅格做一次可达性泛洪（60 个冷栅格约 1.3–1.8 s），只在读取时付出。Perf |
@@ -3009,10 +3208,33 @@ index 80e302f..a76dbb5 100644
      const accepted = (Array.isArray(p.answerEquals) ? p.answerEquals : [p.answerEquals]).map((a) => resolve(view, a));
      const last = view.answers.last();
 diff --git a/packages/bench/src/schema.ts b/packages/bench/src/schema.ts
-index 34d345f..6a54123 100644
+index 34d345f..6bc3e3c 100644
 --- a/packages/bench/src/schema.ts
 +++ b/packages/bench/src/schema.ts
-@@ -157,6 +157,12 @@ export const BenchWorldPredicateSchema = z.discriminatedUnion("kind", [
+@@ -24,6 +24,22 @@ export type BenchCategory = (typeof BENCH_CATEGORIES)[number];
+ export const BENCH_LOCALES = ["zh-CN", "en"] as const;
+ export type BenchLocale = (typeof BENCH_LOCALES)[number];
+ 
++/**
++ * Splits (EMBODIED §13.1): `dev` — may be looked at while an agent is improved; `test` — held out: never used to tune
++ * an agent (its prompts, its tool descriptions, a scripted plan), so it carries no scripted plan and the scripted
++ * control does not run it. Reports give the two apart.
++ */
++export const BENCH_SPLITS = ["dev", "test"] as const;
++export type BenchSplit = (typeof BENCH_SPLITS)[number];
++
++/**
++ * What a scenario covers beyond its category (EMBODIED §13.9, from scenario and case metadata): taking a history,
++ * a time-critical emergency, coordinating with the team. A scenario's `tags` may name one; the rest is derived
++ * (`scenarioCoverage`).
++ */
++export const COVERAGE_KINDS = ["history-taking", "time-critical", "team"] as const;
++export type CoverageKind = (typeof COVERAGE_KINDS)[number];
++
+ /** The bench-only answer tool (perception / spatial tasks). */
+ export const SUBMIT_ANSWER_TOOL = "submit_answer";
+ 
+@@ -157,6 +173,12 @@ export const BenchWorldPredicateSchema = z.discriminatedUnion("kind", [
    z.object({ kind: z.literal("doorState"), door: Ref, open: z.boolean().optional(), locked: z.boolean().optional() }).strict(),
    /** Where the patient is now (EMBODIED §8): in a bed space (`slot`), at a device (`provider`, an id or alias), in a room. */
    z.object({ kind: z.literal("patientAt"), slot: Ref.optional(), provider: Ref.optional(), room: Ref.optional() }).strict(),
@@ -3025,7 +3247,7 @@ index 34d345f..6a54123 100644
  ]);
  export type BenchWorldPredicate = z.infer<typeof BenchWorldPredicateSchema>;
  
-@@ -165,6 +171,13 @@ const RefusalCode = z.enum(REFUSAL_CODES);
+@@ -165,6 +187,13 @@ const RefusalCode = z.enum(REFUSAL_CODES);
  export const PredicateSchema = z.union([
    /** The engine state (core Condition DSL). */
    z.object({ clinical: ConditionSchema }).strict(),
@@ -3039,6 +3261,26 @@ index 34d345f..6a54123 100644
    z.object({ world: BenchWorldPredicateSchema }).strict(),
    /** The last answer submitted with `submit_answer` resolves to one of these entity ids. */
    z.object({ answerEquals: z.union([Ref, z.array(Ref).min(1).max(8)]) }).strict(),
+@@ -279,7 +308,11 @@ const ScenarioShape = z
+     predicates: z.array(PredicateSchema).min(1).max(32),
+     limits: LimitsSchema.default({}),
+     reference: z.object({ steps: z.array(ReferenceStepSchema).min(1).max(200) }).strict(),
++    /** The scripted model's plan; empty for a held-out (`test`) scenario: the scripted control does not run it. */
+     scripted: z.object({ plan: z.array(ScriptedCallSchema).max(500), final: LocalizedTextSchema.optional() }).strict(),
++    /** `dev` (default) or `test`: held out — never used to tune an agent, no scripted plan (`BENCH_SPLITS`). */
++    split: z.enum(BENCH_SPLITS).default("dev"),
++    /** Free labels; `history-taking`, `time-critical` and `team` count the scenario under that coverage (`COVERAGE_KINDS`). */
+     tags: z.array(z.string().min(1).max(40)).max(16).optional(),
+   })
+   .strict();
+@@ -302,6 +335,7 @@ export const BenchScenarioSchema = ScenarioShape.superRefine((s, ctx) => {
+     if (!known.has(tool)) issue(["allowedTools", i], `unknown tool "${tool}"`);
+   });
+   if (s.allowedTools && s.answer && !s.allowedTools.includes(SUBMIT_ANSWER_TOOL)) issue(["allowedTools"], `an answer task must allow ${SUBMIT_ANSWER_TOOL}`);
++  if (s.split === "test" && s.scripted.plan.length > 0) issue(["scripted", "plan"], "a held-out (test) scenario carries no scripted plan: nothing tuned may use it");
+   s.scripted.plan.forEach((call, i) => {
+     if (!known.has(call.tool)) issue(["scripted", "plan", i, "tool"], `unknown tool "${call.tool}"`);
+     else if (call.tool === SUBMIT_ANSWER_TOOL && !s.answer) issue(["scripted", "plan", i, "tool"], `${SUBMIT_ANSWER_TOOL} is offered only in answer tasks`);
 diff --git a/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json b/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json
 index fa97009..54e3b1c 100644
 --- a/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json
@@ -4221,7 +4463,7 @@ index 8471c3a..193c6ce 100644
      if (!each.length || each.some((x) => x.mentions.length !== 1)) return [];
      const { mentions, route } = each[0]!;
 diff --git a/packages/core/src/engine/dose-read.ts b/packages/core/src/engine/dose-read.ts
-index 421130d..f8213c2 100644
+index 421130d..ab396e5 100644
 --- a/packages/core/src/engine/dose-read.ts
 +++ b/packages/core/src/engine/dose-read.ts
 @@ -2,16 +2,25 @@
@@ -4548,9 +4790,9 @@ index 421130d..f8213c2 100644
 +/** Before a dose: its cap ("max 0.5 mg", "maximum of 25 mg", "(max. 90 mg)", "not exceeding", "最大25mg", "不超过"). */
 +const CAP_BEFORE =
 +  /(?:max(?:imum)?\.?(?:\s+(?:of|dose(?:\s+of)?))?|up\s+to(?:\s+a\s+max(?:imum)?(?:\s+of)?)?|not\s+(?:to\s+)?exceed(?:ing)?|no\s+more\s+than|最大(?:剂量|量)?(?:为|是)?|不超过|不得超过|最多|上限(?:为)?|极量(?:为)?)\s*[:：]?\s*[~≈约]?\s*$/u;
-+/** A cannula's gauge, not grams: "18G cannula", "16 g venflon", "18G留置针" — or "via the 18G". */
++/** A cannula's gauge (14–27), not grams: "18G", "16 g venflon", "18G留置针", "via the 18 g". */
 +const GAUGE_AFTER = /^\s*(?:gauge|cannulae?|venflons?|needles?|catheters?|access|lines?|留置针|套管针|针头)/u;
-+const GAUGE_BEFORE = /(?:via|through|thru|using|insert(?:ed)?|place(?:d)?|site|经|用|置入)\s*(?:an?\s+|the\s+)?$/u;
++const GAUGE_BEFORE = /(?:via|through|thru|insert(?:ed)?|place(?:d)?|经|置入)\s*(?:an?\s+|the\s+)?$/u;
 +const GAUGES = new Set([14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27]);
 +/** A measurement per volume after a laboratory name ("K+ 3.8 mmol/L", "glucose 25 mmol/L", "血糖25mmol/L"): not a strength. */
 +const LAB_BEFORE =
@@ -4677,7 +4919,7 @@ index 421130d..f8213c2 100644
 +    // a cannula's gauge ("via the 18G", "18G cannula"), not grams; a bare capital G with any other number is not read
 +    if (unit.quantity === "g" && unit.word === "g" && !unit.perKg && !unit.time && unit.perMl == null && !upTo) {
 +      const capital = sameLength && nfkc[unit.at] === "G";
-+      if (GAUGE_AFTER.test(s.slice(unit.end)) || GAUGE_BEFORE.test(before) || (capital && GAUGES.has(n.value))) continue;
++      if (GAUGES.has(n.value) && (capital || GAUGE_AFTER.test(s.slice(unit.end)) || GAUGE_BEFORE.test(before))) continue;
 +      if (capital) {
 +        note("unreadable", n.start, unit.end);
 +        continue;
@@ -5235,7 +5477,7 @@ index 71321ff..e275f78 100644
    });
  });
 diff --git a/packages/core/src/engine/dose.ts b/packages/core/src/engine/dose.ts
-index f398f2a..e6adfae 100644
+index f398f2a..356090d 100644
 --- a/packages/core/src/engine/dose.ts
 +++ b/packages/core/src/engine/dose.ts
 @@ -4,9 +4,10 @@
@@ -5266,13 +5508,13 @@ index f398f2a..e6adfae 100644
 +/** Why a dose read cannot be compared with the preset (`DoseQueryReason`). */
 +export type IncomparableDoseReason = "strength" | "weight" | "rate";
 +
-+/** An amount (or a range) and a preset's part, in one frame: absolute through the weight when one of them is per kg. */
++/** An amount (or a range) and a preset's part, in one frame: absolute through the weight when it is known. */
 +interface Framed {
 +  low: number;
 +  high: number;
 +  partLow: number;
 +  partHigh: number;
-+  /** Converted through the weight: the tolerance is `WEIGHT_BASED_TOLERANCE`. */
++  /** A dose per kg against an absolute one (or capped): the tolerance is `WEIGHT_BASED_TOLERANCE`. */
 +  mixed: boolean;
 +}
 +
@@ -5877,7 +6119,7 @@ index fc2f53c..fc3e4ed 100644
  
    it("advance-time still moves the clock explicitly", () => {
 diff --git a/packages/core/src/engine/reducer.ts b/packages/core/src/engine/reducer.ts
-index 9162e99..59918b5 100644
+index 9162e99..c279025 100644
 --- a/packages/core/src/engine/reducer.ts
 +++ b/packages/core/src/engine/reducer.ts
 @@ -20,7 +20,7 @@ import {
@@ -6006,7 +6248,7 @@ index 9162e99..59918b5 100644
      weight: `${dose} cannot be compared with ${preset} without the patient's weight`,
      rate: `${dose} and ${preset} are not both rates (or both single doses)`,
 -    range: `"${check.words}" is a range — which dose was meant is not known`,
-+    range: `"${check.words}" is a range across the preset's — which dose was meant is not known`,
++    range: `"${check.words}" is a range across the preset's ends — which dose was meant is not known`,
      "no-unit": `"${check.words}" states no unit`,
 +    unit: `"${check.words}" is in a unit no preset is counted in`,
 +    count: `"${check.words}" is a count of tablets, ampoules or puffs, not an amount`,
@@ -6913,19 +7155,95 @@ index db1a44a..7cace9e 100644
  export const PATIENT_PERFORMED_CAPABILITIES: readonly string[] = ["peak-flow", "scale"];
  
 diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
-index 2da080f..5b4a04c 100644
+index 2da080f..5b70e5f 100644
 --- a/packages/world/src/contracts.ts
 +++ b/packages/world/src/contracts.ts
-@@ -356,6 +356,36 @@ export interface PatientPlaceState {
+@@ -277,9 +277,16 @@ export interface ActorState {
+   /**
+    * Where this actor last saw each movable thing it has perceived (portable
+    * equipment, staff, other actors): what it believes while not perceiving
+-   * it (lead note 1). Absent until the first sighting.
++   * it (lead note 1) — or where a colleague said it is (`SeenPlace.toldBy`).
++   * Absent until the first sighting.
+    */
+   lastSeen?: Record<EntityId, SeenPlace>;
++  /**
++   * Movable things this actor went to where it believed them and did not find (EMBODIED §4 "Whereabouts", audit
++   * 2026-11-12 P1-8): where it looked and when. It knows only that they are not there — until it sees them again or a
++   * colleague tells it where they are. Absent until the first.
++   */
++  missed?: Record<EntityId, MissedPlace>;
+ }
+ 
+ /** A place where an actor saw something (its position, level and facing). */
+@@ -289,6 +296,50 @@ export interface SeenPlace {
+   y: number;
+   z: number;
+   rot?: number;
++  /** Not seen: a colleague said it is there (`WorldRuntime.askWhereabouts`) — where they had last seen it or left it. */
++  toldBy?: ActorId;
++}
++
++/** Where an actor looked for a thing and did not find it (`ActorState.missed`): the place, its room, the simulated minute. */
++export interface MissedPlace {
++  level: string;
++  x: number;
++  z: number;
++  room: string | null;
++  at: number;
++}
++
++/**
++ * What an actor knows of where a thing is (EMBODIED §4 "Whereabouts", audit P1-8; `WorldRuntime.whereabouts`):
++ * `perceived` — it sees it (or it is in its hands) now; `fixed` — a thing that never moves (a room, a door, fixed
++ * equipment, the encounter's patient), where it is; `last-seen` — where it last saw it; `told` — where a colleague
++ * said it is; `usual` — portable equipment never seen: where the department keeps it; `missing` — it looked where it
++ * believed it was and it was not there: whereabouts unknown (`missed`). `place` is null only when missing; `room`,
++ * `level` and the localised `label` (absent for perceived and fixed things) describe the belief.
++ */
++export interface Whereabouts {
++  entityId: EntityId;
++  kind: "perceived" | "fixed" | "last-seen" | "told" | "usual" | "missing";
++  place: SeenPlace | null;
++  room: string | null;
++  level: string | null;
++  label?: string;
++  /** `told`: who said so. */
++  toldBy?: ActorId;
++  /** `missing`: where it looked and when. */
++  missed?: MissedPlace;
++}
++
++/** The answer to "where is …?" asked of colleagues (`WorldRuntime.askWhereabouts`). */
++export interface WhereaboutsAnswer {
++  /** The colleague who knew where it is (null: nobody asked did). */
++  answeredBy: ActorId | null;
++  /** What that colleague knows — or, when one colleague was asked and did not know, what they do know (usually kept, missing); null: nothing. */
++  whereabouts: Whereabouts | null;
++  /** The colleagues asked, in order. */
++  asked: ActorId[];
++  /** The asker now believes the thing is where the colleague said (its knowledge changed). */
++  updated: boolean;
+ }
+ 
+ export const MAX_HELD = 2;
+@@ -356,6 +407,66 @@ export interface PatientPlaceState {
     * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
     */
    asked?: { posture: BodyPosture; over: BodyPosture } | null;
 +  /**
 +   * The patient's journeys so far, oldest first (EMBODIED §8.7; the last `MAX_PATIENT_LEGS`): one leg per transport or
-+   * transfer that moved them. Absent until the first.
++   * transfer that moved them, and per walk they made with someone (§8.4). Absent until the first.
 +   */
 +  legs?: PatientLeg[];
 +}
++
++/**
++ * How the patient travelled on a leg (EMBODIED §8.4, audit 2026-11-12 P2-11): `walk` — on their own feet beside the
++ * body that took them (`by`); `bed` / `trolley` / `wheelchair` — wheeled on it (`PatientLeg.vehicle`; the equipment
++ * type decides, `TRAVEL_MODES`). A relocation has none (no journey).
++ */
++export type TravelMode = "walk" | "bed" | "trolley" | "wheelchair";
 +
 +/** Where a leg of the patient's journey starts or ends: a bed space, a device, the room. */
 +export interface LegEnd {
@@ -6950,10 +7268,85 @@ index 2da080f..5b4a04c 100644
 +  monitor: EntityId | null;
 +  /** `arrived`; `stopped`: the walk ended short (interrupted, or the patient could no longer go on). */
 +  status: "arrived" | "stopped";
++  /**
++   * What moved them (audit 2026-11-12 P2-11): `transport` — a body took them somewhere (`transport_patient`: wheeled,
++   * or walking beside a patient who can walk); `escort` — they walked with someone on their own feet (`escort_patient`:
++   * one leg per walk of the one they follow, or per stretch of a hand-steered walk); `relocation` — a clinical phase
++   * or an intervention moved them (`cause`): no journey — nobody held them in transit, `departedAt` = `arrivedAt`,
++   * `mode` null, `distance` 0.
++   */
++  kind: "transport" | "escort" | "relocation";
++  /** How they travelled (null: a relocation). */
++  mode: TravelMode | null;
++  /** What they were wheeled on (their bed, a stretcher), or null (on foot; a relocation). */
++  vehicle: EntityId | null;
++  /** Metres they travelled: the route of a transport; on an escort leg, the follower's own path; 0 for a relocation. */
++  distance: number;
++  /**
++   * The handover: who received them where a transport arrived — a colleague other than `by` at their bedside there
++   * (THE bedside rule), nearest first — with that colleague's role; null: nobody did (`by` stays responsible), and
++   * always null for an escort leg (the walker stays with them) or a relocation.
++   */
++  receivedBy: ActorId | null;
++  receivedRole: string | null;
++  /** A relocation's cause, when the session gave it: the phase entered or the intervention given. */
++  cause?: { phase: string } | { intervention: string };
  }
  
  /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
-@@ -759,9 +789,10 @@ export interface ClinicalIntent {
+@@ -495,6 +606,19 @@ export type WorldEvent = (
+    * they are); `actorId` asked for it (null: it ended by itself — a transport, a transfer, clinical state).
+    */
+   | { id: string; type: "patient.escort"; entityId: EntityId; escort: ActorId | null; actorId: ActorId | null }
++  /**
++   * A journey of the patient set off (EMBODIED §8.4, audit 2026-11-12 P2-11): a transport (`kind: "transport"`, to
++   * `to`) or a walk with someone (`kind: "escort"`, `to` null: wherever the walker goes) — who holds them in transit
++   * (`by`, `role`), how (`mode`, `vehicle`), with which monitor, from where, at which simulated minute. A relocation
++   * has no departure (no journey).
++   */
++  | { id: string; type: "patient.departed"; entityId: EntityId; kind: "transport" | "escort"; by: ActorId; role: string; mode: TravelMode; vehicle: EntityId | null; monitor: EntityId | null; from: LegEnd; to: LegEnd | null; at: number }
++  /**
++   * A leg of the patient's journey ended — they arrived, or stopped short (`leg.status`) — or a relocation moved them
++   * (`leg.kind: "relocation"`): the leg as recorded (`PatientPlaceState.legs`), with the handover. `path`: the
++   * follower's own path on an escort leg (from where they stood to where they arrived, along the walker's way).
++   */
++  | { id: string; type: "patient.arrived"; entityId: EntityId; leg: PatientLeg; path?: PathPoint[] }
+ ) & {
+   /**
+    * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
+@@ -563,11 +687,14 @@ export interface ObservedEntity {
+    * A movable thing not perceived now is reported where the actor believes
+    * it is (lead note 1), and this says which belief: `usual` — where the
+    * department keeps it (portable equipment not seen yet); `last-seen` —
+-   * where the actor last saw it (it may have moved since). `level`, `room`,
+-   * distances, bearing and reachability then measure to that place. Absent
+-   * for perceived things and things that never move.
++   * where the actor last saw it (it may have moved since); `told` — where a
++   * colleague said it is; `missing` — the actor looked where it believed it
++   * was and it was not there (audit P1-8): its whereabouts are unknown, `room`
++   * is null and distance and bearing measure to where it looked. `level`,
++   * `room`, distances, bearing and reachability then measure to that place.
++   * Absent for perceived things and things that never move.
+    */
+-  lastKnown?: { kind: "usual" | "last-seen"; label: string };
++  lastKnown?: { kind: "usual" | "last-seen" | "told" | "missing"; label: string };
+ }
+ 
+ export interface WorldObservation {
+@@ -669,6 +796,12 @@ export interface NavRequest {
+    * them aside (the route a relocation records). Walls, fixed equipment, locks and zones still apply.
+    */
+   ignoreObstacles?: boolean;
++  /**
++   * Where the planning actor believes things are (EMBODIED §4 "Whereabouts", audit P1-8): a goal on one of these
++   * entities leads to that place — the interaction points, reach and line of sight of its footprint standing there —
++   * instead of where it really is. The action bus passes the actor's stale beliefs; a custom backend may ignore it.
++   */
++  believed?: Readonly<Record<EntityId, SeenPlace>>;
+ }
+ 
+ export type NavPlan =
+@@ -759,9 +892,10 @@ export interface ClinicalIntent {
    /**
     * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
     * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
@@ -6966,6 +7359,57 @@ index 2da080f..5b4a04c 100644
    itemId?: string;
    findingId?: string;
    investigationId?: string;
+@@ -926,6 +1060,13 @@ export interface WorldActionResult {
+    * it already satisfied the destination and nothing was moved (docs/EMBODIED.md §5).
+    */
+   moved?: { entityId: EntityId; displacement: number; at: { x: number; z: number; level: string }; satisfied: boolean; alreadyAtDestination?: true };
++  /**
++   * A walk to a movable thing the actor did not perceive and believed elsewhere than it is (EMBODIED §4, audit P1-8):
++   * it went where it believed the thing was (`kind`: how it knew; `room`: there), and `found` says what it found there —
++   * `in-view`: not there, but in view from there, so the walk went on to it; `absent`: neither — it now knows the thing
++   * is missing (`STALE_DESTINATION`); `unknown`: it already knew it was missing, so there was nowhere to go (no walk).
++   */
++  belief?: { entityId: EntityId; kind: "last-seen" | "told" | "usual" | "missing"; room: string | null; found: "in-view" | "absent" | "unknown" };
+ }
+ 
+ /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
+@@ -1067,8 +1208,23 @@ export interface WorldRuntime {
+    * (default: the world's).
+    */
+   regionName(at: { level: string; x: number; z: number }, locale?: string): string;
++  /**
++   * What an actor knows of where a thing is (EMBODIED §4 "Whereabouts", audit P1-8): perceived now, fixed, last seen,
++   * told by a colleague, usually kept, or missing (looked for and not found); null for unknown ids and things it does
++   * not know at all. Read-only (records nothing).
++   */
++  whereabouts(actorId: ActorId, id: EntityId): Whereabouts | null;
++  /**
++   * "Where is …?" asked of a colleague (`colleagueId`), or of every colleague nearest first until one knows (EMBODIED
++   * §4, audit P1-8): a colleague answers from what they know first-hand or were told — they see it, saw it last or left
++   * it there, or were told —, never from where it really is; a place the asker already looked at without finding it is
++   * no answer. When one knows, the asker now believes it is there (told: `SeenPlace.toldBy`; no longer missing).
++   * Memory only: no version changes, no event; the trace records the inquiry and the update.
++   */
++  askWhereabouts(askerId: ActorId, id: EntityId, colleagueId?: ActorId): WhereaboutsAnswer;
+ 
+   /* navigation (read-only planning) */
++  /** A route as the actor's navigation would plan it: a goal on a movable thing it believes elsewhere leads to that belief (§4). */
+   plan(actorId: ActorId, goal: NavGoal): NavPlan;
+ 
+   /* spatial policy */
+@@ -1128,9 +1284,10 @@ export interface WorldRuntime {
+   /**
+    * Move the patient to a destination at once: a transfer the team carries out (a disposition, entering a phase
+    * with a location) — nobody walks, no time is charged (the clinical act's own time). Already there: nothing
+-   * moves; no such place in the facility: the patient stays (`ok: false`, a localised message).
++   * moves; no such place in the facility: the patient stays (`ok: false`, a localised message). `cause`: the phase or
++   * the intervention that moved them, recorded on the leg (a relocation: no journey, EMBODIED §8.4).
+    */
+-  relocatePatient(destination: PatientDestination): PatientRelocation;
++  relocatePatient(destination: PatientDestination, cause?: { phase: string } | { intervention: string }): PatientRelocation;
+   /** Re-read the patient's clinical posture (after an intervention): the body's collider follows; true when the body changed. */
+   refreshPatient(): boolean;
+ 
 diff --git a/packages/world/src/escort.test.ts b/packages/world/src/escort.test.ts
 index 7020ddc..7d92cee 100644
 --- a/packages/world/src/escort.test.ts
@@ -6990,7 +7434,7 @@ index 7020ddc..7d92cee 100644
  
    it("back to their own bed space afterwards: they walk home and are there again", async () => {
 diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
-index 38c4411..5eac506 100644
+index 38c4411..8f34e04 100644
 --- a/packages/world/src/i18n.ts
 +++ b/packages/world/src/i18n.ts
 @@ -13,6 +13,8 @@ export const ROLE_NAMES: Record<string, Pair> = {
@@ -7019,6 +7463,226 @@ index 38c4411..5eac506 100644
    "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
    "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
    "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+@@ -338,8 +343,34 @@ export const WHEREABOUTS: Record<string, Pair> = {
+   "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
+   "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
+   "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
++  // what an actor knows after looking, or asking (audit 2026-11-12 P1-8)
++  "whereabouts.told": { "zh-CN": "{who}说在{where}", en: "{who} said it is in {where}" },
++  "whereabouts.missing": { "zh-CN": "你去{where}找过，不在那里——下落不明", en: "not in {where} when you looked — whereabouts unknown" },
++  "nav.absent.last-seen": { "zh-CN": "{target}不在{where}（你上次在那里见到）。请在周围找找，或问问同事。", en: "{target} is not in {where}, where you last saw it. Look around, or ask a colleague." },
++  "nav.absent.told": { "zh-CN": "{target}不在{where}（{who}说在那里）。请在周围找找，或问问别的同事。", en: "{target} is not in {where}, where {who} said it was. Look around, or ask another colleague." },
++  "nav.absent.usual": { "zh-CN": "{target}不在{where}（通常放在那里）。请在周围找找，或问问同事。", en: "{target} is not in {where}, where it is usually kept. Look around, or ask a colleague." },
++  "nav.unknown": { "zh-CN": "你不知道{target}现在在哪里：你去{where}找过，不在那里。请在周围找找，或问问同事。", en: "You do not know where {target} is now: it was not in {where} when you looked. Look around, or ask a colleague." },
++  "nav.inView": { "zh-CN": "{target}不在你以为的{where}；你在那里看到了它，就走了过去。", en: "{target} was not in {where}, where you expected it; you saw it from there and went to it." },
++  "ask.knows": { "zh-CN": "{who}：{target}在{where}。", en: "{who}: {target} is in {where}." },
++  "ask.doesNotKnow": { "zh-CN": "{who}不知道{target}现在在哪里（{what}）。", en: "{who} does not know where {target} is now ({what})." },
++  "ask.nobody": { "zh-CN": "问过的同事都不知道{target}现在在哪里（{asked}）。", en: "Nobody you asked knows where {target} is now ({asked})." },
++  "ask.alreadyLooked": { "zh-CN": "{who}说在{where}——你已经去那里找过了。", en: "{who} says {where} — where you have already looked." },
+ };
+ 
++/** How the patient travelled on a leg of a journey (`TravelMode`, audit 2026-11-12 P2-11). */
++export const TRAVEL_MODE_NAMES: Record<string, Pair> = {
++  walk: { "zh-CN": "步行", en: "on foot" },
++  bed: { "zh-CN": "推病床", en: "on their bed" },
++  trolley: { "zh-CN": "推平车", en: "on a trolley" },
++  wheelchair: { "zh-CN": "坐轮椅", en: "in a wheelchair" },
++};
++
++/** Localised travel mode ("推病床" / "on their bed"); unknown modes are returned as is. */
++export function travelModeName(mode: string, locale: string): string {
++  const m = TRAVEL_MODE_NAMES[mode];
++  return m ? t(m, locale) : mode;
++}
++
+ /** One-line event summaries (WorldEventSummary). */
+ export const EVENT_SUMMARIES: Record<string, Pair> = {
+   "actor.moved": { "zh-CN": "{actor}移动了 {distance} 米", en: "{actor} moved {distance} m" },
+@@ -382,6 +413,12 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
+   "patient.escort": { "zh-CN": "{patient}跟着{actor}走", en: "{patient} walks with {actor}" },
+   "self.escort": { "zh-CN": "{patient}跟着你走", en: "{patient} walks with you" },
+   "patient.stays": { "zh-CN": "{patient}停下来等候", en: "{patient} stopped and waits" },
++  // the stages of a journey (audit 2026-11-12 P2-11)
++  "patient.departed": { "zh-CN": "{actor}带{patient}出发（{mode}）", en: "{actor} set off with {patient} ({mode})" },
++  "self.departed": { "zh-CN": "你带{patient}出发（{mode}）", en: "You set off with {patient} ({mode})" },
++  "patient.arrived": { "zh-CN": "{patient}到达{place}", en: "{patient} arrived at {place}" },
++  "patient.handedOver": { "zh-CN": "{patient}到达{place}，由{receiver}接手", en: "{patient} arrived at {place}; {receiver} took over" },
++  "patient.stoppedAt": { "zh-CN": "{patient}停在{place}", en: "{patient} stopped at {place}" },
+ };
+ 
+ /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */
+diff --git a/packages/world/src/perception.ts b/packages/world/src/perception.ts
+index 69c506a..44a0488 100644
+--- a/packages/world/src/perception.ts
++++ b/packages/world/src/perception.ts
+@@ -16,14 +16,18 @@
+  *   knows which bed). Never staff or other actors: those are known only by
+  *   seeing them.
+  *
+- * Whereabouts (lead note 1): a movable thing (portable equipment, staff,
+- * other actors) not perceived now is reported where the actor believes it
+- * is — where it last saw it (`ActorState.lastSeen`, updated at every
+- * sighting), else, for portable equipment, where it is usually kept — with
+- * `lastKnown` saying which; the room, level and distance filters, the
+- * distances, bearing and reachability all measure to that place, and it is
+- * never `inReach`. Moving a thing out of an actor's sight changes nothing
+- * the actor is told. (Navigation by id still finds the thing where it is.)
++ * Whereabouts (lead note 1, audit P1-8): a movable thing (portable
++ * equipment, staff, other actors) not perceived now is reported where the
++ * actor believes it is — where it last saw it (`ActorState.lastSeen`,
++ * updated at every sighting) or a colleague said it is (`toldBy`), else, for
++ * portable equipment, where it is usually kept — with `lastKnown` saying
++ * which; the room, level and distance filters, the distances, bearing and
++ * reachability all measure to that place, and it is never `inReach`. Moving
++ * a thing out of an actor's sight changes nothing the actor is told. A thing
++ * the actor looked for where it believed it was and did not find
++ * (`ActorState.missed`) is `missing`: in no room, until it is seen again or
++ * a colleague says where it is. Navigation by id or name goes where the
++ * actor believes the thing is (`belief`, the action bus).
+  *
+  * Recent events (G13): an observation lists the actor's own events (in the
+  * second person), those of actions done on its behalf (a delegated task,
+@@ -51,9 +55,10 @@
+  * `version`. `canSee` records nothing.
+  */
+ import { t, type LocalizedText } from "@clinicalcraft/core";
+-import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
++import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type Whereabouts, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
+ import type { DeviceRules } from "./behaviors.js";
+ import { metres, operationName, postureName, roleName, stateName, worldMessage } from "./i18n.js";
++import { levelElevation } from "./levels.js";
+ import type { Placed, WorldLocator } from "./locate.js";
+ import type { Reachability } from "./reach.js";
+ import { formatScreen } from "./screen.js";
+@@ -90,6 +95,20 @@ interface Belief {
+   lastKnown?: ObservedEntity["lastKnown"];
+ }
+ 
++/**
++ * A belief a navigation acts on (`Perception.belief`, audit P1-8): the actor believes a movable thing it does not
++ * perceive is somewhere else than where it is — `place` (null: missing, nowhere to go) — and how it knows.
++ */
++export interface StaleBelief {
++  kind: "last-seen" | "told" | "usual" | "missing";
++  place: SeenPlace | null;
++  /** The room of the believed place (where it looked, when missing). */
++  room: string | null;
++}
++
++/** Believed and true places this close (m, same level) are the same place: the thing is there, give or take. */
++const SAME_PLACE = 1;
++
+ /** A candidate entry of a listing: where it is believed to be, the awareness, the distance. */
+ interface Row extends Belief {
+   a: Awareness;
+@@ -150,23 +169,77 @@ export class Perception {
+   }
+ 
+   /**
+-   * Where the actor believes a thing is (lead note 1): where it is while
+-   * perceived (and for things that never move); else where it was last seen;
+-   * else, for portable equipment, where it is usually kept.
++   * Where the actor believes a thing is (lead note 1, audit P1-8): where it is
++   * while perceived (and for things that never move); else, when it looked
++   * for it and did not find it, nowhere — `missing`, reported where it looked,
++   * in no room; else where it was last seen or a colleague said it is; else,
++   * for portable equipment, where it is usually kept.
+    */
+   private believed(actor: ActorState, p: Placed, a: Awareness): Belief {
+     if (a === "visible" || a === "nearby" || !this.movable(p)) return { p };
+     const loc = this.d.locator;
+     const L = this.d.locale;
+     const where = (q: Placed) => loc.regionName({ level: q.level, x: q.position.x, z: q.position.z });
++    const missed = this.d.store.missed(actor.id, p.id);
++    if (missed) {
++      const at = loc.placedAt(p.id, { level: missed.level, x: missed.x, y: levelElevation(loc.facility, missed.level), z: missed.z });
++      const label = worldMessage("whereabouts.missing", L, { where: loc.regionName(missed) });
++      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label } };
++    }
+     const seen = this.d.store.lastSeen(actor.id, p.id);
+     const last = seen ? loc.placedAt(p.id, seen) : null;
++    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) } };
+     if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) } };
+     const home = p.kind === "equipment" ? loc.home(p.id) : null;
+     if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) } };
+     return { p };
+   }
+ 
++  /** Is the thing perceived by the actor now (visible or nearby, or in its hands)? */
++  perceives(actor: ActorState, id: EntityId): boolean {
++    const p = this.d.locator.place(id);
++    const a = p ? this.awareness(actor, p) : null;
++    return a === "visible" || a === "nearby";
++  }
++
++  /**
++   * The belief a walk to a thing acts on (audit P1-8): null when the actor walks to where the thing is — it perceives
++   * it, the thing never moves (rooms, fixed equipment, the encounter's patient), or it believes it there (within
++   * `SAME_PLACE`); else where it believes the thing is, or `missing` (`place` null). A staff member the actor never
++   * saw is sought at their post. Navigation, read-only planning and the policy's hint ranking use it.
++   */
++  belief(actor: ActorState, id: EntityId): StaleBelief | null {
++    const loc = this.d.locator;
++    const truth = loc.place(id);
++    if (!truth || !this.movable(truth)) return null;
++    const a = this.awareness(actor, truth);
++    if (a === "visible" || a === "nearby") return null;
++    const missed = this.d.store.missed(actor.id, id);
++    if (missed) return { kind: "missing", place: null, room: missed.room };
++    const seen = this.d.store.lastSeen(actor.id, id);
++    const home = !seen && (truth.kind === "equipment" || truth.kind === "staff") ? loc.home(id) : null;
++    const place: SeenPlace | null = seen ? { ...seen } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
++    if (!place) return null;
++    if (place.level === truth.level && Math.hypot(place.x - truth.position.x, place.z - truth.position.z) <= SAME_PLACE) return null;
++    return { kind: seen ? (seen.toldBy ? "told" : "last-seen") : "usual", place, room: this.d.locator.registry.roomAt(place.level, place.x, place.z) };
++  }
++
++  /** `WorldRuntime.whereabouts`: what the actor knows of where a thing is (see `Whereabouts`); records nothing. */
++  whereabouts(actorId: ActorId, id: EntityId): Whereabouts | null {
++    const actor = this.actorOf(actorId);
++    const truth = this.d.locator.place(id);
++    if (!truth) return null;
++    const a = this.awareness(actor, truth);
++    if (!a) return null;
++    const missed = this.d.store.missed(actor.id, id);
++    const { p, lastKnown } = this.believed(actor, truth, a);
++    const placeOf = (q: Placed): SeenPlace => ({ level: q.level, x: q.position.x, y: q.position.y, z: q.position.z, rot: q.rot });
++    if (!lastKnown) return { entityId: id, kind: this.movable(truth) ? "perceived" : "fixed", place: placeOf(p), room: p.room, level: p.level };
++    if (lastKnown.kind === "missing" && missed) return { entityId: id, kind: "missing", place: null, room: null, level: missed.level, label: lastKnown.label, missed: { ...missed } };
++    const told = lastKnown.kind === "told" ? this.d.store.lastSeen(actor.id, id)?.toldBy : undefined;
++    return { entityId: id, kind: lastKnown.kind, place: placeOf(p), room: p.room, level: p.level, label: lastKnown.label, ...(told ? { toldBy: told } : {}) };
++  }
++
+   /** Where a movable thing is now, as a sighting (null for things that never move). */
+   private seenPlace(id: EntityId): SeenPlace | null {
+     const p = this.d.locator.place(id);
+@@ -174,9 +247,13 @@ export class Perception {
+     return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot };
+   }
+ 
+-  /** Remember what is visible from the actor's pose now, where it is (a walk's arrival); returns the newly seen ids. */
++  /**
++   * Remember what is visible from the actor's pose now, where it is (a walk's arrival) — and a thing it is looking for
++   * (missing, audit P1-8) that it notices nearby; returns the newly seen ids.
++   */
+   notice(actor: ActorState): EntityId[] {
+-    return this.d.store.remember(actor.id, this.visibleIds(actor), (id) => this.seenPlace(id));
++    const sought = Object.keys(actor.missed ?? {}).filter((id) => this.perceives(actor, id));
++    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.seenPlace(id));
+   }
+ 
+   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
+@@ -304,8 +381,8 @@ export class Perception {
+       entities.filter((e) => e.awareness === "visible").map((e) => e.id),
+       placeOf,
+     );
+-    // a known thing noticed nearby (not looked at) is now known to be here
+-    const nearby = entities.filter((e) => e.awareness === "nearby" && this.d.store.remembers(actor.id, e.id)).map((e) => e.id);
++    // a known thing noticed nearby (not looked at) is now known to be here — and so is a thing it is looking for
++    const nearby = entities.filter((e) => e.awareness === "nearby" && (this.d.store.remembers(actor.id, e.id) || !!this.d.store.missed(actor.id, e.id))).map((e) => e.id);
+     if (nearby.length) this.d.store.remember(actor.id, nearby, placeOf);
+   }
+ 
 diff --git a/packages/world/src/policy.test.ts b/packages/world/src/policy.test.ts
 index 2bb978e..6339dc0 100644
 --- a/packages/world/src/policy.test.ts
@@ -7145,6 +7809,152 @@ index 75278a5..778fb94 100644
          }
          if (caps.every((r) => this.bedside.has(r))) {
            if (intent.kind === "read") return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps, fixedOnly: true, providerKinds: ["workstation"] }] };
+diff --git a/packages/world/src/state.ts b/packages/world/src/state.ts
+index dda12a9..5fe0dee 100644
+--- a/packages/world/src/state.ts
++++ b/packages/world/src/state.ts
+@@ -14,9 +14,10 @@
+  *   changes. A device's version is therefore untouched by anyone walking.
+  * - Sensor updates of human-driven bodies (`sensorPose`, ~10 Hz) bump only
+  *   the actor's own version — never the global version, never another entity.
+- * - Memory (`remember`), current tasks (`setTask`), events, results and
+- *   transient in-flight locks bump nothing: read-only tools stay idempotent
+- *   with respect to every version.
++ * - Memory (`remember`; `miss` and `tell`: what an actor knows of where
++ *   things are), current tasks (`setTask`), events, results and transient
++ *   in-flight locks bump nothing: read-only tools stay idempotent with
++ *   respect to every version.
+  *
+  * Snapshots (`WorldStateSnapshot`) are canonical JSON: keys sorted at every
+  * level, actors sorted by id, `seen` sorted — so the same history gives the
+@@ -32,6 +33,7 @@ import {
+   type EntityId,
+   type EntityRuntimeState,
+   type Pose,
++  type MissedPlace,
+   type SeenPlace,
+   type Vec3,
+   type WorldActionResult,
+@@ -65,6 +67,24 @@ export interface WorldStateStoreOptions {
+   maxEvents?: number;
+   /** Idempotency window: results kept by action id (default 128). */
+   maxResults?: number;
++  /**
++   * Told of every change of what an actor knows of where a thing is that matters for a search (EMBODIED §4, audit
++   * P1-8): it learned a thing is missing, saw a missing thing again, or was told where it is. The runtime records it
++   * in the trace. Memory only: nothing else listens.
++   */
++  onWhereabouts?: (change: WhereaboutsChange) => void;
++}
++
++/** A change of what an actor knows of where a thing is (`WorldStateStoreOptions.onWhereabouts`). */
++export interface WhereaboutsChange {
++  actorId: ActorId;
++  entityId: EntityId;
++  /** `absent`: looked where it believed it was, not there; `seen`: a missing thing seen again; `told`: a colleague said where it is. */
++  change: "absent" | "seen" | "told";
++  /** Where it is now believed to be (`seen`, `told`), or where it was looked for (`absent`). */
++  place: { level: string; x: number; z: number };
++  /** `told`: the colleague. */
++  by?: ActorId;
+ }
+ 
+ /** Deep copy with object keys sorted at every level and `undefined` members dropped (canonical JSON form). */
+@@ -104,6 +124,7 @@ export class WorldStateStore implements WorldDynamics {
+   private readonly registry: SemanticRegistry;
+   private readonly maxEvents: number;
+   private readonly maxResults: number;
++  private readonly onWhereabouts: ((change: WhereaboutsChange) => void) | null;
+ 
+   constructor(opts: WorldStateStoreOptions) {
+     this.facilityId = opts.facility.id;
+@@ -111,6 +132,7 @@ export class WorldStateStore implements WorldDynamics {
+     this.registry = opts.registry;
+     this.maxEvents = opts.maxEvents ?? 256;
+     this.maxResults = opts.maxResults ?? 128;
++    this.onWhereabouts = opts.onWhereabouts ?? null;
+     if (opts.snapshot) this.load(opts.snapshot);
+     else this.init(opts.facility, opts.spawn ?? spawnPose(opts.facility));
+   }
+@@ -141,6 +163,7 @@ export class WorldStateStore implements WorldDynamics {
+     const seen = [...new Set(a.seen)].sort();
+     const actor: ActorState = { ...a, seen, holding: [...a.holding] };
+     if (a.lastSeen) actor.lastSeen = Object.fromEntries(Object.entries(a.lastSeen).map(([id, p]) => [id, { ...p }]));
++    if (a.missed) actor.missed = Object.fromEntries(Object.entries(a.missed).map(([id, p]) => [id, { ...p }]));
+     this.actorMap.set(a.id, actor);
+     this.memory.set(a.id, new Set(seen));
+   }
+@@ -286,7 +309,8 @@ export class WorldStateStore implements WorldDynamics {
+ 
+   /**
+    * Remember entities seen by an actor (EMBODIED R7 "remembered"). Memory is
+-   * epistemic, not physical: no version changes. Returns the newly remembered ids (sorted).
++   * epistemic, not physical: no version changes. A missing thing seen again is
++   * no longer missing (`onWhereabouts` `seen`). Returns the newly remembered ids (sorted).
+    */
+   remember(actorId: ActorId, ids: Iterable<EntityId>, placeOf?: (id: EntityId) => SeenPlace | null): EntityId[] {
+     const a = this.actorMap.get(actorId);
+@@ -297,7 +321,15 @@ export class WorldStateStore implements WorldDynamics {
+       if (id === actorId) continue;
+       // where a movable thing was seen (lead note 1): updated at every sighting
+       const where = placeOf?.(id);
+-      if (where) (a.lastSeen ??= {})[id] = { ...where };
++      if (where) {
++        const { toldBy: _told, ...seen } = where;
++        void _told;
++        (a.lastSeen ??= {})[id] = seen;
++        if (a.missed?.[id]) {
++          this.unmiss(a, id);
++          this.onWhereabouts?.({ actorId, entityId: id, change: "seen", place: { level: seen.level, x: seen.x, z: seen.z } });
++        }
++      }
+       if (set.has(id)) continue;
+       set.add(id);
+       added.push(id);
+@@ -306,11 +338,42 @@ export class WorldStateStore implements WorldDynamics {
+     return added.sort();
+   }
+ 
+-  /** Where an actor last saw a movable thing (null: never seen, or it does not move). */
++  /** Where an actor last saw a movable thing — or was told it is (`toldBy`) — (null: never seen, or it does not move). */
+   lastSeen(actorId: ActorId, id: EntityId): SeenPlace | null {
+     return this.actorMap.get(actorId)?.lastSeen?.[id] ?? null;
+   }
+ 
++  /** Where an actor looked for a thing and did not find it (null: it does not know it to be missing). */
++  missed(actorId: ActorId, id: EntityId): MissedPlace | null {
++    return this.actorMap.get(actorId)?.missed?.[id] ?? null;
++  }
++
++  /**
++   * The actor went where it believed a thing was and it is not there (audit P1-8): it is missing for that actor
++   * until it sees it again or is told where it is. Memory only (no version).
++   */
++  miss(actorId: ActorId, id: EntityId, where: MissedPlace): void {
++    const a = this.actorMap.get(actorId);
++    if (!a) return;
++    (a.missed ??= {})[id] = { ...where };
++    this.onWhereabouts?.({ actorId, entityId: id, change: "absent", place: { level: where.level, x: where.x, z: where.z } });
++  }
++
++  /** A colleague (`place.toldBy`) told the actor where a thing is: believed there, no longer missing. Memory only. */
++  tell(actorId: ActorId, id: EntityId, place: SeenPlace & { toldBy: ActorId }): void {
++    const a = this.actorMap.get(actorId);
++    if (!a || id === actorId) return;
++    (a.lastSeen ??= {})[id] = { ...place };
++    this.unmiss(a, id);
++    this.onWhereabouts?.({ actorId, entityId: id, change: "told", place: { level: place.level, x: place.x, z: place.z }, by: place.toldBy });
++  }
++
++  private unmiss(a: ActorState, id: EntityId): void {
++    if (!a.missed?.[id]) return;
++    delete a.missed[id];
++    if (!Object.keys(a.missed).length) delete a.missed;
++  }
++
+   /**
+    * Patch an entity's runtime state (global + entity version). A member set
+    * to `undefined` is removed; `version` cannot be patched.
 diff --git a/packages/world/src/transport.test.ts b/packages/world/src/transport.test.ts
 index b2034c5..9fd1ca1 100644
 --- a/packages/world/src/transport.test.ts
@@ -7455,5 +8265,40 @@ index 0000000..081b9e7
 +    console.log("believed", believed.room, believed.lastKnown);
 +    const r = await w.act({ actorId: A, operation: "approach", targetId: ECG });
 +    console.log("approach", r.status, r.errorCode, r.message, w.runtime.actor(A)!.room);
++  });
++});
+diff --git a/packages/world/src/zz-repro-p211.test.ts b/packages/world/src/zz-repro-p211.test.ts
+new file mode 100644
+index 0000000..f26104a
+--- /dev/null
++++ b/packages/world/src/zz-repro-p211.test.ts
+@@ -0,0 +1,29 @@
++import { describe, it } from "vitest";
++import { PRIMARY_ACTOR, type WorldEvent } from "./contracts.js";
++import { makeWorld } from "./__fixtures__/world.js";
++
++describe("repro P2-11", () => {
++  it("escort, transport, relocation records", async () => {
++    const w = makeWorld("smzl-lung-adeno");
++    const seen: WorldEvent[] = [];
++    w.runtime.subscribe((e) => seen.push(e));
++    await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: w.patientId } });
++    await w.act({ actorId: PRIMARY_ACTOR, operation: "escort_patient", targetId: w.patientId });
++    seen.length = 0;
++    await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:ws-imaging" } });
++    console.log("escort walk events:", seen.map((e) => e.type).join(","));
++    console.log("legs after escort walk:", JSON.stringify(w.runtime.snapshot().entities[w.patientId]?.patient?.legs ?? null));
++    const me = w.runtime.actor(PRIMARY_ACTOR)!;
++    w.runtime.updatePose(PRIMARY_ACTOR, { ...me.pose, x: me.pose.x + 30 });
++    console.log("after a 30 m sensor jump the patient is at", JSON.stringify(w.runtime.patientPlace()), "escort pose", JSON.stringify(w.runtime.actor(PRIMARY_ACTOR)!.pose));
++    const pe = makeWorld("pulmonary-embolism-postop");
++    const s2: WorldEvent[] = [];
++    pe.runtime.subscribe((e) => s2.push(e));
++    await pe.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: pe.patientId } });
++    s2.length = 0;
++    await pe.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: pe.patientId, parameters: { destination: "eq:ct-scanner" } });
++    console.log("transport events:", s2.map((e) => e.type).join(","));
++    pe.runtime.relocatePatient({ setting: "icu" });
++    console.log("legs:", JSON.stringify(pe.runtime.snapshot().entities[pe.patientId]?.patient?.legs));
 +  });
 +});

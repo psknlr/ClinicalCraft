@@ -25,7 +25,7 @@ text is available. Everything listed under "To verify" is part of that pass.
 | Learner level | Final-year students and paediatric residents (neurology, nephrology and genetics rotations); paediatric nurses for the handover, samples and referrals |
 | Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance; the patient facts are not yet checked against the full article; **not yet reviewed by a licensed clinician**. Have a paediatric neurologist or nephrologist and a clinical geneticist review it before teaching use |
 | Phases | `admission` 入院：病史与查体 / Admission: history and examination → `first-results` 住院期间：首批检查结果 / During the admission: the first results → `genetics` 基因检测回报 / The genetic report → `outcome` 本病例记录的结局 / Recorded course and outcome — none learner-switchable |
-| Content | 24 history items (6 required; 7 recorded facts, 2 labelled teaching devices, 15 unknown; the relative answers) · 6 exam findings · 19 investigations (2 record reviews; 11 with a recorded result, 8 offered with "No result is recorded for this test.") · 12 interventions (4 contraindicated, 1 of them critical) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 39 test utterances |
+| Content | 24 history items (6 required; 7 recorded facts, 2 labelled teaching devices, 15 unknown; the relative answers) · 6 exam findings · 19 investigations (2 record reviews; 11 with a recorded result, 8 offered with "No result is recorded for this test.") · 12 interventions (4 contraindicated, 1 of them critical) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 47 test utterances |
 
 ## Learning outcomes
 
@@ -34,13 +34,14 @@ After the case the learner can:
 1. In an infant with operated congenital cataract and glaucoma, hypotonia and absent reflexes, think of a
    multisystem eye–brain–kidney disorder and, choosing tests from the whole phenotype (AAP 2025), check the blood
    gas, electrolytes and urine alongside SMN1 testing (international SMA care consensus, 2018).
-2. Interpret a urine pH of 7.0 during acidaemia, urine β2-microglobulin above 500 µg/L, generalised aminoaciduria
-   and 0.86 g/24 h of protein as a proximal tubulopathy of the renal Fanconi type, and tell it from distal RTA,
-   cystinosis and nephrotic syndrome as IPNA 2022 defines it.
-3. Measure potassium, phosphate, calcium and creatinine, then correct the chronic acidosis gradually with divided
-   oral citrate or bicarbonate titrated to the serum bicarbonate, adding potassium, phosphate and calcitriol as the
-   results require (GeneReviews: Lowe syndrome, 2019; ERKNet/ESPN 2021) — with no IV bicarbonate bolus and no
-   steroids for tubular proteinuria.
+2. Read a urine pH of 7.0 during acidaemia as a renal tubular acidosis, place it in the proximal tubule from urine
+   β2-microglobulin above 500 µg/L and generalised aminoaciduria (a renal Fanconi-type picture), and tell it from
+   distal RTA, cystinosis and — 0.86 g/24 h of protein with no albumin recorded — nephrotic syndrome as IPNA 2022
+   defines it.
+3. Measure potassium, phosphate, calcium and creatinine, then correct the chronic acidosis gradually with oral
+   citrate or bicarbonate divided through the day (with feeds at his age), titrated to the serum bicarbonate, adding
+   potassium, phosphate and calcitriol as the results require (GeneReviews: Lowe syndrome, 2019; the ERKNet/ESPN 2021
+   principles for distal RTA) — with no IV bicarbonate bolus and no steroids for tubular proteinuria.
 4. Interpret a nonsense variant in OCRL (legacy name OCRL1) under ACMG/AMP 2015, explain that a negative maternal
    blood test does not exclude germline mosaicism, and offer counselling, a maternal slit-lamp lens examination and
    prenatal or pre-implantation testing in a future pregnancy.
@@ -48,7 +49,8 @@ After the case the learner can:
    amplification (JCIH 2019), tubular, bone and kidney-function monitoring and early intervention — and look for a
    separate cause of the haemoglobin of 70 g/L.
 6. Explain the diagnosis, the treatment, the inheritance and its uncertainties to the family in a
-   Calgary–Cambridge structure, checking understanding by teach-back.
+   Calgary–Cambridge structure, breaking the genetic diagnosis as bad news with SPIKES and checking understanding
+   by teach-back.
 
 These are the case's `learningOutcomes`; they name the diagnosis, so front-ends show them before play only behind
 the closed "Learning outcomes (6) · may reveal the diagnosis" disclosure and list them in every debrief
@@ -79,11 +81,13 @@ no treatment, no later course and no follow-up of kidney function, vision, heari
 **Today's answer:** the eye–brain–kidney pattern is recognised from the history and examination; SMN1 is sent
 because of the areflexic hypotonia (international SMA care consensus, 2018), together with the blood gas,
 electrolytes and a tubular urine screen chosen from the whole phenotype (AAP 2025). The acidosis with an alkaline
-urine, β2-microglobulinuria and generalised aminoaciduria localise a proximal tubulopathy; potassium, phosphate,
-calcium and creatinine are measured and oral alkali is started in divided doses and titrated to the serum
-bicarbonate (GeneReviews 2019; the ERKNet/ESPN 2021 principles) — never an IV bicarbonate bolus, never steroids for
-tubular proteinuria. The OCRL nonsense variant is pathogenic evidence under ACMG/AMP 2015; the negative maternal
-blood test lowers but does not remove the recurrence risk (germline mosaicism), so the family is offered
+urine shows a renal tubular acidosis, which β2-microglobulinuria and generalised aminoaciduria place in the proximal
+tubule (a distal RTA leaks amino acids and small proteins mainly when it is untreated and severe in infancy — his
+bicarbonate is 17.9 mmol/L — and does not explain his eyes or tone); potassium, phosphate, calcium and creatinine are
+measured and oral alkali is started in divided doses through the day (with feeds at his age) and titrated to the
+serum bicarbonate (GeneReviews 2019; the ERKNet/ESPN 2021 principles for distal RTA) — never an IV bicarbonate bolus,
+never steroids for tubular proteinuria. The OCRL nonsense variant is pathogenic evidence under ACMG/AMP 2015; the
+negative maternal blood test lowers but does not remove the recurrence risk (germline mosaicism), so the family is offered
 counselling, a maternal slit-lamp examination and prenatal or pre-implantation testing in a future pregnancy. He
 needs lifelong eye-pressure and vision care, prompt diagnostic audiology and amplification (JCIH 2019), nephrology
 follow-up of acid–base, bone and kidney function, early intervention, and a separate work-up of his anaemia.
@@ -116,10 +120,13 @@ phase.
 | 2 | `obj-examine` Examine his responses, motor function, tone, reflexes and eyes | the six manoeuvres examined |
 | 3 | `obj-first-tests` Decide which tests to send first | decision 1 answered |
 | 4 | `obj-unify` Read the first results and find one explanation | blood gas, urinalysis, the three other urine tests, SMN1 and the auditory evoked potentials read in `first-results`; decision 2 answered; genetic test sent |
-| 5 | `obj-acid-base` Treat the acidosis safely | decision 3 answered; oral alkali started |
-| 6 | `obj-family` Explain the genetic result and plan his follow-up | genetic report read in `genetics`; decisions 4 and 5; counselling meeting; ophthalmology, audiology and early-intervention referrals; outcome record read |
+| 5 | `obj-acid-base` Start his treatment safely | decision 3 answered; oral alkali started |
+| 6 | `obj-family` Talk with his family and plan his long-term follow-up | genetic report read in `genetics`; decisions 4 and 5; counselling meeting; ophthalmology, audiology and early-intervention referrals; outcome record read |
 
-Titles and hints name no diagnosis and contain no option text. No `completeWhen` holds a condition that can become
+Titles and hints name no diagnosis and contain no option text. The journal lists later objectives by title from the
+start, so no title announces a result before it is read (objective 5 was "Treat the acidosis safely" and objective
+6 "Explain the genetic result…" until the 2026-11-14 review: both told the learner, before decision 1, that the gas
+would show an acidosis and that a genetic result would come). No `completeWhen` holds a condition that can become
 permanently false, so a learner who acts late can still finish (the contract replays each act late).
 
 ### Decisions
@@ -151,7 +158,7 @@ the two select-all decisions the keys are not the longest options (distractors w
 | `rb-no-harm` | safety | 2 | no prednisolone, no zero-risk promise, no routine discharge; `scoredWhen` = decision 2, 4 or 5 attempted or any of the three acts |
 | `rb-counselling` | management | 3 | decision 4 right first time; post-test counselling meeting |
 | `rb-follow-up` | management | 3 | decision 5 right first time; ophthalmology, audiology and early-intervention referrals |
-| `rb-communication` | communication | (judged) | Calgary–Cambridge conversation with the relative, written for this family (see judge guidance) |
+| `rb-communication` | communication | (judged) | Calgary–Cambridge conversation with the relative, the genetic diagnosis broken as bad news with SPIKES, teach-back; written for this family (see judge guidance) |
 
 ### Critical items
 
@@ -166,7 +173,7 @@ the two select-all decisions the keys are not the longest options (distractors w
 * `rb-no-bicarbonate-bolus` (the dangerous error), scored once decision 3 has been attempted or the bolus given, so
   doing nothing earns nothing.
 
-### How wrong choices score (measured 2026-11-13 with core `assess`)
+### How wrong choices score (measured 2026-11-13 with core `assess`; re-measured unchanged 2026-11-14)
 
 | Path | Score | Critical items missed |
 |---|---|---|
@@ -249,8 +256,11 @@ urine pH and specific gravity.
   the compensation cannot be judged. Without sodium and chloride no anion gap can be calculated.
 * The trap's formula (base deficit × weight × 0.3) gives 8.4 × 8.7 × 0.3 ≈ 21.9 mmol, half ≈ 11 mmol as a bolus; the
   case prints only the formula.
-* Urine protein ≈ 0.86 g ÷ 8.7 kg ≈ 99 mg/kg/day if the undated weight applies; no length is recorded, so no body
-  surface area or per-m² rate can be calculated.
+* Urine protein ≈ 0.86 g ÷ 8.7 kg ≈ 99 mg/kg/day if the undated weight applies. No length is recorded, so no measured
+  body surface area exists; a weight-only estimate (Costeff: (4 × 8.7 + 7) ÷ (8.7 + 90) ≈ 0.42 m²) gives ≈ 2.0
+  g/m²/day (≈ 85 mg/m²/h), above the IPNA 2022 nephrotic-range threshold (1 g/m²/day, 40 mg/m²/h) by amount alone.
+  Learners see neither figure; the case's teaching rests on the unrecorded serum albumin and the tubular pattern
+  (β2-microglobulin, aminoaciduria), never on the protein being "below the nephrotic range".
 * Haemoglobin 70 g/L = 7.0 g/dL.
 * c.1528 is the first base of codon 510 if the numbering starts at the A of the ATG start codon (HGVS); 1.0.0 records
   neither the reference transcript nor the protein change, so the case prints no codon (see "To verify").
@@ -285,7 +295,7 @@ urine pH and specific gravity.
 | Treating him as "cerebral motor delay" and sending only brain tests | `head-ct`; `muscle-biopsy`; the tubular screen is a key of decision 1 | `rb-first-tests` |
 | Stopping at SMA because the reflexes are absent | `smn1-testing` is a key, but decision 2 needs the kidney and eye findings explained | `rb-diagnosis` |
 | Calling the proteinuria nephrotic and starting prednisolone | `infantile-nephrotic`; `prednisolone-nephrotic` contraindicated (the harm text names the eye pressure after glaucoma surgery) | `rb-diagnosis`, `rb-no-harm` |
-| Reading acid blood with alkaline urine as distal RTA | `distal-rta-deafness` (the β2-microglobulin and amino acids point proximal) | `rb-diagnosis` |
+| Reading acid blood with alkaline urine as distal RTA | `distal-rta-deafness` (distal RTA explains neither the eyes nor the areflexic hypotonia; it leaks amino acids and small proteins mainly when untreated and severe in infancy, and his bicarbonate is 17.9 mmol/L) | `rb-diagnosis` |
 | Correcting the base deficit with IV bicarbonate | `iv-bicarbonate-correction`; `iv-bicarbonate-bolus` critical | `rb-acid-base-plan`, `rb-no-bicarbonate-bolus` (critical) |
 | Starting alkali without knowing the potassium | `oral-alkali` counts only once the electrolytes are sent | `rb-acidosis-treated` (critical) |
 | Waiting for the gene result before treating the acidosis | `await-gene-result`; the genetic report stays closed until alkali is started | `rb-acid-base-plan`, `rb-acidosis-treated` |
@@ -390,9 +400,17 @@ reference transcript is not recorded); PVS1 is called very strong evidence, as A
 
 ## Matcher notes
 
-* 39 `extensions.testUtterances` (20 zh-CN, 19 en), written as a learner would type them; none equals a keyword or a
+* 47 `extensions.testUtterances` (25 zh-CN, 22 en), written as a learner would type them; none equals a keyword or a
   canonical question; 3 look-alike negatives (the distance from home, nursery, driving in). Every required item and
-  both phase twins have a paraphrase; `cases verify` passes 39/39 with no extra selections.
+  both phase twins have a paraphrase; `cases verify` passes 47/47 with no extra selections.
+* The chief complaint asked in plain words (fixed in the 2026-11-14 review): "孩子怎么了？" and "孩子会坐了吗？" had
+  reached the sibling item, "What's the problem with him?" the eye history, and "What brings him in today?", "What's
+  been going on?", "Why has he been admitted?" and "这次为什么住院？" nothing. `motor-now` now carries those phrasings
+  (run-together English forms such as `whatstheproblem`, `bringshimin`, and 孩子怎么了、为什么住院、会坐), excludes
+  eye and hearing words so "眼睛怎么了？" stays with `eye-history`, and — like `rolling` — answers in every phase (the
+  relative's account does not change once the results are back). Five of the new corpus lines test these;
+  "他能看见东西吗？" now reaches `vision-now` (it reached `eye-history`) and "Was he born at term?" / "他是早产的吗？"
+  reach `birth` alone.
 * Items without a corpus line in one language were probed with core `matchHistory` while authoring, each selecting its
   item alone: "Does he wear glasses or have any eye drops now?", "How much does he weigh now?", "Is he breast or bottle
   fed?", "Do you know his birth weight?", "Any allergies to medicines?", "Has he had all his jabs?", "Is anyone else in
@@ -420,8 +438,8 @@ reference transcript is not recorded); PVS1 is called very strong evidence, as A
 3. Mercuri E, Finkel RS, Muntoni F, et al. Diagnosis and management of spinal muscular atrophy: Part 1:
    Recommendations for diagnosis, rehabilitation, orthopedic and nutritional care. Neuromuscul Disord.
    2018;28(2):103-115. doi:10.1016/j.nmd.2017.11.005
-4. Rodan LH, Stoler J, Chen E, et al.; Council on Genetics. Genetic evaluation of the child with intellectual
-   disability or global developmental delay: clinical report. Pediatrics. 2025;156(1):e2025072219.
+4. Rodan LH, Stoler J, Chen E, Geleske T, Weaver KN; Council on Genetics. Genetic evaluation of the child with
+   intellectual disability or global developmental delay: clinical report. Pediatrics. 2025;156(1):e2025072219.
    doi:10.1542/peds.2025-072219
 5. Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint
    consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular
@@ -431,7 +449,7 @@ reference transcript is not recorded); PVS1 is called very strong evidence, as A
 7. Trepiccione F, Walsh SB, Ariceta G, et al. Distal renal tubular acidosis: ERKNet/ESPN clinical practice points.
    Nephrol Dial Transplant. 2021;36(9):1585-1596. doi:10.1093/ndt/gfab171
 8. Emma F, Nesterova G, Langman C, et al. Nephropathic cystinosis: an international consensus document. Nephrol Dial
-   Transplant. 2014;29 Suppl 4:iv87-iv94.
+   Transplant. 2014;29 Suppl 4:iv87-iv94. doi:10.1093/ndt/gfu090
 9. Trautmann A, Boyer O, Hodson E, et al. IPNA clinical practice recommendations for the diagnosis and management of
    children with steroid-sensitive nephrotic syndrome. Pediatr Nephrol. 2023;38(3):877-919.
    doi:10.1007/s00467-022-05739-3
@@ -448,6 +466,20 @@ repository records (volume, issue, pages, DOI); ref. 9 — PubMed/PMC records (P
 nephrotic syndrome by nephrotic-range proteinuria with serum albumin below 30 g/L, oedema only when albumin is not
 available). Refs. 5 and 8 were not re-checked in this pass (ref. 5 is the standard ACMG/AMP citation; ref. 8 is
 printed without a DOI).
+
+Re-checked in the independent review of 2026-11-14: ref. 2 — the update date (2019 Apr 18) and, through a summary of
+the chapter, its management of the tubulopathy (oral sodium and potassium bicarbonate or citrate for acidosis and
+hypokalaemia; oral phosphate and calcitriol for hypophosphataemia and renal rickets); ref. 3 — the full text of the
+Diagnosis section ("Genetic testing of SMN1/SMN2 … is first line investigation when the condition is suspected in a
+typical case … there is no need for a muscle biopsy"; with both full SMN1 copies present "a diagnosis of SMA is
+highly unlikely"); ref. 4 — the five authors (Rodan, Stoler, Chen, Geleske, Weaver), published online 2025 Jun 23,
+phenotype-first test selection and an agnostic approach (exome or genome) otherwise; ref. 7 — the publisher's full
+text: alkali "as frequent as possible" (small amounts with each feed in infants, three to four times daily in older
+children), plasma bicarbonate, chloride, potassium and urinary calcium kept in the age-appropriate range, the
+diagnostic urine pH > 5.5 with a positive urine anion gap, low-molecular-weight proteinuria and aminoaciduria in
+untreated dRTA (mainly infants with severe acidosis) resolving on alkali, and no statement on correcting hypokalaemia
+before alkali; ref. 8 — PubMed 25165189, DOI 10.1093/ndt/gfu090 (now printed), "the most common cause of inherited
+renal Fanconi syndrome in young children".
 
 ### To verify
 
@@ -472,19 +504,18 @@ printed without a DOI).
 * Any treatment given (alkali, potassium, phosphate, vitamin D), the discharge and any follow-up — 1.0.0 records none.
 * Who accompanied the child (to name the companion by relation) and the family history on the mother's side.
 
-**Guidance details (secondary sources only in this review):**
+**Guidance details (for a clinician of the specialty; the items checked in full text are listed above):**
 * GeneReviews (2019): the exact treatment wording for the renal tubulopathy (oral bicarbonate or citrate, potassium,
-  phosphate, calcitriol) — confirmed here only through a secondary summary citing the chapter; the age threshold and
-  percentage for lens opacities in heterozygous women; the germline-mosaicism figure (a secondary record gives 4.5 %;
-  the case quotes no number); the statement that kidney function declines with age.
-* International SMA care consensus (Mercuri 2018, part 1): the wording that SMN1 testing is the first diagnostic test
-  when SMA is suspected, and that muscle biopsy is no longer a first test.
-* AAP 2025 clinical report: the exact first-tier recommendations (exome or genome sequencing; phenotype-led targeted
-  testing when a specific disorder is suspected). The case cites it only for phenotype-led test selection.
-* ERKNet/ESPN 2021 (distal RTA): the treatment target (normal serum bicarbonate; urinary calcium), the advice on
-  dosing frequency (the case says 3–4 doses a day for standard preparations), and any statement on correcting
-  hypokalaemia before alkali (the case states the physiology without attributing it); the urine-pH criterion (> 5.5
-  during acidosis) used in teaching point 2.
+  phosphate, calcitriol) — confirmed only through a summary citing the chapter (NCBI Bookshelf could not be opened from
+  this environment); the age threshold and percentage for lens opacities in heterozygous women; the germline-mosaicism
+  figure (a secondary record gives 4.5 %; the case quotes no number); the statement that kidney function declines with
+  age.
+* AAP 2025 clinical report: whether it says anything about metabolic or renal screening tests in a child whose
+  phenotype suggests a multisystem disorder (the case cites it only for phenotype-led test selection, which secondary
+  records confirm).
+* Applying the distal-RTA practice points (ERKNet/ESPN 2021) to a proximal tubulopathy: the case uses them only for the
+  principles (oral alkali, frequent dosing, a normal plasma bicarbonate as the target) and says so; a paediatric
+  nephrologist should confirm the regimen for an 11-month-old with proximal bicarbonate wasting.
 * The alkali requirement in proximal bicarbonate wasting: clinical references give 5–15 or 10–15 mmol/kg/day; the case
   says only "several times the distal-RTA dose" until a guideline figure is confirmed.
 * IPNA 2022 (steroid-sensitive nephrotic syndrome): the age range it covers and its advice for onset before 1 year (an
@@ -495,10 +526,10 @@ printed without a DOI).
 * JCIH 2019: the timing it asks for diagnostic audiology and amplification after a late-identified hearing loss.
 * Chinese guidance a reviewer may add: national consensus on SMA diagnosis and management and on hereditary tubulopathies
   (versions not confirmed in this review).
-* Collection contract vs STANDARD §6.6: the contract matches the English review note with the case-sensitive pattern
-  "not yet reviewed by a licensed clinician", which the §6.6 sentence ("… Not yet reviewed by a licensed clinician.")
-  does not match; the note keeps all of §6.6's content, with the last sentence as "The case is not yet reviewed by a
-  licensed clinician." (as in cmcr-1653411).
+* The 0.86 g/24 h of protein: with no length recorded the case gives no per-m² figure; a weight-only estimate of body
+  surface area (see "Clinical numbers check") puts it in the nephrotic range by amount, which a nephrologist may want
+  to address explicitly in the debrief (the case's teaching rests on the missing albumin and the tubular pattern, not
+  on the amount).
 
 ## Changelog
 
@@ -526,7 +557,7 @@ printed without a DOI).
   communication item written for this family. Do nothing scores 0; a wrong first answer everywhere scores 48 %.
 * **Teaching layer.** 6 learning outcomes, 6 key reasoning steps, 5 teaching points with guidance and year, 8 unknowns,
   4 staff (attending, nurse, nephrology and genetics consultants), 9 Vancouver references, editorial review status with
-  eight guidelines and the §6.6 notes.
+  eight guidelines and the review notes STANDARD §1.2 and §6.3 require.
 * **Completed 2026-11-13 (same version).** The interrupted draft was reviewed against the fact base and the standard:
   the review note's wording; AAP 2014 → AAP 2025 (superseded report); the "MRI over CT" attribution removed; unconfirmed
   guideline statements and the proximal alkali dose removed from learner text; the derived codon removed; PVS1 graded
@@ -535,6 +566,21 @@ printed without a DOI).
   read; "the report records … but not the counselling" rewritten as what this case records; oral alkali counts for the
   critical item only after the electrolytes are sent; select-all distractors lengthened; three matcher collisions fixed;
   the conclusion trimmed to 1,000 characters; this guide written.
+* **Independent review 2026-11-14 (same version).** Every patient fact re-traced to 1.0.0 (none added or changed).
+  Fixed: the objective titles "Treat the acidosis safely" and "Explain the genetic result…", which the journal shows
+  from the start and which announced the acidosis and a genetic result before decision 1 (now "Start his treatment
+  safely", "Talk with his family and plan his long-term follow-up"); the chief complaint asked in plain words reached
+  the sibling or eye item or nothing (keywords, every-phase motor history, eight new corpus lines); the distal-RTA
+  feedback and teaching point 2 said distal RTA never leaks amino acids or small proteins and cited ERKNet/ESPN 2021,
+  which says such a leak occurs in untreated infants with severe acidosis — rewritten with that guidance; the urine pH
+  of 7.0 is now taught as showing a tubular acidosis that the leak localises, not as a proximal sign itself
+  (learning outcome 2, the decision-2 key's feedback); dosing "as frequent as possible, with feeds in an infant" as
+  ERKNet/ESPN 2021 says; ERKNet/ESPN cited as distal-RTA guidance wherever it appears; the muscle-biopsy and
+  VUS feedback no longer attribute to the SMA consensus and ACMG/AMP what they do not say; SPIKES for the genetic
+  diagnosis in the communication item and learning outcome 6; the relative's genetic worry no longer makes them a
+  parent ("another baby of ours"); zh/en parity of the IV-bolus distractor (30 minutes) and the conclusion (birth
+  order, birth injury, the evoked-potential findings); all five AAP 2025 authors and the cystinosis consensus DOI;
+  this guide's validation command, To-verify list and derived per-m² protein estimate. Scores re-measured: unchanged.
 
 ### 1.0.0 — 2026-10-28
 
@@ -543,12 +589,12 @@ printed without a DOI).
 
 ## Validation
 
-Run from the worktree root (all passed on 2026-11-13):
+Run from the worktree root (all passed on 2026-11-13 and again after the review on 2026-11-14):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1171301/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1171301 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 29/29
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1171301        # depth floor, do-nothing 0, wrong-first 48 % < 100 %
+npm run -s cc -- cases verify cmcr-1171301 --lang en          # 76 steps · objectives 6/6 · decisions 5/5 · utterances 47/47 · rubric 29/29
+npx tsx --conditions=source scripts/case-check.ts cmcr-1171301        # depth floor, do-nothing 0, wrong-first 48 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1171301:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1171301:"   # in-world demonstration, en + zh-CN
 ```
@@ -566,15 +612,15 @@ c.1528C>T无义变异，母亲外周血及20条对照染色体未检出；报告
 **学习目标。**
 1. 对先天性白内障和青光眼术后、低张力伴腱反射消失的婴儿，想到眼脑肾多系统疾病，按整体表型选择检查（AAP 2025），在送SMN1
    （2018年国际脊髓性肌萎缩诊疗共识）的同时查血气、电解质和尿液。
-2. 把酸中毒时尿pH 7.0、β2微球蛋白 > 500 µg/L、广泛性氨基酸尿和0.86 g/24 h尿蛋白判读为肾性范科尼型近端肾小管病，并与远端
-   肾小管酸中毒、胱氨酸病和IPNA 2022定义的肾病综合征鉴别。
-3. 先测钾、磷、钙和肌酐，再分次口服枸橼酸盐或碳酸氢钠，按血碳酸氢根逐步纠正，按结果补钾、补磷和骨化三醇（GeneReviews
-   2019；ERKNet/ESPN 2021）；不静推碳酸氢钠，不对肾小管性蛋白尿用激素。
+2. 把血酸时尿pH 7.0判读为肾小管性酸中毒，用β2微球蛋白 > 500 µg/L和广泛性氨基酸尿把它定位在近端小管（肾性范科尼型表现），
+   并与远端肾小管酸中毒、胱氨酸病和IPNA 2022定义的肾病综合征鉴别（0.86 g/24 h尿蛋白而没有白蛋白记录，不足以诊断肾病综合征）。
+3. 先测钾、磷、钙和肌酐，再全天分次口服枸橼酸盐或碳酸氢钠（这个月龄可随喂奶少量给），按血碳酸氢根逐步纠正，按结果补钾、
+   补磷和骨化三醇（GeneReviews 2019；ERKNet/ESPN 2021远端肾小管酸中毒的原则）；不静推碳酸氢钠，不对肾小管性蛋白尿用激素。
 4. 按ACMG/AMP 2015判读OCRL无义变异，说明母亲血液阴性不能排除生殖腺嵌合，提供遗传咨询、母亲裂隙灯晶状体检查和再孕时的
    产前或胚胎植入前检测。
 5. 制订终身多学科随访：眼压和视功能、尽快诊断性听力评估并助听（JCIH 2019）、肾小管、骨骼和肾功能监测、早期干预，并另查
    70 g/L血红蛋白的原因。
-6. 按Calgary–Cambridge结构向家属解释诊断、治疗、遗传方式和不确定性，用回授法确认理解。
+6. 按Calgary–Cambridge结构向家属解释诊断、治疗、遗传方式和不确定性，用SPIKES告知基因诊断这一坏消息，用回授法确认理解。
 
 **关键决策。** ① 首批检查（多选）：血气加电解质、钙磷和肌酐，尿pH、尿蛋白、β2微球蛋白和尿氨基酸，SMN1（干扰项：全麻下
 肌活检、头颅CT）；② 统一诊断：X连锁眼脑肾综合征（Lowe综合征），送OCRL确诊（干扰项：胱氨酸病、伴耳聋的远端肾小管酸中毒、

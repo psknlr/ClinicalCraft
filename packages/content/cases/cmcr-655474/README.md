@@ -19,13 +19,13 @@ is available, and everything under "To verify" belongs to it.
 | id / version | `cmcr-655474` · `1.1.0` · CMCR additional collection (`cmcr-105`) |
 | Source | 文川, 梁青春, 万伍卿, 刘晓艳, 易著文. 儿童Erdheim－Chester病一例. 中华儿科杂志. 2011;49(3):231-232 |
 | Setting / facility | Children's ward bed (`inpatient`) / `general-hospital` |
-| Difficulty / time | 4 / 5 · about 35 min (static clock; four phases, five decisions, 19 investigations, 11 interventions) |
+| Difficulty / time | 4 / 5 · about 35 min (static clock; four phases, five decisions, 20 investigations, 11 interventions) |
 | Specialty | Paediatrics, orthopaedics, radiology, pathology (`pediatrics`, `orthopedics`, `radiology`, `pathology`) |
 | Languages | `zh-CN` (source language), `en` |
 | Learner level | Final-year medical students and paediatric residents; orthopaedic, radiology and pathology trainees for the imaging and biopsy parts |
 | Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance; **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Ask a paediatric haemato-oncologist with histiocytosis experience, a paediatric radiologist and a pathologist to review it before teaching |
 | Phases | `admission` 入院：骨痛九个月 / Admission: nine months of bone pain → `pathology` 活检之后：病理结果 / After the biopsy: the pathology report → `planning` 确定下一步：治疗前评估与家庭谈话 / Next steps: the pre-treatment work-up and the family conversation → `outcome` 原报告记录的结局 / Reported course and outcome — none learner-switchable |
-| Content | 22 history items (8 required, 12 unknown; the girl answers for her own symptoms, her parent for the rest) · 6 exam findings · 19 investigations (2 record reviews; 13 with no result recorded) · 11 interventions (5 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 40 test utterances |
+| Content | 22 history items (8 required, 12 unknown; the girl answers for her own symptoms, her parent for the rest) · 6 exam findings · 20 investigations (2 record reviews; 14 with no result recorded) · 11 interventions (5 contraindicated, 2 of them critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 30; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 40 test utterances |
 
 The case card no longer lists haematology: in 1.0.0 it pointed a learner with a bone-pain presentation straight
 at a blood or histiocytic disease. Orthopaedics (the presenting problem), radiology and pathology (the two
@@ -48,9 +48,9 @@ After the case the learner can:
 4. Complete the pre-treatment work-up the 2020 international ECD consensus sets out: BRAF V600E and
    MAPK-pathway testing of the biopsy, whole-body FDG PET-CT including the legs, brain and pituitary MRI, cardiac
    and endocrine assessment, and referral to an experienced histiocytosis centre.
-5. Explain today's treatment options — a BRAF or MEK inhibitor chosen by mutation status, or conventional
-   therapy such as interferon-alpha, approved for adults and decided for a child by a specialist centre — and why
-   a 2011 report's course is not today's prognosis.
+5. Explain today's treatment options — a BRAF or MEK inhibitor chosen by mutation status (approved for adults;
+   for a child, decided by a specialist centre) or conventional therapy such as interferon-alpha — and why a 2011
+   report's course is not today's prognosis.
 6. Share a rare diagnosis with an 11-year-old and her parent using SPIKES (2000), seek her assent alongside the
    parent's permission (American Academy of Pediatrics, 2016), and when the family is reluctant to treat, explore
    their reasons, give accurate information and keep follow-up open.
@@ -89,7 +89,7 @@ simulated.
 
 | Phase | Time | Entered when | What is there |
 |---|---|---|---|
-| `admission` (initial) | after nine months of pain and four of limping | start | the history from the girl and her parent (two labelled teaching wishes), the six recorded examination findings, the blood count, ESR, CRP and the spine and pelvis imaging report (record review), tests with no result recorded (blood film, bone chemistry, spine MRI, long-bone X-rays, marrow, osmolality, HLA-B27), decisions `bone-pain-triage` and `lesion-plan`, the biopsy booking and the tempting wrong treatments |
+| `admission` (initial) | after nine months of pain and four of limping | start | the history from the girl and her parent (two labelled teaching wishes), the six recorded examination findings, the blood count, ESR, CRP and the spine and pelvis imaging report (record review), tests with no result recorded (blood film, bone chemistry, clotting screen, spine MRI, long-bone X-rays, marrow, osmolality, HLA-B27), decisions `bone-pain-triage` and `lesion-plan`, the biopsy booking and the tempting wrong treatments |
 | `pathology` | after the iliac biopsy (day not recorded) | decision `lesion-plan` answered and the biopsy booked (`request-biopsy`) | the histology and immunohistochemistry, tissue culture and molecular testing (no result recorded), decision `biopsy-reading` |
 | `planning` | once the histology is back | decision `biopsy-reading` answered | the pre-treatment work-up (molecular tests, PET-CT or whole-body MRI, brain and pituitary MRI, echocardiogram, osmolality — no result recorded), the parent's understanding (phase twin), decisions `staging-plan` and `family-talk`, the family meeting and follow-up plan |
 | `outcome` | after the diagnosis | all five decisions answered and `obj-staging` complete | the reported diagnosis and the family's decision (record review) |
@@ -121,8 +121,8 @@ replay finds no trap).
 | id | Opens after | Key | Distractors (why they tempt) |
 |---|---|---|---|
 | `bone-pain-triage` (single) | the pain story, limp, squat pain, weight loss asked; all six manoeuvres examined | `red-flag-workup`: not growing pains or strain — same-day count with film, ESR, CRP and imaging of the painful sites | `growing-pains` (normal neurology, no local inflammation); `enthesitis-arthritis` (sacral tenderness and a positive FABER really do suggest sacroiliitis); `mechanical-back` (pelvic tilt, squat pain) |
-| `lesion-plan` (single) | decision 1; count, ESR, CRP and imaging read in `admission` | `biopsy-before-treatment`: film, marrow and iliac biopsy under one anaesthetic for histology, immunohistochemistry, molecular tests and culture, no steroid before the samples | `lch-chemo` (vertebra plana is the classic sign of LCH); `spinal-tb` (several vertebrae, raised ESR/CRP — and common); `crmo-nsaid` (near-normal count, normal joint spaces) |
-| `biopsy-reading` (single) | histology read in `pathology` | `non-langerhans`: xanthogranuloma-family histiocytosis, ECD first; long-bone imaging, staging and BRAF to confirm | `lch-poor-sample` (vertebra plana again; "the negative stains are artefact"); `rosai-dorfman` (foamy histiocytes and fibrosis); `infection-reaction` (xanthogranulomatous osteomyelitis is real) |
+| `lesion-plan` (single) | decision 1; count, ESR, CRP and imaging read in `admission` | `biopsy-before-treatment`: film and clotting checked, then marrow and iliac biopsy under one anaesthetic for histology, immunohistochemistry, molecular tests and culture, no steroid before the samples | `lch-chemo` (vertebra plana is the classic sign of LCH); `spinal-tb` (several vertebrae, raised ESR/CRP — and common); `crmo-nsaid` (near-normal count, normal joint spaces) |
+| `biopsy-reading` (single) | histology read in `pathology` | `non-langerhans`: xanthogranuloma-family histiocytosis, ECD the leading candidate; leg long-bone imaging, staging and BRAF to settle it (her lytic axial lesions are atypical for ECD) | `lch-poor-sample` (vertebra plana again; "the negative stains are artefact"); `rosai-dorfman` (foamy histiocytes and fibrosis); `infection-reaction` (xanthogranulomatous osteomyelitis is real) |
 | `staging-plan` (select all) | decision 3 | `mutation-testing`, `whole-body-staging`, `endocrine-tests` | `start-braf-inhibitor` ("about half carry the mutation"); `steroid-bridge` (relieve the pain while waiting) |
 | `family-talk` (single) | decision 4; the parent's understanding asked | `shared-plan`: SPIKES with both, the child's view and assent, honest uncertainty, targeted drugs exist, a time to talk again | `parent-only` (protect the child); `historical-pessimism` (1.0.0's "no treatment options" distractor turned into a tempting frankness); `insist-now` (pressure, threat, waiver) |
 
@@ -141,21 +141,22 @@ once per language); in decisions 1–3 a distractor is longer than the key in bo
 | `rb-lesion-plan` | diagnosis | 3 | decision 2 right first time and the biopsy booked |
 | `rb-no-treatment-before-tissue` | safety | 4 | **critical** — no prednisolone and no LCH chemotherapy while contraindicated (before the biopsy, i.e. in `admission`); `scoredWhen` = decision 2 attempted or either drug given |
 | `rb-pathology-reading` | diagnosis | 3 | decision 3 right first time |
-| `rb-staging-acts` | management | 4 | **critical** — molecular testing, PET-CT or whole-body MRI, and brain/pituitary MRI ordered in `pathology` or `planning` |
+| `rb-staging-acts` | management | 4 | **critical** — the biopsy booked, and molecular testing, PET-CT or whole-body MRI, and brain/pituitary MRI ordered before the outcome (`admission`, `pathology` or `planning`) |
 | `rb-staging-plan` | management | 3 | decision 4 right first time; echocardiogram, osmolality and spine MRI ordered; haematology-oncology and spinal referrals |
 | `rb-family-plan` | management | 2 | decision 5 right first time; family meeting; written follow-up plan |
-| `rb-avoid-unproven` | safety | 2 | no discharge as growing pains, no empirical antituberculosis drugs, no BRAF inhibitor without a result; `scoredWhen` = decision 2 attempted or any of the three given |
+| `rb-avoid-unproven` | safety | 2 | no discharge as growing pains, no empirical antituberculosis drugs, no BRAF inhibitor without a result, and no prednisolone or LCH protocol after the biopsy, before staging (given while not contraindicated: `valid: true`); `scoredWhen` = decision 2 attempted or any of the five given |
 | `rb-communication` | communication | (judged) | SPIKES within Calgary–Cambridge with the girl and her parent; assent; refusal handled by exploring reasons and keeping care open (see judge guidance) |
 
 **Critical items are acts.** `rb-no-treatment-before-tissue` is the case's dangerous error (treatment before
 tissue), lost only when a steroid or steroid-containing chemotherapy is given while contraindicated
 (`{intervened, valid: false}`). `rb-staging-acts` is the missed life-saving act — without the molecular result and
 the staging, the brain, heart and great-vessel involvement that decides ECD's urgency and the choice of a targeted
-drug stay unknown — and it is met only by orders placed in `pathology` or `planning`, never in hindsight from the
-outcome phase. 1.0.0's only critical item was a first-try answer to a management question; that is now
+drug stay unknown — and it is met by the biopsy booking and by orders placed before the outcome phase: early ones in
+`admission` count (a PET-CT before the biopsy is reasonable practice), and none can be earned in hindsight because
+the outcome phase itself waits for them (`obj-staging`). 1.0.0's only critical item was a first-try answer to a management question; that is now
 `rb-staging-plan` and carries no critical flag.
 
-### How wrong choices score (measured 2026-11-13 with core `assess`)
+### How wrong choices score (measured 2026-11-14 with core `assess`)
 
 | Path | Score | Critical items missed |
 |---|---|---|
@@ -166,8 +167,10 @@ outcome phase. 1.0.0's only critical item was a first-try answer to a management
 | One wrong first answer at decision 2, 3 or 4 (each distractor) | 27/30 (90 %) | none |
 | Reference path plus prednisolone, or plus LCH chemotherapy, in `admission` | 26/30 (87 %) and the **safety outcome fails** | `rb-no-treatment-before-tissue` |
 | Reference path plus discharge as growing pains, empirical antituberculosis drugs or vemurafenib | 28/30 (93 %); the act is a contraindicated safety event | none |
-| Prednisolone after the biopsy (in `planning`) | 30/30 — neutral, neither indicated nor contraindicated | none |
+| Prednisolone or the LCH protocol after the biopsy (in `planning`) | 28/30 (93 %); not contraindicated, so the safety outcome passes, but `rb-avoid-unproven` is lost | none |
 | Whole-body MRI instead of PET-CT (to spare a child radiation) | 30/30 (100 %) — `whole-body-mri` is the PET-CT's `alternativeTo` | none |
+| PET-CT and brain MRI ordered early, in `admission` (not repeated later) | 30/30 (100 %) | none |
+| No clotting screen | 30/30 (100 %) — in the reference path and named in the key, not scored | none |
 | No molecular testing, PET-CT or brain MRI | stays in `planning` (the outcome phase waits for `obj-staging`); 26/30 if the learner stops | `rb-staging-acts` |
 | No biopsy booked | stays in `admission`; 15/30 (50 %) | `rb-staging-acts` |
 | No red-flag questions (night pain, fevers, leg weakness/bladder, TB contact) | 27/30 (90 %) | none |
@@ -180,15 +183,18 @@ before the biopsy they can partly treat leukaemia, lymphoma or LCH, leave the ti
 tumour lysis, so either fails the assessment's safety outcome whatever the score. `empirical-anti-tb` and
 `discharge-reassure` (risk moderate) and `vemurafenib-now` (risk high) are explicitly `critical: false`: each is a
 serious but recoverable misjudgement that the next clinician corrects, and each costs the `rb-avoid-unproven`
-item.
+item. After the biopsy, prednisolone and the LCH protocol are no longer contraindicated (the samples are taken), so
+they do not fail the safety outcome there; started before staging and the molecular result, they cost
+`rb-avoid-unproven` too.
 
 ## Reference path (`solution`)
 
-75 steps: start → the seven presentation items, the twelve unrecorded items a clinician would ask about (night
+77 steps: start → the seven presentation items, the twelve unrecorded items a clinician would ask about (night
 pain, fevers, injury, earlier care, leg weakness or bladder trouble, headaches and vision, past history,
 medicines, allergies, growth and puberty, TB contact, family history) and the two labelled worries → posture,
 gait, sacrum, FABER, local skin, limb neurology → decision 1 → regular paracetamol → blood count, ESR, CRP, blood
-film, bone chemistry, imaging report, spine MRI, long-bone X-rays → haematology-oncology and spinal referrals →
+film, clotting screen (before the anaesthetic), bone chemistry, imaging report, spine MRI, long-bone X-rays →
+haematology-oncology and spinal referrals →
 decision 2 → marrow → biopsy booking → (`pathology`) histology, tissue culture, molecular testing → decision 3 →
 (`planning`) PET-CT, brain and pituitary MRI, echocardiogram, osmolality → decision 4 → the parent's
 understanding → family meeting, written follow-up plan → decision 5 → (`outcome`) outcome record → finish. It
@@ -223,7 +229,18 @@ A for a positive stain.
 
 **Derived values.** None: no weight, height or body surface area is recorded, so every dose in the case is a
 formula (paracetamol 15 mg/kg per dose; prednisolone 1–2 mg/kg/day, maximum 60 mg; vinblastine 6 mg/m² weekly with
-prednisolone 40 mg/m²/day) and no concrete dose is calculated.
+prednisolone 40 mg/m²/day) and no concrete dose is calculated. The LCH induction doses are Haupt 2013's (vinblastine
+6 mg/m² weekly with prednisone 40 mg/m²/day; prednisolone is its dose-equivalent); the paracetamol formula matches
+published paediatric dosing advice (for example New Zealand's Medsafe and Australian Prescriber: 15 mg/kg, at most
+four doses in 24 hours, at most 1 g a dose); both formulas are still to be checked against the BNF for Children and
+the Chinese national formulary for children (see "To verify").
+
+**Guideline numbers.** NICE NG12 (children): a very urgent full blood count within 48 hours for persistent or
+unexplained bone pain (an "offer" recommendation) and a very urgent X-ray within 48 hours considered for unexplained
+bone pain or swelling. WHO Module 5 (2022): bone and joint TB in children is treated for 12 months — HRZE for 2
+months, then HR for 10. The FDA approvals: vemurafenib for adults with BRAF-V600-mutant ECD (6 November 2017);
+cobimetinib for adults with histiocytic neoplasms (2022). About half of ECD carries BRAF V600E; nearly 20 % of ECD
+has LCH lesions as well (Histiocyte Society, 2016).
 
 ## Facilitator notes
 
@@ -250,8 +267,9 @@ prednisolone 40 mg/m²/day) and no concrete dose is calculated.
 |---|---|---|
 | Accepting growing pains or mechanical pain | `growing-pains`, `mechanical-back`; `discharge-reassure` contraindicated | `rb-triage`, `rb-avoid-unproven` |
 | Reading sacral tenderness and FABER as JIA and stopping there | `enthesitis-arthritis`; HLA-B27 is a low-value test with a note | `rb-triage` |
-| A steroid trial for pain and a raised ESR | `prednisolone-trial` critical in `admission`; `steroid-bridge` later | `rb-no-treatment-before-tissue`, `rb-staging-plan` |
-| "Vertebra plana = LCH" without tissue | `lch-chemo`, `lch-poor-sample`; `lch-chemo-now` critical in `admission` | `rb-lesion-plan`, `rb-pathology-reading`, `rb-no-treatment-before-tissue` |
+| A steroid trial for pain and a raised ESR | `prednisolone-trial` critical in `admission`; `steroid-bridge` later; a steroid after the biopsy, before staging, costs the avoided-harm item | `rb-no-treatment-before-tissue`, `rb-staging-plan`, `rb-avoid-unproven` |
+| "Vertebra plana = LCH" without tissue | `lch-chemo`, `lch-poor-sample`; `lch-chemo-now` critical in `admission`, and avoidable after a CD1a-negative biopsy | `rb-lesion-plan`, `rb-pathology-reading`, `rb-no-treatment-before-tissue`, `rb-avoid-unproven` |
+| Booking an anaesthetic and biopsy without checking clotting | the key and its feedback name the clotting screen; it is in the reference path | not scored (debrief) |
 | Empirical antituberculosis treatment | `spinal-tb`; `empirical-anti-tb` contraindicated | `rb-lesion-plan`, `rb-avoid-unproven` |
 | Trusting a normal white count to exclude leukaemia | the key and its feedback; blood film and marrow offered | `rb-first-tests` |
 | Reading CD68 as diagnostic, or the negative stains as artefact | `lch-poor-sample`, `rosai-dorfman`, `infection-reaction` | `rb-pathology-reading` |
@@ -298,7 +316,8 @@ organ screening and long-term outcome are unknown" became unrecorded tests with 
 test." and the case's `unknowns`.
 
 **Adapted for teaching (labelled).** The parent as a speaking companion (1.0.0 records only 家长 — her parents or
-guardians — declining treatment); who answers what; all dialogue; two worries and one understanding that add no
+guardians — declining treatment); the children's ward and her sitting up on the bed (1.0.0 records only an inpatient
+setting); who answers what; all dialogue; two worries and one understanding that add no
 clinical fact (`concerns-admission`, `child-worry`, `family-understanding`, sourced as teaching devices — the last
 one names the hip bone because 1.0.0 records an iliac biopsy); the staff; the phases; decisions, options, feedback,
 interventions, rubric, teaching points; the unrecorded tests offered to the learner; the order-entry notice on the
@@ -374,12 +393,13 @@ the integer-months rule — and prints as "11 years 5 months" everywhere.
    doi:10.1002/pbc.24367
 6. National Institute for Health and Care Excellence. Suspected cancer: recognition and referral. NICE guideline
    NG12. London: NICE; 2015 (updated 2026).
-7. Children's Cancer and Leukaemia Group. Information for professionals, section 6 (treatment): introduction to
-   steroids. Available from: https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids
+7. Children's Cancer and Leukaemia Group. Introduction to steroids [Internet]. Outreach information resource for
+   professionals, section 6: treatment. CCLG; last updated 2026 Jan [cited 2026 Nov 14]. Available from:
+   https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids
 8. World Health Organization. WHO consolidated guidelines on tuberculosis. Module 5: management of tuberculosis in
    children and adolescents. Geneva: World Health Organization; 2022.
 9. Katz AL, Webb SA; Committee on Bioethics. Informed consent in decision-making in pediatric practice. Pediatrics.
-   2016;138(2):e20161485.
+   2016;138(2):e20161485. doi:10.1542/peds.2016-1485
 10. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad
     news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
 
@@ -387,8 +407,16 @@ The article's DOI is the verified one in `scripts/cmcr-105-sources.json` (publis
 and bibliographic details were confirmed by web search on 2026-11-13 (Blood 2020 consensus,
 Histiocyte Society 2016, WHO-HAEM5 myeloid/histiocytic paper, Euro Histio Net 2013, SPIKES); NICE NG12's 2026 update
 date, the FDA approvals of vemurafenib (2017, adults with BRAF-V600 ECD) and cobimetinib (2022, adults with
-histiocytic neoplasms), the CCLG steroid statement and the AAP 2016 statement were confirmed the same way. No DOI is
-given for Katz 2016 because it was not confirmed. The NCCN Histiocytic Neoplasms guideline (version 2.2021, J Natl
+histiocytic neoplasms), the CCLG steroid statement and the AAP 2016 statement were confirmed the same way. The
+independent review of 2026-11-14 re-checked them: NICE NG12 was last updated on 15 April 2026 (an update on adult
+cancers) and its children's wording was read in a secondary summary (the NICE site refused automated access); the
+CCLG page ("Introduction to steroids", last updated January 2026) says corticosteroids must not be given before
+referral when ALL or non-Hodgkin lymphoma is possible, because they may partly treat it and risk tumour lysis; WHO
+Module 5 (2022) was read for the bone and joint TB regimen (HRZE 2 months, then HR 10 months); Haupt 2013 was read for
+its diagnostic criterion (CD1a and/or CD207 on lesional cells) and induction doses; Emile 2016 for the L and R groups
+and the "nearly 20 %" of ECD with LCH lesions; the abstract of Goyal 2020 for "most patients require treatment, except
+for a minority with minimally symptomatic single-organ disease"; and Europe PMC for the DOI of Katz 2016 (PMID
+27456510; the companion policy statement is e20161484). The NCCN Histiocytic Neoplasms guideline (version 2.2021, J Natl
 Compr Canc Netw 2021) was consulted but is not cited: it is written for adults and adds nothing to the 2020 consensus
 for this child.
 
@@ -410,22 +438,26 @@ for this child.
 * Whether the article reports any molecular test or organ staging (1.0.0's feedback said BRAF was not reported).
 
 **In the guidance:**
-* NICE NG12: the 2026 update date, and that the children's recommendations quoted (very urgent full blood count
-  within 48 hours for persistent or unexplained bone pain; a very urgent X-ray considered for unexplained bone pain or
-  swelling) are unchanged in the current version.
-* CCLG's steroid statement: the date or version of the web resource.
-* Goyal 2020: the exact wording on BRAF V600E testing in every patient and wider MAPK testing when negative; the
-  baseline evaluation list (PET-CT including the legs, brain MRI, cardiac assessment, endocrine evaluation); the
-  statement that most patients need treatment; the place of corticosteroids; and the full author list after the
-  third author.
-* Haupt 2013: the diagnostic criteria (CD1a and/or CD207) and the LCH induction doses quoted in `lch-chemo-now`
-  (vinblastine 6 mg/m² weekly; prednisolone 40 mg/m²/day).
-* WHO Module 5 (2022): the wording on bacteriological confirmation in children and the treatment duration for bone
-  and joint TB (the case says only "at least six months").
+* NICE NG12: the children's wording on the NICE page itself (read here only in a secondary summary: "offer" a very
+  urgent full blood count within 48 hours for persistent or unexplained bone pain; "consider" a very urgent X-ray
+  within 48 hours for unexplained bone pain or swelling), unchanged by the April 2026 update.
+* Goyal 2020 (full text not reachable in this environment): the exact wording on BRAF V600E testing in every patient
+  and wider MAPK testing when negative; the baseline evaluation list (PET-CT including the legs, brain MRI, cardiac
+  assessment, endocrine evaluation); the place of corticosteroids; and the full author list after the third author.
 * The WHO haemoglobin threshold behind the L flag (115 g/L at 5–11 years).
 * Paediatric doses quoted as formulas (paracetamol 15 mg/kg per dose, at most four doses in 24 hours; prednisolone
   1–2 mg/kg/day, at most 60 mg) against the BNF for Children and 中国国家处方集（儿童版）.
-* The author lists abbreviated with "et al." in references 2–6 and the DOI of Katz 2016.
+* The author lists abbreviated with "et al." in references 2–6.
+
+**For clinicians of the specialty (a paediatric haemato-oncologist with histiocytosis experience, a paediatric
+radiologist, a pathologist):**
+* Whether a marrow belongs with the iliac biopsy when the count is near normal, and whether the clotting screen
+  before the anaesthetic is routine in their unit.
+* PET-CT or whole-body MRI for the staging of a child, and whether an early PET-CT before the biopsy is their
+  practice (the case credits both).
+* The keyed reading of the biopsy: ECD as the leading candidate with lytic axial lesions, against mixed ECD–LCH,
+  systemic xanthogranuloma or a late xanthomatous LCH lesion.
+* Scoring a steroid or the LCH protocol started after the biopsy, before staging, as avoidable (`rb-avoid-unproven`).
 
 ## Changelog
 
@@ -449,6 +481,27 @@ for this child.
 * Staff (attending, nurse, radiologist, pathologist), six objectives, debrief with key reasoning, five dated
   teaching points, seven unknowns and ten references; 40-utterance matcher corpus.
 * Review status `editorial` (2026-10-30) with the standard notes; `extensions` in the collection schema.
+* Independent review (2026-11-14), fixes within 1.1.0:
+  * Clinical accuracy: the enthesitis-related arthritis feedback no longer says ERA cannot cause back pain (it can:
+    sacroiliac and low-back pain); the antituberculosis harm now states WHO Module 5's regimen for bone and joint TB in
+    children (12 months: HRZE 2 months, then HR 10) instead of "at least six months of four hepatotoxic drugs"; the
+    biopsy-reading key calls ECD the leading candidate (her lytic axial lesions are atypical) and no longer says BRAF
+    "confirms" it; whole-body MRI for a child is no longer attributed to the 2020 consensus; learning outcome 5 no
+    longer reads as if interferon-alpha were approved for ECD.
+  * Assessment: `rb-staging-acts` now credits staging orders placed early in `admission` (a learner who sent PET-CT
+    and brain MRI before the biopsy was reported as missing the critical act) and requires the biopsy booking;
+    `rb-avoid-unproven` now also covers prednisolone or the LCH protocol started after the biopsy, before staging
+    (both had scored 30/30 with a passing safety outcome).
+  * The keyed biopsy plan names its precondition: a clotting screen (no result recorded) is in the reference path
+    (77 steps) and named in the key and its feedback; the nurse can send it.
+  * Facts and wording: the debrief conclusion states the same facts in zh-CN and en (normal joint spaces, no local
+    redness, no later outcome recorded; ECD as the report's diagnosis); the refusal is no longer called a
+    "communication outcome" (its reasons are not recorded); the biopsy teaching point no longer implies the biopsy
+    side; the CCLG steroid guidance is dated (updated January 2026) and the Katz 2016 DOI added; the judge guidance
+    presents ECD as the likely diagnosis still to be confirmed; the Haupt 2013 exception for an isolated vertebra plana
+    is taught in the LCH distractor's feedback.
+  * README: the children's ward labelled as staging, the scoring table re-measured, the verified citations moved out
+    of "To verify", a clinicians' list added, the `case-check.ts` path corrected.
 
 ### 1.0.0 — 2026-10-28
 
@@ -459,8 +512,8 @@ slots). Superseded by 1.1.0.
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-655474/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-655474 --lang en                                                 # 75 steps · 6/6 · 5/5 · utterances 40/40 · 30/30 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-655474                       # depth floor, do-nothing 0, wrong-first 17/30 < 30/30
+npm run -s cc -- cases verify cmcr-655474 --lang en                                                 # 77 steps · 6/6 · 5/5 · utterances 40/40 · 30/30 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-655474                                       # depth floor, do-nothing 0, wrong-first 17/30 < 30/30
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-655474:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-655474:"  # in-world demonstration, en + zh-CN
 ```
@@ -473,8 +526,8 @@ All five passed on 2026-11-13.
 
 **学习目标：** 识别不能按生长痛处理的骨痛危险信号并立即检查（NICE NG12）；对伴椎体扁平的多部位骨病变先排除白血病、再取组织，取样前不用激素；把CD68阳性、CD1a和S100阴性的泡沫样组织细胞判读为非朗格汉斯细胞组织细胞病，并说明ECD要结合临床和影像诊断；按2020年国际共识在治疗前完成BRAF/MAPK检测和全身分期；说明当前靶向和常规治疗的选择；用SPIKES与孩子和家长沟通，争取孩子的认同。
 
-**关键决策：** ①骨痛的危险信号与第一步检查；②多部位骨病变的确诊计划（涂片、骨髓、髂骨活检，取样前不用激素）；③活检判读（非朗格汉斯细胞组织细胞病，首先考虑ECD，还缺什么）；④治疗前评估（多选：分子检测、全身分期、内分泌检查）；⑤与孩子和家长的谈话方式。
+**关键决策：** ①骨痛的危险信号与第一步检查；②多部位骨病变的确诊计划（看涂片、查凝血，同一次麻醉下做骨髓和髂骨活检，取样前不用激素）；③活检判读（非朗格汉斯细胞组织细胞病，首先考虑ECD，但脊柱和髂骨的溶骨性病变并不典型，还缺什么）；④治疗前评估（多选：分子检测、全身分期、内分泌检查）；⑤与孩子和家长的谈话方式。
 
-**复盘要点：** 危险信号来自病史和查体；没有组织就治疗是最危险的捷径；CD1a和S100阴性指向黄色肉芽肿家族，ECD要结合全身表现；治疗取决于突变和受累器官；家长拒绝治疗是沟通结局，不是对现代治疗的评价。待核实的内容见上文“To verify”。
+**复盘要点：** 危险信号来自病史和查体；没有组织就治疗是最危险的捷径；CD1a和S100阴性指向黄色肉芽肿家族，ECD要结合全身表现；治疗取决于突变和受累器官；家长拒绝进一步治疗的理由没有记录，这一结局不是对现代治疗的评价。待核实的内容见上文“To verify”。
 
-**安全结果：** 活检取样前给泼尼松龙或按LCH方案化疗是本例的危险错误（`critical: true`），无论得分多少都判为安全不合格；经验性抗结核、按生长痛出院和无BRAF结果用维莫非尼是可纠正的错误（`critical: false`），计入安全项扣分。
+**安全结果：** 活检取样前给泼尼松龙或按LCH方案化疗是本例的危险错误（`critical: true`），无论得分多少都判为安全不合格；经验性抗结核、按生长痛出院和无BRAF结果用维莫非尼是可纠正的错误（`critical: false`），计入安全项扣分；活检之后、分期之前开始激素或LCH方案不判为安全不合格，但同样扣安全项的分。

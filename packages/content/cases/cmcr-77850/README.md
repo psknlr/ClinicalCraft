@@ -22,9 +22,9 @@ record stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: four record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist (ideally an electrophysiologist) review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30; independent AI-assisted review and fixes 2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist (ideally an electrophysiologist) review it before teaching use |
 | phases | `ed` 急诊就诊 / In the emergency department → `monitored` 收入监护病床后 / On the monitored bed (critical care) → `recovery` 病情稳定以后 / Once she has stabilised (ward) → `followup` 记录的结局 / Recorded outcome — all one-way, none learner-switchable |
-| content | 23 history items (10 recorded facts, 12 unknown, 1 labelled teaching device; 9 required) · 4 examination findings (the admission examination, phase `ed`) · 11 investigations (3 record reviews; 6 without a recorded result) · 17 interventions (4 harmful: 3 critical, 1 non-critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 40 test utterances |
+| content | 23 history items (10 recorded facts, 12 unknown, 1 labelled teaching device; 9 required) · 4 examination findings (the admission examination, phase `ed`) · 11 investigations (3 record reviews; 6 without a recorded result) · 17 interventions (5 harmful when given while contraindicated: 3 critical, 2 non-critical) · 6 objectives · 5 decisions (21 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 44 test utterances |
 
 ## Learning outcomes
 
@@ -37,9 +37,9 @@ After the case the learner can:
    imminent risk of torsade de pointes, and start continuous ECG monitoring with a defibrillator ready at once (ESC 2018
    syncope; ESC 2022 VA/SCD).
 3. Treat torsade de pointes in congenital long-QT syndrome: defibrillate sustained or pulseless runs at once, give
-   magnesium sulfate 2 g (8 mmol) IV, keep potassium at 4.5–5.0 mmol/L and restart a non-selective beta-blocker,
-   avoiding amiodarone, isoprenaline and QT-prolonging drugs such as ondansetron (RCUK 2026 tachyarrhythmia algorithm;
-   AHA/ACCF 2010; US FDA 2011).
+   magnesium sulfate 2 g (8 mmol) IV, keep potassium at 4.5–5.0 mmol/L and restart a non-selective beta-blocker; avoid
+   amiodarone and QT-prolonging drugs such as ondansetron, and if runs persist raise the rate by pacing rather than
+   isoprenaline (RCUK 2026 tachyarrhythmia algorithm; ESC 2022 VA/SCD; AHA/ACCF 2010; US FDA 2011).
 4. Interpret a QTc that stays at 0.61 s after recovery, and a recurrence seven years after left cardiac sympathetic
    denervation while off the beta-blocker, as persisting high risk, and explain why an emotional trigger suggests but
    cannot establish a genotype (ESC 2022 VA/SCD).
@@ -57,7 +57,7 @@ A 28-year-old woman was seen seven years earlier for long QT and a dangerous arr
 sympathetic denervation** (LCSD; "seven years after" comes from the report's title). She took **propranolol for about a
 year** after the operation and then **stopped it herself** (dose not recorded). From **the day before admission** she
 blacked out repeatedly: the first time she came round after a few minutes, then the attacks recurred; she was
-**incontinent of urine** during the blackouts and afterwards **dizzy, weak, nauseated and vomiting**; **this episode
+**incontinent of urine** when she blacked out and afterwards **dizzy, weak, nauseated and vomiting**; **this episode
 followed emotional upset**. Nobody in her family had similar blackouts. On examination she was **alert but looked
 unwell**, normally developed, with **normal hearing**, clear lungs and a **regular rhythm without murmur**.
 
@@ -71,14 +71,16 @@ unwell**, normally developed, with **normal hearing**, clear lungs and a **regul
   follow-up.
 
 **Diagnosis:** long-QT syndrome (genotype not recorded) with recurrent torsade de pointes seven years after LCSD, off
-beta-blockade and with hypokalaemia. **Today's answer** (ESC 2022 VA/SCD; RCUK 2026 tachyarrhythmia algorithm):
-monitoring with a defibrillator from the first minute in the emergency department; magnesium sulfate 2 g (8 mmol) IV;
-potassium to 4.5–5.0 mmol/L; no QT-prolonging drugs (the vomiting invites ondansetron, which is the trap); shocks for
-sustained or pulseless runs, never amiodarone, and no isoprenaline in emotion-triggered congenital long QT; a full-dose
+beta-blockade and with hypokalaemia. **Today's answer** (ESC 2018 syncope; ESC 2022 VA/SCD; RCUK 2026 tachyarrhythmia
+algorithm; AHA/ACCF 2010 for the potassium target): monitoring with a defibrillator from the first minute in the
+emergency department; magnesium sulfate 2 g (8 mmol) IV; potassium to 4.5–5.0 mmol/L; no QT-prolonging drugs (the
+vomiting invites ondansetron, which is the trap); shocks for sustained or pulseless runs, never amiodarone, and — if the
+rate must be raised — pacing, not isoprenaline, in emotion-triggered congenital long QT (ESC 2022 recommends isoprenaline
+or pacing for acquired long QT; RCUK lists both without that distinction); a full-dose
 non-selective beta-blocker with an adherence plan; and, before discharge, an ICD assessment, genetic counselling and
 testing and ECG screening of first-degree relatives — none of which the record mentions.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
 - **Static clock, no physiology** (the collection contract: `clock.mode: "static"`, no `physiology`). Results are
   immediate; interventions are scored for appropriateness but change nothing — the course is the recorded one. There is
@@ -94,10 +96,11 @@ testing and ECG screening of first-degree relatives — none of which the record
     decision 1) and the first hour (decision 2 and the admission) are done (`enterWhen`: objectives `obj-blackouts`,
     `obj-first-look`, `obj-first-hour`), and moves her to a critical-care bed (`location: {setting: "icu"}`): the
     **monitor recordings of her attacks** (recurrent torsade de pointes; critical result), the echocardiogram, decision
-    3 and the treatment of the attacks.
-  - `recovery` — opens once `obj-attacks` (the monitor recordings read in `monitored`, the echocardiogram, decision 3)
-    is done, on the ward (`location: {setting: "ward"}`): the **ECG once stable** (QTc 0.61 s), the genetic test (no
-    result recorded), decisions 4 and 5 and the discharge acts.
+    3 and the treatment of the attacks — the learner's **shock on the monitored bed** stands for the recorded emergency
+    cardioversion (staging), and the phase does not end until one is given.
+  - `recovery` — opens once `obj-attacks` (the monitor recordings read in `monitored`, the echocardiogram, decision 3
+    and a shock given on the monitored bed) is done, on the ward (`location: {setting: "ward"}`): the **ECG once
+    stable** (QTc 0.61 s), the genetic test (no result recorded), decisions 4 and 5 and the discharge acts.
   - `followup` — opens once all five earlier objectives (and so all five decisions) are done: the **reported course and
     outcome** record.
 - No prompt, hint, order response or harm text states a later phase's result before its record opens. The documented
@@ -112,12 +115,15 @@ testing and ECG screening of first-degree relatives — none of which the record
 | `obj-blackouts` | 问清这几次晕倒的来龙去脉 / Take the story of the blackouts | presentation, onset, course, incontinence, after-waking, trigger, past heart history, operation, propranolol asked |
 | `obj-first-look` | 查体，并阅读第一份心电图和血液检查 / Examine her and read the first ECG and bloods | general state, hearing and heart examined; ECG and electrolytes read in `ed`; decision 1 answered |
 | `obj-first-hour` | 决定她现在需要什么，并马上去做 / Decide what she needs now, and do it | decision 2 answered and `admit-monitored` given |
-| `obj-attacks` | 处理监护病床上的反复发作 / Treat the attacks on the monitored bed | monitor recordings read in `monitored`; echocardiogram read (`ed` or `monitored`); decision 3 answered |
+| `obj-attacks` | 处理监护病床上的反复发作 / Treat the attacks on the monitored bed | monitor recordings read in `monitored`; echocardiogram read (`ed` or `monitored`); decision 3 answered; a shock given while not contraindicated (`{intervened: "defibrillation", valid: true}` — only possible on the monitored bed) |
 | `obj-before-discharge` | 出院前评估风险，制订计划 / Assess her risk and plan before discharge | ECG read in `recovery`; decisions 4 and 5 answered |
 | `obj-outcome` | 查阅记录的结局 / Review the recorded outcome | outcome record read in `followup` |
 
 No objective holds a condition that can become permanently false (no phase leaf, no `whenIndicated`, no
-`decidedFirstTry`); the reads in `ed` sit in objectives the next phase waits for, so they cannot be missed.
+`decidedFirstTry`); the reads in `ed` sit in objectives the next phase waits for, so they cannot be missed. The shock in
+`obj-attacks` works the same way as the admission in `obj-first-hour`: `recovery` waits for it, so she stays on the
+monitored bed until it is given, and answering decision 3 no longer moves her to the ward before the learner has acted
+(in the first draft it did, so the reference path shocked her on the ward after she had stabilised).
 
 ### Decisions
 
@@ -132,7 +138,8 @@ No objective holds a condition that can become permanently false (no phase leaf,
 Every decision opens before the record that would confirm its answer (decision 1 before the monitor recordings,
 decision 4 before the outcome record). No decision is gated on an unknown history item. Option ids name the content;
 in the single-best decisions no key is the longest option in either language (measured: each has a distractor at least
-as long).
+as long), and in the select-all decision 5 the three keys are not the three longest options in either language (a
+distractor is longer than two of the keys in en and zh-CN).
 
 ### Rubric (11 deterministic items, total weight 28, + 1 examiner-judged)
 
@@ -145,13 +152,13 @@ as long).
 | `rb-mechanism` | diagnosis | 3 | `mechanism` right first time |
 | `rb-monitor-now` | management | 4 | **critical** — `monitor-defib` given **while in `ed`** (`whenIndicated`; its `indicatedWhen` is `{phase: "ed"}`) |
 | `rb-first-hour` | management | 3 | `first-hour-plan` right first time; magnesium and potassium given in `ed` or `monitored` (`whenIndicated`); propranolol given; admitted to a monitored bed |
-| `rb-torsade` | management | 3 | `torsade-treatment` right first time; defibrillation given after the monitor recordings were read (`whenIndicated`); arrhythmia team called |
-| `rb-no-harm` | safety | 3 | **critical** — no ondansetron, amiodarone, isoprenaline or discharge from `ed`/`monitored`; scored once decision 2 or 3 is attempted or any of the four is given |
+| `rb-torsade` | management | 3 | `torsade-treatment` right first time; a shock on the monitored bed after the monitor recordings were read (`whenIndicated`; its `indicatedWhen` is phase `monitored` and the recordings read there); arrhythmia team called |
+| `rb-no-harm` | safety | 3 | **critical** — no ondansetron, amiodarone or isoprenaline, no discharge from `ed`/`monitored` and no shock outside the monitored bed (both counted only while contraindicated: `valid: false`); scored once decision 2 or 3 is attempted or any of these harms is done |
 | `rb-future-risk` | diagnosis | 2 | `future-risk` right first time |
 | `rb-secondary-prevention` | management | 3 | `discharge-plan` right first time; ICD referral, genetic counselling, relatives' screening and discharge teaching given |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: plain explanation of the long QT and the low potassium, the monitor and the drugs; non-judgemental exploration of why she stopped propranolol; her worry answered honestly; ICD, genetic testing and family screening as shared decisions; a list of drugs to avoid |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (re-measured with the reducer on 2026-11-14, after the review fixes)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -169,9 +176,14 @@ as long).
 | reference path + amiodarone on the monitored bed | 25/28 (89 %) | `rb-no-harm` | **failed** |
 | reference path + isoprenaline on the monitored bed | 25/28 (89 %) | `rb-no-harm` | **failed** |
 | reference path + discharge with a Holter from the ED | 25/28 (89 %) | `rb-no-harm` | **failed** |
+| reference path + a shock in the ED (alert, no run in progress) | 25/28 (89 %) | `rb-no-harm` | passed (non-critical harm) |
+| reference path + a shock on the ward (attacks controlled) | 25/28 (89 %) | `rb-no-harm` | passed (non-critical harm) |
+| reference path + discharge with a Holter from the ward (not contraindicated) | 28/28 (100 %) | none | passed |
 | reference path without magnesium and potassium | 25/28 (89 %) | none | passed |
 | magnesium and potassium given only after the outcome record | 25/28 (89 %) | none | passed |
-| reference path without the shock and the arrhythmia team | 25/28 (89 %) | none | passed |
+| reference path without the arrhythmia team | 25/28 (89 %) | none | passed |
+| a shock on the monitored bed before the recordings are read | 25/28 (89 %) | none | passed |
+| reference path without any shock | — (she stays on the monitored bed: `recovery` waits for the shock) | — | — |
 | reference path without the ICD referral, counselling, screening and teaching | 25/28 (89 %) | none | passed |
 | reference path without asking about other medicines and sudden death in the family | 26/28 (93 %) | none | passed |
 
@@ -181,21 +193,31 @@ monitor recordings that confirm torsade exist; a learner who puts her on the mon
 misses it. Magnesium and potassium count in `ed` or `monitored` (their `indicatedWhen`), so a late dose after the outcome
 record earns nothing. The admission is required to leave `ed` (`obj-first-hour`), so the recorded course opens only after
 a disposition the record supports; a learner who first sends her home with a Holter has already failed the safety
-outcome. **Known limit:** propranolol, the arrhythmia team and the discharge acts are not time-gated (a late act still
-meets its item); debrief the order from the transcript.
+outcome. The shock counts only on the monitored bed once the recordings are read (its `indicatedWhen`); given in the
+emergency department or on the ward it is contraindicated and loses `rb-no-harm`. **Known limit:** propranolol, the
+arrhythmia team and the discharge acts are not time-gated (a late act still meets its item); debrief the order from the
+transcript.
 
 ### Critical items
 
 `rb-monitor-now` (the missed life-saving act: continuous ECG monitoring with defibrillator pads in the emergency
-department, before the recorded torsade) and `rb-no-harm` (the dangerous errors: a QT-prolonging drug, isoprenaline, or
-sending her home). Both are acts; neither reads a final-phase record.
+department, before the recorded torsade) and `rb-no-harm` (the dangerous errors: a QT-prolonging drug, isoprenaline,
+sending her home from the department or the monitored bed, or a shock with no run to shock). Both are acts; neither reads
+a final-phase record.
 
 **Safety outcome.** `amiodarone` and `isoprenaline` (always contraindicated) and `discharge-holter` (contraindicated in
 `ed` and `monitored`) are `critical: true`: amiodarone lengthens the QT in torsade, isoprenaline adds adrenergic drive in
 emotion-triggered congenital long QT, and sending a patient with recurrent arrhythmic syncope home removes the
-defibrillator — each fails the assessment's safety outcome whatever the score. `ondansetron` is `risk: "moderate"`
-without a `critical` flag: a QT-prolonging antiemetic is a real error (it loses the critical rubric item `rb-no-harm`) but
-a recoverable one. `defibrillation` is `risk: "high"` with no contraindication (it is the recorded act).
+defibrillator — each fails the assessment's safety outcome whatever the score. `defibrillation` is `risk: "high"`,
+indicated on the monitored bed once the recordings are read and contraindicated in `ed`, `recovery` and `followup`
+(an alert patient with a perfusing rhythm, then a patient whose attacks are controlled), with `critical: false`: a shock
+with no run in progress hurts and can itself start VF, but with the pads on it is recoverable, so it loses `rb-no-harm`
+without failing the safety outcome. `ondansetron` is `risk: "moderate"` without a `critical` flag: a QT-prolonging
+antiemetic is a real error (it loses `rb-no-harm`) but a recoverable one. For `isoprenaline`, note that the RCUK
+algorithm lists "isoprenaline or temporary pacing to increase HR" for polymorphic VT with QT prolongation without
+separating congenital from acquired long QT; ESC 2022 recommends either only in acquired long QT, and the case treats it
+as critical because her attacks are emotion-triggered congenital long QT — a clinician should confirm this judgement
+(To verify).
 
 ## Reference path (`solution`)
 
@@ -205,10 +227,12 @@ propranolol, why she stopped, other medicines, allergies, family blackouts, fami
 pregnancy, alcohol/drugs, her worry → examination (general state, hearing, heart, lungs) → **12-lead ECG** → **IV
 cannula** → **electrolytes** → magnesium, glucose, pregnancy test, earlier records (no results) → `mechanism` →
 `first-hour-plan` → **magnesium sulfate**, **potassium**, QT-drug review, **propranolol**, arrhythmia team → **admit to a
-monitored bed** → (phase `monitored`) **monitor recordings** → echocardiogram → `torsade-treatment` → **defibrillation**,
-repeat magnesium → (phase `recovery`) **ECG once stable** → genetic test (no result) → `future-risk` → ICD referral,
+monitored bed** → (phase `monitored`) **monitor recordings** → echocardiogram → **defibrillation**, repeat magnesium →
+`torsade-treatment` → (phase `recovery`) **ECG once stable** → genetic test (no result) → `future-risk` → ICD referral,
 genetic counselling, relatives' screening, discharge teaching → `discharge-plan` → (phase `followup`) outcome record →
-finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 28/28, utterances 40/40. Every unknown asked returns
+finish. The shock and the repeat magnesium are given on the monitored bed (checked step by step with the reducer: the
+phase is `monitored` for both). `cases verify` passes: objectives 6/6, decisions 5/5, rubric 28/28, utterances 44/44.
+Every unknown asked returns
 the lay unknown ("这个我说不上来，医生。" / "I'm not sure, doctor.").
 
 ## Clinical numbers check
@@ -253,9 +277,13 @@ relative with known LQTS or sudden death is recorded). The score asks for a QTc 
 potassium was 3.3 mmol/L, which is why the 0.61 s tracing once stable matters (its potassium is unrecorded). No weight is
 recorded, so no weight-based dose is computed.
 
-**Guidance numbers used in teaching text:** magnesium sulfate 2 g = 8 mmol IV over 10 minutes (RCUK 2025 algorithm,
-March 2026 revision); potassium target 4.5–5.0 mmol/L (AHA/ACCF 2010 statement — see To verify); LQTS diagnosis at
-QTc ≥ 480 ms or a diagnostic score > 3 (ESC 2022 VA/SCD). Numbers that appear only in wrong options or harmful acts, as
+**Guidance numbers used in teaching text:** magnesium 8 mmol IV over 10 minutes (RCUK tachyarrhythmia algorithm, 2025
+guidelines, "Updated March 2026" — read from the PDF on 2026-11-14), which is magnesium sulfate about 2 g (the AHA/ACCF
+2010 statement's "magnesium sulfate 2 g", Class IIa); potassium target 4.5–5.0 mmol/L (AHA/ACCF 2010: repletion to
+4.5–5 mmol/L "may also be considered", Class IIb, level C — read on 2026-11-14; ESC 2022 recommends IV magnesium with
+potassium supplementation in torsade, Class I, without a target); LQTS diagnosis at QTc ≥ 480 ms or a diagnostic score
+> 3 (ESC 2022 VA/SCD); ESC 2018 syncope's major high-risk ECG feature "QTc > 460 ms in repeated 12-lead ECGs indicating
+LQTS". Numbers that appear only in wrong options or harmful acts, as
 the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; isoprenaline to a heart rate of about
 100/min; ondansetron 4 mg IV.
 
@@ -292,6 +320,8 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
 | Amiodarone "as in the arrest algorithm" | decision 3 (`amiodarone-per-algorithm`); `amiodarone` (critical intervention) |
 | Isoprenaline to shorten the QT | decision 3 (`isoprenaline-to-shorten-qt`); `isoprenaline` (critical intervention) |
 | Sending her home with a Holter | decision 2 (`holter-and-clinic`); `discharge-holter` (critical intervention) |
+| Shocking her with no run in progress (alert in the ED; settled on the ward) | `defibrillation` contraindicated outside the monitored bed (harm text); `rb-no-harm` (critical) |
+| Answering decision 3 and forgetting to treat the runs | `obj-attacks` stays open and `recovery` waits until the runs are shocked on the monitored bed |
 | Assigning LQT2 from the trigger; skipping genetic testing | decision 4 (`trigger-proves-lqt2`) |
 | Trusting the denervation, or an ICD, instead of the beta-blocker | decision 4 (`repeat-denervation`); decision 5 (`icd-instead-of-drug`, `denervation-and-potassium`) |
 | Not asking why she stopped her tablets | `rb-communication` (judged); the unknown `why-stopped` answer prompts the conversation |
@@ -301,9 +331,11 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
 1. Incontinence does not make a blackout epileptic; ESC 2018 syncope counts an ECG pointing to long QT among the
    high-risk features and asks for in-hospital ECG monitoring. Then and now: the record caught her torsade on the
    monitor; today the monitor goes on in the emergency department.
-2. Torsade: shock sustained or pulseless runs, magnesium 8 mmol (about 2 g) IV over 10 minutes, potassium 4.5–5.0 mmol/L,
-   stop QT-prolonging drugs, avoid amiodarone (RCUK 2026; AHA/ACCF 2010); raise the rate by pacing, not isoprenaline, in
-   emotion-triggered congenital long QT. The recorded potassium, magnesium and shocks match current practice.
+2. Torsade: shock sustained or pulseless runs and stop QT-prolonging drugs (AHA/ACCF 2010); magnesium 8 mmol (about
+   2 g) IV over 10 minutes and no amiodarone (RCUK 2026); potassium with the magnesium (ESC 2022), aiming for 4.5–5.0
+   mmol/L (AHA/ACCF 2010). ESC 2022 recommends isoprenaline or pacing to raise the rate in acquired long QT; in
+   emotion-triggered congenital long QT, pacing, not isoprenaline. The recorded potassium, magnesium and shocks match
+   current practice.
 3. QT-prolonging drugs: avoid them and correct electrolytes (ESC 2022 VA/SCD); ondansetron is to be avoided in congenital
    long QT (FDA 2011) — check every new drug against a list such as CredibleMeds.
 4. Beta-blockade is the foundation (non-selective nadolol or propranolol, ESC 2022 VA/SCD); LCSD is a complement, not a
@@ -319,7 +351,8 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
   moved to a critical-care bed, the case's stand-in for a CCU or monitored bed (1.0.0 does not record the unit). Phase
   `recovery` moves her to a ward bed (`location: {setting: "ward"}`), where `followup` also happens. Both locations are a
   **staging convention**, said so in the README and in the staff's knowledge.
-- **Kit.** The monitor and pads need the bedside monitor-defibrillator (`cardiac-monitor`, `defibrillator`); the ECG uses
+- **Kit.** The monitor and pads need the bedside monitor-defibrillator (`cardiac-monitor`, `defibrillator`), and so does
+  the shock, which is given at the critical-care bed in phase `monitored`; the ECG uses
   the department's and the ward's ECG machine (`ecg-12lead`, `performedAt: "bedside"`); the echocardiogram needs the
   ultrasound machine wheeled from imaging (`echocardiography`, bedside); the IV cannula, magnesium, propranolol and the
   harmful drugs come from the crash cart (`iv-access`, `medications`); potassium, amiodarone and isoprenaline also need an
@@ -336,8 +369,10 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
   QT-prolonging drug classes and safe potassium and magnesium administration.
 - **She can speak throughout** (a conscious adult answers for herself; no companion). The four examination findings
   exist only in `ed` (the admission examination); later examinations answer with `examNotRecorded`.
-- **Measured (offline demonstration, 2026-11-13).** `embodied-autopilot.test.ts -t "cmcr-77850:"` passes in en and
-  zh-CN: every objective done, in-world score equal to the clinical score (28/28), no "cannot do this".
+- **Measured (offline demonstration, 2026-11-13; again 2026-11-14 after the review fixes).**
+  `embodied-autopilot.test.ts -t "cmcr-77850:"` passes in en and zh-CN: every objective done, in-world score equal to the
+  clinical score (28/28), no "cannot do this"; the demonstration now gives the shock at the monitored bed, not on the
+  ward.
 
 ## Source and adaptation (fidelity limits)
 
@@ -357,8 +392,9 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
   doctor." (the template's "the source notes do not provide that information" is gone); in records "此项检查没有结果记录。" /
   "No result is recorded for this test." and "This case does not record whether this was done; it does not simulate its
   effect."; no claim is made that the article lacks anything.
-- **Labelled teaching devices.** The staging (emergency department → monitored bed → ward), the staff, the decisions,
-  intervention options and scoring, and the patient's worry ("这个还会再犯吗？" / "is this going to keep happening?",
+- **Labelled teaching devices.** The staging (emergency department → monitored bed → ward), the learner's shock on the
+  monitored bed standing for the recorded emergency cardioversion (1.0.0 does not say where or when the shocks were
+  given), the staff, the decisions, intervention options and scoring, and the patient's worry ("这个还会再犯吗？" / "is this going to keep happening?",
   `persona.concerns` and the ICE item `worries`, source "Teaching device (ICE)") add no clinical fact.
 - **Media.** The report's ECG figure (`fig01.png`) is **withheld** by the media review (acquisition dates and
   record-number headers), so `assets` is empty and every ECG and rhythm finding is given as text; no outcome depends on
@@ -391,9 +427,18 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
   Answer words were kept out of keywords where a learner would not say them (激动 / upset left `trigger`).
 - **Order entry.** `orderMatching.rules` send ECG queries with 既往/以前/旧/old/previous/prior/earlier to the earlier
   records, and ECG queries with 监护/发作时/遥测/monitor/telemetry/strip to the monitor recordings.
-- **Corpus.** 40 test utterances (26 zh-CN, 14 en), written as learners speak; every required item has at least one.
+- **The defibrillator and the shock (review, 2026-11-14).** "Get the defibrillator ready", "Put the defibrillator pads on
+  her", "准备好除颤仪" and "贴上除颤电极片" used to tie between `monitor-defib` and `defibrillation` (both 1.00), and
+  "Defibrillate her" tied the other way. `excludeKeywords` now separate them: `defibrillation` excludes pads, ready,
+  attach, standby, monitor, bring, 电极, 准备, 备好, 推, 监护, 贴, 备用; `monitor-defib` excludes defibrillate, shock,
+  cardiovert, 电除颤, 电击, 电复律. Probed with the matcher: each of those phrasings now reaches one item.
+- **Probes added in review.** "What brings you in?" reached no item (the gap KIT §3.10 names): `presentation` gained
+  "brings you" / "bringsyouin"; "How many times has it happened?" reached `presentation` before `course`: `presentation`
+  now excludes how many / 几次 / 几回; "Have you blacked out before?" and "以前晕倒过吗？" reached `incontinence`,
+  `trigger` or `palpitations`: `interval-episodes` gained "blacked out before", "fainted before", 以前晕倒过, 以前晕过…
+- **Corpus.** 44 test utterances (27 zh-CN, 17 en), written as learners speak; every required item has at least one.
   Three **look-alike negatives** (`expect: []`): "你家里人知道你来医院了吗？" and "Does your family know you're in hospital?"
-  (the family-history wording) and "今天早饭吃了吗？" (eating words near the medication item). `cases verify`: 40/40.
+  (the family-history wording) and "今天早饭吃了吗？" (eating words near the medication item). `cases verify`: 44/44.
 
 ## References
 
@@ -406,20 +451,28 @@ the tempting choice, not as advice: amiodarone 300 mg IV after the third shock; 
 4. Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2025: adult advanced life support.
    Resuscitation. 2025;215 Suppl 1:110769. doi:10.1016/j.resuscitation.2025.110769
 5. Resuscitation Council UK. Adult tachyarrhythmia algorithm (2025 guidelines; version 3, March 2026). London:
-   Resuscitation Council UK; 2026.
+   Resuscitation Council UK; 2026. Available from:
+   https://www.resus.org.uk/sites/default/files/2026-03/Adult%20tachyarrhythmia%20algorithm%20V3%20March%202026.pdf
 6. Drew BJ, Ackerman MJ, Funk M, et al. Prevention of torsade de pointes in hospital settings: a scientific statement
-   from the American Heart Association and the American College of Cardiology Foundation. Circulation. 2010;121:1047-1060.
+   from the American Heart Association and the American College of Cardiology Foundation. Circulation.
+   2010;121(8):1047-1060. doi:10.1161/CIRCULATIONAHA.109.192704
 7. Wilde AAM, Semsarian C, Márquez MF, et al. EHRA/HRS/APHRS/LAHRS expert consensus statement on the state of genetic
    testing for cardiac diseases. Europace. 2022;24(8):1307-1367. doi:10.1093/europace/euac030
 8. U.S. Food and Drug Administration. FDA Drug Safety Communication: abnormal heart rhythms may be associated with use of
    Zofran (ondansetron). 2011 Sep 15.
 9. 中华医学会心电生理和起搏分会. 2020室性心律失常中国专家共识(2016共识升级版). 中国心脏起搏与心电生理杂志. 2020;34(3):189-253.
+   doi:10.13333/j.cnki.cjcpe.2020.03.001
 
 Used for the derived score in the Clinical numbers check (README only): Schwartz PJ, Crotti L. QTc behavior during
 exercise and genetic testing for the long-QT syndrome. Circulation. 2011;124(20):2181-2184.
 doi:10.1161/CIRCULATIONAHA.111.062182. The references' existence, years and DOIs were confirmed by web search on
-2026-11-13 (academic.oup.com and escardio.org could not be reached from the authoring environment, so the guideline
-texts themselves were not read; see To verify).
+2026-11-13. The independent review (2026-11-14) re-checked them: PubMed records for references 2, 3, 4, 6 and 7 and the
+Schwartz paper (authors, volume, pages, DOI); the RCUK algorithm PDF (V3, "Updated March 2026") read in full; the
+AHA/ACCF 2010 statement read in its PMC version (PMC3057430); the 2020 Chinese consensus on CNKI (volume, pages, DOI); the
+FDA communication's page. The ESC 2022 recommendation tables are images on the publisher's page, so their wording was
+taken from reproductions (JACC 2023 electrical-storm review, Table 2; Rev Cardiovasc Med 2023 LQTS review, Table 1) and
+the guideline's own prose; the ESC 2018 high-risk table likewise from a reproduction, with the guideline's in-hospital
+monitoring text read on the publisher's page.
 
 ### To verify
 
@@ -445,21 +498,39 @@ texts themselves were not read; see To verify).
 - Genetic testing, any ICD discussion or implantation, family screening, and any sudden death in the family.
 - Follow-up beyond "more than a year", and the QTc at follow-up.
 
-**In the guidance (not read in full from the authoring environment):**
+**In the guidance (what the 2026-11-14 review confirmed, and what is still open):**
 
-- ESC 2022 VA/SCD (LQTS section): the exact wording and classes of the recommendations used — diagnosis at QTc ≥ 480 ms
-  or score > 3; avoiding QT-prolonging drugs and correcting electrolyte abnormalities; non-selective beta-blockers; ICD
-  after cardiac arrest and for arrhythmic syncope or poorly tolerated VT despite beta-blockers; LCSD as a complement (ICD
-  contraindicated or declined, or repeated shocks); genetic testing and counselling; mexiletine in LQT3.
-- ESC 2018 syncope: the high-risk ECG criterion for long QT (the QTc threshold) and the wording on in-hospital ECG
-  monitoring.
-- ERC 2025 ALS and the RCUK tachyarrhythmia algorithm (2025; March 2026 revision): the torsade steps (magnesium 8 mmol over
-  10 minutes, stopping QT-prolonging drugs, correcting hypokalaemia, avoiding amiodarone, isoprenaline or pacing to raise
-  the rate) were confirmed only through search summaries; check the RCUK algorithm URL cited in `debrief.references`.
-- AHA/ACCF 2010 statement: the potassium target of 4.5–5.0 mmol/L, the magnesium dose and the advice on isoproterenol in
-  congenital long QT; its DOI (left out until verified).
-- 2020 Chinese VA consensus: the full list of issuing bodies and its LQTS recommendations. A Chinese syncope consensus
-  (2018) could not be confirmed and is not cited.
+- Confirmed: RCUK tachyarrhythmia algorithm V3 (read in full) — for polymorphic VT with QT prolongation "Give Mg2+ 8 mmol
+  IV over 10 min", "Consider isoprenaline or temporary pacing to increase HR", "Avoid amiodarone". AHA/ACCF 2010 (read) —
+  magnesium sulfate 2 g IV first-line (IIa), repeated if torsade persists; potassium to 4.5–5 mmol/L "may also be
+  considered" (IIb); immediate DC cardioversion for torsade that does not stop or degenerates into VF; "isoproterenol
+  infusion or overdrive pacing can suppress TdP" in pause-dependent torsade. **It says nothing about isoproterenol in
+  congenital long QT, and nothing against amiodarone**, so the first draft's citations of it for those two points were
+  removed. ESC 2022 (from reproductions and its prose) — IV magnesium with potassium supplementation in torsade (I, C);
+  isoproterenol or transvenous pacing in *acquired* long QT with recurrent torsade despite magnesium (I, C); LQTS
+  diagnosis at QTc ≥ 480 ms or score > 3 (I, C); non-selective beta-blockers (I, B); ICD if symptomatic on beta-blockers
+  (I, C); LCSD when an ICD is contraindicated or declined or shocks recur (I, C); genetic testing and counselling (I, C);
+  mexiletine in LQT3 (I, C); the general measures (avoid QT-prolonging drugs, correct hypokalaemia, hypomagnesaemia and
+  hypocalcaemia, avoid genotype-specific triggers). ESC 2018 syncope — major high-risk ECG feature "QTc > 460 ms in
+  repeated 12-lead ECGs indicating LQTS"; in-hospital monitoring "(in bed or by telemetry) is warranted in patients with
+  high-risk clinical features … suggesting arrhythmic syncope".
+- Still open: the ESC 2022 Recommendation Table 41 itself (read only through reproductions) — in particular the wording
+  and class of the ICD-after-cardiac-arrest recommendation and the "symptomatic" footnote (arrhythmic syncope or
+  haemodynamically non-tolerated VT); the ESC 2018 high-risk table itself; whether ERC 2025 ALS says anything specific on
+  torsade (only its citation was confirmed); the 2020 Chinese VA consensus's LQTS recommendations (only its citation was
+  confirmed). A Chinese syncope consensus (2018) could not be confirmed and is not cited.
+
+**For a clinician (an electrophysiologist) to confirm:**
+
+- `isoprenaline` as `critical: true`. The case's own algorithm (RCUK V3) lists isoprenaline or pacing for polymorphic VT
+  with QT prolongation without separating congenital from acquired long QT; ESC 2022 recommends them for acquired long QT,
+  and reviews describe isoprenaline as contraindicated in congenital long QT (LQT1/LQT2). The case fails the safety
+  outcome for it because her attacks are emotion-triggered congenital long QT.
+- Magnesium sulfate 2 g IV in the emergency department, before any torsade is documented (keyed in decision 2 for
+  presumed arrhythmic syncope with QTc 0.58 s, bigeminy and hypokalaemia).
+- The shock gate: the learner must give one shock on the monitored bed to move on (standing for the recorded emergency
+  cardioversion), and a shock in the department or on the ward is contraindicated (`critical: false`).
+- Oral propranolol restarted in the first hour, during recurrent torsade.
 
 ## Changelog
 
@@ -505,6 +576,29 @@ texts themselves were not read; see To verify).
   wording ("The case is not yet reviewed by a licensed clinician" — lower case, as the collection contract requires);
   `extensions`: `sourceDoi` and `doiVerifiedAt` (2026-10-29, from the source map), `sourceTextChecked: false`;
   `authorChecks` and `sourceTextSha256` removed until the source pass.
+- **Independent review (2026-11-14), fixes within 1.1.0.** (1) *Shock on a settled patient:* answering decision 3
+  moved her to the ward at once (the `recovery` gate held), so the reference path — and the in-world demonstration —
+  shocked her and repeated the magnesium after "the attacks are under control", and `rb-torsade` credited it, because
+  the shock's `indicatedWhen` was only "the recordings were read". Now the shock is indicated on the monitored bed after
+  the recordings are read, contraindicated in the department, on the ward and at follow-up (`critical: false`, harm text
+  citing ERC 2025 ALS and the RCUK algorithm), `obj-attacks` waits for a valid shock, `rb-no-harm` counts a misplaced
+  shock, and the reference path shocks before answering decision 3. (2) *Citations that did not hold:* the isoprenaline
+  harm text and decision-3 feedback attributed "isoprenaline is for acquired, pause-dependent torsade" to the RCUK
+  algorithm (which lists isoprenaline or pacing for any QT-prolonged polymorphic VT) and "avoided in congenital long QT"
+  to the AHA/ACCF 2010 statement (which does not say it); both now cite ESC 2022 (isoprenaline or pacing in acquired long
+  QT; beta-blockers in LQTS) and state what RCUK lists. Learning outcome 3, teaching point 2 and the conclusion no longer
+  cite AHA/ACCF 2010 for avoiding amiodarone, or ESC 2022 / RCUK for the 4.5–5.0 mmol/L potassium target (AHA/ACCF 2010,
+  "may be considered"); the amiodarone harm and feedback no longer claim, unverified, that the arrest algorithm's
+  amiodarone step "does not apply" to torsade, and quote what RCUK says instead. (3) *Matcher:* the defibrillator / shock
+  tie and the "What brings you in?" gap fixed (Matcher notes); 4 test utterances added. (4) *Discharge:* `rb-no-harm`
+  now counts a Holter discharge only while contraindicated (`valid: false`), as its text says. (5) *Smaller fixes:* "several
+  times" (好几回) in the chief complaint and the `course` answer and "during the blackouts" in a tag were counts and a
+  generalisation 1.0.0 does not state ("反复发作", "晕倒时尿失禁"); "an unaffected family" in decision 4's key became "a
+  family free of blackouts"; the conclusion's English lost "nausea"; the select-all decision's three keys were its three
+  longest options in zh-CN (two distractors lengthened); the `obj-attacks` hint pointed at the trap ("which drugs from
+  the usual cardiac arrest algorithm would make things worse") and now asks what the runs need; the README's validation
+  path, timeline heading, reference-path description and Safety outcome paragraph corrected; DOIs added for the AHA/ACCF
+  2010 statement and the 2020 Chinese consensus.
 
 ### 1.0.0 — 2026-10-28
 
@@ -515,13 +609,13 @@ texts themselves were not read; see To verify).
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-77850/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-77850 --lang en                                                 # 70 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 28/28 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-77850                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
+npm run -s cc -- cases verify cmcr-77850 --lang en                                                 # 70 steps · objectives 6/6 · decisions 5/5 · utterances 44/44 · rubric 28/28 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-77850                                       # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-77850:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-77850:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-13: all five pass.
+Measured on 2026-11-13, and again on 2026-11-14 after the review fixes: all five pass.
 
 ## 中文摘要
 
@@ -535,7 +629,8 @@ QTc 0.58 s 伴室性早搏二联律；入院血钾 3.3 mmol/L；心脏超声结�
 
 **学习目标。** ① 结合病史与心电图区分心律失常性晕厥、癫痫发作和反射性晕厥（ESC 2018 晕厥指南）；② 识别 QTc 0.58 s、
 室性早搏二联律合并低钾意味着随时可能发生尖端扭转，立即持续监护并备好除颤；③ 处理尖端扭转：电除颤、硫酸镁 2 g（8 mmol）
-静脉注射、血钾 4.5–5.0 mmol/L、恢复非选择性 β 受体阻滞剂，避免胺碘酮、异丙肾上腺素和昂丹司琼等延长 QT 的药物；④ 判断恢复后
+静脉注射、血钾 4.5–5.0 mmol/L、恢复非选择性 β 受体阻滞剂，避免胺碘酮和昂丹司琼等延长 QT 的药物，发作仍反复时以起搏而不是
+异丙肾上腺素提高心率；④ 判断恢复后
 QTc 仍为 0.61 s、去神经术后停药复发属持续高危，情绪诱因不能确定基因分型；⑤ 制订出院前二级预防：足量 β 受体阻滞剂与坚持服药、
 ICD 评估、遗传咨询与基因检测、一级亲属筛查、避免延长 QT 的药物；⑥ 说明 1 年余无晕厥并不证明风险已消失。
 
@@ -550,5 +645,6 @@ ICD 评估、遗传咨询与基因检测、一级亲属筛查、避免延长 QT 
 QT 的药物来处理，胺碘酮和异丙肾上腺素在这里是陷阱，醒后呕吐时最顺手的昂丹司琼也是陷阱。β 受体阻滞剂是基础治疗，左心交感神经切除
 只是补充；出院前评估 ICD、做基因检测并筛查一级亲属——记录中都没有提到。稳定时 QTc 0.61 s，1 年余无晕厥不代表风险消失。
 
-**安全结果。** 胺碘酮、异丙肾上腺素和从急诊或监护病床直接出院为 `critical: true`，给予即判定安全结果不通过；昂丹司琼为中等风险、
-非致命性错误，但会失去关键评分项 `rb-no-harm`。
+**安全结果。** 胺碘酮、异丙肾上腺素和从急诊或监护病床直接出院为 `critical: true`，给予即判定安全结果不通过；昂丹司琼（中等风险，
+未标 critical）和在监护病床以外电击（`critical: false`；急诊时她神志清楚，到病房时发作已控制）为可纠正的错误，不判定安全结果不通过，
+但会失去关键评分项 `rb-no-harm`。

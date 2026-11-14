@@ -32,8 +32,8 @@
       "en": "Recognise a QTc of 0.58 s with ventricular bigeminy and a potassium of 3.3 mmol/L in known long-QT syndrome as an imminent risk of torsade de pointes, and start continuous ECG monitoring with a defibrillator ready at once (ESC 2018 syncope; ESC 2022 VA/SCD)."
     },
     {
-      "zh-CN": "处理先天性长 QT 综合征的尖端扭转：持续或无脉的发作立即电除颤，硫酸镁 2 g（8 mmol）静脉注射，血钾维持 4.5–5.0 mmol/L，恢复非选择性 β 受体阻滞剂；避免胺碘酮、异丙肾上腺素和昂丹司琼等延长 QT 或加重肾上腺素能刺激的药物（英国复苏委员会 2026 快速性心律失常流程；AHA/ACCF 2010；美国 FDA 2011）。",
-      "en": "Treat torsade de pointes in congenital long-QT syndrome: defibrillate sustained or pulseless runs at once, give magnesium sulfate 2 g (8 mmol) IV, keep potassium at 4.5–5.0 mmol/L and restart a non-selective beta-blocker, avoiding amiodarone, isoprenaline and QT-prolonging drugs such as ondansetron (RCUK 2026 tachyarrhythmia algorithm; AHA/ACCF 2010; US FDA 2011)."
+      "zh-CN": "处理先天性长 QT 综合征的尖端扭转：持续或无脉的发作立即电除颤，硫酸镁 2 g（8 mmol）静脉注射，血钾维持 4.5–5.0 mmol/L，恢复非选择性 β 受体阻滞剂；避免胺碘酮和昂丹司琼等延长 QT 的药物，发作仍反复时以起搏而不是异丙肾上腺素提高心率（英国复苏委员会 2026 快速性心律失常流程；ESC 2022 室性心律失常指南；AHA/ACCF 2010；美国 FDA 2011）。",
+      "en": "Treat torsade de pointes in congenital long-QT syndrome: defibrillate sustained or pulseless runs at once, give magnesium sulfate 2 g (8 mmol) IV, keep potassium at 4.5–5.0 mmol/L and restart a non-selective beta-blocker; avoid amiodarone and QT-prolonging drugs such as ondansetron, and if runs persist raise the rate by pacing rather than isoprenaline (RCUK 2026 tachyarrhythmia algorithm; ESC 2022 VA/SCD; AHA/ACCF 2010; US FDA 2011)."
     },
     {
       "zh-CN": "把恢复后仍为 0.61 s 的 QTc、去神经术后 7 年在停药期间的复发判断为持续高危，并说明情绪诱因只能提示、不能确定基因分型（ESC 2022 室性心律失常指南）。",
@@ -75,7 +75,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -108,8 +108,8 @@
     "ageUnit": "years",
     "sex": "female",
     "chiefComplaint": {
-      "zh-CN": "从昨天起又晕倒了好几回",
-      "en": "I've blacked out again — several times since yesterday"
+      "zh-CN": "从昨天起又晕倒了，一次又一次",
+      "en": "I've been blacking out again, over and over, since yesterday"
     },
     "triageNote": {
       "zh-CN": "28岁女性，从昨天开始反复晕倒，刚到急诊，现在神志清楚。",
@@ -122,7 +122,7 @@
       },
       {
         "zh-CN": "晕倒时尿失禁",
-        "en": "Incontinence during the blackouts"
+        "en": "Incontinence when she blacked out"
       },
       {
         "zh-CN": "醒后恶心呕吐",
@@ -306,7 +306,9 @@
           "what's wrong",
           "come in today",
           "reason for coming",
-          "main problem"
+          "main problem",
+          "brings you",
+          "bringsyouin"
         ]
       },
       "excludeKeywords": {
@@ -315,14 +317,18 @@
           "家里",
           "手术",
           "第一次",
-          "醒"
+          "醒",
+          "几次",
+          "几回"
         ],
         "en": [
           "before",
           "family",
           "operation",
           "first time",
-          "afterwards"
+          "afterwards",
+          "how many",
+          "howmany"
         ]
       },
       "disclosure": "volunteer",
@@ -394,8 +400,8 @@
         "en": "How long were you out the first time, and what has happened since?"
       },
       "answer": {
-        "zh-CN": "头一回过了几分钟就醒过来了，后来又反复犯了好几次。",
-        "en": "The first time I came round after a few minutes, but since then it's happened again several times."
+        "zh-CN": "头一回过了几分钟就醒过来了，后来又一次次地犯。",
+        "en": "The first time I came round after a few minutes, but since then it's kept happening."
       },
       "keywords": {
         "zh-CN": [
@@ -1161,14 +1167,22 @@
           "手术以后晕",
           "术后晕过",
           "这些年",
-          "中间晕过"
+          "中间晕过",
+          "以前晕倒过",
+          "以前晕过",
+          "以前也晕",
+          "过去晕倒过"
         ],
         "en": [
           "since the operation",
           "years since",
           "in between",
           "between then and now",
-          "sincethesurgery"
+          "sincethesurgery",
+          "blacked out before",
+          "fainted before",
+          "blackouts before",
+          "passed out before"
         ]
       },
       "disclosure": "unknown",
@@ -2144,6 +2158,18 @@
       "response": {
         "zh-CN": "监护已接上，除颤电极已贴好。本病例没有记录她在急诊的监护读数和开始监护的时间，也不模拟。",
         "en": "Monitoring is on and the pads are applied. This case does not record her monitor readings in the department or when her monitoring began, and does not simulate them."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "电除颤",
+          "电击",
+          "电复律"
+        ],
+        "en": [
+          "defibrillate",
+          "shock",
+          "cardiovert"
+        ]
       }
     },
     {
@@ -2470,11 +2496,24 @@
       "excludeKeywords": {
         "zh-CN": [
           "植入",
-          "icd"
+          "icd",
+          "电极",
+          "准备",
+          "备好",
+          "推",
+          "监护",
+          "贴",
+          "备用"
         ],
         "en": [
           "implant",
-          "icd"
+          "icd",
+          "pads",
+          "ready",
+          "attach",
+          "standby",
+          "monitor",
+          "bring"
         ]
       },
       "dose": {
@@ -2486,10 +2525,35 @@
         "cardiac-monitor"
       ],
       "risk": "high",
+      "critical": false,
       "maxDoses": 3,
       "indicatedWhen": {
-        "read": "rhythm",
-        "phase": "monitored"
+        "all": [
+          {
+            "phase": "monitored"
+          },
+          {
+            "read": "rhythm",
+            "phase": "monitored"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "phase": "ed"
+          },
+          {
+            "phase": "recovery"
+          },
+          {
+            "phase": "followup"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "此时没有正在发作、需要电击的尖端扭转：在急诊她神志清楚，有灌注心律；到了病房，发作已经控制。电击只用于持续不止或已导致无脉的发作——室颤和无脉室速用非同步电除颤（ERC 2025 成人高级生命支持指南），神志清楚而有危及生命表现的快速性心律失常在镇静下同步电复律（英国复苏委员会 2026 快速性心律失常流程）。对有灌注的心律电击会带来疼痛，本身还可能诱发室颤；保持电极贴好、除颤仪备用即可。",
+        "en": "No run of torsade is in progress to shock: in the emergency department she is alert with a perfusing rhythm, and on the ward her attacks are under control. Shocks are for a run that persists or leaves her pulseless — unsynchronised for VF or pulseless VT (ERC 2025 adult ALS), synchronised under sedation for a tachyarrhythmia with life-threatening features in a conscious patient (RCUK 2026 tachyarrhythmia algorithm). A shock into a perfusing rhythm hurts and can itself start VF; keep the pads on and the defibrillator ready instead."
       },
       "response": {
         "zh-CN": "已电击。记录显示她有的发作需要紧急电复律；本病例没有记录电击次数和能量，也不模拟其效果。",
@@ -2623,8 +2687,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "尖端扭转时避免胺碘酮：它本身延长 QT 间期，可使尖端扭转更易发作（英国复苏委员会快速性心律失常流程，2026 年 3 月修订；ESC 2022 室性心律失常指南：长 QT 患者避免延长 QT 的药物）。室颤/无脉室速流程中“3 次电击后给胺碘酮”的步骤不适用于 QT 延长相关的尖端扭转；先给镁剂、纠正低钾、电击持续的发作。",
-        "en": "Avoid amiodarone in torsade de pointes: it lengthens the QT itself and makes torsade more likely (Resuscitation Council UK tachyarrhythmia algorithm, revised March 2026; ESC 2022 VA/SCD: avoid QT-prolonging drugs in LQTS). The 'amiodarone after three shocks' step of the VF/pulseless VT algorithm does not apply to QT-related torsade: give magnesium, correct the potassium and shock sustained runs."
+        "zh-CN": "尖端扭转时避免胺碘酮：它本身延长 QT 间期，可使尖端扭转更易发作（英国复苏委员会快速性心律失常流程，2026 年 3 月修订；ESC 2022 室性心律失常指南：长 QT 患者避免延长 QT 的药物）。她反复发作的尖端扭转正是这种心律，应以镁剂、补钾和对持续发作电击来处理，而不是套用心搏骤停流程里的胺碘酮。",
+        "en": "Avoid amiodarone in torsade de pointes: it lengthens the QT itself and makes torsade more likely (Resuscitation Council UK tachyarrhythmia algorithm, revised March 2026; ESC 2022 VA/SCD: avoid QT-prolonging drugs in LQTS). Her recurring torsade is exactly that rhythm, so treat it with magnesium, potassium and shocks for sustained runs rather than with the arrest algorithm's amiodarone."
       },
       "response": {
         "zh-CN": "胺碘酮已注射。本病例没有记录用过胺碘酮；不模拟其效果。",
@@ -2668,8 +2732,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "异丙肾上腺素用于获得性、长间歇依赖、伴心动过缓的尖端扭转，用来提高心率（英国复苏委员会快速性心律失常流程）；先天性长 QT 综合征、尤其在情绪等肾上腺素能刺激下发作者，通常避免使用，因为肾上腺素能刺激本身就可诱发尖端扭转（AHA/ACCF 2010 院内尖端扭转预防声明）。她这次发作在情绪激动后出现，本病例也没有记录发作前有心动过缓或长间歇。",
-        "en": "Isoprenaline is for acquired, pause-dependent torsade with a slow heart rate, to raise the rate (Resuscitation Council UK tachyarrhythmia algorithm); in congenital long-QT syndrome — above all when attacks follow emotion or another adrenergic trigger — it is usually avoided, because adrenergic stimulation can itself provoke torsade (AHA/ACCF 2010 statement on torsade in hospital). This episode followed emotional upset, and this case records no bradycardia or pauses before her attacks."
+        "zh-CN": "先天性长 QT 综合征的发作若由情绪等肾上腺素能刺激诱发（她这次正是如此），肾上腺素能刺激本身就是诱因，β 受体阻滞剂才是治疗（ESC 2022 室性心律失常指南），再泵入 β 受体激动剂可能诱发更多尖端扭转。英国复苏委员会 2026 快速性心律失常流程对 QT 延长的多形性室速列出异丙肾上腺素或临时起搏以提高心率，ESC 2022 室性心律失常指南则把二者推荐用于获得性长 QT 在补镁、纠正诱因后仍反复的尖端扭转；对她这种先天性、情绪诱发的长 QT，药物无效时以起搏提高心率。本病例也没有记录发作前有心动过缓或长间歇。",
+        "en": "In congenital long-QT syndrome whose attacks follow emotion or another adrenergic trigger — as this one did — adrenergic stimulation is itself the trigger and beta-blockade the treatment (ESC 2022 VA/SCD), so a beta-agonist infusion risks more torsade. The RCUK 2026 tachyarrhythmia algorithm lists isoprenaline or temporary pacing to raise the heart rate in polymorphic VT with QT prolongation, and ESC 2022 VA/SCD recommends either for torsade that keeps recurring in acquired long QT despite magnesium and correction of its causes; in her congenital, emotion-triggered long QT the rate is raised by pacing if drugs fail. This case also records no bradycardia or pauses before her attacks."
       },
       "response": {
         "zh-CN": "异丙肾上腺素已泵入。本病例没有记录用过异丙肾上腺素；不模拟其效果。",
@@ -3073,12 +3137,12 @@
         "en": "Attacks"
       },
       "hint": {
-        "zh-CN": "这些发作是怎样开始、怎样结束的？常规心搏骤停流程里的哪些药在这里会帮倒忙？",
-        "en": "How do these runs start and stop — and which drugs from the usual cardiac arrest algorithm would make things worse here?"
+        "zh-CN": "这些发作是怎样开始、怎样结束的？哪些需要电击？又是什么在继续推动它们？",
+        "en": "How do these runs start and stop, which of them need a shock — and what is still driving them?"
       },
       "guidance": {
-        "zh-CN": "在病历终端或床旁调阅发作时的监护记录和心脏超声，作答决策 3，并按你的决定处理。",
-        "en": "At a records terminal or the bedside, review the monitor recordings of her attacks and the echocardiogram, answer decision 3 and act on it."
+        "zh-CN": "在病历终端或床旁调阅发作时的监护记录和心脏超声；到床旁对持续或导致意识丧失的发作电除颤，处理诱发因素；到会诊板作答决策 3。",
+        "en": "At a records terminal or the bedside, review the monitor recordings of her attacks and the echocardiogram; at the bedside, shock the runs that persist or make her collapse and treat what drives them; answer decision 3 on the case board."
       },
       "completeWhen": {
         "all": [
@@ -3100,6 +3164,10 @@
           },
           {
             "decided": "torsade-treatment"
+          },
+          {
+            "intervened": "defibrillation",
+            "valid": true
           }
         ]
       },
@@ -3110,6 +3178,13 @@
             "phase": "monitored"
           },
           "target": "records"
+        },
+        {
+          "unless": {
+            "intervened": "defibrillation",
+            "valid": true
+          },
+          "target": "patient"
         },
         {
           "target": "board"
@@ -3319,8 +3394,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "对。尖端扭转随时可能发生：持续心电监护，除颤仪立即可用（ESC 2018 晕厥指南：怀疑心律失常性晕厥的高危患者在床旁或遥测下监护）。镁剂是尖端扭转的首选药物，同时把血钾提高到 4.5–5.0 mmol/L（英国复苏委员会 2026 快速性心律失常流程；AHA/ACCF 2010 声明）；ESC 2022 室性心律失常指南要求长 QT 患者避免延长 QT 的药物，并首选非选择性 β 受体阻滞剂（纳多洛尔或普萘洛尔）。",
-            "en": "Right. Torsade could start at any moment: continuous ECG monitoring with a defibrillator ready to use (ESC 2018 syncope: monitoring in bed or by telemetry for high-risk patients with suspected arrhythmic syncope). Magnesium is the first drug for torsade, and potassium goes to 4.5–5.0 mmol/L (RCUK 2026 tachyarrhythmia algorithm; AHA/ACCF 2010 statement); ESC 2022 VA/SCD asks LQTS patients to avoid QT-prolonging drugs and to take a non-selective beta-blocker (nadolol or propranolol)."
+            "zh-CN": "对。尖端扭转随时可能发生：持续心电监护，除颤仪立即可用（ESC 2018 晕厥指南：怀疑心律失常性晕厥的高危患者在床旁或遥测下监护）。镁剂是尖端扭转的首选药物（英国复苏委员会 2026 快速性心律失常流程），同时把血钾提高到 4.5–5.0 mmol/L（AHA/ACCF 2010 声明）；ESC 2022 室性心律失常指南要求长 QT 患者避免延长 QT 的药物，并首选非选择性 β 受体阻滞剂（纳多洛尔或普萘洛尔）。",
+            "en": "Right. Torsade could start at any moment: continuous ECG monitoring with a defibrillator ready to use (ESC 2018 syncope: monitoring in bed or by telemetry for high-risk patients with suspected arrhythmic syncope). Magnesium is the first drug for torsade (RCUK 2026 tachyarrhythmia algorithm), and potassium goes up to 4.5–5.0 mmol/L (AHA/ACCF 2010 statement); ESC 2022 VA/SCD asks LQTS patients to avoid QT-prolonging drugs and to take a non-selective beta-blocker (nadolol or propranolol)."
           }
         },
         {
@@ -3407,8 +3482,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。胺碘酮本身延长 QT，英国复苏委员会 2026 快速性心律失常流程要求 QT 延长的多形性室速避免使用；室颤/无脉室速流程里“第 3 次电击后给胺碘酮”的步骤不适用于尖端扭转。电除颤和补钾补镁是对的。",
-            "en": "No. Amiodarone itself prolongs the QT, and the RCUK 2026 tachyarrhythmia algorithm says to avoid it in polymorphic VT with a long QT; the 'amiodarone after the third shock' step of the VF/pulseless VT algorithm does not apply to torsade. The shocks, potassium and magnesium are right."
+            "zh-CN": "不对。胺碘酮本身延长 QT，英国复苏委员会 2026 快速性心律失常流程要求 QT 延长的多形性室速避免使用——她反复发作的尖端扭转正属于这种情况，所以心搏骤停流程里的胺碘酮在这里不是答案。电除颤和补钾补镁是对的。",
+            "en": "No. Amiodarone itself prolongs the QT, and the RCUK 2026 tachyarrhythmia algorithm says to avoid it in polymorphic VT with QT prolongation — which is what her recurring torsade is, so the arrest algorithm's amiodarone is not the answer here. The shocks, potassium and magnesium are right."
           }
         },
         {
@@ -3419,8 +3494,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。异丙肾上腺素用于伴心动过缓、长间歇依赖的获得性尖端扭转（英国复苏委员会 2026 快速性心律失常流程）。她是先天性长 QT，这次发作在情绪激动之后——肾上腺素能刺激正是诱因，异丙肾上腺素可能诱发更多尖端扭转（AHA/ACCF 2010 声明）；本病例也没有记录发作前有心动过缓或长间歇。",
-            "en": "No. Isoprenaline is for acquired, pause-dependent torsade with a slow heart rate (RCUK 2026 tachyarrhythmia algorithm). Hers is congenital long QT, and this episode followed emotional upset — adrenergic stimulation is the trigger, and isoprenaline can provoke more torsade (AHA/ACCF 2010 statement); this case records no bradycardia or pauses before her attacks either."
+            "zh-CN": "不对。用异丙肾上腺素提高心率适用于伴心动过缓、长间歇依赖的获得性尖端扭转：ESC 2022 室性心律失常指南推荐，获得性长 QT 在补镁后仍反复尖端扭转时用异丙肾上腺素或起搏。她是先天性长 QT，这次发作在情绪激动之后——肾上腺素能刺激正是诱因，β 受体阻滞剂才是治疗（ESC 2022），异丙肾上腺素可能诱发更多尖端扭转；本病例也没有记录发作前有心动过缓或长间歇。需要提高心率时，由心律失常团队起搏。",
+            "en": "No. Raising the rate with isoprenaline suits acquired, pause-dependent torsade with a slow heart rate: ESC 2022 VA/SCD recommends isoprenaline or pacing for torsade that keeps recurring in acquired long QT despite magnesium. Hers is congenital long QT and this episode followed emotional upset — adrenergic stimulation is the trigger and a beta-blocker the treatment (ESC 2022), so isoprenaline risks more torsade; this case records no bradycardia or pauses before her attacks either. If the rate must be raised, the arrhythmia team paces."
           }
         },
         {
@@ -3467,7 +3542,7 @@
           "id": "risk-high-subtype-open",
           "text": {
             "zh-CN": "风险仍高：QTc 仍远超 0.5 s，去神经术后停药时复发且需电复律；情绪诱因只是分型线索，要靠基因检测，家族无人晕倒也排除不了",
-            "en": "Still high-risk: QTc far above 0.5 s and a relapse needing shocks, off beta-blockers, after denervation; the trigger only hints at a subtype — genetic testing types it — and an unaffected family excludes nothing"
+            "en": "Still high-risk: QTc far above 0.5 s and a relapse needing shocks, off beta-blockers, after denervation; the trigger only hints at a subtype — genetic testing types it — and a family free of blackouts excludes nothing"
           },
           "correct": true,
           "feedback": {
@@ -3571,7 +3646,7 @@
         {
           "id": "icd-instead-of-drug",
           "text": {
-            "zh-CN": "植入 ICD 后停用 β 受体阻滞剂，因为以后再发作时由除颤器处理即可",
+            "zh-CN": "植入 ICD 之后就停用 β 受体阻滞剂，因为以后再有发作，都可以交给除颤器自动处理",
             "en": "Implant an ICD and then stop the beta-blocker, since the device will deal with any further attack"
           },
           "correct": false,
@@ -3583,7 +3658,7 @@
         {
           "id": "denervation-and-potassium",
           "text": {
-            "zh-CN": "不再使用 β 受体阻滞剂，依靠当年的左心交感神经切除和长期口服补钾来预防复发",
+            "zh-CN": "不再使用 β 受体阻滞剂，改为依靠当年做过的左心交感神经切除，再加上长期口服补钾，来预防以后复发",
             "en": "No beta-blocker: rely on the earlier left cardiac sympathetic denervation and long-term potassium tablets to prevent recurrences"
           },
           "correct": false,
@@ -3769,8 +3844,8 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "首次作答即正确处理反复的尖端扭转，读到监护记录后实施电除颤，并请心律失常团队会诊",
-        "en": "Treated the recurring torsade correctly at the first attempt, defibrillating after reading the monitor recordings and calling the arrhythmia team"
+        "zh-CN": "首次作答即正确处理反复的尖端扭转，在监护病床上读到监护记录后对发作电除颤，并请心律失常团队会诊",
+        "en": "Treated the recurring torsade correctly at the first attempt, shocking her runs on the monitored bed once the recordings were read, and calling the arrhythmia team"
       },
       "met": {
         "all": [
@@ -3793,8 +3868,8 @@
       "weight": 3,
       "critical": true,
       "text": {
-        "zh-CN": "没有给昂丹司琼、胺碘酮或异丙肾上腺素，也没有让她从急诊或监护病床直接回家",
-        "en": "Gave no ondansetron, amiodarone or isoprenaline, and did not send her home from the emergency department or the monitored bed"
+        "zh-CN": "没有给昂丹司琼、胺碘酮或异丙肾上腺素，只在监护病床上电击，也没有让她从急诊或监护病床直接回家",
+        "en": "Gave no ondansetron, amiodarone or isoprenaline, shocked her only on the monitored bed, and did not send her home from the emergency department or the monitored bed"
       },
       "met": {
         "not": {
@@ -3809,7 +3884,12 @@
               "intervened": "isoprenaline"
             },
             {
-              "intervened": "discharge-holter"
+              "intervened": "discharge-holter",
+              "valid": false
+            },
+            {
+              "intervened": "defibrillation",
+              "valid": false
             }
           ]
         }
@@ -3833,6 +3913,10 @@
           },
           {
             "intervened": "discharge-holter"
+          },
+          {
+            "intervened": "defibrillation",
+            "valid": false
           }
         ]
       }
@@ -3960,8 +4044,8 @@
       "en": "Debrief: repeated blackouts, a long QT and the prevention of torsade"
     },
     "conclusion": {
-      "zh-CN": "28岁女性，7 年前因长 QT 和危险的心律失常就诊，行左心交感神经切除，术后服普萘洛尔约 1 年后自行停药。入院前 1 天起反复晕厥（这次在情绪激动后发作），晕厥时尿失禁，醒后头晕、乏力、恶心呕吐。心电图 QTc 0.58 s 伴室性早搏二联律，入院血钾 3.3 mmol/L，心脏超声结构与功能正常；监护记录到反复的尖端扭转型室速，部分数秒后自行终止，部分需紧急电复律。记录中的团队给予补钾补镁、电复律并恢复普萘洛尔；稳定时 QTc 0.61 s，住院 11 天出院，随访 1 年余未再晕厥。诊断：长 QT 综合征，去神经术后 7 年、停用 β 受体阻滞剂并低钾时反复发生尖端扭转。按现行指南（ESC 2022 室性心律失常指南），应从一开始就持续心电监护并备好除颤，给镁剂、补钾至 4.5–5.0 mmol/L、停用延长 QT 的药物、足量非选择性 β 受体阻滞剂，出院前评估 ICD、做基因检测并筛查一级亲属。",
-      "en": "A 28-year-old woman treated seven years earlier for long QT by left cardiac sympathetic denervation had stopped her propranolol herself after about a year. From the day before admission she blacked out repeatedly — this episode after emotional upset — with incontinence, then dizziness, weakness, vomiting. ECG: QTc 0.58 s, ventricular bigeminy; potassium 3.3 mmol/L; echocardiogram normal. Monitoring showed recurrent torsade de pointes, some runs self-terminating after seconds, others needing emergency shocks. The team gave potassium and magnesium, cardioverted her and restarted propranolol; once stable her QTc was 0.61 s; discharged at 11 days, she had no syncope for over a year. Diagnosis: long-QT syndrome with recurrent torsade, off beta-blockade and hypokalaemic. Today (ESC 2022 VA/SCD): monitor and defibrillator at once, magnesium, potassium 4.5–5.0 mmol/L, no QT-prolonging drugs, full-dose non-selective beta-blockade, then ICD assessment, genetic testing and family screening."
+      "zh-CN": "28岁女性，7 年前因长 QT 和危险的心律失常就诊，行左心交感神经切除，术后服普萘洛尔约 1 年后自行停药。入院前 1 天起反复晕厥（这次在情绪激动后发作），晕厥时尿失禁，醒后头晕、乏力、恶心呕吐。心电图 QTc 0.58 s 伴室性早搏二联律，入院血钾 3.3 mmol/L，心脏超声结构与功能正常；监护记录到反复的尖端扭转型室速，部分数秒后自行终止，部分需紧急电复律。记录中的团队给予补钾补镁、电复律并恢复普萘洛尔；稳定时 QTc 0.61 s，住院 11 天出院，随访 1 年余未再晕厥。诊断：长 QT 综合征，去神经术后 7 年、停用 β 受体阻滞剂并低钾时反复发生尖端扭转。按现行指南（ESC 2018 晕厥指南、ESC 2022 室性心律失常指南；血钾目标据 AHA/ACCF 2010 声明），应从一开始就持续心电监护并备好除颤，给镁剂、补钾至 4.5–5.0 mmol/L、停用延长 QT 的药物、足量非选择性 β 受体阻滞剂，出院前评估 ICD、做基因检测并筛查一级亲属。",
+      "en": "A 28-year-old woman treated seven years earlier for long QT by left cardiac sympathetic denervation had stopped her propranolol herself after about a year. From the day before admission she blacked out repeatedly — this episode after emotional upset — with incontinence, then dizziness, weakness, nausea and vomiting. ECG: QTc 0.58 s, ventricular bigeminy; potassium 3.3 mmol/L; echocardiogram normal. Monitoring showed recurrent torsade de pointes, some runs self-terminating after seconds, others needing emergency shocks. The team gave potassium and magnesium, cardioverted her and restarted propranolol; once stable her QTc was 0.61 s; discharged at 11 days, she had no syncope for over a year. Diagnosis: long-QT syndrome with recurrent torsade, off beta-blockade and hypokalaemic. Today (ESC 2018 syncope; ESC 2022 VA/SCD; the potassium target from AHA/ACCF 2010): monitor and defibrillator at once, magnesium, potassium 4.5–5.0 mmol/L, no QT-prolonging drugs, full-dose non-selective beta-blockade, then ICD assessment, genetic testing and family screening."
     },
     "keyReasoning": [
       {
@@ -4025,8 +4109,8 @@
         "en": "Incontinence does not make a blackout epileptic. ESC 2018 syncope counts an ECG pointing to long-QT syndrome among the high-risk features and asks for continuous ECG monitoring, in bed or by telemetry, for high-risk patients with suspected arrhythmic syncope. Then and now: in the record her attacks were caught on the monitor; today she goes on the monitor, pads applied, in the emergency department as soon as the QTc of 0.58 s is read."
       },
       {
-        "zh-CN": "尖端扭转的处理：持续或导致意识丧失的发作立即电除颤；硫酸镁 8 mmol（约 2 g）10 分钟以上静脉注射；血钾提高到 4.5–5.0 mmol/L；停用一切延长 QT 的药物；避免胺碘酮（英国复苏委员会 2026 快速性心律失常流程，依据 ERC 2025 成人高级生命支持；AHA/ACCF 2010 声明）。提高心率（临时起搏或异丙肾上腺素）可抑制长间歇依赖的尖端扭转，但情绪诱发的先天性长 QT 通常避免异丙肾上腺素，药物无效时以起搏提高心率。记录与现行做法：记录中的补钾补镁和电复律与现行做法一致，剂量没有记录。",
-        "en": "Treating torsade: shock runs that persist or cause collapse at once; magnesium sulfate 8 mmol (about 2 g) IV over 10 minutes; potassium up to 4.5–5.0 mmol/L; stop every QT-prolonging drug; avoid amiodarone (RCUK 2026 tachyarrhythmia algorithm, from the ERC 2025 ALS guidelines; AHA/ACCF 2010 statement). Raising the rate (temporary pacing or isoprenaline) suppresses pause-dependent torsade, but isoprenaline is usually avoided in emotion-triggered congenital long QT, so pacing raises the rate if drugs fail. Then and now: the recorded potassium, magnesium and shocks match current practice; the doses are not recorded."
+        "zh-CN": "尖端扭转的处理：持续或导致意识丧失的发作立即电除颤，停用一切延长 QT 的药物（AHA/ACCF 2010 声明）；硫酸镁 8 mmol（约 2 g）10 分钟以上静脉注射，避免胺碘酮（英国复苏委员会 2026 快速性心律失常流程）；补镁的同时补钾（ESC 2022 室性心律失常指南），目标 4.5–5.0 mmol/L（AHA/ACCF 2010）。用异丙肾上腺素或起搏提高心率可抑制长间歇依赖的尖端扭转，ESC 2022 推荐用于获得性长 QT；情绪诱发的先天性长 QT 用 β 受体激动剂等于加重诱因，药物无效时以起搏提高心率。记录与现行做法：记录中的补钾补镁和电复律与现行做法一致，剂量没有记录。",
+        "en": "Treating torsade: shock runs that persist or cause collapse at once, and stop every QT-prolonging drug (AHA/ACCF 2010 statement); magnesium sulfate 8 mmol (about 2 g) IV over 10 minutes, and no amiodarone (RCUK 2026 tachyarrhythmia algorithm); potassium supplemented with the magnesium (ESC 2022 VA/SCD), aiming for 4.5–5.0 mmol/L (AHA/ACCF 2010). Raising the rate with isoprenaline or pacing suppresses pause-dependent torsade, and ESC 2022 recommends it in acquired long QT; in emotion-triggered congenital long QT a beta-agonist adds the very trigger, so pacing raises the rate if drugs fail. Then and now: the recorded potassium, magnesium and shocks match current practice; the doses are not recorded."
       },
       {
         "zh-CN": "长 QT 患者要远离延长 QT 的药物：ESC 2022 室性心律失常指南要求避免这类药物、纠正电解质紊乱；美国 FDA（2011 年药品安全通讯）建议先天性长 QT 综合征患者避免昂丹司琼。她醒后恶心呕吐，最顺手的止吐药恰恰是陷阱——任何新药都先对照 CredibleMeds 等清单核查，并在病历中标注。",
@@ -4047,10 +4131,10 @@
       "Brignole M, Moya A, de Lange FJ, et al. 2018 ESC Guidelines for the diagnosis and management of syncope. Eur Heart J. 2018;39(21):1883-1948. doi:10.1093/eurheartj/ehy037",
       "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2025: adult advanced life support. Resuscitation. 2025;215 Suppl 1:110769. doi:10.1016/j.resuscitation.2025.110769",
       "Resuscitation Council UK. Adult tachyarrhythmia algorithm (2025 guidelines; version 3, March 2026). London: Resuscitation Council UK; 2026. Available from: https://www.resus.org.uk/sites/default/files/2026-03/Adult%20tachyarrhythmia%20algorithm%20V3%20March%202026.pdf",
-      "Drew BJ, Ackerman MJ, Funk M, et al. Prevention of torsade de pointes in hospital settings: a scientific statement from the American Heart Association and the American College of Cardiology Foundation. Circulation. 2010;121:1047-1060.",
+      "Drew BJ, Ackerman MJ, Funk M, et al. Prevention of torsade de pointes in hospital settings: a scientific statement from the American Heart Association and the American College of Cardiology Foundation. Circulation. 2010;121(8):1047-1060. doi:10.1161/CIRCULATIONAHA.109.192704",
       "Wilde AAM, Semsarian C, Márquez MF, et al. European Heart Rhythm Association (EHRA)/Heart Rhythm Society (HRS)/Asia Pacific Heart Rhythm Society (APHRS)/Latin American Heart Rhythm Society (LAHRS) expert consensus statement on the state of genetic testing for cardiac diseases. Europace. 2022;24(8):1307-1367. doi:10.1093/europace/euac030",
       "U.S. Food and Drug Administration. FDA Drug Safety Communication: abnormal heart rhythms may be associated with use of Zofran (ondansetron). Silver Spring (MD): FDA; 2011 Sep 15. Available from: https://www.fda.gov/drugs/drug-safety-and-availability/fda-drug-safety-communication-abnormal-heart-rhythms-may-be-associated-use-zofran-ondansetron",
-      "中华医学会心电生理和起搏分会. 2020室性心律失常中国专家共识(2016共识升级版). 中国心脏起搏与心电生理杂志. 2020;34(3):189-253."
+      "中华医学会心电生理和起搏分会. 2020室性心律失常中国专家共识(2016共识升级版). 中国心脏起搏与心电生理杂志. 2020;34(3):189-253. doi:10.13333/j.cnki.cjcpe.2020.03.001"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -4319,19 +4403,19 @@
       "phase": "monitored"
     },
     {
-      "type": "answer",
-      "decisionId": "torsade-treatment",
-      "optionIds": [
-        "shock-magnesium-betablocker"
-      ]
-    },
-    {
       "type": "intervene",
       "interventionId": "defibrillation"
     },
     {
       "type": "intervene",
       "interventionId": "magnesium-iv"
+    },
+    {
+      "type": "answer",
+      "decisionId": "torsade-treatment",
+      "optionIds": [
+        "shock-magnesium-betablocker"
+      ]
     },
     {
       "type": "order",
@@ -4678,6 +4762,34 @@
         "text": "Does your family know you're in hospital?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "What brings you in?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How many times has it happened?",
+        "locale": "en",
+        "expect": [
+          "course"
+        ]
+      },
+      {
+        "text": "Have you blacked out before?",
+        "locale": "en",
+        "expect": [
+          "interval-episodes"
+        ]
+      },
+      {
+        "text": "以前晕倒过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "interval-episodes"
+        ]
       }
     ]
   }

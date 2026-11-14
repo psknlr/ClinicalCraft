@@ -92,8 +92,8 @@
       "en": "Complete the pre-treatment work-up the 2020 international ECD consensus sets out: BRAF V600E and MAPK-pathway testing of the biopsy, whole-body FDG PET-CT including the legs, brain and pituitary MRI, cardiac and endocrine assessment, and referral to an experienced histiocytosis centre."
     },
     {
-      "zh-CN": "说明当前的治疗选择（按突变选择BRAF或MEK抑制剂，或干扰素α等常规治疗；在成人获批，儿童由专科中心决定），以及为什么一篇2011年报告的病程不代表今天的预后。",
-      "en": "Explain today's treatment options — a BRAF or MEK inhibitor chosen by mutation status, or conventional therapy such as interferon-alpha, approved for adults and decided for a child by a specialist centre — and why a 2011 report's course is not today's prognosis."
+      "zh-CN": "说明当前的治疗选择（按突变选择BRAF或MEK抑制剂——在成人获批，儿童由专科中心决定——或干扰素α等常规治疗），以及为什么一篇2011年报告的病程不代表今天的预后。",
+      "en": "Explain today's treatment options — a BRAF or MEK inhibitor chosen by mutation status (approved for adults; for a child, decided by a specialist centre) or conventional therapy such as interferon-alpha — and why a 2011 report's course is not today's prognosis."
     },
     {
       "zh-CN": "用SPIKES（2000）向11岁的孩子和家长说明一种罕见诊断，在家长同意之外争取孩子本人的认同（美国儿科学会，2016），在家长不愿继续治疗时了解原因、提供准确信息并保持随访。",
@@ -1969,6 +1969,55 @@
       }
     },
     {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血功能（PT、APTT、纤维蛋白原）",
+        "en": "Clotting screen (PT, APTT, fibrinogen)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "凝血",
+          "凝血功能",
+          "凝血常规",
+          "凝血四项",
+          "pt",
+          "aptt"
+        ],
+        "en": [
+          "clotting",
+          "coagulation",
+          "clotting screen",
+          "coag screen",
+          "pt",
+          "aptt",
+          "inr",
+          "fibrinogen"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "本病例没有记录：保持未知",
+            "en": "Not recorded in this case: kept unknown"
+          }
+        }
+      }
+    },
+    {
       "id": "spine-pelvis-imaging",
       "name": {
         "zh-CN": "影像报告：脊柱和骨盆",
@@ -3037,8 +3086,8 @@
         "phase": "admission"
       },
       "harm": {
-        "zh-CN": "活检和骨髓等诊断标本取得之前用糖皮质激素，可能让白血病、淋巴瘤或朗格汉斯细胞组织细胞增生症部分缓解，使活检无法确诊，还可能诱发肿瘤溶解。英国儿童癌症与白血病组织（CCLG）给专业人员的指引明确：怀疑急性淋巴细胞白血病或非霍奇金淋巴瘤时，转诊确诊之前不能用激素；儿童椎体扁平最常见的原因LCH也要靠病变组织病理确诊（Euro Histio Net儿童LCH指南，2013）。先取样，再决定治疗。",
-        "en": "A corticosteroid before the biopsy and marrow samples can partly treat leukaemia, lymphoma or Langerhans cell histiocytosis, leaving the biopsy unable to give a diagnosis, and can set off tumour lysis. The UK Children's Cancer and Leukaemia Group's guidance for professionals is plain: when acute lymphoblastic leukaemia or non-Hodgkin lymphoma is possible, no corticosteroid before referral; and LCH, the commonest cause of vertebra plana in children, is diagnosed on lesional histology (Euro Histio Net paediatric LCH guideline, 2013). Take the samples first, then decide on treatment."
+        "zh-CN": "活检和骨髓等诊断标本取得之前用糖皮质激素，可能让白血病、淋巴瘤或朗格汉斯细胞组织细胞增生症部分缓解，使活检无法确诊，还可能诱发肿瘤溶解。英国儿童癌症与白血病组织（CCLG）给专业人员的指引（2026年更新）明确：怀疑急性淋巴细胞白血病或非霍奇金淋巴瘤时，转诊确诊之前不能用激素；儿童椎体扁平最常见的原因LCH也要靠病变组织病理确诊（Euro Histio Net儿童LCH指南，2013）。先取样，再决定治疗。",
+        "en": "A corticosteroid before the biopsy and marrow samples can partly treat leukaemia, lymphoma or Langerhans cell histiocytosis, leaving the biopsy unable to give a diagnosis, and can set off tumour lysis. The UK Children's Cancer and Leukaemia Group's guidance for professionals (updated 2026) is plain: when acute lymphoblastic leukaemia or non-Hodgkin lymphoma is possible, no corticosteroid before referral; and LCH, the commonest cause of vertebra plana in children, is diagnosed on lesional histology (Euro Histio Net paediatric LCH guideline, 2013). Take the samples first, then decide on treatment."
       },
       "response": {
         "zh-CN": "已开始泼尼松龙。本病例没有记录用过糖皮质激素；不模拟其后果。",
@@ -3126,8 +3175,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "脊柱结核确实要考虑，但本病例没有任何结核接触史、病原学或病理证据。经验性治疗意味着至少6个月的四联用药（有肝毒性），在活检前开始还会降低分枝杆菌培养的阳性率、拖延真正的诊断。应在活检时送组织做分枝杆菌培养和分子检测；WHO儿童和青少年结核病指南（模块5，2022）把病原学检查纳入诊断流程。",
-        "en": "Spinal tuberculosis belongs in the differential, but nothing in this case — no contact, microbiology or histology — supports it. Empirical treatment commits her to at least six months of four potentially hepatotoxic drugs, and started before the biopsy it lowers the yield of mycobacterial culture and delays the real diagnosis. Send biopsy tissue for mycobacterial culture and a molecular test instead; WHO's guidance on TB in children and adolescents (Module 5, 2022) builds bacteriological testing into the diagnostic work-up."
+        "zh-CN": "脊柱结核确实要考虑，但本病例没有任何结核接触史、病原学或病理证据。WHO儿童和青少年结核病指南（模块5，2022）对儿童骨关节结核规定疗程12个月：异烟肼、利福平、吡嗪酰胺和乙胺丁醇四联2个月，再用异烟肼和利福平10个月，有药物性肝损伤的风险；在活检前开始还会降低分枝杆菌培养的阳性率、拖延真正的诊断。应在活检时送组织做分枝杆菌培养和分子检测；该指南也把病原学检查纳入诊断流程。",
+        "en": "Spinal tuberculosis belongs in the differential, but nothing in this case — no contact, microbiology or histology — supports it. For bone and joint TB in children, WHO's guidance on TB in children and adolescents (Module 5, 2022) sets 12 months of treatment: isoniazid, rifampicin, pyrazinamide and ethambutol for 2 months, then isoniazid and rifampicin for 10, with a risk of drug-induced liver injury. Started before the biopsy, it also lowers the yield of mycobacterial culture and delays the real diagnosis. Send biopsy tissue for mycobacterial culture and a molecular test instead; the same guidance builds bacteriological testing into the diagnostic work-up."
       },
       "response": {
         "zh-CN": "本病例没有记录抗结核治疗；不模拟其效果。",
@@ -3707,8 +3756,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "附着点炎相关关节炎确实可有骶髂部疼痛和4字试验阳性，但它解释不了消瘦以及肋骨和腰背的骨痛。幼年特发性关节炎要在排除其他原因之后才能诊断；NICE NG12（2015年发布，2026年更新）对儿童持续骨痛要求先查血常规和影像，在排除肿瘤和感染之前开始抗炎治疗、只查HLA-B27，会延误诊断。",
-            "en": "Enthesitis-related arthritis can cause sacroiliac pain and a positive FABER test, but not weight loss or pain in the ribs and back. Juvenile idiopathic arthritis is diagnosed only once other causes are excluded; NICE NG12 (2015, updated 2026) puts a blood count and imaging first for persistent bone pain in a child, and starting an NSAID with only an HLA-B27 before tumour and infection are ruled out delays the diagnosis."
+            "zh-CN": "附着点炎相关关节炎确实可有骶髂部和下腰部疼痛、4字试验阳性，但消瘦和包括肋骨在内的多处骨痛是危险信号，要先查清原因，不能先贴上关节炎的标签。幼年特发性关节炎要在排除其他原因之后才能诊断；NICE NG12（2015年发布，2026年更新）对儿童持续骨痛要求先查血常规和影像，在排除肿瘤和感染之前开始抗炎治疗、只查HLA-B27，会延误诊断。",
+            "en": "Enthesitis-related arthritis can cause sacroiliac and low-back pain and a positive FABER test, but weight loss and bone pain at several sites, the ribs among them, are red flags to investigate before any arthritis label. Juvenile idiopathic arthritis is diagnosed only once other causes are excluded; NICE NG12 (2015, updated 2026) puts a blood count and imaging first for persistent bone pain in a child, and starting an NSAID with only an HLA-B27 before tumour and infection are ruled out delays the diagnosis."
           }
         },
         {
@@ -3763,13 +3812,13 @@
         {
           "id": "biopsy-before-treatment",
           "text": {
-            "zh-CN": "先看血涂片排除白血病，在同一次麻醉下做骨髓穿刺并取髂骨病灶活检，组织送病理、免疫组化、分子检测和培养；取样之前不用激素",
-            "en": "Exclude leukaemia with a film, then under one anaesthetic take a marrow and biopsy the iliac lesion for histology, immunohistochemistry, molecular tests and culture, with no steroid before the samples"
+            "zh-CN": "先看血涂片、查凝血，在同一次麻醉下做骨髓穿刺排除白血病，并取髂骨病灶活检，组织送病理、免疫组化、分子检测和培养；取样之前不用激素",
+            "en": "Check a film and clotting, then under one anaesthetic take a marrow to exclude leukaemia and biopsy the iliac lesion for histology, immunohistochemistry, molecular tests and culture, with no steroid before the samples"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。儿童多部位骨病变伴椎体扁平，鉴别包括朗格汉斯细胞和其他组织细胞病、白血病和淋巴瘤、感染（含结核）以及慢性非细菌性骨髓炎，只有病变组织能区分。白细胞正常不能排除白血病，所以先看涂片，并在活检的同一次麻醉下做骨髓穿刺。英国儿童癌症与白血病组织（CCLG）的指引要求可能是白血病或淋巴瘤时确诊取样前不用激素，儿童LCH指南（Haupt等，2013）也以病变组织的病理和免疫组化确诊。",
-            "en": "Right. Bone lesions at several levels with flattened vertebrae in a child have a differential of Langerhans cell and other histiocytoses, leukaemia and lymphoma, infection including tuberculosis, and chronic non-bacterial osteomyelitis, and only lesional tissue separates them. A normal white count does not exclude leukaemia, hence the film and a marrow under the same anaesthetic as the biopsy. The UK Children's Cancer and Leukaemia Group (CCLG) advises no steroid before the diagnostic samples when leukaemia or lymphoma is possible, and the paediatric LCH guideline (Haupt et al., 2013) rests the diagnosis on lesional histology and immunohistochemistry."
+            "zh-CN": "正确。儿童多部位骨病变伴椎体扁平，鉴别包括朗格汉斯细胞和其他组织细胞病、白血病和淋巴瘤、感染（含结核）以及慢性非细菌性骨髓炎，只有病变组织能区分。白细胞正常不能排除白血病，所以先看涂片，并在活检的同一次麻醉下做骨髓穿刺；她的血小板为324×10⁹/L，麻醉和活检之前还要查凝血。英国儿童癌症与白血病组织（CCLG，2026年更新）的指引要求可能是白血病或淋巴瘤时确诊取样前不用激素，儿童LCH指南（Haupt等，2013）也以病变组织的病理和免疫组化确诊。",
+            "en": "Right. Bone lesions at several levels with flattened vertebrae in a child have a differential of Langerhans cell and other histiocytoses, leukaemia and lymphoma, infection including tuberculosis, and chronic non-bacterial osteomyelitis, and only lesional tissue separates them. A normal white count does not exclude leukaemia, hence the film and a marrow under the same anaesthetic as the biopsy; her platelets are 324 × 10⁹/L, and a clotting screen comes before the anaesthetic. The UK Children's Cancer and Leukaemia Group (CCLG, updated 2026) advises no steroid before the diagnostic samples when leukaemia or lymphoma is possible, and the paediatric LCH guideline (Haupt et al., 2013) rests the diagnosis on lesional histology and immunohistochemistry."
           }
         },
         {
@@ -3780,8 +3829,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "儿童椎体扁平最常见于LCH，但白血病、淋巴瘤、感染和其他组织细胞病也能造成。儿童LCH指南（Haupt等，2013）要求先有病变组织的病理和CD1a、langerin免疫组化确诊；未确诊就用含激素的化疗，会掩盖白血病或淋巴瘤，也可能让一个不是LCH的病接受错误的方案。",
-            "en": "In children vertebra plana is most often LCH, but leukaemia, lymphoma, infection and other histiocytoses can cause it too. The paediatric LCH guideline (Haupt et al., 2013) asks for lesional histology with CD1a and langerin immunohistochemistry first; steroid-containing chemotherapy without a diagnosis can mask leukaemia or lymphoma and treat a disease that is not LCH with the wrong regimen."
+            "zh-CN": "儿童椎体扁平最常见于LCH，但白血病、淋巴瘤、感染和其他组织细胞病也能造成。儿童LCH指南（Haupt等，2013）要求先有病变组织的病理和CD1a、langerin免疫组化确诊，只有不伴软组织肿块的孤立性椎体扁平才可暂缓活检——她是多个节段的病变，还有可以取材的髂骨病灶。未确诊就用含激素的化疗，会掩盖白血病或淋巴瘤，也可能让一个不是LCH的病接受错误的方案。",
+            "en": "In children vertebra plana is most often LCH, but leukaemia, lymphoma, infection and other histiocytoses can cause it too. The paediatric LCH guideline (Haupt et al., 2013) asks for lesional histology with CD1a and langerin immunohistochemistry, and accepts deferring a biopsy only for an isolated vertebra plana without a soft-tissue mass — she has lesions at several levels and an accessible iliac one. Steroid-containing chemotherapy without a diagnosis can mask leukaemia or lymphoma and treat a disease that is not LCH with the wrong regimen."
           }
         },
         {
@@ -3829,13 +3878,13 @@
         {
           "id": "non-langerhans",
           "text": {
-            "zh-CN": "非朗格汉斯细胞（黄色肉芽肿家族）组织细胞病，结合骨病变首先考虑Erdheim–Chester病，还需长骨影像、全身分期和BRAF检测确认",
-            "en": "A non-Langerhans (xanthogranuloma-family) histiocytosis, with these bone lesions Erdheim–Chester disease first; long-bone imaging, whole-body staging and BRAF testing must confirm it"
+            "zh-CN": "非朗格汉斯细胞（黄色肉芽肿家族）组织细胞病，首先考虑Erdheim–Chester病，还要靠下肢长骨影像、全身分期和BRAF检测才能确定",
+            "en": "A non-Langerhans (xanthogranuloma-family) histiocytosis, Erdheim–Chester disease the leading candidate; leg long-bone imaging, whole-body staging and BRAF testing are needed to settle it"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。泡沫样组织细胞CD68阳性、CD1a和S100阴性，符合非朗格汉斯细胞组织细胞病。WHO造血与淋巴组织肿瘤分类第5版（2022）把Erdheim–Chester病列为组织细胞肿瘤；组织细胞学会2016年修订分类把它与LCH同列于L组，并指出近20%的ECD患者同时有LCH病灶。ECD要结合临床和影像诊断（典型为双下肢长骨对称性骨硬化），所以还缺长骨影像、全身分期和BRAF V600E等分子检测。",
-            "en": "Right. CD68-positive foamy histiocytes that are CD1a- and S100-negative fit a non-Langerhans histiocytosis. The WHO 5th edition (2022) classes Erdheim–Chester disease among the histiocytic neoplasms, and the Histiocyte Society's 2016 revision puts it beside LCH in its L group, noting that nearly 20 % of patients with ECD also have LCH lesions. ECD is diagnosed with the clinical and radiological picture (classically symmetric osteosclerosis of the leg long bones), so long-bone imaging, whole-body staging and BRAF V600E testing are still missing."
+            "zh-CN": "正确。泡沫样组织细胞CD68阳性、CD1a和S100阴性，符合非朗格汉斯细胞组织细胞病。WHO造血与淋巴组织肿瘤分类第5版（2022）把Erdheim–Chester病列为组织细胞肿瘤；组织细胞学会2016年修订分类把它与LCH同列于L组，并指出近20%的ECD患者同时有LCH病灶。ECD要结合临床和影像诊断（典型为双下肢长骨对称性骨硬化，而她的脊柱和髂骨溶骨性病变并不典型），所以还缺长骨影像、全身分期和BRAF V600E等分子检测。",
+            "en": "Right. CD68-positive foamy histiocytes that are CD1a- and S100-negative fit a non-Langerhans histiocytosis. The WHO 5th edition (2022) classes Erdheim–Chester disease among the histiocytic neoplasms, and the Histiocyte Society's 2016 revision puts it beside LCH in its L group, noting that nearly 20 % of patients with ECD also have LCH lesions. ECD is diagnosed with the clinical and radiological picture (classically symmetric osteosclerosis of the leg long bones, whereas her lytic spinal and iliac lesions are atypical), so long-bone imaging, whole-body staging and BRAF V600E testing are still missing."
           }
         },
         {
@@ -3911,8 +3960,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。2020年ECD国际共识建议基线做包括下肢的全身FDG PET-CT、脑部增强MRI和心脏评估（儿科团队也可用全身MRI以减少辐射），因为中枢神经和心血管受累决定预后；分期结果和突变一起决定治疗的选择和紧迫性。",
-            "en": "Yes. The 2020 international ECD consensus asks for baseline whole-body FDG PET-CT including the legs, contrast brain MRI and cardiac assessment (a paediatric team may use whole-body MRI to limit radiation), because brain and cardiovascular involvement set the prognosis; the stage and the mutation together decide the choice and urgency of treatment."
+            "zh-CN": "应选。2020年ECD国际共识建议基线做包括下肢的全身FDG PET-CT、脑部增强MRI和心脏评估，因为中枢神经和心血管受累决定预后；儿科团队也可以改用全身MRI以减少辐射。分期结果和突变一起决定治疗的选择和紧迫性。",
+            "en": "Yes. The 2020 international ECD consensus asks for baseline whole-body FDG PET-CT including the legs, contrast brain MRI and cardiac assessment, because brain and cardiovascular involvement set the prognosis; a paediatric team may choose whole-body MRI to limit radiation. The stage and the mutation together decide the choice and urgency of treatment."
           }
         },
         {
@@ -4229,7 +4278,14 @@
       "met": {
         "all": [
           {
+            "intervened": "request-biopsy"
+          },
+          {
             "any": [
+              {
+                "ordered": "mutation-test",
+                "phase": "admission"
+              },
               {
                 "ordered": "mutation-test",
                 "phase": "pathology"
@@ -4244,11 +4300,19 @@
             "any": [
               {
                 "ordered": "pet-ct",
+                "phase": "admission"
+              },
+              {
+                "ordered": "pet-ct",
                 "phase": "pathology"
               },
               {
                 "ordered": "pet-ct",
                 "phase": "planning"
+              },
+              {
+                "ordered": "whole-body-mri",
+                "phase": "admission"
               },
               {
                 "ordered": "whole-body-mri",
@@ -4262,6 +4326,10 @@
           },
           {
             "any": [
+              {
+                "ordered": "brain-mri",
+                "phase": "admission"
+              },
               {
                 "ordered": "brain-mri",
                 "phase": "pathology"
@@ -4332,8 +4400,8 @@
       "id": "rb-avoid-unproven",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有按生长痛让她出院，没有经验性抗结核，也没有在没有BRAF结果时用BRAF抑制剂",
-        "en": "Did not discharge her as growing pains, start empirical antituberculosis drugs or give a BRAF inhibitor without a BRAF result"
+        "zh-CN": "没有按生长痛让她出院，没有经验性抗结核，没有在没有BRAF结果时用BRAF抑制剂，也没有在活检之后、分期之前开始激素或LCH方案",
+        "en": "Did not discharge her as growing pains, start empirical antituberculosis drugs, give a BRAF inhibitor without a BRAF result, or start a steroid or the LCH protocol after the biopsy, before staging"
       },
       "weight": 2,
       "met": {
@@ -4347,6 +4415,14 @@
             },
             {
               "intervened": "vemurafenib-now"
+            },
+            {
+              "intervened": "prednisolone-trial",
+              "valid": true
+            },
+            {
+              "intervened": "lch-chemo-now",
+              "valid": true
             }
           ]
         }
@@ -4364,6 +4440,12 @@
           },
           {
             "intervened": "vemurafenib-now"
+          },
+          {
+            "intervened": "prednisolone-trial"
+          },
+          {
+            "intervened": "lch-chemo-now"
           }
         ]
       }
@@ -4377,8 +4459,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（SPIKES，结合Calgary–Cambridge）：安排安静的房间，上级医生和护士在场，孩子和家长都在（家长希望时可先单独谈）；先问她们已经知道什么、想知道多少；用孩子听得懂的话说明：从胯骨取的组织里看到一种少见的“组织细胞”病，叫Erdheim–Chester病，在孩子中很少见；解释为什么还要做基因检测和全身检查（看哪些器官受累、能不能用靶向药），说明靶向药已在成人获批、儿童用药由专科中心决定，预后要等检查结果才能说；坦白不确定之处，不引用旧文献的“治不好”，也不用“会瘫痪”吓唬；问孩子自己的想法和担心，争取她的认同；回应情绪，用回授法确认理解；如果家长倾向不治疗，先了解原因（费用、怕药物副作用、对疗效的印象等），说明随时可以再谈或寻求第二意见，给出书面随访计划和需要马上回来的情况（腿没劲或发麻、大小便控制不住、特别口渴尿多）；不施压、不替家长作决定，并记录谈话。",
-        "en": "Good performance (SPIKES within Calgary–Cambridge): a quiet room with the senior doctor and the nurse, the girl and her parent both present (the parent first, alone, if they wish); first asks what they know and how much they want to know; explains in words she can follow that the tissue from her hip bone shows an unusual disease of ‘histiocytes’, Erdheim–Chester disease, which is rare in children; explains why gene tests and whole-body scans come next (which organs are involved, and whether a targeted drug could work), that targeted drugs are approved for adults and a specialist centre decides about them for a child, and that the outlook waits for those results; is honest about the uncertainty, without quoting old reports that ‘nothing works’ or frightening them with paralysis; asks the girl for her own view and worries and seeks her assent; responds to emotion and checks understanding by teach-back; if the family leans towards no treatment, explores why (cost, fear of side effects, what they have heard about results), says the door stays open and a second opinion is welcome, and gives a written follow-up plan with the signs that need an immediate return (leg weakness or numbness, loss of bladder or bowel control, heavy thirst and urine); applies no pressure, does not decide for them and documents the conversation."
+        "zh-CN": "良好表现（SPIKES，结合Calgary–Cambridge）：安排安静的房间，上级医生和护士在场，孩子和家长都在（家长希望时可先单独谈）；先问她们已经知道什么、想知道多少；用孩子听得懂的话说明：从胯骨取的组织里看到一种少见的“组织细胞”病，最可能是Erdheim–Chester病，在孩子中很少见，还要等全身检查和基因检测确认；解释为什么还要做基因检测和全身检查（看哪些器官受累、能不能用靶向药），说明靶向药已在成人获批、儿童用药由专科中心决定，预后要等检查结果才能说；坦白不确定之处，不引用旧文献的“治不好”，也不用“会瘫痪”吓唬；问孩子自己的想法和担心，争取她的认同；回应情绪，用回授法确认理解；如果家长倾向不治疗，先了解原因（费用、怕药物副作用、对疗效的印象等），说明随时可以再谈或寻求第二意见，给出书面随访计划和需要马上回来的情况（腿没劲或发麻、大小便控制不住、特别口渴尿多）；不施压、不替家长作决定，并记录谈话。",
+        "en": "Good performance (SPIKES within Calgary–Cambridge): a quiet room with the senior doctor and the nurse, the girl and her parent both present (the parent first, alone, if they wish); first asks what they know and how much they want to know; explains in words she can follow that the tissue from her hip bone shows an unusual disease of ‘histiocytes’, most likely Erdheim–Chester disease, which is rare in children and still to be confirmed by the scans and gene tests; explains why gene tests and whole-body scans come next (which organs are involved, and whether a targeted drug could work), that targeted drugs are approved for adults and a specialist centre decides about them for a child, and that the outlook waits for those results; is honest about the uncertainty, without quoting old reports that ‘nothing works’ or frightening them with paralysis; asks the girl for her own view and worries and seeks her assent; responds to emotion and checks understanding by teach-back; if the family leans towards no treatment, explores why (cost, fear of side effects, what they have heard about results), says the door stays open and a second opinion is welcome, and gives a written follow-up plan with the signs that need an immediate return (leg weakness or numbness, loss of bladder or bowel control, heavy thirst and urine); applies no pressure, does not decide for them and documents the conversation."
       }
     }
   ],
@@ -4409,8 +4491,8 @@
         "en": "Nurse Lin (children's ward)"
       },
       "knowledge": {
-        "zh-CN": "儿科病房护士。交班（ISBAR）：11岁5个月女孩，由家长陪同入院；多处骨痛9个月（从双膝开始，后来是腰背、肋骨和髋部），近4个月跛行，伴消瘦。可以协助抽血送检、预约影像（MRI、X线、PET-CT、超声心动图）、联系骨科和影像科安排活检、按医嘱给止痛药、安排家庭谈话。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到入院生命体征、体重或身高时，直接说没有记录。",
-        "en": "Children's ward nurse. Handover (ISBAR): girl aged 11 years 5 months, admitted with her parent; nine months of bone pain in several places (first both knees, later the back, ribs and hip), a limp for the last four months, and weight loss. Can help with bloods, booking imaging (MRI, X-ray, PET-CT, echocardiography), arranging the biopsy with orthopaedics and radiology, charted analgesia and the family meeting. Reads orders back, reports only results that are back, never interprets or diagnoses, and says plainly that her admission observations, weight and height are not recorded."
+        "zh-CN": "儿科病房护士。交班（ISBAR）：11岁5个月女孩，由家长陪同入院；多处骨痛9个月（从双膝开始，后来是腰背、肋骨和髋部），近4个月跛行，伴消瘦。可以协助抽血送检（包括活检前的凝血功能）、预约影像（MRI、X线、PET-CT、超声心动图）、联系骨科和影像科安排活检、按医嘱给止痛药、安排家庭谈话。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到入院生命体征、体重或身高时，直接说没有记录。",
+        "en": "Children's ward nurse. Handover (ISBAR): girl aged 11 years 5 months, admitted with her parent; nine months of bone pain in several places (first both knees, later the back, ribs and hip), a limp for the last four months, and weight loss. Can help with bloods (including a clotting screen before the biopsy), booking imaging (MRI, X-ray, PET-CT, echocardiography), arranging the biopsy with orthopaedics and radiology, charted analgesia and the family meeting. Reads orders back, reports only results that are back, never interprets or diagnoses, and says plainly that her admission observations, weight and height are not recorded."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4452,8 +4534,8 @@
       "en": "Debrief: Erdheim–Chester disease in a child presenting with bone pain and a limp"
     },
     "conclusion": {
-      "zh-CN": "11岁5个月女孩，骨痛从双膝开始，九个月来累及腰背、肋骨和髋部，近四个月跛行、下蹲时左髋痛，伴消瘦，无多饮多尿。查体躯干和骨盆左倾、跛行，骶尾部压痛，左侧4字试验阳性，四肢神经检查正常。血红蛋白108 g/L，白细胞7.8×10⁹/L，血小板324×10⁹/L，血沉38 mm/h，C反应蛋白22.8 mg/L。影像示T2、T10椎体扁平，L3、L5、S2低密度改变，右髂骨溶骨性病变，髋和骶髂关节间隙正常。髂骨活检见泡沫样组织细胞伴纤维化，CD68、AACT阳性，CD1a、S100阴性，报告诊断Erdheim–Chester病。家长拒绝进一步治疗，之后的结局没有记录。现行做法：取样前不用激素，结合影像判读活检，做BRAF V600E和MAPK检测与全身分期（2020年国际共识），在专科中心选择治疗，并让孩子参与决定。",
-      "en": "A girl of 11 years 5 months had nine months of bone pain that began in both knees and spread to her back, ribs and hip, a four-month limp with left hip pain on squatting, and weight loss, without thirst or polyuria. She stood with her trunk and pelvis tilted to the left and limped; the sacrococcygeal region was tender, the left FABER test positive and limb neurology normal. Haemoglobin was 108 g/L, white cells 7.8 × 10⁹/L, platelets 324 × 10⁹/L, ESR 38 mm/h, CRP 22.8 mg/L. Imaging showed flattened T2 and T10, low-density change at L3, L5 and S2 and an osteolytic right iliac lesion. An iliac biopsy showed foamy histiocytes with fibrosis, CD68- and AACT-positive and CD1a- and S100-negative: Erdheim–Chester disease. The family declined further treatment. Today: no steroid before tissue, BRAF/MAPK testing and staging (2020 consensus), shared decisions."
+      "zh-CN": "11岁5个月女孩，骨痛从双膝开始，九个月来累及腰背、肋骨和髋部，近四个月跛行、下蹲时左髋痛，伴消瘦，无烦渴、多饮、多尿。查体躯干和骨盆左倾、跛行，骶尾部压痛，左侧4字试验阳性，局部无红热破溃，四肢肌力、肌张力和反射正常。血红蛋白108 g/L，白细胞7.8×10⁹/L，血小板324×10⁹/L，血沉38 mm/h，C反应蛋白22.8 mg/L。影像示T2、T10椎体扁平，L3、L5、S2低密度改变，右髂骨溶骨性病变，髋和骶髂关节间隙正常。髂骨活检见黄色肉芽组织、纤维化和泡沫样组织细胞，CD68、AACT阳性，CD1a、S100阴性，报告诊断Erdheim–Chester病。家长拒绝进一步治疗，之后的结局没有记录。现行做法：取样前不用激素，结合影像判读活检，做BRAF V600E和MAPK检测与全身分期（2020年国际共识），在专科中心选择治疗，并让孩子参与决定。",
+      "en": "A girl of 11 years 5 months had nine months of bone pain that began in both knees and later involved her back, ribs and hip, a four-month limp with left hip pain on squatting, and weight loss, without excessive thirst, drinking or urination. Her trunk and pelvis tilted to the left and she limped; the sacrococcygeal region was tender and the left FABER test positive, with no local redness, warmth or skin breakdown and normal limb power, tone and reflexes. Haemoglobin was 108 g/L, white cells 7.8 × 10⁹/L, platelets 324 × 10⁹/L, ESR 38 mm/h and CRP 22.8 mg/L. Imaging showed flattened T2 and T10, low-density change at L3, L5 and S2 and an osteolytic right iliac lesion, with normal hip and sacroiliac joint spaces. An iliac biopsy showed yellow 肉芽组织 (granulation or granulomatous tissue) with fibrosis and foamy histiocytes, CD68- and AACT-positive and CD1a- and S100-negative, and the report diagnosed Erdheim–Chester disease. The family declined further treatment; no later outcome is recorded. Today: no steroid before tissue, the biopsy read with the imaging, BRAF V600E/MAPK testing and whole-body staging (2020 international consensus), treatment chosen at a specialist centre, and the child involved in the decision."
     },
     "keyReasoning": [
       {
@@ -4477,8 +4559,8 @@
         "en": "The treatment follows the mutation and the organs involved, so BRAF/MAPK testing and whole-body staging come before any drug, decided at a specialist centre."
       },
       {
-        "zh-CN": "家长拒绝继续治疗是一个沟通结局，不是对现代治疗的评价：让孩子参与、说明不确定性，并保持随访的通道。",
-        "en": "The family's refusal of further treatment is a communication outcome, not a verdict on modern therapy: involve the child, explain the uncertainty and keep the door open."
+        "zh-CN": "家长拒绝进一步治疗的理由没有记录，这个结局也不是对现代治疗的评价：让孩子参与、说明不确定性，并保持随访的通道。",
+        "en": "The family declined further treatment for reasons the case does not record, and that is no verdict on modern therapy: involve the child, explain the uncertainty and keep the door open."
       }
     ],
     "boundaries": {
@@ -4521,8 +4603,8 @@
         "en": "Red flags (NICE NG12, 2015, updated 2026): growing pains are a diagnosis of exclusion — evening or night pain in both legs, a normal examination and no limp. Nine months of pain in several places (knees, then back, ribs and hip), a four-month limp, weight loss, a pelvic tilt, sacrococcygeal tenderness and a positive left FABER test fit none of it. NG12 asks for a full blood count within 48 hours for persistent or unexplained bone pain in a child and considers an X-ray within 48 hours for unexplained bone pain; the further assessment recorded here came after nine months of pain and four of limping."
       },
       {
-        "zh-CN": "先取样后治疗（CCLG指引；Euro Histio Net儿童LCH指南，2013）：儿童多节段骨病变伴椎体扁平（本例T2、T10），鉴别包括LCH和其他组织细胞病、白血病和淋巴瘤、感染（含结核）和慢性非细菌性骨髓炎。白细胞7.8×10⁹/L、血小板324×10⁹/L不能排除白血病：看涂片，并在活检麻醉时同做骨髓。选最安全可达的病灶（本例右髂骨溶骨性病变）取活检，新鲜组织送细菌和分枝杆菌培养，固定组织做病理和免疫组化（CD1a、langerin、S100、CD68、CD163、因子XIIIa），并留组织做分子检测；取样前不用激素。",
-        "en": "Tissue before treatment (CCLG guidance; Euro Histio Net paediatric LCH guideline, 2013): bone lesions at several levels with vertebra plana (here T2 and T10) have a differential of LCH and other histiocytoses, leukaemia and lymphoma, infection including TB, and chronic non-bacterial osteomyelitis. White cells of 7.8 × 10⁹/L and platelets of 324 × 10⁹/L do not exclude leukaemia: look at a film and take a marrow under the biopsy anaesthetic. Biopsy the safest accessible lesion (here the osteolytic right iliac lesion) with fresh tissue for bacterial and mycobacterial culture, fixed tissue for histology and immunohistochemistry (CD1a, langerin, S100, CD68, CD163, factor XIIIa) and tissue kept for molecular tests — and no steroid before the samples."
+        "zh-CN": "先取样后治疗（CCLG指引，2026年更新；Euro Histio Net儿童LCH指南，2013）：儿童多节段骨病变伴椎体扁平（本例T2、T10），鉴别包括LCH和其他组织细胞病、白血病和淋巴瘤、感染（含结核）和慢性非细菌性骨髓炎。白细胞7.8×10⁹/L、血小板324×10⁹/L不能排除白血病：看涂片、查凝血，并在活检麻醉时同做骨髓。选最安全可达的病灶（本例为髂骨病灶，而不是椎体）取活检，新鲜组织送细菌和分枝杆菌培养，固定组织做病理和免疫组化（CD1a、langerin、S100、CD68、CD163、因子XIIIa），并留组织做分子检测；取样前不用激素。",
+        "en": "Tissue before treatment (CCLG guidance, updated 2026; Euro Histio Net paediatric LCH guideline, 2013): bone lesions at several levels with vertebra plana (here T2 and T10) have a differential of LCH and other histiocytoses, leukaemia and lymphoma, infection including TB, and chronic non-bacterial osteomyelitis. White cells of 7.8 × 10⁹/L and platelets of 324 × 10⁹/L do not exclude leukaemia: look at a film, check clotting and take a marrow under the biopsy anaesthetic. Biopsy the safest accessible lesion (here the iliac lesion rather than a vertebra) with fresh tissue for bacterial and mycobacterial culture, fixed tissue for histology and immunohistochemistry (CD1a, langerin, S100, CD68, CD163, factor XIIIa) and tissue kept for molecular tests — and no steroid before the samples."
       },
       {
         "zh-CN": "判读活检（WHO第5版，2022；组织细胞学会修订分类，2016）：泡沫样组织细胞CD68、AACT阳性，CD1a、S100阴性，指向黄色肉芽肿家族；LCH为CD1a、langerin阳性、S100多阳性，Rosai–Dorfman病S100阳性。ECD的典型影像是双下肢长骨对称性骨硬化，脊柱和骨盆的溶骨性病变在LCH中更常见，而本病例没有记录长骨影像——所以诊断要结合全身情况和分子检测，近20%的ECD合并LCH病灶。2011年的报告只记录了四个标记；今天还会加做CD163、因子XIIIa、langerin和BRAF V600E。",
@@ -4544,9 +4626,9 @@
       "Khoury JD, Solary E, et al. The 5th edition of the World Health Organization Classification of Haematolymphoid Tumours: Myeloid and Histiocytic/Dendritic Neoplasms. Leukemia. 2022;36(7):1703-1719. doi:10.1038/s41375-022-01613-1",
       "Haupt R, Minkov M, Astigarraga I, et al. Langerhans cell histiocytosis (LCH): guidelines for diagnosis, clinical work-up, and treatment for patients till the age of 18 years. Pediatr Blood Cancer. 2013;60(2):175-184. doi:10.1002/pbc.24367",
       "National Institute for Health and Care Excellence. Suspected cancer: recognition and referral. NICE guideline NG12. London: NICE; 2015 (updated 2026).",
-      "Children's Cancer and Leukaemia Group. Information for professionals, section 6 (treatment): introduction to steroids. Available from: https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids",
+      "Children's Cancer and Leukaemia Group. Introduction to steroids [Internet]. Outreach information resource for professionals, section 6: treatment. CCLG; last updated 2026 Jan [cited 2026 Nov 14]. Available from: https://www.cclg.org.uk/information-professionals/outreach-information-resource/section-6-treatment/introduction-steroids",
       "World Health Organization. WHO consolidated guidelines on tuberculosis. Module 5: management of tuberculosis in children and adolescents. Geneva: World Health Organization; 2022.",
-      "Katz AL, Webb SA; Committee on Bioethics. Informed consent in decision-making in pediatric practice. Pediatrics. 2016;138(2):e20161485.",
+      "Katz AL, Webb SA; Committee on Bioethics. Informed consent in decision-making in pediatric practice. Pediatrics. 2016;138(2):e20161485. doi:10.1542/peds.2016-1485",
       "Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302"
     ],
     "notice": {
@@ -4759,6 +4841,15 @@
     {
       "type": "read",
       "investigationId": "blood-film",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
       "phase": "admission"
     },
     {
