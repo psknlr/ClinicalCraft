@@ -84,6 +84,7 @@
         "Gilead Sciences: HEPSERA (adefovir dipivoxil) prescribing information, revised 12/2018",
         "Bristol-Myers Squibb: BARACLUDE (entecavir) prescribing information, 2019",
         "Gilead Sciences: VEMLIDY (tenofovir alafenamide) prescribing information, revised 03/2024",
+        "EASL 2018 Clinical Practice Guidelines for the management of patients with decompensated cirrhosis (J Hepatol 2018;69(2):406–460): HRS-AKI criteria",
         "NICE NG59 (2016): Low back pain and sciatica in over 16s — assessment and management",
         "NICE NG249 (2025): Falls — assessment and prevention in older people and in people 50 and over at higher risk",
         "Uppsala Monitoring Centre: the WHO-UMC system for standardised case causality assessment",
@@ -131,7 +132,7 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "63岁男性，乙肝肝硬化，躺在病房床上。走路一年比一年费劲，心里着急，但说话平和、配合，问什么答什么。知道自己长期吃的乙肝药叫什么、吃了多久，别的就说不清了。",
+        "zh-CN": "63岁男性，乙肝肝硬化，躺在病房床上。走路越来越费劲，心里着急，但说话平和、配合，问什么答什么。知道自己长期吃的乙肝药叫什么、吃了多久，别的就说不清了。",
         "en": "A 63-year-old man with hepatitis B cirrhosis, lying in a ward bed. His walking has been getting worse and he is worried, but he speaks calmly, cooperates and answers what he is asked. He knows the name of the hepatitis B tablet he takes and how long he has taken it, and little else about his treatment."
       },
       "speechStyle": {
@@ -270,8 +271,8 @@
         ],
         "en": [
           "whats wrong",
-          "what brings you",
-          "brought you in",
+          "whatbringsyou",
+          "broughtyouin",
           "main problem",
           "the trouble",
           "complaint",
@@ -310,9 +311,7 @@
           "什么时候开始",
           "一年半",
           "持续",
-          "几个月",
-          "几年",
-          "开始的"
+          "几个月"
         ],
         "en": [
           "how long",
@@ -320,19 +319,26 @@
           "started",
           "since when",
           "duration",
-          "how many months",
-          "how many years",
+          "howmanymonths",
+          "howmanyyears",
           "begin"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "阿德福韦",
-          "吃药"
+          "吃药",
+          "从哪",
+          "哪儿开始",
+          "哪里开始",
+          "肾",
+          "查过"
         ],
         "en": [
           "adefovir",
-          "tablet"
+          "tablet",
+          "kidney",
+          "where did"
         ]
       },
       "disclosure": "on-ask",
@@ -377,7 +383,7 @@
           "numbness",
           "pins and needles",
           "tingling",
-          "where did it start",
+          "wherediditstart",
           "spread",
           "left foot",
           "right leg",
@@ -432,12 +438,14 @@
         "en": [
           "back pain",
           "the pain",
-          "where does it hurt",
-          "what's the pain like",
+          "wheredoesithurt",
+          "whatsthepainlike",
           "radiate",
           "ache",
           "sore",
-          "describe the pain"
+          "describe the pain",
+          "pain in your back",
+          "backache"
         ]
       },
       "excludeKeywords": {
@@ -447,9 +455,9 @@
           "肋"
         ],
         "en": [
-          "hip",
-          "rib",
-          "bones"
+          "hips",
+          "ribs",
+          "bone pain"
         ]
       },
       "disclosure": "on-ask",
@@ -566,7 +574,7 @@
       ],
       "source": {
         "zh-CN": "1.0.0版报告事实：胸部有紧束感；患者口吻为教学改写",
-        "en": "Report fact (version 1.0.0): a tight, band-like (紧束感) feeling in the chest; his words are a teaching adaptation"
+        "en": "Report fact (version 1.0.0): a tight, band-like feeling in the chest; his words are a teaching adaptation"
       }
     },
     {
@@ -694,12 +702,16 @@
         "zh-CN": [
           "乙肝药",
           "以前吃过",
-          "套扎"
+          "套扎",
+          "拉米夫定",
+          "阿德福韦",
+          "吃过"
         ],
         "en": [
           "lamivudine",
           "hepatitis tablet",
-          "banding"
+          "banding",
+          "adefovir"
         ]
       },
       "disclosure": "on-ask",
@@ -736,7 +748,9 @@
           "肝脏",
           "病史",
           "脾",
-          "静脉曲张"
+          "静脉曲张",
+          "基础病",
+          "基础疾病"
         ],
         "en": [
           "long-term",
@@ -747,7 +761,9 @@
           "liver",
           "cirrhosis",
           "spleen",
-          "varices"
+          "varices",
+          "health problems",
+          "ongoing"
         ]
       },
       "excludeKeywords": {
@@ -1007,7 +1023,7 @@
           "supplements",
           "herbal",
           "anything else",
-          "over the counter",
+          "overthecounter",
           "apart from"
         ]
       },
@@ -1268,11 +1284,16 @@
       "excludeKeywords": {
         "zh-CN": [
           "家族",
-          "遗传"
+          "遗传",
+          "吃药",
+          "服药"
         ],
         "en": [
           "family history",
-          "inherited"
+          "inherited",
+          "tablet",
+          "pill",
+          "medicine"
         ]
       },
       "disclosure": "unknown",
@@ -1315,7 +1336,9 @@
           "concerns",
           "afraid",
           "scared",
-          "anxious"
+          "anxious",
+          "frightening",
+          "frightened"
         ]
       },
       "disclosure": "on-ask",
@@ -1548,7 +1571,7 @@
           "walking",
           "watch him walk",
           "stride",
-          "get up and walk"
+          "getupandwalk"
         ]
       },
       "finding": {
@@ -2443,8 +2466,8 @@
     {
       "id": "bone-xray",
       "name": {
-        "zh-CN": "骨盆及疼痛部位X线片（找假骨折线）",
-        "en": "X-rays of the pelvis and painful bones (looking for pseudofractures)"
+        "zh-CN": "骨盆及疼痛部位X线片",
+        "en": "X-rays of the pelvis and painful bones"
       },
       "category": "imaging",
       "aliases": {
@@ -2926,8 +2949,8 @@
           "沟通"
         ],
         "en": [
-          "explain to him",
-          "talk to the patient",
+          "explaintohim",
+          "talktothepatient",
           "tell him",
           "teach-back",
           "patient education",
@@ -3522,8 +3545,8 @@
         "en": "Treatment"
       },
       "hint": {
-        "zh-CN": "哪种药必须换？换药的同时，他的乙肝绝不能出现什么情况？选药和定剂量之前要先知道什么？低磷和骨骼怎么处理，还需要请谁来看？",
-        "en": "Which medicine has to change, and what must not happen to his hepatitis B while it does? What do you need to know before choosing the drug and its dose? What do his phosphate and bones need, and who else should see him?"
+        "zh-CN": "他的每一种药接下来该怎么办？无论怎么调整，他的乙肝绝不能出现什么情况？选药和定剂量之前要先知道什么？低磷和骨骼怎么处理，还需要请谁来看？",
+        "en": "What should happen to each of his medicines, and what must not happen to his hepatitis B whatever you change? What do you need to know before choosing a drug and its dose? What do his phosphate and bones need, and who else should see him?"
       },
       "guidance": {
         "zh-CN": "仍在病房；可以开药、开检查、请会诊。",
@@ -3669,7 +3692,7 @@
         {
           "id": "cord-mri-and-bloods",
           "text": {
-            "zh-CN": "颈髓或更高水平的脊髓病变，运动和感觉传导束都受累：尽快做颈、胸段脊髓MRI，同时查血、尿，寻找代谢和药物原因",
+            "zh-CN": "颈髓或更高水平的脊髓病变，运动、感觉通路均受累：尽快做颈、胸段脊髓MRI，并查血、尿找代谢和药物原因",
             "en": "A spinal cord lesion at neck level or higher, affecting motor and sensory tracts: urgent MRI of the cervical and thoracic cord, with blood and urine tests for metabolic and drug causes"
           },
           "correct": true,
@@ -3681,7 +3704,7 @@
         {
           "id": "lumbar-disc-injection",
           "text": {
-            "zh-CN": "腰椎间盘突出压迫双侧神经根：做腰椎MRI，证实突出后行硬膜外类固醇注射，效果不好再考虑减压手术",
+            "zh-CN": "腰椎间盘突出同时压迫两侧神经根：先做腰椎MRI，证实有突出就做硬膜外类固醇注射，效果不好再做减压手术",
             "en": "A lumbar disc prolapse compressing nerve roots on both sides: MRI of the lumbar spine, then an epidural steroid injection if it shows a prolapse, and decompression if that fails"
           },
           "correct": false,
@@ -3693,7 +3716,7 @@
         {
           "id": "neuropathy-outpatient",
           "text": {
-            "zh-CN": "肝病引起的长度依赖性周围神经病：门诊安排神经传导检查，先补充B族维生素，结果出来后再到门诊复查",
+            "zh-CN": "肝病引起的长度依赖性周围神经病：门诊安排神经传导检查，先补充B族维生素，等结果出来以后再到门诊复查",
             "en": "A length-dependent peripheral neuropathy from his liver disease: nerve conduction studies as an outpatient, vitamin B supplements for now, and a clinic review when the results are back"
           },
           "correct": false,
@@ -3705,13 +3728,13 @@
         {
           "id": "hepatic-myelopathy-label",
           "text": {
-            "zh-CN": "肝硬化门体分流引起的肝性脊髓病：不必再做其他检查，转诊评估肝移植，同时做康复训练缓解下肢僵硬",
+            "zh-CN": "肝硬化门体分流引起的肝性脊髓病：不必再做其他检查，直接转诊评估肝移植，同时做康复训练缓解双下肢僵硬",
             "en": "Hepatic myelopathy from portosystemic shunting in his cirrhosis: no further tests are needed, so refer him for transplant assessment and give physiotherapy for the stiff legs"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "肝硬化伴门体分流时确实会出现肝性脊髓病，但它是排除性诊断：典型表现是缓慢进展的双下肢痉挛性无力，感觉障碍轻，括约肌功能大多保留。他从脚开始的麻木、小便失禁和胸部紧束感都不太符合；而压迫、营养缺乏、感染和药物等原因是可以治疗的——先做脊髓影像和检查，再下结论。",
-            "en": "Hepatic myelopathy does occur in cirrhosis with portosystemic shunting, but it is a diagnosis of exclusion: typically a slowly progressive spastic weakness of the legs, with little sensory loss and sphincters largely spared. His numbness from the feet up, the incontinence and the tight, bound chest fit poorly, and compressive, nutritional, infective and drug causes are treatable — image the cord and test before labelling it."
+            "zh-CN": "肝硬化伴门体分流时确实会出现肝性脊髓病，但它是排除性诊断：典型表现是缓慢进展的双下肢痉挛性无力，感觉障碍轻，括约肌功能大多保留。他从左脚开始的麻木、小便失禁和胸部紧束感都不太符合；而压迫、营养缺乏、感染和药物等原因是可以治疗的——先做脊髓影像和检查，再下结论。",
+            "en": "Hepatic myelopathy does occur in cirrhosis with portosystemic shunting, but it is a diagnosis of exclusion: typically a slowly progressive spastic weakness of the legs, with little sensory loss and sphincters largely spared. His numbness, which began in the left foot, the incontinence and the tight, bound chest fit poorly, and compressive, nutritional, infective and drug causes are treatable — image the cord and test before labelling it."
           }
         }
       ]
@@ -3746,19 +3769,19 @@
         {
           "id": "proximal-tubulopathy-drug",
           "text": {
-            "zh-CN": "近端肾小管广泛功能障碍（范科尼综合征）：葡萄糖、磷、尿酸和小分子蛋白从尿中丢失，最可能由长期服用的阿德福韦酯引起",
+            "zh-CN": "近端肾小管功能障碍（范科尼综合征）：糖、磷、尿酸和小分子蛋白从尿中丢失，最可能是长期服用阿德福韦酯所致",
             "en": "Generalised proximal tubule failure (Fanconi syndrome) — glucose, phosphate, urate and small proteins lost in the urine — most likely caused by his long-term adefovir"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。空腹血糖4.5 mmol/L时尿糖阳性，是肾性糖尿；α1微球蛋白明显升高是低分子量（肾小管性）蛋白尿，NAG升高提示小管上皮损伤；再加上低磷和低尿酸，这是近端肾小管的广泛功能障碍。阿德福韦酯说明书（2018）列有范科尼综合征、近端肾小管病、低磷血症和骨软化症，而且这种毒性可以在平稳服药多年后才出现。肌酐119 μmol/L低估了损伤：EASL 2025指南指出，单看肌酐可能反映不出肾小管损害。",
-            "en": "Right. Glucose in the urine with a fasting glucose of 4.5 mmol/L is renal glycosuria; a high alpha-1 microglobulin is low-molecular-weight (tubular) proteinuria and a raised NAG marks tubular cell injury; with a low phosphate and a low urate, this is generalised proximal tubule failure. Adefovir's label (2018) lists Fanconi syndrome, proximal tubulopathy, hypophosphataemia and osteomalacia, and the toxicity can appear after years of uneventful treatment. A creatinine of 119 μmol/L understates the damage: EASL 2025 notes that creatinine alone may not reflect tubular injury."
+            "zh-CN": "正确。空腹血糖4.5 mmol/L时尿糖阳性，是肾性糖尿；α1微球蛋白明显升高是低分子量（肾小管性）蛋白尿，NAG升高提示小管上皮损伤；再加上低磷和低尿酸，这是近端肾小管的广泛功能障碍。阿德福韦酯说明书（2018）列有范科尼综合征、近端肾小管病、低磷血症和骨软化症，而且这种毒性可以在服药多年之后才出现。肌酐119 μmol/L低估了损伤：EASL 2025指南指出，单看肌酐可能反映不出肾小管损害。",
+            "en": "Right. Glucose in the urine with a fasting glucose of 4.5 mmol/L is renal glycosuria; a high alpha-1 microglobulin is low-molecular-weight (tubular) proteinuria and a raised NAG marks tubular cell injury; with a low phosphate and a low urate, this is generalised proximal tubule failure. Adefovir's label (2018) lists Fanconi syndrome, proximal tubulopathy, hypophosphataemia and osteomalacia, and the toxicity can appear only after years of treatment. A creatinine of 119 μmol/L understates the damage: EASL 2025 notes that creatinine alone may not reflect tubular injury."
           }
         },
         {
           "id": "diabetic-kidney",
           "text": {
-            "zh-CN": "未诊断的糖尿病合并糖尿病肾病：尿糖和尿蛋白来自餐后高血糖，应查糖化血红蛋白，并开始口服降糖药控制血糖",
+            "zh-CN": "未诊断的糖尿病合并糖尿病肾病：尿糖和尿蛋白都来自餐后高血糖，应查糖化血红蛋白，并开始口服降糖药控制血糖",
             "en": "Undiagnosed diabetes with diabetic kidney disease: the glucose and protein in the urine come from high sugars after meals, so check the HbA1c and start a diabetes tablet"
           },
           "correct": false,
@@ -3770,19 +3793,19 @@
         {
           "id": "hepatorenal",
           "text": {
-            "zh-CN": "晚期肝硬化引起的肝肾综合征：肾脏是因为肝病而衰竭，应给予白蛋白和特利加压素，并转诊评估肝移植",
+            "zh-CN": "晚期肝硬化引起的肝肾综合征：肾脏是因为肝病而衰竭的，应给予白蛋白和特利加压素，并尽快转诊评估肝移植",
             "en": "Hepatorenal syndrome from advanced cirrhosis: his kidneys are failing because of his liver, so give albumin and terlipressin and refer him for a transplant assessment"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "肝肾综合征是功能性肾衰竭，尿液“干净”——没有肾性糖尿，没有小管性蛋白尿——诊断依赖肌酐的急性升高。按国际腹水俱乐部的标准（EASL 2018失代偿期肝硬化指南采用），存在蛋白尿等肾实质损伤证据或正在使用肾毒性药物时，不能诊断肝肾综合征；他只有一次肌酐119 μmol/L，尿里却有糖和小分子蛋白，还在服用阿德福韦酯。特利加压素有缺血和容量负荷过重的风险，这里没有指征。",
-            "en": "Hepatorenal syndrome is a functional kidney failure with a bland urine — no renal glycosuria, no tubular proteinuria — diagnosed from an acute rise in creatinine. Under the International Club of Ascites criteria (adopted by EASL 2018 for decompensated cirrhosis), proteinuria or other structural injury, or a current nephrotoxic drug, rules it out; he has a single creatinine of 119 μmol/L, glucose and small proteins in the urine, and is taking adefovir. Terlipressin carries ischaemic and fluid-overload risks and is not indicated."
+            "zh-CN": "肝肾综合征是功能性肾衰竭，尿液“干净”——没有肾性糖尿，没有小管性蛋白尿——诊断依赖肌酐的急性升高。EASL 2018失代偿期肝硬化指南采用的国际腹水俱乐部标准要求：近期没有使用肾毒性药物，也没有蛋白尿（>500 mg/d）等肾实质损伤的证据；他只有一次肌酐119 μmol/L，尿里有糖和小分子蛋白，又在服用肾毒性药物阿德福韦酯。特利加压素有缺血和容量负荷过重的风险，这里没有指征。",
+            "en": "Hepatorenal syndrome is a functional kidney failure with a bland urine — no renal glycosuria, no tubular proteinuria — diagnosed from an acute rise in creatinine. The International Club of Ascites criteria in the EASL 2018 guideline on decompensated cirrhosis require no current nephrotoxic drug and no sign of structural kidney injury such as proteinuria above 500 mg a day; he has a single creatinine of 119 μmol/L, glucose and small proteins in his urine, and takes a nephrotoxic drug, adefovir. Terlipressin carries ischaemic and fluid-overload risks and is not indicated."
           }
         },
         {
           "id": "poor-intake",
           "text": {
-            "zh-CN": "肝硬化进食少、营养不良，足以解释低磷、低尿酸和低钙；尿液改变是偶然发现，下次门诊复查一下即可",
+            "zh-CN": "肝硬化进食少、营养不良，足以解释低磷、低尿酸和低钙；尿液改变只是偶然发现，下次门诊时再复查一下即可",
             "en": "Poor intake and malnutrition from cirrhosis explain the low phosphate, urate and calcium; the urine changes are incidental and can simply be rechecked at his next clinic visit"
           },
           "correct": false,
@@ -3794,7 +3817,7 @@
         {
           "id": "light-chain-first",
           "text": {
-            "zh-CN": "服药五年多都没事，不太可能是阿德福韦酯：先按骨髓瘤轻链所致的肾小管病处理，血液科结果回来前抗病毒药不变",
+            "zh-CN": "服药五年多都没出过事，不太可能是阿德福韦酯：先按骨髓瘤轻链所致肾小管病处理，血液科结果回来前抗病毒药不变",
             "en": "Adefovir is unlikely after five uneventful years: treat this as a myeloma light-chain tubulopathy, and keep the antiviral unchanged until the haematology tests are back"
           },
           "correct": false,
@@ -3830,7 +3853,7 @@
         {
           "id": "switch-etv-or-taf",
           "text": {
-            "zh-CN": "停用阿德福韦酯，当天换用恩替卡韦（用过拉米夫定则换丙酚替诺福韦）；同时查HBV DNA、肝功能，核实既往用药",
+            "zh-CN": "停阿德福韦酯，当天换恩替卡韦（用过拉米夫定则换丙酚替诺福韦），同时查HBV DNA和肝功能、核实既往用药",
             "en": "Stop adefovir and start entecavir the same day — tenofovir alafenamide if he has had lamivudine — while checking HBV DNA, liver function and his earlier drugs"
           },
           "correct": true,
@@ -3842,7 +3865,7 @@
         {
           "id": "pause-until-recovered",
           "text": {
-            "zh-CN": "停用阿德福韦酯，暂停所有乙肝治疗，等肾功能和血磷恢复、复查血都正常以后，再重新开始抗病毒",
+            "zh-CN": "停用阿德福韦酯，暂停所有乙肝抗病毒治疗，等肾功能和血磷都恢复、复查血都正常以后，再重新开始抗病毒治疗",
             "en": "Stop adefovir and pause all hepatitis B treatment until his kidneys and phosphate have recovered, then restart an antiviral once his blood tests are back to normal"
           },
           "correct": false,
@@ -3854,7 +3877,7 @@
         {
           "id": "keep-adefovir-spaced",
           "text": {
-            "zh-CN": "继续服用阿德福韦酯，但按肌酐清除率延长给药间隔；三个月后复查尿液和血磷，看损伤是否稳定下来",
+            "zh-CN": "继续服用阿德福韦酯，但按肌酐清除率延长给药间隔；三个月后再复查尿液和血磷，看肾小管损伤是否已经稳定下来",
             "en": "Keep adefovir but lengthen the dosing interval to match his creatinine clearance, then recheck his urine and phosphate in three months to see whether things have settled"
           },
           "correct": false,
@@ -3866,7 +3889,7 @@
         {
           "id": "switch-tdf",
           "text": {
-            "zh-CN": "换用富马酸替诺福韦二吡呋酯（TDF），它比阿德福韦酯更强效、耐药屏障高；下次常规随访时再复查肾功能",
+            "zh-CN": "换用富马酸替诺福韦二吡呋酯（TDF），它比阿德福韦酯更强效、耐药屏障更高；下次常规随访时再复查一次肾功能",
             "en": "Switch to tenofovir disoproxil fumarate, which is more potent than adefovir with a high barrier to resistance, and recheck his kidney function at the next routine visit"
           },
           "correct": false,
@@ -3895,7 +3918,7 @@
         {
           "id": "oral-phosphate-active-d",
           "text": {
-            "zh-CN": "分次口服补磷，加用活性维生素D；用药前先查白蛋白校正钙、镁、碱性磷酸酶、甲状旁腺激素和维生素D，疼痛部位拍片",
+            "zh-CN": "分次口服补磷加活性维生素D；先查白蛋白校正钙、镁、碱性磷酸酶、甲状旁腺激素和维生素D，疼痛的骨头拍片",
             "en": "Replace phosphate by mouth in divided doses with active vitamin D, after checking albumin-adjusted calcium, magnesium, ALP, PTH and vitamin D, and X-ray painful bones"
           },
           "correct": true,
@@ -3907,31 +3930,31 @@
         {
           "id": "zoledronate-osteoporosis",
           "text": {
-            "zh-CN": "按骨质疏松引起的腰痛处理：静脉输注唑来膦酸，之后长期口服钙片和普通维生素D，用来保护骨骼",
-            "en": "Treat presumed osteoporosis as the cause of the back pain: intravenous zoledronic acid, then calcium and plain vitamin D tablets long term to protect the bones"
+            "zh-CN": "按骨质疏松引起的腰痛处理：先静脉输注一次唑来膦酸，之后长期口服钙片和普通维生素D，用来保护和加强骨骼",
+            "en": "Treat presumed osteoporosis as the cause of the back pain: a dose of intravenous zoledronic acid, then calcium and plain vitamin D tablets long term to protect the bones"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "骨痛伴低磷提示骨软化症——矿化障碍，双膦酸盐治不了。唑来膦酸说明书把低钙血症和肌酐清除率<35 mL/min列为禁忌；他的总钙1.97 mmol/L而白蛋白未知，肾脏也已受损。应先纠正低磷和维生素D，再评估骨骼。",
-            "en": "Bone pain with a low phosphate suggests osteomalacia — a mineralisation defect a bisphosphonate does not treat. The zoledronic acid label contraindicates it in hypocalcaemia and with a creatinine clearance below 35 mL/min; his total calcium is 1.97 mmol/L with the albumin unknown, and his kidneys are injured. Correct the phosphate and vitamin D first, then reassess the bones."
+            "zh-CN": "骨痛伴低磷提示骨软化症——矿化障碍，双膦酸盐治不了。唑来膦酸（5 mg，用于骨质疏松）说明书把低钙血症和肌酐清除率<35 mL/min列为禁忌；他的总钙1.97 mmol/L而白蛋白未知，肾脏也已受损。应先纠正低磷和维生素D，再评估骨骼。",
+            "en": "Bone pain with a low phosphate suggests osteomalacia — a mineralisation defect a bisphosphonate does not treat. The zoledronic acid (Reclast) label contraindicates it in hypocalcaemia and with a creatinine clearance below 35 mL/min; his total calcium is 1.97 mmol/L with the albumin unknown, and his kidneys are injured. Correct the phosphate and vitamin D first, then reassess the bones."
           }
         },
         {
           "id": "calcium-plain-d",
           "text": {
-            "zh-CN": "只补碳酸钙和普通维生素D（胆骨化醇），按骨质疏松常规处理；阿德福韦酯换掉以后就不用再额外补磷了",
+            "zh-CN": "只补碳酸钙和普通维生素D（胆骨化醇），按骨质疏松的常规方案处理；阿德福韦酯换掉以后，就不用再额外补磷了",
             "en": "Calcium carbonate with plain vitamin D (colecalciferol) only, as for osteoporosis; phosphate tablets are unnecessary once the adefovir has been stopped and replaced"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "普通维生素D和钙补不了小管还在丢失的磷，而受损的近端小管合成活性维生素D也减少；换药后数周内血磷仍低，骨骼仍然矿化不足。要直接补磷，并用活性维生素D。",
-            "en": "Plain vitamin D and calcium do not replace the phosphate the tubule is still wasting, and the injured proximal tubule makes less active vitamin D; the phosphate stays low for weeks after the switch while the bone stays undermineralised. Replace phosphate directly and use an active vitamin D."
+            "zh-CN": "普通维生素D和钙补不了小管还在丢失的磷，而受损的近端小管合成活性维生素D也减少；换药后数周内磷仍可能继续丢失，骨骼仍然矿化不足。要直接补磷，并用活性维生素D。",
+            "en": "Plain vitamin D and calcium do not replace the phosphate the tubule is still wasting, and the injured proximal tubule makes less active vitamin D; phosphate wasting can continue for weeks after the switch while the bone stays undermineralised. Replace phosphate directly and use an active vitamin D."
           }
         },
         {
           "id": "no-supplements",
           "text": {
-            "zh-CN": "不必补充：单靠换药，几天之内血磷就会自己恢复；一周后复查一次，到时候仍然偏低再开始处理",
+            "zh-CN": "暂时不必补充：单靠换药，几天之内血磷就会自己恢复正常；一周以后复查一次，到时候仍然偏低再开始补充治疗",
             "en": "No supplements: the switch alone will correct the phosphate within a few days, so recheck his blood in a week and only treat it if it is still low then"
           },
           "correct": false,
@@ -3946,7 +3969,7 @@
       "id": "causality-followup",
       "prompt": {
         "zh-CN": "阿德福韦酯换掉、补磷开始以后：MRI未见胸段髓外占位，有轻度退变；神经电生理示双下肢深感觉传导径路阻滞。你怎样判断阿德福韦酯与他的肾脏和脊髓问题有没有因果关系？之后怎样随访？",
-        "en": "Once adefovir has been replaced and phosphate replacement started: the MRI showed no thoracic extramedullary mass and mild degenerative change, and the neurophysiology impaired deep-sensation conduction in both legs. How will you judge whether adefovir caused his kidney and spinal cord problems, and what follow-up does he need?"
+        "en": "Once adefovir has been replaced and phosphate replacement started: the MRI showed no thoracic extramedullary mass and mild degenerative change, and the neurophysiology showed impaired deep-sensation conduction in both legs. How will you judge whether adefovir caused his kidney and spinal cord problems, and what follow-up does he need?"
       },
       "kind": "single",
       "requires": {
@@ -3975,8 +3998,8 @@
         {
           "id": "dechallenge-and-search",
           "text": {
-            "zh-CN": "数月内追踪血磷、尿糖、小管标志物、肌酐、HBV DNA和行走；好转可把小管病判为“很可能”由药物引起，但脊髓病的其他原因还要查",
-            "en": "Track phosphate, urine glucose, tubular markers, creatinine, HBV DNA and his walking for months; recovery would make the drug a probable cause of the tubulopathy, while other cord causes are still sought"
+            "zh-CN": "数月内追踪血磷、小管指标、肌酐、HBV DNA和行走；好转可判小管病“很可能”为药物所致，脊髓病其他原因仍要查",
+            "en": "Follow phosphate, tubular markers, creatinine, HBV DNA and walking for months; recovery makes the tubulopathy probably drug-related, but other causes of the cord disease still need testing"
           },
           "correct": true,
           "feedback": {
@@ -3987,7 +4010,7 @@
         {
           "id": "rechallenge-to-prove",
           "text": {
-            "zh-CN": "等他恢复以后，短期重新服用阿德福韦酯做激发试验：再次出现就能证明因果，如果没事，以后可以放心长期服用",
+            "zh-CN": "等他恢复以后，短期重新服用阿德福韦酯做激发试验：如果再次出现就能证明因果关系，如果没事以后就可以放心地长期服用",
             "en": "Once he has recovered, restart adefovir for a short trial: a relapse would prove the link, and if nothing happens he can safely stay on it long term"
           },
           "correct": false,
@@ -3999,8 +4022,8 @@
         {
           "id": "stop-when-phosphate-normal",
           "text": {
-            "zh-CN": "血磷一回到正常范围就停止小管指标随访：血磷正常说明肾损伤已经完全恢复，以后不需要再查肾脏了",
-            "en": "Stop the tubular tests once his serum phosphate is back in range, because a normal phosphate shows the kidney damage has fully healed and needs no further checks"
+            "zh-CN": "血磷一回到参考范围就停掉小管指标的随访：血磷正常说明肾损伤已经完全恢复了，以后不需要再专门查肾脏",
+            "en": "Stop the tubular tests once his serum phosphate is back in the reference range, because a normal phosphate shows that the kidney damage has fully healed and needs no further checks after that"
           },
           "correct": false,
           "feedback": {
@@ -4012,7 +4035,7 @@
           "id": "recovery-proves-neurotoxicity",
           "text": {
             "zh-CN": "如果换药以后行走恢复，就证明阿德福韦酯直接损伤了脊髓，脊髓病的其他原因也就都不需要再去查了",
-            "en": "If his walking recovers after the switch, that proves adefovir damaged the spinal cord directly, so the other causes of myelopathy no longer need to be looked for"
+            "en": "If his walking recovers after the switch, that proves adefovir damaged his spinal cord directly, so the other causes of myelopathy on the list no longer need to be looked for"
           },
           "correct": false,
           "feedback": {
@@ -4429,8 +4452,8 @@
         "en": "Explained in plain words the kidney and spinal cord problems, why the medicine is changed rather than stopped and what remains uncertain, and checked he understood"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge框架评价与施先生的谈话。开始：介绍自己，确认他愿意现在谈，必要时请家人在场。了解：先问他已经知道什么、最担心什么（“以后还能走路吗？”“是不是腰椎间盘越来越重？”）。说明：用通俗的话讲——问题不在腰椎间盘，而在脊髓和肾脏；肾脏在丢磷、丢糖、丢蛋白，最可能与吃了五年半的阿德福韦酯有关，这是这种药已知的副作用；乙肝药是“换”不是“停”，自己停药可能让肝炎突然加重；新药怎么吃（恩替卡韦空腹）；补磷的药；之后要定期查血、查尿和HBV DNA；还要做哪些检查排除其他原因。如实说明不确定：行走能恢复多少、药物是否直接伤到脊髓，现在都说不准，不作虚假保证。回应情绪，留出提问时间；请他用自己的话复述关键点（尤其“绝不自己停乙肝药”）。不要责怪以前开药或治疗的医生；说明这次反应会按规定上报。本病例没有记录医生当时对他说了什么。",
-        "en": "Judge the conversation with Mr Shi against the Calgary–Cambridge guide. Initiating: introduce yourself, check he is ready to talk now, and offer to have family present. Gathering: ask first what he already knows and what worries him most ('Will I walk properly again?', 'Is my disc getting worse?'). Explaining, in plain words: the problem is not a disc but the spinal cord and the kidneys; his kidneys are losing phosphate, sugar and protein, most likely because of the adefovir he has taken for five and a half years — a known side effect of that drug; the hepatitis medicine is being changed, not stopped, because stopping it himself could make the hepatitis flare suddenly; how to take the new tablet (entecavir on an empty stomach); the phosphate tablets; the regular blood, urine and HBV DNA tests to come; and the tests still needed to rule out other causes. Be honest about uncertainty — how much his walking will recover, and whether the drug harmed the cord directly, cannot be said yet — with no false reassurance. Respond to emotion and leave time for questions; ask him to say the key points back in his own words (above all, never to stop the hepatitis tablets himself). Do not blame earlier prescribers or therapists; say the reaction will be reported as required. This case does not record what he was told."
+        "zh-CN": "按Calgary–Cambridge框架评价与施先生的谈话。开始：介绍自己，确认他愿意现在谈，必要时请家人在场。了解：先问他已经知道什么、最担心什么（“以后还能走路吗？”“是不是腰椎间盘越来越重？”）。说明：用通俗的话讲——问题不在腰椎间盘，而在脊髓和肾脏；肾脏在丢磷、丢糖、丢蛋白，最可能与吃了五年半的阿德福韦酯有关，这是这种药已知的副作用；乙肝药是“换”不是“停”，自己停药可能让肝炎突然加重；新药怎么吃（恩替卡韦空腹，或丙酚替诺福韦随餐）；补磷的药；之后要定期查血、查尿和HBV DNA；还要做哪些检查排除其他原因。如实说明不确定：行走能恢复多少、药物是否直接伤到脊髓，现在都说不准，不作虚假保证。回应情绪，留出提问时间；请他用自己的话复述关键点（尤其“绝不自己停乙肝药”）。不要责怪以前开药或治疗的医生；说明这次反应会按规定上报。本病例没有记录医生当时对他说了什么。",
+        "en": "Judge the conversation with Mr Shi against the Calgary–Cambridge guide. Initiating: introduce yourself, check he is ready to talk now, and offer to have family present. Gathering: ask first what he already knows and what worries him most ('Will I walk properly again?', 'Is my disc getting worse?'). Explaining, in plain words: the problem is not a disc but the spinal cord and the kidneys; his kidneys are losing phosphate, sugar and protein, most likely because of the adefovir he has taken for five and a half years — a known side effect of that drug; the hepatitis medicine is being changed, not stopped, because stopping it himself could make the hepatitis flare suddenly; how to take the new tablet (entecavir on an empty stomach, or tenofovir alafenamide with food); the phosphate tablets; the regular blood, urine and HBV DNA tests to come; and the tests still needed to rule out other causes. Be honest about uncertainty — how much his walking will recover, and whether the drug harmed the cord directly, cannot be said yet — with no false reassurance. Respond to emotion and leave time for questions; ask him to say the key points back in his own words (above all, never to stop the hepatitis tablets himself). Do not blame earlier prescribers or therapists; say the reaction will be reported as required. This case does not record what he was told."
       }
     }
   ],
@@ -4535,8 +4558,8 @@
         "en": "Glycosuria with a fasting glucose of 4.5 mmol/L, a high alpha-1 microglobulin and NAG, and a low phosphate and urate mean the proximal tubule is failing to reclaim what it should — even though the creatinine is only 119 μmol/L."
       },
       {
-        "zh-CN": "记录中唯一的长期用药阿德福韦酯是核苷酸类似物，以迟发的近端小管毒性、低磷和骨软化著称；症状在服药约四年后出现，符合累积性毒性，而不是急性反应。",
-        "en": "The one recorded long-term drug, adefovir, is a nucleotide analogue known for delayed proximal tubular toxicity with hypophosphataemia and osteomalacia; symptoms beginning about four years into treatment fit a cumulative toxicity rather than an acute one."
+        "zh-CN": "记录中唯一的长期用药阿德福韦酯是核苷酸类似物，以迟发的近端小管毒性、低磷和骨软化著称；腰痛和行走困难在服药约四年后出现（腿麻更早，时间未记录），符合累积性毒性，而不是急性反应。",
+        "en": "The one recorded long-term drug, adefovir, is a nucleotide analogue known for delayed proximal tubular toxicity with hypophosphataemia and osteomalacia; back pain and walking difficulty beginning about four years into treatment (the numbness earlier, at a time not recorded) fit a cumulative toxicity rather than an acute one."
       },
       {
         "zh-CN": "处理要撤掉这个药，又不能让乙肝失去治疗：当天换成没有这种毒性的抗病毒药，按既往用药和肝功能选药定量，同时补上小管仍在丢失的磷。",
@@ -4607,6 +4630,7 @@
       "李璐, 宋红松, 蔡晧东. 阿德福韦酯相关范科尼综合征合并脊髓病及周围神经病. 药物不良反应杂志. 2014;16(1):52-53. doi:10.3760/cma.j.issn.1008-5734.2014.01.018. Available from: https://rs.yiigle.com/cmaid/1423444",
       "European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol. 2025;83(2):502-583. doi:10.1016/j.jhep.2025.03.018",
       "中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.",
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines for the management of patients with decompensated cirrhosis. J Hepatol. 2018;69(2):406-460.",
       "Gilead Sciences. HEPSERA (adefovir dipivoxil) tablets, for oral use: prescribing information. Foster City (CA): Gilead Sciences; revised 2018 Dec.",
       "Bristol-Myers Squibb. BARACLUDE (entecavir) tablets and oral solution: prescribing information. Princeton (NJ): Bristol-Myers Squibb; 2019.",
       "Gilead Sciences. VEMLIDY (tenofovir alafenamide) tablets, for oral use: prescribing information. Foster City (CA): Gilead Sciences; revised 2024 Mar.",
@@ -4887,6 +4911,10 @@
     {
       "type": "order",
       "investigationId": "bone-profile"
+    },
+    {
+      "type": "order",
+      "investigationId": "bone-xray"
     },
     {
       "type": "answer",

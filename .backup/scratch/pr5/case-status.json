@@ -167,6 +167,12 @@
   },
   "reviewed": true
  },
+ "cmcr-1423436": {
+  "authored": true
+ },
+ "cmcr-1423444": {
+  "authored": true
+ },
  "cmcr-1551888": {
   "allChecksPass": true,
   "authored": true,
@@ -191,6 +197,9 @@
    "minor": 7
   },
   "reviewed": true
+ },
+ "cmcr-1653405": {
+  "authored": true
  },
  "cmcr-1653411": {
   "allChecksPass": true,
@@ -518,6 +527,7 @@
   "reviewed": true
  },
  "cmcr-70172": {
+  "authored": true,
   "partialDraft": true
  },
  "cmcr-77850": {
