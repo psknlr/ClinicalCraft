@@ -52,6 +52,7 @@ import { scopeActorOf } from "../../tools/scope-actor.js";
 import type { SurgicalCount } from "../count.js";
 import { afterFieldWalk, afterOperate, followStep } from "./assistant.js";
 import { askText } from "./asks.js";
+import { learnerAwaited } from "./awaits.js";
 import { both, phrase, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterStandIn, type StandInOutcome } from "./operator.js";
 import { planOf } from "./operator-plan.js";
@@ -301,9 +302,7 @@ export class TeamScheduler {
    * it waits for is the learner's to say.
    */
   awaitsLearner(): boolean {
-    if (this.surgeon !== "learner") return false;
-    const counts = this.member(PRIMARY_ACTOR)?.duties.includes("count") ?? false;
-    return this.state.tasks.some((t) => t.kind === "operate" && !TERMINAL.has(t.status) && (t.request?.to === PRIMARY_ACTOR || (counts && t.reason === "count")));
+    return learnerAwaited(this.state, this.surgeon) !== null;
   }
 
   /**

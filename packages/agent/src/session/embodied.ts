@@ -406,6 +406,8 @@ export class EmbodiedSession {
       observe: (actorId, opts) => w().observe(actorId, opts),
       find: (actorId, query) => w().find(actorId, query),
       inspect: (actorId, id) => w().inspect(actorId, id),
+      offers: (actorId, id) => w().offers(actorId, id),
+      searchRefusal: (actorId, targetId) => w().searchRefusal(actorId, targetId),
       nearby: (aroundId, type, within) => w().nearby(aroundId, type, within),
       roomInfo: (actorId, roomId) => w().roomInfo(actorId, roomId),
       canSee: (actorId, id) => w().canSee(actorId, id),

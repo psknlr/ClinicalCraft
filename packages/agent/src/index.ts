@@ -78,6 +78,13 @@ export { extraRef, nextStep, planRef } from "./session/team/operator-plan.js";
 export { validTeamCheckpoint } from "./session/team/checkpoint.js";
 export { CALLOUT_OPS, calloutLine, isCallout, isCalloutStep, isTeamStepRef, TEAM_CALLER } from "./session/team/callout.js";
 export { FIELD_ASK_OPS, parseFieldAsk } from "./session/team/ask-input.js";
+export { haltOf, learnerAwaited } from "./session/team/awaits.js";
+export { FOLLOW_NEED } from "./session/team/assistant.js";
+// whom the learner names (docs/PROTOCOL.md §3): the one room-aware resolver, positions in words included
+export { encounterRoom, lookupStaff, type StaffLookup } from "./tools/consult-target.js";
+export { membersInPosition, positionWord, type PositionWord, type TeamView } from "./tools/position-words.js";
+// the debrief of a place in the team (docs/TEAM.md §1): the place and what the team did before the learner joined
+export { joinedLines, joinedParts, ownObjectives } from "./agents/joined.js";
 export type { RoleState } from "./session/staff-autonomy.js";
 export { PROFILE_POSITION, ROLE_CARDS, SHARED_PROTOCOL, positionOf, roleCardOf, roleSection, type RoleCard } from "./characters/roles.js";
 export { lineProblem, ModelTeamMind, type MindHost, type MindModel } from "./characters/team-mind.js";

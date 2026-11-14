@@ -20,14 +20,17 @@
  * session understands the same way when typed —, and a nurse, paramedic,
  * porter or attending can be asked to take the patient to a study or back.
  */
-import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, scopeOf, type Resolution } from "@clinicalcraft/agent";
+import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, scopeOf, type Resolution, type RoleState } from "@clinicalcraft/agent";
 import {
   historyAvailable,
   matchExam,
   matchInterventions,
   matchSpecificity,
+  observeField,
+  procedureFor,
   type CaseDefinition,
   type ExamFinding,
+  type FieldView,
   type HistoryItem,
   type Intervention,
   type SessionState,
@@ -44,8 +47,9 @@ import { ct, getLocale, tr, trList, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { portrait, STAFF_COLOURS } from "../portrait.js";
-import { parseAddress } from "../address.js";
+import { parseAddress, staffAddress } from "../address.js";
 import { capList } from "./common.js";
+import { controlsFor, label } from "./surgery-controls.js";
 import { bedsideTests } from "./tests-tab.js";
 import { treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
@@ -87,13 +91,56 @@ function roleLabel(agent: string): string {
   return trMaybe(`role.${agent}`, agent);
 }
 
-/** Bedside tasks offered as chips to a colleague whose role may do them (embodied mode; `scopeOf(role).tasks`). */
+/** Bedside tasks offered as chips — said to the colleague in words — when the session says they may be handed them. */
 export const DELEGATE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access"] as const;
+export type DelegateTask = (typeof DELEGATE_TASKS)[number];
 
-/** The bedside tasks a role may be asked to do (the session's scope of practice). */
-export function delegateTasks(role: string): (typeof DELEGATE_TASKS)[number][] {
-  const tasks = scopeOf(role).tasks;
+/**
+ * The bedside tasks a colleague may be asked to do now: those of their delegation tasks the session says they may be
+ * handed (`RoleState.delegable` — by role; nothing for the colleague standing by). None without their state.
+ */
+export function delegateTasks(state: Pick<RoleState, "delegable"> | null | undefined): DelegateTask[] {
+  const tasks = state?.delegable ?? [];
   return DELEGATE_TASKS.filter((t) => tasks.includes(t));
+}
+
+/** The operating table's work offered as chips, asked of the colleague by name (`/delegate staff:<id> <task> [target]`). */
+export interface TheatreOffer {
+  /** Hold port …: each port whose instrument holds traction, not theirs already. */
+  hold: string[];
+  /** Let go: they hold a port. */
+  release: boolean;
+  /** Hold the camera: the camera port is not theirs already. */
+  camera: boolean;
+  /** Camera on …: the field's regions. */
+  aim: string[];
+  /** Pass the …: the case's instruments. */
+  pass: string[];
+}
+
+/**
+ * The operating table's chips for a colleague, from what the session says they may be handed now (`RoleState.delegable`:
+ * the operating table's tasks by control — the stand-in who operates and the colleague standing by have none) and what
+ * the field offers to name (its ports and their instruments' work — core `INSTRUMENT_OPS` —, its regions, the case's
+ * instruments). Null before the operation, or when none of it is theirs. The session decides the rest: a refusal says why
+ * and who holds the control.
+ */
+export function theatreOffer(state: Pick<RoleState, "delegable"> | null | undefined, staffId: string, v: Pick<FieldView, "ports" | "regions" | "camera"> | null, instruments: readonly string[]): TheatreOffer | null {
+  const tasks = state?.delegable ?? [];
+  if (!v) return null;
+  const offer: TheatreOffer = {
+    hold: tasks.includes("hold_traction") ? v.ports.filter((p) => p.instrument && p.holder !== staffId && controlsFor(p.instrument).includes("retract")).map((p) => p.port) : [],
+    release: tasks.includes("release_traction") && v.ports.some((p) => p.holder === staffId),
+    camera: tasks.includes("hold_camera") && v.camera?.holder !== staffId,
+    aim: tasks.includes("aim_camera") ? v.regions.map((r) => r.id) : [],
+    pass: tasks.includes("pass_instrument") ? [...instruments] : [],
+  };
+  return offer.hold.length || offer.release || offer.camera || offer.aim.length || offer.pass.length ? offer : null;
+}
+
+/** The line a theatre chip sends: a delegation by name, with what it needs (a port, a region, an instrument). */
+export function theatreLine(staffId: string, task: string, target?: string): string {
+  return `/delegate staff:${staffId} ${task}${target ? ` ${target}` : ""}`;
 }
 
 export function conversationPanel(app: App, args: ConversationArgs): () => PanelView {

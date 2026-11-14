@@ -8,14 +8,18 @@
  * reason, Enter in the reason field denies with it. A request raised by an
  * external agent's call (`app.external.owns(submissionId)`, PROTOCOL §13.6)
  * is labelled as coming from the external agent — the learner decides it like
- * any other; nothing on the bridge can answer it.
+ * any other; nothing on the bridge can answer it. The stand-in surgeon's
+ * call-out before a critical step (docs/TEAM.md §4.5) is its own card: the line
+ * said by name, "No objection" / "Stop" bound to the same approval response.
  */
 import type { ApprovalDecision } from "@clinicalcraft/agent";
+import { t } from "@clinicalcraft/core";
 import type { App } from "../app/context.js";
 import type { ApprovalRequest } from "../app/store.js";
-import { tr, trMaybe } from "../i18n/index.js";
+import { getLocale, tr, trMaybe } from "../i18n/index.js";
 import { clear, focusables, h } from "./dom.js";
 import { riskBadge } from "./panels/common.js";
+import { calloutOf, type CalloutCard } from "./panels/team-view.js";
 
 export class ApprovalDialog {
   private current: ApprovalRequest | null = null;
@@ -116,7 +120,35 @@ export class ApprovalDialog {
     if (this.queueEl) this.queueEl.textContent = more > 0 ? tr("approval.queue", { n: more }) : "";
   }
 
+  /**
+   * The stand-in surgeon's call-out (`team-view.ts` `calloutOf`: a request carrying its line, raised for its body): its
+   * line said by name — "Dr Ito: Clipping the cystic duct." —, and "No objection" / "Stop", bound to this request's
+   * approval response (Esc stops, as it denies any request). Stopped, the stand-in looks at the field and asks the learner
+   * what they see (the team's panel offers "Go on").
+   */
+  private renderCallout(card: CalloutCard, more: number): void {
+    clear(this.box);
+    this.reasonEl = null;
+    const game = this.app.game;
+    const who = game?.session.world()?.entity(card.actorId);
+    const name = who ? t(who.name, getLocale()) : card.actorId.replace(/^staff:/u, "");
+    const go = h("button", { type: "button", class: "primary", id: "approval-approve", dataset: { callout: "go" }, onclick: () => this.answer("approved") }, tr("callout.go"));
+    const stop = h("button", { type: "button", class: "danger-solid", id: "approval-deny", dataset: { callout: "stop" }, title: tr("callout.stopTitle"), onclick: () => this.answer("denied") }, tr("callout.stop"));
+    this.queueEl = h("small", { class: "muted" });
+    this.box.className = "window approval-window callout-card";
+    delete this.box.dataset.source;
+    this.box.append(
+      h("header", { class: "window-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("callout.kicker")), h("h2", { id: "approval-title", class: "callout-line" }, tr("callout.title", { name, line: card.line })))),
+      h("div", { class: "window-body" }, h("p", { class: "approval-summary", id: "approval-summary" }, tr("callout.lead")), h("div", { class: "approval-actions callout-actions" }, go, stop), this.queueEl),
+    );
+    this.renderQueue(more);
+    this.initialFocus = go;
+  }
+
   private render(req: ApprovalRequest, more: number): void {
+    const game = this.app.game;
+    const card = game ? calloutOf(req, game.caseDef, game.session.store.snapshot?.state ?? game.session.session.state) : null;
+    if (card) return this.renderCallout(card, more);
     clear(this.box);
     const high = req.risk === "high";
     // An external agent's call runs as the clinician: its requests carry `agent: "clinician"`, the submission tells them apart.

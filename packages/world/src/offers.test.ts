@@ -1,0 +1,79 @@
+/**
+ * What a front-end asks the world before it offers anything (docs/EMBODIED.md §8.2, §8.6): `offers` — each operation of
+ * an entity with the action bus's own verdict for this actor, never where it stands — and `searchRefusal` — whether a
+ * search would be refused before it runs (its role, the wound rule). Both read-only: no trace span, nothing remembered,
+ * the world unchanged; and both agree with what the action bus then does.
+ */
+import { describe, expect, it } from "vitest";
+import { PRIMARY_ACTOR } from "./contracts.js";
+import { DEVICE, operate, STAFF, standBeside, theatreWorld, WHOLE_OPERATION } from "./__fixtures__/theatre.js";
+
+describe("offers: the world's verdict on each operation, for one body", () => {
+  it("equals availableActions and says why not as the action bus does", async () => {
+    const w = theatreWorld();
+    for (const actor of [STAFF.scrub, STAFF.circulating, STAFF.anaesthetist, PRIMARY_ACTOR]) {
+      for (const id of Object.values(DEVICE)) {
+        const offers = w.runtime.offers(actor, id);
+        expect(offers.length, `${actor} ${id}`).toBeGreaterThan(0);
+        // what `observe` / `inspect` call availableActions, exactly
+        expect(offers.filter((o) => o.available).map((o) => o.op), `${actor} ${id}`).toEqual(w.runtime.inspect(actor, id)!.availableActions);
+      }
+    }
+    // the scrub nurse may load the stapler, not fire it: the refusal is the one the action bus gives
+    const fire = w.runtime.offers(STAFF.scrub, DEVICE.stapler).find((o) => o.op === "fire")!;
+    expect(fire).toMatchObject({ available: false, code: "NOT_AUTHORIZED", reason: "Fire the stapler is for the operating surgeon: Chen Yu is the scrub nurse." });
+    expect(w.runtime.offers(STAFF.scrub, DEVICE.stapler).find((o) => o.op === "load")).toEqual({ op: "load", available: true });
+    standBeside(w, STAFF.scrub, DEVICE.stapler);
+    const done = await w.act({ actorId: STAFF.scrub, operation: "fire", targetId: DEVICE.stapler });
+    expect({ code: done.errorCode, message: done.message }).toEqual({ code: fire.code, message: fire.reason });
+    // an unknown id or body offers nothing
+    expect(w.runtime.offers(PRIMARY_ACTOR, "eq:nothing-here")).toEqual([]);
+    expect(w.runtime.offers("staff:nobody", DEVICE.stapler)).toEqual([]);
+  });
+
+  it("is read-only: no trace span, nothing remembered, the world unchanged", () => {
+    const w = theatreWorld();
+    const snap = JSON.stringify(w.runtime.snapshot());
+    const n = w.trace.spans().length;
+    w.runtime.offers(STAFF.scrub, DEVICE.stapler);
+    w.runtime.offers(PRIMARY_ACTOR, DEVICE.tower);
+    expect(JSON.stringify(w.runtime.snapshot())).toBe(snap);
+    expect(w.trace.spans().length).toBe(n);
+  });
+});
+
+describe("searchRefusal: the wound rule asked before a search", () => {
+  it("refuses whom the action bus refuses, in the same words; null where the search would run", async () => {
+    const w = theatreWorld({ start: { type: "start", lineup: "three-surgeons" } });
+    // before the operation: nobody is refused the patient
+    expect(w.runtime.searchRefusal(STAFF.circulating, w.patientId)).toBeNull();
+    operate(w, WHOLE_OPERATION.slice(0, 3));
+    for (const who of [STAFF.circulating, STAFF.scrub, STAFF.anaesthetist, STAFF.porter]) {
+      const refused = w.runtime.searchRefusal(who, w.patientId);
+      expect(refused, who).toMatchObject({ code: "NOT_AUTHORIZED" });
+      standBeside(w, who, w.patientId, 1.3);
+      const r = await w.act({ actorId: who, operation: "search", targetId: w.patientId });
+      expect({ code: r.errorCode, message: r.message }, who).toEqual(refused);
+    }
+    expect(w.runtime.searchRefusal(STAFF.circulating, w.patientId)!.message).toBe("Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant, second assistant: Lin Xiao is the circulating nurse.");
+    // whoever holds traction; anyone searching where they stand; a body the world does not know
+    for (const who of [PRIMARY_ACTOR, STAFF.first, STAFF.second]) expect(w.runtime.searchRefusal(who, w.patientId), who).toBeNull();
+    for (const who of [STAFF.circulating, STAFF.scrub]) expect(w.runtime.searchRefusal(who), who).toBeNull();
+    expect(w.runtime.searchRefusal("staff:nobody", w.patientId)).toBeNull();
+    // the learner in the scrub nurse's place is told it is not theirs, in the learner's words
+    const seat = theatreWorld({ start: { type: "start", seat: "scrub-nurse" } });
+    operate(seat, WHOLE_OPERATION.slice(0, 2));
+    expect(seat.runtime.searchRefusal(PRIMARY_ACTOR, seat.patientId)).toEqual({ code: "NOT_AUTHORIZED", message: "Checking the wound during the operation needs Traction, held by the operating surgeon, first assistant: you are the scrub nurse." });
+  });
+
+  it("is read-only: no trace span, the world unchanged", () => {
+    const w = theatreWorld();
+    operate(w, WHOLE_OPERATION.slice(0, 3));
+    const snap = JSON.stringify(w.runtime.snapshot());
+    const n = w.trace.spans().length;
+    w.runtime.searchRefusal(STAFF.circulating, w.patientId);
+    w.runtime.searchRefusal(PRIMARY_ACTOR);
+    expect(JSON.stringify(w.runtime.snapshot())).toBe(snap);
+    expect(w.trace.spans().length).toBe(n);
+  });
+});

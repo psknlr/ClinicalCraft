@@ -71,6 +71,7 @@ import type {
   TraceSink,
   WorldActionRequest,
   WorldActionResult,
+  WorldErrorCode,
   WorldEvent,
 } from "./contracts.js";
 import { WALK_SPEED } from "./contracts.js";
@@ -438,6 +439,18 @@ export class ActionBus implements EffectsHost, TransportHost {
     return this.d.store.actor(`actor:${idOrAlias}`) ? `actor:${idOrAlias}` : null;
   }
 
+  /**
+   * Why a search by this actor (of `targetId`, or where it stands) is refused before it runs — its role, then the wound
+   * while the operation is in progress, the scrubbed surgeons' (EMBODIED §8.6: no walk fixes a position) — or null. The
+   * one check of a `search` request, which `WorldRuntime.searchRefusal` answers without running anything.
+   */
+  searchRefusal(actor: ActorState, targetId?: EntityId): { code: WorldErrorCode; message: string } | null {
+    const L = this.d.locale;
+    if (!permits(actor.role, "search")) return { code: "NOT_AUTHORIZED", message: worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName("search", L) }) };
+    const wound = this.d.rules.searchRefusal(actor, targetId);
+    return wound ? { code: wound.code, message: wound.message } : null;
+  }
+
   private timing() {
     return { startedAt: this.d.now(), clockStart: this.d.clinical.clock() };
   }
@@ -477,10 +490,8 @@ export class ActionBus implements EffectsHost, TransportHost {
       }
     }
     if (request.operation === "search") {
-      if (!permits(actor.role, "search")) return failed("NOT_AUTHORIZED", worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName("search", L) }));
-      // the wound while the operation is in progress: the scrubbed surgeons' (EMBODIED §8.6) — no walk fixes a position
-      const wound = this.d.rules.searchRefusal(actor, targetId);
-      if (wound) return failed(wound.code, wound.message);
+      const refused = this.searchRefusal(actor, targetId);
+      if (refused) return failed(refused.code, refused.message);
       return search(this, request, actor, targetId);
     }
     if (MOVE_OPS.includes(request.operation)) {

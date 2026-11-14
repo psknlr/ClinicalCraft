@@ -142,6 +142,21 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       traceRead("inspect", actorId, resolved ? [resolved] : [], () => (out = resolved ? perception.inspect(actorId, resolved) : null));
       return out;
     },
+    offers(actorId, id) {
+      const actor = store.actor(actorId);
+      const resolved = actions.resolve(id);
+      if (!actor || !resolved) return [];
+      return rules.spec(resolved).operations.map((op) => {
+        const fail = rules.precheck(resolved, op, actor);
+        return fail ? { op: op.id, available: false, code: fail.code, reason: fail.message } : { op: op.id, available: true };
+      });
+    },
+    searchRefusal(actorId, targetId) {
+      const actor = store.actor(actorId);
+      if (!actor) return null;
+      const resolved = targetId === undefined ? undefined : actions.resolve(targetId);
+      return actions.searchRefusal(actor, resolved ?? undefined);
+    },
     roomInfo: (actorId, roomId) => perception.roomInfo(actorId, roomId),
     regionName: (at, locale) => locator.regionName(at, locale),
     canSee(actorId, id) {

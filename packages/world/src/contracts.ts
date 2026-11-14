@@ -1056,6 +1056,20 @@ export interface WorldRuntime {
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
   inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] }) | null;
   /**
+   * What the world says now to each operation an entity offers, for this actor (§8.2): the action bus's own `precheck` —
+   * role and control, availability, reservation and busy, held by another, record binding, state, preconditions; never
+   * where the actor stands, which a short walk fixes — `available` (= `availableActions`), or the refusal's code and
+   * message. Read-only: no trace span, nothing remembered (`inspect` also judges where the actor stands and records the
+   * look). A front-end greys out what is not available (docs/EMBODIED.md §8.2). Empty for an unknown id.
+   */
+  offers(actorId: ActorId, id: EntityId): { op: string; available: boolean; code?: WorldErrorCode; reason?: string }[];
+  /**
+   * Whether a search by this actor — of `targetId`, or where it stands — is refused before it runs, and why: its role,
+   * and the wound rule (§8.6: the patient during the operation, in the team's room, by whoever holds `retract`). The one
+   * check a `search` request goes through. Read-only. Null: the world would carry it out.
+   */
+  searchRefusal(actorId: ActorId, targetId?: EntityId): { code: WorldErrorCode; message: string } | null;
+  /**
    * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
    * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a
    * `nearbyState` precondition reads (devices that depend on devices). `states`: every state it is in — a carried
