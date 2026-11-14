@@ -235,6 +235,33 @@ describe("each place sees the reference operation through, the learner playing i
     await t.session.close();
   });
 
+  it("the reference's own steps of the place's member are asked of the learner and waited for — the stand-in never takes them", async () => {
+    // the reference has the first assistant take the camera after the scope goes in and aim it at the triangle
+    const solution = [
+      { type: "start" },
+      { type: "set-phase", phase: "theatre" },
+      ...WHOLE_OPERATION.slice(0, 3).map((op) => ({ type: "operate", op })),
+      { type: "operate", actor: "doc-1", op: { op: "hand-over", port: "A", to: "doc-1" } },
+      { type: "operate", actor: "doc-1", op: { op: "aim", port: "A", at: "hepatocystic-triangle" } },
+      ...WHOLE_OPERATION.slice(3).map((op) => ({ type: "operate", op })),
+      { type: "finish" },
+    ];
+    const t = await inPlace({ type: "start", seat: "first-assistant" }, { caseDef: theatreCase({ solution }) });
+    const played = await play(t);
+    expect(t.session.state.procedure).toMatchObject({ closed: true, specimen: "extracted", unsafe: [], injuries: [] });
+    // the learner took the camera and aimed it at the triangle, as asked — their place's steps of the reference
+    expect(played.steps.slice(0, 2)).toEqual([
+      { op: "hand-over", port: "A", to: "doc-1" },
+      { op: "aim", port: "A", at: "hepatocystic-triangle" },
+    ]);
+    expect(played.heard.filter((m) => m.kind === "request").map((m) => m.text.en).slice(0, 2)).toEqual(["The first assistant (you), take the camera, please.", "The first assistant (you), camera on the hepatocystic triangle, please."]);
+    // the stand-in's own plan steps recorded once each, in order — never the place member's two (plan steps 3 and 4)
+    const own = standInRefs(t).filter((r) => /^standin:\d+$/u.test(r));
+    const plan = WHOLE_OPERATION.length + 2;
+    expect(own).toEqual(Array.from({ length: plan }, (_, k) => k).filter((k) => k !== 3 && k !== 4).map((k) => `standin:${k}`));
+    await t.session.close();
+  });
+
   it("the first assistant with the scrub nurse on a break: no pass is needed; the relief scrub nurse brings what the stand-in needs", async () => {
     const t = await inPlace({ type: "start", seat: "first-assistant", team: "scrub-break" });
     // the stand-in needs a swab: the team sees to it — the circulating nurse calls the relief scrub nurse in

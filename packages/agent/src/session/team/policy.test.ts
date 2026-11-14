@@ -3,10 +3,10 @@
  */
 import { describe, expect, it } from "vitest";
 import type { FieldView, TeamDuty } from "@clinicalcraft/core";
-import { REFERENCE_OPS } from "../../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
+import { LAP_CHOLE_SOLUTION, REFERENCE_OPS } from "../../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
 import { afterOperate } from "./assistant.js";
 import { afterStandIn } from "./operator.js";
-import { expectedInstruments, expectedTractions } from "./operator-plan.js";
+import { expectedInstruments, expectedTractions, planOf } from "./operator-plan.js";
 import { afterAct, learnerCount, propose, type ColleagueView, type CountView, type ItemSighting, type MemberView } from "./policy.js";
 import type { MemberState, Proposal, TeamMessage, TeamTask } from "./types.js";
 
@@ -573,7 +573,7 @@ describe("the stand-in surgeon", () => {
   const stepOf = (p: Proposal | null) => (p?.kind === "operate" ? { op: p.op, ref: p.ref } : null);
   const requestOf = (p: Proposal | null) => sets(p).find((x) => x.request)?.request;
 
-  it("starts its plan at the first reference step the field has not recorded: a colleague's steps never move it, the place member's own steps are passed over", () => {
+  it("starts its plan at the first reference step the field has not recorded — those the learner's start applied are done too —; a colleague's steps never move it", () => {
     // nothing done: the operation begins (its plan task made with the first step) — at the table first
     const first = propose(standIn(0, { tasks: [], field: null }));
     expect(stepOf(first)).toEqual({ op: { op: "plan-ports", plan: "three-port-left" }, ref: "standin:0" });
@@ -581,9 +581,30 @@ describe("the stand-in surgeon", () => {
     expect(propose(standIn(0, { tasks: [], atTable: false, field: null }))).toMatchObject({ kind: "act", operation: "navigate", goal: { kind: "interact", id: PATIENT } });
     // the camera taken and aimed by colleagues (their own refs) leaves the plan where the field's record has it
     expect(stepOf(propose(standIn(6, { refs: [...done(6), "team.task-3.1", "team.task-3.2"] })))).toEqual({ op: REFERENCE_OPS[6], ref: "standin:6" });
-    // a step the reference gives the learner's place (`actor`) is theirs: the plan goes on after it
+    // the learner's start applied the reference up to its fourth operative step (`joined.actions` 5: the phase, steps
+    // 0–3, recorded with no ref): the plan begins after them
+    const joined = planOf(LAP_CHOLE_SOLUTION as never, 5);
+    expect(joined.filter((x) => x.joined).map((x) => x.k)).toEqual([0, 1, 2, 3]);
+    expect(stepOf(propose(standIn(0, { plan: joined, refs: [], field: at(4) })))).toEqual({ op: REFERENCE_OPS[4], ref: "standin:4" });
+  });
+
+  it("a step the reference gives the learner's place is theirs: asked of them and waited for — its cursor goes on after it, never taking it", () => {
     const theirs = PLAN.map((x) => (x.k === 5 ? { ...x, actor: "or.first" } : x));
-    expect(stepOf(propose(standIn(5, { plan: theirs, field: at(6) })))).toEqual({ op: REFERENCE_OPS[6], ref: "standin:6" });
+    const p = propose(standIn(5, { plan: theirs, field: at(5) }));
+    expect(said(p)).toMatchObject({ to: LEARNER, kind: "request", text: "The first assistant (you), please hold the grasper in port B, pulling the infundibulum to the patient's left and caudally.", about: { field: { op: "traction", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" } } });
+    const req = requestOf(p)!;
+    expect(req).toMatchObject({ key: "step:5", to: LEARNER });
+    // read back, confirmed, not done yet: it waits — its own next step is not taken meanwhile
+    expect(propose(standIn(5, { plan: theirs, field: at(5), tasks: [planTask({ request: { ...req, confirmed: true } })] }))).toBeNull();
+    // they hold port B, pulling as the reference does: seen through, then its own next step (6) — never step 5
+    const held = holding(at(6), "B", "or.first");
+    expect(sets(propose(standIn(5, { plan: theirs, field: held, tasks: [planTask({ request: { ...req, confirmed: true } })] })))).toContainEqual(expect.objectContaining({ request: undefined, requested: ["camera:2", "step:5"] }));
+    expect(stepOf(propose(standIn(5, { plan: theirs, field: held, tasks: [planTask({ requested: ["camera:2", "step:5"] })] })))).toEqual({ op: REFERENCE_OPS[6], ref: "standin:6" });
+    // given up (they never took it): its own next step needs the traction — it pulls it itself, an extra step
+    expect(stepOf(propose(standIn(5, { plan: theirs, field: at(5), tasks: [planTask({ requested: ["camera:2", "step:5"] })] })))).toEqual({ op: REFERENCE_OPS[5], ref: "standin:6:retract:1" });
+    // a step of a colleague's that no request names (their suction) is passed over, never taken
+    const suction = PLAN.map((x) => (x.k === 5 ? { k: 5, op: { op: "suction", port: "C" } as const, actor: "or.first" } : x));
+    expect(sets(propose(standIn(5, { plan: suction, field: at(5) })))).toContainEqual(expect.objectContaining({ requested: ["camera:2", "step:5"] }));
   });
 
   it("a dissection run is one move: it goes on until the region shows cleared — past the reference's steps, never past the run's length", () => {

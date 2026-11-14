@@ -3,21 +3,47 @@
  * (`PlanStep`), and where the operation has got to — a pure function of the field's own record (`ProcedureState.refs`)
  * and of what the screen shows, never of the team's memory, so a save and resume at any point carries on from the same
  * step, exactly once.
- * - A plan step `k` is done once the field has recorded a step with its ref, `standin:<k>`.
+ * - A plan step `k` is done once the field has recorded a step with its ref, `standin:<k>` — or when the learner's start
+ *   in a place applied it (core `joinPath`, `SessionState.joined`: the reference up to the team's phase, by the system).
  * - A run of dissections of one region is one move: done once the region shows cleared, or once every reference step of
  *   it and the extra dissections it allows (as many as the run has steps: `standin:<k>:dissect:<n>`) are recorded.
  * - The stand-in's own extra steps — a port taken back, the camera aimed, an instrument put back, an injury said aloud,
  *   suction — are `standin:<k>:<kind>:<n>` (`k`: the plan step they are for), counted from the record to bound them.
- * - A reference step the reference gives a colleague (`actor`) is that colleague's own: the plan passes over it.
+ * - A reference step the reference gives a colleague (`actor`) is that colleague's own, never the stand-in's: its next
+ *   step passes over it, and before that step it asks the colleague for it (`colleagueSteps`), or waits for the learner
+ *   when the step is their place's.
  */
 import { describeDirection, directionVector, type ClinicalAction, type Direction, type DirectionName, type FieldView, type InstrumentId, type ProcedureOp } from "@clinicalcraft/core";
 import type { PlanStep } from "./types.js";
 
-/** The stand-in's plan: a case's reference solution's operative steps, in order (`PlanStep.k`: their index among them). */
-export function planOf(solution: readonly ClinicalAction[]): PlanStep[] {
+/**
+ * The stand-in's plan: a case's reference solution's operative steps, in order (`PlanStep.k`: their index among them);
+ * `joined`, the reference actions the learner's start in a place applied (`SessionState.joined.actions`: the first of
+ * the solution's actions after its own start) — their operative steps are done.
+ */
+export function planOf(solution: readonly ClinicalAction[], joined = 0): PlanStep[] {
+  const start = solution.findIndex((a) => a.type === "start");
   const steps: PlanStep[] = [];
-  for (const a of solution) if (a.type === "operate") steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) });
+  solution.forEach((a, i) => {
+    if (a.type !== "operate") return;
+    const byJoin = i > start && i <= start + joined;
+    steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}), ...(byJoin ? { joined: true as const } : {}) });
+  });
   return steps;
+}
+
+/** A plan step done: recorded with its ref, or applied when the learner joined. */
+function isDone(x: PlanStep, refs: ReadonlySet<string>): boolean {
+  return x.joined === true || refs.has(planRef(x.k));
+}
+
+/** The index in the plan of the furthest plan step done (-1: none): the stand-in works its plan in order. */
+function furthestDone(plan: readonly PlanStep[], refs: ReadonlySet<string>): number {
+  let furthest = -1;
+  plan.forEach((x, i) => {
+    if (isDone(x, refs)) furthest = i;
+  });
+  return furthest;
 }
 
 /** The ref a plan step is recorded with in the field (`ProcedureState.refs`). */
@@ -69,16 +95,12 @@ function cleared(f: FieldView | null, region: string): boolean {
  */
 export function nextStep(plan: readonly PlanStep[], refs: readonly string[], f: FieldView | null): NextStep | null {
   const done = new Set(refs);
-  // the furthest plan step the field has recorded (the stand-in works its plan in order)
-  let furthest = -1;
-  plan.forEach((x, i) => {
-    if (done.has(planRef(x.k))) furthest = i;
-  });
+  const furthest = furthestDone(plan, done);
   for (let i = 0; i < plan.length; i++) {
     const step = plan[i]!;
     if (step.actor !== undefined) continue;
     if (step.op.op !== "dissect") {
-      if (!done.has(planRef(step.k))) return { step, ref: planRef(step.k) };
+      if (!isDone(step, done)) return { step, ref: planRef(step.k) };
       continue;
     }
     const end = runEnd(plan, i);
@@ -86,13 +108,25 @@ export function nextStep(plan: readonly PlanStep[], refs: readonly string[], f: 
     const region = step.op.region;
     i = end;
     if (cleared(f, region) || furthest > end) continue;
-    const open = run.find((x) => !done.has(planRef(x.k)));
+    const open = run.find((x) => !isDone(x, done));
     if (open) return { step: open, ref: planRef(open.k) };
     const last = run.at(-1)!;
     const n = extras(refs, last.k, "dissect");
     if (n < run.length) return { step: last, ref: extraRef(last.k, "dissect", n + 1), extra: true };
   }
   return null;
+}
+
+/**
+ * The colleagues' own steps the reference has now — after the furthest plan step done and before the stand-in's next
+ * (`next`; null: the plan's end), in order: the stand-in asks for each before it goes on (or waits for the learner, when
+ * it is their place's), and never takes one itself.
+ */
+export function colleagueSteps(plan: readonly PlanStep[], refs: readonly string[], next: PlanStep | null): PlanStep[] {
+  const done = new Set(refs);
+  const furthest = furthestDone(plan, done);
+  const end = next ? plan.findIndex((x) => x.k === next.k) : plan.length;
+  return plan.filter((x, i) => x.actor !== undefined && !x.joined && i > furthest && i < end);
 }
 
 /** The plan steps before step `k` (the reference as it stands when `k` is next), the stand-in's own and its colleagues'. */

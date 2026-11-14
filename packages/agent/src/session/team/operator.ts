@@ -21,7 +21,9 @@
  * 6. **What its last step hands on** (A17), right after it: after its own scope insert, "Take the camera, please." to the
  *    camera holder (the holder of the camera port, else the present colleague holding the camera control); after its own
  *    traction on an assist port, that traction to the traction assistant (a present colleague other than the camera
- *    holder holding `retract`: "Please hold the grasper in port D, pulling the fundus cephalad.").
+ *    holder holding `retract`: "Please hold the grasper in port D, pulling the fundus cephalad."). Then **a colleague's
+ *    own step** the reference has before its next (`actor`): asked of them as a request about the field — the learner's
+ *    place's too, and waited for —, never taken by the stand-in itself; one no request names is passed over.
  * 7. **What the next step needs**: a port a colleague holds — "I'll take port B." / "B 孔我来。", then taken back (the
  *    camera port before the extraction through it too); on tissue, the reference's traction (taken back and pulled again
  *    when lost) and the camera on the step's region ("Camera on the cystic plate."; held by nobody, it aims it itself);
@@ -41,7 +43,7 @@ import type { NavGoal } from "@clinicalcraft/world";
 import { askText, instrumentWords, theWords } from "./asks.js";
 import { CALLOUT_OPS } from "./callout.js";
 import { phrase, type Bilingual } from "./i18n.js";
-import { directionNames, expectedInstruments, expectedTractions, extraRef, extras, instrumentPort, lastOwn, needsPicture, nextStep, TISSUE_OPS, tractionShown, type NextStep, type Traction } from "./operator-plan.js";
+import { colleagueSteps, directionNames, expectedInstruments, expectedTractions, extraRef, extras, instrumentPort, lastOwn, needsPicture, nextStep, TISSUE_OPS, tractionShown, type NextStep, type Traction } from "./operator-plan.js";
 import type { ColleagueView, MemberView } from "./policy.js";
 import { surgeonAnswer, woundStep } from "./surgeon.js";
 import type { FieldAsk, MemberId, PlanStep, Proposal, StandInRequest, TaskPatch, TeamMessage, TeamTask } from "./types.js";
@@ -149,28 +151,91 @@ function over(v: MemberView, task: TeamTask, key: string): Partial<TeamTask> {
   return { ...going(task), request: undefined, requested: [...(task.requested ?? []), key], since: v.round };
 }
 
-/** What the screen shows once a request is done (an aim: the camera on that region, as close as asked). */
-function requestDone(v: MemberView, req: StandInRequest): boolean {
+/**
+ * What the screen shows once a request said to `to` is done: the camera in their hands; an aim — the camera on that
+ * region, as close as asked (a follow aim elsewhere never counts); the zoom; their traction as asked; the port let go;
+ * the instrument passed to the operator.
+ */
+function fieldShows(v: MemberView, ask: FieldAsk, to: MemberId): boolean {
   const f = v.field;
-  const ask = req.field;
-  if (!f || !ask) return false;
-  const ref = v.refOf(req.to);
+  if (!f) return false;
+  const ref = v.refOf(to);
   switch (ask.op) {
     case "camera":
       return !!f.camera && f.camera.holder === ref;
     case "aim":
-      return !!f.camera && f.camera.at === ask.region && (!ask.zoom || f.camera.zoom === ask.zoom);
+      return !!f.camera && f.camera.at === (ask.region ?? null) && (!ask.zoom || f.camera.zoom === ask.zoom);
     case "zoom":
       return !!f.camera && f.camera.zoom === ask.zoom;
     case "traction": {
       const p = f.ports.find((x) => x.port === ask.port);
       return !!p && p.holder === ref && tractionShown(f, { structure: ask.structure ?? "", port: ask.port ?? "", direction: ask.direction ?? [], force: ask.force ?? "firm" });
     }
+    case "release":
+      return !f.retractions.some((r) => r.port === ask.port) && f.ports.find((p) => p.port === ask.port)?.holder !== ref;
     case "pass":
       return f.passed.some((q) => q.instrument === ask.instrument && q.to === undefined);
-    default:
-      return false;
   }
+}
+
+/** What the screen shows once a request is done (`fieldShows`); the stop after a call-out is done only by the learner's word. */
+function requestDone(v: MemberView, req: StandInRequest): boolean {
+  return !!req.field && fieldShows(v, req.field, req.to);
+}
+
+/**
+ * A colleague's own step of the reference as a request about the field (null: none names it — passed over): a traction,
+ * letting go of one, the camera taken (the scope handed to them, or put into the camera port by them), an aim at a
+ * region, a zoom, a pass to the operator (`operator`: whether a field reference names the stand-in).
+ */
+function askOf(f: FieldView, x: PlanStep, operator: (ref: string) => boolean): FieldAsk | null {
+  const op = x.op;
+  switch (op.op) {
+    case "retract":
+      return { op: "traction", port: op.port, structure: op.structure, direction: directionNames(op.direction), force: op.force };
+    case "release": {
+      const port = f.retractions.find((r) => r.structure === op.structure)?.port;
+      return port ? { op: "release", port } : null;
+    }
+    case "aim":
+      return op.at !== undefined ? { op: "aim", region: op.at } : null;
+    case "zoom":
+      return { op: "zoom", zoom: op.level };
+    case "pass":
+      return op.to === undefined || op.to === "surgeon" || operator(op.to) ? { op: "pass", instrument: op.instrument } : null;
+    case "hand-over":
+    case "insert": {
+      const port = f.ports.find((p) => p.port === op.port);
+      const scope = op.op === "insert" ? op.instrument === "laparoscope" : port?.instrument === "laparoscope";
+      const theirs = op.op === "insert" || op.to === x.actor;
+      return port?.role === "camera" && scope && theirs ? { op: "camera", port: op.port } : null;
+    }
+    default:
+      return null;
+  }
+}
+
+/**
+ * The colleagues' own steps the reference has before the stand-in's next (`colleagueSteps`, A3): each asked of the
+ * colleague whose step it is — the learner too, when it is their place's: then waited for — and seen through like any
+ * request; one nobody is there to do, one no request names, one the field shows done already, is passed over. The
+ * stand-in never takes one itself: it goes on once the field shows it done or it gave up waiting, and what its next step
+ * needs then (a traction gone) it sees to itself.
+ */
+function colleagueStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, next: NextStep | null): Part {
+  const f = v.field;
+  if (!f) return undefined;
+  const asked = new Set(task.requested ?? []);
+  for (const x of colleagueSteps(plan, v.refs, next?.step ?? null)) {
+    const key = `step:${x.k}`;
+    if (asked.has(key)) continue;
+    const who = v.bodyOf(x.actor);
+    const ask = askOf(f, x, (ref) => v.bodyOf(ref) === v.me.id);
+    const there = who !== v.me.id && v.colleagues.some((c) => c.id === who && here(c));
+    if (!ask || !there || fieldShows(v, ask, who)) return { kind: "update", patch: [{ id: task.id, set: over(v, task, key) }] };
+    return request(v, task, who, ask, key);
+  }
+  return undefined;
 }
 
 /**
@@ -456,15 +521,25 @@ function decide(v: MemberView, plan: readonly PlanStep[], task: TeamTask): Propo
   const walk = walkStep(v, task);
   if (walk) return walk;
   const next = nextStep(plan, v.refs, v.field);
-  const k = next?.step.k ?? plan.at(-1)?.k ?? 0;
-  const seen = recogniseStep(v, task, k);
+  // an injury in sight is said aloud before anything else of the operation (none once its plan is done)
+  const seen = next ? recogniseStep(v, task, next.step.k) : null;
   if (seen) return seen;
   if (task.request) return requestStep(v, task, task.request);
-  if (!next) return finished(v, task);
+  // the plan done: a colleague's own step the reference ends with asked for first
+  if (!next) return colleagueStep(v, plan, task, null) ?? finished(v, task);
   // the field's first step is taken before anything is on the screen (the port plan); every other needs it in sight
   if (!v.field && next.step.op.op !== "plan-ports") return null;
-  for (const part of [supplyStep(v, plan, task, next), fieldStep(v, task, next), handOnStep(v, plan, task, next), prepareStep(v, plan, task, next)]) {
-    if (part !== undefined) return part;
+  // in order, each looked at only when the ones before it need nothing (no id given out for a request not made)
+  const parts: (() => Part)[] = [
+    () => supplyStep(v, plan, task, next),
+    () => fieldStep(v, task, next),
+    () => handOnStep(v, plan, task, next),
+    () => colleagueStep(v, plan, task, next),
+    () => prepareStep(v, plan, task, next),
+  ];
+  for (const part of parts) {
+    const p = part();
+    if (p !== undefined) return p;
   }
   return doStep(v, task, next);
 }

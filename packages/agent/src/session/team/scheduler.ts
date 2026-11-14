@@ -295,7 +295,9 @@ export class TeamScheduler {
 
   /**
    * Something was set in motion, and all of it ended: every posted need's supply task, the count once due, and the work
-   * in the operative field (`assist`, `operate` tasks) — one waiting only for the learner's confirmation is theirs to end.
+   * in the operative field (`assist`, `operate` tasks: the stand-in's operation too) — one waiting only on the learner is
+   * theirs to end (a read-back of theirs awaiting their confirmation; the stand-in's request to them, or its stop,
+   * awaiting their answer or their step), so a `team run` stops there for the learner to answer.
    */
   settled(): boolean {
     const posted = this.state.posted;
@@ -303,7 +305,9 @@ export class TeamScheduler {
     const needsDone = posted.every((need) => this.state.tasks.some((t) => t.kind === "supply" && t.need === need && TERMINAL.has(t.status)));
     const countDone = !ledger || ledger.dueRound === undefined || ledger.settledRound !== undefined;
     const field = this.state.tasks.filter((t) => FIELD_TASKS.has(t.kind));
-    const fieldDone = field.every((t) => TERMINAL.has(t.status) || (t.status === "asked" && t.initiator === PRIMARY_ACTOR && this.surgeon === "learner"));
+    const learner = this.surgeon === "learner";
+    const theirs = (t: TeamTask) => learner && ((t.status === "asked" && t.initiator === PRIMARY_ACTOR) || (t.kind === "operate" && t.request?.to === PRIMARY_ACTOR));
+    const fieldDone = field.every((t) => TERMINAL.has(t.status) || theirs(t));
     return (posted.length > 0 || ledger?.dueRound !== undefined || field.length > 0) && needsDone && countDone && fieldDone;
   }
 
@@ -487,11 +491,12 @@ export class TeamScheduler {
     // the member inspects the receipt at once: a hand-over done is reported; a refusal they cannot fix is said (a field
     // task's walk to the table, in its own words)
     const outcome = { status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message, operation: p.operation, ...(r.hint?.goal ? { hint: r.hint.goal } : {}) };
+    // (a device's step of the operation — the gas — is never a call-out: a denial of it is a rule's, never the learner's Stop)
     const follow =
       task.kind === "assist"
         ? afterFieldWalk(this.view(member), task, outcome)
         : task.kind === "operate"
-          ? afterStandIn(this.view(member), task, { ...outcome, ...(r.errorCode === "APPROVAL_DENIED" ? { code: "DENIED", byLearner: true } : {}), ...(p.ref !== undefined ? { ref: p.ref } : {}) })
+          ? afterStandIn(this.view(member), task, { ...outcome, ...(p.ref !== undefined ? { ref: p.ref } : {}) })
           : afterAct(this.view(member), task, outcome);
     if (follow && follow.kind === "say") {
       this.apply(member, follow.patch ?? []);
@@ -880,7 +885,7 @@ export class TeamScheduler {
       surgeon: this.surgeonBody(),
       learner: PRIMARY_ACTOR,
       passingRequired: passingRequired(c, s),
-      plan: this.isOperator(me) ? planOf(c.solution) : null,
+      plan: this.isOperator(me) ? planOf(c.solution, s.joined?.actions ?? 0) : null,
       refs: [...(procedure?.refs ?? [])],
       where: (handle) => {
         // a duct or vessel the screen shows, where it lies

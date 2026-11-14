@@ -1410,13 +1410,15 @@ own body: after its scope insert it asks the camera holder to take the camera ("
 step in a region the camera is not aimed at, "Camera on …" (held by nobody, it aims it itself); "Closer." before the
 safety pause and "Wider." after it; a traction it set up on an assist port it hands to the traction assistant; a port a
 colleague holds it takes back ("I'll take port B."), the camera port before the extraction through it too; in the scrub
-nurse's place it asks for every instrument and never puts one in without the pass. Each request is a closed loop
-(read-back, confirmation, done when the field shows it) with a bounded wait, after which it does the thing itself — never
-a pass. It says an injury the screen shows (or a colleague called) aloud before its next step, suctions an obscured
-field, waits and says why without gas or a picture, takes insufflation through the tower when the tower offers it (its
-own body, the world's operation), and closes only once the count is settled. It takes at most one step of the operation
-a round, and the team's turn after an act of the learner ends after it: the operation goes on with the team's clock.
-In observer mode the learner's place is played by its own policy with the learner's body (a demonstration of the place).
+nurse's place it asks for every instrument and never puts one in without the pass; a step the reference gives a
+colleague — the learner's place's too — it asks of them and waits for, never taking it itself. Each request is a closed
+loop (read-back, confirmation, done when the field shows it) with a bounded wait, after which it does the thing itself —
+never a pass. It says an injury the screen shows (or a colleague called) aloud before its next step, suctions an
+obscured field, waits and says why without gas or a picture, takes insufflation through the tower when the tower offers
+it (its own body, the world's operation), and closes only once the count is settled. It takes at most one step of the
+operation a round, and the team's turn after an act of the learner ends after it: the operation goes on with the team's
+clock. In observer mode the learner's place is played by its own policy with the learner's body (a demonstration of the
+place).
 
 ### 8.6 Concealed items and search
 

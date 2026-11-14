@@ -38,12 +38,15 @@ export interface FieldAsk {
 /**
  * One step of the stand-in surgeon's plan (docs/TEAM.md §4.5): an operative step of the case's reference solution, in
  * order — `k`, its index among them, is the plan step's own number (`standin:<k>`, the ref the field records it with).
- * `actor`: the colleague the reference gives it to (their own step, not the stand-in's).
+ * `actor`: the colleague the reference gives it to (their own step, not the stand-in's: asked of them). `joined`: done
+ * by the system when the learner joined the team (the place's start, `SessionState.joined`) — recorded with no ref,
+ * done all the same.
  */
 export interface PlanStep {
   k: number;
   op: ProcedureOp;
   actor?: string;
+  joined?: true;
 }
 
 /** An injury a member can tell is there (`MemberView.injuries`): the field shows it, or a colleague said it aloud. */
@@ -57,7 +60,8 @@ export interface SeenInjury {
 
 /**
  * A request of the stand-in surgeon's under way (`TeamTask.request`, one at a time; docs/TEAM.md §4.5): what it is for
- * (`key`: `camera:<k>`, `traction:<k>`, `aim:<k>`, `closer:<k>`, `wider:<k>`, `pass:<ref>`, `stop:<k>`), to whom, the
+ * (`key`: `camera:<k>`, `traction:<k>`, `aim:<k>`, `closer:<k>`, `wider:<k>`, `pass:<ref>`, `step:<k>` — a colleague's
+ * own step of the reference —, `stop:<k>`), to whom, the
  * request about the field (none for the stop after a call-out), the thread it is said in, how many times it was said,
  * the round it was last said or confirmed in, whether its read-back was confirmed and whether it was declined.
  */

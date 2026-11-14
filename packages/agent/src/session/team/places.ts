@@ -5,7 +5,7 @@
  * operation out, a deny rule matching `operate` or `observe_field`) refuses the place at the start, saying why, and the
  * stand-in never meets a refusal by a rule in the middle of the operation.
  */
-import { memberBody, type Place, type ProcedureOp } from "@clinicalcraft/core";
+import { memberBody, standInOf, type Place, type ProcedureOp } from "@clinicalcraft/core";
 import { checkPermission } from "../../permissions.js";
 import type { SessionKernel } from "../kernel.js";
 import { TEAM_CALLER } from "./callout.js";
@@ -27,6 +27,8 @@ const STAND_IN_EXTRAS: readonly ProcedureOp[] = [
  * the team's caller with the stand-in's body would ask them.
  */
 export function standInRefusal(k: SessionKernel, id: string, seat: Place): string | null {
+  // no stand-in named: the engine refuses the place itself, saying why
+  if (!standInOf(k.caseDef)) return null;
   const s = k.settings;
   const ctx = k.tools.context(TEAM_CALLER, id, undefined, { actorId: memberBody(k.caseDef, { seat }, "surgeon") });
   const steps = [...planOf(k.caseDef.solution).map((x) => x.op), ...STAND_IN_EXTRAS];
