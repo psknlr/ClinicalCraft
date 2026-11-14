@@ -381,7 +381,7 @@ function recount(v: MemberView, m: TeamMessage): Proposal {
 }
 
 /**
- * The count said for the learner who holds it (`team count`, A18): what the simulated counter's policy would say from the
+ * The count said for the learner who holds it (`team count`): what the simulated counter's policy would say from the
  * same view and the same `CountView` — a recount asked of them, answered in its thread; else the count, once it is due
  * and not yet said. The items are the view's (`CountView.seen`: what the team in the room can account for, by item),
  * never typed. Null: nothing to count now (no count kept, not due, said already).

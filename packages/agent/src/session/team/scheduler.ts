@@ -460,7 +460,7 @@ export class TeamScheduler {
   }
 
   /**
-   * The team's record catching up with the field's and the world's (exactly once across a save, A3): an action id of a
+   * The team's record catching up with the field's and the world's (exactly once across a save): an action id of a
    * field task's that the field recorded as a step's `ref`, or the world as a result, is that act done — its counter moves
    * past it, so the next act never takes its id and nothing is done twice.
    */
@@ -596,7 +596,7 @@ export class TeamScheduler {
   }
 
   /**
-   * The learner who holds the count says it (`team count`, A18): exactly what the simulated counter's policy would say in
+   * The learner who holds the count says it (`team count`): exactly what the simulated counter's policy would say in
    * their place (`learnerCount`), from the same `CountView` — a recount asked of them, else the count once due — and the
    * items are the view's, what the team in the room can account for: never typed. Refused: observing, no count kept, the
    * count not theirs (`counters`: whose it is), nothing to count now.

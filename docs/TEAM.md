@@ -378,8 +378,8 @@ duty (`assistant.ts`, pure: the same view gives the same proposal):
    why**: their controls do not cover it (traction and letting go `retract`, the camera `camera`, a pass `instruments`),
    naming who in the team may be handed it instead — the operating table's tasks by control (`checkTaskScope`), never
    the surgeon ("I don't hold the Traction control: ask Dr Abe." / "我没有牵引显露的分工权限：请找阿部医生。"); the
-   port holds an instrument only the operator works (A13: "The Maryland dissector in port C is the operator's own
-   instrument."), or one held for another control; a colleague holds the port (they hand it over themselves); there
+   port holds an instrument only the operator works (core `instrumentControl`: "The Maryland dissector in port C is
+   the operator's own instrument."), or one held for another control; a colleague holds the port (they hand it over themselves); there
    is no such port. The scrub nurse asked for traction, the anaesthetist asked for the camera, decline so.
 2. The asker's **confirmation** accepts it (the learner: `team reply {kind: "confirm"}`); their decline withdraws it.
 3. **The work**, one step a round: walk to the operating table (the patient on it, within reach); **take the port** —
@@ -416,7 +416,7 @@ the team's room and not concealed, or in the hands of someone in that room (`Sur
 accounting from the world's record of where each item is) — not what the learner's own body perceives. Refused:
 observing, a team that keeps no count, the count not the learner's place's ("The count is not yours to say: Chen Yu
 counts."); nothing to count now is a warning. The record names who counted by the place's member, shown to the
-learner as "you" (A19).
+learner as "you".
 
 ### 4.5 The team's caller and the call-out
 

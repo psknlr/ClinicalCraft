@@ -6,7 +6,7 @@
  * 1. A request (`about.field`) is read back to the one who asked (check-back step 2), or declined at once, saying why:
  *    the member's controls do not cover it (traction and letting go of it `retract`, the camera `camera`, a pass
  *    `instruments`; core `fieldControlFor`), naming who in the team may be handed it instead (`ColleagueView.handed`,
- *    `checkTaskScope` — never the surgeon); an instrument only the operator works (A13: core `instrumentControl`); a
+ *    `checkTaskScope` — never the surgeon); an instrument only the operator works (core `instrumentControl`); a
  *    port a colleague holds (they hand it over themselves); no such port.
  * 2. The asker's confirmation (step 3) accepts the task; a decline from them withdraws it.
  * 3. The work, one step a round: walk to the operating table; take the port — the operator's handed over to them, or
@@ -78,7 +78,7 @@ function holderName(v: MemberView, holder: string | undefined): Bilingual {
 export function fieldRefusal(v: MemberView, ask: FieldAsk): { code: string; text: Bilingual } | null {
   const control = ASK_CONTROL[ask.op];
   if (control && !holds(v.controls, control)) {
-    // who in the team may be handed it instead: present, the surgeon apart (the operating table's tasks, A16)
+    // who in the team may be handed it instead: present, the surgeon apart (never handed the operating table's tasks)
     const helpers = v.colleagues.filter((c) => c.present && !c.absent && c.id !== surgeonOf(v) && (c.handed ?? []).includes(ASK_TASK[ask.op])).map((c) => v.name(c.id));
     const instead = helpers.length ? phrase("clause.instead", { who: joinBoth(helpers, "or") }) : NONE;
     return { code: "no-control", text: phrase("decline.noControl", { control: both(CONTROL_TITLES[control]), instead }) };
@@ -93,7 +93,7 @@ export function fieldRefusal(v: MemberView, ask: FieldAsk): { code: string; text
       if (!p) return { code: "no-port", text: phrase("decline.noPort", { port: port(ask.port) }) };
       if (p.holder !== undefined && p.holder !== me) return { code: "port-held", text: phrase("decline.portHeld", { holder: holderName(v, p.holder), port: port(p.port) }) };
       if (p.instrument) {
-        // A13: an instrument nobody but the operator works; one held for another control than traction
+        // an instrument nobody but the operator works; one held for another control than traction
         const control = instrumentControl(p.instrument);
         if (control === null) return { code: "operator-instrument", text: phrase("decline.operatorInstrument", { instrument: instrumentWords(p.instrument), port: port(p.port) }) };
         if (control !== "retract") return { code: "not-traction", text: phrase("decline.notTraction", { instrument: instrumentWords(p.instrument), port: port(p.port) }) };
