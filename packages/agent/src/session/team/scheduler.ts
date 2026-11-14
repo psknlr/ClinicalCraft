@@ -492,7 +492,9 @@ export class TeamScheduler {
   /**
    * The team's record catching up with the field's and the world's (exactly once across a save): an action id of a
    * field task's that the field recorded as a step's `ref`, or the world as a result, is that act done — its counter moves
-   * past it, so the next act never takes its id and nothing is done twice.
+   * past it, so the next act never takes its id and nothing is done twice. What the field cannot show once it is done is
+   * taken from the record too: a pass task with a step recorded has passed (the instrument may be in already), a letting
+   * go with a step recorded was said.
    */
   private syncSteps(): void {
     const w = this.host.world();
@@ -500,9 +502,12 @@ export class TeamScheduler {
       if (!FIELD_TASKS.has(task.kind)) continue;
       for (;;) {
         const next = `team.${task.id}.${task.acts + 1}`;
-        if (!this.host.stepDone(next) && !w.feedback(next)) break;
+        const stepped = this.host.stepDone(next);
+        if (!stepped && !w.feedback(next)) break;
         task.acts++;
-        if (!this.state.completed.includes(next) && (this.host.stepDone(next) || w.feedback(next)?.status === "completed")) this.state.completed.push(next);
+        if (!this.state.completed.includes(next) && (stepped || w.feedback(next)?.status === "completed")) this.state.completed.push(next);
+        if (stepped && task.kind === "assist" && task.field?.op === "pass") task.step = "passed";
+        if (stepped && task.kind === "assist" && task.field?.op === "release") task.step ??= "announced";
       }
     }
   }

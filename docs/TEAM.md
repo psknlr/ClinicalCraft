@@ -220,11 +220,12 @@ One `TeamScheduler` per session. It is created when the encounter starts, becaus
 **Rounds.** A round wakes the members who have something to do, in a fixed order:
 1. those answering an unread message (oldest message first);
 2. those with work under way;
-3. those noticing something (a need, a count that has fallen due);
+3. those noticing something (a need, a count that has fallen due, the work to follow with the camera they hold — §4.4);
 4. ties go to the stable staff id.
 
-Each awakened member proposes at most one thing: a message, a world act, or a change to their own tasks. Waits are
-counted in rounds, so a colleague who doesn't answer is rerouted or escalated after a bounded wait.
+Each awakened member proposes at most one thing: a message, a world act, a step in the operative field, or a change to
+their own tasks. Waits are counted in rounds, so a colleague who doesn't answer is rerouted or escalated after a bounded
+wait.
 
 **One step operation.** The browser and a headless run advance the team the same way, through the session's `team`
 op ([PROTOCOL.md](PROTOCOL.md)), queued with the learner's own ops:
@@ -256,7 +257,8 @@ Everything is plain JSON (`TeamState`), saved as a whole: `TeamCheckpoint`, form
   - the outcome and code, the world version, the minute and the simulated seconds.
 - **Tasks**, per member: `supply` (see that someone gets an item), `deliver`, `count`, `check` (a count discrepancy
   seen through), `wound` (the simulated surgeon checks the wound), `assist` (a request about the operative field seen
-  through: `field`, what was asked — §4.4), `operate` (the operator's own plan, with a `cursor`: the stand-in surgeon's,
+  through: `field`, what was asked — §4.4; or, need `field:follow`, a camera holder's own following of the work, with
+  what they last looked at: `followed`), `operate` (the operator's own plan, with a `cursor`: the stand-in surgeon's,
   which no policy drives yet). Each has a status, the round it last changed, the colleagues already asked, the act
   counter, whether the result was verified, and the reason.
 - A message is also about a request of the operative field (`about.field`: `{op, port?, structure?, direction?,
@@ -377,36 +379,53 @@ duty (`assistant.ts`, pure: the same view gives the same proposal):
    caudally — confirm?" / "B 孔的抓钳，把胆囊颈向患者左侧、尾侧牵拉——确认吗？"), or **declined at once, saying
    why**: their controls do not cover it (traction and letting go `retract`, the camera `camera`, a pass `instruments`),
    naming who in the team may be handed it instead — the operating table's tasks by control (`checkTaskScope`), never
-   the surgeon ("I don't hold the Traction control: ask Dr Abe." / "我没有牵引显露的分工权限：请找阿部医生。"); the
-   port holds an instrument only the operator works (core `instrumentControl`: "The Maryland dissector in port C is
-   the operator's own instrument."), or one held for another control; a colleague holds the port (they hand it over themselves); there
-   is no such port. The scrub nurse asked for traction, the anaesthetist asked for the camera, decline so.
-2. The asker's **confirmation** accepts it (the learner: `team reply {kind: "confirm"}`); their decline withdraws it.
+   the surgeon and never the one who asked ("I don't hold the Traction control: ask Dr Abe." /
+   "我没有牵引显露的分工权限：请找阿部医生。"); one who asked and holds the control themselves is told so ("…: you
+   do." / "…：你有。"); the port holds an instrument only the operator works (core `instrumentControl`: "The Maryland
+   dissector in port C is the operator's own instrument."), or one held for another control; a colleague holds the
+   port (they hand it over themselves); there is no such port; the camera step is one the field refuses whoever holds
+   the camera — closer with nothing aimed at ("A close view needs something to look at: tell me where to aim the
+   camera first."), a region the field does not have —; letting go with nothing in their hands ("I'm not holding
+   anything."). The scrub nurse asked for traction, the anaesthetist asked for the camera, decline so. What depends on
+   the field is checked again at the table, before anything is taken: a member out of sight of the screen reads it
+   back, and declines there.
+2. The asker's **confirmation** accepts it (the learner: `team reply {kind: "confirm"}` — "Yes — go ahead." /
+   "对，开始吧。" unless they give words of their own); their decline withdraws it ("No — not now." / "先不用。").
 3. **The work**, one step a round: walk to the operating table (the patient on it, within reach); **take the port** —
    the operator's handed over to them (`hand-over {port, to: <their id>}`), or the instrument put into an empty port of
    its kind (a grasper into an assist port, the laparoscope into the camera port) —; then **the step asked**: traction
    on the structure, which way and how hard (`retract`); the camera aimed, closer or wider (`aim`, `zoom`); the
    instrument put into the asker's hand (`pass`). Each is a step in the operative field with their own body, through
    the team's caller (§4.5), carried out once. A refusal for reach sends them where the world points; any other
-   refusal of the field ends the task declined, with the field's reason.
+   refusal of the field ends the task declined, with the field's reason in both languages ("I couldn't do it: …").
 4. **The report** to the asker: "Holding." / "拉住了。"; "I have the camera." / "镜头我扶好了。"; "Camera on the
    hepatocystic triangle." / "镜头已对准胆囊三角。"; "Closer." / "已推近。", "Wider." / "已拉远。"; "Passed." / "递好了。"
+   Only a request under way (confirmed) is reported, and only once the field shows what was asked (an aim: the camera
+   on that region, as close as asked).
 5. **Letting go**, asked: "Letting go now." / "我松手了。" is said first; then each traction is released and each port
    handed back to the operator (`release`, `hand-over {port}`).
 
-An assistant **never withdraws an instrument or lets go unasked**; and holding the camera they **follow the work**:
-when the operator's last tissue step (`FieldView.working`) is in a region the camera is not aimed at, they aim it
-there — once for each change of region (kept on their camera task), so a refused aim is never tried again in a loop,
-and an aim the learner asked for stands until the work moves on. Anything else said to an assistant is taken in. A
-member who asks nothing of the field — the published Case 126 has no `assist` member — sees no change: every existing
-scenario's messages and timings are as before. There is no lens soiling and no cleaning of the lens.
+An assistant **never withdraws an instrument or lets go unasked**; and holding the camera they **follow the work**
+(`followStep`, the same rule the scheduler wakes them by — a camera holder with the work to follow is "noticing
+something", §2): when the operator's last tissue step (`FieldView.working`) is in a region the camera is not aimed at,
+they aim it there one round later — once for each change of region, under a task of their own (`assist`, need
+`field:follow`: never a request's, and nothing said). What they last looked at is kept on that task (`followed`: the
+work's region and the camera's aim): the camera aimed elsewhere since — an aim someone asked for, through `team ask` or
+a delegation (`aim_camera`) — stays there until the work moves on, and an aim of theirs the field refused is never tried
+again in a loop; when the work comes back to a region, the camera follows it. While a request about the camera of
+theirs is under way — read back and waiting for its confirmation, or being done — they leave the camera where it is.
+Anything else said to an assistant is taken in. A member who asks nothing of the field — the published Case 126 has no
+`assist` member — sees no change: every existing scenario's messages and timings are as before. There is no lens
+soiling and no cleaning of the lens.
 
 **`team ask {to, field}`** (docs/PROTOCOL.md): the learner asks a member of the team — `to`, their staff id — for one
 of the above. It is said aloud as the learner's own request ("Dr Abe, please hold the grasper in port B, pulling the
 infundibulum to the patient's left and caudally."), and the loop runs as above: the read-back is said to the learner,
 who confirms it with `team reply`; the member acts and reports. Refused: observing (§4.6), nobody of that name in the
-team, the learner's own place, a member away this encounter, the one who operates; a malformed `field` is
-`invalid_op`; outside the team's phases a warning says when the team works.
+team, the learner's own place, a member away this encounter, the one who operates, one who is not in the theatre now
+("Dr Abe is not in the theatre now: ask a colleague at the table." — said aloud there, nobody would hear it; a relief
+colleague is called by phone and asked all the same); a malformed `field` is `invalid_op`; outside the team's phases a
+warning says when the team works.
 
 **`team count`**: the learner whose place holds the count (the scrub nurse's) says it. What is said is exactly what
 the simulated counter's policy would say in their place (`learnerCount`), from the same `CountView`: a recount asked
@@ -415,26 +434,33 @@ of them, answered in its thread; else, once the count is due, the count — and 
 the team's room and not concealed, or in the hands of someone in that room (`SurgicalCount.accounted`, the room's
 accounting from the world's record of where each item is) — not what the learner's own body perceives. Refused:
 observing, a team that keeps no count, the count not the learner's place's ("The count is not yours to say: Chen Yu
-counts."); nothing to count now is a warning. The record names who counted by the place's member, shown to the
-learner as "you".
+counts."); nothing to count now is a warning that says which — not due yet ("The count is not due yet."), or said
+already with no recount asked for ("You have said the count: there is nothing more to count until a recount is asked
+for."). The record names who counted by the place's member, shown to the learner as "you".
 
 ### 4.5 The team's caller and the call-out
 
 Every step a team member takes in the operative field — an assistant's traction or camera, the scrub nurse's pass,
 and later the stand-in surgeon's steps — runs through the one tool path: the `operate` tool under the team's own
 caller (agent `team`, a built-in profile holding `operate` and `observe_field` only — never in the roster a learner
-talks to, never overridden by a profile of that name), with the member's own body (`actorId`), so hooks, deny rules,
-the practice scope, the scope of practice by control, the spatial gate and the approval gate all apply; the plan
-step's id reaches the tool only through the tool context (`stepRef` → the step's `ref`, from the action id
-`team.<task>.<n>`), never from what anyone types. What the tool says is said to the learner (`addressee`). World acts
-(walking to the table) stay on a nurse's tool path. Each call runs in a turn of its own that always ends —
+talks to, never overridden by a profile of that name: a user or project profile named `team` is not used, and the
+session says so in a start-up warning), with the member's own body (`actorId`), so hooks, deny rules, the practice
+scope, the scope of practice by control, the spatial gate and the approval gate all apply; the plan step's id reaches
+the tool only through the tool context (`stepRef` → the step's `ref`, from the action id `team.<task>.<n>`), never
+from what anyone types. What the tool says is said to the learner (`addressee`); a refusal's reason is said again in
+the member's decline in both languages. World acts (walking to the table) stay on a nurse's tool path. Each call runs
+in a turn of its own that always ends —
 `turn_started` (synthetic) → its tool call (and an approval's phases) → `turn_complete` → `turn_phase idle` — so a
 front-end that follows each agent's phase never sees the team still driving, and the team's clock, the staff's clock
 and the real-time clock run on after it.
 
 **Exactly once.** The step is recorded with its action id as `ref`; the scheduler, before it takes a step, moves a
 task's act counter past every id the field (`ProcedureState.refs`) or the world already recorded — so a save and
-restore in the middle of a request carries out every act once, and a later act never takes an earlier one's id.
+restore in the middle of a request carries out every act once, even when the team's record is older than the field's
+(saved after the confirmation, restored after the steps: a crash in the middle of `team run`), and a later act never
+takes an earlier one's id. The policies read what is done from the field (the port held, the traction, the camera's
+aim); what the field cannot show once done comes from the record: a pass task with a step recorded has passed (the
+instrument may be in already), a letting go with a step recorded was said.
 
 **Approvals.** None of the team's steps is asked about — in any approval mode — except the stand-in surgeon's
 critical steps: a clip, a division, a coagulation or a bail-out by the body that operates while the learner holds a
@@ -464,8 +490,8 @@ stand-in yet: the call-out is the gate's answer whenever the stand-in's body tak
 
 | piece | what it is |
 |---|---|
-| `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need — `for` a member of the team, the surgeon by default, else `invalid_op`; the team takes it from there), `ask {to, field}` (a request about the operative field, §4.4), `count` (the learner holding the count says it, §4.4). A case without a team: `error` `no_team` |
-| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again; observing, the learner answers nothing (`permission_denied`) |
+| `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need — `for` the surgeon, by default, whether or not the team lists a surgeon member; or a member of the team by their staff id — the body it works with: in a place the stand-in's own id is the surgeon, the place's member the learner —, else `invalid_op`; the team takes it from there), `ask {to, field}` (a request about the operative field, §4.4), `count` (the learner holding the count says it, §4.4). A case without a team: `error` `no_team` |
+| replies | the learner answers only what was said to them (else `permission_denied`), in their own words (`text`) — else a confirmation says "Yes — go ahead." / "对，开始吧。", a decline "No — not now." / "先不用。", anything else repeats what it answers; a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again; observing, the learner answers nothing (`permission_denied`) |
 | status | `team_event` `status`: the round, the pace, who answers as the surgeon, and the learner's place and line-up (`seat`, `lineup`) when the start chose them |
 | names | in the team's words whoever operates is "the surgeon" (术者) — the learner, or the stand-in while the learner holds a place —, and the learner holding a place is that place, "you": "the first assistant (you)" / "第一助手（你）"; a member of staff by their name. Each line is spoken through the profile of the speaker's role (the nurses' through the nurse's, an assistant's through the attending's); the learner's own words as before |
 | one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
@@ -561,18 +587,32 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
 - `agent/src/session/team/policy.test.ts`: every rule above on hand-built views — and at the operating table: an
   assistant's read-back; the port taken by hand-over and by putting the instrument into an empty port; the traction
   and "Holding."; a decline without the control (the scrub nurse asked for traction, the anaesthetist for the camera),
-  naming who can; the operator's own instrument and a colleague's port declined; following the work with the camera
-  (one aim per change of region); never letting go unasked; "Letting go now.", the release and the hand-back; the
-  scrub nurse's pass to the asker (the operator's hand, a colleague's), never unasked, her count and needle holder as
-  before, and the learner's count the same as hers from the same view; the same view, the same proposal.
+  naming who can — never the one who asked, told "you do" when they hold it; the operator's own instrument and a
+  colleague's port declined; a camera step the field would refuse (closer with nothing aimed at, a region it does not
+  have) declined before the port is taken; letting go with nothing held declined; the field's refusal said in both
+  languages, once; following the work with the camera under a task of its own (one aim per change of region, a
+  refused aim never retried, an aim someone asked for standing until the work moves on and followed when it comes
+  back, nothing while a camera request is under way); only a confirmed request done as asked reported; never letting
+  go unasked; "Letting go now.", the release and the hand-back; the scrub nurse's pass to the asker (the operator's
+  hand, a colleague's), never unasked, her count and needle holder as before, and the learner's count the same as hers
+  from the same view; the same view, the same proposal.
 - `agent/src/session/team/session-team.test.ts`: the op without a team, the transcript replay, checkpoint validation
   (an old version-2 checkpoint loads unchanged and carries on); status with the place and the line-up; replies, asks
-  and counts refused while observing; `need.for` checked; on the theatre fixture with the learner operating, `team
-  ask` for traction on port B — request, read-back, confirm, the walk, the port, the pull, "Holding." — then letting
-  go; every team step's turn closed in the default approval mode with nothing left driving; who may be asked;
-  declines; a save and restore mid-request carrying out every act once; the stand-in's clip asked as its call-out
-  (actorId, the line in English and Chinese), never in bypass mode; an assistant's traction and the scrub nurse's pass
-  never asked about in any mode; the scrub nurse's pass; `team count` from the scrub nurse's place, never typed.
+  and counts refused while observing; whom a need is for (the surgeon by default, a team with no surgeon member too;
+  in a place the stand-in's own id is the surgeon's; anyone outside the team refused); on the theatre fixture with the
+  learner operating, `team ask` for traction on port B — request, read-back, confirm, the walk, the port, the pull,
+  "Holding." — then letting go; every team step's turn closed in the default approval mode with nothing left driving;
+  who may be asked (one not in the theatre now refused, nothing said); declines (in a place, "you do"; closer with
+  nothing aimed at, letting go holding nothing — the camera never taken for it); saves and restores mid-request with
+  the team's record behind the field's — walking first, at the table from the start (the traction never taken for done
+  under the hand-over's id), after the scrub nurse's pass (never passed again) — carrying out every act once; the
+  camera holder following the work one round later, one aim per change of region — a camera taken through a delegation
+  too, a delegated aim standing —; an aim asked for waiting for its confirmation (the camera never moved meanwhile),
+  the learner's "Yes — go ahead.", then done as asked and standing; the stand-in's clip asked as its call-out
+  (actorId, the line in English and Chinese), its turn closed whether approved or stopped in the default mode with the
+  clocks running on, never asked in bypass mode; an assistant's traction and the scrub nurse's pass never asked about
+  in any mode; the scrub nurse's pass; `team count` from the scrub nurse's place, never typed, and said once ("You
+  have said the count: …"); a profile named `team` never used, said at start in both languages.
 - A session in a place, on the agent's theatre fixture (`agent/src/session/__fixtures__/theatre.ts`: the world's
   theatre with core's lap-chole team): `seat-operate.test.ts` (the first assistant's port and traction; dissection
   refused before any approval in both languages; the engine's English message after the reason; no `actor`, no `ref`;

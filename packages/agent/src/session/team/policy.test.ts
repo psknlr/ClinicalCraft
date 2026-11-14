@@ -272,6 +272,16 @@ const fieldTask = (owner: string, f: NonNullable<TeamTask["field"]>, extra: Part
 
 const operated = (p: Proposal | null) => (p?.kind === "operate" ? p.op : null);
 
+/** The member's tasks once a proposal's changes to them are made (a task made, fields of one set). */
+function applied(tasks: readonly TeamTask[], p: Proposal | null): TeamTask[] {
+  const out = tasks.map((x) => structuredClone(x));
+  for (const change of p?.patch ?? []) {
+    if ("create" in change) out.push(structuredClone(change.create));
+    else if ("set" in change) Object.assign(out.find((x) => x.id === change.id)!, change.set);
+  }
+  return out;
+}
+
 describe("an assistant at the operating table", () => {
   const me = member(FIRST, ["assist"]);
 
@@ -329,20 +339,63 @@ describe("an assistant at the operating table", () => {
     expect(sets(propose(table(me, { tasks: [announced] })))).toContainEqual(expect.objectContaining({ status: "done" }));
   });
 
-  it("holding the camera, follows the work: one aim for each change of region, never a loop", () => {
-    const camera = fieldTask(FIRST, { op: "camera" }, { status: "done" });
-    const held = (extra: Partial<FieldView>) => field({ ports: [{ ...field().ports[0]!, holder: "or.first" }, ...field().ports.slice(1)], camera: { port: "A", at: null, zoom: "wide", holder: "or.first" }, ...extra });
-    const triangle = propose(table(me, { tasks: [camera], field: held({ working: "hepatocystic-triangle" }) }));
-    expect(operated(triangle)).toEqual({ op: "aim", port: "A", at: "hepatocystic-triangle" });
-    expect(sets(triangle)).toContainEqual({ step: "followed:hepatocystic-triangle" });
-    // the same region again (the aim refused, or turned elsewhere since): no second aim
-    expect(propose(table(me, { tasks: [{ ...camera, step: "followed:hepatocystic-triangle" }], field: held({ working: "hepatocystic-triangle" }) }))).toBeNull();
-    // aimed there already: nothing to do
-    expect(propose(table(me, { tasks: [camera], field: held({ working: "hepatocystic-triangle", camera: { port: "A", at: "hepatocystic-triangle", zoom: "wide", holder: "or.first" } }) }))).toBeNull();
-    // the work moves on: one more aim
-    expect(operated(propose(table(me, { tasks: [{ ...camera, step: "followed:hepatocystic-triangle" }], field: held({ working: "cystic-plate" }) })))).toEqual({ op: "aim", port: "A", at: "cystic-plate" });
-    // not holding the camera: never
-    expect(propose(table(me, { tasks: [camera], field: field({ working: "cystic-plate" }) }))).toBeNull();
+  /** The laparoscope in A held by the first assistant: the work in `working`, the camera aimed at `at`. */
+  const held = (working: string | null, at: string | null = null): FieldView => field({ ports: [{ ...field().ports[0]!, holder: "or.first" }, ...field().ports.slice(1)], camera: { port: "A", at, zoom: "wide", holder: "or.first" }, ...(working ? { working } : {}) });
+  const tookCamera = fieldTask(FIRST, { op: "camera" }, { id: "task-4", thread: "thread-4", status: "done" });
+
+  it("holding the camera, follows the work under a task of its own: one aim for each change of region, never a loop", () => {
+    // the work in the triangle, the camera on the whole field: an aim there — under the member's own task, never a request's
+    const first = propose(table(me, { tasks: [tookCamera], field: held("hepatocystic-triangle") }));
+    expect(first).toMatchObject({ kind: "operate", op: { op: "aim", port: "A", at: "hepatocystic-triangle" } });
+    expect(first!.patch).toEqual([{ create: expect.objectContaining({ kind: "assist", need: "field:follow", owner: FIRST, initiator: FIRST, status: "done", followed: { working: "hepatocystic-triangle", at: "hepatocystic-triangle" } }) }]);
+    const tasks = applied([tookCamera], first);
+    expect(first).toMatchObject({ task: tasks[1]!.id });
+    // aimed there: nothing more, round after round
+    expect(propose(table(me, { tasks, field: held("hepatocystic-triangle", "hepatocystic-triangle") }))).toBeNull();
+    // the aim refused (the camera still on the whole field): noted, never tried again while the work stays there
+    const refused = propose(table(me, { tasks, field: held("hepatocystic-triangle") }));
+    expect(refused).toEqual({ kind: "update", patch: [{ id: tasks[1]!.id, set: { followed: { working: "hepatocystic-triangle", at: null } } }] });
+    expect(propose(table(me, { tasks: applied(tasks, refused), field: held("hepatocystic-triangle") }))).toBeNull();
+    // the work moves on: one more aim, under the same task of its own
+    expect(propose(table(me, { tasks, field: held("cystic-plate", "hepatocystic-triangle") }))).toMatchObject({ kind: "operate", task: tasks[1]!.id, op: { op: "aim", port: "A", at: "cystic-plate" } });
+    // not holding the camera, or no work yet: never
+    expect(propose(table(me, { tasks: [tookCamera], field: field({ working: "cystic-plate" }) }))).toBeNull();
+    expect(propose(table(me, { tasks: [tookCamera], field: held(null) }))).toBeNull();
+  });
+
+  it("an aim someone asked for stands until the work moves on; when the work comes back, the camera follows it", () => {
+    const following = task({ id: "task-6", kind: "assist", need: "field:follow", item: "A", owner: FIRST, initiator: FIRST, for: FIRST, thread: "thread-6", status: "done", field: { op: "aim", port: "A" }, followed: { working: "hepatocystic-triangle", at: "hepatocystic-triangle" } });
+    // the camera aimed at the cystic plate since (a request, a delegation) while the work stays in the triangle: noted, no aim
+    const asked = propose(table(me, { tasks: [tookCamera, following], field: held("hepatocystic-triangle", "cystic-plate") }));
+    expect(asked).toEqual({ kind: "update", patch: [{ id: "task-6", set: { followed: { working: "hepatocystic-triangle", at: "cystic-plate" } } }] });
+    let tasks = applied([tookCamera, following], asked);
+    expect(propose(table(me, { tasks, field: held("hepatocystic-triangle", "cystic-plate") }))).toBeNull();
+    // the work moves to the cystic plate, where the camera is: noted
+    const there = propose(table(me, { tasks, field: held("cystic-plate", "cystic-plate") }));
+    expect(there).toEqual({ kind: "update", patch: [{ id: "task-6", set: { followed: { working: "cystic-plate", at: "cystic-plate" } } }] });
+    tasks = applied(tasks, there);
+    // and back to the triangle: the camera follows it
+    expect(propose(table(me, { tasks, field: held("hepatocystic-triangle", "cystic-plate") }))).toMatchObject({ kind: "operate", task: "task-6", op: { op: "aim", port: "A", at: "hepatocystic-triangle" } });
+  });
+
+  it("a request about the camera under way comes first: no following meanwhile, and only that request, confirmed and done as asked, is reported", () => {
+    const aim = { op: "aim", region: "cystic-plate" } as const;
+    const asked = fieldTask(FIRST, aim, { status: "asked" });
+    // read back, waiting for the confirmation: the camera stays where it is
+    expect(propose(table(me, { tasks: [tookCamera, asked], field: held("hepatocystic-triangle") }))).toBeNull();
+    const aimed = (at: string): Parameters<typeof afterOperate>[2] => ({ status: "completed", message: "Done.", op: { op: "aim", port: "A", at } });
+    // an aim done at another region never reports the request — asked or under way
+    expect(afterOperate(table(me, { tasks: [tookCamera, asked], field: held("hepatocystic-triangle", "hepatocystic-triangle") }), asked, aimed("hepatocystic-triangle"))).toBeNull();
+    const accepted = { ...asked, status: "accepted" as const };
+    expect(afterOperate(table(me, { tasks: [tookCamera, accepted], field: held("hepatocystic-triangle", "hepatocystic-triangle") }), accepted, aimed("hepatocystic-triangle"))).toBeNull();
+    // under way, the step is the one asked; done as asked, it is reported, and the view asked for stands
+    expect(operated(propose(table(me, { tasks: [tookCamera, accepted], field: held("hepatocystic-triangle") })))).toEqual({ op: "aim", port: "A", at: "cystic-plate" });
+    const reported = afterOperate(table(me, { tasks: [tookCamera, accepted], field: held("hepatocystic-triangle", "cystic-plate") }), accepted, aimed("cystic-plate"));
+    expect(say(reported)).toMatchObject({ to: SURGEON, message: { kind: "report", text: { en: "Camera on the cystic plate.", "zh-CN": "镜头已对准胆囊板。" } } });
+    expect(reported!.patch).toContainEqual({ create: expect.objectContaining({ need: "field:follow", followed: { working: "hepatocystic-triangle", at: "cystic-plate" } }) });
+    // the camera's own following of the work says nothing
+    const following = task({ id: "task-6", kind: "assist", need: "field:follow", item: "A", owner: FIRST, initiator: FIRST, for: FIRST, thread: "thread-6", status: "done", field: { op: "aim", port: "A" } });
+    expect(afterOperate(table(me, { tasks: [following], field: held("cystic-plate", "cystic-plate") }), following, aimed("cystic-plate"))).toBeNull();
   });
 
   it("declines what its controls do not cover, saying why and who can: the scrub nurse asked for traction, the anaesthetist for the camera", () => {
@@ -358,6 +411,55 @@ describe("an assistant at the operating table", () => {
     expect(say(propose(table(me, { inbox: [ask(FIRST, { ...TRACTION, port: "C" })] })))).toMatchObject({ message: { kind: "decline", about: { reason: "operator-instrument" }, text: { en: "The Maryland dissector in port C is the operator's own instrument." } } });
     const heldBySecond = field({ ports: [field().ports[0]!, { ...field().ports[1]!, holder: "or.second" }, field().ports[2]!] });
     expect(say(propose(table(me, { field: heldBySecond, inbox: [ask(FIRST, TRACTION)] })))).toMatchObject({ message: { kind: "decline", about: { reason: "port-held" } } });
+  });
+
+  it("a decline never names the one who asked: holding the control themselves, they are told it is theirs", () => {
+    // the learner in the first assistant's place (two surgeons: traction and the camera are theirs); the stand-in operates
+    const STANDIN = "staff:or.standin";
+    const inPlace = (learnerHanded: string[], more: ColleagueView[] = []) =>
+      table(member(SCRUB, ["instruments", "count"]), {
+        controls: ["instruments", "count"],
+        surgeon: STANDIN,
+        colleagues: [colleague(SURGEON, ["assist"], { handed: learnerHanded }), colleague(STANDIN, ["surgeon"], { controls: "all", handed: [] }), colleague(ANAES, ["anaesthesia"], { handed: [] }), ...more],
+        name: (who) => (who === SURGEON ? { en: "the first assistant (you)", "zh-CN": "第一助手（你）" } : (NAMES[who] ?? { en: who, "zh-CN": who })),
+        inbox: [ask(SCRUB, TRACTION)],
+      });
+    const yours = propose(inPlace(["hold_traction", "release_traction", "hold_camera", "aim_camera"]));
+    expect(say(yours)).toMatchObject({ to: SURGEON, message: { kind: "decline", about: { reason: "no-control" }, text: { en: "I don't hold the Traction control: you do.", "zh-CN": "我没有牵引显露的分工权限：你有。" } } });
+    // the one who asked may not: whoever else may is named — never the asker, never the stand-in
+    const other = propose(inPlace([], [colleague(FIRST, ["assist"], { handed: ["hold_traction"] })]));
+    expect(say(other)!.message.text).toEqual({ en: "I don't hold the Traction control: ask Dr Abe.", "zh-CN": "我没有牵引显露的分工权限：请找阿部医生。" });
+  });
+
+  it("a camera step the field would refuse is declined before anything is taken: closer with nothing aimed at, a region the field does not have", () => {
+    const closer = { op: "zoom", zoom: "close" } as const;
+    expect(say(propose(table(me, { inbox: [ask(FIRST, closer)] })))).toMatchObject({ message: { kind: "decline", about: { reason: "aim-first" }, text: { en: "A close view needs something to look at: tell me where to aim the camera first.", "zh-CN": "推近需要先对准一个部位：请先告诉我镜头对准哪里。" } } });
+    // aimed at something: read back
+    expect(say(propose(table(me, { inbox: [ask(FIRST, closer)], field: field({ camera: { port: "A", at: "cystic-plate", zoom: "wide" } }) })))).toMatchObject({ message: { kind: "readback" } });
+    // the field in view lists its regions: one it does not have is declined
+    const regions: FieldView["regions"] = [{ id: "hepatocystic-triangle", name: { en: "Hepatocystic triangle" }, dissection: "untouched", exposure: "none" }];
+    expect(say(propose(table(me, { inbox: [ask(FIRST, { op: "aim", region: "nowhere" })], field: field({ regions }) })))).toMatchObject({ message: { kind: "decline", about: { reason: "unknown-region" }, text: { en: "There is no region nowhere." } } });
+    // confirmed earlier, the camera unaimed since: declined at the table — the port is never taken first
+    const p = propose(table(me, { tasks: [fieldTask(FIRST, closer)] }));
+    expect(p).toMatchObject({ kind: "say", message: { kind: "decline", about: { reason: "aim-first" } } });
+    expect(operated(p)).toBeNull();
+  });
+
+  it("asked to let go with nothing in their hands: declined — never 'Letting go now.'", () => {
+    const p = propose(table(me, { tasks: [fieldTask(FIRST, { op: "release" })] }));
+    expect(say(p)).toMatchObject({ to: SURGEON, message: { kind: "decline", about: { reason: "nothing-held" }, text: { en: "I'm not holding anything.", "zh-CN": "我手上没有握持器械。" } } });
+    expect(sets(p)).toContainEqual(expect.objectContaining({ status: "declined", reason: "nothing-held" }));
+    // holding the camera only: a port named that they do not hold is nothing to let go of either
+    const camera = field({ ports: [{ ...field().ports[0]!, holder: "or.first" }, ...field().ports.slice(1)] });
+    expect(say(propose(table(me, { tasks: [fieldTask(FIRST, { op: "release", port: "B" })], field: camera })))).toMatchObject({ message: { kind: "decline", about: { reason: "nothing-held" } } });
+  });
+
+  it("a refusal of the field is said with the field's own reason, in both languages, once", () => {
+    const accepted = fieldTask(FIRST, { op: "zoom", zoom: "close" });
+    const message = "Rejected (requirements-unmet): Aim the camera first: a close view needs a region to look at. Aim the camera first: a close view needs a region to look at.";
+    const reason = { en: "Aim the camera first: a close view needs a region to look at.", "zh-CN": "请先把镜头对准：推近需要一个对准的区域。" };
+    const refused = afterOperate(table(me, { tasks: [accepted] }), accepted, { status: "failed", code: "requirements-unmet", message, reason, op: { op: "zoom", port: "A", level: "close" } });
+    expect(say(refused)!.message.text).toEqual({ en: "I couldn't do it: Aim the camera first: a close view needs a region to look at.", "zh-CN": "没能做到：请先把镜头对准：推近需要一个对准的区域。" });
   });
 
   it("the same view, the same proposal", () => {

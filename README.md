@@ -658,7 +658,9 @@ companion — with `@path` imports. Markdown slash commands live in
 `.clinicalcraft/commands/*.md` (frontmatter `description`, `argument-hint`,
 `agent`; `$ARGUMENTS`, `$1…$9`) and agent profiles in
 `.clinicalcraft/agents/*.md` (see the example `pharmacist.md`); both also
-load from `~/.clinicalcraft/`. Project skills (`.clinicalcraft/skills/*.json`,
+load from `~/.clinicalcraft/`. The agent name `team` is reserved for the
+care team's own steps at the operating table (docs/TEAM.md §4.5): a profile
+of that name is not used, and the session warns at start. Project skills (`.clinicalcraft/skills/*.json`,
 embodied mode) load only from a trusted project.
 
 ## Hooks
