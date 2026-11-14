@@ -2798,6 +2798,9 @@
       "requires": [
         "surgery"
       ],
+      "destination": {
+        "roomKind": "operating-room"
+      },
       "risk": "high",
       "critical": true,
       "maxDoses": 1,

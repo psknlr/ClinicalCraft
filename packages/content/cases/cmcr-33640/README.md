@@ -401,6 +401,8 @@ record so it cannot reveal the capsule finding early.
   ACG 2015 statements checked in its full text; an order rule so that "小肠镜" no longer retrieves the colonoscopy
   record; the laparotomy no longer offered for a surgical consult; wording (angiography's detection threshold, the
   Meckel-scan qualifier, no authoring language in the teaching points, the persona's age).
+- Integration (2026-11-14): `laparotomy` names where it is done (`destination` {"roomKind": "operating-room"}: the operating theatre), so
+  the act can be carried out in the 3D world, where every act of a case must be possible in its own facility.
 
 ### 1.0.0
 

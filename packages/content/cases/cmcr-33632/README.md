@@ -467,6 +467,9 @@ so none is cited.
   speaks of "the largest" nodule (sizes are not recorded); a harm text no longer credits AAAAI/ACAAI with "lifelong"
   care; learning outcomes 1 and 5 reworded to match (the admission plan; a most-likely-new variant); the angiography
   test points to the IR referral.
+- Integration (2026-11-14): `lung-biopsy` and `lobectomy` name where they are done (`destination` {"capability": "ct"}: the
+  CT room; {"roomKind": "operating-room"}: the theatre), so the acts can be carried out in the 3D world, where every act
+  of a case must be possible in its own facility.
 
 ### 1.0.0
 

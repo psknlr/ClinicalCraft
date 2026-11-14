@@ -2923,6 +2923,9 @@
       "requires": [
         "surgery"
       ],
+      "destination": {
+        "roomKind": "operating-room"
+      },
       "scope": "medical",
       "risk": "high",
       "critical": true,

@@ -455,6 +455,8 @@ Europe PMC and Crossref. The independent review re-checked each quoted recommend
   angiogram" (listed from the start); the embolisation harm no longer reveals that the later angiogram differs; key
   reasoning no longer asserts the aneurysm "has not healed"; the decision-5 key says "alongside" (same study), not
   "beside" (a place the record does not give).
+* Integration (2026-11-14): `endovascular-recanalisation` names where it is done (`destination` {"capability": "fluoroscopy"}: the angiography suite), so
+  the act can be carried out in the 3D world, where every act of a case must be possible in its own facility.
 
 ### 1.0.0
 

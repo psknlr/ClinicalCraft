@@ -3414,6 +3414,9 @@
       "requires": [
         "ct"
       ],
+      "destination": {
+        "capability": "ct"
+      },
       "risk": "high",
       "critical": true,
       "maxDoses": 1,
@@ -3460,6 +3463,9 @@
       "requires": [
         "surgery"
       ],
+      "destination": {
+        "roomKind": "operating-room"
+      },
       "risk": "high",
       "critical": false,
       "maxDoses": 1,
