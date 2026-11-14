@@ -7,7 +7,7 @@
     "en": "Fever, abdominal pain and flank bruising after a caesarean birth · 29-year-old woman"
   },
   "summary": {
-    "zh-CN": "急诊剖宫产后第2天，一名29岁女性因持续高热、右侧腰痛加重和腰腹部大片瘀斑由外院转来。",
+    "zh-CN": "急诊剖宫产后第2天，一名29岁女性因高热、右侧腰痛加重和腰腹部大片瘀斑由外院转来。",
     "en": "Two days after an emergency caesarean, a 29-year-old woman is transferred in with a high fever, worsening right-sided flank pain and extensive bruising over her abdomen and flank."
   },
   "specialty": [
@@ -344,8 +344,8 @@
         "en": "When did the fever start, and how high has it gone?"
       },
       "answer": {
-        "zh-CN": "开完刀两个小时就烧起来了……到现在两天了。最高烧到39度5。",
-        "en": "It started about two hours after the operation… that's two days ago now. The highest it got was 39.5."
+        "zh-CN": "开完刀两个小时就烧起来了……到现在两天了。烧到过39度5。",
+        "en": "It started about two hours after the operation… that's two days ago now. It's been up to 39.5."
       },
       "keywords": {
         "zh-CN": [
@@ -375,7 +375,7 @@
       ],
       "source": {
         "zh-CN": "报告（1.0.0版摘录）：现病史（剖宫产后2小时起发热，至就诊已2天；体温曾达39.5 ℃）；患者口吻为教学改写",
-        "en": "Report (version 1.0.0 extract): present illness (fever from 2 hours after the caesarean, 2 days before this visit; temperature up to 39.5 °C); her words are a teaching adaptation"
+        "en": "Report (version 1.0.0 extract): present illness (fever from 2 hours after the caesarean, 2 days before this visit; temperature reaching 39.5 °C); her words are a teaching adaptation"
       }
     },
     {
@@ -387,7 +387,7 @@
       },
       "answer": {
         "zh-CN": "肚子疼，右边腰这儿也疼……越来越疼，变得特别快。具体怎么个疼法，我说不好。",
-        "en": "My tummy hurts, and here — my right side, round my waist… it keeps getting worse, and so fast. I can't really say what kind of pain it is."
+        "en": "My tummy hurts, and here — my right side, towards my back… it keeps getting worse, and so fast. I can't really say what kind of pain it is."
       },
       "keywords": {
         "zh-CN": [
@@ -786,8 +786,8 @@
         "en": "What treatment did they give you at the other hospital?"
       },
       "answer": {
-        "zh-CN": "开完刀用了头孢唑林，后来又换成甲硝唑、头孢曲松，还有别的，一直不见好。",
-        "en": "After the operation I had cefazolin, then they switched to metronidazole and ceftriaxone, and some others — but I didn't get any better."
+        "zh-CN": "开完刀用了头孢唑林，后来又用了甲硝唑、头孢曲松，还有别的，一直不见好。",
+        "en": "After the operation I had cefazolin, then metronidazole and ceftriaxone, and some others — but I didn't get any better."
       },
       "keywords": {
         "zh-CN": [
@@ -1756,8 +1756,8 @@
         "arrival": {
           "available": true,
           "text": {
-            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温最高39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后改用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
-            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, maximum 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
+            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温曾达39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后又用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
+            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, temperature reaching 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
           },
           "note": {
             "zh-CN": "本病例没有记录抗菌药物的剂量、给药途径和起止时间，也没有记录头孢唑林是预防用药还是治疗用药。",
@@ -1771,8 +1771,8 @@
         "deterioration": {
           "available": true,
           "text": {
-            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温最高39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后改用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
-            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, maximum 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
+            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温曾达39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后又用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
+            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, temperature reaching 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
           },
           "note": {
             "zh-CN": "本病例没有记录抗菌药物的剂量、给药途径和起止时间，也没有记录头孢唑林是预防用药还是治疗用药。",
@@ -1786,8 +1786,8 @@
         "theatre": {
           "available": true,
           "text": {
-            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温最高39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后改用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
-            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, maximum 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
+            "zh-CN": "急诊剖宫产（胎儿窘迫，行会阴侧切和胎头吸引失败后中转剖宫产）。术后2小时起发热，体温曾达39.5 ℃；右侧腰痛进行性加重，术后次日起腰腹部出现大片瘀斑，疼痛和皮肤改变进展很快。术后用头孢唑林，后又用甲硝唑、头孢曲松等，病情无好转。因高热、瘀斑和全身情况加重转院。孕期未行正规产前检查；既往体健。",
+            "en": "Emergency caesarean section (fetal distress; converted after an episiotomy and a failed vacuum extraction). Fever from 2 hours after the operation, temperature reaching 39.5 °C; right flank pain getting steadily worse, and extensive bruising of the abdomen and flank from the day after the operation, the pain and the skin changes progressing rapidly. Cefazolin after the operation, then metronidazole, ceftriaxone and others, without improvement. Transferred because the fever, the bruising and her general condition were worsening. No regular antenatal care; previously healthy."
           },
           "note": {
             "zh-CN": "本病例没有记录抗菌药物的剂量、给药途径和起止时间，也没有记录头孢唑林是预防用药还是治疗用药。",
@@ -2473,8 +2473,8 @@
     {
       "id": "operative-findings",
       "name": {
-        "zh-CN": "手术记录（探查所见）",
-        "en": "Operation note (findings at exploration)"
+        "zh-CN": "手术记录",
+        "en": "Operation note"
       },
       "category": "record",
       "aliases": {
@@ -2518,8 +2518,8 @@
     {
       "id": "histology",
       "name": {
-        "zh-CN": "切除组织病理检查",
-        "en": "Histopathology of the excised tissue"
+        "zh-CN": "组织病理检查",
+        "en": "Tissue histopathology"
       },
       "category": "pathology",
       "aliases": {
@@ -2789,8 +2789,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "平衡晶体液（如乳酸林格液）每次约500 mL快速输注，每次后复评；最初3小时内总量可达30 mL/kg（按实测或估计体重，本病例没有记录体重）。",
-        "en": "Balanced crystalloid (e.g. Hartmann's or lactated Ringer's) in boluses of about 500 mL, reassessing after each, up to 30 mL/kg in the first 3 hours (by measured or estimated weight — her weight is not recorded)."
+        "zh-CN": "平衡晶体液（如乳酸林格液），最初3小时内共1～2 L，每次250～500 mL快速推注，每次后复评灌注和肺部情况（SMFM 2023）。",
+        "en": "Balanced crystalloid (e.g. Hartmann's or lactated Ringer's), 1–2 L within the first 3 hours given as boluses of 250–500 mL, reassessing perfusion and the chest after each (SMFM 2023)."
       },
       "requires": [
         "iv-access"
@@ -2832,8 +2832,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "先问清药物过敏史（本病例没有记录）。哌拉西林他唑巴坦4.5 g静脉滴注，每6～8小时一次（或美罗培南1 g，每8小时一次），按肾功能调整；加万古霉素，按体重给负荷量，再按血药浓度和肾功能调整；怀疑链球菌感染时可加克林霉素。",
-        "en": "Ask about drug allergies first (not recorded in this case). Piperacillin–tazobactam 4.5 g IV every 6–8 hours (or meropenem 1 g every 8 hours), adjusted to renal function; plus vancomycin, a weight-based loading dose then dosing by levels and renal function; consider clindamycin while streptococcal infection is possible."
+        "zh-CN": "先问清药物过敏史（本病例没有记录）。哌拉西林他唑巴坦3.375 g静脉滴注，每6～8小时一次，或美罗培南1 g静脉滴注，每8小时一次，按肾功能调整；加万古霉素，按体重给药（肾功能正常时每日30 mg/kg，分2次静脉滴注），再按血药浓度和她的肾功能调整（IDSA 2014）；怀疑链球菌感染时可加克林霉素。",
+        "en": "Ask about drug allergies first (not recorded in this case). Piperacillin–tazobactam 3.375 g IV every 6–8 hours, or meropenem 1 g IV every 8 hours, adjusted to renal function; plus vancomycin by weight (30 mg/kg a day IV in 2 divided doses with normal kidney function), adjusted to levels and her renal function (IDSA 2014); consider clindamycin while streptococcal infection is possible."
       },
       "requires": [
         "iv-access",
@@ -3074,8 +3074,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "首次清创后24～48小时内返回手术室复查，有坏死就再清创，直到不再有坏死组织。",
-        "en": "Back to theatre within 24–48 hours of the first debridement, debriding again wherever necrosis remains, until none is left."
+        "zh-CN": "首次清创后24～36小时返回手术室复查，此后每天一次，有坏死就再清创，直到不再有坏死组织（IDSA 2014；WSES/SIS-E 2018建议首次再探查在12～24小时内）。",
+        "en": "Back to theatre 24–36 hours after the first debridement and daily thereafter, debriding again wherever necrosis remains until none is left (IDSA 2014; WSES/SIS-E 2018 suggests the first re-exploration within 12–24 hours)."
       },
       "requires": [],
       "scope": "medical",
@@ -3150,8 +3150,16 @@
       },
       "requires": [],
       "risk": "moderate",
+      "critical": true,
       "contraindicatedWhen": {
-        "always": true
+        "any": [
+          {
+            "phase": "arrival"
+          },
+          {
+            "phase": "deterioration"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "两种方案都已失败，疼痛和皮肤改变仍在迅速进展，再换药观察只会重复无效的做法：抗菌药物到不了坏死组织，只有手术能清除。IDSA 2014建议对伴全身中毒表现或疑似坏死性感染的患者立即请外科会诊；EAST 2018建议疑诊后12小时内首次清创——其荟萃分析中早清创组病死率14%，晚清创组25.8%。",
@@ -3186,6 +3194,7 @@
       },
       "requires": [],
       "risk": "moderate",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3226,6 +3235,7 @@
         "iv-access"
       ],
       "risk": "moderate",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3264,12 +3274,13 @@
       "requires": [],
       "scope": "medical",
       "risk": "moderate",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "床旁切开既看不清筋膜层，也清除不了坏死组织，还会让人误以为已经处理了感染源；探查和清创要在手术室、在麻醉下完成（IDSA 2014；WSES/SIS-E 2018）。",
-        "en": "A bedside incision can neither show the fascia nor remove dead tissue, and it gives a false sense that the source has been dealt with; exploration and debridement belong in theatre under anaesthesia (IDSA 2014; WSES/SIS-E 2018)."
+        "zh-CN": "床旁拆开刀口引流清除不了坏死的筋膜，还会让人误以为已经处理了感染源。小切口探查可以帮助确诊（IDSA 2014），但她已有明显的全身中毒表现，不能用它代替或推迟在手术室、麻醉下的探查和彻底清创（WSES/SIS-E 2018：尽快完成感染源控制，最迟12小时内）。",
+        "en": "Opening and draining the wound at the bedside cannot remove necrotic fascia and gives a false sense that the source has been dealt with. A small exploratory incision can help confirm the diagnosis (IDSA 2014), but with this degree of systemic toxicity it must not replace or delay exploration and radical debridement in theatre under anaesthesia (WSES/SIS-E 2018: source control as soon as possible, at the latest within 12 hours)."
       },
       "response": {
         "zh-CN": "已在床旁拆开部分刀口。本病例没有记录这一步，不模拟其结果。",
@@ -3301,6 +3312,7 @@
         "iv-access"
       ],
       "risk": "moderate",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3338,8 +3350,16 @@
       },
       "requires": [],
       "risk": "moderate",
+      "critical": true,
       "contraindicatedWhen": {
-        "always": true
+        "any": [
+          {
+            "phase": "arrival"
+          },
+          {
+            "phase": "deterioration"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "感染源本身就是她休克的原因，不清除它，休克难以纠正；复苏应在手术室里继续，而不是等稳定以后再手术（拯救脓毒症运动2026：感染源控制最好在诊断后6小时内；EAST 2018：疑诊后12小时内清创）。",
@@ -3409,8 +3429,8 @@
         "en": "Exam and bloods"
       },
       "hint": {
-        "zh-CN": "她的生命体征说明了什么？腹部和皮肤的表现能用普通的切口感染解释吗？化验里哪些数字最让你担心——白细胞低是好消息吗？",
-        "en": "What do her vital signs tell you? Do the abdomen and the skin fit an ordinary wound infection? Which numbers worry you most — and is a low white count good news?"
+        "zh-CN": "她的生命体征说明了什么？腹部和皮肤的表现能用普通的切口感染解释吗？化验里哪些结果最让你担心——又有哪些可能让你误以为没事？",
+        "en": "What do her vital signs tell you? Do the abdomen and the skin fit an ordinary wound infection? Which blood results worry you most — and which could falsely reassure you?"
       },
       "guidance": {
         "zh-CN": "床旁查体；血标本在床旁留取，结果在病历终端或床旁查看。",
@@ -3484,8 +3504,8 @@
         "en": "First hour"
       },
       "hint": {
-        "zh-CN": "什么病能同时解释这些皮肤、腹部和全身表现？抗菌药物已经换过两次——还缺了什么？哪些检查和处理可以等，哪些一刻也不能等？",
-        "en": "Which condition explains the skin, the abdomen and the systemic picture together? The antibiotics have been changed twice — what is missing? What can wait, and what cannot?"
+        "zh-CN": "什么病能同时解释这些皮肤、腹部和全身表现？抗菌药物已经换过了——还缺了什么？哪些检查和处理可以等，哪些一刻也不能等？",
+        "en": "Which condition explains the skin, the abdomen and the systemic picture together? The antibiotics have already been changed — what is missing? What can wait, and what cannot?"
       },
       "guidance": {
         "zh-CN": "在会诊板上作答决策 1 和决策 2，然后按你的计划下医嘱。",
@@ -3543,8 +3563,8 @@
         "en": "Deterioration"
       },
       "hint": {
-        "zh-CN": "她的皮肤和下肢有什么新变化？家属看到了什么？休克时还能不能上手术台——什么才能让休克好转？",
-        "en": "What has changed in her skin and her legs, and what did her relative see? Is she too unwell for theatre — or what would it take for the shock to improve?"
+        "zh-CN": "她的皮肤、下肢和循环有什么新变化？家属看到了什么？她现在还能不能上手术台——什么才能让她好转？",
+        "en": "What has changed in her skin, her legs and her circulation, and what did her relative see? Is she now too unwell for theatre — or what would it take for her to improve?"
       },
       "guidance": {
         "zh-CN": "她已意识丧失并气管插管，一位家属在床旁。",
@@ -3612,8 +3632,8 @@
         "en": "What do the operative findings and the cultures change? Is one operation enough? How long do the antibiotics run, and what guides any change?"
       },
       "guidance": {
-        "zh-CN": "她在手术室接受首次探查。",
-        "en": "She is in theatre for the first exploration."
+        "zh-CN": "她在手术室接受手术探查。",
+        "en": "She is in theatre for surgical exploration."
       },
       "completeWhen": {
         "all": [
@@ -3670,8 +3690,8 @@
         "en": "Outcome"
       },
       "hint": {
-        "zh-CN": "她最终痊愈出院——这能说明当时处理的时机没有问题吗？",
-        "en": "She left hospital healed in the end — does that show the timing was safe?"
+        "zh-CN": "无论结局如何，它能说明当时手术的时机是否安全吗？",
+        "en": "Whatever the outcome turns out to be, can it tell you whether the timing of the operation was safe?"
       },
       "guidance": {
         "zh-CN": "在病历终端查看原报告记录的后续经过与结局。",
@@ -3692,8 +3712,8 @@
     {
       "id": "working-diagnosis",
       "prompt": {
-        "zh-CN": "急诊剖宫产（胎儿窘迫，侧切和胎头吸引失败后中转）后第2天：术后2小时起发热，最高39.5 ℃；腹痛，右侧腰痛越来越重；腰腹部和左大腿上部大片紫红色瘀斑；先后用头孢唑林及甲硝唑、头孢曲松无效。体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg；腹部压痛、反跳痛，右侧明显。白细胞1.39×10⁹/L，血红蛋白94 g/L，血小板108×10⁹/L，肌酐205 μmol/L，乳酸5.52 mmol/L，PT 19.2 s。哪个工作诊断应当主导接下来这一小时？",
-        "en": "Day 2 after an emergency caesarean (fetal distress; converted after an episiotomy and a failed vacuum extraction): fever since 2 hours after the operation, maximum 39.5 °C; abdominal pain, and right flank pain getting worse; extensive purple-red bruising of the abdomen, flank and upper left thigh; no response to cefazolin, then metronidazole and ceftriaxone. T 39.6 °C, HR 170/min, RR 44/min, BP 108/70 mmHg; tender abdomen with rebound, worse on the right. WBC 1.39×10⁹/L, Hb 94 g/L, platelets 108×10⁹/L, creatinine 205 μmol/L, lactate 5.52 mmol/L, PT 19.2 s. Which working diagnosis should drive the next hour?"
+        "zh-CN": "急诊剖宫产（胎儿窘迫，侧切和胎头吸引失败后中转）后第2天：术后2小时起发热，体温曾达39.5 ℃；腹痛，右侧腰痛越来越重；腰腹部和左大腿上部大片紫红色瘀斑；先后用头孢唑林及甲硝唑、头孢曲松无效。体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg；腹部压痛、反跳痛，右侧明显。白细胞1.39×10⁹/L，血红蛋白94 g/L，血小板108×10⁹/L，肌酐205 μmol/L，乳酸5.52 mmol/L，PT 19.2 s。哪个工作诊断应当主导接下来这一小时？",
+        "en": "Day 2 after an emergency caesarean (fetal distress; converted after an episiotomy and a failed vacuum extraction): fever since 2 hours after the operation, reaching 39.5 °C; abdominal pain, and right flank pain getting worse; extensive purple-red bruising of the abdomen, flank and upper left thigh; no response to cefazolin, then metronidazole and ceftriaxone. T 39.6 °C, HR 170/min, RR 44/min, BP 108/70 mmHg; tender abdomen with rebound, worse on the right. WBC 1.39×10⁹/L, Hb 94 g/L, platelets 108×10⁹/L, creatinine 205 μmol/L, lactate 5.52 mmol/L, PT 19.2 s. Which working diagnosis should drive the next hour?"
       },
       "kind": "single",
       "requires": {
@@ -3756,8 +3776,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。术后数小时起高热，疼痛和皮肤改变迅速进展，腰腹部和左大腿上部大片瘀斑，伴心率170次/分、呼吸44次/分、乳酸5.52 mmol/L、肌酐205 μmol/L和PT延长，而两种抗菌方案都无效——这是深部坏死性感染的表现，不是普通的切口感染。IDSA 2014建议一旦怀疑坏死性感染就立即请外科会诊；诊断要在探查中确立，不能等CT或培养。",
-            "en": "Right. Fever from hours after the operation, pain and skin changes progressing fast, extensive bruising of the abdomen, flank and upper left thigh, HR 170/min, RR 44/min, lactate 5.52 mmol/L, creatinine 205 μmol/L and a prolonged PT, with two failed antibiotic regimens: this is a deep necrotising infection, not a wound infection. IDSA 2014 recommends prompt surgical consultation as soon as a necrotising infection is suspected; the diagnosis is made at exploration, not by waiting for CT or cultures."
+            "zh-CN": "正确。术后2小时起发热，疼痛和皮肤改变迅速进展，腰腹部和左大腿上部大片瘀斑，伴心率170次/分、呼吸44次/分、乳酸5.52 mmol/L、肌酐205 μmol/L和PT延长，而两种抗菌方案都无效——这是深部坏死性感染的表现，不是普通的切口感染。IDSA 2014建议一旦怀疑坏死性感染就立即请外科会诊；诊断要在探查中确立，不能等CT或培养。",
+            "en": "Right. Fever from 2 hours after the operation, pain and skin changes progressing fast, extensive bruising of the abdomen, flank and upper left thigh, HR 170/min, RR 44/min, lactate 5.52 mmol/L, creatinine 205 μmol/L and a prolonged PT, with two failed antibiotic regimens: this is a deep necrotising infection, not a wound infection. IDSA 2014 recommends prompt surgical consultation as soon as a necrotising infection is suspected; the diagnosis is made at exploration, not by waiting for CT or cultures."
           }
         },
         {
@@ -3780,8 +3800,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这接近原报告中先后换用抗菌药物的做法。蜂窝织炎不会在两天内造成迅速进展的瘀斑、肾损害和凝血异常；两种方案都已失败，提示存在抗菌药物到不了的坏死组织，需要外科探查，而不是再观察24小时（IDSA 2014）。",
-            "en": "This is close to the report's sequence of antibiotic changes. Cellulitis does not produce rapidly progressing bruising, kidney injury and a clotting abnormality within two days; two failed regimens point to dead tissue the drugs cannot reach, which needs surgical exploration, not another 24 hours of observation (IDSA 2014)."
+            "zh-CN": "这接近原报告中先后换用抗菌药物的做法。子宫内膜炎和切口蜂窝织炎解释不了迅速扩大的瘀斑和如此严重的全身中毒表现，WSES/SIS-E 2018也建议凡是迅速进展的软组织感染都要怀疑坏死性感染；两种方案都已失败，提示存在抗菌药物到不了的坏死组织，需要外科探查，而不是再观察24小时（IDSA 2014）。",
+            "en": "This is close to the report's sequence of antibiotic changes. Endometritis and wound cellulitis do not explain rapidly spreading ecchymoses with this degree of systemic toxicity, and WSES/SIS-E 2018 asks that any rapidly progressive soft-tissue infection be suspected as necrotising; two failed regimens point to dead tissue the drugs cannot reach, which needs surgical exploration, not another 24 hours of observation (IDSA 2014)."
           }
         },
         {
@@ -3821,8 +3841,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。拯救脓毒症运动2026：可行时先留血培养，可能的感染性休克或很可能的脓毒症在1小时内给抗菌药物；乳酸5.52 mmol/L提示灌注不足，建议平衡晶体液（最初可达30 mL/kg）并反复评估；需要感染源控制时最好在诊断后6小时内完成。IDSA 2014的经验方案为万古霉素或利奈唑胺加哌拉西林他唑巴坦或碳青霉烯类，并建议立即请外科会诊，EAST 2018建议疑诊后12小时内首次清创；她的过敏史没有记录，首剂前要问清并查看转诊资料。",
-            "en": "Right. SSC 2026: blood cultures first when feasible, antimicrobials within 1 hour for possible septic shock or probable sepsis; lactate 5.52 mmol/L signals hypoperfusion, so balanced crystalloid (up to 30 mL/kg at first) with repeated reassessment; source control ideally within 6 hours of diagnosis. IDSA 2014's empirical regimen is vancomycin or linezolid plus piperacillin–tazobactam or a carbapenem, with prompt surgical consultation, and EAST 2018 recommends the first debridement within 12 hours of suspicion; her allergy history is not recorded, so ask and check the notes before the first dose."
+            "zh-CN": "正确。拯救脓毒症运动2026：可行时先留血培养，可能的感染性休克或很可能的脓毒症在1小时内给抗菌药物，需要感染源控制时最好在诊断后6小时内完成。乳酸5.52 mmol/L提示灌注不足：SMFM 2023建议最初3小时内给平衡晶体液1～2 L，每次推注后复评。IDSA 2014的经验方案为万古霉素或利奈唑胺加哌拉西林他唑巴坦或碳青霉烯类，并建议立即请外科会诊，EAST 2018建议疑诊后12小时内首次清创；她的过敏史没有记录，首剂前要问清并查看转诊资料。",
+            "en": "Right. SSC 2026: blood cultures first when feasible, antimicrobials within 1 hour for possible septic shock or probable sepsis, and source control ideally within 6 hours of diagnosis. Lactate 5.52 mmol/L signals hypoperfusion: SMFM 2023 recommends 1–2 L of balanced crystalloid within the first 3 hours, reassessed after each bolus. IDSA 2014's empirical regimen is vancomycin or linezolid plus piperacillin–tazobactam or a carbapenem, with prompt surgical consultation, and EAST 2018 recommends the first debridement within 12 hours of suspicion; her allergy history is not recorded, so ask and check the notes before the first dose."
           }
         },
         {
@@ -3833,15 +3853,15 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这类似她转院前的经过：抗菌药物一换再换，感染源却留在原处。美罗培南加万古霉素本身可以接受，但观察24小时违背了IDSA 2014立即请外科会诊的建议；EAST 2018的荟萃分析中，首次清创晚于12小时者病死率25.8%，早清创者14%。",
-            "en": "This resembles her course before the transfer: antibiotics changed again and again while the source stayed in place. Meropenem plus vancomycin is a reasonable regimen, but a 24-hour wait goes against IDSA 2014's prompt surgical consultation; in EAST 2018's meta-analysis, mortality was 25.8% when the first debridement came after 12 hours, against 14% when it came earlier."
+            "zh-CN": "这类似她转院前的经过：抗菌药物换了，感染源却留在原处。美罗培南加万古霉素本身可以接受，但观察24小时违背了IDSA 2014立即请外科会诊的建议；EAST 2018的荟萃分析中，首次清创晚于12小时者病死率25.8%，早清创者14%。",
+            "en": "This resembles her course before the transfer: the antibiotics were changed while the source stayed in place. Meropenem plus vancomycin is a reasonable regimen, but a 24-hour wait goes against IDSA 2014's prompt surgical consultation; in EAST 2018's meta-analysis, mortality was 25.8% when the first debridement came after 12 hours, against 14% when it came earlier."
           }
         },
         {
           "id": "ct-first",
           "text": {
-            "zh-CN": "留血培养后，1小时内给同样的广谱抗菌药物和平衡晶体液，先做腹部、盆腔及大腿CT，看到积气或积液再请外科会诊",
-            "en": "Take blood cultures, give the same broad antibiotics and balanced crystalloid within the hour, and get CT of the abdomen, pelvis and thighs first, calling the surgeons if it shows gas"
+            "zh-CN": "留血培养后，1小时内静脉给广谱抗菌药物和平衡晶体液，先做腹部、盆腔及大腿CT，看到积气或积液再请外科会诊",
+            "en": "Take blood cultures, give broad-spectrum IV antibiotics and balanced crystalloid within the hour, and get CT of the abdomen, pelvis and thighs first, calling the surgeons if it shows gas or fluid"
           },
           "correct": false,
           "feedback": {
@@ -3852,8 +3872,8 @@
         {
           "id": "clotting-first",
           "text": {
-            "zh-CN": "留血培养后，1小时内给同样的广谱抗菌药物和平衡晶体液，先输新鲜冰冻血浆和血小板，把PT和血小板纠正到正常，再决定是否手术",
-            "en": "Take blood cultures, give the same broad antibiotics and balanced crystalloid within the hour, and bring the PT and platelets to normal with plasma and platelets before deciding on surgery"
+            "zh-CN": "留血培养后，1小时内静脉给广谱抗菌药物和平衡晶体液，先输新鲜冰冻血浆和血小板，把PT和血小板纠正到正常，再决定是否手术",
+            "en": "Take blood cultures, give broad-spectrum IV antibiotics and balanced crystalloid within the hour, and bring the PT and platelets to normal with plasma and platelets before deciding on surgery"
           },
           "correct": false,
           "feedback": {
@@ -3972,13 +3992,13 @@
         {
           "id": "relook-tailor",
           "text": {
-            "zh-CN": "24～48小时内计划性再次探查，有坏死就再清创；按药敏调整抗菌药物，用到不再需要清创、临床好转且退热48～72小时",
-            "en": "Plan a second look within 24–48 hours and debride again wherever necrosis remains; adjust antibiotics to susceptibilities and continue until debridement stops and she is afebrile for 48–72 hours"
+            "zh-CN": "24～36小时内计划性再次探查，有坏死就再清创；按药敏调整抗菌药物，用到不再需要清创、临床好转且退热48～72小时",
+            "en": "Plan a second look within 24–36 hours and debride again wherever necrosis remains; adjust antibiotics to susceptibilities and continue until debridement stops and she is afebrile for 48–72 hours"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。坏死性感染首次清创后常需多次手术，应计划性返回手术室复查，而不是等病情恶化（IDSA 2014）；IDSA 2014建议抗菌药物用到不再需要清创、临床好转并退热48～72小时。本病例没有记录药敏，降阶梯要等结果。",
-            "en": "Right. Necrotising infection usually needs more than one operation, so the return to theatre is planned rather than triggered by deterioration (IDSA 2014); IDSA 2014 continues antibiotics until no further debridement is needed, she has improved and has been afebrile for 48–72 hours. Narrowing waits for the susceptibilities, which this case does not record."
+            "zh-CN": "正确。坏死性感染首次清创后常需多次手术，应计划性返回手术室复查，而不是等病情恶化：IDSA 2014建议多数患者在首次清创后24～36小时返回手术室，此后每天一次，直到不再需要清创；WSES/SIS-E 2018建议首次再探查计划在12～24小时内。IDSA 2014建议抗菌药物用到不再需要清创、临床好转并退热48～72小时。本病例没有记录药敏，降阶梯要等结果。",
+            "en": "Right. Necrotising infection usually needs more than one operation, so the return to theatre is planned rather than triggered by deterioration: IDSA 2014 brings most patients back 24–36 hours after the first debridement and daily thereafter until no further debridement is needed, and WSES/SIS-E 2018 suggests planning the first re-exploration within 12–24 hours. IDSA 2014 continues antibiotics until no further debridement is needed, she has improved and has been afebrile for 48–72 hours. Narrowing waits for the susceptibilities, which this case does not record."
           }
         },
         {
@@ -4303,8 +4323,8 @@
         "en": "Explained the illness and the urgent operation in plain words and sought her consent while she was conscious, then explained the situation and its uncertainty to her relative after she was intubated"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评价两次谈话。到达时（她清醒、气促、害怕）：先自我介绍，用简短的句子；先问她知道多少；用通俗的话说明——刀口周围和肚子、腰部皮下的组织很可能有严重的感染，在往深处和周围蔓延，药物已经控制不住，需要马上手术把坏的组织清除，可能要做不止一次，术后要在重症监护室治疗；说明不做或推迟的风险；回应她“还要再开一刀吗”“我会不会有危险”的担心，不作虚假保证；在她还能作决定的时候征得同意，请她复述要点。她插管以后与家属谈：说明发生了什么（皮肤起疱、下肢花斑、休克、意识丧失、插管）、手术的必要性和不确定的预后，回答“还能不能挺过来”“要做几次手术”的问题时不说病例没有记录的数字；询问谁在照顾孩子、家里能得到哪些支持。不得说出原报告的结局（住院天数、植皮和皮瓣）。本病例没有记录这两次谈话。",
-        "en": "Judge both conversations by Calgary–Cambridge. On arrival (conscious, breathless, frightened): introduce yourself and use short sentences; ask what she understands first; explain in plain words that the tissue under the skin around the wound, the abdomen and her side very probably has a severe infection spreading deeper and wider, that the drugs have not controlled it, that she needs an operation now to remove the damaged tissue — possibly more than one — and intensive care afterwards; say what refusing or delaying would risk; respond to her fears ('another operation?', 'am I going to be all right?') without false reassurance; seek her consent while she can still decide, and check understanding by teach-back. After she is intubated, speak with her relative: what has happened (blisters, mottled legs, shock, loss of consciousness, the breathing tube), why surgery cannot wait, and the uncertain outlook — answering 'will she pull through?' and 'how many operations?' without numbers the case does not record; ask who is caring for the baby and what support the family has. Do not reveal the reported outcome (length of stay, grafts and flaps). This case does not record either conversation."
+        "zh-CN": "按Calgary–Cambridge评价两次谈话。到达时（她清醒、气促、害怕）：先自我介绍，用简短的句子；先问她知道多少；用通俗的话说明——刀口周围和肚子、腰部皮下的组织很可能有严重的感染，在往深处和周围蔓延，药物已经控制不住，需要马上手术把坏的组织清除，可能要做不止一次，术后要在重症监护室治疗；说明不做或推迟的风险；回应她“还要再开一刀吗”“我会不会有危险”的担心，不作虚假保证；在她还能作决定的时候征得同意，请她复述要点。她插管以后按SPIKES与家属谈（找安静的地方，先了解他们知道多少、想知道多少，再告知，回应情绪并说明下一步）：说明发生了什么（皮肤起疱、下肢花斑、休克、意识丧失、插管）、手术的必要性和不确定的预后，回答“还能不能挺过来”“要做几次手术”的问题时不说病例没有记录的数字；询问谁在照顾孩子、家里能得到哪些支持。不得说出原报告的结局（住院天数、植皮和皮瓣）。本病例没有记录这两次谈话。",
+        "en": "Judge both conversations by Calgary–Cambridge. On arrival (conscious, breathless, frightened): introduce yourself and use short sentences; ask what she understands first; explain in plain words that the tissue under the skin around the wound, the abdomen and her side very probably has a severe infection spreading deeper and wider, that the drugs have not controlled it, that she needs an operation now to remove the damaged tissue — possibly more than one — and intensive care afterwards; say what refusing or delaying would risk; respond to her fears ('another operation?', 'am I going to be all right?') without false reassurance; seek her consent while she can still decide, and check understanding by teach-back. After she is intubated, speak with her relative using SPIKES (a private setting, what they already know and want to hear, then the news, with empathy and a plan): what has happened (blisters, mottled legs, shock, loss of consciousness, the breathing tube), why surgery cannot wait, and the uncertain outlook — answering 'will she pull through?' and 'how many operations?' without numbers the case does not record; ask who is caring for the baby and what support the family has. Do not reveal the reported outcome (length of stay, grafts and flaps). This case does not record either conversation."
       }
     }
   ],
@@ -4316,8 +4336,8 @@
         "en": "Dr Shao (obstetric attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“术后两小时就发热，第二天皮肤大片青紫，这像普通的切口感染吗？”“白细胞明显减低，你是更放心还是更担心？”“qSOFA只有1分，SIRS四项全中——你相信哪个？”“LRINEC你能算出几分，缺了哪几项？分数低能排除吗？”“抗菌药物已经换过两次，问题出在药上还是出在别处？”“哪些检查可以等，哪些处理不能等？”“休克了还能不能上手术台？”“一次清创够不够？”“她痊愈了，能说明当时的时机没问题吗？”。可以讲IDSA 2014、拯救脓毒症运动2026、SMFM 2023、WSES/SIS-E 2018和EAST 2018的相关原则。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；她的血氧饱和度、尿量、体重、孩子的情况、药敏结果和转院后的抗菌方案都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'Fever two hours after the operation and a large purple patch the next day — does that look like an ordinary wound infection?', 'The white count is very low: does that reassure you or worry you?', 'qSOFA is 1 and every SIRS criterion is met — which do you believe?', 'How much of LRINEC can you score, what is missing, and can a low score rule it out?', 'The antibiotics have been changed twice — is the problem the drug or something else?', 'What can wait, and what cannot?', 'Is she too shocked for theatre?', 'Is one debridement enough?', 'She recovered — does that show the timing was safe?'. May explain the relevant principles of IDSA 2014, SSC 2026, SMFM 2023, WSES/SIS-E 2018 and EAST 2018. The report's management is a historical record shown at the end of the case and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; her oxygen saturation, urine output, weight, the baby's condition, the susceptibilities and the antibiotics after the transfer are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“术后两小时就发热，第二天皮肤大片青紫，这像普通的切口感染吗？”“白细胞明显减低，你是更放心还是更担心？”“qSOFA只有1分，SIRS四项全中——你相信哪个？”“LRINEC你能算出几分，缺了哪几项？分数低能排除吗？”“抗菌药物已经换过了，问题出在药上还是出在别处？”“哪些检查可以等，哪些处理不能等？”“休克了还能不能上手术台？”“一次清创够不够？”“她痊愈了，能说明当时的时机没问题吗？”。可以讲IDSA 2014、拯救脓毒症运动2026、SMFM 2023、WSES/SIS-E 2018和EAST 2018的相关原则。原报告的处理是历史记录，病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；她的血氧饱和度、尿量、体重、孩子的情况、药敏结果和转院后的抗菌方案都没有记录，不要替它补上。病例结束时按PEARLS复盘：先谈感受，再复述经过，对照指南分析，最后总结下次怎么做。",
+        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'Fever two hours after the operation and a large purple patch the next day — does that look like an ordinary wound infection?', 'The white count is very low: does that reassure you or worry you?', 'qSOFA is 1 and every SIRS criterion is met — which do you believe?', 'How much of LRINEC can you score, what is missing, and can a low score rule it out?', 'The antibiotics have already been changed — is the problem the drug or something else?', 'What can wait, and what cannot?', 'Is she too shocked for theatre?', 'Is one debridement enough?', 'She recovered — does that show the timing was safe?'. May explain the relevant principles of IDSA 2014, SSC 2026, SMFM 2023, WSES/SIS-E 2018 and EAST 2018. The report's management is a historical record shown at the end of the case and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; her oxygen saturation, urine output, weight, the baby's condition, the susceptibilities and the antibiotics after the transfer are not recorded — do not supply them. At the end, debriefs with PEARLS: reactions, a description of what happened, analysis against the guidance, and a summary of what to do next time."
       },
       "interprets": [
         "transfer-notes",
@@ -4340,7 +4360,7 @@
         "en": "Nurse Ye (emergency department, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "急诊抢救室护士。交班（ISBAR）：29岁女性，急诊剖宫产后第2天由外院转入；术后2小时起发热，右侧腰痛越来越重，术后次日起腰腹部大片瘀斑；外院用过头孢唑林，后改甲硝唑、头孢曲松等，没有好转。到达时神志尚清，被动体位，体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg。可以协助建立两条静脉通路、留取血培养和血标本、接监护、吸氧、留置导尿、快速补液、准备抗菌药物和升压药，联系外科、麻醉科和ICU，安排CT转运。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（体重、血氧饱和度、尿量、孩子的情况）时，如实说没有记录。",
+        "zh-CN": "急诊抢救室护士。交班（ISBAR）：29岁女性，急诊剖宫产后第2天由外院转入；术后2小时起发热，右侧腰痛越来越重，术后次日起腰腹部大片瘀斑；外院用过头孢唑林，后又用甲硝唑、头孢曲松等，没有好转。到达时神志尚清，被动体位，体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg。可以协助建立两条静脉通路、留取血培养和血标本、接监护、吸氧、留置导尿、快速补液、准备抗菌药物和升压药，联系外科、麻醉科和ICU，安排CT转运。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（体重、血氧饱和度、尿量、孩子的情况）时，如实说没有记录。",
         "en": "Emergency department resus nurse. Handover (ISBAR): 29-year-old woman transferred on day 2 after an emergency caesarean; fever from 2 hours after the operation, right flank pain getting worse, extensive bruising of the abdomen and flank from the next day; given cefazolin, then metronidazole, ceftriaxone and others, without improvement. On arrival conscious, in a passive position, T 39.6 °C, HR 170/min, RR 44/min, BP 108/70 mmHg. Can place two cannulas, take blood cultures and bloods, attach the monitor, give oxygen, catheterise, run fluid boluses, prepare antibiotics and vasopressors, call the surgeons, the anaesthetist and intensive care, and arrange transfer to CT. Reads back orders, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (her weight, oxygen saturation, urine output, the baby)."
       },
       "interprets": [],
@@ -4386,13 +4406,13 @@
       "en": "Debrief: necrotising soft-tissue infection after a caesarean birth (reported as acute necrotising fasciitis)"
     },
     "conclusion": {
-      "zh-CN": "29岁女性，因胎儿窘迫行会阴侧切和胎头吸引失败后急诊剖宫产，术后2小时起发热（最高39.5 ℃），腹痛，右侧腰痛进行性加重，次日起腰腹部大片瘀斑；头孢唑林及甲硝唑、头孢曲松等无效，术后第2天转院。到达时神志尚清、被动体位，体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg；腹膨隆，压痛、反跳痛右侧明显，腰腹部和左大腿上部紫红色瘀斑，肠鸣音弱。白细胞1.39×10⁹/L，血红蛋白94 g/L，血小板108×10⁹/L，肌酐205 μmol/L，白蛋白11.2 g/L，乳酸5.52 mmol/L，PT 19.2 s（记录的血钙62 mmol/L不可信）。数小时内出现水疱、下肢花斑和感染性休克，随后意识丧失、气管插管。血和水疱液培养均为大肠埃希菌；CT示腹壁、盆壁及大腿软组织肿胀和腹壁皮下积气；探查见筋膜发黑坏死、恶臭渗液，病理为急性坏死性筋膜炎。约发病第5天才确诊并清创，作者认为偏晚；此后仍有广泛皮肤和肌肉坏死，经多次清创、植皮和皮瓣修复，住院403天治愈出院。按现行指南：到达当时就应按坏死性软组织感染处理，1小时内留培养并给广谱抗菌药物、平衡晶体液复苏，并立即请外科，在数小时内探查清创，必要时计划性再次探查。",
-      "en": "A 29-year-old had an emergency caesarean for fetal distress after an episiotomy and failed vacuum extraction. Fever began 2 h later; abdominal pain, worsening right flank pain and extensive abdominal and flank bruising (from the next day) followed despite cefazolin, then metronidazole and ceftriaxone. Transferred on day 2: T 39.6 °C, HR 170/min, RR 44/min, BP 108/70 mmHg, peritonism worse on the right, ecchymoses also over the upper left thigh; WBC 1.39×10⁹/L, creatinine 205 μmol/L, lactate 5.52 mmol/L, PT 19.2 s. Within hours came bullae, mottled legs, septic shock and intubation. Blood and blister fluid grew E. coli, CT showed subcutaneous gas, and exploration found black necrotic fascia (acute necrotising fasciitis). Diagnosis and debridement came about 5 days into the illness, late in the authors' view; she left hospital healed after 403 days, repeated debridement, grafts and flaps. Today: start sepsis care within the hour of arrival and explore within hours."
+      "zh-CN": "29岁女性，因胎儿窘迫行会阴侧切和胎头吸引失败后急诊剖宫产，术后2小时起发热（曾达39.5 ℃），腹痛，右侧腰痛进行性加重，次日起腰腹部大片瘀斑；头孢唑林及甲硝唑、头孢曲松等无效，术后第2天转院。到达时神志尚清、被动体位，体温39.6 ℃，心率170次/分，呼吸44次/分，血压108/70 mmHg；腹膨隆，压痛、反跳痛右侧明显，腰腹部和左大腿上部紫红色瘀斑，肠鸣音弱。白细胞1.39×10⁹/L，血红蛋白94 g/L，血小板108×10⁹/L，肌酐205 μmol/L，白蛋白11.2 g/L，乳酸5.52 mmol/L，PT 19.2 s（记录的血钙62 mmol/L不可信）。数小时内出现水疱、下肢花斑和感染性休克，随后意识丧失、气管插管。血和水疱液培养均为大肠埃希菌；CT示腹壁、盆壁及大腿软组织肿胀和腹壁皮下积气；探查见筋膜发黑坏死、恶臭渗液，病理为急性坏死性筋膜炎。约发病第5天才确诊并清创，作者认为偏晚；此后仍有广泛皮肤和肌肉坏死，经多次清创、植皮和皮瓣修复，住院403天治愈出院。按现行指南：到达当时就应按坏死性软组织感染处理，1小时内留培养并给广谱抗菌药物、平衡晶体液复苏，并立即请外科，在数小时内探查清创，必要时计划性再次探查。",
+      "en": "A 29-year-old woman had an emergency caesarean for fetal distress after an episiotomy and a failed vacuum extraction. Fever began 2 hours after the operation (reaching 39.5 °C), with abdominal pain, steadily worsening right flank pain and, from the next day, extensive bruising of the abdomen and flank; cefazolin, then metronidazole, ceftriaxone and others brought no improvement, and she was transferred on day 2. On arrival she was conscious and lying in a passive position: T 39.6 °C, HR 170/min, RR 44/min, BP 108/70 mmHg; the abdomen was distended and tender with rebound, more marked on the right, with weak bowel sounds, and there were purple-red ecchymoses over the abdomen, flank and upper left thigh. WBC 1.39×10⁹/L, Hb 94 g/L, platelets 108×10⁹/L, creatinine 205 μmol/L, albumin 11.2 g/L, lactate 5.52 mmol/L, PT 19.2 s (the recorded calcium of 62 mmol/L is implausible). Within hours came bullae, mottled legs and septic shock, then loss of consciousness and intubation. Blood and blister fluid grew Escherichia coli; CT showed soft-tissue swelling of the abdominal wall, pelvic wall and thigh with subcutaneous gas in the abdominal wall; exploration found black necrotic fascia with foul-smelling exudate, and histology acute necrotising fasciitis. Diagnosis and debridement came about 5 days into the illness, late in the authors' view; extensive skin and muscle necrosis still followed, and after repeated debridement, skin grafting and flap reconstruction she was discharged healed after 403 days in hospital. Today: treat it as a necrotising soft-tissue infection on arrival — cultures and broad antibiotics within the hour, balanced crystalloid, and an immediate surgical call for exploration and debridement within hours, with planned second looks."
     },
     "keyReasoning": [
       {
-        "zh-CN": "术后2小时就发热，疼痛和皮肤改变一天之内迅速进展，腰腹部和左大腿上部出现大片瘀斑：这不是普通的术后发热，迅速进展的皮肤软组织改变在探查证明之前都要按坏死性感染处理。",
-        "en": "Fever from 2 hours after the operation, with pain and skin changes progressing within a day and extensive bruising over the abdomen, flank and upper left thigh, is not an ordinary post-operative fever: rapidly progressive soft-tissue signs mean a necrotising infection until exploration shows otherwise."
+        "zh-CN": "术后2小时就发热，疼痛和皮肤改变进展很快，次日起腰腹部出现大片瘀斑，到达时左大腿上部也有：这不是普通的术后发热，迅速进展的皮肤软组织改变在探查证明之前都要按坏死性感染处理（WSES/SIS-E 2018）。",
+        "en": "Fever from 2 hours after the operation, pain and skin changes progressing rapidly, extensive bruising over the abdomen and flank from the next day and, on arrival, over the upper left thigh too: this is not an ordinary post-operative fever — a rapidly progressive soft-tissue infection must be suspected, and treated, as necrotising until exploration shows otherwise (WSES/SIS-E 2018)."
       },
       {
         "zh-CN": "白细胞1.39×10⁹/L是重症的标志而不是反证：与乳酸5.52 mmol/L、肌酐205 μmol/L、PT 19.2 s和血小板108×10⁹/L放在一起，提示多个器官已经受累。",
@@ -4447,24 +4467,24 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "识别靠临床：术后2小时起发热，一天之内疼痛和皮肤改变迅速进展，腰腹部和左大腿上部大片瘀斑，随后出现水疱和下肢花斑，并有心率170次/分、呼吸44次/分，而两种抗菌方案无效——这就是坏死性软组织感染的表现。IDSA 2014建议对伴全身中毒表现或疑似坏死性筋膜炎的患者立即请外科会诊。原报告中，作者认为确诊和清创偏晚。",
-        "en": "Recognition is clinical. Fever from 2 hours after the operation, pain and skin changes progressing within a day, ecchymoses over the abdomen, flank and upper left thigh, then bullae and mottling, with HR 170/min and RR 44/min despite two antibiotic regimens: this is the picture of a necrotising soft-tissue infection. IDSA 2014 recommends prompt surgical consultation for an aggressive infection with systemic toxicity or suspected necrotising fasciitis. In the report, the authors judged the diagnosis and debridement late."
+        "zh-CN": "识别靠临床：术后2小时起发热，疼痛和皮肤改变迅速进展，腰腹部和左大腿上部大片瘀斑，随后出现水疱和下肢花斑，并有心率170次/分、呼吸44次/分，而两种抗菌方案无效——这就是坏死性软组织感染的表现。IDSA 2014建议对伴全身中毒表现或疑似坏死性筋膜炎的患者立即请外科会诊；WSES/SIS-E 2018也建议，凡是迅速进展的软组织感染都要怀疑坏死性感染。原报告中，作者认为确诊和清创偏晚。",
+        "en": "Recognition is clinical. Fever from 2 hours after the operation, pain and skin changes progressing rapidly, ecchymoses over the abdomen, flank and upper left thigh, then bullae and mottling, with HR 170/min and RR 44/min despite two antibiotic regimens: this is the picture of a necrotising soft-tissue infection. IDSA 2014 recommends prompt surgical consultation for an aggressive infection with systemic toxicity or suspected necrotising fasciitis, and WSES/SIS-E 2018 asks that any rapidly progressive soft-tissue infection be suspected as necrotising. In the report, the authors judged the diagnosis and debridement late."
       },
       {
         "zh-CN": "重症藏在数字里：白细胞1.39×10⁹/L本身是SIRS标准之一，乳酸5.52 mmol/L提示灌注不足，肌酐205 μmol/L、PT 19.2 s和血小板108×10⁹/L提示肾和凝血功能受累（Sepsis-3，2016）。而qSOFA只有1分（呼吸44次/分；收缩压108 mmHg；神志清楚）；LRINEC（Wong 2004，回顾性推导）也算不全：已记录的项目得4分（血红蛋白9.4 g/dL、肌酐>141 μmol/L），CRP、钠和血糖没有记录——分数低也不能排除。",
         "en": "Severity hides in plain numbers. A white count of 1.39×10⁹/L is itself a SIRS criterion, lactate 5.52 mmol/L signals hypoperfusion, and creatinine 205 μmol/L, PT 19.2 s and platelets 108×10⁹/L show renal and coagulation dysfunction (Sepsis-3, 2016). Yet qSOFA was only 1 (RR 44/min; systolic 108 mmHg; conscious), and LRINEC (Wong 2004, retrospectively derived) cannot be completed: the recorded items give 4 points (Hb 9.4 g/dL, creatinine > 141 μmol/L) with CRP, sodium and glucose unrecorded — and a low score never excludes the disease."
       },
       {
-        "zh-CN": "第一个小时（拯救脓毒症运动2026；IDSA 2014）：可行时先留血培养，可能的感染性休克或很可能的脓毒症在1小时内给抗菌药物；经验方案如万古霉素或利奈唑胺加哌拉西林他唑巴坦或碳青霉烯类，按肌酐调整；平衡晶体液（灌注不足时建议最初30 mL/kg）并反复评估，不用淀粉或明胶类液体（SMFM 2023）。外院的头孢曲松加甲硝唑加上万古霉素或利奈唑胺本身也是IDSA的可选方案——它的失败首先提示感染源没有清除（也可能耐药，本病例没有记录药敏）。",
-        "en": "First hour (SSC 2026; IDSA 2014): blood cultures before antimicrobials when feasible, then antimicrobials within 1 hour for possible septic shock or probable sepsis; an empirical regimen such as vancomycin or linezolid plus piperacillin–tazobactam or a carbapenem, adjusted to her creatinine; balanced crystalloid (30 mL/kg suggested at first for hypoperfusion) with repeated reassessment, and no starches or gelatin (SMFM 2023). Ceftriaxone plus metronidazole, with vancomycin or linezolid added, is itself an IDSA option — its failure points first to the source left in place (and possibly to resistance; no susceptibility is recorded)."
+        "zh-CN": "第一个小时（拯救脓毒症运动2026；SMFM 2023；IDSA 2014）：可行时先留血培养，可能的感染性休克或很可能的脓毒症在1小时内给抗菌药物；经验方案如万古霉素或利奈唑胺加哌拉西林他唑巴坦或碳青霉烯类，按肌酐调整。补液用平衡晶体液：低血压或灌注不足时，最初3小时内给1～2 L，每次推注后复评——SMFM 2023提醒，拯救脓毒症运动的30 mL/kg在妊娠期和产后可能过于激进，因为胶体渗透压较低、更易发生肺水肿（她的白蛋白只有11.2 g/L）；不用淀粉或明胶类液体（SMFM 2023）。外院用过的头孢曲松加甲硝唑，若再加万古霉素或利奈唑胺，本身也是IDSA的可选方案——方案失败首先提示感染源没有清除（也可能耐药，本病例没有记录药敏）。",
+        "en": "First hour (SSC 2026; SMFM 2023; IDSA 2014): blood cultures before antimicrobials when feasible, then antimicrobials within 1 hour for possible septic shock or probable sepsis; an empirical regimen such as vancomycin or linezolid plus piperacillin–tazobactam or a carbapenem, adjusted to her creatinine. Fluids: balanced crystalloid, 1–2 L within the first 3 hours for hypotension or hypoperfusion, reassessed after each bolus — SMFM 2023 warns that the SSC's 30 mL/kg may be too aggressive in pregnancy and after birth, when oncotic pressure is lower and pulmonary oedema more likely (her albumin is 11.2 g/L) — and no starches or gelatin (SMFM 2023). Ceftriaxone plus metronidazole, with vancomycin or linezolid added, is itself an IDSA option — its failure points first to the source left in place (and possibly to resistance; no susceptibility is recorded)."
       },
       {
         "zh-CN": "感染源控制就是治疗：EAST 2018建议疑诊后12小时内首次清创（其荟萃分析中早清创组病死率14%，晚清创组25.8%）；拯救脓毒症运动2026建议感染源控制最好在诊断后6小时内完成。原报告中确诊和清创约在发病第5天——按本病例的天数推算，约在转院后3天——作者认为偏晚。",
         "en": "Source control is the treatment. EAST 2018 recommends the first debridement within 12 hours of suspicion (mortality 14% early versus 25.8% late in its meta-analysis); SSC 2026 suggests source control ideally within 6 hours of diagnosis. In the report, diagnosis and debridement came about 5 days after the illness began — about 3 days after her transfer by the case's day count — and the authors judged it late."
       },
       {
-        "zh-CN": "休克不是等待的理由：复苏在手术室里继续，以去甲肾上腺素为一线升压药、初始平均动脉压目标65 mmHg，持续需要升压药时建议静脉糖皮质激素（拯救脓毒症运动2026，证据确定性低）。首次清创后计划性返回手术室，而不是等病情恶化；抗菌药物用到不再需要清创、临床好转且退热48～72小时（IDSA 2014），降阶梯要依据药敏——本病例没有记录药敏。",
-        "en": "Shock is not a reason to wait. Resuscitation continues in theatre, with noradrenaline as the first-line vasopressor to an initial mean arterial pressure target of 65 mmHg and IV corticosteroids suggested if vasopressors are still needed (SSC 2026, low certainty). After the first debridement the return to theatre is planned, not triggered by deterioration; antibiotics continue until no further debridement is needed, she has improved and has been afebrile for 48–72 hours (IDSA 2014), narrowing only on susceptibilities — which this case does not record."
+        "zh-CN": "休克不是等待的理由：复苏在手术室里继续，以去甲肾上腺素为一线升压药、初始平均动脉压目标65 mmHg，持续需要升压药时建议静脉糖皮质激素（拯救脓毒症运动2026，证据确定性低）。首次清创后计划性返回手术室，而不是等病情恶化（IDSA 2014：24～36小时后，此后每天一次）；抗菌药物用到不再需要清创、临床好转且退热48～72小时（IDSA 2014），降阶梯要依据药敏——本病例没有记录药敏。",
+        "en": "Shock is not a reason to wait. Resuscitation continues in theatre, with noradrenaline as the first-line vasopressor to an initial mean arterial pressure target of 65 mmHg and IV corticosteroids suggested if vasopressors are still needed (SSC 2026, low certainty). After the first debridement the return to theatre is planned, not triggered by deterioration (IDSA 2014: 24–36 hours later, then daily); antibiotics continue until no further debridement is needed, she has improved and has been afebrile for 48–72 hours (IDSA 2014), narrowing only on susceptibilities — which this case does not record."
       },
       {
         "zh-CN": "产褥期背景与结局偏倚：SMFM 2023把孕产妇脓毒症作为急症处理；本例发病前有会阴侧切和胎头吸引失败后的急诊剖宫产，孕期未正规产检。要把母亲的严重感染告知孩子的主管医生。她最终在住院403天、多次清创、植皮和皮瓣修复后痊愈，但这并不说明延误是安全的：评价第2天的决策，要看第2天已经知道什么。",
@@ -4477,9 +4497,10 @@
       "Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2026. Crit Care Med. 2026. doi:10.1097/CCM.0000000000007075",
       "Shields AD, Plante LA, Pacheco LD, Louis JM; Society for Maternal-Fetal Medicine Publications Committee. Society for Maternal-Fetal Medicine Consult Series #67: Maternal sepsis. Am J Obstet Gynecol. 2023;229(3):B2-B19. doi:10.1016/j.ajog.2023.05.019",
       "Royal College of Obstetricians and Gynaecologists. Identification and management of maternal sepsis during and following pregnancy. Green-top Guideline No. 64. London: RCOG; 2024.",
-      "Sartelli M, et al. 2018 WSES/SIS-E consensus conference: recommendations for the management of skin and soft-tissue infections. World J Emerg Surg. 2018;13:58. doi:10.1186/s13017-018-0219-9",
-      "Gelbard RB, Ferrada P, Yeh DD, et al. Optimal timing of initial debridement for necrotizing soft tissue infection: a Practice Management Guideline from the Eastern Association for the Surgery of Trauma. J Trauma Acute Care Surg. 2018;85(1):208-214.",
-      "Wong CH, et al. The LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) score: a tool for distinguishing necrotizing fasciitis from other soft tissue infections. Crit Care Med. 2004;32(7):1535-1541.",
+      "Sartelli M, Guirao X, Hardcastle TC, Kluger Y, Boermeester MA, Raşa K, et al. 2018 WSES/SIS-E consensus conference: recommendations for the management of skin and soft-tissue infections. World J Emerg Surg. 2018;13:58. doi:10.1186/s13017-018-0219-9",
+      "Gelbard RB, Ferrada P, Yeh DD, et al. Optimal timing of initial debridement for necrotizing soft tissue infection: a Practice Management Guideline from the Eastern Association for the Surgery of Trauma. J Trauma Acute Care Surg. 2018;85(1):208-214. doi:10.1097/TA.0000000000001857",
+      "Wong CH, Khin LW, Heng KS, Tan KC, Low CO. The LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) score: a tool for distinguishing necrotizing fasciitis from other soft tissue infections. Crit Care Med. 2004;32(7):1535-1541. doi:10.1097/01.CCM.0000129486.35458.7D",
+      "Singer M, Deutschman CS, Seymour CW, Shankar-Hari M, Annane D, Bauer M, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810. doi:10.1001/jama.2016.0287",
       "中华医学会烧伤外科学分会, 《中华烧伤与创面修复杂志》编辑委员会, 中国医疗保健国际交流促进会烧伤医学分会. 成人坏死性筋膜炎诊治专家共识(2025版). 中华烧伤与创面修复杂志. 2025;41(7):613-627. doi:10.3760/cma.j.cn501225-20250329-00150"
     ],
     "notice": {

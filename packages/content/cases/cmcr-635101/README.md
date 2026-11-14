@@ -24,7 +24,7 @@ unknown.
 | languages | `zh-CN` (source language), `en` |
 | review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have an endocrinologist or emergency physician review it before teaching use |
 | phases | `ed` 急诊抢救区：到院时 / ED resus bay: on arrival → `treatment-12h` 补液和胰岛素治疗 12 小时后 / Twelve hours into fluids and insulin → `ward` 病房：入院次日起 / On the ward: from the day after admission (ward bed) → `followup` 随访：2 周与 3 个月 / Follow-up: two weeks and three months — all one-way, none learner-switchable |
-| content | 20 history items (6 recorded facts, 2 labelled teaching devices, 12 unknown; 7 required) · 7 exam findings (4 required, all at presentation) · 16 investigations (1 record review; 10 with an `available: false` result in one or more phases) · 19 interventions (7 always contraindicated, 2 contraindicated in a window) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 40 test utterances |
+| content | 20 history items (6 recorded facts, 2 labelled teaching devices, 12 unknown; 7 required) · 7 exam findings (4 required, all at presentation) · 16 investigations (1 record review; 10 with an `available: false` result in one or more phases) · 19 interventions (7 always contraindicated, 2 contraindicated in a window; 2 `critical`: `kcl-added`, `oral-agent`) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 44 test utterances |
 
 ## Learning outcomes
 
@@ -81,7 +81,7 @@ insulin 1–2 h before the infusion stops; classify by onset and C-peptide, not 
 HbA1c by method; judge control by glucose data; no iron without proven deficiency; carrier counselling with partner and
 family testing.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
 - **Static clock, no physiology** (the collection contract: `clock.mode: "static"`, no `physiology`). Results are
   immediate; interventions are scored for appropriateness but change nothing — the course is the recorded one. There is
@@ -107,7 +107,7 @@ family testing.
   HbA1c ("next day" in 1.0.0), the C-peptide ("after the acidosis was corrected") and the islet antibodies, blood counts,
   electrophoresis and genetic test (no time recorded); the two-week C-peptide with the three-month results (1.0.0 does
   not say what the two weeks are counted from).
-- No prompt, hint, order response or harm text states a later phase's result before its record opens. The ED-phase
+- No prompt, hint, option feedback, order response or harm text states a later phase's result before its record opens. The ED-phase
   HbA1c and C-peptide placeholders say only when the recorded values were taken.
 
 ## Decisions and assessment
@@ -151,14 +151,17 @@ permanently false (no phase leaf, `whenIndicated`, first-try or `not`).
   `monogenic` (MODY), `stress-hyperglycaemia`.
 - **5 `hba1c-plan`** (select all; needs decision 4 and the blood count, electrophoresis and genetic test read). Keys:
   `diagnosis-stands`, `glucose-based-monitoring`, `carrier-counselling`. Distractors: `oral-iron`, `lower-insulin`
-  (HbA1c 6.8 % "already at target").
+  (HbA1c 6.8 % "already at target"). The `diagnosis-stands` feedback says what JDS 2012 requires — all three findings,
+  of which only the HbA1c half of the second involves haemoglobin — so the trait is a reason to check the 6.8 % against
+  its method, not to drop the diagnosis.
 
 Every option has its own feedback (2–4 sentences) naming the 2024 consensus, JBDS-IP 2023, the Japan Diabetes Society
 2012 criteria, the ADA Standards of Care 2026, the 2023 laboratory guideline (Sacks et al.), the 2014 European
 hyponatraemia guideline or BSH 2023. Option ids name their content. **No length cue:** in no single-best decision is the
 key the uniquely longest option, in either language (measured on 2026-10-30, key / longest distractor in characters:
 decision 1 zh-CN 51 / 54, en 160 / 164; decision 2 83 / 85, 172 / 193; decision 3 48 / 49, 137 / 142; decision 4 70 /
-71, 157 / 162).
+71, 157 / 162). In the select-all decision 5 the three keys are not the three longest options either (re-measured on
+2026-11-14: zh-CN keys 39 / 54 / 46, distractors 39 / 43; en keys 95 / 169 / 138, distractors 110 / 110).
 
 ### Rubric (11 deterministic items, total weight 29, + 1 examiner-judged)
 
@@ -171,13 +174,13 @@ decision 1 zh-CN 51 / 54, en 160 / 164; decision 2 83 / 85, 172 / 193; decision 
 | `rb-first-hour-plan` | management | 3 | `first-hour` right first time **and** `monitoring-plan` charted in the ED or at 12 h (`whenIndicated`) |
 | `rb-first-hour-acts` | management | 4 | **critical** — `isotonic-fluid` and `friii` given while in the ED (`whenIndicated`, window `{phase: "ed"}`) |
 | `rb-potassium-safe` | safety | 3 | **critical** — ECG ordered in phase `ed`, `cardiac-monitoring` given in the ED (`whenIndicated`), and no `kcl-added` |
-| `rb-avoided-harm` | safety | 3 | no bicarbonate, 0.45 % saline, SC insulin on the ward, correction-only insulin, oral agent or oral iron, and `stop-friii` only once basal insulin or a pump was given (`whenIndicated`); scored once decision 2, 3 or 5 is attempted or any of these is given |
-| `rb-transition` | management | 2 | `transition` right first time **and** SC basal insulin or a pump started |
+| `rb-avoided-harm` | safety | 3 | no bicarbonate, 0.45 % saline, SC insulin on the ward, correction-only insulin, oral agent or oral iron; `stop-friii` only once basal insulin or a pump was given, and `csii-start` only after the ketoacidosis (both `whenIndicated`); scored once decision 2, 3 or 5 is attempted or any of these is given |
+| `rb-transition` | management | 2 | `transition` right first time **and** SC basal insulin or a pump started at 12 hours or on the ward (`whenIndicated`) |
 | `rb-classification` | diagnosis | 3 | `classification` right first time |
 | `rb-hba1c-plan` | management | 2 | `hba1c-plan` right first time **and** `genetic-counselling` and `diabetes-education` given |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge, case-specific: the emergency in plain words and why no potassium yet; the new sudden-onset type 1 diabetes and lifelong insulin; sick-day rules, ketones, hypoglycaemia; the carrier state, why HbA1c may mislead, partner and family testing; teach-back |
 
-### How wrong choices score (measured with the reducer on 2026-10-30)
+### How wrong choices score (measured with core `assess` on 2026-10-30; re-measured on 2026-11-14)
 
 | path | deterministic score | critical items missed |
 |---|---:|---|
@@ -186,14 +189,16 @@ decision 1 zh-CN 51 / 54, en 160 / 164; decision 2 83 / 85, 172 / 193; decision 
 | wrong first answer at all five decisions, then right | 16/29 (55 %) | none |
 | wrong first answer at decision 1, 2 or 4 only | 26/29 (90 %) | none |
 | wrong first answer at decision 3 or 5 only | 27/29 (93 %) | none |
-| reference path plus potassium chloride in the ED | 26/29 (90 %) | `rb-potassium-safe` |
+| reference path plus potassium chloride in the ED | 26/29 (90 %) | `rb-potassium-safe`; **safety outcome fails** (`kcl-added` is critical) |
 | reference path without cardiac monitoring, or without the ED ECG | 26/29 (90 %) | `rb-potassium-safe` |
 | 0.45 % saline and SC insulin on the ward instead of isotonic fluid and the infusion | 22/29 (76 %) | `rb-first-hour-acts` |
 | … with isotonic fluid and the infusion given only at 12 hours | 22/29 (76 %) | `rb-first-hour-acts` |
-| reference path plus bicarbonate in the ED | 26/29 (90 %) | none (`rb-avoided-harm` lost) |
+| reference path plus bicarbonate in the ED | 26/29 (90 %) | none (`rb-avoided-harm` lost; safety outcome passes — `critical: false`) |
+| reference path plus an insulin pump started in the ED | 26/29 (90 %) | none (`rb-avoided-harm` lost) |
 | infusion stopped before the basal insulin | 26/29 (90 %) | none (`rb-avoided-harm` lost) |
 | correction-only insulin at 12 h instead of basal insulin | 24/29 (83 %) | none (`rb-avoided-harm`, `rb-transition` lost) |
-| reference path plus oral iron, or plus metformin, on the ward | 26/29 (90 %) | none (`rb-avoided-harm` lost) |
+| reference path plus oral iron on the ward | 26/29 (90 %) | none (`rb-avoided-harm` lost) |
+| reference path plus metformin in place of insulin on the ward | 26/29 (90 %) | none (`rb-avoided-harm` lost); **safety outcome fails** (`oral-agent` is critical) |
 | reference path without genetic counselling | 27/29 (93 %) | none |
 | reference path without the HDU referral, monitoring plan, education and CGM | 21/29 (72 %) | none |
 | the report's own transition — an insulin pump in place of the basal injection | 29/29 (100 %) | none |
@@ -210,8 +215,20 @@ the ED — the 12-hour record opens only after a fluid act and an insulin act, s
 insulin cannot make it up later) and `rb-potassium-safe` (the dangerous error at K⁺ 6.23 mmol/L: no ECG, no monitoring, or
 potassium added against that value). Both are acts timed to the ED phase; neither reads a final-phase record. **Known
 limit:** the potassium trap is contraindicated in every phase, because 1.0.0 records no potassium after the first value —
-a learner who adds potassium at 12 hours "by protocol" is told why (no repeat value is recorded) and loses the critical
-item. Debrief it as the teaching point it is: potassium follows a measured value.
+a learner who adds potassium at 12 hours "by protocol" is told why (no repeat value is recorded), loses the critical
+item and — `kcl-added` being `critical: true` — fails the safety outcome. Debrief it as the teaching point it is:
+potassium follows a measured value, and this record never shows one below the threshold.
+
+**Safety outcome.** Two interventions are `critical: true`. `kcl-added`: potassium chloride in the IV fluid against the
+only recorded potassium, 6.23 mmol/L with a creatinine of 179 μmol/L, risks a fatal arrhythmia (contraindicated in
+every phase, because no later potassium is recorded). `oral-agent`: stopping insulin for tablets in diabetes that has
+just presented in ketoacidosis, with a C-peptide of 50 / 70 pmol/L, lets the ketoacidosis return. Giving either fails the
+assessment's safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it.
+`sodium-bicarbonate`, the third high-risk trap, is `critical: false`: at pH 7.173 it brings no benefit and adds
+hypokalaemia and a sodium load — a recoverable misjudgement that costs `rb-avoided-harm`. The insulin infusion
+(`friii`) carries no preset dose: its rate is per kilogram and his weight is not recorded (a per-kg preset cannot be
+compared with an order in units per hour without it), and its dose text gives the JBDS-IP 2023 schedule (0.1 units/kg/h,
+with 0.05 units/kg/h considered once glucose is below 14 mmol/L).
 
 ## Reference path (`solution`)
 
@@ -225,7 +242,7 @@ electrolytes, ketones and glucose (only the gas has a result) → diabetes educa
 (phase `ward`) **stop the infusion** → his worry about insulin → HbA1c, C-peptide, antibodies → `classification` → blood
 count, earlier blood problems, family blood conditions → electrophoresis, genetic test, iron studies and glycated
 albumin (the last two no result) → CGM → **genetic counselling** → `hba1c-plan` → (phase `followup`) C-peptide, HbA1c,
-outcome record → finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 29/29, utterances 40/40. The
+outcome record → finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 29/29, utterances 44/44. The
 demonstration asks only questions a clinician would ask a 24-year-old in this situation.
 
 ## Clinical numbers check
@@ -269,15 +286,16 @@ steady state, baseline unknown). BMI 17.62 kg/m² is below the WHO 18.5 cut-off 
 recorded, so **no weight-based dose is computed** — the doses are formulas.
 
 **Guidance numbers used in teaching text:** DKA criteria glucose ≥ 11.1 mmol/L or known diabetes, β-hydroxybutyrate
-≥ 3.0 mmol/L, pH < 7.3 and/or bicarbonate < 18 mmol/L; severity mild pH > 7.25 and bicarbonate ≥ 15, moderate pH
+≥ 3.0 mmol/L (or urine ketones 2+ or more where it cannot be measured), pH < 7.3 and/or bicarbonate < 18 mmol/L; severity mild pH > 7.25 and bicarbonate ≥ 15, moderate pH
 7.0–7.25 and bicarbonate 10 to < 15, severe pH < 7.0 and bicarbonate < 10 mmol/L (β-OHB ≤ 6 / > 6; mental status); fluids
 500–1,000 mL/h for 2–4 h; insulin 0.1 units/kg/h; 5–10 % glucose below 13.9 mmol/L; potassium replaced below 5.0 mmol/L,
 insulin delayed below 3.5, potassium checked 2 h after insulin; bicarbonate only below pH 7.0; resolution ketones < 0.6
 mmol/L with pH ≥ 7.3 or bicarbonate ≥ 18; basal insulin 1–2 h before stopping (2024 consensus). JBDS-IP 2023: diagnosis
-with urine ketones ++ or more and bicarbonate < 15 mmol/L; potassium none above 5.5, 40 mmol/L at 3.5–5.5 (to verify).
+with urine ketones ++ or more and bicarbonate < 15 mmol/L; potassium none above 5.5, 40 mmol/L at 3.5–5.5; FRIII 0.1 units/kg/h, 0.05 units/kg/h considered below 14 mmol/L;
+more cautious fluids at 18–25 years (March 2023 pathway, read on 2026-11-14).
 JDS 2012: ketosis within about 7 days; glucose ≥ 16.0 mmol/L with HbA1c < 8.7 % (NGSP); fasting C-peptide < 0.10 nmol/L
 and post-meal or post-glucagon < 0.17 nmol/L (2004: HbA1c < 8.5 %, JDS value). Sodium rise ≤ 10 mmol/L in the first 24 h
-(European 2014). HHS ≥ 33.3 mmol/L with effective osmolality > 300 mOsm/kg (to verify).
+(European 2014). HHS (2024 consensus): glucose ≥ 33.3 mmol/L with effective osmolality > 300 mOsm/kg, β-hydroxybutyrate < 3.0 mmol/L and pH ≥ 7.3.
 
 ## Facilitator notes
 
@@ -296,16 +314,16 @@ and post-meal or post-glucagon < 0.17 nmol/L (2004: HbA1c < 8.5 %, JDS value). S
      your choice between 0.9 % and 0.45 % saline?"
    - "Why no bicarbonate at pH 7.17?"
    - "At 12 hours the gas is normal. What else must you know, and what must already be in him, before the drip comes
-     down? The 2010 team started a pump the next day — what comes first today?"
+     down? The report's team started a pump the next day — what comes first today?"
    - "Glucose 23.8 with an HbA1c of 6.8 %: what are the two explanations, and which other results decide between them?"
    - "Which of the three fulminant criteria does his β-thalassaemia trait touch, and which does it not?"
    - "Microcytosis on every count — why not iron?"
-   - "How did you explain lifelong insulin, ketone checks when ill, and what his blood result means for a future family?"
+   - "How did you explain lifelong insulin, ketone checks when ill, and what his carrier result means for his relatives and for a partner planning a pregnancy?"
 4. **Summary.** "What will you check first the next time a young adult arrives vomiting after days of thirst — and what
    will you look at instead of HbA1c when a haemoglobin variant is in play?"
 
 The record gives no fluid volumes, insulin doses, place of care, later potassium or sodium, or ketone values: do not let
-the group praise or blame the 2010 team for steps the record does not show.
+the group praise or blame the report's team for steps the record does not show.
 
 ### Common learner errors and how the case surfaces them
 
@@ -326,7 +344,8 @@ the group praise or blame the 2010 team for steps the record does not show.
 
 ### Teaching points for the debrief
 
-The six `debrief.teachingPoints`: (1) recognise and grade DKA — the 2024 consensus criteria and bands, breath odour and
+The six `debrief.teachingPoints`: (1) recognise and grade DKA — the 2024 consensus criteria (urine ketones count where β-hydroxybutyrate cannot be
+measured) and bands, breath odour and
 vomiting change nothing, then and now; (2) the first hour — fluids, 0.1 units/kg/h, potassium below 5.0 (5.5 JBDS),
 dextrose below 13.9 mmol/L, bicarbonate only below pH 7.0, ECG monitoring at K⁺ 6.23; (3) the sodium read with the
 glucose — corrected about 122–125 mmol/L, effective osmolality about 258 mOsm/kg, isotonic fluid only, 2–4-hourly
@@ -354,7 +373,7 @@ instead, no iron without deficiency, carrier counselling (ADA 2026; Sacks 2023; 
   monitoring plan, education, CGM and stopping the infusion are medical by kind.
 - **He can speak throughout** (a conscious adult; no companion). Unrecorded examinations answer with `examNotRecorded`
   ("This case holds no record of this examination; treat it as unknown — neither normal nor abnormal.").
-- **Measured (offline demonstration, 2026-10-30).** `embodied-autopilot.test.ts -t "cmcr-635101:"` passes in en and
+- **Measured (offline demonstration, 2026-10-30; again 2026-11-14).** `embodied-autopilot.test.ts -t "cmcr-635101:"` passes in en and
   zh-CN: the demonstration finishes the case in the general hospital with the clinical-mode score.
 
 ## Source and adaptation (fidelity limits)
@@ -444,12 +463,23 @@ template voice) are all addressed.
 - **Order entry.** `orderMatching.rules` keep urine queries off the blood-ketone meter, HbA1c queries ("糖化", "a1c",
   "glycated") off the blood count and electrophoresis, albumin/fructosamine queries off HbA1c, electrophoresis queries off
   the blood count, and gene queries off both.
-- **Interventions.** "subcutaneous insulin" / "皮下胰岛素" reaches basal insulin (the safe reading), not the ward SC
-  protocol, whose aliases are specific ("sc insulin every 2 hours"); "monitoring plan" no longer reaches cardiac
-  monitoring.
-- **Corpus.** 40 test utterances (27 zh-CN, 13 en), written as learners speak; every required item is covered. Two
+- **Interventions.** "subcutaneous insulin" / "皮下胰岛素" / "胰岛素皮下注射" reach basal insulin (the safe reading), not
+  the ward SC protocol, whose aliases are specific ("sc insulin every 2 hours"); "monitoring plan" no longer reaches
+  cardiac monitoring. Re-probed on 2026-11-14: "静脉滴注胰岛素" had resolved to *stopping* the infusion and "胰岛素泵入" tied
+  with stopping; both, and "小剂量胰岛素持续静滴", now reach the infusion; `stop-friii` excludes start words (开始 / 启动 /
+  静滴 / 滴注 / 给胰岛素 / start / begin) and none of its aliases contains a whole start phrase, while "撤掉静脉胰岛素"
+  reaches it (the infusion excludes 撤); the pump is reached by its own phrases (上 / 装 / 启用 / 改用胰岛素泵), so a bare
+  "给胰岛素" asks which insulin instead of starting a pump. Bare "胰岛素泵" and "静脉胰岛素" stay ambiguous: the learner is
+  asked which is meant.
+- **Added in review (2026-11-14).** "怎么了？", "什么时候开始吐的？" (a required item that reached nothing), "每天喝多少水？",
+  "家里人有什么病吗？", "What's the problem?", "What seems to be the problem?" and "Tell me what's been going on." now reach
+  their items (`怎么了`, `开始吐`, `喝多少水`, `家里人有什么病`; run-together `whatstheproblem`, `seemstobetheproblem`,
+  `beengoingon`, `howmuchwater` — "how much water" as words reduced to "water" and took the glass-of-water negative);
+  `有没有糖尿病` was added to `diabetes-before` so "有没有糖尿病？" no longer credits the family item as well; 肚子 / 胃 are
+  excluded from `presenting`, so "肚子怎么了？" goes to the abdominal-pain unknown.
+- **Corpus.** 44 test utterances (28 zh-CN, 16 en), written as learners speak; every required item is covered. Two
   **look-alike negatives** (`expect: []`): "你家里人知道你住院了吗？" (family wording; it selected `family-blood` at 0.60
-  before `知道你` was excluded) and "Can I get you a glass of water?" (thirst wording). `cases verify` reports 40/40 with no
+  before `知道你` was excluded) and "Can I get you a glass of water?" (thirst wording). `cases verify` reports 44/44 with no
   extra selections.
 
 ## References
@@ -469,11 +499,12 @@ template voice) are all addressed.
 6. American Diabetes Association Professional Practice Committee. 6. Glycemic goals, hypoglycemia, and hyperglycemic
    crises: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S132-S149. doi:10.2337/dc26-S006
 7. Sacks DB, Arnold M, Bakris GL, et al. Guidelines and recommendations for laboratory analysis in the diagnosis and
-   management of diabetes mellitus. Clin Chem. 2023;69(8):808-868.
+   management of diabetes mellitus. Clin Chem. 2023;69(8):808-868. doi:10.1093/clinchem/hvad080
 8. Spasovski G, Vanholder R, Allolio B, et al. Clinical practice guideline on diagnosis and treatment of hyponatraemia.
    Eur J Endocrinol. 2014;170(3):G1-G47. doi:10.1530/EJE-13-1020
-9. British Society for Haematology. Significant haemoglobinopathies: a guideline for screening and diagnosis. Br J
-   Haematol. 2023.
+9. Bain BJ, Daniel Y, Henthorn J, de la Salle B, Hogan A, Roy NBA, et al. Significant haemoglobinopathies: a guideline
+   for screening and diagnosis: a British Society for Haematology guideline. Br J Haematol. 2023;201(6):1047-1065.
+   doi:10.1111/bjh.18794
 
 **How they were checked (2026-10-30).** Ref. 1 — citation and DOI from the source map (`verifiedDoi`, publisher check
 2026-10-29). Ref. 4 — authors, title, journal, volume, issue, pages and DOI confirmed in this session from indexer
@@ -486,7 +517,20 @@ published summaries of the consensus (Cleveland Clinic Journal of Medicine revie
 its full text. Ref. 3 — string and DOI as dka-adult gives them; the 2023 revision's diagnostic criteria were confirmed
 from the JBDS 02 single-page pathway (March 2023). Ref. 5 — the string dka-adult cites (no DOI). Ref. 6 — as
 cmcr-1423446 cites it (title, pages and DOI checked there on 2026-10-28 from web-search records). Ref. 8 — as cmcr-138898 cites it (DOI checked from the Erasmus
-repository record). Refs 7 and 9 — **no DOI**, because none could be verified in this session; see To verify.
+repository record). Refs 7 and 9 — no DOI could be verified on 2026-10-30; both were completed on 2026-11-14 (below).
+
+**Re-checked in the independent review (2026-11-14).** Ref. 2 — from the Cleveland Clinic Journal of Medicine review of
+the consensus and an interview with its first author: ketosis is β-hydroxybutyrate ≥ 3.0 mmol/L **or urine ketones 2+ or
+more where it is not available** (1.1.0 had given the urine criterion to JBDS-IP only); severity bands and level of care
+(mild ward, moderate step-down, severe ICU; not every marker need agree); fluids 500–1,000 mL/h for 2–4 h; the 0.1
+units/kg/h infusion; dextrose below 250 mg/dL; potassium replaced below 5.0; bicarbonate only below pH 7.0; resolution
+ketones < 0.6 mmol/L with pH ≥ 7.3 or bicarbonate ≥ 18; basal insulin at least 1–2 h before the infusion stops; the SC
+option for mild and uncomplicated moderate DKA; the HHS criteria. Ref. 3 — the JBDS 02 single-page pathway (March 2023)
+itself: urine ketones ++ or more, bicarbonate < 15 mmol/L; the FRIII at 0.1 units/kg/h on an estimated weight (50 units
+in 50 mL), with 0.05 units/kg/h considered below 14 mmol/L; potassium none above 5.5 mmol/L; more cautious fluids at
+18–25 years; resolution ketones < 0.6 mmol/L and pH > 7.3. Ref. 4 — PMC4015434: all three findings are required. Ref. 6 —
+PMC12690178: the title, pages and DOI; HbA1c limits with altered red-cell turnover and some variants (thalassaemia is not
+named), BGM/CGM, fructosamine and glycated albumin. Refs 7 and 9 — authors, volume, pages and DOI from indexer records.
 
 ### To verify
 
@@ -522,25 +566,28 @@ repository record). Refs 7 and 9 — **no DOI**, because none could be verified 
 - Follow-up: the insulin regimen and hypoglycaemia at three months, complications, follow-up after three months; whether
   "C-peptide remained low" is the authors' wording.
 - Whether the article has figures or tables (none were reviewed for this case).
+- His weight, if the report gives one beside the BMI of 17.62 kg/m²: with it the insulin infusion could carry a preset
+  dose (`doseSpec` per kg needs `patient.weightKg`).
 
 **In the guidance (primary texts not read in this session):**
 
-- 2024 consensus: confirmed only through published summaries; to check in the full text — how discordant severity
-  markers are combined (the case treats the worse band as decisive), whether its ketone criterion accepts urine ketones,
-  its HHS definition (the case uses glucose ≥ 33.3 mmol/L with effective osmolality > 300 mOsm/kg), and the wording of the
-  subcutaneous option for mild and moderate DKA.
-- JBDS-IP 2023 (JBDS 02): the potassium bands (none above 5.5 mmol/L; 40 mmol/L at 3.5–5.5) and "no initial insulin
-  bolus", as the library's dka-adult cites them; the level-2 markers; the caution in young adults aged 18–25.
+- 2024 consensus: confirmed through published summaries (its urine-ketone criterion, bands, HHS criteria and the 1–2 h
+  basal overlap re-checked on 2026-11-14); to check in the full text — how discordant severity markers are combined (the
+  case treats the worse band as decisive; the summaries say not every marker need agree and clinical judgement decides),
+  and the wording of the subcutaneous option for mild and moderate DKA.
+- JBDS-IP 2023 (JBDS 02): the single-page pathway (March 2023) was read on 2026-11-14 for the diagnostic criteria, the
+  FRIII and its 0.05 units/kg/h step, the potassium bands and the caution at 18–25 years; the full text's level-2 (HDU)
+  markers remain to check.
 - 中国1型糖尿病诊治指南（2021版）: whether its fulminant criteria match JDS 2012; and whether 中国糖尿病防治指南（2024版）
   (中华糖尿病杂志 2025;17(1):16-139) or a newer Chinese hyperglycaemic-crisis guideline should be cited for DKA care.
-- ADA Standards of Care 2026, section 6: the wording on haemoglobin variants, CGM metrics and fructosamine or glycated
-  albumin (checked against earlier editions' recommendations only).
-- Sacks et al. 2023: the author list after the third author and the DOI; its statements on HbA1c interference by
-  haemoglobin variants and on C-peptide.
+- ADA Standards of Care 2026, section 6: its CGM metrics and the exact recommendation numbers (the HbA1c limits and the
+  alternatives were re-checked against the 2026 text on 2026-11-14).
+- Sacks et al. 2023 (citation and DOI confirmed 2026-11-14): its statements on HbA1c interference by haemoglobin
+  variants and on C-peptide.
 - European hyponatraemia guideline 2014: the glucose correction and the 10 mmol/L-in-24-hours limit — the case applies the
   limit to the glucose-corrected sodium in DKA as a teaching rule; check that this is how a current source frames it.
-- BSH 2023 (ref. 9): authors, volume, pages and DOI; its statements that iron deficiency lowers HbA2 and on partner and
-  family testing. Cite also the NGSP list of HbA1c assay interferences (ngsp.org) for his laboratory's method, with the
+- BSH 2023 (ref. 9; citation and DOI confirmed 2026-11-14): its statements that iron deficiency lowers HbA2 and on
+  partner and family testing. Cite also the NGSP list of HbA1c assay interferences (ngsp.org) for his laboratory's method, with the
   access date.
 
 ## Changelog
@@ -575,6 +622,20 @@ repository record). Refs 7 and 9 — **no DOI**, because none could be verified 
 - **Governance.** Review status and notes in the STANDARD §6.6 wording, with the collection's English ending ("The case
   is not yet reviewed by a licensed clinician.", which the collection contract matches case-sensitively);
   `sourceTextChecked: false`; `sourceDoi` + `doiVerifiedAt` in place of `sourceDoiVerification`.
+- **Independent review applied (2026-11-14).** Facts: "near-absent" / "几乎测不到" C-peptide (three option feedbacks, both
+  languages) → "very low" / "很低", and "his own insulin has almost stopped" in the communication guidance → "very little
+  insulin of his own" — 1.0.0 calls 50 / 70 pmol/L very low, not absent; "the 2010 team" (a care year the record does not
+  give; 2010 is the publication year) → "the report's team"; "a future partner" / "将来的配偶" (a social fact not recorded)
+  → his partner, now or in future; the zh triage "分诊手测" → "分诊时测得". Guidance: the 2024 consensus accepts urine
+  ketones 2+ for ketosis (it had been credited to JBDS-IP only); the JDS 2012 criteria need all three findings (the
+  `diagnosis-stands` feedback and the conclusion had made the HbA1c criterion merely supporting); the infusion's dose
+  text now gives JBDS-IP 2023's 0.05 units/kg/h step and the fluid text its caution at 18–25 years; refs 7 and 9 completed
+  with their DOIs. Safety outcome: `kcl-added` and `oral-agent` `critical: true`, `sodium-bicarbonate` `critical: false`,
+  with the README paragraph and 安全结果. Validity: the decision 5 feedback no longer cites the three-month HbA1c before
+  its phase; the select-all keys are no longer exactly its three longest options; an insulin pump started in the ED now
+  costs `rb-avoided-harm`, and `rb-transition` counts the basal insulin or pump only in its window. Matcher: Chinese orders
+  for the IV infusion had resolved to stopping it, and "给胰岛素" to the pump; seven natural questions (one of them for a required item) reached nothing.
+  Staff: the attending's "ketone values or potassium" now reads "blood ketone values or potassium replacement".
 
 ### 1.0.0 — 2026-10-28
 
@@ -585,13 +646,13 @@ repository record). Refs 7 and 9 — **no DOI**, because none could be verified 
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-635101/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-635101 --lang en                                                 # 89 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 29/29 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-635101                       # depth floor, do-nothing 0, wrong-first 55 % < 100 %
+npm run -s cc -- cases verify cmcr-635101 --lang en                                                 # 89 steps · objectives 6/6 · decisions 5/5 · utterances 44/44 · rubric 29/29 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-635101                                       # depth floor, do-nothing 0, wrong-first 55 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-635101:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-635101:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-10-30: all five pass.
+Measured on 2026-10-30, and again after the independent review on 2026-11-14: all five pass.
 
 ## 中文摘要
 
@@ -624,8 +685,12 @@ pH 属中度、按 HCO₃⁻ 属重度。补液和胰岛素治疗 12 小时后 p
   （关键项），并在血钾 6.23 时做心电图、上监护、不加钾（关键项）。
 - 决策 3（12 小时）：先确认血酮 < 0.6 mmol/L、能进食，皮下基础胰岛素后 1–2 小时再停输注；报告中的团队次日开始胰岛素泵。
 - 决策 4（分型）：暴发性 1 型糖尿病（JDS 2012），终身胰岛素；干扰项为酮症倾向 2 型、经典自身免疫性 1 型、MODY、应激性高血糖。
-- 决策 5（多选）：诊断不变（起病时间和 C 肽不依赖 HbA1c）；用血糖或 CGM、果糖胺或糖化白蛋白评估控制；携带者咨询与配偶、
-  亲属检测；不补铁，不因 HbA1c 6.8% 减胰岛素。
+- 决策 5（多选）：诊断不变（JDS 2012 要求三条同时满足，其中只有 HbA1c 与血红蛋白有关，起病时间和 C 肽不依赖它）；用血糖或
+  CGM、果糖胺或糖化白蛋白评估控制；携带者咨询，为配偶（现在或将来）和亲属提供检测；不补铁，不因 HbA1c 6.8% 减胰岛素。
+
+**安全结果。** `kcl-added`（血钾 6.23 mmol/L、肌酐 179 μmol/L 时往液体里加钾）和 `oral-agent`（停胰岛素改口服降糖药）标为
+`critical: true`：无论得分多少，给了就判安全结果不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示；
+`sodium-bicarbonate` 为 `critical: false`（pH 7.173 时无益，但可以纠正），静脉胰岛素因体重没有记录而不设预设剂量。
 
 **复盘要点（PEARLS）。** 先谈面对“像胃肠炎”的年轻人时的感受；用两句话说清床旁和首批结果以及第一小时做了什么；分析烂苹果味
 的分量、pH 与 HCO₃⁻ 分级不一致时怎么办、高钾时体内总钾是多是少及何时补钾、校正血钠与有效渗透压对选液体的意义、为什么不用

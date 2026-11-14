@@ -7,8 +7,8 @@
     "en": "Frequent bloody stools, then faecal matter in the urine · 51-year-old man"
   },
   "summary": {
-    "zh-CN": "中年男性便血、消瘦一个多月，近来小便里出现了粪渣：理清几种并发症孰先孰后，决定第一步，再沿着他记录的病程走到术后随访。",
-    "en": "A middle-aged man with a month of bloody stools and weight loss is now passing faecal matter in his urine: sort out which of his complications comes first, choose the first step, then follow his recorded course to the post-operative review."
+    "zh-CN": "中年男性一个多月来便次增多、便血，伴发热、消瘦，近来小便里出现了粪渣：理清几种并发症孰先孰后，决定第一步，再沿着他记录的病程走到术后随访。",
+    "en": "A middle-aged man with frequent bloody stools for over a month, fevers and weight loss is now passing faecal matter in his urine: sort out which of his complications comes first, choose the first step, then follow his recorded course to the post-operative review."
   },
   "specialty": [
     "colorectal-surgery",
@@ -37,16 +37,16 @@
       "en": "Control the complications first in a tumour that is partly obstructing, bleeding and contaminating the urinary tract of a man with fevers — a defunctioning colostomy and culture-guided antibiotics before neoadjuvant treatment — and explain why a stent is not the bridge for a tumour 4 cm from the anal verge (ESGE 2020; EAU 2025)."
     },
     {
-      "zh-CN": "依据 MMR 状态选择新辅助方案（dMMR/MSI-H 用免疫治疗，pMMR 用全程新辅助治疗；ASCO 2024），并在专科中心按治疗前的受累范围计划整块多脏器切除、争取 R0 切缘，不因再分期时的退缩而缩小手术（Beyond TME 协作组共识，2013）。",
-      "en": "Choose neoadjuvant treatment by MMR status — immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR tumours (ASCO 2024) — and plan an en bloc multivisceral resection for clear (R0) margins in a specialist centre, sized to the pre-treatment extent rather than to the regression on restaging (Beyond TME Collaborative consensus, 2013)."
+      "zh-CN": "依据 MMR 状态选择新辅助方案（dMMR/MSI-H 用免疫治疗，pMMR 用全程新辅助治疗；ASCO 2024），与专科团队一起计划受侵器官的整块切除、争取 R0 切缘（ASCRS 2020；Beyond TME 协作组共识，2013），并说明为什么再分期时的退缩本身不足以支持缩小手术范围。",
+      "en": "Choose neoadjuvant treatment by MMR status — immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR tumours (ASCO 2024) — and plan with a specialist team an en bloc resection of the invaded organs for clear (R0) margins (ASCRS 2020; Beyond TME Collaborative consensus, 2013), explaining why regression on restaging does not by itself justify a smaller operation."
     },
     {
       "zh-CN": "正确解读病理完全缓解（标本无癌残留、淋巴结 0/22）：预后良好，但不等于治愈，也不能事后证明当初可以保留器官；据此安排后续化疗的讨论和 5 年随访（ASCRS 2021 随访指南）。",
       "en": "Interpret a pathological complete response (no residual cancer, 0/22 nodes) correctly — favourable, but neither proof of cure nor proof after the event that organ preservation would have been safe — and plan the further-chemotherapy discussion and five-year surveillance (ASCRS 2021 surveillance guideline)."
     },
     {
-      "zh-CN": "用通俗语言向他解释分阶段的治疗——先做肠造口，之后可能还需要尿路造口——取得知情同意，并安排术前造口定位和造口宣教（WOCN 协会与 ASCRS 术前造口定位联合立场声明，2014）。",
-      "en": "Explain the staged plan — a bowel stoma first, possibly a urinary stoma later — in plain words, obtain consent, and arrange preoperative stoma-site marking and teaching (WOCN Society and ASCRS joint position statement on preoperative stoma-site marking, 2014)."
+      "zh-CN": "用通俗语言向他解释分阶段的治疗——先做肠造口，之后可能还需要尿路造口——取得知情同意，并在每次造口手术前安排造口定位和造口宣教（WOCN 协会、AUA 与 ASCRS 术前造口定位联合立场声明，2021）。",
+      "en": "Explain the staged plan — a bowel stoma first, possibly a urinary stoma later — in plain words, obtain consent, and arrange preoperative stoma-site marking and teaching before each stoma operation (WOCN Society, AUA and ASCRS joint position statement on preoperative stoma-site marking, 2021)."
     }
   ],
   "tags": [
@@ -78,7 +78,7 @@
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-30",
+      "reviewedAt": "2026-11-14",
       "reviewers": [
         "ClinicalCraft editorial review (AI-assisted)"
       ],
@@ -86,10 +86,12 @@
         "ASCO 2024 management of locally advanced rectal cancer",
         "NCCN Guidelines Insights: Rectal Cancer, Version 3.2024",
         "Beyond TME Collaborative 2013 consensus (primary and recurrent rectal cancer beyond TME planes)",
+        "ASCRS 2020 clinical practice guidelines for the management of rectal cancer",
         "ESGE 2020 self-expandable metal stents for obstructing colonic and extracolonic cancer (guideline update)",
         "ASCRS 2021 surveillance and survivorship care after curative treatment of colon and rectal cancer",
         "EAU Guidelines on Urological Infections 2025",
-        "AJCC Cancer Staging Manual, 8th edition (2017)"
+        "AJCC Cancer Staging Manual, 8th edition (2017)",
+        "WOCN Society, AUA and ASCRS 2021 position statement on preoperative stoma site marking for patients undergoing ostomy surgery"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -195,8 +197,8 @@
         "en": "After the first operation"
       },
       "description": {
-        "zh-CN": "按记录的病程，多学科团队的初始临床分期为 T4bN2M0，伴直肠膀胱瘘、不全梗阻、出血和感染；第一步是横结肠造口，使粪便改道。他回到病房，接下来是术前（新辅助）治疗。",
-        "en": "In the recorded course, the multidisciplinary team's initial clinical stage was T4bN2M0, with a rectovesical fistula, partial obstruction, bleeding and infection, and the first step was a transverse colostomy to divert the faecal stream. He is back on the ward; preoperative (neoadjuvant) treatment comes next."
+        "zh-CN": "按记录的病程，初始临床分期为 T4bN2M0，伴直肠膀胱瘘、不全梗阻、出血和感染；第一步是横结肠造口，使粪便改道。他回到病房，接下来是术前（新辅助）治疗。",
+        "en": "In the recorded course, the initial clinical stage was T4bN2M0, with a rectovesical fistula, partial obstruction, bleeding and infection, and the first step was a transverse colostomy to divert the faecal stream. He is back on the ward; preoperative (neoadjuvant) treatment comes next."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -332,7 +334,10 @@
           "为什么来",
           "主要问题",
           "哪儿难受",
-          "什么毛病"
+          "什么毛病",
+          "你怎么了",
+          "看什么病",
+          "来看什么"
         ],
         "en": [
           "brought you",
@@ -341,7 +346,9 @@
           "what's wrong",
           "what happened",
           "troubling you",
-          "reason for admission"
+          "reason for admission",
+          "brings you",
+          "the matter"
         ]
       },
       "excludeKeywords": {
@@ -353,7 +360,8 @@
         "en": [
           "before",
           "family",
-          "medicine"
+          "medicine",
+          "past"
         ]
       },
       "disclosure": "volunteer",
@@ -407,7 +415,8 @@
           "fever",
           "temperature",
           "weight",
-          "stoma"
+          "stoma",
+          "in the past"
         ]
       },
       "disclosure": "on-ask",
@@ -449,12 +458,15 @@
       "excludeKeywords": {
         "zh-CN": [
           "小便",
-          "尿"
+          "尿",
+          "现在要"
         ],
         "en": [
           "urine",
           "pee",
-          "water"
+          "water",
+          "right now",
+          "pain"
         ]
       },
       "disclosure": "on-ask",
@@ -606,7 +618,8 @@
           "air",
           "sting",
           "burn",
-          "painful"
+          "pain",
+          "hurt"
         ]
       },
       "disclosure": "on-ask",
@@ -680,7 +693,11 @@
           "urgency",
           "dysuria",
           "moreoften",
-          "hurts to pee"
+          "hurts to pee",
+          "pain when you pass",
+          "painful to pee",
+          "hurt when you pass",
+          "pain passing"
         ]
       },
       "disclosure": "unknown",
@@ -931,7 +948,11 @@
           "crohn",
           "colitis",
           "long-term",
-          "medical history"
+          "medical history",
+          "bowel problems before",
+          "problems before",
+          "trouble before",
+          "inthepast"
         ]
       },
       "excludeKeywords": {
@@ -1115,6 +1136,21 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "来看",
+          "今天",
+          "探望",
+          "陪"
+        ],
+        "en": [
+          "coming in",
+          "visit",
+          "today",
+          "on their way",
+          "see you"
+        ]
       }
     },
     {
@@ -1393,8 +1429,8 @@
       "results": {
         "admission": {
           "text": {
-            "zh-CN": "肠镜活检：中分化腺癌。",
-            "en": "Colonoscopic biopsy: moderately differentiated adenocarcinoma."
+            "zh-CN": "活检（与肠镜一并记录）：中分化腺癌。",
+            "en": "Biopsy (recorded with the colonoscopy): moderately differentiated adenocarcinoma."
           },
           "note": {
             "zh-CN": "本病例没有记录对这份活检组织做过的其他检测。",
@@ -2321,9 +2357,16 @@
       "risk": "moderate",
       "maxDoses": 1,
       "indicatedWhen": {
-        "not": {
-          "intervened": "neoadjuvant-crt"
-        }
+        "all": [
+          {
+            "phase": "admission"
+          },
+          {
+            "not": {
+              "intervened": "neoadjuvant-crt"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "记录的病程中，第一次手术正是横结肠造口转流。术后情况见下一阶段。",
@@ -2373,12 +2416,12 @@
         }
       },
       "harm": {
-        "zh-CN": "肿瘤部分梗阻、出血，粪便还在经瘘进入一位发热达 39 ℃ 的患者的膀胱，此时不转流就开始盆腔放化疗：放疗引起的肿瘤水肿可使不全梗阻变成完全梗阻，持续的粪便污染使尿路感染无法控制，化疗又削弱抗感染能力——可能被迫在放射野内急诊手术，甚至危及生命。EAU 2025：复杂性尿路感染须同时处理其复杂因素，这里就是瘘。先转流、控制感染，再开始新辅助治疗。",
-        "en": "Starting pelvic chemoradiotherapy with no diversion while the tumour partly obstructs, bleeds and keeps passing stool into the bladder of a man who has had fevers to 39 °C: radiation oedema can turn the partial obstruction into a complete one, the ongoing faecal contamination keeps the urinary infection out of control and chemotherapy weakens his defences — risking emergency surgery in an irradiated field, or his life. EAU 2025 treats a complicated urinary infection together with its complicating factor, here the fistula. Divert and control the infection first, then start neoadjuvant treatment."
+        "zh-CN": "肿瘤部分梗阻、出血，粪便还在经瘘进入一位发热达 39 ℃ 的患者的膀胱，此时不转流就开始盆腔放化疗：放疗引起的肿瘤水肿可使不全梗阻变成完全梗阻，持续的粪便污染使尿路感染无法控制，化疗又削弱抗感染能力——可能被迫在放射野内急诊手术，甚至危及生命。EAU 2025 要求：发热（全身性）尿路感染须处理任何泌尿系统异常或潜在的复杂因素，这里就是瘘。先转流、控制感染，再开始新辅助治疗。",
+        "en": "Starting pelvic chemoradiotherapy with no diversion while the tumour partly obstructs, bleeds and keeps passing stool into the bladder of a man who has had fevers to 39 °C: radiation oedema can turn the partial obstruction into a complete one, the ongoing faecal contamination keeps the urinary infection out of control and chemotherapy weakens his defences — risking emergency surgery in an irradiated field, or his life. EAU 2025 asks that, in a febrile (systemic) urinary infection, any urological abnormality or underlying complicating factor be managed — here the fistula. Divert and control the infection first, then start neoadjuvant treatment."
       },
       "response": {
-        "zh-CN": "记录显示他接受了新辅助放化疗；本病例没有记录放化疗的方案、剂量和疗程。",
-        "en": "The record states that he received neoadjuvant chemoradiotherapy; this case records neither its regimen, its dose nor its duration."
+        "zh-CN": "记录显示他接受了新辅助放化疗；本病例没有记录放化疗的方案、剂量和疗程，也没有 MMR 结果——今天多学科团队会先拿到 MMR 状态，再在以放化疗为基础的方案和免疫治疗之间作出选择。",
+        "en": "The record states that he received neoadjuvant chemoradiotherapy; this case records neither its regimen, its dose nor its duration, and no MMR result — today the MDT would have the MMR status before choosing between chemoradiotherapy-based treatment and immunotherapy."
       }
     },
     {
@@ -2417,8 +2460,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "ESGE 2020 支架指南的推荐只适用于直肠乙状结肠至脾曲的左半结肠梗阻，不推荐预防性放置支架，并把减压性造口列为不宜放支架时的替代方案。距肛门 4 cm 的低位肿瘤放支架会引起疼痛、里急后重和失禁，且易移位；穿过已经形成瘘的肿瘤，还可能加重瘘或导致穿孔，也挡不住粪便进入膀胱。",
-        "en": "ESGE 2020 limits its stenting recommendations to left-sided obstruction from the rectosigmoid to the splenic flexure, advises against prophylactic stenting and names a decompressing stoma as the alternative where a stent is unsuitable. In a low tumour 4 cm from the anal verge a stent causes pain, tenesmus and incontinence and tends to migrate; through a tumour that has already fistulated into the bladder it risks worsening the fistula or perforating, and it does nothing to stop stool reaching the bladder."
+        "zh-CN": "ESGE 2020 支架指南的推荐只适用于直肠乙状结肠至脾曲的左半结肠梗阻，不推荐预防性放置支架，并把减压性造口列为不宜放支架时的替代方案。直肠支架通常被避免，因为它与疼痛、里急后重、失禁和移位相关——距肛门 4 cm 的低位肿瘤尤其如此；穿过已经形成瘘的肿瘤，还可能加重瘘或导致穿孔，也挡不住粪便进入膀胱。",
+        "en": "ESGE 2020 limits its stenting recommendations to left-sided obstruction from the rectosigmoid to the splenic flexure, advises against prophylactic stenting and names a decompressing stoma as the alternative where a stent is unsuitable. Rectal stenting is usually avoided because of its association with pain, tenesmus, incontinence and migration — all the likelier in a low tumour 4 cm from the anal verge; through a tumour that has already fistulated into the bladder it risks worsening the fistula or perforating, and it does nothing to stop stool reaching the bladder."
       },
       "response": {
         "zh-CN": "本病例没有记录放置支架；不模拟其效果。",
@@ -2515,8 +2558,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "治疗前肿瘤已穿透直肠壁侵入膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，并形成瘘。放化疗后，影像上的退缩分不清纤维化和残留癌，沿退缩边界分离，切缘可能经过肿瘤（R1），局部复发风险高。Beyond TME 协作组共识（2013）要求这类超出 TME 平面的直肠癌由专科多学科团队处理，以 R0 切除为目标，受累范围由 MRI 判断；膀胱颈/三角区受侵也不适合做膀胱部分切除。",
-        "en": "Before treatment the tumour had grown through the rectal wall into the bladder, with an approximately 6 × 6 cm mass at the bladder neck/trigone, and formed a fistula. After chemoradiotherapy, regression on imaging cannot tell fibrosis from residual cancer, so dissecting along the shrunken edge risks a margin through tumour (R1) and a high chance of local recurrence. The Beyond TME Collaborative consensus (2013) asks that tumours beyond the TME planes be managed by a specialist multidisciplinary team aiming for R0 resection, with the extent defined on MRI; and involvement of the bladder neck/trigone does not suit a partial cystectomy."
+        "zh-CN": "治疗前肿瘤已穿透直肠壁侵入膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，并形成瘘。放化疗后，影像上的退缩分不清纤维化和残留癌，沿退缩边界分离，切缘可能经过肿瘤（R1），局部复发风险高。ASCRS 2020 对 T4 直肠癌推荐整块切除受累的邻近器官（1B 级）；Beyond TME 协作组共识（2013）主张这类肿瘤转诊亚专科多学科团队，把 R0 切除视为长期生存的关键，并指出三角区受侵通常需要全膀胱切除——膀胱部分切除同样不适合。",
+        "en": "Before treatment the tumour had grown through the rectal wall into the bladder, with an approximately 6 × 6 cm mass at the bladder neck/trigone, and formed a fistula. After chemoradiotherapy, regression on imaging cannot tell fibrosis from residual cancer, so dissecting along the shrunken edge risks a margin through tumour (R1) and a high chance of local recurrence. ASCRS 2020 recommends en bloc resection of the involved adjacent organs in T4 rectal cancer (grade 1B); the Beyond TME Collaborative consensus (2013) refers such tumours to a subspecialised multidisciplinary team, regards R0 resection as the key to survival and notes that trigone involvement typically needs a total cystectomy — so a partial cystectomy does not suit it either."
       },
       "response": {
         "zh-CN": "本病例没有记录这种手术；不模拟其效果。",
@@ -2793,8 +2836,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "按 ASCRS 2021 随访指南：定期门诊复查和 CEA，胸腹盆 CT，治疗结束约 1 年时行结肠镜检查剩余结肠；同时随访造口、上尿路引流和肾功能。",
-        "en": "Per the ASCRS 2021 surveillance guideline: regular clinic review with CEA, CT of chest, abdomen and pelvis, and colonoscopy of the remaining colon about a year after treatment; with follow-up of the stomas, upper-tract drainage and renal function."
+        "zh-CN": "按 ASCRS 2021 随访指南：定期门诊复查和 CEA，胸腹盆 CT，治疗结束约 1 年时行结肠镜检查剩余结肠——若术前未能完整检查肿瘤以上的结肠，则在切除后约 6 个月内完成；同时随访造口、上尿路引流和肾功能。",
+        "en": "Per the ASCRS 2021 surveillance guideline: regular clinic review with CEA, CT of chest, abdomen and pelvis, and colonoscopy of the remaining colon about a year after treatment — or within about six months of the resection if the colon above the tumour was never fully examined; with follow-up of the stomas, upper-tract drainage and renal function."
       },
       "requires": [],
       "scope": "medical",
@@ -2844,8 +2887,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "尿中有粪便不是普通的尿路感染，而是肠道和膀胱之间有了通道：只要粪便还在进入膀胱，抗生素就压不住感染（EAU 2025：复杂性尿路感染要同时处理复杂因素）。他还有不全梗阻、出血和 15 kg 的体重下降，带药回家等待，可能在院外发生梗阻或尿脓毒症。",
-        "en": "Stool in the urine is not an ordinary urinary infection but a channel between bowel and bladder: while stool keeps entering the bladder, antibiotics cannot clear the infection (EAU 2025: a complicated urinary infection is treated together with its complicating factor). With a partial obstruction, bleeding and a 15 kg weight loss as well, sending him home on tablets leaves him to obstruct or develop urosepsis while he waits."
+        "zh-CN": "尿中有粪便不是普通的尿路感染，而是肠道和膀胱之间有了通道：只要粪便还在进入膀胱，抗生素就压不住感染（EAU 2025：发热性尿路感染须处理泌尿系统异常或潜在的复杂因素）。他还有不全梗阻、出血和 15 kg 的体重下降，带药回家等待，可能在院外发生梗阻或尿脓毒症。",
+        "en": "Stool in the urine is not an ordinary urinary infection but a channel between bowel and bladder: while stool keeps entering the bladder, antibiotics cannot clear the infection (EAU 2025: manage any urological abnormality or underlying complicating factor of a febrile urinary infection). With a partial obstruction, bleeding and a 15 kg weight loss as well, sending him home on tablets leaves him to obstruct or develop urosepsis while he waits."
       },
       "response": {
         "zh-CN": "本病例没有记录这时出院；不模拟其效果。",
@@ -2865,8 +2908,8 @@
         "en": "History"
       },
       "hint": {
-        "zh-CN": "大便的哪些变化提示出血和狭窄？小便的变化又说明问题可能在哪里？",
-        "en": "Which changes in his stools point to bleeding and narrowing — and what does the change in his urine suggest about where the problem lies?"
+        "zh-CN": "大便的哪些变化提示病变在肠道低位？小便的变化又说明问题可能在哪里？",
+        "en": "Which changes in his stools point to a problem low in the bowel — and what does the change in his urine suggest about where the problem lies?"
       },
       "guidance": {
         "zh-CN": "到床旁问清起病时间、大便次数和性状、小便的变化、发热和体重。",
@@ -3061,8 +3104,8 @@
         "en": "How has the first step worked — and what do you need to confirm before the next treatment starts?"
       },
       "guidance": {
-        "zh-CN": "问他现在感觉如何，查阅术后病程记录，然后转介开始新辅助治疗。",
-        "en": "Ask how he feels now, read the progress note, then refer him to start neoadjuvant treatment."
+        "zh-CN": "问他现在感觉如何，查阅术后病程记录，然后转介开始新辅助治疗（本病例没有记录 MMR 结果；记录中给予的是放化疗）。",
+        "en": "Ask how he feels now, read the progress note, then refer him to start neoadjuvant treatment (no MMR result is recorded for him; the record gave chemoradiotherapy)."
       },
       "completeWhen": {
         "all": [
@@ -3108,8 +3151,8 @@
         "en": "Definitive treatment"
       },
       "hint": {
-        "zh-CN": "影像上的“缩小”能说明肿瘤原先侵犯过的地方现在没有癌吗？手术范围应以什么为准？",
-        "en": "Can 'shrinkage' on imaging tell you that the places the tumour once invaded are now free of cancer — and what should set the extent of the operation?"
+        "zh-CN": "把再分期结果和治疗前的肿瘤范围对照：放化疗后的影像对它最初侵犯的器官能说明什么，又不能说明什么？",
+        "en": "Compare the restaging with the tumour's extent before treatment: what can imaging after chemoradiotherapy tell you, and what can it not, about the organs the tumour first invaded?"
       },
       "guidance": {
         "zh-CN": "查阅再分期影像，在会诊板作答决策 4，然后预约你选择的手术或方案。",
@@ -3163,8 +3206,8 @@
         "en": "After surgery"
       },
       "hint": {
-        "zh-CN": "标本里没有癌说明了什么，又不能说明什么？今后由谁随访，查些什么？",
-        "en": "What does a specimen without cancer tell you, and what can it not tell you? Who follows him up from here, and with which tests?"
+        "zh-CN": "标本病理能说明什么，又不能说明什么？今后由谁随访，查些什么？",
+        "en": "What does the specimen report tell you, and what can it not tell you? Who follows him up from here, and with which tests?"
       },
       "guidance": {
         "zh-CN": "查阅手术病理和术后早期 MRI，作答决策 5，安排随访和后续治疗的讨论；最后查阅记录的病程与结局。",
@@ -3295,8 +3338,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。他明确说尿中混有粪便，直肠前壁又有紧贴膀胱的肿瘤；把它当作脓尿，会漏掉肠道与膀胱相通这一关键诊断。尿中出现粪便或气体几乎是肠膀胱瘘的特征性症状；EAU 2025 也要求复杂性尿路感染找出并处理其复杂因素。",
-            "en": "No. He clearly describes stool in his urine, and there is a tumour on the anterior rectal wall right against the bladder; calling it pus misses the key finding that bowel and bladder communicate. Stool or gas in the urine is almost pathognomonic of a bowel–bladder fistula, and EAU 2025 expects the complicating factor of a complicated urinary infection to be found and dealt with."
+            "zh-CN": "不对。他明确说尿中混有粪便，直肠前壁又有紧贴膀胱的肿瘤；把它当作脓尿，会漏掉肠道与膀胱相通这一关键诊断。尿中出现粪便或气体几乎是肠膀胱瘘的特征性症状；EAU 2025 也要求发热性尿路感染找出并处理泌尿系统异常或潜在的复杂因素。",
+            "en": "No. He clearly describes stool in his urine, and there is a tumour on the anterior rectal wall right against the bladder; calling it pus misses the key finding that bowel and bladder communicate. Stool or gas in the urine is almost pathognomonic of a bowel–bladder fistula, and EAU 2025 asks for any urological abnormality or underlying complicating factor behind a febrile urinary infection to be found and managed."
           }
         },
         {
@@ -3307,8 +3350,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。肿物在直肠前壁，肠镜活检为腺癌，而膀胱癌绝大多数是尿路上皮癌；病程也是先有排便改变，后来才出现尿中粪便，符合直肠癌侵犯膀胱。原发器官决定分期本身——直肠癌侵犯膀胱按 AJCC/UICC TNM 第 8 版（2017）记为 T4b——也决定整个治疗方案。",
-            "en": "No. The mass is on the anterior rectal wall and the colonoscopic biopsy shows adenocarcinoma, whereas most bladder cancers are urothelial; and his bowel symptoms came first, the stool in his urine later — rectal cancer invading the bladder. The primary organ decides the staging itself (rectal cancer invading the bladder is T4b in AJCC/UICC TNM, 8th edition, 2017) and the whole treatment plan."
+            "zh-CN": "不对。肿物在直肠前壁，活检为腺癌，而膀胱癌绝大多数是尿路上皮癌；病程也是先有排便改变，后来才出现尿中粪便，符合直肠癌侵犯膀胱。原发器官决定分期本身——直肠癌侵犯膀胱按 AJCC/UICC TNM 第 8 版（2017）记为 T4b——也决定整个治疗方案。",
+            "en": "No. The mass is on the anterior rectal wall and the biopsy shows adenocarcinoma, whereas most bladder cancers are urothelial; and his bowel symptoms came first, the stool in his urine later — rectal cancer invading the bladder. The primary organ decides the staging itself (rectal cancer invading the bladder is T4b in AJCC/UICC TNM, 8th edition, 2017) and the whole treatment plan."
           }
         }
       ]
@@ -3316,8 +3359,8 @@
     {
       "id": "staging-gaps",
       "prompt": {
-        "zh-CN": "盆腔 MRI 与膀胱镜：肿瘤突破直肠壁侵犯膀胱，膀胱内有肠内容物，膀胱颈/三角区约 6 cm × 6 cm 肿物，盆腔多发淋巴结。胸片和腹部超声未见明确远处转移，肿瘤标志物报告正常。多学科团队确定分期和治疗方案之前，还需要补充哪些检查？（多选）",
-        "en": "Pelvic MRI and cystoscopy: tumour through the rectal wall into the bladder, intestinal contents in the bladder, a mass of about 6 × 6 cm at the bladder neck/trigone and multiple pelvic lymph nodes. The chest radiograph and abdominal ultrasound show no definite distant metastasis, and the tumour markers are reported normal. Before the multidisciplinary team settles the stage and the plan, what else is needed? (Select all that apply.)"
+        "zh-CN": "盆腔 MRI 与膀胱镜：肿瘤突破直肠壁侵犯膀胱，膀胱内有肠内容物，膀胱颈/三角区约 6 cm × 6 cm 肿物，盆腔多发淋巴结。胸片和腹部超声未见明确远处转移，肿瘤标志物报告正常。这些资料是否足以让多学科团队确定分期和治疗方案？如果不够，还需要补充什么？（多选）",
+        "en": "Pelvic MRI and cystoscopy: tumour through the rectal wall into the bladder, intestinal contents in the bladder, a mass of about 6 × 6 cm at the bladder neck/trigone and multiple pelvic lymph nodes. The chest radiograph and abdominal ultrasound show no definite distant metastasis, and the tumour markers are reported normal. Is this enough for the multidisciplinary team to settle the stage and the plan — and if not, what does it still need? (Select all that apply.)"
       },
       "kind": "multiple",
       "requires": {
@@ -3413,8 +3456,8 @@
     {
       "id": "first-step",
       "prompt": {
-        "zh-CN": "肿瘤使肠腔明显狭窄（不全梗阻）并出血，粪便经瘘进入膀胱；他病程中发热最高 39 ℃，尿白细胞 ++。在开始任何抗肿瘤治疗之前，第一步做什么？",
-        "en": "The tumour markedly narrows the lumen (partial obstruction) and bleeds, and stool is passing through the fistula into his bladder; he has had fevers up to 39 °C and his urine shows leucocytes ++. Before any cancer treatment starts, what comes first?"
+        "zh-CN": "肿瘤使肠腔明显狭窄（不全梗阻）并出血，粪便经瘘进入膀胱；他病程中发热最高 39 ℃，尿白细胞 ++。他的治疗第一步做什么？",
+        "en": "The tumour markedly narrows the lumen (partial obstruction) and bleeds, and stool is passing through the fistula into his bladder; he has had fevers up to 39 °C and his urine shows leucocytes ++. What is the first step in his treatment?"
       },
       "kind": "single",
       "requires": {
@@ -3444,8 +3487,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。粪便经瘘持续污染尿路，又有不全梗阻和出血，先转流粪便、按培养用抗生素，数周的盆腔放化疗才能安全进行；这也是记录中团队的第一步——先做横结肠造口，再开始新辅助放化疗。EAU 2025 要求复杂性尿路感染同时处理复杂因素，这里的复杂因素就是瘘。",
-            "en": "Correct. With stool continually contaminating the urinary tract, a partial obstruction and bleeding, diverting the faecal stream and treating the infection by culture is what makes weeks of pelvic chemoradiotherapy safe — and it is what the recorded team did first: a transverse colostomy before neoadjuvant chemoradiotherapy. EAU 2025 treats a complicated urinary infection together with its complicating factor, and here that factor is the fistula."
+            "zh-CN": "正确。粪便经瘘持续污染尿路，又有不全梗阻和出血，先转流粪便、按培养用抗生素，数周的盆腔放化疗才能安全进行；这也是记录中团队的第一步——先做横结肠造口，再开始新辅助放化疗。EAU 2025 要求发热性尿路感染须处理泌尿系统异常或潜在的复杂因素，这里的复杂因素就是瘘。",
+            "en": "Correct. With stool continually contaminating the urinary tract, a partial obstruction and bleeding, diverting the faecal stream and treating the infection by culture is what makes weeks of pelvic chemoradiotherapy safe — and it is what the recorded team did first: a transverse colostomy before neoadjuvant chemoradiotherapy. EAU 2025 asks that any urological abnormality or underlying complicating factor of a febrile urinary infection be managed, and here that factor is the fistula."
           }
         },
         {
@@ -3456,8 +3499,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。放疗引起的水肿可能把不全梗阻变成完全梗阻，持续的粪便污染使感染无法控制，化疗又会削弱抗感染能力；肿瘤缩小也不能可靠地闭合一个恶性瘘。EAU 2025：复杂性尿路感染须同时处理复杂因素——先转流，再放化疗。",
-            "en": "No. Radiation oedema can turn a partial obstruction into a complete one, ongoing faecal contamination keeps the infection uncontrolled and chemotherapy weakens his defences — and shrinkage does not reliably close a malignant fistula. EAU 2025 treats a complicated urinary infection together with its complicating factor: divert first, then chemoradiotherapy."
+            "zh-CN": "不对。放疗引起的水肿可能把不全梗阻变成完全梗阻，持续的粪便污染使感染无法控制，化疗又会削弱抗感染能力；肿瘤缩小也不能可靠地闭合一个恶性瘘。EAU 2025：发热性尿路感染须处理潜在的复杂因素——先转流，再放化疗。",
+            "en": "No. Radiation oedema can turn a partial obstruction into a complete one, ongoing faecal contamination keeps the infection uncontrolled and chemotherapy weakens his defences — and shrinkage does not reliably close a malignant fistula. EAU 2025: manage the underlying complicating factor of a febrile urinary infection — divert first, then chemoradiotherapy."
           }
         },
         {
@@ -3468,8 +3511,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。ESGE 2020 的支架推荐只适用于直肠乙状结肠至脾曲的梗阻，不推荐预防性放置支架，并把减压性造口列为替代方案。距肛门 4 cm 的低位肿瘤放支架会疼痛、里急后重、失禁和移位，穿过已形成瘘的肿瘤还可能穿孔，也挡不住粪便进入膀胱。",
-            "en": "No. ESGE 2020 confines its stenting recommendations to obstruction from the rectosigmoid to the splenic flexure, advises against prophylactic stenting and names a decompressing stoma as the alternative. In a tumour 4 cm from the anal verge a stent brings pain, tenesmus, incontinence and migration; through a fistulating tumour it risks perforation, and it does not stop stool reaching the bladder."
+            "zh-CN": "不对。ESGE 2020 的支架推荐只适用于直肠乙状结肠至脾曲的梗阻，不推荐预防性放置支架，并把减压性造口列为替代方案。直肠支架因与疼痛、里急后重、失禁和移位相关通常被避免，距肛门 4 cm 时更是如此；穿过已形成瘘的肿瘤还可能穿孔，也挡不住粪便进入膀胱。",
+            "en": "No. ESGE 2020 confines its stenting recommendations to obstruction from the rectosigmoid to the splenic flexure, advises against prophylactic stenting and names a decompressing stoma as the alternative. Rectal stents are usually avoided for their association with pain, tenesmus, incontinence and migration, all the likelier 4 cm from the anal verge; through a fistulating tumour it risks perforation, and it does not stop stool reaching the bladder."
           }
         },
         {
@@ -3501,8 +3544,8 @@
     {
       "id": "definitive-operation",
       "prompt": {
-        "zh-CN": "转流后他接受了新辅助放化疗，再分期影像显示肿瘤退缩。治疗前，肿瘤穿透直肠壁侵犯膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，有瘘，伴盆腔多发淋巴结。多学科团队应计划什么手术？",
-        "en": "After the diversion he has had neoadjuvant chemoradiotherapy, and restaging imaging shows the tumour has regressed. Before treatment it had grown through the rectal wall into the bladder, with a mass of about 6 × 6 cm at the bladder neck/trigone, a fistula and multiple pelvic lymph nodes. What operation should the multidisciplinary team plan?"
+        "zh-CN": "转流后他接受了新辅助放化疗，再分期影像显示肿瘤退缩。治疗前，肿瘤穿透直肠壁侵犯膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，有瘘，伴盆腔多发淋巴结。多学科团队下一步应作何安排？",
+        "en": "After the diversion he has had neoadjuvant chemoradiotherapy, and restaging imaging shows the tumour has regressed. Before treatment it had grown through the rectal wall into the bladder, with a mass of about 6 × 6 cm at the bladder neck/trigone, a fistula and multiple pelvic lymph nodes. What should the multidisciplinary team plan next?"
       },
       "kind": "single",
       "requires": {
@@ -3529,20 +3572,20 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。治疗前肿瘤已侵犯膀胱（膀胱颈/三角区约 6 cm × 6 cm 肿物）并形成瘘，放化疗后的退缩分不清纤维化和残留癌，应按原先的受累范围整块切除，以 R0 为目标；Beyond TME 协作组共识（2013）主张这类超出 TME 平面的肿瘤由经常开展此类手术的专科中心处理。记录中他接受的正是全盆腔脏器切除并输尿管皮肤造口。",
-            "en": "Correct. Before treatment the tumour had invaded the bladder — an approximately 6 × 6 cm mass at the bladder neck/trigone — and formed a fistula, and after chemoradiotherapy regression cannot separate fibrosis from residual cancer, so the resection removes the originally involved organs en bloc for an R0 margin; the Beyond TME Collaborative consensus (2013) sends such beyond-TME tumours to centres that manage them routinely. The record shows exactly this: total pelvic exenteration with ureterocutaneous diversion."
+            "zh-CN": "正确。治疗前肿瘤已侵犯膀胱（膀胱颈/三角区约 6 cm × 6 cm 肿物）并形成瘘，放化疗后的退缩分不清纤维化和残留癌，应把原先受侵的器官整块切除，以 R0 为目标：ASCRS 2020 对 T4 直肠癌推荐整块切除受累的邻近器官（1B 级），Beyond TME 协作组共识（2013）主张这类肿瘤转诊亚专科多学科团队。记录中他接受的正是全盆腔脏器切除并输尿管皮肤造口。",
+            "en": "Correct. Before treatment the tumour had invaded the bladder — an approximately 6 × 6 cm mass at the bladder neck/trigone — and formed a fistula, and after chemoradiotherapy regression cannot separate fibrosis from residual cancer, so the originally invaded organs are removed en bloc for an R0 margin: ASCRS 2020 recommends en bloc resection of involved adjacent organs in T4 rectal cancer (grade 1B), and the Beyond TME Collaborative consensus (2013) sends such tumours to a subspecialised multidisciplinary team. The record shows exactly this: total pelvic exenteration with ureterocutaneous diversion."
           }
         },
         {
           "id": "bladder-sparing",
           "text": {
-            "zh-CN": "肿瘤已从三角区退缩，行保留膀胱的腹会阴联合直肠切除，沿退缩后的肿瘤边界把直肠从膀胱上分离下来",
+            "zh-CN": "行保留膀胱的腹会阴联合直肠切除术，沿着已经退缩的肿瘤边缘，把直肠从三角区上剥离下来",
             "en": "An abdominoperineal resection that keeps the bladder, peeling the rectum off the trigone along the edge of the shrunken tumour"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。影像上的退缩不能证明三角区已经没有癌，沿退缩边界分离有切缘阳性（R1）和局部复发的高风险；Beyond TME 协作组共识（2013）以 R0 切除为目标、由 MRI 确定受累范围。切缘一旦经过肿瘤，事后无法弥补。",
-            "en": "No. Regression on imaging does not prove the trigone is free of cancer; dissecting along the shrunken edge risks a positive (R1) margin and local recurrence. The Beyond TME Collaborative consensus (2013) aims for R0 resection with the extent defined on MRI. A margin through tumour cannot be put right afterwards."
+            "zh-CN": "不对。影像上的退缩不能证明三角区已经没有癌，沿退缩边界分离有切缘阳性（R1）和局部复发的高风险；ASCRS 2020 对 T4 直肠癌推荐整块切除受累器官（1B 级），Beyond TME 协作组共识（2013）把 R0 切除视为长期生存的关键。切缘一旦经过肿瘤，事后很难弥补。",
+            "en": "No. Regression on imaging does not prove the trigone is free of cancer; dissecting along the shrunken edge risks a positive (R1) margin and local recurrence. ASCRS 2020 recommends en bloc resection of the involved organs in T4 rectal cancer (grade 1B), and the Beyond TME Collaborative consensus (2013) regards R0 resection as the key to survival. A margin through tumour is hard to put right afterwards."
           }
         },
         {
@@ -3565,8 +3608,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。膀胱受累部位在膀胱颈/三角区，膀胱部分切除在这里既难以获得足够的切缘，又会损伤输尿管开口和膀胱出口；这种情况需要整块切除膀胱（Beyond TME 协作组共识，2013：以 R0 切除为目标）。",
-            "en": "No. The bladder disease sits at the bladder neck/trigone, where a partial cystectomy can neither give an adequate margin nor spare the ureteric orifices and the bladder outlet; disease here calls for en bloc removal of the bladder (Beyond TME Collaborative consensus, 2013: aim for R0)."
+            "zh-CN": "不对。膀胱受累部位在膀胱颈/三角区，膀胱部分切除在这里既难以获得足够的切缘，又会损伤输尿管开口和膀胱出口；Beyond TME 协作组共识（2013）指出三角区受侵通常需要全膀胱切除，以 R0 切除为目标。",
+            "en": "No. The bladder disease sits at the bladder neck/trigone, where a partial cystectomy can neither give an adequate margin nor spare the ureteric orifices and the bladder outlet; the Beyond TME Collaborative consensus (2013) notes that trigone involvement typically needs a total cystectomy, with R0 resection as the aim."
           }
         }
       ]
@@ -3606,8 +3649,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。记录显示术后建议继续化疗。病理完全缓解后再化疗的获益并不确定，需结合治疗前分期（cT4bN2）和他的意愿个体化决定。今天 ASCO 2024 对高危 pMMR 肿瘤推荐全程新辅助治疗，化疗放在手术之前完成，这个问题因此少见了。他是否完成化疗没有记录。",
-            "en": "Include. The record shows further chemotherapy was recommended after surgery. Its benefit after a complete response is uncertain, so the decision is individual, weighing the pre-treatment stage (cT4bN2) and his wishes. Today ASCO 2024 recommends total neoadjuvant therapy for high-risk pMMR tumours, giving the chemotherapy before surgery — so this question arises less often. Whether he completed it is not recorded."
+            "zh-CN": "需要。记录显示术后建议继续化疗。ASCRS 2020 对术前未接受全身化疗的 II–III 期直肠癌推荐辅助化疗（1B 级）；病理完全缓解后再化疗的获益只有观察性证据，因此多学科团队要向他说明这一不确定性，结合治疗前分期（cT4bN2）和他的意愿共同决定。今天 ASCO 2024 对高危 pMMR 肿瘤推荐全程新辅助治疗，化疗放在手术之前完成，这个问题因此少见了。他是否完成化疗没有记录。",
+            "en": "Include. The record shows further chemotherapy was recommended after surgery. ASCRS 2020 recommends adjuvant chemotherapy for stage II–III rectal cancer when no systemic chemotherapy was given before surgery (grade 1B); the evidence of benefit specifically after a complete response is observational, so the MDT puts the recommendation to him with that uncertainty, weighing the pre-treatment stage (cT4bN2) and his wishes. Today ASCO 2024 recommends total neoadjuvant therapy for high-risk pMMR tumours, giving the chemotherapy before surgery — so this question arises less often. Whether he completed it is not recorded."
           }
         },
         {
@@ -3618,8 +3661,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。ASCRS 2021 随访指南推荐 II–III 期结直肠癌根治术后进行随访（1A 级），包括 CEA、胸腹盆 CT 和治疗结束约 1 年时的结肠镜，并为患者制订生存者照护计划。病理完全缓解降低但不消除复发风险。",
-            "en": "Include. The ASCRS 2021 surveillance guideline recommends surveillance after curative resection of stage II–III colon or rectal cancer (grade 1A) — CEA, CT of chest, abdomen and pelvis, and colonoscopy about a year after treatment — with a written survivorship care plan. A complete response lowers the risk of recurrence; it does not remove it."
+            "zh-CN": "需要。ASCRS 2021 随访指南推荐 II–III 期结直肠癌根治术后进行随访（1A 级），包括 CEA、胸腹盆 CT 和治疗结束约 1 年时的结肠镜（若术前未能完整检查肿瘤以上的结肠，则在切除后约 6 个月内完成——本病例没有记录这一点），并为患者制订生存者照护计划。病理完全缓解降低但不消除复发风险。",
+            "en": "Include. The ASCRS 2021 surveillance guideline recommends surveillance after curative resection of stage II–III colon or rectal cancer (grade 1A) — CEA, CT of chest, abdomen and pelvis, and colonoscopy about a year after treatment (within about six months of the resection if the colon above the tumour was never fully examined, which this case does not record) — with a survivorship care plan. A complete response lowers the risk of recurrence; it does not remove it."
           }
         },
         {
@@ -3630,15 +3673,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。他现在带着肠造口和输尿管皮肤造口生活：造口护理、皮肤问题和造口狭窄需要专科护士随访；输尿管皮肤造口可能狭窄、梗阻，应定期检查肾功能和上尿路引流。WOCN 协会与 ASCRS 的立场声明（2014）把造口宣教放在第一次手术之前就开始的照护中心。",
-            "en": "Include. He now lives with a bowel stoma and a ureterocutaneous urinary diversion: stoma care, skin problems and stomal stenosis need specialist nursing follow-up, and because a cutaneous ureterostomy can narrow and obstruct, renal function and upper-tract drainage are checked regularly. The WOCN Society and ASCRS position statement (2014) puts stoma teaching at the centre of care from before the first operation."
+            "zh-CN": "需要。他第一次手术时做了结肠造口，现在又有输尿管皮肤造口：造口护理、皮肤问题和造口狭窄需要专科护士随访；输尿管皮肤造口可能狭窄、梗阻，应定期检查肾功能和上尿路引流。WOCN 协会、AUA 与 ASCRS 的立场声明（2021）把术前造口定位和宣教视为肠造口或尿路造口手术前的最佳实践，造口护士的照护在术后继续。",
+            "en": "Include. He had a colostomy at the first operation and now has a ureterocutaneous urinary diversion as well: stoma care, skin problems and stomal stenosis need specialist nursing follow-up, and because a cutaneous ureterostomy can narrow and obstruct, renal function and upper-tract drainage are checked regularly. The WOCN Society, AUA and ASCRS position statement (2021) regards preoperative stoma-site marking and teaching as best practice before any bowel or urinary stoma operation, and the stoma nurse's care continues afterwards."
           }
         },
         {
           "id": "cured-no-follow-up",
           "text": {
             "zh-CN": "标本无癌、淋巴结 0/22，可以认为已经治愈，不需要再化疗或随访",
-            "en": "No cancer in the specimen and 0/22 nodes: he can be called cured, with no further chemotherapy or follow-up"
+            "en": "No cancer in the specimen and 0/22 nodes: he can be called cured and needs neither further chemotherapy nor any follow-up"
           },
           "correct": false,
           "feedback": {
@@ -3986,8 +4029,8 @@
         "en": "Nurse Zhong"
       },
       "knowledge": {
-        "zh-CN": "入院交班（ISBAR）：51岁男性，已收住病房，一个多月来大便次数多、稀便带血，之后尿中混有粪便；他说病程中最高烧到 39 度，瘦了 15 公斤。病房有治疗车（留置针、采血管、血培养瓶）；护士站的病历终端里有他入院前的肠镜、活检、盆腔 MRI 与膀胱镜报告，以及胸片和腹部超声报告；CT 在影像科；外科、肿瘤科和造口护士都可以电话联系。复述医嘱，执行护理范围内的操作；只报告已经出来的结果，不解读、不下诊断；被问到生命体征时如实说没有记录可报，从不报数字。",
-        "en": "Handover on admission (ISBAR): a 51-year-old man admitted to the ward with over a month of frequent, loose, bloody stools and, since then, faecal matter in his urine; he says his temperature went as high as 39 degrees and he has lost 15 kilos. The ward has a treatment cart (cannulas, blood bottles, culture bottles); the records terminal at the nurses' station holds his colonoscopy, biopsy, pelvic MRI and cystoscopy reports from before admission, and his chest radiograph and abdominal ultrasound reports; CT is in imaging; the surgical and oncology teams and the stoma nurse are a phone call away. Reads orders back and carries out nursing-scope tasks; reports only results that are back, never interprets or diagnoses; asked for vital signs, says plainly there are none recorded to report — never gives a number."
+        "zh-CN": "入院交班（ISBAR）：51岁男性，已收住病房，一个多月来大便次数多、稀便带血，之后尿中混有粪便；他说病程中最高烧到 39 度，瘦了 15 公斤。病房有治疗车（留置针、采血管、血培养瓶）；护士站的病历终端里有他入院前的肠镜和活检报告、盆腔 MRI 与膀胱镜报告，以及胸片和腹部超声报告；CT 在影像科；外科、肿瘤科和造口护士都可以电话联系。复述医嘱，执行护理范围内的操作；只报告已经出来的结果，不解读、不下诊断；被问到生命体征时如实说没有记录可报，从不报数字。",
+        "en": "Handover on admission (ISBAR): a 51-year-old man admitted to the ward with over a month of frequent, loose, bloody stools and, since then, faecal matter in his urine; he says his temperature went as high as 39 degrees and he has lost 15 kilos. The ward has a treatment cart (cannulas, blood bottles, culture bottles); the records terminal at the nurses' station holds his colonoscopy and biopsy reports from before admission, his pelvic MRI and cystoscopy reports, and his chest radiograph and abdominal ultrasound reports; CT is in imaging; the surgical and oncology teams and the stoma nurse are a phone call away. Reads orders back and carries out nursing-scope tasks; reports only results that are back, never interprets or diagnoses; asked for vital signs, says plainly there are none recorded to report — never gives a number."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -3999,8 +4042,8 @@
         "en": "Dr Yi (colorectal surgery attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只问学员已经掌握的信息，例如：“尿里有粪便，你首先想到的是什么解剖问题？”“肿瘤长进膀胱，算局部侵犯还是远处转移？”“胸片和 B 超‘未见转移’，够不够说明 M0？”“新辅助方案为什么要先知道 MMR 状态？”“他发烧到过 39 度、不全梗阻，粪便还在进膀胱——这时先放化疗会怎样？”“为什么这个位置不放支架？”“影像上缩小了，手术范围能跟着缩小吗？”“标本里没有癌，说明当初可以不做手术吗？”。学员读过记录之后，可以对照记录的做法（以胸片和腹部超声做远处分期、先横结肠造口、新辅助放化疗、退缩后全盆腔脏器切除、术后建议化疗）与今天的标准（胸腹盆 CT 与 MMR/MSI、按 MMR 分流的全程新辅助治疗或免疫治疗、专科中心的 R0 整块切除），说明 ASCO 2024、NCCN 3.2024、Beyond TME 共识（2013）、ESGE 2020、ASCRS 2021 和 EAU 2025 的相关原则。在学员作答前从不说出诊断或任何决策的正确选项，也不补充本病例没有的资料（生命体征、腹部查体、检验数值、MMR 状态、放化疗方案、手术细节、远期结局都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about what the learner already has, e.g. “Stool in the urine — what anatomical problem comes to mind first?”, “A tumour growing into the bladder: local invasion or distant spread?”, “A chest film and an ultrasound with ‘no metastasis’ — is that enough to call him M0?”, “Why does the neoadjuvant plan need the MMR status first?”, “He has had fevers to 39 degrees, he is partly obstructed and stool is still passing into his bladder — what happens if chemoradiotherapy starts now?”, “Why not a stent at this level?”, “The tumour has shrunk on imaging — can the operation shrink with it?”, “No cancer in the specimen — so was the operation unnecessary?”. Once the learner has read the records, may contrast the recorded course (staging by chest film and abdominal ultrasound, a transverse colostomy first, neoadjuvant chemoradiotherapy, exenteration after regression, chemotherapy recommended after surgery) with today's standard (CT of chest, abdomen and pelvis and MMR/MSI testing, total neoadjuvant therapy or immunotherapy by MMR status, R0 en bloc resection in a specialist centre), explaining the relevant principles of ASCO 2024, NCCN 3.2024, the Beyond TME consensus (2013), ESGE 2020, ASCRS 2021 and EAU 2025. Never states the diagnosis or a decision's correct option before the learner commits, and adds no data the case lacks (vital signs, abdominal examination, laboratory values, MMR status, the chemoradiotherapy regimen, operative details and the long-term outcome are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只问学员已经掌握的信息，例如：“尿里有粪便，你首先想到的是什么解剖问题？”“肿瘤长进膀胱，算局部侵犯还是远处转移？”“胸片和 B 超‘未见转移’，够不够说明 M0？”“新辅助方案为什么要先知道 MMR 状态？”“他发烧到过 39 度、不全梗阻，粪便还在进膀胱——这时先放化疗会怎样？”“为什么这个位置不放支架？”“影像上缩小了，手术范围能跟着缩小吗？”“标本里没有癌，说明当初可以不做手术吗？”。学员读过记录之后，可以对照记录的做法（以胸片和腹部超声做远处分期、先横结肠造口、新辅助放化疗、退缩后全盆腔脏器切除、术后建议化疗）与今天的标准（胸腹盆 CT 与 MMR/MSI、按 MMR 分流的全程新辅助治疗或免疫治疗、专科中心的 R0 整块切除），说明 ASCO 2024、NCCN 3.2024、ASCRS 2020、Beyond TME 共识（2013）、ESGE 2020、ASCRS 2021 和 EAU 2025 的相关原则。在学员作答前从不说出诊断或任何决策的正确选项，也不补充本病例没有的资料（生命体征、腹部查体、检验数值、MMR 状态、放化疗方案、手术细节、远期结局都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about what the learner already has, e.g. “Stool in the urine — what anatomical problem comes to mind first?”, “A tumour growing into the bladder: local invasion or distant spread?”, “A chest film and an ultrasound with ‘no metastasis’ — is that enough to call him M0?”, “Why does the neoadjuvant plan need the MMR status first?”, “He has had fevers to 39 degrees, he is partly obstructed and stool is still passing into his bladder — what happens if chemoradiotherapy starts now?”, “Why not a stent at this level?”, “The tumour has shrunk on imaging — can the operation shrink with it?”, “No cancer in the specimen — so was the operation unnecessary?”. Once the learner has read the records, may contrast the recorded course (staging by chest film and abdominal ultrasound, a transverse colostomy first, neoadjuvant chemoradiotherapy, exenteration after regression, chemotherapy recommended after surgery) with today's standard (CT of chest, abdomen and pelvis and MMR/MSI testing, total neoadjuvant therapy or immunotherapy by MMR status, R0 en bloc resection in a specialist centre), explaining the relevant principles of ASCO 2024, NCCN 3.2024, ASCRS 2020, the Beyond TME consensus (2013), ESGE 2020, ASCRS 2021 and EAU 2025. Never states the diagnosis or a decision's correct option before the learner commits, and adds no data the case lacks (vital signs, abdominal examination, laboratory values, MMR status, the chemoradiotherapy regimen, operative details and the long-term outcome are not recorded)."
       },
       "interprets": [
         "colonoscopy",
@@ -4042,8 +4085,8 @@
         "en": "Dr Tang (medical oncologist)"
       },
       "knowledge": {
-        "zh-CN": "肿瘤内科会诊医生，只解读学员已经读过的活检、MMR/MSI 申请（无结果）和手术病理：MMR/MSI 状态如何决定新辅助方案（ASCO 2024：dMMR/MSI-H 用免疫治疗，pMMR 用全程新辅助治疗），长程放化疗与巩固化疗的常用方案，病理完全缓解的含义与局限，以及病理完全缓解后继续化疗获益不确定、需要个体化讨论。不编造他的 MMR 状态、记录中的放化疗方案和剂量，也不说他是否完成了术后化疗（都没有记录）。",
-        "en": "Medical oncology consultant who interprets only the biopsy, the MMR/MSI request (no result) and the surgical pathology the learner has read: how MMR/MSI status decides the neoadjuvant plan (ASCO 2024: immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR), the usual long-course chemoradiotherapy and consolidation regimens, what a pathological complete response means and does not mean, and why further chemotherapy after one has uncertain benefit and is discussed individually. Never invents his MMR status, the recorded chemoradiotherapy regimen or dose, or whether he completed chemotherapy after surgery (none is recorded)."
+        "zh-CN": "肿瘤内科会诊医生，只解读学员已经读过的活检、MMR/MSI 申请（无结果）和手术病理：MMR/MSI 状态如何决定新辅助方案（ASCO 2024：dMMR/MSI-H 用免疫治疗，pMMR 用全程新辅助治疗），长程放化疗与巩固化疗的常用方案，病理完全缓解的含义与局限，以及为什么对术前未接受全身化疗的 II–III 期患者仍推荐辅助化疗（ASCRS 2020），而病理完全缓解后的获益只有观察性证据，需要与他个体化讨论。不编造他的 MMR 状态、记录中的放化疗方案和剂量，也不说他是否完成了术后化疗（都没有记录）。",
+        "en": "Medical oncology consultant who interprets only the biopsy, the MMR/MSI request (no result) and the surgical pathology the learner has read: how MMR/MSI status decides the neoadjuvant plan (ASCO 2024: immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR), the usual long-course chemoradiotherapy and consolidation regimens, what a pathological complete response means and does not mean, and why further chemotherapy is still recommended for stage II–III disease when no systemic chemotherapy was given before surgery (ASCRS 2020) although its benefit after a complete response rests on observational evidence, so it is discussed with him individually. Never invents his MMR status, the recorded chemoradiotherapy regimen or dose, or whether he completed chemotherapy after surgery (none is recorded)."
       },
       "interprets": [
         "biopsy",
@@ -4059,8 +4102,8 @@
       "en": "Debrief: faecaluria from a low rectal cancer — complications first, then a cure sized to the original extent"
     },
     "conclusion": {
-      "zh-CN": "51岁男性，一个多月每天 6–8 次稀便带鲜血、里急后重，之后尿中混有粪便，发热最高 39 ℃，体重下降 15 kg。指检于距肛门 4 cm 的直肠前壁触及环周（近环周）、活动差的肿物，活检为中分化腺癌；盆腔 MRI 与膀胱镜示肿瘤侵犯膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，膀胱内有肠内容物，盆腔多发淋巴结。胸片和腹部超声未见明确转移，初始分期 cT4bN2M0，伴瘘、不全梗阻、出血和感染。诊断：直肠腺癌直接侵犯膀胱形成直肠膀胱瘘。记录的处理：先横结肠造口，症状缓解；新辅助放化疗；退缩后全盆腔脏器切除并输尿管皮肤造口，标本无癌残留（淋巴结 0/22），早期 MRI 无明确病灶，建议继续化疗。今天的答案：同样先转流并按培养控制感染，用胸腹盆 CT 和 MMR/MSI 补全分期，按 MMR 状态选择全程新辅助治疗或免疫治疗（ASCO 2024），在专科中心做整块 R0 切除，并随访 5 年。",
-      "en": "A 51-year-old man had over a month of six to eight loose, bloody stools a day with tenesmus, then faecal matter in his urine, fevers to 39 °C and a 15 kg weight loss. A poorly mobile anterior rectal mass lay 4 cm from the anal verge; biopsy showed moderately differentiated adenocarcinoma; pelvic MRI with cystoscopy showed tumour invading the bladder (an approximately 6 × 6 cm bladder neck/trigone mass, bowel content in the bladder) and multiple pelvic nodes; chest film and ultrasound showed no definite metastasis — cT4bN2M0 with fistula, partial obstruction, bleeding and infection. Diagnosis: rectal adenocarcinoma invading the bladder through a rectovesical fistula. Recorded care: a transverse colostomy, neoadjuvant chemoradiotherapy, then total pelvic exenteration with ureterocutaneous diversion — no residual cancer, 0/22 nodes. Today: the same order, with CT and MMR/MSI staging, TNT or immunotherapy by MMR status (ASCO 2024) and five-year surveillance."
+      "zh-CN": "51岁男性，一个多月每天 6–8 次稀便带鲜血、里急后重，之后尿中混有粪便，发热最高 39 ℃，体重下降 15 kg。指检于距肛门 4 cm 的直肠前壁触及环周（近环周）、活动差的肿物，活检为中分化腺癌；盆腔 MRI 与膀胱镜示肿瘤侵犯膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，膀胱内有肠内容物，盆腔多发淋巴结。胸片和腹部超声未见明确转移，初始分期 cT4bN2M0，伴瘘、不全梗阻、出血和感染。诊断：直肠腺癌直接侵犯膀胱形成直肠膀胱瘘。记录的处理：先横结肠造口，症状缓解；新辅助放化疗；退缩后全盆腔脏器切除并输尿管皮肤造口，标本无癌残留（淋巴结 0/22），早期 MRI 无明确病灶，建议继续化疗。今天的答案：与记录一样先转流，并按培养控制感染；用胸腹盆 CT 和 MMR/MSI 补全分期，按 MMR 状态选择全程新辅助治疗或免疫治疗（ASCO 2024），在专科中心做整块 R0 切除，并随访 5 年。",
+      "en": "A 51-year-old man had over a month of six to eight loose, bloody stools a day with tenesmus, then faecal matter in his urine, fevers to 39 °C and a 15 kg weight loss. A circumferential (near-circumferential), poorly mobile anterior rectal mass lay 4 cm from the anal verge; biopsy showed moderately differentiated adenocarcinoma; pelvic MRI with cystoscopy showed tumour invading the bladder (an approximately 6 × 6 cm bladder neck/trigone mass, bowel content in the bladder) and multiple pelvic nodes; the chest film and abdominal ultrasound showed no definite metastasis — initial stage cT4bN2M0, with fistula, partial obstruction, bleeding and infection. Diagnosis: rectal adenocarcinoma directly invading the bladder, with a rectovesical fistula. Recorded care: a transverse colostomy first, which relieved his symptoms; neoadjuvant chemoradiotherapy; after regression, total pelvic exenteration with ureterocutaneous diversion — no residual cancer, 0/22 nodes; an early post-operative MRI showed no definite lesion, and further chemotherapy was recommended. Today: divert first, as his team did, and treat the infection by culture; complete the staging with CT of chest, abdomen and pelvis and MMR/MSI; choose total neoadjuvant therapy or immunotherapy by MMR status (ASCO 2024); resect en bloc for R0 in a specialist centre; and follow him for five years."
     },
     "keyReasoning": [
       {
@@ -4132,20 +4175,20 @@
         "en": "Stage locally advanced rectal cancer with rectal-protocol pelvic MRI, contrast CT of chest, abdomen and pelvis, CEA and MMR/MSI testing of the biopsy (NCCN Rectal Cancer Version 3.2024); endorectal ultrasound only when MRI cannot be done or for superficial lesions, PET-CT only to settle a specific question. Then and now: the recorded distant staging was a chest radiograph and an abdominal ultrasound, and no MMR status is recorded; today neither would be accepted before the multidisciplinary team commits to treatment."
       },
       {
-        "zh-CN": "肿瘤既梗阻、又出血、又经瘘污染发热患者的尿路时，先让它“安全”，再做新辅助治疗：转流性结肠造口使粪便改道，按尿培养（和血培养）用抗生素，第一次手术前就开始营养支持和造口宣教（EAU 2025：复杂性尿路感染同时处理复杂因素）。ESGE 2020 的支架推荐只覆盖直肠乙状结肠至脾曲的梗阻，并把减压性造口列为替代方案——距肛门 4 cm 的肿瘤不在其范围内。过去与现在：记录中团队也是先转流，与今天一致。",
-        "en": "A tumour that obstructs, bleeds and fistulates into the urinary tract of a man with fevers is made safe before neoadjuvant treatment: a defunctioning colostomy diverts the stool, urine (and blood) cultures guide the antibiotics, and nutrition and stoma teaching start before the first operation (EAU 2025: treat the complicating factor of a complicated urinary infection). ESGE 2020 confines its stenting recommendations to obstruction between the rectosigmoid and the splenic flexure and names a decompressing stoma as the alternative — a tumour 4 cm from the anal verge is outside that scope. Then and now: the recorded team diverted first, as today."
+        "zh-CN": "肿瘤既梗阻、又出血、又经瘘污染发热患者的尿路时，先让它“安全”，再做新辅助治疗：转流性结肠造口使粪便改道，按尿培养（和血培养）用抗生素，第一次手术前就开始营养支持和造口宣教（EAU 2025：发热的全身性尿路感染须处理泌尿系统异常或潜在的复杂因素）。ESGE 2020 的支架推荐只覆盖直肠乙状结肠至脾曲的梗阻，并把减压性造口列为替代方案——距肛门 4 cm 的肿瘤不在其范围内。过去与现在：记录中团队也是先转流，与今天一致。",
+        "en": "A tumour that obstructs, bleeds and fistulates into the urinary tract of a man with fevers is made safe before neoadjuvant treatment: a defunctioning colostomy diverts the stool, urine (and blood) cultures guide the antibiotics, and nutrition and stoma teaching start before the first operation (EAU 2025: in a febrile, systemic urinary infection, manage any urological abnormality or underlying complicating factor). ESGE 2020 confines its stenting recommendations to obstruction between the rectosigmoid and the splenic flexure and names a decompressing stoma as the alternative — a tumour 4 cm from the anal verge is outside that scope. Then and now: the recorded team diverted first, as today."
       },
       {
-        "zh-CN": "按 MMR 状态选择新辅助方案。ASCO 2024 对 dMMR/MSI-H 局部进展期直肠癌推荐免疫治疗——单药 PD-1 抑制剂在一项小样本单臂 II 期研究中取得了临床完全缓解（Cercek 等，N Engl J Med 2022），仍需更长随访；对低位或高危的 pMMR 肿瘤推荐全程新辅助治疗，优先长程放化疗（例如 45–50.4 Gy/25–28 次，同步卡培他滨 825 mg/m² 每日 2 次、放疗日服用）后接巩固化疗。过去与现在：记录中给予新辅助放化疗（方案未记录），术后才建议化疗。",
-        "en": "Choose the neoadjuvant pathway by MMR status. ASCO 2024 recommends immunotherapy for dMMR/MSI-H locally advanced rectal cancer — single-agent PD-1 blockade produced clinical complete responses in a small single-arm phase 2 study (Cercek et al., N Engl J Med 2022), with longer follow-up still needed — and total neoadjuvant therapy for pMMR tumours in the low rectum or at high risk, preferring long-course chemoradiotherapy (for example 45–50.4 Gy in 25–28 fractions with capecitabine 825 mg/m² twice daily on radiotherapy days) followed by consolidation chemotherapy. Then and now: the recorded course gave neoadjuvant chemoradiotherapy (regimen not recorded) and recommended chemotherapy only after surgery."
+        "zh-CN": "按 MMR 状态选择新辅助方案。ASCO 2024 对 dMMR/MSI-H 局部进展期直肠癌推荐免疫治疗——单药 PD-1 抑制剂在一项小样本单臂 II 期研究中取得了临床完全缓解（Cercek 等，N Engl J Med 2022），仍需更长随访；对低位或高危的 pMMR 肿瘤推荐全程新辅助治疗，优先长程放化疗（例如 45–50.4 Gy/25–28 次，同步卡培他滨 825 mg/m² 每日 2 次、放疗日服用）后接巩固化疗。过去与现在：记录中给予新辅助放化疗（方案未记录），术后建议继续化疗；没有记录 MMR 结果。",
+        "en": "Choose the neoadjuvant pathway by MMR status. ASCO 2024 recommends immunotherapy for dMMR/MSI-H locally advanced rectal cancer — single-agent PD-1 blockade produced clinical complete responses in a small single-arm phase 2 study (Cercek et al., N Engl J Med 2022), with longer follow-up still needed — and total neoadjuvant therapy for pMMR tumours in the low rectum or at high risk, preferring long-course chemoradiotherapy (for example 45–50.4 Gy in 25–28 fractions with capecitabine 825 mg/m² twice daily on radiotherapy days) followed by consolidation chemotherapy. Then and now: the recorded course gave neoadjuvant chemoradiotherapy (regimen not recorded) and recommended further chemotherapy after surgery; no MMR result is recorded."
       },
       {
-        "zh-CN": "按治疗前的范围计划切除。放化疗后影像分不清纤维化和残留癌，诊断时受侵的器官——本例为膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物并有瘘——应整块切除以获得 R0 切缘；Beyond TME 协作组共识（2013）主张这类肿瘤由专科中心处理、以 MRI 界定范围、以 R0 为目标。非手术治疗只用于经内镜、指检和 MRI 确认的临床完全缓解（ASCO 2024；NCCN 3.2024），“退缩”不是临床完全缓解。过去与现在：记录中退缩后做了全盆腔脏器切除并输尿管皮肤造口，正是今天的标准所要求的手术。",
-        "en": "Plan the resection on the pre-treatment extent. After chemoradiotherapy, imaging cannot separate fibrosis from residual tumour, so the organs invaded at diagnosis — here the bladder, with an approximately 6 × 6 cm mass at the bladder neck/trigone and a fistula — are removed en bloc for an R0 margin; the Beyond TME Collaborative consensus (2013) puts such tumours in specialist centres, with the extent defined on MRI and R0 as the aim. Non-operative management is reserved for a clinical complete response confirmed by endoscopy, rectal examination and MRI (ASCO 2024; NCCN 3.2024) — regression is not that. Then and now: after regression the recorded team performed total pelvic exenteration with ureterocutaneous diversion, the operation today's standard calls for."
+        "zh-CN": "手术范围看肿瘤侵犯过哪里，而不是它缩小了多少。放化疗后影像分不清纤维化和残留癌，诊断时受侵的器官——本例为膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物并有瘘——应整块切除以获得 R0 切缘：ASCRS 2020 对 T4 直肠癌推荐整块切除受累的邻近器官（1B 级），Beyond TME 协作组共识（2013）主张这类肿瘤转诊亚专科多学科团队，并把 R0 视为长期生存的关键。该共识没有规定应以首次还是再分期的 MRI 来计划手术；而他的再分期只记录了“退缩”，没有任何资料显示三角区或瘘已经清除。非手术治疗只用于经内镜、指检和 MRI 确认的临床完全缓解（ASCO 2024；NCCN 3.2024），“退缩”不是临床完全缓解。过去与现在：记录中退缩后做了全盆腔脏器切除并输尿管皮肤造口，正是今天的标准所要求的手术。",
+        "en": "Plan the resection on what the tumour invaded, not on how far it shrank. After chemoradiotherapy, imaging cannot separate fibrosis from residual tumour, so the organs invaded at diagnosis — here the bladder, with an approximately 6 × 6 cm mass at the bladder neck/trigone and a fistula — are removed en bloc for an R0 margin: ASCRS 2020 recommends en bloc resection of involved adjacent organs in T4 rectal cancer (grade 1B), and the Beyond TME Collaborative consensus (2013) sends such tumours to a subspecialised multidisciplinary team and treats R0 as the key to survival. That consensus left open whether to plan on the first or the restaging MRI; his restaging records only 'regression', nothing to show the trigone or the fistula clear. Non-operative management is reserved for a clinical complete response confirmed by endoscopy, rectal examination and MRI (ASCO 2024; NCCN 3.2024) — regression is not that. Then and now: after regression the recorded team performed total pelvic exenteration with ureterocutaneous diversion, the operation today's standard calls for."
       },
       {
-        "zh-CN": "如实解读病理完全缓解：标本无癌残留、淋巴结 0/22 是好结果，但不是治愈，也不是事后允许保留器官的证据。II–III 期根治术后按 ASCRS 2021 随访指南（1A 级）随访——CEA、胸腹盆 CT、治疗结束约 1 年时的结肠镜，并制订生存者照护计划——同时长期照护肠造口、尿路造口和上尿路。病理完全缓解后继续化疗的获益不确定，需与患者共同决定；记录建议了化疗，但没有记录是否完成。",
-        "en": "Interpret a pathological complete response honestly: no residual cancer and 0/22 nodes is a favourable result, not a cure, and not a retrospective licence for organ preservation. Plan surveillance after curative resection of stage II–III disease per the ASCRS 2021 guideline (grade 1A) — CEA, CT of chest, abdomen and pelvis, and colonoscopy about a year after treatment, with a survivorship care plan — plus long-term care of the bowel and urinary stomas and of the upper urinary tract. Further chemotherapy after a complete response has uncertain benefit and is decided with the patient; the record recommended it but does not say whether he completed it."
+        "zh-CN": "如实解读病理完全缓解：标本无癌残留、淋巴结 0/22 是好结果，但不是治愈，也不是事后允许保留器官的证据。II–III 期根治术后按 ASCRS 2021 随访指南（1A 级）随访——CEA、胸腹盆 CT、治疗结束约 1 年时的结肠镜（若术前未能完整检查肿瘤以上的结肠，则在切除后约 6 个月内完成），并制订生存者照护计划——同时长期照护肠造口、尿路造口和上尿路。ASCRS 2020 对术前未接受全身化疗的 II–III 期直肠癌推荐辅助化疗（1B 级）；病理完全缓解后的获益只有观察性证据，因此在推荐的同时与患者共同决定——记录建议了化疗，但没有记录是否完成。",
+        "en": "Interpret a pathological complete response honestly: no residual cancer and 0/22 nodes is a favourable result, not a cure, and not a retrospective licence for organ preservation. Plan surveillance after curative resection of stage II–III disease per the ASCRS 2021 guideline (grade 1A) — CEA, CT of chest, abdomen and pelvis, and colonoscopy about a year after treatment (within about six months of the resection if the colon above the tumour was never fully examined), with a survivorship care plan — plus long-term care of the bowel and urinary stomas and of the upper urinary tract. ASCRS 2020 recommends adjuvant chemotherapy for stage II–III rectal cancer when no systemic chemotherapy was given before surgery (grade 1B); after a complete response its benefit rests on observational evidence, so it is recommended and decided with the patient — the record recommended it but does not say whether he completed it."
       }
     ],
     "references": [
@@ -4153,11 +4196,13 @@
       "Scott AJ, Kennedy EB, Berlin J, et al. Management of locally advanced rectal cancer: ASCO guideline. J Clin Oncol. 2024;42(28):3355-3375. doi:10.1200/JCO.24.01160",
       "Benson AB, Venook AP, Adam M, et al. NCCN Guidelines Insights: Rectal Cancer, Version 3.2024. J Natl Compr Canc Netw. 2024;22(6):366-375. doi:10.6004/jnccn.2024.0041",
       "Beyond TME Collaborative. Consensus statement on the multidisciplinary management of patients with recurrent and primary rectal cancer beyond total mesorectal excision planes. Br J Surg. 2013;100(8):1009-1014. doi:10.1002/bjs.9192",
+      "You YN, Hardiman KM, Bafford A, et al. The American Society of Colon and Rectal Surgeons clinical practice guidelines for the management of rectal cancer. Dis Colon Rectum. 2020;63(9):1191-1222. doi:10.1097/DCR.0000000000001762",
       "van Hooft JE, Veld JV, Arnold D, et al. Self-expandable metal stents for obstructing colonic and extracolonic cancer: European Society of Gastrointestinal Endoscopy (ESGE) Guideline - Update 2020. Endoscopy. 2020;52(5):389-407. doi:10.1055/a-1140-3017",
       "Hardiman KM, Felder SI, Friedman G, et al. The American Society of Colon and Rectal Surgeons clinical practice guidelines for the surveillance and survivorship care of patients after curative treatment of colon and rectal cancer. Dis Colon Rectum. 2021;64(5):517-533. doi:10.1097/DCR.0000000000001984",
       "Cercek A, Lumish M, Sinopoli J, et al. PD-1 blockade in mismatch repair-deficient, locally advanced rectal cancer. N Engl J Med. 2022;386(25):2363-2376. doi:10.1056/NEJMoa2201445",
       "European Association of Urology. EAU Guidelines on Urological Infections. Arnhem: EAU Guidelines Office; 2025.",
-      "Amin MB, Edge SB, Greene FL, et al., editors. AJCC Cancer Staging Manual. 8th ed. New York: Springer; 2017."
+      "Amin MB, Edge SB, Greene FL, et al., editors. AJCC Cancer Staging Manual. 8th ed. New York: Springer; 2017.",
+      "Wound, Ostomy and Continence Nurses Society; American Urological Association; American Society of Colon and Rectal Surgeons. WOCN Society, AUA, and ASCRS position statement on preoperative stoma site marking for patients undergoing ostomy surgery. J Wound Ostomy Continence Nurs. 2021;48(6):533-536. doi:10.1097/WON.0000000000000820"
     ],
     "notice": {
       "zh-CN": "本评分为教学脚本评估，并非经过验证的能力评分。",
@@ -4563,7 +4608,7 @@
         ]
       },
       {
-        "text": "So what's been going on that brought you in?",
+        "text": "What brings you in today?",
         "locale": "en",
         "expect": [
           "presenting"
@@ -4656,6 +4701,13 @@
       {
         "text": "尿的时候疼吗，有没有烧灼感？",
         "locale": "zh-CN",
+        "expect": [
+          "dysuria"
+        ]
+      },
+      {
+        "text": "Does it hurt when you pass urine?",
+        "locale": "en",
         "expect": [
           "dysuria"
         ]
@@ -4801,12 +4853,12 @@
         ]
       },
       {
-        "text": "外面天气怎么样？",
+        "text": "家里人今天来看你吗？",
         "locale": "zh-CN",
         "expect": []
       },
       {
-        "text": "Can you tell me where the nearest car park is?",
+        "text": "Is your family coming in to see you today?",
         "locale": "en",
         "expect": []
       },
@@ -4816,7 +4868,7 @@
         "expect": []
       },
       {
-        "text": "Let me just check the name on your wristband.",
+        "text": "Do you need the toilet right now?",
         "locale": "en",
         "expect": []
       }

@@ -153,8 +153,8 @@ tissue), lost only when a steroid or steroid-containing chemotherapy is given wh
 the staging, the brain, heart and great-vessel involvement that decides ECD's urgency and the choice of a targeted
 drug stay unknown — and it is met by the biopsy booking and by orders placed before the outcome phase: early ones in
 `admission` count (a PET-CT before the biopsy is reasonable practice), and none can be earned in hindsight because
-the outcome phase itself waits for them (`obj-staging`). 1.0.0's only critical item was a first-try answer to a management question; that is now
-`rb-staging-plan` and carries no critical flag.
+the outcome phase itself waits for them (`obj-staging`). 1.0.0's only critical item was a first-try answer to a
+management question; that is now `rb-staging-plan` and carries no critical flag.
 
 ### How wrong choices score (measured 2026-11-14 with core `assess`)
 
@@ -470,7 +470,7 @@ radiologist, a pathologist):**
   and lay unknowns; two labelled teaching wishes.
 * Four phases with descriptions, the pathology phase gated on the biopsy booking, the outcome phase on every
   decision and the staging objective.
-* 22 history items, 6 examination findings, 19 investigations (structured values, record reviews, unrecorded tests),
+* 22 history items, 6 examination findings, 19 investigations (20 with the clotting screen added at review; structured values, record reviews, unrecorded tests),
   11 interventions with harm texts and the `critical` decision on the high-risk ones; the report's diagnosis moved
   out of the histology into the outcome record.
 * Five decisions at the real decision points (red flags, the plan for multifocal bone lesions, the biopsy reading,
@@ -518,7 +518,7 @@ npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-655
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-655474:"  # in-world demonstration, en + zh-CN
 ```
 
-All five passed on 2026-11-13.
+All five passed on 2026-11-13, and again on 2026-11-14 after the independent review's fixes.
 
 ## 中文摘要
 

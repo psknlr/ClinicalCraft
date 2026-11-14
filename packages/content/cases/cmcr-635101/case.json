@@ -111,7 +111,7 @@
       "en": "I've been thirsty and peeing a lot for five days, and sick for the last three"
     },
     "triageNote": {
-      "zh-CN": "24岁男性，口渴、多尿 5 天，恶心呕吐 3 天，急性病容。分诊手测：体温 36.7 ℃，脉搏 106 次/分，呼吸 25 次/分，血压 106/59 mmHg。",
+      "zh-CN": "24岁男性，口渴、多尿 5 天，恶心呕吐 3 天，急性病容。分诊时测得：体温 36.7 ℃，脉搏 106 次/分，呼吸 25 次/分，血压 106/59 mmHg。",
       "en": "24-year-old man with five days of thirst and polyuria and three days of nausea and vomiting; looks acutely unwell. Triage readings: T 36.7 °C, pulse 106/min, RR 25/min, BP 106/59 mmHg."
     },
     "tags": [
@@ -298,7 +298,9 @@
           "因为什么来",
           "来看急诊",
           "什么情况来的",
-          "主要问题"
+          "主要问题",
+          "怎么了",
+          "说说情况"
         ],
         "en": [
           "brought you",
@@ -308,7 +310,10 @@
           "reason for coming",
           "whatsthematter",
           "whatbringsyou",
-          "bringsyouin"
+          "bringsyouin",
+          "whatstheproblem",
+          "seemstobetheproblem",
+          "beengoingon"
         ]
       },
       "excludeKeywords": {
@@ -317,7 +322,9 @@
           "家族",
           "以前",
           "多久",
-          "几天"
+          "几天",
+          "肚子",
+          "胃"
         ],
         "en": [
           "family",
@@ -355,7 +362,8 @@
           "多尿",
           "多饮",
           "渴了几天",
-          "尿得多"
+          "尿得多",
+          "喝多少水"
         ],
         "en": [
           "thirsty",
@@ -366,7 +374,8 @@
           "weeing",
           "polyuria",
           "urinating",
-          "howlongthirsty"
+          "howlongthirsty",
+          "howmuchwater"
         ]
       },
       "excludeKeywords": {
@@ -413,7 +422,9 @@
           "想吐",
           "吐几天",
           "反胃",
-          "吐多久"
+          "吐多久",
+          "开始吐",
+          "吐的"
         ],
         "en": [
           "vomiting",
@@ -462,7 +473,9 @@
           "血糖高过",
           "说过糖尿病",
           "得过糖尿病",
-          "诊断过糖尿病"
+          "诊断过糖尿病",
+          "有没有糖尿病",
+          "有糖尿病吗"
         ],
         "en": [
           "diabetes before",
@@ -525,7 +538,9 @@
           "免疫病",
           "家里有人",
           "爸妈",
-          "兄弟姐妹"
+          "兄弟姐妹",
+          "家里人有什么病",
+          "家族病史"
         ],
         "en": [
           "family history",
@@ -533,7 +548,9 @@
           "parents diabetes",
           "relatives",
           "autoimmune",
-          "runs in the family"
+          "runs in the family",
+          "conditions in the family",
+          "family medical history"
         ]
       },
       "excludeKeywords": {
@@ -3027,8 +3044,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "第 1 小时静脉输注 1 L，之后约 500–1000 mL/h 持续 2–4 小时，按血压、尿量和血钠调整；有心、肾衰竭时用较小的量分次给。",
-        "en": "1 L IV over the first hour, then about 500–1,000 mL/h for 2–4 hours, adjusted to blood pressure, urine output and sodium; smaller boluses where there is heart or kidney failure."
+        "zh-CN": "第 1 小时静脉输注 1 L，之后约 500–1000 mL/h，补足最初 2–4 小时，按血压、尿量和血钠调整；JBDS-IP 2023 提醒 18–25 岁的年轻人补液要更谨慎，心、肾衰竭时用较小的量分次给。",
+        "en": "1 L IV over the first hour, then about 500–1,000 mL/h to complete the first 2–4 hours, adjusted to blood pressure, urine output and sodium; JBDS-IP 2023 advises more caution in young adults aged 18–25, and smaller boluses where there is heart or kidney failure."
       },
       "requires": [
         "iv-access"
@@ -3057,7 +3074,12 @@
           "胰岛素持续静滴",
           "小剂量胰岛素",
           "胰岛素微泵",
-          "胰岛素输注"
+          "胰岛素输注",
+          "静脉滴注胰岛素",
+          "静滴胰岛素",
+          "胰岛素静滴",
+          "静脉输注胰岛素",
+          "胰岛素静脉输注"
         ],
         "en": [
           "insulin infusion",
@@ -3065,14 +3087,17 @@
           "iv insulin",
           "fixed rate insulin",
           "insulin drip",
-          "insulin pump infusion"
+          "insulin pump infusion",
+          "iv insulin infusion",
+          "start insulin infusion"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "停",
           "皮下",
-          "基础"
+          "基础",
+          "撤"
         ],
         "en": [
           "stop",
@@ -3081,8 +3106,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通（短效）胰岛素 0.1 U/(kg·h) 经微量泵静脉输注（50 U 加 0.9% 氯化钠至 50 mL），不推注负荷量；补液开始后、确认血钾 ≥ 3.5 mmol/L 时启动；血糖降到 14 mmol/L 以下时加 5%–10% 葡萄糖，持续到酮症酸中毒纠正。",
-        "en": "Soluble (regular) insulin 0.1 units/kg/h IV by syringe pump (50 units in 50 mL 0.9 % sodium chloride), no loading bolus; start once fluids are running and potassium is known to be ≥ 3.5 mmol/L; add 5–10 % glucose once glucose falls below 14 mmol/L and continue until the ketoacidosis has resolved."
+        "zh-CN": "普通（短效）胰岛素 0.1 U/kg/h 经微量泵静脉输注（50 U 加 0.9% 氯化钠至 50 mL），不推注负荷量；补液开始后、确认血钾 ≥ 3.5 mmol/L 时启动；血糖降到 14 mmol/L 以下时加 5%–10% 葡萄糖，JBDS-IP 2023 并建议考虑把速率减到 0.05 U/kg/h；胰岛素持续到酮症酸中毒纠正。他的体重没有记录，按估计体重计算。",
+        "en": "Soluble (regular) insulin 0.1 units/kg/h IV by syringe pump (50 units in 50 mL 0.9 % sodium chloride), no loading bolus; start once fluids are running and potassium is known to be ≥ 3.5 mmol/L; once glucose falls below 14 mmol/L add 5–10 % glucose, and JBDS-IP 2023 suggests considering a lower rate of 0.05 units/kg/h; continue until the ketoacidosis has resolved. His weight is not recorded: use an estimated weight."
       },
       "requires": [
         "infusion-pump",
@@ -3218,6 +3243,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3263,6 +3289,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3390,7 +3417,9 @@
           "甘精胰岛素",
           "地特胰岛素",
           "德谷胰岛素",
-          "皮下胰岛素"
+          "皮下胰岛素",
+          "胰岛素皮下注射",
+          "皮下注射胰岛素"
         ],
         "en": [
           "basal insulin",
@@ -3434,11 +3463,14 @@
       "kind": "other",
       "aliases": {
         "zh-CN": [
-          "停胰岛素泵入",
-          "停静脉胰岛素",
+          "停用静脉胰岛素输注",
+          "停胰岛素微泵",
           "停微泵",
           "撤胰岛素",
-          "停止输注"
+          "停止输注",
+          "撤掉静脉胰岛素",
+          "撤静脉胰岛素",
+          "停掉胰岛素泵入"
         ],
         "en": [
           "stop the insulin infusion",
@@ -3446,6 +3478,22 @@
           "stop iv insulin",
           "come off the drip",
           "discontinue infusion"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "开始",
+          "启动",
+          "给胰岛素",
+          "静滴",
+          "滴注",
+          "加用",
+          "皮下注射"
+        ],
+        "en": [
+          "start",
+          "begin",
+          "commence"
         ]
       },
       "dose": {
@@ -3495,7 +3543,11 @@
       "kind": "medication",
       "aliases": {
         "zh-CN": [
-          "胰岛素泵",
+          "胰岛素泵治疗",
+          "装胰岛素泵",
+          "上胰岛素泵",
+          "启用胰岛素泵",
+          "改用胰岛素泵",
           "持续皮下胰岛素",
           "csii",
           "装泵",
@@ -3527,6 +3579,16 @@
       "requires": [
         "medications"
       ],
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "treatment-12h"
+          },
+          {
+            "phase": "ward"
+          }
+        ]
+      },
       "risk": "moderate",
       "maxDoses": 1,
       "contraindicatedWhen": {
@@ -3616,6 +3678,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3697,8 +3760,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "转诊遗传咨询，给他书面结果；建议将来配偶在怀孕前检测，并为亲属提供检测。",
-        "en": "Referral for genetic counselling, with his results in writing; partner testing offered before a pregnancy, and testing offered to his relatives."
+        "zh-CN": "转诊遗传咨询，给他书面结果；建议他的配偶（现在或将来）在怀孕前检测，并为亲属提供检测。",
+        "en": "Referral for genetic counselling, with his results in writing; testing offered to his partner, now or in future, before a pregnancy, and testing offered to his relatives."
       },
       "requires": [],
       "risk": "none",
@@ -4145,8 +4208,8 @@
         "en": "Follow-up"
       },
       "hint": {
-        "zh-CN": "他自己的胰岛素分泌后来怎样了？3 个月时的 HbA1c 能直接拿来评价控制吗？",
-        "en": "What happened to his own insulin secretion — and can the three-month HbA1c be taken at face value?"
+        "zh-CN": "他自己的胰岛素分泌后来怎样了？今后你凭什么来判断他的血糖控制？",
+        "en": "What happened to his own insulin secretion — and what will you judge his control by from here?"
       },
       "guidance": {
         "zh-CN": "查看随访时的 C 肽和 HbA1c，以及记录的病程与结局。",
@@ -4231,8 +4294,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 高血糖危象共识的诊断要素是血糖 ≥ 11.1 mmol/L（或已知糖尿病）、酮症（β-羟丁酸 ≥ 3.0 mmol/L；JBDS-IP 2023 也接受尿酮体 ++ 及以上）和酸中毒（pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L）。他的 pH 7.173 属中度，HCO₃⁻ 7.1 mmol/L 却已低于重度界值 10 mmol/L；共识建议中度在过渡监护病房、重度在重症监护病房治疗，而高钾、低钠和肌酐升高都要求持续监护和频繁复查。",
-            "en": "Correct. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus defines DKA by glucose ≥ 11.1 mmol/L (or known diabetes), ketosis (β-hydroxybutyrate ≥ 3.0 mmol/L; JBDS-IP 2023 also accepts urine ketones ++ or more) and acidosis (pH < 7.3 and/or bicarbonate < 18 mmol/L). His pH of 7.173 is in the moderate band but his bicarbonate of 7.1 mmol/L is below the severe cut-off of 10 mmol/L; the consensus treats moderate DKA in step-down care and severe DKA in intensive care, and his potassium, sodium and creatinine all call for continuous monitoring and frequent rechecks."
+            "zh-CN": "正确。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 高血糖危象共识的诊断要素是血糖 ≥ 11.1 mmol/L（或已知糖尿病）、酮症（β-羟丁酸 ≥ 3.0 mmol/L，无法测定时尿酮体 ++ 及以上也可——他是 +++）和酸中毒（pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L）。他的 pH 7.173 属中度，HCO₃⁻ 7.1 mmol/L 却已低于重度界值 10 mmol/L；共识建议中度在过渡监护病房、重度在重症监护病房治疗，而高钾、低钠和肌酐升高都要求持续监护和频繁复查。",
+            "en": "Correct. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus defines DKA by glucose ≥ 11.1 mmol/L (or known diabetes), ketosis (β-hydroxybutyrate ≥ 3.0 mmol/L, or urine ketones 2+ or more where it cannot be measured — his are +++) and acidosis (pH < 7.3 and/or bicarbonate < 18 mmol/L). His pH of 7.173 is in the moderate band but his bicarbonate of 7.1 mmol/L is below the severe cut-off of 10 mmol/L; the consensus treats moderate DKA in step-down care and severe DKA in intensive care, and his potassium, sodium and creatinine all call for continuous monitoring and frequent rechecks."
           }
         },
         {
@@ -4504,8 +4567,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不是最佳答案。经典自身免疫性 1 型糖尿病通常在数周到数月内起病，诊断时 HbA1c 往往更高，多数患者胰岛自身抗体阳性；5 天的病程、HbA1c 6.8%、GAD/ICA/IAA 阴性和几乎测不到的 C 肽，按日本糖尿病学会 2012 年标准属于暴发性亚型。区分它有意义：不要指望“蜜月期”，从第一天起就需要胰岛素。",
-            "en": "Not the best answer. Classic autoimmune type 1 diabetes usually develops over weeks to months, so HbA1c is usually higher at diagnosis and most patients have islet autoantibodies; a five-day course, an HbA1c of 6.8 %, negative GAD, ICA and IAA and near-absent C-peptide make this the fulminant subtype by the Japan Diabetes Society 2012 criteria. The distinction matters: expect no honeymoon — insulin is needed from day one."
+            "zh-CN": "不是最佳答案。经典自身免疫性 1 型糖尿病通常在数周到数月内起病，诊断时 HbA1c 往往更高，多数患者胰岛自身抗体阳性；5 天的病程、HbA1c 6.8%、GAD/ICA/IAA 阴性和很低的 C 肽，按日本糖尿病学会 2012 年标准属于暴发性亚型。区分它有意义：不要指望“蜜月期”，从第一天起就需要胰岛素。",
+            "en": "Not the best answer. Classic autoimmune type 1 diabetes usually develops over weeks to months, so HbA1c is usually higher at diagnosis and most patients have islet autoantibodies; a five-day course, an HbA1c of 6.8 %, negative GAD, ICA and IAA and a very low C-peptide make this the fulminant subtype by the Japan Diabetes Society 2012 criteria. The distinction matters: expect no honeymoon — insulin is needed from day one."
           }
         },
         {
@@ -4516,8 +4579,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。MODY 通常多代家族聚集、保留胰岛素分泌，很少以酮症酸中毒起病；他没有糖尿病家族史，以酮症酸中毒起病，C 肽几乎测不到，符合日本糖尿病学会 2012 年暴发性 1 型标准。试用磺脲类会让一个缺乏胰岛素的人失去胰岛素治疗。",
-            "en": "No. MODY usually runs through several generations and keeps insulin secretion, so it rarely presents in ketoacidosis; he has no family history of diabetes, presented in ketoacidosis and has near-absent C-peptide, which fits the Japan Diabetes Society 2012 fulminant type 1 criteria. A sulfonylurea trial would leave an insulin-deficient man without insulin."
+            "zh-CN": "不对。MODY 通常多代家族聚集、保留胰岛素分泌，很少以酮症酸中毒起病；他没有糖尿病家族史，以酮症酸中毒起病，C 肽很低，符合日本糖尿病学会 2012 年暴发性 1 型标准。试用磺脲类会让一个缺乏胰岛素的人失去胰岛素治疗。",
+            "en": "No. MODY usually runs through several generations and keeps insulin secretion, so it rarely presents in ketoacidosis; he has no family history of diabetes, presented in ketoacidosis and has a very low C-peptide, which fits the Japan Diabetes Society 2012 fulminant type 1 criteria. A sulfonylurea trial would leave an insulin-deficient man without insulin."
           }
         },
         {
@@ -4573,8 +4636,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。日本糖尿病学会 2012 年标准中只有 HbA1c < 8.7% 一条与血红蛋白有关；5 天的起病时间和 50、70 pmol/L 的 C 肽各自成立。即使携带状态使 HbA1c 有偏差，改变的也只是一条支持证据的分量，而不是诊断。",
-            "en": "Correct. Of the Japan Diabetes Society 2012 criteria only the HbA1c below 8.7 % involves haemoglobin; the five-day onset and the C-peptide of 50 and 70 pmol/L stand on their own. If his trait biases HbA1c, it changes the weight of one supporting criterion, not the diagnosis."
+            "zh-CN": "正确。日本糖尿病学会 2012 年标准要求三条同时满足，其中只有第二条里的 HbA1c < 8.7% 与血红蛋白有关；5 天的起病时间和 50、70 pmol/L 的 C 肽都不依赖它，血糖 23.8 mmol/L 也满足第二条的另一半。携带状态意味着这次 6.8% 要结合检测方法复核，而不是推翻另外两条标准独立支持、并与报告一致的诊断。",
+            "en": "Correct. The Japan Diabetes Society 2012 criteria need all three findings, and only the HbA1c < 8.7 % part of the second involves haemoglobin; the five-day onset and the C-peptide of 50 and 70 pmol/L do not depend on it, and the glucose of 23.8 mmol/L meets the other half of the second. His trait is a reason to check this 6.8 % against its method, not to overturn a diagnosis the other two criteria support independently and the report made."
           }
         },
         {
@@ -4585,27 +4648,27 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ADA 2026 年诊疗标准和 2023 年糖尿病实验室指南（Sacks 等）指出，血红蛋白变异和红细胞寿命改变可使 HbA1c 失真，偏差方向取决于检测方法；此时用血糖仪或 CGM 数据，必要时加果糖胺或糖化白蛋白评估控制。他的 HbA1c 方法没有记录，6.8% 和 3 个月时的 6.9% 都不能直接当真。",
-            "en": "Correct. The ADA Standards of Care 2026 and the 2023 laboratory guideline (Sacks et al.) warn that haemoglobin variants and altered red-cell survival can make HbA1c misleading, in a direction that depends on the assay; meter or CGM glucose data, with fructosamine or glycated albumin, then judge control. His HbA1c method is not recorded, so neither the 6.8 % nor the 6.9 % at three months can be taken at face value."
+            "zh-CN": "正确。ADA 2026 年诊疗标准和 2023 年糖尿病实验室指南（Sacks 等）指出，血红蛋白变异和红细胞寿命改变可使 HbA1c 失真，偏差方向取决于检测方法；此时用血糖仪或 CGM 数据，必要时加果糖胺或糖化白蛋白评估控制。他的 HbA1c 方法没有记录，这次的 6.8% 不能直接当真。",
+            "en": "Correct. The ADA Standards of Care 2026 and the 2023 laboratory guideline (Sacks et al.) warn that haemoglobin variants and altered red-cell survival can make HbA1c misleading, in a direction that depends on the assay; meter or CGM glucose data, with fructosamine or glycated albumin, then judge control. His HbA1c method is not recorded, so his 6.8 % cannot be taken at face value."
           }
         },
         {
           "id": "carrier-counselling",
           "text": {
-            "zh-CN": "告诉他是 β 地中海贫血携带者，建议将来的配偶在怀孕前检测，并为他的亲属提供检测",
-            "en": "Explain that he carries β-thalassaemia trait, and offer testing to a future partner before a pregnancy and to his relatives"
+            "zh-CN": "告诉他是 β 地中海贫血携带者，建议他的配偶（现在或将来）在怀孕前检测，并为他的亲属提供检测",
+            "en": "Explain that he carries β-thalassaemia trait, and offer testing to his partner, now or in future, before a pregnancy, and to his relatives"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。HbA2 4.6% 加 HBB 杂合突变、血红蛋白 110.7–126 g/L，是 β 地中海贫血携带状态（轻型），不是疾病本身。若将来配偶也是携带者，每次怀孕有 1/4 的机会生下重型 β 地中海贫血患儿，所以应在遗传咨询下为配偶和亲属提供检测（BSH 2023）。",
-            "en": "Correct. HbA2 of 4.6 % with a heterozygous HBB variant and a haemoglobin of 110.7–126 g/L is β-thalassaemia trait — a carrier state, not the disease. If a future partner is also a carrier, each pregnancy carries a 1 in 4 chance of a child with β-thalassaemia major, so partner and family testing are offered with genetic counselling (BSH 2023)."
+            "zh-CN": "正确。HbA2 4.6% 加 HBB 杂合突变、血红蛋白 110.7–126 g/L，是 β 地中海贫血携带状态（轻型），不是疾病本身。若配偶也是携带者，每次怀孕有 1/4 的机会生下严重 β 地中海贫血（重型或中间型，取决于双方的变异）患儿，所以应在遗传咨询下为配偶和亲属提供检测（BSH 2023）。",
+            "en": "Correct. HbA2 of 4.6 % with a heterozygous HBB variant and a haemoglobin of 110.7–126 g/L is β-thalassaemia trait — a carrier state, not the disease. If his partner is also a carrier, each pregnancy carries a 1 in 4 chance of a child with a serious β-thalassaemia (major or intermedia, depending on both variants), so partner and family testing are offered with genetic counselling (BSH 2023)."
           }
         },
         {
           "id": "oral-iron",
           "text": {
-            "zh-CN": "针对持续的小细胞性改变开始口服铁剂，3 个月后复查血常规",
-            "en": "Start oral iron for the persistent microcytosis and recheck the blood count in three months"
+            "zh-CN": "针对每次血常规都有的小细胞性改变开始口服铁剂，3 个月后复查血常规和 HbA2",
+            "en": "Start oral iron for the microcytosis seen on every count, and recheck the blood count and HbA2 in three months"
           },
           "correct": false,
           "feedback": {
@@ -4616,13 +4679,13 @@
         {
           "id": "lower-insulin",
           "text": {
-            "zh-CN": "HbA1c 6.8% 已经达到 7% 的常用目标，可以减少他的胰岛素用量",
-            "en": "Reduce his insulin, since an HbA1c of 6.8 % already meets the usual target of 7 %"
+            "zh-CN": "HbA1c 6.8% 已经达到成人低于 7% 的常用目标，出院前可以减少他的胰岛素用量",
+            "en": "Reduce his insulin before discharge, since an HbA1c of 6.8 % already meets the usual adult target of below 7 %"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。这次 HbA1c 是在他起病不到一周时测的，主要反映起病前几周的血糖，又可能受携带状态影响，说明不了现在的控制，更不能用来减胰岛素。他的 C 肽几乎测不到，胰岛素剂量应按血糖监测结果调整（ADA 2026 年诊疗标准）。",
-            "en": "No. This HbA1c was taken less than a week into his illness, so it mostly reflects the weeks before it, and it may be biased by his trait: it says nothing about control and cannot justify cutting insulin. His C-peptide is near-absent; insulin doses follow his glucose readings (ADA Standards of Care 2026)."
+            "zh-CN": "不对。这次 HbA1c 是在他起病不到一周时测的，主要反映起病前几周的血糖，又可能受携带状态影响，说明不了现在的控制，更不能用来减胰岛素。他的 C 肽很低，胰岛素剂量应按血糖监测结果调整（ADA 2026 年诊疗标准）。",
+            "en": "No. This HbA1c was taken less than a week into his illness, so it mostly reflects the weeks before it, and it may be biased by his trait: it says nothing about control and cannot justify cutting insulin. His C-peptide is very low; insulin doses follow his glucose readings (ADA Standards of Care 2026)."
           }
         }
       ]
@@ -4810,8 +4873,8 @@
       "id": "rb-avoided-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有给碳酸氢钠、低渗盐水、代替静脉输注的皮下胰岛素、只按血糖追加的胰岛素、口服降糖药或铁剂，也没有在基础胰岛素之前停掉静脉胰岛素",
-        "en": "Gave no bicarbonate, hypotonic saline, subcutaneous insulin in place of the infusion, correction-only insulin, oral glucose-lowering tablets or iron, and did not stop the infusion before basal insulin"
+        "zh-CN": "没有给碳酸氢钠、低渗盐水、代替静脉输注的皮下胰岛素或胰岛素泵、只按血糖追加的胰岛素、口服降糖药或铁剂，也没有在基础胰岛素之前停掉静脉胰岛素",
+        "en": "Gave no bicarbonate, hypotonic saline, subcutaneous insulin or an insulin pump in place of the infusion, correction-only insulin, oral glucose-lowering tablets or iron, and did not stop the infusion before basal insulin"
       },
       "weight": 3,
       "met": {
@@ -4852,6 +4915,19 @@
                 "whenIndicated": true
               }
             ]
+          },
+          {
+            "any": [
+              {
+                "not": {
+                  "intervened": "csii-start"
+                }
+              },
+              {
+                "intervened": "csii-start",
+                "whenIndicated": true
+              }
+            ]
           }
         ]
       },
@@ -4886,6 +4962,9 @@
           },
           {
             "intervened": "stop-friii"
+          },
+          {
+            "intervened": "csii-start"
           }
         ]
       }
@@ -4906,10 +4985,12 @@
           {
             "any": [
               {
-                "intervened": "sc-basal-insulin"
+                "intervened": "sc-basal-insulin",
+                "whenIndicated": true
               },
               {
-                "intervened": "csii-start"
+                "intervened": "csii-start",
+                "whenIndicated": true
               }
             ]
           }
@@ -4959,8 +5040,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、收集信息、解释与计划、结束）：自我介绍，先了解他觉得自己怎么了，正面回应“是不是吃坏肚子”的担心；用通俗的话说明这是血糖太高、身体缺胰岛素引起的酸中毒，需要静脉输液、胰岛素泵入、反复抽血和心电监护，并说明为什么暂时不补钾。到了病房，说明这是一种起病很急的 1 型糖尿病，自身几乎不再分泌胰岛素，需要终身用胰岛素（回应他“以后是不是离不开胰岛素”的担心，不作虚假保证）；讲清生病时不能停胰岛素、要查血酮、何时就医，以及低血糖的识别和处理；解释他是 β 地中海贫血携带者，为什么 HbA1c 可能不准、要改看血糖记录，并说明将来配偶检测和家人检测的意义。用复述确认理解，留出提问时间，说明接下来的安排；不编造病例中没有记录的结果。",
-        "en": "Good performance (Calgary–Cambridge: initiating, gathering, explaining and planning, closing): introduces themselves, first finds out what he thinks is wrong and answers his worry that it is a stomach bug honestly; explains in plain words that his blood sugar is very high because his body lacks insulin, that this has made his blood acidic, and that he needs a drip, an insulin infusion, repeated blood tests and heart monitoring — including why potassium is not being added yet. On the ward, explains a sudden-onset form of type 1 diabetes in which his own insulin has almost stopped, so insulin is lifelong (meeting his worry about needing insulin every day without false reassurance); covers never stopping insulin when ill, checking ketones and when to seek help, and recognising and treating hypoglycaemia; explains that he carries β-thalassaemia trait, why his HbA1c may mislead and glucose records are used instead, and why a future partner and his relatives may want testing. Checks understanding by teach-back, leaves room for questions and says what happens next; invents no result the case does not record."
+        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、收集信息、解释与计划、结束）：自我介绍，先了解他觉得自己怎么了，正面回应“是不是吃坏肚子”的担心；用通俗的话说明这是血糖太高、身体缺胰岛素引起的酸中毒，需要静脉输液、胰岛素泵入、反复抽血和心电监护，并说明为什么暂时不补钾。到了病房，说明这是一种起病很急的 1 型糖尿病，自身分泌的胰岛素已经很少，需要终身用胰岛素（回应他“以后是不是离不开胰岛素”的担心，不作虚假保证）；讲清生病时不能停胰岛素、要查血酮、何时就医，以及低血糖的识别和处理；解释他是 β 地中海贫血携带者，为什么 HbA1c 可能不准、要改看血糖记录，并说明配偶（现在或将来）和家人检测的意义。用复述确认理解，留出提问时间，说明接下来的安排；不编造病例中没有记录的结果。",
+        "en": "Good performance (Calgary–Cambridge: initiating, gathering, explaining and planning, closing): introduces themselves, first finds out what he thinks is wrong and answers his worry that it is a stomach bug honestly; explains in plain words that his blood sugar is very high because his body lacks insulin, that this has made his blood acidic, and that he needs a drip, an insulin infusion, repeated blood tests and heart monitoring — including why potassium is not being added yet. On the ward, explains a sudden-onset form of type 1 diabetes in which he now makes very little insulin of his own, so insulin is lifelong (meeting his worry about needing insulin every day without false reassurance); covers never stopping insulin when ill, checking ketones and when to seek help, and recognising and treating hypoglycaemia; explains that he carries β-thalassaemia trait, why his HbA1c may mislead and glucose records are used instead, and why his partner, now or in future, and his relatives may want testing. Checks understanding by teach-back, leaves room for questions and says what happens next; invents no result the case does not record."
       }
     }
   ],
@@ -4972,7 +5053,7 @@
         "en": "Nurse Tang"
       },
       "knowledge": {
-        "zh-CN": "急诊抢救区护士，之后跟着病例到病房。交班（ISBAR）：24岁男性，口渴、多尿 5 天，恶心呕吐 3 天，急性病容；分诊手测体温 36.7 ℃、脉搏 106 次/分、呼吸 25 次/分、血压 106/59 mmHg。抢救区床旁有血糖仪和血酮仪、监护仪、心电图机、输液泵和抢救车（留置针、常用药）；化验在床旁采血送检。复述医嘱，完成护理范围内的操作；往任何液体里加钾之前，先问医生最新的血钾和他是否已上监护。只报告已经出来的结果，不解读、不诊断；被问到体重、血氧、意识评分或尿量时，如实说没有可报的记录，绝不报出数字。",
+        "zh-CN": "急诊抢救区护士，之后跟着病例到病房。交班（ISBAR）：24岁男性，口渴、多尿 5 天，恶心呕吐 3 天，急性病容；分诊时测得体温 36.7 ℃、脉搏 106 次/分、呼吸 25 次/分、血压 106/59 mmHg。抢救区床旁有血糖仪和血酮仪、监护仪、心电图机、输液泵和抢救车（留置针、常用药）；化验在床旁采血送检。复述医嘱，完成护理范围内的操作；往任何液体里加钾之前，先问医生最新的血钾和他是否已上监护。只报告已经出来的结果，不解读、不诊断；被问到体重、血氧、意识评分或尿量时，如实说没有可报的记录，绝不报出数字。",
         "en": "ED resus nurse who follows the case to the ward. Handover (ISBAR): a 24-year-old man with five days of thirst and polyuria and three days of nausea and vomiting, acutely unwell; triage readings T 36.7 °C, pulse 106/min, RR 25/min, BP 106/59 mmHg. At the resus bedside: a glucose and ketone meter, the monitor, the ECG machine, infusion pumps and the crash cart (cannulas, common drugs); bloods are taken at the patient and sent. Reads orders back and carries out nursing-scope tasks; before adding potassium to any bag she asks the doctor for the latest potassium and whether he is on the monitor. Reports only results that are back, never interprets or diagnoses; asked for his weight, oxygen saturation, conscious-level score or urine output, she says plainly there is nothing recorded to report — never a number."
       },
       "interprets": [],
@@ -4986,7 +5067,7 @@
       },
       "knowledge": {
         "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“没有烂苹果味，能排除酮症酸中毒吗？”“pH 和 HCO₃⁻ 落在不同的严重程度分级，你按哪个处理？”“血钾高，体内总钾是高还是低？什么时候开始补钾？”“血钠按血糖校正后是多少？有效渗透压呢？这对选液体意味着什么？”“为什么这里不用碳酸氢钠？”“血气正常了，就能停输注吗？还缺什么？”“血糖那么高而 HbA1c 不高，有哪两种解释？”“病程、C 肽和抗体放在一起，你怎么分型？”“携带状态会怎样影响 HbA1c？诊断还站得住吗？”。可以讲解 2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识、JBDS-IP 2023、日本糖尿病学会 2012 年标准、ADA 2026 年诊疗标准和 2014 年欧洲低钠血症指南的相关原则；学员读到相应记录后，可以指出报告的病程（记录了补液和胰岛素、次日用胰岛素泵，没有记录治疗地点、血酮和补钾）与现行做法的差别。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（体重身高、意识、血氧、血酮、氯、心电图、胰酶、治疗方案、MCV 数值、HbA1c 方法都没有记录），也不解读结局记录。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Does the absence of fruity breath exclude ketoacidosis?”, “The pH and the bicarbonate fall in different severity bands — which do you treat?”, “His potassium is high: is his total-body potassium high or low, and when does potassium go in?”, “What is his sodium once corrected for the glucose, and his effective osmolality — what does that mean for the choice of fluid?”, “Why no bicarbonate here?”, “The gas is normal — can the infusion stop? What is missing?”, “A glucose that high with an HbA1c that modest — what are the two explanations?”, “Put the time course, the C-peptide and the antibodies together: how do you classify him?”, “How could his carrier state affect HbA1c — and does the diagnosis still stand?”. May explain the relevant principles of the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, JBDS-IP 2023, the Japan Diabetes Society 2012 criteria, the ADA Standards of Care 2026 and the 2014 European hyponatraemia guideline, and — once the learner has read the records — contrast the recorded course (fluids and insulin, a pump from the next day; no place of care, ketone values or potassium recorded) with current practice. Never states the diagnosis or any decision's correct option before the learner commits; adds no data the case lacks (weight and height, conscious level, oxygen saturation, blood ketones, chloride, ECG, pancreatic enzymes, the regimen, the MCV value and the HbA1c method are not recorded), and does not interpret the outcome record."
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Does the absence of fruity breath exclude ketoacidosis?”, “The pH and the bicarbonate fall in different severity bands — which do you treat?”, “His potassium is high: is his total-body potassium high or low, and when does potassium go in?”, “What is his sodium once corrected for the glucose, and his effective osmolality — what does that mean for the choice of fluid?”, “Why no bicarbonate here?”, “The gas is normal — can the infusion stop? What is missing?”, “A glucose that high with an HbA1c that modest — what are the two explanations?”, “Put the time course, the C-peptide and the antibodies together: how do you classify him?”, “How could his carrier state affect HbA1c — and does the diagnosis still stand?”. May explain the relevant principles of the 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus, JBDS-IP 2023, the Japan Diabetes Society 2012 criteria, the ADA Standards of Care 2026 and the 2014 European hyponatraemia guideline, and — once the learner has read the records — contrast the recorded course (fluids and insulin, a pump from the next day; no place of care, blood ketone values or potassium replacement recorded) with current practice. Never states the diagnosis or any decision's correct option before the learner commits; adds no data the case lacks (weight and height, conscious level, oxygen saturation, blood ketones, chloride, ECG, pancreatic enzymes, the regimen, the MCV value and the HbA1c method are not recorded), and does not interpret the outcome record."
       },
       "interprets": [
         "glucose",
@@ -5025,8 +5106,8 @@
       "en": "Debrief: ketoacidosis in the ED, a fulminant onset, and what a haemoglobin trait does to HbA1c"
     },
     "conclusion": {
-      "zh-CN": "24岁男性（BMI 17.62 kg/m²），口渴、多尿 5 天，恶心呕吐 3 天；脉搏 106 次/分，呼吸 25 次/分，血压 106/59 mmHg，皮肤干燥，呼出气没有烂苹果味。血糖 23.8 mmol/L、尿酮体 +++、pH 7.173、HCO₃⁻ 7.1 mmol/L，确立糖尿病酮症酸中毒，按 HCO₃⁻ 属重度；同时有钾 6.23、钠 117.05 mmol/L（校正后约 122–125）和肌酐 179 μmol/L。补液和胰岛素治疗 12 小时后 pH 7.375、HCO₃⁻ 20 mmol/L，次日开始胰岛素泵。入院次日 HbA1c 6.8%，C 肽 50/70 pmol/L，GAD、ICA、IAA 阴性，符合日本糖尿病学会 2012 年暴发性 1 型糖尿病标准。持续小细胞性改变、HbA2 4.6% 和 HBB 第 17 位密码子杂合突变提示 β 地中海贫血携带状态，可使 HbA1c 失真，但诊断依靠起病时间和 C 肽仍然成立。3 个月时 HbA1c 6.9%，C 肽仍低。今天的做法：等渗补液，0.1 U/(kg·h) 静脉胰岛素，血钾高时在心电监护下暂不补钾，不用碳酸氢钠，停输注前先给基础胰岛素，用血糖监测而非 HbA1c 评估控制，并提供携带者咨询。",
-      "en": "A 24-year-old man (BMI 17.62 kg/m²): five days of thirst and polyuria, three of vomiting; pulse 106/min, RR 25/min, BP 106/59 mmHg, dry skin, no fruity breath. Glucose 23.8 mmol/L, urine ketones +++, pH 7.173 and bicarbonate 7.1 mmol/L made it diabetic ketoacidosis, severe by its bicarbonate, with K⁺ 6.23, Na⁺ 117.05 mmol/L (≈ 122–125 corrected) and creatinine 179 μmol/L. After 12 hours of fluids and insulin: pH 7.375, bicarbonate 20 mmol/L; a pump from the next day. HbA1c 6.8 %, C-peptide 50/70 pmol/L and negative GAD, ICA and IAA met the JDS 2012 criteria for fulminant type 1 diabetes. Microcytosis, HbA2 4.6 % and a heterozygous HBB codon 17 variant showed β-thalassaemia trait, which can bias HbA1c; the diagnosis rests on onset and C-peptide. At three months: HbA1c 6.9 %, C-peptide still low. Today: isotonic fluid, insulin 0.1 units/kg/h, potassium withheld under monitoring, no bicarbonate, basal insulin before stopping the infusion, glucose-based monitoring, carrier counselling."
+      "zh-CN": "24岁男性（BMI 17.62 kg/m²），口渴、多尿 5 天，恶心呕吐 3 天；脉搏 106 次/分，呼吸 25 次/分，血压 106/59 mmHg，皮肤干燥，呼出气没有烂苹果味。血糖 23.8 mmol/L、尿酮体 +++、pH 7.173、HCO₃⁻ 7.1 mmol/L，确立糖尿病酮症酸中毒，按 HCO₃⁻ 属重度；同时有钾 6.23、钠 117.05 mmol/L（校正后约 122–125）和肌酐 179 μmol/L。补液和胰岛素治疗 12 小时后 pH 7.375、HCO₃⁻ 20 mmol/L，次日开始胰岛素泵。入院次日 HbA1c 6.8%，C 肽 50/70 pmol/L，GAD、ICA、IAA 阴性，符合日本糖尿病学会 2012 年暴发性 1 型糖尿病标准。持续小细胞性改变、HbA2 4.6% 和 HBB 第 17 位密码子杂合突变提示 β 地中海贫血携带状态，可使 HbA1c 失真，但起病时间和 C 肽两条标准不依赖 HbA1c。3 个月时 HbA1c 6.9%，C 肽仍低。今天的做法：等渗补液，0.1 U/(kg·h) 静脉胰岛素，血钾高时在心电监护下暂不补钾，不用碳酸氢钠，停输注前先给基础胰岛素，用血糖监测而非 HbA1c 评估控制，并提供携带者咨询。",
+      "en": "A 24-year-old man (BMI 17.62 kg/m²): five days of thirst and polyuria, three of vomiting; pulse 106/min, RR 25/min, BP 106/59 mmHg, dry skin, no fruity breath. Glucose 23.8 mmol/L, urine ketones +++, pH 7.173 and bicarbonate 7.1 mmol/L made it diabetic ketoacidosis, severe by its bicarbonate, with K⁺ 6.23, Na⁺ 117.05 mmol/L (≈ 122–125 corrected) and creatinine 179 μmol/L. After 12 hours of fluids and insulin: pH 7.375, bicarbonate 20 mmol/L; a pump from the next day. HbA1c 6.8 %, C-peptide 50/70 pmol/L and negative GAD, ICA and IAA met the JDS 2012 criteria for fulminant type 1 diabetes. Microcytosis, HbA2 4.6 % and a heterozygous HBB codon 17 variant showed β-thalassaemia trait, which can bias HbA1c but not his onset or C-peptide criteria. At three months: HbA1c 6.9 %, C-peptide still low. Today: isotonic fluid, insulin 0.1 units/kg/h, potassium withheld under monitoring, no bicarbonate, basal insulin before stopping the infusion, glucose-based monitoring, carrier counselling."
     },
     "keyReasoning": [
       {
@@ -5052,8 +5133,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "识别并分级酮症酸中毒。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识：血糖 ≥ 11.1 mmol/L 或已知糖尿病，β-羟丁酸 ≥ 3.0 mmol/L（JBDS-IP 2023 也接受尿酮体 ++ 及以上），pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L；轻度 pH > 7.25 且 HCO₃⁻ ≥ 15，中度 pH 7.0–7.25、HCO₃⁻ 10 至 < 15，重度 pH < 7.0、HCO₃⁻ < 10 mmol/L，分级决定治疗地点。他的 pH 属中度、HCO₃⁻ 属重度；没有烂苹果味和呕吐突出都不能改变诊断。报告与现行做法：报告记录了补液和胰岛素，没有记录治疗地点和任何血酮值。",
-        "en": "Recognise and grade DKA. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus: glucose ≥ 11.1 mmol/L or known diabetes, β-hydroxybutyrate ≥ 3.0 mmol/L (JBDS-IP 2023 also accepts urine ketones ++ or more), and pH < 7.3 and/or bicarbonate < 18 mmol/L; mild is pH > 7.25 with bicarbonate ≥ 15, moderate pH 7.0–7.25 with bicarbonate 10 to < 15, severe pH < 7.0 with bicarbonate < 10 mmol/L, and the grade sets the place of care. His pH is moderate but his bicarbonate severe; neither the absent fruity breath nor the prominent vomiting changes the diagnosis. Then and now: the report records fluids and insulin, but not where he was treated or any ketone value."
+        "zh-CN": "识别并分级酮症酸中毒。2024 年 ADA/EASD/JBDS-IP/AACE/DTS 共识：血糖 ≥ 11.1 mmol/L 或已知糖尿病，β-羟丁酸 ≥ 3.0 mmol/L，无法测定时尿酮体 ++ 及以上（JBDS-IP 2023 同样接受），pH < 7.3 和/或 HCO₃⁻ < 18 mmol/L；轻度 pH > 7.25 且 HCO₃⁻ ≥ 15，中度 pH 7.0–7.25、HCO₃⁻ 10 至 < 15，重度 pH < 7.0、HCO₃⁻ < 10 mmol/L，分级决定治疗地点。他的 pH 属中度、HCO₃⁻ 属重度；没有烂苹果味和呕吐突出都不能改变诊断。报告与现行做法：报告记录了补液和胰岛素，没有记录治疗地点和任何血酮值。",
+        "en": "Recognise and grade DKA. The 2024 ADA/EASD/JBDS-IP/AACE/DTS consensus: glucose ≥ 11.1 mmol/L or known diabetes, β-hydroxybutyrate ≥ 3.0 mmol/L or, where it cannot be measured, urine ketones 2+ or more (JBDS-IP 2023 likewise), and pH < 7.3 and/or bicarbonate < 18 mmol/L; mild is pH > 7.25 with bicarbonate ≥ 15, moderate pH 7.0–7.25 with bicarbonate 10 to < 15, severe pH < 7.0 with bicarbonate < 10 mmol/L, and the grade sets the place of care. His pH is moderate but his bicarbonate severe; neither the absent fruity breath nor the prominent vomiting changes the diagnosis. Then and now: the report records fluids and insulin, but not where he was treated or any blood ketone value."
       },
       {
         "zh-CN": "第一小时：补液、胰岛素、钾。2024 年共识：等渗盐水或平衡晶体液最初 2–4 小时 500–1000 mL/h；固定速率静脉胰岛素 0.1 U/(kg·h)；血糖 < 13.9 mmol/L 时加 5%–10% 葡萄糖，胰岛素持续到酮体清除；血钾 < 5.0 mmol/L 才补钾（JBDS-IP 2023：5.5），< 3.5 mmol/L 时推迟胰岛素；pH < 7.0 才考虑碳酸氢钠。血钾 6.23 mmol/L、肌酐 179 μmol/L 时，要心电监护和复查血钾，不能第一袋就加钾。报告与现行做法：报告没有记录方案，只记录 12 小时后 pH 7.375、HCO₃⁻ 20 mmol/L。",
@@ -5064,8 +5145,8 @@
         "en": "Read the sodium with the glucose. A sodium of 117.05 mmol/L with a glucose of 23.8 mmol/L corrects to about 122 mmol/L (adding 1.6 per 5.6 mmol/L of glucose above normal) or 125 mmol/L (adding 2.4) — still a true hyponatraemia — and the effective osmolality (2 × Na⁺ + glucose) is about 258 mOsm/kg. So: isotonic fluid only, never 0.45 % saline; sodium and glucose every 2–4 hours, expecting the measured sodium to rise as the glucose falls; a blood-gas (direct electrode) sodium to exclude pseudohyponatraemia from a lipaemic sample; and a rise in corrected sodium kept within about 10 mmol/L in the first 24 hours, as for chronic hyponatraemia (European hyponatraemia guideline 2014). No later sodium is recorded."
       },
       {
-        "zh-CN": "撤离静脉胰岛素。2024 年共识的纠正标准是血酮 < 0.6 mmol/L 且静脉 pH ≥ 7.3 或 HCO₃⁻ ≥ 18 mmol/L；停输注前至少 1–2 小时给皮下基础胰岛素，之后用基础–餐时方案。他 12 小时的 pH 和 HCO₃⁻ 已达标，但没有记录血酮。报告与现行做法：2010 年的团队次日开始用胰岛素泵；无论长期用注射还是胰岛素泵，都要等皮下胰岛素起效再停输注，并配合胰岛素使用、低血糖处理和病假时监测血酮的结构化教育。",
-        "en": "Come off the infusion safely. The 2024 consensus defines resolution as ketones < 0.6 mmol/L with venous pH ≥ 7.3 or bicarbonate ≥ 18 mmol/L, gives subcutaneous basal insulin at least 1–2 hours before the infusion stops, and continues a basal–bolus regimen. His 12-hour pH and bicarbonate met the thresholds, but no ketone value is recorded. Then and now: the 2010 team began pump treatment the next day; whether injections or a pump follow, the infusion stops only once subcutaneous insulin is working, with structured education on insulin, hypoglycaemia and sick-day ketone checks."
+        "zh-CN": "撤离静脉胰岛素。2024 年共识的纠正标准是血酮 < 0.6 mmol/L 且静脉 pH ≥ 7.3 或 HCO₃⁻ ≥ 18 mmol/L；停输注前至少 1–2 小时给皮下基础胰岛素，之后用基础–餐时方案。他 12 小时的 pH 和 HCO₃⁻ 已达标，但没有记录血酮。报告与现行做法：报告中的团队次日开始用胰岛素泵；无论长期用注射还是胰岛素泵，都要等皮下胰岛素起效再停输注，并配合胰岛素使用、低血糖处理和病假时监测血酮的结构化教育。",
+        "en": "Come off the infusion safely. The 2024 consensus defines resolution as ketones < 0.6 mmol/L with venous pH ≥ 7.3 or bicarbonate ≥ 18 mmol/L, gives subcutaneous basal insulin at least 1–2 hours before the infusion stops, and continues a basal–bolus regimen. His 12-hour pH and bicarbonate met the thresholds, but no ketone value is recorded. Then and now: the report's team began pump treatment the next day; whether injections or a pump follow, the infusion stops only once subcutaneous insulin is working, with structured education on insulin, hypoglycaemia and sick-day ketone checks."
       },
       {
         "zh-CN": "暴发性 1 型糖尿病（日本糖尿病学会 2012 年标准）：高血糖症状出现约 7 天内发生酮症或酮症酸中毒；初诊血糖 ≥ 16.0 mmol/L 且 HbA1c < 8.7%（NGSP；既往已知糖耐量异常者不适用这条）；空腹 C 肽 < 0.10 nmol/L、餐后或胰高糖素刺激后 < 0.17 nmol/L。他的数值：5 天；23.8 mmol/L 和 6.8%；50 和 70 pmol/L。胰岛自身抗体通常阴性，胰岛素需终身使用。报告与现行做法：报告发表于 2010 年，早于 2012 年修订，当时的界值是 HbA1c < 8.5%（JDS 值）；他的 6.8% 两种界值都满足。",
@@ -5121,9 +5202,9 @@
       "Imagawa A, Hanafusa T, Awata T, et al. Report of the Committee of the Japan Diabetes Society on the Research of Fulminant and Acute-onset Type 1 Diabetes Mellitus: new diagnostic criteria of fulminant type 1 diabetes mellitus (2012). J Diabetes Investig. 2012;3(6):536-539. doi:10.1111/jdi.12024",
       "中华医学会糖尿病学分会, 中国医师协会内分泌代谢科医师分会, 中华医学会内分泌学分会, 等. 中国1型糖尿病诊治指南(2021版). 中华糖尿病杂志. 2022;14(11):1143-1250.",
       "American Diabetes Association Professional Practice Committee. 6. Glycemic goals, hypoglycemia, and hyperglycemic crises: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S132-S149. doi:10.2337/dc26-S006",
-      "Sacks DB, Arnold M, Bakris GL, et al. Guidelines and recommendations for laboratory analysis in the diagnosis and management of diabetes mellitus. Clin Chem. 2023;69(8):808-868.",
+      "Sacks DB, Arnold M, Bakris GL, et al. Guidelines and recommendations for laboratory analysis in the diagnosis and management of diabetes mellitus. Clin Chem. 2023;69(8):808-868. doi:10.1093/clinchem/hvad080",
       "Spasovski G, Vanholder R, Allolio B, et al. Clinical practice guideline on diagnosis and treatment of hyponatraemia. Eur J Endocrinol. 2014;170(3):G1-G47. doi:10.1530/EJE-13-1020",
-      "British Society for Haematology. Significant haemoglobinopathies: a guideline for screening and diagnosis. Br J Haematol. 2023."
+      "Bain BJ, Daniel Y, Henthorn J, de la Salle B, Hogan A, Roy NBA, et al. Significant haemoglobinopathies: a guideline for screening and diagnosis: a British Society for Haematology guideline. Br J Haematol. 2023;201(6):1047-1065. doi:10.1111/bjh.18794"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -5847,6 +5928,34 @@
         "text": "Can I get you a glass of water?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "什么时候开始吐的？",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting-duration"
+        ]
+      },
+      {
+        "text": "What seems to be the problem?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "How much water have you been drinking?",
+        "locale": "en",
+        "expect": [
+          "thirst-duration"
+        ]
+      },
+      {
+        "text": "Are there any illnesses that run in your family?",
+        "locale": "en",
+        "expect": [
+          "family-diabetes"
+        ]
       }
     ]
   }

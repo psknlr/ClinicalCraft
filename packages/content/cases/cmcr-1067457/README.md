@@ -22,7 +22,7 @@
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; obstetric, emergency, surgical and ICU residents; obstetric and emergency nurses and midwives |
 | Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an obstetrician, a general or plastic surgeon and an intensivist review it before teaching use |
-| Content | 24 history items (10 not recorded, 7 required) · 10 exam findings · 13 investigations (3 record reviews, 2 without any recorded result) · 19 interventions (6 contraindicated) · 6 objectives · 4 decisions (16 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff characters and 1 relative · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| Content | 24 history items (10 not recorded, 7 required) · 10 exam findings · 13 investigations (3 record reviews, 2 without any recorded result) · 19 interventions (6 contraindicated, 2 of them `critical`) · 6 objectives · 4 decisions (16 options) · 12 rubric items (11 deterministic, weight 28; 1 examiner-judged; 2 critical) · 4 staff characters and 1 relative · 6 learning outcomes · 6 teaching points · 10 references · 39 test utterances |
 
 ## Learning outcomes
 
@@ -53,7 +53,7 @@ GLOSSARY §4). The six HUD `objectives` below are the in-game task list.
 ## Clinical summary (spoilers)
 
 A 29-year-old woman with no regular antenatal care, previously healthy, had an emergency caesarean section for fetal
-distress after an episiotomy and a failed vacuum extraction. Fever began 2 hours after the operation (maximum
+distress after an episiotomy and a failed vacuum extraction. Fever began 2 hours after the operation (reaching
 39.5 °C). Right flank pain grew steadily worse, she had abdominal pain, and from the day after the operation
 extensive bruising appeared over the abdomen and flank; pain and skin changes progressed fast. She also had
 breathlessness and abdominal distension. Cefazolin after the operation, then metronidazole, ceftriaxone and others,
@@ -75,9 +75,9 @@ after the debridement; she needed repeated debridement, skin grafting and flap r
 hospital and was discharged healed.
 
 **Diagnosis (as taught):** a necrotising soft-tissue infection of the abdominal wall, flank and thigh after an
-emergency caesarean — monomicrobial *E. coli* with bacteraemia, reported as acute necrotising fasciitis — with
-sepsis, organ dysfunction and septic shock. The portal of entry (caesarean wound, episiotomy, uterus) is not
-recorded.
+emergency caesarean — *E. coli* grown from the blood and the blister fluid, reported as acute necrotising fasciitis —
+with sepsis, organ dysfunction and septic shock. Whether any other organism grew (and so whether the infection was
+monomicrobial) and the portal of entry (caesarean wound, episiotomy, uterus) are not recorded.
 
 ## Scenario timeline and physiology
 
@@ -124,7 +124,7 @@ Hints are Socratic questions; none contains a key's text (`cases validate` check
 | 1 | `working-diagnosis` | the six core history items, vital signs, abdominal palpation, skin and the four arrival results | a necrotising soft-tissue infection of the abdominal wall and flank with sepsis and organ dysfunction, confirmed only at exploration | wound or flank haematoma from the clotting abnormality (bruising + PT 19.2 s); endometritis with cellulitis — broaden antibiotics and review in 24 h (**close to her course before transfer**); viral illness or drug reaction because the WBC is 1.39×10⁹/L |
 | 2 | `first-hour` | decision 1 | blood cultures, then within the hour IV piperacillin–tazobactam or a carbapenem plus vancomycin (renal doses), balanced crystalloid, and the surgeons called now to explore | switch to meropenem + vancomycin and observe 24 h (**the report-like path**); CT first, surgeons only if gas; plasma and platelets to normalise the clotting first |
 | 3 | `shock-plan` | the four deterioration exam findings | theatre now for exploration and radical debridement, resuscitating as she goes (noradrenaline to MAP 65 mmHg, hydrocortisone if vasopressors persist) | stabilise in ICU and operate once off vasopressors; hyperbaric oxygen first and debride after demarcation; IVIG and wait for susceptibilities |
-| 4 | `after-debridement` | operation note and both cultures read in theatre | second look within 24–48 h and repeated debridement; antibiotics adjusted to susceptibilities and continued until debridement stops and she is afebrile for 48–72 h | one debridement then the ward, fixed 14 days; narrow to ceftriaxone and close at 48 h; flap at the next operation and stop antibiotics after 24 h afebrile |
+| 4 | `after-debridement` | operation note and both cultures read in theatre | second look within 24–36 h (IDSA 2014: 24–36 h after the first debridement, then daily; WSES/SIS-E 2018: first re-exploration within 12–24 h) and repeated debridement; antibiotics adjusted to susceptibilities and continued until debridement stops and she is afebrile for 48–72 h | one debridement then the ward, fixed 14 days; narrow to ceftriaxone and close at 48 h; flap at the next operation and stop antibiotics after 24 h afebrile |
 
 All decisions are single best answer with option-specific feedback naming the guidance. Options were balanced for
 length: the key is the uniquely longest option in no decision in either language.
@@ -144,32 +144,49 @@ length: the key is the uniquely longest option in no decision in either language
 | `rb-no-harm` | Safety · **critical** | no hydroxyethyl starch and no delaying surgery until off vasopressors; `scoredWhen` decision 2 or 3 attempted or either harm done | 3 |
 | `rb-after-debridement` | Management | decision 4 first time and the second look booked | 2 |
 | `rb-baby-team` | Management | the baby's doctors told about the mother's severe infection | 1 |
-| `rb-communication` | Communication (examiner) | plain-language explanation and consent while she is conscious; the relative after intubation (Calgary–Cambridge) | 1 |
+| `rb-communication` | Communication (examiner) | plain-language explanation and consent while she is conscious, with teach-back; the relative after intubation (Calgary–Cambridge, SPIKES for the bad news) | 1 |
 
 Critical items are acts (`intervened`), never a multiple-choice answer, and none can be earned in hindsight: the
 surgical call is credited only when no delaying step came first, which places it in the arrival stage, before the CT,
 the bullae, the cultures and the operative findings.
 
-### How wrong choices score (measured 2026-10-30 with the core engine)
+### How wrong choices score (measured 2026-11-14 with the core engine: `assess`, after the independent review)
 
-| Path | Score | Critical items missed |
-|---|---|---|
-| Reference `solution` | 28/28 (100 %) | none |
-| Start and do nothing | 0/25 (0 %) | `rb-source-control` (`rb-no-harm` not scored) |
-| Wrong first answer at every decision, then the key | 17/28 (61 %) | none |
-| Wrong first at decision 1, 2 or 3 only | 25/28 (89 %) | none |
-| Wrong first at decision 4 only | 26/28 (93 %) | none |
-| Report-like: change antibiotics and observe, surgeons called only after she deteriorates | 24/28 (86 %) | `rb-source-control`; the observation step flagged as contraindicated |
-| CT first, or clotting corrected first, surgeons called after she deteriorates | 24/28 (86 %) | `rb-source-control`; the step flagged |
-| Reference plus hydroxyethyl starch | 25/28 (89 %) | `rb-no-harm`; starch flagged |
-| Reference plus "stabilise and operate once off vasopressors" | 25/28 (89 %) | `rb-no-harm`; the delay flagged |
-| Reference without noradrenaline and hydrocortisone | 25/28 (89 %) | none |
-| Reference without telling the baby's doctors | 27/28 (96 %) | none |
-| Never calls the surgeons and takes no other strategy | 19/28, stuck in the arrival stage | `rb-source-control` |
+| Path | Score | Critical items missed | Safety outcome |
+|---|---|---|---|
+| Reference `solution` | 28/28 (100 %) | none | passed |
+| Start and do nothing | 0/25 (0 %) | `rb-source-control` (`rb-no-harm` not scored) | passed (nothing given) |
+| Wrong first answer at every decision, then the key | 17/28 (61 %) | none | passed |
+| Wrong first at decision 1, 2 or 3 only | 25/28 (89 %) | none | passed |
+| Wrong first at decision 4 only | 26/28 (93 %) | none | passed |
+| Report-like: change antibiotics and observe, surgeons called only after she deteriorates | 24/28 (86 %) | `rb-source-control` | **failed** (`observe-on-antibiotics`) |
+| CT first, clotting corrected first or the wound opened at the bedside, surgeons called after she deteriorates | 24/28 (86 %) | `rb-source-control`; the step flagged as contraindicated | passed |
+| Reference plus hydroxyethyl starch | 25/28 (89 %) | `rb-no-harm`; starch flagged | passed |
+| Reference plus "stabilise and operate once off vasopressors" | 25/28 (89 %) | `rb-no-harm` | **failed** (`delay-until-off-pressors`) |
+| Reference without noradrenaline and hydrocortisone | 25/28 (89 %) | none | passed |
+| Reference without telling the baby's doctors | 27/28 (96 %) | none | passed |
+| Never calls the surgeons and takes no other strategy | 19/28, stuck in the arrival stage | `rb-source-control` | passed |
 
 Ordering cannot be scored by the condition language (CMCR_CASES "Known limits"): "antibiotics before the surgical
 call" or "cultures before antibiotics" are taught in the feedback, and blood cultures are scored by the stage they
 were ordered in. Contraindicated acts appear in the debrief as safety events.
+
+The safety item `rb-no-harm` lists two of the six harmful interventions; the other four (observe on antibiotics, CT
+first, clotting first, bedside opening) are scored by the critical `rb-source-control` item instead, whose `met`
+fails for good once any of them is given. Listing them in both items would charge each delay twice (7 of 28), and
+scoring the call with a time-window `indicatedWhen` would add nothing the stage gate does not already enforce.
+
+**Safety outcome.** `observe-on-antibiotics` and `delay-until-off-pressors` are `critical: true`, contraindicated
+before the operation (the arrival and deterioration stages): putting off source control in a necrotising
+soft-tissue infection with sepsis — by watching her on new antibiotics, or by waiting for her to come off
+vasopressors — is this case's dangerous error (EAST 2018: mortality 14% with debridement within 12 hours against
+25.8% later), so choosing either fails the assessment's safety outcome (`safety.passed: false`) whatever the score,
+and every debrief and export shows it beside the score. `imaging-before-surgery`, `correct-clotting-first`,
+`bedside-wound-opening` and `starch-colloid` are `critical: false`: harmful but recoverable misjudgements (a delay of
+hours that the surgical call still corrects, or one avoidable fluid) that show their harm text and cost a critical
+rubric item without failing the safety outcome on their own. The two high-risk interventions, `intubation` and
+`planned-relook`, have no contraindication in this case; no preset doses are set (the antibiotic, fluid,
+vasopressor and steroid texts are schedules, titrations or alternatives).
 
 ## Reference path (`solution`)
 
@@ -233,12 +250,17 @@ Derived values (editorial, for teaching; none is shown as a recorded result):
   "about day 5" counts from the onset, the diagnosis and debridement came about 3 days after the transfer. The
   starting point of the report's count is to verify.
 * The recorded calcium of 62 mmol/L is not physiologically possible; no corrected value is offered.
-* No weight is recorded, so 30 mL/kg and vancomycin doses are left as formulas.
+* No weight is recorded, so the vancomycin dose is left as a formula; the fluid volume follows SMFM 2023 (1–2 L in
+  the first 3 hours), which needs no weight.
 
-Doses in the case are guideline and labelling formulas, not the report's: piperacillin–tazobactam 4.5 g IV every
-6–8 h or meropenem 1 g every 8 h, renally adjusted; vancomycin by weight and levels; clindamycin considered while
-streptococcal infection is possible; balanced crystalloid boluses of about 500 mL up to 30 mL/kg in 3 hours;
-noradrenaline to MAP 65 mmHg; hydrocortisone 50 mg IV every 6 hours (200 mg/day).
+Doses in the case are the cited guidance's, not the report's: piperacillin–tazobactam 3.375 g IV every 6–8 h or
+meropenem 1 g IV every 8 h, renally adjusted, and vancomycin 30 mg/kg a day in 2 divided doses with normal kidney
+function, then by levels and renal function (IDSA 2014, table of necrotising-infection regimens); clindamycin
+considered while streptococcal infection is possible (IDSA 2014); balanced crystalloid 1–2 L within the first
+3 hours in 250–500 mL boluses, reassessed after each (SMFM 2023 — more restrictive than the SSC's 30 mL/kg because of
+the lower oncotic pressure and pulmonary-oedema risk around pregnancy; her albumin is 11.2 g/L); noradrenaline to MAP
+65 mmHg (SSC 2026; SMFM 2023); hydrocortisone 50 mg IV every 6 hours (200 mg/day) if vasopressors are still needed;
+second look 24–36 hours after the first debridement, then daily (IDSA 2014).
 
 ## Facilitator notes
 
@@ -254,6 +276,8 @@ noradrenaline to MAP 65 mmHg; hydrocortisone 50 mg IV every 6 hours (200 mg/day)
    * "Could this be a haematoma? What made infection the better explanation, and did it change what you did?"
    * "She had already had three antibiotics. Was the problem the drugs?"
    * "Why not CT first? When does imaging help, and when does it hurt?"
+   * "How much fluid did you give her, and what would have made you stop? Why does SMFM 2023 advise less than the
+     SSC's 30 mL/kg around pregnancy — and what does an albumin of 11.2 g/L add?"
    * "When she went into shock, was she too sick for theatre?"
    * "After the first debridement, how did you decide when she goes back?"
    * "She recovered after 403 days. What does that tell you about the timing — and what does it not?"
@@ -267,12 +291,13 @@ noradrenaline to MAP 65 mmHg; hydrocortisone 50 mg IV every 6 hours (200 mg/day)
 |---|---|---|
 | Reassured by a low white count or a qSOFA of 1 | decision 1 distractor; attending prompts; teaching point 2 | `rb-working-diagnosis` |
 | Bruising read as a haematoma from the coagulopathy | decision 1 distractor; "correct the clotting first" trap | `rb-working-diagnosis`, `rb-source-control` |
-| Escalating antibiotics and observing (her course before transfer) | decision 2 distractor; `observe-on-antibiotics` contraindicated | `rb-first-hour-plan`, `rb-source-control` (critical) |
+| Escalating antibiotics and observing (her course before transfer) | decision 2 distractor; `observe-on-antibiotics` contraindicated and `critical` | `rb-first-hour-plan`, `rb-source-control` (critical); the safety outcome fails |
 | CT before the surgical call | decision 2 distractor; `imaging-before-surgery` contraindicated; CT has no result on arrival | `rb-first-hour-plan`, `rb-source-control` |
 | Normalising the clotting before deciding on surgery | decision 2 distractor; `correct-clotting-first` contraindicated | `rb-first-hour-plan`, `rb-source-control` |
 | Bedside opening of the wound as "source control" | `bedside-wound-opening` contraindicated | `rb-source-control` |
 | A colloid because the albumin is 11.2 g/L | `starch-colloid` contraindicated | `rb-no-harm` (critical) |
-| "Too unstable for theatre" once in shock | decision 3 distractor; `delay-until-off-pressors` contraindicated | `rb-shock-plan`, `rb-no-harm` |
+| 30 mL/kg given reflexively to a woman two days after birth with an albumin of 11.2 g/L | the fluid order's dose text and teaching point 3 (SMFM 2023: 1–2 L, reassessed) | not scored (volumes are not simulated) |
+| "Too unstable for theatre" once in shock | decision 3 distractor; `delay-until-off-pressors` contraindicated and `critical` | `rb-shock-plan`, `rb-no-harm`; the safety outcome fails |
 | Hyperbaric oxygen or IVIG instead of debridement | decision 3 distractors | `rb-shock-plan` |
 | One debridement, early closure or narrowing on "usual" susceptibility | decision 4 distractors | `rb-after-debridement` |
 | Forgetting the baby | `inform-baby-team` | `rb-baby-team` |
@@ -305,7 +330,7 @@ noradrenaline to MAP 65 mmHg; hydrocortisone 50 mg IV every 6 hours (200 mg/day)
 
 **From the report, via version 1.0.0 (kept as fact).** Every fact in the extraction map above: her age; the emergency
 caesarean for fetal distress after an episiotomy and a failed vacuum extraction; no regular antenatal care; previously
-healthy; fever from 2 hours after the operation to a maximum of 39.5 °C; abdominal pain and worsening right flank
+healthy; fever from 2 hours after the operation, reaching 39.5 °C; abdominal pain and worsening right flank
 pain; extensive abdominal and flank bruising from the next day, with pain and skin changes progressing fast;
 breathlessness and distension; cefazolin, then metronidazole, ceftriaxone and others without improvement; transfer on
 day 2; the arrival examination and bloods; bullae, mottled legs, septic shock, loss of consciousness and intubation
@@ -325,8 +350,13 @@ the decisions, interventions, rubric, feedback, teaching points and doses (curre
 * The delivery: the Chinese history says an episiotomy was done and vacuum extraction failed ("侧切和胎头吸引失败后");
   the English says "attempted episiotomy/vacuum delivery". The case follows the Chinese reading (she was cut and the
   suction cup failed) and lists the point to verify.
-* Temperature 39.5 °C (the maximum before transfer, history) and 39.6 °C (on arrival, examination) are different time
-  points; both are kept and labelled.
+* Temperature 39.5 °C (reached before the transfer, history: 1.0.0 "体温曾到39.5℃" / "fever reaching 39.5°C") and
+  39.6 °C (on arrival, examination) are different time points; both are kept and labelled. The case says "reached",
+  not "maximum": 1.0.0 does not call 39.5 °C the peak, and the arrival reading is higher.
+* The antibiotics: 1.0.0 records cefazolin after the operation, "later" metronidazole, ceftriaxone and others; whether
+  the cefazolin was stopped (a switch) or continued is not recorded, so the case says "then", not "switched".
+* "The next day" (第二天) for the bruising is read as the day after the operation; the thigh bruising is recorded only
+  in the arrival examination, so no text dates it earlier.
 * The English feedback of a 1.0.0 decision says "bruising preceded later anticoagulation"; the Chinese says only that
   bruising was present before admission, and no anticoagulant appears anywhere else. No anticoagulant is mentioned in
   this version; to verify.
@@ -344,7 +374,8 @@ gestational age and labour (membrane rupture, intrapartum fever); allergies, pre
 gestational diabetes; the caesarean wound, perineum, uterus and lochia, urine output, skin sensation; SpO₂, GCS,
 weight; antibiotic doses, routes and timing before transfer and the regimen after it; any anticoagulant; CRP,
 procalcitonin, sodium, glucose, blood gas, INR, APTT, fibrinogen, D-dimer and a usable calcium; the blood pressure,
-lactate, fluids, vasopressors and blood products during the shock; the *E. coli* susceptibilities; the timing of
+lactate, fluids, vasopressors and blood products during the shock; the *E. coli* susceptibilities and whether any other
+organism grew; the timing of
 the CT and cultures; the dates, number and extent of the operations, the grafts and flaps; the ICU course and
 extubation; function and follow-up after discharge.
 
@@ -397,28 +428,33 @@ Details to look for in the full article (the source check is pending):
   survey's critic recommended.
 * Whether a relative was present (the companion is a teaching device).
 
-Guidance details to confirm in the full texts (taken from abstracts, guideline pages and secondary summaries):
-* SSC 2026: volume and pages; the exact wording and grades of antibiotics within 1 hour, blood cultures before
-  antimicrobials, 30 mL/kg, source control "ideally within 6 hours", noradrenaline first-line, the initial MAP target
-  of 65 mmHg and the corticosteroid suggestion (dose and trigger); any statement on starches and on qSOFA.
-* IDSA 2014: the planned return to theatre (recalled as 24–36 hours after the first debridement and daily
-  thereafter; the case uses 24–48 hours), the empirical-regimen table and doses, and the hyperbaric-oxygen wording
-  (found in a secondary summary of the clostridial myonecrosis section).
-* SMFM Consult #67 (2023): its antibiotic-timing and vasopressor recommendations (only the fluid, starch/gelatin and
-  "medical emergency" points were confirmed).
+Guidance details to confirm in the full texts. Checked in the independent review of 2026-11-14: IDSA 2014 in full
+(the 24–36-hour return to theatre and daily thereafter, the table doses, antibiotics until no further debridement and
+48–72 hours afebrile, the small exploratory incision, CT or MRI delaying treatment, hyperbaric oxygen in the
+clostridial section, IVIG unproven); SMFM Consult #67 in full (medical emergency; antibiotics within 1 hour, GRADE 1C;
+1–2 L balanced crystalloid within 3 hours, 1C, with its warning that 30 mL/kg may be too aggressive in pregnancy;
+no starches or gelatin, 1A; noradrenaline first, 1C; corticosteroids if vasopressors persist, 2B; ACOG endorsement);
+the SSC 2026 guideline page (source control ideally within 6 hours; at least 30 mL/kg; balanced crystalloids; no
+starches; MAP 65 mmHg; IV corticosteroids suggested; antimicrobials within 1 hour); the EAST 2018 abstract (within
+12 hours of suspected diagnosis; 14% against 25.8%; DOI); the WSES/SIS-E 2018 author list (Europe PMC) and its NSTI
+statements as quoted in a secondary summary (source control within 12 hours, 1B; first re-exploration within
+12–24 hours, 1C); Wong 2004's authors and DOI. Still to confirm:
+* SSC 2026: volume and pages (one listing gives 2026;54(4):725-812); the exact corticosteroid wording (whether it
+  keeps "ongoing vasopressor requirement") and the dose the panel describes.
+* WSES/SIS-E 2018: the full text — its NSTI antibiotic table and doses, and its wording on imaging, hyperbaric oxygen
+  and IVIG.
 * RCOG Green-top Guideline No. 64 (2024): its recommendations on antibiotic timing, lactate and the obstetric early
-  warning score, and its BJOG citation and DOI (not confirmed, so it is cited without one and is not listed as a
-  guideline the case was checked against).
-* WSES/SIS-E 2018: full author list; the NSTI statements and grades (timing, re-look, imaging, hyperbaric oxygen,
-  IVIG, LRINEC) — only the abstract was confirmed.
-* EAST 2018 (Gelbard et al.): DOI. Wong 2004 (LRINEC): full author list and DOI.
+  warning score, and any journal version or DOI (the RCOG page lists it as published on 19 December 2024; it is cited
+  without a DOI and is not listed as a guideline the case was checked against).
 * 成人坏死性筋膜炎诊治专家共识（2025版）: its recommendations (only its citation and DOI were confirmed; it is cited as
   further reading).
-* The doses used in the interventions (piperacillin–tazobactam 4.5 g every 6–8 h, meropenem 1 g every 8 h,
-  hydrocortisone 50 mg every 6 h, vancomycin loading by weight) against the current Chinese labels and local
-  formularies.
+* The doses used in the interventions (piperacillin–tazobactam 3.375 g every 6–8 h, meropenem 1 g every 8 h and
+  vancomycin 30 mg/kg a day, as IDSA 2014 tabulates them; hydrocortisone 50 mg every 6 h) against the current Chinese
+  labels and local formularies — many formularies use piperacillin–tazobactam 4.5 g every 6–8 h in severe sepsis.
 * Clinician input: an obstetrician, a general or plastic surgeon and an intensivist should review decisions 2–4,
-  in particular the re-look interval and the antibiotic choice when allergy status is unknown.
+  in particular the re-look interval (IDSA 24–36 h against WSES 12–24 h), the fluid volume two days after birth with an
+  albumin of 11.2 g/L, the antibiotic choice when allergy status is unknown, and which delays should fail the safety
+  outcome (`critical`).
 
 ## Matcher notes
 
@@ -435,7 +471,9 @@ Guidance details to confirm in the full texts (taken from abstracts, guideline p
 * **Orders.** No bare "CT", "PT" or "HES" alias (substrings of other words); the CT answers to "CT扫描/腹部CT/ct scan/
   ct abdomen", clotting to "凝血/prothrombin time/inr", starch to "羟乙基淀粉/hydroxyethyl starch". The skin-fluid
   culture has a neutral name ("Skin and wound fluid culture") so no bullae are announced before they appear; its
-  aliases include 水疱液/blister fluid.
+  aliases include 水疱液/blister fluid. The operation note and the histology are named "Operation note / 手术记录" and
+  "Tissue histopathology / 组织病理检查" (no "findings at exploration" or "excised tissue" in the order list before
+  the surgical call); their aliases still reach them.
 
 ## References
 
@@ -451,20 +489,23 @@ Guidance details to confirm in the full texts (taken from abstracts, guideline p
    doi:10.1016/j.ajog.2023.05.019
 5. Royal College of Obstetricians and Gynaecologists. Identification and management of maternal sepsis during and
    following pregnancy. Green-top Guideline No. 64. London: RCOG; 2024.
-6. Sartelli M, et al. 2018 WSES/SIS-E consensus conference: recommendations for the management of skin and
-   soft-tissue infections. World J Emerg Surg. 2018;13:58. doi:10.1186/s13017-018-0219-9
+6. Sartelli M, Guirao X, Hardcastle TC, Kluger Y, Boermeester MA, Raşa K, et al. 2018 WSES/SIS-E consensus
+   conference: recommendations for the management of skin and soft-tissue infections. World J Emerg Surg.
+   2018;13:58. doi:10.1186/s13017-018-0219-9
 7. Gelbard RB, Ferrada P, Yeh DD, et al. Optimal timing of initial debridement for necrotizing soft tissue infection:
    a Practice Management Guideline from the Eastern Association for the Surgery of Trauma. J Trauma Acute Care Surg.
-   2018;85(1):208-214.
-8. Wong CH, et al. The LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) score: a tool for distinguishing
-   necrotizing fasciitis from other soft tissue infections. Crit Care Med. 2004;32(7):1535-1541.
-9. 中华医学会烧伤外科学分会, 《中华烧伤与创面修复杂志》编辑委员会, 中国医疗保健国际交流促进会烧伤医学分会.
-   成人坏死性筋膜炎诊治专家共识(2025版). 中华烧伤与创面修复杂志. 2025;41(7):613-627.
-   doi:10.3760/cma.j.cn501225-20250329-00150
+   2018;85(1):208-214. doi:10.1097/TA.0000000000001857
+8. Wong CH, Khin LW, Heng KS, Tan KC, Low CO. The LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) score:
+   a tool for distinguishing necrotizing fasciitis from other soft tissue infections. Crit Care Med.
+   2004;32(7):1535-1541. doi:10.1097/01.CCM.0000129486.35458.7D
+9. Singer M, Deutschman CS, Seymour CW, Shankar-Hari M, Annane D, Bauer M, et al. The Third International Consensus
+   Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810. doi:10.1001/jama.2016.0287
+10. 中华医学会烧伤外科学分会, 《中华烧伤与创面修复杂志》编辑委员会, 中国医疗保健国际交流促进会烧伤医学分会.
+    成人坏死性筋膜炎诊治专家共识(2025版). 中华烧伤与创面修复杂志. 2025;41(7):613-627.
+    doi:10.3760/cma.j.cn501225-20250329-00150
 
-These nine strings are `debrief.references`. Also named in the case's feedback: Sepsis-3 (Third International
-Consensus Definitions for Sepsis and Septic Shock, 2016) for the definition of sepsis as infection with organ
-dysfunction.
+These ten strings are `debrief.references`. Sepsis-3 (ref. 9) is the definition of sepsis as infection with
+life-threatening organ dysfunction that the feedback and teaching points use.
 
 **How they were checked (2026-10-30).** PMC, BMC and the publishers' sites could not be fetched from this environment,
 so each item was confirmed by web search against indexing records, society pages and secondary summaries: ref. 2
@@ -476,15 +517,43 @@ doi:10.1186/s13017-018-0219-9), ref. 7 (EAST page and indexing records: 2018;85(
 (secondary summaries: 2004;32(7):1535-1541), ref. 9 (journal page: 2025;41(7):613-627 and its DOI). The source
 article's DOI is the one verified in `scripts/cmcr-105-sources.json` (publisher check 2026-10-29). The 1.0.0
 guideline string ("IDSA. Skin and Soft Tissue Infection Guideline.2014" with a society URL) was replaced by the
-Vancouver citation.
+Vancouver citation. **Re-checked 2026-11-14 (independent review):** the IDSA 2014 full text (publisher page) and the
+SMFM #67 full text (SMFM PDF) were read; ref. 7's DOI and ref. 8's authors and DOI were confirmed from indexing
+records, ref. 6's author list from Europe PMC, ref. 3's statements from the SCCM guideline page and ref. 5's
+publication date from the RCOG page; ref. 9 (Sepsis-3) was added because the feedback cites it.
 
 ## Changelog
 
-### 1.1.0 — 2026-10-30
+### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
 
-1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked
-against the full source article.
-
+* **Independent review (2026-11-14), applied.**
+  * *Facts.* Invented timing removed: "pain and skin changes progressing within a day" (key reasoning and teaching
+    point 1, zh 一天之内) now says "rapidly", as 1.0.0 records. The facilitator's diagnosis no longer calls the
+    infection "monomicrobial" (only *E. coli* in blood and blister fluid is recorded; any other organism is unknown).
+    39.5 °C is "reached", not the "maximum" (1.0.0: 体温曾到39.5℃; the arrival reading is 39.6 °C); the later
+    antibiotics are "then", not a "switch" (换成/改用), and the hint, the attending and one feedback no longer say
+    they were changed "twice" or "again and again" (换过两次/一换再换) — 1.0.0 records cefazolin, then
+    metronidazole, ceftriaxone and others; the diagnostic feedback says fever "from 2 hours", not "from hours"
+    (数小时); the English conclusion now states the same facts as the Chinese one.
+  * *Guidance.* Fluids follow SMFM 2023 (1–2 L of balanced crystalloid within the first 3 hours, reassessed after
+    each bolus) — the decision-2 feedback had attributed "up to 30 mL/kg" to SSC 2026, which says "at least
+    30 mL/kg", and SMFM 2023 warns that 30 mL/kg may be too aggressive in pregnancy. The second look is 24–36 hours
+    after the first debridement, then daily (IDSA 2014; WSES/SIS-E 2018: first re-exploration within 12–24 hours),
+    not "24–48 hours", which no cited guidance gives. The bedside-opening harm no longer says a bedside incision
+    cannot show the fascia (IDSA 2014: a small exploratory incision can confirm the diagnosis) — it cannot debride and
+    must not delay theatre. Antibiotic doses are IDSA 2014's table doses (piperacillin–tazobactam 3.375 g every
+    6–8 h; vancomycin 30 mg/kg a day in 2 doses, then by levels). The endometritis feedback no longer says cellulitis
+    cannot cause kidney injury or a clotting abnormality.
+  * *Safety outcome.* `observe-on-antibiotics` and `delay-until-off-pressors` are `critical: true`, contraindicated
+    before the operation (the report-like delay and "too unstable for theatre" now fail the safety outcome); the other
+    four traps are `critical: false`. The missing **Safety outcome.** paragraph and **安全结果。** sentence were added.
+  * *Spoilers.* Objective hints no longer state results not yet obtained (the low white count, the shock, "she left
+    hospital healed"); the theatre guidance no longer says "first" exploration; the operation note and histology names
+    no longer say "findings at exploration" or "excised tissue". The library summary no longer says "持续".
+  * *Polish.* Two distractors no longer refer to "the same" antibiotics as another option, and the CT distractor says
+    "gas or fluid" in both languages; the attending debriefs with PEARLS; the communication item names SPIKES for the
+    relative; references gain EAST's DOI, LRINEC's authors and DOI, WSES's authors and Sepsis-3; a debrief question on
+    fluids. Scores and the reference path are unchanged (re-measured above).
 * **Safety and validity (survey audit and critic).** The diagnostic decision now opens on arrival, before any CT,
   culture, operative finding or histology (1.0.0 opened it after the histology). The management key names the acts —
   cultures, IV piperacillin–tazobactam or a carbapenem plus vancomycin within the hour, balanced crystalloid and an
@@ -527,14 +596,18 @@ against the full source article.
 
 ### 1.0.0
 
-* Initial template version (PR #5).
+* Initial template version (PR #5, 2026-10-28): three stages (`initial`, `workup`, `followup`), 15 generic history
+  slots (seven answered "the source notes do not provide that information"), two bundled examination records, five
+  bundled record reviews, no interventions, and three decisions of three options (`supported`/`alternative-N`) that
+  opened only after the histology. Its critical item was a hindsight question (whether recovery showed the delay was
+  safe), answered after the outcome record.
 
 ## Validation
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1067457/case.json --strict --lang en   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1067457 --lang en        # 75 steps · objectives 6/6 · decisions 4/4 · utterances 39/39 · rubric 28/28
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1067457                   # PASS (depth floor, do nothing 0, wrong-first < reference)
+npx tsx --conditions=source scripts/case-check.ts cmcr-1067457                                   # PASS (depth floor, do nothing 0, wrong-first < reference)
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1067457:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1067457:"  # demonstration, en + zh-CN
 ```
@@ -542,7 +615,7 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 ## 中文摘要
 
 **病例概要。** 29岁女性，孕期未正规产检，既往体健；因胎儿窘迫行会阴侧切和胎头吸引失败后急诊剖宫产。术后2小时起发热
-（最高39.5 ℃），腹痛，右侧腰痛进行性加重，术后次日起腰腹部大片瘀斑，疼痛和皮肤改变进展很快，伴气促、腹胀；外院先后
+（曾达39.5 ℃），腹痛，右侧腰痛进行性加重，术后次日起腰腹部大片瘀斑，疼痛和皮肤改变进展很快，伴气促、腹胀；外院先后
 用头孢唑林及甲硝唑、头孢曲松等无效，术后第2天转院。到达时神志尚清、被动体位，体温39.6 ℃，心率170次/分，呼吸44次/分，
 血压108/70 mmHg；腹膨隆，压痛、反跳痛右侧明显，肠鸣音弱，腰腹部和左大腿上部大片紫红色瘀斑。白细胞1.39×10⁹/L，
 血红蛋白94 g/L，血小板108×10⁹/L，肌酐205 μmol/L，白蛋白11.2 g/L，乳酸5.52 mmol/L，PT 19.2 s（血钙记录为62 mmol/L，
@@ -562,13 +635,20 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **关键决策。** ① 到达时的工作诊断：坏死性软组织感染伴脓毒症和器官功能障碍（干扰项：凝血异常致血肿、子宫内膜炎合并
 蜂窝织炎换药复评——接近她转院前的经过、白细胞低故非细菌感染）；② 第一个小时：留血培养，1小时内哌拉西林他唑巴坦或碳青
 霉烯类加万古霉素，平衡晶体液，立即请外科探查（干扰项：换美罗培南观察24小时——原报告式路径、先做CT、先纠正凝血）；③ 休克
-时：立即手术、复苏同时进行（干扰项：先稳定再手术、先做高压氧、免疫球蛋白加等药敏）；④ 首次清创后：24～48小时计划性
-再次探查，按药敏调整抗菌药物并用到不再清创且退热48～72小时（干扰项：一次清创即可、改头孢曲松并早期缝合、早期皮瓣）。
+时：立即手术、复苏同时进行（干扰项：先稳定再手术、先做高压氧、免疫球蛋白加等药敏）；④ 首次清创后：24～36小时计划性
+再次探查（IDSA 2014；WSES/SIS-E 2018建议12～24小时内），按药敏调整抗菌药物并用到不再清创且退热48～72小时（干扰项：一次
+清创即可、改头孢曲松并早期缝合、早期皮瓣）。补液按SMFM 2023：最初3小时内平衡晶体液1～2 L、每次推注后复评，而不是机械地给
+30 mL/kg（她产后2天、白蛋白11.2 g/L）。
 
 **复盘要点（PEARLS）。** 先谈感受；复述第一个小时的判断、送检、用药和何时请外科；分析：白细胞1.39让你放心还是担心、qSOFA
 与SIRS哪个更能说明问题、LRINEC能算出几分、血肿还是感染、问题出在药上还是感染源、为什么不先做CT、休克时能否上手术台、
-首次清创后何时再回手术室、403天的痊愈能否说明时机安全、对患者和家属说了什么；总结下次遇到剖宫产后发热、剧痛和大片
-瘀斑时怎么做。关键评分：到达阶段就请外科且之前没有拖延步骤（关键项）、不用羟乙基淀粉且休克时不推迟手术（关键项）。
+首次清创后何时再回手术室、补多少液体、403天的痊愈能否说明时机安全、对患者和家属说了什么；总结下次遇到剖宫产后发热、
+剧痛和大片瘀斑时怎么做。关键评分：到达阶段就请外科且之前没有拖延步骤（关键项）、不用羟乙基淀粉且休克时不推迟手术（关键项）。
+
+**安全结果。** `observe-on-antibiotics`（换药观察24小时）和 `delay-until-off-pressors`（停用升压药后再手术）标为
+`critical: true`，在手术前（到达和病情恶化阶段）禁忌：推迟坏死性软组织感染的感染源控制是本病例的危险错误，选择其中任一项，
+无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示；先做CT、先纠正凝血、床旁拆开
+刀口和羟乙基淀粉标为 `critical: false`，为有害但可挽回的误判，显示伤害说明并失去关键评分项的分值。
 待核实：时间线和“约第5天”的起算点、分娩细节和新生儿情况、外院用药剂量、到达时的其余查体和化验、血钙数值、休克时的
 治疗、药敏、各次手术和5张原图的内容（见上文 To verify）。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业
 医师审核。

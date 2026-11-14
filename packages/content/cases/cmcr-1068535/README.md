@@ -24,9 +24,9 @@ stays unknown.
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a colorectal surgeon or clinical oncologist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30; independent review 2026-11-14); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a colorectal surgeon or clinical oncologist review it before teaching use |
 | phases | `admission` 入院评估 / Admission assessment → `diversion` 第一次手术之后 / After the first operation → `restaging` 新辅助治疗后再评估 / Restaging after neoadjuvant treatment → `postop` 术后病理与早期复查 / Pathology and early post-operative review → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
-| content | 22 history items (11 recorded facts, 1 labelled teaching device, 10 unknown; 9 required; 1 phase twin) · 1 exam finding (the rectal examination, the only one recorded) · 19 investigations (10 record reviews; 5 orderable tests without a recorded result, one of them neutral and one low-value) · 15 interventions (7 that can be contraindicated — 2 of them the report's own steps, when given out of order) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| content | 22 history items (11 recorded facts, 1 labelled teaching device, 10 unknown; 9 required; 1 phase twin) · 1 exam finding (the rectal examination, the only one recorded) · 19 investigations (10 record reviews; 5 orderable tests without a recorded result, one of them neutral and one low-value) · 15 interventions (7 that can be contraindicated — 2 of them the report's own steps, when given out of order) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 40 test utterances |
 
 ## Learning outcomes
 
@@ -43,14 +43,15 @@ After the case the learner can:
    tract of a man with fevers — a defunctioning colostomy and culture-guided antibiotics before neoadjuvant treatment —
    and explain why a stent is not the bridge for a tumour 4 cm from the anal verge (ESGE 2020; EAU 2025).
 4. Choose neoadjuvant treatment by MMR status — immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR
-   tumours (ASCO 2024) — and plan an en bloc multivisceral resection for clear (R0) margins in a specialist centre,
-   sized to the pre-treatment extent rather than to the regression on restaging (Beyond TME Collaborative consensus,
-   2013).
+   tumours (ASCO 2024) — and plan with a specialist team an en bloc resection of the invaded organs for clear (R0)
+   margins (ASCRS 2020; Beyond TME Collaborative consensus, 2013), explaining why regression on restaging does not by
+   itself justify a smaller operation.
 5. Interpret a pathological complete response (no residual cancer, 0/22 nodes) correctly — favourable, but neither
    proof of cure nor proof after the event that organ preservation would have been safe — and plan the
    further-chemotherapy discussion and five-year surveillance (ASCRS 2021 surveillance guideline).
 6. Explain the staged plan — a bowel stoma first, possibly a urinary stoma later — in plain words, obtain consent, and
-   arrange preoperative stoma-site marking and teaching (WOCN Society and ASCRS joint position statement, 2014).
+   arrange preoperative stoma-site marking and teaching before each stoma operation (WOCN Society, AUA and ASCRS joint
+   position statement on preoperative stoma-site marking, 2021).
 
 These are the case's `learningOutcomes` (shown before play only on request; listed in every debrief). The six HUD
 `objectives` below are the in-game task list.
@@ -70,7 +71,7 @@ narrowing the lumen, not tender, its upper edge out of reach; a little blood on 
 lumen; biopsy, **moderately differentiated adenocarcinoma**. Pelvic MRI and cystoscopy (recorded together): **tumour
 through the rectal wall into the bladder, intestinal contents in the bladder**, an approximately 6 × 6 cm mass at the
 bladder neck/trigone and multiple pelvic lymph nodes. Chest radiograph and abdominal ultrasound: no definite distant
-metastasis. Blood count, chemistry and tumour markers reported normal; urine leucocytes ++. The team's initial clinical
+metastasis. Blood count, chemistry and tumour markers reported normal; urine leucocytes ++. The recorded initial clinical
 stage: **T4bN2M0, with fistula, partial obstruction, bleeding and infection**.
 
 **Diagnosis.** Locally advanced low rectal adenocarcinoma (cT4bN2M0) invading the bladder with a rectovesical fistula,
@@ -83,25 +84,28 @@ pathological complete response — and an early post-operative MRI showed no def
 recommended; whether he completed it, and whether the cancer recurred, is not recorded.
 
 **Today's answer.** The recorded sequence still stands — divert and control the infection first, neoadjuvant
-treatment, then an en bloc R0 resection planned on the pre-treatment extent in a specialist centre — but today's
-staging adds contrast CT of chest, abdomen and pelvis and MMR/MSI testing (NCCN Rectal Cancer 3.2024), the neoadjuvant
-plan follows MMR status (immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR: ASCO 2024), and the plan
-after a complete response is five-year surveillance (ASCRS 2021) with an individual decision on further chemotherapy.
+treatment, then an en bloc R0 resection of the invaded organs by a specialist team (ASCRS 2020; Beyond TME 2013) — but
+today's staging adds contrast CT of chest, abdomen and pelvis and MMR/MSI testing (NCCN Rectal Cancer 3.2024), the
+neoadjuvant plan follows MMR status (immunotherapy for dMMR/MSI-H, total neoadjuvant therapy for pMMR: ASCO 2024), and
+the plan after a complete response is five-year surveillance (ASCRS 2021) with further chemotherapy recommended for
+stage II–III disease (ASCRS 2020) but decided with him, since its benefit after a complete response rests on
+observational evidence.
 
-## Scenario timeline (staged evidence by phase)
+## Scenario timeline and physiology
 
-Static clock; phases advance by themselves once their gates hold, and none can be selected again.
+Static clock (`clock.mode` "static", no `physiology`: the report establishes no physiological response model); phases
+advance by themselves once their gates hold, and none can be selected again.
 
 | phase | opens when | what the learner meets |
 |---|---|---|
 | `admission` 入院评估 | start | the patient on the ward bed; history (10 recorded answers, 1 teaching device, 10 unknown); the rectal examination; record reviews of the colonoscopy, biopsy, pelvic MRI and cystoscopy, chest radiograph and abdominal ultrasound; orderable admission bloods (reported normal) and urinalysis (leucocytes ++); urine culture, contrast CT, MMR/MSI testing, a plain abdominal film (neutral) and PET-CT (low-value) can be ordered but have no recorded result; decisions 1–3 |
-| `diversion` 第一次手术之后 | objectives 1–3 complete — the history, the work-up with decisions 1 and 2, and decision 3 **plus a committed first act** (colostomy, chemoradiotherapy, stent, exenteration or discharge) | the phase text gives the team's initial stage (T4bN2M0 with fistula, partial obstruction, bleeding and infection) and the recorded first step (transverse colostomy); his status (twin of the admission symptom items); the progress note (symptoms relieved); the neoadjuvant referral |
+| `diversion` 第一次手术之后 | objectives 1–3 complete — the history, the work-up with decisions 1 and 2, and decision 3 **plus a committed first act** (colostomy, chemoradiotherapy, stent, exenteration or discharge) | the phase text gives the recorded initial stage (T4bN2M0 with fistula, partial obstruction, bleeding and infection) and the recorded first step (transverse colostomy); his status (twin of the admission symptom items); the progress note (symptoms relieved); the neoadjuvant referral |
 | `restaging` 新辅助治疗后再评估 | objective 4 complete (status asked, note read, neoadjuvant chemoradiotherapy given) | the restaging imaging (regression only); decision 4 and the definitive act |
 | `postop` 术后病理与早期复查 | objective 5 complete (restaging read, decision 4, an operation or plan booked) | the phase text gives the recorded operation (total pelvic exenteration with ureterocutaneous diversion); the specimen pathology (no residual cancer, 0/22 nodes) and the early post-operative MRI (no definite lesion); decision 5, surveillance and the chemotherapy discussion |
 | `followup` 记录的病程与结局 | objectives 1–5 complete and decision 5 answered — i.e. after every decision | the outcome record, with the approved figure 1 (MRI, specimen and stoma composite) |
 
 No result appears before the decision it answers: decision 1 opens on the history, the rectal examination,
-colonoscopy and biopsy, **before** the pelvic MRI/cystoscopy is required; the team's T4bN2M0 stage is shown only in the
+colonoscopy and biopsy, **before** the pelvic MRI/cystoscopy is required; the recorded T4bN2M0 stage is shown only in the
 `diversion` phase text, after decisions 1–3; the operation performed and the pathology appear only after decision 4.
 
 ## Decisions and assessment
@@ -120,7 +124,9 @@ colonoscopy and biopsy, **before** the pelvic MRI/cystoscopy is required; the te
 Titles name no finding, test result or treatment (objective 4 says "the next stage", not "after the colostomy";
 objective 5 "the definitive treatment", not the operation); hints
 are Socratic questions without the answer ("Of the narrowing, the bleeding, the infection and the tumour itself, which
-must be dealt with first…?"). As in cmcr-1653411, the first-step objective needs a **committed act** of the learner's
+must be dealt with first…?") that name no result the learner has not yet read (the review removed "narrowing" from the
+history hint, "'shrinkage'" from the restaging hint and "a specimen without cancer" from the pathology hint). As in
+cmcr-1653411, the first-step objective needs a **committed act** of the learner's
 choosing, so the recorded course opens only once the learner has acted — and a wrong act is possible and scored.
 
 ### Decisions
@@ -143,10 +149,17 @@ choosing, so the recorded course opens only once the learner has acted — and a
   case's one appraisal-type distractor: a specimen finding cannot validate watch and wait after the event).
 
 Every option has its own 2–4-sentence feedback naming AJCC/UICC TNM 8th edition (2017), NCCN Rectal Cancer 3.2024,
-ASCO 2024, ESGE 2020, EAU 2025, the Beyond TME Collaborative consensus (2013), ASCRS 2021 or the WOCN Society/ASCRS
-statement (2014). Option ids name their content. **No length cue:** in none of the three single-best decisions is the
-key the uniquely longest option (measured 2026-11-13: decision 1 key 42 of 33–44 characters in zh-CN and 146 of
-125–147 in en; decision 3 key 41 of 27–43 and 145 of 125–152; decision 4 key 40 of 30–46 and 125 of 95–134).
+ASCO 2024, ESGE 2020, EAU 2025, the Beyond TME Collaborative consensus (2013), ASCRS 2020 (rectal cancer), ASCRS 2021
+(surveillance) or the WOCN Society/AUA/ASCRS statement (2021). Option ids name their content. **Neutral prompts:** no
+prompt presupposes its answer — decision 2 asks whether the staging is enough (so "nothing more" stays a live choice),
+decision 3 asks for "the first step in his treatment" (not "before any cancer treatment", which would rule out the
+chemoradiotherapy and exenteration distractors) and decision 4 asks what the team should plan next (not "what
+operation", which would rule out watch and wait). **No length cue:** in none of the three single-best decisions is the
+key the uniquely longest option (measured 2026-11-14: decision 1 key 42 of 33–44 characters in zh-CN and 146 of
+125–147 in en; decision 3 key 41 of 27–43 and 145 of 125–152; decision 4 key 40 of 30–41 and 125 of 95–134). In the
+select-all decisions the keys are not the longest options either: decision 5's three keys were the three longest
+English options (a distractor tied the shortest key at 109 characters), so the review lengthened `cured-no-follow-up`
+to 121 (keys 141, 116 and 109; distractors 121 and 109; in zh-CN keys 45, 38 and 29, distractors 37 and 32).
 
 ### Rubric (11 deterministic items, total weight 26, + 1 examiner-judged)
 
@@ -158,14 +171,14 @@ key the uniquely longest option (measured 2026-11-13: decision 1 key 42 of 33–
 | `rb-work-up-records` | investigations | 2 | colonoscopy, biopsy, pelvic MRI/cystoscopy, chest radiograph, abdominal ultrasound, urinalysis read (phase `admission`) |
 | `rb-fistula-cause` | diagnosis | 3 | decision 1 right first time |
 | `rb-staging-complete` | investigations | 2 | decision 2 right first time, CT and MMR/MSI ordered in `admission`, and no PD-1 blockade without an MMR result |
-| `rb-divert-first` | management | 4 | **critical** — decision 3 right first time **and** the colostomy given while indicated (before any chemoradiotherapy) |
+| `rb-divert-first` | management | 4 | **critical** — decision 3 right first time **and** the colostomy given while indicated (in the `admission` phase, before any chemoradiotherapy — so not after another first act has opened the recorded course) |
 | `rb-no-unsafe-first-step` | safety | 3 | **critical** — no chemoradiotherapy before the diversion, no stent, no exenteration before neoadjuvant treatment, no discharge on oral antibiotics; scored once decision 3 is attempted or any of these is given |
 | `rb-supportive-care` | management | 2 | antibiotics given after the urine culture was sent (`whenIndicated`), MDT referral, stoma marking and teaching, nutritional support |
 | `rb-definitive-operation` | management | 3 | decision 4 right first time, the exenteration booked in the restaging window, and no bladder-sparing resection or watch and wait |
 | `rb-after-pathology` | management | 2 | decision 5 right first time, surveillance plan and chemotherapy discussion given |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge structure with SPIKES for the bad news: the cancer through into the bladder, cure as the aim, why a stoma first, stoma nurse, consent, his fears of "a growth" and "a bag" answered honestly; after surgery, "no cancer in the specimen" as good news, not a guarantee |
 
-### How wrong choices score (measured with the reducer on 2026-11-13)
+### How wrong choices score (measured with the reducer on 2026-11-14)
 
 | path | deterministic score | critical items missed | safety outcome |
 |---|---:|---|---|
@@ -174,7 +187,8 @@ key the uniquely longest option (measured 2026-11-13: decision 1 key 42 of 33–
 | wrong first answer at all five decisions, then right | 12/26 (46 %) | `rb-divert-first` | passed |
 | wrong first answer at decision 1 / 2 / 3 / 4 / 5 only | 23 / 24 / 22 / 23 / 24 of 26 | only `rb-divert-first` (decision 3) | passed |
 | chemoradiotherapy before the colostomy, then the rest of the reference path | 19/26 (73 %) | `rb-divert-first`, `rb-no-unsafe-first-step` | **not passed** |
-| stent as well, before the colostomy | 23/26 (88 %) | `rb-no-unsafe-first-step` | passed |
+| stent first, then the colostomy (the stent is the first act, so the colostomy comes in the `diversion` phase) | 19/26 (73 %) | both | passed |
+| oral antibiotics and discharge first, then the colostomy in the `diversion` phase (hindsight) | 19/26 (73 %) | both | passed |
 | stent instead of the colostomy (and the reference path's later chemoradiotherapy) | 19/26 (73 %) | both | **not passed** (chemoradiotherapy then comes without diversion) |
 | exenteration on admission instead of the colostomy | 16/26 (62 %) | both | **not passed** (same reason) |
 | oral antibiotics and discharge instead of the colostomy | 19/26 (73 %) | both | **not passed** (same reason) |
@@ -193,7 +207,10 @@ came first).
 
 `rb-divert-first` (the life-saving act: diverting the faecal stream before any pelvic chemoradiotherapy, decided and
 booked in the admission phase — the recorded course opens only after a first act) and `rb-no-unsafe-first-step` (the
-dangerous shortcuts at the same point). Both are acts; neither reads a final-phase record.
+dangerous shortcuts at the same point). Both are acts; neither reads a final-phase record. The colostomy's
+`indicatedWhen` is the `admission` phase before any chemoradiotherapy, so a colostomy booked only after another first
+act has opened the `diversion` phase (whose text names the recorded transverse colostomy) earns no critical credit —
+the independent review closed that hindsight route (it scored 23/26 with `rb-divert-first` met before the fix).
 
 **Safety outcome.** `neoadjuvant-crt` is `critical: true`: given before the defunctioning colostomy — with a partly
 obstructing, bleeding tumour still passing stool into the bladder of a man with fevers to 39 °C — it fails the assessment's safety
@@ -215,8 +232,10 @@ referral, antibiotics after the culture, nutrition, stoma marking and teaching �
 colostomy** → (phase `diversion`) his status, the progress note → **neoadjuvant chemoradiotherapy** → (phase
 `restaging`) restaging imaging → `definitive-operation` → **total pelvic exenteration** → (phase `postop`) pathology,
 post-operative MRI → chemotherapy discussion, surveillance plan → `after-pcr` → (phase `followup`) outcome record →
-finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 26/26, utterances 39/39; no intervention is given
-while contraindicated.
+finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 26/26, utterances 40/40; no intervention is given
+while contraindicated. No MMR result is recorded for him, so the path refers him for the chemoradiotherapy the record
+gave; the `neoadjuvant-crt` response and the objective's guidance say so, and that today the MDT would have the MMR
+status first.
 
 ## Clinical numbers check
 
@@ -258,8 +277,12 @@ from.
 
 **Guidance numbers used in teaching text** (formulas, no patient value): long-course pelvic radiotherapy 45–50.4 Gy in
 25–28 fractions with capecitabine 825 mg/m² twice daily on radiotherapy days (a standard regimen, given as an example);
-surveillance colonoscopy about one year after treatment (ASCRS 2021); ASCRS 2021 grade 1A for surveillance after
-curative resection of stage II–III disease. No dose depends on a patient value.
+surveillance colonoscopy about one year after treatment (ASCRS 2021, grade 1B), or a completion colonoscopy within about
+six months of the resection when the colon was not fully examined before it (ASCRS 2021 — the case does not record
+whether the scope passed his tumour); ASCRS 2021 grade 1A for surveillance, CEA and CT after curative resection of stage
+II–III disease; ASCRS 2020 grade 1B for en bloc resection of involved adjacent organs in T4 rectal cancer and for
+adjuvant chemotherapy in stage II–III disease when no systemic chemotherapy was given before surgery. No dose depends
+on a patient value.
 
 ## Facilitator notes
 
@@ -276,9 +299,11 @@ curative resection of stage II–III disease. No dose depends on a patient value
     result change?"
   - "He has had fevers to 39 °C, he is partly obstructed, bleeding and passing stool into his bladder. What happens if pelvic
     chemoradiotherapy starts this week? Why not a stent?"
+  - "No MMR result was ever recorded for him. When would you have wanted it, and what would a dMMR result have changed?"
   - "After chemoradiotherapy the tumour has shrunk on imaging. Why does the operation not shrink with it — and what
     would you need before considering watch and wait?"
-  - "No cancer in the specimen: what does that tell him, and what does it not tell you about the operation he had?"
+  - "No cancer in the specimen: what does that tell him, and what does it not tell you about the operation he had? Why
+    is further chemotherapy still discussed?"
 - **Summary.** "Name the one act on the first day that made everything after it safe, and the one test today's
   standard adds to the recorded work-up."
 
@@ -295,14 +320,17 @@ curative resection of stage II–III disease. No dose depends on a patient value
 | immunotherapy without an MMR result | intervention `pd1-blockade` (harm text); `rb-staging-complete` lost |
 | shrinking the operation to the regression; watch and wait after "regression" | decision 4 `bladder-sparing`, `watch-and-wait`, `partial-cystectomy`; `rb-definitive-operation` |
 | treating a pathological complete response as cure, or as proof that surgery was unnecessary | decision 5 `cured-no-follow-up`, `nom-was-enough` |
+| dropping further chemotherapy because the specimen is clear | decision 5 `discuss-chemo` feedback (ASCRS 2020 recommends it for stage II–III disease without preoperative systemic chemotherapy; the evidence after a complete response is observational) |
+| booking the colostomy only after the recorded course has named it | `rb-divert-first` counts the colostomy only in the `admission` phase |
 
 ### Teaching points for the debrief
 
 The six `debrief.teachingPoints`: the fistula and its cause (T4b, AJCC 2017); staging then vs now (NCCN 3.2024);
 complications first, stent out of scope (EAU 2025; ESGE 2020); neoadjuvant pathway by MMR status (ASCO 2024; Cercek
-2022); resection sized to the pre-treatment extent, watch and wait only after a clinical complete response (Beyond TME
-2013; ASCO 2024; NCCN 3.2024); honest reading of a pathological complete response and five-year surveillance (ASCRS
-2021). Each contrasts the recorded course with current practice.
+2022); en bloc resection of the invaded organs, not of the shrunken tumour, and watch and wait only after a clinical
+complete response (ASCRS 2020; Beyond TME 2013; ASCO 2024; NCCN 3.2024); honest reading of a pathological complete
+response, further chemotherapy and five-year surveillance (ASCRS 2020; ASCRS 2021). Each contrasts the recorded course
+with current practice.
 
 ## Embodied mode
 
@@ -318,7 +346,8 @@ complications first, stent out of scope (EAU 2025; ESGE 2020); neoadjuvant pathw
   the chemotherapy discussion are `consult` acts (booked by phone), so nothing is operated on from the ward; their
   results arrive as the next phase's recorded course. Antibiotics need the cannula (`ivAccessInSitu: false`).
 - **Capabilities used:** `records`, `iv-access`, `medications`, `lab-hematology`, `lab-chemistry`, `lab-urinalysis`,
-  `lab-microbiology`, `ct`, `histopathology` — all present in `general-hospital` (`caseCapabilityGaps` empty). The
+  `lab-microbiology`, `ct`, `histopathology`, and `xray` and `pet-ct` for the neutral plain film and the low-value
+  PET-CT — all present in `general-hospital` (`caseCapabilityGaps` empty). The
   in-world demonstration finishes in both languages at the clinical score.
 
 ## Source and adaptation (fidelity limits)
@@ -360,16 +389,30 @@ complications first, stent out of scope (EAU 2025; ESGE 2020); neoadjuvant pathw
 
 ## Matcher notes
 
-39 test utterances (20 zh-CN, 19 en; 4 look-alike negatives: weather, a car park, raising the bed head, the wristband),
-written as learners type them — colloquial ("一天得跑几趟厕所？", "noticed anything odd when you pee lately?"),
-clinical ("Any history of diverticulitis or inflammatory bowel disease?") and later-phase ("How have things been since
-they made the stoma?"). Every required item has a paraphrase; none is a canonical question or a keyword.
+40 test utterances (20 zh-CN, 20 en; 4 negatives, three of them true look-alikes — "Is your family coming in to see
+you today?" / "家里人今天来看你吗？" beside the family-history item and "Do you need the toilet right now?" beside the
+stool-frequency item — and a bedside courtesy, raising the bed head), written as learners type them — the chief
+complaint in plain words ("What brings you in today?"), colloquial ("一天得跑几趟厕所？", "noticed anything odd when
+you pee lately?"), clinical ("Any history of diverticulitis or inflammatory bowel disease?") and later-phase ("How have
+things been since they made the stoma?"). Every required item has a paraphrase; none is a canonical question or a
+keyword.
+
+- **Probed beyond the corpus (independent review, 2026-11-14).** "What brings you in today?", "What's the matter?",
+  "你怎么了？" and "今天来看什么病？" first selected nothing, "Do you have any pain when you pass urine?" reached the
+  faecaluria item, "Have you had any trouble with your bowels in the past?" reached onset, and the family-visit and
+  toilet-now questions reached history items. Keywords added: `presenting` "brings you", "the matter", "你怎么了",
+  "看什么病", "来看什么"; `dysuria` "pain when you pass", "painful to pee", "hurt when you pass", "pain passing";
+  `bowel-history` "bowel problems before", "problems before", "trouble before", "inthepast" (run together: the lint
+  reduces "in the past" to "past"). Exclusions added: `faecaluria` "pain", "hurt"; `family-history` "coming in", "visit",
+  "today", "on their way", "see you" / "来看", "今天", "探望", "陪"; `stool-frequency` "right now", "pain" / "现在要";
+  `onset` "in the past"; `presenting` "past". 68 probe questions now reach the expected item or none.
 
 - **Phase twin.** `status-colostomy` (phase `diversion`) supersedes `stool-frequency`, `faecaluria` and `course`
   (admission only): asked after the colostomy, "how are your bowels / your urine / things now" gets "better — the
   trouble I came in with has eased off", and asking it credits the items it supersedes.
 - **Substring traps avoided.** Keywords are matched as normalised substrings, so "urge" (inside "surgery"), "wee"
-  (inside "week"), "checked" (the wristband negative) and "runny" (stem of "running a temperature") were replaced;
+  (inside "week"), "checked" (a wristband negative the review has since replaced) and "runny" (stem of "running a
+  temperature") were replaced;
   one-word stems that the lint flags were written run together ("howmanytimes", "needtogoagain", "moreoften").
 - **Exclusions.** The urine items exclude each other's words (bubbles/air, sting/burn); stool items exclude urine words;
   `onset` excludes fever, weight and stoma words; medications exclude allergy.
@@ -386,26 +429,34 @@ they made the stoma?"). Every required item has a paraphrase; none is a canonica
 4. Beyond TME Collaborative. Consensus statement on the multidisciplinary management of patients with recurrent and
    primary rectal cancer beyond total mesorectal excision planes. Br J Surg. 2013;100(8):1009-1014.
    doi:10.1002/bjs.9192
-5. van Hooft JE, Veld JV, Arnold D, et al. Self-expandable metal stents for obstructing colonic and extracolonic cancer:
+5. You YN, Hardiman KM, Bafford A, et al. The American Society of Colon and Rectal Surgeons clinical practice
+   guidelines for the management of rectal cancer. Dis Colon Rectum. 2020;63(9):1191-1222.
+   doi:10.1097/DCR.0000000000001762
+6. van Hooft JE, Veld JV, Arnold D, et al. Self-expandable metal stents for obstructing colonic and extracolonic cancer:
    European Society of Gastrointestinal Endoscopy (ESGE) Guideline - Update 2020. Endoscopy. 2020;52(5):389-407.
    doi:10.1055/a-1140-3017
-6. Hardiman KM, Felder SI, Friedman G, et al. The American Society of Colon and Rectal Surgeons clinical practice
+7. Hardiman KM, Felder SI, Friedman G, et al. The American Society of Colon and Rectal Surgeons clinical practice
    guidelines for the surveillance and survivorship care of patients after curative treatment of colon and rectal
    cancer. Dis Colon Rectum. 2021;64(5):517-533. doi:10.1097/DCR.0000000000001984
-7. Cercek A, Lumish M, Sinopoli J, et al. PD-1 blockade in mismatch repair-deficient, locally advanced rectal cancer.
+8. Cercek A, Lumish M, Sinopoli J, et al. PD-1 blockade in mismatch repair-deficient, locally advanced rectal cancer.
    N Engl J Med. 2022;386(25):2363-2376. doi:10.1056/NEJMoa2201445
-8. European Association of Urology. EAU Guidelines on Urological Infections. Arnhem: EAU Guidelines Office; 2025.
-9. Amin MB, Edge SB, Greene FL, et al., editors. AJCC Cancer Staging Manual. 8th ed. New York: Springer; 2017.
+9. European Association of Urology. EAU Guidelines on Urological Infections. Arnhem: EAU Guidelines Office; 2025.
+10. Amin MB, Edge SB, Greene FL, et al., editors. AJCC Cancer Staging Manual. 8th ed. New York: Springer; 2017.
+11. Wound, Ostomy and Continence Nurses Society; American Urological Association; American Society of Colon and Rectal
+    Surgeons. WOCN Society, AUA, and ASCRS position statement on preoperative stoma site marking for patients undergoing
+    ostomy surgery. J Wound Ostomy Continence Nurs. 2021;48(6):533-536. doi:10.1097/WON.0000000000000820
 
-Also cited in teaching text (not in `debrief.references`): the WOCN Society and ASCRS joint position statement on
-preoperative stoma-site marking (2014).
+All DOIs above were resolved in PubMed on 2026-11-14 (the source's DOI is the one `scripts/cmcr-105-sources.json`
+verifies); the 2021 WOCN/AUA/ASCRS statement replaces the 2014 WOCN/ASCRS statement the case cited before the review.
 
 ### To verify
 
 **In the source article** (details to look for):
 
 - The rectal examination: circumferential or near-circumferential; the exact distance wording (above the anal verge).
-- The colonoscopy: eroded or ulcerated; whether the scope passed the tumour; the colon above it; biopsy sites.
+- The colonoscopy: eroded or ulcerated; whether the scope passed the tumour; the colon above it; biopsy sites (and that
+  the biopsy was taken at that colonoscopy, which 1.0.0 records only by listing them together).
+- Whether the "pelvic assessment" done before admission was the pelvic MRI, the cystoscopy or both.
 - Which findings came from the pelvic MRI and which from cystoscopy; whether the ≈ 6 × 6 cm bladder neck/trigone mass
   was measured on MRI or seen at cystoscopy; the mesorectal fascia, extramural venous invasion, node size and number;
   hydronephrosis.
@@ -433,12 +484,34 @@ preoperative stoma-site marking (2014).
   checked against it — compare the staging, neoadjuvant, surgical and follow-up teaching with it.
 - NCCN Rectal Cancer: the case cites the Version 3.2024 Insights; compare with the current NCCN version (2026) —
   in particular the work-up list, the PET-CT and endorectal-ultrasound wording, and the adjuvant-therapy wording.
-- EAU Guidelines on Urological Infections 2025: the 2025 edition reorganised complicated infections into localised and
-  systemic UTI; confirm the wording on treating the complicating factor (here the fistula) and on cultures before
-  treatment.
-- The Beyond TME consensus pages: the abstract is indexed as 1009–1014 and the full statement as E1–E33.
-- The WOCN Society/ASCRS position statement on stoma-site marking: the 2014 version is cited; a 2021 revision with the
-  AUA (J Wound Ostomy Continence Nurs 2021;48(6):533-536) was found only in a secondary listing.
+- EAU Guidelines on Urological Infections 2025 (limited update, March 2025) — checked in the full text during the
+  independent review: the edition no longer uses "complicated/uncomplicated" but "localised/systemic" UTI with risk
+  factors; under systemic UTI it recommends "Manage any urological abnormality and/or underlying complicating factors"
+  (strong), urine culture with susceptibility testing, and blood cultures for sepsis or severe illness. The case's
+  wording now cites that recommendation for a febrile (systemic) infection; it still advises blood cultures "if he is
+  febrile", which is wider than EAU's criterion — a urologist or microbiologist may narrow it.
+- The Beyond TME consensus (abstract indexed as 1009–1014, full statement E1–E33) — read during the independent review:
+  its 51 voted statements refer primary rectal cancer beyond the TME planes to a subspecialised MDT (93 %) and make
+  high-resolution MRI the imaging of choice; R0 as the key to survival and "involvement of the trigone typically
+  necessitates total cystectomy" are in its narrative text. It does **not** say to plan the resection on the
+  pre-treatment MRI: it calls initial-versus-restaging planning unclear and says a clear MRI response "may allow more
+  organ-preserving surgery". The case no longer attributes the pre-treatment-extent principle to it; it cites ASCRS 2020
+  (en bloc resection of involved adjacent organs in T4 disease, 1B) and teaches the principle from the recorded facts
+  (only "regression" recorded, nothing on the trigone or the fistula). A colorectal surgeon should confirm the key of
+  decision 4 and the principle, and the ESMO 2025 guideline should be checked for it.
+- ASCRS 2020 rectal cancer guideline (You et al., Dis Colon Rectum 2020;63(9):1191-1222): the 1B recommendations on en
+  bloc resection in T4 disease and on adjuvant chemotherapy were read in a guideline summary, not the full text.
+  Adjuvant chemotherapy after a pathological complete response: NCCN is reported (secondary sources) to recommend about
+  six months of perioperative treatment regardless of the pathology and ESMO is more selective — confirm the current
+  NCCN and ESMO 2025 wording and the case's "recommended, but decided with him" framing.
+- The WOCN Society, AUA and ASCRS position statement (2021) on preoperative stoma-site marking: found in PubMed during
+  the independent review; its full text was not read (the case uses it for preoperative marking and teaching, as its
+  publisher's summary describes).
+- ESGE 2020: checked in the full text — "unless indicated otherwise, the recommendations in this Guideline only apply to
+  left-sided colon cancer arising from the rectosigmoid colon, sigmoid colon, descending colon, and splenic flexure,
+  while excluding rectal cancers"; rectal stenting "is often avoided because of the presumed association with
+  complications such as pain, tenesmus, incontinence, and stent migration"; recommendation 7 makes a decompressing
+  stoma a valid bridge when stenting is not suitable.
 - The example long-course regimen (45–50.4 Gy in 25–28 fractions; capecitabine 825 mg/m² twice daily on radiotherapy
   days): taken from published protocols, not from the NCCN text itself.
 - Chinese guidance not consulted in detail: 国家卫生健康委员会《中国结直肠癌诊疗规范（2023年版）》(中华外科杂志
@@ -465,6 +538,33 @@ preoperative stoma-site marking (2014).
   teaching points; guidelines: ASCO 2024, NCCN 3.2024, Beyond TME 2013, ESGE 2020, ASCRS 2021, EAU 2025, AJCC 2017
   (replacing one unversioned NCI PDQ page).
 - README rewritten to the §9.6 template with the extraction table, the measured scoring table and the To-verify list.
+- **Independent review applied (2026-11-14).** Every patient fact re-traced to 1.0.0 (no fact added or changed); fixes:
+  - *Guideline attribution.* The "resect to the pre-treatment extent" principle was credited to the Beyond TME
+    consensus (2013), which calls that question unresolved; learning outcome 4, decision 4's feedback, the
+    bladder-sparing harm and teaching point 5 now cite ASCRS 2020 (en bloc resection of involved organs in T4 disease,
+    1B) and what Beyond TME does say (subspecialised MDT; R0; trigone involvement usually needs total cystectomy).
+    EAU 2025 is quoted in its own terms (systemic UTI; "manage any urological abnormality and/or underlying
+    complicating factors"), not as "complicated UTI", which the 2025 edition dropped. The 2014 WOCN/ASCRS statement is
+    replaced by the 2021 WOCN/AUA/ASCRS statement, now in the references with ASCRS 2020.
+  - *Assessment validity.* Decision prompts no longer presuppose their answer (decision 3 "before any cancer treatment",
+    decision 4 "what operation", decision 2 "what else is needed"), and decision 5's keys are no longer its three
+    longest English options. Three objective hints no longer name results not
+    yet read or lead to the key ("narrowing", "'shrinkage'", "a specimen without cancer"). The colostomy counts for the
+    critical item only in the `admission` phase, closing a hindsight route after another first act opened the
+    recorded course.
+  - *Teaching.* Adjuvant chemotherapy after a complete response: ASCRS 2020's recommendation added beside the
+    uncertainty; the surveillance colonoscopy now includes the six-month completion colonoscopy when the colon above
+    the tumour was not examined (ASCRS 2021); the neoadjuvant referral says no MMR result is recorded; the
+    complications of rectal stenting are stated as an association, as ESGE 2020 does ("presumed"), not a certainty.
+  - *Facts and wording.* "Colonoscopic biopsy" → "biopsy (recorded with the colonoscopy)"; the nurse no longer dates
+    the MRI and cystoscopy before admission; the stage is no longer attributed to "the multidisciplinary team"; "only
+    after surgery" removed; the Chinese bladder-sparing option no longer asserts that the tumour "has regressed from
+    the trigone"; the English conclusion now states the same facts as the Chinese (symptom relief, early MRI,
+    chemotherapy recommended); the summary no longer gives the weight loss a month's duration.
+  - *Matcher.* The chief complaint in plain words ("What brings you in today?", "你怎么了？") and ten other probes
+    (of 68) reached no item or the wrong one; keywords and exclusions fixed, look-alike negatives added (Matcher notes).
+  - README: Validation command path, "Scenario timeline and physiology" heading, capabilities, scoring table
+    re-measured.
 
 ### 1.0.0 — 2026-10-28
 
@@ -475,19 +575,19 @@ preoperative stoma-site marking (2014).
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-1068535/case.json --strict --lang en
 npm run -s cc -- cases verify cmcr-1068535 --lang en
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1068535
+npx tsx --conditions=source scripts/case-check.ts cmcr-1068535
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1068535:"
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1068535:"
 ```
 
-Measured on 2026-11-13: strict validation 0 errors, 0 warnings; `cases verify` objectives
-6/6, decisions 5/5, utterances 39/39, rubric 26/26 (100 %); the per-case check passes (do nothing 0, wrong-first 46 %
-< 100 %); the collection contract and the in-world demonstration (en + zh-CN) pass.
+Measured on 2026-11-14 (after the independent review): strict validation 0 errors, 0 warnings; `cases verify`
+objectives 6/6, decisions 5/5, utterances 40/40, rubric 26/26 (100 %); the per-case check passes (do nothing 0,
+wrong-first 46 % < 100 %); the collection contract and the in-world demonstration (en + zh-CN) pass.
 
 ## 中文摘要
 
 **病例概要：** 51岁男性，一个多月每天 6–8 次稀便混有鲜血、里急后重，之后尿中混有粪便，发热最高 39 ℃，体重下降
-15 kg。直肠指检：距肛门 4 cm 的直肠前壁环周（近环周）肿物，活动差，肠腔明显狭窄；肠镜活检为中分化腺癌；盆腔 MRI 与
+15 kg。直肠指检：距肛门 4 cm 的直肠前壁环周（近环周）肿物，活动差，肠腔明显狭窄；肠镜见糜烂（溃疡）性肿块，活检为中分化腺癌；盆腔 MRI 与
 膀胱镜示肿瘤侵犯膀胱，膀胱颈/三角区约 6 cm × 6 cm 肿物，膀胱内有肠内容物，盆腔多发淋巴结；胸片和腹部超声未见明确
 远处转移。初始临床分期 cT4bN2M0，伴直肠膀胱瘘、不全梗阻、出血和感染。记录的病程：横结肠造口后症状缓解，继以新辅助
 放化疗，影像退缩后行全盆腔脏器切除及输尿管皮肤造口，标本无癌残留、淋巴结 0/22（病理完全缓解），术后早期 MRI 未见
@@ -498,9 +598,9 @@ Measured on 2026-11-13: strict validation 0 errors, 0 warnings; `cases verify` o
 1. 识别直肠癌直接侵犯膀胱所致的直肠膀胱瘘（局部侵犯 T4b，而非远处转移），并与憩室病、克罗恩病所致瘘相鉴别。
 2. 按现行标准补全分期：盆腔 MRI、胸腹盆增强 CT、CEA、活检 MMR/MSI 检测（NCCN 3.2024；ASCO 2024）。
 3. 先控制并发症：转流性结肠造口，留取尿培养后针对性抗感染，再开始新辅助治疗；低位肿瘤不以支架过渡（ESGE 2020）。
-4. 按 MMR 状态选择免疫治疗或全程新辅助治疗（ASCO 2024），按治疗前范围做整块 R0 切除（Beyond TME 共识，2013）。
-5. 正确解读病理完全缓解，安排化疗讨论和 5 年随访（ASCRS 2021）。
-6. 用通俗语言解释分阶段治疗和造口，取得知情同意，安排术前造口定位与宣教。
+4. 按 MMR 状态选择免疫治疗或全程新辅助治疗（ASCO 2024），与专科团队计划受侵器官的整块 R0 切除（ASCRS 2020；Beyond TME 共识，2013），说明退缩本身不足以缩小手术范围。
+5. 正确解读病理完全缓解，安排化疗讨论和 5 年随访（ASCRS 2020；ASCRS 2021）。
+6. 用通俗语言解释分阶段治疗和造口，取得知情同意，每次造口手术前安排造口定位与宣教（WOCN/AUA/ASCRS 2021）。
 
 **关键决策：** ① 尿中粪便的解释——直肠腺癌直接侵犯膀胱形成直肠膀胱瘘（局部侵犯）；② 分期还缺什么——胸腹盆增强 CT
 和 MMR/MSI 检测（多选）；③ 第一步——先转流性结肠造口并按培养抗感染，再新辅助治疗；④ 根治手术——按治疗前范围整块
@@ -508,10 +608,13 @@ Measured on 2026-11-13: strict validation 0 errors, 0 warnings; `cases verify` o
 
 **复盘要点：** 尿中有粪便先按肠膀胱瘘处理；长入邻近器官是 T4b，仍以根治为目标；分期以 MRI、胸腹盆 CT 和 MMR/MSI 为准，
 胸片加超声不够；发热、梗阻、出血且粪便进入膀胱时先转流、控制感染；新辅助方案按 MMR 状态选择；放化疗后的退缩不能缩小手术
-范围，“退缩”也不是临床完全缓解；病理完全缓解预后好，但不是治愈，也不能事后证明可以不做手术。
+范围，“退缩”也不是临床完全缓解；病理完全缓解预后好，但不是治愈，也不能事后证明可以不做手术；术后化疗按 ASCRS 2020
+仍予推荐，但病理完全缓解后的获益只有观察性证据，需与患者共同决定。（独立审阅 2026-11-14：Beyond TME 共识并未规定按治疗前
+MRI 计划手术范围，本例改引 ASCRS 2020；EAU 2025 按“全身性尿路感染”的表述引用；造口定位改引 2021 年 WOCN/AUA/ASCRS 声明；
+决策题干不再暗示答案；关闭了造口手术“事后补做”得分的漏洞；补全了主诉的口语问法。）
 
 **安全结果。** 未做转流就开始新辅助放化疗（`neoadjuvant-crt` 在结肠造口之前）是本例的严重安全失误（`critical: true`），
 无论得分多少，安全结果均判为未通过；支架、新辅助治疗前的盆腔脏器切除、保留膀胱手术、等待观察和无 MMR 结果的免疫治疗为
 `critical: false`，由评分扣分。
 
-审核状态：人工智能辅助编写的教学设计，已对照所引指南进行编辑审核；尚未经执业医师审核。
+审核状态：人工智能辅助编写的教学设计，已对照所引指南进行编辑审核（2026-11-14 独立审阅）；患者事实尚未对照原文全文核对；尚未经执业医师审核。

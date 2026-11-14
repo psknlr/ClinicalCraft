@@ -1,8 +1,8 @@
-- cmcr-1171301: Unsteady head control and not yet sitting · 11-month-old boy (5 decisions, 12 interventions;
-  review: 0 critical, 4 major, 7 minor findings)
-- cmcr-44614: Fever and leg pain after treatment for a bone tumour · 6-year-old girl (5 decisions, 15 interventions;
-  review: 1 critical, 5 major, 10 minor findings)
-- cmcr-77850: Repeated blackouts · 28-year-old woman (5 decisions, 17 interventions;
-  review: 1 critical, 4 major, 11 minor findings)
-- cmcr-859852: Worsening recurrent cough with blood-streaked sputum · 74-year-old woman (5 decisions, 10 interventions;
-  review: 0 critical, 6 major, 11 minor findings)
+- cmcr-1067457: Fever, abdominal pain and flank bruising after a caesarean birth · 29-year-old woman (4 decisions, 19 interventions;
+  review: 2 critical, 6 major, 14 minor findings)
+- cmcr-1068535: Frequent bloody stools, then faecal matter in the urine · 51-year-old man (5 decisions, 15 interventions;
+  review: 0 critical, 7 major, 17 minor findings)
+- cmcr-635101: Thirst, polyuria and vomiting · 24-year-old man (5 decisions, 19 interventions;
+  review: 1 critical, 10 major, 10 minor findings)
+- cmcr-655474: Bone pain in several places and a limp · girl aged 11 years 5 months (5 decisions, 11 interventions;
+  review: 2 critical, 4 major, 12 minor findings)
