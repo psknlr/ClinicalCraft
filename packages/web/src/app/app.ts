@@ -742,8 +742,8 @@ export class ClinicalCraftApp implements App {
   /**
    * The start's choices for the next new encounter (docs/EMBODIED.md §2.1): a team scenario a facilitator chose
    * (`?team=<scenario id>`, set at `start` when the case has it — docs/TEAM.md §6), a place in the care team and a
-   * line-up (`?seat=`, `?lineup=`, the intro's picker, or `__QA__.start`'s). A place is sent whenever the case has a team:
-   * the session says whether it can be taken.
+   * line-up (`?seat=`, `?lineup=`, the intro's picker, or `__QA__.start`'s). A place is sent when the case's card offers
+   * it with the line-up chosen (`startAction`): the session says whether it can be taken.
    */
   startChoice: StartChoice = startChoiceFromSearch(location.search);
 
