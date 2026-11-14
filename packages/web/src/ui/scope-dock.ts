@@ -7,7 +7,8 @@
  * own, a refused one with its reason and the field unchanged. The scope out of the patient says so; a conversion to
  * open ends the feed (the theatre view goes on). While the surgery window is open it shows the same picture full
  * size, so the dock steps aside. Only the operator's `FieldView` is drawn — never a structure's name, an injury the
- * field does not show, or a score.
+ * field does not show, or a score. People are named as the learner reads them (core `memberBody`): the learner —
+ * operating, or their place's member — is "you" (a step "(you)", the camera "held by you"), anyone else by name.
  */
 import { observeField, procedureFor, t, type RefusalReason } from "@clinicalcraft/core";
 import type { App, Game } from "../app/context.js";
@@ -15,7 +16,7 @@ import type { LaparoscopeApi } from "../contracts.js";
 import { createLaparoscope } from "../laparoscopy/index.js";
 import { getLocale, tr } from "../i18n/index.js";
 import { h, mount, prefersReducedMotion } from "./dom.js";
-import { learnerField, partyName, refusalWords } from "./field-names.js";
+import { cameraWords, learnerField, partyName, refusalWords } from "./field-names.js";
 import type { PlaybackItem } from "./operative-playback.js";
 import { openFieldText } from "./open-field.js";
 import { identifyChoices, label, labelList } from "./panels/surgery-controls.js";
@@ -136,6 +137,10 @@ export class ScopeDock {
     const words = game ? fieldWordsOf(game) : null;
     const cap = frameCaption(item, (id) => (words ? partyName(words, id) : id), (r) => (words ? refusalWords(words, r) : null));
     if (cap) lines.push(h("div", { class: ["lap-line", cap.status === "rejected" ? "bad" : ""], dataset: { status: cap.status, op: cap.op, id: cap.id } }, cap.text));
+    // the camera, once a colleague holds it or it is aimed: where it looks and who holds it ("held by you")
+    const cam = v.camera;
+    const camera = cam && words && (cam.holder !== undefined || cam.at !== null) ? cameraWords(words, v, def) : null;
+    if (cam && camera) lines.push(h("div", { class: "lap-line", dataset: { camera: cam.at ?? "", zoom: cam.zoom } }, camera));
     // the window over a region being dissected that the traction no longer holds open, in words
     if (v.inView && v.specimen === "in-situ")
       for (const r of v.regions) if (r.dissection !== "untouched" && r.exposure !== "good") lines.push(h("div", { class: "lap-line warn", dataset: { window: r.id, exposure: r.exposure } }, tr("scope.window", { region: t(r.name, getLocale()), exposure: label("exposure", r.exposure), dissection: label("dissection", r.dissection) })));

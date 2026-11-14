@@ -11,10 +11,11 @@
  * Index (docs/EMBODIED.md §11): `caseIndexEntry` builds the metadata a
  * library needs — cards, filters, facility choice and the places in the care
  * team the picker offers — from a case file's raw JSON, without validating the
- * whole case (that happens when the case is loaded). The web bundle (build-time index), `clinicalcraft serve`
- * (`GET /api/content/cases`) and `clinicalcraft cases index` use this one
- * builder. Isomorphic and dependency-free at runtime (type imports only), so
- * the web's Vite plugin can bundle it into its config.
+ * whole case (that happens when the case is loaded). The web bundle
+ * (build-time index), `clinicalcraft serve` (`GET /api/content/cases`) and
+ * `clinicalcraft cases index` use this one builder. Isomorphic and
+ * dependency-free at runtime (type imports only), so the web's Vite plugin can
+ * bundle it into its config.
  */
 import type { CaseDefinition, LocalizedText, Place } from "@clinicalcraft/core";
 

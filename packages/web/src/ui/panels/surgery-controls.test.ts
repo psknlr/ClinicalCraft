@@ -163,6 +163,19 @@ describe("the window by place: core's verdicts, never a rule of the web's own", 
     expect(holderOf(seatOf(encounter({ type: "start" }, ACCESS())), undefined)).toEqual({ kind: "you" });
   });
 
+  it("two hands: a place holding two ports is offered no third — to take or to put in —, as the engine refuses it", () => {
+    const steps = [...ACCESS("doc-0"), { op: { op: "hand-over", port: "A", to: "doc-1" } as ProcedureOp, actor: "doc-1" }];
+    const one = encounter({ type: "start", seat: "first-assistant" }, steps);
+    expect(portsForPlace(seatOf(one), def, field(one)).find((o) => o.port === "B")!.take).toEqual({ op: "hand-over", port: "B", to: "doc-1" });
+    const two = encounter({ type: "start", seat: "first-assistant" }, [...steps, { op: { op: "hand-over", port: "B", to: "doc-1" }, actor: "doc-1" }]);
+    const d = portsForPlace(seatOf(two), def, field(two)).find((o) => o.port === "D")!;
+    expect([d.insert, d.askFor]).toEqual([[], []]);
+    expect(engineTakes(k, two, { op: "insert", port: "D", instrument: "suction" })).toBe(false);
+    // handed one back, the hand is free again
+    const back = encounter({ type: "start", seat: "first-assistant" }, [...steps, { op: { op: "hand-over", port: "B", to: "doc-1" }, actor: "doc-1" }, { op: { op: "hand-over", port: "B" }, actor: "doc-1" }]);
+    expect(portsForPlace(seatOf(back), def, field(back)).find((o) => o.port === "D")!.insert).toEqual(["grasper", "suction"]);
+  });
+
   it("the actions through a port: only one the learner holds — operating, all its instrument does; in a place, the place's by its controls", () => {
     const operating = encounter({ type: "start" }, ACCESS());
     const at = (s: SessionState, port: string) => field(s).ports.find((p) => p.port === port)!;

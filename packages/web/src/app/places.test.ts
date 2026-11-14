@@ -36,8 +36,14 @@ describe("the start's choices: the page's address, the picker, __QA__.start", ()
     expect(startChoiceFromSearch("")).toEqual(NONE);
     const k = lapCholeTeamCase();
     expect(startAction(k, startChoiceFromSearch("?seat=second-assistant&lineup=three-surgeons&team=second-away"))).toEqual({ type: "start", team: "second-away", seat: "second-assistant", lineup: "three-surgeons" });
-    // what the case does not have is not sent (as ?team= always was); a place is sent whenever the case has a team — the session says whether it can be taken
+    // what the case does not have is not sent (as ?team= always was); a place whenever the case has a team — with its card,
+    // only the places the card offers with the line-up: what the picker shows is what is sent
     expect(startAction(k, { team: "nope", seat: "scrub-nurse", lineup: "nope" })).toEqual({ type: "start", seat: "scrub-nurse" });
+    const card = cardOf(k);
+    expect(startAction(k, { team: null, seat: "second-assistant", lineup: null }, card)).toEqual({ type: "start" });
+    expect(startAction(k, { team: null, seat: "second-assistant", lineup: "three-surgeons" }, card)).toEqual({ type: "start", seat: "second-assistant", lineup: "three-surgeons" });
+    // a scenario that makes the place's member absent is the session's to refuse: the card lists the place
+    expect(startAction(k, { team: "scrub-break", seat: "scrub-nurse", lineup: null }, card)).toEqual({ type: "start", team: "scrub-break", seat: "scrub-nurse" });
     const noTeam = loadContent().cards[0]!;
     expect(startAction({ team: undefined }, { team: null, seat: "first-assistant", lineup: "three-surgeons" })).toEqual({ type: "start" });
     expect(noTeam.seats).toEqual([]);

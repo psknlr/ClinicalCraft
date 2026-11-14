@@ -5,9 +5,9 @@
  * member — is "you"; anyone else by name and, for a member of staff, position ("Dr Ito (operating surgeon)").
  */
 import { nameOfRef, reasonText, type FieldContext, type ReasonWords } from "@clinicalcraft/agent";
-import { LEARNER_BODY, memberBody, SurgicalControlSchema, type CaseDefinition, type FacilityDefinition, type RefusalReason, type SessionState } from "@clinicalcraft/core";
+import { LEARNER_BODY, memberBody, SurgicalControlSchema, type CaseDefinition, type FacilityDefinition, type FieldView, type ProcedureDefinition, type RefusalReason, type SessionState } from "@clinicalcraft/core";
 import { bodyPosition } from "@clinicalcraft/world";
-import { getLocale, tr, trMaybe } from "../i18n/index.js";
+import { ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 
 /**
  * The words' context: what the learner reads (no acting body — the learner's — and nobody else addressed), in the UI
@@ -69,4 +69,17 @@ export const WEB_REASON_WORDS: ReasonWords = {
 /** Why the field refused a step, in the learner's words with the people's names (null: the field gave no reason). */
 export function refusalWords(ctx: FieldContext, reason: RefusalReason | undefined): string | null {
   return reasonText(ctx, reason, WEB_REASON_WORDS);
+}
+
+/**
+ * The camera in the learner's words: its port, where it looks, how close and who holds it — the learner as "you" ("Port
+ * A: aimed at the gallbladder bed, close up — held by you" / "A 孔：对准胆囊床，近景——由你握持"), anyone else by name and
+ * position. Null: no laparoscope in a camera port. A region is named as the view names it, else as the case does.
+ */
+export function cameraWords(ctx: FieldContext, v: Pick<FieldView, "camera" | "regions">, def?: Pick<ProcedureDefinition, "regions"> | null): string | null {
+  const cam = v.camera;
+  if (!cam) return null;
+  const region = cam.at ? (v.regions.find((r) => r.id === cam.at) ?? def?.regions.find((r) => r.id === cam.at)) : undefined;
+  const aim = cam.at ? tr("surgery.camera.at", { region: region ? ct(region.name) : cam.at }) : tr("surgery.camera.whole");
+  return tr("surgery.camera.now", { port: cam.port, aim, zoom: tr(`surgery.camera.zoom.${cam.zoom}`), who: partyWords(ctx, cam.holder) });
 }

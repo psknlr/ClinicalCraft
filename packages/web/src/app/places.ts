@@ -79,14 +79,15 @@ export function placePicker(card: Pick<CaseCard, "seats" | "lineups">, embodied:
 }
 
 /**
- * The `start` of a new encounter: the team scenario and the line-up when the case has them; a place whenever the case has
- * a care team — the session says whether it can be taken (in-world mode, a stand-in surgeon, the settings: its words are
- * shown), so a facilitator's `?seat=` is never dropped silently where it could mean something.
+ * The `start` of a new encounter: the team scenario and the line-up when the case has them; a place when the case has a
+ * care team — and, given its library card, when the card offers it with that line-up, so what the picker shows is what
+ * is sent (a place a case does not offer is dropped, as `?team=` always was). The session says whether it can be taken
+ * now (in-world mode, the settings, the team scenario): its words are shown.
  */
-export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice): StartAction {
+export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice, card?: Pick<CaseCard, "seats" | "lineups">): StartAction {
   const team = choice.team && c.team?.scenarios.some((x) => x.id === choice.team) ? choice.team : null;
   const lineup = choice.lineup && (c.team?.lineups ?? []).some((l) => l.id === choice.lineup) ? choice.lineup : null;
-  const seat = choice.seat && c.team ? choice.seat : null;
+  const seat = choice.seat && c.team && (!card || placesOffered(card, lineup).includes(choice.seat)) ? choice.seat : null;
   return { type: "start", ...(team ? { team } : {}), ...(seat ? { seat } : {}), ...(lineup ? { lineup } : {}) };
 }
 
@@ -94,8 +95,8 @@ export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice
  * The `start` an encounter sends now (null: none — it has started already, a resumed save among them, or finished): a
  * place's start runs once, and so does the first-person view's move to the team's table that follows it.
  */
-export function pendingStart(s: Pick<SessionState, "started" | "finished">, c: Pick<CaseDefinition, "team">, choice: StartChoice): StartAction | null {
-  return !s.started && !s.finished ? startAction(c, choice) : null;
+export function pendingStart(s: Pick<SessionState, "started" | "finished">, c: Pick<CaseDefinition, "team">, choice: StartChoice, card?: Pick<CaseCard, "seats" | "lineups">): StartAction | null {
+  return !s.started && !s.finished ? startAction(c, choice, card) : null;
 }
 
 /** The place and line-up a saved encounter was started with (its recorded `start`; none: the operating surgeon's). */

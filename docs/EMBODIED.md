@@ -276,10 +276,12 @@ the world model; the browser supplies its sensors and actuators
   a team). A saved encounter's own place is said under them, read-only. The
   choice also comes from the page's address (`?seat=`, `?lineup=`, beside
   `?team=`) or `__QA__.start(case, facility, resume, team, seat, lineup)` (its
-  four-argument form keeps none). The start in a place runs before the
-  encounter is entered: refused — a clinical encounter (`not_embodied`),
-  settings that would stop the stand-in surgeon, the engine's own reason —
-  nothing is entered and the card shows the session's words. Accepted, the
+  four-argument form keeps the page's choice: none unless the address gives
+  one); a place the case's card does not offer is not sent. The start in a
+  place runs before the encounter is entered: refused — a clinical encounter
+  (`not_embodied`), settings that would stop the stand-in surgeon, the
+  engine's own reason — nothing is entered, a save it would have replaced is
+  kept, and the card shows the session's words. Accepted, the
   learner's body is at the team's operating table (the world's pose,
   `place.atTable`) and the first-person view follows it there once — a
   resumed save restores the body and the view, never moving them again. A

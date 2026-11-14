@@ -227,7 +227,7 @@ export interface PortOffer {
   handBack: ProcedureOp | null;
   /** Hand it, from the learner's hands, to a member of the team whose controls cover its instrument. */
   handTo: { to: string; op: ProcedureOp }[];
-  /** Instruments the learner may put into it (an empty port); operating: every instrument on the table, as always. */
+  /** Instruments the learner may put into it: a colleague, into an empty port; operating, every instrument on the table into a port of their own (an exchange too), as always. */
   insert: InstrumentId[];
   /** Instead of an insert, while every instrument is passed first and none waits: the instrument asked for, and of whom. */
   askFor: { instrument: InstrumentId; to: string }[];
@@ -253,7 +253,8 @@ function passerFor(f: FieldSeat, me: string): string | null {
  * the controls (a colleague takes a port from the operator — another colleague hands theirs over themselves); what may
  * be put in (a colleague: the laparoscope into a camera port, a grasper or the suction into an assist port — the
  * instrument's control); while every instrument is passed first (`passingRequired`: the scrub nurse's place) an insert
- * with no pass waiting becomes a request for one; and the withdrawal of the instrument in a port the learner holds.
+ * with no pass waiting becomes a request for one; and the withdrawal of the instrument in a port the learner holds. A
+ * colleague holding two ports (`COLLEAGUE_PORTS`: two hands) is offered no third, nor is anyone handed one.
  */
 export function portsForPlace(f: FieldSeat, def: ProcedureDefinition, v: FieldView): PortOffer[] {
   const me = learnerRef(f);
@@ -265,9 +266,11 @@ export function portsForPlace(f: FieldSeat, def: ProcedureDefinition, v: FieldVi
     if (me === null) return none;
     const mine = (p.holder ?? undefined) === me;
     const offer = (op: ProcedureOp): ProcedureOp | null => (stepOffered(f, op) ? op : null);
+    // a colleague's two hands (`COLLEAGUE_PORTS`): holding two ports, the place takes or puts in no other
+    const handsFull = me !== undefined && held(me) >= COLLEAGUE_PORTS;
     let take: ProcedureOp | null = null;
     if (!mine && p.instrument) {
-      if (me !== undefined && p.holder === undefined) take = offer({ op: "hand-over", port: p.port, to: me });
+      if (me !== undefined && p.holder === undefined && !handsFull) take = offer({ op: "hand-over", port: p.port, to: me });
       else if (me === undefined && p.holder !== undefined) take = offer({ op: "hand-over", port: p.port });
     }
     const handBack = mine && p.instrument && me !== undefined ? offer({ op: "hand-over", port: p.port }) : null;
@@ -277,18 +280,17 @@ export function portsForPlace(f: FieldSeat, def: ProcedureDefinition, v: FieldVi
     }) : [];
     let insert: InstrumentId[] = [];
     const askFor: PortOffer["askFor"] = [];
-    if (!p.instrument && (p.holder === undefined || mine)) {
-      const table = def.instruments.map((i) => i.id);
-      if (me === undefined) insert = table;
+    const table = def.instruments.map((i) => i.id);
+    // operating: into a port of the operator's own, any instrument (an exchange too); a colleague: into an empty port
+    if (me === undefined) insert = mine ? table : [];
+    else if (!p.instrument && !handsFull) {
+      const own = table.filter((i) => colleaguePortFits(p.role, i) && stepOffered(f, { op: "insert", port: p.port, instrument: i }));
+      if (!passingRequired(f.c, f.s)) insert = own;
       else {
-        const own = table.filter((i) => colleaguePortFits(p.role, i) && stepOffered(f, { op: "insert", port: p.port, instrument: i }));
-        if (!passingRequired(f.c, f.s)) insert = own;
-        else {
-          const passer = passerFor(f, me);
-          for (const i of own) {
-            if (waitingPass(field, i, me) >= 0) insert.push(i);
-            else if (passer) askFor.push({ instrument: i, to: passer });
-          }
+        const passer = passerFor(f, me);
+        for (const i of own) {
+          if (waitingPass(field, i, me) >= 0) insert.push(i);
+          else if (passer) askFor.push({ instrument: i, to: passer });
         }
       }
     }

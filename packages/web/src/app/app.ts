@@ -785,8 +785,9 @@ export class ClinicalCraftApp implements App {
       this.placeRefusal = null;
       // a place in the care team joins the team along the case's reference path: a case served without it (`clinicalcraft
       // serve`) gets its place path fetched beside it — for a new start in a place, or a saved encounter in one
+      const card = this.content.cards.find((x) => x.id === caseId);
       const prior = resume ? this.saves.caseSave(caseId) : null;
-      const seat = prior ? savedPlace(prior.snapshot.actions).seat : startAction(loaded.def, this.startChoice).seat;
+      const seat = prior ? savedPlace(prior.snapshot.actions).seat : startAction(loaded.def, this.startChoice, card).seat;
       let caseDef: CaseDefinition = loaded.def;
       if (seat) {
         try {
@@ -800,6 +801,8 @@ export class ClinicalCraftApp implements App {
       const save = resume ? this.saves.caseSave(caseId) : null;
       const facility = this.content.facilities.get(save?.facilityId ?? facilityId) ?? this.content.facilities.get(facilityId);
       if (!facility) return;
+      // a new attempt replaces the case's save — put back if the session refuses its place at the start
+      const replaced = resume ? null : { session: this.saves.data.sessions[caseId], world: this.saves.data.worlds[facility.id] };
       if (!resume) {
         delete this.saves.data.sessions[caseId];
         const ws = this.saves.data.worlds[facility.id];
@@ -898,7 +901,7 @@ export class ClinicalCraftApp implements App {
       this.lastTalk = {
         agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
-      const start = pendingStart(session.session.state, caseDef, this.startChoice);
+      const start = pendingStart(session.session.state, caseDef, this.startChoice, card);
       let notices: { title: string; body: string }[] = [];
       if (start?.seat) {
         // a place in the team: the session accepts the start or says why not — refused, nothing is entered and the
@@ -906,8 +909,12 @@ export class ClinicalCraftApp implements App {
         const outcome = await this.startInPlace(game, start);
         if (!outcome.ok) {
           await this.endGame(false);
+          if (replaced?.session) this.saves.data.sessions[caseId] = replaced.session;
+          if (replaced?.world) this.saves.data.worlds[facility.id] = replaced.world;
+          if (replaced) this.saves.write();
           this.placeRefusal = { caseId, seat: start.seat, text: outcome.words };
           this.toast(tr("intro.place.refused", { place: t(POSITION_TITLES[start.seat], getLocale()) }), outcome.words, "warning", "place-refused");
+          this.intro.render();
           return;
         }
         notices = outcome.notices;

@@ -61,7 +61,7 @@ import {
 } from "./surgery-controls.js";
 import { lapScene } from "./surgery-scene.js";
 import { fieldWordsOf, frameCaption } from "../scope-dock.js";
-import { partyName, partyWords, refusalWords } from "../field-names.js";
+import { cameraWords, partyName, partyWords, refusalWords } from "../field-names.js";
 import { convertedToOpen, openFieldText } from "../open-field.js";
 
 /** Injuries the operator can say aloud (the `recognise` op). */
@@ -514,8 +514,7 @@ export function surgeryPanel(app: App): () => PanelView {
         const r = v.regions.find((x) => x.id === id) ?? def.regions.find((x) => x.id === id);
         return r ? ct(r.name) : id;
       };
-      const aim = cam.at ? tr("surgery.camera.at", { region: regionName(cam.at) }) : tr("surgery.camera.whole");
-      const now = h("p", { class: "small", id: "lap-camera-now", dataset: { at: cam.at ?? "", zoom: cam.zoom, holder: cam.holder.kind } }, tr("surgery.camera.now", { port: cam.port, aim, zoom: tr(`surgery.camera.zoom.${cam.zoom}`), who: holderText(cam.holder) }));
+      const now = h("p", { class: "small", id: "lap-camera-now", dataset: { at: cam.at ?? "", zoom: cam.zoom, holder: cam.holder.kind } }, cameraWords(words, v, def));
       if (!cam.aims) return h("div", { class: "lap-block", id: "lap-camera" }, h("h5", null, tr("surgery.camera.title")), now, h("p", { class: "small muted" }, tr("surgery.camera.notYours", { who: holderText(cam.holder) })));
       const regions = def.regions.map((r) => r.id);
       if (!regions.includes(d.aimAt)) d.aimAt = cam.at ?? v.working ?? regions[0] ?? "";
