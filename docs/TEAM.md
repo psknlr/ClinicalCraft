@@ -461,25 +461,26 @@ for."). The record names who counted by the place's member, shown to the learner
 ### 4.5 The stand-in surgeon, the team's caller and the call-out
 
 While the learner holds a place in the team, **the stand-in surgeon operates** (`operator.ts`, `operator-plan.ts`,
-`operator-asks.ts`, pure: the same view gives the same proposal): the team's surgeon member, with the body of the facility's surgeon its
-`standIn` names, works the case's **reference path** — its plan is the reference solution's operative steps, in order —
-and asks the team for their part. Each reference step is read as the field reads it (core `normaliseStep`): the
-operator's own names — the `surgeon` token, the stand-in's id — are no actor, the stand-in's own step. A reference step
-the reference gives a colleague (`actor`) is that colleague's own, never the stand-in's: before its next step it asks
-them for it (6. below) — the learner too, when the step is their place's, and then it waits for them —, and goes on once
-the field shows it done or it gave up waiting; a colleague's step no request names (their suction, say) is passed over.
+`operator-asks.ts`, pure: the same view gives the same proposal): the team's surgeon member, with the body of the
+facility's surgeon its `standIn` names, works the case's **reference path** — its plan is the reference solution's
+operative steps, in order — and asks the team for their part. Each reference step is read as the field reads it (core
+`normaliseStep`): the operator's own names — the `surgeon` token, the stand-in's id — are no actor, the stand-in's own
+step. A reference step the reference gives a colleague (`actor`) is that colleague's own, never the stand-in's: before
+its next step it asks them for it (6. below) — the learner too, when the step is their place's, and then it waits for
+them —, and goes on once the field shows it done or it gave up waiting; a colleague's step no request names (their
+suction, say) is passed over.
 
 **Where the operation has got to is the field's record, never the team's memory.** The stand-in's own steps are recorded
 with their plan step's ref, `standin:<k>` (`k`: the step's index in the plan); its next step is the first of its plan
 whose ref the field has not recorded (`ProcedureState.refs`) — the steps the learner's start in a place applied
-(`SessionState.joined`, by the system, with no ref) are done too, and it never goes back to a step of its own before
-the furthest one done. A run of dissections of one region is one move: it goes on
-until the screen shows the region cleared — past the reference's steps if need be, with extra dissections up to the
-run's length — and is passed over once a later step is recorded. Its own extra steps — a port taken back, the camera
-aimed or zoomed, an instrument put back, an injury said aloud, suction, the abdomen insufflated again after a gas fault,
-a traction pulled again — are `standin:<k>:<kind>:<n>`, counted from the record to bound each kind. So a save and resume
-anywhere — from the transcript, whose last team record may be older than the field's, or from a snapshot — carries on
-from the same step, and no step is done twice or skipped: a ref the field holds is never taken again.
+(`SessionState.joined`, by the system, with no ref) are done too, and it never goes back to a step of its own before the
+furthest one done. A run of dissections of one region is one move: it goes on until the screen shows the region cleared
+— past the reference's steps if need be, with extra dissections up to the run's length — and is passed over once a later
+step is recorded. Its own extra steps — a port taken back, the camera aimed or zoomed, an instrument put back, an injury
+said aloud, suction, the abdomen insufflated again after a gas fault, a traction pulled again — are
+`standin:<k>:<kind>:<n>`, counted from the record to bound each kind. So a save and resume anywhere — from the
+transcript, whose last team record may be older than the field's, or from a snapshot — carries on from the same step,
+and no step is done twice or skipped: a ref the field holds is never taken again.
 
 Each round, at most one thing, in this order:
 1. **What was said to it**, first: a hold on closure read back and the wound checked, an escalation acknowledged (as any
@@ -501,9 +502,10 @@ Each round, at most one thing, in this order:
    waiting first**. A request the field's record has gone past — a team restored older than the field (a crash in the
    middle of a run): a pass whose insert is recorded, a request for a plan step that is done — is dropped, never waited
    on (and a stop whose step is done is over).
-5. **The equipment and the field**: no gas — for the gas itself, or the abdomen let down by a gas fault — or no
-   picture: it waits and says so, once ("No CO₂ — I'm waiting for the insufflator."), however long; the gas back after
-   a fault (the record follows the room on the staff's own round) — the abdomen insufflated again before its next step;
+5. **The equipment and the field**: no gas — for the gas itself, or the abdomen let down by a gas fault before a step
+   that needs it insufflated (one on the picture, an instrument put in) — or no picture: it waits and says so, once
+   ("No CO₂ — I'm waiting for the insufflator."), however long; the gas back after a fault (the record follows the room
+   on the staff's own round) — the abdomen insufflated again before its next step;
    the scope out of the camera port the reference has it in — the camera holder asked to put it back ("Take the camera,
    please."), else (given up, nobody to ask) put back by the stand-in itself, passed first in the scrub nurse's place;
    blood obscuring the field, or bile and stones in it — suction (irrigation first for spillage), the suction put into

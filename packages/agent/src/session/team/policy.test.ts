@@ -967,6 +967,9 @@ describe("the stand-in surgeon", () => {
     // the gas back: insufflated again first, as the reference did — through the device that offers it, when one does
     const back = at(12, { insufflated: false, pressure: 0 });
     expect(stepOf(propose(standIn(12, { field: back, tasks: [planTask({ reason: "no-gas", status: "waiting" })] })))).toEqual({ op: { op: "insufflate", pressure: 12 }, ref: "standin:12:insufflate:1" });
+    // an instrument to put in needs the abdomen insufflated too (the clip applier, after the Maryland came out)
+    expect(said(propose(standIn(21, { field: at(21, { insufflated: false, pressure: 0, supply: { image: true, gas: false } }) })))).toMatchObject({ text: "No CO₂ — I'm waiting for the insufflator." });
+    expect(stepOf(propose(standIn(21, { field: at(21, { insufflated: false, pressure: 0 }) })))).toEqual({ op: { op: "insufflate", pressure: 12 }, ref: "standin:21:insufflate:1" });
     // the scope taken out of the camera port: the camera holder (the learner, by control) asked to put it back
     const out = at(12, { camera: undefined, ports: at(12).ports.map((x) => (x.port === "A" ? { port: "A", role: "camera" as const, sizeMm: 10, instrument: null } : x)) });
     const asked = propose(standIn(12, { field: out }));

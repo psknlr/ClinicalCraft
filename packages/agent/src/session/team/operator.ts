@@ -294,10 +294,11 @@ function recogniseStep(v: MemberView, task: TeamTask, k: number): Proposal | nul
 }
 
 /**
- * The equipment: no gas — for the gas itself, or for a step that needs the picture while the abdomen is let down — or no
- * picture: waiting, said once; the gas back after a fault: the abdomen insufflated again; the scope out of the camera
- * port the reference has it in: the camera holder asked to put it back (`scope:<k>`), else — given up, nobody to ask —
- * put back by the stand-in itself (in the scrub nurse's place, passed first).
+ * The equipment: no gas — for the gas itself, or for a step that needs the abdomen insufflated (one on the picture, an
+ * instrument put in) while it is let down — or no picture: waiting, said once; the gas back after a fault: the abdomen
+ * insufflated again; the scope out of the camera port the reference has it in: the camera holder asked to put it back
+ * (`scope:<k>`), else — given up, nobody to ask — put back by the stand-in itself (in the scrub nurse's place, passed
+ * first).
  */
 function supplyStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, next: NextStep): Part {
   const f = v.field;
@@ -305,14 +306,15 @@ function supplyStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, ne
   const k = next.step.k;
   if (!f) return undefined;
   const picture = needsPicture(op);
-  if (!f.supply.gas && (op.op === "insufflate" || (picture && !f.insufflated))) return waitFor(v, task, "no-gas", phrase("standin.wait.gas"));
-  if (!picture) return undefined;
-  if (!f.supply.image) return waitFor(v, task, "no-picture", phrase("standin.wait.picture"));
+  const abdomen = picture || op.op === "insert";
+  if (!f.supply.gas && (op.op === "insufflate" || (abdomen && !f.insufflated))) return waitFor(v, task, "no-gas", phrase("standin.wait.gas"));
   const gas = lastOwn(plan, k, (x) => x.op === "insufflate");
   const again = extras(v.refs, k, "insufflate");
-  if (!f.insufflated && gas && gas.op.op === "insufflate" && again < BOUND.insufflate!) {
+  if (abdomen && !f.insufflated && gas && gas.op.op === "insufflate" && again < BOUND.insufflate!) {
     return gasStep(v, task, { op: "insufflate", pressure: gas.op.pressure }, extraRef(k, "insufflate", again + 1), k);
   }
+  if (!picture) return undefined;
+  if (!f.supply.image) return waitFor(v, task, "no-picture", phrase("standin.wait.picture"));
   if (!f.ports.some((p) => p.instrument === "laparoscope")) {
     const port = [...expectedInstruments(plan, k)].find(([, instrument]) => instrument === "laparoscope")?.[0];
     const empty = port ? f.ports.find((p) => p.port === port && !p.instrument) : undefined;
