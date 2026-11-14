@@ -377,6 +377,9 @@ normaliseStep, stepPartyRefusal, fieldControlFor, instrumentControl, seatCheck, 
                                                         // engine/seats.ts (TEAM.md §1): who holds which position and controls, which
                                                         // body is whose, which places a learner may take — from the case and the start;
                                                         // the operative field's gate by control (PROCEDURE.md §3)
+fieldGate(c, s, facility, op, body?): FieldGate | null  // engine/field-gate.ts (PROCEDURE.md §3, §7): whether the field takes a body's step
+                                                        // at all, before the physics — the session's precheck and a front-end's offers
+operateRefusal(c, s, op, actor?): StepRefusal | null    // reducer.ts: the engine's verdict on an operative step without taking it
 PERSONAL_KIT, ROOM_KINDS                                // schema/common.ts: capabilities every learner carries (no equipment needed), room kinds
 DestinationSchema, PostureSchema; RoomTemplateSchema     // schema/case.ts (§2: where a step takes the patient, postures); schema/facility.ts (room templates)
 CAPABILITY_LABELS, capabilityLabels(capabilities, locale): string[]   // i18n.ts: capability display names (zh-CN / en) for every front-end

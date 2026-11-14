@@ -87,18 +87,22 @@ places, the case-start card shows — in in-world mode — the team's line-up an
 "Your place in the team" (the operating surgeon by default; first assistant,
 second assistant, scrub nurse where the case's team has them); `?seat=` and
 `?lineup=` (beside `?team=`) choose them from the address, `__QA__.start(case,
-facility, resume, team, seat, lineup)` from a test. A place the session
-refuses is not entered: the card says why, in the session's words. Taken, you
-join the team at the operating table and the stand-in surgeon operates; a
-case `clinicalcraft serve` sends fetches its place path first
-(`/api/content/cases/:id/place-path`). The **surgery window** then works by
-place (docs/PROCEDURE.md §7): each port says who holds it, with **Take**,
-**Hand back** and **Hand to …** by your controls, an insert where your place
-may put one in (in the scrub nurse's place **Ask for the …** until it is
-passed), the actions through the ports you hold, the **camera block** — aim at
-a region, the whole field, follow the work, **Closer** / **Wider** — for the
-camera holder, and the **instrument table** (passing, for the scrub nurse);
-the operator's own steps stay in view, read-only.
+facility, resume, team, seat, lineup)` from a test (its four-argument form is
+the operating surgeon). A place asked for is always sent: one the team does
+not offer shows as such, and a place the session refuses is not entered — the
+card says why, in the session's words; so is a saved encounter in a place whose
+settings would stop the stand-in surgeon. Taken, you join the team at the
+operating table and the stand-in surgeon operates; a case `clinicalcraft serve`
+sends fetches its place path first (`/api/content/cases/:id/place-path`). The
+**surgery window** then works by place (docs/PROCEDURE.md §7): each port says
+who holds it, with **Take**, **Hand back** and **Hand to …** (a colleague at
+the table) where the field would take them, an insert where your place may put
+one in (in the scrub nurse's place **Ask for the …** until it is passed), the
+actions through the ports you hold, the **camera block** — aim at a region, the
+whole field, follow the work, **Closer** / **Wider** — for the camera holder
+(otherwise why not), and the **instrument table** (passing, for the scrub
+nurse, each instrument to whoever may put it in); the operator's own steps stay
+in view, read-only.
 
 | folder (`src/`) | |
 |---|---|

@@ -35,7 +35,7 @@ import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/
 import { Toaster, type ToastLevel } from "../ui/toast.js";
 import { ActionFeedback } from "../ui/feedback.js";
 import { playSound } from "./audio.js";
-import { fetchServerCase, loadContent, loadServerContent, PlacePathError, placeReady, type ContentIndex } from "./content.js";
+import { fetchPlacePath, fetchServerCase, loadContent, loadServerContent, PlacePathError, placeReady, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
@@ -825,11 +825,14 @@ export class ClinicalCraftApp implements App {
       let caseDef: CaseDefinition = loaded.def;
       if (seat) {
         try {
-          this.intro.startNote(tr("intro.place.loading"));
-          caseDef = await placeReady(loaded.def);
+          // said on the enter button while it is fetched (a bundled case carries its solution: nothing to fetch)
+          caseDef = await placeReady(loaded.def, (id) => {
+            this.intro.startNote(tr("intro.place.loading"));
+            return fetchPlacePath(id);
+          });
         } catch (err) {
           const why = this.placePathWords(err);
-          this.placeRefusal = { caseId, seat, text: `${tr("intro.place.pathFailed")}: ${why}`, ...(prior ? { resume: true } : {}) };
+          this.placeRefusal = { caseId, seat, text: tr("intro.place.pathFailedWhy", { why }), ...(prior ? { resume: true } : {}) };
           this.toast(tr("intro.place.pathFailed"), why, "critical", "place-refused");
           this.intro.render();
           return;
@@ -945,7 +948,7 @@ export class ClinicalCraftApp implements App {
       if (held) {
         // a saved encounter in a place: the settings it would go on with must let the stand-in surgeon work — asked of the
         // session as a start in a place is; refused, nothing is entered and the save stays as it was
-        const why = session.session.placeRefusal();
+        const why = session.session.standInRefusal();
         if (why) {
           await this.endGame(false);
           this.placeRefusal = { caseId, seat: held, text: why, resume: true };

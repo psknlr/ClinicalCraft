@@ -56,10 +56,13 @@ describe("GET /api/content/cases/:id/place-path (a content directory with team c
   };
   const team = placesCase(MINI, undefined, { id: "team-mini" });
   const lap = lapCholeTeamCase();
+  // an operation-only case: it starts in its team's phase, so nothing is joined — the stand-in's plan is all its path carries
+  const op = lapCholeTeamCase({ id: "lap-team-op", initialPhase: "theatre", solution: lap.solution.filter((a) => a.type !== "set-phase") });
   let server: RunningServer;
   beforeAll(async () => {
     write("team-mini", team);
     write("lap-team", lap);
+    write("lap-team-op", op);
     write("no-team", { ...structuredClone(MINI), id: "no-team" });
     server = await startServer({ port: 0, host: "127.0.0.1", settings: mergeSettings([{ source: "flag", settings: { locale: "en" } }]), staticDir: null, assetDirs: [], env, log: () => undefined, contentDirs: [dir], contentRevalidateMs: 0 });
   });
@@ -96,8 +99,21 @@ describe("GET /api/content/cases/:id/place-path (a content directory with team c
     expect((await fetch(new URL("api/content/cases/team-mini/place-path", server.url), { method: "POST" })).status).toBe(405);
   });
 
+  it("an operation-only case (it starts in its team's phase): joined at once served as it is, but the stand-in's plan comes only with its path", async () => {
+    const entry = ((await (await get("api/content/cases?limit=200")).json()) as { items: CaseIndexEntry[] }).items.find((e) => e.id === op.id);
+    expect(entry).toMatchObject({ seats: ["first-assistant", "scrub-nurse"] });
+    const parsed = parseCase(await (await get(`api/content/cases/${op.id}?spoilers=1`)).json());
+    if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues.slice(0, 3)));
+    // served as it is, a start in a place is taken (nothing to join along) — with no operative step to work from
+    expect(reduce(parsed.value, createSession(parsed.value), { type: "start", seat: "first-assistant" }).rejected).toBeUndefined();
+    expect(parsed.value.solution.filter((a) => a.type === "operate")).toEqual([]);
+    const { path } = (await (await get(`api/content/cases/${op.id}/place-path`)).json()) as { path: ClinicalAction[] };
+    expect(path.map((a) => a.type)).toEqual(["start", ...op.solution.filter((a) => a.type === "operate").map(() => "operate")]);
+    expect(withPlacePath(parsed.value, path).solution.filter((a) => a.type === "operate")).toEqual(op.solution.filter((a) => a.type === "operate"));
+  });
+
   it("with the path put in, the served case offers the full case's places and a start in a place joins as the full case's does", async () => {
-    for (const c of [team, lap]) {
+    for (const c of [team, lap, op]) {
       const parsed = parseCase(await (await get(`api/content/cases/${c.id}?spoilers=1`)).json());
       if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues.slice(0, 3)));
       const { path } = (await (await get(`api/content/cases/${c.id}/place-path`)).json()) as { path: ClinicalAction[] };

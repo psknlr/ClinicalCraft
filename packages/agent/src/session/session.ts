@@ -28,7 +28,7 @@ import type { ToolDefinition, VitalsView } from "../tools/types.js";
 import { rt } from "./i18n.js";
 import { SessionKernel } from "./kernel.js";
 import { provenanceNow, restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
-import { standInRefusal } from "./team/places.js";
+import { standInRefusal as settingsRefusal } from "./team/places.js";
 import { emptyTrace } from "./trace.js";
 import type { ClinicalSessionApi, RecordProvenance, ReplayIssue, SessionOptions, SessionSnapshot } from "./types.js";
 import type { TeamCheckpoint } from "./team/types.js";
@@ -154,11 +154,11 @@ export class ClinicalSession implements ClinicalSessionApi {
    * place asks before it goes on — as a start in a place is refused (`place.standInRefused`) and a `configure` is
    * (`place.configRefused`): the stand-in never meets a refusal by a rule in the middle of the operation.
    */
-  placeRefusal(settings?: ResolvedSettings): string | null {
+  standInRefusal(settings?: ResolvedSettings): string | null {
     const k = this.k;
     const seat = k.state.seat;
     if (!seat || k.state.finished || k.state.procedure?.closed) return null;
-    const why = standInRefusal(k, k.currentSubmission || k.id, seat, settings ?? k.settings);
+    const why = settingsRefusal(k, k.currentSubmission || k.id, seat, settings ?? k.settings);
     const L = k.locale;
     return why ? rt(L, "action.denied", { reason: rt(L, "place.resumeRefused", { place: t(POSITION_TITLES[seat], L), reason: why }) }) : null;
   }

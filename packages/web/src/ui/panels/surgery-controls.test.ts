@@ -150,7 +150,7 @@ describe("the window by place: the field's own verdicts, never a rule of the web
 
   it("Hand to only a colleague at the operating table — the world's own rule (a port held away from it is let go at once)", () => {
     const w = theatreWorld();
-    operateIn(w, ACCESS());
+    operateIn(w, ACCESS().map((x) => x.op));
     const seatIn = (): FieldSeat => ({ c: w.caseDef, s: w.harness.state(), facility: w.facility, atTable: (body) => atOperatingTable(w.runtime, body) });
     const handTo = () => portsForPlace(seatIn(), w.caseDef.procedure!, observeField(w.caseDef.procedure!, w.harness.state().procedure!)).find((o) => o.port === "B")!.handTo.map((x) => x.to);
     // the first assistant at their post, across the theatre: not handed the grasper
@@ -318,13 +318,14 @@ describe("the instrument table and 'Ask for': every instrument passed first in t
     expect(offer.pass?.to).toMatchObject({ grasper: [undefined, "doc-1"], suction: [undefined, "doc-1"], hook: [undefined], "clip-applier": [undefined], maryland: [undefined] });
     // the laparoscope passed already waits for the operator: passed again only to the camera holder
     expect(offer.pass?.to.laparoscope).toEqual(["doc-1"]);
-    for (const [instrument, takers] of Object.entries(offer.pass!.to) as [InstrumentId, (string | undefined)[]][]) {
+    // both ways: offered exactly when the session takes the pass and whoever it is for may put the instrument in (their
+    // own insert through the gates) — a pass nobody can use would wait for ever
+    for (const instrument of def.instruments.map((i) => i.id as InstrumentId)) {
       for (const to of [undefined, "nurse-1", "doc-1", "anaes-1"]) {
         const op: ProcedureOp = { op: "pass", instrument, ...(to ? { to } : {}) };
-        if (takers.includes(to)) expect(sessionTakes(f, op), `${instrument} to ${to}`).toBe(true);
-        else if (to === undefined || to === "doc-1") expect(sessionTakes(f, op) && !(instrument === "laparoscope" && to === undefined), `${instrument} to ${to}`).toBe(false);
+        const putsIn = to === undefined || fieldGate(k, scrub, null, { op: "insert", port: "A", instrument }, `staff:${to}`) === null;
+        expect(offer.pass!.to[instrument]?.includes(to) ?? false, `${instrument} to ${to}`).toBe(sessionTakes(f, op) && putsIn);
       }
-      expect(takers.filter((x) => x === "nurse-1" || x === "anaes-1"), instrument).toEqual([]);
     }
     for (const place of PLACES.filter((p) => p.start.seat !== "scrub-nurse")) {
       const s = encounter(place.start, place.steps);

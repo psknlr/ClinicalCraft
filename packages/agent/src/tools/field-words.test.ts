@@ -5,10 +5,11 @@
  * the member whose place the learner holds as "you" (A19).
  */
 import { describe, expect, it } from "vitest";
-import { createSession, reduce, type ClinicalAction } from "@clinicalcraft/core";
+import { createSession, fieldGate, LEARNER_BODY, reduce, type ClinicalAction } from "@clinicalcraft/core";
 import { LAP_CHOLE_TEAM } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
 import { msgsOf, type TestSession } from "../__fixtures__/harness.js";
 import { ACCESS, operatorSteps, STAFF, standAtTable, THEATRE, theatreCase, theatreSession } from "../session/__fixtures__/theatre.js";
+import { placeRefusal } from "./field-words.js";
 import { countLines } from "./requirements.js";
 import type { ToolContext } from "./types.js";
 
@@ -73,5 +74,33 @@ describe("a record's staff as the learner reads it (A19)", () => {
     expect(countLines(c, placed, "zh-CN")).toContain("  已上报：你 → surgeon。");
     const operating = { ...reduce(c, createSession(c), { type: "start" }).state, count: record };
     expect(countLines(c, operating, "en")).toContain("  Escalated: nurse-2 → surgeon.");
+  });
+});
+
+describe("the operate tool's precheck is core's fieldGate, said in words (the gate a front-end's offers ask too)", () => {
+  it("refuses exactly what core's fieldGate refuses, for each body and step — the learner's place, a colleague, the colleague standing by", async () => {
+    const t = await theatreSession({ start: { type: "start", seat: "first-assistant" }, settingsPatch: { approvalMode: "bypass" } });
+    operatorSteps(t, ACCESS);
+    const s = t.session;
+    const steps = [
+      { op: "hand-over", port: "B", to: "doc-1" },
+      { op: "hand-over", port: "C", to: "doc-1" },
+      { op: "hand-over", port: "B", to: "porter-1" },
+      { op: "hand-over", port: "B" },
+      { op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false },
+      { op: "aim", port: "A" },
+      { op: "pass", instrument: "hook" },
+      { op: "pass", instrument: "hook", to: "nobody" },
+      { op: "insert", port: "D", instrument: "suction" },
+      { op: "recognise", injury: "bleeding" },
+    ] as const;
+    for (const body of [undefined, STAFF.scrub, STAFF.second, STAFF.first, STAFF.porter]) {
+      for (const op of steps) {
+        const gate = fieldGate(s.caseDef, s.state, s.facility, op as never, body ?? LEARNER_BODY);
+        const refused = placeRefusal(ctx(t, body), op as never);
+        expect(refused === null, `${body ?? "the learner"}: ${JSON.stringify(op)}`).toBe(gate === null);
+      }
+    }
+    await s.close();
   });
 });

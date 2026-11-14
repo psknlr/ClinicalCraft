@@ -426,26 +426,34 @@ control submits `operate` through the app's action path.
 
 **The window by place** (`packages/web/src/ui/panels/surgery-controls.ts`). Operating, the window offers what each
 instrument does, as always, and the field refuses the rest with its reason. Holding a place in the team, it offers what
-that place may do, and every offer is core's verdict, never a rule of the web's own: the field's gates before the
-physics (`stepOffered`: `COLLEAGUE_OPS`, `stepPartyRefusal`, `seatCheck` with each body's controls — the same checks the
-session's precheck makes), the instrument vocabulary (`INSTRUMENT_OPS`, `colleaguePortFits`) and who holds each port
-(`FieldView.ports[].holder`). `portsForPlace` gives each port's holder ("you" — the learner's place's member, core
-`memberBody` —, the stand-in surgeon, or a colleague by name and position) and its offers: **Take** (a port the
-operator holds, into the place, when its instrument's control is the place's; a colleague hands theirs over
-themselves), **Hand back**, **Hand to …** (members of the team as it is whose controls cover the port; operating, the
-operator's own ports — "Take back" a colleague's), an insert into an empty port (a colleague's only the laparoscope
-into a camera port, a grasper or the suction into an assist port, by control) and its withdrawal; a colleague has two
+that place may do, and every offer is a step the field takes now — asked of core, never a rule of the web's own: the
+field's gates (core `fieldGate`: the one composition of `COLLEAGUE_OPS`, `stepPartyRefusal` and `seatCheck` with each
+body's controls that the session's precheck asks too) and then the engine's own verdict on the step without taking it
+(core `operateRefusal`: the reducer's checks — the passing rule and the physics: who holds a port, consent, two hands,
+what is in a port, the gas); the instrument vocabulary (`INSTRUMENT_OPS`); who holds each port
+(`FieldView.ports[].holder`); and, from the world, who stands at the operating table (`atOperatingTable`, the spatial
+policy's `operate` rule: a port held by a body that is not is let go at once). `portsForPlace` gives each port's holder
+("you" — the learner's place's member, core `memberBody` —, the stand-in surgeon, or a colleague by name and position)
+and its offers: **Take** (a port the operator holds, into the place, when its instrument's control is the place's; a
+colleague hands theirs over themselves), **Hand back**, **Hand to …** (members of the team as it is at the operating
+table whose controls cover the port and whose hands are free; operating, the operator's own ports — "Take back" a
+colleague's), an insert into an empty port (a colleague's only the laparoscope into a camera port, a grasper or the
+suction into an assist port, by control — and none before the pneumoperitoneum) and its withdrawal; a colleague has two
 hands (`COLLEAGUE_PORTS`), so a place holding two ports is offered no third, nor is anyone handed one. In the scrub nurse's
-place, where every instrument is passed first, an insert with no pass waiting becomes **Ask for the …** — the team's
-ask (`team ask {field: {op: "pass"}}`) of the member who passes. `controlsForPlace` gives the actions through a port
-the learner holds: traction, suction and irrigation by control, never the operator's own steps. **The camera block**
-(`cameraOffer`) replaces the laparoscope's port actions: where the camera looks, how close and who holds it; aim at a
-region of the case, the whole field, follow the work (`working`), closer / wider (a close view needs an aim) — offered
-to the camera holder, or to the operator while nobody holds the camera port; the picture looks at the aimed region's
-centre, nearer at a close view (`surgery-scene.ts`), and without an aim it is the picture as it always was. **The
-instrument table** (`tableOffer`): what is on it, what was passed and waits to go in, and — for the place holding the
-instrument table — passing an instrument to the operator or a member. The operator's own steps (the port plan, the
-pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in view, read-only; saying an injury
+place, where every instrument is passed first, an insert the engine refuses for want of a pass (`pass-first`) and would
+take once one waits becomes **Ask for the …** — the team's ask (`team ask {field: {op: "pass"}}`) of the member who
+passes. `controlsForPlace` gives the actions through a port the learner holds: traction, suction and irrigation by
+control, never the operator's own steps (their targets are chosen after; the field refuses what it cannot take, with
+its reason). **The camera block** (`cameraOffer`) replaces the laparoscope's port actions: where the camera looks, how
+close and who holds it; aim at a region of the case, the whole field, follow the work (`working`), closer / wider (a
+close view needs an aim) — offered while the field takes the learner's aim: to the camera holder, or to the operator
+while nobody holds the camera port, with a picture; otherwise the field's reason why not, in the learner's words. The
+picture looks at the aimed region's centre, nearer at a close view (`surgery-scene.ts`), and without an aim it is the
+picture as it always was. **The instrument table** (`tableOffer`): what is on it, what was passed and waits to go in,
+and — for the place holding the instrument table — passing an instrument to the operator or to a member who may put it
+in (a grasper or the suction to whoever holds traction or suction, the laparoscope to the camera holder; an operating
+instrument to the operator only: a pass nobody could use would wait for ever). The operator's own steps (the port plan,
+the pneumoperitoneum, identification, the safety pause, bail-outs and closing) stay in view, read-only; saying an injury
 aloud (`recognise`) is anyone's. The window's own refusal line is the session's words, and the playback's refusal frame
 says the field's reason in the learner's words (the web's `surgery.reason.<key>` with the people named by the agent's
 `reasonText` — "you" for the learner), else the engine's message.
@@ -454,8 +462,8 @@ says the field's reason in the learner's words (the web's `surgery.reason.<key>`
 with no body — the learner's, a slash command's, MCP's, the external clinician's — is the learner's body: the operator,
 or while the learner holds a place in the team that place's member; a colleague's body is their staff id. `operate`
 takes the actor from there, never from its input, and never a plan step `ref` (the care team's host sets it). A step
-outside the body's controls is refused before the approval gate (`NOT_AUTHORIZED`: core `seatCheck` with each body's
-own controls; "You are the first assistant: dissection is the operating surgeon's." / "你是第一助手：分离由主刀完成。"),
+outside the body's controls is refused before the approval gate (`NOT_AUTHORIZED`: core `fieldGate` — `seatCheck` with
+each body's own controls; "You are the first assistant: dissection is the operating surgeon's." / "你是第一助手：分离由主刀完成。"),
 so nobody is asked to approve what the body may not do — the operator's own steps are never narrowed, but whoever takes
 a port, from the operator too, holds its control (a hand-over to the porter or to a physician is refused: "Li Qiang does
 not hold the Traction control that this needs."). A step naming someone the field takes no part from (core

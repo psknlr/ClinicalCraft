@@ -7,7 +7,7 @@
  * team at the operating table, the first-person view following the world's pose once (a resume does not move it again).
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { caseIndexEntry } from "@clinicalcraft/agent";
+import { caseIndexEntry, type AgentEvent } from "@clinicalcraft/agent";
 import { canJoinTeam, createSession, parseCase, placePath, reduce, seatsOf, type CaseDefinition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { theatreCase, theatreCatalog, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
@@ -254,9 +254,66 @@ describe("a case served without its solution: the place path fetched beside it (
       }
     }
     // each kind has its words in both languages (the app's title and cause; the raw cause goes to the console only)
-    for (const key of ["intro.place.pathFailed", "intro.place.path.notFound", "intro.place.path.http", "intro.place.path.timeout", "intro.place.path.network", "intro.place.path.malformed"] as const) {
+    for (const key of ["intro.place.pathFailed", "intro.place.pathFailedWhy", "intro.place.path.notFound", "intro.place.path.http", "intro.place.path.timeout", "intro.place.path.network", "intro.place.path.malformed"] as const) {
       expect(POSITIONS_EN[key], key).toBeTruthy();
       expect(POSITIONS_ZH[key], key).toMatch(/\p{Script=Han}/u);
     }
   });
 });
+
+/** The messages of one type among a run's events. */
+const msgsOf = <T extends AgentEvent["msg"]["type"]>(events: readonly AgentEvent[], type: T) => events.flatMap((e) => (e.msg.type === type ? [e.msg as Extract<AgentEvent["msg"], { type: T }>] : []));
+
+describe("the settings while a place is held: the web keeps what the session runs with", () => {
+  let open: AppSession[] = [];
+  afterEach(async () => {
+    for (const a of open) await a.close();
+    open = [];
+  });
+  const facility = theatreFacility();
+  const inPlace = async (stored = defaultSettings(), resume?: AppSession["snapshot"] extends () => infer S ? S : never) => {
+    const app = await startAppSession({ caseDef: theatreCase(), facility, catalogs: [...catalogs(), theatreCatalog()], stored, choice: offline, locale: "en", served: false, embodiment: "embodied", ...(resume ? { resume } : {}) });
+    open.push(app);
+    return app;
+  };
+  const withMode = (approvalMode: "plan" | "default" | "strict", practiceScope: "full" | "workup" = "full") => {
+    const stored = defaultSettings();
+    stored.agent.approvalMode = approvalMode;
+    stored.agent.practiceScope = practiceScope;
+    return stored;
+  };
+
+  it("a change the session refuses (place.configRefused) comes back as the values it kept, said once — never asked again on the next change", async () => {
+    const app = await inPlace();
+    const said: string[] = [];
+    app.session.subscribe((e) => {
+      if (e.msg.type === "error") said.push(e.msg.message);
+    });
+    expect(msgsOf(await app.session.run({ type: "clinical_action", action: { type: "start", seat: "first-assistant" } }), "error")).toEqual([]);
+    // plan mode would stop the stand-in surgeon: refused, the session keeps its own — and says what it kept
+    expect(await app.reconfigure(withMode("plan"), offline, "en")).toEqual({ approvalMode: "default", practiceScope: "full" });
+    expect(said).toEqual([expect.stringMatching(/^While you hold the first assistant's place the stand-in surgeon operates, and this change would stop them/u)]);
+    expect([app.session.settings.approvalMode, app.settings.approvalMode]).toEqual(["default", "default"]);
+    // the preferences taken back (as the app does), a language switch asks for nothing the session refused
+    expect(await app.reconfigure(withMode("default"), offline, "zh-CN")).toBeNull();
+    expect(said).toHaveLength(1);
+    expect(app.session.settings.locale).toBe("zh-CN");
+    // a practice scope without the operation: refused the same way; strict mode stops nothing: taken
+    expect(await app.reconfigure(withMode("default", "workup"), offline, "zh-CN")).toEqual({ approvalMode: "default", practiceScope: "full" });
+    expect(await app.reconfigure(withMode("strict"), offline, "zh-CN")).toBeNull();
+    expect(app.session.settings.approvalMode).toBe("strict");
+  });
+
+  it("a saved encounter in a place, resumed with settings that would stop the stand-in: the session says so before it goes on", async () => {
+    const app = await inPlace();
+    await app.session.run({ type: "clinical_action", action: { type: "start", seat: "first-assistant" } });
+    const snapshot = app.snapshot();
+    expect(app.session.standInRefusal()).toBeNull();
+    const plan = await inPlace(withMode("plan"), snapshot);
+    expect(plan.session.state.seat).toBe("first-assistant");
+    expect(plan.session.standInRefusal()).toMatch(/^Action not permitted: while you hold the first assistant's place the stand-in surgeon operates, and this session's settings would stop them \(.*\)\. Change the approval mode, the practice scope or the deny rules to go on with this encounter\.$/su);
+    const fine = await inPlace(withMode("default"), snapshot);
+    expect(fine.session.standInRefusal()).toBeNull();
+  });
+});
+

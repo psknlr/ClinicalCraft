@@ -344,8 +344,10 @@ export class Intro {
   /**
    * A place in the care team and the team's line-up (docs/EMBODIED.md §2.1, docs/TEAM.md §1): shown in in-world mode for
    * a case that offers places — the operating surgeon's (you may also do the team's parts) first, the default; the
-   * places the chosen line-up offers after it. A saved encounter's own place is said under them, read-only (continuing
-   * keeps it; the choice is a new encounter's), and a start the session refused says why, in its words.
+   * places the chosen line-up (and team scenario) offers after it; a place asked for that they do not offer, as chosen
+   * but not offered. A saved encounter's own place is said under them, read-only (continuing keeps it; the choice is a
+   * new encounter's), and a start in a place that did not happen says why — the session's refusal in its words, a saved
+   * encounter its settings would stop, a place path that could not be had.
    */
   private placeRows(card: CaseCard): HTMLElement | null {
     const app = this.app;

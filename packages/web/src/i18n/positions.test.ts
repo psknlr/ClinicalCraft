@@ -38,6 +38,9 @@ describe("both languages", () => {
     // the operating surgeon's place is the learner as always (docs/GLOSSARY.md "your place in the team")
     expect([POSITIONS_EN["place.surgeon"], POSITIONS_ZH["place.surgeon"]]).toEqual(["Operating surgeon (you may also do the team's parts)", "主刀医生（团队各岗位的事也可由你做）"]);
     expect([POSITIONS_EN["intro.lineup.label"], POSITIONS_ZH["intro.lineup.label"]]).toEqual(["Team", "团队配置"]);
+    // a line-up's provenance and a place not offered, bracketed as each language does (docs/GLOSSARY.md: full-width in Chinese)
+    expect([POSITIONS_EN["intro.lineup.tagged"], POSITIONS_ZH["intro.lineup.tagged"]]).toEqual(["{name} ({tag})", "{name}（{tag}）"]);
+    for (const key of ["intro.lineup.tagged", "intro.place.unavailable", "holder.named"] as const) expect(POSITIONS_ZH[key], key).not.toMatch(/[()]/u);
   });
 
   it("says a reason to the one it is about in both languages: each 'you' sentence has its template's blanks less the person", () => {

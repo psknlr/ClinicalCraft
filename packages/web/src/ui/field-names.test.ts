@@ -62,6 +62,24 @@ describe("the field's people in the learner's words", () => {
     expect([partyWords(op, undefined), partyWords(op, "doc-1")]).toEqual(["你", "阿部医生（第一助手）"]);
     expect([partyWords(fa, "doc-1"), partyWords(fa, undefined), partyWords(fa, "nurse-2")]).toEqual(["你", "伊藤医生（主刀医生）", "陈雨（洗手护士）"]);
   });
+
+  it("a name the facility already qualifies in brackets is said once — its position not added again", () => {
+    // a content pack's theatre names its staff with their part ("Dr Mori (assistant surgeon)", "林护士（洗手）")
+    const qualified = {
+      staff: [
+        { id: "doc-1", role: "attending", position: "first-assistant", name: { en: "Dr Mori (assistant surgeon)", "zh-CN": "森医生（助手）" } },
+        { id: "nurse-2", role: "nurse", position: "scrub-nurse", name: { en: "Nurse Lim (scrub)", "zh-CN": "林护士（洗手）" } },
+        { id: "anaes-1", role: "attending", position: "anaesthetist", name: { en: "Dr Tanaka", "zh-CN": "田中医生" } },
+      ],
+    } as unknown as FacilityDefinition;
+    const s = encounter({ type: "start" }, [...access(), { op: { op: "hand-over", port: "A", to: "doc-1" } }]);
+    const words = learnerField(k, qualified, () => s);
+    setLocale("en");
+    expect([partyWords(words, "doc-1"), partyWords(words, "nurse-2"), partyWords(words, "anaes-1")]).toEqual(["Dr Mori (assistant surgeon)", "Nurse Lim (scrub)", "Dr Tanaka (anaesthetist)"]);
+    expect(cameraWords(words, observeField(def, s.procedure!), def)).toBe("Port A: the whole field, wide — held by Dr Mori (assistant surgeon)");
+    setLocale("zh-CN");
+    expect([partyWords(words, "doc-1"), partyWords(words, "nurse-2"), partyWords(words, "anaes-1")]).toEqual(["森医生（助手）", "林护士（洗手）", "田中医生（麻醉医生）"]);
+  });
 });
 
 describe("the camera in the learner's words (the scope dock and the surgery window)", () => {
