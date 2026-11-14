@@ -46,7 +46,7 @@
     "license": "Educational paraphrase; the source publication retains its copyright.",
     "notes": {
       "zh-CN": "依据一篇已发表的单例病例报告改编。1.1.0版依据1.0.0版已记录的事实重写：6月龄男婴，双眼间断上斜20余天；抬头不稳，不会翻身、独坐或主动抓物；喜饮水约1200 mL/日、夜尿多；生后前3个月少哭、吃奶后即睡、每日睡约22小时；过期妊娠且无羊水，孕43周加1天剖宫产，出生体重4.5 kg；孕中期母亲感冒发热、治疗3天好转；父母非近亲；入院查体（不能注视追视、强光无瞬目，瞳孔左3 mm右4 mm且直接间接对光反射消失，四肢肌张力低，不能竖头、翻身、独坐，对声音有反应但定位不灵敏，阴茎约1 cm、双侧阴囊饱满、无隐睾）；眼底、视觉与听觉诱发电位、头颅磁共振、尿比重、电解质与肾功能、血糖、生长激素、甲状腺功能和Gesell评估结果；报告的诊断、处理和9个月复查。体重8.5 kg只见于1.0.0版的患者资料。这些事实尚未对照原文全文核对。患儿姓名为化名，医院和日历日期已去除，时间以相对时间表示。陪同的家长（是父亲还是母亲未记录）、全部对话、阶段、决策、处置选项、评分和教学要点为教学设计；1.0.0未记录的内容保持未知。保留的矛盾和疑点：后一项生长激素值10.06 nmol/L与报告的“生长激素缺乏”判断不一致；生长激素以nmol/L报告；眼底描述为视神经萎缩而磁共振为视神经纤细。1.0.0称这些内容“原病例资料没有说明”，本版改为“没有记录”，不再对原文作出断言。",
-      "en": "Adapted from one published single-case report. Version 1.1.0 is re-authored from the facts version 1.0.0 records: a 6-month-old boy with intermittent upward deviation of both eyes for over 20 days; poor head control, unable to roll, sit or reach for objects; likes drinking water, about 1200 mL a day, with heavy night-time urine; in his first three months he rarely cried, slept after feeds and slept about 22 hours a day; a post-term pregnancy without amniotic fluid, caesarean at 43 weeks and 1 day, birth weight 4.5 kg; a febrile cold in the mother in mid-pregnancy, better after three days of treatment; non-consanguineous parents; the admission examination (no fixing or following, no blink to bright light, pupils left 3 mm and right 4 mm with absent direct and consensual reflexes, reduced limb tone, no head control, rolling or sitting, a response to sound with poor localisation, a penis of about 1 cm with full scrotal sacs and no undescended testis); the fundoscopy, visual and auditory evoked potentials, brain MRI, urine specific gravity, electrolytes and renal function, glucose, GH, thyroid and Gesell results; the report's diagnosis, management and 9-month review. The 8.5 kg weight appears only in 1.0.0's patient card. These facts have not yet been checked against the full article. The baby's name is a pseudonym; hospitals and calendar dates are removed and times are relative. The parent (whether mother or father is not recorded), all dialogue, the phases, decisions, management options, scoring and teaching points are teaching design; what 1.0.0 does not record stays unknown. Inconsistencies kept: the later GH value of 10.06 nmol/L does not fit the report's reading of GH deficiency; GH is reported in nmol/L; the fundi are described as optic atrophy while the MRI shows thin optic nerves. Version 1.0.0 said such details were 'not provided by the source case'; this version says they are not recorded, without a claim about the article."
+      "en": "Adapted from one published single-case report. Version 1.1.0 is re-authored from the facts version 1.0.0 records: a 6-month-old boy with intermittent upward deviation of both eyes for over 20 days; poor head control, unable to roll, sit or grasp objects of his own accord; likes drinking water, about 1200 mL a day, with heavy night-time urine; in his first three months he rarely cried, slept after feeds and slept about 22 hours a day; a post-term pregnancy without amniotic fluid, caesarean at 43 weeks and 1 day, birth weight 4.5 kg; a febrile cold in the mother in mid-pregnancy, better after three days of treatment; non-consanguineous parents; the admission examination (no fixing or following, no blink to bright light, pupils left 3 mm and right 4 mm with absent direct and consensual reflexes, reduced limb tone, no head control, rolling or sitting, a response to sound with poor localisation, a penis of about 1 cm with full scrotal sacs and no undescended testis); the fundoscopy, visual and auditory evoked potentials, brain MRI, urine specific gravity, electrolytes and renal function, glucose, GH, thyroid and Gesell results; the report's diagnosis, management and 9-month review. The 8.5 kg weight appears only in 1.0.0's patient card. These facts have not yet been checked against the full article. The baby's name is a pseudonym; hospitals and calendar dates are removed and times are relative. The parent (whether mother or father is not recorded), all dialogue, the phases, decisions, management options, scoring and teaching points are teaching design; what 1.0.0 does not record stays unknown. Inconsistencies kept: the later GH value of 10.06 nmol/L does not fit the report's reading of GH deficiency; GH is reported in nmol/L; the fundi are described as optic atrophy while the MRI shows thin optic nerves. Version 1.0.0 said such details were 'not provided by the source case'; this version says they are not recorded, without a claim about the article."
     },
     "review": {
       "status": "editorial",
@@ -74,7 +74,7 @@
   "learningOutcomes": [
     {
       "zh-CN": "从不注视、强光不眨眼和对光反射消失识别前部视路病变，并把小阴茎、多饮夜尿和早期嗜睡与下丘脑-垂体功能障碍联系起来。",
-      "en": "Recognise anterior visual pathway disease from absent fixing, blink to light and pupil reflexes, and link a micropenis, heavy drinking with night-time wees and early sleepiness to hypothalamic–pituitary dysfunction."
+      "en": "Recognise anterior visual pathway disease from absent fixing, blink to light and pupil reflexes, and link a micropenis, heavy drinking with much urine at night and early sleepiness to hypothalamic–pituitary dysfunction."
     },
     {
       "zh-CN": "把透明隔缺如合并视神经、视交叉细小解读为视隔发育不良，并据此安排全部垂体轴的评估和定期复查，皮质醇优先。",
@@ -85,8 +85,8 @@
       "en": "Assess suspected arginine vasopressin deficiency in an infant safely, as the RCH 2022 diabetes insipidus guideline sets out: free water, no restriction, paired blood and urine osmolality, and a deprivation test only under specialist monitoring."
     },
     {
-      "zh-CN": "按PES 2016（强烈推荐治疗生长激素缺乏，益处不止于身高）为生长激素缺乏制定治疗计划：先查清肾上腺轴，用药后复查FT4和皮质醇。",
-      "en": "Plan GH treatment for GH deficiency in line with PES 2016 (a strong recommendation to treat, with benefits beyond height), clearing the adrenal axis first and rechecking free T4 and cortisol after starting."
+      "zh-CN": "按PES 2016（为使成年身高正常、避免极度矮小而强烈推荐治疗）为生长激素缺乏制定治疗计划：先查清肾上腺轴，用药后重新评估肾上腺轴和甲状腺轴。",
+      "en": "Plan GH treatment for GH deficiency in line with PES 2016 (a strong recommendation to treat, to normalise adult height and avoid extreme shortness), clearing the adrenal axis first and re-assessing the adrenal and thyroid axes after starting."
     },
     {
       "zh-CN": "为证实ACTH缺乏的婴儿制定BSPED 2023应急方案（应激加量、应急卡、1岁以下肌注氢化可的松25 mg），并按PES 2015的阈值监测血糖。",
@@ -2916,8 +2916,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "水放在他随时喝得到的地方，不限制饮水；护士记录每次喂奶和饮水量，称重尿布计算尿量，每天称体重。",
-        "en": "Keep water within his reach at all times and never restrict it; the nurses chart every feed and drink, weigh the nappies for urine output and weigh him daily."
+        "zh-CN": "他自己拿不到水、也不会要水：随时、经常给他喂水，绝不限制饮水；护士记录每次喂奶和饮水量，称重尿布计算尿量，每天称体重。",
+        "en": "Offer him water freely and often, since he cannot reach for a drink or ask for one, and never restrict it; the nurses chart every feed and drink, weigh the nappies for urine output and weigh him daily."
       },
       "requires": [],
       "scope": "nursing",
@@ -2926,8 +2926,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "已安排：水随时放在床边，护士开始记录出入量并称重尿布。本病例没有记录是否做过这一步；不模拟其效果。",
-        "en": "Arranged: water stays at the cot side and the nurses start an intake–output chart with weighed nappies. This case does not record whether this was done; it does not simulate its effect."
+        "zh-CN": "已安排：随时、经常给他喂水，护士开始记录出入量并称重尿布。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Arranged: water is offered to him freely and often, and the nurses start an intake–output chart with weighed nappies. This case does not record whether this was done; it does not simulate its effect."
       }
     },
     {
@@ -2954,8 +2954,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "每次喂奶前测末梢血糖；低于PES 2015的评估阈值（3.3 mmol/L）时，立即复测静脉血糖并在低血糖时留取关键标本，同时报告医生。",
-        "en": "A capillary glucose before each feed; below the PES 2015 evaluation threshold (3.3 mmol/L), confirm on a venous sample, take the critical sample during the low and tell the doctor at once."
+        "zh-CN": "每次喂奶前测末梢血糖；低于3.3 mmol/L（60 mg/dL，PES 2015对婴儿进一步评估的阈值）时，立即送检静脉血糖并报告医生，由医生决定关键标本的留取。",
+        "en": "A capillary glucose before each feed; below 3.3 mmol/L (60 mg/dL, the PES 2015 threshold for evaluating an infant), send a laboratory glucose and tell the doctor at once, who decides on the critical sample."
       },
       "requires": [
         "point-of-care"
@@ -3180,13 +3180,11 @@
       ],
       "risk": "moderate",
       "contraindicatedWhen": {
-        "not": {
-          "ordered": "cortisol"
-        }
+        "always": true
       },
       "harm": {
-        "zh-CN": "先查皮质醇：生长激素会加快皮质醇代谢、促进T4转化为T3，可能使潜在的肾上腺皮质功能不全或中枢性甲减显现，诱发肾上腺危象。PES 2016强烈推荐对生长激素缺乏者治疗，但要由儿科内分泌医生在查清肾上腺轴（缺乏者先替代）后开始，开始后复查FT4和皮质醇。",
-        "en": "Check cortisol first: GH speeds cortisol metabolism and T4-to-T3 conversion and can unmask latent adrenal insufficiency or central hypothyroidism, precipitating an adrenal crisis. PES 2016 strongly recommends treating GH deficiency, but paediatric endocrinology starts it once the adrenal axis is clear (replaced first if deficient), then rechecks free T4 and cortisol."
+        "zh-CN": "现在不能开始：本病例没有皮质醇结果，后一项10.06 nmol/L的生长激素值也未核实。生长激素会加快皮质醇代谢、促进T4转化为T3，可使潜在的肾上腺皮质功能不全或中枢性甲减显现；对可能缺乏ACTH的婴儿，这意味着肾上腺危象的风险（BSPED 2023）。PES 2016为使成年身高正常而强烈推荐治疗生长激素缺乏，并建议由儿科内分泌医生负责：诊断成立、肾上腺轴查清（缺乏者先替代）后再开始，开始后重新评估肾上腺轴和甲状腺轴。",
+        "en": "Not now: this case has no cortisol result, and the later GH value of 10.06 nmol/L is unverified. GH speeds cortisol metabolism and T4-to-T3 conversion and can unmask a latent adrenal insufficiency or central hypothyroidism — in an infant who may lack ACTH, a risk of adrenal crisis (BSPED 2023). PES 2016 strongly recommends treating GH deficiency to normalise adult height and leaves it to paediatric endocrinologists: they start GH once the diagnosis stands and the adrenal axis is clear (replaced first if deficient), then re-assess the adrenal and thyroid axes."
       },
       "response": {
         "zh-CN": "已开始。本病例不模拟其效果；报告的做法在结局记录中开放。",
@@ -3372,7 +3370,7 @@
       },
       "hint": {
         "zh-CN": "他自己说不了：眼睛的问题从什么时候开始、是什么样子？运动发育到了哪一步？吃喝、睡觉和小便有什么特别？出生前后有什么情况？",
-        "en": "He cannot tell you himself: when did the eye problem start and what is it like? How far has his movement come? Is anything unusual about his drinking, sleeping or wees? What happened around his birth?"
+        "en": "He cannot tell you himself: when did the eye problem start and what is it like? How far has his movement come? Is anything unusual about his drinking, sleeping or urine? What happened around his birth?"
       },
       "guidance": {
         "zh-CN": "到床旁向陪同的家长了解病史。",
@@ -3705,7 +3703,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "6月龄男婴，双眼间断上斜20余天；至今抬头不稳，不会翻身、独坐，也不会主动抓物；每天饮水约1200 mL，夜里尿多；出生后头3个月很少哭，吃奶后就睡，每天约睡22小时。查体：不能注视和追视，强光照射无瞬目反射；瞳孔左3 mm、右4 mm，直接和间接对光反射消失；四肢肌张力低；阴茎长约1 cm，双侧阴囊饱满，无隐睾。还没有任何检查结果。你的初步判断和首要安排是什么？",
-        "en": "A 6-month-old boy has had intermittent upward deviation of both eyes for over 20 days; he still cannot hold his head steady, roll, sit unsupported or reach for objects; he drinks about 1200 mL a day and passes a lot of urine at night; in his first three months he hardly cried, slept after feeds and slept about 22 hours a day. On examination he does not fix or follow and does not blink to a bright light; the pupils are 3 mm on the left and 4 mm on the right with absent direct and consensual light reflexes; limb tone is reduced; the penis is about 1 cm long, the scrotum is full on both sides and no testis is undescended. No results are back yet. What is your working view, and what comes first?"
+        "en": "A 6-month-old boy has had intermittent upward deviation of both eyes for over 20 days; he still cannot hold his head steady, roll or sit unsupported, and does not grasp objects of his own accord; he drinks about 1200 mL a day and passes a lot of urine at night; in his first three months he hardly cried, slept after feeds and slept about 22 hours a day. On examination he does not fix or follow and does not blink to a bright light; the pupils are 3 mm on the left and 4 mm on the right with absent direct and consensual light reflexes; limb tone is reduced; the penis is about 1 cm long, the scrotum is full on both sides and no testis is undescended. No results are back yet. What is your working view, and what comes first?"
       },
       "requires": {
         "all": [
@@ -3746,7 +3744,7 @@
       },
       "need": {
         "zh-CN": "先向家长问清眼睛的问题、运动发育、饮水和小便、早期睡眠，并检查视觉反应、瞳孔、肌张力和外生殖器。",
-        "en": "First ask his parent about the eyes, his motor development, his drinking and wees and his early sleep, and examine his visual responses, pupils, tone and genitalia."
+        "en": "First ask his parent about the eyes, his motor development, his drinking and urine and his early sleep, and examine his visual responses, pupils, tone and genitalia."
       },
       "options": [
         {
@@ -3758,7 +3756,7 @@
           "correct": true,
           "feedback": {
             "zh-CN": "正确。不注视、不追视、强光不眨眼，加上直接和间接对光反射都消失，说明病变在前部视路（视神经），不是眼外肌或视皮质的问题；同时出现小阴茎、多饮多尿和早期嗜睡，提示同一个中线发育异常累及下丘脑-垂体。最先要查的是可能致命的激素缺乏，而且不必等影像结果：ACTH缺乏可在应激时引起肾上腺危象（BSPED 2023），低血糖则按PES 2015的阈值评估。",
-            "en": "Right. No fixing or following, no blink to bright light and absent direct and consensual light reflexes put the lesion in the anterior visual pathway (the optic nerves), not the eye muscles or the visual cortex; a micropenis, heavy drinking and wees and early sleepiness suggest the same midline maldevelopment reaches the hypothalamus and pituitary. The deficiencies that can kill come first and need no scan to start: ACTH deficiency can cause an adrenal crisis under stress (BSPED 2023), and hypoglycaemia is judged against the PES 2015 thresholds."
+            "en": "Right. No fixing or following, no blink to bright light and absent direct and consensual light reflexes put the lesion in the anterior visual pathway (the optic nerves), not the eye muscles or the visual cortex; a micropenis, heavy drinking with much urine at night and early sleepiness suggest the same midline maldevelopment reaches the hypothalamus and pituitary. The deficiencies that can kill come first and need no scan to start: ACTH deficiency can cause an adrenal crisis under stress (BSPED 2023), and hypoglycaemia is judged against the PES 2015 thresholds."
           }
         },
         {
@@ -3793,8 +3791,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "过期妊娠和羊水缺乏确是围产期危险因素，但皮质盲的婴儿瞳孔对光反射保留，而他直接和间接对光反射都消失，病变在视神经。缺氧性脑损伤也解释不了小阴茎；垂体功能要直接检查——PES 2016把下丘脑-垂体结构缺陷和其他垂体激素缺乏作为生长激素缺乏的诊断依据，而不是不做检查的理由。",
-            "en": "A post-term pregnancy without amniotic fluid is a perinatal risk, but cortical visual impairment spares the pupil reflexes, whereas he has lost both the direct and consensual responses — the lesion is in the optic nerves. Hypoxic injury does not explain the micropenis either; the pituitary needs testing in its own right, and PES 2016 counts hypothalamic–pituitary malformations and other pituitary hormone deficiencies as evidence for GH deficiency, not as reasons to skip the tests."
+            "zh-CN": "过期妊娠和羊水缺乏确是围产期危险因素，但皮质盲的婴儿瞳孔对光反射保留，而他直接和间接对光反射都消失，病变在视神经。缺氧性脑损伤也解释不了小阴茎；垂体功能要直接检查，不必等影像：未发现的ACTH缺乏可使他下一次生病时发生肾上腺危象（BSPED 2023）。",
+            "en": "A post-term pregnancy without amniotic fluid is a perinatal risk, but cortical visual impairment spares the pupil reflexes, whereas he has lost both the direct and consensual responses — the lesion is in the optic nerves. Hypoxic injury does not explain the micropenis either, and the pituitary needs testing in its own right without waiting for a scan: an unrecognised ACTH deficiency can turn his next illness into an adrenal crisis (BSPED 2023)."
           }
         }
       ]
@@ -3855,7 +3853,7 @@
           "correct": false,
           "feedback": {
             "zh-CN": "常见的正常变异是透明隔腔，而不是透明隔缺如；透明隔缺如合并视神经和视交叉细小，正符合视隔发育不良的定义。他已有小阴茎和多饮多尿，只做眼科随访会漏掉垂体功能减退，而ACTH缺乏在应激时可以致命（BSPED 2023）。",
-            "en": "The common normal variant is a cavum septi pellucidi, not an absent septum; an absent septum with thin optic nerves and chiasm is what defines septo-optic dysplasia. With a micropenis and heavy drinking and wees already present, eye-clinic follow-up alone would miss hypopituitarism, and ACTH deficiency can be fatal under stress (BSPED 2023)."
+            "en": "The common normal variant is a cavum septi pellucidi, not an absent septum; an absent septum with thin optic nerves and chiasm is what defines septo-optic dysplasia. With a micropenis, heavy drinking and much urine at night already present, eye-clinic follow-up alone would miss hypopituitarism, and ACTH deficiency can be fatal under stress (BSPED 2023)."
           }
         },
         {
@@ -3918,14 +3916,14 @@
       },
       "need": {
         "zh-CN": "先调阅尿比重、电解质和肾功能、血糖报告，并向家长问清饮水和小便情况。",
-        "en": "Read the urine specific gravity, electrolytes and renal function and glucose reports, and ask his parent about his drinking and wees first."
+        "en": "Read the urine specific gravity, electrolytes and renal function and glucose reports, and ask his parent about his drinking and urine first."
       },
       "options": [
         {
           "id": "paired-osmolality",
           "text": {
             "zh-CN": "随时饮水并记录出入量；同时查血钠、血浆渗透压和配对的尿渗透压，并查清皮质醇和甲状腺轴；仍不明确时，由儿科内分泌团队决定是否在严密监测下做禁水试验。",
-            "en": "Keep water within his reach and chart intake and output; send a sodium and plasma osmolality with a paired urine osmolality and clarify the cortisol and thyroid axes; if still unclear, paediatric endocrinology decides on a closely monitored deprivation test."
+            "en": "Offer him water freely and often and chart intake and output; send a sodium and plasma osmolality with a paired urine osmolality and clarify the cortisol and thyroid axes; if still unclear, paediatric endocrinology decides on a closely monitored deprivation test."
           },
           "correct": true,
           "feedback": {
@@ -4013,13 +4011,13 @@
         {
           "id": "verify-then-gh",
           "text": {
-            "zh-CN": "核对后一项生长激素值的原始化验单，并查皮质醇；肾上腺轴明确（缺乏者先替代）后，由儿科内分泌医生开始每日生长激素，用药后复查FT4和皮质醇。",
-            "en": "Check the original report of the later GH value and test cortisol; once the adrenal axis is clear (replaced first if deficient), paediatric endocrinology starts daily GH and rechecks free T4 and cortisol afterwards."
+            "zh-CN": "核对后一项生长激素值的原始化验单并查皮质醇；缺乏的判断成立、肾上腺轴明确（缺乏者先替代）后，由儿科内分泌医生开始生长激素治疗，用药后复查FT4和皮质醇。",
+            "en": "Check the later GH value's original report and test cortisol; if the deficiency stands, paediatric endocrinology starts GH once the adrenal axis is clear (replaced first if deficient) and rechecks free T4 and cortisol."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。PES 2016强烈推荐对生长激素缺乏者用生长激素治疗，认为其益处不止于身高；它也提醒激发试验结果不能作为唯一的诊断依据——前后矛盾的数值要回到原始报告核实，不能自行“修正”。生长激素会加快皮质醇代谢、促进T4转化为T3，可使潜在的肾上腺皮质功能不全或中枢性甲减显现，所以开始前先查清肾上腺轴，开始后复查FT4和皮质醇。",
-            "en": "Right. PES 2016 strongly recommends GH for GH deficiency, with benefits beyond height, and warns that stimulation tests should not be the sole diagnostic criterion — a contradictory value goes back to the original report, never 'corrected' by hand. GH speeds cortisol metabolism and T4-to-T3 conversion and can unmask latent adrenal insufficiency or central hypothyroidism, so the adrenal axis is clarified before starting and free T4 and cortisol are rechecked afterwards."
+            "zh-CN": "正确。PES 2016为使成年身高正常、避免极度矮小而强烈推荐用生长激素治疗生长激素缺乏，同时强烈建议不要把激发试验结果作为唯一的诊断依据——前后矛盾的数值要回到原始报告核实，不能自行“修正”。生长激素会加快皮质醇代谢、促进T4转化为T3，可使潜在的肾上腺皮质功能不全或中枢性甲减显现，所以开始前先查清肾上腺轴；PES 2016还强烈推荐在开始后重新评估肾上腺轴和甲状腺轴。",
+            "en": "Right. PES 2016 strongly recommends GH for GH deficiency to normalise adult height and avoid extreme shortness, and strongly advises against relying on stimulation tests as the sole diagnostic criterion — a contradictory value goes back to the original report, never 'corrected' by hand. GH speeds cortisol metabolism and T4-to-T3 conversion and can unmask latent adrenal insufficiency or central hypothyroidism, so the adrenal axis is clarified before starting, and PES 2016 strongly recommends re-assessing the adrenal and thyroid axes once GH has started."
           }
         },
         {
@@ -4030,8 +4028,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这接近报告当年的做法。PES 2016对生长激素缺乏强烈推荐治疗，指出治疗的益处不止于身高；一次身长正常不是不治疗的理由，等到生长减速才开始已损失了生长。经济困难是真实的障碍，应作为需要解决的问题（社会支持、医保或援助项目），而不是改变治疗指征的理由。",
-            "en": "This is close to what the report did. PES 2016 strongly recommends treating GH deficiency and sees benefits beyond height; a length in the normal range today is no reason to withhold it, and waiting for growth to slow gives growth away. Cost is a real barrier, to be solved through social work, insurance or assistance schemes, not a reason to change the indication."
+            "zh-CN": "这接近报告当年的做法。PES 2016为使成年身高正常、避免极度矮小而强烈推荐治疗生长激素缺乏；一次身长正常不是不治疗的理由，等到生长减速才开始已损失了生长。经济困难是真实的障碍，应作为需要解决的问题（社会支持、医保或援助项目），而不是改变治疗指征的理由。",
+            "en": "This is close to what the report did. PES 2016 strongly recommends treating GH deficiency to normalise adult height and avoid extreme shortness; a length in the normal range today is no reason to withhold it, and waiting for growth to slow gives growth away. Cost is a real barrier, to be solved through social work, insurance or assistance schemes, not a reason to change the indication."
           }
         },
         {
@@ -4153,7 +4151,7 @@
       "weight": 3,
       "text": {
         "zh-CN": "向家长问清眼睛上斜的起病和表现、运动发育、饮水与夜尿、早期睡眠，以及孕期、分娩方式和原因、出生体重和父母是否近亲",
-        "en": "Took from the parent the onset and pattern of the eye deviation, motor development, drinking and night-time wees, early sleep, and the pregnancy, the mode of and reason for delivery, birth weight and parental consanguinity"
+        "en": "Took from the parent the onset and pattern of the eye deviation, motor development, drinking and night-time urine, early sleep, and the pregnancy, the mode of and reason for delivery, birth weight and parental consanguinity"
       },
       "met": {
         "all": [
@@ -4388,6 +4386,40 @@
       }
     },
     {
+      "id": "rb-no-early-hormones",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "肾上腺轴未明、后一项生长激素值未核实时，没有开始左甲状腺素或生长激素",
+        "en": "Started neither levothyroxine nor growth hormone while the adrenal axis was unknown and the later GH value unverified"
+      },
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "levothyroxine"
+            },
+            {
+              "intervened": "gh-start"
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "gh-plan"
+          },
+          {
+            "intervened": "levothyroxine"
+          },
+          {
+            "intervened": "gh-start"
+          }
+        ]
+      }
+    },
+    {
       "id": "rb-follow-up",
       "domain": "management",
       "weight": 2,
@@ -4439,8 +4471,8 @@
         "en": "Explained his sight, development and hormone problems and what is still uncertain to the parent, gave the danger signs and checked understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge结构：先问家长已经知道什么、最担心什么（看不看得见、能不能跟上同龄孩子）；用通俗的话说明眼睛往上斜不是普通斜视，而是视神经发育不好、孩子能看到的很有限，磁共振显示大脑中线结构发育异常，可能影响管激素的垂体；讲清有些激素缺乏（皮质醇）在生病时可能危及生命，所以要尽快查，并交代需要立即就医的表现（呕吐、精神差、吃奶差、发软、体温低）；强调任何时候都不要限制他喝水；说明有一项生长激素结果前后不一致，需要核对原始化验单后再定治疗；发育落后需要尽早开始康复和视觉训练；坦诚说明不确定性和长期随访的必要，不作“以后会看得见”或“会赶上来”的保证；如果费用是顾虑，说明可以寻求的支持；最后请家长用自己的话复述要点（回授法）。",
-        "en": "Calgary–Cambridge structure: ask what the parent already knows and fears most (whether he can see, whether he will catch up); explain in plain words that the upward eyes are not an ordinary squint but under-developed optic nerves, so he sees very little, and that the MRI shows a midline brain malformation that can affect the hormone-controlling pituitary; say that some hormone deficiencies (cortisol) can be life-threatening during illness, which is why they are checked quickly, and give the signs that need urgent care (vomiting, unusual sleepiness, poor feeding, floppiness, a low temperature); stress that his water must never be restricted; explain that one growth hormone result does not fit and must be checked against the original laboratory report before treatment is decided; say that therapy for his development and sight should start early; be honest about the uncertainty and the need for long-term follow-up, promising neither sight nor catching up; if cost is a worry, explain where support can be sought; finish with teach-back in the parent's own words."
+        "zh-CN": "按Calgary–Cambridge结构，坏消息按SPIKES告知（安静的房间，请家长坐下；先问家长已经知道什么、最担心什么——看不看得见、能不能跟上同龄孩子——以及想了解多少；说坏消息前先给预告；先回应家长的情绪再往下谈）；用通俗的话说明眼睛往上斜不是普通斜视，而是视神经发育不好、孩子能看到的很有限，磁共振显示大脑中线结构发育异常，可能影响管激素的垂体；讲清有些激素缺乏（皮质醇）在生病时可能危及生命，所以要尽快查，并交代需要立即就医的表现（呕吐、精神差、吃奶差、发软、体温低）；强调任何时候都不要限制他喝水；说明有一项生长激素结果前后不一致，需要核对原始化验单后再定治疗；发育落后需要尽早开始康复和视觉训练；坦诚说明不确定性和长期随访的必要，不作“以后会看得见”或“会赶上来”的保证；如果费用是顾虑，说明可以寻求的支持；最后请家长用自己的话复述要点（回授法）。",
+        "en": "Calgary–Cambridge structure, with SPIKES for the bad news (a quiet room, the parent seated; ask what they already know and fear most — whether he can see, whether he will catch up — and how much they want to hear; a warning shot before the news; respond to their emotion before moving on); explain in plain words that the upward eyes are not an ordinary squint but under-developed optic nerves, so he sees very little, and that the MRI shows a midline brain malformation that can affect the hormone-controlling pituitary; say that some hormone deficiencies (cortisol) can be life-threatening during illness, which is why they are checked quickly, and give the signs that need urgent care (vomiting, unusual sleepiness, poor feeding, floppiness, a low temperature); stress that his water must never be restricted; explain that one growth hormone result does not fit and must be checked against the original laboratory report before treatment is decided; say that therapy for his development and sight should start early; be honest about the uncertainty and the need for long-term follow-up, promising neither sight nor catching up; if cost is a worry, explain where support can be sought; finish with teach-back in the parent's own words."
       }
     }
   ],
@@ -4452,8 +4484,8 @@
         "en": "Dr Xu (paediatric attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：为什么不注视、强光不眨眼且对光反射消失的“斜视”其实是看不见，瞳孔反射怎样区分视神经病变和皮质盲；小阴茎、多饮夜尿和早期嗜睡为什么把眼睛和垂体联系在一起；哪些激素缺乏可能致命、应该最先查（皮质醇、血糖、血钠），为什么生长激素可以按部就班而皮质醇不能等；为什么任何时候都不能限水，婴儿的尿崩症怎样安全评估（RCH 2022），皮质醇缺乏为什么会掩盖多尿；与报告判断矛盾的数值为什么要核实而不是修改；生长激素为什么会让潜在的肾上腺和甲状腺功能减退显现；在PES 2016强烈推荐治疗、益处不止于身高的前提下，为什么身长暂时在范围内本身不是不治疗的理由；随访计划为什么要包括定期复查、应急预案（BSPED 2023）和早期干预。历史与现行：复盘时再把报告因身高范围和家庭经济原因未用生长激素、尿崩症未能证实的经过，与PES 2016、RCH 2022对照。病例没有记录的内容（生命体征、入院身长和头围、血钠数值、渗透压、皮质醇、FT4和TSH数值、性激素、激发试验的药物和时间点、脑电图、磁共振上的垂体情况）不要替它补上。学员作答前不说出诊断、任何决策的正确选项或报告的处理与结局。",
-        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why a 'squint' with no fixing, no blink to light and absent light reflexes means he cannot see, and how the pupil reflexes separate optic nerve disease from cortical visual impairment; why a micropenis, heavy drinking with night-time wees and early sleepiness tie the eyes to the pituitary; which deficiencies can kill and come first (cortisol, glucose, sodium), and why GH can be worked up in order while cortisol cannot wait; why water is never restricted, how DI is assessed safely in an infant (RCH 2022) and why cortisol deficiency can mask polyuria; why a value that contradicts the report's reading is verified rather than edited; why GH can unmask latent adrenal and thyroid deficiency; why, with PES 2016's strong recommendation to treat and its benefits beyond height, a length still in range is not by itself a reason to withhold GH; why follow-up needs repeat testing, an emergency plan (BSPED 2023) and early intervention. Then and now: in the debrief, compare the report's decision to give no GH (height range, family finances) and its unconfirmed DI with PES 2016 and RCH 2022. Never supply what the case does not record (vital signs, admission length and head circumference, the sodium value, osmolalities, cortisol, free T4 and TSH values, sex hormones, the stimulation agents and time points, an EEG, the pituitary on MRI). Before the learner commits, never state the diagnosis, any decision's correct option, or the report's management and outcome."
+        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：为什么不注视、强光不眨眼且对光反射消失的“斜视”其实是看不见，瞳孔反射怎样区分视神经病变和皮质盲；小阴茎、多饮夜尿和早期嗜睡为什么把眼睛和垂体联系在一起；哪些激素缺乏可能致命、应该最先查（皮质醇、血糖、血钠），为什么生长激素可以按部就班而皮质醇不能等；为什么任何时候都不能限水，婴儿的尿崩症怎样安全评估（RCH 2022），皮质醇缺乏为什么会掩盖多尿；与报告判断矛盾的数值为什么要核实而不是修改；生长激素为什么会让潜在的肾上腺和甲状腺功能减退显现；在PES 2016为使成年身高正常而强烈推荐治疗生长激素缺乏的前提下，为什么身长暂时在范围内本身不是不治疗的理由；随访计划为什么要包括定期复查、应急预案（BSPED 2023）和早期干预。历史与现行：复盘时再把报告因身高范围和家庭经济原因未用生长激素、尿崩症未能证实的经过，与PES 2016、RCH 2022对照。病例没有记录的内容（生命体征、入院身长和头围、血钠数值、渗透压、皮质醇、FT4和TSH数值、性激素、激发试验的药物和时间点、脑电图、磁共振上的垂体情况）不要替它补上。学员作答前不说出诊断、任何决策的正确选项或报告的处理与结局。",
+        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why a 'squint' with no fixing, no blink to light and absent light reflexes means he cannot see, and how the pupil reflexes separate optic nerve disease from cortical visual impairment; why a micropenis, heavy drinking with much urine at night and early sleepiness tie the eyes to the pituitary; which deficiencies can kill and come first (cortisol, glucose, sodium), and why GH can be worked up in order while cortisol cannot wait; why water is never restricted, how DI is assessed safely in an infant (RCH 2022) and why cortisol deficiency can mask polyuria; why a value that contradicts the report's reading is verified rather than edited; why GH can unmask latent adrenal and thyroid deficiency; why, with PES 2016's strong recommendation to treat GH deficiency to normalise adult height, a length still in range is not by itself a reason to withhold GH; why follow-up needs repeat testing, an emergency plan (BSPED 2023) and early intervention. Then and now: in the debrief, compare the report's decision to give no GH (height range, family finances) and its unconfirmed DI with PES 2016 and RCH 2022. Never supply what the case does not record (vital signs, admission length and head circumference, the sodium value, osmolalities, cortisol, free T4 and TSH values, sex hormones, the stimulation agents and time points, an EEG, the pituitary on MRI). Before the learner commits, never state the diagnosis, any decision's correct option, or the report's management and outcome."
       },
       "interprets": [
         "fundoscopy",
@@ -4476,8 +4508,8 @@
         "en": "Nurse Zhou (paediatric ward)"
       },
       "knowledge": {
-        "zh-CN": "儿科病房护士。交班（ISBAR）：6月龄男婴，由家长陪同入院；双眼间断上斜20余天；至今抬头不稳，不会翻身，也不能独坐。病区有床旁血糖仪、称尿布用的秤和出入量记录单；血标本在床旁采集后送检验科；治疗车上有静脉置管用物，药品在药柜；病历和检查报告在护士站电脑上调阅。复述医嘱，只报告已经回报的结果，不解读、不诊断；被问到病例没有记录的内容（体温、心率、呼吸、血压、入院身长、头围、血钠数值、皮质醇结果），如实说没有记录。他的水杯一直放在床边，除非内分泌团队另有安排，不限制他喝水。",
-        "en": "Paediatric ward nurse. Handover (ISBAR): 6-month-old boy admitted with a parent; intermittent upward deviation of both eyes for over 20 days; still unable to hold his head steady, roll over or sit unsupported. The ward has a bedside glucose meter, nappy scales and intake–output charts; blood is taken at the bedside and sent to the laboratory; cannulation kit is on the treatment trolley and drugs are in the cupboard; notes and reports are on the nurses' station computer. Reads orders back and reports only results that are back, never interprets or diagnoses; asked about anything the case does not record (temperature, heart rate, breathing rate, blood pressure, admission length, head circumference, the sodium value, a cortisol result), says plainly that it is not recorded. His cup stays at the cot side: his water is not restricted unless the endocrine team plans otherwise."
+        "zh-CN": "儿科病房护士。交班（ISBAR）：6月龄男婴，由家长陪同入院；双眼间断上斜20余天；至今抬头不稳，不会翻身，也不能独坐。病区有床旁血糖仪、称尿布用的秤和出入量记录单；血标本在床旁采集后送检验科；治疗车上有静脉置管用物，药品在药柜；病历和检查报告在护士站电脑上调阅。复述医嘱，只报告已经回报的结果，不解读、不诊断；被问到病例没有记录的内容（体温、心率、呼吸、血压、入院身长、头围、血钠数值、皮质醇结果），如实说没有记录。除非内分泌团队安排有监护的试验，不限制他喝水；他自己拿不到水、也不会要水，所以要主动给他喂水。",
+        "en": "Paediatric ward nurse. Handover (ISBAR): 6-month-old boy admitted with a parent; intermittent upward deviation of both eyes for over 20 days; still unable to hold his head steady, roll over or sit unsupported. The ward has a bedside glucose meter, nappy scales and intake–output charts; blood is taken at the bedside and sent to the laboratory; cannulation kit is on the treatment trolley and drugs are in the cupboard; notes and reports are on the nurses' station computer. Reads orders back and reports only results that are back, never interprets or diagnoses; asked about anything the case does not record (temperature, heart rate, breathing rate, blood pressure, admission length, head circumference, the sodium value, a cortisol result), says plainly that it is not recorded. His water is never restricted unless the endocrine team plans a supervised test; he cannot reach for a drink or ask for one, so water is offered to him."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4524,7 +4556,7 @@
     },
     "conclusion": {
       "zh-CN": "过期产（43周加1天剖宫产，无羊水，出生体重4.5 kg）的6月龄男婴，双眼间断上斜20余天，不能注视追视、强光无瞬目，瞳孔左3 mm右4 mm、直接和间接对光反射消失；四肢肌张力低，不能竖头、翻身、独坐；每天饮水约1200 mL、夜尿多；阴茎约1 cm。眼底双侧视神经萎缩，视觉诱发电位潜伏期延长、振幅下降；磁共振示透明隔缺如、视神经和视交叉纤细；尿比重1.002–1.006，电解质和肾功能报告正常，血糖5.12 mmol/L；生长激素激发试验0.10、0.05、0.09、0.18 nmol/L（另有一项印为10.06 nmol/L），甲状腺功能正常，发育商35。报告诊断视隔发育不良合并生长激素缺乏，中枢性尿崩症未能证实；因当时身高范围和家庭经济原因未用生长激素，9个月复查发育商20、身长69 cm、体重9 kg。现行做法：尽早评估并定期复查全部垂体轴（皮质醇优先），不限水、以配对渗透压评估尿崩症（RCH 2022），核实矛盾数值、查清肾上腺轴后按PES 2016治疗生长激素缺乏。",
-      "en": "A 6-month-old boy born post-term (caesarean at 43+1 weeks; 4.5 kg) had over 20 days of intermittent upward eye deviation. He did not fix, follow or blink to light, his pupils (left 3 mm, right 4 mm) had no light reflexes, his tone was low with no head control, he drank about 1200 mL a day with much urine at night, and his penis was about 1 cm. Fundi showed bilateral optic atrophy, VEPs were delayed and reduced, and MRI showed an absent septum pellucidum with thin optic nerves and chiasm. Urine SG was 1.002–1.006, electrolytes reported normal, glucose 5.12 mmol/L; stimulated GH was 0.10, 0.05, 0.09 and 0.18 nmol/L (a later value printed as 10.06), thyroid function normal, DQ 35. The report diagnosed septo-optic dysplasia with GH deficiency, left DI unconfirmed and gave no GH (height range, finances); at the 9-month review the DQ was 20. Today: test every axis, cortisol first, and repeat; never restrict water (RCH 2022); verify the odd value, then treat GH deficiency (PES 2016)."
+      "en": "A 6-month-old boy born post-term (caesarean at 43+1 weeks for a post-term pregnancy without amniotic fluid; 4.5 kg) had over 20 days of intermittent upward eye deviation. He did not fix, follow or blink to bright light, his pupils (left 3 mm, right 4 mm) had no direct or consensual light reflexes, his limb tone was low and he could not hold his head up, roll or sit; he drank about 1200 mL a day with much urine at night, and his penis was about 1 cm. The fundi showed bilateral optic atrophy, the VEPs prolonged latency and reduced amplitude, and the MRI an absent septum pellucidum with thin optic nerves and chiasm. Urine SG was 1.002–1.006, electrolytes and renal function were reported normal and glucose was 5.12 mmol/L; stimulated GH was 0.10, 0.05, 0.09 and 0.18 nmol/L (a later value printed as 10.06 nmol/L), thyroid function normal, DQ 35. The report diagnosed septo-optic dysplasia with GH deficiency, left DI unconfirmed and gave no GH (height range, finances); at the 9-month review the DQ was 20, length 69 cm and weight 9 kg. Today: test every axis early, cortisol first, and repeat; never restrict water and assess DI with paired osmolalities (RCH 2022); verify the contradictory value and clear the adrenal axis before treating GH deficiency (PES 2016)."
     },
     "keyReasoning": [
       {
@@ -4533,7 +4565,7 @@
       },
       {
         "zh-CN": "6月龄阴茎约1 cm（远低于小阴茎的通常定义：牵拉长度低于同龄均值2.5个标准差）、多饮夜尿和早期嗜睡，把眼睛的问题与下丘脑-垂体联系起来：一个中线发育异常可以同时解释视神经、透明隔和激素。",
-        "en": "A penis of about 1 cm at six months (far below the usual definition of micropenis, a stretched length more than 2.5 SD under the mean for age), heavy drinking with night-time wees and early sleepiness link the eyes to the hypothalamus and pituitary: one midline malformation can explain the optic nerves, the septum and the hormones."
+        "en": "A penis of about 1 cm at six months (far below the usual definition of micropenis, a stretched length more than 2.5 SD under the mean for age), heavy drinking with much urine at night and early sleepiness link the eyes to the hypothalamus and pituitary: one midline malformation can explain the optic nerves, the septum and the hormones."
       },
       {
         "zh-CN": "按危险程度排序：ACTH缺乏和低血糖可以致命，要最先查；生长激素缺乏重要，但可以在几天内有序评估。",
@@ -4566,8 +4598,8 @@
         "en": "Water balance: the Royal Children's Hospital Melbourne diabetes insipidus guideline (RCH 2022) keeps water freely available to a child with suspected DI and never restricts it; the deprivation test is for specialist guidance and may not be appropriate under 12 months for safety. Sodium, plasma osmolality and urine osmolality taken together often answer the question directly, and cortisol deficiency can mask polyuria. The 2022 multi-society position statement renames central DI arginine vasopressin deficiency (AVP-D). The report records that a deprivation test was not completed because of his age, and DI stayed unconfirmed; no paired chemistry is recorded in this case."
       },
       {
-        "zh-CN": "生长激素：美国儿科内分泌学会2016年指南（PES 2016）强烈推荐对生长激素缺乏者用生长激素治疗，认为益处不止于身高；激发试验不能作为唯一诊断依据，新生儿期低血糖伴其他垂体激素缺乏等情况下可以不做激发试验。报告因当时身高范围和家庭经济原因未用生长激素；今天的做法是核实矛盾数值、先查清肾上腺轴再开始治疗，用药后复查FT4和皮质醇，并帮助家庭解决费用问题。",
-        "en": "GH: the Pediatric Endocrine Society's 2016 guideline (PES 2016) strongly recommends GH treatment for GH deficiency, with benefits beyond height; stimulation tests are not the sole criterion, and some situations, such as neonatal hypoglycaemia with another pituitary hormone deficiency, allow the diagnosis without them. The report gave no GH, citing his height range and the family's finances; today the contradictory value is verified, the adrenal axis cleared and treatment started, with free T4 and cortisol rechecked afterwards and help with the cost."
+        "zh-CN": "生长激素：美国儿科内分泌学会2016年指南（PES 2016）为使成年身高正常、避免极度矮小而强烈推荐用生长激素治疗生长激素缺乏；强烈建议不要把激发试验作为唯一诊断依据，并在特定情况下允许不做激发试验（如新生儿低血糖时生长激素不超过5 µg/L、并有其他垂体激素缺乏或典型影像三联征）；对可能合并多种垂体激素缺乏者，强烈推荐开始治疗后重新评估肾上腺轴和甲状腺轴。报告因当时身高范围和家庭经济原因未用生长激素；今天的做法是核实矛盾数值、先查清肾上腺轴再开始治疗，并帮助家庭解决费用问题。",
+        "en": "GH: the Pediatric Endocrine Society's 2016 guideline (PES 2016) strongly recommends GH for GH deficiency to normalise adult height and avoid extreme shortness; it strongly advises against stimulation tests as the sole criterion, allows the diagnosis without them in defined settings (such as a newborn with hypoglycaemia whose GH stays at or below 5 µg/L, with another pituitary deficiency or the classic imaging triad), and strongly recommends re-assessing the adrenal and thyroid axes after GH starts when other deficiencies are possible. The report gave no GH, citing his height range and the family's finances; today the contradictory value is verified and the adrenal axis cleared before treatment starts, with help for the cost."
       },
       {
         "zh-CN": "血糖：生长激素和皮质醇缺乏都可致空腹低血糖。美国儿科内分泌学会2015年建议（PES 2015）：婴幼儿血浆葡萄糖低于3.3 mmol/L（60 mg/dL）时进一步评估，确诊低血糖疾病者维持在3.9 mmol/L（70 mg/dL）以上。他唯一记录的血糖5.12 mmol/L排除不了禁食后的低血糖，所以喂奶前要测血糖。",
@@ -5213,7 +5245,7 @@
         ]
       },
       {
-        "text": "Are you and his dad related in any way?",
+        "text": "Are his mum and dad related to each other at all?",
         "locale": "en",
         "expect": [
           "consanguinity"

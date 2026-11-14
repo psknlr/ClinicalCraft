@@ -4,7 +4,7 @@
   "version": "1.1.0",
   "title": {
     "zh-CN": "打针后臀部肿痛、瘀斑扩大 · 51岁男性",
-    "en": "Buttock swelling and a spreading bruise after an injection · 51-year-old man"
+    "en": "Painful buttock swelling and a spreading bruise after an injection · 51-year-old man"
   },
   "summary": {
     "zh-CN": "一位做过心脏瓣膜手术的男性，打针后臀部越来越肿、青紫一天天扩大：在病房接诊，查明原因，决定先做什么，并跟进此后几天的病程。",
@@ -359,8 +359,8 @@
         "en": "Did you have an injection before this started?"
       },
       "answer": {
-        "zh-CN": "打过。住院前 8 天我感冒了，在屁股上打了一针安乃近。",
-        "en": "Yes. Eight days before I came in I had a cold, and they gave me a metamizole jab in my backside."
+        "zh-CN": "打过。我那时感冒了，住院前 8 天在屁股上打了一针安乃近。",
+        "en": "Yes. I had a cold, and eight days before I came in they gave me a metamizole jab in my backside for it."
       },
       "keywords": {
         "zh-CN": [
@@ -400,7 +400,7 @@
       },
       "required": true,
       "source": {
-        "zh-CN": "报告病例资料·现病史及用药（感冒时肌注安乃近，就诊前 8 天）（据 1.0.0 版 history.onset, history.medications and the citation title 提取，待对照原文全文核对）；患者口吻为改写",
+        "zh-CN": "报告病例资料·现病史及用药（感冒时肌注安乃近，就诊前 8 天）（据 1.0.0 版 history.onset、history.medications 及引文标题提取，待对照原文全文核对）；患者口吻为改写",
         "en": "Case presentation in the report: history and medicines (an intramuscular metamizole injection for a cold, 8 days before presentation) (from 1.0.0 history.onset, history.medications and the citation title; check against the full article pending); the patient's wording is adapted"
       }
     },
@@ -2540,8 +2540,8 @@
         "followup": {
           "available": true,
           "text": {
-            "zh-CN": "华法林的作用被逆转后（报告描述为大剂量维生素K，剂量未记录）行手术引流，引流出血凝块而非脓液。术后血红蛋白降至 58 g/L，予输血；输血后出现胸闷、气短，被考虑为心力衰竭，经治疗后缓解。此后恢复服用华法林。1 个月时瘀斑消退，INR 2.1。",
-            "en": "After the warfarin effect had been reversed (with what the report describes as high-dose vitamin K; the dose is not recorded), the collection was drained at an operation: it contained blood clot, not pus. After the operation the haemoglobin fell to 58 g/L and he was transfused; after the transfusion he became tight-chested and short of breath, which was considered heart failure and improved with treatment. Warfarin was later resumed. At one month the bruising had resolved and the INR was 2.1."
+            "zh-CN": "华法林的作用被逆转后（所用维生素K描述为大剂量，剂量未记录）行手术引流，引流出血凝块而非脓液。术后血红蛋白降至 58 g/L，予输血；输血后出现胸闷、气短，被考虑为心力衰竭，经治疗后缓解。此后恢复服用华法林。1 个月时瘀斑消退，INR 2.1。",
+            "en": "After the warfarin effect had been reversed (with vitamin K described as high-dose; the dose is not recorded), the collection was drained at an operation: it contained blood clot, not pus. After the operation the haemoglobin fell to 58 g/L and he was transfused; after the transfusion he became tight-chested and short of breath, which was considered heart failure and improved with treatment. Warfarin was later resumed. At one month the bruising had resolved and the INR was 2.1."
           },
           "values": [],
           "figures": [],
@@ -2706,6 +2706,12 @@
         "zh-CN": "维生素K₁ 5–10 mg，稀释后缓慢静脉输注，不肌注；用量够用即可，剂量过大会让日后重新抗凝更难。",
         "en": "Vitamin K₁ 5–10 mg, diluted and infused slowly IV, never intramuscularly; give what is needed, as larger doses make re-anticoagulation harder."
       },
+      "doseSpec": {
+        "amount": 5,
+        "upTo": 10,
+        "unit": "mg",
+        "route": "IV"
+      },
       "requires": [
         "medications",
         "iv-access"
@@ -2718,8 +2724,8 @@
         }
       },
       "response": {
-        "zh-CN": "维生素K₁开始静脉输注。报告描述原团队用大剂量维生素K逆转（剂量和途径未记录）；本病例不模拟其效果。",
-        "en": "Vitamin K₁ is running intravenously. The report describes reversal with high-dose vitamin K (dose and route not recorded); this case does not simulate its effect."
+        "zh-CN": "维生素K₁开始静脉输注。记录中的逆转所用维生素K描述为大剂量（剂量和途径未记录）；本病例不模拟其效果。",
+        "en": "Vitamin K₁ is running intravenously. The recorded reversal used vitamin K described as high-dose (dose and route not recorded); this case does not simulate its effect."
       }
     },
     {
@@ -2877,13 +2883,14 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "不要在床旁动针动刀：INR 6.2 时穿刺或切开一个约 139×55 mm 的积液区，会让出血重新开始，还可能带入感染。有没有脓、要不要引流，要在凝血纠正、复查 INR 之后，由外科在影像引导下或在手术中处理（ACC 2020：先控制出血、逆转抗凝）。",
-        "en": "No needle or blade at the bedside: aspirating or incising a collection of about 139×55 mm at an INR of 6.2 restarts the bleeding and can bring in infection. Whether there is pus, and whether to drain, is for the surgeons under imaging or at operation once the INR is corrected and rechecked (ACC 2020: control the bleeding and reverse the anticoagulant first)."
+        "zh-CN": "不要在床旁动针动刀：INR 6.2 时穿刺或切开一个约 139×55 mm 的积液区，可能让仍在进行的出血失去控制，还可能带入感染。有没有脓、要不要引流，要在凝血纠正、复查 INR 之后，由外科在影像引导下或在手术中处理（ACC 2020：先控制出血、逆转抗凝）。",
+        "en": "No needle or blade at the bedside: aspirating or incising a collection of about 139×55 mm at an INR of 6.2 can turn an ongoing bleed into an uncontrolled one and can bring in infection. Whether there is pus, and whether to drain, is for the surgeons under imaging or at operation once the INR is corrected and rechecked (ACC 2020: control the bleeding and reverse the anticoagulant first)."
       },
       "response": {
         "zh-CN": "开始在床旁穿刺。",
@@ -2945,8 +2952,8 @@
         }
       },
       "harm": {
-        "zh-CN": "还不能送去引流：还没有补充凝血因子，INR 仍是 6.2。维生素K单用需要数小时才起效、约一天才充分；先给PCC（没有PCC时用血浆）加静脉维生素K，复查 INR 确认纠正后再手术（ACC 2020）。",
-        "en": "Not yet: no clotting factors have been replaced and the INR is still 6.2. Vitamin K alone takes hours to act and about a day for its full effect; give PCC (plasma if there is none) with IV vitamin K and confirm correction on a repeat INR before the operation (ACC 2020)."
+        "zh-CN": "还不能送去引流：还没有补充凝血因子，最近一次 INR 是 6.2，也没有复查结果证明已经纠正。维生素K单用需要数小时才起效、约一天才充分；先给PCC（没有PCC时用血浆）加静脉维生素K，复查 INR 确认纠正后再手术（ACC 2020）。",
+        "en": "Not yet: no clotting factors have been replaced, and the last INR was 6.2 with no repeat to show correction. Vitamin K alone takes hours to act and about a day for its full effect; give PCC (plasma if there is none) with IV vitamin K and confirm correction on a repeat INR before the operation (ACC 2020)."
       },
       "response": {
         "zh-CN": "外科同意评估并安排手术引流。本病例记录，臀部的积液是在华法林的作用被逆转之后引流的。",
@@ -3142,6 +3149,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3319,8 +3327,8 @@
         "phase": "admission"
       },
       "harm": {
-        "zh-CN": "现在不行：血肿还在扩大、INR 6.2，此时恢复抗凝只会加重出血。先停药、逆转、控制出血；止血可靠后再尽早恢复（ACC 2020）。",
-        "en": "Not now: the haematoma is still growing and the INR is 6.2, so restarting anticoagulation would only feed the bleeding. Stop, reverse and control the bleeding first; restart as soon as haemostasis is secure (ACC 2020)."
+        "zh-CN": "现在不行：瘀斑还在扩大、INR 6.2，此时恢复抗凝只会加重出血。先停药、逆转、控制出血；止血可靠后再尽早恢复（ACC 2020）。",
+        "en": "Not now: the bruise is still spreading and the INR is 6.2, so restarting anticoagulation would only feed the bleeding. Stop, reverse and control the bleeding first; restart as soon as haemostasis is secure (ACC 2020)."
       },
       "response": {
         "zh-CN": "恢复抗凝的计划已下达。本病例没有记录恢复华法林的时间、剂量以及是否用肝素过渡；不模拟其效果。",
@@ -3360,6 +3368,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3873,8 +3882,8 @@
       "id": "first-steps",
       "kind": "single",
       "prompt": {
-        "zh-CN": "你考虑是华法林抗凝过度时注射部位出血形成的血肿：INR 6.2，Hb 86 g/L，血肿仍在扩大，可能需要外科引流。他 5 年前换过主动脉瓣和二尖瓣，瓣膜类型和目标 INR 还不清楚。现在先怎么做？",
-        "en": "You think this is a haematoma from bleeding at the injection site on excessive warfarin: INR 6.2, Hb 86 g/L, still enlarging, and it may need surgical drainage. He had aortic and mitral valve replacements 5 years ago; the valve type and his target INR are not yet known. What do you do first?"
+        "zh-CN": "你考虑是华法林抗凝过度时注射部位出血形成的血肿：INR 6.2，Hb 86 g/L，瘀斑仍在扩大，可能需要外科引流。他 5 年前换过主动脉瓣和二尖瓣，瓣膜类型和目标 INR 还不清楚。现在先怎么做？",
+        "en": "You think this is a haematoma from bleeding at the injection site on excessive warfarin: INR 6.2, Hb 86 g/L, the bruise still spreading, and it may need surgical drainage. He had aortic and mitral valve replacements 5 years ago; the valve type and his target INR are not yet known. What do you do first?"
       },
       "requires": {
         "all": [
@@ -3899,8 +3908,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血肿仍在扩大、已有贫血、又可能需要引流——ACC 2020 共识对华法林相关的大出血或需要干预的出血，要求停药并给维生素K，逆转首选4因子PCC（没有PCC时才用血浆）。PCC 立即补足凝血因子，维生素K需要数小时起效、负责维持；剂量再大也没有好处，反而会在日后重新抗凝时造成华法林抵抗，对人工瓣膜不利。引流前复查 INR，确认已经纠正。",
-            "en": "Correct. A growing haematoma with anaemia that may need drainage is bleeding that needs intervention: ACC 2020 says stop warfarin and give vitamin K, with 4-factor PCC as the reversal agent of choice (plasma only when no PCC is available). PCC replaces the factors at once, while vitamin K takes hours and sustains the reversal; larger doses add nothing and cause warfarin resistance when he must be re-anticoagulated for his valves. Recheck the INR before any drainage."
+            "zh-CN": "正确。ACC 2020 共识：需要干预的出血要停用华法林并静脉给维生素K；大出血经初始处理仍未控制时加用逆转药物，华法林的逆转首选4因子PCC（没有PCC时才用血浆；CHEST 2012 对大出血同样首选PCC而不是血浆）。瘀斑逐日扩大、Hb 86 g/L、很可能还要引流，应按此处理。PCC 立即补足凝血因子，维生素K需要数小时起效、负责维持；剂量超过需要并无好处，反而可能在日后重新抗凝时造成华法林抵抗，对人工瓣膜不利。引流前复查 INR，确认已经纠正。",
+            "en": "Correct. ACC 2020 stops warfarin and gives IV vitamin K for a bleed that needs intervention, and adds a reversal agent when a major bleed does not settle — for warfarin, 4-factor PCC (plasma only when there is none; CHEST 2012 also prefers PCC to plasma in major bleeding). A haematoma whose bruise has spread day by day, with an Hb of 86 g/L and a likely drainage, is managed that way. PCC replaces the factors at once, while vitamin K takes hours and sustains the reversal; doses beyond what is needed add nothing and can cause warfarin resistance when he must be re-anticoagulated for his valves. Recheck the INR before any drainage."
           }
         },
         {
@@ -3911,8 +3920,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这接近原报告的做法（报告描述为大剂量维生素K，剂量未记录），但今天不应单独使用：维生素K需要数小时起效、约一天才充分，其间血肿继续扩大，引流也只能等。CHEST 2012 建议华法林相关大出血用4因子PCC而不是血浆，并加用静脉维生素K。大剂量还会让恢复华法林后数天难以达标，对人工瓣膜不利。",
-            "en": "Close to the report's course (described as high-dose vitamin K; the dose is not recorded), but not enough on its own today: vitamin K takes hours to act and about a day for full effect, while the haematoma keeps growing and the drainage waits. CHEST 2012 suggests 4-factor PCC rather than plasma for major bleeding on a vitamin K antagonist, with IV vitamin K added. High doses also make the INR hard to bring back into range when warfarin restarts — a problem with prosthetic valves."
+            "zh-CN": "这接近原报告的做法（报告描述为大剂量维生素K，剂量未记录），但今天不应单独使用：维生素K需要数小时起效、约一天才充分，其间出血仍在继续，引流也只能等。CHEST 2012 建议华法林相关大出血用4因子PCC而不是血浆，并加用静脉维生素K。大剂量还会让恢复华法林后数天难以达标，对人工瓣膜不利。",
+            "en": "Close to the report's course (described as high-dose vitamin K; the dose is not recorded), but not enough on its own today: vitamin K takes hours to act and about a day for full effect, while the bleeding goes on and the drainage waits. CHEST 2012 suggests 4-factor PCC rather than plasma for major bleeding on a vitamin K antagonist, with IV vitamin K added. High doses also make the INR hard to bring back into range when warfarin restarts — a problem with prosthetic valves."
           }
         },
         {
@@ -3935,8 +3944,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不够。口服小剂量维生素K用于 INR 偏高但没有出血的患者——CHEST 2012 对 INR 4.5–10 且无出血者甚至不建议常规使用维生素K。他正在出血、血肿逐日增大、已有贫血；口服起效太慢，引流前也纠正不了凝血（ACC 2020）。",
-            "en": "Not enough. Low-dose oral vitamin K is for a high INR without bleeding — CHEST 2012 even suggests against routine vitamin K for an INR of 4.5–10 without bleeding. He is bleeding, the haematoma grows daily and he is anaemic; oral vitamin K is too slow, and the clotting would not be corrected before a drainage (ACC 2020)."
+            "zh-CN": "不够。口服小剂量维生素K用于 INR 偏高但没有出血的患者——CHEST 2012 对 INR 4.5–10 且无出血者甚至不建议常规使用维生素K。他正在出血、瘀斑逐日扩大、已有贫血；口服起效太慢，引流前也纠正不了凝血（ACC 2020）。",
+            "en": "Not enough. Low-dose oral vitamin K is for a high INR without bleeding — CHEST 2012 even suggests against routine vitamin K for an INR of 4.5–10 without bleeding. He is bleeding, the bruise has spread daily and he is anaemic; oral vitamin K is too slow, and the clotting would not be corrected before a drainage (ACC 2020)."
           }
         },
         {
@@ -3947,8 +3956,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。他的瓣膜确实需要长期抗凝，但在出血扩大、INR 6.2 时继续服药只会让出血继续。ACC 2020 共识：先停药、逆转、控制出血，止血可靠后再按血栓风险尽早恢复；人工瓣膜患者需要有计划地恢复，而不是在出血时继续用药。",
-            "en": "No. His valves do need long-term anticoagulation, but carrying on at an INR of 6.2 with a growing bleed feeds the bleeding. ACC 2020: stop, reverse and control the bleeding, then restart as soon as it is safe given the thrombotic risk; a prosthetic-valve patient needs a planned restart, not continued warfarin while he bleeds."
+            "zh-CN": "不对。他的瓣膜确实需要长期抗凝，但在瘀斑仍在扩大、INR 6.2 时继续服药只会让出血继续。ACC 2020 共识：先停药、逆转、控制出血，止血可靠后再按血栓风险尽早恢复；人工瓣膜患者需要有计划地恢复，而不是在出血时继续用药。",
+            "en": "No. His valves do need long-term anticoagulation, but carrying on at an INR of 6.2 while the bruise is still spreading feeds the bleeding. ACC 2020: stop, reverse and control the bleeding, then restart as soon as it is safe given the thrombotic risk; a prosthetic-valve patient needs a planned restart, not continued warfarin while he bleeds."
           }
         }
       ]
@@ -4052,49 +4061,49 @@
         {
           "id": "stop-assess-overload",
           "text": {
-            "zh-CN": "停止继续输血、保留通路，评估生命体征、肺部和出入量并吸氧；考虑超负荷时静注呋塞米，查胸片、心电图、BNP和超声心动图，并上报",
-            "en": "Stop further transfusion and keep the line; assess vital signs, chest and fluid balance and give oxygen; IV furosemide if overloaded; chest film, ECG, BNP and echo; report it"
+            "zh-CN": "停止继续输血并保留通路，评估生命体征、肺部和出入量，吸氧；超负荷时静注呋塞米；查胸片、心电图、BNP、心超并上报",
+            "en": "Stop further transfusion, keep the line; assess vital signs, chest and fluid balance; oxygen; IV furosemide if overloaded; chest film, ECG, BNP, echo; report it"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。输血期间或输血后新出现的呼吸困难，先停止输血、评估，再找原因。ISBT 2018 对输血相关循环超负荷（TACO）的监测定义：输血期间或结束后 12 小时内出现呼吸窘迫或肺水肿，并有心血管变化、液体超负荷或 BNP 升高等支持证据；他有瓣膜病，TACO 可能性最大，利尿常能改善。但也要排除输血相关急性肺损伤、过敏或溶血反应，以及逆转华法林后人工瓣膜的血栓或功能障碍——所以要做超声心动图，并按输血不良反应上报。",
-            "en": "Correct. New breathlessness during or after a transfusion means stop, assess, then find the cause. The ISBT 2018 surveillance definition of transfusion-associated circulatory overload (TACO) asks for respiratory distress or pulmonary oedema during or within 12 hours of transfusion, with supporting cardiovascular changes, fluid overload or a raised BNP; with his valve disease TACO is the likeliest, and a diuretic often helps. But exclude lung injury, an allergic or haemolytic reaction and, after the reversal of his warfarin, prosthetic-valve thrombosis or dysfunction — hence the echo — and report the reaction."
+            "zh-CN": "正确。输血期间或输血后新出现的呼吸困难，先停止输血、评估，再找原因。ISBT 2018 对输血相关循环超负荷（TACO）的监测定义：输血期间或结束后 12 小时内出现呼吸窘迫或肺水肿，且总共满足至少 3 项标准，其余标准为心血管变化、液体超负荷和利钠肽升高；他有瓣膜病，TACO 可能性最大，利尿常能改善。但也要排除输血相关急性肺损伤、过敏或溶血反应，以及逆转华法林后人工瓣膜的血栓或功能障碍——所以要做超声心动图，并按输血不良反应上报。",
+            "en": "Correct. New breathlessness during or after a transfusion means stop, assess, then find the cause. The ISBT 2018 surveillance definition of transfusion-associated circulatory overload (TACO) needs respiratory compromise or pulmonary oedema during or within 12 hours of transfusion and at least three criteria in all, the others being cardiovascular changes, fluid overload and a raised natriuretic peptide; with his valve disease TACO is the likeliest, and a diuretic often helps. But exclude lung injury, an allergic or haemolytic reaction and, after the reversal of his warfarin, prosthetic-valve thrombosis or dysfunction — hence the echo — and report the reaction."
           }
         },
         {
           "id": "slow-and-finish",
           "text": {
-            "zh-CN": "把输血速度调慢，先把这一单位输完再评估；输血时胸闷多半是紧张，安慰他就可以了",
-            "en": "Slow the rate and finish the unit before assessing him; tightness during a transfusion is usually anxiety, so reassure him"
+            "zh-CN": "把输血速度调慢，先把这一单位输完再评估；输血时胸闷多半是紧张，先安慰他，输完后再复测生命体征",
+            "en": "Slow the rate and finish the unit before assessing him; tightness during a transfusion is usually anxiety, so reassure him and repeat his observations at the end"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。在弄清原因前继续输血，可能让循环超负荷或输血反应加重；任何新出现的呼吸症状都要先停止输血、评估（ISBT 2018 把这类表现纳入输血反应的监测定义）。紧张只能在排除其他原因之后才考虑。",
-            "en": "No. Carrying on before the cause is known can push overload or a transfusion reaction further; any new respiratory symptom means stopping and assessing first (ISBT 2018 builds such symptoms into its surveillance definitions of transfusion reactions). Anxiety is a diagnosis of exclusion."
+            "zh-CN": "不对。在弄清原因前继续输血，可能让循环超负荷或输血反应加重，等输完再测生命体征也太迟；任何新出现的呼吸症状都要先停止输血、评估（ISBT 2018 的 TACO 定义把输血后 12 小时内新出现的呼吸窘迫列为必备条件之一）。紧张只能在排除其他原因之后才考虑。",
+            "en": "No. Carrying on before the cause is known can push overload or a transfusion reaction further, and observations at the end come too late; any new respiratory symptom means stopping and assessing first (the ISBT 2018 TACO definition counts new respiratory compromise up to 12 hours after a transfusion). Anxiety is a diagnosis of exclusion."
           }
         },
         {
           "id": "allergy-continue",
           "text": {
-            "zh-CN": "按过敏反应处理：静脉给氢化可的松和氯苯那敏，症状缓解后继续把余下的血输完",
-            "en": "Treat it as an allergic reaction with IV hydrocortisone and chlorphenamine, and carry on with the transfusion once he settles"
+            "zh-CN": "按过敏反应处理：静脉给氢化可的松和氯苯那敏，查看皮肤并复测生命体征，症状缓解后继续把余下的血输完",
+            "en": "Treat it as an allergic reaction with IV hydrocortisone and chlorphenamine, look at his skin and observations, and carry on with the transfusion once he settles"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。过敏反应确实可能，但本病例没有记录荨麻疹、喘鸣或低血压；未经评估就按过敏处理并继续输血，可能漏掉更常见的循环超负荷（ISBT 2018 定义）。真正的严重过敏反应需要停止输血并肌注肾上腺素，而不是只给激素和抗组胺药。",
-            "en": "No. An allergic reaction is possible, but no urticaria, wheeze or hypotension is recorded, and assuming allergy and carrying on risks missing the commoner circulatory overload (ISBT 2018 definitions). True anaphylaxis would mean stopping the transfusion and giving IM adrenaline, not steroids and an antihistamine alone."
+            "zh-CN": "不对。过敏反应确实可能，但本病例没有记录荨麻疹、喘鸣或低血压；未经评估就按过敏处理并继续输血，可能漏掉瓣膜病患者身上更可能的循环超负荷（ISBT 2018 TACO 定义）。真正的严重过敏反应需要停止输血并肌注肾上腺素，而不是只给激素和抗组胺药。",
+            "en": "No. An allergic reaction is possible, but no urticaria, wheeze or hypotension is recorded, and assuming allergy and carrying on risks missing circulatory overload, the likelier cause in a man with valve disease (ISBT 2018 TACO definition). True anaphylaxis would mean stopping the transfusion and giving IM adrenaline, not steroids and an antihistamine alone."
           }
         },
         {
           "id": "trali-steroids-fluids",
           "text": {
-            "zh-CN": "诊断为输血相关急性肺损伤：给大剂量糖皮质激素并补液，避免使用利尿剂",
-            "en": "Diagnose transfusion-related acute lung injury: give high-dose corticosteroids and fluids, and avoid diuretics"
+            "zh-CN": "诊断为输血相关急性肺损伤：停止输血，给大剂量糖皮质激素并静脉补液，避免使用利尿剂，血袋退回输血科",
+            "en": "Diagnose transfusion-related acute lung injury: stop the unit, give high-dose corticosteroids and IV fluids, avoid diuretics and return the bag to the blood bank"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。输血相关急性肺损伤（TRALI）和循环超负荷（TACO）的处理方向相反：TRALI 以支持治疗为主，TACO 需要利尿；没有胸片、BNP 或超声心动图之前，不能直接认定是 TRALI（ISBT 2018 定义）。糖皮质激素对 TRALI 没有确切疗效，盲目补液对瓣膜病患者尤其危险。",
-            "en": "No. TRALI and TACO pull treatment in opposite directions — TRALI is managed supportively, TACO with diuretics — and neither can be called without a chest film, BNP or echo (ISBT 2018 definitions). Corticosteroids have no proven benefit in TRALI, and giving fluids blindly is especially dangerous with valve disease."
+            "zh-CN": "不对——停止输血、退回血袋是对的，其余不对。输血相关急性肺损伤（TRALI）和循环超负荷（TACO）的处理方向相反：TRALI 以支持治疗为主，TACO 需要利尿；在评估、胸片、BNP 和超声心动图排查他身上更可能的循环超负荷之前，不能直接认定是 TRALI（ISBT 2018 TACO 定义）。糖皮质激素对 TRALI 没有确切疗效，盲目补液对瓣膜病患者尤其危险。",
+            "en": "No — stopping the unit and returning the bag are right; the rest is not. TRALI and TACO pull treatment in opposite directions (supportive care for TRALI, a diuretic for TACO), and TRALI cannot be called before the assessment, chest film, BNP and echo have looked for overload, the likelier cause in him (ISBT 2018 TACO definition). Corticosteroids have no proven benefit in TRALI, and giving fluids blindly is especially dangerous with valve disease."
           }
         }
       ]
@@ -4103,8 +4112,8 @@
       "id": "restart-plan",
       "kind": "single",
       "prompt": {
-        "zh-CN": "胸闷气短已经处理。接下来要规划抗凝：他 5 年前换了主动脉瓣和二尖瓣，长期服用华法林，平时大约半年才查一次凝血；这次在 INR 6.2 时肌注后出血。什么时候、怎样恢复抗凝？今后要改变什么？",
-        "en": "The breathlessness has been treated. Now plan his anticoagulation: aortic and mitral valve replacements 5 years ago, long-term warfarin with clotting checked about every six months, and a bleed after an IM injection at an INR of 6.2. When and how should anticoagulation restart, and what must change afterwards?"
+        "zh-CN": "接下来要规划抗凝：他 5 年前换了主动脉瓣和二尖瓣，长期服用华法林，平时大约半年才查一次凝血；这次肌注部位出血，入院时 INR 6.2。什么时候、怎样恢复抗凝？今后要改变什么？",
+        "en": "Now plan his anticoagulation: aortic and mitral valve replacements 5 years ago, long-term warfarin with clotting checked about every six months, and a bleed at an IM injection site, with an INR of 6.2 on admission. When and how should anticoagulation restart, and what must change afterwards?"
       },
       "requires": {
         "all": [
@@ -4147,8 +4156,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。如果是机械瓣，单用阿司匹林不能预防瓣膜血栓和栓塞，必须终身用华法林（ACC/AHA 2020）。一次原因明确的出血（INR 6.2 时肌注）应该纠正原因，而不是放弃抗凝。",
-            "en": "No. If his valves are mechanical, aspirin alone does not prevent valve thrombosis or embolism, and warfarin is required for life (ACC/AHA 2020). A bleed with an obvious cause — an IM injection at an INR of 6.2 — calls for fixing the cause, not abandoning anticoagulation."
+            "zh-CN": "不对。如果是机械瓣，单用阿司匹林不能预防瓣膜血栓和栓塞，必须终身用华法林（ACC/AHA 2020）。一次原因明确的出血（服华法林期间肌注，入院时 INR 6.2）应该纠正原因，而不是放弃抗凝。",
+            "en": "No. If his valves are mechanical, aspirin alone does not prevent valve thrombosis or embolism, and warfarin is required for life (ACC/AHA 2020). A bleed with an obvious cause — an IM injection in a man on warfarin whose INR, when checked, was 6.2 — calls for fixing the cause, not abandoning anticoagulation."
           }
         },
         {
@@ -4171,8 +4180,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。一个月不抗凝、又把目标降到 1.5 左右，会让两个人工瓣膜（尤其二尖瓣位）面临很高的血栓风险；对服用华法林的人来说，半年查一次 INR 也远远不够。ACC 2020 共识主张止血后尽早恢复，CHEST 2012 的监测间隔最长也只有 12 周。",
-            "en": "No. A month without anticoagulation and a target near 1.5 expose two prosthetic valves — the mitral above all — to a high risk of thrombosis, and six-monthly INR checks are far too few for anyone on warfarin. ACC 2020 restarts as soon as haemostasis allows, and CHEST 2012 never stretches monitoring beyond 12 weeks."
+            "zh-CN": "不对。如果是机械瓣，一个月不抗凝、又把目标降到 1.5 左右，会让两个人工瓣膜（尤其二尖瓣位）面临很高的血栓风险；对服用华法林的人来说，半年查一次 INR 也远远不够。ACC 2020 共识主张止血后尽早恢复，CHEST 2012 的监测间隔最长也只有 12 周。",
+            "en": "No. If his valves are mechanical, a month without anticoagulation and a target near 1.5 expose them — the mitral above all — to a high risk of thrombosis; and six-monthly INR checks are far too few for anyone on warfarin. ACC 2020 restarts as soon as haemostasis allows, and CHEST 2012 never stretches monitoring beyond 12 weeks."
           }
         }
       ]
@@ -4511,8 +4520,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "按 Calgary–Cambridge 的解释与计划环节评估。良好表现：先问他已经知道什么、最担心什么（他怕停华法林会让换的瓣膜出事），用通俗的话分段说明——血太稀（INR 过高）时打针，针眼处出血形成了大血块；现在暂停华法林、用药把凝血纠正过来是为了止血，是暂时的；止血可靠后会尽早恢复，以保护瓣膜，瓣膜类型和目标值要和他的瓣膜医生核实；输血可能引起气短，有不适要马上说；以后不再接受肌内注射、至少每 4 周查一次 INR、看病和买药都说明自己在吃华法林。每段之后确认他听懂（请他用自己的话复述），回应他的担忧，不作虚假保证，不说病例中没有记录的事（例如瓣膜类型）。",
-        "en": "Judge the explanation-and-planning part of Calgary–Cambridge. Good performance: first ask what he already knows and what worries him most (he fears that stopping warfarin will harm his new valves), then explain in plain words, a piece at a time — the injection was given while his blood was too thin (INR too high), so the needle track bled into a large clot; stopping warfarin and correcting the clotting now is to stop the bleeding and is temporary; it will be restarted as soon as the bleeding is controlled, to protect his valves, and the valve type and his target range will be checked with his valve doctors; a transfusion can cause breathlessness, so he should say at once if he feels unwell; in future no intramuscular injections, an INR check at least every 4 weeks, and telling every doctor and pharmacist he takes warfarin. Check understanding after each piece (teach-back), respond to his worry, give no false reassurance and claim nothing the case does not record (such as the valve type)."
+        "zh-CN": "按 Calgary–Cambridge 的解释与计划环节评估。良好表现：先问他已经知道什么、最担心什么（他怕停华法林会让换的瓣膜出事），用通俗的话分段说明——这次查出他的血太稀（INR 过高），打针的地方出血形成了大血块；现在暂停华法林、用药把凝血纠正过来是为了止血，是暂时的；止血可靠后会尽早恢复，以保护瓣膜，瓣膜类型和目标值要和他的瓣膜医生核实；输血可能引起气短，有不适要马上说；以后不再接受肌内注射、至少每 4 周查一次 INR、看病和买药都说明自己在吃华法林。每段之后确认他听懂（请他用自己的话复述），回应他的担忧，不作虚假保证，不说病例中没有记录的事（例如瓣膜类型）。",
+        "en": "Judge the explanation-and-planning part of Calgary–Cambridge. Good performance: first ask what he already knows and what worries him most (he fears that stopping warfarin will harm his new valves), then explain in plain words, a piece at a time — his blood was found to be far too thin (INR too high), and the injection site bled into a large clot; stopping warfarin and correcting the clotting now is to stop the bleeding and is temporary; it will be restarted as soon as the bleeding is controlled, to protect his valves, and the valve type and his target range will be checked with his valve doctors; a transfusion can cause breathlessness, so he should say at once if he feels unwell; in future no intramuscular injections, an INR check at least every 4 weeks, and telling every doctor and pharmacist he takes warfarin. Check understanding after each piece (teach-back), respond to his worry, give no false reassurance and claim nothing the case does not record (such as the valve type)."
       }
     }
   ],
@@ -4524,8 +4533,8 @@
         "en": "Dr Liao (cardiology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只就学员已经拿到的资料提问，按 PEARLS 复盘。第 1 项决策前只问鉴别：“长期吃华法林的人，打针后第二天开始、一天比一天大的青紫和肿块，首先要想到什么？白细胞高和局部发热能说明什么、不能说明什么？”“哪些发现会让你担心深部或腹膜后出血？”作答后再深入：“按 ACC 2020 的四条标准，这次出血现在能判断到哪一步？哪一条因为缺少之前的血红蛋白而判断不了？”“维生素K为什么要静脉给、不能肌注？PCC 和血浆各有什么利弊，对瓣膜病人呢？”“送去引流之前你要看到什么？”“术后输血输多少、怎么输？”“输血后胸闷气短要排除哪些原因？为什么要看人工瓣膜？”“瓣膜类型不清楚时，怎么定恢复抗凝的时机和方式？为什么不能换成新型口服抗凝药？”“半年查一次凝血和感冒肌注，各暴露了什么问题？”可以讲解 ACC 2020、CHEST 2012、ACC/AHA 2020、AABB 2023、NICE NG24、ISBT 2018 和 NHS SPS 2023 的相关原则，并把原报告的历史处置与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（生命体征、血小板、瓣膜类型、华法林剂量、维生素K剂量、输血量和心衰治疗都没有记录）。",
-        "en": "Socratic teacher who asks only about information the learner already has and debriefs with PEARLS. Before decision 1, only the differential: “In a man on long-term warfarin, what does a bruise and swelling that start the day after an injection and grow daily suggest first? What can a raised white count and local warmth show, and what can they not?”, “Which findings would make you worry about a deep or retroperitoneal bleed?” After the learner commits, go deeper: “How far can you classify this bleed by the four ACC 2020 criteria — and which one can you not judge without an earlier haemoglobin?”, “Why vitamin K intravenously and never into the muscle? PCC or plasma — and for a man with valve disease?”, “What do you need to see before he goes for drainage?”, “How much blood after the operation, and how?”, “What must you exclude when he becomes breathless after the transfusion, and why look at the prosthetic valves?”, “With the valve type unknown, how do you set the timing and route of the restart, and why not a DOAC?”, “What did six-monthly clotting checks and an injection for a cold each expose?” May explain the relevant principles of ACC 2020, CHEST 2012, ACC/AHA 2020, AABB 2023, NICE NG24, ISBT 2018 and NHS SPS 2023, contrasting the reported course with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (vital signs, platelets, the valve type, the warfarin and vitamin K doses, the volume transfused and the heart-failure treatment are not recorded)."
+        "zh-CN": "苏格拉底式带教，只就学员已经拿到的资料提问，按 PEARLS 复盘。第 1 项决策前只问鉴别：“长期吃华法林的人，打针后第二天开始出现肿块、青紫一天比一天大，首先要想到什么？白细胞高和局部发热能说明什么、不能说明什么？”“哪些发现会让你担心深部或腹膜后出血？”作答后再深入：“按 ACC 2020 的四条标准，这次出血现在能判断到哪一步？哪一条因为缺少之前的血红蛋白而判断不了？”“维生素K为什么要静脉给、不能肌注？PCC 和血浆各有什么利弊，对瓣膜病人呢？”“送去引流之前你要看到什么？”“术后输血输多少、怎么输？”“输血后胸闷气短要排除哪些原因？为什么要看人工瓣膜？”“瓣膜类型不清楚时，怎么定恢复抗凝的时机和方式？为什么不能换成新型口服抗凝药？”“半年查一次凝血和感冒肌注，各暴露了什么问题？”可以讲解 ACC 2020、CHEST 2012、ACC/AHA 2020、AABB 2023、NICE NG24、ISBT 2018 和 NHS SPS 2023 的相关原则，并把原报告的历史处置与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（生命体征、血小板、瓣膜类型、华法林剂量、维生素K剂量、输血量和心衰治疗都没有记录）。",
+        "en": "Socratic teacher who asks only about information the learner already has and debriefs with PEARLS. Before decision 1, only the differential: “In a man on long-term warfarin, what do a swelling and a bruise that start the day after an injection, the bruise spreading daily, suggest first? What can a raised white count and local warmth show, and what can they not?”, “Which findings would make you worry about a deep or retroperitoneal bleed?” After the learner commits, go deeper: “How far can you classify this bleed by the four ACC 2020 criteria — and which one can you not judge without an earlier haemoglobin?”, “Why vitamin K intravenously and never into the muscle? PCC or plasma — and for a man with valve disease?”, “What do you need to see before he goes for drainage?”, “How much blood after the operation, and how?”, “What must you exclude when he becomes breathless after the transfusion, and why look at the prosthetic valves?”, “With the valve type unknown, how do you set the timing and route of the restart, and why not a DOAC?”, “What did six-monthly clotting checks and an injection for a cold each expose?” May explain the relevant principles of ACC 2020, CHEST 2012, ACC/AHA 2020, AABB 2023, NICE NG24, ISBT 2018 and NHS SPS 2023, contrasting the reported course with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (vital signs, platelets, the valve type, the warfarin and vitamin K doses, the volume transfused and the heart-failure treatment are not recorded)."
       },
       "interprets": [
         "coag",
@@ -4589,21 +4598,21 @@
       "en": "Debrief: a buttock haematoma after an intramuscular injection on excessive warfarin"
     },
     "conclusion": {
-      "zh-CN": "51岁男性，5 年前换过主动脉瓣和二尖瓣，长期服用华法林，约半年才查一次凝血。感冒时肌注安乃近，次日起左臀部肿痛，瘀斑逐日扩大到部分右臀和左腰；左臀约 150×50 mm 压痛肿块，局部稍热。INR 6.2，APTT 42.5 s，Hb 86 g/L，WBC 24.7×10⁹/L；超声见约 139×55 mm 不规则低回声区，内有絮状回声——华法林抗凝过度时肌注部位出血形成的血肿，伴失血性贫血。原团队逆转华法林（描述为大剂量维生素K，剂量未记录）后手术引流，见血凝块而非脓液；术后 Hb 降至 58 g/L，输血后胸闷气短，被考虑为心力衰竭，治疗后缓解；此后恢复华法林，1 个月时瘀斑消退，INR 2.1。按现行指南：立即停用华法林，静脉维生素K₁加4因子PCC，复查 INR 后再引流（ACC 2020）；按限制性阈值逐单位输血并警惕循环超负荷（AABB 2023；NICE NG24）；核实瓣膜类型后尽早恢复抗凝，机械瓣不用直接口服抗凝药（ACC/AHA 2020）。",
-      "en": "A 51-year-old man on warfarin since aortic and mitral valve replacements 5 years before, with clotting checked about six-monthly, got IM metamizole for a cold. Next day the left buttock swelled and hurt, with a bruise spreading daily to part of the right buttock and the left waist and a tender, mildly warm mass of about 150×50 mm. INR 6.2, APTT 42.5 s, Hb 86 g/L, WBC 24.7×10⁹/L; ultrasound: irregular hypoechoic area of about 139×55 mm with flocculent echoes — an injection-site haematoma on excessive warfarin, with blood-loss anaemia. After reversal (described as high-dose vitamin K; dose not recorded) drainage found clot, not pus; Hb fell to 58 g/L; breathlessness after a transfusion, considered heart failure, improved with treatment. Warfarin was resumed; at one month the bruise had gone, INR 2.1. Today: stop warfarin, IV vitamin K and 4-factor PCC, drain after a repeat INR (ACC 2020); single units (AABB 2023; NICE NG24); early restart, no DOAC for a mechanical valve (ACC/AHA 2020)."
+      "zh-CN": "51岁男性，5 年前换过主动脉瓣和二尖瓣，长期服用华法林，约半年才查一次凝血。感冒时肌注安乃近，次日起左臀部肿痛，瘀斑逐日扩大到部分右臀和左腰；左臀约 150×50 mm 压痛肿块，局部稍热。INR 6.2，APTT 42.5 s，Hb 86 g/L，WBC 24.7×10⁹/L；超声见约 139×55 mm 不规则低回声区，内有絮状回声——华法林抗凝过度时肌注部位出血形成的血肿，伴失血性贫血。原团队逆转华法林（描述为大剂量维生素K，剂量未记录）后手术引流，见血凝块而非脓液；术后 Hb 降至 58 g/L，输血后胸闷气短，被考虑为心力衰竭，治疗后缓解；此后恢复华法林，1 个月时瘀斑消退，INR 2.1。按现行指南：立即停用华法林，静脉维生素K₁加4因子PCC，复查 INR 后再引流（ACC 2020）；按限制性阈值输血（AABB 2023），每次 1 单位、输后复评并警惕循环超负荷（NICE NG24）；核实瓣膜类型后尽早恢复抗凝，机械瓣不用直接口服抗凝药（ACC/AHA 2020）。",
+      "en": "A 51-year-old man on warfarin since aortic and mitral valve replacements 5 years before, with clotting checked about six-monthly, got IM metamizole for a cold. Next day the left buttock swelled and hurt, with a bruise spreading daily to part of the right buttock and the left waist and a tender, mildly warm mass of about 150×50 mm. INR 6.2, APTT 42.5 s, Hb 86 g/L, WBC 24.7×10⁹/L; ultrasound: irregular hypoechoic area of about 139×55 mm with flocculent echoes — an injection-site haematoma on excessive warfarin, with blood-loss anaemia. After reversal (described as high-dose vitamin K; dose not recorded) drainage found clot, not pus; Hb fell to 58 g/L; breathlessness after a transfusion, considered heart failure, improved with treatment. Warfarin was resumed; at one month the bruise had gone, INR 2.1. Today: stop warfarin, IV vitamin K and 4-factor PCC, drain after a repeat INR (ACC 2020); transfuse below the restrictive threshold (AABB 2023), one unit at a time with review, watching for overload (NICE NG24); early restart, no DOAC for a mechanical valve (ACC/AHA 2020)."
     },
     "keyReasoning": [
       {
-        "zh-CN": "长期服用华法林的人，打针后第二天开始、一天比一天大的青紫和肿块，首先要想到出血：INR 6.2 说明为什么会出血，Hb 86 g/L 说明已经失血不少。",
-        "en": "In a man on long-term warfarin, a bruise and swelling that start the day after an injection and grow daily are bleeding until shown otherwise: the INR of 6.2 explains why, and an Hb of 86 g/L shows how much has been lost."
+        "zh-CN": "长期服用华法林的人，打针后第二天开始出现肿块、青紫一天比一天大，首先要想到出血：INR 6.2 说明为什么会出血，Hb 86 g/L 说明已经贫血（没有此前的数值，算不出下降了多少）。",
+        "en": "In a man on long-term warfarin, a swelling and a bruise that start the day after an injection, the bruise spreading daily, are bleeding until shown otherwise: the INR of 6.2 explains why, and an Hb of 86 g/L shows he is already anaemic (with no earlier value, the size of the fall cannot be measured)."
       },
       {
         "zh-CN": "白细胞 24.7×10⁹/L 和局部稍热不能证明脓肿，大血肿也可以这样；有没有脓，要等凝血纠正后由外科来回答，而不是在 INR 6.2 时用针去验证。",
         "en": "A WBC of 24.7×10⁹/L and mild warmth do not prove an abscess — a large haematoma can do the same; whether there is pus is answered by the surgeons once the clotting is corrected, not by a needle at an INR of 6.2."
       },
       {
-        "zh-CN": "逆转的强度要与出血相称：仍在扩大、已有贫血、可能需要引流的出血，需要补充凝血因子加静脉维生素K，而不是 INR 偏高但没有出血时的口服小剂量。",
-        "en": "Reversal is matched to the bleed: one that is still growing, with anaemia and a possible drainage, needs clotting factors plus IV vitamin K, not the small oral dose used for a high INR without bleeding."
+        "zh-CN": "逆转的强度要与出血相称：瘀斑仍在扩大、已有贫血、可能需要引流的出血，需要补充凝血因子加静脉维生素K，而不是 INR 偏高但没有出血时的口服小剂量。",
+        "en": "Reversal is matched to the bleed: one whose bruise is still spreading, with anaemia and a possible drainage, needs clotting factors plus IV vitamin K, not the small oral dose used for a high INR without bleeding."
       },
       {
         "zh-CN": "两个人工瓣膜让停药成为短期的权衡：现在停、现在逆转，但从一开始就要计划尽早恢复——瓣膜类型和目标 INR 决定恢复的时机和方式。",
@@ -4632,8 +4641,8 @@
         "en": "His warfarin dose, his last INR before this illness, his other medicines (including any for the cold), diet and alcohol — that is, why the INR reached 6.2."
       },
       {
-        "zh-CN": "安乃近的剂量、注射的部位和侧别，以及一共打了几针。",
-        "en": "The metamizole dose, the injection site and side, and how many injections he had."
+        "zh-CN": "安乃近的剂量、注射在哪一侧（臀部系据报告标题推断），以及一共打了几针。",
+        "en": "The metamizole dose, the side of the injection (the buttock is inferred from the report's title), and how many injections he had."
       },
       {
         "zh-CN": "入院时的生命体征和体温、血小板计数、肝肾功能，以及别处有无出血。",
@@ -4658,20 +4667,20 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "出血严重程度与逆转。ACC 2020 共识把下列任一情况定为大出血：关键部位出血、血流动力学不稳定、Hb 下降 ≥ 20 g/L，或需要输注 ≥ 2 单位红细胞。本病例没有记录他此前的 Hb，但血肿仍在扩大、Hb 86 g/L 且可能需要引流，属于需要干预的出血：停用华法林，静脉缓慢输注维生素K₁ 5–10 mg，按 INR 和体重给4因子PCC（INR > 6 时 50 IU/kg），没有PCC时才用血浆 10–15 mL/kg，引流前复查 INR。历史与现行：原报告描述为大剂量维生素K逆转后再引流（剂量未记录）；今天以PCC为主，维生素K给到够用即可。",
-        "en": "Severity and reversal. ACC 2020 calls a bleed major if it involves a critical site, causes haemodynamic instability, drops the Hb by ≥ 20 g/L or needs ≥ 2 units of red cells. His earlier Hb is not recorded, but a still-growing haematoma with an Hb of 86 g/L that may need drainage is bleeding that needs intervention: stop warfarin, give vitamin K₁ 5–10 mg by slow IV infusion and 4-factor PCC by INR and weight (50 IU/kg when the INR is above 6), plasma 10–15 mL/kg only when there is no PCC, and recheck the INR before drainage. Then and now: the report describes reversal with high-dose vitamin K before the drainage (dose not recorded); today PCC leads and vitamin K is given only in the dose needed."
+        "zh-CN": "出血严重程度与逆转。ACC 2020 共识把下列任一情况定为大出血：关键部位出血、血流动力学不稳定、Hb 下降 ≥ 20 g/L，或需要输注 ≥ 2 单位红细胞；大出血经初始处理仍未控制时加用逆转药物。本病例没有记录他此前的 Hb，但瘀斑逐日扩大、Hb 86 g/L、很可能需要引流，应按此处理：停用华法林，静脉缓慢输注维生素K₁ 5–10 mg，按 INR 和体重给4因子PCC（INR > 6 时 50 IU/kg），没有PCC时才用血浆 10–15 mL/kg，引流前复查 INR。历史与现行：记录中引流前的逆转所用维生素K描述为大剂量（剂量未记录）；今天以PCC为主，维生素K给到够用即可。",
+        "en": "Severity and reversal. ACC 2020 calls a bleed major if it involves a critical site, causes haemodynamic instability, drops the Hb by ≥ 20 g/L or needs ≥ 2 units of red cells, and adds a reversal agent when a major bleed does not settle with the first measures. His earlier Hb is not recorded, but a bleed whose bruise has spread daily, with an Hb of 86 g/L and a drainage likely, is treated as such: stop warfarin, give vitamin K₁ 5–10 mg by slow IV infusion and 4-factor PCC by INR and weight (50 IU/kg when the INR is above 6), plasma 10–15 mL/kg only when there is no PCC, and recheck the INR before drainage. Then and now: the recorded reversal before the drainage used vitamin K described as high-dose (dose not recorded); today PCC leads and vitamin K is given only in the dose needed."
       },
       {
-        "zh-CN": "抗凝患者的给药途径。NHS SPS 2023：服用华法林的人最近一次 INR 应在治疗范围内，INR 高于治疗范围时不应肌注；能口服就不肌注，维生素K₁也不肌注。感冒发热止痛首选口服对乙酰氨基酚，避免非甾体抗炎药。历史与现行：本例在华法林治疗中因感冒肌注安乃近，而凝血约半年才查一次；国家药品监督管理局 2020 年已因严重不良反应（包括粒细胞缺乏症）注销安乃近注射液的注册证书，今天国内已不再使用这种注射液。",
-        "en": "Routes in anticoagulated patients. NHS SPS 2023: a patient on warfarin should have a recent INR within range, and no IM injection is given when the INR is above the therapeutic range; give by mouth whenever possible, and never give vitamin K₁ into the muscle. For a cold or fever, oral paracetamol, not an NSAID. Then and now: he was given IM metamizole for a cold while on warfarin with clotting checked about six-monthly; in 2020 China's National Medical Products Administration cancelled the registration of metamizole injection for serious adverse reactions, agranulocytosis among them, so the injection is no longer used there."
+        "zh-CN": "抗凝患者的给药途径。NHS SPS 2023：服用华法林的人最近一次 INR 应在治疗范围内，INR 高于治疗范围时不应肌注；先考虑其他给药途径——维生素K₁同样不肌注，ACC 2020 采用静脉给药。感冒发热止痛首选口服对乙酰氨基酚，避免非甾体抗炎药。历史与现行：本例在华法林治疗中因感冒肌注安乃近，而凝血约半年才查一次；国家药品监督管理局 2020 年已因严重不良反应（包括粒细胞缺乏症）注销安乃近注射液的注册证书，今天国内已不再使用这种注射液。",
+        "en": "Routes in anticoagulated patients. NHS SPS 2023: a patient on warfarin should have a recent INR within range, and no IM injection is given when the INR is above the therapeutic range; consider another route first — so vitamin K₁ is not given into the muscle either; ACC 2020 gives it IV. For a cold or fever, oral paracetamol, not an NSAID. Then and now: he was given IM metamizole for a cold while on warfarin with clotting checked about six-monthly; in 2020 China's National Medical Products Administration cancelled the registration of metamizole injection for serious adverse reactions, agranulocytosis among them, so the injection is no longer used there."
       },
       {
         "zh-CN": "瓣膜病患者的输血。AABB 2023：血流动力学稳定的住院成人在 Hb < 70 g/L 时考虑输血，合并心血管病者可采用 80 g/L；他术后 Hb 58 g/L，需要输血。NICE NG24（2015）：没有活动性出血时每次输 1 单位，输后评估并复查 Hb 再决定是否继续。瓣膜病和重度贫血都增加输血相关循环超负荷的风险：控制速度、记录出入量、观察血氧，必要时用利尿剂。历史与现行：本病例只记录了输血，没有记录血制品、单位数和速度。",
         "en": "Transfusing a patient with valve disease. AABB 2023: consider transfusion at an Hb below 70 g/L in stable hospitalised adults, with 80 g/L an option in cardiovascular disease; at 58 g/L after the operation he needed blood. NICE NG24 (2015): without active bleeding give one unit, then reassess and recheck the Hb before the next. Valve disease and severe anaemia both raise the risk of transfusion-associated circulatory overload: control the rate, chart fluid balance, watch the saturation and consider a diuretic. Then and now: this case records the transfusion but not the product, units or rate."
       },
       {
-        "zh-CN": "输血后的气短。ISBT 2018 对输血相关循环超负荷（TACO）的监测定义：输血期间或结束后 12 小时内出现急性呼吸窘迫或肺水肿，并有心血管变化、液体超负荷或 BNP 升高等支持证据。处理：停止继续输血、吸氧、利尿，查胸片、心电图、BNP 和超声心动图，并按输血不良反应上报；同时排除输血相关急性肺损伤、过敏或溶血反应，以及逆转华法林后人工瓣膜的血栓或功能障碍。历史与现行：原团队考虑为心力衰竭，治疗后缓解；今天应按可能的 TACO 评估并上报。",
-        "en": "Breathlessness after a transfusion. The ISBT 2018 surveillance definition of TACO: acute respiratory distress or pulmonary oedema during or within 12 hours of transfusion, with supporting cardiovascular changes, fluid overload or a raised BNP. Stop further transfusion, give oxygen and a diuretic, get a chest film, ECG, BNP and echo, and report the reaction; exclude lung injury, an allergic or haemolytic reaction and, after the reversal, prosthetic-valve thrombosis or dysfunction. Then and now: the team considered heart failure and it improved with treatment; today it would be assessed and reported as possible TACO."
+        "zh-CN": "输血后的气短。ISBT 2018 对输血相关循环超负荷（TACO）的监测定义：输血期间或结束后 12 小时内出现急性或加重的呼吸窘迫或肺水肿，且 5 项标准中总共满足至少 3 项（其余为心血管变化、液体超负荷、利钠肽升高）。处理：停止继续输血、吸氧、利尿，查胸片、心电图、BNP 和超声心动图，并按输血不良反应上报；同时排除输血相关急性肺损伤、过敏或溶血反应，以及逆转华法林后人工瓣膜的血栓或功能障碍。历史与现行：原团队考虑为心力衰竭，治疗后缓解；今天应按可能的 TACO 评估并上报。",
+        "en": "Breathlessness after a transfusion. The ISBT 2018 surveillance definition of TACO: acute or worsening respiratory compromise or pulmonary oedema during or within 12 hours of transfusion, and at least three of its five criteria in all (the others: cardiovascular changes, fluid overload, a raised natriuretic peptide). Stop further transfusion, give oxygen and a diuretic, get a chest film, ECG, BNP and echo, and report the reaction; exclude lung injury, an allergic or haemolytic reaction and, after the reversal, prosthetic-valve thrombosis or dysfunction. Then and now: the team considered heart failure and it improved with treatment; today it would be assessed and reported as possible TACO."
       },
       {
         "zh-CN": "恢复抗凝。ACC 2020 共识：出血来源已控制、又不是关键器官出血时，医学上安全后尽早恢复抗凝。ACC/AHA 2020：机械二尖瓣目标 INR 3.0，无危险因素的机械主动脉瓣 2.5（有危险因素 3.0）；机械二尖瓣中断华法林时用肝素过渡是合理的（2a 类）；直接口服抗凝药对机械瓣有害（3 类）。国内中心使用的目标范围可能更低，应以他的瓣膜团队设定的目标为准；若为生物瓣，是否需要长期抗凝取决于其他指征。历史与现行：本病例记录恢复了华法林，1 个月时 INR 2.1；瓣膜类型、目标范围、恢复时间和是否过渡都没有记录。",
@@ -4708,8 +4717,8 @@
       "en": "His warfarin dose, his last INR before this illness, his other medicines (including any for the cold), diet and alcohol — that is, why the INR reached 6.2."
     },
     {
-      "zh-CN": "安乃近的剂量、注射的部位和侧别，以及一共打了几针。",
-      "en": "The metamizole dose, the injection site and side, and how many injections he had."
+      "zh-CN": "安乃近的剂量、注射在哪一侧（臀部系据报告标题推断），以及一共打了几针。",
+      "en": "The metamizole dose, the side of the injection (the buttock is inferred from the report's title), and how many injections he had."
     },
     {
       "zh-CN": "入院时的生命体征和体温、血小板计数、肝肾功能，以及别处有无出血。",

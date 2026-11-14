@@ -83,8 +83,8 @@
       "en": "Start HLH-94 induction (dexamethasone 10 mg/m²/day and etoposide 150 mg/m² twice weekly; Histiocyte Society consensus 2018) as soon as EBV-associated HLH is diagnosed, without waiting for genetic results and without substituting antivirals (Imashuku 2001; Chinese consensus on EBV-related disease in children 2021)."
     },
     {
-      "zh-CN": "按合子状态和遗传方式解读基因报告：单个UNC13D杂合变异不能确立常染色体隐性的FHL3；SH2D1A半合子变异须按HGVS规范重新书写、按ACMG/AMP 2015分类，并有SAP和脱颗粒功能检测支持（NACHO 2019），才能诊断X连锁淋巴组织增生症1型。",
-      "en": "Interpret a gene report by zygosity and inheritance: one heterozygous UNC13D variant does not establish autosomal recessive FHL3, and a hemizygous SH2D1A variant must be written in HGVS, classified under ACMG/AMP 2015 and supported by SAP and degranulation assays (NACHO 2019) before it means XLP1."
+      "zh-CN": "按合子状态和遗传方式解读基因报告：单个UNC13D杂合变异不能确立常染色体隐性的FHL3（Munc13-4的功能用CD107a脱颗粒试验检测）；SH2D1A半合子变异须按HGVS规范重新书写、按ACMG/AMP 2015分类，并有SAP蛋白表达支持（NACHO 2019），才能诊断X连锁淋巴组织增生症1型。",
+      "en": "Interpret a gene report by zygosity and inheritance: one heterozygous UNC13D variant does not establish autosomal recessive FHL3 (Munc13-4 function is tested by CD107a degranulation), and a hemizygous SH2D1A variant must be written in HGVS, classified under ACMG/AMP 2015 and supported by SAP protein expression (NACHO 2019) before it means XLP1."
     },
     {
       "zh-CN": "HLH在诱导治疗后再活动时，无论基因结果如何都转诊行异基因造血干细胞移植（HLH-2004），没有同胞供者时启动非血缘供者检索。",
@@ -195,8 +195,8 @@
         "en": "After treatment: the disease flares again"
       },
       "description": {
-        "zh-CN": "初始治疗后病情一度缓解，此后又出现活动迹象（是哪些表现、在什么时候，本病例没有记录）。基因检测报告现在可以调阅（何时出结果没有记录）。",
-        "en": "After the first treatment the disease went into remission for a time, then showed signs of activity again (which signs, and when, this case does not record). The gene report can now be read (when it came back is not recorded)."
+        "zh-CN": "初始治疗后病情一度缓解，此后又出现活动迹象（是哪些表现、在什么时候，没有记录）。基因检测报告现在可以调阅（何时出结果没有记录）。",
+        "en": "After the first treatment the disease went into remission for a time, then showed signs of activity again (which signs, and when, is not recorded). The gene report can now be read (when it came back is not recorded)."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -1829,8 +1829,8 @@
             "en": "Early investigations"
           },
           "text": {
-            "zh-CN": "骨髓涂片见噬血细胞。骨髓的其余形态学描述（增生程度、各系比例、有无异常细胞）没有记录。",
-            "en": "Marrow smear: haemophagocytes are seen. The rest of the marrow description (cellularity, the lineages, any abnormal cells) is not recorded."
+            "zh-CN": "骨髓见噬血细胞。骨髓的其余形态学描述（增生程度、各系比例、有无异常细胞）没有记录。",
+            "en": "Bone marrow: haemophagocytes are seen. The rest of the marrow description (cellularity, the lineages, any abnormal cells) is not recorded."
           },
           "source": {
             "zh-CN": "报告病例资料·早期检查（骨髓噬血细胞）（取自1.0.0版，尚待对照原文核对）",
@@ -2231,8 +2231,8 @@
             "en": "After the first treatment"
           },
           "text": {
-            "zh-CN": "按噬血细胞性淋巴组织细胞增生症方案治疗后病情缓解，此后又出现疾病活动迹象。本病例没有记录所用方案、药物、剂量和疗程，也没有记录活动迹象是哪些表现、出现在什么时候。",
-            "en": "After treatment on an HLH protocol the disease went into remission, and then showed signs of renewed activity. This case does not record the protocol, drugs, doses or duration, nor which signs showed the renewed activity or when."
+            "zh-CN": "按噬血细胞性淋巴组织细胞增生症方案治疗后病情缓解，此后又出现疾病活动迹象。所用方案、药物、剂量和疗程没有记录，活动迹象是哪些表现、出现在什么时候也没有记录。",
+            "en": "After treatment on an HLH protocol the disease went into remission, and then showed signs of renewed activity. The protocol, drugs, doses and duration are not recorded, nor which signs showed the renewed activity or when."
           },
           "source": {
             "zh-CN": "报告病例资料·治疗经过（历史HLH方案后缓解又有活动迹象）（取自1.0.0版，尚待对照原文核对）",
@@ -2383,8 +2383,8 @@
             "en": "After the transplant"
           },
           "text": {
-            "zh-CN": "临床诊断：临床Ⅲ度肠道GVHD。各器官分期、每日粪便量、内镜和活检结果没有记录；它与HHV-6阳性腹泻是同时还是先后出现，本病例没有说明。",
-            "en": "Clinical diagnosis: clinical grade III intestinal GVHD. Organ stages, daily stool volumes, endoscopy and biopsy results are not recorded, and this case does not say whether it was present at the same time as the HHV-6-positive diarrhoea or followed it."
+            "zh-CN": "临床诊断：临床Ⅲ度肠道GVHD。各器官分期、每日粪便量、内镜和活检结果没有记录；它与HHV-6阳性腹泻是同时还是先后出现，也没有记录。",
+            "en": "Clinical diagnosis: clinical grade III intestinal GVHD. Organ stages, daily stool volumes, endoscopy and biopsy results are not recorded, nor whether it was present at the same time as the HHV-6-positive diarrhoea or followed it."
           },
           "source": {
             "zh-CN": "报告病例资料·移植后经过（临床Ⅲ度肠道GVHD）（取自1.0.0版，尚待对照原文核对）",
@@ -2532,8 +2532,8 @@
             "en": "To the 9-month follow-up"
           },
           "text": {
-            "zh-CN": "报告标题的诊断：MUNC13-4突变所致家族性噬血细胞性淋巴组织细胞增多症。病程：按HLH方案治疗后缓解，此后又出现活动迹象，接受HLA全相合非血缘供者造血干细胞移植。移植后出现HHV-6阳性腹泻及临床Ⅲ度肠道GVHD，治疗后好转（所用治疗本病例没有记录；两者是同时还是先后出现，本病例没有说明）。9个月时供者完全嵌合、无病生存，无慢性GVHD。移植后的血液基因检测反映的是供者造血。本病例没有记录：所用HLH方案和剂量、预处理方案、移植物来源和配型细节、GVHD预防与治疗用药、HHV-6标本和载量、父母基因检测和9个月以后的随访。",
-            "en": "Diagnosis in the report's title: familial haemophagocytic lymphohistiocytosis with a MUNC13-4 mutation. Course: remission on an HLH protocol, then signs of renewed activity, then a haematopoietic stem cell transplant from a fully HLA-matched unrelated donor. After it, HHV-6-positive diarrhoea and clinical grade III intestinal GVHD improved with treatment (the treatment is not recorded in this case, nor whether the two were simultaneous or sequential). At 9 months: complete donor chimerism and disease-free survival, without chronic GVHD. Blood genotyping after the transplant reflected the donor's haematopoiesis. This case does not record the HLH regimen and doses, the conditioning, the graft source and HLA details, GVHD prophylaxis and treatment, the HHV-6 specimen and load, parental genetic testing or follow-up beyond 9 months."
+            "zh-CN": "报告标题的诊断：MUNC13-4突变所致家族性噬血细胞性淋巴组织细胞增多症。病程：按HLH方案治疗后缓解，此后又出现活动迹象，接受HLA全相合非血缘供者造血干细胞移植。移植后出现HHV-6阳性腹泻及临床Ⅲ度肠道GVHD，治疗后好转（所用治疗没有记录；两者是同时还是先后出现也没有记录）。9个月时供者完全嵌合、无病生存，无慢性GVHD。移植后的血液基因检测反映的是供者造血。没有记录：所用HLH方案和剂量、预处理方案、移植物来源和配型细节、GVHD预防与治疗用药、HHV-6标本和载量、父母基因检测和9个月以后的随访。",
+            "en": "Diagnosis in the report's title: familial haemophagocytic lymphohistiocytosis with a MUNC13-4 mutation. Course: remission on an HLH protocol, then signs of renewed activity, then a haematopoietic stem cell transplant from a fully HLA-matched unrelated donor. After it, HHV-6-positive diarrhoea and clinical grade III intestinal GVHD improved with treatment (the treatment is not recorded, nor whether the two were simultaneous or sequential). At 9 months: complete donor chimerism and disease-free survival, without chronic GVHD. Blood genotyping after the transplant reflected the donor's haematopoiesis. Not recorded: the HLH regimen and doses, the conditioning, the graft source and HLA details, GVHD prophylaxis and treatment, the HHV-6 specimen and load, parental genetic testing or follow-up beyond 9 months."
           },
           "source": {
             "zh-CN": "报告病例资料·诊断、治疗经过与随访（历史HLH方案后缓解又有活动迹象，全相合非血缘移植；HHV6阳性腹泻及临床Ⅲ度肠道GVHD治疗后改善；9个月全供者嵌合、无病生存，无慢性GVHD；移植后血基因检测反映供者造血）（取自1.0.0版，尚待对照原文核对）",
@@ -2686,8 +2686,8 @@
         }
       },
       "harm": {
-        "zh-CN": "HLH-94剂量的地塞米松本身就有抗白血病作用：骨髓结果出来之前就用，可能部分治疗并掩盖白血病或淋巴瘤，使诊断无法完成。先看骨髓结果，再开始激素。",
-        "en": "Dexamethasone at the HLH-94 dose is itself an anti-leukaemic drug: started before the marrow result has been read, it can partly treat and hide a leukaemia or lymphoma and leave the diagnosis incomplete. Read the marrow first, then start the steroid."
+        "zh-CN": "HLH-94剂量的地塞米松本身就有抗白血病作用：骨髓结果出来之前就用，可能部分治疗并掩盖白血病或淋巴瘤，使诊断无法完成；NACHO（2019）提醒，针对HLH的治疗常会掩盖尚未诊断的恶性肿瘤，并把骨髓检查列为排除恶性肿瘤的必需检查。先看骨髓结果，再开始激素。",
+        "en": "Dexamethasone at the HLH-94 dose is itself an anti-leukaemic drug: started before the marrow result has been read, it can partly treat and hide a leukaemia or lymphoma and leave the diagnosis incomplete; NACHO (2019) warns that HLH-directed therapy often obscures an undiagnosed malignancy and counts the marrow as essential to rule one out. Read the marrow first, then start the steroid."
       },
       "response": {
         "zh-CN": "地塞米松已开始（HLH-94方案的激素部分）。本病例没有记录所用的具体药物和剂量；不模拟其效果。",
@@ -2745,8 +2745,8 @@
         }
       },
       "harm": {
-        "zh-CN": "骨髓检查完成之前就用依托泊苷，是在诊断尚未成立时上化疗，还可能掩盖白血病或淋巴瘤；应在骨髓和血液检查确立诊断之后再开始。",
-        "en": "Etoposide before the marrow has been examined means chemotherapy before the diagnosis is made, and it can mask a leukaemia or lymphoma; it starts once the marrow and the bloods have established the diagnosis."
+        "zh-CN": "骨髓检查完成之前就用依托泊苷，是在诊断尚未成立时上化疗，还可能掩盖白血病或淋巴瘤（NACHO 2019：针对HLH的治疗常会掩盖尚未诊断的恶性肿瘤）；应在骨髓和血液检查确立诊断之后再开始。",
+        "en": "Etoposide before the marrow has been examined means chemotherapy before the diagnosis is made, and it can mask a leukaemia or lymphoma (NACHO 2019: HLH-directed therapy often obscures an undiagnosed malignancy); it starts once the marrow and the bloods have established the diagnosis."
       },
       "response": {
         "zh-CN": "依托泊苷已开始（HLH-94方案）。本病例没有记录所用的具体药物和剂量；不模拟其效果。",
@@ -3106,7 +3106,15 @@
       ],
       "risk": "moderate",
       "indicatedWhen": {
-        "phase": "post-transplant"
+        "all": [
+          {
+            "phase": "post-transplant"
+          },
+          {
+            "read": "gvhd-assessment",
+            "phase": "post-transplant"
+          }
+        ]
       },
       "response": {
         "zh-CN": "甲泼尼龙已开始（2 mg/kg/天是Ⅱ–Ⅳ度急性GVHD的一线剂量；治疗3天后仍进展或7天后无改善视为激素耐药）。本病例没有记录腹泻期间用了哪些药；不模拟其效果。",
@@ -3429,12 +3437,12 @@
         "en": "Reassess"
       },
       "hint": {
-        "zh-CN": "他的病情有了新的变化，这对下一步意味着什么？基因报告里的每个变异，各能证明什么、不能证明什么？",
-        "en": "What does the change in his illness mean for the plan — and what can each variant in the gene report prove, or not?"
+        "zh-CN": "他的病情有了新的变化，这对下一步意味着什么？基因报告能证明什么、不能证明什么？",
+        "en": "What does the change in his illness mean for the plan — and what can the gene report prove, and what can it not?"
       },
       "guidance": {
-        "zh-CN": "了解治疗后的经过，调阅病程记录和基因报告，作答决策3，并安排转诊。",
-        "en": "Ask how he has been since the treatment, read the course note and the gene report, answer decision 3 and make the referral."
+        "zh-CN": "了解治疗后的经过，调阅病程记录和基因报告，作答决策3，并落实你的计划。",
+        "en": "Ask how he has been since the treatment, read the course note and the gene report, answer decision 3 and act on your plan."
       },
       "completeWhen": {
         "all": [
@@ -3487,8 +3495,8 @@
         "en": "Later course"
       },
       "hint": {
-        "zh-CN": "新出现的症状可能有哪几种原因，它们能同时存在吗？要明确他本人的基因型，该用什么标本？",
-        "en": "What could cause the new symptom, and can two causes coexist? And which sample will show his own genotype?"
+        "zh-CN": "新出现的症状可能有哪些原因，哪些发现会改变你的治疗？关于他的基因，还有什么问题没有回答，现在可以怎样回答？",
+        "en": "What could cause the new symptom, and which findings would change your treatment? And which question about his genes is still open — how could it be answered now?"
       },
       "guidance": {
         "zh-CN": "了解移植后的情况，送检并作答决策4和决策5，最后调阅转归记录。",
@@ -3680,8 +3688,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "等基因结果会错过最关键的时间窗：EB病毒相关HLH中，确诊后4周内开始依托泊苷者长期生存率为90.2%，较晚或未用者为56.5%（Imashuku 2001）。国际组织细胞协会（2018）以HLH-94（依托泊苷加地塞米松）为依托泊苷方案的标准，符合诊断标准的病重患儿不必等基因型再开始。",
-            "en": "Waiting for a genotype costs the window that matters: in EBV-HLH, long-term survival was 90.2 % when etoposide began within four weeks of diagnosis against 56.5 % when it began later or not at all (Imashuku 2001). The Histiocyte Society (2018) keeps HLH-94 — etoposide with dexamethasone — as the standard etoposide-based therapy, and a sick child who meets the criteria does not wait for a genotype to start it."
+            "zh-CN": "等基因结果会错过最关键的时间窗：EB病毒相关HLH中，确诊后4周内开始依托泊苷者长期生存率为90.2%，较晚或未用者为56.5%（Imashuku 2001）。国际组织细胞协会（2018）以HLH-94（依托泊苷加地塞米松）为依托泊苷方案的标准；2021年儿童EB病毒感染相关疾病专家共识要求一旦符合诊断标准就立即开始治疗，只有单用激素已能控制的轻症才可暂缓依托泊苷，而不是为了等基因结果。",
+            "en": "Waiting for a genotype costs the window that matters: in EBV-HLH, long-term survival was 90.2 % when etoposide began within four weeks of diagnosis against 56.5 % when it began later or not at all (Imashuku 2001). The Histiocyte Society (2018) keeps HLH-94 — etoposide with dexamethasone — as the standard etoposide-based therapy, and the 2021 Chinese consensus on EBV-related disease in children starts treatment as soon as the criteria are met, deferring etoposide only while steroids alone are controlling mild disease — not to await a genotype."
           }
         },
         {
@@ -3818,8 +3826,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。异基因移植后的腹泻可能是急性GVHD、感染或两者并存，HHV-6阳性本身不能证明病毒就是病因；ECIL-7（2019）还提醒染色体整合型HHV-6会造成PCR持续阳性。肠道GVHD按粪便量分期，安全时以活检证实；Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天，激素耐药时EBMT 2024以芦可替尼为标准治疗。",
-            "en": "Right. Diarrhoea after allogeneic transplantation may be acute GVHD, infection or both, and a positive HHV-6 result does not by itself make the virus the cause; ECIL-7 (2019) also flags chromosomally integrated HHV-6 as a source of persistently positive PCRs. Gut GVHD is staged by stool volume and confirmed by biopsy when safe; grade II–IV acute GVHD is treated first with methylprednisolone 2 mg/kg/day, and EBMT 2024 makes ruxolitinib the standard for steroid-refractory disease."
+            "zh-CN": "正确。异基因移植后的腹泻可能是急性GVHD、感染或两者并存，HHV-6阳性本身不能证明病毒就是病因；ECIL-7（2019）还提醒染色体整合型HHV-6会造成PCR持续阳性。肠道GVHD按粪便量分期，安全时以活检证实；Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天，激素耐药时EBMT 2024对成人推荐芦可替尼（儿童的二线治疗由移植团队决定）。",
+            "en": "Right. Diarrhoea after allogeneic transplantation may be acute GVHD, infection or both, and a positive HHV-6 result does not by itself make the virus the cause; ECIL-7 (2019) also flags chromosomally integrated HHV-6 as a source of persistently positive PCRs. Gut GVHD is staged by stool volume and confirmed by biopsy when safe; grade II–IV acute GVHD is treated first with methylprednisolone 2 mg/kg/day, and for steroid-refractory disease EBMT 2024 recommends ruxolitinib in adults (in a child the transplant team chooses the second line)."
           }
         },
         {
@@ -4063,8 +4071,8 @@
       "id": "rb-treatment-plan",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选对初始治疗方案；用药前问过过敏史和身高体重，送出基因检测，开始肺孢子菌预防，没有用抗病毒药代替诱导",
-        "en": "Chose the first-treatment plan at the first attempt; asked about allergies, weight and height before dosing, sent the gene panel, started Pneumocystis prophylaxis and gave no antiviral in place of induction"
+        "zh-CN": "首次作答即选对初始治疗方案；问过过敏史和身高体重，送出基因检测，并开始肺孢子菌预防",
+        "en": "Chose the first-treatment plan at the first attempt; asked about allergies and his weight and height, sent the gene panel and started Pneumocystis prophylaxis"
       },
       "weight": 3,
       "met": {
@@ -4084,12 +4092,6 @@
           },
           {
             "intervened": "cotrimoxazole"
-          },
-          {
-            "not": {
-              "intervened": "ganciclovir-ebv",
-              "valid": false
-            }
           }
         ]
       }
@@ -4099,7 +4101,7 @@
       "domain": "management",
       "text": {
         "zh-CN": "首次作答即认识到再活动是移植指征、基因报告尚不能定论，并完成移植转诊和遗传咨询",
-        "en": "Recognised at the first attempt that the flare indicates transplantation while the gene report proves nothing yet, and made the transplant and genetics referrals"
+        "en": "Recognised at the first attempt that the flare indicates transplantation while the gene report is not yet conclusive, and made the transplant and genetics referrals"
       },
       "weight": 3,
       "met": {
@@ -4120,8 +4122,8 @@
       "id": "rb-diarrhoea-workup",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即对移植后腹泻同时评估GVHD和感染：送粪便病原学、记录大便量，并且没有停用免疫抑制剂",
-        "en": "Worked up the post-transplant diarrhoea for GVHD and infection together at the first attempt, sending stool pathogen tests, charting the stools and not stopping his immunosuppression"
+        "zh-CN": "首次作答即对移植后腹泻同时评估GVHD和感染：送粪便病原学并记录大便量",
+        "en": "Worked up the post-transplant diarrhoea for GVHD and infection together at the first attempt, sending stool pathogen tests and charting the stools"
       },
       "weight": 3,
       "met": {
@@ -4135,11 +4137,6 @@
           },
           {
             "intervened": "stool-chart"
-          },
-          {
-            "not": {
-              "intervened": "withdraw-immunosuppression"
-            }
           }
         ]
       }
@@ -4148,8 +4145,8 @@
       "id": "rb-gvhd-steroids",
       "domain": "management",
       "text": {
-        "zh-CN": "在移植后阶段为严重的肠道GVHD开始全身甲泼尼龙",
-        "en": "Started systemic methylprednisolone for severe gut GVHD in the post-transplant phase"
+        "zh-CN": "在移植后阶段、肠道GVHD分级明确后开始全身甲泼尼龙",
+        "en": "Started systemic methylprednisolone in the post-transplant phase once the gut GVHD had been graded"
       },
       "weight": 4,
       "critical": true,
@@ -4219,6 +4216,47 @@
       }
     },
     {
+      "id": "rb-no-recoverable-harm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "避免了可挽回的错误：在依托泊苷之前用更昔洛韦针对EB病毒，或在移植后停用他的免疫抑制剂",
+        "en": "Avoided the recoverable errors: ganciclovir aimed at the EBV before any etoposide, or stopping his immunosuppression after the transplant"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "ganciclovir-ebv",
+              "valid": false
+            },
+            {
+              "intervened": "withdraw-immunosuppression",
+              "valid": false
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "first-treatment"
+          },
+          {
+            "attempted": "diarrhoea-approach"
+          },
+          {
+            "intervened": "ganciclovir-ebv",
+            "valid": false
+          },
+          {
+            "intervened": "withdraw-immunosuppression",
+            "valid": false
+          }
+        ]
+      }
+    },
+    {
       "id": "rb-communication",
       "domain": "communication",
       "text": {
@@ -4278,8 +4316,8 @@
         "en": "Dr Qiu (paediatric transplant consultant)"
       },
       "knowledge": {
-        "zh-CN": "儿童造血干细胞移植科会诊医生，只解读学员已经看过的结果。可以讲：HLH-2004（国际组织细胞协会，2007）的移植指征（家族性或分子确诊、诱导后重症持续或再活动）；没有同胞时的HLA配型和非血缘供者检索；遗传病患儿若用亲属供者，要先排除供者是患者或携带者；移植后腹泻的鉴别（急性GVHD、感染或两者并存），按粪便量分期和活检；Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天，治疗3天后仍进展或7天后无改善为激素耐药，EBMT 2024以芦可替尼为激素耐药的标准治疗；HHV-6阳性的意义、染色体整合型HHV-6和ECIL-7（2019）的建议；移植后嵌合状态监测的意义。不提前给出决策答案或后续病程，不补充没有记录的结果（预处理、移植物来源、GVHD预防都没有记录）。",
-        "en": "Paediatric transplant consultant who interprets only results the learner has already read. Can explain the transplant indications of HLH-2004 (Histiocyte Society, 2007: familial or molecularly proven HLH, severe persistent or reactivated disease after induction); HLA typing and the unrelated-donor search when there is no sibling; why a related donor for an inherited disorder must first be shown not to be affected or a carrier; the differential of diarrhoea after transplantation (acute GVHD, infection or both), staging by stool volume and biopsy; methylprednisolone 2 mg/kg/day first-line for grade II–IV acute GVHD, steroid-refractoriness as progression after 3 days or no improvement after 7, and ruxolitinib as the EBMT 2024 standard for steroid-refractory disease; what a positive HHV-6 result means, chromosomally integrated HHV-6 and the ECIL-7 (2019) advice; why chimerism is monitored after transplant. Never gives a decision's answer or the later course early, and adds no result the case does not record (the conditioning, graft source and GVHD prophylaxis are not recorded)."
+        "zh-CN": "儿童造血干细胞移植科会诊医生，只解读学员已经看过的结果。可以讲：HLH-2004（国际组织细胞协会，2007）的移植指征（家族性或分子确诊、诱导后重症持续或再活动）；没有同胞时的HLA配型和非血缘供者检索；遗传病患儿若用亲属供者，要先排除供者是患者或携带者；移植后腹泻的鉴别（急性GVHD、感染或两者并存），按粪便量分期和活检；Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天，治疗3天后仍进展或7天后无改善为激素耐药，EBMT 2024对成人激素耐药推荐芦可替尼（儿童的二线治疗由移植团队决定）；HHV-6阳性的意义、染色体整合型HHV-6和ECIL-7（2019）的建议；移植后嵌合状态监测的意义。不提前给出决策答案或后续病程，不补充没有记录的结果（预处理、移植物来源、GVHD预防都没有记录）。",
+        "en": "Paediatric transplant consultant who interprets only results the learner has already read. Can explain the transplant indications of HLH-2004 (Histiocyte Society, 2007: familial or molecularly proven HLH, severe persistent or reactivated disease after induction); HLA typing and the unrelated-donor search when there is no sibling; why a related donor for an inherited disorder must first be shown not to be affected or a carrier; the differential of diarrhoea after transplantation (acute GVHD, infection or both), staging by stool volume and biopsy; methylprednisolone 2 mg/kg/day first-line for grade II–IV acute GVHD, steroid-refractoriness as progression after 3 days or no improvement after 7, and ruxolitinib as EBMT 2024's recommendation for steroid-refractory disease in adults (a second line for a child is the transplant team's choice); what a positive HHV-6 result means, chromosomally integrated HHV-6 and the ECIL-7 (2019) advice; why chimerism is monitored after transplant. Never gives a decision's answer or the later course early, and adds no result the case does not record (the conditioning, graft source and GVHD prophylaxis are not recorded)."
       },
       "interprets": [
         "course-after-induction",
@@ -4398,8 +4436,8 @@
         "en": "Transplantation: HLH-2004 lists familial or molecularly proven HLH and severe, persistent or reactivated disease after induction as indications — the reactivation decided it here, and the 2021 Chinese consensus on EBV-related disease in children names relapsed or refractory EBV-HLH as the main indication. A proven pathogenic SH2D1A variant (XLP1, an inherited form) would be an indication in itself. He has no siblings; the report records a fully HLA-matched unrelated transplant, not the conditioning or graft source."
       },
       {
-        "zh-CN": "移植后腹泻：可能是急性GVHD、感染或两者并存。在按粪便量分期的同时，送粪便病原学、HHV-6定量PCR并争取活检（ECIL-7，2019：注意染色体整合型HHV-6，膦甲酸钠或更昔洛韦用于HHV-6病）。Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天；治疗3天后仍进展或7天后无改善为激素耐药，EBMT 2024以芦可替尼为标准治疗；不为清除病毒而停用免疫抑制剂。报告记录HHV-6阳性腹泻和临床Ⅲ度肠道GVHD经治疗好转，所用治疗没有记录。",
-        "en": "Diarrhoea after transplantation: acute GVHD, infection or both. Stage it by stool volume while stool pathogen tests, a quantitative HHV-6 PCR and, where safe, a biopsy run alongside (ECIL-7, 2019: think of chromosomally integrated HHV-6; foscarnet or ganciclovir for HHV-6 disease). Grade II–IV acute GVHD is treated first with methylprednisolone 2 mg/kg/day; progression after 3 days or no improvement after 7 is steroid-refractory, for which EBMT 2024 makes ruxolitinib the standard; immunosuppression is not stopped to clear a virus. The report records HHV-6-positive diarrhoea and clinical grade III intestinal GVHD that improved with treatment, not which treatment."
+        "zh-CN": "移植后腹泻：可能是急性GVHD、感染或两者并存。在按粪便量分期的同时，送粪便病原学、HHV-6定量PCR并争取活检（ECIL-7，2019：注意染色体整合型HHV-6，膦甲酸钠或更昔洛韦用于HHV-6病）。Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天；治疗3天后仍进展或7天后无改善为激素耐药，EBMT 2024对成人推荐芦可替尼；不为清除病毒而停用免疫抑制剂。报告记录HHV-6阳性腹泻和临床Ⅲ度肠道GVHD经治疗好转，所用治疗没有记录。",
+        "en": "Diarrhoea after transplantation: acute GVHD, infection or both. Stage it by stool volume while stool pathogen tests, a quantitative HHV-6 PCR and, where safe, a biopsy run alongside (ECIL-7, 2019: think of chromosomally integrated HHV-6; foscarnet or ganciclovir for HHV-6 disease). Grade II–IV acute GVHD is treated first with methylprednisolone 2 mg/kg/day; progression after 3 days or no improvement after 7 is steroid-refractory, for which EBMT 2024 recommends ruxolitinib in adults; immunosuppression is not stopped to clear a virus. The report records HHV-6-positive diarrhoea and clinical grade III intestinal GVHD that improved with treatment, not which treatment."
       },
       {
         "zh-CN": "胚系检测与咨询：植入后血液基因型代表供者——报告中的移植后血液检测正是如此——所以胚系确认要用移植前保存的DNA或培养的皮肤成纤维细胞等非血液组织，口腔拭子可能混有供者DNA。随后做父母检测（ACMG/AMP 2015的家系分离证据）和遗传咨询：若SH2D1A变异致病，母亲可能是携带者，她的其他男性亲属和今后的儿子都有风险。",
@@ -4409,13 +4447,13 @@
     "references": [
       "唐湘凤, 栾佐, 吴南海, 章波, 王凯. 非血缘造血干细胞移植治疗MUNC13－4突变家族性噬血细胞性淋巴组织细胞增多症一例. 中华儿科杂志. 2013;51(12):944-945. doi:10.3760/cma.j.issn.0578-1310.2013.12.014. Available from: https://rs.yiigle.com/cmaid/33686",
       "Henter JI, Horne A, Aricó M, et al. HLH-2004: Diagnostic and therapeutic guidelines for hemophagocytic lymphohistiocytosis. Pediatr Blood Cancer. 2007;48(2):124-131. doi:10.1002/pbc.21039",
-      "Ehl S, et al.; HLH Steering Committee of the Histiocyte Society. Recommendations for the use of etoposide-based therapy and bone marrow transplantation for the treatment of HLH: consensus statements by the HLH Steering Committee of the Histiocyte Society. J Allergy Clin Immunol Pract. 2018;6(5):1508-1517. doi:10.1016/j.jaip.2018.05.031",
-      "Imashuku S, et al. Requirement for etoposide in the treatment of Epstein-Barr virus-associated hemophagocytic lymphohistiocytosis. J Clin Oncol. 2001;19(10):2665-2673.",
-      "中华医学会儿科学分会感染学组, 全国儿童EB病毒感染协作组. 儿童EB病毒感染相关疾病的诊断和治疗原则专家共识. 中华儿科杂志. 2021;59(11):905-911.",
+      "Ehl S, Astigarraga I, von Bahr Greenwood T, et al.; HLH Steering Committee of the Histiocyte Society. Recommendations for the use of etoposide-based therapy and bone marrow transplantation for the treatment of HLH: consensus statements by the HLH Steering Committee of the Histiocyte Society. J Allergy Clin Immunol Pract. 2018;6(5):1508-1517. doi:10.1016/j.jaip.2018.05.031",
+      "Imashuku S, Kuriyama K, Teramura T, et al. Requirement for etoposide in the treatment of Epstein-Barr virus-associated hemophagocytic lymphohistiocytosis. J Clin Oncol. 2001;19(10):2665-2673. doi:10.1200/JCO.2001.19.10.2665",
+      "中华医学会儿科学分会感染学组, 全国儿童EB病毒感染协作组. 儿童EB病毒感染相关疾病的诊断和治疗原则专家共识. 中华儿科杂志. 2021;59(11):905-911. doi:10.3760/cma.j.cn112140-20210618-00513",
       "Jordan MB, Allen CE, Greenberg J, et al. Challenges in the diagnosis of hemophagocytic lymphohistiocytosis: recommendations from the North American Consortium for Histiocytosis (NACHO). Pediatr Blood Cancer. 2019;66(11):e27929. doi:10.1002/pbc.27929",
       "Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30",
-      "Penack O, Marchetti M, et al. Prophylaxis and management of graft-versus-host disease after stem-cell transplantation for haematological malignancies: updated consensus recommendations of the European Society for Blood and Marrow Transplantation. Lancet Haematol. 2024;11:e147-e159. doi:10.1016/S2352-3026(23)00342-3",
-      "Ward KN, Hill JA, Hubacek P, et al. Guidelines from the 2017 European Conference on Infections in Leukaemia for management of HHV-6 infection in patients with hematologic malignancies and after hematopoietic stem cell transplantation. Haematologica. 2019;104:2155-2163."
+      "Penack O, Marchetti M, Aljurf M, et al. Prophylaxis and management of graft-versus-host disease after stem-cell transplantation for haematological malignancies: updated consensus recommendations of the European Society for Blood and Marrow Transplantation. Lancet Haematol. 2024;11(2):e147-e159. doi:10.1016/S2352-3026(23)00342-3",
+      "Ward KN, Hill JA, Hubacek P, et al. Guidelines from the 2017 European Conference on Infections in Leukaemia for management of HHV-6 infection in patients with hematologic malignancies and after hematopoietic stem cell transplantation. Haematologica. 2019;104(11):2155-2163. doi:10.3324/haematol.2019.223073"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",

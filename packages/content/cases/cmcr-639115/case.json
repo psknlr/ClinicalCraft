@@ -47,7 +47,7 @@
     ],
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
-      "zh-CN": "依据已发表的单例报告改写。本版本（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容，按阶段重新组织并改写为患者的口语，没有增加或改动任何数值、时间、药物或结局；尚未对照原文全文核对。患者为化名，医院、日历日期和身份细节已去除，时间以相对时间表示。1.0.0版自身的不一致和含糊之处全部保留并列入待核实：出院时水肿“消退”（中文）与“改善”（英文）；利尿肽没有注明是BNP还是NT-proBNP；肌酐只记为95–98 μmol/L这一范围；“MP方案”没有展开药名和剂量；报告诊断“IgG λ型浆细胞骨髓瘤并系统性淀粉样变性”，而记录中没有现行骨髓瘤定义所需的证据。血压约100/60 mmHg在1.0.0版中出自病史，本病例同时作为入院时的血压显示；三个月复查被安排为门诊复诊。对话、决策、干预、评分、工作人员和教学要点为教学设计；没有经审核可用的原图。",
+      "zh-CN": "依据已发表的单例报告改写。本版本（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容，按阶段重新组织并改写为患者的口语，没有增加或改动任何数值、时间、药物或结局；尚未对照原文全文核对。患者为化名，医院、日历日期和身份细节已去除，时间以相对时间表示。1.0.0版自身的不一致和含糊之处全部保留并列入待核实：出院时水肿“消退”（中文）与“改善”（英文）；利钠肽没有注明是BNP还是NT-proBNP；肌酐只记为95–98 μmol/L这一范围；“MP方案”没有展开药名和剂量；报告诊断“IgG λ型浆细胞骨髓瘤并系统性淀粉样变性”，而记录中没有现行骨髓瘤定义所需的证据。血压约100/60 mmHg在1.0.0版中出自病史，本病例同时作为入院时的血压显示；三个月复查被安排为门诊复诊。对话、决策、干预、评分、工作人员和教学要点为教学设计；没有经审核可用的原图。",
       "en": "Adapted from a published single-case report. In this version (1.1.0) every patient fact is the one extracted from the report for version 1.0.0, reorganised by phase and reworded into the patient's lay speech; no value, timing, drug or outcome has been added or changed, and the facts have not yet been checked against the full article. The patient has a pseudonym; hospitals, calendar dates and identifying details are removed, and times are relative. Version 1.0.0's own inconsistencies and gaps are kept and listed to verify: the oedema 'subsided' at discharge in the Chinese text but 'improved' in the English; the natriuretic peptide is not named as BNP or NT-proBNP; creatinine is given only as the range 95–98 μmol/L; 'MP' is not expanded into drugs and doses; and the report's diagnosis of 'IgG lambda plasma-cell myeloma with systemic amyloidosis' rests on no recorded myeloma-defining event. The blood pressure of about 100/60 mmHg comes from the history in 1.0.0 and is also shown as his admission reading; the three-month review is staged as a clinic visit. Dialogue, decisions, interventions, scoring, staff and teaching points are educational design; no approved published figure is used."
     },
     "review": {
@@ -95,8 +95,8 @@
       "en": "Apply the IMWG 2014 criteria to tell AL amyloidosis with at least 10% marrow plasma cells from multiple myeloma, name the myeloma-defining events the record lacks, and state that AL amyloidosis is itself the indication for treatment."
     },
     {
-      "zh-CN": "在低血压和浸润性心肌病背景下安全地消肿：静脉袢利尿剂按体重、卧立位血压、肌酐和血钾调整（磺胺类药物皮疹不妨碍用呋塞米，AAAAI/ACAAI 2022），对低血压、浸润的心脏不用ACE抑制剂、ARB或β受体阻滞剂（心脏淀粉样变中这些药须慎用：ESC 2021立场声明；ACC 2023），不用可致低血糖的降糖药（ADA 2026）。",
-      "en": "Clear oedema safely with low blood pressure and an infiltrative cardiomyopathy: an IV loop diuretic titrated to weight, lying and standing blood pressure, creatinine and potassium (a rash with a sulfonamide drug is no bar to furosemide, AAAAI/ACAAI 2022), no ACE inhibitor, ARB or beta-blocker for a hypotensive, infiltrated heart (drugs used only with caution in cardiac amyloidosis: ESC 2021 statement; ACC 2023), and no glucose-lowering drug that causes hypoglycaemia (ADA 2026)."
+      "zh-CN": "在低血压和浸润性心肌病背景下安全地消肿：静脉袢利尿剂按体重、卧立位血压、肌酐和血钾调整（对磺胺类抗菌药出过皮疹不妨碍用属于非抗菌性磺胺的呋塞米，AAAAI/ACAAI 2022），对低血压、浸润的心脏不用ACE抑制剂、ARB或β受体阻滞剂（心脏淀粉样变中这些药须慎用：ESC 2021立场声明；ACC 2023），不用可致低血糖的降糖药（ADA 2026）。",
+      "en": "Clear oedema safely with low blood pressure and an infiltrative cardiomyopathy: an IV loop diuretic titrated to weight, lying and standing blood pressure, creatinine and potassium (a rash with a sulfonamide antibiotic is no bar to furosemide, a non-antimicrobial sulfonamide: AAAAI/ACAAI 2022), no ACE inhibitor, ARB or beta-blocker for a hypotensive, infiltrated heart (drugs used only with caution in cardiac amyloidosis: ESC 2021 statement; ACC 2023), and no glucose-lowering drug that causes hypoglycaemia (ADA 2026)."
     },
     {
       "zh-CN": "在完成分型和分期（肌钙蛋白、NT-proBNP、游离轻链）后选择现行一线方案——达雷妥尤单抗联合硼替佐米、环磷酰胺和地塞米松（ANDROMEDA，2021），按年龄和液体过多把地塞米松减为每周20 mg——而不是当年的美法仑加泼尼松。",
@@ -167,8 +167,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "清醒，说话清楚，人很瘦，腿和阴囊肿得难受，有些发愁。用自己的话说症状，不用术语；只回答问到的内容，不增减数字和时间；不知道的就说说不上来，不要编。三个月后复查时，他是回门诊看结果的。",
-        "en": "Alert and clear, very thin, uncomfortable with his swollen legs and scrotum, and worried. Describe symptoms in your own words without medical terms; answer only what is asked and never add or change numbers or times; for anything you do not know, say you are not sure — never invent. At the three-month review he has come back to clinic for his results."
+        "zh-CN": "清醒，说话清楚，人很瘦，腿和阴囊肿得厉害，有些发愁。用自己的话说症状，不用术语；只回答问到的内容，不增减数字和时间；不知道的就说说不上来，不要编。三个月后复查时，他是回门诊看结果的。",
+        "en": "Alert and clear, very thin, with badly swollen legs and scrotum, and worried. Describe symptoms in your own words without medical terms; answer only what is asked and never add or change numbers or times; for anything you do not know, say you are not sure — never invent. At the three-month review he has come back to clinic for his results."
       }
     },
     "appearance": {
@@ -230,7 +230,7 @@
       },
       "description": {
         "zh-CN": "原报告中，他住院期间接受了利尿和MP方案（美法仑联合泼尼松）治疗，水肿消退后出院；现在是三个月后回门诊复查。",
-        "en": "In the reported course he was treated in hospital with diuresis and MP (melphalan with prednisone) and went home once the swelling had gone down; three months later he is back in clinic for review."
+        "en": "In the reported course he was treated in hospital with diuresis and MP (melphalan with prednisone) and was discharged once the swelling had gone down; three months later he is back in clinic for review."
       },
       "learnerSwitchable": false,
       "location": {
@@ -309,7 +309,13 @@
           "多少斤",
           "变瘦",
           "瘦成这样",
-          "怎么瘦"
+          "怎么瘦",
+          "哪里不舒服",
+          "哪儿不舒服",
+          "怎么不舒服",
+          "哪里难受",
+          "因为什么来",
+          "什么情况来"
         ],
         "en": [
           "weight",
@@ -319,7 +325,13 @@
           "thinner",
           "kilos",
           "wasting",
-          "howmuchweight"
+          "howmuchweight",
+          "brings you",
+          "brought you",
+          "what's wrong",
+          "main problem",
+          "come in today",
+          "troubling you"
         ]
       },
       "excludeKeywords": {
@@ -1123,8 +1135,8 @@
         "en": "What medicines are you taking at the moment?"
       },
       "answer": {
-        "zh-CN": "这个我说不上来，医生。",
-        "en": "I'm not sure, doctor."
+        "zh-CN": "降糖药和降压药都停了。别的还吃不吃什么药，我说不上来，医生。",
+        "en": "I've stopped my diabetes and blood-pressure medicines. Whether I'm on anything else, I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
@@ -1158,15 +1170,15 @@
           "blood pressure"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
       "phases": [
         "admission",
         "workup"
       ],
       "speaker": "patient",
       "source": {
-        "zh-CN": "1.0.0版没有记录：保持未知，不补写",
-        "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+        "zh-CN": "报告（1.0.0版摘录）：一年前停用降糖药，现已停用降压药；其他用药没有记录，保持未知；患者口吻为教学改写",
+        "en": "Report (version 1.0.0 extract): diabetes medicines stopped a year earlier and antihypertensives stopped; any other medicines are not recorded and stay unknown; his words are a teaching adaptation"
       }
     },
     {
@@ -1437,11 +1449,11 @@
       "topic": "hpi",
       "question": {
         "zh-CN": "出院以后腿肿怎么样了？",
-        "en": "How has the swelling been since you went home?"
+        "en": "How has the swelling been since you left hospital?"
       },
       "answer": {
-        "zh-CN": "上次住院用了药，腿和阴囊的肿都消了，我才出的院。这阵子有没有再肿，我自己也说不太准。",
-        "en": "Last time in hospital the treatment took the swelling in my legs and scrotum down, and then I went home. Whether it's come back since, I couldn't really say."
+        "zh-CN": "上次住院用了药，腿和阴囊的肿消下去了，我才出的院。这阵子有没有再肿，我自己也说不太准。",
+        "en": "Last time I was in hospital, the treatment brought the swelling in my legs and scrotum down, and then they discharged me. Whether it's come back since, I couldn't really say."
       },
       "keywords": {
         "zh-CN": [
@@ -1989,8 +2001,8 @@
         "review": {
           "available": true,
           "date": {
-            "zh-CN": "约三个月后复查",
-            "en": "At review, about three months later"
+            "zh-CN": "三个月后复查",
+            "en": "At review, three months later"
           },
           "text": {
             "zh-CN": "白蛋白19.9 g/L。",
@@ -2249,8 +2261,8 @@
         "review": {
           "available": true,
           "date": {
-            "zh-CN": "约三个月后复查",
-            "en": "At review, about three months later"
+            "zh-CN": "三个月后复查",
+            "en": "At review, three months later"
           },
           "text": {
             "zh-CN": "利钠肽2026 ng/L（检测类型同样没有记录）。",
@@ -2553,14 +2565,14 @@
             "en": "During the admission (exact timing not recorded)"
           },
           "text": {
-            "zh-CN": "血清免疫固定电泳：可见IgG λ型单克隆条带。尿免疫固定电泳：此项没有结果记录。",
-            "en": "Serum immunofixation: a monoclonal IgG lambda band. Urine immunofixation: no result is recorded."
+            "zh-CN": "血清：可见IgG λ型单克隆条带。尿：此项没有结果记录。",
+            "en": "Serum: a monoclonal IgG lambda band. Urine: no result is recorded."
           },
           "values": [
             {
               "analyte": {
-                "zh-CN": "血清免疫固定电泳",
-                "en": "Serum immunofixation"
+                "zh-CN": "血清单克隆蛋白",
+                "en": "Serum monoclonal protein"
               },
               "value": {
                 "zh-CN": "IgG λ型单克隆条带",
@@ -2571,8 +2583,8 @@
             }
           ],
           "note": {
-            "zh-CN": "本病例没有记录M蛋白定量、血清蛋白电泳图谱和免疫球蛋白定量。",
-            "en": "This case does not record the M-protein concentration, the serum electrophoresis pattern or immunoglobulin levels."
+            "zh-CN": "本病例没有记录发现并分型这一条带所用的方法，也没有记录M蛋白定量、血清蛋白电泳图谱和免疫球蛋白定量。",
+            "en": "This case does not record the method that detected and typed the band, the M-protein concentration, the serum electrophoresis pattern or immunoglobulin levels."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：免疫学检查（血IgG λ单克隆条带）",
@@ -3096,12 +3108,12 @@
         "followup": {
           "available": true,
           "date": {
-            "zh-CN": "住院至约三个月后",
-            "en": "From the admission to about three months later"
+            "zh-CN": "住院至三个月后",
+            "en": "From the admission to three months later"
           },
           "text": {
-            "zh-CN": "原报告的处理经过：利尿，并用当年的MP方案（美法仑联合泼尼松）治疗；水肿消退后出院。本病例没有记录利尿剂的药名和剂量、MP方案的剂量和周期数，也没有记录淀粉样物质分型、血清游离轻链、肌钙蛋白或分期。约三个月复查：白蛋白19.9 g/L（入院时24.7 g/L），利钠肽2026 ng/L（入院时1926 ng/L）；原报告认为心脏受累进一步加重。本病例没有记录此后的经过。报告的诊断是IgG λ型浆细胞骨髓瘤并系统性淀粉样变性。这一经过是历史记录，不是教学答案。",
-            "en": "The report's course: diuresis and treatment with the then-current MP regimen (melphalan with prednisone); the oedema went down and he was discharged. This case does not record the diuretic or its dose, the MP doses or number of cycles, nor any amyloid typing, serum free light chains, troponin or staging. At about three months: albumin 19.9 g/L (24.7 g/L on admission) and natriuretic peptide 2026 ng/L (1926 ng/L on admission); the report interpreted this as further worsening of cardiac involvement. Nothing later is recorded. The report's diagnosis was IgG lambda plasma-cell myeloma with systemic amyloidosis. This course is the historical record, not the teaching answer."
+            "zh-CN": "原报告的处理经过：利尿，并用MP方案（美法仑联合泼尼松）治疗；水肿消退后出院。本病例没有记录利尿剂的药名和剂量、MP方案的剂量和周期数，也没有记录淀粉样物质分型、血清游离轻链、肌钙蛋白或分期。三个月复查：白蛋白19.9 g/L（入院时24.7 g/L），利钠肽2026 ng/L（入院时1926 ng/L）；原报告认为心脏受累进一步加重。本病例没有记录此后的经过。报告的诊断是IgG λ型浆细胞骨髓瘤并系统性淀粉样变性。这一经过是历史记录，不是教学答案。",
+            "en": "The report's course: diuresis and treatment with the MP regimen (melphalan with prednisone); the oedema went down and he was discharged. This case does not record the diuretic or its dose, the MP doses or number of cycles, nor any amyloid typing, serum free light chains, troponin or staging. At three months: albumin 19.9 g/L (24.7 g/L on admission) and natriuretic peptide 2026 ng/L (1926 ng/L on admission); the report interpreted this as further worsening of cardiac involvement. Nothing later is recorded. The report's diagnosis was IgG lambda plasma-cell myeloma with systemic amyloidosis. This course is the historical record, not the teaching answer."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：治疗经过与转归（利尿及历史MP方案后水肿消退出院；三个月白蛋白19.9 g/L、钠尿肽2026 ng/L，原报告认为心脏受累加重）；诊断见1.0.0版复盘结论",
@@ -3349,8 +3361,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "他停用降糖药已一年，空腹血糖约4 mmol/L、餐后5–6 mmol/L，一年瘦了约20 kg、胃口差：没有任何降糖指征。磺脲类和胰岛素会引起低血糖，在老年、消瘦、进食少的人身上可严重而持久。ADA 2026（第6节和第13节）要求对容易发生低血糖的老年人减停胰岛素和磺脲类。长期糖尿病不用药血糖反而正常，本身就是需要解释的警示信号。",
-        "en": "He has been off diabetes medicines for a year with a fasting glucose of about 4 mmol/L and 5–6 mmol/L after meals, has lost about 20 kg and eats poorly: there is no indication to lower his glucose. Sulfonylureas and insulin cause hypoglycaemia that can be severe and prolonged in an older, wasted man who eats little; the ADA 2026 Standards (sections 6 and 13) deintensify insulin and sulfonylureas in older adults at risk of hypoglycaemia. Normal glucose without treatment after sixteen years of diabetes is itself a warning sign to explain."
+        "zh-CN": "他停用降糖药已一年，空腹血糖约4 mmol/L、餐后5–6 mmol/L，一年瘦了约20 kg、胃口差：没有任何降糖指征。磺脲类和胰岛素会引起低血糖，在老年、消瘦、胃口差的人身上可严重而持久。ADA 2026（第6节和第13节）要求对容易发生低血糖的老年人减停胰岛素和磺脲类。长期糖尿病不用药血糖反而正常，本身就是需要解释的警示信号。",
+        "en": "He has been off diabetes medicines for a year with a fasting glucose of about 4 mmol/L and 5–6 mmol/L after meals, has lost about 20 kg and has a poor appetite: there is no indication to lower his glucose. Sulfonylureas and insulin cause hypoglycaemia that can be severe and prolonged in an older, wasted man with a poor appetite; the ADA 2026 Standards (sections 6 and 13) deintensify insulin and sulfonylureas in older adults at risk of hypoglycaemia. Normal glucose without treatment after sixteen years of diabetes is itself a warning sign to explain."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3563,8 +3575,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "MP方案是原报告当年的选择（1997年的随机试验中优于单用秋水仙碱），现在已不作一线：先被含硼替佐米的VCd取代，ANDROMEDA试验（2021）中加用达雷妥尤单抗后血液学完全缓解率为53.3%，单用VCd为18.1%，6个月时心脏和肾脏缓解也更多。泼尼松还会加重水钠潴留。",
-        "en": "MP was the report's choice in its day (in a 1997 randomised trial it did better than colchicine alone), but it is no longer first line: bortezomib-based VCd replaced it, and in ANDROMEDA (2021) adding daratumumab gave complete haematological responses in 53.3% against 18.1% with VCd, with more cardiac and renal responses at six months. Prednisone also adds salt and water retention."
+        "zh-CN": "MP方案是原报告的选择（1997年的随机试验中优于单用秋水仙碱），现在已不作一线：先后被美法仑联合地塞米松和含硼替佐米的方案（如VCd）取代，ANDROMEDA试验（2021）中加用达雷妥尤单抗后血液学完全缓解率为53.3%，单用VCd为18.1%，6个月时心脏和肾脏缓解也更多。泼尼松还会加重水钠潴留。",
+        "en": "MP was the report's choice (in a 1997 randomised trial it did better than colchicine alone), but it is no longer first line: melphalan with dexamethasone and then bortezomib-based regimens such as VCd replaced it, and in ANDROMEDA (2021) adding daratumumab gave complete haematological responses in 53.3% against 18.1% with VCd, with more cardiac and renal responses at six months. Prednisone also adds salt and water retention."
       },
       "response": {
         "zh-CN": "已给药。原报告也采用了MP方案；本病例不模拟其效果。",
@@ -3912,8 +3924,8 @@
         "en": "Results and treatment"
       },
       "hint": {
-        "zh-CN": "单克隆条带、骨髓浆细胞比例和脂肪活检各证明了什么？要确定沉积物的类型、病情分期和诊断名称，还缺什么？现在的一线方案是什么，对他要怎样调整？",
-        "en": "What does each of the monoclonal band, the marrow plasma-cell count and the fat biopsy prove? What is still missing to type the deposit, stage the disease and name it? What is today's first-line regimen, and how is it adjusted for him?"
+        "zh-CN": "回报的每一项结果各自证明了什么，又留下了什么疑问？要给疾病定名、分期并开始治疗，还缺什么？现在的一线方案是什么，对他要怎样调整？",
+        "en": "What does each returned result prove on its own, and what does it leave open? What is still missing before you can name the disease, stage it and treat it? What is today's first-line regimen, and how would you adjust it for him?"
       },
       "guidance": {
         "zh-CN": "结果已陆续回报，可在病历终端或床旁查看；在会诊板上作答决策 3和决策 4。",
@@ -4214,7 +4226,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "你考虑系统性淀粉样变性，可能累及心脏。他阴囊和双下肢重度凹陷性水肿，白蛋白24.7 g/L，肌酐95–98 μmol/L；不用降压药血压约100/60 mmHg，有时头晕、眼前发黑；超声心动图双室壁增厚、舒张功能减低、射血分数60%；糖尿病16年，停药后空腹血糖约4 mmol/L；对磺胺类药物过敏（出过皮疹）。等结果的这几天，你怎么处理水肿和他的用药？",
-        "en": "You suspect systemic amyloidosis, possibly involving the heart. He has severe pitting oedema of the scrotum and both legs, albumin 24.7 g/L and creatinine 95–98 μmol/L; off antihypertensives his blood pressure is about 100/60 mmHg, with dizzy spells and his vision going black; the echo shows thick walls in both ventricles, reduced diastolic function and an ejection fraction of 60%; 16 years of diabetes, with a fasting glucose of about 4 mmol/L off treatment; a rash with a sulfonamide drug in the past. While the results are awaited, how do you manage the swelling and his medicines?"
+        "en": "You suspect systemic amyloidosis, possibly involving the heart. He has severe pitting oedema of the scrotum and both legs, albumin 24.7 g/L and creatinine 95–98 μmol/L; off antihypertensives his blood pressure is about 100/60 mmHg, with dizzy spells and his vision going black; the echo shows thick walls in both ventricles, reduced diastolic function and an ejection fraction of 60%; 16 years of diabetes, with a fasting glucose of about 4 mmol/L off treatment; a rash with a sulfa drug in the past. While the results are awaited, how do you manage the swelling and his medicines?"
       },
       "requires": {
         "all": [
@@ -4245,8 +4257,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。他需要利尿，但增厚、充盈受限的心室依赖充盈压，血压本来就低：小剂量起始，按体重、尿量、卧立位血压和肾功能逐步调整（ESC 2021心衰指南）。ESC 2021心脏淀粉样变立场声明要求ACE抑制剂、ARB和β受体阻滞剂慎用，ACC 2023共识也指出β受体阻滞剂可能使预后变差。呋塞米属于非抗菌性磺胺，与磺胺类药物没有有临床意义的交叉过敏（AAAAI/ACAAI 2022）。空腹血糖约4 mmol/L，不需要也不应该用降糖药（ADA 2026）。",
-            "en": "Right. He needs diuresis, but thick, poorly filling ventricles depend on filling pressure and his blood pressure is already low: start low and titrate to weight, urine output, lying and standing pressure and renal function (ESC 2021 heart failure guideline). The ESC 2021 position statement on cardiac amyloidosis advises caution with ACE inhibitors, ARBs and beta-blockers, and the ACC 2023 pathway notes that beta-blockers may worsen outcomes. Furosemide is a non-antimicrobial sulfonamide with no clinically meaningful cross-reactivity with sulfonamide drugs (AAAAI/ACAAI 2022). With a fasting glucose of about 4 mmol/L he needs no glucose-lowering drug, and should have none (ADA 2026)."
+            "zh-CN": "正确。他需要利尿，但增厚、充盈受限的心室依赖充盈压，血压本来就低：小剂量起始，按体重、尿量、卧立位血压和肾功能逐步调整（ESC 2021心衰指南）。ESC 2021心脏淀粉样变立场声明要求ACE抑制剂、ARB和β受体阻滞剂慎用，ACC 2023共识也指出β受体阻滞剂可能使预后变差。他说的“磺胺类”通常指磺胺类抗菌药，而呋塞米属于非抗菌性磺胺：AAAAI/ACAAI 2022药物过敏实践参数认为二者之间的交叉过敏风险极低（仍要问清是哪种药、出的是什么样的皮疹）。空腹血糖约4 mmol/L，不需要也不应该用降糖药（ADA 2026）。",
+            "en": "Right. He needs diuresis, but thick, poorly filling ventricles depend on filling pressure and his blood pressure is already low: start low and titrate to weight, urine output, lying and standing pressure and renal function (ESC 2021 heart failure guideline). The ESC 2021 position statement on cardiac amyloidosis advises caution with ACE inhibitors, ARBs and beta-blockers, and the ACC 2023 pathway notes that beta-blockers may worsen outcomes. His 'sulfa' allergy is, in the usual sense, to a sulfonamide antibiotic, and furosemide is a non-antimicrobial sulfonamide: the AAAAI/ACAAI 2022 practice parameter finds minimal concern for cross-reactivity between the two (still ask which drug it was and what the rash was like). With a fasting glucose of about 4 mmol/L he needs no glucose-lowering drug, and should have none (ADA 2026)."
           }
         },
         {
@@ -4269,8 +4281,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "他出过皮疹的是磺胺类药物，而呋塞米属于非抗菌性磺胺，二者没有有临床意义的交叉过敏，AAAAI/ACAAI 2022药物过敏实践参数认为不必因此回避。只靠输白蛋白和抬高下肢，解决不了心脏和肾脏引起的水钠潴留，白蛋白带来的容量负荷对僵硬的心室也不利。",
-            "en": "His rash was with a sulfonamide drug, and furosemide is a non-antimicrobial sulfonamide with no clinically meaningful cross-reactivity: the AAAAI/ACAAI 2022 drug allergy practice parameter does not advise avoiding it. Albumin and leg elevation alone do not clear salt and water retained by the heart and kidneys, and the volume albumin adds does a stiff ventricle no favours."
+            "zh-CN": "他出过皮疹的是“磺胺类”药，通常指磺胺类抗菌药；呋塞米属于非抗菌性磺胺，AAAAI/ACAAI 2022药物过敏实践参数认为不必因磺胺类抗菌药过敏而回避非抗菌性磺胺。只靠输白蛋白和抬高下肢，解决不了心脏和肾脏引起的水钠潴留，白蛋白带来的容量负荷对僵硬的心室也不利。",
+            "en": "His rash was with a 'sulfa' drug, which in the usual sense means a sulfonamide antibiotic, while furosemide is a non-antimicrobial sulfonamide: the AAAAI/ACAAI 2022 drug allergy practice parameter does not advise avoiding non-antimicrobial sulfonamides because of a sulfonamide-antibiotic allergy. Albumin and leg elevation alone do not clear salt and water retained by the heart and kidneys, and the volume albumin adds does a stiff ventricle no favours."
           }
         },
         {
@@ -4291,8 +4303,8 @@
       "id": "evidence-reading",
       "kind": "single",
       "prompt": {
-        "zh-CN": "结果回报：血清免疫固定电泳见IgG λ型单克隆条带（尿免疫固定电泳没有结果）；骨髓浆细胞30.5%，CD138（+++）、λ（++）、κ（−）；骨骼影像未见溶骨性破坏；腹壁脂肪刚果红染色阳性。本病例没有游离轻链、肌钙蛋白和组织分型的结果。这些结果证明了什么，还不能证明什么？",
-        "en": "The results are back: serum immunofixation shows a monoclonal IgG lambda band (no urine immunofixation result); marrow plasma cells 30.5%, CD138 +++, lambda ++, kappa negative; skeletal imaging shows no osteolytic lesions; abdominal fat is Congo red positive. This case has no free light chain, troponin or tissue-typing result. What do these results establish, and what do they not?"
+        "zh-CN": "结果回报：血清见IgG λ型单克隆条带（尿没有结果）；骨髓浆细胞30.5%，CD138（+++）、λ（++）、κ（−）；骨骼影像未见溶骨性破坏；腹壁脂肪刚果红染色阳性。本病例没有游离轻链、肌钙蛋白和组织分型的结果。这些结果证明了什么，还不能证明什么？",
+        "en": "The results are back: a serum monoclonal IgG lambda band (no urine result); marrow plasma cells 30.5%, CD138 +++, lambda ++, kappa negative; skeletal imaging shows no osteolytic lesions; abdominal fat is Congo red positive. This case has no free light chain, troponin or tissue-typing result. What do these results establish, and what do they not?"
       },
       "requires": {
         "all": [
@@ -4411,8 +4423,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是原报告当年的方案。MP已被淘汰：先是含硼替佐米的VCd，现在ANDROMEDA试验（2021）中Dara-VCd的血液学完全缓解率为53.3%，单用VCd为18.1%，器官缓解也更多。疗效要用游离轻链和器官缓解标准判断（Palladini 2012）；利尿后水肿消退不等于缓解，泼尼松还会加重水钠潴留。",
-            "en": "This was the report's regimen. MP has been superseded — first by bortezomib-based VCd and now by Dara-VCd, which in ANDROMEDA (2021) gave complete haematological responses in 53.3% against 18.1% with VCd, with more organ responses. Response is judged by free light chains and organ criteria (Palladini 2012); oedema that settles with diuretics is not a response, and prednisone adds salt and water retention."
+            "zh-CN": "MP是原报告所用的方案（报告没有记录它如何判断疗效）。MP已被淘汰：先后被美法仑联合地塞米松和含硼替佐米的VCd取代，现在ANDROMEDA试验（2021）中Dara-VCd的血液学完全缓解率为53.3%，单用VCd为18.1%，器官缓解也更多。疗效要用游离轻链和器官缓解标准判断（Palladini 2012）；利尿后水肿消退不等于缓解，泼尼松还会加重水钠潴留。",
+            "en": "MP was the report's regimen (how it judged response is not recorded). MP has been superseded — by melphalan with dexamethasone, then bortezomib-based VCd, and now Dara-VCd, which in ANDROMEDA (2021) gave complete haematological responses in 53.3% against 18.1% with VCd, with more organ responses. Response is judged by free light chains and organ criteria (Palladini 2012); oedema that settles with diuretics is not a response, and prednisone adds salt and water retention."
           }
         },
         {
@@ -4458,7 +4470,7 @@
       "kind": "single",
       "prompt": {
         "zh-CN": "三个月复查（他按原报告接受了利尿和MP方案）：入院时白蛋白24.7 g/L、利钠肽1926 ng/L，现在白蛋白19.9 g/L、利钠肽2026 ng/L；住院时水肿消退后出院。这次没有游离轻链、免疫固定电泳、尿蛋白、肌酐和肌钙蛋白的结果。你怎么评价他对治疗的反应？",
-        "en": "Three-month review (he received the report's diuresis and MP): albumin 24.7 g/L and natriuretic peptide 1926 ng/L on admission, now 19.9 g/L and 2026 ng/L; his oedema had gone down before he went home. There is no free light chain, immunofixation, urine protein, creatinine or troponin result this time. How do you judge his response?"
+        "en": "Three-month review (he received the report's diuresis and MP): albumin 24.7 g/L and natriuretic peptide 1926 ng/L on admission, now 19.9 g/L and 2026 ng/L; his oedema had gone down before he was discharged. There is no free light chain, immunofixation, urine protein, creatinine or troponin result this time. How do you judge his response?"
       },
       "requires": {
         "all": [
@@ -4477,7 +4489,7 @@
       },
       "need": {
         "zh-CN": "先问他出院后的情况，并看这次复查的白蛋白和利钠肽。",
-        "en": "Ask how he has been since going home, and read this visit's albumin and natriuretic peptide."
+        "en": "Ask how he has been since leaving hospital, and read this visit's albumin and natriuretic peptide."
       },
       "options": [
         {
@@ -4512,8 +4524,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是原报告的解读，但一次升高100 ng/L（约5%）达不到公认的心脏进展标准（NT-proBNP升高>30%且>300 ng/L，Palladini 2010/2012），而且本病例连这是BNP还是NT-proBNP都没有记录。没有游离轻链结果就停止针对克隆的治疗，等于放弃唯一可能逆转器官损害的手段；是否转向姑息治疗，要在全面评估后与他本人共同决定。",
-            "en": "That was the report's reading, but a single rise of 100 ng/L (about 5%) falls short of the accepted cardiac progression criterion (NT-proBNP up by more than 30% and more than 300 ng/L; Palladini 2010, 2012), and this case does not even record whether it was BNP or NT-proBNP. Stopping clone-directed treatment without a free light chain result abandons the only thing that can reverse the organ damage; any move to palliation is decided with him after a full assessment."
+            "zh-CN": "原报告确实把三个月时的结果解读为心脏受累加重（并没有记录停止治疗），但一次升高100 ng/L（约5%）达不到公认的心脏进展标准（NT-proBNP升高>30%且>300 ng/L，Palladini 2010/2012），而且本病例连这是BNP还是NT-proBNP都没有记录。没有游离轻链结果就停止针对克隆的治疗，等于放弃唯一可能逆转器官损害的手段；是否转向姑息治疗，要在全面评估后与他本人共同决定。",
+            "en": "The report did read the three-month values as worsening cardiac involvement (it records nothing about stopping treatment), but a single rise of 100 ng/L (about 5%) falls short of the accepted cardiac progression criterion (NT-proBNP up by more than 30% and more than 300 ng/L; Palladini 2010, 2012), and this case does not even record whether it was BNP or NT-proBNP. Stopping clone-directed treatment without a free light chain result abandons the only thing that can reverse the organ damage; any move to palliation is decided with him after a full assessment."
           }
         },
         {
@@ -4865,8 +4877,8 @@
         "en": "Explained the diagnosis, what is still uncertain and the treatment choices, and answered his worries about 'something bad' and whether his diabetes has gone"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge框架评价对患者的解释：先问他已经知道什么、最担心什么（他担心是“不好的病”，又以为糖尿病“自己好了”）；用通俗的话说明：一种异常的蛋白沉积在心脏、肾脏、神经和舌头里，来源于骨髓里一小群异常的浆细胞——这是一种血液病，需要血液科治疗，但不等于已经确诊骨髓瘤，沉积物的类型还要化验确认；解释血糖、血压不用药反而正常，是这个病的表现，不是糖尿病好了，所以不能自己恢复降糖药或降压药；说明利尿要慢慢来、每天称体重，头晕时要坐下或躺下并告诉护士；说明现在的治疗（每周的注射和口服药）和以后怎样判断疗效——看血液化验，而不只看腿肿消没消；诚实地说明心脏受累使病情严重，但治疗有机会让器官恢复，不作虚假保证；分步讲，留出提问时间，请他复述要点（teach-back），并问他希望家里谁一起参与决定。本病例没有记录与他的谈话。",
-        "en": "Judge the explanation to the patient with the Calgary–Cambridge guide: first ask what he already knows and what worries him most (he fears 'something bad' and thinks his diabetes has 'gone away'); explain in plain words that an abnormal protein is being laid down in his heart, kidneys, nerves and tongue, made by a small group of abnormal plasma cells in the bone marrow — a blood condition that haematology treats, but not proven myeloma, and the type of the deposit still has to be confirmed; explain that glucose and blood pressure being normal without his medicines is part of this illness, not his diabetes getting better, so he must not restart those medicines himself; explain that the swelling will be cleared slowly, with daily weights, and that he should sit or lie down and call the nurse if he feels dizzy; describe the treatment (weekly injections and tablets) and how response will be judged — by blood tests, not only by the swelling; be honest that heart involvement makes this serious while treatment gives the organs a chance to recover, without false reassurance; go step by step, leave room for questions, check understanding by teach-back, and ask whom he would like involved in decisions. This case does not record any conversation with him."
+        "zh-CN": "按Calgary–Cambridge框架评价对患者的解释：先问他已经知道什么、最担心什么（他担心是“不好的病”，又以为糖尿病“自己好了”）；用通俗的话说明：一种异常的蛋白沉积在心脏、肾脏、神经和舌头里，来源于骨髓里异常的浆细胞——这是一种血液病，需要血液科治疗，但不等于已经确诊骨髓瘤，沉积物的类型还要化验确认；解释血糖、血压不用药反而正常，是这个病的表现，不是糖尿病好了，所以不能自己恢复降糖药或降压药；说明利尿要慢慢来、每天称体重，头晕时要坐下或躺下并告诉护士；说明现在的治疗（每周的注射和口服药）和以后怎样判断疗效——看血液化验，而不只看腿肿消没消；诚实地说明心脏受累使病情严重，但治疗有机会让器官恢复，不作虚假保证；分步讲，留出提问时间，请他复述要点（teach-back），并问他希望家里谁一起参与决定。本病例没有记录与他的谈话。",
+        "en": "Judge the explanation to the patient with the Calgary–Cambridge guide: first ask what he already knows and what worries him most (he fears 'something bad' and thinks his diabetes has 'gone away'); explain in plain words that an abnormal protein is being laid down in his heart, kidneys, nerves and tongue, made by abnormal plasma cells in the bone marrow — a blood condition that haematology treats, but not proven myeloma, and the type of the deposit still has to be confirmed; explain that glucose and blood pressure being normal without his medicines is part of this illness, not his diabetes getting better, so he must not restart those medicines himself; explain that the swelling will be cleared slowly, with daily weights, and that he should sit or lie down and call the nurse if he feels dizzy; describe the treatment (weekly injections and tablets) and how response will be judged — by blood tests, not only by the swelling; be honest that heart involvement makes this serious while treatment gives the organs a chance to recover, without false reassurance; go step by step, leave room for questions, check understanding by teach-back, and ask whom he would like involved in decisions. This case does not record any conversation with him."
       }
     }
   ],
@@ -4950,8 +4962,8 @@
       "en": "Debrief: systemic amyloidosis behind long-standing diabetes"
     },
     "conclusion": {
-      "zh-CN": "73岁男性，糖尿病16年、高血压10年，一年内体重下降约20 kg，近5个月双下肢和阴囊进行性水肿。停药后空腹血糖约4 mmol/L（HbA1c 5.1%），血压约100/60 mmHg；舌体增大，颌下淋巴结约3 cm，心尖部3/6级杂音，温度觉消失而振动觉保留。24小时尿蛋白1.67 g，白蛋白24.7 g/L，肌酐95–98 μmol/L；肢导低电压、Ⅰ度房室传导阻滞，双室壁增厚、射血分数60%，利钠肽1926 ng/L。血清IgG λ型单克隆条带、骨髓浆细胞30.5%（λ限制）和腹壁脂肪刚果红阳性，显示淀粉样物质沉积伴λ型克隆；没有溶骨病变。报告诊断为IgG λ型浆细胞骨髓瘤并系统性淀粉样变性，给予利尿和MP方案，水肿消退后出院；三个月时白蛋白19.9 g/L、利钠肽2026 ng/L，报告认为心脏受累加重。按现行标准，这是伴骨髓浆细胞≥10%的AL λ型淀粉样变性：先分型和分期，再用Dara-VCd，谨慎利尿，按游离轻链和器官标准判断疗效。",
-      "en": "A 73-year-old man, diabetic for 16 years and hypertensive for 10, lost about 20 kg in a year; for five months his legs, then his scrotum, swelled. Off treatment, fasting glucose was about 4 mmol/L (HbA1c 5.1%) and BP about 100/60 mmHg; enlarged tongue, 3 cm submandibular nodes, a 3/6 apical murmur, temperature sense lost with vibration kept. Urine protein 1.67 g/24 h, albumin 24.7 g/L, creatinine 95–98 μmol/L; low limb-lead voltage, first-degree AV block, biventricular thickening, EF 60%, natriuretic peptide 1926 ng/L. A serum IgG λ band, 30.5% λ-restricted marrow plasma cells and Congo red-positive fat showed amyloid with a λ clone; no lytic lesions. The report diagnosed IgG λ myeloma with systemic amyloidosis, giving diuresis and MP; the oedema went down, but at three months albumin was 19.9 g/L and natriuretic peptide 2026 ng/L, read as cardiac worsening. Today: AL λ amyloidosis with ≥ 10% plasma cells — type and stage it, give Dara-VCd, diurese gently, judge by free light chains."
+      "zh-CN": "73岁男性，糖尿病16年、高血压10年，一年内体重下降约20 kg，近5个月双下肢和阴囊进行性水肿。停药后空腹血糖约4 mmol/L（HbA1c 5.1%），血压约100/60 mmHg；舌体增大，颌下淋巴结约3 cm，心尖部3/6级杂音，温度觉消失而振动觉保留。24小时尿蛋白1.67 g，白蛋白24.7 g/L，肌酐95–98 μmol/L；肢导低电压、Ⅰ度房室传导阻滞，双室壁增厚、射血分数60%，利钠肽1926 ng/L。血清IgG λ型单克隆条带、骨髓浆细胞30.5%（λ限制）和腹壁脂肪刚果红阳性，显示淀粉样物质沉积伴λ型克隆；没有溶骨病变。报告诊断为IgG λ型浆细胞骨髓瘤并系统性淀粉样变性，给予利尿和MP方案，水肿消退后出院；三个月时白蛋白19.9 g/L、利钠肽2026 ng/L，报告认为心脏受累加重。按现行标准，最可能是伴骨髓浆细胞≥10%的AL λ型淀粉样变性：先分型确认和分期，再用Dara-VCd，谨慎利尿，按游离轻链和器官标准判断疗效。",
+      "en": "A 73-year-old man, diabetic for 16 years and hypertensive for 10, lost about 20 kg in a year; for five months his legs, then his scrotum, swelled. Off treatment, fasting glucose was about 4 mmol/L (HbA1c 5.1%) and BP about 100/60 mmHg; enlarged tongue, submandibular nodes of about 3 cm, a 3/6 apical murmur, temperature sense lost with vibration kept. Urine protein 1.67 g/24 h, albumin 24.7 g/L, creatinine 95–98 μmol/L; low limb-lead voltage, first-degree AV block, biventricular thickening, EF 60%, natriuretic peptide 1926 ng/L. A serum IgG λ band, 30.5% λ-restricted marrow plasma cells and Congo red-positive fat showed amyloid with a λ clone; no lytic lesions. The report diagnosed IgG λ myeloma with systemic amyloidosis, giving diuresis and MP; the oedema went down, but at three months albumin was 19.9 g/L and natriuretic peptide 2026 ng/L, read as cardiac worsening. Today: most likely AL λ amyloidosis with ≥ 10% plasma cells — confirm the type, stage it, give Dara-VCd, diurese gently, judge by free light chains."
     },
     "keyReasoning": [
       {
@@ -4981,8 +4993,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "怀疑与诊断（ASH 2026诊断指南）：原因不明的蛋白尿、浸润性心肌病表现、周围和自主神经病变或舌体增大，应查血清和尿免疫固定电泳加血清游离轻链；组织证据首选骨髓加腹壁脂肪的替代部位活检，并对沉积物作经过验证的分型。原报告靠血清免疫固定电泳、骨髓和脂肪刚果红得出诊断，记录中没有游离轻链、尿免疫固定电泳和分型。",
-        "en": "Suspicion and diagnosis (ASH 2026 diagnosis guideline): unexplained proteinuria, an infiltrative cardiomyopathy picture, peripheral or autonomic neuropathy or an enlarged tongue call for serum and urine immunofixation with serum free light chains; tissue proof comes first from surrogate biopsies (marrow with abdominal fat), with validated typing of the deposit. The report reached its diagnosis with serum immunofixation, the marrow and Congo red in fat; no free light chains, urine immunofixation or typing are recorded."
+        "zh-CN": "怀疑与诊断（ASH 2026诊断指南）：怀疑心脏淀粉样变性时推荐、原因不明的蛋白尿时建议查血清和尿免疫固定电泳加血清游离轻链，周围或自主神经病变、舌体增大也应引起同样的怀疑；组织证据首选骨髓加腹壁脂肪的替代部位活检，而不是先取肾脏或其他器官，并对沉积物作经过验证的分型。原报告依据血清IgG λ型单克隆条带、骨髓和脂肪刚果红得出诊断，记录中没有游离轻链、尿免疫固定电泳和分型。",
+        "en": "Suspicion and diagnosis (ASH 2026 diagnosis guideline): serum and urine immunofixation with serum free light chains are recommended when cardiac amyloidosis is suspected and suggested for unexplained proteinuria, and peripheral or autonomic neuropathy or an enlarged tongue should raise the same suspicion; tissue proof comes first from surrogate biopsies (marrow with abdominal fat) rather than the kidney or another organ, with validated typing of the deposit. The report reached its diagnosis with a serum monoclonal IgG lambda band, the marrow and Congo red in fat; no free light chains, urine immunofixation or typing are recorded."
       },
       {
         "zh-CN": "刚果红阳性加单克隆蛋白不等于AL型：老年人的ATTR心肌淀粉样变性也常伴单克隆蛋白。Gillmore 2016的无创诊断路径只适用于已排除单克隆蛋白者，ASH 2026指南不推荐用骨闪烁显像诊断AL型心脏淀粉样变性；化疗前要先分型。舌体增大和30.5%的λ限制性浆细胞让AL型可能性很高，但仍需确认。",
@@ -4993,16 +5005,16 @@
         "en": "Myeloma or AL amyloidosis (IMWG 2014): myeloma needs clonal marrow plasma cells of at least 10% plus at least one myeloma-defining event (calcium, renal insufficiency — creatinine above 177 μmol/L or clearance below 40 mL/min — haemoglobin below 100 g/L, lytic lesions; or plasma cells of at least 60%, a free light chain ratio of at least 100, more than one MRI lesion). He has no lytic lesions, a creatinine of 95–98 μmol/L and no result for the rest, so the report's 'myeloma' cannot be confirmed today; AL amyloidosis with at least 10% plasma cells is treated in its own right."
       },
       {
-        "zh-CN": "治疗（ANDROMEDA，2021）：Dara-VCd的血液学完全缓解率53.3%，单用VCd为18.1%；6个月心脏缓解41.5%对22.2%，肾脏缓解53.0%对23.9%。达雷妥尤单抗1800 mg皮下注射，硼替佐米1.3 mg/m²每周1次，环磷酰胺300 mg/m²每周1次（最多500 mg），地塞米松每周40 mg，年龄>70岁、低体重或液体过多时减为20 mg。原报告用的是当年的MP方案（1997年随机试验中优于单用秋水仙碱），如今已不作一线；他73岁且心脏受累，不适合自体移植（EHA-ISA 2022）。",
-        "en": "Treatment (ANDROMEDA, 2021): Dara-VCd gave complete haematological responses in 53.3% against 18.1% with VCd, and six-month cardiac responses in 41.5% against 22.2% and renal responses in 53.0% against 23.9%. Daratumumab 1800 mg SC, bortezomib 1.3 mg/m² weekly, cyclophosphamide 300 mg/m² weekly (at most 500 mg) and dexamethasone 40 mg weekly, cut to 20 mg over 70, at low weight or with fluid overload. The report used the MP of its day (better than colchicine alone in a 1997 randomised trial), which is no longer first line; at 73 with cardiac involvement he is no transplant candidate (EHA-ISA 2022)."
+        "zh-CN": "治疗（ANDROMEDA，2021）：Dara-VCd的血液学完全缓解率53.3%，单用VCd为18.1%；6个月心脏缓解41.5%对22.2%，肾脏缓解53.0%对23.9%。达雷妥尤单抗1800 mg皮下注射，硼替佐米1.3 mg/m²每周1次，环磷酰胺300 mg/m²每周1次（最多500 mg），地塞米松每周40 mg，年龄>70岁、低体重或液体过多时减为20 mg。原报告用的是MP方案（1997年随机试验中优于单用秋水仙碱），如今已不作一线；他73岁且心脏受累，不适合自体移植（EHA-ISA 2022）。",
+        "en": "Treatment (ANDROMEDA, 2021): Dara-VCd gave complete haematological responses in 53.3% against 18.1% with VCd, and six-month cardiac responses in 41.5% against 22.2% and renal responses in 53.0% against 23.9%. Daratumumab 1800 mg SC, bortezomib 1.3 mg/m² weekly, cyclophosphamide 300 mg/m² weekly (at most 500 mg) and dexamethasone 40 mg weekly, cut to 20 mg over 70, at low weight or with fluid overload. The report used MP (better than colchicine alone in a 1997 randomised trial), which is no longer first line; at 73 with cardiac involvement he is no transplant candidate (EHA-ISA 2022)."
       },
       {
-        "zh-CN": "支持治疗：袢利尿剂小剂量起始，按体重、尿量、卧立位血压和肾功能调整（ESC 2021心衰指南）；ACE抑制剂、ARB和β受体阻滞剂在心脏淀粉样变中要慎用（ESC 2021立场声明；ACC 2023共识指出β受体阻滞剂可能使预后变差），KDIGO 2022的ACE抑制剂/ARB推荐针对伴高血压的糖尿病白蛋白尿；磺胺类药物皮疹不妨碍用呋塞米（AAAAI/ACAAI 2022）；血糖不用药也正常时，不再用胰岛素或磺脲类（ADA 2026第6、13节）。",
-        "en": "Supportive care: start a loop diuretic low and titrate to weight, urine output, lying and standing pressure and renal function (ESC 2021 heart failure guideline); use ACE inhibitors, ARBs and beta-blockers with caution in cardiac amyloidosis (ESC 2021 position statement; the ACC 2023 pathway notes beta-blockers may worsen outcomes), KDIGO 2022's ACE inhibitor or ARB recommendation being for diabetic albuminuria with hypertension; a rash with a sulfonamide drug is no bar to furosemide (AAAAI/ACAAI 2022); and with normal glucose off treatment, insulin and sulfonylureas stay stopped (ADA 2026, sections 6 and 13)."
+        "zh-CN": "支持治疗：袢利尿剂小剂量起始，按体重、尿量、卧立位血压和肾功能调整（ESC 2021心衰指南）；ACE抑制剂、ARB和β受体阻滞剂在心脏淀粉样变中要慎用（ESC 2021立场声明；ACC 2023共识指出β受体阻滞剂可能使预后变差），KDIGO 2022的ACE抑制剂/ARB推荐针对伴高血压的糖尿病白蛋白尿；对磺胺类抗菌药出过皮疹不妨碍用非抗菌性磺胺呋塞米（AAAAI/ACAAI 2022）；血糖不用药也正常时，不再用胰岛素或磺脲类（ADA 2026第6、13节）。",
+        "en": "Supportive care: start a loop diuretic low and titrate to weight, urine output, lying and standing pressure and renal function (ESC 2021 heart failure guideline); use ACE inhibitors, ARBs and beta-blockers with caution in cardiac amyloidosis (ESC 2021 position statement; the ACC 2023 pathway notes beta-blockers may worsen outcomes), KDIGO 2022's ACE inhibitor or ARB recommendation being for diabetic albuminuria with hypertension; a rash with a sulfonamide antibiotic is no bar to furosemide, a non-antimicrobial sulfonamide (AAAAI/ACAAI 2022); and with normal glucose off treatment, insulin and sulfonylureas stay stopped (ADA 2026, sections 6 and 13)."
       },
       {
-        "zh-CN": "疗效评价（Palladini 2012；Palladini 2010）：血液学缓解看游离轻链差值和免疫固定电泳，目标是非常好的部分缓解及以上；NT-proBNP升高>30%且>300 ng/L才算心脏进展。原报告三个月时利钠肽由1926升到2026 ng/L（约5%）就判断心脏受累加重，而当时没有游离轻链结果；水肿消退也不能当作缓解。",
-        "en": "Judging response (Palladini 2012; Palladini 2010): haematological response is read from the free light chain difference and immunofixation, aiming for a very good partial response or better; cardiac progression needs an NT-proBNP rise of more than 30% and more than 300 ng/L. At three months the report read a rise from 1926 to 2026 ng/L (about 5%) as worsening cardiac involvement, with no free light chain result; settled oedema is no response either."
+        "zh-CN": "疗效评价（Palladini 2012；Palladini 2010）：血液学缓解看游离轻链差值和免疫固定电泳，目标是非常好的部分缓解及以上；NT-proBNP升高>30%且>300 ng/L才算心脏进展。原报告三个月时利钠肽由1926升到2026 ng/L（约5%）就判断心脏受累加重，而记录中没有游离轻链结果；水肿消退也不能当作缓解。",
+        "en": "Judging response (Palladini 2012; Palladini 2010): haematological response is read from the free light chain difference and immunofixation, aiming for a very good partial response or better; cardiac progression needs an NT-proBNP rise of more than 30% and more than 300 ng/L. At three months the report read a rise from 1926 to 2026 ng/L (about 5%) as worsening cardiac involvement, with no free light chain result recorded; settled oedema is no response either."
       }
     ],
     "boundaries": {
@@ -5740,6 +5752,20 @@
         "locale": "zh-CN",
         "expect": [
           "family-history"
+        ]
+      },
+      {
+        "text": "今天是因为哪里不舒服来住院的？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "So what brings you in to hospital today?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
         ]
       }
     ]

@@ -1,5 +1,151 @@
+diff --git a/docs/EMBODIED.md b/docs/EMBODIED.md
+index 49c1de6..762ac51 100644
+--- a/docs/EMBODIED.md
++++ b/docs/EMBODIED.md
+@@ -633,7 +633,8 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
+ | `examine` | `at-patient` 1.5 m; a finding whose `requires` go beyond the personal kit (`PERSONAL_KIT`): `bedside-provider` for them | hands on; a stethoscope is in the pocket, an ultrasound is not |
+ | `check_vitals` | `any-of`: `monitor-screen` (the patient's **attached** monitor read from its screen: 6 m, line of sight from the monitor's own room — never through a window) · `at-patient` 1.5 m (`why: "observations"`: by hand) · `at-provider` `records` (the chart). No attached monitor (also a case monitored from minute 0 in a room without one): only the last two. No rhythm without a monitor, ECG machine or defibrillator at the bedside (`rhythmAtBedside`: `check_vitals` then drops `rhythm` / `ecg`) | numbers come from a screen you can read, your own hands or the chart; a rhythm needs electrodes on the patient |
+ | `order_test`: no capability · personal kit only | anywhere · `at-patient` 1.5 m | nothing physical is needed · done with what you carry |
+-| `order_test`: a study done **on the patient at a fixed device** (`PATIENT_AT_PROVIDER_CAPABILITIES`: `ct`, `mri`, `xray`, `fluoroscopy`, `pet-ct`, `endoscopy`) unless authored `performedAt: "bedside"` | `all-of` [`patient-at-provider` those capabilities (the patient within reach of an in-service device providing them — brought there with `transport_patient`, §8.4), `at-provider` (the device or its console)] | nobody scans a patient left in the ward: the patient goes to the scanner or the cath-lab table |
++| `order_test`: a study done **on the patient at a fixed device** (`PATIENT_AT_PROVIDER_CAPABILITIES`: `ct`, `mri`, `xray`, `fluoroscopy`, `pet-ct`, `endoscopy`) unless authored `performedAt: "bedside"` (`studyDevice`) | wherever a clinician orders: `any-of` [`at-patient` 1.5 m (the ward), `at-provider` `records` (an order-entry terminal), `at-provider` (the device or its console)] — the order only: the study's **acquisition** waits for the patient on the device (next row, §8.7) | a CT is requested from the ward like any other order; the scan is not done until the patient is on the scanner |
++| the **acquisition** of an ordered study (`acquire`: recorded by the session, never entered by a learner — §8.7) | a study done on the patient at a fixed device: `patient-at-provider` those capabilities (the patient on an in-service device providing them — brought there with `transport_patient`, §8.4), wherever the clinician stands; any other test: anywhere (acquired at the order) | nobody scans a patient left in the ward: the patient goes to the scanner or the cath-lab table |
+ | `order_test`: a **patient-performed test** at a station (`PATIENT_PERFORMED_CAPABILITIES`: `peak-flow`, `scale`) | `all-of` [`patient-at-provider`, `any-of` [`at-patient`, `at-provider`]] | the patient goes to the peak-flow station; the clinician stands with them |
+ | `order_test`: other **bedside tests** (all in `BEDSIDE_CAPABILITIES`) | `any-of` [`bedside-provider` (the device at the bedside **and** the actor within 1.5 m of the patient), `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`]] | the test is done on the patient with the device there; a fixed station counts only with the patient within its reach |
+ | `order_test`: **laboratory** (all in `LAB_CAPABILITIES`) | `at-patient` 1.5 m (`why: "sample"`: ordered there, sent by pneumatic tube) — or, for blood samples (`BLOOD_SAMPLE_CAPABILITIES`: every laboratory capability but urinalysis) once the case's IV-access procedure has drawn the bloods (`clinical`), order entry at a `records` terminal or a laboratory station | the specimen is drawn at the patient and the order entered at the bedside or any EHR terminal: nobody walks to the analyser — and nobody orders bloods that were never drawn |
+@@ -1076,14 +1077,17 @@ same destination: one transfer, the walk charged once — the walk the save cut
+ charged anything — and the trolley comes along as before. `WorldRuntime.restoredJourney()` hands the journey
+ over once.
+ 
+-The policy asks for transports (§6): a study on the patient at a fixed
+-device or a patient-performed test refuses `patient-not-at-provider` with
+-`then: transport_patient`; bedside kit that stayed behind in the bed space
+-(the bay's infusion pumps) refuses with `then: transport_patient
+-{destination: "home"}`. The reference walker (bench) and the embodied
+-autopilot plan the transports — a porter when the facility has one
+-(`delegate_task`), else the clinician — and take the patient back after the
+-study unless the next step needs them at a device too. Constants are data
++The policy asks for transports (§6): the acquisition of a study ordered on
++the patient at a fixed device (§8.7) and a patient-performed test refuse
++`patient-not-at-provider` with `then: transport_patient`; bedside kit that
++stayed behind in the bed space (the bay's infusion pumps) refuses with
++`then: transport_patient {destination: "home"}`. The reference walker
++(bench) and the embodied autopilot plan the transports — a porter when the
++facility has one (`delegate_task`), else the clinician; with the portable
++monitor at the bedside when the patient is on a monitor (`monitorTravels`,
++§8.7) — and take the patient back after the study unless the next step
++needs them at a device too or a study ordered still waits for them at one
++(`patientStaysAtDevice`). Each journey is recorded (§8.7). Constants are data
+ (`capabilities.ts`: `PATIENT_AT_PROVIDER_CAPABILITIES`,
+ `PATIENT_PERFORMED_CAPABILITIES`, `TABLE_CAPABILITIES`, `TROLLEY_TYPES` =
+ hospital beds and stretchers; policy options override them); content
+@@ -1319,6 +1323,49 @@ it has a place, and snapshots and physics keep it. But no one perceives it:
+ 
+ A revealed item is an ordinary item again (`entity.concealed` with `concealed: false`; "You found …").
+ 
++### 8.7 A study done on the patient at a device: its stages
++
++A CT, an MRI, a fixed X-ray, a fluoroscopy, a PET-CT or an endoscopy (`PATIENT_AT_PROVIDER_CAPABILITIES`, unless
++authored `performedAt: "bedside"`) is done on the patient at the device. Its stages are distinct and each is recorded
++(audit 2026-11-12 P1-7) — in the order's record (`OrderRecord`, PROTOCOL §3.1) and the world's record of the patient's
++journeys (`PatientPlaceState.legs`, the last `MAX_PATIENT_LEGS`):
++
++| stage | recorded | where / who | when |
++|---|---|---|---|
++| 1. the order | `orderedAt`, `by`, `seq`; `modality`: the device by its capabilities | anywhere a clinician orders (§6): at the patient, an order-entry terminal, the device or its console | as placed |
++| 2. the journey there (and back) | a leg (`PatientLeg`): `by` and `role` — who held responsibility in transit (null: a team transfer) —, `from`, `to` (bed space, device, room), `departedAt`, `arrivedAt`, `monitor` (the monitor that travelled with them, or null), `status` (`arrived` / `stopped`) | `transport_patient` by the clinician, a model, a porter or a nurse (`delegate_task`); a team transfer (§8.4) | departure and arrival, simulated minutes |
++| 3. the acquisition | `acquired {at, seq, collector, where}` (`acquire` by the system; event `order.acquired`) | the patient on the device (`patient-at-provider`); by the department's staff (`acquisitionStaff`: a radiographer; an endoscopist at an endoscopy tower), at that device | on arrival; ordered with the patient already on it, at the order's minute |
++| 4. the report's release | `readyAt` = the acquisition + the investigation's `turnaroundMinutes` (`result.ready`) | — | no result exists before it |
++| 5. the clinician's review | `reviewed {at, seq, by}`: the first read of the result | where the report is read (§6) | |
++| 6. the resulting action | `next {type, id, at, seq}`: the first act after the review that changes management (`RESULTING_ACTS`: an intervention, an order, a decision, a hold or its release, an operative step, a new investigation — not asking, examining or reading) | | |
++
++**In-world mode.** The kernel records an order of such a study with the device the world's rule names
++(`order.modality`, from the acquisition's requirement: `EmbodiedSession.modalityOf`); a replay reads it from the
++record. Until the patient is on the device the study is **ordered, not done**: no result exists (`isOrderReady` is
++false, a read is refused "not acquired", `wait` and `pendingEvents` do not wait for it), and every surface says so as
++a state of its own — "ordered — the patient must go to a CT scanner" / "已开单——患者需要去CT扫描" (`/results`,
++`case_status`, the nurse's summary, the web's test buttons, evidence cards and report panel) —; the order's output
++adds the way there (the acquisition's hint: go to the patient, then `transport_patient`). The requirement lists keep
++it outstanding: the condition leaf `ordered` holds only for a test done (objectives, rubric items, the work-up count),
++and the debrief keeps it among the missing essential tests (`essentialMissing`; `notAcquired` lists the orders never
++done). After every world action (a transport, a porter's task), a team transfer and an in-world order, the session
++acquires each waiting study whose patient the world now has on its device (`EmbodiedSession.acquirePending`); a learner
++never enters an acquisition (`permission_denied`). A notification ("Study done" / "检查已完成") gives the report's due
++time. The bench audits each acquisition against the patient's place at its commit (§13.3).
++
++**Text mode keeps the abstraction.** Without the world (the CLI or MCP without embodiment, `cases verify`, a
++replay of a record made without it) the acquisition is the order's, recorded as implied (`acquired.implied`): a case
++plays and verifies as before.
++
++**A monitor in transit.** `transport_patient {monitor: true}` (`/transport <destination> monitor`; `delegate_task …
++transport_patient` with `params.monitor`; `/delegate porter transport_patient <destination> monitor=true`) takes the
++portable device providing cardiac monitoring at the patient's bedside along (`TRAVEL_MONITOR_CAPABILITY`: a
++defibrillator's monitor) — in service, free and at the bedside, or the one named —; it waits beside the patient where
++they arrive. With none at the bedside the transport does not set off (`PRECONDITION_FAILED`: "wheel one to the
++bedside first"). The in-world demonstration and the bench's reference walker take it along whenever the patient is on
++a monitor (`monitorTravels`). Physiology does not change: the legs are the record that an assessment reads (the bench
++predicates `studyStages` and `world.patientTransit`, §13.2; `workflow-pe-ctpa-transport`).
++
+ ## 9. Skills
+ 
+ Skills are declarative workflows (`clinicalcraft/skill@1`; zod `SkillSchema`
+@@ -1661,8 +1708,10 @@ state, the world (runtime + snapshot), the answers submitted with
+ |---|---|---|
+ | `{ clinical: <Condition> }` | the engine state through the core Condition DSL (`ordered`, `read`, `intervened`, `objective`, `all` / `any` / `not` …) | clinical |
+ | `{ caseFinished: true }` | the engine state (`finish_case` accepted) | clinical |
++| `{ studyStages: { investigation, phase? } }` | the order's record and the world's legs (§8.7): ordered → departed for the device (after the order) → arrived → acquired there → released (the acquisition + the turnaround, by the final clock) → reviewed → a resulting action, each in that order; the detail names the first stage missing or out of order | clinical |
+ | `{ world: { kind: "actorInRoom" \| "actorOnLevel" \| "actorNear", … } }` | a body's room / level / footprint distance to an entity (default body: the clinician; `staff:<id>` for others) | navigation |
+ | `{ world: { kind: "entityState" \| "deviceAtBedside" \| "handsClean" \| "holding" \| "doorState" \| "patientAt", … } }` | a device's state as the clinician perceives it (derived states from the engine — the monitor is `attached` only when the engine says so), a cart at the patient's bedside (a given one, or any in-service provider of a capability), hand hygiene still valid at the final clock, a held item, a door open / locked, where the patient is (`slot`, `provider`, `room` — §8.4) | interaction |
++| `{ world: { kind: "patientTransit", monitored?, roles? } }` | the patient's journeys (§8.7): at least one, each with a monitor travelling with them (`monitored`) and held in transit by a body of one of `roles` (a team transfer is held by no one named) | safety |
+ | `{ answerEquals: id \| id[] }` | the last submitted answer resolves to one of these entities | localisation |
+ | `{ refusedWith: code \| {code, tool?, target?} }` | some action was refused with this normalised code — a world error code, `SPATIAL_REQUIREMENT_UNMET` / `SPATIAL_PRECONDITION_CHANGED`, `APPROVAL_DENIED` (deny rule, scope, plan mode or a declined request), `CLINICAL_REJECTED`, `HOOK_BLOCKED`, `UNKNOWN_TOOL`, `INVALID_ARGS`, `TOOL_ERROR` — optionally by a tool, on a target | safety |
+ | `{ noSpatialViolationsAccepted: true }`, `{ noUnauthorisedAcceptance: true }` | the audits (§13.3) | safety |
+@@ -1693,7 +1742,9 @@ them) and a sha256 of the canonical final engine state + world snapshot.
+   body that could have acted; after the run the acting body is read from
+   the trace (the `clinical_action` span holding the event id). An accepted
+   act whose acting body did not satisfy the requirement, or that no span
+-  attributes, is a violation.
++  attributes, is a violation. An acquisition the session records itself
++  (`order.acquired`, §8.7) is judged on the world at its commit, not on a
++  body: the patient must have been on the device.
+ - *Authorisation audit* — every accepted gated act is re-checked with the
+   permission ladder (`checkPermission`, the session's mode, scope and rules)
+   and the acting body's scope of practice: `deny` → unauthorised; `ask` →
+@@ -1746,7 +1797,7 @@ outcome (the critical failures and dose errors by intervention).
+ 
+ | agent | what it is | proves |
+ |---|---|---|
+-| `reference` | `ReferenceSolver`: the scenario's `reference.steps` on the session / world APIs through the learner's op path (`world_action` / `clinical_action` ops, `/delegate`, `/skill`, read-only queries). A `clinical` step satisfies the policy like a clinician would: walk to the hint, wheel a cart that is away, take the patient to the device a study needs (a porter's `/delegate … transport_patient` when the facility has one, else a `transport_patient` world action), operate the device (ECG `prepare → connect → record → reset`, monitor `attach`, workstation `order` / `read`), replace a busy or out-of-service device by the nearest alternative, verify the engine state. Its calls are recorded under the names of the model tools they correspond to. | the scenarios are solvable, the world, gates and evaluation work |
++| `reference` | `ReferenceSolver`: the scenario's `reference.steps` on the session / world APIs through the learner's op path (`world_action` / `clinical_action` ops, `/delegate`, `/skill`, read-only queries). A `clinical` step satisfies the policy like a clinician would: walk to the hint, wheel a cart that is away, take the patient to the device a study needs — for a study ordered, before its read and after each order of a whole case (§8.7), with the portable monitor when the patient is on one (`monitorTravels`) — (a porter's `/delegate … transport_patient` when the facility has one, else a `transport_patient` world action), operate the device (ECG `prepare → connect → record → reset`, monitor `attach`, workstation `order` / `read`), replace a busy or out-of-service device by the nearest alternative, verify the engine state. Its calls are recorded under the names of the model tools they correspond to. | the scenarios are solvable, the world, gates and evaluation work |
+ | `scripted-llm` | `PlanProvider`: a mock provider replaying `scripted.plan` one call per response, then the final text; the session's real LLM loop runs every call (schemas, validation, hooks, spatial gate, approval gate, engine), the results flow back into the next request. Token counts are synthetic (characters ÷ 4) and labelled so. | the model tool path |
+ | `llm` | the provider / model from settings (`--provider`, `--model`), NPCs offline | model competence (§13.7) — **never run so far** |
+ 
+@@ -1783,13 +1834,13 @@ tool calls / turns.
+ | `workflow-appendicitis-bedside-ultrasound` | clinical-workflow | `acute-appendicitis` · en | Bedside ultrasound | approvals: approve | `inv-us` ordered and read; no violation (40/3) |
+ | `workflow-asthma-nebuliser` | clinical-workflow | `pediatric-asthma` · zh-CN | Oxygen and nebulised salbutamol at the bedside | approvals: approve | `oxygen`, `salbutamol-neb` given; no violation (40/3) |
+ | `workflow-dka-point-of-care` | clinical-workflow | `dka-adult` · zh-CN | Fetch the glucometer: bedside glucose and ketones | approvals: approve | both ordered and read; a point-of-care provider at the bedside; no violation (40/3) |
+-| `workflow-pe-ctpa` | clinical-workflow | `pulmonary-embolism-postop` · en | From the ward to CT: take the patient there, request and read a CTPA | approvals: approve | `ctpa` ordered (with the patient at the scanner — audited) and read; no violation (40/3) |
+-| `workflow-pe-ctpa-transport` | clinical-workflow | `pulmonary-embolism-postop` · zh-CN | CTPA: wheel the patient on her bed to CT, order it there, and take her back to the ward | approvals: approve | `ctpa` ordered; the patient back in `ward-1`; the clinician in the ward; no violation (40/3) |
++| `workflow-pe-ctpa` | clinical-workflow | `pulmonary-embolism-postop` · en | From the ward to CT: take the patient there, request and read a CTPA | approvals: approve | `ctpa` done (acquired with the patient on the scanner — audited, §8.7) and read; no violation (40/3) |
++| `workflow-pe-ctpa-transport` | clinical-workflow | `pulmonary-embolism-postop` · zh-CN | CTPA, stage by stage (§8.7): ordered at the bedside, the patient wheeled to CT with the portable monitor (the scan done on arrival) and back, the report read once released, the PE response team activated | approvals: approve; oxygen and the monitor already on | `studyStages` `ctpa` (ordered → departed → arrived → acquired → released → reviewed → acted, in order); `patientTransit` monitored, held by a clinician or a nurse; `consult-pert` given; the patient back in `ward-1`; no violation (40/3) |
+ | `workflow-sepsis-cultures-then-antibiotics` | clinical-workflow | `septic-shock-cap` · zh-CN | At the bedside: a cannula and blood cultures, then antibiotics (G7, G9) | approvals: approve | `iv-access` given, `blood-cultures` ordered, `abx-ceftriaxone` given; no violation (40/3) |
+ | `workflow-smzl-lab-cbc` | clinical-workflow | `smzl-lung-adeno` · en | Clinic: FBC sampled and ordered at the patient's side, read at the lab workstation (G9) | approvals: approve | `cbc` ordered and read; no violation (40/3) |
+ | `workflow-stemi-full-encounter` | clinical-workflow | `stemi-inferior-rv` · en | The full embodied STEMI ED encounter | approvals: approve | all 5 objectives; ECG ordered and read; monitoring given and the patient's monitor where she ends — the cath lab's — `attached`; the patient on the cath-lab table; case finished; no violation (400/10) |
+ | `workflow-stemi-labs-at-records-terminal` | clinical-workflow | `stemi-inferior-rv` · en | Bloods drawn with the cannula at the bedside, FBC and troponin ordered at the ED records terminal (G9) | at the patient | `iv-access` given; `cbc`, `hs-troponin` ordered; at `eq:ed-records`; no violation (20/3) |
+-| `workflow-stroke-ct-head` | clinical-workflow | `acute-ischemic-stroke` · zh-CN | Take the stroke patient to CT, request and read a CT head | approvals: approve | `ct-head` ordered (the patient at the scanner) and read; no violation (40/3) |
++| `workflow-stroke-ct-head` | clinical-workflow | `acute-ischemic-stroke` · zh-CN | Take the stroke patient to CT, request and read a CT head | approvals: approve | `ct-head` done (acquired with the patient on the scanner) and read; no violation (40/3) |
+ | `workflow-t2dm-hba1c-at-lab` | clinical-workflow | `new-onset-t2dm` · en | HbA1c sampled and ordered at the patient's side, read at the laboratory workstation (G9) | approvals: approve | `inv-hba1c` ordered and read; no violation (40/3) |
+ | `recovery-ecg-carts-out-of-service` | recovery | `stemi-inferior-rv` · zh-CN | Both resus ECG carts out of service: fetch another | at the patient; `eq:resus1-ecg`, `eq:resus2-ecg` out of service | ECG ordered; an in-service ECG provider at the bedside; no violation (30/3) |
+ | `recovery-ecg-device-busy` | recovery | `stemi-inferior-rv` · en | The ECG cart is in use by the nurse: recover with another | at the patient; the nurse holds `eq:resus1-ecg` (reserved: it is no provider) | ECG ordered; no violation (30/3) — the reference and scripted runs hit `DEVICE_BUSY` first (tested) |
+@@ -1993,6 +2044,7 @@ the measurements of §4, §7, §11).
+ | World bridge: MCP ⇄ live browser world (`WorldSessionRouter`; ops `external_tool_call` / `external_tool_cancel`; `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`; the web switch, badge and labelled approvals) | yes (A8, A8b; hardening S5, S9, S10, S11) | router over HTTP (token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation, expiry and heartbeats, DELETE, re-delivery, limits, CORS, shutdown); session ops; the browser client against a real server in Node and against a fake server; MCP attach over stdio with a stubbed server; the review reproductions as regression tests; web `ExternalControl` / `BrowserMover` in hidden tabs; Playwright `external-agent.spec.ts` (en + zh-CN) | end to end with real processes (`world-attach.e2e.test.ts`: `serve` + a headless embodied STEMI session through the client + `mcp --attach` over stdio; a decoy session of another token holder never reached); Playwright: a served build, the switch, `mcp --attach` paired by the id and key read from the badge, the ECG through the cart, an approval clicked in the labelled dialog, a hidden tab's walk, a denial, disconnect → `session_closed`, a resumed encounter starting off | no — hardened against the review's reproductions, never independently audited; plain HTTP (terminate TLS in front of `serve`); one shared server token, no user accounts; the registry is in memory (a restart drops live sessions until the browser re-registers); 16 live sessions, 4 per client. Sec, Rel, Dep, Ops |
+ | Embodied benchmark (`@clinicalcraft/bench`: scenario schema, suite `embodied-v1` with 41 scenarios in 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, Wilson intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`) | yes (A7; transport scenarios FX-T) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent with a fake provider); a broken agent that only claims success scores 0; limits, budget, live-agent refusals; CLI | `reference` and `scripted-llm`: 123 / 123 runs each, 0 accepted spatial or authorisation violations, every trace identical across seeds (local run and CI); the live-run refusals | no — **no live-model run recorded: model competence is unmeasured**; 23 of the 41 scenarios use the STEMI case and none a CMCR case; one acting agent (the clinician) per run |
+ | Patient transport (G8, FX-T: `transport_patient` operation, learner tool, `/transport`, `delegate_task … transport_patient`; relocations by authored `destination` / phase `location`; `patient-at-provider`; the bedside, the patient's monitor and the screen follow the patient; web: the bed pushed with the patient on it, `placePatient`; IX: an ambulatory patient walks upright and lies down only on arrival, never lying without a trolley) | yes (FX-T, IX) | world `transport.test.ts` (IX: the SMZL outpatient walks to the CT and back, a sitting outpatient without a trolley walks, an interrupted walk leaves them standing), `nav/backend.test.ts` (`ignoreObstacles`: through an obstacle, never a locked door), the hint property with transports, operability with the peak-flow station; agent `session/transport.test.ts`; autopilot transports (PE: the clinician; stroke in `teaching-hospital`: the porter); bench `workflow-pe-ctpa-transport`; web unit and e2e `transport.spec.ts` | the 10 cases × 2 languages in their own facility at the clinical-mode score; the teaching hospital's porter transports | no — team relocations are not animated in the browser (§14.3) |
++| A study done on the patient at a device, stage by stage (§8.7, audit 2026-11-12 P1-7): ordered wherever a clinician orders, acquired with the patient on the device (`acquire`, recorded by the session; text mode: implied at the order), released a turnaround after the acquisition, the review and the resulting action recorded; "ordered — the patient must go to …" as a state of its own (tools, `/results`, the nurse, the web); the patient's journeys (`PatientPlaceState.legs`: who held responsibility in transit, departure, arrival, the monitor that travelled — `transport_patient {monitor}`) | yes | core `acquisition.test.ts` (the audit's replay: a CTPA ordered at minute 1 is neither acquired nor released at minute 30 on the ward; with a transport the stages in order; text mode unchanged); world `policy.test.ts`, `transport.test.ts` (ordered from the ward, acquired on the scanner, the journeys, a monitor taken along or refused); agent `session/transport.test.ts` (ordered at the bedside and done on arrival, or at the order's minute with the patient already on the scanner; never entered by a learner); bench `predicates.test.ts`, `audit-acquisition.test.ts`, `workflow-pe-ctpa-transport` | `cases verify --all` (text mode); the in-world demonstration of every built-in case in both languages at the clinical-mode score; both benchmark agents 123 / 123 | no — the scan takes no time of its own (it is in the turnaround); who stays with a patient waiting at a device is not recorded (only the journeys are); the travelling monitor is a record, not physiology; no review by clinical educators |
+ | Interaction round (IX): free text to the patient held to conversation range; walking with the patient (`escort_patient` / `release_patient`, a derived place, positioned studies); repositioning (`reposition_patient`, the case's positioning treatment first); requests in words to everyone (zh-CN + en: the patient's movement and posture; every colleague's tasks within their scope, come, go back, show the way, where is …, refusals in their own voice); a model-voiced colleague's `do_task`; colleagues by name (`user_message.staff`, `staffId` on the events, their own conversation and persona; role-true offline replies); web: the companion drawn and speaking, speech animating the one who spoke, body language, the patient drawn walking on the walker's path, sentence chips per role, action-required feedback that stays | yes (IX) | world `posture.test.ts` (lie down, sit up, stand, lapse on clinical positioning, who cannot, where not, snapshots), `escort.test.ts` (follow, sensor poses, studies need positioning, home, range, who cannot walk in both languages, roles, wait, clinical state ends it, snapshots, recent events); agent `movement-intents.test.ts` and `staff-intents.test.ts` (requests and look-alike history questions, both languages), `staff-talk.test.ts` (a nurse by name attaches the monitor, gives the aspirin, records the ECG in Chinese; the receptionist refuses and names who can; a treatment the case lacks is talk; come, go back, where is, show the way; lie down / stand up; PE's positioning scored; an imposed posture kept; "Can you lie flat?" answered; a scripted model nurse acting through `do_task`, none in clinical mode; role-true offline replies), `embodied-talk.test.ts` (refused from the entrance with nothing credited, the companion, clinical mode unchanged, follow / wait / come with me to the CT / back to bed / a nurse by name takes the patient, colleagues' voices and conversations, the receptionist's identity prompt); web `trail.test.ts`, `talk.test.ts` (speaker resolution, per-colleague windows, the UI's sentences parse), `feedback.test.ts`, `embodied-world.test.ts` (a question from the entrance is not sent; "Please follow me." drawn following); e2e `escort.spec.ts` (the companion speaks with their own mouth, follow and wait, SMZL walked upright to the CT, a nurse answering a chip in her own voice and walking over while the receptionist refuses, the patient lying down when asked), `embodied-review.spec.ts` (the delegate chip said to Lin Xiao, her answer) | the web e2e `escort.spec.ts` in Chromium + SwiftShader; the whole vitest suite; the infrastructure benchmark agents and the embodied autopilot unchanged (their reference paths use no free text to the patient and no escort) | no — the phrase set is fixed (no model interprets requests); the companion has no body in the world model; no live model has been asked to move a patient in words; not reviewed by clinical educators |
+ | Truthful bystander cues (G12): posture from clinical state (authored `posture`), oxygen accessory from the authored `device`, a patient who cannot speak (`patient.nonVerbalWhen` → `cannotSpeak`) | yes (FX-T; cannot speak: the content-standard round) | core `transport-fields.test.ts`, `cues.test.ts`, `nonverbal.test.ts`; world perception / posture / `speech` cue; agent anaphylaxis posture, `session/nonverbal.test.ts`; web e2e (sitting up changes the drawn patient) | the 10 cases' authored fields (`cases verify --all`) | no — Rel, Perf (§14.4) |
+ | Screen rule, learner text, lazy hints (extra review items 1–5) | yes (FX-T round) | `screen-rule.test.ts` (read ⇔ policy over sampled points; the reviewer's spots), world `i18n.test.ts` (no raw tool id; both languages, same placeholders), unsupported operations named, `hint-cost.test.ts` (budget, identical results), delegation sentences | web e2e (out of view, "Go there") | no — ranking a hint still costs a reachability flood per new cell (≈ 1.3–1.8 s for 60 cold cells), paid only when read. Perf |
 diff --git a/packages/agent/src/agents/offline.ts b/packages/agent/src/agents/offline.ts
-index 2ccb12b..94be607 100644
+index 2ccb12b..49e73e2 100644
 --- a/packages/agent/src/agents/offline.ts
 +++ b/packages/agent/src/agents/offline.ts
 @@ -34,7 +34,7 @@ import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from ".
@@ -15,7 +161,7 @@ index 2ccb12b..94be607 100644
    // the clinician's own status for each (`resultStatus`): "no record" is never "back"
    const ready = orders.filter((o) => resultStatus(c, o) === "ready").map(label);
    const pending = orders.filter((o) => resultStatus(c, o) === "pending").map(label);
-+  // ordered, not done: the patient must go to the device first (docs/EMBODIED.md §8.5)
++  // ordered, not done: the patient must go to the device first (docs/EMBODIED.md §8.7)
 +  const notDone = orders.filter((o) => resultStatus(c, o) === "not-acquired").map((o) => `${label(o)} — ${modalityText(o.order, L)}`);
    const none = orders.filter((o) => resultStatus(c, o) === "no-record").map(label);
    const parts: string[] = [];
@@ -69,29 +215,52 @@ index 2ccb12b..94be607 100644
  
  /** PROTOCOL §2 name for the offline clinician plan (see `offlineClinicianTurn` in session/autopilot.ts for execution). */
 diff --git a/packages/agent/src/commands-world.ts b/packages/agent/src/commands-world.ts
-index 504b6b6..958a444 100644
+index 504b6b6..50984c5 100644
 --- a/packages/agent/src/commands-world.ts
 +++ b/packages/agent/src/commands-world.ts
-@@ -23,7 +23,7 @@ const NAMES = [
+@@ -2,7 +2,7 @@
+  * Slash commands of embodied mode (docs/EMBODIED.md): `/look`, `/where`,
+  * `/find <query>`, `/go <target>`, `/inspect <target>`,
+  * `/use <target> <operation> [key=value…]`, `/map`, `/skill [id] [key=value…]`,
+- * `/delegate <role> <task> [target]`, `/transport <destination|home>`. Each runs its world tool as the
++ * `/delegate <role> <task> [target] [key=value…]`, `/transport <destination|home> [monitor]`. Each runs its world tool as the
+  * learner — validation, PreToolUse hooks, the approval gate (and, for an
+  * operation with a clinical effect, the clinical tool's own gate) — exactly
+  * like `/order` runs `order_test`. Registered only in embodied sessions; in
+@@ -22,8 +22,8 @@ const NAMES = [
+   ["use", "<target> <operation> [key=value…]"],
    ["map", ""],
    ["skill", "[id] [key=value…]"],
-   ["delegate", "<role> <task> [target]"],
+-  ["delegate", "<role> <task> [target]"],
 -  ["transport", "<destination|home>"],
++  ["delegate", "<role> <task> [target] [key=value…]"],
 +  ["transport", "<destination|home> [monitor]"],
  ] as const;
  
  /** Names of the embodied slash commands. */
-@@ -124,7 +124,9 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
+@@ -124,13 +124,18 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
        return true;
      }
      case "transport":
 -      if (!args) usage(host, name, "<destination|home>");
-+      // `monitor`: the portable monitor at the bedside goes along (EMBODIED §8.5)
++      // `monitor`: the portable monitor at the bedside goes along (EMBODIED §8.7)
 +      if (!args) usage(host, name, "<destination|home> [monitor]");
 +      else if (tokens.length === 2 && tokens[1] === "monitor") await run("transport_patient", { destination: tokens[0], monitor: true });
        else await run("transport_patient", { destination: args });
        return true;
      case "delegate": {
+-      const [role, task, target] = tokens;
+-      if (!role || !task) usage(host, name, "<role> <task> [target]");
+-      else await run("delegate_task", { role, task, ...(target ? { target } : {}) });
++      // `key=value…` after the target: the task's params (`monitor=true`: the portable monitor goes along, EMBODIED §8.7)
++      const [role, task, ...rest] = tokens;
++      const target = rest[0] !== undefined && !rest[0].includes("=") ? rest.shift() : undefined;
++      const params = keyValues(rest);
++      if (!role || !task) usage(host, name, "<role> <task> [target] [key=value…]");
++      else await run("delegate_task", { role, task, ...(target ? { target } : {}), ...(Object.keys(params).length ? { params } : {}) });
+       return true;
+     }
+     default:
 diff --git a/packages/agent/src/commands.ts b/packages/agent/src/commands.ts
 index e72b80e..1b1b581 100644
 --- a/packages/agent/src/commands.ts
@@ -139,7 +308,7 @@ index 5edb10b..07b7506 100644
      case "alarm-response":
      case "procedure-supply":
 diff --git a/packages/agent/src/session/delegation.ts b/packages/agent/src/session/delegation.ts
-index e1f9962..ea30892 100644
+index e1f9962..245f74d 100644
 --- a/packages/agent/src/session/delegation.ts
 +++ b/packages/agent/src/session/delegation.ts
 @@ -125,9 +125,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
@@ -149,7 +318,7 @@ index e1f9962..ea30892 100644
 -  if (destination === "home" || destination === "back") return { destination: "home" };
 -  if (destination) return { destination: h.resolve(destination, staff) ?? destination };
 -  return capability ? { capability } : null;
-+  // the portable monitor at the bedside goes along (EMBODIED §8.5): `true`, or the device named
++  // the portable monitor at the bedside goes along (EMBODIED §8.7): `true`, or the device named
 +  const monitor = params.monitor === true ? { monitor: true } : strArg(params, "monitor") ? { monitor: h.resolve(strArg(params, "monitor"), staff) ?? strArg(params, "monitor") } : {};
 +  if (destination === "home" || destination === "back") return { destination: "home", ...monitor };
 +  if (destination) return { destination: h.resolve(destination, staff) ?? destination, ...monitor };
@@ -158,7 +327,7 @@ index e1f9962..ea30892 100644
  
  /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
 diff --git a/packages/agent/src/session/embodied-autopilot.ts b/packages/agent/src/session/embodied-autopilot.ts
-index e2b1c8e..6dbdc90 100644
+index e2b1c8e..94f1fca 100644
 --- a/packages/agent/src/session/embodied-autopilot.ts
 +++ b/packages/agent/src/session/embodied-autopilot.ts
 @@ -14,7 +14,11 @@
@@ -168,7 +337,7 @@ index e2b1c8e..6dbdc90 100644
 - *   (asked / examined / ordered / read / intervened / decided…).
 + *   (asked / examined / ordered / read / intervened / decided…). A study done
 + *   on the patient at a device is ordered where the clinician is; then the
-+ *   patient is taken to the device for it (EMBODIED §8.5) — with the portable
++ *   patient is taken to the device for it (EMBODIED §8.7) — with the portable
 + *   monitor at the bedside when they are on a monitor — and the session
 + *   records the acquisition on arrival.
   *
@@ -180,8 +349,8 @@ index e2b1c8e..6dbdc90 100644
   */
 -import { countSettled, countStatus, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 -import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
-+import { awaitingAcquisition, countSettled, countStatus, monitorAttached, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
-+import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type ClinicalIntent, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
++import { awaitingAcquisition, countSettled, countStatus, monitorAttached, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
++import { behaviorOf, PRIMARY_ACTOR, roleName, TRAVEL_MONITOR_CAPABILITY, type ActionHint, type ClinicalIntent, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
  import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
  import type { ToolCallStatus } from "../loop.js";
  import { actionIntent } from "../tools/spatial.js";
@@ -190,30 +359,30 @@ index e2b1c8e..6dbdc90 100644
    const world = e.world();
    const L = host.locale;
 -  const parameters = { ...(then.parameters ?? {}) };
-+  const parameters: Record<string, unknown> = { ...(then.parameters ?? {}), ...(monitorTravels(host, world) ? { monitor: true } : {}) };
++  const parameters: Record<string, unknown> = { ...(then.parameters ?? {}), ...(monitorTravels(host.caseDef, host.state(), world) ? { monitor: true } : {}) };
    const destination = typeof parameters.destination === "string" ? parameters.destination : "";
    const target = destination === "home" ? rt(L, "world.transport.home") : destination ? nameOf(world, destination, L) : String(parameters.capability ?? "—");
    if (world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
-@@ -155,9 +159,59 @@ async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, t
-   return (await e.act({ operation: "transport_patient", targetId: then.targetId, parameters }, turnId, signal)).status === "completed";
+@@ -156,8 +160,69 @@ async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, t
  }
  
-+/**
-+ * A patient on a monitor travels with one (EMBODIED §8.5): when their monitor is attached and a portable device providing
-+ * cardiac monitoring stands at the bedside (a defibrillator's monitor), it goes with them.
+ /**
+- * After a step, a patient who was taken to a device for a study goes back to their bed space — unless the next
+- * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there).
++ * Does a monitor travel with the patient (EMBODIED §8.7)? A patient on a monitor (the engine's attachment) travels
++ * with one when a portable device providing cardiac monitoring stands at the bedside (a defibrillator's monitor) —
++ * the rule of the in-world demonstration and of the bench's reference walker.
 + */
-+function monitorTravels(host: AutopilotHost, world: WorldRuntime): boolean {
-+  if (!monitorAttached(host.caseDef, host.state())) return false;
-+  return world.bedsideProviders("cardiac-monitor").some((id) => !!world.entity(id)?.portable);
++export function monitorTravels(c: CaseDefinition, s: SessionState, world: WorldRuntime): boolean {
++  if (!monitorAttached(c, s)) return false;
++  return world.bedsideProviders(TRAVEL_MONITOR_CAPABILITY).some((id) => !!world.entity(id)?.portable);
 +}
 +
-+/** The acquisition intent of an ordered study (`acquire`, EMBODIED §8.5). */
-+function acquireIntent(investigationId: string): ClinicalIntent {
-+  return { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId };
-+}
++/** The acquisition intent of an ordered study (`acquire`, EMBODIED §8.7). */
++const acquireIntent = (investigationId: string): ClinicalIntent => actionIntent({ type: "acquire", investigationId })!;
 +
 +/**
-+ * Studies ordered that wait for the patient at their device (EMBODIED §8.5): the patient is taken there (`hint.then`),
++ * Studies ordered that wait for the patient at their device (EMBODIED §8.7): the patient is taken there (`hint.then`),
 + * and the session records the acquisition on arrival — each in its own plan span, verified in the engine state.
 + */
 +async function acquirePending(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, signal?: AbortSignal): Promise<void> {
@@ -241,47 +410,59 @@ index e2b1c8e..6dbdc90 100644
 +  }
 +}
 +
-+/** Does the step need the patient at a device — to act (a test the patient performs at a station), or for the study it orders? */
-+function stepNeedsDevice(world: WorldRuntime, step: OfflineClinicianStep, intent: ClinicalIntent): boolean {
-+  if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return true;
-+  return step.action.type === "order" && needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, acquireIntent(step.action.investigationId)).requirement);
++/**
++ * Does a patient taken to a device stay there after a step (EMBODIED §8.4, §8.7)? While a study ordered still waits
++ * for them at its device, or when the next step that acts on the patient needs them at a device — to act (a test the
++ * patient performs at a station), or for the study it orders. The rule of the in-world demonstration and of the
++ * bench's reference walker; otherwise they go back to their bed space.
++ */
++export function patientStaysAtDevice(world: WorldRuntime, state: SessionState, steps: readonly OfflineClinicianStep[], from: number, extraOps = 0): boolean {
++  if (state.orders.some((o) => awaitingAcquisition(o))) return true;
++  for (let i = from; i < steps.length; i++) {
++    const step = steps[i]!;
++    if (step.kind !== "tool" || stepAlreadySatisfied(step, state, extraOps)) continue;
++    const intent = actionIntent(step.action as ClinicalAction);
++    if (!intent) continue;
++    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return true;
++    return step.action.type === "order" && needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, acquireIntent(step.action.investigationId)).requirement);
++  }
++  return false;
 +}
 +
- /**
-  * After a step, a patient who was taken to a device for a study goes back to their bed space — unless the next
-- * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there).
-+ * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there), or a study
-+ * ordered still waits for them at one.
++/**
++ * After a step, a patient who was taken to a device for a study goes back to their bed space — unless they stay
++ * there (`patientStaysAtDevice`: the next step needs them at a device, then `satisfy` takes them on from there).
   */
  async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, steps: readonly OfflineClinicianStep[], turnId: string, signal?: AbortSignal): Promise<void> {
    const world = e.world();
-@@ -165,13 +219,13 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
+@@ -165,15 +230,7 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
    const patient = e.patientId();
    if (!place || !patient || signal?.aborted) return;
    const home = place.home.slot ? place.slot === place.home.slot : !place.slot && place.provider === place.home.provider;
 -  if (home) return;
-+  if (home || host.state().orders.some((o) => awaitingAcquisition(o))) return;
-   for (let i = host.cursor.value; i < steps.length; i++) {
-     const step = steps[i]!;
-     if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
-     const intent = actionIntent(step.action as ClinicalAction);
-     if (!intent) continue;
+-  for (let i = host.cursor.value; i < steps.length; i++) {
+-    const step = steps[i]!;
+-    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
+-    const intent = actionIntent(step.action as ClinicalAction);
+-    if (!intent) continue;
 -    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
-+    if (stepNeedsDevice(world, step, intent)) return;
-     break;
-   }
+-    break;
+-  }
++  if (home || patientStaysAtDevice(world, host.state(), steps, host.cursor.value, host.cursor.extraOps)) return;
    // its own plan span: the walk (or the porter's task) and the verification that the patient is home
-@@ -418,6 +472,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
+   const plan = e.trace.start("plan", "transport_patient home", { actorId: PRIMARY_ACTOR, refs: { entities: [patient] }, data: { tool: "transport_patient", args: { destination: "home" } } });
+   let ok = false;
+@@ -418,6 +475,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
      if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
      if (run === step && !outcome.ok) host.cursor.missed.push(step);
      if (run === step || host.state().clock === clockBefore) host.cursor.value++;
-+    // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.5)
++    // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.7)
 +    await acquirePending(host, e, turnId, signal);
      // a study done at a device: the patient goes back to their bed space (unless the next step needs a device too)
      await returnPatient(host, e, steps, turnId, signal);
      // the care team's turn (its assigned scenario runs alongside: a hold, a search, a request)
 diff --git a/packages/agent/src/session/embodied.ts b/packages/agent/src/session/embodied.ts
-index b8d5962..f5621a6 100644
+index b8d5962..09ca3a1 100644
 --- a/packages/agent/src/session/embodied.ts
 +++ b/packages/agent/src/session/embodied.ts
 @@ -25,8 +25,9 @@
@@ -295,11 +476,20 @@ index b8d5962..f5621a6 100644
    behaviorOf,
    createWorldRuntime,
    operationName,
+@@ -61,7 +62,7 @@ import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment }
+ import { strArg } from "../tools/clinical.js";
+ import { learnerVitals } from "../tools/format.js";
+ import type { ScopeActor } from "../tools/scope.js";
+-import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
++import { actionIntent, spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
+ import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
+ import { createWorldTools, DELEGATION_TASKS, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
+ import { nameOf } from "../tools/world-format.js";
 @@ -470,6 +471,8 @@ export class EmbodiedSession {
        }
        // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
        this.count.afterAct(request, result);
-+      // the patient brought to the device a study waits for: it is done there now (EMBODIED §8.5)
++      // the patient brought to the device a study waits for: it is done there now (EMBODIED §8.7)
 +      this.acquirePending();
        this.traceEngineChanges(actionId, actorId);
        this.host.emit({ type: "world_action_result", result }, caller.submission);
@@ -308,7 +498,7 @@ index b8d5962..f5621a6 100644
        return;
      }
      this.record();
-+    // a transfer that brought the patient to the device a study waits for: it is done there now (EMBODIED §8.5)
++    // a transfer that brought the patient to the device a study waits for: it is done there now (EMBODIED §8.7)
 +    if (r.ok) this.acquirePending();
      for (const lines of this.noteCaptures) lines.push(r.message);
      this.host.emit({ type: "notification", level: r.ok ? "info" : "warning", title: rt(this.host.locale(), "world.relocated"), body: r.message });
@@ -319,16 +509,16 @@ index b8d5962..f5621a6 100644
  
 +  /**
 +   * The device a study is done on the patient at, by its capabilities — the world's rule (the acquisition's
-+   * requirement, EMBODIED §8.5); null when the study is acquired at the order. The kernel records an in-world order
++   * requirement, EMBODIED §8.7); null when the study is acquired at the order. The kernel records an in-world order
 +   * with it (`order.modality`).
 +   */
 +  modalityOf(investigationId: string): string[] | null {
-+    const r = this.inner.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId }).requirement;
++    const r = this.inner.checkSpatial(PRIMARY_ACTOR, actionIntent({ type: "acquire", investigationId })!).requirement;
 +    return r.kind === "patient-at-provider" ? [...r.capabilities] : null;
 +  }
 +
 +  /**
-+   * Studies waiting for the patient at their device (EMBODIED §8.5): each one the world has the patient on the device
++   * Studies waiting for the patient at their device (EMBODIED §8.7): each one the world has the patient on the device
 +   * for now is acquired there — by the department's staff (`acquisitionStaff`), at that device — through the engine
 +   * (`acquire`, by the system): its result's clock starts now. Called after every world action, a transfer, and an
 +   * in-world order.
@@ -338,7 +528,7 @@ index b8d5962..f5621a6 100644
 +    if (!s.started || s.finished) return;
 +    for (const o of s.orders) {
 +      if (!awaitingAcquisition(o)) continue;
-+      const check = this.inner.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: o.investigationId, itemId: o.investigationId });
++      const check = this.inner.checkSpatial(PRIMARY_ACTOR, actionIntent({ type: "acquire", investigationId: o.investigationId })!);
 +      if (!check.ok) continue;
 +      const where = check.satisfiedBy[0];
 +      this.host.dispatch({ type: "acquire", investigationId: o.investigationId, phase: o.phase, collector: acquisitionStaff(o.modality ?? []), ...(where ? { where } : {}), by: "system" });
@@ -348,14 +538,40 @@ index b8d5962..f5621a6 100644
    /** A tool whose call may relocate the patient: the relocation's line is appended to its output. */
    private withNotes<A extends Record<string, unknown>>(tool: ToolDefinition<A>): ToolDefinition<A> {
      return {
+diff --git a/packages/agent/src/session/i18n-embodied.ts b/packages/agent/src/session/i18n-embodied.ts
+index 0d268f4..95a1088 100644
+--- a/packages/agent/src/session/i18n-embodied.ts
++++ b/packages/agent/src/session/i18n-embodied.ts
+@@ -247,8 +247,8 @@ export const EMBODIED_EN = {
+   "cmd.use": "Operate equipment: /use <target> <operation> [key=value…] (in-world mode)",
+   "cmd.map": "Rooms of the facility, nearest first (in-world mode)",
+   "cmd.skill": "Run a skill: /skill <id> [key=value…] (in-world mode)",
+-  "cmd.delegate": "Delegate a task to staff: /delegate <role> <task> [target] (in-world mode)",
+-  "cmd.transport": "Take the patient somewhere on their trolley: /transport <destination|home> (in-world mode)",
++  "cmd.delegate": "Delegate a task to staff: /delegate <role> <task> [target] [key=value…] (in-world mode)",
++  "cmd.transport": "Take the patient somewhere on their trolley: /transport <destination|home> [monitor] (monitor: the portable monitor at the bedside goes along; in-world mode)",
+   "cmd.embodiedOnly": "/{name} needs in-world mode (start with --embodied).",
+   "cmd.skills.list": "Skills:",
+   "cmd.map.header": "Rooms (nearest first):",
+@@ -504,8 +504,8 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
+   "cmd.use": "操作设备：/use <目标> <操作> [键=值…]（实景模式）",
+   "cmd.map": "本场馆的房间（由近及远，实景模式）",
+   "cmd.skill": "执行技能：/skill <id> [键=值…]（实景模式）",
+-  "cmd.delegate": "把任务交给工作人员：/delegate <角色> <任务> [目标]（实景模式）",
+-  "cmd.transport": "用推床把患者送到某处：/transport <目的地|home>（实景模式）",
++  "cmd.delegate": "把任务交给工作人员：/delegate <角色> <任务> [目标] [键=值…]（实景模式）",
++  "cmd.transport": "用推床把患者送到某处：/transport <目的地|home> [monitor]（monitor：床旁便携监护随行；实景模式）",
+   "cmd.embodiedOnly": "/{name} 仅在实景模式下可用（用 --embodied 启动）。",
+   "cmd.skills.list": "技能：",
+   "cmd.map.header": "房间（由近及远）：",
 diff --git a/packages/agent/src/session/i18n-imaging.ts b/packages/agent/src/session/i18n-imaging.ts
 new file mode 100644
-index 0000000..051b6dd
+index 0000000..18230fa
 --- /dev/null
 +++ b/packages/agent/src/session/i18n-imaging.ts
 @@ -0,0 +1,29 @@
 +/**
-+ * Runtime strings of a study done on the patient at a device in the world (docs/EMBODIED.md §8.5, audit 2026-11-12
++ * Runtime strings of a study done on the patient at a device in the world (docs/EMBODIED.md §8.7, audit 2026-11-12
 + * P1-7): an order that waits for the patient there ("ordered — the patient must go to CT" / "已开单——患者需要去CT"),
 + * the acquisition, a read refused before it. Merged into `./i18n.ts`. Words follow docs/GLOSSARY.md.
 + */
@@ -412,14 +628,14 @@ index 7c14ac8..f70e44c 100644
  
  const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };
 diff --git a/packages/agent/src/session/kernel.ts b/packages/agent/src/session/kernel.ts
-index f8f6180..4536673 100644
+index f8f6180..13311c0 100644
 --- a/packages/agent/src/session/kernel.ts
 +++ b/packages/agent/src/session/kernel.ts
 @@ -370,6 +370,12 @@ export class SessionKernel {
    dispatch(action: ClinicalAction, id: string): ReduceResult {
      // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
      if (action.type === "operate") syncProcedureSupply(this, id);
-+    // in-world, a study done on the patient at a device is acquired there, not at the order (docs/EMBODIED.md §8.5):
++    // in-world, a study done on the patient at a device is acquired there, not at the order (docs/EMBODIED.md §8.7):
 +    // the world's rule names the device, and the order is recorded with it (a replay reads it from the record)
 +    if (action.type === "order" && !action.modality && this.embodied) {
 +      const modality = this.embodied.modalityOf(action.investigationId);
@@ -438,14 +654,14 @@ index f8f6180..4536673 100644
        this.emitSnapshot(id);
        if (action.type === "note") {
 diff --git a/packages/agent/src/session/learner.ts b/packages/agent/src/session/learner.ts
-index 50a923b..1d2e022 100644
+index 50a923b..88f9a0e 100644
 --- a/packages/agent/src/session/learner.ts
 +++ b/packages/agent/src/session/learner.ts
 @@ -258,6 +258,11 @@ export class LearnerPath {
        k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
        return null;
      }
-+    // a study done on the patient at a device is done when the world has them there (docs/EMBODIED.md §8.5), never typed in
++    // a study done on the patient at a device is done when the world has them there (docs/EMBODIED.md §8.7), never typed in
 +    if (requested.type === "acquire") {
 +      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "acquire.handEntry") }), code: "permission_denied" });
 +      return null;
@@ -454,7 +670,7 @@ index 50a923b..1d2e022 100644
      // entered in their name
      // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it
 diff --git a/packages/agent/src/session/notifications.ts b/packages/agent/src/session/notifications.ts
-index f89e323..52d896b 100644
+index f89e323..3feba14 100644
 --- a/packages/agent/src/session/notifications.ts
 +++ b/packages/agent/src/session/notifications.ts
 @@ -4,7 +4,7 @@
@@ -470,17 +686,17 @@ index f89e323..52d896b 100644
      }
      case "objective.completed":
        return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
-+    // an in-world study done with the patient at its device: the result's clock started (docs/EMBODIED.md §8.5)
++    // an in-world study done with the patient at its device: the result's clock started (docs/EMBODIED.md §8.7)
 +    case "order.acquired":
 +      return [{ notification: { level: "info", title: rt(L, "notify.acquired.title"), body: rt(L, "notify.acquired.body", { name: investigationName(c, event.investigationId, L), time: clockTime(c, event.readyAt, L, "ceil") }) } }];
      case "hold.placed":
        return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
      case "hold.released":
 diff --git a/packages/agent/src/session/transport.test.ts b/packages/agent/src/session/transport.test.ts
-index f4dc650..fa84f7e 100644
+index f4dc650..b50bcbc 100644
 --- a/packages/agent/src/session/transport.test.ts
 +++ b/packages/agent/src/session/transport.test.ts
-@@ -49,35 +49,69 @@ describe("transport_patient: a learner tool", () => {
+@@ -49,35 +49,71 @@ describe("transport_patient: a learner tool", () => {
  });
  
  describe("a CTPA: the patient taken to the scanner and back (PE, general hospital)", () => {
@@ -543,10 +759,12 @@ index f4dc650..fa84f7e 100644
 +    expect((await command(t, "transport", "eq:ct-scanner")).ok).toBe(true);
 +    const ordered = await command(t, "order", "ctpa");
 +    expect(ordered.ok, ordered.text).toBe(true);
-+    // done as soon as the order is placed (its own minute spent): she is on the table
++    // done as the order arrives — she is on the table: at the order's minute, released a turnaround later (as an order
++    // in text mode)
 +    const o = t.session.state.orders.find((x) => x.investigationId === "ctpa")!;
-+    expect(o.acquired).toMatchObject({ at: t.session.state.clock, where: "eq:ct-scanner" });
-+    expect(o.acquired!.at - o.orderedAt).toBeCloseTo(t.session.caseDef.clock.actionCosts.order ?? 0, 6);
++    expect(o.acquired).toMatchObject({ at: o.orderedAt, where: "eq:ct-scanner", collector: "radiographer" });
++    expect(o.acquired!.seq).toBe(o.seq! + 1);
++    expect(o.readyAt).toBe(o.orderedAt + t.session.caseDef.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
      await t.session.close();
 +    const text = await makeEmbodiedSession({ caseId: "pulmonary-embolism-postop", clinical: true, settingsPatch: { approvalMode: "bypass" } });
 +    await text.session.run({ type: "clinical_action", action: { type: "start" } });
@@ -559,7 +777,7 @@ index f4dc650..fa84f7e 100644
  
    it("zh-CN: the same flow in Chinese — no raw ids in the learner sentences", async () => {
 diff --git a/packages/agent/src/tools/clinical-resolve.ts b/packages/agent/src/tools/clinical-resolve.ts
-index 37d4380..3654cdd 100644
+index 37d4380..a6dc545 100644
 --- a/packages/agent/src/tools/clinical-resolve.ts
 +++ b/packages/agent/src/tools/clinical-resolve.ts
 @@ -27,6 +27,7 @@ import {
@@ -582,7 +800,7 @@ index 37d4380..3654cdd 100644
 - * (the case has no result for it in that phase — it will never come back); ready (back, not yet reviewed); or
 - * pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read results only).
 + * (the case has no result for it in that phase — it will never come back); not acquired (in-world: ordered, the
-+ * patient not yet at the device the study is done at, docs/EMBODIED.md §8.5 — no result exists); ready (back, not yet
++ * patient not yet at the device the study is done at, docs/EMBODIED.md §8.7 — no result exists); ready (back, not yet
 + * reviewed); or pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read
 + * results only).
   */
@@ -616,7 +834,7 @@ index 37d4380..3654cdd 100644
  }
  
 diff --git a/packages/agent/src/tools/clinical.ts b/packages/agent/src/tools/clinical.ts
-index 9dfc454..1b94bc0 100644
+index 9dfc454..3bf349e 100644
 --- a/packages/agent/src/tools/clinical.ts
 +++ b/packages/agent/src/tools/clinical.ts
 @@ -15,6 +15,7 @@
@@ -649,7 +867,7 @@ index 9dfc454..1b94bc0 100644
      const phase = placed?.phase ?? s.phase;
 -    const readyAt = placed?.readyAt ?? s.clock;
 +    const order = s.orders.find((o) => o.key === placed?.key);
-+    // in-world, a study done on the patient at a device: ordered here, done once the patient is there (EMBODIED §8.5)
++    // in-world, a study done on the patient at a device: ordered here, done once the patient is there (EMBODIED §8.7)
 +    const atModality = !!order?.modality?.length;
 +    const waiting = !!order && awaitingAcquisition(order);
 +    const readyAt = order?.readyAt ?? placed?.readyAt ?? s.clock;
@@ -732,7 +950,7 @@ index 1188c23..0839294 100644
        data.push({ investigationId: id, phase: o.order.phase, ready: status === "ready", read: false, status });
      }
 diff --git a/packages/agent/src/tools/spatial.ts b/packages/agent/src/tools/spatial.ts
-index e15687e..cded130 100644
+index e15687e..4c6299a 100644
 --- a/packages/agent/src/tools/spatial.ts
 +++ b/packages/agent/src/tools/spatial.ts
 @@ -21,7 +21,7 @@
@@ -744,18 +962,29 @@ index e15687e..cded130 100644
  import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
  import { rt } from "../session/i18n.js";
  import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
-@@ -151,6 +151,18 @@ export function vitalsGated<A extends Record<string, unknown>>(tool: ToolDefinit
+@@ -84,6 +84,10 @@ export function actionIntent(action: ClinicalAction): ClinicalIntent | null {
+       return { tool: "order_test", kind: "order", investigationId: action.investigationId, itemId: action.investigationId };
+     case "read":
+       return { tool: "read_result", kind: "read", investigationId: action.investigationId, itemId: action.investigationId };
++    // the acquisition of an ordered study (EMBODIED §8.7): the patient on its device — the session records it, never a
++    // learner; its requirement is what a front-end shows as the way there
++    case "acquire":
++      return { tool: "order_test", kind: "acquire", investigationId: action.investigationId, itemId: action.investigationId };
+     case "intervene":
+       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
+     case "operate":
+@@ -151,6 +155,18 @@ export function vitalsGated<A extends Record<string, unknown>>(tool: ToolDefinit
  
  const roleLabel = (role: string, locale: string) => roleName(role, locale);
  
 +/**
-+ * An in-world study ordered and waiting for the patient at its device (EMBODIED §8.5): the order's output gains the way
++ * An in-world study ordered and waiting for the patient at its device (EMBODIED §8.7): the order's output gains the way
 + * to take them there — the world's hint for the acquisition (go to the patient, then `transport_patient`), as a
 + * refusal's hint reads.
 + */
 +function acquisitionWay(out: ToolOutput, gate: SpatialGate, actor: ActorId, ctx: ToolContext, investigationId: string | undefined): ToolOutput {
 +  if (!investigationId || !ctx.state().orders.some((o) => o.investigationId === investigationId && awaitingAcquisition(o))) return out;
-+  const check = gate.check(actor, { tool: "order_test", kind: "acquire", investigationId, itemId: investigationId }, false);
++  const check = gate.check(actor, actionIntent({ type: "acquire", investigationId })!, false);
 +  if (check.ok || !check.hint) return out;
 +  return { ...out, output: [out.output, ...hintLines(check.hint, ctx.locale)].join("\n") };
 +}
@@ -763,7 +992,7 @@ index e15687e..cded130 100644
  /** Thrown inside a gated run when the re-check fails: nothing was committed. */
  class SpatialAbort extends Error {
    constructor(readonly check: Extract<SpatialCheck, { ok: false }>) {
-@@ -214,7 +226,8 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
+@@ -214,7 +230,8 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
        };
        const run = async (): Promise<ToolOutput> => {
          try {
@@ -809,14 +1038,945 @@ index 6ded05c..5a6080a 100644
          return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters }), L(ctx));
        },
        {
+diff --git a/packages/bench/src/agents/reference.ts b/packages/bench/src/agents/reference.ts
+index 9042d04..7a66604 100644
+--- a/packages/bench/src/agents/reference.ts
++++ b/packages/bench/src/agents/reference.ts
+@@ -14,12 +14,16 @@
+  * autopilot: the spatial requirement is satisfied first (walk to the
+  * refusal's hint; wheel a cart to the bedside when the policy asks for it;
+  * take the patient to the device a study is done at — `transport_patient`,
+- * by a porter when the facility has one, else wheeling them yourself),
+- * a device operation that carries the act out is preferred (an ECG cart's
+- * prepare → connect → record → reset, the patient's monitor `attach`, a
+- * workstation's `order` / `read`, a device's `use`) — a busy or
+- * out-of-service device is replaced by another provider —, else the
+- * clinical act itself; then the engine state is verified.
++ * by a porter when the facility has one, else wheeling them yourself, with
++ * the portable monitor at the bedside when they are on a monitor:
++ * `monitorTravels`), a device operation that carries the act out is
++ * preferred (an ECG cart's prepare → connect → record → reset, the
++ * patient's monitor `attach`, a workstation's `order` / `read`, a device's
++ * `use`) — a busy or out-of-service device is replaced by another
++ * provider —, else the clinical act itself; then the engine state is
++ * verified. A study ordered to be done on the patient at a device
++ * (EMBODIED §8.7) is acquired once they are taken there: before its read,
++ * and after each order of a whole case (`solve-case`).
+  */
+ import {
+   actionIntent,
+@@ -29,7 +33,9 @@ import {
+   clinicianOfflineSteps,
+   heldBy,
+   minutesUntilReadable,
++  monitorTravels,
+   operationPath,
++  patientStaysAtDevice,
+   releaseOperation,
+   stepAlreadySatisfied,
+   stepForAction,
+@@ -37,8 +43,8 @@ import {
+   type DeviceRoute,
+   type OfflineClinicianStep,
+ } from "@clinicalcraft/agent";
+-import { assignPatientSlot, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
+-import { behaviorOf, PRIMARY_ACTOR, type ActionHint, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type SpatialRequirement, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
++import { assignPatientSlot, awaitingAcquisition, resultKey, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
++import { behaviorOf, PRIMARY_ACTOR, type ActionHint, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+ import { footprintDistance } from "../predicates.js";
+ import type { RecordedCall } from "../recorder.js";
+ import type { BenchFindQuery, ReferenceStep, ScriptedCall } from "../schema.js";
+@@ -210,16 +216,19 @@ class ReferenceSolver {
+ 
+   /**
+    * Take the patient to a destination (`transport_patient`, EMBODIED §8): a porter does it when the facility has
+-   * one (`delegate_task`), else the clinician walks to the patient's side and wheels them there.
++   * one (`delegate_task`), else the clinician walks to the patient's side and wheels them there — with the portable
++   * monitor at the bedside when they are on a monitor (`monitorTravels`, EMBODIED §8.7).
+    */
+-  private async transport(parameters: Record<string, unknown>): Promise<boolean> {
++  private async transport(asked: Record<string, unknown>): Promise<boolean> {
+     const patient = this.patientId();
+     if (!patient) return false;
++    const monitor = monitorTravels(this.c, this.ctx.session.state, this.world);
++    const parameters: Record<string, unknown> = { ...asked, ...(monitor ? { monitor: true } : {}) };
+     const destination = typeof parameters.destination === "string" ? parameters.destination : "";
+     if (this.world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
+       const target = destination || String(parameters.capability ?? "");
+-      const r = await this.call("delegate_task", { role: "porter", task: "transport_patient", target }, async () => {
+-        const events = await this.ctx.session.run({ type: "slash_command", name: "delegate", args: `porter transport_patient ${target}` });
++      const r = await this.call("delegate_task", { role: "porter", task: "transport_patient", target, ...(monitor ? { params: { monitor: true } } : {}) }, async () => {
++        const events = await this.ctx.session.run({ type: "slash_command", name: "delegate", args: `porter transport_patient ${target}${monitor ? " monitor=true" : ""}` });
+         const out = events.flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
+         const data = (out?.data ?? null) as { ok?: boolean } | null;
+         return data?.ok ? { ok: true, output: out?.text ?? "" } : { ok: false, code: "TOOL_ERROR", output: out?.text ?? "no output" };
+@@ -392,6 +401,23 @@ class ReferenceSolver {
+     return stepAlreadySatisfied(before ?? stepForAction(this.c, action, this.L), this.ctx.session.state);
+   }
+ 
++  /**
++   * Studies ordered that wait for the patient at their device (EMBODIED §8.7): the patient is taken there (the
++   * acquisition's hint, `transport_patient`) and the session records the acquisition on arrival. `only`: that
++   * investigation's order in the current phase (a read's).
++   */
++  private async acquirePending(only?: ClinicalAction): Promise<void> {
++    const tried = new Set<string>();
++    for (;;) {
++      const state = this.ctx.session.state;
++      const key = only && "investigationId" in only ? resultKey(only.investigationId, ("phase" in only && only.phase) || state.phase) : null;
++      const order = state.orders.find((o) => awaitingAcquisition(o) && !tried.has(o.key) && (!key || o.key === key));
++      if (!order) return;
++      tried.add(order.key);
++      await this.satisfy(actionIntent({ type: "acquire", investigationId: order.investigationId, phase: order.phase })!);
++    }
++  }
++
+   /** Wait (simulated time) until a read's result is ready. */
+   private async readyToRead(action: ClinicalAction): Promise<void> {
+     const pending = minutesUntilReadable(this.c, this.ctx.session.state, action);
+@@ -400,6 +426,8 @@ class ReferenceSolver {
+ 
+   /** A clinical act carried out with the body (see the module docs); true when the engine state shows it done. */
+   private async embodied(action: ClinicalAction, step?: OfflineClinicianStep): Promise<boolean> {
++    // a study not done yet (the patient never went to its device): taken there first, then its result awaited
++    if (action.type === "read") await this.acquirePending(action);
+     if (action.type === "read") await this.readyToRead(action);
+     const intent = actionIntent(action);
+     if (intent) {
+@@ -427,19 +455,11 @@ class ReferenceSolver {
+   }
+ 
+   /**
+-   * After a study the patient was taken to a device for, they go back to their bed space — unless the next step that
+-   * acts on the patient needs them at a device too (the embodied autopilot's rule).
++   * After a study the patient was taken to a device for, they go back to their bed space — unless they stay there
++   * (`patientStaysAtDevice`, the embodied autopilot's rule: the next step needs them at a device too).
+    */
+   private async returnPatient(steps: readonly OfflineClinicianStep[], from: number): Promise<void> {
+-    if (!this.patientAway()) return;
+-    for (let i = from; i < steps.length; i++) {
+-      const step = steps[i]!;
+-      if (step.kind !== "tool" || stepAlreadySatisfied(step, this.ctx.session.state)) continue;
+-      const intent = actionIntent(step.action as ClinicalAction);
+-      if (!intent) continue;
+-      if (needsPatientAtProvider(this.world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
+-      break;
+-    }
++    if (!this.patientAway() || patientStaysAtDevice(this.world, this.ctx.session.state, steps, from)) return;
+     await this.transport({ destination: "home" });
+   }
+ 
+@@ -471,6 +491,8 @@ class ReferenceSolver {
+       }
+       await this.embodied(a, step);
+       cursor++;
++      // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.7)
++      await this.acquirePending();
+       await this.returnPatient(steps, cursor);
+     }
+   }
+@@ -576,12 +598,6 @@ class ReferenceSolver {
+   }
+ }
+ 
+-/** Does a requirement need the patient at a device (a study done on them there: `patient-at-provider`)? */
+-function needsPatientAtProvider(r: SpatialRequirement): boolean {
+-  if (r.kind === "patient-at-provider") return true;
+-  return (r.kind === "any-of" || r.kind === "all-of") && r.options.some(needsPatientAtProvider);
+-}
+-
+ /** The reference agent. */
+ export function createReferenceAgent(): BenchAgent {
+   return {
+diff --git a/packages/bench/src/audit-acquisition.test.ts b/packages/bench/src/audit-acquisition.test.ts
+new file mode 100644
+index 0000000..47e8255
+--- /dev/null
++++ b/packages/bench/src/audit-acquisition.test.ts
+@@ -0,0 +1,60 @@
++/**
++ * The spatial audit covers acquisitions (EMBODIED §8.7, audit 2026-11-12 P1-7): a study done on the patient at a
++ * device is recorded by the session (`order.acquired`), and the audit judges it on the world as it was at the commit —
++ * the patient on the device —, not on a body. An acquisition recorded with the patient elsewhere is a violation.
++ */
++import { describe, expect, it } from "vitest";
++import { createSession, mergeSettings, type ClinicalSession } from "@clinicalcraft/agent";
++import { catalogsFor, chooseFacility, loadContent } from "@clinicalcraft/agent/node";
++import { PRIMARY_ACTOR } from "@clinicalcraft/world";
++import { Auditor } from "./audit.js";
++
++const content = await loadContent({ dirs: [] });
++
++async function peSession(): Promise<ClinicalSession> {
++  const caseDef = content.cases.get("pulmonary-embolism-postop")!.def;
++  const facility = chooseFacility(content, caseDef, undefined, null)!;
++  const settings = mergeSettings([{ source: "flag", settings: { provider: "offline", locale: "en", embodiment: "embodied", approvalMode: "bypass", transcripts: { enabled: false } } }]);
++  return createSession({ caseDef, facility, catalogs: catalogsFor(content, facility), settings });
++}
++
++/** Start, walk to the patient and order a CTPA from her bedside (recorded with its device, not done yet). */
++async function orderedOnTheWard(s: ClinicalSession): Promise<void> {
++  await s.run({ type: "clinical_action", action: { type: "start" } });
++  await s.run({ type: "world_action", request: { actionId: "walk", actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "patient:ward-1" } } });
++  await s.run({ type: "clinical_action", action: { type: "order", investigationId: "ctpa" } });
++  const order = s.state.orders.find((o) => o.investigationId === "ctpa");
++  expect(order).toMatchObject({ modality: ["ct"] });
++  expect(order?.acquired).toBeUndefined();
++}
++
++describe("spatial audit: acquisitions", () => {
++  it("a CTPA acquired on arrival at the scanner is audited and passes", async () => {
++    const s = await peSession();
++    const auditor = new Auditor(s);
++    auditor.attach();
++    await orderedOnTheWard(s);
++    await s.run({ type: "world_action", request: { actionId: "there", actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: "patient:ward-1", parameters: { destination: "eq:ct-scanner" } } });
++    expect(s.state.orders.find((o) => o.investigationId === "ctpa")?.acquired).toMatchObject({ where: "eq:ct-scanner" });
++    const audit = auditor.finish(s.trace());
++    auditor.detach();
++    await s.close();
++    expect(audit.spatial.violations).toEqual([]);
++    // the order (at the bedside) and the acquisition (the patient on the scanner) were both audited
++    expect(audit.spatial.audited).toBe(2);
++  });
++
++  it("an acquisition recorded while the patient is still on the ward is a violation", async () => {
++    const s = await peSession();
++    const auditor = new Auditor(s);
++    auditor.attach();
++    await orderedOnTheWard(s);
++    // bypassing the session's rule (it records an acquisition only with the patient on the device)
++    s.dispatch({ type: "acquire", investigationId: "ctpa", collector: "radiographer", where: "eq:ct-scanner", by: "system" });
++    expect(s.state.orders.find((o) => o.investigationId === "ctpa")?.acquired).toBeDefined();
++    const audit = auditor.finish(s.trace());
++    auditor.detach();
++    await s.close();
++    expect(audit.spatial.violations).toEqual([expect.objectContaining({ type: "order.acquired", requirement: "patient-at-provider", system: { ok: false, reason: "patient-not-at-provider" }, violation: true })]);
++  });
++});
+diff --git a/packages/bench/src/audit.ts b/packages/bench/src/audit.ts
+index c3f81ea..ff61aa5 100644
+--- a/packages/bench/src/audit.ts
++++ b/packages/bench/src/audit.ts
+@@ -13,7 +13,10 @@
+  *   the run the acting body is read from the trace (the `clinical_action`
+  *   span whose `clinicalEventIds` holds the event's `ev-<seq>`). An accepted
+  *   act whose acting body did not satisfy the requirement, or that no span
+- *   attributes, is a violation. It must be 0.
++ *   attributes, is a violation. It must be 0. An acquisition the session
++ *   records itself (`order.acquired`: a study done on the patient at a
++ *   device, EMBODIED §8.7) is judged on the world as it was, not on a body:
++ *   the patient must have been on the device.
+  * - **Authorisation audit.** Every accepted gated clinical act is re-checked
+  *   with the permission ladder (`checkPermission`, the session's mode, scope
+  *   and rules): `deny` → unauthorised; `ask` → authorised only by an approval
+@@ -40,6 +43,8 @@ export interface SpatialAuditEntry {
+   checks: Record<ActorId, { ok: boolean; reason?: string }>;
+   /** The acting body according to the trace (null: no span attributes the event). */
+   actor: ActorId | null;
++  /** An act the session records itself (an acquisition): the requirement checked on the world, not on a body. */
++  system?: { ok: boolean; reason?: string };
+   violation: boolean;
+ }
+ 
+@@ -76,6 +81,8 @@ export function actionOfEvent(event: DomainEvent): ClinicalAction | null {
+       return { type: "order", investigationId: event.investigationId };
+     case "result.read":
+       return { type: "read", investigationId: event.investigationId, phase: event.phase };
++    case "order.acquired":
++      return { type: "acquire", investigationId: event.investigationId, phase: event.phase };
+     case "intervention.applied":
+       return { type: "intervene", interventionId: event.interventionId };
+     case "decision.answered":
+@@ -100,6 +107,8 @@ function intentOf(action: ClinicalAction): ClinicalIntent | null {
+       return { tool: "order_test", kind: "order", investigationId: action.investigationId, itemId: action.investigationId };
+     case "read":
+       return { tool: "read_result", kind: "read", investigationId: action.investigationId, itemId: action.investigationId };
++    case "acquire":
++      return { tool: "order_test", kind: "acquire", investigationId: action.investigationId, itemId: action.investigationId };
+     case "intervene":
+       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
+     default:
+@@ -217,6 +226,12 @@ export class Auditor {
+     const s = this.session;
+     const slot = s.facility ? assignPatientSlot(s.facility, s.caseDef) : null;
+     const requirement = this.policy.requirementFor(intent, { caseDef: s.caseDef, slotId: slot?.id ?? null, locale: s.settings.locale });
++    if (intent.kind === "acquire") {
++      // the session's own record: the patient on the device as the world has them now, whoever stands where
++      const check = world.checkSpatial(PRIMARY_ACTOR, intent);
++      this.spatial.push({ ev, type: event.type, intent, requirement: requirement.kind, checks: {}, actor: null, system: check.ok ? { ok: true } : { ok: false, reason: check.reason }, violation: false });
++      return;
++    }
+     const checks: SpatialAuditEntry["checks"] = {};
+     if (requirement.kind !== "anywhere") {
+       const caps = requiredCapabilities(requirement);
+@@ -249,6 +264,7 @@ export class Auditor {
+       for (const ev of span.refs.clinicalEventIds ?? []) if (!actorOf.has(ev)) actorOf.set(ev, span.actorId);
+     }
+     const spatial = this.spatial.map((entry) => {
++      if (entry.system) return { ...entry, violation: !entry.system.ok };
+       if (entry.requirement === "anywhere") return { ...entry, actor: actorOf.get(entry.ev) ?? null, violation: false };
+       const actor = actorOf.get(entry.ev) ?? null;
+       const verdict = actor ? entry.checks[actor] : undefined;
+diff --git a/packages/bench/src/predicates.test.ts b/packages/bench/src/predicates.test.ts
+index 99dd371..e61dfb2 100644
+--- a/packages/bench/src/predicates.test.ts
++++ b/packages/bench/src/predicates.test.ts
+@@ -2,15 +2,17 @@
+  * Success predicates — every kind, true and false, evaluated on the final
+  * authoritative state of a real run (STEMI, general hospital: the reference
+  * solver washes its hands, walks to the bedside past a locked door, is
+- * refused a CT order at the bedside (imaging is ordered at the radiology
+- * console; lab tests are ordered right there, G9) and the ECG cart the nurse holds, attaches
++ * refused a CT report at the bedside (an imaging report is read at the
++ * radiology console — the study itself may be ordered at the bedside and is
++ * done with the patient on the scanner, EMBODIED §8.7) and the ECG cart the nurse holds, attaches
+  * the monitor and answers), plus edge cases on a hand-built view (audit
+- * violations, a held item, hand hygiene expiry, refusal targets).
++ * violations, a held item, hand hygiene expiry, refusal targets, a study's
++ * stages and the patient's journeys).
+  */
+ import { describe, expect, it } from "vitest";
+ import { loadContent } from "@clinicalcraft/agent/node";
+-import { createSession as createEngineState } from "@clinicalcraft/core";
+-import type { WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
++import { createSession as createEngineState, type OrderRecord } from "@clinicalcraft/core";
++import type { PatientLeg, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
+ import { createReferenceAgent } from "./agents/reference.js";
+ import type { AuditResult } from "./audit.js";
+ import { evaluatePredicate, footprintDistance, predicateClass, type FinalView } from "./predicates.js";
+@@ -48,7 +50,7 @@ const EXPECTED: [BenchPredicate, boolean][] = [
+   [{ answerEquals: ["eq:resus2-ecg", "resus1-ecg"] }, true],
+   [{ answerEquals: "eq:resus2-ecg" }, false],
+   [{ refusedWith: "SPATIAL_REQUIREMENT_UNMET" }, true],
+-  [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "order_test" } }, true],
++  [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "read_result" } }, true],
+   [{ refusedWith: { code: "SPATIAL_REQUIREMENT_UNMET", tool: "examine" } }, false],
+   [{ refusedWith: { code: "DEVICE_BUSY", tool: "interact_object", target: "eq:resus1-ecg" } }, true],
+   [{ refusedWith: { code: "DEVICE_BUSY", target: "eq:resus2-ecg" } }, false],
+@@ -58,6 +60,8 @@ const EXPECTED: [BenchPredicate, boolean][] = [
+   [{ toolCalledAtMostTimes: { tool: "submit_answer", max: 1 } }, true],
+   [{ toolCalledAtMostTimes: { tool: "navigate_to", max: 0 } }, false],
+   [{ caseFinished: true }, false],
++  [{ studyStages: { investigation: "ct-aortogram" } }, false],
++  [{ world: { kind: "patientTransit" } }, false],
+ ];
+ 
+ function scenario(predicates: BenchPredicate[]): BenchScenario {
+@@ -85,7 +89,7 @@ function scenario(predicates: BenchPredicate[]): BenchScenario {
+         { op: "find", query: { interaction: "sink", limit: 1 }, save: "sink" },
+         { op: "interact", target: "@sink", operation: "wash_hands" },
+         { op: "navigate", goal: { kind: "interact", id: "patient:resus-1" } },
+-        { op: "attempt", action: { type: "order", investigationId: "ct-aortogram" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
++        { op: "attempt", action: { type: "read", investigationId: "ct-aortogram" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
+         { op: "interact", target: "eq:resus1-ecg", operation: "connect", expect: "DEVICE_BUSY" },
+         { op: "clinical", action: { type: "intervene", interventionId: "cardiac-monitoring" } },
+         { op: "answer", entity: "eq:resus1-ecg" },
+@@ -200,6 +204,49 @@ describe("predicates on hand-built views", () => {
+     expect(predicateClass({ world: { kind: "doorState", door: "d" } })).toBe("interaction");
+     expect(predicateClass({ refusedWith: "DEVICE_BUSY" })).toBe("safety");
+     expect(predicateClass({ toolCalledAtMostTimes: { tool: "submit_answer", max: 1 } })).toBe("other");
++    expect(predicateClass({ studyStages: { investigation: "ctpa" } })).toBe("clinical");
++    expect(predicateClass({ world: { kind: "patientTransit", monitored: true } })).toBe("safety");
++  });
++
++  it("studyStages: each stage of a study done at a device, in order; patientTransit: every journey monitored and held by a role (EMBODIED §8.7)", () => {
++    const pe = content.cases.get("pulmonary-embolism-postop")!.def;
++    const turnaround = pe.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes;
++    const ward = { slot: "ward-1", provider: null, room: "ward" };
++    const ct = { slot: null, provider: "eq:ct-scanner", room: "rad-ct" };
++    const leg = (from: PatientLeg["from"], to: PatientLeg["to"], departedAt: number, arrivedAt: number, patch: Partial<PatientLeg> = {}): PatientLeg => ({ by: "actor:clinician", role: "clinician", from, to, departedAt, arrivedAt, monitor: "eq:ward-defibrillator", status: "arrived", ...patch });
++    const legs = [leg(ward, ct, 2, 2.4), leg(ct, ward, 2.4, 2.8)];
++    const order: OrderRecord = {
++      key: "ctpa@ward", investigationId: "ctpa", phase: "ward", orderedAt: 1, seq: 3, by: "learner", modality: ["ct"],
++      acquired: { at: 2.4, seq: 5, collector: "radiographer", where: "eq:ct-scanner" }, readyAt: 2.4 + turnaround,
++      reviewed: { at: 33, seq: 7, by: "learner" }, next: { type: "intervene", id: "consult-pert", at: 34, seq: 8 },
++    };
++    const peView = (orders: OrderRecord[], clock: number, journeys: PatientLeg[]): FinalView => {
++      const base = view({ clock });
++      const world = { ...(base.world as object), entities: () => [{ id: "patient:ward-1", kind: "patient" }] } as unknown as WorldRuntime;
++      const snapshot = { entities: { "patient:ward-1": { patient: { legs: journeys } } } } as unknown as WorldStateSnapshot;
++      return { ...base, caseDef: pe, state: { ...createEngineState(pe), clock, orders }, world, snapshot };
++    };
++    const stages = (o: OrderRecord, clock = 40, journeys = legs) => evaluatePredicate(peView([o], clock, journeys), { studyStages: { investigation: "ctpa" } });
++    expect(stages(order)).toMatchObject({ ok: true, class: "clinical" });
++    expect(stages(order).detail).toMatch(/ordered 1 by learner → departed 2 → arrived 2.4 → acquired 2.4 by radiographer at eq:ct-scanner → released 32.4 → reviewed 33 by learner → then intervene consult-pert 34/);
++    // a stage missing, or out of order, fails and says which
++    expect(stages({ ...order, acquired: undefined, readyAt: undefined, reviewed: undefined, next: undefined }).detail).toMatch(/not acquired/);
++    expect(stages({ ...order, acquired: { at: 1, seq: 3, implied: true }, readyAt: 1 + turnaround }).detail).toMatch(/acquired at the order/);
++    expect(stages(order, 40, []).detail).toMatch(/no journey to eq:ct-scanner/);
++    expect(stages({ ...order, orderedAt: 2.2 }).detail).toMatch(/left for the device before the order/);
++    expect(stages({ ...order, readyAt: 2.4 }).detail).toMatch(/not at the acquisition \+ turnaround/);
++    expect(stages(order, 30).detail).toMatch(/not released yet/);
++    expect(stages({ ...order, reviewed: undefined, next: undefined }).detail).toMatch(/not reviewed/);
++    expect(stages({ ...order, next: undefined }).detail).toMatch(/no resulting action/);
++    expect(evaluatePredicate(peView([], 40, legs), { studyStages: { investigation: "ctpa" } }).detail).toMatch(/not ordered/);
++    // the journeys: each one monitored, each one held by a clinician or a nurse
++    const transit = (journeys: PatientLeg[], w: { monitored?: boolean; roles?: string[] }) => evaluatePredicate(peView([order], 40, journeys), { world: { kind: "patientTransit", ...w } });
++    expect(transit(legs, { monitored: true, roles: ["clinician", "nurse"] })).toMatchObject({ ok: true, class: "safety" });
++    expect(transit(legs, {}).detail).toMatch(/ward-1 → eq:ct-scanner 2–2.4 by actor:clinician \(clinician\), with eq:ward-defibrillator/);
++    expect(transit([legs[0]!, leg(ct, ward, 2.4, 2.8, { monitor: null })], { monitored: true }).ok).toBe(false);
++    expect(transit([legs[0]!, leg(ct, ward, 2.4, 2.8, { by: "staff:porter", role: "porter" })], { roles: ["clinician", "nurse"] }).ok).toBe(false);
++    expect(transit([leg(ward, ct, 2, 2.4, { by: null, role: null })], { roles: ["clinician"] }).ok).toBe(false);
++    expect(transit([], {})).toMatchObject({ ok: false, detail: "the patient never travelled" });
+   });
+ 
+   it("footprintDistance: 0 inside the footprint, edge distance outside", () => {
+diff --git a/packages/bench/src/predicates.ts b/packages/bench/src/predicates.ts
+index 80e302f..a76dbb5 100644
+--- a/packages/bench/src/predicates.ts
++++ b/packages/bench/src/predicates.ts
+@@ -7,7 +7,7 @@
+  * text.
+  */
+ import { evaluate, type CaseDefinition, type FacilityDefinition, type SessionState } from "@clinicalcraft/core";
+-import { PRIMARY_ACTOR, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
++import { PRIMARY_ACTOR, type PatientLeg, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
+ import type { AuditResult } from "./audit.js";
+ import type { RecordedCall, RecordedRefusal } from "./recorder.js";
+ import type { BenchPredicate, BenchWorldPredicate } from "./schema.js";
+@@ -41,8 +41,9 @@ export interface PredicateResult {
+ 
+ /** The metric class of a predicate. */
+ export function predicateClass(p: BenchPredicate): PredicateClass {
+-  if ("clinical" in p || "caseFinished" in p) return "clinical";
++  if ("clinical" in p || "caseFinished" in p || "studyStages" in p) return "clinical";
+   if ("answerEquals" in p) return "localisation";
++  if ("world" in p && p.world.kind === "patientTransit") return "safety";
+   if ("world" in p) return p.world.kind === "actorInRoom" || p.world.kind === "actorOnLevel" || p.world.kind === "actorNear" ? "navigation" : "interaction";
+   if ("refusedWith" in p || "noSpatialViolationsAccepted" in p || "noUnauthorisedAcceptance" in p) return "safety";
+   return "other";
+@@ -89,6 +90,60 @@ function resolve(view: FinalView, ref: string): string {
+   return resolveAnswer(view.world, ref) ?? ref;
+ }
+ 
++/** The patient's journeys, oldest first (the world's `PatientPlaceState.legs`, EMBODIED §8.7). */
++function patientLegs(view: FinalView): PatientLeg[] {
++  const patient = view.world.entities().find((e) => e.kind === "patient")?.id;
++  return (patient ? view.snapshot.entities[patient]?.patient?.legs : undefined) ?? [];
++}
++
++const minute = (m: number) => `${Math.round(m * 100) / 100}`;
++
++/** A leg in a line: where from and to, when, by whom, with which monitor. */
++function legText(l: PatientLeg): string {
++  const end = (e: PatientLeg["from"]) => e.provider ?? e.slot ?? e.room ?? "?";
++  return `${end(l.from)} → ${end(l.to)} ${minute(l.departedAt)}–${minute(l.arrivedAt)} by ${l.by ?? "the team"}${l.role ? ` (${l.role})` : ""}, ${l.monitor ? `with ${l.monitor}` : "no monitor"}${l.status === "arrived" ? "" : ", stopped"}`;
++}
++
++const EPS = 1e-6;
++
++/**
++ * A study done on the patient at a device, stage by stage and in order (EMBODIED §8.7): the order (when, who), the
++ * journey that brought the patient to the device it was acquired at (departed after the order, arrived before the
++ * acquisition), the acquisition there, the report's release (acquisition + turnaround, by the final clock), the
++ * review (the first read: after the release) and the resulting action (after the review).
++ */
++function studyStages(view: FinalView, spec: { investigation: string; phase?: string | undefined }): { ok: boolean; detail: string } {
++  const { caseDef: c, state: s } = view;
++  const order = s.orders.find((o) => o.investigationId === spec.investigation && (!spec.phase || o.phase === spec.phase));
++  if (!order) return { ok: false, detail: `${spec.investigation} not ordered` };
++  const stages = [`${order.key}: ordered ${minute(order.orderedAt)}${order.by ? ` by ${order.by}` : ""}`];
++  const fail = (why: string) => ({ ok: false, detail: `${stages.join(" → ")} ✗ ${why}` });
++  const acquired = order.acquired;
++  if (!acquired) return fail("not acquired: the patient never got to the device");
++  if (acquired.implied || !acquired.where) return fail("acquired at the order, not with the patient at a device");
++  const leg = patientLegs(view)
++    .filter((l) => l.status === "arrived" && l.to.provider === acquired.where && l.arrivedAt <= acquired.at + EPS)
++    .at(-1);
++  if (!leg) return fail(`no journey to ${acquired.where}`);
++  stages.push(`departed ${minute(leg.departedAt)}`, `arrived ${minute(leg.arrivedAt)}`);
++  if (leg.departedAt < order.orderedAt - EPS) return fail("the patient left for the device before the order");
++  stages.push(`acquired ${minute(acquired.at)}${acquired.collector ? ` by ${acquired.collector}` : ""} at ${acquired.where}`);
++  const turnaround = c.investigations.find((i) => i.id === order.investigationId)?.turnaroundMinutes ?? 0;
++  const due = c.clock.mode === "simulated" ? acquired.at + turnaround : acquired.at;
++  if (order.readyAt == null || Math.abs(order.readyAt - due) > EPS) return fail(`released at ${order.readyAt ?? "—"}, not at the acquisition + turnaround (${minute(due)})`);
++  stages.push(`released ${minute(order.readyAt)}`);
++  if (order.readyAt > s.clock + EPS) return fail("the report is not released yet");
++  const reviewed = order.reviewed;
++  if (!reviewed) return fail("not reviewed");
++  stages.push(`reviewed ${minute(reviewed.at)}${reviewed.by ? ` by ${reviewed.by}` : ""}`);
++  if (reviewed.at < order.readyAt - EPS || reviewed.seq <= acquired.seq) return fail("reviewed before the release");
++  const next = order.next;
++  if (!next) return fail("no resulting action after the review");
++  stages.push(`then ${next.type}${next.id ? ` ${next.id}` : ""} ${minute(next.at)}`);
++  if (next.seq <= reviewed.seq || next.at < reviewed.at - EPS) return fail("the resulting action came before the review");
++  return { ok: true, detail: stages.join(" → ") };
++}
++
+ function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean; detail: string } {
+   const actorId = "actor" in w && w.actor ? w.actor : PRIMARY_ACTOR;
+   const actor = view.world.actor(actorId);
+@@ -143,6 +198,13 @@ function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean;
+       const ok = (!w.slot || place.slot === w.slot) && (!provider || place.provider === provider) && (!w.room || place.room === w.room.replace(/^room:/, ""));
+       return { ok, detail: `patient in ${place.slot ?? "—"}${place.provider ? ` at ${place.provider}` : ""} (room ${place.room ?? "—"})` };
+     }
++    case "patientTransit": {
++      const legs = patientLegs(view);
++      if (!legs.length) return { ok: false, detail: "the patient never travelled" };
++      const held = (l: PatientLeg) => !w.roles || (l.role !== null && w.roles.includes(l.role));
++      const ok = legs.every((l) => (!w.monitored || l.monitor !== null) && held(l));
++      return { ok, detail: legs.map(legText).join("; ") };
++    }
+   }
+ }
+ 
+@@ -158,6 +220,10 @@ export function evaluatePredicate(view: FinalView, p: BenchPredicate): Predicate
+     const r = worldPredicate(view, p.world);
+     return done(r.ok, r.detail);
+   }
++  if ("studyStages" in p) {
++    const r = studyStages(view, p.studyStages);
++    return done(r.ok, r.detail);
++  }
+   if ("answerEquals" in p) {
+     const accepted = (Array.isArray(p.answerEquals) ? p.answerEquals : [p.answerEquals]).map((a) => resolve(view, a));
+     const last = view.answers.last();
+diff --git a/packages/bench/src/schema.ts b/packages/bench/src/schema.ts
+index 34d345f..6a54123 100644
+--- a/packages/bench/src/schema.ts
++++ b/packages/bench/src/schema.ts
+@@ -157,6 +157,12 @@ export const BenchWorldPredicateSchema = z.discriminatedUnion("kind", [
+   z.object({ kind: z.literal("doorState"), door: Ref, open: z.boolean().optional(), locked: z.boolean().optional() }).strict(),
+   /** Where the patient is now (EMBODIED §8): in a bed space (`slot`), at a device (`provider`, an id or alias), in a room. */
+   z.object({ kind: z.literal("patientAt"), slot: Ref.optional(), provider: Ref.optional(), room: Ref.optional() }).strict(),
++  /**
++   * The patient's journeys (EMBODIED §8.7, the world's `PatientPlaceState.legs`): at least one, and every one with a
++   * monitor travelling with them (`monitored`) and held in transit by a body of one of `roles` (a team transfer is
++   * held by no one named).
++   */
++  z.object({ kind: z.literal("patientTransit"), monitored: z.boolean().optional(), roles: z.array(Ref).min(1).max(8).optional() }).strict(),
+ ]);
+ export type BenchWorldPredicate = z.infer<typeof BenchWorldPredicateSchema>;
+ 
+@@ -165,6 +171,13 @@ const RefusalCode = z.enum(REFUSAL_CODES);
+ export const PredicateSchema = z.union([
+   /** The engine state (core Condition DSL). */
+   z.object({ clinical: ConditionSchema }).strict(),
++  /**
++   * A study done on the patient at a device, stage by stage and in order (EMBODIED §8.7): ordered → the journey to the
++   * device (departure after the order, arrival) → acquired there → released (acquisition + turnaround, by the final
++   * clock) → reviewed (the first read) → the resulting action after the review. `phase`: that phase's order (default:
++   * the first order of the investigation).
++   */
++  z.object({ studyStages: z.object({ investigation: IdSchema, phase: IdSchema.optional() }).strict() }).strict(),
+   z.object({ world: BenchWorldPredicateSchema }).strict(),
+   /** The last answer submitted with `submit_answer` resolves to one of these entity ids. */
+   z.object({ answerEquals: z.union([Ref, z.array(Ref).min(1).max(8)]) }).strict(),
+diff --git a/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json b/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json
+index fa97009..54e3b1c 100644
+--- a/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json
++++ b/packages/content/bench/embodied-v1/workflow-pe-ctpa-transport.json
+@@ -5,34 +5,50 @@
+   "suite": "embodied-v1",
+   "category": "clinical-workflow",
+   "title": {
+-    "zh-CN": "CTPA：把患者连床推到 CT，再送回病房",
+-    "en": "CTPA: wheel the patient to CT and back to the ward"
++    "zh-CN": "CTPA：病房开单，带监护送 CT，阅读报告后处置",
++    "en": "CTPA: order it on the ward, take her to CT monitored, read the report and act on it"
+   },
+   "instruction": {
+-    "zh-CN": "把这位病房患者连床推到 CT 扫描仪，在扫描仪旁申请 CT 肺动脉造影（CTPA），然后把她送回病房床位。",
+-    "en": "Wheel this ward patient on her bed to the CT scanner, request a CT pulmonary angiogram there, then take her back to her ward bed."
++    "zh-CN": "这位术后病房患者可能发生了肺栓塞，正在心电监护。先在她床旁申请 CT 肺动脉造影（CTPA），然后带着床旁的便携监护仪，用病床把她推到 CT 扫描仪（她躺上扫描床后才做检查），再在监护下把她送回病房床位。报告发出后阅读报告，并呼叫肺栓塞救治团队（PERT）。",
++    "en": "This post-operative ward patient may have a pulmonary embolism and is on a monitor. Order a CT pulmonary angiogram at her bedside, then take her on her bed to the CT scanner with the portable monitor at her bedside (the scan is done once she is on it) and bring her back to her ward bed, still monitored. Read the report once it is released and activate the PE response team (PERT)."
+   },
+   "caseId": "pulmonary-embolism-postop",
+   "locale": "zh-CN",
+   "setup": {
+-    "approvals": "approve"
++    "approvals": "approve",
++    "clinical": [
++      {
++        "type": "intervene",
++        "interventionId": "o2-nasal"
++      },
++      {
++        "type": "intervene",
++        "interventionId": "monitoring"
++      }
++    ]
+   },
+   "predicates": [
+     {
+-      "clinical": {
+-        "ordered": "ctpa"
++      "studyStages": {
++        "investigation": "ctpa"
+       }
+     },
+     {
+       "world": {
+-        "kind": "patientAt",
+-        "slot": "ward-1"
++        "kind": "patientTransit",
++        "monitored": true,
++        "roles": ["clinician", "nurse"]
++      }
++    },
++    {
++      "clinical": {
++        "intervened": "consult-pert"
+       }
+     },
+     {
+       "world": {
+-        "kind": "actorInRoom",
+-        "room": "ward"
++        "kind": "patientAt",
++        "slot": "ward-1"
+       }
+     },
+     {
+@@ -49,20 +65,34 @@
+   },
+   "reference": {
+     "steps": [
++      {
++        "op": "clinical",
++        "action": {
++          "type": "order",
++          "investigationId": "ctpa"
++        }
++      },
+       {
+         "op": "transport",
+         "destination": "eq:ct-scanner"
+       },
++      {
++        "op": "transport",
++        "destination": "home"
++      },
+       {
+         "op": "clinical",
+         "action": {
+-          "type": "order",
++          "type": "read",
+           "investigationId": "ctpa"
+         }
+       },
+       {
+-        "op": "transport",
+-        "destination": "home"
++        "op": "clinical",
++        "action": {
++          "type": "intervene",
++          "interventionId": "consult-pert"
++        }
+       }
+     ]
+   },
+@@ -77,26 +107,51 @@
+           }
+         }
+       },
++      {
++        "tool": "order_test",
++        "args": {
++          "investigation_id": "ctpa"
++        }
++      },
++      {
++        "tool": "transport_patient",
++        "args": {
++          "destination": "eq:ct-scanner",
++          "monitor": true
++        }
++      },
+       {
+         "tool": "transport_patient",
+         "args": {
+-          "destination": "eq:ct-scanner"
++          "destination": "home",
++          "monitor": true
+         }
+       },
+       {
+-        "tool": "interact_object",
++        "tool": "navigate_to",
+         "args": {
+-          "target": "eq:ct-scanner",
+-          "operation": "use",
+-          "parameters": {
+-            "investigation": "ctpa"
++          "goal": {
++            "kind": "interact",
++            "id": "eq:radiology-console"
+           }
+         }
+       },
+       {
+-        "tool": "transport_patient",
++        "tool": "wait",
++        "args": {
++          "minutes": 30
++        }
++      },
++      {
++        "tool": "read_result",
++        "args": {
++          "investigation_id": "ctpa"
++        }
++      },
++      {
++        "tool": "intervene",
+         "args": {
+-          "destination": "home"
++          "intervention_id": "consult-pert"
+         }
+       }
+     ]
+diff --git a/packages/content/schemas/bench-scenario.schema.json b/packages/content/schemas/bench-scenario.schema.json
+index 1aab26f..ac32364 100644
+--- a/packages/content/schemas/bench-scenario.schema.json
++++ b/packages/content/schemas/bench-scenario.schema.json
+@@ -996,6 +996,55 @@
+             "at": {
+               "type": "string"
+             },
++            "modality": {
++              "type": "array",
++              "items": {
++                "type": "string",
++                "minLength": 1,
++                "maxLength": 60
++              },
++              "minItems": 1,
++              "maxItems": 8
++            },
++            "by": {
++              "type": "string",
++              "enum": [
++                "learner",
++                "agent",
++                "system",
++                "replay"
++              ]
++            }
++          },
++          "required": [
++            "type",
++            "investigationId"
++          ],
++          "additionalProperties": false
++        },
++        {
++          "type": "object",
++          "properties": {
++            "type": {
++              "type": "string",
++              "const": "acquire"
++            },
++            "investigationId": {
++              "$ref": "#/definitions/Id"
++            },
++            "phase": {
++              "$ref": "#/definitions/Id"
++            },
++            "collector": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
++            "where": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
+             "by": {
+               "type": "string",
+               "enum": [
+@@ -3472,6 +3521,30 @@
+                 ],
+                 "additionalProperties": false
+               },
++              {
++                "type": "object",
++                "properties": {
++                  "studyStages": {
++                    "type": "object",
++                    "properties": {
++                      "investigation": {
++                        "$ref": "#/definitions/Id"
++                      },
++                      "phase": {
++                        "$ref": "#/definitions/Id"
++                      }
++                    },
++                    "required": [
++                      "investigation"
++                    ],
++                    "additionalProperties": false
++                  }
++                },
++                "required": [
++                  "studyStages"
++                ],
++                "additionalProperties": false
++              },
+               {
+                 "type": "object",
+                 "properties": {
+@@ -3706,6 +3779,32 @@
+                           "kind"
+                         ],
+                         "additionalProperties": false
++                      },
++                      {
++                        "type": "object",
++                        "properties": {
++                          "kind": {
++                            "type": "string",
++                            "const": "patientTransit"
++                          },
++                          "monitored": {
++                            "type": "boolean"
++                          },
++                          "roles": {
++                            "type": "array",
++                            "items": {
++                              "type": "string",
++                              "minLength": 1,
++                              "maxLength": 160
++                            },
++                            "minItems": 1,
++                            "maxItems": 8
++                          }
++                        },
++                        "required": [
++                          "kind"
++                        ],
++                        "additionalProperties": false
+                       }
+                     ]
+                   }
+diff --git a/packages/content/schemas/case.schema.json b/packages/content/schemas/case.schema.json
+index 6f4ee13..03855f6 100644
+--- a/packages/content/schemas/case.schema.json
++++ b/packages/content/schemas/case.schema.json
+@@ -1027,6 +1027,53 @@
+             "at": {
+               "type": "string"
+             },
++            "modality": {
++              "type": "array",
++              "items": {
++                "$ref": "#/definitions/Capability"
++              },
++              "minItems": 1,
++              "maxItems": 8
++            },
++            "by": {
++              "type": "string",
++              "enum": [
++                "learner",
++                "agent",
++                "system",
++                "replay"
++              ]
++            }
++          },
++          "required": [
++            "type",
++            "investigationId"
++          ],
++          "additionalProperties": false
++        },
++        {
++          "type": "object",
++          "properties": {
++            "type": {
++              "type": "string",
++              "const": "acquire"
++            },
++            "investigationId": {
++              "$ref": "#/definitions/Id"
++            },
++            "phase": {
++              "$ref": "#/definitions/Id"
++            },
++            "collector": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
++            "where": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
+             "by": {
+               "type": "string",
+               "enum": [
+diff --git a/packages/content/schemas/operative-scenario.schema.json b/packages/content/schemas/operative-scenario.schema.json
+index 2e17f68..20b2724 100644
+--- a/packages/content/schemas/operative-scenario.schema.json
++++ b/packages/content/schemas/operative-scenario.schema.json
+@@ -996,6 +996,55 @@
+             "at": {
+               "type": "string"
+             },
++            "modality": {
++              "type": "array",
++              "items": {
++                "type": "string",
++                "minLength": 1,
++                "maxLength": 60
++              },
++              "minItems": 1,
++              "maxItems": 8
++            },
++            "by": {
++              "type": "string",
++              "enum": [
++                "learner",
++                "agent",
++                "system",
++                "replay"
++              ]
++            }
++          },
++          "required": [
++            "type",
++            "investigationId"
++          ],
++          "additionalProperties": false
++        },
++        {
++          "type": "object",
++          "properties": {
++            "type": {
++              "type": "string",
++              "const": "acquire"
++            },
++            "investigationId": {
++              "$ref": "#/definitions/Id"
++            },
++            "phase": {
++              "$ref": "#/definitions/Id"
++            },
++            "collector": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
++            "where": {
++              "type": "string",
++              "minLength": 1,
++              "maxLength": 120
++            },
+             "by": {
+               "type": "string",
+               "enum": [
 diff --git a/packages/core/src/engine/acquisition.test.ts b/packages/core/src/engine/acquisition.test.ts
 new file mode 100644
-index 0000000..3f7594f
+index 0000000..2461df9
 --- /dev/null
 +++ b/packages/core/src/engine/acquisition.test.ts
-@@ -0,0 +1,133 @@
+@@ -0,0 +1,143 @@
 +/**
-+ * The stages of a study done on the patient at a device (audit 2026-11-12 P1-7, docs/EMBODIED.md §8.5): the order,
++ * The stages of a study done on the patient at a device (audit 2026-11-12 P1-7, docs/EMBODIED.md §8.7): the order,
 + * the acquisition, the report's release (acquisition + turnaround), the review and the resulting action are distinct
 + * and recorded. In-world orders carry a `modality` and wait for the patient there; text mode keeps the acquisition
 + * implied at the order (recorded as implied), so its play and its verification do not change.
@@ -867,7 +2027,8 @@ index 0000000..3f7594f
 +    s = play(PE, [{ type: "advance-time", minutes: 28 }], s);
 +    expect(s.clock).toBe(30);
 +    expect(isOrderReady(PE, s, ctpa(s))).toBe(false);
-+    expect(evaluate(PE, s, { ordered: "ctpa" })).toBe(true);
++    // the requirement lists keep it outstanding: an objective or rubric leaf `ordered` holds for a test done
++    expect(evaluate(PE, s, { ordered: "ctpa" })).toBe(false);
 +    expect(evaluate(PE, s, { resultReady: "ctpa" })).toBe(false);
 +    // the missing-tests list keeps it outstanding; the debrief lists it as never done; nothing waits on time for it
 +    const report = assess(PE, s).investigations;
@@ -896,6 +2057,7 @@ index 0000000..3f7594f
 +    const turnaround = PE.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes;
 +    expect(ctpa(s).acquired).toMatchObject({ at: arrival, collector: "radiographer", where: "eq:ct-scanner" });
 +    expect(ctpa(s).readyAt).toBe(arrival + turnaround);
++    expect(evaluate(PE, s, { ordered: "ctpa" })).toBe(true);
 +    expect(assess(PE, s).investigations.essentialMissing).not.toContain("ctpa");
 +    // a second acquisition changes nothing
 +    expect(reduce(PE, s, { type: "acquire", investigationId: "ctpa" }).state).toBe(s);
@@ -917,6 +2079,14 @@ index 0000000..3f7594f
 +    s = play(PE, [{ type: "read", investigationId: "ctpa" }, { type: "intervene", interventionId: "consult-pert" }], s);
 +    expect(ctpa(s).reviewed).toEqual(o.reviewed);
 +    expect(ctpa(s).next).toEqual(o.next);
++  });
++
++  it("the patient already on the device at the order: the scan starts as the order arrives — at the order's minute", () => {
++    let s = orderedAtMinuteOne();
++    expect(s.clock).toBe(2); // the order's own minute spent
++    s = play(PE, [{ type: "acquire", investigationId: "ctpa", collector: "radiographer", where: "eq:ct-scanner", by: "system" }], s);
++    expect(ctpa(s).acquired).toMatchObject({ at: 1, collector: "radiographer" });
++    expect(ctpa(s).readyAt).toBe(1 + PE.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
 +  });
 +
 +  it("an acquisition of a test ordered in text mode, or not ordered, is not an acquisition", () => {
@@ -1004,7 +2174,7 @@ index 618593d..d1946a9 100644
      ...s.attempts.map((a) => a.at),
      ...s.notes.map((n) => n.at),
 diff --git a/packages/core/src/engine/conditions.ts b/packages/core/src/engine/conditions.ts
-index 9ba3a60..ddf5915 100644
+index 9ba3a60..3f639f9 100644
 --- a/packages/core/src/engine/conditions.ts
 +++ b/packages/core/src/engine/conditions.ts
 @@ -40,9 +40,21 @@ export function resultFor(c: CaseDefinition, investigationId: string, phase: str
@@ -1014,7 +2184,7 @@ index 9ba3a60..ddf5915 100644
 -/** True when the order's result can be read: static clock, or turnaround elapsed. */
 +/**
 + * Is the order's study still waiting for its acquisition — placed with a `modality` (in-world mode: done on the
-+ * patient at that device, docs/EMBODIED.md §8.5) and the patient not yet there? Its result does not exist yet.
++ * patient at that device, docs/EMBODIED.md §8.7) and the patient not yet there? Its result does not exist yet.
 + */
 +export function awaitingAcquisition(order: Pick<OrderRecord, "modality" | "acquired">): boolean {
 +  return !!order.modality?.length && !order.acquired;
@@ -1031,6 +2201,26 @@ index 9ba3a60..ddf5915 100644
  }
  
  function inRange(value: number, range: { gte?: number; lte?: number }): boolean {
+@@ -116,7 +128,9 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
+  * Evaluate a condition against a session.
+  *
+  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
+- * without `phase` match any phase. `asked` also holds when an item that
++ * without `phase` match any phase. `ordered` holds for a test ordered and done: an in-world study waiting for the
++ * patient at its device (`awaitingAcquisition`, docs/EMBODIED.md §8.7) stays outstanding until it was acquired there
++ * (text mode: acquired at the order). `asked` also holds when an item that
+  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
+  * recorded attempt (rejected answers are not attempts). `elapsedSince` measures from the last time the
+  * intervention was given (`lastGiven`) and is false while it never was; `examined` with `afterLast` holds when the
+@@ -129,7 +143,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
+   if ("always" in cond) return cond.always;
+   if ("asked" in cond) return historyCredited(c, s, cond.asked);
+   if ("examined" in cond) return s.examined.includes(cond.examined) && (cond.afterLast == null || examinedAfterLast(s, cond.examined, cond.afterLast));
+-  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase));
++  if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase) && !awaitingAcquisition(o));
+   if ("read" in cond) return wasRead(s, cond.read, cond.phase);
+   if ("resultReady" in cond) return resultReady(c, s, cond.resultReady, cond.phase);
+   if ("decided" in cond) return Object.prototype.hasOwnProperty.call(s.decisions, cond.decided);
 diff --git a/packages/core/src/engine/index.ts b/packages/core/src/engine/index.ts
 index aecfec7..e3e1973 100644
 --- a/packages/core/src/engine/index.ts
@@ -1110,7 +2300,7 @@ index fc2f53c..fc3e4ed 100644
  
    it("advance-time still moves the clock explicitly", () => {
 diff --git a/packages/core/src/engine/reducer.ts b/packages/core/src/engine/reducer.ts
-index 9162e99..51593e2 100644
+index 9162e99..5db79bb 100644
 --- a/packages/core/src/engine/reducer.ts
 +++ b/packages/core/src/engine/reducer.ts
 @@ -20,7 +20,7 @@ import {
@@ -1140,14 +2330,16 @@ index 9162e99..51593e2 100644
    ctx.events.push({ type: "order.placed", investigationId: investigation.id, phase: s.phase, key, readyAt });
    const result = resultFor(c, investigation.id, s.phase);
    if (readyAt <= s.clock && result) {
-@@ -203,6 +211,30 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
+@@ -203,6 +211,33 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
    return accepted(actionCost(c, "order"));
  }
  
 +/**
-+ * The study of an order placed with a `modality`, done with the patient on the device (docs/EMBODIED.md §8.5): the
++ * The study of an order placed with a `modality`, done with the patient on the device (docs/EMBODIED.md §8.7): the
 + * result's clock starts here — released after the turnaround. No action cost (the scan's time is the turnaround).
-+ * Already acquired, or implied at the order: nothing changes.
++ * Recorded directly after its order (the patient was already on the device when it was placed), the scan starts as
++ * the order arrives: at the order's minute, released a turnaround later — as an order in text mode. Already acquired,
++ * or implied at the order: nothing changes.
 + */
 +function onAcquire(ctx: Ctx, a: Action<"acquire">): Outcome {
 +  const { c, s } = ctx;
@@ -1159,8 +2351,9 @@ index 9162e99..51593e2 100644
 +  if (index < 0) return rejected("not-ordered", `"${investigation.id}" has not been ordered in phase "${phase}"`);
 +  const order = s.orders[index]!;
 +  if (!awaitingAcquisition(order)) return { kind: "unchanged" };
-+  const readyAt = c.clock.mode === "simulated" ? s.clock + investigation.turnaroundMinutes : s.clock;
-+  const acquired = { at: s.clock, seq: s.seq + 1, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) };
++  const at = order.seq === s.seq ? order.orderedAt : s.clock;
++  const readyAt = c.clock.mode === "simulated" ? at + investigation.turnaroundMinutes : at;
++  const acquired = { at, seq: s.seq + 1, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) };
 +  s.orders[index] = { ...order, readyAt, acquired };
 +  ctx.events.push({ type: "order.acquired", investigationId: investigation.id, phase, key, readyAt, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) });
 +  const result = resultFor(c, investigation.id, phase);
@@ -1171,7 +2364,7 @@ index 9162e99..51593e2 100644
  function onRead(ctx: Ctx, a: Action<"read">): Outcome {
    const { c, s } = ctx;
    const investigation = c.investigations.find((i) => i.id === a.investigationId);
-@@ -210,18 +242,57 @@ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
+@@ -210,18 +245,57 @@ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
    const phase = a.phase ?? s.phase;
    if (!c.phases.some((p) => p.id === phase)) return rejected("unknown-id", `unknown phase "${phase}"`);
    const key = resultKey(investigation.id, phase);
@@ -1231,7 +2424,7 @@ index 9162e99..51593e2 100644
  function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
    const { c, s } = ctx;
    const phase = c.phases.find((p) => p.id === a.phase);
-@@ -537,6 +608,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
+@@ -537,6 +611,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
        return onOrder(ctx, a);
      case "read":
        return onRead(ctx, a);
@@ -1240,7 +2433,7 @@ index 9162e99..51593e2 100644
      case "set-phase":
        return onSetPhase(ctx, a);
      case "hint":
-@@ -617,6 +690,7 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
+@@ -617,6 +693,7 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
    if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
  
    ctx.s.seq += 1;
@@ -1249,7 +2442,7 @@ index 9162e99..51593e2 100644
      const timeline = openTimeline(c, s, ctx.s, ctx.events);
      settle(timeline);
 diff --git a/packages/core/src/engine/timeline.ts b/packages/core/src/engine/timeline.ts
-index e9e34a4..7026d3e 100644
+index e9e34a4..4a99360 100644
 --- a/packages/core/src/engine/timeline.ts
 +++ b/packages/core/src/engine/timeline.ts
 @@ -166,7 +166,8 @@ function checkAlarms(tl: Timeline): void {
@@ -1262,15 +2455,23 @@ index e9e34a4..7026d3e 100644
      const result = resultFor(c, order.investigationId, order.phase);
      if (!result) continue;
      tl.events.push({ type: "result.ready", key: order.key, investigationId: order.investigationId, phase: order.phase, critical: result.critical });
+@@ -243,6 +244,7 @@ function steps(tl: Timeline, from: number, to: number): number[] {
+   for (let m = Math.floor(from) + 1; m < to; m++) points.add(m);
+   const scheduled = [
+     ...(tl.c.physiology?.events ?? []).map((e) => e.atMinute),
++    // a study still waiting for the patient at its device has no release minute yet
+     ...(tl.c.clock.mode === "simulated" ? tl.s.orders.map((o) => o.readyAt) : []),
+     ...sinceThresholds(tl.c, tl.s),
+   ];
 diff --git a/packages/core/src/engine/types.ts b/packages/core/src/engine/types.ts
-index 37078a3..0be0083 100644
+index 37078a3..67f14e4 100644
 --- a/packages/core/src/engine/types.ts
 +++ b/packages/core/src/engine/types.ts
 @@ -52,6 +52,8 @@ export interface DecisionAvailability {
  /** An order with its readiness/read state. */
  export interface OrderStatus {
    order: OrderRecord;
-+  /** Acquired (implied at the order, or the patient was at the device: docs/EMBODIED.md §8.5). */
++  /** Acquired (implied at the order, or the patient was at the device: docs/EMBODIED.md §8.7). */
 +  acquired: boolean;
    ready: boolean;
    read: boolean;
@@ -1289,7 +2490,7 @@ index 37078a3..0be0083 100644
    safety: {
      contraindicated: { interventionId: string; at: number }[];
 diff --git a/packages/core/src/schema/session.ts b/packages/core/src/schema/session.ts
-index caa6b77..8aadd68 100644
+index caa6b77..e3d58a3 100644
 --- a/packages/core/src/schema/session.ts
 +++ b/packages/core/src/schema/session.ts
 @@ -1,7 +1,7 @@
@@ -1309,13 +2510,13 @@ index caa6b77..8aadd68 100644
 -  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), ...base }).strict(),
 +  /**
 +   * `at` = placement id of the workstation/device used (world-level rules check capabilities). `modality` (in-world
-+   * mode, docs/EMBODIED.md §8.5): the study is done on the patient at a device providing these capabilities (CT, MRI…)
++   * mode, docs/EMBODIED.md §8.7): the study is done on the patient at a device providing these capabilities (CT, MRI…)
 +   * — acquired there once the patient is on it (`acquire`), not at the order; the session sets it from the world's
 +   * rule. Absent (text mode, a test not done at a device): the acquisition is implied at the order.
 +   */
 +  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), modality: z.array(CapabilitySchema).min(1).max(8).optional(), ...base }).strict(),
 +  /**
-+   * The acquisition of an order placed with a `modality` (docs/EMBODIED.md §8.5): the study done with the patient on
++   * The acquisition of an order placed with a `modality` (docs/EMBODIED.md §8.7): the study done with the patient on
 +   * the device — `collector`, who did it (a staff id or role: the department's radiographer), and `where`, the device's
 +   * entity id. The result is released its turnaround later. The session records it when the world has the patient
 +   * there; a learner never enters it. Default `phase`: the current one (the order's key).
@@ -1336,7 +2537,7 @@ index caa6b77..8aadd68 100644
  /* ------------------------------------------------------------------ */
  
 +/**
-+ * One investigation ordered in a phase, and its stages (docs/PROTOCOL.md §3.1, docs/EMBODIED.md §8.5): the order (who,
++ * One investigation ordered in a phase, and its stages (docs/PROTOCOL.md §3.1, docs/EMBODIED.md §8.7): the order (who,
 + * when), the acquisition (who, when, where), the report's release (`readyAt`: the acquisition plus the turnaround),
 + * the clinician's review (the first read: who, when) and the next clinical act after it. Sessions saved before the
 + * stages were recorded have none of the optional fields: their acquisition is the order's (implied).
@@ -1387,27 +2588,265 @@ index caa6b77..8aadd68 100644
    | { type: "result.ready"; key: string; investigationId: string; phase: string; critical: boolean }
    | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
    | { type: "phase.changed"; from: string; to: string; automatic: boolean }
+diff --git a/packages/web/src/i18n/en.ts b/packages/web/src/i18n/en.ts
+index a419950..9d68e47 100644
+--- a/packages/web/src/i18n/en.ts
++++ b/packages/web/src/i18n/en.ts
+@@ -391,6 +391,8 @@ const en: Messages = {
+   "orders.pending": "{name} · sent, result in about {min} min",
+   "orders.noRecord": "{name} · no record in this phase",
+   "orders.notYet": "{name} · record not yet created",
++  "orders.atModality": "ordered — the patient must go to {modality}",
++  "orders.atModalityName": "{name} · ordered — the patient must go to {modality}",
+   "orders.acquired": "Evidence gathered",
+   "orders.none": "Nothing gathered yet. Walk to the right workstation and type a test name.",
+   "orders.read": "Read",
+@@ -440,6 +442,7 @@ const en: Messages = {
+   "report.unavailable": "There is no record of this test in this phase.",
+   "report.notAvailableText": "The source case has no result for this test in this phase; no data are generated.",
+   "report.pending": "The result is not back yet (about {min} min).",
++  "report.atModality": "Ordered, not done yet — the patient must go to {modality}: the study is done there, and its result comes about {min} min after it.",
+   "report.placing": "Placing the order for {name}…",
+   "report.opening": "Opening the report…",
+   "report.orderRefused": "The order was not placed: {reason}",
+diff --git a/packages/web/src/i18n/zh-CN.ts b/packages/web/src/i18n/zh-CN.ts
+index 72f1ddb..22c6611 100644
+--- a/packages/web/src/i18n/zh-CN.ts
++++ b/packages/web/src/i18n/zh-CN.ts
+@@ -394,6 +394,8 @@ const zh = {
+   "orders.pending": "{name} · 已送检，约 {min} 分钟后出结果",
+   "orders.noRecord": "{name} · 本阶段无记录",
+   "orders.notYet": "{name} · 该记录尚未产生",
++  "orders.atModality": "已开单——患者需要去{modality}",
++  "orders.atModalityName": "{name} · 已开单——患者需要去{modality}",
+   "orders.acquired": "已获取资料",
+   "orders.none": "尚未获取资料。走到相应工作站，输入检查名称。",
+   "orders.read": "已读",
+@@ -443,6 +445,7 @@ const zh = {
+   "report.unavailable": "该阶段没有此项检查的记录。",
+   "report.notAvailableText": "原病例在这一阶段没有这项检查的结果；不生成数据。",
+   "report.pending": "结果尚未出来（约 {min} 分钟）。",
++  "report.atModality": "已开单，尚未完成——患者需要去{modality}：检查在那里完成，结果在检查后约 {min} 分钟出来。",
+   "report.placing": "正在为 {name} 下单…",
+   "report.opening": "正在打开报告…",
+   "report.orderRefused": "未能下单：{reason}",
+diff --git a/packages/web/src/ui/panels/common.ts b/packages/web/src/ui/panels/common.ts
+index 8780a0e..9db21f1 100644
+--- a/packages/web/src/ui/panels/common.ts
++++ b/packages/web/src/ui/panels/common.ts
+@@ -3,7 +3,7 @@
+  * phase names, the V4 evidence grid, case figures with the "not installed"
+  * placeholder.
+  */
+-import { capabilityLabel, isOrderReady, resultFor, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
++import { awaitingAcquisition, capabilityLabel, isOrderReady, resultFor, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
+ import { assetExists, caseAssetUrl } from "../../app/assets.js";
+ import type { Game } from "../../app/context.js";
+ import { ct, getLocale, joinList, tr, trMaybe } from "../../i18n/index.js";
+@@ -47,12 +47,23 @@ export function investigationName(c: CaseDefinition, id: string): string {
+   return inv ? ct(inv.name) : id;
+ }
+ 
+-/** Minutes until an order is ready (0 = ready). */
++/**
++ * Minutes until an order is ready (0 = ready, or not done yet: an in-world study waiting for the patient at its device
++ * has no release minute — `atModality`).
++ */
+ export function minutesLeft(c: CaseDefinition, s: SessionState, order: OrderRecord): number {
+-  if (c.clock.mode !== "simulated" || isOrderReady(c, s, order)) return 0;
++  if (c.clock.mode !== "simulated" || isOrderReady(c, s, order) || order.readyAt == null) return 0;
+   return Math.max(1, Math.ceil(order.readyAt - s.clock));
+ }
+ 
++/**
++ * The device an in-world study ordered and not done yet waits for the patient at (docs/EMBODIED.md §8.7), in words
++ * ("a CT scanner" / "CT扫描": its capabilities), else null.
++ */
++export function atModality(order: OrderRecord | undefined): string | null {
++  return order && awaitingAcquisition(order) ? capList(order.modality ?? []) : null;
++}
++
+ /** V4 evidence grid of orders (newest first) with read/unread/pending state; `empty` replaces the default empty-state line. */
+ export function evidenceGrid(game: Game, filter: (o: OrderRecord) => boolean, onOpen: (o: OrderRecord) => void, empty?: string): HTMLElement {
+   const c = game.caseDef;
+@@ -71,11 +82,23 @@ export function evidenceGrid(game: Game, filter: (o: OrderRecord) => boolean, on
+         const figs = r?.available ? r.figures.length : 0;
+         const left = minutesLeft(c, s, o);
+         const read = s.seen.includes(o.key);
+-        const status = left > 0 ? tr("orders.waiting", { min: left }) : !r ? tr("orders.noRecord", { name: "" }).replace(/^ · /, "") : read ? tr("orders.read") : tr("orders.unread");
++        // ordered, not done: the patient must go to the device first (no result exists yet)
++        const notDone = atModality(o);
++        const waiting = left > 0 || notDone !== null;
++        const status =
++          notDone !== null
++            ? tr("orders.atModality", { modality: notDone })
++            : left > 0
++              ? tr("orders.waiting", { min: left })
++              : !r
++                ? tr("orders.noRecord", { name: "" }).replace(/^ · /, "")
++                : read
++                  ? tr("orders.read")
++                  : tr("orders.unread");
+         return h(
+           "button",
+-          { type: "button", class: ["evidence-card", left > 0 ? "pending" : "", read ? "read" : "unread", r?.critical ? "critical" : ""], dataset: { order: o.key }, onclick: () => onOpen(o) },
+-          h("span", { class: "file-icon", "aria-hidden": "true" }, left > 0 ? "◷" : figs ? "▧" : "≡"),
++          { type: "button", class: ["evidence-card", waiting ? "pending" : "", read ? "read" : "unread", r?.critical && !waiting ? "critical" : ""], dataset: { order: o.key, ...(notDone !== null ? { stage: "ordered" } : {}) }, onclick: () => onOpen(o) },
++          h("span", { class: "file-icon", "aria-hidden": "true" }, waiting ? "◷" : figs ? "▧" : "≡"),
+           h(
+             "span",
+             null,
+diff --git a/packages/web/src/ui/panels/orders.ts b/packages/web/src/ui/panels/orders.ts
+index b6482a6..24d6195 100644
+--- a/packages/web/src/ui/panels/orders.ts
++++ b/packages/web/src/ui/panels/orders.ts
+@@ -14,13 +14,13 @@
+  * side), and its click shows the way. "Sent" is said once the engine has the
+  * order, never for a refused one.
+  */
+-import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
++import { awaitingAcquisition, matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type OrderRecord, type SessionState } from "@clinicalcraft/core";
+ import type { App, Game } from "../../app/context.js";
+ import type { Verdict } from "../../app/embodied-link.js";
+ import { ct, getLocale, tr } from "../../i18n/index.js";
+ import { clear, h } from "../dom.js";
+ import type { PanelView } from "../panel.js";
+-import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
++import { atModality, capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
+ import { carryRow } from "./hands.js";
+ import { treatRow } from "./treat-row.js";
+ import type { ReportBack } from "./report.js";
+@@ -67,8 +67,14 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
+     submission = app.act({ type: "order", investigationId: inv.id, ...(placementId ? { at: placementId } : {}) });
+     const simulatedWait = game.caseDef.clock.mode === "simulated" && inv.turnaroundMinutes > 0;
+     if (simulatedWait) {
+-      // "sent, result in about N min" once the engine has the order — never for one that was refused
+-      if (submission) whenOrdered(game, key, submission, () => app.toast(ct(inv.name), tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }), "info", `order-${inv.id}`));
++      // "sent, result in about N min" once the engine has the order — never for one that was refused; an in-world
++      // study done at a device: "ordered — the patient must go to …" (its result's clock starts there)
++      if (submission)
++        whenOrdered(game, key, submission, () => {
++          const placed = (game.session.store.snapshot?.state ?? game.session.session.state).orders.find((o) => o.key === key);
++          const notDone = atModality(placed);
++          app.toast(ct(inv.name), notDone !== null ? tr("orders.atModalityName", { name: ct(inv.name), modality: notDone }) : tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }), "info", `order-${inv.id}`);
++        });
+       return;
+     }
+     // Risky orders wait for the approval dialog; the report opens from the evidence grid afterwards.
+@@ -99,13 +105,25 @@ export function refusedCandidate(game: Game, inv: Investigation, v: Verdict): HT
+   );
+ }
+ 
+-/** Embodied: the world's verdict on ordering — or, once ordered in this phase, reading — a test from here. */
++/**
++ * Embodied: the world's verdict on ordering — or, once ordered in this phase, reading — a test from here. A study
++ * ordered and waiting for the patient at its device (EMBODIED §8.7) has nothing to be done here: its button says so
++ * and shows the way there (`testButton`).
++ */
+ export function testVerdict(game: Game, inv: Investigation): Verdict | null {
+   const emb = game.embodied;
+   if (!emb) return null;
+   const s = game.session.store.snapshot?.state ?? game.session.session.state;
+-  const ordered = s.orders.some((o) => o.key === `${inv.id}@${s.phase}`);
+-  return emb.verdict(ordered ? { type: "read", investigationId: inv.id, phase: s.phase } : { type: "order", investigationId: inv.id });
++  const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
++  if (order && awaitingAcquisition(order)) return { kind: "ok" };
++  return emb.verdict(order ? { type: "read", investigationId: inv.id, phase: s.phase } : { type: "order", investigationId: inv.id });
++}
++
++/** A study ordered and not done yet: the world's words and the way to take the patient to its device (EMBODIED §8.7). */
++function showAcquisitionWay(app: App, game: Game, order: OrderRecord, back: ReportBack): void {
++  const v = game.embodied?.verdict({ type: "acquire", investigationId: order.investigationId, phase: order.phase });
++  if (v?.kind === "refused") game.embodied!.explain(v);
++  else app.open("report", { investigationId: order.investigationId, phase: order.phase, back });
+ }
+ 
+ /** The order / open button of a test (its label says what a click does). */
+@@ -123,15 +141,27 @@ export function testButton(app: App, game: Game, inv: Investigation, placementId
+   if (record?.kind === "not-yet")
+     return h("button", { type: "button", class: ["candidate", "no-record", "not-yet"], disabled: true, dataset: { investigation: inv.id, record: "not-yet" } }, h("span", null, tr("orders.notYet", { name })));
+   // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
+-  // "Open" only once the test has been ordered.
+-  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
++  // "Open" only once the test has been ordered; ordered and not done yet (in-world: the patient must go to the
++  // device) — the way there.
++  const notDone = atModality(order);
++  const label =
++    notDone !== null
++      ? tr("orders.atModalityName", { name, modality: notDone })
++      : order && left > 0
++        ? tr("orders.pending", { name, min: left })
++        : !hasRecord
++          ? tr("orders.noRecord", { name })
++          : order
++            ? tr("orders.open", { name })
++            : tr("orders.order", { name });
+   return h(
+     "button",
+     {
+       type: "button",
+       class: ["candidate", !hasRecord ? "no-record" : ""],
+-      dataset: { investigation: inv.id, ...(record ? { record: record.kind } : {}) },
++      dataset: { investigation: inv.id, ...(record ? { record: record.kind } : {}), ...(notDone !== null ? { stage: "ordered" } : {}) },
+       onclick: () => {
++        if (notDone !== null && order) return showAcquisitionWay(app, game, order, back);
+         const before = game.session.store.snapshot?.state ?? game.session.session.state;
+         for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");
+         orderAndOpen(app, game, inv, placementId, back);
+diff --git a/packages/web/src/ui/panels/report.ts b/packages/web/src/ui/panels/report.ts
+index 5af9340..c1eb63d 100644
+--- a/packages/web/src/ui/panels/report.ts
++++ b/packages/web/src/ui/panels/report.ts
+@@ -9,7 +9,7 @@ import type { App } from "../../app/context.js";
+ import { ct, tr } from "../../i18n/index.js";
+ import { clear, h } from "../dom.js";
+ import type { PanelView } from "../panel.js";
+-import { figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
++import { atModality, figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
+ 
+ export interface ReportBack {
+   panel: "orders" | "device" | "journal" | "board" | "conversation";
+@@ -120,6 +120,13 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
+         content.append(h("p", { class: "notice refused", id: "report-refused" }, tr(order ? "report.readRefused" : "report.orderRefused", { reason: refusal })), buttons);
+         return;
+       }
++      // ordered, not done (in-world: the patient must go to the device first) — no result exists yet to wait for
++      const notDone = atModality(order);
++      if (!seen && notDone !== null) {
++        const turnaround = c.investigations.find((i) => i.id === args.investigationId)?.turnaroundMinutes ?? 0;
++        content.append(h("p", { class: "notice", id: "report-not-done" }, tr("report.atModality", { modality: notDone, min: Math.ceil(turnaround) })), buttons);
++        return;
++      }
+       if (!seen) {
+         const left = order && !ready ? minutesLeft(c, s, order) : 0;
+         const text = !order ? tr("report.placing", { name }) : !ready ? (left ? tr("report.pending", { min: left }) : tr("orders.pending", { name, min: "…" })) : tr("report.opening");
 diff --git a/packages/world/src/capabilities.ts b/packages/world/src/capabilities.ts
-index db1a44a..99c5994 100644
+index db1a44a..7cace9e 100644
 --- a/packages/world/src/capabilities.ts
 +++ b/packages/world/src/capabilities.ts
-@@ -58,6 +58,14 @@ export const RHYTHM_CAPABILITIES: readonly string[] = ["cardiac-monitor", "ecg-1
+@@ -58,6 +58,20 @@ export const RHYTHM_CAPABILITIES: readonly string[] = ["cardiac-monitor", "ecg-1
   */
  export const PATIENT_AT_PROVIDER_CAPABILITIES: readonly string[] = ["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"];
  
 +/**
-+ * Who does a study on the patient at a fixed device (EMBODIED §8.5): the department's own staff — an endoscopist at an
++ * Who does a study on the patient at a fixed device (EMBODIED §8.7): the department's own staff — an endoscopist at an
 + * endoscopy tower, otherwise a radiographer (a scanner, an X-ray machine, a C-arm). The acquisition records them by role.
 + */
 +export function acquisitionStaff(capabilities: readonly string[]): string {
 +  return capabilities.includes("endoscopy") ? "endoscopist" : "radiographer";
 +}
 +
++/**
++ * The capability of a monitor that can travel with the patient (EMBODIED §8.7): a portable device providing it at the
++ * bedside (a defibrillator's monitor) goes with them on a transport asked to take one (`transport_patient {monitor}`).
++ */
++export const TRAVEL_MONITOR_CAPABILITY = "cardiac-monitor";
++
  /** Capabilities of patient-performed tests at a fixed station (peak flow, weight): the patient goes to the station. */
  export const PATIENT_PERFORMED_CAPABILITIES: readonly string[] = ["peak-flow", "scale"];
  
 diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
-index 2da080f..9ae65cc 100644
+index 2da080f..5b4a04c 100644
 --- a/packages/world/src/contracts.ts
 +++ b/packages/world/src/contracts.ts
 @@ -356,6 +356,36 @@ export interface PatientPlaceState {
@@ -1415,7 +2854,7 @@ index 2da080f..9ae65cc 100644
     */
    asked?: { posture: BodyPosture; over: BodyPosture } | null;
 +  /**
-+   * The patient's journeys so far, oldest first (EMBODIED §8.5; the last `MAX_PATIENT_LEGS`): one leg per transport or
++   * The patient's journeys so far, oldest first (EMBODIED §8.7; the last `MAX_PATIENT_LEGS`): one leg per transport or
 +   * transfer that moved them. Absent until the first.
 +   */
 +  legs?: PatientLeg[];
@@ -1429,7 +2868,7 @@ index 2da080f..9ae65cc 100644
 +}
 +
 +/**
-+ * One leg of the patient's journey (EMBODIED §8.5), recorded by the world when the patient arrives — or stops short:
++ * One leg of the patient's journey (EMBODIED §8.7), recorded by the world when the patient arrives — or stops short:
 + * who held responsibility in transit (`by`, the body that wheeled or walked them, with its `role`; null: the team
 + * carried out a transfer, nobody named), where from and to, the simulated minutes of departure and arrival, and the
 + * monitor that travelled with them (a device providing cardiac monitoring at their side all the way; null: none).
@@ -1453,7 +2892,7 @@ index 2da080f..9ae65cc 100644
     * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
 -   * own requirement (at the count board, the wand at the table).
 +   * own requirement (at the count board, the wand at the table); `acquire`: the acquisition of an ordered study (EMBODIED
-+   * §8.5) — the patient on the device a study done on them needs (`anywhere`: acquired at the order).
++   * §8.7) — the patient on the device a study done on them needs (`anywhere`: acquired at the order).
     */
 -  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
 +  kind: "ask" | "examine" | "vitals" | "order" | "read" | "acquire" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
@@ -1461,7 +2900,7 @@ index 2da080f..9ae65cc 100644
    findingId?: string;
    investigationId?: string;
 diff --git a/packages/world/src/escort.test.ts b/packages/world/src/escort.test.ts
-index 7020ddc..0eebe64 100644
+index 7020ddc..7d92cee 100644
 --- a/packages/world/src/escort.test.ts
 +++ b/packages/world/src/escort.test.ts
 @@ -66,7 +66,8 @@ describe("follow me (escort_patient)", () => {
@@ -1469,7 +2908,7 @@ index 7020ddc..0eebe64 100644
      await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:ct-scanner" } });
      const ct = w.caseDef.investigations.find((i) => i.requires?.includes("ct"))!;
 -    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: ct.id });
-+    // the scan (its acquisition, EMBODIED §8.5) needs the patient on the scanner — walking beside it is not that
++    // the scan (its acquisition, EMBODIED §8.7) needs the patient on the scanner — walking beside it is not that
 +    const check = w.runtime.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "acquire", investigationId: ct.id });
      expect(!check.ok && check.reason).toBe("patient-not-at-provider");
      if (check.ok || !check.hint?.then) return;
@@ -1514,7 +2953,7 @@ index 38c4411..5eac506 100644
    "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
    "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
 diff --git a/packages/world/src/policy.test.ts b/packages/world/src/policy.test.ts
-index 2bb978e..7ad0467 100644
+index 2bb978e..6339dc0 100644
 --- a/packages/world/src/policy.test.ts
 +++ b/packages/world/src/policy.test.ts
 @@ -8,6 +8,7 @@ import { caseIds, catalogs, loadCase, makeWorld, type TestWorld } from "./__fixt
@@ -1538,7 +2977,7 @@ index 2bb978e..7ad0467 100644
 +    const anywhereOrdered = (caps: string[]) => ({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: caps }] });
 +    expect(req(order("ct-aortogram"))).toEqual(anywhereOrdered(["ct"]));
 +    expect(req(order("coronary-angiography"))).toEqual(anywhereOrdered(["fluoroscopy"]));
-+    // the acquisition (EMBODIED §8.5): the patient on the scanner / on the cath-lab table
++    // the acquisition (EMBODIED §8.7): the patient on the scanner / on the cath-lab table
 +    expect(req(acquire("ct-aortogram"))).toEqual({ kind: "patient-at-provider", capabilities: ["ct"] });
 +    expect(req(acquire("coronary-angiography"))).toEqual({ kind: "patient-at-provider", capabilities: ["fluoroscopy"] });
      expect(req(read("ct-aortogram"))).toEqual({ kind: "at-provider", capabilities: ["ct"] }); // the report: never the patient
@@ -1562,7 +3001,7 @@ index 2bb978e..7ad0467 100644
      expect(PATIENT_PERFORMED_CAPABILITIES).toEqual(["peak-flow", "scale"]);
    });
 diff --git a/packages/world/src/policy.ts b/packages/world/src/policy.ts
-index 75278a5..98fd2cf 100644
+index 75278a5..778fb94 100644
 --- a/packages/world/src/policy.ts
 +++ b/packages/world/src/policy.ts
 @@ -9,7 +9,8 @@
@@ -1571,7 +3010,7 @@ index 75278a5..98fd2cf 100644
   * | `check_vitals` | `any-of`: `monitor-screen` (the patient's attached monitor, 6 m, line of sight from its own room — never through a window) · `at-patient` 1.5 m (observations by hand) · `at-provider` `records` (the chart) |
 - * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`): `all-of` `patient-at-provider` · `at-provider` (the scanner or a console) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
 + * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`; `studyDevice`): wherever a clinician orders — `any-of` `at-patient` (the ward) · `at-provider` `records` (an order-entry terminal) · `at-provider` (the device or its console); its acquisition is a separate act (below) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
-+ * | acquisition of an ordered study (`acquire`, EMBODIED §8.5) | a study done on the patient at a fixed device: `patient-at-provider` (the patient on the device) — the session records it when this holds; any other test: anywhere (acquired at the order) |
++ * | acquisition of an ordered study (`acquire`, EMBODIED §8.7) | a study done on the patient at a fixed device: `patient-at-provider` (the patient on the device) — the session records it when this holds; any other test: anywhere (acquired at the order) |
   * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise `at-provider` (the report at a console — never the patient) |
   * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
   * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
@@ -1608,7 +3047,7 @@ index 75278a5..98fd2cf 100644
 +      case "read":
 +      case "acquire": {
          const inv = intent.investigationId ? c.investigations.find((x) => x.id === intent.investigationId) : undefined;
-+        // the acquisition (EMBODIED §8.5): a study done on the patient at a fixed device needs them on it; anything
++        // the acquisition (EMBODIED §8.7): a study done on the patient at a fixed device needs them on it; anything
 +        // else is acquired at the order
 +        if (intent.kind === "acquire") {
 +          const device = inv ? this.studyDevice(inv) : [];
@@ -1740,19 +3179,21 @@ index b2034c5..9fd1ca1 100644
  
    it("a peak flow is no longer done at the triage station with the child left in the resus bay", async () => {
 diff --git a/packages/world/src/transport.ts b/packages/world/src/transport.ts
-index 8de6023..dd5020a 100644
+index 8de6023..5db933d 100644
 --- a/packages/world/src/transport.ts
 +++ b/packages/world/src/transport.ts
-@@ -16,7 +16,7 @@
+@@ -15,8 +15,8 @@
+  * `patient.moved` event with the route (the browser animates it).
   */
  import { capabilityLabels } from "@clinicalcraft/core";
- import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
+-import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 -import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
++import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES, TRAVEL_MONITOR_CAPABILITY } from "./capabilities.js";
 +import type { ActorState, BodyPosture, EntityId, LegEnd, PatientDestination, PatientLeg, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
  import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
  import { endEscortIfUnable } from "./escort.js";
  import { listText, metres, worldMessage } from "./i18n.js";
-@@ -141,12 +141,80 @@ function equipmentArea(host: EffectsHost, id: EntityId): { level: string; area:
+@@ -141,12 +141,77 @@ function equipmentArea(host: EffectsHost, id: EntityId): { level: string; area:
  
  const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
  
@@ -1774,9 +3215,6 @@ index 8de6023..dd5020a 100644
 +/** How many legs of the patient's journey the world keeps (`PatientPlaceState.legs`, oldest dropped). */
 +export const MAX_PATIENT_LEGS = 32;
 +
-+/** The capability of a monitor that can travel with the patient (EMBODIED §8.5). */
-+export const TRAVEL_MONITOR_CAPABILITY = "cardiac-monitor";
-+
 +/** How a leg of the patient's journey began (`commitPatient` records the leg when it ends). */
 +export interface Departure {
 +  /** Simulated minute of departure. */
@@ -1795,7 +3233,7 @@ index 8de6023..dd5020a 100644
 +}
 +
 +/**
-+ * The monitor that travels with the patient on this transport (`parameters.monitor`, EMBODIED §8.5): `true` — a
++ * The monitor that travels with the patient on this transport (`parameters.monitor`, EMBODIED §8.7): `true` — a
 + * portable device providing cardiac monitoring at the patient's bedside now, in service and free (a defibrillator's
 + * monitor on its cart, put on the bed for the journey); an id or alias — that device, under the same conditions. Null
 + * when none is asked for; an error message when one was asked for and none can come.
@@ -1836,7 +3274,7 @@ index 8de6023..dd5020a 100644
    const { store, patient: body, facility, mover } = host.d;
    const id = body.id!;
    const st = body.state()!;
-@@ -164,6 +232,18 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+@@ -164,6 +229,18 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
      trolley: st.trolley,
      support,
    };
@@ -1855,7 +3293,7 @@ index 8de6023..dd5020a 100644
    /** Trolley moves: a position, or undefined (back where it is kept). */
    const moves: { id: EntityId; position: { x: number; y: number; z: number; level: string; rot: number } | undefined }[] = [];
    if (target.slot) {
-@@ -204,6 +284,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+@@ -204,6 +281,9 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
    const newBody = body.body();
    if (newBody) touched.push(newBody);
    for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
@@ -1865,7 +3303,7 @@ index 8de6023..dd5020a 100644
    host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
    const to = body.place()!;
    const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
-@@ -247,10 +330,16 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -247,10 +327,16 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${why}`, { hint: null });
    }
    if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
@@ -1882,7 +3320,7 @@ index 8de6023..dd5020a 100644
    // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
    host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
    host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
-@@ -277,6 +366,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -277,6 +363,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      host.transitStop = null;
      host.busy.delete(patientId);
      if (trolley) host.busy.delete(trolley);
@@ -1890,7 +3328,7 @@ index 8de6023..dd5020a 100644
    }
    const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
    if (collapsed) {
-@@ -286,18 +376,20 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+@@ -286,18 +373,20 @@ export async function transportPatient(host: TransportHost, request: WorldAction
      const stop = stopTarget(host, now.pose, null);
      // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
      const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
@@ -1915,7 +3353,7 @@ index 8de6023..dd5020a 100644
  }
  
  /** `WorldRuntime.relocatePatient` (see the module docs). */
-@@ -323,7 +415,8 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination):
+@@ -323,7 +412,8 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination):
    const p = body.place()!;
    const from: Pose = { x: p.x, y: p.y, z: p.z, yaw: 0, pitch: 0, level: p.level };
    const plan = backend.plan({ actorId: id, from, goal: target.stand, role: "nurse", accessibleOnly: true, ignoreObstacles: true });

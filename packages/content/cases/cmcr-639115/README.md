@@ -21,8 +21,8 @@
 | Specialty | Internal medicine, endocrinology, nephrology, cardiology (haematology is the answer discipline, so the card leaves it out) |
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; internal medicine, nephrology, endocrinology, cardiology and haematology residents |
-| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a haematologist (amyloidosis), a nephrologist and a cardiologist review it before teaching use |
-| Content | 26 history items (14 not recorded, 7 required) · 7 exam findings · 19 investigations (1 record review, 8 without any recorded result) · 12 interventions (6 contraindicated in some or all states, 2 of them critical) · 6 objectives · 5 decisions (22 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| Review status | Editorial review 2026-10-30 and an independent review 2026-11-14 (both AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have a haematologist (amyloidosis), a nephrologist and a cardiologist review it before teaching use |
+| Content | 26 history items (13 not recorded, 7 required) · 7 exam findings · 19 investigations (1 record review, 8 without any recorded result) · 12 interventions (6 contraindicated in some or all states, 2 of them critical) · 6 objectives · 5 decisions (22 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 40 test utterances |
 
 ## Learning outcomes
 
@@ -39,8 +39,9 @@ By the end of the case the learner can:
    name the myeloma-defining events the record lacks, and state that AL amyloidosis is itself the indication for
    treatment.
 4. Clear oedema safely with low blood pressure and an infiltrative cardiomyopathy: an IV loop diuretic titrated to
-   weight, lying and standing blood pressure, creatinine and potassium (a rash with a sulfonamide drug is no bar to
-   furosemide, AAAAI/ACAAI 2022), no ACE inhibitor, ARB or beta-blocker for a hypotensive, infiltrated heart (drugs
+   weight, lying and standing blood pressure, creatinine and potassium (a rash with a sulfonamide antibiotic is no bar
+   to furosemide, a non-antimicrobial sulfonamide: AAAAI/ACAAI 2022), no ACE inhibitor, ARB or beta-blocker for a
+   hypotensive, infiltrated heart (drugs
    used only with caution in cardiac amyloidosis: ESC 2021 statement; ACC 2023), and no glucose-lowering drug that
    causes hypoglycaemia (ADA 2026).
 5. After typing and staging (troponin, NT-proBNP, free light chains), choose today's first line — daratumumab with
@@ -65,15 +66,15 @@ muffled heart sounds with a grade 3/6 apical murmur, and lost temperature sense 
 Urine protein is 1.67 g/24 h, albumin 24.7 g/L, creatinine 95–98 μmol/L and HbA1c 5.1%. The ECG shows low
 limb-lead voltage and first-degree AV block; the echocardiogram thickened walls of both ventricles, reduced
 diastolic function (impaired relaxation) and an ejection fraction of 60%; the natriuretic peptide is 1926 ng/L
-(BNP or NT-proBNP is not recorded). Serum immunofixation shows a monoclonal IgG λ band; marrow plasma cells are 30.5%
-(CD138 +++, λ ++, κ −); skeletal imaging shows no osteolytic lesion; abdominal fat is Congo red positive. No amyloid
-typing, free light chains, troponin or kidney biopsy is recorded.
+(BNP or NT-proBNP is not recorded). A serum monoclonal IgG λ band is recorded (not the method that found it); marrow
+plasma cells are 30.5% (CD138 +++, λ ++, κ −); no osteolytic lesions are seen (imaging method not recorded); abdominal
+fat is Congo red positive. No amyloid typing, free light chains or troponin is recorded, and no kidney biopsy was done.
 
 The report diagnosed **IgG λ plasma-cell myeloma with systemic amyloidosis**. He was diuresed and given the MP
-regimen of the time (melphalan with prednisone); the oedema went down and he went home. At three months albumin was
+regimen (melphalan with prednisone); the oedema went down and he was discharged. At three months albumin was
 19.9 g/L and the natriuretic peptide 2026 ng/L, which the report read as worsening cardiac involvement.
 
-**Today's reading.** The picture is systemic AL λ amyloidosis — heart (low voltage with thick walls, raised
+**Today's reading.** The picture is most likely systemic AL λ amyloidosis — heart (low voltage with thick walls, raised
 natriuretic peptide), kidney (proteinuria with low albumin), peripheral and probably autonomic nerves (small-fibre
 sensory loss, falling blood pressure, bowel upset) and soft tissue (macroglossia) — with ≥ 10% clonal marrow plasma
 cells. Without a recorded myeloma-defining event, IMWG 2014 does not confirm myeloma. The deposit still needs
@@ -94,7 +95,7 @@ staged results appear only in the phase they belong to.
 |---|---|---|
 | `admission` — Admission: weight loss and swelling (ward) | start | History (24 items available), the seven admission findings, the first tests: 24-hour urine protein, blood chemistry, HbA1c, ECG, echocardiogram, natriuretic peptide. Tests sent now that are not yet back (immunofixation, marrow, fat biopsy) say "sent; not back yet"; free light chains, troponin, blood count, clotting and thyroid function have no recorded result at any stage. Decisions 1 and 2. |
 | `workup` — On the ward: the results come back | objectives `obj-history`, `obj-assess` and `obj-congestion`, and decisions 1 and 2 | Re-ordered, the immunofixation (serum IgG λ band; urine not recorded), marrow (30.5% plasma cells, CD138 +++, λ ++, κ −), skeletal imaging (no osteolytic lesions; method not recorded) and fat biopsy (Congo red positive) results; typing has no result; the kidney biopsy record says none was done. Decisions 3 and 4. |
-| `review` — Review three months later (clinic) | objective `obj-results-plan`, decisions 3 and 4 | The description says the report's team diuresed him and gave MP and that he went home once the oedema went down. Albumin 19.9 g/L and natriuretic peptide 2026 ng/L; no free light chain, immunofixation, urine protein, creatinine or troponin result. Decision 5. |
+| `review` — Review three months later (clinic) | objective `obj-results-plan`, decisions 3 and 4 | The description says the report's team diuresed him and gave MP and that he was discharged once the oedema went down. Albumin 19.9 g/L and natriuretic peptide 2026 ng/L; no free light chain, immunofixation, urine protein, creatinine or troponin result. Decision 5. |
 | `followup` — Reported course and outcome | all five decisions | The outcome record: diuresis and MP, discharge, the three-month values and the report's reading, the report's diagnosis, and what is not recorded. |
 
 Every phase after the first has `learnerSwitchable: false`; the outcome record exists only in the final phase.
@@ -124,8 +125,8 @@ Hints are Socratic questions; none contains a key's text (`cases validate` check
 | 1 | `unifying-diagnosis` | the six core history items, all seven exam findings and the six admission tests | diabetes cannot explain it: systemic amyloidosis — serum and urine immunofixation with free light chains, fat and marrow biopsies (feedback: blood count and clotting before the biopsies) | multisystem diabetic complications with an ACE inhibitor (the anchoring error the 1.0.0 title warned of); cancer cachexia with CT and node biopsy first; HFpEF plus hypoalbuminaemia, review in three months; a "myeloma screen" of electrophoresis, skeletal films and marrow without free light chains or tissue |
 | 2 | `congestion-plan` | decision 1, the allergy history, the oedema and the blood pressure | low-dose IV furosemide titrated to daily weight, fluid balance, lying and standing BP, creatinine and potassium; the sulfonamide rash does not bar it; no antihypertensive, ACE inhibitor, ARB, beta-blocker or glucose-lowering drug | high-dose infusion with albumin chasing > 2 kg/day plus restarting his usual drugs; no furosemide because of the allergy, albumin and leg elevation instead; "diabetic kidney disease" with an ACE inhibitor and SGLT2 inhibitor |
 | 3 | `evidence-reading` | decision 1 and the four work-up results | amyloid and a λ clone are established, AL λ most likely; the deposit still needs typing; with no myeloma-defining event it is AL amyloidosis with ≥ 10% marrow plasma cells, not proven myeloma | myeloma proven (**the report's label**); diabetic disease plus MGUS; ATTR diagnosed by bone scan |
-| 4 | `treatment-plan` | decision 3 | type the tissue and stage (troponin, NT-proBNP, free light chains); once AL is confirmed, Dara-VCd with weekly SC bortezomib and dexamethasone 20 mg weekly; cardiology sharing care | MP judged by the oedema (**the report's regimen**); transplant first; watch until CRAB; Dara-VCd today at full dexamethasone and twice-weekly bortezomib without typing |
-| 5 | `response-review` | his account since discharge and the review albumin and natriuretic peptide | response cannot be assumed — measure free light chains, immunofixation, urine protein, creatinine and troponin now, judge by haematological and organ criteria, change to a daratumumab-based regimen if the response is not deep | "the oedema has gone, continue MP" (**the report's course**); "progression — stop chemotherapy, palliate" (**the report's reading** of the natriuretic peptide); albumin infusions with the regimen unchanged |
+| 4 | `treatment-plan` | decision 3 | type the tissue and stage (troponin, NT-proBNP, free light chains); once AL is confirmed, Dara-VCd with weekly SC bortezomib and dexamethasone 20 mg weekly; cardiology sharing care | MP (**the report's regimen**) judged by the oedema; transplant first; watch until CRAB; Dara-VCd today at full dexamethasone and twice-weekly bortezomib without typing |
+| 5 | `response-review` | his account since discharge and the review albumin and natriuretic peptide | response cannot be assumed — measure free light chains, immunofixation, urine protein, creatinine and troponin now, judge by haematological and organ criteria, change to a daratumumab-based regimen if the response is not deep | "the oedema has gone, continue MP" (what followed the three-month review is not recorded); "progression — stop chemotherapy, palliate" (its first half is **the report's reading** of the values; the report records no decision to stop treatment); albumin infusions with the regimen unchanged |
 
 All decisions are single best answer with option-specific feedback naming the guidance. Options were balanced for
 length: the key is not the uniquely longest option in any decision in either language (decision 4's zh key ties
@@ -148,7 +149,7 @@ with its longest distractor; checked by `cases validate`).
 | `rb-response-review` | Management | decision 5 first time, free light chains and urine protein sent at the review | 2 |
 | `rb-communication` | Communication (examiner) | Calgary–Cambridge explanation of the diagnosis, its uncertainty and treatment, answering his two worries | 1 |
 
-### How wrong choices score (measured 2026-10-30 with the core engine)
+### How wrong choices score (measured 2026-10-30; re-measured 2026-11-14 with the core engine on the final files)
 
 | Path | Score | Critical items missed | Safety outcome |
 |---|---|---|---|
@@ -171,7 +172,7 @@ when given after typing was sent.
 **Safety outcome.** `bp-lowering` (an ACE inhibitor such as ramipril, or restarting his old antihypertensives) and
 `glucose-lowering` (a sulfonylurea such as gliclazide) are `critical: true`: with a blood pressure of about
 100/60 mmHg, dizzy spells and a stiff, infiltrated heart, a blood-pressure drug risks profound hypotension, syncope
-and acute kidney injury; with a fasting glucose of about 4 mmol/L, weight loss and poor intake, a sulfonylurea risks
+and acute kidney injury; with a fasting glucose of about 4 mmol/L, weight loss and a poor appetite, a sulfonylurea risks
 severe, prolonged hypoglycaemia. Giving either fails the safety outcome whatever the score, and the critical rubric
 item `rb-no-hypotensive-or-hypoglycaemic-drug` loses its weight. `melphalan-prednisone`, `transplant-plan`,
 `observe-until-crab` (all contraindicated throughout) and `dara-vcd` (contraindicated until typing is sent) are
@@ -201,8 +202,8 @@ source check is pending. Extraction map (1.0.0 field → 1.1.0 field):
 | 73-year-old man | `patient.age`, `sex` | `patient` |
 | About 20 kg weight loss over one year, no obvious cause | `history.weight`, chief complaint, triage note, opening line | `history.weight-loss`, chief complaint, triage note, opening line |
 | Leg swelling for 5 months, progressing to severe scrotal and leg oedema | `history.oedema`, chief complaint, triage note | `history.leg-swelling`, triage note |
-| Diabetes 16 years; diabetes medicines stopped a year earlier; since then fasting glucose about 4, post-meal 5–6 mmol/L | `history.glucose` | `history.diabetes-course` |
-| Hypertension 10 years; now off treatment, BP about 100/60 mmHg | `history.bp` | `history.bp-course`, `exam.blood-pressure` (shown as the admission reading), triage note |
+| Diabetes 16 years; diabetes medicines stopped a year earlier; since then fasting glucose about 4, post-meal 5–6 mmol/L | `history.glucose` | `history.diabetes-course`, `history.current-medicines` (stopped) |
+| Hypertension 10 years; now off treatment, BP about 100/60 mmHg | `history.bp` | `history.bp-course`, `history.current-medicines` (stopped), `exam.blood-pressure` (shown as the admission reading), triage note |
 | Limb numbness, tingling (刺痛) and coldness; intermittent claudication; dizziness and transient visual blackout | `history.neuropathy` | `history.limb-sensation`, `history.claudication`, `history.dizziness` |
 | Occasional alternating constipation and diarrhoea; reduced appetite | `history.bowel` | `history.bowel-habit`, `history.appetite` |
 | A sulfonamide drug (磺胺类) previously caused a rash | `history.allergies` | `history.allergies` (`safety.datum: allergy`) |
@@ -212,7 +213,7 @@ source check is pending. Extraction map (1.0.0 field → 1.1.0 field):
 | Low limb-lead voltage, first-degree AV block | `investigations.cardiac` | `ecg` (admission) |
 | Thickened walls of both ventricles (双室壁增厚), reduced diastolic function (impaired relaxation), EF 60% | `investigations.cardiac` | `echocardiogram` (admission) |
 | Natriuretic peptide (钠尿肽) 1926 ng/L, type not stated | `investigations.cardiac` | `natriuretic-peptide` (admission; named 利钠肽, the standard term) |
-| Serum monoclonal IgG λ band | `investigations.monoclonal` | `immunofixation` (work-up) |
+| Serum monoclonal IgG λ band (the method is not recorded) | `investigations.monoclonal` | `immunofixation` (work-up; its text says the method is not recorded) |
 | Marrow plasma cells 30.5%, CD138 +++, λ ++, κ − | `investigations.monoclonal` | `bone-marrow` (work-up) |
 | No osteolytic lesions (未见溶骨破坏) | `investigations.monoclonal` | `skeletal-imaging` (work-up; method not recorded) |
 | Abdominal fat: Congo red positive, supporting amyloid; no mass spectrometry or complete typing reported | `investigations.tissue` | `fat-pad-biopsy` (work-up), `amyloid-typing` (no result) |
@@ -283,14 +284,18 @@ consensus marker of renal involvement in AL amyloidosis (Gertz 2005) and below t
 something bad?", "has my diabetes gone away?") — teaching devices that add no clinical fact; the blood pressure of
 "about 100/60 mmHg now" from the history also shown as his admission reading; the staging of the first tests at
 admission and of the immunofixation, marrow, skeletal imaging and fat results later in the admission ("sent; not
-back yet" placeholders at admission are order status, not results); the three-month values staged as a clinic
+back yet" placeholders at admission are order status, not results); the serum monoclonal band filed under the
+immunofixation a learner orders today, with a note that the method behind it is not recorded; his answer about current
+medicines restating the recorded stopping of his diabetes and blood-pressure medicines (anything else he takes stays
+unknown); the three-month values staged as a clinic
 review, with his account limited to the swelling having gone down before discharge; "MP" expanded to melphalan with
 prednisone; the staff characters (Nurse Feng, Dr Hao, Dr Yin, Dr Luo); the decisions, interventions, rubric,
 feedback, teaching points and doses (current guidance).
 
 **Inconsistencies and gaps in 1.0.0 kept, not resolved.**
 * The oedema at discharge "消退" (subsided) in the Chinese text but "improved" in the English; the case says it "went
-  down" in both languages.
+  down" in both languages. The discharge itself (出院) is recorded only in the Chinese text; the case says "discharged"
+  and never where he went.
 * The natriuretic peptide is not named as BNP or NT-proBNP (1.0.0 "钠尿肽"); the case says so wherever it is shown
   and applies no assay-specific threshold except the relative part of the progression rule.
 * Creatinine is a range, 95–98 μmol/L (one result or two?); kept as the range.
@@ -303,7 +308,7 @@ feedback, teaching points and doses (current guidance).
 * The report's diagnosis of "myeloma" rests on no recorded myeloma-defining event; kept as the report's label and
   taught against IMWG 2014.
 
-**Not recorded and kept unknown** (`unknowns`, 14 unknown history items, 8 tests with no result, `examNotRecorded`):
+**Not recorded and kept unknown** (`unknowns`, 13 unknown history items and any medicines beyond the two stopped, 8 tests with no result, `examNotRecorded`):
 typing and polarised-light appearance; free light chains, urine immunofixation, M-protein and immunoglobulins; the
 peptide's assay, troponin, cardiac MRI and echo details; blood count, calcium, electrolytes, liver tests, clotting,
 thyroid function, urinalysis, laboratory glucose; fundoscopy, orthostatic blood pressure, other vital signs, weight
@@ -321,66 +326,15 @@ the key as the longest option, a critical item met by a decision after the corro
 interventions, a decision opened after the result that answers it, authoring language in the patient's mouth,
 template history slots such as vaccinations) are all replaced.
 
-### To verify
-
-**In the source article (the details 1.0.0 does not give):**
-
-- The natriuretic peptide assay (BNP or NT-proBNP), its reference range, and whether troponin was measured.
-- Serum free light chains (κ, λ, ratio), urine immunofixation or Bence Jones protein, the M-protein concentration and
-  immunoglobulin levels.
-- The fat biopsy: Congo red birefringence under polarised light; whether any typing (immunohistochemistry, immuno-EM,
-  mass spectrometry) was done; whether the marrow was stained with Congo red.
-- The full admission bloods: blood count, calcium, electrolytes, liver tests, clotting, thyroid function,
-  urinalysis and a laboratory glucose; whether the creatinine range 95–98 μmol/L is two measurements.
-- Echocardiographic detail: wall thicknesses, which ventricles (双室壁 vs "ventricular walls"), valves and the
-  source of the apical murmur, pericardial effusion, atrial size, strain; ECG rate, rhythm, PR interval and chest
-  leads.
-- Whether the dizziness was postural; lying and standing blood pressure; other vital signs; weight and height.
-- Fundoscopy (diabetic retinopathy) and whether diabetic kidney disease was weighed against amyloid.
-- Which diabetes and antihypertensive drugs he took, when and why they were stopped, and any hypoglycaemia.
-- The sulfonamide drug and the nature of the rash.
-- The submandibular nodes: imaging, biopsy, outcome.
-- The skeletal imaging method; marrow morphology, the method behind CD138/λ/κ, cytogenetics and FISH.
-- The diuretic (drug, dose, route); MP doses and cycles; any other treatment (albumin, steroids).
-- Timing: when each test was done, length of stay, whether the oedema resolved or improved at discharge, the setting
-  of the three-month values, and anything after three months.
-- How the report justified "myeloma" (any CRAB feature?) and "worsening cardiac involvement" (echo or symptoms as
-  well as the peptide?).
-
-**In the guidance (the session's web-search budget ran out before these could be re-checked against primary texts):**
-
-- ESC 2021 position statement on cardiac amyloidosis: its red-flag table (e.g. hypotension or normotension in a
-  previously hypertensive patient, a low QRS voltage-to-mass ratio) — taught here as reasoning, not quoted.
-- Mayo 2012 staging thresholds (NT-proBNP, troponin T, dFLC) — the case names the components only.
-- Palladini 2012 haematological response thresholds (dFLC for PR and VGPR, CR definition) — the case names the
-  categories only.
-- EHA-ISA 2022 non-transplant guideline: wording on Dara-VCd as first line and dexamethasone reduction; EHA-ISA 2022
-  transplant guideline eligibility criteria (the case says only "carefully selected patients").
-- ESC 2021 heart failure guideline: the initial IV furosemide dose (the case's 20–40 mg if diuretic-naive, at least
-  the usual oral dose otherwise).
-- ANDROMEDA eligibility (cardiac stage, myeloma criteria) against this patient; the case quotes trial-population
-  results only.
-- ASH 2026: exact wording of the recommendations on unexplained proteinuria, typing method and cardiac MRI.
-- AAAAI/ACAAI 2022: exact wording and grade of the recommendation on non-antimicrobial sulfonamides.
-- ADA 2026 sections 6 and 13: exact deintensification wording.
-- Gertz 2005 consensus: the renal-involvement criterion quoted in the numbers check (24-hour urine protein above
-  0.5 g, predominantly albumin).
-- IMWG 2014 thresholds quoted in decision 3 and the teaching points (creatinine above 177 μmol/L or clearance below
-  40 mL/min, haemoglobin below 100 g/L, at least 60% plasma cells, a free light chain ratio of at least 100, more
-  than one MRI focal lesion; MGUS below 10% plasma cells).
-- Kyle 1997: the survival advantage of melphalan with prednisone over colchicine alone, cited as the historical basis
-  of MP.
-- Chinese guidance for the source pass (bibliographic details not confirmed here): 系统性轻链型淀粉样变性诊断和治疗指南
-  （2021年修订）; the current 中国多发性骨髓瘤诊治指南; 中国糖尿病防治指南（2024版）.
-
 ## Matcher notes
 
-38 test utterances (21 zh-CN, 17 en), written as learners type: colloquial, abbreviated, multi-clause. Three
+40 test utterances (22 zh-CN, 18 en), written as learners type: colloquial, abbreviated, multi-clause. Three
 look-alike negatives (`expect: []`). Keywords were tuned against the corpus: "瘦得厉害" was dropped from the
 weight-loss item because "头晕得厉害" reached it; English multi-word phrases that reduce to one token are run
 together ("howmuchweight", "underthejaw", "daytoday", "getup", "outofbed", "puffedout"); exclusions keep blood
 pressure and glucose apart, send "on standing" questions to the postural item, and keep lymph-node and lung requests
-away from the oedema and heart findings. The review-phase item `since-discharge` supersedes `leg-swelling`.
+away from the oedema and heart findings. The review-phase item `since-discharge` supersedes `leg-swelling`. The plain opening question ("What brings you
+in?", "哪里不舒服？") reaches `weight-loss`, the volunteered presenting complaint (keywords added in the review).
 
 ## References
 
@@ -408,12 +362,71 @@ Immunol. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028); Kyle 1997 (N En
 doi:10.1056/NEJM199704243361702) for the historical MP regimen. All DOIs above were resolved through Crossref on
 2026-11-13.
 
+### To verify
+
+**In the source article (the details 1.0.0 does not give):**
+
+- The natriuretic peptide assay (BNP or NT-proBNP), its reference range, and whether troponin was measured.
+- Serum free light chains (κ, λ, ratio), urine immunofixation or Bence Jones protein, the M-protein concentration and
+  immunoglobulin levels.
+- The fat biopsy: Congo red birefringence under polarised light; whether any typing (immunohistochemistry, immuno-EM,
+  mass spectrometry) was done; whether the marrow was stained with Congo red.
+- The full admission bloods: blood count, calcium, electrolytes, liver tests, clotting, thyroid function,
+  urinalysis and a laboratory glucose; whether the creatinine range 95–98 μmol/L is two measurements.
+- Echocardiographic detail: wall thicknesses, which ventricles (双室壁 vs "ventricular walls"), valves and the
+  source of the apical murmur, pericardial effusion, atrial size, strain; ECG rate, rhythm, PR interval and chest
+  leads.
+- Whether the dizziness was postural; lying and standing blood pressure; other vital signs; weight and height.
+- Fundoscopy (diabetic retinopathy) and whether diabetic kidney disease was weighed against amyloid.
+- Which diabetes and antihypertensive drugs he took, when and why they were stopped, and any hypoglycaemia.
+- The sulfonamide drug and the nature of the rash.
+- The submandibular nodes: imaging, biopsy, outcome.
+- The method that detected and typed the serum IgG λ band (immunofixation, immunoelectrophoresis or another).
+- The skeletal imaging method; marrow morphology, the method behind CD138/λ/κ, cytogenetics and FISH.
+- The diuretic (drug, dose, route); MP doses and cycles, and whether MP was chosen as myeloma treatment (the report's
+  diagnosis); any other treatment (albumin, steroids).
+- Timing: when each test was done, length of stay, whether the oedema resolved or improved at discharge, the setting
+  of the three-month values, and anything after three months.
+- How the report justified "myeloma" (any CRAB feature?) and "worsening cardiac involvement" (echo or symptoms as
+  well as the peptide?).
+
+**In the guidance (checked on 2026-11-14 against Crossref and published summaries of the guidelines; confirm each against
+the primary text):**
+
+- ESC 2021 position statement on cardiac amyloidosis: its red-flag table (e.g. hypotension or normotension in a
+  previously hypertensive patient, a low QRS voltage-to-mass ratio) — taught here as reasoning, not quoted.
+- Mayo 2012 staging thresholds (NT-proBNP, troponin T, dFLC) — the case names the components only.
+- Palladini 2012 haematological response thresholds (dFLC for PR and VGPR, CR definition) — the case names the
+  categories only.
+- EHA-ISA 2022 non-transplant guideline: wording on Dara-VCd as first line and dexamethasone reduction; EHA-ISA 2022
+  transplant guideline eligibility criteria (the case says only "carefully selected patients"). A very good partial
+  response as the goal and Dara-VCd as first line for most untreated patients were confirmed in a published summary.
+- ESC 2021 heart failure guideline: the initial IV furosemide dose (the case's 20–40 mg if diuretic-naive, at least
+  the usual oral dose otherwise).
+- ANDROMEDA eligibility (cardiac stage, myeloma criteria) against this patient; the case quotes trial-population
+  results only.
+- ASH 2026 (12 recommendations, checked against a published summary): the exact wording and strength of those the
+  case quotes — immunofixation with free light chains when cardiac amyloidosis is suspected (recommended) and for
+  unexplained proteinuria (suggested), cardiac MRI only when the echo is non-diagnostic, no bone scintigraphy for AL
+  cardiac amyloidosis, marrow with fat sampling before kidney, nerve or other organ biopsy — and the typing method
+  the full text names.
+- AAAAI/ACAAI 2022: the exact wording and grade of its conclusion that cross-reactivity between sulfonamide
+  antibiotics and non-antimicrobial sulfonamides such as furosemide is of minimal concern (confirmed in secondary
+  sources).
+- ADA 2026 sections 6 and 13 (citations confirmed on Crossref): exact deintensification wording.
+- Gertz 2005 consensus: the renal-involvement criterion quoted in the numbers check (24-hour urine protein above
+  0.5 g, predominantly albumin).
+- IMWG 2014 thresholds quoted in decision 3 and the teaching points (creatinine above 177 μmol/L or clearance below
+  40 mL/min, haemoglobin below 100 g/L, at least 60% plasma cells, a free light chain ratio of at least 100, more
+  than one MRI focal lesion; MGUS below 10% plasma cells).
+- Kyle 1997: the survival advantage of melphalan with prednisone over colchicine alone, cited as the historical basis
+  of MP.
+- Chinese guidance for the source pass (bibliographic details not confirmed here): 系统性轻链型淀粉样变性诊断和治疗指南
+  （2021年修订）; the current 中国多发性骨髓瘤诊治指南; 中国糖尿病防治指南（2024版）.
+
 ## Changelog
 
-### 1.1.0 — 2026-10-30
-
-1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked
-against the full source article.
+### 1.1.0 — 2026-10-30 — re-authored to the clinical content standard from the facts recorded in 1.0.0; not yet checked against the full source article
 
 - **Structure.** Four staged phases (admission → work-up results → three-month review → reported outcome) instead of
   a single evidence dump; 26 history items in the patient's own voice (the template's 15 slots, eight of them
@@ -433,30 +446,48 @@ against the full source article.
   2022, ADA 2026 and AAAAI/ACAAI 2022; the unconfirmed PMC link of 1.0.0 dropped.
 - **Review status.** Editorial (AI-assisted) with the standard notes; `extensions.sourceTextChecked: false`.
 
-### 1.0.0
+- **Independent review (2026-11-14), fixes.** "Went home" (an invented destination) replaced by "discharged" in the
+  review-phase description, his answer at review and decision 5; the serum band no longer attributed to
+  immunofixation, a method 1.0.0 does not record; the sulfonamide teaching narrowed to what AAAAI/ACAAI 2022 says
+  (sulfonamide antibiotics and non-antimicrobial sulfonamides such as furosemide), with "ask which drug and what the
+  rash was like"; the report's three-month reading no longer reads as a decision to stop treatment, and "continue MP"
+  is no longer called the report's course; MP no longer called "then-current", and its succession given as melphalan
+  with dexamethasone, then bortezomib-based regimens, then Dara-VCd; "about" restored to the 3 cm nodes and dropped
+  from the three-month timing; "eats little" replaced by the recorded poor appetite; his answer about current medicines
+  now states the two medicines he stopped; the presenting-complaint item answers "What brings you in?"; the ASH 2026
+  teaching point attributes only what the guideline recommends; the results objective's hint no longer names results
+  before they are read; the debrief calls AL λ the most likely reading until typed; "To verify" moved under References;
+  the **安全结果。** sentence added to the 中文摘要.
 
-Initial template version (2026-10-28).
+### 1.0.0 — 2026-10-28
+
+Template version: three single-best-answer decisions of three options with role-named option ids (`yes`), the key the
+longest option in two of them, no interventions, 15 generic history slots of which eight answered "the source case does
+not provide that information", a critical item met by a decision alone (taken after the corroborating records), the
+clone result read before the decision that should have asked for it, and one guideline citation.
 
 ## Validation
 
-Run from the worktree root on 2026-11-13:
+Run from the worktree root on 2026-11-14, after the review's fixes (all pass):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-639115/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-639115 --lang en                                                 # 87 steps, objectives 6/6, decisions 5/5, utterances 38/38, rubric 29/29 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-639115                       # depth floor, do nothing 0, wrong first < reference, patient voice
+npm run -s cc -- cases verify cmcr-639115 --lang en                                                 # 87 steps, objectives 6/6, decisions 5/5, utterances 40/40, rubric 29/29 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-639115                                         # depth floor, do nothing 0, wrong first < reference, patient voice
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-639115:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-639115:"  # in-world demonstration, en + zh-CN
 ```
 
 ## 中文摘要
 
-**病例概要。** 73岁男性，糖尿病16年、高血压10年。一年内体重下降约20 kg，近5个月双下肢水肿并累及阴囊；停用降糖药后空腹血糖约4 mmol/L、HbA1c 5.1%，停用降压药后血压约100/60 mmHg；舌体增大，颌下淋巴结约3 cm，心音低钝伴心尖部3/6级杂音，温度觉消失而振动觉保留。24小时尿蛋白1.67 g，白蛋白24.7 g/L；心电图肢导低电压、Ⅰ度房室传导阻滞，超声心动图双室壁增厚、射血分数60%，利钠肽1926 ng/L。血清IgG λ型单克隆条带、骨髓浆细胞30.5%（λ限制）、腹壁脂肪刚果红阳性。报告诊断为IgG λ型浆细胞骨髓瘤并系统性淀粉样变性，给予利尿和MP方案；三个月时白蛋白19.9 g/L、利钠肽2026 ng/L。按现行标准，这是伴骨髓浆细胞≥10%的AL λ型淀粉样变性（记录中没有骨髓瘤定义事件），沉积物仍需分型。
+**病例概要。** 73岁男性，糖尿病16年、高血压10年。一年内体重下降约20 kg，近5个月双下肢水肿并累及阴囊；停用降糖药后空腹血糖约4 mmol/L、HbA1c 5.1%，停用降压药后血压约100/60 mmHg；舌体增大，颌下淋巴结约3 cm，心音低钝伴心尖部3/6级杂音，温度觉消失而振动觉保留。24小时尿蛋白1.67 g，白蛋白24.7 g/L；心电图肢导低电压、Ⅰ度房室传导阻滞，超声心动图双室壁增厚、射血分数60%，利钠肽1926 ng/L。血清IgG λ型单克隆条带、骨髓浆细胞30.5%（λ限制）、腹壁脂肪刚果红阳性。报告诊断为IgG λ型浆细胞骨髓瘤并系统性淀粉样变性，给予利尿和MP方案；三个月时白蛋白19.9 g/L、利钠肽2026 ng/L。按现行标准，最可能是伴骨髓浆细胞≥10%的AL λ型淀粉样变性（记录中没有骨髓瘤定义事件），沉积物仍需分型确认。
 
 **学习目标。** 识别糖尿病解释不了的信号并送检免疫固定电泳和游离轻链（ASH 2026）；用脂肪加骨髓活检证实沉积并理解分型的必要；按IMWG 2014区分AL型淀粉样变性和骨髓瘤；在低血压和浸润性心肌病下安全利尿，不用ACE抑制剂和降糖药；分型、分期后选择Dara-VCd（ANDROMEDA）；按血液学和器官标准判断疗效（Palladini 2012）。
 
 **关键决策。** 决策 1：糖尿病解释不了，送检克隆和组织；决策 2：小剂量静脉呋塞米并监测，不用降压、降糖药；决策 3：已证实的与尚待确认的（分型、骨髓瘤定义事件）；决策 4：分型、分期后Dara-VCd（地塞米松每周20 mg）；决策 5：水肿消退不等于缓解，按游离轻链和器官标准评价。
 
 **复盘要点。** 长期糖尿病患者血糖、血压停药后反而“正常”，加上消瘦，是全身性疾病的信号；电压低而室壁厚提示心肌浸润；克隆和组织检查要同时送；刚果红加单克隆蛋白不等于AL型；报告的“骨髓瘤”按现行标准不能确认；MP方案已被Dara-VCd取代；利钠肽升高约5%达不到进展标准。待核实事项见上文“To verify”。
+
+**安全结果。** 降压药（如ACE抑制剂雷米普利）和磺脲类降糖药（如格列齐特）标为critical：他不用药血压约100/60 mmHg、有头晕和眼前发黑、心脏受浸润，用降压药可致严重低血压、晕厥和急性肾损伤；空腹血糖约4 mmol/L、消瘦、胃口差，用磺脲类可致严重而持久的低血糖——给其中任何一种，无论得分多少，安全结果都不通过。MP方案、自体移植、“等出现CRAB再治疗”和未送分型就开始的Dara-VCd为非critical的错误，在复盘中标出。
 
 **安全结果。** 开始或恢复降压药（含ACE抑制剂）和使用磺脲类降糖药被标为本病例的危险错误（`critical: true`），一旦给予，安全结果即判定不合格；MP方案、自体移植、“等CRAB再治疗”和分型前的Dara-VCd为可纠正的不当选择（`critical: false`）。

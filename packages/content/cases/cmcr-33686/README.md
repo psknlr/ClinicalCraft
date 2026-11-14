@@ -23,9 +23,9 @@ article text is available. Everything listed under "To verify" is part of that p
 | Specialty | Paediatrics, haematology, infectious disease (`pediatrics`, `hematology`, `infectious-disease`) — the presenting disciplines of a child with prolonged fever and an enlarged liver and spleen. 1.0.0's `transplantation` (and `immunology`) gave the answer away and are gone |
 | Languages | `zh-CN` (source language), `en` |
 | Learner level | Final-year students and paediatric residents (phase 1); paediatric haematology, immunology and transplant trainees (phases 2–3) |
-| Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance; **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a paediatric haematologist with transplant experience and a clinical geneticist review it before teaching use |
+| Review status | `editorial`, 2026-10-30 — AI-assisted teaching design with an editorial review against the cited guidance, independently re-reviewed 2026-11-14 (AI-assisted; fixes in the changelog); **not yet reviewed by a licensed clinician**, and the patient facts are not yet checked against the full article. Have a paediatric haematologist with transplant experience and a clinical geneticist review it before teaching use |
 | Phases | `admission` 入院：发热约1个月 / Admission: about a month of fever → `reactivation` 治疗后：病情再次活动 / After treatment: the disease flares again → `post-transplant` 移植后 / After the transplant → `outcome` 随访：原报告记录的转归 / Follow-up: the reported course and outcome — none learner-switchable |
-| Content | 26 history items (7 required, 15 unknown, 3 labelled teaching worries; the relative answers) · 2 exam findings (all the record holds) · 19 investigations (3 record reviews; 7 with no result recorded in one or more phases) · 14 interventions (5 can be contraindicated, 3 of them `critical: true`) · 6 objectives · 5 decisions (20 options) · 12 rubric items (11 deterministic, weight 31; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances · 9 references |
+| Content | 26 history items (7 required, 15 unknown, 3 labelled teaching worries; the relative answers) · 2 exam findings (all the record holds) · 19 investigations (3 record reviews; 7 with no result recorded in one or more phases) · 14 interventions (5 can be contraindicated, 3 of them `critical: true`) · 6 objectives · 5 decisions (20 options) · 13 rubric items (12 deterministic, weight 33; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances · 9 references |
 
 ## Learning outcomes
 
@@ -39,8 +39,9 @@ After the case the learner can:
    consensus 2018) as soon as EBV-associated HLH is diagnosed, without waiting for genetic results and without
    substituting antivirals (Imashuku 2001; Chinese consensus on EBV-related disease in children 2021).
 3. Interpret a gene report by zygosity and inheritance: one heterozygous UNC13D variant does not establish
-   autosomal recessive FHL3, and a hemizygous SH2D1A variant must be written in HGVS, classified under ACMG/AMP
-   2015 and supported by SAP and degranulation assays (NACHO 2019) before it means XLP1.
+   autosomal recessive FHL3 (Munc13-4 function is tested by CD107a degranulation), and a hemizygous SH2D1A variant
+   must be written in HGVS, classified under ACMG/AMP 2015 and supported by SAP protein expression (NACHO 2019)
+   before it means XLP1.
 4. Refer for allogeneic haematopoietic stem cell transplantation when HLH reactivates after induction, whatever
    the genetic result (HLH-2004), and start an unrelated-donor search when there is no sibling donor.
 5. Assess diarrhoea after transplantation for acute GVHD and infection in parallel, and start methylprednisolone
@@ -115,11 +116,16 @@ final phase.
 | 6 | `obj-after-transplant` Later course: handle the new problem and plan follow-up | status asked; HHV-6 result and GVHD assessment read in `post-transplant`; methylprednisolone given; decisions 4 and 5 right; outcome read |
 
 Titles and hints name no diagnosis and contain no option text, and the later titles name no later event (the journal
-lists them from the start); likewise the `need` of a locked decision, the intervention names and the test names say
-nothing about the flare, the transplant, the diarrhoea or GVHD ("Stop his immunosuppressive drugs", "IV foscarnet",
-"Clinical assessment note", "Chimerism study"), and the HLH-94 label sits in the drug responses, not the names. No objective holds a condition that can become
-permanently false (no phase leaf, `whenIndicated` or `decidedFirstTry`); the timing of the critical acts is scored
-in the rubric (`whenIndicated`).
+lists them from the start). Hints (shown on request) and the quest-card guidance coach without giving a key: the
+review removed "make the referral" from the fifth objective's guidance, "each variant" from its hint (the report had
+not been read yet) and "can two causes coexist?" from the sixth objective's hint. The `need` of a locked decision
+names no result. Intervention and test names describe acts, not results, but the treatment tab lists every
+intervention from the start, so a few names do hint that later problems exist ("Refer to a paediatric transplant
+centre and search for a donor", "Stop his immunosuppressive drugs", "IV foscarnet", "Chart stool volume and
+appearance", "Chimerism study"); none states a result or a decision's key, the GVHD record is named "Clinical
+assessment note", and the HLH-94 label sits in the drug responses, not the names. No objective holds a condition that
+can become permanently false (no phase leaf, `whenIndicated` or `decidedFirstTry`); the timing of the critical acts
+is scored in the rubric (`whenIndicated`).
 
 ### Decisions
 
@@ -135,7 +141,7 @@ Every option has its own feedback (2–4 sentences naming the guidance, issuing 
 content. No key is the uniquely longest option in either language: in every decision a distractor is as long or
 longer (measured in characters; `flare-plan`'s key was shortened in this pass for that reason).
 
-### Rubric (11 deterministic items, weight 31, + 1 examiner-judged)
+### Rubric (12 deterministic items, weight 33, + 1 examiner-judged)
 
 | id | Domain | Weight | Met when |
 |---|---|---:|---|
@@ -144,54 +150,62 @@ longer (measured in characters; `flare-plan`'s key was shortened in this pass fo
 | `rb-admission-workup` | investigations | 2 | the seven admission tests read in `admission`; degranulation assays ordered in `admission` |
 | `rb-hlh-recognition` | diagnosis | 3 | decision 1 right first time |
 | `rb-induction-started` | management | 4 | **critical** — dexamethasone and etoposide each given while indicated: in `admission`, after the marrow has been read (`whenIndicated`) |
-| `rb-treatment-plan` | management | 3 | decision 2 right first time; allergies and weight/height asked; gene panel ordered in `admission`; co-trimoxazole; no ganciclovir given before etoposide (in place of induction) |
+| `rb-treatment-plan` | management | 3 | decision 2 right first time; allergies and weight/height asked; gene panel ordered in `admission`; co-trimoxazole |
 | `rb-flare-plan` | management | 3 | decision 3 right first time; transplant referral; genetic counselling |
-| `rb-diarrhoea-workup` | diagnosis | 3 | decision 4 right first time; stool pathogens ordered in `post-transplant`; stool chart; immunosuppression not withdrawn |
-| `rb-gvhd-steroids` | management | 4 | **critical** — methylprednisolone given while indicated (in `post-transplant`; `whenIndicated`) |
+| `rb-diarrhoea-workup` | diagnosis | 3 | decision 4 right first time; stool pathogens ordered in `post-transplant`; stool chart |
+| `rb-gvhd-steroids` | management | 4 | **critical** — methylprednisolone given while indicated: in `post-transplant`, once the clinical assessment (the GVHD grade) has been read (`whenIndicated`) |
 | `rb-germline-plan` | management | 2 | decision 5 right first time |
 | `rb-no-harm` | safety | 4 | **critical** — none of the case's dangerous errors: discharge as a viral illness; dexamethasone or etoposide before the marrow result has been read — `scoredWhen` = decision 1 or 2 attempted, or any of these acts |
+| `rb-no-recoverable-harm` | safety | 2 | not critical — neither recoverable error: ganciclovir before etoposide (in place of induction), immunosuppression withdrawn after the transplant — `scoredWhen` = decision 2 or 4 attempted, or either act |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge explanation and planning with the relative and the boy (see judge guidance) |
 
 **Critical items are acts**, not decisions, and none can be met in hindsight: `rb-induction-started` (the
 life-saving act — HLH-directed induction once the marrow is read, before any genetic answer; `reactivation` cannot
 open without both drugs, so they are necessarily given in `admission`), `rb-gvhd-steroids` (systemic steroids for
-severe gut GVHD in the post-transplant phase; given after decision 5 has opened the follow-up, they no longer count)
+severe gut GVHD in the post-transplant phase once its grade has been read — EBMT 2024 starts treatment on the clinical
+grade without waiting for histology; given before the grade is known, or after decision 5 has opened the follow-up,
+they do not count)
 and `rb-no-harm` (the dangerous errors avoided: no discharge as a viral illness, no dexamethasone or etoposide before
 the marrow result). The two recoverable misjudgements — ganciclovir in place of induction and withdrawing
-immunosuppression after the transplant — cost the management item they belong to (`rb-treatment-plan`,
-`rb-diarrhoea-workup`) instead.
+immunosuppression after the transplant — are scored by the non-critical safety item `rb-no-recoverable-harm`, so
+every harmful intervention sits in a safety-domain item.
 
-### How wrong choices score (measured 2026-11-13 with core `assess`)
+### How wrong choices score (measured 2026-11-14 with core `assess`)
 
 | Path | Score | Critical items missed | Safety outcome |
 |---|---|---|---|
-| Reference path (`solution`) | 31/31 (100 %) | none | passed |
+| Reference path (`solution`) | 33/33 (100 %) | none | passed |
 | Do nothing (start, then try to finish) | 0/27 (finish refused: objectives incomplete) | `rb-induction-started`, `rb-gvhd-steroids` | passed |
-| A wrong first answer at every decision, then the right one | 17/31 (55 %) | none | passed |
-| One wrong first answer at decision 1, 2, 3 or 4 (each of the 12 distractors) | 28/31 (90 %) | none | passed |
-| One wrong first answer at decision 5 (each of the 3 distractors) | 29/31 (94 %) | none | passed |
-| Reference path plus discharge home as a viral illness | 27/31 (87 %); a contraindicated safety event | `rb-no-harm` | **failed** (`discharge-viral`) |
-| Dexamethasone and etoposide given before the marrow result, not repeated | 23/31 (74 %); both contraindicated | `rb-induction-started`, `rb-no-harm` | **failed** (`dexamethasone`, `etoposide`) |
-| The same, then both given again after the marrow has been read | 27/31 (87 %) | `rb-no-harm` | **failed** |
-| Reference path plus ganciclovir before etoposide | 28/31 (90 %); a contraindicated safety event (`rb-treatment-plan` lost) | none | passed |
-| Ganciclovir after etoposide | 31/31 (neutral: no harm scored; its response says it treats neither HLH nor latent EBV) | none | passed |
-| Reference path plus withdrawing immunosuppression after the transplant | 28/31 (90 %); a contraindicated safety event (`rb-diarrhoea-workup` lost) | none | passed |
-| No induction at all | stays in `admission` (`obj-start-treatment` open); 15/31 (48 %) if the learner stops | `rb-induction-started`, `rb-gvhd-steroids` | passed |
-| Methylprednisolone only after decision 5 (late) | 27/31 (87 %) | `rb-gvhd-steroids` | passed |
-| No methylprednisolone | cannot finish (`obj-after-transplant`); 27/31 (87 %) at that point | `rb-gvhd-steroids` | passed |
-| No transplant referral | stays in `reactivation` (`obj-flare`); 19/31 (61 %) if the learner stops there | `rb-gvhd-steroids` (never reached) | passed |
+| A wrong first answer at every decision, then the right one | 19/33 (58 %) | none | passed |
+| One wrong first answer at decision 1, 2, 3 or 4 (each of the 12 distractors) | 30/33 (91 %) | none | passed |
+| One wrong first answer at decision 5 (each of the 3 distractors) | 31/33 (94 %) | none | passed |
+| Reference path plus discharge home as a viral illness | 29/33 (88 %); a contraindicated safety event | `rb-no-harm` | **failed** (`discharge-viral`) |
+| Dexamethasone and etoposide given before the marrow result, not repeated | 25/33 (76 %); both contraindicated | `rb-induction-started`, `rb-no-harm` | **failed** (`dexamethasone`, `etoposide`) |
+| The same, then both given again after the marrow has been read | 29/33 (88 %) | `rb-no-harm` | **failed** |
+| Reference path plus ganciclovir before etoposide | 31/33 (94 %); a contraindicated safety event (`rb-no-recoverable-harm` lost) | none | passed |
+| Ganciclovir after etoposide | 33/33 (neutral: no harm scored; its response says it treats neither HLH nor latent EBV) | none | passed |
+| Reference path plus withdrawing immunosuppression after the transplant | 31/33 (94 %); a contraindicated safety event (`rb-no-recoverable-harm` lost) | none | passed |
+| No induction at all | stays in `admission` (`obj-start-treatment` open); 17/33 (52 %) if the learner stops | `rb-induction-started`, `rb-gvhd-steroids` | passed |
+| Methylprednisolone before the clinical assessment (the GVHD grade) has been read, not repeated | 29/33 (88 %) | `rb-gvhd-steroids` | passed |
+| The same, then given again after reading it | 33/33 (100 %) | none | passed |
+| Methylprednisolone only after decision 5 (late) | 29/33 (88 %) | `rb-gvhd-steroids` | passed |
+| No methylprednisolone | cannot finish (`obj-after-transplant`); 29/33 (88 %) at that point | `rb-gvhd-steroids` | passed |
+| No transplant referral | stays in `reactivation` (`obj-flare`); 21/33 (64 %) if the learner stops there | `rb-gvhd-steroids` (never reached) | passed |
 
 Contraindicated acts are listed as safety events in every debrief. `transfusion-support`, `hhv6-antiviral` and
-`ganciclovir-ebv` after etoposide are neutral; the other interventions are indicated in their phases.
+`ganciclovir-ebv` after etoposide are neutral, and so is methylprednisolone before the GVHD grade has been read (not
+contraindicated, but it does not earn `rb-gvhd-steroids`); the other interventions are indicated in their phases.
 
 **Safety outcome.** `dexamethasone` and `etoposide` (contraindicated until the marrow result has been read) and
 `discharge-viral` (always contraindicated) are `critical: true`: HLH-dose dexamethasone and etoposide are
 anti-leukaemic drugs that can partly treat and hide a leukaemia or lymphoma in a child with fever, a big liver and
-spleen and low counts, and sending him home leaves a potentially fatal hyperinflammation untreated — giving any of
+spleen and low counts (NACHO 2019: HLH-directed therapy often obscures an undiagnosed malignancy, and the marrow is
+essential to rule one out), and sending him home leaves a potentially fatal hyperinflammation untreated — giving any of
 them while contraindicated fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and
 every debrief and export shows it beside the score; `rb-no-harm` scores all three. `ganciclovir-ebv` (before
 etoposide) and `withdraw-immunosuppression` (after the transplant) are moderate-risk, recoverable misjudgements: they
-show their harm text and cost the management item they belong to, but do not fail the safety outcome.
+show their harm text and cost the non-critical safety item `rb-no-recoverable-harm`, but do not fail the safety
+outcome.
 
 ## Reference path (`solution`)
 
@@ -204,7 +218,7 @@ conversation and consent → gene panel sent, degranulation assays (not recorded
 co-trimoxazole → decision 2 → (`reactivation`) the relative's account and worry → course note, gene report,
 degranulation (still not recorded) → decision 3 → genetic counselling, transplant referral → (`post-transplant`)
 status, stool, donor and worry → HHV-6 result, stool pathogens (not recorded) → stool chart → decision 4 → GVHD
-assessment → methylprednisolone → decision 5 → (`outcome`) chimerism, outcome record → finish. It scores 31/31 with
+assessment → methylprednisolone → decision 5 → (`outcome`) chimerism, outcome record → finish. It scores 33/33 with
 no contraindicated act, in clinical and in-world mode, in both languages.
 
 ## Clinical numbers check
@@ -220,7 +234,7 @@ check against the full article is pending.
 | Enlarged liver and spleen found early in the fever | history `organs` | `organomegaly-onset`, triage note |
 | No siblings; no similar family history | history `family` | `siblings`, `family-similar` |
 | Hepatomegaly, splenomegaly, no measurement | exam `liver`, `spleen` | exam `liver`, `spleen` |
-| WBC 3.4 × 10⁹/L, neutrophils 0.84 (unit not stated), platelets 50 × 10⁹/L, Hb 71 g/L | `cytopenia` (workup) | `blood-count` (`admission`) values |
+| "WBC 3.4, neutrophils 0.84 and platelets 50 × 10⁹/L" (one unit after the list), Hb 71 g/L — the case gives the white cells × 10⁹/L and leaves the neutrophil unit open | `cytopenia` (workup) | `blood-count` (`admission`) values |
 | Ferritin 1176.6 µg/L; triglycerides 5.8 mmol/L; fibrinogen 1.3 g/L | `cytopenia` (workup) | `ferritin`, `triglycerides`, `clotting` (`admission`) |
 | Marrow haemophagocytes | `marrow` (workup) | `marrow` (`admission`) |
 | Blood EBV DNA 5.43 × 10⁷ copies, per-volume unit not stated | `marrow` (workup) | `ebv-pcr` (`admission`; value 54 300 000 copies) |
@@ -277,7 +291,7 @@ platelets and haemoglobin are flagged L (1.0.0's Chinese title calls them 三系
 * **Waiting for the genes before etoposide** — decision 2's `steroid-await-genes`; the critical item and the phase
   gate make the induction an act in `admission`.
 * **Treating EBV with antivirals instead of HLH** — decision 2's `antiviral-ivig` and the `ganciclovir-ebv`
-  intervention (contraindicated before etoposide; it costs `rb-treatment-plan`).
+  intervention (contraindicated before etoposide; it costs `rb-no-recoverable-harm`).
 * **Discharging him as a viral illness** — the `discharge-viral` disposition is always contraindicated and
   `critical: true`: it fails the safety outcome and `rb-no-harm`.
 * **Starting steroids or chemotherapy before the marrow** — `dexamethasone`/`etoposide` are contraindicated until
@@ -287,7 +301,10 @@ platelets and haemoglobin are flagged L (1.0.0's Chinese title calls them 三系
   decision 3's `fhl3-confirmed` and `xlp-no-transplant`.
 * **Stopping at 8 weeks because "it was only EBV"** — decision 3's `secondary-complete-course`.
 * **Treating the positive HHV-6 as the whole story**, or stopping immunosuppression to clear it — decision 4 and
-  the contraindicated `withdraw-immunosuppression` (it costs `rb-diarrhoea-workup`).
+  the contraindicated `withdraw-immunosuppression` (it costs `rb-no-recoverable-harm`).
+* **Steroids for any post-transplant diarrhoea before it has been graded, or without the infection work-up** —
+  methylprednisolone earns the critical `rb-gvhd-steroids` only once the clinical assessment (grade III) has been
+  read, and decision 4's near-miss `steroids-skip-tests` drops the stool, viral and biopsy work-up.
 * **Using post-transplant blood (or a cheek swab) for germline testing** — decision 5.
 
 ## Embodied mode
@@ -337,6 +354,10 @@ unrecorded tests offered with "No result is recorded for this test."; the order-
 * The fever is "间断" (intermittent) in the chief complaint, "反复" (recurrent) in the history and "持续"
   (persistent) in the title and triage note; the case says "on and off … never properly gone away".
 * Neutrophils "0.84" carry no unit (absolute count or fraction); 1.0.0's Chinese title calls the count 三系减少.
+  1.0.0 writes one unit after the list ("WBC 3.4, neutrophils 0.84 and platelets 50 × 10⁹/L"); the case gives the
+  white cells × 10⁹/L, the only unit a count of 3.4 can have, and keeps the neutrophil unit open.
+* The first response to HLH treatment is "response" in 1.0.0's English and 缓解 (remission) in its Chinese; the case
+  follows the Chinese (the article's language) and lists the word under "To verify".
 * The EBV DNA copies have no volume; plasma or whole blood is not stated.
 * "NK cells 1.9 %" has no denominator, and 1.0.0 does not say whether it is a cell proportion or an activity
   measure; the case reads it as a proportion, as 1.0.0's wording does, and does not count it as a criterion.
@@ -388,26 +409,29 @@ item for). Every required item
    https://rs.yiigle.com/cmaid/33686
 2. Henter JI, Horne A, Aricó M, et al. HLH-2004: Diagnostic and therapeutic guidelines for hemophagocytic
    lymphohistiocytosis. Pediatr Blood Cancer. 2007;48(2):124-131. doi:10.1002/pbc.21039
-3. Ehl S, et al.; HLH Steering Committee of the Histiocyte Society. Recommendations for the use of etoposide-based
+3. Ehl S, Astigarraga I, von Bahr Greenwood T, et al.; HLH Steering Committee of the Histiocyte Society.
+   Recommendations for the use of etoposide-based
    therapy and bone marrow transplantation for the treatment of HLH: consensus statements by the HLH Steering
    Committee of the Histiocyte Society. J Allergy Clin Immunol Pract. 2018;6(5):1508-1517.
    doi:10.1016/j.jaip.2018.05.031
-4. Imashuku S, et al. Requirement for etoposide in the treatment of Epstein-Barr virus-associated hemophagocytic
-   lymphohistiocytosis. J Clin Oncol. 2001;19(10):2665-2673.
+4. Imashuku S, Kuriyama K, Teramura T, et al. Requirement for etoposide in the treatment of Epstein-Barr
+   virus-associated hemophagocytic lymphohistiocytosis. J Clin Oncol. 2001;19(10):2665-2673.
+   doi:10.1200/JCO.2001.19.10.2665
 5. 中华医学会儿科学分会感染学组, 全国儿童EB病毒感染协作组. 儿童EB病毒感染相关疾病的诊断和治疗原则专家共识. 中华儿科杂志.
-   2021;59(11):905-911.
+   2021;59(11):905-911. doi:10.3760/cma.j.cn112140-20210618-00513
 6. Jordan MB, Allen CE, Greenberg J, et al. Challenges in the diagnosis of hemophagocytic lymphohistiocytosis:
    recommendations from the North American Consortium for Histiocytosis (NACHO). Pediatr Blood Cancer.
    2019;66(11):e27929. doi:10.1002/pbc.27929
 7. Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint
    consensus recommendation of the American College of Medical Genetics and Genomics and the Association for
    Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30
-8. Penack O, Marchetti M, et al. Prophylaxis and management of graft-versus-host disease after stem-cell
-   transplantation for haematological malignancies: updated consensus recommendations of the European Society for
-   Blood and Marrow Transplantation. Lancet Haematol. 2024;11:e147-e159. doi:10.1016/S2352-3026(23)00342-3
+8. Penack O, Marchetti M, Aljurf M, et al. Prophylaxis and management of graft-versus-host disease after
+   stem-cell transplantation for haematological malignancies: updated consensus recommendations of the European
+   Society for Blood and Marrow Transplantation. Lancet Haematol. 2024;11(2):e147-e159.
+   doi:10.1016/S2352-3026(23)00342-3
 9. Ward KN, Hill JA, Hubacek P, et al. Guidelines from the 2017 European Conference on Infections in Leukaemia for
    management of HHV-6 infection in patients with hematologic malignancies and after hematopoietic stem cell
-   transplantation. Haematologica. 2019;104:2155-2163.
+   transplantation. Haematologica. 2019;104(11):2155-2163. doi:10.3324/haematol.2019.223073
 
 The same strings are `debrief.references`: the article and eight guidelines and key papers, within the standard's
 "article + 3–8" (an XLP1 outcome series cited by an earlier draft was dropped for that reason; the XLP1 teaching now
@@ -428,6 +452,22 @@ GVHD; methylprednisolone 2 mg/kg/day first line confirmed for the EBMT recommend
 ref. 9 — PMC6821622 and the ECIL-7 slide set (authors, volume, pages; foscarnet or ganciclovir for HHV-6B
 encephalitis; chromosomally integrated HHV-6 to be distinguished before treating).
 
+**Independent review, 2026-11-14** (Europe PMC records, full texts read where open, doi.org): ref. 3 — the abstract
+(HLH-94 the standard of care for etoposide-based treatment) and the first three authors; ref. 4 — Europe PMC record
+(eight authors, 2001;19(10):2665-2673, DOI; 47 patients; 90.2 % ± 6.9 % against 56.5 % ± 12.6 %); ref. 5 — a
+reprint's visible part (过度抗病毒治疗 named as a problem; 阿昔洛韦等抗EBV治疗无效 in EBV-HLH; treatment starts as soon as
+the criteria are met; VP-16 may be deferred when steroids alone control mild disease; 移植的适应证为难治和复发的EBV-HLH)
+and the DOI, which doi.org resolves to the publisher; ref. 6 — PMC7340087 (§1.2 "HLH-directed therapy often obscures
+diagnosis" of an undiagnosed malignancy; §2.7 lymphoma work-up before corticosteroids; Table 2: the marrow "essential
+to rule out malignancy"; protein measurement of perforin, SAP and XIAP; CD107a degranulation preferred to NK-cell
+function); ref. 8 — the 2024 full text (Panel 2: systemic treatment from grade 2; methylprednisolone 2 mg/kg daily
+first line, lower doses for isolated grade 2 skin or upper-gut disease; treatment not delayed for histology;
+ruxolitinib for steroid-refractory acute GVHD in adults) and its Europe PMC record (issue 2, authors); ref. 9 — Europe
+PMC record (issue 11, DOI) and PMC6821622 (IV foscarnet or ganciclovir for HHV-6B encephalitis, AIIu; no routine
+screening or pre-emptive therapy, DIIu; no recommendation for other end-organ disease; ciHHV-6 testing in ambiguous
+cases to avoid unnecessary antiviral therapy); HLH-2004 (ref. 2) — the abstract's transplant indication (familial or
+molecular diagnosis; severe and persistent, or reactivated, disease).
+
 ### To verify
 
 **Against the full source article (the source pass):**
@@ -446,8 +486,9 @@ encephalitis; chromosomally integrated HHV-6 to be distinguished before treating
 * The gene report: method, when it came back (before or after the reactivation), which variant's notation is
   unclear, the SH2D1A variant's exact HGVS (cDNA and protein), the UNC13D variant's protein change, any second
   UNC13D finding, the laboratory's classification, parental (segregation) and maternal carrier testing.
-* The HLH protocol (HLH-94 or HLH-2004?), drugs, doses, duration, response, and the timing and signs of the
-  reactivation and its treatment.
+* The HLH protocol (HLH-94 or HLH-2004?), drugs, doses, duration, response (the article's word: response or
+  remission — 1.0.0's English and Chinese differ), and the timing and signs of the reactivation and its treatment.
+* The blood count's units as printed (the white-cell unit; the neutrophil figure as a count or a fraction).
 * The transplant: timing, donor HLA match level, graft source (marrow, peripheral blood or cord), conditioning,
   GVHD prophylaxis.
 * The diarrhoea: HHV-6 specimen, load and treatment; organ stages and grade; biopsy; whether HHV-6 and GVHD were
@@ -458,25 +499,26 @@ encephalitis; chromosomally integrated HHV-6 to be distinguished before treating
 **Guidance details to confirm (could not be fully checked in this environment):**
 * The HLH-2004 thresholds quoted in teaching point 1 (haemoglobin < 90 g/L, platelets < 100 × 10⁹/L, neutrophils
   < 1.0 × 10⁹/L, fasting triglycerides ≥ 3.0 mmol/L, fibrinogen ≤ 1.5 g/L, ferritin ≥ 500 µg/L, soluble CD25
-  ≥ 2400 U/mL) against the 2007 paper's table; the full text was not opened in this session.
-* Ref. 3: the author list after Ehl and the consensus wording on dose adjustment, CNS therapy and conditioning
-  intensity (the case quotes only HLH-94's schedule, which secondary summaries confirmed).
-* Ref. 4: volume, issue and pages (2001;19(10):2665-2673 from the citation record) and the full author list.
-* Ref. 8: the full author list and the 2024 update's own wording for first-line methylprednisolone 2 mg/kg/day
-  (found in this session for the EBMT recommendations of 2020 and in secondary reproductions of the current table,
-  not in the 2024 text itself) and for the steroid-refractory definition (progression after 3 days or no
-  improvement after 7); the 2024 recommendations were written for transplants for haematological malignancies and
-  are applied here to a transplant for HLH.
-* Ref. 9: the issue number, the ECIL-7 advice on chromosomally integrated HHV-6 (the case says it can keep a PCR
-  positive) and its grading of treatment for non-encephalitis HHV-6 disease and viraemia.
+  ≥ 2400 U/mL) against the 2007 paper's own table, which was not opened; NACHO 2019's Table 1 reproduces them in US
+  units.
+* Ref. 3: the consensus wording on dose adjustment, CNS therapy and conditioning intensity (the case quotes only
+  HLH-94's schedule, which secondary summaries confirmed).
+* Ref. 8: the source of the steroid-refractory definition the case uses (progression after 3 days or no
+  improvement after 7), which the 2024 text does not state; the 2024 recommendations were written for transplants
+  for haematological malignancies, recommend ruxolitinib for steroid-refractory acute GVHD in adults, and are applied
+  here to a child transplanted for HLH — a paediatric transplant physician should confirm the second line for a child.
+* Ref. 9: ECIL-7 makes no treatment recommendation for HHV-6 disease other than encephalitis; a transplant
+  physician should confirm the case's reading of a positive HHV-6 in post-transplant diarrhoea.
+* Ref. 5 was read only through a reprint's visible part (the publisher's page could not be read): confirm its wording
+  on antivirals in EBV-HLH, on starting treatment once the criteria are met, on deferring VP-16 in mild disease that
+  steroids alone control, and on transplantation for refractory or relapsed EBV-HLH.
 * The current national guideline, 中国噬血细胞综合征诊断与治疗指南（2022年版）(中国医师协会血液科医师分会, 中华医学会儿科学分会
   血液学组, 噬血细胞综合征中国专家联盟; 中华医学杂志 2022;102(20):1492-1499 — bibliographic record confirmed
   2026-11-13), could not be read: check decisions 1–3 against it before teaching use (it is not cited).
-* The guideline wording behind reading the marrow before HLH-directed therapy: the case contraindicates
-  dexamethasone and etoposide until the marrow result has been read and marks them `critical: true`, on the
-  clinical ground that both drugs can partly treat and hide a leukaemia or lymphoma; no guideline sentence saying
-  so could be opened in this session (the harm texts therefore cite none), so confirm it against ref. 3, ref. 6 and
-  the 2022 Chinese guideline.
+* Reading the marrow before HLH-directed therapy now rests on NACHO 2019 (ref. 6: "HLH-directed therapy often
+  obscures diagnosis" of an undiagnosed malignancy; the marrow "essential to rule out malignancy"), which both harm
+  texts cite; a paediatric haematologist should confirm the `critical: true` judgement (it fails the safety outcome)
+  and check it against the 2022 Chinese guideline.
 * Germline sampling after transplantation: the case recommends stored pre-transplant DNA or cultured skin
   fibroblasts and warns that buccal swabs can carry donor DNA (supported by recent studies found in this session;
   no guideline names one source); confirm the local laboratory's preferred tissue.
@@ -500,6 +542,16 @@ encephalitis; chromosomally integrated HHV-6 to be distinguished before treating
   immunosuppression are recoverable and cost their management items. No key is the uniquely longest option.
 * Provenance: editorial review status with seven named guidelines; nine references (the article and eight
   guidelines and key papers); `sourceTextChecked: false`.
+* Independent review and fixes (2026-11-14): the critical marrow-first contraindication of dexamethasone and
+  etoposide names its guidance (NACHO 2019); a non-critical safety item `rb-no-recoverable-harm` now holds the two
+  recoverable errors (ganciclovir before etoposide, withdrawing immunosuppression), which left `rb-treatment-plan`
+  and `rb-diarrhoea-workup` (13 rubric items, weight 33); methylprednisolone counts as in time only once the GVHD
+  grade has been read; learning outcome 3 ties SAP expression to XLP1 and CD107a degranulation to Munc13-4;
+  ruxolitinib is EBMT 2024's recommendation for adults; decision 2's feedback names the 2021 consensus's deferral of
+  etoposide in mild disease and no longer calls him "sick"; "smear" left the marrow record (not in 1.0.0); records
+  say "not recorded" rather than "this case does not record"; the fifth objective's guidance and hint and the sixth
+  objective's hint no longer lead to a key; references gained verified authors, issues and DOIs; the scoring table
+  was re-measured.
 
 ### 1.0.0
 
@@ -511,8 +563,8 @@ Run from the worktree root (all pass for this version):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-33686/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-33686 --lang en                                                 # 81 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 31/31 (100 %)
-npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-33686                       # PASS: depth floor, do nothing 0, wrong first 55 % < 100 %, patient voice
+npm run -s cc -- cases verify cmcr-33686 --lang en                                                 # 81 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 33/33 (100 %)
+npx tsx --conditions=source scripts/case-check.ts cmcr-33686                                      # PASS: depth floor, do nothing 0/27, wrong first 58 % < 100 %, patient voice
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-33686:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33686:"  # in-world demonstration, en + zh-CN
 ```
@@ -533,12 +585,12 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 **关键决策：** ① 工作诊断：EB病毒诱发的HLH（满足≥5条），仍需查找遗传病因和淋巴瘤；② 初始治疗：现在就开始HLH-94并送基因和
 脱颗粒检测；③ 再活动：再活动即移植指征，同时复核变异、做功能检测和父母检测；④ 移植后腹泻：GVHD与感染同时评估，Ⅱ度及以上即用全身
 激素；⑤ 基因随访：用移植前或非血液来源的DNA，并检测父母。三个关键（critical）评分项都是行动：入院阶段在骨髓结果之后开始地塞米松和
-依托泊苷；移植后阶段开始甲泼尼龙；避免按病毒感染让他出院、避免在骨髓结果之前用地塞米松或依托泊苷。
+依托泊苷；移植后阶段在肠道GVHD分级明确后开始甲泼尼龙；避免按病毒感染让他出院、避免在骨髓结果之前用地塞米松或依托泊苷。
 
 **安全结果。** `dexamethasone`、`etoposide`（读到骨髓结果之前禁忌）和 `discharge-viral`（始终禁忌）标为
-`critical: true`：HLH剂量的地塞米松和依托泊苷可能部分治疗并掩盖白血病或淋巴瘤，按病毒感染出院会让可能致命的过度炎症得不到治疗；
+`critical: true`：HLH剂量的地塞米松和依托泊苷可能部分治疗并掩盖白血病或淋巴瘤（NACHO 2019），按病毒感染出院会让可能致命的过度炎症得不到治疗；
 在禁忌时给予，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示。`ganciclovir-ebv`
-（依托泊苷之前）和 `withdraw-immunosuppression`（移植后）是可挽回的误判，只扣所属管理评分项，不使安全结果不通过。
+（依托泊苷之前）和 `withdraw-immunosuppression`（移植后）是可挽回的误判，只扣非关键的安全评分项 `rb-no-recoverable-harm`，不使安全结果不通过。
 
 **复盘要点：** 一组单独不特异的结果合起来构成诊断；EB病毒解释的是诱因不是易感性；EB病毒相关HLH越早用依托泊苷越好（Imashuku
 2001）；单个杂合变异不能确立隐性遗传病，写法不清的变异先复核再解读；决定移植的是再活动而不是基因型；病毒阳性与GVHD不是二选一；
