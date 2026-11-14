@@ -42,6 +42,9 @@
   "committed": true,
   "reviewed": true
  },
+ "cmcr-1068530": {
+  "authored": true
+ },
  "cmcr-1068535": {
   "allChecksPass": true,
   "authored": true,
@@ -251,6 +254,9 @@
   "committed": true,
   "reviewed": true
  },
+ "cmcr-33476": {
+  "authored": true
+ },
  "cmcr-33555": {
   "allChecksPass": true,
   "authored": true,
@@ -268,6 +274,9 @@
    "minor": 10
   },
   "reviewed": true
+ },
+ "cmcr-33632": {
+  "authored": true
  },
  "cmcr-33666": {
   "allChecksPass": true,
@@ -381,7 +390,17 @@
   "allChecksPass": true,
   "authored": true,
   "committed": true,
-  "reviewed": true
+  "reviewed": true,
+  "rounds": {
+   "2": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 1,
+     "major": 11,
+     "minor": 17
+    }
+   }
+  }
  },
  "cmcr-44344": {
   "allChecksPass": true,
@@ -446,7 +465,17 @@
   "allChecksPass": true,
   "authored": true,
   "committed": true,
-  "reviewed": true
+  "reviewed": true,
+  "rounds": {
+   "2": {
+    "allChecksPass": true,
+    "findings": {
+     "critical": 4,
+     "major": 14,
+     "minor": 9
+    }
+   }
+  }
  },
  "cmcr-598191": {
   "allChecksPass": true,
@@ -699,5 +728,8 @@
    "minor": 11
   },
   "reviewed": true
+ },
+ "cmcr-860885": {
+  "authored": true
  }
 }

@@ -8,7 +8,7 @@
   },
   "summary": {
     "zh-CN": "12岁男孩，间断咯血1年，出生后就反复长湿疹，收入儿科病房查找咯血原因。",
-    "en": "A 12-year-old boy with a year of intermittent haemoptysis and eczema since soon after birth is admitted to find the cause of the bleeding."
+    "en": "A 12-year-old boy with a year of intermittent haemoptysis and eczema since soon after birth is admitted to the children's ward to find the cause of the bleeding."
   },
   "specialty": [
     "pediatrics",
@@ -27,7 +27,7 @@
   "learningOutcomes": [
     {
       "zh-CN": "对反复咯血的孩子问清病程、次数、每次的量和既往诊治，并在入院时安排SpO₂、血常规、凝血、备血、痰病原学和增强CT加血管重建。",
-      "en": "Take a focused history of recurrent haemoptysis (duration, episodes, volume, earlier work-up) and order SpO₂, a blood count, clotting, group and save, sputum microbiology and contrast CT with vascular reconstruction on admission."
+      "en": "Take a focused history of recurrent haemoptysis (duration, episodes, volume, earlier work-up) and plan his admission: SpO₂ measured at once, a blood count, clotting, group and save, sputum microbiology and contrast CT with vascular reconstruction."
     },
     {
       "zh-CN": "解释看不见发绀为什么不等于血氧正常，并对有杵状指、可能存在右向左分流的孩子测SpO₂。",
@@ -42,8 +42,8 @@
       "en": "Faced with a CT showing enhancing vessels within lung nodules, avoid biopsy and refer for angiography of the pulmonary and bronchial arteries with embolisation, checking platelets and giving antibiotic cover first."
     },
     {
-      "zh-CN": "按Woellner诊断指南（2010）用STAT3测序和父母验证确诊，并向家庭解释新发显性变异的含义。",
-      "en": "Apply the Woellner diagnostic guidelines (2010) to confirm the diagnosis with STAT3 sequencing and parental testing, and explain a new dominant variant to the family."
+      "zh-CN": "按Woellner诊断指南（2010）用STAT3测序和父母验证确诊，并向家庭解释这个很可能新发的显性变异的含义。",
+      "en": "Apply the Woellner diagnostic guidelines (2010) to confirm the diagnosis with STAT3 sequencing and parental testing, and explain to the family a dominant variant that most likely arose in him."
     },
     {
       "zh-CN": "与家人商定出院计划：抗葡萄球菌预防、牙科和有创操作前的抗生素、书面的再咯血计划、遗传咨询和费用上的帮助。",
@@ -290,7 +290,9 @@
           "为了什么",
           "这回住院",
           "这次住院",
-          "来住院"
+          "来住院",
+          "病情",
+          "这次的病"
         ],
         "en": [
           "whatbringsyou",
@@ -312,7 +314,11 @@
           "comeintohospital",
           "cometohospital",
           "whyhaveyoucome",
-          "whyareyouinhospital"
+          "whyareyouinhospital",
+          "his illness",
+          "this illness",
+          "the illness",
+          "present illness"
         ]
       },
       "excludeKeywords": {
@@ -335,7 +341,9 @@
           "泡沫",
           "家里",
           "体重",
-          "鼻"
+          "鼻",
+          "喘",
+          "气短"
         ],
         "en": [
           "eczema",
@@ -354,7 +362,9 @@
           "how much",
           "how many",
           "amount",
-          "volume"
+          "volume",
+          "breath",
+          "long-term"
         ]
       },
       "disclosure": "volunteer",
@@ -745,7 +755,11 @@
           "流鼻血",
           "鼻血",
           "鼻出血",
-          "鼻子出血"
+          "鼻子出血",
+          "瘀青",
+          "淤青",
+          "瘀斑",
+          "容易出血"
         ],
         "en": [
           "nosebleed",
@@ -754,7 +768,12 @@
           "bleed from his nose",
           "bleeding from the nose",
           "epistaxis",
-          "nose"
+          "nose",
+          "bruise",
+          "bruises",
+          "bruising",
+          "bleed easily",
+          "bleeds easily"
         ]
       },
       "disclosure": "unknown",
@@ -788,7 +807,14 @@
           "从小皮肤",
           "出生后",
           "皮肤病",
-          "长疹子"
+          "长疹子",
+          "既往史",
+          "既往",
+          "以前得过什么病",
+          "得过什么病",
+          "平时身体",
+          "身体怎么样",
+          "以前身体"
         ],
         "en": [
           "eczema",
@@ -798,18 +824,37 @@
           "dermatitis",
           "since he was a baby",
           "since birth",
-          "skin problems"
+          "skin problems",
+          "past medical history",
+          "medical history",
+          "pastmedicalhistory",
+          "medical problems",
+          "health problems",
+          "other illnesses",
+          "long-term illness",
+          "long-term illnesses",
+          "been well",
+          "otherwise well"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "疖子",
           "脓包",
-          "脓肿"
+          "脓肿",
+          "家里",
+          "家族",
+          "父母",
+          "兄弟",
+          "亲戚"
         ],
         "en": [
           "boil",
-          "abscess"
+          "abscess",
+          "family",
+          "parents",
+          "relatives",
+          "siblings"
         ]
       },
       "required": true,
@@ -866,7 +911,9 @@
           "疖子",
           "脓包",
           "皮肤感染",
-          "长疮"
+          "长疮",
+          "肺",
+          "胸"
         ],
         "en": [
           "other operation",
@@ -874,7 +921,10 @@
           "apart from",
           "boil",
           "boils",
-          "skin infection"
+          "skin infection",
+          "chest",
+          "lung",
+          "pneumonia"
         ]
       },
       "required": true,
@@ -1037,7 +1087,9 @@
           "智力",
           "学习",
           "同龄",
-          "跟得上"
+          "跟得上",
+          "上学",
+          "学校"
         ],
         "en": [
           "development",
@@ -1048,7 +1100,9 @@
           "learning",
           "keeping up",
           "other kids",
-          "his age"
+          "his age",
+          "school",
+          "at school"
         ]
       },
       "phases": [
@@ -1139,6 +1193,19 @@
       "source": {
         "zh-CN": "病例报告·家族史（未见特殊）（据1.0.0版提取）；对话为教学改写",
         "en": "Case report · family history (nothing notable) (as extracted in version 1.0.0); the wording is a teaching adaptation"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "结核",
+          "肺结核",
+          "咳嗽",
+          "传染"
+        ],
+        "en": [
+          "tb",
+          "tuberculosis",
+          "cough"
+        ]
       }
     },
     {
@@ -2825,6 +2892,10 @@
           "source": {
             "zh-CN": "未记录：保持未知，不补写",
             "en": "Not recorded: kept unknown, nothing added"
+          },
+          "note": {
+            "zh-CN": "导管血管造影由介入放射科完成，需转介介入放射科申请；本例没有血管造影的记录。",
+            "en": "Catheter angiography is done by interventional radiology and is requested through a referral to them; no angiography is recorded in this case."
           }
         },
         "confirmation": {
@@ -2836,6 +2907,10 @@
           "source": {
             "zh-CN": "未记录：保持未知，不补写",
             "en": "Not recorded: kept unknown, nothing added"
+          },
+          "note": {
+            "zh-CN": "导管血管造影由介入放射科完成，需转介介入放射科申请；本例没有血管造影的记录。",
+            "en": "Catheter angiography is done by interventional radiology and is requested through a referral to them; no angiography is recorded in this case."
           }
         }
       }
@@ -3059,7 +3134,7 @@
       "id": "ir-referral",
       "name": {
         "zh-CN": "转介介入放射科：肺动脉及支气管动脉造影，必要时同期栓塞",
-        "en": "Refer to interventional radiology for pulmonary and bronchial angiography, with embolisation in the same session"
+        "en": "Refer to interventional radiology for pulmonary and bronchial angiography, with embolisation in the same session if needed"
       },
       "kind": "consult",
       "aliases": {
@@ -3084,8 +3159,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "申请肺动脉和支气管（体循环）动脉造影，明确供血血管并同期栓塞；术前先查血小板计数（凝血已记录为未见异常），并为操作预防性使用抗生素。",
-        "en": "Request angiography of the pulmonary and the bronchial (systemic) arteries to define the feeding vessels and embolise them in the same session; check the platelet count first (clotting is reported as showing no abnormality) and give antibiotic cover for the procedure."
+        "zh-CN": "申请肺动脉和支气管（体循环）动脉造影，明确供血血管并同期栓塞；术前先查血小板计数和凝血功能，并为操作预防性使用抗生素。",
+        "en": "Request angiography of the pulmonary and the bronchial (systemic) arteries to define the feeding vessels and embolise them in the same session; check the platelet count and clotting first and give antibiotic cover for the procedure."
       },
       "risk": "low",
       "maxDoses": 2,
@@ -3097,7 +3172,7 @@
           },
           {
             "not": {
-              "phase": "outcome"
+              "decided": "family-plan"
             }
           }
         ]
@@ -3218,8 +3293,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "由遗传咨询师或遗传科医生解释结果的含义：对他本人、父母以及将来的孩子。",
-        "en": "A genetic counsellor or clinical geneticist explains what the result means for him, for his parents and for his future children."
+        "zh-CN": "由遗传咨询师或遗传科医生解释基因检测结果的含义：对他本人、父母以及将来的孩子。",
+        "en": "A genetic counsellor or clinical geneticist explains what a genetic result means for him, for his parents and for his future children."
       },
       "maxDoses": 1,
       "indicatedWhen": {
@@ -3306,8 +3381,8 @@
     {
       "id": "lung-biopsy",
       "name": {
-        "zh-CN": "右肺结节活检（CT引导下经皮穿刺或经支气管镜）",
-        "en": "Biopsy of a right-lung nodule (CT-guided needle or bronchoscopic)"
+        "zh-CN": "肺活检（CT引导下经皮穿刺或经支气管镜）",
+        "en": "Lung biopsy (CT-guided needle or bronchoscopic)"
       },
       "kind": "procedure",
       "aliases": {
@@ -3332,8 +3407,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "CT引导下经皮穿刺（或经支气管镜）对右肺结节取活检。",
-        "en": "A CT-guided percutaneous (or bronchoscopic) biopsy of a right-lung nodule."
+        "zh-CN": "CT引导下经皮穿刺（或经支气管镜）对肺部病变取活检。",
+        "en": "A CT-guided percutaneous (or bronchoscopic) biopsy of a lung lesion."
       },
       "requires": [
         "ct"
@@ -3356,8 +3431,8 @@
     {
       "id": "lobectomy",
       "name": {
-        "zh-CN": "右肺病变手术切除（肺叶切除）",
-        "en": "Surgical resection of the affected right lung (lobectomy)"
+        "zh-CN": "肺部病变手术切除（肺叶切除）",
+        "en": "Surgical resection of the lung lesion (lobectomy)"
       },
       "kind": "procedure",
       "aliases": {
@@ -3433,7 +3508,7 @@
       },
       "harm": {
         "zh-CN": "血管病变未处理、类型不明；右向左分流的风险不止出血，还有反常栓塞和脑脓肿。BTS肺动静脉畸形临床声明（2017，针对成人）要求在栓塞之外进行药物管理和随访；他的免疫缺陷也需要长期专科管理（AAAAI/ACAAI 2015实践参数：以处理并发症为中心）。",
-        "en": "The vascular lesion is untreated and its type unknown; a possible right-to-left shunt carries risks beyond bleeding — paradoxical emboli and brain abscess. The BTS clinical statement on pulmonary AVMs (2017, for adults) asks for medical management and follow-up alongside embolisation, and his immune defect needs lifelong specialist care directed at its complications (AAAAI/ACAAI practice parameter, 2015)."
+        "en": "The vascular lesion is untreated and its type unknown; a possible right-to-left shunt carries risks beyond bleeding — paradoxical emboli and brain abscess. The BTS clinical statement on pulmonary AVMs (2017, for adults) asks for medical management and follow-up alongside embolisation, and his immune defect is lifelong, with care that the AAAAI/ACAAI practice parameter (2015) directs at its complications."
       },
       "response": {
         "zh-CN": "已按医嘱记录为出院且不随访。",
@@ -3738,8 +3813,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "结核必须查——痰和其他病原学检查——但没有证据就治疗，会让他服药数月，推迟能找到血管性病因的CT，也忽视了他皮肤、颈部和牙齿的线索。",
-            "en": "TB must be looked for — sputum and other microbiology — but treating without evidence commits him to months of drugs, delays the CT that would find a vascular source and ignores the clues in his skin, neck and teeth."
+            "zh-CN": "结核必须查——痰和其他病原学检查——但没有证据就治疗，会让他服药数月，推迟可能发现血管性或其他结构性病因的CT，也忽视了他皮肤、颈部和牙齿的线索。",
+            "en": "TB must be looked for — sputum and other microbiology — but treating without evidence commits him to months of drugs, delays the CT that could show a vascular or other structural source and ignores the clues in his skin, neck and teeth."
           }
         },
         {
@@ -3780,8 +3855,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先问他出生后的皮肤情况、1岁时的颈部手术和乳牙，并查看皮肤。",
-        "en": "Ask about his skin since birth, the neck operation and his teeth, and look at his skin first."
+        "zh-CN": "先问他出生后的皮肤情况、严重感染和乳牙，并查看皮肤。",
+        "en": "Ask about his skin since birth, serious infections and his teeth, and look at his skin first."
       },
       "options": [
         {
@@ -3866,15 +3941,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。两套循环的血管造影能回答CT留下的问题——是肺动静脉畸形，还是支气管（体循环）动脉—肺血管瘘——并可同期治疗。BTS肺动静脉畸形临床声明（2017，针对成人）主张：技术可行时，所有影像可见的肺动静脉畸形都转介栓塞，没有“3 mm以下不处理”的规则；CIRSE实践标准（2022）对反复咯血且见病理性动脉者行栓塞。凝血已记录为正常，但血小板计数没有记录；BTS建议栓塞前预防性使用抗生素。",
-            "en": "Right. Angiography of both circulations answers the question the CT leaves open — a pulmonary arteriovenous malformation or a bronchial (systemic) artery–to–pulmonary fistula — and treats it in the same session. The BTS clinical statement on pulmonary AVMs (2017, for adults) refers every radiologically visible PAVM for embolisation if technically feasible, with no '3 mm rule'; the CIRSE standards of practice (2022) embolise pathological arteries in recurrent haemoptysis. Clotting is recorded as normal but the platelet count is not; BTS advises antibiotic cover for embolisation."
+            "zh-CN": "正确。两套循环的血管造影能回答CT留下的问题——是肺动静脉畸形，还是支气管（体循环）动脉—肺血管瘘——并可同期治疗。BTS肺动静脉畸形临床声明（2017，针对成人）主张：技术可行时，所有影像可见的肺动静脉畸形都转介栓塞，没有“3 mm以下不处理”的规则；CIRSE实践标准（2022）对反复咯血且见病理性动脉者行栓塞。凝血记录为未见异常，但血小板计数没有记录；BTS建议栓塞时预防性使用抗生素。",
+            "en": "Right. Angiography of both circulations answers the question the CT leaves open — a pulmonary arteriovenous malformation or a bronchial (systemic) artery–to–pulmonary fistula — and treats it in the same session. The BTS clinical statement on pulmonary AVMs (2017, for adults) refers every radiologically visible PAVM for embolisation if technically feasible, with no '3 mm rule'; the CIRSE standards of practice (2022) embolise pathological arteries in recurrent haemoptysis. Clotting is reported as unremarkable but the platelet count is not recorded; BTS advises antibiotic cover for embolisation."
           }
         },
         {
           "id": "ct-biopsy",
           "text": {
-            "zh-CN": "在CT引导下对右肺最大的结节穿刺活检，先用组织学区分是血管性、炎症性还是真菌性病变，再决定怎么治疗",
-            "en": "A CT-guided needle biopsy of the largest right-lung nodule, so that histology can separate a vascular from an inflammatory or fungal lesion before anyone decides on treatment or refers him on"
+            "zh-CN": "在CT引导下对右肺其中一个结节穿刺活检，先用组织学区分是血管性、炎症性还是真菌性病变，再决定怎么治疗",
+            "en": "A CT-guided needle biopsy of one of the right-lung nodules, so that histology can separate a vascular from an inflammatory or fungal lesion before anyone decides on treatment or refers him on"
           },
           "correct": false,
           "feedback": {
@@ -3994,7 +4069,7 @@
           "id": "shared-plan",
           "text": {
             "zh-CN": "免疫科随访，抗葡萄球菌预防加皮肤护理；安排栓塞；牙科操作前用抗生素；书面再咯血预案；遗传咨询；帮助解决费用",
-            "en": "Immunology follow-up with anti-staphylococcal prophylaxis and skin care; embolisation planned; antibiotic cover before dental work; a bleeding plan; genetic counselling; help with costs"
+            "en": "Immunology follow-up with anti-staphylococcal prophylaxis and skin care; embolisation planned; antibiotic cover before dental work; a written bleeding plan; genetic counselling; help with costs"
           },
           "correct": true,
           "feedback": {
@@ -4022,8 +4097,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "父母都阴性，说明变异是在他身上新发生的——但他现在携带它，显性变异传给他每个孩子的机会都是50%。对父母将来再生育，风险低但不是零（生殖腺嵌合）。",
-            "en": "Parents who test negative make the variant new (de novo) in him — but he now carries it, and a dominant variant passes to each of his children with a 50 % chance. For his parents' future children the risk is low but not nil (germline mosaicism)."
+            "zh-CN": "父母都阴性，说明变异很可能是在他身上新发生的——但他现在携带它，显性变异传给他每个孩子的机会都是50%。对父母将来再生育，风险低但不是零（生殖腺嵌合）。",
+            "en": "Parents who both test negative make the variant most likely new (de novo) in him — but he now carries it, and a dominant variant passes to each of his children with a 50 % chance. For his parents' future children the risk is low but not nil (germline mosaicism)."
           }
         },
         {
@@ -4034,7 +4109,7 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "等感染发生再治疗，会招来STAT3高IgE综合征常见的肺炎及其肺损害（肺气囊、支气管扩张），指南建议预防（AAAAI/ACAAI，2015；Tsilifis等，2021）。把血管病变推迟到成年，等于让他继续承受每次最多100 mL的咯血风险。",
+            "zh-CN": "等感染发生再治疗，会招来STAT3高IgE综合征常见的肺炎及其肺损害（肺气囊、支气管扩张），预防是推荐做法（AAAAI/ACAAI，2015；Tsilifis等，2021）。把血管病变推迟到成年，等于让他继续承受每次最多100 mL的咯血风险。",
             "en": "Waiting for infections invites the pneumonias — and the lung damage, pneumatoceles and bronchiectasis — that STAT3 hyper-IgE syndrome makes likely; prophylaxis is advised (AAAAI/ACAAI, 2015; Tsilifis et al., 2021). Deferring the lesion to adulthood leaves him exposed to further bleeds of up to 100 mL."
           }
         }
@@ -4340,8 +4415,8 @@
         "en": "Talked the boy and his parent through the findings, the news and the plan, and checked understanding"
       },
       "judgeGuidance": {
-        "zh-CN": "按Calgary–Cambridge评估：问候孩子和家长；咯血的经过让孩子自己说，婴幼儿期、颈部手术和乳牙由家长补充；解释正在查咯血原因，以及为什么即使口唇不紫也要测血氧。基因结果回来时用SPIKES告知坏消息：这是一种终身但可以管理的免疫病；变异是他身上新发生的，不是父母遗传的（不要让父母自责）；他将来的每个孩子有50%的机会遗传。说明肺部病变仍需造影、很可能需要栓塞，牙科操作前要用抗生素，再咯血时怎么办；坦诚地询问费用顾虑，介绍社工和医保。用回授法确认理解。不要承诺不会再咯血，也不要把病变类型说成已经确定。原报告没有记录和家属的沟通。",
-        "en": "Calgary–Cambridge: greet the boy and his parent; let the boy describe the bleeding in his own words and the parent fill in infancy, the neck operation and the teeth; explain that the cause of the bleeding is being looked for and why his oxygen will be measured even though his lips are not blue. When the STAT3 result is back, break the news with SPIKES: a lifelong but manageable immune condition; the variant arose in him and was not passed on by his parents (no blame); each of his future children has a 50 % chance of inheriting it. Explain that the lung lesion still needs angiography and probably embolisation, that dental work needs antibiotic cover, and what to do if he coughs up blood again; ask openly about cost and offer the social worker and insurance help. Check understanding by teach-back. Do not promise that the bleeding will not come back, and do not present the lesion's type as settled. The report records no conversation with the family."
+        "zh-CN": "按Calgary–Cambridge评估：问候孩子和家长；咯血的经过让孩子自己说，婴幼儿期、颈部手术和乳牙由家长补充；解释正在查咯血原因，以及为什么即使口唇不紫也要测血氧。基因结果回来时用SPIKES告知坏消息：这是一种终身但可以管理的免疫病；父母都没有检出这个变异，它很可能是在他身上新发生的（不要让父母自责）；他将来的每个孩子有50%的机会遗传。说明肺部病变仍需造影、很可能需要栓塞，牙科操作前要用抗生素，再咯血时怎么办；坦诚地询问费用顾虑，介绍社工和医保。用回授法确认理解。不要承诺不会再咯血，也不要把病变类型说成已经确定。原报告没有记录和家属的沟通。",
+        "en": "Calgary–Cambridge: greet the boy and his parent; let the boy describe the bleeding in his own words and the parent fill in infancy, the neck operation and the teeth; explain that the cause of the bleeding is being looked for and why his oxygen will be measured even though his lips are not blue. When the STAT3 result is back, break the news with SPIKES: a lifelong but manageable immune condition; the variant was not found in either parent, so it most likely arose in him (no blame); each of his future children has a 50 % chance of inheriting it. Explain that the lung lesion still needs angiography and probably embolisation, that dental work needs antibiotic cover, and what to do if he coughs up blood again; ask openly about cost and offer the social worker and insurance help. Check understanding by teach-back. Do not promise that the bleeding will not come back, and do not present the lesion's type as settled. The report records no conversation with the family."
       }
     }
   ],
@@ -4353,8 +4428,8 @@
         "en": "Attending paediatrician"
       },
       "knowledge": {
-        "zh-CN": "这是一份按时间推进的历史病例：入院时的咯血病史和床旁评估、住院检查结果、基因结果与出院计划，最后是半年随访。用苏格拉底式提问引导：口唇不紫能说明血氧吗？为什么不能给强化如血管的结节穿刺？肺动静脉瘘和支气管动静脉瘘怎么区分，哪项检查能回答？新发的显性变异对他和他将来的孩子意味着什么？只用记录的事实：SpO₂没有测；血小板和白细胞计数、体重、生命体征、结节数目和大小都没有记录——不要替它们补数。不提前透露随访结果。复盘用PEARLS。",
-        "en": "A historical teaching case that moves through one admission: the bleeding history and bedside assessment, the admission results, the genetic result and the discharge plan, then the six-month follow-up. Ask Socratic questions: what do lips that are not blue tell you about his oxygen? Why not needle a nodule that enhances like a vessel? What separates a pulmonary from a bronchial arteriovenous fistula, and which test answers it? What does a new dominant variant mean for him and for his future children? Use recorded facts only: SpO₂ was not measured, and the platelet and white counts, his weight, his vital signs and the number and size of the nodules are not recorded — do not supply them. Do not reveal the follow-up early. Debrief with PEARLS."
+        "zh-CN": "这是一份按时间推进的历史病例：入院时的咯血病史和床旁评估、住院检查结果、基因结果与出院计划，最后是半年随访。按学员所处的阶段做苏格拉底式提问：入院时——口唇不紫能说明血氧吗？哪些小时候的经历重要？读过CT后——为什么不能给强化如血管的病变穿刺？肺动静脉瘘和支气管动静脉瘘怎么区分，哪项检查能回答？读过基因结果后——它对他本人、父母和他将来的孩子意味着什么？只用记录的事实：SpO₂没有测；血小板和白细胞计数、体重、生命体征、结节数目和大小都没有记录——不要替它们补数。学员还没看到的结果不要提前说，随访结果更不能提前透露。学员作出相应决策之前，不要说出诊断或该决策的答案。复盘用PEARLS。",
+        "en": "A historical teaching case that moves through one admission: the bleeding history and bedside assessment, the admission results, the genetic result and the discharge plan, then the six-month follow-up. Ask Socratic questions that fit the stage the learner has reached: on admission — what do lips that are not blue tell you about his oxygen, and which childhood facts matter? With the CT read — why not put a needle into a lesion that enhances like a vessel, what separates a pulmonary from a bronchial arteriovenous fistula, and which test answers it? With the genetic result read — what does it mean for him, his parents and his future children? Use recorded facts only: SpO₂ was not measured, and the platelet and white counts, his weight, his vital signs and the number and size of the nodules are not recorded — do not supply them. Do not reveal a result before the learner has read it, and never reveal the follow-up early. Never state the diagnosis or a decision's answer before the learner has made that decision. Debrief with PEARLS."
       },
       "interprets": [
         "immune",
@@ -4387,8 +4462,8 @@
         "en": "Radiologist"
       },
       "knowledge": {
-        "zh-CN": "能解释CT报告：右肺结节内见强化血管，部分有肺动静脉伴行，提示血管发育畸形，肺动静脉瘘可能。说明CT不一定能区分肺动静脉畸形和支气管（体循环）动脉—肺血管瘘，肺动脉和支气管动脉的导管造影能显示两套循环；报告里没有结节数目、大小和血管直径。被问到穿刺活检时，说明对强化如血管的病变穿刺有出血风险。",
-        "en": "Can explain the CT report: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins, suggesting a developmental vascular malformation, possibly a pulmonary arteriovenous fistula. Explains that CT cannot always tell a pulmonary AVM from a bronchial (systemic) artery–to–pulmonary fistula and that catheter angiography of the pulmonary and bronchial arteries shows both circulations; the report gives no number, size or vessel diameter. If asked about a biopsy, explains the bleeding risk of needling a lesion that enhances like a vessel."
+        "zh-CN": "学员拿到CT报告后，能解释报告：右肺结节内见强化血管，部分有肺动静脉伴行，提示血管发育畸形，肺动静脉瘘可能。说明CT不一定能区分肺动静脉畸形和支气管（体循环）动脉—肺血管瘘，肺动脉和支气管动脉的导管造影能显示两套循环；报告里没有结节数目、大小和血管直径。被问到穿刺活检时，说明对强化如血管的病变穿刺有出血风险。",
+        "en": "Once the learner has the CT report, can explain it: enhancing vessels within nodules in the right lung, partly accompanied by pulmonary arteries/veins, suggesting a developmental vascular malformation, possibly a pulmonary arteriovenous fistula. Explains that CT cannot always tell a pulmonary AVM from a bronchial (systemic) artery–to–pulmonary fistula and that catheter angiography of the pulmonary and bronchial arteries shows both circulations; the report gives no number, size or vessel diameter. If asked about a biopsy, explains the bleeding risk of needling a lesion that enhances like a vessel."
       },
       "interprets": [
         "ct"
@@ -4402,8 +4477,8 @@
         "en": "Paediatric immunologist"
       },
       "knowledge": {
-        "zh-CN": "学员拿到结果后帮助解读免疫学、淋巴细胞亚群和基因检测，不主动给出诊断。熟悉现行做法：高IgE不特异；STAT3高IgE综合征时IgG、IgA、IgM和淋巴细胞总数通常正常；诊断按Woellner指南（2010）分级；长期管理包括抗葡萄球菌预防（复方磺胺甲噁唑按体重给药——他的体重没有记录）、皮肤护理、滞留乳牙的处理、脊柱侧弯和轻微外伤骨折的监测；有肺实质病变时才考虑抗真菌预防；免疫球蛋白替代和造血干细胞移植只用于特定患者。",
-        "en": "Helps interpret the immunology, lymphocyte and genetic results once the learner has them, without volunteering a diagnosis. Knows current practice: a high IgE is not specific; in STAT3 hyper-IgE syndrome IgG, IgA, IgM and the total lymphocyte count are usually normal; the diagnosis is graded by the Woellner guidelines (2010); long-term care means anti-staphylococcal prophylaxis (co-trimoxazole dosed by weight — his weight is not recorded), skin care, managing retained primary teeth, and watching for scoliosis and minimal-trauma fractures; antifungal prophylaxis only with parenchymal lung disease; immunoglobulin replacement and haematopoietic stem-cell transplantation for selected patients."
+        "zh-CN": "学员拿到结果后帮助解读免疫学、淋巴细胞亚群和基因检测，不主动给出诊断。熟悉现行做法：高IgE不特异；STAT3高IgE综合征时IgG、IgA、IgM和淋巴细胞总数通常正常；诊断按Woellner指南（2010）分级；长期管理包括抗葡萄球菌预防（复方磺胺甲噁唑按体重给药——他的体重没有记录）、皮肤护理、滞留乳牙的处理、脊柱侧弯和轻微外伤骨折的监测；有肺实质病变时可考虑抗霉菌唑类预防；免疫球蛋白替代用于特定患者，造血干细胞移植是可以考虑的选项。",
+        "en": "Helps interpret the immunology, lymphocyte and genetic results once the learner has them, without volunteering a diagnosis. Knows current practice: a high IgE is not specific; in STAT3 hyper-IgE syndrome IgG, IgA, IgM and the total lymphocyte count are usually normal; the diagnosis is graded by the Woellner guidelines (2010); long-term care means anti-staphylococcal prophylaxis (co-trimoxazole dosed by weight — his weight is not recorded), skin care, managing retained primary teeth, and watching for scoliosis and minimal-trauma fractures; a mould-active azole considered when there is parenchymal lung disease; immunoglobulin replacement in selected patients, and haematopoietic stem-cell transplantation as an option to consider."
       },
       "interprets": [
         "immune",
@@ -4440,8 +4515,8 @@
         "en": "Enhancing vessels inside the nodules → no needle; angiography of both circulations types the lesion and can embolise it at once."
       },
       {
-        "zh-CN": "STAT3变异确立免疫诊断，却说明不了血管解剖；父母阴性 → 变异在他身上新发，他的每个孩子有50%的机会遗传。",
-        "en": "The STAT3 variant settles the immune diagnosis but not the vascular anatomy; parents negative → new in him, and each of his children has a 50 % chance of inheriting it."
+        "zh-CN": "STAT3变异确立免疫诊断，却说明不了血管解剖；父母阴性 → 变异很可能在他身上新发，他的每个孩子有50%的机会遗传。",
+        "en": "The STAT3 variant settles the immune diagnosis but not the vascular anatomy; parents negative → most likely new in him, and each of his children has a 50 % chance of inheriting it."
       },
       {
         "zh-CN": "因经济困难未手术：计划要把费用考虑进去。",
@@ -4496,8 +4571,8 @@
         "en": "Diagnosing STAT3 hyper-IgE syndrome. An IgE in the thousands is not specific — severe atopic dermatitis is the commoner cause (AAAAI/ACAAI practice parameter on primary immunodeficiency, 2015). Woellner's diagnostic guidelines (2010): possible with IgE > 1000 IU/mL and a weighted score > 30, probable with absent Th17 cells or a family history, definitive with a dominant-negative heterozygous STAT3 variant. His c.1909G>A (p.V637M) lies in the SH2 domain and was carried by 10 patients in that cohort."
       },
       {
-        "zh-CN": "终身管理。AAAAI/ACAAI（2015）：处理以并发症为中心——积极的治疗性和预防性抗生素，可考虑抗真菌预防，预防轻微外伤骨折，监测脊柱侧弯，拔除滞留乳牙。Tsilifis等（2021）的综述建议复方磺胺甲噁唑每日2次和抗菌皮肤护理；有支气管扩张或肺气囊时才加用抗霉菌唑类；肺部手术易出现支气管胸膜瘘。原报告没有记录预防用药。",
-        "en": "Lifelong care. AAAAI/ACAAI (2015): direct care at complications — aggressive therapeutic and prophylactic antibiotics, consider antifungal prophylaxis, prevent minimal-trauma fractures, watch for scoliosis, extract retained primary teeth. The review by Tsilifis and colleagues (2021) suggests twice-daily co-trimoxazole with antiseptic skin care, a mould-active azole only when there is bronchiectasis or pneumatocele, and warns that lung surgery risks bronchopleural fistula. The report records no prophylaxis."
+        "zh-CN": "终身管理。AAAAI/ACAAI（2015）：处理以并发症为中心——积极的治疗性和预防性抗生素，可考虑抗真菌预防，预防轻微外伤骨折，监测脊柱侧弯，拔除滞留乳牙。Tsilifis等（2021）的综述建议复方磺胺甲噁唑每日2次和抗菌皮肤护理；有支气管扩张、肺气囊等肺实质病变时可考虑抗霉菌唑类预防；肺部手术易出现支气管胸膜瘘。原报告没有记录预防用药。",
+        "en": "Lifelong care. AAAAI/ACAAI (2015): direct care at complications — aggressive therapeutic and prophylactic antibiotics, consider antifungal prophylaxis, prevent minimal-trauma fractures, watch for scoliosis, extract retained primary teeth. The review by Tsilifis and colleagues (2021) suggests twice-daily co-trimoxazole with antiseptic skin care, considers a mould-active azole when there is parenchymal lung disease such as bronchiectasis or pneumatoceles, and warns that lung surgery risks bronchopleural fistula. The report records no prophylaxis."
       },
       {
         "zh-CN": "父母阴性意味着什么。ACMG/AMP变异解读标准（2015）：新发变异只有在亲子关系经过确认时才算强证据（PS2），否则为中等证据（PM6）——本例未记录亲子关系是否确认。显性遗传：他的每个孩子有50%的机会遗传；父母再生育的风险低但不为零（生殖腺嵌合）。",
@@ -5254,6 +5329,62 @@
         "locale": "zh-CN",
         "expect": [
           "skin-abscesses"
+        ]
+      },
+      {
+        "text": "Has he had any medical problems in the past?",
+        "locale": "en",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "他以前身体怎么样，得过什么病？",
+        "locale": "zh-CN",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "Any chest infections in the past?",
+        "locale": "en",
+        "expect": [
+          "pneumonia"
+        ]
+      },
+      {
+        "text": "家里有人得过肺结核吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "tb-contact"
+        ]
+      },
+      {
+        "text": "How is he getting on at school?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Does he bruise easily?",
+        "locale": "en",
+        "expect": [
+          "nosebleeds"
+        ]
+      },
+      {
+        "text": "咳血的时候会喘吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathless"
+        ]
+      },
+      {
+        "text": "Tell me about this illness.",
+        "locale": "en",
+        "expect": [
+          "presenting"
         ]
       },
       {

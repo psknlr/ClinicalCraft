@@ -89,7 +89,7 @@
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用1.0.0版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核，用于教学前请由肿瘤科、遗传科或消化科医生审核。",
-        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0 and have not yet been checked against the full source article. The case has not yet been reviewed by a licensed clinician — have an oncologist, clinical geneticist or gastroenterologist review it before teaching use."
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0 and have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician: have an oncologist, clinical geneticist or gastroenterologist review it before teaching use."
       }
     }
   },
@@ -272,8 +272,8 @@
             "whenIndicated": true
           },
           {
-            "ordered": "mri-spine",
-            "phase": "later"
+            "intervened": "mscc-referral",
+            "whenIndicated": true
           }
         ]
       }
@@ -301,6 +301,7 @@
           "怎么了",
           "这次怎么了",
           "哪里不舒服",
+          "哪里疼",
           "怎么回事",
           "有什么不舒服",
           "多久了",
@@ -314,6 +315,7 @@
         "en": [
           "whatbringsyouin",
           "whatseemstobe",
+          "wheredoesithurt",
           "what happened",
           "whatstheproblem",
           "whatistheproblem",
@@ -938,8 +940,10 @@
         "en": [
           "family",
           "parents",
-          "mother",
+          "mum",
+          "mom",
           "father",
+          "dad",
           "sister",
           "siblings",
           "run in the family",
@@ -1032,8 +1036,7 @@
           "children",
           "kids",
           "son",
-          "daughter",
-          "pregnan"
+          "daughter"
         ]
       },
       "disclosure": "unknown",
@@ -1383,6 +1386,17 @@
           "whatputsyouoff"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "住院",
+          "入院"
+        ],
+        "en": [
+          "hospital",
+          "admit",
+          "come in"
+        ]
+      },
       "disclosure": "unknown",
       "phases": [
         "treatment",
@@ -1435,7 +1449,8 @@
           "几个月",
           "住院",
           "大便",
-          "黏液"
+          "黏液",
+          "髋"
         ],
         "en": [
           "how long",
@@ -1445,7 +1460,8 @@
           "admit",
           "hospital",
           "stool",
-          "mucus"
+          "mucus",
+          "hip"
         ]
       },
       "disclosure": "on-ask",
@@ -1530,6 +1546,9 @@
       "keywords": {
         "zh-CN": [
           "髋部还疼",
+          "还疼",
+          "现在还疼",
+          "髋部现在",
           "放疗后",
           "疼痛现在",
           "髋痛好了吗"
@@ -1539,6 +1558,10 @@
           "hip now",
           "pain now",
           "still hurt",
+          "still sore",
+          "hip still",
+          "howisthehip",
+          "howsyourhip",
           "did the radiotherapy help"
         ]
       },
@@ -1619,6 +1642,19 @@
           "stay in hospital"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "为什么",
+          "原因",
+          "顾虑"
+        ],
+        "en": [
+          "why",
+          "reason",
+          "reluctant",
+          "worries"
+        ]
+      },
       "disclosure": "on-ask",
       "phases": [
         "later",
@@ -1649,6 +1685,7 @@
         "en": [
           "reluctant",
           "whynotcomein",
+          "whydontyouwant",
           "whatstopsyou",
           "worries about hospital"
         ]
@@ -2494,7 +2531,6 @@
         ]
       },
       "requires": [
-        "ultrasound",
         "histopathology"
       ],
       "turnaroundMinutes": 120,
@@ -2989,8 +3025,8 @@
         "investigation": "diagnosis-record",
         "ifMatches": ".*",
         "message": {
-          "zh-CN": "诊断记录在住院治疗阶段开放：请先作答遗传问题和确诊方案两项决策（决策2、3）。",
-          "en": "The recorded diagnosis opens in the inpatient-care stage: first answer the hereditary and diagnostic-plan decisions (decisions 2 and 3)."
+          "zh-CN": "诊断记录在住院治疗阶段开放：请先在会诊板上作答决策2和决策3。",
+          "en": "The recorded diagnosis opens in the inpatient-care stage: first answer decisions 2 and 3 on the case board."
         },
         "unless": {
           "all": [
@@ -3007,8 +3043,8 @@
         "investigation": "treatment-record",
         "ifMatches": ".*",
         "message": {
-          "zh-CN": "住院治疗记录在数月后复诊阶段开放：请先作答骨转移处理决策（决策4）并完成住院治疗。",
-          "en": "The inpatient treatment record opens at the later visit: first answer the bone-care decision (decision 4) and complete her inpatient treatment."
+          "zh-CN": "住院治疗记录在数月后复诊阶段开放：请先作答决策4并完成住院期间的处理。",
+          "en": "The inpatient treatment record opens at the later visit: first answer decision 4 and complete her inpatient care."
         },
         "unless": {
           "attempted": "bone-plan"
@@ -3018,8 +3054,8 @@
         "investigation": "outcome-record",
         "ifMatches": ".*",
         "message": {
-          "zh-CN": "随访记录在最后开放：请先作答复诊时的决策（决策5），并完成当次的紧急处理。",
-          "en": "The follow-up record opens at the end: first answer the later-visit decision (decision 5) and complete that visit's urgent steps."
+          "zh-CN": "随访记录在最后开放：请先作答决策5，并完成那次复诊。",
+          "en": "The follow-up record opens at the end: first answer decision 5 and complete that visit."
         },
         "unless": {
           "attempted": "new-symptoms"
@@ -3417,6 +3453,46 @@
       "response": {
         "zh-CN": "你说明了担心的原因，建议她今天住院紧急评估。她拒绝住院。",
         "en": "You explain your concern and advise admission today for urgent assessment. She declines to be admitted."
+      }
+    },
+    {
+      "id": "mscc-referral",
+      "name": {
+        "zh-CN": "紧急转诊：立即联系MSCC协调员（或值班肿瘤科），24小时内完成全脊柱MRI",
+        "en": "Urgent MSCC referral: contact the MSCC coordinator now for a whole-spine MRI within 24 hours"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "MSCC协调员",
+          "脊髓压迫转诊",
+          "紧急MRI",
+          "急查MRI",
+          "值班肿瘤科",
+          "紧急转诊"
+        ],
+        "en": [
+          "mscc coordinator",
+          "mscc referral",
+          "cord compression referral",
+          "urgent mri",
+          "mri within 24 hours",
+          "on-call oncology"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按肿瘤急症处理：立即联系MSCC协调员（没有该岗位时联系值班肿瘤科或脊柱团队），申请尽快、一定在24小时内完成全脊柱MRI（NICE NG234 2023，1.3.2、1.5.2）。",
+        "en": "Treat it as an oncological emergency: contact the MSCC coordinator now (or the on-call oncology or spinal team where there is none) and request an MRI of the whole spine as soon as possible and always within 24 hours (NICE NG234 2023, 1.3.2, 1.5.2)."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "indicatedWhen": {
+        "phase": "later"
+      },
+      "response": {
+        "zh-CN": "值班团队接受转诊，将在24小时内安排全脊柱MRI；本病例没有记录MRI是否完成或其结果。",
+        "en": "The on-call team accepts the referral and will arrange a whole-spine MRI within 24 hours; whether it was done, and any result, is not recorded in this case."
       }
     },
     {
@@ -4029,8 +4105,8 @@
         "en": "What could explain new trouble passing urine and the swelling, and how quickly must it be investigated? What in her treatment record must be checked before any further radiotherapy? What do you do when she says no? Then read the follow-up record."
       },
       "guidance": {
-        "zh-CN": "在门诊与她交谈，开具检查和处理，作答第5项决策，再调阅随访记录。",
-        "en": "Talk with her in clinic, order and give what is needed, answer decision 5, then read the follow-up record."
+        "zh-CN": "在门诊与她交谈，调阅住院治疗记录，安排紧急转诊、检查和处理，作答第5项决策，再调阅随访记录。",
+        "en": "Talk with her in clinic, read her inpatient treatment record, make the urgent referral and give what is needed, answer decision 5, then read the follow-up record."
       },
       "completeWhen": {
         "all": [
@@ -4041,7 +4117,7 @@
             "intervened": "advise-admission"
           },
           {
-            "ordered": "mri-spine"
+            "intervened": "mscc-referral"
           },
           {
             "intervened": "capacity-discussion"
@@ -4310,8 +4386,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。骨活检比淋巴结活检创伤大，骨标本通常需要脱钙，可能影响基于DNA的RAS、BRAF和MMR检测。可触及的淋巴结能更安全地给出同样的诊断，而且组织更适合做生物标志物检测。",
-            "en": "No. A bone biopsy is more invasive than a node biopsy, and the decalcification bone samples usually need can compromise DNA-based RAS, BRAF and MMR testing. The palpable node gives the same diagnosis more safely, with better tissue for biomarkers."
+            "zh-CN": "不对。骨活检比淋巴结活检创伤大，骨标本通常需要脱钙，酸性脱钙会影响RAS、BRAF和MSI等分子检测。可触及的淋巴结能更安全地给出同样的诊断，而且组织更适合做生物标志物检测。",
+            "en": "No. A bone biopsy is more invasive than a node biopsy, and the decalcification bone samples usually need — acid decalcification in particular — can compromise molecular tests such as RAS, BRAF and MSI. The palpable node gives the same diagnosis more safely, with better tissue for biomarkers."
           }
         },
         {
@@ -4701,8 +4777,8 @@
       "domain": "management",
       "critical": true,
       "text": {
-        "zh-CN": "复诊当次即建议紧急住院，并在结束就诊前申请全脊柱MRI",
-        "en": "At the later visit, advised urgent admission and requested a whole-spine MRI before the visit ended"
+        "zh-CN": "复诊当次即建议紧急住院，并立即转诊、申请24小时内的全脊柱MRI",
+        "en": "At the later visit itself, advised urgent admission and made the urgent referral for a whole-spine MRI within 24 hours"
       },
       "weight": 3,
       "met": {
@@ -4712,8 +4788,8 @@
             "whenIndicated": true
           },
           {
-            "ordered": "mri-spine",
-            "phase": "later"
+            "intervened": "mscc-referral",
+            "whenIndicated": true
           }
         ]
       }
@@ -5324,8 +5400,8 @@
       "interventionId": "advise-admission"
     },
     {
-      "type": "order",
-      "investigationId": "mri-spine"
+      "type": "intervene",
+      "interventionId": "mscc-referral"
     },
     {
       "type": "order",
