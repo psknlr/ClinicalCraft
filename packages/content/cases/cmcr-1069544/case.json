@@ -32,8 +32,8 @@
       "en": "Screen every attack of pancreatitis for its cause, and treat a raised calcium during an attack as a red flag that needs a repeat albumin-adjusted calcium with a paired PTH (IAP 2025; NICE NG132, 2019)."
     },
     {
-      "zh-CN": "在任何定位影像之前用生化检查确立原发性甲状旁腺功能亢进症，并说明影像为何既不能确诊也不能排除它（第五届原发性甲旁亢国际研讨会，2022）。",
-      "en": "Establish primary hyperparathyroidism biochemically before any localisation scan, and explain why imaging can neither make nor exclude the diagnosis (Fifth International Workshop on primary hyperparathyroidism, 2022)."
+      "zh-CN": "在任何定位影像之前用生化检查确立原发性甲状旁腺功能亢进症，并说明影像为何既不能确诊也不能排除它（第五届原发性甲旁亢国际研讨会，2022；AAES 2016）。",
+      "en": "Establish primary hyperparathyroidism biochemically before any localisation scan, and explain why imaging can neither make nor exclude the diagnosis (Fifth International Workshop on primary hyperparathyroidism, 2022; AAES 2016)."
     },
     {
       "zh-CN": "遇到检验项目名称存疑的结果（此处标为“甲状腺素”的 31 pmol/L），先与检验科核实或复查，再让它影响手术等决定。",
@@ -69,8 +69,8 @@
     ],
     "license": "Educational paraphrase; the source publication retains its copyright.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——58岁女性；第一次发作（上腹持续胀痛伴恶心、呕吐 1 天；左上腹及脐周压痛、局部轻度肌紧张、反跳痛可疑、墨菲征阴性、颈部未触及包块；淀粉酶 1139 U/L、血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石）；出院后饮食、大便正常，无腹痛腹胀、骨痛及腰背酸痛、多尿多饮，未服降压药时血压正常；约 20 个月后再次发作（突发上腹胀痛伴恶心、呕吐，8 小时后就诊；淀粉酶 1055.9 U/L、血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石）；颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤；术前一项 31 pmol/L 的结果被标为“甲状腺素”（可能为误标的 PTH）；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解；随访未诉不适（时长未记录）；报告的胰腺炎处置包括禁食和抗菌药物——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、病情严重程度、白蛋白与离子钙、胆囊影像、甘油三酯、参考区间、手术细节、随访时长）保持未知。保留的内部不一致：术前激素结果的项目名称（甲状腺素或 PTH）不作裁定，两种读法并列；第二次 CT 的结石侧别和数目没有写明。原报告图片因带有日期信息未获准展示。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 58-year-old woman; the first attack (a day of constant upper abdominal pain with nausea and vomiting; tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass; amylase 1139 U/L, calcium 2.76 mmol/L; CT pancreatitis and a left renal stone); after discharge, normal eating and bowels with no abdominal pain or bloating, bone or back ache, polyuria or polydipsia, and a normal blood pressure without antihypertensive medicine; a second attack about 20 months later (sudden upper abdominal pain with nausea and vomiting, presenting after 8 hours; amylase 1055.9 U/L, calcium 2.87 mmol/L; CT pancreatitis with renal stone(s) still seen); neck ultrasound/CT showing a lesion behind the lower pole of the left thyroid lobe; its removal (about 2 × 1.5 × 1 cm) with a histology of parathyroid adenoma; a pre-operative value of 31 pmol/L labelled 'thyroxine' (possibly a mislabelled PTH); post-operative PTH 3.8 pmol/L and calcium 2.18 mmol/L, staying normal, with transient limb numbness without tetany or convulsions that settled on its own; no complaints at follow-up (length not recorded); and the report's care of the pancreatitis with fasting and antibiotics — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, severity, albumin and ionised calcium, gallbladder imaging, triglycerides, reference intervals, operative details, length of follow-up) stays unknown. Kept as recorded, not resolved: the analyte of the pre-operative hormone value (thyroxine or PTH) — both readings stand; the side and number of the stones on the second CT are not stated. The report's figure is withheld because it carries date information."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——58岁女性；第一次发作（上腹持续胀痛伴恶心、呕吐 1 天；左上腹及脐周压痛、局部轻度肌紧张、反跳痛可疑、墨菲征阴性、颈部未触及包块；淀粉酶 1139 U/L、血钙 2.76 mmol/L；CT 示胰腺炎及左肾结石）；出院后饮食、大便正常，无腹痛腹胀、骨痛及腰背酸痛、多尿多饮，未服降压药时血压正常；约 20 个月后再次发作（突发上腹胀痛伴恶心、呕吐，8 小时后就诊；淀粉酶 1055.9 U/L、血钙 2.87 mmol/L；CT 仍见胰腺炎及肾结石）；颈部超声及 CT 示左甲状腺下极后方病灶；切除约 2 × 1.5 × 1 cm，病理为甲状旁腺腺瘤；术前一项 31 pmol/L 的结果被标为“甲状腺素”（可能为误标的 PTH）；术后 PTH 3.8 pmol/L、血钙 2.18 mmol/L 并维持正常，曾短暂四肢麻木、无抽搐、自行缓解；随访未诉不适（时长未记录）；报告的胰腺炎处置包括禁食和抗菌药物——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段（包括病房床位，以及把第二次就诊设定为再次入院——1.0.0 版只记录她痛了 8 小时后就诊）、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、病情严重程度、白蛋白与离子钙、胆囊影像、甘油三酯、参考区间、手术细节、随访时长）保持未知。保留的内部不一致：术前激素结果的项目名称（甲状腺素或 PTH）不作裁定，两种读法并列；第二次 CT 的结石侧别和数目没有写明。原报告图片因带有日期信息未获准展示。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 58-year-old woman; the first attack (a day of constant upper abdominal pain with nausea and vomiting; tenderness in the left upper quadrant and around the umbilicus with mild local guarding, equivocal rebound, negative Murphy's sign, no palpable neck mass; amylase 1139 U/L, calcium 2.76 mmol/L; CT pancreatitis and a left renal stone); after discharge, normal eating and bowels with no abdominal pain or bloating, bone or back ache, polyuria or polydipsia, and a normal blood pressure without antihypertensive medicine; a second attack about 20 months later (sudden upper abdominal pain with nausea and vomiting, presenting after 8 hours; amylase 1055.9 U/L, calcium 2.87 mmol/L; CT pancreatitis with renal stone(s) still seen); neck ultrasound/CT showing a lesion behind the lower pole of the left thyroid lobe; its removal (about 2 × 1.5 × 1 cm) with a histology of parathyroid adenoma; a pre-operative value of 31 pmol/L labelled 'thyroxine' (possibly a mislabelled PTH); post-operative PTH 3.8 pmol/L and calcium 2.18 mmol/L, staying normal, with transient limb numbness without tetany or convulsions that settled on its own; no complaints at follow-up (length not recorded); and the report's care of the pancreatitis with fasting and antibiotics — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases (including the ward bed and the staging of the second presentation as a readmission — 1.0.0 records only that she presented after 8 hours), decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, severity, albumin and ionised calcium, gallbladder imaging, triglycerides, reference intervals, operative details, length of follow-up) stays unknown. Kept as recorded, not resolved: the analyte of the pre-operative hormone value (thyroxine or PTH) — both readings stand; the side and number of the stones on the second CT are not stated. The report's figure is withheld because it carries date information."
     },
     "review": {
       "status": "editorial",
@@ -301,7 +301,8 @@
           "怎么难受",
           "看什么病",
           "来看什么",
-          "你的情况"
+          "你的情况",
+          "什么情况"
         ],
         "en": [
           "broughtyouin",
@@ -314,7 +315,8 @@
           "goingon",
           "whatstheproblem",
           "seemstobe",
-          "howcanihelp"
+          "howcanihelp",
+          "whatshappened"
         ]
       },
       "excludeKeywords": {
@@ -373,7 +375,9 @@
           "什么时候开始",
           "起病",
           "持续多久",
-          "开始痛"
+          "开始痛",
+          "一整天",
+          "痛了一天"
         ],
         "en": [
           "howlong",
@@ -385,14 +389,17 @@
           "how long has it hurt",
           "pain begin",
           "painstart",
-          "whendidthis"
+          "whendidthis",
+          "yesterday"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "以前",
           "上次",
-          "多少年"
+          "多少年",
+          "大餐",
+          "吃了"
         ],
         "en": [
           "before",
@@ -431,7 +438,8 @@
           "绞痛",
           "刀割",
           "钻着痛",
-          "一阵一阵"
+          "一阵一阵",
+          "一直痛"
         ],
         "en": [
           "kindofpain",
@@ -447,7 +455,8 @@
           "painconstant",
           "painfeel",
           "whatsthepainlike",
-          "whatisthepainlike"
+          "whatisthepainlike",
+          "allthetime"
         ]
       },
       "excludeKeywords": {
@@ -502,7 +511,11 @@
           "pointtoit",
           "location",
           "whereithurts",
-          "showmewhere"
+          "showmewhere",
+          "whereabouts",
+          "pointto",
+          "whereitssore",
+          "wheresore"
         ]
       },
       "excludeKeywords": {
@@ -604,7 +617,9 @@
           "背部",
           "痛到背",
           "牵扯",
-          "传到"
+          "传到",
+          "背上",
+          "背也痛"
         ],
         "en": [
           "gothrough",
@@ -655,7 +670,10 @@
           "饱餐",
           "暴饮暴食",
           "吃饭后",
-          "饮食"
+          "饮食",
+          "大餐",
+          "吃完饭",
+          "饭后"
         ],
         "en": [
           "fatty meal",
@@ -710,7 +728,9 @@
           "之前",
           "类似的痛",
           "以前发作",
-          "犯过"
+          "犯过",
+          "得过胰腺炎",
+          "胰腺炎病史"
         ],
         "en": [
           "first time",
@@ -719,7 +739,9 @@
           "previous episodes",
           "everhadthis",
           "likethisbefore",
-          "hadthisbefore"
+          "hadthisbefore",
+          "pancreatitisbefore",
+          "hadpancreatitis"
         ]
       },
       "excludeKeywords": {
@@ -1333,7 +1355,9 @@
           "几个钟头",
           "开完刀",
           "手术",
-          "术后"
+          "术后",
+          "上一次",
+          "上回"
         ],
         "en": [
           "last time",
@@ -1443,7 +1467,11 @@
           "以前发作",
           "之前",
           "这么痛过",
-          "痛过吗"
+          "痛过吗",
+          "上一次",
+          "上回",
+          "同样的痛",
+          "一样的痛"
         ],
         "en": [
           "last time",
@@ -1452,7 +1480,10 @@
           "first attack",
           "beeninbefore",
           "episodelikethis",
-          "likethisbefore"
+          "likethisbefore",
+          "lastinhospital",
+          "lasttimeinhospital",
+          "samepain"
         ]
       },
       "excludeKeywords": {
@@ -1488,7 +1519,7 @@
       ],
       "source": {
         "zh-CN": "1.0.0 版提取的报告事实：第一次发作后约 20 个月再次发作；第一次发作曾入院（经 1.0.0 版提取，待对照原文全文核对）；患者的说法为教学改写",
-        "en": "Report fact as extracted for version 1.0.0: a second attack about 20 months after the first, which led to admission (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
+        "en": "Report fact as extracted for version 1.0.0: a second attack about 20 months after the first; the first attack led to admission (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     },
     {
@@ -1892,7 +1923,8 @@
           "recovered",
           "better now",
           "afterwards",
-          "howareyoudoing"
+          "howareyoudoing",
+          "beenkeeping"
         ]
       },
       "disclosure": "on-ask",
@@ -1929,7 +1961,10 @@
           "检查腹部",
           "查腹部",
           "腹部查体",
-          "查一下肚子"
+          "查一下肚子",
+          "压一下",
+          "这里痛不痛",
+          "按这里"
         ],
         "en": [
           "palpate the abdomen",
@@ -1941,17 +1976,23 @@
           "belly",
           "stomach",
           "examine abdomen",
-          "examine the abdomen"
+          "examine the abdomen",
+          "presshere",
+          "whenipress"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "反跳",
-          "墨菲"
+          "墨菲",
+          "松开",
+          "肋骨"
         ],
         "en": [
           "rebound",
-          "murphy"
+          "murphy",
+          "letgo",
+          "ribs"
         ]
       },
       "finding": {
@@ -1980,7 +2021,10 @@
           "反跳痛",
           "反跳",
           "腹膜刺激征",
-          "松手痛"
+          "松手痛",
+          "松开",
+          "按下去再松开",
+          "放手"
         ],
         "en": [
           "rebound",
@@ -2016,7 +2060,10 @@
           "墨菲征",
           "murphy",
           "胆囊压痛",
-          "右上腹"
+          "右上腹",
+          "右边肋骨",
+          "肋骨下面",
+          "右肋下"
         ],
         "en": [
           "murphy",
@@ -2281,8 +2328,8 @@
             "en": "After the operation (time since surgery not recorded)"
           },
           "text": {
-            "zh-CN": "术后血钙降至 2.18 mmol/L。报告称切除后血钙维持正常。",
-            "en": "After the operation the calcium fell to 2.18 mmol/L. The report describes the calcium as staying normal after the resection."
+            "zh-CN": "术后血钙降至 2.18 mmol/L；记录为切除后血钙维持正常。",
+            "en": "After the operation the calcium fell to 2.18 mmol/L; it is documented as staying normal after the resection."
           },
           "values": [
             {
@@ -2387,8 +2434,8 @@
             "en": "After the operation (time since surgery not recorded)"
           },
           "text": {
-            "zh-CN": "术后甲状旁腺激素（PTH，报告明确标注）降至 3.8 pmol/L。报告称切除后 PTH 维持正常。",
-            "en": "After the operation the parathyroid hormone (PTH, explicitly labelled in the report) fell to 3.8 pmol/L. The report describes the PTH as staying normal after the resection."
+            "zh-CN": "术后甲状旁腺激素（PTH，明确标注）降至 3.8 pmol/L；记录为切除后 PTH 维持正常。",
+            "en": "After the operation the parathyroid hormone (PTH, explicitly labelled) fell to 3.8 pmol/L; it is documented as staying normal after the resection."
           },
           "values": [
             {
@@ -3268,8 +3315,8 @@
     {
       "id": "ringer-lactate",
       "name": {
-        "zh-CN": "乳酸钠林格液目标导向适度补液",
-        "en": "Goal-directed lactated Ringer's at a moderate rate"
+        "zh-CN": "乳酸钠林格液适度补液（按反应调整）",
+        "en": "Lactated Ringer's at a moderate, titrated rate"
       },
       "kind": "fluid",
       "aliases": {
@@ -3293,11 +3340,24 @@
       "excludeKeywords": {
         "zh-CN": [
           "大量",
-          "快速输注20"
+          "快速输注20",
+          "快速",
+          "积极",
+          "加快",
+          "冲击",
+          "20毫升每公斤",
+          "3毫升每公斤"
         ],
         "en": [
           "aggressive",
-          "20 ml/kg"
+          "20 ml/kg",
+          "wide open",
+          "push fluids",
+          "fluids hard",
+          "rapid",
+          "3 ml/kg",
+          "3 ml per kg",
+          "20 ml per kg"
         ]
       },
       "dose": {
@@ -3458,6 +3518,27 @@
       "response": {
         "zh-CN": "本病例记录的历史处置中包括禁食（时长未记录）；本病例不模拟其效果。",
         "en": "The report's historical care included fasting (for how long is not recorded); this case does not simulate its effect."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "解除禁食",
+          "停止禁食",
+          "取消禁食",
+          "不要禁食",
+          "不用禁食",
+          "不必禁食",
+          "别禁食",
+          "无需禁食",
+          "开放饮食"
+        ],
+        "en": [
+          "don't keep",
+          "do not keep",
+          "no need to keep",
+          "not be nil",
+          "stop the nil",
+          "let her eat"
+        ]
       }
     },
     {
@@ -3587,6 +3668,16 @@
       "response": {
         "zh-CN": "本病例没有记录 ERCP；不模拟其效果。",
         "en": "This case records no ERCP; it does not simulate its effect."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "不做",
+          "不要做",
+          "别做",
+          "不用做",
+          "不需做"
+        ],
+        "en": []
       }
     },
     {
@@ -4449,8 +4540,8 @@
         {
           "id": "ringer-moderate-early-diet",
           "text": {
-            "zh-CN": "乳酸钠林格液目标导向适度补液、充分镇痛，能耐受就开始低脂饮食；不预防性使用抗菌药物",
-            "en": "Lactated Ringer's at a moderate, goal-directed rate, analgesia, and a low-fat diet once she can manage it; no prophylactic antibiotic"
+            "zh-CN": "乳酸钠林格液适度补液并按反应调整、充分镇痛，能耐受就开始低脂饮食；不预防性使用抗菌药物",
+            "en": "Lactated Ringer's at a moderate, titrated rate, analgesia, and a low-fat diet once she can manage it; no prophylactic antibiotic"
           },
           "correct": true,
           "feedback": {
@@ -4642,8 +4733,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "顺序错了。超声和 MIBI 显像只用于定位，既不能确诊也不能排除（第五届国际研讨会，2022）；扫描阴性并不能排除本病。先做影像还可能把偶然发现的甲状腺结节当成目标。",
-            "en": "Wrong order. Ultrasound and sestamibi only localise; they can neither make nor exclude the diagnosis (Fifth International Workshop 2022), and a negative scan does not rule the disease out. Scanning first also risks chasing an incidental thyroid nodule."
+            "zh-CN": "顺序错了。超声和 MIBI 显像只用于定位：影像不用于诊断（第五届国际研讨会，2022），既不能确诊也不能排除本病，扫描阴性并不能排除（AAES 2016）。先做影像还可能把偶然发现的甲状腺结节当成目标。",
+            "en": "Wrong order. Ultrasound and sestamibi only localise: imaging is not used to make the diagnosis (Fifth International Workshop 2022), it can neither confirm nor exclude it, and a negative scan does not rule the disease out (AAES 2016). Scanning first also risks chasing an incidental thyroid nodule."
           }
         },
         {
@@ -4997,8 +5088,8 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "首次作答即选择现行的早期处理方案，并在发作期实际给予目标导向的适度林格液补液和早期经口进食",
-        "en": "Chose the current plan for the first days at the first attempt, and during the attack actually gave moderate goal-directed Ringer's and early oral feeding"
+        "zh-CN": "首次作答即选择现行的早期处理方案，并在发作期实际给予适度、按反应调整的林格液补液和早期经口进食",
+        "en": "Chose the current plan for the first days at the first attempt, and during the attack actually gave moderate, titrated Ringer's and early oral feeding"
       },
       "met": {
         "all": [
@@ -5263,8 +5354,8 @@
         "en": "Dr Kong (endocrinology)"
       },
       "knowledge": {
-        "zh-CN": "内分泌科会诊医生，被请会诊时到场。只解读学员已经读过的血钙、激素和影像记录：生化诊断的标准（血钙升高，同时 PTH 升高或与血钙不相称地正常，两者同步测定）；为什么检验项目名称有疑问时必须先澄清；一个甲状腺素数值需要哪些配套信息（TSH 和参考区间）；为什么 PTH 偏低就要找别的病因；为什么影像只能定位、不能诊断；有症状的病例手术指征；以及手术成功后血钙为何会快速下降。不报告学员没有读过的结果，不把 31 pmol/L 擅自改称 PTH，也不编造参考区间、白蛋白、维生素 D、尿钙或手术所见——这些都没有记录。",
-        "en": "Endocrinologist who comes when consulted. Interprets only the calcium, hormone and imaging records the learner has read: the biochemical criteria (a raised calcium with a raised or inappropriately normal PTH, measured together); why a doubtful analyte name must be settled first; what a thyroxine value would need beside it (a TSH and reference intervals); why a low PTH sends you looking for another cause; why imaging localises but never diagnoses; the surgical indication in symptomatic disease; and why the calcium falls quickly after a successful operation. Never reports a result the learner has not read, never relabels the 31 pmol/L value as a PTH on their own authority, and never invents a reference interval, albumin, vitamin D, urine calcium or operative finding — none is recorded."
+        "zh-CN": "内分泌科会诊医生，被请会诊时到场。只解读学员已经读过的血钙、激素和影像记录：生化诊断的标准（血钙升高，同时 PTH 升高或与血钙不相称地正常，两者同步测定）；为什么检验项目名称有疑问时必须先澄清；一个甲状腺素数值需要哪些配套信息（TSH 和参考区间）；为什么 PTH 偏低就要找别的病因；为什么影像只能定位、不能诊断；有症状的病例手术指征；以及手术成功后、其余被抑制的腺体恢复期间血钙为何可能下降。不报告学员没有读过的结果，不把 31 pmol/L 擅自改称 PTH，也不编造参考区间、白蛋白、维生素 D、尿钙或手术所见——这些都没有记录。",
+        "en": "Endocrinologist who comes when consulted. Interprets only the calcium, hormone and imaging records the learner has read: the biochemical criteria (a raised calcium with a raised or inappropriately normal PTH, measured together); why a doubtful analyte name must be settled first; what a thyroxine value would need beside it (a TSH and reference intervals); why a low PTH sends you looking for another cause; why imaging localises but never diagnoses; the surgical indication in symptomatic disease; and why the calcium can fall after a successful operation while the suppressed glands recover. Never reports a result the learner has not read, never relabels the 31 pmol/L value as a PTH on their own authority, and never invents a reference interval, albumin, vitamin D, urine calcium or operative finding — none is recorded."
       },
       "interprets": [
         "calcium",
@@ -5316,16 +5407,16 @@
         "en": "Every attack needs its cause sought: alcohol and drug history, gallbladder ultrasound, liver tests, triglycerides and calcium (IAP 2025). Calcium usually falls in an attack, so a raised value is a red flag: IAP 2025 asks for a PTH, and NICE NG132 (2019) repeats an albumin-adjusted calcium of 2.6 mmol/L or above and measures PTH with a concurrent adjusted calcium. Then and now: whether her 2.76 mmol/L was pursued is not recorded; the cause was found after the second attack."
       },
       {
-        "zh-CN": "原发性甲旁亢是生化诊断——血钙升高，同时 PTH 升高或与血钙不相称地正常（第五届国际研讨会 2022）；PTH 低于参考区间就要寻找包括恶性肿瘤在内的其他病因（NICE NG132，2019）。超声、CT 或 MIBI 只为外科医生定位，既不能确诊也不能排除。项目名称存疑的结果——这里标为“甲状腺素”的 31 pmol/L——要先与检验科核实或复查，才能用来做决定。",
-        "en": "Primary hyperparathyroidism is a biochemical diagnosis — a raised calcium with a raised or inappropriately normal PTH (Fifth International Workshop 2022); a PTH below its reference range sends you looking for another cause, including malignancy (NICE NG132, 2019). Ultrasound, CT or sestamibi only localise the gland for the surgeon and can neither make nor exclude the diagnosis. A result whose analyte label is in doubt — here 31 pmol/L labelled 'thyroxine' — is resolved with the laboratory or repeated before it carries a decision."
+        "zh-CN": "原发性甲旁亢是生化诊断——血钙升高，同时 PTH 升高或与血钙不相称地正常（第五届国际研讨会 2022）；PTH 低于参考区间就要寻找包括恶性肿瘤在内的其他病因（NICE NG132，2019）。超声、CT 或 MIBI 只为外科医生定位，既不能确诊也不能排除（AAES 2016）。项目名称存疑的结果——这里标为“甲状腺素”的 31 pmol/L——要先与检验科核实或复查，才能用来做决定。",
+        "en": "Primary hyperparathyroidism is a biochemical diagnosis — a raised calcium with a raised or inappropriately normal PTH (Fifth International Workshop 2022); a PTH below its reference range sends you looking for another cause, including malignancy (NICE NG132, 2019). Ultrasound, CT or sestamibi only localise the gland for the surgeon and can neither make nor exclude the diagnosis (AAES 2016). A result whose analyte label is in doubt — here 31 pmol/L labelled 'thyroxine' — is resolved with the laboratory or repeated before it carries a decision."
       },
       {
         "zh-CN": "肾结石说明疾病有症状，反复胰腺炎更添分量：应转诊有经验的甲状旁腺外科医生（第五届国际研讨会 2022；NICE NG132，2019）。手术是唯一的根治手段（AAES 2016）；西那卡塞能降钙但不能治愈，只用于不能手术者；疑似甲状旁腺病灶的细针穿刺不是诊断步骤。",
         "en": "Kidney stones make this symptomatic disease, and recurrent pancreatitis adds weight: refer to an experienced parathyroid surgeon (Fifth International Workshop 2022; NICE NG132, 2019). Surgery is the only definitive treatment (AAES 2016); cinacalcet lowers the calcium without curing and is for those who cannot have surgery; a needle biopsy of a suspected parathyroid lesion is not a diagnostic step."
       },
       {
-        "zh-CN": "成功手术后血钙下降很快，可能出现麻木。应复查白蛋白校正钙或离子钙及血镁，检查 Chvostek 征和 Trousseau 征；英国内分泌学会急诊指南（2016）在校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状时，给 10% 葡萄糖酸钙 10–20 mL 10 分钟内静推（心电监护下）。术后 3–6 个月复查校正钙确认手术成功（NICE NG132，2019；AAES 2016 把治愈定义为血钙正常超过 6 个月）。",
-        "en": "After a successful operation the calcium falls fast and numbness can follow. Check an albumin-adjusted or ionised calcium with magnesium and look for Chvostek's and Trousseau's signs; the Society for Endocrinology emergency guidance (2016) gives 10–20 mL of 10 % calcium gluconate over 10 minutes with ECG monitoring for an adjusted calcium below 1.9 mmol/L, or symptoms with a calcium below the reference range. Confirm success with an adjusted calcium 3–6 months after surgery (NICE NG132, 2019; AAES 2016 defines cure as normocalcaemia beyond 6 months)."
+        "zh-CN": "成功手术后，其余被抑制的腺体恢复期间血钙可能下降，并可出现麻木——出现症状时的血钙水平取决于下降的速度（英国内分泌学会 2016）。应复查白蛋白校正钙或离子钙及血镁，检查 Chvostek 征和 Trousseau 征；英国内分泌学会急诊指南（2016）在校正钙低于 1.9 mmol/L、或钙低于参考区间且有症状时，给 10% 葡萄糖酸钙 10–20 mL 10 分钟内静推（心电监护下）。术后 3–6 个月复查校正钙确认手术成功（NICE NG132，2019；AAES 2016 把治愈定义为血钙正常超过 6 个月）。",
+        "en": "After a successful operation the calcium can fall while the suppressed glands recover, and numbness can follow — the level at which symptoms start depends on how fast it falls (Society for Endocrinology 2016). Check an albumin-adjusted or ionised calcium with magnesium and look for Chvostek's and Trousseau's signs; the Society for Endocrinology emergency guidance (2016) gives 10–20 mL of 10 % calcium gluconate over 10 minutes with ECG monitoring for an adjusted calcium below 1.9 mmol/L, or symptoms with a calcium below the reference range. Confirm success with an adjusted calcium 3–6 months after surgery (NICE NG132, 2019; AAES 2016 defines cure as normocalcaemia beyond 6 months)."
       }
     ],
     "boundaries": {
@@ -6264,6 +6355,62 @@
         "locale": "en",
         "expect": [
           "last-treatment"
+        ]
+      },
+      {
+        "text": "以前得过胰腺炎吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "earlier-episodes"
+        ]
+      },
+      {
+        "text": "上一次是什么时候发作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "last-attack"
+        ]
+      },
+      {
+        "text": "痛的时候背上也痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "是不是吃了大餐以后开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "meal-trigger"
+        ]
+      },
+      {
+        "text": "Whereabouts is the pain?",
+        "locale": "en",
+        "expect": [
+          "site"
+        ]
+      },
+      {
+        "text": "Did it start yesterday?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Can you tell me what's happened?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "When were you last in hospital?",
+        "locale": "en",
+        "expect": [
+          "last-attack"
         ]
       }
     ]
