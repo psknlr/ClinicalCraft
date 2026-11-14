@@ -13,7 +13,7 @@ import { reasonText } from "../../tools/field-words.js";
 import { spatialCodeOf } from "../../tools/spatial.js";
 import type { NavGoal } from "@clinicalcraft/world";
 import { runToolAs } from "../embodied-wiring.js";
-import { rt } from "../i18n.js";
+import { joinList, rt } from "../i18n.js";
 import type { SessionKernel } from "../kernel.js";
 import { staffAgent } from "../staff-voice.js";
 import { TEAM_CALLER } from "./callout.js";
@@ -255,7 +255,7 @@ export class SessionTeam {
           if (r.refused === "observer") return this.observing(id);
           const nameOf = (body: string) => t(k.embodied!.world().entity(body)?.name ?? body.replace(/^staff:/u, ""), k.locale);
           if (r.refused === "ambiguous") {
-            k.emit(id, { type: "error", message: rt(k.locale, "team.ask.ambiguous", { asked: to, who: r.who.map(nameOf).join(", ") }), code: "invalid_op" });
+            k.emit(id, { type: "error", message: rt(k.locale, "team.ask.ambiguous", { asked: to, who: joinList(k.locale, r.who.map(nameOf)) }), code: "invalid_op" });
             return;
           }
           const who = "to" in r ? nameOf(r.to) : to;

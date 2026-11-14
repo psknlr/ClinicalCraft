@@ -21,7 +21,8 @@
  *   rule approved for the session). An operative step a tool took is one
  *   (`procedure.step`, `operate`; the session's own records — `by: "system"`
  *   — are not); a care team member's own step (its `ref` `team.<task>.<n>`,
- *   or the stand-in surgeon's `standin:<k>…`) is re-checked as the gate checked it, with the team's rung
+ *   or the stand-in surgeon's `standin:<k>…`) is re-checked as the gate
+ *   checked it, with the team's rung
  *   (`teamPermission`: only the stand-in surgeon's call-out asks). The acting body (from the trace, as for the spatial audit)
  *   must also be allowed the act — its clinical authority and scope of
  *   practice as the session scopes that body (`scopeActorOf`, review S3; the

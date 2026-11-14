@@ -9,6 +9,7 @@ import { memberBody, type Place, type ProcedureOp } from "@clinicalcraft/core";
 import { checkPermission } from "../../permissions.js";
 import type { SessionKernel } from "../kernel.js";
 import { TEAM_CALLER } from "./callout.js";
+import { planOf } from "./operator-plan.js";
 
 /** Steps the stand-in may take besides the reference's own (`./operator.ts`): taking a port back, the camera, an injury said aloud, suction. */
 const STAND_IN_EXTRAS: readonly ProcedureOp[] = [
@@ -28,7 +29,7 @@ const STAND_IN_EXTRAS: readonly ProcedureOp[] = [
 export function standInRefusal(k: SessionKernel, id: string, seat: Place): string | null {
   const s = k.settings;
   const ctx = k.tools.context(TEAM_CALLER, id, undefined, { actorId: memberBody(k.caseDef, { seat }, "surgeon") });
-  const steps = [...k.caseDef.solution.flatMap((a) => (a.type === "operate" ? [a.op] : [])), ...STAND_IN_EXTRAS];
+  const steps = [...planOf(k.caseDef.solution).map((x) => x.op), ...STAND_IN_EXTRAS];
   const seen = new Set<string>();
   const calls: [string, Record<string, unknown>][] = [["observe_field", {}]];
   for (const op of steps) {

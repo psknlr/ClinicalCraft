@@ -53,9 +53,10 @@ import { afterFieldWalk, afterOperate, followStep } from "./assistant.js";
 import { askText } from "./asks.js";
 import { both, phrase, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterStandIn, type StandInOutcome } from "./operator.js";
+import { planOf } from "./operator-plan.js";
 import { afterAct, learnerCount, propose, type ColleagueView, type DeviceStep, type ItemSighting, type MemberView } from "./policy.js";
 import { validTeamCheckpoint } from "./checkpoint.js";
-import { TEAM_STATE_VERSION, type ActionReceipt, type FieldAsk, type KnownNeed, type MemberId, type MemberState, type PlanStep, type Proposal, type SeenInjury, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
+import { TEAM_STATE_VERSION, type ActionReceipt, type FieldAsk, type KnownNeed, type MemberId, type MemberState, type Proposal, type SeenInjury, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
 /**
  * How a step in the operative field went (`TeamHost.operate`): the tool's outcome, with where the world points after a
@@ -879,7 +880,7 @@ export class TeamScheduler {
       surgeon: this.surgeonBody(),
       learner: PRIMARY_ACTOR,
       passingRequired: passingRequired(c, s),
-      plan: this.isOperator(me) ? this.plan() : null,
+      plan: this.isOperator(me) ? planOf(c.solution) : null,
       refs: [...(procedure?.refs ?? [])],
       where: (handle) => {
         // a duct or vessel the screen shows, where it lies
@@ -903,13 +904,6 @@ export class TeamScheduler {
         .filter((i) => (i.visible && field() !== null) || (i.recognisedBy !== undefined && body?.room === room))
         .map((i) => ({ kind: i.kind, recognised: i.recognised, ...(i.recognisedBy !== undefined ? { calledBy: i.recognisedBy } : {}) }));
     return lazy(lazy(lazy(lazy(view as MemberView, "controls", () => controlsOf(me.id)), "atTable", atTable), "field", field), "injuries", injuries);
-  }
-
-  /** The stand-in surgeon's plan: the case's reference solution's operative steps, in order (`PlanStep.k`: their index). */
-  private plan(): PlanStep[] {
-    const steps: PlanStep[] = [];
-    for (const a of this.host.caseDef.solution) if (a.type === "operate") steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) });
-    return steps;
   }
 
   /**

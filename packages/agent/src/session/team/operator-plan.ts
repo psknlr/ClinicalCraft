@@ -10,8 +10,15 @@
  *   suction — are `standin:<k>:<kind>:<n>` (`k`: the plan step they are for), counted from the record to bound them.
  * - A reference step the reference gives a colleague (`actor`) is that colleague's own: the plan passes over it.
  */
-import { describeDirection, directionVector, type Direction, type DirectionName, type FieldView, type InstrumentId, type ProcedureOp } from "@clinicalcraft/core";
+import { describeDirection, directionVector, type ClinicalAction, type Direction, type DirectionName, type FieldView, type InstrumentId, type ProcedureOp } from "@clinicalcraft/core";
 import type { PlanStep } from "./types.js";
+
+/** The stand-in's plan: a case's reference solution's operative steps, in order (`PlanStep.k`: their index among them). */
+export function planOf(solution: readonly ClinicalAction[]): PlanStep[] {
+  const steps: PlanStep[] = [];
+  for (const a of solution) if (a.type === "operate") steps.push({ k: steps.length, op: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) });
+  return steps;
+}
 
 /** The ref a plan step is recorded with in the field (`ProcedureState.refs`). */
 export function planRef(k: number): string {
