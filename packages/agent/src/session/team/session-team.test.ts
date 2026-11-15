@@ -125,6 +125,17 @@ describe("the team's status and the learner's replies", () => {
       expect(saidIn(ask), locale).toEqual([]);
       await t.session.close();
     }
+    // holding a place, the refusal names the place's own choice ("I play my place"), as a front-end shows it
+    for (const [locale, said] of [
+      ["en", "You are observing: the team plays your place. Choose “I play my place” to answer, ask or count yourself."],
+      ["zh-CN", "你正在观察：你的岗位由团队代为完成。选择“我来担任这个岗位”后才能自己回答、请求或清点。"],
+    ] as const) {
+      const placed = await theatreSession({ start: { type: "start", seat: "scrub-nurse" }, settingsPatch: { locale } });
+      await placed.session.run({ type: "team", action: "surgeon", surgeon: "simulated" });
+      const count = await placed.session.run({ type: "team", action: "count" });
+      expect(msgsOf(count, "error"), locale).toEqual([expect.objectContaining({ code: "permission_denied", message: said })]);
+      await placed.session.close();
+    }
   });
 
   it("need.for names a member of the team (the surgeon by default)", async () => {

@@ -45,14 +45,14 @@ describe("a position in words names whoever holds it in this encounter", () => {
     for (const asked of ["二助", "second assistant", "第二助手", "扶镜手", "camera holder"]) expect(who(asked, three), asked).toBe("doc-2");
     expect(who("一助", three)).toBe("doc-1");
     // whoever operates: the stand-in while the learner holds a place
-    for (const asked of ["主刀", "术者", "operating surgeon", "主刀医生"]) expect(who(asked, { seat: "first-assistant" }), asked).toBe("doc-0");
+    for (const asked of ["主刀", "术者", "operating surgeon", "主刀医生", "surgeon", "the surgeon"]) expect(who(asked, { seat: "first-assistant" }), asked).toBe("doc-0");
     for (const asked of ["scrub nurse", "洗手护士"]) expect(who(asked), asked).toBe("nurse-2");
   });
 
   it("nobody holds a position the team as it is does not have: no second assistant without the line-up, no operating colleague while the learner operates", () => {
     expect(who("二助")).toBe("none");
     expect(who("second assistant", { lineup: "three-surgeons", teamScenario: "second-away" })).toBe("none");
-    for (const asked of ["主刀", "术者"]) expect(who(asked), asked).toBe("none");
+    for (const asked of ["主刀", "术者", "surgeon"]) expect(who(asked), asked).toBe("none");
     // and without a team the words are nobody's: the position tier needs the case's team
     expect(lookupStaff(facility, "一助", THEATRE)).toEqual({ kind: "none" });
   });
@@ -76,6 +76,8 @@ describe("a position in words names whoever holds it in this encounter", () => {
     expect(positionWord("@一助")).toBe("first-assistant");
     expect(positionWord("The Camera Holder")).toBe("camera-holder");
     expect(positionWord("assistant")).toBeNull();
+    // the team's own word for whoever operates, in English as in Chinese
+    for (const asked of ["surgeon", "the surgeon", "@Surgeon"]) expect(positionWord(asked), asked).toBe("surgeon");
   });
 });
 

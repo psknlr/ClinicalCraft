@@ -310,9 +310,12 @@ export class SessionTeam {
     this.k.emit(id, { type: "error", message: rt(this.k.locale, "team.invalid", { reason }), code: "invalid_op" });
   }
 
-  /** Observing (observer mode): the learner's part is played for them — they answer, ask and count in learner mode. */
+  /**
+   * Observing (observer mode): the learner's part is played for them — they answer, ask and count in learner mode, which
+   * the refusal names as a front-end's choice does: as the surgeon, or (holding a place) in their place.
+   */
   private observing(id: string): void {
-    this.k.emit(id, { type: "error", message: rt(this.k.locale, "team.observer"), code: "permission_denied" });
+    this.k.emit(id, { type: "error", message: rt(this.k.locale, this.k.state.seat ? "team.observerPlace" : "team.observer"), code: "permission_denied" });
   }
 
   /** The team as saved now (a session snapshot), or null. */

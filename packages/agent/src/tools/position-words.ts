@@ -1,8 +1,9 @@
 /**
  * Positions said in words (docs/GLOSSARY.md "position", "camera holder"; docs/PROTOCOL.md §3): how a learner names a
  * colleague by the job they hold in this encounter's team — every position's title in either language
- * (`POSITION_TITLES`: "first assistant", "第一助手", "scrub nurse", "洗手护士"…), what the team says (主刀 and 术者 for
- * whoever operates, 一助, 二助) and the camera holder (扶镜手, "camera holder": whoever holds the camera port with the
+ * (`POSITION_TITLES`: "first assistant", "第一助手", "scrub nurse", "洗手护士"…), what the team says (主刀, 术者 and
+ * "surgeon" for whoever operates — the team's own word for the stand-in, docs/GLOSSARY.md "surgeon" —, 一助, 二助) and
+ * the camera holder (扶镜手, "camera holder": whoever holds the camera port with the
  * scope in it, else a present member other than the surgeon who holds the camera control — never the surgeon member).
  * Resolved through the case's team as it is in this encounter (core `effectiveTeam`), never through the facility's
  * titles: the position tier of `lookupStaff`, which `@` mentions, `consult {staff}` and `delegate_task` share.
@@ -12,10 +13,11 @@ import { cameraPort, canonicalPosition, effectiveTeam, memberControls, operatorO
 /** A position a word names, or the camera holder (who holds the camera port, not a position). */
 export type PositionWord = StaffPosition | "camera-holder";
 
-/** What the team says besides the titles: 主刀 / 术者 (whoever operates), 一助, 二助, the camera holder. */
+/** What the team says besides the titles: 主刀 / 术者 / "surgeon" (whoever operates), 一助, 二助, the camera holder. */
 const TEAM_WORDS: Readonly<Record<string, PositionWord>> = {
   主刀: "surgeon",
   术者: "surgeon",
+  surgeon: "surgeon",
   一助: "first-assistant",
   二助: "second-assistant",
   扶镜手: "camera-holder",
