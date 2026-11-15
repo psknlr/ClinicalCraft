@@ -82,8 +82,7 @@ export { answered, awaitedLine, haltOf, learnerAwaited, owedByLearner, repliesTo
 export { FOLLOW_NEED } from "./session/team/assistant.js";
 // the care team for text front-ends (docs/TEAM.md §5): `/seat`, `/team`, the `team` tool of an external agent
 export { bodyName, defaultReplyTarget, saidLines, seatLines, staffName, teamLines, type AnswerWords, type OpenLine, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
-export { TEAM_TOOL, TEAM_TOOL_ACTIONS, TEAM_TOOL_WORDS, teamToolCall, teamToolResult, type CalloutPending, type TeamOp, type TeamToolAction, type TeamToolCall } from "./team-tool.js";
-export { OBSERVER_WORDS_DEFAULT, type ObserverWords } from "./session/team/session-team.js";
+export { TEAM_TOOL, TEAM_TOOL_ACTIONS, TEAM_TOOL_WORDS, teamToolCall, teamToolResult, type CalloutPending, type TeamOp, type TeamToolAction, type TeamToolCall, type TeamToolData } from "./team-tool.js";
 // whom the learner names (docs/PROTOCOL.md §3): the one room-aware resolver, positions in words included
 export { encounterRoom, lookupStaff, type StaffLookup } from "./tools/consult-target.js";
 export { membersInPosition, ownPlaceWord, positionWord, type PositionWord, type TeamView } from "./tools/position-words.js";

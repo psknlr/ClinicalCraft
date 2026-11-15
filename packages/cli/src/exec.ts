@@ -263,15 +263,16 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
           for await (const event of session.events()) write(JSON.stringify(event));
         })()
       : Promise.resolve();
+  session.subscribe((e) => tracker.observe(e));
   // the start the flags ask for (or, resumed in a place, the settings checked): refused, a usage error in the session's words
+  let opening: readonly AgentEvent[];
   try {
-    await beginEncounter(session, start, resume !== undefined);
+    opening = await beginEncounter(session, start, resume !== undefined);
   } catch (err) {
     await pump;
     throw err;
   }
 
-  session.subscribe((e) => tracker.observe(e));
   const renderer =
     format === "text" && !quiet
       ? new EventRenderer({ out: ctx.io.stderr, palette: ctx.err, caseDef: session.caseDef, locale: () => session.settings.locale, interactive: false, verbose: ctx.verbose, callout: (req) => calloutOf(session, req) })
@@ -279,6 +280,8 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   if (renderer) session.subscribe((e) => renderer.handle(e));
   // a place in the team: the place, its controls and who works where (`/seat`), with the progress
   if (renderer) for (const line of placeLines(session)) renderer.line(ctx.err.cyan(sanitizeTerminal(line)));
+  // … and what the start said (the stand-in's first step), taken before the renderer subscribed
+  if (renderer) for (const e of opening) renderer.handle(e);
   // A stream-json client (stream-json in and out) answers approvals itself with
   // `approval_response` ops while its stdin is open; afterwards (and in every
   // other mode) they are answered automatically.

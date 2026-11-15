@@ -4,19 +4,42 @@
  * `team` op the browser uses, scored from the session's own record against each scenario's authored `expect`.
  *
  *   bench team [--case ids] [--scenario ids] [--out dir]
+ *   bench team --seat <place> [--lineup <id>] [--case ids] [--scenario ids] [--out dir]
  *
- * Writes `team-report.json` and `team-report.md`; every scenario must pass (exit 1 otherwise).
+ * By place (`--seat first-assistant | second-assistant | scrub-nurse`): each scenario that offers the place starts in
+ * it (the start joins the team at its phase), the place is played by its own policy while the stand-in surgeon operates,
+ * and the run also owes the operation brought to its close; a scenario that leaves the place without its member is
+ * skipped, saying why. Writes `team-report.json` and `team-report.md`; every scenario must pass (exit 1 otherwise).
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { loadContent } from "@clinicalcraft/agent/node";
-import { runTeamBench, teamCases, teamMarkdown } from "@clinicalcraft/bench";
+import { placeCases, runTeamBench, teamCases, teamMarkdown } from "@clinicalcraft/bench";
+import { POSITION_TITLES, t, type Place } from "@clinicalcraft/core";
 import { flagList, flagString, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 const TEXT = {
-  en: { none: "No case has team scenarios (case `team.scenarios`).", run: "{mark} {case} · {scenario}", summary: "{passed} of {total} team scenarios passed.", written: "Report: {md} (JSON: {json})" },
-  "zh-CN": { none: "没有病例带团队情境（病例的 `team.scenarios`）。", run: "{mark} {case} · {scenario}", summary: "{total} 个团队情境中通过 {passed} 个。", written: "报告：{md}（JSON：{json}）" },
+  en: {
+    none: "No case has team scenarios (case `team.scenarios`).",
+    nonePlace: "No case with team scenarios offers the {place}'s place{lineup} (a case team whose surgeon names a stand-in, with a member in that position).",
+    lineup: " with the line-up {lineup}",
+    place: "By place: the {place}'s, played by its own policy while the stand-in surgeon operates.",
+    skipped: "– {case} · {scenario}: {reason}",
+    run: "{mark} {case} · {scenario}",
+    summary: "{passed} of {total} team scenarios passed.",
+    written: "Report: {md} (JSON: {json})",
+  },
+  "zh-CN": {
+    none: "没有病例带团队情境（病例的 `team.scenarios`）。",
+    nonePlace: "没有带团队情境的病例{lineup}提供{place}岗位（病例团队的术者需指定主刀同事，并有该岗位的成员）。",
+    lineup: "在团队配置 {lineup} 下",
+    place: "按岗位：{place}岗位由其自身策略代为完成，由主刀同事主刀。",
+    skipped: "– {case} · {scenario}：{reason}",
+    run: "{mark} {case} · {scenario}",
+    summary: "{total} 个团队情境中通过 {passed} 个。",
+    written: "报告：{md}（JSON：{json}）",
+  },
 } as const;
 
 function tm(locale: string, key: keyof (typeof TEXT)["en"], params: Record<string, string | number> = {}): string {
@@ -30,8 +53,14 @@ export async function benchTeam(ctx: CliContext, args: ParsedArgs): Promise<numb
   const settings = await loadCliSettings(ctx);
   const content = await loadContent({ dirs: settings.contentDirs });
   const caseIds = flagList(args, "case");
+  const seat = flagString(args, "seat") as Place | undefined;
+  const lineup = flagString(args, "lineup");
   if (!teamCases(content, caseIds).length) throw new CliError(tm(L, "none"), EXIT.usage);
-  const report = await runTeamBench(content, { ...(caseIds.length ? { caseIds } : {}), ...(flagList(args, "scenario").length ? { scenarios: flagList(args, "scenario") } : {}), locale: L });
+  const lang = L.startsWith("zh") ? "zh-CN" : "en";
+  if (seat && !placeCases(content, seat, lineup, caseIds).length) throw new CliError(tm(L, "nonePlace", { place: t(POSITION_TITLES[seat], lang), lineup: lineup ? tm(L, "lineup", { lineup }) : "" }), EXIT.usage);
+  const report = await runTeamBench(content, { ...(caseIds.length ? { caseIds } : {}), ...(flagList(args, "scenario").length ? { scenarios: flagList(args, "scenario") } : {}), locale: L, ...(seat ? { seat } : {}), ...(lineup ? { lineup } : {}) });
+  if (seat) ctx.printErr(tm(L, "place", { place: t(POSITION_TITLES[seat], lang) }));
+  for (const x of report.skipped ?? []) ctx.printErr(ctx.err.dim(tm(L, "skipped", { case: x.caseId, scenario: x.scenario, reason: x.reason })));
   for (const r of report.runs) ctx.printErr(tm(L, "run", { mark: r.pass ? ctx.err.green("✓") : ctx.err.red("✗"), case: r.caseId, scenario: r.scenario }) + (r.pass ? "" : ctx.err.red(`  ${r.failures.join("; ")}`)));
   const outDir = ctx.path(flagString(args, "out") ?? "team-results");
   await mkdir(outDir, { recursive: true });

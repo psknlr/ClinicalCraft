@@ -5,7 +5,7 @@
  * settings that let the stand-in work — and its refusal is printed as it words it. A resumed encounter keeps the place
  * it was started in, and is asked first whether its settings would stop the stand-in (`standInRefusal`).
  */
-import { isCalloutRequest, seatLines, staffName, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { isCalloutRequest, seatLines, staffName, type AgentEvent, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import type { ClinicalAction, Seat } from "@clinicalcraft/core";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, type CliContext } from "./context.js";
@@ -27,25 +27,27 @@ export function checkPlaceFlags(ctx: CliContext, start: Start | null, resume: st
 }
 
 /**
- * Take the start the flags ask for as the encounter's first action (the learner's own `clinical_action`): null when the
- * session took it, else what the session said — its error or, for a start the engine refuses, its warning — word for
- * word.
+ * Take the start the flags ask for as the encounter's first action (the learner's own `clinical_action`): its events —
+ * the start and the team's round after it — and, when the session did not take it, what it said — its error or, for a
+ * start the engine refuses, its warning — word for word.
  */
-export async function takeStart(session: ClinicalSession, start: Start): Promise<string | null> {
+export async function takeStart(session: ClinicalSession, start: Start): Promise<{ events: readonly AgentEvent[]; refusal: string | null }> {
   const events = await session.run({ type: "clinical_action", action: start });
-  if (session.state.started) return null;
+  if (session.state.started) return { events, refusal: null };
   const said = events.flatMap((e) => (e.msg.type === "error" || e.msg.type === "warning" ? [e.msg.message] : []));
-  return said[0] ?? `start ${JSON.stringify(start)}`;
+  return { events, refusal: said[0] ?? `start ${JSON.stringify(start)}` };
 }
 
 /**
  * The start for a new encounter, or the check of a resumed one in a place: a start the session refuses, or a resume
  * whose settings would stop the stand-in surgeon (`ClinicalSession.standInRefusal`, `place.resumeRefused`), closes the
- * session and is a usage error carrying the session's words.
+ * session and is a usage error carrying the session's words. Taken, the start's events are returned: a renderer that
+ * subscribes after it shows them (the stand-in's first step).
  */
-export async function beginEncounter(session: ClinicalSession, start: Start | null, resumed: boolean): Promise<void> {
-  const refusal = start ? await takeStart(session, start) : resumed ? session.standInRefusal() : null;
-  if (refusal === null) return;
+export async function beginEncounter(session: ClinicalSession, start: Start | null, resumed: boolean): Promise<readonly AgentEvent[]> {
+  const taken = start ? await takeStart(session, start) : null;
+  const refusal = taken ? taken.refusal : resumed ? session.standInRefusal() : null;
+  if (refusal === null) return taken?.events ?? [];
   await session.close();
   throw new CliError(refusal, EXIT.usage);
 }

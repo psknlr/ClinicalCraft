@@ -30,6 +30,24 @@ It does not measure surgical skill, and it is not a clinical validation:
 The `reference` and `scripted-llm` agents replay known trajectories. They validate the scenarios, the
 engine and the tool path. Only `--agent llm` measures a model, and then only on the suite it ran.
 
+**The agent is the operating surgeon; it takes no place in the team yet.** A scenario has no seat
+(`operative-scenario@1` has no field for one), runs in clinical mode and puts the agent at the table as
+the operator, as it always did. A place in the care team (the first or second assistant's, the scrub
+nurse's — docs/TEAM.md §1) needs what this benchmark does not have:
+
+- in-world mode with the team's bodies: a place is refused in clinical mode (`not_embodied`), because the
+  team works at the table with its own hands;
+- reference steps that name whose they are: a reference trajectory is the operator's alone, so it cannot
+  say which steps an assistant takes, nor be resolved for one;
+- a colleague model in clinical mode: there the stand-in surgeon who operates while the agent holds a
+  place has no body to act with;
+- scoring of a place's own work — read-backs answered, traction held, the camera aimed in time —, which
+  no metric here covers.
+
+Until then a place is benchmarked as the team is: `clinicalcraft bench team --seat <place>` plays it by its
+own policy while the stand-in operates, and scores the team's obligations and the operation's close
+(docs/TEAM.md §7).
+
 ## 2. Scenarios
 
 `clinicalcraft/operative-scenario@1`, one file per scenario in `<content dir>/operative/<suite>/`.

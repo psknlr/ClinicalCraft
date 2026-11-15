@@ -142,6 +142,7 @@ describe("the team tool in the first assistant's place (default approval mode)",
     // a reply to a line said to someone else (the learner's own read-back, said to Dr Ito): permission_denied
     const notMine = await call(s, "team", { session_id, action: "reply", message: mine.id, kind: "confirm" });
     expect(notMine.isError).toBe(true);
+    expect(notMine.structuredContent).toMatchObject({ ok: false, error: "permission_denied" });
     expect(text(notMine)).toMatch(/✗ That message was said to Dr Ito, not to you: only they can read it back or answer it\./u);
 
     // operating in the place: dissection is the operating surgeon's (refused before any approval)
@@ -240,6 +241,7 @@ describe("the team tool in the first assistant's place (default approval mode)",
     // observing, the team's words name this tool's own control
     expect((await call(s, "team", { session_id, action: "observe" })).isError).not.toBe(true);
     const observing = await call(s, "team", { session_id, action: "reply", message: asked.id, kind: "report" });
+    expect(observing.structuredContent).toMatchObject({ ok: false, error: "permission_denied" });
     expect(text(observing)).toMatch(/✗ You are observing: the team plays your place\. Call the team tool with action "play" to answer, ask or count yourself\./u);
     await s.close();
   });

@@ -114,29 +114,45 @@ export interface CalloutPending {
   line: string;
 }
 
+/** What a `team` call's result carries beside its words. */
+export interface TeamToolData {
+  /** What the team said in the call, one line each. */
+  said: string[];
+  /** The session's refusals and warnings, as it said them. */
+  errors: string[];
+  warnings: string[];
+  /** The first refusal's code as the session gave it (`permission_denied`, `invalid_op`…); absent when nothing was refused. */
+  error?: string;
+  team: TeamStatusReport | null;
+  callout: CalloutPending | null;
+}
+
 /**
- * The tool's result: what the team said in the call's events, the session's errors and warnings as it said them — an
- * observer refusal named with this tool's `play` —, the team now and what waits on the learner (`teamLines`), and a
- * call-out waiting for the learner's answer (`callout`: how to give it is the front-end's — null where the tool cannot).
+ * The tool's result: what the team said in the call's events, the session's errors (and the first one's code) and
+ * warnings as it said them — an observer refusal named with this tool's `play` —, the team now and what waits on the
+ * learner (`teamLines`), and a call-out waiting for the learner's answer (`callout`: how to give it is the front-end's —
+ * null where the tool cannot).
  */
 export function teamToolResult(
   ctx: TeamTextContext,
   cp: TeamCheckpoint | null,
   events: readonly AgentEvent[],
   callout: { pending: CalloutPending; how: string | null } | null = null,
-): { ok: boolean; text: string; data: { said: string[]; errors: string[]; warnings: string[]; team: TeamStatusReport | null; callout: CalloutPending | null } } {
+): { ok: boolean; text: string; data: TeamToolData } {
   const L = ctx.locale;
   // the session's observer refusal names the browser's buttons: this tool's own control is its `play` action
   const reworded = new Map([
     [rt(L, "team.observer"), rt(L, "team.observer.tool")],
     [rt(L, "team.observerPlace"), rt(L, "team.observerPlace.tool")],
   ]);
-  const errors = events.flatMap((e) => (e.msg.type === "error" ? [reworded.get(e.msg.message) ?? e.msg.message] : []));
+  const refusals = events.flatMap((e) => (e.msg.type === "error" ? [e.msg] : []));
+  const errors = refusals.map((e) => reworded.get(e.message) ?? e.message);
   const warnings = events.flatMap((e) => (e.msg.type === "warning" ? [e.msg.message] : []));
   const said = saidLines(ctx, events);
   const team = teamLines(ctx, cp, TEAM_TOOL_WORDS);
   const pending = callout?.pending ?? null;
   const calloutLine = pending ? rt(L, "teamText.callout", { who: pending.who, line: pending.line, how: callout?.how ?? rt(L, "teamText.calloutLive") }) : "";
   const text = [...said, ...errors.map((m) => `✗ ${m}`), ...warnings.map((m) => `! ${m}`), ...(calloutLine ? [calloutLine] : []), ...team.lines].join("\n");
-  return { ok: errors.length === 0, text, data: { said, errors, warnings, team: team.report, callout: pending } };
+  const error = refusals[0] ? (refusals[0].code ?? "error") : undefined;
+  return { ok: errors.length === 0, text, data: { said, errors, warnings, ...(error ? { error } : {}), team: team.report, callout: pending } };
 }

@@ -131,3 +131,44 @@ describe("import-v4 output", () => {
     expect(verbose.out).not.toMatch(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/);
   });
 });
+
+describe("the care team's lines and the stand-in's call-out", () => {
+  const msg = (m: EventMsg): AgentEvent => ({ id: "s", seq: 1, msg: m });
+  const teamLine = (id: string, from: string, to: string, en: string, zh: string): AgentEvent =>
+    msg({ type: "team_event", event: { kind: "message", message: { id, thread: "th-1", from, to, kind: "request", text: { en, "zh-CN": zh }, about: {}, room: "or", patient: null, at: 0, round: 1, evidence: [], delivered: true, read: false } } } as EventMsg);
+  const spoken = (speaker: string, text: string): AgentEvent => msg({ type: "agent_message", turnId: "t", agent: "attending", speaker, text, grounded: [] });
+
+  it.skipIf(!smzl)("a line said to the learner is marked → you (→ 你) with the id a reply names; a line to a colleague, and the learner's own, as always", () => {
+    for (const [locale, mark] of [
+      ["en", "Dr Ito → you: The first assistant (you), take the camera, please. [msg-8]"],
+      ["zh-CN", "伊藤医生 → 你: 第一助手（你），请扶镜。 [msg-8]"],
+    ] as const) {
+      let out = "";
+      const r = new EventRenderer({ out: { write: (s: string) => ((out += s), true) }, palette: createPalette(false), caseDef: smzl!, locale: () => locale, interactive: false });
+      r.handle(teamLine("msg-8", "staff:doc-0", "actor:clinician", "The first assistant (you), take the camera, please.", "第一助手（你），请扶镜。"));
+      r.handle(spoken(locale === "en" ? "Dr Ito" : "伊藤医生", locale === "en" ? "The first assistant (you), take the camera, please." : "第一助手（你），请扶镜。"));
+      r.handle(teamLine("msg-9", "staff:doc-0", "staff:nurse-2", "Maryland, please.", "请递分离钳。"));
+      r.handle(spoken(locale === "en" ? "Dr Ito" : "伊藤医生", locale === "en" ? "Maryland, please." : "请递分离钳。"));
+      r.handle(teamLine("msg-10", "actor:clinician", "staff:doc-0", "Taking the camera.", "接镜头。"));
+      r.handle(spoken("the first assistant (you)", "Taking the camera."));
+      expect(out.split("\n")[0], locale).toBe(mark);
+      expect(out, locale).not.toContain("[msg-9]");
+      expect(out, locale).not.toContain("[msg-10]");
+    }
+  });
+
+  it.skipIf(!smzl)("the stand-in's call-out is shown as its line, by who says it; any other request as always", () => {
+    let out = "";
+    const r = new EventRenderer({
+      out: { write: (s: string) => ((out += s), true) },
+      palette: createPalette(false),
+      caseDef: smzl!,
+      locale: () => "en",
+      interactive: false,
+      callout: (req) => (req.callout ? { who: "Dr Ito", line: req.callout } : null),
+    });
+    r.handle(msg({ type: "approval_request", requestId: "r1", agent: "team", actorId: "staff:doc-0", callout: "Clipping the cystic duct.", tool: "operate", args: { op: "clip" }, risk: "high", summary: "Dr Ito (Attending): Operative step: clip", reason: "call-out", ruleId: "team.callout", allowSession: false }));
+    r.handle(msg({ type: "approval_request", requestId: "r2", agent: "learner", tool: "intervene", args: {}, risk: "high", summary: "Give alteplase?", reason: "high risk", ruleId: "tool.always-ask", allowSession: false }));
+    expect(out).toBe("? Dr Ito: Clipping the cystic duct. (call-out before a critical step · team.callout)\n? Give alteplase? (risk high · tool.always-ask · high risk)\n");
+  });
+});

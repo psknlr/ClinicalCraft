@@ -41,7 +41,7 @@ function sandbox(): { env: Record<string, string>; cwd: string; home: string } {
   mkdirSync(join(cwd, ".clinicalcraft"), { recursive: true });
   mkdirSync(join(content, "cases", CASE), { recursive: true });
   mkdirSync(join(content, "facilities"), { recursive: true });
-  const raw = { ...structuredClone(LAP_CHOLE_SIT), id: CASE, team: { ...structuredClone(LAP_CHOLE_TEAM), room: THEATRE }, solution: structuredClone(LAP_CHOLE_SOLUTION) };
+  const raw = { ...structuredClone(LAP_CHOLE_SIT), id: CASE, facility: FACILITY, team: { ...structuredClone(LAP_CHOLE_TEAM), room: THEATRE }, solution: structuredClone(LAP_CHOLE_SOLUTION) };
   writeFileSync(join(content, "cases", CASE, "case.json"), JSON.stringify(raw));
   // general-hospital's theatre with the team's staff (the test devices of the world's fixture left out)
   const facility = theatreFacility();
@@ -315,5 +315,31 @@ describe("the REPL in a place", () => {
     expect(r.stdout.match(/\? › y\n {2}→ approved/gu)?.length).toBe(4);
     // the operation seen through, the place played by its own policy
     expect(r.stdout).toMatch(/✓ Objective completed: Operate/u);
+  });
+});
+
+describe("bench team --seat", () => {
+  it("runs each scenario that offers the place in it, the operation closed; a place no case offers is a usage error", { timeout: T }, async () => {
+    const box = sandbox();
+    const out = join(box.cwd, "team-out");
+    const r = await run(["bench", "team", "--seat", "first-assistant", "--case", CASE, "--out", out, "--lang", "en"], box);
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stdout).toMatch(/2 of 2 team scenarios passed\./u);
+    expect(r.stderr).toMatch(/By place: the first assistant's, played by its own policy while the stand-in surgeon operates\./u);
+    const report = JSON.parse(readFileSync(join(out, "team-report.json"), "utf8")) as Record<string, any>;
+    expect(report).toMatchObject({ seat: "first-assistant", passed: 2, total: 2, skipped: [] });
+    for (const run of report.runs) expect(run.operation).toEqual({ closed: true });
+    // no second assistant without the line-up that brings one
+    const none = await run(["bench", "team", "--seat", "second-assistant", "--case", CASE, "--out", out, "--lang", "en"], box);
+    expect(none.code).toBe(2);
+    expect(none.stderr).toMatch(/No case with team scenarios offers the second assistant's place \(a case team whose surgeon names a stand-in/u);
+    const three = await run(["bench", "team", "--seat", "second-assistant", "--lineup", "three-surgeons", "--case", CASE, "--out", out, "--lang", "en"], box);
+    expect(three.code, three.stderr).toBe(0);
+    expect(three.stdout).toMatch(/1 of 1 team scenarios passed\./u);
+    expect(three.stderr).toMatch(/– cli-lap-chole-team · second-away: the second assistant's place is not offered in this scenario/u);
+    // the operating surgeon's place is the default run's
+    const surgeon = await run(["bench", "team", "--seat", "surgeon", "--out", out, "--lang", "en"], box);
+    expect(surgeon.code).toBe(2);
+    expect(surgeon.stderr).toMatch(/expected first-assistant \| second-assistant \| scrub-nurse/u);
   });
 });

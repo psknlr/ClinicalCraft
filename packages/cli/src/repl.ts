@@ -125,7 +125,8 @@ export class Repl {
   constructor(
     private readonly ctx: CliContext,
     private readonly session: ClinicalSession,
-    private readonly options: { resumed: boolean; transcripts: boolean },
+    /** `opening`: the events of the start taken before the REPL subscribed (a place's start, `--seat`): shown after the banner. */
+    private readonly options: { resumed: boolean; transcripts: boolean; opening?: readonly AgentEvent[] },
   ) {
     this.history = new HistoryFile(ctx.env);
     this.done = new Promise<number>((resolve) => (this.finish = resolve));
@@ -172,6 +173,7 @@ export class Repl {
   async run(): Promise<number> {
     this.session.subscribe((e) => this.onEvent(e));
     this.banner();
+    for (const e of this.options.opening ?? []) this.renderer.handle(e);
     this.openReadline();
     // the patient's opening — not for a learner who joins the team at the table in a place (the start took it)
     if (!this.options.resumed && !this.session.state.seat) {
@@ -490,7 +492,7 @@ export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number
   const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, library, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
   ctx.locale = session.settings.locale;
   // refused (the session's words): a usage error; a resumed encounter in a place whose settings would stop the stand-in too
-  await beginEncounter(session, start, resume !== undefined);
-  const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled });
+  const opening = await beginEncounter(session, start, resume !== undefined);
+  const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled, opening });
   return repl.run();
 }

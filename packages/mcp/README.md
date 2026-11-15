@@ -16,7 +16,7 @@ claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "
 | | |
 |---|---|
 | methods | `initialize` (protocol versions `2025-06-18`, `2025-03-26`, `2024-11-05`), `ping`, `tools/list`, `tools/call`, `resources/list`, `resources/templates/list`, `resources/read`, `notifications/cancelled` |
-| tools (36) | `list_cases {locale?}` (spoiler-free: opaque handles, each case's review status and `learningOutcomeCount` — never the outcomes, which `get_debrief` lists once the case is complete), `start_case {case_id, locale?, facility_id?, embodied?}` → `session_id`; then, each with a required `session_id`: `ask_patient`, `list_options`, `examine`, `order_test`, `read_result`, `check_vitals`, `intervene`, `consult`, `answer_decision`, `set_phase`, `wait`, `update_workup`, `case_status`, `finish_case`, `get_debrief`, and in a case with an operation `observe_field` and `operate` (one operative step per call; `start_case` says the case has one; elsewhere they answer "this case has no operation"); embodied sessions only (17 world tools): `observe_world`, `get_agent_state`, `find_entities`, `find_objects`, `inspect_object`, `get_nearby_objects`, `get_visible_objects`, `get_room_info`, `get_action_feedback`, `navigate_to`, `approach_object`, `look_at`, `interact_object`, `transport_patient`, `cancel_action`, `delegate_task`, `execute_skill` |
+| tools (42) | `list_cases {locale?}` (spoiler-free: opaque handles, each case's review status and `learningOutcomeCount` — never the outcomes, which `get_debrief` lists once the case is complete), `start_case {case_id, locale?, facility_id?, embodied?, seat?, lineup?, team?}` → `session_id`; then, each with a required `session_id`: `ask_patient`, `list_options`, `examine`, `order_test`, `read_result`, `check_vitals`, `intervene`, `consult`, `answer_decision`, `set_phase`, `wait`, `update_workup`, `case_status`, `finish_case`, `get_debrief`, and in a case with an operation `observe_field` and `operate` (one operative step per call; `start_case` says the case has one; elsewhere they answer "this case has no operation"); embodied sessions only (17 world tools): `observe_world`, `get_agent_state`, `find_entities`, `find_objects`, `inspect_object`, `get_nearby_objects`, `get_visible_objects`, `get_room_info`, `get_action_feedback`, `navigate_to`, `approach_object`, `look_at`, `interact_object`, `transport_patient`, `cancel_action`, `delegate_task`, `execute_skill`; the care team's `team` (in-world sessions of a case with a team) |
 | resources | `clinicalcraft://cases`, `clinicalcraft://session/{session_id}/state`, `clinicalcraft://session/{session_id}/transcript` |
 | annotations | every tool: `title`, `readOnlyHint` (`list_cases`, `list_options`, `check_vitals`, `case_status`, `get_debrief`, `observe_field` and the nine perception tools), `destructiveHint` (`intervene`, `operate`, `order_test`, `interact_object`, `delegate_task`, `execute_skill`), `idempotentHint` (the read-only tools, `set_phase`, `update_workup`, `finish_case`, `transport_patient`, `cancel_action`), `openWorldHint: false` (a closed simulation) |
 
@@ -61,6 +61,22 @@ clinical tool), and deny rules hold. On a clinical session the world tools
 return `isError` with `structuredContent.error = "not_embodied"`. The case
 list comes from the case index; only the started case is validated.
 
+**A place in the care team.** In a case whose team names a stand-in surgeon,
+`start_case {"embodied": true, "seat": "first-assistant" | "second-assistant" |
+"scrub-nurse", "lineup"?, "team"?}` starts the encounter in that place, joined
+at the team's table, while the stand-in operates (a place without `embodied:
+true` is refused `not_embodied`; the session's own refusals come back in its
+words, e.g. `start_refused`). The team is then paced by the `team` tool:
+`run` lets it work until the surgeon waits on you, `status` says what for and
+how to answer, `reply` answers (without `message`: the line the surgeon waits
+for), `ask`, `need`, `count`, `play` / `observe`; your own steps are `operate`
+calls, as your place. A round that meets the stand-in's call-out before a
+critical step returns with it pending (`structuredContent.callout`):
+`team {"action": "callout", "decision": "approve"}` lets it go on, `"deny"`
+stops the stand-in, which asks what you see and waits for
+`team {"action": "reply", "kind": "confirm"}`. While a call-out waits, calls
+that would change the encounter are refused (`callout_pending`).
+
 **Attach mode.** `clinicalcraft mcp --attach <server> --world-session <id>
 --attach-key-file <f> [--token-file f] [--timeout <sec>]`
 (`runAttachedMcpServer`) acts in a learner's LIVE browser session through
@@ -68,9 +84,9 @@ list comes from the case index; only the started case is validated.
 control for, paired by the id and attach key its HUD badge shows (or
 `CLINICALCRAFT_WORLD_SESSION` / `CLINICALCRAFT_ATTACH_KEY`); it never picks
 a session itself. `list_live_sessions` (the key's sessions) plus the
-clinical and world tools with an optional `session_id`, no `start_case` and
-no `confirm` — approvals go to the learner in the browser and a denial comes
-back as `status: "denied"`. What the live session returns is marked as data,
+clinical and world tools and `team` with an optional `session_id`, no `start_case` and
+no `confirm` — approvals go to the learner in the browser (the stand-in's
+call-outs too) and a denial comes back as `status: "denied"`. What the live session returns is marked as data,
 not instructions (`structuredContent.untrusted: true`).
 `notifications/cancelled` cancels a call in the browser too. Without
 `--world-session` (or its variable) or the attach key the command exits with

@@ -13,6 +13,7 @@ import { benchOperative } from "./bench-operative.js";
 import { benchTeam } from "./bench-team.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, PLACE_FLAGS, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
+import { TEAM_PLACES } from "@clinicalcraft/core";
 import { runImportV4 } from "./import-v4.js";
 import { providersList, providersModels, providersTest } from "./providers.js";
 import { runPlay } from "./repl.js";
@@ -174,10 +175,21 @@ export const BENCH: CommandSpec = {
       flags: [
         { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases (default: every case with team scenarios)", zh: "只运行这些病例（默认：所有带团队情境的病例）" } },
         { name: "scenario", type: "list", valueName: "<ids>", description: { en: "Only these team scenarios", zh: "只运行这些团队情境" } },
+        {
+          name: "seat",
+          type: "string",
+          valueName: "<place>",
+          choices: TEAM_PLACES,
+          description: {
+            en: "By place: first-assistant | second-assistant | scrub-nurse — each scenario that offers it starts in that place, played by its own policy while the stand-in surgeon operates; the operation must close",
+            zh: "按岗位：first-assistant | second-assistant | scrub-nurse——每个提供该岗位的情境都以该岗位开始，由其自身策略代为完成，主刀同事主刀；手术须做到关闭",
+          },
+        },
+        { name: "lineup", type: "string", valueName: "<id>", description: { en: "The line-up the runs start with (e.g. three-surgeons)", zh: "运行开始时的团队配置（如 three-surgeons）" } },
         { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default team-results)", zh: "报告目录（默认 team-results）" } },
       ],
       run: benchTeam,
-      examples: ["clinicalcraft bench team", "clinicalcraft bench team --case cmcr-1654623 --scenario swab-on-floor,swab-in-wound"],
+      examples: ["clinicalcraft bench team", "clinicalcraft bench team --case cmcr-1654623 --scenario swab-on-floor,swab-in-wound", "clinicalcraft bench team --seat second-assistant --lineup three-surgeons"],
     },
   ],
 };

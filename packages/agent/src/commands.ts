@@ -469,6 +469,8 @@ async function settingCommand<V extends string>(
   current: string,
   allowed: readonly V[] | null,
   patch: (value: V) => RuntimeConfigPatch,
+  /** The value in force after the change (a change the session refuses keeps the old one: say that one). */
+  now: () => string = () => args,
 ): Promise<void> {
   const L = host.locale;
   if (!args) {
@@ -480,7 +482,8 @@ async function settingCommand<V extends string>(
     return;
   }
   await host.configure(patch(args as V));
-  host.output(rt(host.locale, "cmd.set", { label: rt(host.locale, label), value: args }), { [name]: args });
+  const value = now();
+  host.output(rt(host.locale, "cmd.set", { label: rt(host.locale, label), value }), { [name]: value });
 }
 
 async function providerCommand(host: CommandHost, args: string): Promise<void> {
@@ -650,10 +653,12 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
       return settingCommand(host, "model", a, "label.model", host.settings.model ?? "-", null, (v) => ({ model: v }));
     case "provider":
       return providerCommand(host, a);
+    // while a place in the team is held a change that would stop the stand-in is refused (`place.configRefused`): the
+    // mode in force is said, not the one asked for
     case "approval":
-      return settingCommand(host, "approvalMode", a, "label.approval", host.settings.approvalMode, APPROVAL_MODES, (v) => ({ approvalMode: v }));
+      return settingCommand(host, "approvalMode", a, "label.approval", host.settings.approvalMode, APPROVAL_MODES, (v) => ({ approvalMode: v }), () => host.settings.approvalMode);
     case "scope":
-      return settingCommand(host, "practiceScope", a, "label.scope", host.settings.practiceScope, SCOPES, (v) => ({ practiceScope: v }));
+      return settingCommand(host, "practiceScope", a, "label.scope", host.settings.practiceScope, SCOPES, (v) => ({ practiceScope: v }), () => host.settings.practiceScope);
     case "permissions":
       return permissionsCommand(host);
     case "compact":
