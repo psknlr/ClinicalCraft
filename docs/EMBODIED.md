@@ -378,7 +378,7 @@ the world model; the browser supplies its sensors and actuators
   own window; a position the learner holds themselves names nobody else — said so, nothing sent (the colleague standing
   by can still be named by name) —, and a role's window (`@nurse`) opens with the colleague the session would pick,
   never the one standing by. What the team says for the learner's own member (a read-back, "Yes — go ahead.") shows
-  in the team's window and in the window of the colleague it was said to, never in every window. In the scrub nurse's
+  in the team's window, and in a colleague's window only when it was said to them — never in every window. In the scrub nurse's
   place the patient's window says that no history is taken there.
 * **The HUD and the hand in a place**: the badge says the place ("In-world · OR 7 · First assistant"), in a part of
   its own that never shortens (the room's name gives way); in the scrub nurse's place a bar stacked on the scope dock
