@@ -49,9 +49,10 @@ export type TeamAnswer =
 
 const reply = (m: TeamMessage, kind: "readback" | "confirm" | "decline" | "report", text?: string): TeamOp => ({ type: "team", action: "reply", message: m.id, kind, ...(text ? { text } : {}) });
 
-/** What the learner reports once they have done what was asked of the field (`team.report.*`, in the UI language). */
+/** What the learner reports once they have done what was asked of the field (`team.report.*`, in the UI language: the team's own words). */
 function reportText(f: FieldAsk): string {
-  return tr(f.op === "traction" ? "team.report.traction" : f.op === "release" ? "team.report.release" : f.op === "camera" ? "team.report.camera" : f.op === "aim" ? "team.report.aim" : f.op === "zoom" ? "team.report.zoom" : f.op === "pass" ? "team.report.pass" : "team.report.done");
+  if (f.op === "zoom") return tr(f.zoom === "close" ? "team.report.closer" : "team.report.wider");
+  return tr(f.op === "traction" ? "team.report.traction" : f.op === "release" ? "team.report.release" : f.op === "camera" ? "team.report.camera" : f.op === "aim" ? "team.report.aim" : f.op === "pass" ? "team.report.pass" : "team.report.done");
 }
 
 /**

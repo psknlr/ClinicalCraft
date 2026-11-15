@@ -173,7 +173,7 @@ describe("the stand-in's call-out", () => {
     expect(app.session.state.procedure!.ports.find((p) => p.role === "camera")!.holder).toBe("doc-1");
     const asked = app.session.team()!.state.messages.filter((m) => m.to === PRIMARY_ACTOR && m.kind === "request" && m.about.field).map((m) => m.about.field!.op);
     expect(asked).toEqual(["camera", "aim", "zoom"]);
-    expect(app.session.team()!.state.messages.filter((m) => m.from === PRIMARY_ACTOR && m.kind === "report").map((m) => m.text.en)).toEqual(["I have the camera.", "Camera on it.", "Done."]);
+    expect(app.session.team()!.state.messages.filter((m) => m.from === PRIMARY_ACTOR && m.kind === "report").map((m) => m.text.en)).toEqual(["I have the camera.", "Camera on it.", "Wider."]);
   }, 120_000);
 });
 
