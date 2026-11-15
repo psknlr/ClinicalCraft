@@ -26,7 +26,7 @@ import {
 } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { AgentEvent } from "./protocol.js";
-import { joinList, rt } from "./session/i18n.js";
+import { isZh, joinList, rt } from "./session/i18n.js";
 import { awaitedLine, repliesTo, type ReplyKind } from "./session/team/awaits.js";
 import type { TeamCheckpoint, TeamMessage } from "./session/team/types.js";
 
@@ -54,7 +54,7 @@ export interface OpenLine {
 }
 
 /** The team as a text front-end reports it (the data beside the words). */
-export interface TeamReport {
+export interface TeamStatusReport {
   round: number;
   autonomy: TeamCheckpoint["autonomy"];
   /** Who plays the learner's part: the learner (`learner`), or the team (`simulated`: observing). */
@@ -119,13 +119,15 @@ export function seatLines(ctx: TeamTextContext): string[] {
     const offered = (lineupId?: string) => seatsOf(c, lineupId ? { lineup: lineupId } : {}).filter((x) => x !== "surgeon");
     const base = offered();
     const more = (team.lineups ?? []).map((l) => ({ id: l.id, places: offered(l.id) })).filter((x) => x.places.length > 0 && x.places.join() !== base.join());
-    const parts = [...(base.length ? [base.join(", ")] : []), ...more.map((x) => rt(L, "seat.offeredLineup", { places: x.places.join(", "), lineup: x.id }))];
-    lines.push(parts.length ? rt(L, "seat.offered", { places: parts.join("; ") }) : rt(L, "seat.offeredNone"));
+    const parts = [...(base.length ? [joinList(L, base)] : []), ...more.map((x) => rt(L, "seat.offeredLineup", { places: joinList(L, x.places), lineup: x.id }))];
+    lines.push(parts.length ? rt(L, "seat.offered", { places: parts.join(isZh(L) ? "；" : "; ") }) : rt(L, "seat.offeredNone"));
   }
   lines.push(rt(L, "seat.team"));
   const scenario = s.teamScenario ? (team.scenarios ?? []).find((x) => x.id === s.teamScenario) : undefined;
   const relief = new Set((scenario?.relief ?? []).map((m) => m.staff));
-  for (const m of effectiveTeam(c, s)) {
+  // whoever operates first, then the team as the case lists it
+  const members = effectiveTeam(c, s);
+  for (const m of [...members.filter((x) => x.staff === "surgeon"), ...members.filter((x) => x.staff !== "surgeon")]) {
     const operator = m.staff === "surgeon";
     const position = operator ? "surgeon" : staffPosition(c, ctx.facility, m.staff);
     const standIn = operator && seat ? standInOf(c) : undefined;
@@ -162,7 +164,7 @@ function answerText(locale: string, words: AnswerWords, line: OpenLine): string 
  * first what the stand-in waits on them for (its line — and whether they answered it —, or the count), with how to
  * answer; then anything else said to them that waits for an answer. Null checkpoint: the team has not begun.
  */
-export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words: AnswerWords): { lines: string[]; report: TeamReport | null } {
+export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words: AnswerWords): { lines: string[]; report: TeamStatusReport | null } {
   const L = ctx.locale;
   const c = ctx.caseDef;
   if (!cp) {
@@ -174,7 +176,7 @@ export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words
   const who = cp.surgeon === "learner" ? (seat ? rt(L, "teamText.who.learnerPlace", { place }) : rt(L, "teamText.who.learner")) : seat ? rt(L, "teamText.who.simulatedPlace", { place }) : rt(L, "teamText.who.simulated");
   const lines = [rt(L, "teamText.status", { round: cp.state.round, pace: rt(L, `teamText.pace.${cp.autonomy}`), who })];
   const waiting = awaitedLine(cp.state, cp.surgeon);
-  let awaited: TeamReport["awaited"] = null;
+  let awaited: TeamStatusReport["awaited"] = null;
   if (waiting?.kind === "line") {
     const line = openLine(ctx, cp, waiting.message);
     awaited = { kind: "line", line, answered: waiting.answered };

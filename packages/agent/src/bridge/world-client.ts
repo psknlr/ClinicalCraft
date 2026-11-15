@@ -43,8 +43,10 @@
  * queued before the learner switched to bypass), and only an op carrying
  * `allowBypass` — set here when the front-end opted in — is exempt.
  */
-import { t, type CaseDefinition } from "@clinicalcraft/core";
+import { t, type CaseDefinition, type FacilityDefinition, type SessionState } from "@clinicalcraft/core";
 import type { AgentEvent, AgentRole, EventMsg, Op } from "../protocol.js";
+import type { TeamCheckpoint } from "../session/team/types.js";
+import { TEAM_TOOL, teamToolCall, teamToolResult } from "../team-tool.js";
 import { parseSSE } from "../providers/sse.js";
 import { rt } from "../session/i18n.js";
 import type { ResolvedSettings } from "../settings/schema.js";
@@ -92,6 +94,20 @@ export interface BridgeSession {
   submit(op: Op): string;
   subscribe(listener: (event: AgentEvent) => void): () => void;
   toolsFor(agent: AgentRole): readonly { name: string }[];
+  /** The encounter's state (a `team` call's words read it). Optional: without it and `team()` no `team` tool is offered. */
+  readonly state?: SessionState;
+  /** The care team's record (`ClinicalSession.team`): optional, as `state`. */
+  team?(): TeamCheckpoint | null;
+}
+
+/**
+ * What a `team` call reads in a session (`ClinicalSession`): the full case and facility, the state, the team's record —
+ * an in-world session of a case with a care team. Null: the session offers no `team` tool.
+ */
+function teamSessionOf(s: BridgeSession): { caseDef: CaseDefinition; facility: FacilityDefinition | null; state: () => SessionState; team: () => TeamCheckpoint | null } | null {
+  const team = s.team;
+  if (s.embodiment !== "embodied" || typeof team !== "function" || !s.state || !(s.caseDef as Partial<CaseDefinition>).team) return null;
+  return { caseDef: s.caseDef as CaseDefinition, facility: s.facility as FacilityDefinition | null, state: () => s.state!, team: () => team.call(s) };
 }
 
 /** How the bridge authenticates to `clinicalcraft serve`. */
@@ -507,8 +523,28 @@ class WorldBridgeClient implements WorldBridge {
 
   private capabilities(): string[] {
     const own = new Set(this.session.toolsFor("clinician").map((tool) => tool.name));
+    // the care team's `team` (never a tool of the clinician's): an in-world session of a case with a care team
+    own.delete(TEAM_TOOL.name);
+    if (teamSessionOf(this.session)) own.add(TEAM_TOOL.name);
     const only = this.options.tools ? new Set(this.options.tools) : null;
     return BRIDGE_TOOLS.filter((name) => own.has(name) && (!only || only.has(name)));
+  }
+
+  /**
+   * A `team` call (docs/PROTOCOL.md §13): the session's own `team` op, worded by the agent (`teamToolResult`) — the
+   * external agent plays the learner's part in the team as it plays their clinical part. A call-out stays the learner's:
+   * they answer it in the browser while the call waits (`callout` is refused here).
+   */
+  private async teamCall(args: Record<string, unknown>): Promise<BridgeToolResult> {
+    const L = this.session.locale;
+    const host = teamSessionOf(this.session);
+    if (!host) return { ok: false, status: "denied", output: rt(L, "bridge.toolNotAllowed", { tool: TEAM_TOOL.name }) };
+    const call = teamToolCall(args, host.team(), L);
+    if ("error" in call) return { ok: false, status: "error", output: call.error };
+    if (call.action === "callout") return { ok: false, status: "denied", output: rt(L, "teamText.calloutLive") };
+    const events = call.action === "status" ? [] : await this.session.run(call.op);
+    const out = teamToolResult({ caseDef: host.caseDef, facility: host.facility, state: host.state(), locale: L }, host.team(), events);
+    return { ok: out.ok, status: out.ok ? "ok" : "error", output: out.text, data: out.data };
   }
 
   private async register(): Promise<void> {
@@ -710,6 +746,14 @@ class WorldBridgeClient implements WorldBridge {
     this.activity({ phase: "started", correlationId, tool, args });
     void this.http("POST", `${WORLD_SESSIONS_PATH}/${encodeURIComponent(reg.id)}/results`, { reg, body: { correlationId, kind: "ack" } }).catch(() => undefined);
     let result = this.refusal(tool);
+    // the care team's `team`: its own op, not a tool of the clinician's
+    if (!result && tool === TEAM_TOOL.name) {
+      try {
+        result = await this.teamCall(args);
+      } catch (err) {
+        result = { ok: false, status: "error", output: err instanceof Error ? err.message : String(err) };
+      }
+    }
     if (!result) {
       // The learner's answers to the call's approval requests carry the id of their own response.
       const related: AgentEvent[] = [];

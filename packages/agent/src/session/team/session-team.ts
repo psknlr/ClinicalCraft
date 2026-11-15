@@ -46,6 +46,9 @@ export interface ObserverWords {
 /** The browser's words (the default): "Choose “I am the surgeon” / “I play my place”". */
 export const OBSERVER_WORDS_DEFAULT: ObserverWords = { surgeon: "team.observer", place: "team.observerPlace" };
 
+/** The `/team` command's words: "Type /team play …". */
+export const OBSERVER_WORDS_COMMAND: ObserverWords = { surgeon: "team.observer.command", place: "team.observerPlace.command" };
+
 export class SessionTeam {
   private scheduler: TeamScheduler | null = null;
   /** What the last `team` transcript item recorded (one item per change). */

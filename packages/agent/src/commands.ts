@@ -23,6 +23,9 @@ import {
 import { expandCommandTemplate, splitArgs } from "./agents/markdown.js";
 import type { SlashCommand } from "./agents/types.js";
 import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
+import type { FacilityDefinition } from "@clinicalcraft/core";
+import type { TeamCheckpoint } from "./session/team/types.js";
+import type { TeamOp } from "./team-tool.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
 import { agentLabel, isZh, joinList, reviewStatusLine, rt, type RuntimeKey } from "./session/i18n.js";
@@ -31,7 +34,7 @@ import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import { joinedLines } from "./agents/joined.js";
-import { executeEmbodiedCommand } from "./commands-world.js";
+import { executeEmbodiedCommand, keyValues } from "./commands-world.js";
 import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
 
@@ -80,6 +83,12 @@ export interface CommandHost {
   embodied?(): boolean;
   /** The skills `/skill` lists (embodied mode). */
   skills?(): { id: string; name: string }[];
+  /** The care team's record now (docs/TEAM.md): null without one (no case team, clinical mode) or before the encounter starts. Optional. */
+  team?(): TeamCheckpoint | null;
+  /** A `team` op as the learner, in this command's turn (`/team`): the session's own handler — its observer refusal names `/team play`. Optional. */
+  teamOp?(op: TeamOp): Promise<void>;
+  /** The facility the encounter is played in (staff names, positions), or null. Optional. */
+  facility?(): FacilityDefinition | null;
 }
 
 const BUILTIN_NAMES = [
@@ -103,6 +112,8 @@ const BUILTIN_NAMES = [
   ["talk", "<role>"],
   ["consult", "<role> <question>"],
   ["autopilot", "[goal]"],
+  ["field", ""],
+  ["operate", "<op> [key=value…]"],
   ["finish", ""],
   ["assess", ""],
   ["debrief", ""],
@@ -524,6 +535,17 @@ async function hintCommand(host: CommandHost): Promise<void> {
   host.output(rt(L, "cmd.hint.text", { hint }), { objectiveId: objective.id, hint, accepted: result !== null && !result.rejected });
 }
 
+/**
+ * `/operate <op> [key=value…]` → the `operate` tool's arguments (docs/PROTOCOL.md §3): the step's fields as `key=value`
+ * (numbers, booleans and JSON parsed — `claims={"triangle":true}`); a `direction` may list several, comma-separated
+ * (`direction=patient-left,caudal`). The tool validates the rest, and works the field as the learner's place.
+ */
+export function operateArgs(op: string, tokens: readonly string[]): Record<string, unknown> {
+  const args: Record<string, unknown> = { op, ...keyValues(tokens) };
+  if (typeof args.direction === "string") args.direction = args.direction.split(",").map((d) => d.trim()).filter(Boolean);
+  return args;
+}
+
 /* ------------------------------------------------------------------ */
 /* Dispatcher                                                          */
 /* ------------------------------------------------------------------ */
@@ -611,6 +633,13 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     }
     case "autopilot":
       return host.autopilot(a || undefined);
+    case "field":
+      return toolOut(host, await host.runTool("observe_field", {}));
+    case "operate": {
+      const [op, ...rest] = splitArgs(a);
+      if (!op) return usage(host, name, "<op> [key=value…]");
+      return toolOut(host, await host.runTool("operate", operateArgs(op, rest)));
+    }
     case "finish":
       return toolOut(host, await host.runTool("finish_case", {}));
     case "assess":

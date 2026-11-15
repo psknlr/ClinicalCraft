@@ -60,6 +60,16 @@ export function awaitedLine(state: Pick<TeamState, "tasks" | "members" | "messag
 }
 
 /**
+ * Whether what the stand-in waits on the learner for is still theirs to give (`awaitedLine`): a line they have not
+ * answered, or the count. A text front-end's `team run` stops there, and does not start while it holds (a round would
+ * only let the stand-in's wait run on: say it again, give it up).
+ */
+export function owedByLearner(state: Pick<TeamState, "tasks" | "members" | "messages">, surgeon: SurgeonMode): boolean {
+  const waiting = awaitedLine(state, surgeon);
+  return waiting !== null && (waiting.kind === "count" || !waiting.answered);
+}
+
+/**
  * The replies that fit a line said to the learner's own member while they play their part (learner mode; observing:
  * none), until they have answered it — what the browser's team window offers, for a text front-end (the `/team`
  * command, the `team` tool of an external agent):
@@ -68,7 +78,8 @@ export function awaitedLine(state: Pick<TeamState, "tasks" | "members" | "messag
  * - a read-back of the learner's own ask or need: `confirm` or `decline`;
  * - the confirmation of their read-back of a request about the field: theirs to do, then `report`;
  * - an escalation: `report` — understood.
- * What the stand-in says is about its open request: a request it gave up, or saw done in the field, is over.
+ * What the stand-in says is about its open request: a request it gave up, or saw done in the field, is over — and its
+ * latest line there is the one to answer (a request said again stands for the first).
  */
 export function repliesTo(state: Pick<TeamState, "tasks" | "members" | "messages">, surgeon: SurgeonMode, m: TeamMessage): ReplyKind[] {
   if (surgeon !== "learner" || m.to !== PRIMARY_ACTOR || answered(state, m)) return [];
@@ -76,6 +87,9 @@ export function repliesTo(state: Pick<TeamState, "tasks" | "members" | "messages
   if (standIn) {
     const open = learnerAwaited(state, "learner")?.request;
     if (open?.to !== PRIMARY_ACTOR || open.thread !== m.thread) return [];
+    // its latest line in that thread is the one to answer: a request said again stands for the first
+    const latest = [...state.messages].reverse().find((x) => x.thread === m.thread && x.to === PRIMARY_ACTOR);
+    if (latest?.id !== m.id) return [];
   }
   if (haltOf(state, m)) return ["confirm"];
   if (m.kind === "request") return m.about.field ? ["readback", "decline"] : ["readback"];

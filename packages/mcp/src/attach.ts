@@ -24,7 +24,7 @@
  *   a short notice that it is the learner's simulation output, not
  *   instructions (`structuredContent.untrusted: true`).
  */
-import { CLINICALCRAFT_VERSION, clinicalTools, isLiveSessionId, procedureTools, studyTools, WORLD_TOOL_SPECS, WorldAttachClient, type AttachFailure, type BridgeToolResult, type LiveSessionInfo } from "@clinicalcraft/agent";
+import { CLINICALCRAFT_VERSION, clinicalTools, isLiveSessionId, procedureTools, studyTools, TEAM_TOOL, WORLD_TOOL_SPECS, WorldAttachClient, type AttachFailure, type BridgeToolResult, type LiveSessionInfo } from "@clinicalcraft/agent";
 import { normalizeLocale } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 import { classifyMessage, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
@@ -61,11 +61,16 @@ function liveSpec(name: string, description: string, inputSchema: Record<string,
   };
 }
 
-/** The tools of attach mode: `list_live_sessions`, then every clinical and world tool, forwarded (no `confirm`: the learner approves). */
+/**
+ * The tools of attach mode: `list_live_sessions`, then every clinical and world tool and the care team's `team`, forwarded
+ * (no `confirm`: the learner approves — and answers the stand-in surgeon's call-outs in the browser).
+ */
 export function attachTools(): McpToolSpec[] {
   // the clinical tools and the operative field's (a live session offers these only in a case with an operation)
   const clinical = [...clinicalTools(), ...procedureTools(), ...studyTools()].map((tool) => liveSpec(tool.name, tool.description, tool.inputSchema));
   const world = WORLD_TOOL_SPECS.filter((spec) => MCP_WORLD_TOOLS.includes(spec.name)).map((spec) => liveSpec(spec.name, `${spec.description} Embodied encounters only.`, spec.inputSchema));
+  // the care team (an in-world encounter of a case with a team); a call-out is the learner's to answer in the browser
+  const team = liveSpec(TEAM_TOOL.name, `${TEAM_TOOL.description} In a live session the learner answers the stand-in's call-outs in the browser: callout is refused there.`, TEAM_TOOL.inputSchema);
   const title = "Live sessions";
   return [
     {
@@ -79,6 +84,7 @@ export function attachTools(): McpToolSpec[] {
     },
     ...clinical,
     ...world,
+    team,
   ];
 }
 

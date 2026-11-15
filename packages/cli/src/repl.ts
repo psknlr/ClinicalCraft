@@ -20,6 +20,7 @@ import { m } from "./i18n.js";
 import { pickCase } from "./picker.js";
 import { EventRenderer, resolvedModelLabel } from "./render.js";
 import { openSession } from "./session.js";
+import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart } from "./place.js";
 
 type ApprovalRequest = Extract<EventMsg, { type: "approval_request" }>;
 
@@ -142,6 +143,8 @@ export class Repl {
       place: () => session.placeLabel(),
       // Only what the learner's body can see from where it stands (review G11).
       vitals: () => session.vitalsView(),
+      // The stand-in surgeon's call-out: who says it and its line (answered with the approval keys)
+      callout: (req) => calloutOf(session, req),
     });
     const settings = session.settings;
     const offline = settings.provider === "offline";
@@ -170,7 +173,8 @@ export class Repl {
     this.session.subscribe((e) => this.onEvent(e));
     this.banner();
     this.openReadline();
-    if (!this.options.resumed) {
+    // the patient's opening — not for a learner who joins the team at the table in a place (the start took it)
+    if (!this.options.resumed && !this.session.state.seat) {
       await this.send({ type: "user_message", text: "", to: "patient" });
     }
     this.afterTurn();
@@ -197,6 +201,8 @@ export class Repl {
     const cfg = r.configured!;
     r.line(p.dim(m(L, "repl.config", { provider: cfg.provider, model: cfg.model || "-", approval: cfg.approvalMode, scope: cfg.practiceScope, locale: L })));
     if (this.options.resumed) r.line(p.cyan(m(L, "repl.resumed", { id: this.session.id, actions: this.session.snapshot().actions.length })));
+    // a place in the team: the place, its controls and who works where (`/seat`)
+    for (const line of placeLines(this.session)) r.line(p.cyan(sanitizeTerminal(line)));
     r.line(p.dim(m(L, "repl.hint")));
   }
 
@@ -383,9 +389,15 @@ export class Repl {
     }
   }
 
+  /** The choices of an approval: the stand-in's call-out is answered "No objection" (y) or "Stop" (n). */
+  private choicesOf(req: ApprovalRequest): string {
+    if (calloutOf(this.session, req)) return m(this.L, "repl.calloutChoices");
+    return req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession");
+  }
+
   private askApproval(req: ApprovalRequest): void {
     const p = this.ctx.out;
-    const choices = req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession");
+    const choices = this.choicesOf(req);
     // The renderer already printed "? <summary> (risk · rule · reason)"; add the choices.
     this.renderer.line(`  ${p.bold(choices)}`);
     this.awaitApprovalInput(req);
@@ -427,7 +439,7 @@ export class Repl {
     const parsed = parseApprovalAnswer(line, req.allowSession);
     if (!this.tty) this.renderer.line(this.ctx.out.dim(`? › ${line.trim()}`));
     if (!parsed) {
-      this.renderer.line(this.ctx.out.yellow(req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession")));
+      this.renderer.line(this.ctx.out.yellow(this.choicesOf(req)));
       this.awaitApprovalInput(req);
       return;
     }
@@ -464,6 +476,9 @@ export class Repl {
 export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number> {
   if (args.positionals.length > 1) throw new UsageError(ctx.t("play.tooMany", { extra: args.positionals.slice(1).join(" ") }));
   const resume = resumeRef(args);
+  // a place in the care team (--seat, --lineup, --team): the first action is that start
+  const start = placeStart(args);
+  checkPlaceFlags(ctx, start, resume);
   const flags = await sessionFlagsLayer(ctx, args);
   await requireProviderKey(ctx, args, flags);
   let caseId = args.positionals[0];
@@ -474,6 +489,8 @@ export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number
   const facility = flagString(args, "facility");
   const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, library, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
   ctx.locale = session.settings.locale;
+  // refused (the session's words): a usage error; a resumed encounter in a place whose settings would stop the stand-in too
+  await beginEncounter(session, start, resume !== undefined);
   const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled });
   return repl.run();
 }

@@ -81,3 +81,14 @@ export function calloutLine(c: CaseDefinition, s: SessionState, op: ProcedureOp)
       return null;
   }
 }
+
+/**
+ * Whether an approval request is the stand-in surgeon's call-out (docs/TEAM.md §4.5): it carries the line said aloud
+ * (`callout`) and the body that would act is the stand-in's — the operating surgeon's body while the learner holds a
+ * place (core `memberBody`), a member of staff's. Its answer is the request's own approval response: approved is "No
+ * objection", denied is "Stop". Any other request is asked as always.
+ */
+export function isCalloutRequest(c: CaseDefinition, s: TeamChoice, req: { callout?: string; actorId?: string }): req is { callout: string; actorId: string } {
+  const line = typeof req.callout === "string" ? req.callout.trim() : "";
+  return !!line && !!req.actorId && standInBody(c, s) === req.actorId;
+}

@@ -36,6 +36,7 @@ import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext
 import { m } from "./i18n.js";
 import { EventRenderer, sanitizeTerminal } from "./render.js";
 import { openSession } from "./session.js";
+import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart } from "./place.js";
 
 /** Reason given to the agent when a headless run cannot ask the learner. */
 export const HEADLESS_DENY_REASON = "headless: approval required";
@@ -235,6 +236,10 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const maxTurns = args.flags["max-turns"] !== undefined ? flagPositiveInt(args, "max-turns", 500, ctx.locale) : undefined;
   const to = flagString(args, "to");
 
+  // a place in the care team (--seat, --lineup, --team): the encounter's first action is that start
+  const start = placeStart(args);
+  checkPlaceFlags(ctx, start, resumeRef(args));
+
   let prompt = [flagString(args, "print") ?? "", ...args.positionals].filter((s) => s.length > 0).join(" ");
   if (prompt === "-" || (!prompt && inputFormat === "text" && !autopilot && !ctx.io.stdin.isTTY)) prompt = (await readAllStdin(ctx.io.stdin)).trim();
   if (!prompt && !autopilot && inputFormat !== "stream-json") throw new UsageError(ctx.t("exec.noPrompt"));
@@ -258,13 +263,22 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
           for await (const event of session.events()) write(JSON.stringify(event));
         })()
       : Promise.resolve();
+  // the start the flags ask for (or, resumed in a place, the settings checked): refused, a usage error in the session's words
+  try {
+    await beginEncounter(session, start, resume !== undefined);
+  } catch (err) {
+    await pump;
+    throw err;
+  }
 
   session.subscribe((e) => tracker.observe(e));
   const renderer =
     format === "text" && !quiet
-      ? new EventRenderer({ out: ctx.io.stderr, palette: ctx.err, caseDef: session.caseDef, locale: () => session.settings.locale, interactive: false, verbose: ctx.verbose })
+      ? new EventRenderer({ out: ctx.io.stderr, palette: ctx.err, caseDef: session.caseDef, locale: () => session.settings.locale, interactive: false, verbose: ctx.verbose, callout: (req) => calloutOf(session, req) })
       : null;
   if (renderer) session.subscribe((e) => renderer.handle(e));
+  // a place in the team: the place, its controls and who works where (`/seat`), with the progress
+  if (renderer) for (const line of placeLines(session)) renderer.line(ctx.err.cyan(sanitizeTerminal(line)));
   // A stream-json client (stream-json in and out) answers approvals itself with
   // `approval_response` ops while its stdin is open; afterwards (and in every
   // other mode) they are answered automatically.

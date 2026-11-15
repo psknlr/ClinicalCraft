@@ -198,6 +198,12 @@ export class SessionManager {
     return next;
   }
 
+  /** Drop a session (its start was refused): closed cleanly, never listed again. Call it outside `exclusive`. */
+  async discard(entry: McpSession): Promise<void> {
+    if (this.sessions.get(entry.id) === entry) this.sessions.delete(entry.id);
+    await this.closeEntry(entry);
+  }
+
   /** Close every session (flushes transcripts). */
   async closeAll(): Promise<void> {
     const entries = [...this.sessions.values()];

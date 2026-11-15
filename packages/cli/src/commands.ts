@@ -12,7 +12,7 @@ import { benchDemo, benchGrounding, benchList, benchRun } from "./bench.js";
 import { benchOperative } from "./bench-operative.js";
 import { benchTeam } from "./bench-team.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
-import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
+import { EXEC_FLAGS, JSON_FLAG, PLACE_FLAGS, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
 import { providersList, providersModels, providersTest } from "./providers.js";
 import { runPlay } from "./repl.js";
@@ -51,16 +51,16 @@ export const PLAY: CommandSpec = {
   name: "play",
   usage: "[case]",
   summary: { en: "Play a case in the terminal REPL (default command)", zh: "在终端交互式接诊（默认命令）" },
-  flags: [...SESSION_FLAGS, ...RESUME_FLAGS],
+  flags: [...SESSION_FLAGS, ...RESUME_FLAGS, ...PLACE_FLAGS],
   run: runPlay,
-  examples: ["clinicalcraft play smzl-lung-adeno --lang en", "clinicalcraft --continue"],
+  examples: ["clinicalcraft play smzl-lung-adeno --lang en", "clinicalcraft --continue", "clinicalcraft play <case> --embodied --seat first-assistant --lineup three-surgeons"],
 };
 
 export const EXEC: CommandSpec = {
   name: "exec",
   usage: "<prompt>",
   summary: { en: "Run headless: one prompt (or --autopilot) → text / JSON / JSONL", zh: "无界面运行：一条提示（或 --autopilot）→ 文本 / JSON / JSONL" },
-  flags: [...EXEC_FLAGS, ...SESSION_FLAGS, ...RESUME_FLAGS],
+  flags: [...EXEC_FLAGS, ...SESSION_FLAGS, ...RESUME_FLAGS, ...PLACE_FLAGS],
   run: runExec,
   examples: [
     'clinicalcraft -p "Where does it hurt?" --case smzl-lung-adeno',

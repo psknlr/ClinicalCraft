@@ -20,6 +20,10 @@ const EN = {
   "start.operation":
     "This case has an operation ({name}). It is not an intervention: once case_status says it is under way (after the checklist steps it names), look with observe_field and do one step at a time with operate — ports, dissection, the critical view, clips, the specimen, closure, or a safe bail-out. Counts and equipment never perform it. Clip, divide, coagulate and bail-out steps need confirm: true.",
   "start.failed": "Could not start the case: {message}",
+  "start.place":
+    "You hold the {place}'s place in the care team, fixed for this encounter: {standIn}, the stand-in surgeon, operates, and the team is paced by the team tool — team {action: \"run\"} goes on until the surgeon waits on you, team {action: \"status\"} says what for and how to answer, team {action: \"reply\"} answers it, team {action: \"callout\", decision} answers a call-out before a critical step. " +
+    "Your own steps in the operative field are operate calls, as your place (observe_field shows the field and your controls).",
+  "team.calloutHow": 'team {action: "callout", decision: "approve"} (no objection) or team {action: "callout", decision: "deny"} (stop)',
   "start.embodied":
     "In-world mode (embodied): you have a body in the hospital and are at {place}. Clinical tools need you in the right place (the patient's bedside, a workstation, a device): " +
     "observe_world and find_entities show what is around, navigate_to walks there (it takes simulated time), interact_object operates equipment. " +
@@ -94,6 +98,10 @@ const ZH: Record<McpMessageKey, string> = {
   "start.operation":
     "本病例包含手术（{name}）。手术不是一项处置：当 case_status 显示手术已开始（先完成它列出的核查步骤）后，用 observe_field 观察术野，用 operate 一步一步操作——布孔、解剖、关键安全视野、夹闭、标本、关腹，或安全的替代方式。清点和设备操作都不能代替手术。夹闭、离断、电凝和替代方式需要 confirm: true。",
   "start.failed": "无法开始病例：{message}",
+  "start.place":
+    "你担任手术团队中的{place}岗位，本次接诊中不变：由主刀同事{standIn}主刀，团队的节奏由 team 工具决定——team {action: \"run\"} 一直进行到术者在等你，team {action: \"status\"} 说明在等什么、如何回答，team {action: \"reply\"} 作答，team {action: \"callout\", decision} 回答关键步骤前告知。" +
+    "你自己在术野中的步骤用 operate 调用，以你的岗位进行（observe_field 显示术野与你的分工权限）。",
+  "team.calloutHow": 'team {action: "callout", decision: "approve"}（无异议）或 team {action: "callout", decision: "deny"}（停）',
   "start.embodied":
     "实景模式（embodied）：你在医院里有一个身体，现在位于{place}。临床工具要求你身处正确的位置（患者床旁、工作站、设备旁）：" +
     "observe_world 和 find_entities 显示周围情况，navigate_to 前往目的地（会消耗模拟时间），interact_object 操作设备。" +

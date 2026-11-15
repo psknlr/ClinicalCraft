@@ -12,10 +12,11 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { EmbodimentError, inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
+import { EmbodimentError, inScope, isHiddenByDeny, rt, seatLines, staffName, TEAM_TOOL, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type ClinicalSession, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
-import { normalizeLocale, progress, t, type AssessmentReport } from "@clinicalcraft/core";
+import { normalizeLocale, POSITION_TITLES, progress, SEAT_POSITIONS, standInOf, t, type AssessmentReport, type ClinicalAction, type Seat } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
+import { calloutFirst, pendingCallout, teamTool } from "./team.js";
 import { assessmentText, caseHandle, caseListing, casesText, resolveCaseRef } from "./format.js";
 import { mm } from "./i18n.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
@@ -136,6 +137,10 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   cancel_action: { title: "Cancel an action", ...RECORDS, idempotentHint: true },
   delegate_task: { title: "Delegate a task", ...RECORDS, destructiveHint: true },
   execute_skill: { title: "Run a skill", ...RECORDS, destructiveHint: true },
+  // the care team (docs/TEAM.md §5): every action is recorded in the team's record — a round, a reply, a request —, a
+  // round may let the stand-in operate, and answering its call-out lets a critical step go ahead (that step itself is
+  // the stand-in's, asked as its call-out)
+  team: { title: "The care team", ...RECORDS },
 };
 
 /** World tools this server lists (embodied sessions; camera frames need a browser, never headless). */
@@ -198,6 +203,18 @@ function worldSpec(spec: WorldToolSpec): McpToolSpec {
   };
 }
 
+/** The `team` tool (agent `TEAM_TOOL`): listed for every session — it answers "no care team" elsewhere. */
+function teamSpec(): McpToolSpec {
+  const annotations = toolAnnotations(TEAM_TOOL.name);
+  return {
+    name: TEAM_TOOL.name,
+    title: annotations.title,
+    description: `${TEAM_TOOL.description} Only in an in-world session of a case with a care team (start_case says so); requires session_id. In a place in the team (start_case seat) the team is paced by this tool, and a call-out waits for your answer (callout) before anything else.`,
+    inputSchema: withSessionId(TEAM_TOOL.inputSchema),
+    annotations,
+  };
+}
+
 /** The tools this server lists, honouring the practice scope and bare `deny` rules. */
 export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToolSpec[] {
   const clinical = [...bridgedTools().values()].filter((tool) => inScope(tool.scope, host.practiceScope) && !isHiddenByDeny(tool.name, host.deny)).map(clinicalSpec);
@@ -231,6 +248,15 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
               "In-world mode (embodied): you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
               "clinical tools then need you in the right place. Fixed for the encounter. Default: the server settings (embodiment).",
           },
+          seat: {
+            type: "string",
+            enum: [...SEAT_POSITIONS],
+            description:
+              "Your place in the care team, fixed for the encounter: surgeon (operating surgeon, the default — you may also do the team's parts), first-assistant, second-assistant or scrub-nurse. " +
+              "A place in the team needs embodied: true and a case whose team has a stand-in surgeon, who then operates while you play your place (the team tool; operate as your place).",
+          },
+          lineup: { type: "string", minLength: 1, maxLength: 80, description: "The care team's line-up for the encounter (one of the case team's line-ups, e.g. three-surgeons)." },
+          team: { type: "string", minLength: 1, maxLength: 80, description: "A team scenario for the encounter (one of the case team's scenarios: a facilitator's choice the team is not told)." },
         },
         required: ["case_id"],
         additionalProperties: false,
@@ -239,6 +265,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
     },
     ...clinical,
     ...world,
+    teamSpec(),
     {
       name: "get_debrief",
       title: toolAnnotations("get_debrief").title,
@@ -290,10 +317,19 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
     }
     case "start_case":
       return startCase(host, args);
+    case "team": {
+      const found = findSession(host, String(args.session_id));
+      if ("error" in found) return found.error;
+      const entry = found.entry;
+      return host.sessions.exclusive(entry, () => teamTool(entry, args));
+    }
     case "get_debrief": {
       const found = findSession(host, String(args.session_id));
       if ("error" in found) return found.error;
       const entry = found.entry;
+      // the assessment queues behind the round a call-out stopped: answered first
+      const pending = pendingCallout(entry);
+      if (pending) return calloutFirst(entry, pending);
       return host.sessions.exclusive(entry, () => debrief(entry));
     }
     default: {
@@ -305,6 +341,10 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
       if (MCP_WORLD_TOOLS.includes(name) && entry.session.embodiment !== "embodied") {
         return textResult(mm(entry.session.locale, "embodied.required", { tool: name }), { session_id: entry.id, tool: name, ok: false, error: "not_embodied" }, true);
       }
+      // the stand-in's call-out waits for the learner's answer (the team tool): a call that changes the encounter would
+      // wait behind the round it stopped — only looking runs meanwhile
+      const pending = pendingCallout(entry);
+      if (pending && !toolAnnotations(name).readOnlyHint) return calloutFirst(entry, pending);
       return host.sessions.exclusive(entry, async () => {
         const outcome = await entry.runner.run(name, toolArgs, signal, { confirmed: confirm === true });
         if (outcome.status === "refused") {
@@ -329,12 +369,41 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
   }
 }
 
+/** The start `start_case` asks for (`seat`, `lineup`, `team`), or null: the encounter starts as always. */
+function startOf(args: Record<string, unknown>): Extract<ClinicalAction, { type: "start" }> | null {
+  const seat = typeof args.seat === "string" ? (args.seat as Seat) : undefined;
+  const lineup = typeof args.lineup === "string" ? args.lineup : undefined;
+  const team = typeof args.team === "string" ? args.team : undefined;
+  if (!seat && !lineup && !team) return null;
+  return { type: "start", ...(seat ? { seat } : {}), ...(lineup ? { lineup } : {}), ...(team ? { team } : {}) };
+}
+
+/**
+ * The encounter's first action, the start asked for: null when the session took it; else what the session said — its
+ * error (a place in clinical mode: `not_embodied`; settings that would stop the stand-in: `permission_denied`) or the
+ * engine's refusal (a warning: `start_refused`) — word for word.
+ */
+async function takeStart(session: ClinicalSession, start: Extract<ClinicalAction, { type: "start" }>): Promise<{ message: string; code: string } | null> {
+  const events = await session.run({ type: "clinical_action", action: start });
+  if (session.state.started) {
+    // in a place the team is paced by the team tool: a call-out is answered there, never inside another tool's call
+    if (session.state.seat) await session.run({ type: "team", action: "pause" });
+    return null;
+  }
+  for (const e of events) {
+    if (e.msg.type === "error") return { message: e.msg.message, code: e.msg.code ?? "start_refused" };
+    if (e.msg.type === "warning") return { message: e.msg.message, code: "start_refused" };
+  }
+  return { message: JSON.stringify(start), code: "start_refused" };
+}
+
 async function startCase(host: ToolHost, args: Record<string, unknown>): Promise<McpToolResult> {
   const ref = String(args.case_id);
   const locale = typeof args.locale === "string" ? normalizeLocale(args.locale) : null;
   const L = locale ?? host.locale;
   const known = resolveCaseRef(await (await host.library()).entries(), ref);
   if (!known) return textResult(mm(L, "start.unknownCase", { ref }), { error: "unknown_case", case_id: ref }, true);
+  const start = startOf(args);
   let entry: McpSession;
   try {
     entry = await host.sessions.start({
@@ -349,28 +418,45 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     // Unknown facility (BootstrapError), unreadable settings…: the model can pick another case.
     return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: ref }, true);
   }
+  // a place in the team, a line-up, a team scenario: the encounter's first action — refused, the session is dropped
+  const refused = start ? await host.sessions.exclusive(entry, () => takeStart(entry.session, start)) : null;
+  if (refused) {
+    const SL = entry.session.locale;
+    await host.sessions.discard(entry);
+    return textResult(mm(SL, "start.failed", { message: refused.message }), { error: refused.code, case_id: ref }, true);
+  }
   return host.sessions.exclusive(entry, async () => {
     const session = entry.session;
     const SL = session.locale;
+    const seat = session.state.seat ?? null;
     // The learner-facing case card (same as `/case` in the REPL) …
     const card = (await session.run({ type: "slash_command", name: "case", args: "" })).flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
-    // … and the patient's first words when approached (an empty message = approach).
-    const approach = await session.run({ type: "user_message", text: "", to: "patient" });
+    // … and the patient's first words when approached (an empty message = approach) — not for a learner who joins the
+    // team at the operating table in a place.
+    const approach = seat ? [] : await session.run({ type: "user_message", text: "", to: "patient" });
     // E.g. "no API key for provider … — using the deterministic offline responder": the client must know.
     const warnings = [...new Set(approach.flatMap((e) => (e.msg.type === "warning" ? [e.msg.message] : [])))];
     for (const w of warnings) host.log?.(w);
     const replies = approach.flatMap((e) => (e.msg.type === "agent_message" ? [e.msg] : []));
     const c = session.caseDef;
-    const opening = replies.map((r) => r.text).join("\n") || t(c.patient.persona.openingLine, SL);
-    const speaker = replies[0]?.speaker ?? t(c.patient.displayName, SL);
+    const opening = seat ? "" : replies.map((r) => r.text).join("\n") || t(c.patient.persona.openingLine, SL);
+    const speaker = seat ? "" : (replies[0]?.speaker ?? t(c.patient.displayName, SL));
     // A narration (the patient cannot speak, or an opening line written as an aside) is no one's words.
     const narrated = replies[0]?.grounding === "narrated";
     const embodied = session.embodiment === "embodied";
     const place = session.placeLabel();
+    // a place in the team: the place, its controls, who works where, and how the team tool paces the team
+    const standIn = standInOf(c);
+    const placeText = seat
+      ? [
+          seatLines({ caseDef: c, facility: session.facility, state: session.state, locale: SL }).join("\n"),
+          mm(SL, "start.place", { place: t(POSITION_TITLES[seat], SL), standIn: standIn ? staffName({ facility: session.facility, locale: SL }, standIn) : "-" }),
+        ]
+      : [];
     const text = [
       mm(SL, "start.header", { session: session.id }),
       card?.text ?? "",
-      narrated ? mm(SL, "start.narration", { text: opening }) : mm(SL, "start.says", { speaker, text: opening }),
+      ...(seat ? placeText : [narrated ? mm(SL, "start.narration", { text: opening }) : mm(SL, "start.says", { speaker, text: opening })]),
       mm(SL, "start.next", { session: session.id }),
       // a case with an operation: how it is done (never with intervene, a count or a device)
       c.procedure ? mm(SL, "start.operation", { name: t(c.procedure.name, SL) }) : "",
@@ -393,6 +479,9 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
       embodiment: session.embodiment,
       operation: c.procedure != null,
       ...(embodied ? { place } : {}),
+      // a place in the team chosen at the start, and the line-up (absent: the operating surgeon, as always)
+      ...(seat ? { seat } : {}),
+      ...(session.state.lineup ? { lineup: session.state.lineup } : {}),
       ...(warnings.length ? { warnings } : {}),
     });
   });

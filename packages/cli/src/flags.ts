@@ -1,6 +1,7 @@
 /**
  * Flag specifications shared by several commands.
  */
+import { POSITION_TITLES, SEAT_POSITIONS, type Seat } from "@clinicalcraft/core";
 import type { FlagSpec } from "./argv.js";
 
 export const OUTPUT_FORMATS = ["text", "json", "stream-json"] as const;
@@ -64,6 +65,44 @@ export const SESSION_FLAGS: FlagSpec[] = [
 export const RESUME_FLAGS: FlagSpec[] = [
   { name: "resume", short: "r", type: "string", valueName: "<id>", description: { en: "Resume a recorded session (id, id prefix or transcript path)", zh: "恢复已记录的会话（ID、ID 前缀或记录文件路径）" } },
   { name: "continue", short: "c", type: "boolean", description: { en: "Resume the most recent session", zh: "恢复最近一次会话" } },
+];
+
+/** The places a learner may take at the start (`--seat`): core's seat list. */
+export const SEAT_CHOICES: readonly Seat[] = SEAT_POSITIONS;
+
+/** "first-assistant — first assistant" for each place, in one language (core's titles). */
+function seatChoices(lang: "en" | "zh-CN", sep: string): string {
+  return SEAT_CHOICES.map((seat) => `${seat}${sep}${POSITION_TITLES[seat][lang]}`).join(" | ");
+}
+
+/**
+ * A place in the care team chosen at the start (play, exec; docs/TEAM.md §1, docs/PROTOCOL.md §3.1): the first action
+ * becomes `start {seat, lineup, team}`. The session decides — a place needs in-world mode, a case team with a stand-in
+ * surgeon and settings that let the stand-in work — and a refusal is printed as it words it.
+ */
+export const PLACE_FLAGS: FlagSpec[] = [
+  {
+    name: "seat",
+    type: "string",
+    valueName: "<place>",
+    choices: SEAT_CHOICES,
+    description: {
+      en: `Your place in the care team, fixed for the encounter (in-world mode; a case whose team has a stand-in surgeon): ${seatChoices("en", " — ")} (default: surgeon)`,
+      zh: `你在手术团队中的岗位，本次接诊中不变（实景模式；病例团队需有主刀同事）：${seatChoices("zh-CN", "——")}（默认 surgeon）`,
+    },
+  },
+  {
+    name: "lineup",
+    type: "string",
+    valueName: "<id>",
+    description: { en: "The care team's line-up for the encounter (one of the case team's `lineups`, e.g. three-surgeons)", zh: "本次接诊的团队配置（病例团队 `lineups` 中的一个，如 three-surgeons）" },
+  },
+  {
+    name: "team",
+    type: "string",
+    valueName: "<scenario>",
+    description: { en: "Team scenario for the encounter (one of the case team's `scenarios`; a facilitator's choice the team is not told)", zh: "本次接诊的团队情境（病例团队 `scenarios` 中的一个；由带教老师选择，团队并不知情）" },
+  },
 ];
 
 /** Headless flags (exec / -p). */

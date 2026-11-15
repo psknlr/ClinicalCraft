@@ -4,7 +4,7 @@
  * clinical events (✓ objectives, ⚠ alarms, 🔔 critical results), a spinner
  * while the model is thinking, approvals, assessments and a status line.
  */
-import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
+import { progress as caseProgress, LEARNER_BODY, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   criticalMissLines,
   findProviderTemplate,
@@ -52,6 +52,11 @@ export interface RendererOptions {
    * body can see them — else the status line says "vitals: not in view". Without it: the last state snapshot's.
    */
   vitals?: () => VitalsView;
+  /**
+   * The stand-in surgeon's call-out an approval request is (docs/TEAM.md §4.5): who says it and its line — shown as
+   * "Dr Ito: Clipping the cystic duct." — or null for any other request (shown as always).
+   */
+  callout?: (req: Extract<EventMsg, { type: "approval_request" }>) => { who: string; line: string } | null;
 }
 
 interface Configured {
@@ -192,6 +197,8 @@ export class EventRenderer {
   private finishedShown = false;
   /** Last `command_output` data (REPL reacts to /export, /quit). */
   lastCommand: { name: string; text: string; data?: unknown } | null = null;
+  /** A line the care team just said to the learner's own member (its `team_event`): marked "→ you" when it is heard, with its id. */
+  private toYou: { text: string; id: string } | null = null;
 
   constructor(options: RendererOptions) {
     this.o = options;
@@ -297,9 +304,9 @@ export class EventRenderer {
     }
   }
 
-  private label(agent: string, speaker?: string): string {
+  private label(agent: string, speaker?: string, toYou = false): string {
     const name = speaker && speaker !== agent ? speaker : this.speakerName(agent);
-    return this.p.bold(this.colorFor(agent)(`${name}:`));
+    return this.p.bold(this.colorFor(agent)(`${name}${toYou ? ` ${m(this.L, "render.toYou")}` : ""}:`));
   }
 
   /* ---------------------------------------------------------------- */
@@ -364,6 +371,9 @@ export class EventRenderer {
       }
       case "agent_message": {
         const agent = String(msg.agent);
+        // the care team's line to the learner (its team_event came first): "Dr Ito → you: … [msg-12]" — the id a reply names
+        const toYou = this.toYou && this.toYou.text === msg.text ? this.toYou : null;
+        this.toYou = null;
         // A narration or a monitor announcement is not the agent's name: later streamed lines keep theirs.
         const narration = msg.grounding === "narrated" || msg.speaker === rt(L, "speaker.narrator") || msg.speaker === rt(L, "speaker.monitor");
         if (msg.speaker && msg.speaker !== agent && !narration) this.speakers.set(`${this.L}\u0000${agent}`, msg.speaker);
@@ -377,7 +387,7 @@ export class EventRenderer {
           return;
         }
         if (!msg.text.trim()) return;
-        this.line(`${this.label(agent, msg.speaker)} ${msg.text}`);
+        this.line(toYou ? `${this.label(agent, msg.speaker, true)} ${msg.text} ${p.dim(`[${toYou.id}]`)}` : `${this.label(agent, msg.speaker)} ${msg.text}`);
         return;
       }
       case "agent_reasoning":
@@ -401,11 +411,18 @@ export class EventRenderer {
         }
         return;
       }
-      case "approval_request":
+      case "approval_request": {
+        // the stand-in surgeon's call-out: "Dr Ito: Clipping the cystic duct." (No objection / Stop)
+        const callout = this.o.callout?.(msg) ?? null;
+        if (callout) {
+          this.line(`${p.yellow("?")} ${p.bold(`${sanitizeTerminal(callout.who)}: ${sanitizeTerminal(callout.line)}`)} ${p.dim(`(${m(L, "render.callout")} · ${msg.ruleId})`)}`);
+          return;
+        }
         this.line(
           `${p.yellow("?")} ${p.bold(msg.summary || msg.tool)} ${p.dim(`(${m(L, "render.risk", { risk: msg.risk })} · ${msg.ruleId}${msg.reason ? ` · ${truncate(msg.reason, 80)}` : ""})`)}`,
         );
         return;
+      }
       case "approval_resolved": {
         const text = m(L, `approval.${msg.decision}` as "approval.approved");
         const colored = msg.decision === "approved" || msg.decision === "approved_for_session" ? p.green(text) : p.yellow(text);
@@ -487,9 +504,13 @@ export class EventRenderer {
         this.line(this.p.dim(`  ${mark} ${truncate(text, 160)}${msg.result.errorCode ? ` [${msg.result.errorCode}]` : ""}`));
         return;
       }
-      case "team_event":
-        // the care team's speech is heard as each member's own line (agent_message); receipts and tasks stay in the record
+      case "team_event": {
+        // the care team's speech is heard as each member's own line (agent_message); receipts and tasks stay in the record —
+        // a line said to the learner's own member is marked "→ you" when it is heard
+        const ev = msg.event;
+        if (ev.kind === "message" && ev.message.to === LEARNER_BODY && ev.message.from !== LEARNER_BODY) this.toYou = { text: sanitizeTerminal(t(ev.message.text, L)), id: sanitizeTerminal(ev.message.id) };
         return;
+      }
       default: {
         const never: never = msg;
         void never;

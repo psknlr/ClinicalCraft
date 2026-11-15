@@ -27,6 +27,9 @@ import { sessionSnapshot } from "./resume.js";
 import { parseLearnerInput, parseMention, resolveAgentAlias } from "./router.js";
 import { staffAgent, staffVoice, type StaffVoice } from "./staff-voice.js";
 import { standInRefusal } from "./team/places.js";
+import { OBSERVER_WORDS_COMMAND } from "./team/session-team.js";
+import { ownPlaceWord } from "../tools/position-words.js";
+import { ownPlaceText } from "../commands-world.js";
 import { encounterRoom, lookupStaff, staffChoice } from "../tools/consult-target.js";
 
 /** The learner as the holder of a hold they place or release themselves. */
@@ -61,14 +64,23 @@ export class LearnerPath {
     // a colleague named — in an `@` mention or the staff picker (id or name) — through the one room-aware resolver
     const room = encounterRoom(k.caseDef, k.facility);
     // a position in the team ("@first assistant", "@一助", "@扶镜手") is whoever holds it in this encounter
+    let asked = "";
     const lookup = (name: string) => {
       const r = lookupStaff(k.facility, name, room, { caseDef: k.caseDef, state: k.state });
-      return r.kind === "none" ? null : r;
+      if (r.kind === "none") return null;
+      asked = name;
+      return r;
     };
     let named = staff ? lookup(staff) : null;
     if (to === null && !named) {
       const mention = parseMention(text, lookup, k.availableAgents());
       if (mention) {
+        // a position word naming the learner's own place names nobody else: the colleague standing by is named by name
+        const own = ownPlaceWord({ caseDef: k.caseDef, state: k.state }, asked);
+        if (own) {
+          k.emit(id, { type: "error", message: ownPlaceText(k.locale, own), code: "own_place" });
+          return;
+        }
         named = mention.found;
         body = mention.text;
       }
@@ -208,6 +220,10 @@ export class LearnerPath {
       snapshot: () => sessionSnapshot(k),
       embodied: () => k.embodied !== null,
       skills: () => k.skillList.map((sk) => ({ id: sk.id, name: t(sk.name, k.locale) })),
+      team: () => (k.team.available() ? (k.team.get()?.checkpoint() ?? null) : null),
+      // the `/team` command's own op: its observer refusal names `/team play`, the command's control
+      teamOp: (op) => k.team.op(id, op, signal, OBSERVER_WORDS_COMMAND),
+      facility: () => k.facility,
       shutdown: async () => {
         k.closing = true;
         k.ops.enqueue(id, { type: "shutdown" }).catch(() => undefined);
