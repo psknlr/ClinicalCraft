@@ -9,7 +9,7 @@
 import type { ReportWriter } from "./studies.js";
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
 import type { CameraSensor, EpisodeTrace, Mover, Pose, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
-import type { TeamCheckpoint } from "./team/types.js";
+import type { TeamAutonomy, TeamCheckpoint } from "./team/types.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { CommandHookExecutor, HookHandler } from "../hooks/types.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
@@ -103,9 +103,11 @@ export interface SessionOptions {
    * (`EmbodimentError`, code `embodiment_requires_facility`). `mover` animates bodies (browser; default instant),
    * `camera` gives camera frames (`get_camera_frame`, vision models only), `spawn` the learner's start pose,
    * `snapshot` the physical state to restore (resume: the last transcript `world` item), `team` the care team to
-   * restore with it (the last transcript `team` item; docs/TEAM.md).
+   * restore with it (the last transcript `team` item; docs/TEAM.md), `teamPace` the pace the care team begins at —
+   * `auto` (the default: after each act of the learner, the start included) or `step` (only as a `team` op runs it: a
+   * front-end that paces the team itself, e.g. MCP in a place in the team; a restored team keeps its own).
    */
-  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot; team?: TeamCheckpoint };
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot; team?: TeamCheckpoint; teamPace?: TeamAutonomy };
   /**
    * Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills,
    * registered as `project:<id>` (they never shadow a built-in; `execute_skill {skill_id: "<id>"}` finds them when

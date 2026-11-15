@@ -14,6 +14,7 @@ import type { RetryPolicy } from "../providers/factory.js";
 import type { LLMProvider, ProviderConfig } from "../providers/types.js";
 import { embodimentProblem } from "../session/embodied.js";
 import { createSession, type ClinicalSession } from "../session/session.js";
+import type { TeamAutonomy } from "../session/team/types.js";
 import type { TranscriptSink } from "../session/types.js";
 import type { SettingsLayerData } from "../settings/merge.js";
 import type { ToolDefinition } from "../tools/types.js";
@@ -60,10 +61,12 @@ export interface CreateNodeSessionOptions {
    */
   library?: CaseLibrary;
   /**
-   * Embodied mode (settings `embodiment: "embodied"`, e.g. the flag layer): a front-end's `Mover` / `CameraSensor`
-   * and the learner's start pose. A resumed embodied session restores the world from its transcript.
+   * Embodied mode (settings `embodiment: "embodied"`, e.g. the flag layer): a front-end's `Mover` / `CameraSensor`,
+   * the learner's start pose and the pace the care team begins at (`teamPace`: `step` for a front-end that paces it
+   * itself — MCP in a place in the team, a terminal until it can answer a call-out). A resumed embodied session
+   * restores the world and the team from its transcript.
    */
-  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose };
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; teamPace?: TeamAutonomy };
   now?: () => number;
   newId?: () => string;
 }

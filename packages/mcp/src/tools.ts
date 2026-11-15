@@ -12,7 +12,7 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { EmbodimentError, inScope, isHiddenByDeny, rt, seatLines, staffName, TEAM_TOOL, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type ClinicalSession, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
+import { EmbodimentError, inScope, isHiddenByDeny, rt, seatLines, staffName, startOffers, TEAM_TOOL, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type ClinicalSession, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
 import { normalizeLocale, POSITION_TITLES, progress, SEAT_POSITIONS, standInOf, t, type AssessmentReport, type ClinicalAction, type Seat } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
@@ -253,7 +253,8 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
             enum: [...SEAT_POSITIONS],
             description:
               "Your place in the care team, fixed for the encounter: surgeon (operating surgeon, the default — you may also do the team's parts), first-assistant, second-assistant or scrub-nurse. " +
-              "A place in the team needs embodied: true and a case whose team has a stand-in surgeon, who then operates while you play your place (the team tool; operate as your place).",
+              "A place in the team needs an in-world session — embodied: true, or a server whose default is in-world (clinicalcraft mcp --embodied); in a clinical session it is refused not_embodied — " +
+              "and a case whose team has a stand-in surgeon, who then operates while you play your place (the team tool; operate as your place).",
           },
           lineup: { type: "string", minLength: 1, maxLength: 80, description: "The care team's line-up for the encounter (one of the case team's line-ups, e.g. three-surgeons)." },
           team: { type: "string", minLength: 1, maxLength: 80, description: "A team scenario for the encounter (one of the case team's scenarios: a facilitator's choice the team is not told)." },
@@ -327,10 +328,12 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
       const found = findSession(host, String(args.session_id));
       if ("error" in found) return found.error;
       const entry = found.entry;
-      // the assessment queues behind the round a call-out stopped: answered first
-      const pending = pendingCallout(entry);
-      if (pending) return calloutFirst(entry, pending);
-      return host.sessions.exclusive(entry, () => debrief(entry));
+      // the assessment would queue behind the round a call-out stopped: answered first — checked when the call runs, a
+      // call queued before the call-out was raised included
+      return host.sessions.exclusive(entry, () => {
+        const pending = pendingCallout(entry);
+        return pending ? Promise.resolve(calloutFirst(entry, pending)) : debrief(entry);
+      });
     }
     default: {
       const found = findSession(host, String(args.session_id));
@@ -341,11 +344,12 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
       if (MCP_WORLD_TOOLS.includes(name) && entry.session.embodiment !== "embodied") {
         return textResult(mm(entry.session.locale, "embodied.required", { tool: name }), { session_id: entry.id, tool: name, ok: false, error: "not_embodied" }, true);
       }
-      // the stand-in's call-out waits for the learner's answer (the team tool): a call that changes the encounter would
-      // wait behind the round it stopped — only looking runs meanwhile
-      const pending = pendingCallout(entry);
-      if (pending && !toolAnnotations(name).readOnlyHint) return calloutFirst(entry, pending);
       return host.sessions.exclusive(entry, async () => {
+        // the stand-in's call-out waits for the learner's answer (the team tool): a call that changes the encounter would
+        // wait behind the round it stopped — only looking runs meanwhile. Checked when the call runs: one queued before
+        // the call-out was raised is refused too, never left behind the waiting round (the answer queues after it)
+        const pending = pendingCallout(entry);
+        if (pending && !toolAnnotations(name).readOnlyHint) return calloutFirst(entry, pending);
         const outcome = await entry.runner.run(name, toolArgs, signal, { confirmed: confirm === true });
         if (outcome.status === "refused") {
           const refused = {
@@ -381,18 +385,21 @@ function startOf(args: Record<string, unknown>): Extract<ClinicalAction, { type:
 /**
  * The encounter's first action, the start asked for: null when the session took it; else what the session said — its
  * error (a place in clinical mode: `not_embodied`; settings that would stop the stand-in: `permission_denied`) or the
- * engine's refusal (a warning: `start_refused`) — word for word.
+ * engine's refusal (a warning: `start_refused`: a line-up, a team scenario or a place the case does not offer, a member
+ * away) — word for word, the engine's followed by what the case offers (`startOffers`: its places and line-ups; its team
+ * scenarios are the facilitator's, not listed to a client that may be the learner). A place's session begins with its
+ * team paused (`teamPace: "step"`): the start takes no team round, and the stand-in operates only as the `team` tool runs
+ * the team — never inside another tool's call.
  */
 async function takeStart(session: ClinicalSession, start: Extract<ClinicalAction, { type: "start" }>): Promise<{ message: string; code: string } | null> {
   const events = await session.run({ type: "clinical_action", action: start });
-  if (session.state.started) {
-    // in a place the team is paced by the team tool: a call-out is answered there, never inside another tool's call
-    if (session.state.seat) await session.run({ type: "team", action: "pause" });
-    return null;
-  }
+  if (session.state.started) return null;
   for (const e of events) {
     if (e.msg.type === "error") return { message: e.msg.message, code: e.msg.code ?? "start_refused" };
-    if (e.msg.type === "warning") return { message: e.msg.message, code: "start_refused" };
+    if (e.msg.type === "warning") {
+      const offers = startOffers({ caseDef: session.caseDef, locale: session.locale }, { scenarios: false });
+      return { message: [e.msg.message, ...offers].join("\n"), code: "start_refused" };
+    }
   }
   return { message: JSON.stringify(start), code: "start_refused" };
 }
@@ -404,13 +411,17 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
   const known = resolveCaseRef(await (await host.library()).entries(), ref);
   if (!known) return textResult(mm(L, "start.unknownCase", { ref }), { error: "unknown_case", case_id: ref }, true);
   const start = startOf(args);
+  // a place in the team: the team begins paused — the `team` tool paces it
+  const place = start?.seat !== undefined && start.seat !== "surgeon";
   let entry: McpSession;
   try {
-    entry = await host.sessions.start({
+    // opened, not listed: a start refused at its first action never closes another session (`maxSessions`)
+    entry = await host.sessions.open({
       caseId: known.id,
       locale,
       facilityId: typeof args.facility_id === "string" ? args.facility_id : null,
       embodied: typeof args.embodied === "boolean" ? args.embodied : null,
+      ...(place ? { teamPace: "step" as const } : {}),
     });
   } catch (err) {
     // No facility or no place in it for the case (review C15): its stable code and the reason in the session language.
@@ -418,13 +429,15 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     // Unknown facility (BootstrapError), unreadable settings…: the model can pick another case.
     return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: ref }, true);
   }
-  // a place in the team, a line-up, a team scenario: the encounter's first action — refused, the session is dropped
-  const refused = start ? await host.sessions.exclusive(entry, () => takeStart(entry.session, start)) : null;
+  // a place in the team, a line-up, a team scenario: the encounter's first action (no call reaches the session yet) —
+  // refused, the session is dropped
+  const refused = start ? await takeStart(entry.session, start) : null;
   if (refused) {
     const SL = entry.session.locale;
     await host.sessions.discard(entry);
     return textResult(mm(SL, "start.failed", { message: refused.message }), { error: refused.code, case_id: ref }, true);
   }
+  await host.sessions.admit(entry);
   return host.sessions.exclusive(entry, async () => {
     const session = entry.session;
     const SL = session.locale;

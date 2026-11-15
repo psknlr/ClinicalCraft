@@ -16,6 +16,7 @@
 import { nextEvent, POSITION_TITLES, t, vitalsAt, type PendingEvent, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type EpisodeTrace, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { TEAM_PROFILE } from "../agents/builtin.js";
+import { RESERVED_COMMAND_NAMES } from "../commands.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { RoleState } from "./staff-autonomy.js";
 import type { HookRunner } from "../hooks/runner.js";
@@ -210,6 +211,9 @@ export class ClinicalSession implements ClinicalSessionApi {
     for (const issue of k.opts.skillIssues ?? []) k.emit("", { type: "warning", message: rt(this.locale, "embodied.skillIssue", { issue }) });
     // a user or project profile named like the care team's own caller: never used — said, so it is not lost silently
     if ((k.opts.agents ?? []).some((p) => p.name === TEAM_PROFILE.name)) k.emit("", { type: "warning", message: rt(this.locale, "team.profileReserved") });
+    // a project's or user's command named like a built-in one (`/team`, `/seat`, `/operate`…): never run — said, likewise
+    const reserved = (k.opts.commands ?? []).filter((c) => RESERVED_COMMAND_NAMES.has(c.name)).map((c) => `/${c.name}`);
+    if (reserved.length) k.emit("", { type: "warning", message: rt(this.locale, "cmd.projectReserved", { commands: [...new Set(reserved)].join(", ") }) });
     const untrusted = k.opts.skillsUntrusted;
     if (untrusted && k.embodied) k.emit("", { type: "warning", message: rt(this.locale, "embodied.skillsUntrusted", { files: untrusted.files, dir: untrusted.dir }) });
     k.sessionContext.push(...hook.additionalContext);

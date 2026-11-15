@@ -14,7 +14,7 @@
  * their answer or count is still owed it does not start. After a round or a run the staff take their own round
  * (`staff_step`), as a headless driver does, so the stand-in sees the world as it now is.
  */
-import { isCalloutRequest, owedByLearner, rt, staffName, TEAM_TOOL, teamToolCall, teamToolResult, type AgentEvent, type CalloutPending, type ClinicalSession, type TeamOp } from "@clinicalcraft/agent";
+import { isCalloutRequest, rt, runHeld, staffName, TEAM_TOOL, teamToolCall, teamToolResult, type AgentEvent, type CalloutPending, type ClinicalSession, type TeamOp } from "@clinicalcraft/agent";
 import { mm } from "./i18n.js";
 import type { McpSession } from "./sessions.js";
 import { textResult, type McpToolResult } from "./tools.js";
@@ -99,6 +99,8 @@ async function settle(entry: McpSession, run: TeamRun): Promise<McpToolResult> {
 export async function teamTool(entry: McpSession, args: Record<string, unknown>): Promise<McpToolResult> {
   const s: ClinicalSession = entry.session;
   const L = s.locale;
+  // no care team that works on its own here (a case without a team, a clinical session): every action says so
+  if (!s.caseDef.team || s.embodiment !== "embodied") return textResult(rt(L, "teamText.noTeam"), { session_id: entry.id, tool: TEAM_TOOL.name, ok: false, error: "no_team", team: null, callout: null }, true);
   const { session_id: _sid, ...rest } = args;
   const call = teamToolCall(rest, s.team(), L);
   if ("error" in call) return textResult(call.error, { session_id: entry.id, tool: TEAM_TOOL.name, ok: false, error: "invalid_op" }, true);
@@ -114,8 +116,7 @@ export async function teamTool(entry: McpSession, args: Record<string, unknown>)
   // a call-out waits: the round it stopped in holds the session's queue until the learner answers it
   if (run?.callout) return calloutFirst(entry, run.callout);
   // a run stops where the stand-in waits on the learner: while their answer or count is owed it does not start
-  const cp = s.team();
-  if (call.op.action === "run" && cp && owedByLearner(cp.state, cp.surgeon)) return result(entry, [], null);
+  if (runHeld(call.op, s.team())) return result(entry, [], null);
   return settle(entry, begin(entry, call.op));
 }
 

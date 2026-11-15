@@ -15,10 +15,9 @@ import { splitArgs } from "./agents/markdown.js";
 import type { SlashCommand } from "./agents/types.js";
 import type { CommandHost } from "./commands.js";
 import { rt, type RuntimeKey } from "./session/i18n.js";
-import { owedByLearner } from "./session/team/awaits.js";
-import { defaultReplyTarget, seatLines, teamLines, type AnswerWords, type TeamTextContext } from "./team-text.js";
-import type { TeamOp } from "./team-tool.js";
-import { ownPlaceWord } from "./tools/position-words.js";
+import { defaultReplyTarget, noReplyTarget, seatLines, teamLines, type AnswerWords, type TeamTextContext } from "./team-text.js";
+import { runHeld, type TeamOp } from "./team-tool.js";
+import { ownPlaceWord, positionWord } from "./tools/position-words.js";
 import { DELEGATION_TASKS } from "./tools/world.js";
 
 const NAMES = [
@@ -188,10 +187,14 @@ const ASK_WORDS = ["traction", "release", "camera", "aim", "zoom", "closer", "wi
 /**
  * `/team ask <who> <request…>` → the `ask` op's `to` and `field` (the session checks both): whom — everything before the
  * request's word —, then traction `port structure direction[,direction] [force]`, release `[port]`, camera `[port]`,
- * aim `region [close|wide]`, zoom `close|wide`, closer, wider, pass `instrument`. Null: no request word after a name.
+ * aim `region [close|wide]`, zoom `close|wide`, closer, wider, pass `instrument`. A request word inside a position in
+ * words ("the camera holder") is part of whom: the request is the first word after it. Null: no request word after a
+ * name.
  */
 export function teamAskArgs(tokens: readonly string[]): { to: string; field: Record<string, unknown> } | null {
-  const at = tokens.findIndex((tok, i) => i > 0 && (ASK_WORDS as readonly string[]).includes(tok.toLowerCase()));
+  // a position in words from the first token that takes this word in ("the camera holder" takes "camera") keeps it
+  const inPosition = (i: number) => [1, 2, 3].some((n) => i + n <= tokens.length && positionWord(tokens.slice(0, i + n).join(" ")) !== null);
+  const at = tokens.findIndex((tok, i) => i > 0 && (ASK_WORDS as readonly string[]).includes(tok.toLowerCase()) && !inPosition(i));
   if (at <= 0) return null;
   const to = tokens.slice(0, at).join(" ");
   const word = tokens[at]!.toLowerCase();
@@ -254,9 +257,8 @@ async function teamCommand(host: CommandHost, args: string): Promise<void> {
       const rounds = rest[0] !== undefined ? Number(rest[0]) : undefined;
       if (rounds !== undefined && !(Number.isInteger(rounds) && rounds > 0)) return host.output(rt(L, "cmd.usage", { name: "team", hint: rt(L, "teamCmd.usage.run").replace(/^\/team /u, "") }), { error: "usage" });
       // a run stops where the stand-in waits on the learner (`awaitedLine`): while their answer or their count is still
-      // owed it does not start — the team now, and how to answer
-      const cp = host.team?.() ?? null;
-      if (cp && owedByLearner(cp.state, cp.surgeon)) return status(action);
+      // owed it does not start (`runHeld`) — the team now, and how to answer
+      if (runHeld({ action: "run" }, host.team?.() ?? null)) return status(action);
       return op({ action: "run", ...(rounds !== undefined ? { rounds } : {}) });
     }
     case "need": {
@@ -277,8 +279,10 @@ async function teamCommand(host: CommandHost, args: string): Promise<void> {
       const parsed = lone ? { message: null, kind: kindOf(lone[1]!), text: lone[2] } : m ? { message: m[1] ?? null, kind: kindOf(m[2]!), text: m[3] } : null;
       if (!parsed) return host.output(rt(L, "cmd.usage", { name: "team", hint: rt(L, "teamCmd.usage.reply").replace(/^\/team /u, "") }), { error: "usage" });
       const cp = host.team?.() ?? null;
-      const message = parsed.message ?? (cp ? defaultReplyTarget(cp) : null);
-      if (!message) return host.output(rt(L, "teamCmd.noAwaited"), { error: "no-message" });
+      const target = parsed.message === null && cp ? defaultReplyTarget(cp) : null;
+      const message = parsed.message ?? (target && "id" in target ? target.id : null);
+      // none waits, or several do (which ones): name the message
+      if (!message) return host.output(noReplyTarget(L, cp, { none: "teamCmd.noAwaited", several: "teamCmd.severalAwaited" }), { error: "no-message", ...(target && "several" in target ? { waiting: target.several } : {}) });
       return op({ action: "reply", message, kind: parsed.kind, ...(parsed.text?.trim() ? { text: parsed.text.trim() } : {}) });
     }
     default:

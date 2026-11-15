@@ -47,6 +47,7 @@ import { t, type CaseDefinition, type FacilityDefinition, type SessionState } fr
 import type { AgentEvent, AgentRole, EventMsg, Op } from "../protocol.js";
 import type { TeamCheckpoint } from "../session/team/types.js";
 import { TEAM_TOOL, teamToolCall, teamToolResult } from "../team-tool.js";
+import { isHiddenByDeny } from "../tools/index.js";
 import { parseSSE } from "../providers/sse.js";
 import { rt } from "../session/i18n.js";
 import type { ResolvedSettings } from "../settings/schema.js";
@@ -87,7 +88,8 @@ export interface BridgeSession {
   readonly caseDef: Pick<CaseDefinition, "id" | "title">;
   readonly facility: { readonly id: string } | null;
   readonly locale: string;
-  readonly settings: Pick<ResolvedSettings, "approvalMode">;
+  /** The approval mode; the deny rules (`permissions.deny`: a bare `team` withholds the care team's tool). */
+  readonly settings: Pick<ResolvedSettings, "approvalMode"> & { readonly permissions?: Pick<ResolvedSettings["permissions"], "deny"> };
   readonly embodiment: "clinical" | "embodied";
   readonly isClosed?: boolean;
   run(op: Op): Promise<AgentEvent[]>;
@@ -523,27 +525,30 @@ class WorldBridgeClient implements WorldBridge {
 
   private capabilities(): string[] {
     const own = new Set(this.session.toolsFor("clinician").map((tool) => tool.name));
-    // the care team's `team` (never a tool of the clinician's): an in-world session of a case with a care team
+    // the care team's `team` (never a tool of the clinician's model): an in-world session of a case with a care team,
+    // unless a bare deny rule names it (`--disallowed-tools team`)
     own.delete(TEAM_TOOL.name);
-    if (teamSessionOf(this.session)) own.add(TEAM_TOOL.name);
+    if (teamSessionOf(this.session) && !isHiddenByDeny(TEAM_TOOL.name, this.session.settings.permissions?.deny)) own.add(TEAM_TOOL.name);
     const only = this.options.tools ? new Set(this.options.tools) : null;
     return BRIDGE_TOOLS.filter((name) => own.has(name) && (!only || only.has(name)));
   }
 
   /**
-   * A `team` call (docs/PROTOCOL.md §13): the session's own `team` op, worded by the agent (`teamToolResult`) — the
-   * external agent plays the learner's part in the team as it plays their clinical part. A call-out stays the learner's:
-   * they answer it in the browser while the call waits (`callout` is refused here).
+   * A `team` call answered here, without running anything (docs/PROTOCOL.md §13): `status` only reads the team's record
+   * (worded by the agent's `teamToolResult`); `callout` is the learner's own to answer in the browser, while the round it
+   * stopped waits; a malformed call is refused. Null: an act of the learner's part in the team — it runs as an
+   * `external_tool_call` on the clinician's tool path like any other call (deny rules, plan and strict mode asking the
+   * learner, the call's deadline and cancellation; agent `teamTool`).
    */
-  private async teamCall(args: Record<string, unknown>): Promise<BridgeToolResult> {
+  private teamLocal(args: Record<string, unknown>): BridgeToolResult | null {
     const L = this.session.locale;
     const host = teamSessionOf(this.session);
     if (!host) return { ok: false, status: "denied", output: rt(L, "bridge.toolNotAllowed", { tool: TEAM_TOOL.name }) };
     const call = teamToolCall(args, host.team(), L);
     if ("error" in call) return { ok: false, status: "error", output: call.error };
     if (call.action === "callout") return { ok: false, status: "denied", output: rt(L, "teamText.calloutLive") };
-    const events = call.action === "status" ? [] : await this.session.run(call.op);
-    const out = teamToolResult({ caseDef: host.caseDef, facility: host.facility, state: host.state(), locale: L }, host.team(), events);
+    if (call.action !== "status") return null;
+    const out = teamToolResult({ caseDef: host.caseDef, facility: host.facility, state: host.state(), locale: L }, host.team(), []);
     return { ok: out.ok, status: out.ok ? "ok" : "error", output: out.text, data: out.data };
   }
 
@@ -746,14 +751,8 @@ class WorldBridgeClient implements WorldBridge {
     this.activity({ phase: "started", correlationId, tool, args });
     void this.http("POST", `${WORLD_SESSIONS_PATH}/${encodeURIComponent(reg.id)}/results`, { reg, body: { correlationId, kind: "ack" } }).catch(() => undefined);
     let result = this.refusal(tool);
-    // the care team's `team`: its own op, not a tool of the clinician's
-    if (!result && tool === TEAM_TOOL.name) {
-      try {
-        result = await this.teamCall(args);
-      } catch (err) {
-        result = { ok: false, status: "error", output: err instanceof Error ? err.message : String(err) };
-      }
-    }
+    // the care team's `team`: its status read here, a call-out left to the learner; its acts run below as any call
+    if (!result && tool === TEAM_TOOL.name) result = this.teamLocal(args);
     if (!result) {
       // The learner's answers to the call's approval requests carry the id of their own response.
       const related: AgentEvent[] = [];

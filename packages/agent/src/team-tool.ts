@@ -8,9 +8,10 @@
  */
 import type { AgentEvent, Op } from "./protocol.js";
 import { rt } from "./session/i18n.js";
-import type { ReplyKind } from "./session/team/awaits.js";
+import { owedByLearner, type ReplyKind } from "./session/team/awaits.js";
 import type { TeamCheckpoint } from "./session/team/types.js";
-import { defaultReplyTarget, saidLines, teamLines, type AnswerWords, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
+import { defaultReplyTarget, noReplyTarget, saidLines, teamLines, type AnswerWords, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
+import type { ToolDefinition, ToolOutput } from "./tools/types.js";
 import { validateArgs } from "./tools/validate.js";
 
 /** The tool's actions. */
@@ -88,13 +89,25 @@ export function teamToolCall(raw: unknown, cp: TeamCheckpoint | null, locale: st
       return a.to && a.field ? op({ action: "ask", to: a.to, field: a.field as TeamOp["field"] }) : { error: "ask needs to and field" };
     case "reply": {
       if (!a.kind) return { error: "reply needs kind (readback, confirm, decline, report)" };
-      const message = a.message ?? (cp ? defaultReplyTarget(cp) : null);
-      if (!message) return { error: rt(locale, "teamCmd.noAwaited") };
+      const target = a.message === undefined && cp ? defaultReplyTarget(cp) : null;
+      const message = a.message ?? (target && "id" in target ? target.id : null);
+      // none waits, or several do: the tool names its own `message` argument
+      if (!message) return { error: noReplyTarget(locale, cp, { none: "teamText.noAwaited.tool", several: "teamText.severalAwaited.tool" }) };
       return op({ action: "reply", message, kind: a.kind, ...(a.text?.trim() ? { text: a.text.trim() } : {}), ...(a.item ? { item: a.item } : {}) });
     }
     default:
       return { error: `unknown action "${String(a.action)}"` };
   }
+}
+
+/**
+ * Whether a `run` waits for the learner instead (agent `owedByLearner`: a line of the stand-in's said to them and not
+ * answered, or the count while it is theirs to say): a text front-end's run does not start then — a round would only let
+ * the stand-in's wait run on —, it shows what waits. One rule for the `/team` command, MCP's `team` tool and the world
+ * bridge's.
+ */
+export function runHeld(op: Pick<TeamOp, "action">, cp: TeamCheckpoint | null): boolean {
+  return op.action === "run" && cp !== null && owedByLearner(cp.state, cp.surgeon);
 }
 
 /** How the tool tells the learner to answer: as a call of this tool. */
@@ -155,4 +168,55 @@ export function teamToolResult(
   const text = [...said, ...errors.map((m) => `✗ ${m}`), ...warnings.map((m) => `! ${m}`), ...(calloutLine ? [calloutLine] : []), ...team.lines].join("\n");
   const error = refusals[0] ? (refusals[0].code ?? "error") : undefined;
   return { ok: errors.length === 0, text, data: { said, errors, warnings, ...(error ? { error } : {}), team: team.report, callout: pending } };
+}
+
+/** What the `team` tool runs on as a tool of the clinician's path (an external agent's call over the world bridge). */
+export interface TeamToolHost {
+  /** What the words are read from now: the case, the facility, the encounter's state, the session's language. */
+  context(): TeamTextContext;
+  /** The care team's record now (null before it begins). */
+  checkpoint(): TeamCheckpoint | null;
+  /** A `team` op as the learner, in the call's own turn (the observer refusal naming this tool's `play`): its events. */
+  op(op: TeamOp, signal: AbortSignal): Promise<readonly AgentEvent[]>;
+}
+
+/**
+ * The `team` tool as one of the clinician's tool path (docs/PROTOCOL.md §13): an external agent's call forwarded over the
+ * world bridge runs like its other calls — the deny rules (`team`, or `team(<action>)`), plan mode, the approval mode
+ * (strict asks the learner: "Team: reply msg-3 readback"), the call's own deadline and cancellation — and then the
+ * session's own `team` op as the learner, worded by `teamToolResult`. A `run` while the learner's answer is owed shows
+ * what waits (`runHeld`); `status` only reads; a call-out is the learner's to answer in the browser (`callout` refused).
+ * Never a tool of the clinician's model: only the external path offers it, in an in-world session of a case with a care
+ * team.
+ */
+export function teamTool(host: TeamToolHost): ToolDefinition<Record<string, unknown>> {
+  return {
+    name: TEAM_TOOL.name,
+    description: TEAM_TOOL.description,
+    inputSchema: TEAM_TOOL.inputSchema,
+    readOnly: false,
+    sideEffect: "record",
+    // the learner's own part in the team: any practice scope (their `/team` is not scoped either)
+    scope: "history-only",
+    risk: () => "low",
+    summarize: (args, ctx) => rt(ctx.locale, "teamText.summary", { action: summaryOf(args) }),
+    specifier: (args) => (typeof args.action === "string" ? args.action : ""),
+    run: async (args, ctx): Promise<ToolOutput> => {
+      const L = ctx.locale;
+      const cp = host.checkpoint();
+      const call = teamToolCall(args, cp, L);
+      if ("error" in call) return { ok: false, output: call.error, data: { error: "invalid_op" } };
+      if (call.action === "callout") return { ok: false, output: rt(L, "teamText.calloutLive"), data: { error: "callout_live" } };
+      const events = call.action === "status" || runHeld(call.op, cp) ? [] : await host.op(call.op, ctx.signal ?? new AbortController().signal);
+      const out = teamToolResult(host.context(), host.checkpoint(), events);
+      return { ok: out.ok, output: out.text, data: out.data };
+    },
+  };
+}
+
+/** A call's action and what it names, as the approval dialog shows it ("reply msg-3 readback", "ask doc-2 camera"). */
+function summaryOf(args: Record<string, unknown>): string {
+  const field = args.field && typeof args.field === "object" ? (args.field as { op?: unknown }).op : undefined;
+  const parts = [args.action, args.message, args.kind, args.to, field, args.item, args.for].filter((x): x is string => typeof x === "string" && x.length > 0);
+  return parts.join(" ").slice(0, 160) || "status";
 }

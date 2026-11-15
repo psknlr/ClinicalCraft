@@ -45,28 +45,49 @@ export function answered(state: Pick<TeamState, "messages">, m: Pick<TeamMessage
 }
 
 /**
+ * Where the learner's count stands while they hold the `count` duty (`team count`, the simulated counter's
+ * `learnerCount` read from the same record): `owed` — a recount asked of them waits unread, or the count has fallen due
+ * and they have not said it; `said` — they have said it and nothing more is asked of them (the team checks it); `notDue`
+ * — it has not fallen due yet. Null: their member does not count.
+ */
+export function learnerCountState(state: Pick<TeamState, "tasks" | "members" | "messages" | "count">): "owed" | "said" | "notDue" | null {
+  const me = state.members.find((m) => m.id === PRIMARY_ACTOR);
+  if (!me?.duties.includes("count")) return null;
+  const recount = state.messages.some((m) => m.to === PRIMARY_ACTOR && m.kind === "request" && m.about.recount && me.inbox.includes(m.id));
+  const said = state.tasks.some((t) => t.owner === PRIMARY_ACTOR && t.kind === "count");
+  if (recount || (state.count?.dueRound !== undefined && !said)) return "owed";
+  return said ? "said" : "notDue";
+}
+
+/**
  * What the stand-in waits on the learner for now, as a text front-end shows it (`learnerAwaited`): the latest line of
  * its open request said to them — its request, its confirmation of their read-back, its stop, its word that it cannot go
  * on — and whether they have answered it (the stand-in goes on in its next round), or the count it waits for before
- * closing. Null when nothing waits on them (observing included).
+ * closing, and where the learner's count stands (`learnerCountState`: owed, said, not due yet). Null when nothing waits
+ * on them (observing included).
  */
-export function awaitedLine(state: Pick<TeamState, "tasks" | "members" | "messages">, surgeon: SurgeonMode): { kind: "line"; task: TeamTask; message: TeamMessage; answered: boolean } | { kind: "count"; task: TeamTask } | null {
+export function awaitedLine(
+  state: Pick<TeamState, "tasks" | "members" | "messages" | "count">,
+  surgeon: SurgeonMode,
+): { kind: "line"; task: TeamTask; message: TeamMessage; answered: boolean } | { kind: "count"; task: TeamTask; count: "owed" | "said" | "notDue" } | null {
   const task = learnerAwaited(state, surgeon);
   if (!task) return null;
   const thread = task.request?.to === PRIMARY_ACTOR ? task.request.thread : null;
   const message = thread ? [...state.messages].reverse().find((m) => m.thread === thread && m.to === PRIMARY_ACTOR) : undefined;
   if (message) return { kind: "line", task, message, answered: answered(state, message) };
-  return task.reason === "count" ? { kind: "count", task } : null;
+  return task.reason === "count" ? { kind: "count", task, count: learnerCountState(state) ?? "notDue" } : null;
 }
 
 /**
  * Whether what the stand-in waits on the learner for is still theirs to give (`awaitedLine`): a line they have not
- * answered, or the count. A text front-end's `team run` stops there, and does not start while it holds (a round would
- * only let the stand-in's wait run on: say it again, give it up).
+ * answered, or the count while they can say it (`owed`: not once said, nor before it falls due). A text front-end's
+ * `team run` stops there, and does not start while it holds (a round would only let the stand-in's wait run on: say it
+ * again, give it up); a count said, or not due yet, lets the rounds go on (the team checks it; the stand-in sees it
+ * settled).
  */
-export function owedByLearner(state: Pick<TeamState, "tasks" | "members" | "messages">, surgeon: SurgeonMode): boolean {
+export function owedByLearner(state: Pick<TeamState, "tasks" | "members" | "messages" | "count">, surgeon: SurgeonMode): boolean {
   const waiting = awaitedLine(state, surgeon);
-  return waiting !== null && (waiting.kind === "count" || !waiting.answered);
+  return waiting !== null && (waiting.kind === "count" ? waiting.count === "owed" : !waiting.answered);
 }
 
 /**

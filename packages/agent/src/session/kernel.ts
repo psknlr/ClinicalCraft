@@ -38,7 +38,7 @@ import { BUILTIN_AGENTS, mergeAgentProfiles, TEAM_PROFILE } from "../agents/buil
 import { narrateAction } from "../agents/offline.js";
 import { npcDisplayName, type PromptContext } from "../agents/prompts.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
-import { BUILTIN_COMMANDS } from "../commands.js";
+import { BUILTIN_COMMANDS, RESERVED_COMMAND_NAMES } from "../commands.js";
 import { EMBODIED_COMMANDS } from "../commands-world.js";
 import { emptyHookResult, HookRunner } from "../hooks/runner.js";
 import type { HookInput, HookResult } from "../hooks/types.js";
@@ -171,9 +171,10 @@ export class SessionKernel {
     this.profiles = new Map(mergeAgentProfiles(BUILTIN_AGENTS, opts.agents).map((p) => [p.name, p]));
     // the care team's caller: always the built-in one (a profile of that name cannot widen what the team may do)
     this.profiles.set(TEAM_PROFILE.name, { ...TEAM_PROFILE, tools: [...TEAM_PROFILE.tools] });
-    const builtinNames = new Set(BUILTIN_COMMANDS.map((c) => c.name));
     const disabled = new Set((opts.disabledCommands ?? []).map((n) => n.toLowerCase()));
-    this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...(opts.commands ?? []).filter((c) => !builtinNames.has(c.name))];
+    // a project's or user's command named like a built-in one (an in-world one too) never runs: not listed either (the
+    // session says so at its start: `cmd.projectReserved`)
+    this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...(opts.commands ?? []).filter((c) => !RESERVED_COMMAND_NAMES.has(c.name))];
     const affect = initialAffectIntensity(this.caseDef.patient.persona.affect);
     this.patientMemory = { patient: { approached: false, affectIntensity: affect }, companion: { approached: false, affectIntensity: Math.min(affect, 1) as 0 | 1 } };
     this.ownedFlags = new Set([...this.caseDef.interventions.flatMap((i) => i.setFlags), ...(this.caseDef.physiology?.events ?? []).flatMap((e) => e.setFlags)]);
@@ -189,7 +190,7 @@ export class SessionKernel {
     this.ops = new OpDispatcher(this);
     // Embodied mode (EMBODIED R3): the session builds the world; the clinical tools are spatially gated, world tools are added.
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
-    this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
+    this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team), opts.embodied?.teamPace ?? "auto");
     this.studies = new SessionStudies(this);
     this.staff = new StaffAutonomy(this);
     if (opts.reportWriter) this.studies.writer = opts.reportWriter;

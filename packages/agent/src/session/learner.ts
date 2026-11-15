@@ -390,15 +390,16 @@ export class LearnerPath {
   }
 
   /**
-   * What a refusal of the learner's action says: the generic wording — or, for an operative step and for a start in a
-   * place in the team, why in the learner's words with the people's names (its reason; the generic wording without
-   * one), then the engine's own English message word for word.
+   * What a refusal of the learner's action says: the generic wording — or, for an operative step and for a start that
+   * chooses for the encounter (a place in the team, a line-up, a team scenario), why in the learner's words with the
+   * people's names (its reason; the generic wording without one), then the engine's own English message word for word
+   * (it names what was asked: `this case's team has no line-up "…"`).
    */
   private rejectionMessage(action: ClinicalAction, rejected: NonNullable<ReduceResult["rejected"]>, signal?: AbortSignal): string {
     const L = this.k.locale;
     const generic = rejectionText(L, rejected.code, action.type);
-    const place = action.type === "start" && action.seat !== undefined && action.seat !== "surgeon";
-    if (action.type !== "operate" && !place) return generic;
+    const choice = action.type === "start" && ((action.seat !== undefined && action.seat !== "surgeon") || action.lineup !== undefined || action.team !== undefined);
+    if (action.type !== "operate" && !choice) return generic;
     const lead = reasonText(this.k.tools.context("learner", this.k.currentSubmission, signal), rejected.reason) ?? generic;
     return `${lead} ${rejected.message}`;
   }

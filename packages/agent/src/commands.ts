@@ -34,7 +34,7 @@ import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import { joinedLines } from "./agents/joined.js";
-import { executeEmbodiedCommand, keyValues } from "./commands-world.js";
+import { EMBODIED_COMMAND_NAMES, executeEmbodiedCommand, keyValues } from "./commands-world.js";
 import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
 
@@ -128,6 +128,13 @@ const BUILTIN_NAMES = [
   ["clear", ""],
   ["quit", ""],
 ] as const;
+
+/**
+ * The names a project's or the user's own command cannot take (`.clinicalcraft/commands/<name>.md`): the built-in
+ * commands' and the in-world ones' — `/team` and `/seat` among them, which answer "needs in-world mode" in a clinical
+ * session — always run instead. A session says which of its commands are not used (`cmd.projectReserved`).
+ */
+export const RESERVED_COMMAND_NAMES: ReadonlySet<string> = new Set([...BUILTIN_NAMES.map(([name]) => name), ...EMBODIED_COMMAND_NAMES]);
 
 /** Built-in slash commands (descriptions in English; `/help` localises them). */
 export const BUILTIN_COMMANDS: readonly SlashCommand[] = BUILTIN_NAMES.map(([name, hint]) => ({

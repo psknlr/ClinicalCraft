@@ -4,11 +4,13 @@
  * it is aborted), and run as a clinician turn of their own through the clinician's tool path.
  */
 import { executeToolCall } from "../loop.js";
-import type { Op } from "../protocol.js";
+import type { AgentEvent, Op } from "../protocol.js";
+import { TEAM_TOOL, teamTool } from "../team-tool.js";
 import type { ToolContext, ToolDefinition } from "../tools/types.js";
 import type { AgentOutcome } from "./autopilot.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
+import { OBSERVER_WORDS_TOOL } from "./team/session-team.js";
 
 /** Longest `external_tool_call` call id / tool name accepted (world bridge). */
 const EXTERNAL_CALL_ID_MAX = 200;
@@ -93,8 +95,11 @@ export class ExternalCalls {
       k.agents.finishTurn(id, turnId, "clinician", { status: "denied", text: "", grounded: [] }, started);
       return;
     }
-    // A state-changing tool starts the encounter once the gate let it through (as the learner's and MCP's paths do).
-    const tools = k.toolsFor("clinician").map((tool): ToolDefinition<any> =>
+    // A state-changing tool starts the encounter once the gate let it through (as the learner's and MCP's paths do). The
+    // care team's `team` is the learner's own part, never a tool of the clinician's model: on this path only, in an
+    // in-world session of a case with a care team, so its calls meet the same rules, gate, deadline and cancellation.
+    const offered = op.tool === TEAM_TOOL.name && k.team.available() ? [this.teamTool(id)] : [];
+    const tools = [...k.toolsFor("clinician"), ...offered].map((tool): ToolDefinition<any> =>
       tool.readOnly
         ? tool
         : {
@@ -125,5 +130,30 @@ export class ExternalCalls {
       turnSignal.removeEventListener("abort", onInterrupt);
     }
     k.agents.finishTurn(id, turnId, "clinician", { status, text: "", grounded: [] }, started);
+  }
+
+  /**
+   * The care team's `team` as an external agent's tool (docs/PROTOCOL.md §13; agent `teamTool`): the session's own `team`
+   * op as the learner, in the call's turn — its observer refusal naming the tool's `play` —, the words read from the
+   * events it emitted.
+   */
+  private teamTool(id: string): ToolDefinition<any> {
+    const k = this.k;
+    return teamTool({
+      context: () => ({ caseDef: k.caseDef, facility: k.facility, state: k.state, locale: k.locale }),
+      checkpoint: () => (k.team.available() ? (k.team.get()?.checkpoint() ?? null) : null),
+      op: async (teamOp, signal) => {
+        const events: AgentEvent[] = [];
+        const off = k.hub.subscribe((e) => {
+          if (e.id === id) events.push(e);
+        });
+        try {
+          await k.team.op(id, teamOp, signal, OBSERVER_WORDS_TOOL);
+        } finally {
+          off();
+        }
+        return events;
+      },
+    });
   }
 }

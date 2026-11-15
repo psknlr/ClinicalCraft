@@ -78,11 +78,11 @@ export { extraRef, nextStep, planRef } from "./session/team/operator-plan.js";
 export { validTeamCheckpoint } from "./session/team/checkpoint.js";
 export { CALLOUT_OPS, calloutLine, isCallout, isCalloutRequest, isCalloutStep, isTeamStepRef, TEAM_CALLER } from "./session/team/callout.js";
 export { FIELD_ASK_OPS, parseFieldAsk } from "./session/team/ask-input.js";
-export { answered, awaitedLine, haltOf, learnerAwaited, owedByLearner, repliesTo, type ReplyKind } from "./session/team/awaits.js";
+export { answered, awaitedLine, haltOf, learnerAwaited, learnerCountState, owedByLearner, repliesTo, type ReplyKind } from "./session/team/awaits.js";
 export { FOLLOW_NEED } from "./session/team/assistant.js";
 // the care team for text front-ends (docs/TEAM.md §5): `/seat`, `/team`, the `team` tool of an external agent
-export { bodyName, defaultReplyTarget, saidLines, seatLines, staffName, teamLines, type AnswerWords, type OpenLine, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
-export { TEAM_TOOL, TEAM_TOOL_ACTIONS, TEAM_TOOL_WORDS, teamToolCall, teamToolResult, type CalloutPending, type TeamOp, type TeamToolAction, type TeamToolCall, type TeamToolData } from "./team-tool.js";
+export { bodyName, defaultReplyTarget, noReplyTarget, saidLines, seatLines, staffName, startOffers, teamLines, type AnswerWords, type OpenLine, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
+export { runHeld, TEAM_TOOL, TEAM_TOOL_ACTIONS, TEAM_TOOL_WORDS, teamTool, teamToolCall, teamToolResult, type CalloutPending, type TeamOp, type TeamToolAction, type TeamToolCall, type TeamToolData, type TeamToolHost } from "./team-tool.js";
 // whom the learner names (docs/PROTOCOL.md §3): the one room-aware resolver, positions in words included
 export { encounterRoom, lookupStaff, type StaffLookup } from "./tools/consult-target.js";
 export { membersInPosition, ownPlaceWord, positionWord, type PositionWord, type TeamView } from "./tools/position-words.js";

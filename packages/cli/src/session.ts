@@ -21,7 +21,7 @@ import {
   type CreateNodeSessionOptions,
   type LoadedContent,
 } from "@clinicalcraft/agent/node";
-import { EmbodimentError, type ClinicalSession } from "@clinicalcraft/agent";
+import { EmbodimentError, type ClinicalSession, type TeamAutonomy } from "@clinicalcraft/agent";
 import { suggest } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
 
@@ -35,6 +35,11 @@ export interface OpenSessionOptions {
   content?: LoadedContent;
   /** The case library (e.g. the one the picker listed); default: opened over the settings' content directories. */
   library?: CaseLibrary;
+  /**
+   * The pace the care team begins at (in-world; agent `teamPace`): `step` for a place in the team — its start takes no
+   * team round, and the front-end lets the team go on once it can answer the stand-in's call-out (`place.ts`).
+   */
+  teamPace?: TeamAutonomy;
 }
 
 /**
@@ -116,6 +121,7 @@ export async function openSession(ctx: CliContext, o: OpenSessionOptions): Promi
     ...(o.facilityId ? { facilityId: o.facilityId } : {}),
     ...(o.transcript !== undefined ? { transcript: o.transcript } : {}),
     ...(o.content ? { content: o.content } : { library: checked.library }),
+    ...(o.teamPace ? { embodied: { teamPace: o.teamPace } } : {}),
   };
   try {
     const session = await createNodeSession(opts);

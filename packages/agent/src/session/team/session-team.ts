@@ -18,7 +18,7 @@ import type { SessionKernel } from "../kernel.js";
 import { staffAgent } from "../staff-voice.js";
 import { TEAM_CALLER } from "./callout.js";
 import { TeamScheduler, type OperateOutcome, type TeamHost } from "./scheduler.js";
-import type { MemberState, TeamCheckpoint } from "./types.js";
+import type { MemberState, TeamAutonomy, TeamCheckpoint } from "./types.js";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { ModelTeamMind } from "../../characters/team-mind.js";
 import { positionOf } from "../../characters/roles.js";
@@ -49,6 +49,9 @@ export const OBSERVER_WORDS_DEFAULT: ObserverWords = { surgeon: "team.observer",
 /** The `/team` command's words: "Type /team play …". */
 export const OBSERVER_WORDS_COMMAND: ObserverWords = { surgeon: "team.observer.command", place: "team.observerPlace.command" };
 
+/** An external agent's `team` tool's words: "Call the team tool with action "play" …". */
+export const OBSERVER_WORDS_TOOL: ObserverWords = { surgeon: "team.observer.tool", place: "team.observerPlace.tool" };
+
 export class SessionTeam {
   private scheduler: TeamScheduler | null = null;
   /** What the last `team` transcript item recorded (one item per change). */
@@ -57,6 +60,12 @@ export class SessionTeam {
   constructor(
     private readonly k: SessionKernel,
     private readonly saved: TeamCheckpoint | null,
+    /**
+     * The pace the team begins at (`SessionOptions.embodied.teamPace`): `auto` (the default) — it acts after each act of
+     * the learner, the start included —, or `step` — only as a `team` op runs it (a front-end that paces the team itself:
+     * MCP in a place, a terminal resuming it once it can answer a call-out). A restored checkpoint keeps its own.
+     */
+    private readonly pace: TeamAutonomy = "auto",
   ) {}
 
   /** Does this session have a care team (a case with a `team`, embodied mode)? */
@@ -71,7 +80,7 @@ export class SessionTeam {
     const team = k.caseDef.team;
     if (!team || !k.embodied || !k.state.started) return null;
     const scenario = k.state.teamScenario ?? null;
-    const s = new TeamScheduler(this.host(), team, scenario);
+    const s = new TeamScheduler(this.host(), team, scenario, this.pace);
     // a saved team of another scenario (a different case version) is not this one's
     if (this.saved && this.saved.state.scenario === scenario) s.restore(this.saved);
     this.scheduler = s;

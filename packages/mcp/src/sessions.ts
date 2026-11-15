@@ -14,7 +14,7 @@
  * Calls on one session are serialised; sessions beyond `maxSessions` evict
  * the least recently used one (closed cleanly, transcript flushed).
  */
-import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData } from "@clinicalcraft/agent";
+import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData, TeamAutonomy } from "@clinicalcraft/agent";
 import type { DomainEvent } from "@clinicalcraft/core";
 import { createCommandHookExecutor, createNodeSession, findProjectRoot, type CaseLibrary, type Env } from "@clinicalcraft/agent/node";
 import { SessionToolRunner } from "./bridge.js";
@@ -131,6 +131,16 @@ function loggable(event: AgentEvent): LoggedEvent | null {
   }
 }
 
+/** What `start_case` opens a session with. */
+export interface StartParams {
+  caseId: string;
+  locale?: string | null;
+  facilityId?: string | null;
+  embodied?: boolean | null;
+  /** The pace the care team begins at: `step` while a place in the team is taken (the `team` tool paces it). */
+  teamPace?: TeamAutonomy;
+}
+
 export class SessionManager {
   private readonly sessions = new Map<string, McpSession>();
   private readonly queues = new Map<string, Promise<unknown>>();
@@ -154,10 +164,22 @@ export class SessionManager {
   }
 
   /**
-   * Start a case (`embodied`: true/false chooses the embodiment, null the settings'). Throws `BootstrapError`
-   * (unknown or invalid case, unknown facility), `EmbodimentError` (embodied without a facility) and settings errors.
+   * Start a case (`embodied`: true/false chooses the embodiment, null the settings'): `open`, then `admit`. Throws
+   * `BootstrapError` (unknown or invalid case, unknown facility), `EmbodimentError` (embodied without a facility) and
+   * settings errors.
    */
-  async start(params: { caseId: string; locale?: string | null; facilityId?: string | null; embodied?: boolean | null }): Promise<McpSession> {
+  async start(params: StartParams): Promise<McpSession> {
+    const entry = await this.open(params);
+    await this.admit(entry);
+    return entry;
+  }
+
+  /**
+   * Open a case's session without listing it: no call reaches it, and no other session is closed for it, until `admit`
+   * lists it — a start whose first action is refused (`start_case {seat}`) is `discard`ed instead. `teamPace` is the pace
+   * the care team begins at (`step`: only as the `team` tool runs it — a place in the team).
+   */
+  async open(params: StartParams): Promise<McpSession> {
     const settings = this.opts.settings;
     const session = await createNodeSession({
       caseId: params.caseId,
@@ -168,6 +190,7 @@ export class SessionManager {
       transcript: settings.transcripts.enabled,
       library: await this.opts.library(),
       ...(this.opts.providerFactory ? { providerFactory: this.opts.providerFactory } : {}),
+      ...(params.teamPace ? { embodied: { teamPace: params.teamPace } } : {}),
     });
     const projectRoot = findProjectRoot(this.opts.cwd, this.opts.env) ?? this.opts.cwd;
     const runner = new SessionToolRunner(session, { executor: createCommandHookExecutor(projectRoot), cwd: projectRoot, ...(this.opts.log ? { log: this.opts.log } : {}) });
@@ -178,9 +201,14 @@ export class SessionManager {
       entry.log.push(item);
       if (entry.log.length > LOG_LIMIT) entry.log.splice(0, entry.log.length - LOG_LIMIT);
     });
-    this.sessions.set(session.id, entry);
-    await this.evict();
     return entry;
+  }
+
+  /** List a session `open` made: calls reach it from now on; beyond `maxSessions` the least recently used one is closed. */
+  async admit(entry: McpSession): Promise<void> {
+    entry.lastUsed = this.now();
+    this.sessions.set(entry.id, entry);
+    await this.evict();
   }
 
   /** Run `fn` after every earlier call on the same session has finished. */
@@ -198,7 +226,7 @@ export class SessionManager {
     return next;
   }
 
-  /** Drop a session (its start was refused): closed cleanly, never listed again. Call it outside `exclusive`. */
+  /** Drop a session (its start was refused): closed cleanly, never listed (again). Call it outside `exclusive`. */
   async discard(entry: McpSession): Promise<void> {
     if (this.sessions.get(entry.id) === entry) this.sessions.delete(entry.id);
     await this.closeEntry(entry);

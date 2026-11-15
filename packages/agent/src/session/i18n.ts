@@ -273,6 +273,7 @@ const EN = {
   "cmd.clear": "Clear conversations (case progress is kept)",
   "cmd.quit": "End the session",
   "cmd.unknown": "Unknown command /{name}. Type /help for the list.",
+  "cmd.projectReserved": "Not used — a built-in command has the same name: {commands}. Rename the project's own command to use it.",
   "cmd.custom.needsModel":
     "/{name} sends a free-text prompt to the {agent}, which needs a language model — it is offline now, and its offline responder would not read your prompt. Configure a provider with /provider. Offline, /hint gives a (scored) hint and /assess the deterministic assessment.",
   "cmd.disabled": "/{name} is not available here — use this front-end's own menus.",
@@ -727,6 +728,7 @@ const ZH: Record<RuntimeKey, string> = {
   "cmd.clear": "清空对话（保留病例进度）",
   "cmd.quit": "结束会话",
   "cmd.unknown": "未知命令 /{name}，输入 /help 查看命令列表。",
+  "cmd.projectReserved": "未使用——与内置命令同名：{commands}。请为项目自己的命令改名后再使用。",
   "cmd.custom.needsModel": "/{name} 会向 {agent} 发送自由文本提示，这需要语言模型；它目前处于离线状态，离线应答不会读取你的提示。请用 /provider 配置服务商。离线时可用 /hint 获取提示（计分），或用 /assess 查看确定性评估。",
   "cmd.disabled": "这里不支持 /{name}——请使用本界面自己的菜单。",
   "cmd.usage": "用法：/{name} {hint}",

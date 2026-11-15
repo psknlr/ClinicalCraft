@@ -26,7 +26,7 @@ import {
 } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { AgentEvent } from "./protocol.js";
-import { isZh, joinList, rt } from "./session/i18n.js";
+import { isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
 import { awaitedLine, repliesTo, type ReplyKind } from "./session/team/awaits.js";
 import type { TeamCheckpoint, TeamMessage } from "./session/team/types.js";
 
@@ -61,8 +61,11 @@ export interface TeamStatusReport {
   surgeon: TeamCheckpoint["surgeon"];
   seat: string | null;
   lineup: string | null;
-  /** What the stand-in waits on the learner for (`awaitedLine`): a line — answered or not —, the count, or nothing. */
-  awaited: { kind: "line"; line: OpenLine; answered: boolean } | { kind: "count" } | null;
+  /**
+   * What the stand-in waits on the learner for (`awaitedLine`): a line — answered or not —, the count — owed, said (the
+   * team checks it), not due yet —, or nothing.
+   */
+  awaited: { kind: "line"; line: OpenLine; answered: boolean } | { kind: "count"; count: "owed" | "said" | "notDue" } | null;
   /** Everything else said to the learner that waits for their answer. */
   open: OpenLine[];
 }
@@ -187,8 +190,9 @@ export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words
       if (how) lines.push(how);
     }
   } else if (waiting?.kind === "count") {
-    awaited = { kind: "count" };
-    lines.push(rt(L, "teamText.waitsCount", { how: words.count() }));
+    awaited = { kind: "count", count: waiting.count };
+    // the count is theirs to say while it is owed; said, the team checks it; not due yet, nothing to say
+    lines.push(waiting.count === "owed" ? rt(L, "teamText.waitsCount", { how: words.count() }) : rt(L, waiting.count === "said" ? "teamText.waitsCountSaid" : "teamText.waitsCountNotDue"));
   }
   const skip = awaited?.kind === "line" ? awaited.line.id : null;
   const open = cp.state.messages
@@ -207,14 +211,50 @@ export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words
 }
 
 /**
- * The message a reply without one answers: the line the stand-in waits on the learner for (not answered yet), else the
- * one line said to them that waits for an answer; null when there is none, or several.
+ * The message a reply without one answers (`id`): the line the stand-in waits on the learner for (not answered yet),
+ * else the one line said to them that waits for an answer; `several` — the lines that wait, when more than one does (the
+ * reply must name one); null when none waits.
  */
-export function defaultReplyTarget(cp: TeamCheckpoint): string | null {
+export function defaultReplyTarget(cp: TeamCheckpoint): { id: string } | { several: string[] } | null {
   const waiting = awaitedLine(cp.state, cp.surgeon);
-  if (waiting?.kind === "line" && !waiting.answered) return waiting.message.id;
+  if (waiting?.kind === "line" && !waiting.answered) return { id: waiting.message.id };
   const open = cp.state.messages.filter((m) => m.to === PRIMARY_ACTOR && m.from !== PRIMARY_ACTOR && repliesTo(cp.state, cp.surgeon, m).length > 0);
-  return open.length === 1 ? open[0]!.id : null;
+  if (open.length === 1) return { id: open[0]!.id };
+  return open.length > 1 ? { several: open.map((m) => m.id) } : null;
+}
+
+/**
+ * Why a reply names no message and none can be taken for it (`defaultReplyTarget`), in the front-end's words (`how`:
+ * how it names a message — the command's `/team reply <message> <kind>`, the tool's `message` argument): nothing said
+ * to the learner waits for an answer, or several do (which ones).
+ */
+export function noReplyTarget(locale: string, cp: TeamCheckpoint | null, keys: { none: RuntimeKey; several: RuntimeKey }): string {
+  const target = cp ? defaultReplyTarget(cp) : null;
+  return target && "several" in target ? rt(locale, keys.several, { ids: target.several.join(", ") }) : rt(locale, keys.none);
+}
+
+/**
+ * What a start in the encounter may choose (docs/TEAM.md §1, §6), shown with a start the engine refused (a line-up, a
+ * team scenario or a place the case does not offer): the places in the team it offers — and each line-up's, core
+ * `seatsOf` —, its line-ups (ids, as `start {lineup}` takes them, with their names) and, for a facilitator's front-end
+ * (`scenarios`: the terminal's `--team`), its team scenarios by id — a learner's front-end is told they are the
+ * facilitator's (their ids can name what the team is not told).
+ */
+export function startOffers(ctx: Pick<TeamTextContext, "caseDef" | "locale">, opts: { scenarios: boolean }): string[] {
+  const { caseDef: c, locale: L } = ctx;
+  const team = c.team;
+  if (!team) return [rt(L, "startOffers.noTeam")];
+  const offered = (lineup?: string) => seatsOf(c, lineup ? { lineup } : {}).filter((x) => x !== "surgeon");
+  const base = offered();
+  const more = (team.lineups ?? []).map((l) => ({ id: l.id, places: offered(l.id) })).filter((x) => x.places.length > 0 && x.places.join() !== base.join());
+  const places = [...(base.length ? [joinList(L, base)] : []), ...more.map((x) => rt(L, "seat.offeredLineup", { places: joinList(L, x.places), lineup: x.id }))];
+  const lineups = (team.lineups ?? []).map((l) => `${l.id} (${t(l.name, L)})`);
+  const scenarios = team.scenarios.map((x) => x.id);
+  return [
+    places.length ? rt(L, "startOffers.places", { places: places.join(isZh(L) ? "；" : "; ") }) : rt(L, "startOffers.placesNone"),
+    lineups.length ? rt(L, "startOffers.lineups", { lineups: lineups.join(", ") }) : rt(L, "startOffers.lineupsNone"),
+    !opts.scenarios ? rt(L, "startOffers.scenariosHidden") : scenarios.length ? rt(L, "startOffers.scenarios", { scenarios: scenarios.join(", ") }) : rt(L, "startOffers.scenariosNone"),
+  ];
 }
 
 /** What the team said in these events, one line each — a line said to the learner with its id, the one a reply names. */
