@@ -113,7 +113,7 @@ developer documents use.
 |---|---|---|---|---|
 | in-world mode | in-world mode | 实景模式 | embodied mode / 具身模式: `embodiment: "embodied"`, `--embodied`, `embodied: true` | the encounter happens in the 3D hospital: you (and the demonstration clinician, and staff you delegate to) must be where an act is done — at the bedside, with the cart wheeled over, the patient on the CT table. The web world's default |
 | clinical mode | clinical mode | 临床模式 | `embodiment: "clinical"` | acts do not depend on where anyone stands |
-| demonstration | demonstration; HUD button "Demo" | 示范接诊 | autopilot: `/autopilot`, `--autopilot`, `eval` | the clinician agent works the case through the same approvals; offline it replays the case's reference path (参考路径) |
+| demonstration | demonstration; HUD button "Demo"; in a place in the team: "The demonstration works the case as the operating surgeon: it does not run while you hold the first assistant's place." | 示范接诊；在团队中担任岗位时：“示范接诊是以主刀医生的身份完成病例：你担任第一助手岗位时不能使用。” | autopilot: `/autopilot`, `--autopilot`, `eval`; agent `demonstrationRefused`, web `demonstrationLock` | the clinician agent works the case through the same approvals; offline it replays the case's reference path (参考路径); in a place its buttons are greyed out with that sentence, and the session refuses it all the same |
 | offline | offline (deterministic) | 离线（确定性） | provider `offline` | |
 | approval mode | approval mode: default, strict, auto, plan, bypass | 审批模式：默认、严格、自动、计划、绕过 | `approvalMode` | |
 | practice scope | practice scope: history only, history & work-up, full (incl. treatment) | 操作范围：仅问诊、问诊与检查、完整（含处置） | `practiceScope`: `history-only`, `workup`, `full` | which tools are offered |

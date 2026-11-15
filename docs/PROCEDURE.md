@@ -185,7 +185,8 @@ step — from the browser, the terminal's `/operate`, an MCP client or the exter
 body — is their place's member's (`actor` = that member: their controls, never the operator's), and the stand-in
 surgeon operates (its steps normalised to the operator's, above). Place or none, an `operate` the learner sends naming
 an `actor` or carrying a `ref` is refused before it reaches the engine (`permission_denied`): only the care team's own
-caller sets them (docs/TEAM.md §4.5). Only a raw action with no actor — the reference path replayed, a quality check,
+caller sets them ([TEAM.md §4.5](TEAM.md#45-the-stand-in-surgeon-the-teams-caller-and-the-call-out)). The positions, and
+the cards each colleague speaks from, are [CHARACTERS.md §2](CHARACTERS.md#2-positions-and-role-cards). Only a raw action with no actor — the reference path replayed, a quality check,
 the system's own — is the operator in a place.
 
 **Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,

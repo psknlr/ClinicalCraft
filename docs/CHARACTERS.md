@@ -2,7 +2,7 @@
 
 Every person in the simulated hospital is a **character** with a job of their own: the patient and their companion,
 the attending who teaches, and every member of staff — the scrub and circulating nurses, the anaesthetist, the
-assistant surgeon, the porter, the pharmacist, the theatre coordinator. This page is the contract for how characters
+surgeon's first and second assistants, the porter, the pharmacist, the theatre coordinator. This page is the contract for how characters
 are designed, how they are driven (by rules, or each by its own model) and how they collaborate without leaving the
 facts or the physics of the simulation.
 
@@ -35,7 +35,10 @@ or second assistant, an anaesthetist, a physician or an educator. Positions (`St
 `pathologist`, `lab-technician`, `transfusion-scientist`, `pharmacist`, `receptionist`, `porter`, `paramedic`.
 `assistant-surgeon` is the first assistant's old name: it stays valid and keeps its own card (Dr Mori speaks from it),
 and counts as `first-assistant` wherever controls, places or sterility are decided (docs/TEAM.md §1). What each
-position may work in an operation — its controls — is the care team's (docs/TEAM.md §1); a card says it in words.
+position may work in an operation — its controls — is the care team's (docs/TEAM.md §1); a card says it in words, and
+the operative field enforces it ([PROCEDURE.md §3](PROCEDURE.md#3-operations-operate)). While the learner holds a place,
+the operating surgeon's card is the stand-in surgeon's, who operates
+([TEAM.md §4.5](TEAM.md#45-the-stand-in-surgeon-the-teams-caller-and-the-call-out)).
 
 **Where a position comes from** (`positionOf`, core's `staffPosition`): the case team's own `position` for the member
 (a first and a second assistant share the duty `assist`), else the facility's `staff.position` (or a room template
@@ -106,8 +109,8 @@ Set it in any settings layer (`"characters": {"engine": "llm", "timeoutMs": 8000
 other settings and sent to the running encounter at once — `configurePatch`; with no model chosen it says the
 characters follow the rules until one is), or at runtime with `configure {characters: {engine}}` (an unknown value is
 refused, `invalid_config`). A character's model is the one their
-facility role speaks through (`STAFF_AGENT`: a nurse's is `agents.nurse`, an anaesthetist's or assistant surgeon's
-`agents.attending`), with that agent's provider, model, temperature, effort and retries. `timeoutMs` (default 8000,
+facility role speaks through (`STAFF_AGENT`: a nurse's is `agents.nurse`, an anaesthetist's, a surgeon's or an
+assistant's `agents.attending`), with that agent's provider, model, temperature, effort and retries. `timeoutMs` (default 8000,
 500–60000) is how long a model may take before the rules decide.
 
 ### A care-team member's decision (`ModelTeamMind`)
@@ -196,3 +199,6 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
 - Lines worded by a model are in the session's language only; the other language keeps the template.
 - Only the care team's decisions and the anaesthetist's alarm call are model-driven beyond conversation; the staff's
   other fixed lines (a study's progress, a hand-over summary) still use their templates.
+- With the learner in a place in the team, only the rules have been run through a whole operation: a model-driven
+  assistant's or stand-in's step is offered and taken as the policy gives it (`characters.test.ts`), but no model has
+  played an operation by place end to end (docs/TEAM.md §9).
