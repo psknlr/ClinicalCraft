@@ -2,9 +2,9 @@
 
 Every person in the simulated hospital is a **character** with a job of their own: the patient and their companion,
 the attending who teaches, and every member of staff — the scrub and circulating nurses, the anaesthetist, the
-surgeon's first and second assistants, the porter, the pharmacist, the theatre coordinator. This page is the contract for how characters
-are designed, how they are driven (by rules, or each by its own model) and how they collaborate without leaving the
-facts or the physics of the simulation.
+surgeon's first and second assistants, the porter, the pharmacist, the theatre coordinator. This page is the contract
+for how characters are designed, how they are driven (by rules, or each by its own model) and how they collaborate
+without leaving the facts or the physics of the simulation.
 
 Code: `packages/core/src/schema/facility.ts` (`StaffPositionSchema`, `staff.position`),
 `packages/agent/src/characters/` (`roles.ts` — the role cards and `positionOf`; `team-mind.ts` — a model-driven
@@ -110,8 +110,8 @@ other settings and sent to the running encounter at once — `configurePatch`; w
 characters follow the rules until one is), or at runtime with `configure {characters: {engine}}` (an unknown value is
 refused, `invalid_config`). A character's model is the one their
 facility role speaks through (`STAFF_AGENT`: a nurse's is `agents.nurse`, an anaesthetist's, a surgeon's or an
-assistant's `agents.attending`), with that agent's provider, model, temperature, effort and retries. `timeoutMs` (default 8000,
-500–60000) is how long a model may take before the rules decide.
+assistant's `agents.attending`), with that agent's provider, model, temperature, effort and retries. `timeoutMs`
+(default 8000, 500–60000) is how long a model may take before the rules decide.
 
 ### A care-team member's decision (`ModelTeamMind`)
 
