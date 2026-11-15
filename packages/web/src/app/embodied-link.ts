@@ -544,11 +544,11 @@ export class EmbodiedLink {
     }
   }
 
-  /** A delegated task ended: who did (or could not do) what. */
+  /** A delegated task ended: who did (or could not do) what — refused before it started, the session's reason as it is. */
   private delegated(d: Delegation | null): void {
     if (!d?.staffId) return;
     const done = d.status === "completed";
-    this.o.toast(tr(done ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who: this.staffName(d.staffId), task: trTask(d.task) }), "", done ? "success" : "warning", `delegate-${d.staffId}`);
+    this.o.toast(tr(done ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who: this.staffName(d.staffId), task: trTask(d.task) }), done ? "" : (d.refusal ?? ""), done ? "success" : "warning", `delegate-${d.staffId}`);
   }
 
   /** A staff member as the HUD names them: role and name ("Nurse Lin Xiao" / "护士林晓"). */
@@ -648,6 +648,8 @@ export interface Delegation {
   staffId: string | null;
   task: string;
   status: string;
+  /** Why it could not start, as the session words it (the scope of practice; the operating table's: who holds the control). */
+  refusal?: string;
 }
 
 /**
@@ -658,8 +660,9 @@ export function delegationOf(data: unknown): Delegation | null {
   const pick = (v: unknown): Delegation | null => {
     const d = v && typeof v === "object" ? (v as { delegation?: unknown }).delegation : undefined;
     if (!d || typeof d !== "object") return null;
-    const { staffId, task, status } = d as Record<string, unknown>;
-    return typeof task === "string" && typeof status === "string" ? { staffId: typeof staffId === "string" ? staffId : null, task, status } : null;
+    const { staffId, task, status, refusal } = d as Record<string, unknown>;
+    if (typeof task !== "string" || typeof status !== "string") return null;
+    return { staffId: typeof staffId === "string" ? staffId : null, task, status, ...(typeof refusal === "string" && refusal.trim() ? { refusal: refusal.trim() } : {}) };
   };
   return pick(data) ?? pick(data && typeof data === "object" ? (data as { data?: unknown }).data : undefined);
 }

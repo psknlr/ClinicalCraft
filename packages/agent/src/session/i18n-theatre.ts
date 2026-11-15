@@ -76,6 +76,7 @@ export const THEATRE_EN = {
   "scope.operator": "{who} operates: the operating table's tasks — traction, the camera, passing — go to the assistants and the scrub nurse.",
   "scope.noPart": "{who} is not in this encounter's care team: they take no part in the operation.",
   "delegate.controlHeld": "In this team the {control} control is held by {holders}.",
+  "delegate.holder": "{name} ({position})",
   "delegate.notCameraPort": "Task {task} needs a camera port (the laparoscope in it, or empty): port {port} is not one.",
   // the theatre's delegation tasks (PROTOCOL §12.7)
   "delegate.task.hold_camera": "take the camera and hold it",
@@ -170,6 +171,7 @@ export const THEATRE_ZH: Record<keyof typeof THEATRE_EN, string> = {
   "scope.operator": "{who}正在主刀：手术台旁的牵引、扶镜和递器械由助手和洗手护士负责。",
   "scope.noPart": "{who}不在本次的手术团队中：不参与手术操作。",
   "delegate.controlHeld": "本次团队中有“{control}”分工权限的是：{holders}。",
+  "delegate.holder": "{name}（{position}）",
   "delegate.notCameraPort": "任务 {task} 需要观察孔（其中是腹腔镜，或空着）：{port} 孔不是。",
   "delegate.task.hold_camera": "接过镜头并扶镜",
   "delegate.task.aim_camera": "调整镜头方向",

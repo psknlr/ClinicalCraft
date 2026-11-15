@@ -16,6 +16,10 @@ describe("delegations", () => {
     expect(delegationOf({ ok: true, data: null })).toBeNull();
     expect(delegationOf(undefined)).toBeNull();
     expect(delegationOf({ delegation: { task: 3 } })).toBeNull();
+    // refused before it started: the session's reason, as it is (for the operating table's tasks: who holds the control)
+    const refusal = "Chen Yu is the scrub nurse: Traction is not theirs. In this team the Traction control is held by Dr Abe (first assistant).";
+    expect(delegationOf({ ok: false, data: { delegation: { ...d, staffId: "staff:nurse-2", task: "hold_traction", status: "failed", refusal: ` ${refusal} ` } } })).toEqual({ staffId: "staff:nurse-2", task: "hold_traction", status: "failed", refusal });
+    expect(delegationOf({ delegation: { ...d, refusal: "  " } })).toEqual({ staffId: "staff:ed-nurse", task: "attach_monitor", status: "completed" });
   });
 
   it("names the tasks in both languages, unknown ones by id", () => {

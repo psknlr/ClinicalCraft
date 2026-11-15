@@ -64,6 +64,7 @@ export const TEAM_ZH = {
   /* ---------------- what the stand-in surgeon waits on you for ---------------- */
   "team.awaited": "术者在等你",
   "team.awaitedCount": "术者在等你报清点后再关闭。",
+  "team.line": "{name}：{text}",
   "team.goOn": "继续",
   "team.goOnTitle": "让术者继续：术者在等你的话",
   "team.confirm": "确认",
@@ -124,6 +125,7 @@ export const TEAM_ZH = {
   "callout.go": "无异议",
   "callout.stop": "停",
   "callout.stopTitle": "喊停：术者停下，查看术野并问你看到了什么",
+  "callout.stopped": "你叫停了{name}",
   /* ---------------- the scrub nurse's place ---------------- */
   "scrub.title": "洗手护士",
   "scrub.asked": "术者要：{instrument}",
@@ -203,6 +205,7 @@ export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   /* ---------------- what the stand-in surgeon waits on you for ---------------- */
   "team.awaited": "The surgeon waits for you",
   "team.awaitedCount": "The surgeon waits for your count before closing.",
+  "team.line": "{name}: {text}",
   "team.goOn": "Go on",
   "team.goOnTitle": "Tell the surgeon to go on: it waits for your word",
   "team.confirm": "Confirm",
@@ -263,6 +266,7 @@ export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   "callout.go": "No objection",
   "callout.stop": "Stop",
   "callout.stopTitle": "Stop: the surgeon stops, looks at the field and asks what you see",
+  "callout.stopped": "You stopped {name}",
   /* ---------------- the scrub nurse's place ---------------- */
   "scrub.title": "Scrub nurse",
   "scrub.asked": "The surgeon asks for: {instrument}",

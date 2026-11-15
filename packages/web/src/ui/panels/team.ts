@@ -83,7 +83,7 @@ export function teamPanel(app: App): () => PanelView {
         "div",
         { class: "team-awaited", id: "team-awaited", role: "status", dataset: { kind: w.message.kind, id: w.message.id } },
         h("strong", null, tr("team.awaited")),
-        h("span", null, `${name(w.message.from)}: ${text(w.message)}`),
+        h("span", null, tr("team.line", { name: name(w.message.from), text: text(w.message) })),
         answers.length ? h("span", { class: "team-answers" }, answers.map(answerButton)) : null,
       );
     };
@@ -252,7 +252,7 @@ export function teamPanel(app: App): () => PanelView {
         "section",
         { class: "team-done" },
         h("h3", null, tr("team.done")),
-        h("ul", null, list.map((r) => h("li", { class: ["team-receipt", `outcome-${r.outcome}`], dataset: { operation: r.operation } }, `${name(r.actor)}: ${receiptText(r, cp.state.tasks)}`))),
+        h("ul", null, list.map((r) => h("li", { class: ["team-receipt", `outcome-${r.outcome}`], dataset: { operation: r.operation } }, tr("team.line", { name: name(r.actor), text: receiptText(r, cp.state.tasks) })))),
       );
     };
 

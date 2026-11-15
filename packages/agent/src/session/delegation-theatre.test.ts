@@ -318,6 +318,10 @@ describe("the report names people and regions as the learner reads them", () => 
     operatorSteps(zh, ACCESS);
     const aimed = await delegate(zh, { role: "一助", task: "aim_camera", params: { region: "hepatocystic-triangle", zoom: "close" } });
     expect(aimed.text).toContain("阿部医生把镜头对准Hepatocystic triangle（hepatocystic-triangle），近景。");
+    // a refusal names who holds the control, bracketed as Chinese is (full-width, no space)
+    const wang = await delegate(zh, { role: "王医生", task: "hold_traction", params: { port: "B" } });
+    expect(wang.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
+    expect(wang.delegation.refusal).toContain("本次团队中有“牵引显露”分工权限的是：阿部医生（第一助手）。");
     await zh.session.close();
   });
 });

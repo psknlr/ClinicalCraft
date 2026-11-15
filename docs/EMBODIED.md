@@ -352,16 +352,17 @@ the world model; the browser supplies its sensors and actuators
 * **The stand-in's call-out**: an `approval_request` carrying the stand-in surgeon's `callout` line, raised for its
   body (`actorId`), is its own card in the approval dialog — "Dr Ito: Clipping the cystic duct." — whose "No
   objection" and "Stop" are that request's approval response (Esc stops, as it denies any request); any other request
-  is asked as always. Stopped, the stand-in looks at the field and asks "Stopped — tell me what you see." in the team's
-  window, which offers Go on.
+  is asked as always. Stopped, a notice says whom the learner stopped and their line ("You stopped Dr Ito"), and the
+  stand-in looks at the field and asks "Stopped — tell me what you see." in the team's window, which offers Go on.
 * **Colleagues by position**: a colleague's window offers what the session says they may be handed now
   (`RoleState.delegable`): the bedside tasks by role, said in words, and the operating table's work by control — Hold
   port …, Let go, Hold the camera, Camera on …, Pass the … — asked of them by name as a delegation (`/delegate
   staff:<id> <task> [target]`; the stand-in who operates and the colleague standing by are offered none). A refused
-  delegation shows the session's words, who holds the control included. A colleague named in an `@` mention — by name,
-  or by the position they hold in this encounter's team (`@一助`, `@二助`, `@扶镜手`, `@术者` / `@主刀`, `@first
-  assistant`, `@camera holder`) — is resolved by the session's own parse and resolver (`parseMention`, `lookupStaff`)
-  and answers in their own window. In the scrub nurse's place the patient's window says that no history is taken there.
+  delegation shows the session's words, who holds the control included, in the colleague's window and in its notice.
+  A colleague named in an `@` mention — by name, or by the position they hold in this encounter's team (`@一助`,
+  `@二助`, `@扶镜手`, `@术者` / `@主刀`, `@first assistant`, `@camera holder`) — is resolved by the session's own parse
+  and resolver (`parseMention`, `lookupStaff`) and answers in their own window. In the scrub nurse's place the
+  patient's window says that no history is taken there.
 * **The HUD and the hand in a place**: the badge says the place ("In-world · OR 7 · First assistant"); in the scrub
   nurse's place a bar beside the scope dock (`ui/scrub-bar.ts`) says what the stand-in asks for — with its pass when
   the field takes it now —, what was passed and waits, and the count when it is the learner's (`team count`); it is no

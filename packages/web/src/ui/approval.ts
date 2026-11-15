@@ -30,6 +30,8 @@ export class ApprovalDialog {
   private initialFocus: HTMLElement | null = null;
   private answered: string | null = null;
   private reasonEl: HTMLInputElement | null = null;
+  /** The call-out on show (`renderCallout`): whose line it is and the line, for the answer's toast. */
+  private callout: { requestId: string; name: string; line: string } | null = null;
   /** Where focus goes when the dialog closes (default: the element focused before it opened). */
   restoreFocus: (previous: HTMLElement | null) => void = (previous) => previous?.focus?.({ preventScroll: true });
 
@@ -135,6 +137,7 @@ export class ApprovalDialog {
     const go = h("button", { type: "button", class: "primary", id: "approval-approve", dataset: { callout: "go" }, onclick: () => this.answer("approved") }, tr("callout.go"));
     const stop = h("button", { type: "button", class: "danger-solid", id: "approval-deny", dataset: { callout: "stop" }, title: tr("callout.stopTitle"), onclick: () => this.answer("denied") }, tr("callout.stop"));
     this.queueEl = h("small", { class: "muted" });
+    this.callout = { requestId: req.requestId, name, line: card.line };
     this.box.className = "window approval-window callout-card";
     delete this.box.dataset.source;
     this.box.append(
@@ -150,6 +153,7 @@ export class ApprovalDialog {
     const game = this.app.game;
     const card = game ? calloutOf(req, game.caseDef, game.session.store.snapshot?.state ?? game.session.session.state) : null;
     if (card) return this.renderCallout(card, req, more);
+    this.callout = null;
     clear(this.box);
     const high = req.risk === "high";
     // An external agent's call runs as the clinician: its requests carry `agent: "clinician"`, the submission tells them apart.
@@ -214,7 +218,9 @@ export class ApprovalDialog {
     }, 3000);
     this.app.submit({ type: "approval_response", requestId: req.requestId, decision, ...(reason?.trim() ? { reason: reason.trim() } : {}) });
     const label = tr(`approval.resolved.${decision}` as "approval.resolved.approved");
-    // Learner actions: the session itself reports the refusal (no duplicate toast).
-    if (decision !== "approved" && decision !== "approved_for_session" && req.agent !== "learner") this.app.toast(label, req.summary, "warning");
+    // Learner actions: the session itself reports the refusal (no duplicate toast). A call-out stopped: who was stopped
+    // and their line, as the card said it (the stand-in then asks what the learner sees, in the team's panel).
+    const callout = this.callout?.requestId === req.requestId ? this.callout : null;
+    if (decision !== "approved" && decision !== "approved_for_session" && req.agent !== "learner") this.app.toast(callout ? tr("callout.stopped", { name: callout.name }) : label, callout ? callout.line : req.summary, "warning");
   }
 }

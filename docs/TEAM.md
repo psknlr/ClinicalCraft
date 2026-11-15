@@ -833,6 +833,20 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   team's own steps — an assistant's traction in strict mode, the stand-in's clip with its call-out approved — read
   with the team's rung; a place started through the learner's own path in strict mode, the join nobody's act and the
   stand-in's whole operation authorised).
+- The browser, on the web's own session of the world's theatre fixture (`web/src/ui/panels/__fixtures__/team-play.ts`:
+  a learner who plays their place with the panel's own answers): `ui/panels/team.test.ts` (answers to the learner's
+  member in every place — the stand-in's camera and pass requests read back or declined —, none while observing; a
+  read-back of the learner's own ask confirmed or declined without words; the stand-in's confirmation offering the
+  surgery window and the report; Ask, Need and Count as the session's `team` ops, its refusals and warnings shown as
+  said; the call-out card only for the stand-in's request, bound to its approval response, a request without the
+  stand-in's body asked as always; a clip stopped, "Stopped — tell me what you see." and Go on; the follow tasks never
+  listed), `app/store-team.test.ts` (the default approval mode: the team's turns — a call-out stopped, one let go on —
+  leave nothing driving in the web store, and the team's, the staff's and the real-time clocks tick), `app/talk.test.ts`
+  (chips from `RoleState.delegable`), `app/app-logic.test.ts` (`@` mentions by position through `lookupStaff`),
+  `ui/panels/orders.test.ts` (a device's operations and the wound search as the world says),
+  `ui/scrub-bar.test.ts`, `world/npc.test.ts` (the gloved hand; name tags by the facility's position); world
+  `offers.test.ts`; e2e `places.spec.ts` (no place row for any built-in case; a team case's places and a first
+  assistant at the table, gloved, the team's window and the surgery window by place).
 - `core/src/engine/count.test.ts`: the count record — clean, recoverable, unresolved (closure recorded, never
   erased; or refused), excluded, six of five, a false five of five, a documented transfer.
 - `bench/src/team/score.test.ts`: obligations — two requests with one delivery is not a pass; one item cannot answer

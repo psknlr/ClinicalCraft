@@ -238,7 +238,7 @@ function controlHoldersText(h: Pick<DelegationHost, "caseDef" | "facility" | "lo
     .filter((m) => m.staff !== "surgeon" && (memberControls(c, s, m.staff) ?? []).includes(control))
     .map((m) => {
       const p = memberPosition(c, s, m.staff);
-      return p ? `${nameOfRef(field, m.staff)} (${t(POSITION_TITLES[canonicalPosition(p)], L)})` : nameOfRef(field, m.staff);
+      return p ? rt(L, "delegate.holder", { name: nameOfRef(field, m.staff), position: t(POSITION_TITLES[canonicalPosition(p)], L) }) : nameOfRef(field, m.staff);
     });
   return holders.length ? rt(L, "delegate.controlHeld", { control: t(CONTROL_TITLES[control], L), holders: joinList(L, holders) }) : null;
 }
