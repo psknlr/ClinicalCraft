@@ -17,6 +17,7 @@ import type { App } from "../../app/context.js";
 import { browserResolveProvider, directTemplates, providerName, runtimeChoice, STANDALONE, testConnection } from "../../app/llm.js";
 import { KeyStore, resolveAgentSettings, type LlmMode } from "../../app/settings.js";
 import { getLocale, joinList, tr } from "../../i18n/index.js";
+import { demonstrationLock } from "../demonstration.js";
 import { append, clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 
@@ -160,11 +161,13 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
 
     /* ---------------- pause actions ---------------- */
     const resume = h("button", { type: "button", id: "resume", class: "primary", onclick: () => app.close() }, game ? tr("pause.resume") : tr("pause.back"));
-    // the autopilot and an external agent both drive the clinician: one at a time
+    // the autopilot and an external agent both drive the clinician: one at a time — and it works the case as the operating
+    // surgeon: never while the learner holds a place in the care team (the session's words)
     const autopilotMenu = h("button", { type: "button", id: "autopilot-menu", onclick: () => app.open("autopilot") }, tr("hud.autopilot"));
     const lockAutopilot = () => {
-      autopilotMenu.disabled = app.external.on;
-      autopilotMenu.title = app.external.on ? tr("ext.autopilotOff") : "";
+      const why = demonstrationLock(app.external.on, game?.session.session.state);
+      autopilotMenu.disabled = why !== null;
+      autopilotMenu.title = why ?? "";
     };
     lockAutopilot();
     if (menu) {

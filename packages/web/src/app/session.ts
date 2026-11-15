@@ -18,6 +18,7 @@ import {
   type ResolvedSettings,
   type RuntimeConfigPatch,
   type SessionSnapshot,
+  type TeamAutonomy,
   type TranscriptItem,
   type TranscriptSink,
 } from "@clinicalcraft/agent";
@@ -214,8 +215,12 @@ export interface AppSessionOptions {
    * snapshot keeps its recorded mode (absent = clinical). Embodied needs a facility.
    */
   embodiment?: "clinical" | "embodied";
-  /** Embodied mode: the renderer-backed body mover and camera (app/embodied.ts). */
-  embodied?: { mover?: Mover; camera?: CameraSensor };
+  /**
+   * Embodied mode: the renderer-backed body mover and camera (app/embodied.ts), and the pace the care team begins at
+   * (`teamPace`, agent `SessionOptions.embodied.teamPace`: `step` for a new start in a place — `places.ts` `startPace` —,
+   * the session's own otherwise; a restored team keeps the pace it was saved at).
+   */
+  embodied?: { mover?: Mover; camera?: CameraSensor; teamPace?: TeamAutonomy };
 }
 
 /** The approval mode and practice scope a session kept when it refused a change of them (`AppSession.reconfigure`). */
@@ -304,7 +309,7 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   const savedTeam = savedWorld ? validTeamCheckpoint(resume?.team) : null;
   const embodiedOption = (withSnapshot: boolean) =>
     embodiment === "embodied"
-      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld, ...(savedTeam ? { team: savedTeam } : {}) } : {}) } }
+      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(o.embodied?.teamPace ? { teamPace: o.embodied.teamPace } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld, ...(savedTeam ? { team: savedTeam } : {}) } : {}) } }
       : {};
   const options = (withSnapshot: boolean): Parameters<typeof createSession>[0] => ({
     caseDef: o.caseDef,

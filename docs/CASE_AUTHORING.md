@@ -431,8 +431,8 @@ A theatre case can give its room a care team that works on its own in in-world m
 - optionally, the count it keeps item by item (`count`: the counted handheld type, when it falls due, and the places
   the circulating nurse searches).
 
-* **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` (the
-  learner). Somebody must circulate.
+* **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` — the
+  learner operating, or, while the learner holds a place, the stand-in's body (below). Somebody must circulate.
 * **Positions and controls** (TEAM.md §1). A member's position follows from their duties, by priority (`[count,
   instruments]` is a scrub nurse); give `position` when two members share a duty — a first and a second assistant
   both `assist` — and keep it the job the facility gives that staff member (`cases validate` refuses a disagreement).
@@ -458,7 +458,29 @@ A theatre case can give its room a care team that works on its own in in-world m
   team scenario or a place the case does not offer is refused with the places, line-ups and team scenarios it does) — and
   `clinicalcraft bench team --seat <place> [--lineup <id>] --case <case>` plays every team scenario that offers the
   place through to the operation's close (TEAM.md §7): a place the stand-in cannot see through there will not work for
-  a learner either.
+  a learner either. Headless, `clinicalcraft exec --case <case> --embodied --seat <place> --input-format stream-json
+  --output-format stream-json` takes the same start and reads ops from its input (`/team reply …`, `/operate …`, the
+  call-out's own `approval_response`); in text mode the headless approval rules answer the call-out
+  (packages/cli/README.md).
+* **Passes need no authoring.** A pass is needed only in the scrub nurse's place: there every insert, the stand-in's
+  too, waits for the scrub nurse's pass of that instrument (`passingRequired`, PROCEDURE.md §3), and the stand-in asks
+  for each ("Maryland, please."). Nowhere else is one needed, so the reference solution has no `pass` steps and there is
+  no field to set; `cases verify`, the benchmarks and the demonstration pass nothing.
+* **Say who is reported and who is authored** (the grounding of a team). A report usually names the operating surgeon
+  and perhaps one assistant; a stand-in, an added line-up's assistants and a relief colleague are teaching staff you
+  authored. Mark line-ups and scenarios `provenance: "authored"` (the browser's picker tags a line-up so: "Three
+  surgeons (authored)") and say in the team's `note` which members the source reports and which are authored (Case 126:
+  the report names one assistant; the second assistant and the stand-in are authored). Their cards and words state
+  only what the case records, as every character's do (§1, grounding).
+* **Tag the theatre's equipment with controls with care** (an operation's `control`, FACILITIES.md; EMBODIED §8.1,
+  §8.2): only a body holding the control does a tagged operation — the learner in a place too —, so **tag an operation
+  only when everyone who should do it holds the control**, and only theatre operations (loading a reload is the scrub
+  nurse's `instruments`, the tower's power the circulating nurse's `equipment`, isolating a lung the anaesthetist's
+  `anaesthesia`). Leave untagged what a body without the control does today: a count board or an RF wand (no policy of
+  the team works them yet), a camera's white balance, a drainage unit's steps on the ward or in recovery (a ward or
+  recovery nurse holds no control). A member meant to do a tagged step must resolve to a position that holds it: a team
+  membership or a facility `position` (a nurse with neither is a ward nurse, an attending a physician — neither holds
+  a control).
 * **Line-ups** (`lineups`: id, name, provenance, note, members) add assistants for one encounter (`start {lineup}`):
   new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
   team as the source reports it and mark an added line-up `provenance: "authored"`.

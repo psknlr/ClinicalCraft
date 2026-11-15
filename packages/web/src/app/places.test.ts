@@ -10,16 +10,19 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { caseIndexEntry, type AgentEvent } from "@clinicalcraft/agent";
 import { canJoinTeam, createSession, parseCase, placePath, reduce, seatsOf, type CaseDefinition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { theatreCase, theatreCatalog, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
+import { LAP_CHOLE_TEAM, REFERENCE_OPS } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
+import { LAP_CHOLE_SIT } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js";
+import { THEATRE, theatreCase, theatreCatalog, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
 import { catalogs } from "../../../world/src/__fixtures__/world.js";
 import type { WorldApi } from "../contracts.js";
 import { ActionFeedback } from "../ui/feedback.js";
 import { lapCholeTeamCase } from "../ui/panels/__fixtures__/lap-chole-sit.js";
+import { answerCallouts } from "../ui/panels/__fixtures__/team-play.js";
 import { POSITIONS_EN, POSITIONS_ZH } from "../i18n/positions.js";
 import { fetchPlacePath, loadContent, placePathOf, placeReady } from "./content.js";
 import { BrowserMover } from "./embodied.js";
 import { EmbodiedLink } from "./embodied-link.js";
-import { offersPlaces, pendingStart, placePicker, placesOffered, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartChoice } from "./places.js";
+import { offersPlaces, pendingStart, placePicker, placesOffered, savedPlace, startAction, startChoiceFromSearch, startPace, teamGoesOn, withStartArgs, type StartChoice } from "./places.js";
 import { startAppSession, type AppSession } from "./session.js";
 import { defaultSettings } from "./settings.js";
 
@@ -259,6 +262,87 @@ describe("a case served without its solution: the place path fetched beside it (
       expect(POSITIONS_ZH[key], key).toMatch(/\p{Script=Han}/u);
     }
   });
+});
+
+describe("a place's team opens paused: the stand-in's call-out waits until the call-out card can answer it", () => {
+  let open: AppSession[] = [];
+  afterEach(async () => {
+    for (const a of open) await a.close();
+    open = [];
+  });
+
+  /**
+   * The theatre case whose team works from the clipping on: a place joins along the reference path to just before the
+   * first clip, so the stand-in surgeon's first step is a critical one — asked as its call-out before it is taken.
+   */
+  const callOutFirst = (): CaseDefinition => {
+    const clipAt = REFERENCE_OPS.findIndex((op) => op.op === "clip");
+    const operate = (ops: typeof REFERENCE_OPS) => ops.map((op) => ({ type: "operate", op }));
+    const raw = structuredClone(LAP_CHOLE_SIT) as unknown as { phases: unknown[]; procedure: Record<string, unknown> };
+    return theatreCase({
+      phases: [...raw.phases, { id: "clipping", label: { en: "Clipping", "zh-CN": "夹闭" } }],
+      procedure: { ...raw.procedure, phases: ["theatre", "clipping"] },
+      team: { ...structuredClone(LAP_CHOLE_TEAM), room: THEATRE, phases: ["clipping"] },
+      solution: [{ type: "start" }, { type: "set-phase", phase: "theatre" }, ...operate(REFERENCE_OPS.slice(0, clipAt)), { type: "set-phase", phase: "clipping" }, ...operate(REFERENCE_OPS.slice(clipAt)), { type: "finish" }],
+    });
+  };
+  const sessionOf = async (caseDef: CaseDefinition, teamPace?: "step") => {
+    const app = await startAppSession({ caseDef, facility: theatreFacility(), catalogs: [...catalogs(), theatreCatalog()], stored: defaultSettings(), choice: offline, locale: "en", served: false, embodiment: "embodied", ...(teamPace ? { embodied: { teamPace } } : {}) });
+    open.push(app);
+    return app;
+  };
+
+  it("a new start in a place opens its team paused and lets it go on once entered; no place, a refused start, a resume: nothing to send", () => {
+    const c = callOutFirst();
+    const start = startAction(c, { team: null, seat: "first-assistant", lineup: null });
+    expect(startPace(start)).toBe("step");
+    expect(teamGoesOn({ seat: "first-assistant" }, start)).toEqual({ type: "team", action: "resume" });
+    // the operating surgeon's start (no place), no start at all (a resumed encounter), a start the session refused
+    expect(startPace(startAction(c, NONE))).toBeUndefined();
+    expect(startPace(null)).toBeUndefined();
+    expect(teamGoesOn({ seat: "first-assistant" }, null)).toBeNull();
+    expect(teamGoesOn({}, startAction(c, NONE))).toBeNull();
+    expect(teamGoesOn({}, start)).toBeNull();
+  });
+
+  it("at the session's own pace the start's own team round asks the call-out — before the browser can show it —; at the web's pace for a place the start asks nothing, and the call-out comes once the team goes on, answered on the card", async () => {
+    const c = callOutFirst();
+    const start = startAction(c, { team: null, seat: "first-assistant", lineup: null });
+    expect(pendingStart(createSession(c), start)).toEqual(start);
+
+    // the session's own pace (auto): the start runs a team round, and the stand-in's call-out is asked inside the start's
+    // own run — in the browser that is before the store is subscribed and the approval dialog can show the card
+    const auto = await sessionOf(c);
+    const askedInStart: string[] = [];
+    auto.session.subscribe((e) => {
+      if (e.msg.type !== "approval_request") return;
+      askedInStart.push(e.msg.callout ?? "");
+      auto.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
+    });
+    await auto.session.run({ type: "clinical_action", action: start });
+    expect(askedInStart).toEqual(["Clipping the cystic duct."]);
+
+    // the web's pace for a new start in a place: the start takes no team round — nothing asked, no step of the stand-in's
+    const app = await sessionOf(c, startPace(start));
+    const events = await app.session.run({ type: "clinical_action", action: start });
+    expect(events.filter((e) => e.msg.type === "error")).toEqual([]);
+    expect(app.session.state.seat).toBe("first-assistant");
+    expect(app.session.state.phase).toBe("clipping");
+    expect(events.filter((e) => e.msg.type === "approval_request" || (e.msg.type === "turn_started" && e.msg.agent === "team"))).toEqual([]);
+    expect(app.session.team()?.autonomy).toBe("step");
+    expect((app.session.state.procedure?.refs ?? []).filter((r) => r.startsWith("standin:"))).toEqual([]);
+
+    // entered (the store subscribed, the call-out card able to answer): the team goes on at its own pace — its call-out is
+    // asked of the learner as the card, let go on, and the stand-in clips
+    const { cards, off } = answerCallouts(app, () => "go");
+    await app.session.run(teamGoesOn(app.session.state, start)!);
+    off();
+    expect(cards.map((x) => [x.line, x.requestId.length > 0])).toEqual([["Clipping the cystic duct.", true]]);
+    expect([...app.store.resolved.values()]).toEqual(["approved"]);
+    expect(app.store.pendingApprovals()).toEqual([]);
+    expect(app.session.team()?.autonomy).toBe("auto");
+    expect(app.session.state.procedure?.clips["cystic-duct"] ?? 0).toBeGreaterThan(0);
+  }, 60_000);
 });
 
 /** The messages of one type among a run's events. */

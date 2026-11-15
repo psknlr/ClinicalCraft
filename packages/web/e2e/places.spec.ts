@@ -78,6 +78,8 @@ test.describe("a place in the care team (zh-CN)", () => {
     expect(seen).toMatchObject({ seat: null, held: "bedside", surgery: true, scrub: true });
     // the badge says where the learner is, and nothing of a place
     for (const place of ["第一助手", "第二助手", "洗手护士"]) expect(seen.badge).not.toContain(place);
+    // the demonstration is offered as always
+    await expect(page.locator("#autopilot-btn")).toBeEnabled();
     expect(errors).toEqual([]);
   });
 
@@ -120,6 +122,9 @@ test.describe("a place in the care team (zh-CN)", () => {
     expect(at.view).toBeLessThan(0.5);
     // the badge says the place
     await expect(page.locator("#embodiment-badge")).toContainText("第一助手");
+    // the demonstration works the case as the operating surgeon: greyed out in a place, with the session's own words
+    await expect(page.locator("#autopilot-btn")).toBeDisabled();
+    await expect(page.locator("#autopilot-btn")).toHaveAttribute("title", "示范接诊是以主刀医生的身份完成病例：你担任第一助手岗位时不能使用。");
     // the team's panel: the place in its header, the play/observe row's own ids
     await page.evaluate(() => (window as any).__QA__.route("team"));
     await expect(page.locator("#team-place")).toHaveAttribute("data-seat", "first-assistant");

@@ -179,8 +179,14 @@ say the English only. An `operate` action's `ref` (a short lower-case token) is 
 an accepted step records it in `ProcedureState.refs` (so a team member's progress is read from the record;
 docs/TEAM.md).
 
-For now the learner is the operator in a session: no session offers a place in the team yet (docs/TEAM.md §1), and
-an `operate` with no `actor` is the learner's step as the operator, as it always was.
+**Whose step a session's `operate` is.** Without a place the learner is the operator, as always: an `operate` with no
+`actor` is the learner's step as the operator. Holding a place in the team (docs/TEAM.md §1, §4.4), the learner's
+step — from the browser, the terminal's `/operate`, an MCP client or the external clinician, none of which names a
+body — is their place's member's (`actor` = that member: their controls, never the operator's), and the stand-in
+surgeon operates (its steps normalised to the operator's, above). Place or none, an `operate` the learner sends naming
+an `actor` or carrying a `ref` is refused before it reaches the engine (`permission_denied`): only the care team's own
+caller sets them (docs/TEAM.md §4.5). Only a raw action with no actor — the reference path replayed, a quality check,
+the system's own — is the operator in a place.
 
 **Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,
 `PROCEDURE_SUPPLY`): the image needs a working camera and light source (`endoscopic-camera`, `light-source`), the

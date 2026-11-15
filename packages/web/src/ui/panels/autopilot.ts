@@ -6,12 +6,15 @@
  * → interaction → clinical action → verification per step, with failures
  * and hints (`ClinicalSession.trace()`). While external control is on
  * (PROTOCOL §13.6) it cannot be started: an external agent and the
- * autopilot would both drive the clinician.
+ * autopilot would both drive the clinician; nor while the learner holds a
+ * place in the care team (it works the case as the operating surgeon):
+ * Start is greyed out with the session's words (`demonstrationLock`).
  */
 import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { learnerText } from "../../app/spatial.js";
 import { ct, tr } from "../../i18n/index.js";
+import { demonstrationLock } from "../demonstration.js";
 import { append, clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { traceGroups, traceList } from "./trace.js";
@@ -53,8 +56,10 @@ export function autopilotPanel(app: App): () => PanelView {
       if (list) list.scrollTop = list.scrollHeight;
     };
 
+    // why it cannot be started now (external control on, a place held in the care team: the session's words), or null
+    const locked = () => demonstrationLock(app.external.on, game.session.session.state);
     const start = (watch: boolean) => {
-      if (store.autopilotRunning || app.external.on) return;
+      if (store.autopilotRunning || locked()) return;
       // embodied: the agent takes the body over from where the learner left it
       game.embodied?.syncPose();
       void game.session.autopilot(goal.value);
@@ -68,12 +73,13 @@ export function autopilotPanel(app: App): () => PanelView {
       state.className = `auto-state ${running ? "running" : ""}`;
       clear(controls);
       const external = app.external.on;
+      const why = locked();
       if (running) controls.append(h("button", { type: "button", id: "autopilot-stop", class: "danger", onclick: () => game.session.interrupt() }, tr("auto.stop")));
       else
         append(controls, [
-          h("button", { type: "button", id: "autopilot-start", class: "primary", disabled: external, onclick: () => start(false) }, tr("auto.start")),
-          h("button", { type: "button", id: "autopilot-watch", disabled: external, onclick: () => start(true) }, tr("auto.startWatch")),
-          external ? h("small", { class: "muted", id: "autopilot-external" }, tr("ext.autopilotOff")) : null,
+          h("button", { type: "button", id: "autopilot-start", class: "primary", disabled: why !== null, ...(why ? { title: why } : {}), onclick: () => start(false) }, tr("auto.start")),
+          h("button", { type: "button", id: "autopilot-watch", disabled: why !== null, ...(why ? { title: why } : {}), onclick: () => start(true) }, tr("auto.startWatch")),
+          why ? h("small", { class: "muted", id: external ? "autopilot-external" : "autopilot-place" }, why) : null,
         ]);
       const list = store.toolCalls.filter((c) => c.agent === "clinician");
       clear(calls);

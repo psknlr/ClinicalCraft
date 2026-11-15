@@ -40,7 +40,7 @@ import { fetchPlacePath, fetchServerCase, loadContent, loadServerContent, PlaceP
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
-import { heldWear, pendingStart, placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
+import { heldWear, pendingStart, placeOf, savedPlace, startAction, startChoiceFromSearch, startPace, teamGoesOn, withStartArgs, type StartAction, type StartChoice } from "./places.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
 import { BrowserCamera, BrowserMover } from "./embodied.js";
@@ -791,7 +791,8 @@ export class ClinicalCraftApp implements App {
   /**
    * A start in a place in the team, before the encounter is entered (docs/TEAM.md §1): run to its end, so a refusal —
    * in-world mode, a setting that would stop the stand-in surgeon, the engine's own — is known and shown as the session
-   * words it, and the notices it gave (joining the team at the table) can follow the welcome.
+   * words it, and the notices it gave (joining the team at the table) can follow the welcome. Its team began paused
+   * (`startPace`), so the start takes no team round: nothing waits on an answer the learner cannot give yet.
    */
   private async startInPlace(game: Game, start: StartAction): Promise<{ ok: true; notices: { title: string; body: string }[] } | { ok: false; words: string }> {
     const events: AgentEvent[] = await game.session.session.run({ type: "clinical_action", action: start });
@@ -867,6 +868,9 @@ export class ClinicalCraftApp implements App {
       const catalogs = this.content.catalogsFor(facility);
       const locale = getLocale();
       this.selection = { caseId, facilityId: facility.id };
+      // a new start in a place opens with its team paused: nothing the stand-in surgeon asks (its call-out) comes before
+      // the call-out card can answer it — the team goes on once the encounter is entered (`teamGoesOn`, below)
+      const teamPace = startPace(save ? null : wanted);
       const session = await startAppSession({
         caseDef,
         facility,
@@ -879,7 +883,7 @@ export class ClinicalCraftApp implements App {
         onTranscriptStopped: () => this.toast(tr("toast.transcriptStopped"), tr("toast.transcriptStoppedBody"), "warning", "transcript-stopped"),
         // "In-world mode" (a save keeps the mode it was recorded in)
         embodiment: this.preferredEmbodiment(),
-        embodied: { mover: this.mover, camera: this.camera },
+        embodied: { mover: this.mover, camera: this.camera, ...(teamPace ? { teamPace } : {}) },
       });
       const slot = slotFor(caseDef, facility);
       const saved: WorldSave | null = this.saves.data.worlds[facility.id] ?? null;
@@ -995,6 +999,10 @@ export class ClinicalCraftApp implements App {
       this.dressPlayer();
       this.enter(!!save);
       for (const n of notices) this.toast(n.title, n.body);
+      // a place taken at this start: entered, with the approval dialog able to show the stand-in's call-out card, its
+      // team goes on at its own pace (as the terminal does once its prompt can answer)
+      const going = teamGoesOn(session.session.state, start);
+      if (going) void session.session.run(going);
     } catch (err) {
       console.error(err);
       this.toast(tr("toast.error"), err instanceof Error ? err.message : String(err), "critical");

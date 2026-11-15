@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { encounterRoom, lookupStaff } from "@clinicalcraft/agent";
+import { encounterRoom, lookupStaff, ownPlaceWord } from "@clinicalcraft/agent";
 import { createSession, parseCatalog, parseFacility, PERSONAL_KIT, reduce } from "@clinicalcraft/core";
 import { theatreCase, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
 import { parseAddress, staffAddress } from "../ui/address.js";
@@ -84,6 +84,12 @@ describe("staffAddress: a colleague named in an @ mention, by the session's own 
   it("a position the learner holds themselves names nobody else: said so (`self`), never the colleague standing by — who can still be named by name", () => {
     const first = { facility, caseDef, state: stateOf({ seat: "first-assistant" }) };
     for (const words of ["@一助 拉一下", "@扶镜手 近一点", "@first assistant hold it", "@camera holder closer"]) expect(staffAddress(words, first, agents), words).toMatchObject({ kind: "self", place: "first-assistant" });
+    // the agent's predicate decides it (the session's own mention and `/delegate` read the same); the resolver itself still
+    // names the member whose place it is — the colleague standing by, who answers for himself on the tool paths (A19)
+    for (const words of ["一助", "扶镜手", "first assistant", "camera holder"]) {
+      expect(ownPlaceWord({ caseDef, state: first.state }, words), words).toBe("first-assistant");
+      expect(resolver(first.state, words), words).toMatchObject({ kind: "one", staff: { id: "doc-1" } });
+    }
     // by name, the colleague standing by is still Dr Abe
     expect(staffAddress("@Dr Abe how are you?", first, agents)).toMatchObject({ kind: "one", staffId: "doc-1" });
     // the second assistant's place with three surgeons: 二助 and the camera holder are the learner; 一助 is Dr Abe

@@ -403,7 +403,7 @@ fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; e
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
 
-**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at, actor?, ref?)` — the pure step behind the `operate` action (the operator's, or a colleague's: `actor`), whose result lands in `SessionState.procedure`, asked after the reducer's gate by control (`engine/seats.ts` `seatCheck`, PROCEDURE.md §3); `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
+**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at, actor?, ref?)` — the pure step behind the `operate` action (the operator's, or a colleague's: `actor`; `ref` recorded in `ProcedureState.refs` when the step is taken), whose result lands in `SessionState.procedure`. The field answers in **two layers, both pure core** (PROCEDURE.md §3): the **physics** (`engine/procedure`: what a step does, the operator's or a colleague's — the colleague's steps, consent to a hand-over, two hands, the colleague's insert, crossed hands the operator's, whose step an unsafe act or an injury was), and, asked first, the reducer's **gate** (`onOperate`, which only refuses: the step normalised — the stand-in surgeon's steps are the operator's —, `stepPartyRefusal`, `seatCheck` by control, the passes the scrub nurse's place needs); `fieldGate` composes the gate for the session's precheck and a front-end's offers, `operateRefusal` is the engine's verdict on a step without taking it; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
 
 ### 3.1 Reducer semantics
 
@@ -768,10 +768,14 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   Deterministic `clinical_action` ops work with no LLM at all.
 * **The care team** (`packages/agent/src/session/team/`, docs/TEAM.md) — in in-world mode, a case's room staff work
   on their own: a `TeamScheduler` per session wakes members by rounds; pure role policies (`policy.ts`) decide from
-  each member's own view (what their body perceives, what was said to them, their tasks); their acts are world
-  actions on a nurse's tool path. Driven by the `team` op (the browser's team clock and headless runs alike), saved as
-  a `TeamCheckpoint`, scored by `bench team`. Concealed items and `search` live in the world
-  (`packages/world/src/conceal.ts`).
+  each member's own view (what their body perceives, what was said to them, their tasks); their acts in the world are
+  world actions on a nurse's tool path, and their steps in the operative field — an assistant's traction or camera, the
+  scrub nurse's pass, the stand-in surgeon's operation while the learner holds a place — run the `operate` tool through
+  the one tool path under the team's own caller (agent `team`, the built-in `TEAM_PROFILE`: `operate` and
+  `observe_field` only; the member's body as `actorId`, the step's `ref` from the tool context), each in a turn of its
+  own that always ends; only the stand-in's critical steps ask (the call-out, §4.1). Driven by the `team` op (the
+  browser's team clock and headless runs alike), saved as a `TeamCheckpoint`, scored by `bench team`. Concealed items
+  and `search` live in the world (`packages/world/src/conceal.ts`).
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient` and `companion` (portrayed like standardised patients),
   `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`
@@ -822,7 +826,15 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   runs the clinical tool through the caller's own tool path (deny rules
   included); a body may only do what its role may (**scope of practice**,
   `tools/scope.ts`: a porter nothing clinical, a nurse no intubation —
-  `NOT_AUTHORIZED` before anyone is asked); every learner-facing vitals
+  `NOT_AUTHORIZED` before anyone is asked) and, in the operating theatre, what
+  its controls allow: the operative field's steps and the theatre's
+  delegation tasks by control (`checkClinicalScope`, `checkTaskScope`), a
+  device operation that names a `control` only for a body holding it
+  (world `DeviceRules.controlsOf`, core `bodyControls`), and the **wound
+  rule** — searching the patient in the team's room while the operation is in
+  progress needs `retract` (world `operationInProgress`, `WOUND_CONTROL`;
+  EMBODIED §8.2, §8.6); front-ends ask the world (`WorldRuntime.offers`,
+  `searchRefusal`), never re-derive it; every learner-facing vitals
   channel goes through `vitalsView()` and shows the bedside only where the
   learner's body can see it; `transport_patient` (and a porter's or nurse's
   delegated transport) takes the patient to a device and back, and an
@@ -850,7 +862,14 @@ and denies always-ask, ask-rule and high-risk ones unless
 `--approve-high-risk` is passed. MCP sessions default to `auto` and turn an
 "ask" into a two-step confirmation (`confirm: true` on a second call that
 repeats the refused one; on a first call it is refused like any other).
-`bypass` is for benchmarks only (PROTOCOL §11).
+`bypass` is for benchmarks only (PROTOCOL §11). The care team's caller
+`team` asks for one thing only: the stand-in surgeon's critical step (clip,
+divide, coagulate, a bail-out) while the learner holds a place — its
+**call-out**, in every mode but `bypass`; a deny rule still stands, and every
+other team step is allowed (PROTOCOL §6, TEAM.md §4.5). The browser shows it
+as the call-out card, the REPL asks it, MCP answers it with its `team` tool,
+and headless text `exec` answers it by the rules above (a denial is the
+learner's Stop).
 
 Rules (`permissions.allow|ask|deny`, Claude Code syntax `tool(pattern)` with
 `*` glob over tool names from PROTOCOL §3, e.g. `intervene(thrombolysis*)`,

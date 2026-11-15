@@ -23,6 +23,7 @@ import type { BlockType } from "../app/persistence.js";
 import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
 import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { append, clear, clockLabel, h, mount } from "./dom.js";
+import { demonstrationLock } from "./demonstration.js";
 import { phaseBadge } from "./panels/common.js";
 import { awaitedOf } from "./panels/team-view.js";
 import { surgeryOffered } from "./panels/surgery-controls.js";
@@ -434,16 +435,19 @@ export class Hud {
    * connecting / reconnecting / failed, with the bridge's localised error), the live-session id and the attach
    * key — what the learner hands to their own agent (`--world-session`, `--attach-key-file`), copyable —, the
    * calls running and the last one, and Disconnect (cancels running external calls, withdraws their approval
-   * prompts, unregisters). Off: hidden, and the autopilot button is enabled again.
+   * prompts, unregisters). Off: hidden, and the autopilot button is enabled again — unless the learner holds a place in
+   * the care team, where the demonstration does not run (`demonstrationLock`: the session's words as its title).
    */
   private renderExternal(): void {
     const e = this.el;
     const ext = this.app.external;
     const st = ext.status;
     if (e.autopilot) {
-      const locked = ext.on;
+      // greyed out with the reason: external control on, or a place held in the care team (the session's own words)
+      const why = demonstrationLock(ext.on, this.app.game?.session.session.state);
+      const locked = why !== null;
       if (e.autopilot.hasAttribute("disabled") !== locked) e.autopilot.toggleAttribute("disabled", locked);
-      e.autopilot.title = locked ? tr("ext.autopilotOff") : "";
+      e.autopilot.title = why ?? "";
     }
     const b = e.external;
     if (!b) return;

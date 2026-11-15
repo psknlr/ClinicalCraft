@@ -6,6 +6,7 @@
  * (`start {seat: "surgeon"}` is normalised away) —, so it is the picker's default and never sent. Whether a place can be
  * taken is the session's to say: a place asked for is sent, never dropped, and the web shows the session's words.
  */
+import type { TeamOp } from "@clinicalcraft/agent";
 import { canonicalPosition, effectiveTeam, isSterilePosition, placeMember, TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
 import type { CaseCard } from "./content.js";
 
@@ -123,6 +124,26 @@ export function startAction(c: Pick<CaseDefinition, "team">, choice: StartChoice
  */
 export function pendingStart(s: Pick<SessionState, "started" | "finished">, start: StartAction): StartAction | null {
   return !s.started && !s.finished ? start : null;
+}
+
+/**
+ * The pace the care team begins at for a new encounter's start (`startAppSession`'s `embodied.teamPace`; agent
+ * `SessionOptions.embodied.teamPace`): `step` for a start in a place — the start takes no team round, so nothing the
+ * stand-in surgeon does (its call-out before a critical step: an approval waiting on the learner) is asked before the
+ * encounter is entered and the call-out card can answer it —; undefined otherwise: the session's own pace (a resumed
+ * encounter's team keeps the pace it was saved at). The terminal opens a place's session the same way (cli `place.ts`).
+ */
+export function startPace(start: StartAction | null): "step" | undefined {
+  return start?.seat ? "step" : undefined;
+}
+
+/**
+ * The op that lets the care team go on at its own pace (`team resume`: autonomy `auto`, then its rounds), sent once the
+ * encounter is entered and the call-out card can answer the stand-in — after a place was taken at this start
+ * (`startPace`); null otherwise (no place, a start refused, a resumed encounter).
+ */
+export function teamGoesOn(s: Pick<SessionState, "seat">, start: StartAction | null): TeamOp | null {
+  return startPace(start) && s.seat ? { type: "team", action: "resume" } : null;
 }
 
 /** The place and line-up a saved encounter was started with (its recorded `start`; none: the operating surgeon's). */
