@@ -43,6 +43,7 @@ export const SAFETY_EN = {
   "dose.conflict.unit": "a dose in {ordered} cannot be compared with the preset in {preset}",
   "dose.checked": "Dose checked: {ordered} as ordered is the preset dose ({preset}).",
   "dose.checkedParts": "Dose checked: {bolus} as a bolus, then {rate}, as ordered, is the preset dose ({preset}).",
+  "dose.checkedRest": "Dose checked: {bolus} as a bolus, then the rest over {minutes} min, as ordered, is the preset dose ({preset}).",
   "dose.bolusNotOrdered": "Your order gave only the infusion's rate; the dose prepared ({preset}) starts with its bolus.",
   // a dose per kg for this patient
   "dose.perKgFor": "{dose} ({absolute})",
@@ -123,6 +124,7 @@ export const SAFETY_ZH: Record<keyof typeof SAFETY_EN, string> = {
   "dose.conflict.unit": "以 {ordered} 开具的剂量无法与以 {preset} 计的预设剂量比较",
   "dose.checked": "剂量已核对：医嘱 {ordered} 即预设剂量（{preset}）。",
   "dose.checkedParts": "剂量已核对：医嘱先推注 {bolus}，随后 {rate}，即预设剂量（{preset}）。",
+  "dose.checkedRest": "剂量已核对：医嘱先推注 {bolus}，其余于 {minutes} 分钟内输注，即预设剂量（{preset}）。",
   "dose.bolusNotOrdered": "您的医嘱只写了输注速率；准备好的剂量（{preset}）先给首剂推注。",
   "dose.perKgFor": "{dose}（{absolute}）",
   "dose.preset.then": "{dose}，随后 {rate}",

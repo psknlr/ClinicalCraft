@@ -71,6 +71,9 @@ export interface EffectsHost {
 
 export const failed = (code: WorldErrorCode, message: string, extra: Partial<Outcome> = {}): Outcome => ({ status: "failed", errorCode: code, message, events: [], ...extra });
 
+/** Who the events of a change the team made name as its actor (a relocation: no body moved the patient, EMBODIED §8.4). */
+export const TEAM_ACTOR = "team";
+
 /** Run an operation that passed authority, preconditions and the spatial check. */
 export async function runOperation(host: EffectsHost, request: WorldActionRequest, actor: ActorState, targetId: EntityId, o: OperationSpec, signal: AbortSignal): Promise<Outcome> {
   if (o.effect === "move-to") return moveCart(host, request, actor, targetId, signal);
@@ -239,11 +242,13 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
 /* ------------------------------------------------------------------ */
 
 /**
- * A device wheeled away from the patient with its leads on (a `live` state, audit P2-13): they come off — it goes back
- * to the state they were put on from (`unpluggedState`: the ECG cart → `prepared`) once its screen no longer shows
- * the patient where it now stands. Its events (none when it stays by them, or was not on the patient).
+ * A device with its leads on the patient (a `live` state, audit P2-13) that no longer stands by them — wheeled away
+ * (`move_to`), or the patient taken away from it (a transport, a relocation, a walk together: audit W2): the leads come
+ * off — it goes back to the state they were put on from (`unpluggedState`: the ECG cart → `prepared`) once its screen
+ * no longer shows the patient. Putting them on again is a new act (`connect`). Its events (none when it still stands
+ * by them, or was not on the patient). `actorId`: who moved (a relocation: `team`); `operation`: what moved.
  */
-function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): WorldEvent[] {
+export function unplugIfAway(host: EffectsHost, actorId: ActorId, id: EntityId, operation: string): WorldEvent[] {
   const { rules, store, locator } = host.d;
   const spec = rules.spec(id);
   if (spec.stateSource !== "stored") return [];
@@ -251,7 +256,23 @@ function unplugIfAway(host: EffectsHost, actor: ActorState, id: EntityId): World
   const to = unpluggedState(spec, from);
   if (!to || screenPatient({ locator, rules }, id)) return [];
   store.patchEntity(id, { state: to });
-  return [host.emit({ type: "entity.state", entityId: id, from, to, operation: "move_to", actorId: actor.id })];
+  return [host.emit({ type: "entity.state", entityId: id, from, to, operation, actorId })];
+}
+
+/**
+ * The devices whose leads are on the patient now (a stored `live` state, and THE screen rule has them showing the
+ * patient): what a move of the patient may take off (`unplugIfAway` after the move). Registry order.
+ */
+export function pluggedIn(host: EffectsHost): EntityId[] {
+  const { rules, locator, registry } = host.d;
+  if (!locator.patientId) return [];
+  return registry
+    .ofKind("equipment")
+    .filter((e) => {
+      const spec = rules.spec(e.id);
+      return spec.stateSource === "stored" && unpluggedState(spec, rules.state(e.id)) !== null && screenPatient({ locator, rules }, e.id) === locator.patientId;
+    })
+    .map((e) => e.id);
 }
 
 async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, signal: AbortSignal): Promise<Outcome> {
@@ -296,7 +317,7 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
   store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
-  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }), ...unplugIfAway(host, actor, id)];
+  const events = [...walk.events, host.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: actor.id }), ...unplugIfAway(host, actor.id, id, "move_to")];
   host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
   host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
   mover.placeEntity?.(id, { ...spot, rot: cart.rot });

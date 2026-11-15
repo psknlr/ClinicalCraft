@@ -50,7 +50,7 @@ describe("follow me (escort_patient)", () => {
     expect(w.runtime.plan(PRIMARY_ACTOR, { kind: "point", x: p.x, z: p.z }).ok).toBe(true);
   });
 
-  it("a hand-steered avatar (sensor poses) takes the patient along without a stored step or a version", async () => {
+  it("a hand-steered avatar (sensor poses) takes the patient along by their own steps — no world version (audit W3)", async () => {
     const w = makeWorld("smzl-lung-adeno");
     expect((await follow(w)).status).toBe("completed");
     const v = w.runtime.version;

@@ -42,12 +42,12 @@ export class Carts {
     world.culling.invalidate();
   }
 
-  /** `WorldApi.pushEquipment`: drawn in front of a walker while pushed (`by`), or not any more (`null`). */
-  push(placementId: string, by: string | null): void {
+  /** `WorldApi.pushEquipment`: drawn in front of a walker (or at their side: `at`) while pushed (`by`), or not any more (`null`). */
+  push(placementId: string, by: string | null, at: "ahead" | "beside" = "ahead"): void {
     const world = this.world;
     const rec = world.ctx.portables.get(placementId.replace(/^eq:/, ""));
     if (!rec) return;
-    pushPortable(this.host, rec, by);
+    pushPortable(this.host, rec, by, at);
     if (by) this.drag();
     world.stage.markShadows();
   }

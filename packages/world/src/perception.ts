@@ -94,6 +94,8 @@ const round = (v: number, digits: number) => {
 interface Belief {
   p: Placed;
   lastKnown?: ObservedEntity["lastKnown"];
+  /** Believed elsewhere: what the actor saw of it when it last saw it there (`last-seen`), else nothing (audit W1). */
+  seen?: { state?: string; version: number };
 }
 
 /**
@@ -174,25 +176,29 @@ export class Perception {
    * while perceived (and for things that never move); else, when it looked
    * for it and did not find it, nowhere — `missing`, reported where it looked,
    * in no room; else where it was last seen or a colleague said it is; else,
-   * for portable equipment, where it is usually kept.
+   * for portable equipment, where it is usually kept. Believed elsewhere, all
+   * it knows of the thing is what it saw at its last sighting there (`seen`:
+   * its state and version then) — nothing of it when told, missing or never
+   * seen (audit 2026-11-12 W1).
    */
   private believed(actor: ActorState, p: Placed, a: Awareness): Belief {
     if (a === "visible" || a === "nearby" || !this.movable(p)) return { p };
     const loc = this.d.locator;
     const L = this.d.locale;
     const where = (q: Placed) => loc.regionName({ level: q.level, x: q.position.x, z: q.position.z });
+    const none = { version: 0 };
     const missed = this.d.store.missed(actor.id, p.id);
     if (missed) {
       const at = loc.placedAt(p.id, { level: missed.level, x: missed.x, y: levelElevation(loc.facility, missed.level), z: missed.z });
       const label = worldMessage("whereabouts.missing", L, { where: loc.regionName(missed) });
-      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label } };
+      if (at) return { p: { ...at, room: null }, lastKnown: { kind: "missing", label }, seen: none };
     }
     const seen = this.d.store.lastSeen(actor.id, p.id);
     const last = seen ? loc.placedAt(p.id, seen) : null;
-    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) } };
-    if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) } };
+    if (last && seen?.toldBy) return { p: last, lastKnown: { kind: "told", label: worldMessage("whereabouts.told", L, { where: where(last), who: loc.name(seen.toldBy) }) }, seen: none };
+    if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) }, seen: { ...(seen?.state !== undefined ? { state: seen.state } : {}), version: seen?.version ?? 0 } };
     const home = p.kind === "equipment" ? loc.home(p.id) : null;
-    if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) } };
+    if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) }, seen: none };
     return { p };
   }
 
@@ -219,7 +225,8 @@ export class Perception {
     if (missed) return { kind: "missing", place: null, room: missed.room };
     const seen = this.d.store.lastSeen(actor.id, id);
     const home = !seen && (truth.kind === "equipment" || truth.kind === "staff") ? loc.home(id) : null;
-    const place: SeenPlace | null = seen ? { ...seen } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
+    // the place only (what was seen there stays in memory)
+    const place: SeenPlace | null = seen ? { level: seen.level, x: seen.x, y: seen.y, z: seen.z, ...(seen.rot !== undefined ? { rot: seen.rot } : {}), ...(seen.toldBy ? { toldBy: seen.toldBy } : {}) } : home ? { level: home.level, x: home.position.x, y: home.position.y, z: home.position.z, rot: home.rot } : null;
     if (!place) return null;
     if (place.level === truth.level && Math.hypot(place.x - truth.position.x, place.z - truth.position.z) <= SAME_PLACE) return null;
     return { kind: seen ? (seen.toldBy ? "told" : "last-seen") : "usual", place, room: this.d.locator.registry.roomAt(place.level, place.x, place.z) };
@@ -304,11 +311,21 @@ export class Perception {
     return { entityId: id, kind: lastKnown.kind, place: placeOf(p), room: p.room, level: p.level, label: lastKnown.label, ...(told ? { toldBy: told } : {}) };
   }
 
-  /** Where a movable thing is now, as a sighting (null for things that never move). */
-  private seenPlace(id: EntityId): SeenPlace | null {
+  /**
+   * Where a movable thing is now, as a sighting (null for things that never move): its place, and what is seen of it
+   * there — its behaviour state (`out-of-service` when out of service) and version (audit 2026-11-12 W1). Memory
+   * records it at every sighting (`ActorState.lastSeen`); the action bus records what a mover or a witness sees.
+   */
+  sighting(id: EntityId): SeenPlace | null {
     const p = this.d.locator.place(id);
     if (!p || !this.movable(p)) return null;
-    return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot };
+    const state = this.stateNow(p.id);
+    return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot, ...(state !== null ? { state } : {}), version: this.d.store.entityVersion(p.id) };
+  }
+
+  /** The behaviour state of a thing now (`out-of-service` when a scenario took it out), or null when it has none. */
+  private stateNow(id: EntityId): string | null {
+    return this.d.store.available(id) ? this.d.rules.state(id) : "out-of-service";
   }
 
   /**
@@ -317,7 +334,7 @@ export class Perception {
    */
   notice(actor: ActorState): EntityId[] {
     const sought = Object.keys(actor.missed ?? {}).filter((id) => this.perceives(actor, id));
-    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.seenPlace(id));
+    return this.d.store.remember(actor.id, [...this.visibleIds(actor), ...sought], (id) => this.sighting(id));
   }
 
   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
@@ -363,8 +380,11 @@ export class Perception {
     return (Math.atan2(dx * right.x + dz * right.z, dx * f.x + dz * f.z) * 180) / Math.PI;
   }
 
-  /** The observed form of an entity for an actor. */
-  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean, lastKnown?: ObservedEntity["lastKnown"]): ObservedEntity {
+  /**
+   * The observed form of an entity for an actor. Believed elsewhere (`lastKnown`): where it is believed to be, with
+   * what the actor saw of it there (`seen`) — never what it is or offers where it is now (audit 2026-11-12 W1).
+   */
+  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean, lastKnown?: ObservedEntity["lastKnown"], seen?: Belief["seen"]): ObservedEntity {
     const loc = this.d.locator;
     const e = p.entity;
     const distance = this.distanceTo(actor, p);
@@ -384,9 +404,11 @@ export class Perception {
       visible: awareness === "visible",
       reachable: null,
       inReach,
-      stateVersion: this.d.store.entityVersion(p.id),
-      // a missing thing: nothing to do with it, and no state of it is known (audit P1-8 re-review)
-      availableActions: lastKnown?.kind === "missing" ? [] : this.d.rules.availableActions(p.id, actor),
+      // believed elsewhere: the version it had when last seen (audit W1)
+      stateVersion: lastKnown ? (seen?.version ?? 0) : this.d.store.entityVersion(p.id),
+      // believed elsewhere or missing: nothing to do with it from here — what it offers depends on where it truly is,
+      // and that is not known (audit P1-8 re-review, W1)
+      availableActions: lastKnown ? [] : this.d.rules.availableActions(p.id, actor),
     };
     // a missing thing has no place to walk to (audit P1-8): reachability is not computed for it
     if (withReach && lastKnown?.kind !== "missing") {
@@ -397,8 +419,9 @@ export class Perception {
       }
     }
     if (e?.kind === "equipment" && e.capabilities.length) out.capabilities = [...e.capabilities];
-    const state = this.d.store.available(p.id) ? this.d.rules.state(p.id) : "out-of-service";
-    if (state !== null && lastKnown?.kind !== "missing") out.state = state;
+    // believed elsewhere: the state it was in when last seen there, or none (told, usual, missing) — never its state now
+    const state = lastKnown ? (seen?.state ?? null) : this.stateNow(p.id);
+    if (state !== null) out.state = state;
     const cues = awareness === "visible" || awareness === "nearby" ? this.cues(actor, p, awareness) : null;
     if (cues) out.cues = cues;
     if (lastKnown) out.lastKnown = lastKnown;
@@ -451,7 +474,7 @@ export class Perception {
   }
 
   private record(actor: ActorState, entities: ObservedEntity[]): void {
-    const placeOf = (id: EntityId) => this.seenPlace(id);
+    const placeOf = (id: EntityId) => this.sighting(id);
     this.d.store.remember(
       actor.id,
       entities.filter((e) => e.awareness === "visible").map((e) => e.id),
@@ -476,12 +499,12 @@ export class Perception {
       if (!truth || truth.kind === "room") continue;
       const a = this.awareness(actor, truth, o);
       if (!a || a === "mapped") continue;
-      const { p, lastKnown } = this.believed(actor, truth, a);
-      rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
+      const { p, lastKnown, seen } = this.believed(actor, truth, a);
+      rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown, seen });
     }
     const sorted = this.ordered(rows);
     const kept = sorted.slice(0, Math.max(0, o.maxEntities));
-    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability, r.lastKnown));
+    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability, r.lastKnown, r.seen));
     this.record(actor, entities);
     const room = actor.room ? this.d.locator.registry.entity(`room:${actor.room}`) : null;
     return {
@@ -584,15 +607,15 @@ export class Perception {
       const a = this.awareness(actor, truth, o);
       if (!a || !allowed.has(a) || (q.visibleOnly && a !== "visible")) continue;
       // where the actor believes it is (lead note 1): the room, level and distance filters follow the belief
-      const { p, lastKnown } = this.believed(actor, truth, a);
+      const { p, lastKnown, seen } = this.believed(actor, truth, a);
       if (room !== undefined && p.room !== room) continue;
       if (q.level !== undefined && p.level !== q.level) continue;
       const d = this.distanceTo(actor, p);
       if (q.maxDistance !== undefined && !(d <= q.maxDistance)) continue;
-      rows.push({ p, a, d, lastKnown });
+      rows.push({ p, a, d, lastKnown, seen });
     }
     const withReach = o.reachability || !!q.reachableOnly || q.sort === "path";
-    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach, r.lastKnown) }));
+    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach, r.lastKnown, r.seen) }));
     if (q.reachableOnly) found = found.filter((x) => x.e.reachable === true);
     const sort = q.sort ?? (withReach ? "path" : "distance");
     found.sort((x, y) => {
@@ -629,7 +652,7 @@ export class Perception {
     const a = this.awareness(actor, p);
     if (!a) return null;
     const belief = this.believed(actor, p, a);
-    const base = this.observed(actor, belief.p, a, this.d.options.reachability, belief.lastKnown);
+    const base = this.observed(actor, belief.p, a, this.d.options.reachability, belief.lastKnown, belief.seen);
     this.record(actor, [base]);
     const L = this.d.locale;
     const rules = this.d.rules;
@@ -693,12 +716,12 @@ export class Perception {
       if (!truth || truth.kind === "room") continue;
       const a = this.awareness(actor, truth);
       if (!a) continue;
-      const { p, lastKnown } = this.believed(actor, truth, a);
-      if (p.room === rid) rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
+      const { p, lastKnown, seen } = this.believed(actor, truth, a);
+      if (p.room === rid) rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown, seen });
     }
     const entities = this.ordered(rows)
       .slice(0, this.d.options.maxEntities)
-      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability, r.lastKnown));
+      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability, r.lastKnown, r.seen));
     this.record(actor, entities);
     return { id: room.id, name: t(room.name, this.d.locale), kind: room.type, level: room.level, exits, entities };
   }

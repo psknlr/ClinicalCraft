@@ -7000,7 +7000,10 @@
             },
             "heldBy": "triage-nurse",
             "for": "surgeon",
-            "blocks": "tenecteplase",
+            "blocks": [
+              "tenecteplase",
+              "alteplase"
+            ],
             "when": {
               "read": "ct-head"
             }
@@ -7039,7 +7042,10 @@
             },
             "heldBy": "triage-nurse",
             "for": "surgeon",
-            "blocks": "tenecteplase",
+            "blocks": [
+              "tenecteplase",
+              "alteplase"
+            ],
             "when": {
               "read": "ct-head"
             }

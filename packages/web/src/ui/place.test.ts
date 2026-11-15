@@ -57,6 +57,31 @@ describe("one place for the map's label and the badge", () => {
       }
   });
 
+  it("inside the build zone: 'Building Garden' / '建造园地' beside the map and on the badge again — the world's own name, the one the map draws (audit W5)", () => {
+    const zone = gh.buildZone!.rect;
+    const world = regionLookup(gh);
+    for (const [locale, name] of [
+      ["en", "Building Garden"],
+      ["zh-CN", "建造园地"],
+    ] as const) {
+      setLocale(locale);
+      // before W5: "Healing Garden" / "疗愈花园" (the outdoor region) at every one of these
+      for (const [x, z] of [
+        [zone.x, zone.z],
+        [zone.x - zone.w / 2 + 0.5, zone.z + zone.d / 2 - 0.5],
+      ] as const) {
+        const where = placeAt(gh, x, z, locale);
+        expect(where).toEqual({ name, roomId: null });
+        expect(world({ level: "L0", x, z }, locale).name).toBe(name);
+        const t = placeTexts({ region: where.name }, { walking: false });
+        expect(t.region).toBe(name);
+        expect(t.badge).toContain(name);
+      }
+      // a step outside it: the outdoor region
+      expect(placeAt(gh, zone.x + zone.w / 2 + 1, zone.z, locale).name).not.toBe(name);
+    }
+  });
+
   it("the badge: the same place in-world, 'walking…' while the world moves the body, its own words in clinical mode", () => {
     setLocale("en");
     expect(placeTexts({ region: "MRI Suite" }, { walking: false })).toEqual({ region: "MRI Suite", badge: "In-world · MRI Suite" });

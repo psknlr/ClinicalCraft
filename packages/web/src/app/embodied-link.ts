@@ -284,8 +284,16 @@ export class EmbodiedLink {
       const e = world?.entity(place.provider);
       if (e) return t(e.name, L);
     }
-    // THE region lookup of the world (the HUD's badge and the map's label say the same, P2-15)
-    return placeAt(this.o.facility, place.x, place.z, L, place.level).name;
+    return this.placeName({ level: place.level, x: place.x, z: place.z });
+  }
+
+  /**
+   * A place by name: asked of the world (`WorldRuntime.regionName`, THE region lookup — the one the map's label and
+   * the badge use, P2-15; audit W5), the same lookup over the facility only while no world model runs.
+   */
+  private placeName(at: { level: string; x: number; z: number }): string {
+    const L = this.o.locale();
+    return this.world?.regionName(at, L) ?? placeAt(this.o.facility, at.x, at.z, L, at.level).name;
   }
 
   /** A device's stored behaviour state (ECG cart: idle / prepared / connected / completed), else null. */
@@ -326,6 +334,17 @@ export class EmbodiedLink {
     return best ? placementIdOf(best.id) : null;
   }
 
+  /**
+   * The monitor that travels with the patient in an actor's `transport_patient` (the world's `transit.monitor`, EMBODIED
+   * §8.7): drawn travelling beside their bed, never left at the bedside it came from (audit W4).
+   */
+  riding(actorId: ActorId): string | null {
+    const world = this.world;
+    if (!world || this.tasks.get(actorId) !== "transport_patient") return null;
+    const transit = world.patientPlace()?.transit;
+    return transit?.by === actorId && transit.monitor ? placementIdOf(transit.monitor) : null;
+  }
+
   /** The patient an actor takes along in its `transport_patient` (lying on the trolley, or walking): their slot and posture. */
   carrying(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null {
     const world = this.world;
@@ -338,8 +357,7 @@ export class EmbodiedLink {
   onBodyStart(actorId: ActorId, plan: Extract<NavPlan, { ok: true }>): void {
     const world = this.world;
     if (!world || !staffIdOf(actorId)) return;
-    const L = this.o.locale();
-    const place = placeAt(this.o.facility, plan.target.x, plan.target.z, L, plan.target.level).name;
+    const place = this.placeName({ level: plan.target.level, x: plan.target.x, z: plan.target.z });
     this.o.toast(tr("emb.toast.walking", { who: this.staffName(actorId), place }), "", "info", `walk-${actorId}`);
   }
 

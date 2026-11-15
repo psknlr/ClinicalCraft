@@ -69,7 +69,8 @@ Duties:
 - somebody circulates;
 - needs are for members;
 - information needs (`inform`, §4.5) name a history item the case records, a holder who is a member or relief
-  colleague (never the person it is for), a member it is for, and an intervention of the case it holds up;
+  colleague (never the person it is for), a member it is for, and the interventions of the case it holds up (one or
+  several, each once);
 - absent members are members, and the surgeon is never absent;
 - relief and cover colleagues are not members (and nobody covers the surgeon);
 - the solution's `start {team}` names a scenario;
@@ -246,19 +247,19 @@ nurse at the door):
   "name": { "en": "his anticoagulant and antiplatelet history", "zh-CN": "他的抗凝和抗血小板用药情况" },
   "heldBy": "triage-nurse",             // a member, or a relief colleague (by phone) — they learned it before
   "for": "surgeon",                     // who needs it
-  "blocks": "tenecteplase",             // the act it holds up until it is supplied or escalated
+  "blocks": ["tenecteplase", "alteplase"], // the acts it holds up until it is supplied or escalated (one id, or several)
   "when": { "read": "ct-head" }         // when the need arises (default: as soon as the team works)
 }]
 ```
 
 | step | who | what is recorded |
 |---|---|---|
-| the need, noticed once `when` holds | the circulating nurse (or `noticedBy`) | an `inform` task; a `notice` to the person: who holds it, and that the act it `blocks` waits ("IV tenecteplase waits until it's confirmed.") |
+| the need, noticed once `when` holds | the circulating nurse (or `noticedBy`) | an `inform` task; a `notice` to the person: who holds it, and that the acts it `blocks` wait ("IV tenecteplase and IV alteplase wait until it's confirmed.") |
 | asked | the circulating nurse → the holder (in the room aloud, or by phone) | a `request` about `info` — **who ordered** the task |
 | supplied | the holder → the circulating nurse | a `report` carrying the fact as the case records it — **who performed** it; a holder who does not have it declines (`not-known`) |
 | told | the circulating nurse → the person, once they are in the room (`waiting` until then) | a `report` with the fact |
 | read back, confirmed | the person reads it back (the simulated surgeon; the learner from the Team panel); the circulating nurse confirms a read-back about the same item and says it again after a wrong one | **who received** it and when: only now is it recorded in the case as known to them — `ask` with `via: "team"` (docs/PROTOCOL.md), so the case's own rules (thrombolysis contraindicated until the anticoagulant history is known) see it |
-| escalated | the circulating nurse → the person, with the reason | the holder away (`holder-absent`, at once: nobody else knows it), no answer within `waitRounds` (`no-answer`), not known, the person not in the room for `waitRounds × 4`, or no read-back for `waitRounds × 4`; "… still waits." when it blocks an act |
+| escalated | the circulating nurse → the person, with the reason | the holder away (`holder-absent`, at once: nobody else knows it), no answer within `waitRounds` (`no-answer`), not known, the person not in the room for `waitRounds × 4`, or no read-back for `waitRounds × 4`; "… still wait." when it blocks acts |
 
 Only the one named holder is asked: rerouting cannot help, so an unanswered request is escalated rather than passed
 on. What the person does next — the change in management — is theirs: in learner mode the learner's, in the team
@@ -331,16 +332,17 @@ them, headless, in **observer mode**:
 2. the surgeon's body goes to the table (the patient);
 3. the team then works alone (`team run`) until what was set in motion has ended;
 4. after an information handoff the clinician's path goes on — what the team escalated they take themselves first,
-   what it supplied they never ask again — up to the act the information held up, so the run records what they did
-   next.
+   what it supplied they never ask again — up to an act each information need held up (one of its `blocks`: they may
+   be alternatives, thrombolysis by either drug), so the run records what they did next.
 
 The score comes from the session's own record (the team checkpoint, the case's count record, what bodies hold), never
 from the team's say-so, checked against the scenario's `expect`. Its denominator is the scenario's **obligations**,
 enumerated by id at the start (`obligations`): every need — its recipient, the physical outcome (they hold an item of
 the type, one no other need was credited with), whether the circulating nurse verified it —, every information need —
 the physical outcome is the case recording it as known to its recipient, verified by their read-back, and the
-**handoff**: who asked the holder, who supplied it, who received it and when, the first act after it and when the act
-it held up was given — and the count, when the scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
+**handoff**: who asked the holder, who supplied it, who received it and when, the first act after it and, for each act
+it held up, when it was given — any of them given before the information arrived is an inappropriate progression, and
+once it arrived one of them must follow — and the count, when the scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
 `unfinished` when the run stopped — a run with an unfinished obligation never passes, however many rounds it ran. A
 scenario is `activated` when it was set up in the world and its work began; one assigned and never activated is
 **invalid** (nothing about the team can be concluded from it). The report publishes the denominators apart: scenarios
@@ -355,7 +357,7 @@ The report (`team-report.json`, `team-report.md`) gives, per scenario:
 | false hold | a hold when every item was there (the control) |
 | obligations: met / escalated / unfinished / failed | the scenario's obligations as they ended |
 | inappropriate progression | closure began while the count was not settled (the count record's unsafe progression; `closedOnHold`); an act given before the information it waited for |
-| information: asked by → supplied by → received by · then · held-up act | the handoff of each information need, with the simulated minute of each (the report's "Information handoffs") |
+| information: asked by → supplied by → received by · then · held-up acts | the handoff of each information need, with the simulated minute of each, and each act it held up: when it was given, after the read-back or before it, or not given (the report's "Information handoffs") |
 | exactly once | no action id carried out twice; no more hand-overs than needs |
 | rounds · messages · acts · seconds | the work it took (simulated seconds) |
 

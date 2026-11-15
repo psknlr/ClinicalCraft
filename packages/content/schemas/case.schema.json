@@ -6896,7 +6896,18 @@
                           "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
                         },
                         "blocks": {
-                          "$ref": "#/definitions/Id"
+                          "anyOf": [
+                            {
+                              "$ref": "#/definitions/Id"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "minItems": 1
+                            }
+                          ]
                         },
                         "when": {
                           "$ref": "#/definitions/Condition"

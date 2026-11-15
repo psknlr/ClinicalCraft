@@ -13,7 +13,12 @@
  *   (`entityVersion`, 0 until first changed), bumped only when that entity
  *   changes. A device's version is therefore untouched by anyone walking.
  * - Sensor updates of human-driven bodies (`sensorPose`, ~10 Hz) bump only
- *   the actor's own version — never the global version, never another entity.
+ *   the actor's own version — never the global version, never another entity
+ *   but the patient walking with that body, whose own step (`sensorPatch`)
+ *   bumps only the patient's version; a step that takes the patient away from
+ *   a device whose leads were on them unplugs it (EMBODIED §6, R4): that
+ *   device's version and the global version step too, as any committed
+ *   device change does.
  * - Memory (`remember`; `miss` and `tell`: what an actor knows of where
  *   things are), current tasks (`setTask`), events, results and transient
  *   in-flight locks bump nothing: read-only tools stay idempotent with
@@ -363,7 +368,11 @@ export class WorldStateStore implements WorldDynamics {
   tell(actorId: ActorId, id: EntityId, place: SeenPlace & { toldBy: ActorId }): void {
     const a = this.actorMap.get(actorId);
     if (!a || id === actorId) return;
-    (a.lastSeen ??= {})[id] = { ...place };
+    // where it is, in a colleague's words — not what it is like (no state or version of it: those are sightings)
+    const { state: _state, version: _version, ...where } = place;
+    void _state;
+    void _version;
+    (a.lastSeen ??= {})[id] = where;
     this.unmiss(a, id);
     this.onWhereabouts?.({ actorId, entityId: id, change: "told", place: { level: place.level, x: place.x, z: place.z }, by: place.toldBy });
   }
@@ -379,7 +388,19 @@ export class WorldStateStore implements WorldDynamics {
    * to `undefined` is removed; `version` cannot be patched.
    */
   patchEntity(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>): void {
-    this.bump(id);
+    this.applyPatch(id, patch, true);
+  }
+
+  /**
+   * A step of a patient walking with a body steered by hand — the consequence of a sensor update (`sensorPose`): like
+   * it, the entity's own version only, never the global one (audit 2026-11-12 W3: the follower's own spot).
+   */
+  sensorPatch(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>): void {
+    this.applyPatch(id, patch, false);
+  }
+
+  private applyPatch(id: EntityId, patch: Partial<Omit<EntityRuntimeState, "version">>, global: boolean): void {
+    this.bump(id, global);
     const e = this.entityMap.get(id)!;
     for (const [key, value] of Object.entries(patch) as [keyof EntityRuntimeState, unknown][]) {
       if (key === "version") continue;

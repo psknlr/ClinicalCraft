@@ -158,9 +158,12 @@ export interface TeamTask {
   count?: CountCheck;
   /** Where the world pointed after a refusal for reach or sight (walk there, then act again). */
   goal?: NavGoal;
-  /** `inform`: who holds it, the intervention it holds up, and when the case recorded it as known to the person (the read-back confirmed). */
+  /**
+   * `inform`: who holds it, the interventions it holds up (the scenario's `blocks`, one or several), and when the case
+   * recorded it as known to the person (the read-back confirmed).
+   */
   holder?: MemberId;
-  blocks?: string;
+  blocks?: string[];
   relayed?: { at: number; round: number };
   /** `inform`: the information as the holder reported it (said again if the read-back is wrong). */
   fact?: Bilingual;

@@ -373,11 +373,9 @@ export class ActionBus implements EffectsHost, TransportHost {
    * they are there (memory only): every actor but `except` (it learns by its own walk).
    */
   private witness(ids: readonly EntityId[], except: ActorId | null): void {
-    const { store, locator, perception } = this.d;
-    const placeOf = (id: EntityId): SeenPlace | null => {
-      const p = locator.place(id);
-      return p ? { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot } : null;
-    };
+    const { store, perception } = this.d;
+    // a sighting: where it is and what is seen of it (its state, audit W1)
+    const placeOf = (id: EntityId): SeenPlace | null => perception.sighting(id);
     for (const a of store.actors()) {
       if (a.id === except) continue;
       const seen = ids.filter((id) => id !== a.id && perception.perceives(a, id));
@@ -397,10 +395,7 @@ export class ActionBus implements EffectsHost, TransportHost {
    */
   learnWhere(actorId: ActorId | null, ids: readonly EntityId[]): void {
     if (!ids.length) return;
-    const placeOf = (id: EntityId): SeenPlace | null => {
-      const p = this.d.locator.place(id);
-      return p ? { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot } : null;
-    };
+    const placeOf = (id: EntityId): SeenPlace | null => this.d.perception.sighting(id);
     this.witness(ids, actorId);
     if (!actorId) return;
     this.d.store.remember(actorId, ids, placeOf);
@@ -408,8 +403,10 @@ export class ActionBus implements EffectsHost, TransportHost {
     if (!principal) return;
     for (const id of ids) {
       const at = placeOf(id);
-      if (at && !this.d.perception.perceives(this.d.store.actor(principal)!, id)) this.d.store.tell(principal, id, { ...at, toldBy: actorId });
-      else if (at) this.d.store.remember(principal, [id], placeOf);
+      if (!at) continue;
+      // told where it is, not what it is like (a colleague's word: no state of it, audit W1)
+      if (!this.d.perception.perceives(this.d.store.actor(principal)!, id)) this.d.store.tell(principal, id, { level: at.level, x: at.x, y: at.y, z: at.z, ...(at.rot !== undefined ? { rot: at.rot } : {}), toldBy: actorId });
+      else this.d.store.remember(principal, [id], placeOf);
     }
   }
 
@@ -521,8 +518,9 @@ export class ActionBus implements EffectsHost, TransportHost {
   }
 
   /**
-   * A sensor pose moved this actor: a patient walking with them follows on their own path (`journey.ts`) — or, where
-   * no one could have walked the move, stops where they last were and the walk together ends (`stopFollowing`).
+   * A sensor pose moved this actor: a patient walking with them takes their own step along their own route once the
+   * actor got away from them (`journey.ts`) — or, where no one could have walked the move (a jump, through a wall or a
+   * window), does not move: the walk together ends where they are (`stopFollowing`).
    */
   followSensor(actorId: ActorId): void {
     const a = this.d.store.actor(actorId);
@@ -747,7 +745,12 @@ export class ActionBus implements EffectsHost, TransportHost {
     if (discovered.length) events.push(this.emit({ type: "actor.discovered", actorId: actor.id, entities: discovered }));
     // whoever sees the walker where it arrived knows it is there (and what it carries)
     if (!samePose(from, pose)) this.witness([actor.id, ...store.actor(actor.id)!.holding], actor.id);
-    if (follower) events.push(...followWalkEnd(this, from, plan.path, interrupted));
+    // the patient walking with them walks their own route to their side — or, when they cannot, stops where they are
+    if (follower) {
+      const end = followWalkEnd(this, interrupted);
+      events.push(...end.events);
+      if (end.stoppedAt) events.push(...stopFollowing(this, end.stoppedAt));
+    }
     store.setTask(actor.id, null);
     this.emit({ type: "task.changed", actorId: actor.id, task: null });
     if (travelSeconds > 0) port?.elapse(travelSeconds, "travel");

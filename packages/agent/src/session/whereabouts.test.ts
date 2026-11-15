@@ -66,6 +66,33 @@ describe("where is …? — a colleague's knowledge, then the learner's (audit P
   });
 });
 
+describe("a cart believed elsewhere is listed as last seen (audit 2026-11-12 W1)", () => {
+  it("the verifier's replay: the nurse wheels the cubicle cart to the patient and connects it — the clinician's line does not change; seen, it is 'connected when last seen'", async () => {
+    const CUB2 = "eq:cub2-ecg";
+    for (const [locale, usual, seenLine] of [
+      ["en", `- Cubicle ECG Cart [${CUB2}] · 69 m behind (usually kept in ED Cubicle 2)`, /^- Cubicle ECG Cart \[eq:cub2-ecg\] · \d+(\.\d)? m [a-z -]+ · connected when last seen \(last seen in Resuscitation Room\)$/],
+      ["zh-CN", `- 急诊诊室心电图机 [${CUB2}] · 69 米 身后（通常放在急诊诊室 2）`, /^- 急诊诊室心电图机 \[eq:cub2-ecg\] · \d+(\.\d)? 米 \S+ · 上次所见：connected（上次见于抢救室）$/],
+    ] as const) {
+      const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { locale } });
+      const line = async () => (await tool(t, "find_entities", { capabilities: ["ecg-12lead"], limit: 8 })).output.split("\n").find((l) => l.includes(`[${CUB2}]`));
+      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+      expect(await line()).toBe(usual);
+      expect((await act(t, { actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
+      expect((await act(t, { actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: "patient:resus-1" } })).status).toBe("completed");
+      // before W1: "· idle · can: prepare, move_to" — the cart at the patient's bedside, out of the clinician's sight
+      expect(await line()).toBe(usual);
+      for (const operation of ["prepare", "connect"]) expect((await act(t, { actorId: NURSE, operation, targetId: CUB2 })).status, operation).toBe("completed");
+      // before W1: "· connected" — the state it is in now, out of the clinician's sight
+      expect(await line()).toBe(usual);
+      // seen at the bedside, then left behind: the state it was in when last seen there, and nothing to do with it
+      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient:resus-1" })).status).toBe("completed");
+      expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+      expect(await line()).toMatch(seenLine);
+      await t.session.close();
+    }
+  });
+});
+
 describe("staff and the in-world demonstration go by the same rule (audit P1-8)", () => {
   it("a delegated ECG: the cart moved out of the nurse's sight — she asks around, fetches it from the cubicle and records it", async () => {
     const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { approvalMode: "bypass" } });

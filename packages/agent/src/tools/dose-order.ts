@@ -4,13 +4,16 @@
  * several items (`itemOrder`, `orderClause`) — and the dose read from them (core `parseDose`, zh-CN and en). The
  * engine checks the words against the intervention's preset (`doseSpec`, core `checkOrder`): an equivalent dose is
  * given, a conflicting one is not — the session records a dose error (`dose.error`) —, and one it cannot read or
- * compare is refused (`dose-unclear`) — the nurse asks. This module builds the order and says what the learner reads
- * back: a dose in their language, the nurse's read-back of an order whose dose differs from the dose prepared and
- * their question about one that is not clear (nothing given either way), and the check of an order's dose.
+ * compare is refused (`dose-unclear`) — the nurse asks. Words that order several items order the first of them, in
+ * either language (`resolveOrderedIntervention`); the others' clauses are checked too, each against its own item's
+ * preset (`otherClauses`: a dose error recorded and read back though that item is not given). This module builds the
+ * order and says what the learner reads back: a dose in their language, the nurse's read-back of an order whose dose
+ * differs from the dose prepared and their question about one that is not clear (nothing given either way), and the
+ * check of an order's dose.
  */
-import { checkOrder, readOrder, parseDose, ROUTE_WORDS, t, type CaseDefinition, type DomainEvent, type DosePart, type DoseRoute, type DoseSpec, type DoseUnit, type Intervention, type OrderCheck, type OrderedDose, type WrittenOrder } from "@clinicalcraft/core";
-import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
-import { resolveIntervention, strArg, withoutDoses, type ToolArgs } from "./clinical-resolve.js";
+import { checkOrder, compareDose, readOrder, parseDose, ROUTE_WORDS, t, type CaseDefinition, type DomainEvent, type DosePart, type DoseRoute, type DoseSpec, type DoseUnit, type Intervention, type OrderCheck, type OrderedDose, type WrittenOrder } from "@clinicalcraft/core";
+import { isZh, rt, type RuntimeKey } from "../session/i18n.js";
+import { resolveIntervention, strArg, withoutDoses, type Resolution, type ToolArgs } from "./clinical-resolve.js";
 
 /** Longest order text kept (core `WrittenOrderSchema`). */
 const MAX_ORDER_LENGTH = 1000;
@@ -114,12 +117,24 @@ export function doseRatioText(ratio: number | null, locale: string, range = fals
 /** Is the preset a range (`upTo` above `amount`), or given in parts — "the dose for this is …", not "what I have prepared"? */
 export const isRange = (preset: DoseSpec): boolean => (preset.upTo != null && preset.upTo !== preset.amount) || preset.maintenance != null || preset.bolus != null;
 
+/**
+ * Was a dose error's amount compared with a range — the preset's own, or, for a rate ordered beside a single dose, its
+ * infusion's (`maintenance`: a heparin rate against 18 units/kg/h, not against the bolus's 70–80 units/kg)? A dose
+ * given in parts is one dose (its whole), not a range. How far apart they are is then said from the range's nearer end
+ * (`doseRatioText`).
+ */
+export function againstRange(e: Pick<DoseErrorEvent, "ordered" | "preset">): boolean {
+  const isRate = (unit: string | undefined) => unit != null && /\/(?:h|min)$/u.test(unit);
+  const part = isRate(e.ordered.unit) && !isRate(e.preset.unit) && e.preset.maintenance ? e.preset.maintenance : e.preset;
+  return part.upTo != null && part.upTo !== part.amount;
+}
+
 /** What conflicts, in words: the amount (how far), the route, an incomparable unit. */
 function conflictText(e: Pick<DoseErrorEvent, "conflicts" | "ordered" | "preset" | "ratio">, locale: string): string {
   const parts: string[] = [];
   if (e.conflicts.includes("amount")) {
-    // against a range's nearer end; a dose given in parts is one dose (its whole), not a range
-    const ratio = doseRatioText(e.ratio, locale, e.preset.upTo != null && e.preset.upTo !== e.preset.amount);
+    // against a range's nearer end
+    const ratio = doseRatioText(e.ratio, locale, againstRange(e));
     if (ratio) parts.push(ratio);
   }
   if (e.conflicts.includes("route") && e.ordered.route && e.preset.route) {
@@ -227,11 +242,12 @@ export function doseQueryData(c: Pick<CaseDefinition, "interventions">, interven
 }
 
 /**
- * Where an order moves to its next one: "…, then …", "…; …", "然后", "接着" — and where it adds another drug: "+", "&",
- * "and", "plus", "with", "和", "及", "与", "联合", "加" (a comma between digits is a number's; a join inside a dose or a
- * preparation, "50U+NS 50ml", "KCl 40 mmol with saline", is not one).
+ * Where an order moves to its next one: "…, then …", "…; …", "然后", "接着" — and where it adds another drug, the same
+ * in both languages: "+", "&", "and", "plus", "with", "as well as", "和", "及", "以及", "与", "同时", "联合", "加" and
+ * the enumeration comma "、" (a comma between digits is a number's; a join inside a dose or a preparation, "50U+NS
+ * 50ml", "KCl 40 mmol with saline", "0、5mg", is not one).
  */
-const CLAUSE = /\s*(?:(?<!\d),|,(?!\d)|，|;|；|。|\+|＋|&|\b(?:and then|then|after that|followed by|and|plus|with)\b|然后|接着|随后|之后|再给|并给|联合|并用|加用|加上|加(?![入至量快慢压温热])|和|及|与)\s*/giu;
+const CLAUSE = /\s*(?:(?<!\d),|,(?!\d)|，|、|;|；|。|\+|＋|&|\b(?:and then|then|after that|followed by|as well as|and|plus|with)\b|然后|接着|随后|之后|再给|并给|联合|并用|加用|加上|加(?![入至量快慢压温热])|和|以及|及|与|同时)\s*/giu;
 
 /**
  * Words that say how, when or how fast — never what (beside a dose and a route): a clause of only these names no item
@@ -248,29 +264,123 @@ function namesNothing(words: string): boolean {
   return !/[a-z]{2,}|[\u4e00-\u9fff]/u.test(rest);
 }
 
+/** What stands between two letters of a name: a bracket, a separator (",", "—", "、", ";", "/"…), other marks, or spacing alone. */
+type Gap = "bracket" | "separator" | "other" | "space";
+const gapOf = (between: string): Gap => (/[(（)）[\]【】]/u.test(between) ? "bracket" : /[,，、;；:：—–\-/·]/u.test(between) ? "separator" : /\S/u.test(between) ? "other" : "space");
+
+/** The letters and digits of a text and where each stands in it: a name as written, whatever its punctuation and spacing. */
+function letters(text: string): { chars: string; at: number[] } {
+  let chars = "";
+  const at: number[] = [];
+  for (let i = 0; i < text.length; i++) {
+    if (/[\p{L}\p{N}]/u.test(text[i]!)) {
+      chars += text[i];
+      at.push(i);
+    }
+  }
+  return { chars, at };
+}
+
+/**
+ * Every name and alias of a case's items, NFKC and lower case — with its letters and digits when it is long enough to be
+ * known by them whatever its punctuation (ten, or six Han characters), and whether it holds a join (`CLAUSE`); cached
+ * per case (immutable).
+ */
+interface ItemName {
+  name: string;
+  joined: boolean;
+  /** Its letters and digits, when long enough to be known by them; null otherwise. */
+  letters: string | null;
+  /** Where its own punctuation or spacing stands — before which of its letters (index into `letters`) — and what it is. */
+  gaps: Map<number, Gap>;
+}
+const itemNamesCache = new WeakMap<CaseDefinition, ItemName[]>();
+function itemNames(c: CaseDefinition): ItemName[] {
+  let names = itemNamesCache.get(c);
+  if (!names) {
+    const all = (x: unknown): string[] => (typeof x === "string" ? [x] : Array.isArray(x) ? x.flatMap(all) : x && typeof x === "object" ? Object.values(x).flatMap(all) : []);
+    const joins = new RegExp(CLAUSE.source, "iu");
+    names = [...new Set(c.interventions.flatMap((iv) => [...all(iv.name), ...all(iv.aliases)]).map((n) => n.normalize("NFKC").toLowerCase().trim()))]
+      .filter((n) => n.length > 0)
+      .map((name) => {
+        const own = letters(name);
+        const long = own.chars.length >= 10 || (own.chars.match(/\p{Script=Han}/gu)?.length ?? 0) >= 6;
+        const gaps = new Map<number, Gap>();
+        for (let k = 1; k < own.at.length; k++) if (own.at[k]! - own.at[k - 1]! > 1) gaps.set(k, gapOf(name.slice(own.at[k - 1]! + 1, own.at[k]!)));
+        return { name, joined: joins.test(name), letters: long ? own.chars : null, gaps };
+      });
+    itemNamesCache.set(c, names);
+  }
+  return names;
+}
+
+/**
+ * Where the words write an item's own name or alias that holds a join, as the item writes it ("Continuous ECG, blood
+ * pressure and SpO₂ monitoring", "反应后处理：监护观察、记录致敏药物、告知家属…") — or a long one with other punctuation and
+ * spacing where it has its own, from a word's edge to a word's edge ("Lifestyle advice only, recheck in 6–12 months"
+ * for "Lifestyle advice only — recheck in 6–12 months", "加压快速大量输注晶体液、直到血压恢复正常" for "…晶体液，直到…"):
+ * [start, end) in `text` — no clause ends inside it.
+ */
+function namedSpans(c: CaseDefinition, text: string): [number, number][] {
+  const hay = text.normalize("NFKC").toLowerCase();
+  if (hay.length !== text.length) return [];
+  const spans: [number, number][] = [];
+  const word = /[a-z0-9]/u;
+  const written = letters(hay);
+  for (const n of itemNames(c)) {
+    if (n.joined) for (let at = hay.indexOf(n.name); at >= 0; at = hay.indexOf(n.name, at + 1)) spans.push([at, at + n.name.length]);
+    if (!n.letters) continue;
+    for (let i = written.chars.indexOf(n.letters); i >= 0; i = written.chars.indexOf(n.letters, i + 1)) {
+      const start = written.at[i]!;
+      const end = written.at[i + n.letters.length - 1]! + 1;
+      const cutsWord = (word.test(hay[start]!) && start > 0 && word.test(hay[start - 1]!)) || (word.test(hay[end - 1]!) && end < hay.length && word.test(hay[end]!));
+      // the words' punctuation only of the kind the name has there ("，" for "—", "、" for "，"), their spacing wherever it
+      // has either — never a list's comma where the name has a space or a bracket ("adrenaline, im …" is no "adrenaline
+      // IM", "IV glucose, dextrose infusion" no "IV glucose (dextrose)")
+      let aligned = true;
+      for (let k = 1; k < n.letters.length && aligned; k++) {
+        const between = hay.slice(written.at[i + k - 1]! + 1, written.at[i + k]!);
+        if (between.length === 0) continue;
+        const own = n.gaps.get(k);
+        const gap = gapOf(between);
+        if (own == null || (gap !== "space" && gap !== own)) aligned = false;
+      }
+      if (!cutsWord && aligned) spans.push([start, end]);
+    }
+  }
+  return spans;
+}
+
 /**
  * The orders of a request: each stretch of its words and the item it names (null: none named alone). `leadingId`: the
- * item a first clause naming none orders (an id written before the order's words).
+ * item a first clause naming none orders (an id written before the order's words). `listed`: every clause of the
+ * request names an item alone, or nothing but doses, routes and how they are given — a list of orders, not one item's
+ * words that hold a join (whose clauses name nothing, or other items by a fragment of its name).
  */
-function orderClauses(c: CaseDefinition, text: string, locale: string, leadingId?: string): { start: number; end: number; id: string | null }[] {
-  // a join inside a dose or a preparation is not a clause's end (core `readOrder` spans, NFKC — the same length here)
+function orderClauses(c: CaseDefinition, text: string, locale: string, leadingId?: string): { orders: { start: number; end: number; id: string | null }[]; listed: boolean } {
+  // a join inside a dose or a preparation is not a clause's end (core `readOrder` spans, NFKC — the same length here),
+  // nor one inside an item's own name or alias as the words write it
   const nfkc = text.normalize("NFKC");
   const inside = nfkc.length === text.length ? readOrder(nfkc).spans : [];
+  const names = namedSpans(c, text);
   const parts: { start: number; end: number }[] = [];
   let at = 0;
   for (const m of text.matchAll(CLAUSE)) {
     const core = m.index + Math.max(0, m[0].search(/\S/u));
-    if (inside.some(([a, b]) => core >= a && core < b)) continue;
+    if (inside.some(([a, b]) => core >= a && core < b) || names.some(([a, b]) => core > a && core < b)) continue;
     if (m.index > at) parts.push({ start: at, end: m.index });
     at = m.index + m[0].length;
   }
   if (at < text.length) parts.push({ start: at, end: text.length });
-  if (parts.length <= 1) return [{ start: 0, end: text.length, id: null }];
+  if (parts.length <= 1) return { orders: [{ start: 0, end: text.length, id: null }], listed: false };
   // each part's item: one it names alone, else none (joined to the part before) — never through its dose and route
   // alone ("500ml/h静滴"), nor the diluent of a preparation ("加生理盐水至50毫升")
+  let listed = true;
   const named = parts.map((p, i) => {
     const words = text.slice(p.start, p.end);
-    const r = namesNothing(words) ? null : resolveIntervention(c, { query: words }, locale);
+    const nothing = namesNothing(words);
+    const r = nothing ? null : resolveIntervention(c, { query: words }, locale);
+    if (!nothing && r?.kind !== "id" && !(i === 0 && leadingId)) listed = false;
     return r?.kind === "id" ? r.id : i === 0 ? (leadingId ?? null) : null;
   });
   const orders: { start: number; end: number; id: string | null }[] = [];
@@ -282,7 +392,7 @@ function orderClauses(c: CaseDefinition, text: string, locale: string, leadingId
       last.id ??= named[i]!;
     } else orders.push({ ...p, id: named[i]! });
   });
-  return orders;
+  return { orders, listed };
 }
 
 /**
@@ -297,21 +407,72 @@ function orderClauses(c: CaseDefinition, text: string, locale: string, leadingId
  */
 export function orderClause(c: CaseDefinition, request: string, interventionId: string, locale: string, leadingId?: string): string | null {
   const text = request.trim();
-  const orders = orderClauses(c, text, locale, leadingId);
+  const { orders } = orderClauses(c, text, locale, leadingId);
   if (orders.length === 1) return text;
   const own = orders.find((o) => o.id === interventionId);
   return own ? text.slice(own.start, own.end).trim() : null;
 }
 
-/** The other items an order names beside this one, each in its own clause (`orderClause`): ordered, not given here. */
-export function otherOrders(c: CaseDefinition, request: string, interventionId: string, locale: string): string[] {
-  return [...new Set(orderClauses(c, request.trim(), locale).map((o) => o.id).filter((id): id is string => id != null && id !== interventionId))];
+/**
+ * The items a request orders, each with the words that order it (`orderClauses`), in the order written: one per item
+ * named alone in its own clause (an item named twice keeps its first clause; words naming none are no order) — fewer
+ * than two for words that are one order. `leadingId`: the item a first clause naming none orders (an id written before
+ * them).
+ */
+export function orderedItems(c: CaseDefinition, request: string, locale: string, leadingId?: string): { id: string; text: string }[] {
+  return listedItems(c, request, locale, leadingId).items;
 }
 
-/** "Your order also names salbutamol: each treatment is given on its own order." — null when it names no other. */
-export function otherOrdersText(c: CaseDefinition, request: string, interventionId: string, locale: string): string | null {
-  const others = otherOrders(c, request, interventionId, locale);
-  return others.length ? rt(locale, "dose.alsoOrdered", { items: joinList(locale, others.map((id) => interventionNameText(c, id, locale))) }) : null;
+/** The items a request orders (`orderedItems`), and whether its clauses are a list of orders (`orderClauses` `listed`). */
+function listedItems(c: CaseDefinition, request: string, locale: string, leadingId?: string): { items: { id: string; text: string }[]; listed: boolean } {
+  const text = request.trim();
+  const seen = new Set<string>();
+  const out: { id: string; text: string }[] = [];
+  const { orders, listed } = orderClauses(c, text, locale, leadingId);
+  for (const o of orders) {
+    if (o.id == null || seen.has(o.id)) continue;
+    seen.add(o.id);
+    out.push({ id: o.id, text: text.slice(o.start, o.end).trim() });
+  }
+  return { items: out, listed };
+}
+
+/** The other items an order names beside this one, each in its own clause (`orderedItems`): ordered, not given here. */
+export function otherOrders(c: CaseDefinition, request: string, interventionId: string, locale: string): string[] {
+  return orderedItems(c, request, locale).map((o) => o.id).filter((id) => id !== interventionId);
+}
+
+/**
+ * The item an `intervene` call orders, as every step of the call reads it — the tool, its approval and risk, the
+ * spatial gate and a hook's rewrite (docs/PROTOCOL.md §3.2): by id (`intervention_id`) that item; free words as
+ * `resolveIntervention` reads them — but words that order several items, each in its own clause ("ticagrelor 180 mg
+ * PO and aspirin 300 mg PO", "替格瑞洛180mg+阿司匹林300mg口服", "…、…"), order the first of them, in either language:
+ * never the one whose name the matcher finds longer, nor none ("which one?"). The others are checked clause by clause
+ * against their own presets (`otherClauses`) and given on their own orders. "The first of them" holds only for a list
+ * of orders — every clause names an item alone, or nothing but doses, routes and how they are given (`orderClauses`
+ * `listed`) —, and an item's own name or alias that holds a join is one clause ("Continuous ECG, blood pressure and SpO₂
+ * monitoring" orders monitoring): words that, whole, name one item none of the clauses names alone, or whose clauses
+ * are no such list, keep the whole words' item.
+ */
+export function resolveOrderedIntervention(c: CaseDefinition, args: ToolArgs, locale: string): Resolution {
+  const r = resolveIntervention(c, args, locale);
+  const query = strArg(args, "query");
+  if (strArg(args, "intervention_id") || !query || (r.kind !== "id" && r.kind !== "ambiguous")) return r;
+  const { items, listed } = listedItems(c, query, locale);
+  const ids = items.map((o) => o.id);
+  if (ids.length < 2 || !listed || (r.kind === "id" && !ids.includes(r.id))) return r;
+  return { kind: "id", id: ids[0]! };
+}
+
+/**
+ * The other orders of an `intervene` call's words (`writtenOrder`) beside its item's — each item with the words that
+ * order it, as written (`orderedItems`; an id written before the words owns their first clause).
+ */
+export function otherClauses(c: CaseDefinition, args: ToolArgs, interventionId: string, locale: string): { id: string; text: string }[] {
+  const words = writtenOrder(args)?.text;
+  if (!words) return [];
+  const leading = strArg(args, "intervention_id") && !strArg(args, "query") ? interventionId : undefined;
+  return orderedItems(c, words, locale, leading).filter((o) => o.id !== interventionId);
 }
 
 /**
@@ -326,9 +487,14 @@ export function doseCheckText(c: Partial<Pick<CaseDefinition, "patient">>, iv: P
   if (!spec) return rt(locale, "dose.unchecked", { ordered: doseText(dose, locale) });
   const preset = presetText(c, spec, locale);
   const isRate = (unit: string) => /\/(?:h|min)$/u.test(unit);
-  // in the parts the order gave: a bolus, then the infusion's rate ("7.2 mg as a bolus, then 64.8 mg/h")
-  const rate = !isRate(dose.unit) && spec.bolus ? readOrder(ordered.text).mentions.find((m) => isRate(m.unit) && !m.then) : undefined;
+  // in the parts the order gave: a bolus, then the infusion's rate ("7.2 mg as a bolus, then 64.8 mg/h") — or the time
+  // its rest runs over ("7.2 mg bolus, the rest over 60 min": the dose given is the bolus's)
+  const mentions = !isRate(dose.unit) && spec.bolus ? readOrder(ordered.text).mentions : [];
+  const rate = mentions.find((m) => isRate(m.unit) && !m.then);
   if (rate) return rt(locale, "dose.checkedParts", { bolus: doseText(dose, locale), rate: doseText({ amount: rate.amount, unit: rate.unit }, locale), preset });
+  const restOver = mentions.find((m) => m.restOver != null)?.restOver;
+  const isBolus = spec.bolus != null && dose.amount != null && compareDose({ amount: dose.amount, unit: dose.unit }, { ...spec.bolus }, c.patient?.weightKg).equivalent;
+  if (restOver != null && isBolus) return rt(locale, "dose.checkedRest", { bolus: doseText(dose, locale), minutes: number(restOver), preset });
   const checked = rt(locale, "dose.checked", { ordered: doseText(dose, locale), preset });
   // only the infusion's rate, for a dose prepared as a bolus then an infusion: the bolus is the preset's own
   return isRate(dose.unit) && !isRate(spec.unit) && spec.maintenance ? `${checked} ${rt(locale, "dose.bolusNotOrdered", { preset })}` : checked;

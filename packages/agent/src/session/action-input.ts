@@ -17,7 +17,6 @@ import {
   noSuchDecisionText,
   resolveFinding,
   resolveHits,
-  resolveIntervention,
   resolveInvestigation,
   strArg,
   unknownOptionsText,
@@ -25,7 +24,7 @@ import {
   type Resolution,
 } from "../tools/clinical.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
-import { itemOrder } from "../tools/dose-order.js";
+import { itemOrder, resolveOrderedIntervention } from "../tools/dose-order.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
 
@@ -161,7 +160,8 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
       return { ok: true, action: { ...rest, investigationId: r.id, ...(phase ? { phase } : {}) } };
     }
     case "intervene": {
-      const r = resolveIntervention(c, input, L);
+      // the item the words order, as the intervene tool reads them (the first of several orders)
+      const r = resolveOrderedIntervention(c, input, L);
       if (r.kind !== "id") return refuse(r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
       // The order as written: kept as the action states it (its dose as read) while the hook left the words alone,
       // else read again from the words the input now holds (`itemOrder`, as the tool reads them: this item's clause).
