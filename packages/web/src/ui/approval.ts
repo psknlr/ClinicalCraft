@@ -123,10 +123,10 @@ export class ApprovalDialog {
   /**
    * The stand-in surgeon's call-out (`team-view.ts` `calloutOf`: a request carrying its line, raised for its body): its
    * line said by name — "Dr Ito: Clipping the cystic duct." —, and "No objection" / "Stop", bound to this request's
-   * approval response (Esc stops, as it denies any request). Stopped, the stand-in looks at the field and asks the learner
-   * what they see (the team's panel offers "Go on").
+   * approval response (Esc stops, as it denies any request; a high-risk step's card starts with the focus on Stop).
+   * Stopped, the stand-in looks at the field and asks the learner what they see (the team's panel offers "Go on").
    */
-  private renderCallout(card: CalloutCard, more: number): void {
+  private renderCallout(card: CalloutCard, req: ApprovalRequest, more: number): void {
     clear(this.box);
     this.reasonEl = null;
     const game = this.app.game;
@@ -142,13 +142,14 @@ export class ApprovalDialog {
       h("div", { class: "window-body" }, h("p", { class: "approval-summary", id: "approval-summary" }, tr("callout.lead")), h("div", { class: "approval-actions callout-actions" }, go, stop), this.queueEl),
     );
     this.renderQueue(more);
-    this.initialFocus = go;
+    // as for any high-risk request, the focus starts on the answer that stops: a key pressed at once never lets it go on
+    this.initialFocus = req.risk === "high" ? stop : go;
   }
 
   private render(req: ApprovalRequest, more: number): void {
     const game = this.app.game;
     const card = game ? calloutOf(req, game.caseDef, game.session.store.snapshot?.state ?? game.session.session.state) : null;
-    if (card) return this.renderCallout(card, more);
+    if (card) return this.renderCallout(card, req, more);
     clear(this.box);
     const high = req.risk === "high";
     // An external agent's call runs as the clinician: its requests carry `agent: "clinician"`, the submission tells them apart.

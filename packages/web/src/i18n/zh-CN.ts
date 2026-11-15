@@ -1009,7 +1009,6 @@ const zh = {
   "conv.delegateTitle": "委派结果",
   "conv.theatre": "手术台旁",
   "conv.theatreHint": "点名请对方做：对方走到手术台旁亲手完成（以其分工权限为准），结果显示在这里。",
-  "conv.theatreGo": "请对方做",
   "conv.addressAmbiguous": "有几位同事都对得上：{names}。请指明一位。",
   "auto.trace": "实时轨迹",
   "auto.traceLead": "观察 → 导航 → 操作 → 临床动作 → 核验，逐步记录（失败与提示一并显示）。",

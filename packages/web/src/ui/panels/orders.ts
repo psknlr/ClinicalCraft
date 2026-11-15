@@ -354,7 +354,7 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
  * check — role and control, availability, state, preconditions —, never where the learner stands), by operation id.
  * Empty without a world: nothing is greyed out, the world decides on the click.
  */
-export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, { available: boolean; code?: string; reason?: string }> {
+export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, ReturnType<WorldRuntime["offers"]>[number]> {
   return new Map((world?.offers(PRIMARY_ACTOR, entityId) ?? []).map((o) => [o.op, o]));
 }
 

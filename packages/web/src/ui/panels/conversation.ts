@@ -706,7 +706,9 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         lastState = state;
         if (tab === "talk") {
           renderLog();
-          if (stateChanged || placeChanged) renderSuggestions();
+          // (never under a choice being made in one of its lists: the operating table's pickers)
+          const choosing = document.activeElement instanceof HTMLSelectElement && suggestions.contains(document.activeElement);
+          if ((stateChanged || placeChanged) && !choosing) renderSuggestions();
           renderBadge();
         } else if (stateChanged) {
           const scroll = tabBody.parentElement?.scrollTop ?? 0;

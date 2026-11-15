@@ -354,7 +354,12 @@ export class EmbodiedLink {
   /* Real time (EMBODIED R8)                                           */
   /* ---------------------------------------------------------------- */
 
-  /** An agent drives a body now (autopilot / clinician turn, a body-moving world tool, a Mover walk): ticks pause. */
+  /**
+   * An agent drives a body now (autopilot / clinician turn, a body-moving world tool, a Mover walk): ticks pause. The
+   * care team's own calls (agent `team`: a member's step in the operative field, the stand-in's call-out) never count —
+   * each is a turn of its own that closes, and `operate` moves no body: the team's, the staff's and the real-time clocks
+   * run on (docs/TEAM.md §4.5).
+   */
   agentDriving(): boolean {
     const store = this.o.app.store;
     if (this.o.mover.isMoving() || store.autopilotRunning || store.phaseOf("clinician") !== null) return true;

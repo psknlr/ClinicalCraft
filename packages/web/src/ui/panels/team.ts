@@ -218,6 +218,9 @@ export function teamPanel(app: App): () => PanelView {
 
     const messages = (cp: TeamCheckpoint): HTMLElement => {
       const list = cp.state.messages.slice(-SHOWN);
+      // the line the stand-in waits on is answered where it is shown first (above), not twice
+      const w = awaitedOf(cp);
+      const first = w?.kind === "line" ? w.message.id : null;
       return h(
         "section",
         { class: "team-messages", "aria-live": "polite" },
@@ -227,7 +230,7 @@ export function teamPanel(app: App): () => PanelView {
               "ol",
               null,
               ...list.map((m) => {
-                const answers = answersFor(cp, m);
+                const answers = m.id === first ? [] : answersFor(cp, m);
                 return h(
                   "li",
                   { class: ["team-msg", `kind-${m.kind}`, m.to === PRIMARY_ACTOR ? "to-you" : ""], dataset: { kind: m.kind, id: m.id } },

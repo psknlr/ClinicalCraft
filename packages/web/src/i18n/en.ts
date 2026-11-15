@@ -1006,7 +1006,6 @@ const en: Messages = {
   "conv.delegateTitle": "Delegation",
   "conv.theatre": "At the operating table",
   "conv.theatreHint": "Asked of them by name: they walk to the table and do it with their own hands, as their controls allow; the result shows here.",
-  "conv.theatreGo": "Ask",
   "conv.addressAmbiguous": "Several colleagues answer to that: {names}. Name one.",
   "auto.trace": "Live trace",
   "auto.traceLead": "Observation → navigation → interaction → clinical action → verification, step by step (failures and hints included).",

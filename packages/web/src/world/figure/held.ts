@@ -44,7 +44,7 @@ export function buildHeld(skinHex = "#dbb597", wear: HeldWear = "bedside"): Grou
     const forearm: Station[] = [{ p: [0, -0.09, 0.002], rx: 0.0285, rz: 0.021 }, { p: [0, -0.05, 0.001], rx: 0.027, rz: 0.0196 }, { p: [0, -0.02, 0], rx: WRIST_SECTION[0] * 1.01, rz: WRIST_SECTION[1] * 1.01 }, { p: [0, 0, 0], rx: WRIST_SECTION[0], rz: WRIST_SECTION[1] }];
     const hand = sterile ? GLOVE : skin;
     // scrubbed, the glove's cuff flares over the end of the gown's sleeve
-    const gloveCuff: Station[] = [{ p: [0, -0.095, 0.002], rx: 0.044, rz: 0.038 }, { p: [0, -0.06, 0.001], rx: 0.036, rz: 0.029 }, ...forearm.slice(2)];
+    const gloveCuff: Station[] = [{ p: [0, -0.062, 0.002], rx: 0.0405, rz: 0.0345 }, { p: [0, -0.036, 0.001], rx: 0.0315, rz: 0.0255 }, ...forearm.slice(2)];
     sc.sweep(sterile ? gloveCuff : forearm, hand, { seg: 16, start: "open", end: "open" });
     const pads = addHand(sc, hand, sterile ? HAND_RELAXED : HAND_HOLD, { detail: true, gloved: sterile, wrist: sweepEnd(forearm, { seg: 16 }) });
     if (!sterile) sc.sweep([{ p: [0, -0.2, 0.004], rx: 0.036, rz: 0.03 }, { p: [0, -0.046, 0.002], rx: 0.0312, rz: 0.0255 }, { p: [0, -0.03, 0.002], rx: 0.0308, rz: 0.025 }], cuff, { seg: 14, start: "open", end: "flat", capPaint: { rgb: shade(cuff.rgb, 0.5), gloss: 0 } });
@@ -53,7 +53,7 @@ export function buildHeld(skinHex = "#dbb597", wear: HeldWear = "bedside"): Grou
         { p: [0.004, -0.46, 0.012], rx: 0.058, rz: 0.054 },
         { p: [0.002, -0.3, 0.008], rx: 0.05, rz: 0.045 },
         { p: [0, -0.11, 0.004], rx: 0.0405, rz: 0.035 },
-        sterile ? { p: [0, -0.082, 0.003], rx: 0.038, rz: 0.0325 } : { p: [0, -0.05, 0.003], rx: 0.039, rz: 0.0335 },
+        sterile ? { p: [0, -0.052, 0.003], rx: 0.0355, rz: 0.03 } : { p: [0, -0.05, 0.003], rx: 0.039, rz: 0.0335 },
       ],
       sleeve,
       { seg: 16, start: "open", end: "flat", capPaint: { rgb: shade(sleeve.rgb, 0.5), gloss: 0 } },

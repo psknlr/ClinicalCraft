@@ -53,7 +53,6 @@ export const TEAM_ZH = {
   "team.task.wound": "检查术野",
   "team.task.assist": "协助",
   "team.task.operate": "主刀操作",
-  "team.task.following": "跟随术者调整镜头",
   /* ---------------- a place in the team (docs/TEAM.md §1; docs/GLOSSARY.md "your place in the team") ---------------- */
   "team.you": "你：{place}",
   "team.lineup": "团队配置：{lineup}",
@@ -62,8 +61,6 @@ export const TEAM_ZH = {
   "team.playPlace": "我来担任这个岗位",
   "team.playPlaceTitle": "学员模式：说给你岗位的话由你回答（复述确认、报告），岗位的事由你来做",
   "team.observePlaceTitle": "观察模式：由团队代你完成岗位的工作，你只观察",
-  "team.members": "团队成员",
-  "team.memberStandingBy": "{name}（在旁待命）",
   /* ---------------- what the stand-in surgeon waits on you for ---------------- */
   "team.awaited": "术者在等你",
   "team.awaitedCount": "术者在等你报清点后再关闭。",
@@ -119,7 +116,6 @@ export const TEAM_ZH = {
   "team.done.observe": "查看了术野",
   "team.done.device": "{op}（通过设备）",
   "team.done.failed": "未能：{op}",
-  "team.done.none": "还没有动作。",
   /* ---------------- the stand-in's call-out (approval_request.callout) ---------------- */
   "callout.kicker": "关键步骤前告知",
   "callout.title": "{name}：{line}",
@@ -195,7 +191,6 @@ export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   "team.task.wound": "wound check",
   "team.task.assist": "assist",
   "team.task.operate": "operating",
-  "team.task.following": "following the work with the camera",
   /* ---------------- a place in the team (docs/TEAM.md §1; docs/GLOSSARY.md "your place in the team") ---------------- */
   "team.you": "You: {place}",
   "team.lineup": "Team: {lineup}",
@@ -204,8 +199,6 @@ export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   "team.playPlace": "I play my place",
   "team.playPlaceTitle": "Learner mode: you answer what is said to your place (read-backs, reports) and do its part",
   "team.observePlaceTitle": "Observer mode: the team plays your place; you watch",
-  "team.members": "The team",
-  "team.memberStandingBy": "{name} (standing by)",
   /* ---------------- what the stand-in surgeon waits on you for ---------------- */
   "team.awaited": "The surgeon waits for you",
   "team.awaitedCount": "The surgeon waits for your count before closing.",
@@ -261,7 +254,6 @@ export const TEAM_EN: Record<keyof typeof TEAM_ZH, string> = {
   "team.done.observe": "looked at the field",
   "team.done.device": "{op} (through the device)",
   "team.done.failed": "could not: {op}",
-  "team.done.none": "Nothing done yet.",
   /* ---------------- the stand-in's call-out (approval_request.callout) ---------------- */
   "callout.kicker": "CALL-OUT",
   "callout.title": "{name}: {line}",

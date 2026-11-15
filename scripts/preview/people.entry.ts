@@ -130,7 +130,7 @@ function renderHeld(params: URLSearchParams): { count: number; width: number; he
   hand.position.set(0.4, -0.39, -0.58);
   hand.rotation.set(-0.12, -0.17, -0.2);
   camera.add(hand);
-  const held = buildHeld();
+  const held = buildHeld(undefined, params.get("wear") === "sterile" ? "sterile" : "bedside");
   hand.add(held);
   let triangles = 0;
   held.traverse((o) => {

@@ -52,7 +52,8 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   equipment" below; `--view front|back|head|top`; `--breath` and `--rise` draw the chest that far out); `--sheet roles|positions|looks|patients` the
   reference sheets (every role's uniform, every position core knows, worn by its role, what an appearance can ask for);
   `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
-  player's own hand and stethoscope as the camera sees them.
+  player's own hand and stethoscope as the camera sees them (`--wear sterile`: as a place at the sterile field
+  dresses it — gloved, a gown's sleeve, no stethoscope).
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.
@@ -168,7 +169,12 @@ people of a case are drawn by what the case records, never by their hair: the pa
 leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
 glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
 team is three people, not one person three times. Everyone breathes, blinks, turns their head to
-the learner and moves their jaw when they speak. A name tag floats over each.
+the learner and moves their jaw when they speak. A name tag floats over each: the title of the position the facility
+gives them (core's `POSITION_TITLES`: "Scrub nurse · Chen Yu" / "洗手护士 · 陈雨"), else their role ("Nurse · Lin
+Xiao"); a name the facility already qualifies in brackets ("Dr Mori (assistant surgeon)") stands alone. Tags and dress
+follow the facility's `position` only — the people are built from the facility alone: a case's team that gives someone
+another position for one encounter says so in the field and in the team's words, never on the figure (web
+`world/strings.ts` `staffTag`).
 
 A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
 line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising
@@ -212,7 +218,11 @@ through a cage of a few hundred points and refined into a smooth surface (`figur
 resting, laid flat on a lap or a bed, or closed over one another in front of a sterile gown. A
 forearm turns with its hand (the wrist is wide the way the hand is wide) and the hand grows out
 of the forearm's last ring, so wrist and arm are one surface. The player's own hand is the same
-hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
+hand, refined once more, pinching the chest piece of its stethoscope pad to pad, out of a white coat's sleeve. While the
+learner holds a place in the care team at the sterile field (first or second assistant, scrub nurse: core's sterile
+positions; docs/TEAM.md §1) it is scrubbed: gloved, the glove's cuff over the sleeve of a sterile gown, the hand open,
+no stethoscope — nothing unsterile is carried to the table (`figure/held.ts`, `WorldApi.setPlayerWear`; operating, with
+no place, it is the coat and the stethoscope as always).
 
 **Equipment types.**
 

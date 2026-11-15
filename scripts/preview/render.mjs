@@ -23,7 +23,8 @@
  * it, a case's patient (standing, sitting, in bed) and companion, or a reference sheet — every role, every
  * theatre position, the looks an appearance can ask for; `--posture lateral` (with `--up right`, `--cover blanket|drapes`,
  * `--flex <degrees>`, `--asleep 1`) lays them on their side on an operating table; `--view held` is the first-person hand and its
- * stethoscope as the camera sees them, `--view hand` the hand by itself in each of its poses (`--detail 0`: as
+ * stethoscope as the camera sees them (`--wear sterile`: gloved in a gown's sleeve, as a place at the sterile field dresses
+ * it), `--view hand` the hand by itself in each of its poses (`--detail 0`: as
  * it is on a figure). Each label gives the figure's triangle count.
  * Facility mode renders a labelled 2D floor plan of one level (default: the default level) —
  * buildings, rooms, walls/openings, placements, slots, staff, spawn, stairs/ramp flights,
@@ -168,7 +169,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors: errors.filter((e) => !/404/.test(e)) }));
   } else if (mode === "people") {
     const q = new URLSearchParams();
-    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "up", "cover", "draped", "flex", "asleep", "distress", "speak", "blink", "breath", "rise", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
+    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "up", "cover", "draped", "flex", "asleep", "distress", "speak", "blink", "breath", "rise", "turn", "bg", "detail", "skin", "wear"]) if (args[k] !== undefined) q.set(k, args[k]);
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/people.html?${q}`);
     await rendered();
     const info = await page.evaluate(() => window.__done);

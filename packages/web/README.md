@@ -104,6 +104,26 @@ whole field, follow the work, **Closer** / **Wider** — for the camera holder
 nurse, each instrument to whoever may put it in); the operator's own steps stay
 in view, read-only.
 
+In a place the **Team** window (HUD **Team**) says "You: First assistant" and
+the line-up, puts first what the stand-in surgeon waits for you to do, and
+offers the answers to what is said to your place: **Read back** / **Can't** to a
+request, **Confirm** / **Not now** to a colleague's read-back of your own ask,
+**Do it in the surgery window** and the report once the stand-in confirms, and
+**Go on** after its stop (or once it said it cannot go on); **I play my place** /
+**Observe** chooses who plays it. **Ask** (whom, and traction, let go, the
+camera, an aim, closer, wider or a pass), **Need** (an item the team knows) and,
+in the scrub nurse's place, **Say the count** (never typed) send the team's
+ops, and the session's refusal shows as it is. The stand-in's **call-out**
+("Dr Ito: Clipping the cystic duct.") is its own card: **No objection** or
+**Stop** (Esc). A colleague's window offers the operating table's work their
+controls allow — **Hold port …**, **Let go**, **Hold the camera**, **Camera on
+…**, **Pass the …** — and `@一助`, `@二助`, `@扶镜手`, `@术者`, `@first
+assistant` or `@camera holder` in a line names whoever holds that position now.
+The badge says the place ("In-world · OR 7 · First assistant"); in the scrub
+nurse's place a bar beside the scope dock says what is asked for, what waits to
+go in and when the count is due; at the sterile field your hand is gloved. A
+device's operations the world will not let you do are greyed out, with why.
+
 | folder (`src/`) | |
 |---|---|
 | `world/` | voxel renderer — `index.ts` builds the `WorldApi` over a `VoxelWorld` (`voxel-world.ts`) and its parts: `stage.ts` (renderer, scene, lights), `facility-build.ts`, `people.ts` (patients and staff), `doors.ts`, `rides.ts`, `autowalk.ts`, `input.ts`, `interaction.ts`, `overlay.ts`, `blocks.ts`, `carts.ts`, `culling.ts`, `frame-loop.ts`, `map-data.ts`, `qa.ts`; equipment meshes (and optional GLB models, `models.ts`, their layers `layers.ts`; the body a type is drawn with, `manikin.ts`; a placement whose look follows its state, `live.ts`), live screens and the pictures of the others (`screens.ts`; a thoracoscope's picture: `scope-picture.ts`), NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
