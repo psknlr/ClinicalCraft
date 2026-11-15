@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { loadMiniCase, makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { textScript, toolCallScript } from "../providers/scripted.js";
 import { MemoryTranscript } from "../transcript.js";
-import { classifyUtterance, clarifyText, isOpenQuestion, offlineRerank, parseVoiceReply, selectFacts } from "./patient-pipeline.js";
+import { classifyUtterance, clarifyText, isOnsetQuestion, isOpenQuestion, offlineRerank, onsetFallback, parseVoiceReply, selectFacts } from "./patient-pipeline.js";
 
 const voice = (say: string, usedFactIds: string[], extra: Record<string, unknown> = {}) =>
   textScript(JSON.stringify({ say, nonverbal: null, usedFactIds, affectHint: "same", ...extra }));
@@ -73,6 +73,29 @@ describe("routing & selection (deterministic)", () => {
     const open = selectFacts(c, s, "Anything else you want to tell me?", "en");
     expect(open.volunteer).toBe("onset");
     expect(selectFacts(c, { ...s, asked: ["onset"] }, "Anything else?", "en").volunteer).toBeNull();
+  });
+
+  it("answers a question about when it began with the presenting complaint when nothing matched, if its answer says when", () => {
+    expect(isOnsetQuestion("How long has this been going on?")).toBe(true);
+    expect(isOnsetQuestion("什么时候开始的？")).toBe(true);
+    expect(isOnsetQuestion("Do you smoke?")).toBe(false);
+    // one that asks about something of its own is no question about the problem's onset
+    expect(isOnsetQuestion("How long have you smoked?")).toBe(false);
+    expect(isOnsetQuestion("这个药吃了多久？")).toBe(false);
+    expect(isOnsetQuestion("这次是什么时候开始不舒服的？")).toBe(true);
+    const c = structuredClone(loadMiniCase());
+    const onset = c.history.find((h) => h.id === "onset")!;
+    onset.question = { "zh-CN": "哪里不舒服？", en: "What's the matter?" };
+    onset.keywords = { "zh-CN": ["胸口压"], en: ["chest pressure"] };
+    const s = createEngineState(c);
+    for (const [q, l] of [["How long has this been going on?", "en"], ["When did it start?", "en"], ["多久了？", "zh-CN"], ["什么时候开始的？", "zh-CN"]] as const) {
+      expect(selectFacts(c, s, q, l), q).toMatchObject({ selected: ["onset"], method: "onset" });
+    }
+    // an answer that says no time: the patient does not make one up
+    onset.answer = { "zh-CN": "胸口压得慌。", en: "My chest feels tight." };
+    const untimed = structuredClone(c);
+    expect(onsetFallback(untimed, createEngineState(untimed), "en")).toBeNull();
+    expect(selectFacts(untimed, createEngineState(untimed), "How long has this been going on?", "en").selected).toEqual([]);
   });
 
   it("re-ranks offline by margin, else asks to clarify by topic", () => {

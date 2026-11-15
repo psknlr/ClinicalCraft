@@ -326,7 +326,7 @@ const en: Messages = {
   "exam.closest": "Closest recorded examinations:",
   "exam.noMatch": "No examination in the case matches that.",
 
-  "treat.lead": "Treatments you can give at the bedside. Moderate and high-risk actions ask for your confirmation; contraindicated ones are logged as safety events.",
+  "treat.lead": "Type the treatment you want to give, with its dose if you like. Moderate and high-risk actions ask for your confirmation; contraindicated ones are logged as safety events.",
   "treat.give": "Give",
   "treat.given": "Given {n}×",
   "treat.max": "Maximum doses reached",
@@ -336,6 +336,9 @@ const en: Messages = {
   "treat.empty": "This case has no treatments to give.",
   "treat.search": "Type a treatment, e.g. oxygen",
   "treat.noMatch": "No treatment in the case matches that.",
+  "treat.givenTitle": "Given so far",
+  "treat.browseAll": "Every treatment in this case",
+  "treat.browseAllNote": "The full list names options you may not have thought of yet, including later steps. Try deciding first.",
   "treat.asOrdered": "Dose read from your order: {dose} — checked against the preset dose when given",
   "treat.asOrderedUnclear": "The dose in your order is not clear (“{words}”) — the nurse will ask before giving anything",
   "treat.asOrderedUnchecked": "Dose read from your order: {dose} — this treatment has no preset dose to check it against",

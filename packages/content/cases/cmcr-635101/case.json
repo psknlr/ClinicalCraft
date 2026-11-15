@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-635101",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "口渴多尿、恶心呕吐 · 24岁男性",
     "en": "Thirst, polyuria and vomiting · 24-year-old man"
@@ -2897,13 +2897,13 @@
         ]
       },
       {
-        "ifMatches": "白蛋白|果糖胺|血清蛋白|albumin|fructosamine|serum protein",
+        "ifMatches": "白蛋白|果糖胺|血清蛋白|albumin|fructosamine|serumprotein",
         "remove": [
           "hba1c"
         ]
       },
       {
-        "ifMatches": "电泳|hba2|hbf|electrophoresis|haemoglobinopathy|thalassaemia screen",
+        "ifMatches": "电泳|hba2|hbf|electrophoresis|haemoglobinopathy|thalassaemiascreen",
         "remove": [
           "fbc"
         ]

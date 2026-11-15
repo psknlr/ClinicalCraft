@@ -329,7 +329,7 @@ const zh = {
   "exam.closest": "最接近的已记录查体：",
   "exam.noMatch": "未匹配到病例中的查体项目。",
 
-  "treat.lead": "可在床旁执行的处置。中高风险操作需要你确认；禁忌操作会记录为安全事件。",
+  "treat.lead": "输入你要执行的处置，可以写上剂量。中高风险操作需要你确认；禁忌操作会记录为安全事件。",
   "treat.give": "执行",
   "treat.given": "已执行 {n} 次",
   "treat.max": "已达最大次数",
@@ -339,6 +339,9 @@ const zh = {
   "treat.empty": "本病例没有可执行的处置。",
   "treat.search": "输入处置，例如：吸氧",
   "treat.noMatch": "未匹配到病例中的处置。",
+  "treat.givenTitle": "已执行的处置",
+  "treat.browseAll": "本病例的全部处置",
+  "treat.browseAllNote": "完整列表会列出你可能还没想到的选项，包括后面的步骤。建议先自己判断。",
   "treat.asOrdered": "识别剂量：{dose}——给药时与预设剂量核对",
   "treat.asOrderedUnclear": "医嘱剂量不明确（“{words}”）——给药前护士会先向您确认",
   "treat.asOrderedUnchecked": "识别剂量：{dose}——该处置没有可供核对的预设剂量",

@@ -309,8 +309,11 @@ function checkInvestigations(c: CaseDefinition, ids: Ids): Issue[] {
 }
 
 function checkRegex(source: string | undefined, path: PathPart[]): Issue[] {
-  if (source == null || compileCaseRegex(source)) return [];
-  return [err(path, `invalid regular expression ${JSON.stringify(source)}`)];
+  if (source == null) return [];
+  if (!compileCaseRegex(source)) return [err(path, `invalid regular expression ${JSON.stringify(source)}`)];
+  // the order is matched without its spaces (`normalizeQuery`): a literal space never matches
+  if (/ (?![*?]|\{0)/.test(source.replace(/\[(?:\\.|[^\]])*\]/g, "[]"))) return [warn(path, `regular expression ${JSON.stringify(source)} has a space, but orders are matched with their spaces removed: write it without (e.g. "urineketone" or "urine\\s*ketone")`)];
+  return [];
 }
 
 function checkOrderMatching(c: CaseDefinition, ids: Ids): Issue[] {

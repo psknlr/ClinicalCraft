@@ -70,7 +70,9 @@ function withPhaseTwins(c: CaseDefinition, hits: readonly MatchHit[], phase: str
  * `extras` (warnings) lists facts the patient pipeline would also select and
  * credit with the expected ones — ≥ 0.55, within 0.25 of the best, at most 3,
  * available in a phase of the first expected item — that are neither
- * expected nor in the utterance's `alsoOk`. Phase twins (`supersedes`) apply
+ * expected nor in the utterance's `alsoOk`. Hits on items available in no
+ * phase of an expected item are left out: the session never selects them
+ * where the expected ones are asked. Phase twins (`supersedes`) apply
  * in the first phase of the first expected item: a hit on an item superseded
  * there counts for its twin, as in the pipeline; so does `distinctHistoryHits`
  * (a hit that a more specific one accounts for entirely is not selected).
@@ -84,7 +86,10 @@ export function checkUtterances(c: CaseDefinition): { total: number; failures: I
     const path = `extensions.testUtterances.${i}`;
     for (const id of u.expect) if (!byId.has(id)) failures.push({ path, message: `unknown history id "${id}"`, severity: "error" });
     const phase = u.expect.length > 0 ? byId.get(u.expect[0]!)?.phases?.[0] : undefined;
-    const strong = withPhaseTwins(c, matchHistory(c, u.text, u.locale), phase).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
+    // items the session cannot select where the expected ones are asked (only in other phases) are left out
+    const expectedPhases = u.expect.map((id) => byId.get(id)?.phases);
+    const reachable = (id: string) => expectedPhases.length === 0 || expectedPhases.some((p) => sharePhase(p, byId.get(id)?.phases));
+    const strong = withPhaseTwins(c, matchHistory(c, u.text, u.locale), phase).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD && reachable(h.id));
     const selected = distinctHistoryHits(c, u.text, u.locale, strong, phase);
     const got = selected.map((h) => h.id);
     if (u.expect.length === 0) {

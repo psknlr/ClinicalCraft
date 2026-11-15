@@ -65,6 +65,7 @@ export {
   interventionNegation,
   MATCH_THRESHOLD,
   EXCLUDE_KEYWORD_FACTOR,
+  NEGATED_EXCLUDE_FACTOR,
   ELLIPSIS_FACTOR,
   NEGATED_MARGIN,
   type InterventionNegation,
@@ -73,6 +74,7 @@ export {
 export { analyzeNegation, type NegationAnalysis } from "./negation.js";
 export {
   compactText,
+  stripGreeting,
   tokenize,
   tokensMatch,
   canonicalToken,

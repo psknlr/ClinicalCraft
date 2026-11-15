@@ -23,9 +23,17 @@
  * * Two cues with only function words between them ("do not delay", "never
  *   stop", "no need to stop", "不要停") make a double negative: the clause is
  *   reported in `doubleNegated` and read neither way.
+ * * A Chinese cue followed only by a verb of taking (吃, 服, 喝) negates the
+ *   words before it when there are any ("新斯的明不要再吃了"), the verb otherwise
+ *   ("不吃不喝"). A Chinese predicate (不行, 不可以, 没有指征 …) negates the words
+ *   before it when there are any ("出院还不行", "ERCP没有指征").
+ * * "without" negates what follows it ("do the CT without sedation"), but
+ *   "without delay", "without stopping" and the like negate nothing ("give
+ *   antibiotics without delay").
  * * Words that only look like cues are not cues: "hold pressure", "stop the
- *   bleeding" (a symptom is treated, not withheld), 心脏骤停, 呼吸暂停, 鉴别,
- *   不适, 要不要 (a question), 阿莫西林.
+ *   bleeding" (a symptom is treated, not withheld), "without delay", 心脏骤停,
+ *   呼吸暂停, 鉴别, 不适, 不透气 (airtight), 要不要 (a question), 阿莫西林.
+ * * Latin letters in Chinese text are content: "不做ERCP" negates the ERCP.
  */
 import { tokenize, toHalfWidth } from "./text.js";
 
@@ -56,12 +64,12 @@ interface Cue {
 /* ------------------------------------------------------------------ */
 
 const EN_PREDICATE =
-  "contraindicated|unnecessary|on\\s+hold|not\\s+(?:needed|required|indicated|necessary|recommended|appropriate|advised|wanted|warranted|suitable|safe|allowed|permitted|given)";
+  "contraindicated|unnecessary|on\\s+hold|(?:not|[a-z]+n't)\\s+(?:needed|required|indicated|necessary|recommended|appropriate|advised|wanted|warranted|suitable|safe|allowed|permitted|given)";
 const EN_PARTICIPLE =
   "withheld|held|suspended|stopped|discontinued|ceased|paused|avoided|deferred|delayed|postponed|cancell?ed|omitted|skipped|halted|withdrawn|(?:turned|switched)\\s+off";
 const EN_VERB =
   "withhold(?:s|ing)?|hold(?:s|ing)?(?:\\s+off)?|suspend(?:s|ing)?|stop(?:s|ping)?|discontinu(?:e|es|ing)|ceas(?:e|es|ing)|paus(?:e|es|ing)|avoid(?:s|ing)?|defer(?:s|ring)?|delay(?:s|ing)?|postpon(?:e|es|ing)|cancel(?:s|ling|ing)?|omit(?:s|ting)?|skip(?:s|ping)?|refrain(?:s|ing)?|halt(?:s|ing)?|abstain(?:s|ing)?|withdraw(?:s|ing)?|(?:turn|switch)(?:s|ing)?\\s+off|come\\s+off|rather\\s+than|instead\\s+of|in\\s+place\\s+of";
-const EN_PARTICLE = "no|not|never|nothing|nil|none|neither|nor|cannot|[a-z]+n't";
+const EN_PARTICLE = "no|not|never|nothing|nil|none|neither|nor|cannot|without|[a-z]+n't";
 
 /** English cues, most specific first (a predicate "not indicated" before the particle "not"). */
 const EN_CUE = new RegExp(`\\b(?:(${EN_PREDICATE})|(${EN_PARTICIPLE})|(${EN_VERB})|(${EN_PARTICLE}))\\b`, "g");
@@ -73,15 +81,22 @@ const HOLD_WORD = /^hold|^held/;
 const STOP_NOT_A_CUE =
   /^\s+(?:(?:the|his|her|their|this|that|any|further)\s+)*(?:bleed\w*|pain\w*|vomit\w*|seiz\w*|fit(?:s|ting)?|itch\w*|wheez\w*|cough\w*|nause\w*|ha?emorrhag\w*|convuls\w*|swelling|fever\w*|shiver\w*|shaking|spasm\w*|cramp\w*|diarrh\w*|hiccup\w*|arrhythmi\w*|tachycardi\w*)\b/;
 const STOP_WORD = /^stop/;
+/** "without delay", "without stopping": the act is to be done at once, nothing is withheld. */
+const WITHOUT_NOT_A_CUE = /^\s+(?:(?:any|further|a|undue)\s+)?(?:delay\w*|fail|hesitat\w*|interrupt\w*|stopping|paus\w*|break\w*|let(?:ting)?\s+up)\b/;
+const WITHOUT_WORD = /^without$/;
+/** A cue that is the object of "without" ("without delay", "without stopping") is no cue either. */
+const AFTER_WITHOUT = /\bwithout\s+(?:(?:any|further|a|undue)\s+)?$/;
 
 /** Chinese verb-like cues (stop, suspend, defer, avoid, forbid …). */
-const ZH_VERB = "(?<!呼吸)暂停|(?<!心跳|呼吸|心脏|搏动)停止|停用|停掉|(?<!骤|暂|心跳|呼吸|心脏|搏动)停(?![搏经顿留车滞歇靠])|暂缓|避免|取消|禁止|禁用|禁|推迟|延迟|中止";
+const ZH_VERB = "(?<!呼吸)暂停|(?<!心跳|呼吸|心脏|搏动)停止|停用|停掉|(?<!骤|暂|心跳|呼吸|心脏|搏动)停(?![搏经顿留车滞歇靠])|暂缓|避免|取消|解除|禁止|禁用|禁|推迟|延迟|中止";
+/** Chinese predicates: they negate the words before them when there are any (出院还不行, ERCP没有指征), else the words after. */
+const ZH_PREDICATE = "(?:没有|无)(?:指征|适应证|适应症)|不行|不可以|不合适|不妥";
 /** Chinese particle-like cues; bare 不 last, minus compounds that negate nothing to do (不适, 不全, 不得不, 不超过 …). */
 const ZH_PARTICLE =
-  "不需要|不必要|没必要|无需|无须|不用|不要|不必|不给|不予|不能|不可|不宜|不应|不该|不准|不许|不再|不得(?!不)|先不|先别|暂不|勿|" +
+  "不需要|不必要|没有必要|没必要|无需|无须|不用|不要|不必|不给|不予|不能|不可|不宜|不应|不该|不准|不许|不再|不得(?!不)|先不|先别|暂不|勿|" +
   "(?<![特区分个级类识鉴性告辨差派离送])别(?![人的处名称墅])|" +
-  "(?<!差|不得)不(?!适|舒|良|全|齐|稳|清|足|明|安|畅|佳|振|规|对称|耐|典型|一定|管|久|断|同|少|过|仅|然|论|到|超过|低于|高于|大于|小于|少于|多于|敏感|可逆|洁|孕|育|遂|利|错|好|太|是很|得不|止一|变|定|详|退|降|升|缓解|改善|好转|消|起)";
-const ZH_CUE = new RegExp(`(${ZH_VERB})|(${ZH_PARTICLE})`, "g");
+  "(?<!差|不得)不(?!适|舒|良|全|齐|稳|清|足|明|安|畅|佳|振|规|对称|耐|典型|一定|管|久|断|同|少|过|仅|然|论|到|超过|低于|高于|大于|小于|少于|多于|敏感|可逆|洁|孕|育|遂|利|错|好|太|是很|得不|止一|变|定|详|退|降|升|缓解|改善|好转|消|起|透)";
+const ZH_CUE = new RegExp(`(${ZH_PREDICATE})|(${ZH_VERB})|(${ZH_PARTICLE})`, "g");
 
 /** Clause boundaries: punctuation (not 、), dashes, brackets, contrastive and sequencing conjunctions. */
 const BOUNDARY = new RegExp(
@@ -99,13 +114,18 @@ const SUBORDINATE_START = new RegExp(
 
 /** English words that carry no content of their own in a scope ("hold it for now"). */
 const EN_FILLER: ReadonlySet<string> = new Set(
-  ["now", "today", "tonight", "yet", "anymore", "moment", "currently", "still", "longer", "time", "further", "notice", "immediately", "straight", "away", "right", "completely", "altogether", "entirely", "temporarily", "permanently", "need", "needs", "want", "wants", "try", "ever", "really", "please"].map(
+  ["now", "today", "tonight", "yet", "anymore", "moment", "currently", "still", "longer", "time", "further", "notice", "immediately", "straight", "away", "right", "completely", "altogether", "entirely", "temporarily", "permanently", "need", "needs", "want", "wants", "try", "ever", "really", "please", "keep", "kept", "stay", "remain"].map(
     (w) => tokenize(w)[0] ?? w,
   ),
 );
 
 /** Chinese function words stripped before deciding whether a stretch has content. */
 const ZH_FUNCTION = /暂时|现在|目前|马上|立即|立刻|一下|病人|患者|[了吧啊呢掉先再就也还都要的地得么嘛哦呀给用做打上加去把将被让他她它们这那个下]/g;
+/** How long or how often a thing is held ("停一次", "停3天", "hold it for 2 days"): no object of the negation. */
+const DURATION =
+  /(?:[一二两三四五六七八九十几半]+|\d+(?:\.\d+)?)\s*个?(?:次|天|日|晚|顿|周|星期|剂|小时|钟头|分钟)|\b(?:for\s+)?(?:\d+(?:\.\d+)?|a|an|one|two|three|four|five|six|seven|a\s+few|several)\s*-?\s*(?:hours?|hrs?|days?|nights?|weeks?|doses?)\b/giu;
+/** Verbs of taking: after a cue, with something before it ("新斯的明不要再吃了"), they say how, not what. */
+const ZH_TAKING = /[吃服喝]/g;
 
 /* ------------------------------------------------------------------ */
 /* Analysis                                                            */
@@ -113,9 +133,16 @@ const ZH_FUNCTION = /暂时|现在|目前|马上|立即|立刻|一下|病人|患
 
 /** True when a stretch of text says something beyond function words. */
 function hasContent(text: string): boolean {
-  if (tokenize(text).some((t) => !EN_FILLER.has(t))) return true;
-  const cjk = text.replace(/[^\p{Script=Han}]/gu, "").replace(ZH_FUNCTION, "");
+  const said = text.replace(DURATION, " ");
+  // Latin letters next to Han characters are words of their own (不做ERCP, 查个CT)
+  if (tokenize(said.replace(/\p{Script=Han}+/gu, " ")).some((t) => !EN_FILLER.has(t))) return true;
+  const cjk = said.replace(/[^\p{Script=Han}]/gu, "").replace(ZH_FUNCTION, "");
   return cjk.length > 0;
+}
+
+/** `hasContent` once a Chinese verb of taking is set aside too ("再吃了" says nothing of what is not taken). */
+function hasContentBeyondTaking(text: string): boolean {
+  return hasContent(text.replace(ZH_TAKING, ""));
 }
 
 function englishCues(clause: string): Cue[] {
@@ -126,6 +153,8 @@ function englishCues(clause: string): Cue[] {
     const rest = clause.slice(end);
     if (HOLD_WORD.test(word) && HOLD_NOT_A_CUE.test(rest)) continue;
     if (STOP_WORD.test(word) && STOP_NOT_A_CUE.test(rest)) continue;
+    if (WITHOUT_WORD.test(word) && WITHOUT_NOT_A_CUE.test(rest)) continue;
+    if (AFTER_WITHOUT.test(clause.slice(0, m.index)) && WITHOUT_NOT_A_CUE.test(` ${word}`)) continue;
     const kind: CueKind = m[1] ? "predicate" : m[2] ? "participle" : m[3] ? "verb" : "particle";
     cues.push({ start: m.index, end, kind });
   }
@@ -138,7 +167,7 @@ function chineseCues(clause: string): Cue[] {
     const i = m.index;
     // an A-not-A question (要不要, 用不用, 给不给, 是不是) asks; it does not negate
     if (m[0].startsWith("不") && i > 0 && clause[i - 1] === clause[i + 1]) continue;
-    cues.push({ start: i, end: i + m[0].length, kind: m[1] ? "verb" : "particle" });
+    cues.push({ start: i, end: i + m[0].length, kind: m[1] ? "participle" : m[2] ? "verb" : "particle" });
   }
   return cues;
 }
@@ -201,10 +230,12 @@ export function analyzeNegation(text: string): NegationAnalysis {
     let pending = clause.slice(0, cues[0]!.start);
     cues.forEach((cue, k) => {
       const after = clause.slice(cue.end, cues[k + 1]?.start ?? clause.length);
-      const backward = cue.kind === "predicate" || (cue.kind === "participle" && hasContent(pending)) || !hasContent(after);
+      // a verb of taking after the cue says how, not what, when something before it is negated ("新斯的明不要再吃了")
+      const taking = hasContent(after) && !hasContentBeyondTaking(after) && hasContent(pending);
+      const backward = cue.kind === "predicate" || (cue.kind === "participle" && hasContent(pending)) || !hasContent(after) || taking;
       if (backward) {
         if (hasContent(pending)) scopes.push(pending.trim());
-        pending = after;
+        pending = taking ? "" : after;
       } else {
         affirmative.push(pending);
         scopes.push(after.trim());

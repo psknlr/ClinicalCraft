@@ -122,8 +122,8 @@ The remaining figures carry at most the journal's watermark. Journal PDFs share 
 
 - **One patient per case.** In the perinatal cases the newborn is represented by records the team reads (1653403); a second, examinable patient would need framework support.
 - **No CTG device**: the trace is a record the midwife has already run (1653403).
-- **Ordering is not scorable.** The rubric's condition language cannot say "A before B" (antibiotics after cultures, food only once alert); such errors are flagged as contraindicated actions in the debrief, and contraindicated actions do not lower the score by themselves.
-- **Interventions are listed from the start** (no phase-scoped availability), so their names are kept neutral.
+- **Ordering.** The rubric's condition language now says "A before B" (`{"inOrder": [...]}`, docs/CASE_AUTHORING.md); the original 20 cases, written before it, still flag such errors (antibiotics before cultures, food before the patient is alert) as contraindicated actions, and a contraindicated critical action fails the run's safety outcome.
+- **Interventions have no phase-scoped availability.** The Treat tab therefore lists no treatment until the learner searches for it or opens the full list, which says that it names options they may not have thought of yet; names are still kept neutral.
 - **No ventilator, tube, ECMO or balloon-pump cues** on the patient model in the 3D world.
 - **References still to verify** are listed per case: this session's network policy blocked DOI resolution (doi.org, Crossref) and the publisher's site, so DOIs were checked against the source PDF, the export record and publisher/PubMed pages found by search.
 

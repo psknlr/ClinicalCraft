@@ -343,7 +343,7 @@ supersededIn(c, id, phase): string | null               // the item available in
 supersededItems(c, id): string[]; hasHistoryTwins(c): boolean
 historyCredited(c, s, id): boolean                      // asked, or an item superseding it (transitively) was asked — what `asked` conditions test
 creditedHistory(c, s): string[]                         // asked ids, then ids credited through twins (assessment)
-MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
+MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; NEGATED_EXCLUDE_FACTOR = 0.8; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
@@ -627,7 +627,13 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
 letters/digits → ASCII. `matchOrders` reproduces V4 `Xd` exactly when the case
 supplies the equivalent `orderMatching` (the SMZL port does) — unit tests
 assert V4 parity on V4's examples. Its candidates come from the aliases
-**and names** of every locale (`locale` does not narrow them).
+**and names** of every locale (`locale` does not narrow them). An alias that
+begins with a Latin letter or digit counts only where it begins a word of the
+order, and one whose last run of letters or digits is short (≤ 3: "tte",
+"ct", "u&e") only where it ends one too, a plural "s" aside ("LFTs"): "tte"
+is not in "better", "ua" not in "evaluate", "ct" not in "CTPA". A CJK alias
+counts anywhere, as before. `orderMatching` regular expressions see the order
+without its spaces: `cases validate` warns on one with a literal space.
 
 History/exam/intervention matching is a scored keyword matcher: candidate
 phrases = question/maneuver/name + keywords (+ aliases) for the locale and
@@ -647,7 +653,14 @@ for every locale (cross-lingual); score = max over phrases of:
   pipeline's 0.55 select band) unless it is the phrase's own start and not a
   question bigram (怎么, 什么, 有没…), or the whole phrase occurs in order
   within a few extra characters ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血"
-  never credits a fact;
+  never credits a fact. A run of Latin letters or digits alone carries no
+  topic either: a CJK phrase's Latin part ("BEP方案", "有过TIA吗") is scored by
+  its words instead — that part's share of the phrase (a function character
+  counting half) times the share of its tokens the utterance holds, read with
+  the Latin words of a mixed utterance on their own ("BEP化疗" → bep) — so
+  "ep" of "check the pulse" is no overlap with "BEP方案". The 下 of the
+  particle 一下 begins no phrase that lacks 一下 itself (量一下体温 holds no 下体,
+  看一下肢体 no 下肢; 一下子 and 一下午 are words of their own);
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
   Tokens (`canonicalToken`): lower-case words minus English stop-words, then
@@ -665,7 +678,19 @@ for every locale (cross-lingual); score = max over phrases of:
   ~ allergic, nausea ~ nauseous, anticoagulant ~ anticoagulation,
   prophylaxis ~ prophylactic). So medical ≁ medication, history ≁
   historical, hypertension ≁ hyperthermia, thrombosis ≁ thrombolysis,
-  cholecystitis ≁ cholecystectomy.
+  cholecystitis ≁ cholecystectomy. Nor do two tokens of which one ends as a
+  medicine does (-in, -ine) and the other does not (aspirin ≁ aspirate,
+  atropine ≁ atrophy, penicillin ≁ penicillamine), nor an agent noun and an
+  adjective (anaesthetist ≁ anaesthetic); a name (Ringer's, Hartmann's)
+  matches only itself (ring ≁ Ringer's).
+
+A question's opening greeting is not scored (`stripGreeting`: "Good
+morning, …", "Hi Tom, …", "您好，…", "王阿姨您好，…"; a question that is only a
+greeting stays whole), so "morning" or "早上" as a keyword never answers
+"Good morning". In intervention matching a generic order verb ("give",
+"start", "administer", "commence", "prescribe", "order") is a weak token: a
+phrase matched on weak tokens alone scores 0, so "give oxygen" is no half of
+"give atropine".
 
 `excludeKeywords`: if the utterance, normalised with `scoringText`
 (`normalizeQuery` minus punctuation, 痛 read as 疼 — case, spacing and
@@ -673,7 +698,15 @@ punctuation are ignored), contains any exclude phrase of an item (any
 locale, same normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
 = 0.2 before the threshold, which in practice removes it (1 × 0.2 < 0.34).
 Containment is on whitespace-free text, so prefer distinctive phrases
-("past medical", "过敏") over short fragments.
+("past medical", "过敏") over short fragments. `containsExclusion` reads a
+Latin exclusion as the start of a word or a part of one, except after a
+prefix that reverses the word ("discontinue" holds no "continue", "unstable"
+no "stable"); one that begins with a function word or a digit ("at first",
+"50%") counts only where it begins a word ("what first", "250 ml/h" hold
+neither). For an intervention, an exclusion that only a negated clause holds
+multiplies the affirmative reading by `NEGATED_EXCLUDE_FACTOR` = 0.8 instead:
+"give cefotaxime, not ceftriaxone" still gives the cefotaxime, yet the tie
+in "antibiotics instead of surgery" still goes to the antibiotics-first plan.
 
 A keyword's stop-words carry no weight: "what does he take" tokenizes to
 `tak` alone and scores 1 against any utterance with "take". So
@@ -918,7 +951,11 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
-   `unknown` item's authored answer when that matched).
+   `unknown` item's authored answer when that matched). A question about when
+   the problem began that reaches nothing ("When did it start?", "多久了？")
+   is answered with the presenting complaint (then a volunteered item) whose
+   answer states a time (`onsetFallback`, `method: "onset"`); with none, the
+   fallback stands — the patient never makes a time up.
    `disclosure: "specific"` facts require a direct match (score ≥ 0.55);
    `volunteer` facts may be offered on open questions (≤ 1 per turn).
    Each newly selected id dispatches `ask` with `via: "agent"` (learner credit).
