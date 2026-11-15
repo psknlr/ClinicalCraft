@@ -199,7 +199,7 @@ describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
   const FACT = { en: "(Wife) No, none of them.", "zh-CN": "（妻子）没有，一样都没有。" };
   const NAME = { en: "his anticoagulant history", "zh-CN": "他的抗凝用药情况" };
   const need = { need: { id: "i1", history: INFO, heldBy: "triage", for: "surgeon", blocks: "tenecteplase" }, forId: SURGEON, holderId: TRIAGE, noticedBy: CIRC };
-  const inform = (extra: Partial<TeamTask> = {}) => task({ kind: "inform", need: "i1", item: INFO, holder: TRIAGE, blocks: "tenecteplase", ...extra });
+  const inform = (extra: Partial<TeamTask> = {}) => task({ kind: "inform", need: "i1", item: INFO, holder: TRIAGE, blocks: ["tenecteplase"], ...extra });
   const infoView = (me: MemberState, extra: Partial<MemberView> = {}) =>
     view(me, { itemName: () => NAME, actName: () => ({ en: "IV tenecteplase", "zh-CN": "替奈普酶静脉溶栓" }), colleagues: [colleague(TRIAGE, ["inform"], { relief: true, present: false })], ...extra });
 
@@ -208,7 +208,20 @@ describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
     expect(p).toMatchObject({ to: SURGEON, message: { kind: "notice", about: { need: "i1", info: INFO, for: SURGEON } } });
     // (the test view names everyone by their body id)
     expect(p!.message.text.en).toBe("His anticoagulant history for actor:clinician — staff:triage has it; I'm getting it. IV tenecteplase waits until it's confirmed.");
-    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", owner: CIRC, holder: TRIAGE, blocks: "tenecteplase", status: "open" } });
+    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", owner: CIRC, holder: TRIAGE, blocks: ["tenecteplase"], status: "open" } });
+  });
+
+  it("an information need that holds up several acts names each as waiting, and still waiting when it is escalated (verification D4)", () => {
+    const names: Record<string, { en: string; "zh-CN": string }> = { tenecteplase: { en: "IV tenecteplase", "zh-CN": "替奈普酶静脉溶栓" }, alteplase: { en: "IV alteplase", "zh-CN": "阿替普酶静脉溶栓" } };
+    const both = { ...need, need: { ...need.need, blocks: ["tenecteplase", "alteplase"] } };
+    const named = (me: MemberState, extra: Partial<MemberView> = {}) => infoView(me, { actName: (id) => names[id]!, ...extra });
+    const p = say(propose(named(member(CIRC, ["circulate"]), { informs: [both] })));
+    expect(p!.message.text.en).toBe("His anticoagulant history for actor:clinician — staff:triage has it; I'm getting it. IV tenecteplase and IV alteplase wait until it's confirmed.");
+    expect(p!.message.text["zh-CN"]).toMatch(/替奈普酶静脉溶栓和阿替普酶静脉溶栓都等确认后再进行。$/u);
+    expect(p!.patch?.[0]).toMatchObject({ create: { kind: "inform", blocks: ["tenecteplase", "alteplase"] } });
+    const away = say(propose(named(member(CIRC, ["circulate"]), { tasks: [inform({ blocks: ["tenecteplase", "alteplase"] })], colleagues: [colleague(TRIAGE, ["inform"], { relief: true, absent: true })] })));
+    expect(away!.message.text.en).toMatch(/isn't available\. IV tenecteplase and IV alteplase still wait\.$/u);
+    expect(away!.message.text["zh-CN"]).toMatch(/替奈普酶静脉溶栓和阿替普酶静脉溶栓都仍需等待。$/u);
   });
 
   it("asks the one member who holds it (by phone), and escalates at once when they are away — with the reason", () => {

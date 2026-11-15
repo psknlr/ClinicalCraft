@@ -17,13 +17,15 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type Collider, type ColliderKind, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { navMessage, worldMessage } from "./i18n.js";
-import { levelInfos } from "./levels.js";
+import { levelElevation, levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
 import { receiptsOf, receiptsToConfirm } from "./hand.js";
 import { GridAStarBackend } from "./nav/backend.js";
 import { PatientBody } from "./patient.js";
+import { PHYSICS } from "./physics.js";
+import { segmentCrossesArea } from "./raster.js";
 import { Perception } from "./perception.js";
 import { DefaultSpatialPolicy, SpatialChecker } from "./policy.js";
 import { Reachability } from "./reach.js";
@@ -38,6 +40,9 @@ const copyActor = (a: ActorState): ActorState => {
   if (a.missed) out.missed = Object.fromEntries(Object.entries(a.missed).map(([id, p]) => [id, { ...p }]));
   return out;
 };
+
+/** What a straight step of a person cannot pass (`PatientBodyDeps.clear`): door leaves only when the door is locked. */
+const BARRIER_KINDS: ReadonlySet<ColliderKind> = new Set(["wall", "partition", "window", "rail", "door"]);
 
 /** A body steered by hand looks around again once it has moved this far (m) since it last did, or entered a room. */
 const NOTICE_STEP = 1;
@@ -65,6 +70,17 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
   // the patient's body (EMBODIED §8): where it is now, its posture (the place's, else clinical state's), its collider
   const staticBody = slot ? collision.colliders.find((c) => c.id === `patient:${slot.id}`) : undefined;
+  // a straight step a person can take (audit 2026-11-12 W3): no wall, partition, window or balustrade at body height in
+  // the way — a window lets sight through, never a body — and no locked door (doors open as one walks, unless locked)
+  const barriers = new Map<string, Collider[]>();
+  for (const c of collision.colliders) {
+    if (!BARRIER_KINDS.has(c.kind)) continue;
+    const floor = levelElevation(facility, c.level);
+    if (c.maxY - floor <= 0.05 || c.minY - floor >= PHYSICS.height) continue;
+    barriers.set(c.level, [...(barriers.get(c.level) ?? []), c]);
+  }
+  const stepClear = (level: string, a: { x: number; z: number }, b: { x: number; z: number }) =>
+    !(barriers.get(level) ?? []).some((c) => (c.kind !== "door" || (!!c.entity && !!store.doorState(c.entity)?.locked)) && segmentCrossesArea(a, b, c));
   const patient = new PatientBody({
     facility,
     registry,
@@ -74,9 +90,9 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     initialPosture: bindingPosture(binding, facility),
     staticBody: staticBody ? { minX: staticBody.minX, maxX: staticBody.maxX, minZ: staticBody.minZ, maxZ: staticBody.maxZ } : null,
     locale,
-    // walking with someone (`escort_patient`): at that actor's side, on their side of any wall
+    // walking with someone (`escort_patient`): heading for that actor's side, on their side of any wall or window
     actorPose: (id) => store.actor(id)?.pose ?? null,
-    clear: (level, a, b) => visibility.lineOfSight(level, a, b),
+    clear: stepClear,
     cues: () => (slot ? clinical.cues(slot.id) : {}),
   });
   // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built

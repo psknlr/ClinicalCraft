@@ -99,7 +99,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       return n ? walkers.pose(n) : null;
     },
     placeEquipment: (placementId, at) => world.carts.place(placementId, at),
-    pushEquipment: (placementId, by) => world.carts.push(placementId, by),
+    pushEquipment: (placementId, by, at) => world.carts.push(placementId, by, at),
     placePatient: (slotId, at) => world.people.placeAt(slotId, at),
     pushPatient: (slotId, by, posture) => world.people.push(slotId, by, posture),
     escortPatient: (slotId, by) => world.people.escort(slotId, by),

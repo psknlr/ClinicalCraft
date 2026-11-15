@@ -270,9 +270,10 @@ export interface WorldApi {
   /**
    * Draw a cart in front of a walker while it is pushed (`by`: "avatar" or a staff id; `null`: stop) — no
    * collider meanwhile; the world model parks it (`placeEquipment`) when the push ends. A trolley (a bed, a
-   * stretcher) is turned along the way.
+   * stretcher) is turned along the way. `at: "beside"`: drawn at the walker's side instead — the monitor that
+   * travels with the patient beside their bed (`PatientPlace.transit.monitor`, EMBODIED §8.7).
    */
-  pushEquipment(placementId: string, by: string | null): void;
+  pushEquipment(placementId: string, by: string | null, at?: "ahead" | "beside"): void;
   /**
    * Draw the patient where the world model has them (EMBODIED §8): at a spot (`PatientSpot`), or back in their
    * own bed space (`null`). Their collider (standing) and aim target follow.

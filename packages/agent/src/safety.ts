@@ -8,7 +8,7 @@
  */
 import { safetyPassed, t, type AssessedDoseError, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { isZh, rt } from "./session/i18n.js";
-import { doseRatioText, doseText, interventionNameText, isRange } from "./tools/dose-order.js";
+import { againstRange, doseRatioText, doseText, interventionNameText } from "./tools/dose-order.js";
 
 /**
  * The safety part of a report, as saved transcripts and exports may hold it: reports written before the safety
@@ -127,7 +127,7 @@ export function safetySummary(c: Pick<CaseDefinition, "interventions">, report: 
     const name = interventionNameText(c, e.interventionId, L);
     const readAs = doseText(e.ordered, L);
     const preset = doseText(e.preset, L);
-    const ratio = doseRatioText(e.ratio, L, isRange(e.preset));
+    const ratio = doseRatioText(e.ratio, L, againstRange(e));
     const key = e.severity === "critical" ? "safety.doseError.critical" : "safety.doseError.warning";
     return {
       interventionId: e.interventionId,

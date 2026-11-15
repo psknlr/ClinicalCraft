@@ -72,13 +72,21 @@ export const TeamInformSchema = z
     for: MemberRef,
     /** The member who notices it is needed (default: the member who circulates). */
     noticedBy: MemberRef.optional(),
-    /** The case's intervention it holds up: not to be given until the information is supplied or escalated. */
-    blocks: IdSchema.optional(),
+    /**
+     * The case's interventions it holds up — one id, or several (thrombolysis by either drug: `["tenecteplase",
+     * "alteplase"]`): none of them is to be given until the information is supplied or escalated (`informBlocks`).
+     */
+    blocks: z.union([IdSchema, z.array(IdSchema).min(1)]).optional(),
     /** When the need arises (a CT read: thrombolysis is being considered); default: as soon as the team works. */
     when: ConditionSchema.optional(),
   })
   .strict();
 export type TeamInform = z.infer<typeof TeamInformSchema>;
+
+/** The interventions an information need holds up (`TeamInform.blocks`: one id or several), in the order written. */
+export function informBlocks(n: Pick<TeamInform, "blocks">): string[] {
+  return n.blocks == null ? [] : typeof n.blocks === "string" ? [n.blocks] : [...n.blocks];
+}
 
 /** A team scenario: initial conditions and perturbations, never the steps (authored teaching / benchmark material). */
 export const TeamScenarioSchema = z

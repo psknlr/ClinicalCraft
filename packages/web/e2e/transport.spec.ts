@@ -4,8 +4,9 @@
  * the scanner (§8.7) —, she is wheeled on her ward bed to the CT scanner — the bed is pushed in front of the
  * avatar with her lying on it, then drawn where the world parks it, her on the scanner table, where the scan is
  * done —, and she is wheeled back to her bed space. Sitting her up (an authored
- * `posture`) changes the posture of the drawn patient. Assertions read the authoritative state (__QA__: the
- * world model, the renderer's records), not the pixels.
+ * `posture`) changes the posture of the drawn patient. The monitor taken along (§8.7) travels beside her bed — the
+ * world's transit names it — and stays with her on arrival (audit 2026-11-12 W4). Assertions read the
+ * authoritative state (__QA__: the world model, the renderer's records), not the pixels.
  */
 import { expect, test, type Page } from "@playwright/test";
 import { embodiedSetup, enterCase, freshStart, placeAvatar, shot, toPatientSide, traceLines } from "./helpers.js";
@@ -17,11 +18,12 @@ const BED = "ward-bed-1";
 
 const drawnPatient = (page: Page) => page.evaluate((slot) => (window as any).__QA__.world.debug.patientPose(slot), SLOT);
 const worldPlace = (page: Page) => page.evaluate(() => (window as any).__QA__.worldModel.patientPlace());
-const drawnBed = (page: Page) =>
+const drawnPortable = (page: Page, id: string) =>
   page.evaluate((id) => {
     const r = (window as any).__QA__.world.debug.portables.get(id);
-    return r ? { x: r.x as number, z: r.z as number, pushedBy: (r.pushedBy ?? null) as string | null, promoted: r.promoted as boolean } : null;
-  }, BED);
+    return r ? { x: r.x as number, z: r.z as number, pushedBy: (r.pushedBy ?? null) as string | null, pushAt: (r.pushAt ?? null) as string | null, promoted: r.promoted as boolean } : null;
+  }, id);
+const drawnBed = (page: Page) => drawnPortable(page, BED);
 
 test.describe("patient transport (en)", () => {
   test.use({ locale: "en-US" });
@@ -108,5 +110,44 @@ test.describe("patient transport (en)", () => {
     const at = await worldPlace(page);
     await placeAvatar(page, at.x + 1.8, at.z + 2.4, { x: at.x, z: at.z });
     await shot(page, "transport-posture-sitting");
+  });
+
+  test("(m) PE: the monitor taken along travels beside her bed and stays with her at the CT scanner (audit W4)", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    const MONITOR = "ward-defibrillator";
+    await freshStart(page);
+    await enterCase(page, CASE);
+    await embodiedSetup(page, { bypassApprovals: true });
+    await toPatientSide(page);
+    const home = await page.evaluate((id) => (window as any).__QA__.worldModel.entity(`eq:${id}`).position, MONITOR);
+    const done = page.evaluate((patient) => (window as any).__QA__.worldAction({ operation: "transport_patient", targetId: patient, parameters: { destination: "eq:ct-scanner", monitor: true } }), PATIENT);
+    // on the way: the world's transit names the monitor, and it is drawn travelling at the avatar's side, beside her
+    // bed (before W4: left standing at her bedside on the ward until she arrived)
+    await expect.poll(async () => (await drawnPortable(page, MONITOR))?.pushedBy ?? null, { timeout: 60_000, intervals: [200] }).toBe("avatar");
+    expect(await drawnPortable(page, MONITOR)).toMatchObject({ pushAt: "beside", promoted: true });
+    expect(await page.evaluate(() => (window as any).__QA__.worldModel.patientPlace()?.transit?.monitor ?? null)).toBe(`eq:${MONITOR}`);
+    await expect.poll(async () => {
+      const m = await drawnPortable(page, MONITOR);
+      return m ? Math.hypot(m.x - home.x, m.z - home.z) : 0;
+    }, { timeout: 60_000, intervals: [300] }).toBeGreaterThan(3);
+    await shot(page, "transport-monitor-travelling");
+    const result = await done;
+    expect(result?.status, result?.message).toBe("completed");
+    expect(result?.message).toMatch(/went with them, monitoring/);
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
+    // there: parked with her (beside the scanner's table), drawn where the world has it, at her bedside
+    const where = await page.evaluate((id) => {
+      const w = (window as any).__QA__.worldModel;
+      return { at: w.snapshot().entities[`eq:${id}`].position, room: w.roomOf(`eq:${id}`), bedside: w.atBedside(`eq:${id}`), place: w.patientPlace() };
+    }, MONITOR);
+    expect(where).toMatchObject({ room: "rad-ct", bedside: true, place: { provider: "eq:ct-scanner" } });
+    expect(where.place.transit).toBeUndefined();
+    const drawn = await drawnPortable(page, MONITOR);
+    expect(drawn).toMatchObject({ pushedBy: null });
+    expect(Math.hypot(drawn!.x - where.at.x, drawn!.z - where.at.z)).toBeLessThan(0.05);
+    await placeAvatar(page, where.place.x + 2.6, where.place.z + 3.2, { x: where.place.x, z: where.place.z });
+    await shot(page, "transport-monitor-at-ct");
+    expect(errors).toEqual([]);
   });
 });

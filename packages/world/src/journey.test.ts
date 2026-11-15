@@ -1,12 +1,17 @@
 /**
  * The patient's journeys in the event log (EMBODIED §8.4, audit 2026-11-12 P2-11): a walk with someone (the
- * follower's own path and arrival, never only the walker's pose), a transport on their bed, a trolley or on foot
- * (departure, transit, arrival, the colleague who takes over), and a relocation by a phase or an intervention (no
- * journey) — told by `patient.departed` / `patient.arrived` and kept in `PatientPlaceState.legs`.
+ * follower's own spot, steps and path along a route planned for them — never the walker's pose, never through a wall
+ * or a window: audit W3), a transport on their bed, a trolley or on foot (departure, transit, arrival, the colleague
+ * who takes over), and a relocation by a phase or an intervention (no journey) — told by `patient.departed` /
+ * `patient.arrived` and kept in `PatientPlaceState.legs`.
  */
 import { describe, expect, it } from "vitest";
-import { PRIMARY_ACTOR, type PatientLeg, type Pose, type WorldEvent } from "./contracts.js";
-import { makeWorld, type TestWorld } from "./__fixtures__/world.js";
+import { buildCollisionModel } from "./collision.js";
+import { PRIMARY_ACTOR, type PatientLeg, type PathPoint, type Pose, type WorldEvent } from "./contracts.js";
+import { levelElevation } from "./levels.js";
+import { PHYSICS } from "./physics.js";
+import { segmentCrossesArea } from "./raster.js";
+import { catalogs, makeWorld, type TestWorld } from "./__fixtures__/world.js";
 
 const A = PRIMARY_ACTOR;
 
@@ -20,6 +25,18 @@ const legs = (w: TestWorld): PatientLeg[] => w.runtime.snapshot().entities[w.pat
 const arrived = (seen: WorldEvent[]) => seen.filter((e): e is Extract<WorldEvent, { type: "patient.arrived" }> => e.type === "patient.arrived");
 const departed = (seen: WorldEvent[]) => seen.filter((e): e is Extract<WorldEvent, { type: "patient.departed" }> => e.type === "patient.departed");
 const near = (a: { x: number; z: number }, b: { x: number; z: number }, m = 0.05) => Math.hypot(a.x - b.x, a.z - b.z) <= m;
+
+/** The walls, partitions, windows and balustrades (at body height) a path's steps cross: none when a person walked it. */
+function crossings(w: TestWorld, path: readonly PathPoint[]): string[] {
+  const floor = (level: string) => levelElevation(w.facility, level);
+  const barriers = buildCollisionModel(w.facility, catalogs()).colliders.filter((c) => ["wall", "partition", "window", "rail"].includes(c.kind) && c.maxY - floor(c.level) > 0.05 && c.minY - floor(c.level) < PHYSICS.height);
+  const out: string[] = [];
+  for (let i = 1; i < path.length; i++) {
+    const a = path[i - 1]!, b = path[i]!;
+    if (a.level === b.level) for (const c of barriers) if (c.level === a.level && segmentCrossesArea(a, b, c)) out.push(c.id);
+  }
+  return out;
+}
 
 async function follow(w: TestWorld) {
   expect((await w.act({ actorId: A, operation: "navigate", goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
@@ -43,9 +60,10 @@ describe("walking with someone: the follower's own path and arrival (audit P2-11
     const path = done!.path!;
     expect(near(path[0]!, start)).toBe(true);
     expect(near(path.at(-1)!, end)).toBe(true);
-    const walker = walk.navigation!.path;
-    expect(path.length).toBeGreaterThanOrEqual(walker.length);
+    expect(path.length).toBeGreaterThanOrEqual(2);
     expect(done!.leg.distance).toBeGreaterThan(walk.navigation!.length - 2);
+    // their own route (W3): planned for them from where they stood — through no wall or window
+    expect(crossings(w, path)).toEqual([]);
     // the walk's events carry it; the record keeps the leg
     expect(walk.events.map((e) => e.type)).toEqual(expect.arrayContaining(["patient.departed", "patient.arrived"]));
     expect(legs(w)).toEqual([done!.leg]);
@@ -55,28 +73,68 @@ describe("walking with someone: the follower's own path and arrival (audit P2-11
     expect(legs(w)[1]).toMatchObject({ kind: "escort", from: { room: end.room } });
   });
 
-  it("a hand-steered walk (sensor poses): no stored step while walking; the stretch is recorded with its path when they stop", async () => {
+  it("a hand-steered walk (sensor poses): the patient walks by their own steps, a step behind — no world version; the stretch is recorded with their path when they stop (audit W3)", async () => {
     const w = makeWorld("smzl-lung-adeno");
     await follow(w);
     const seen = events(w);
     const v = w.runtime.version;
     const me = w.runtime.actor(A)!.pose;
     const start = w.runtime.patientPlace()!;
-    const step = (dx: number): Pose => ({ ...me, x: me.x + dx });
-    for (const dx of [0.2, 1, 2, 3]) w.runtime.updatePose(A, step(dx));
-    // the walk is in progress: set off, nothing stored, no version
+    // facing the way they walk (+x), steered by hand in steps of a quarter of a metre (a slow walk's sensor poses)
+    const east = -Math.PI / 2;
+    const step = (dx: number, yaw = east): Pose => ({ ...me, x: me.x + dx, yaw });
+    for (let i = 1; i <= 12; i++) w.runtime.updatePose(A, step(i * 0.25));
+    // the walk is in progress: set off, nothing recorded yet, no world version (their own steps change only them)
     expect(departed(seen)).toHaveLength(1);
     expect(arrived(seen)).toEqual([]);
     expect(w.runtime.version).toBe(v);
+    // their own spot, a step behind the walker — they step once the walker is more than 1.2 m away (FOLLOW_KEEP)
+    const walked = w.runtime.patientPlace()!;
+    expect(walked.escort).toBe(A);
+    expect(Math.hypot(walked.x - (me.x + 3), walked.z - me.z)).toBeLessThanOrEqual(1.2);
+    expect(near(walked, { x: me.x + 3, z: me.z }, 0.3)).toBe(false);
+    // turning round on the spot is no walk: they stay where they stand (before W3 their place was derived from the
+    // walker's pose and swung round behind the new facing)
+    w.runtime.updatePose(A, step(3, east + Math.PI));
+    expect(w.runtime.patientPlace()).toMatchObject({ x: walked.x, z: walked.z });
     const r = await w.act({ actorId: A, operation: "release_patient", targetId: w.patientId });
     expect(r.status).toBe("completed");
     const [done] = arrived(seen);
     expect(done!.leg).toMatchObject({ kind: "escort", mode: "walk", by: A, status: "arrived" });
-    expect(near(done!.path![0]!, start)).toBe(true);
-    // every step of half a metre or more is on their path (the 0.2 m shuffle is not)
-    expect(done!.path!.length).toBe(5);
+    const path = done!.path!;
+    expect(near(path[0]!, start)).toBe(true);
+    // their steps, one each time the walker got away from them: none through a wall or a window
+    expect(path.length).toBeGreaterThan(3);
+    expect(crossings(w, path)).toEqual([]);
     expect(done!.leg.distance).toBeGreaterThan(2.5);
     expect(legs(w)).toHaveLength(1);
+  });
+
+  it("the verifier's replay (audit W3): a hand-steered move through a window is no step — the patient stays in the room, the walk together ends there, the jump is no leg", async () => {
+    const w = makeWorld("smzl-lung-adeno");
+    await follow(w);
+    const seen = events(w);
+    const me = w.runtime.actor(A)!.pose;
+    const north = Math.PI;
+    // by hand to the consultation room's window onto the garden (facing +z, steps of half a metre)
+    for (let z = me.z; z <= 6; z += 0.5) w.runtime.updatePose(A, { ...me, z, yaw: north });
+    for (let x = me.x; x >= -7.75; x -= 0.5) w.runtime.updatePose(A, { ...me, x, z: 6, yaw: north });
+    const before = w.runtime.patientPlace()!;
+    expect(before).toMatchObject({ room: "consult", escort: A });
+    // one sensor pose 3.4 m on, through the window: sight passes a window, a body does not
+    w.runtime.updatePose(A, { ...me, x: -8, z: 9.4, yaw: north });
+    expect(w.runtime.actor(A)!.room).toBeNull();
+    const after = w.runtime.patientPlace()!;
+    // before W3: at (-8.45, 8.7) in the garden, still walking with the clinician
+    expect(after.escort).toBeUndefined();
+    expect(after.room).toBe("consult");
+    expect(Math.hypot(after.x - before.x, after.z - before.z)).toBeLessThan(0.5);
+    expect(seen.some((e) => e.type === "patient.escort" && e.escort === null)).toBe(true);
+    // the walk up to the window is their leg, stopped where they stood; the jump is none of it
+    const [leg] = arrived(seen);
+    expect(leg!.leg).toMatchObject({ kind: "escort", mode: "walk", status: "stopped", to: { room: "consult" } });
+    expect(leg!.path!.every((p) => p.z < 6.5)).toBe(true);
+    expect(crossings(w, leg!.path!)).toEqual([]);
   });
 
   it("a transport picks them up where the walk together ended: two legs, the walk's and the transport's", async () => {

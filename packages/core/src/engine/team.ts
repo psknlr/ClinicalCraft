@@ -4,6 +4,7 @@
  * items and the placements a scenario moves exist there).
  */
 import type { CaseDefinition } from "../schema/case.js";
+import { informBlocks } from "../schema/team.js";
 import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
 import { formatPath } from "./parse.js";
 import type { Issue } from "./types.js";
@@ -68,7 +69,13 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
       if (!known(n.for)) issues.push(err([...here, "for"], `"${n.for}" is not a member of the team`));
       if (n.heldBy === n.for) issues.push(err([...here, "heldBy"], `"${n.heldBy}" already holds what they need`));
       if (n.noticedBy && !members.has(n.noticedBy)) issues.push(err([...here, "noticedBy"], `"${n.noticedBy}" is not a member of the team`));
-      if (n.blocks && !interventions.has(n.blocks)) issues.push(err([...here, "blocks"], `unknown intervention "${n.blocks}"`));
+      // the acts it holds up: each an intervention of the case, once
+      const blocks = informBlocks(n);
+      blocks.forEach((b, k) => {
+        const path = typeof n.blocks === "string" ? [...here, "blocks"] : [...here, "blocks", k];
+        if (!interventions.has(b)) issues.push(err(path, `unknown intervention "${b}"`));
+        else if (blocks.indexOf(b) !== k) issues.push(err(path, `"${b}" is listed twice`));
+      });
     });
     if (s.expect?.delivered !== undefined && s.needs.length === 0) issues.push(err([...at, "expect", "delivered"], `nothing is needed in team scenario "${s.id}" (no need to deliver)`));
     if (s.expect?.informed !== undefined && s.inform.length === 0) issues.push(err([...at, "expect", "informed"], `no information is needed in team scenario "${s.id}" (no inform)`));

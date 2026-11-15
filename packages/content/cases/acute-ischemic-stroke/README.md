@@ -414,15 +414,17 @@ at the bedside (duty `circulate`; posted at the ED nurse station, she comes to r
 learner is the doctor in charge (the team calls them "the doctor" / 医生). Two authored team scenarios route one fact
 the case records — his wife's answer to the anticoagulant question (`anticoagulants`) — through the team: the triage
 nurse, Yang Jie, heard it at the door (a relief colleague with duty `inform`, reached by phone). Once the CT head has
-been read the need arises; until the doctor has read the answer back, IV tenecteplase waits (`blocks`):
+been read the need arises; until the doctor has read the answer back, thrombolysis by either drug — IV tenecteplase
+and IV alteplase — waits (`blocks`, each act tracked):
 
 | scenario | set-up | expected |
 |---|---|---|
 | `anticoagulants-from-triage` | Yang Jie holds it | asked by the resus nurse, answered by Yang Jie, told to the doctor, read back, confirmed and recorded in the case (`ask` `via: "team"`): `informed` |
-| `anticoagulants-triage-away` | Yang Jie on her break (`absent`) | escalated at once with the reason ("Yang Jie isn't available. IV tenecteplase still waits."): the doctor asks his wife directly |
+| `anticoagulants-triage-away` | Yang Jie on her break (`absent`) | escalated at once with the reason ("Yang Jie isn't available. IV tenecteplase and IV alteplase still wait."): the doctor asks his wife directly |
 
 `clinicalcraft bench team --case acute-ischemic-stroke` runs both in observer mode and records who asked, who
-supplied it, who received it and when, and what the doctor did next (tenecteplase given only after the read-back).
+supplied it, who received it and when, and what the doctor did next — each thrombolytic it holds up, when given
+(tenecteplase only after the read-back; alteplase not given).
 Played alone, with no scenario chosen at `start`, the team takes no round: the single-learner path, `cases verify`
 and the in-world demonstration are unchanged. A facilitator chooses a scenario with `?team=<id>` in the browser; the
 learner reads the information back from the Team panel.
@@ -539,7 +541,7 @@ journal, volume and pages); none was added from memory.
 
 ## Changelog
 
-### 1.1.4 — 2026-11-13 (clinical and gameplay audit of 2026-11-12: the team handoff, P1-9)
+### 1.1.4 — 2026-11-14 (clinical and gameplay audit of 2026-11-12: the team handoff, P1-9, and its verification)
 
 * **A care team with an information handoff.** The audit found that no built-in case exercised the full team
   handoff (`bench team` found no eligible case). The case now has a `team` in the resus room — the ED nurse
@@ -547,6 +549,11 @@ journal, volume and pages); none was added from memory.
   wife's recorded answer, no new fact) is held by the triage nurse and thrombolysis waits for it: supplied (asked,
   answered, told, read back, confirmed, recorded) or escalated with the reason when she is away. `bench team` runs
   both (2 / 2). The single-learner path is unchanged: no scenario, no team round; `cases verify` 100 %.
+* **Both thrombolytics wait for it** (the audit's verification, 2026-11-14). The scenarios held up tenecteplase only,
+  so `bench team` tracked tenecteplase alone, though alteplase has the same contraindication (`contraindicatedWhen`:
+  the anticoagulant history unknown and no coagulation screen). Each scenario's `blocks` now names both
+  (`["tenecteplase", "alteplase"]`): the resus nurse says both wait, and `bench team` records each — either given
+  before the read-back fails the run, one of them after it is what the doctor went on to (2 / 2, en and zh-CN).
 
 ### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
 
@@ -665,6 +672,6 @@ NIHSS ≥ 6、ASPECTS ≥ 6、6小时内、发病前mRS 0–1。
 
 **团队协作（信息交接，1.1.4）。** 抢救室有一个医护团队：急诊护士林晓在床旁协调，学员是负责的医生。两个团队情境把病例
 已记录的一条事实——妻子关于抗凝药的回答——交给团队传递：分诊护士杨洁在门口听到了这个回答（电话联系）。头颅CT判读后
-需求出现；医生复述确认之前，替奈普酶静脉溶栓需等待。`anticoagulants-from-triage`：抢救室护士去问、杨洁回答、转告医生、
+需求出现；医生复述确认之前，替奈普酶和阿替普酶静脉溶栓都需等待（两种溶栓药分别记录）。`anticoagulants-from-triage`：抢救室护士去问、杨洁回答、转告医生、
 医生复述、护士确认并记入病例；`anticoagulants-triage-away`：杨洁在休息，护士立即上报并说明原因，医生直接询问妻子。
 `clinicalcraft bench team` 记录谁去问、谁提供、谁在何时接收，以及医生接下来做了什么。单人接诊不选情境时团队不行动。

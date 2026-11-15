@@ -5,7 +5,7 @@
  * for confirmation, nothing is given, and the dose error stays for the debrief — whose safety outcome does not pass.
  * Equivalent units are given. The order as written, the dose read from it and the dose given are kept apart.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { assess, createSession as createCoreSession, parseCase, type CaseDefinition, type DoseSpec, type Requirement } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
@@ -14,7 +14,7 @@ import { giveArgs } from "./commands.js";
 import { actionFromToolInput, actionToolArgs } from "./session/action-input.js";
 import { safetyHeadline, safetyLines } from "./safety.js";
 import { resolveIntervention, withoutDoses } from "./tools/clinical-resolve.js";
-import { administeredDose, doseQueryReadBack, doseText, itemOrder, orderCheck, orderClause, otherOrders, presetText, writtenOrder, type DoseQuery } from "./tools/dose-order.js";
+import { administeredDose, doseQueryReadBack, doseText, itemOrder, orderCheck, orderClause, otherOrders, presetText, resolveOrderedIntervention, writtenOrder, type DoseQuery } from "./tools/dose-order.js";
 import { requirementText } from "./tools/requirements.js";
 
 /**
@@ -507,10 +507,12 @@ describe("a learner's own order that names several items is read clause by claus
   it("the intervene tool, /give and a hook's rewrite send the item's own clause; the other items are named, not dropped", async () => {
     expect(itemOrder(asthma, { query: "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化" }, "ipratropium-neb", "zh-CN")).toEqual({ text: "异丙托溴铵250微克雾化", dose: { amount: 250, unit: "microgram", route: "INH" } });
     expect(itemOrder(asthma, { query: "salbutamol 2.5 mg nebulised" }, "salbutamol-neb", "en")).toEqual({ text: "salbutamol 2.5 mg nebulised", dose: { amount: 2.5, unit: "mg", route: "INH" } });
+    // free words that order several items order the first of them, in either language (verification D3: the zh order
+    // gave ipratropium, whose name the matcher found longer, while the en one gave salbutamol)
     const zh = await give("zh-CN", asthma, "沙丁胺醇2.5毫克+异丙托溴铵250微克雾化");
-    expect(zh.state.interventions).toEqual([expect.objectContaining({ interventionId: "ipratropium-neb", ordered: { text: "异丙托溴铵250微克雾化", dose: { amount: 250, unit: "microgram", route: "INH" } } })]);
+    expect(zh.state.interventions).toEqual([expect.objectContaining({ interventionId: "salbutamol-neb", ordered: { text: "沙丁胺醇2.5毫克", dose: { amount: 2.5, unit: "mg" } } })]);
     expect(zh.state.doseErrors ?? []).toEqual([]);
-    expect(zh.out.text).toContain("您的医嘱还写了沙丁胺醇氧驱动雾化吸入：每种治疗请单独下医嘱。");
+    expect(zh.out.text).toContain("您的医嘱还写了异丙托溴铵雾化吸入：每种治疗请单独下医嘱。");
     const en = await give("en", asthma, "nebulise salbutamol 2.5 mg with ipratropium 250 micrograms");
     expect(en.state.interventions).toEqual([expect.objectContaining({ interventionId: "salbutamol-neb", ordered: expect.objectContaining({ text: "nebulise salbutamol 2.5 mg" }) })]);
     expect(en.out.text).toContain("Your order also names Nebulised ipratropium bromide: each treatment is given on its own order.");
@@ -591,5 +593,267 @@ describe("second re-review replays: no exemption swallows the only dose; prepara
     // a bolus and the infusion's rate: the check names both parts
     const parts = await give("en", stroke, "alteplase bolus 7.2 mg, infusion 64.8 mg/h", "bypass");
     expect(parts.out.text).toContain("Dose checked: 7.2 mg as a bolus, then 64.8 mg/h, as ordered, is the preset dose");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The second set's verification (D3): every clause of an order checked */
+/* ------------------------------------------------------------------ */
+
+describe("an order that names several items: every clause checked against its own item, the same in both languages (verification D3)", () => {
+  const stemi = builtin("stemi-inferior-rv");
+
+  it("a tenfold dose in a clause that is not given is recorded, fails the safety outcome and is read back — en and zh-CN alike", async () => {
+    for (const [locale, order, words] of [
+      ["en", "ticagrelor 180 mg PO with aspirin 3000 mg", "Nurse: “Before I give aspirin loading dose, let me read it back: you ordered 3000 mg; the dose for this is 150–325 mg PO. Can you confirm the dose?”\nNot given: the dose ordered differs from the preset dose (9.23 times the top of the preset range). Order it again with the dose you mean."],
+      ["zh-CN", "替格瑞洛180mg口服+阿司匹林3000mg", "护士：“给阿司匹林负荷之前我复述一下：您开的是 3000 mg，这个药的剂量是 150–325 mg 口服。请您确认剂量。”\n未给药：医嘱剂量与预设剂量不符（为预设剂量上限的 9.23 倍）。请写明您要给的剂量，重新下医嘱。"],
+      ["zh-CN", "替格瑞洛180mg和阿司匹林3000mg口服", "您开的是 3000 mg 口服"],
+      ["zh-CN", "替格瑞洛180mg、阿司匹林3000mg口服", "您开的是 3000 mg 口服"],
+      ["en", "give ticagrelor 180 mg PO and aspirin 3000 mg PO", "you ordered 3000 mg PO"],
+    ] as const) {
+      const { state, out } = await give(locale, stemi, order, "bypass");
+      // the first order is given on its own words; the other's dose error is the engine's record, not given
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ticagrelor"]);
+      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: "aspirin", ordered: expect.objectContaining({ amount: 3000, unit: "mg" }), severity: "critical" })]);
+      expect(assess(stemi, state).safety.passed, order).toBe(false);
+      expect(out.text, order).toContain(words);
+      expect((out.data as { data: unknown }).data, order).toMatchObject({ interventionId: "ticagrelor", alsoOrdered: [{ interventionId: "aspirin", outcome: "dose-error", doseError: { severity: "critical" } }] });
+    }
+  });
+
+  it("the joiners of both languages split alike: the first item is given, never a \"which one?\" for one language only", async () => {
+    for (const [locale, order] of [
+      ["en", "ticagrelor 180 mg PO and aspirin 300 mg PO"],
+      ["en", "ticagrelor 180 mg PO plus aspirin 300 mg PO"],
+      ["en", "ticagrelor 180 mg PO as well as aspirin 300 mg PO"],
+      ["en", "give ticagrelor 180 mg PO & aspirin 300 mg PO"],
+      ["zh-CN", "替格瑞洛180mg+阿司匹林300mg口服"],
+      ["zh-CN", "替格瑞洛180mg和阿司匹林300mg口服"],
+      ["zh-CN", "替格瑞洛180mg、阿司匹林300mg口服"],
+      ["zh-CN", "替格瑞洛180mg以及阿司匹林300mg口服"],
+      ["zh-CN", "替格瑞洛180mg同时阿司匹林300mg口服"],
+    ] as const) {
+      const { state, out } = await give(locale, stemi, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ticagrelor"]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+      expect(out.text, order).toContain(locale === "en" ? "Your order also names Aspirin loading dose: each treatment is given on its own order." : "您的医嘱还写了阿司匹林负荷：每种治疗请单独下医嘱。");
+    }
+    // the first of them, whichever name is longer
+    for (const [locale, order] of [["en", "give aspirin 300 mg PO and ticagrelor 180 mg PO"], ["zh-CN", "阿司匹林300mg和替格瑞洛180mg嚼服"]] as const) {
+      const { state } = await give(locale, stemi, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["aspirin"]);
+    }
+    // a dose that cannot be read in the other order is asked about: nothing recorded for it
+    const unclear = await give("en", stemi, "ticagrelor 180 mg PO and aspirin 0.5 tablet", "bypass");
+    expect(unclear.state.interventions.map((r) => r.interventionId)).toEqual(["ticagrelor"]);
+    expect(unclear.state.doseErrors ?? []).toEqual([]);
+    expect((unclear.out.data as { data: unknown }).data).toMatchObject({ alsoOrdered: [{ interventionId: "aspirin", outcome: "dose-query" }] });
+  });
+
+  it("a multi-drug order whose doses are all right stays given exactly as before", async () => {
+    // the id first, its own clause (the reply as the first set gave it, line for line)
+    const both = await give("en", stemi, "ticagrelor 180 mg PO and aspirin 300 mg PO", "bypass");
+    expect(both.state.interventions).toEqual([expect.objectContaining({ interventionId: "ticagrelor", ordered: { text: "180 mg PO", dose: { amount: 180, unit: "mg", route: "PO" } } })]);
+    expect(both.state.doseErrors ?? []).toEqual([]);
+    expect(both.out.text.split("\n").slice(0, 4)).toEqual([
+      "Given: Ticagrelor loading dose (Ticagrelor 180 mg PO).",
+      "Dose checked: 180 mg PO as ordered is the preset dose (180 mg PO).",
+      "Your order also names Aspirin loading dose: each treatment is given on its own order.",
+      expect.stringMatching(/^Response: Ticagrelor 180 mg given orally\./u),
+    ]);
+    expect(assess(stemi, both.state).safety.passed).toBe(true);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The second set's verification (D1, D2) through /give                */
+/* ------------------------------------------------------------------ */
+
+describe("an infusion's rate checked when the parts add up to the whole; a heparin rate as an amount over a time (verification D1, D2, /give)", () => {
+  const stroke = builtin("acute-ischemic-stroke");
+  const pe = builtin("pulmonary-embolism-postop");
+
+  it("a tenfold alteplase infusion is not given: a critical dose error, read back — en and zh-CN", async () => {
+    for (const [locale, order, dose, words] of [
+      ["en", "alteplase 7.2 mg IV bolus then 64.8 mg over 6 min", { amount: 648, unit: "mg/h" }, "you ordered 648 mg/h IV"],
+      ["zh-CN", "阿替普酶7.2mg静推，随后64.8mg于6分钟内泵入", { amount: 648, unit: "mg/h" }, "您开的是 648 mg/h 静脉"],
+      ["en", "alteplase 72 mg IV over 6 min", { amount: 720, unit: "mg/h" }, "you ordered 720 mg/h IV"],
+      ["zh-CN", "阿替普酶0.9mg/kg，其中10%于1分钟内静推，其余6分钟内泵入", { amount: 8.1, unit: "mg/kg/h" }, "您开的是 8.1 mg/kg/h 静脉"],
+    ] as const) {
+      const { state, out } = await give(locale, stroke, order, "bypass");
+      expect(state.interventions, order).toEqual([]);
+      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: "alteplase", ordered: expect.objectContaining(dose), ratio: 10, severity: "critical" })]);
+      expect(assess(stroke, state).safety.passed, order).toBe(false);
+      expect(out.text, order).toContain(words);
+    }
+  });
+
+  it("the right regimen stays given in either language, its bolus's own minute no infusion, its rest's time how long it runs", async () => {
+    for (const [locale, order, line] of [
+      ["en", "alteplase 7.2 mg IV bolus then 64.8 mg over 60 min", "Dose checked: 72 mg IV as ordered is the preset dose"],
+      ["zh-CN", "阿替普酶7.2mg静推，随后64.8mg于60分钟内泵入", "剂量已核对：医嘱 72 mg 静脉 即预设剂量"],
+      ["en", "alteplase 0.9 mg/kg IV, 10% bolus over 1 min", "Dose checked: 0.9 mg/kg IV as ordered is the preset dose"],
+      ["zh-CN", "阿替普酶0.9mg/kg，其中10%于1分钟内静推", "剂量已核对：医嘱 0.9 mg/kg 静脉 即预设剂量"],
+      ["en", "alteplase 7.2 mg IV bolus, the rest over 60 min", "Dose checked: 7.2 mg IV as a bolus, then the rest over 60 min, as ordered, is the preset dose"],
+      ["zh-CN", "阿替普酶7.2mg静推，其余60分钟内泵入", "剂量已核对：医嘱先推注 7.2 mg 静脉，其余于 60 分钟内输注，即预设剂量"],
+    ] as const) {
+      const { state, out } = await give(locale, stroke, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["alteplase"]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+      expect(out.text, order).toContain(line);
+    }
+  });
+
+  it("heparin 5000 units then 2520 units over 2 h is the bolus and its 1260 units/h — given, never \"several\" (en and zh-CN)", async () => {
+    for (const [locale, order, line] of [
+      ["en", "heparin 5000 units IV bolus then 2520 units over 2 h", "Dose checked: 5000 units IV as ordered is the preset dose"],
+      ["zh-CN", "肝素5000单位静推，随后2520单位于2小时内泵入", "剂量已核对：医嘱 5000 单位 静脉 即预设剂量"],
+    ] as const) {
+      const { state, out } = await give(locale, pe, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ufh"]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+      expect(out.text, order).toContain(line);
+    }
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The verification of the D1–D3 fixes, through /give                  */
+/* ------------------------------------------------------------------ */
+
+describe("the D1–D3 fixes, verified through /give: the whole beside its bolus, times however written, equal heparin amounts, strengths (en + zh-CN)", () => {
+  const stroke = builtin("acute-ischemic-stroke");
+  const pe = builtin("pulmonary-embolism-postop");
+  const dka = builtin("dka-adult");
+
+  it("the whole with its bolus over its own minute and the rest in words is given; the rest over 6 min is the tenfold infusion, read back at 648 mg/h", async () => {
+    for (const [locale, order] of [
+      ["en", "alteplase 72 mg IV: 7.2 mg bolus over 1 min, rest over 60 min"],
+      ["zh-CN", "阿替普酶72mg，其中7.2mg 1分钟内静推，其余60分钟内泵入"],
+    ] as const) {
+      const { state } = await give(locale, stroke, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["alteplase"]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+    }
+    for (const [locale, order, words] of [
+      ["en", "alteplase 72 mg IV: 7.2 mg bolus over 1 min, rest over 6 min", "you ordered 648 mg/h IV"],
+      ["en", "alteplase 7.2 mg IV bolus then 64.8 mg IV over six minutes", "you ordered 648 mg/h IV"],
+      ["zh-CN", "阿替普酶0.9mg/kg静脉滴注，其中10%在最初1分钟内静脉推注，其余持续滴注6分钟", "您开的是 8.1 mg/kg/h 静脉"],
+      ["zh-CN", "阿替普酶7.2mg静推，64.8mg 6分钟泵完", "您开的是 648 mg/h 静脉"],
+    ] as const) {
+      const { state, out } = await give(locale, stroke, order, "bypass");
+      expect(state.interventions, order).toEqual([]);
+      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: "alteplase", ratio: 10, severity: "critical" })]);
+      expect(out.text, order).toContain(words);
+    }
+  });
+
+  it("heparin's bolus then the same amount over 20 min is a 15000 units/h dose error; over 4 h it is the infusion, given", async () => {
+    for (const [locale, order, words] of [
+      ["en", "heparin 5000 units bolus then 5000 units over 20 min", "you ordered 15000 units/h"],
+      ["zh-CN", "肝素5000单位静推，随后5000单位于20分钟内泵入", "您开的是 15000 单位/h 静脉"],
+    ] as const) {
+      const { state, out } = await give(locale, pe, order, "bypass");
+      expect(state.interventions, order).toEqual([]);
+      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: "ufh", ordered: expect.objectContaining({ amount: 15000, unit: "unit/h" }), severity: "critical" })]);
+      expect(assess(pe, state).safety.passed, order).toBe(false);
+      expect(out.text, order).toContain(words);
+    }
+    for (const [locale, order] of [["en", "heparin 5000 units bolus then 5000 units over 4 h"], ["zh-CN", "肝素5000单位静推，随后5000单位于4小时内泵入"]] as const) {
+      const { state } = await give(locale, pe, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual(["ufh"]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+    }
+  });
+
+  it("a diluent's strength is no share and an infusion word alone names no part: potassium and insulin rates are checked again", async () => {
+    for (const [locale, order, id, dose, severity] of [
+      ["en", "KCl 40 mmol in 100 mL 0.9% over 10 min", "kcl-replacement", { amount: 240, unit: "mmol/h" }, "critical"],
+      ["zh-CN", "氯化钾40mmol加入1000ml 0.9%，1小时内静滴", "kcl-replacement", { amount: 40, unit: "mmol/h" }, "critical"],
+      ["en", "insulin 55 units IV, infusion over 1 h", "friii", { amount: 55, unit: "unit/h" }, "critical"],
+    ] as const) {
+      const { state } = await give(locale, dka, order, "bypass");
+      expect(state.interventions, order).toEqual([]);
+      expect(state.doseErrors, order).toEqual([expect.objectContaining({ interventionId: id, ordered: expect.objectContaining(dose), severity })]);
+    }
+    for (const [locale, order, id] of [
+      ["en", "KCl 40 mmol in 1 L NaCl 0.9% over 2 hours", "kcl-replacement"],
+      ["zh-CN", "氯化钾40mmol加入1000ml 0.9%，2小时内静滴", "kcl-replacement"],
+      ["en", "insulin 5.5 units IV, infusion over 1 h", "friii"],
+      ["zh-CN", "胰岛素5.5单位静脉，泵入1小时", "friii"],
+    ] as const) {
+      const { state } = await give(locale, dka, order, "bypass");
+      expect(state.interventions.map((r) => r.interventionId), order).toEqual([id]);
+      expect(state.doseErrors ?? [], order).toEqual([]);
+    }
+  });
+});
+
+describe("an item's own name that holds a join orders that item: \"the first of them\" is for a list of orders only (verification D3)", () => {
+  const casesDir = fileURLToPath(new URL("../../content/cases/", import.meta.url));
+  const all = readdirSync(casesDir).sort().map((id) => builtin(id));
+  const names = (iv: CaseDefinition["interventions"][number], locale: "en" | "zh-CN") => {
+    const name = typeof iv.name === "string" ? iv.name : iv.name[locale];
+    const aliases = iv.aliases == null ? [] : Array.isArray(iv.aliases) ? iv.aliases : (iv.aliases[locale] ?? []);
+    return [name, ...aliases].filter((x): x is string => typeof x === "string" && x.length > 0);
+  };
+
+  it("every built-in item's name and alias, in both languages, resolves as its whole words do — and orders with its whole name", () => {
+    const changed: string[] = [];
+    for (const c of all) {
+      for (const iv of c.interventions) {
+        for (const locale of ["en", "zh-CN"] as const) {
+          for (const name of names(iv, locale)) {
+            const whole = resolveIntervention(c, { query: name }, locale);
+            const ordered = resolveOrderedIntervention(c, { query: name }, locale);
+            if (JSON.stringify(ordered) !== JSON.stringify(whole)) changed.push(`${c.id}|${iv.id}|${locale}|${name} → ${JSON.stringify(ordered)} (whole words: ${JSON.stringify(whole)})`);
+            else if (whole.kind === "id" && whole.id === iv.id && itemOrder(c, { query: name }, iv.id, locale)?.text !== name.trim()) changed.push(`${c.id}|${iv.id}|${locale}|${name}: its order is “${itemOrder(c, { query: name }, iv.id, locale)?.text}”`);
+          }
+        }
+      }
+    }
+    expect(changed).toEqual([]);
+  });
+
+  it("the audit's replays: monitoring, the consent talk, lifestyle advice alone — each its own item, not the first item a fragment names", () => {
+    for (const [caseId, locale, query, id] of [
+      ["cmcr-857041", "en", "Continuous ECG, blood pressure and SpO₂ monitoring", "monitoring"],
+      ["acute-appendicitis", "zh-CN", "解释诊断与治疗选择（含“抗生素优先”方案），共同决策并取得知情同意", "shared-decision-consent"],
+      ["new-onset-t2dm", "zh-CN", "仅给予生活方式建议，6–12个月后复查", "iv-lifestyle-only"],
+      ["cmcr-1653406", "en", "Ventilate with 100% oxygen and adjust the ventilator", "ventilate-100"],
+      ["cmcr-1653406", "zh-CN", "加压快速大量输注晶体液，直到血压恢复正常", "rapid-fluids"],
+      ["cmcr-70044", "zh-CN", "反应后处理：监护观察、记录致敏药物、告知家属、变态反应科随访", "aftercare-plan"],
+      ["cmcr-1074569", "en", "Systemic therapy after the hepatectomy, then oral maintenance", "post-hepatectomy-chemo"],
+    ] as const) {
+      const c = builtin(caseId);
+      expect(resolveOrderedIntervention(c, { query: query }, locale), query).toEqual({ kind: "id", id });
+      expect(otherOrders(c, query, id, locale), query).toEqual([]);
+    }
+    // a list of orders still orders the first of them, each item named in its own clause
+    const stemi = builtin("stemi-inferior-rv");
+    expect(resolveOrderedIntervention(stemi, { query: "ticagrelor 180 mg PO and aspirin 300 mg PO" }, "en")).toEqual({ kind: "id", id: "ticagrelor" });
+    expect(resolveOrderedIntervention(stemi, { query: "阿司匹林300mg和替格瑞洛180mg嚼服" }, "zh-CN")).toEqual({ kind: "id", id: "aspirin" });
+  });
+
+  it("an item's own name reworded — a comma for its dash, 、 for its comma — still orders that item: a clause that is a fragment of its name orders no other item (final check)", async () => {
+    for (const [caseId, locale, query, id] of [
+      ["new-onset-t2dm", "en", "Lifestyle advice only, recheck in 6–12 months", "iv-lifestyle-only"],
+      ["new-onset-t2dm", "en", "Lifestyle advice only, recheck in 6-12 months", "iv-lifestyle-only"],
+      ["new-onset-t2dm", "zh-CN", "仅给予生活方式建议，6-12个月后复查", "iv-lifestyle-only"],
+      ["new-onset-t2dm", "zh-CN", "仅给予生活方式建议、6–12个月后复查", "iv-lifestyle-only"],
+      ["cmcr-1653406", "zh-CN", "加压快速大量输注晶体液、直到血压恢复正常", "rapid-fluids"],
+    ] as const) {
+      const c = builtin(caseId);
+      expect(resolveOrderedIntervention(c, { query }, locale), query).toEqual({ kind: "id", id });
+      expect(otherOrders(c, query, id, locale), query).toEqual([]);
+      expect(orderClause(c, query, id, locale), query).toBe(query);
+    }
+    // through /give: the item itself is given, and no other treatment is said to be named
+    const { state, events } = await give("en", builtin("new-onset-t2dm"), "Lifestyle advice only, recheck in 6–12 months", "bypass");
+    expect(state.interventions.map((r) => r.interventionId)).toEqual(["iv-lifestyle-only"]);
+    expect(msgsOf(events, "command_output").map((m) => m.text).join("\n")).not.toMatch(/also names/u);
+    // a list whose clauses each order an item of its own is still a list (ticagrelor is no fragment of aspirin's name)
+    const stemi = builtin("stemi-inferior-rv");
+    expect(otherOrders(stemi, "ticagrelor 180 mg PO and aspirin 300 mg PO", "ticagrelor", "en")).toEqual(["aspirin"]);
   });
 });

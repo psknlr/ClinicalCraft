@@ -5,8 +5,8 @@
  * building's corridor between rooms, the outdoor region outside, the level's own rooms upstairs.
  */
 import { describe, expect, it } from "vitest";
-import { buildingLevels, defaultLevelId, rectContains } from "@clinicalcraft/core";
-import { regionLookup } from "./locate.js";
+import { buildingLevels, defaultLevelId, rectContains, t } from "@clinicalcraft/core";
+import { buildZoneName, regionLookup } from "./locate.js";
 import { roomLookup } from "./registry.js";
 import { loadFacility } from "./__fixtures__/content.js";
 import { makeWorld } from "./__fixtures__/world.js";
@@ -72,5 +72,36 @@ describe("the world's room and region lookups", () => {
         if (gap) expect(lookup({ level, ...gap }, "en").room).toBeNull();
       }
     }
+  });
+
+  it("the build zone is named as such (audit W5: it read as the outdoor region) — on the ground, in no room, by the facility's own name for it; the runtime says the same", () => {
+    for (const [facility, caseId] of [
+      ["general-hospital", "pulmonary-embolism-postop"],
+      ["clinic-v4", "smzl-lung-adeno"],
+    ] as const) {
+      const f = loadFacility(facility);
+      const zone = f.buildZone!.rect;
+      const ground = defaultLevelId(f);
+      const lookup = regionLookup(f);
+      const inside = { level: ground, x: zone.x, z: zone.z };
+      // one name for the place in either language: the facility's build-zone room's, the label the map draws
+      expect(lookup(inside, "en"), facility).toEqual({ room: null, name: "Building Garden" });
+      expect(lookup(inside, "zh-CN"), facility).toEqual({ room: null, name: "建造园地" });
+      for (const locale of ["en", "zh-CN"]) expect(buildZoneName(f, locale)).toBe(t(f.rooms.find((r) => r.kind === "build-zone")!.name, locale));
+      // just outside it: the outdoor region again
+      expect(lookup({ ...inside, x: zone.x + zone.w / 2 + 1 }, "en"), facility).toEqual({ room: null, name: "Healing Garden" });
+      const w = makeWorld(caseId);
+      for (const locale of ["en", "zh-CN"]) expect(w.runtime.regionName(inside, locale)).toBe(lookup(inside, locale).name);
+      expect(w.runtime.roomAt(inside)).toBeNull();
+    }
+    // a facility without a room of its own for it: "Build zone" / "建造园地"
+    const gh = loadFacility("general-hospital");
+    const bare = { ...gh, rooms: gh.rooms.filter((r) => r.kind !== "build-zone") };
+    const zone = gh.buildZone!.rect;
+    expect(regionLookup(bare)({ level: defaultLevelId(bare), x: zone.x, z: zone.z }, "en")).toEqual({ room: null, name: "Build zone" });
+    expect(buildZoneName(bare, "zh-CN")).toBe("建造园地");
+    // a facility without one: the outdoor region everywhere outside its buildings
+    const th = loadFacility("teaching-hospital");
+    expect(th.buildZone).toBeUndefined();
   });
 });

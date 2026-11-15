@@ -5,7 +5,7 @@
  * equipment of the next bed in the same bay never shows this patient; nothing shows a patient who was taken away.
  */
 import { describe, expect, it } from "vitest";
-import { PRIMARY_ACTOR } from "./contracts.js";
+import { PRIMARY_ACTOR, type WorldEvent } from "./contracts.js";
 import { makeWorld } from "./__fixtures__/world.js";
 
 const A = PRIMARY_ACTOR;
@@ -79,6 +79,66 @@ describe("screenPatient: whose bedside a device's live screen shows", () => {
     expect((await w.act({ actorId: A, operation: "move_to", targetId: CART, goal: { kind: "interact", id: "eq:resus2-monitor" } })).status).toBe("completed");
     expect(w.runtime.screenPatient(CART)).toBeNull();
     expect(w.runtime.stateOf(CART)).toBe("prepared");
+  });
+
+  it("audit W2, the verifier's replay: the patient taken away from a connected cart — its leads come off; back home it shows them only once connected again", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    const P = w.patientId;
+    const CART = "eq:resus1-ecg";
+    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: CART })).status, op).toBe("completed");
+    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["connected", P]);
+    // to the CT on her bed: the cart stays in resus — its leads come off (before W2: still "connected", showing nobody)
+    const ct = await w.act({ actorId: A, operation: "transport_patient", targetId: P, parameters: { destination: "eq:ct-scanner" } });
+    expect(ct.status, ct.message).toBe("completed");
+    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
+    expect(ct.events.find((e) => e.type === "entity.state" && e.entityId === CART)).toMatchObject({ from: "connected", to: "prepared", operation: "transport_patient", actorId: A });
+    // the event log: the leads came off when she arrived elsewhere — after her move, before the leg is closed
+    const types = ct.events.map((e) => (e.type === "entity.state" ? `entity.state:${e.entityId}` : e.type));
+    expect(types.indexOf(`entity.state:${CART}`)).toBeGreaterThan(types.indexOf("patient.moved"));
+    expect(types.indexOf(`entity.state:${CART}`)).toBeLessThan(types.indexOf("patient.arrived"));
+    // back home: by her bed again, but nothing on her (before W2: "connected", showing her again without a new act)
+    const home = await w.act({ actorId: A, operation: "transport_patient", targetId: P, parameters: { destination: "home" } });
+    expect(home.status, home.message).toBe("completed");
+    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
+    // connecting is a new act
+    expect((await w.act({ actorId: A, operation: "connect", targetId: CART })).status).toBe("completed");
+    expect(w.runtime.screenPatient(CART)).toBe(P);
+  });
+
+  it("audit W2: a team relocation takes the leads off too (the team moved her); a cart not on her is left as it was", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    const P = w.patientId;
+    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: "eq:resus1-ecg" })).status, op).toBe("completed");
+    const seen: WorldEvent[] = [];
+    w.runtime.subscribe((e) => seen.push(e));
+    const rel = w.runtime.relocatePatient({ capability: "fluoroscopy" }, { intervention: "transfer-cath-lab" });
+    expect(rel).toMatchObject({ ok: true, moved: true });
+    expect([w.runtime.stateOf("eq:resus1-ecg"), w.runtime.screenPatient("eq:resus1-ecg")]).toEqual(["prepared", null]);
+    expect(seen.find((e) => e.type === "entity.state")).toMatchObject({ entityId: "eq:resus1-ecg", from: "connected", to: "prepared", operation: "relocate", actorId: "team" });
+    // the only device on her: every other cart is as it was
+    expect(seen.filter((e) => e.type === "entity.state")).toHaveLength(1);
+    expect(w.runtime.stateOf("eq:resus2-ecg")).toBe("idle");
+  });
+
+  it("audit W2: walking away with the clinician takes the leads off too — not when they get up by the cart, once they are no longer by it", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    const P = w.patientId;
+    const CART = "eq:resus1-ecg";
+    expect((await w.act({ actorId: A, operation: "approach", targetId: P })).status).toBe("completed");
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: CART })).status, op).toBe("completed");
+    // she is well enough to sit up and walk: she gets up beside the cart, its leads still on her
+    w.harness.cues.posture = "sitting";
+    w.runtime.refreshPatient();
+    expect((await w.act({ actorId: A, operation: "escort_patient", targetId: P })).status).toBe("completed");
+    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["connected", P]);
+    // she walks with the clinician out of the bay (before W2: still "connected", showing nobody)
+    const walk = await w.act({ actorId: A, operation: "navigate", goal: { kind: "room", id: "ed-cubicle-1" } });
+    expect(walk.status, walk.message).toBe("completed");
+    expect(w.runtime.patientPlace()?.escort).toBe(A);
+    expect([w.runtime.stateOf(CART), w.runtime.screenPatient(CART)]).toEqual(["prepared", null]);
+    expect(walk.events.find((e) => e.type === "entity.state" && e.entityId === CART)).toMatchObject({ from: "connected", to: "prepared", operation: "escort_patient", actorId: A });
   });
 
   it("out of service: nobody, the patient's own monitor included", () => {

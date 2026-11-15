@@ -287,6 +287,83 @@ describe("audit 2026-11-12 P1-8: navigation goes where the actor believes a thin
   });
 });
 
+describe("audit 2026-11-12 W1: a thing believed elsewhere is listed as last seen — never as it is now", () => {
+  const CUB2 = "eq:cub2-ecg";
+  const listed = (w: ReturnType<typeof makeWorld>, id: string) => w.runtime.find(A, { capabilities: ["ecg-12lead"] }).find((e) => e.id === id)!;
+
+  it("the verifier's replay: the nurse wheels the cubicle cart to the patient and connects it out of the clinician's sight — nothing the clinician is told changes", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+    const before = listed(w, CUB2);
+    // never seen: where it is kept, in no state, nothing to do with it from here, no version of it
+    expect(before).toMatchObject({ awareness: "mapped", room: "ed-cubicle-2", lastKnown: { kind: "usual", label: "usually kept in ED Cubicle 2" }, availableActions: [], stateVersion: 0, inReach: false });
+    expect(before.state).toBeUndefined();
+    expect((await w.act({ actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
+    expect((await w.act({ actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
+    expect(listed(w, CUB2)).toEqual(before);
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: NURSE, operation: op, targetId: CUB2 })).status, op).toBe("completed");
+    expect(w.runtime.stateOf(CUB2)).toBe("connected");
+    // the same in every read: find, a room report, an inspection (its operations all refused where it is believed)
+    expect(listed(w, CUB2)).toEqual(before);
+    expect(w.runtime.roomInfo(A, "ed-cubicle-2")!.entities.find((e) => e.id === CUB2)).toEqual(before);
+    const insp = w.runtime.inspect(A, CUB2)!;
+    expect(insp).toMatchObject({ availableActions: [], stateVersion: 0, lastKnown: { kind: "usual" } });
+    expect(insp.state).toBeUndefined();
+    expect(insp.operations.every((o) => !o.available)).toBe(true);
+  });
+
+  it("seen, then out of sight again: the state it was in when last seen, never a change made since", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    expect((await w.act({ actorId: NURSE, operation: "approach", targetId: CUB2 })).status).toBe("completed");
+    expect((await w.act({ actorId: NURSE, operation: "move_to", targetId: CUB2, goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: NURSE, operation: op, targetId: CUB2 })).status, op).toBe("completed");
+    // the clinician walks up to the patient: the cart is there, connected — perceived, as it is
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    const seen = listed(w, CUB2);
+    expect(seen).toMatchObject({ state: "connected", awareness: expect.stringMatching(/visible|nearby/) });
+    expect(seen.lastKnown).toBeUndefined();
+    const version = seen.stateVersion;
+    expect(version).toBeGreaterThan(0);
+    // to the office: remembered as last seen — connected, at that version, nothing to do with it from here
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+    const remembered = listed(w, CUB2);
+    expect(remembered).toMatchObject({ awareness: "remembered", state: "connected", stateVersion: version, availableActions: [], lastKnown: { kind: "last-seen" } });
+    // the nurse records and resets it out of the clinician's sight: still "connected, as last seen"
+    for (const op of ["record", "reset"]) await w.act({ actorId: NURSE, operation: op, targetId: CUB2, parameters: { investigation: "ecg-12lead" } });
+    expect(w.runtime.stateOf(CUB2)).toBe("idle");
+    expect(listed(w, CUB2)).toEqual(remembered);
+    // the belief, its last-seen state included, survives a snapshot
+    const again = makeWorld("stemi-inferior-rv", { extra: { snapshot: w.runtime.snapshot() } });
+    expect(again.runtime.find(A, { capabilities: ["ecg-12lead"] }).find((e) => e.id === CUB2)).toMatchObject({ state: "connected", stateVersion: version, lastKnown: { kind: "last-seen" } });
+  });
+
+  it("told where it is: where, not what it is like — no state; missing: no state, no actions, and distance and bearing only to where it was looked for", async () => {
+    const w = await cartMovedOutOfSight();
+    expect((await w.act({ actorId: A, operation: "approach", targetId: ECG })).errorCode).toBe("STALE_DESTINATION");
+    const missing = listed(w, ECG);
+    const me = w.runtime.actor(A)!.pose;
+    const looked = w.runtime.whereabouts(A, ECG)!.missed!;
+    const truth = w.runtime.snapshot().entities[ECG]!.position!;
+    expect(missing).toMatchObject({ lastKnown: { kind: "missing" }, room: null, availableActions: [], stateVersion: 0 });
+    expect(missing.state).toBeUndefined();
+    // the distance and the bearing are to where it looked (within the cart's footprint of it), never to where the cart is
+    expect(Math.abs(missing.distance - Math.hypot(looked.x - me.x, looked.z - me.z))).toBeLessThan(1);
+    expect(Math.abs(missing.distance - Math.hypot(truth.x - me.x, truth.z - me.z))).toBeGreaterThan(5);
+    const bearingTo = (x: number, z: number) => {
+      const dx = x - me.x, dz = z - me.z;
+      return (Math.atan2(dx * Math.cos(me.yaw) - dz * Math.sin(me.yaw), -dx * Math.sin(me.yaw) - dz * Math.cos(me.yaw)) * 180) / Math.PI;
+    };
+    const turn = (a: number, b: number) => Math.abs(((a - b + 540) % 360) - 180);
+    expect(turn(missing.bearing, bearingTo(looked.x, looked.z))).toBeLessThan(0.5);
+    expect(turn(missing.bearing, bearingTo(truth.x, truth.z))).toBeGreaterThan(10);
+    w.runtime.askWhereabouts(A, ECG, NURSE);
+    const told = listed(w, ECG);
+    expect(told).toMatchObject({ lastKnown: { kind: "told" }, room: "ed-cubicle-1", availableActions: [], stateVersion: 0 });
+    expect(told.state).toBeUndefined();
+    expect(w.runtime.snapshot().actors.find((a) => a.id === A)!.lastSeen![ECG]).toEqual({ level: "L0", x: truth.x, y: truth.y, z: truth.z, rot: expect.any(Number), toldBy: NURSE });
+  });
+});
+
 describe("lead note 2: where a place is", () => {
   it("a room by name; a corridor inside the building; outdoors the facility's outdoor region", () => {
     const en = makeWorld("stemi-inferior-rv");

@@ -42,6 +42,7 @@ const PHRASES = {
   // information a colleague holds (docs/TEAM.md §4.5): asked for, reported back, told to the person, read back
   infoNotice: { en: "{info} for {for} — {holder} has it; I'm getting it.{blocked}", "zh-CN": "{for}需要的{info}在{holder}那里，我去问。{blocked}" },
   infoBlocked: { en: " {blocks} waits until it's confirmed.", "zh-CN": "{blocks}等确认后再进行。" },
+  infoBlockedMany: { en: " {blocks} wait until it's confirmed.", "zh-CN": "{blocks}都等确认后再进行。" },
   infoRequest: { en: "{to}, {for} needs {info} — what did you learn?", "zh-CN": "{to}，{for}需要{info}——你了解到的情况是什么？" },
   infoReport: { en: "{info}: {fact}", "zh-CN": "{info}：{fact}" },
   infoRelay: { en: "{info}, from {holder}: {fact}", "zh-CN": "{info}——{holder}转述：{fact}" },
@@ -50,6 +51,7 @@ const PHRASES = {
   infoNotKnown: { en: "I don't have {info}.", "zh-CN": "我不了解{info}。" },
   infoUnresolved: { en: "{info} for {for} hasn't come — {reason}.{blocked}", "zh-CN": "{for}需要的{info}还没拿到——{reason}。{blocked}" },
   infoStillBlocked: { en: " {blocks} still waits.", "zh-CN": "{blocks}仍需等待。" },
+  infoStillBlockedMany: { en: " {blocks} still wait.", "zh-CN": "{blocks}都仍需等待。" },
   // why a task could not be done, as a colleague tells it (escalations)
   "why.noAnswer": { en: "no answer from {to}", "zh-CN": "{to}没有回应" },
   "why.notFound": { en: "{to} can't find one in the room", "zh-CN": "{to}在手术间里找不到" },
@@ -72,6 +74,12 @@ export function phrase(key: TeamPhrase, params: Params = {}): Bilingual {
   const en = fill(p.en, "en");
   // a sentence starts with a capital ("The surgeon needs…"); a clause (`why.*`) is left as it is
   return { en: key.startsWith("why.") ? en : en.charAt(0).toUpperCase() + en.slice(1), "zh-CN": fill(p["zh-CN"], "zh-CN") };
+}
+
+/** Names in both languages as one list: "A and B", "A, B and C"; zh-CN "A和B", "A、B和C". */
+export function bothList(items: readonly Bilingual[]): Bilingual {
+  const join = (names: string[], sep: string, last: string) => (names.length <= 1 ? (names[0] ?? "") : `${names.slice(0, -1).join(sep)}${last}${names.at(-1)}`);
+  return { en: join(items.map((x) => x.en), ", ", " and "), "zh-CN": join(items.map((x) => x["zh-CN"]), "、", "和") };
 }
 
 /** A name in both languages from a localized value (strings stand for both). */

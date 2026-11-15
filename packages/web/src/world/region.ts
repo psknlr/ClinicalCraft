@@ -1,17 +1,18 @@
 /**
  * Region naming. `placeAt` — where the player is, by name, for the HUD — is THE region lookup of the world
  * (`regionLookup` of @clinicalcraft/world, the one `WorldRuntime.regionName` uses): the smallest room containing
- * the point on the level; in no room but in a building, that building's corridor; outdoors, the facility's outdoor
- * region. The place beside the map and the in-world badge both show it (one lookup of one position, audit
- * 2026-11-12 P2-15). `roomAt` is the room a placement is built in (V4 `O()` generalised: smallest room containing
- * the point; in a multi-level facility pass the level — only its rooms count).
+ * the point on the level; in no room but in a building, that building's corridor; outdoors, the build zone ("Build
+ * zone" / "建造园地") inside it, else the facility's outdoor region. The place beside the map and the in-world badge
+ * both show it (one lookup of one position, audit 2026-11-12 P2-15; the build zone named again, W5). `roomAt` is the
+ * room a placement is built in (V4 `O()` generalised: smallest room containing the point; in a multi-level facility
+ * pass the level — only its rooms count).
  */
 import { defaultLevelId, roomLevel, type FacilityDefinition } from "@clinicalcraft/core";
 import { regionLookup, type NamedRegion } from "@clinicalcraft/world";
 import { rectContains } from "./geometry.js";
 
 type RoomDef = FacilityDefinition["rooms"][number];
-type RegionSource = Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion">;
+type RegionSource = Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion" | "buildZone">;
 
 export function roomAt(f: Pick<FacilityDefinition, "rooms" | "levels">, x: number, z: number, level?: string): RoomDef | null {
   let best: RoomDef | null = null;

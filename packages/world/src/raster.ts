@@ -111,6 +111,27 @@ export function areasOverlap(a: Area, b: Area): boolean {
   return a.minX < b.maxX && b.minX < a.maxX && a.minZ < b.maxZ && b.minZ < a.maxZ;
 }
 
+/** Does the segment `a`–`b` cross (or touch) an area? (slab test on the XZ plane) */
+export function segmentCrossesArea(a: { x: number; z: number }, b: { x: number; z: number }, area: Area): boolean {
+  let t0 = 0, t1 = 1;
+  const d = { x: b.x - a.x, z: b.z - a.z };
+  for (const [p, q, min, max] of [
+    [a.x, d.x, area.minX, area.maxX],
+    [a.z, d.z, area.minZ, area.maxZ],
+  ] as const) {
+    if (Math.abs(q) < 1e-12) {
+      if (p < min || p > max) return false;
+      continue;
+    }
+    let u0 = (min - p) / q, u1 = (max - p) / q;
+    if (u0 > u1) [u0, u1] = [u1, u0];
+    t0 = Math.max(t0, u0);
+    t1 = Math.min(t1, u1);
+    if (t0 > t1) return false;
+  }
+  return true;
+}
+
 /** Distance from a point to an area (0 inside). */
 export function distanceToArea(x: number, z: number, a: Area): number {
   const dx = Math.max(a.minX - x, 0, x - a.maxX);

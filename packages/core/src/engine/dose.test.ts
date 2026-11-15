@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { DOSE_UNITS, DoseSpecSchema, OrderedDoseSchema } from "../schema/common.js";
-import { checkOrder, compareDose, doseErrorSeverity, doseMentions, doseRoute, formatDose, isHighAlert, parseDose, readOrder } from "./index.js";
+import { checkOrder, compareDose, doseErrorSeverity, doseMentions, doseRoute, formatDose, infusionMinutes, isHighAlert, parseDose, readOrder } from "./index.js";
 
 describe("parseDose: the dose a written order states", () => {
   it("reads the amount, its unit and the route, in English and Chinese", () => {
@@ -322,7 +322,7 @@ describe("readOrder: spellings the first reader missed (re-review)", () => {
     expect(unclear("IM adrenaline 5 x 0.1 mg")).toEqual({ reason: "unreadable", words: "5 x 0.1 mg" });
     expect(doseMentions("IM adrenaline 0.01 mg/kg, max 0.5 mg")).toEqual([{ amount: 0.01, unit: "mg/kg", max: { amount: 0.5, unit: "mg" } }]);
     expect(doseMentions("KCl 40 mmol in 1 L 0.9% NaCl over 2 hours")).toEqual([{ amount: 40, unit: "mmol", over: 120 }]);
-    expect(doseMentions("阿替普酶7.2mg静推，剩余64.8mg在60分钟内泵入")).toEqual([{ amount: 7.2, unit: "mg" }, { amount: 64.8, unit: "mg", over: 60 }]);
+    expect(doseMentions("阿替普酶7.2mg静推，剩余64.8mg在60分钟内泵入")).toEqual([{ amount: 7.2, unit: "mg" }, { amount: 64.8, unit: "mg", over: 60, infusionAmount: true }]);
     // a diluent is no dose
     expect(doseMentions("salbutamol 0.5 mL of 5 mg/mL nebulised with 2.5 mL saline")).toEqual([{ amount: 2.5, unit: "mg", volume: { amount: 0.5, unit: "mL" } }]);
   });
@@ -516,5 +516,566 @@ describe("no exemption leaves an order without the dose it states (re-review of 
       ["头孢曲松每日20g静滴", ceftriaxone], ["ceftriaxone 4 g/day IV", ceftriaxone], ["adrenaline5mg IM", im], ["IM adrenaline x 5", im], ["vitamin K 10 IV", { doseSpec: { amount: 10, unit: "mg", route: "IV" }, risk: "low", name: "Vitamin K" }],
     ];
     for (const [text, iv] of rows) expect(never(check(text, iv)), text).toBe(true);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The second set's verification (audit 2026-11-12 follow-ups, D1–D2)   */
+/* ------------------------------------------------------------------ */
+
+describe("checkOrder: an infusion's rate is checked even when the parts add up to the whole (verification D1, D2)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const ufh = { doseSpec: DoseSpecSchema.parse({ amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance: { amount: 18, unit: "unit/kg/h" } }), risk: "moderate", name: "Unfractionated heparin IV infusion" } as const;
+  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
+
+  it("the infusion of a dose given in parts runs for its own duration: the whole less the bolus at the maintenance rate", () => {
+    expect(infusionMinutes(alteplase.doseSpec)).toEqual({ low: 60, high: 60 });
+    // a per-kg whole beside an absolute rate needs the weight
+    expect(infusionMinutes({ amount: 0.9, unit: "mg/kg", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 64.8, unit: "mg/h" } }, 80)).toEqual({ low: 60, high: 60 });
+    expect(infusionMinutes({ amount: 0.9, unit: "mg/kg", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 64.8, unit: "mg/h" } })).toBeNull();
+    expect(infusionMinutes(ufh.doseSpec)).toBeNull();
+  });
+
+  it("a tenfold infusion is a critical dose error, whether its parts add up to the whole or the whole is given too fast — en and zh-CN", () => {
+    // the parts are the preset's, the infusion runs over 6 min instead of 60: 648 mg/h, ten times 64.8 mg/h
+    for (const text of ["alteplase 7.2 mg IV bolus then 64.8 mg over 6 min", "阿替普酶7.2mg静推，随后64.8mg于6分钟内泵入", "alteplase 7.2 mg IV bolus then 64.8 mg over 6 min (total 72 mg)"]) {
+      expect(check(text, alteplase, 80), text).toEqual({ outcome: "conflict", dose: { amount: 648, unit: "mg/h", route: "IV" }, ratio: 10, conflicts: ["amount"], severity: "critical" });
+    }
+    // the whole over 6 min: ten times as fast as the infusion's own 60 min (as the rate it runs at, 720 mg/h)
+    for (const text of ["alteplase 72 mg IV over 6 min", "阿替普酶72mg静脉，6分钟内泵入"]) {
+      expect(check(text, alteplase, 80), text).toEqual({ outcome: "conflict", dose: { amount: 720, unit: "mg/h", route: "IV" }, ratio: 10, conflicts: ["amount"], severity: "critical" });
+    }
+    expect(check("alteplase 0.9 mg/kg IV over 6 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 9, unit: "mg/kg/h" }, ratio: 10, severity: "critical" });
+    // twice as fast is critical for a thrombolytic; slower than the preset is a dose error to review
+    expect(check("alteplase 72 mg IV over 30 min", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 2, severity: "critical" });
+    expect(check("alteplase 72 mg IV over 90 min", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 0.666667, severity: "warning" });
+  });
+
+  it("the right regimen stays given in either language, however its times are written", () => {
+    for (const text of [
+      "alteplase 7.2 mg IV bolus then 64.8 mg over 60 min",
+      "阿替普酶7.2mg静推，随后64.8mg于60分钟内泵入",
+      "alteplase 72 mg IV over 60 min",
+      "alteplase 0.9 mg/kg IV over 1 hour",
+      // the bolus given over its own minute is no infusion
+      "alteplase 7.2 mg IV bolus over 1 min, then 64.8 mg over 60 min",
+      // of two times after one dose, the longer is how long it runs
+      "alteplase 0.9 mg/kg over 60 min with 10% given as a bolus over 1 min",
+      "阿替普酶0.9mg/kg静脉，其中10%在1分钟内静推，其余60分钟内泵入",
+      "阿替普酶0.9mg/kg，总量72mg，其中10%即7.2mg静推，余64.8mg 1小时内泵入",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(doseMentions("alteplase 0.9 mg/kg over 60 min with 10% given as a bolus over 1 min")).toEqual([{ amount: 0.9, unit: "mg/kg", over: 60 }]);
+  });
+
+  it("a time after a part of the dose is that part's: the bolus's minute is no infusion, the rest's time is how long it runs — en and zh-CN", () => {
+    // the bolus's own minute, after the whole (these were critical 60-fold errors when it was read as the whole's time)
+    for (const text of [
+      "alteplase 0.9 mg/kg IV, 10% bolus over 1 min",
+      "alteplase 72 mg IV, 10% as a bolus over 1 minute, rest as infusion",
+      "阿替普酶0.9mg/kg，其中10%于1分钟内静推",
+      "阿替普酶72mg静脉，10%在1分钟内推注，其余持续泵入",
+      "alteplase 0.9 mg/kg IV, bolus over 1 min, rest over 60 min",
+      "alteplase 72 mg IV, bolus over 1 minute then infusion over 60 minutes",
+      "alteplase 0.9 mg/kg IV (10% bolus over 1 min, 90% over 60 min)",
+      "alteplase 0.9 mg/kg IV, 10% as IV bolus over 1 minute, remaining 90% infused over 60 minutes",
+      "阿替普酶0.9mg/kg（最大90mg），10%在1分钟内静推，剩余90%在60分钟内静滴",
+      "阿替普酶0.9mg/kg静脉溶栓，其中10%静推，剩余60分钟内泵入",
+      // the bolus's clause goes on after a comma; a time that comes "then", or an infusion's, is the rest's
+      "alteplase 0.9 mg/kg, 10% as an IV bolus, over 1 min",
+      "alteplase 72 mg, bolus over 1 min, then over 60 min",
+      "阿替普酶0.9mg/kg，10%静推，60分钟内泵入",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(doseMentions("alteplase 0.9 mg/kg IV, 10% bolus over 1 min")).toEqual([{ amount: 0.9, unit: "mg/kg" }]);
+    expect(doseMentions("阿替普酶0.9mg/kg，其中10%于1分钟内静推，其余60分钟内泵入")).toEqual([{ amount: 0.9, unit: "mg/kg", restOver: 60 }]);
+    // a percentage that is a strength is no part of the dose: the time stays the dose's
+    expect(doseMentions("KCl 40 mmol in 1 L 0.9% NaCl over 2 hours")).toEqual([{ amount: 40, unit: "mmol", over: 120 }]);
+    expect(doseMentions("magnesium sulfate 2 g in 100 mL 5% dextrose over 20 min")).toEqual([{ amount: 2, unit: "g", over: 20 }]);
+    // the rest given too fast: tenfold, as the rate it runs at in the unit of the dose stated
+    for (const [text, dose] of [
+      ["alteplase 0.9 mg/kg IV, 10% bolus over 1 min, rest over 6 min", { amount: 8.1, unit: "mg/kg/h" }],
+      ["阿替普酶0.9mg/kg，其中10%于1分钟内静推，其余6分钟内泵入", { amount: 8.1, unit: "mg/kg/h" }],
+      ["alteplase 72 mg IV, bolus over 1 minute then infusion over 6 minutes", { amount: 648, unit: "mg/h" }],
+      ["alteplase 7.2 mg IV bolus, the rest over 6 min", { amount: 648, unit: "mg/h" }],
+      ["阿替普酶7.2mg静推，其余6分钟内泵入", { amount: 648, unit: "mg/h" }],
+      ["alteplase 72 mg, bolus over 1 min, then over 6 min", { amount: 648, unit: "mg/h" }],
+      ["阿替普酶0.9mg/kg，10%静推，6分钟内泵入", { amount: 8.1, unit: "mg/kg/h" }],
+    ] as const) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "conflict", dose, ratio: 10, severity: "critical" });
+    }
+    // the bolus with the time its rest runs over is the whole, given in its parts (a warning dose error before)
+    for (const text of ["alteplase 7.2 mg IV bolus, the rest over 60 min", "阿替普酶7.2mg静推，其余60分钟内泵入"]) {
+      expect(check(text, alteplase, 80), text).toEqual({ outcome: "given", checked: true, dose: { amount: 7.2, unit: "mg", route: "IV" } });
+    }
+    // the bolus alone over its own minute is the bolus, asked about — not a critical dose error at 432 mg/h
+    expect(check("alteplase 7.2 mg IV over 1 min", alteplase, 80)).toMatchObject({ outcome: "query", reason: "partial" });
+    // the whole dose given as a bolus over a minute is still the 60-fold error it says
+    expect(check("alteplase 72 mg IV bolus over 1 minute", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 60, severity: "critical" });
+  });
+
+  it("a time is stated rounded: within 10 % of the infusion's own it is the preset's", () => {
+    for (const text of ["alteplase 0.9 mg/kg IV over 61 min", "alteplase 0.9 mg/kg IV over 65 min", "alteplase 0.09 mg/kg bolus then 0.81 mg/kg over 61 min", "heparin 80 units/kg IV bolus then 36 units/kg over 121 min"]) {
+      expect(check(text, text.startsWith("heparin") ? ufh : alteplase, text.startsWith("heparin") ? 70 : 80), text).toMatchObject({ outcome: "given" });
+    }
+    expect(check("alteplase 0.9 mg/kg IV over 50 min", alteplase, 80)).toMatchObject({ outcome: "conflict", severity: "warning" });
+  });
+
+  it("a colon after a word is no ratio: the dose after it is read (zh-CN \"：\")", () => {
+    expect(doseMentions("肾上腺素剂量：5mg肌注")).toEqual([{ amount: 5, unit: "mg" }]);
+    expect(check("阿替普酶72mg：7.2mg 1分钟内静推，64.8mg 60分钟内泵入", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+    // a ratio and a clock time are still no doses
+    expect(doseMentions("时间：10:30 肾上腺素0.5mg肌注")).toEqual([{ amount: 0.5, unit: "mg" }]);
+    expect(doseMentions("IM adrenaline 1:1000 0.5 mL")).toEqual([{ amount: 0.5, unit: "mg", volume: { amount: 0.5, unit: "mL" } }]);
+    expect(doseMentions("BP：180/100，拉贝洛尔10mg静推")).toEqual([{ amount: 10, unit: "mg" }]);
+  });
+
+  it("beside a single dose, an amount over a time at the infusion's rate is the infusion — never a second dose to ask about (en and zh-CN)", () => {
+    // 2520 units over 2 h is 1260 units/h, the preset's 18 units/kg/h at 70 kg (a833280 gave it; the second set asked "several")
+    for (const text of ["heparin 5000 units IV bolus then 2520 units over 2 h", "肝素5000单位静推，随后2520单位于2小时内泵入"]) {
+      expect(check(text, ufh, 70), text).toEqual({ outcome: "given", checked: true, dose: { amount: 5000, unit: "unit", route: "IV" } });
+    }
+    expect(check("heparin 2520 units over 2 h", ufh, 70)).toEqual({ outcome: "given", checked: true, dose: { amount: 1260, unit: "unit/h" } });
+    // the single dose given over a time is that dose; an infusion at ten times the rate is still a critical dose error
+    expect(check("heparin 5000 units IV over 5 min", ufh, 70)).toMatchObject({ outcome: "given", dose: { amount: 5000, unit: "unit" } });
+    expect(check("heparin 5000 units IV bolus then 25200 units over 2 h", ufh, 70)).toMatchObject({ outcome: "conflict", dose: { amount: 12600, unit: "unit/h" }, ratio: 10, severity: "critical" });
+    // two single doses that disagree are still asked about
+    expect(check("heparin 5000 units IV, sorry, 7000 units", ufh, 70)).toMatchObject({ outcome: "query", reason: "several" });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The verification of the second set's fixes (D1, D2)                 */
+/* ------------------------------------------------------------------ */
+
+describe("checkOrder: the verification of the D1–D2 fixes (whole beside its bolus, strengths, times, equal amounts)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const ufh = { doseSpec: DoseSpecSchema.parse({ amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance: { amount: 18, unit: "unit/kg/h" } }), risk: "moderate", name: "Unfractionated heparin IV infusion" } as const;
+  const kcl = { doseSpec: DoseSpecSchema.parse({ amount: 20, unit: "mmol/h", route: "IV" }), risk: "moderate", name: "IV potassium replacement (KCl infusion)" } as const;
+  const insulin = { doseSpec: DoseSpecSchema.parse({ amount: 0.1, unit: "unit/kg/h", route: "IV" }), risk: "moderate", critical: true, name: "Fixed-rate IV insulin infusion" } as const;
+  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
+  const tenfoldRest = { outcome: "conflict", dose: { amount: 648, unit: "mg/h" }, ratio: 10, severity: "critical" } as const;
+
+  it("the whole beside its bolus alone, the rest in words, is the whole given in its parts — never a 432 mg/h dose error (en and zh-CN)", () => {
+    for (const text of [
+      "alteplase 72 mg IV: 7.2 mg bolus over 1 min, rest over 60 min",
+      "alteplase 0.9 mg/kg (72 mg) IV: 10% (7.2 mg) bolus over 1 minute, the rest over 60 minutes",
+      "alteplase 0.9 mg/kg (total 72 mg), 7.2 mg bolus over 1 min, remainder over 60 min",
+      "alteplase 0.9 mg/kg: 0.09 mg/kg over 1 min, rest over 60 min",
+      "阿替普酶72mg，其中7.2mg 1分钟内静推，其余60分钟内泵入",
+      "阿替普酶72毫克，其中7.2毫克1分钟内静推，余量60分钟内静滴",
+      "阿替普酶72mg，先7.2mg 1分钟内静推，剩余60分钟内泵入",
+      // without the bolus's minute, and with no time for the rest at all (it runs at the preset's rate)
+      "alteplase 72 mg IV, 7.2 mg bolus, rest over 60 min",
+      "阿替普酶72mg，7.2mg静推，其余60分钟内泵入",
+      "alteplase 72 mg IV, 7.2 mg bolus",
+      "alteplase 72 mg IV with a 7.2 mg bolus over 1 min",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    // its rest over 6 min: the tenfold infusion, at the rate it runs (648 mg/h, not the bolus's 432 mg/h)
+    for (const text of ["alteplase 72 mg IV: 7.2 mg bolus over 1 min, rest over 6 min", "阿替普酶72mg，其中7.2mg 1分钟内静推，其余6分钟内泵入", "alteplase 72 mg IV with a 7.2 mg bolus over 1 min, the rest over 6 min"]) {
+      expect(check(text, alteplase, 80), text).toMatchObject(tenfoldRest);
+    }
+    // a "bolus" over more than a bolus's few minutes is no bolus: its rate is checked
+    expect(check("alteplase 72 mg IV: 7.2 mg over 30 min, rest over 60 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 14.4, unit: "mg/h" }, severity: "warning" });
+  });
+
+  it("reads a time however it is written — words, Chinese numerals, \"for\", \"in\", 泵完, 持续滴注, min in Chinese text — the right one given, the tenfold one a critical dose error", () => {
+    const pairs: [string, string][] = [
+      ["阿替普酶0.9mg/kg静脉滴注，其中10%在最初1分钟内静脉推注，其余持续滴注1小时", "阿替普酶0.9mg/kg静脉滴注，其中10%在最初1分钟内静脉推注，其余持续滴注6分钟"],
+      ["阿替普酶0.9mg/kg静脉滴注，其中10%在最初1分钟内静脉推注，其余持续滴注60min", "阿替普酶0.9mg/kg静脉滴注，其中10%在最初1分钟内静脉推注，其余持续滴注6min"],
+      ["阿替普酶7.2mg静推，64.8mg 60分钟泵完", "阿替普酶7.2mg静推，64.8mg 6分钟泵完"],
+      ["阿替普酶7.2mg静推后，余64.8mg 60min内泵入", "阿替普酶7.2mg静推后，余64.8mg 6min内泵入"],
+      ["阿替普酶7.2mg静推，随后六十四点八毫克于六十分钟内泵入", "阿替普酶7.2mg静推，随后六十四点八毫克于六分钟内泵入"],
+      ["阿替普酶72mg，其中7.2mg静推，剩余64.8mg于一个小时内泵入", "阿替普酶72mg，其中7.2mg静推，剩余64.8mg于六分钟内泵入"],
+      ["alteplase 7.2 mg IV bolus then 64.8 mg IV over sixty minutes", "alteplase 7.2 mg IV bolus then 64.8 mg IV over six minutes"],
+      ["alteplase 7.2 mg IV bolus then 64.8 mg infused for 60 minutes", "alteplase 7.2 mg IV bolus then 64.8 mg infused for 6 minutes"],
+      ["alteplase 7.2 mg IV bolus then 64.8 mg in 60 min", "alteplase 7.2 mg IV bolus then 64.8 mg in 6 min"],
+      ["alteplase 0.9 mg/kg IV, 10% bolus over 1 min, rest infused for 60 minutes", "alteplase 0.9 mg/kg IV, 10% bolus over 1 min, rest infused for 6 minutes"],
+      ["alteplase 7.2 mg IV bolus then 64.8 mg as a 60-minute infusion", "alteplase 7.2 mg IV bolus then 64.8 mg as a 6-minute infusion"],
+      ["alteplase 72 mg IV, bolus over 1 min, then 60 min infusion", "alteplase 72 mg IV, bolus over 1 min, then 6 min infusion"],
+    ];
+    for (const [right, tenfold] of pairs) {
+      expect(check(right, alteplase, 80), right).toMatchObject({ outcome: "given", checked: true });
+      expect(check(tenfold, alteplase, 80), tenfold).toMatchObject({ outcome: "conflict", ratio: 10, severity: "critical" });
+    }
+    expect(check("alteplase 72 mg IV over ten minutes", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 432, unit: "mg/h" }, ratio: 6, severity: "critical" });
+    expect(check("阿替普酶72mg，其中7.2mg静推，剩余64.8mg于半小时内泵入", alteplase, 80)).toMatchObject({ outcome: "conflict", ratio: 2, severity: "critical" });
+    // a rate preset: the time in Chinese words, in English words, after "in"
+    for (const text of ["胰岛素5.5单位静脉，泵入1小时", "insulin 5.5 units IV over sixty minutes", "KCl 20 mmol IV in 1 h", "氯化钾20mmol静滴1小时", "KCl 40 mmol in 1 L over two hours"]) {
+      expect(check(text, text.includes("单位") || text.includes("insulin") ? insulin : kcl, 55), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(check("KCl 40 mmol IV in 10 min", kcl, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 240, unit: "mmol/h" }, ratio: 12, severity: "critical" });
+  });
+
+  it("a time that says when, not how long, is none: \"repeat in 5 min\", \"recheck in 1 hour\", \"…后\", \"每6小时\", \"第1小时\"", () => {
+    expect(doseMentions("adrenaline 0.5 mg IM, repeat in 5 min")).toEqual([{ amount: 0.5, unit: "mg" }]);
+    expect(doseMentions("insulin 5.5 units IV, recheck glucose in 1 hour")).toEqual([{ amount: 5.5, unit: "unit" }]);
+    expect(doseMentions("氯化钾40mmol静滴，1小时后复查血钾")).toEqual([{ amount: 40, unit: "mmol" }]);
+    expect(doseMentions("氯化钾40mmol静滴1小时后复查血钾")).toEqual([{ amount: 40, unit: "mmol" }]);
+    expect(doseMentions("吗啡2.5mg静推，每6小时内可重复")).toEqual([{ amount: 2.5, unit: "mg" }]);
+    expect(check("insulin 5.5 units IV, recheck glucose in 1 hour", insulin, 55)).toMatchObject({ outcome: "query", reason: "rate" });
+  });
+
+  it("beside heparin's single dose, the same amount again over a time is the infusion, at the rate it runs — never the bolus written twice (en and zh-CN)", () => {
+    for (const [text, rate] of [
+      ["heparin 5000 units bolus then 5000 units over 20 min", 15000],
+      ["肝素5000单位静推，随后5000单位于20分钟内泵入", 15000],
+      ["heparin 5000 units IV bolus then 5000 units IV over 30 min", 10000],
+      ["heparin 5000 units bolus then 5000 units over 80 min", 3750],
+      ["heparin 4900 units IV bolus then 5040 units over 2 h", 2520],
+    ] as const) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "conflict", dose: { amount: rate, unit: "unit/h" }, severity: "critical" });
+    }
+    for (const text of ["heparin 5000 units bolus then 5000 units over 4 h", "肝素5000单位静推，随后5000单位于4小时内泵入", "heparin 5000 units over 5 min, then 5000 units over 4 hours"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given", dose: { amount: 5000, unit: "unit" } });
+    }
+    // the same dose written again in brackets is one dose, given over its time; a bolus's own minutes are no infusion
+    for (const text of ["heparin 5000 units (5000 IU) IV over 20 min", "heparin 5000 units IV over 5 min", "heparin 5000 units IV over 5 min then 2520 units over 2 h"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given", dose: { amount: 5000, unit: "unit" } });
+    }
+    expect(doseMentions("heparin 5000 units (5000 IU) IV over 20 min")).toEqual([{ amount: 5000, unit: "unit", over: 20 }, { amount: 5000, unit: "unit", copy: true }]);
+    // the bolus's 5 min is never read as a 60000 units/h infusion
+    expect(check("heparin 5000 units IV over 5 min then 25200 units over 2 h", ufh, 70)).toMatchObject({ outcome: "conflict", dose: { amount: 12600, unit: "unit/h" }, ratio: 10, severity: "critical" });
+  });
+
+  it("a strength is never a share of the dose, and a bolus or an infusion word alone names no part: the time stays the dose's (en and zh-CN)", () => {
+    expect(check("KCl 40 mmol in 100 mL 0.9% over 10 min", kcl, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 240, unit: "mmol/h" }, ratio: 12, severity: "critical" });
+    expect(check("氯化钾40mmol加入1000ml 0.9%，1小时内静滴", kcl, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 40, unit: "mmol/h" }, ratio: 2, severity: "critical" });
+    expect(check("insulin 55 units IV, infusion over 1 h", insulin, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 55, unit: "unit/h" }, ratio: 10, severity: "critical" });
+    for (const [text, iv] of [
+      ["KCl 40 mmol in 1 L NaCl 0.9% over 2 hours", kcl],
+      ["KCl 40 mmol IV in 1 L NaCl 0.9% over 2 hours", kcl],
+      ["氯化钾40mmol加入1000ml 0.9%，2小时内静滴", kcl],
+      ["KCl 20 mmol IV, infusion over 1 h", kcl],
+      ["insulin 5.5 units IV, infusion over 1 h", insulin],
+      ["insulin 50 units IV in 50 mL at 5.5 mL/h", insulin],
+    ] as const) {
+      expect(check(text, iv, 55), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(doseMentions("KCl 40 mmol in 100 mL 0.9% over 10 min")).toEqual([{ amount: 40, unit: "mmol", over: 10 }]);
+    for (const text of ["heparin 5000 units IV bolus then 25200 units 0.9% over 2 h", "heparin 5000 units IV bolus; 25200 units, infusion over 2 h", "heparin 5000 units IV bolus then 25200 units (50%) over 2 h"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "conflict", dose: { amount: 12600, unit: "unit/h" }, ratio: 10, severity: "critical" });
+    }
+    expect(check("heparin 5000 units IV bolus; 2520 units, infusion over 2 h", ufh, 70)).toMatchObject({ outcome: "given", dose: { amount: 5000, unit: "unit" } });
+    expect(check("alteplase 7.2 mg bolus then 648 mg in 0.9% over 60 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 648, unit: "mg/h" }, ratio: 10, severity: "critical" });
+    // the whole dose pushed as a bolus, the bolus word after a comma: 60-fold
+    for (const text of ["alteplase 72 mg IV, bolus over 1 min", "alteplase 72 mg, push over 1 min", "阿替普酶72mg，静推，1分钟内"]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "conflict", ratio: 60, severity: "critical" });
+    }
+    // a time after the volume the drug is made up in is the drug's
+    expect(check("alteplase 72 mg IV in 100 mL 0.9% saline over 6 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 720, unit: "mg/h" }, ratio: 10, severity: "critical" });
+    expect(check("alteplase 72 mg IV in 100 mL 0.9% saline over 60 min", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+  });
+
+  it("the bolus's amount alone is asked about over the bolus's own few minutes only; over a longer time its rate is checked", () => {
+    for (const text of ["alteplase 7.2 mg IV over 1 min", "alteplase 7.2 mg IV over 5 min", "alteplase 7.2 mg IV bolus"]) expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "query", reason: "partial" });
+    expect(check("alteplase 7.2 mg IV over 120 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 3.6, unit: "mg/h" }, severity: "critical" });
+    expect(check("alteplase 7.2 mg over 60 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 7.2, unit: "mg/h" }, severity: "warning" });
+    expect(check("alteplase 7.2 mg IV infusion over 30 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 14.4, unit: "mg/h" }, severity: "warning" });
+  });
+
+  it("a number after an enumeration comma that follows a word is read (\"静推、64.8mg\"); \"0、5mg\" is still a broken number", () => {
+    expect(check("阿替普酶7.2mg静推、64.8mg于6分钟内泵入", alteplase, 80)).toMatchObject(tenfoldRest);
+    expect(check("阿替普酶7.2mg静推、64.8mg于60分钟内泵入", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+    expect(readOrder("肾上腺素0、5mg肌注").unclear).toEqual({ reason: "unreadable", words: "0、5mg" });
+  });
+});
+
+describe("checkOrder: the final check's regressions of the second fix round (a whole after its bolus, a dose restated after its bolus word)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const ufh = { doseSpec: DoseSpecSchema.parse({ amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance: { amount: 18, unit: "unit/kg/h" } }), risk: "moderate", name: "Unfractionated heparin IV infusion" } as const;
+  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
+
+  it("the whole written after its bolus is its infusion, not the whole given in parts: 72 mg over an hour after the bolus is a dose error (en and zh-CN)", () => {
+    for (const [text, amount, unit] of [
+      ["alteplase 7.2 mg IV bolus, then 72 mg infusion over 1 hour", 72, "mg/h"],
+      ["阿替普酶7.2mg静推，随后72mg于60分钟内泵入", 72, "mg/h"],
+      ["alteplase 0.09 mg/kg bolus, then 0.9 mg/kg over 60 min", 0.9, "mg/kg/h"],
+    ] as const) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "conflict", dose: { amount, unit }, severity: "warning" });
+    }
+    // the bolus's own minute is no infusion: the 72 mg's rate is what is wrong
+    expect(check("alteplase 7.2 mg IV bolus over 1 min, then 72 mg infusion over 1 hour", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 72, unit: "mg/h" }, severity: "warning" });
+    // with no time for it, the bolus and the whole again are two doses: asked about, never given
+    for (const text of ["alteplase 7.2 mg IV push, 72 mg IV infusion", "alteplase 7.2 mg IV bolus over 1 min, then 72 mg IV infusion"]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "query", reason: "several" });
+    }
+    // the whole written first, or after its bolus as what the rest is of, or as the total: the whole given in its parts
+    for (const text of [
+      "alteplase 72 mg IV, 7.2 mg bolus",
+      "alteplase 72 mg IV with a 7.2 mg bolus over 1 min",
+      "阿替普酶72mg，7.2mg静推，其余60分钟内泵入",
+      "alteplase 7.2 mg IV bolus over 1 min, then the rest of the 72 mg over 60 min",
+      "alteplase bolus 7.2 mg over 1 minute, then infuse the remainder of the 72 mg total dose over 60 minutes",
+      "alteplase 7.2 mg IV bolus over 1 min, the rest over 60 min (total dose 72 mg)",
+      "alteplase 0.09 mg/kg IV bolus, then the rest of the 0.9 mg/kg over 60 min",
+      "alteplase 7.2 mg IV bolus over 1 min, then infusion over 60 min; 72 mg total",
+      "alteplase 7.2 mg IV bolus over 1 min, then infusion over 60 min (72 mg in total)",
+      "alteplase 7.2 mg IV bolus over 1 min, then infuse the balance of the 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus over 1 min, followed by infusion to complete 72 mg over 60 min",
+      "阿替普酶7.2mg静推，然后泵入60分钟，72mg总量",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    // a bolus rounded so that it and the whole again fall within the whole's rounding is still the whole again (79 mg)
+    expect(check("alteplase 7 mg IV bolus, then 72 mg IV infusion", alteplase, 80)).toMatchObject({ outcome: "query", reason: "several" });
+  });
+
+  it("a dose written again after its route and bolus word or a comma (\"IV bolus (70 units/kg)\", \"，即4900单位\") is the same dose over the same time — never a 420 units/kg/h infusion (en and zh-CN)", () => {
+    for (const [text, amount, unit] of [
+      ["heparin 5000 units IV bolus (70 units/kg) over 10 min", 5000, "unit"],
+      ["heparin 80 units/kg IV bolus (5600 units) over 10 min, then 18 units/kg/h", 80, "unit/kg"],
+      ["肝素70单位/kg，即4900单位，10分钟内静推", 70, "unit/kg"],
+      ["heparin 5000 units IV push, i.e. 70 units/kg, over 10 min", 5000, "unit"],
+      ["肝素5000单位静推（70单位/kg），10分钟内推完", 5000, "unit"],
+    ] as const) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given", dose: { amount, unit } });
+    }
+    expect(doseMentions("heparin 5000 units IV bolus (70 units/kg) over 10 min")).toEqual([{ amount: 5000, unit: "unit", over: 10 }, { amount: 70, unit: "unit/kg", copy: true }]);
+    // however the copy says how it is given (inside its bracket or after it)
+    for (const text of ["肝素5000单位（70单位/kg静推，10分钟内推完）", "heparin 5000 units IV (70 units/kg IV bolus over 10 min)", "heparin 5000 units (70 units/kg bolus) IV over 10 min", "heparin 5000 units (i.e. 70 units/kg as a bolus) over 10 minutes", "heparin 70 units/kg (4900 units IV push) over 10 minutes, then 18 units/kg/h"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given" });
+    }
+    // a time is copied only onto the same dose written again — through the weight —, never from a bracketed part onto
+    // the whole ("0.9 mg/kg (7.2 mg over 1 min, …)")
+    for (const text of [
+      "阿替普酶72mg，（7.2mg 1分钟内静推，64.8mg 60分钟内泵入）",
+      "alteplase 72 mg, (7.2 mg bolus over 1 min, then 64.8 mg over 60 min)",
+      "alteplase 0.9 mg/kg IV (7.2 mg bolus over 1 min, the rest over 60 min)",
+      "阿替普酶0.9mg/kg，（7.2mg 1分钟内静推，64.8mg 60分钟内泵入）",
+      "阿替普酶0.9mg/kg，即7.2mg 1分钟内静推，64.8mg 60分钟内泵入",
+      "alteplase 0.9 mg/kg IV (7.2 mg over 1 min, 64.8 mg over 60 min)",
+      "alteplase 0.9 mg/kg IV = 7.2 mg over 1 min + 64.8 mg over 60 min",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    // the same amount again after "then", over a time, is still the infusion at the rate it runs
+    expect(check("heparin 5000 units IV bolus, then 5000 units over 20 min", ufh, 70)).toMatchObject({ outcome: "conflict", dose: { amount: 15000, unit: "unit/h" }, severity: "critical" });
+  });
+});
+
+describe("checkOrder: the time forms and doses written twice the final check left open (en and zh-CN)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const kcl = { doseSpec: DoseSpecSchema.parse({ amount: 20, unit: "mmol/h", route: "IV" }), risk: "moderate", name: "IV potassium replacement (KCl infusion)" } as const;
+  const aspirin = { doseSpec: DoseSpecSchema.parse({ amount: 300, unit: "mg", route: "PO" }), risk: "moderate", name: "Aspirin loading dose" } as const;
+  const adrenaline = { doseSpec: DoseSpecSchema.parse({ amount: 0.3, upTo: 0.5, unit: "mg", route: "IM" }), risk: "high", critical: true, name: "IM adrenaline" } as const;
+  const methylpred = { doseSpec: DoseSpecSchema.parse({ amount: 1, unit: "g", route: "IV" }), risk: "high", critical: true, name: "IV methylprednisolone" } as const;
+  const paracetamol = { doseSpec: DoseSpecSchema.parse({ amount: 1, unit: "g", route: "IV" }), risk: "low", name: "Paracetamol" } as const;
+  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
+  const tenfold = { outcome: "conflict", ratio: 10, severity: "critical" } as const;
+
+  it("an hour and a half is 90 minutes — never the half hour at its end — and hours with minutes are one time wherever they stand", () => {
+    for (const text of ["阿替普酶72mg一个半小时内泵入", "阿替普酶72mg 1个半小时内泵入", "alteplase 72 mg IV over one and a half hours", "alteplase 72 mg IV over an hour and a half", "alteplase 72 mg IV over 1.5 hours", "阿替普酶72mg 1小时30分钟内泵入", "alteplase 72 mg IV over 1 hour and 30 minutes", "alteplase 72 mg IV over 1 h 30 min"]) {
+      expect(doseMentions(text), text).toEqual([{ amount: 72, unit: "mg", over: 90 }]);
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "conflict", dose: { amount: 48, unit: "mg/h" }, severity: "warning" });
+    }
+    for (const text of ["KCl 30 mmol IV for 1 h 30 min", "KCl 30 mmol IV infusion x 1 h 30 min", "氯化钾30mmol静滴，用时1小时30分钟", "氯化钾30mmol静脉泵入，时间1小时30分钟", "氯化钾30mmol 1小时30分钟静脉泵入", "KCl 30 mmol IV over one hour and thirty minutes", "KCl 30 mmol infused for 1 hour 30 minutes", "KCl 30 mmol IV as a 1 hour 30 minute infusion", "氯化钾30mmol 一个半小时内静滴"]) {
+      expect(check(text, kcl, 55), text).toMatchObject({ outcome: "given", dose: { amount: 20, unit: "mmol/h" } });
+    }
+  });
+
+  it("reads a tenfold infusion however its time is written — for or x after a route, 时间/用时 after an infusion's word, 推完", () => {
+    for (const [right, wrong] of [
+      ["alteplase 7.2 mg bolus then 64.8 mg IV for 60 min", "alteplase 7.2 mg bolus then 64.8 mg IV for 6 min"],
+      ["alteplase 7.2 mg bolus then 64.8 mg IV infusion x 60 min", "alteplase 7.2 mg bolus then 64.8 mg IV infusion x 6 min"],
+      ["阿替普酶7.2mg静推，64.8mg静脉泵入，时间60分钟", "阿替普酶7.2mg静推，64.8mg静脉泵入，时间6分钟"],
+      ["阿替普酶7.2mg静推，64.8mg静脉泵入，用时60分钟", "阿替普酶7.2mg静推，64.8mg静脉泵入，用时6分钟"],
+      ["阿替普酶7.2mg静推，余量60分钟推完", "阿替普酶7.2mg静推，余量6分钟推完"],
+    ] as const) {
+      expect(check(right, alteplase, 80), right).toMatchObject({ outcome: "given", checked: true });
+      expect(check(wrong, alteplase, 80), wrong).toMatchObject(tenfold);
+    }
+    // the bolus's own time however written stays the bolus's ("用时1分钟", "历时1分钟", "IV x 1 min" after a 10% bolus)
+    for (const text of ["阿替普酶72mg，10%静推，用时1分钟", "阿替普酶72mg，10%静推，耗时1分钟", "阿替普酶72mg，10%静推，历时1分钟", "阿替普酶72mg，10%静推，持续1分钟", "阿替普酶0.9mg/kg，10%静推用时1分钟，其余泵入", "alteplase 72 mg: 10% bolus IV x 1 min, remainder infused"]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    // a window, or "within", says when — not how long
+    for (const text of ["alteplase 0.9 mg/kg IV within 4.5 hours of symptom onset", "alteplase 0.9 mg/kg IV; start infusion within 30 minutes", "alteplase 72 mg IV in 3 h of onset", "阿替普酶0.9mg/kg静脉溶栓（发病4.5小时内）", "阿替普酶72mg静脉，发病3小时内，10%静推，其余60分钟内泵入"]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(doseMentions("KCl 20 mmol IV, recheck potassium within 1 hour")).toEqual([{ amount: 20, unit: "mmol" }]);
+    expect(doseMentions("ceftriaxone 2 g IV daily for 5 days")).toEqual([{ amount: 2, unit: "g" }]);
+  });
+
+  it("a check done within a time is not the dose's time (\"1小时内复查血钾\")", () => {
+    for (const text of ["氯化钾40mmol静滴，1小时内复查血钾", "氯化钾40mmol静滴1小时内复查血钾", "氯化钾40mmol静滴，2小时内监测血钾"]) {
+      expect(doseMentions(text), text).toEqual([{ amount: 40, unit: "mmol" }]);
+      expect(check(text, kcl, 55), text).toMatchObject({ outcome: "query", reason: "rate" });
+    }
+    expect(check("氯化钾40mmol 2小时内静滴", kcl, 55)).toMatchObject({ outcome: "given", dose: { amount: 20, unit: "mmol/h" } });
+    expect(check("阿替普酶72mg，10%静推，其余60分钟内泵入，24小时内复查头颅CT", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+  });
+
+  it("the same dose written again with nothing else is asked about when it is the preset's; a wrong one stays a dose error; a later dose with a time, a frequency, another route or another drug is no second dose now", () => {
+    for (const text of ["aspirin 300 mg then 300 mg", "阿司匹林300mg，之后再300mg", "aspirin 300 mg PO, followed by 300 mg PO", "aspirin 300 mg then 300 mg again"]) {
+      expect(check(text, aspirin, 70), text).toMatchObject({ outcome: "query", reason: "several", words: "300 mg, 300 mg" });
+    }
+    for (const text of ["adrenaline 5 mg IM then 5 mg IM", "肾上腺素5mg肌注，之后再5mg肌注"]) expect(check(text, adrenaline, 62), text).toMatchObject({ outcome: "conflict", severity: "critical" });
+    for (const [text, iv] of [
+      ["aspirin 300 mg PO, then 300 mg OD", aspirin],
+      ["阿司匹林300mg嚼服，之后300mg qd", aspirin],
+      ["aspirin 300 mg (300 mg)", aspirin],
+      ["adrenaline 0.5 mg IM, then 0.5 mg IM 5 minutes later", adrenaline],
+      ["adrenaline 0.5 mg IM, then 0.5 mg IM after 5 minutes if no improvement", adrenaline],
+      ["methylprednisolone 1 g IV, then 1 g IV the next day", methylpred],
+      ["甲泼尼龙1g静滴，之后1g，24小时一次", methylpred],
+      ["aspirin 300 mg PO, then clopidogrel 300 mg PO", aspirin],
+      ["paracetamol 1 g IV then 1 g PO", paracetamol],
+    ] as const) {
+      expect(check(text, iv, 70), text).toMatchObject({ outcome: "given", checked: true });
+    }
+  });
+});
+
+describe("checkOrder: the comparison of the fix rounds with main (a dose written again, a time that is no dose's, per kg each hour)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const ufh = { doseSpec: DoseSpecSchema.parse({ amount: 70, upTo: 80, unit: "unit/kg", route: "IV", maintenance: { amount: 18, unit: "unit/kg/h" } }), risk: "moderate", name: "Unfractionated heparin IV infusion" } as const;
+  const kcl = { doseSpec: DoseSpecSchema.parse({ amount: 20, unit: "mmol/h", route: "IV" }), risk: "moderate", name: "IV potassium replacement (KCl infusion)" } as const;
+  const aspirin = { doseSpec: DoseSpecSchema.parse({ amount: 300, unit: "mg", route: "PO" }), risk: "moderate", name: "Aspirin loading dose" } as const;
+  const check = (text: string, iv: Parameters<typeof checkOrder>[1], weightKg: number) => checkOrder({ text }, iv, weightKg);
+  const tenfold = { outcome: "conflict", dose: { amount: 648, unit: "mg/h" }, ratio: 10, severity: "critical" } as const;
+
+  it("每小时 before a dose per kg is per hour (\"每小时18单位/kg\"), and the bolus's own 用时 is the bolus's: heparin's regimen is given, a tenfold maintenance a dose error", () => {
+    expect(doseMentions("肝素每小时18单位/kg泵入")).toEqual([{ amount: 18, unit: "unit/kg/h" }]);
+    expect(check("肝素每小时18单位/kg泵入", ufh, 70)).toMatchObject({ outcome: "given", dose: { amount: 18, unit: "unit/kg/h" } });
+    for (const text of ["肝素80单位/kg静推，用时5分钟，然后每小时18单位/kg泵入", "肝素5600单位静推，用时5分钟，随后每小时18单位/kg持续泵入"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(check("肝素80单位/kg静推，用时5分钟，然后每小时180单位/kg泵入", ufh, 70)).toMatchObject({ outcome: "conflict", dose: { amount: 180, unit: "unit/kg/h" }, ratio: 10, severity: "critical" });
+  });
+
+  it("a part written again in brackets (\"7.2 mg (0.09 mg/kg)\", \"7.2 mg (10%)\") is counted once, and its time is its own — the infusion's rate as it runs", () => {
+    for (const text of [
+      "alteplase 7.2 mg (0.09 mg/kg) IV bolus over 1 min, then 64.8 mg (0.81 mg/kg) over 60 min",
+      "阿替普酶7.2mg（0.09mg/kg）1分钟内静推，64.8mg（0.81mg/kg）60分钟内泵入",
+      "alteplase 7.2 mg (10%) over 1 min, then 64.8 mg (90%) over 60 min",
+      "阿替普酶7.2mg（10%）1分钟内静推，64.8mg（90%）60分钟内泵入",
+      "alteplase 72 mg, 7.2 mg (10%) IV bolus over 1 min, 64.8 mg (90%) IV infusion over 60 min",
+      "alteplase 7.2 mg (10% of 72 mg) bolus over 1 min, then 64.8 mg over 60 min",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+      expect(check(text.replace(/60 min|60分钟/u, (t) => t.replace("60", "6")), alteplase, 80), text).toMatchObject(tenfold);
+    }
+    expect(doseMentions("alteplase 7.2 mg (10%) over 1 min, then 64.8 mg (90%) over 6 min")).toEqual([{ amount: 7.2, unit: "mg", over: 1 }, { amount: 64.8, unit: "mg", over: 6, infusionAmount: true }]);
+    // a share of the order's only dose still names its part: the time after it is the bolus's, the rest's its own
+    expect(check("alteplase 0.9 mg/kg (10%) bolus over 1 min, rest over 60 min", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+    expect(check("alteplase 0.9 mg/kg (10%) bolus over 1 min, rest over 6 min", alteplase, 80)).toMatchObject({ outcome: "conflict", dose: { amount: 8.1, unit: "mg/kg/h" }, ratio: 10, severity: "critical" });
+  });
+
+  it("the whole an infusion runs to (\"to 72 mg\", \"补足72mg\", \"泵入至72mg\") is the whole given in its parts", () => {
+    for (const text of [
+      "alteplase 7.2 mg IV bolus over 1 min, then infusion to 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus over 1 min, then infuse up to 72 mg over 60 min",
+      "阿替普酶7.2mg静推，余量补足72mg于60分钟内泵入",
+      "阿替普酶7.2mg 1分钟内静推，再泵入至72mg，60分钟",
+      "阿替普酶7.2mg 1分钟内静推，然后泵入到72mg，60分钟内",
+    ]) {
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+  });
+
+  it("a dose written again in its other unit keeps the one the preset is counted in: KCl in grams with its mmol", () => {
+    for (const text of ["KCl 1.5 g (20 mmol) IV over 60 minutes", "KCl 20 mmol (1.5 g) IV over 1 h", "10%氯化钾15ml（20mmol）1小时内静滴", "氯化钾1.5g，即20mmol，1小时内静滴", "氯化钾1.5g（20mmol）静滴1小时"]) {
+      expect(check(text, kcl, 55), text).toMatchObject({ outcome: "given", dose: { amount: 20, unit: "mmol/h" } });
+    }
+    expect(check("KCl 1.5 g (20 mmol) IV over 6 min", kcl, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 200, unit: "mmol/h" }, ratio: 10, severity: "critical" });
+    // the two units disagree: the preset's is the dose ordered
+    expect(check("KCl 40 mmol (1.5 g) IV over 1 h", kcl, 55)).toMatchObject({ outcome: "conflict", dose: { amount: 40, unit: "mmol/h" }, ratio: 2 });
+  });
+
+  it("a dose written again after \"-\", \"/\", \"which is\", \"that is\" or \"namely\" is the same dose over the same time", () => {
+    for (const text of ["heparin 80 units/kg - 5600 units - IV bolus over 10 min", "heparin 80 units/kg / 5600 units IV bolus over 10 min", "heparin 80 units/kg, which is 5600 units, IV bolus over 10 min", "heparin 80 units/kg, that is 5600 units, IV bolus over 10 min", "heparin 80 units/kg, namely 5600 units, IV bolus over 10 min"]) {
+      expect(check(text, ufh, 70), text).toMatchObject({ outcome: "given", dose: { amount: 80, unit: "unit/kg" } });
+    }
+    // after a closing bracket, the time is the dose's before the bracket
+    expect(doseMentions("heparin 5000 units (70 units/kg) over 10 min, then 18 units/kg/h")).toEqual([{ amount: 5000, unit: "unit", over: 10 }, { amount: 70, unit: "unit/kg", copy: true }, { amount: 18, unit: "unit/kg/h" }]);
+  });
+
+  it("a time is no dose's when it is an onset window (最后正常时间, 发病后, 4个半小时, 四点五小时) or when its clause is about monitoring", () => {
+    for (const text of ["阿替普酶0.9mg/kg静脉溶栓（最后正常时间4.5小时内）", "阿替普酶0.9mg/kg静脉溶栓（末次正常4.5小时内）", "阿替普酶0.9mg/kg静脉溶栓（发病后4.5小时内）", "阿替普酶0.9mg/kg静脉溶栓（发病4个半小时内）", "阿替普酶0.9mg/kg静脉溶栓，发病四点五小时内", "阿替普酶0.9mg/kg，时间窗4.5小时内", "alteplase 0.9 mg/kg IV, monitor BP for 24 hours"]) {
+      expect(doseMentions(text), text).toEqual([{ amount: 0.9, unit: "mg/kg" }]);
+      expect(check(text, alteplase, 80), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    expect(check("阿替普酶72mg，症状出现后3小时内，10%静推，其余60分钟内泵入", alteplase, 80)).toMatchObject({ outcome: "given", checked: true });
+    expect(doseMentions("alteplase 72 mg IV, 10% bolus over 1 min, rest over 60 min; BP checks over 24 h")).toEqual([{ amount: 72, unit: "mg", restOver: 60 }]);
+    for (const text of ["KCl 20 mmol IV, monitor ECG for 2 h", "氯化钾20mmol静滴，心电监护2小时"]) {
+      expect(check(text, kcl, 55), text).toMatchObject({ outcome: "query", reason: "rate" });
+    }
+    expect(check("KCl 20 mmol IV over 1 h, monitor ECG for 2 h", kcl, 55)).toMatchObject({ outcome: "given", dose: { amount: 20, unit: "mmol/h" } });
+  });
+
+  it("the same dose again after a route written before it is still the dose written twice", () => {
+    for (const text of ["aspirin PO 300 mg then 300 mg", "aspirin PO 300 mg then PO 300 mg", "阿司匹林口服300mg，之后再口服300mg"]) {
+      expect(check(text, aspirin, 70), text).toMatchObject({ outcome: "query", reason: "several", words: "300 mg, 300 mg" });
+    }
+  });
+});
+
+describe("checkOrder: an amount after the bolus is what runs next, unless the words make it the whole (the comparison with main)", () => {
+  const alteplase = { doseSpec: DoseSpecSchema.parse({ amount: 0.9, unit: "mg/kg", route: "IV", bolus: { amount: 0.09, unit: "mg/kg" }, maintenance: { amount: 0.81, unit: "mg/kg/h" } }), risk: "high", critical: true, name: "IV alteplase" } as const;
+  const kcl = { doseSpec: DoseSpecSchema.parse({ amount: 20, unit: "mmol/h", route: "IV" }), risk: "moderate", name: "IV potassium replacement (KCl infusion)" } as const;
+  const check = (text: string, weightKg = 80) => checkOrder({ text }, alteplase, weightKg);
+  const overrun = { outcome: "conflict", dose: { amount: 72, unit: "mg/h" }, severity: "warning" } as const;
+
+  it("the whole written after its bolus — however joined, before or after an infusion's word — runs after it: 79.2 mg, a dose error or asked, never given", () => {
+    for (const text of [
+      "alteplase 7.2 mg IV bolus, 72 mg IV over 60 min",
+      "alteplase 7.2 mg IV push and 72 mg over 60 min",
+      "alteplase 7.2 mg IV push, 72 mg IV drip over 60 min",
+      "alteplase IV push 7.2 mg, IV infusion 72 mg over 60 min",
+      "alteplase bolus 7.2 mg over 1 min, infusion 72 mg over 60 min",
+      "alteplase bolus 7.2 mg, infusion of 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus, then the remaining 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus, then 72 mg infusion over 60 min to complete treatment",
+      "阿替普酶7.2mg 1分钟内静推，余下的72mg 60分钟内泵入",
+      "阿替普酶7.2mg静推，72mg 1小时滴完",
+      "阿替普酶7.2mg静推，随后72mg共60分钟泵完",
+      "alteplase 72 mg IV: 7.2 mg bolus over 1 min, then 72 mg over 60 min",
+    ]) {
+      expect(check(text), text).toMatchObject(overrun);
+    }
+    for (const text of ["阿替普酶静推7.2mg，泵入72mg", "alteplase 7.2 mg IV bolus, then 72 mg infusion over a total of 60 min", "alteplase 7.2 mg IV bolus, the rest (72 mg) over 60 min"]) {
+      expect(check(text), text).toMatchObject({ outcome: "query", reason: "several" });
+    }
+  });
+
+  it("the words that make it the whole: a total, the rest *of* it, a share of it, what it runs to, the bolus taken from it", () => {
+    for (const text of [
+      "alteplase 7.2 mg IV bolus, then the rest of the 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus then the other 90% of 72 mg over 60 min",
+      "alteplase 10% bolus (7.2 mg) of the 72 mg dose, the rest over 60 min",
+      "alteplase 7.2 mg IV bolus, then 72 mg in total over 60 min",
+      "alteplase 7.2 mg IV bolus, then infuse 72 mg (including the bolus) over 60 min",
+      "阿替普酶7.2mg静推，随后72mg（含推注量）60分钟内泵入",
+      "alteplase 72 mg — 7.2 mg IV bolus followed by 72 mg minus bolus over 60 min",
+      "alteplase bolus 7.2 mg, infusion to 72 mg over 60 min",
+      "alteplase 7.2 mg IV bolus over 1 min followed by infusion to complete 72 mg over 60 min",
+      "alteplase 72 mg infusion, 7.2 mg bolus",
+      "alteplase 0.09 mg/kg IV bolus then 0.81 mg/kg/h for 1 h (total 0.9 mg/kg = 72 mg)",
+    ]) {
+      expect(check(text), text).toMatchObject({ outcome: "given", checked: true });
+    }
+    // the first dose written again is the first dose, whatever words follow it ("(72 mg) IV infusion")
+    for (const text of ["alteplase 0.9 mg/kg (72 mg) IV infusion, 7.2 mg bolus over 1 min, rest over 60 min", "阿替普酶0.9mg/kg（72mg）静脉泵入，其中7.2mg 1分钟内静推，其余60分钟内泵入"]) {
+      expect(check(text), text).toMatchObject({ outcome: "given", checked: true });
+    }
+  });
+
+  it("the rest's time is kept when its dose is written again (\"0.9 mg/kg (72 mg) …, the rest over 6 minutes\")", () => {
+    expect(check("alteplase 0.9 mg/kg (72 mg) IV: 10% (7.2 mg) bolus over 1 minute, the rest over 6 minutes")).toMatchObject({ outcome: "conflict", dose: { amount: 8.1, unit: "mg/kg/h" }, ratio: 10, severity: "critical" });
+    expect(check("alteplase 0.9 mg/kg (72 mg) IV: 10% (7.2 mg) bolus over 1 minute, the rest over 60 minutes")).toMatchObject({ outcome: "given", checked: true });
+  });
+
+  it("a range of times is none in English, in every form (\"as a 1-2 hour infusion\")", () => {
+    for (const text of ["KCl 40 mmol as a 1-2 hour infusion", "KCl 40 mmol as a 1 to 2 hour infusion", "KCl 40 mmol over 1-2 hours", "KCl 40 mmol IV for 1 h to 2 h", "KCl 40 mmol IV over 60 minutes - 2 hours"]) {
+      expect(doseMentions(text), text).toEqual([{ amount: 40, unit: "mmol" }]);
+      expect(checkOrder({ text }, kcl, 55), text).toMatchObject({ outcome: "query", reason: "rate" });
+    }
+    expect(checkOrder({ text: "KCl 40 mmol as a 2-hour infusion" }, kcl, 55)).toMatchObject({ outcome: "given", dose: { amount: 20, unit: "mmol/h" } });
+    expect(doseMentions("alteplase 72 mg IV over 30 min to 1 hour")).toEqual([{ amount: 72, unit: "mg" }]);
   });
 });

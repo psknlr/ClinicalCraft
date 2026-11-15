@@ -23,9 +23,9 @@
  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
  * and it is not there).
  */
-import type { TeamDuty } from "@clinicalcraft/core";
+import { informBlocks, type TeamDuty } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
-import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
+import { bothList, phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
 import type { KnownInform, KnownNeed, MemberId, MemberState, Proposal, TaskPatch, TeamMessage, TeamTask } from "./types.js";
 
 /** An item of a type, as the member knows of it. */
@@ -281,6 +281,13 @@ function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskP
 /** What the team calls an intervention (its id when the view cannot name it). */
 const actName = (v: MemberView, id: string): Bilingual => v.actName?.(id) ?? { en: id, "zh-CN": id };
 
+/** That the acts an information need holds up wait ("IV tenecteplase and IV alteplase wait until it's confirmed."); nothing when it holds up none. */
+function waiting(v: MemberView, acts: readonly string[] | undefined, still: boolean): Bilingual {
+  if (!acts?.length) return { en: "", "zh-CN": "" };
+  const blocks = bothList(acts.map((id) => actName(v, id)));
+  return phrase(acts.length > 1 ? (still ? "infoStillBlockedMany" : "infoBlockedMany") : still ? "infoStillBlocked" : "infoBlocked", { blocks });
+}
+
 /** What an information message is about (the need, the history item, the person; the fact as said). */
 function infoAbout(task: TeamTask, fact?: Bilingual): TeamMessage["about"] {
   return { need: task.need, info: task.item, for: task.for, ...(fact ? { fact } : {}) };
@@ -307,15 +314,16 @@ function tell(v: MemberView): Proposal | null {
 
 /** An information need noticed: the circulator's task, said aloud to the person who needs it — and what waits meanwhile. */
 function noticeInform(v: MemberView, n: KnownInform): Proposal {
-  const task: TeamTask = { id: v.newId("task"), kind: "inform", need: n.need.id, item: n.need.history, for: n.forId, owner: v.me.id, initiator: v.me.id, holder: n.holderId, ...(n.need.blocks ? { blocks: n.need.blocks } : {}), thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0 };
-  const blocked = n.need.blocks ? phrase("infoBlocked", { blocks: actName(v, n.need.blocks) }) : { en: "", "zh-CN": "" };
+  const acts = informBlocks(n.need);
+  const task: TeamTask = { id: v.newId("task"), kind: "inform", need: n.need.id, item: n.need.history, for: n.forId, owner: v.me.id, initiator: v.me.id, holder: n.holderId, ...(acts.length ? { blocks: acts } : {}), thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0 };
+  const blocked = waiting(v, acts, false);
   return sayInfo(v, n.forId, "notice", phrase("infoNotice", { info: v.itemName(task.item), for: v.name(task.for), holder: v.name(n.holderId), blocked }), task, { patch: [{ create: task }] });
 }
 
 /** Raise information that has not come to the person who needs it, with the reason; what it holds up still waits. */
 function escalateInform(v: MemberView, task: TeamTask, reason: string, reasonText: Bilingual, patch: TaskPatch[] = []): Proposal {
   const clause = { en: reasonText.en.replace(/[.。]\s*$/u, ""), "zh-CN": reasonText["zh-CN"].replace(/[.。]\s*$/u, "") };
-  const blocked = task.blocks ? phrase("infoStillBlocked", { blocks: actName(v, task.blocks) }) : { en: "", "zh-CN": "" };
+  const blocked = waiting(v, task.blocks, true);
   const text = phrase("infoUnresolved", { info: v.itemName(task.item), for: v.name(task.for), reason: clause, blocked });
   return sayInfo(v, task.for, "escalate", text, task, { patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason, reasonText } }] });
 }

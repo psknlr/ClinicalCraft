@@ -40,7 +40,11 @@ describe("the stroke case's information handoff (bench team)", () => {
     // what the clinician did next; thrombolysis only after the information arrived
     expect(h.next).toMatchObject({ by: "actor:clinician" });
     expect(h.next!.at).toBeGreaterThanOrEqual(h.received!.at);
-    expect(h.blocked).toMatchObject({ intervention: "tenecteplase", afterReceipt: true });
+    // each act it holds up tracked on its own (verification D4): tenecteplase given after the read-back, alteplase not given
+    expect(h.blocked).toEqual([
+      { intervention: "tenecteplase", givenAt: expect.any(Number), afterReceipt: true },
+      { intervention: "alteplase", givenAt: null, afterReceipt: null },
+    ]);
 
     const away = report.runs[1]!.obligations[0]!;
     expect(away).toMatchObject({ status: "escalated", physical: false, escalation: { appropriate: true } });
@@ -49,10 +53,11 @@ describe("the stroke case's information handoff (bench team)", () => {
     expect(away.escalation!.reasonText?.["zh-CN"]).toMatch(/[\u4e00-\u9fff]/u);
     expect(report.runs[1]!.escalated).toBe(1);
     // the change in management: the clinician takes the history directly, then thrombolysis
-    expect(away.handoff).toMatchObject({ ordered: null, performed: null, received: null, next: { action: "ask anticoagulants" }, blocked: { intervention: "tenecteplase" } });
+    expect(away.handoff).toMatchObject({ ordered: null, performed: null, received: null, next: { action: "ask anticoagulants" }, blocked: [{ intervention: "tenecteplase" }, { intervention: "alteplase", givenAt: null }] });
 
     const md = teamMarkdown(report, "en");
     expect(md).toContain("## Information handoffs");
+    expect(md).toMatch(/\| tenecteplase: [\d.]+ \(after the read-back\) · alteplase: not given \| met \|/u);
     expect(md).toMatch(/\| acute-ischemic-stroke \| anticoagulants-from-triage \| anticoagulants \| ed-nurse \(min [\d.]+\) \| triage-nurse \(min [\d.]+\) \| clinician \(min [\d.]+\) \|/);
     const zh = teamMarkdown(report, "zh-CN");
     expect(zh).toContain("## 信息交接");
@@ -74,6 +79,13 @@ describe("the stroke case's information handoff (bench team)", () => {
     expect(r.pass).toBe(false);
     expect(r.failures.join("; ")).toMatch(/tenecteplase was given before the information arrived/);
     expect(r.failures.join("; ")).toMatch(/lacks who asked, who supplied it or who received it/);
+    // the other thrombolytic the scenario holds up is tracked too (verification D4: only tenecteplase was)
+    const early = score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: [{ action: "intervene alteplase", by: "actor:clinician", at: 20, accepted: true, interventionId: "alteplase" }] });
+    expect(early.failures.join("; ")).toMatch(/alteplase was given before the information arrived \(inappropriate progression\)/);
+    // after the information, one of them is what the clinician goes on to; neither given fails
+    const after = (interventionId: string) => [{ action: `intervene ${interventionId}`, by: "actor:clinician", at: 40, accepted: true, interventionId }];
+    expect(score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: after("alteplase") }).failures.join("; ")).not.toMatch(/never given|before the information/);
+    expect(score(c, "anticoagulants-from-triage", { informed: true }, cp, { known: () => true, after: after("labetalol") }).failures.join("; ")).toMatch(/tenecteplase \/ alteplase was never given after the information arrived/);
   });
 
   it("played alone (no scenario), the team takes no round: the case is as it was without a team", { timeout: T }, async () => {

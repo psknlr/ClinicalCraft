@@ -7,8 +7,9 @@
  * Both labels now come from the world's region lookup at the avatar's position, reported whenever the body moved, and
  * the world has the body at that very position: the map's place, the badge and the world's own room agree — after
  * walking up to the wall from either suite, after the transport, after the reposition (playing, and with a window
- * open, on either side of the wall line), and after a walk the world drives. Assertions read the HUD and the world
- * model (`__QA__`), not the pixels.
+ * open, on either side of the wall line), and after a walk the world drives. Inside the build zone the lookup names
+ * it again — "Building Garden", the name the map draws, not the outdoor region (audit W5). Assertions read the HUD and the world model (`__QA__`),
+ * not the pixels.
  */
 import { expect, test, type Page } from "@playwright/test";
 import { embodiedSetup, enterCase, freshStart, placeAvatar, shot, toPatientSide } from "./helpers.js";
@@ -18,6 +19,8 @@ const PATIENT = "patient:ward-1";
 /** general-hospital: the wall between the CT suite (x 21–26) and the MRI suite (x 26–31), and a line clear of both scanners. */
 const WALL_X = 26;
 const Z = -34.2;
+/** general-hospital: a spot in the build zone (x −59…−47, z 23…39), clear of its seed blocks (z 30). */
+const BUILD_ZONE = { x: -53, z: 34 };
 
 /** The place beside the map, the badge, the world's name and room of the body, the avatar and the world's pose: one read. */
 async function places(page: Page) {
@@ -45,8 +48,8 @@ async function agreement(page: Page) {
   return same ? "agree" : p;
 }
 
-/** Wait until both labels and the world agree; then they name `name` (and the world's room is `room`). */
-async function agreeOn(page: Page, name: string, room: string): Promise<void> {
+/** Wait until both labels and the world agree; then they name `name` (and the world's room is `room`, null in none). */
+async function agreeOn(page: Page, name: string, room: string | null): Promise<void> {
   await expect.poll(() => agreement(page), { timeout: 30_000 }).toBe("agree");
   const p = await places(page);
   expect(p.world).toBe(name);
@@ -144,6 +147,13 @@ test.describe("the place beside the map and the badge (en)", () => {
     expect((await walk)?.status).toBe("completed");
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
     await agreeOn(page, "MRI Suite", "rad-mri");
+
+    // the build zone (audit W5): named as such beside the map, on the badge and by the world — no longer the garden
+    await placeAvatar(page, BUILD_ZONE.x, BUILD_ZONE.z);
+    await agreeOn(page, "Building Garden", null);
+    await shot(page, "place-build-zone");
+    await placeAvatar(page, BUILD_ZONE.x + 9, BUILD_ZONE.z);
+    await agreeOn(page, "Healing Garden", null);
     expect(errors).toEqual([]);
   });
 });

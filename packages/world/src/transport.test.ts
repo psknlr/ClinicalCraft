@@ -543,6 +543,44 @@ describe("the policy: a study done on the patient at a fixed device needs the pa
     expect(named).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
   });
 
+  it("audit W4: the monitor taken along travels on the transit (every front-end draws it with the bed) and stays with the patient — beside them, or with no free spot right with them, never back where it is kept", async () => {
+    const MONITOR = "eq:ward-defibrillator";
+    let w!: TestWorld;
+    let armed = false;
+    const mid: (PatientPlace["transit"] | undefined)[] = [];
+    const mover = steppingMover((i) => {
+      if (!armed) return;
+      if (i === 1) mid.push(w.runtime.patientPlace()?.transit);
+      // the CT room filled with boxes while the bed is on its way: no free spot left beside the table
+      if (i === 2) w.runtime.setObstacle({ id: "w4-boxes", level: "L0", rect: { x: 23.5, z: -37, w: 9, d: 14 }, label: { en: "boxes", "zh-CN": "箱子" } }, true);
+    });
+    w = makeWorld("pulmonary-embolism-postop", { mover });
+    await toPatient(w);
+    armed = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
+    armed = false;
+    expect(r.status, r.message).toBe("completed");
+    // in transit: the monitor is the transit's, on her bed (before W4 the transit named no monitor)
+    expect(mid).toEqual([{ by: PRIMARY_ACTOR, trolley: "eq:ward-bed-1", posture: "lying", monitor: MONITOR }]);
+    // on arrival with no free spot: it stays with her, where she lies (before W4: back on the ward, the leg still naming it)
+    const at = w.runtime.snapshot().entities[MONITOR]!.position!;
+    const p = place(w);
+    expect(near(at, p, 0.01)).toBe(true);
+    expect(w.runtime.roomOf(MONITOR)).toBe("rad-ct");
+    expect(w.runtime.atBedside(MONITOR)).toBe(true);
+    expect(r.message).toMatch(/stays right with them/);
+    expect(w.runtime.snapshot().entities[w.patientId]?.patient?.legs?.at(-1)).toMatchObject({ monitor: MONITOR, to: { provider: "eq:ct-scanner" } });
+    // in zh-CN as well; with room beside her, the monitor waits beside her (as before)
+    const zh = makeWorld("pulmonary-embolism-postop", { locale: "zh-CN" });
+    await toPatient(zh);
+    const there = await zh.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: zh.patientId, parameters: { destination: "eq:ct-scanner", monitor: true } });
+    expect(there.message).toMatch(/除颤监护仪随行监护。$/);
+    const beside = zh.runtime.snapshot().entities[MONITOR]!.position!;
+    expect(near(beside, zh.runtime.patientPlace()!, 0.01)).toBe(false);
+    expect(near(beside, zh.runtime.patientPlace()!, 6)).toBe(true);
+    expect(zh.runtime.patientPlace()!.transit).toBeUndefined();
+  });
+
   it("a peak flow is no longer done at the triage station with the child left in the resus bay", async () => {
     const w = makeWorld("pediatric-asthma");
     await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: "eq:triage-peak-flow" } });

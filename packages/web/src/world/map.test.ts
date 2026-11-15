@@ -96,14 +96,15 @@ describe("regions", () => {
     buildZone: { rect: { x: 23.5, z: 1.5, w: 15, d: 15 } },
     outdoorRegion: { "zh-CN": "疗愈花园", en: "Healing Garden" },
   } as never;
-  it("the world's region lookup: smallest room wins, then the building's corridor, then the outdoors", () => {
+  it("the world's region lookup: smallest room wins, then the building's corridor, then the build zone, then the outdoors", () => {
     expect(roomAt(f, 0, -12)?.id).toBe("conference");
     expect(placeAt(f, 0, -12, "zh-CN")).toEqual({ name: "会诊区", roomId: "conference" });
     expect(placeAt(f, 0, 0, "en")).toEqual({ name: "Corridor", roomId: "corridor" });
     // in the building but in no room: its corridor, as the world (and so the in-world badge) names it
     expect(placeAt(f, -8, 3, "en")).toEqual({ name: "a corridor of Clinic", roomId: null });
-    // the build zone is outdoors: the facility's outdoor region (the map still labels the zone)
-    expect(placeAt(f, 23, 2, "zh-CN")).toEqual({ name: "疗愈花园", roomId: null });
+    // the build zone, outdoors, by its own name — as the map labels it (audit W5: it read as the outdoor region)
+    expect(placeAt(f, 23, 2, "zh-CN")).toEqual({ name: "建造园地", roomId: null });
+    expect(placeAt(f, 23, 2, "en")).toEqual({ name: "Build zone", roomId: null });
     expect(placeAt(f, 0, 25, "zh-CN").name).toBe("疗愈花园");
   });
 });

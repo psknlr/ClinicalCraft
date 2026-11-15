@@ -162,6 +162,7 @@ export class ClinicalCraftApp implements App {
         this.refresh();
       },
       pushing: (actorId) => this.game?.embodied?.pushing(actorId) ?? null,
+      riding: (actorId) => this.game?.embodied?.riding(actorId) ?? null,
       carrying: (actorId) => this.game?.embodied?.carrying(actorId) ?? null,
       // a hidden tab draws no frames: bodies are put at their targets (an external agent's walk does not stall)
       hidden: () => typeof document !== "undefined" && document.hidden,

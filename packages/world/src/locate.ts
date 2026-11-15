@@ -8,7 +8,7 @@
  * it or a short walk away — across a room boundary only for an open slot or
  * a cart just outside; never through a wall).
  */
-import { buildingLevels, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import { buildingLevels, defaultLevelId, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import { BedsideRule, type BedsideAnchor } from "./bedside.js";
 import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SeenPlace, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
 import { rotateXZ, rotatedFootprint } from "./geometry.js";
@@ -28,15 +28,28 @@ export interface NamedRegion {
 }
 
 /**
+ * The build zone's name (where blocks are built: `buildZone`): the facility's own — the name of its room of kind
+ * `build-zone` ("Building Garden" / "建造园地" in the built-in facilities), the label the map draws for it —, else
+ * "Build zone" / "建造园地". One name for the place, whoever says it: the region lookup and the map's label.
+ */
+export function buildZoneName(f: Pick<FacilityDefinition, "rooms">, locale: string): string {
+  const room = f.rooms.find((r) => r.kind === "build-zone");
+  return room ? t(room.name, locale) : worldMessage("region.buildZone", locale);
+}
+
+/**
  * THE region lookup of the world (`WorldRuntime.regionName`, lead note 2): where a point is, by name — the room it
  * is in (`roomLookup`, the registry's own); in no room but inside a building on that level, that building's
- * corridor; outdoors, the facility's outdoor region (e.g. "Healing Garden") — never "a corridor". Pure, built once
- * per facility: the web's HUD names the learner's place with it, so the place beside the map and the in-world
- * badge are one lookup of one position (audit 2026-11-12 P2-15).
+ * corridor; outdoors, the facility's build zone on the ground level (`buildZoneName`: "Building Garden" / "建造园地",
+ * where blocks are built: `buildZone.rect`), else its outdoor region (e.g. "Healing Garden") — never "a corridor".
+ * Pure, built once per facility: the web's HUD names the learner's place with it, so the place beside the map and the
+ * in-world badge are one lookup of one position (audit 2026-11-12 P2-15; the build zone named again, W5).
  */
-export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion">): (at: { level: string; x: number; z: number }, locale: string) => NamedRegion {
+export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "buildings" | "outdoorRegion" | "buildZone">): (at: { level: string; x: number; z: number }, locale: string) => NamedRegion {
   const roomAt = roomLookup(f);
   const rooms = new Map(f.rooms.map((r) => [r.id, r]));
+  const ground = defaultLevelId(f);
+  const zone = f.buildZone?.rect ?? null;
   return (at, locale) => {
     const room = roomAt(at.level, at.x, at.z);
     const r = room ? rooms.get(room) : undefined;
@@ -45,6 +58,7 @@ export function regionLookup(f: Pick<FacilityDefinition, "rooms" | "levels" | "b
       .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(f, b).includes(at.level))
       .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
     if (building) return { room: null, name: worldMessage("region.corridor", locale, { building: t(building.name, locale) }) };
+    if (zone && at.level === ground && rectContains(zone, at.x, at.z)) return { room: null, name: buildZoneName(f, locale) };
     return { room: null, name: t(f.outdoorRegion, locale) };
   };
 }

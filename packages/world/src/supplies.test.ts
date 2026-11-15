@@ -51,10 +51,15 @@ describe("what a device supplies follows its state", () => {
     const all = ["endoscopic-camera", "light-source", "insufflator"];
     expect(rt.provides("eq:tower-off")).toEqual([]);
     expect(rt.provides("eq:tower-ready")).toEqual(all);
-    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBe("on");
+    expect(rt.stateOf("eq:tower-ready")).toBe("on");
+    // a cart the clinician has not seen yet is believed where it is kept, in no state it could know (audit W1)…
+    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")).toMatchObject({ lastKnown: { kind: "usual" }, availableActions: [] });
+    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBeUndefined();
     // the stand-alone insufflator switched on: the gas, never a picture
     const at = (id: string) => w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id } });
     expect((await at("eq:gas-only")).status).toBe("completed");
+    // …and seen, in the state it is in
+    expect(rt.inspect(PRIMARY_ACTOR, "eq:tower-ready")?.state).toBe("on");
     const on = await w.act({ actorId: PRIMARY_ACTOR, operation: "power_on", targetId: "eq:gas-only" });
     expect(on.status, on.message).toBe("completed");
     expect(rt.provides("eq:gas-only")).toEqual(["insufflator"]);
