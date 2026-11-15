@@ -1,17 +1,21 @@
 /**
  * What the player holds, seen in first person: their right hand (`hand.ts`, in full detail) growing out of the
- * end of a forearm, a shirt cuff and a white-coat sleeve; the chest piece of their stethoscope pinched pad to
- * pad by its near edge between the thumb and the first two fingers — the diaphragm turned away to the patient,
- * the stem back between the two fingers — and the tubing coming up over the dip between their knuckles and
- * trailing back over the hand. One mesh of the figure material; `overlay.ts` hangs it on the camera.
+ * end of a forearm. As a doctor on the ward (`bedside`, the default): a shirt cuff and a white-coat sleeve, the chest
+ * piece of their stethoscope pinched pad to pad by its near edge between the thumb and the first two fingers — the
+ * diaphragm turned away to the patient, the stem back between the two fingers — and the tubing coming up over the dip
+ * between their knuckles and trailing back over the hand. Scrubbed at the sterile field (`sterile`: a place in the care
+ * team the learner holds there — first or second assistant, scrub nurse; core's sterile positions): a sterile glove
+ * over the cuff of a gown sleeve, the hand open, no stethoscope (nothing unsterile is carried to the table). One mesh of
+ * the figure material; `overlay.ts` hangs it on the camera.
  */
 import { Group, Matrix4, Mesh, Vector3 } from "three";
 import { WRIST as WRIST_SECTION } from "./hand-cage.js";
-import { addHand, HAND_HOLD } from "./hand.js";
+import { addHand, HAND_HOLD, HAND_RELAXED } from "./hand.js";
 import { SKIN_GLOW } from "./head.js";
 import { figureMaterial } from "./material.js";
 import { paint, rgb, shade, Sculpt, sweepEnd, type Paint, type Station, type V3 } from "./sculpt.js";
 import { addChestPiece, addTubing, STEM_END } from "./stethoscope.js";
+import { STERILE_GOWN } from "./wear.js";
 
 /** The hand's frame in the overlay's hand group: where the wrist is, which way the fingers point and the palm faces. */
 const WRIST = new Vector3(0.0, 0.17, 0.12);
@@ -20,30 +24,41 @@ const PALM = new Vector3(-0.6, -0.5, -0.62).normalize();
 /** How much larger than life it is drawn (it is held closer to the eye than the hand group sits). */
 const SCALE = 1.8;
 
-/** The held stethoscope and the hand holding it (see the module doc). */
-export function buildHeld(skinHex = "#dbb597"): Group {
+/** What the player's hand is dressed in: a white coat with the stethoscope (the ward), or scrubbed at the sterile field. */
+export type HeldWear = "bedside" | "sterile";
+
+/** A sterile glove: the colour the people of the world wear theirs in (`figure.ts`). */
+export const GLOVE: Paint = { rgb: rgb("#e6dcc4"), gloss: 0.3 };
+
+/** The held stethoscope and the hand holding it, or the scrubbed hand (see the module doc). */
+export function buildHeld(skinHex = "#dbb597", wear: HeldWear = "bedside"): Group {
   const sc = new Sculpt();
+  const sterile = wear === "sterile";
   const skin: Paint = { rgb: rgb(skinHex), gloss: 0.24, glow: SKIN_GLOW };
-  const coat = paint("#f1f2ee");
+  const sleeve = sterile ? paint(STERILE_GOWN) : paint("#f1f2ee");
   const cuff = paint("#7fa9c4");
   // a left hand is built; the player's right is its mirror
   const mirror = new Matrix4().makeScale(-1, 1, 1);
   sc.within(mirror, () => {
-    // the forearm's end, and the hand growing out of it
+    // the forearm's end, and the hand growing out of it (scrubbed: the glove's cuff, pulled up over the gown's sleeve)
     const forearm: Station[] = [{ p: [0, -0.09, 0.002], rx: 0.0285, rz: 0.021 }, { p: [0, -0.05, 0.001], rx: 0.027, rz: 0.0196 }, { p: [0, -0.02, 0], rx: WRIST_SECTION[0] * 1.01, rz: WRIST_SECTION[1] * 1.01 }, { p: [0, 0, 0], rx: WRIST_SECTION[0], rz: WRIST_SECTION[1] }];
-    sc.sweep(forearm, skin, { seg: 16, start: "open", end: "open" });
-    const pads = addHand(sc, skin, HAND_HOLD, { detail: true, wrist: sweepEnd(forearm, { seg: 16 }) });
-    sc.sweep([{ p: [0, -0.2, 0.004], rx: 0.036, rz: 0.03 }, { p: [0, -0.046, 0.002], rx: 0.0312, rz: 0.0255 }, { p: [0, -0.03, 0.002], rx: 0.0308, rz: 0.025 }], cuff, { seg: 14, start: "open", end: "flat", capPaint: { rgb: shade(cuff.rgb, 0.5), gloss: 0 } });
+    const hand = sterile ? GLOVE : skin;
+    // scrubbed, the glove's cuff flares over the end of the gown's sleeve
+    const gloveCuff: Station[] = [{ p: [0, -0.095, 0.002], rx: 0.044, rz: 0.038 }, { p: [0, -0.06, 0.001], rx: 0.036, rz: 0.029 }, ...forearm.slice(2)];
+    sc.sweep(sterile ? gloveCuff : forearm, hand, { seg: 16, start: "open", end: "open" });
+    const pads = addHand(sc, hand, sterile ? HAND_RELAXED : HAND_HOLD, { detail: true, gloved: sterile, wrist: sweepEnd(forearm, { seg: 16 }) });
+    if (!sterile) sc.sweep([{ p: [0, -0.2, 0.004], rx: 0.036, rz: 0.03 }, { p: [0, -0.046, 0.002], rx: 0.0312, rz: 0.0255 }, { p: [0, -0.03, 0.002], rx: 0.0308, rz: 0.025 }], cuff, { seg: 14, start: "open", end: "flat", capPaint: { rgb: shade(cuff.rgb, 0.5), gloss: 0 } });
     sc.sweep(
       [
         { p: [0.004, -0.46, 0.012], rx: 0.058, rz: 0.054 },
         { p: [0.002, -0.3, 0.008], rx: 0.05, rz: 0.045 },
         { p: [0, -0.11, 0.004], rx: 0.0405, rz: 0.035 },
-        { p: [0, -0.05, 0.003], rx: 0.039, rz: 0.0335 },
+        sterile ? { p: [0, -0.082, 0.003], rx: 0.038, rz: 0.0325 } : { p: [0, -0.05, 0.003], rx: 0.039, rz: 0.0335 },
       ],
-      coat,
-      { seg: 16, start: "open", end: "flat", capPaint: { rgb: shade(coat.rgb, 0.5), gloss: 0 } },
+      sleeve,
+      { seg: 16, start: "open", end: "flat", capPaint: { rgb: shade(sleeve.rgb, 0.5), gloss: 0 } },
     );
+    if (sterile) return;
     // the chest piece pinched by its near edge between the thumb's pad and the pads of the index and the middle
     // finger: the diaphragm looks away from the hand, the stem runs back between the fingers
     const fingers = pads.fingers[0]!.clone().add(pads.fingers[1]!).multiplyScalar(0.5);
@@ -73,6 +88,7 @@ export function buildHeld(skinHex = "#dbb597"): Group {
   });
   const mesh = new Mesh(sc.geometry(), figureMaterial());
   mesh.userData.figure = true;
+  mesh.userData.wear = wear;
   mesh.frustumCulled = false;
   const y = FINGERS.clone();
   const z = PALM.clone().multiplyScalar(-1);

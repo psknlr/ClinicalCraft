@@ -541,6 +541,7 @@ const en: Messages = {
   "debrief.formative": "Formative feedback · not a validated competency score",
   "debrief.assessment": "Assessment",
   "debrief.objectives": "Objectives",
+  "debrief.byTeam": "done by the team before you joined (not credited to you)",
   "debrief.history": "History taking",
   "debrief.exam": "Examination",
   "debrief.coverage": "Required items covered {done}/{total}",

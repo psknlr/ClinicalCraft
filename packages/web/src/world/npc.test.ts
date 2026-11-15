@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { Box3, Group, type BufferAttribute, type Mesh } from "three";
-import { canonicalPosition, STERILE_POSITIONS, StaffPositionSchema } from "@clinicalcraft/core";
+import { canonicalPosition, STERILE_POSITIONS, StaffPositionSchema, TEAM_PLACES } from "@clinicalcraft/core";
+import { heldWear } from "../app/places.js";
+import { buildHeld, GLOVE } from "./figure/held.js";
+import { rgb } from "./figure/sculpt.js";
+import { STERILE_GOWN } from "./figure/wear.js";
+import { staffTag } from "./strings.js";
 import { frameOf } from "./figure/anatomy.js";
 import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, presentationOf, presentationOfSex, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
 
@@ -307,5 +312,50 @@ describe("people of the world (npc.ts)", () => {
     disposeRig(rig);
     expect(disposed).toBe(seen.length);
     expect(rig.root.parent).toBeNull();
+  });
+});
+
+describe("the player's own hand, as their place dresses it (figure/held.ts)", () => {
+  /** The colours a built hand is painted in (its one mesh's vertex colours), as `r,g,b` keys. */
+  const colours = (wear?: "bedside" | "sterile"): Set<string> => {
+    const g = buildHeld(undefined, wear);
+    const mesh = g.children[0] as Mesh;
+    const c = (mesh.geometry.getAttribute("color") as BufferAttribute).array as Float32Array;
+    const out = new Set<string>();
+    for (let i = 0; i < c.length; i += 3) out.add(`${c[i]!.toFixed(5)},${c[i + 1]!.toFixed(5)},${c[i + 2]!.toFixed(5)}`);
+    return out;
+  };
+  const key = (hex: string) => rgb(hex).map((v) => v.toFixed(5)).join(",");
+
+  it("in a sterile place — first or second assistant, scrub nurse — gloved, in a gown's sleeve, with no stethoscope; otherwise as always", () => {
+    const bedside = colours();
+    const sterile = colours("sterile");
+    // as always: the white coat's sleeve and the stethoscope's tubing and steel
+    for (const hex of ["#f1f2ee", "#1c252d", "#cdd2d5"]) expect(bedside.has(key(hex)), hex).toBe(true);
+    // scrubbed: the glove and the gown, and nothing of the stethoscope or the coat
+    expect(sterile.has(GLOVE.rgb.map((v) => v.toFixed(5)).join(","))).toBe(true);
+    expect(sterile.has(key(STERILE_GOWN))).toBe(true);
+    for (const hex of ["#f1f2ee", "#1c252d", "#cdd2d5", "#7fa9c4"]) expect(sterile.has(key(hex)), hex).toBe(false);
+    expect((buildHeld(undefined, "sterile").children[0] as Mesh).userData.wear).toBe("sterile");
+    // which places are scrubbed: core's sterile positions (the operating surgeon's place is no place: as always)
+    expect(TEAM_PLACES.map((p) => heldWear(p))).toEqual(["sterile", "sterile", "sterile"]);
+    expect([heldWear(null), heldWear(undefined)]).toEqual(["bedside", "bedside"]);
+  });
+});
+
+describe("staff name tags (people.ts): the position the facility gives them", () => {
+  it("the facility position's title, else the role; a name the facility already qualifies alone — in both languages", () => {
+    expect(staffTag({ role: "nurse", position: "scrub-nurse", name: "Chen Yu" }, "en")).toBe("Scrub nurse · Chen Yu");
+    expect(staffTag({ role: "nurse", position: "scrub-nurse", name: "陈雨" }, "zh-CN")).toBe("洗手护士 · 陈雨");
+    expect(staffTag({ role: "attending", position: "first-assistant", name: "Dr Abe" }, "en")).toBe("First assistant · Dr Abe");
+    expect(staffTag({ role: "attending", position: "surgeon", name: "伊藤医生" }, "zh-CN")).toBe("主刀医生 · 伊藤医生");
+    // no position: the role, as always
+    expect(staffTag({ role: "nurse", name: "Lin Xiao" }, "en")).toBe("Nurse · Lin Xiao");
+    expect(staffTag({ role: "nurse", position: null, name: "林晓" }, "zh-CN")).toBe("护士 · 林晓");
+    // the facility's name already says it: said once
+    expect(staffTag({ role: "attending", position: "assistant-surgeon", name: "Dr Mori (assistant surgeon)" }, "en")).toBe("Dr Mori (assistant surgeon)");
+    expect(staffTag({ role: "nurse", position: "scrub-nurse", name: "林护士（洗手）" }, "zh-CN")).toBe("林护士（洗手）");
+    // an unknown position word: the role
+    expect(staffTag({ role: "porter", position: "juggler", name: "Li Qiang" }, "en")).toBe("Porter · Li Qiang");
   });
 });

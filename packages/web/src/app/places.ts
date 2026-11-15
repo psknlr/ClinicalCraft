@@ -6,7 +6,7 @@
  * (`start {seat: "surgeon"}` is normalised away) —, so it is the picker's default and never sent. Whether a place can be
  * taken is the session's to say: a place asked for is sent, never dropped, and the web shows the session's words.
  */
-import { effectiveTeam, placeMember, TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
+import { canonicalPosition, effectiveTeam, isSterilePosition, placeMember, TEAM_PLACES, type CaseDefinition, type ClinicalAction, type Place, type SessionState } from "@clinicalcraft/core";
 import type { CaseCard } from "./content.js";
 
 /** The start's own choices besides the case and the facility (null: none). */
@@ -129,4 +129,14 @@ export function pendingStart(s: Pick<SessionState, "started" | "finished">, star
 export function savedPlace(actions: readonly unknown[] | null | undefined): { seat: Place | null; lineup: string | null } {
   const start = (actions ?? []).find((a): a is { type: "start"; seat?: unknown; lineup?: unknown } => !!a && typeof a === "object" && (a as { type?: unknown }).type === "start");
   return { seat: placeOf(start?.seat), lineup: typeof start?.lineup === "string" ? start.lineup : null };
+}
+
+/**
+ * What the player's first-person hand is dressed in for the place they hold (`WorldApi.setPlayerWear`): scrubbed at the
+ * sterile field in a place core counts sterile (`isSterilePosition`: first and second assistant, scrub nurse) — gloved,
+ * a gown's sleeve, no stethoscope —; otherwise as always (operating, no place recorded: the white coat and the
+ * stethoscope).
+ */
+export function heldWear(seat: Place | null | undefined): "bedside" | "sterile" {
+  return seat && isSterilePosition(canonicalPosition(seat)) ? "sterile" : "bedside";
 }

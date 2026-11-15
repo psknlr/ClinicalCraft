@@ -12,9 +12,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { movementIntent, staffIntent, type AgentEvent } from "@clinicalcraft/agent";
-import { parseCase } from "@clinicalcraft/core";
 import { setLocale, tr } from "../i18n/index.js";
-import { delegateTasks } from "../ui/panels/conversation.js";
+import { observeField, parseCase, procedureFor } from "@clinicalcraft/core";
+import { delegateTasks, theatreLine, theatreOffer } from "../ui/panels/conversation.js";
+import { placeSession } from "../ui/panels/__fixtures__/team-play.js";
+import type { AppSession } from "./session.js";
+import { delegateLine, delegationSummary } from "./staff.js";
 import { SessionStore } from "./store.js";
 import { lineSpeaker } from "./world-bridge.js";
 
@@ -24,7 +27,11 @@ const parsed = parseCase(caseJson);
 if (!parsed.ok) throw new Error("pediatric-asthma does not parse");
 const caseDef = parsed.value;
 
-afterEach(() => setLocale("zh-CN"));
+const open: AppSession[] = [];
+afterEach(async () => {
+  setLocale("zh-CN");
+  for (const app of open.splice(0)) await app.close();
+});
 
 describe("the speaking animation follows the speaker", () => {
   const ctx = { slotId: "resus-1", staffFor: () => "ed-nurse", activeStaff: () => "triage-nurse" };
@@ -90,11 +97,70 @@ describe("the movement sentences the UI offers are understood (both languages)",
   }
 });
 
-describe("the chips a colleague's window offers follow their role's scope of practice", () => {
-  it("nurses and paramedics: the bedside tasks; a porter, a receptionist, a radiologist: none", () => {
-    expect(delegateTasks("nurse")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
-    expect(delegateTasks("paramedic")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
-    expect(delegateTasks("attending")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
-    for (const role of ["porter", "receptionist", "radiologist", "lab-tech", "pharmacist"]) expect(delegateTasks(role), role).toEqual([]);
+describe("the chips a colleague's window offers follow what the session says they may be handed (RoleState.delegable)", () => {
+  /** Every colleague's state as the session knows it, by staff id. */
+  const states = (app: AppSession) => new Map(app.session.staffStates().map((r) => [r.actorId.slice("staff:".length), r]));
+  /** The field as the operator sees it, and the case's instruments. */
+  const fieldOf = (app: AppSession) => {
+    const s = app.session.state;
+    const def = procedureFor(app.session.caseDef, s)!;
+    return { v: observeField(def, s.procedure!), instruments: def.instruments.map((i) => i.id) };
+  };
+
+  it("bedside: the tasks of their role — nurses, attendings and paramedics; a porter, a receptionist, a radiologist: none", async () => {
+    const app = await placeSession();
+    open.push(app);
+    const byRole = new Map<string, string[]>();
+    for (const r of app.session.staffStates()) if (!byRole.has(r.role)) byRole.set(r.role, delegateTasks(r));
+    expect(byRole.get("nurse")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
+    expect(byRole.get("attending")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
+    for (const role of ["porter", "receptionist", "radiologist", "lab-tech", "pharmacist"]) if (byRole.has(role)) expect(byRole.get(role), role).toEqual([]);
+    expect(byRole.has("porter")).toBe(true);
+    // no state (clinical mode): no chips
+    expect(delegateTasks(null)).toEqual([]);
+  });
+
+  it("the operating table's: by control — traction and the camera to the assistant, passes to the scrub nurse; none to the stand-in who operates or the colleague standing by", async () => {
+    const app = await placeSession();
+    open.push(app);
+    app.session.dispatch({ type: "set-phase", phase: "theatre" });
+    for (const op of [{ op: "plan-ports", plan: "three-port-left" }, { op: "insufflate", pressure: 12 }, { op: "insert", port: "A", instrument: "laparoscope" }, { op: "insert", port: "B", instrument: "grasper" }] as const) app.session.dispatch({ type: "operate", op });
+    const { v, instruments } = fieldOf(app);
+    const roles = states(app);
+    // the first assistant (two surgeons: the camera too)
+    expect(theatreOffer(roles.get("doc-1"), "doc-1", v, instruments)).toEqual({ hold: ["B"], release: false, camera: true, aim: v.regions.map((r) => r.id), pass: [] });
+    // the scrub nurse: the instrument table
+    expect(theatreOffer(roles.get("nurse-2"), "nurse-2", v, instruments)).toEqual({ hold: [], release: false, camera: false, aim: [], pass: instruments });
+    // the circulating nurse and the anaesthetist: nothing at the table
+    expect(theatreOffer(roles.get("nurse-1"), "nurse-1", v, instruments)).toBeNull();
+    expect(theatreOffer(roles.get("anaes-1"), "anaes-1", v, instruments)).toBeNull();
+    // before the operation, nothing at the table at all
+    expect(theatreOffer(roles.get("doc-1"), "doc-1", null, instruments)).toBeNull();
+    // a chip is a delegation by name, with what it names
+    expect(theatreLine("doc-1", "hold_traction", "B")).toBe("/delegate staff:doc-1 hold_traction B");
+    expect(theatreLine("nurse-2", "pass_instrument", "maryland")).toBe("/delegate staff:nurse-2 pass_instrument maryland");
+    expect(theatreLine("doc-1", "release_traction")).toBe("/delegate staff:doc-1 release_traction");
+
+    // in the first assistant's place: the stand-in who operates and the colleague standing by are offered nothing
+    const placed = await placeSession({ seat: "first-assistant" });
+    open.push(placed);
+    await placed.session.run({ type: "team", action: "run", rounds: 40 });
+    const f = fieldOf(placed);
+    const there = states(placed);
+    expect(there.get("doc-0")!.delegable.filter((t) => ["hold_traction", "release_traction", "hold_camera", "aim_camera", "pass_instrument"].includes(t))).toEqual([]);
+    expect(theatreOffer(there.get("doc-0"), "doc-0", f.v, f.instruments)).toBeNull();
+    expect(there.get("doc-1")).toMatchObject({ standingBy: true, delegable: [] });
+    expect(theatreOffer(there.get("doc-1"), "doc-1", f.v, f.instruments)).toBeNull();
+    expect(delegateTasks(there.get("doc-1"))).toEqual([]);
+    // the scrub nurse still passes
+    expect(theatreOffer(there.get("nurse-2"), "nurse-2", f.v, f.instruments)?.pass).toEqual(f.instruments);
+  });
+
+  it("a refused delegation says why as the session words it — who holds the control — and the line reads as a sentence", () => {
+    const refusal = "Hold the traction is not a scrub nurse's work. In this team the Traction control is held by Dr Abe (first assistant).";
+    const data = { delegation: { staffId: "staff:nurse-2", role: "nurse", task: "hold_traction", status: "failed", steps: [], elapsedSeconds: 0, message: "not-authorized", refusal } };
+    expect(delegationSummary(data, () => null)!.steps).toEqual([refusal]);
+    setLocale("en");
+    expect(delegateLine("/delegate staff:doc-1 hold_traction B", (id) => (id === "doc-1" ? "Dr Abe" : null))).toBe("Dr Abe, please: Hold the traction · B");
   });
 });

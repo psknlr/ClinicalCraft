@@ -4,14 +4,16 @@
  * teaching points, references, its clinical review status, notice) plus the `AssessmentReport`
  * visualised — objectives, history/exam coverage, investigation stewardship,
  * first-try decisions, safety events, the operation (cases with a `procedure`,
- * once the case is finished: `debrief-operation.ts`), the rubric (deterministic met/unmet,
+ * once the case is finished: `debrief-operation.ts`), a place in the care team (the place and what the team did
+ * before the learner joined — not credited to them: the agent's `joinedLines`), the rubric (deterministic met/unmet,
  * examiner-judged items with evidence) and the examiner narrative. Scores are
  * formative only (DESIGN_PRINCIPLES §2.6).
  */
+import { joinedLines } from "@clinicalcraft/agent";
 import { availableDecisions, progress, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
-import { ct, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
+import { ct, getLocale, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { investigationName } from "./common.js";
@@ -56,10 +58,14 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
     const p = c.phases.find((x) => x.id === phase);
     return `${investigationName(c, id)}${p ? `（${ct(p.label)}）` : ""}`;
   });
+  // a place in the team: the place, and what the team did before the learner joined — shown, never credited to them
+  const joined = new Set(r.joined?.objectives ?? []);
+  const place = joinedLines(c, r, getLocale());
   return h(
     "section",
     { class: "assessment" },
     h("div", { class: "assess-head" }, h("h3", null, tr("debrief.assessment")), h("span", { class: "formative" }, tr("debrief.formative"))),
+    place.length ? h("div", { class: "notice debrief-place", id: "debrief-place", dataset: { seat: r.seat ?? "" } }, place.map((line, i) => h(i === 0 ? "strong" : "p", null, line))) : null,
     h(
       "div",
       { class: "assess-grid" },
@@ -70,7 +76,11 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
         h(
           "ul",
           { class: "check-list" },
-          r.objectives.map((o) => h("li", { class: o.done ? "ok" : "no" }, h("span", { class: "mark" }, o.done ? "✓" : "·"), ct(c.objectives.find((x) => x.id === o.id)?.title) || o.id)),
+          r.objectives.map((o) =>
+            joined.has(o.id)
+              ? h("li", { class: "joined", title: tr("debrief.byTeam") }, h("span", { class: "mark" }, "—"), ct(c.objectives.find((x) => x.id === o.id)?.title) || o.id, h("small", { class: "muted" }, ` · ${tr("debrief.byTeam")}`))
+              : h("li", { class: o.done ? "ok" : "no" }, h("span", { class: "mark" }, o.done ? "✓" : "·"), ct(c.objectives.find((x) => x.id === o.id)?.title) || o.id),
+          ),
         ),
       ),
       h(

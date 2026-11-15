@@ -42,8 +42,8 @@ export function teamPanel(app: App): () => PanelView {
     const name = (id: string): string => memberName(id, state(), worldName);
     // the session's refusal or warning of the panel's last op, as it said it (an ask of someone away, a count said already)
     let note = "";
-    const op = (o: TeamOp | Record<string, unknown>) =>
-      void session.run({ type: "team", ...o } as never).then((events: AgentEvent[]) => {
+    const op = (o: TeamOp | Omit<TeamOp, "type">) =>
+      void session.run({ ...o, type: "team" } as TeamOp).then((events: AgentEvent[]) => {
         const said = events.flatMap((e) => (e.msg.type === "error" || e.msg.type === "warning" ? [e.msg.message] : []));
         note = said.join(" ");
         render();

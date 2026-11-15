@@ -1,12 +1,13 @@
 /**
  * What a voxel world draws for the player rather than of the facility: the first-person hand holding the chest
- * piece of a stethoscope in every hotbar slot (`figure/held.ts`; the hotbar shows the selected block), the
- * outline around the aimed target or block, and the golden waypoint beacon over the current objective's
- * destination, with its label (`WorldApi.setWaypoint`).
+ * piece of a stethoscope in every hotbar slot (`figure/held.ts`; the hotbar shows the selected block) — gloved, in a
+ * sterile gown's sleeve and holding nothing while the learner holds a place at the sterile field
+ * (`WorldApi.setPlayerWear`) —, the outline around the aimed target or block, and the golden waypoint beacon over the
+ * current objective's destination, with its label (`WorldApi.setWaypoint`).
  */
 import { BoxGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Object3D, type Vector3 } from "three";
 import type { WorldPoint } from "../contracts.js";
-import { buildHeld } from "./figure/held.js";
+import { buildHeld, type HeldWear } from "./figure/held.js";
 import { UNIT_BOX } from "./voxels.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
@@ -19,6 +20,8 @@ export class Overlay {
   readonly beacon: Group;
   /** The current waypoint (the beacon's destination), or null. */
   waypoint: (WorldPoint & { label: string }) | null = null;
+  /** What the hand is dressed in now (`setHeld`). */
+  private wear: HeldWear;
   private readonly beaconMat: MeshBasicMaterial;
   private readonly marker: Mesh;
   private beaconLabel: Object3D | null = null;
@@ -33,6 +36,7 @@ export class Overlay {
     hand.position.set(0.4, -0.39, -0.58);
     hand.rotation.set(-0.12, -0.17, -0.2);
     hand.add(buildHeld());
+    this.wear = "bedside";
 
     const highlight = new LineSegments(new EdgesGeometry(new BoxGeometry(1.01, 1.01, 1.01)), new LineBasicMaterial({ color: "#faf6cf", transparent: true, opacity: 0.85 }));
     this.highlight = highlight;
@@ -54,6 +58,20 @@ export class Overlay {
     marker.rotation.set(Math.PI / 4, 0, Math.PI / 4);
     beacon.add(marker);
     scene.add(beacon);
+  }
+
+  /**
+   * `WorldApi.setPlayerWear`: the player's hand as their place dresses it (`figure/held.ts`): the white coat and the
+   * stethoscope, or scrubbed at the sterile field — gloved, a gown's sleeve, nothing else held. Rebuilt only on a change.
+   */
+  setHeld(wear: HeldWear): void {
+    if (wear === this.wear) return;
+    this.wear = wear;
+    for (const old of [...this.hand.children]) {
+      old.removeFromParent();
+      old.traverse((o) => (o as Mesh).geometry?.dispose?.());
+    }
+    this.hand.add(buildHeld(undefined, wear));
   }
 
   /** `WorldApi.setWaypoint`: the beacon (and its label) over the destination on its level's floor, or hidden. */

@@ -32,6 +32,10 @@ export function worldDebug(world: VoxelWorld, buildMs: () => number): WorldApi["
     },
     /** Elevators: cars (rooms), doors and stops per level. */
     elevators,
+    /** What the player's first-person hand is dressed in now (`WorldApi.setPlayerWear`): "bedside" or "sterile". */
+    get held() {
+      return (world.overlay.hand.children[0]?.children[0]?.userData.wear as string | undefined) ?? "bedside";
+    },
     /** Equipment models: placements requested, loaded and failed (voxel parts kept). */
     models: models.state,
     rideElevator: (connectorId: string, to: string) => world.rides.ride(connectorId, to),

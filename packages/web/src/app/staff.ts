@@ -72,15 +72,17 @@ export function staffForAgent(agent: string, ctx: StaffContext): StaffRef | null
 }
 
 /**
- * The learner's `/delegate <staff:id | role> <task>` line as a sentence ("Lin Xiao, please: Attach the
- * monitor" / "林晓，请：连接监护仪"); null for any other line.
+ * The learner's `/delegate <staff:id | role> <task> [target]` line as a sentence ("Lin Xiao, please: Attach the
+ * monitor" / "林晓，请：连接监护仪"; the operating table's with what it names: "Dr Abe, please: Hold the traction · B");
+ * null for any other line.
  */
 export function delegateLine(text: string, nameOf: (staffId: string) => string | null): string | null {
-  const m = /^[/／]delegate\s+(\S+)\s+(\S+)/.exec(text.trim());
+  const m = /^[/／]delegate\s+(\S+)\s+(\S+)(?:\s+(\S+))?/.exec(text.trim());
   if (!m) return null;
   const who = m[1]!;
   const name = who.startsWith("staff:") ? (nameOf(who.slice("staff:".length)) ?? who.slice("staff:".length)) : trMaybe(`role.${who}`, who);
-  return tr("conv.delegated", { name, task: trTask(m[2]!) });
+  const task = trTask(m[2]!);
+  return tr("conv.delegated", { name, task: m[3] ? `${task} · ${m[3]}` : task });
 }
 
 interface DelegationData {
@@ -90,6 +92,8 @@ interface DelegationData {
   status: string;
   steps: { operation: string; target?: string; status: string; message?: string }[];
   elapsedSeconds?: number;
+  /** Why it could not start, as the session words it (the scope of practice; the operating table's: who holds the control). */
+  refusal?: string;
 }
 
 function delegationData(data: unknown): DelegationData | null {
@@ -99,16 +103,17 @@ function delegationData(data: unknown): DelegationData | null {
     const r = d as Record<string, unknown>;
     if (typeof r.task !== "string" || typeof r.status !== "string" || !Array.isArray(r.steps)) return null;
     const steps = r.steps.filter((x): x is DelegationData["steps"][number] => !!x && typeof x === "object" && typeof (x as { operation?: unknown }).operation === "string" && typeof (x as { status?: unknown }).status === "string");
-    return { staffId: typeof r.staffId === "string" ? r.staffId : null, role: typeof r.role === "string" ? r.role : "", task: r.task, status: r.status, steps, elapsedSeconds: typeof r.elapsedSeconds === "number" ? r.elapsedSeconds : 0 };
+    return { staffId: typeof r.staffId === "string" ? r.staffId : null, role: typeof r.role === "string" ? r.role : "", task: r.task, status: r.status, steps, elapsedSeconds: typeof r.elapsedSeconds === "number" ? r.elapsedSeconds : 0, ...(typeof r.refusal === "string" && r.refusal.trim() ? { refusal: r.refusal.trim() } : {}) };
   };
   return pick(data) ?? pick(data && typeof data === "object" ? (data as { data?: unknown }).data : undefined);
 }
 
 /**
  * A delegation's outcome (`/delegate` output data, `{ delegation }`) as the learner reads it: who did which
- * task and how it went, then each step — its operation and target by name, why it failed in words. The
- * session's own text names operations and entities by id (it is also a model's tool output). Null when the
- * data is no delegation.
+ * task and how it went, then — refused before it started — the session's reason as it is (the scope of practice;
+ * for the operating table's work, who in this team holds its control), then each step — its operation and target by
+ * name, why it failed in words. The session's own text names operations and entities by id (it is also a model's
+ * tool output). Null when the data is no delegation.
  */
 export function delegationSummary(data: unknown, nameOf: (id: string) => string | null): { head: string; steps: string[] } | null {
   const d = delegationData(data);
@@ -126,5 +131,5 @@ export function delegationSummary(data: unknown, nameOf: (id: string) => string 
       why: s.status === "completed" || !s.message ? "" : ` — ${learnerText(refusalLead(s.message))}`,
     }),
   );
-  return { head, steps };
+  return { head, steps: d.refusal ? [d.refusal, ...steps] : steps };
 }

@@ -1,7 +1,8 @@
 /**
- * World-level strings (toasts, hints, door names). The world runs without
- * the UI i18n bundle, so it carries its own tiny zh-CN / en table.
+ * World-level strings (toasts, hints, door names, name tags). The world runs without
+ * the UI i18n bundle, so it carries its own tiny zh-CN / en table (positions' titles are core's).
  */
+import { POSITION_TITLES, type StaffPosition } from "@clinicalcraft/core";
 
 export type LocalizedText = string | { [locale: string]: string } | undefined | null;
 
@@ -101,4 +102,20 @@ export const ROLE_NAMES: Record<string, { "zh-CN": string; en: string }> = {
 export function roleName(role: string, locale: string): string {
   const r = ROLE_NAMES[role];
   return r ? tx(r, locale) : role;
+}
+
+/** A name that already says who someone is in brackets ("Dr Mori (assistant surgeon)", "林护士（洗手）"): the facility's own words. */
+const QUALIFIED = /[)）]\s*$/u;
+
+/**
+ * A member of staff's name tag (docs/FACILITIES.md "Staff in the 3D world"): the position the FACILITY gives them —
+ * core's title, "Scrub nurse · Chen Yu" / "洗手护士 · 陈雨" — else their role ("Nurse · Lin Xiao"); a name the facility
+ * already qualifies in brackets with their position stands alone ("Dr Mori (assistant surgeon)"). People are built
+ * from the facility alone: a case's team never changes a tag.
+ */
+export function staffTag(st: { role: string; position?: string | null; name: string }, locale: string): string {
+  const title = st.position && Object.hasOwn(POSITION_TITLES, st.position) ? tx(POSITION_TITLES[st.position as StaffPosition], locale) : null;
+  if (!title) return `${roleName(st.role, locale)} · ${st.name}`;
+  if (QUALIFIED.test(st.name)) return st.name;
+  return `${title.charAt(0).toUpperCase()}${title.slice(1)} · ${st.name}`;
 }

@@ -75,6 +75,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     },
     setCompanionSpeaking: (slotId, speaking) => world.people.setCompanionSpeaking(slotId, speaking),
     setWaypoint: (target) => world.overlay.setWaypoint(target),
+    setPlayerWear: (wear) => world.overlay.setHeld(wear),
     walkTo: (target, signal) => world.walk.walkTo(target, signal),
     drawMap: (target, o) => world.map.draw(target, o),
     locate: (id) => world.map.locate(id),

@@ -240,12 +240,15 @@ export function needOp(c: CaseDefinition, s: Pick<SessionState, "seat" | "lineup
   return { type: "team", action: "need", item, ...(typeof me === "string" ? { for: me } : {}) };
 }
 
-/** Whether the count is the learner's to say (their member holds the `count` duty), and whether it is due now. */
+/**
+ * The count as the learner's to say — the team keeps one (its record of the count) and the learner's own member holds
+ * the `count` duty (the scrub nurse's place) — and whether it is due now; null otherwise.
+ */
 export function countRow(cp: TeamCheckpoint): { op: TeamOp; due: boolean } | null {
   const mine = cp.state.members.find((m) => m.id === PRIMARY_ACTOR)?.duties.includes("count") ?? false;
-  if (!mine) return null;
   const ledger = cp.state.count;
-  return { op: { type: "team", action: "count" }, due: !!ledger && ledger.dueRound !== undefined && ledger.settledRound === undefined };
+  if (!mine || !ledger) return null;
+  return { op: { type: "team", action: "count" }, due: ledger.dueRound !== undefined && ledger.settledRound === undefined };
 }
 
 /** The member's name in a line (`staff:<id>` through the world's names; the learner's own member as their place). */

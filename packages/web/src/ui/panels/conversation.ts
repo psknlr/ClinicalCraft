@@ -6,9 +6,16 @@
  * grounding indicator and — for the patient — Examine / Treat / Notes tabs.
  * Embodied mode: every colleague is asked in words — "Please put the patient
  * on the monitor", "Please come to the bedside", "You can go back now" —
- * offered as chips for what their role may do (`scopeOf`): they acknowledge,
- * do it with their own body and report in their own voice (the session's
- * `staff-requests.ts`), or say it is not their job and who can. A colleague is
+ * offered as chips for what the session says they may be handed now
+ * (`RoleState.delegable`: by role; the operating table's work by control): they
+ * acknowledge, do it with their own body and report in their own voice (the
+ * session's `staff-requests.ts`), or say it is not their job and who can; the
+ * operating table's work (Hold port …, Let go, Hold the camera, Camera on …,
+ * Pass the …) is asked of them by name as a delegation, a refusal shown as the
+ * session words it (who holds the control). A colleague named in an `@`
+ * mention — by name, or by the position they hold in the team ("@一助",
+ * "@扶镜手", "@first assistant") — is resolved as the session resolves it
+ * (`address.ts`) and answers in their own window. A colleague is
  * always a named staff member (`app/staff.ts`: the one the world would send
  * to this patient when the window was opened for a role, e.g. `@nurse`), and
  * the learner's words go to that person (`user_message.staff`): they answer
@@ -20,7 +27,7 @@
  * session understands the same way when typed —, and a nurse, paramedic,
  * porter or attending can be asked to take the patient to a study or back.
  */
-import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, scopeOf, type Resolution, type RoleState } from "@clinicalcraft/agent";
+import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution, type RoleState } from "@clinicalcraft/agent";
 import {
   historyAvailable,
   matchExam,
@@ -190,7 +197,25 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         app.submit({ type: "user_message", text: raw }, isPatient ? "patient" : args.agent);
         return;
       }
-      const addressed = parseAddress(raw, game.session.session.availableAgents());
+      const available = game.session.session.availableAgents();
+      const addressed = parseAddress(raw, available);
+      // a colleague named in an `@` mention — by name or by the position they hold in this encounter ("@一助", "@扶镜手",
+      // "@first assistant"): the session's own parse and resolver; they answer in their own window
+      const named = addressed.to ? null : staffAddress(raw, { facility: game.facility, caseDef: c, state: store.snapshot?.state ?? game.session.session.state }, available);
+      if (named?.kind === "ambiguous") {
+        const names = named.staffIds.map((id) => staffById(id, staffCtx)?.name ?? id).join(getLocale().startsWith("zh") ? "、" : ", ");
+        app.toast(tr("conv.addressAmbiguous", { names }), "", "warning");
+        input.value = raw;
+        return;
+      }
+      if (named?.kind === "one") {
+        if (named.text) app.say(named.text, named.agent, named.staffId);
+        if (!staff || named.staffId !== staff.staffId) {
+          const who = staffById(named.staffId, staffCtx);
+          app.open("conversation", { agent: named.agent, staffId: named.staffId, staffRole: named.role, ...(who ? { name: who.name } : {}), focusInput: true });
+        }
+        return;
+      }
       const to = addressed.to ?? (isPatient ? "patient" : args.agent);
       if (!addressed.text && !addressed.to) return;
       if (addressed.to && !addressed.text) {
@@ -243,6 +268,41 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       grounded.append(chips);
     };
 
+    /** The colleague's state as the session knows it now (embodied: `staffStates`), or null. */
+    const roleStateOf = (staffId: string): RoleState | null => game.session.session.staffStates().find((r) => r.actorId === `staff:${staffId}`) ?? null;
+
+    /** The operating table's chips for this colleague (`theatreOffer`), each a delegation by name; null: none. */
+    const theatreSection = (staffId: string, role: RoleState | null): HTMLElement[] | null => {
+      const state = store.snapshot?.state ?? game.session.session.state;
+      const def = procedureFor(c, state);
+      const v: FieldView | null = def && state.procedure ? observeField(def, state.procedure) : null;
+      const offer = theatreOffer(role, staffId, v, def?.instruments.map((i) => i.id) ?? []);
+      if (!offer || !v) return null;
+      const send = (task: string, target?: string) => app.submit({ type: "user_message", text: theatreLine(staffId, task, target) }, args.agent);
+      const chip = (task: string, text: string, target?: string) => h("button", { type: "button", dataset: { task, ...(target ? { target } : {}) }, onclick: () => send(task, target) }, text);
+      const picker = (task: string, text: string, options: { value: string; label: string }[]) => {
+        const sel = h("select", { "aria-label": text, dataset: { task } }, options.map((o) => h("option", { value: o.value }, o.label)));
+        return h("span", { class: "theatre-pick" }, sel, h("button", { type: "button", dataset: { task }, onclick: () => send(task, sel.value) }, text));
+      };
+      const regionName = (id: string) => {
+        const r = v.regions.find((x) => x.id === id) ?? def?.regions.find((x) => x.id === id);
+        return r ? ct(r.name) : id;
+      };
+      return [
+        h("div", { class: "eyebrow delegate-head" }, tr("conv.theatre")),
+        h("p", { class: "small muted" }, tr("conv.theatreHint")),
+        h(
+          "div",
+          { class: "chips theatre-chips", id: "theatre-chips" },
+          offer.hold.map((port) => chip("hold_traction", tr("emb.chip.hold_traction", { port }), port)),
+          offer.release ? chip("release_traction", tr("emb.chip.release_traction")) : null,
+          offer.camera ? chip("hold_camera", tr("emb.chip.hold_camera")) : null,
+          offer.aim.length ? picker("aim_camera", tr("emb.chip.aim_camera"), offer.aim.map((id) => ({ value: id, label: regionName(id) }))) : null,
+          offer.pass.length ? picker("pass_instrument", tr("emb.chip.pass_instrument"), offer.pass.map((i) => ({ value: i, label: label("instrument", i) }))) : null,
+        ),
+      ];
+    };
+
     const renderSuggestions = (): void => {
       clear(suggestions);
       if (!isPatient) {
@@ -257,8 +317,10 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             prompts.map((p) => h("button", { type: "button", onclick: () => app.say(p, args.agent, staff?.staffId ?? null) }, p)),
           ),
         );
-        // embodied: ask this colleague for a bedside task their role may do — in words: they answer and act themselves
-        const tasks = game.embodied && staff ? delegateTasks(staff.role) : [];
+        // embodied: what the session says this colleague may be handed now (their role; the operating table's by control)
+        const role = game.embodied && staff ? roleStateOf(staff.staffId) : null;
+        // a bedside task their role may do — in words: they answer and act themselves
+        const tasks = delegateTasks(role);
         if (staff && tasks.length) {
           suggestions.append(
             h("div", { class: "eyebrow delegate-head" }, tr("conv.delegate")),
@@ -270,9 +332,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             ),
           );
         }
+        // embodied: the operating table's work, asked of them by name — as their controls allow, the session says
+        const theatre = staff ? theatreSection(staff.staffId, role) : null;
+        if (theatre) suggestions.append(...theatre);
         // embodied: ask this colleague to take the patient to a study or back to bed — in words, as typed
         const world = game.embodied ? game.session.world() : null;
-        if (world && staff && scopeOf(staff.role).tasks.includes("transport_patient")) {
+        if (world && staff && (role?.delegable ?? []).includes("transport_patient")) {
           const take = (text: string, dest: string) => h("button", { type: "button", dataset: { take: dest }, onclick: () => app.say(text, args.agent, staff.staffId) }, text);
           suggestions.append(
             h("div", { class: "eyebrow delegate-head" }, tr("conv.moveTake")),
@@ -396,9 +461,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         badge,
         grounded,
       );
+      // in the scrub nurse's place no history is taken and no one consulted: said before the session refuses it
+      const seat = (store.snapshot?.state ?? game.session.session.state).seat;
       const main = h(
         "div",
         { class: "convo-main" },
+        isPatient && seat === "scrub-nurse" ? h("p", { class: "notice", id: "conv-scrub-note", role: "note" }, tr("scrub.notYours")) : null,
         log,
         form,
         h("p", { class: "small muted address-hint" }, tr("conv.addressHint")),

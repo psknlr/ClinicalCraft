@@ -1,5 +1,6 @@
 /**
- * Pure logic of the web app layer (no DOM): addressing, settings
+ * Pure logic of the web app layer (no DOM): addressing (a role, or a colleague by name or by the position they hold in
+ * the team — the agent's own resolver), settings
  * sanitising/merging, provider choice, save import validation and the
  * spatial station rules on the real clinic-v4 facility.
  */
@@ -7,8 +8,10 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseCatalog, parseFacility, PERSONAL_KIT } from "@clinicalcraft/core";
-import { parseAddress } from "../ui/address.js";
+import { encounterRoom, lookupStaff } from "@clinicalcraft/agent";
+import { createSession, parseCatalog, parseFacility, PERSONAL_KIT, reduce } from "@clinicalcraft/core";
+import { theatreCase, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
+import { parseAddress, staffAddress } from "../ui/address.js";
 import { runtimeChoice, type ServerInfo } from "./llm.js";
 import { DEFAULT_INVENTORY, EXPORT_FORMAT, SaveStore } from "./persistence.js";
 import { defaultSettings, resolveAgentSettings, sanitizeSettings } from "./settings.js";
@@ -30,6 +33,47 @@ describe("parseAddress", () => {
     expect(parseAddress("@pharmacist hello", agents)).toEqual({ to: null, text: "@pharmacist hello" });
     expect(parseAddress("@家属 他平时怎样", agents)).toEqual({ to: null, text: "@家属 他平时怎样" });
     expect(parseAddress("where does it hurt?", agents)).toEqual({ to: null, text: "where does it hurt?" });
+  });
+});
+
+describe("staffAddress: a colleague named in an @ mention, by the session's own resolver", () => {
+  const caseDef = theatreCase();
+  const facility = theatreFacility();
+  const agents = ["patient", "nurse", "attending", "radiologist"];
+  const stateOf = (start: Record<string, unknown>) => reduce(caseDef, createSession(caseDef), { type: "start", ...start } as never).state;
+  /** What the agent's one resolver answers for the words (the position tier: the team as it is in this encounter). */
+  const resolver = (state: ReturnType<typeof stateOf>, words: string) => lookupStaff(facility, words, encounterRoom(caseDef, facility), { caseDef, state });
+
+  it("@一助, @二助, @扶镜手, @first assistant, @camera holder route to whoever holds the position in this encounter — the agent's lookupStaff, never a table of the web's own", () => {
+    const three = { facility, caseDef, state: stateOf({ lineup: "three-surgeons" }) };
+    expect(staffAddress("@一助 请拉一下胆囊", three, agents)).toEqual({ kind: "one", staffId: "doc-1", role: "attending", agent: "attending", text: "请拉一下胆囊" });
+    expect(staffAddress("@一助请拉一下胆囊", three, agents)).toMatchObject({ kind: "one", staffId: "doc-1", text: "请拉一下胆囊" });
+    expect(staffAddress("@二助 镜头近一点", three, agents)).toMatchObject({ kind: "one", staffId: "doc-2", text: "镜头近一点" });
+    // with three surgeons the second assistant holds the camera; with two, the first assistant does
+    expect(staffAddress("@扶镜手 镜头近一点", three, agents)).toMatchObject({ kind: "one", staffId: "doc-2" });
+    const two = { facility, caseDef, state: stateOf({}) };
+    expect(staffAddress("@扶镜手 镜头近一点", two, agents)).toMatchObject({ kind: "one", staffId: "doc-1" });
+    expect(staffAddress("@camera holder closer, please", two, agents)).toMatchObject({ kind: "one", staffId: "doc-1", text: "closer, please" });
+    expect(staffAddress("@first assistant hold the gallbladder", two, agents)).toEqual({ kind: "one", staffId: "doc-1", role: "attending", agent: "attending", text: "hold the gallbladder" });
+    // each is exactly what the agent's resolver says
+    for (const [words, state] of [["一助", three.state], ["二助", three.state], ["扶镜手", three.state], ["扶镜手", two.state], ["first assistant", two.state]] as const) {
+      const found = resolver(state, words);
+      expect(found.kind, words).toBe("one");
+      expect(staffAddress(`@${words} …`, { facility, caseDef, state }, agents), words).toMatchObject({ staffId: found.kind === "one" ? found.staff.id : "" });
+    }
+  });
+
+  it("@术者 / @主刀 is whoever operates: the stand-in while the learner holds a place; operating themselves, nobody else answers to it", () => {
+    const placed = { facility, caseDef, state: stateOf({ seat: "first-assistant" }) };
+    expect(staffAddress("@术者 我看到胆囊管了", placed, agents)).toMatchObject({ kind: "one", staffId: "doc-0", agent: "attending", text: "我看到胆囊管了" });
+    expect(staffAddress("@主刀 可以夹闭了", placed, agents)).toMatchObject({ kind: "one", staffId: "doc-0" });
+    const operating = { facility, caseDef, state: stateOf({}) };
+    expect(staffAddress("@术者 我看到胆囊管了", operating, agents)).toBeNull();
+    expect(resolver(operating.state, "术者").kind).toBe("none");
+    // an agent's own words are left to parseAddress, and plain text is no mention
+    expect(staffAddress("@nurse what are the vitals?", operating, agents)).toBeNull();
+    expect(staffAddress("@护士 血压多少", operating, agents)).toBeNull();
+    expect(staffAddress("where does it hurt?", operating, agents)).toBeNull();
   });
 });
 

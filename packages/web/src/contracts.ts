@@ -59,7 +59,8 @@ export interface PatientSpot {
 
 export type InteractionTarget =
   | { kind: "patient"; slotId: string; caseId: string; name: string; hint: string }
-  | { kind: "staff"; staffId: string; role: string; name: string; hint: string }
+  /** `position`: the one the facility gives them (`staff.position`), the name tag's title. */
+  | { kind: "staff"; staffId: string; role: string; position?: string; name: string; hint: string }
   | {
       kind: "equipment";
       placementId: string;
@@ -228,6 +229,12 @@ export interface WorldApi {
   setCompanionSpeaking(slotId: string, speaking: boolean): void;
   /** Golden beacon over the current objective's destination (null hides it); stands on `level`'s floor. */
   setWaypoint(target: (WorldPoint & { label: string }) | null): void;
+  /**
+   * What the player's own first-person hand is dressed in: `bedside` — a white-coat sleeve and the stethoscope (as
+   * always) —, `sterile` — gloved, in a sterile gown's sleeve, no stethoscope: the learner holds a place in the care team
+   * at the sterile field (first or second assistant, scrub nurse).
+   */
+  setPlayerWear(wear: "bedside" | "sterile"): void;
   /**
    * Autopilot `walk_to`: smooth path to a point (straight segments via doorways); resolves on arrival or
    * rejects if unreachable. A point on another level is reached via the stairs (or the elevator).

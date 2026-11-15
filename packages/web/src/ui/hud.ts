@@ -505,8 +505,9 @@ export class Hud {
 
   /**
    * The embodiment badge: embodied — the place where the world model has the learner's body (it must match
-   * the scene: the avatar is the world's input device), "walking…" while the world moves it; clinical mode
-   * says so. Clicking it opens the settings ("In-world mode").
+   * the scene: the avatar is the world's input device) and, holding a place in the care team, that place ("In-world ·
+   * OR 7 · First assistant"), "walking…" while the world moves it; clinical mode says so. Clicking it opens the
+   * settings ("In-world mode").
    */
   private renderEmbodiment(): void {
     const b = this.el.embodiment;
@@ -519,7 +520,10 @@ export class Hud {
     let cls: string;
     if (emb) {
       const walking = emb.walking;
-      text = walking ? tr("emb.badgeWalking") : tr("emb.badge", { place: emb.placeLabel() ?? tr("emb.outside") });
+      // holding a place in the care team, the badge says which: "In-world · OR 7 · First assistant"
+      const seat = (game.session.store.snapshot?.state ?? game.session.session.state).seat;
+      const place = emb.placeLabel() ?? tr("emb.outside");
+      text = walking ? tr("emb.badgeWalking") : seat ? tr("emb.badgeSeat", { place, seat: tr(`place.${seat}`) }) : tr("emb.badge", { place });
       cls = `embodiment-badge mode-embodied${walking ? " walking" : ""}`;
       b.title = tr("emb.badgeTitle");
     } else {

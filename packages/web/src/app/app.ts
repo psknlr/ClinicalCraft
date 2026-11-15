@@ -10,6 +10,7 @@ import { historyVoice, POSITION_TITLES, procedureFor, procedureStateOf, regionAt
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
+import { ScrubBar } from "../ui/scrub-bar.js";
 import { throttleFrame } from "../ui/dom.js";
 import { Hud } from "../ui/hud.js";
 import { Intro } from "../ui/intro.js";
@@ -39,7 +40,7 @@ import { fetchPlacePath, fetchServerCase, loadContent, loadServerContent, PlaceP
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
-import { pendingStart, placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
+import { heldWear, pendingStart, placeOf, savedPlace, startAction, startChoiceFromSearch, withStartArgs, type StartAction, type StartChoice } from "./places.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
 import { BrowserCamera, BrowserMover } from "./embodied.js";
@@ -97,6 +98,8 @@ export class ClinicalCraftApp implements App {
   readonly feedback: ActionFeedback;
   /** External control of the running encounter (`clinicalcraft mcp --attach`): per encounter, never persisted. */
   readonly scope: ScopeDock;
+  /** The scrub nurse's bar beside the dock (only in that place; non-modal: the encounter's time runs on). */
+  readonly scrub: ScrubBar;
   readonly playback = new OperativePlayback();
   readonly external: ExternalControl;
   private _slot = 0;
@@ -114,6 +117,7 @@ export class ClinicalCraftApp implements App {
     this.hud.update();
     this.panels.update();
     this.scope.update();
+    this.scrub.update();
   });
 
   /** Does the encounter's time run now (`encounterClockRuns`: the case clock, the staff's round and the team's)? */
@@ -148,6 +152,8 @@ export class ClinicalCraftApp implements App {
     // the laparoscopic picture beside the theatre, above any window (below an approval)
     this.scope = new ScopeDock(this);
     dom.approval.before(this.scope.el);
+    this.scrub = new ScrubBar(this);
+    dom.approval.before(this.scrub.el);
     this.intro = new Intro(dom.intro, this);
     this.mover = new BrowserMover({
       renderer: () => this.world.api,
@@ -593,6 +599,7 @@ export class ClinicalCraftApp implements App {
       this.reconfigure(game, locale);
       // a rebuilt scene starts from the facility data: draw the world's physical state again
       game.embodied?.syncScene();
+      this.dressPlayer();
     }
     this.feedback.render();
     this.panels.rebuild();
@@ -984,6 +991,8 @@ export class ClinicalCraftApp implements App {
         }),
       );
       if (start && !start.seat) session.act(start);
+      // the player's hand as their place dresses it (a world reused from another encounter is dressed again)
+      this.dressPlayer();
       this.enter(!!save);
       for (const n of notices) this.toast(n.title, n.body);
     } catch (err) {
@@ -992,6 +1001,12 @@ export class ClinicalCraftApp implements App {
     } finally {
       this.starting = false;
     }
+  }
+
+  /** The player's first-person hand as the place they hold dresses it (`heldWear`: scrubbed at the sterile field, else as always). */
+  private dressPlayer(): void {
+    const game = this.game;
+    this.world.api?.setPlayerWear(heldWear(game ? game.session.session.state.seat : null));
   }
 
   private enter(resumed: boolean): void {

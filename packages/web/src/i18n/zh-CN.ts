@@ -544,6 +544,7 @@ const zh = {
   "debrief.formative": "形成性反馈 · 不是经过验证的临床能力评分",
   "debrief.assessment": "评估报告",
   "debrief.objectives": "任务目标",
+  "debrief.byTeam": "你加入前由团队完成（不计入你的成绩）",
   "debrief.history": "病史采集",
   "debrief.exam": "体格检查",
   "debrief.coverage": "必问/必查覆盖 {done}/{total}",

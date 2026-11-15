@@ -21,7 +21,7 @@ import { rigRotationOf, yawOfRig } from "./embodiment.js";
 import { surfaceTop, surfaceUnder } from "./equipment.js";
 import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, setDistressed, uniformOf, type AppearanceLike, type Posture } from "./npc.js";
 import { collides } from "./physics.js";
-import { roleName, tx } from "./strings.js";
+import { staffTag, tx } from "./strings.js";
 import { Trail } from "./trail.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
@@ -197,7 +197,11 @@ export class People {
     stage.markShadows();
   }
 
-  /** Staff at their posts: uniform by role, a "role · name" tag, their greeting as the aim hint. */
+  /**
+   * Staff at their posts, built from the facility alone: the uniform of their role as their facility position wears it,
+   * a name tag with that position's title ("Scrub nurse · Chen Yu"; else their role: "Nurse · Lin Xiao"), their greeting
+   * as the aim hint.
+   */
   private buildStaff(): void {
     const { facility, ctx, levels, signs, S, locale, levelRoots, stage } = this.world;
     const root = stage.root;
@@ -213,19 +217,20 @@ export class People {
       rig.root.rotation.y = MathUtils.degToRad(st.rot ?? 0);
       (levelRoots.get(staffLevel) ?? root).add(rig.root);
       const name = tx(st.name, locale);
-      const role = roleName(st.role, locale);
-      const tag = signs.make(`${role} · ${name}`, TAG_WIDTH, "#417868");
+      // the tag says the position the facility gives them (core's title), else their role
+      const label = staffTag({ role: st.role, position: st.position ?? null, name }, locale);
+      const tag = signs.make(label, TAG_WIDTH, "#417868");
       tag.position.set(0, rig.tagY, 0);
       noRaycast(tag);
       rig.root.add(tag);
       this.tagSigns.push(tag);
       const greeting = st.greeting ? tx(st.greeting, locale) : "";
-      const target: InteractionTarget = { kind: "staff", staffId: st.id, role: st.role, name, hint: greeting ? `${S.talk} · ${greeting}` : S.talk };
+      const target: InteractionTarget = { kind: "staff", staffId: st.id, role: st.role, ...(st.position ? { position: st.position } : {}), name, hint: greeting ? `${S.talk} · ${greeting}` : S.talk };
       rig.root.userData.action = target;
       rig.root.userData.highlight = rig.body;
       ctx.pickables.push(rig.root);
       const collider = physics.get(`staff:${st.id}`) ?? null; // the collision model's staff body
-      ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label: `${role} · ${name}`, level: staffLevel });
+      ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label, level: staffLevel });
     }
   }
 

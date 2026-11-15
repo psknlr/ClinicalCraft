@@ -15,6 +15,7 @@
  * order, never for a refused one.
  */
 import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
+import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
 import type { App, Game } from "../../app/context.js";
 import type { Verdict } from "../../app/embodied-link.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -349,11 +350,22 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
 }
 
 /**
+ * The world's verdict on each operation of a device for the learner's body (`WorldRuntime.offers`: the action bus's own
+ * check — role and control, availability, state, preconditions —, never where the learner stands), by operation id.
+ * Empty without a world: nothing is greyed out, the world decides on the click.
+ */
+export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, { available: boolean; code?: string; reason?: string }> {
+  return new Map((world?.offers(PRIMARY_ACTOR, entityId) ?? []).map((o) => [o.op, o]));
+}
+
+/**
  * Embodied mode: the device's own operations (catalog behaviour, e.g. the ECG cart's prepare → connect →
- * record → reset, offered from its current state) and, for a cart, "Bring to the patient" (`move_to`); for a
- * handheld item, its carry row (`hands.ts`: pick up, put down, equip, hand to someone).
- * Each is a `world_action` — validated, spatially checked and (for `record`) run through the approval gate
- * by the world, exactly as for an agent. Null when the device has none (or clinical mode).
+ * record → reset), greyed out where the world says the learner's body may not do them now (`deviceOpOffers`: its
+ * state, a precondition, a surgical control the body does not hold — the reason as the title, and the control's
+ * refusal said under them) and, for a cart, "Bring to the patient" (`move_to`); for a handheld item, its carry row
+ * (`hands.ts`: pick up, put down, equip, hand to someone). Each is a `world_action` — validated, spatially checked
+ * and (for `record`) run through the approval gate by the world, exactly as for an agent. Null when the device has
+ * none (or clinical mode).
  */
 function deviceOps(game: Game, placementId: string): HTMLElement | null {
   const emb = game.embodied;
@@ -370,24 +382,28 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
   const wrap = h("section", { class: "device-ops" }, h("h3", null, tr("device.ops")), h("p", { class: "small muted" }, tr("device.opsLead")));
   if (carry) wrap.append(carry);
   if (behavior) {
-    // a handheld item: its own lifecycle state as the world stores it, and "held" / "equipped" while the learner
-    // carries it (operations made for the hand: `from: ["held"]`)
+    // a handheld item: its own lifecycle state as the world stores it (operations made for the hand, `from: ["held"]`,
+    // are offered while the learner carries it: the world's verdict below)
     const handheld = type.portable === "handheld";
-    const carried = handheld ? emb.carriedState(entityId) : null;
     const state = (handheld ? game.session.world()?.snapshot().entities[entityId]?.state : emb.deviceState(entityId)) ?? behavior.initial;
     const stateName = behavior.states?.[state]?.name;
     wrap.append(h("p", { class: "small", id: "device-state", dataset: { state } }, tr("device.state", { state: stateName ? ct(stateName) : state })));
+    // what the world offers the learner's body now — its own verdict (role and control, state, preconditions; never
+    // where the learner stands: a short walk fixes that), the reason as its title
+    const verdicts = deviceOpOffers(game.session.world(), entityId);
     wrap.append(
       h(
         "div",
         { class: "row wrap device-op-list" },
         Object.entries(behavior.operations).map(([id, op]) => {
-          const from = op.from ?? ["*"];
-          const offered = from.includes("*") || from.includes(state) || (!!carried && from.includes(carried));
-          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+          const verdict = verdicts.get(id);
+          const offered = verdict?.available ?? true;
+          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, title: verdict?.reason ?? "", dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
         }),
       ),
     );
+    const refused = [...verdicts.values()].find((v) => !v.available && v.code === "NOT_AUTHORIZED");
+    if (refused?.reason) wrap.append(h("p", { class: "small muted", id: "device-why" }, refused.reason));
   }
   if (portable && patient) {
     wrap.append(h("div", { class: "row wrap" }, h("button", { type: "button", id: "device-bring", dataset: { op: "move_to" }, onclick: () => run("move_to", { goal: { kind: "interact", id: patient } }) }, tr("device.bring"))));
