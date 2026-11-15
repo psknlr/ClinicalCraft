@@ -460,11 +460,11 @@ export class ClinicalCraftApp implements App {
     this.panels.close();
   }
 
-  submit(op: Op, view?: string): string | null {
+  submit(op: Op, view?: string, staff?: string): string | null {
     if (!this.game) return null;
     // embodied: the world judges what an op asks for from where the avatar stands — tell it first
     if (op.type !== "world_pose") this.game.embodied?.syncPose();
-    return this.game.session.submit(op, view);
+    return this.game.session.submit(op, view, staff);
   }
 
   act(action: ClinicalAction, rationale?: string): string | null {
@@ -908,7 +908,7 @@ export class ClinicalCraftApp implements App {
         locale: () => getLocale(),
         playing: () => this.isPlaying(),
         activeStaff: () => this.game?.activeStaff ?? null,
-        staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world() })?.staffId ?? null,
+        staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world(), view: { caseDef, state: session.session.state, facility } })?.staffId ?? null,
         agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
         embodied: () => this.game?.embodied ?? null,
         // one pause policy for the encounter's time, the staff's round and the care team's: the team works on while the
@@ -1141,6 +1141,8 @@ export class ClinicalCraftApp implements App {
       if (this.game) this.save();
     }
     this.hud.update();
+    // the scrub nurse's bar steps aside for every window and comes back with the world
+    this.scrub.update();
   }
 
   /** Everything under a modal is inert (no focus, no clicks, hidden from assistive tech). */

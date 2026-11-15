@@ -148,7 +148,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       if (!actor || !resolved) return [];
       return rules.spec(resolved).operations.map((op) => {
         const fail = rules.precheck(resolved, op, actor);
-        return fail ? { op: op.id, available: false, code: fail.code, reason: fail.message } : { op: op.id, available: true };
+        // a refusal with a way to fix it (the action bus's hint on the attempt): the actor's own steps fix it
+        return fail ? { op: op.id, available: false, code: fail.code, reason: fail.message, ...(fail.goal ? { fixable: true as const } : {}) } : { op: op.id, available: true };
       });
     },
     searchRefusal(actorId, targetId) {

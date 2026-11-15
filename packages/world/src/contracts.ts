@@ -1059,10 +1059,13 @@ export interface WorldRuntime {
    * What the world says now to each operation an entity offers, for this actor (§8.2): the action bus's own `precheck` —
    * role and control, availability, reservation and busy, held by another, record binding, state, preconditions; never
    * where the actor stands, which a short walk fixes — `available` (= `availableActions`), or the refusal's code and
-   * message. Read-only: no trace span, nothing remembered (`inspect` also judges where the actor stands and records the
-   * look). A front-end greys out what is not available (docs/EMBODIED.md §8.2). Empty for an unknown id.
+   * message, and `fixable` when the refusal carries a way the actor can take (a place to go, then what to do there: the
+   * hint the action bus returns on the attempt — fetch the cart to the patient, wash at the sink, switch the evacuator
+   * on). Read-only: no trace span, nothing remembered (`inspect` also judges where the actor stands and records the
+   * look). A front-end greys out what is not available and not fixable, and leaves a fixable one to ask (its hint comes
+   * back: "Go there"; docs/EMBODIED.md §8.2). Empty for an unknown id.
    */
-  offers(actorId: ActorId, id: EntityId): { op: string; available: boolean; code?: WorldErrorCode; reason?: string }[];
+  offers(actorId: ActorId, id: EntityId): { op: string; available: boolean; code?: WorldErrorCode; reason?: string; fixable?: true }[];
   /**
    * Whether a search by this actor — of `targetId`, or where it stands — is refused before it runs, and why: its role,
    * and the wound rule (§8.6: the patient during the operation, in the team's room, by whoever holds `retract`). The one

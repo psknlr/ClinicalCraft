@@ -6,10 +6,10 @@
  * the web's own — who waits on the learner and for what is the agent's (`learnerAwaited`, `haltOf`), whose body is whose
  * core's (`memberBody`, `refOfBody`).
  */
-import { FOLLOW_NEED, haltOf, learnerAwaited, type ActionReceipt, type FieldAsk, type Op, type TeamCheckpoint, type TeamMessage, type TeamTask } from "@clinicalcraft/agent";
-import { memberBody, refOfBody, standInOf, type CaseDefinition, type DirectionName, type InstrumentId, type Place, type SessionState } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { ct, tr, trMaybe } from "../../i18n/index.js";
+import { FOLLOW_NEED, haltOf, learnerAwaited, type ActionReceipt, type FieldAsk, type Op, type StandInRequest, type TeamCheckpoint, type TeamMessage, type TeamTask } from "@clinicalcraft/agent";
+import { canonicalPosition, memberBody, POSITION_TITLES, refOfBody, staffPosition, standingBy, standInOf, t, type CaseDefinition, type DirectionName, type FacilityDefinition, type InstrumentId, type Place, type SessionState } from "@clinicalcraft/core";
+import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
+import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
 import type { ApprovalRequest } from "../../app/store.js";
 import { label } from "./surgery-controls.js";
 import { nameLabel } from "./trace-labels.js";
@@ -68,7 +68,9 @@ function reportText(f: FieldAsk): string {
  */
 export function answersFor(cp: TeamCheckpoint, m: TeamMessage): TeamAnswer[] {
   if (cp.surgeon !== "learner" || m.to !== PRIMARY_ACTOR) return [];
-  if (cp.state.messages.some((x) => x.replyTo === m.id && x.from === PRIMARY_ACTOR)) return [];
+  if (answeredBy(cp, m)) return [];
+  // what the stand-in says to the learner is about its open request: one it gave up, or saw done in the field, is over
+  if (fromStandIn(cp, m) && openRequest(cp)?.thread !== m.thread) return [];
   const halt = haltOf(cp.state, m);
   if (halt) return [{ id: "goOn", label: tr("team.goOn"), title: tr("team.goOnTitle"), op: reply(m, "confirm") }];
   if (m.kind === "request") {
@@ -96,20 +98,46 @@ export function answersFor(cp: TeamCheckpoint, m: TeamMessage): TeamAnswer[] {
   return [];
 }
 
-/** What the stand-in surgeon waits on the learner for (learner mode, holding a place): the line to answer, or the count. */
-export type Awaited = { kind: "line"; task: TeamTask; message: TeamMessage } | { kind: "count"; task: TeamTask };
+/** Whether the learner has answered a line said to their member (a reply of theirs to it). */
+function answeredBy(cp: TeamCheckpoint, m: Pick<TeamMessage, "id">): boolean {
+  return cp.state.messages.some((x) => x.replyTo === m.id && x.from === PRIMARY_ACTOR);
+}
+
+/** Whether a line is the stand-in's: said by the member who carries the plan of the operation (an `operate` task). */
+function fromStandIn(cp: TeamCheckpoint, m: Pick<TeamMessage, "from">): boolean {
+  return cp.state.tasks.some((x) => x.kind === "operate" && x.owner === m.from);
+}
+
+/**
+ * The stand-in's open request said to the learner's own member — a camera, a traction, a pass, their own reference
+ * step, its stop, its word that it cannot go on —, whoever plays the place (learner or observer mode): the request on
+ * its plan task (the agent's `learnerAwaited`, as it reads it when the learner plays), with its thread and what it asks
+ * of the field; null when none is open. Its latest line may be a confirmation: the request stands until the field shows
+ * it done or the stand-in gives it up.
+ */
+export function openRequest(cp: TeamCheckpoint): StandInRequest | null {
+  const req = learnerAwaited(cp.state, "learner")?.request;
+  return req?.to === PRIMARY_ACTOR ? req : null;
+}
+
+/**
+ * What the stand-in surgeon waits on the learner for (learner mode, holding a place): the line to answer — `answered`
+ * once the learner has (the stand-in goes on in its next round) —, or the count.
+ */
+export type Awaited = { kind: "line"; task: TeamTask; message: TeamMessage; answered: boolean } | { kind: "count"; task: TeamTask };
 
 /**
  * What the stand-in waits on the learner for now (the agent's `learnerAwaited`: a `team run` stops there) — the latest
- * line of its open request said to them (its request, its stop, its word that it cannot go on), or the count it waits
- * for before closing; null when nothing waits on them.
+ * line of its open request said to them (its request, its confirmation of their read-back, its stop, its word that it
+ * cannot go on) and whether they have answered it, or the count it waits for before closing; null when nothing waits on
+ * them.
  */
 export function awaitedOf(cp: TeamCheckpoint): Awaited | null {
   const task = learnerAwaited(cp.state, cp.surgeon);
   if (!task) return null;
   const thread = task.request?.to === PRIMARY_ACTOR ? task.request.thread : null;
   const message = thread ? [...cp.state.messages].reverse().find((m) => m.thread === thread && m.to === PRIMARY_ACTOR) : undefined;
-  if (message) return { kind: "line", task, message };
+  if (message) return { kind: "line", task, message, answered: answeredBy(cp, message) };
   return task.reason === "count" ? { kind: "count", task } : null;
 }
 
@@ -141,6 +169,14 @@ export function calloutOf(req: Pick<ApprovalRequest, "requestId" | "callout" | "
   return { requestId: req.requestId, line, actorId: req.actorId, go: answer("approved"), stop: answer("denied") };
 }
 
+/**
+ * What the call-out card sends for an answer (the approval dialog's buttons, Esc): "No objection" — `go`, the request
+ * approved —; anything else — "Stop", Esc — `stop`, the request denied. Always the card's own approval response.
+ */
+export function calloutAnswer(card: Pick<CalloutCard, "go" | "stop">, decision: string): CalloutCard["go"] {
+  return decision === "approved" || decision === "approved_for_session" ? card.go : card.stop;
+}
+
 /** Whether a task is shown in the panel's list: a member's own following of the work with the camera is not a request. */
 export function taskShown(x: TeamTask): boolean {
   return !(x.kind === "assist" && x.need === FOLLOW_NEED);
@@ -153,19 +189,69 @@ export function taskLabel(x: TeamTask): string {
 
 /**
  * What a receipt says was done, in words: a step of the field by its name, a look at the field, a step of the operation
- * through a device (an act of the stand-in's plan task), a world act by its name; refused or cancelled: "could not: …".
+ * through a device (an act of the stand-in's plan task on a device: it names its target), any other world act — a walk
+ * included — by its name; refused or cancelled: "could not: …".
  */
 export function receiptText(r: ActionReceipt, tasks: readonly TeamTask[]): string {
-  const op = r.operation === "operate" ? label("op", r.step ?? "operate") : r.operation === "observe_field" ? tr("team.done.observe") : tasks.some((x) => x.id === r.task && x.kind === "operate") ? tr("team.done.device", { op: nameLabel(r.operation) }) : nameLabel(r.operation);
+  const device = r.target !== undefined && tasks.some((x) => x.id === r.task && x.kind === "operate");
+  const op = r.operation === "operate" ? label("op", r.step ?? "operate") : r.operation === "observe_field" ? tr("team.done.observe") : device ? tr("team.done.device", { op: nameLabel(r.operation) }) : nameLabel(r.operation);
   return r.outcome === "completed" ? op : tr("team.done.failed", { op });
+}
+
+/* ------------------------------------------------------------------ */
+/* The team as it is in this encounter                                 */
+/* ------------------------------------------------------------------ */
+
+/** A member of the team as the panel lists them: who, in which position, and how they are there. */
+export interface TeamRow {
+  /** The member's body (`staff:<id>`, or the learner's own). */
+  body: string;
+  /** Their name — the learner's own member: "you" (their position says which place, or that they operate). */
+  name: string;
+  /** Their position's title ("First assistant"), null when the team gives none. */
+  position: string | null;
+  you: boolean;
+  /** A colleague from outside the room the team may call (the scenario's relief). */
+  relief: boolean;
+  /** Away in this encounter (the scenario makes them absent). */
+  absent: boolean;
+  /** The learner's own row in a place: the colleague whose place they hold, standing by (their name). */
+  standingBy?: string;
+}
+
+/**
+ * The team as it works in this encounter (`team-view`'s list under the place): every member of the team's record —
+ * base members, the line-up's, the scenario's relief colleagues and those it makes absent — with their positions (core
+ * `staffPosition` through `POSITION_TITLES`), the learner's own member as "you" ("First assistant: you"; operating:
+ * "Operating surgeon: you"), and, holding a place, the colleague who stands by (core `standingBy`). Nothing is decided
+ * here: the members are the team's own (`TeamCheckpoint`), the positions the case's.
+ */
+export function teamRows(cp: TeamCheckpoint, c: CaseDefinition, s: Pick<SessionState, "seat" | "lineup" | "teamScenario">, facility: FacilityDefinition | null | undefined, worldName: (id: string) => string | null): TeamRow[] {
+  const L = getLocale();
+  const by = standingBy(c, s);
+  const title = (ref: string): string | null => {
+    const p = staffPosition(c, facility, ref);
+    return p ? t(POSITION_TITLES[canonicalPosition(p)], L) : null;
+  };
+  return cp.state.members.map((m) => {
+    const you = m.id === PRIMARY_ACTOR;
+    const row: TeamRow = { body: m.id, name: you ? tr("team.member.you") : memberName(m.id, s, worldName), position: title(m.staff), you, relief: m.relief, absent: m.absent };
+    if (you && by) row.standingBy = worldName(by) ?? by.replace(/^staff:/u, "");
+    return row;
+  });
 }
 
 /* ------------------------------------------------------------------ */
 /* Asking the team: team ask / need / count                            */
 /* ------------------------------------------------------------------ */
 
-/** Who the learner may ask (`team ask`): the members of the team as it stands but themselves, the operator and whoever is absent. */
+/**
+ * Who the learner may ask (`team ask`) from the Ask row — the operator's row (docs/TEAM.md §1): operating, the members of
+ * the team as it stands but themselves and whoever is absent; holding a place, nobody — the stand-in asks and the
+ * learner answers (its requests, the read-back, the report), as a colleague at the table does.
+ */
 export function askable(cp: TeamCheckpoint, c: CaseDefinition, s: Pick<SessionState, "seat" | "lineup" | "teamScenario">): { to: string; body: string }[] {
+  if (s.seat) return [];
   const operator = memberBody(c, s, "surgeon");
   return cp.state.members.filter((m) => m.id !== PRIMARY_ACTOR && m.id !== operator && !m.absent && m.staff !== "surgeon").map((m) => ({ to: m.staff, body: m.id }));
 }
@@ -214,25 +300,50 @@ export function askOp(to: string, kind: AskKind, c: AskChoice): TeamOp | null {
   return to && field ? { type: "team", action: "ask", to, field } : null;
 }
 
-/** An item the team may be told is needed (`team need`): a team scenario's need, by the name the team calls it. */
+/** An item the team may be told is needed (`team need`): an equipment type, by the name the team calls it. */
 export interface NeedItem {
   item: string;
   name: string;
 }
 
 /**
- * What the Need row offers: the items the case's team scenarios name as needs — by the name the team calls them, else the
- * equipment type's — that this hospital has (`present`: an equipment type the world holds).
+ * What the Need row offers: what the team can find and bring — the hospital's hand-held equipment types (`types`: the
+ * types the world holds, as `handheldTypes` lists them) —, the needs the case's team scenarios name first, by the name
+ * the team calls them; then the rest by name. `team need` itself takes any type the hospital has: the session decides.
  */
-export function needItems(c: Pick<CaseDefinition, "team">, present: (item: string) => string | null): NeedItem[] {
+export function needItems(c: Pick<CaseDefinition, "team">, types: readonly NeedItem[]): NeedItem[] {
   const out: NeedItem[] = [];
   for (const need of (c.team?.scenarios ?? []).flatMap((x) => x.needs ?? [])) {
-    if (out.some((x) => x.item === need.item)) continue;
-    const typeName = present(need.item);
-    if (typeName === null) continue;
-    out.push({ item: need.item, name: need.name ? ct(need.name) : typeName });
+    const type = types.find((x) => x.item === need.item);
+    if (!type || out.some((x) => x.item === need.item)) continue;
+    out.push({ item: need.item, name: need.name ? ct(need.name) : type.name });
   }
-  return out;
+  const rest = types.filter((x) => !out.some((o) => o.item === x.item)).sort((a, b) => a.name.localeCompare(b.name) || (a.item < b.item ? -1 : 1));
+  return [...out, ...rest];
+}
+
+/** The hospital's hand-held equipment types the world holds (what a colleague can carry over), each once, named in the UI language. */
+export function handheldTypes(world: Pick<WorldRuntime, "entities">): NeedItem[] {
+  const L = getLocale();
+  const out = new Map<string, string>();
+  for (const e of world.entities()) {
+    const type = e.equipmentType;
+    if (!type || e.portable !== "handheld" || out.has(type.id)) continue;
+    out.set(type.id, t(type.name, L));
+  }
+  return [...out].map(([item, name]) => ({ item, name }));
+}
+
+/**
+ * The wound as the panel offers its search to the learner (`team.ts`): the patient's body (`patient:<slot>`) and the
+ * world's own verdict on the learner's search of it (`WorldRuntime.searchRefusal`: the role, and the wound rule during
+ * the operation — the search needs `retract`, in the team's room) — offered, or the reason it is not; null without a
+ * patient's body.
+ */
+export function woundSearch(world: Pick<WorldRuntime, "searchRefusal"> | null | undefined, patientId: string | null | undefined): { targetId: string; offered: boolean; why: string | null } | null {
+  if (!patientId) return null;
+  const refused = world?.searchRefusal(PRIMARY_ACTOR, patientId) ?? null;
+  return { targetId: patientId, offered: !refused, why: refused?.message ?? null };
 }
 
 /** The `team need` op: for the surgeon (whoever operates), or for the learner's own place (`forMe`, holding one). */

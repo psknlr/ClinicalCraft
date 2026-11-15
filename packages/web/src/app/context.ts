@@ -94,8 +94,11 @@ export interface App {
   /** Execute a world interaction route. */
   route(route: Route): void;
   close(): void;
-  /** Submit an op to the running session (`view`: the conversation it was typed in). */
-  submit(op: Op, view?: string): string | null;
+  /**
+   * Submit an op to the running session (`view`: the conversation it was typed in; `staff`: the colleague of that window
+   * — a command sent from it, e.g. an operating table's delegation, keeps its line and its outcome in their window only).
+   */
+  submit(op: Op, view?: string, staff?: string): string | null;
   act(action: ClinicalAction, rationale?: string): string | null;
   /**
    * The learner's words to an agent (`staff`: the colleague addressed by name). In-world mode: words for the patient

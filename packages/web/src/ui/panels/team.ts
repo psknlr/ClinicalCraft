@@ -5,20 +5,24 @@
  * The controls are `team` ops — the same ones a headless run uses: the team's pace (auto: it moves on its own; step: only
  * on "Next step"), who plays the learner's part (the learner — as the surgeon, or in their place —, or the team, to
  * watch), the learner's answers to what is said to their member (a read-back, a confirmation, "Go on", a report), and
- * the Ask, Need and Count rows (a request about the operative field, something needed, the count — never typed: the
- * items are what the team in the room accounts for). Searching is the learner's own world action (`search`, within
+ * the Ask (operating: a request about the operative field — in a place the stand-in asks, the learner answers), Need
+ * and Count rows (something needed; the count — never typed: the items are what the team in the room accounts for).
+ * The team as it works in this encounter is listed under the place: each member with their position, the learner's own
+ * "you", who stands by, who is a relief colleague or away. Searching is the learner's own world action (`search`, within
  * reach or of the wound), offered as the world allows it (`searchRefusal`). What it shows is worked out in
- * `team-view.ts`; the session decides every op.
+ * `team-view.ts`; the session decides every op. The window is drawn in three parts — what is said and waited for, the
+ * controls, the record — so a choice being made in one of the controls' lists is never closed by the team's work: the
+ * other parts redraw, the controls once the choice is made.
  */
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { observeField, procedureFor, t, type CaseDefinition, type FieldView, type SessionState } from "@clinicalcraft/core";
+import { observeField, procedureFor, type CaseDefinition, type FieldView, type SessionState } from "@clinicalcraft/core";
 import type { AgentEvent, TeamCheckpoint, TeamMessage, TeamTask } from "@clinicalcraft/agent";
 import type { App } from "../../app/context.js";
 import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
-import { h, mount, type Child } from "../dom.js";
+import { clear, h, mount, type Child } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { DIRECTION_NAMES, FORCES, label } from "./surgery-controls.js";
-import { answersFor, ASK_KINDS, askOp, askable, awaitedOf, countRow, learnerName, memberName, needItems, needOp, placeHeader, receiptText, taskLabel, taskShown, type AskChoice, type AskKind, type TeamAnswer, type TeamOp } from "./team-view.js";
+import { answersFor, ASK_KINDS, askOp, askable, awaitedOf, countRow, handheldTypes, learnerName, memberName, needItems, needOp, placeHeader, receiptText, taskLabel, taskShown, teamRows, woundSearch, type AskChoice, type AskKind, type TeamAnswer, type TeamOp } from "./team-view.js";
 
 /** Messages shown (the latest). */
 const SHOWN = 14;
@@ -49,7 +53,11 @@ export function teamPanel(app: App): () => PanelView {
         render();
       });
     const search = (targetId?: string) => game.embodied?.worldAction({ operation: "search", ...(targetId ? { targetId } : {}) });
-    const body = h("div", { class: "team-panel", id: "team-panel" });
+    // three parts, redrawn apart: what is said and waited for; the controls (their lists keep a choice being made); the record
+    const top = h("div", { class: "team-top" });
+    const controlsSlot = h("div", { class: "team-controls-slot" });
+    const record = h("div", { class: "team-record" });
+    const body = h("div", { class: "team-panel", id: "team-panel" }, top, controlsSlot, record);
     // the Ask and Need rows' choices, kept across renders
     const ask: { to: string; kind: AskKind; choice: AskChoice } = { to: "", kind: "traction", choice: {} };
     const need = { item: "", forMe: false };
@@ -70,7 +78,27 @@ export function teamPanel(app: App): () => PanelView {
       );
     };
 
-    /** What the stand-in waits on the learner for: shown first, with its answers. */
+    /** The team as it works in this encounter: each member with their position — "you", who stands by, a relief colleague, one away. */
+    const members = (cp: TeamCheckpoint): Child => {
+      const rows = teamRows(cp, c, state(), game.facility, worldName);
+      if (!rows.length) return null;
+      return h(
+        "ul",
+        { class: "team-members", id: "team-members", "aria-label": tr("team.members") },
+        rows.map((r) =>
+          h(
+            "li",
+            { class: ["team-member", r.you ? "you" : "", r.absent ? "absent" : "", r.relief ? "relief" : ""], dataset: { body: r.body } },
+            r.position ? tr("team.member", { position: r.position, name: r.name }) : r.name,
+            r.standingBy ? h("span", { class: "muted" }, ` · ${tr("team.member.standingBy", { name: r.standingBy })}`) : null,
+            r.relief ? h("span", { class: "muted" }, ` · ${tr("team.member.relief")}`) : null,
+            r.absent ? h("span", { class: "muted" }, ` · ${tr("team.member.absent")}`) : null,
+          ),
+        ),
+      );
+    };
+
+    /** What the stand-in waits on the learner for: shown first, with its answers — answered, it says so until the stand-in goes on. */
     const awaited = (cp: TeamCheckpoint): Child => {
       const w = awaitedOf(cp);
       if (!w) return null;
@@ -78,12 +106,15 @@ export function teamPanel(app: App): () => PanelView {
         const row = countRow(cp);
         return h("div", { class: "team-awaited", id: "team-awaited", role: "status" }, h("strong", null, tr("team.awaited")), h("span", null, tr("team.awaitedCount")), row ? h("button", { type: "button", class: "primary", onclick: () => op(row.op) }, tr("team.countSay")) : null);
       }
+      const line = tr("team.line", { name: name(w.message.from), text: text(w.message) });
+      if (w.answered)
+        return h("div", { class: "team-awaited answered", id: "team-awaited", role: "status", dataset: { kind: w.message.kind, id: w.message.id, answered: "true" } }, h("strong", null, tr("team.awaitedAnswered")), h("span", { class: "muted" }, line));
       const answers = answersFor(cp, w.message);
       return h(
         "div",
         { class: "team-awaited", id: "team-awaited", role: "status", dataset: { kind: w.message.kind, id: w.message.id } },
         h("strong", null, tr("team.awaited")),
-        h("span", null, tr("team.line", { name: name(w.message.from), text: text(w.message) })),
+        h("span", null, line),
         answers.length ? h("span", { class: "team-answers" }, answers.map(answerButton)) : null,
       );
     };
@@ -108,14 +139,13 @@ export function teamPanel(app: App): () => PanelView {
         h("button", { type: "button", id: "team-observer", "aria-pressed": String(cp.surgeon === "simulated"), title: placed ? tr("team.observePlaceTitle") : tr("team.observerTitle"), onclick: () => op({ action: "surgeon", surgeon: "simulated" }) }, tr("team.observer")),
       );
       // the wound: offered as the world allows the learner's body (the wound rule during the operation), else its reason
-      const patient = game.embodied?.patientId() ?? null;
-      const woundRefused = patient ? (world()?.searchRefusal(PRIMARY_ACTOR, patient) ?? null) : null;
+      const wound = woundSearch(world(), game.embodied?.patientId());
       const hands = h(
         "div",
         { class: "team-row" },
         h("button", { type: "button", id: "team-search", onclick: () => search() }, tr("team.searchHere")),
-        patient ? h("button", { type: "button", id: "team-search-wound", disabled: !!woundRefused, title: woundRefused?.message ?? "", onclick: () => search(patient) }, tr("team.searchWound")) : null,
-        woundRefused ? h("small", { class: "muted team-why", id: "team-wound-why" }, woundRefused.message) : null,
+        wound ? h("button", { type: "button", id: "team-search-wound", disabled: !wound.offered, title: wound.why ?? "", onclick: () => search(wound.targetId) }, tr("team.searchWound")) : null,
+        wound?.why ? h("small", { class: "muted team-why", id: "team-wound-why" }, wound.why) : null,
       );
       return h("div", { class: "team-controls" }, pace, who, hands, askRow(cp), needRow(cp), countLine(cp));
     };
@@ -128,7 +158,10 @@ export function teamPanel(app: App): () => PanelView {
       return { v: observeField(def, s.procedure), instruments: def.instruments.map((i) => i.id) };
     };
 
-    /** The Ask row: whom, what about the field, and its choices (from the field the operator sees). */
+    /**
+     * The Ask row — the operator's (no place): whom, what about the field, and its choices (from the field the operator
+     * sees). In a place the stand-in asks and the learner answers: no row (docs/TEAM.md §1).
+     */
     const askRow = (cp: TeamCheckpoint): Child => {
       const whom = askable(cp, c, state());
       const f = field();
@@ -137,7 +170,7 @@ export function teamPanel(app: App): () => PanelView {
       const select = (id: string, aria: string, options: { value: string; label: string }[], value: string | undefined, set: (v: string) => void, empty?: string) =>
         h(
           "select",
-          { id, "aria-label": aria, onchange: (e: Event) => (set((e.target as HTMLSelectElement).value), render()) },
+          { id, "aria-label": aria, onchange: (e: Event) => (set((e.target as HTMLSelectElement).value), render(true)) },
           empty !== undefined ? h("option", { value: "", selected: !value }, empty) : null,
           options.map((o) => h("option", { value: o.value, selected: o.value === value }, o.label)),
         );
@@ -175,15 +208,14 @@ export function teamPanel(app: App): () => PanelView {
       );
     };
 
-    /** The Need row: an item the team's scenarios know, for the surgeon or (holding a place) for the learner. */
+    /**
+     * The Need row: what the team can find and bring (the hospital's hand-held equipment, the needs the team's scenarios
+     * name first), for the surgeon or (holding a place) for the learner.
+     */
     const needRow = (cp: TeamCheckpoint): Child => {
       const w = world();
       if (!w || cp.surgeon !== "learner") return null;
-      const L = getLocale();
-      const items = needItems(c, (item) => {
-        const e = w.entities().find((x) => x.equipmentType?.id === item);
-        return e?.equipmentType ? t(e.equipmentType.name, L) : null;
-      });
+      const items = needItems(c, handheldTypes(w));
       if (!items.length) return null;
       if (!items.some((x) => x.item === need.item)) need.item = items[0]!.item;
       const placed = !!state().seat;
@@ -191,11 +223,11 @@ export function teamPanel(app: App): () => PanelView {
         "div",
         { class: "team-row team-need", id: "team-need", role: "group", "aria-label": tr("team.need"), title: tr("team.need.title") },
         h("span", { class: "muted" }, tr("team.need")),
-        h("select", { id: "team-need-item", "aria-label": tr("team.need.item"), onchange: (e: Event) => (need.item = (e.target as HTMLSelectElement).value) }, items.map((x) => h("option", { value: x.item, selected: x.item === need.item }, x.name))),
+        h("select", { id: "team-need-item", "aria-label": tr("team.need.item"), onchange: (e: Event) => ((need.item = (e.target as HTMLSelectElement).value), render(true)) }, items.map((x) => h("option", { value: x.item, selected: x.item === need.item }, x.name))),
         placed
           ? h(
               "select",
-              { id: "team-need-for", "aria-label": tr("team.need.for"), onchange: (e: Event) => (need.forMe = (e.target as HTMLSelectElement).value === "me") },
+              { id: "team-need-for", "aria-label": tr("team.need.for"), onchange: (e: Event) => ((need.forMe = (e.target as HTMLSelectElement).value === "me"), render(true)) },
               h("option", { value: "surgeon", selected: !need.forMe }, tr("team.need.forSurgeon")),
               h("option", { value: "me", selected: need.forMe }, tr("team.need.forMe")),
             )
@@ -290,21 +322,44 @@ export function teamPanel(app: App): () => PanelView {
       const st = cp.state;
       return JSON.stringify([cp.autonomy, cp.surgeon, s.seq, s.seat ?? "", st.messages.length, st.messages.at(-1)?.id ?? "", st.tasks.map((x) => `${x.id}:${x.status}:${x.request?.key ?? ""}`), st.receipts.length, st.count ?? null, note, getLocale()]);
     };
-    const render = () => {
+    /** A choice being made in one of the controls' lists (an open select): the controls wait for it, the rest redraws. */
+    const choosing = (): boolean => document.activeElement instanceof HTMLSelectElement && controlsSlot.contains(document.activeElement);
+    let controlsStale = false;
+    const drawControls = (cp: TeamCheckpoint): void => {
+      controlsStale = false;
+      mount(controlsSlot, controls(cp));
+    };
+    /** Draw the window; the controls too unless a choice is being made in them (`force`: a choice was just made). */
+    const render = (force = false) => {
       const cp = session.team();
       shownKey = keyOf(cp);
-      if (!c.team) return mount(body, h("p", null, tr("team.none")));
-      if (!cp) return mount(body, header(), h("p", null, tr("team.notStarted")));
-      mount(body, header(), awaited(cp), controls(cp), noteLine(), count(cp), messages(cp), done(cp), tasks(cp));
+      if (!c.team || !cp) {
+        mount(top, header(), h("p", null, tr(c.team ? "team.notStarted" : "team.none")));
+        clear(controlsSlot);
+        clear(record);
+        return;
+      }
+      mount(top, header(), members(cp), awaited(cp));
+      if (force || !choosing()) drawControls(cp);
+      else controlsStale = true;
+      mount(record, noteLine(), count(cp), messages(cp), done(cp), tasks(cp));
     };
-    /** On a store change: redrawn only when what it shows changed, and never under a choice being made in one of its lists. */
+    // the choice made (or left), the controls catch up with what changed meanwhile
+    controlsSlot.addEventListener("focusout", (e) => {
+      if (!controlsStale) return;
+      const next = (e as FocusEvent).relatedTarget;
+      if (next instanceof HTMLSelectElement && controlsSlot.contains(next)) return;
+      setTimeout(() => {
+        const cp = session.team();
+        if (controlsStale && cp && !choosing()) drawControls(cp);
+      }, 0);
+    });
+    /** On a store change: redrawn only when what it shows changed — the controls never under a choice being made in one of their lists. */
     const update = () => {
       const cp = session.team();
       const round = body.querySelector<HTMLElement>("#team-round");
       if (round && cp) round.textContent = tr("team.round", { n: cp.state.round });
       if (keyOf(cp) === shownKey) return;
-      const active = document.activeElement;
-      if (active instanceof HTMLSelectElement && body.contains(active)) return;
       render();
     };
     render();

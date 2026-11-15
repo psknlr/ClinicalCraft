@@ -22,8 +22,9 @@ import { statusLabel } from "../app/llm.js";
 import type { BlockType } from "../app/persistence.js";
 import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
 import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
-import { append, clear, clockLabel, h } from "./dom.js";
+import { append, clear, clockLabel, h, mount } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
+import { awaitedOf } from "./panels/team-view.js";
 import { surgeryOffered } from "./panels/surgery-controls.js";
 import { nameLabel } from "./panels/trace-labels.js";
 
@@ -381,6 +382,14 @@ export class Hud {
     if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
     const team = !!game.embodied && !!c.team?.phases.includes(s.phase);
     if (e.team.hidden === team) e.team.hidden = !team;
+    // the stand-in waits for the learner's answer (its request, its stop, the count): the Team button says so
+    const cp = team ? game.session.session.team() : null;
+    const awaited = cp ? awaitedOf(cp) : null;
+    const waits = !!awaited && (awaited.kind === "count" || !awaited.answered);
+    const teamLabel = waits ? tr("team.hudWaits") : tr("team.hud");
+    if (e.team.textContent !== teamLabel) e.team.textContent = teamLabel;
+    e.team.title = waits ? tr("team.hudWaitsTitle") : tr("team.hudTitle");
+    e.team.classList.toggle("waits", waits);
     if (c.clock.mode === "simulated") {
       e.clock.hidden = false;
       e.clock.textContent = c.clock.startTime ? ` · ${tr("hud.clock", { time: clockLabel(c.clock.startTime, s.clock) })}` : ` · ${tr("hud.elapsed", { min: Math.round(s.clock) })}`;
@@ -518,22 +527,30 @@ export class Hud {
     const emb = game.embodied;
     let text: string;
     let cls: string;
+    // holding a place in the care team, the badge says which, whatever the room's name: "In-world · OR 7 · First
+    // assistant" — the place in its own part that never shortens (the room's name gives way)
+    let seatText: string | null = null;
     if (emb) {
       const walking = emb.walking;
-      // holding a place in the care team, the badge says which: "In-world · OR 7 · First assistant"
       const seat = (game.session.store.snapshot?.state ?? game.session.session.state).seat;
       const place = emb.placeLabel() ?? tr("emb.outside");
-      text = walking ? tr("emb.badgeWalking") : seat ? tr("emb.badgeSeat", { place, seat: tr(`place.${seat}`) }) : tr("emb.badge", { place });
-      cls = `embodiment-badge mode-embodied${walking ? " walking" : ""}`;
+      seatText = seat ? tr(`place.${seat}`) : null;
+      text = walking ? tr("emb.badgeWalking") : tr("emb.badge", { place });
+      cls = `embodiment-badge mode-embodied${walking ? " walking" : ""}${seatText ? " seated" : ""}`;
       b.title = tr("emb.badgeTitle");
     } else {
       text = tr("emb.badgeClinical");
       cls = "embodiment-badge mode-clinical";
       b.title = tr("emb.badgeClinicalTitle");
     }
-    if (b.textContent !== text) b.textContent = text;
+    const full = seatText ? tr("emb.badgeSeat", { place: text, seat: seatText }) : text;
+    if (b.dataset.text !== full) {
+      b.dataset.text = full;
+      if (seatText) mount(b, h("span", { class: "badge-where" }, text), h("span", { class: "badge-seat", id: "badge-seat" }, full.slice(text.length)));
+      else b.textContent = text;
+    }
     if (b.className !== cls) b.className = cls;
-    b.setAttribute("aria-label", `${text} — ${b.title}`);
+    b.setAttribute("aria-label", `${full} — ${b.title}`);
     b.dataset.mode = emb ? "embodied" : "clinical";
   }
 

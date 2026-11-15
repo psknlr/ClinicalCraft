@@ -12,6 +12,8 @@ import { encounterRoom, lookupStaff } from "@clinicalcraft/agent";
 import { createSession, parseCatalog, parseFacility, PERSONAL_KIT, reduce } from "@clinicalcraft/core";
 import { theatreCase, theatreFacility } from "../../../world/src/__fixtures__/theatre.js";
 import { parseAddress, staffAddress } from "../ui/address.js";
+import { placeSession } from "../ui/panels/__fixtures__/team-play.js";
+import { staffForAgent } from "./staff.js";
 import { runtimeChoice, type ServerInfo } from "./llm.js";
 import { DEFAULT_INVENTORY, EXPORT_FORMAT, SaveStore } from "./persistence.js";
 import { defaultSettings, resolveAgentSettings, sanitizeSettings } from "./settings.js";
@@ -74,6 +76,41 @@ describe("staffAddress: a colleague named in an @ mention, by the session's own 
     expect(staffAddress("@nurse what are the vitals?", operating, agents)).toBeNull();
     expect(staffAddress("@护士 血压多少", operating, agents)).toBeNull();
     expect(staffAddress("where does it hurt?", operating, agents)).toBeNull();
+    // the team's English word for whoever operates, as in Chinese
+    expect(staffAddress("@surgeon ready when you are", placed, agents)).toMatchObject({ kind: "one", staffId: "doc-0", text: "ready when you are" });
+    expect(staffAddress("@the surgeon ready when you are", placed, agents)).toMatchObject({ kind: "one", staffId: "doc-0" });
+  });
+
+  it("a position the learner holds themselves names nobody else: said so (`self`), never the colleague standing by — who can still be named by name", () => {
+    const first = { facility, caseDef, state: stateOf({ seat: "first-assistant" }) };
+    for (const words of ["@一助 拉一下", "@扶镜手 近一点", "@first assistant hold it", "@camera holder closer"]) expect(staffAddress(words, first, agents), words).toMatchObject({ kind: "self", place: "first-assistant" });
+    // by name, the colleague standing by is still Dr Abe
+    expect(staffAddress("@Dr Abe how are you?", first, agents)).toMatchObject({ kind: "one", staffId: "doc-1" });
+    // the second assistant's place with three surgeons: 二助 and the camera holder are the learner; 一助 is Dr Abe
+    const second = { facility, caseDef, state: stateOf({ seat: "second-assistant", lineup: "three-surgeons" }) };
+    for (const words of ["@二助 近一点", "@扶镜手 近一点"]) expect(staffAddress(words, second, agents), words).toMatchObject({ kind: "self", place: "second-assistant" });
+    expect(staffAddress("@一助 拉一下", second, agents)).toMatchObject({ kind: "one", staffId: "doc-1" });
+    // the scrub nurse's place: 洗手护士 is the learner
+    const scrub = { facility, caseDef, state: stateOf({ seat: "scrub-nurse" }) };
+    expect(staffAddress("@洗手护士 递一下", scrub, agents)).toMatchObject({ kind: "self", place: "scrub-nurse" });
+  });
+});
+
+describe("the colleague a role's window opens with (staffForAgent): as the session picks them", () => {
+  it("in the scrub nurse's place, @nurse is the circulating nurse — never the colleague standing by", async () => {
+    const caseDef = theatreCase();
+    const facility = theatreFacility();
+    const app = await placeSession({ seat: "scrub-nurse" });
+    try {
+      const world = app.world()!;
+      const slotId = world.patientPlace()!.slot;
+      const view = { caseDef, state: app.session.state, facility };
+      expect(staffForAgent("nurse", { facility, slotId, world, view })?.staffId).toBe("nurse-1");
+      // without the encounter's view the world alone would pick the nearest nurse: the one standing by
+      expect(staffForAgent("nurse", { facility, slotId, world })?.staffId).toBe("nurse-2");
+    } finally {
+      await app.close();
+    }
   });
 });
 

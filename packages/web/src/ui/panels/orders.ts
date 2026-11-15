@@ -349,20 +349,53 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
   };
 }
 
+/** The world's verdict on one operation for the learner's body (`WorldRuntime.offers`). */
+export type DeviceOpVerdict = ReturnType<WorldRuntime["offers"]>[number];
+
 /**
  * The world's verdict on each operation of a device for the learner's body (`WorldRuntime.offers`: the action bus's own
  * check — role and control, availability, state, preconditions —, never where the learner stands), by operation id.
  * Empty without a world: nothing is greyed out, the world decides on the click.
  */
-export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, ReturnType<WorldRuntime["offers"]>[number]> {
+export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, DeviceOpVerdict> {
   return new Map((world?.offers(PRIMARY_ACTOR, entityId) ?? []).map((o) => [o.op, o]));
 }
 
 /**
+ * How a device's operation button stands (`deviceOps`): offered — the world takes it, or its refusal is one the learner's
+ * own steps fix (`fixable`: the click brings the world's way back, "Go there": fetch the cart to the patient, wash at the
+ * sink, switch the evacuator on) — or greyed out with the world's reason (its role or control, out of service, busy,
+ * its state, a condition no step of the learner's fixes). No verdict (no world): offered, the world decides.
+ */
+export function deviceOpOffer(verdict: DeviceOpVerdict | undefined): { offered: boolean; why: string | null } {
+  if (!verdict || verdict.available) return { offered: true, why: null };
+  return { offered: !!verdict.fixable, why: verdict.reason ?? null };
+}
+
+/** Which refusals the panel says first (a control or a role, then the device out of service or busy, then the rest). */
+const WHY_ORDER = ["NOT_AUTHORIZED", "DEVICE_UNAVAILABLE", "DEVICE_BUSY"];
+
+/**
+ * Why the greyed-out operations are greyed out, said under them (never only in a tooltip, which touch screens never
+ * show): the world's reasons, each once, a control or a role first — at most `max`.
+ */
+export function deviceOpReasons(verdicts: ReadonlyMap<string, DeviceOpVerdict>, max = 3): string[] {
+  const greyed = [...verdicts.values()].filter((v) => !deviceOpOffer(v).offered && v.reason);
+  const rank = (v: DeviceOpVerdict) => {
+    const i = WHY_ORDER.indexOf(v.code ?? "");
+    return i < 0 ? WHY_ORDER.length : i;
+  };
+  const out: string[] = [];
+  for (const v of [...greyed].sort((a, b) => rank(a) - rank(b))) if (!out.includes(v.reason!)) out.push(v.reason!);
+  return out.slice(0, max);
+}
+
+/**
  * Embodied mode: the device's own operations (catalog behaviour, e.g. the ECG cart's prepare → connect →
- * record → reset), greyed out where the world says the learner's body may not do them now (`deviceOpOffers`: its
- * state, a precondition, a surgical control the body does not hold — the reason as the title, and the control's
- * refusal said under them) and, for a cart, "Bring to the patient" (`move_to`); for a handheld item, its carry row
+ * record → reset), greyed out where the world says the learner's body may not do them now and no step of theirs fixes
+ * it (`deviceOpOffer`: a surgical control or a role the body does not hold, its state, a condition — the reasons said
+ * under them, `deviceOpReasons`; a refusal the learner fixes — the cart away from the bedside — stays to press: the
+ * world's way comes back, "Go there") and, for a cart, "Bring to the patient" (`move_to`); for a handheld item, its carry row
  * (`hands.ts`: pick up, put down, equip, hand to someone). Each is a `world_action` — validated, spatially checked
  * and (for `record`) run through the approval gate by the world, exactly as for an agent. Null when the device has
  * none (or clinical mode).
@@ -396,14 +429,14 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
         "div",
         { class: "row wrap device-op-list" },
         Object.entries(behavior.operations).map(([id, op]) => {
-          const verdict = verdicts.get(id);
-          const offered = verdict?.available ?? true;
-          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, title: verdict?.reason ?? "", dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+          const { offered, why } = deviceOpOffer(verdicts.get(id));
+          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, title: why ?? "", dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
         }),
       ),
     );
-    const refused = [...verdicts.values()].find((v) => !v.available && v.code === "NOT_AUTHORIZED");
-    if (refused?.reason) wrap.append(h("p", { class: "small muted", id: "device-why" }, refused.reason));
+    // why the greyed-out ones are greyed out, said under them (a tooltip alone never shows on a touch screen)
+    const reasons = deviceOpReasons(verdicts);
+    if (reasons.length) wrap.append(h("ul", { class: "small muted device-why", id: "device-why" }, reasons.map((r) => h("li", null, r))));
   }
   if (portable && patient) {
     wrap.append(h("div", { class: "row wrap" }, h("button", { type: "button", id: "device-bring", dataset: { op: "move_to" }, onclick: () => run("move_to", { goal: { kind: "interact", id: patient } }) }, tr("device.bring"))));

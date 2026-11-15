@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR } from "./contracts.js";
 import { DEVICE, operate, STAFF, standBeside, theatreWorld, WHOLE_OPERATION } from "./__fixtures__/theatre.js";
+import { makeWorld } from "./__fixtures__/world.js";
 
 describe("offers: the world's verdict on each operation, for one body", () => {
   it("equals availableActions and says why not as the action bus does", async () => {
@@ -29,6 +30,23 @@ describe("offers: the world's verdict on each operation, for one body", () => {
     // an unknown id or body offers nothing
     expect(w.runtime.offers(PRIMARY_ACTOR, "eq:nothing-here")).toEqual([]);
     expect(w.runtime.offers("staff:nobody", DEVICE.stapler)).toEqual([]);
+  });
+
+  it("says when the actor's own steps fix a refusal (`fixable`: the way the action bus gives as the hint), never for a role or a state", async () => {
+    // a cubicle's ECG cart, far from the resus bed: preparing it needs it at the bedside — fetch it there
+    const w = makeWorld("stemi-inferior-rv", { facility: "general-hospital" });
+    const cart = "eq:cub2-ecg";
+    const offers = new Map(w.runtime.offers(PRIMARY_ACTOR, cart).map((o) => [o.op, o]));
+    expect(offers.get("prepare")).toMatchObject({ available: false, code: "PRECONDITION_FAILED", fixable: true });
+    // the attempt returns that way as its hint (fetch the cart, then wheel it to the patient)
+    const tried = await w.act({ actorId: PRIMARY_ACTOR, operation: "prepare", targetId: cart });
+    expect({ code: tried.errorCode, message: tried.message }).toEqual({ code: "PRECONDITION_FAILED", message: offers.get("prepare")!.reason });
+    expect(tried.hint?.then).toMatchObject({ operation: "move_to", targetId: cart });
+    // a step its state does not offer yet has no way to fix it from here: not fixable
+    for (const [op, o] of offers) if (op !== "prepare" && !o.available) expect(o.fixable, op).toBeUndefined();
+    // nor a refusal by control
+    const t = theatreWorld();
+    expect(t.runtime.offers(STAFF.scrub, DEVICE.stapler).find((o) => o.op === "fire")).not.toHaveProperty("fixable");
   });
 
   it("is read-only: no trace span, nothing remembered, the world unchanged", () => {

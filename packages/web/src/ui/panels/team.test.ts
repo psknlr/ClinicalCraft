@@ -15,7 +15,7 @@ import type { AppSession } from "../../app/session.js";
 import { setLocale, tr } from "../../i18n/index.js";
 import { TEAM_EN, TEAM_ZH } from "../../i18n/team.js";
 import { answerCallouts, placeSession, play, said } from "./__fixtures__/team-play.js";
-import { answersFor, askField, askOp, awaitedOf, calloutOf, countRow, learnerName, needItems, needOp, placeHeader, taskShown, type TeamAnswer } from "./team-view.js";
+import { answersFor, askable, askField, askOp, awaitedOf, calloutAnswer, calloutOf, countRow, learnerName, needItems, needOp, placeHeader, receiptText, taskShown, teamRows, type TeamAnswer } from "./team-view.js";
 
 const open: AppSession[] = [];
 afterEach(async () => {
@@ -215,9 +215,13 @@ describe("Ask, Need and Count", () => {
     expect(needOp(c, first.session.state, "test-swab", true)).toEqual({ type: "team", action: "need", item: "test-swab", for: "doc-1" });
     expect(said(await first.session.run(needOp(c, first.session.state, "test-swab", true)))).toEqual([]);
     expect(first.session.team()!.state.extra.at(-1)).toMatchObject({ item: "test-swab", for: "doc-1" });
-    // what the Need row offers: the needs the case's team scenarios name, that the hospital has, by the team's word
+    // what the Need row offers: what the team can find and bring (the hospital's hand-held types) — the needs the case's
+    // team scenarios name first, by the team's word; a need the hospital does not have is not offered
     const withNeeds = { team: { ...c.team!, scenarios: [{ ...c.team!.scenarios![0]!, needs: [{ id: "n1", item: "test-swab", for: "surgeon", name: { en: "a swab", "zh-CN": "纱布" } }, { id: "n2", item: "nowhere", for: "surgeon" }] }] } } as never;
-    expect(needItems(withNeeds, (item) => (item === "test-swab" ? "Test swab" : null))).toEqual([{ item: "test-swab", name: "a swab" }]);
+    const types = [{ item: "gauze", name: "Gauze" }, { item: "test-swab", name: "Test swab" }, { item: "clamp", name: "Clamp" }];
+    expect(needItems(withNeeds, types)).toEqual([{ item: "test-swab", name: "a swab" }, { item: "clamp", name: "Clamp" }, { item: "gauze", name: "Gauze" }]);
+    // a team whose scenarios name no needs (the engine's lap-chole team): the Need row still offers what can be brought
+    expect(needItems(c, types).map((x) => x.item)).toEqual(["clamp", "gauze", "test-swab"]);
     // ask someone who is not in the room: the session's refusal, as it says it
     const relief = first.session.world()!.actor("staff:nurse-9")!.pose;
     first.session.submit({ type: "world_pose", actorId: "staff:nurse-2", pose: { ...relief, x: relief.x + 0.8 } });
@@ -225,9 +229,93 @@ describe("Ask, Need and Count", () => {
     expect(said(away)).toEqual([expect.stringContaining("Chen Yu")]);
   });
 
+  it("the Ask row is the operator's: in a place the stand-in asks and the learner answers — nobody to ask", async () => {
+    const plain = await session();
+    await plain.session.run({ type: "team", action: "step" });
+    expect(askable(plain.session.team()!, plain.session.caseDef, plain.session.state).map((x) => x.to).sort()).toEqual(["anaes-1", "doc-1", "nurse-1", "nurse-2"]);
+    for (const seat of ["first-assistant", "scrub-nurse"] as const) {
+      const placed = await session({ seat });
+      await placed.session.run({ type: "team", action: "step" });
+      expect(askable(placed.session.team()!, placed.session.caseDef, placed.session.state), seat).toEqual([]);
+    }
+  });
+
   it("the members' own following of the work with the camera is never listed as a request", () => {
     const follow = { kind: "assist", need: "field:follow" } as never;
     const asked = { kind: "assist", need: "field:traction" } as never;
     expect([taskShown(follow), taskShown(asked), taskShown({ kind: "operate", need: "operate" } as never)]).toEqual([false, true, true]);
+  });
+});
+
+describe("the team as it works, and what is still the learner's to answer", () => {
+  it("lists every member with their position: the learner's own 'you' with the colleague standing by, a relief colleague, one away", async () => {
+    setLocale("en");
+    const app = await session({ seat: "first-assistant" });
+    await app.session.run({ type: "team", action: "step" });
+    const worldName = (id: string) => {
+      const e = app.world()!.entity(id);
+      return e ? (typeof e.name === "string" ? e.name : e.name.en) : null;
+    };
+    const rows = teamRows(app.session.team()!, app.session.caseDef, app.session.state, app.session.facility, worldName);
+    expect(rows.find((r) => r.you)).toMatchObject({ name: "you", position: "First assistant", standingBy: "Dr Abe", relief: false, absent: false });
+    expect(rows.find((r) => r.body === "staff:doc-0")).toMatchObject({ name: "Dr Ito", position: "Operating surgeon", you: false });
+    expect(rows.find((r) => r.body === "staff:nurse-2")).toMatchObject({ name: "Chen Yu", position: "Scrub nurse" });
+    // nobody is listed twice, and the colleague standing by is no member of their own
+    expect(new Set(rows.map((r) => r.body)).size).toBe(rows.length);
+    expect(rows.some((r) => r.body === "staff:doc-1")).toBe(false);
+    // the scrub nurse on a break: away, and the relief colleague who stands in for them
+    const relieved = await session({ seat: "first-assistant" }, "en", theatreCase());
+    await relieved.session.run({ type: "clinical_action", action: { type: "set-phase", phase: "theatre" } });
+    const plain = await session();
+    await plain.session.run({ type: "team", action: "step" });
+    const operating = teamRows(plain.session.team()!, plain.session.caseDef, plain.session.state, plain.session.facility, worldName);
+    expect(operating.find((r) => r.you)).toMatchObject({ name: "you", position: "Operating surgeon" });
+    expect(operating.find((r) => r.you)).not.toHaveProperty("standingBy");
+  });
+
+  it("an answer is offered only while the stand-in's request is open: passed from the bar, the old request asks nothing more", async () => {
+    setLocale("en");
+    const app = await session({ seat: "scrub-nurse" });
+    await app.session.run({ type: "team", action: "run", rounds: 40 });
+    const request = awaitedLine(app.session.team()!);
+    expect(request.about.field).toMatchObject({ op: "pass", instrument: "laparoscope" });
+    expect(ids(answersFor(app.session.team()!, request))).toEqual(["readback", "cannot"]);
+    // passed without a read-back (the bar's Pass), and the stand-in puts it in: its request is over
+    expect(said(await app.session.run({ type: "clinical_action", action: { type: "operate", op: { op: "pass", instrument: "laparoscope" } } }))).toEqual([]);
+    for (let i = 0; i < 6 && app.session.state.procedure!.ports.find((p) => p.site === "A")?.instrument !== "laparoscope"; i++) await app.session.run({ type: "team", action: "step" });
+    expect(app.session.state.procedure!.ports.find((p) => p.site === "A")?.instrument).toBe("laparoscope");
+    expect(answersFor(app.session.team()!, request)).toEqual([]);
+  });
+
+  it("answered, the line the stand-in waits on says so until it goes on — nothing left to press", async () => {
+    setLocale("en");
+    const app = await session({ seat: "first-assistant" });
+    await app.session.run({ type: "team", action: "run", rounds: 80 });
+    const before = awaitedOf(app.session.team()!);
+    expect(before).toMatchObject({ kind: "line", answered: false });
+    const request = awaitedLine(app.session.team()!);
+    const readBack = answersFor(app.session.team()!, request).find((a) => a.id === "readback")!;
+    await app.session.run("op" in readBack ? readBack.op : (null as never));
+    expect(awaitedOf(app.session.team()!)).toMatchObject({ kind: "line", answered: true, message: { id: request.id } });
+    expect(answersFor(app.session.team()!, request)).toEqual([]);
+    // the stand-in's next round: its confirmation, the learner's to do and report — not answered yet
+    await app.session.run({ type: "team", action: "step" });
+    expect(awaitedOf(app.session.team()!)).toMatchObject({ kind: "line", answered: false, message: { kind: "confirm" } });
+  });
+
+  it("what was done: a walk is a walk, a step through a device says so; the call-out card's answers are its own ops", async () => {
+    setLocale("en");
+    const tasks = [{ id: "task-1", kind: "operate" }] as never;
+    const receipt = (extra: Record<string, unknown>) => ({ id: "team.task-1.1", actor: "staff:doc-0", initiator: "staff:doc-0", outcome: "completed", message: "", worldVersion: 1, at: 0, round: 1, task: "task-1", ...extra }) as never;
+    expect(receiptText(receipt({ operation: "navigate" }), tasks)).toBe("Walk");
+    expect(receiptText(receipt({ operation: "navigate", outcome: "failed" }), tasks)).toBe("could not: Walk");
+    expect(receiptText(receipt({ operation: "start_insufflation", target: "eq:or-tower" }), tasks)).toMatch(/\(through the device\)$/u);
+    expect(receiptText(receipt({ operation: "operate", step: "clip" }), tasks)).toBe("clip");
+    // "No objection" sends the card's go, "Stop" (and Esc) its stop
+    const card = calloutOf({ requestId: "r-1", callout: "Clipping the cystic duct.", actorId: "staff:doc-0" }, theatreCase(), { seat: "first-assistant" })!;
+    expect(calloutAnswer(card, "approved")).toBe(card.go);
+    expect(calloutAnswer(card, "approved_for_session")).toBe(card.go);
+    expect(calloutAnswer(card, "denied")).toBe(card.stop);
+    expect(calloutAnswer(card, "abort")).toBe(card.stop);
   });
 });

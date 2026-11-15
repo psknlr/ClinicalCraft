@@ -100,11 +100,11 @@ describe("the movement sentences the UI offers are understood (both languages)",
 describe("the chips a colleague's window offers follow what the session says they may be handed (RoleState.delegable)", () => {
   /** Every colleague's state as the session knows it, by staff id. */
   const states = (app: AppSession) => new Map(app.session.staffStates().map((r) => [r.actorId.slice("staff:".length), r]));
-  /** The field as the operator sees it, and the case's instruments. */
+  /** The field as the operator sees it, the case's instruments, and what the offers are worked out from (the window's `FieldSeat`). */
   const fieldOf = (app: AppSession) => {
     const s = app.session.state;
     const def = procedureFor(app.session.caseDef, s)!;
-    return { v: observeField(def, s.procedure!), instruments: def.instruments.map((i) => i.id) };
+    return { v: observeField(def, s.procedure!), instruments: def.instruments.map((i) => i.id), seat: { c: app.session.caseDef, s, facility: app.session.facility } };
   };
 
   it("bedside: the tasks of their role — nurses, attendings and paramedics; a porter, a receptionist, a radiologist: none", async () => {
@@ -125,17 +125,21 @@ describe("the chips a colleague's window offers follow what the session says the
     open.push(app);
     app.session.dispatch({ type: "set-phase", phase: "theatre" });
     for (const op of [{ op: "plan-ports", plan: "three-port-left" }, { op: "insufflate", pressure: 12 }, { op: "insert", port: "A", instrument: "laparoscope" }, { op: "insert", port: "B", instrument: "grasper" }] as const) app.session.dispatch({ type: "operate", op });
-    const { v, instruments } = fieldOf(app);
+    const { v, instruments, seat } = fieldOf(app);
     const roles = states(app);
-    // the first assistant (two surgeons: the camera too)
-    expect(theatreOffer(roles.get("doc-1"), "doc-1", v, instruments)).toEqual({ hold: ["B"], release: false, camera: true, aim: v.regions.map((r) => r.id), pass: [] });
-    // the scrub nurse: the instrument table
-    expect(theatreOffer(roles.get("nurse-2"), "nurse-2", v, instruments)).toEqual({ hold: [], release: false, camera: false, aim: [], pass: instruments });
+    // the first assistant (two surgeons: the camera too): the grasper's port, theirs to take
+    expect(theatreOffer(roles.get("doc-1"), "doc-1", seat, v, instruments)).toEqual({ hold: ["B"], release: false, camera: true, aim: v.regions.map((r) => r.id), pass: [] });
+    // the scrub nurse: the instrument table — every instrument the field lets them pass now
+    expect(theatreOffer(roles.get("nurse-2"), "nurse-2", seat, v, instruments)).toEqual({ hold: [], release: false, camera: false, aim: [], pass: instruments });
+    // once the Maryland dissector is passed and waits to go in, it is not offered again (the field: already passed)
+    expect(app.session.dispatch({ type: "operate", op: { op: "pass", instrument: "maryland" }, actor: "nurse-2" }).rejected).toBeUndefined();
+    const waiting = fieldOf(app);
+    expect(theatreOffer(states(app).get("nurse-2"), "nurse-2", waiting.seat, waiting.v, waiting.instruments)?.pass).toEqual(instruments.filter((i) => i !== "maryland"));
     // the circulating nurse and the anaesthetist: nothing at the table
-    expect(theatreOffer(roles.get("nurse-1"), "nurse-1", v, instruments)).toBeNull();
-    expect(theatreOffer(roles.get("anaes-1"), "anaes-1", v, instruments)).toBeNull();
+    expect(theatreOffer(roles.get("nurse-1"), "nurse-1", seat, v, instruments)).toBeNull();
+    expect(theatreOffer(roles.get("anaes-1"), "anaes-1", seat, v, instruments)).toBeNull();
     // before the operation, nothing at the table at all
-    expect(theatreOffer(roles.get("doc-1"), "doc-1", null, instruments)).toBeNull();
+    expect(theatreOffer(roles.get("doc-1"), "doc-1", seat, null, instruments)).toBeNull();
     // a chip is a delegation by name, with what it names
     expect(theatreLine("doc-1", "hold_traction", "B")).toBe("/delegate staff:doc-1 hold_traction B");
     expect(theatreLine("nurse-2", "pass_instrument", "maryland")).toBe("/delegate staff:nurse-2 pass_instrument maryland");
@@ -148,12 +152,51 @@ describe("the chips a colleague's window offers follow what the session says the
     const f = fieldOf(placed);
     const there = states(placed);
     expect(there.get("doc-0")!.delegable.filter((t) => ["hold_traction", "release_traction", "hold_camera", "aim_camera", "pass_instrument"].includes(t))).toEqual([]);
-    expect(theatreOffer(there.get("doc-0"), "doc-0", f.v, f.instruments)).toBeNull();
+    expect(theatreOffer(there.get("doc-0"), "doc-0", f.seat, f.v, f.instruments)).toBeNull();
     expect(there.get("doc-1")).toMatchObject({ standingBy: true, delegable: [] });
-    expect(theatreOffer(there.get("doc-1"), "doc-1", f.v, f.instruments)).toBeNull();
+    expect(theatreOffer(there.get("doc-1"), "doc-1", f.seat, f.v, f.instruments)).toBeNull();
     expect(delegateTasks(there.get("doc-1"))).toEqual([]);
-    // the scrub nurse still passes
-    expect(theatreOffer(there.get("nurse-2"), "nurse-2", f.v, f.instruments)?.pass).toEqual(f.instruments);
+    // the scrub nurse still passes what is on the table
+    expect(theatreOffer(there.get("nurse-2"), "nurse-2", f.seat, f.v, f.instruments)?.pass.length).toBeGreaterThan(0);
+  });
+
+  it("a port is offered to hold only when the field lets the colleague take it: a grasper's, never the operator's own instrument (A13), never a third port", async () => {
+    // the operator's Maryland dissector in port C (the reference access): only the grasper's port B is offered
+    const app = await placeSession();
+    open.push(app);
+    app.session.dispatch({ type: "set-phase", phase: "theatre" });
+    for (const op of [
+      { op: "plan-ports", plan: "three-port-left" },
+      { op: "insufflate", pressure: 12 },
+      { op: "insert", port: "A", instrument: "laparoscope" },
+      { op: "insert", port: "B", instrument: "grasper" },
+      { op: "insert", port: "C", instrument: "maryland" },
+    ] as const)
+      expect(app.session.dispatch({ type: "operate", op }).rejected, op.op).toBeUndefined();
+    const f = fieldOf(app);
+    expect(theatreOffer(states(app).get("doc-1"), "doc-1", f.seat, f.v, f.instruments)?.hold).toEqual(["B"]);
+
+    // four ports, a grasper in each working and assist port: three to take, until the colleague holds two of them
+    const four = await placeSession({ lineup: "three-surgeons" });
+    open.push(four);
+    four.session.dispatch({ type: "set-phase", phase: "theatre" });
+    for (const op of [
+      { op: "plan-ports", plan: "mirror-four-port" },
+      { op: "insufflate", pressure: 12 },
+      { op: "insert", port: "A", instrument: "laparoscope" },
+      { op: "insert", port: "B", instrument: "grasper" },
+      { op: "insert", port: "C", instrument: "grasper" },
+      { op: "insert", port: "D", instrument: "grasper" },
+    ] as const)
+      expect(four.session.dispatch({ type: "operate", op }).rejected, op.op).toBeUndefined();
+    const before = fieldOf(four);
+    expect(theatreOffer(states(four).get("doc-1"), "doc-1", before.seat, before.v, before.instruments)?.hold).toEqual(["B", "C", "D"]);
+    for (const port of ["B", "C"]) expect(four.session.dispatch({ type: "operate", op: { op: "hand-over", port, to: "doc-1" }, actor: "doc-1" }).rejected, port).toBeUndefined();
+    const after = fieldOf(four);
+    expect(after.v.ports.filter((p) => p.holder === "doc-1").map((p) => p.port)).toEqual(["B", "C"]);
+    expect(theatreOffer(states(four).get("doc-1"), "doc-1", after.seat, after.v, after.instruments)?.hold ?? []).toEqual([]);
+    // the second assistant, holding nothing, may still take the last one
+    expect(theatreOffer(states(four).get("doc-2"), "doc-2", after.seat, after.v, after.instruments)?.hold).toEqual(["D"]);
   });
 
   it("a refused delegation says why as the session words it — who holds the control — and the line reads as a sentence", () => {
@@ -161,6 +204,19 @@ describe("the chips a colleague's window offers follow what the session says the
     const data = { delegation: { staffId: "staff:nurse-2", role: "nurse", task: "hold_traction", status: "failed", steps: [], elapsedSeconds: 0, message: "not-authorized", refusal } };
     expect(delegationSummary(data, () => null)!.steps).toEqual([refusal]);
     setLocale("en");
-    expect(delegateLine("/delegate staff:doc-1 hold_traction B", (id) => (id === "doc-1" ? "Dr Abe" : null))).toBe("Dr Abe, please: Hold the traction · B");
+    const nameOf = (id: string) => (id === "doc-1" ? "Dr Abe" : id === "nurse-2" ? "Chen Yu" : id === "ed-nurse" ? "Lin Xiao" : null);
+    // what the operating table's delegation names, by name: a port by its letter, an instrument, a region — never an id
+    const targetName = (x: string) => ({ B: "B", maryland: "Maryland dissector", "hepatocystic-triangle": "Hepatocystic triangle" })[x] ?? null;
+    expect(delegateLine("/delegate staff:doc-1 hold_traction B", nameOf, targetName)).toBe("Dr Abe, please: Hold the traction · B");
+    expect(delegateLine("/delegate staff:nurse-2 pass_instrument maryland", nameOf, targetName)).toBe("Chen Yu, please: Pass an instrument · Maryland dissector");
+    expect(delegateLine("/delegate staff:doc-1 aim_camera hepatocystic-triangle", nameOf, targetName)).toBe("Dr Abe, please: Aim the camera · Hepatocystic triangle");
+    // a target that cannot be named is left out; any other task's target too (as before)
+    expect(delegateLine("/delegate staff:doc-1 hold_traction Z9", nameOf, targetName)).toBe("Dr Abe, please: Hold the traction");
+    expect(delegateLine("/delegate staff:ed-nurse fetch_equipment eq:cub2-ecg", nameOf, () => "Cubicle ECG Cart")).toBe("Lin Xiao, please: Fetch equipment");
+    // a delegation's steps in the operative field by their names, never 'operate · hand-over'
+    const steps = delegationSummary({ delegation: { staffId: "staff:doc-1", role: "attending", task: "hold_traction", status: "completed", steps: [{ operation: "operate", target: "hand-over", status: "completed" }, { operation: "operate", status: "completed" }], elapsedSeconds: 1 } }, () => null)!.steps;
+    expect(steps).toEqual(["1. Hand over: done", "2. A step in the operative field: done"]);
+    setLocale("zh-CN");
+    expect(delegationSummary({ delegation: { staffId: "staff:doc-1", role: "attending", task: "hold_traction", status: "completed", steps: [{ operation: "operate", target: "hand-over", status: "completed" }], elapsedSeconds: 1 } }, () => null)!.steps[0]).not.toMatch(/[A-Za-z]/u);
   });
 });

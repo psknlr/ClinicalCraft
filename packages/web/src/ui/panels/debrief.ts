@@ -202,6 +202,16 @@ function debriefTitle(title: string, ended: boolean): string {
   return tr("debrief.endedTitle", { title: carries ? title.slice(prefix.length).replace(/^[\s·:：-]+/, "") : title });
 }
 
+/**
+ * The "first try" metric: the learner's decisions answered right the first time, of the decisions that are theirs to
+ * answer — the report's (`report.decisions`: in a place, those the team answered before the learner joined are the
+ * team's, left out, as the CLI's assess summary counts them); before the report, the case's.
+ */
+export function firstTryMetric(c: Pick<CaseDefinition, "decisions">, report: Pick<AssessmentReport, "decisions"> | null): { firstTry: number; of: number } {
+  if (!report) return { firstTry: 0, of: c.decisions.length };
+  return { firstTry: report.decisions.filter((d) => d.firstTryCorrect).length, of: report.decisions.length };
+}
+
 /** The debrief's opening line: completed (✓), or ended with objectives open — by the time limit (⏱) or by finishing early. */
 function leadBlock(c: CaseDefinition, s: SessionState): HTMLElement {
   const ended = !progress(c, s).complete;
@@ -233,8 +243,7 @@ export function debriefPanel(app: App): () => PanelView {
       clear(content);
       const s = store.snapshot?.state ?? game.session.session.state;
       const report = store.assessment?.report ?? null;
-      const decisions = c.decisions.length;
-      const firstTry = report ? report.decisions.filter((d) => d.firstTryCorrect).length : 0;
+      const { firstTry, of: decisions } = firstTryMetric(c, report);
       const d = c.debrief;
       // Mid-case (e.g. after /assess) only the formative assessment: the authored debrief is the answer.
       const unlocked = debriefUnlocked(c, s);

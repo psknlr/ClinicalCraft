@@ -230,8 +230,11 @@ export interface AppSession {
   world(): WorldRuntime | null;
   readonly settings: ResolvedSettings;
   readonly transcript: TranscriptSink & { flushOnExit?: () => void };
-  /** Submit an op (logged into the store first, so the learner's own line renders immediately); `view` = the conversation it came from. */
-  submit(op: Op, view?: string): string;
+  /**
+   * Submit an op (logged into the store first, so the learner's own line renders immediately); `view` = the conversation
+   * it came from, `staff` = the colleague of that window (a command sent from it stays in their window).
+   */
+  submit(op: Op, view?: string, staff?: string): string;
   /** Shorthand for a learner clinical action. */
   act(action: ClinicalAction, rationale?: string): string;
   /** Run the clinician autopilot; resolves when it stops. */
@@ -341,9 +344,9 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     }
   })();
 
-  const submit = (op: Op, view?: string): string => {
+  const submit = (op: Op, view?: string, staff?: string): string => {
     const id = session.submit(op);
-    store.op(id, op, view);
+    store.op(id, op, view, staff);
     return id;
   };
 

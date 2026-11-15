@@ -19,7 +19,7 @@ import type { ApprovalRequest } from "../app/store.js";
 import { getLocale, tr, trMaybe } from "../i18n/index.js";
 import { clear, focusables, h } from "./dom.js";
 import { riskBadge } from "./panels/common.js";
-import { calloutOf, type CalloutCard } from "./panels/team-view.js";
+import { calloutAnswer, calloutOf, type CalloutCard } from "./panels/team-view.js";
 
 export class ApprovalDialog {
   private current: ApprovalRequest | null = null;
@@ -30,8 +30,8 @@ export class ApprovalDialog {
   private initialFocus: HTMLElement | null = null;
   private answered: string | null = null;
   private reasonEl: HTMLInputElement | null = null;
-  /** The call-out on show (`renderCallout`): whose line it is and the line, for the answer's toast. */
-  private callout: { requestId: string; name: string; line: string } | null = null;
+  /** The call-out on show (`renderCallout`): its card — the answers it sends —, whose line it is and the line, for the answer's toast. */
+  private callout: { card: CalloutCard; name: string; line: string } | null = null;
   /** Where focus goes when the dialog closes (default: the element focused before it opened). */
   restoreFocus: (previous: HTMLElement | null) => void = (previous) => previous?.focus?.({ preventScroll: true });
 
@@ -124,9 +124,11 @@ export class ApprovalDialog {
 
   /**
    * The stand-in surgeon's call-out (`team-view.ts` `calloutOf`: a request carrying its line, raised for its body): its
-   * line said by name — "Dr Ito: Clipping the cystic duct." —, and "No objection" / "Stop", bound to this request's
-   * approval response (Esc stops, as it denies any request; a high-risk step's card starts with the focus on Stop).
-   * Stopped, the stand-in looks at the field and asks the learner what they see (the team's panel offers "Go on").
+   * line said by name — "Dr Ito: Clipping the cystic duct." —, and "No objection" / "Stop", each sending the card's own
+   * approval response (`calloutAnswer`: `card.go` / `card.stop`; Esc stops, as it denies any request; a high-risk step's
+   * card starts with the focus on Stop). Stopped, the stand-in looks at the field and asks the learner what they see:
+   * the team's window offers "Go on" (opened at once when no other window is open; the HUD's Team button says the
+   * surgeon waits).
    */
   private renderCallout(card: CalloutCard, req: ApprovalRequest, more: number): void {
     clear(this.box);
@@ -137,7 +139,7 @@ export class ApprovalDialog {
     const go = h("button", { type: "button", class: "primary", id: "approval-approve", dataset: { callout: "go" }, onclick: () => this.answer("approved") }, tr("callout.go"));
     const stop = h("button", { type: "button", class: "danger-solid", id: "approval-deny", dataset: { callout: "stop" }, title: tr("callout.stopTitle"), onclick: () => this.answer("denied") }, tr("callout.stop"));
     this.queueEl = h("small", { class: "muted" });
-    this.callout = { requestId: req.requestId, name, line: card.line };
+    this.callout = { card, name, line: card.line };
     this.box.className = "window approval-window callout-card";
     delete this.box.dataset.source;
     this.box.append(
@@ -216,11 +218,18 @@ export class ApprovalDialog {
     setTimeout(() => {
       if (this.answered === id) this.answered = null;
     }, 3000);
-    this.app.submit({ type: "approval_response", requestId: req.requestId, decision, ...(reason?.trim() ? { reason: reason.trim() } : {}) });
+    // a call-out sends its card's own answer (No objection / Stop); any other request the decision chosen
+    const callout = this.callout?.card.requestId === req.requestId ? this.callout : null;
+    this.app.submit(callout ? calloutAnswer(callout.card, decision) : { type: "approval_response", requestId: req.requestId, decision, ...(reason?.trim() ? { reason: reason.trim() } : {}) });
     const label = tr(`approval.resolved.${decision}` as "approval.resolved.approved");
-    // Learner actions: the session itself reports the refusal (no duplicate toast). A call-out stopped: who was stopped
-    // and their line, as the card said it (the stand-in then asks what the learner sees, in the team's panel).
-    const callout = this.callout?.requestId === req.requestId ? this.callout : null;
-    if (decision !== "approved" && decision !== "approved_for_session" && req.agent !== "learner") this.app.toast(callout ? tr("callout.stopped", { name: callout.name }) : label, callout ? callout.line : req.summary, "warning");
+    const stopped = decision !== "approved" && decision !== "approved_for_session";
+    if (callout && stopped) {
+      // a call-out stopped: who was stopped and their line, and where the learner answers the stand-in's question ("Go on")
+      this.app.toast(tr("callout.stopped", { name: callout.name }), tr("callout.stoppedBody", { line: callout.line }), "warning");
+      if (!this.app.panels.isOpen) setTimeout(() => !this.app.panels.isOpen && this.app.game && this.app.open("team"), 0);
+      return;
+    }
+    // Learner actions: the session itself reports the refusal (no duplicate toast).
+    if (stopped && req.agent !== "learner") this.app.toast(label, req.summary, "warning");
   }
 }

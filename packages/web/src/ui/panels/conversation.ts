@@ -27,9 +27,10 @@
  * session understands the same way when typed —, and a nurse, paramedic,
  * porter or attending can be asked to take the patient to a study or back.
  */
-import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution, type RoleState } from "@clinicalcraft/agent";
+import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, THEATRE_TASK_CONTROL, type Resolution, type RoleState } from "@clinicalcraft/agent";
 import {
   historyAvailable,
+  instrumentControl,
   matchExam,
   matchInterventions,
   matchSpecificity,
@@ -39,9 +40,12 @@ import {
   type ExamFinding,
   type FieldView,
   type HistoryItem,
+  type InstrumentId,
+  type ProcedureOp,
   type Intervention,
   type SessionState,
 } from "@clinicalcraft/core";
+import { atOperatingTable } from "@clinicalcraft/world";
 import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { trTask } from "../../app/embodied-link.js";
@@ -56,7 +60,7 @@ import type { PanelView } from "../panel.js";
 import { portrait, STAFF_COLOURS } from "../portrait.js";
 import { parseAddress, staffAddress } from "../address.js";
 import { capList } from "./common.js";
-import { controlsFor, label } from "./surgery-controls.js";
+import { label, stepVerdictOf, type FieldSeat } from "./surgery-controls.js";
 import { bedsideTests } from "./tests-tab.js";
 import { treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
@@ -113,7 +117,7 @@ export function delegateTasks(state: Pick<RoleState, "delegable"> | null | undef
 
 /** The operating table's work offered as chips, asked of the colleague by name (`/delegate staff:<id> <task> [target]`). */
 export interface TheatreOffer {
-  /** Hold port …: each port whose instrument holds traction, not theirs already. */
+  /** Hold port …: each port of an instrument worked with traction (core `instrumentControl`) the field lets them take now (their own hand-over of it: the control, the two-port limit, consent). */
   hold: string[];
   /** Let go: they hold a port. */
   release: boolean;
@@ -121,26 +125,31 @@ export interface TheatreOffer {
   camera: boolean;
   /** Camera on …: the field's regions. */
   aim: string[];
-  /** Pass the …: the case's instruments. */
+  /** Pass the …: each instrument the field lets them pass now. */
   pass: string[];
 }
 
 /**
  * The operating table's chips for a colleague, from what the session says they may be handed now (`RoleState.delegable`:
  * the operating table's tasks by control — the stand-in who operates and the colleague standing by have none) and what
- * the field offers to name (its ports and their instruments' work — core `INSTRUMENT_OPS` —, its regions, the case's
- * instruments). Null before the operation, or when none of it is theirs. The session decides the rest: a refusal says why
- * and who holds the control.
+ * the field takes from them now (`stepVerdictOf` with their body: core `fieldGate` and the engine's own verdict — a port
+ * is offered to hold when its instrument is worked with traction (core `instrumentControl`: the grasper; never an
+ * operating instrument, A13) and their own hand-over of it is taken: the control, at most two ports, consent —, an
+ * instrument to pass only when their pass of it is), its regions to aim at.
+ * Null before the operation, or when none of it is theirs. The session decides the rest: a refusal says why and who
+ * holds the control.
  */
-export function theatreOffer(state: Pick<RoleState, "delegable"> | null | undefined, staffId: string, v: Pick<FieldView, "ports" | "regions" | "camera"> | null, instruments: readonly string[]): TheatreOffer | null {
+export function theatreOffer(state: Pick<RoleState, "delegable"> | null | undefined, staffId: string, f: FieldSeat | null, v: Pick<FieldView, "ports" | "regions" | "camera"> | null, instruments: readonly string[]): TheatreOffer | null {
   const tasks = state?.delegable ?? [];
-  if (!v) return null;
+  if (!v || !f) return null;
+  const body = `staff:${staffId}`;
+  const takes = (op: ProcedureOp) => stepVerdictOf(f, op, body) === null;
   const offer: TheatreOffer = {
-    hold: tasks.includes("hold_traction") ? v.ports.filter((p) => p.instrument && p.holder !== staffId && controlsFor(p.instrument).includes("retract")).map((p) => p.port) : [],
+    hold: tasks.includes("hold_traction") ? v.ports.filter((p) => p.instrument && p.holder !== staffId && instrumentControl(p.instrument) === THEATRE_TASK_CONTROL.hold_traction && takes({ op: "hand-over", port: p.port, to: staffId })).map((p) => p.port) : [],
     release: tasks.includes("release_traction") && v.ports.some((p) => p.holder === staffId),
     camera: tasks.includes("hold_camera") && v.camera?.holder !== staffId,
     aim: tasks.includes("aim_camera") ? v.regions.map((r) => r.id) : [],
-    pass: tasks.includes("pass_instrument") ? [...instruments] : [],
+    pass: tasks.includes("pass_instrument") ? instruments.filter((i) => takes({ op: "pass", instrument: i as InstrumentId })) : [],
   };
   return offer.hold.length || offer.release || offer.camera || offer.aim.length || offer.pass.length ? offer : null;
 }
@@ -159,8 +168,9 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     const isPatient = args.agent === "patient" || args.agent === "companion";
     const companion = c.patient.persona.companion;
     const agents = new Set<string>(isPatient ? ["patient", "companion"] : [args.agent]);
-    // the colleague by name: the staff member aimed at, else the one this agent stands for here (`@nurse`)
-    const staffCtx = { facility: game.facility, slotId: game.slotId, world: game.session.world() };
+    // the colleague by name: the staff member aimed at, else the one this agent stands for here (`@nurse`: as the session
+    // picks them — never the colleague standing by while the learner holds their place)
+    const staffCtx = { facility: game.facility, slotId: game.slotId, world: game.session.world(), view: { caseDef: c, state: store.snapshot?.state ?? game.session.session.state, facility: game.facility } };
     const staff: StaffRef | null = isPatient ? null : args.staffId ? (staffById(args.staffId, staffCtx) ?? { staffId: args.staffId, role: args.staffRole ?? "", name: args.name ?? args.staffId }) : staffForAgent(args.agent, staffCtx);
     const staffRole = staff?.role || args.staffRole || args.agent;
     const staffName = staff?.name ?? roleLabel(staffRole);
@@ -205,6 +215,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       if (named?.kind === "ambiguous") {
         const names = named.staffIds.map((id) => staffById(id, staffCtx)?.name ?? id).join(getLocale().startsWith("zh") ? "、" : ", ");
         app.toast(tr("conv.addressAmbiguous", { names }), "", "warning");
+        input.value = raw;
+        return;
+      }
+      // the learner's own place named ("@一助" as the first assistant): nobody else holds it — said, nothing sent
+      if (named?.kind === "self") {
+        app.toast(tr("conv.addressSelf", { place: tr(`place.${named.place}`) }), "", "warning");
         input.value = raw;
         return;
       }
@@ -276,9 +292,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const state = store.snapshot?.state ?? game.session.session.state;
       const def = procedureFor(c, state);
       const v: FieldView | null = def && state.procedure ? observeField(def, state.procedure) : null;
-      const offer = theatreOffer(role, staffId, v, def?.instruments.map((i) => i.id) ?? []);
+      const world = game.session.world();
+      const seat = { c, s: state, facility: game.facility, ...(world ? { atTable: (body: string) => atOperatingTable(world, body) } : {}) };
+      const offer = theatreOffer(role, staffId, seat, v, def?.instruments.map((i) => i.id) ?? []);
       if (!offer || !v) return null;
-      const send = (task: string, target?: string) => app.submit({ type: "user_message", text: theatreLine(staffId, task, target) }, args.agent);
+      // a command for the session (never words to say): its line and its outcome stay in this colleague's window
+      const send = (task: string, target?: string) => app.submit({ type: "user_message", text: theatreLine(staffId, task, target) }, args.agent, staffId);
       const chip = (task: string, text: string, target?: string) => h("button", { type: "button", dataset: { task, ...(target ? { target } : {}) }, onclick: () => send(task, target) }, text);
       const picker = (task: string, text: string, options: { value: string; label: string }[]) => {
         const sel = h("select", { "aria-label": text, dataset: { task } }, options.map((o) => h("option", { value: o.value }, o.label)));
@@ -425,7 +444,17 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         const e = staffCtx.world?.entity(id);
         return e ? ct(e.name) : null;
       };
-      for (const m of items) log.append(chatBubble(m, c, nameOf, entityName));
+      // what an operating table's delegation names, by name (a port by its letter, a region, an instrument)
+      const targetName = (x: string): string | null => {
+        const s0 = store.snapshot?.state ?? game.session.session.state;
+        const def = procedureFor(c, s0);
+        if (s0.procedure?.ports.some((p) => p.site === x)) return x;
+        const region = def?.regions.find((r) => r.id === x);
+        if (region) return ct(region.name);
+        if (def?.instruments.some((i) => i.id === x)) return label("instrument", x);
+        return entityName(x);
+      };
+      for (const m of items) log.append(chatBubble(m, c, nameOf, entityName, targetName));
       const busy = store.busyAmong(agents);
       typing.hidden = !busy;
       if (busy) {
@@ -723,7 +752,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
   };
 }
 
-function chatBubble(m: ChatItem, c: CaseDefinition, nameOf: (staffId: string) => string | null = () => null, entityName: (id: string) => string | null = () => null): HTMLElement {
+function chatBubble(m: ChatItem, c: CaseDefinition, nameOf: (staffId: string) => string | null = () => null, entityName: (id: string) => string | null = () => null, targetName: (target: string) => string | null = () => null): HTMLElement {
   // a delegation's outcome in words (the session's text names operations and entities by id)
   const delegation = m.role === "system" && m.speaker === "/delegate" ? delegationSummary(m.data, entityName) : null;
   if (delegation) {
@@ -739,7 +768,7 @@ function chatBubble(m: ChatItem, c: CaseDefinition, nameOf: (staffId: string) =>
   }
   const learner = m.role === "learner";
   // the learner's delegation (the delegate chips) as a sentence, the command itself in the tooltip
-  const delegated = learner && m.tone === "command" ? delegateLine(m.text, nameOf) : null;
+  const delegated = learner && m.tone === "command" ? delegateLine(m.text, nameOf, targetName) : null;
   if (delegated) {
     return h(
       "div",

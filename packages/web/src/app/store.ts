@@ -9,11 +9,11 @@
 import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
 import type { WorldActionResult } from "@clinicalcraft/world";
 import { commandRefusal, learnerText, refusalLead, SPATIAL_CODES } from "./spatial.js";
-import { createSession as createEngineState, historyVoice, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
+import { createSession as createEngineState, historyVoice, LEARNER_BODY, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 
 export type LogEntry =
   | { kind: "event"; at: number; event: AgentEvent }
-  | { kind: "op"; at: number; id: string; op: Op; view?: string }
+  | { kind: "op"; at: number; id: string; op: Op; view?: string; staff?: string }
   | { kind: "restored"; at: number; agent: string; role: "user" | "assistant"; text: string }
   /**
    * The UI did not submit what the learner asked for (embodied mode: the body stands too far and walking
@@ -128,6 +128,13 @@ export class SessionStore {
   private readonly viewStaff = new Map<string, string>();
   /** Running turns that speak as a colleague (`turn_started.staffId`, `speaker`): streamed text is labelled at once. */
   private readonly turnStaff = new Map<string, { staffId: string; speaker: string | null }>();
+  /**
+   * What the care team says for the learner's own member (a read-back, "Yes — go ahead.", a report: `team_event`
+   * messages from the learner's body, spoken next as a line that names no colleague) and to whom: the colleague it was
+   * said to (`staff:<id>` → their id), so the line shows in that colleague's window only — never in every window of the
+   * agent that speaks it. The team's window shows them all.
+   */
+  private readonly ownTeamLines: { texts: string[]; to: string | null }[] = [];
   private readonly entryListeners = new Set<(entry: LogEntry) => void>();
   private readonly changeListeners = new Set<() => void>();
   private seq = 0;
@@ -155,9 +162,13 @@ export class SessionStore {
     this.append({ kind: "event", at: Date.now(), event });
   }
 
-  /** Log a submitted op; `view` = the conversation it was typed in (slash-command output is shown there). */
-  op(id: string, op: Op, view?: string): void {
-    this.append({ kind: "op", at: Date.now(), id, op, ...(view ? { view } : {}) });
+  /**
+   * Log a submitted op; `view` = the conversation it was typed in (slash-command output is shown there); `staff` = the
+   * colleague of that window: a command sent from it (an operating table's delegation) and its output stay in their
+   * window, never in another colleague's of the same role.
+   */
+  op(id: string, op: Op, view?: string, staff?: string): void {
+    this.append({ kind: "op", at: Date.now(), id, op, ...(view ? { view } : {}), ...(staff ? { staff } : {}) });
   }
 
   /** Seed conversation lines restored from a saved session (before any event). */
@@ -303,11 +314,11 @@ export class SessionStore {
       });
       return;
     }
-    if (entry.kind === "op") return this.foldOp(entry.id, entry.op, entry.at, entry.view);
+    if (entry.kind === "op") return this.foldOp(entry.id, entry.op, entry.at, entry.view, entry.staff);
     this.foldEvent(entry.event, entry.at);
   }
 
-  private foldOp(id: string, op: Op, at: number, view?: string): void {
+  private foldOp(id: string, op: Op, at: number, view?: string, viewStaff?: string): void {
     const L = this.config?.locale ?? "zh-CN";
     if (op.type === "user_message") {
       let to = op.to ?? this.interlocutor;
@@ -319,10 +330,13 @@ export class SessionStore {
         text = m[2];
       }
       if (!op.to && /^[/／](?![/／])/.test(trimmed)) {
-        // A slash command: echo it in the conversation it was typed in; its output follows (command_output).
+        // A slash command: echo it in the conversation it was typed in; its output follows (command_output) — sent from a
+        // colleague's window, in that colleague's window only.
         const where = view ?? this.interlocutor;
         this.views.set(id, where);
-        this.chat.push({ key: this.key("u"), role: "learner", agent: where, speaker: "learner", text: trimmed, grounded: [], streaming: false, tone: "command", at });
+        const own = viewStaff?.replace(/^staff:/, "");
+        if (own) this.viewStaff.set(id, own);
+        this.chat.push({ key: this.key("u"), role: "learner", agent: where, speaker: "learner", text: trimmed, grounded: [], streaming: false, tone: "command", at, ...(own ? { staffId: own } : {}) });
         return;
       }
       if (!op.to && /^[/／]{2}/.test(trimmed)) text = trimmed.slice(1);
@@ -395,12 +409,24 @@ export class SessionStore {
         this.phases.set(String(msg.agent), "streaming");
         break;
       }
+      case "team_event": {
+        // the learner's own member speaks next (the team's line for them): remember to whom it is said
+        const e = msg.event;
+        if (e.kind === "message" && e.message.from === LEARNER_BODY) {
+          this.ownTeamLines.push({ texts: [e.message.text.en, e.message.text["zh-CN"]], to: e.message.to.startsWith("staff:") ? e.message.to.slice("staff:".length) : null });
+          if (this.ownTeamLines.length > 8) this.ownTeamLines.shift();
+        }
+        break;
+      }
       case "agent_message": {
         if (CHAT_AGENTS_EXCLUDED.has(String(msg.agent))) break;
         const extra = msg as typeof msg & { grounding?: string; nonverbal?: string };
         const stream = this.streams.get(msg.turnId);
         const speaker = this.displaySpeaker(String(msg.agent), msg.speaker);
-        const staffId = msg.staffId ?? this.turnStaff.get(msg.turnId)?.staffId;
+        // a line the team says for the learner's own member: the colleague it is said to, as the line's colleague
+        const ownLine = !msg.staffId ? this.ownTeamLines.findIndex((x) => x.texts.includes(msg.text)) : -1;
+        const said = ownLine >= 0 ? this.ownTeamLines.splice(ownLine, 1)[0]! : null;
+        const staffId = msg.staffId ?? this.turnStaff.get(msg.turnId)?.staffId ?? said?.to ?? undefined;
         const own = staffId ? { staffId } : {};
         if (extra.grounding === "narrated") {
           // A narration (the patient cannot speak, or an aside): a note in the conversation, never the patient's words.

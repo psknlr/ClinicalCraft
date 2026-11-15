@@ -208,9 +208,18 @@ export type StepVerdict = null | { by: "gate"; gate: FieldGate } | { by: "engine
  * port, consent, two hands, what is in it, the gas). An offer of the window by place is a step this takes.
  */
 export function stepVerdict(f: FieldSeat, op: ProcedureOp): StepVerdict {
-  const gate = fieldGate(f.c, f.s, f.facility, op, LEARNER_BODY);
+  return stepVerdictOf(f, op, LEARNER_BODY);
+}
+
+/**
+ * The field's verdict on a step taken by a body (`stepVerdict` for anyone: a colleague asked to take it — the operating
+ * table's chips of a conversation offer only what this takes): core `fieldGate` with that body, then the engine's own
+ * verdict with whom the body works the field as (core `refOfBody`).
+ */
+export function stepVerdictOf(f: FieldSeat, op: ProcedureOp, body: string): StepVerdict {
+  const gate = fieldGate(f.c, f.s, f.facility, op, body);
   if (gate) return { by: "gate", gate };
-  const refusal = operateRefusal(f.c, f.s, op, learnerRef(f) ?? undefined);
+  const refusal = operateRefusal(f.c, f.s, op, refOfBody(f.c, f.s, body) ?? undefined);
   return refusal ? { by: "engine", refusal } : null;
 }
 
