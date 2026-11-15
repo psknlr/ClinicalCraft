@@ -58,6 +58,42 @@ describe("SessionStore conversation lines", () => {
   });
 });
 
+describe("SessionStore: a colleague's window keeps what was said and sent in it", () => {
+  const attendingView = new Set(["attending"]);
+  it("an operating table's delegation sent from a colleague's window — its line and its outcome — stays in that window", () => {
+    const store = new SessionStore(caseDef);
+    store.op("d1", { type: "user_message", text: "/delegate staff:doc-1 hold_traction B" }, "attending", "doc-1");
+    store.event(ev("d1", { type: "command_output", name: "delegate", text: "Delegation: Dr Abe — hold the traction: done", data: { delegation: { staffId: "staff:doc-1", task: "hold_traction", status: "completed", steps: [] } } }));
+    expect(store.chatFor(attendingView, "doc-1").map((m) => [m.role, m.tone, m.staffId])).toEqual([
+      ["learner", "command", "doc-1"],
+      ["system", "command", "doc-1"],
+    ]);
+    // another colleague of the same role never sees it; a slash command typed without a colleague shows as before
+    expect(store.chatFor(attendingView, "doc-2")).toEqual([]);
+    store.op("d2", { type: "user_message", text: "/vitals" }, "attending");
+    expect(store.chatFor(attendingView, "doc-2").map((m) => m.text)).toEqual(["/vitals"]);
+  });
+
+  it("what the care team says for the learner's own member is shown to the colleague it is said to, never in every window", () => {
+    const store = new SessionStore(caseDef);
+    const said = (id: string, to: string, en: string, zh: string) => {
+      store.event(ev(id, { type: "team_event", event: { kind: "message", message: { id, thread: "thread-1", from: "actor:clinician", to, kind: "readback", text: { en, "zh-CN": zh }, about: {}, evidence: [] } } } as never));
+      store.event(ev(id, { type: "turn_started", turnId: `t-${id}`, agent: "nurse", synthetic: true } as never));
+      store.event(ev(id, { type: "agent_message", turnId: `t-${id}`, agent: "nurse", speaker: "the scrub nurse (you)", text: en, grounded: [] }));
+      store.event(ev(id, { type: "turn_complete", turnId: `t-${id}`, agent: "nurse", lastMessage: en, durationMs: 0 } as never));
+    };
+    // a read-back to the stand-in: in no nurse's window (the team's window shows it)
+    said("m1", "staff:doc-0", "The second assistant (you), take the camera, please.", "第二助手（你），请接镜头。");
+    // a read-back to the scrub nurse: in her window only
+    said("m2", "staff:nurse-2", "Needle holder for the surgeon.", "给术者的持针器。");
+    expect(store.chatFor(nurseView, "nurse-2").map((m) => m.text)).toEqual(["Needle holder for the surgeon."]);
+    expect(store.chatFor(nurseView, "nurse-1")).toEqual([]);
+    // a nurse's own line, said to nobody in particular (an alarm call), still shows in every nurse's window
+    store.event(ev("m3", { type: "agent_message", turnId: "t-m3", agent: "nurse", speaker: "Nurse", text: "The monitor is alarming.", grounded: [] }));
+    expect(store.chatFor(nurseView, "nurse-1").map((m) => m.text)).toEqual(["The monitor is alarming."]);
+  });
+});
+
 describe("SessionStore in embodied mode (world actions)", () => {
   const result = (actionId: string, status: "completed" | "failed", message: string, extra: Record<string, unknown> = {}) => ({ actionId, status, message, worldVersion: 3, events: [], ...extra }) as never;
 

@@ -231,7 +231,10 @@ export function teamRows(cp: TeamCheckpoint, c: CaseDefinition, s: Pick<SessionS
   const by = standingBy(c, s);
   const title = (ref: string): string | null => {
     const p = staffPosition(c, facility, ref);
-    return p ? t(POSITION_TITLES[canonicalPosition(p)], L) : null;
+    if (!p) return null;
+    const words = t(POSITION_TITLES[canonicalPosition(p)], L);
+    // a list item's first word ("First assistant: you"; Chinese as it is)
+    return words.charAt(0).toUpperCase() + words.slice(1);
   };
   return cp.state.members.map((m) => {
     const you = m.id === PRIMARY_ACTOR;

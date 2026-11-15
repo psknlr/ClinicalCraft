@@ -178,7 +178,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
+  padding: 4px 10px;
 }
 .scrub-head b {
   flex: 1;
@@ -194,10 +194,9 @@
 }
 .scrub-body {
   display: grid;
-  gap: 6px;
-  padding: 0 10px 8px;
+  gap: 5px;
+  padding: 5px 10px 7px;
   border-top: 1px solid #3d5d50;
-  padding-top: 6px;
 }
 .scrub-bar .scrub-row {
   display: flex;
@@ -205,8 +204,13 @@
   gap: 6px;
   align-items: center;
 }
+/* compact: the bar sits on the dock, under the quest card — never taller than it needs */
 .scrub-bar button {
   font-size: 11px;
+  padding: 4px 8px;
+}
+.scrub-bar .scrub-toggle {
+  padding: 3px 8px;
 }
 
 /* ---------------- the embodiment badge holding a place: the place never shortens, the room's name gives way ---------------- */

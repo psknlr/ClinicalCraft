@@ -382,8 +382,9 @@ export class Hud {
     if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
     const team = !!game.embodied && !!c.team?.phases.includes(s.phase);
     if (e.team.hidden === team) e.team.hidden = !team;
-    // the stand-in waits for the learner's answer (its request, its stop, the count): the Team button says so
-    const cp = team ? game.session.session.team() : null;
+    // the stand-in waits for the learner's answer (its request, its stop, the count): the Team button says so — only
+    // while the learner holds a place (there is a stand-in to wait only then)
+    const cp = team && s.seat ? game.session.session.team() : null;
     const awaited = cp ? awaitedOf(cp) : null;
     const waits = !!awaited && (awaited.kind === "count" || !awaited.answered);
     const teamLabel = waits ? tr("team.hudWaits") : tr("team.hud");

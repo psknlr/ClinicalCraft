@@ -263,9 +263,13 @@ describe("the team as it works, and what is still the learner's to answer", () =
     // nobody is listed twice, and the colleague standing by is no member of their own
     expect(new Set(rows.map((r) => r.body)).size).toBe(rows.length);
     expect(rows.some((r) => r.body === "staff:doc-1")).toBe(false);
-    // the scrub nurse on a break: away, and the relief colleague who stands in for them
-    const relieved = await session({ seat: "first-assistant" }, "en", theatreCase());
-    await relieved.session.run({ type: "clinical_action", action: { type: "set-phase", phase: "theatre" } });
+    // the scrub nurse on a break: away, and the relief colleague called in their stead
+    const relieved = await session({ seat: "first-assistant", team: "scrub-break" } as never);
+    await relieved.session.run({ type: "team", action: "step" });
+    const onBreak = teamRows(relieved.session.team()!, relieved.session.caseDef, relieved.session.state, relieved.session.facility, worldName);
+    expect(onBreak.find((r) => r.body === "staff:nurse-2")).toMatchObject({ absent: true });
+    expect(onBreak.find((r) => r.body === "staff:nurse-9")).toMatchObject({ relief: true, position: "Scrub nurse" });
+    // operating, the learner is the operating surgeon — "you" —, nobody stands by
     const plain = await session();
     await plain.session.run({ type: "team", action: "step" });
     const operating = teamRows(plain.session.team()!, plain.session.caseDef, plain.session.state, plain.session.facility, worldName);

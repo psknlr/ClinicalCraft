@@ -3,9 +3,10 @@
  * case card shows neither the line-up nor the place row for any of them and an encounter looks as it always did — no
  * place in the badge, no scrub nurse's bar, the hand with its stethoscope, no surgery window. A case with a team — the
  * engine's own lap-chole team fixture, given to the page as a server would (`content.addServerContent`) — offers its
- * places; a start in the first assistant's place puts the learner's body and view at the operating table, the badge
- * and the team's panel say the place, the hand is gloved, and the surgery window works by place. Deterministic: no model
- * provider, the team paused right after the start, the state read from `__QA__`, not the pixels.
+ * places; a start in the first assistant's place — chosen in the picker and started from the case card's own Enter —
+ * puts the learner's body and view at the operating table, the badge and the team's panel say the place, the hand is
+ * gloved, and the surgery window works by place. Deterministic: no model provider, the team paused right after the
+ * start, the state read from `__QA__`, not the pixels.
  */
 import { expect, test, type Page } from "@playwright/test";
 import path from "node:path";
@@ -94,11 +95,16 @@ test.describe("a place in the care team (zh-CN)", () => {
     await page.locator("#lineup-select").selectOption("three-surgeons");
     expect(await page.locator("#place-select option").evaluateAll((os) => os.map((o) => (o as HTMLOptionElement).value))).toEqual(["", "first-assistant", "second-assistant", "scrub-nurse"]);
     await page.locator("#lineup-select").selectOption("");
+    // the hospital the page was given, then the place — and the case card's own Enter starts the encounter in it
+    await page.locator("#facility-select").selectOption(FACILITY);
     await page.locator("#place-select").selectOption("first-assistant");
+    await expect(page.locator("#place-select")).toHaveValue("first-assistant");
+    await expect(page.locator("#facility-select")).toHaveValue(FACILITY);
     await shot(page, "places-picker");
-    // the start in the place (the hospital the page was given; `__QA__.start`'s place and line-up, as the picker chose)
-    await page.evaluate(({ c, f }) => (window as any).__QA__.start(c, f, false, "", "first-assistant", ""), { c: CASE, f: FACILITY });
+    await page.locator("#enter").click();
     await page.waitForFunction(() => (window as any).__QA__?.game?.entered === true, null, { timeout: 180_000 });
+    // started as the picker chose: the place, no line-up, the hospital
+    expect(await page.evaluate(() => { const qa = (window as any).__QA__; return { seat: qa.session.state.seat ?? null, lineup: qa.session.state.lineup ?? null, facility: qa.game.facility.id }; })).toEqual({ seat: "first-assistant", lineup: null, facility: FACILITY });
     // the team waits for the test from here on (one round at a time, none asked)
     await page.evaluate(() => (window as any).__QA__.session.run({ type: "team", action: "pause" }));
     const at = await page.evaluate(() => {
@@ -118,6 +124,12 @@ test.describe("a place in the care team (zh-CN)", () => {
     await page.evaluate(() => (window as any).__QA__.route("team"));
     await expect(page.locator("#team-place")).toHaveAttribute("data-seat", "first-assistant");
     await expect(page.locator("#team-place")).toContainText("你：第一助手");
+    // the team as it works: the learner's own place, the colleague standing by, the stand-in who operates
+    await expect(page.locator("#team-members")).toContainText("第一助手：你");
+    await expect(page.locator("#team-members")).toContainText("阿部医生在旁待命");
+    await expect(page.locator("#team-members")).toContainText("主刀医生：伊藤医生");
+    // in a place the stand-in asks and the learner answers: no Ask row
+    await expect(page.locator("#team-ask")).toHaveCount(0);
     await expect(page.locator("#team-learner")).toBeVisible();
     await expect(page.locator("#team-observer")).toBeVisible();
     await shot(page, "places-team");

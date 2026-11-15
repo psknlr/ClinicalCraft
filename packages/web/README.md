@@ -104,25 +104,35 @@ whole field, follow the work, **Closer** / **Wider** — for the camera holder
 nurse, each instrument to whoever may put it in); the operator's own steps stay
 in view, read-only.
 
-In a place the **Team** window (HUD **Team**) says "You: First assistant" and
-the line-up, puts first what the stand-in surgeon waits for you to do, and
-offers the answers to what is said to your place: **Read back** / **Can't** to a
-request, **Confirm** / **Not now** to a colleague's read-back of your own ask,
-**Do it in the surgery window** and the report once the stand-in confirms, and
-**Go on** after its stop (or once it said it cannot go on); **I play my place** /
-**Observe** chooses who plays it. **Ask** (whom, and traction, let go, the
-camera, an aim, closer, wider or a pass), **Need** (an item the team knows) and,
-in the scrub nurse's place, **Say the count** (never typed) send the team's
-ops, and the session's refusal shows as it is. The stand-in's **call-out**
-("Dr Ito: Clipping the cystic duct.") is its own card: **No objection** or
-**Stop** (Esc). A colleague's window offers the operating table's work their
-controls allow — **Hold port …**, **Let go**, **Hold the camera**, **Camera on
-…**, **Pass the …** — and `@一助`, `@二助`, `@扶镜手`, `@术者`, `@first
-assistant` or `@camera holder` in a line names whoever holds that position now.
-The badge says the place ("In-world · OR 7 · First assistant"); in the scrub
-nurse's place a bar beside the scope dock says what is asked for, what waits to
-go in and when the count is due; at the sterile field your hand is gloved. A
-device's operations the world will not let you do are greyed out, with why.
+In a place the **Team** window (HUD **Team**, which says "Team · waits for you"
+while the stand-in surgeon waits for your answer) says "You: First assistant"
+and the line-up, lists the team with their positions ("First assistant: you ·
+Dr Abe stands by"), puts first what the stand-in waits for you to do — "You
+answered — the surgeon goes on" once you have —, and offers the answers to what
+is said to your place while the stand-in's request is open: **Read back** /
+**Can't** to a request, **Confirm** / **Not now** to a colleague's read-back of
+your own ask, **Do it in the surgery window** and the report once the stand-in
+confirms, and **Go on** after its stop (or once it said it cannot go on); **I
+play my place** / **Observe** chooses who plays it. Operating, **Ask** (whom, and
+traction, let go, the camera, an aim, closer, wider or a pass) asks the team;
+**Need** (what the team can find and bring) and, in the scrub nurse's place,
+**Say the count** (never typed) send the team's ops, and the session's refusal
+shows as it is. The stand-in's **call-out** ("Dr Ito: Clipping the cystic
+duct.") is its own card: **No objection** or **Stop** (Esc); stopped, the Team
+window opens to answer. A colleague's window offers the operating table's work
+the field lets them take now — **Hold port …**, **Let go**, **Hold the camera**,
+**Camera on …**, **Pass the …** —, keeping the delegation and its outcome in that
+window; `@一助`, `@二助`, `@扶镜手`, `@术者`, `@surgeon`, `@first assistant` or
+`@camera holder` in a line names whoever holds that position now — the position
+you hold yourself names nobody else (you are told so). The badge says the place
+("In-world · OR 7 · First assistant", the place never cut short); in the scrub
+nurse's place a bar on the scope dock (hidden while a window is open, with its
+own **Hide**) says what is asked for, with its **Pass**, what waits to go in and
+when the count is due, hands what you carry to the surgeon and opens **In my
+hands** and the **Instrument table**; at the sterile field your hand is gloved.
+A device's operations the world will not let you do are greyed out, with why
+under them; one your own steps fix (the cart to fetch) stays to press, and the
+world says the way.
 
 | folder (`src/`) | |
 |---|---|
