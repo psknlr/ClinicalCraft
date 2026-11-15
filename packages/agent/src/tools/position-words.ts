@@ -8,7 +8,7 @@
  * Resolved through the case's team as it is in this encounter (core `effectiveTeam`), never through the facility's
  * titles: the position tier of `lookupStaff`, which `@` mentions, `consult {staff}` and `delegate_task` share.
  */
-import { cameraPort, canonicalPosition, effectiveTeam, memberControls, operatorOf, POSITION_TITLES, positionOfMember, StaffPositionSchema, type CaseDefinition, type SessionState, type StaffPosition, type TeamChoice } from "@clinicalcraft/core";
+import { cameraPort, canonicalPosition, effectiveTeam, memberControls, operatorOf, POSITION_TITLES, positionOfMember, refOfBody, StaffPositionSchema, type CaseDefinition, type Place, type SessionState, type StaffPosition, type TeamChoice } from "@clinicalcraft/core";
 
 /** A position a word names, or the camera holder (who holds the camera port, not a position). */
 export type PositionWord = StaffPosition | "camera-holder";
@@ -70,4 +70,23 @@ export function membersInPosition(view: TeamView, word: PositionWord): string[] 
     const p = positionOfMember(m);
     return p !== null && canonicalPosition(p) === want;
   }).map((m) => m.staff);
+}
+
+/**
+ * The place the learner holds, when `asked` is a position word that names only it in this encounter's team (docs/GLOSSARY.md
+ * "surgeon"): holding the first assistant's place, "first assistant" or "一助" — and "camera holder" while they hold the
+ * camera — name the learner, not the colleague who stands by (still named by their name): nobody else answers to it.
+ * Null otherwise: no place, not a position word, nobody in that position, or someone else holds it too. The same reading as
+ * the browser's `@` mentions (web `staffAddress`), for a typed mention and `/delegate`.
+ */
+export function ownPlaceWord(view: TeamView, asked: string): Place | null {
+  const seat = view.state.seat;
+  if (!seat) return null;
+  const word = positionWord(asked);
+  if (!word) return null;
+  // the learner's own place in the field: its member's staff id (core `refOfBody` of the learner's body)
+  const own = refOfBody(view.caseDef, view.state);
+  if (typeof own !== "string") return null;
+  const holders = membersInPosition(view, word);
+  return holders.length > 0 && holders.every((h) => h === own) ? seat : null;
 }

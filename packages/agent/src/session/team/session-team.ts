@@ -13,7 +13,7 @@ import { reasonText } from "../../tools/field-words.js";
 import { spatialCodeOf } from "../../tools/spatial.js";
 import type { NavGoal } from "@clinicalcraft/world";
 import { runToolAs } from "../embodied-wiring.js";
-import { joinList, rt } from "../i18n.js";
+import { joinList, rt, type RuntimeKey } from "../i18n.js";
 import type { SessionKernel } from "../kernel.js";
 import { staffAgent } from "../staff-voice.js";
 import { TEAM_CALLER } from "./callout.js";
@@ -29,6 +29,22 @@ import { parseFieldAsk } from "./ask-input.js";
 export { validTeamCheckpoint } from "./checkpoint.js";
 
 type TeamOp = Extract<Op, { type: "team" }>;
+
+/**
+ * How an observer refusal names the control that gives the learner their part back (`team.observer` /
+ * `team.observerPlace`): each front-end names its own — the browser's buttons ("I am the surgeon", "I play my place") by
+ * default; the `/team` command its `/team play` (`OBSERVER_WORDS_COMMAND`); an external agent's `team` tool its `play`
+ * action.
+ */
+export interface ObserverWords {
+  /** Operating (no place): the refusal names the control to answer as the surgeon. */
+  surgeon: RuntimeKey;
+  /** Holding a place: the refusal names the control to play the place. */
+  place: RuntimeKey;
+}
+
+/** The browser's words (the default): "Choose “I am the surgeon” / “I play my place”". */
+export const OBSERVER_WORDS_DEFAULT: ObserverWords = { surgeon: "team.observer", place: "team.observerPlace" };
 
 export class SessionTeam {
   private scheduler: TeamScheduler | null = null;
@@ -179,8 +195,8 @@ export class SessionTeam {
     this.record();
   }
 
-  /** A `team` op. */
-  async op(id: string, op: TeamOp, signal: AbortSignal): Promise<void> {
+  /** A `team` op; `words`: how an observer refusal names the control that gives the learner their part back. */
+  async op(id: string, op: TeamOp, signal: AbortSignal, words: ObserverWords = OBSERVER_WORDS_DEFAULT): Promise<void> {
     const k = this.k;
     if (!this.available()) {
       k.emit(id, { type: "error", message: rt(k.locale, "team.none"), code: "no_team" });
@@ -218,7 +234,7 @@ export class SessionTeam {
         const kinds = new Set(["readback", "confirm", "decline", "report"]);
         if (typeof op.message !== "string" || !op.kind || !kinds.has(op.kind)) return this.invalid(id, "reply needs message and kind (readback, confirm, decline, report)");
         const r = s.reply(op.message, op.kind, typeof op.text === "string" && op.text.trim() ? op.text.trim() : undefined, typeof op.item === "string" ? op.item : undefined);
-        if ("refused" in r && r.refused === "observer") return this.observing(id);
+        if ("refused" in r && r.refused === "observer") return this.observing(id, words);
         if ("refused" in r && r.refused === "unknown") return this.invalid(id, `no team message "${op.message}"`);
         if ("refused" in r && r.refused === "notYours") {
           const to = t(k.embodied!.world().entity(r.to)?.name ?? r.to, k.locale);
@@ -252,7 +268,7 @@ export class SessionTeam {
         if (typeof field === "string") return this.invalid(id, field);
         const r = s.ask(to, field);
         if ("refused" in r) {
-          if (r.refused === "observer") return this.observing(id);
+          if (r.refused === "observer") return this.observing(id, words);
           const nameOf = (body: string) => t(k.embodied!.world().entity(body)?.name ?? body.replace(/^staff:/u, ""), k.locale);
           if (r.refused === "ambiguous") {
             k.emit(id, { type: "error", message: rt(k.locale, "team.ask.ambiguous", { asked: to, who: joinList(k.locale, r.who.map(nameOf)) }), code: "invalid_op" });
@@ -270,7 +286,7 @@ export class SessionTeam {
         if (!this.working(id, s)) return;
         const r = s.count();
         if ("refused" in r) {
-          if (r.refused === "observer") return this.observing(id);
+          if (r.refused === "observer") return this.observing(id, words);
           if (r.refused === "none") return void k.emit(id, { type: "error", message: rt(k.locale, "team.count.none"), code: "invalid_op" });
           if (r.refused === "notDue") return void k.emit(id, { type: "warning", message: rt(k.locale, "team.count.notDue") });
           if (r.refused === "said") return void k.emit(id, { type: "warning", message: rt(k.locale, "team.count.said") });
@@ -312,10 +328,10 @@ export class SessionTeam {
 
   /**
    * Observing (observer mode): the learner's part is played for them — they answer, ask and count in learner mode, which
-   * the refusal names as a front-end's choice does: as the surgeon, or (holding a place) in their place.
+   * the refusal names as the front-end's own control does (`words`): as the surgeon, or (holding a place) in their place.
    */
-  private observing(id: string): void {
-    this.k.emit(id, { type: "error", message: rt(this.k.locale, this.k.state.seat ? "team.observerPlace" : "team.observer"), code: "permission_denied" });
+  private observing(id: string, words: ObserverWords): void {
+    this.k.emit(id, { type: "error", message: rt(this.k.locale, this.k.state.seat ? words.place : words.surgeon), code: "permission_denied" });
   }
 
   /** The team as saved now (a session snapshot), or null. */
