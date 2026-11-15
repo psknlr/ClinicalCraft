@@ -64,18 +64,26 @@ list comes from the case index; only the started case is validated.
 **A place in the care team.** In a case whose team names a stand-in surgeon,
 `start_case {"embodied": true, "seat": "first-assistant" | "second-assistant" |
 "scrub-nurse", "lineup"?, "team"?}` starts the encounter in that place, joined
-at the team's table, while the stand-in operates (a place without `embodied:
-true` is refused `not_embodied`; the session's own refusals come back in its
-words, e.g. `start_refused`). The team is then paced by the `team` tool:
-`run` lets it work until the surgeon waits on you, `status` says what for and
-how to answer, `reply` answers (without `message`: the line the surgeon waits
-for), `ask`, `need`, `count`, `play` / `observe`; your own steps are `operate`
-calls, as your place. A round that meets the stand-in's call-out before a
-critical step returns with it pending (`structuredContent.callout`):
-`team {"action": "callout", "decision": "approve"}` lets it go on, `"deny"`
-stops the stand-in, which asks what you see and waits for
-`team {"action": "reply", "kind": "confirm"}`. While a call-out waits, calls
-that would change the encounter are refused (`callout_pending`).
+at the team's table, while the stand-in operates. A place needs an in-world
+session — `embodied: true`, or a server whose default is in-world (`clinicalcraft
+mcp --embodied`); in a clinical session it is refused `not_embodied`. The
+session's own refusals come back in its words, e.g. `start_refused` for a
+line-up, a team scenario or a place the case does not offer, followed by the
+places and line-ups it offers (its team scenarios are the facilitator's choice
+and are not listed); a refused start is dropped before it is listed, so it never
+closes another session. The team begins paused — the start takes no team round —
+and is then paced by the `team` tool: `run` lets it work until the surgeon waits
+on you (it does not start while your answer or your count is owed), `status`
+says what for and how to answer, `reply` answers (without `message`: the line
+the surgeon waits for; several waiting, name one), `ask`, `need`, `count`,
+`play` / `observe`; your own steps are `operate` calls, as your place. In a
+session without a care team every action answers `no_team`. A round that meets
+the stand-in's call-out before a critical step returns with it pending
+(`structuredContent.callout`): `team {"action": "callout", "decision":
+"approve"}` lets it go on, `"deny"` stops the stand-in, which asks what you see
+and waits for `team {"action": "reply", "kind": "confirm"}`. While a call-out
+waits, calls that would change the encounter — one already queued included —
+are refused (`callout_pending`).
 
 **Attach mode.** `clinicalcraft mcp --attach <server> --world-session <id>
 --attach-key-file <f> [--token-file f] [--timeout <sec>]`
@@ -86,7 +94,9 @@ control for, paired by the id and attach key its HUD badge shows (or
 a session itself. `list_live_sessions` (the key's sessions) plus the
 clinical and world tools and `team` with an optional `session_id`, no `start_case` and
 no `confirm` — approvals go to the learner in the browser (the stand-in's
-call-outs too) and a denial comes back as `status: "denied"`. What the live session returns is marked as data,
+call-outs too; a forwarded `team` act is asked about like any call, e.g. in
+strict mode, and a deny rule withholds it) and a denial comes back as
+`status: "denied"`. What the live session returns is marked as data,
 not instructions (`structuredContent.untrusted: true`).
 `notifications/cancelled` cancels a call in the browser too. Without
 `--world-session` (or its variable) or the attach key the command exits with

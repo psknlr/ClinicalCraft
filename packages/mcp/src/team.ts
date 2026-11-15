@@ -9,10 +9,13 @@
  * or `run` that meets one returns at once with the call-out pending (`status` lists it), the op still running; `callout
  * {decision}` answers it (approve: No objection; deny: Stop — the stand-in stops, looks and asks what the learner sees,
  * until they say go on: `reply {kind: "confirm"}`) and the call returns where the run then stops — its end or the next
- * call-out. While one is pending, a call that would queue behind the waiting round is refused, saying so (only reading
- * tools and the team's status run). A `run` stops where the stand-in waits on the learner (agent `owedByLearner`): while
- * their answer or count is still owed it does not start. After a round or a run the staff take their own round
- * (`staff_step`), as a headless driver does, so the stand-in sees the world as it now is.
+ * call-out. While one is pending, a call that would queue behind the waiting round is refused when it comes to run,
+ * saying so (only reading tools and the team's status run; `tools.ts`). A `run` stops where the stand-in waits on the
+ * learner (agent `runHeld`): while their answer or count is still owed it does not start. After a round or a run the
+ * staff take their own round (`staff_step`), as a headless driver does, so the stand-in sees the world as it now is.
+ * In a session without a care team that works on its own (a case without a team, a clinical session) every action
+ * answers `no_team`. A place's session begins with its team paused (`start_case`): the stand-in operates only as this
+ * tool runs the team.
  */
 import { isCalloutRequest, rt, runHeld, staffName, TEAM_TOOL, teamToolCall, teamToolResult, type AgentEvent, type CalloutPending, type ClinicalSession, type TeamOp } from "@clinicalcraft/agent";
 import { mm } from "./i18n.js";

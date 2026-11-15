@@ -398,7 +398,8 @@ export function placeCases(content: Pick<LoadedContent, "cases">, seat: Place, l
 /**
  * Run every team scenario of the cases (optionally only some scenarios). By place (`seat`, optionally `lineup`): the
  * cases that offer it, each scenario that offers it too (`seatsOf` with that scenario) — one whose absences leave the
- * place without its member is `skipped`, saying why.
+ * place without its member is `skipped`, saying why. The line-up belongs to a run by place (`clinicalcraft bench team`
+ * refuses `--lineup` without `--seat`): the default run takes each case's team as it is.
  */
 export async function runTeamBench(content: LoadedContent, opts: { caseIds?: readonly string[]; scenarios?: readonly string[]; locale?: string; seat?: Place; lineup?: string } = {}): Promise<TeamReport> {
   const runs: TeamRunResult[] = [];

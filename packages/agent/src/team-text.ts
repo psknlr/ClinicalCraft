@@ -248,12 +248,12 @@ export function startOffers(ctx: Pick<TeamTextContext, "caseDef" | "locale">, op
   const base = offered();
   const more = (team.lineups ?? []).map((l) => ({ id: l.id, places: offered(l.id) })).filter((x) => x.places.length > 0 && x.places.join() !== base.join());
   const places = [...(base.length ? [joinList(L, base)] : []), ...more.map((x) => rt(L, "seat.offeredLineup", { places: joinList(L, x.places), lineup: x.id }))];
-  const lineups = (team.lineups ?? []).map((l) => `${l.id} (${t(l.name, L)})`);
+  const lineups = (team.lineups ?? []).map((l) => (isZh(L) ? `${l.id}（${t(l.name, L)}）` : `${l.id} (${t(l.name, L)})`));
   const scenarios = team.scenarios.map((x) => x.id);
   return [
     places.length ? rt(L, "startOffers.places", { places: places.join(isZh(L) ? "；" : "; ") }) : rt(L, "startOffers.placesNone"),
-    lineups.length ? rt(L, "startOffers.lineups", { lineups: lineups.join(", ") }) : rt(L, "startOffers.lineupsNone"),
-    !opts.scenarios ? rt(L, "startOffers.scenariosHidden") : scenarios.length ? rt(L, "startOffers.scenarios", { scenarios: scenarios.join(", ") }) : rt(L, "startOffers.scenariosNone"),
+    lineups.length ? rt(L, "startOffers.lineups", { lineups: joinList(L, lineups) }) : rt(L, "startOffers.lineupsNone"),
+    !opts.scenarios ? rt(L, "startOffers.scenariosHidden") : scenarios.length ? rt(L, "startOffers.scenarios", { scenarios: joinList(L, scenarios) }) : rt(L, "startOffers.scenariosNone"),
   ];
 }
 

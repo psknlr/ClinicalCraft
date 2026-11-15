@@ -104,10 +104,64 @@ describe("start_case in a place in the care team", () => {
     expect(text(r)).toMatch(/You hold the first assistant's place in the care team, fixed for this encounter: Dr Ito, the stand-in surgeon, operates/u);
     // the patient's opening is not said: the learner joined the team at the operating table
     expect(text(r)).not.toMatch(/Test patient: “Hello\.”/u);
-    // paced by the team tool: nothing acts between its calls
+    // paced by the team tool: nothing acts between its calls — the start itself took no team round (the stand-in has
+    // taken no step yet: its first is the team tool's)
     expect(entry.session.team()).toMatchObject({ autonomy: "step", surgeon: "learner" });
+    expect(entry.session.team()!.state.round).toBe(0);
+    expect((entry.session.state.procedure?.refs ?? []).filter((r) => r.startsWith("standin:"))).toEqual([]);
     const tools = (await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "tools/list" })) as JsonRpcResponse & { result: { tools: { name: string; annotations: Record<string, unknown> }[] } };
     expect(tools.result.tools.find((t) => t.name === "team")?.annotations).toEqual(TOOL_ANNOTATIONS.team);
+    await s.close();
+  });
+
+  it("a line-up or a team scenario the case does not have: refused naming it, with what the case offers (its team scenarios are the facilitator's)", { timeout: T }, async () => {
+    const s = server({ approvalMode: "default" });
+    await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } } });
+    const lineup = await call(s, "start_case", { case_id: CASE, facility_id: facility.id, seat: "first-assistant", lineup: "bogus", embodied: true });
+    expect(lineup.structuredContent).toMatchObject({ error: "start_refused" });
+    expect(text(lineup).split("\n")).toEqual([
+      expect.stringMatching(/^Could not start the case: .*this case's team has no line-up "bogus"$/u),
+      "Places in the team this case offers: first-assistant, scrub-nurse; first-assistant, second-assistant, scrub-nurse (line-up three-surgeons).",
+      "Line-ups: three-surgeons (Three surgeons).",
+      "Team scenarios are the facilitator's choice: they are not listed here.",
+    ]);
+    const team = await call(s, "start_case", { case_id: CASE, facility_id: facility.id, team: "bogus", embodied: true });
+    expect(text(team)).toMatch(/this case has no team scenario "bogus"\nPlaces in the team this case offers: /u);
+    // a place the case does not offer without the line-up that brings it
+    expect(text(await call(s, "start_case", { case_id: CASE, facility_id: facility.id, seat: "second-assistant", embodied: true }))).toMatch(/has no second-assistant: there is no such place\nPlaces in the team this case offers: /u);
+    expect(s.sessions.list()).toHaveLength(0);
+    await s.close();
+  });
+
+  it("a refused start never closes another session: it is opened, refused and dropped before it is listed", { timeout: T }, async () => {
+    const dir = mkdtempSync(join(root, "p-"));
+    const home = join(dir, "home");
+    mkdirSync(home, { recursive: true });
+    const settings: ResolvedSettings = mergeSettings([{ source: "flag", settings: { locale: "en", transcripts: { enabled: false } } }]);
+    const s = new McpServer({ settings, env: { CLINICALCRAFT_HOME: home, HOME: home }, cwd: dir, content, log: () => undefined, maxSessions: 1 });
+    await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } } });
+    const first = await call(s, "start_case", { case_id: CASE, facility_id: facility.id, embodied: true });
+    const id = first.structuredContent!.session_id as string;
+    const refused = await call(s, "start_case", { case_id: CASE, facility_id: facility.id, seat: "first-assistant" });
+    expect(refused.structuredContent).toMatchObject({ error: "not_embodied" });
+    expect(s.sessions.list().map((e) => e.id)).toEqual([id]);
+    expect((await call(s, "case_status", { session_id: id })).isError).not.toBe(true);
+    await s.close();
+  });
+
+  it("a session without a care team that works on its own: every team action says so (no_team) — a case without a team, a clinical session", { timeout: T }, async () => {
+    const s = server({ approvalMode: "default" });
+    await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } } });
+    const noTeam = (await call(s, "start_case", { case_id: caseHandle("stemi-inferior-rv"), embodied: true })).structuredContent!.session_id as string;
+    const clinical = (await call(s, "start_case", { case_id: CASE, facility_id: facility.id, embodied: false })).structuredContent!.session_id as string;
+    for (const session_id of [noTeam, clinical]) {
+      for (const action of ["status", "run"]) {
+        const r = await call(s, "team", { session_id, action });
+        expect(r.isError, `${session_id} ${action}`).toBe(true);
+        expect(r.structuredContent).toMatchObject({ ok: false, error: "no_team" });
+        expect(text(r)).toBe("This case has no care team that works on its own (it needs a case team and in-world mode).");
+      }
+    }
     await s.close();
   });
 });
@@ -194,6 +248,7 @@ describe("the team tool in the first assistant's place (default approval mode)",
     const blocked = await call(s, "operate", { session_id, op: "zoom", port: "A", level: "wide" });
     expect(blocked.structuredContent).toMatchObject({ error: "callout_pending" });
     expect((await call(s, "team", { session_id, action: "step" })).structuredContent).toMatchObject({ error: "callout_pending" });
+    expect((await call(s, "get_debrief", { session_id })).structuredContent).toMatchObject({ error: "callout_pending" });
     expect((await call(s, "observe_field", { session_id })).isError).not.toBe(true);
 
     // Stop: the stand-in stops, looks and asks what the learner sees — and clips nothing until they say go on
@@ -230,12 +285,19 @@ describe("the team tool in the first assistant's place (default approval mode)",
     expect(approved.isError, text(approved)).not.toBe(true);
     expect(session.state.procedure!.clips["cystic-duct"]).toBe(3);
 
-    // the rest of the operation: each call-out answered no objection, the learner's camera requests answered
+    // the rest of the operation: each call-out answered no objection, the learner's camera requests answered — with an
+    // acting call sent alongside each run: queued behind it, it is refused when the run stopped at a call-out (never left
+    // waiting behind the round the call-out holds, the answer queued behind it)
+    let refusedAlongside = 0;
     for (let i = 0; i < 300 && !session.state.procedure!.closed; i++) {
       if (await answer()) continue;
-      const r = await call(s, "team", { session_id, action: "run" });
-      if (r.structuredContent?.callout) expect((await call(s, "team", { session_id, action: "callout", decision: "approve" })).isError).not.toBe(true);
+      const [r, alongside] = await Promise.all([call(s, "team", { session_id, action: "run" }), call(s, "look_at", { session_id, target: "patient" })]);
+      if (!r.structuredContent?.callout) continue;
+      expect(alongside.structuredContent).toMatchObject({ error: "callout_pending" });
+      refusedAlongside++;
+      expect((await call(s, "team", { session_id, action: "callout", decision: "approve" })).isError).not.toBe(true);
     }
+    expect(refusedAlongside).toBeGreaterThan(0);
     expect(session.state.procedure).toMatchObject({ closed: true, specimen: "extracted", unsafe: [], injuries: [] });
     expect(session.state.procedure!.clips).toEqual({ "cystic-duct": 3, "cystic-artery": 2 });
     // observing, the team's words name this tool's own control

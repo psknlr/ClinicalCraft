@@ -10,9 +10,12 @@
  */
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { msgsOf, type TestSession } from "./__fixtures__/harness.js";
+import { makeSession, msgsOf, type TestSession } from "./__fixtures__/harness.js";
 import { teamAskArgs } from "./commands-world.js";
 import { operateArgs } from "./commands.js";
+import type { TeamCheckpoint, TeamMessage } from "./session/team/types.js";
+import { defaultReplyTarget, noReplyTarget } from "./team-text.js";
+import { teamToolCall } from "./team-tool.js";
 import { ACCESS, operatorSteps, sendToScrubRoom, STAFF, theatreSession } from "./session/__fixtures__/theatre.js";
 
 /** A slash command's own output (text, data) and the session's errors and warnings around it. */
@@ -186,7 +189,77 @@ describe("parsing", () => {
     expect(teamAskArgs(["doc-2", "closer"])).toEqual({ to: "doc-2", field: { op: "zoom", zoom: "close" } });
     expect(teamAskArgs(["doc-1", "release"])).toEqual({ to: "doc-1", field: { op: "release" } });
     expect(teamAskArgs(["camera"])).toBeNull();
+    // a request word inside a position in words is part of whom: the request is the first word after it
+    expect(teamAskArgs(["the", "camera", "holder", "aim", "gallbladder-bed"])).toEqual({ to: "the camera holder", field: { op: "aim", region: "gallbladder-bed" } });
+    expect(teamAskArgs(["the", "camera", "holder", "camera"])).toEqual({ to: "the camera holder", field: { op: "camera" } });
+    expect(teamAskArgs(["camera", "holder", "wider"])).toEqual({ to: "camera holder", field: { op: "zoom", zoom: "wide" } });
     expect(operateArgs("retract", ["port=B", "structure=gallbladder-fundus", "direction=cephalad,patient-left", "force=firm"])).toEqual({ op: "retract", port: "B", structure: "gallbladder-fundus", direction: ["cephalad", "patient-left"], force: "firm" });
     expect(operateArgs("safety-pause", ["view=cvs", 'claims={"triangle":true,"two":2}'])).toEqual({ op: "safety-pause", view: "cvs", claims: { triangle: true, two: 2 } });
+  });
+});
+
+describe("a reply that names no message", () => {
+  it("several lines waiting for the learner: the command and the tool each say which, naming their own way to name one; none: say so", () => {
+    const line = (id: string, from: string): TeamMessage => ({ id, thread: `th-${id}`, from, to: PRIMARY_ACTOR, kind: "readback", text: { en: "Hook to the surgeon — confirm?", "zh-CN": "电钩递给术者——确认吗？" }, about: {}, evidence: [] }) as TeamMessage;
+    const cp = (messages: TeamMessage[]): TeamCheckpoint => ({ format: "clinicalcraft-team@1", autonomy: "step", surgeon: "learner", state: { version: 2, scenario: null, lifecycle: "active", round: 3, seq: 0, members: [], messages, receipts: [], tasks: [], claims: {}, completed: [], posted: [], extra: [] } });
+    const two = cp([line("msg-1", "staff:doc-1"), line("msg-2", "staff:nurse-2")]);
+    expect(defaultReplyTarget(two)).toEqual({ several: ["msg-1", "msg-2"] });
+    expect(noReplyTarget("en", two, { none: "teamCmd.noAwaited", several: "teamCmd.severalAwaited" })).toBe("Several lines said to you wait for an answer (msg-1, msg-2): name one (/team reply <message> <kind>).");
+    expect(teamToolCall({ action: "reply", kind: "confirm" }, two, "en")).toEqual({ error: 'Several lines said to you wait for an answer (msg-1, msg-2): name one — team {action: "reply", message, kind}.' });
+    expect(teamToolCall({ action: "reply", kind: "confirm" }, two, "zh-CN")).toEqual({ error: '有几句对你说的话在等你回答（msg-1, msg-2）：请指明其中一句——team {action: "reply", message, kind}。' });
+    // one: that one
+    expect(defaultReplyTarget(cp([line("msg-1", "staff:doc-1")]))).toEqual({ id: "msg-1" });
+    // none: the tool names its own `message` argument, never the terminal's command
+    const none = teamToolCall({ action: "reply", kind: "confirm" }, cp([]), "en");
+    expect(none).toEqual({ error: 'Nothing said to you waits for an answer: name the message — team {action: "reply", message: "msg-…", kind}.' });
+  });
+});
+
+describe("a project's own command named like a built-in one", () => {
+  it("never runs and is not listed — the session says so at its start; another project command runs as always", async () => {
+    const commands = [
+      { name: "team", description: "Team plan", source: "project" as const, template: "Summarise the team plan: $ARGUMENTS" },
+      { name: "operate", description: "Operate", source: "project" as const, template: "Operate: $ARGUMENTS" },
+      { name: "sbar", description: "SBAR", source: "project" as const, template: "SBAR for $ARGUMENTS", agent: "nurse" },
+    ];
+    for (const [locale, said] of [
+      ["en", "Not used — a built-in command has the same name: /team, /operate. Rename the project's own command to use it."],
+      ["zh-CN", "未使用——与内置命令同名：/team、/operate。请为项目自己的命令改名后再使用。"],
+    ] as const) {
+      const t = await makeSession({ commands, settingsPatch: { locale } });
+      const warnings: string[] = [];
+      for await (const e of t.session.events()) {
+        if (e.msg.type === "warning") warnings.push(e.msg.message);
+        if (e.msg.type === "session_configured") break;
+      }
+      expect(warnings, locale).toEqual([said]);
+      const listed = t.session.commands().map((c) => `${c.name}:${c.source}`);
+      expect(listed).toContain("operate:builtin");
+      expect(listed).toContain("sbar:project");
+      expect(listed.filter((x) => x.startsWith("team:"))).toEqual([]);
+      // a clinical session: the built-in /team answers that it needs in-world mode; the template never runs
+      if (locale === "en") expect((await cmd(t, "team", "tonight")).text).toBe("/team needs in-world mode (start with --embodied).");
+      await t.session.close();
+    }
+    const plain = await makeSession({ commands: [commands[2]!] });
+    const warnings: string[] = [];
+    for await (const e of plain.session.events()) {
+      if (e.msg.type === "warning") warnings.push(e.msg.message);
+      if (e.msg.type === "session_configured") break;
+    }
+    expect(warnings).toEqual([]);
+    await plain.session.close();
+  });
+});
+
+describe("a start the engine refuses names what was asked", () => {
+  it("a line-up or a team scenario the case does not have: the engine's own words after the lead", async () => {
+    const t = await theatreSession({ settingsPatch: { approvalMode: "bypass" } });
+    const lineup = await t.session.run({ type: "clinical_action", action: { type: "start", lineup: "bogus" } });
+    expect(msgsOf(lineup, "warning").map((m) => m.message)).toEqual([expect.stringMatching(/this case's team has no line-up "bogus"$/u)]);
+    const team = await t.session.run({ type: "clinical_action", action: { type: "start", team: "bogus" } });
+    expect(msgsOf(team, "warning").map((m) => m.message)).toEqual([expect.stringMatching(/this case has no team scenario "bogus"$/u)]);
+    expect(t.session.state.started).toBe(false);
+    await t.session.close();
   });
 });

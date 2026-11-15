@@ -266,7 +266,8 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
     },
     ...clinical,
     ...world,
-    teamSpec(),
+    // the care team's `team`, unless a bare deny rule withholds it (as the other tools)
+    ...(isHiddenByDeny(TEAM_TOOL.name, host.deny) ? [] : [teamSpec()]),
     {
       name: "get_debrief",
       title: toolAnnotations("get_debrief").title,

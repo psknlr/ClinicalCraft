@@ -185,7 +185,7 @@ export const BENCH: CommandSpec = {
             zh: "按岗位：first-assistant | second-assistant | scrub-nurse——每个提供该岗位的情境都以该岗位开始，由其自身策略代为完成，主刀同事主刀；手术须做到关闭",
           },
         },
-        { name: "lineup", type: "string", valueName: "<id>", description: { en: "The line-up the runs start with (e.g. three-surgeons)", zh: "运行开始时的团队配置（如 three-surgeons）" } },
+        { name: "lineup", type: "string", valueName: "<id>", description: { en: "With --seat: the line-up the runs by place start with (e.g. three-surgeons)", zh: "与 --seat 一起使用：按岗位运行开始时的团队配置（如 three-surgeons）" } },
         { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default team-results)", zh: "报告目录（默认 team-results）" } },
       ],
       run: benchTeam,

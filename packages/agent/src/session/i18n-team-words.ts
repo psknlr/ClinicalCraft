@@ -148,7 +148,7 @@ export const TEAM_WORDS_ZH: Record<keyof typeof TEAM_WORDS_EN, string> = {
   "startOffers.lineupsNone": "本病例团队没有其他团队配置。",
   "startOffers.scenarios": "团队情境：{scenarios}。",
   "startOffers.scenariosNone": "本病例团队没有团队情境。",
-  "startOffers.scenariosHidden": "团队情境由带教老师选择：此处不列出。",
+  "startOffers.scenariosHidden": "团队情境由导师选择：此处不列出。",
   "startOffers.noTeam": "本病例没有手术团队：没有可选的团队岗位、团队配置或团队情境（只能担任主刀医生）。",
   "team.observer.command": "你正在观察：你的岗位由团队代为完成。输入 /team play 后才能自己回答、请求或清点。",
   "team.observerPlace.command": "你正在观察：你的岗位由团队代为完成。输入 /team play 后才能自己回答、请求或清点。",

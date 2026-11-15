@@ -103,6 +103,70 @@ describe("the team tool of a live session (world bridge)", () => {
     }
   });
 
+  it("acts on the clinician's tool path: strict mode asks the learner first; a run while their answer is owed runs nothing and asks nothing; deny rules withhold it", async () => {
+    const t = await theatreSession({ settingsPatch: { approvalMode: "strict", permissions: { deny: ["team(observe)"] } } });
+    await t.session.run({ type: "clinical_action", action: { type: "start", seat: "first-assistant" } });
+    // the learner answers in the browser: here, the session's approval requests answered as they come
+    const asked: { tool: string; summary: string }[] = [];
+    t.session.subscribe((e) => {
+      if (e.msg.type !== "approval_request" || e.msg.tool !== "team") return;
+      asked.push({ tool: e.msg.tool, summary: e.msg.summary });
+      t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: asked.length === 2 ? "denied" : "approved" });
+    });
+    const server = new FakeServer();
+    const bridge = connectWorldBridge({ serverUrl: "http://fake.invalid", session: t.session as unknown as BridgeSession, fetch: server.fetch });
+    try {
+      await bridge.ready;
+      // a deny rule with a specifier withholds that action only: the tool is still offered
+      expect(server.registrations[0]!.capabilities).toContain("team");
+      // reading asks nothing
+      expect(await server.call("s0", { action: "status" })).toMatchObject({ ok: true, status: "ok" });
+      expect(asked).toEqual([]);
+      // an act: the learner is asked first (strict), then the team runs to where the stand-in waits on them
+      const run = await server.call("s1", { action: "run" });
+      expect(asked).toEqual([{ tool: "team", summary: "Team: run" }]);
+      expect(run).toMatchObject({ ok: true, status: "ok" });
+      expect(run.output).toMatch(/The surgeon waits for you — Dr Ito: “The first assistant \(you\), take the camera, please\.”/u);
+      // their answer is owed: a run asks nothing and adds no round — it says what waits
+      const round = t.session.team()!.state.round;
+      const held = await server.call("s2", { action: "run" });
+      expect(held).toMatchObject({ ok: true, status: "ok" });
+      expect(held.output).toMatch(/The surgeon waits for you — Dr Ito/u);
+      expect(asked).toHaveLength(1);
+      expect(t.session.team()!.state.round).toBe(round);
+      // the learner says no: nothing is said for them
+      const said = t.session.team()!.state.messages.length;
+      const refused = await server.call("s3", { action: "reply", kind: "readback" });
+      expect(asked).toEqual([
+        { tool: "team", summary: "Team: run" },
+        { tool: "team", summary: "Team: reply readback" },
+      ]);
+      expect(refused).toMatchObject({ ok: false, status: "denied" });
+      expect(t.session.team()!.state.messages).toHaveLength(said);
+      // a deny rule naming the action: refused before anyone is asked
+      const observe = await server.call("s4", { action: "observe" });
+      expect(observe).toMatchObject({ ok: false, status: "denied" });
+      expect(asked).toHaveLength(2);
+      expect(t.session.team()!.surgeon).toBe("learner");
+    } finally {
+      await bridge.dispose();
+      await t.session.close();
+    }
+    // a bare deny rule: never offered, refused if called
+    const denied = await theatreSession({ settingsPatch: { approvalMode: "default", permissions: { deny: ["team"] } } });
+    await denied.session.run({ type: "clinical_action", action: { type: "start", seat: "first-assistant" } });
+    const server2 = new FakeServer();
+    const bridge2 = connectWorldBridge({ serverUrl: "http://fake.invalid", session: denied.session as unknown as BridgeSession, fetch: server2.fetch });
+    try {
+      await bridge2.ready;
+      expect(server2.registrations[0]!.capabilities).not.toContain("team");
+      expect(await server2.call("d1", { action: "run" })).toMatchObject({ ok: false, status: "denied" });
+    } finally {
+      await bridge2.dispose();
+      await denied.session.close();
+    }
+  });
+
   it("is not offered by a clinical session, nor by a case without a team", async () => {
     for (const t of [await theatreSession({ clinical: true, settingsPatch: { approvalMode: "default" } }), await makeEmbodiedSession({ settingsPatch: { approvalMode: "default" } })]) {
       expect(t.session.caseDef.team === undefined || t.session.embodiment === "clinical").toBe(true);

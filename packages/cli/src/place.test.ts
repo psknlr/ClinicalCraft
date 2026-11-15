@@ -139,6 +139,47 @@ describe("a place the session refuses is printed as it words it (exit 2)", () =>
     expect(resumed.stderr).toMatch(/--seat, --lineup and --team choose a new encounter's start: a resumed encounter keeps its own\./u);
   });
 
+  it("a line-up, a team scenario or a place the case does not offer: refused naming it, with the case's places, line-ups and team scenarios — play and exec", { timeout: T }, async () => {
+    const box = sandbox();
+    const offers = [
+      "Places in the team this case offers: first-assistant, scrub-nurse; first-assistant, second-assistant, scrub-nurse (line-up three-surgeons).",
+      "Line-ups: three-surgeons (Three surgeons).",
+      "Team scenarios: scrub-break, second-away.",
+    ].join("\n");
+    for (const command of [
+      ["exec", "hello", ...THEATRE_ARGS],
+      ["play", CASE, ...THEATRE_ARGS.slice(2)],
+    ]) {
+      for (const [extra, said] of [
+        [["--lineup", "bogus"], /this case's team has no line-up "bogus"/u],
+        [["--team", "bogus"], /this case has no team scenario "bogus"/u],
+        [["--seat", "first-assistant", "--lineup", "bogus"], /this case's team has no line-up "bogus"/u],
+        [["--seat", "second-assistant"], /this case's team has no second-assistant: there is no such place/u],
+      ] as const) {
+        const r = await run([...command, "--embodied", "--ephemeral", ...extra], box);
+        expect(r.code, `${command[0]} ${extra.join(" ")}: ${r.stderr}`).toBe(2);
+        const [first, ...rest] = r.stderr.trim().split("\n");
+        expect(first).toMatch(said);
+        expect(rest.join("\n")).toBe(offers);
+      }
+    }
+    // in Chinese
+    const zh = await run(["exec", "hello", ...THEATRE_ARGS.slice(0, -2), "--lang", "zh-CN", "--embodied", "--ephemeral", "--lineup", "bogus"], box);
+    expect(zh.code).toBe(2);
+    expect(zh.stderr).toMatch(/本病例提供的团队岗位：first-assistant、scrub-nurse；first-assistant、second-assistant、scrub-nurse（团队配置 three-surgeons）。\n团队配置：three-surgeons（Three surgeons）。\n团队情境：scrub-break、second-away。/u);
+  });
+
+  it("--output-format json or stream-json: a refused start still ends with the final result — an error, the refusal in its errors", { timeout: T }, async () => {
+    const box = sandbox();
+    for (const format of ["stream-json", "json"]) {
+      const r = await run(["exec", "hello", ...THEATRE_ARGS, "--seat", "first-assistant", "--ephemeral", "--output-format", format], box);
+      expect(r.code, format).toBe(2);
+      const result = JSON.parse(r.stdout.trim().split("\n").at(-1)!) as Record<string, any>;
+      expect(result, format).toMatchObject({ type: "result", subtype: "error_during_execution", is_error: true, errors: [expect.stringMatching(/needs in-world mode/u)] });
+      expect(r.stderr, format).toMatch(/^error: Action not permitted: the first assistant's place in the team needs in-world mode/mu);
+    }
+  });
+
   it("a saved encounter in a place resumed with settings that would stop the stand-in is refused before it goes on", { timeout: T }, async () => {
     const box = sandbox();
     const first = await run(["exec", "/seat", ...THEATRE_ARGS, "--embodied", "--seat", "first-assistant", "--approval", "bypass", "--output-format", "json"], box);
@@ -341,5 +382,9 @@ describe("bench team --seat", () => {
     const surgeon = await run(["bench", "team", "--seat", "surgeon", "--out", out, "--lang", "en"], box);
     expect(surgeon.code).toBe(2);
     expect(surgeon.stderr).toMatch(/expected first-assistant \| second-assistant \| scrub-nurse/u);
+    // a line-up belongs to a run by place: alone it is a usage error, never ignored
+    const lineupAlone = await run(["bench", "team", "--lineup", "three-surgeons", "--case", CASE, "--out", out, "--lang", "en"], box);
+    expect(lineupAlone.code).toBe(2);
+    expect(lineupAlone.stderr).toMatch(/--lineup chooses the line-up of a run by place: give --seat <place> with it/u);
   });
 });

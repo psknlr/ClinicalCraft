@@ -13,6 +13,7 @@ import { canonicalLocale, type ResolvedSettings } from "../settings/schema.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { standInRefusal } from "./team/places.js";
+import { TEAM_TOOL } from "../team-tool.js";
 
 /** Valid `approval_response` decisions (ops may arrive as untyped JSON). */
 const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_for_session", "denied", "abort"]);
@@ -151,8 +152,10 @@ export class OpDispatcher {
     k.currentSubmission = id;
     try {
       await this.handle(id, op);
-      // the care team acts after each act of the learner (autonomy `auto`), in the same submission
-      if (LEARNER_OPS.has(op.type) && k.team.available() && !k.closing) await this.withTurn(id, (signal) => k.team.afterLearner(signal));
+      // the care team acts after each act of the learner (autonomy `auto`), in the same submission — but an external
+      // agent's `team` call, which paces the team itself as a `team` op does (its rounds are the call's)
+      const teamCall = op.type === "external_tool_call" && op.tool === TEAM_TOOL.name;
+      if (LEARNER_OPS.has(op.type) && !teamCall && k.team.available() && !k.closing) await this.withTurn(id, (signal) => k.team.afterLearner(signal));
       // the staff's own round follows too: traction against where bodies are, investigations, a new alarm answered
       if (LEARNER_OPS.has(op.type) && !k.closing) await this.withTurn(id, (signal) => k.staff.step(id, signal));
     } finally {

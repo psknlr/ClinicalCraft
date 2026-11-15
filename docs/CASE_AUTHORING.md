@@ -454,7 +454,8 @@ A theatre case can give its room a care team that works on its own in in-world m
   `clinicalcraft serve` is joined along its place path, served beside it. Try each place from the terminal before
   publishing: `clinicalcraft play <case> --embodied --seat first-assistant [--lineup <id>] [--team <scenario>]` — `/seat`
   shows the place and who works where, `/team run` lets the stand-in operate until it waits for you, `/team reply …`
-  answers it and `/operate …` does your place's steps (`/team observe` lets the place's own policy play it) — and
+  answers it and `/operate …` does your place's steps (`/team observe` lets the place's own policy play it; a line-up, a
+  team scenario or a place the case does not offer is refused with the places, line-ups and team scenarios it does) — and
   `clinicalcraft bench team --seat <place> [--lineup <id>] --case <case>` plays every team scenario that offers the
   place through to the operation's close (TEAM.md §7): a place the stand-in cannot see through there will not work for
   a learner either.

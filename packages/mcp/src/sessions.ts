@@ -12,7 +12,9 @@
  * settings'): an embodied session builds its own headless world.
  *
  * Calls on one session are serialised; sessions beyond `maxSessions` evict
- * the least recently used one (closed cleanly, transcript flushed).
+ * the least recently used one (closed cleanly, transcript flushed) — only once
+ * a session is listed (`admit`): one whose first action is refused (`open`,
+ * then `discard`) never closes another.
  */
 import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData, TeamAutonomy } from "@clinicalcraft/agent";
 import type { DomainEvent } from "@clinicalcraft/core";

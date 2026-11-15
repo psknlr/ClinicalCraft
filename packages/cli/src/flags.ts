@@ -101,7 +101,7 @@ export const PLACE_FLAGS: FlagSpec[] = [
     name: "team",
     type: "string",
     valueName: "<scenario>",
-    description: { en: "Team scenario for the encounter (one of the case team's `scenarios`; a facilitator's choice the team is not told)", zh: "本次接诊的团队情境（病例团队 `scenarios` 中的一个；由带教老师选择，团队并不知情）" },
+    description: { en: "Team scenario for the encounter (one of the case team's `scenarios`; a facilitator's choice the team is not told)", zh: "本次接诊的团队情境（病例团队 `scenarios` 中的一个；由导师选择，团队并不知情）" },
   },
 ];
 

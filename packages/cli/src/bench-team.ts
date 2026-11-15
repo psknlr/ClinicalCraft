@@ -9,20 +9,22 @@
  * By place (`--seat first-assistant | second-assistant | scrub-nurse`): each scenario that offers the place starts in
  * it (the start joins the team at its phase), the place is played by its own policy while the stand-in surgeon operates,
  * and the run also owes the operation brought to its close; a scenario that leaves the place without its member is
- * skipped, saying why. Writes `team-report.json` and `team-report.md`; every scenario must pass (exit 1 otherwise).
+ * skipped, saying why; `--lineup` chooses the line-up of a run by place only (alone, a usage error: it would be ignored).
+ * Writes `team-report.json` and `team-report.md`; every scenario must pass (exit 1 otherwise).
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { placeCases, runTeamBench, teamCases, teamMarkdown } from "@clinicalcraft/bench";
 import { POSITION_TITLES, t, type Place } from "@clinicalcraft/core";
-import { flagList, flagString, type ParsedArgs } from "./argv.js";
+import { flagList, flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 const TEXT = {
   en: {
     none: "No case has team scenarios (case `team.scenarios`).",
     nonePlace: "No case with team scenarios offers the {place}'s place{lineup} (a case team whose surgeon names a stand-in, with a member in that position).",
+    lineupNeedsSeat: "--lineup chooses the line-up of a run by place: give --seat <place> with it (the default run takes each case's team as it is).",
     lineup: " with the line-up {lineup}",
     place: "By place: the {place}'s, played by its own policy while the stand-in surgeon operates.",
     skipped: "– {case} · {scenario}: {reason}",
@@ -33,6 +35,7 @@ const TEXT = {
   "zh-CN": {
     none: "没有病例带团队情境（病例的 `team.scenarios`）。",
     nonePlace: "没有带团队情境的病例{lineup}提供{place}岗位（病例团队的术者需指定主刀同事，并有该岗位的成员）。",
+    lineupNeedsSeat: "--lineup 用于选择按岗位运行时的团队配置：请同时给出 --seat <岗位>（默认运行按各病例团队本身进行）。",
     lineup: "在团队配置 {lineup} 下",
     place: "按岗位：{place}岗位由其自身策略代为完成，由主刀同事主刀。",
     skipped: "– {case} · {scenario}：{reason}",
@@ -55,6 +58,8 @@ export async function benchTeam(ctx: CliContext, args: ParsedArgs): Promise<numb
   const caseIds = flagList(args, "case");
   const seat = flagString(args, "seat") as Place | undefined;
   const lineup = flagString(args, "lineup");
+  // the line-up belongs to a run by place: alone it would be ignored
+  if (lineup !== undefined && !seat) throw new UsageError(tm(L, "lineupNeedsSeat"));
   if (!teamCases(content, caseIds).length) throw new CliError(tm(L, "none"), EXIT.usage);
   const lang = L.startsWith("zh") ? "zh-CN" : "en";
   if (seat && !placeCases(content, seat, lineup, caseIds).length) throw new CliError(tm(L, "nonePlace", { place: t(POSITION_TITLES[seat], lang), lineup: lineup ? tm(L, "lineup", { lineup }) : "" }), EXIT.usage);

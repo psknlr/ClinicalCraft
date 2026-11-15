@@ -11,7 +11,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
 import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, reviewStatusLine, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, reviewStatusLine, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg, type Op } from "@clinicalcraft/agent";
 import { CaseLibrary } from "@clinicalcraft/agent/node";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
@@ -20,7 +20,7 @@ import { m } from "./i18n.js";
 import { pickCase } from "./picker.js";
 import { EventRenderer, resolvedModelLabel } from "./render.js";
 import { openSession } from "./session.js";
-import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart } from "./place.js";
+import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart, startPace, teamGoesOn } from "./place.js";
 
 type ApprovalRequest = Extract<EventMsg, { type: "approval_request" }>;
 
@@ -125,8 +125,11 @@ export class Repl {
   constructor(
     private readonly ctx: CliContext,
     private readonly session: ClinicalSession,
-    /** `opening`: the events of the start taken before the REPL subscribed (a place's start, `--seat`): shown after the banner. */
-    private readonly options: { resumed: boolean; transcripts: boolean; opening?: readonly AgentEvent[] },
+    /**
+     * `opening`: the events of the start taken before the REPL subscribed (a place's start, `--seat`): shown after the
+     * banner. `going`: the op that lets a place's team go on at its own pace once the REPL can ask its call-outs.
+     */
+    private readonly options: { resumed: boolean; transcripts: boolean; opening?: readonly AgentEvent[]; going?: Op | null },
   ) {
     this.history = new HistoryFile(ctx.env);
     this.done = new Promise<number>((resolve) => (this.finish = resolve));
@@ -175,6 +178,8 @@ export class Repl {
     this.banner();
     for (const e of this.options.opening ?? []) this.renderer.handle(e);
     this.openReadline();
+    // a place taken at the start: its team goes on now that the REPL asks its call-outs (the stand-in's first steps)
+    if (this.options.going) await this.send(this.options.going);
     // the patient's opening — not for a learner who joins the team at the table in a place (the start took it)
     if (!this.options.resumed && !this.session.state.seat) {
       await this.send({ type: "user_message", text: "", to: "patient" });
@@ -489,10 +494,12 @@ export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number
   const library = await CaseLibrary.open({ dirs: settings.contentDirs });
   if (!caseId && !resume) caseId = settings.defaultCase ?? (await pickCase(ctx, library));
   const facility = flagString(args, "facility");
-  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, library, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
+  // a place in the team: its team begins paused — it goes on once the REPL can ask the stand-in's call-out
+  const teamPace = startPace(start);
+  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, library, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}), ...(teamPace ? { teamPace } : {}) });
   ctx.locale = session.settings.locale;
   // refused (the session's words): a usage error; a resumed encounter in a place whose settings would stop the stand-in too
   const opening = await beginEncounter(session, start, resume !== undefined);
-  const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled, opening });
+  const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled, opening, going: teamGoesOn(session, start) });
   return repl.run();
 }

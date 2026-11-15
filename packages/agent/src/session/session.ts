@@ -26,7 +26,7 @@ import type { ChatMessage } from "../providers/types.js";
 import type { HookEventName, ResolvedSettings } from "../settings/schema.js";
 import { learnerVitals } from "../tools/format.js";
 import type { ToolDefinition, VitalsView } from "../tools/types.js";
-import { rt } from "./i18n.js";
+import { joinList, rt } from "./i18n.js";
 import { SessionKernel } from "./kernel.js";
 import { provenanceNow, restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
 import { standInRefusal as settingsRefusal } from "./team/places.js";
@@ -213,7 +213,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     if ((k.opts.agents ?? []).some((p) => p.name === TEAM_PROFILE.name)) k.emit("", { type: "warning", message: rt(this.locale, "team.profileReserved") });
     // a project's or user's command named like a built-in one (`/team`, `/seat`, `/operate`…): never run — said, likewise
     const reserved = (k.opts.commands ?? []).filter((c) => RESERVED_COMMAND_NAMES.has(c.name)).map((c) => `/${c.name}`);
-    if (reserved.length) k.emit("", { type: "warning", message: rt(this.locale, "cmd.projectReserved", { commands: [...new Set(reserved)].join(", ") }) });
+    if (reserved.length) k.emit("", { type: "warning", message: rt(this.locale, "cmd.projectReserved", { commands: joinList(this.locale, [...new Set(reserved)]) }) });
     const untrusted = k.opts.skillsUntrusted;
     if (untrusted && k.embodied) k.emit("", { type: "warning", message: rt(this.locale, "embodied.skillsUntrusted", { files: untrusted.files, dir: untrusted.dir }) });
     k.sessionContext.push(...hook.additionalContext);

@@ -36,7 +36,7 @@ import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext
 import { m } from "./i18n.js";
 import { EventRenderer, sanitizeTerminal } from "./render.js";
 import { openSession } from "./session.js";
-import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart } from "./place.js";
+import { beginEncounter, calloutOf, checkPlaceFlags, placeLines, placeStart, startPace, teamGoesOn } from "./place.js";
 
 /** Reason given to the agent when a headless run cannot ask the learner. */
 export const HEADLESS_DENY_REASON = "headless: approval required";
@@ -226,6 +226,41 @@ export function parseOpLine(line: string): Op {
   return value as Op;
 }
 
+/**
+ * The final `result` of a run (`--output-format json|stream-json`): what the session's record and the tracker hold now —
+ * an error when anything failed (a refused start's words among `errors`), the turn budget hit, an autopilot that left
+ * the case incomplete, else a success.
+ */
+function execResult(session: ClinicalSession, tracker: RunTracker, run: { started: number; autopilot: boolean; maxTurns: number | undefined }): ExecResult {
+  const state = session.state;
+  const prog = caseProgress(session.caseDef, state);
+  const clinicianTurns = tracker.turnsByAgent.clinician ?? 0;
+  const budget = run.maxTurns ?? DEFAULT_AUTOPILOT_TURNS;
+  const maxTurnsHit = (run.autopilot && clinicianTurns >= budget && !state.finished) || tracker.maxToolRoundsHit;
+  // An autopilot is asked to work the case: ending with objectives open (denied/blocked steps, a model that stopped) is not a success.
+  const incomplete = run.autopilot && !prog.complete && !state.finished;
+  const subtype: ResultSubtype = tracker.errors.length > 0 ? "error_during_execution" : maxTurnsHit ? "error_max_turns" : incomplete ? "error_incomplete" : "success";
+  return {
+    type: "result",
+    subtype,
+    is_error: subtype !== "success",
+    session_id: session.id,
+    case_id: session.caseDef.id,
+    result: tracker.lastMessage,
+    finished: state.finished,
+    completed: prog.complete,
+    progress: { done: prog.done, total: prog.total },
+    assessment: tracker.assessment ?? { report: coreAssess(session.caseDef, state), narrative: null, judged: [] },
+    usage: tracker.usage,
+    usage_by_agent: tracker.usageByAgent,
+    num_turns: run.autopilot ? clinicianTurns : tracker.totalTurns,
+    duration_ms: Date.now() - run.started,
+    errors: tracker.errors,
+    warnings: tracker.warnings,
+    permission_denials: tracker.denials,
+  };
+}
+
 export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const started = Date.now();
   const format = flagString(args, "output-format") ?? "text";
@@ -251,7 +286,9 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const caseId = flagString(args, "case");
   const resume = resumeRef(args);
   const facility = flagString(args, "facility");
-  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
+  // a place in the team: its team begins paused — it goes on once the call-out can be answered (below)
+  const teamPace = startPace(start);
+  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}), ...(teamPace ? { teamPace } : {}) });
 
   const tracker = new RunTracker();
   const write = (line: string) => void ctx.io.stdout.write(`${line}\n`);
@@ -264,12 +301,18 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
         })()
       : Promise.resolve();
   session.subscribe((e) => tracker.observe(e));
-  // the start the flags ask for (or, resumed in a place, the settings checked): refused, a usage error in the session's words
+  // the start the flags ask for (or, resumed in a place, the settings checked): refused, a usage error in the session's
+  // words — and, for json and stream-json, the final result the output promises (an error, the refusal in `errors`)
   let opening: readonly AgentEvent[];
   try {
     opening = await beginEncounter(session, start, resume !== undefined);
   } catch (err) {
     await pump;
+    if (format === "json" || format === "stream-json") {
+      // the session's own error is already among the run's errors; the engine's refusal (a warning) is added
+      if (!tracker.errors.length) tracker.errors.push((err as Error).message);
+      write(JSON.stringify(execResult(session, tracker, { started, autopilot, maxTurns })));
+    }
     throw err;
   }
 
@@ -302,6 +345,9 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
 
   const pending: Promise<unknown>[] = [];
   try {
+    // a place taken at this start: the team goes on at its own pace now that its call-out can be answered
+    const going = teamGoesOn(session, start);
+    if (going) pending.push(session.run(going));
     if (autopilot) {
       pending.push(session.run({ type: "autopilot", ...(prompt ? { goal: prompt } : {}), ...(maxTurns !== undefined ? { maxTurns } : {}) }));
     } else if (prompt) {
@@ -338,33 +384,9 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
     tracker.errors.push((err as Error).message);
   }
 
-  const state = session.state;
-  const prog = caseProgress(session.caseDef, state);
-  const clinicianTurns = tracker.turnsByAgent.clinician ?? 0;
+  const result = execResult(session, tracker, { started, autopilot, maxTurns });
+  const { subtype } = result;
   const budget = maxTurns ?? DEFAULT_AUTOPILOT_TURNS;
-  const maxTurnsHit = (autopilot && clinicianTurns >= budget && !state.finished) || tracker.maxToolRoundsHit;
-  // An autopilot is asked to work the case: ending with objectives open (denied/blocked steps, a model that stopped) is not a success.
-  const incomplete = autopilot && !prog.complete && !state.finished;
-  const subtype: ResultSubtype = tracker.errors.length > 0 ? "error_during_execution" : maxTurnsHit ? "error_max_turns" : incomplete ? "error_incomplete" : "success";
-  const result: ExecResult = {
-    type: "result",
-    subtype,
-    is_error: subtype !== "success",
-    session_id: session.id,
-    case_id: session.caseDef.id,
-    result: tracker.lastMessage,
-    finished: state.finished,
-    completed: prog.complete,
-    progress: { done: prog.done, total: prog.total },
-    assessment: tracker.assessment ?? { report: coreAssess(session.caseDef, state), narrative: null, judged: [] },
-    usage: tracker.usage,
-    usage_by_agent: tracker.usageByAgent,
-    num_turns: autopilot ? clinicianTurns : tracker.totalTurns,
-    duration_ms: Date.now() - started,
-    errors: tracker.errors,
-    warnings: tracker.warnings,
-    permission_denials: tracker.denials,
-  };
 
   await session.close();
   await pump;

@@ -61,7 +61,8 @@ export type TeamToolCall = { action: Exclude<TeamToolAction, "status" | "callout
 /**
  * The call a tool's arguments make (validated against `TEAM_TOOL.inputSchema`): `play` and `observe` are who plays the
  * learner's part (`surgeon learner | simulated`); a `reply` without `message` answers the line the surgeon waits on the
- * learner for, else the one line said to them that waits for an answer (`cp`: the team now).
+ * learner for, else the one line said to them that waits for an answer (`cp`: the team now) — none, or several (named),
+ * is an error in the tool's own words (its `message` argument, never the terminal's command).
  */
 export function teamToolCall(raw: unknown, cp: TeamCheckpoint | null, locale: string): TeamToolCall {
   const checked = validateArgs(TEAM_TOOL.inputSchema, raw ?? {});
@@ -184,12 +185,22 @@ export interface TeamToolHost {
  * The `team` tool as one of the clinician's tool path (docs/PROTOCOL.md §13): an external agent's call forwarded over the
  * world bridge runs like its other calls — the deny rules (`team`, or `team(<action>)`), plan mode, the approval mode
  * (strict asks the learner: "Team: reply msg-3 readback"), the call's own deadline and cancellation — and then the
- * session's own `team` op as the learner, worded by `teamToolResult`. A `run` while the learner's answer is owed shows
- * what waits (`runHeld`); `status` only reads; a call-out is the learner's to answer in the browser (`callout` refused).
- * Never a tool of the clinician's model: only the external path offers it, in an in-world session of a case with a care
- * team.
+ * session's own `team` op as the learner, worded by `teamToolResult`. What runs nothing is answered before the gate
+ * (`precheck`): `status`, a `run` while the learner's answer is owed (`runHeld`: what waits), a malformed call, and
+ * `callout` — the learner's own to answer in the browser. Never a tool of the clinician's model: only the external path
+ * offers it, in an in-world session of a case with a care team.
  */
 export function teamTool(host: TeamToolHost): ToolDefinition<Record<string, unknown>> {
+  /** The op the call runs, or what it says without running anything. */
+  const decide = (args: Record<string, unknown>, L: string): { op: TeamOp } | { said: ToolOutput } => {
+    const cp = host.checkpoint();
+    const call = teamToolCall(args, cp, L);
+    if ("error" in call) return { said: { ok: false, output: call.error, data: { error: "invalid_op" } } };
+    if (call.action === "callout") return { said: { ok: false, output: rt(L, "teamText.calloutLive"), data: { error: "callout_live" } } };
+    if (call.action !== "status" && !runHeld(call.op, cp)) return { op: call.op };
+    const out = teamToolResult(host.context(), cp, []);
+    return { said: { ok: out.ok, output: out.text, data: out.data } };
+  };
   return {
     name: TEAM_TOOL.name,
     description: TEAM_TOOL.description,
@@ -201,13 +212,14 @@ export function teamTool(host: TeamToolHost): ToolDefinition<Record<string, unkn
     risk: () => "low",
     summarize: (args, ctx) => rt(ctx.locale, "teamText.summary", { action: summaryOf(args) }),
     specifier: (args) => (typeof args.action === "string" ? args.action : ""),
+    precheck: (args, ctx) => {
+      const d = decide(args, ctx.locale);
+      return "said" in d ? d.said : null;
+    },
     run: async (args, ctx): Promise<ToolOutput> => {
-      const L = ctx.locale;
-      const cp = host.checkpoint();
-      const call = teamToolCall(args, cp, L);
-      if ("error" in call) return { ok: false, output: call.error, data: { error: "invalid_op" } };
-      if (call.action === "callout") return { ok: false, output: rt(L, "teamText.calloutLive"), data: { error: "callout_live" } };
-      const events = call.action === "status" || runHeld(call.op, cp) ? [] : await host.op(call.op, ctx.signal ?? new AbortController().signal);
+      const d = decide(args, ctx.locale);
+      if ("said" in d) return d.said;
+      const events = await host.op(d.op, ctx.signal ?? new AbortController().signal);
       const out = teamToolResult(host.context(), host.checkpoint(), events);
       return { ok: out.ok, output: out.text, data: out.data };
     },
