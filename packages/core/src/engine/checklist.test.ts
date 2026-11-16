@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 import type { ClinicalAction, SessionState } from "../schema/session.js";
 import type { ProcedureOp } from "../schema/procedure.js";
 import { assess } from "./assessment.js";
-import { evaluate } from "./conditions.js";
+import { dosesGiven, evaluate, maxDosesReached } from "./conditions.js";
 import { checkCaseIntegrity } from "./integrity.js";
 import { parseCase } from "./parse.js";
 import { createSession, reduce } from "./reducer.js";
@@ -83,6 +83,20 @@ describe("checklist steps", () => {
     expect(play(c, [op({ op: "plan-ports", plan: "three-port-left" })], valid.s).rejected).toEqual([]);
     // and a second valid one is refused by its maxDoses
     expect(play(c, [iv("time-out")], valid.s).rejected[0]?.code).toBe("max-doses");
+  });
+
+  it("dosesGiven / maxDosesReached count what the reducer counts: an invalid attempt is no dose (what front-ends show)", () => {
+    const timeOut = c.interventions.find((i) => i.id === "time-out")!;
+    const early = play(c, [THEATRE, iv("time-out")]);
+    expect(dosesGiven(early.s, "time-out")).toBe(0);
+    expect(maxDosesReached(early.s, timeOut)).toBe(false);
+    const valid = play(c, [iv("sign-in"), iv("induction"), iv("time-out")], early.s);
+    expect(early.s.interventions.length + 3).toBe(valid.s.interventions.length);
+    expect(dosesGiven(valid.s, "time-out")).toBe(1);
+    expect(maxDosesReached(valid.s, timeOut)).toBe(true);
+    expect(play(c, [iv("time-out")], valid.s).rejected[0]?.code).toBe("max-doses");
+    // no maxDoses: never reached
+    expect(maxDosesReached(valid.s, { id: "time-out" })).toBe(false);
   });
 
   it("induction before the Sign In is a real act, out of order: the order check, the gate and the verdict show it", () => {
