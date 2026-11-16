@@ -7,7 +7,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { assess, parseCase, replay, type AssessmentReport, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { assess, createSession, parseCase, replay, type AssessmentReport, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { App, Game } from "../../app/context.js";
 import type { RuntimeChoice } from "../../app/llm.js";
@@ -275,7 +275,8 @@ describe("the treatment search: words that state a dose are an order", () => {
     const iv = stroke.interventions.find((i) => i.id === "tenecteplase")!;
     const acts: ClinicalAction[] = [];
     const app = { act: (a: ClinicalAction) => (acts.push(a), null) } as unknown as App;
-    const game = { session: { store: { interventions: new Map() } }, embodied: null } as unknown as Game;
+    // a fresh encounter: nothing given (the row reads the engine's record)
+    const game = { session: { store: { interventions: new Map() }, session: { state: createSession(stroke) } }, embodied: null } as unknown as Game;
     const ordered = searchOrder(stroke, "tenecteplase 0。5 mg IV", "tenecteplase", "en")!;
     const row = treatRow(app, game, iv, new Set(iv.requires), false, ordered) as unknown as FakeElement;
     expect(row.textContent).toContain("The dose in your order is not clear (“0。5 mg”) — the nurse will ask before giving anything");
@@ -295,7 +296,8 @@ describe("the treatment search: words that state a dose are an order", () => {
     const iv = stroke.interventions.find((i) => i.id === "tenecteplase")!;
     const acts: ClinicalAction[] = [];
     const app = { act: (a: ClinicalAction) => (acts.push(a), null) } as unknown as App;
-    const game = { session: { store: { interventions: new Map() } }, embodied: null } as unknown as Game;
+    // a fresh encounter: nothing given (the row reads the engine's record)
+    const game = { session: { store: { interventions: new Map() }, session: { state: createSession(stroke) } }, embodied: null } as unknown as Game;
     const ordered = searchOrder(stroke, "tenecteplase 2 mg IV", "tenecteplase", "en")!;
     const row = treatRow(app, game, iv, new Set(iv.requires), false, ordered) as unknown as FakeElement;
     expect(row.textContent).toContain("Dose read from your order: 2 mg IV — checked against the preset dose when given");
