@@ -58,7 +58,7 @@ export class Reachability {
     cells.sort((a, b) => field[a] - field[b] || a - b);
     const sight = this.locator.sight(p);
     for (const i of cells) {
-      if (p.kind === "room" || this.locator.visibility.visibleFrom(g.level, cellPoint(g, i), sight)) return field[i] * g.cell;
+      if (p.kind === "room" || this.locator.visibility.visibleFrom(g.level, cellPoint(g, i), sight, "contact")) return field[i] * g.cell;
     }
     return Infinity;
   }

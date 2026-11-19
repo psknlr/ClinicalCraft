@@ -24,6 +24,8 @@ import type { Aabb, RampSurface } from "./contracts.js";
 export const PHYSICS = {
   speed: 3.9,
   sprint: 6.2,
+  /** Deliberate steps around a patient or equipment (m/s). */
+  carefulSpeed: 1.35,
   gravity: 18,
   jump: 6.3,
   height: 1.78,
@@ -68,6 +70,8 @@ export interface MoveInput {
   yaw: number;
   sprint: boolean;
   jump: boolean;
+  /** Fine positioning. Takes priority over sprinting. */
+  careful?: boolean;
 }
 
 export interface Bounds {
@@ -135,8 +139,8 @@ function stepTarget(p: PlayerState, next: { x: number; y: number; z: number }, c
 }
 
 /** Movement vector (dx, dz) per second for an input (V4 basis: yaw 0 looks towards −Z). */
-export function moveVector(input: Pick<MoveInput, "forward" | "side" | "yaw" | "sprint">): { dx: number; dz: number } {
-  const speed = input.sprint ? PHYSICS.sprint : PHYSICS.speed;
+export function moveVector(input: Pick<MoveInput, "forward" | "side" | "yaw" | "sprint" | "careful">): { dx: number; dz: number } {
+  const speed = input.careful ? PHYSICS.carefulSpeed : input.sprint ? PHYSICS.sprint : PHYSICS.speed;
   const cos = Math.cos(input.yaw);
   const sin = Math.sin(input.yaw);
   let f = input.forward || 0;

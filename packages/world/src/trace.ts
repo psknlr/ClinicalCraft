@@ -101,7 +101,7 @@ export class TraceRecorder implements TraceSink {
 export const NAVIGATION_OPERATIONS: readonly string[] = ["navigate", "approach", "look_at", "move_to"];
 
 /** Event types that are physical state changes (a `state_change` span). */
-const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "entity.state", "entity.moved", "item.held", "item.handoff", "door.changed", "reservation.changed", "hygiene"];
+const STATE_EVENTS: readonly WorldEvent["type"][] = ["actor.moved", "actor.turned", "entity.state", "entity.moved", "item.held", "item.handoff", "door.changed", "reservation.changed", "hygiene"];
 
 /** Timing of one action (injected clocks). */
 export interface ActionTiming {

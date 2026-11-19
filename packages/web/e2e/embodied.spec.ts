@@ -20,6 +20,30 @@ const state = (page: Page) => page.evaluate(() => (window as any).__QA__.session
 test.describe("embodied mode (en)", () => {
   test.use({ locale: "en-US" });
 
+  test("one held movement key takes the avatar back from a guided walk", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, CASE);
+    await embodiedSetup(page);
+
+    const guide = page.evaluate(() => {
+      const qa = (window as any).__QA__;
+      return qa.worldAction({ operation: "navigate", goal: { kind: "interact", id: `patient:${qa.game.slotId}` } });
+    });
+    await page.waitForFunction(() => !!(window as any).__QA__.world.debug.walk);
+    await page.keyboard.down("s");
+    try {
+      expect(await guide).toMatchObject({ status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED" });
+      const at = await page.evaluate(() => (window as any).__QA__.world.position);
+      // No second keydown: the same press must actually step backward, even on a slow renderer.
+      await page.waitForFunction(({ x, z, yaw }) => {
+        const pos = (window as any).__QA__.world.position;
+        return (pos.x - x) * Math.sin(yaw) + (pos.z - z) * Math.cos(yaw) > 0.5;
+      }, at);
+    } finally {
+      await page.keyboard.up("s");
+    }
+  });
+
   test("(a) the offline autopilot walks to the patient, works the devices at the bedside and treats", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));

@@ -16,6 +16,12 @@ describe("WorldStateStore: actors", () => {
     const me = s.actor(PRIMARY_ACTOR)!;
     expect(me).toMatchObject({ role: "clinician", controller: "agent", pose: spawnPose(f), task: null, holding: [], seen: [], handsCleanUntil: null });
     expect(s.actors().map((a) => a.id)).toEqual([PRIMARY_ACTOR, ...f.staff.map((st) => `staff:${st.id}`)].sort());
+    for (const st of f.staff) {
+      const authored = (st.rot ?? 0) * Math.PI / 180;
+      const yaw = s.actor(`staff:${st.id}`)!.pose.yaw;
+      expect(-Math.sin(yaw)).toBeCloseTo(Math.sin(authored));
+      expect(-Math.cos(yaw)).toBeCloseTo(Math.cos(authored));
+    }
     const nurse = s.actor("staff:ed-nurse")!;
     expect(nurse).toMatchObject({ role: "nurse", controller: "npc", room: "ed-station", pose: { x: 21, z: -9.4, level: "L0" } });
   });

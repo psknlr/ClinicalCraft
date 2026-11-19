@@ -6,13 +6,13 @@
  * world's words on the row; the click shows the way). Panels never decide by
  * a rule of their own.
  */
+import { PATIENT_DISTANCE } from "../../app/spatial.js";
 import type { Verdict } from "../../app/embodied-link.js";
 import type { Game } from "../../app/context.js";
 import { tr } from "../../i18n/index.js";
 import { h } from "../dom.js";
 
-/** Refusals a walk to the patient's side fixes. */
-export const PATIENT_DISTANCE: ReadonlySet<string> = new Set(["not-at-patient", "not-near-patient", "patient-not-visible"]);
+export { PATIENT_DISTANCE };
 
 /** Is this refusal only that the learner stands away from the patient? */
 export function onlyDistance(v: Verdict): boolean {

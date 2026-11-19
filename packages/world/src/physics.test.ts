@@ -26,6 +26,13 @@ describe("moveVector (V4 basis: yaw 0 looks towards −Z)", () => {
     const d = moveVector({ forward: 1, side: 1, yaw: 0, sprint: true });
     expect(Math.hypot(d.dx, d.dz)).toBeCloseTo(6.2);
   });
+  it("uses the same deliberate bedside pace on straight and diagonal approaches, including when sprint is held", () => {
+    for (const side of [0, 1]) {
+      const vector = moveVector({ forward: 1, side, yaw: 1.6, sprint: true, careful: true });
+      expect(Math.hypot(vector.dx, vector.dz)).toBeCloseTo(PHYSICS.carefulSpeed);
+    }
+    expect(PHYSICS.carefulSpeed).toBeLessThan(PHYSICS.speed / 2);
+  });
   it("yaw π/2 turns forward towards −X", () => {
     const v = moveVector({ forward: 1, side: 0, yaw: Math.PI / 2, sprint: false });
     expect(v.dx).toBeCloseTo(-3.9);

@@ -89,7 +89,7 @@ export class ElevatorRides {
         if (dest.door && !dest.door.open) world.doors.toggle(dest.door, true);
         return resolve();
       }
-      world.keys = {};
+      world.input.release();
       if (from.door?.open) world.doors.toggle(from.door, false);
       this.current = { elevator: el, from, to: dest, phase: "closing", t: 0, duration: RIDE.base + Math.abs(dest.elevation - from.elevation) * RIDE.perMetre, moved: false, resolve, reject };
     });

@@ -303,6 +303,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "setting.community": { "zh-CN": "院外场所", en: "place outside the hospital" },
   // spatial policy (reasons)
   "spatial.not-near-patient": { "zh-CN": "距{patient} {distance} 米，需在 {range} 米内且视线无遮挡。", en: "You are {distance} m from {patient}; within {range} m with a clear view is needed." },
+  "spatial.contact-blocked": { "zh-CN": "隔着玻璃可以看到「{target}」。请走到同一侧再操作。", en: 'You can see "{target}" through the glass. Move to the same side to interact.' },
   "spatial.patient-not-visible": { "zh-CN": "{patient}在 {range} 米范围内，但视线被遮挡。", en: "{patient} is within {range} m but out of sight." },
   "spatial.not-at-patient": { "zh-CN": "需要在{patient}身边（{range} 米内），当前相距 {distance} 米。", en: "You need to be at {patient}'s side (within {range} m); you are {distance} m away." },
   "spatial.no-provider-in-reach": { "zh-CN": "需要{caps}：请到「{provider}」操作（最近）。", en: 'Needs {caps}: go to "{provider}" (nearest).' },
@@ -385,6 +386,10 @@ export function travelModeName(mode: string, locale: string): string {
 
 /** One-line event summaries (WorldEventSummary). */
 export const EVENT_SUMMARIES: Record<string, Pair> = {
+  "pre.lookHeading": { "zh-CN": "请单独指定 0 至 360 度之间的朝向，正北为 0 度，顺时针增加。", en: "Give a heading alone, from 0 to 360 degrees clockwise from north." },
+  "ok.lookHeading": { "zh-CN": "当前朝向为 {heading}°（从正北顺时针）。", en: "Facing {heading}° clockwise from north." },
+  "actor.turned": { "zh-CN": "{actor}原地转身", en: "{actor} turned in place" },
+  "self.turned": { "zh-CN": "你原地转了身", en: "You turned in place" },
   "actor.moved": { "zh-CN": "{actor}移动了 {distance} 米", en: "{actor} moved {distance} m" },
   "actor.entered-room": { "zh-CN": "{actor}进入{room}", en: "{actor} entered {room}" },
   "actor.left": { "zh-CN": "{actor}离开了房间", en: "{actor} left the room" },

@@ -32,10 +32,63 @@ test.describe("walking with the patient (en)", () => {
     expect(Math.hypot(at.companion.x - at.x, at.companion.z - at.z)).toBeLessThan(2.5);
     await toPatientSide(page);
     await shot(page, "companion-at-side");
-    await say(page, "When did the wheeze start?", "companion");
+    // Aim at the parent's neck from the bedside and interact using the real crosshair and E key.
+    const parentName = await page.evaluate(() => {
+      const qa = (window as any).__QA__;
+      const world = qa.world;
+      const { x, y, z } = world.position;
+      const head = world.debug.npcs.get(`companion:${qa.game.slotId}`).rig.head;
+      const parent = head.getWorldPosition(head.position.clone());
+      const yaw = Math.atan2(x - parent.x, z - parent.z);
+      const pitch = Math.atan2(parent.y - world.debug.camera.position.y, Math.hypot(parent.x - x, parent.z - z));
+      world.debug.teleport(x, z, y, yaw, pitch);
+      return qa.game.caseDef.patient.persona.companion.name.en as string;
+    });
+    await page.keyboard.press("e");
+    const input = page.locator("#panel .chat-input");
+    await expect(input).toBeVisible();
+    expect(await input.getAttribute("placeholder")).toContain(parentName);
+    const question = "When did the wheeze start?";
+    await input.fill(question);
+    await input.press("Enter");
     await expect.poll(async () => (await drawn(page)).companion.speaking, { timeout: 30_000, intervals: [50] }).toBe(true);
     expect((await drawn(page)).speaking).toBe(false);
+    expect(await page.evaluate(text => (window as any).__QA__.store.chat.find((m: any) => m.role === "learner" && m.text === text)?.agent, question)).toBe("companion");
     expect(errors).toEqual([]);
+  });
+
+  test("the conversation shows distinct rendered portraits for the child, parent and nurse", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("clinicalcraft-v5-settings", JSON.stringify({ version: 1, ui: { quality: "low" } })));
+    await page.goto("/?qa");
+    await expect(page.locator("#enter")).toBeEnabled({ timeout: 180_000 });
+    await enterCase(page, "pediatric-asthma");
+    await toPatientSide(page);
+    const pose = () => page.evaluate(() => (window as any).__QA__.world.position);
+    const before = await pose();
+    const sources = new Set<string>();
+    for (const agent of ["patient", "companion", "nurse"]) {
+      await page.evaluate(agent => (window as any).__QA__.app.open("conversation", { agent }), agent);
+      const portrait = page.locator("#panel .character-portrait img");
+      await expect(portrait).toBeVisible();
+      const { src, pixels, size } = await portrait.evaluate(async (img: HTMLImageElement) => {
+        await img.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0);
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let pixels = 0;
+        for (let i = 3; i < data.length; i += 4) if (data[i]! > 128) pixels++;
+        return { src: img.src, pixels, size: canvas.width * canvas.height };
+      });
+      expect(pixels).toBeGreaterThan(size * 0.1);
+      expect(pixels).toBeLessThan(size * 0.95);
+      sources.add(src);
+      await shot(page, `conversation-${agent}`);
+      expect(await pose()).toEqual(before);
+    }
+    expect(sources.size).toBe(3);
   });
 
   test("(w2) 'Please follow me.' — the outpatient walks with the avatar; 'Please wait here.' — they stay", async ({ page }) => {

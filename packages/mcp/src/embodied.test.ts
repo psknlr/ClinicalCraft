@@ -116,6 +116,18 @@ describe("MCP embodied mode", () => {
     const examined = await c.call("examine", { session_id: session, finding_id: "general" });
     expect(examined.isError).toBeUndefined();
 
+    // A model can scan the bedside from a fixed spot. The structured and text observations follow its new view.
+    const before = (await c.call("get_agent_state", { session_id: session })).structuredContent!.data.actor.pose;
+    const turn = await c.call("look_at", { session_id: session, heading: 90 });
+    expect(turn.isError).toBeUndefined();
+    expect(turn.structuredContent!.data.observation.actor.pose).toEqual({ ...before, yaw: -Math.PI / 2 });
+    expect(turn.structuredContent!.data.result.navigation).toBeUndefined();
+    expect(turn.content[0]!.text).toMatch(/Facing 90° clockwise from north/);
+    expect(turn.content[0]!.text).toContain("Resuscitation Room");
+    const ambiguous = await c.call("look_at", { session_id: session, target: "patient", heading: 180 });
+    expect(ambiguous.isError).toBe(true);
+    expect((await c.call("get_agent_state", { session_id: session })).structuredContent!.data.actor.pose.yaw).toBe(-Math.PI / 2);
+
     const look = await c.call("observe_world", { session_id: session });
     expect(look.isError).toBeUndefined();
     expect(look.content[0]!.text).toMatch(/Resuscitation Room/);

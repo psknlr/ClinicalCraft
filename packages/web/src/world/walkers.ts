@@ -12,6 +12,7 @@ import type { Object3D } from "three";
 import type { BodyMove, BodyPose, RoutePoint } from "../contracts.js";
 import type { DoorRecord, NpcRecord } from "./context.js";
 import { connectorIdOf, normAngle, rigRotationOf, stepTowards, STAFF_RIDE_SECONDS, STAFF_SPEED, yawOfRig, type ConnectorKindOf } from "./embodiment.js";
+import { turnTowards } from "./steer.js";
 import type { Aabb } from "./physics.js";
 
 /** What walking needs from the world (index.ts). */
@@ -20,6 +21,7 @@ export interface WalkersHost {
   levelRoot(level: string): Object3D;
   connectorKind: ConnectorKindOf;
   doors(): readonly DoorRecord[];
+  pushing(staffId: string): boolean;
   /** Open / close a door record (animation + its leaf colliders). */
   setDoorOpen(door: DoorRecord, open: boolean): void;
   /** Is anybody but `except` (the player, another NPC) standing in the doorway? */
@@ -43,7 +45,7 @@ interface Walk {
   /** Seconds left inside an elevator car (0: walking). */
   riding: number;
   yaw: number | undefined;
-  phase: number;
+  swingArms: boolean;
   /** Doors this walk opened (closed again once passed and clear). */
   opened: Set<DoorRecord>;
   resolve(r: BodyMove): void;
@@ -92,7 +94,7 @@ export class StaffWalkers {
         n.collider = null;
       }
       const y = this.host.elevation(n.level);
-      const w: Walk = { n, route: route.map((p) => ({ ...p })), i: 0, y, from: { x: n.x, z: n.z, y }, riding: 0, yaw: opts.yaw, phase: 0, opened: new Set(), resolve, ...(opts.signal ? { signal: opts.signal } : {}) };
+      const w: Walk = { n, route: route.map((p) => ({ ...p })), i: 0, y, from: { x: n.x, z: n.z, y }, riding: 0, yaw: opts.yaw, swingArms: !this.host.pushing(n.id), opened: new Set(), resolve, ...(opts.signal ? { signal: opts.signal } : {}) };
       if (opts.signal) {
         w.onAbort = () => this.stop(n.id, false);
         opts.signal.addEventListener("abort", w.onAbort, { once: true });
@@ -151,37 +153,39 @@ export class StaffWalkers {
   private advance(w: Walk, dt: number): void {
     const { n } = w;
     const rig = n.rig;
-    if (w.riding > 0) {
-      w.riding -= dt;
-      if (w.riding > 0) return;
-      // out of the car on the destination level
+    let time = dt;
+    let distance = 0;
+    while (time > 1e-9 && w.i < w.route.length) {
       const p = w.route[w.i]!;
-      w.riding = 0;
-      this.moveLevel(n, p.level);
-      n.x = p.x;
-      n.z = p.z;
-      w.y = this.host.elevation(p.level);
-      w.from = { x: p.x, z: p.z, y: w.y };
-      w.i++;
-      rig.root.visible = true;
-      rig.root.position.set(n.x, w.y, n.z);
-    }
-    let budget = STAFF_SPEED * dt;
-    while (budget > 1e-6 && w.i < w.route.length) {
-      const p = w.route[w.i]!;
-      const kind = p.via ? this.host.connectorKind(connectorIdOf(p.via)) : null;
-      if (kind === "elevator") {
-        // into the car: hidden for the ride
-        w.riding = STAFF_RIDE_SECONDS;
-        rig.root.visible = false;
-        return;
+      if (p.via && this.host.connectorKind(connectorIdOf(p.via)) === "elevator") {
+        if (w.riding === 0) {
+          w.riding = STAFF_RIDE_SECONDS;
+          rig.gait?.rest();
+          rig.root.visible = false;
+        }
+        const inCar = Math.min(time, w.riding);
+        w.riding -= inCar;
+        time -= inCar;
+        if (w.riding > 0) return;
+        this.moveLevel(n, p.level);
+        n.x = p.x;
+        n.z = p.z;
+        w.y = this.host.elevation(p.level);
+        w.from = { x: p.x, z: p.z, y: w.y };
+        w.i++;
+        distance = 0;
+        rig.root.visible = true;
+        continue;
       }
       const seg = Math.hypot(p.x - w.from.x, p.z - w.from.z);
+      const budget = STAFF_SPEED * time;
       const s = stepTowards(n.x, n.z, p, budget);
-      if (Math.hypot(p.x - n.x, p.z - n.z) > 1e-4) rig.root.rotation.y = this.turn(rig.root.rotation.y, Math.atan2(p.x - n.x, p.z - n.z), dt);
+      const walked = budget - s.rest;
+      if (walked > 1e-6) rig.root.rotation.y = turnTowards(rig.root.rotation.y, Math.atan2(p.x - n.x, p.z - n.z), walked / STAFF_SPEED);
       n.x = s.x;
       n.z = s.z;
-      budget = s.rest;
+      distance += walked;
+      time = s.rest / STAFF_SPEED;
       if (p.via) {
         // a flight: the feet follow it from the floor of one level to the other's
         const done = seg > 1e-6 ? Math.min(1, Math.hypot(n.x - w.from.x, n.z - w.from.z) / seg) : 1;
@@ -194,19 +198,19 @@ export class StaffWalkers {
         w.i++;
       }
     }
-    // walking bob (the merged body moves as one): a step every ~0.55 m
-    w.phase += STAFF_SPEED * dt * 5.7;
-    rig.body.position.y = Math.abs(Math.sin(w.phase)) * 0.045;
-    rig.body.rotation.z = Math.sin(w.phase) * 0.035;
+    const last = w.route[w.i];
+    const remaining = !last ? 0 : w.i === w.route.length - 1 ? Math.hypot(last.x - n.x, last.z - n.z) : Infinity;
+    rig.gait?.advance(distance, dt, remaining, w.swingArms);
     rig.root.position.set(n.x, w.y, n.z);
     this.doors(w);
-    if (w.i >= w.route.length) this.finish(w, true);
-  }
-
-  /** Turn smoothly towards `target` (rig rotation). */
-  private turn(from: number, target: number, dt: number): number {
-    const d = normAngle(target - from);
-    return from + d * Math.min(1, dt * 10);
+    if (w.i < w.route.length) return;
+    // Arrive facing the equipment or patient. Only time left after walking may be spent turning here.
+    if (w.yaw !== undefined) {
+      const target = rigRotationOf(w.yaw);
+      rig.root.rotation.y = turnTowards(rig.root.rotation.y, target, time);
+      if (Math.abs(normAngle(target - rig.root.rotation.y)) > 0.015) return;
+    }
+    this.finish(w, true);
   }
 
   private moveLevel(n: NpcRecord, level: string): void {
@@ -242,8 +246,7 @@ export class StaffWalkers {
     if (w.signal && w.onAbort) w.signal.removeEventListener("abort", w.onAbort);
     // stopped inside a car: out on the level it was on
     rig.root.visible = true;
-    rig.body.position.y = 0;
-    rig.body.rotation.z = 0;
+    rig.gait?.rest();
     if (arrived && w.yaw !== undefined) rig.root.rotation.y = rigRotationOf(w.yaw);
     n.rot = rig.root.rotation.y;
     // half-way up a flight: on the floor of the level it is assigned to

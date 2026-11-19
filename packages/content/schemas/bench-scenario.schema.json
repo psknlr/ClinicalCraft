@@ -3122,6 +3122,9 @@
             },
             "sameRoom": {
               "type": "boolean"
+            },
+            "clearReach": {
+              "type": "boolean"
             }
           },
           "required": [

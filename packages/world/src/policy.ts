@@ -23,7 +23,7 @@
  * Measuring (shared with the action bus, `WorldLocator`): ranges from the
  * actor to the target's *current* footprint, same level, never below
  * `MIN_RANGE` (0.88 m); line of sight at eye height (no field of view —
- * the actor can turn). Providers: in service and not reserved by someone
+ * the actor can turn). Face-to-face and physical interactions also require a ray clear of window panes. Providers: in service and not reserved by someone
  * else (a busy device is not a provider). `at-provider`: equipment of
  * interaction kind workstation / device / monitor whose capabilities ⊇ the
  * requirement, within its reach (moved carts where they stand now; a
@@ -408,9 +408,13 @@ export class SpatialChecker {
     if (!patient) return this.noPatient();
     const needed = Math.max(range, MIN_RANGE);
     const distance = loc.distance(actor.pose, patient);
-    if (distance <= needed + 1e-6 && (!lineOfSight || loc.lineOfSight(actor.pose, patient))) return { ok: true, satisfiedBy: [patient.id] };
-    const reason = distance <= needed + 1e-6 ? "patient-not-visible" : farReason;
-    const vars = { patient: this.patientName(), range: metres(needed), distance: metres(distance) };
+    let reason = farReason;
+    if (distance <= needed + 1e-6) {
+      if (!lineOfSight || loc.contactClear(actor.pose, patient)) return { ok: true, satisfiedBy: [patient.id] };
+      reason = loc.lineOfSight(actor.pose, patient) ? "contact-blocked" : "patient-not-visible";
+    }
+    const name = this.patientName();
+    const vars = { patient: name, target: name, range: metres(needed), distance: metres(distance) };
     const key = why && reason === "not-at-patient" ? `spatial.not-at-patient.${why}` : `spatial.${reason}`;
     return { ok: false, failures: [{ reason, details: { distance: round2(distance), range: needed, ...(why ? { why } : {}) }, candidates: [{ goal: { kind: "interact", id: patient.id }, target: patient, fetch: false }], message: () => worldMessage(key, this.d.locale, vars) }] };
   }
@@ -439,7 +443,7 @@ export class SpatialChecker {
     const providers = all.filter((p) => !this.busyBy(actor, p.id));
     for (const p of providers) {
       const needed = range !== undefined ? Math.max(range, MIN_RANGE) : loc.reach(p);
-      if (loc.distance(actor.pose, p) <= needed + 1e-6 && loc.lineOfSight(actor.pose, p)) return { ok: true, satisfiedBy: [p.id] };
+      if (loc.distance(actor.pose, p) <= needed + 1e-6 && loc.contactClear(actor.pose, p)) return { ok: true, satisfiedBy: [p.id] };
     }
     if (!providers.length) {
       const holder = this.busyBy(actor, all[0]!.id)!;
@@ -564,7 +568,7 @@ export class SpatialChecker {
     const loc = this.d.locator;
     if (patient.level !== p.level) return false;
     if (areaGap(patient.area, p.area) > Math.max(loc.reach(p), MIN_RANGE) + 1e-6) return false;
-    return loc.visibility.visibleFrom(p.level, { x: patient.position.x, z: patient.position.z }, loc.sight(p));
+    return loc.contactClear({ ...patient.position, level: patient.level }, p);
   }
 
   /**

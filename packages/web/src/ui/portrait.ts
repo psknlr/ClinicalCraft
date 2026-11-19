@@ -1,7 +1,6 @@
 /**
- * V4 pixel portrait (head + shoulders), now coloured from the case
- * appearance (skin, hair, hair style, shirt/gown, stature, accessory) or a
- * staff uniform.
+ * A conversation portrait with its accessible caption. The illustrated fallback uses
+ * the authored appearance or staff uniform when no world figure is available.
  */
 import type { Appearance } from "@clinicalcraft/core";
 import { h } from "./dom.js";
@@ -28,7 +27,9 @@ export const STAFF_COLOURS: Record<string, { shirt: string; coat?: boolean }> = 
   clinician: { shirt: "#487c59", coat: true },
 };
 
-export function portrait(app: Partial<Appearance> & { coat?: boolean }, caption: string, opts: { small?: boolean } = {}): HTMLElement {
+export function portrait(app: Partial<Appearance> & { coat?: boolean }, caption: string, opts: { small?: boolean; image?: string | null } = {}): HTMLElement {
+  if (opts.image) return h("div", { class: "portrait character-portrait", role: "img", "aria-label": caption },
+    h("img", { src: opts.image, alt: "", width: 320, height: 240 }), h("small", null, caption));
   const skin = app.skin ?? "#cba88a";
   const hairStyle = app.hairStyle ?? "short";
   const hair = hairStyle === "bald" ? shade(skin, 0.92) : app.hair ?? "#3b3027";

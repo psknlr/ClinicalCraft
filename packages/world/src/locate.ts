@@ -11,7 +11,7 @@
 import { buildingLevels, defaultLevelId, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import { BedsideRule, type BedsideAnchor } from "./bedside.js";
 import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SeenPlace, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
-import { rotateXZ, rotatedFootprint } from "./geometry.js";
+import { DEG, normDeg, rotateXZ, rotatedFootprint } from "./geometry.js";
 import { roleName, worldMessage } from "./i18n.js";
 import { entityLevel } from "./levels.js";
 import { MIN_RANGE } from "./nav/backend.js";
@@ -143,7 +143,7 @@ export class WorldLocator {
     if (id === this.patientId && this.patientBody) return this.patientPlaced();
     const e = this.registry.entity(id);
     const actor = this.state.actor(id);
-    if (actor && (!e || e.kind === "staff")) return this.bodyAt(id, e, { level: actor.pose.level, x: actor.pose.x, y: actor.pose.y, z: actor.pose.z, rot: actor.pose.yaw / (Math.PI / 180) }, actor.room);
+    if (actor && (!e || e.kind === "staff")) return this.bodyAt(id, e, { level: actor.pose.level, x: actor.pose.x, y: actor.pose.y, z: actor.pose.z, rot: normDeg(actor.pose.yaw / DEG + 180) }, actor.room);
     if (!e) return null;
     const s = this.state.entity(id);
     if (s?.heldBy) {
@@ -235,8 +235,12 @@ export class WorldLocator {
   /** Line of sight at eye height from a pose to any sample of the entity (no field-of-view test). */
   lineOfSight(pose: Pick<Pose, "x" | "z" | "level">, p: Placed): boolean {
     if (pose.level !== p.level) return false;
-    if (p.heldBy) return true;
     return this.visibility.visibleFrom(pose.level, pose, this.sight(p));
+  }
+
+  /** A direct path to the target on this level, including the pane check for face-to-face and physical interactions. */
+  contactClear(pose: Pick<Pose, "x" | "z" | "level">, p: Placed): boolean {
+    return this.visibility.visibleFrom(pose.level, pose, this.sight(p), "contact");
   }
 
   /**

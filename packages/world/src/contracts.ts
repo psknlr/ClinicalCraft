@@ -633,6 +633,7 @@ export interface WorldJourney {
 
 export type WorldEvent = (
   | { id: string; type: "actor.moved"; actorId: ActorId; from: Pose; to: Pose; distance: number; travelSeconds: number }
+  | { id: string; type: "actor.turned"; actorId: ActorId; yaw: number }
   | { id: string; type: "actor.entered-room"; actorId: ActorId; room: string | null; level: string }
   | { id: string; type: "actor.discovered"; actorId: ActorId; entities: EntityId[] }
   | { id: string; type: "entity.state"; entityId: EntityId; from: string | null; to: string | null; operation: string; actorId: ActorId }
@@ -729,7 +730,7 @@ export interface ObservedEntity {
   /** A path exists for this actor (null = not computed). */
   reachable: boolean | null;
   pathDistance?: number;
-  /** Within interaction reach with line of sight right now. */
+  /** Within interaction reach with a clear path for physical contact right now. */
   inReach: boolean;
   capabilities?: string[];
   /**
@@ -831,8 +832,8 @@ export type NavGoal =
   | { kind: "interact"; id: EntityId; operation?: string }
   | { kind: "room"; id: string }
   | { kind: "follow"; id: EntityId; range?: number }
-  /** `sameRoom`: only spots in the target's own room (a screen is never read through a window, EMBODIED §6). */
-  | { kind: "look"; id: EntityId; range?: number; sameRoom?: boolean }
+  /** `sameRoom`: only spots in the target's own room (a screen is never read through a window, EMBODIED §6). `clearReach`: a physical action needs a clear path through open space. */
+  | { kind: "look"; id: EntityId; range?: number; sameRoom?: boolean; clearReach?: boolean }
   | { kind: "any"; goals: NavGoal[] };
 
 export type NavErrorCode =
@@ -995,7 +996,7 @@ export type SpatialCheck =
       code: SpatialErrorCode;
       requirement: SpatialRequirement;
       /**
-       * Which part failed: "not-near-patient", "not-at-patient", "patient-not-visible", "no-provider-in-reach",
+       * Which part failed: "not-near-patient", "not-at-patient", "patient-not-visible", "contact-blocked", "no-provider-in-reach",
        * "provider-not-at-bedside" (hint: fetch the cart and `move_to` it to the patient; null when none can be brought),
        * "provider-busy" (every provider at the bedside is reserved by someone else; hint: an alternative to fetch),
        * "no-monitor-attached", "monitor-not-in-view", "clinical-prerequisite" (no hint: `details.prerequisite` names

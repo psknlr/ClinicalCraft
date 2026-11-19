@@ -52,6 +52,11 @@ export interface FigureSpec {
 
 export interface Figure {
   body: BufferGeometry;
+  /** First vertex of each arm. Only free arms swing (scrubbed hands and a sling keep their pose). */
+  armsStart: [number, number];
+  armsFree: [boolean, boolean];
+  /** First vertex of each leg in the merged limb mesh (standing gait). */
+  legsStart: [number, number];
   chest: BufferGeometry;
   head: BufferGeometry;
   clear: BufferGeometry | null;
@@ -155,7 +160,9 @@ export function buildFigure(spec: FigureSpec): Figure {
   const sleevePaint = over ?? shirt;
   const arms = armRadii(f);
   const side = (index: 0 | 1, fn: () => void) => (index === 0 ? fn() : body.within(MIRROR, fn));
+  const armsStart: [number, number] = [0, 0];
   for (const index of [0, 1] as const) {
+    armsStart[index] = body.vertexCount;
     const armL = sk.arms[index];
     const slung = sling && index === 0;
     side(index, () => {
@@ -190,8 +197,10 @@ export function buildFigure(spec: FigureSpec): Figure {
       if (wear.wristband && index === (sling ? 1 : 0)) body.sweep(arm(1.86, 1.9, armRadii(f, 0.0022)), paint("#f4f4f0", 0.2), { seg: 10, start: "flat", end: "flat" });
     });
   }
+  const legsStart: [number, number] = [0, 0];
   const bareLegs = top === "gown" || undressed;
   for (const index of [0, 1] as const) {
+    legsStart[index] = body.vertexCount;
     const leg = sk.legs[index];
     side(index, () => {
       if (bareLegs) body.tagged("skin", () => body.sweep(limbStations(leg, 0, 2, legRadii(f), 0.075), skin, { seg: 12, start: "open", end: "open" }));
@@ -253,6 +262,9 @@ export function buildFigure(spec: FigureSpec): Figure {
   }
   return {
     body: bodyG,
+    armsStart,
+    armsFree: [!sling && pose === "relaxed", pose === "relaxed"],
+    legsStart,
     chest: chestG,
     head: headG,
     clear: clearG,

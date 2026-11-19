@@ -13,7 +13,7 @@ export interface TrailPoint {
 
 /** Spacing (m) of the points kept; the longest jump (m) between frames still walked; points kept. */
 const SPACING = 0.12;
-const JUMP = 4.5;
+export const TRAIL_JUMP = 4.5;
 const MAX_POINTS = 240;
 /** How far back (m) behind the walker a restarted trail begins. */
 const RESTART = 2.2;
@@ -33,7 +33,7 @@ export class Trail {
    */
   push(x: number, z: number, level: string, yaw = 0): void {
     const last = this.pts[this.pts.length - 1];
-    if (last && (last.level !== level || Math.hypot(x - last.x, z - last.z) > JUMP)) {
+    if (last && (last.level !== level || Math.hypot(x - last.x, z - last.z) > TRAIL_JUMP)) {
       this.pts = [
         { x: x + Math.sin(yaw) * RESTART, z: z + Math.cos(yaw) * RESTART, level },
         { x, z, level },

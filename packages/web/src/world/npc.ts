@@ -7,16 +7,18 @@
  * its jaw moves when its owner speaks, its eyes blink) — plus an unseen box that takes the aim. Distress flushes
  * the skin.
  */
+import type { FacilityDefinition } from "@clinicalcraft/core";
 import { BoxGeometry, Group, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Vector3, type BufferAttribute } from "three";
 import { HEIGHT, LATERAL, STATURE_SCALE as SCALES, type Frame, type Posture as FigurePosture, type Skeleton } from "./figure/anatomy.js";
+import { WalkingGait } from "./figure/gait.js";
 import type { SideBend } from "./figure/bend.js";
 import { trunkAt } from "./figure/body.js";
 import { buildFigure } from "./figure/figure.js";
 import { blinkRound, MOVES } from "./figure/head.js";
 import { figureMaterial } from "./figure/material.js";
-import { feminineOf, presentationOf, type Presentation } from "./figure/looks.js";
+import { feminineOf, heightOf, looksOf, presentationOf, type Presentation } from "./figure/looks.js";
 import { rgb, type Ranges } from "./figure/sculpt.js";
-import { PLAIN, type Wear } from "./figure/wear.js";
+import { PLAIN, uniformOf, type Wear } from "./figure/wear.js";
 import { hashString } from "./textures.js";
 
 export { heightOf, looksOf, presentationOf, presentationOfSex, type Presentation } from "./figure/looks.js";
@@ -64,8 +66,10 @@ export interface PersonOptions {
 
 export interface PersonRig {
   root: Group;
-  /** Everything of the figure, scaled for stature (laid down when lying; a walker bobs it). */
+  /** Everything of the figure, scaled for stature and laid down when lying. */
   body: Group;
+  /** Only upright figures step. The walk poses are prepared on the first step. */
+  gait: WalkingGait | null;
   /** The head about the top of the neck (turns and nods). */
   head: Group;
   /** The trunk: breathing changes its depth (`setBreath`). */
@@ -165,6 +169,13 @@ const AIM_MATERIAL = new MeshBasicMaterial({ visible: false });
 const CLEAR_MATERIAL = new MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.42, roughness: 0.12, depthWrite: false });
 CLEAR_MATERIAL.name = "__figure-clear";
 
+/** The same staff member, in their authored uniform, wherever their figure is drawn. */
+export function buildStaffPerson(staff: NonNullable<FacilityDefinition["staff"]>[number]): PersonRig {
+  const uniform = uniformOf(staff.role, staff.position);
+  const appearance = { ...looksOf(staff.id), shirt: uniform.shirt, pants: uniform.pants, ...(uniform.hairStyle ? { hairStyle: uniform.hairStyle } : {}), ...staff.appearance };
+  return buildPerson(appearance, { posture: "standing", wear: uniform.wear, seed: `staff:${staff.id}`, height: heightOf(staff.id) });
+}
+
 /** Build a person whose feet are at the root origin facing +Z. */
 export function buildPerson(appearance: AppearanceLike | undefined, opts: PersonOptions): PersonRig {
   const ap: Required<Omit<AppearanceLike, "presentation">> & Pick<AppearanceLike, "presentation"> = { ...DEFAULT_APPEARANCE };
@@ -253,7 +264,8 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   }
 
   const phase = (hashString(opts.seed ?? "someone") % 1000) / 1000;
-  return { root, body, head, torso, face, tagY, headBaseY: fig.pivot[1], scale, posture: opts.posture, skin, distressed: false, phase, triangles: fig.triangles, frame: fig.frame, skeleton: fig.skeleton, bend: fig.bend };
+  const gait = opts.posture === "standing" ? new WalkingGait(limbs, torso, body, fig, scale) : null;
+  return { root, body, gait, head, torso, face, tagY, headBaseY: fig.pivot[1], scale, posture: opts.posture, skin, distressed: false, phase, triangles: fig.triangles, frame: fig.frame, skeleton: fig.skeleton, bend: fig.bend };
 }
 
 /** Disposes what a rig owns: its geometries (the materials are shared by every figure). */

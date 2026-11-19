@@ -9,8 +9,8 @@
 import type { RoutePoint } from "../contracts.js";
 import type { Leg } from "./route.js";
 
-/** Arrival radius (m) of the last point of a route: the planner's interaction point is a free cell centre, so the walker then settles on it exactly. */
-export const ROUTE_ARRIVE = 0.4;
+/** Arrival radius (m) of the last point of a route: within a careful half-step, the walker settles on the planner's point if it is still free. */
+export const ROUTE_ARRIVE = 0.045;
 /** Staff walking speed (m/s): a brisk hospital walk, a little slower than the avatar's 3.9 m/s. */
 export const STAFF_SPEED = 3.2;
 /** Seconds an NPC spends "in" an elevator car (doors, ride) before it appears on the other level. */

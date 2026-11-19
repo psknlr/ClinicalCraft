@@ -208,6 +208,7 @@ export class VoxelWorld {
       elevation: (lv) => levels.elevation(lv),
       levelRoot: (lv) => levelRoots.get(lv) ?? stage.root,
       connectorKind: this.walk.connectorKind,
+      pushing: (id) => [...ctx.portables.values()].some((p) => p.pushedBy === id),
       doors: () => ctx.doors,
       // a door far from the player opens without a sound
       setDoorOpen: (d, open) => this.doors.toggle(d, open, Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 8),

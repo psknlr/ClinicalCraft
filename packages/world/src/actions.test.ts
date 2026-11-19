@@ -29,6 +29,26 @@ function holdingGate(w: TestWorld) {
 describe("validation and resolution", () => {
   const w = makeWorld("stemi-inferior-rv");
 
+  it("a compass look changes only facing, is repeatable, and does not charge travel or move the patient", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    const before = { ...w.runtime.actor(A)!.pose, pitch: -0.35, yaw: 0 };
+    w.runtime.updatePose(A, before);
+    const patient = w.runtime.patientPlace();
+    const turn = (heading: unknown) => w.act({ actorId: A, operation: "look_at", parameters: { heading } });
+    const east = await turn(90);
+    expect(east.status).toBe("completed");
+    expect(east.events).toContainEqual(expect.objectContaining({ type: "actor.turned", actorId: A, yaw: -Math.PI / 2 }));
+    expect(w.runtime.actor(A)!.pose).toEqual({ ...before, yaw: -Math.PI / 2 });
+    expect(w.runtime.patientPlace()).toEqual(patient);
+    const revision = w.runtime.version;
+    expect((await turn(90)).events.some((e) => e.type === "actor.turned")).toBe(false);
+    for (const bad of [-1, 361, NaN, "east", null]) expect(await turn(bad)).toMatchObject({ status: "failed", errorCode: "INVALID_REQUEST" });
+    expect(w.runtime.version).toBe(revision);
+    expect((await turn(360)).status).toBe("completed");
+    expect(w.runtime.actor(A)!.pose.yaw).toBeCloseTo(0);
+    expect(w.harness.elapsed).toEqual([]);
+  });
+
   it("malformed requests → INVALID_REQUEST (recorded only under a usable action id)", async () => {
     const noId = await w.runtime.execute({ actorId: A, operation: "navigate" } as never);
     expect(noId).toMatchObject({ status: "failed", errorCode: "INVALID_REQUEST", actionId: "" });

@@ -103,6 +103,8 @@ export function entitiesText(list: readonly ObservedEntity[], locale: string, ac
 /** The text of an inspection (`inspect_object`). */
 export function inspectionText(i: NonNullable<ReturnType<WorldRuntime["inspect"]>>, locale: string, actorLevel: string): string {
   const lines = [rt(locale, "world.inspect", { name: i.name, id: i.id, description: i.description || "—" }), entityLine(i, locale, actorLevel)];
+  // Text-only models do not receive the structured inspection. Expose a version only for a current observation.
+  if (i.awareness === "visible" || i.awareness === "nearby") lines.push(rt(locale, "world.inspect.version", { version: i.stateVersion }));
   if (i.usage) lines.push(rt(locale, "world.inspect.usage", { usage: i.usage }));
   for (const op of i.operations) {
     lines.push(rt(locale, "world.inspect.op", { name: op.name, op: op.op, status: op.available ? rt(locale, "world.inspect.available") : rt(locale, "world.inspect.unavailable", { reason: op.reason ?? "—" }) }));
@@ -140,5 +142,6 @@ export function hintLines(hint: ActionHint, locale: string): string[] {
 export function actionResultText(result: WorldActionResult, locale: string): string {
   const lines = [result.errorCode ? `${result.message} [${result.errorCode}]` : result.message];
   if (result.status !== "completed" && result.hint) lines.push(...hintLines(result.hint, locale));
+  if (result.actionId) lines.push(rt(locale, "world.feedback.id", { id: result.actionId }));
   return lines.join("\n");
 }

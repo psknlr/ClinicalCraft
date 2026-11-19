@@ -35,7 +35,7 @@ import { MIN_RANGE } from "./nav/backend.js";
 import { cellPoint, distanceToArea } from "./raster.js";
 
 /** Policy reasons a walk can fix (everything else is left to the operation's normal path). */
-const POSITIONAL: ReadonlySet<string> = new Set(["not-near-patient", "not-at-patient", "patient-not-visible", "no-provider-in-reach", "monitor-not-in-view"]);
+const POSITIONAL: ReadonlySet<string> = new Set(["not-near-patient", "not-at-patient", "patient-not-visible", "contact-blocked", "no-provider-in-reach", "monitor-not-in-view"]);
 
 /** Candidate spots tried by planning before giving up on a hint. */
 const PLAN_TRIES = 4;

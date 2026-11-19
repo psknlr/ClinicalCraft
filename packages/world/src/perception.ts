@@ -389,7 +389,7 @@ export class Perception {
     const e = p.entity;
     const distance = this.distanceTo(actor, p);
     // a believed place (lastKnown) is never within reach: the thing may not be there
-    const inReach = p.kind === "room" ? awareness === "visible" : p.heldBy === actor.id || (!lastKnown && p.level === actor.pose.level && distance <= loc.reach(p) + 1e-6 && loc.lineOfSight(actor.pose, p));
+    const inReach = p.kind === "room" ? awareness === "visible" : p.heldBy === actor.id || (!lastKnown && p.level === actor.pose.level && distance <= loc.reach(p) + 1e-6 && loc.contactClear(actor.pose, p));
     const actorState = this.d.store.actor(p.id);
     const out: ObservedEntity = {
       id: p.id,
@@ -549,6 +549,7 @@ export class Perception {
       case "actor.discovered":
         return e.actorId === actor.id; // what another actor noticed is in its head
       case "actor.moved":
+      case "actor.turned":
       case "actor.entered-room":
       case "hygiene":
       case "action.completed":
@@ -759,6 +760,9 @@ export class Perception {
     switch (e.type) {
       case "actor.moved":
         summary = worldMessage(key(e.actorId, "actor.moved", "self.moved"), L, { actor: n(e.actorId), distance: metres(e.distance) });
+        break;
+      case "actor.turned":
+        summary = worldMessage(key(e.actorId, "actor.turned", "self.turned"), L, { actor: n(e.actorId) });
         break;
       case "actor.entered-room": {
         const room = e.room ? this.d.locator.registry.entity(`room:${e.room}`) : null;

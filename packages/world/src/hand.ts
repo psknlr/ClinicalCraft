@@ -29,10 +29,13 @@ export function handOver(host: EffectsHost, request: WorldActionRequest, actor: 
   const who = locator.name(recipient.id);
   const place = locator.place(recipient.id);
   const distance = place ? locator.distance(actor.pose, place) : Infinity;
-  if (!place || distance > RANGES.contact + 1e-6 || !locator.lineOfSight(actor.pose, place)) {
-    const goal: NavGoal = { kind: "entity", id: recipient.id, range: 1 };
+  if (!place || distance > RANGES.contact + 1e-6 || !locator.contactClear(actor.pose, place)) {
+    const goal: NavGoal = { kind: "look", id: recipient.id, range: RANGES.contact, clearReach: true };
     const hint = host.verifyHint(actor, goal, worldMessage("hint.approach", L, { target: who }));
-    return failed("NOT_IN_RANGE", worldMessage("NOT_IN_RANGE", L, { target: who, distance: Number.isFinite(distance) ? metres(distance) : "—", range: metres(RANGES.contact) }), { hint: hint ?? null });
+    const message = place && distance <= RANGES.contact && locator.lineOfSight(actor.pose, place)
+      ? worldMessage("spatial.contact-blocked", L, { target: who })
+      : worldMessage("NOT_IN_RANGE", L, { target: who, distance: Number.isFinite(distance) ? metres(distance) : "—", range: metres(RANGES.contact) });
+    return failed("NOT_IN_RANGE", message, { hint: hint ?? null });
   }
   if (itemsInHand(recipient, store).length >= MAX_HELD) return failed("HANDS_FULL", worldMessage("pre.recipientHandsFull", L, { holder: who, max: MAX_HELD }));
   // what the item is as it changes hands (its own lifecycle state: a specimen tube "collected"), read before it moves

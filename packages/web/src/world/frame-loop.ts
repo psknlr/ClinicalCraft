@@ -10,6 +10,7 @@ import { MathUtils, Vector3 } from "three";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { clampPitch, PHYSICS, stepPlayer, targetFov, type Aabb } from "./physics.js";
 import { placeAt } from "./region.js";
+import { WalkingGait } from "./gait.js";
 import { animateDoors } from "./structures.js";
 import { normAngle, rigRotationOf, yawTowards } from "./embodiment.js";
 import type { NpcRecord } from "./context.js";
@@ -49,8 +50,7 @@ export class FrameLoop {
   private raf = 0;
   private lastFrame = performance.now();
   private aimTimer = 0;
-  private walkPhase = 0;
-  private lastStep = 0;
+  private readonly gait = new WalkingGait();
   private qualityCheck = 0;
   private readonly tmpV = new Vector3();
   private readonly tmpCam = new Vector3();
@@ -161,16 +161,18 @@ export class FrameLoop {
     if (world.playing() || walking) {
       const keys = world.keys;
       const px = player.x, pz = player.z;
-      const sprint = walking ? walking.sprint : !!keys.ShiftLeft || !!keys.ShiftRight;
+      const careful = walking ? walking.careful : !!keys.KeyC;
+      const sprint = !careful && (walking ? walking.sprint : !!keys.ShiftLeft || !!keys.ShiftRight);
+      const jump = world.input.takeJump();
       const input = walking
-        ? { forward: walking.forward, side: 0, yaw: world.yaw, sprint, jump: false }
-        : { forward: (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0), side: (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0), yaw: world.yaw, sprint, jump: !!keys.Space };
+        ? { forward: walking.forward, side: 0, yaw: world.yaw, sprint, careful, jump: false }
+        : { forward: (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0), side: (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0), yaw: world.yaw, sprint, careful, jump };
       if (!world.frozen && !world.rides.current) {
         stepPlayer(player, input, walking ? stepDt : dt, this.nearbyColliders(), walkBounds);
         for (let i = 1; i < subSteps && walking && world.walk.current && !world.rides.current; i++) {
           const more = world.walk.input(stepDt);
           if (!more) break;
-          stepPlayer(player, { forward: more.forward, side: 0, yaw: world.yaw, sprint: more.sprint, jump: false }, stepDt, this.nearbyColliders(), walkBounds);
+          stepPlayer(player, { forward: more.forward, side: 0, yaw: world.yaw, sprint: more.sprint, careful: more.careful, jump: false }, stepDt, this.nearbyColliders(), walkBounds);
         }
       }
       if (!walking) {
@@ -180,19 +182,18 @@ export class FrameLoop {
         if (world.keys.ArrowDown) world.pitch = clampPitch(world.pitch - dt);
       }
       const moved = Math.hypot(player.x - px, player.z - pz);
-      this.walkPhase += moved * 2.7;
-      if (moved > 0.001 && player.grounded && now - this.lastStep > (sprint ? PHYSICS.stepMsSprint : PHYSICS.stepMs)) {
-        this.lastStep = now;
-        callbacks.onSound("step");
-      }
+      if (this.gait.update(moved, walking ? walkTime : dt, player.grounded, sprint, careful)) callbacks.onSound("step");
       const bob = s.bob !== false;
-      camera.position.set(player.x, player.y + PHYSICS.eye + (bob ? Math.sin(this.walkPhase * 2) * 0.026 : 0), player.z);
+      camera.position.set(player.x, player.y + PHYSICS.eye + (bob ? this.gait.headOffset : 0), player.z);
       camera.rotation.set(world.pitch, world.yaw, 0);
-      camera.fov = MathUtils.lerp(camera.fov, targetFov(sprint, moved > 0.001), dt * 5);
-      camera.updateProjectionMatrix();
+      const fov = targetFov(sprint, moved > 0.001);
+      if (camera.fov !== fov) {
+        camera.fov = Math.abs(camera.fov - fov) < 0.005 ? fov : MathUtils.damp(camera.fov, fov, 5, dt);
+        camera.updateProjectionMatrix();
+      }
       world.swing = Math.max(0, world.swing - dt * 4);
       overlay.hand.rotation.x = -0.12 - world.swing * 0.7;
-      overlay.hand.position.y = -0.39 + (bob ? Math.sin(this.walkPhase) * 0.013 : 0);
+      overlay.hand.position.y = -0.39 + (bob ? this.gait.handOffset : 0);
       this.aimTimer += dt;
       if (this.aimTimer > 0.09) {
         this.aimTimer = 0;
@@ -209,7 +210,7 @@ export class FrameLoop {
     // staff walking world-model routes (delegated tasks): an animation, real time
     if (walkers.update(Math.min(realDt, 0.25))) world.culling.cullWalkers();
     world.carts.drag();
-    people.drag();
+    people.drag(Math.min(realDt, 0.5));
     if (animateDoors(ctx.doors, Math.max(dt, walkTime))) stage.markShadows();
     stage.followSun(player.x, player.z);
     world.lights.assign(player.x, player.z, false, player.y);
@@ -247,7 +248,8 @@ export class FrameLoop {
         rig.head.rotation.x *= 0.9;
       }
       rig.head.position.y = hy;
-      setBreath(rig, n.distressed ? 0.035 * Math.sin(now * 0.016) : 0.014 * Math.sin(now * 0.0022 + rig.phase * 6));
+      const measuredBreath = n.kind === "patient" ? people.breathing.get(n.id)?.step(realDt) : null;
+      setBreath(rig, measuredBreath ?? 0.014 * Math.sin(now * 0.0022 + rig.phase * 6));
       // a blink every few seconds, each person in their own time
       const since = (now * 0.001 + rig.phase * 7) % (3.1 + rig.phase * 2.6);
       setBlink(rig, since < BLINK ? Math.sin((since / BLINK) * Math.PI) : 0);

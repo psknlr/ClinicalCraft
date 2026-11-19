@@ -159,12 +159,11 @@ export class EmbodiedLink {
     for (const a of snap.actors) {
       const sid = staffIdOf(a.id);
       if (!sid || this.o.mover.isMoving(a.id)) continue;
-      const post = world.entity(a.id);
-      const atPost = !!post && post.level === a.pose.level && Math.hypot(a.pose.x - post.position.x, a.pose.z - post.position.z) < 0.05;
       const drawn = api.staffPose(sid);
-      const want = atPost && post ? { x: post.position.x, z: post.position.z, level: post.level } : { x: a.pose.x, z: a.pose.z, level: a.pose.level };
-      if (drawn && drawn.level === want.level && Math.hypot(drawn.x - want.x, drawn.z - want.z) < 0.05) continue;
-      api.placeStaff(sid, atPost ? null : a.pose);
+      const pose = a.pose;
+      // A colleague can still be at their post after turning. Restore their saved facing as well as their spot.
+      if (drawn && drawn.level === pose.level && Math.hypot(drawn.x - pose.x, drawn.z - pose.z) < 0.05 && Math.cos(drawn.yaw - pose.yaw) > 0.999999) continue;
+      api.placeStaff(sid, pose);
     }
     for (const e of world.entities()) {
       const st = snap.entities[e.id];
@@ -218,6 +217,17 @@ export class EmbodiedLink {
   private onWorldEvent(ev: WorldEvent): void {
     if (this.disposed) return;
     switch (ev.type) {
+      case "actor.turned": {
+        const api = this.o.renderer();
+        if (!api) return;
+        if (ev.actorId === PRIMARY_ACTOR) api.faceHeading(ev.yaw);
+        else {
+          const staff = staffIdOf(ev.actorId);
+          const pose = staff ? api.staffPose(staff) : null;
+          if (staff && pose) api.placeStaff(staff, { ...pose, yaw: ev.yaw });
+        }
+        return;
+      }
       case "door.changed":
         this.o.renderer()?.setDoorLocked(ev.entityId, ev.locked);
         return;

@@ -97,8 +97,9 @@ describe("staff and the in-world demonstration go by the same rule (audit P1-8)"
   it("a delegated ECG: the cart moved out of the nurse's sight — she asks around, fetches it from the cubicle and records it", async () => {
     const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { approvalMode: "bypass" } });
     const w = t.session.world()!;
-    // the clinician wheels the bay's cart out to cubicle 1 (the nurse at her station does not see it); the other
-    // carts nearby are out of service
+    // Face the nurse away from the cubicle before the clinician wheels the cart there.
+    w.updatePose(NURSE, { ...w.actor(NURSE)!.pose, yaw: 0 });
+    // The other carts nearby are out of service.
     expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "approach", targetId: ECG })).status).toBe("completed");
     expect((await act(t, { actorId: PRIMARY_ACTOR, operation: "move_to", targetId: ECG, goal: { kind: "room", id: "ed-cubicle-1" } })).status).toBe("completed");
     w.setAvailability("eq:resus2-ecg", false);
