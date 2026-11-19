@@ -31,7 +31,7 @@ const STEP_BEHIND = 1.05;
 const COMPANION_BEHIND = 1.95;
 
 /** Width (m) of the name tag over someone's head: wide enough to read across a room, not wider than the person is tall. */
-const TAG_WIDTH = 1.5;
+export const TAG_WIDTH = 1.5;
 
 /** Name tags / labels never take the aim ray. */
 function noRaycast(o: Object3D): void {

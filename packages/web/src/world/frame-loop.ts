@@ -6,7 +6,7 @@
  * tracking, speech and breathing, the manikins' breathing, name tags, particles, clouds, the beacon, animated
  * parts and live monitor screens. While paused the scene is redrawn at a low rate; the auto-walk runs even while paused.
  */
-import { MathUtils, Vector3 } from "three";
+import { MathUtils, Vector2, Vector3 } from "three";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { clampPitch, PHYSICS, stepPlayer, targetFov, type Aabb } from "./physics.js";
 import { placeAt } from "./region.js";
@@ -16,6 +16,7 @@ import { normAngle, rigRotationOf, yawTowards } from "./embodiment.js";
 import type { NpcRecord } from "./context.js";
 import { animateLive } from "./live.js";
 import { setBlink, setBreath, setMouth } from "./npc.js";
+import { TAG_WIDTH } from "./people.js";
 import { screenSource } from "./screen-source.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
@@ -54,6 +55,7 @@ export class FrameLoop {
   private qualityCheck = 0;
   private readonly tmpV = new Vector3();
   private readonly tmpCam = new Vector3();
+  private readonly viewSize = new Vector2();
   private lastMove = 0;
   /** Where the player was when last reported (`reportMove`); null: not yet. */
   private reported: { x: number; z: number; y: number } | null = null;
@@ -256,10 +258,17 @@ export class FrameLoop {
     }
     // the manikins that breathe (a ventilator's rhythm; one lung down: all but still on the side that is up)
     animateLive(ctx.live.values(), now);
+    // A nearby patient's name can otherwise cover the face of the person standing beside them.
+    // Use CSS pixels and camera depth so the cap survives zoom, display density and quality changes.
+    renderer.getSize(this.viewSize);
+    const maxTagWidth = Math.min(204, this.viewSize.x * 0.42);
+    const focalPixels = this.viewSize.y * camera.projectionMatrix.elements[5] * 0.5;
     for (const tag of people.tagSigns) {
       tag.getWorldPosition(tmpV);
       const parentYaw = tag.parent ? tag.parent.rotation.y : 0;
       tag.rotation.y = Math.atan2(tmpCam.x - tmpV.x, tmpCam.z - tmpV.z) - parentYaw;
+      const depth = Math.max(camera.near, -tmpV.applyMatrix4(camera.matrixWorldInverse).z);
+      tag.scale.setScalar(Math.min(1, (maxTagWidth * depth) / (TAG_WIDTH * focalPixels)));
     }
     // particles
     world.blocks.updateParticles(dt);
