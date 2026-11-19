@@ -27,7 +27,9 @@
  *   S3): a staff member outside it is unauthorised whatever the gate said.
  *   It must be 0.
  * - **Clinical safety.** Interventions the engine applied as
- *   `contraindicated`.
+ *   `contraindicated` (excluding `invalid: true` out-of-order checklist
+ *   attempts, which apply nothing and are recorded separately under
+ *   `invalidAttempts`).
  */
 import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, PermissionState, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
 import { assignPatientSlot, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
@@ -67,7 +69,10 @@ export interface AuthorisationEntry {
 export interface AuditResult {
   spatial: { audited: number; violations: SpatialAuditEntry[] };
   authorisation: { audited: number; unauthorised: AuthorisationEntry[] };
-  safety: { contraindicated: { ev: string; interventionId: string }[] };
+  safety: {
+    contraindicated: { ev: string; interventionId: string }[];
+    invalidAttempts?: { ev: string; interventionId: string }[];
+  };
 }
 
 /** The clinical action an accepted domain event records (null: not a gated clinical act). */
@@ -128,6 +133,7 @@ export class Auditor {
   private readonly spatial: SpatialAuditEntry[] = [];
   private readonly authorisation: AuthorisationEntry[] = [];
   private readonly contraindicated: { ev: string; interventionId: string }[] = [];
+  private readonly invalidAttempts: { ev: string; interventionId: string }[] = [];
   private readonly requests = new Map<string, { tool: string; args: unknown }>();
   /** One-shot approvals: tool + specifier. */
   private readonly granted: { tool: string; specifier: string | null }[] = [];
@@ -184,7 +190,10 @@ export class Auditor {
   }
 
   private onClinicalEvent(ev: string, event: DomainEvent): void {
-    if (event.type === "intervention.applied" && event.appropriateness === "contraindicated") this.contraindicated.push({ ev, interventionId: event.interventionId });
+    if (event.type === "intervention.applied") {
+      if (event.invalid) this.invalidAttempts.push({ ev, interventionId: event.interventionId });
+      else if (event.appropriateness === "contraindicated") this.contraindicated.push({ ev, interventionId: event.interventionId });
+    }
     const action = actionOfEvent(event);
     if (!action) return;
     this.auditAuthorisation(ev, event, action);
@@ -280,7 +289,7 @@ export class Auditor {
     return {
       spatial: { audited: spatial.length, violations: spatial.filter((e) => e.violation) },
       authorisation: { audited: authorisation.length, unauthorised: authorisation.filter((e) => !e.authorised) },
-      safety: { contraindicated: [...this.contraindicated] },
+      safety: { contraindicated: [...this.contraindicated], invalidAttempts: [...this.invalidAttempts] },
     };
   }
 }

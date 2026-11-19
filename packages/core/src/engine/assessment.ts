@@ -228,6 +228,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const score = gates?.cap != null && raw.percent > gates.cap ? { ...raw, percent: gates.cap, uncapped: raw.percent } : raw;
   const procedure = procedureSummary(c, s);
   const count = countSummary(s);
+  const invalidAttempts = s.interventions.filter((r) => r.invalid === true).map((r) => ({ interventionId: r.interventionId, at: r.at }));
   return {
     caseId: c.id,
     caseVersion: c.version,
@@ -243,7 +244,8 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
     investigations: investigationSummary(c, s),
     decisions: decisionSummary(c, s),
     safety: {
-      contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated").map((r) => ({ interventionId: r.interventionId, at: r.at })),
+      contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated" && !r.invalid).map((r) => ({ interventionId: r.interventionId, at: r.at })),
+      ...(invalidAttempts.length ? { invalidAttempts } : {}),
       criticalAlarms: countCriticalAlarms(c, s),
       ...(gates ? { gates: gates.gates, verdict: gates.verdict } : {}),
       ...safetyOutcome(c, s, gates?.verdict),

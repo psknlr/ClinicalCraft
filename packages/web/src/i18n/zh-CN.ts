@@ -578,6 +578,7 @@ const zh = {
   "debrief.undecided": "未作答",
   "debrief.safety": "安全事件",
   "debrief.contra": "禁忌处置：{name}（第 {min} 分钟）",
+  "debrief.invalidAttempt": "顺序不符（未执行）：{name}（第 {min} 分钟）",
   "debrief.criticalAlarms": "生命体征危急 {n} 次",
   "debrief.noSafety": "未记录安全事件。",
   "debrief.rubric": "评分细则",
