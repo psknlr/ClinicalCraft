@@ -64,6 +64,7 @@ export interface BenchRun {
     spatial: { audited: number; violations: AuditResult["spatial"]["violations"] };
     authorisation: { audited: number; unauthorised: AuditResult["authorisation"]["unauthorised"] };
     contraindicated: AuditResult["safety"]["contraindicated"];
+    invalidAttempts?: NonNullable<AuditResult["safety"]["invalidAttempts"]>;
   };
   /**
    * The safety outcome of the final state (core `assess`, docs/PROTOCOL.md §3.2), reported beside the predicates:
@@ -273,7 +274,12 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
       trace: { spans: trace.spans.length, setupSpans, digest: sha256(jsonl) },
       stateDigest,
       evidence: (s.state.studies?.orders.length ?? 0) > 0 ? "expanded" : "source-only",
-      audit: { spatial: audit.spatial, authorisation: audit.authorisation, contraindicated: audit.safety.contraindicated },
+      audit: {
+        spatial: audit.spatial,
+        authorisation: audit.authorisation,
+        contraindicated: audit.safety.contraindicated,
+        ...(audit.safety.invalidAttempts?.length ? { invalidAttempts: audit.safety.invalidAttempts } : {}),
+      },
       safety,
     };
     o.onTrace?.(run, jsonl);

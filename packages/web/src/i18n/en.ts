@@ -575,6 +575,7 @@ const en: Messages = {
   "debrief.undecided": "Not answered",
   "debrief.safety": "Safety events",
   "debrief.contra": "Contraindicated: {name} (minute {min})",
+  "debrief.invalidAttempt": "Out-of-order attempt (not applied): {name} (minute {min})",
   "debrief.criticalAlarms": "{n} critical vital-sign episode(s)",
   "debrief.noSafety": "No safety events recorded.",
   "debrief.rubric": "Rubric",

@@ -131,11 +131,14 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
           hiddenDecisions > 0 ? h("li", { class: "no" }, h("span", { class: "mark" }, "·"), tr("debrief.decisionsLocked", { n: hiddenDecisions })) : null,
         ),
         h("h4", { style: "margin-top:14px" }, tr("debrief.safety")),
-        r.safety.contraindicated.length || r.safety.criticalAlarms || r.safety.doseErrors?.length
+        r.safety.contraindicated.length || r.safety.invalidAttempts?.length || r.safety.criticalAlarms || r.safety.doseErrors?.length
           ? h(
               "ul",
               { class: "check-list" },
               r.safety.contraindicated.map((s) => h("li", { class: "no" }, h("span", { class: "mark" }, "⚠"), tr("debrief.contra", { name: ct(c.interventions.find((x) => x.id === s.interventionId)?.name) || s.interventionId, min: Math.round(s.at) }))),
+              (r.safety.invalidAttempts ?? []).map((s) =>
+                h("li", { class: "partial", dataset: { invalidAttempt: s.interventionId } }, h("span", { class: "mark" }, "!"), tr("debrief.invalidAttempt", { name: ct(c.interventions.find((x) => x.id === s.interventionId)?.name) || s.interventionId, min: Math.round(s.at) })),
+              ),
               // orders not given: what was written, what was read from it, the preset
               safetySummary(c, r, getLocale()).doseErrors.map((e) => h("li", { class: e.severity === "critical" ? "no" : "partial", dataset: { doseError: e.interventionId } }, h("span", { class: "mark" }, "⚠"), e.text.replace(/^⚠\s*/u, ""))),
               r.safety.criticalAlarms ? h("li", { class: "partial" }, h("span", { class: "mark" }, "!"), tr("debrief.criticalAlarms", { n: r.safety.criticalAlarms })) : null,

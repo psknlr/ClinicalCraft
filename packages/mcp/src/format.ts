@@ -166,6 +166,7 @@ export function assessmentText(
   if (inv.harmful.length) lines.push(mm(L, "debrief.harmful", { list: joinList(L, inv.harmful.map(name)) }));
   if (inv.unread.length) lines.push(mm(L, "debrief.unread", { list: joinList(L, inv.unread) }));
   if (report.safety.contraindicated.length) lines.push(mm(L, "debrief.unsafe", { count: report.safety.contraindicated.length }));
+  if (report.safety.invalidAttempts?.length) lines.push(mm(L, "debrief.invalidAttempts", { count: report.safety.invalidAttempts.length }));
   if (judged.length) {
     lines.push(mm(L, "debrief.judged"));
     for (const j of judged) lines.push(`  ${j.met ? "✓" : "·"} ${j.id}${j.evidence ? ` — ${j.evidence}` : ""}`);

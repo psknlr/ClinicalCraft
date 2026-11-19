@@ -629,7 +629,7 @@ export class EmbodiedSession {
    */
   private followClinicalEvent(event: DomainEvent): void {
     const c = this.host.caseDef;
-    if (event.type === "intervention.applied") {
+    if (event.type === "intervention.applied" && !event.invalid) {
       const destination = c.interventions.find((i) => i.id === event.interventionId)?.destination;
       if (destination) this.relocate(destination, { intervention: event.interventionId });
       if (this.inner.refreshPatient()) this.record();

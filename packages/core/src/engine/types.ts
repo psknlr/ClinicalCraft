@@ -196,7 +196,10 @@ export interface AssessmentReport {
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[]; notAcquired?: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
   safety: {
+    /** Contraindicated interventions actually applied (excludes out-of-order `invalid` checklist attempts, which apply nothing). */
     contraindicated: { interventionId: string; at: number }[];
+    /** Checklist steps attempted out of order (`invalid: true`, nothing applied), in order. Present when non-empty. */
+    invalidAttempts?: { interventionId: string; at: number }[];
     criticalAlarms: number;
     /**
      * Case safety gates that hold (docs/PROCEDURE.md §8), and the verdict they give: `safety-critical`

@@ -615,6 +615,7 @@ export class EventRenderer {
     }
     if (report.investigations.lowValue.length) this.line(p.dim(m(L, "assess.lowValue", { list: report.investigations.lowValue.map((id) => investigationName(c, id, L)).join(", ") })));
     if (report.safety.contraindicated.length) this.line(p.red(m(L, "assess.unsafe", { count: report.safety.contraindicated.length })));
+    if (report.safety.invalidAttempts?.length) this.line(p.yellow(m(L, "assess.invalidAttempts", { count: report.safety.invalidAttempts.length })));
     // Critical items missed, prominently — once the case is complete (mid-case they would be an answer key).
     if (final) for (const line of criticalMissLines(c, report, L)) this.line(p.bold(p.red(line)));
     for (const j of judged) this.line(`  ${j.met ? p.green("✓") : p.yellow("·")} ${j.id}${j.evidence ? p.dim(` — ${truncate(j.evidence, 100)}`) : ""}`);

@@ -51,6 +51,7 @@ const EN = {
   "debrief.harmful": "Potentially harmful investigations: {list}",
   "debrief.unread": "Results ordered but never read: {list}",
   "debrief.unsafe": "Contraindicated interventions given: {count}",
+  "debrief.invalidAttempts": "Out-of-order checklist attempts (not applied): {count}",
   "debrief.judged": "Examiner judgements:",
   "debrief.failed": "The assessment could not be produced: {message}",
   // attach mode (`clinicalcraft mcp --attach`): a learner's live browser session
@@ -126,6 +127,7 @@ const ZH: Record<McpMessageKey, string> = {
   "debrief.harmful": "可能有害的检查：{list}",
   "debrief.unread": "已开具但未查看的结果：{list}",
   "debrief.unsafe": "给予了禁忌的处置：{count} 次",
+  "debrief.invalidAttempts": "顺序不符的核查尝试（未执行）：{count} 次",
   "debrief.judged": "考官判定：",
   "debrief.failed": "无法生成评估：{message}",
   "attach.noSession":
