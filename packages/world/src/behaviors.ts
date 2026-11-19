@@ -492,11 +492,11 @@ export class DeviceRules {
     return out.sort((a, b) => a.d - b.d || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).map((x) => x.id);
   }
 
-  /** Within `m` (≥ MIN_RANGE) of the entity's footprint, same level, line of sight (or carrying it). */
+  /** Within `m` (≥ MIN_RANGE) of the footprint on the same level, with a clear path for contact (or carrying it). */
   within(actor: ActorState, p: Placed, m: number): boolean {
     if (p.heldBy === actor.id) return true;
     const loc = this.d.locator;
-    return loc.distance(actor.pose, p) <= Math.max(m, MIN_RANGE) + 1e-6 && loc.lineOfSight(actor.pose, p);
+    return loc.distance(actor.pose, p) <= Math.max(m, MIN_RANGE) + 1e-6 && loc.contactClear(actor.pose, p);
   }
 
   /**
@@ -745,7 +745,7 @@ export class DeviceRules {
    * Spatial check of an operation (actor placement): within `actorWithin`
    * of the device — or its reach when the operation declares neither
    * `actorWithin` nor `patientWithin` — and within `patientWithin` of the
-   * patient, same level, line of sight. Carrying the item counts as in
+   * patient, on the same level with a clear path for contact. Carrying the item counts as in
    * reach; `put_down` / `equip` need nothing. Null when satisfied.
    */
   spatial(id: EntityId, o: OperationSpec, actor: ActorState): RuleFailure | null {
@@ -810,12 +810,15 @@ export class DeviceRules {
     const reach = loc.reach(p);
     const needed = Math.max(range ?? reach, MIN_RANGE);
     const target = loc.name(p.id);
-    const goal: NavGoal = needed + 1e-9 >= reach && needed <= reach + 1 ? { kind: "interact", id: p.id } : { kind: "look", id: p.id, range: needed };
+    const goal: NavGoal = needed + 1e-9 >= reach && needed <= reach + 1 ? { kind: "interact", id: p.id } : { kind: "look", id: p.id, range: needed, clearReach: true };
     const label = goal.kind === "interact" ? (p.kind === "patient" ? worldMessage("hint.patient", L, { patient: target }) : worldMessage("hint.approach", L, { target })) : worldMessage("hint.look", L, { target });
     if (actor.pose.level !== p.level) return { code: "NOT_IN_RANGE", message: worldMessage("NOT_IN_RANGE_LEVEL", L, { target, level: p.level }), goal, label };
     const distance = loc.distance(actor.pose, p);
     if (distance > needed + 1e-6) return { code: "NOT_IN_RANGE", message: worldMessage("NOT_IN_RANGE", L, { target, distance: metres(distance), range: metres(needed) }), goal, label };
-    if (!loc.lineOfSight(actor.pose, p)) return { code: "NOT_VISIBLE", message: worldMessage("NOT_VISIBLE", L, { target }), goal, label };
+    if (!loc.contactClear(actor.pose, p)) {
+      if (loc.lineOfSight(actor.pose, p)) return { code: "NOT_IN_RANGE", message: worldMessage("spatial.contact-blocked", L, { target }), goal, label };
+      return { code: "NOT_VISIBLE", message: worldMessage("NOT_VISIBLE", L, { target }), goal, label };
+    }
     return null;
   }
 

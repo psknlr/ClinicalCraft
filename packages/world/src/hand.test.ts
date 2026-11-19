@@ -8,7 +8,7 @@
 import { describe, expect, it } from "vitest";
 import { checkCatalogs, parseCatalog, type EquipmentCatalog } from "@clinicalcraft/core";
 import { behaviorOf, evaluatePredicate, type PredicateEnv } from "./behaviors.js";
-import { PRIMARY_ACTOR } from "./contracts.js";
+import { PRIMARY_ACTOR, RANGES } from "./contracts.js";
 import { loadFacility } from "./__fixtures__/content.js";
 import { catalogs, makeWorld, type TestWorld } from "./__fixtures__/world.js";
 
@@ -139,7 +139,7 @@ describe("hand_over", () => {
     await take(w, "eq:scalpel-1");
     // too far: refused with the way to the recipient
     const far = await w.act({ actorId: A, operation: "hand_over", targetId: "eq:scalpel-1", parameters: { to: NURSE } });
-    expect(far).toMatchObject({ status: "failed", errorCode: "NOT_IN_RANGE", hint: { goal: { kind: "entity", id: NURSE } } });
+    expect(far).toMatchObject({ status: "failed", errorCode: "NOT_IN_RANGE", hint: { goal: { kind: "look", id: NURSE, range: RANGES.contact, clearReach: true } } });
     await stepTo(w, A, NURSE);
     const r = await w.act({ actorId: A, operation: "hand_over", targetId: "eq:scalpel-1", parameters: { to: NURSE } });
     expect(r.status, r.message).toBe("completed");
@@ -157,6 +157,23 @@ describe("hand_over", () => {
     // its state outlives the hands it went through: "used" once it is put down
     expect((await w.act({ actorId: A, operation: "put_down", targetId: "eq:scalpel-1" })).status).toBe("completed");
     expect(w.runtime.inspect(A, "eq:scalpel-1")!.state).toBe("used");
+  });
+
+  it("keeps the item with the giver across the resus window and routes handover through the door", async () => {
+    const w = theatreWorld();
+    await take(w, "eq:scalpel-1");
+    const at = { y: 0, z: -15, yaw: -Math.PI / 2, pitch: 0, level: "L0" };
+    w.runtime.updatePose(NURSE, { ...at, x: 26.75 });
+    w.runtime.updatePose(A, { ...at, x: 25.25 });
+    expect(w.runtime.inspect(A, NURSE)).toMatchObject({ visible: true, inReach: false });
+    const pass = () => w.act({ actorId: A, operation: "hand_over", targetId: "eq:scalpel-1", parameters: { to: NURSE } });
+    const blocked = await pass();
+    expect(blocked).toMatchObject({ status: "failed", errorCode: "NOT_IN_RANGE", hint: { goal: { clearReach: true } } });
+    expect(w.runtime.actor(A)!.holding).toContain("eq:scalpel-1");
+    const arrived = await w.act({ actorId: A, operation: "navigate", goal: blocked.hint!.goal });
+    expect(arrived.status, arrived.message).toBe("completed");
+    expect((await pass()).status).toBe("completed");
+    expect(w.runtime.actor(NURSE)!.holding).toContain("eq:scalpel-1");
   });
 
   it("refuses what cannot be handed: not held, worn, to nobody, to oneself, to full hands", async () => {

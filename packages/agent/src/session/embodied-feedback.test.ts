@@ -40,6 +40,30 @@ describe("embodied feedback says what happened", () => {
     await t.session.close();
   });
 
+  it("a text-only operator can guard an ECG action by version and look its receipt up by id", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "bypass" } });
+    const target = "eq:resus1-ecg";
+    expect((await tool(t, "approach_object", { target })).ok).toBe(true);
+    const inspect = await tool(t, "inspect_object", { target });
+    const match = /Observed target version (\d+)/.exec(inspect.output);
+    expect(match).not.toBeNull();
+    const expected_version = Number(match![1]);
+    const prepare = { target, operation: "prepare", expected_version };
+    const atCart = await tool(t, "interact_object", prepare);
+    const goal = /navigate_to (\{[^\n]+?\}) —/.exec(atCart.output)?.[1];
+    expect(goal).toBeDefined();
+    expect((await tool(t, "navigate_to", { goal: JSON.parse(goal!) })).ok).toBe(true);
+    const prepared = await tool(t, "interact_object", prepare);
+    expect(prepared.ok, prepared.output).toBe(true);
+    const id = /Action ID (.+)\.$/m.exec(prepared.output)?.[1];
+    expect(id).toBe(prepared.data.result.actionId);
+    const receipt = await tool(t, "get_action_feedback", { action_id: id });
+    expect(receipt.data.result).toEqual(prepared.data.result);
+    const stale = await tool(t, "interact_object", { target, operation: "connect", expected_version });
+    expect(stale.data.result.errorCode).toBe("STALE_STATE");
+    await t.session.close();
+  });
+
   it("move_to: already there says so; out of reach names the obstacle and an alternative that works", async () => {
     const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "bypass" } });
     const w = t.session.world()!;

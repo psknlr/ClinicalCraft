@@ -8,6 +8,7 @@
  * taller than eye height, and door leaves while the door is closed (door
  * state from `WorldDynamics.doorState`, read at query time). Windows,
  * bodies, low furniture and the lintel over an open doorway do not occlude.
+ * Physical interaction rays also intersect the exact window panes on their level.
  * A displaced cart occludes at its new position after `invalidate(area)`.
  *
  * Yaw convention (the renderer's): yaw 0 looks towards −Z; the view
@@ -17,7 +18,7 @@ import type { FacilityDefinition } from "@clinicalcraft/core";
 import { DEFAULT_PERCEPTION, type Collider, type CollisionModel, type Pose, type Vec2 } from "./contracts.js";
 import { spansEye } from "./collision.js";
 import { levelInfos } from "./levels.js";
-import { AreaIndex, cellIndex, distanceToArea, footprintArea, forEachCellCovered, inFrame, makeFrame, type Area, type GridFrame, type WorldDynamics } from "./raster.js";
+import { AreaIndex, cellIndex, distanceToArea, footprintArea, forEachCellCovered, inFrame, makeFrame, segmentCrossesArea, type Area, type GridFrame, type WorldDynamics } from "./raster.js";
 
 /** Default occlusion cell (m). */
 export const OCCLUSION_CELL = 0.25;
@@ -101,6 +102,7 @@ type Occluder = Collider & { door: number };
 export class VisibilityModel {
   private readonly grids = new Map<string, OcclusionGrid>();
   private readonly occluders = new Map<string, AreaIndex<Occluder>>();
+  private readonly windows = new Map<string, AreaIndex<Collider>>();
   private readonly byEntity = new Map<string, Occluder[]>();
   private readonly doorIds: string[];
   private readonly doorIndex: Map<string, number>;
@@ -123,6 +125,7 @@ export class VisibilityModel {
       const occluders = collision.colliders
         .filter((c) => c.level === level.id && c.opaque && spansEye(c, level.elevation))
         .map((c) => ({ ...c, door: c.kind === "door" && c.entity ? (doorIndex.get(c.entity) ?? 0) : 0 }));
+      this.windows.set(level.id, new AreaIndex(collision.colliders.filter((c) => c.level === level.id && c.kind === "window" && spansEye(c, level.elevation))));
       this.occluders.set(level.id, new AreaIndex(occluders));
       for (const c of occluders) if (c.entity && c.kind === "equipment") this.byEntity.set(c.entity, [...(this.byEntity.get(c.entity) ?? []), c]);
     }
@@ -210,13 +213,17 @@ export class VisibilityModel {
     return sightSamples(target).some((p) => this.lineOfSight(level, eye, p, stopIn, ownDoor, extra));
   }
 
-  /** Line of sight from a point to any sample of a target (no range or field-of-view test). */
-  visibleFrom(level: string, eye: { x: number; z: number }, target: SightTarget): boolean {
+  /** A clear ray to a target sample. Sight passes through glazing. Physical contact needs a sample on this side of the glass. */
+  visibleFrom(level: string, eye: Vec2, target: SightTarget, mode: "sight" | "contact" = "sight"): boolean {
     if (target.level !== level) return false;
     const own = footprintArea(target);
+    const windows = mode === "contact" ? this.windows.get(level)?.query({
+      minX: Math.min(eye.x, own.minX), maxX: Math.max(eye.x, own.maxX),
+      minZ: Math.min(eye.z, own.minZ), maxZ: Math.max(eye.z, own.maxZ),
+    }) : undefined;
     const stopIn = { minX: own.minX - 0.05, maxX: own.maxX + 0.05, minZ: own.minZ - 0.05, maxZ: own.maxZ + 0.05 };
     const ownDoor = target.id ? (this.doorIndex.get(target.id) ?? 0) : 0;
-    return sightSamples(target).some((p) => this.lineOfSight(level, eye, p, stopIn, ownDoor));
+    return sightSamples(target).some((p) => !windows?.some((pane) => segmentCrossesArea(eye, p, pane)) && this.lineOfSight(level, eye, p, stopIn, ownDoor));
   }
 
   /**

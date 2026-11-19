@@ -13,9 +13,10 @@
  *                  clock ticks — paused while an agent drives a body (EMBODIED R8) —, the clinical-mode
  *                  `walk_to` dynamic tool (embodied: mapped onto a world navigation)
  */
-import { patientAgeText, patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import { patientAgeText, patientCues, resolveWaypoint, t, vitalsAt, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot, type SessionState } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
+import { breathingRate } from "../world/breathing.js";
 import { presentationOfSex } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
@@ -180,7 +181,8 @@ export { STAFF_AGENT };
 export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean; phase?: string }): Route {
   switch (target.kind) {
     case "patient":
-      if (ctx.caseDef && target.caseId === ctx.caseDef.id) return { panel: "conversation", agent: "patient" };
+    case "companion":
+      if (ctx.caseDef && target.caseId === ctx.caseDef.id) return { panel: "conversation", agent: target.kind };
       return { panel: "toast", title: target.name, body: target.hint };
     case "staff":
       return { panel: "conversation", agent: STAFF_AGENT[target.role] ?? "nurse", staffId: target.staffId, staffRole: target.role, name: target.name };
@@ -272,7 +274,7 @@ export class GameWorldLink {
   manual: Destination | null = null;
   private manualObjective = -1;
   private lastWaypointKey = "";
-  private speakTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  private readonly speakers = new Map<string, { timer: ReturnType<typeof setTimeout>; draw(active: boolean): void }>();
   /** The staff member each running turn speaks as (`turn_started.staffId`). */
   private readonly turnStaff = new Map<string, string>();
   private tick: ReturnType<typeof setInterval> | null = null;
@@ -280,9 +282,7 @@ export class GameWorldLink {
   private offEntry: () => void;
   private offChange: () => void;
   private walkAbort: AbortController | null = null;
-  private distressed = false;
-  private accessory: string | null = null;
-  private posture: string | null = null;
+  private drawnPatient: Parameters<WorldApi["setPatientState"]>[1] | null = null;
 
   constructor(private readonly o: GameWorldLinkOptions) {
     this.stations = new Stations(o.facility, o.catalogs);
@@ -296,7 +296,11 @@ export class GameWorldLink {
     this.offChange();
     if (this.tick) clearInterval(this.tick);
     this.walkAbort?.abort();
-    for (const timer of this.speakTimers.values()) clearTimeout(timer);
+    for (const speaker of this.speakers.values()) {
+      clearTimeout(speaker.timer);
+      speaker.draw(false);
+    }
+    this.speakers.clear();
   }
 
   /** Current objective destination (manual pick wins). */
@@ -344,34 +348,54 @@ export class GameWorldLink {
     world.setWaypoint(dest);
   }
 
-  /** Re-apply world state after the world was recreated (language change). */
+  /** Draw current cues on entry, resume, or a recreated world (language change). */
   refresh(): void {
     this.lastWaypointKey = "";
     this.syncWaypoint();
+    const state = this.o.app.session.state;
+    this.drawnPatient = null;
+    this.drawPatient(state, vitalsAt(this.o.caseDef, state));
+    for (const speaker of this.speakers.values()) speaker.draw(true);
+  }
+
+  private drawPatient(state: SessionState, vitals: VitalsSnapshot): void {
     const world = this.o.world();
-    if (world && this.o.slotId && this.distressed) world.setPatientState(this.o.slotId, { distressed: true });
-    if (world && this.o.slotId && this.accessory) world.setPatientState(this.o.slotId, { accessory: this.accessory as "oxygen-mask" });
-    if (world && this.o.slotId && this.posture && !this.o.embodied?.()) world.setPatientState(this.o.slotId, { posture: this.posture as "lying" });
+    if (!world || !this.o.slotId) return;
+    const cues = patientCues(this.o.caseDef, state);
+    const next = {
+      distressed: cues.distressed,
+      accessory: cues.accessory ?? this.o.caseDef.patient.appearance.accessory,
+      respiratoryRate: breathingRate(vitals),
+      // EmbodiedLink places the body on its actual support, which can impose its own posture.
+      ...(!this.o.embodied?.() ? { posture: cues.posture } : {}),
+    };
+    const last = this.drawnPatient;
+    if (last && last.distressed === next.distressed && last.accessory === next.accessory && last.respiratoryRate === next.respiratoryRate && last.posture === next.posture) return;
+    world.setPatientState(this.o.slotId, next);
+    this.drawnPatient = next;
   }
 
   private speak(id: string, kind: "patient" | "companion" | "staff", text: string): void {
-    const world = this.o.world();
-    if (!world) return;
-    const set = (v: boolean) => (kind === "patient" ? world.setPatientState(id, { speaking: v }) : kind === "companion" ? world.setCompanionSpeaking(id, v) : world.setStaffSpeaking(id, v));
-    set(true);
+    const draw = (active: boolean) => {
+      const world = this.o.world();
+      if (kind === "patient") world?.setPatientState(id, { speaking: active });
+      else if (kind === "companion") world?.setCompanionSpeaking(id, active);
+      else world?.setStaffSpeaking(id, active);
+    };
     const key = `${kind}:${id}`;
-    const prev = this.speakTimers.get(key);
-    if (prev) clearTimeout(prev);
-    this.speakTimers.set(
-      key,
-      setTimeout(() => set(false), Math.min(9000, 900 + text.length * 70)),
-    );
+    const prev = this.speakers.get(key);
+    if (prev) clearTimeout(prev.timer);
+    draw(true);
+    const timer = setTimeout(() => {
+      draw(false);
+      this.speakers.delete(key);
+    }, Math.min(9000, 900 + text.length * 70));
+    this.speakers.set(key, { timer, draw });
   }
 
   private onEntry(entry: LogEntry): void {
     if (entry.kind !== "event") return;
     const msg = entry.event.msg;
-    const world = this.o.world();
     if (msg.type === "turn_started") {
       if (msg.staffId) this.turnStaff.set(msg.turnId, msg.staffId);
     } else if (msg.type === "turn_complete" || msg.type === "turn_aborted") {
@@ -379,24 +403,8 @@ export class GameWorldLink {
     } else if (msg.type === "agent_message") {
       const who = lineSpeaker(msg, { slotId: this.o.slotId, turnStaff: this.turnStaff.get(msg.turnId) ?? null, staffFor: this.o.staffFor, activeStaff: this.o.activeStaff });
       if (who) this.speak(who.id, who.kind, msg.text);
-    } else if (msg.type === "state_snapshot" && world && this.o.slotId) {
-      // what a bystander sees (core `patientCues`, the same cues the world model shows agents): a sick patient
-      // looks sick (a critical alarm, or no monitor yet and in extremis), oxygen on the face
-      const cues = patientCues(this.o.caseDef, msg.state);
-      if (cues.distressed !== this.distressed) {
-        this.distressed = cues.distressed;
-        world.setPatientState(this.o.slotId, { distressed: cues.distressed });
-      }
-      if (cues.accessory && cues.accessory !== this.accessory) {
-        this.accessory = cues.accessory;
-        world.setPatientState(this.o.slotId, { accessory: cues.accessory });
-      }
-      // the posture clinical state gives (G12: lying flat, sitting up): in embodied mode the world model says it,
-      // with where the patient is (a scanner table forces lying) — the embodied link draws that
-      if (cues.posture !== this.posture) {
-        this.posture = cues.posture;
-        if (!this.o.embodied?.()) world.setPatientState(this.o.slotId, { posture: cues.posture });
-      }
+    } else if (msg.type === "state_snapshot") {
+      this.drawPatient(msg.state, msg.vitals);
     } else if (msg.type === "dynamic_tool_call" && msg.tool === "walk_to") {
       void this.walkTo(msg.callId, msg.args);
     }

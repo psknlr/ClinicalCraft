@@ -216,7 +216,9 @@ the world model; the browser supplies its sensors and actuators
   on slow frames (physics sub-steps ≤ `maxDt` = 0.05 s, at most 0.5 s per
   frame), and every walk ends: a budget of 3 × the walking time + 20 s, at
   most 8 local detours, and a body stalled within 0.8 m of the last point
-  stops there. The world commits the pose the Mover reports and charges the
+  stops there. The avatar slows to 1.35 m/s for the last 1.25 m, checks that
+  the final spot is still free, and turns in place to face the interaction.
+  The world commits the pose the Mover reports and charges the
   travel time once. In a hidden tab no frames are drawn, so a body is put at
   its target at once.
 * **CameraSensor** (`BrowserCamera`): the avatar's WebGL viewport only (no
@@ -226,6 +228,12 @@ the world model; the browser supplies its sensors and actuators
   (~10 Hz while it moves — a body put elsewhere while a window is open
   too —, every change however small, out of band) and again right before
   every submission and autopilot start, never while the Mover drives it.
+  A movement key or touch direction takes over an automated walk on the first press.
+  Hold C with a movement key to move at bedside pace (1.35 m/s). The touch
+  controls let one thumb steer while the other turns the view. Footfalls and
+  camera bob follow the distance the feet actually cover on the ground.
+  Pressing E samples the current aim again. A hidden person or a carried
+  device in its former spot cannot intercept the interaction.
 * **Same action path**: the panels' equipment buttons are `world_action` ops
   (monitor attach / NIBP / read — the read is offered only while the screen
   is readable —, ECG cart prepare / connect / record / reset, a sink's
@@ -304,8 +312,9 @@ the world model; the browser supplies its sensors and actuators
   side (`WorldPatient.companion`; beside the bed's head end, else the other
   side, else its foot — the first spot no collider takes) and goes where the
   patient goes; they have no body in the world model (no collider: the
-  renderer's colliders are the world model's, R2) and share the patient's aim
-  target. A line moves the mouth of the one who spoke — the patient, the
+  renderer's colliders are the world model's, R2) and have their own aim
+  target in the browser. Address either person with E or the chat shortcut.
+  The shared bedside conversation opens with the selected addressee. A line moves the mouth of the one who spoke — the patient, the
   companion, the colleague the line names — and a narration (a patient who
   cannot speak, a movement carried out) moves none.
 * **Body language**: someone standing who speaks to the learner within 6 m —
@@ -429,9 +438,12 @@ model only). They are `observe`, `find`, `inspect`, `roomInfo`,
   entity)` samples the footprint (centre and four corners inset to ¾) —
   partial occlusion still counts as visible — and a target never hides
   itself (the ray stops at its footprint; a closed door's own leaves never
-  hide it). Yaw 0 looks towards −Z (the renderer's convention). Interaction
-  additionally needs line of sight (no operating a workstation through a
-  partition).
+  hide it). Yaw 0 looks towards −Z (the renderer's convention). A window permits observation. Hands-on care,
+  face-to-face conversation, device controls and item handovers also require
+  a clear path to a sample of the target on the actor's side of the glass.
+  When the glass blocks access, a physical approach goal leads around it.
+  A `look` goal used for a physical action at a custom distance carries
+  `clearReach: true`.
 * **Reachability** is computed separately: a Dijkstra flood of the planner's
   grid per actor cell, role and allowed zones (cached), respecting restricted
   areas, locked doors and dynamic obstacles (`Reachability`, `reach.ts`).
@@ -550,10 +562,10 @@ Every entity is labelled with what the actor knows of it:
   never another actor's walk out of sight, a device changed behind a wall or
   what another actor noticed; task bookkeeping is left out.
 * **Each `ObservedEntity`** carries the distance to the footprint, the
-  bearing relative to the facing (+ = right), `inReach` (within reach with
-  line of sight), `reachable` / `pathDistance` (an entity counts as
+  bearing relative to the facing (+ = right), `inReach` (within interaction distance with a clear path
+  through open space), `reachable` / `pathDistance` (an entity counts as
   reachable when one of its interaction cells — the planner's rule — is
-  flooded and has line of sight to it; on another level: the
+  flooded and has a clear path to it through open space; on another level: the
   walking-equivalent of its route through the connectors), the behaviour
   `state` (`out-of-service` when a scenario took it out), `stateVersion` and
   `availableActions` — for a thing believed elsewhere, as last seen there
@@ -680,6 +692,11 @@ code path returns it.
   connector seconds of every ride completed (a walk stopped before the
   stairs never pays a share of them); the record's `length` adds the climb
   of every flight completed, as the planner's does.
+* **Turn in place** with `look_at {"heading":90}` to face east. Headings are
+  degrees clockwise from north (0–360). The actor keeps their position and
+  pitch, and the tool reports what they can see from the new direction.
+  Turning consumes no travel time. A changed heading emits `actor.turned`
+  and rotates the body’s view in an attached browser.
 * **A cart's destination is checked before and after** (`move_to`): a cart
   already as close as a move would leave it (within 1.25 m of its target, in
   its room; at the patient's bedside by the bedside rule) is not moved —
@@ -739,7 +756,7 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
 
 | clinical action | requirement (as implemented) | realism rationale |
 |---|---|---|
-| `ask_patient` (history; the companion too) — and every non-empty learner message to the patient or the companion (typed, `/ask`; PROTOCOL §12.2) | `near-patient` 3 m + line of sight | conversation range: nothing is said, disclosed or credited from across the hospital |
+| `ask_patient` (history; the companion too) — and every non-empty learner message to the patient or the companion (typed, `/ask`; PROTOCOL §12.2) | `near-patient` 3 m with a clear path through open space | conversation range: nothing is said, disclosed or credited from across the hospital |
 | `examine` | `at-patient` 1.5 m; a finding whose `requires` go beyond the personal kit (`PERSONAL_KIT`): `bedside-provider` for them | hands on; a stethoscope is in the pocket, an ultrasound is not |
 | `check_vitals` | `any-of`: `monitor-screen` (the patient's **attached** monitor read from its screen: 6 m, line of sight from the monitor's own room — never through a window) · `at-patient` 1.5 m (`why: "observations"`: by hand) · `at-provider` `records` (the chart). No attached monitor (also a case monitored from minute 0 in a room without one): only the last two. No rhythm without a monitor, ECG machine or defibrillator at the bedside (`rhythmAtBedside`: `check_vitals` then drops `rhythm` / `ecg`) | numbers come from a screen you can read, your own hands or the chart; a rhythm needs electrodes on the patient |
 | `order_test`: no capability · personal kit only | anywhere · `at-patient` 1.5 m | nothing physical is needed · done with what you carry |
@@ -1297,6 +1314,13 @@ shows it: `ClinicalView.cues().cannotSpeak` carries the authored reason and
 perception reports the patient's `speech` cue "cannot speak: <reason>" /
 "无法说话：<reason>"; what they would say is narration in every channel
 (PROTOCOL §4), and the companion answers the history.
+
+The web patient's chest follows the current bedside respiratory reading. A rate
+change alters the speed of the ongoing breath, and a measured zero brings the
+chest to rest. Missing readings, baseline placeholders and past spot checks
+leave the figure in its generic idle animation. On resuming an encounter, the
+renderer restores the patient's oxygen accessory and visible distress from
+the current clinical state.
 
 **How the patient travels** (review IX; `transport.ts` `trolleyFor`). The
 posture now, the way of travelling and the posture where they go are three

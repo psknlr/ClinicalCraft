@@ -9,11 +9,11 @@
  */
 import type { BodyMove, BodyPose, RoutePoint, WorldPoint } from "../contracts.js";
 import type { DoorRecord } from "./context.js";
-import { polylineLength, ROUTE_ARRIVE, worldRouteLegs } from "./embodiment.js";
+import { normAngle, polylineLength, ROUTE_ARRIVE, worldRouteLegs } from "./embodiment.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
-import { PHYSICS, type Aabb } from "./physics.js";
+import { collides, PHYSICS, type Aabb } from "./physics.js";
 import { routeLegs, type Leg } from "./route.js";
-import { nextWaypoint, steer, walkBudget } from "./steer.js";
+import { nextWaypoint, steer, turnTowards, walkBudget } from "./steer.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
 interface AutoWalk {
@@ -51,6 +51,8 @@ interface AutoWalk {
   pathLeg?: boolean;
   /** Simulated seconds a world-model route may still take before the walk gives up (`walkBudget`). */
   budget?: number;
+  /** The world model's requested facing direction after the final approach. */
+  finalYaw?: number;
 }
 
 /** A world-model route walk gives up after this many local detours (blocked repeatedly). */
@@ -73,12 +75,11 @@ export class AutoWalker {
   /** Kind of a facility connector (route legs: stairs and ramps are walked, elevators ridden). */
   readonly connectorKind = (id: string) => (this.world.facility.connectors ?? []).find((c) => c.id === id)?.kind ?? null;
 
-  /** End the walk: resolved (`err` null) or rejected with `err`; the keys are released. */
+  /** End the walk: resolved (`err` null) or rejected with `err`. */
   cancel(err: Error | null): void {
     const w = this.current;
     if (!w) return;
     this.current = null;
-    this.world.keys = {};
     if (w.signal && w.onAbort) w.signal.removeEventListener("abort", w.onAbort);
     if (err) w.reject(err);
     else w.resolve();
@@ -98,15 +99,21 @@ export class AutoWalker {
   }
 
   /** The walk's movement input for a physics step of `dt` s (null: nothing to walk now). */
-  input(dt: number): { forward: number; side: number; sprint: boolean } | null {
+  input(dt: number): { forward: number; side: number; sprint: boolean; careful: boolean } | null {
     const world = this.world;
     const { player, levels, level, ctx, S } = world;
     const w = this.current;
     if (!w || w.riding) return null;
     const dGoal = Math.hypot(w.goal.x - player.x, w.goal.z - player.z);
     if (dGoal <= w.arrive && (!levels.multi || world.currentLevel() === w.level)) {
-      if (!w.legs.length) this.cancel(null);
-      else if (!this.nextLeg(w)) this.cancel(new Error(S.unreachable));
+      if (!w.legs.length) {
+        if (w.finalYaw !== undefined && dt > 0 && (Math.abs(normAngle(w.finalYaw - world.yaw)) > 0.015 || Math.abs(world.pitch) > 0.015)) {
+          world.yaw = turnTowards(world.yaw, w.finalYaw, dt);
+          world.pitch = turnTowards(world.pitch, 0, dt);
+          return { forward: 0, side: 0, sprint: false, careful: true };
+        }
+        this.cancel(null);
+      } else if (!this.nextLeg(w)) this.cancel(new Error(S.unreachable));
       return null;
     }
     if (w.index >= w.path.length) {
@@ -123,7 +130,7 @@ export class AutoWalker {
     // reached or already passed (a slow frame's long step): on to the next waypoint
     w.index = nextWaypoint(w.path, w.index, player.x, player.z);
     const wp = w.path[w.index];
-    if (w.index === w.path.length - 1 && Math.hypot(wp.x - player.x, wp.z - player.z) < 0.35) {
+    if (w.index === w.path.length - 1 && Math.hypot(wp.x - player.x, wp.z - player.z) < Math.min(0.35, w.arrive)) {
       w.index++;
       return null;
     }
@@ -149,8 +156,8 @@ export class AutoWalker {
     } else if ((w.stall += dt) > 3) {
       // a route's last spot that cannot be reached (somebody stands there): the walk ends next to it
       if (w.route && !w.legs.length && (!levels.multi || world.currentLevel() === w.level) && Math.hypot(w.goal.x - player.x, w.goal.z - player.z) <= ROUTE_SETTLE) {
-        this.cancel(null);
-        return null;
+        w.arrive = ROUTE_SETTLE;
+        return { forward: 0, side: 0, sprint: false, careful: true };
       }
       // blocked (an NPC stepped in, a door swung): re-plan from here, give up after 3 fruitless tries
       if (!this.replan(w)) {
@@ -162,7 +169,7 @@ export class AutoWalker {
     const s = steer(world.yaw, player.x, player.z, wp, dt);
     world.yaw = s.yaw;
     world.pitch += (0 - world.pitch) * Math.min(1, dt * 6);
-    return { forward: s.forward, side: 0, sprint: s.sprint };
+    return { forward: s.forward, side: 0, sprint: s.sprint, careful: !w.legs.length && dGoal < 1.25 };
   }
 
   /**
@@ -313,6 +320,7 @@ export class AutoWalker {
         };
         signal.addEventListener("abort", w.onAbort, { once: true });
       }
+      world.input.release();
       this.current = w;
     });
   }
@@ -341,9 +349,11 @@ export class AutoWalker {
         if (done) return;
         done = true;
         if (arrived) {
-          // settle exactly on the planned spot (a free cell centre) and face the target
+          // Finish the last few centimetres only if the planned spot is still free. A blocked
+          // arrival reports the actual feet position, including when a colleague just stepped in.
           const end = route[route.length - 1];
-          if (end && end.level === (levels.multi ? world.currentLevel() : level) && Math.hypot(end.x - player.x, end.z - player.z) <= ROUTE_ARRIVE + 0.1) {
+          if (end && end.level === (levels.multi ? world.currentLevel() : level) && Math.hypot(end.x - player.x, end.z - player.z) <= ROUTE_ARRIVE &&
+              !collides({ x: end.x, y: player.y, z: end.z }, world.ctx.colliders.query(end.x, end.z, PHYSICS.radius))) {
             player.x = end.x;
             player.z = end.z;
           }
@@ -392,6 +402,8 @@ export class AutoWalker {
         };
         opts.signal.addEventListener("abort", w.onAbort, { once: true });
       }
+      if (opts.yaw !== undefined && Number.isFinite(opts.yaw)) w.finalYaw = opts.yaw;
+      world.input.release();
       this.current = w;
     });
   }

@@ -9,20 +9,21 @@
  *
  * A case's companion (the parent, the spouse…) stands at the patient's side and goes where the patient goes —
  * drawn, speaking and looking at the learner, but with no body of the world model's: no collider (the renderer's
- * colliders are the world model's, EMBODIED R2) and the patient's aim target (talking to them opens the patient's
- * conversation, where the companion answers).
+ * colliders are the world model's, EMBODIED R2) and a conversation target of their own in the shared bedside conversation.
  */
 import { MathUtils, type Object3D } from "three";
 import { entityLevel } from "@clinicalcraft/core";
 import { npcBodyBox, patientBodyBox } from "@clinicalcraft/world";
 import type { InteractionTarget, PatientSpot, WorldApi, WorldPatient } from "../contracts.js";
 import type { NpcRecord } from "./context.js";
+import { PatientBreathing } from "./breathing.js";
 import { rigRotationOf, yawOfRig } from "./embodiment.js";
 import { surfaceTop, surfaceUnder } from "./equipment.js";
-import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, setDistressed, uniformOf, type AppearanceLike, type Posture } from "./npc.js";
+import { buildPerson, buildStaffPerson, disposeRig, PATIENT_WEAR, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { collides } from "./physics.js";
 import { roleName, tx } from "./strings.js";
-import { Trail } from "./trail.js";
+import { turnTowards } from "./steer.js";
+import { Trail, TRAIL_JUMP } from "./trail.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
 /** How far (m) behind a walker, along its trail, the patient walking with it goes — and their companion. */
@@ -30,7 +31,7 @@ const STEP_BEHIND = 1.05;
 const COMPANION_BEHIND = 1.95;
 
 /** Width (m) of the name tag over someone's head: wide enough to read across a room, not wider than the person is tall. */
-const TAG_WIDTH = 1.5;
+export const TAG_WIDTH = 1.5;
 
 /** Name tags / labels never take the aim ray. */
 function noRaycast(o: Object3D): void {
@@ -41,6 +42,8 @@ function noRaycast(o: Object3D): void {
 export class People {
   /** Patients by slot id. */
   readonly patients = new Map<string, WorldPatient>();
+  /** A patient's chest animation survives a move to another bed or a change of clothing. */
+  readonly breathing = new Map<string, PatientBreathing>();
   /** Where the world model has a patient when not in their own bed space (EMBODIED §8): slot → spot. */
   readonly patientSpots = new Map<string, PatientSpot>();
   /** Patients travelling with a walker ("avatar" or a staff id): slot → walker (drawn on its trolley, or walking with it). */
@@ -167,13 +170,11 @@ export class People {
     noRaycast(tag);
     rig.root.add(tag);
     this.tagSigns.push(tag);
-    const target = ctx.npcs.get(`patient:${p.slotId}`)?.target;
-    if (target) {
-      rig.root.userData.action = target;
-      rig.root.userData.highlight = rig.body;
-      ctx.pickables.push(rig.root);
-    }
-    ctx.npcs.set(`companion:${p.slotId}`, { kind: "companion", id: p.slotId, rig, x: spot.x, z: spot.z, rot: rig.root.rotation.y, speaking: false, distressed: false, collider: null, target: target ?? { kind: "patient", slotId: p.slotId, caseId: p.caseId, name: p.name, hint: "" }, label: c.label, level: at.level });
+    const target: InteractionTarget = { kind: "companion", slotId: p.slotId, caseId: p.caseId, name: c.label, hint: this.world.S.talk };
+    rig.root.userData.action = target;
+    rig.root.userData.highlight = rig.body;
+    ctx.pickables.push(rig.root);
+    ctx.npcs.set(`companion:${p.slotId}`, { kind: "companion", id: p.slotId, rig, x: spot.x, z: spot.z, rot: rig.root.rotation.y, speaking: false, distressed: false, collider: null, target, label: c.label, level: at.level });
   }
 
   /** `WorldApi.setCompanionSpeaking`: the companion's speaking animation (no companion: nothing). */
@@ -204,11 +205,7 @@ export class People {
     const physics = ctx.physics;
     for (const st of facility.staff ?? []) {
       const staffLevel = entityLevel(facility, st);
-      // the uniform of their role as their position wears it; what the facility leaves unsaid about their looks
-      // differs from one member of staff to the next (the same for the same id, every time)
-      const uni = uniformOf(st.role, st.position);
-      const ap: AppearanceLike = { ...looksOf(st.id), shirt: uni.shirt, pants: uni.pants, ...(uni.hairStyle ? { hairStyle: uni.hairStyle } : {}), ...(st.appearance ?? {}) };
-      const rig = buildPerson(ap, { posture: "standing", wear: uni.wear, seed: `staff:${st.id}`, height: heightOf(st.id) });
+      const rig = buildStaffPerson(st);
       rig.root.position.set(st.x, levels.elevation(staffLevel), st.z);
       rig.root.rotation.y = MathUtils.degToRad(st.rot ?? 0);
       (levelRoots.get(staffLevel) ?? root).add(rig.root);
@@ -235,6 +232,14 @@ export class People {
     const n = ctx.npcs.get(`patient:${slotId}`);
     const p = this.patients.get(slotId);
     if (!n || !p) return;
+    if (state.respiratoryRate !== undefined) {
+      let breath = this.breathing.get(slotId);
+      if (!breath) {
+        breath = new PatientBreathing(n.rig.phase);
+        this.breathing.set(slotId, breath);
+      }
+      breath.rate = state.respiratoryRate;
+    }
     if ((state.posture && state.posture !== n.rig.posture) || (state.accessory && state.accessory !== p.appearance.accessory)) {
       const next: WorldPatient = { ...p, posture: state.posture ?? p.posture, appearance: { ...p.appearance, accessory: state.accessory ?? p.appearance.accessory } };
       const speaking = n.speaking, distressed = n.distressed;
@@ -285,7 +290,7 @@ export class People {
     if (!by) {
       // stays where it was drawn until the world model says where the patient is (`placePatient`)
       this.patientPushes.delete(slotId);
-      if (!this.patientEscorts.has(slotId)) this.trails.delete(slotId);
+      if (!this.patientEscorts.has(slotId)) this.stopFollowing(slotId, n);
       return;
     }
     this.patientPushes.set(slotId, by);
@@ -321,7 +326,7 @@ export class People {
     if (!p || !n) return;
     if (!by) {
       this.patientEscorts.delete(slotId);
-      if (!this.patientPushes.has(slotId)) this.trails.delete(slotId);
+      if (!this.patientPushes.has(slotId)) this.stopFollowing(slotId, n);
       return;
     }
     this.patientEscorts.set(slotId, by);
@@ -336,6 +341,12 @@ export class People {
       setDistressed(nn.rig, distressed);
     }
     this.drag();
+  }
+
+  private stopFollowing(slotId: string, patient: NpcRecord): void {
+    this.trails.delete(slotId);
+    patient.rig.gait?.rest();
+    this.world.ctx.npcs.get(`companion:${slotId}`)?.rig.gait?.rest();
   }
 
   /** Start the trail a patient walks behind `by`: from where the patient is drawn to the walker. */
@@ -355,8 +366,13 @@ export class People {
   }
 
   /** Move a rig to a point (and to that level's root), facing `yaw` (a rig's rotation: `rigRotationOf`). */
-  private moveRig(n: NpcRecord, x: number, z: number, level: string, rotation: number): void {
+  private moveRig(n: NpcRecord, x: number, z: number, level: string, rotation: number, dt = 0): void {
     const { levels, levelRoots, stage } = this.world;
+    const distance = Math.hypot(x - n.x, z - n.z);
+    if (dt > 0 && level === n.level && distance <= TRAIL_JUMP) {
+      n.rig.gait?.advance(distance, dt);
+      rotation = turnTowards(n.rot, rotation, dt);
+    } else n.rig.gait?.rest();
     if (level !== n.level) {
       (levelRoots.get(level) ?? stage.root).add(n.rig.root);
       n.level = level;
@@ -372,7 +388,7 @@ export class People {
    * Draw the patients travelling with a walker or walking with someone (each frame while any is): on the trolley the
    * walker pushes, else a step behind it on its trail; their companion a step further back.
    */
-  drag(): void {
+  drag(dt = 0): void {
     const { ctx } = this.world;
     for (const slotId of new Set([...this.patientPushes.keys(), ...this.patientEscorts.keys()])) {
       const by = this.patientPushes.get(slotId) ?? this.patientEscorts.get(slotId)!;
@@ -389,11 +405,11 @@ export class People {
       } else {
         // walking: a step behind the walker where it walked, facing the way
         const at = trail.at(STEP_BEHIND);
-        if (at) this.moveRig(n, at.x, at.z, at.level, rigRotationOf(at.yaw ?? walker.yaw));
+        if (at) this.moveRig(n, at.x, at.z, at.level, rigRotationOf(at.yaw ?? walker.yaw), dt);
       }
       const companion = ctx.npcs.get(`companion:${slotId}`);
       const back = trail.at(trolley ? STEP_BEHIND : COMPANION_BEHIND);
-      if (companion && back) this.moveRig(companion, back.x, back.z, back.level, rigRotationOf(back.yaw ?? walker.yaw));
+      if (companion && back) this.moveRig(companion, back.x, back.z, back.level, rigRotationOf(back.yaw ?? walker.yaw), dt);
     }
   }
 

@@ -439,7 +439,7 @@ export function freeCellNear(grids: NavGrids | null, visibility: VisibilityModel
         }
       if (!ok) continue;
     }
-    if (sight && !visibility.visibleFrom(level, c, sight)) continue;
+    if (sight && !visibility.visibleFrom(level, c, sight, "contact")) continue;
     return { x: c.x, z: c.z };
   }
   return null;

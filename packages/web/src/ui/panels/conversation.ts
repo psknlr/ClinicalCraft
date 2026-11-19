@@ -1,5 +1,5 @@
 /**
- * Conversation panel (patient, companion or a staff NPC): V4 pixel portrait
+ * Conversation panel (patient, companion or a staff NPC): character portrait
  * and tags, a streaming chat log with speaker names, suggested questions
  * (the case's canonical history questions not yet asked, grouped by topic),
  * free text (Enter sends, `@nurse` addressing), the offline badge, the
@@ -107,6 +107,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     const store = game.session.store;
     const isPatient = args.agent === "patient" || args.agent === "companion";
     const companion = c.patient.persona.companion;
+    const companionName = args.agent === "companion" && companion ? ct(companion.name) : null;
     const agents = new Set<string>(isPatient ? ["patient", "companion"] : [args.agent]);
     // the colleague by name: the staff member aimed at, else the one this agent stands for here (`@nurse`)
     const staffCtx = { facility: game.facility, slotId: game.slotId, world: game.session.world() };
@@ -119,13 +120,14 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     /* ---------------- talk tab ---------------- */
     const log = h("div", { class: "chat-log", role: "log", "aria-live": "polite", "aria-label": tr("conv.tab.talk") });
     const typing = h("div", { class: "typing", hidden: true });
+    const placeholder = companionName ? tr("conv.placeholderStaff", { name: companionName }) : isPatient ? tr("conv.placeholder") : staff ? tr("conv.placeholderStaff", { name: staffName }) : tr("conv.placeholderRole", { role: staffName });
     const input = h("input", {
       class: "chat-input",
       type: "text",
       autocomplete: "off",
       maxlength: "800",
-      placeholder: isPatient ? tr("conv.placeholder") : staff ? tr("conv.placeholderStaff", { name: staffName }) : tr("conv.placeholderRole", { role: staffName }),
-      "aria-label": isPatient ? tr("conv.placeholder") : staff ? tr("conv.placeholderStaff", { name: staffName }) : tr("conv.placeholderRole", { role: staffName }),
+      placeholder,
+      "aria-label": placeholder,
     });
     const sendBtn = h("button", { class: "primary", type: "submit" }, tr("conv.send"));
     const stopBtn = h("button", { type: "button", hidden: true, onclick: () => game.session.interrupt() }, tr("conv.stop"));
@@ -143,15 +145,15 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         // never reach the session: there they would change the session behind the UI's back.
         if (webCommand(app, raw)) return;
         // Other slash commands (/help, /vitals, /results…): the output is shown in this conversation.
-        app.submit({ type: "user_message", text: raw }, isPatient ? "patient" : args.agent);
+        app.submit({ type: "user_message", text: raw }, args.agent);
         return;
       }
       const addressed = parseAddress(raw, game.session.session.availableAgents());
-      const to = addressed.to ?? (isPatient ? "patient" : args.agent);
+      const to = addressed.to ?? args.agent;
       if (!addressed.text && !addressed.to) return;
       if (addressed.to && !addressed.text) {
         // "@nurse" alone: switch to that person's window instead of sending an empty line.
-        if (!agents.has(addressed.to)) app.open("conversation", { agent: addressed.to, focusInput: true });
+        if (addressed.to !== args.agent) app.open("conversation", { agent: addressed.to, focusInput: true });
         return;
       }
       // Someone addressed from this window (`@nurse …`) answers here too.
@@ -309,7 +311,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const nearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 60;
       clear(log);
       const items = store.chatFor(agents, staff?.staffId ?? null);
-      if (!items.length) log.append(h("div", { class: "chat-empty" }, isPatient ? tr("conv.empty") : staff ? tr("conv.emptyStaff", { name: staffName }) : tr("conv.emptyRole", { role: staffName })));
+      if (!items.length) log.append(h("div", { class: "chat-empty" }, companionName ? tr("conv.emptyCompanion", { name: companionName }) : isPatient ? tr("conv.empty") : staff ? tr("conv.emptyStaff", { name: staffName }) : tr("conv.emptyRole", { role: staffName })));
       const nameOf = (id: string) => staffById(id, staffCtx)?.name ?? null;
       // world entities and actors by name (a delegation's steps)
       const entityName = (id: string) => {
@@ -342,11 +344,14 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             : `${roleLabel(staffRole)} · ${staffName}`
           : roleLabel(staffRole);
       const look = isPatient ? (args.agent === "companion" && companion?.appearance ? { ...c.patient.appearance, ...companion.appearance } : c.patient.appearance) : { ...(STAFF_COLOURS[staffRole] ?? { shirt: "#6d9fba" }), hair: "#3b3027" };
+      const person = isPatient ? game.slotId : staff?.staffId;
+      const portraitKind = isPatient ? (args.agent === "companion" ? "companion" : "patient") : "staff";
+      const image = person ? app.world.api?.portrait(portraitKind, person) : null;
       const tags = isPatient ? c.patient.tags.map((x) => h("span", { class: "tag" }, ct(x))) : [];
       const side = h(
         "div",
         { class: "convo-side" },
-        portrait(look, caption),
+        portrait(look, caption, { image }),
         tags.length ? h("div", { class: "tags" }, tags) : null,
         isPatient ? h("p", { class: "small muted" }, ct((c.extensions?.v4 as { patientPanel?: { note?: never } } | undefined)?.patientPanel?.note) || tr("conv.note")) : null,
         badge,
@@ -598,7 +603,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     return {
       id: "conversation",
       kicker: isPatient ? tr("conv.kicker") : tr("conv.kickerStaff"),
-      title: isPatient ? tr("conv.titlePatient") : tr("conv.titleStaff", { name: staffName }),
+      title: companionName ? tr("conv.titleStaff", { name: companionName }) : isPatient ? tr("conv.titlePatient") : tr("conv.titleStaff", { name: staffName }),
       variant: "wide",
       body: [tabs.length > 1 ? tabBar : null, tabBody],
       focus: args.focusInput || !isPatient ? input : null,

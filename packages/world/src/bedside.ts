@@ -89,7 +89,7 @@ export class BedsideRule {
     const openSlot = !slot.room || this.isOpenRoom(slot.room);
     // the radius bridges a room boundary only for an open slot, or a portable item just outside the room
     if (!openSlot && !(portable && open)) return false;
-    if (open && this.d.visibility.visibleFrom(p.level, { x: slot.x, z: slot.z }, this.d.sight(p))) return true;
+    if (open && this.d.visibility.visibleFrom(p.level, { x: slot.x, z: slot.z }, this.d.sight(p), "contact")) return true;
     return this.walk(p) <= BEDSIDE_RADIUS + 1e-9;
   }
 
@@ -131,7 +131,7 @@ export class BedsideRule {
     const sight = this.d.sight(p);
     for (const c of cells) {
       if (c.d * g.cell > BEDSIDE_RADIUS + 1e-9) break;
-      if (this.d.visibility.visibleFrom(level, c, sight)) return c.d * g.cell;
+      if (this.d.visibility.visibleFrom(level, c, sight, "contact")) return c.d * g.cell;
     }
     return Infinity;
   }

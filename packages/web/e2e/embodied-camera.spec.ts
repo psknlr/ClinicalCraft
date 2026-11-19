@@ -76,11 +76,14 @@ test("(d) a vision model's get_camera_frame puts the avatar's view in its next r
   await embodiedSetup(page, { bypassApprovals: true });
   await placeAvatar(page, 30.25, -14.0, { x: 31, z: -17.3 });
 
+  // The world action changes the live camera before the next capture, without moving the learner off the bedside.
+  const turn = await page.evaluate(() => (window as any).__QA__.worldAction({ operation: "look_at", parameters: { heading: 90 } }));
+  expect(turn.status).toBe("completed");
   // the sensor itself: the viewport only, capped at 768 px, with the camera pose
   const direct = await page.evaluate(() => (window as any).__QA__.cameraFrame(4096));
   expect(direct.width).toBeLessThanOrEqual(768);
   expect(direct.mimeType).toBe("image/jpeg");
-  expect(direct.cameraPose).toMatchObject({ x: expect.closeTo(30.25, 1), z: expect.closeTo(-14, 1), level: "L0" });
+  expect(direct.cameraPose).toMatchObject({ x: expect.closeTo(30.25, 1), z: expect.closeTo(-14, 1), yaw: expect.closeTo(-Math.PI / 2, 5), level: "L0" });
   expect(jpegSize(direct.imageData)).toEqual({ width: direct.width, height: direct.height });
 
   await page.locator("#autopilot-btn").click();

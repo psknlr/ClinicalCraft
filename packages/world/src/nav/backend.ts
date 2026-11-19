@@ -277,7 +277,7 @@ export class GridAStarBackend implements NavigationBackend {
             let ok = memo.get(i);
             if (ok === undefined) {
               const c = cellPoint(g, i);
-              ok = distanceToArea(c.x, c.z, area) <= range + 1e-9 && !(target.soft && distanceToArea(c.x, c.z, area) < NAV_RADIUS) && (room === undefined || this.registry.roomAt(target.level, c.x, c.z) === room) && this.visibility.visibleFrom(target.level, c, sight);
+              ok = distanceToArea(c.x, c.z, area) <= range + 1e-9 && !(target.soft && distanceToArea(c.x, c.z, area) < NAV_RADIUS) && (room === undefined || this.registry.roomAt(target.level, c.x, c.z) === room) && this.visibility.visibleFrom(target.level, c, sight, goal.clearReach ? "contact" : "sight");
               memo.set(i, ok);
             }
             return ok;
@@ -287,7 +287,7 @@ export class GridAStarBackend implements NavigationBackend {
         // interact
         if (target.kind === "level") return this.fail(goal, "NO_INTERACTION_POINT", { target: target.name }, { reason: "not-interactive" });
         const reach = Math.max(MIN_RANGE, target.reach);
-        const cells = this.candidates(g, area, reach, target, true);
+        const cells = this.interactionCells(g, area, reach, target);
         if (!cells.size) return this.fail(goal, "NO_INTERACTION_POINT", { target: target.name }, { reach: target.reach, declaredPoints: target.interactionPoints?.length ?? 0 });
         // declared points may lie beyond the reach band: the heuristic slack must cover every goal cell
         const slack = target.interactionPoints?.length ? Math.max(reach, ...[...cells].map((i) => distanceToArea(cellPoint(g, i).x, cellPoint(g, i).z, area))) : reach;
@@ -304,15 +304,14 @@ export class GridAStarBackend implements NavigationBackend {
   }
 
   /**
-   * Interaction / vantage cells: statically free cells within `range` of the
-   * footprint (declared interaction points when `points` and the entity has
-   * some), not inside a body without a collider, with line of sight to it.
+   * Free cells in range of the footprint (or the declared interaction points),
+   * outside the body, with a clear path for contact.
    */
-  private candidates(g: NavLevelGrid, area: Area, range: number, target: Located, points: boolean): Set<number> {
+  private interactionCells(g: NavLevelGrid, area: Area, range: number, target: Located): Set<number> {
     const out = new Set<number>();
     const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
-    const visible = (i: number) => this.visibility.visibleFrom(target.level, cellPoint(g, i), sight);
-    if (points && target.interactionPoints?.length) {
+    const visible = (i: number) => this.visibility.visibleFrom(target.level, cellPoint(g, i), sight, "contact");
+    if (target.interactionPoints?.length) {
       for (const p of target.interactionPoints) {
         if (!inFrame(g, p.x, p.z)) continue;
         const i = nearestFreeCell(g, g.base, cellIndex(g, p.x, p.z), 1);
@@ -661,10 +660,11 @@ export class GridAStarBackend implements NavigationBackend {
       return this.fail(request.goal, "TARGET_NOT_REACHABLE", { target: label }, { reason: "no-accessible-route", accessibleOnly: true });
     }
     const look = targets.find((tg) => tg.lookRange !== undefined && tg.entity);
-    if (look && targets.length === 1) {
-      const located = this.locate(look.entity!);
-      const g = located ? this.grids.grid(located.level) : null;
-      if (located && g && !this.candidates(g, look.area, look.lookRange!, located, false).size) return this.fail(request.goal, "NO_INTERACTION_POINT", { target: label }, { reason: "no-line-of-sight", range: look.lookRange });
+    if (look?.test && targets.length === 1) {
+      const g = this.grids.grid(look.level);
+      if (g && ![...cellsNear(g, look.area, look.lookRange!, 0)].some(look.test)) {
+        return this.fail(request.goal, "NO_INTERACTION_POINT", { target: label }, { reason: "no-line-of-sight", range: look.lookRange });
+      }
     }
     return this.fail(request.goal, "TARGET_NOT_REACHABLE", { target: label }, { level: targets[0].level, from: request.from.level });
   }

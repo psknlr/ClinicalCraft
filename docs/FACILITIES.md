@@ -166,6 +166,11 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 (`nurse`, `radiologist`, `pathologist`, `lab-tech`, `attending`,
 `pharmacist`, `receptionist`, `paramedic`, `porter`).
 
+In the conversation panel, the portrait uses the same figure, authored appearance
+and uniform as the person in the facility. Each portrait is a still drawn on first
+use from that person's starting appearance. It uses a separate camera and contains
+no information about their present location or condition.
+
 **Staff in the 3D world.** A member of staff is drawn as a figure of real proportions (an adult
 stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
 
@@ -206,8 +211,16 @@ people of a case are drawn by what the case records, never by their hair: the pa
 (CASE_AUTHORING.md). A child is neither yet, a teenager on the way. What an appearance
 leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
 glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
-team is three people, not one person three times. Everyone breathes, blinks, turns their head to
-the learner and moves their jaw when they speak. A name tag floats over each.
+team is three people, not one person three times. People blink, turn their head towards
+the learner and move their jaw when they speak. When the bedside has a live respiratory rate,
+the patient's chest follows it through changes of clothing and posture. A name tag floats over each.
+
+Delegated staff, walking patients and their companions use distance along their route to drive
+their steps. A planted shoe stays on the floor through stance as the other knee bends and its
+foot lifts. The stride scales with leg length, and coat and gown hems follow the legs under
+them. Free arms swing in opposition while scrubbed hands, an arm in a sling and hands on a cart keep their pose.
+The renderer prepares the walk poses on the first step. Staff turn towards their
+assigned patient or equipment when they reach it.
 
 A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
 line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising

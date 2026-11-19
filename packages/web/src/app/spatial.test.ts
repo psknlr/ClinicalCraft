@@ -28,6 +28,7 @@ describe("approachDecision", () => {
 
   it("tells range problems from the others", () => {
     expect(checkIsRange({ ok: false, reason: "not-near-patient" } as never)).toBe(true);
+    expect(checkIsRange({ ok: false, reason: "contact-blocked" } as never)).toBe(true);
     expect(checkIsRange({ ok: false, reason: "missing-capability" } as never)).toBe(false);
     const r = (errorCode: string, status = "failed") => ({ actionId: "a", status, message: "", worldVersion: 1, events: [], errorCode }) as unknown as WorldActionResult;
     expect(resultIsRange(r("NOT_IN_RANGE"))).toBe(true);

@@ -12,6 +12,7 @@
  */
 import type { CreateWorld, WorldApi, WorldOptions, WorldSave } from "../contracts.js";
 import { hasLooks } from "@clinicalcraft/core";
+import { conversationPortraits } from "./portraits.js";
 import { captureJpeg } from "./capture.js";
 import { applyLook } from "./live.js";
 import { PHYSICS } from "./physics.js";
@@ -27,17 +28,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const { camera, scene, renderer } = stage;
 
   const api: WorldApi = {
+    portrait: conversationPortraits(opts, renderer),
     start() {
       world.started = true;
       world.paused = false;
     },
     pause(p: boolean) {
       world.paused = p;
-      world.keys = {};
-      if (p) {
-        world.input.dragFrom = null;
-        if (document.pointerLockElement === canvas) document.exitPointerLock();
-      }
+      world.input.release();
+      if (p && document.pointerLockElement === canvas) document.exitPointerLock();
     },
     select: (n) => world.blocks.select(n),
     interact: () => world.interaction.interact(),
@@ -51,10 +50,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         blocks: [...world.blocks.placed.values()].map((p) => ({ cell: [...p.cell] as [number, number, number], type: p.type })),
       };
     },
-    setKey(code: string, down: boolean) {
-      world.keys[code] = down;
-      if (down && world.walk.current && ["KeyW", "KeyA", "KeyS", "KeyD"].includes(code)) world.walk.cancel(new Error("interrupted by player"));
-    },
+    setKey: (code, down) => world.input.setKey(code, down),
     look: (dx, dy) => world.input.look(dx, dy),
     reset() {
       world.walk.cancel(new Error("reset"));
@@ -62,6 +58,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       world.teleportTo(spawn.x, spawn.z, 0, spawn.yaw ?? 0, 0);
       world.doors.shutAll();
       stage.markShadows();
+    },
+    faceHeading(yaw) {
+      world.yaw = yaw;
+      camera.rotation.set(world.pitch, yaw, 0);
     },
     teleport(x: number, z: number, newYaw?: number, lv?: string) {
       world.walk.cancel(new Error("teleported"));

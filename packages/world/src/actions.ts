@@ -194,6 +194,7 @@ function goalShape(g: unknown, depth: number, leaves: string[]): string | null {
     case "room":
       if (typeof goal.id !== "string" || !goal.id.trim()) return `${goal.kind} goals need an id`;
       if (goal.sameRoom !== undefined && (goal.kind !== "look" || typeof goal.sameRoom !== "boolean")) return "sameRoom is a boolean of look goals";
+      if (goal.clearReach !== undefined && (goal.kind !== "look" || typeof goal.clearReach !== "boolean")) return "clearReach is a boolean of look goals";
       return leaf();
     case "any":
       if (depth >= 3) return "goals nest too deep";
@@ -601,6 +602,23 @@ export class ActionBus implements EffectsHost, TransportHost {
     }
     if (MOVE_OPS.includes(request.operation)) {
       if (!permits(actor.role, request.operation)) return failed("NOT_AUTHORIZED", worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName(request.operation, L) }));
+      // A compass heading scans the room from the current spot. There is no path, travel time or follower step.
+      if (request.operation === "look_at" && request.parameters?.heading !== undefined) {
+        const heading = request.parameters.heading;
+        if (targetId || request.goal || typeof heading !== "number" || !Number.isFinite(heading) || heading < 0 || heading > 360) {
+          return failed("INVALID_REQUEST", worldMessage("pre.lookHeading", L));
+        }
+        const yaw = -(heading % 360) * Math.PI / 180;
+        const events: WorldEvent[] = [];
+        const delta = actor.pose.yaw - yaw;
+        if (Math.abs(Math.atan2(Math.sin(delta), Math.cos(delta))) > 1e-9) {
+          store.setActorPose(actor.id, { ...actor.pose, yaw });
+          events.push(this.emit({ type: "actor.turned", actorId: actor.id, yaw }));
+        }
+        const discovered = this.d.perception.notice(store.actor(actor.id)!);
+        if (discovered.length) events.push(this.emit({ type: "actor.discovered", actorId: actor.id, entities: discovered }));
+        return { status: "completed", message: worldMessage("ok.lookHeading", L, { heading: heading % 360 }), events };
+      }
       let goal: NavGoal | undefined;
       if (request.operation === "navigate") goal = request.goal ?? (targetId ? { kind: "interact", id: targetId } : undefined);
       else if (targetId) goal = request.operation === "approach" ? { kind: "interact", id: targetId } : { kind: "look", id: targetId };

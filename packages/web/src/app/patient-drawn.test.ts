@@ -6,9 +6,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
-import { parseCase, parseFacility, t, type CaseDefinition, type FacilityDefinition } from "@clinicalcraft/core";
-import { patientFor } from "./world-bridge.js";
+import { describe, expect, it, vi } from "vitest";
+import { createSession, parseCase, parseFacility, progress, reduce, t, vitalsAt, type CaseDefinition, type FacilityDefinition } from "@clinicalcraft/core";
+import type { AgentEvent } from "@clinicalcraft/agent";
+import type { WorldApi } from "../contracts.js";
+import type { AppSession } from "./session.js";
+import type { EmbodiedLink } from "./embodied-link.js";
+import { SessionStore } from "./store.js";
+import { GameWorldLink, patientFor } from "./world-bridge.js";
 
 const content = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../content");
 
@@ -38,6 +43,52 @@ function drawn(c: CaseDefinition) {
 }
 
 describe("how the people of a case are drawn", () => {
+  it("reapplies an active speaking animation after a redraw and closes the mouth when leaving mid-line", () => {
+    const c = cases.find((c) => c.id === "dka-adult")!;
+    const store = new SessionStore(c);
+    const app = { store, session: { state: createSession(c) } } as AppSession;
+    const oldDraw = vi.fn(), newDraw = vi.fn();
+    let api = { setPatientState: oldDraw } as unknown as WorldApi;
+    const link = new GameWorldLink({ app, world: () => api, caseDef: c, facility: hospitals[0]!, catalogs: [], slotId: "bed", locale: () => "en", playing: () => false, activeStaff: () => null });
+    try {
+      store.event({ id: "speech", seq: 1, msg: { type: "agent_message", turnId: "1", agent: "patient", speaker: "Patient", text: "Hello", grounded: [] } } as AgentEvent);
+      expect(oldDraw).toHaveBeenLastCalledWith("bed", { speaking: true });
+      api = { setPatientState: newDraw } as unknown as WorldApi;
+      link.refresh();
+      expect(newDraw).toHaveBeenLastCalledWith("bed", { speaking: true });
+    } finally {
+      link.dispose();
+    }
+    expect(newDraw).toHaveBeenLastCalledWith("bed", { speaking: false });
+  });
+
+  it("resumes a treated patient before the next event and refreshes a reused rig from a fresh encounter", () => {
+    const c = cases.find((c) => c.id === "septic-shock-cap")!;
+    const fresh = reduce(c, createSession(c), { type: "start" }).state;
+    const monitored = reduce(c, fresh, { type: "intervene", interventionId: "monitor" }).state;
+    let state = reduce(c, monitored, { type: "intervene", interventionId: "o2-nrb" }).state;
+    const draw = vi.fn();
+    const api = { setPatientState: draw } as unknown as WorldApi;
+    const app = { store: new SessionStore(c), session: { get state() { return state; } } } as AppSession;
+    const link = new GameWorldLink({ app, world: () => api, caseDef: c, facility: hospitals[0]!, catalogs: [], slotId: "bed", locale: () => "en", playing: () => false, activeStaff: () => null, embodied: () => ({} as EmbodiedLink) });
+    try {
+      link.refresh();
+      const given = draw.mock.calls[0]![1];
+      expect(given).toMatchObject({ accessory: "oxygen-mask", respiratoryRate: vitalsAt(c, state).vitals.rr });
+      expect(given).not.toHaveProperty("posture"); // The world determines the posture on a scanner or trolley.
+      state = fresh;
+      link.refresh();
+      expect(draw.mock.calls[1]![1]).toMatchObject({ accessory: c.patient.appearance.accessory, respiratoryRate: null });
+      state = monitored;
+      const vitals = vitalsAt(c, state);
+      expect(vitals.vitals.rr).toBeGreaterThan(0);
+      app.store.event({ id: "attached", seq: 1, msg: { type: "state_snapshot", state, progress: progress(c, state), vitals, waypoint: null } } as AgentEvent);
+      expect(draw.mock.calls[2]![1]).toMatchObject({ accessory: c.patient.appearance.accessory, respiratoryRate: vitals.vitals.rr });
+    } finally {
+      link.dispose();
+    }
+  });
+
   it("the patient by the sex the case records, whatever their hair", () => {
     let seen = 0;
     const kinds = new Set<string>();

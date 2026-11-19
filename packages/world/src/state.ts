@@ -149,7 +149,8 @@ export class WorldStateStore implements WorldDynamics {
     for (const st of f.staff ?? []) {
       const e = this.registry.entity(`staff:${st.id}`);
       if (!e) continue;
-      const pose: Pose = { x: e.position.x, y: e.position.y, z: e.position.z, yaw: (st.rot ?? 0) * DEG, pitch: 0, level: e.level };
+      // Facility figures face +Z at rotation 0. A world actor with yaw 0 looks down −Z.
+      const pose: Pose = { x: e.position.x, y: e.position.y, z: e.position.z, yaw: ((st.rot ?? 0) - 180) * DEG, pitch: 0, level: e.level };
       this.addActor({ id: e.id, role: st.role, controller: "npc", pose, room: e.room, task: null, holding: [], seen: [], handsCleanUntil: null });
     }
   }

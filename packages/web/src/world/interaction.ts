@@ -1,8 +1,8 @@
 /**
  * Aiming and interaction in a voxel world (V4 `Ne`): a ray from the centre of the view finds what the player
  * aims at — an interactive target within reach (outlined; the UI is told when it changes), else a build-zone
- * block — with an analytic ground plane, and in a multi-level facility only what is drawn (hidden levels and
- * culled rigs never take the ray). `E` opens or closes the aimed door (never on the player; a locked one is the
+ * block — with an analytic ground plane. Hidden equipment, culled rigs and hidden levels never take the ray.
+ * `E` opens or closes the aimed door (never on the player; a locked one is the
  * world model's to unlock), calls or works an elevator, or hands the target to the app; with nothing aimed at,
  * the hotbar's first slots are shortcuts.
  */
@@ -24,6 +24,7 @@ function targetId(t: InteractionTarget): string {
     case "equipment":
       return t.placementId;
     case "patient":
+    case "companion":
       return t.slotId;
     case "staff":
       return t.staffId;
@@ -32,6 +33,14 @@ function targetId(t: InteractionTarget): string {
     default:
       return t.id;
   }
+}
+
+/** Three.js raycasts include invisible objects and descendants of hidden groups. */
+function shown(object: Object3D): boolean {
+  for (let part: Object3D | null = object; part; part = part.parent) {
+    if (!part.visible) return false;
+  }
+  return true;
 }
 
 /** The aim of one world and what `E` does with it. */
@@ -56,6 +65,8 @@ export class Interaction {
     const world = this.world;
     const { ctx, callbacks, S } = world;
     if (!world.started || world.paused) return;
+    // A turn or a change of target may have happened since the throttled HUD sample.
+    this.update();
     const t = this.aimTarget;
     if (t) {
       if (t.kind === "door") {
@@ -115,16 +126,6 @@ export class Interaction {
     return { target: o.userData.action as InteractionTarget, box };
   }
 
-  /** Pickables the aim ray may hit: in a multi-level facility, not those of a hidden level (or culled rig). */
-  private aimables(): Object3D[] {
-    const { ctx, levels } = this.world;
-    if (!levels.multi) return ctx.pickables;
-    return ctx.pickables.filter((o) => {
-      for (let p: Object3D | null = o; p; p = p.parent) if (!p.visible) return false;
-      return true;
-    });
-  }
-
   /** Cast the aim ray from the camera: target, block, highlight; tells the app when the target changes. */
   update(): void {
     const world = this.world;
@@ -132,11 +133,12 @@ export class Interaction {
     const { camera } = stage;
     const { raycaster, centre, groundProxy } = this;
     const highlight = overlay.highlight;
+    camera.rotation.set(world.pitch, world.yaw, 0);
     camera.updateMatrixWorld();
     raycaster.setFromCamera(centre, camera);
     raycaster.far = AIM_FAR;
-    const hits = raycaster.intersectObjects(this.aimables(), true);
-    let hit: Intersection | null = hits.find((h) => h.object.visible !== false) ?? null;
+    const hits = raycaster.intersectObjects(world.ctx.pickables.filter(shown), true);
+    let hit: Intersection | null = hits.find((h) => shown(h.object)) ?? null;
     // analytic ground plane (y = 0) — the ground grid is not ray-tested
     const ray = raycaster.ray;
     if (ray.direction.y < -1e-4) {

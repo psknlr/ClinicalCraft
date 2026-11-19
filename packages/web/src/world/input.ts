@@ -10,6 +10,8 @@ import type { VoxelWorld } from "./voxel-world.js";
 /** Keys the world turns into actions (their default — typing a character — is suppressed). */
 const SHORTCUT_CODES = new Set(["KeyE", "KeyB", "Tab", "KeyM", "KeyJ", "KeyT", "Enter", "KeyQ", "KeyF", "Escape"]);
 
+const MOVEMENT_CODES = new Set(["KeyW", "KeyA", "KeyS", "KeyD"]);
+
 /** Is the user typing into a form field (keys are theirs, not the world's)? */
 const typing = () => {
   const el = document.activeElement as HTMLElement | null;
@@ -19,8 +21,9 @@ const typing = () => {
 /** The DOM input of one world (listeners removed by `dispose`). */
 export class InputControls {
   /** Where a drag-look started (no pointer lock), or null. */
-  dragFrom: [number, number] | null = null;
-  private touchFrom: [number, number] | null = null;
+  private dragFrom: [number, number] | null = null;
+  private lookTouch: { id: number; x: number; y: number } | null = null;
+  private jumpPending = false;
   private pointerLocked = false;
   private readonly listeners: [EventTarget, string, EventListener, AddEventListenerOptions | boolean | undefined][] = [];
   private ro: ResizeObserver | null = null;
@@ -70,7 +73,7 @@ export class InputControls {
     on(document, "pointerlockchange", () => {
       this.pointerLocked = document.pointerLockElement === canvas;
       if (!this.pointerLocked) {
-        world.keys = {};
+        this.release();
         if (playing()) callbacks.onPauseRequest();
       }
     });
@@ -79,9 +82,8 @@ export class InputControls {
       // Enter/Space on a focused HUD button activate that button, not the world's chat/jump.
       const control = e.target instanceof Element && e.target !== canvas ? e.target.closest("button, a[href], summary, [role='button']") : null;
       if (control && (e.code === "Enter" || e.code === "NumpadEnter" || e.code === "Space")) return;
-      world.keys[e.code] = true;
+      this.setKey(e.code, true);
       if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(e.code)) e.preventDefault();
-      if (world.walk.current && ["KeyW", "KeyA", "KeyS", "KeyD"].includes(e.code)) world.walk.cancel(new Error("interrupted by player"));
       // Shortcut keys may open a window that focuses a text field synchronously (T/Enter → chat input,
       // E on a staff member): without preventDefault the key's own character would be typed into it.
       if (SHORTCUT_CODES.has(e.code) || e.code.startsWith("Digit")) e.preventDefault();
@@ -124,21 +126,23 @@ export class InputControls {
       }
     });
     on(window, "keyup", (e: KeyboardEvent) => {
-      world.keys[e.code] = false;
+      this.setKey(e.code, false);
     });
     on(window, "blur", () => {
-      world.keys = {};
+      this.release();
       if (playing()) callbacks.onPauseRequest();
     });
     on(document, "visibilitychange", () => {
-      world.keys = {};
+      this.release();
       if (document.hidden && playing()) callbacks.onPauseRequest();
     });
     on(
       canvas,
       "touchstart",
       (e: TouchEvent) => {
-        if (e.touches.length === 1) this.touchFrom = [e.touches[0].clientX, e.touches[0].clientY];
+        if (!playing() || this.lookTouch) return;
+        const t = e.changedTouches[0];
+        if (t) this.lookTouch = { id: t.identifier, x: t.clientX, y: t.clientY };
       },
       { passive: true },
     );
@@ -146,23 +150,54 @@ export class InputControls {
       canvas,
       "touchmove",
       (e: TouchEvent) => {
-        const touchFrom = this.touchFrom;
-        if (touchFrom && e.touches.length === 1 && playing()) {
-          const t = e.touches[0];
-          this.look(t.clientX - touchFrom[0], t.clientY - touchFrom[1]);
-          this.touchFrom = [t.clientX, t.clientY];
+        const from = this.lookTouch;
+        if (!from || !playing()) return;
+        for (const t of e.changedTouches) {
+          if (t.identifier !== from.id) continue;
+          this.look(t.clientX - from.x, t.clientY - from.y);
+          from.x = t.clientX;
+          from.y = t.clientY;
           e.preventDefault();
+          break;
         }
       },
       { passive: false },
     );
-    on(canvas, "touchend", () => (this.touchFrom = null));
+    const endTouch = (e: TouchEvent) => {
+      for (const t of e.changedTouches) if (t.identifier === this.lookTouch?.id) this.lookTouch = null;
+    };
+    on(canvas, "touchend", endTouch);
+    on(canvas, "touchcancel", endTouch);
 
     on(window, "resize", stage.resize);
     if (typeof ResizeObserver !== "undefined") {
       this.ro = new ResizeObserver(stage.resize);
       this.ro.observe(canvas);
     }
+  }
+
+  /** Apply a hardware or on-screen key. Keep the very press that interrupted an agent walk. */
+  setKey(code: string, down: boolean): void {
+    const world = this.world;
+    if (down && !world.playing()) return;
+    if (down && MOVEMENT_CODES.has(code) && world.walk.current) world.walk.cancel(new Error("interrupted by player"));
+    if (code === "Space" && down && !world.keys.Space) this.jumpPending = true;
+    world.keys[code] = down;
+  }
+
+  /** A jump is a press, including a tap that starts and ends between rendered frames. */
+  takeJump(): boolean {
+    const pressed = this.jumpPending;
+    this.jumpPending = false;
+    return pressed;
+  }
+
+  /** Clear held keys and pending gestures when control is suspended or ownership changes. */
+  release(): void {
+    this.world.keys = {};
+    this.jumpPending = false;
+    this.dragFrom = null;
+    this.lookTouch = null;
   }
 
   /** Turn the view by a mouse / touch movement (sensitivity from the settings). */

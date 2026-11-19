@@ -61,6 +61,10 @@ clinical tool), and deny rules hold. On a clinical session the world tools
 return `isError` with `structuredContent.error = "not_embodied"`. The case
 list comes from the case index; only the started case is validated.
 
+At the bedside, `look_at {"session_id":"…","heading":90}` turns the clinician
+east in place and returns a new observation. North is 0°, south is 180° and
+west is 270°. Use `look_at` with `target` to walk to a viewing position.
+
 **Attach mode.** `clinicalcraft mcp --attach <server> --world-session <id>
 --attach-key-file <f> [--token-file f] [--timeout <sec>]`
 (`runAttachedMcpServer`) acts in a learner's LIVE browser session through

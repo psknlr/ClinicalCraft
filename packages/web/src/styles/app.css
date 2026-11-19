@@ -1037,6 +1037,19 @@ html[lang="en"] .intro-card h2 {
 .convo-side .portrait {
   min-height: 200px;
 }
+.convo-side .character-portrait {
+  overflow: hidden;
+  padding: 0 0 12px;
+}
+.character-portrait img {
+  display: block;
+  width: 100%;
+  height: clamp(128px, 23vh, 220px);
+  object-fit: contain;
+}
+.character-portrait small {
+  margin: 6px 8px 0;
+}
 .convo-side > p {
   margin: 0;
 }

@@ -58,7 +58,7 @@ export interface PatientSpot {
 }
 
 export type InteractionTarget =
-  | { kind: "patient"; slotId: string; caseId: string; name: string; hint: string }
+  | { kind: "patient" | "companion"; slotId: string; caseId: string; name: string; hint: string }
   | { kind: "staff"; staffId: string; role: string; name: string; hint: string }
   | {
       kind: "equipment";
@@ -214,6 +214,8 @@ export interface WorldOptions {
 }
 
 export interface WorldApi {
+  /** A conversation portrait made from the person's authored appearance, or null when unavailable. */
+  portrait(kind: "patient" | "companion" | "staff", id: string): string | null;
   start(): void;
   pause(paused: boolean): void;
   /** Hotbar slot (V4: 0 talk, 1 journal, 2 map, 3-6 blocks wood/stone/glass/lamp, 7 inventory, 8 help). */
@@ -226,10 +228,12 @@ export interface WorldApi {
   look(dx: number, dy: number): void;
   /** Back to spawn (doors closed); progress kept. */
   reset(): void;
+  /** Set the avatar’s world yaw in radians, preserving position, pitch and motion. */
+  faceHeading(yaw: number): void;
   /** Teleport onto the floor of `level` (default: the facility's default level). */
   teleport(x: number, z: number, yaw?: number, level?: string): void;
-  /** Animate an NPC: speaking (head bob), posture, accessory (oxygen mask…), affect tint. */
-  setPatientState(slotId: string, state: { speaking?: boolean; posture?: WorldPatient["posture"]; accessory?: Appearance["accessory"]; distressed?: boolean }): void;
+  /** Animate the patient. A current respiratory reading sets the chest cadence in breaths/minute; null restores idle motion. */
+  setPatientState(slotId: string, state: { speaking?: boolean; posture?: WorldPatient["posture"]; accessory?: Appearance["accessory"]; distressed?: boolean; respiratoryRate?: number | null }): void;
   setStaffSpeaking(staffId: string, speaking: boolean): void;
   /** The speaking animation of the patient's companion (`WorldPatient.companion`; none: nothing). */
   setCompanionSpeaking(slotId: string, speaking: boolean): void;

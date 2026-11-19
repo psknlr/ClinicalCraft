@@ -176,7 +176,8 @@ describe("audit 2026-11-12 P1-8: navigation goes where the actor believes a thin
 
   it("staff go by the same rule: the nurse seeks a cart the clinician moved where she believes it is, and asks", async () => {
     const w = makeWorld("stemi-inferior-rv");
-    // the clinician wheels the bay's cart out to cubicle 1 while the nurse is at her station
+    // The nurse faces away from the cubicle at her station while the clinician wheels the cart there.
+    w.runtime.updatePose(NURSE, { ...w.runtime.actor(NURSE)!.pose, yaw: 0 });
     expect((await w.act({ actorId: A, operation: "approach", targetId: ECG })).status).toBe("completed");
     expect((await w.act({ actorId: A, operation: "move_to", targetId: ECG, goal: { kind: "room", id: "ed-cubicle-1" } })).status).toBe("completed");
     // whoever moved it knows where it is

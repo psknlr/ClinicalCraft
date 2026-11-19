@@ -104,7 +104,7 @@ export const NavGoalSchema: z.ZodType<NavGoal> = z.lazy(() =>
     z.object({ kind: z.literal("interact"), id: Ref, operation: Ref.optional() }).strict(),
     z.object({ kind: z.literal("room"), id: Ref }).strict(),
     z.object({ kind: z.literal("follow"), id: Ref, range: z.number().positive().max(50).optional() }).strict(),
-    z.object({ kind: z.literal("look"), id: Ref, range: z.number().positive().max(50).optional(), sameRoom: z.boolean().optional() }).strict(),
+    z.object({ kind: z.literal("look"), id: Ref, range: z.number().positive().max(50).optional(), sameRoom: z.boolean().optional(), clearReach: z.boolean().optional() }).strict(),
     z.object({ kind: z.literal("any"), goals: z.array(NavGoalSchema).min(1).max(8) }).strict(),
   ]),
 ) as z.ZodType<NavGoal>;

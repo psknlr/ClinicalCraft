@@ -58,7 +58,8 @@ jobs:
   e2e:
     # The suite renders the 3D world through SwiftShader (one worker, ~30 min serial): two shards of spec files.
     name: e2e (${{ matrix.shard }})
-    runs-on: ubuntu-latest
+    # Playwright 1.56 supports the Ubuntu 24.04 Chromium dependencies.
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     needs: build-test
     strategy:

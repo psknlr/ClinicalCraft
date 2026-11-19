@@ -161,7 +161,11 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
     inputSchema: obj({ target: { type: "string", minLength: 1, maxLength: 120 }, goal: GOAL_SCHEMA, range: { type: "number", minimum: 0, maximum: 30, description: "Stop within this distance (m) of the target." } }),
   },
   { name: "approach_object", description: "Walk to the best interaction point of an entity (within reach, line of sight, facing it).", inputSchema: obj({ target: TARGET }, ["target"]) },
-  { name: "look_at", description: "Move to a spot from where you can see an entity and face it (e.g. a monitor screen).", inputSchema: obj({ target: TARGET }, ["target"]) },
+  {
+    name: "look_at",
+    description: "Give either target to walk to a vantage point facing an entity, or heading to turn in place and observe your surroundings. A heading is absolute degrees clockwise from north (0 north, 90 east, 180 south, 270 west).",
+    inputSchema: obj({ target: TARGET, heading: { type: "number", minimum: 0, maximum: 360, description: "Compass heading in degrees. Use alone to keep your current position." } }),
+  },
   {
     name: "interact_object",
     description:
@@ -409,6 +413,10 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
     const target = strArg(args, "target");
     return (target && host.resolve(target, host.actorOf(ctx))) || target;
   };
+  const lookSpecifiers = (args: Record<string, unknown>, ctx: ToolContext): string[] => {
+    if (args.heading !== undefined && args.target === undefined) return [`heading:${args.heading === 360 ? 0 : String(args.heading)}`];
+    return spellings(resolvedTarget(args, ctx));
+  };
   /** `navigate_to`'s rule specifiers: the target's entity, or every leaf of the goal (canonical ids). */
   const navigateSpecifiers = (args: Record<string, unknown>, ctx: ToolContext): string[] => {
     const actorId = host.actorOf(ctx);
@@ -633,13 +641,25 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
     ),
     acting(
       "look_at",
-      (args, ctx) => rt(ctx.locale, "sum.lookAt", { target: targetName(ctx, strArg(args, "target")) }),
+      (args, ctx) => args.heading === undefined
+        ? rt(ctx.locale, "sum.lookAt", { target: targetName(ctx, strArg(args, "target")) })
+        : rt(ctx.locale, "sum.lookHeading", { heading: String(args.heading) }),
       async (args, ctx) => {
-        const id = host.resolve(strArg(args, "target"), host.actorOf(ctx));
+        const actor = host.actorOf(ctx);
+        if (args.heading !== undefined) {
+          if (args.target !== undefined) return failedOutput(ctx, "world.lookChoice");
+          const result = await host.act(ctx, { operation: "look_at", parameters: { heading: args.heading } });
+          if (result.status !== "completed") return resultOutput(result, L(ctx));
+          const world = host.world();
+          const observation = world.observe(actor, { maxEntities: 8 });
+          return { ok: true, output: [actionResultText(result, L(ctx)), observationText(world, observation, L(ctx), host.clockText())].join("\n"), data: { result, observation } };
+        }
+        if (!strArg(args, "target")) return failedOutput(ctx, "world.lookChoice");
+        const id = host.resolve(strArg(args, "target"), actor);
         if (!id) return failedOutput(ctx, "world.unknownTarget", { target: strArg(args, "target") });
         return resultOutput(await host.act(ctx, { operation: "look_at", targetId: id }), L(ctx));
       },
-      { specifier: (args, ctx) => resolvedTarget(args, ctx), specifiers: (args, ctx) => [spellings(resolvedTarget(args, ctx))] },
+      { specifier: (args, ctx) => lookSpecifiers(args, ctx)[0] ?? "", specifiers: (args, ctx) => [lookSpecifiers(args, ctx)] },
     ),
     acting(
       "interact_object",
@@ -690,7 +710,7 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       async (args, ctx) => {
         const actorId = strArg(args, "actor") ? (host.resolve(strArg(args, "actor"), host.actorOf(ctx)) ?? strArg(args, "actor")) : host.actorOf(ctx);
         const result = await host.act(ctx, { actorId, operation: "cancel" });
-        return { ok: result.status === "completed", output: result.message, data: { result } };
+        return resultOutput(result, L(ctx));
       },
     ),
     acting(

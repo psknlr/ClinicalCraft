@@ -13,7 +13,8 @@ import type { ActionHint, NavGoal, NavPlan, SpatialCheck, WorldActionResult, Wor
 export const AUTO_APPROACH_M = 5.5;
 
 /** Spatial-check reasons that walking a few steps fixes (no cart to fetch, nothing missing). */
-export const RANGE_REASONS: ReadonlySet<string> = new Set(["not-near-patient", "not-at-patient", "patient-not-visible", "no-provider-in-reach"]);
+export const PATIENT_DISTANCE: ReadonlySet<string> = new Set(["not-near-patient", "not-at-patient", "patient-not-visible", "contact-blocked"]);
+export const RANGE_REASONS: ReadonlySet<string> = new Set([...PATIENT_DISTANCE, "no-provider-in-reach"]);
 
 /** World action error codes that walking a few steps fixes. */
 export const RANGE_CODES: ReadonlySet<string> = new Set(["NOT_IN_RANGE", "NOT_VISIBLE", "SPATIAL_REQUIREMENT_UNMET"]);

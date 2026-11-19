@@ -77,10 +77,10 @@ published; build a redistributable one with
 `npm run build:standalone -- --no-local-assets` (from the repository root or
 this package; docs/ASSETS.md).
 
-**Controls:** `WASD` move · mouse look · `Space` jump · `Shift` sprint · `E`
+**Controls:** `WASD` move · hold `C` while moving for small bedside steps · mouse look · `Space` jump · `Shift` sprint · `E`
 interact · `T`/`Enter` talk · `V` monitor · `J` journal · `M` map ·
 `B`/`Tab` bag · `1–9` hotbar · `Esc` pause. Touch controls appear on
-touch screens.
+touch screens. Hold a direction with one thumb and swipe the scene with the other to turn.
 
 | folder (`src/`) | |
 |---|---|

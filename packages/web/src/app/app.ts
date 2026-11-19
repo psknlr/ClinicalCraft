@@ -175,6 +175,8 @@ export class ClinicalCraftApp implements App {
       },
     });
     this.external = new ExternalControl({
+      // An attached agent may act between the avatar's throttled pose updates.
+      onActivity: (activity) => { if (activity.phase === "started") this.game?.embodied?.syncPose(); },
       onChange: () => {
         this.refresh();
         this.maybeEndExternal();
@@ -719,7 +721,7 @@ export class ClinicalCraftApp implements App {
     const game = this.game;
     if (!game) return;
     const a = this.aim;
-    if (a?.kind === "staff" || a?.kind === "patient") {
+    if (a?.kind === "staff" || a?.kind === "patient" || a?.kind === "companion") {
       const r = routeInteraction(a, {
         caseDef: game.caseDef,
         slotId: game.slotId,
@@ -857,6 +859,7 @@ export class ClinicalCraftApp implements App {
       };
       this.game = game;
       // the scene shows the world's physical state (a restored world: staff, carts, locks)
+      link.refresh();
       embodied?.syncScene();
       // Who answers history first (core `historyVoice`): the companion who answers it, or any companion while the patient cannot speak.
       this.lastTalk = {
