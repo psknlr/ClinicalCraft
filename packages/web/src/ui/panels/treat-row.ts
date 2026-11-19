@@ -16,7 +16,7 @@
  * (docs/PROTOCOL.md §3.2). Without it the row gives the preset it shows.
  */
 import { doseText, itemOrder } from "@clinicalcraft/agent";
-import { readOrder, type CaseDefinition, type Intervention, type WrittenOrder } from "@clinicalcraft/core";
+import { dosesGiven, lastGivenRecord, maxDosesReached, readOrder, type CaseDefinition, type Intervention, type WrittenOrder } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { missingCaps } from "../../app/stations.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -38,14 +38,18 @@ export function searchOrder(c: CaseDefinition, text: string, interventionId: str
 
 /** One treatment as a row with its "Give" (see the module docs); `ordered`: the search's order as written, when it states a dose. */
 export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean, ordered?: WrittenOrder): HTMLElement {
-  const store = game.session.store;
-  const outcome = store.interventions.get(iv.id);
+  // what was given is the engine's record, counted as the engine counts it against `maxDoses` (`dosesGiven`): a
+  // checklist step attempted out of order gave nothing and can be made again in order; a resumed encounter shows
+  // what it had given
+  const state = game.session.store.snapshot?.state ?? game.session.session.state;
+  const given = dosesGiven(state, iv.id);
+  const outcome = lastGivenRecord(state, iv.id);
   // embodied: the world's verdict from where the learner stands (the kit at the bedside, the IV access first, a
   // busy device…) — the click goes through act (a short step, or the refusal with the way); clinical mode: the
   // facility's bedside capabilities
   const v = game.embodied?.verdict({ type: "intervene", interventionId: iv.id }) ?? null;
   const missing = v ? [] : missingCaps(iv.requires, caps);
-  const maxed = iv.maxDoses !== undefined && (outcome?.count ?? 0) >= iv.maxDoses;
+  const maxed = maxDosesReached(state, iv);
   let needs = "";
   if (v?.kind === "refused" && !onlyDistance(v)) needs = v.message;
   else if (missing.length) {
@@ -71,7 +75,7 @@ export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<strin
         { class: "badges" },
         riskBadge(iv.risk),
         outcome ? h("span", { class: `outcome ${outcome.appropriateness}` }, tr(`treat.outcome.${outcome.appropriateness}`)) : null,
-        outcome ? h("span", { class: "muted small" }, tr("treat.given", { n: outcome.count })) : null,
+        outcome ? h("span", { class: "muted small" }, tr("treat.given", { n: given })) : null,
       ),
       needs ? h("small", { class: "needs" }, needs) : null,
     ),

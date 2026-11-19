@@ -17,7 +17,7 @@ export * from "./procedure/index.js";
 export { createSession, reduce, replay, RESULTING_ACTS } from "./reducer.js";
 
 // queries
-export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, awaitingAcquisition, activeHolds, type ConditionRef } from "./conditions.js";
+export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, dosesGiven, maxDosesReached, resultFor, resultKey, parseResultKey, isOrderReady, awaitingAcquisition, activeHolds, type ConditionRef } from "./conditions.js";
 export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
 export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";

@@ -22,6 +22,7 @@
  */
 import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, scopeOf, type Resolution } from "@clinicalcraft/agent";
 import {
+  dosesGiven,
   historyAvailable,
   matchExam,
   matchInterventions,
@@ -495,8 +496,10 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const emb = game.embodied;
       const away = emb ? distanceNotice(game, c.interventions.map((iv) => emb.verdict({ type: "intervene", interventionId: iv.id }))) : null;
       if (away) wrap.insertBefore(away, wrap.children[1] ?? null);
-      // what was given so far, ready to give again
-      const given = c.interventions.filter((iv) => store.interventions.has(iv.id));
+      // what was given so far, ready to give again — the engine's record (`dosesGiven`: an attempt out of order gave
+      // nothing; a resumed encounter keeps what it gave)
+      const state = store.snapshot?.state ?? game.session.session.state;
+      const given = c.interventions.filter((iv) => dosesGiven(state, iv.id) > 0);
       if (given.length) {
         wrap.append(h("h4", { class: "group-title" }, tr("treat.givenTitle")), h("div", { class: "treat-list" }, given.map((iv) => treatRow(app, game, iv, caps, scope !== "full"))));
       }

@@ -109,6 +109,22 @@ export function lastGivenRecord(s: SessionState, interventionId: string): Interv
 }
 
 /**
+ * Doses of an intervention given so far: its records that are not invalid checklist attempts (an attempt out of order
+ * gives nothing and uses none of `maxDoses`). What `maxDoses` counts — the reducer refuses a dose past it, and a
+ * front-end shows this count rather than one of its own.
+ */
+export function dosesGiven(s: SessionState, interventionId: string): number {
+  let n = 0;
+  for (const r of s.interventions) if (r.interventionId === interventionId && !r.invalid) n++;
+  return n;
+}
+
+/** True when an intervention with a `maxDoses` has had that many doses (`dosesGiven`): the reducer refuses another. */
+export function maxDosesReached(s: SessionState, intervention: { id: string; maxDoses?: number }): boolean {
+  return intervention.maxDoses != null && dosesGiven(s, intervention.id) >= intervention.maxDoses;
+}
+
+/**
  * Was a finding examined after the intervention was last given? By committed action sequence (records saved before
  * `seq` compare minutes); false while either never happened.
  */

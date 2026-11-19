@@ -20,7 +20,7 @@ import {
 } from "../schema/session.js";
 import type { Intervention } from "../schema/case.js";
 import { t } from "../i18n.js";
-import { activeHolds, awaitingAcquisition, evaluate, resultFor, resultKey } from "./conditions.js";
+import { activeHolds, awaitingAcquisition, evaluate, maxDosesReached, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
@@ -348,9 +348,8 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
   const { c, s, before } = ctx;
   const intervention = c.interventions.find((i) => i.id === a.interventionId);
   if (!intervention) return rejected("unknown-id", `unknown intervention "${a.interventionId}"`);
-  // a checklist step's out-of-order attempts are logged but use none of its doses
-  const given = s.interventions.filter((r) => r.interventionId === intervention.id && !r.invalid).length;
-  if (intervention.maxDoses != null && given >= intervention.maxDoses) {
+  // a checklist step's out-of-order attempts are logged but use none of its doses (`dosesGiven`, as front-ends count)
+  if (maxDosesReached(s, intervention)) {
     return rejected("max-doses", `"${intervention.id}" may be given at most ${intervention.maxDoses} time(s)`);
   }
   // an explicit hold (who placed it, why) stands until its holder records a reassessment and releases it
@@ -435,8 +434,7 @@ function onHold(ctx: Ctx, a: Action<"hold">): Outcome {
   const { c, s } = ctx;
   const intervention = c.interventions.find((i) => i.id === a.interventionId);
   if (!intervention) return rejected("unknown-id", `unknown intervention "${a.interventionId}"`);
-  const given = s.interventions.filter((r) => r.interventionId === intervention.id && !r.invalid).length;
-  if (intervention.maxDoses != null && given >= intervention.maxDoses) return rejected("invalid", `"${intervention.id}" has already been given; there is nothing left to hold`);
+  if (maxDosesReached(s, intervention)) return rejected("invalid", `"${intervention.id}" has already been given; there is nothing left to hold`);
   if (activeHolds(s, intervention.id).some((h) => sameHolder(h.placedBy, a.placedBy))) {
     return rejected("invalid", `${a.placedBy} already holds "${intervention.id}"`);
   }
