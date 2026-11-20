@@ -3,7 +3,7 @@
  * are their place's — the first assistant takes port B and keeps its traction; a step outside the place's controls
  * (dissection) is refused NOT_AUTHORIZED before anyone is asked to approve it, in the learner's language; nobody but the
  * session names who acts (`actor`) or which step of a plan a step is (`ref`); a body-less call — the learner, the CLI,
- * MCP, the external clinician — is the learner's body (A6); a place needs in-world mode and is never the
+ * MCP, the external clinician — is the learner's body (docs/TEAM.md §1); a place needs in-world mode and is never the
  * demonstration's; and once a place's start is accepted the learner's body stands at the team's table, once.
  *
  * A place is taken by dispatching the start to the session kernel (`theatreSession({start})`): the learner's own path
@@ -190,7 +190,7 @@ describe("whom a port is handed to, and who takes part, before any approval", ()
   });
 });
 
-describe("a body-less call is the learner's body (A6)", () => {
+describe("a body-less call is the learner's body", () => {
   it("in a place, an MCP-style and a CLI-style dissection are refused NOT_AUTHORIZED; what the place may do, they do as the place", async () => {
     const t = await theatreSession({ start: FIRST });
     operatorSteps(t, ACCESS);

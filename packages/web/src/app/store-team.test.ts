@@ -1,5 +1,5 @@
 /**
- * The web store and the care team's own calls (docs/TEAM.md §4.5; amendments A5): the stand-in surgeon's steps run on
+ * The web store and the care team's own calls (docs/TEAM.md §4.5): the stand-in surgeon's steps run on
  * the session's team caller (agent `team`) in turns of their own that close. In the DEFAULT approval mode — its critical
  * steps asked as call-outs, one stopped and one let go on through the call-out card — the store never holds the `team`
  * agent busy, `agentDriving` stays false throughout, and afterwards the encounter's clocks run on: the team's round, the

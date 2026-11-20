@@ -41,7 +41,7 @@ export function frameCaption(
 
 /**
  * The field's people as the learner reads them in a game (`field-names.ts`): the learner — operating, or their place's
- * member — is "you", anyone else by name (core `memberBody`, A19).
+ * member — is "you", anyone else by name (core `memberBody`; docs/TEAM.md §1).
  */
 export function fieldWordsOf(game: Game) {
   return learnerField(game.caseDef, game.facility, () => game.session.store.snapshot?.state ?? game.session.session.state);

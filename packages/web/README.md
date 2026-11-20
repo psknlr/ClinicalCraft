@@ -133,7 +133,9 @@ you hold yourself names nobody else (you are told so). The badge says the place
 nurse's place a bar on the scope dock (hidden while a window is open, with its
 own **Hide**) says what is asked for, with its **Pass**, what waits to go in and
 when the count is due, hands what you carry to the surgeon and opens **In my
-hands** and the **Instrument table**; at the sterile field your hand is gloved.
+hands** and the **Instrument table** (the operative field's, in the surgery
+window: the world's instrument sets are opened at the set); at the sterile
+field your hand is gloved.
 A device's operations the world will not let you do are greyed out, with why
 under them; one your own steps fix (the cart to fetch) stays to press, and the
 world says the way.
@@ -153,7 +155,7 @@ every full case is its own lazy chunk, loaded (and validated) when the case
 is selected or started. Facilities, room templates and equipment catalogs are
 bundled; facilities that place room templates are compiled when loaded.
 
-The e2e suite (45 tests in 16 spec files, `e2e/`) runs Chromium with
+The e2e suite (57 tests in 19 spec files, `e2e/`) runs Chromium with
 SwiftShader only — no other browser or real GPU is tested. E2E tests start
 Vite on port 5197 (`CC_E2E_PORT`; `external-agent.spec.ts`
 also builds the web into a temporary directory and runs `clinicalcraft serve`

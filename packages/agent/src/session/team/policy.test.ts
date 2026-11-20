@@ -410,7 +410,8 @@ describe("an assistant at the operating table", () => {
     // nobody else may be handed it: no one named
     const alone = propose(table(member(ANAES, ["anaesthesia"]), { controls: ["anaesthesia"], colleagues: [], inbox: [ask(ANAES, TRACTION)] }));
     expect(say(alone)!.message.text.en).toBe("I don't hold the Traction control.");
-    // the operator's own instrument is never taken (A13); a port a colleague holds is theirs to hand over
+    // the operator's own instrument is never taken (docs/PROCEDURE.md §3); a port a colleague holds is theirs to hand
+    // over
     expect(say(propose(table(me, { inbox: [ask(FIRST, { ...TRACTION, port: "C" })] })))).toMatchObject({ message: { kind: "decline", about: { reason: "operator-instrument" }, text: { en: "The Maryland dissector in port C is the operator's own instrument." } } });
     const heldBySecond = field({ ports: [field().ports[0]!, { ...field().ports[1]!, holder: "or.second" }, field().ports[2]!] });
     expect(say(propose(table(me, { field: heldBySecond, inbox: [ask(FIRST, TRACTION)] })))).toMatchObject({ message: { kind: "decline", about: { reason: "port-held" } } });
@@ -741,7 +742,7 @@ describe("the stand-in surgeon", () => {
     expect(p!.kind === "say" && p!.message.text["zh-CN"]).toBe("B 孔我来。");
     expect(sets(p)).toContainEqual(expect.objectContaining({ step: "take:B:30" }));
     expect(stepOf(propose(standIn(30, { field: heldB, tasks: [planTask({ step: "take:B:30" })] })))).toEqual({ op: { op: "hand-over", port: "B" }, ref: "standin:30:take:1" });
-    // the extraction through the camera port its holder holds (A12)
+    // the extraction through the camera port its holder holds (docs/TEAM.md §4.5)
     const bagged = at(39, { specimen: "bagged" });
     expect(said(propose(standIn(39, { field: bagged })))).toMatchObject({ text: "I'll take port A." });
     expect(stepOf(propose(standIn(39, { field: bagged, tasks: [planTask({ step: "take:A:39" })] })))).toEqual({ op: { op: "hand-over", port: "A" }, ref: "standin:39:take:1" });

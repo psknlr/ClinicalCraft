@@ -196,7 +196,7 @@ const TABLE_TASKS = ["hold_traction", "release_traction", "hold_camera", "aim_ca
 const FIRST = { type: "start", seat: "first-assistant" } as const;
 const learnerStep = (t: TestSession, op: Record<string, unknown>) => t.session.run({ type: "clinical_action", action: { type: "operate", op } as never });
 
-describe("the body that operates is handed none of the table's tasks (A16), and nobody the field takes no part from is chosen", () => {
+describe("the body that operates is handed none of the table's tasks (never the camera), and nobody the field takes no part from is chosen", () => {
   it("the stand-in surgeon: named (主刀) he is refused the camera, with who holds it; asked of the attendings he is never chosen, however near — the ports the learner holds stay theirs", async () => {
     // two surgeons, the learner as first assistant (who holds the camera); no physician spelling the role
     const t = await theatre(FIRST, { facility: noPhysician() });

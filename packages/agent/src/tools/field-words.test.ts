@@ -2,7 +2,7 @@
  * Whom the operative field's words are said to (docs/PROCEDURE.md §7): "you" is the addressee — the acting body unless
  * the caller names another (a delegated step reports to the learner who delegated it) —, so a colleague's own call never
  * calls two people "you": the learner, said to a colleague, is named by their place. A record's staff reference shows
- * the member whose place the learner holds as "you" (A19).
+ * the member whose place the learner holds as "you" (docs/TEAM.md §1).
  */
 import { describe, expect, it } from "vitest";
 import { createSession, fieldGate, LEARNER_BODY, reduce, type ClinicalAction } from "@clinicalcraft/core";
@@ -63,7 +63,7 @@ describe("'you' is whom the words are said to", () => {
   });
 });
 
-describe("a record's staff as the learner reads it (A19)", () => {
+describe("a record's staff as the learner reads it", () => {
   it("the count's escalation by the member whose place the learner holds is 'you'; anyone else as recorded", () => {
     const c = theatreCase({ team: { ...structuredClone(LAP_CHOLE_TEAM), room: THEATRE, count: { item: "test-swab", when: { procedure: { specimen: "extracted" } }, searchPlaces: ["t-swab"] } } });
     const escalated = { op: "escalate" as const, staff: "nurse-2", to: "surgeon", reason: "one swab is missing", at: 0, seq: 1 };

@@ -2,11 +2,12 @@
  * The care team from slash commands (docs/TEAM.md §5, docs/PROTOCOL.md §9), on the agent's theatre fixture: `/seat`
  * says the learner's place, its controls and who works where — operating, the places the case offers —; `/team` shows
  * the team now and what the stand-in waits on the learner for, with how to answer; `/team run` stops there and does not
- * start while the learner's answer is owed; `/team reply` with no message answers that line; `/operate` is a step as the
- * learner's place (A6: dissection refused for the first assistant before any approval), `/field` the field as the place
- * sees it; an observer refusal names `/team play`; the session's refusals and warnings are shown as it says them; a
- * position word naming the learner's own place names nobody — in an `@` mention and in `/delegate` —; `/delegate`'s
- * usage names its target, and a position in words before the task is whom it asks.
+ * start while the learner's answer is owed; `/team reply` with no message answers that line; `/operate` is a step as
+ * the learner's place (a body-less call is the learner's body: dissection refused for the first assistant before any
+ * approval), `/field` the field as the place sees it; an observer refusal names `/team play`; the session's refusals
+ * and warnings are shown as it says them; a position word naming the learner's own place names nobody — in an `@`
+ * mention and in `/delegate` —; `/delegate`'s usage names its target, and a position in words before the task is whom
+ * it asks.
  */
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
@@ -94,7 +95,8 @@ describe("/team in a place", () => {
     const step = await cmd(t, "operate", "hand-over port=A to=doc-1");
     expect(step.text).toBe("Done: hand-over.");
     expect(t.session.state.procedure!.ports.find((p) => p.site === "A")).toMatchObject({ holder: "doc-1" });
-    // a step the place's controls do not cover: refused before any approval, as the first assistant (A6)
+    // a step the place's controls do not cover: refused before any approval, as the first assistant (a body-less call
+    // is the learner's body)
     const dissect = await cmd(t, "operate", "dissect port=C region=hepatocystic-triangle");
     expect(dissect.text).toBe("You are the first assistant: dissection is the operating surgeon's.");
     expect(dissect.data).toMatchObject({ ok: false, data: { code: "NOT_AUTHORIZED" } });

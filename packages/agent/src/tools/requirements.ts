@@ -78,7 +78,7 @@ export function countLines(c: CaseDefinition, s: SessionState, L: string): strin
   const item = countItemName(c, L);
   const open = r && status !== "correct" && status !== "reconciled" ? countOpenItems(r) : { missing: [], unexpected: [] };
   const lines = [rt(L, "count.line", { item, status: rt(L, `count.status.${status}` as RuntimeKey), open: openItemsText(L, open) })];
-  // who escalated, as the record names them — the member whose place the learner holds is "you" (A19)
+  // who escalated, as the record names them — the member whose place the learner holds is "you" (docs/TEAM.md §1)
   for (const e of r?.entries ?? []) if (e.op === "escalate") lines.push(rt(L, "count.line.escalated", { who: shownRef(c, s, e.staff, L), to: e.to }));
   for (const u of r?.unsafe ?? []) lines.push(rt(L, "count.line.unsafe", { status: rt(L, `count.status.${u.status}` as RuntimeKey), open: openItemsText(L, u) }));
   return lines;

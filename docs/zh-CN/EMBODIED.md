@@ -944,9 +944,10 @@ clinical 类别只允许行动者*请求*临床效果；最终仍由会话的工
 - 手术室的委派任务：`hold_traction` / `release_traction` 需要牵引显露（`retract`），`hold_camera` / `aim_camera`
   需要扶镜，`pass_instrument` 需要器械台。
 - 学员担任其岗位时在旁待命的同事没有任何分工权限，也不会被委派任何任务。
-- 正在主刀的身体——学员担任团队岗位时即主刀同事的身体——不会被委派任何手术室的任务（从不扶镜，A16；也不会从握持者
-  手中收回某个孔），术野不接纳其参与的同事同样如此（核心的 `stepPartyRefusal`：本次团队情景中不在场的成员；学员担任
-  岗位时不在本次团队中的同事）。按角色委派这些任务时，这三类人都会被跳过。
+- 正在主刀的身体——学员担任团队岗位时即主刀同事的身体——不会被委派任何手术室的任务（从不扶镜：扶镜手从不是
+  术者成员，见 docs/GLOSSARY.md；也不会从握持者手中收回某个孔），术野不接纳其参与的同事同样如此（核心的
+  `stepPartyRefusal`：本次团队情景中不在场的成员；学员担任岗位时不在本次团队中的同事）。按角色委派这些任务时，
+  这三类人都会被跳过。
 
 其余一切仍按角色判断。因此 `delegate_task {role: "attending", task: "hold_traction"}` 会交给第一助手，而不是麻醉
 医生——点名麻醉医生时，在迈出一步或任何审批之前就以 `NOT_AUTHORIZED` 拒绝，并说明团队中谁有该分工权限（"Dr Wang
@@ -1762,7 +1763,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 智能体具身模式（设置 `embodiment` / `perception`、`SessionOptions.embodied`、`world_action` / `world_pose` op、`world_event` / `world_action_result`、`ClinicalView` / `ClinicalPort`、空间闸门 + 提交前复查、18 个世界工具、行走与操作时间、`world()` / `trace()`） | yes（A5；`transport_patient` 来自 FX-T） | 在内置病例上的智能体单元 + 集成测试：审批前带 `hint.goal` 的拒绝、TOCTOU → `SPATIAL_PRECONDITION_CHANGED`、经设备的 `deny: ["intervene(alteplase)"]`、`world_action` op、委派、技能与模型的内联技能、行走只计一次 / 静态时钟从不计时、脚本模型 observe → navigate → order → read、只对视觉模型提供摄像画面、Anthropic / OpenAI 请求体 | CLI `--embodied`（play、exec、eval）与 MCP `start_case {embodied}`；网页（§2.1） | no——**从未有真实模型驱动过具身工具**；未用真实模型测试对提示注入的抵抗力。Sec |
 | 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
-| 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（45 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
+| 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（57 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
 | 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29）。中华病例说 20 例（[CMCR_CASES.md](../CMCR_CASES.md)）：该测试在综合医院、两种语言下均达到临床得分（2026-10-29）；调阅病历从不移动患者；未在教学医院测量 | no——是参考解法的确定性重放：展示的是管道，不是推理 |
 | 委派（`delegate_task`：`attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`、`hold_traction`、`release_traction`、`hold_camera`、`aim_camera`、`pass_instrument`） | yes（A5；评审：床旁规则、跟随取设备提示、`onBehalfOf`、迈步前检查执业范围、`cancelled` C17、不留下任何占用 C3；手术台旁的任务按分工权限：手术岗位轮次） | 护士连接监护仪（引擎、世界状态、护士在床旁、行走时间）；拒绝规则作用于委派者；`/delegate staff:ed-nurse record_ecg`（综合医院）与 `staff:ed-station.nurse`（教学医院，先把推车推到床边）；护工转运；手术台旁的任务按分工权限与岗位——经交接或放入空孔接过镜头、对准、递器械、牵引，跳过并拒绝在旁待命的同事与正在主刀的主刀同事（agent `delegation-theatre.test.ts`、`scope-review.test.ts`） | 多智能体场景；REPL `/delegate nurse attach_monitor` | no——委派的任务由确定性脚本执行并报告；大模型驱动的角色（docs/CHARACTERS.md）在手术团队的行动中选择，并措辞麻醉医生的报警应答与对话，但从不选择委派任务的步骤或其报告 |
 | 技能（`clinicalcraft/skill@1`、11 个内置技能、项目与内联技能、解释器） | yes（A5；评审 S2、S8、G1、C3、C8–C10） | schema（引用、宏、无代码）、解释器（when、重试、恢复、最终拒绝、后置条件）、STEMI 上的内置技能、项目加载器、按步骤评估风险 | REPL `/skill` 列出 11 个；**没有任何基准场景运行技能** | no——未端到端验证；没有真实模型提出过内联技能。Sec |

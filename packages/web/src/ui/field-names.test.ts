@@ -1,7 +1,7 @@
 /**
- * The field's people and its camera in the learner's words (docs/PROCEDURE.md §7, A19): the learner — operating, or
- * their place's member — is "you" (the camera "held by you" / "由你握持"), anyone else by name and position, in both
- * languages. The scope dock and the surgery window say the camera with this one sentence (`cameraWords`).
+ * The field's people and its camera in the learner's words (docs/PROCEDURE.md §7; docs/TEAM.md §1): the learner —
+ * operating, or their place's member — is "you" (the camera "held by you" / "由你握持"), anyone else by name and position,
+ * in both languages. The scope dock and the surgery window say the camera with this one sentence (`cameraWords`).
  */
 import { createSession, observeField, reduce, type ClinicalAction, type FacilityDefinition, type ProcedureOp, type SessionState } from "@clinicalcraft/core";
 import { afterEach, describe, expect, it } from "vitest";

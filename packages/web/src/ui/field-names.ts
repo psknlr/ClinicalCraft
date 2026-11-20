@@ -1,6 +1,6 @@
 /**
- * The operative field's people and refusals in the learner's words (docs/PROCEDURE.md §7; A19): the agent's own
- * helpers (`nameOfRef`, `reasonText`) — one way of naming the field's people in every front-end — with the web's
+ * The operative field's people and refusals in the learner's words (docs/PROCEDURE.md §7; docs/TEAM.md §1): the agent's
+ * own helpers (`nameOfRef`, `reasonText`) — one way of naming the field's people in every front-end — with the web's
  * templates (`surgery.reason.<key>`, `holder.*`, `position.*`, `control.*`). The learner — operating, or their place's
  * member — is "you"; anyone else by name and, for a member of staff, position ("Dr Ito (operating surgeon)").
  */

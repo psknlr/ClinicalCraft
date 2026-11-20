@@ -31,13 +31,13 @@ export function stepOfRef(ref: string | undefined): number | null {
 const holds = (c: ColleagueView, control: "camera" | "retract" | "instruments"): boolean => c.controls === "all" || (c.controls ?? []).includes(control);
 export const here = (c: ColleagueView): boolean => c.present && !c.absent;
 
-/** The camera holder (A16): the colleague holding the camera port with the scope in it, else the present colleague holding the camera control. */
+/** The camera holder (docs/GLOSSARY.md): the colleague holding the camera port with the scope in it, else the present colleague holding the camera control. */
 export function cameraHolder(v: MemberView, f: FieldView): MemberId | null {
   if (f.camera?.holder !== undefined) return v.bodyOf(f.camera.holder);
   return v.colleagues.find((c) => here(c) && c.id !== v.me.id && holds(c, "camera"))?.id ?? null;
 }
 
-/** The traction assistant (A17): a present colleague other than the camera holder, holding `retract`. */
+/** The traction assistant (docs/TEAM.md §4.5): a present colleague other than the camera holder, holding `retract`. */
 export function tractionAssistant(v: MemberView, f: FieldView): MemberId | null {
   const camera = cameraHolder(v, f);
   return v.colleagues.find((c) => here(c) && c.id !== v.me.id && c.id !== camera && holds(c, "retract"))?.id ?? null;
@@ -170,10 +170,11 @@ export function askOf(f: FieldView, x: PlanStep, operator: (ref: string) => bool
 }
 
 /**
- * A step of its own plan the stand-in hands on now (A17), to whom and asked how: its traction on an assist port, to the
- * traction assistant; a hand-over the reference has the operator make, to whoever holds the port's control — the scope
- * in a camera port to the camera holder, a grasper pulling to the traction assistant. `keep`: a hand-over nobody may take
- * (an instrument only the operator works, nobody holding the control): the stand-in keeps the port. Null: its own to take.
+ * A step of its own plan the stand-in hands on now (docs/TEAM.md §4.5), to whom and asked how: its traction on an
+ * assist port, to the traction assistant; a hand-over the reference has the operator make, to whoever holds the port's
+ * control — the scope in a camera port to the camera holder, a grasper pulling to the traction assistant. `keep`: a
+ * hand-over nobody may take (an instrument only the operator works, nobody holding the control): the stand-in keeps the
+ * port. Null: its own to take.
  */
 export function handedAsk(v: MemberView, f: FieldView, x: PlanStep): { to: MemberId; ask: FieldAsk } | "keep" | null {
   const op = x.op;

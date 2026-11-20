@@ -42,7 +42,7 @@ export function planOf(solution: readonly ClinicalAction[], o: { joined?: number
   return steps;
 }
 
-/** A step of the stand-in's own plan it hands to a colleague now (A17): not its to take, as a colleague's own step is not. */
+/** A step of the stand-in's own plan it hands to a colleague now (docs/TEAM.md §4.5): not its to take, as a colleague's own step is not. */
 export type Handed = (x: PlanStep) => boolean;
 const NONE_HANDED: Handed = () => false;
 

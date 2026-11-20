@@ -195,7 +195,8 @@ scope stay as they were (the browser's settings take the session's values back),
 place is asked the same before it goes on (`ClinicalSession.standInRefusal`). The
 browser's case-start card offers the places a case's index entry lists (`seats`, `lineups`; a team scenario chosen
 leaves out a place whose member it makes absent), in in-world mode (docs/EMBODIED.md §2.1); its start in a place runs
-before the encounter is entered, a place asked for is sent and never dropped, and a refusal is shown in the session's
+before the encounter is entered — its team paused until then, so the stand-in's first call-out finds its card (§5) —,
+a place asked for is sent and never dropped, and a refusal is shown in the session's
 words — the engine's own with its reason where it gives one (the place's member away in the team scenario, by name).
 
 ### Checks
@@ -458,7 +459,7 @@ colleague is called by phone and asked all the same); a malformed `field` is `in
 warning says when the team works.
 
 **A position word that names the learner's own place.** `lookupStaff` names whoever holds a position in the team as it
-is — for the learner's own place, the member whose place it is: the colleague standing by (A19), whose staff body it
+is — for the learner's own place, the member whose place it is: the colleague standing by (§1), whose staff body it
 is. That is deliberate: the tool paths reach him under any name and he answers for himself — `delegate_task {role:
 "first assistant"}` from a model or an MCP client is refused with his standing-by words ("Dr Abe stands by: you hold the
 first assistant's place."), a `consult` is answered from his card and the standing-by line (docs/CHARACTERS.md §2).
@@ -542,7 +543,7 @@ Each round, at most one thing, in this order:
    aim, a zoom, a pass to the operator): "The first assistant (you), camera on the hepatocystic triangle, please." —
    seen through like any request (4.), and in the learner's place waited for them to do it; given up, what its own next
    step needs it sees to itself (a traction: the port taken back and pulled again, 7.). And **a step of its own it hands
-   on** (A17), asked the same way before it: a traction the reference pulls through an **assist port** goes to the
+   on**, asked the same way before it: a traction the reference pulls through an **assist port** goes to the
    **traction assistant** (a present colleague other than the camera holder holding `retract` — the first assistant with
    three surgeons): "Dr Abe, please hold the grasper in port D, pulling the fundus cephalad." — read back, confirmed;
    they take the port with the stand-in's grasper in it and pull as asked: "Holding." That plan step is theirs then —
@@ -665,7 +666,7 @@ watches it played.
 | status | `team_event` `status`: the round, the pace, who answers as the surgeon, and the learner's place and line-up (`seat`, `lineup`) when the start chose them |
 | names | in the team's words whoever operates is "the surgeon" (术者) — the learner, or the stand-in while the learner holds a place —, and the learner holding a place is that place, "you": "the first assistant (you)" / "第一助手（你）"; a member of staff by their name. Each line is spoken through the profile of the speaker's role (the nurses' through the nurse's, an assistant's through the attending's); the learner's own words as before |
 | one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
-| `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon) |
+| `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon; the place and the line-up when the start chose them) |
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |
 | acts | world acts through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member; steps in the operative field — and a device's step of the operation, the stand-in's gas — through the team's caller (`team`, §4.5), each in a turn of its own that always ends |
 | the stand-in surgeon | while the learner holds a place, the team's surgeon member with its `standIn`'s body works the reference path (§4.5): its progress is the field's record (`standin:<k>`), never the team's memory; it asks the team — the learner in their place among them — for the camera, a traction, a pass; it calls a critical step out, and stops when the learner says Stop; one step of the operation a round at most, and a run until idle ends after it |
@@ -903,12 +904,13 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   `memberBody` (the surgeon the stand-in's body in a place, the learner's without one).
 - `agent/src/commands-team.test.ts`: `/seat` in a place and operating (both languages); `/team` status, a run to where
   the stand-in waits on the learner and not started while their answer is owed, a reply with no message, the learner's
-  own step with `/operate` and dissection refused for the first assistant (A6), `/field`; observer refusals naming
-  `/team play`; a position word for the learner's own place in an `@` mention and `/delegate`; a request for traction
-  in words, a colleague away, no count kept, each action's usage; `/delegate`'s whom before the task; `/team ask`'s
-  whom taking a request word inside a position in words ("the camera holder"); a reply naming no message with several
-  lines waiting (each front-end naming its own way to name one); a project's command named `/team` or `/operate` never
-  run nor listed, said at the start; a start with a line-up or a team scenario the case does not have naming it.
+  own step with `/operate` and dissection refused for the first assistant (a body-less call is the learner's body, §1),
+  `/field`; observer refusals naming `/team play`; a position word for the learner's own place in an `@` mention and
+  `/delegate`; a request for traction in words, a colleague away, no count kept, each action's usage; `/delegate`'s whom
+  before the task; `/team ask`'s whom taking a request word inside a position in words ("the camera holder"); a reply
+  naming no message with several lines waiting (each front-end naming its own way to name one); a project's command
+  named `/team` or `/operate` never run nor listed, said at the start; a start with a line-up or a team scenario the
+  case does not have naming it.
 - `agent/src/session/team/awaits.test.ts`: the count the stand-in waits for — owed while due and not said, said once
   the learner's count is recorded, not due before it falls due, owed again on a recount asked —, and the status saying so.
 - `agent/src/bridge/world-team.test.ts`: the `team` tool offered by an in-world session with a care team (never a

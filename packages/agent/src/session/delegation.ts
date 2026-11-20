@@ -31,7 +31,7 @@
  * The operating table's tasks go by control (docs/EMBODIED.md §8.3): the scope
  * check is the control each is worked with (`THEATRE_TASK_CONTROL`) — never for
  * the colleague standing by, the body that operates (the stand-in while the
- * learner holds a place: never the camera, A16) or a colleague the field takes
+ * learner holds a place: never the camera) or a colleague the field takes
  * no part from —, and a colleague asked for by role (`attending`, `nurse`) is
  * chosen among those of that role in the patient's room whom the scope lets be
  * handed the task, by position (traction: the first assistant, the second, the

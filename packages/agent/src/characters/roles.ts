@@ -299,7 +299,7 @@ export function roleCardOf(c: CaseDefinition, facility: FacilityDefinition | nul
 }
 
 /**
- * The line a stood-down colleague's card adds (docs/TEAM.md §1, A19): the learner holds their place, so they stand by
+ * The line a stood-down colleague's card adds (docs/TEAM.md §1): the learner holds their place, so they stand by
  * — no part in the operation's work, still there to be spoken to.
  */
 export function standingByLine(card: RoleCard): string {

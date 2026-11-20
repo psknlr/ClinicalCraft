@@ -130,14 +130,14 @@ export interface TheatreOffer {
 }
 
 /**
- * The operating table's chips for a colleague, from what the session says they may be handed now (`RoleState.delegable`:
- * the operating table's tasks by control — the stand-in who operates and the colleague standing by have none) and what
- * the field takes from them now (`stepVerdictOf` with their body: core `fieldGate` and the engine's own verdict — a port
- * is offered to hold when its instrument is worked with traction (core `instrumentControl`: the grasper; never an
- * operating instrument, A13) and their own hand-over of it is taken: the control, at most two ports, consent —, an
- * instrument to pass only when their pass of it is), its regions to aim at.
- * Null before the operation, or when none of it is theirs. The session decides the rest: a refusal says why and who
- * holds the control.
+ * The operating table's chips for a colleague, from what the session says they may be handed now
+ * (`RoleState.delegable`: the operating table's tasks by control — the stand-in who operates and the colleague standing
+ * by have none) and what the field takes from them now (`stepVerdictOf` with their body: core `fieldGate` and the
+ * engine's own verdict — a port is offered to hold when its instrument is worked with traction (core
+ * `instrumentControl`: the grasper; never an operating instrument: docs/PROCEDURE.md §3) and their own hand-over of it
+ * is taken: the control, at most two ports, consent —, an instrument to pass only when their pass of it is), its
+ * regions to aim at. Null before the operation, or when none of it is theirs. The session decides the rest: a refusal
+ * says why and who holds the control.
  */
 export function theatreOffer(state: Pick<RoleState, "delegable"> | null | undefined, staffId: string, f: FieldSeat | null, v: Pick<FieldView, "ports" | "regions" | "camera"> | null, instruments: readonly string[]): TheatreOffer | null {
   const tasks = state?.delegable ?? [];

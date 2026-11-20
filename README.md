@@ -537,13 +537,16 @@ model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
 
 ## MCP: let Claude Code, Codex or Grok CLI play the clinician
 
-`clinicalcraft mcp` is a stdio MCP server with 34 tools: 17 for the clinical
+`clinicalcraft mcp` is a stdio MCP server with 42 tools: 18 for the clinical
 encounter (`list_cases`, `start_case`, `ask_patient`, `examine`,
 `order_test`, `read_result`, `intervene`, `answer_decision`, `finish_case`,
-`get_debrief`, …) and 17 world tools for embodied sessions (`observe_world`,
+`get_debrief`, …), 2 for an operation (`observe_field`, `operate`), 4 for
+new investigations (`order_study`, `list_studies`, `read_study`,
+`retrieve_report`), 17 world tools for embodied sessions (`observe_world`,
 `navigate_to`, `interact_object`, `transport_patient`, `delegate_task`,
-`execute_skill`, …), each with MCP annotations, plus resources for the case
-library and each session's state and transcript. Build once
+`execute_skill`, …) and the care team's `team` (a place in the team:
+`start_case {seat}`; docs/TEAM.md), each with MCP annotations, plus resources
+for the case library and each session's state and transcript. Build once
 (`npm run build:lib`), then register it with an absolute path — run these
 from the repository root:
 

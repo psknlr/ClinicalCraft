@@ -45,7 +45,7 @@ const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 function roleCardContext(k: SessionKernel, agent: string, voice: StaffVoice | null): { roleCard?: { card: RoleCard; name: string; standingBy?: boolean } } {
   const card = voice ? roleCardOf(k.caseDef, k.facility, voice.staffId) : PROFILE_POSITION[agent] ? ROLE_CARDS[PROFILE_POSITION[agent]!] : null;
   if (!card) return {};
-  // the colleague whose place the learner holds speaks from their card and stands by (A19)
+  // the colleague whose place the learner holds speaks from their card and stands by (docs/TEAM.md §1)
   const standing = voice !== null && standingBy(k.caseDef, k.state) === `staff:${voice.staffId}`;
   return { roleCard: { card, name: voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale), ...(standing ? { standingBy: true } : {}) } };
 }

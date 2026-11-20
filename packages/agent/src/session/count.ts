@@ -52,7 +52,7 @@ export class SurgicalCount {
 
   /**
    * Who did it, as the record names people: a staff id; the learner — holding a place in the team, that place's member
-   * (their ref: the record names the place, A19 — shown to the learner as "you"); operating, `surgeon` in a case team
+   * (their ref: the record names the place — shown to the learner as "you"); operating, `surgeon` in a case team
    * with a surgeon, else `learner`.
    */
   staffOf(actorId: ActorId): string {
@@ -65,7 +65,7 @@ export class SurgicalCount {
     return actorId;
   }
 
-  /** A record's staff as the learner reads it: their place's member is "you" (A19); everyone else as recorded. */
+  /** A record's staff as the learner reads it: their place's member is "you" (docs/TEAM.md §1); everyone else as recorded. */
   private shown(staff: string, L: string): string {
     return shownRef(this.h.caseDef, this.h.state(), staff, L);
   }

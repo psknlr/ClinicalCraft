@@ -46,10 +46,10 @@ export interface TeamView {
 }
 
 /**
- * The staff ids of the team as it is who answer to a position word (see the module docs): the members in that
- * position (the first assistant's old name counts as the first assistant); the operating surgeon is the stand-in while
- * the learner holds a place — otherwise the learner, no member of staff; the camera holder as A16 says. Empty without
- * a team.
+ * The staff ids of the team as it is who answer to a position word (see the module docs): the members in that position
+ * (the first assistant's old name counts as the first assistant); the operating surgeon is the stand-in while the
+ * learner holds a place — otherwise the learner, no member of staff; the camera holder as docs/GLOSSARY.md says. Empty
+ * without a team.
  */
 export function membersInPosition(view: TeamView, word: PositionWord): string[] {
   const c = view.caseDef;

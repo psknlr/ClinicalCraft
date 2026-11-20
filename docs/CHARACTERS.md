@@ -85,7 +85,7 @@ the system prompt — for a colleague the learner talks to by name (Nurse Lim an
 the anaesthetist — never the learner's preceptor —, Dr Mori as the assistant surgeon), for a care-team member's
 decision and for a staff line worded by a model. A card never grants an act: the world and the scope of practice
 refuse what a body may not do whatever its card says. The colleague whose place the learner holds in the team (docs/TEAM.md
-§1, A19) still speaks from their own card, which adds the **standing-by line** (`roleSection(card, name, standingBy)`,
+§1: they stand by) still speaks from their own card, which adds the **standing-by line** (`roleSection(card, name, standingBy)`,
 `standingByLine`): "You are standing by: the learner holds your place as the first assistant in this operation. Until
 they hand it back you take no part in its work — no traction, camera, passes or counts, nothing at the table — and you
 can still be spoken to."

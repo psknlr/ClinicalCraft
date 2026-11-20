@@ -459,9 +459,9 @@ A theatre case can give its room a care team that works on its own in in-world m
   `clinicalcraft bench team --seat <place> [--lineup <id>] --case <case>` plays every team scenario that offers the
   place through to the operation's close (TEAM.md §7): a place the stand-in cannot see through there will not work for
   a learner either. Headless, `clinicalcraft exec --case <case> --embodied --seat <place> --input-format stream-json
-  --output-format stream-json` takes the same start and reads ops from its input (`/team reply …`, `/operate …`, the
-  call-out's own `approval_response`); in text mode the headless approval rules answer the call-out
-  (packages/cli/README.md).
+  --output-format stream-json` takes the same start and reads Op JSON lines from its input (`slash_command` ops such as
+  `/team reply …` and `/operate …`, the call-out's own `approval_response`); in text mode the headless approval rules
+  answer the call-out (packages/cli/README.md).
 * **Passes need no authoring.** A pass is needed only in the scrub nurse's place: there every insert, the stand-in's
   too, waits for the scrub nurse's pass of that instrument (`passingRequired`, PROCEDURE.md §3), and the stand-in asks
   for each ("Maryland, please."). Nowhere else is one needed, so the reference solution has no `pass` steps and there is

@@ -121,7 +121,7 @@ export interface ScopeActor {
   standingBy?: boolean;
   /**
    * The body that operates (the stand-in's while the learner holds a place): the operating table's tasks are not handed
-   * to it — never the camera (A16), nor a port to take back from whoever holds it.
+   * to it — never the camera, nor a port to take back from whoever holds it.
    */
   operates?: boolean;
   /**

@@ -160,7 +160,7 @@ describe("the chips a colleague's window offers follow what the session says the
     expect(theatreOffer(there.get("nurse-2"), "nurse-2", f.seat, f.v, f.instruments)?.pass.length).toBeGreaterThan(0);
   });
 
-  it("a port is offered to hold only when the field lets the colleague take it: a grasper's, never the operator's own instrument (A13), never a third port", async () => {
+  it("a port is offered to hold only when the field lets the colleague take it: a grasper's, never the operator's own instrument, never a third port", async () => {
     // the operator's Maryland dissector in port C (the reference access): only the grasper's port B is offered
     const app = await placeSession();
     open.push(app);

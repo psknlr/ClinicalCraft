@@ -2,7 +2,7 @@
  * The `team` tool over MCP (docs/PROTOCOL.md §11; docs/TEAM.md §5): the learner's part in the care team — the team now,
  * a round, a run, a reply, a request about the field, a need, the count, playing the part or watching it played — each
  * the session's own `team` op (agent `teamToolCall`), worded by the agent (`teamToolResult`, an observer refusal naming
- * this tool's `play`); and the stand-in surgeon's call-out answered (A7).
+ * this tool's `play`); and the stand-in surgeon's call-out answered (docs/TEAM.md §5).
  *
  * A call-out is an approval request raised in the middle of a team round (the stand-in's clip, division, coagulation or
  * bail-out): the round waits for the learner's answer, and over MCP the learner answers with another call. So a `step`

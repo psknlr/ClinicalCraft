@@ -23,7 +23,7 @@
  *    the gas back after a fault, the abdomen insufflated again; the scope out of the camera port, the camera holder
  *    asked to put it back (else it does). **The field**: obscured, or bile and stones in it — suction (and irrigation
  *    for spillage), the suction put into a working port when none is in.
- * 6. **What its last step hands on** (A17), right after it: after its own scope insert, "Take the camera, please." to the
+ * 6. **What its last step hands on**, right after it: after its own scope insert, "Take the camera, please." to the
  *    camera holder (the holder of the camera port, else the present colleague holding the camera control). Then **a
  *    colleague's own step** the reference has before its next (`actor`): asked of them as a request about the field —
  *    the learner's place's too, and waited for —, never taken by the stand-in itself; one no request names is passed
@@ -44,7 +44,7 @@
  *    "正在夹闭胆囊管。", `about.callout`); in a supervised approval mode the session asks the learner then (No
  *    objection / Stop). Stopped, it looks at the field (`observe_field`), says "Stopped — tell me what you see." / "停下
  *    了——告诉我你看到了什么。" and waits for the learner's confirmation; then the same step again, its call-out first.
- * 9. **Closure** only once the count is settled. **The step**: the gas through the device that offers it (A11), else the
+ * 9. **Closure** only once the count is settled. **The step**: the gas through the device that offers it, else the
  *    `operate` tool with its own body; recorded with the plan step's ref.
  * A step the field refuses three times in a row stops it there: it says why ("I can't go on: …") and waits for the
  * learner's word to try again.
@@ -122,7 +122,7 @@ function waitFor(v: MemberView, task: TeamTask, code: string, text: Bilingual): 
 type CameraOp = Extract<ProcedureOp, { op: "aim" | "zoom" }>;
 
 /**
- * The colleagues' own steps the reference has before the stand-in's next (`colleagueSteps`, A3), and the steps of its
+ * The colleagues' own steps the reference has before the stand-in's next (`colleagueSteps`), and the steps of its
  * own it hands on: each asked of whose it is — the learner too, when it is their place's: then waited for — and seen
  * through like any request; one nobody is there to do, one no request names, one the field shows done already, is
  * passed over. The stand-in never takes a colleague's own step: it goes on once the field shows it done or it gave up
@@ -332,7 +332,7 @@ function supplyStep(v: MemberView, plan: readonly PlanStep[], task: TeamTask, ne
 }
 
 /**
- * The gas through the device that offers it now (the tower: A11), with its own body; at the table when none does — or
+ * The gas through the device that offers it now (the tower), with its own body; at the table when none does — or
  * when the device refused the step (out of the patient's reach, say: `failed` holds the step's ref).
  */
 function gasStep(v: MemberView, task: TeamTask, op: ProcedureOp, ref: string, k: number): Proposal {
@@ -370,7 +370,7 @@ function fieldStep(v: MemberView, task: TeamTask, next: NextStep): Part {
 }
 
 /**
- * What its last step hands on (A17), right after it: the camera after its own scope insert, to the camera holder —
+ * What its last step hands on, right after it: the camera after its own scope insert, to the camera holder —
  * asked once, then the stand-in carries on either way (and never again once the plan has moved on: a port it takes back
  * later stays its own).
  */

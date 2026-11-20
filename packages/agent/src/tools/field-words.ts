@@ -4,13 +4,13 @@
  * field would not take from the acting body (`placeRefusal`: core `fieldGate` — who takes part, `stepPartyRefusal`,
  * and the controls, `seatCheck` with each body's own, `bodyControls` for the field, for whoever does the step and
  * whoever takes a port — so nobody is asked to approve what the body may not do). The engine's English `message` stays as it
- * is: callers keep it as the detail of a rejection and replace only the generic lead-in with `reasonText` (the A4 rule
- * of the theatre round).
+ * is: callers keep it as the detail of a rejection and replace only the generic lead-in with `reasonText`
+ * (docs/PROCEDURE.md §3).
  *
  * "You" is whom the words are said to (`addresseeOf`): the acting body — a body-less call is the learner's — unless the
  * caller names another (a delegated step reports to the learner who delegated). Anyone else is named: a member of staff
  * by name, the learner — said to a colleague — by their place ("the first assistant (the learner)"; the operating
- * surgeon while they operate), whose place's member is the learner wherever its ref is shown (A19).
+ * surgeon while they operate), whose place's member is the learner wherever its ref is shown (docs/TEAM.md §1).
  */
 import {
   bodyControls,
@@ -84,8 +84,8 @@ export function nameOfRef(ctx: FieldContext, ref: string | undefined): string {
 }
 
 /**
- * A record's staff reference as the learner reads it (A19): the member whose place the learner holds is "you"; any
- * other reference — a staff id, the `surgeon` or `learner` token — as recorded.
+ * A record's staff reference as the learner reads it (docs/TEAM.md §1): the member whose place the learner holds is
+ * "you"; any other reference — a staff id, the `surgeon` or `learner` token — as recorded.
  */
 export function shownRef(c: CaseDefinition, s: TeamChoice, ref: string, locale: string): string {
   return s.seat !== undefined && seatMember(c, s)?.staff === ref ? rt(locale, "place.you") : ref;
