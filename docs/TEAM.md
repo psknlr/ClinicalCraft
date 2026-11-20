@@ -948,8 +948,8 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   member in every place — the stand-in's camera and pass requests read back or declined —, none while observing and
   none to a request the stand-in gave up or saw done; a read-back of the learner's own ask confirmed or declined without
   words; a line answered said so until the stand-in goes on; the stand-in's confirmation offering the surgery window and
-  the report; the team listed with positions — you, standing by, a relief colleague, one away; the Ask row the
-  operator's only; Need and Count as the session's `team` ops, its refusals and warnings shown as said; the call-out
+  the report; information told to the learner read back, once (§4.7); the team listed with positions — you, standing
+  by, a relief colleague, one away; the Ask row the operator's only; Need and Count as the session's `team` ops, its refusals and warnings shown as said; the call-out
   card only for the stand-in's request, its answers — the dialog's buttons and Esc — the card's own approval responses,
   a request without the stand-in's body asked as always; a clip stopped, "Stopped — tell me what you see." and Go on;
   the follow tasks never listed; a walk never a device's step), `app/store-team.test.ts` (the default approval mode: the
@@ -1017,7 +1017,8 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   member away `start_refused`, a line-up, a team scenario or a place the case does not offer refused naming it with its
   places and line-ups; a refused start closing no other session (`maxSessions` 1); `no_team` for every action in a
   session without a care team; an acting call sent alongside a run that meets a call-out refused `callout_pending`
-  (never left waiting behind the round), `get_debrief` likewise;
+  (never left waiting behind the round), `get_debrief` likewise; a mid-case `get_debrief` naming the decisions the team
+  answered before the learner joined by their numbers, never their ids (`joined.decisions`);
   the `team` tool's run, a reply to the learner's line and one to another member's refused (`permission_denied`),
   dissection refused as the place, the call-out in the default approval mode — pending, listed, blocking other changes;
   Stop: the stand-in looks, asks what the learner sees and clips nothing until the confirm; no objection: the clip —
@@ -1041,7 +1042,8 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   views. `core/src/engine/team.test.ts`: the information checks, the circulator posted elsewhere, `ask` via the team.
 - `bench team` over Case 126: 11 / 11 (11 activated, 11 completed, 2 appropriately escalated, 0 invalid).
 - `bench team` over the built-in content (2026-11-14): 2 / 2 — `acute-ischemic-stroke` (2 activated, 2 completed,
-  1 appropriately escalated, 0 invalid; 2 obligations, 0 unfinished).
+  1 appropriately escalated, 0 invalid; 2 obligations, 0 unfinished). With a content pack's Case 126 beside it (a
+  `contentDirs` entry, 2026-11-20): 13 / 13 — the pack's 11 and the stroke case's 2, all activated and completed.
 
 ## 9. Limits (stated as they are)
 

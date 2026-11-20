@@ -86,3 +86,17 @@ describe("/delegate record_ecg from the nurse's post (staff know their departmen
     });
   }
 });
+
+describe("/delegate: whom in words before the task, then its target and its params (key=value)", () => {
+  it("a colleague named in two words gives the order as written: a tenfold dose is checked and nothing given — the learner's dose error —, the dose as prepared is given", async () => {
+    const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv", settingsPatch: { approvalMode: "bypass", locale: "en" } });
+    const wrong = await command(t, "delegate", "Lin Xiao give_intervention aspirin dose=3000mg");
+    expect((wrong.data as { delegation: { status: string } }).delegation.status, wrong.text).toBe("failed");
+    expect(t.session.state.interventions.some((i) => i.interventionId === "aspirin")).toBe(false);
+    expect(t.session.state.doseErrors).toEqual([expect.objectContaining({ interventionId: "aspirin", severity: "critical", ordered: expect.objectContaining({ amount: 3000, unit: "mg" }) })]);
+    const right = await command(t, "delegate", "Lin Xiao give_intervention aspirin dose=300mg");
+    expect((right.data as { delegation: { status: string } }).delegation.status, right.text).toBe("completed");
+    expect(t.session.state.interventions.find((i) => i.interventionId === "aspirin")?.ordered).toMatchObject({ dose: { amount: 300, unit: "mg" } });
+    await t.session.close();
+  });
+});

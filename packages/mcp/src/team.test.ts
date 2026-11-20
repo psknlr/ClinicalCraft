@@ -43,12 +43,35 @@ function theatreHospital() {
   return f;
 }
 
+/**
+ * The theatre case with a decision the team answers before the learner joins (the join's reference path): its id and
+ * its options' ids would give the answer away ("dx-secret-gallstones", "supported-answer", "alternative-answer").
+ */
+function decidedTeamCase() {
+  const L = (en: string) => ({ en, "zh-CN": en });
+  const decision = {
+    id: "dx-secret-gallstones",
+    prompt: L("Why is the gallbladder coming out?"),
+    need: L("Read the history first."),
+    options: [
+      { id: "supported-answer", text: L("Symptomatic gallstones"), correct: true, feedback: L("Yes.") },
+      { id: "alternative-answer", text: L("An incidental finding"), correct: false, feedback: L("No.") },
+    ],
+  };
+  const solution = structuredClone(LAP_CHOLE_SOLUTION) as Record<string, unknown>[];
+  solution.splice(1, 0, { type: "answer", decisionId: decision.id, optionIds: ["supported-answer"] });
+  const parsed = parseCase({ ...structuredClone(LAP_CHOLE_SIT), id: "mcp-lap-chole-decided", decisions: [decision], team: { ...structuredClone(LAP_CHOLE_TEAM), room: THEATRE }, solution });
+  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues.slice(0, 3)));
+  return parsed.value;
+}
+
 const builtin = await loadContent();
 const theatre = theatreTeamCase();
+const decided = decidedTeamCase();
 const facility = theatreHospital();
 const content = {
   ...builtin,
-  cases: new Map([...builtin.cases, [theatre.id, { def: theatre, dir: root, file: join(root, "case.json") }]]),
+  cases: new Map([...builtin.cases, [theatre.id, { def: theatre, dir: root, file: join(root, "case.json") }], [decided.id, { def: decided, dir: root, file: join(root, "decided.json") }]]),
   facilities: new Map([...builtin.facilities, [facility.id, { def: facility, file: join(root, "facility.json") }]]),
 };
 const CASE = caseHandle(theatre.id);
@@ -81,6 +104,23 @@ async function started(s: McpServer, extra: Record<string, unknown> = {}): Promi
   expect(r.isError, text(r)).not.toBe(true);
   return r.structuredContent!.session_id as string;
 }
+
+describe("a mid-case get_debrief in a place in the care team", () => {
+  it("names the decisions the team answered before the learner joined by their numbers, never by their authored ids", { timeout: T }, async () => {
+    const s = server({ approvalMode: "default" });
+    await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } } });
+    const r = await call(s, "start_case", { case_id: caseHandle(decided.id), facility_id: facility.id, seat: "first-assistant", embodied: true });
+    expect(r.isError, text(r)).not.toBe(true);
+    const session_id = r.structuredContent!.session_id as string;
+    // the join answered it, by the system: the team's, never the learner's
+    expect(s.sessions.get(session_id)!.session.state.joined?.decisions).toEqual(["dx-secret-gallstones"]);
+    const debrief = await call(s, "get_debrief", { session_id });
+    expect(debrief.structuredContent).toMatchObject({ complete: false, report: { seat: "first-assistant", joined: { decisions: [1] } } });
+    const seen = JSON.stringify([debrief.content, debrief.structuredContent]);
+    for (const secret of ["dx-secret-gallstones", "supported-answer", "alternative-answer"]) expect(seen, secret).not.toContain(secret);
+    await s.close();
+  });
+});
 
 describe("start_case in a place in the care team", () => {
   it("sets the place (SessionState.seat); the team is paced by the team tool; a place without in-world mode is refused not_embodied, in the session's words", { timeout: T }, async () => {
