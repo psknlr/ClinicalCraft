@@ -159,7 +159,7 @@ every full case is its own lazy chunk, loaded (and validated) when the case
 is selected or started. Facilities, room templates and equipment catalogs are
 bundled; facilities that place room templates are compiled when loaded.
 
-The e2e suite (57 tests in 19 spec files, `e2e/`) runs Chromium with
+The e2e suite (58 tests in 19 spec files, `e2e/`) runs Chromium with
 SwiftShader only — no other browser or real GPU is tested. E2E tests start
 Vite on port 5197 (`CC_E2E_PORT`; `external-agent.spec.ts`
 also builds the web into a temporary directory and runs `clinicalcraft serve`
