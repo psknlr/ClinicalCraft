@@ -16,9 +16,13 @@
  *   in the operative field ("Maryland, please"), she passes it into the asker's hand (`./assistant.ts`); never unasked.
  * - `assist` (an assistant at the table, `./assistant.ts`): reads back a request about the field — traction, letting go,
  *   the camera —, walks to the table, takes the port, does it and reports; holding the camera, follows the work.
- * - `surgeon`: the simulated surgeon of observer mode (`./surgeon.ts`) acknowledges what is escalated to them and checks
- *   the wound when asked; while the learner holds a place in the team, the stand-in surgeon (`./operator.ts`) — the
- *   surgeon duty on a member of staff's body — operates along the case's reference path, asking the team for its part.
+ * - `surgeon`: the simulated surgeon of observer mode (`./surgeon.ts`) acknowledges what is escalated to them, reads back
+ *   information told to them and checks the wound when asked; while the learner holds a place in the team, the stand-in
+ *   surgeon (`./operator.ts`) — the surgeon duty on a member of staff's body — operates along the case's reference path,
+ *   asking the team for its part (and reads back information told to it, as any surgeon does).
+ * - information (docs/TEAM.md §4.5): whoever holds it reports it back when asked (any duty; `inform`: a colleague
+ *   who holds information); the circulating nurse notices the need, asks the one named member who holds it, tells
+ *   the person who needs it and confirms their read-back — or escalates, saying why, and what it held up still waits.
  *
  * A request about the operative field said to anyone else of the team is declined with the reason (their controls do
  * not cover it), naming who may be handed it instead.
@@ -27,13 +31,13 @@
  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
  * and it is not there).
  */
-import type { Controls, FieldView, TeamDuty } from "@clinicalcraft/core";
+import { informBlocks, type Controls, type FieldView, type TeamDuty } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
 import { answerField, assist, fieldWork, isFieldMessage } from "./assistant.js";
-import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
+import { bothList, phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
 import { operator } from "./operator.js";
 import { surgeon } from "./surgeon.js";
-import type { KnownNeed, MemberId, MemberState, PlanStep, Proposal, SeenInjury, TaskPatch, TeamMessage, TeamTask } from "./types.js";
+import type { KnownInform, KnownNeed, MemberId, MemberState, PlanStep, Proposal, SeenInjury, TaskPatch, TeamMessage, TeamTask } from "./types.js";
 
 /** A step of the operation a device in the team's room offers now (a tower's gas: its operation, with the step's parameters). */
 export interface DeviceStep {
@@ -114,6 +118,12 @@ export interface MemberView {
   tasks: readonly TeamTask[];
   /** Needs this member noticed that no task of theirs covers yet. */
   needs: readonly KnownNeed[];
+  /** Information needs this member noticed that no task of theirs covers yet (docs/TEAM.md §4.5; absent: none). */
+  informs?: readonly KnownInform[];
+  /** What this member holds of a history item — the case's recorded answer, as they learned it — or null (absent: nothing). */
+  knows?(info: string): Bilingual | null;
+  /** What the team calls an intervention (an act held up until information comes; absent: its id). */
+  actName?(id: string): Bilingual;
   colleagues: readonly ColleagueView[];
   /** Items of an equipment type the member knows of, nearest first. */
   items(type: string): ItemSighting[];
@@ -209,20 +219,30 @@ function say(v: MemberView, to: MemberId, kind: TeamMessage["kind"], key: TeamPh
 
 /**
  * The member's next step (null: nothing to do now). The oldest thing said to them comes first: a request about the
- * operative field — whatever their duty — is read back or declined (`answerField`); anything else is their duty's. Then
- * their duty's own work; then their work in the field (an assistant's, the scrub nurse's passes).
+ * operative field — whatever their duty — is read back or declined (`answerField`); then information they hold, asked
+ * for, is reported back (`tell`, whatever their duty); anything else is their duty's. Then their duty's own work; then
+ * their work in the field (an assistant's, the scrub nurse's passes). Whoever operates reads back information told to
+ * them first, then answers or works as the surgeon (`./surgeon.ts`, `./operator.ts`).
  */
 export function propose(v: MemberView): Proposal | null {
   if (v.me.absent) return null;
-  // whoever operates: the stand-in surgeon (a member of staff's body, while the learner holds a place) works its plan;
-  // the simulated surgeon of observer mode only answers
-  if (has(v.me.duties, "surgeon")) return v.me.id.startsWith("staff:") && v.plan ? operator(v) : surgeon(v);
+  if (has(v.me.duties, "surgeon")) {
+    // information told to whoever operates: read back first (check-back), as any surgeon answers what is said to them
+    const heard = v.inbox[0] ? readBackInfo(v, v.inbox[0]) : null;
+    if (heard) return heard;
+    // whoever operates: the stand-in surgeon (a member of staff's body, while the learner holds a place) works its plan;
+    // the simulated surgeon of observer mode only answers
+    return v.me.id.startsWith("staff:") && v.plan ? operator(v) : surgeon(v);
+  }
   const first = v.inbox[0];
   // the stand-in's stop after a call-out, said to the learner's place played in observer mode: no objection
   if (first && first.kind === "request" && first.about.callout && first.from === surgeonOf(v)) {
     return { kind: "say", to: first.from, message: { thread: first.thread, kind: "confirm", text: phrase("reply.confirm"), about: structuredClone(first.about), evidence: [], replyTo: first.id }, patch: [{ read: first.id }] };
   }
   if (first && isFieldMessage(v, first)) return answerField(v, first);
+  // information I hold, asked for: reported back first, whatever my duty
+  const told = tell(v);
+  if (told) return told;
   if (has(v.me.duties, "circulate")) {
     const p = circulate(v);
     if (p) return p;
@@ -248,6 +268,8 @@ function circulate(v: MemberView): Proposal | null {
     if (m.kind === "report" && m.about.count !== undefined && m.about.of !== undefined && m.from !== surgeonOf(v)) return countReported(v, m);
     const check = v.tasks.find((t) => t.thread === m.thread && t.kind === "check" && !TERMINAL.has(t.status));
     if (check) return checkMessage(v, check, m);
+    const inform = v.tasks.find((t) => t.thread === m.thread && t.kind === "inform");
+    if (inform) return informMessage(v, inform, m);
     const task = v.tasks.find((t) => t.thread === m.thread && t.kind === "supply");
     if (!task || TERMINAL.has(task.status)) return { kind: "update", patch: [{ read: m.id }] };
     if (m.kind === "readback") {
@@ -269,6 +291,8 @@ function circulate(v: MemberView): Proposal | null {
     const task: TeamTask = { id: v.newId("task"), kind: "supply", need: n.need.id, item: n.need.item, for: n.forId, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0, had: v.heldBy(n.forId, n.need.item) };
     return { kind: "say", to: n.forId, message: { thread: task.thread, kind: "notice", text: phrase("notice", { item: v.itemName(task.item), for: v.name(task.for) }), about: { need: task.need, item: task.item, for: task.for }, evidence: [] }, patch: [{ create: task }] };
   }
+  // 2b. information needed: an inform task, said aloud to the person — with what it holds up meanwhile
+  for (const n of v.informs ?? []) return noticeInform(v, n);
   // 3. a count discrepancy under way: search, then the recount
   for (const task of v.tasks) {
     if (task.kind === "check" && task.status === "open") {
@@ -276,8 +300,13 @@ function circulate(v: MemberView): Proposal | null {
       if (p) return p;
     }
   }
-  // 4. my supply tasks
+  // 4. my supply tasks (and information under way)
   for (const task of v.tasks) {
+    if (task.kind === "inform" && !TERMINAL.has(task.status)) {
+      const p = informStep(v, task);
+      if (p) return p;
+      continue;
+    }
     if (task.kind !== "supply" || TERMINAL.has(task.status)) continue;
     // verified physical completion: I see the person it was for holding an item of that type — one they did not
     // have already, and not one that answered another request of theirs
@@ -324,6 +353,98 @@ export function escalateTask(v: MemberView, task: TeamTask, reason: Bilingual, p
 function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskPatch[] = []): Proposal {
   const clause = { en: reason.en.replace(/[.。]\s*$/u, ""), "zh-CN": reason["zh-CN"].replace(/[.。]\s*$/u, "") };
   return say(v, task.for, "escalate", "unresolved", task, { extra: { reason: clause }, patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason: task.reason ?? "unresolved", reasonText: reason } }] });
+}
+
+/* ------------------------------------------------------------------ */
+/* information a colleague holds (docs/TEAM.md §4.5)                   */
+/* ------------------------------------------------------------------ */
+
+/** What the team calls an intervention (its id when the view cannot name it). */
+const actName = (v: MemberView, id: string): Bilingual => v.actName?.(id) ?? { en: id, "zh-CN": id };
+
+/** That the acts an information need holds up wait ("IV tenecteplase and IV alteplase wait until it's confirmed."); nothing when it holds up none. */
+function waiting(v: MemberView, acts: readonly string[] | undefined, still: boolean): Bilingual {
+  if (!acts?.length) return { en: "", "zh-CN": "" };
+  const blocks = bothList(acts.map((id) => actName(v, id)));
+  return phrase(acts.length > 1 ? (still ? "infoStillBlockedMany" : "infoBlockedMany") : still ? "infoStillBlocked" : "infoBlocked", { blocks });
+}
+
+/** What an information message is about (the need, the history item, the person; the fact as said). */
+function infoAbout(task: TeamTask, fact?: Bilingual): TeamMessage["about"] {
+  return { need: task.need, info: task.item, for: task.for, ...(fact ? { fact } : {}) };
+}
+
+/** A line about information, in the task's thread. */
+function sayInfo(v: MemberView, to: MemberId, kind: TeamMessage["kind"], text: Bilingual, task: TeamTask, o: { fact?: Bilingual; replyTo?: string; patch?: TaskPatch[] } = {}): Proposal {
+  return { kind: "say", to, message: { thread: task.thread, kind, text, about: infoAbout(task, o.fact), evidence: [], ...(o.replyTo ? { replyTo: o.replyTo } : {}) }, patch: o.patch ?? [] };
+}
+
+/** Asked for information I hold: I report it back (the case's recorded answer, as I learned it); else I say I do not have it. */
+function tell(v: MemberView): Proposal | null {
+  for (const m of v.inbox) {
+    if (m.kind !== "request" || !m.about.info) continue;
+    const info = m.about.info;
+    const name = v.itemName(info);
+    const fact = v.knows?.(info) ?? null;
+    const about = { ...(m.about.need ? { need: m.about.need } : {}), info, ...(m.about.for ? { for: m.about.for } : {}) };
+    if (fact) return { kind: "say", to: m.from, message: { thread: m.thread, kind: "report", text: phrase("infoReport", { info: name, fact }), about: { ...about, fact }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+    return { kind: "say", to: m.from, message: { thread: m.thread, kind: "decline", text: phrase("infoNotKnown", { info: name }), about: { ...about, reason: "not-known" }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+  }
+  return null;
+}
+
+/** An information need noticed: the circulator's task, said aloud to the person who needs it — and what waits meanwhile. */
+function noticeInform(v: MemberView, n: KnownInform): Proposal {
+  const acts = informBlocks(n.need);
+  const task: TeamTask = { id: v.newId("task"), kind: "inform", need: n.need.id, item: n.need.history, for: n.forId, owner: v.me.id, initiator: v.me.id, holder: n.holderId, ...(acts.length ? { blocks: acts } : {}), thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0 };
+  const blocked = waiting(v, acts, false);
+  return sayInfo(v, n.forId, "notice", phrase("infoNotice", { info: v.itemName(task.item), for: v.name(task.for), holder: v.name(n.holderId), blocked }), task, { patch: [{ create: task }] });
+}
+
+/** Raise information that has not come to the person who needs it, with the reason; what it holds up still waits. */
+function escalateInform(v: MemberView, task: TeamTask, reason: string, reasonText: Bilingual, patch: TaskPatch[] = []): Proposal {
+  const clause = { en: reasonText.en.replace(/[.。]\s*$/u, ""), "zh-CN": reasonText["zh-CN"].replace(/[.。]\s*$/u, "") };
+  const blocked = waiting(v, task.blocks, true);
+  const text = phrase("infoUnresolved", { info: v.itemName(task.item), for: v.name(task.for), reason: clause, blocked });
+  return sayInfo(v, task.for, "escalate", text, task, { patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason, reasonText } }] });
+}
+
+/**
+ * An inform task under way: ask the one who holds it (nobody else knows it); once they have answered, tell the person
+ * who needs it as soon as they are in the room (`waiting` until then); watch for the answer and the read-back.
+ */
+function informStep(v: MemberView, task: TeamTask): Proposal | null {
+  const holder = task.holder ?? "";
+  if (task.status === "open") {
+    const colleague = v.colleagues.find((c) => c.id === holder);
+    if (!colleague || colleague.absent) return escalateInform(v, task, "holder-absent", phrase("why.infoAbsent", { to: v.name(holder) }));
+    return sayInfo(v, holder, "request", phrase("infoRequest", { to: v.name(holder), for: v.name(task.for), info: v.itemName(task.item) }), task, { patch: [{ id: task.id, set: { status: "asked", assignee: holder, since: v.round, tried: [holder] } }] });
+  }
+  if (task.status === "asked" && v.round - task.since >= v.waitRounds) return escalateInform(v, task, "no-answer", phrase("why.noAnswer", { to: v.name(holder) }));
+  if (task.status === "waiting" && task.fact) {
+    // supplied: told to the person who needs it, as the holder said it, once they are here (a read-back is expected)
+    if (v.inRoom(task.for)) return sayInfo(v, task.for, "report", phrase("infoRelay", { info: v.itemName(task.item), holder: v.name(holder), fact: task.fact }), task, { fact: task.fact, patch: [{ id: task.id, set: { status: "accepted", since: v.round } }] });
+    if (v.round - task.since >= v.waitRounds * 4) return escalateInform(v, task, "recipient-absent", phrase("why.infoNotHere", { for: v.name(task.for) }));
+    return null;
+  }
+  if (task.status === "accepted" && v.round - task.since >= v.waitRounds * 4) return escalateInform(v, task, "no-readback", phrase("why.noReadback", { for: v.name(task.for) }));
+  return null;
+}
+
+/** A message in an inform task's thread: the holder's answer is told to the person; their read-back is confirmed. */
+function informMessage(v: MemberView, task: TeamTask, m: TeamMessage): Proposal {
+  const read: TaskPatch = { read: m.id };
+  if (TERMINAL.has(task.status)) return { kind: "update", patch: [read] };
+  const holder = task.holder ?? "";
+  // supplied: kept as the holder said it, to be told to the person who needs it (`informStep`)
+  if (m.from === holder && m.kind === "report" && m.about.info === task.item && m.about.fact) return { kind: "update", patch: [read, { id: task.id, set: { status: "waiting", since: v.round, fact: m.about.fact } }] };
+  if (m.from === holder && m.kind === "decline") return escalateInform(v, task, "not-known", phrase("why.infoUnknown", { to: v.name(holder) }), [read]);
+  if (m.from === task.for && m.kind === "readback" && task.status === "accepted") {
+    // check-back: the read-back must be about the same information; then it is confirmed (and recorded in the case)
+    if (m.about.info === task.item) return sayInfo(v, m.from, "confirm", phrase("infoConfirm", { info: v.itemName(task.item) }), task, { replyTo: m.id, patch: [read, { id: task.id, set: { status: "done", verified: true, since: v.round } }] });
+    if (task.fact) return sayInfo(v, task.for, "report", phrase("infoRelay", { info: v.itemName(task.item), holder: v.name(holder), fact: task.fact }), task, { fact: task.fact, replyTo: m.id, patch: [read] });
+  }
+  return { kind: "update", patch: [read] };
 }
 
 /* ------------------------------------------------------------------ */
@@ -551,4 +672,19 @@ export function afterAct(v: MemberView, task: TeamTask, outcome: { status: strin
   if (outcome.code === "NOT_IN_RANGE" || outcome.code === "NOT_VISIBLE" || outcome.code === "MOVEMENT_INTERRUPTED") return outcome.hint ? { kind: "update", patch: [{ id: task.id, set: { goal: outcome.hint } }] } : null;
   const reason = outcome.message.split("\n")[0]!.replace(/[.。]\s*$/u, "");
   return say(v, task.initiator, "decline", "failedAct", task, { extra: { reason: { en: reason, "zh-CN": reason } }, reason: outcome.code ?? "failed", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed" } }, ...release] });
+}
+
+/* ------------------------------------------------------------------ */
+/* the surgeon (observer mode, or the stand-in): information told      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Information told to the surgeon (docs/TEAM.md §4.5) — the simulated surgeon of observer mode, or the stand-in while the
+ * learner holds a place: read back (check-back), as it was said. Null for anything else (`./surgeon.ts` answers it).
+ */
+function readBackInfo(v: MemberView, m: TeamMessage): Proposal | null {
+  if (m.kind !== "report" || !m.about.info || !m.about.fact) return null;
+  // information told to me: read back (check-back), as it was said
+  const about = { ...(m.about.need ? { need: m.about.need } : {}), info: m.about.info, ...(m.about.for ? { for: m.about.for } : {}), fact: m.about.fact };
+  return { kind: "say", to: m.from, message: { thread: m.thread, kind: "readback", text: phrase("infoReadback", { info: v.itemName(m.about.info), fact: m.about.fact }), about, evidence: [m.id], replyTo: m.id }, patch: [{ read: m.id }] };
 }

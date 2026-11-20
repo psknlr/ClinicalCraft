@@ -27,7 +27,7 @@ import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 export async function facilitiesList(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const settings = await loadCliSettings(ctx);
-  const content = await loadContent({ dirs: settings.contentDirs });
+  const content = await loadContent({ dirs: settings.contentDirs, cases: false });
   const facilities = [...content.facilities.values()];
   if (flagBool(args, "json")) {
     ctx.print(

@@ -2,38 +2,52 @@
  * Walking with the patient (EMBODIED §8.4): `escort_patient` — "follow me" — and `release_patient` — "wait here".
  *
  * A patient who can walk (`PatientBody.walkProblem`: not lying by clinical state, able to respond, not in
- * distress) gets up and walks with the actor who asked, from conversation range: from then on the patient is at
- * that actor's side wherever the actor goes — a world navigation, a staff member's walk, or the learner's own
- * avatar steered by hand, whose sensor pose takes the patient along without a stored step (the place is derived,
- * `PatientBody.escortSpot`). Every rule that measures from the patient follows: the bedside, conversation range,
- * goals on the patient, perception. Their bed stays where it is.
+ * distress) gets up and walks with the actor who asked, from conversation range: from then on the patient goes
+ * wherever the actor goes — a world navigation, a staff member's walk, or the learner's own avatar steered by hand —
+ * on their own feet: their own spot (`PatientPlaceState.spot`), advanced by their own steps along their own planned
+ * route to the actor's side (`journey.ts`: never a step through a wall or a window, audit 2026-11-12 W3; a step of a
+ * hand-steered walk changes no world version). Every rule that measures from the patient follows: the bedside,
+ * conversation range, goals on the patient, perception. Their bed stays where it is; the leads of a device left by it
+ * come off once they walk away from it (audit W2).
  *
  * It ends when the actor asks them to wait (`release_patient`: they stand where they are, a body on the floor
  * again), when someone takes them somewhere (`transport_patient`: they arrive there) or the team moves them (a
- * transfer), and when clinical state no longer lets them walk (`endEscortIfUnable`, from `refreshPatient`: they
- * lie down, or stop, where they are). No time is charged: the walking is the walker's own.
+ * transfer), when clinical state no longer lets them walk (`endEscortIfUnable`, from `refreshPatient`: they
+ * lie down, or stop, where they are), and when the walker goes where no one could have followed (a jump of a
+ * hand-steered body, through a wall or a window; a world walk they have no route after: `stopFollowing` — they stop
+ * where they are). No time is charged: the walking is the walker's own.
+ *
+ * Their walk is recorded as their own (audit 2026-11-12 P2-11; `journey.ts`): each walk of the walker in the world —
+ * and each stretch of a hand-steered walk — is a leg with the follower's own path (their own route, to a step behind
+ * the walker) and where they arrived, told by `patient.departed` / `patient.arrived`.
  */
 import type { ActorState, BodyPosture, EntityId, PatientPlaceState, WorldActionRequest, WorldEvent } from "./contracts.js";
-import type { Outcome } from "./effects.js";
+import { pluggedIn, TEAM_ACTOR, unplugIfAway, type Outcome } from "./effects.js";
 import { worldMessage } from "./i18n.js";
+import { closeStretch, followArm } from "./journey.js";
 import { freeCellNear, type PatientBody } from "./patient.js";
 import type { TransportHost } from "./transport.js";
 
 const grow = (a: { minX: number; maxX: number; minZ: number; maxZ: number }, m: number) => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
 
-/** Store the patient's place, re-stamp the grids where the body was and is, and say where they went. */
-function commit(host: TransportHost, next: PatientPlaceState, by: string | null): WorldEvent {
+/**
+ * Store the patient's place, re-stamp the grids where the body was and is, and say where they went — then the leads of
+ * a device they are no longer by come off (audit W2). The `patient.moved` event first, then those.
+ */
+function commit(host: TransportHost, next: PatientPlaceState, by: string | null): WorldEvent[] {
   const body = host.d.patient;
   const id = body.id!;
   const from = body.place()!;
   const old = host.patientStamp.body;
+  const plugged = pluggedIn(host);
   host.d.store.patchEntity(id, { patient: next });
   const now = body.body();
   for (const b of [old, now]) if (b) host.invalidate({ level: b.level, ...grow(b.area, 0.1) });
   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: now };
   const to = body.place()!;
   const distance = from.level === to.level ? Math.round(Math.hypot(to.x - from.x, to.z - from.z) * 100) / 100 : 0;
-  return host.emit({ type: "patient.moved", entityId: id, from, to, by, distance, path: [] });
+  const moved = host.emit({ type: "patient.moved", entityId: id, from, to, by, distance, path: [] });
+  return [moved, ...plugged.flatMap((d) => unplugIfAway(host, by ?? TEAM_ACTOR, d, "escort_patient"))];
 }
 
 /** The stored place without an escort or a posture asked for (the keys left out: snapshots stay as they were before). */
@@ -59,18 +73,24 @@ function stopHere(host: TransportHost, st: PatientPlaceState, posture: BodyPostu
 export function escortPatient(host: TransportHost, _request: WorldActionRequest, actor: ActorState, patientId: EntityId, start: boolean): Outcome {
   const { patient: body, locale: L, locator } = host.d;
   const name = locator.name(patientId);
-  const st = body.state()!;
   if (!start) {
-    const event = commit(host, stopHere(host, st, "standing"), actor.id);
+    // the walk together ends where they are: its last leg first, then they wait on a free spot there
+    const walked = closeStretch(host, "arrived", "end");
+    const moved = commit(host, stopHere(host, body.state()!, "standing"), actor.id);
     const ended = host.emit({ type: "patient.escort", entityId: patientId, escort: null, actorId: actor.id });
-    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [event, ended] };
+    return { status: "completed", message: worldMessage("ok.patientWaits", L, { patient: name, place: locator.regionName(body.place()!) }), events: [...walked, ...moved, ended] };
   }
-  // they get up and come along: no bed space, no provider, no support any more — the place is the walker's side
+  // walking with someone else until now: that walk ends here (its own leg)
+  const walked = closeStretch(host, "arrived", "end");
+  // they get up and come along: no bed space, no provider, no support any more — their own spot is where they stand
+  // (they walk from it by their own steps: `journey.ts`)
   const here = body.place()!;
-  const next: PatientPlaceState = { ...without(st), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
-  const event = commit(host, next, actor.id);
+  const next: PatientPlaceState = { ...without(body.state()!), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
+  const moved = commit(host, next, actor.id);
   const started = host.emit({ type: "patient.escort", entityId: patientId, escort: actor.id, actorId: actor.id });
-  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [event, started] };
+  // their own walk starts from here (a leg per walk of the walker: `journey.ts`)
+  followArm(host, actor);
+  return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [...walked, ...moved, started] };
 }
 
 /** Why the patient cannot start (`start`) or stop walking with this actor now — a precondition — or null. */
@@ -84,6 +104,24 @@ export function escortProblem(body: PatientBody, name: string, actor: ActorState
 }
 
 /**
+ * The walker went where the patient walking with them cannot have followed (`journey.ts`: a jump of a hand-steered
+ * body, through a wall or a window, another level by no connector; a world walk they have no route after): the walk
+ * together ends — the patient stopped where they are (`at`), standing on a free spot there, and the leg is recorded
+ * `stopped`.
+ */
+export function stopFollowing(host: TransportHost, at: { level: string; x: number; z: number }): WorldEvent[] {
+  const body = host.d.patient;
+  const st = body.state();
+  if (!st || !body.id || !body.escort(st)) return [];
+  const rot = body.place()?.rot ?? 0;
+  const cell = freeCellNear(host.d.grids, host.d.visibility, at.level, { minX: at.x, maxX: at.x, minZ: at.z, maxZ: at.z }, 1.5, null) ?? { x: at.x, z: at.z };
+  const moved = commit(host, { ...without(st), slot: null, provider: null, spot: { level: at.level, x: cell.x, z: cell.z, rot }, posture: "standing", support: null }, null);
+  const walked = closeStretch(host, "stopped", "end");
+  const ended = host.emit({ type: "patient.escort", entityId: body.id, escort: null, actorId: null });
+  return [...moved, ...walked, ended];
+}
+
+/**
  * Clinical state no longer lets the patient walk (laid flat, sedated, in distress): they stop where they are —
  * lying down there when clinical state has them lying — and the walk together ends. True when it did.
  */
@@ -92,7 +130,9 @@ export function endEscortIfUnable(host: TransportHost): boolean {
   const st = body.state();
   if (!st || !body.id || !body.escort(st) || !body.walkProblem(st)) return false;
   const lying = body.clinicalPostureOf(st) === "lying";
-  commit(host, stopHere(host, st, lying ? null : "standing"), null);
+  // the walk stopped short where they are (its last leg), then they stop there
+  closeStretch(host, "stopped", "end");
+  commit(host, stopHere(host, body.state()!, lying ? null : "standing"), null);
   host.emit({ type: "patient.escort", entityId: body.id, escort: null, actorId: null });
   return true;
 }

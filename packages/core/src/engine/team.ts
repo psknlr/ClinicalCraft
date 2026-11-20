@@ -7,7 +7,7 @@
 import type { CaseDefinition } from "../schema/case.js";
 import type { ActorRole, EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
 import { canonicalPosition, FIELD_CONTROLS, isSterilePosition, NON_STERILE_CONTROLS, TEAM_PLACES, type StaffPosition } from "../schema/positions.js";
-import type { CaseTeam, TeamMember } from "../schema/team.js";
+import { informBlocks, type CaseTeam, type TeamMember } from "../schema/team.js";
 import { formatPath } from "./parse.js";
 import { procedureFor } from "./procedure/variant.js";
 import { createSession, reduce } from "./reducer.js";
@@ -65,12 +65,34 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     });
     s.relief.forEach((r, j) => {
       if (members.has(r.staff)) issues.push(err([...at, "relief", j, "staff"], `"${r.staff}" is already a member of the team`));
-      if (r.duties.includes("surgeon") || r.duties.includes("circulate")) issues.push(err([...at, "relief", j, "duties"], `a relief colleague brings instruments or counts (not "surgeon" or "circulate")`));
+      if (r.duties.includes("surgeon") || r.duties.includes("circulate")) issues.push(err([...at, "relief", j, "duties"], `a relief colleague brings instruments, counts or holds information (not "surgeon" or "circulate")`));
+    });
+    // information to get to someone: a fact the case records, held by a member or a relief colleague (docs/TEAM.md §4.7)
+    const informs = new Set<string>();
+    const history = new Set(c.history.map((h) => h.id));
+    const interventions = new Set(c.interventions.map((iv) => iv.id));
+    s.inform.forEach((n, j) => {
+      const here = [...at, "inform", j];
+      if (informs.has(n.id) || needs.has(n.id)) issues.push(err([...here, "id"], `duplicate need id "${n.id}"`));
+      informs.add(n.id);
+      if (!history.has(n.history)) issues.push(err([...here, "history"], `unknown history item "${n.history}" (the information is a fact the case records)`));
+      if (!known(n.heldBy) || n.heldBy === "surgeon") issues.push(err([...here, "heldBy"], `"${n.heldBy}" is not a member or relief colleague who could hold it`));
+      if (!known(n.for)) issues.push(err([...here, "for"], `"${n.for}" is not a member of the team`));
+      if (n.heldBy === n.for) issues.push(err([...here, "heldBy"], `"${n.heldBy}" already holds what they need`));
+      if (n.noticedBy && !members.has(n.noticedBy)) issues.push(err([...here, "noticedBy"], `"${n.noticedBy}" is not a member of the team`));
+      // the acts it holds up: each an intervention of the case, once
+      const blocks = informBlocks(n);
+      blocks.forEach((b, k) => {
+        const path = typeof n.blocks === "string" ? [...here, "blocks"] : [...here, "blocks", k];
+        if (!interventions.has(b)) issues.push(err(path, `unknown intervention "${b}"`));
+        else if (blocks.indexOf(b) !== k) issues.push(err(path, `"${b}" is listed twice`));
+      });
     });
     if (s.expect?.delivered !== undefined && s.needs.length === 0) issues.push(err([...at, "expect", "delivered"], `nothing is needed in team scenario "${s.id}" (no need to deliver)`));
+    if (s.expect?.informed !== undefined && s.inform.length === 0) issues.push(err([...at, "expect", "informed"], `no information is needed in team scenario "${s.id}" (no inform)`));
     if (s.expect?.count && !team.count) issues.push(err([...at, "expect", "count"], `the team keeps no count (team.count)`));
     // a control scenario (nothing set up) is fine when the team keeps a count: it measures false holds
-    if (s.needs.length === 0 && s.items.length === 0 && s.absent.length === 0 && !team.count) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no item moved, nobody absent)`));
+    if (s.needs.length === 0 && s.inform.length === 0 && s.items.length === 0 && s.absent.length === 0 && !team.count) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no information, no item moved, nobody absent)`));
   });
   c.solution.forEach((a, i) => {
     if (a.type === "start" && a.team !== undefined && !scenarios.has(a.team)) issues.push(err(["solution", i, "team"], `unknown team scenario "${a.team}"`));
@@ -267,9 +289,10 @@ function standInIssues(c: CaseDefinition, f: FacilityDefinition, standIn: string
 }
 
 /**
- * The team in its facility: the room; the members, the surgeon's stand-in (a surgeon of that room) and the line-ups'
- * assistants (staff of that room); each member's facility position agreeing with their position in the team; relief
- * and cover colleagues; the items needed; the placements moved.
+ * The team in its facility: the room; the members (staff of that room — the member who circulates may be posted
+ * nearby), the surgeon's stand-in (a surgeon of that room) and the line-ups' assistants (staff of that room); each
+ * member's facility position agreeing with their position in the team (outside an operating room, a member who only
+ * circulates keeps her post's); relief and cover colleagues; the items needed; the placements moved.
  */
 export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, catalogs: readonly EquipmentCatalog[]): Issue[] {
   const team = c.team;
@@ -277,25 +300,30 @@ export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, cat
   const issues: Issue[] = [];
   if (!f.rooms.some((r) => r.id === team.room)) issues.push(err(["team", "room"], `facility "${f.id}" has no room "${team.room}"`));
   const staff = new Map(f.staff.map((s) => [s.id, s]));
-  const inRoom = (id: string, at: PathPart[]) => {
+  // staff of the facility who work in the team's room (`nearby`: or are posted elsewhere and come to it)
+  const inRoom = (id: string, at: PathPart[], nearby = false) => {
     const s = staff.get(id);
     if (!s) issues.push(err(at, `facility "${f.id}" has no staff "${id}"`));
-    else if (s.room !== team.room) issues.push(err(at, `"${id}" works in "${s.room}", not in the team's room "${team.room}"`));
+    else if (s.room !== team.room && !nearby) issues.push(err(at, `"${id}" works in "${s.room}", not in the team's room "${team.room}"`));
   };
   team.members.forEach((m, i) => {
     if (m.staff === "surgeon") {
       if (m.standIn !== undefined) issues.push(...standInIssues(c, f, m.standIn, ["team", "members", i, "standIn"]));
       return;
     }
-    inRoom(m.staff, ["team", "members", i, "staff"]);
+    // the member who circulates may be posted nearby (the ED nurse at the station): she comes to the team's room first
+    inRoom(m.staff, ["team", "members", i, "staff"], m.duties.includes("circulate"));
   });
   // the line-ups' assistants are the room's staff too
   (team.lineups ?? []).forEach((l, i) => l.members.forEach((m, j) => inRoom(m.staff, ["team", "lineups", i, "members", j, "staff"])));
   // the card a colleague speaks from (their facility position) and the controls the team gives them (their position in
-  // the team) are one job
+  // the team) are one job — save that the duty `circulate` alone makes a member the circulating nurse in an operating
+  // room only: elsewhere she is the nurse coordinating at the bedside (the ED nurse), in her own post's position
+  const theatre = f.rooms.find((r) => r.id === team.room)?.kind === "operating-room";
   for (const { m, at } of everyMember(team)) {
     const own = staff.get(m.staff)?.position;
     const p = positionOfMember(m);
+    if (!theatre && m.position === undefined && m.duties.includes("circulate") && p === "circulating-nurse") continue;
     if (own && p && canonicalPosition(own) !== canonicalPosition(p)) issues.push(err([...at, "staff"], `"${m.staff}" is a ${own} in facility "${f.id}" but a ${p} in the team: give them one position`));
   }
   const types = new Map(catalogs.flatMap((cat) => cat.equipment.map((e) => [e.id, e] as const)));

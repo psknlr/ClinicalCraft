@@ -55,7 +55,11 @@ afterEach(async () => {
   setLocale("zh-CN");
 });
 
-async function start(caseId = "stemi-inferior-rv", locale = "en"): Promise<{ app: AppSession; link: EmbodiedLink; c: CaseDefinition; feedback: ActionFeedback }> {
+async function start(
+  caseId = "stemi-inferior-rv",
+  locale = "en",
+  opts: { toast?: (title: string) => void; renderer?: () => WorldApi | null } = {},
+): Promise<{ app: AppSession; link: EmbodiedLink; c: CaseDefinition; feedback: ActionFeedback }> {
   setLocale(locale === "en" ? "en" : "zh-CN");
   const c = caseOf(caseId);
   const stored = defaultSettings();
@@ -67,13 +71,13 @@ async function start(caseId = "stemi-inferior-rv", locale = "en"): Promise<{ app
   const feedback = new ActionFeedback(() => null, () => null, () => undefined);
   const link = new EmbodiedLink({
     app,
-    renderer: () => null,
+    renderer: opts.renderer ?? (() => null),
     mover: new BrowserMover({ renderer: () => null }),
     facility,
     caseDef: c,
     slotId: slot.id,
     feedback,
-    toast: () => undefined,
+    toast: (title) => opts.toast?.(title),
     locale: () => locale,
   });
   open.push({ app, link });
@@ -98,6 +102,33 @@ describe("the patient's monitor and the bedside (the world's rule)", () => {
     expect(caps.has("medications")).toBe(true);
     // never a capability only found in another room (CT is in radiology)
     expect(caps.has("ct")).toBe(false);
+  });
+});
+
+describe("the toasts name a place as the world does (audit W5)", () => {
+  /** A renderer that draws nothing (every call a no-op; no equipment with a look of its own to draw). */
+  const blank = new Proxy({}, { get: (_, key) => (key === "statefulEquipment" ? () => [] : () => undefined) }) as WorldApi;
+
+  it("a colleague walking to the build zone and the patient moved by the team: asked of the world, in both languages", async () => {
+    const zone = facility.buildZone!.rect;
+    for (const [locale, walking, moved] of [
+      ["en", / is walking to Building Garden$/, "The patient was moved to General Ward"],
+      ["zh-CN", /正前往建造园地$/, "患者已被送到综合病房"],
+    ] as const) {
+      const toasts: string[] = [];
+      const { app, link } = await start("stemi-inferior-rv", locale, { toast: (t) => toasts.push(t), renderer: () => blank });
+      const world = app.world()!;
+      const asked = vi.spyOn(world, "regionName");
+      // before W5 the build zone read as the outdoor region ("Healing Garden" / "疗愈花园")
+      link.onBodyStart("staff:ed-nurse", { ok: true, goal: { kind: "point", x: zone.x, z: zone.z }, path: [], length: 0, travelSeconds: 0, target: { x: zone.x, y: 0, z: zone.z, yaw: 0, pitch: 0, level: "L0" } });
+      expect(toasts.at(-1)).toMatch(walking);
+      expect(asked).toHaveBeenCalledWith({ level: "L0", x: zone.x, z: zone.z }, locale);
+      // the team moves her to a ward bed: the place is the world's name for where she now is
+      expect(world.relocatePatient({ slot: "ward-1" })).toMatchObject({ ok: true, moved: true });
+      expect(toasts.at(-1)).toBe(moved);
+      const to = world.patientPlace()!;
+      expect(asked).toHaveBeenLastCalledWith({ level: to.level, x: to.x, z: to.z }, locale);
+    }
   });
 });
 

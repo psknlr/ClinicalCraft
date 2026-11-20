@@ -32,7 +32,8 @@ names. Only the words around them follow the glossary.
 | an AI agent | 代理 (agent warnings, `/autopilot` help, external agent) | **智能体** | 代理 is "proxy" — the LLM proxy mode (代理 · {model}) uses it; one word, one meaning |
 | external agent (`mcp --attach`) | 外部代理 | **外部智能体** | as above; the badge, approvals, CLI and MCP texts name it alike |
 | model provider | 提供商 (agent), 供应商 (web), 服务商 (CLI, bench) | **服务商** | the CLI and benchmark already used it |
-| a case-board decision (`decisions[]`) | 判断 / "judgement" (web), 决策 / "decision" (CLI, agent, MCP) | **决策** / **decision** (临床决策 / clinical decisions) | the schema, tools and reports say decision; "can answer" reads 可以作答 |
+| a case-board decision (`decisions[]`) | 判断 / "judgement" (web), 决策 / "decision" (CLI, agent, MCP) | **决策** / **decision** (临床决策 / clinical decisions) | the schema, tools and reports say decision; "can answer" reads 可以作答 (also the status in decision lists, not 可作答) |
+| how a decision and its options are named while the case runs | by authored id (`/answer diagnosis dual`, `[dual]` in lists); a locked one 判断 N (agent, CLI) | **决策 2** / **Decision 2** (its number in case order) and **选项 B** / **option B** (letters in presentation order); `/answer 1 B` | authored ids can name the diagnosis or the answer (`phosphate-wasting`, `carney`, `supported`); numbers and letters say nothing, and every surface — board, `/board`, tools, MCP — uses the same ones |
 | the board where decisions are made | 会诊板 / "case board" (web), 决策板 / "evidence board" (CLI, agent), 证据板 / "the evidence board" (capability label, `answer_decision`) | **会诊板** (panel title 会诊证据板) / **case board** | the object in the world; the web already used it. In-world signs and labels (facility data) name each board, e.g. "ED Case Board", "Case Conference · Evidence Board" |
 | case phase (`phases[]`) | 时期 (web), 阶段 (agent, CLI) | **阶段** | acute cases have stages, not periods; matches the runtime |
 | facility (`facility`) | 场景 (web), 场馆 (CLI, agent) | **场馆** | 场景 is the case setting (门诊, 急诊…); one word per concept |
@@ -62,6 +63,7 @@ names. Only the words around them follow the glossary.
 | `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
+| the CMCR collections (library filter, card label) | 中华病例说 · 多专科疑难（{n} 例）, 多专科疑难病例集 / "CMCR · multispecialty cases ({n})", "Multispecialty collection" (web); 中华病例说 · 20 例 / "CMCR · 20 cases" (docs) | **中华病例说 · 原选病例（{n} 例）**, label **原选病例集** / **CMCR · original selection ({n})**, label **Original selection**; **中华病例说 · 新增病例（{n} 例）**, label **新增病例集** / **CMCR · additional cases ({n})**, label **Additional collection** | a collection is named for how it joined the library, the same way in both languages: 疑难 ("difficult") judged the cases and had no counterpart in "multispecialty", and both collections are multispecialty |
 
 ## 2. Terms
 
@@ -93,12 +95,20 @@ developer documents use.
 | session | session | 会话 | `session_id`, `ClinicalSession` | technical; learners read "this encounter" / 本次接诊 |
 | case library | case library | 病例库 | case index (`CaseIndexEntry`) | |
 | case card | case card | 病例卡片 | library entry and selected-case panel | |
+| case collection | collection; the filter's "All collections" | 病例集；筛选项“全部病例集” | collection tag in `tags` (`cmcr-20`, `cmcr-105`) | a case carries at most one collection tag; one wording per collection below |
+| the original CMCR selection | CMCR · original selection ({n}); card label "Original selection" | 中华病例说 · 原选病例（{n} 例）；卡片标签“原选病例集” | tag `cmcr-20` | the 20 published cases of [CMCR_CASES.md](CMCR_CASES.md) |
+| the additional CMCR cases | CMCR · additional cases ({n}); card label "Additional collection" | 中华病例说 · 新增病例（{n} 例）；卡片标签“新增病例集” | tag `cmcr-105` | the 105 of [CMCR_105_CASES.md](CMCR_105_CASES.md); never 疑难 / "difficult" or "multispecialty" (§1) |
 | setting | setting (outpatient, emergency, inpatient, ICU, ward, operating theatre, community) | 场景（门诊、急诊、住院、重症监护、病房、手术室、院外现场） | `setting` | |
 | facility | facility | 场馆 | `facility`, `clinicalcraft/facility@1` | |
 | phase | phase | 阶段 | `phases[]` | |
 | objective | objective; a "chapter" in the HUD | 任务目标（HUD 中为“章节”）；简称“目标” | `objectives[]` | the in-game task list; "目标" alone always means an objective |
 | learning outcome | learning outcome | 学习目标 | `learningOutcomes[]` | an action verb and its standard; see §4 |
 | decision | decision (clinical decisions) | 决策（临床决策） | `decisions[]`, `answer_decision` | answered on the case board |
+| decision number | Decision 2 | 决策 2 | `decisionNumber`, `resolveDecisionRef`; `answer_decision` `decision_id: "2"`, `/answer 2 B` | how every learner-facing surface names a decision while the case runs: its number in case order, never its authored id (§1); a half-width space before the number (§3); a locked one shows only its number and what it needs |
+| option letter | option B; "Answer by letter" | 选项 B；“请按字母作答” | `labelledOptions`; `option_ids: ["B"]` | A, B, C… in presentation order (`presentedOptions`), never the authored id or order; half-width capitals (full-width ones are read too); several options "A, C" (the CLI shows "A+C") |
+| decision status | open; decided; a locked one "Decision 2 (not yet available)" in lists, "Decision 2 — locked" on the board | 可以作答；已作答；未开放的在列表中为“决策 2（尚未开放）”，在会诊板上为“决策 2 · 尚未解锁” | `label.unlocked`, `label.decided`, `label.decisionN` (lists: `/board`, `list_options`, `case_status`); web `board.ready`, `board.lockedTitle` | "can answer" is 可以作答 (§1), also the board's "Ready to decide" |
+| single best answer | single best answer ("Decision 2 takes a single best answer: answer with one letter.") | 单选题（“决策 2 为单选题：请只用一个字母作答。”） | `decisions[].kind: "single"` | the default kind |
+| select all that apply | select all that apply (a prompt ends "(Select all that apply.)"; the board: "Select all that apply, then submit") | 多选（题干注明“（多选）”；会诊板：“可多选 · 选出全部正确项后提交”） | `decisions[].kind: "multiple"` | not 多选题: the words say what to do |
 | case board | case board | 会诊板（面板标题：会诊证据板） | interaction kind `board`, `/board`, object type `evidence-board` | a facility's own sign may name its board (急诊病例讨论板, 会诊 · 证据拼图) |
 | hint | hint (counts against the score) | 提示（计入评分） | `hint`, `give_hint` | |
 | journal | journal | 随身档案 | journal panel | |
@@ -151,12 +161,23 @@ developer documents use.
 | IV access | IV access | 静脉通路 | `iv-access` |
 | delegate a task | delegate a task | 委派任务 | `delegate_task` |
 | take the patient (on their trolley) | take the patient to …; patient transport | 转运患者；用推床把患者送过去 | `transport_patient` (a patient who can walk walks there, EMBODIED §8.4) |
+| take a monitor along | take the patient with the portable monitor; "… went with them, monitoring."; with no free spot on arrival: "… went with them, monitoring; with no free spot beside them on arrival, it stays right with them." | 带着便携监护转运；“……随行监护。”；到达后没有空位时：“……随行监护；到达后旁边没有空位，它仍留在患者身边。” | `transport_patient {monitor: true}`, `PatientLeg.monitor`, `PatientPlace.transit.monitor` (EMBODIED §8.7) |
+| how the patient travelled; who took over | "You set off with … (on their bed / on a trolley / on foot)"; "… took over … there." | “你带……出发（推病床 / 推平车 / 步行）”；“由……在那里接手……。” | `patient.departed`, `PatientLeg.mode` (`TravelMode`), `PatientLeg.receivedBy` — the handover on arrival (EMBODIED §8.4) |
+| not where you expected it; whereabouts unknown | "… is not in …, where you last saw it. Look around, or ask a colleague."; "not in … when you looked — whereabouts unknown" | “……不在……（你上次在那里见到）。请在周围找找，或问问同事。”；“你去……找过，不在那里——下落不明” | `STALE_DESTINATION`, `ActorState.missed`, `lastKnown.kind: "missing"` (EMBODIED §4) |
+| ask where something is | ask a colleague where …; "Lin Xiao: … is in …"; "… said it is in …" | 问问同事……在哪里；“林晓：……在……。”；“……说在……” | `ask_whereabouts`, `askWhereabouts`, `lastKnown.kind: "told"` (EMBODIED §4) |
+| as last seen (a thing out of sight) | "· connected when last seen (last seen in …)" | “· 上次所见：connected（上次见于……）” | `ObservedEntity.state` of a thing believed elsewhere, `SeenPlace.state` (EMBODIED §4) |
+| build zone | the facility's own name for it — its room of kind `build-zone` ("Building Garden" in the built-in facilities) —, else "Build zone" (where blocks are built; a place name) | 建造园地 | `buildZone`, `buildZoneName`, `region.buildZone` (EMBODIED §4 "Location text") |
+| ordered, not done yet (a study done on the patient at a device) | ordered — the patient must go to a CT scanner | 已开单——患者需要去CT扫描 | `resultStatus` `not-acquired`, `awaitingAcquisition` (EMBODIED §8.7): in-world only — ordered anywhere, done when the patient is on the device, the result its turnaround later; never "pending" (no result is on its way yet) |
+| study done (the acquisition) | Study done; "the study has been done" | 检查已完成 | `acquire`, `order.acquired`, `OrderRecord.acquired`, by the radiographer / endoscopist (放射技师 / 内镜医师): recorded by the hospital when the patient is on the device, never entered by the learner |
 | walk with the patient | walk with the patient; said: "Please follow me." / "Please wait here." | 带患者走动；说：“请跟我来。” / “请在这里等一下。” | `escort_patient` / `release_patient`, `PatientPlace.escort` (the technical name *escort* stays out of learner text) |
 | come with me to … | said: "Please come with me to the CT scanner." | 说：“请跟我去CT扫描仪。” | a movement request → `transport_patient` (typed or a chip; understood in both languages) |
 | change position | said: "Please lie down." / "Please sit up." / "Please stand up." | 说：“请躺下。” / “请坐起来。” / “请站起来。” | the case's positioning intervention for that posture, else `reposition_patient` |
 | ask a colleague | said to them: "Please put the patient on the monitor.", "Please come to the bedside.", "You can go back now." | 对同事说：“请给患者上监护。”“请到床旁来。”“您可以回岗位了。” | a request in words → `delegate_task` / a walk by that colleague; outside their role they say so (`checkTaskScope`) |
 | pass me … | said to a colleague: "Pass me the scalpel.", "Gauze, please." | 对同事说：“把手术刀递给我。”“纱布，谢谢。” | a request in words → the colleague's `pick_up` + `hand_over {to}` (`staff-requests.ts`); a bare noun only when a handheld item is called that |
 | carried items | In your hands; Pick up / Put down / Equip / Take off / Hand to … | 手中物品；拿起 / 放下 / 佩戴 / 脱下 / 递给…… | handheld items `pick_up` / `put_down` / `equip` / `hand_over`; worn = `equipped` (does not fill a hand, `MAX_HELD` = 2) |
+| an item kept in custody; hand-over receipt; sign for it | "Handed … : the hand-over is recorded, for … to confirm."; "Receipt confirmed: … from …"; Sign for it | 交接需签收的物品；交接记录；确认签收（“……交接已记录，待……签收。”“已签收……”） | `EquipmentType.custody`, `HandoffReceipt`, `confirm_receipt`, `item.handoff` (EMBODIED §8.1) — the receiver signs, never the one who handed it over; a receipt records the hand-over only |
+| blood specimen tube; take the sample and label it at the bedside; medication box | Blood specimen tube; Take the sample and label it at the bedside; Medication box | 血标本管；床旁采血并贴标签；药盒 | `specimen-tube` `collect` (`empty` → `collected`, "Filled and labelled" / 已采血、已贴标签), `medication-box` — labelled in front of the patient |
+| take an item to someone | take an item to someone and hand it over | 把物品送交给某人 | `delegate_task deliver_item` (`params.to`) |
 | equipment operation | operate the equipment (device operations) | 设备操作 | world action / 世界动作: `world_action`, `interact_object` |
 | refusal | "Not here: …" with the reason and the way | “此处无法进行：……”及原因与去路 | spatial refusal: `SPATIAL_REQUIREMENT_UNMET`, `hint.goal` |
 | Go there | Go there | 前往 | a `navigate` to `hint.goal` |
@@ -166,6 +187,8 @@ developer documents use.
 | read-back (check-back) | read back; "A needle holder to the surgeon — confirm?" — "Yes — go ahead." / "No — not now."; the team window's buttons: Read back / Can't (to a request), Confirm / Not now (to a read-back of your own ask) | 复述确认；“持针器递给术者——确认吗？”——“对，开始吧。”/“先不用。”；团队面板的按钮：复述确认 / 做不到（回应请求）、确认 / 先不用（回应同事对你请求的复述） | message kinds `request` → `readback` → `confirm` (TeamSTEPPS check-back); the learner's `team reply` confirm / decline without words of their own | the confirmation is the asker's own words, never the read-back said back |
 | escalate | tell the surgeon why ("… hasn't arrived — …") | 上报（向术者说明原因） | message kind `escalate` | always with the reason |
 | relief colleague | relief colleague (called by phone) | 顶班同事（电话联系） | scenario `relief` | |
+| information a colleague holds; pass it on | "… has it; I'm getting it."; "… waits until it's confirmed."; read back | 信息交接；“……在某某那里，我去问。”“……等确认后再进行。”；复述确认 | scenario `inform`, duty `inform`, message `about.info`; recorded as `ask` with `via: "team"` (TEAM.md §4.7) | only a fact the case records, word for word; one named colleague holds it |
+| the doctor (an emergency team's words for the learner) | the doctor | 医生 | team member `name` on `surgeon` | in an operating room the team says the surgeon (术者); an emergency team is a 医护团队, never a 手术团队 |
 | assistant (at the operating table); hold the traction; let go | assistant — the first or the second ("assistant surgeon" is the first's old name); "Please hold the grasper in port B, pulling the infundibulum caudally." — "Holding."; "Letting go now."; the traction has gone: the window has closed | 助手（第一助手、第二助手）；“请拉住 B 孔的抓钳，把胆囊颈向尾侧牵拉。”——“拉住了。”；“我松手了。”；牵引已松开：术野窗口已闭合 | duty `assist`; `delegate_task hold_traction` / `release_traction`, `team ask` (`traction`, `release`), `operate {op: "hand-over"}` with `actor`, `PortState.holder`, signal `exposure-lost` | the assistant holds with their own hands: when they leave the table, the traction falls; "Letting go now." is said before letting go |
 | assist port (a port's role) | camera port, working port, assist port | 观察孔、操作孔、辅助孔 | port role `camera` / `working` / `assist` | never "assistant" for a port: the assistant (助手) is a person |
 | camera holder | camera holder; said: "Take the camera, please." — "I have the camera."; "Camera on the hepatocystic triangle." / "Closer." / "Wider."; follows the work (aims where the operator works, unasked, saying nothing); declines "A close view needs something to look at: tell me where to aim the camera first." | 扶镜手；说：“请扶镜。”——“镜头我扶好了。”；“镜头对准胆囊三角。”/“推近。”/“拉远。”；镜头跟随术者操作（无需吩咐，不必说出）；不能推近时：“推近需要先对准一个部位：请先告诉我镜头对准哪里。” | whoever holds the camera port with the scope in it; else the member present, other than the surgeon, who holds the `camera` control (the position words `扶镜手` / "camera holder": agent `tools/position-words.ts`); following the work: `followStep`, task need `field:follow` | never a position: the only assistant in a two-surgeon team, the second assistant in a three-surgeon one; never the surgeon member, who may still aim a camera port nobody holds; an aim someone asked for stands until the work moves on |
@@ -207,6 +230,13 @@ developer documents use.
 | not scored | not scored ("the situation this item scores did not arise") | 未计分（“本次接诊中没有出现该项评分的情形”） | `rubric[].scoredWhen`, rubric result `scored: false` | an avoided-harm item counts only once the harm was possible |
 | an item of another place | not scored in your place ("this item is another place's") | 不计入你担任的岗位（“该项属于其他岗位”） | `rubric[].seats`, rubric result `scored: false` | an item without `seats` is the operating surgeon's |
 | done by the team before you joined | Done by the team before you joined | 你加入前由团队完成 | `AssessmentReport.joined` (`SessionState.joined`) | in a place: shown, never credited to you |
+| safety outcome; passed / not passed | safety: passed / not passed | 安全性：通过 / 未通过 | `AssessmentReport.safety.passed` | shown beside the score on every debrief and export, never folded into it; a run that did not pass is never called passed, whatever its percentage |
+| critical safety failure | critical safety failure | 严重安全失误 | `interventions[].critical`, `safety.criticalFailures` | the case's dangerous error, made: a critical intervention given while contraindicated. Not "critical item" (关键项), which is a rubric item missed |
+| dose error; critical dose error | dose error; critical dose error ("not given: the dose ordered differs from the preset") | 剂量错误；严重剂量错误（“未给药：医嘱剂量与预设剂量不符”） | `dose.error`, `safety.doseErrors`, `severity` | the order is not carried out; critical when tenfold (×10 or ÷10 of any dose the preset allows), and on a critical, high-risk or high-alert drug (高警示药品, ISMP) also at twice the preset or more or by another route; any other is a dose error to review (待复盘) that never fails the safety outcome |
+| dose not clear | the dose in the order is not clear ("I need the dose clearly", "as a number with its unit") | 剂量不明确（“我需要把剂量确认清楚”，“用数字加单位”） | rejection `dose-unclear`, `checkOrder` `query`, `data.doseQuery` | a dose that cannot be read (a fraction, "0。5 mg", "50 000", mEq, a range across the preset's ends, two doses that disagree, no unit) or compared (no strength, no weight, a rate for a single dose), or a part of a dose given in parts ("is that the whole dose?" / “这是全部剂量吗？”): the nurse asks, nothing is given, no dose error |
+| the order as written; the dose read from it; the preset dose | as ordered; read as; preset dose | 医嘱原文；识别剂量；预设剂量 | `ordered.text`, `ordered.dose`, `doseSpec` | the debrief shows all three apart |
+| a bolus, then an infusion; given in parts | "70–80 units/kg IV, then 18 units/kg/h"; "(… as a bolus, the rest at …)" | 随后……；先推注……，其余以……输注 | `doseSpec.maintenance`, `doseSpec.bolus` | a preset's two parts, each checked against what an order states for it |
+| error recognition and recovery | error recognition and recovery (teaching) | 错误识别与补救（教学） | `errorRecovery` | a reference path that makes an error on purpose, declared; facilitator-facing |
 | debrief | debrief | 复盘 | `/debrief`, `debrief` | the method is debriefing (引导性反馈), here PEARLS |
 | key reasoning, teaching points, evidence boundaries, unknowns, references | key reasoning, teaching points, evidence boundaries, unknowns, references | 关键推理、教学要点、证据边界、仍未知的信息、参考文献 | `debrief.*` | |
 
@@ -232,6 +262,9 @@ developer documents use.
 | operative benchmark | operative benchmark | 手术基准测试 | `bench operative`, suites in `<content dir>/operative/` | developer-facing; agents operate with the anatomy hidden |
 | embodied agent benchmark | embodied agent benchmark | 具身智能体基准测试 | `bench run`, suite `embodied-v1` | developer-facing technical name |
 | benchmark scenario | scenario | 场景 | `clinicalcraft/bench-scenario@1` | |
+| held-out split | held-out (test) | 留出（test） | scenario `split: "test"`, `bench run --split` | never used to tune an agent; no scripted plan; reported apart from `dev` |
+| control (benchmark agent) | control run — not a model result | 对照运行——不是模型结果 | `reference`, `scripted-llm`; report `agent.role: "control"` | a live model's run (`llm`) is reported apart, never beside a control's 100 % |
+| safety-review worksheet | safety-review worksheet; specialty clinician / nurse verdict; disagreement | 安全审核表；专科医师意见 / 护士意见；分歧 | `cases safety-review` | it records no verdict: "No independent review has been recorded yet." |
 | skill; hook | skill; hook | 技能；钩子 | `execute_skill`; settings `hooks` | |
 | equipment catalog | equipment catalog | 设备目录 | `clinicalcraft/equipment-catalog@1` | "catalog" is the schema's name; ordinary prose says "catalogue" (the provider catalogue) |
 
@@ -242,9 +275,10 @@ developer documents use.
 * **Clinical words, not software words, for learners.** Learner-facing text
   never shows a tool id (`navigate_to`), an error code
   (`SPATIAL_REQUIREMENT_UNMET`), a JSON field, an id that names a diagnosis
-  (`stemi-inferior-rv`) or AI jargon (agent loop, prompt, token, embodied /
-  具身, grounding / 落地, autopilot / 自动驾驶). Those belong to the technical
-  register.
+  (`stemi-inferior-rv`) or an answer (a decision's or option's authored id:
+  `phosphate-wasting`, `supported` — decisions by number, options by letter,
+  §2) or AI jargon (agent loop, prompt, token, embodied / 具身, grounding /
+  落地, autopilot / 自动驾驶). Those belong to the technical register.
 * **Facts only from the case record.** Runtime strings never add a clinical
   "normal", a number or a finding; unrecorded data stays "not recorded" /
   “未记录” (ARCHITECTURE §2.1).

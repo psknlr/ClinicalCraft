@@ -14,12 +14,18 @@
  * autopilot: the spatial requirement is satisfied first (walk to the
  * refusal's hint; wheel a cart to the bedside when the policy asks for it;
  * take the patient to the device a study is done at — `transport_patient`,
- * by a porter when the facility has one, else wheeling them yourself),
- * a device operation that carries the act out is preferred (an ECG cart's
- * prepare → connect → record → reset, the patient's monitor `attach`, a
- * workstation's `order` / `read`, a device's `use`) — a busy or
- * out-of-service device is replaced by another provider —, else the
- * clinical act itself; then the engine state is verified.
+ * by a porter when the facility has one, else wheeling them yourself, with
+ * the portable monitor at the bedside when they are on a monitor:
+ * `monitorTravels`), a device operation that carries the act out is
+ * preferred (an ECG cart's prepare → connect → record → reset, the
+ * patient's monitor `attach`, a workstation's `order` / `read`, a device's
+ * `use`) — a busy or out-of-service device is replaced by another
+ * provider —, else the clinical act itself; then the engine state is
+ * verified. A study ordered to be done on the patient at a device
+ * (EMBODIED §8.7) is acquired once they are taken there: before its read,
+ * and after each order of a whole case (`solve-case`). A walk goes where the
+ * clinician believes a thing is (EMBODIED §4): not there, the solver asks
+ * around (`ask_whereabouts`) and goes where a colleague who knows says.
  */
 import {
   actionIntent,
@@ -29,7 +35,9 @@ import {
   clinicianOfflineSteps,
   heldBy,
   minutesUntilReadable,
+  monitorTravels,
   operationPath,
+  patientStaysAtDevice,
   releaseOperation,
   stepAlreadySatisfied,
   stepForAction,
@@ -37,8 +45,8 @@ import {
   type DeviceRoute,
   type OfflineClinicianStep,
 } from "@clinicalcraft/agent";
-import { assignPatientSlot, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
-import { behaviorOf, PRIMARY_ACTOR, type ActionHint, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type SpatialRequirement, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { assignPatientSlot, awaitingAcquisition, resultKey, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
+import { behaviorOf, PRIMARY_ACTOR, type ActionHint, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { footprintDistance } from "../predicates.js";
 import type { RecordedCall } from "../recorder.js";
 import type { BenchFindQuery, ReferenceStep, ScriptedCall } from "../schema.js";
@@ -134,8 +142,20 @@ class ReferenceSolver {
     return { ok: r.status === "completed", ...(r.status === "completed" ? {} : { code: r.errorCode ?? "TOOL_ERROR" }), output: r.message, result: r };
   }
 
-  private navigate(goal: NavGoal): Promise<Outcome & { result: WorldActionResult }> {
-    return this.call("navigate_to", { goal }, async () => this.worldOutcome(await this.act({ operation: "navigate", goal })));
+  /**
+   * A walk, as a person goes (EMBODIED §4, audit 2026-11-12 P1-8): to where the clinician believes a thing is. Not
+   * there: ask around ("has anyone seen …?", `ask_whereabouts`) and go once more where a colleague who knows says.
+   */
+  private async navigate(goal: NavGoal): Promise<Outcome & { result: WorldActionResult }> {
+    const walk = () => this.call("navigate_to", { goal }, async () => this.worldOutcome(await this.act({ operation: "navigate", goal })));
+    const out = await walk();
+    const missing = out.result.errorCode === "STALE_DESTINATION" ? out.result.belief?.entityId : undefined;
+    if (!missing) return out;
+    const asked = await this.call("ask_whereabouts", { target: missing }, async () => {
+      const answer = this.world.askWhereabouts(PRIMARY_ACTOR, missing);
+      return { ok: answer.answeredBy !== null, ...(answer.answeredBy ? {} : { code: "NOT_FOUND" }), output: answer.message, updated: answer.updated };
+    });
+    return asked.updated ? walk() : out;
   }
 
   /** A device / door / cart operation; a reach refusal's hint is followed once. */
@@ -210,16 +230,19 @@ class ReferenceSolver {
 
   /**
    * Take the patient to a destination (`transport_patient`, EMBODIED §8): a porter does it when the facility has
-   * one (`delegate_task`), else the clinician walks to the patient's side and wheels them there.
+   * one (`delegate_task`), else the clinician walks to the patient's side and wheels them there — with the portable
+   * monitor at the bedside when they are on a monitor (`monitorTravels`, EMBODIED §8.7).
    */
-  private async transport(parameters: Record<string, unknown>): Promise<boolean> {
+  private async transport(asked: Record<string, unknown>): Promise<boolean> {
     const patient = this.patientId();
     if (!patient) return false;
+    const monitor = monitorTravels(this.c, this.ctx.session.state, this.world);
+    const parameters: Record<string, unknown> = { ...asked, ...(monitor ? { monitor: true } : {}) };
     const destination = typeof parameters.destination === "string" ? parameters.destination : "";
     if (this.world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
       const target = destination || String(parameters.capability ?? "");
-      const r = await this.call("delegate_task", { role: "porter", task: "transport_patient", target }, async () => {
-        const events = await this.ctx.session.run({ type: "slash_command", name: "delegate", args: `porter transport_patient ${target}` });
+      const r = await this.call("delegate_task", { role: "porter", task: "transport_patient", target, ...(monitor ? { params: { monitor: true } } : {}) }, async () => {
+        const events = await this.ctx.session.run({ type: "slash_command", name: "delegate", args: `porter transport_patient ${target}${monitor ? " monitor=true" : ""}` });
         const out = events.flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
         const data = (out?.data ?? null) as { ok?: boolean } | null;
         return data?.ok ? { ok: true, output: out?.text ?? "" } : { ok: false, code: "TOOL_ERROR", output: out?.text ?? "no output" };
@@ -392,6 +415,23 @@ class ReferenceSolver {
     return stepAlreadySatisfied(before ?? stepForAction(this.c, action, this.L), this.ctx.session.state);
   }
 
+  /**
+   * Studies ordered that wait for the patient at their device (EMBODIED §8.7): the patient is taken there (the
+   * acquisition's hint, `transport_patient`) and the session records the acquisition on arrival. `only`: that
+   * investigation's order in the current phase (a read's).
+   */
+  private async acquirePending(only?: ClinicalAction): Promise<void> {
+    const tried = new Set<string>();
+    for (;;) {
+      const state = this.ctx.session.state;
+      const key = only && "investigationId" in only ? resultKey(only.investigationId, ("phase" in only && only.phase) || state.phase) : null;
+      const order = state.orders.find((o) => awaitingAcquisition(o) && !tried.has(o.key) && (!key || o.key === key));
+      if (!order) return;
+      tried.add(order.key);
+      await this.satisfy(actionIntent({ type: "acquire", investigationId: order.investigationId, phase: order.phase })!);
+    }
+  }
+
   /** Wait (simulated time) until a read's result is ready. */
   private async readyToRead(action: ClinicalAction): Promise<void> {
     const pending = minutesUntilReadable(this.c, this.ctx.session.state, action);
@@ -400,6 +440,8 @@ class ReferenceSolver {
 
   /** A clinical act carried out with the body (see the module docs); true when the engine state shows it done. */
   private async embodied(action: ClinicalAction, step?: OfflineClinicianStep): Promise<boolean> {
+    // a study not done yet (the patient never went to its device): taken there first, then its result awaited
+    if (action.type === "read") await this.acquirePending(action);
     if (action.type === "read") await this.readyToRead(action);
     const intent = actionIntent(action);
     if (intent) {
@@ -427,19 +469,11 @@ class ReferenceSolver {
   }
 
   /**
-   * After a study the patient was taken to a device for, they go back to their bed space — unless the next step that
-   * acts on the patient needs them at a device too (the embodied autopilot's rule).
+   * After a study the patient was taken to a device for, they go back to their bed space — unless they stay there
+   * (`patientStaysAtDevice`, the embodied autopilot's rule: the next step needs them at a device too).
    */
   private async returnPatient(steps: readonly OfflineClinicianStep[], from: number): Promise<void> {
-    if (!this.patientAway()) return;
-    for (let i = from; i < steps.length; i++) {
-      const step = steps[i]!;
-      if (step.kind !== "tool" || stepAlreadySatisfied(step, this.ctx.session.state)) continue;
-      const intent = actionIntent(step.action as ClinicalAction);
-      if (!intent) continue;
-      if (needsPatientAtProvider(this.world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
-      break;
-    }
+    if (!this.patientAway() || patientStaysAtDevice(this.world, this.ctx.session.state, steps, from)) return;
     await this.transport({ destination: "home" });
   }
 
@@ -471,6 +505,8 @@ class ReferenceSolver {
       }
       await this.embodied(a, step);
       cursor++;
+      // a study ordered to be done on the patient at a device: the patient is taken there for it (EMBODIED §8.7)
+      await this.acquirePending();
       await this.returnPatient(steps, cursor);
     }
   }
@@ -574,12 +610,6 @@ class ReferenceSolver {
       }
     }
   }
-}
-
-/** Does a requirement need the patient at a device (a study done on them there: `patient-at-provider`)? */
-function needsPatientAtProvider(r: SpatialRequirement): boolean {
-  if (r.kind === "patient-at-provider") return true;
-  return (r.kind === "any-of" || r.kind === "all-of") && r.options.some(needsPatientAtProvider);
 }
 
 /** The reference agent. */

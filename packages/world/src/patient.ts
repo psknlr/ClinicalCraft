@@ -15,10 +15,11 @@
  * the bed and has no collider of its own; otherwise a body box at the slot point. At a spot: on a support
  * (sitting or lying) the support collides; standing, a body box.
  *
- * A patient who walks with someone (`escort`, EMBODIED §8.4) is where that actor is — half a step behind,
- * on the actor's side of any wall — standing, with no body box of their own (like a patient in transit): the
- * place is derived from the actor's pose, so a human avatar driven by its sensor takes the patient along
- * without a single stored step. Whether a patient can walk at all is `walkProblem`.
+ * A patient who walks with someone (`escort`, EMBODIED §8.4) is where they walked to — their own spot (`spot`),
+ * advanced by their own steps along their own planned route towards the walker's side (`escortSpot`: half a step
+ * behind the walker, on the walker's side of any wall or window; `journey.ts`) — standing, with no body box of their
+ * own (like a patient in transit). Never derived from the walker's pose (audit 2026-11-12 W3). Whether a patient can
+ * walk at all is `walkProblem`.
  */
 import { capabilityLabels, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import { PATIENT_PERFORMED_CAPABILITIES, TABLE_CAPABILITIES, TROLLEY_TYPES } from "./capabilities.js";
@@ -56,7 +57,11 @@ export interface PatientBodyDeps {
   locale: string;
   /** The pose of an actor (whom a patient walks with), null when unknown. */
   actorPose?: (id: ActorId) => Pose | null;
-  /** Clear sight between two points of a level (walls, partitions): a patient walking with someone stays on their side of a wall. */
+  /**
+   * A straight step a person can take between two points of a level: nothing in the way at body height — no wall,
+   * partition or closed door (sight), and no window (sight passes, a body does not). A patient walking with someone
+   * heads for a spot on the walker's side of all of these (audit W3).
+   */
   clear?: (level: string, a: { x: number; z: number }, b: { x: number; z: number }) => boolean;
   /** What clinical state shows of the patient now (distress, cannot speak) — whether they can walk with someone. */
   cues?: () => { distressed?: boolean; cannotSpeak?: string };
@@ -186,8 +191,9 @@ export class PatientBody {
   }
 
   /**
-   * Where a patient walking with an actor is: half a step behind them, to one side, on the actor's side of any wall
-   * (else at the actor's own spot), facing the actor's way (`rot`, degrees).
+   * Where a patient walking with an actor heads for: half a step behind them, to one side, a straight step away from
+   * the actor (`clear`: on their side of any wall or window; else the actor's own spot), facing the actor's way (`rot`,
+   * degrees). The patient gets there by their own steps (`journey.ts`); their place is where they arrived.
    */
   escortSpot(pose: Pose): { level: string; x: number; z: number; rot: number } {
     const back = { x: Math.sin(pose.yaw), z: Math.cos(pose.yaw) };
@@ -199,6 +205,16 @@ export class PatientBody {
       if (!this.d.clear || this.d.clear(pose.level, pose, at)) return { level: pose.level, x: at.x, z: at.z, rot };
     }
     return { level: pose.level, x: pose.x, z: pose.z, rot };
+  }
+
+  /** Is a straight step between two points of a level one a person can take (`PatientBodyDeps.clear`; none given: yes)? */
+  clearStep(level: string, a: { x: number; z: number }, b: { x: number; z: number }): boolean {
+    return !this.d.clear || this.d.clear(level, a, b);
+  }
+
+  /** Where a patient walking with someone stands now: their own spot (an old snapshot without one: beside the walker). */
+  private followerSpot(st: PatientPlaceState, by: ActorId): { level: string; x: number; z: number; rot: number } {
+    return st.spot ? { ...st.spot } : this.escortSpot(this.d.actorPose!(by)!);
   }
 
   /** A slot by id. */
@@ -230,7 +246,7 @@ export class PatientBody {
     const f = this.d.facility;
     const by = this.escort(st);
     if (by) {
-      const s = this.escortSpot(this.d.actorPose!(by)!);
+      const s = this.followerSpot(st, by);
       return { slot: null, provider: null, home: { ...st.home }, level: s.level, x: s.x, y: levelElevation(f, s.level), z: s.z, rot: s.rot, room: this.d.registry.roomAt(s.level, s.x, s.z), posture, support: null, trolley: st.trolley, footprint: { ...BODY_FOOTPRINT[posture] }, escort: by };
     }
     if (st.slot) {
@@ -257,7 +273,7 @@ export class PatientBody {
     if (!st) return null;
     const by = this.escort(st);
     if (by) {
-      const s = this.escortSpot(this.d.actorPose!(by)!);
+      const s = this.followerSpot(st, by);
       return { level: s.level, x: s.x, z: s.z, room: this.d.registry.roomAt(s.level, s.x, s.z) };
     }
     if (st.slot) {

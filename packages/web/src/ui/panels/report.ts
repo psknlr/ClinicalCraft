@@ -9,7 +9,7 @@ import type { App } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
-import { figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
+import { atModality, figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
 
 export interface ReportBack {
   panel: "orders" | "device" | "journal" | "board" | "conversation";
@@ -118,6 +118,13 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
       const refusal = (!order && args.orderSubmission ? store.failureOf(args.orderSubmission) : undefined) ?? (!seen && readSubmission ? store.failureOf(readSubmission) : undefined);
       if (refusal) {
         content.append(h("p", { class: "notice refused", id: "report-refused" }, tr(order ? "report.readRefused" : "report.orderRefused", { reason: refusal })), buttons);
+        return;
+      }
+      // ordered, not done (in-world: the patient must go to the device first) — no result exists yet to wait for
+      const notDone = atModality(order);
+      if (!seen && notDone !== null) {
+        const turnaround = c.investigations.find((i) => i.id === args.investigationId)?.turnaroundMinutes ?? 0;
+        content.append(h("p", { class: "notice", id: "report-not-done" }, tr("report.atModality", { modality: notDone, min: Math.ceil(turnaround) })), buttons);
         return;
       }
       if (!seen) {

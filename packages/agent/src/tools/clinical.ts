@@ -7,11 +7,15 @@
  * Information discipline: tools only return what the action itself reveals
  * (an examined finding, a result that was read) or learner-visible
  * metadata (names, ids, phases, objective titles). `list_options` never
- * returns findings, results or answers; ambiguous queries return the
- * candidate names and perform no action.
+ * returns findings, results or answers; it names a decision only by its
+ * number in case order (`decision-refs.ts`) and its options only by their
+ * letters (`option-labels.ts`) — authored decision and option ids can name the
+ * diagnosis or the answer; ambiguous queries return the candidate names and
+ * perform no action.
  */
 import {
   activeHolds,
+  awaitingAcquisition,
   datumStatus,
   availableDecisions,
   currentObjective,
@@ -19,26 +23,29 @@ import {
   historyVoice,
   orderStatus,
   orderWarnings,
-  presentedOptions,
   progress,
   resultFor,
   t,
   vitalsAt,
   type CaseDefinition,
   type ClinicalAction,
+  type Decision,
   type DomainEvent,
   type ReduceResult,
   type SessionState,
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
-import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { countedLabel, isZh, joinList, listHeading, rt, type RuntimeKey } from "../session/i18n.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { nonVerbalNarration, nonVerbalReason } from "../session/nonverbal.js";
+import { decisionNumber, resolveDecisionRef } from "./decision-refs.js";
+import { labelledOptions, optionTokens, resolveOptionTokens, type LabelledOption } from "./option-labels.js";
 import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, learnerVitals, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import {
   actorFor,
   capabilityRefusal,
   maxDosesRefusal,
+  modalityText,
   orderStatusText,
   readPhase,
   rejectedOutput,
@@ -51,6 +58,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
+import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, interventionNameText, itemOrder, orderCheck, otherClauses, resolveOrderedIntervention, writtenOrder, type DoseErrorEvent, type DoseQuery } from "./dose-order.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -61,6 +69,7 @@ export {
   RESOLVE_THRESHOLD,
   actorFor,
   missingCapabilities,
+  modalityText,
   orderStatusText,
   readPhase,
   rejectedOutput,
@@ -71,6 +80,7 @@ export {
   resolveInvestigation,
   strArg,
   unresolvedOutput,
+  withoutDoses,
   type Resolution,
   type ToolArgs,
 } from "./clinical-resolve.js";
@@ -133,9 +143,9 @@ const LIST_LABEL: Record<ListKind, RuntimeKey> = {
   phases: "label.phases",
 };
 
-/** "Decision 3" — what a locked decision is called instead of its prompt. */
-export function lockedDecisionLabel(c: CaseDefinition, decisionId: string, locale: string): string {
-  return rt(locale, "label.decisionN", { n: c.decisions.findIndex((d) => d.id === decisionId) + 1 });
+/** "Decision 3 (not yet available)" — what a locked decision is called instead of its prompt (its number in case order). */
+export function lockedDecisionLabel(c: Pick<CaseDefinition, "decisions">, decisionId: string, locale: string): string {
+  return rt(locale, "label.decisionN", { n: decisionNumber(c, decisionId) });
 }
 
 /**
@@ -151,7 +161,11 @@ export function visiblePhases(c: CaseDefinition, s: SessionState): Set<string> {
   return new Set(c.phases.map((p) => p.id).filter((id) => shown.has(id)));
 }
 
-/** Names/ids only — never findings, results or correct answers. */
+/**
+ * Names/ids only — never findings, results or correct answers. A decision is listed by its number in case order
+ * ("- Decision 2: <prompt> (open)"; `data.number`) and its options by their letters in presentation order
+ * ("    [A] <text>"; `data.options: [{label, text}]`), never by their authored ids.
+ */
 export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, kind: ListKind): { text: string; data: unknown[] } {
   const c = ctx.caseDef;
   const s = ctx.state();
@@ -198,25 +212,27 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
       break;
     case "decisions":
       for (const d of availableDecisions(c, s)) {
-        const status = d.decided ? "label.decided" : d.unlocked ? "label.unlocked" : "label.locked";
+        // By number in case order, never by authored id: ids can name the diagnosis or the answer ("carney").
+        const number = decisionNumber(c, d.decision.id);
         // A locked decision's prompt and options can state results not yet obtained (or another
-        // decision's answer): only a placeholder and what it still needs.
+        // decision's answer): only its number and what it still needs.
         if (!d.unlocked && !d.decided) {
-          lines.push(`- [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
+          lines.push(`- ${lockedDecisionLabel(c, d.decision.id, L)}`);
           lines.push(`    ${t(d.decision.need, L)}`);
-          data.push({ id: d.decision.id, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
+          data.push({ number, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
           continue;
         }
-        const options = presentedOptions(c, d.decision);
-        lines.push(`- [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, status)})`);
-        for (const o of options) lines.push(`    [${o.id}] ${t(o.text, L)}`);
+        // Letters in presentation order: authored option ids often name the answer ("supported", "alternative-1").
+        const options = labelledOptions(c, d.decision);
+        lines.push(`- ${rt(L, "tool.list.decision", { n: number, prompt: t(d.decision.prompt, L), status: rt(L, d.decided ? "label.decided" : "label.unlocked") })}`);
+        for (const o of options) lines.push(`    [${o.label}] ${t(o.option.text, L)}`);
         data.push({
-          id: d.decision.id,
+          number,
           prompt: t(d.decision.prompt, L),
           kind: d.decision.kind,
           unlocked: d.unlocked,
           decided: d.decided,
-          options: options.map((o) => ({ id: o.id, text: t(o.text, L) })),
+          options: options.map((o) => ({ label: o.label, text: t(o.option.text, L) })),
         });
       }
       break;
@@ -238,14 +254,14 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
       return never;
     }
   }
-  return { text: `${rt(L, LIST_LABEL[kind])}:\n${lines.length > 0 ? lines.join("\n") : rt(L, "tool.list.empty")}`, data };
+  return { text: `${listHeading(L, rt(L, LIST_LABEL[kind]))}\n${lines.length > 0 ? lines.join("\n") : rt(L, "tool.list.empty")}`, data };
 }
 
 const listOptions: ToolDefinition<ToolArgs> = {
   name: "list_options",
   description:
     "List what can be asked, examined, ordered, given, decided or which phases exist (ids and names only — never findings or results). " +
-    "Use it to find exact ids for other tools.",
+    "Use it to find exact ids for other tools; decisions are numbered (Decision 1, 2, …) and their options lettered (A, B, …) — answer_decision takes the number and the letters.",
   inputSchema: {
     type: "object",
     properties: { kind: { type: "string", enum: [...LIST_KINDS] } },
@@ -370,19 +386,50 @@ const orderTest: ToolDefinition<ToolArgs> = {
     if (duplicate) return { ok: true, output: rt(L, "tool.orderDuplicate", { name, phase: phaseLabel(c, duplicate.phase, L) }), data: { investigationId: r.id, duplicate: true, phase: duplicate.phase } };
     const placed = eventsOf(result, "order.placed")[0];
     const phase = placed?.phase ?? s.phase;
-    const readyAt = placed?.readyAt ?? s.clock;
+    const order = s.orders.find((o) => o.key === placed?.key);
+    // in-world, a study done on the patient at a device: ordered here, done once the patient is there (EMBODIED §8.7)
+    const atModality = !!order?.modality?.length;
+    const waiting = !!order && awaitingAcquisition(order);
+    const readyAt = order?.readyAt ?? placed?.readyAt ?? s.clock;
     const hasRecord = resultFor(c, r.id, phase) != null;
+    const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+    const modality = order ? modalityText(order, L) : "";
     const ready = !hasRecord
       ? rt(L, "tool.ordered.noRecord", { phase: phaseLabel(c, phase, L) })
-      : readyAt <= s.clock
-        ? rt(L, "tool.ordered.readyNow")
-        : readyAtText(c, readyAt, s.clock, L);
+      : waiting
+        ? rt(L, "tool.ordered.atModality", { modality, minutes: turnaround })
+        : atModality && readyAt > s.clock
+          ? rt(L, "tool.ordered.atModalityNow", { patient: t(c.patient.displayName, L), modality, time: clockTime(c, readyAt, L, "ceil"), now: clockTime(c, s.clock, L) })
+          : readyAt <= s.clock
+            ? rt(L, "tool.ordered.readyNow")
+            : readyAtText(c, readyAt, s.clock, L);
     const lines = [rt(L, "tool.ordered", { name, phase: phaseLabel(c, phase, L), ready })];
     const query = strArg(args, "query");
     if (query) for (const w of orderWarnings(c, query, r.id, L, before)) lines.push(rt(L, "tool.orderWarning", { text: w }));
-    return { ok: true, output: lines.join("\n"), data: { investigationId: r.id, phase, readyAt, ready: hasRecord && readyAt <= s.clock, hasRecord } };
+    return {
+      ok: true,
+      output: lines.join("\n"),
+      data: { investigationId: r.id, phase, ...(waiting ? { acquired: false, modality: order!.modality } : { readyAt }), ready: hasRecord && !waiting && readyAt <= s.clock, hasRecord },
+    };
   },
 };
+
+/**
+ * A read of a study ordered but not done — the patient was never at its device (docs/EMBODIED.md §8.7): what it waits
+ * for and the way there, answered before anything else (never "go to the console" for a study nobody has done).
+ */
+function notAcquiredOutput(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, args: ToolArgs): ToolOutput | null {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const r = resolveInvestigation(c, args, L);
+  if (r.kind !== "id") return null;
+  const phase = readPhase(ctx.state(), r.id, strArg(args, "phase"));
+  const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
+  if (!order || !awaitingAcquisition(order)) return null;
+  const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+  const detail = rt(L, "tool.read.notAcquired", { name: investigationName(c, r.id, L), modality: modalityText(order, L), minutes: turnaround });
+  return rejectedOutput(L, { state: ctx.state(), events: [], rejected: { code: "not-ready", message: detail } }, detail);
+}
 
 const readResult: ToolDefinition<ToolArgs> = {
   name: "read_result",
@@ -411,6 +458,8 @@ const readResult: ToolDefinition<ToolArgs> = {
     const r = resolveInvestigation(ctx.caseDef, args, ctx.locale);
     return r.kind === "id" ? r.id : strArg(args, "investigation_id");
   },
+  // a study not done yet: said before the spatial gate sends anyone to a console to read nothing
+  precheck: (args, ctx) => notAcquiredOutput(ctx, args),
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
@@ -422,7 +471,12 @@ const readResult: ToolDefinition<ToolArgs> = {
     if (result.rejected) {
       if (result.rejected.code === "not-ready") {
         const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
-        return rejectedOutput(L, result, order ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
+        // ordered, not done: the patient was never at the device — no result exists to wait for
+        if (order && awaitingAcquisition(order)) {
+          const turnaround = c.investigations.find((i) => i.id === r.id)?.turnaroundMinutes ?? 0;
+          return rejectedOutput(L, result, rt(L, "tool.read.notAcquired", { name: investigationName(c, r.id, L), modality: modalityText(order, L), minutes: turnaround }));
+        }
+        return rejectedOutput(L, result, order?.readyAt != null ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
       }
       if (result.rejected.code === "not-ordered") {
         // Name the phase(s) it was ordered in, with the exact command (/results shows labels).
@@ -479,7 +533,7 @@ function operationRedirect(ctx: ToolContext, query: string): ToolOutput {
 }
 
 function interventionRisk(args: ToolArgs, ctx: ToolContext) {
-  const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+  const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
   return r.kind === "id" ? (ctx.caseDef.interventions.find((i) => i.id === r.id)?.risk ?? "low") : "none";
 }
 
@@ -488,12 +542,16 @@ const intervene: ToolDefinition<ToolArgs> = {
   description:
     "Give a treatment or perform a bedside procedure (drug, oxygen, fluids, airway, a checklist step, disposition…), by id or free text. " +
     "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm. " +
+    "A dose and route written in the order (query or dose: \"IM adrenaline 0.5 mg\", \"肌注肾上腺素 0.5 mg\") are checked against the dose the nurse prepared: " +
+    "a dose that differs is not given — the nurse reads the order back and asks you to confirm, and it is recorded as a dose error; a dose that cannot be read (a fraction, a range, no unit, a volume of unknown strength) is not given either — the nurse asks for it as a number with its unit. Without a dose the prepared dose is given. " +
+    "Each treatment is given on its own order: words that order several give the first of them; the others are checked against their own doses (a dose error there is recorded and read back) and named, to be ordered on their own. " +
     "An operation is not an intervention: when the case has one, it is done with observe_field and operate at the table.",
   inputSchema: {
     type: "object",
     properties: {
       intervention_id: { type: "string", description: "Exact intervention id from list_options(interventions)." },
-      query: { type: "string", maxLength: 300, description: "Free text when the id is unknown." },
+      query: { type: "string", maxLength: 300, description: "Free text when the id is unknown: the order as you would write it (a dose and route in it are checked)." },
+      dose: { type: "string", maxLength: 120, description: "The dose and route as written in your order (\"0.5 mg IM\", \"500 micrograms IM\", \"0.5毫克 肌注\"); checked against the dose prepared. Omit to give the prepared dose." },
     },
     additionalProperties: false,
   },
@@ -503,15 +561,22 @@ const intervene: ToolDefinition<ToolArgs> = {
   risk: interventionRisk,
   alwaysAsk: (args, ctx) => interventionRisk(args, ctx) === "high",
   summarize(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
-    return rt(ctx.locale, "sum.intervene", { name: r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id") });
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
+    const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
+    // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
+    // the words that order this item (its own clause when they order several)
+    const order = r.kind === "id" ? itemOrder(ctx.caseDef, args, r.id, ctx.locale) : writtenOrder(args);
+    const check = order && r.kind === "id" ? orderCheck(ctx.caseDef, r.id, order) : null;
+    if (order && check?.outcome === "query") return rt(ctx.locale, "sum.interveneUnclear", { name, text: order.text });
+    const dose = check ? check.dose : order?.dose;
+    return dose ? rt(ctx.locale, "sum.interveneDose", { name, dose: doseText(dose, ctx.locale) }) : rt(ctx.locale, "sum.intervene", { name });
   },
   specifier(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
     return r.kind === "id" ? r.id : strArg(args, "intervention_id") || strArg(args, "query");
   },
   precheck(args, ctx) {
-    const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+    const r = resolveOrderedIntervention(ctx.caseDef, args, ctx.locale);
     const iv = r.kind === "id" ? ctx.caseDef.interventions.find((i) => i.id === r.id) : undefined;
     if (!iv) return null;
     // Refused before the approval gate: no high-risk confirmation for a dose that cannot be given.
@@ -520,7 +585,7 @@ const intervene: ToolDefinition<ToolArgs> = {
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
-    const r = resolveIntervention(c, args, L);
+    const r = resolveOrderedIntervention(c, args, L);
     if (r.kind !== "id") {
       // the operation itself asked for as an intervention: the way in is the operative field, with what it still needs
       const asked = strArg(args, "query") || strArg(args, "intervention_id");
@@ -529,34 +594,121 @@ const intervene: ToolDefinition<ToolArgs> = {
     }
     const unavailable = capabilityRefusal(ctx, interventionLabel(c, r.id, L), c.interventions.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
-    const result = dispatch(ctx, { type: "intervene", interventionId: r.id });
+    // the order as written (words only: an id alone states none; the clause that names this item when they order
+    // several) and the dose read from it — the engine checks it
+    const ordered = itemOrder(c, args, r.id, L);
+    const result = dispatch(ctx, { type: "intervene", interventionId: r.id, ...(ordered ? { ordered } : {}) });
+    // the other treatments the words order: each checked against its own preset — a dose error recorded and read back,
+    // an unclear dose asked about — and given on its own order (never silently dropped)
+    const others = alsoOrdered(ctx, args, r.id);
+    // a refusal ends with them; a treatment given names the others after its dose check, as before, and reads back the
+    // other orders' doses after its own lines
+    const withOthers = (out: ToolOutput, lines = [...(others.named ? [others.named] : []), ...others.readBacks]): ToolOutput =>
+      others.data.length ? { ...out, output: [out.output, ...lines].join("\n"), data: { ...((out.data as Record<string, unknown> | undefined) ?? {}), alsoOrdered: others.data } } : out;
     if (result.rejected?.code === "on-hold") {
       const hold = activeHolds(ctx.state(), r.id)[0];
       const message = hold ? rt(L, "intervene.onHold", { name: interventionLabel(c, r.id, L), by: hold.placedBy, reason: sentence(hold.reason) }) : rejectionText(L, "on-hold");
-      return { ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } };
+      return withOthers({ ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } });
+    }
+    // the order's dose is not clear: nothing given, no dose error — the nurse asks for it as a number with its unit
+    if (result.rejected?.code === "dose-unclear" && ordered) {
+      const check = orderCheck(c, r.id, ordered);
+      if (check?.outcome === "query") {
+        const message = doseQueryChallengeText(c, r.id, check, L);
+        const iv = c.interventions.find((i) => i.id === r.id)!;
+        return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } });
+      }
     }
     // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
-    if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
+    if (result.rejected) return withOthers(rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined));
     const iv = c.interventions.find((i) => i.id === r.id)!;
+    const doseError = eventsOf(result, "dose.error")[0];
+    if (doseError) {
+      // the dose ordered differs from the dose prepared: nothing given — the nurse reads the order back (closed loop)
+      const message = doseChallengeText(c, doseError, L);
+      return withOthers({ ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } });
+    }
     const applied = eventsOf(result, "intervention.applied")[0];
     const appropriateness = applied?.appropriateness ?? "neutral";
     const harm = iv.harm ? t(iv.harm, L) : "";
     if (applied?.invalid) {
       // a checklist step out of order: recorded as invalid, nothing applied — never reported as done
       const output = [rt(L, "intervene.invalid", { harm }).trim(), ...objectiveRequirementLines(c, ctx.state(), L, visiblePhases(c, ctx.state()))].join("\n");
-      return { ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } };
+      return withOthers({ ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } });
     }
     const dose = iv.dose ? t(iv.dose, L) : "";
     const name = t(iv.name, L);
     const lines = [rt(L, "tool.intervened", { name, dose: dose && !name.includes(dose) ? ` (${dose})` : "" })];
+    // the order as the engine recorded it (the dose it read from the words: a split dose's total, a volume's content)
+    const record = ctx.state().interventions.at(-1);
+    const recorded = record?.interventionId === iv.id && record.ordered ? record.ordered : ordered;
+    // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
+    const checked = doseCheckText(c, iv, recorded, L);
+    if (checked) lines.push(checked);
+    if (others.named) lines.push(others.named);
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
     // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
     const data = safetyDataLines(c, ctx.state(), iv.reports, L);
     lines.push(...data);
     if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
-    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
+    // the order as written and the dose read from it, apart from the dose given: the preset (`doseSpec`, the dose text)
+    const order = recorded ? { ordered: recorded, administered: administeredDose(c, iv.id, L) } : {};
+    return withOthers({ ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } }, others.readBacks);
   },
 };
+
+/**
+ * Another treatment an `intervene` call's words order beside its own (`otherClauses`), as the call left it:
+ * `dose-error` — its own words' dose conflicts with its preset: recorded by the engine (`dose.error`, the reducer's own
+ * check; nothing given) and read back; `dose-query` — a dose that cannot be read or compared, asked about (nothing
+ * given or recorded); `named` — to be given on its own order.
+ */
+export interface AlsoOrdered {
+  interventionId: string;
+  /** The words that order it. */
+  text: string;
+  outcome: "dose-error" | "dose-query" | "named";
+  doseError?: ReturnType<typeof doseErrorData>;
+  doseQuery?: ReturnType<typeof doseQueryData>;
+}
+
+/**
+ * The other orders of an `intervene` call's words, each checked against its own item's preset (core `checkOrder`, as
+ * the engine checks it): a dose error is dispatched as that item's order — the reducer records it (a critical one fails
+ * the safety outcome) and gives nothing — and the nurse reads it back; an unclear dose is asked about; the rest are
+ * named, each given on its own order. Run after the call's own order reached the engine, so the spatial re-check is
+ * its own. The line naming the others ("Your order also names …"), the nurse's read-backs and questions, and
+ * `data.alsoOrdered`.
+ */
+function alsoOrdered(ctx: ToolContext, args: ToolArgs, interventionId: string): { named: string | null; readBacks: string[]; data: AlsoOrdered[] } {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const readBacks: string[] = [];
+  const named: string[] = [];
+  const data: AlsoOrdered[] = [];
+  for (const other of otherClauses(c, args, interventionId, L)) {
+    const order = writtenOrder({ query: other.text });
+    const check = order ? orderCheck(c, other.id, order) : null;
+    if (order && check?.outcome === "conflict") {
+      const e: DoseErrorEvent | undefined = eventsOf(dispatch(ctx, { type: "intervene", interventionId: other.id, ordered: order }), "dose.error")[0];
+      if (e) {
+        readBacks.push(doseChallengeText(c, e, L));
+        data.push({ interventionId: other.id, text: other.text, outcome: "dose-error", doseError: doseErrorData(e) });
+        continue;
+      }
+    }
+    if (order && check?.outcome === "query") {
+      const q: DoseQuery = check;
+      readBacks.push(doseQueryChallengeText(c, other.id, q, L));
+      data.push({ interventionId: other.id, text: other.text, outcome: "dose-query", doseQuery: doseQueryData(c, other.id, order.text, q) });
+      continue;
+    }
+    named.push(other.id);
+    data.push({ interventionId: other.id, text: other.text, outcome: "named" });
+  }
+  const names = named.length ? rt(L, "dose.alsoOrdered", { items: joinList(L, named.map((id) => interventionNameText(c, id, L))) }) : null;
+  return { named: names, readBacks, data };
+}
 
 /* ------------------------------------------------------------------ */
 /* Team                                                                */
@@ -619,35 +771,99 @@ const consult: ToolDefinition<ToolArgs> = {
 /* Decisions, phases, time, plan                                       */
 /* ------------------------------------------------------------------ */
 
-function optionIds(args: ToolArgs): string[] {
-  const v = args.option_ids;
-  if (Array.isArray(v)) return v.map((x) => String(x).trim()).filter(Boolean);
-  if (typeof v === "string" && v.trim()) return [v.trim()];
-  return [];
+/** "A (Inferior STEMI); B (Pulmonary embolism)" — every option by its letter, in presentation order. */
+function optionsByLetter(options: readonly LabelledOption<Decision["options"][number]>[], locale: string): string {
+  const zh = isZh(locale);
+  return options.map((o) => (zh ? `${o.label}（${t(o.option.text, locale)}）` : `${o.label} (${t(o.option.text, locale)})`)).join(zh ? "；" : "; ");
+}
+
+/** The decision a `decision_id` names, or the refusal: the reference is not a decision's number or id. */
+export type AnsweredDecision = { ok: true; decision: Decision } | { ok: false; output: string };
+
+/**
+ * The refusal of a reference naming no decision of the case: the decisions by their numbers, never their ids
+ * (which can name the diagnosis or the answer). Shared by `answeredDecision` and a learner `answer` action naming
+ * a decision id the case lacks (`session/action-input.ts`).
+ */
+export function noSuchDecisionText(c: CaseDefinition, ref: string, locale: string): string {
+  if (c.decisions.length === 0) return rt(locale, "tool.answer.noDecisions");
+  return rt(locale, "tool.answer.noSuchDecision", { ref: ref.trim(), numbers: joinList(locale, c.decisions.map((_, i) => String(i + 1))) });
 }
 
 /**
- * A decision the caller may not see yet (neither unlocked nor decided): its
- * prompt and options can state results not yet obtained, so a call naming it
- * gets only what it still needs — never its prompt, option texts or ids.
+ * The decision an `answer_decision` `decision_id` names (`resolveDecisionRef`: its number in case order — "2",
+ * "D2", "决策 2" — else its exact id). A reference naming none is refused with the decisions' numbers, never
+ * their ids (which can name the diagnosis or the answer).
  */
-function lockedDecisionRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, decisionId: string): ToolOutput | null {
+export function answeredDecision(c: CaseDefinition, ref: string, locale: string): AnsweredDecision {
+  const decision = resolveDecisionRef(c.decisions, ref);
+  return decision ? { ok: true, decision } : { ok: false, output: noSuchDecisionText(c, ref, locale) };
+}
+
+/**
+ * The refusal of tokens naming no option of a decision the caller may see: the tokens as given, then every option
+ * by its letter in presentation order — never its id, never the authored order (where the correct answer usually
+ * comes first). Shared by `answeredOptions` and a learner `answer` action naming an option id its decision lacks.
+ */
+export function unknownOptionsText(c: CaseDefinition, decision: Decision, tokens: readonly string[], locale: string): string {
+  return rt(locale, "tool.answer.badOption", { tokens: joinList(locale, tokens), options: optionsByLetter(labelledOptions(c, decision), locale) });
+}
+
+/** The options an answer names, each once in the order first named, or the refusal listing every option by letter. */
+export type AnsweredOptions = { ok: true; chosen: LabelledOption<Decision["options"][number]>[] } | { ok: false; output: string };
+
+/**
+ * The options an `option_ids` value names on a decision the caller may see (unlocked or decided): read by the one
+ * tokenizer (`optionTokens`: "A, C" in one item is two) and resolved as letters, numbers or exact ids
+ * (`resolveOptionTokens`; the same option twice counts once). A token naming no option, or no token at all (an
+ * item of separators only), is refused with every option by its letter in presentation order — never its id, never
+ * the authored order (where the correct answer usually comes first); more than one option on a single-best-answer
+ * decision is refused too. Shared by `answer_decision` (its precheck and run) and a learner action's tool input
+ * (`session/action-input.ts`).
+ */
+export function answeredOptions(c: CaseDefinition, decision: Decision, optionIds: unknown, locale: string): AnsweredOptions {
+  const labelled = labelledOptions(c, decision);
+  const { chosen, unresolved } = resolveOptionTokens(labelled, optionTokens(optionIds));
+  if (unresolved.length > 0) return { ok: false, output: unknownOptionsText(c, decision, unresolved, locale) };
+  if (chosen.length === 0) return { ok: false, output: rt(locale, "tool.answer.noOption", { options: optionsByLetter(labelled, locale) }) };
+  // "A, C" is two options: a single-best-answer decision takes one (the engine would refuse the answer as invalid).
+  if (decision.kind === "single" && chosen.length > 1) return { ok: false, output: rt(locale, "tool.answer.oneOption", { n: decisionNumber(c, decision.id) }) };
+  return { ok: true, chosen };
+}
+
+/**
+ * A decision the caller may not see yet (neither unlocked nor decided): its prompt and options can state results
+ * not yet obtained, so a call naming it gets only its number and what it still needs — never its prompt, option
+ * texts or ids. Null when the caller may see it.
+ */
+export function lockedDecisionRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, decision: Pick<Decision, "id">): ToolOutput | null {
   const c = ctx.caseDef;
-  const entry = availableDecisions(c, ctx.state()).find((x) => x.decision.id === decisionId);
+  const entry = availableDecisions(c, ctx.state()).find((x) => x.decision.id === decision.id);
   if (!entry || entry.unlocked || entry.decided) return null;
-  return { ok: false, output: rt(ctx.locale, "tool.answer.need", { need: t(entry.decision.need, ctx.locale) }), data: { rejected: { code: "requirements-unmet" } } };
+  return { ok: false, output: rt(ctx.locale, "tool.answer.need", { n: decisionNumber(c, decision.id), need: t(entry.decision.need, ctx.locale) }), data: { rejected: { code: "requirements-unmet" } } };
+}
+
+/** The decision an `answer_decision` call names, when it names one (its number or id). */
+function namedDecision(args: ToolArgs, ctx: Pick<ToolContext, "caseDef">): Decision | undefined {
+  return resolveDecisionRef(ctx.caseDef.decisions, strArg(args, "decision_id"));
 }
 
 const answerDecision: ToolDefinition<ToolArgs> = {
   name: "answer_decision",
   description:
-    "Answer a decision on the case board (single best answer: one option id; select-all: every option id you choose). " +
+    "Answer a decision on the case board: the decision by its number and the options by the letters list_options(decisions) shows (single best answer: one letter; select-all: every letter you choose). " +
     "Returns whether it is correct and feedback. Decisions unlock once their evidence has been gathered.",
   inputSchema: {
     type: "object",
     properties: {
-      decision_id: { type: "string", minLength: 1 },
-      option_ids: { type: "array", items: { type: "string", minLength: 1 }, minItems: 1, maxItems: 12 },
+      decision_id: { type: "string", minLength: 1, description: "The decision's number as list_options(decisions) and case_status show it (\"2\" for Decision 2); an exact decision id from older clients is accepted too." },
+      option_ids: {
+        type: "array",
+        items: { type: "string", minLength: 1, description: "An option's letter as list_options(decisions) lists it (\"A\", \"B\", …), or its 1-based number in that order; \"A, C\" in one item is two options." },
+        minItems: 1,
+        maxItems: 12,
+        description: "The options you choose, by letter (\"A\") or number (\"1\"); an exact option id from older clients is accepted too.",
+      },
     },
     required: ["decision_id", "option_ids"],
     additionalProperties: false,
@@ -657,49 +873,68 @@ const answerDecision: ToolDefinition<ToolArgs> = {
   scope: "history-only",
   risk: () => "low",
   summarize(args, ctx) {
-    const decisionId = strArg(args, "decision_id");
-    const d = ctx.caseDef.decisions.find((x) => x.id === decisionId);
+    const d = namedDecision(args, ctx);
     const L = ctx.locale;
     // A locked decision is named by its number only (approval dialogs are shown to the learner).
-    if (d && lockedDecisionRefusal(ctx, d.id)) return rt(L, "sum.answerLocked", { label: lockedDecisionLabel(ctx.caseDef, d.id, L) });
-    const options = optionIds(args).map((id) => {
-      const o = d?.options.find((x) => x.id === id);
-      return o ? t(o.text, L) : id;
-    });
-    return rt(L, "sum.answer", { prompt: d ? t(d.prompt, L) : decisionId, options: joinList(L, options) });
+    if (d && lockedDecisionRefusal(ctx, d)) return rt(L, "sum.answerLocked", { label: lockedDecisionLabel(ctx.caseDef, d.id, L) });
+    // The chosen options by their text (letters, numbers and ids alike, each once); a token naming none as given.
+    const { chosen, unresolved } = resolveOptionTokens(d ? labelledOptions(ctx.caseDef, d) : [], optionTokens(args.option_ids));
+    const options = [...chosen.map((o) => t(o.option.text, L)), ...unresolved];
+    return rt(L, "sum.answer", { prompt: d ? t(d.prompt, L) : strArg(args, "decision_id"), options: joinList(L, options) });
   },
-  specifier: (args) => strArg(args, "decision_id"),
-  precheck: (args, ctx) => lockedDecisionRefusal(ctx, strArg(args, "decision_id")),
+  // Rules, and the gate's reasons that quote them (shown to the learner), name a decision by its number; a rule
+  // written with the authored id still applies (`specifiers`).
+  specifier(args, ctx) {
+    const d = namedDecision(args, ctx);
+    return d ? String(decisionNumber(ctx.caseDef, d.id)) : strArg(args, "decision_id");
+  },
+  specifiers(args, ctx) {
+    const d = namedDecision(args, ctx);
+    return d ? [[String(decisionNumber(ctx.caseDef, d.id)), d.id]] : [[strArg(args, "decision_id")]];
+  },
+  // Before any approval, on every tool path: a call naming no decision, a locked one (only what it needs) or no
+  // option of its own cannot run.
+  precheck(args, ctx) {
+    const named = answeredDecision(ctx.caseDef, strArg(args, "decision_id"), ctx.locale);
+    if (!named.ok) return { ok: false, output: named.output };
+    const locked = lockedDecisionRefusal(ctx, named.decision);
+    if (locked) return locked;
+    const options = answeredOptions(ctx.caseDef, named.decision, args.option_ids, ctx.locale);
+    return options.ok ? null : { ok: false, output: options.output };
+  },
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
-    const decisionId = strArg(args, "decision_id");
-    const d = c.decisions.find((x) => x.id === decisionId);
-    if (!d) return { ok: false, output: rt(L, "tool.noSuchId", { id: decisionId }) };
-    // Locked first: an unknown option id must not list a locked decision's options.
-    const locked = lockedDecisionRefusal(ctx, decisionId);
+    const named = answeredDecision(c, strArg(args, "decision_id"), L);
+    if (!named.ok) return { ok: false, output: named.output };
+    const d = named.decision;
+    const n = decisionNumber(c, d.id);
+    // Locked first: an unknown option must not list a locked decision's options.
+    const locked = lockedDecisionRefusal(ctx, d);
     if (locked) return locked;
-    const ids = optionIds(args);
-    const bad = ids.filter((id) => !d.options.some((o) => o.id === id));
-    if (bad.length > 0) {
-      // Presentation order (presentedOptions), never the authored order (correct answer usually first).
-      const listed = presentedOptions(c, d).map((o) => `${o.id} (${t(o.text, L)})`).join(isZh(L) ? "；" : "; ");
-      return { ok: false, output: rt(L, "tool.answer.badOption", { ids: bad.join(", "), options: listed }) };
-    }
-    const result = dispatch(ctx, { type: "answer", decisionId, optionIds: ids });
+    // Letters and numbers in presentation order (presentedOptions), else exact ids; the same option twice counts once.
+    const options = answeredOptions(c, d, args.option_ids, L);
+    if (!options.ok) return { ok: false, output: options.output };
+    const chosen = options.chosen;
+    const result = dispatch(ctx, { type: "answer", decisionId: d.id, optionIds: chosen.map((o) => o.option.id) });
     if (result.rejected) {
-      if (result.rejected.code === "requirements-unmet") return { ok: false, output: rt(L, "tool.answer.need", { need: t(d.need, L) }), data: { rejected: result.rejected } };
-      if (result.rejected.code === "already-decided") return { ok: false, output: rt(L, "tool.answer.already"), data: { rejected: result.rejected } };
-      return rejectedOutput(L, result);
+      // The code only, as `lockedDecisionRefusal`: the engine's own message names the decision by its authored id
+      // ("decision \"phosphate-wasting\" was already answered correctly"), and `data` reaches MCP clients.
+      const rejected = { code: result.rejected.code };
+      if (rejected.code === "requirements-unmet") return { ok: false, output: rt(L, "tool.answer.need", { n, need: t(d.need, L) }), data: { rejected } };
+      if (rejected.code === "already-decided") return { ok: false, output: rt(L, "tool.answer.already", { n }), data: { rejected } };
+      // Anything else (the case has finished…): the reason in the learner's language, as `rejectedOutput` words it.
+      const { output, data } = rejectedOutput(L, result);
+      return { ok: false, output, data: { rejected, message: (data as { message: string }).message } };
     }
     const answered = eventsOf(result, "decision.answered")[0];
     const correct = answered?.correct ?? false;
     const lines = [rt(L, correct ? "tool.answer.correct" : "tool.answer.incorrect")];
-    for (const id of ids) {
-      const o = d.options.find((x) => x.id === id)!;
-      lines.push(`- ${t(o.text, L)}: ${t(o.feedback, L)}`);
-    }
-    return { ok: true, output: lines.join("\n"), data: { decisionId, optionIds: ids, correct, firstTry: answered?.firstTry ?? false } };
+    for (const o of chosen) lines.push(`- ${t(o.option.text, L)}: ${t(o.option.feedback, L)}`);
+    // The decision by its number, the options by letter and text — never their authored ids (the engine's
+    // `decision.answered` records those).
+    const picked = chosen.map((o) => ({ label: o.label, text: t(o.option.text, L) }));
+    return { ok: true, output: lines.join("\n"), data: { decision: n, options: picked, correct, firstTry: answered?.firstTry ?? false } };
   },
 };
 
@@ -857,29 +1092,29 @@ export function safetyDataLines(c: CaseDefinition, s: SessionState, data: readon
   return lines.map((x) => `  ${x}`);
 }
 
-/** Learner-visible status: objectives, orders, decisions, phase, clock. */
+/** Learner-visible status: objectives, orders, decisions (by number in case order, never by id), phase, clock. */
 export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state"> & Partial<Pick<ToolContext, "facility">>): { text: string; data: unknown } {
   const c = ctx.caseDef;
   const s = ctx.state();
   const L = ctx.locale;
   const p = progress(c, s);
   const lines = [rt(L, "tool.status.header", { phase: phaseLabel(c, s.phase, L), clock: clockTime(c, s.clock, L), finished: s.finished ? rt(L, "tool.status.finished") : "" })];
-  lines.push(`${rt(L, "label.objectives")} (${p.done}/${p.total}):`);
+  lines.push(listHeading(L, countedLabel(L, rt(L, "label.objectives"), p.done, p.total)));
   for (const o of p.objectives) lines.push(`  ${o.done ? "✓" : o.current ? "▶" : "·"} ${objectiveTitle(c, o.id, L)}`);
   const orders = orderStatus(c, s);
   if (orders.length > 0) {
-    lines.push(`${rt(L, "label.orders")}:`);
+    lines.push(listHeading(L, rt(L, "label.orders")));
     for (const o of orders) {
       lines.push(`  - ${investigationName(c, o.order.investigationId, L)} [${o.order.investigationId}@${o.order.phase}] ${orderStatusText(c, o, L)}`);
     }
   }
   const decisions = availableDecisions(c, s);
   if (decisions.length > 0) {
-    lines.push(`${rt(L, "label.decisions")}:`);
+    lines.push(listHeading(L, rt(L, "label.decisions")));
     for (const d of decisions) {
       // A locked decision's label already says it is not yet available: no "(locked)" suffix.
-      if (!d.unlocked && !d.decided) lines.push(`  - [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
-      else lines.push(`  - [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, d.decided ? "label.decided" : "label.unlocked")})`);
+      if (!d.unlocked && !d.decided) lines.push(`  - ${lockedDecisionLabel(c, d.decision.id, L)}`);
+      else lines.push(`  - ${rt(L, "tool.list.decision", { n: decisionNumber(c, d.decision.id), prompt: t(d.decision.prompt, L), status: rt(L, d.decided ? "label.decided" : "label.unlocked") })}`);
     }
   }
   // what the current objective still needs (named, with the next action), standing holds, and the operation
@@ -897,8 +1132,8 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       currentObjective: objective?.id ?? null,
       // the next steps of the current objective, each with whether the engine would run it now and what blocks it
       recommendations: recommendations(c, s, L),
-      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
-      decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
+      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, acquired: o.acquired, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
+      decisions: decisions.map((d) => ({ number: decisionNumber(c, d.decision.id), unlocked: d.unlocked, decided: d.decided })),
       holds: (s.holds ?? []).filter((h) => !h.released),
       hints: s.hints,
     },

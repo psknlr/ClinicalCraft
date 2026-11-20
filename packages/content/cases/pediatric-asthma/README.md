@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `pediatric-asthma` · v1.1.1 |
+| Case | `pediatric-asthma` · v1.1.3 |
 | Setting | Paediatric emergency department, resus cubicle (`emergency`) — on the monitor from arrival |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 3 / 5 |
@@ -193,11 +193,19 @@ agrees with them.
 |---|---|---|---|
 | `dec-severity` | single | arrival speech, work of breathing, auscultation, conscious level + arrival PRAM | Acute severe exacerbation without life-threatening features |
 | `dec-first-line` | multiple | the severity decision | inhaled salbutamol ×3 · ipratropium ×3 · oxygen to 94–98 % · prednisolone 40 mg within the hour (not magnesium now, CXR, amoxicillin or sedation) |
-| `dec-response` | single | reassessment PRAM + re-auscultation | Good response: titrate and wean oxygen, space salbutamol, stop ipratropium, continue the steroid, observe |
+| `dec-response` | single | reassessment PRAM + re-auscultation | Good response: wean the oxygen, space salbutamol to 1–4-hourly, stop ipratropium, continue the steroid and observe |
 | `dec-discharge` | multiple | discharge-phase room-air SpO₂ or PRAM | SpO₂ > 94 % · stable on 3–4-hourly salbutamol · PEF > 75 % · education bundle · review within 2 working days (not a normal CXR, no wheeze, HR < 100 or 24 h for every severe attack) |
 
 Decision feedback states no result the decision does not require (e.g. `dec-severity` does not quote
 the PEF, which it does not require).
+
+Options are written so that length gives nothing away: in both single-best decisions the key is not the
+longest option, and the distractors state the reason a learner would choose them — "he is alert"
+(mild), "he can still talk in phrases" (moderate), "SpO₂ is below 92%" (life-threatening); at one hour,
+the room-air SpO₂ of 93% (IV magnesium), the heart rate of 150 with a tremor (stopping salbutamol),
+PRAM 8 → 3 (discharge now) and the three back-to-back rounds (PICU). Each option's feedback answers
+that reason. In the two select-all decisions the wrong options are as specific as the right ones (dose,
+reason), so length does not separate them either.
 
 ### Rubric (14 deterministic items, 20 points, + 2 examiner-judged)
 
@@ -225,6 +233,21 @@ weight-2 item) and drive the tiring and life-threatening branches; sedation, ami
 life-threatening features, a duplicate systemic steroid, excess salbutamol and premature discharge are
 contraindicated (safety events); antibiotics, routine tests and IV magnesium for a responder are
 neutral but cost rubric points.
+
+**Safety outcome.** `sedation` is `critical`: a sedative in acute severe asthma (outside an intubated, ventilated
+patient in intensive care) fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and
+every debrief and export shows it beside the score; SpO₂, RR, EtCO₂ and GCS still respond. In the audit's replay
+(a sedative after the prednisolone) the score stays 18/20 (90 %), with the sedation/discharge item named first and
+the safety outcome failed. Aminophylline without life-threatening features is `critical: false` (not indicated,
+recoverable). Free-text orders are checked against the preset doses (`doseSpec`): ipratropium 250 micrograms and
+budesonide 1 mg nebulised, salbutamol 2.5–5 mg nebulised and magnesium sulfate 25–50 mg/kg IV — the doses the
+Chinese guideline (25–40 mg/kg) and GINA (40–50 mg/kg) allow, through his 20 kg: 800 mg and 1 g are given; an adult
+2 g of magnesium or 500 micrograms of ipratropium draws the nurse's read-back and is not given (a dose error to
+review). The spacer's salbutamol (dosed in puffs), hydrocortisone (the text gives two regimens), prednisolone and
+aminophylline have none. Prednisolone: GINA's 1–2 mg/kg allows 20–40 mg here, and the item also answers for
+"steroids", so dexamethasone's dose would read as a dose error against any prednisolone preset. Aminophylline: the
+guideline loading doses differ (5 mg/kg here and in BNFc, 4–6 mg/kg in the Chinese paediatric guideline, 6 mg/kg where
+it is dosed as theophylline) and its text gives a bolus then an infusion, so no single preset says it.
 
 ## Reference path (`solution`)
 
@@ -365,7 +388,7 @@ autopilot: 265.6).
 | Salbutamol alone for a severe attack | `dec-first-line` feedback; `r-burst` needs three ipratropium doses |
 | No systemic steroid (or nebulised budesonide instead) | 60-min nurse prompt (`steroid-delayed`); the discharge phase stays locked |
 | Reading the salbutamol tachycardia as deterioration | `dec-response` distractor ("stop salbutamol"); IV magnesium for a responder costs `r-stewardship` |
-| Sedating the distressed child | contraindicated: SpO₂ falls, EtCO₂ rises, GCS drops |
+| Sedating the distressed child | contraindicated: SpO₂ falls, EtCO₂ rises, GCS drops; a critical safety failure |
 | Antibiotics for the low-grade fever, routine CXR/bloods | rubric deductions; the results are distractors |
 | Discharge before the criteria | `premature-discharge`; the nurse holds the discharge |
 | Discharge without the education bundle | `r-discharge-bundle` unmet |
@@ -438,7 +461,7 @@ no scale at the bedside (weighed at triage). Results can be read anywhere from t
   purpose, so a phrasing judged in `reassess` is led by `hx-child-feeling-critical` there (the review
   tests pin the phase-aware selection instead).
 * All 80 `extensions.testUtterances` (40 zh-CN, 40 en, including colloquial Chinese, typos such as
-  储物罐 / vomitting / wat, and clinical abbreviations such as NKDA, URTI, ICS, PICU, pred, GP, hx)
+  储物罐 / vomitting / wat, and clinical abbreviations such as URTI, ICS, PICU, pred, GP, hx)
   resolve to an expected history item as the top `matchHistory` hit. CJK keywords avoid generic
   two-character fragments (家里, 孩子, 多少, 多久, 东西, 了吗, 过吗, 一下…) that would otherwise score
   ≥ 0.55 on unrelated questions, and English keywords avoid phrases that collapse to a single generic
@@ -498,6 +521,32 @@ because none could be confirmed; guideline documents 1–4 have none.
 * The 2020 recommendations (ref. 7): DOI not confirmed.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Sedation is a critical safety failure (audit P0-3).** The audit's replay (a sedative after the prednisolone)
+  scored 18/20 (90 %) with no safety outcome. `sedation` is now `critical: true`: it fails the safety outcome shown
+  beside the score (the score is unchanged). The sedation/discharge rubric item was already critical.
+  `aminophylline-iv` is `critical: false` (`cases validate`).
+* **Preset doses (audit P0-2):** `doseSpec` on ipratropium 250 micrograms, budesonide 1 mg and salbutamol 2.5–5 mg
+  (nebulised) and magnesium sulfate 25–50 mg/kg IV — the range the cited guidelines allow (Chinese guideline
+  25–40 mg/kg, GINA 40–50 mg/kg; the dose text now names both, around its 40 mg/kg); a weight-based order is compared
+  through his 20 kg. Prednisolone has none (GINA's 1–2 mg/kg, and the "steroids" it also answers for, dexamethasone
+  included, whose doses would read as dose errors), nor has aminophylline (the guidelines' loading doses differ,
+  4–6 mg/kg, and its text gives a bolus then an infusion).
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length; option ids neutral.** The keyed option was the longest
+  option in `dec-response` (both languages) and `dec-severity` (English), a length cue the content lints now flag
+  (CASE_AUTHORING §9.8). It is now the longest in no decision. The `dec-response` key is tightened (the SpO₂ target
+  of 94–98% and the end-point, stable on 3–4-hourly salbutamol, move to its feedback), and the distractors of all four
+  decisions state, in the key's register and specificity, the reason a learner would choose them (see "Decisions").
+  Feedback gained a sentence where a distractor's new reason needed an answer (`sev-mild`, `sev-moderate`,
+  `resp-mg`, `resp-discharge-now`, `resp-picu`). Medical meaning, correct flags and option ids (already content ids)
+  are unchanged; the reference path still scores 20/20.
+* Matcher corpus: two `extensions.testUtterances` that were one of their item's keywords ("NKDA?", 预防药是不是停了？)
+  are now paraphrases (`cases validate --strict`); no history question, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

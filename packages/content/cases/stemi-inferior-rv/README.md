@@ -11,7 +11,7 @@ pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang
 
 | | |
 |---|---|
-| id / version | `stemi-inferior-rv` / `1.1.1` |
+| id / version | `stemi-inferior-rv` / `1.1.3` |
 | setting / facility | `emergency` / `general-hospital` (resus bay 1) |
 | specialty | emergency medicine, cardiology |
 | difficulty / estimated time | 3 / 5 · 35 min (simulated clock, 120-min limit) |
@@ -123,6 +123,15 @@ never state a result.
   time exceeds 120 min.
 - `antithrombotic-bundle` (select all; after the 12-lead and the bleeding/stroke history): aspirin + one P2Y12
   inhibitor + UFH.
+- **No length cue.** In the three single-best decisions the key is not the longest option (it was in all three), and
+  the distractors are as specific as the key and state the reason a learner would choose them: each wrong diagnosis
+  names its culprit or its tempting feature (distal RCA, a dominant circumflex, ST elevation with severe pain, a type A
+  dissection reaching the RCA ostium, NSTEMI "to be confirmed once the troponin result is back"); the nitrate options
+  give the dose and the reason (ischaemic chest pain, an infusion "easier to stop", a fluid-restored BP, a raised JVP
+  read as overload); the reperfusion options offer a pharmaco-invasive plan, troponin confirmation, CCU "until his BP
+  and heart rate settle" and a CT aortogram for dissection. Each one's feedback answers that reason. In the select-all
+  bundle, fondaparinux and tenecteplase carry their rationale and UFH its ACT-guided top-up, so length does not
+  separate right from wrong.
 
 **Rubric** (deterministic total 22; the reference path scores 22/22):
 
@@ -140,7 +149,7 @@ never state a result.
 | `r-fluid` | management | 1 | fluid bolus given |
 | `r-no-nitrate` | safety | **3** | no nitroglycerin — scored once the nitrate decision is reached or a nitrate is given; **critical** |
 | `r-no-routine-o2` | safety | 1 | no `routine-oxygen` flag — scored once aspirin is given, the cath lab is called or routine oxygen is given |
-| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission — scored once the reperfusion or antithrombotic decision is reached or one of them is given |
+| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission, and no shock or arrest-dose adrenaline while he has a pulse — scored once the reperfusion or antithrombotic decision is reached or one of them is given; **critical** |
 | `r-door-to-lab` | efficiency | 2 | transferred after activation, before 60 min, no VF |
 | `r-explain-consent` | communication | 1 | examiner-judged (plain explanation, consent, his fear) |
 | `r-handover` | communication | 1 | examiner-judged (SBAR, read-back) |
@@ -150,7 +159,21 @@ never state a result.
 of the five harmful options costs 2; routine oxygen, troponin-waiting, a late ECG, a transfer before activation and a
 VF arrest each fail their own item. Contraindicated interventions are also logged as safety events with their `harm`
 text. Doing nothing earns none of the three avoided-harm items (each counts once its decision point is reached:
-`scoredWhen`), and a missed `r-no-nitrate` is named first in the debrief (`critical`).
+`scoredWhen`), and a missed `r-no-nitrate` or `r-no-harmful-drugs` is named first in the debrief (`critical`).
+
+**Safety outcome.** Five interventions are `critical`: **nitroglycerin** (RV infarction), **tenecteplase** (primary
+PCI 15 minutes away), **IV metoprolol** (bradycardia, borderline BP, RV involvement), and an **unsynchronised shock**
+or **adrenaline 1 mg IV** while he has a pulse. Giving one fails the assessment's safety outcome
+(`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score; the effects still
+play out. In the audit's replay (nitroglycerin after the IV line) the score stays 19/22 (86 %), with `r-no-nitrate`
+named first and the safety outcome failed. Free-text orders are checked against the preset doses (`doseSpec`):
+aspirin 150–325 mg (the loading doses of the guidelines its text cites — ESC and Chinese 150–300 mg, ACC/AHA
+162–325 mg — around its 300 mg), ticagrelor 180 mg, clopidogrel 600 mg (PO), UFH 70–100 units/kg, enoxaparin
+0.5 mg/kg and morphine 2–4 mg (IV, through his 78 kg), and the arrest-dose adrenaline 1 mg IV. "Aspirin 150 mg",
+"162 mg" and "325 mg" are given; "aspirin 3000 mg" is not — a critical dose error: nine times the top of the range,
+but twenty times its bottom (a tenfold slip of any dose the range allows is critical); "300 g" is one too. The
+statin and ondansetron items have none: they also answer for "a statin" and "an antiemetic", and the dose check
+compares amounts, not drugs, so rosuvastatin 20 mg (high-intensity) would read as half the atorvastatin dose.
 
 ## Reference path (`solution`)
 
@@ -206,14 +229,14 @@ finish at 60.5 min. Without VF and in the lab within 60 min, the deterministic r
 | Error | What the case does |
 |---|---|
 | Waiting for troponin before activating | `troponin-wait` / `late-activation` (nurse prompt at 20 min); `r-no-troponin-wait` lost; VF at 35 min if still not activated |
-| Nitrate for ongoing pain | `nitrate-crash` alarm as SBP falls < 85; possible `hypotensive-collapse`; `r-no-nitrate` (3) lost |
+| Nitrate for ongoing pain | `nitrate-crash` alarm as SBP falls < 85; possible `hypotensive-collapse`; `r-no-nitrate` (3) lost; a critical safety failure |
 | No right-sided leads | `dx-diagnosis` stays locked; `obj2-ecg` incomplete; `r-right-leads` lost |
 | Furosemide for the raised JVP | harm text (clear lungs, RV failure); SBP falls; `r-no-harmful-drugs` lost |
 | Routine oxygen at SpO₂ 96 % | `routine-oxygen`; `r-no-routine-o2` lost |
-| Thrombolysis although PCI is 15 min away | harm text (bleeding, ASSENT-4 PCI); `r-no-harmful-drugs` lost |
+| Thrombolysis although PCI is 15 min away | harm text (bleeding, ASSENT-4 PCI); `r-no-harmful-drugs` lost; a critical safety failure |
 | Clopidogrel after ticagrelor | harm text (duplicate P2Y12 inhibition) |
 | Transfer before the activation call | `transfer-before-activation` (he waits at the door); `r-door-to-lab` lost |
-| Shock with a pulse | `early-shock` (painful; may itself induce VF) |
+| Shock with a pulse | `early-shock` (painful; may itself induce VF); `r-no-harmful-drugs` lost; a critical safety failure |
 
 ## Embodied mode
 
@@ -291,7 +314,11 @@ clinical scores are equal (100 % in both modes and languages).
 - Co-selections removed in the fifth review: `pain-site` excludes radiation words (放射, 别的地方, "spread"),
   `medications` excludes PDE5-inhibitor words (Viagra, 伟哥), and `assoc-dyspnoea` excludes pleuritic phrasing ("hurt
   to breathe", 吸气时疼), so those questions select only `pain-radiation`, `pde5` and `pain-pleuritic`.
-- `extensions.testUtterances` ends with a regression set for each collision above.
+- `extensions.testUtterances` ends with a regression set for each collision above. The plain site questions are the
+  run-together keywords themselves, so the set uses paraphrases around them ("Can you point to where the pain is?",
+  "whereabouts is the pain exactly", "Point to the spot where it hurts", "Which part of your chest hurts?", "Does it go
+  up into your neck or down your arm?"); an utterance that is one of its item's keywords tests nothing the keyword does
+  not (`cases validate --strict`).
 - Questions about things the case does not record get `persona.fallbackUnknown` or, offline, a clarifying question:
   weight change, stress, sleep, urinary, bowel and other systems, insurance, and the details listed under `unknowns`.
   The patient never invents a "normal" answer. `pmh-cardiac` excludes urine, bowel, sleep, eye, memory and similar
@@ -367,6 +394,42 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 - Ref. 2: the issue number (cited without it); ref. 4: a DOI (none could be verified, so none is given).
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failures (audit P0-3).** The audit's replay (sublingual nitroglycerin after the IV line) scored
+  19/22 (86 %) with no safety outcome. `nitroglycerin` is now `critical: true`, as are `tenecteplase` (fibrinolysis
+  with primary PCI 15 minutes away), `metoprolol-iv` (bradycardia, borderline BP, RV involvement), and
+  `defibrillation` and `adrenaline` given while he has a pulse: giving one fails the safety outcome shown beside the
+  score. The percentage is unchanged (19/22 for the nitrate).
+- `r-no-harmful-drugs` is a critical rubric item and now also covers an unsynchronised shock or arrest-dose
+  adrenaline while he has a pulse (`{ "intervened": …, "valid": false }`; its `scoredWhen` names both); the item's
+  weight, the total (22) and the reference path (22/22) are unchanged — the VF branch's indicated shocks and
+  adrenaline do not cost it.
+- **Preset doses (audit P0-2):** `doseSpec` on aspirin 150–325 mg (the guidelines' loading doses, which its text now
+  names around the 300 mg), ticagrelor 180 mg, clopidogrel 600 mg, UFH 70–100 units/kg, enoxaparin 0.5 mg/kg and
+  morphine 2–4 mg IV, the doses their texts state. Atropine (0.5 mg here, 1 mg in the AHA algorithm the text cites),
+  the infusions and the deliberate errors (nitroglycerin, metoprolol, tenecteplase: given whatever dose is written,
+  so the consequence plays out) have none, nor do the statin and ondansetron items, which also answer for other drugs
+  of their class ("a statin", "an antiemetic") whose usual doses the amount-only dose check would read as dose errors.
+- **Arrest-dose adrenaline preset (follow-up review of the audit fixes, 2026-11-13):** `doseSpec` 1 mg IV, the dose
+  its text states. IV adrenaline is a high-alert medicine (`cases validate` now asks for its preset): "adrenaline
+  10 mg IV" was given with its dose unchecked; it is now a critical dose error, not given.
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length; option ids neutral.** The keyed option was the longest option
+  in all three single-best decisions in both languages, a length cue the content lints now flag (CASE_AUTHORING §9.8);
+  it is now the longest in none. The diagnosis key says "STEMI" in Chinese as its distractors do, the nitrate key is
+  tightened without losing content, and the distractors state, in the key's register and specificity, the reason a
+  learner would choose them (see "Decisions"). Feedback gained a clause where a distractor's new reason needed an
+  answer (`nitro-iv`, `rep-ccu`). The nitrate distractor still opens "If the JVP is raised, that means fluid
+  overload…", and the sublingual option keeps the 0.4–0.5 mg of the `nitroglycerin` dose. Medical meaning, correct
+  flags and option ids (already content ids) are unchanged; the reference path still scores 22/22.
+- Matcher corpus: nine `extensions.testUtterances` that were one of their item's keywords ("Where is the pain?",
+  "Where's the pain?", "Where does it hurt?", "Where do you feel the pain?", "Where does the pain go?", "When did the
+  pain start?", "When did you last eat?", "SOB?", "NKDA?") are now paraphrases (`cases validate --strict`); no history
+  item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

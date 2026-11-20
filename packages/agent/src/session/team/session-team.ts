@@ -23,7 +23,7 @@ import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { ModelTeamMind } from "../../characters/team-mind.js";
 import { positionOf } from "../../characters/roles.js";
 import { characterModel } from "../character-models.js";
-import { SURGEON_NAME } from "./i18n.js";
+import { both, SURGEON_NAME } from "./i18n.js";
 import { parseFieldAsk } from "./ask-input.js";
 
 export { validTeamCheckpoint } from "./checkpoint.js";
@@ -112,6 +112,18 @@ export class SessionTeam {
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
       count: () => k.embodied?.count ?? null,
       record: () => k.state.count,
+      // information (docs/TEAM.md §4.5): only what the case records — a history item's question and its recorded answer
+      history: (id) => {
+        const h = k.caseDef.history.find((x) => x.id === id);
+        return h ? { question: both(h.question), answer: both(h.answer) } : null;
+      },
+      interventionName: (id) => {
+        const iv = k.caseDef.interventions.find((x) => x.id === id);
+        return iv ? both(iv.name) : null;
+      },
+      // read back to the clinician in charge and confirmed: the case records it as known to them (`ask` via the team) — the
+      // learner's own record, so only when it reached the learner's body (never the stand-in's while they hold a place)
+      relay: (history, to) => to === PRIMARY_ACTOR && !k.dispatch({ type: "ask", itemId: history, via: "team", by: "system" }, k.currentSubmission).rejected,
       say: (speaker, text, member) => {
         // spoken through the profile of the speaker's role (the nurses' through the nurse's, an assistant's or the
         // stand-in's through the attending's); the learner's own words as before
@@ -187,6 +199,10 @@ export class SessionTeam {
       model: (member) => characterModel(k, staffOf(member)?.role ?? (member.staff === "surgeon" ? "attending" : "nurse")),
       position: (member) => (member.staff === "surgeon" ? "surgeon" : positionOf(k.caseDef, k.facility, member.staff)),
       name: (id) => {
+        // the case team's name for the clinician in charge ("the doctor"), when it gives one: whoever operates (core
+        // `memberBody`: the learner, or the stand-in while the learner holds a place)
+        const named = id === memberBody(k.caseDef, k.state, "surgeon") ? k.caseDef.team?.members.find((m) => m.staff === "surgeon")?.name : undefined;
+        if (named) return t(named, k.locale);
         const e = k.embodied?.world().entity(id);
         return e ? t(e.name, k.locale) : id === PRIMARY_ACTOR ? t(SURGEON_NAME, k.locale) : id;
       },
@@ -199,10 +215,14 @@ export class SessionTeam {
     return this.mindInstance;
   }
 
-  /** After an op of the learner: the team acts on its own (autonomy `auto`) until it is idle. */
+  /**
+   * After an op of the learner: the team acts on its own (autonomy `auto`) until it is idle. A team with nothing that
+   * could set it to work (no scenario, no count, nothing asked of it, no place held, no colleague holding the camera:
+   * `TeamScheduler.hasWork`) takes no round: the case played alone is as it was without a team.
+   */
   async afterLearner(signal: AbortSignal): Promise<void> {
     const s = this.get();
-    if (!s || s.autonomy !== "auto" || !s.active()) return;
+    if (!s || s.autonomy !== "auto" || !s.active() || !s.hasWork()) return;
     await s.run(signal, { untilIdle: true });
     this.record();
   }

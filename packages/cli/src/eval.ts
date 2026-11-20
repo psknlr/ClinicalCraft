@@ -9,7 +9,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { assess as coreAssess, progress as caseProgress, t } from "@clinicalcraft/core";
-import { DEFAULT_AUTOPILOT_TURNS, type TokenUsage } from "@clinicalcraft/agent";
+import { DEFAULT_AUTOPILOT_TURNS, safetyHeadline, type TokenUsage } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
@@ -29,6 +29,11 @@ export interface EvalRun {
   objectives: { done: number; total: number };
   decisions: { firstTry: number; decided: number; total: number };
   score: { earned: number; possible: number; percent: number };
+  /**
+   * The safety outcome beside the score (docs/PROTOCOL.md §3.2): not passed after a critical safety failure (the
+   * interventions, by id), a critical dose error or a safety-critical gate — whatever the score.
+   */
+  safety: { passed: boolean; headline: string; criticalFailures: string[]; doseErrors: number };
   contraindicated: number;
   criticalAlarms: number;
   essentialMissing: string[];
@@ -47,7 +52,7 @@ export interface EvalReport {
   runsPerCase: number;
   maxTurns: number;
   runs: EvalRun[];
-  summary: { runs: number; finished: number; meanScore: number; errors: number; inputTokens: number; outputTokens: number };
+  summary: { runs: number; finished: number; meanScore: number; safetyPassed: number; errors: number; inputTokens: number; outputTokens: number };
   notice: string;
 }
 
@@ -64,7 +69,10 @@ export function evalMarkdown(report: EvalReport, L: string): string {
   lines.push("|---|---|---|---|---|---|---|---|---|---|");
   for (const r of report.runs) {
     const result = r.subtype !== "success" ? r.subtype : r.finished ? m(L, "eval.finished") : m(L, "eval.unfinished");
-    const safety = r.contraindicated > 0 ? `☠ ${r.contraindicated}` : "—";
+    // passed or not, beside the score: a run with a critical failure is never shown as passed
+    const safety = [r.safety.passed ? m(L, "eval.safety.passed") : `**${m(L, "eval.safety.notPassed")}**`, r.contraindicated > 0 ? `☠ ${r.contraindicated}` : "", r.safety.doseErrors > 0 ? m(L, "eval.safety.dose", { n: r.safety.doseErrors }) : ""]
+      .filter(Boolean)
+      .join(" · ");
     lines.push(
       `| \`${r.caseId}\` | ${r.run} | ${result} | ${r.objectives.done}/${r.objectives.total} | ${r.decisions.firstTry}/${r.decisions.total} | ${r.score.percent}% | ${safety} | ${r.turns} | ${r.usage.inputTokens}/${r.usage.outputTokens} | ${(r.durationMs / 1000).toFixed(1)} s |`,
     );
@@ -73,11 +81,12 @@ export function evalMarkdown(report: EvalReport, L: string): string {
   const s = report.summary;
   lines.push(`## ${m(L, "eval.summaryTitle")}`);
   lines.push("");
-  lines.push(m(L, "eval.summary", { finished: s.finished, runs: s.runs, score: s.meanScore, errors: s.errors, input: s.inputTokens, output: s.outputTokens }));
-  const failures = report.runs.filter((r) => r.errors.length > 0 || r.essentialMissing.length > 0);
+  lines.push(m(L, "eval.summary", { finished: s.finished, runs: s.runs, score: s.meanScore, safe: s.safetyPassed, errors: s.errors, input: s.inputTokens, output: s.outputTokens }));
+  const failures = report.runs.filter((r) => r.errors.length > 0 || r.essentialMissing.length > 0 || !r.safety.passed);
   if (failures.length > 0) {
     lines.push("");
     for (const r of failures) {
+      if (!r.safety.passed) lines.push(`- \`${r.caseId}\` #${r.run}: ${r.safety.headline}${r.safety.criticalFailures.length ? ` (${r.safety.criticalFailures.map((id) => `\`${id}\``).join(", ")})` : ""}`);
       for (const e of r.errors) lines.push(`- \`${r.caseId}\` #${r.run}: ${e}`);
       if (r.essentialMissing.length) lines.push(`- \`${r.caseId}\` #${r.run}: ${m(L, "eval.missing", { list: r.essentialMissing.join(", ") })}`);
     }
@@ -114,7 +123,7 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
     runsPerCase: runs,
     maxTurns,
     runs: [],
-    summary: { runs: 0, finished: 0, meanScore: 0, errors: 0, inputTokens: 0, outputTokens: 0 },
+    summary: { runs: 0, finished: 0, meanScore: 0, safetyPassed: 0, errors: 0, inputTokens: 0, outputTokens: 0 },
     notice: m(ctx.locale, "assess.notice"),
   };
 
@@ -148,6 +157,12 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
         objectives: { done: prog.done, total: prog.total },
         decisions: { firstTry: report0.decisions.filter((d) => d.firstTryCorrect).length, decided: report0.decisions.filter((d) => d.decided).length, total: report0.decisions.length },
         score: report0.score,
+        safety: {
+          passed: report0.safety.passed,
+          headline: safetyHeadline(report0.safety, ctx.locale),
+          criticalFailures: report0.safety.criticalFailures.map((f) => f.interventionId),
+          doseErrors: report0.safety.doseErrors.length,
+        },
         contraindicated: report0.safety.contraindicated.length,
         criticalAlarms: report0.safety.criticalAlarms,
         essentialMissing: report0.investigations.essentialMissing,
@@ -158,8 +173,11 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
       };
       await session.close();
       report.runs.push(entry);
-      const mark = entry.subtype === "success" && entry.finished ? p.green("✓") : entry.subtype === "error_during_execution" ? p.red("✗") : p.yellow("·");
-      ctx.printErr(`${mark} ${caseId} #${run} ${ctx.err.dim(ctx.t("eval.progress", { done: entry.objectives.done, total: entry.objectives.total, score: entry.score.percent, seconds: (entry.durationMs / 1000).toFixed(1) }))}`);
+      // never a ✓ for a run whose safety outcome did not pass
+      const mark = entry.subtype === "error_during_execution" ? p.red("✗") : !entry.safety.passed ? p.red("☠") : entry.subtype === "success" && entry.finished ? p.green("✓") : p.yellow("·");
+      // the safety outcome after the score when it did not pass, whatever the score
+      const unsafe = entry.safety.passed ? "" : ` ${ctx.err.red(entry.safety.headline)}`;
+      ctx.printErr(`${mark} ${caseId} #${run} ${ctx.err.dim(ctx.t("eval.progress", { done: entry.objectives.done, total: entry.objectives.total, score: entry.score.percent, seconds: (entry.durationMs / 1000).toFixed(1) }))}${unsafe}`);
     }
   }
 
@@ -168,6 +186,7 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
     runs: all.length,
     finished: all.filter((r) => r.finished).length,
     meanScore: all.length ? Math.round((all.reduce((sum, r) => sum + r.score.percent, 0) / all.length) * 10) / 10 : 0,
+    safetyPassed: all.filter((r) => r.safety.passed).length,
     errors: all.filter((r) => r.subtype === "error_during_execution").length,
     inputTokens: all.reduce((sum, r) => sum + r.usage.inputTokens, 0),
     outputTokens: all.reduce((sum, r) => sum + r.usage.outputTokens, 0),

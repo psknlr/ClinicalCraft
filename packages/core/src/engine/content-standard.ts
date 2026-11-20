@@ -15,10 +15,26 @@
  * | no exam finding is a "not recorded" placeholder (`examNotRecorded` says that) | `exam.<i>.finding` |
  * | a child under 12 is not asked adult social history (smoking, alcohol, drugs, work) — the carer is | `history.<i>` |
  * | an avoided-harm item gated by `scoredWhen` counts whenever its harm is done (each harmful step is in the gate) | `rubric.<i>.scoredWhen` |
+ * | an option id names the option's content, not its correctness or position (`supported`, `alt-1`, `a`…) | `decisions.<i>.options.<j>.id` |
+ * | the key of a single-best decision is the uniquely longest option in at most one decision per locale (length cue) | `decisions.<i>.options.<j>.text` |
+ * | no authoring language ("原报告", "the source", "teaching role"…) in the patient's, carer's or nurse's learner-facing words | `history.<i>.answer`, `patient.persona.openingLine` / `.fallbackUnknown` / `.companion.name`, `patient.chiefComplaint`, `patient.triageNote` |
+ * | no decision is gated on asking an item the case does not record (`disclosure: "unknown"`) | `decisions.<i>.requires…asked` |
+ * | no redundant gate structure: `{always: true}` in an all/any list, an all directly in an all (an any in an any) | `phases.<i>.enterWhen…`, `decisions.<i>.requires…`, `objectives.<i>.completeWhen…` |
+ * | a key reasoning point is not a copy of a teaching point | `debrief.keyReasoning.<i>` |
+ * | a test utterance is not one of its expected item's keywords | `extensions.testUtterances.<i>` |
+ * | every specialty id is canonical (`CANONICAL_SPECIALTIES`); a synonym's warning names its replacement | `specialty.<i>` |
+ * | a high-risk intervention with a `contraindicatedWhen` says whether giving it then is a critical safety failure (`critical: true` or `false`) | `interventions.<i>.critical` |
+ * | a critical intervention is not low- or no-risk (its badge and confirmation say what it can do) | `interventions.<i>.risk` |
+ * | a preset dose (`doseSpec`) states the dose its `dose` text states (the text's first dose, in a unit that can be compared — capped by the text's own "max" for this patient —, its route, and the rate it states for an infusion when the preset has a `maintenance`), and a name or alias that states a dose, typed as an order, is given (the preset's dose, one dose with its unit) | `interventions.<i>.doseSpec` |
+ * | a high-alert medication (`isHighAlert`: an insulin, potassium, an anticoagulant, an opioid, a thrombolytic; IV an adrenergic agonist, magnesium, a sedative…) whose `dose` text states exactly one dose (one amount or one range) and is not titrated has a preset dose (`doseSpec`), so an order's dose is checked — the warning names the preset to add | `interventions.<i>.doseSpec` |
  */
-import type { CaseDefinition, HistoryItem } from "../schema/case.js";
+import type { CaseDefinition, Decision, HistoryItem } from "../schema/case.js";
 import { PERSONAL_KIT, type Condition } from "../schema/common.js";
-import { hasLocale, t, type LocalizedText } from "../i18n.js";
+import { hasLocale, t, tList, type LocalizedText } from "../i18n.js";
+import { canonicalSpecialty, isCanonicalSpecialty } from "../specialties.js";
+import { checkOrder, compareDose, formatDose } from "./dose.js";
+import { doseMentions, doseRoute } from "./dose-read.js";
+import { isHighAlert } from "./high-alert.js";
 import { createSession } from "./reducer.js";
 import { historyVoice } from "./speech.js";
 import { compactText } from "./text.js";
@@ -280,9 +296,14 @@ function triggers(cond: Condition): Condition[] {
   return [cond];
 }
 
-/** Does the trigger hold whenever the step is done (`{ intervened: x }` covers `{ intervened: x, minCount: 2 }`)? */
+/**
+ * Does the trigger hold whenever the step is done (`{ intervened: x }` covers `{ intervened: x, minCount: 2 }` and
+ * `{ intervened: x, whenIndicated: true }`; a trigger `whenIndicated` covers only a step that is too)?
+ */
 function covers(trigger: Condition, step: Condition): boolean {
-  if ("intervened" in trigger && "intervened" in step) return trigger.intervened === step.intervened && (trigger.minCount ?? 1) <= (step.minCount ?? 1);
+  if ("intervened" in trigger && "intervened" in step) {
+    return trigger.intervened === step.intervened && (trigger.minCount ?? 1) <= (step.minCount ?? 1) && (!trigger.whenIndicated || !!step.whenIndicated);
+  }
   if ("ordered" in trigger && "ordered" in step) return trigger.ordered === step.ordered && (trigger.phase === undefined || trigger.phase === step.phase);
   if ("flag" in trigger && "flag" in step) return trigger.flag === step.flag;
   return false;
@@ -317,6 +338,292 @@ function checkScoredWhenCoverage(c: CaseDefinition): Issue[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Decision options: neutral ids, no length cue                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * An option id that names the option's role instead of its content: a correctness marker (`supported`, `correct`,
+ * `wrong`, `yes`, `best`, `key`, `answer`…, also numbered or as `correct-answer`), a placeholder (`alternative`,
+ * `alt-2`, `option-1`, `opt3`, `choice-b`), a distractor (`distractor…`), a single letter or a number (the authored
+ * position — options are shown shuffled). Agents and MCP see letters, but the id still reaches the web board's markup, hook
+ * payloads, traces and record exports.
+ */
+const ROLE_OPTION_ID =
+  /^(?:(?:un|not-)?supported|correct|incorrect|right|wrong|true|false|yes|no|best|key|answer)(?:[-_.](?:answer|option|choice))?(?:[-_.]?\d+)?$|^(?:alternative|alt|option|opt|choice)(?:[-_.]?(?:\d+|[a-z]))?$|^distract[eo]r|^[a-z]$|^\d+$/i;
+
+function checkOptionIds(c: CaseDefinition): Issue[] {
+  return c.decisions.flatMap((d, i) =>
+    d.options.flatMap((o, j) =>
+      ROLE_OPTION_ID.test(o.id)
+        ? [warn(`decisions.${i}.options.${j}.id`, `option id "${o.id}" names the option's role, not its content — the id reaches the web board, hook payloads, traces and exports, so it gives the answer or its position away: name what the option says (e.g. "ivig-now")`)]
+        : [],
+    ),
+  );
+}
+
+/** The keyed option of a single-best decision (exactly one correct option) when it is the uniquely longest in `locale` (characters), else -1. */
+function keyedLongest(d: Decision, locale: string): number {
+  const keyed = d.options.flatMap((o, j) => (o.correct ? [j] : []));
+  if (d.kind !== "single" || keyed.length !== 1 || !d.options.every((o) => hasLocale(o.text, locale))) return -1;
+  const k = keyed[0]!;
+  const lengths = d.options.map((o) => [...t(o.text, locale).trim()].length);
+  return lengths.every((n, j) => j === k || n < lengths[k]!) ? k : -1;
+}
+
+/** A key that is the longest option in more than one decision teaches learners to pick the longest: per locale, one such decision is allowed. */
+function checkLengthCue(c: CaseDefinition): Issue[] {
+  const repeats = new Map<number, string[]>(); // decision index → the locales where an earlier decision has the cue
+  for (const l of c.locales) {
+    let seen = 0;
+    c.decisions.forEach((d, i) => {
+      if (keyedLongest(d, l) < 0 || seen++ === 0) return;
+      repeats.set(i, [...(repeats.get(i) ?? []), l]);
+    });
+  }
+  return [...repeats]
+    .sort(([a], [b]) => a - b)
+    .map(([i, locales]) => {
+      const d = c.decisions[i]!;
+      const k = keyedLongest(d, locales[0]!);
+      return warn(`decisions.${i}.options.${k}.text`, `the correct option "${d.options[k]!.id}" of decision "${d.id}" is its longest option (${locales.join(", ")}), as in an earlier decision: a key that is the longest more than once is a length cue — make a distractor as long, or the key shorter`);
+    });
+}
+
+/* ------------------------------------------------------------------ */
+/* Authoring language in what the learner reads                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Authoring language: words about the source or the teaching design ("原病历", "the source", "teaching role"). Learners
+ * read the patient's and carer's words, the chief complaint and the triage note; only record-facing text (results,
+ * `examNotRecorded`, the debrief) may name the report. "The source of the bleeding" is clinical language, not this.
+ */
+const AUTHORING_LANGUAGE =
+  /原报告|原病历|原文|源病例|原始资料|教学设定|教学改写|教学角色|\bthe source\b(?!\s+of\b)|\bsource (?:notes?|reports?)\b|\bthe original report\b|\beducational role\b|\bteaching (?:role|device)\b/iu;
+
+function checkAuthoringLanguage(c: CaseDefinition): Issue[] {
+  const { persona } = c.patient;
+  const texts: [path: string, what: string, text: LocalizedText | undefined][] = [
+    ...c.history.map((h, i): [string, string, LocalizedText] => [`history.${i}.answer`, `the answer to "${h.id}"`, h.answer]),
+    ["patient.persona.openingLine", "the opening line", persona.openingLine],
+    ["patient.persona.fallbackUnknown", "the fallback answer", persona.fallbackUnknown],
+    ["patient.persona.companion.name", "the companion's name", persona.companion?.name],
+    ["patient.chiefComplaint", "the chief complaint", c.patient.chiefComplaint],
+    ["patient.triageNote", "the triage note", c.patient.triageNote],
+  ];
+  const issues: Issue[] = [];
+  for (const [path, what, text] of texts) {
+    const found = localesOf(c, text).flatMap((l) => {
+      const m = AUTHORING_LANGUAGE.exec(t(text, l));
+      return m ? [`"${m[0]}" (${l})`] : [];
+    });
+    if (found.length) issues.push(warn(path, `${what} uses authoring language — ${found.join(", ")}: learners read it, so write it in character; only record-facing text (results, examNotRecorded, the debrief) may name the report`));
+  }
+  return issues;
+}
+
+/* ------------------------------------------------------------------ */
+/* Gates: unrecorded history, redundant structure                      */
+/* ------------------------------------------------------------------ */
+
+/** The leaves of a condition (through all, any and not), each with its path below `path`. */
+function leaves(cond: Condition, path: string): [Condition, string][] {
+  if ("all" in cond) return cond.all.flatMap((x, k) => leaves(x, `${path}.all.${k}`));
+  if ("any" in cond) return cond.any.flatMap((x, k) => leaves(x, `${path}.any.${k}`));
+  if ("not" in cond) return leaves(cond.not, `${path}.not`);
+  return [[cond, path]];
+}
+
+/** A decision gated on asking an item the case does not record is a hidden gate: the question has no answer to find. */
+function checkUnrecordedGates(c: CaseDefinition): Issue[] {
+  const unrecorded = new Set(c.history.filter((h) => h.disclosure === "unknown").map((h) => h.id));
+  return c.decisions.flatMap((d, i) =>
+    leaves(d.requires, `decisions.${i}.requires`).flatMap(([leaf, path]) =>
+      "asked" in leaf && unrecorded.has(leaf.asked)
+        ? [warn(`${path}.asked`, `decision "${d.id}" requires asking "${leaf.asked}", which the case does not record (disclosure "unknown"): gate it on recorded evidence — a question without an answer is a hidden gate`)]
+        : [],
+    ),
+  );
+}
+
+/** Redundant structure below `path`: `{always: true}` in an all or any list; an all directly in an all, an any in an any. */
+function redundantGate(cond: Condition, path: string): Issue[] {
+  if ("not" in cond) return redundantGate(cond.not, `${path}.not`);
+  if (!("all" in cond) && !("any" in cond)) return [];
+  const kind = "all" in cond ? "all" : "any";
+  const list = "all" in cond ? cond.all : cond.any;
+  return list.flatMap((x, k) => {
+    const at = `${path}.${kind}.${k}`;
+    const own: Issue[] = [];
+    if ("always" in x && x.always) own.push(warn(at, kind === "all" ? '{"always": true} in an "all" list adds nothing: drop it' : '{"always": true} in an "any" list makes the whole "any" hold from the start: gate on what the learner does'));
+    if (kind in x) own.push(warn(at, `an "${kind}" directly in an "${kind}" list: move its conditions into the outer list`));
+    return [...own, ...redundantGate(x, at)];
+  });
+}
+
+function checkRedundantGates(c: CaseDefinition): Issue[] {
+  return [
+    ...c.phases.flatMap((p, i) => (p.enterWhen ? redundantGate(p.enterWhen, `phases.${i}.enterWhen`) : [])),
+    ...c.decisions.flatMap((d, i) => redundantGate(d.requires, `decisions.${i}.requires`)),
+    ...c.objectives.flatMap((o, i) => redundantGate(o.completeWhen, `objectives.${i}.completeWhen`)),
+  ];
+}
+
+/* ------------------------------------------------------------------ */
+/* Echoes: key reasoning, keyword utterances                           */
+/* ------------------------------------------------------------------ */
+
+function checkKeyReasoningEchoes(c: CaseDefinition): Issue[] {
+  const { keyReasoning, teachingPoints } = c.debrief;
+  return keyReasoning.flatMap((k, i) => {
+    for (const [j, point] of teachingPoints.entries()) {
+      const same = c.locales.filter((l) => hasLocale(k, l) && hasLocale(point, l) && compactText(t(k, l)) !== "" && compactText(t(k, l)) === compactText(t(point, l)));
+      if (same.length) return [warn(`debrief.keyReasoning.${i}`, `the key reasoning point repeats debrief.teachingPoints.${j} (${same.join(", ")}): give the reasoning chain that leads to the answer, not the teaching point again`)];
+    }
+    return [];
+  });
+}
+
+/** `caseTestUtterances` with each entry's index in `extensions.testUtterances` (malformed entries are skipped). */
+function indexedUtterances(c: CaseDefinition): [number, TestUtterance][] {
+  const raw = (c.extensions as Record<string, unknown>).testUtterances;
+  return Array.isArray(raw) ? (caseTestUtterances(c) ?? []).map((u) => [raw.indexOf(u), u]) : [];
+}
+
+function checkKeywordUtterances(c: CaseDefinition): Issue[] {
+  const byId = new Map(c.history.map((h) => [h.id, h]));
+  return indexedUtterances(c).flatMap(([i, u]) => {
+    const text = compactText(u.text);
+    const item = text === "" ? undefined : u.expect.find((id) => tList(byId.get(id)?.keywords, "*").some((k) => compactText(k) === text));
+    return item === undefined ? [] : [warn(`extensions.testUtterances.${i}`, `"${u.text}" is a keyword of "${item}", so it tests nothing the keyword does not: write a paraphrase a learner would type`)];
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Specialty ids                                                       */
+/* ------------------------------------------------------------------ */
+
+/** Every specialty id is canonical, so the library filter lists each discipline once (packages/core/src/specialties.ts). */
+function checkSpecialties(c: CaseDefinition): Issue[] {
+  return c.specialty.flatMap((id, i) => {
+    if (isCanonicalSpecialty(id)) return [];
+    const replacement = canonicalSpecialty(id, c.specialty);
+    if (replacement === null) return [warn(`specialty.${i}`, `specialty "${id}" is not a canonical id: use one of CANONICAL_SPECIALTIES (packages/core/src/specialties.ts), or add the discipline there with its bilingual label`)];
+    const use = replacement.map((r) => `"${r}"`).join(" + ");
+    const child = /^p(?:a)?ediatric-/.test(id) && !replacement.includes("pediatric-surgery");
+    return [warn(`specialty.${i}`, `specialty "${id}" is a synonym: use ${use}${child ? ' — a child\'s organ specialty is the adult id beside the age group ("pediatrics", or "neonatology" for a newborn)' : ""}`)];
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Critical interventions and preset doses                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A high-risk intervention that can be contraindicated is where a case's dangerous errors are: its author decides
+ * whether giving it while contraindicated is a critical safety failure (`critical: true`) or not (`false`).
+ */
+function checkCriticalDecided(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) =>
+    iv.risk === "high" && iv.contraindicatedWhen && iv.critical === undefined
+      ? [warn(`interventions.${i}.critical`, `high-risk intervention "${iv.id}" can be contraindicated but does not say whether giving it then is a critical safety failure: set critical to true (the safety outcome fails) or false`)]
+      : [],
+  );
+}
+
+/**
+ * A critical intervention is the case's dangerous error: its risk is never `none` or `low` — the treatment list's badge
+ * and the confirmation (moderate and high risk ask) say what it can do.
+ */
+function checkCriticalRisk(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) =>
+    iv.critical === true && (iv.risk === "none" || iv.risk === "low")
+      ? [warn(`interventions.${i}.risk`, `critical intervention "${iv.id}" is ${iv.risk} risk: giving it while contraindicated is a critical safety failure — set its risk to moderate or high (the learner is asked to confirm it, and its badge says so)`)]
+      : [],
+  );
+}
+
+/**
+ * The preset dose and what the item states: the `dose` text's first dose against `[amount, upTo]` — a single dose lies
+ * within it (the preset may span the doses the cited guidelines allow around the dose the text gives: aspirin 300 mg,
+ * preset 150–325 mg), a range has the preset's ends; through the patient's weight for a dose per kg, and capped by the
+ * text's own "max" (alteplase 0.9 mg/kg, max 90 mg, at 120 kg is 90 mg: the capped dose CASE_AUTHORING §6 asks for); a
+ * unit that cannot be compared is a mismatch too — its route when the text names exactly one, and, for a preset with
+ * a `maintenance` rate, the first rate the text states; and any dose its name or aliases state (as an order would read
+ * them: a learner who types one is checked against the preset).
+ */
+function checkDoseSpecs(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  c.interventions.forEach((iv, i) => {
+    const spec = iv.doseSpec;
+    if (!spec) return;
+    // each end of the text's dose against the same end of the preset's
+    const bottom = { ...spec, upTo: undefined };
+    const top = { ...spec, amount: spec.upTo ?? spec.amount, upTo: undefined };
+    const differ = localesOf(c, iv.dose).flatMap((l) => {
+      const text = t(iv.dose, l);
+      const mentions = doseMentions(text);
+      const first = mentions.find((m) => !/\/(?:h|min)$/u.test(m.unit) || /\/(?:h|min)$/u.test(spec.unit)) ?? mentions[0];
+      const route = doseRoute(text);
+      const cap = first?.max ? { max: first.max } : {};
+      const ends = !first
+        ? []
+        : first.upTo == null
+          ? [compareDose({ amount: first.amount, unit: first.unit, ...cap }, spec, c.patient.weightKg)]
+          : [compareDose({ amount: first.amount, unit: first.unit }, bottom, c.patient.weightKg), compareDose({ amount: first.upTo, unit: first.unit }, top, c.patient.weightKg)];
+      const amountDiffers = ends.some((r) => r.conflicts.includes("amount") || r.conflicts.includes("unit"));
+      // the infusion's rate the text states, against the preset's maintenance
+      const rate = spec.maintenance ? mentions.find((m) => /\/(?:h|min)$/u.test(m.unit)) : undefined;
+      const rateDiffers = rate != null && spec.maintenance != null && !compareDose({ amount: rate.amount, unit: rate.unit }, spec.maintenance, c.patient.weightKg).equivalent;
+      const said = [
+        ...(amountDiffers && first ? [`${formatDose({ amount: first.amount, upTo: first.upTo, unit: first.unit })}${first.max ? ` max ${first.max.amount} ${first.max.unit}` : ""}`] : []),
+        ...(route && spec.route && route !== spec.route ? [route] : []),
+        ...(rateDiffers ? [`then ${formatDose({ amount: rate.amount, upTo: rate.upTo, unit: rate.unit })}`] : []),
+      ];
+      return said.length ? [`${l}: ${said.join(", ")}`] : [];
+    });
+    if (differ.length) issues.push(warn(`interventions.${i}.doseSpec`, `the preset dose of "${iv.id}" (${formatDose(spec)}) is not what its dose text states (${differ.join("; ")}): make them say the same dose`));
+    // a name or an alias that states a dose: typed as an order, it must be given — the preset's dose, read clearly
+    const named = [...localesOf(c, iv.name).flatMap((l) => [t(iv.name, l), ...tList(iv.aliases, l)])].filter((words) => checkOrder({ text: words }, iv, c.patient.weightKg).outcome !== "given");
+    if (named.length) issues.push(warn(`interventions.${i}.doseSpec`, `"${iv.id}" is named with a dose that is not its preset (${formatDose(spec)}), or one that cannot be checked against it: ${named.map((x) => `"${x}"`).join(", ")} — typed as an order it would not be given; name the preset's dose (one dose, with its unit), or none`));
+  });
+  return issues;
+}
+
+/** A dose text that says the dose is titrated to effect: no single preset says it (a titration step would read as a dose error). */
+const TITRATED = /\btitrat(?:e|ed|ing|ion)\b|\badjust(?:ed)?\s+to\s+(?:the\s+)?(?:response|effect)\b|\bto\s+effect\b|滴定|按反应调整|按效应调整|调整剂量|逐渐加量/iu;
+
+/**
+ * A high-alert medication (`isHighAlert`) whose `dose` text states exactly one dose — one amount, or one range — has a
+ * preset (`doseSpec`), so that a free-text order's dose (a tenfold insulin rate, a heparin bolus in the tens of
+ * thousands, ten milligrams of adrenaline for one) is checked, never given as written. A text that states several doses
+ * — a bolus then an infusion, a schedule, alternatives — or a dose titrated to effect is exempt: no single preset says
+ * it (give the preset its `maintenance`, or split the item if each dose matters), and no author is pushed to invent
+ * one. One that is never given right (contraindicated always) is exempt too. The warning names the preset to add, as
+ * the text states it.
+ */
+function checkHighAlertDoseSpecs(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) => {
+    if (iv.kind !== "medication" || iv.doseSpec) return [];
+    const always = iv.contraindicatedWhen != null && "always" in iv.contraindicatedWhen && iv.contraindicatedWhen.always;
+    if (always || !isHighAlert(iv)) return [];
+    const texts = localesOf(c, iv.dose).map((l) => t(iv.dose, l));
+    if (texts.some((text) => TITRATED.test(text))) return [];
+    const each = texts.map((text) => ({ mentions: doseMentions(text), route: doseRoute(text) }));
+    if (!each.length || each.some((x) => x.mentions.length !== 1)) return [];
+    const { mentions, route } = each[0]!;
+    const m = mentions[0]!;
+    const spec = { amount: m.amount, ...(m.upTo != null ? { upTo: m.upTo } : {}), unit: m.unit, ...(route ? { route } : {}) };
+    return [
+      warn(
+        `interventions.${i}.doseSpec`,
+        `high-alert medication "${iv.id}" states one dose (${formatDose(spec)}) but has no preset dose: an order's dose is not checked — a tenfold one would be given; add "doseSpec": ${JSON.stringify(spec)}${route ? "" : ' (with its "route")'}, widened with "upTo" to every dose the case's cited guidance allows`,
+      ),
+    ];
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /* Entry point                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -333,5 +640,17 @@ export function checkContentStandard(c: CaseDefinition): Issue[] {
     ...checkExamPlaceholders(c),
     ...checkChildSocialHistory(c),
     ...checkScoredWhenCoverage(c),
+    ...checkOptionIds(c),
+    ...checkLengthCue(c),
+    ...checkAuthoringLanguage(c),
+    ...checkUnrecordedGates(c),
+    ...checkRedundantGates(c),
+    ...checkKeyReasoningEchoes(c),
+    ...checkKeywordUtterances(c),
+    ...checkSpecialties(c),
+    ...checkCriticalDecided(c),
+    ...checkCriticalRisk(c),
+    ...checkDoseSpecs(c),
+    ...checkHighAlertDoseSpecs(c),
   ];
 }

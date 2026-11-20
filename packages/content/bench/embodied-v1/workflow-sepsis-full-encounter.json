@@ -1,0 +1,658 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-sepsis-full-encounter",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "完整的具身脓毒性休克接诊",
+    "en": "Full embodied septic shock encounter"
+  },
+  "instruction": {
+    "zh-CN": "从患者到达一直处理到转诊 ICU：完成每一个学习目标，然后结束病例。",
+    "en": "Manage this patient from arrival to the ICU referral: complete every objective, then finish the case."
+  },
+  "caseId": "septic-shock-cap",
+  "locale": "en",
+  "split": "dev",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "objective": "obj-primary"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-workup"
+          },
+          {
+            "objective": "obj-hour1"
+          },
+          {
+            "objective": "obj-perfusion"
+          },
+          {
+            "objective": "obj-dispo"
+          }
+        ]
+      }
+    },
+    {
+      "caseFinished": true
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 400,
+    "maxTurns": 10,
+    "timeoutMs": 600000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "solve-case"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-monitor",
+          "operation": "attach",
+          "parameters": {
+            "intervention": "monitor"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "o2-nasal"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-crash-cart"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-crash-cart",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-crash-cart",
+          "operation": "use",
+          "parameters": {
+            "intervention": "iv-access"
+          }
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-general"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-resp-ausc"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-perfusion"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "vbg-lactate"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "blood-cultures"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "cbc"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "chem"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "lft"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "crp-pct"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "coag"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ed-glucometer"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-glucose"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "order",
+          "parameters": {
+            "investigation": "cxr"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-bolus"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Any allergies to medicines or foods?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Has she been in hospital, had IV treatment or taken antibiotics in the last three months?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What regular medicines does she take, and at what doses?"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "vbg-lactate",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "abx-timing",
+          "option_ids": [
+            "B"
+          ]
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "abx-regimen",
+          "option_ids": [
+            "F",
+            "C"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "abx-ceftriaxone"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "abx-azithromycin"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-bolus"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "sputum"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "urine-antigens"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "How long has she had a fever, and how high has it been?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Is she coughing? Bringing anything up — what does it look like?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Where is the chest pain, when did it start and what is it like?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Is she normally clear-headed? When did the confusion start?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "How have her eating and fluid intake been, and how much urine has she passed?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What medical conditions does she have — high blood pressure, diabetes?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What has she taken herself over the last two days — which fever medicine?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Roughly how much does she weigh, and how tall is she?"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-neuro"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "hold-home-meds"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-bolus"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "urinary-catheter"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-glucose",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "blood-cultures",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 1.42
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 1.45
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "read",
+          "parameters": {
+            "investigation": "cxr",
+            "phase": "resus"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-reassess-perfusion"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-reassess-lungs"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "vasopressor",
+          "option_ids": [
+            "D"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "norepinephrine"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "lactate-repeat"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "paracetamol"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 0.28
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "cbc",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-bolus"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 1
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 0.72
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "lactate-repeat",
+          "phase": "reassess"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 6.28
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "chem",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "lft",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "coag",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "sepsis3",
+          "option_ids": [
+            "A"
+          ]
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "curb65",
+          "option_ids": [
+            "D"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "icu-referral"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 27
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "crp-pct",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 1.08
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "sputum",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "urine-antigens",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "finish_case"
+      }
+    ]
+  }
+}

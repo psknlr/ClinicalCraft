@@ -5,7 +5,8 @@ Some content cannot (or should not) live in a public repository:
 | asset | why local-only | source |
 |---|---|---|
 | SMZL case figures `fig1`–`fig7` and the source PDF | © original rights holders (Chinese Medical Association journal) — local teaching use only | Virtual Patient V4 package |
-| CMCR 20-case collection: 20 source PDFs and 23 referenced figures (24 figures downloaded) | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
+| CMCR original 20 cases: 20 PDFs and 24 figures downloaded; 17 PDFs and 21 figures approved for display | © original rights holders — local teaching use only | The user's own copy of the CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
+| CMCR additional cases (57 in the library of the 105 reports selected): 105 PDFs, 101 figures and 9 tables downloaded; for the cases in the library the media review approves 42 figures and 1 PDF, and only those are installed | © original rights holders — local teaching use only | The user's own copy of the CMCR corpus; [installation and review boundaries](CMCR_105_CASES.md) |
 | Anatomy model (`anatomy.glb.gz`, 25 MB) + organ catalog | size (Z-Anatomy / BodyParts3D, CC BY-SA 4.0 — attribution kept) | Virtual Patient V4 package |
 
 ## Install
@@ -31,6 +32,13 @@ mismatch is only a warning), then writes (default destination
 <dest>/cases/smzl-lung-adeno/source_case_report.pdf
 <dest>/manifest.json            # sha256 of every file
 ```
+
+CMCR case media come from the user's own download, never from the network:
+`node scripts/install-cmcr-assets.mjs "<download directory>" [cmcr-20|cmcr-105] [--dry-run]`
+copies only the files the collection's cases list (for `cmcr-105`, only those the
+media review approves, with a matching checksum) into `assets/local/cases/cmcr-<articleId>/`,
+refuses withdrawn files and copies nothing unless every file passes; `--dry-run`
+only checks. See [CMCR_CASES.md](CMCR_CASES.md) and [CMCR_105_CASES.md](CMCR_105_CASES.md).
 
 ## Serving
 
@@ -81,7 +89,10 @@ docs/FACILITIES.md "Equipment models"):
   `.glb` (a `.gltf` with external buffers or images is not served).
 * **Built-in models.** Every built-in equipment type ships a model
   (`packages/content/assets/models`, MIT, built from the types' voxel parts by
-  `scripts/blender/build.py`: docs/BLENDER.md; a unit test keeps it so). Both
+  `scripts/blender/build.py`: docs/BLENDER.md; a unit test keeps it so) — the
+  handheld items too (audit 2026-11-12 P2-12): the medication box, and the blood
+  specimen tube, the first built-in model with layers for its looks (`sample`
+  and `label`, drawn once it is filled and labelled at the bedside). Both
   `clinicalcraft serve` and the Vite dev server search the built-in content's
   `assets/` last, so a local or pack copy overrides one; a unit test checks
   that every built-in model is pinned, cleared and passes the inspector. The

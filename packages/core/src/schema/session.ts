@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
-import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
+import { CapabilitySchema, CountStageSchema, IdSchema, OrderedDoseSchema, type CountStage, type CountStatus, type DoseSpec, type OrderedDose, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState, type RefusalReason } from "./procedure.js";
 import { SeatSchema, type Place } from "./positions.js";
@@ -58,6 +58,18 @@ export const CountOpSchema = z.discriminatedUnion("op", [
 ]);
 export type CountOp = z.infer<typeof CountOpSchema>;
 
+/**
+ * An order as the learner wrote it (`intervene` `ordered`): the text, and the dose read from it (`parseDose`) —
+ * kept apart from the dose given, so the debrief can show both.
+ */
+export const WrittenOrderSchema = z
+  .object({
+    text: z.string().trim().min(1).max(1000),
+    dose: OrderedDoseSchema.optional(),
+  })
+  .strict();
+export type WrittenOrder = z.infer<typeof WrittenOrderSchema>;
+
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
   z.object({
@@ -76,17 +88,47 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
     lineup: IdSchema.optional(),
     ...base,
   }).strict(),
-  /** Learner asked a history question (button, free text, or attributed by the patient agent). */
-  z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent"]).optional(), ...base }).strict(),
+  /**
+   * Learner asked a history question (button, free text, or attributed by the patient agent) — or, `via: "team"`, the
+   * item's recorded answer reached the clinician in charge through the care team: a colleague who held it reported it
+   * and the clinician read it back (docs/TEAM.md §4.5; the session records it, never a learner).
+   */
+  z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent", "team"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("examine"), findingId: IdSchema, ...base }).strict(),
-  /** `at` = placement id of the workstation/device used (world-level rules check capabilities). */
-  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), ...base }).strict(),
+  /**
+   * `at` = placement id of the workstation/device used (world-level rules check capabilities). `modality` (in-world
+   * mode, docs/EMBODIED.md §8.7): the study is done on the patient at a device providing these capabilities (CT, MRI…)
+   * — acquired there once the patient is on it (`acquire`), not at the order; the session sets it from the world's
+   * rule. Absent (text mode, a test not done at a device): the acquisition is implied at the order.
+   */
+  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), modality: z.array(CapabilitySchema).min(1).max(8).optional(), ...base }).strict(),
+  /**
+   * The acquisition of an order placed with a `modality` (docs/EMBODIED.md §8.7): the study done with the patient on
+   * the device — `collector`, who did it (a staff id or role: the department's radiographer), and `where`, the device's
+   * entity id. The result is released its turnaround later. The session records it when the world has the patient
+   * there; a learner never enters it. Default `phase`: the current one (the order's key).
+   */
+  z.object({
+    type: z.literal("acquire"),
+    investigationId: IdSchema,
+    phase: IdSchema.optional(),
+    collector: z.string().trim().min(1).max(120).optional(),
+    where: z.string().trim().min(1).max(120).optional(),
+    ...base,
+  }).strict(),
   /** Read the result of an investigation for `phase` (default: current phase). Must have been ordered in that phase. */
   z.object({ type: z.literal("read"), investigationId: IdSchema, phase: IdSchema.optional(), ...base }).strict(),
   z.object({ type: z.literal("set-phase"), phase: IdSchema, ...base }).strict(),
   z.object({ type: z.literal("hint"), ...base }).strict(),
   z.object({ type: z.literal("answer"), decisionId: IdSchema, optionIds: z.array(IdSchema).min(1), ...base }).strict(),
-  z.object({ type: z.literal("intervene"), interventionId: IdSchema, ...base }).strict(),
+  /**
+   * Give an intervention. `ordered`: the order as written and the dose read from it — the engine reads the words
+   * itself (`checkOrder`): a `dose` they do not state, or none, never hides the dose written. When the intervention
+   * has a preset (`doseSpec`): an equivalent dose is given and recorded with the order; a conflicting amount or route
+   * is not given — a dose error is recorded (`dose.error`); a dose that cannot be read or compared is refused
+   * (`dose-unclear`). An order that states no dose, or no `ordered`, gives the preset.
+   */
+  z.object({ type: z.literal("intervene"), interventionId: IdSchema, ordered: WrittenOrderSchema.optional(), ...base }).strict(),
   /**
    * Let simulated time pass. `reason` (optional, informational — the engine treats every reason alike):
    * `wait` (the learner or an agent waited), `travel` (an embodied walk, docs/EMBODIED.md R8),
@@ -144,14 +186,41 @@ export type ClinicalActionType = ClinicalAction["type"];
 /* State                                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * One investigation ordered in a phase, and its stages (docs/PROTOCOL.md §3.3, docs/EMBODIED.md §8.7): the order (who,
+ * when), the acquisition (who, when, where), the report's release (`readyAt`: the acquisition plus the turnaround),
+ * the clinician's review (the first read: who, when) and the next clinical act after it. Sessions saved before the
+ * stages were recorded have none of the optional fields: their acquisition is the order's (implied).
+ */
 export interface OrderRecord {
   /** `${investigationId}@${phase}` */
   key: string;
   investigationId: string;
   phase: string;
   orderedAt: number;
-  readyAt: number;
+  /**
+   * The minute the result is released: the acquisition plus the investigation's turnaround (simulated clock). Absent
+   * while the acquisition is outstanding (`awaitingAcquisition`): the result does not exist yet.
+   */
+  readyAt?: number;
   at?: string;
+  /** Who placed the order (the action's `by`) and its action sequence (`SessionState.seq` when committed). */
+  by?: Actor;
+  seq?: number;
+  /** In-world mode: the capabilities of the device the study is done at, with the patient on it (`order.modality`). */
+  modality?: string[];
+  /**
+   * The acquisition: when, its action sequence, who (`collector`) and where (`where`, the device). `implied`: at the
+   * order (text mode, a test not done at a device). Absent on an order with a `modality` until the patient was there.
+   */
+  acquired?: { at: number; seq: number; implied?: true; collector?: string; where?: string };
+  /** The clinician review: the first read of its result — when, its action sequence, who. */
+  reviewed?: { at: number; seq: number; by?: Actor };
+  /**
+   * The resulting action: the first act after the review that changes management (`RESULTING_ACTS`: an intervention,
+   * an order, a decision, a hold, an operative step, a new investigation) — its type, item id, minute and sequence.
+   */
+  next?: { type: ClinicalActionType; id?: string; at: number; seq: number };
 }
 
 export interface AttemptRecord {
@@ -172,6 +241,42 @@ export interface InterventionRecord {
    * its effects and flags did not apply and it used none of `maxDoses`.
    */
   invalid?: true;
+  /**
+   * The order as written, when the action carried one: its text and the dose read from it (equivalent to the
+   * preset when the intervention has a `doseSpec` — a conflicting dose is never given, see `DoseErrorRecord`).
+   */
+  ordered?: WrittenOrder;
+}
+
+/** What an order's dose conflicts with in the preset: the amount, the route, or a unit the preset's cannot be compared with. */
+export type DoseConflict = "amount" | "route" | "unit";
+
+/**
+ * An order whose dose conflicts with the intervention's preset (`interventions[].doseSpec`): it was not given.
+ * Kept for the debrief — what was written, what was read from it, the preset, how far apart they are — never erased.
+ */
+export interface DoseErrorRecord {
+  interventionId: string;
+  at: number;
+  seq: number;
+  /** The order as written. */
+  text: string;
+  /** The dose read from it. */
+  ordered: OrderedDose;
+  /** The intervention's preset dose. */
+  preset: DoseSpec;
+  /**
+   * The ordered amount over the preset's, after unit conversion (over the nearer end of a preset range): 10 is a
+   * tenfold overdose. Null when the order states no amount or its unit cannot be compared with the preset's.
+   */
+  ratio: number | null;
+  conflicts: DoseConflict[];
+  /**
+   * `critical` (`doseErrorSeverity`): a tenfold difference (ratio ≥ 10 or ≤ 0.1) for any medicine, and for an
+   * intervention that is `critical` or high-risk also twice the preset or more (ratio ≥ 2) or another route; otherwise
+   * `warning` (a rounding or weight-band difference, an under-dose that is not tenfold) — never failing the safety outcome.
+   */
+  severity: "warning" | "critical";
 }
 
 /** An explicit hold on an intervention (see the `hold` action): placed, and later released after a reassessment. */
@@ -252,6 +357,11 @@ export interface SessionState {
   phasesReached?: string[];
   asked: string[];
   examined: string[];
+  /**
+   * Each finding's latest examination: the minute and the action sequence (`{ examined, afterLast }` conditions).
+   * Absent until the first; sessions saved before have none.
+   */
+  lastExamined?: Record<string, { at: number; seq: number }>;
   orders: OrderRecord[];
   /** Result keys read, `${investigationId}@${phase}` */
   seen: string[];
@@ -297,6 +407,8 @@ export interface SessionState {
   joined?: JoinRecord;
   /** Holds placed on interventions, in order (absent until the first; sessions saved before have none). */
   holds?: HoldRecord[];
+  /** Orders not given because their dose conflicted with the preset, in order (absent until the first). */
+  doseErrors?: DoseErrorRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
   count?: CountRecord;
   /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
@@ -326,16 +438,24 @@ export interface SessionState {
 
 export type DomainEvent =
   | { type: "session.started" }
-  | { type: "history.asked"; itemId: string; firstTime: boolean; disclosure: string }
+  | { type: "history.asked"; itemId: string; firstTime: boolean; disclosure: string; via?: "team" }
   | { type: "exam.performed"; findingId: string; firstTime: boolean }
-  | { type: "order.placed"; investigationId: string; phase: string; key: string; readyAt: number }
+  /** `readyAt` absent with `modality`: the study waits for the patient at that device (`order.acquired` then). */
+  | { type: "order.placed"; investigationId: string; phase: string; key: string; readyAt?: number; modality?: string[] }
   | { type: "order.duplicate"; investigationId: string; phase: string; key: string }
+  /** An order placed with a `modality` was acquired there (`acquire`): its result is released at `readyAt`. */
+  | { type: "order.acquired"; investigationId: string; phase: string; key: string; readyAt: number; collector?: string; where?: string }
   | { type: "result.ready"; key: string; investigationId: string; phase: string; critical: boolean }
   | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
-  /** `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`). */
-  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true }
+  /**
+   * `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`).
+   * `critical`: given while contraindicated, and the intervention is `critical` — a critical safety failure.
+   */
+  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true; critical?: true }
+  /** An order whose dose conflicts with the preset: nothing was given (the fields of its `DoseErrorRecord`). */
+  | { type: "dose.error"; interventionId: string; text: string; ordered: OrderedDose; preset: DoseSpec; ratio: number | null; conflicts: DoseConflict[]; severity: "warning" | "critical" }
   /**
    * A vital newly crossing an alarm limit on the bedside monitor. `unmeasurable`: the monitor has no
    * reading — `value` is the cardiac-arrest placeholder 0 (`VitalsSnapshot.unmeasurable`), never a measurement.
@@ -407,6 +527,13 @@ export type RejectionCode =
   | "cannot-answer"
   /** `intervene`: an explicit hold stands on this intervention (see the `hold` action); it is not carried out. */
   | "on-hold"
+  /**
+   * `intervene`: the order's dose cannot be checked against the preset — it cannot be read (a fraction, "0。5 mg", a
+   * unit with no number), is a range, has no unit, or is in a unit the preset's cannot be compared with: without the
+   * strength or the weight, or a rate against a single dose (`checkOrder` `query`). Nothing is given and no dose error
+   * is recorded: the nurse asks.
+   */
+  | "dose-unclear"
   | "invalid";
 
 export interface ReduceResult {

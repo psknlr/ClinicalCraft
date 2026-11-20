@@ -17,9 +17,10 @@
  * then `discard`) never closes another.
  */
 import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData, TeamAutonomy } from "@clinicalcraft/agent";
-import type { DomainEvent } from "@clinicalcraft/core";
+import type { CaseDefinition, DomainEvent } from "@clinicalcraft/core";
 import { createCommandHookExecutor, createNodeSession, findProjectRoot, type CaseLibrary, type Env } from "@clinicalcraft/agent/node";
 import { SessionToolRunner } from "./bridge.js";
+import { learnerAnswer } from "./format.js";
 
 /** Kept per session for the `transcript` resource (bounded; clinical events redacted by `learnerClinicalEvent`). */
 export interface LoggedEvent {
@@ -96,31 +97,46 @@ export function sessionFlags(settings: ResolvedSettings, locale: string | null, 
  * ("high-risk-pe", scoring markers) name findings or the learner's mistakes
  * before they are earned — the scenario line itself is logged as said (its
  * `agent_message`), so the event keeps only its severity; flag changes are
- * left out.
+ * left out. An answer names its decision by number and its options by the
+ * letters `list_options` shows (`decision`, `options`: `learnerAnswer`), never
+ * by their authored ids, which can name the diagnosis or the answer. A
+ * rejected action keeps its action and code only: the engine's message is
+ * English developer text that names authored ids ("decision
+ * \"phosphate-wasting\" was already answered correctly"); the tool's result
+ * gives the reason in the learner's language.
  */
-export function learnerClinicalEvent(event: DomainEvent): Record<string, unknown> | null {
+export function learnerClinicalEvent(event: DomainEvent, c: Pick<CaseDefinition, "id" | "decisions">): Record<string, unknown> | null {
   switch (event.type) {
     case "flag.changed":
       return null;
     case "scenario.event":
       return { type: event.type, severity: event.severity };
+    case "decision.answered": {
+      const { decisionId, optionIds, ...answered } = event;
+      return { ...answered, ...learnerAnswer(c, decisionId, optionIds) };
+    }
+    case "action.rejected":
+      return { type: event.type, action: event.action, code: event.code };
     default:
       return { ...event };
   }
 }
 
-function loggable(event: AgentEvent): LoggedEvent | null {
+function loggable(event: AgentEvent, c: Pick<CaseDefinition, "id" | "decisions">): LoggedEvent | null {
   const msg = event.msg;
   if (!LOGGED_TYPES.has(msg.type)) return null;
   switch (msg.type) {
     case "clinical_event": {
-      const visible = learnerClinicalEvent(msg.event);
+      const visible = learnerClinicalEvent(msg.event, c);
       return visible ? { seq: event.seq, type: msg.type, event: visible } : null;
     }
     case "agent_message":
       return { seq: event.seq, type: msg.type, agent: msg.agent, speaker: msg.speaker, text: msg.text, grounded: msg.grounded, grounding: msg.grounding ?? null };
-    case "assessment":
-      return { seq: event.seq, type: msg.type, score: msg.report.score, completed: msg.report.completed, narrative: msg.narrative };
+    case "assessment": {
+      // the safety outcome beside the score (docs/PROTOCOL.md §3.2): the learner's own critical failures and dose errors
+      const { passed, criticalFailures, doseErrors } = msg.report.safety;
+      return { seq: event.seq, type: msg.type, score: msg.report.score, safety: { passed, criticalFailures, doseErrors }, completed: msg.report.completed, narrative: msg.narrative };
+    }
     case "command_output":
       return { seq: event.seq, type: msg.type, name: msg.name, text: msg.text };
     case "world_action_result": {
@@ -198,7 +214,7 @@ export class SessionManager {
     const runner = new SessionToolRunner(session, { executor: createCommandHookExecutor(projectRoot), cwd: projectRoot, ...(this.opts.log ? { log: this.opts.log } : {}) });
     const entry: McpSession = { id: session.id, session, runner, createdAt: this.now(), lastUsed: this.now(), log: [] };
     session.subscribe((event) => {
-      const item = loggable(event);
+      const item = loggable(event, session.caseDef);
       if (!item) return;
       entry.log.push(item);
       if (entry.log.length > LOG_LIMIT) entry.log.splice(0, entry.log.length - LOG_LIMIT);

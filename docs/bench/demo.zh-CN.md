@@ -2,17 +2,17 @@
 
 > 本演示验证的是基础设施（确定性地重放病例的参考解法），而不是临床推理能力。
 
-病例 `stemi-inferior-rv` · 场馆 `general-hospital` · 语言 zh-CN · 提交 `22c4d6914a38 (工作区有未提交的修改)` · 2026-10-29T00:07:30.767Z
+病例 `stemi-inferior-rv` · 场馆 `general-hospital` · 语言 zh-CN · 提交 `a83328044f2f (工作区有未提交的修改)` · 2026-11-14T06:11:13.131Z
 
 具身参考医生（具身模式下的离线示范接诊）在病例自己的场馆中无界面地完成接诊；每一个审批请求都由一位上级医师答复（批准）。下面每一步都把 观察 → 计划 → 导航 → 设备交互 → 临床操作 → 状态变化 → 核验 串联起来，并给出世界版本、目标版本、动作 ID 与临床事件 ID（均取自本次轨迹 `trace.jsonl`）；每一步的结论都在运行结束后对照权威的引擎状态和世界状态重新核验，最后给出评估。✗ 表示被世界或空间闸门拒绝的世界动作：拒绝及随后的恢复都保留在记录中。
 
 ## 概要
 
 - 通过 —— 每一步都得到权威状态的确认。
-- 50 步 · 288 个轨迹片段 · 26 次世界动作 · 世界版本 23 · 模拟 66.2 分钟
+- 50 步 · 287 个轨迹片段 · 26 次世界动作 · 世界版本 24 · 模拟 66.22 分钟
 - 3 次世界动作被拒绝并已恢复（见下文 ✗）
 - 4 个审批请求由上级医师答复（批准 4 个）
-- 独立审计：43 个受空间约束的操作，被接受的空间违规 0 个；48 个受权限约束的操作，未经授权 0 个
+- 独立审计：44 个受空间约束的操作，被接受的空间违规 0 个；48 个受权限约束的操作，未经授权 0 个
 
 ## 步骤
 
@@ -181,7 +181,7 @@
 - **状态变化** — 引擎：order.placed, time.advanced（`ev-213`, `ev-214`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：coagulation ordered —— 已确认
 
-### 第 16 步 —— 处置：阿司匹林负荷 (阿司匹林 300 mg 嚼服（非肠溶片）) ✓
+### 第 16 步 —— 处置：阿司匹林负荷 (阿司匹林 300 mg 嚼服（非肠溶片；指南负荷剂量 150–325 mg：ESC 与中国指南 150–300 mg，ACC/AHA 162–325 mg）) ✓
 
 - **观察** — 观察 observe_world（`b226`，世界 v13）
 - **计划** — `intervene aspirin` · 空间要求 delivered to the bedside [medications] (`b224`)
@@ -236,7 +236,7 @@
 - **状态变化** — 引擎：result.read, time.advanced（`ev-252`, `ev-253`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：ecg-right-sided read —— 已确认
 
-### 第 21 步 —— 作答：综合病史、查体和心电图，最可能的诊断是什么？ → 急性下壁ST段抬高型心肌梗死合并右心室梗死（右冠近段闭塞可能） ✓
+### 第 21 步 —— 作答：综合病史、查体和心电图，最可能的诊断是什么？ → 急性下壁STEMI合并右心室梗死（右冠近段闭塞可能） ✓
 
 - **观察** — 无需
 - **计划** — `answer_decision` (`b260`)
@@ -368,7 +368,7 @@
 - **状态变化** — 引擎：decision.answered（`ev-360`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：decision reperfusion-strategy answered —— 已确认
 
-### 第 33 步 —— 作答：按本院胸痛中心流程，进入导管室前应给予哪些抗栓治疗？（多选，选出全部正确项） → 阿司匹林150–300 mg负荷（嚼服）、一种P2Y12抑制剂负荷（替格瑞洛180 mg 或 氯吡格雷600 mg）、普通肝素70–100 U/kg静脉推注 ✓
+### 第 33 步 —— 作答：按本院胸痛中心流程，进入导管室前应给予哪些抗栓治疗？（多选，选出全部正确项） → 阿司匹林150–300 mg负荷（嚼服）、一种P2Y12抑制剂负荷（替格瑞洛180 mg 或 氯吡格雷600 mg）、普通肝素70–100 U/kg静脉推注，导管室内按ACT追加 ✓
 
 - **观察** — 无需
 - **计划** — `answer_decision` (`b341`)
@@ -430,149 +430,150 @@
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — intervene（moderate 风险）：approved
-- **临床操作** — `intervene` → ok；临床事件 `ev-419`, `ev-422`, `ev-423`, `ev-424`
-- **状态变化** — 引擎：intervention.applied, flag.changed, phase.changed, time.advanced（`ev-419`, `ev-422`, `ev-423`, `ev-424`）
+- **临床操作** — `intervene` → ok；临床事件 `ev-419`, `ev-423`, `ev-424`, `ev-425`
+- **状态变化** — 引擎：intervention.applied, flag.changed, phase.changed, time.advanced（`ev-419`, `ev-423`, `ev-424`, `ev-425`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：transfer-cath-lab given; monitor attachment latched (engine + eq:cathlab-monitor) = true —— 已确认
 
 ### 第 39 步 —— 开具检查：冠状动脉造影（直接PCI） ✓
 
-- **观察** — 观察 observe_world（`b388`，世界 v15）; 观察 inspect `eq:radiology-console`（`b398`，世界 v16）; 观察 inspect `eq:radiology-console`（`b409`，世界 v16）
-- **计划** — `order_test coronary-angiography` · 空间要求 the patient at [fluoroscopy] + at-provider [fluoroscopy] (`b386`)
-- **导航** — navigate → 影像医嘱与阅片工作站 (`eq:radiology-console`)：31.1 米，8.0 秒（动作 `wa-b389`，世界 v16）
-- **设备交互** — order 影像医嘱与阅片工作站 (`eq:radiology-console`) → completed（动作 `wa-b399`，世界 v16，目标 v0）
+- **观察** — 观察 observe_world（`b389`，世界 v15）
+- **计划** — `order_test coronary-angiography` · 空间要求 at-patient ≤ 1.5 m | at-provider [records] | at-provider [fluoroscopy] (`b387`)
+- **导航** — navigate → 急诊护士站 (`eq:ed-nurse-station`)：9.5 米，2.4 秒（动作 `wa-b390`，世界 v16）
+- **设备交互** — 无需
 - **审批** — order_test（moderate 风险）：approved
-- **临床操作** — `order_test` → ok；临床事件 `ev-443`, `ev-444`
-- **状态变化** — 世界：actor.moved; 引擎：order.placed, time.advanced（`ev-443`, `ev-444`）
+- **临床操作** — `order_test` → ok；临床事件 `ev-443`, `ev-444`, `ev-445`
+- **状态变化** — 世界：actor.moved; 引擎：order.placed, time.advanced, order.acquired（`ev-443`, `ev-444`, `ev-445`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：coronary-angiography ordered —— 已确认
 
-### 第 40 步 —— 等待 13.12 分钟 ✓
+### 第 40 步 —— 等待 13.21 分钟 ✓
 
 - **观察** — 无需
-- **计划** — `wait` (`b411`)
+- **计划** — `wait` (`b405`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
 - **临床操作** — `wait` → ok；临床事件 `ev-452`
 - **状态变化** — 引擎：time.advanced（`ev-452`）
-- **核验** — 轨迹中的后置条件：ok; 权威状态：time advanced 13.12 min —— 已确认
+- **核验** — 轨迹中的后置条件：ok; 权威状态：time advanced 13.21 min —— 已确认
 
-### 第 41 步 —— 等待 6.38 分钟 ✓
+### 第 41 步 —— 等待 6.29 分钟 ✓
 
 - **观察** — 无需
-- **计划** — `wait` (`b414`)
+- **计划** — `wait` (`b408`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
 - **临床操作** — `wait` → ok；临床事件 `ev-459`
 - **状态变化** — 引擎：time.advanced（`ev-459`）
-- **核验** — 轨迹中的后置条件：ok; 权威状态：time advanced 6.38 min —— 已确认
+- **核验** — 轨迹中的后置条件：ok; 权威状态：time advanced 6.29 min —— 已确认
 
 ### 第 42 步 —— 查看结果：冠状动脉造影（直接PCI）（导管室） ✓
 
-- **观察** — 观察 observe_world（`b420`，世界 v16）; 观察 inspect `eq:radiology-console`（`b421`，世界 v16）; 观察 inspect `eq:radiology-console`（`b430`，世界 v16）
-- **计划** — `read_result coronary-angiography` · 空间要求 at-provider [fluoroscopy] (`b418`)
-- **导航** — 无需
-- **设备交互** — read 影像医嘱与阅片工作站 (`eq:radiology-console`) → completed（动作 `wa-b422`，世界 v16，目标 v0）
+- **观察** — 观察 observe_world（`b414`，世界 v16）; 观察 inspect `eq:radiology-console`（`b424`，世界 v17）; 观察 inspect `eq:radiology-console`（`b433`，世界 v17）
+- **计划** — `read_result coronary-angiography` · 空间要求 at-provider [fluoroscopy] (`b412`)
+- **导航** — navigate → 影像医嘱与阅片工作站 (`eq:radiology-console`)：24.7 米，6.3 秒（动作 `wa-b415`，世界 v17）
+- **设备交互** — read 影像医嘱与阅片工作站 (`eq:radiology-console`) → completed（动作 `wa-b425`，世界 v17，目标 v0）
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-474`, `ev-475`, `ev-476`
-- **状态变化** — 引擎：result.read, time.advanced, result.ready（`ev-474`, `ev-475`, `ev-476`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-483`, `ev-484`, `ev-485`
+- **状态变化** — 世界：actor.moved; 引擎：result.read, time.advanced, result.ready（`ev-483`, `ev-484`, `ev-485`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：coronary-angiography read —— 已确认
 
 ### 第 43 步 —— 开具检查：12导联心电图 ✓
 
-- **观察** — 观察 observe_world（`b434`，世界 v16）; 观察 inspect `eq:resus1-ecg`（`b453`，世界 v19）; 观察 inspect `eq:resus1-ecg`（`b475`，世界 v22）
-- **计划** — `order_test ecg-12lead` · 空间要求 bedside-provider [ecg-12lead] | the patient at [ecg-12lead] + at-provider [ecg-12lead] (fixed) (`b432`)
-- **导航** — navigate → 12 导联心电图机 1 (`eq:resus1-ecg`)：30.1 米，7.7 秒（动作 `wa-b435`，世界 v17）; move_to → 12 导联心电图机 1 (`eq:resus1-ecg`)：46.0 米，11.8 秒（动作 `wa-b443`，世界 v19）
-- **设备交互** — prepare 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b454`，世界 v20，目标 v10）; connect 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b460`，世界 v21，目标 v11）; record 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b465`，世界 v22，目标 v12）; reset 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b476`，世界 v23，目标 v13）
+- **观察** — 观察 observe_world（`b437`，世界 v17）; 观察 inspect `eq:resus1-ecg`（`b456`，世界 v20）; 观察 inspect `eq:resus1-ecg`（`b478`，世界 v23）
+- **计划** — `order_test ecg-12lead` · 空间要求 bedside-provider [ecg-12lead] | the patient at [ecg-12lead] + at-provider [ecg-12lead] (fixed) (`b435`)
+- **导航** — navigate → 12 导联心电图机 1 (`eq:resus1-ecg`)：30.1 米，7.7 秒（动作 `wa-b438`，世界 v18）; move_to → 12 导联心电图机 1 (`eq:resus1-ecg`)：46.0 米，11.8 秒（动作 `wa-b446`，世界 v20）
+- **设备交互** — prepare 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b457`，世界 v21，目标 v10）; connect 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b463`，世界 v22，目标 v11）; record 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b468`，世界 v23，目标 v12）; reset 12 导联心电图机 1 (`eq:resus1-ecg`) → completed（动作 `wa-b479`，世界 v24，目标 v13）
 - **审批** — 无需
-- **临床操作** — `order_test` → ok；临床事件 `ev-514`, `ev-515`
-- **状态变化** — 世界：actor.moved, entity.moved, entity.state, reservation.changed; 引擎：order.placed, time.advanced（`ev-514`, `ev-515`）
+- **临床操作** — `order_test` → ok；临床事件 `ev-523`, `ev-524`
+- **状态变化** — 世界：actor.moved, entity.moved, entity.state, reservation.changed; 引擎：order.placed, time.advanced（`ev-523`, `ev-524`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：ecg-12lead ordered —— 已确认
 
 ### 第 44 步 —— 等待 4 分钟 ✓
 
 - **观察** — 无需
-- **计划** — `wait` (`b483`)
+- **计划** — `wait` (`b486`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `wait` → ok；临床事件 `ev-524`
-- **状态变化** — 引擎：time.advanced（`ev-524`）
+- **临床操作** — `wait` → ok；临床事件 `ev-533`
+- **状态变化** — 引擎：time.advanced（`ev-533`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：time advanced 4 min —— 已确认
 
 ### 第 45 步 —— 查看结果：12导联心电图（导管室 · PCI术后） ✓
 
-- **观察** — 观察 observe_world（`b488`，世界 v23）
-- **计划** — `read_result ecg-12lead` · 空间要求 at-patient ≤ 1.5 m | at-provider [records] | at-provider [ecg-12lead] (fixed) (`b486`)
+- **观察** — 观察 observe_world（`b491`，世界 v24）
+- **计划** — `read_result ecg-12lead` · 空间要求 at-patient ≤ 1.5 m | at-provider [records] | at-provider [ecg-12lead] (fixed) (`b489`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-536`, `ev-537`, `ev-539`, `ev-541`
-- **状态变化** — 引擎：result.read, objective.completed, case.completed, time.advanced（`ev-536`, `ev-537`, `ev-539`, `ev-541`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-545`, `ev-546`, `ev-548`, `ev-550`
+- **状态变化** — 引擎：result.read, objective.completed, case.completed, time.advanced（`ev-545`, `ev-546`, `ev-548`, `ev-550`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：ecg-12lead read —— 已确认
 
 ### 第 46 步 —— 查看结果：血常规（急诊抢救室） ✓
 
-- **观察** — 观察 observe_world（`b495`，世界 v23）
-- **计划** — `read_result cbc` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b493`)
+- **观察** — 观察 observe_world（`b498`，世界 v24）
+- **计划** — `read_result cbc` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b496`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-546`, `ev-547`
-- **状态变化** — 引擎：result.read, time.advanced（`ev-546`, `ev-547`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-555`, `ev-556`
+- **状态变化** — 引擎：result.read, time.advanced（`ev-555`, `ev-556`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：cbc read —— 已确认
 
 ### 第 47 步 —— 查看结果：电解质与肾功能（急诊抢救室） ✓
 
-- **观察** — 观察 observe_world（`b502`，世界 v23）
-- **计划** — `read_result renal-electrolytes` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b500`)
+- **观察** — 观察 observe_world（`b505`，世界 v24）
+- **计划** — `read_result renal-electrolytes` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b503`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-552`, `ev-553`, `ev-554`
-- **状态变化** — 引擎：result.read, time.advanced, result.ready（`ev-552`, `ev-553`, `ev-554`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-561`, `ev-562`, `ev-563`
+- **状态变化** — 引擎：result.read, time.advanced, result.ready（`ev-561`, `ev-562`, `ev-563`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：renal-electrolytes read —— 已确认
 
 ### 第 48 步 —— 查看结果：凝血功能（急诊抢救室） ✓
 
-- **观察** — 观察 observe_world（`b510`，世界 v23）
-- **计划** — `read_result coagulation` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b508`)
+- **观察** — 观察 observe_world（`b513`，世界 v24）
+- **计划** — `read_result coagulation` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b511`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-564`, `ev-565`
-- **状态变化** — 引擎：result.read, time.advanced（`ev-564`, `ev-565`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-573`, `ev-574`
+- **状态变化** — 引擎：result.read, time.advanced（`ev-573`, `ev-574`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：coagulation read —— 已确认
 
 ### 第 49 步 —— 查看结果：高敏肌钙蛋白T（急诊抢救室） ✓
 
-- **观察** — 观察 observe_world（`b517`，世界 v23）
-- **计划** — `read_result hs-troponin` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b515`)
+- **观察** — 观察 observe_world（`b520`，世界 v24）
+- **计划** — `read_result hs-troponin` · 空间要求 at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b518`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `read_result` → ok；临床事件 `ev-570`, `ev-571`
-- **状态变化** — 引擎：result.read, time.advanced（`ev-570`, `ev-571`）
+- **临床操作** — `read_result` → ok；临床事件 `ev-579`, `ev-580`
+- **状态变化** — 引擎：result.read, time.advanced（`ev-579`, `ev-580`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：hs-troponin read —— 已确认
 
 ### 第 50 步 —— 结束病例。 ✓
 
 - **观察** — 无需
-- **计划** — `finish_case` (`b522`)
+- **计划** — `finish_case` (`b525`)
 - **导航** — 无需
 - **设备交互** — 无需
 - **审批** — 无需
-- **临床操作** — `finish_case` → ok；临床事件 `ev-576`
-- **状态变化** — 引擎：case.finished（`ev-576`）
+- **临床操作** — `finish_case` → ok；临床事件 `ev-585`
+- **状态变化** — 引擎：case.finished（`ev-585`）
 - **核验** — 轨迹中的后置条件：ok; 权威状态：case finished —— 已确认
 
 ## 最终评估
 
 - 得分 22/22（100%）
+- 安全性：通过
 - 目标 5/5
 - 首次即答对的决策：4/4
 - 禁忌干预：0
-- 模拟时间 66.2 分钟
+- 模拟时间 66.22 分钟
 - 评估: `bench-assessment` (是)
 
 ## 复现

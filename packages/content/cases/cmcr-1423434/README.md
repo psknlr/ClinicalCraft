@@ -14,7 +14,7 @@ unknown.
 
 | | |
 |---|---|
-| id / version | `cmcr-1423434` / `1.1.0` |
+| id / version | `cmcr-1423434` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed 1) |
 | specialty | cardiology, clinical pharmacology |
 | difficulty | 3 / 5 |
@@ -149,10 +149,11 @@ Every option has its own feedback (why it is right or wrong, with the guidance o
   `restart-warfarin` is contraindicated while she bleeds and indicated in `followup`.
 - `vitk-iv`, `stop-amiodarone` and `iv-access` are `neutral`; their responses explain what they would and would not
   achieve.
-- **Pending framework fields** (S/pr3/fxc-annotations/cmcr-1423434.json, applied by the coordinator): both safety
-  items get `scoredWhen` (counting once the learner has reached the relevant prescribing step — attempted the
-  decision or charted any of its drugs) and `critical: true`. Until then, as in every case, doing nothing earns both
-  safety items (6/24).
+- Both safety items count only once the learner has reached the relevant prescribing step — attempted the decision
+  or charted any of its drugs (`scoredWhen`) — so doing nothing earns neither, and both are `critical`.
+- `warfarin-continue` is `critical` (since 1.1.2): charting it fails the assessment's safety outcome
+  (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score. `pcc` is
+  `critical: false`.
 
 ## Reference path (`solution`)
 
@@ -323,6 +324,36 @@ cited without a DOI because none was verified.
 - **中国专家共识（2013）:** bibliographic data from citing reference lists; content not read; no DOI confirmed.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** `warfarin-continue` — warfarin kept at full dose alongside
+  amiodarone, or while she bleeds — is `critical: true` (the report's course: INR 5.1 with visible haematuria eight
+  days after amiodarone started without a warfarin reduction); `rb-safety-dose` was already a critical rubric item.
+  `pcc` (high risk; no major bleed recorded) is `critical: false`: a thrombotic risk to a new bioprosthesis, but
+  recoverable. `warfarin-continue` is moderate risk (it was low): a critical intervention's badge and confirmation
+  say what it can do. Scores are unchanged.
+- **No preset dose (audit P0-2).** The amiodarone item (0.2 g PO, the report's maintenance dose) takes no
+  `doseSpec`: it also answers for "an antiarrhythmic", and an oral loading regimen (for example 600 mg a day) is
+  common practice, so the dose check — it compares amounts, not drugs or regimens — would read both as dose errors.
+  The warfarin items state no dose to check.
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four single-best decisions the keyed option was the
+  uniquely longest in both languages (1.6–2.4 times the mean option length); now it is in none. The keys say the same
+  in fewer words; the distractors carry the key's detail and say why they tempt — keeping 3.75 mg/day because the INR
+  is still below 2.0; stopping warfarin while amiodarone builds up; increasing it because she is under-anticoagulated
+  with recurrent AF and a new bioprosthesis; a urinary cause because the INR was only 2.2–2.4 on the two days before;
+  amiodarone liver injury with right-sided congestion; "certainly" because the timing fits exactly; the report's IM
+  vitamin K as a full reversal-and-restart plan; PCC because visible haematuria looks major; carrying on at a lower
+  dose so the valve is not left unprotected; aspirin because a bioprosthesis carries less thrombotic risk; the
+  three-month clinic once the INR is 1.4 and warfarin has restarted lower; a week off warfarin so the urinary tract
+  can heal; stopping amiodarone and returning to 3.75 mg/day. The report's own choices remain distractors, so every
+  decision still sets the historical course against current practice. Medical meaning, correct flags, scoring and the
+  reference path are unchanged; the feedback of `pcc-now`, `continue-lower` and `stop-for-good` now also answers the
+  reason their text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

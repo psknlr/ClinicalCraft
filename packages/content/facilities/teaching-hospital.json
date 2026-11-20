@@ -85,6 +85,8 @@
     {"id": "corridor-l1-sanitizer-2", "type": "hand-sanitizer", "x": 14.8, "z": -1.6, "room": "corridor-l1"},
     {"id": "icu-store-cabinet", "type": "cabinet", "x": 23.5, "z": -9.575, "room": "icu-store"},
     {"id": "icu-store-cylinder", "type": "oxygen-cylinder", "x": 24.5, "z": -7.0, "rot": 270, "room": "icu-store"},
+    {"id": "icu-store-eeg", "type": "eeg-machine", "x": 22.525, "z": -7.6, "rot": 90, "room": "icu-store", "label": {"zh-CN": "视频脑电图仪", "en": "Video-EEG cart"}},
+    {"id": "icu-store-apheresis", "type": "apheresis-machine", "x": 22.55, "z": -6.4, "rot": 90, "room": "icu-store", "label": {"zh-CN": "血细胞分离机", "en": "Apheresis machine"}},
     {"id": "staff-table", "type": "desk", "x": 22.0, "z": 6.4, "room": "staff-room"},
     {"id": "staff-chair-1", "type": "chair", "x": 21.4, "z": 7.2, "rot": 180, "room": "staff-room"},
     {"id": "staff-chair-2", "type": "chair", "x": 22.6, "z": 7.2, "rot": 180, "room": "staff-room"},

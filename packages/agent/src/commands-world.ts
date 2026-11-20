@@ -2,7 +2,7 @@
  * Slash commands of embodied mode (docs/EMBODIED.md): `/look`, `/where`,
  * `/find <query>`, `/go <target>`, `/inspect <target>`,
  * `/use <target> <operation> [key=value…]`, `/map`, `/skill [id] [key=value…]`,
- * `/delegate <who> <task> [target]`, `/transport <destination|home>`. Each runs its world tool as the
+ * `/delegate <who> <task> [target] [key=value…]`, `/transport <destination|home> [monitor]`. Each runs its world tool as the
  * learner — validation, PreToolUse hooks, the approval gate (and, for an
  * operation with a clinical effect, the clinical tool's own gate) — exactly
  * like `/order` runs `order_test`. And the care team's (docs/TEAM.md §5): `/seat` (the learner's place, its controls,
@@ -29,8 +29,8 @@ const NAMES = [
   ["use", "<target> <operation> [key=value…]"],
   ["map", ""],
   ["skill", "[id] [key=value…]"],
-  ["delegate", "<who> <task> [port|region|instrument|item|destination]"],
-  ["transport", "<destination|home>"],
+  ["delegate", "<who> <task> [port|region|instrument|item|destination] [key=value…]"],
+  ["transport", "<destination|home> [monitor]"],
   ["seat", ""],
   ["team", "[status|step|run|reply|ask|need|count|play|observe|pause|resume]"],
 ] as const;
@@ -133,21 +133,27 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
       return true;
     }
     case "transport":
-      if (!args) usage(host, name, "<destination|home>");
+      // `monitor`: the portable monitor at the bedside goes along (EMBODIED §8.7)
+      if (!args) usage(host, name, "<destination|home> [monitor]");
+      else if (tokens.length === 2 && tokens[1] === "monitor") await run("transport_patient", { destination: tokens[0], monitor: true });
       else await run("transport_patient", { destination: args });
       return true;
     case "delegate": {
-      // whom: everything before the task — a role, a staff id or a position in words ("first assistant", "camera holder")
+      // whom: everything before the task — a role, a staff id or a position in words ("first assistant", "camera holder");
+      // `key=value…` after the target: the task's params (`to=me`; `monitor=true`: the portable monitor goes along,
+      // EMBODIED §8.7)
       const at = tokens.findIndex((tok, i) => i > 0 && (DELEGATION_TASKS as readonly string[]).includes(tok));
-      const [role, task, target] = at > 0 ? [tokens.slice(0, at).join(" "), tokens[at], tokens[at + 1]] : tokens;
+      const [role, task, ...rest] = at > 0 ? [tokens.slice(0, at).join(" "), ...tokens.slice(at)] : tokens;
+      const target = rest[0] !== undefined && !rest[0].includes("=") ? rest.shift() : undefined;
+      const params = keyValues(rest);
       if (!role || !task) {
-        usage(host, name, "<who> <task> [port|region|instrument|item|destination]");
+        usage(host, name, "<who> <task> [port|region|instrument|item|destination] [key=value…]");
         return true;
       }
       // a position word naming the learner's own place names nobody else (the colleague standing by is named by name)
       const own = ownPlaceWord({ caseDef: host.caseDef, state: host.state() }, role);
       if (own) host.output(ownPlaceText(L, own), { error: "own-place", place: own });
-      else await run("delegate_task", { role, task, ...(target ? { target } : {}) });
+      else await run("delegate_task", { role, task, ...(target ? { target } : {}), ...(Object.keys(params).length ? { params } : {}) });
       return true;
     }
     case "seat": {

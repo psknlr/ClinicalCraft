@@ -28,7 +28,7 @@ function fakeRenderer(over: Partial<WorldApi> = {}) {
       return { arrived: true, pose: { ...target }, replans: 0 };
     }),
     staffPose: (id: string) => staff.get(id) ?? null,
-    pushEquipment: (id: string, by: string | null) => calls.push(`push:${id}:${by}`),
+    pushEquipment: (id: string, by: string | null, at?: string) => calls.push(`push:${id}:${by}${at ? `:${at}` : ""}`),
     pushPatient: (slot: string, by: string | null, posture?: string) => calls.push(`patient:${slot}:${by}${posture ? `:${posture}` : ""}`),
     placeEquipment: (id: string, at: unknown) => calls.push(`place:${id}:${at === null ? "hidden" : JSON.stringify(at)}`),
     setDoor: (id: string, open: boolean) => calls.push(`door:${id}:${open}`),
@@ -73,6 +73,26 @@ describe("BrowserMover", () => {
     const r = await mover.move("staff:ed-nurse", plan);
     expect(r.arrived).toBe(true);
     expect(calls).toEqual(["push:ward-bed-1:ed-nurse", "patient:ward-1:ed-nurse:lying", "staff:ed-nurse:2", "push:ward-bed-1:null", "patient:ward-1:null"]);
+  });
+
+  it("a transport with the monitor taken along (audit W4): it travels at the walker's side, beside the bed — not left at the bedside", async () => {
+    const { api, calls } = fakeRenderer();
+    const mover = new BrowserMover({
+      renderer: () => api,
+      pushing: (a) => (a === "staff:ed-nurse" ? "ward-bed-1" : null),
+      riding: (a) => (a === "staff:ed-nurse" ? "ward-defibrillator" : null),
+      carrying: (a) => (a === "staff:ed-nurse" ? { slotId: "ward-1", posture: "lying" } : null),
+    });
+    expect((await mover.move("staff:ed-nurse", plan)).arrived).toBe(true);
+    expect(calls).toEqual([
+      "push:ward-bed-1:ed-nurse",
+      "push:ward-defibrillator:ed-nurse:beside",
+      "patient:ward-1:ed-nurse:lying",
+      "staff:ed-nurse:2",
+      "push:ward-bed-1:null",
+      "push:ward-defibrillator:null",
+      "patient:ward-1:null",
+    ]);
   });
 
   it("moves bodies the renderer does not draw instantly, like the headless mover", async () => {

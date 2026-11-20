@@ -15,7 +15,7 @@ traditional characters; the case uses simplified Chinese.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653404` / `1.1.0` |
+| id / version | `cmcr-1653404` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (paediatric ward bed `ward-1`) |
 | specialty | paediatrics, immunology, infectious disease |
 | difficulty | 4 / 5 |
@@ -194,13 +194,16 @@ teach-back.
   `ivig-replacement`, `vaccine-plan`, `genetic-counselling` and
   `steroid-eczema` are `indicated` once their evidence exists.
 
-### Framework annotations (pending)
+### Framework annotations
 
-`S/pr3/fxc-annotations/cmcr-1653404.json` (not in `case.json`): the outside
-reports and the follow-up record are record reviews (`performedAt: "records"`);
-`rb-confirm` and `rb-safety-longterm` are `critical`; `rb-safety-vaccine` is
-`critical` and counts only once `long-term` has been attempted
-(`scoredWhen: {attempted: "long-term"}`), so doing nothing does not earn it.
+In `case.json`: the outside reports and the follow-up record are record reviews
+(`performedAt: "records"`); `rb-confirm` and `rb-safety-longterm` are
+`critical`; `rb-safety-vaccine` is `critical` and counts only once `long-term`
+has been attempted or a live vaccine given (`scoredWhen`), so doing nothing
+does not earn it. Since 1.1.2 `live-vaccine` is a `critical` intervention:
+giving it once the low immunoglobulins have been read fails the assessment's
+safety outcome (`safety.passed: false`), which every debrief and export shows
+beside the score.
 
 ## Reference path (`solution`)
 
@@ -405,6 +408,36 @@ entry (NBK1453, no DOI); the CDC chapter carries no DOI.
   discussion but are not carried into the case.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** A live attenuated vaccine once the immunoglobulins show a severe
+  antibody deficiency is `critical: true` (vaccine-associated poliomyelitis, disseminated BCG); `rb-safety-vaccine` was
+  already a critical rubric item. `live-vaccine` is moderate risk (it was low): a critical intervention's badge and
+  confirmation say what it can do. Scores are unchanged.
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option
+  was the uniquely longest in all four single-best decisions in Chinese and in
+  three of them in English (up to 1.8 times the mean option length); now it
+  is in none. The `immune-screen`, `confirm` and `long-term` keys say the same
+  in fewer words (the `interpret-ig` key is unchanged). Each distractor now
+  gives the reason it tempts: eczema since birth breaking the skin barrier to
+  staphylococci; HIV as a treatable acquired cause to exclude first; a foot
+  still worsening on amoxicillin–clavulanate, so an MRI for osteomyelitis or
+  a deep collection first; selective IgA deficiency as the commonest primary
+  antibody defect, with a normal IgM; consumption in a severe infection;
+  values that only look low against adult ranges; SCID as the defect not to
+  miss; a gene test that would not change his own treatment; transplantation
+  as the only treatment that can correct the defect and spare him lifelong
+  infusions; prophylactic antibiotics to avoid the cost and infusions of
+  replacement; discharge once the infection has responded and the fever has
+  settled. The feedback of `hiv-only`, `scid`, `no-gene-needed` and
+  `transplant-now` now also answers the reason its text gives. Medical
+  meaning, correct flags, scoring and the reference path are unchanged; no
+  new patient fact is introduced.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

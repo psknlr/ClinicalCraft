@@ -8,6 +8,10 @@
  *
  * Token usage is synthetic (⌈characters ÷ 4⌉ of each request and response),
  * so budget accounting is exercised; reports label it as an estimate.
+ *
+ * A held-out (`test`) scenario carries no plan — nothing tuned may use it —
+ * so the scripted control does not run it (the run is `skipped`, counted
+ * nowhere; docs/EMBODIED.md §13.1).
  */
 import { DEFAULT_CAPABILITIES, type ChatRequest, type LLMProvider, type ModelCapabilities, type ProviderConfig, type StreamEvent } from "@clinicalcraft/agent";
 import { t } from "@clinicalcraft/core";
@@ -85,17 +89,21 @@ export interface ScriptedAgentOptions {
   finalFor?: (scenario: BenchScenario, locale: string) => string;
   /** Agent kind label (tests use other kinds for deliberately broken agents). */
   kind?: string;
+  /** Run held-out (`test`) scenarios too (default: only when `planFor` is given — the scenario's own plan is empty). */
+  heldOut?: boolean;
 }
 
 /** The scripted-llm agent (see the module docs). */
 export function createScriptedAgent(options: ScriptedAgentOptions = {}): BenchAgent {
   const planFor = options.planFor ?? ((s: BenchScenario) => s.scripted.plan);
   const finalFor = options.finalFor ?? ((s: BenchScenario, locale: string) => (s.scripted.final ? t(s.scripted.final, locale) : bm(locale, "task.final")));
+  const heldOut = options.heldOut ?? options.planFor !== undefined;
   return {
     kind: options.kind ?? "scripted-llm",
     provider: SCRIPTED_PROVIDER_ID,
     model: SCRIPTED_MODEL,
     syntheticTokens: true,
+    skips: (scenario: BenchScenario) => !heldOut && scenario.split === "test",
     wiring(scenario: BenchScenario, tap: ProviderTap): AgentWiring {
       const provider = tapProvider(new PlanProvider(planFor(scenario), finalFor(scenario, scenario.locale)), tap);
       return {

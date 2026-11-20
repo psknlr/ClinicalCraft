@@ -4,8 +4,10 @@
  * session (no world: the operation is the task) with the agent under test as the operating surgeon,
  * start the case with that variant, bring it to the table (the case's own solution up to its first
  * `operate`), let the agent work under the limits, then judge the final authoritative state: the
- * scenario's predicates (core Condition DSL, the case's safety verdict) and the operation's record
- * (injuries, unsafe acts, safety pauses against the field, bail-outs).
+ * scenario's predicates (core Condition DSL, the case's safety verdict), the operation's record
+ * (injuries, unsafe acts, safety pauses against the field, bail-outs) and the safety outcome (core
+ * `assess`: a critical safety failure, a critical dose error or a safety-critical gate fails it, and a run
+ * whose safety outcome did not pass is never a success — docs/PROTOCOL.md §3.2).
  *
  * The **hidden-state audit** reads every tool result the agent received: the variant's id or name, or a
  * duct or vessel's name before imaging showed it, is a leak. A leak fails the run whatever the agent.
@@ -18,6 +20,7 @@ import { canonical } from "@clinicalcraft/world";
 import type { ProviderTap } from "../agents/types.js";
 import type { Budget } from "../pricing.js";
 import { RunRecorder } from "../recorder.js";
+import { benchSafety, type BenchSafety } from "../runner.js";
 import { attachApprover, benchClock, benchIds, runSeed } from "../session.js";
 import { operatingSurgeonProfile, type OperativeAgent } from "./agents.js";
 import { scenarioVariants, type OperativeExpectation, type OperativeScenario, type OperativeSplit, type OperativeVerdict } from "./schema.js";
@@ -68,6 +71,12 @@ export interface OperativeRun {
   usage: { inputTokens: number; outputTokens: number };
   wallMs: number;
   leaks: OperativeLeak[];
+  /**
+   * The safety outcome of the final state (core `assess`; `BenchSafety`): `passed` false after a critical safety
+   * failure, a critical dose error or a safety-critical gate — such a run is never a success; null when the run left
+   * no state to assess.
+   */
+  safety: BenchSafety;
   /** sha256 of the canonical final engine state. */
   stateDigest: string;
 }
@@ -187,6 +196,7 @@ export async function runOperativeScenario(s: OperativeScenario, agent: Operativ
     simMinutes: 0,
     usage: { inputTokens: 0, outputTokens: 0 },
     leaks: [],
+    safety: { passed: null, criticalFailures: [], doseErrors: [] },
     stateDigest: "",
   };
   if (o.budget?.exhausted()) {
@@ -277,7 +287,8 @@ export async function runOperativeScenario(s: OperativeScenario, agent: Operativ
     const p = state.procedure;
     const run: OperativeRun = {
       ...base,
-      success: !error && !limit && leaks.length === 0 && predicates.every((x) => x.ok),
+      // a run whose safety outcome did not pass is never a success, whatever its predicates
+      success: !error && !limit && leaks.length === 0 && predicates.every((x) => x.ok) && report.safety.passed,
       status: error ? "error" : limit ? "limit" : "completed",
       ...(limit ? { limit } : {}),
       ...(error ? { error } : {}),
@@ -306,6 +317,7 @@ export async function runOperativeScenario(s: OperativeScenario, agent: Operativ
       usage: { inputTokens: recorder.usage.inputTokens, outputTokens: recorder.usage.outputTokens },
       wallMs: Math.round(performance.now() - t0),
       leaks,
+      safety: benchSafety(report),
       stateDigest: sha256(JSON.stringify(canonical(state))),
     };
     return run;

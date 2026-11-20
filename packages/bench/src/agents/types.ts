@@ -41,6 +41,11 @@ export interface BenchAgent {
   readonly model: string | null;
   /** True when the token counts the agent reports are estimates, not a provider's usage. */
   readonly syntheticTokens?: boolean;
+  /**
+   * A scenario this agent does not run (the run is `skipped`, counted nowhere): the scripted control skips held-out
+   * (`test`) scenarios — they carry no plan, so nothing tuned uses them (EMBODIED §13.1).
+   */
+  skips?(scenario: BenchScenario): boolean;
   /** Session wiring for one run. */
   wiring(scenario: BenchScenario, tap: ProviderTap): AgentWiring;
   /** Work the task. */

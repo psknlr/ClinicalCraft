@@ -329,6 +329,9 @@
             "handheld"
           ]
         },
+        "custody": {
+          "type": "boolean"
+        },
         "reach": {
           "type": "number",
           "exclusiveMinimum": 0,
@@ -414,7 +417,8 @@
                               "standing",
                               "sitting",
                               "lying",
-                              "lateral"
+                              "lateral",
+                              "prone"
                             ]
                           },
                           "sideUp": {
@@ -429,7 +433,8 @@
                             "enum": [
                               "clothes",
                               "blanket",
-                              "drapes"
+                              "drapes",
+                              "towels"
                             ]
                           },
                           "flex": {
@@ -453,6 +458,9 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "live": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
@@ -714,7 +722,8 @@
                 "standing",
                 "sitting",
                 "lying",
-                "lateral"
+                "lateral",
+                "prone"
               ]
             },
             "sideUp": {
@@ -729,7 +738,8 @@
               "enum": [
                 "clothes",
                 "blanket",
-                "drapes"
+                "drapes",
+                "towels"
               ]
             },
             "draped": {
@@ -1143,6 +1153,9 @@
           "properties": {
             "examined": {
               "$ref": "#/definitions/Id"
+            },
+            "afterLast": {
+              "$ref": "#/definitions/Id"
             }
           },
           "required": [
@@ -1242,6 +1255,9 @@
               "minimum": 1
             },
             "valid": {
+              "type": "boolean"
+            },
+            "whenIndicated": {
               "type": "boolean"
             }
           },
@@ -1372,6 +1388,35 @@
           },
           "required": [
             "elapsed"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "elapsedSince": {
+              "type": "object",
+              "properties": {
+                "intervened": {
+                  "$ref": "#/definitions/Id"
+                },
+                "gte": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "lte": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "intervened"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsedSince"
           ],
           "additionalProperties": false
         },

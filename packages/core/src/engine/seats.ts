@@ -27,8 +27,8 @@ export type Controls = "all" | SurgicalControl[];
 /** What controls are asked for: the operative field (`field`) or the world's operations (`world`). */
 export type ControlPurpose = "field" | "world";
 
-/** The position each team duty stands for. */
-export const DUTY_POSITION: Readonly<Record<TeamDuty, StaffPosition>> = {
+/** The position each team duty stands for — `inform` names none: an information holder's position comes from elsewhere. */
+export const DUTY_POSITION: Readonly<Partial<Record<TeamDuty, StaffPosition>>> = {
   surgeon: "surgeon",
   anaesthesia: "anaesthetist",
   instruments: "scrub-nurse",
@@ -37,7 +37,11 @@ export const DUTY_POSITION: Readonly<Record<TeamDuty, StaffPosition>> = {
   count: "circulating-nurse",
 };
 
-/** The order in which a member's duties decide their position — never the order they are listed in: `[count, instruments]` is a scrub nurse. */
+/**
+ * The order in which a member's duties decide their position — never the order they are listed in: `[count, instruments]`
+ * is a scrub nurse. `inform` is not among them: a member listed only to hold information (`["inform"]`) has no position
+ * from their duties.
+ */
 export const DUTY_PRIORITY: readonly TeamDuty[] = ["surgeon", "anaesthesia", "instruments", "assist", "circulate", "count"];
 
 /** The position of a facility role when nothing else names one. */
@@ -67,7 +71,7 @@ function ordered(xs: Iterable<SurgicalControl>): SurgicalControl[] {
 
 /** The position a list of duties stands for, by `DUTY_PRIORITY` (null: no duty). */
 export function dutyPosition(duties: readonly TeamDuty[]): StaffPosition | null {
-  for (const d of DUTY_PRIORITY) if (duties.includes(d)) return DUTY_POSITION[d];
+  for (const d of DUTY_PRIORITY) if (duties.includes(d)) return DUTY_POSITION[d] ?? null;
   return null;
 }
 

@@ -57,10 +57,10 @@ export { verifyCase } from "./verify.js";
 export * from "./procedure/index.js";
 
 // session lifecycle
-export { createSession, operateRefusal, reduce, replay, type StepRefusal } from "./reducer.js";
+export { createSession, operateRefusal, reduce, replay, RESULTING_ACTS, type StepRefusal } from "./reducer.js";
 
 // queries
-export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
+export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, awaitingAcquisition, activeHolds, type ConditionRef } from "./conditions.js";
 export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
 export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
@@ -108,6 +108,7 @@ export {
   interventionNegation,
   MATCH_THRESHOLD,
   EXCLUDE_KEYWORD_FACTOR,
+  NEGATED_EXCLUDE_FACTOR,
   ELLIPSIS_FACTOR,
   NEGATED_MARGIN,
   type InterventionNegation,
@@ -116,6 +117,7 @@ export {
 export { analyzeNegation, type NegationAnalysis } from "./negation.js";
 export {
   compactText,
+  stripGreeting,
   tokenize,
   tokensMatch,
   canonicalToken,
@@ -128,8 +130,13 @@ export {
   ENGLISH_LEMMAS,
 } from "./text.js";
 
+// doses: an order's stated dose against an intervention's preset (docs/PROTOCOL.md §3.2)
+export { BOLUS_MINUTES, checkOrder, compareDose, doseErrorSeverity, formatDose, infusionMinutes, TENFOLD, TWOFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseQueryReason, type IncomparableDoseReason, type OrderCheck } from "./dose.js";
+export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS, type DoseMention, type OrderReading, type UnclearDose, type UnclearDoseReason } from "./dose-read.js";
+export { isHighAlert } from "./high-alert.js";
+
 // assessment
-export { assess, countCriticalAlarms } from "./assessment.js";
+export { assess, countCriticalAlarms, safetyPassed } from "./assessment.js";
 export { ENGINE_VERSION } from "./version.js";
 
 // new investigations (docs/STUDIES.md)
@@ -208,6 +215,7 @@ export type {
   MatchHit,
   MatchOptions,
   AssessmentReport,
+  AssessedDoseError,
   PatientSlot,
   WaypointLocation,
   VerifyResult,

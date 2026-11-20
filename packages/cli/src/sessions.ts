@@ -4,7 +4,7 @@
 import { basename } from "node:path";
 import type { CaseDefinition } from "@clinicalcraft/core";
 import { CaseLibrary, listSessions, readTranscript } from "@clinicalcraft/agent/node";
-import { objectiveTitle, replayTranscript, table, type Op, type TranscriptItem } from "@clinicalcraft/agent";
+import { objectiveTitle, replayTranscript, safetyHeadline, table, type Op, type TranscriptItem } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, type CliContext } from "./context.js";
 import { sanitizeTerminal, truncate } from "./render.js";
@@ -100,7 +100,11 @@ export async function sessionsShow(ctx: CliContext, args: ParsedArgs): Promise<n
         else if (msg.type === "tool_call_end") ctx.print(p.dim(`  ⏺ ${safe(msg.tool)} ${msg.ok ? "✓" : "✗"} ${truncate(safe(String(msg.output ?? "").split("\n")[0] ?? ""), 90)}`));
         else if (msg.type === "command_output" && String(msg.text ?? "").trim()) ctx.print(p.dim(`  ${truncate(safe(String(msg.text).trim().split("\n")[0] ?? ""), 100)}`));
         else if (msg.type === "clinical_event" && msg.event.type === "objective.completed") ctx.print(p.green(`  ✓ ${objective(msg.event.objectiveId)}`));
-        else if (msg.type === "assessment") ctx.print(p.bold(ctx.t("sessions.score", { percent: safe(msg.report?.score?.percent) })));
+        else if (msg.type === "assessment") {
+          // the safety outcome beside the score (a report saved before it existed has none)
+          const safety = safetyHeadline(msg.report?.safety, ctx.locale);
+          ctx.print(p.bold(ctx.t("sessions.score", { percent: safe(msg.report?.score?.percent), safety: safety ? ` · ${safety}` : "" })));
+        }
         break;
       }
       default:

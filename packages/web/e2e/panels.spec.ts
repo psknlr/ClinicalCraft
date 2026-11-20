@@ -61,7 +61,9 @@ test("map, inventory, crafting, help, atlas, autopilot", async ({ page }) => {
   await page.evaluate(() => {
     const qa = (window as any).__QA__;
     qa.dispatch({ type: "order", investigationId: "abdct" });
-    // embodied mode: CT images are read at an imaging workstation — set-up reads it (this checks the figures)
+    // embodied mode: a CT is done with the patient on the scanner (the session records the acquisition when the world
+    // has her there, EMBODIED §8.7) and read at an imaging workstation — set-up records both (this checks the figures)
+    qa.dispatch({ type: "acquire", investigationId: "abdct", collector: "radiographer", by: "system" });
     qa.dispatch({ type: "read", investigationId: "abdct" });
     qa.route("report", { investigationId: "abdct", phase: "pre", back: { panel: "journal" } });
   });

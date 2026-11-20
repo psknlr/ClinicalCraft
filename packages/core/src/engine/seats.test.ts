@@ -117,6 +117,9 @@ describe("a member's position", () => {
     expect(dutyPosition(["count", "instruments"])).toBe("scrub-nurse");
     expect(dutyPosition(["count", "circulate"])).toBe("circulating-nurse");
     expect(dutyPosition(["assist"])).toBe("first-assistant");
+    // `inform` names no position: a colleague listed only to hold information has none from their duties
+    expect(dutyPosition(["inform"])).toBeNull();
+    expect(dutyPosition(["inform", "circulate"])).toBe("circulating-nurse");
     expect(memberPosition(c, {}, "nurse-2")).toBe("scrub-nurse");
     expect(memberPosition(c, {}, "doc-1")).toBe("first-assistant");
     expect(memberPosition(c, {}, "surgeon")).toBe("surgeon");

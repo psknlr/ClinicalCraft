@@ -30,7 +30,8 @@ export const SUPPORTED_PROTOCOL_VERSIONS: readonly string[] = ["2025-06-18", "20
 const INSTRUCTIONS =
   "ClinicalCraft runs grounded virtual-patient encounters. Call list_cases, then start_case to get a session_id, and act as the clinician " +
   "with the clinical tools (ask_patient, examine, order_test, read_result, answer_decision, …), passing session_id each time. " +
-  "Patients and staff only know what the case records; missing data stays missing. Use case_status to see objectives and open decisions, " +
+  "Patients and staff only know what the case records; missing data stays missing. Use case_status to see objectives and open decisions " +
+  "(decisions go by number and their options by letter: answer_decision takes the number and the letters), " +
   "finish_case when every objective is done, and get_debrief for the assessment (a teaching-script measure, not a validated competency score). " +
   "start_case with embodied: true gives you a body in the case's hospital: observe_world, find_entities, navigate_to and interact_object move and act in it, " +
   "and the clinical tools then need you in the right place — a refusal carries data.hint.goal to pass to navigate_to.";

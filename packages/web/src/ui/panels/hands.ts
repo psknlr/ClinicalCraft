@@ -2,7 +2,8 @@
  * Embodied mode: what the learner carries (docs/EMBODIED.md §5, §8.1) — the carry row of a handheld item's device
  * panel (Pick up; held: Put down, Equip, Hand to a person within reach) and "In your hands" in the inventory panel
  * (each carried item, worn ones apart, with the same buttons and its own operations). Every button is a
- * `world_action` of the learner's — the world decides (hands full, worn items, arm's reach), as for an agent.
+ * `world_action` of the learner's — the world decides (hands full, worn items, arm's reach), as for an agent. An item
+ * kept in custody handed to the learner offers "Sign for it" (`confirm_receipt`) while its receipt awaits them.
  */
 import { t } from "@clinicalcraft/core";
 import { MAX_HELD, PRIMARY_ACTOR, type ActorState, type WorldRuntime } from "@clinicalcraft/world";
@@ -36,12 +37,16 @@ function worn(world: WorldRuntime, id: string): boolean {
   return !!world.snapshot().entities[id]?.data?.equipped;
 }
 
-/** The buttons for an item the learner carries: put down (take off), equip, hand to each person near. */
+/** The buttons for an item the learner carries: sign for it (an open receipt), put down (take off), equip, hand to each person near. */
 function carriedButtons(game: Game, world: WorldRuntime, me: ActorState, id: string): HTMLElement[] {
   const emb = game.embodied!;
   const run = (operation: string, parameters?: Record<string, unknown>) => () => void emb.worldAction({ operation, targetId: id, ...(parameters ? { parameters } : {}) });
   const isWorn = worn(world, id);
-  const out = [h("button", { type: "button", class: "hand-op", dataset: { op: "put_down", item: id }, onclick: run("put_down") }, tr(isWorn ? "hands.takeOff" : "hands.putDown"))];
+  const out: HTMLElement[] = [];
+  // handed over against a receipt that waits for the learner (EMBODIED §8.1, audit 2026-11-12 P2-12): offered when
+  // the world says it is theirs to confirm now (`receiptsToConfirm`, THE custody rule), never decided here
+  if (world.receiptsToConfirm(me.id).some((r) => r.item === id)) out.push(h("button", { type: "button", class: "hand-op", dataset: { op: "confirm_receipt", item: id }, onclick: run("confirm_receipt") }, tr("hands.confirmReceipt")));
+  out.push(h("button", { type: "button", class: "hand-op", dataset: { op: "put_down", item: id }, onclick: run("put_down") }, tr(isWorn ? "hands.takeOff" : "hands.putDown")));
   if (isWorn) return out;
   out.push(h("button", { type: "button", class: "hand-op", dataset: { op: "equip", item: id }, onclick: run("equip") }, tr("hands.equip")));
   for (const p of people(world, me)) out.push(h("button", { type: "button", class: "hand-op", dataset: { op: "hand_over", item: id, to: p.id }, onclick: run("hand_over", { to: p.id }) }, tr("hands.handTo", { who: p.label })));

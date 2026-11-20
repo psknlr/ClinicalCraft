@@ -4,7 +4,7 @@
  * announcements). Results are never quoted — the learner must read them.
  */
 import { t, type CaseDefinition, type DomainEvent, type VitalKey } from "@clinicalcraft/core";
-import { interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
+import { clockTime, interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
 import { rt, type RuntimeKey } from "./i18n.js";
 import { sentence } from "./i18n-checklist.js";
 
@@ -218,6 +218,9 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     }
     case "objective.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
+    // an in-world study done with the patient at its device: the result's clock started (docs/EMBODIED.md §8.7)
+    case "order.acquired":
+      return [{ notification: { level: "info", title: rt(L, "notify.acquired.title"), body: rt(L, "notify.acquired.body", { name: investigationName(c, event.investigationId, L), time: clockTime(c, event.readyAt, L, "ceil") }) } }];
     case "hold.placed":
       return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
     case "hold.released":
@@ -251,6 +254,9 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "procedure.step":
     case "alarm.response":
     case "procedure.supply":
+    // a dose error (core `dose.error`: an order's dose conflicted with the preset, nothing given) is reported by the
+    // `intervene` tool that placed the order
+    case "dose.error":
       return [];
     default: {
       const never: never = event;

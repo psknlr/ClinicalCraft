@@ -6,6 +6,7 @@
  * and `locate`, the position of a placement, slot, staff member, room or building for waypoints.
  */
 import { buildingLevels, entityLevel, roomLevel } from "@clinicalcraft/core";
+import { buildZoneName } from "@clinicalcraft/world";
 import type { WorldApi, WorldPoint } from "../contracts.js";
 import { drawMap as paintMap, type MapConnector, type MapData, type MapWall } from "./map.js";
 import { stopOn } from "./rides.js";
@@ -76,7 +77,8 @@ export class MapLayers {
         ponds: facility.terrain?.ponds ?? [],
         trees: facility.terrain?.trees ?? [],
         buildZone: facility.buildZone?.rect ?? null,
-        buildZoneLabel: SL.buildZone,
+        // the world's one name for the place (a facility's own build-zone room's, else "Build zone")
+        buildZoneLabel: buildZoneName(facility, loc),
         buildings: facility.buildings.filter((bb) => buildingLevels(facility, bb).includes(lv)).map((bb) => ({ ...bb.rect, name: tx(bb.name, loc) })),
         rooms: facility.rooms.filter((r) => roomLevel(facility, r) === lv).map((r) => ({ ...r.rect, name: tx(r.name, loc), kind: r.kind })),
         walls: walls.filter((w) => w.level === lv).map(toMapWall),

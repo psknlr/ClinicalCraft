@@ -7,12 +7,15 @@
 import { progress as caseProgress, LEARNER_BODY, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   criticalMissLines,
+  decisionNumber,
   findProviderTemplate,
   investigationName,
   noReading,
   objectiveTitle,
   phaseLabel,
+  resolveDecisionRef,
   rt,
+  safetySummary,
   sanitizeTerminal,
   vitalLabel,
   vitalWithUnit,
@@ -96,7 +99,10 @@ export function resolvedModelLabel(settings: Pick<ResolvedSettings, "provider" |
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 const TOOL_ARG_KEYS = ["investigation_id", "finding_id", "intervention_id", "decision_id", "query", "phase", "minutes", "role", "kind", "target", "question", "fact_ids", "option_ids"];
 
-/** Compact rendering of tool arguments: `cbc`, `"Where is the pain?"`, `diagnosis: dual`. */
+/**
+ * Compact rendering of tool arguments: `cbc`, `"Where is the pain?"`; an answer as its decision and options,
+ * `2: B` (several options `2: A+C`, which `/answer` reads back).
+ */
 export function summarizeArgs(args: unknown, max = 48): string {
   if (!args || typeof args !== "object") return "";
   const obj = args as Record<string, unknown>;
@@ -208,6 +214,17 @@ export class EventRenderer {
 
   private get L(): string {
     return this.o.locale();
+  }
+
+  /**
+   * `answer_decision` input with its decision by number, as `/board` names it (`⏺ answer_decision(2: B)`): the
+   * demonstration's walkthrough passes authored ids, which can name the answer.
+   */
+  private decisionByNumber(args: unknown): unknown {
+    if (!args || typeof args !== "object") return args;
+    const input = args as Record<string, unknown>;
+    const d = typeof input.decision_id === "string" ? resolveDecisionRef(this.c.decisions, input.decision_id) : undefined;
+    return d ? { ...input, decision_id: String(decisionNumber(this.c, d.id)) } : args;
   }
 
   /* ---------------------------------------------------------------- */
@@ -395,7 +412,7 @@ export class EventRenderer {
         return;
       case "tool_call_begin": {
         this.ensureLineStart();
-        const args = sanitizeTerminal(summarizeArgs(msg.args));
+        const args = sanitizeTerminal(summarizeArgs(msg.tool === "answer_decision" ? this.decisionByNumber(msg.args) : msg.args));
         this.raw(`${p.dim("⏺")} ${p.bold(msg.tool)}${p.dim(`(${args})`)} ${p.dim("…")}`);
         this.pendingTool = msg.callId;
         return;
@@ -559,7 +576,10 @@ export class EventRenderer {
         if (event.severity === "critical") this.line(p.bold(p.red(`‼ ${m(L, "render.scenario")}`)));
         return;
       case "intervention.applied":
-        if (event.appropriateness === "contraindicated") this.line(p.bold(p.red(`☠ ${m(L, "render.contraindicated")}`)));
+        if (event.appropriateness === "contraindicated") this.line(p.bold(p.red(`☠ ${m(L, event.critical ? "render.criticalFailure" : "render.contraindicated")}`)));
+        return;
+      case "dose.error":
+        this.line(event.severity === "critical" ? p.bold(p.red(`⚠ ${m(L, "render.doseError")}`)) : p.yellow(`⚠ ${m(L, "render.doseError")}`));
         return;
       case "action.rejected":
         if (this.o.verbose) this.line(p.dim(`· ${event.action}: ${event.code}`));
@@ -597,6 +617,8 @@ export class EventRenderer {
         decisions: report.decisions.length,
       }),
     );
+    // The safety outcome beside the score, never folded into it (PROTOCOL §3.2): what the learner did, so mid-case too.
+    this.renderSafety(report);
     this.line(
       m(L, "assess.coverage", {
         asked: report.history.requiredAsked,
@@ -619,6 +641,16 @@ export class EventRenderer {
     for (const j of judged) this.line(`  ${j.met ? p.green("✓") : p.yellow("·")} ${j.id}${j.evidence ? p.dim(` — ${truncate(j.evidence, 100)}`) : ""}`);
     if (narrative) this.line(narrative);
     this.line(p.dim(m(L, "assess.notice")));
+  }
+
+  /** "Safety: passed" (green), "… to review" (yellow) or "Safety: not passed — …" (red), each critical safety failure and dose error. */
+  private renderSafety(report: AssessmentReport): void {
+    const p = this.p;
+    const safety = safetySummary(this.c, report, this.L);
+    if (!safety.headline) return;
+    this.line(safety.passed === false ? p.bold(p.red(safety.headline)) : safety.doseErrors.length > 0 ? p.yellow(safety.headline) : p.green(safety.headline));
+    for (const f of safety.criticalFailures) this.line(p.bold(p.red(f.text)));
+    for (const e of safety.doseErrors) this.line(e.severity === "critical" ? p.red(e.text) : p.yellow(e.text));
   }
 
   /* ---------------------------------------------------------------- */

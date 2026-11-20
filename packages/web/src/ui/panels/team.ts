@@ -1,10 +1,13 @@
 /**
  * The care team's panel (docs/TEAM.md): the learner's place and line-up when they hold one, what the stand-in surgeon
  * waits on them for, what the team said (each message with whom it was to, its kind and its check-back), what was done,
- * its tasks (who carries them, how far they got, and whether the result was seen to be done), and the count's record.
+ * its tasks (who carries them, how far they got, and whether the result was seen to be done), and the count's record —
+ * an operating team's window (手术团队: a team with instruments or a count) or a care team's (医护团队), where the
+ * learner's own member goes by the team's name for them while they operate ("the doctor" in an ED team).
  * The controls are `team` ops — the same ones a headless run uses: the team's pace (auto: it moves on its own; step: only
  * on "Next step"), who plays the learner's part (the learner — as the surgeon, or in their place —, or the team, to
- * watch), the learner's answers to what is said to their member (a read-back, a confirmation, "Go on", a report), and
+ * watch), the learner's answers to what is said to their member (a read-back — of a request, or of information told to
+ * them —, a confirmation, "Go on", a report), and
  * the Ask (operating: a request about the operative field — in a place the stand-in asks, the learner answers), Need
  * and Count rows (something needed; the count — never typed: the items are what the team in the room accounts for).
  * The team as it works in this encounter is listed under the place: each member with their position, the learner's own
@@ -39,11 +42,18 @@ export function teamPanel(app: App): () => PanelView {
     const c: CaseDefinition = game.caseDef;
     const world = () => game.session.world();
     const state = (): SessionState => game.session.store.snapshot?.state ?? session.state;
+    // what the team calls the learner: the case team's name for them ("the doctor" in an ED team), else the surgeon
+    const lead = c.team?.members.find((m) => m.staff === "surgeon")?.name;
+    const leadName = lead ? (typeof lead === "string" ? lead : (lead[getLocale()] ?? lead.en ?? "")) : "";
+    // an operating team (instruments, a count) is a 手术团队; any other a 医护团队 (docs/GLOSSARY.md)
+    const theatre = !!c.team?.members.some((m) => m.duties.includes("instruments") || m.duties.includes("count")) || !!c.team?.count;
     const worldName = (id: string): string | null => {
       const e = world()?.entity(id);
       return e ? (typeof e.name === "string" ? e.name : (e.name[getLocale()] ?? e.name.en ?? id)) : null;
     };
-    const name = (id: string): string => memberName(id, state(), worldName);
+    // the learner's own member: the team's name for them while they operate (`leadName`), else their place ("First
+    // assistant (you)") or the surgeon (`memberName`)
+    const name = (id: string): string => (id === PRIMARY_ACTOR && leadName && !state().seat ? leadName : memberName(id, state(), worldName));
     // the session's refusal or warning of the panel's last op, as it said it (an ask of someone away, a count said already)
     let note = "";
     const op = (o: TeamOp | Omit<TeamOp, "type">) =>
@@ -134,8 +144,8 @@ export function teamPanel(app: App): () => PanelView {
       const who = h(
         "div",
         { class: "team-row", role: "group", "aria-label": placed ? tr("team.place") : tr("team.surgeon") },
-        h("span", { class: "muted" }, placed ? tr("team.place") : tr("team.surgeon")),
-        h("button", { type: "button", id: "team-learner", "aria-pressed": String(cp.surgeon === "learner"), title: placed ? tr("team.playPlaceTitle") : tr("team.learnerTitle"), onclick: () => op({ action: "surgeon", surgeon: "learner" }) }, placed ? tr("team.playPlace") : tr("team.learner")),
+        h("span", { class: "muted" }, placed ? tr("team.place") : leadName || tr("team.surgeon")),
+        h("button", { type: "button", id: "team-learner", "aria-pressed": String(cp.surgeon === "learner"), title: placed ? tr("team.playPlaceTitle") : tr("team.learnerTitle"), onclick: () => op({ action: "surgeon", surgeon: "learner" }) }, placed ? tr("team.playPlace") : leadName ? tr("team.learnerAs", { name: leadName }) : tr("team.learner")),
         h("button", { type: "button", id: "team-observer", "aria-pressed": String(cp.surgeon === "simulated"), title: placed ? tr("team.observePlaceTitle") : tr("team.observerTitle"), onclick: () => op({ action: "surgeon", surgeon: "simulated" }) }, tr("team.observer")),
       );
       // the wound: offered as the world allows the learner's body (the wound rule during the operation), else its reason
@@ -363,7 +373,7 @@ export function teamPanel(app: App): () => PanelView {
       render();
     };
     render();
-    return { id: "team", kicker: tr("team.kicker"), title: tr("team.title"), body, variant: "wide", update };
+    return { id: "team", kicker: tr(theatre ? "team.kicker" : "team.kickerCare"), title: tr(theatre ? "team.title" : "team.titleCare"), body, variant: "wide", update };
   };
 }
 

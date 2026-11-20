@@ -7,7 +7,7 @@
  * text.
  */
 import { evaluate, type CaseDefinition, type FacilityDefinition, type SessionState } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, type PatientLeg, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AuditResult } from "./audit.js";
 import type { RecordedCall, RecordedRefusal } from "./recorder.js";
 import type { BenchPredicate, BenchWorldPredicate } from "./schema.js";
@@ -41,8 +41,9 @@ export interface PredicateResult {
 
 /** The metric class of a predicate. */
 export function predicateClass(p: BenchPredicate): PredicateClass {
-  if ("clinical" in p || "caseFinished" in p) return "clinical";
+  if ("clinical" in p || "caseFinished" in p || "studyStages" in p) return "clinical";
   if ("answerEquals" in p) return "localisation";
+  if ("world" in p && p.world.kind === "patientTransit") return "safety";
   if ("world" in p) return p.world.kind === "actorInRoom" || p.world.kind === "actorOnLevel" || p.world.kind === "actorNear" ? "navigation" : "interaction";
   if ("refusedWith" in p || "noSpatialViolationsAccepted" in p || "noUnauthorisedAcceptance" in p) return "safety";
   return "other";
@@ -87,6 +88,60 @@ function entityState(view: FinalView, id: string): string | null {
 
 function resolve(view: FinalView, ref: string): string {
   return resolveAnswer(view.world, ref) ?? ref;
+}
+
+/** The patient's journeys, oldest first (the world's `PatientPlaceState.legs`, EMBODIED §8.7). */
+function patientLegs(view: FinalView): PatientLeg[] {
+  const patient = view.world.entities().find((e) => e.kind === "patient")?.id;
+  return (patient ? view.snapshot.entities[patient]?.patient?.legs : undefined) ?? [];
+}
+
+const minute = (m: number) => `${Math.round(m * 100) / 100}`;
+
+/** A leg in a line: where from and to, when, by whom, with which monitor. */
+function legText(l: PatientLeg): string {
+  const end = (e: PatientLeg["from"]) => e.provider ?? e.slot ?? e.room ?? "?";
+  return `${end(l.from)} → ${end(l.to)} ${minute(l.departedAt)}–${minute(l.arrivedAt)} by ${l.by ?? "the team"}${l.role ? ` (${l.role})` : ""}, ${l.monitor ? `with ${l.monitor}` : "no monitor"}${l.status === "arrived" ? "" : ", stopped"}`;
+}
+
+const EPS = 1e-6;
+
+/**
+ * A study done on the patient at a device, stage by stage and in order (EMBODIED §8.7): the order (when, who), the
+ * journey that brought the patient to the device it was acquired at (departed after the order, arrived before the
+ * acquisition), the acquisition there, the report's release (acquisition + turnaround, by the final clock), the
+ * review (the first read: after the release) and the resulting action (after the review).
+ */
+function studyStages(view: FinalView, spec: { investigation: string; phase?: string | undefined }): { ok: boolean; detail: string } {
+  const { caseDef: c, state: s } = view;
+  const order = s.orders.find((o) => o.investigationId === spec.investigation && (!spec.phase || o.phase === spec.phase));
+  if (!order) return { ok: false, detail: `${spec.investigation} not ordered` };
+  const stages = [`${order.key}: ordered ${minute(order.orderedAt)}${order.by ? ` by ${order.by}` : ""}`];
+  const fail = (why: string) => ({ ok: false, detail: `${stages.join(" → ")} ✗ ${why}` });
+  const acquired = order.acquired;
+  if (!acquired) return fail("not acquired: the patient never got to the device");
+  if (acquired.implied || !acquired.where) return fail("acquired at the order, not with the patient at a device");
+  const leg = patientLegs(view)
+    .filter((l) => l.status === "arrived" && l.to.provider === acquired.where && l.arrivedAt <= acquired.at + EPS)
+    .at(-1);
+  if (!leg) return fail(`no journey to ${acquired.where}`);
+  stages.push(`departed ${minute(leg.departedAt)}`, `arrived ${minute(leg.arrivedAt)}`);
+  if (leg.departedAt < order.orderedAt - EPS) return fail("the patient left for the device before the order");
+  stages.push(`acquired ${minute(acquired.at)}${acquired.collector ? ` by ${acquired.collector}` : ""} at ${acquired.where}`);
+  const turnaround = c.investigations.find((i) => i.id === order.investigationId)?.turnaroundMinutes ?? 0;
+  const due = c.clock.mode === "simulated" ? acquired.at + turnaround : acquired.at;
+  if (order.readyAt == null || Math.abs(order.readyAt - due) > EPS) return fail(`released at ${order.readyAt ?? "—"}, not at the acquisition + turnaround (${minute(due)})`);
+  stages.push(`released ${minute(order.readyAt)}`);
+  if (order.readyAt > s.clock + EPS) return fail("the report is not released yet");
+  const reviewed = order.reviewed;
+  if (!reviewed) return fail("not reviewed");
+  stages.push(`reviewed ${minute(reviewed.at)}${reviewed.by ? ` by ${reviewed.by}` : ""}`);
+  if (reviewed.at < order.readyAt - EPS || reviewed.seq <= acquired.seq) return fail("reviewed before the release");
+  const next = order.next;
+  if (!next) return fail("no resulting action after the review");
+  stages.push(`then ${next.type}${next.id ? ` ${next.id}` : ""} ${minute(next.at)}`);
+  if (next.seq <= reviewed.seq || next.at < reviewed.at - EPS) return fail("the resulting action came before the review");
+  return { ok: true, detail: stages.join(" → ") };
 }
 
 function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean; detail: string } {
@@ -143,6 +198,14 @@ function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean;
       const ok = (!w.slot || place.slot === w.slot) && (!provider || place.provider === provider) && (!w.room || place.room === w.room.replace(/^room:/, ""));
       return { ok, detail: `patient in ${place.slot ?? "—"}${place.provider ? ` at ${place.provider}` : ""} (room ${place.room ?? "—"})` };
     }
+    case "patientTransit": {
+      // a relocation by a phase or an intervention is no journey (EMBODIED §8.4, audit P2-11): nothing in transit to judge
+      const legs = patientLegs(view).filter((l) => l.kind !== "relocation");
+      if (!legs.length) return { ok: false, detail: "the patient never travelled" };
+      const held = (l: PatientLeg) => !w.roles || (l.role !== null && w.roles.includes(l.role));
+      const ok = legs.every((l) => (!w.monitored || l.monitor !== null) && held(l));
+      return { ok, detail: legs.map(legText).join("; ") };
+    }
   }
 }
 
@@ -156,6 +219,10 @@ export function evaluatePredicate(view: FinalView, p: BenchPredicate): Predicate
   }
   if ("world" in p) {
     const r = worldPredicate(view, p.world);
+    return done(r.ok, r.detail);
+  }
+  if ("studyStages" in p) {
+    const r = studyStages(view, p.studyStages);
     return done(r.ok, r.detail);
   }
   if ("answerEquals" in p) {

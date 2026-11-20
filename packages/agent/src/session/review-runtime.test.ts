@@ -186,7 +186,9 @@ describe("C3: no device stays reserved after a failed route", () => {
     expect(out.data.delegation).toMatchObject({ status: "failed" });
     expect(out.data.delegation.steps.map((s: { operation: string }) => s.operation)).toContain("reset");
     expect(reserved(t)).toEqual([]);
-    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")!.state).toBe("idle");
+    // the cart's own state (the clinician, who has not seen it, is told no state of it: EMBODIED §4, audit W1)
+    expect(w.stateOf("eq:resus1-ecg")).toBe("idle");
+    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")).toMatchObject({ lastKnown: { kind: "usual" }, availableActions: [] });
     expect(t.session.state.orders).toEqual([]);
     await w.execute({ actionId: "c0", actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient" });
     expect((await w.execute({ actionId: "c1", actorId: PRIMARY_ACTOR, operation: "prepare", targetId: "eq:resus1-ecg" })).status).toBe("completed");

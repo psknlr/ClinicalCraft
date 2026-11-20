@@ -1,16 +1,23 @@
 /**
  * The benchmark report as Markdown (`bench-report.md`; the JSON report is
- * the `BenchReport` object itself): environment, agent / model, seeds, the
- * disclaimer, overall and per-category metrics with Wilson 95 % intervals,
- * the per-scenario results and the failed runs with their failing
- * predicates.
+ * the `BenchReport` object itself): what the agent is — a control
+ * (`reference`, `scripted-llm`: never a model's result) or a live model —,
+ * environment, agent / model, seeds, the disclaimer, overall metrics, the
+ * coverage with its denominators apart (scenarios and cases, scenarios per
+ * case, the most frequent case's share, the splits, history-taking /
+ * time-critical / team coordination), per-category, per-evidence and
+ * per-split metrics with Wilson 95 % intervals, the per-scenario results
+ * with their safety outcome beside the successes, and the failed runs with
+ * their failing predicates and safety outcome — a run whose safety outcome
+ * did not pass is never shown as passed (docs/PROTOCOL.md §3.2).
  */
+import { safetyHeadline } from "@clinicalcraft/agent";
 import { t } from "@clinicalcraft/core";
 import { commitLabel } from "./environment.js";
 import { bm, type BenchMessageKey } from "./i18n.js";
 import type { Metrics } from "./metrics.js";
 import type { BenchReport } from "./runner.js";
-import { BENCH_CATEGORIES } from "./schema.js";
+import { BENCH_CATEGORIES, BENCH_SPLITS } from "./schema.js";
 import type { Proportion } from "./stats.js";
 
 const pct = (v: number | null) => (v === null ? "—" : `${(v * 100).toFixed(1)} %`);
@@ -30,6 +37,9 @@ function metricRows(m: Metrics, L: string): string[] {
     ["report.metric.clinical", m.clinical],
     ["report.metric.recovery", m.recovery],
     ["report.metric.safety", m.safetyViolations],
+    ["report.metric.criticalFailures", m.criticalFailures],
+    ["report.metric.doseErrors", m.doseErrors],
+    ["report.metric.safetyNotPassed", m.safetyNotPassed],
     ["report.metric.spatial", m.spatialViolations],
     ["report.metric.unauthorised", m.unauthorisedAcceptance],
   ];
@@ -43,17 +53,75 @@ function metricRows(m: Metrics, L: string): string[] {
   return lines;
 }
 
+/** Why a run's safety outcome did not pass: the headline, with the critical failures and dose errors by intervention id; null when it passed. */
+function safetyReason(run: BenchReport["runs"][number], L: string): string | null {
+  const s = run.safety;
+  if (!s || s.passed !== false) return null;
+  const zh = L.toLowerCase().startsWith("zh");
+  const item = (id: string, key: BenchMessageKey) => (zh ? `\`${id}\`（${bm(L, key)}）` : `\`${id}\` (${bm(L, key)})`);
+  const items = [...s.criticalFailures.map((f) => item(f.interventionId, "report.criticalFailure")), ...s.doseErrors.map((e) => item(e.interventionId, e.severity === "critical" ? "report.criticalDoseError" : "report.doseError"))];
+  return `${safetyHeadline(s, L)}${items.length ? `${zh ? "：" : ": "}${items.join(zh ? "、" : ", ")}` : ""}`;
+}
+
+/** The coverage section: the denominators apart, scenarios per case, the splits, the coverage by kind. */
+function coverageLines(r: BenchReport, L: string): string[] {
+  const cov = r.coverage;
+  if (!cov) return [];
+  const counted = r.runs.filter((x) => x.status !== "skipped").length;
+  const skipped = r.runs.length - counted;
+  const top = cov.mostFrequent;
+  const out = [`## ${bm(L, "report.coverage")}`, ""];
+  if (top) out.push(bm(L, "report.coverage.summary", { scenarios: cov.scenarios, cases: cov.cases, runs: counted, skipped, caseId: top.caseId, top: top.scenarios, share: (top.share * 100).toFixed(1) }), "");
+  out.push(bm(L, "report.coverage.splits", { dev: cov.splits.dev ?? 0, test: cov.splits.test ?? 0 }), "");
+  const heldOutSkipped = r.runs.filter((x) => x.skip === "held-out").length;
+  if (heldOutSkipped) out.push(bm(L, "report.heldOutSkipped", { n: heldOutSkipped }), "");
+  out.push(`### ${bm(L, "report.coverage.perCase")}`, "");
+  out.push(`| ${bm(L, "report.case")} | ${bm(L, "report.coverage.scenarios")} | ${bm(L, "report.coverage.split")} | ${bm(L, "report.runs")} | ${bm(L, "report.metric.taskSuccess")} | ${bm(L, "report.ci")} |`, "|---|---:|---:|---:|---:|---|");
+  for (const c of cov.perCase) {
+    const [rate, ci] = propCells(c.success);
+    out.push(`| \`${c.caseId}\` | ${c.scenarios} | ${c.dev} / ${c.test} | ${c.success.n} | ${rate} | ${ci} |`);
+  }
+  out.push("", `### ${bm(L, "report.coverage.byKind")}`, "");
+  out.push(`| ${bm(L, "report.coverage.kind")} | ${bm(L, "report.coverage.scenarios")} | ${bm(L, "report.coverage.cases")} | ${bm(L, "report.runs")} | ${bm(L, "report.metric.taskSuccess")} | ${bm(L, "report.ci")} |`, "|---|---:|---:|---:|---:|---|");
+  for (const k of cov.byKind) {
+    const [rate, ci] = propCells(k.success);
+    out.push(`| ${bm(L, `report.coverage.kind.${k.kind}` as BenchMessageKey)} | ${k.scenarios.length} | ${k.cases.length} | ${k.success.n} | ${rate} | ${ci} |`);
+  }
+  out.push("", bm(L, "report.coverage.kindNote"), "");
+  return out;
+}
+
+/** Metrics apart by split (dev, held-out): never pooled into one figure. */
+function splitLines(r: BenchReport, L: string): string[] {
+  const bySplit = r.metrics.bySplit ?? {};
+  if (!Object.keys(bySplit).length && !r.runs.some((x) => x.skip === "held-out")) return [];
+  const out = [`## ${bm(L, "report.bySplit")}`, ""];
+  out.push(`| ${bm(L, "report.split")} | ${bm(L, "report.coverage.scenarios")} | ${bm(L, "report.runs")} | ${bm(L, "report.skipped")} | ${bm(L, "report.metric.taskSuccess")} | ${bm(L, "report.ci")} | ${bm(L, "report.metric.safetyNotPassed")} |`, "|---|---:|---:|---:|---:|---|---:|");
+  for (const sp of BENCH_SPLITS) {
+    const scenarios = r.scenarios.filter((s) => (s.split ?? "dev") === sp).length;
+    if (!scenarios) continue;
+    const m = bySplit[sp];
+    const skipped = r.runs.filter((x) => (x.split ?? "dev") === sp && x.status === "skipped").length;
+    const [rate, ci] = m ? propCells(m.taskSuccess) : ["—", "—"];
+    out.push(`| ${bm(L, `report.split.${sp}` as BenchMessageKey)} | ${scenarios} | ${m?.runs ?? 0} | ${skipped} | ${rate} | ${ci} | ${m ? `${m.safetyNotPassed.k} / ${m.safetyNotPassed.n}` : "—"} |`);
+  }
+  out.push("");
+  return out;
+}
+
 /** Markdown of a benchmark report in `locale`. */
 export function reportMarkdown(r: BenchReport, locale: string): string {
   const L = locale;
   const out: string[] = [];
   const env = r.environment;
+  const role = r.agent.role ?? (r.agent.kind === "llm" ? "model" : "control");
   out.push(`# ${bm(L, "report.title", { suite: r.suite })}`, "");
+  out.push(`> ${role === "model" ? bm(L, "report.role.model", { model: `${r.agent.provider ?? "?"} / ${r.agent.model ?? "default"}` }) : bm(L, "report.role.control", { agent: r.agent.kind })}`, "");
   out.push(`> ${r.agent.kind === "llm" ? bm(L, "report.disclaimer.live", { n: r.scenarios.length }) : bm(L, "report.disclaimer.infra", { n: r.scenarios.length })}`, "");
   if (r.agent.syntheticTokens) out.push(`> ${bm(L, "report.tokensSynthetic")}`, "");
   out.push(`## ${bm(L, "report.environment")}`, "");
   out.push("| | |", "|---|---|");
-  out.push(`| ${bm(L, "report.agent")} | \`${r.agent.kind}\` |`);
+  out.push(`| ${bm(L, "report.agent")} | \`${r.agent.kind}\` (${bm(L, role === "model" ? "report.agentRole.model" : "report.agentRole.control")}) |`);
   out.push(`| ${bm(L, "report.model")} | ${r.agent.provider ? `\`${r.agent.provider}\` / \`${r.agent.model ?? "default"}\`` : "—"} |`);
   out.push(`| ${bm(L, "report.seeds")} | ${r.seeds.join(", ")} |`);
   out.push(`| ${bm(L, "report.commit")} | \`${commitLabel(env, bm(L, "report.dirty"))}\` |`);
@@ -68,6 +136,7 @@ export function reportMarkdown(r: BenchReport, locale: string): string {
   }
   out.push("");
   out.push(`## ${bm(L, "report.overall")}`, "", ...metricRows(r.metrics.overall, L), "", bm(L, "report.definitions"), "");
+  out.push(...coverageLines(r, L));
   out.push(`## ${bm(L, "report.byCategory")}`, "");
   out.push(
     `| ${bm(L, "report.category")} | ${bm(L, "report.runs")} | ${bm(L, "report.metric.taskSuccess")} | ${bm(L, "report.ci")} | ${bm(L, "report.metric.spatial")} | ${bm(L, "report.metric.unauthorised")} | ${bm(L, "report.metric.toolCalls")} | ${bm(L, "report.metric.latency")} |`,
@@ -93,18 +162,26 @@ export function reportMarkdown(r: BenchReport, locale: string): string {
     }
     out.push("");
   }
+  out.push(...splitLines(r, L));
   out.push(`## ${bm(L, "report.scenarios")}`, "");
   out.push(
-    `| ${bm(L, "report.scenario")} | ${bm(L, "report.category")} | ${bm(L, "report.case")} | ${bm(L, "report.success")} | ${bm(L, "report.calls")} | ${bm(L, "report.tokens")} | ${bm(L, "report.wall")} | ${bm(L, "report.sim")} | ${bm(L, "report.deterministic")} |`,
-    "|---|---|---|---:|---:|---:|---:|---:|---|",
+    `| ${bm(L, "report.scenario")} | ${bm(L, "report.category")} | ${bm(L, "report.case")} | ${bm(L, "report.split")} | ${bm(L, "report.success")} | ${bm(L, "report.safetyPassed")} | ${bm(L, "report.calls")} | ${bm(L, "report.tokens")} | ${bm(L, "report.wall")} | ${bm(L, "report.sim")} | ${bm(L, "report.deterministic")} |`,
+    "|---|---|---|---|---:|---:|---:|---:|---:|---:|---|",
   );
   for (const s of r.scenarios) {
     const runs = r.runs.filter((x) => x.scenarioId === s.id && x.status !== "skipped");
     const ok = runs.filter((x) => x.success).length;
+    const assessed = runs.filter((x) => typeof x.safety?.passed === "boolean");
+    const safe = `${assessed.filter((x) => x.safety.passed).length}/${assessed.length}`;
     const avg = (f: (x: (typeof runs)[number]) => number) => (runs.length ? runs.reduce((sum, x) => sum + f(x), 0) / runs.length : 0);
     const det = s.deterministic === null ? "—" : bm(L, s.deterministic ? "report.yes" : "report.no");
+    const split = bm(L, `report.split.${s.split ?? "dev"}` as BenchMessageKey);
+    // a held-out scenario this agent did not run: no success to show (counted nowhere)
+    const skippedAll = !runs.length && r.runs.some((x) => x.scenarioId === s.id && x.skip === "held-out");
     out.push(
-      `| \`${s.id}\` — ${t(s.title, L)} | ${bm(L, `category.${s.category}` as BenchMessageKey)} | \`${s.caseId}\` | ${ok}/${runs.length} | ${avg((x) => x.calls.length).toFixed(1)} | ${avg((x) => x.usage.inputTokens).toFixed(0)}/${avg((x) => x.usage.outputTokens).toFixed(0)} | ${avg((x) => x.wallMs).toFixed(0)} | ${avg((x) => x.simMinutes).toFixed(2)} | ${det} |`,
+      skippedAll
+        ? `| \`${s.id}\` — ${t(s.title, L)} | ${bm(L, `category.${s.category}` as BenchMessageKey)} | \`${s.caseId}\` | ${split} | ${bm(L, "report.skipped")} | — | — | — | — | — | — |`
+        : `| \`${s.id}\` — ${t(s.title, L)} | ${bm(L, `category.${s.category}` as BenchMessageKey)} | \`${s.caseId}\` | ${split} | ${ok}/${runs.length} | ${safe} | ${avg((x) => x.calls.length).toFixed(1)} | ${avg((x) => x.usage.inputTokens).toFixed(0)}/${avg((x) => x.usage.outputTokens).toFixed(0)} | ${avg((x) => x.wallMs).toFixed(0)} | ${avg((x) => x.simMinutes).toFixed(2)} | ${det} |`,
     );
   }
   out.push("");
@@ -112,7 +189,7 @@ export function reportMarkdown(r: BenchReport, locale: string): string {
   const failed = r.runs.filter((x) => !x.success && x.status !== "skipped");
   if (!failed.length) out.push(bm(L, "report.noFailures"));
   for (const f of failed) {
-    const why = [f.limit ? `limit ${f.limit}` : null, f.error ?? null, ...f.predicates.filter((p) => !p.ok).map((p) => `${p.kind}: ${p.detail}`)].filter(Boolean).join("; ");
+    const why = [f.limit ? `limit ${f.limit}` : null, f.error ?? null, ...f.predicates.filter((p) => !p.ok).map((p) => `${p.kind}: ${p.detail}`), safetyReason(f, L)].filter(Boolean).join("; ");
     out.push(`- \`${f.scenarioId}\` seed ${f.seed}: ${why.replace(/\|/g, "\\|")}`);
   }
   out.push("");

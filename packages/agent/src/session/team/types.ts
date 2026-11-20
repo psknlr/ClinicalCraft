@@ -4,7 +4,7 @@
  * whom, the outcome and the world version after it), what each member is doing (tasks) and what each member
  * knows (observations with an evidence reference). Plain JSON: the whole state is a checkpoint.
  */
-import type { DirectionName, InjuryKind, InstrumentId, ProcedureOp, ProcedureOpType, TeamDuty, TeamNeed, ZoomLevel } from "@clinicalcraft/core";
+import type { DirectionName, InjuryKind, InstrumentId, ProcedureOp, ProcedureOpType, TeamDuty, TeamInform, TeamNeed, ZoomLevel } from "@clinicalcraft/core";
 import type { NavGoal } from "@clinicalcraft/world";
 import type { Bilingual } from "./i18n.js";
 
@@ -108,14 +108,17 @@ export interface TeamMessage {
    * What it is about: the need, the item type, the person it is for; a decline's reason code; a count (`count` of
    * `of` accounted for, by item: the `ids` counted at `stage`, what was `missing` or not in the count —
    * `unexpected`), a hold on closure (`hold`), a recount asked for (`recount`), an item set aside off the field
-   * (`setAside`: not in the count); a request about the operative field (`field`: traction, letting go, the camera, a
-   * pass — read back and confirmed like any request); the call-out before the stand-in's critical step (`callout`: the
-   * step and the handle it is done to — a bail-out's strategy —, said as a `notice`; a `request` about it is the
-   * stand-in's stop after the learner said Stop: "Stopped — tell me what you see.", answered with a confirmation).
+   * (`setAside`: not in the count); information (`info`: the case's history item, `fact`: its recorded answer as said);
+   * a request about the operative field (`field`: traction, letting go, the camera, a pass — read back and confirmed
+   * like any request); the call-out before the stand-in's critical step (`callout`: the step and the handle it is done
+   * to — a bail-out's strategy —, said as a `notice`; a `request` about it is the stand-in's stop after the learner said
+   * Stop: "Stopped — tell me what you see.", answered with a confirmation).
    */
   about: {
     need?: string;
     item?: string;
+    info?: string;
+    fact?: Bilingual;
     for?: MemberId;
     reason?: string;
     count?: number;
@@ -199,12 +202,13 @@ export interface TeamTask {
   /**
    * `supply`: see that someone gets an item (the circulator's); `deliver`: take an item to someone (the scrub
    * nurse's); `count`: a count (the counter's); `check`: a count discrepancy seen through — hold, search, recount
-   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's); `assist`: a request about the
-   * operative field seen through — read back, walked to the table, the port taken, the step done, reported (an
-   * assistant's, the scrub nurse's pass; `field`) — or the camera holder's own following of the work (`followed`);
-   * `operate`: the operator's own plan (the stand-in surgeon's; `cursor`).
+   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's); `inform`: see that information
+   * a colleague holds reaches the person who needs it, read back (the circulator's; `item` is the history item);
+   * `assist`: a request about the operative field seen through — read back, walked to the table, the port taken, the
+   * step done, reported (an assistant's, the scrub nurse's pass; `field`) — or the camera holder's own following of the
+   * work (`followed`); `operate`: the operator's own plan (the stand-in surgeon's; `cursor`).
    */
-  kind: "supply" | "deliver" | "count" | "check" | "wound" | "assist" | "operate";
+  kind: "supply" | "deliver" | "count" | "check" | "wound" | "inform" | "assist" | "operate";
   need: string;
   /** Equipment type id. */
   item: string;
@@ -234,6 +238,15 @@ export interface TeamTask {
   count?: CountCheck;
   /** Where the world pointed after a refusal for reach or sight (walk there, then act again). */
   goal?: NavGoal;
+  /**
+   * `inform`: who holds it, the interventions it holds up (the scenario's `blocks`, one or several), and when the case
+   * recorded it as known to the person (the read-back confirmed).
+   */
+  holder?: MemberId;
+  blocks?: string[];
+  relayed?: { at: number; round: number };
+  /** `inform`: the information as the holder reported it (said again if the read-back is wrong). */
+  fact?: Bilingual;
   /** `assist`: what was asked of the operative field (the request's `about.field`). */
   field?: FieldAsk;
   /**
@@ -264,7 +277,8 @@ export interface Observation {
   id: string;
   round: number;
   at: number;
-  kind: "need" | "message" | "receipt" | "seen" | "holder";
+  /** `inform`: an information need noticed; `info`: information this member holds (learned before: `ref` is the history item). */
+  kind: "need" | "message" | "receipt" | "seen" | "holder" | "inform" | "info";
   /** The message, receipt, need or entity it refers to. */
   ref: string;
   fact: string;
@@ -316,6 +330,8 @@ export interface TeamState {
   posted: string[];
   /** Needs posted during the session beyond the scenario's (the surgeon asked for something). */
   extra: TeamNeed[];
+  /** Information needs of the scenario posted (by id), once each's `when` held (absent until the first). */
+  informed?: string[];
   /** The count (a case team with `count`): the baseline and what happened, for the record and the benchmark. */
   count?: CountLedger;
 }
@@ -374,6 +390,15 @@ export type Proposal =
 
 /** A change to the task list: a new task, or fields of an existing one. */
 export type TaskPatch = { create: TeamTask } | { id: string; set: Partial<TeamTask> } | { claim: string; task: string } | { release: string } | { read: string };
+
+/** An information need as the team knows it (the scenario's, once noticed). */
+export interface KnownInform {
+  need: TeamInform;
+  /** The body the information is for, and the body that holds it. */
+  forId: MemberId;
+  holderId: MemberId;
+  noticedBy: MemberId;
+}
 
 /** A need as the team knows it (the scenario's need, once noticed). */
 export interface KnownNeed {

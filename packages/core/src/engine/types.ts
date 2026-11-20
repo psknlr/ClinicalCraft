@@ -8,7 +8,8 @@ import type { Decision } from "../schema/case.js";
 import type { VitalKey, Vitals } from "../schema/common.js";
 import type { PatientSlotSchema } from "../schema/facility.js";
 import type { Place } from "../schema/positions.js";
-import type { ClinicalAction, DomainEvent, OrderRecord, RejectionCode, SessionState } from "../schema/session.js";
+import type { ClinicalAction, DomainEvent, DoseErrorRecord, OrderRecord, RejectionCode, SessionState } from "../schema/session.js";
+import type { LocalizedText } from "../i18n.js";
 
 /* ------------------------------------------------------------------ */
 /* Validation                                                          */
@@ -52,6 +53,8 @@ export interface DecisionAvailability {
 /** An order with its readiness/read state. */
 export interface OrderStatus {
   order: OrderRecord;
+  /** Acquired (implied at the order, or the patient was at the device: docs/EMBODIED.md §8.7). */
+  acquired: boolean;
   ready: boolean;
   read: boolean;
 }
@@ -199,7 +202,11 @@ export interface AssessmentReport {
   history: { asked: number; required: number; requiredAsked: number; missingRequired: string[] };
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */
-  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
+  /**
+   * `essentialMissing`: essential investigations not done (an in-world study ordered but never acquired at its device
+   * counts as not done); `notAcquired`: order keys of in-world studies ordered whose patient never got to the device.
+   */
+  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[]; notAcquired?: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
   safety: {
     contraindicated: { interventionId: string; at: number }[];
@@ -211,6 +218,19 @@ export interface AssessmentReport {
      */
     gates?: { id: string; verdict: "safety-critical" | "complication" }[];
     verdict?: "clear" | "complication" | "safety-critical";
+    /**
+     * The safety outcome, reported beside the score and never folded into it: false when a critical safety failure
+     * happened (`criticalFailures`), a dose error was critical, or a safety-critical gate holds. Every debrief and
+     * export shows it next to the score; a run that did not pass is never presented as passed.
+     */
+    passed: boolean;
+    /**
+     * A `critical` intervention given while contraindicated (`interventions[].critical`), in order, with its `harm`
+     * text: the case's dangerous error. Its effects applied — the learner met the consequence.
+     */
+    criticalFailures: { interventionId: string; at: number; harm?: LocalizedText }[];
+    /** Orders not given because their dose conflicted with the preset (`DoseErrorRecord`), in order. */
+    doseErrors: AssessedDoseError[];
   };
   /**
    * What the operation really did (cases with a `procedure`, once it has begun): unsafe acts, injuries and
@@ -248,6 +268,9 @@ export interface AssessmentReport {
    */
   criticalMissed?: string[];
 }
+
+/** A dose error as the assessment reports it: the session's record without its action sequence number. */
+export type AssessedDoseError = Omit<DoseErrorRecord, "seq">;
 
 /* ------------------------------------------------------------------ */
 /* Facility                                                            */
