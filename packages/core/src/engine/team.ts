@@ -291,8 +291,9 @@ function standInIssues(c: CaseDefinition, f: FacilityDefinition, standIn: string
 /**
  * The team in its facility: the room; the members (staff of that room — the member who circulates may be posted
  * nearby), the surgeon's stand-in (a surgeon of that room) and the line-ups' assistants (staff of that room); each
- * member's facility position agreeing with their position in the team (outside an operating room, a member who only
- * circulates keeps her post's); relief and cover colleagues; the items needed; the placements moved.
+ * member's facility position agreeing with their position in the team (outside an operating room, a member who
+ * circulates — her duties naming no other position, no `position` of her own — keeps her post's); relief and cover
+ * colleagues; the items needed; the placements moved.
  */
 export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, catalogs: readonly EquipmentCatalog[]): Issue[] {
   const team = c.team;

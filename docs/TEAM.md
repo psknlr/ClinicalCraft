@@ -73,9 +73,10 @@ Duties:
 
 A member's **position** (docs/CHARACTERS.md §2) is their own `position` when the team gives one — needed when two
 members share a duty, as a first and a second assistant both `assist`, and when, in an operating room, the facility
-gives the staff member another job than their duties name ("Checks" below; outside an operating room a member who only
-circulates keeps her post's position without one — the ED nurse stays a ward nurse in her card, her dress and the
-team's list, and the circulating nurse's controls her duty gives her work nothing there) — else it follows from their
+gives the staff member another job than their duties name ("Checks" below; outside an operating room a member who
+circulates, her duties naming no other position, keeps her post's position without one — the ED nurse stays a ward
+nurse in her card, her dress and the team's list, and the circulating nurse's controls her duty gives her work nothing
+there) — else it follows from their
 duties, read by priority, never by their order: `surgeon`, `anaesthesia`, `instruments`, `assist`, `circulate`,
 `count` (so `[count, instruments]` is a scrub nurse; `inform` names no position).
 `assistant-surgeon`, the first assistant's old name, counts as `first-assistant` wherever controls, places or
@@ -250,8 +251,9 @@ the team does not have.
   doctor's role (`attending` or `clinician`), since they operate with the surgeon member's controls;
 - relief and cover colleagues exist;
 - a member's facility position is their position in the team — the card they speak from and the controls they hold
-  are one job —, save outside an operating room for a member who only circulates, with no `position` of her own: she
-  is the nurse coordinating at the bedside and keeps her post's position (the ED nurse stays a ward nurse);
+  are one job —, save outside an operating room for a member who circulates, her duties naming no other position and
+  no `position` of her own: she is the nurse coordinating at the bedside and keeps her post's position (the ED nurse
+  stays a ward nurse);
 - the needed items and the counted item are handheld types;
 - the count's search places and the scenarios' placements exist.
 

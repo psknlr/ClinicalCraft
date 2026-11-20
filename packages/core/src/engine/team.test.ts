@@ -224,7 +224,7 @@ describe("care team · in its facility", () => {
     expect(messages(withTeam(team), staffed)).toEqual([`team.members.1.staff: "nurse-2" is a circulating-nurse in facility "${f.id}" but a scrub-nurse in the team: give them one position`]);
   });
 
-  it("outside an operating room the member who only circulates keeps her post's position (the ED nurse stays a ward nurse); in an operating room she is the circulating nurse", () => {
+  it("outside an operating room the member who circulates, her duties naming no other position, keeps her post's position (the ED nurse stays a ward nurse); in an operating room she is the circulating nurse", () => {
     const { f, catalogs } = facility();
     const messages = (c: CaseDefinition, at: FacilityDefinition) => teamFacilityIssues(c, at, catalogs).map((i) => `${i.path}: ${i.message}`);
     const ward = structuredClone(f);

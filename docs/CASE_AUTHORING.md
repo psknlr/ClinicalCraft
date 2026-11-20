@@ -590,8 +590,8 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
   instruments]` is a scrub nurse); give `position` when two members share a duty — a first and a second assistant
   both `assist` — or when, in an operating room, the facility gives the staff member another job than their duties
   name, and keep it the job the facility gives that staff member (`cases validate` refuses a disagreement). Outside
-  an operating room a member who only circulates needs none: she keeps her post's position (the ED nurse stays a ward
-  nurse; the circulating nurse's controls her duty gives her work nothing there).
+  an operating room a member who circulates, her duties naming no other position, needs none: she keeps her post's
+  position (the ED nurse stays a ward nurse; the circulating nurse's controls her duty gives her work nothing there).
   Each position holds default controls; give a member `controls` only where your source says the team divides the
   work otherwise (the surgeon keeps the camera; the scrub nurse also holds it), and keep `operate` the surgeon's, the
   sterile field's controls on scrubbed positions and `equipment` / `anaesthesia` on the others. A first assistant
