@@ -9,6 +9,7 @@ import type { ActorRole, EquipmentCatalog, FacilityDefinition } from "../schema/
 import { canonicalPosition, FIELD_CONTROLS, isSterilePosition, NON_STERILE_CONTROLS, TEAM_PLACES, type StaffPosition } from "../schema/positions.js";
 import type { CaseTeam, TeamMember } from "../schema/team.js";
 import { formatPath } from "./parse.js";
+import { procedureFor } from "./procedure/variant.js";
 import { createSession, reduce } from "./reducer.js";
 import { positionOfMember, seatsOf, staffPosition, standInOf } from "./seats.js";
 import type { Issue } from "./types.js";
@@ -219,7 +220,10 @@ function checkLineups(c: CaseDefinition): Issue[] {
 
 /**
  * Every place the team offers can be joined: with the base team and each line-up, a start in each place brings the
- * case to the team's phases along the reference path, every step of it accepted (the reducer's join).
+ * case to the team's phases along the reference path, every step of it accepted (the reducer's join) — and, in a case
+ * with an operation, to a phase where it is under way: the stand-in surgeon operates from the moment the learner joins,
+ * and nobody takes the reference's later phase switches (a team whose first phase along the path comes before the
+ * operation's — a sign-in, a baseline count — would leave the stand-in's first step refused there, for good).
  */
 function checkJoin(c: CaseDefinition): Issue[] {
   const team = c.team!;
@@ -230,7 +234,14 @@ function checkJoin(c: CaseDefinition): Issue[] {
     for (const seat of seatsOf(c, { lineup })) {
       if (seat === "surgeon") continue;
       const r = reduce(c, createSession(c), { type: "start", seat, ...(lineup ? { lineup } : {}) });
-      if (r.rejected) messages.add(`the ${seat} place${lineup ? ` (line-up "${lineup}")` : ""} cannot be joined: ${r.rejected.message}`);
+      if (r.rejected) {
+        messages.add(`the ${seat} place${lineup ? ` (line-up "${lineup}")` : ""} cannot be joined: ${r.rejected.message}`);
+        continue;
+      }
+      const operation = procedureFor(c, r.state)?.phases;
+      if (operation && !operation.includes(r.state.phase)) {
+        messages.add(`a place in the team joins in phase "${r.state.phase}", where the operation is not under way: the stand-in surgeon could not take its first step there (the operation's phases: ${operation.map((p) => `"${p}"`).join(", ")}) — begin the team's phases along the reference path with the operation's`);
+      }
     }
   }
   return [...messages].map((m) => err(["team", "members", index, "standIn"], m));

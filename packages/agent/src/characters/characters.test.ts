@@ -120,6 +120,9 @@ describe("role cards", () => {
     expect(second).toMatch(/^<role>\nYou are Dr Ito, the second assistant\. Keeps the view: the working point centred and the camera steady/u);
     expect(second).toMatch(/- withdraw the scope on your own, above all in bleeding — turn the view away instead/u);
     expect(second).toMatch(/You escalate what you cannot resolve to: first assistant, then operating surgeon\./u);
+    expect(second).toMatch(/- aim the camera; go closer or wider/u);
+    // the camera has an aim and a zoom, nothing else (docs/TEAM.md §4.4): no card offers or asks to clean the lens
+    for (const p of StaffPositionSchema.options) expect(roleSection(ROLE_CARDS[p], "Dr X"), p).not.toMatch(/clean(s|ing)? the lens|lens clean/iu);
     const mori = roleSection(ROLE_CARDS["assistant-surgeon"], "Dr Mori (assistant surgeon)");
     expect(mori).toMatch(/^<role>\nYou are Dr Mori \(assistant surgeon\), the assistant surgeon\. Keeps the operating surgeon's exposure steady and hands back cleanly\./u);
     expect(mori).toMatch(/- dissect, clip, divide or coagulate on your own initiative/u);

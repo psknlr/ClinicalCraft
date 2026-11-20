@@ -18,7 +18,7 @@ import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSa
 import { createWorld } from "../world/index.js";
 import { presentationOfSex } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
-import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
+import { owedByLearner, STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
 import { surgeryOffered } from "../ui/panels/surgery-controls.js";
 import { STANDALONE } from "./llm.js";
@@ -436,14 +436,22 @@ export class GameWorldLink {
    * The care team's clock (docs/TEAM.md §2): in autonomy `auto`, one `team step` op every `TEAM_STEP_MS` while the
    * encounter runs (the same clock as the staff's round: the learner operating or reading the chart does not stop it)
    * — the same op a headless run uses, queued with the learner's own, so a learner who only watches still sees the
-   * team work. Never while an agent drives a body or a step is still running.
+   * team work. Never while an agent drives a body or a step is still running; and, in a place, not while the stand-in
+   * surgeon waits on the learner for what is still theirs to give (agent `owedByLearner`, the rule a text front-end's
+   * `team run` keeps: a read-back, their own step, their word after a stop, their count) — a round would only let its
+   * wait run out and do their part itself. Their answer goes on: their own act runs the team's round in its submission.
    */
   private teamTick(dt: number): void {
     const session = this.o.app.session;
     if (this.teamBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
     const team = this.o.caseDef.team;
     if (!team || !team.phases.includes(session.state.phase) || session.state.finished) return;
-    if (session.team()?.autonomy !== "auto") return;
+    const cp = session.team();
+    if (cp?.autonomy !== "auto") return;
+    if (owedByLearner(cp.state, cp.surgeon)) {
+      this.teamWait = 0;
+      return;
+    }
     this.teamWait += dt;
     if (this.teamWait < TEAM_STEP_MS) return;
     this.teamWait = 0;

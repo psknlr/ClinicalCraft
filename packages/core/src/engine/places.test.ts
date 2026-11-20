@@ -11,8 +11,9 @@ import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction, DomainEvent, ReduceResult, SessionState } from "../schema/session.js";
 import { LAP_CHOLE_SIT } from "./procedure/__fixtures__/lap-chole-sit.js";
+import { LAP_CHOLE_TEAM, lapCholeTeamCase, REFERENCE_OPS } from "./procedure/__fixtures__/lap-chole-team.js";
 import { PLACES_TEAM, placesCase } from "./__fixtures__/team-places.js";
-import { assess, checkCaseIntegrity, checkTeamDefinition, createSession, evaluate, joinPath, parseCase, reduce, replay, seatsOf, verifyCase } from "./index.js";
+import { assess, checkCaseIntegrity, checkTeamDefinition, createSession, evaluate, joinPath, operateRefusal, parseCase, reduce, replay, seatsOf, verifyCase } from "./index.js";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const MINI: Json = JSON.parse(readFileSync(new URL("./__fixtures__/mini-anaphylaxis.case.json", import.meta.url), "utf8"));
@@ -209,6 +210,39 @@ describe("the case's checks", () => {
       `team.members.4.standIn: the scrub-nurse place (line-up "three-surgeons") cannot be joined: the case's reference path never reaches the team's phases (observation)`,
     ]);
     expect(checkTeamDefinition(c)).toEqual([]);
+  });
+
+  it("with an operation, a place joins where it is under way: a team that works from an earlier phase is refused", () => {
+    // the lap-chole team working in the theatre before the operation's own phase (a sign-in, a baseline count): the join
+    // stops at the team's first phase, where the stand-in surgeon's first step is refused — and nobody else takes the
+    // reference's switch into the operation
+    const raw = structuredClone(LAP_CHOLE_SIT) as unknown as Json;
+    const operation = (team: string[]) =>
+      lapCholeTeamCase({
+        phases: [...raw.phases, { id: "operation", label: L("Operation") }],
+        procedure: { ...raw.procedure, phases: ["operation"] },
+        team: { ...structuredClone(LAP_CHOLE_TEAM), phases: team },
+        solution: [{ type: "start" }, { type: "set-phase", phase: "theatre" }, { type: "set-phase", phase: "operation" }, ...REFERENCE_OPS.map((op) => ({ type: "operate", op })), { type: "finish" }],
+      });
+    const setUp = operation(["theatre", "operation"]);
+    expect(checkTeamDefinition(setUp).map((i) => `${i.path}: ${i.message}`)).toEqual([
+      `team.members.4.standIn: a place in the team joins in phase "theatre", where the operation is not under way: the stand-in surgeon could not take its first step there (the operation's phases: "operation") — begin the team's phases along the reference path with the operation's`,
+    ]);
+    expect(verifyCase(setUp).ok).toBe(true);
+    // the place as it would be: joined in the theatre, the stand-in's first step refused there
+    const joined = start(setUp, { seat: "first-assistant" });
+    expect(joined.rejected).toBeUndefined();
+    expect(joined.state.phase).toBe("theatre");
+    expect(operateRefusal(setUp, joined.state, REFERENCE_OPS[0]!)).toMatchObject({ code: "phase-locked" });
+    // the same team working from the operation's phase on: sound, and every place joins where the stand-in operates
+    const fromOperation = operation(["operation"]);
+    expect(checkTeamDefinition(fromOperation)).toEqual([]);
+    for (const seat of ["first-assistant", "scrub-nurse"] as const) {
+      const r = start(fromOperation, { seat });
+      expect(r.state.phase, seat).toBe("operation");
+      expect(operateRefusal(fromOperation, r.state, REFERENCE_OPS[0]!), seat).toBeNull();
+    }
+    expect(checkTeamDefinition(lapCholeTeamCase())).toEqual([]);
   });
 });
 

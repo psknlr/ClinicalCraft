@@ -469,9 +469,9 @@ A theatre case can give its room a care team that works on its own in in-world m
 * **Say who is reported and who is authored** (the grounding of a team). A report usually names the operating surgeon
   and perhaps one assistant; a stand-in, an added line-up's assistants and a relief colleague are teaching staff you
   authored. Mark line-ups and scenarios `provenance: "authored"` (the browser's picker tags a line-up so: "Three
-  surgeons (authored)") and say in the team's `note` which members the source reports and which are authored (Case 126:
-  the report names one assistant; the second assistant and the stand-in are authored). Their cards and words state
-  only what the case records, as every character's do (§1, grounding).
+  surgeons (authored)") and say in the team's `note` which members the source reports and which are authored (for
+  example, a report that names the operating surgeon and one assistant: a second assistant and a stand-in you add are
+  authored). Their cards and words state only what the case records, as every character's do (§1, grounding).
 * **Tag the theatre's equipment with controls with care** (an operation's `control`, FACILITIES.md; EMBODIED §8.1,
   §8.2): only a body holding the control does a tagged operation — the learner in a place too —, so **tag an operation
   only when everyone who should do it holds the control**, and only theatre operations (loading a reload is the scrub

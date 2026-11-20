@@ -927,7 +927,7 @@ const zh = {
   "emb.task.hold_traction": "维持牵引",
   "emb.task.release_traction": "松开牵引",
   "emb.task.hold_camera": "扶镜",
-  "emb.task.aim_camera": "调整镜头方向",
+  "emb.task.aim_camera": "镜头对准",
   "emb.task.pass_instrument": "递器械",
   "emb.chip.hold_traction": "握持 {port} 孔",
   "emb.chip.release_traction": "松开",
