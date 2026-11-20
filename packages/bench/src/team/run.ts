@@ -389,10 +389,11 @@ export function teamCounts(runs: readonly TeamRunResult[]): TeamReport["counts"]
 
 /**
  * The cases a run by place takes (`seat`, with the line-up): team cases that offer the place (core `seatsOf`: a team
- * whose surgeon names a stand-in, a member in that position with the line-up).
+ * whose surgeon names a stand-in, a member in that position with the line-up) — with a line-up, only those that declare
+ * it (core's `seatsOf` reads an unknown one as the base team, whose start the session would then refuse).
  */
 export function placeCases(content: Pick<LoadedContent, "cases">, seat: Place, lineup?: string, caseIds?: readonly string[]): CaseDefinition[] {
-  return teamCases(content, caseIds).filter((c) => seatsOf(c, lineup ? { lineup } : {}).includes(seat));
+  return teamCases(content, caseIds).filter((c) => (!lineup || (c.team!.lineups ?? []).some((l) => l.id === lineup)) && seatsOf(c, lineup ? { lineup } : {}).includes(seat));
 }
 
 /**

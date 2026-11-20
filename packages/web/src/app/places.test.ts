@@ -23,7 +23,7 @@ import { fetchPlacePath, loadContent, placePathOf, placeReady } from "./content.
 import { BrowserMover } from "./embodied.js";
 import { EmbodiedLink } from "./embodied-link.js";
 import { offersPlaces, pendingStart, placePicker, placesOffered, savedPlace, startAction, startChoiceFromSearch, startPace, teamGoesOn, withStartArgs, type StartChoice } from "./places.js";
-import { startAppSession, type AppSession } from "./session.js";
+import { letTeamGoOn, startAppSession, type AppSession } from "./session.js";
 import { defaultSettings } from "./settings.js";
 
 const NONE: StartChoice = { team: null, seat: null, lineup: null };
@@ -305,6 +305,19 @@ describe("a place's team opens paused: the stand-in's call-out waits until the c
     expect(teamGoesOn({}, start)).toBeNull();
   });
 
+  it("nothing to let go on — no place taken at this start, a resume —: nothing sent, nothing saved", async () => {
+    const c = callOutFirst();
+    const app = await sessionOf(c);
+    const saved = vi.fn();
+    const run = vi.spyOn(app.session, "run");
+    expect(letTeamGoOn(app, null, saved)).toBeNull();
+    expect(letTeamGoOn(app, startAction(c, NONE), saved)).toBeNull();
+    // a place asked for that the session did not record (a refused start): nothing either
+    expect(letTeamGoOn(app, startAction(c, { team: null, seat: "first-assistant", lineup: null }), saved)).toBeNull();
+    expect(run).not.toHaveBeenCalled();
+    expect(saved).not.toHaveBeenCalled();
+  });
+
   it("at the session's own pace the start's own team round asks the call-out — before the browser can show it —; at the web's pace for a place the start asks nothing, and the call-out comes once the team goes on, answered on the card", async () => {
     const c = callOutFirst();
     const start = startAction(c, { team: null, seat: "first-assistant", lineup: null });
@@ -332,11 +345,16 @@ describe("a place's team opens paused: the stand-in's call-out waits until the c
     expect(app.session.team()?.autonomy).toBe("step");
     expect((app.session.state.procedure?.refs ?? []).filter((r) => r.startsWith("standin:"))).toEqual([]);
 
-    // entered (the store subscribed, the call-out card able to answer): the team goes on at its own pace — its call-out is
-    // asked of the learner as the card, let go on, and the stand-in clips
+    // entered (the store subscribed, the call-out card able to answer): the team goes on at its own pace — saved as soon as
+    // it does, before its first round (a resume finds it going on, not paused as it began) —, its call-out is asked of the
+    // learner as the card, let go on, and the stand-in clips
     const { cards, off } = answerCallouts(app, () => "go");
-    await app.session.run(teamGoesOn(app.session.state, start)!);
+    const saves: string[] = [];
+    const going = letTeamGoOn(app, start, () => saves.push(`${app.session.team()?.autonomy} after ${cards.length} call-outs`));
+    expect(going).not.toBeNull();
+    await going;
     off();
+    expect(saves).toEqual(["auto after 0 call-outs"]);
     expect(cards.map((x) => [x.line, x.requestId.length > 0])).toEqual([["Clipping the cystic duct.", true]]);
     expect([...app.store.resolved.values()]).toEqual(["approved"]);
     expect(app.store.pendingApprovals()).toEqual([]);

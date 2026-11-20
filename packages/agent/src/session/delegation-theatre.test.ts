@@ -322,6 +322,10 @@ describe("the report names people and regions as the learner reads them", () => 
     const wang = await delegate(zh, { role: "王医生", task: "hold_traction", params: { port: "B" } });
     expect(wang.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
     expect(wang.delegation.refusal).toContain("本次团队中有“牵引显露”分工权限的是：阿部医生（第一助手）。");
+    // the camera's aim in the glossary's words (docs/GLOSSARY.md "the camera's view": 镜头对准), as the chip says it
+    const chen = await delegate(zh, { role: "陈雨", task: "aim_camera", params: { region: "hepatocystic-triangle" } });
+    expect(chen.delegation).toMatchObject({ status: "failed", message: "not-authorized" });
+    expect(chen.delegation.refusal).toContain("不能让陈雨（洗手护士）把镜头对准某个区域：这需要“扶镜”分工权限");
     await zh.session.close();
   });
 });

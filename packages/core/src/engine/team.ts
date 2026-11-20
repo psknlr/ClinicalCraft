@@ -223,7 +223,7 @@ function checkLineups(c: CaseDefinition): Issue[] {
  * case to the team's phases along the reference path, every step of it accepted (the reducer's join) — and, in a case
  * with an operation, to a phase where it is under way: the stand-in surgeon operates from the moment the learner joins,
  * and nobody takes the reference's later phase switches (a team whose first phase along the path comes before the
- * operation's — a sign-in, a baseline count — would leave the stand-in's first step refused there, for good).
+ * operation's — the Sign In, a baseline count — would leave the stand-in's first step refused there, for good).
  */
 function checkJoin(c: CaseDefinition): Issue[] {
   const team = c.team!;

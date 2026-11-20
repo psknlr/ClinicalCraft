@@ -6,7 +6,8 @@ with a `team` names the room, the members and their duties. In the case's team p
 - decides what to do next from **their own view**: what their body perceives, what was said to them, and the tasks
   they carry;
 - talks to colleagues with **check-back**: a request, a read-back, then a confirmation;
-- acts with their **own body** through the world's action bus;
+- acts with their **own body**: in the world through the world's action bus, at the operating table through the
+  `operate` tool under the team's own caller (§4.5);
 - **verifies** results with their own eyes.
 
 Authored **team scenarios** set up initial conditions (a need, a colleague on a break, an instrument somewhere else,
@@ -218,7 +219,10 @@ words — the engine's own with its reason where it gives one (the place's membe
 - a stand-in is named on the surgeon member only and is no member, cover, relief colleague or line-up assistant; a team
   with a stand-in works in every phase of the operation;
 - line-ups: unique ids, each adding new staff with the duties `["assist"]`, a first or a second assistant;
-- with a stand-in, every place the team offers, with each line-up, can be joined along the reference path.
+- with a stand-in, every place the team offers, with each line-up, can be joined along the reference path — and, in a
+  case with an operation, the join ends in one of the operation's phases: the stand-in operates from the moment the
+  learner joins, and nobody takes the reference's later switch of phase (a team that works before the operation, the
+  Sign In or a baseline count, offers no place yet).
 
 The reference solution is the operating surgeon's: `checkCaseIntegrity` refuses a seat on its start, and a line-up
 the team does not have.
@@ -255,7 +259,7 @@ op ([PROTOCOL.md](PROTOCOL.md)), queued with the learner's own ops:
 
 | autonomy | how the team advances |
 |---|---|
-| `auto` (default) | after each op of the learner, until a round passes with nothing done; in the browser also one `step` every `TEAM_STEP_MS` (2 s) while the encounter runs — the same clock as the staff's round (`encounterClockRuns`: the learner operating in the surgery window, reading the chart or watching the team does not stop it; the pause menu, settings, help, a reset confirmation or an approval waiting does) — so a learner who only watches, or operates, sees the team work |
+| `auto` (default) | after each op of the learner, until a round passes with nothing done; in the browser also one `step` every `TEAM_STEP_MS` (2 s) while the encounter runs — the same clock as the staff's round (`encounterClockRuns`: the learner operating in the surgery window, reading the chart or watching the team does not stop it; the pause menu, settings, help, a reset confirmation or an approval waiting does) — so a learner who only watches, or operates, sees the team work; in a place, the clock holds while the stand-in waits on the learner for what is still theirs to give (`owedByLearner`, §4.5: the rule a text front-end's `team run` keeps), so a learner who takes a while to answer keeps their part — their answer, or their own act (whose submission runs the team's round), lets it go on |
 | `step` | only on `team step` / `team run` (the "Next step" button; tests; the benchmark) |
 | `off` | never |
 
@@ -633,7 +637,8 @@ set in motion has ended, the operation's plan task included — and, playing a p
 on the learner (`TeamScheduler.awaitsLearner`): its request said to them, its stop, its word that it cannot go on,
 awaiting their answer or their step, or the closure while the count it waits for is theirs to say — whatever else of
 the team's is still under way (a need being fetched); a run never plays the learner's part, nor lets the stand-in's
-wait for them run out).
+wait for them run out). The browser's clock keeps the same rule: it takes no round while the stand-in waits on the
+learner for what is still theirs to give (`owedByLearner`) — the learner's answer, or their own act, lets it go on (§2).
 
 ### 4.6 The surgeon, and the learner's part played or watched
 
@@ -672,7 +677,7 @@ watches it played.
 | the stand-in surgeon | while the learner holds a place, the team's surgeon member with its `standIn`'s body works the reference path (§4.5): its progress is the field's record (`standin:<k>`), never the team's memory; it asks the team — the learner in their place among them — for the camera, a traction, a pass; it calls a critical step out, and stops when the learner says Stop; one step of the operation a round at most, and a run until idle ends after it |
 | places | a learner's start in a place is taken in-world only (`not_embodied` otherwise, facility or none) and only when the session's permission settings let the stand-in work (`permission_denied`, saying why); while the place is held a `configure` that would stop the stand-in (plan mode, a practice scope without the operation) is refused the same way and the settings stay; the demonstration is refused in a place (§1) |
 | approvals | a team member's step is never asked about, in any mode — except the stand-in surgeon's clip, division, coagulation or bail-out, asked of the learner as its call-out (`approval_request.callout`, `actorId`), in every mode but bypass (§4.5) |
-| browser | the HUD's **Team** button (in the team's phases) opens the panel (`ui/panels/team.ts`, worked out in `team-view.ts`); while the stand-in waits for the learner's answer the button says so ("Team · waits for you"): in a place, the place and the line-up ("You: First assistant · Team: …"), the team as it works (each member with their position — "First assistant: you · Dr Abe stands by", a relief colleague, one away; operating, "Operating surgeon: you") and, first, what the stand-in waits on the learner for (`learnerAwaited`) — answered, "You answered — the surgeon goes on" until it does; pace (Auto / Step / Next step); who plays the learner's part (I am the surgeon — in a place, I play my place — / Observe: the ids `team-learner`, `team-observer` kept); Search within reach / Check the wound (offered as the world allows the learner's body: `WorldRuntime.searchRefusal`); Ask — the operator's: in a place the stand-in asks and the learner answers — (whom; traction, letting go, the camera, an aim, closer, wider, a pass), Need (what the team can find and bring: the hospital's hand-held equipment, a team scenario's needs first — for the surgeon or the learner's place) and, for the place that holds the count, Say the count — the `team` ops, the session's refusal or warning shown as it said it; what was said, with the answers offered to whatever is said to the learner's own member in any place while they play it (none observing; for the stand-in's lines only while its request is open): a request — Read back / Can't; a read-back of their own ask — Confirm / Not now (a confirmation or a decline without words); the stand-in's confirmation — do it in the surgery window, then the report; its stop or its word that it cannot go on — Go on; an escalation — Understood; what was done (the latest receipts: a step of the field, a look at it, a step through a device, a walk as a walk); the tasks (with "seen to be done"; a member's own following of the work with the camera is not listed), the count. The window redraws in three parts, a choice being made in one of its lists kept. The stand-in's call-out is its own card in the approval dialog ("Dr Ito: Clipping the cystic duct." — No objection / Stop, and Esc: the card's own approval responses); stopped, the notice says where to answer and the team's window opens when no other is. What the team says for the learner's member shows in a colleague's window only when it is said to them, never in every window. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, whichever panel is open, and stops only with the encounter's explicit pause; the team's own calls never stop it (their turns close: the web store's `agentDriving` never counts agent `team`). A new start in a place opens the session with its team paused (`SessionOptions.embodied.teamPace: "step"`: the start takes no team round) and sends `team resume` once the encounter is entered, so the stand-in's first call-out always finds the card (web `app/places.ts` `startPace`, `teamGoesOn`) |
+| browser | the HUD's **Team** button (in the team's phases) opens the panel (`ui/panels/team.ts`, worked out in `team-view.ts`); while the stand-in waits for the learner's answer the button says so ("Team · waits for you"): in a place, the place and the line-up ("You: First assistant · Team: …"), the team as it works (each member with their position — "First assistant: you · Dr Abe stands by", a relief colleague, one away; operating, "Operating surgeon: you") and, first, what the stand-in waits on the learner for (`learnerAwaited`) — answered, "You answered — the surgeon goes on" until it does; pace (Auto / Step / Next step); who plays the learner's part (I am the surgeon — in a place, I play my place — / Observe: the ids `team-learner`, `team-observer` kept); Search within reach / Check the wound (offered as the world allows the learner's body: `WorldRuntime.searchRefusal`); Ask — the operator's: in a place the stand-in asks and the learner answers — (whom; traction, letting go, the camera, an aim, closer, wider, a pass), Need (what the team can find and bring: the hospital's hand-held equipment, a team scenario's needs first — for the surgeon or the learner's place) and, for the place that holds the count, Say the count — the `team` ops, the session's refusal or warning shown as it said it; what was said, with the answers offered to whatever is said to the learner's own member in any place while they play it (none observing; for the stand-in's lines only while its request is open): a request — Read back / Can't; a read-back of their own ask — Confirm / Not now (a confirmation or a decline without words); the stand-in's confirmation — do it in the surgery window, then the report; its stop or its word that it cannot go on — Go on; an escalation — Understood; what was done (the latest receipts: a step of the field, a look at it, a step through a device, a walk as a walk); the tasks (with "seen to be done"; a member's own following of the work with the camera is not listed), the count. The window redraws in three parts, a choice being made in one of its lists kept. The stand-in's call-out is its own card in the approval dialog ("Dr Ito: Clipping the cystic duct." — No objection / Stop, and Esc: the card's own approval responses); stopped, the notice says where to answer and the team's window opens when no other is. What the team says for the learner's member shows in a colleague's window only when it is said to them, never in every window. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, whichever panel is open, and stops only with the encounter's explicit pause — in a place it also holds while the stand-in waits on the learner for what is still theirs to give (`owedByLearner`, §2); the team's own calls never stop it (their turns close: the web store's `agentDriving` never counts agent `team`). A new start in a place opens the session with its team paused (`SessionOptions.embodied.teamPace: "step"`: the start takes no team round) and sends `team resume` once the encounter is entered, so the stand-in's first call-out always finds the card, saving the encounter as soon as the team goes on, so a resume finds it at its own pace (web `app/places.ts` `startPace`, `teamGoesOn`; `app/session.ts` `letTeamGoOn`) |
 | text front-ends | the terminal's `/seat` (the learner's place and its id, fixed for the encounter; the line-up; the place's controls; who operates and who stands by; the team as it works, with positions — operating, the places the case offers at the start) and `/team [status\|step\|run\|reply\|ask\|need\|count\|play\|observe\|pause\|resume]` (each a `team` op in the command's turn; then the team now and, first, what the stand-in waits on the learner for — `awaitedLine` — with how to answer: "answer: /team reply msg-12 readback"; anything else said to them that waits for an answer — `repliesTo`); `/field` and `/operate <op> [key=value…]` for the learner's own steps as their place. The REPL marks a line said to the learner's member "Dr Ito → you: … [msg-12]" and asks the stand-in's call-out with its own keys (`[y] No objection / [n] Stop`). An external agent has the same through MCP's `team` tool (`status`, `step`, `run`, `reply`, `ask`, `need`, `count`, `play`, `observe`, and `callout {decision: approve \| deny}`: a round that meets the call-out returns with it pending, and the answer lets the round go on — docs/PROTOCOL.md §11), forwarded to a live session in attach mode (where the learner answers call-outs in the browser). A place's session begins with its team paused (`SessionOptions.embodied.teamPace: "step"`): the start takes no team round, so nothing the stand-in does — its call-out — is asked before the front-end can answer it. In MCP it stays paused: the stand-in operates only as the tool runs the team, never inside another tool's call; the terminal lets it go on at its own pace (`team resume`) once its prompt, or `exec`'s answers, are in place. A text front-end's `run` stops where the stand-in waits on the learner and does not start while their answer — or their count, until they have said it (`learnerCountState`) — is owed (`runHeld`, one rule for `/team`, MCP and the world bridge); headless drivers send `staff_step` after the team's rounds, so the stand-in sees the world as it is (a gas fault reaches the record only on a sync). Over the world bridge a `team` act is an external call like the others, on the clinician's tool path: deny rules (`team`, `team(<action>)`), plan and strict mode (the learner asked first), its deadline and cancellation; it takes no team round beyond its own. The observer refusal names each front-end's own control: the browser's "I play my place", the terminal's `/team play`, the tool's `play` action. A position word naming the learner's own place names nobody — in a typed `@` mention and in `/delegate` (`ownPlaceWord`), as in the browser |
 | anaesthesia responsibility | continuous (`SessionState.anaesthesia`, core `engine/anaesthesia.ts`): the responsible anaesthetist is the team's `anaesthesia` member until a hand-over moves it. While the patient is under anaesthesia (`patient.nonVerbalWhen`) the responsible anaesthetist never leaves the patient's room by **any** path — a walk, a request to fetch, a delegated task, the team's own move, a learner's world action on their body: every one goes through `EmbodiedSession.act`, which refuses a movement whose destination is outside the patient's room (`NOT_AUTHORIZED`, "Continuous anaesthesia responsibility is required. Arrange relief before leaving the patient."); within the room they move freely, and moving with the patient (a transport) is staying |
 | the sterile field | the scrub nurse keeps it: while the operation is under way (world `operationInProgress`), the staff body of the team member with the `instruments` duty (the team as it is: a team scenario's relief scrub nurse too) never leaves the team's room by **any** path — a request to fetch, a direct move, a delegated task, the team's own move — unless another scrub nurse who can take over is in the room (not one the team scenario makes absent, nor the colleague standing by while the learner holds a place): the same guard in `EmbodiedSession.act` as the anaesthetist's (`NOT_AUTHORIZED`, "The scrub nurse keeps the sterile field while the operation is under way: another scrub nurse takes over in the room before she leaves."). Within the theatre she moves freely. Staff bodies only: the learner's body — in the scrub nurse's place too — moves by poses and walks no guard refuses |
@@ -756,7 +761,8 @@ cannot go on, or 600 rounds. The scenario's obligations are scored as above — 
 `memberBody` by the encounter's place (the surgeon is the stand-in's body there, never the learner's) — plus one more:
 the **operation**, met when it is closed (`unfinished` when the run stopped first; `failed` when the stand-in could not
 go on). A scenario whose absences leave the place without its member is skipped, saying why (the report's `skipped`); no
-case offering the place is a usage error, and so is `--lineup` without `--seat` (the line-up is a run by place's). The
+case offering the place is a usage error, and so are `--lineup` without `--seat` (the line-up is a run by place's) and a
+`--lineup` none of the cases declares (named with the line-ups they have). The
 default run (no place) is unchanged: the bench's own replay up to the
 moment the scenario is about (`bringTo`), the simulated surgeon, no operation owed. What a place itself does — read-backs
 answered, traction held, how soon the camera follows — is not scored yet (§9).
@@ -770,7 +776,8 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   places offered, members' bodies and their inverse, controls in the field and in the world.
 - `core/src/engine/places.test.ts`: the operating surgeon's seat recorded as no place; what a place needs; the join at
   the team's phase (the reference path's events and state) and a transcript replaying to the same state; the reference
-  path's checks; assessment by place.
+  path's checks — with an operation, a team working from a phase before it refused (the place would join where the
+  stand-in's first step is refused), the same team from the operation's phase on sound —; assessment by place.
 - `world/src/conceal.test.ts`: concealed items out of everyone's sight, untouchable by id, revealed by a search within
   reach or of what they are in, kept by a snapshot.
 - `agent/src/session/team/policy.test.ts`: every rule above on hand-built views — and at the operating table: an
@@ -876,23 +883,28 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   a request without the stand-in's body asked as always; a clip stopped, "Stopped — tell me what you see." and Go on;
   the follow tasks never listed; a walk never a device's step), `app/store-team.test.ts` (the default approval mode: the
   team's turns — a call-out stopped, one let go on — leave nothing driving in the web store, and the team's, the
-  staff's and the real-time clocks tick), `app/store.test.ts` (a colleague's window keeps the delegation sent from it,
+  staff's and the real-time clocks tick; the team's clock held for a minute while the stand-in waits on a learner who has
+  not answered — its request never given up — and going on once they read it back), `app/store.test.ts` (a colleague's window keeps the delegation sent from it,
   and what the team says for the learner's member to that colleague), `app/talk.test.ts` (chips from
   `RoleState.delegable` and the field's verdict for that colleague — never the operator's instrument, never a third
   port —; delegations shown by name), `app/app-logic.test.ts` (`@` mentions by position through `lookupStaff`,
   `@surgeon` too; the learner's own place names nobody else — the agent's `ownPlaceWord`, the resolver itself still
   naming the member who stands by (§4.4); a role's window never the colleague standing by), `app/places.test.ts` (a
   new start in a place opens its team paused: on a case whose stand-in's first step is a clip, the session's own pace
-  asks the call-out inside the start, the web's asks nothing until the team goes on, and then the card answers it),
-  `ui/demonstration.test.ts` (the demonstration's buttons greyed out in a place with the session's own refusal, in
-  both languages; external control as before),
+  asks the call-out inside the start, the web's asks nothing until the team goes on — the encounter saved as soon as it
+  does, before its first round — and then the card answers it; nothing sent or saved without a place taken at this
+  start), `ui/demonstration.test.ts` (the lock's words in a place are the session's own refusal of the demonstration,
+  in both languages; external control as before),
   `ui/panels/orders.test.ts` (a device's operations and the wound search as the world says; a refusal the learner's own
   steps fix left to press), `ui/scrub-bar.test.ts` (the instrument still asked for after the read-back and the
   confirmation; nothing offered while observing; what is carried handed to the stand-in), `ui/panels/debrief.test.ts`
   (the first-try metric of the learner's own decisions), `world/npc.test.ts` (the gloved hand; name tags by the
   facility's position); world `offers.test.ts`; e2e `places.spec.ts` (no place row for any built-in case; a team case's
-  places and a first assistant started from the case card's own Enter, at the table, gloved, the demonstration greyed
-  out with the session's words, the team's window and the surgery window by place).
+  places and a first assistant started from the case card's own Enter, at the table, gloved, the team gone on at its
+  own pace once entered and the encounter saved so, the demonstration's buttons — the HUD's, the pause menu's, the
+  panel's Start and Watch — greyed out with the session's words, the team's window and the surgery window by place; on a
+  case whose team works from the clipping on, the stand-in's call-out once the encounter is entered, on its card, "No
+  objection" and the clip).
 - `core/src/engine/count.test.ts`: the count record — clean, recoverable, unresolved (closure recorded, never
   erased; or refused), excluded, six of five, a false five of five, a documented transfer.
 - `bench/src/team/score.test.ts`: obligations — two requests with one delivery is not a pass; one item cannot answer
@@ -927,7 +939,7 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   place lines, "→ you", and a call-out asked with its own keys; a line-up, a team scenario or a place the case does not
   offer refused naming it with the case's places, line-ups and team scenarios (`play` and `exec`, both languages); a
   refused start under `--output-format json|stream-json` ending with its `result`; `bench team --seat` (and with
-  `--lineup`), a place no case offers and `--lineup` without `--seat` usage errors. `cli/src/render.test.ts`: "→ you" /
+  `--lineup`), a place no case offers, `--lineup` without `--seat` and a line-up no case declares usage errors. `cli/src/render.test.ts`: "→ you" /
   "→ 你" with the message id, the call-out's line.
 - `mcp/src/team.test.ts`: `start_case {seat, embodied}` takes the place (`SessionState.seat`; the team paused for the
   tool — the start took no team round), a place without in-world mode refused `not_embodied` in the session's words, a
@@ -975,9 +987,13 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   debrief); its Ask row is the operator's and asks one direction of traction at a time, and the scrub nurse's bar opens
   the operative field's instrument table (the world's instrument sets are opened at the set). A front-end that takes a
   place begins with the team paused and lets it go on once it can answer the stand-in's call-out (the browser once the
-  encounter is entered, the terminal once its prompt or its answers are in place; MCP paces it by its `team` tool only).
-  No e2e test drives a call-out (it comes some 34 rounds into the operation: its card's answers and the store's turns are
-  unit-tested). Text-mode `exec` answers the call-out by the headless approval rules — a Stop, which waits for `/team
+  encounter is entered, saving it again as the team goes on; the terminal once its prompt or its answers are in place;
+  MCP paces it by its `team` tool only). One e2e test drives a call-out, on a variant whose team works from the
+  clipping on, so that the stand-in's first step is a critical one; the call-out some 34 rounds into the operation of
+  the full path is unit-tested (its card's answers, the store's turns). A team with a stand-in works from a phase of
+  the operation on: a team that works before it along the reference path (the Sign In, a baseline count before the
+  incision) offers no place yet — `checkTeamDefinition` refuses it, since nobody would take the reference's switch
+  into the operation. Text-mode `exec` answers the call-out by the headless approval rules — a Stop, which waits for `/team
   reply … confirm`, unless `--approval auto --approve-high-risk`; `bypass` asks none —, so a headless script in another
   mode answers through stream-json. There is no place for the circulating nurse or the anaesthetist, and a place does
   not change during an encounter.
@@ -988,7 +1004,9 @@ answered, traction held, how soon the camera follows — is not scored yet (§9)
   the base anatomy only): it never changes its plan, chooses a bail-out of its own or calls for help, and its answer to a
   complication is to say the injury aloud and to suction — a major bleed is beyond it, and after three refusals of one
   step it waits for the learner's word (a refusal it cannot see coming, a hook's, meets it there). A request it gives up
-  waiting for it does itself (never a pass), and an assist port's traction it hands on before it is pulled. A reference
+  waiting for it does itself (never a pass) — one to the learner's place runs out only on rounds the learner takes
+  themselves (`team step`): the browser's clock and a `team run` hold while it is theirs to answer (§4.5) —, and an
+  assist port's traction it hands on before it is pulled. A reference
   step the reference gives a colleague it asks of them; one no request about the field names (a colleague's suction)
   is passed over, done by nobody, and a hand-over of the reference's nobody may take leaves the port the stand-in's. It
   reads the gas from the tower only when the tower offers the step in the state it is in, and sees a gas fault on the

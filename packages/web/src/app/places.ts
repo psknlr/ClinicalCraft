@@ -140,7 +140,8 @@ export function startPace(start: StartAction | null): "step" | undefined {
 /**
  * The op that lets the care team go on at its own pace (`team resume`: autonomy `auto`, then its rounds), sent once the
  * encounter is entered and the call-out card can answer the stand-in — after a place was taken at this start
- * (`startPace`); null otherwise (no place, a start refused, a resumed encounter).
+ * (`startPace`); null otherwise (no place, a start refused, a resumed encounter). `session.ts` `letTeamGoOn` sends it
+ * and saves the encounter once it is in force.
  */
 export function teamGoesOn(s: Pick<SessionState, "seat">, start: StartAction | null): TeamOp | null {
   return startPace(start) && s.seat ? { type: "team", action: "resume" } : null;

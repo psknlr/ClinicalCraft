@@ -382,6 +382,13 @@ describe("bench team --seat", () => {
     const surgeon = await run(["bench", "team", "--seat", "surgeon", "--out", out, "--lang", "en"], box);
     expect(surgeon.code).toBe(2);
     expect(surgeon.stderr).toMatch(/expected first-assistant \| second-assistant \| scrub-nurse/u);
+    // a line-up no case declares is a usage error naming those they do — never a run of refused starts, whatever the place
+    for (const place of ["first-assistant", "second-assistant"]) {
+      const typo = await run(["bench", "team", "--seat", place, "--lineup", "nope", "--case", CASE, "--out", out, "--lang", "en"], box);
+      expect(typo.code, place).toBe(2);
+      expect(typo.stderr, place).toMatch(/No case with team scenarios has the line-up nope \(their line-ups: three-surgeons\)\./u);
+      expect(typo.stdout, place).not.toMatch(/team scenarios passed/u);
+    }
     // a line-up belongs to a run by place: alone it is a usage error, never ignored
     const lineupAlone = await run(["bench", "team", "--lineup", "three-surgeons", "--case", CASE, "--out", out, "--lang", "en"], box);
     expect(lineupAlone.code).toBe(2);

@@ -125,8 +125,8 @@ describe("the browser's team clock and a learner who has not answered yet", () =
     expect(app.session.team()!.state.messages.filter((m) => m.to === PRIMARY_ACTOR && m.kind === "decline")).toEqual([]);
     // read back, as the team window offers it: the clock goes on, and the stand-in confirms in its next round
     const readBack = answersFor(app.session.team()!, request!).find((a) => a.id === "readback");
-    expect(readBack && "op" in readBack).toBe(true);
-    await app.session.run(readBack!.op!);
+    if (!readBack || !("op" in readBack)) throw new Error("no read-back offered");
+    await app.session.run(readBack.op);
     expect(owed()).toBe(false);
     run.mockClear();
     await tick();

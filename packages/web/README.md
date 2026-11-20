@@ -93,11 +93,15 @@ not offer shows as such, and a place the session refuses is not entered — the
 card says why, in the session's words; so is a saved encounter in a place whose
 settings would stop the stand-in surgeon. Taken, you join the team at the
 operating table and the stand-in surgeon operates — its team begins paused and
-goes on once you are in the encounter, so its first call-out waits for its card
-(`app/places.ts` `startPace`, `teamGoesOn`); a case `clinicalcraft serve`
+goes on once you are in the encounter, so its first call-out waits for its card,
+and the encounter is saved again as it goes on (`app/places.ts` `startPace`,
+`teamGoesOn`; `app/session.ts` `letTeamGoOn`); while the stand-in waits for your
+answer the team's clock holds, so its request never runs out while it is yours
+to answer; a case `clinicalcraft serve`
 sends fetches its place path first (`/api/content/cases/:id/place-path`). The
 **Demo** button (the demonstration works the case as the operating surgeon) is
-greyed out in a place, saying so in the session's words (`ui/demonstration.ts`). The
+greyed out in a place — the pause menu's and the panel's **Start** and **Watch**
+too —, saying so in the session's words (`ui/demonstration.ts`). The
 **surgery window** then works by place (docs/PROCEDURE.md §7): each port says
 who holds it, with **Take**, **Hand back** and **Hand to …** (a colleague at
 the table) where the field would take them, an insert where your place may put

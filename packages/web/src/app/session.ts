@@ -25,6 +25,7 @@ import {
 import { ClinicalActionSchema, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
 import type { CameraSensor, Mover, WorldRuntime } from "@clinicalcraft/world";
 import { browserResolveProvider, type RuntimeChoice } from "./llm.js";
+import { teamGoesOn, type StartAction } from "./places.js";
 import { resolveAgentSettings, type StoredSettings } from "./settings.js";
 import { trimWorldSnapshot, validWorldSnapshot } from "./spatial.js";
 import { SessionStore } from "./store.js";
@@ -404,4 +405,31 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
       await transcript.flush?.();
     },
   };
+}
+
+/**
+ * Let the care team go on once a place taken at this start is entered (`places.ts` `teamGoesOn`: `team resume`) and save
+ * the encounter as soon as it does: the entry's own save holds the team paused, as it began (`startPace`), and a resumed
+ * save keeps the pace it holds — so a page closed right after entering must find the team at its own pace, not paused.
+ * `saved` is called once: when the team's status says `auto` (its round may still wait on the stand-in's call-out), at
+ * the latest when the op's run ends. Null: nothing to let go on (no place taken at this start, a resume).
+ */
+export function letTeamGoOn(app: Pick<AppSession, "session" | "store">, start: StartAction | null, saved: () => void): Promise<void> | null {
+  const going = teamGoesOn(app.session.state, start);
+  if (!going) return null;
+  let done = false;
+  const save = () => {
+    if (done || app.session.team()?.autonomy !== "auto") return;
+    done = true;
+    off();
+    saved();
+  };
+  const off = app.store.onChange(save);
+  return app.session.run(going).then(
+    () => undefined,
+    (err: unknown) => console.error(err),
+  ).finally(() => {
+    save();
+    off();
+  });
 }

@@ -16,9 +16,11 @@ the same change.
 
 **The model chooses and speaks; the engine keeps the physics and the protocol.** A character's model never moves a
 body, hands over an item, changes the record or states a fact on its own: it chooses among the moves the engine says
-are legal now, and it words what the character says. Every act still goes through the one world-action path (reach,
-custody, sterility, the scope of practice, continuous anaesthesia responsibility — docs/TEAM.md §5, EMBODIED.md), and
-every line is checked against what that character perceives. When a model is missing, slow, fails or answers
+are legal now, and it words what the character says. Every act still goes through the path the rules take — an act
+in the world through the one world-action path (reach, custody, sterility, the scope of practice, continuous
+anaesthesia responsibility — docs/TEAM.md §5, EMBODIED.md), a step in the operative field through the `operate` tool
+under the team's own caller (the field's gate and the member's controls — docs/TEAM.md §4.5) —, and every line is
+checked against what that character perceives. When a model is missing, slow, fails or answers
 outside the options, **the rules decide** — the deterministic policy that drives the character in `rules` mode — with
 one warning per character and a diagnostic record of what was refused. So a model-driven team is never less safe and
 never less complete than the rules, and the benchmarks stay deterministic (they run with `rules`).
@@ -58,7 +60,7 @@ The theatre's cards, in short:
 |---|---|---|
 | surgeon (operating surgeon) | carries out the operation safely and leads the operative team; asks the scrub nurse for instruments, the first assistant for traction and the camera holder for the view | surgeon (a senior) |
 | first assistant | keeps the operating surgeon's exposure — traction and counter-traction, suction, help with haemostasis; the camera when the team gives it to them; never dissects, clips, divides or coagulates, never takes a port another colleague holds | surgeon |
-| second assistant | keeps the view: the working point centred and the camera steady; static retraction and suction when asked; never withdraws the scope on their own, above all in bleeding | first assistant, then surgeon |
+| second assistant | keeps the view: the working point centred and the camera steady; static retraction and suction when asked; says when the view is poor, and before moving the camera off the working point; never withdraws the scope on their own, above all in bleeding | first assistant, then surgeon |
 | assistant surgeon | (the first assistant's old name, its own card) keeps the exposure steady and hands back cleanly | surgeon |
 | scrub nurse | keeps the sterile field and its instruments, hands the surgeon what they need — each instrument into the hand of the one who will insert it, clips and stapler reloads loaded — and counts with the circulating nurse | circulating nurse, then surgeon |
 
@@ -166,7 +168,8 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
 ## 5. Tested
 
 - `packages/agent/src/characters/characters.test.ts`: every position has a complete, distinct card, its title the
-  position's name (`POSITION_TITLES`); the first and the second assistant's cards and the assistant surgeon's kept;
+  position's name (`POSITION_TITLES`); the first and the second assistant's cards and the assistant surgeon's kept —
+  no card offers or asks to clean the lens (the camera has an aim and a zoom: docs/TEAM.md §4.4);
   positions from the facility, the team's duties and the facility role, the team's own position first and duties by
   priority; the role section; a model-driven member does the protocol's move
   in its own words, refuses ungrounded lines (a stray number, a colleague not in view, the wrong language), waits at
