@@ -16,7 +16,7 @@
  * escalated with a reason when it could not be done; the count's outcome; detection latency (rounds from the count
  * falling due to the hold asked for); false holds (a hold when every item was there); inappropriate progression
  * (closure begun on a hold; an act given before the information it waited for); exactly once (no action id carried
- * out twice; no more hand-overs than needs). An information handoff (docs/TEAM.md §4.5) is recorded as who asked for
+ * out twice; no more hand-overs than needs). An information handoff (docs/TEAM.md §4.7) is recorded as who asked for
  * it, who supplied it, who received it (read back) and when, and what the clinician in charge did next: after the
  * team, the case's reference path goes on as the simulated clinician's — the history the team supplied is not asked
  * again, and what it escalated is asked first — up to the act it held up.
@@ -63,7 +63,7 @@ export interface HandoffParty {
 }
 
 /**
- * An information handoff as the record has it (docs/TEAM.md §4.5): the request to the member who holds it
+ * An information handoff as the record has it (docs/TEAM.md §4.7): the request to the member who holds it
  * (`ordered`), their report back (`performed`), the read-back of the person who needed it, confirmed (`received`);
  * then the first clinical act after it (`next`) and each act it held up (`blocked`, the scenario's `blocks` in their
  * order: when each was given — after the information arrived, or not; null when it was not given).

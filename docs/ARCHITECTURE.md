@@ -1104,7 +1104,7 @@ spoken by the patient — those come from engine actions.
   live browser session that an attached MCP client may act in — PROTOCOL
   §13); plain HTTP, bound to 127.0.0.1 by default (any other host needs a
   token). Routes: PROTOCOL §11.
-* **mcp** — stdio JSON-RPC 2.0 MCP server exposing 42 tools (case listing
+* **mcp** — stdio JSON-RPC 2.0 MCP server exposing 43 tools (case listing
   and start, the clinical tools, the operative field's and the new
   investigations', the world tools of an embodied session, the care team's
   `team`, the debrief) so Claude Code / Codex / Grok CLI can play the clinician

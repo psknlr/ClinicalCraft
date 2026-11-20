@@ -584,12 +584,14 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
   be posted nearby — the ED nurse at the station — and comes to the room first); the surgeon is `surgeon` — the
   learner, the clinician in charge (in an operating room, operating); or, while the learner holds a place in the team,
   the stand-in's body (below). Somebody must circulate. A facility staff member's `position` keeps their job when a
-  duty would name another (the ED nurse stays a ward nurse, not a theatre circulating nurse).
+  duty would name another (the ED nurse stays a ward nurse, not a theatre circulating nurse) — in an operating room the
+  two must agree (below).
 * **Positions and controls** (TEAM.md §1). A member's position follows from their duties, by priority (`[count,
   instruments]` is a scrub nurse); give `position` when two members share a duty — a first and a second assistant
-  both `assist` — or when the facility gives the staff member another job than their duties name (a ward nurse who
-  circulates in an emergency room), and keep it the job the facility gives that staff member (`cases validate`
-  refuses a disagreement).
+  both `assist` — or when, in an operating room, the facility gives the staff member another job than their duties
+  name, and keep it the job the facility gives that staff member (`cases validate` refuses a disagreement). Outside
+  an operating room a member who only circulates needs none: she keeps her post's position (the ED nurse stays a ward
+  nurse; the circulating nurse's controls her duty gives her work nothing there).
   Each position holds default controls; give a member `controls` only where your source says the team divides the
   work otherwise (the surgeon keeps the camera; the scrub nurse also holds it), and keep `operate` the surgeon's, the
   sterile field's controls on scrubbed positions and `equipment` / `anaesthesia` on the others. A first assistant
@@ -666,8 +668,8 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
   `clinicalcraft bench team` scores every scenario against it (all must pass), and the control measures false holds.
   An information scenario pairs naturally with its failure: the holder away (`absent`), expected escalated.
 * **Played alone, a team does nothing.** A start without a team scenario sets nothing up, and a team with no
-  scenario, no count, no place taken in it and nothing asked of it takes no round — so adding a team never changes
-  the case's single-learner path, `cases verify` or the in-world demonstration.
+  scenario, no count, no place taken in it, nobody holding the camera port and nothing asked of it takes no round — so
+  adding a team never changes the case's single-learner path, `cases verify` or the in-world demonstration.
 * The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room,
   by entity id, recorded at the start of an in-world encounter. The count is the case's record (docs/TEAM.md §4.3):
   read it with `{ "count": {…} }` conditions — make the Sign Out contraindicated while it is open

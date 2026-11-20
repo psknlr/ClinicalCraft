@@ -2,7 +2,8 @@
  * The surgeon's own part in the team's closed loops (docs/TEAM.md §4.3, §4.6): what whoever operates answers when the
  * team speaks to them — a hold on closure read back (check-back), the wound then checked with their own body and what
  * it brings to light taken out, an escalation acknowledged. The simulated surgeon of observer mode does only this; the
- * stand-in surgeon (`./operator.ts`) does it first, before its own plan. Pure: from the member's view only.
+ * stand-in surgeon (`./operator.ts`) does it first, before its own plan. Information told to either is read back before
+ * any of it (`readBackInfo` in `./policy.ts`, docs/TEAM.md §4.7). Pure: from the member's view only.
  */
 import { phrase } from "./i18n.js";
 import type { MemberView } from "./policy.js";

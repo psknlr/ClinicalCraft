@@ -112,7 +112,7 @@ export class SessionTeam {
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
       count: () => k.embodied?.count ?? null,
       record: () => k.state.count,
-      // information (docs/TEAM.md §4.5): only what the case records — a history item's question and its recorded answer
+      // information (docs/TEAM.md §4.7): only what the case records — a history item's question and its recorded answer
       history: (id) => {
         const h = k.caseDef.history.find((x) => x.id === id);
         return h ? { question: both(h.question), answer: both(h.answer) } : null;

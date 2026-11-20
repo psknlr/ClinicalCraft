@@ -39,7 +39,7 @@ const PHRASES = {
   woundChecked: { en: "Wound checked.", "zh-CN": "术野已检查。" },
   countReconciled: { en: "Recount correct: {n} of {of} {item} — you may close.", "zh-CN": "复点无误：{item}{n}/{of}——可以关闭。" },
   countUnresolved: { en: "Still {n} of {of} {item} after searching the room — an X-ray before the patient leaves.", "zh-CN": "全面查找后{item}仍只有{n}/{of}——患者离开前需拍 X 线片。" },
-  // information a colleague holds (docs/TEAM.md §4.5): asked for, reported back, told to the person, read back
+  // information a colleague holds (docs/TEAM.md §4.7): asked for, reported back, told to the person, read back
   infoNotice: { en: "{info} for {for} — {holder} has it; I'm getting it.{blocked}", "zh-CN": "{for}需要的{info}在{holder}那里，我去问。{blocked}" },
   infoBlocked: { en: " {blocks} waits until it's confirmed.", "zh-CN": "{blocks}等确认后再进行。" },
   infoBlockedMany: { en: " {blocks} wait until it's confirmed.", "zh-CN": "{blocks}都等确认后再进行。" },

@@ -117,6 +117,24 @@ describe("answers to what is said to the learner's own member, in any place", ()
   });
 });
 
+describe("information told to the learner (docs/TEAM.md §4.7)", () => {
+  it("is read back, as said — sent as the session's reply; once answered, or observing, nothing more is asked", () => {
+    setLocale("en");
+    const line = (x: Partial<TeamMessage>): TeamMessage => ({ id: "m1", thread: "inform:anticoagulant-history", from: "staff:ed-nurse", to: PRIMARY_ACTOR, kind: "report", text: { en: "No blood thinners.", "zh-CN": "没有用抗凝药。" }, about: {}, room: "ed-resus", patient: null, at: 0, round: 1, evidence: [], ...x });
+    const told = line({ about: { info: "anticoagulants", fact: { en: "No blood thinners.", "zh-CN": "没有用抗凝药。" } } });
+    const cp = { format: "clinicalcraft-team@1", state: { messages: [told], tasks: [] }, autonomy: "auto", surgeon: "learner" } as unknown as TeamCheckpoint;
+    const answers = answersFor(cp, told);
+    expect(answers.map((a) => [a.id, a.label])).toEqual([["readback", tr("team.readBack")]]);
+    expect(opsOf(answers)).toEqual([{ type: "team", action: "reply", message: "m1", kind: "readback" }]);
+    // a report that carries no information asks nothing of the learner
+    expect(answersFor(cp, line({ id: "m0" }))).toEqual([]);
+    // read back: nothing more to answer; observing, the team plays the learner's part
+    const readBack = line({ id: "m2", from: PRIMARY_ACTOR, to: "staff:ed-nurse", kind: "readback", replyTo: "m1" });
+    expect(answersFor({ ...cp, state: { ...cp.state, messages: [told, readBack] } }, told)).toEqual([]);
+    expect(answersFor({ ...cp, surgeon: "simulated" }, told)).toEqual([]);
+  });
+});
+
 describe("the stand-in's call-out", () => {
   it("is a card only for an approval request carrying the stand-in's line and raised for its body; 'No objection' and 'Stop' are that request's approval response", () => {
     const c = theatreCase();

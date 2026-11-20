@@ -126,7 +126,7 @@ export interface TeamHost {
   count(): SurgicalCount | null;
   /** The case's count record now. */
   record(): CountRecord | undefined;
-  /** A history item of the case (docs/TEAM.md §4.5): what the team calls it (its question) and its recorded answer. */
+  /** A history item of the case (docs/TEAM.md §4.7): what the team calls it (its question) and its recorded answer. */
   history?(id: string): { question: Bilingual; answer: Bilingual } | null;
   /** What the team calls an intervention of the case. */
   interventionName?(id: string): Bilingual | null;
@@ -254,7 +254,7 @@ export class TeamScheduler {
   }
 
   /**
-   * Information the scenario routes through the team (docs/TEAM.md §4.5): the member who holds it knows it from the
+   * Information the scenario routes through the team (docs/TEAM.md §4.7): the member who holds it knows it from the
    * start (they learned it before: an `info` observation of the history item); the need is noticed once its `when`
    * holds (thrombolysis being considered), by the member who circulates (or `noticedBy`).
    */

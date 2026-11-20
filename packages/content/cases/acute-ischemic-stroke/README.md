@@ -409,7 +409,7 @@ done on the patient at the CT scanner: in embodied mode the patient is wheeled t
 trolley and back (the autopilot does both scans in one trip: 36.6 m there, 37.8 m back, 0.16 min each
 way; in `teaching-hospital` the porter does it). Scores are unchanged (100 in both modes).
 
-**The care team (`team`, docs/TEAM.md §4.5).** The resus room has a care team: the ED nurse, Lin Xiao, coordinates
+**The care team (`team`, docs/TEAM.md §4.7).** The resus room has a care team: the ED nurse, Lin Xiao, coordinates
 at the bedside (duty `circulate`; posted at the ED nurse station, she comes to resus when there is work) and the
 learner is the doctor in charge (the team calls them "the doctor" / 医生). Two authored team scenarios route one fact
 the case records — his wife's answer to the anticoagulant question (`anticoagulants`) — through the team: the triage

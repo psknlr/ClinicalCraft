@@ -58,10 +58,10 @@ What is inside (contracts in [docs/PROTOCOL.md](../../docs/PROTOCOL.md)):
   headless `@clinicalcraft/world` runtime for the case's facility —
   clinical tools are spatially gated before the approval gate and again
   before the engine commits (refusals carry `hint.goal` and `hint.then`),
-  18 world tools look, walk, operate equipment, transport the patient,
-  delegate to staff and run skills, every body is held to its role's scope
-  of practice, every learner-facing vitals channel follows one check
-  (`vitalsView()`), walking charges simulated time, and `session.world()` /
+  19 world tools look, walk, ask where things are, operate equipment,
+  transport the patient, delegate to staff and run skills, every body is held
+  to its role's scope of practice, every learner-facing vitals channel
+  follows one check (`vitalsView()`), walking charges simulated time, and `session.world()` /
   `session.trace()` expose the world and the episode trace.
 - **World bridge client** (`src/bridge/`; PROTOCOL §13):
   `connectWorldBridge` lets a live session (the web world) accept an

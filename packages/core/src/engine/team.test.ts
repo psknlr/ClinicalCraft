@@ -224,6 +224,22 @@ describe("care team · in its facility", () => {
     expect(messages(withTeam(team), staffed)).toEqual([`team.members.1.staff: "nurse-2" is a circulating-nurse in facility "${f.id}" but a scrub-nurse in the team: give them one position`]);
   });
 
+  it("outside an operating room the member who only circulates keeps her post's position (the ED nurse stays a ward nurse); in an operating room she is the circulating nurse", () => {
+    const { f, catalogs } = facility();
+    const messages = (c: CaseDefinition, at: FacilityDefinition) => teamFacilityIssues(c, at, catalogs).map((i) => `${i.path}: ${i.message}`);
+    const ward = structuredClone(f);
+    ward.staff.find((s) => s.id === "nurse-1")!.position = "ward-nurse";
+    // the team's room is a consulting room: coordinating at the bedside, she is still the ward nurse her post says
+    expect(messages(withTeam(), ward)).toEqual([]);
+    // a position the team gives her is hers, and is held to her post's
+    const own = { ...TEAM, members: [{ staff: "nurse-1", duties: ["circulate"], position: "circulating-nurse" }, ...TEAM.members.slice(1)] };
+    expect(messages(withTeam(own), ward)).toEqual([`team.members.0.staff: "nurse-1" is a ward-nurse in facility "${f.id}" but a circulating-nurse in the team: give them one position`]);
+    // in an operating room the duty makes her the circulating nurse: a ward nurse there is refused
+    const theatre = structuredClone(ward);
+    theatre.rooms.find((r) => r.id === "consult")!.kind = "operating-room";
+    expect(messages(withTeam(), theatre)).toEqual([`team.members.0.staff: "nurse-1" is a ward-nurse in facility "${f.id}" but a circulating-nurse in the team: give them one position`]);
+  });
+
   it("a member from another room, a relief colleague nobody knows, a need for a cart, a placement that does not exist", () => {
     const { f, catalogs } = facility();
     const c = withTeam({
@@ -243,7 +259,7 @@ describe("care team · in its facility", () => {
   });
 });
 
-describe("care team · information a colleague holds (docs/TEAM.md §4.5)", () => {
+describe("care team · information a colleague holds (docs/TEAM.md §4.7)", () => {
   const informScenario = (inform: Json, extra: Json = {}) => ({
     id: "allergy-history",
     name: L("Allergy history"),

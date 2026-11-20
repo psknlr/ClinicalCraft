@@ -72,7 +72,7 @@ function expected(r: TeamRunResult, L: (typeof TEXT)[keyof typeof TEXT]): string
 
 const minute = (n: number) => (Math.round(n * 10) / 10).toString();
 
-/** One information handoff as a table row (docs/TEAM.md §4.5). */
+/** One information handoff as a table row (docs/TEAM.md §4.7). */
 function handoffRow(r: TeamRunResult, o: TeamObligation, L: (typeof TEXT)[keyof typeof TEXT]): string {
   const h = o.handoff;
   const body = (id: string) => id.replace(/^(staff|actor):/u, "");

@@ -91,7 +91,7 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /**
    * Learner asked a history question (button, free text, or attributed by the patient agent) — or, `via: "team"`, the
    * item's recorded answer reached the clinician in charge through the care team: a colleague who held it reported it
-   * and the clinician read it back (docs/TEAM.md §4.5; the session records it, never a learner).
+   * and the clinician read it back (docs/TEAM.md §4.7; the session records it, never a learner).
    */
   z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent", "team"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("examine"), findingId: IdSchema, ...base }).strict(),

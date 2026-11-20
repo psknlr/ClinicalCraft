@@ -20,7 +20,7 @@
  *   information told to them and checks the wound when asked; while the learner holds a place in the team, the stand-in
  *   surgeon (`./operator.ts`) — the surgeon duty on a member of staff's body — operates along the case's reference path,
  *   asking the team for its part (and reads back information told to it, as any surgeon does).
- * - information (docs/TEAM.md §4.5): whoever holds it reports it back when asked (any duty; `inform`: a colleague
+ * - information (docs/TEAM.md §4.7): whoever holds it reports it back when asked (any duty; `inform`: a colleague
  *   who holds information); the circulating nurse notices the need, asks the one named member who holds it, tells
  *   the person who needs it and confirms their read-back — or escalates, saying why, and what it held up still waits.
  *
@@ -118,7 +118,7 @@ export interface MemberView {
   tasks: readonly TeamTask[];
   /** Needs this member noticed that no task of theirs covers yet. */
   needs: readonly KnownNeed[];
-  /** Information needs this member noticed that no task of theirs covers yet (docs/TEAM.md §4.5; absent: none). */
+  /** Information needs this member noticed that no task of theirs covers yet (docs/TEAM.md §4.7; absent: none). */
   informs?: readonly KnownInform[];
   /** What this member holds of a history item — the case's recorded answer, as they learned it — or null (absent: nothing). */
   knows?(info: string): Bilingual | null;
@@ -356,7 +356,7 @@ function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskP
 }
 
 /* ------------------------------------------------------------------ */
-/* information a colleague holds (docs/TEAM.md §4.5)                   */
+/* information a colleague holds (docs/TEAM.md §4.7)                   */
 /* ------------------------------------------------------------------ */
 
 /** What the team calls an intervention (its id when the view cannot name it). */
@@ -679,7 +679,7 @@ export function afterAct(v: MemberView, task: TeamTask, outcome: { status: strin
 /* ------------------------------------------------------------------ */
 
 /**
- * Information told to the surgeon (docs/TEAM.md §4.5) — the simulated surgeon of observer mode, or the stand-in while the
+ * Information told to the surgeon (docs/TEAM.md §4.7) — the simulated surgeon of observer mode, or the stand-in while the
  * learner holds a place: read back (check-back), as it was said. Null for anything else (`./surgeon.ts` answers it).
  */
 function readBackInfo(v: MemberView, m: TeamMessage): Proposal | null {

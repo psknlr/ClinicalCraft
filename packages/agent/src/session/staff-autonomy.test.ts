@@ -10,7 +10,7 @@ import type { TestSession } from "../__fixtures__/harness.js";
 import { STAFF, system, theatreSession } from "./__fixtures__/theatre.js";
 
 const role = (t: TestSession, actorId: string) => t.session.staffStates().find((r) => r.actorId === actorId)!;
-const CARE = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"];
+const CARE = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "deliver_item", "give_intervention", "transport_patient"];
 
 describe("a colleague's role state", () => {
   it("lists the care team's work of theirs: the request she has not answered yet, then the task she carries", async () => {

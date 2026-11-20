@@ -506,12 +506,14 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
 /**
  * The assessment report as a client may see it before the case is complete: the case's handle, how many essential
  * tests are missing (not which), and every decision — locked ones too — by its number in case order, never its
- * authored id (ids can name the diagnosis or the answer).
+ * authored id (ids can name the diagnosis or the answer); in a place in the team, the decisions the team had answered
+ * before the learner joined (`joined.decisions`) by their numbers too.
  */
-function midCaseReport(report: AssessmentReport, c: Pick<CaseDefinition, "id" | "decisions">): Record<string, unknown> {
+export function midCaseReport(report: AssessmentReport, c: Pick<CaseDefinition, "id" | "decisions">): Record<string, unknown> {
   const { essentialMissing, ...investigations } = report.investigations;
   const decisions = report.decisions.map(({ id, ...d }) => ({ number: decisionNumber(c, id), ...d }));
-  return { ...report, caseId: caseHandle(c.id), investigations: { ...investigations, essentialMissingCount: essentialMissing.length }, decisions };
+  const joined = report.joined ? { joined: { ...report.joined, decisions: report.joined.decisions.map((id) => decisionNumber(c, id)) } } : {};
+  return { ...report, caseId: caseHandle(c.id), investigations: { ...investigations, essentialMissingCount: essentialMissing.length }, decisions, ...joined };
 }
 
 async function debrief(entry: McpSession): Promise<McpToolResult> {

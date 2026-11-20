@@ -64,7 +64,9 @@ function reportText(f: FieldAsk): string {
  * - another request: Read back (and "Wound checked" for a hold on closure);
  * - a read-back of the learner's own ask or need: Confirm / Not now — a confirmation or a decline without words;
  * - the stand-in's confirmation of the learner's read-back: do it in the surgery window, then report it;
- * - an escalation: Understood.
+ * - an escalation: Understood;
+ * - information told to them (a report carrying `about.info`, docs/TEAM.md §4.7): Read back, as said — only then is
+ *   it recorded in the case.
  */
 export function answersFor(cp: TeamCheckpoint, m: TeamMessage): TeamAnswer[] {
   if (cp.surgeon !== "learner" || m.to !== PRIMARY_ACTOR) return [];
@@ -95,6 +97,8 @@ export function answersFor(cp: TeamCheckpoint, m: TeamMessage): TeamAnswer[] {
     ];
   }
   if (m.kind === "escalate") return [{ id: "understood", label: tr("team.understood"), op: reply(m, "report", tr("team.understood")) }];
+  // information told to the learner (docs/TEAM.md §4.7): read back, as said — only then is it recorded in the case
+  if (m.kind === "report" && m.about.info) return [{ id: "readback", label: tr("team.readBack"), op: reply(m, "readback") }];
   return [];
 }
 

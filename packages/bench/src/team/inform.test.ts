@@ -1,5 +1,5 @@
 /**
- * An information handoff in a built-in case (audit 2026-11-12, P1-9; docs/TEAM.md §4.5): in acute-ischemic-stroke the
+ * An information handoff in a built-in case (audit 2026-11-12, P1-9; docs/TEAM.md §4.7): in acute-ischemic-stroke the
  * triage nurse holds his anticoagulant history (his wife's recorded answer); thrombolysis waits for it. The team
  * benchmark finds the case, runs both scenarios and records who asked, who supplied it, who received it and when,
  * and what the clinician in charge did next — the act it held up given only after it arrived; with the holder away

@@ -394,7 +394,7 @@ production-ready, and no live model has been run through these tools yet):
 
 - **MCP** — `start_case {"case_id": …, "embodied": true}` (or start the
   server with `clinicalcraft mcp --embodied`) gives your MCP client a body in
-  a headless world of its own: 17 world tools next to the clinical ones, and
+  a headless world of its own: 18 world tools next to the clinical ones, and
   a refusal's `data.hint.goal` to pass to `navigate_to` (see
   [MCP](#mcp-let-claude-code-codex-or-grok-cli-play-the-clinician)).
 
@@ -549,12 +549,12 @@ model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
 
 ## MCP: let Claude Code, Codex or Grok CLI play the clinician
 
-`clinicalcraft mcp` is a stdio MCP server with 42 tools: 18 for the clinical
+`clinicalcraft mcp` is a stdio MCP server with 43 tools: 18 for the clinical
 encounter (`list_cases`, `start_case`, `ask_patient`, `examine`,
 `order_test`, `read_result`, `intervene`, `answer_decision`, `finish_case`,
 `get_debrief`, …), 2 for an operation (`observe_field`, `operate`), 4 for
 new investigations (`order_study`, `list_studies`, `read_study`,
-`retrieve_report`), 17 world tools for embodied sessions (`observe_world`,
+`retrieve_report`), 18 world tools for embodied sessions (`observe_world`,
 `navigate_to`, `interact_object`, `transport_patient`, `delegate_task`,
 `execute_skill`, …) and the care team's `team` (a place in the team:
 `start_case {seat}`; docs/TEAM.md), each with MCP annotations, plus resources

@@ -1008,7 +1008,7 @@ describe("the stand-in surgeon", () => {
   });
 });
 
-describe("information a colleague holds (docs/TEAM.md §4.5)", () => {
+describe("information a colleague holds (docs/TEAM.md §4.7)", () => {
   const TRIAGE = "staff:triage";
   const INFO = "anticoagulants";
   const FACT = { en: "(Wife) No, none of them.", "zh-CN": "（妻子）没有，一样都没有。" };

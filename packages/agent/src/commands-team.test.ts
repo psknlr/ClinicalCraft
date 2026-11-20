@@ -172,10 +172,10 @@ describe("/team operating, and the session's words", () => {
     await t.session.close();
   });
 
-  it("/delegate: the usage names the target; a position in words before the task is whom it asks", async () => {
+  it("/delegate: the usage names the target and the task's params; a position in words before the task is whom it asks", async () => {
     const t = await theatreSession({ settingsPatch: { approvalMode: "bypass" } });
     const usage = await cmd(t, "delegate", "nurse");
-    expect(usage.text).toBe("Usage: /delegate <who> <task> [port|region|instrument|item|destination]");
+    expect(usage.text).toBe("Usage: /delegate <who> <task> [port|region|instrument|item|destination] [key=value…]");
     operatorSteps(t, ACCESS);
     const delegated = await cmd(t, "delegate", "first assistant hold_traction B");
     expect(delegated.text).not.toMatch(/^Usage/u);
