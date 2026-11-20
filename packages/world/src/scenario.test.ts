@@ -56,7 +56,7 @@ function drillCatalog(station: Record<string, unknown> = {}): EquipmentCatalog {
   return r.value;
 }
 
-function world(): TestWorld {
+function world(station: Record<string, unknown> = {}): TestWorld {
   const facility = structuredClone(loadFacility("general-hospital"));
   const at = (id: string, type: string, x: number, z: number) => ({ id, type, x, z, y: 0, rot: 0, room: "ed-resus" });
   facility.placements.push(at("drill", "t-drill", 36, -13.4), at("vitals", "t-vitals", 37.2, -13.4), at("tray", "t-tray", 34.8, -13.4), at("desk", "t-desk", 36, -12.2));
@@ -65,7 +65,7 @@ function world(): TestWorld {
     if (s.id === "attending") s.position = "anaesthetist";
     if (s.id === "ed-nurse") s.position = "circulating-nurse";
   }
-  return makeWorld("stemi-inferior-rv", { facility, catalogs: [...catalogs(), drillCatalog()] });
+  return makeWorld("stemi-inferior-rv", { facility, catalogs: [...catalogs(), drillCatalog(station)] });
 }
 
 const A = PRIMARY_ACTOR;
@@ -186,6 +186,23 @@ describe("a staff position's step, and a run's marks", () => {
     expect(closed.scenario).toBe("bleed");
     expect(closed.marks!.map((m) => m.status)).toEqual(["met", "met", "met"]);
     expect([state(w, "eq:vitals"), state(w, "eq:tray")]).toEqual(["stable", "sealed"]);
+  });
+
+  it("a substitution names whoever acted the way the step names people: by role, or by position where the step names one", async () => {
+    // a step assessed by role alone (content written before positions), and one that names a position
+    const w = world({ swab: op(["ready"], undefined, { assessed: ["clinician", "attending"] }), drape: op(["ready"], undefined, { assessed: ["clinician", "anaesthetist"] }) });
+    const byRole = await done(w, NURSE, "swab", DRILL);
+    expect(byRole.message).toContain("(Done by the nurse in place of the clinician or attending this step is assessed for: recorded as a role substitution, not assessed.)");
+    const byPosition = await done(w, NURSE, "drape", DRILL);
+    expect(byPosition.message).toContain("(Done by the circulating nurse in place of the clinician or anaesthetist this step is assessed for: recorded as a role substitution, not assessed.)");
+    const entries = w.runtime.runsOf(DRILL).current!.entries;
+    expect(entries.map((e) => [e.op, e.role, e.position, e.substitution?.assessed])).toEqual([
+      ["swab", "nurse", "circulating-nurse", ["clinician", "attending"]],
+      ["drape", "nurse", "circulating-nurse", ["clinician", "anaesthetist"]],
+    ]);
+    // the anaesthetist's own step, by role or by position, is no substitution
+    expect((await done(w, ANAESTHETIST, "swab", DRILL)).message).not.toMatch(/substitution/);
+    expect((await done(w, ANAESTHETIST, "drape", DRILL)).message).not.toMatch(/substitution/);
   });
 
   it("`first`: something else of theirs before the response misses the mark", async () => {

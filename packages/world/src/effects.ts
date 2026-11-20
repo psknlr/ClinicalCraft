@@ -297,8 +297,12 @@ export function commitExtras(host: EffectsHost, actor: ActorState, id: EntityId,
   const position = rules.positionOf(actor.id);
   const substitution = o.assessed && !o.assessed.includes(actor.role) && !(position && o.assessed.includes(position)) ? { assessed: [...o.assessed] } : null;
   if (substitution) {
-    const who = (x: string) => ((ACTOR_ROLES as readonly string[]).includes(x) ? roleName(x as ActorRole, L) : positionName(x, L)).toLowerCase();
-    note = worldMessage("ok.substitution", L, { role: (position ? positionName(position, L) : roleName(actor.role, L)).toLowerCase(), assessed: listText(substitution.assessed.map(who), L, "or") });
+    const isRole = (x: string) => (ACTOR_ROLES as readonly string[]).includes(x);
+    const who = (x: string) => (isRole(x) ? roleName(x as ActorRole, L) : positionName(x, L)).toLowerCase();
+    // whoever acted is named the way the step names people: by role where it is assessed by role alone ("the nurse"),
+    // by their position where the step names a position ("the circulating nurse")
+    const byPosition = position !== null && position !== undefined && substitution.assessed.some((x) => !isRole(x));
+    note = worldMessage("ok.substitution", L, { role: (byPosition ? positionName(position, L) : roleName(actor.role, L)).toLowerCase(), assessed: listText(substitution.assessed.map(who), L, "or") });
   }
   const entry: RunEntry = {
     op: o.id,
