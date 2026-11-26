@@ -17,6 +17,7 @@
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { PrescriptionPredicate, PrescriptionStatus } from "../schema/common.js";
+import type { FacilityDefinition } from "../schema/facility.js";
 import type {
   Dispensing,
   Formulation,
@@ -36,6 +37,7 @@ import type {
 import type { SessionState } from "../schema/session.js";
 import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
+import type { Issue } from "./types.js";
 
 type Bi = { en: string; "zh-CN": string };
 
@@ -400,6 +402,20 @@ export function preparationDiscrepancies(c: CaseDefinition, s: SessionState, pre
   const v = prep ? prescriptionVersions(s, prescription).find((x) => x.n === prep.version) : undefined;
   const formulation = def && v ? formulationOf(def, v.formulation) : undefined;
   return def && prep && formulation ? supplyDiscrepancies(def, formulation, prep.picks, true, undefined) : [];
+}
+
+/**
+ * The case's prescriptions in its facility (`cases validate` with the case's facility): the dispensary each names —
+ * who reviews every version and, `dispensedBy: "staff"`, supplies it — is a member of the facility's staff, by id (a
+ * room template's staff are `<instance>.<id>`) or by role. The device it is dispensed at is a capability gap of the
+ * case (`caseCapabilityGaps`), not checked here.
+ */
+export function prescriptionFacilityIssues(c: CaseDefinition, f: FacilityDefinition): Issue[] {
+  return (c.prescriptions ?? []).flatMap((def, i) =>
+    f.staff.some((s) => s.id === def.dispensary || s.role === def.dispensary)
+      ? []
+      : [{ path: `prescriptions.${i}.dispensary`, message: `facility "${f.id}" has no staff "${def.dispensary}" (an id or a role) to review prescription "${def.id}"${def.dispensedBy === "staff" ? " and supply it" : ""}`, severity: "error" as const }],
+  );
 }
 
 /** `{ prescription: {…} }`: every given field holds for the named prescription — or, with no `id`, for one of the case's. */

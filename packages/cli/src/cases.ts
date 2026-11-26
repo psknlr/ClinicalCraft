@@ -19,6 +19,7 @@ import {
   supersededIn,
   t,
   staffTaskFacilityIssues,
+  prescriptionFacilityIssues,
   teamFacilityIssues,
   verifyCase,
   type CaseDefinition,
@@ -399,9 +400,11 @@ export function facilityIssues(c: CaseDefinition, content: Pick<LoadedContent, "
       message: `facility "${f.id}" lacks ${g.missing.join(", ")} for ${g.kind} "${g.id}" (needed by ${g.neededBy.join(", ")})${g.blocking ? ": the case cannot be completed there" : ""}`,
       severity: g.blocking ? ("error" as const) : ("warning" as const),
     })),
-    // the care team in that facility (docs/TEAM.md §6), and the staff's standing tasks (§5.1)
+    // the care team in that facility (docs/TEAM.md §6), the staff's standing tasks (§5.1), and the dispensary of each
+    // prescription (docs/PRESCRIPTIONS.md §2)
     ...teamFacilityIssues(c, f, catalogs),
     ...staffTaskFacilityIssues(c, f, catalogs),
+    ...prescriptionFacilityIssues(c, f),
   ];
 }
 

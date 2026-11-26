@@ -96,7 +96,8 @@ before anything is signed).
 `cases validate` checks every id (a line's product, a look-alike, a rule's products and formulations, a deviation's
 formulation and substitutions, every condition), warns about a `signableWhen` without `refusal`, a deviation that
 changes nothing or can never apply, and reports a facility with no device that provides `requires` as a capability
-gap. A prescription id must differ from every intervention id.
+gap, and a `dispensary` that is not a member of the facility's staff as an error (an id — a room template's staff are
+`<instance>.<id>`, e.g. `dispensary.dispenser` — or a role). A prescription id must differ from every intervention id.
 
 ## 3. The review
 

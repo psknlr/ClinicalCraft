@@ -19,6 +19,7 @@ import {
   parseFacility,
   preparationDiscrepancies,
   prescriptionDef,
+  prescriptionFacilityIssues,
   prescriptionStatus,
   reduce,
   replay,
@@ -538,6 +539,18 @@ describe("prescriptions in validation and verification", () => {
     );
     const gaps = caseCapabilityGaps(c, facility.value, [catalog.value]).filter((g) => g.kind === "prescription");
     expect(gaps).toMatchObject([{ kind: "prescription", id: "discharge", missing: ["tcm-dispensing"], neededBy: ["supply"], blocking: true }]);
+  });
+
+  it("the dispensary a prescription names is a member of the facility's staff, by id or by role", () => {
+    const facility = parseFacility(fixture("mini.facility.json"));
+    if (!facility.ok) throw new Error("fixtures");
+    const staff = facility.value.staff[0]!;
+    const named = (dispensary: string) => prescriptionFacilityIssues(load(rxJson((p) => (p.dispensary = dispensary))), facility.value);
+    expect(named(staff.id)).toEqual([]);
+    expect(named(staff.role)).toEqual([]);
+    const issues = named("dispenser");
+    expect(issues).toMatchObject([{ path: "prescriptions.0.dispensary", severity: "error" }]);
+    expect(issues[0]!.message).toContain('has no staff "dispenser"');
   });
 
   it("the same actions replay to the same record", () => {

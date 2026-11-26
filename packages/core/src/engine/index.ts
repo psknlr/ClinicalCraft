@@ -120,6 +120,7 @@ export {
   openPreparation,
   preparationDiscrepancies,
   prescriptionDef,
+  prescriptionFacilityIssues,
   prescriptionStatus,
   prescriptionVersions,
   unreadVersion,
