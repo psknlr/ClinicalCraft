@@ -5,34 +5,50 @@
   "suite": "embodied-v1",
   "category": "clinical-workflow",
   "title": {
-    "zh-CN": "CTPA：把患者连床推到 CT，再送回病房",
-    "en": "CTPA: wheel the patient to CT and back to the ward"
+    "zh-CN": "CTPA：病房开单，带监护送 CT，阅读报告后处置",
+    "en": "CTPA: order it on the ward, take her to CT monitored, read the report and act on it"
   },
   "instruction": {
-    "zh-CN": "把这位病房患者连床推到 CT 扫描仪，在扫描仪旁申请 CT 肺动脉造影（CTPA），然后把她送回病房床位。",
-    "en": "Wheel this ward patient on her bed to the CT scanner, request a CT pulmonary angiogram there, then take her back to her ward bed."
+    "zh-CN": "这位术后病房患者可能发生了肺栓塞，正在心电监护。先在她床旁申请 CT 肺动脉造影（CTPA），然后带着床旁的便携监护仪，用病床把她推到 CT 扫描仪（她躺上扫描床后才做检查），再在监护下把她送回病房床位。报告发出后阅读报告，并呼叫肺栓塞救治团队（PERT）。",
+    "en": "This post-operative ward patient may have a pulmonary embolism and is on a monitor. Order a CT pulmonary angiogram at her bedside, then take her on her bed to the CT scanner with the portable monitor at her bedside (the scan is done once she is on it) and bring her back to her ward bed, still monitored. Read the report once it is released and activate the PE response team (PERT)."
   },
   "caseId": "pulmonary-embolism-postop",
   "locale": "zh-CN",
   "setup": {
-    "approvals": "approve"
+    "approvals": "approve",
+    "clinical": [
+      {
+        "type": "intervene",
+        "interventionId": "o2-nasal"
+      },
+      {
+        "type": "intervene",
+        "interventionId": "monitoring"
+      }
+    ]
   },
   "predicates": [
     {
+      "studyStages": {
+        "investigation": "ctpa"
+      }
+    },
+    {
+      "world": {
+        "kind": "patientTransit",
+        "monitored": true,
+        "roles": ["clinician", "nurse"]
+      }
+    },
+    {
       "clinical": {
-        "ordered": "ctpa"
+        "intervened": "consult-pert"
       }
     },
     {
       "world": {
         "kind": "patientAt",
         "slot": "ward-1"
-      }
-    },
-    {
-      "world": {
-        "kind": "actorInRoom",
-        "room": "ward"
       }
     },
     {
@@ -50,10 +66,6 @@
   "reference": {
     "steps": [
       {
-        "op": "transport",
-        "destination": "eq:ct-scanner"
-      },
-      {
         "op": "clinical",
         "action": {
           "type": "order",
@@ -62,7 +74,25 @@
       },
       {
         "op": "transport",
+        "destination": "eq:ct-scanner"
+      },
+      {
+        "op": "transport",
         "destination": "home"
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "ctpa"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "consult-pert"
+        }
       }
     ]
   },
@@ -78,25 +108,50 @@
         }
       },
       {
-        "tool": "transport_patient",
+        "tool": "order_test",
         "args": {
-          "destination": "eq:ct-scanner"
+          "investigation_id": "ctpa"
         }
       },
       {
-        "tool": "interact_object",
+        "tool": "transport_patient",
         "args": {
-          "target": "eq:ct-scanner",
-          "operation": "use",
-          "parameters": {
-            "investigation": "ctpa"
+          "destination": "eq:ct-scanner",
+          "monitor": true
+        }
+      },
+      {
+        "tool": "transport_patient",
+        "args": {
+          "destination": "home",
+          "monitor": true
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
           }
         }
       },
       {
-        "tool": "transport_patient",
+        "tool": "wait",
         "args": {
-          "destination": "home"
+          "minutes": 30
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ctpa"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "consult-pert"
         }
       }
     ]

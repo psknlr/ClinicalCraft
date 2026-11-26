@@ -16,7 +16,8 @@
  *                  the real-time clock (`agentDriving`), so travel is charged once (by the world).
  */
 import { actionIntent } from "@clinicalcraft/agent";
-import { regionAt, t, type CaseDefinition, type ClinicalAction, type FacilityDefinition } from "@clinicalcraft/core";
+import { t, type CaseDefinition, type ClinicalAction, type FacilityDefinition } from "@clinicalcraft/core";
+import { placeAt } from "../world/region.js";
 import type { Op } from "@clinicalcraft/agent";
 import { PRIMARY_ACTOR, type ActionHint, type ActorId, type ClinicalIntent, type NavGoal, type NavPlan, type PatientPlace, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
 import type { BodyMove, PatientSpot, WorldApi } from "../contracts.js";
@@ -103,14 +104,16 @@ export class EmbodiedLink {
   /**
    * Send the avatar's pose to the world (`world_pose`) when it changed — on every throttled move of the
    * renderer (~10 Hz) and right before a position-dependent submission. Never while the world's Mover
-   * drives the avatar (the world commits that pose itself).
+   * drives the avatar (the world commits that pose itself). Any change is sent, however small: the world's
+   * room is then the room of the place the HUD names (a few millimetres decide at a room's edge — the CT / MRI
+   * wall, audit 2026-11-12 P2-15).
    */
   syncPose(): void {
     const api = this.o.renderer();
     if (this.disposed || !this.world || !api || this.o.mover.isMoving(PRIMARY_ACTOR)) return;
     const p = api.position;
     if (![p.x, p.y, p.z, p.yaw, p.pitch].every(Number.isFinite)) return;
-    const key = `${p.x.toFixed(2)},${p.y.toFixed(2)},${p.z.toFixed(2)},${p.yaw.toFixed(3)},${p.pitch.toFixed(3)},${p.level}`;
+    const key = `${p.x},${p.y},${p.z},${p.yaw},${p.pitch},${p.level}`;
     if (key === this.lastPose) return;
     this.lastPose = key;
     // out of band: applied at once, never queued, never transcribed (not logged into the store either)
@@ -202,9 +205,13 @@ export class EmbodiedLink {
     const api = this.o.renderer();
     if (this.disposed || !world || !api) return;
     for (const pid of api.statefulEquipment()) {
-      const state = world.stateOf(`eq:${pid}`);
+      const id = `eq:${pid}`;
+      const state = world.stateOf(id);
+      // a carried item is drawn in its own lifecycle state (a filled, labelled specimen tube: audit 2026-11-12 P2-12),
+      // never "held"; one that never changed keeps the look it was built with
+      const drawn = state === "held" || state === "equipped" ? (world.snapshot().entities[id]?.state ?? null) : state;
       // (none: equipment the world does not know — left as it was built)
-      if (state !== null) api.setEquipmentState(pid, state);
+      if (drawn !== null) api.setEquipmentState(pid, drawn);
     }
   }
 
@@ -245,6 +252,10 @@ export class EmbodiedLink {
         else if (!ev.escort && ev.actorId === null) this.o.toast(tr("emb.toast.patientStopped", { patient: this.patientName() }), "", "info", "patient-escort");
         return;
       }
+      case "item.held":
+        // put down (or handed on): drawn again in its own state where it lies
+        if (!ev.held) this.syncLooks();
+        return;
       case "patient.posture": {
         // clinical state changed the posture (positioning, a transfer): the NPC follows
         const api = this.o.renderer();
@@ -273,7 +284,16 @@ export class EmbodiedLink {
       const e = world?.entity(place.provider);
       if (e) return t(e.name, L);
     }
-    return regionAt(this.o.facility, place.x, place.z, L, place.level);
+    return this.placeName({ level: place.level, x: place.x, z: place.z });
+  }
+
+  /**
+   * A place by name: asked of the world (`WorldRuntime.regionName`, THE region lookup — the one the map's label and
+   * the badge use, P2-15; audit W5), the same lookup over the facility only while no world model runs.
+   */
+  private placeName(at: { level: string; x: number; z: number }): string {
+    const L = this.o.locale();
+    return this.world?.regionName(at, L) ?? placeAt(this.o.facility, at.x, at.z, L, at.level).name;
   }
 
   /** A device's stored behaviour state (ECG cart: idle / prepared / connected / completed), else null. */
@@ -314,6 +334,17 @@ export class EmbodiedLink {
     return best ? placementIdOf(best.id) : null;
   }
 
+  /**
+   * The monitor that travels with the patient in an actor's `transport_patient` (the world's `transit.monitor`, EMBODIED
+   * §8.7): drawn travelling beside their bed, never left at the bedside it came from (audit W4).
+   */
+  riding(actorId: ActorId): string | null {
+    const world = this.world;
+    if (!world || this.tasks.get(actorId) !== "transport_patient") return null;
+    const transit = world.patientPlace()?.transit;
+    return transit?.by === actorId && transit.monitor ? placementIdOf(transit.monitor) : null;
+  }
+
   /** The patient an actor takes along in its `transport_patient` (lying on the trolley, or walking): their slot and posture. */
   carrying(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null {
     const world = this.world;
@@ -326,8 +357,7 @@ export class EmbodiedLink {
   onBodyStart(actorId: ActorId, plan: Extract<NavPlan, { ok: true }>): void {
     const world = this.world;
     if (!world || !staffIdOf(actorId)) return;
-    const L = this.o.locale();
-    const place = regionAt(this.o.facility, plan.target.x, plan.target.z, L, plan.target.level);
+    const place = this.placeName({ level: plan.target.level, x: plan.target.x, z: plan.target.z });
     this.o.toast(tr("emb.toast.walking", { who: this.staffName(actorId), place }), "", "info", `walk-${actorId}`);
   }
 
@@ -579,6 +609,11 @@ export class EmbodiedLink {
     return this.view.screenKey(now);
   }
 
+  /** Whose vitals a device's live screen in the 3D world shows now: the world's answer (`WorldView.screenSlot`). */
+  screenSlot(placementId: string): string | null {
+    return this.view.screenSlot(placementId);
+  }
+
   /** The world's verdict on an act from where the body stands (`WorldView.verdict`). */
   verdict(action: ClinicalAction): Verdict {
     return this.view.verdict(action);
@@ -596,11 +631,6 @@ export class EmbodiedLink {
   /** The patient's entity id (`patient:<slot>`), or null. */
   patientId(): string | null {
     return this.o.slotId && this.world?.entity(`patient:${this.o.slotId}`) ? `patient:${this.o.slotId}` : null;
-  }
-
-  /** Where the learner's body is ("Resus room" / "outside"), the HUD badge. */
-  placeLabel(): string | null {
-    return this.o.app.session.placeLabel();
   }
 
   /** The avatar is being walked by the world (an agent, an auto-approach, "Go there"). */

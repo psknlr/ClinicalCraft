@@ -40,6 +40,7 @@ export async function caseIndexModule(contentDir: string): Promise<{ code: strin
 /** Serve `virtual:clinicalcraft/case-index` for `contentDir` (packages/content). */
 export function caseIndexPlugin(opts: { contentDir: string }): Plugin {
   const casesDir = path.join(path.resolve(opts.contentDir), "cases");
+  const casesPrefix = casesDir.replace(/\\/g, "/") + "/";
   let serving = false;
   return {
     name: "clinicalcraft-case-index",
@@ -57,9 +58,14 @@ export function caseIndexPlugin(opts: { contentDir: string }): Plugin {
       return code;
     },
     configureServer(server) {
+      // Content is a sibling of the web root. Watch the directory as well as currently imported files,
+      // so a new case folder is discovered without restarting Vite.
+      server.watcher?.add(casesDir);
       // A case file added, changed or removed: rebuild the index and reload the page.
       const changed = (file: string) => {
-        if (!file.startsWith(casesDir + path.sep) || !file.endsWith("case.json")) return;
+        // Chokidar uses forward slashes; path.join uses backslashes on Windows.
+        const normalized = file.replace(/\\/g, "/");
+        if (!normalized.startsWith(casesPrefix) || !normalized.endsWith("/case.json")) return;
         const mod = server.moduleGraph.getModuleById(RESOLVED_ID);
         if (mod) server.moduleGraph.invalidateModule(mod);
         server.ws.send({ type: "full-reload" });

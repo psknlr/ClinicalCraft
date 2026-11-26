@@ -83,6 +83,8 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
 
   // IV access first: an IV drug needs a cannula in place (patient state, EMBODIED §6 G7) — else it is refused before any approval
   await page.locator("#tab-treat").click();
+  // every treatment of the case is listed only on request (the full list's section, closed at first)
+  await page.locator(".treat-all > summary").click();
   await page.locator('[data-intervention="iv-access"]').click();
   await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.interventions.some((i: any) => i.interventionId === "iv-access"))).toBe(true);
 

@@ -178,7 +178,9 @@ function dropCollider(host: PortableHost, rec: PortableRecord): void {
 /**
  * Draw a portable placement at a spot of the world model (`null`: hidden —
  * carried by someone; `"home"`: back where it was authored). Its collider,
- * aim target, map/locate position and live screens follow.
+ * aim target, map/locate position and live screens follow — where they are
+ * drawn; whose vitals they show is the world model's answer where the cart
+ * stands now (the frame loop's `screenSource`), never the bed it was built by.
  */
 export function placePortable(host: PortableHost, rec: PortableRecord, at: { x: number; y: number; z: number; level: string; rot?: number } | "home" | null): void {
   // never moved: it is drawn at home in the static batches already
@@ -245,17 +247,23 @@ export function placePortable(host: PortableHost, rec: PortableRecord, at: { x: 
 /** How far in front of the walker (m) a pushed cart is drawn. */
 export const PUSH_AHEAD = 0.95;
 
-/** Start / stop pushing: the collider is lifted while the cart travels with its walker. */
-export function pushPortable(host: PortableHost, rec: PortableRecord, by: string | null): void {
+/** Start / stop pushing (in front of the walker, or at their side: `at`): the collider is lifted while the cart travels with its walker. */
+export function pushPortable(host: PortableHost, rec: PortableRecord, by: string | null, at: "ahead" | "beside" = "ahead"): void {
   homeOf(host.ctx, rec);
   if (by) {
     promotePortable(host, rec);
     rec.pushedBy = by;
+    rec.pushAt = at;
     dropCollider(host, rec);
     return;
   }
   rec.pushedBy = null;
+  rec.pushAt = undefined;
 }
+
+/** Where (m) equipment travelling at a walker's side is drawn: to their right, a little ahead (beside the bed's head end). */
+export const BESIDE_SIDE = 0.8;
+export const BESIDE_AHEAD = 0.35;
 
 /** How far in front of the walker (m) a pushed trolley's centre is drawn: half its length beyond the walker's hands. */
 export function trolleyAhead(rec: Pick<PortableRecord, "trolley">): number {
@@ -268,8 +276,11 @@ export function trolleyAhead(rec: Pick<PortableRecord, "trolley">): number {
  * (a bed) is turned to lie along the walking direction.
  */
 export function dragPortable(host: PortableHost, rec: PortableRecord, x: number, z: number, yaw: number, level: string): void {
-  const ahead = trolleyAhead(rec);
-  const ax = x - Math.sin(yaw) * ahead, az = z - Math.cos(yaw) * ahead;
+  // at the walker's side (the monitor travelling with the patient, beside their bed), else in front of them
+  const beside = rec.pushAt === "beside";
+  const ahead = beside ? BESIDE_AHEAD : trolleyAhead(rec);
+  const side = beside ? BESIDE_SIDE : 0;
+  const ax = x - Math.sin(yaw) * ahead + Math.cos(yaw) * side, az = z - Math.cos(yaw) * ahead - Math.sin(yaw) * side;
   const lift = rec.origin.y - host.elevation(rec.origin.level);
   if (level !== rec.level) {
     host.levelRoot(level).add(rec.group);

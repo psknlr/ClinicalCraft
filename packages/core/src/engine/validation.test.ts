@@ -305,7 +305,11 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
       { id: "x3", domain: "management", text: "x", weight: 1, met: { intervened: "epi", minCount: 3 } },
       { id: "x4", domain: "efficiency", text: "x", weight: 1, met: { elapsed: { gte: 10, lte: 5 } } },
       { id: "x5", domain: "efficiency", text: "x", weight: 1, met: { hints: { gte: 2, lte: 1 } } },
+      { id: "x6", domain: "management", text: "x", weight: 1, met: { intervened: "epi", whenIndicated: true } },
     );
+    // "epi" has an indicatedWhen in the fixture; an intervention without one is never given while indicated
+    const noWindow = c.interventions.find((i) => !i.indicatedWhen)!;
+    c.rubric.push({ id: "x7", domain: "management", text: "x", weight: 1, met: { intervened: noWindow.id, whenIndicated: true } });
     const issues = checkCaseIntegrity(c);
     const n = SIM.rubric.length;
     expect(issues.map((i) => [i.path, i.severity])).toEqual([
@@ -314,6 +318,7 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
       [`rubric.${n + 2}.met.minCount`, "error"],
       [`rubric.${n + 3}.met.elapsed`, "error"],
       [`rubric.${n + 4}.met.hints`, "error"],
+      [`rubric.${n + 6}.met.whenIndicated`, "error"],
       [`investigations.${SIM.investigations.length}.results`, "warning"],
     ]);
     expect(at(issues, `rubric.${n}.met.read`)[0].message).toMatch(/no result in any phase/);
@@ -387,5 +392,146 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
       ["solution.26.optionIds", "error"],
       ["phases.2", "warning"],
     ]);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* The reference path is the intended course (audit P1-5)              */
+/* ------------------------------------------------------------------ */
+
+describe("verifyCase: the reference path gives nothing while contraindicated", () => {
+  /** SIM's reference path with the beta-blocker (contraindicated: always) given before `finish`. */
+  const withBeta = (patch: (c: CaseDefinition) => void = () => undefined): CaseDefinition => {
+    const c = structuredClone(SIM);
+    c.solution = [...c.solution.slice(0, -1), { type: "intervene", interventionId: "beta-blocker" }, { type: "finish" }];
+    patch(c);
+    return c;
+  };
+  const beta = (c: CaseDefinition) => c.interventions.find((i) => i.id === "beta-blocker")!;
+
+  it("flags a reference path with a contraindicated step, at that step", () => {
+    const r = verifyCase(withBeta());
+    expect(r.ok).toBe(false);
+    expect(r.issues).toEqual([{ path: "solution.8", message: expect.stringMatching(/^gives "beta-blocker" while it is contraindicated: the reference path is the intended course/), severity: "error" }]);
+    // the same step on a critical intervention says it is a critical safety failure
+    const critical = verifyCase(withBeta((c) => (beta(c).critical = true)));
+    expect(critical.issues.map((i) => i.message)).toEqual([expect.stringMatching(/contraindicated — a critical safety failure:/)]);
+    expect(critical.assessment.safety.passed).toBe(false);
+  });
+
+  it("accepts it when the case declares the step as error-recognition and recovery teaching", () => {
+    const errorRecovery = { interventions: ["beta-blocker"], rationale: { en: "Recognise and reverse the beta-blocker's harm.", "zh-CN": "识别并纠正β受体阻滞剂的危害。" } };
+    const r = verifyCase(withBeta((c) => (c.errorRecovery = errorRecovery)));
+    expect(r.issues).toEqual([]);
+    expect(r.ok).toBe(true);
+    // declared and critical: accepted, with a warning that the path's own assessment does not pass safety
+    const critical = verifyCase(withBeta((c) => ((c.errorRecovery = errorRecovery), (beta(c).critical = true))));
+    expect(critical.ok).toBe(true);
+    expect(critical.issues).toEqual([{ path: "solution.8", message: expect.stringMatching(/as errorRecovery declares — a critical safety failure/), severity: "warning" }]);
+    // a declaration the path never uses is stale
+    const stale = structuredClone(SIM);
+    stale.errorRecovery = errorRecovery;
+    expect(verifyCase(stale).issues).toEqual([{ path: "errorRecovery.interventions.0", message: 'the reference path never gives "beta-blocker" while it is contraindicated: drop it from errorRecovery', severity: "warning" }]);
+    expect(verifyCase(stale).ok).toBe(true);
+  });
+
+  it("flags a dose error and a safety-critical gate holding at the end, whatever is declared for contraindications", () => {
+    const dosed = structuredClone(SIM);
+    dosed.interventions.find((i) => i.id === "epi")!.doseSpec = { amount: 0.5, unit: "mg", route: "IM" };
+    const step = dosed.solution.findIndex((a) => a.type === "intervene" && a.interventionId === "epi");
+    dosed.solution[step] = { type: "intervene", interventionId: "epi", ordered: { text: "IM adrenaline 5 mg", dose: { amount: 5, unit: "mg", route: "IM" } } };
+    const r = verifyCase(dosed);
+    expect(r.ok).toBe(false);
+    expect(r.issues[0]).toEqual({ path: `solution.${step}`, message: 'the dose ordered for "epi" (5 mg IM) conflicts with its preset (0.5 mg IM): it was not given — a critical dose error', severity: "error" });
+    // the same order at the preset dose verifies
+    dosed.solution[step] = { type: "intervene", interventionId: "epi", ordered: { text: "IM adrenaline 500 micrograms", dose: { amount: 500, unit: "microgram", route: "IM" } } };
+    expect(verifyCase(dosed).issues).toEqual([]);
+    const gated = structuredClone(SIM);
+    gated.safetyGates = [{ id: "no-airway-check", label: "Airway never assessed", when: { not: { examined: "chest" } }, verdict: "safety-critical" }];
+    expect(verifyCase(gated).issues).toEqual([{ path: "safetyGates.0", message: 'the safety-critical gate "no-airway-check" holds at the end of the reference path', severity: "error" }]);
+  });
+
+  it("errorRecovery is narrow: it excuses only the gate its own error sets off, never a dose error", () => {
+    const errorRecovery = { interventions: ["beta-blocker"], rationale: { en: "Recognise and reverse the beta-blocker's harm.", "zh-CN": "识别并纠正β受体阻滞剂的危害。" } };
+    const gates: CaseDefinition["safetyGates"] = [
+      // set off by the declared error: its `when` names the declared intervention
+      { id: "beta-given", label: "A beta-blocker in anaphylaxis", when: { intervened: "beta-blocker" }, verdict: "safety-critical" },
+      // unrelated to it
+      { id: "no-airway-check", label: "Airway never assessed", when: { not: { examined: "chest" } }, verdict: "safety-critical" },
+    ];
+    const r = verifyCase(withBeta((c) => ((c.errorRecovery = errorRecovery), (c.safetyGates = gates))));
+    expect(r.ok).toBe(false);
+    expect(r.issues).toEqual([
+      { path: "safetyGates.0", message: 'the safety-critical gate "beta-given" holds at the end of the reference path, set off by an error errorRecovery declares', severity: "warning" },
+      { path: "safetyGates.1", message: 'the safety-critical gate "no-airway-check" holds at the end of the reference path', severity: "error" },
+    ]);
+    // a gate on a flag the declared intervention sets is its consequence too
+    const flagged = verifyCase(
+      withBeta((c) => {
+        c.errorRecovery = errorRecovery;
+        c.interventions.find((i) => i.id === "beta-blocker")!.setFlags = ["beta-blocked"];
+        c.safetyGates = [{ id: "beta-flag", label: "Beta-blocked", when: { flag: "beta-blocked" }, verdict: "safety-critical" }];
+      }),
+    );
+    expect(flagged.issues).toEqual([{ path: "safetyGates.0", message: expect.stringContaining("set off by an error errorRecovery declares"), severity: "warning" }]);
+    expect(flagged.ok).toBe(true);
+    // a dose error is never excused, even of a declared intervention
+    const dosed = withBeta((c) => {
+      c.errorRecovery = errorRecovery;
+      const iv = c.interventions.find((i) => i.id === "beta-blocker")!;
+      iv.doseSpec = { amount: 5, unit: "mg", route: "IV" };
+      c.solution = [...c.solution.slice(0, -2), { type: "intervene", interventionId: "beta-blocker", ordered: { text: "metoprolol 50 mg IV" } }, { type: "finish" }];
+    });
+    const d = verifyCase(dosed);
+    expect(d.ok).toBe(false);
+    expect(d.issues.filter((i) => i.severity === "error").map((i) => i.message)).toEqual([expect.stringMatching(/^the dose ordered for "beta-blocker" \(50 mg IV\) conflicts with its preset \(5 mg IV\): it was not given — a critical dose error$/)]);
+  });
+});
+
+describe("checkCaseIntegrity: critical interventions, preset doses, elapsedSince, errorRecovery", () => {
+  it("checks the new fields' references and warns where they can have no effect", () => {
+    const c = structuredClone(SIM);
+    const epi = c.interventions.findIndex((i) => i.id === "epi");
+    c.interventions[epi]!.critical = true; // no contraindicatedWhen
+    c.interventions[epi]!.doseSpec = { amount: 0.01, unit: "mg/kg", route: "IM" }; // the patient has no weight
+    c.errorRecovery = { interventions: ["ghost", "epi"], rationale: "x" };
+    c.rubric.push(
+      { id: "y1", domain: "management", text: "x", weight: 1, met: { elapsedSince: { intervened: "ghost", gte: 5 } } },
+      { id: "y2", domain: "management", text: "x", weight: 1, met: { elapsedSince: { intervened: "epi", gte: 10, lte: 5 } } },
+    );
+    const n = SIM.rubric.length;
+    const issues = checkCaseIntegrity(c).filter((i) => /^(interventions|errorRecovery|rubric)/.test(i.path));
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      [`rubric.${n}.met.elapsedSince.intervened`, "error"],
+      [`rubric.${n + 1}.met.elapsedSince`, "error"],
+      [`interventions.${epi}.critical`, "warning"],
+      [`interventions.${epi}.doseSpec.unit`, "warning"],
+      ["errorRecovery.interventions.0", "error"],
+      ["errorRecovery.interventions.1", "warning"],
+    ]);
+    expect(at(issues, `rubric.${n + 1}.met.elapsedSince`)[0].message).toMatch(/empty range/);
+    // with a weight, and a contraindication, nothing to say
+    c.patient.weightKg = 60;
+    c.interventions[epi]!.contraindicatedWhen = { flag: "collapsed" };
+    c.errorRecovery = { interventions: ["epi"], rationale: "x" };
+    c.rubric.splice(n, 2);
+    expect(checkCaseIntegrity(c).filter((i) => /^(interventions|errorRecovery)/.test(i.path))).toEqual([]);
+  });
+
+  it("parses the new fields and rejects a malformed preset dose", () => {
+    const json = fixture("mini-anaphylaxis.case.json");
+    json.interventions[0].doseSpec = { amount: 0.5, unit: "mg", route: "IM" };
+    json.interventions[0].critical = false;
+    json.errorRecovery = { interventions: ["beta-blocker"], rationale: { en: "x", "zh-CN": "x" } };
+    json.rubric[0].met = { elapsedSince: { intervened: "epi", gte: 5 } };
+    expect(parseCase(json).ok).toBe(true);
+    for (const bad of [{ amount: 0.5, unit: "µg" }, { amount: -1, unit: "mg" }, { amount: 0.5, unit: "mg", route: "intramuscular" }, { amount: 2, upTo: 1, unit: "mg" }]) {
+      const j = fixture("mini-anaphylaxis.case.json");
+      j.interventions[0].doseSpec = bad;
+      expect(parseCase(j).ok, JSON.stringify(bad)).toBe(false);
+    }
+    const empty = fixture("mini-anaphylaxis.case.json");
+    empty.errorRecovery = { interventions: [], rationale: "x" };
+    expect(parseCase(empty).ok).toBe(false);
   });
 });

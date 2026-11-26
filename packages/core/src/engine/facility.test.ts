@@ -483,6 +483,14 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(cover({ posture: "lateral", cover: "blanket" })).toBe("blanket");
     expect(cover({ posture: "lateral", cover: "drapes", draped: true })).toBe("drapes");
     expect(cover({ posture: "lateral", cover: "blanket", draped: true })).toBeNull();
+    // lying flat — on its back, or face down as on a treatment couch — it is in its clothes or under towels
+    expect(cover({ posture: "prone" })).toBe("clothes");
+    expect(cover({ posture: "prone", cover: "towels" })).toBe("towels");
+    expect(cover({ posture: "lying", cover: "towels" })).toBe("towels");
+    expect(cover({ posture: "lying", cover: "clothes" })).toBe("clothes");
+    raw.equipment[0].manikin = { posture: "prone", cover: "towels", breathing: "both", y: 0.62 };
+    const couch = parseCatalog(raw);
+    expect(couch.ok && couch.value.equipment[0].manikin).toEqual({ posture: "prone", cover: "towels", breathing: "both", flex: 0, asleep: false, x: 0, z: 0, y: 0.62, rot: 0 });
     for (const [bad, at] of [
       [{ posture: "lying", draped: true }, "equipment.0.manikin"],
       [{ posture: "lying", cover: "blanket" }, "equipment.0.manikin"],
@@ -492,7 +500,14 @@ describe("checkCatalogs: embodiment fields", () => {
       [{ posture: "sitting", flex: 9 }, "equipment.0.manikin"],
       [{ posture: "standing", sideUp: "right" }, "equipment.0.manikin"],
       [{ posture: "lateral", flex: 40 }, "equipment.0.manikin.flex"],
-      [{ posture: "prone" }, "equipment.0.manikin.posture"],
+      [{ posture: "kneeling" }, "equipment.0.manikin.posture"],
+      // a cover its posture does not take
+      [{ posture: "lateral", cover: "towels" }, "equipment.0.manikin"],
+      [{ posture: "prone", cover: "drapes" }, "equipment.0.manikin"],
+      [{ posture: "prone", cover: "blanket" }, "equipment.0.manikin"],
+      [{ posture: "sitting", cover: "towels" }, "equipment.0.manikin"],
+      [{ posture: "prone", sideUp: "left" }, "equipment.0.manikin"],
+      [{ posture: "prone", breathing: "one-lung" }, "equipment.0.manikin"],
       [{ posture: "lateral", hat: true }, "equipment.0.manikin"],
     ] as const) {
       raw.equipment[0].manikin = bad;
@@ -509,6 +524,13 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(above.issues.map((i) => i.path.slice(above.prefix.length + 1))).toEqual(["manikin.y"]);
     const held = withType({ portable: "handheld", manikin: { posture: "standing" } });
     expect(held.issues.map((i) => i.message)).toEqual(expect.arrayContaining([expect.stringMatching(/a body is not carried in a hand/)]));
+  });
+
+  it("keeps only handheld items in custody (a receipt at every hand-over, audit 2026-11-12 P2-12)", () => {
+    const fixed = withType({ custody: true });
+    expect(fixed.issues.map((i) => [i.path.slice(fixed.prefix.length + 1), i.severity, i.message])).toEqual([["custody", "warning", expect.stringMatching(/not handheld/)]]);
+    const carried = withType({ custody: true, portable: "handheld", solid: false, footprint: { w: 0.14, d: 0.04, h: 0.04 } });
+    expect(carried.issues.filter((i) => i.path.endsWith(".custody") || i.path.endsWith(".portable"))).toEqual([]);
   });
 
   it("the built-in catalogs' behaviours and portable flags are consistent", () => {
@@ -531,7 +553,14 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(monitor.behavior!.operations.attach.clinical).toEqual({ tool: "intervene", select: "monitoring" });
     expect(Object.keys(monitor.behavior!.operations)).toEqual(["attach", "read", "cycle_nibp"]);
     for (const id of ["defibrillator", "crash-cart", "pocus-cart", "ultrasound-machine", "glucometer-station", "oxygen-cylinder"]) expect(equipment.get(id)?.portable).toBe("cart");
-    // nothing wall-mounted or fixed became portable
-    for (const e of equipment.values()) if (e.portable) expect(e.solid && !e.tags.includes("wall")).toBe(true);
+    // nothing wall-mounted or fixed became a cart
+    for (const e of equipment.values()) if (e.portable === "cart") expect(e.solid && !e.tags.includes("wall")).toBe(true);
+    // the handheld items are carried by hand and kept in custody (audit 2026-11-12 P2-12): no collider, a receipt at each hand-over
+    const handheld = [...equipment.values()].filter((e) => e.portable === "handheld");
+    expect(handheld.map((e) => [e.id, e.solid, e.custody])).toEqual([
+      ["specimen-tube", false, true],
+      ["medication-box", false, true],
+    ]);
+    expect(equipment.get("specimen-tube")!.behavior!.operations.collect).toMatchObject({ from: ["empty"], to: "collected", requires: [{ state: "held" }, { handsClean: true }, { patientWithin: 1.5 }] });
   });
 });

@@ -12,12 +12,15 @@ import {
   type ClinicalAction,
   type ClinicalActionType,
   type DomainEvent,
+  type DoseErrorRecord,
   type ReduceResult,
+  type WrittenOrder,
   type RejectionCode,
   type SessionState,
 } from "../schema/session.js";
+import type { Intervention } from "../schema/case.js";
 import { t } from "../i18n.js";
-import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
+import { activeHolds, awaitingAcquisition, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
@@ -31,6 +34,7 @@ import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
 import { applyStaffTask } from "./staff-task.js";
+import { checkOrder, formatDose, type DoseQueryReason, type OrderCheck } from "./dose.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -164,13 +168,14 @@ function onAsk(ctx: Ctx, a: Action<"ask">): Outcome {
   if (item.phases && !item.phases.includes(s.phase)) return rejected("phase-locked", `history item "${item.id}" is not available in phase "${s.phase}"`);
   const twin = supersededIn(c, item.id, s.phase);
   if (twin) return rejected("phase-locked", `history item "${item.id}" is superseded by "${twin}" in phase "${s.phase}"`);
-  // The patient cannot speak (`patient.nonVerbalWhen`) and no companion can answer: nothing is learned.
-  if (historyVoice(c, s, item.id) === "none") return rejected("cannot-answer", `the patient cannot speak now and the case has no companion to answer "${item.id}"`);
+  // The patient cannot speak (`patient.nonVerbalWhen`) and no companion can answer: nothing is learned — unless a
+  // colleague learned it earlier and the team relayed it (`via: "team"`, docs/TEAM.md §4.5).
+  if (a.via !== "team" && historyVoice(c, s, item.id) === "none") return rejected("cannot-answer", `the patient cannot speak now and the case has no companion to answer "${item.id}"`);
   const firstTime = !s.asked.includes(item.id);
   if (firstTime) s.asked.push(item.id);
   // an answer that follows the record: the branch that holds as it is asked is the one heard (before this ask counts)
   const branch = item.branches?.length ? tell(s, toldKey.history(item.id), historyBranch(c, ctx.before, item)) : undefined;
-  ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure, ...(branch !== undefined ? { branch } : {}) });
+  ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure, ...(a.via === "team" ? { via: "team" as const } : {}), ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "ask"));
 }
 
@@ -183,6 +188,8 @@ function onExamine(ctx: Ctx, a: Action<"examine">): Outcome {
   }
   const firstTime = !s.examined.includes(finding.id);
   if (firstTime) s.examined.push(finding.id);
+  // when it was last examined: a reassessment after a dose (`{ examined, afterLast }`)
+  s.lastExamined = { ...(s.lastExamined ?? {}), [finding.id]: { at: s.clock, seq: s.seq + 1 } };
   const branch = finding.branches?.length ? tell(s, toldKey.exam(finding.id), examBranch(c, ctx.before, finding)) : undefined;
   ctx.events.push({ type: "exam.performed", findingId: finding.id, firstTime, ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "examine"));
@@ -200,14 +207,49 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
     ctx.events.push({ type: "order.duplicate", investigationId: investigation.id, phase: s.phase, key });
     return { kind: "unchanged" };
   }
+  const placed = { key, investigationId: investigation.id, phase: s.phase, orderedAt: s.clock, ...(a.at != null ? { at: a.at } : {}), ...(a.by ? { by: a.by } : {}), seq: s.seq + 1 };
+  // in-world, a study done on the patient at a device waits for them there: no acquisition, no result clock yet
+  if (a.modality?.length) {
+    s.orders.push({ ...placed, modality: [...a.modality] });
+    ctx.events.push({ type: "order.placed", investigationId: investigation.id, phase: s.phase, key, modality: [...a.modality] });
+    return accepted(actionCost(c, "order"));
+  }
+  // otherwise the acquisition is implied at the order (text mode's abstraction, recorded as such)
   const readyAt = c.clock.mode === "simulated" ? s.clock + investigation.turnaroundMinutes : s.clock;
-  s.orders.push({ key, investigationId: investigation.id, phase: s.phase, orderedAt: s.clock, readyAt, ...(a.at != null ? { at: a.at } : {}) });
+  s.orders.push({ ...placed, readyAt, acquired: { at: s.clock, seq: s.seq + 1, implied: true } });
   ctx.events.push({ type: "order.placed", investigationId: investigation.id, phase: s.phase, key, readyAt });
   const result = resultFor(c, investigation.id, s.phase);
   if (readyAt <= s.clock && result) {
     ctx.events.push({ type: "result.ready", key, investigationId: investigation.id, phase: s.phase, critical: result.critical });
   }
   return accepted(actionCost(c, "order"));
+}
+
+/**
+ * The study of an order placed with a `modality`, done with the patient on the device (docs/EMBODIED.md §8.7): the
+ * result's clock starts here — released after the turnaround. No action cost (the scan's time is the turnaround).
+ * Recorded directly after its order (the patient was already on the device when it was placed), the scan starts as
+ * the order arrives: at the order's minute, released a turnaround later — as an order in text mode. Already acquired,
+ * or implied at the order: nothing changes.
+ */
+function onAcquire(ctx: Ctx, a: Action<"acquire">): Outcome {
+  const { c, s } = ctx;
+  const investigation = c.investigations.find((i) => i.id === a.investigationId);
+  if (!investigation) return rejected("unknown-id", `unknown investigation "${a.investigationId}"`);
+  const phase = a.phase ?? s.phase;
+  const key = resultKey(investigation.id, phase);
+  const index = s.orders.findIndex((o) => o.key === key);
+  if (index < 0) return rejected("not-ordered", `"${investigation.id}" has not been ordered in phase "${phase}"`);
+  const order = s.orders[index]!;
+  if (!awaitingAcquisition(order)) return { kind: "unchanged" };
+  const at = order.seq === s.seq ? order.orderedAt : s.clock;
+  const readyAt = c.clock.mode === "simulated" ? at + investigation.turnaroundMinutes : at;
+  const acquired = { at, seq: s.seq + 1, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) };
+  s.orders[index] = { ...order, readyAt, acquired };
+  ctx.events.push({ type: "order.acquired", investigationId: investigation.id, phase, key, readyAt, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) });
+  const result = resultFor(c, investigation.id, phase);
+  if (readyAt <= s.clock && result) ctx.events.push({ type: "result.ready", key, investigationId: investigation.id, phase, critical: result.critical });
+  return accepted();
 }
 
 function onRead(ctx: Ctx, a: Action<"read">): Outcome {
@@ -217,18 +259,57 @@ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
   const phase = a.phase ?? s.phase;
   if (!c.phases.some((p) => p.id === phase)) return rejected("unknown-id", `unknown phase "${phase}"`);
   const key = resultKey(investigation.id, phase);
-  const order = s.orders.find((o) => o.key === key);
+  const index = s.orders.findIndex((o) => o.key === key);
+  const order = s.orders[index];
   if (!order) return rejected("not-ordered", `"${investigation.id}" has not been ordered in phase "${phase}"`);
-  if (c.clock.mode === "simulated" && s.clock < order.readyAt) {
+  // ordered, not done: the patient was never on the device — there is no result to read
+  if (awaitingAcquisition(order)) return rejected("not-ready", `"${key}" has not been acquired: the patient must be at the device (${order.modality!.join(", ")})`);
+  if (c.clock.mode === "simulated" && s.clock < (order.readyAt ?? order.orderedAt)) {
     return rejected("not-ready", `result "${key}" is not ready until minute ${order.readyAt}`);
   }
   const result = resultFor(c, investigation.id, phase);
   if (!result) return rejected("no-record", `the case has no "${investigation.id}" record for phase "${phase}"`);
   const firstTime = !s.seen.includes(key);
   if (firstTime) s.seen.push(key);
+  // the clinician review: the first read (who, when) — the act after it is the resulting action
+  if (!order.reviewed) s.orders[index] = { ...order, reviewed: { at: s.clock, seq: s.seq + 1, ...(a.by ? { by: a.by } : {}) } };
   const branch = result.branches?.length ? tell(s, toldKey.result(investigation.id, phase), resultBranch(c, ctx.before, investigation.id, phase)) : undefined;
   ctx.events.push({ type: "result.read", key, investigationId: investigation.id, phase, firstTime, ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "read"));
+}
+
+/**
+ * Acts that change management — the "resulting action" of a review (`OrderRecord.next`): an intervention (given, or
+ * refused as a dose error), an order, a decision, a hold or its release, an operative step, a new investigation.
+ * Gathering information (asking, examining, reading), time and bookkeeping are not.
+ */
+export const RESULTING_ACTS: ReadonlySet<ClinicalActionType> = new Set<ClinicalActionType>(["intervene", "order", "answer", "hold", "release-hold", "operate", "study"]);
+
+/** The item an act concerns (an intervention, investigation, decision or study id), for `OrderRecord.next`. */
+function actItem(a: ClinicalAction): string | undefined {
+  switch (a.type) {
+    case "intervene":
+    case "hold":
+    case "release-hold":
+      return a.interventionId;
+    case "order":
+      return a.investigationId;
+    case "answer":
+      return a.decisionId;
+    case "study":
+      return a.study.op === "order" ? a.study.code : undefined;
+    default:
+      return undefined;
+  }
+}
+
+/** Record `a` (committed at `s.seq`) as the resulting action of every reviewed order that has none yet. */
+function noteResultingAct(s: SessionState, a: ClinicalAction): void {
+  if (!RESULTING_ACTS.has(a.type) || a.by === "system") return;
+  if (a.type === "study" && a.study.op !== "order") return;
+  if (!s.orders.some((o) => o.reviewed && !o.next && o.reviewed.seq < s.seq)) return;
+  const id = actItem(a);
+  s.orders = s.orders.map((o) => (o.reviewed && !o.next && o.reviewed.seq < s.seq ? { ...o, next: { type: a.type, ...(id ? { id } : {}), at: s.clock, seq: s.seq } } : o));
 }
 
 function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
@@ -295,6 +376,19 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
       `"${intervention.id}" is on hold — placed by ${hold.placedBy}: ${hold.reason}. It needs a recorded reassessment and release by ${hold.placedBy}.`,
     );
   }
+  // the order as written (`checkOrder`, read from its words whatever dose the client sent): a dose that cannot be read
+  // or compared is asked about — nothing given, nothing recorded; one that conflicts with the preset is not given — a
+  // dose error, kept for the debrief
+  let ordered: WrittenOrder | undefined;
+  if (a.ordered) {
+    const check = checkOrder(a.ordered, intervention, c.patient.weightKg);
+    if (check.outcome === "query") return rejected("dose-unclear", doseQueryMessage(a.ordered.text, check, intervention));
+    if (check.outcome === "conflict") {
+      recordDoseError(ctx, intervention, a.ordered.text, check);
+      return accepted(actionCost(c, "intervene"));
+    }
+    ordered = { text: a.ordered.text, ...(check.dose ? { dose: { ...check.dose } } : {}) };
+  }
   const appropriateness =
     intervention.contraindicatedWhen && evaluate(c, before, intervention.contraindicatedWhen)
       ? "contraindicated"
@@ -302,8 +396,10 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
         ? "indicated"
         : "neutral";
   const invalid = intervention.checklist === true && appropriateness === "contraindicated";
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, phase: s.phase, ...(invalid ? { invalid: true as const } : {}) });
-  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}) });
+  // a critical intervention given while contraindicated: the critical safety failure (an invalid attempt gave nothing)
+  const critical = appropriateness === "contraindicated" && !invalid && intervention.critical === true;
+  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, phase: s.phase, ...(invalid ? { invalid: true as const } : {}), ...(ordered ? { ordered } : {}) });
+  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}), ...(critical ? { critical: true as const } : {}) });
   if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {
     if (s.flags.includes(flag)) continue;
@@ -311,6 +407,40 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
     ctx.events.push({ type: "flag.changed", flag, value: true });
   }
   return accepted(actionCost(c, "intervene"));
+}
+
+/** Why an order's dose is asked about (`dose-unclear`), technically: the words, and the preset they could not be checked against. */
+function doseQueryMessage(text: string, check: Extract<OrderCheck, { outcome: "query" }>, intervention: Intervention): string {
+  const preset = formatDose(intervention.doseSpec!);
+  const dose = check.dose ? formatDose(check.dose) : "its dose";
+  const why: Record<DoseQueryReason, string> = {
+    strength: `${dose} cannot be compared with ${preset} without the strength`,
+    weight: `${dose} cannot be compared with ${preset} without the patient's weight`,
+    rate: `${dose} and ${preset} are not both rates (or both single doses)`,
+    range: `"${check.words}" is a range across the preset's ends — which dose was meant is not known`,
+    "no-unit": `"${check.words}" states no unit`,
+    unit: `"${check.words}" is in a unit no preset is counted in`,
+    count: `"${check.words}" is a count of tablets, ampoules or puffs, not an amount`,
+    several: `the order states more than one dose for it (${check.words}) — which one was meant is not known`,
+    partial: `${dose} is only part of ${preset}, a dose given in parts — is that the whole dose?`,
+    total: `"${check.words}" is a daily total or a dose per m², not the dose to give now`,
+    unreadable: `"${check.words}" cannot be read as a dose`,
+  };
+  return `the dose of the order "${text}" for "${intervention.id}" is not clear: ${why[check.reason]}; nothing was given — order it again with the dose as a number and its unit`;
+}
+
+/**
+ * An order whose dose conflicts with the intervention's preset (`checkOrder`, through the patient's weight): records
+ * the dose error and emits `dose.error` — nothing is given.
+ */
+function recordDoseError(ctx: Ctx, intervention: Intervention, text: string, check: Extract<OrderCheck, { outcome: "conflict" }>): void {
+  const { s } = ctx;
+  const preset = intervention.doseSpec!;
+  // the record and the event each get their own copies (records are immutable by convention, events go out)
+  const fields = () => ({ interventionId: intervention.id, text, ordered: { ...check.dose }, preset: { ...preset }, ratio: check.ratio, conflicts: [...check.conflicts], severity: check.severity });
+  const record: DoseErrorRecord = { ...fields(), at: s.clock, seq: s.seq + 1 };
+  s.doseErrors = [...(s.doseErrors ?? []), record];
+  ctx.events.push({ type: "dose.error", ...fields() });
 }
 
 const sameHolder = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
@@ -535,6 +665,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onOrder(ctx, a);
     case "read":
       return onRead(ctx, a);
+    case "acquire":
+      return onAcquire(ctx, a);
     case "set-phase":
       return onSetPhase(ctx, a);
     case "hint":
@@ -619,6 +751,7 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
   if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
 
   ctx.s.seq += 1;
+  noteResultingAct(ctx.s, action);
   if (ctx.s.started && !ctx.s.finished) {
     const timeline = openTimeline(c, s, ctx.s, ctx.events);
     settle(timeline);

@@ -16,9 +16,10 @@
  * run of characters (newlines included), `?` one character, a backslash escapes
  * the next character; case-insensitive, e.g. `intervene(alteplase*)`.
  */
-import type { ClinicalAction } from "@clinicalcraft/core";
+import type { CaseDefinition, ClinicalAction } from "@clinicalcraft/core";
 import type { ApprovalMode, PracticeScope, RiskLevel } from "./protocol.js";
 import { rt, type RuntimeKey } from "./session/i18n.js";
+import { decisionNumber } from "./tools/decision-refs.js";
 import type { PermissionCheck, ToolContext, ToolDefinition } from "./tools/types.js";
 
 /** Stable rule ids (exported for UIs, transcripts and tests). */
@@ -346,6 +347,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   // signing is `prescribe`; by op (`actionToolName`): reading the review `read_prescription`, a dispensing step
   // `dispense`; the review is the dispensary's
   prescription: "prescribe",
+  // an in-world study is acquired when the world has the patient on its device (the session records it), never by hand
+  acquire: null,
   anaesthesia: null,
   "alarm-response": null,
   "staff-task": null,
@@ -361,8 +364,12 @@ export function actionToolName(action: Pick<ClinicalAction, "type"> | ClinicalAc
   return ACTION_TOOL[action.type] ?? null;
 }
 
-/** Rule specifier for a clinical action (investigation/intervention/finding/decision id, phase). */
-export function actionSpecifier(action: ClinicalAction): string | null {
+/**
+ * Rule specifier for a clinical action (investigation/intervention/finding id, phase; a decision's id — or, with
+ * the case, its number, as `answer_decision`'s specifier gives it: rules and the reasons quoting them name a
+ * decision by its number, since authored decision ids can name the answer).
+ */
+export function actionSpecifier(action: ClinicalAction, c?: Pick<CaseDefinition, "decisions">): string | null {
   switch (action.type) {
     case "ask":
       return action.itemId;
@@ -373,8 +380,10 @@ export function actionSpecifier(action: ClinicalAction): string | null {
       return action.investigationId;
     case "intervene":
       return action.interventionId;
-    case "answer":
-      return action.decisionId;
+    case "answer": {
+      const n = c ? decisionNumber(c, action.decisionId) : 0;
+      return n > 0 ? String(n) : action.decisionId;
+    }
     case "set-phase":
       return action.phase;
     case "prescription":

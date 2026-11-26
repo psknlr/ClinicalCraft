@@ -77,7 +77,8 @@ describe("how the people of a case are drawn", () => {
       expect(p.companion!.appearance.presentation, c.id).toBe(companion.appearance?.presentation ?? "neutral");
       // a wife, a mother, a daughter; a husband, a father, a son: the name tells, so the appearance tells
       const name = t(companion.name, "en");
-      const woman = /\((?:his |her )?(?:wife|mother|daughter|sister)\b/.test(name) || /^(?:Ms|Mrs) /.test(name);
+      // "Ms Li (his wife)" is a woman; "Ms Ouyang's relative" is the relative of a woman — the name does not tell
+      const woman = /\((?:his |her )?(?:wife|mother|daughter|sister)\b/.test(name) || /^(?:Ms|Mrs) [A-Z][a-z]+ \(/.test(name);
       const man = /\((?:his |her )?(?:husband|father|son|brother)\b/.test(name) || /^Mr [A-Z][a-z]+ \(/.test(name);
       if (woman) expect(companion.appearance?.presentation, `${c.id}: ${name}`).toBe("feminine");
       if (man) expect(companion.appearance?.presentation, `${c.id}: ${name}`).toBe("masculine");

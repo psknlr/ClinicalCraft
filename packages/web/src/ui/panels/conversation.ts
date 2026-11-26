@@ -49,10 +49,13 @@ import { parseAddress } from "../address.js";
 import { capList } from "./common.js";
 import { prescriptionsSection } from "./prescriptions-section.js";
 import { bedsideTests } from "./tests-tab.js";
-import { treatRow } from "./treat-row.js";
+import { searchOrder, treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
 
 export { treatRow };
+
+/** Cases whose full treatment list the learner opened in the Treat tab (kept open across re-renders). */
+const treatListOpen = new Set<string>();
 
 export { parseAddress };
 
@@ -478,15 +481,19 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       q.addEventListener("keydown", (e) => e.stopPropagation());
       const search = (e?: Event) => {
         e?.preventDefault();
-        const hits = q.value.trim() ? matchInterventions(c, q.value.trim(), getLocale()) : [];
+        const text = q.value.trim();
+        const hits = text ? matchInterventions(c, text, getLocale()) : [];
         mount(result);
         if (!hits.length) {
           result.append(h("div", { class: "empty" }, tr("treat.noMatch")));
           return;
         }
+        // words that state a dose are an order: each row found gives the words that order its item (its own clause
+        // when they order several), its dose checked against the dose prepared (docs/PROTOCOL.md §3.2) — never
+        // silently the preset
         for (const hit of hits.slice(0, 4)) {
           const iv = c.interventions.find((x) => x.id === hit.id);
-          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full"));
+          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full", searchOrder(c, text, iv.id, getLocale())));
         }
       };
       wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("treat.find"))), result);
@@ -494,11 +501,25 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const emb = game.embodied;
       const away = emb ? distanceNotice(game, c.interventions.map((iv) => emb.verdict({ type: "intervene", interventionId: iv.id }))) : null;
       if (away) wrap.insertBefore(away, wrap.children[1] ?? null);
+      // what was given so far, ready to give again
+      const given = c.interventions.filter((iv) => store.interventions.has(iv.id));
+      if (given.length) {
+        wrap.append(h("h4", { class: "group-title" }, tr("treat.givenTitle")), h("div", { class: "treat-list" }, given.map((iv) => treatRow(app, game, iv, caps, scope !== "full"))));
+      }
+      // every treatment of the case only on request: the list names options — later steps, a decision's answer — the
+      // learner has not thought of yet, so it is closed until they open it (it stays open for this case once opened)
       const groups = new Map<string, Intervention[]>();
       for (const iv of c.interventions) groups.set(iv.kind, [...(groups.get(iv.kind) ?? []), iv]);
-      for (const [kind, list] of groups) {
-        wrap.append(h("h4", { class: "group-title" }, trMaybe(`kind.${kind}`, kind)), h("div", { class: "treat-list" }, list.map((iv) => treatRow(app, game, iv, caps, scope !== "full"))));
-      }
+      const all = h(
+        "details",
+        { class: "topic treat-all", open: treatListOpen.has(c.id) },
+        h("summary", null, h("span", null, tr("treat.browseAll")), h("span", { class: "count" }, String(c.interventions.length))),
+        h("p", { class: "small muted" }, tr("treat.browseAllNote")),
+        ...[...groups].flatMap(([kind, list]) => [h("h4", { class: "group-title" }, trMaybe(`kind.${kind}`, kind)), h("div", { class: "treat-list" }, list.map((iv) => treatRow(app, game, iv, caps, scope !== "full")))]),
+      ) as HTMLDetailsElement;
+      all.addEventListener("toggle", () => (all.open ? treatListOpen.add(c.id) : treatListOpen.delete(c.id)));
+      wrap.append(all);
+      // prescriptions: signed here, reviewed and supplied by the dispensary (docs/PRESCRIPTIONS.md)
       if (prescriptions) wrap.append(prescriptions);
       return wrap;
     };

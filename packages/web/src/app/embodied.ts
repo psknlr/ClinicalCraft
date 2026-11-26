@@ -28,6 +28,8 @@ export interface MoverHooks {
   onEnd?(actorId: ActorId, move: BodyMove): void;
   /** The cart this move pushes (`move_to`) or the trolley the patient lies on (`transport_patient`), if any — drawn in front of the walker. */
   pushing?(actorId: ActorId): string | null;
+  /** The monitor that travels with the patient on this move (`transport_patient`, the world's `transit.monitor`) — drawn at the walker's side. */
+  riding?(actorId: ActorId): string | null;
   /** The patient this move takes along (`transport_patient`): their slot and the posture they travel in. */
   carrying?(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null;
   /** The page is hidden (`document.hidden`): no frames are drawn, so nothing would animate a walk. */
@@ -79,6 +81,9 @@ export class BrowserMover implements Mover {
     }
     const cart = this.hooks.pushing?.(actorId) ?? null;
     if (cart) api!.pushEquipment(cart, staff ?? "avatar");
+    // the monitor taken along travels beside the bed (never left behind at the bedside it came from)
+    const monitor = this.hooks.riding?.(actorId) ?? null;
+    if (monitor) api!.pushEquipment(monitor, staff ?? "avatar", "beside");
     // the patient travels with the walker (lying on the pushed trolley, or walking upright behind): placed by the world model after
     const patient = this.hooks.carrying?.(actorId) ?? null;
     if (patient) api!.pushPatient(patient.slotId, staff ?? "avatar", patient.posture);
@@ -105,6 +110,7 @@ export class BrowserMover implements Mover {
       offHidden();
       signal?.removeEventListener("abort", onAbort);
       if (cart) this.hooks.renderer()?.pushEquipment(cart, null);
+      if (monitor) this.hooks.renderer()?.pushEquipment(monitor, null);
       if (patient) this.hooks.renderer()?.pushPatient(patient.slotId, null);
     }
     if (hid && !result.arrived && !signal?.aborted) {

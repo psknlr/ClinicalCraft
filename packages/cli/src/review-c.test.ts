@@ -131,6 +131,25 @@ describe("utterance corpus and phase twins (C2)", () => {
     if (!plain.ok) throw new Error("parse");
     expect(checkUtterances(plain.value).failures).toHaveLength(1);
   });
+
+  it.skipIf(!smzlFile)("leaves out an item that only another phase holds, as the session does", () => {
+    const json = JSON.parse(readFileSync(smzlFile!, "utf8"));
+    const [first, last] = [json.phases[0].id as string, json.phases[json.phases.length - 1].id as string];
+    const item = (id: string, phases: string[], keywords: string[]) => ({
+      id,
+      topic: "hpi",
+      question: { "zh-CN": "肚子现在怎么样？", en: "How is your tummy now?" },
+      answer: { "zh-CN": "还行。", en: "It's all right." },
+      keywords: { "zh-CN": [], en: keywords },
+      phases,
+    });
+    // the later phase's item has more of the words: asked everywhere, it would win
+    json.history.push(item("tummy-first", [first], ["tummy"]), item("tummy-later", [last], ["tummy", "buddy"]));
+    json.extensions = { testUtterances: [{ text: "How's your tummy, buddy?", locale: "en", expect: ["tummy-first"] }] };
+    const parsed = parseCase(json);
+    if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));
+    expect(checkUtterances(parsed.value).failures).toEqual([]);
+  });
 });
 
 describe("unsupported configured locale (C3)", () => {

@@ -79,14 +79,20 @@ async function entries(params: URLSearchParams): Promise<Entry[]> {
     if (comp) list.push({ label: `companion · ${text(comp.name)}`, appearance: { presentation: "neutral", ...comp.appearance }, options: { posture: "standing", seed: "companion" } });
   } else list = (params.get("sheet") || "roles").split(",").flatMap(sheet).filter((e) => !only.length || only.some((o) => e.label.includes(o)));
   const posture = params.get("posture") as Posture | null;
-  const flat = posture === "lying" || posture === "lateral";
+  const flat = posture === "lying" || posture === "lateral" || posture === "prone";
   // on their side: the side that is up, what covers them (their clothes, a blanket, the drapes of an operation on the
-  // chest), the table's flex, asleep (`--up right --cover drapes --flex 9 --asleep 1`; `--draped 1` is `--cover drapes`)
+  // chest), the table's flex, asleep (`--up right --cover drapes --flex 9 --asleep 1`; `--draped 1` is `--cover drapes`);
+  // lying flat — on their back or face down (`--posture prone`) — their clothes or towels (`--cover towels`)
   const asked = params.get("cover") ?? (params.get("draped") === "1" ? "drapes" : "clothes");
-  const cover = asked === "drapes" || asked === "blanket" ? asked : ("clothes" as const);
-  const lateral = posture === "lateral" ? { up: params.get("up") === "right" ? ("right" as const) : ("left" as const), cover, flex: Number(params.get("flex")) || 0, asleep: params.get("asleep") === "1" } : {};
+  const cover = asked === "drapes" || asked === "blanket" || asked === "towels" ? asked : ("clothes" as const);
+  const lateral =
+    posture === "lateral"
+      ? { up: params.get("up") === "right" ? ("right" as const) : ("left" as const), cover, flex: Number(params.get("flex")) || 0, asleep: params.get("asleep") === "1" }
+      : (posture === "lying" || posture === "prone") && cover === "towels"
+        ? { cover, asleep: params.get("asleep") === "1" }
+        : {};
   // (someone undressed for theatre wears a theatre cap)
-  if (posture === "lateral" && cover !== "clothes") for (const e of list) e.options = { ...e.options, wear: { ...(e.options.wear ?? PLAIN_WEAR), cap: true } };
+  if (posture === "lateral" && cover !== "clothes" && cover !== "towels") for (const e of list) e.options = { ...e.options, wear: { ...(e.options.wear ?? PLAIN_WEAR), cap: true } };
   if (posture) for (const e of list) Object.assign(e, { options: { ...e.options, ...lateral, posture, surfaceY: flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 }, surface: posture === "standing" ? undefined : flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 });
   return list;
 }
@@ -249,8 +255,9 @@ export async function render(): Promise<{ count: number; width: number; height: 
       column.castShadow = column.receiveShadow = true;
       scene.add(column);
     } else if (e.surface !== undefined) {
-      const prop = posture === "lying" ? new THREE.Mesh(new THREE.BoxGeometry(0.95, e.surface, 2.1), propMat) : new THREE.Mesh(new THREE.BoxGeometry(0.5, e.surface, 0.46), propMat);
-      prop.position.set(0, e.surface / 2, posture === "lying" ? 0 : -0.02);
+      const lies = posture === "lying" || posture === "prone";
+      const prop = lies ? new THREE.Mesh(new THREE.BoxGeometry(posture === "prone" ? 0.72 : 0.95, e.surface, 2.1), propMat) : new THREE.Mesh(new THREE.BoxGeometry(0.5, e.surface, 0.46), propMat);
+      prop.position.set(0, e.surface / 2, lies ? 0 : -0.02);
       prop.castShadow = prop.receiveShadow = true;
       scene.add(prop);
     }
@@ -279,7 +286,8 @@ export async function render(): Promise<{ count: number; width: number; height: 
       centre = new THREE.Vector3(0.24 * rig.scale, 0.76 * rig.scale, 0.05);
       radius = 0.2 * rig.scale;
       dir = new THREE.Vector3(1, 0.1, 0.6);
-    } else if (posture === "lying" && view === "front") dir = new THREE.Vector3(0.9, 0.75, 0.55);
+    } else if ((posture === "lying" || posture === "prone") && view === "front") dir = new THREE.Vector3(0.9, 0.75, 0.55);
+    else if ((posture === "lying" || posture === "prone") && view === "back") dir = new THREE.Vector3(-0.9, 0.75, 0.55);
     else if (posture === "lateral" && view === "front") dir = new THREE.Vector3(e.options.up === "right" ? 0.9 : -0.9, 0.62, 0.2);
     else if (posture === "lateral" && view === "back") dir = new THREE.Vector3(e.options.up === "right" ? -0.9 : 0.9, 0.62, 0.2);
     else if (posture === "lateral" && view === "head") dir = new THREE.Vector3(e.options.up === "right" ? 0.5 : -0.5, 0.55, -1);

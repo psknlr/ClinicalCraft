@@ -151,6 +151,20 @@ const SHORT_STEM_ENDINGS: ReadonlySet<string> = new Set(["s", "es", "ed", "d", "
 /** From this length a token that prefixes another is the same word whatever the ending (breath ~ breathless). */
 const FREE_PREFIX_LENGTH = 6;
 
+/** Names (canonical tokens) that are no stem of another word: ring ≁ Ringer's, heart ≁ Hartmann's. */
+const PROPER_NAME_TOKENS: ReadonlySet<string> = new Set(["ringer", "hartmann"]);
+/** A medicine's ending: a word ending so is no form of a word that ends otherwise (aspirin ≁ aspirate, atropine ≁ atrophy, penicillin ≁ penicillamine). */
+const MEDICINE_TAIL = /^(?:in|ine|ins|ines)$/;
+/** An agent noun's ending against an adjective's: the anaesthetist is not the anaesthetic. */
+const AGENT_NOUN = /ists?$/;
+const ADJECTIVE = /(?:ic|ics|ical)$/;
+
+/** True when two tokens that share a prefix are different words whatever their tails' length (a medicine's ending, an agent noun's). */
+function differentWords(a: string, b: string, prefix: number): boolean {
+  if (MEDICINE_TAIL.test(a.slice(prefix)) !== MEDICINE_TAIL.test(b.slice(prefix))) return true;
+  return (AGENT_NOUN.test(a) && ADJECTIVE.test(b)) || (AGENT_NOUN.test(b) && ADJECTIVE.test(a));
+}
+
 /**
  * Token equivalence (on canonical tokens):
  *
@@ -165,10 +179,15 @@ const FREE_PREFIX_LENGTH = 6;
  *   anticoagulation, prophylaxis ~ prophylactic — but not medical ~
  *   medication, history ~ historical, hypertension ~ hyperthermia,
  *   thrombosis ~ thrombolysis, pneumonia ~ pneumothorax or cholecystitis ~
- *   cholecystectomy.
+ *   cholecystectomy; nor when one tail is a medicine's and the other is not
+ *   (aspirin ≁ aspirate, atropine ≁ atrophy), or an agent noun's against an
+ *   adjective's (anaesthetist ≁ anaesthetic).
+ *
+ * A name (`PROPER_NAME_TOKENS`: Ringer's, Hartmann's) matches only itself.
  */
 export function tokensMatch(a: string, b: string): boolean {
   if (a === b) return true;
+  if (PROPER_NAME_TOKENS.has(a) || PROPER_NAME_TOKENS.has(b)) return false;
   const shorter = Math.min(a.length, b.length);
   const prefix = commonPrefixLength(a, b);
   if (shorter >= 4 && prefix === shorter) {
@@ -177,7 +196,7 @@ export function tokensMatch(a: string, b: string): boolean {
     if (SHORT_STEM_ENDINGS.has(ending)) return true;
   }
   const maxTail = prefix >= LONG_SHARED_PREFIX ? MAX_DIVERGENT_TAIL + 1 : MAX_DIVERGENT_TAIL;
-  return prefix >= 5 && Math.max(a.length, b.length) - prefix <= maxTail;
+  return prefix >= 5 && Math.max(a.length, b.length) - prefix <= maxTail && !differentWords(a, b, prefix);
 }
 
 /** Length of the longest common substring (dynamic programming, O(n·m) time, O(m) space). */
@@ -201,6 +220,16 @@ export interface Prepared {
   compact: string;
   tokens: string[];
   cjk: boolean;
+  /** Indices in `compact` where a word of Latin letters or digits begins in the text (`containsExclusion`). */
+  starts?: ReadonlySet<number>;
+  /** Tokens of a text that mixes Han characters and Latin words, the Latin words read on their own ("BEP方案" → bep). */
+  mixedTokens?: string[];
+  /** `compact` with the 下 of the particle 一下 masked (same length), when it has one: what a phrase without 一下 is scored against. */
+  particleSafe?: string;
+  /** Share of a CJK phrase that is Latin letters or digits, a Han function character counting half ("BEP方案": 3/5; "有过TIA吗": 3/4.5). */
+  latin?: number;
+  /** A phrase's tokens that match nothing on their own (an intervention's "give", "start"): a match on these alone scores 0. */
+  weak?: ReadonlySet<string>;
 }
 
 /** Characters spelled one way for scoring: 痛 → 疼 (both "pain": 头痛 ~ 头疼, 有多痛 ~ 有多疼). */
@@ -212,9 +241,95 @@ export function scoringText(text: string): string {
   return compactText(text).replace(CJK_FOLD_RE, (ch) => CJK_FOLDS.get(ch) ?? ch);
 }
 
+const LATIN_OR_DIGIT = /[a-z0-9]/;
+
+/**
+ * Indices in `scoringText(text)` where a word of Latin letters or digits begins: the character before it in the text
+ * (spaces and punctuation included) is no Latin letter or digit — so "continue" begins no word in "discontinue", nor
+ * "at first" in "what first", nor "50" in "250".
+ */
+function wordStarts(text: string): Set<number> {
+  const starts = new Set<number>();
+  const folded = toHalfWidth(text).toLowerCase();
+  let index = 0;
+  let previous = "";
+  for (const ch of folded) {
+    const kept = !/\s/u.test(ch) && !/[\p{P}\p{S}]/u.test(ch);
+    if (kept) {
+      if (LATIN_OR_DIGIT.test(ch) && !LATIN_OR_DIGIT.test(previous)) starts.add(index);
+      index += ch.length;
+    }
+    previous = ch;
+  }
+  return starts;
+}
+
+/** The particle 一下 ("look a bit"), not 一下子 (suddenly) or 一下午 (all afternoon). */
+const YIXIA = /一下(?![子午])/g;
+/** What masks the 下 of 一下: no phrase holds it, so no phrase begins inside the particle (量一下体温 holds no 下体). */
+const PARTICLE_MASK = "\uE000";
+
 /** Prepare text for `phraseScore`. */
 export function prepare(text: string): Prepared {
-  return { compact: scoringText(text), tokens: tokenize(text), cjk: hasCjk(text) };
+  const compact = scoringText(text);
+  const cjk = hasCjk(text);
+  const prepared: Prepared = { compact, tokens: tokenize(text), cjk };
+  if (LATIN_OR_DIGIT.test(compact)) {
+    prepared.starts = wordStarts(text);
+    if (cjk) {
+      prepared.mixedTokens = tokenize(text.replace(/\p{Script=Han}+/gu, " "));
+      // the Latin part's share of the phrase: a function character (有过…吗, 请) counts half
+      const latin = compact.replace(/[^a-z0-9]/g, "").length;
+      const han = [...compact].filter((ch) => HAN.test(ch));
+      const functional = han.filter((ch) => CJK_FUNCTION_CHARS.has(ch)).length;
+      prepared.latin = latin / (latin + (han.length - functional) + functional / 2);
+    }
+  }
+  if (compact.includes("一下")) prepared.particleSafe = compact.replace(YIXIA, `一${PARTICLE_MASK}`);
+  return prepared;
+}
+
+/** An exclusion (`excludeKeywords`) as the matcher checks it. */
+export interface Exclusion {
+  /** As `scoringText` leaves it. */
+  compact: string;
+  /** It begins with a function word ("at first") or a digit ("50%"): it counts only where it begins a word. */
+  wordStart: boolean;
+}
+
+/** An exclusion for `containsExclusion`, or null when it is empty. */
+export function exclusion(text: string): Exclusion | null {
+  const compact = scoringText(text);
+  if (!compact) return null;
+  const first = toHalfWidth(text).toLowerCase().trim().split(/[^\p{L}\p{N}']+/u)[0] ?? "";
+  return { compact, wordStart: /^[0-9]/.test(compact) || (/^[a-z']+$/.test(first) && ENGLISH_STOP_WORDS.has(first)) };
+}
+
+/** Prefixes that make a word its opposite: "discontinue" is no "continue", "unstable" no "stable". */
+const REVERSING_PREFIX = /^(?:dis|un|non|in|im|ir|il|de|anti)$/;
+
+/**
+ * True when the prepared text holds the exclusion: anywhere for one that begins with a Han character; for one that
+ * begins with a Latin letter or digit, anywhere but after a prefix that reverses the word it is in ("discontinue"
+ * holds no "continue") — and, for one that begins with a function word or a digit, only where it begins a word
+ * ("what first" holds no "at first", "250" no "50").
+ */
+export function containsExclusion(text: Prepared, x: Exclusion): boolean {
+  const phrase = x.compact;
+  if (!LATIN_OR_DIGIT.test(phrase[0] ?? "")) return text.compact.includes(phrase);
+  for (let at = text.compact.indexOf(phrase); at >= 0; at = text.compact.indexOf(phrase, at + 1)) {
+    if (text.starts?.has(at)) return true;
+    if (x.wordStart) continue;
+    let start = at;
+    while (start > 0 && !text.starts?.has(start)) start--;
+    if (!REVERSING_PREFIX.test(text.compact.slice(start, at))) return true;
+  }
+  return false;
+}
+
+/** The utterance a CJK phrase is scored against: with 一下's 下 masked unless the phrase itself holds 一下. */
+function cjkView(utterance: Prepared, phrase: Prepared): string {
+  return utterance.particleSafe && !phrase.compact.includes("一下") ? utterance.particleSafe : utterance.compact;
 }
 
 /** Bonus when the whole utterance is a fragment of the phrase. */
@@ -272,14 +387,16 @@ const CJK_FUNCTION_CHARS: ReadonlySet<string> = new Set(
 
 /**
  * The longest run of `u` that `p` also contains and that holds a topic
- * character (one not in `CJK_FUNCTION_CHARS`): its start in `u` and its
- * length (0 when there is none).
+ * character (one not in `CJK_FUNCTION_CHARS`, and no Latin letter or digit:
+ * the tokens score a CJK phrase's Latin part, so "ep" of "the pulse" is no
+ * overlap with "BEP方案"): its start in `u` and its length (0 when there is
+ * none).
  */
 function topicRun(u: string, p: string): { start: number; length: number } {
   let best = { start: 0, length: 0 };
   if (!u || !p) return best;
   const topical = new Array<number>(u.length + 1).fill(0);
-  for (let i = 0; i < u.length; i++) topical[i + 1] = topical[i]! + (CJK_FUNCTION_CHARS.has(u[i]!) ? 0 : 1);
+  for (let i = 0; i < u.length; i++) topical[i + 1] = topical[i]! + (CJK_FUNCTION_CHARS.has(u[i]!) || LATIN_OR_DIGIT.test(u[i]!) ? 0 : 1);
   let prev = new Array<number>(p.length + 1).fill(0);
   let curr = new Array<number>(p.length + 1).fill(0);
   for (let i = 1; i <= u.length; i++) {
@@ -341,23 +458,31 @@ function characterScore(u: string, p: string): number {
   return Math.min(1, score);
 }
 
-function tokenScore(u: string[], p: string[]): number {
+function tokenScore(u: string[], p: string[], weak?: ReadonlySet<string>): number {
   if (p.length === 0 || u.length === 0) return 0;
-  const matched = p.filter((pt) => u.some((ut) => tokensMatch(ut, pt))).length;
-  return matched / p.length;
+  const matched = p.filter((pt) => u.some((ut) => tokensMatch(ut, pt)));
+  if (weak && matched.every((pt) => weak.has(pt))) return 0;
+  return matched.length / p.length;
 }
 
 /**
  * Similarity of an utterance to one candidate phrase, 0..1.
  * CJK phrases: 1 when the phrase is contained, 0.9 when it is but for
  * particles (`particlePositions`), else the length of the longest common
- * substring holding a topic character / phrase length. Latin phrases: share of
- * phrase tokens present in the utterance (1 when all are), or 0.9 for a
- * ≥ 4-letter compact containment.
+ * substring holding a topic character / phrase length — or, for a phrase with
+ * a Latin part ("BEP方案"), that part's share of the phrase times the share of
+ * its tokens present, when more; the 下 of the particle 一下 begins no phrase
+ * (量一下体温 holds no 下体). Latin phrases: share of phrase tokens present in
+ * the utterance (1 when all are), or 0.9 for a ≥ 4-letter compact containment.
  */
 export function phraseScore(utterance: Prepared, phrase: Prepared): number {
-  if (phrase.cjk) return characterScore(utterance.compact, phrase.compact);
-  const tokens = tokenScore(utterance.tokens, phrase.tokens);
+  if (phrase.cjk) {
+    const characters = characterScore(cjkView(utterance, phrase), phrase.compact);
+    // a Latin part ("BEP方案") is scored by its words, for its share of the phrase
+    if (!phrase.latin || !phrase.mixedTokens) return characters;
+    return Math.max(characters, phrase.latin * tokenScore(utterance.mixedTokens ?? utterance.tokens, phrase.mixedTokens, phrase.weak));
+  }
+  const tokens = tokenScore(utterance.tokens, phrase.tokens, phrase.weak);
   const compact = phrase.compact.length >= 4 && utterance.compact.includes(phrase.compact) ? LATIN_COMPACT_CONTAINMENT : 0;
   return Math.max(tokens, compact);
 }
@@ -370,8 +495,9 @@ export function phraseScore(utterance: Prepared, phrase: Prepared): number {
  */
 export function phraseCoverage(utterance: Prepared, phrase: Prepared): number {
   if (!phrase.compact || !utterance.compact) return 0;
-  if (utterance.compact.includes(phrase.compact)) return phrase.compact.length;
-  if (phrase.cjk) return longestCommonSubstring(utterance.compact, phrase.compact);
+  const u = phrase.cjk ? cjkView(utterance, phrase) : utterance.compact;
+  if (u.includes(phrase.compact)) return phrase.compact.length;
+  if (phrase.cjk) return longestCommonSubstring(u, phrase.compact);
   return phrase.tokens.filter((pt) => utterance.tokens.some((ut) => tokensMatch(ut, pt))).reduce((n, pt) => n + pt.length, 0);
 }
 
@@ -386,7 +512,7 @@ export function phraseCoverage(utterance: Prepared, phrase: Prepared): number {
  * when it accounts for nothing.
  */
 export function phraseEvidence(utterance: Prepared, phrase: Prepared): string[] {
-  const u = utterance.compact;
+  const u = phrase.cjk ? cjkView(utterance, phrase) : utterance.compact;
   const keys = (positions: number[]) => positions.filter((i) => !CJK_FUNCTION_CHARS.has(u[i]!)).map((i) => `c${i}`);
   const span = (start: number, length: number) => keys(Array.from({ length }, (_, k) => start + k));
   if (phrase.cjk) {
@@ -400,6 +526,35 @@ export function phraseEvidence(utterance: Prepared, phrase: Prepared): string[] 
     return run.length >= 2 ? span(run.start, run.length) : [];
   }
   return utterance.tokens.flatMap((ut, i) => (phrase.tokens.some((pt) => tokensMatch(ut, pt)) ? [`t${i}`] : []));
+}
+
+/** An English greeting that opens a question ("Good morning", "Hi there"), and the name after it up to a comma ("Hi Tom,"). */
+const EN_GREETING = /^\s*(?:good\s+(?:morning|afternoon|evening)|hello|hiya|hi|hey)\b(?:\s+there\b)?/i;
+const EN_GREETING_NAME = /^[^,.!?;:]{0,30}?[,.!;:]/;
+/** "Morning," on its own (not "morning sickness"). */
+const EN_BARE_GREETING = /^\s*(?:morning|afternoon|evening)\s*[,.!;:]/i;
+/** A Chinese greeting with the name or title before it and punctuation, a space or the end after it ("王阿姨，您好，"). */
+const ZH_GREETING = /^\s*(?:[^，,。.!！?？；;\s]{1,8}?[，,]?\s*)?(?:早上好|早安|上午好|中午好|下午好|晚上好|你好|您好|大家好)[呀啊]?(?:[，,。.!！~～；;]+|\s+|$)/;
+
+/**
+ * A question without the greeting that opens it ("Good morning, what brings you in?" → "what brings you in?", "您好，
+ * 哪里不舒服？" → "哪里不舒服？"): a greeting says nothing to match a fact on ("morning" is no answer to "Good morning").
+ * A question that is only a greeting is returned whole.
+ */
+export function stripGreeting(question: string): string {
+  let rest = question;
+  const en = EN_GREETING.exec(rest);
+  if (en) {
+    rest = rest.slice(en[0].length);
+    const name = EN_GREETING_NAME.exec(rest);
+    // a name or title before a comma ("Hi Tom,", "Good morning Mrs Li,"): at most three words
+    if (name && name[0].trim().split(/\s+/).length <= 4) rest = rest.slice(name[0].length);
+  } else {
+    const bare = EN_BARE_GREETING.exec(rest) ?? ZH_GREETING.exec(rest);
+    if (bare) rest = rest.slice(bare[0].length);
+  }
+  rest = rest.replace(/^[\s,.!;:，。！；：、~～—–-]+/, "");
+  return rest.trim() ? rest : question;
 }
 
 /** Every rendering of a localized text: the requested locale first, then every locale. */

@@ -147,8 +147,8 @@ export function caseTemplate(id: string): Record<string, unknown> {
         requires: { read: "inv-fbc" },
         need: both("先查看血常规结果。", "Read the full blood count first."),
         options: [
-          { id: "opt-a", text: both(`${TODO_ZH}正确选项`, `${TODO_EN}Correct option`), correct: true, feedback: both(`${TODO_ZH}为什么正确。`, `${TODO_EN}Why this is right.`) },
-          { id: "opt-b", text: both(`${TODO_ZH}错误选项`, `${TODO_EN}Wrong option`), correct: false, feedback: both(`${TODO_ZH}为什么错误。`, `${TODO_EN}Why this is wrong.`) },
+          { id: "dx-todo-x", text: both(`${TODO_ZH}正确选项`, `${TODO_EN}Correct option`), correct: true, feedback: both(`${TODO_ZH}为什么正确。`, `${TODO_EN}Why this is right.`) },
+          { id: "dx-todo-y", text: both(`${TODO_ZH}错误选项`, `${TODO_EN}Wrong option`), correct: false, feedback: both(`${TODO_ZH}为什么错误。`, `${TODO_EN}Why this is wrong.`) },
         ],
       },
     ],
@@ -184,7 +184,7 @@ export function caseTemplate(id: string): Record<string, unknown> {
       { type: "examine", findingId: "ex-general" },
       { type: "order", investigationId: "inv-fbc" },
       { type: "read", investigationId: "inv-fbc" },
-      { type: "answer", decisionId: "dec-diagnosis", optionIds: ["opt-a"] },
+      { type: "answer", decisionId: "dec-diagnosis", optionIds: ["dx-todo-x"] },
       { type: "finish" },
     ],
     extensions: {

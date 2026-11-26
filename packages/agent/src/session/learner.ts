@@ -6,17 +6,18 @@
  * commit, the engine, PostToolUse hooks. Only learner tools may run on this path (never an NPC's or a
  * front-end's), and simulation-owned flags can never be set directly.
  */
-import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState, type WrittenOrder } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { agentKind } from "../agents/prompts.js";
 import { executeCommand, type CommandHost } from "../commands.js";
 import { actionToolName } from "../permissions.js";
 import { rejectionText } from "../tools/clinical.js";
+import { doseChallengeText, doseQueryReadBack, doseReadBack, orderCheck } from "../tools/dose-order.js";
 import { isLearnerTool } from "../tools/learner.js";
 import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
-import { actionFromToolInput, actionToolArgs } from "./action-input.js";
+import { actionFromToolInput, actionToolArgs, answerActionRefusal } from "./action-input.js";
 import type { AgentTurnMode } from "./agent-turns.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
@@ -233,7 +234,8 @@ export class LearnerPath {
    * A learner action through PreToolUse hooks and the approval gate (as its
    * equivalent tool), then the engine. A hook's `updatedInput` is re-validated
    * and mapped back to the action, so the gate, the engine and PostToolUse all
-   * see the rewritten input.
+   * see the rewritten input. An answer naming a decision or option id its case
+   * lacks is refused first (`answerActionRefusal`).
    */
   async action(id: string, requested: ClinicalAction, signal?: AbortSignal): Promise<ReduceResult | null> {
     const k = this.k;
@@ -261,6 +263,17 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "rx.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // what a colleague passed on (`ask` via "team", docs/TEAM.md) is recorded by the session when they pass it on —
+    // never claimed by a learner: it would skip the rule of who can answer
+    if (requested.type === "ask" && requested.via === "team") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.relayOwned") }), code: "permission_denied" });
+      return null;
+    }
+    // a study done on the patient at a device is done when the world has them there (docs/EMBODIED.md §8.7), never typed in
+    if (requested.type === "acquire") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "acquire.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
     // entered in their name
     // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it
@@ -275,6 +288,13 @@ export class LearnerPath {
     }
     if (requested.type === "operate" && requested.actor) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
+      return null;
+    }
+    // Before the hooks and the gate: they see `answer_decision` input, read letters and numbers first, while the
+    // engine reads the action's ids as they are — an id the case lacks would be approved as another option.
+    const unanswerable = requested.type === "answer" ? answerActionRefusal(k.caseDef, requested, L, k.state) : null;
+    if (unanswerable) {
+      k.emit(id, { type: "error", message: rt(L, "error.invalidAction", { errors: unanswerable }), code: "invalid_action" });
       return null;
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
@@ -295,7 +315,8 @@ export class LearnerPath {
       const pre = await this.preToolUse(id, tool, args, signal);
       if (!pre.ok) return null;
       if (pre.updated) {
-        const mapped = actionFromToolInput(k.caseDef, action, pre.input, L, k.state.phase);
+        // Read as the tool reads it, before any approval (a locked decision names only what it needs).
+        const mapped = actionFromToolInput(k.caseDef, action, pre.input, L, k.state);
         if (!mapped.ok) {
           k.emit(id, { type: "error", message: rt(L, "action.hookInputUnresolved", { tool: tool.name, detail: mapped.detail }), code: "invalid_action" });
           return null;
@@ -337,20 +358,45 @@ export class LearnerPath {
     } else if (action.type === "ask") {
       this.speakAuthoredAnswer(id, action.itemId, voice === "companion" ? "companion" : "patient", asked);
     }
+    // an order whose dose differs from the dose prepared: nothing given — the nurse reads it back (PROTOCOL §3.2)
+    const doseError = result.events.find((e) => e.type === "dose.error");
+    if (doseError) this.speakDoseReadBack(id, doseError);
+    // an order whose dose is not clear: nothing given, no dose error — the nurse asks for it
+    if (result.rejected?.code === "dose-unclear" && action.type === "intervene" && action.ordered) this.speakDoseQuery(id, action.interventionId, action.ordered);
     if (tool && args) {
       // Same hook sequence as an agent's tool call: PreToolUse → gate → run → PostToolUse.
-      let output = rejection ?? "";
-      if (!rejection) {
+      let output = rejection ?? (doseError ? doseChallengeText(k.caseDef, doseError, L) : "");
+      if (!rejection && !doseError) {
         try {
           output = tool.summarize(args, k.tools.context("learner", id, signal));
         } catch {
           output = tool.name;
         }
       }
-      const post = await k.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: tool.name, tool_input: args, tool_response: { ok: !rejection, output } }, signal);
+      const post = await k.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: tool.name, tool_input: args, tool_response: { ok: !rejection && !doseError, output } }, signal);
       for (const w of post.warnings) k.emit(id, { type: "warning", message: w });
     }
     return result;
+  }
+
+  /** The nurse's question about an order whose dose is not clear (core `dose-unclear`): spoken, and kept for the examiner. */
+  private speakDoseQuery(id: string, interventionId: string, ordered: WrittenOrder): void {
+    const k = this.k;
+    const check = orderCheck(k.caseDef, interventionId, ordered);
+    if (check?.outcome !== "query") return;
+    const speaker = rt(k.locale, "speaker.nurse");
+    const text = doseQueryReadBack(k.caseDef, interventionId, check, k.locale);
+    k.conversations.addDialogue({ who: "nurse", speaker, text });
+    k.speakLine(id, { agent: "nurse", speaker, text, grounded: [] });
+  }
+
+  /** The nurse's read-back of an order whose dose differs from the dose prepared (core `dose.error`): spoken, and kept for the examiner. */
+  private speakDoseReadBack(id: string, e: Extract<ReduceResult["events"][number], { type: "dose.error" }>): void {
+    const k = this.k;
+    const speaker = rt(k.locale, "speaker.nurse");
+    const text = doseReadBack(k.caseDef, e, k.locale);
+    k.conversations.addDialogue({ who: "nurse", speaker, text });
+    k.speakLine(id, { agent: "nurse", speaker, text, grounded: [] });
   }
 
   /**

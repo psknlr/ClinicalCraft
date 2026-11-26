@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "anaphylaxis-garden",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "title": { "zh-CN": "花园蜇伤后呼吸困难 · 30岁女性", "en": "Breathless after a sting in the garden · 30-year-old woman" },
   "summary": {
     "zh-CN": "午后的医院疗愈花园里，一位来探视家属的年轻女性在长椅旁突然不适。你和带着病区急救包赶来的护士一起，在没有抢救室设备的户外完成快速评估与处理，随后安排转运、检查与去向。",
@@ -3201,9 +3201,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "肾上腺素0.5 mg肌注（1 mg/mL [1:1000] 溶液0.5 mL），大腿中段前外侧；若无改善，5分钟后重复",
-        "en": "Adrenaline 0.5 mg IM (0.5 mL of 1 mg/mL [1:1000]) into the anterolateral mid-thigh; repeat after 5 min if no improvement"
+        "zh-CN": "肾上腺素0.5 mg肌注（1 mg/mL [1:1000] 溶液0.5 mL），大腿中段前外侧（成人自动注射笔为0.3 mg或0.5 mg）；若无改善，5分钟后重复",
+        "en": "Adrenaline 0.5 mg IM (0.5 mL of 1 mg/mL [1:1000]) into the anterolateral mid-thigh (an adult auto-injector gives 0.3 mg or 0.5 mg); repeat after 5 min if no improvement"
       },
+      "doseSpec": { "amount": 0.3, "upTo": 0.5, "unit": "mg", "route": "IM" },
       "requires": [],
       "risk": "moderate",
       "effects": [
@@ -3222,7 +3223,19 @@
           { "not": { "intervened": "adrenaline-im" } },
           {
             "all": [
-              { "flag": "reassessed-before-repeat" },
+              { "elapsedSince": { "intervened": "adrenaline-im", "gte": 5 } },
+              {
+                "any": [
+                  { "examined": "ex-airway-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-chest-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-circ-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-general-treated", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-airway-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-chest-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-circ-ed", "afterLast": "adrenaline-im" },
+                  { "examined": "ex-general-ed", "afterLast": "adrenaline-im" }
+                ]
+              },
               {
                 "any": [
                   { "vital": "sbp", "op": "lt", "value": 90 },
@@ -3259,6 +3272,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "effects": [
         { "vital": "sbp", "delta": 90, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 6 },
         { "vital": "dbp", "delta": 45, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 6 },
@@ -3332,7 +3346,8 @@
         "en": ["sit up", "sit upright", "stand up", "sitherup", "upright", "help her stand", "propherup"]
       },
       "requires": [],
-      "risk": "low",
+      "risk": "moderate",
+      "critical": true,
       "effects": [
         { "vital": "sbp", "delta": -14, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
         { "vital": "dbp", "delta": -6, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
@@ -3357,6 +3372,7 @@
       },
       "requires": [],
       "risk": "moderate",
+      "critical": true,
       "effects": [
         { "vital": "sbp", "delta": -18, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 6 },
         { "vital": "dbp", "delta": -8, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 6 },
@@ -3886,22 +3902,20 @@
         "message": { "zh-CN": "她重新睁开眼睛，能切题对答。", "en": "She opens her eyes and answers appropriately again." }
       },
       {
-        "id": "reassessed-before-repeat",
+        "id": "reassessed-after-adrenaline",
         "when": {
-          "all": [
-            { "intervened": "adrenaline-im" },
-            { "not": { "intervened": "adrenaline-im", "minCount": 2 } },
-            {
-              "any": [
-                { "examined": "ex-airway-treated" },
-                { "examined": "ex-chest-treated" },
-                { "examined": "ex-circ-treated" },
-                { "examined": "ex-general-treated" }
-              ]
-            }
+          "any": [
+            { "examined": "ex-airway-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-chest-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-circ-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-general-treated", "afterLast": "adrenaline-im" },
+            { "examined": "ex-airway-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-chest-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-circ-ed", "afterLast": "adrenaline-im" },
+            { "examined": "ex-general-ed", "afterLast": "adrenaline-im" }
           ]
         },
-        "setFlags": ["reassessed-before-repeat"],
+        "setFlags": ["reassessed-after-adrenaline"],
         "severity": "info"
       },
       {
@@ -4380,7 +4394,10 @@
         },
         {
           "id": "iv-bolus",
-          "text": { "zh-CN": "肾上腺素0.5 mg静脉推注", "en": "Adrenaline 0.5 mg IV bolus" },
+          "text": {
+            "zh-CN": "肾上腺素0.5 mg（1 mg/mL溶液0.5 mL）静脉推注，起效最快；5分钟无改善则重复",
+            "en": "Adrenaline 0.5 mg (0.5 mL of 1 mg/mL) as an IV bolus for the fastest effect; repeat after 5 min if no improvement"
+          },
           "correct": false,
           "feedback": {
             "zh-CN": "错误且危险。静推肌注剂量可致严重高血压、室性心律失常和心肌缺血。静脉肾上腺素仅用于心脏骤停或由专家在监护下稀释滴注。",
@@ -4389,7 +4406,10 @@
         },
         {
           "id": "antihistamine-steroid",
-          "text": { "zh-CN": "氯苯那敏10 mg静注加氢化可的松200 mg静注", "en": "Chlorphenamine 10 mg IV plus hydrocortisone 200 mg IV" },
+          "text": {
+            "zh-CN": "立即静注氯苯那敏10 mg加氢化可的松200 mg，肾上腺素留作备用",
+            "en": "Chlorphenamine 10 mg IV plus hydrocortisone 200 mg IV straight away, keeping adrenaline in reserve"
+          },
           "correct": false,
           "feedback": {
             "zh-CN": "错误。二者都不能治疗气道水肿、支气管痉挛或休克；以它们代替肾上腺素是严重过敏反应死亡的常见可避免因素。",
@@ -4398,7 +4418,10 @@
         },
         {
           "id": "sc",
-          "text": { "zh-CN": "肾上腺素0.5 mg皮下注射", "en": "Adrenaline 0.5 mg subcutaneously" },
+          "text": {
+            "zh-CN": "肾上腺素0.5 mg（1 mg/mL溶液0.5 mL）上臂皮下注射；5分钟无改善则重复",
+            "en": "Adrenaline 0.5 mg (0.5 mL of 1 mg/mL) subcutaneously into the upper arm; repeat after 5 min if no improvement"
+          },
           "correct": false,
           "feedback": {
             "zh-CN": "错误。皮下吸收慢且不可靠（休克时更甚），应肌注。",
@@ -4407,7 +4430,10 @@
         },
         {
           "id": "salbutamol-first",
-          "text": { "zh-CN": "先雾化沙丁胺醇，无效再考虑肾上腺素", "en": "Nebulised salbutamol first, adrenaline only if that fails" },
+          "text": {
+            "zh-CN": "先雾化吸入沙丁胺醇5 mg缓解哮鸣，无效再考虑肾上腺素",
+            "en": "Nebulised salbutamol 5 mg first for the wheeze, then adrenaline only if that fails"
+          },
           "correct": false,
           "feedback": {
             "zh-CN": "错误。沙丁胺醇只针对支气管痉挛，不能治疗喉头水肿和休克；它是肾上腺素之后的辅助治疗。",
@@ -4415,8 +4441,11 @@
           }
         },
         {
-          "id": "wrong-strength",
-          "text": { "zh-CN": "肾上腺素1:10 000（0.1 mg/mL）溶液0.5 mL肌注", "en": "Adrenaline 1:10,000 (0.1 mg/mL) solution, 0.5 mL IM" },
+          "id": "im-1-in-10000",
+          "text": {
+            "zh-CN": "肾上腺素1:10 000（0.1 mg/mL）溶液0.5 mL，大腿中段前外侧肌注；5分钟无改善则重复",
+            "en": "Adrenaline 1:10,000 (0.1 mg/mL) solution, 0.5 mL IM into the anterolateral mid-thigh; repeat after 5 min if no improvement"
+          },
           "correct": false,
           "feedback": {
             "zh-CN": "错误。这只有0.05 mg——剂量不足10倍。肌注必须用1 mg/mL（1:1000）溶液；0.1 mg/mL只用于心脏骤停静脉给药。",
@@ -4456,8 +4485,8 @@
         {
           "id": "observe-12h-aai",
           "text": {
-            "zh-CN": "留院观察过夜：症状完全缓解后至少12小时；出院时带2支肾上腺素自动注射笔并完成培训、书面应急计划，转诊变态反应专科",
-            "en": "Keep her in overnight: observe for at least 12 h after full resolution; discharge with two adrenaline auto-injectors, training and a written action plan, and refer to the allergy clinic"
+            "zh-CN": "留院过夜（缓解后≥12小时）；出院带2支肾上腺素笔并培训，给书面应急计划，转诊变态反应专科",
+            "en": "Overnight stay (≥ 12 h after resolution); discharge with two adrenaline auto-injectors, training, a written action plan and allergy referral"
           },
           "correct": true,
           "feedback": {
@@ -4468,8 +4497,8 @@
         {
           "id": "fast-track",
           "text": {
-            "zh-CN": "症状已消失，观察满2小时即可出院，让社区医生以后转诊",
-            "en": "Symptoms have resolved — discharge after 2 h, GP to refer later"
+            "zh-CN": "症状已完全消失、她也想回家：观察满2小时即可出院，变态反应专科的转诊以后再由社区医生安排",
+            "en": "Symptoms have resolved and she wants to go home: discharge after 2 h of observation, with her GP to arrange any allergy referral later"
           },
           "correct": false,
           "feedback": {
@@ -4480,8 +4509,8 @@
         {
           "id": "steroid-antihistamine",
           "text": {
-            "zh-CN": "出院带3天口服泼尼松龙和氯苯那敏，不需要肾上腺素笔",
-            "en": "Discharge with 3 days of oral prednisolone and chlorphenamine; no auto-injector needed"
+            "zh-CN": "出院带3天口服泼尼松龙和氯苯那敏以预防双相反应，不需要肾上腺素笔",
+            "en": "Discharge with 3 days of oral prednisolone and chlorphenamine to prevent a biphasic reaction; no auto-injector is needed"
           },
           "correct": false,
           "feedback": {
@@ -4492,8 +4521,8 @@
         {
           "id": "icu-48h",
           "text": {
-            "zh-CN": "收入ICU观察48小时，并预防性静脉用激素和抗组胺药",
-            "en": "Admit to ICU for 48 h with prophylactic IV steroids and antihistamines"
+            "zh-CN": "收入ICU监护48小时以防双相反应，并预防性静脉使用氢化可的松和氯苯那敏",
+            "en": "Admit to ICU for 48 h of monitoring for a biphasic reaction, with prophylactic IV hydrocortisone and chlorphenamine"
           },
           "correct": false,
           "feedback": {
@@ -4504,8 +4533,8 @@
         {
           "id": "one-pen-no-referral",
           "text": {
-            "zh-CN": "开1支肾上腺素笔回家备用；只是蜂蜇，不需要专科随访",
-            "en": "One auto-injector to keep at home; it was only a bee sting, so no specialist follow-up"
+            "zh-CN": "留院观察过夜后出院，只开1支肾上腺素自动注射笔放在家中备用；只是一次蜂蜇，不需要再去专科随访",
+            "en": "Observe her overnight, then discharge with one adrenaline auto-injector to keep at home; as it was only a bee sting, no specialist follow-up is needed"
           },
           "correct": false,
           "feedback": {
@@ -4584,10 +4613,20 @@
       "domain": "management",
       "weight": 1,
       "text": {
-        "zh-CN": "首剂后先再评估，无明显改善时重复肌注肾上腺素",
-        "en": "Reassessed after the first dose and repeated IM adrenaline because the response was inadequate"
+        "zh-CN": "在需要时重复肌注肾上腺素：距上一剂至少5分钟、已再评估且反应仍不充分",
+        "en": "Repeated IM adrenaline when it was due: at least 5 minutes after the last dose, after a reassessment, with the response still inadequate"
       },
-      "met": { "all": [{ "intervened": "adrenaline-im", "minCount": 2 }, { "flag": "reassessed-before-repeat" }] }
+      "met": { "intervened": "adrenaline-im", "whenIndicated": true, "minCount": 2 }
+    },
+    {
+      "id": "r-adr-reassess",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "给药后再评估气道、呼吸与循环，据此决定是否重复给药",
+        "en": "Reassessed airway, breathing and circulation after a dose to decide on a repeat"
+      },
+      "met": { "flag": "reassessed-after-adrenaline" }
     },
     {
       "id": "r-help-position",
@@ -4655,7 +4694,8 @@
           { "not": { "flag": "upright-while-hypotensive" } },
           { "not": { "intervened": "walk-to-ed" } }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-tryptase",
@@ -4950,7 +4990,7 @@
       { "text": "有没有吃降压药？", "locale": "zh-CN", "expect": ["meds-bb"] },
       { "text": "Do you have asthma?", "locale": "en", "expect": ["pmh-asthma"] },
       { "text": "有哮喘吗？", "locale": "zh-CN", "expect": ["pmh-asthma"] },
-      { "text": "Could you be pregnant?", "locale": "en", "expect": ["obstetric-lmp"] },
+      { "text": "Any chance you might be pregnant?", "locale": "en", "expect": ["obstetric-lmp"] },
       { "text": "家里有人养蜂吗？", "locale": "zh-CN", "expect": ["social-bees"] },
       { "text": "Who do you live with?", "locale": "en", "expect": ["social-home"] },
       { "text": "Do you smoke or drink?", "locale": "en", "expect": ["social-habits"] },
@@ -4992,9 +5032,9 @@
       { "text": "吃不吃降血压的药", "locale": "zh-CN", "expect": ["meds-bb"] },
       { "text": "自己吃了抗过敏药没", "locale": "zh-CN", "expect": ["self-treatment"] },
       { "text": "既往体健吗", "locale": "zh-CN", "expect": ["pmh-asthma", "pmh-other"] },
-      { "text": "LOC?", "locale": "en", "expect": ["hpi-loc"] },
-      { "text": "N/V?", "locale": "en", "expect": ["hpi-gi"] },
-      { "text": "DHx?", "locale": "en", "expect": ["meds"] },
+      { "text": "Any LOC at all?", "locale": "en", "expect": ["hpi-loc"] },
+      { "text": "N/V or tummy pain?", "locale": "en", "expect": ["hpi-gi"] },
+      { "text": "DHx — any regular meds?", "locale": "en", "expect": ["meds"] },
       { "text": "FHx of allergies?", "locale": "en", "expect": ["family"] },
       { "text": "any previous anaphylaxis?", "locale": "en", "expect": ["prev-reaction"] },
       { "text": "was it a bee?", "locale": "en", "expect": ["hpi-insect"] },
@@ -5043,7 +5083,7 @@
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",
       "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). `collapsed` is entered when the peri-arrest event fires before any adrenaline: history is phase-locked except `status-collapsed` (she can only groan), and general/circulation/neurological findings switch to peri-arrest variants; the first IM dose leaves it for `treated` (or `ed-resus` after a deferred transfer). Symptom questions re-asked in `ed` are answered by the `now-*-ed` phase twins (`supersedes` the garden-time `hpi-*` items, which keep only `scene`/`treated`/`ed-resus` because their present-tense answers no longer hold), so the patient never describes resolved symptoms as current; asking a twin credits the `hpi-*` items it supersedes (required history included) without revealing their stale answers. ECG/imaging/blood gas exist only in the ED phases.",
-      "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-before-repeat` marks a treated-phase reassessment between the first and second IM dose; it gates r-adr-repeat and the 'indicated' label of a repeat dose. The 5-minute interval itself is not expressible in the condition DSL."
+      "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-after-adrenaline` marks the first airway, breathing or circulation reassessment after an IM dose (scored by r-adr-reassess). A repeat dose is 'indicated' only at least 5 minutes after the last dose (`elapsedSince`), after a reassessment made since that dose (`{ examined, afterLast }`: one made before it does not count), while SBP < 90, SpO₂ < 94 or RR > 24; r-adr-repeat counts only doses given while indicated (`whenIndicated`, `minCount: 2`), so a repeat at 1.5 minutes, or in a patient who has improved, earns nothing. Critical interventions (the safety outcome fails): the IV bolus, sitting her up while hypotensive, walking her."
     }
   }
 }

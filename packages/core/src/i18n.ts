@@ -5,6 +5,7 @@
  * `LocalizedText`: either a plain string (single-language content) or a map
  * from BCP-47-ish locale tags ("zh-CN", "en") to strings.
  */
+import { SPECIALTY_SYNONYMS } from "./specialties.js";
 
 export type Locale = string;
 
@@ -107,6 +108,8 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   "ecg-12lead": { "zh-CN": "十二导联心电图", en: "a 12-lead ECG" },
   "cardiac-monitor": { "zh-CN": "心电监护", en: "cardiac monitoring" },
   capnography: { "zh-CN": "呼气末二氧化碳监测", en: "capnography" },
+  eeg: { "zh-CN": "脑电图", en: "an EEG" },
+  "fetal-monitor": { "zh-CN": "胎心监护", en: "fetal monitoring (CTG)" },
   stethoscope: { "zh-CN": "听诊器", en: "a stethoscope" },
   otoscope: { "zh-CN": "耳镜/检眼镜", en: "an otoscope" },
   "reflex-hammer": { "zh-CN": "叩诊锤", en: "a reflex hammer" },
@@ -142,6 +145,10 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   "tongue-imaging": { "zh-CN": "舌象采集仪", en: "a tongue-imaging station" },
   "tcm-dispensing": { "zh-CN": "中药调剂设备", en: "herbal dispensing equipment" },
   decoction: { "zh-CN": "煎药机", en: "a decoction machine" },
+  apheresis: { "zh-CN": "治疗性单采（血浆置换）", en: "therapeutic apheresis (plasma exchange)" },
+  "neonatal-care": { "zh-CN": "新生儿暖箱/辐射台", en: "a neonatal incubator or radiant warmer" },
+  phototherapy: { "zh-CN": "新生儿光疗", en: "neonatal phototherapy" },
+  "hyperbaric-oxygen": { "zh-CN": "高压氧舱", en: "a hyperbaric chamber" },
   // Teaching & records
   "anatomy-atlas": { "zh-CN": "解剖图谱", en: "the anatomy atlas" },
   "evidence-board": { "zh-CN": "会诊板", en: "the case board" },
@@ -167,8 +174,10 @@ export function capabilityLabels(capabilities: readonly string[], locale: Locale
 /**
  * Display labels of the case specialties (`CaseDefinition.specialty` ids): what the web library, the CLI and
  * MCP show — "急诊医学" / "Emergency medicine", never `emergency-medicine`. One table for every front-end;
- * British spelling and sentence case in English, department names in Chinese. A specialty outside the table
- * is shown as words (its id without hyphens), never invented.
+ * British spelling and sentence case in English, department names in Chinese. It labels every canonical id
+ * (`CANONICAL_SPECIALTIES`, specialties.ts) — one label per discipline, so the library filter lists each
+ * discipline once — and a synonym only while a library case still lists it. A specialty outside the table is
+ * shown as words (its id without hyphens), never invented.
  */
 export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: string }>> = {
   "acute-medicine": { "zh-CN": "急症内科", en: "Acute medicine" },
@@ -177,11 +186,13 @@ export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: st
   "cardiac-surgery": { "zh-CN": "心脏外科", en: "Cardiac surgery" },
   cardiology: { "zh-CN": "心内科", en: "Cardiology" },
   "clinical-pharmacology": { "zh-CN": "临床药理", en: "Clinical pharmacology" },
+  "clinical-toxicology": { "zh-CN": "临床毒理", en: "Clinical toxicology" },
   "colorectal-surgery": { "zh-CN": "结直肠外科", en: "Colorectal surgery" },
   "critical-care": { "zh-CN": "重症医学", en: "Critical care" },
   dermatology: { "zh-CN": "皮肤科", en: "Dermatology" },
   "emergency-medicine": { "zh-CN": "急诊医学", en: "Emergency medicine" },
   endocrinology: { "zh-CN": "内分泌", en: "Endocrinology" },
+  gastroenterology: { "zh-CN": "消化内科", en: "Gastroenterology" },
   "general-practice": { "zh-CN": "全科医学", en: "General practice" },
   "general-surgery": { "zh-CN": "普通外科", en: "General surgery" },
   genetics: { "zh-CN": "医学遗传学", en: "Clinical genetics" },
@@ -195,24 +206,39 @@ export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: st
   neonatology: { "zh-CN": "新生儿科", en: "Neonatology" },
   nephrology: { "zh-CN": "肾内科", en: "Nephrology" },
   neurology: { "zh-CN": "神经内科", en: "Neurology" },
+  neurosurgery: { "zh-CN": "神经外科", en: "Neurosurgery" },
+  nutrition: { "zh-CN": "临床营养", en: "Clinical nutrition" },
   obstetrics: { "zh-CN": "产科", en: "Obstetrics" },
   oncology: { "zh-CN": "肿瘤科", en: "Oncology" },
+  ophthalmology: { "zh-CN": "眼科", en: "Ophthalmology" },
+  orthopedics: { "zh-CN": "骨科", en: "Orthopaedics" },
+  otolaryngology: { "zh-CN": "耳鼻咽喉科", en: "Otolaryngology" },
   pathology: { "zh-CN": "病理科", en: "Pathology" },
+  // a synonym (`pediatrics` + `cardiology`) that a library case still lists — drop the label once none does
   "pediatric-cardiology": { "zh-CN": "小儿心血管科", en: "Paediatric cardiology" },
+  "pediatric-surgery": { "zh-CN": "小儿外科", en: "Paediatric surgery" },
   pediatrics: { "zh-CN": "儿科", en: "Paediatrics" },
-  pulmonology: { "zh-CN": "呼吸内科", en: "Pulmonology" },
-  respiratory: { "zh-CN": "呼吸", en: "Respiratory" },
+  radiology: { "zh-CN": "放射科", en: "Radiology" },
   "respiratory-medicine": { "zh-CN": "呼吸内科", en: "Respiratory medicine" },
   rheumatology: { "zh-CN": "风湿免疫科", en: "Rheumatology" },
   "sleep-medicine": { "zh-CN": "睡眠医学", en: "Sleep medicine" },
+  "thoracic-surgery": { "zh-CN": "胸外科", en: "Thoracic surgery" },
   "traditional-chinese-medicine": { "zh-CN": "中医", en: "Traditional Chinese medicine" },
+  transplantation: { "zh-CN": "移植医学", en: "Transplantation" },
+  "trauma-surgery": { "zh-CN": "创伤外科", en: "Trauma surgery" },
   urology: { "zh-CN": "泌尿外科", en: "Urology" },
   "vascular-medicine": { "zh-CN": "血管医学", en: "Vascular medicine" },
+  "vascular-surgery": { "zh-CN": "血管外科", en: "Vascular surgery" },
 };
 
-/** Display label of a specialty in `locale` (`SPECIALTY_LABELS`); an unknown id reads as words ("space medicine"). */
+/**
+ * Display label of a specialty in `locale` (`SPECIALTY_LABELS`). A synonym of one canonical id reads as that id's
+ * label ("pulmonology" → "Respiratory medicine", so older content joins its discipline's filter); any other
+ * unknown id reads as words ("space medicine").
+ */
 export function specialtyLabel(specialty: string, locale: Locale = DEFAULT_LOCALE): string {
-  const label = SPECIALTY_LABELS[specialty];
+  const synonym = SPECIALTY_SYNONYMS[specialty];
+  const label = SPECIALTY_LABELS[specialty] ?? (synonym?.length === 1 ? SPECIALTY_LABELS[synonym[0]!] : undefined);
   return label ? t(label, locale) : specialty.replace(/-/g, " ");
 }
 

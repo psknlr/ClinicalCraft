@@ -66,6 +66,15 @@ export function trMaybe(key: string, fallback: string, params?: Params): string 
   return v == null ? fallback : fill(v, params);
 }
 
+/**
+ * A message in every UI language, whatever the current one (`[]` when no table has the key): what the library
+ * search matches, so "ICU" finds the ICU cases in the Chinese interface and "急诊" the emergency ones in English.
+ */
+export function trEvery(key: string, params?: Params): string[] {
+  const texts = (Object.values(TABLES) as Record<string, string>[]).map((table) => table[key]).filter((v): v is string => v != null);
+  return [...new Set(texts.map((v) => fill(v, params)))];
+}
+
 /** A `|`-separated list message. */
 export function trList(key: MessageKey): string[] {
   return tr(key)

@@ -56,8 +56,57 @@ describe("analyzeNegation", () => {
     expect(read("intubate, no delay")).toEqual({ scopes: [], affirmative: "intubate", double: true });
   });
 
+  it("reads Latin letters in Chinese text as words (不做ERCP)", () => {
+    for (const text of ["不做ERCP", "不要做ERCP", "暂不做ERCP", "没必要做ERCP", "没有必要做ERCP", "不必做ERCP", "不能做ERCP"]) {
+      expect(read(text), text).toEqual({ scopes: ["做ercp"], affirmative: "", double: false });
+    }
+    expect(read("先不查CT，做B超").scopes).toEqual(["查ct"]);
+  });
+
+  it("reads a Chinese predicate backward when something comes before it", () => {
+    expect(read("ERCP没有指征")).toEqual({ scopes: ["ercp"], affirmative: "", double: false });
+    expect(read("溶栓无指征").scopes).toEqual(["溶栓"]);
+    expect(read("出院还不行")).toEqual({ scopes: ["出院还"], affirmative: "", double: false });
+    expect(read("吗啡不可以给").scopes).toEqual(["吗啡"]);
+    expect(read("不可以给吗啡").scopes).toEqual(["给吗啡"]);
+    expect(read("没有指征做ERCP").scopes).toEqual(["做ercp"]);
+  });
+
+  it("a cue followed only by a verb of taking negates what comes before it", () => {
+    expect(read("新斯的明不要再吃了")).toEqual({ scopes: ["新斯的明"], affirmative: "", double: false });
+    expect(read("新斯的明别吃了")).toEqual({ scopes: ["新斯的明"], affirmative: "", double: false });
+    expect(read("这个药先不要服了").scopes).toEqual(["这个药"]);
+    expect(read("不吃不喝").scopes).toEqual(["吃", "喝"]);
+    expect(read("不要吃阿司匹林").scopes).toEqual(["吃阿司匹林"]);
+  });
+
+  it("a hold's duration is no object of the negation", () => {
+    expect(read("去氨加压素停一次").scopes).toEqual(["去氨加压素"]);
+    expect(read("肝素停3天").scopes).toEqual(["肝素"]);
+    expect(read("heparin — hold it for 2 days").scopes).toEqual(["heparin"]);
+    expect(read("hold the heparin for 2 days").scopes).toEqual(["the heparin for 2 days"]);
+  });
+
+  it("reads 'isn't indicated' as a predicate and 'without' as a cue, but not 'without delay'", () => {
+    expect(read("Lavage isn't indicated")).toEqual({ scopes: ["lavage"], affirmative: "", double: false });
+    expect(read("antibiotics aren't needed").scopes).toEqual(["antibiotics"]);
+    expect(read("Do the CT without sedation")).toEqual({ scopes: ["sedation"], affirmative: "do the ct", double: false });
+    expect(read("discharge without follow-up")).toEqual({ scopes: ["follow-up"], affirmative: "discharge", double: false });
+    for (const text of ["Give antibiotics without delay", "continue CPR without stopping", "start the infusion without any delay", "intubate without hesitation"]) {
+      expect(analyzeNegation(text), text).toMatchObject({ negated: false, affirmative: text.toLowerCase(), doubleNegated: [] });
+    }
+  });
+
+  it("reads lifting a withholding as a double negative (解除禁食, don't keep her nil by mouth)", () => {
+    for (const text of ["解除禁食", "don't keep her nil by mouth", "she doesn't need to be nil by mouth"]) {
+      expect(analyzeNegation(text), text).toMatchObject({ negated: false, scopes: [], doubleNegated: [text.toLowerCase()] });
+    }
+  });
+
   it("ignores words that only look like cues", () => {
     for (const text of [
+      "用不透气的敷料封住伤口",
+      "不透明",
       "hold pressure on the groin",
       "stop the bleeding",
       "non-rebreather mask",

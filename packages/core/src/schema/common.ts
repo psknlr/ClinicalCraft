@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { keyedUnion } from "./keyed-union.js";
 
 /* ------------------------------------------------------------------ */
 /* Primitive schemas                                                   */
@@ -238,8 +239,12 @@ export type Condition =
   | { always: boolean }
   /** History item asked by the learner (or disclosed by the patient agent). */
   | { asked: string }
-  /** Physical-exam finding performed. */
-  | { examined: string }
+  /**
+   * Physical-exam finding performed. `afterLast` (an intervention id): examined after that intervention was last
+   * given (`lastGiven`, by committed action sequence) — a reassessment after the latest dose, which a dose given since
+   * undoes; false while the intervention was never given (sessions saved before the exam times were kept: false).
+   */
+  | { examined: string; afterLast?: string }
   /** Investigation ordered; `phase` restricts to orders placed in that phase. */
   | { ordered: string; phase?: string }
   /** Investigation result read; `phase` restricts to the result for that phase. */
@@ -260,9 +265,12 @@ export type Condition =
    * Intervention given at least `minCount` times (default 1). `valid: true` counts only attempts that were not
    * contraindicated when made (a checklist step in order); `valid: false` only those that were. `phase` counts only
    * attempts made while the case was in that phase — a tuina refused at the first visit and one refused at the review
-   * are two facts (an attempt recorded before attempts carried their phase matches no `phase`).
+   * are two facts (an attempt recorded before attempts carried their phase matches no `phase`). With
+   * `whenIndicated`, only the times it was given while its `indicatedWhen` held (and its `contraindicatedWhen` did
+   * not) count — "given in time": the window is the intervention's own `indicatedWhen` (e.g.
+   * `{ "phase": "admission" }`), judged when it is given.
    */
-  | { intervened: string; minCount?: number; valid?: boolean; phase?: string }
+  | { intervened: string; minCount?: number; valid?: boolean; phase?: string; whenIndicated?: boolean }
   /**
    * Interventions first validly given in this order (by committed action sequence, so two acts in the same
    * simulated minute keep their order): `{"inOrder": ["sign-in", "induction"]}`. False while one is missing.
@@ -280,6 +288,15 @@ export type Condition =
   | { vital: VitalKey; op: "lt" | "lte" | "gt" | "gte" | "eq"; value: number }
   /** Simulated minutes elapsed since the case started. */
   | { elapsed: { gte?: number; lte?: number } }
+  /**
+   * Simulated minutes since the intervention was last given (its latest record that is not an invalid checklist
+   * attempt — a dose given while contraindicated was given) lie in the range; false while it has never been given.
+   * In the intervention's own `indicatedWhen` it sets a repeat dose's window, which `{ intervened, whenIndicated }`
+   * then counts: `{ "any": [{ "not": { "intervened": "adrenaline-im" } }, { "all": [{ "elapsedSince": { "intervened":
+   * "adrenaline-im", "gte": 5 } }, { "flag": "still-compromised" }] }] }` — the first dose, or one ≥ 5 min after the
+   * last while the patient is still compromised.
+   */
+  | { elapsedSince: { intervened: string; gte?: number; lte?: number } }
   /** Number of hints used. */
   | { hints: { gte?: number; lte?: number } }
   | { procedure: ProcedurePredicate }
@@ -292,21 +309,30 @@ export type Condition =
   | { prescription: PrescriptionPredicate }
   | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
 
+/** The union behind `ConditionSchema`, built once (`z.lazy` calls its getter on every parse). */
+let conditionUnion: z.ZodType<Condition> | undefined;
+
+/**
+ * A `Condition`, parsed by a `KeyedUnion`: a valid condition is parsed only
+ * by the options whose required keys it has (a case holds hundreds of
+ * conditions; with a plain `z.union` they took most of the time it took to
+ * load the case library).
+ */
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
-  z.union([
+  (conditionUnion ??= keyedUnion([
     z.object({ all: z.array(ConditionSchema) }).strict(),
     z.object({ any: z.array(ConditionSchema) }).strict(),
     z.object({ not: ConditionSchema }).strict(),
     z.object({ always: z.boolean() }).strict(),
     z.object({ asked: IdSchema }).strict(),
-    z.object({ examined: IdSchema }).strict(),
+    z.object({ examined: IdSchema, afterLast: IdSchema.optional() }).strict(),
     z.object({ ordered: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ read: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ resultReady: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
     z.object({ decidedFirstTry: IdSchema }).strict(),
-    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional(), phase: IdSchema.optional() }).strict(),
+    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional(), phase: IdSchema.optional(), whenIndicated: z.boolean().optional() }).strict(),
     z.object({ inOrder: z.array(IdSchema).min(2).max(8) }).strict(),
     z.object({ held: IdSchema }).strict(),
     z.object({ phase: IdSchema }).strict(),
@@ -314,6 +340,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ objective: IdSchema }).strict(),
     z.object({ vital: VitalKeySchema, op: z.enum(["lt", "lte", "gt", "gte", "eq"]), value: z.number() }).strict(),
     z.object({ elapsed: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
+    /** Minutes since an intervention was last given (false while never given). */
+    z.object({ elapsedSince: z.object({ intervened: IdSchema, gte: z.number().min(0).optional(), lte: z.number().min(0).optional() }).strict() }).strict(),
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     /** The operative field (case `procedure`, docs/PROCEDURE.md §6). */
     z.object({ procedure: ProcedurePredicateSchema }).strict(),
@@ -327,8 +355,105 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ prescription: PrescriptionPredicateSchema }).strict(),
     /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */
     z.object({ datum: IdSchema, status: z.array(z.enum(["not-asked", "asked-unknown", "verified-negative", "verified-positive", "mitigated"])).min(1) }).strict(),
-  ]),
+  ])),
 );
+
+/* ------------------------------------------------------------------ */
+/* Doses (an intervention's preset dose; the dose an order states)     */
+/* ------------------------------------------------------------------ */
+
+/** What a dose is counted in: a mass (g, mg, microgram), a volume (mL), international units, millimoles. */
+export const DOSE_QUANTITIES = ["g", "mg", "microgram", "mL", "unit", "mmol"] as const;
+export type DoseQuantity = (typeof DOSE_QUANTITIES)[number];
+
+/**
+ * A dose's unit: a quantity, per kilogram of body weight or not, and per hour or per minute for a rate — `mg`,
+ * `mg/kg`, `unit/kg/h`, `microgram/kg/min`. Written `microgram` (never µg or mcg, the abbreviation misread a
+ * thousandfold) and `unit` (never U or IU, misread as 0 or 10).
+ */
+export type DoseUnit = `${DoseQuantity}${"" | "/kg"}${"" | "/h" | "/min"}`;
+/** Every `DoseUnit`, quantity by quantity: `g`, `g/h`, `g/min`, `g/kg`, `g/kg/h`, `g/kg/min`, `mg`, …. */
+export const DOSE_UNITS = DOSE_QUANTITIES.flatMap((q) =>
+  (["", "/kg"] as const).flatMap((kg) => (["", "/h", "/min"] as const).map((rate): DoseUnit => `${q}${kg}${rate}`)),
+) as unknown as readonly [DoseUnit, ...DoseUnit[]];
+export const DoseUnitSchema = z.enum(DOSE_UNITS);
+
+/**
+ * Routes of administration: intramuscular, intravenous, intraosseous, subcutaneous, oral, sublingual, rectal,
+ * intranasal, inhaled (nebulised or by inhaler), topical.
+ */
+export const DOSE_ROUTES = ["IM", "IV", "IO", "SC", "PO", "SL", "PR", "IN", "INH", "TOP"] as const;
+export type DoseRoute = (typeof DOSE_ROUTES)[number];
+export const DoseRouteSchema = z.enum(DOSE_ROUTES);
+
+/** A rate's unit: so much per hour or per minute. */
+const isRateUnit = (unit: string) => /\/(?:h|min)$/u.test(unit);
+
+/**
+ * One part of a preset given as a bolus and an infusion (`DoseSpec.bolus`, `DoseSpec.maintenance`): an amount, or a
+ * range up to `upTo`, in its unit.
+ */
+export const DosePartSchema = z
+  .object({
+    amount: z.number().positive(),
+    upTo: z.number().positive().optional(),
+    unit: DoseUnitSchema,
+  })
+  .strict()
+  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the part's range: it cannot be below amount", path: ["upTo"] });
+export type DosePart = z.infer<typeof DosePartSchema>;
+
+/**
+ * An intervention's preset dose, machine-readable (`interventions[].doseSpec`; the learner reads the `dose` text):
+ * what giving it gives. `upTo` is the top of a range the dose may take, in the same unit (labetalol 10–20 mg:
+ * `{ "amount": 10, "upTo": 20, "unit": "mg", "route": "IV" }`). An order's dose is checked against it (`checkOrder`).
+ *
+ * A dose given as a bolus and then an infusion states both parts. `maintenance` is the infusion's rate (heparin
+ * 80 units/kg IV, then 18 units/kg/h: `{ "amount": 70, "upTo": 80, "unit": "unit/kg", "route": "IV", "maintenance":
+ * { "amount": 18, "unit": "unit/kg/h" } }`): an order may state the bolus, the rate or both, each checked against its
+ * own part. When the bolus and the infusion are one dose given in two parts, `bolus` is the part given first and
+ * `amount` the whole (alteplase 0.9 mg/kg, a tenth as a bolus, the rest over an hour: `{ "amount": 0.9, "unit":
+ * "mg/kg", "route": "IV", "bolus": { "amount": 0.09, "unit": "mg/kg" }, "maintenance": { "amount": 0.81, "unit":
+ * "mg/kg/h" } }`): the whole, or both parts, are given; a part alone is asked about ("is that the whole dose?").
+ */
+export const DoseSpecSchema = z
+  .object({
+    amount: z.number().positive(),
+    upTo: z.number().positive().optional(),
+    unit: DoseUnitSchema,
+    route: DoseRouteSchema.optional(),
+    maintenance: DosePartSchema.optional(),
+    bolus: DosePartSchema.optional(),
+  })
+  .strict()
+  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the dose's range: it cannot be below amount", path: ["upTo"] })
+  .refine((d) => d.maintenance == null || (isRateUnit(d.maintenance.unit) && !isRateUnit(d.unit)), {
+    message: "maintenance is the rate of the infusion that goes with a single dose: a unit per hour or minute, beside a dose that is not itself a rate",
+    path: ["maintenance"],
+  })
+  .refine((d) => d.bolus == null || (d.bolus.unit === d.unit && !isRateUnit(d.unit) && (d.bolus.upTo ?? d.bolus.amount) < d.amount), {
+    message: "bolus is the part of the dose given first: in the dose's own unit (not a rate) and less than the whole dose",
+    path: ["bolus"],
+  });
+export type DoseSpec = z.infer<typeof DoseSpecSchema>;
+
+/**
+ * The dose an order states, as read from what was written (`parseDose`): an amount with its unit (a range ordered as
+ * `amount`–`upTo`), a route, or both — `{ "amount": 5, "unit": "mg", "route": "IM" }`, `{ "amount": 2, "upTo": 3,
+ * "unit": "mg" }`, `{ "route": "IV" }`.
+ */
+export const OrderedDoseSchema = z
+  .object({
+    amount: z.number().positive().optional(),
+    upTo: z.number().positive().optional(),
+    unit: DoseUnitSchema.optional(),
+    route: DoseRouteSchema.optional(),
+  })
+  .strict()
+  .refine((d) => (d.amount == null) === (d.unit == null), "an amount needs its unit, and a unit its amount")
+  .refine((d) => d.upTo == null || (d.amount != null && d.upTo > d.amount), "upTo is the top of an ordered range: above its amount")
+  .refine((d) => d.amount != null || d.route != null, "a dose states an amount, a route or both");
+export type OrderedDose = z.infer<typeof OrderedDoseSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Capabilities vocabulary                                             */
@@ -368,6 +493,8 @@ export const CAPABILITIES = {
   "ecg-12lead": "12-lead ECG",
   "cardiac-monitor": "Continuous ECG, NIBP, SpO2 monitoring",
   "capnography": "End-tidal CO2 monitoring",
+  "eeg": "Electroencephalography, incl. continuous bedside EEG / aEEG",
+  "fetal-monitor": "Cardiotocography (CTG): fetal heart rate and uterine activity",
   "stethoscope": "Auscultation",
   "otoscope": "Otoscopy / fundoscopy",
   "reflex-hammer": "Neurological reflex exam",
@@ -404,6 +531,10 @@ export const CAPABILITIES = {
   "tongue-imaging": "Tongue-imaging station: a standard light source and a colour reference card",
   "tcm-dispensing": "Herbal dispensing: a herb drawer cabinet or a granule dispenser",
   "decoction": "Decoction of a herbal prescription (a decoction machine)",
+  "apheresis": "Therapeutic apheresis: plasma exchange, red-cell exchange, cytapheresis",
+  "neonatal-care": "Neonatal thermal care: incubator or radiant warmer",
+  "phototherapy": "Neonatal phototherapy for hyperbilirubinaemia",
+  "hyperbaric-oxygen": "Hyperbaric oxygen therapy (a monoplace chamber)",
   // Teaching & records
   "anatomy-atlas": "3D anatomical reference",
   "evidence-board": "Case conference / decision board",

@@ -117,9 +117,13 @@ describe("navigation", () => {
     const me = w.runtime.actor(A)!.pose;
     expect(Math.hypot(cart.x - me.x, cart.z - me.z)).toBeLessThanOrEqual(1.25 + 1e-9);
     expect(w.runtime.inspect(A, "eq:ed-glucometer")!.room).toBe("ed-resus");
-    // the planner routes to the cart where it stands now
-    const plan = w.runtime.plan(N, { kind: "interact", id: "ed-glucometer" });
+    // the planner routes to the cart where it stands now for whoever moved it — and where the nurse believes it is for
+    // her (its usual place: she did not see it moved, audit 2026-11-12 P1-8)
+    const plan = w.runtime.plan(A, { kind: "interact", id: "ed-glucometer" });
     expect(plan.ok && Math.hypot(plan.target.x - cart.x, plan.target.z - cart.z)).toBeLessThan(2);
+    const usual = w.runtime.entity("eq:ed-glucometer")!.position;
+    const hers = w.runtime.plan(N, { kind: "interact", id: "ed-glucometer" });
+    expect(hers.ok && Math.hypot(hers.target.x - usual.x, hers.target.z - usual.z)).toBeLessThan(2);
     // carts cannot be moved by someone who is not at them
     expect(await w.act({ actorId: N, operation: "move_to", targetId: "ed-glucometer", goal: { kind: "room", id: "ed-station" } })).toMatchObject({ errorCode: "NOT_IN_RANGE", hint: { goal: { kind: "interact", id: "eq:ed-glucometer" } } });
   });

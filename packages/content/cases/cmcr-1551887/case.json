@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551887",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "睡眠障碍与注意力下降 · 31岁女性",
     "en": "Sleep disturbance and difficulty concentrating · 31-year-old woman"
@@ -2654,8 +2654,8 @@
           "id": "wu-biopsy",
           "correct": false,
           "text": {
-            "zh-CN": "尽快行脑组织活检以明确诊断",
-            "en": "Arrange a brain biopsy promptly to make the diagnosis"
+            "zh-CN": "尽快安排脑组织活检：组织学能一步区分朊蛋白病与炎症或肿瘤性病因",
+            "en": "Arrange a brain biopsy promptly: tissue would separate a prion disease from an inflammatory or neoplastic cause in one step"
           },
           "feedback": {
             "zh-CN": "不恰当。疑似朊蛋白病时，脑组织属于WHO 2000所列的高感染性组织，活检器械需要专门处理；而遗传性朊蛋白病可以用血液PRNP基因检测确诊（GeneReviews），活检不是首选。",
@@ -2707,8 +2707,8 @@
           "id": "probable-unverified",
           "correct": true,
           "text": {
-            "zh-CN": "临床上为“很可能的FFI”（A组睡眠障碍＋B组快速进展的认知与神经精神症状，加上舅舅类似病史这一提示性特征）；报告只写“PRNP（+）”，没有D178N和129位密码子，“确诊”无法按同一标准核实",
-            "en": "Probable FFI on clinical grounds (group A sleep disturbance + group B rapidly progressive cognitive and neuropsychiatric features, plus the uncle's similar illness as a suggestive feature); the report gives only “PRNP (+)” without D178N or codon 129, so “definite” cannot be checked against the same criteria"
+            "zh-CN": "很可能的FFI：A组睡眠障碍＋B组快速进展的认知与神经精神症状，舅舅类似病史为提示性特征；“PRNP（+）”未写明D178N和129位密码子，“确诊”无法核实",
+            "en": "Probable FFI: group A sleep disturbance and group B rapidly progressive cognitive and neuropsychiatric features, with the uncle's similar illness as a suggestive feature; “PRNP (+)” names neither D178N nor codon 129, so “definite” cannot be checked"
           },
           "feedback": {
             "zh-CN": "正确。原文表2转载的2018年中国专家共识（Wu 2018）：A组＋1–2项B/C组核心特征为“可能”；两组以上核心特征再加一项以上提示性特征（RPD与失眠的阳性家族史、PSG证据、SPECT/PET丘脑低代谢）为“很可能”；“确诊”依赖PRNP检测，表2写明为D178N突变伴129位密码子多态性。本例C组自主神经表现、PSG和PET都没有报告，舅舅“类似症状”的细节也未展开，所以“很可能”是记录资料能支持的上限。“PRNP（+）”可以对应多种PRNP致病变异（遗传性CJD和GSS都在作者的鉴别诊断中），需要写明变异的完整报告。2022年修订标准（Chu 2022）保留了“可能＋阳性家族史或v-PSG/PET/SPECT异常＝很可能”的层级。",
@@ -2719,8 +2719,8 @@
           "id": "definite",
           "correct": false,
           "text": {
-            "zh-CN": "已确诊FFI：PRNP阳性即满足确诊标准，无需再核对",
-            "en": "Definite FFI: a positive PRNP result meets the definite criterion, so there is nothing further to check"
+            "zh-CN": "已确诊FFI：睡眠障碍和快速进展的认知、神经精神症状满足临床核心特征，舅舅的类似病史也相符，PRNP阳性又满足确诊条件，按共识可直接定为确诊，无需再作任何核对",
+            "en": "Definite FFI: the sleep disturbance and the rapidly progressive cognitive and neuropsychiatric features meet the clinical criteria, the uncle's illness fits, and a positive PRNP result fulfils the consensus's definite criterion, so there is nothing further to check"
           },
           "feedback": {
             "zh-CN": "不够严谨。这是原报告的结论，但它自己转载的标准要求PRNP结果为D178N突变并注明129位密码子；“PRNP（+）”没有说明是哪个变异——同一基因的其他致病变异可表现为遗传性CJD或GSS（作者列出的鉴别诊断）。FFI对应D178N与129位甲硫氨酸位于同一等位基因（GeneReviews）。应索取完整报告（变异名称和129位基因型）后再定为“确诊”。",
@@ -2731,8 +2731,8 @@
           "id": "excluded",
           "correct": false,
           "text": {
-            "zh-CN": "基本可排除朊蛋白病：颅脑MRI、脑静脉成像和脑脊液常规都正常，脑电图只是轻度异常",
-            "en": "Prion disease is effectively excluded: brain MRI, MR venography and routine CSF are normal and the EEG is only mildly abnormal"
+            "zh-CN": "基本可排除朊蛋白病：颅脑MRI、脑静脉成像和脑脊液常规都正常，脑电图只有散在θ波、没有痫样放电，应另找导致她病情下降的原因",
+            "en": "Prion disease is effectively excluded: brain MRI, MR venography and routine CSF are normal and the EEG shows only scattered theta with no epileptiform discharges, so look for another cause of her decline"
           },
           "feedback": {
             "zh-CN": "不正确。2018年共识特别指出，FFI诊断困难的原因之一就是辅助检查敏感性低；共识的诊断要素是睡眠、神经精神和自主神经表现，加上PSG、SPECT/PET和家族史，并不包括MRI或脑脊液常规是否异常。正常的MRI、脑电图和脑脊液常规不能排除FFI。",
@@ -2743,8 +2743,8 @@
           "id": "unclassifiable",
           "correct": false,
           "text": {
-            "zh-CN": "无法分级：没有多导睡眠监测和PET，共识标准不能用于本例",
-            "en": "It cannot be graded: without polysomnography and PET the consensus criteria cannot be applied"
+            "zh-CN": "无法分级：没有多导睡眠监测和PET或SPECT，共识标准不能用于本例，任何分级都要等这两项检查做完以后",
+            "en": "It cannot be graded: without polysomnography and PET or SPECT the consensus criteria cannot be applied to her, so any grade must wait until both studies have been done"
           },
           "feedback": {
             "zh-CN": "不正确。PSG和SPECT/PET只是提示性特征中的两项，不是前提：仅凭临床核心特征就能判断“可能的FFI”，阳性家族史本身也是提示性特征。缺少PSG和PET应写进证据边界，而不是放弃分级。",
@@ -2755,8 +2755,8 @@
           "id": "anxiety-insomnia",
           "correct": false,
           "text": {
-            "zh-CN": "焦虑相关的原发性失眠：避孕药诱发，苯二氮䓬类使病情加重",
-            "en": "Primary insomnia with anxiety, triggered by the contraceptive pill and worsened by the benzodiazepine"
+            "zh-CN": "焦虑相关的原发性失眠：失眠在开始服避孕药后出现，苯二氮䓬类使之加重，半年来的紧张焦虑足以解释注意力下降",
+            "en": "Primary insomnia with anxiety: the poor sleep began after she started the contraceptive pill and was worsened by the benzodiazepine, and six months of tension explain the poor concentration"
           },
           "feedback": {
             "zh-CN": "不正确。焦虑确实存在，但它解释不了数月内进行性的记忆力和计算力下降、言语错乱、肢体不自主运动和震颤，也解释不了家族中类似的病例；服避孕药以后出现失眠只是时间先后，不能证明因果。",
@@ -2792,8 +2792,8 @@
           "id": "ic-tse",
           "correct": true,
           "text": {
-            "zh-CN": "日常护理按标准预防，无需隔离；有创操作、脑脊液和组织标本按TSE感染控制要求处理：标注并告知检验科，尽量用一次性器械，接触高感染性组织的器械按专门程序灭活或销毁",
-            "en": "Standard precautions for routine care, no isolation; invasive procedures, CSF and tissue specimens under TSE precautions: label them and tell the laboratory, single-use instruments where possible, and instruments that touch high-infectivity tissue decontaminated by TSE-specific methods or destroyed"
+            "zh-CN": "日常护理按标准预防、不隔离；有创操作及脑脊液、组织标本按TSE要求：标注并告知检验科，尽量用一次性器械，接触高感染性组织的器械按专门程序灭活或销毁",
+            "en": "Standard precautions for routine care, no isolation; TSE precautions for invasive procedures and CSF or tissue specimens: label them and tell the laboratory, prefer single-use instruments, and decontaminate by TSE methods or destroy those touching high-infectivity tissue"
           },
           "feedback": {
             "zh-CN": "正确。WHO 2000 TSE感染控制指南：脑、脊髓和眼为高感染性组织，脑脊液的感染性较低；完整皮肤接触的风险可忽略，患者无需隔离，也不应因此被拒绝任何检查或治疗；真正需要管理的是有创操作的器械和标本。朊蛋白能耐受常规消毒灭菌。加拿大CJD感染控制指南把GSS和FFI患者也列为需要这些措施的人群。原报告没有提到感染控制。",
@@ -2804,8 +2804,8 @@
           "id": "ic-isolate",
           "correct": false,
           "text": {
-            "zh-CN": "单间隔离，所有接触者戴N95口罩，按空气和接触传播隔离",
-            "en": "Single-room isolation, N95 respirators for everyone, airborne and contact precautions"
+            "zh-CN": "传播途径尚不明确，应按空气和接触传播隔离：单间收治，所有进入者戴N95口罩、穿隔离衣、戴手套，限制家属探视，她用过的床单、餐具都按感染性废物装袋处理",
+            "en": "Single-room isolation with airborne and contact precautions, since how the agent spreads between people is uncertain: N95 respirators, gowns and gloves for everyone entering, restricted visiting for her family, and her linen and crockery bagged and disposed of as infectious waste"
           },
           "feedback": {
             "zh-CN": "不需要。朊蛋白病不经空气、飞沫或日常接触传播；WHO 2000指出这类患者无需隔离。过度隔离增加她和家属的负担，却没有针对真正的风险——有创操作的器械和标本。",
@@ -2816,8 +2816,8 @@
           "id": "ic-none",
           "correct": false,
           "text": {
-            "zh-CN": "不需要特殊措施：这是遗传病，不是传染病",
-            "en": "No special measures: this is a genetic disease, not an infection"
+            "zh-CN": "不需要特殊措施：遗传性朊蛋白病是经PRNP基因遗传的，不会在人与人之间传染，她的日常护理、标本和所用器械都按普通患者处理",
+            "en": "No special measures: a genetic prion disease is inherited through the PRNP gene, not caught from other people, so her care, her specimens and the instruments used on her are handled like any other patient's"
           },
           "feedback": {
             "zh-CN": "不正确。遗传性朊蛋白病的异常朊蛋白同样可以经器械和组织医源性传播，这正是TSE感染控制针对的风险；加拿大CJD感染控制指南把GSS和FFI患者也列为需要这些措施的人群。",
@@ -2828,8 +2828,8 @@
           "id": "ic-avoid",
           "correct": false,
           "text": {
-            "zh-CN": "今后不再给她做任何有创操作，包括腰椎穿刺、胃管和静脉穿刺",
-            "en": "No further invasive procedures for her — no lumbar puncture, feeding tube or even venepuncture"
+            "zh-CN": "为保护医务人员和其他患者，今后不再给她做任何有创操作：不再腰穿、不插胃管、不抽血，也不再往检验科送任何标本",
+            "en": "Protect staff and other patients by avoiding any further invasive procedure on her: no repeat lumbar puncture, no feeding tube, no venepuncture, and no more specimens sent to the laboratory"
           },
           "feedback": {
             "zh-CN": "不正确。WHO 2000指出，不应因TSE而拒绝患者任何需要的检查或治疗；要改变的是器械和标本的处理方式。",
@@ -2840,12 +2840,12 @@
           "id": "ic-autoclave",
           "correct": false,
           "text": {
-            "zh-CN": "复用器械沿用常规清洗和高压灭菌即可",
-            "en": "Routine cleaning and standard autoclaving of reusable instruments is enough"
+            "zh-CN": "按标准预防、无需隔离；她做各种操作用过的复用器械照常清洗、按常规程序高压灭菌即可，与其他患者相同",
+            "en": "Standard precautions and no isolation, and reusable instruments from any procedure on her go through the usual cleaning and the standard autoclave cycle, as for every other patient"
           },
           "feedback": {
-            "zh-CN": "不够。朊蛋白能耐受常规消毒和灭菌方法；接触高感染性组织的器械要按WHO 2000推荐的TSE专门程序处理或直接销毁，能用一次性器械时优先一次性。",
-            "en": "Not enough. Prions survive routine disinfection and sterilisation; instruments that touch high-infectivity tissue need the TSE-specific methods WHO 2000 recommends, or destruction, and single-use instruments are preferred where possible."
+            "zh-CN": "标准预防、无需隔离是对的，但常规处理不够：朊蛋白能耐受常规消毒和灭菌方法；接触高感染性组织的器械要按WHO 2000推荐的TSE专门程序处理或直接销毁，能用一次性器械时优先一次性。",
+            "en": "Standard precautions without isolation are right, but routine reprocessing is not enough: prions survive routine disinfection and sterilisation; instruments that touch high-infectivity tissue need the TSE-specific methods WHO 2000 recommends, or destruction, and single-use instruments are preferred where possible."
           }
         }
       ]
@@ -2877,8 +2877,8 @@
           "id": "fam-counsel",
           "correct": true,
           "text": {
-            "zh-CN": "转介遗传咨询：说明常染色体显性遗传，每个子女有50%的遗传风险；高风险成年亲属是否做预测性检测，在咨询后自愿决定（包括有权不知道）；同时索取写明具体变异的完整报告",
-            "en": "Refer to clinical genetics: explain autosomal dominant inheritance and the 50% risk to each child; at-risk adult relatives decide about predictive testing voluntarily after counselling (including the right not to know); and obtain the full report naming the variant"
+            "zh-CN": "转介遗传咨询，说明常染色体显性遗传、每个子女50%风险；高风险成年亲属咨询后自愿决定是否做预测性检测（包括有权不知道）；索取写明具体变异的完整报告",
+            "en": "Refer to clinical genetics to explain autosomal dominant inheritance and the 50% risk to each child; at-risk adult relatives decide freely on predictive testing after counselling, including the right not to know; obtain the full report naming the variant"
           },
           "feedback": {
             "zh-CN": "正确。GeneReviews：携带者的每个子女有50%的概率遗传致病变异。舅舅是母亲一方的亲属，提示风险可能来自母系，但母亲的健康和基因状况原报告没有记录，不能推断。疾病目前无法根治，预测性检测须在遗传咨询后由本人自愿决定；亲属检测还需要先知道她的具体变异。",
@@ -2889,8 +2889,8 @@
           "id": "fam-test-all",
           "correct": false,
           "text": {
-            "zh-CN": "建议所有亲属，包括孩子，马上都去做PRNP检测",
-            "en": "Advise every relative, children included, to have PRNP testing straight away"
+            "zh-CN": "这种病是显性遗传而且致命，应建议所有血亲，包括未成年的孩子，马上都去做PRNP检测，及早发现携带者，在出现症状之前就开始门诊随访、早做打算",
+            "en": "As the disease is dominant and fatal, advise every blood relative, children included, to have PRNP testing straight away, so that carriers are found early, followed up in clinic before any symptoms appear and can plan ahead"
           },
           "feedback": {
             "zh-CN": "不恰当。预测性检测必须知情、自愿，并在遗传咨询之后进行；一刀切地要求所有人检测不尊重个人选择。亲属检测还需要先知道她的具体变异。",
@@ -2901,8 +2901,8 @@
           "id": "fam-unrelated",
           "correct": false,
           "text": {
-            "zh-CN": "舅舅当年诊断的是脑萎缩和帕金森病，和她的病无关，家属不用担心",
-            "en": "Her uncle had brain atrophy and Parkinson's disease, which is unrelated; the family need not worry"
+            "zh-CN": "舅舅当年诊断的是脑萎缩和帕金森病，这些病并不是这样遗传的，和她的病无关；家属不用为自己的遗传风险担心，也不必再去追问他当年的病情",
+            "en": "Her uncle's illness was diagnosed at the time as brain atrophy and Parkinson's disease, conditions not inherited in this way, so it is unrelated to hers: the family need not worry about their own risk or look into his illness any further"
           },
           "feedback": {
             "zh-CN": "不正确。舅舅当年的诊断没有经过基因证实；他“类似症状”的病史正是2018年共识列出的提示性特征（RPD与失眠的阳性家族史），不能因为旧的诊断名称就忽略。",
@@ -2913,8 +2913,8 @@
           "id": "fam-mother",
           "correct": false,
           "text": {
-            "zh-CN": "告诉家属：她母亲一定是携带者，应该马上检测",
-            "en": "Tell the family that her mother must be a carrier and should be tested now"
+            "zh-CN": "患病的舅舅是她母亲的兄弟，所以要明确告诉家属：她母亲一定是携带者，应当马上做PRNP检测，然后再考虑其他亲属",
+            "en": "Because the affected uncle is her mother's brother, tell the family that her mother must be the carrier and should have PRNP testing now, before any other relative is approached"
           },
           "feedback": {
             "zh-CN": "不能这样推断。舅舅提示母系可能有风险，但母亲的健康和基因状况原报告都没有记录；不能把推测当作事实告诉家属，母亲是否检测同样要在遗传咨询后自愿决定。",
@@ -2925,8 +2925,8 @@
           "id": "fam-withhold",
           "correct": false,
           "text": {
-            "zh-CN": "为了不让家属焦虑，暂时不告诉他们遗传风险",
-            "en": "Hold back the genetic risk from the family so as not to alarm them"
+            "zh-CN": "她病得这么重，又没有治疗办法，为了不让家属更焦虑，暂时不告诉他们遗传风险，等哪位亲属出现症状时再说",
+            "en": "Hold back the genetic risk from the family for now, so as not to alarm them while she is so ill and there is no treatment to offer; raise it only if a relative develops symptoms"
           },
           "feedback": {
             "zh-CN": "不恰当。在患者同意的前提下与家属坦诚沟通遗传风险并提供遗传咨询，是亲属能够自主决定的前提；隐瞒会剥夺他们的选择。",

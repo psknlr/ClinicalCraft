@@ -38,4 +38,12 @@ describe("the care team in a session", () => {
     expect(validTeamCheckpoint({ ...checkpoint(1), state: { ...checkpoint(1).state, version: 2 } })).toBeNull();
     expect(validTeamCheckpoint(null)).toBeNull();
   });
+
+  it("a team saved when an information need held up one act reads it as the list it now is (verification D4)", () => {
+    const task = { id: "task-1", kind: "inform", need: "i1", item: "anticoagulants", for: "actor:clinician", owner: "staff:ed-nurse", initiator: "staff:ed-nurse", holder: "staff:triage-nurse", blocks: "tenecteplase", thread: "th-1", status: "asked", since: 2, tried: [], acts: 0 };
+    const saved = { ...checkpoint(3), state: { ...checkpoint(3).state, tasks: [task] } } as unknown as TeamCheckpoint;
+    expect(validTeamCheckpoint(saved)?.state.tasks[0]).toMatchObject({ id: "task-1", blocks: ["tenecteplase"] });
+    const now = { ...saved, state: { ...saved.state, version: 2, lifecycle: "active", tasks: [{ ...task, blocks: ["tenecteplase", "alteplase"] }] } } as unknown as TeamCheckpoint;
+    expect(validTeamCheckpoint(now)?.state.tasks[0]?.blocks).toEqual(["tenecteplase", "alteplase"]);
+  });
 });

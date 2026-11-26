@@ -15,7 +15,7 @@ in the decisions, feedback and debrief. Not medical advice (`disclaimer`).
 
 | | |
 |---|---|
-| id / version | `cmcr-138796` / `1.1.0` |
+| id / version | `cmcr-138796` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed) |
 | specialty | nephrology, rheumatology, general surgery |
 | difficulty | 4 / 5 |
@@ -379,6 +379,32 @@ the published abstract.
   the latter two.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all three
+  single-best decisions (`diagnosis`, `induction`, `biopsy-interpretation`)
+  the keyed option was the uniquely longest in both languages (up to about
+  2.5 times the mean option length); now it is in none. The `induction` and
+  `biopsy-interpretation` keys say the same in fewer words; each distractor
+  now names what makes it tempting — ATN from vomiting, diarrhoea and two
+  operations with the creatinine rising in the surgical stay; IgA vasculitis
+  with intussusception; anti-GBM disease from the tempo (261 → 700 μmol/L in
+  about eight weeks); lupus in a woman of 36 with heavy proteinuria,
+  haematuria and hypertension; glucocorticoids alone, or deferral, to protect
+  the fresh anastomosis; azathioprine to spare her fertility; plasma exchange
+  to clear anti-MPO; "irreversible" from the chronic lesions; another cause
+  (hypertensive injury) for the negative immunofluorescence; a repeat biopsy
+  because 5 glomeruli fall short of the 10 behind the Berden classes. In the
+  select-all `supportive` decision the two wrong options now give their
+  reason too. Medical meaning, correct flags, scoring and the reference path
+  are unchanged; the feedback of `gc-alone`, `wait-bowel`, `azathioprine` and
+  `not-immune` now also answers the reason their text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
+- **Matcher corpus:** three `extensions.testUtterances` that were one of their
+  item's keywords (`cases validate --strict`) are now paraphrases —
+  最近小便一天能解多少？, 以前开过几次刀？, 现在肚子还痛不痛？; no history
+  item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

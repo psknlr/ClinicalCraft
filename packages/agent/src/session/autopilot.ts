@@ -101,7 +101,7 @@ export function walkthroughEndText(c: CaseDefinition, state: SessionState, misse
     ...new Set(
       missed.flatMap((step) =>
         step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state)
-          ? [formatRule(step.tool, actionSpecifier(step.action))]
+          ? [formatRule(step.tool, actionSpecifier(step.action, c))]
           : // a colleague's work that never came: named as theirs
             step.kind === "await" && !stepAlreadySatisfied(step, state)
             ? [step.action.type === "staff-task" ? rt(locale, "task.await.missed", { what: step.what }) : rt(locale, "rx.await.missed", { who: rt(locale, "rx.notify.title"), what: step.what })]

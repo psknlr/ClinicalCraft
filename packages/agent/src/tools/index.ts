@@ -17,10 +17,13 @@ import { prescriptionTools, PRESCRIPTION_TOOL_NAMES } from "./prescriptions.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
+export * from "./decision-refs.js";
+export * from "./dose-order.js";
 export * from "./npc.js";
 export { procedureTools } from "./procedure.js";
 export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export { dispensaryStaff, formulationText, prescriptionHeads, prescriptionLines, prescriptionText, prescriptionTools, PRESCRIPTION_TOOL_NAMES, resolveFormulation } from "./prescriptions.js";
+export * from "./option-labels.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";

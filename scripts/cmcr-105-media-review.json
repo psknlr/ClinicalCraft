@@ -1,0 +1,747 @@
+{
+  "scope": "101 figures individually inspected; five source PDFs inspected. Only approved files are displayed. Other full PDFs remain private and are not approved for display.",
+  "files": [
+    {
+      "case": "cmcr-1551888",
+      "file": "source.pdf",
+      "status": "approved",
+      "reason": "Both pages visually reviewed; text-only source report without patient-identifying imaging.",
+      "sha256": "e23c713349cc2b1317bca8a53e6a67b2163093060822a273c28e2d04a5077e0e"
+    },
+    {
+      "case": "cmcr-1551889",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original prenatal ultrasound: no patient identifier or calendar acquisition date visible.",
+      "sha256": "ff2cd5f2c12c83ae454e6be0ecd1dd761053a2db0033f67cc0d9aa91b7ce4e66"
+    },
+    {
+      "case": "cmcr-1551889",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original postnatal CT reconstruction: no patient identifier or calendar acquisition date visible.",
+      "sha256": "0cce8b472757c628de0839ce9117cbbb0603d9f2e29ce06ef1a42eb44f21fd05"
+    },
+    {
+      "case": "cmcr-1551889",
+      "file": "source.pdf",
+      "status": "withheld",
+      "reason": "Journal back-cover ophthalmic image from another report contains a calendar acquisition date and time.",
+      "sha256": "4b84cba60ef01b28c4c1b5d6e644c72e9679f6ee371a19386f1cbac7f29b6015"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "547057224a5b589d510454ce1a6d228bcc4293860b97b39388bbf36e5ca1b5f0"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "56092c86a559f7fda653ff0229254e9ce0f0718f7e784cd62734f683d4fb7546"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig03.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "aebd4131ec90ab531758427a4f3221cb2983e7a263cd3c9e2913a50e737e9700"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig04.png",
+      "status": "withheld",
+      "reason": "Burned-in patient/hospital identifiers, birth date and acquisition date/time.",
+      "sha256": "cd20d1af351b57f8b80fa9557f815b26bdd06a2c41f2f1c548d8ff571f999b67"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig05.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "f7a8360d29f453c571b1476a9a53534c51c168de1a178e25178d029081ee5142"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig06.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "82b2c656fa88554ecf942e02d7b59302dd156445cb019f41afad319ebf17df80"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig07.png",
+      "status": "withheld",
+      "reason": "Burned-in patient name, birth date, record number and acquisition date/time.",
+      "sha256": "92826f9249052fbe7b74057ace49ca3a9e868e49c450d4095b9d67ae18ed0aa1"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig08.png",
+      "status": "withheld",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "5beeb545403030e41f2653eae41d00fae34e86053e4c5e3abe45dfd06cc756c3"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "source.pdf",
+      "status": "withheld",
+      "reason": "Reprints ECG dates and identifying CT/angiography overlays.",
+      "sha256": "c45bfd669798fca17fdb15e6e5d0ee8fd6165ed13cb13a46d56ac79e8e495bb8"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original ultrasound composite inspected; no identifying overlay visible.",
+      "sha256": "0572fedca68ec6d5235747951cc82233adc3fa4ffbc8f8649ae4b62d7baab04b"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "PET/CT composite includes hospital, birth-date and acquisition-date overlays.",
+      "sha256": "e8ba54e0e10808cb7098cf5e1b1b2b8b4c271626c4f1ff4f12dc10d362ca8c00"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "fig03.png",
+      "status": "approved",
+      "reason": "Original histology composite inspected; no identifying overlay visible.",
+      "sha256": "4d025d03f5ae62b44aa692101bdf226308680b0d3d998c9b8f47a0cc1ccb722d"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "source.pdf",
+      "status": "withheld",
+      "reason": "Reprints identifying PET/CT and additional journal back-cover patient imaging.",
+      "sha256": "17cd44a1e447d45fff3c79451eb0967ae7648810dbee2946fa8ae750c32af5d8"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "source.pdf",
+      "status": "withheld",
+      "reason": "CT figures contain day-level acquisition dates.",
+      "sha256": "5a45f2915bd778a10f61fddd5f0c7e023bae30647a796f1807a590f4a7943b80"
+    },
+    {
+      "case": "cmcr-1067457",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical photograph, CT or histology inspected; no direct identifier or calendar date visible.",
+      "sha256": "74a2628873da2d60e208be1f15ffb0bb0a2d463ee7e9935222d5d9258972047a"
+    },
+    {
+      "case": "cmcr-1067457",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical photograph, CT or histology inspected; no direct identifier or calendar date visible.",
+      "sha256": "f3600df38d11d24fb56d324d444ea1fb37469b12af385e3f01906f18dbee6f81"
+    },
+    {
+      "case": "cmcr-1067457",
+      "file": "fig03.png",
+      "status": "approved",
+      "reason": "Original clinical photograph, CT or histology inspected; no direct identifier or calendar date visible.",
+      "sha256": "17493c4c56738d68e3d2937d4f645d7f983f8dba837275cbe6065aebb12cdf8e"
+    },
+    {
+      "case": "cmcr-1067457",
+      "file": "fig04.png",
+      "status": "approved",
+      "reason": "Original clinical photograph, CT or histology inspected; no direct identifier or calendar date visible.",
+      "sha256": "ffdcd020e8d45e289efe31c810db584dc54b06d3b69c195e4fb878005508a8dd"
+    },
+    {
+      "case": "cmcr-1067457",
+      "file": "fig05.png",
+      "status": "approved",
+      "reason": "Original clinical photograph, CT or histology inspected; no direct identifier or calendar date visible.",
+      "sha256": "8479e0417018c1786efda068ea83f7d5bbf22b72a1244cb9bb47edc333c6add6"
+    },
+    {
+      "case": "cmcr-1068535",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "MRI, specimen and stoma composite inspected; no identifying overlay visible.",
+      "sha256": "80667e89fdae811a4c301455129bd5d81a78ea9fc4c5e701e5c5936991de952c"
+    },
+    {
+      "case": "cmcr-138892",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "CT composite without identifying overlay.",
+      "sha256": "0f3d0155d7dfa7a30357eb3a41a10bf5fa8d94ab54f470f6344735c61ec76494"
+    },
+    {
+      "case": "cmcr-138892",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "Ultrasound has a partial acquisition-time overlay; withheld because its original uncropped context cannot be confirmed.",
+      "sha256": "2972fe31e813a688faa318c56547af8e4103d4ce20022247bde4d0f754c7f244"
+    },
+    {
+      "case": "cmcr-138892",
+      "file": "fig03.png",
+      "status": "approved",
+      "reason": "Original imaging or histology inspected; no identifying overlay visible.",
+      "sha256": "d57f7ed44df6ded9316d86a7d98b0ff8b955bbe0b3e722c88f29aea0b8bd59bc"
+    },
+    {
+      "case": "cmcr-138892",
+      "file": "fig04.png",
+      "status": "approved",
+      "reason": "Original imaging or histology inspected; no identifying overlay visible.",
+      "sha256": "759cb4bad1fee19ea17b343c7ab72ab7122bb216f17d982414fbb10f02a3a973"
+    },
+    {
+      "case": "cmcr-33789",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging or histology inspected; no identifying overlay visible.",
+      "sha256": "2a116a5895d0ca348a820d0db79c5fa27d9849e74b282dfbaf0127b67ca8f82c"
+    },
+    {
+      "case": "cmcr-33790",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging or histology inspected; no identifying overlay visible.",
+      "sha256": "dba2ae167a9096a0cee01a31d72c150f584a16dce4e3f88c54aa358a1bffeede"
+    },
+    {
+      "case": "cmcr-33797",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging or histology inspected; no identifying overlay visible.",
+      "sha256": "b36b204b5a76aa95df3948a2097cb94d0d59ef7cc783a57f242eadd298e2b4ee"
+    },
+    {
+      "case": "cmcr-33729",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Ultrasound panel carries hospital and calendar acquisition date/time.",
+      "sha256": "004db6ef147f1750a5179d20d336fd8344abf42c663999ea3a6a9b2125272dd8"
+    },
+    {
+      "case": "cmcr-33736",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "CT composite carries patient name, birth date, record number, hospital and acquisition date.",
+      "sha256": "3f9adcdd658f43ea201a5ef3a5a2ca926ce1a1cad50ee2aff073f8329b9522e0"
+    },
+    {
+      "case": "cmcr-33789",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "Angiography panels carry patient name, hospital, record number and acquisition date.",
+      "sha256": "b5fbcb8f7bd4bad90a65d2727b93a2e44520f64230e741639d59557035e59654"
+    },
+    {
+      "case": "cmcr-561086",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "445a7b8f71aed72f662412af1294c9c920872cb62141a7aadcb6272442030032"
+    },
+    {
+      "case": "cmcr-561144",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "efc47a2473ccdc095f740199adbf88887580bbd01f485dc82c48440868bbcb55"
+    },
+    {
+      "case": "cmcr-561190",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "1969cd30609e987d2e59de8b24262e4117e4d7f9dfb1360de1af92e3687e58ae"
+    },
+    {
+      "case": "cmcr-561253",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "1e60e4113680b96a8d39ccd391ffe917b6165926a469b1e3db30d92b79e5d439"
+    },
+    {
+      "case": "cmcr-561253",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "cf4089bc045f6b8c31dc779b0f4c79506e0f30e3553f72365efe6cd10ae3bc86"
+    },
+    {
+      "case": "cmcr-598475",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "4ecbe9d7b59901942d03ed16683573b3c9aa3aab9b684c9cc89b760283bf4ecf"
+    },
+    {
+      "case": "cmcr-598475",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "026d5a040d1d9a6183b99792bd2e6aee6aaa3d885698b4a30c6753c36e2edd93"
+    },
+    {
+      "case": "cmcr-70172",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "a7da6df5f8494477b0e0dc49b461a3a4f0297634b456d4baf32be6f23b3cf045"
+    },
+    {
+      "case": "cmcr-859852",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, specimen or histology inspected; no identifying overlay visible.",
+      "sha256": "cdf7f16ed8cf434c7dd64bd05f43a7b11cf653a1b17f9706f3c75bd801902bd0"
+    },
+    {
+      "case": "cmcr-598475",
+      "file": "fig03.png",
+      "status": "withheld",
+      "reason": "Brain MRI carries a partial calendar overlay at the top edge.",
+      "sha256": "393c34df9d8867fc93f21acec79892227557688943b904f493b52e8318fdbcd4"
+    },
+    {
+      "case": "cmcr-77850",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "ECG composite contains acquisition dates and record-number headers.",
+      "sha256": "532bf0c44da3d512690aded6440c2f1113586ac4364ad4d6c45849acceb0d4d7"
+    },
+    {
+      "case": "cmcr-33667",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Clinical photograph includes the child’s uncovered eyes and central face; retained only with private source files.",
+      "sha256": "b0a513685eea6df2d0b0aa893c463b3ef3940bd0335fb20b3fca211595e8ac37"
+    },
+    {
+      "case": "cmcr-598463",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "MRI panel has a small blurred header whose identifying content cannot be excluded from the supplied original.",
+      "sha256": "df989cd27b74008f49a2f4432e22fb3cae858aed07a3c74859a90ce6f9e3054d"
+    },
+    {
+      "case": "cmcr-485237",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging or pathology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "fdaeff9a2516f08f1d80d646f3c0629efaf3cb46bbc286b593fd25661a512628"
+    },
+    {
+      "case": "cmcr-857887",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging or pathology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "9da409251c09a5d9ba73b0b9b4682db2c3db65376d0b7d7ab2586d8045b7def2"
+    },
+    {
+      "case": "cmcr-860885",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging or pathology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "573dad3b69ce61d5dc28b3a87897ac74301d77b854a6ef7dbdd236598d6f3bcf"
+    },
+    {
+      "case": "cmcr-857887",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Chest photograph, CT and histology composite inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "f0d727e7cbb10180fc2270854c99fccdf680570b28d585ec313a4c6a287886cc"
+    },
+    {
+      "case": "cmcr-1067475",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "b4d804e758722ca35f00a8f7076d85b1f5631ba25f7efdd33da72bbf163dea8d"
+    },
+    {
+      "case": "cmcr-1067475",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "117a0693112d2d968d6a729615f3e32142a7fce28f5d170de203673ff1778bd1"
+    },
+    {
+      "case": "cmcr-1067477",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "8eeee2379b05a1bc438ecf16f27119c75c67badb99aa292068ae02397ca81ec2"
+    },
+    {
+      "case": "cmcr-1067477",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "3567a62041fa1f6edf52b9e3bbf06eebaca9191c6f1f2fe84bf83a2a906c7ddb"
+    },
+    {
+      "case": "cmcr-33500",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "b8611798c838ab123d2150c93170766aee21e7cdb229f39e21201c9c13d773e2"
+    },
+    {
+      "case": "cmcr-33564",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "d3c50b8b52c41f95303fc7785cb5602261260334c691fa0feb515e995ebef4a5"
+    },
+    {
+      "case": "cmcr-857869",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "f7a5b9ddd2d305bd1c82225002366f87fa2ea7e62a6f008c6a3d86956ac4180c"
+    },
+    {
+      "case": "cmcr-857933",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original clinical imaging, pathology or sequence trace inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "751749a84933cc8fd5ad2b51aa09c4a5cc7df4d47f366541f348ee4b625f152e"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "CEA graph labels the patient’s test calendar dates.",
+      "sha256": "b41eefea8a3669fe99c7ab5c266e58580bfbd84f5daa2fbe39e84774d40f419c"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "MRI composite includes record numbers and acquisition-time overlays.",
+      "sha256": "0b7c258d6a46dfef72203488b5ac490fc368d115c815e82bcdd373ac00449cc2"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig03.png",
+      "status": "withheld",
+      "reason": "MRI composite includes birth date, record numbers and calendar acquisition dates.",
+      "sha256": "58bdb318626ecdcc930eedc4ef2d813ef22bd513ca8f159a7d90e655b4611a9c"
+    },
+    {
+      "case": "cmcr-33564",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Clinical composite includes a recognisable frontal facial photograph despite an eye bar.",
+      "sha256": "1ff5fa6ae7bf91375ac372d488ddd2d0492e12343b449c2151a2229ed16132a6"
+    },
+    {
+      "case": "cmcr-635024",
+      "file": "fig03.png",
+      "status": "approved",
+      "reason": "Physiology chart with time-of-day only or sequence trace; no patient identifier or calendar date.",
+      "sha256": "93bdb4116b9fa87e3fcab85c2d7f88102ef2c05a6c1168c825669f741beacc81"
+    },
+    {
+      "case": "cmcr-635024",
+      "file": "fig04.png",
+      "status": "approved",
+      "reason": "Physiology chart with time-of-day only or sequence trace; no patient identifier or calendar date.",
+      "sha256": "e32d8fa5572407a0f3d1560b6a0109fa0caa2d48d9e1306c463de8be2970776a"
+    },
+    {
+      "case": "cmcr-639083",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original PET/CT or sequence composite inspected without identifying overlay.",
+      "sha256": "2f028e7dd8d13f40e9ab04f5a1a0a630382bcf9fb030915f15f81d4ae04d6221"
+    },
+    {
+      "case": "cmcr-639083",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original PET/CT or sequence composite inspected without identifying overlay.",
+      "sha256": "c99426da1d28c36e88ca52ae1bfaad36095817fb28bb097968fa64d3dcbb12ca"
+    },
+    {
+      "case": "cmcr-639135",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Frontal facial photographs remain recognisable despite eye bars.",
+      "sha256": "da43b1ec6cc71e49a9f6bd234327af4b024264f54da035617853324d88fc7e0f"
+    },
+    {
+      "case": "cmcr-655458",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original haematology, limb photographs or thoracic imaging/pathology inspected; no identifying overlay or recognisable face.",
+      "sha256": "c5b0b22163790dd9327010c9a4ed33a471fef5fda3550c41d27958a552c7b490"
+    },
+    {
+      "case": "cmcr-655460",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original haematology, limb photographs or thoracic imaging/pathology inspected; no identifying overlay or recognisable face.",
+      "sha256": "48b3848d3224ee303ca617fc0ef45bde716046cdc79d08e766b8ab08553d9d08"
+    },
+    {
+      "case": "cmcr-655471",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original haematology, limb photographs or thoracic imaging/pathology inspected; no identifying overlay or recognisable face.",
+      "sha256": "c432db52c65d742d7b8ee8e85ac38d29200405ed3474376b5ae269ffdadc10d0"
+    },
+    {
+      "case": "cmcr-655474",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "f83bd76c6fb3cd3930c9f5fc7a9ab7b6b0e030737f1ca7645f7a8c8ea45a041b"
+    },
+    {
+      "case": "cmcr-655489",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "f67b361c9cb0237b743aad535f578b1981d6a3efb98d82ce2390ec55b6ae2910"
+    },
+    {
+      "case": "cmcr-856798",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "026a514634c4959e22af55ab54d8282ed2345bd85105dbd6f3e5bd5b18420ec2"
+    },
+    {
+      "case": "cmcr-857290",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "acbb726cc7ea8d7f62c573e7ac13d7dfa5735ec446977fad0cec3eabe9141593"
+    },
+    {
+      "case": "cmcr-857347",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "8a88f78d3e35372a97d5233829f05ebb453fe91165893b64fce6e0e7d1f4f4b1"
+    },
+    {
+      "case": "cmcr-857471",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "c94a199d4e3e8fb077129d8c8012207be66d3b5784806399b78b5c05eabbfac5"
+    },
+    {
+      "case": "cmcr-857953",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Original imaging, specimen or histology inspected; no identifying overlay or recognisable face visible.",
+      "sha256": "e49ffb2298d6a9be32273b84958630b447c66b0b3ef92f8b0e6405a47cb649b1"
+    },
+    {
+      "case": "cmcr-655520",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Composite contains a facial profile photograph including the nose and mouth; no separate de-identified crop is supplied.",
+      "sha256": "6b9736ed6dc01454d17e02b7a5e39fbcad2f10c01ef84883d68ef66d862cb705"
+    },
+    {
+      "case": "cmcr-857339",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Frontal facial photograph remains recognisable despite an eye bar.",
+      "sha256": "ee967e08235d7f027fc9fe48e35e7ace8a310ba0c4a156c9c668d2208cdb12a0"
+    },
+    {
+      "case": "cmcr-857339",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Original CT composite without identifying overlays.",
+      "sha256": "e2e1263a881c849dc55c19658060a2aa811b3786a7bb97acf813c0efd4f64a1a"
+    },
+    {
+      "case": "cmcr-861099",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Hand radiograph retains a faint top-corner overlay that is not legible enough to exclude identifying metadata.",
+      "sha256": "6c0aca1b505cccc59ddea174681c00fb39b903e4b0ab7b36b1ad5cd4d4ef0e37"
+    },
+    {
+      "case": "cmcr-1067495",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Small residual image-overlay text in the upper-right corner of the lower-right MRI panel is not legible at native resolution; identifying metadata cannot be excluded.",
+      "sha256": "927a4201cb624abb7df907c982180e9aa2d30f76dfce19b8af7ac21efdb144ac"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Calendar acquisition-date and time overlays remain along the upper edge of the CT panels; additional circular institutional text is not fully legible.",
+      "sha256": "68f449a01252d487c11b7bbf06e741c6946d94394d353b93e807ab1a422e2710"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "fig02.png",
+      "status": "withheld",
+      "reason": "Blue circular institutional watermarks remain on both CT panels. Their full text is not legible at native resolution, so a hospital or other identifying institution cannot be excluded.",
+      "sha256": "bdee828e365c0fab1bc5636c9e77ee0071c911d43c3ea7ab01e5504d3e8413ce"
+    },
+    {
+      "case": "cmcr-1069544",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "The middle CT panel retains an Image Date calendar-date overlay and acquisition time in its lower-right corner.",
+      "sha256": "05e1fdc678cd7a9533a4a5afc417f476a08d1c961e22c4a490e68158e59ecfac"
+    },
+    {
+      "case": "cmcr-1171301",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Sequencing chromatograms show only bases, position numbers and panel labels; no personal identifiers, calendar dates or faces are visible.",
+      "sha256": "5edb8df18a4f3a61754c5eda35d9ab699f419f5624936b30b47ac43a3dcb860e"
+    },
+    {
+      "case": "cmcr-1233223",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Cropped intracranial MRI panels show anatomy and figure labels only; no identifying overlays, calendar dates or external faces are visible.",
+      "sha256": "93a34ea1e82bbda164df2514db5750eace2b32306850f88c9af6b3343445ebea"
+    },
+    {
+      "case": "cmcr-1233223",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Cropped intracranial MRI panels show anatomy and figure labels only; no identifying overlays, calendar dates or external faces are visible.",
+      "sha256": "803df291693cf66a6f2d4f5905fbb0b501a95c110dde49597b88c8b5ccca53a1"
+    },
+    {
+      "case": "cmcr-1233223",
+      "file": "fig03.png",
+      "status": "approved",
+      "reason": "Cropped intracranial MRI panels show anatomy and figure labels only; no identifying overlays, calendar dates or external faces are visible.",
+      "sha256": "3cfdae2c23701d34dacb867d0fec943fb81577d0b6191cf1bda597d230a120a1"
+    },
+    {
+      "case": "cmcr-1322371",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "The CT panels retain calendar-date metadata along their upper-left edges, with additional small overlay text not fully legible at native resolution.",
+      "sha256": "08e1bc8ec850c3ebe02ece4a41d3c5e8aaebd93eaed8fbcd8377d3c556091682"
+    },
+    {
+      "case": "cmcr-1322444",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "The MRI panels retain birth-date and examination-date overlays; the angiography panel also retains partially cropped institutional text.",
+      "sha256": "1c5087b3bd8a7ba67b898f67d8890c5d4acb05ef5dbc191df43e5757ba20bfc1"
+    },
+    {
+      "case": "cmcr-33497",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Karyotype plate shows chromosome numbers and a publication watermark only; no personal identifiers, calendar dates or faces are visible.",
+      "sha256": "defa9306b18ecc8489a0015cca4b8949f14c0d9f3ae0e3c1caf23d1192e96999"
+    },
+    {
+      "case": "cmcr-33632",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Cropped thoracic CT and vascular-reconstruction panels show anatomy and figure labels only, without identifying overlays or calendar dates.",
+      "sha256": "6f3b1e7942780e66863f99c0f6b1b47ab9d3fcf0c084920e0d6d230693519c23"
+    },
+    {
+      "case": "cmcr-33638",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Sequencing and histology panels use generic case/parent, exon and figure labels; no names, medical-record numbers, hospitals, calendar dates or faces are visible.",
+      "sha256": "3ea65063f78ce161e82134c1b4cf624f917327a91867bb3e4295c984a5c13cbd"
+    },
+    {
+      "case": "cmcr-33638",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Sequencing and histology panels use generic case/parent, exon and figure labels; no names, medical-record numbers, hospitals, calendar dates or faces are visible.",
+      "sha256": "b5bdf1a18bac03e5a61224fd1da89a4dcc21686e3bd32f3b46f819314419b72b"
+    },
+    {
+      "case": "cmcr-33640",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Endoscopic images show mucosa, arrows and panel labels only; no identifying overlays, calendar dates or faces are visible.",
+      "sha256": "a9fb1f27943eab98d7f534e9cf82465b1b51d70a96e44d8eea07899dacc087b0"
+    },
+    {
+      "case": "cmcr-44344",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Cropped imaging, virtual endoscopy and histology panels show anatomical findings and figure labels, without personal identifiers, calendar dates or faces.",
+      "sha256": "b708632534c617d3f7f911167ca28ea07e00072e319059ab83d74fc36d7dc2b4"
+    },
+    {
+      "case": "cmcr-44344",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Cropped imaging, virtual endoscopy and histology panels show anatomical findings and figure labels, without personal identifiers, calendar dates or faces.",
+      "sha256": "dd9efc8e611c88a78f1c3a90eb52a04e22e2647fd6099a7813eb9908468c50e4"
+    },
+    {
+      "case": "cmcr-44362",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Native-resolution review shows cropped limb imaging and echocardiograms with technical depth/velocity scales only; no identifying text, calendar dates or faces are visible.",
+      "sha256": "eb425e9749c071d7e92bcaa481cdfe9e3ce5d456fd051db0b160e0f77cbe80ff"
+    },
+    {
+      "case": "cmcr-44517",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Cropped chest CT, limb MRI and histology panels contain figure labels and publication watermark only; no identifying metadata or faces are visible.",
+      "sha256": "2f8b4cb8a5d26d4157c946d08b5703dd9121a66d09afbf80710961584969deec"
+    },
+    {
+      "case": "cmcr-44614",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Histology panels contain cells, figure labels and publication watermark only; no personal identifiers, calendar dates or faces are visible.",
+      "sha256": "43a5c450c1d9c0d00d8c1eec02e05ec4ccfdb71cf5bdebb4eedd43e465f23152"
+    },
+    {
+      "case": "cmcr-44872",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Cropped brain MRI panels show anatomy and figure labels only; no identifying metadata, calendar dates or external faces are visible.",
+      "sha256": "3443c127a396a5f6066d90c591a80c53e03956bb2fafb3ec0dd933a5c1d4e873"
+    },
+    {
+      "case": "cmcr-598191",
+      "file": "fig01.png",
+      "status": "withheld",
+      "reason": "Two clinical photographs show recognisable faces despite black bars over the eyes; facial shape, nose, mouth and hair remain visible.",
+      "sha256": "7e7a964d7c1a853b7d3d2d2c53587f2a0b1943622542404f4d5760dc74ffdbfa"
+    },
+    {
+      "case": "cmcr-635024",
+      "file": "fig01.png",
+      "status": "approved",
+      "reason": "Plots use glucose values, treatments and relative meal/clock-time axes only; no calendar dates, personal identifiers or faces are visible.",
+      "sha256": "566fb9c419994e4f3d2e8b2f126189441f74d11bc2672920386a8d1ffe71077f"
+    },
+    {
+      "case": "cmcr-635024",
+      "file": "fig02.png",
+      "status": "approved",
+      "reason": "Plots use glucose values, treatments and relative meal/clock-time axes only; no calendar dates, personal identifiers or faces are visible.",
+      "sha256": "4e9a7a9b73191966bcf05e327a05cf928bf7493a09f658fc0c37ccc6fa4f11ee"
+    }
+  ]
+}

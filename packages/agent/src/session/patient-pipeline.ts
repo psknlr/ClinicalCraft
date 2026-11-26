@@ -10,8 +10,11 @@
  *      `distinctHistoryHits`); 0.34–0.55 → re-rank (LLM over the fact INDEX restricted to the
  *      candidate ids, or a deterministic margin rule offline) or a clarifying
  *      question; nothing → `fallbackUnknown`. `specific` facts need a direct
- *      match; ≤ 1 `volunteer` fact on open questions. Newly selected ids
- *      dispatch `ask` with `via: "agent"` (learner credit).
+ *      match; ≤ 1 `volunteer` fact on open questions. A question about when
+ *      the problem began that matches nothing ("When did it start?", "多久了？")
+ *      is answered with the presenting complaint when its answer states a time
+ *      (`onsetFallback`). Newly selected ids dispatch `ask` with `via:
+ *      "agent"` (learner credit).
  *   3. Voice — the model sees only a `PatientContext` (persona, affect,
  *      revealed ledger, selected answers, ≤ 1 volunteer, fallback) and answers
  *      JSON `{say, nonverbal, usedFactIds, affectHint}`; parsed defensively.
@@ -33,6 +36,7 @@ import {
   matchHistory,
   t,
   toldHistory,
+  tokenize,
   type CaseDefinition,
   type ClinicalAction,
   type MatchHit,
@@ -161,6 +165,50 @@ export function isOpenQuestion(text: string): boolean {
   return OPEN_QUESTION.some((re) => re.test(text));
 }
 
+const ONSET_QUESTION: RegExp[] = [
+  /\b(how long|since when|how many (minutes|hours|days|weeks|months|years)|when did (it|this|that|they|the \w+|your \w+|his \w+|her \w+) (all )?(start|begin|come on|first)|when (was|were) (it|this|they) first|when it (started|began))\b/i,
+  /(多久|多长时间|多少天|几天了|几个?小时|几个月|几年了|什么时候(开始|发生|出现|起|发现)|哪天(开始|起)|从什么时候|啥时候(开始|起))/u,
+];
+
+/** Words of an onset question that name no topic of their own ("How long has this been going on?", "这次是什么时候开始的？"). */
+const ONSET_FILLER: ReadonlySet<string> = new Set(
+  tokenize(
+    "long start started starting begin began begun come came first going go happen happened happening notice noticed problem problems issue trouble symptom symptoms " +
+      "feel feeling ago since time times day days week weeks month months hour hours year years minute minutes exactly roughly about around",
+  ),
+);
+const ZH_ONSET_FILLER = /[这那个次情况问题症状不舒服开始的了吗呢啊呀吧有就是从到现在你您他她它们多久长时间什么候哪天几起来出现发生发现感觉觉得样怎么病大概大约差不多已经一共总共]/gu;
+
+/**
+ * True for a question about when the problem began or how long it has lasted, that names nothing else ("How long has
+ * this been going on?", "When did it start?", "多久了？", "什么时候开始的？" — not "How long have you smoked?" or
+ * "这个药吃了多久？", which ask about something of their own).
+ */
+export function isOnsetQuestion(text: string): boolean {
+  if (!ONSET_QUESTION.some((re) => re.test(text))) return false;
+  const words = tokenize(text).filter((w) => !ONSET_FILLER.has(w));
+  const han = text.replace(/[^\p{Script=Han}]/gu, "").replace(ZH_ONSET_FILLER, "");
+  return words.length === 0 && han.length === 0;
+}
+
+/** An answer that states a time: a duration, a day, a time of day ("for two days", "since last night", "3天前", "昨晚"). */
+const STATES_TIME: RegExp[] = [
+  /\b(\d+|an?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|a few|several|half an?)[\s-]*(minutes?|hours?|days?|nights?|weeks?|months?|years?)\b|\b(since|ago|yesterday|last (night|week|month|year)|this (morning|afternoon|evening)|tonight|overnight)\b/i,
+  /(\d+|[一二两三四五六七八九十半几]+)\s*(个)?(分钟|小时|钟头|天|日|夜|晚|周|星期|礼拜|个月|月|年)|昨天|前天|今天|今早|今晨|昨晚|昨夜|上午|下午|晚上|早上|凌晨|半夜|夜里/u,
+];
+
+/**
+ * The fact that answers a question about when the problem began when nothing matched it: the first item available in
+ * this phase — the presenting complaint first, then the volunteered ones — whose answer states a time (`STATES_TIME`)
+ * and that is neither `specific` nor `unknown`; null when none does (the patient does not say a time the case lacks).
+ */
+export function onsetFallback(c: CaseDefinition, state: SessionState, locale: string): string | null {
+  const available = c.history.filter((h) => historyAvailable(c, h.id, state.phase) && h.disclosure !== "specific" && h.disclosure !== "unknown");
+  const ordered = [...available.filter((h) => h.topic === "presenting-complaint"), ...available.filter((h) => h.topic !== "presenting-complaint" && h.disclosure === "volunteer")];
+  const timed = ordered.find((h) => STATES_TIME.some((re) => re.test(t(h.answer, locale))));
+  return timed?.id ?? null;
+}
+
 /* ------------------------------------------------------------------ */
 /* 2. Selection                                                        */
 /* ------------------------------------------------------------------ */
@@ -191,7 +239,8 @@ export interface FactSelection {
   /** A clarifying question proposed by the model re-rank (verified: no facts/numbers). */
   clarifyText?: string | null;
   open: boolean;
-  method: "match" | "rerank-llm" | "rerank-offline" | "none";
+  /** `onset`: a question about when the problem began, answered with the presenting complaint (`onsetFallback`). */
+  method: "match" | "rerank-llm" | "rerank-offline" | "onset" | "none";
 }
 
 /** Deterministic selection (step 2 without re-ranking). */
@@ -204,6 +253,11 @@ export function selectFacts(c: CaseDefinition, state: SessionState, utterance: s
   const best = strong[0]?.score ?? 0;
   const selected = strong.filter((h) => h.score >= best - SELECT_RELATIVE).slice(0, MAX_SELECTED).map((h) => h.id);
   const candidates = selected.length > 0 ? [] : hits.filter((h) => h.score >= RERANK_THRESHOLD && byId.get(h.id)?.disclosure !== "specific").slice(0, 6);
+  // "When did it start?" that reaches no fact: the presenting complaint, when its answer says when
+  if (selected.length === 0 && candidates.length === 0 && isOnsetQuestion(utterance)) {
+    const onset = onsetFallback(c, state, locale);
+    if (onset) return { selected: [onset], volunteer: null, candidates: [], clarifyTopics: [], open: false, method: "onset" };
+  }
   const open = isOpenQuestion(utterance);
   let volunteer: string | null = null;
   if (open) {

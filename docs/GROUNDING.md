@@ -49,7 +49,14 @@ Items may carry `tags`. The built-in suite tags 205 items `negation`
 - **interventions** — a negated instruction ("hold the heparin", "do not give
   potassium as an IV push", "不要溶栓") must resolve to the case's withholding
   item, or to nothing; never to the drug. Withholding items themselves
-  ("stop the pump", "停掉胰岛素泵") must still resolve.
+  ("stop the pump", "停掉胰岛素泵") must still resolve. The reader
+  (`analyzeNegation`) also takes Latin words inside Chinese ("不做ERCP",
+  "没必要做ERCP"), a Chinese predicate after its object ("ERCP没有指征",
+  "出院还不行"), a verb of taking after the cue ("新斯的明不要再吃了"),
+  "isn't indicated", and "without" ("do the CT without sedation") — but not
+  "without delay" or "without stopping", which withhold nothing; 不透气 is
+  not a cue, and lifting a withholding ("解除禁食", "don't keep her nil by
+  mouth") is a double negative, read neither way.
 - **verifier** — a reply that flips a recorded finding (absent ↔ present:
   "The EGFR test was negative" when the record says positive; "Yes, he takes
   a blood thinner" when he never started one) must be blocked; a faithful
@@ -78,7 +85,7 @@ and English: `acute-appendicitis`, `acute-ischemic-stroke`,
 `anaphylaxis-garden`, `dka-adult`, `new-onset-t2dm`, `pediatric-asthma`,
 `pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno` and
 `stemi-inferior-rv`. Its 843 test items and 676 dev items do not grow when
-the case catalogue grows. The 20 CMCR adaptations are outside this fixed
+the case catalogue grows. The 125 CMCR adaptations are outside this fixed
 cohort: they have their own per-case `extensions.testUtterances` and
 reference `solution`, checked by `cases verify --all` and the CMCR content
 tests. Those checks are authoring regressions, **not** a held-out grounding

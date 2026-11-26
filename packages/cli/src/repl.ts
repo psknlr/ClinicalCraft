@@ -10,7 +10,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
-import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { availableDecisions, createSession as createEngineState, currentWaypoint, patientAgeText, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, reviewStatusLine, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import { CaseLibrary } from "@clinicalcraft/agent/node";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
@@ -41,7 +41,9 @@ export function parseApprovalAnswer(line: string, allowSession: boolean): { deci
  * Candidate values for the argument of a slash command (Tab completion).
  * Phase and exam ids follow what the learner may know (`state`, default the
  * case's starting state): visible phases only (future automatic phases stay
- * unannounced) and the examinations of the current phase.
+ * unannounced) and the examinations of the current phase. `/answer` offers
+ * the numbers of the decisions open now (unlocked, not yet decided), as
+ * `/board` shows them — never their authored ids, which can name the answer.
  */
 export function argumentCandidates(command: string, c: CaseDefinition, agents: readonly string[], state: SessionState = createEngineState(c)): string[] {
   switch (command) {
@@ -62,7 +64,7 @@ export function argumentCandidates(command: string, c: CaseDefinition, agents: r
     case "exam":
       return c.exam.filter((e) => availableInPhase(e, state)).map((e) => e.id);
     case "answer":
-      return c.decisions.map((d) => d.id);
+      return availableDecisions(c, state).flatMap((d, i) => (d.unlocked && !d.decided ? [String(i + 1)] : []));
     case "phase": {
       const shown = visiblePhases(c, state);
       return c.phases.filter((p) => shown.has(p.id)).map((p) => p.id);
@@ -102,8 +104,9 @@ function sexLabel(sex: string, L: string): string {
   return m(L, key);
 }
 
+/** The patient's age as clinicians write it ("8 years 4 months", "8岁4个月"), never a raw fraction: core `patientAgeText`. */
 function ageLabel(c: CaseDefinition, L: string): string {
-  return m(L, `age.${c.patient.ageUnit}` as "age.years", { n: c.patient.age });
+  return patientAgeText(c.patient, L);
 }
 
 export class Repl {

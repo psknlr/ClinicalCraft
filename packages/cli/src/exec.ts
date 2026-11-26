@@ -30,7 +30,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { createInterface } from "node:readline";
 import { assess as coreAssess, progress as caseProgress, type AssessmentReport } from "@clinicalcraft/core";
-import { DEFAULT_AUTOPILOT_TURNS, PERMISSION_RULE_IDS, traceJsonl, type AgentEvent, type ApprovalMode, type ClinicalSession, type Op, type RiskLevel, type TokenUsage } from "@clinicalcraft/agent";
+import { DEFAULT_AUTOPILOT_TURNS, PERMISSION_RULE_IDS, safetyHeadline, traceJsonl, type AgentEvent, type ApprovalMode, type ClinicalSession, type Op, type RiskLevel, type TokenUsage } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { m } from "./i18n.js";
@@ -84,6 +84,11 @@ export interface ExecResult {
   finished: boolean;
   completed: boolean;
   progress: { done: number; total: number };
+  /**
+   * The safety outcome beside the score (docs/PROTOCOL.md §3.2; `assessment.report.safety`): `passed` is false after a
+   * critical safety failure, a critical dose error or a safety-critical gate, whatever the score or the subtype.
+   */
+  safety: { passed: boolean; critical_failures: number; dose_errors: number };
   assessment: { report: AssessmentReport; narrative: string | null; judged: { id: string; met: boolean; evidence: string }[] };
   usage: TokenUsage;
   usage_by_agent: Record<string, TokenUsage>;
@@ -329,6 +334,8 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   // An autopilot is asked to work the case: ending with objectives open (denied/blocked steps, a model that stopped) is not a success.
   const incomplete = autopilot && !prog.complete && !state.finished;
   const subtype: ResultSubtype = tracker.errors.length > 0 ? "error_during_execution" : maxTurnsHit ? "error_max_turns" : incomplete ? "error_incomplete" : "success";
+  const assessment = tracker.assessment ?? { report: coreAssess(session.caseDef, state), narrative: null, judged: [] };
+  const safety = assessment.report.safety;
   const result: ExecResult = {
     type: "result",
     subtype,
@@ -339,7 +346,8 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
     finished: state.finished,
     completed: prog.complete,
     progress: { done: prog.done, total: prog.total },
-    assessment: tracker.assessment ?? { report: coreAssess(session.caseDef, state), narrative: null, judged: [] },
+    safety: { passed: safety.passed, critical_failures: safety.criticalFailures.length, dose_errors: safety.doseErrors.length },
+    assessment,
     usage: tracker.usage,
     usage_by_agent: tracker.usageByAgent,
     num_turns: autopilot ? clinicianTurns : tracker.totalTurns,
@@ -381,6 +389,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
           done: result.progress.done,
           total: result.progress.total,
           score: r.score.percent,
+          safety: safetyHeadline(r.safety, ctx.locale),
         }),
       );
       ctx.print(ctx.t("assess.notice"));

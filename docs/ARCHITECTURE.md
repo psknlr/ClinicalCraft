@@ -167,6 +167,21 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     attaches the monitor, or never its ECG leads.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
+  * Safety fields (docs/CASE_AUTHORING.md §6–§7; PROTOCOL §3.2), all
+    optional: `interventions[].critical` (boolean — giving it while its
+    `contraindicatedWhen` holds is a critical safety failure:
+    `AssessmentReport.safety.passed` is false, the score unchanged; a
+    content lint warns while a high-risk intervention with a
+    `contraindicatedWhen` leaves it unset), `interventions[].doseSpec`
+    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute, maintenance?,
+    bolus?}` — the preset dose an order's stated dose is compared with; a
+    range spans the doses the case's cited guidance allows; `maintenance` is
+    the infusion's rate beside a bolus, `bolus` the part given first of a dose
+    given in parts, each `{amount, upTo?, unit}`) and `errorRecovery`
+    (`{interventions: id[], rationale}` — the interventions the reference
+    `solution` deliberately gives while contraindicated, to teach error
+    recognition and recovery; `verifyCase` accepts those and no others, and
+    only the safety-critical gates their own error sets off; never a dose error).
   * `history[].supersedes` — history ids, optional; **phase twins**: in a
     phase where this item is available it answers for the items it
     supersedes (selection routes to it, they cannot be asked there) and
@@ -233,11 +248,17 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`, `procedure`, `staffTask` (a colleague's standing task is
-  done — or `status` `started` / `blocked`), `prescription` (a predicate on the
-  prescription record — status, the formulation current / signed / dispensed,
-  queried, acknowledged, refused, discrepancy, label checked, supply read:
-  docs/PRESCRIPTIONS.md §6). `intervened` takes `valid`: `true` counts only
+  `elapsed`, `elapsedSince`, `hints`, `procedure`, `staffTask` (a colleague's
+  standing task is done — or `status` `started` / `blocked`), `prescription`
+  (a predicate on the prescription record — status, the formulation current /
+  signed / dispensed, queried, acknowledged, refused, discrepancy, label
+  checked, supply read: docs/PRESCRIPTIONS.md §6). `elapsedSince: {intervened, gte?, lte?}`
+  measures the simulated minutes since that intervention was last given (false
+  while never given) — a repeat dose's window in its own `indicatedWhen`
+  (docs/CASE_AUTHORING.md §7); `examined` takes `afterLast: id` — the
+  finding's latest examination came after that intervention was last given
+  (by action sequence, `SessionState.lastExamined`): the reassessment a repeat
+  needs, undone by a dose given since. `intervened` takes `valid`: `true` counts only
   attempts that were not contraindicated when made, `false` only those that
   were; and `phase`: only attempts made while the case was in that phase
   (`InterventionRecord.phase`; an attempt saved before attempts carried their
@@ -293,7 +314,10 @@ interface Issue { path: string; message: string; severity: "error" | "warning" }
 checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, alternativeTo, solution steps…;
                                                         // warnings for keyword wildcards (an English keyword of ≥ 3 words that tokenizes to one token, §3.3)
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
-                                                        // replays c.solution; ok iff all objectives done, all decisions decided, no rejections
+                                                        // replays c.solution; ok iff all objectives done, all decisions decided, no rejections,
+                                                        // no timeout, nothing given while contraindicated (but `errorRecovery`'s ids), no dose error,
+                                                        // no safety-critical gate holding at the end (but one whose `when` names a declared id or a
+                                                        // flag one sets: a warning; docs/CASE_AUTHORING.md §7)
 checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms,
                                                         // levels / connectors / access zones (FACILITIES.md "Embodiment fields")…
 
@@ -310,7 +334,8 @@ availableDecisions(c, s): { decision: Decision; unlocked: boolean; decided: bool
 presentedOptions(c, decision): Option[]                 // options in presentation order: a deterministic shuffle seeded by case + decision id (every front-end; ids unchanged)
 resultFor(c, investigationId, phase): Result | null     // null = no record in that phase
 resultKey(investigationId, phase): string               // `${id}@${phase}`
-orderStatus(c, s): { order: OrderRecord; ready: boolean; read: boolean }[]
+orderStatus(c, s): { order: OrderRecord; acquired: boolean; ready: boolean; read: boolean }[]   // acquired: false while an in-world study waits for the patient at its device (PROTOCOL §3.3)
+awaitingAcquisition(order): boolean                     // ordered with a `modality`, not yet acquired: no result exists
 vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute); only `shownVitals` (§3.2)
 shownVitals(c, s, minute?): Set<VitalKey>; alarmingVitals(c, s, minute?): Set<VitalKey>   // what the bedside shows / may alarm on at that minute (§3.2)
 monitorAttached(c, s, minute?): boolean; monitorAttachedAt(c, s): number | null   // the bedside monitor (`physiology.monitor`, §3.2); 0 = from the start
@@ -372,9 +397,25 @@ supersededIn(c, id, phase): string | null               // the item available in
 supersededItems(c, id): string[]; hasHistoryTwins(c): boolean
 historyCredited(c, s, id): boolean                      // asked, or an item superseding it (transitively) was asked — what `asked` conditions test
 creditedHistory(c, s): string[]                         // asked ids, then ids credited through twins (assessment)
-MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
+MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; NEGATED_EXCLUDE_FACTOR = 0.8; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
+
+// doses (PROTOCOL §3.2; engine/dose.ts, engine/dose-read.ts)
+readOrder(text): OrderReading                           // every dose an order states (figures, Chinese numerals, English words; a volume through a
+                                                        // stated strength; a preparation not the dose; a cap `max`, a time `over`), its route, and the
+                                                        // doses it cannot read (`unclears`, the first `unclear`: unreadable | range | no-unit | unit | count)
+parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, upTo?, unit} and/or {route}
+checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: each dose against its part (`maintenance`, `bolus`):
+                                                        // given (the dose read) | query (reason: unreadable, range, no-unit, unit, count, several,
+                                                        // partial, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
+compareDose(ordered, preset, weightKg?): { equivalent: boolean; ratio: number | null; far: number | null; conflicts: ("amount" | "route" | "unit")[] }
+doseErrorSeverity(ratio, conflicts, intervention, far?): "warning" | "critical"   // critical: ten times or a tenth of any dose the preset allows
+                                                        // (TENFOLD, `far`); for a critical, high-risk or high-alert one also ratio ≥ 2 (TWOFOLD) or another route
+isHighAlert(intervention): boolean                      // ISMP by the name: insulin, potassium, anticoagulants, opioids, thrombolytics; IV adrenaline,
+                                                        // noradrenaline, magnesium, sedatives… (engine/high-alert.ts; severity and the content lint)
+doseMentions(text), doseRoute(text), formatDose(dose), WEIGHT_BASED_TOLERANCE
+safetyPassed({criticalFailures, doseErrors, verdict?}): boolean   // AssessmentReport.safety.passed — asked without `verdict` to leave a hidden gate out
 
 // assessment
 assess(c, s): AssessmentReport
@@ -385,7 +426,11 @@ interface AssessmentReport {
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };   // unread = result keys, §3.4
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
-  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
+  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number;
+            gates?: { id: string; verdict: "safety-critical" | "complication" }[]; verdict?: "clear" | "complication" | "safety-critical";
+            passed: boolean;                                // false: a critical failure, a critical dose error or a safety-critical gate (PROTOCOL §3.2)
+            criticalFailures: { interventionId: string; at: number; harm?: LocalizedText }[];   // a `critical` intervention given while contraindicated
+            doseErrors: AssessedDoseError[] };              // orders not given: their dose conflicted with the preset (`doseSpec`)
   rubric: { id: string; domain: string; weight: number; met: boolean | null }[];   // null = needs examiner agent
   score: { earned: number; possible: number; percent: number };                    // deterministic rubric only
 }
@@ -456,7 +501,9 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by
   `clock.actionCosts[type]` (order/read/ask/examine/intervene/answer), results
-  are ready at `orderedAt + turnaroundMinutes`; `advance-time` moves the
+  are ready at the acquisition + `turnaroundMinutes` (the acquisition is the
+  order's own unless an in-world order waits for the patient at a device —
+  PROTOCOL §3.3); `advance-time` moves the
   clock. After every clock change: fire due scenario events (by `atMinute` or
   `when`), record `trendStops` for trends whose `until` became true, emit
   `result.ready` for results whose readiness crossed, apply automatic phase
@@ -478,12 +525,20 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
 * `examine` — same pattern for `examined` (`told["exam:<id>"]`,
   `exam.performed.branch`).
 * `order` — key `${id}@${phase}`; duplicates emit `order.duplicate` (no state
-  change). Records `readyAt`.
+  change). Records `by`, `seq` and the acquisition implied at the order with
+  `readyAt` — or, with `modality` (in-world: a study done on the patient at a
+  device), no acquisition and no `readyAt` yet (PROTOCOL §3.3).
+* `acquire` — the acquisition of an order placed with `modality` (the session
+  records it with the patient on the device): `acquired {at, seq, collector?,
+  where?}` and `readyAt`; event `order.acquired`. Rejected `not-ordered`
+  without the order; already acquired (or implied at the order): unchanged.
 * `read` — phase defaults to current. Rejected `not-ordered` if no order with
-  that key, `not-ready` if turnaround not elapsed, `no-record` if
+  that key, `not-ready` if not acquired or the turnaround has not elapsed, `no-record` if
   `resultFor` is null (still counts as "read" for the V4 "no record" notice?
   **No**: a missing result cannot be read; the UI shows "no record" from
-  `resultFor` before ordering). Adds key to `seen`; a result with `branches`
+  `resultFor` before ordering). Adds key to `seen`; the first read is the
+  order's review (`reviewed`), and the next management act after it its
+  resulting action (`next`, `RESULTING_ACTS`); a result with `branches`
   records the one read (`told["result:<id>@<phase>"]`, `result.read.branch`).
 * `staff-task` — a step of a standing task (`applyStaffTask`; docs/TEAM.md
   §5.1): `start` (only once its `when` holds), `blocked {reason}` (the same
@@ -508,13 +563,25 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   Appends to `attempts`; on correct sets `decisions[id] = clock`.
 * `intervene` — `maxDoses` exceeded → `max-doses`. A hold standing on the
   intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
-  is recorded. Appropriateness:
+  is recorded. An order as written (`ordered: {text, dose?}`) is checked
+  against the intervention's preset (`doseSpec`) by `checkOrder`, which reads
+  the words itself (`readOrder`; the client's `dose` only for a route the
+  words name): a dose it cannot read or compare (a fraction, "0。5 mg", a range
+  across the preset's ends, two doses that disagree, a part of a dose given in
+  parts, no unit, a volume without its strength, a rate for a single dose) →
+  `dose-unclear`, nothing recorded; a conflicting amount or route is accepted
+  but **not given**: a `DoseErrorRecord` is appended to `doseErrors` and
+  `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
+  Appropriateness:
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.
   Applies `setFlags`; effects are applied lazily by `vitalsAt` from the
-  intervention records. Every attempt records the phase it was made in
-  (`InterventionRecord.phase`), which `{intervened, phase}` reads. A checklist step (`checklist: true`) attempted while
-  contraindicated is recorded `invalid`: nothing applied, no dose used.
+  intervention records (which keep `ordered`). Every attempt records the phase
+  it was made in (`InterventionRecord.phase`), which `{intervened, phase}`
+  reads. A checklist step (`checklist: true`) attempted while
+  contraindicated is recorded `invalid`: nothing applied, no dose used. A
+  `critical` intervention given while contraindicated is a critical safety
+  failure: applied, its `intervention.applied` event marked `critical: true`.
 * `hold {interventionId, placedBy, reason}` — an explicit hold (an
   anaesthetist or attending withholding clearance): appended to `holds` with
   the minute and sequence. Unknown id → `unknown-id`; an intervention already
@@ -636,7 +703,13 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
 letters/digits → ASCII. `matchOrders` reproduces V4 `Xd` exactly when the case
 supplies the equivalent `orderMatching` (the SMZL port does) — unit tests
 assert V4 parity on V4's examples. Its candidates come from the aliases
-**and names** of every locale (`locale` does not narrow them).
+**and names** of every locale (`locale` does not narrow them). An alias that
+begins with a Latin letter or digit counts only where it begins a word of the
+order, and one whose last run of letters or digits is short (≤ 3: "tte",
+"ct", "u&e") only where it ends one too, a plural "s" aside ("LFTs"): "tte"
+is not in "better", "ua" not in "evaluate", "ct" not in "CTPA". A CJK alias
+counts anywhere, as before. `orderMatching` regular expressions see the order
+without its spaces: `cases validate` warns on one with a literal space.
 
 History/exam/intervention matching is a scored keyword matcher: candidate
 phrases = question/maneuver/name + keywords (+ aliases) for the locale and
@@ -656,7 +729,14 @@ for every locale (cross-lingual); score = max over phrases of:
   pipeline's 0.55 select band) unless it is the phrase's own start and not a
   question bigram (怎么, 什么, 有没…), or the whole phrase occurs in order
   within a few extra characters ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血"
-  never credits a fact;
+  never credits a fact. A run of Latin letters or digits alone carries no
+  topic either: a CJK phrase's Latin part ("BEP方案", "有过TIA吗") is scored by
+  its words instead — that part's share of the phrase (a function character
+  counting half) times the share of its tokens the utterance holds, read with
+  the Latin words of a mixed utterance on their own ("BEP化疗" → bep) — so
+  "ep" of "check the pulse" is no overlap with "BEP方案". The 下 of the
+  particle 一下 begins no phrase that lacks 一下 itself (量一下体温 holds no 下体,
+  看一下肢体 no 下肢; 一下子 and 一下午 are words of their own);
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
   Tokens (`canonicalToken`): lower-case words minus English stop-words, then
@@ -674,7 +754,19 @@ for every locale (cross-lingual); score = max over phrases of:
   ~ allergic, nausea ~ nauseous, anticoagulant ~ anticoagulation,
   prophylaxis ~ prophylactic). So medical ≁ medication, history ≁
   historical, hypertension ≁ hyperthermia, thrombosis ≁ thrombolysis,
-  cholecystitis ≁ cholecystectomy.
+  cholecystitis ≁ cholecystectomy. Nor do two tokens of which one ends as a
+  medicine does (-in, -ine) and the other does not (aspirin ≁ aspirate,
+  atropine ≁ atrophy, penicillin ≁ penicillamine), nor an agent noun and an
+  adjective (anaesthetist ≁ anaesthetic); a name (Ringer's, Hartmann's)
+  matches only itself (ring ≁ Ringer's).
+
+A question's opening greeting is not scored (`stripGreeting`: "Good
+morning, …", "Hi Tom, …", "您好，…", "王阿姨您好，…"; a question that is only a
+greeting stays whole), so "morning" or "早上" as a keyword never answers
+"Good morning". In intervention matching a generic order verb ("give",
+"start", "administer", "commence", "prescribe", "order") is a weak token: a
+phrase matched on weak tokens alone scores 0, so "give oxygen" is no half of
+"give atropine".
 
 `excludeKeywords`: if the utterance, normalised with `scoringText`
 (`normalizeQuery` minus punctuation, 痛 read as 疼 — case, spacing and
@@ -682,7 +774,15 @@ punctuation are ignored), contains any exclude phrase of an item (any
 locale, same normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
 = 0.2 before the threshold, which in practice removes it (1 × 0.2 < 0.34).
 Containment is on whitespace-free text, so prefer distinctive phrases
-("past medical", "过敏") over short fragments.
+("past medical", "过敏") over short fragments. `containsExclusion` reads a
+Latin exclusion as the start of a word or a part of one, except after a
+prefix that reverses the word ("discontinue" holds no "continue", "unstable"
+no "stable"); one that begins with a function word or a digit ("at first",
+"50%") counts only where it begins a word ("what first", "250 ml/h" hold
+neither). For an intervention, an exclusion that only a negated clause holds
+multiplies the affirmative reading by `NEGATED_EXCLUDE_FACTOR` = 0.8 instead:
+"give cefotaxime, not ceftriaxone" still gives the cefotaxime, yet the tie
+in "antibiotics instead of surgery" still goes to the antibiotics-first plan.
 
 A keyword's stop-words carry no weight: "what does he take" tokenizes to
 `tak` alone and scores 1 against any utterance with "take". So
@@ -927,7 +1027,11 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
-   `unknown` item's authored answer when that matched).
+   `unknown` item's authored answer when that matched). A question about when
+   the problem began that reaches nothing ("When did it start?", "多久了？")
+   is answered with the presenting complaint (then a volunteered item) whose
+   answer states a time (`onsetFallback`, `method: "onset"`); with none, the
+   fallback stands — the patient never makes a time up.
    `disclosure: "specific"` facts require a direct match (score ≥ 0.55);
    `volunteer` facts may be offered on open questions (≤ 1 per turn).
    Each newly selected id dispatches `ask` with `via: "agent"` (learner credit).
@@ -1004,8 +1108,12 @@ spoken by the patient — those come from engine actions.
   (the default) the panels ask the world instead of deciding by rules of
   their own: the monitor panel and the HUD vitals strip show the live screen
   only while the world's vitals check holds through that monitor, rows show
-  the world's verdict before a click ("Go there" / the act to do first), and
-  lab tests are ordered from the patient's Tests tab (EMBODIED §2.1).
+  the world's verdict before a click ("Go there" / the act to do first),
+  lab tests are ordered from the patient's Tests tab, a live screen drawn in
+  the world shows the patient the world says its device is connected to now
+  (`WorldRuntime.screenPatient`: a cart wheeled from another bed included),
+  and the place beside the map and the badge are one lookup of the avatar's
+  position (the world's `regionLookup`) (EMBODIED §2.1, §6).
 * **cli** — `clinicalcraft` REPL (plain text → current interlocutor,
   `@nurse …` addressing, `/commands`; `--embodied` adds `/look`, `/go`,
   `/use`, `/transport`…), `exec`/`-p` headless with

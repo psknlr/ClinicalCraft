@@ -1,0 +1,732 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-dka-full-encounter",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "完整的具身糖尿病酮症酸中毒接诊",
+    "en": "Full embodied DKA encounter"
+  },
+  "instruction": {
+    "zh-CN": "从患者到达一直处理到安全过渡到皮下胰岛素：完成每一个学习目标，然后结束病例。",
+    "en": "Manage this patient from arrival to a safe transition to subcutaneous insulin: complete every objective, then finish the case."
+  },
+  "caseId": "dka-adult",
+  "locale": "zh-CN",
+  "split": "dev",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "objective": "obj1-initial"
+          },
+          {
+            "objective": "obj2-diagnosis"
+          },
+          {
+            "objective": "obj3-resus"
+          },
+          {
+            "objective": "obj4-definitive"
+          },
+          {
+            "objective": "obj5-adjust"
+          },
+          {
+            "objective": "obj6-transition"
+          }
+        ]
+      }
+    },
+    {
+      "caseFinished": true
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 400,
+    "maxTurns": 10,
+    "timeoutMs": 600000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "solve-case"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-monitor",
+          "operation": "attach",
+          "parameters": {
+            "intervention": "cardiac-monitoring"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-crash-cart"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-crash-cart",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-crash-cart",
+          "operation": "use",
+          "parameters": {
+            "intervention": "iv-access"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ed-glucometer"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-glucose"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-ketones"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "vbg"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "nacl-1l-1h"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "这些症状什么时候开始的？是怎么发展的？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "口渴吗？小便多不多？"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-glucose",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-ketones",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-general"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-breathing-pattern"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "vbg",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "chemistry"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "cbc"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "urine-hcg"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "urinalysis"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "lipase"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "dx-severity",
+          "option_ids": [
+            "B"
+          ]
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "k-sequencing",
+          "option_ids": [
+            "F"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "kcl-replacement"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "hdu-referral"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "suspend-pump"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-hydration"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-abdomen"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-pump-site"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "urine-hcg",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "urinalysis",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "ondansetron"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "monitoring-plan"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "肚子哪里疼？是怎么样的疼？有多严重？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "你平时怎么用胰岛素？胰岛素泵这几天有没有出问题？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "生病这两天，你的胰岛素（餐前大剂量、校正剂量）是怎么打的？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "输注管路和针头最后一次是什么时候换的？扎在哪里？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "以前有什么病？糖尿病平时在哪里随访？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "除了胰岛素，还用什么药吗？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "对什么药物过敏吗？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "末次月经是什么时候？有没有可能怀孕？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "身边有人最近也生病吗？最近吃过什么特别的东西、或者出过远门吗？"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "你最担心的是什么？你觉得是怎么回事？"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 8.37
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 5.13
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "cbc",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 9.87
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 4.13
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "chemistry",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 1.5
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "lipase",
+          "phase": "resus"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "precipitant",
+          "option_ids": [
+            "A",
+            "F",
+            "B"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "vte-prophylaxis"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "diabetes-team-referral"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 10.37
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "vbg"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-ketones"
+          }
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 5
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "vbg",
+          "phase": "k-replete"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-ketones",
+          "phase": "k-replete"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "friii"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 50
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-kcl-maintenance"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 120
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-kcl-maintenance"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 40
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-ketones"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "vbg"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 5
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-ketones",
+          "phase": "glucose-lt14"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "vbg",
+          "phase": "glucose-lt14"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "glucose-falling",
+          "option_ids": [
+            "D"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "dextrose-10"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-reassess-midway"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 190
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-kcl-maintenance"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 90
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-ketones"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "vbg"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 5
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-ketones",
+          "phase": "resolution"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "vbg",
+          "phase": "resolution"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "ex-reassess-resolved"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "resolution-transition",
+          "option_ids": [
+            "B",
+            "F",
+            "A",
+            "E"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "sc-insulin-transition"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 60
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "stop-friii"
+        }
+      },
+      {
+        "tool": "finish_case"
+      }
+    ]
+  }
+}

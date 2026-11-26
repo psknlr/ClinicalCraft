@@ -8,7 +8,7 @@ import { ENGINE_VERSION } from "./version.js";
 import { procedureFor } from "./procedure/variant.js";
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
-import { evaluate, parseResultKey, resultFor } from "./conditions.js";
+import { awaitingAcquisition, evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { patientAlarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
 import { creditedHistory } from "./twins.js";
@@ -49,6 +49,8 @@ function alternativesOf(c: CaseDefinition, id: string): string[] {
 
 function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentReport["investigations"] {
   const orderedIds = unique(s.orders.map((o) => o.investigationId));
+  // done: acquired — an in-world study ordered but never done on the patient at its device stays outstanding
+  const doneIds = unique(s.orders.filter((o) => !awaitingAcquisition(o)).map((o) => o.investigationId));
   // investigations with an informative result read in some phase (an `available: false` record yields no information)
   const informativeReads = new Set(
     s.seen.flatMap((key) => {
@@ -57,15 +59,19 @@ function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentRep
     }),
   );
   const byValue = (value: string) => c.investigations.filter((i) => i.value === value && orderedIds.includes(i.id)).map((i) => i.id);
-  // an essential investigation is satisfied by ordering it, or by reading (any phase) an available result of one of its alternatives
-  const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
+  // an essential investigation is satisfied by doing it (ordered and acquired: at the order unless it waits for the
+  // patient at a device), or by reading (any phase) an available result of one of its alternatives
+  const satisfied = (id: string) => doneIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
   return {
     ordered: s.orders.length,
     essentialMissing: c.investigations.filter((i) => i.value === "essential" && !satisfied(i.id)).map((i) => i.id),
     lowValue: byValue("low-value"),
     harmful: byValue("harmful"),
-    // ordered results that carry information but were never read ("no record" / available:false results are not counted)
-    unread: s.orders.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
+    // results that exist and carry information but were never read ("no record" / available:false results are not
+    // counted, nor a study never acquired: it has no result)
+    unread: s.orders.filter((o) => !awaitingAcquisition(o) && !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
+    // in-world studies ordered but never done on the patient at their device (the patient never went there)
+    ...((pending) => (pending.length ? { notAcquired: pending } : {}))(s.orders.filter((o) => awaitingAcquisition(o)).map((o) => o.key)),
   };
 }
 
@@ -92,7 +98,7 @@ function sampleMinutes(c: CaseDefinition, s: SessionState): number[] {
   const points = new Set<number>();
   for (let m = 0; m < s.clock; m++) points.add(m);
   const recorded = [
-    ...s.orders.flatMap((o) => (c.clock.mode === "simulated" ? [o.orderedAt, o.readyAt] : [o.orderedAt])),
+    ...s.orders.flatMap((o) => (c.clock.mode === "simulated" && o.readyAt != null ? [o.orderedAt, o.readyAt] : [o.orderedAt])),
     ...s.interventions.map((r) => r.at),
     ...s.attempts.map((a) => a.at),
     ...s.notes.map((n) => n.at),
@@ -177,6 +183,40 @@ function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport[
   };
 }
 
+/**
+ * The safety outcome, beside the score (which it never changes): the critical safety failures — a `critical`
+ * intervention given while contraindicated (an invalid checklist attempt gave nothing) — with the intervention's
+ * `harm`, and every dose error. `passed` unless there is a critical failure, a critical dose error or a
+ * safety-critical gate.
+ */
+function safetyOutcome(c: CaseDefinition, s: SessionState, verdict: AssessmentReport["safety"]["verdict"]): Pick<AssessmentReport["safety"], "passed" | "criticalFailures" | "doseErrors"> {
+  const criticalFailures = s.interventions.flatMap((r) => {
+    const iv = c.interventions.find((i) => i.id === r.interventionId);
+    if (r.appropriateness !== "contraindicated" || r.invalid || iv?.critical !== true) return [];
+    return [{ interventionId: r.interventionId, at: r.at, ...(iv.harm != null ? { harm: iv.harm } : {}) }];
+  });
+  const doseErrors = (s.doseErrors ?? []).map((e) => ({
+    interventionId: e.interventionId,
+    at: e.at,
+    text: e.text,
+    ordered: { ...e.ordered },
+    preset: { ...e.preset },
+    ratio: e.ratio,
+    conflicts: [...e.conflicts],
+    severity: e.severity,
+  }));
+  return { passed: safetyPassed({ criticalFailures, doseErrors, verdict }), criticalFailures, doseErrors };
+}
+
+/**
+ * Whether a safety outcome passes (`AssessmentReport.safety.passed`): no critical safety failure, no critical dose
+ * error and no safety-critical gate. A front-end that must not reveal a hidden gate mid-case (an operation's verdict,
+ * docs/PROCEDURE.md §7) asks it without the `verdict`.
+ */
+export function safetyPassed(safety: { criticalFailures: readonly unknown[]; doseErrors: readonly { severity: "warning" | "critical" }[]; verdict?: AssessmentReport["safety"]["verdict"] }): boolean {
+  return safety.criticalFailures.length === 0 && !safety.doseErrors.some((e) => e.severity === "critical") && safety.verdict !== "safety-critical";
+}
+
 /** Assess a session against its case (pure). */
 export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const p = progress(c, s);
@@ -206,6 +246,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
       contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated").map((r) => ({ interventionId: r.interventionId, at: r.at })),
       criticalAlarms: countCriticalAlarms(c, s),
       ...(gates ? { gates: gates.gates, verdict: gates.verdict } : {}),
+      ...safetyOutcome(c, s, gates?.verdict),
     },
     ...(procedure ? { procedure } : {}),
     ...(count ? { count } : {}),
