@@ -15,6 +15,8 @@ import {
   type VitalKey,
   type VitalsSnapshot,
 } from "@clinicalcraft/core";
+import type { Picture, Provenance } from "@clinicalcraft/core";
+import { provenanceLines } from "./evidence.js";
 import { isZh, rt } from "../session/i18n.js";
 
 /* ------------------------------------------------------------------ */
@@ -265,6 +267,10 @@ export interface FormattedResult {
     critical: boolean;
     /** The authored branch this result was read as (a result that follows the record); absent: its own fields. */
     branch?: string;
+    /** Where it comes from, when it was captured, its quality check (docs/CASE_AUTHORING.md §5.2). */
+    provenance?: Provenance;
+    /** A picture drawn from data (the tool returns it as an image). */
+    picture?: Picture;
   } | null;
 }
 
@@ -300,6 +306,9 @@ export function formatResult(c: CaseDefinition, investigationId: string, phase: 
     })
     .filter(Boolean);
   if (figures.length > 0) lines.push(rt(locale, "tool.result.figures", { list: figures.join(isZh(locale) ? "、" : ", ") }));
+  // where it comes from and how good it is; a picture is labelled as drawn from the record
+  lines.push(...provenanceLines(result.provenance, locale));
+  if (result.available && result.picture) lines.push(rt(locale, "evidence.picture"));
   return {
     text: lines.join("\n"),
     data: {
@@ -314,6 +323,8 @@ export function formatResult(c: CaseDefinition, investigationId: string, phase: 
       note: result.note ? t(result.note, locale) : null,
       critical: result.critical,
       ...(told?.branch ? { branch: told.branch } : {}),
+      ...(result.provenance ? { provenance: result.provenance } : {}),
+      ...(result.available && result.picture ? { picture: result.picture } : {}),
     },
   };
 }

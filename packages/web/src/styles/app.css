@@ -3048,3 +3048,26 @@ button.decision-option {
     top: 238px;
   }
 }
+
+/* A picture drawn from the record (a tongue capture) and where evidence comes from (docs/STUDIES.md §8) */
+.drawn-picture {
+  margin: 8px 0;
+  max-width: 256px;
+}
+.drawn-picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  image-rendering: auto;
+}
+.drawn-picture figcaption {
+  margin-top: 4px;
+}
+ul.provenance {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+ul.provenance.failed li:last-child {
+  color: var(--warn, #b45309);
+}

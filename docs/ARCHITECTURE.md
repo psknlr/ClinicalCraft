@@ -207,6 +207,14 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     the capabilities of the dispensing device (`requires`) and who works it
     (`dispensedBy`). Unknown products, formulations and condition ids are
     integrity errors.
+  * `exam[].picture` / `.provenance`, `investigations[].results.*.picture` /
+    `.provenance` (and on their `branches`) — optional; **evidence with a
+    source, a time and a quality** (`schema/evidence.ts` `ProvenanceSchema`:
+    source, by, capturedAt, quality, basis) and **a picture drawn from data**
+    (`schema/tongue.ts` `PictureSchema`: a tongue's appearance and its capture;
+    docs/CASE_AUTHORING.md §5.2). `studies[].model.kind: "tongue"` — a tongue
+    capture whose observations and picture come from the tongue as it is,
+    what stains it and the station's capture (docs/STUDIES.md §8).
   * `staffTasks[]` — optional, default `[]`; **standing tasks of the staff**
     (`schema/staff-task.ts`; contract: docs/TEAM.md §5.1): what a colleague
     of the facility (`staff`: an id or a role) does on their own once `when`
@@ -373,6 +381,13 @@ toldFinding(c, s, finding): { finding, abnormal, media, branch }
 toldResult(c, s, investigationId, phase): { result, branch } | null   // the recorded branch laid over the result's own fields (no `branches`)
 historyAnswers(item): LocalizedText[]; examFindings(finding)   // every text an item can show (a grounding check knows them all)
 toldKey.history(id) / .exam(id) / .result(investigationId, phase)   // keys of `SessionState.told`
+
+// pictures drawn from data (tongue.ts, png.ts; docs/STUDIES.md §8)
+drawPicture(picture, seed?): { mediaType: "image/png", width, height, png, base64 }   // pure, deterministic; the same bytes everywhere
+drawTongue(appearance, capture, seed?): { width, height, rgb }; encodePng(width, height, rgb); base64(bytes)
+captureQuality(capture): { passed, reasons[] }          // the station's check of the frame: light, colour card, focus
+describeTongue(appearance); describeCapture(capture); apparentTongue(appearance, capture); patchTongue(appearance, patch)
+tonguePicture(c, s, model)                              // study.ts: what a tongue capture shows now (changes and stains that hold)
 
 // standing tasks of the staff (staff-task.ts; docs/TEAM.md §5.1)
 applyStaffTask(c, s, op): StaffTaskResult               // pure: taken up (only once due), blocked with its reason, done; a repeat changes nothing

@@ -57,12 +57,17 @@ export function templateReport(profile: StudyProfile, a: StudyAccession): Report
   const abnormal = a.observations.filter((o) => o.flag === "high" || o.flag === "low");
   const pattern = a.observations.filter((o) => o.id === "lead-i" || o.id === "progression" || o.id === "morphology");
   const imaging = profile.model.kind === "imaging" ? a.observations.filter((o) => o.id !== "technique") : [];
+  // a tongue capture: what the picture shows, each named; a failed quality check is part of the conclusion
+  const tongue = profile.model.kind === "tongue" ? a.observations.filter((o) => o.id === "body" || o.id === "shape" || o.id === "coating" || o.id === "sublingual") : [];
+  const tongueQuality = profile.model.kind === "tongue" ? a.observations.find((o) => o.id === "quality" && !/^passed|^通过/u.test(o.text?.en ?? "")) : undefined;
   const impression = (L: "en" | "zh-CN"): string => {
     const parts: string[] = [];
     if (abnormal.length) parts.push(`${L === "zh-CN" ? "异常：" : "Outside the reference interval: "}${abnormal.map((o) => `${o.label[L]}${flagWord(o, L)}`).join(L === "zh-CN" ? "、" : ", ")}`);
     if (pattern.some((o) => o.id === "lead-i")) parts.push(L === "zh-CN" ? "标准导联位置下呈右位心图形；如需可读图形，按镜像位置（右胸导联、上肢导联互换）复查" : "a dextrocardia pattern with the leads in standard positions; for a readable tracing, repeat with the leads mirrored (right-sided chest leads, arm leads reversed)");
     if (pattern.some((o) => o.id === "morphology")) parts.push(L === "zh-CN" ? "导联镜像放置后波形与正常位心脏相同" : "with the leads mirrored, the tracing reads as a normally placed heart");
     if (imaging.length) parts.push(imaging.map((o) => o.text?.[L] ?? "").join(sep(L)));
+    if (tongue.length) parts.push(tongue.map((o) => `${o.label[L]}${L === "zh-CN" ? "：" : ": "}${o.text?.[L] ?? ""}`).join(sep(L)));
+    if (tongueQuality) parts.push(L === "zh-CN" ? `采集质量检查未通过，颜色不可靠：${tongueQuality.text?.[L] ?? ""}` : `the capture failed its quality check and its colours are not reliable — ${tongueQuality.text?.[L] ?? ""}`);
     if (!parts.length) parts.push(L === "zh-CN" ? "在参考范围内" : "within the reference intervals");
     return parts.join(sep(L));
   };
@@ -72,7 +77,7 @@ export function templateReport(profile: StudyProfile, a: StudyAccession): Report
     limitations: { en: rt("en", "study.limitations"), "zh-CN": rt("zh-CN", "study.limitations") },
     generator: "template",
     bindings: a.observations.map((o) => ({ observation: o.id, en: phrase(o, "en"), "zh-CN": phrase(o, "zh-CN") })),
-    supportedBy: [...abnormal, ...pattern, ...imaging].map((o) => o.id),
+    supportedBy: [...abnormal, ...pattern, ...imaging, ...tongue, ...(tongueQuality ? [tongueQuality] : [])].map((o) => o.id),
   };
 }
 

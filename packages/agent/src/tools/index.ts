@@ -25,6 +25,7 @@ export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export { dispensaryStaff, formulationText, prescriptionHeads, prescriptionLines, prescriptionText, prescriptionTools, PRESCRIPTION_TOOL_NAMES, resolveFormulation } from "./prescriptions.js";
 export * from "./option-labels.js";
 export * from "./spatial.js";
+export { pictureImages, provenanceLines } from "./evidence.js";
 export * from "./scope.js";
 export * from "./world.js";
 export { isLearnerTool, LEARNER_CLINICAL_TOOLS, LEARNER_TOOL_NAMES, LEARNER_TOOLS } from "./learner.js";

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CapabilitySchema, ConditionSchema, IdSchema, LocalizedListSchema, LocalizedTextSchema } from "./common.js";
+import { TongueAppearancePatchSchema, TongueAppearanceSchema, TongueCaptureSchema, TongueCoatingSchema, type Picture } from "./tongue.js";
 
 /**
  * New investigations in an encounter (docs/STUDIES.md): studies the simulated hospital can perform although the
@@ -73,6 +74,26 @@ export const StudyModelSchema = z.discriminatedUnion("kind", [
       kind: z.literal("imaging"),
       technique: LocalizedTextSchema,
       findings: z.array(StudyFindingSchema).min(1),
+    })
+    .strict(),
+  /**
+   * A tongue image captured at a tongue-imaging station (docs/STUDIES.md §8): the observations — body colour, shape,
+   * coating, a quality check of the capture — and a picture drawn from them are computed from the patient's tongue as
+   * it is at acquisition (`appearance`, changed by `changes` that hold), what lies on it then (`stains`: food, drink or
+   * a medicine colouring the coating while their condition holds — a rinse first clears it) and the station's capture
+   * conditions (`capture`: the light, a colour card in the frame, the focus).
+   */
+  z
+    .object({
+      kind: z.literal("tongue"),
+      /** The tongue as it is when the encounter starts. */
+      appearance: TongueAppearanceSchema,
+      /** How it changes with the record (treatment, time): every change whose condition holds applies, in order. */
+      changes: z.array(z.object({ when: ConditionSchema, appearance: TongueAppearancePatchSchema }).strict()).default([]),
+      /** What colours the coating at capture while its condition holds (coffee, tea, a medicine): hidden from the quality check. */
+      stains: z.array(z.object({ id: IdSchema, when: ConditionSchema, coating: TongueCoatingSchema.partial().strict(), cause: LocalizedTextSchema }).strict()).default([]),
+      /** The station's capture conditions (default: standard light, a colour card in the frame, in focus). */
+      capture: TongueCaptureSchema.default({}),
     })
     .strict(),
 ]);
@@ -183,6 +204,11 @@ export interface StudyAccession {
   /** When the report is due (acquisition + turnaround). */
   dueAt: number;
   profileVersion: string;
+  /**
+   * What the capture shows, as data (a tongue study, `model.kind: "tongue"`): the appearance as captured (stains
+   * included) and how it was taken — the engine draws the picture from it (`drawPicture`), the same everywhere.
+   */
+  picture?: Picture;
 }
 
 /** A released report (`study-release`): its text from the observations, who/what wrote it; an amendment is a new revision. */

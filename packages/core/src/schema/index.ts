@@ -9,3 +9,5 @@ export * from "./prescription.js";
 export * from "./anaesthesia.js";
 export * from "./alarm.js";
 export * from "./staff-task.js";
+export * from "./evidence.js";
+export * from "./tongue.js";

@@ -237,6 +237,8 @@ const en: Messages = {
   "conv.tab.tests": "Tests",
   "tests.lead": "Order tests at the patient's side: samples are taken here and go to the lab by pneumatic tube; a bedside test needs its device at the bed. Results that are out can be read here too.",
   "tests.here": "At the bedside",
+  "evidence.caption": "Drawn by the simulation from the recorded description — not a photograph of the patient.",
+  "evidence.alt": "A picture drawn from the record",
   "studies.title": "Order a new investigation (simulated)",
   "studies.lead": "A study done in this encounter from the case's teaching profile — labelled a simulated investigation, never the published case's record. To retrieve an existing report, use the published records above.",
   "studies.order": "Order",

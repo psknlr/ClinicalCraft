@@ -877,6 +877,12 @@ function checkStudies(c: CaseDefinition, ids: Ids): Issue[] {
     issues.push(...checkCondition(c, ids, p.orderableWhen, [...at, "orderableWhen"]));
     (p.restrictions ?? []).forEach((r, j) => issues.push(...checkCondition(c, ids, r.when, [...at, "restrictions", j, "when"])));
     (p.prerequisites ?? []).forEach((r, j) => issues.push(...checkCondition(c, ids, r.when, [...at, "prerequisites", j, "when"])));
+    // a tongue capture: the conditions that change the tongue or stain it name the case's own ids; stains are told apart
+    if (p.model.kind === "tongue") {
+      p.model.changes.forEach((x, j) => issues.push(...checkCondition(c, ids, x.when, [...at, "model", "changes", j, "when"])));
+      p.model.stains.forEach((x, j) => issues.push(...checkCondition(c, ids, x.when, [...at, "model", "stains", j, "when"])));
+      issues.push(...duplicates(p.model.stains, [...at, "model", "stains"], "stain"));
+    }
     if (p.model.kind === "lab") p.model.analytes.forEach((a, j) => {
       if (a.low >= a.high) issues.push({ path: formatPath([...at, "model", "analytes", j]), message: `reference interval of "${a.id}" is empty (low ≥ high)`, severity: "error" });
     });

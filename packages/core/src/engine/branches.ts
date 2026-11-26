@@ -16,6 +16,8 @@
  * chart and the transcript agree by construction. Pure.
  */
 import type { CaseDefinition, ExamFinding, HistoryItem, Result } from "../schema/case.js";
+import type { Provenance } from "../schema/evidence.js";
+import type { Picture } from "../schema/tongue.js";
 import type { Condition } from "../schema/common.js";
 import type { LocalizedText } from "../i18n.js";
 import type { SessionState } from "../schema/session.js";
@@ -82,15 +84,21 @@ export interface ToldFinding {
   abnormal: boolean;
   media: string | null;
   branch: string | null;
+  /** A picture of it drawn from data (the branch's, else the finding's own). */
+  picture: Picture | null;
+  /** Where it comes from (the branch's, else the finding's own). */
+  provenance: Provenance | null;
 }
 
 /** An examination finding as the learner found it (the recorded branch), or as it would be found now. */
 export function toldFinding(c: CaseDefinition, s: SessionState, item: ExamFinding): ToldFinding {
-  const own: ToldFinding = { finding: item.finding, abnormal: item.abnormal, media: item.media ?? null, branch: null };
+  const own: ToldFinding = { finding: item.finding, abnormal: item.abnormal, media: item.media ?? null, picture: item.picture ?? null, provenance: item.provenance ?? null, branch: null };
   if (!item.branches?.length) return own;
   const heard = recorded(s, toldKey.exam(item.id));
   const branch = heard === undefined ? holding(c, s, item.branches) : (item.branches.find((b) => b.id === heard) ?? null);
-  return branch ? { finding: branch.finding, abnormal: branch.abnormal ?? item.abnormal, media: branch.media ?? item.media ?? null, branch: branch.id } : own;
+  return branch
+    ? { finding: branch.finding, abnormal: branch.abnormal ?? item.abnormal, media: branch.media ?? item.media ?? null, picture: branch.picture ?? item.picture ?? null, provenance: branch.provenance ?? item.provenance ?? null, branch: branch.id }
+    : own;
 }
 
 /**
@@ -114,6 +122,8 @@ export function toldResult(c: CaseDefinition, s: SessionState, investigationId: 
       ...(branch.figures != null ? { figures: branch.figures } : {}),
       ...(branch.note != null ? { note: branch.note } : {}),
       ...(branch.source != null ? { source: branch.source } : {}),
+      ...(branch.picture != null ? { picture: branch.picture } : {}),
+      ...(branch.provenance != null ? { provenance: branch.provenance } : {}),
     },
     branch: branch.id,
   };

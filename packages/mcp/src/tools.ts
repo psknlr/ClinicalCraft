@@ -50,7 +50,8 @@ export interface McpToolSpec {
 
 /** A `tools/call` result. */
 export interface McpToolResult {
-  content: { type: "text"; text: string }[];
+  /** Text, and the pictures a tool drew from data (a tongue capture: `ToolOutput.images`) as MCP image content. */
+  content: ({ type: "text"; text: string } | { type: "image"; data: string; mimeType: string })[];
   structuredContent?: Record<string, unknown>;
   isError?: boolean;
   [key: string]: unknown;
@@ -331,7 +332,10 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
         const { output, notices } = outcome;
         const warnings = outcome.warnings ?? [];
         const text = [output.output, notices.length > 0 ? notices.map((n) => `! ${n}`).join("\n") : "", noticeLines(entry.session.locale, warnings)].filter(Boolean).join("\n\n");
-        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(outcome.actionIds?.length ? { actionIds: outcome.actionIds } : {}), ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
+        const result = textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(outcome.actionIds?.length ? { actionIds: outcome.actionIds } : {}), ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
+        // a picture drawn from data travels as image content after the text that labels it
+        for (const img of output.images ?? []) result.content.push({ type: "image", data: img.data, mimeType: img.mediaType });
+        return result;
       });
     }
   }

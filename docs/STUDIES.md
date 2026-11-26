@@ -96,6 +96,8 @@ The **model** owns what the test can reveal:
   the patient's state makes at the moment of collection (a bleed lowers haemoglobin; a bile duct injury raises
   bilirubin). The collection time is the acquisition's.
 - `imaging`: the technique and findings whose condition holds; `side` is the patient's own.
+- `tongue`: a tongue image captured at a tongue-imaging station (§8) — the observations and a picture drawn from them
+  come from the tongue as it is at acquisition, what stains it then and the station's capture conditions.
 
 Values are simulated teaching values (the profile says so), never the patient's. `cases validate` checks that every
 profile's `historical` names an investigation of the case and every capability is a known one.
@@ -224,3 +226,60 @@ apart from source-only runs: a score from an expanded encounter is never compare
 alone. The export (`AssessmentReport`) carries `caseVersion`, `engine` (`ENGINE_VERSION`) and `finished`. In the
 embodied benchmark every run records its `evidence` (`source-only`, or `expanded` once it ordered a study) and the
 report's `metrics.byEvidence` scores the two apart ("By evidence (scored apart)").
+
+## 8. Tongue capture (`model.kind: "tongue"`) and pictures drawn from data
+
+A tongue photograph is evidence with a source and a quality: a photo the patient took at a kiosk under warm light,
+after coffee, is not the tongue seen in daylight after a rinse. A test profile with a `tongue` model is a capture at a
+tongue-imaging station:
+
+```jsonc
+{
+  "code": "tongue-capture",
+  "name": { "zh-CN": "标准光源下舌象采集", "en": "Tongue image at the station" },
+  "acquisition": "department", "collectors": ["nurse"], "requires": ["tongue-imaging"],
+  "model": {
+    "kind": "tongue",
+    "appearance": { "body": "pale", "shape": ["enlarged", "teeth-marked"],
+                    "coating": { "color": "white", "thickness": "thin", "texture": "greasy", "distribution": "full" } },
+    "changes": [ { "when": { "phase": "followup" }, "appearance": { "coating": { "texture": "moist" } } } ],
+    "stains": [ { "id": "coffee", "when": { "not": { "intervened": "rinse-mouth" } },
+                  "coating": { "color": "brown", "thickness": "thick" },
+                  "cause": { "zh-CN": "早上喝了咖啡", "en": "coffee this morning" } } ],
+    "capture": { "light": "standard", "colorCard": true, "focus": "sharp" }
+  }
+}
+```
+
+- **The tongue** (`appearance`): the body colour (`pale` 淡白, `pale-red` 淡红, `red` 红, `crimson` 绛, `purple` 紫,
+  `bluish` 青紫), its shape (`enlarged`, `thin`, `teeth-marked`, `cracked`, `prickles`, `stasis-spots`), the coating
+  (colour `white`, `pale-yellow`, `yellow`, `brown`, `grey`, `black`; thickness `none`, `thin`, `thick`; texture
+  `moist`, `dry`, `slippery`, `greasy`, `curdy`; where it lies: `full`, `center`, `root`, `patchy`) and, optionally,
+  the sublingual veins. Every `changes` entry whose condition holds at acquisition is laid over it, in order
+  (treatment, a later phase).
+- **What lies on it** (`stains`): food, drink or a medicine colouring the coating while its condition holds — the
+  capture shows the stain as coating, and the station's quality check cannot see it (it checks the frame, not the
+  patient). A rinse first, or asking what was eaten and drunk, is the clinician's part.
+- **How it is taken** (`capture`): the light (`standard`, `daylight`, `warm`, `cool`, `dim`), a colour reference card in
+  the frame, the focus. The quality check (core `captureQuality`) passes standard light or daylight with a card in
+  focus; otherwise it fails with each reason, and the accession's `quality` is `limited`.
+
+The observations are `body`, `shape` (when there is one), `coating`, `sublingual` (when given), `capture` and
+`quality`, in both languages, named as a reader would name the picture (warm light reads one step redder and a white
+coating yellowish — core `apparentTongue`). The template report names them and says when the capture's colours are not
+reliable. The acquisition keeps what it captured **as data** (`StudyAccession.picture`: the appearance as captured,
+stains included, and the capture), so a later rinse or treatment never changes an earlier capture.
+
+**Pictures drawn from data.** The engine draws a picture from such data (core `drawPicture`: a dorsal view of the
+protruded tongue — the body colour, shape, coating and its texture, tooth marks, cracks, prickles, stasis spots — in
+the capture's light, with the colour card when it was in the frame, blurred when out of focus; a small PNG, the same
+bytes everywhere for the same data and seed). The same `picture` is how an authored record or finding carries an image
+(docs/CASE_AUTHORING.md §5.2: a kiosk photo's warm cast and stained coating). It is always labelled as drawn by the
+simulation from the recorded description — never presented as a photograph of the patient:
+
+- `read_study`, `read_result` and `examine` add the line "Picture: drawn by the simulation …" and return the picture
+  as an image (`ToolOutput.images`), which reaches a model only when it can look at images (`capabilities().vision`);
+  others get the text. Over MCP the image follows the text as image content; over the browser bridge (attach mode)
+  only the text travels.
+- The web shows the picture with its caption in the report, the examination list and the new-investigations section.
+

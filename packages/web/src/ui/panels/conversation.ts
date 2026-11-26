@@ -48,6 +48,7 @@ import { portrait, STAFF_COLOURS } from "../portrait.js";
 import { parseAddress } from "../address.js";
 import { capList } from "./common.js";
 import { prescriptionsSection } from "./prescriptions-section.js";
+import { drawnPicture, provenanceBlock } from "./picture.js";
 import { bedsideTests } from "./tests-tab.js";
 import { searchOrder, treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
@@ -454,6 +455,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
                 ),
                 !done && v ? refusalNote(v) : null,
                 done ? h("div", { class: "finding" }, ct(found.finding)) : null,
+                done ? provenanceBlock(found.provenance) : null,
+                done && found.picture ? drawnPicture(found.picture, f.id) : null,
               );
             }),
           ),

@@ -59,6 +59,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
+import { pictureImages, provenanceLines } from "./evidence.js";
 import { prescriptionLines } from "./prescriptions.js";
 import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, interventionNameText, itemOrder, orderCheck, otherClauses, resolveOrderedIntervention, writtenOrder, type DoseErrorEvent, type DoseQuery } from "./dose-order.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations, staffTaskLines } from "./requirements.js";
@@ -330,7 +331,14 @@ const examine: ToolDefinition<ToolArgs> = {
     // the finding as it was just found (a finding that follows the record: the branch the engine recorded)
     const found = toldFinding(c, ctx.state(), f);
     const finding = t(found.finding, L);
-    return { ok: true, output: rt(L, "tool.examined", { maneuver, finding }), data: { findingId: f.id, system: f.system, maneuver, finding, abnormal: found.abnormal, media: found.media, ...(found.branch ? { branch: found.branch } : {}) } };
+    // where it comes from, and a picture of it drawn from data (labelled as drawn)
+    const extra = [...provenanceLines(found.provenance, L), ...(found.picture ? [rt(L, "evidence.picture")] : [])];
+    return {
+      ok: true,
+      output: [rt(L, "tool.examined", { maneuver, finding }), ...extra].join("\n"),
+      data: { findingId: f.id, system: f.system, maneuver, finding, abnormal: found.abnormal, media: found.media, ...(found.branch ? { branch: found.branch } : {}), ...(found.provenance ? { provenance: found.provenance } : {}), ...(found.picture ? { picture: found.picture } : {}) },
+      ...(found.picture ? { images: pictureImages([{ picture: found.picture, seed: f.id }]) } : {}),
+    };
   },
 };
 
@@ -493,7 +501,8 @@ const readResult: ToolDefinition<ToolArgs> = {
       return rejectedOutput(L, result);
     }
     const formatted = formatResult(c, r.id, phase, L, ctx.state());
-    return { ok: true, output: formatted.text, data: formatted.data };
+    const picture = formatted.data?.picture;
+    return { ok: true, output: formatted.text, data: formatted.data, ...(picture ? { images: pictureImages([{ picture, seed: `${r.id}@${phase}` }]) } : {}) };
   },
 };
 

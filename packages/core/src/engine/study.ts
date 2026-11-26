@@ -13,6 +13,8 @@ import type { StudyAccession, StudyCategory, StudyObservation, StudyOp, StudyOrd
 import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
 import { vitalValue } from "./signal.js";
+import { apparentTongue, captureQuality, describeCapture, describeTongue, patchTongue } from "./tongue.js";
+import type { Picture } from "../schema/tongue.js";
 
 const both = (t: unknown): { en: string; "zh-CN": string } => {
   if (typeof t === "string") return { en: t, "zh-CN": t };
@@ -32,6 +34,17 @@ export function seeded(key: string): number {
 
 const round = (v: number, d: number) => Math.round(v * 10 ** d) / 10 ** d;
 const within = (range: readonly [number, number], u: number) => Math.round(range[0] + ((u + 1) / 2) * (range[1] - range[0]));
+
+/**
+ * What a tongue capture shows (`model.kind: "tongue"`), as data: the tongue as it is now (the appearance, with every
+ * change whose condition holds), what colours it now (a stain whose condition holds) and the station's capture.
+ */
+export function tonguePicture(c: CaseDefinition, s: SessionState, m: Extract<StudyProfile["model"], { kind: "tongue" }>): Extract<Picture, { kind: "tongue" }> {
+  let appearance = m.appearance;
+  for (const change of m.changes) if (evaluate(c, s, change.when)) appearance = patchTongue(appearance, change.appearance);
+  for (const stain of m.stains) if (evaluate(c, s, stain.when)) appearance = patchTongue(appearance, { coating: stain.coating });
+  return { kind: "tongue", appearance, capture: m.capture };
+}
 
 /** The case's test profile of `code`, or undefined. */
 export function studyProfile(c: CaseDefinition, code: string): StudyProfile | undefined {
@@ -132,6 +145,25 @@ export function studyObservations(c: CaseDefinition, s: SessionState, profile: S
     for (const f of m.findings) if (!f.when || evaluate(c, s, f.when)) out.push({ id: f.id, label: { en: "Finding", "zh-CN": "所见" }, text: both(f.text), ...(f.side ? { side: f.side } : {}) });
     return out;
   }
+  if (m.kind === "tongue") {
+    const picture = tonguePicture(c, s, m);
+    const seen = describeTongue(apparentTongue(picture.appearance, picture.capture));
+    const quality = captureQuality(picture.capture);
+    return [
+      { id: "body", label: { en: "Tongue body", "zh-CN": "舌质" }, text: seen.body },
+      ...(seen.shape ? [{ id: "shape", label: { en: "Shape", "zh-CN": "舌形" }, text: seen.shape }] : []),
+      { id: "coating", label: { en: "Coating", "zh-CN": "舌苔" }, text: seen.coating },
+      ...(seen.sublingual ? [{ id: "sublingual", label: { en: "Sublingual veins", "zh-CN": "舌下络脉" }, text: seen.sublingual }] : []),
+      { id: "capture", label: { en: "Capture", "zh-CN": "采集条件" }, text: describeCapture(picture.capture) },
+      {
+        id: "quality",
+        label: { en: "Quality check", "zh-CN": "质量检查" },
+        text: quality.passed
+          ? { en: "passed", "zh-CN": "通过" }
+          : { en: `failed: ${quality.reasons.map((r) => r.text.en).join(" ")}`, "zh-CN": `未通过：${quality.reasons.map((r) => r.text["zh-CN"]).join("")}` },
+      },
+    ];
+  }
   return [
     { id: "technique", label: { en: "Technique", "zh-CN": "技术" }, text: both(m.technique) },
     ...m.findings.filter((f) => !f.when || evaluate(c, s, f.when)).map((f) => ({ id: f.id, label: { en: "Finding", "zh-CN": "所见" }, text: both(f.text), ...(f.side ? { side: f.side } : {}) })),
@@ -216,8 +248,10 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
         at: s.clock,
         revision: s.seq,
         ...(op.configuration ? { configuration: op.configuration } : {}),
-        quality: op.quality,
+        // a tongue capture's quality is the station's own check of the frame; its picture is kept as data
+        quality: profile.model.kind === "tongue" ? (captureQuality(profile.model.capture).passed ? "good" : "limited") : op.quality,
         observations: studyObservations(c, s, profile, id, op.configuration),
+        ...(profile.model.kind === "tongue" ? { picture: tonguePicture(c, s, profile.model) } : {}),
         dueAt: s.clock + (c.clock.mode === "simulated" ? profile.turnaroundMinutes : 0),
         profileVersion: profile.version,
       };

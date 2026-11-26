@@ -156,6 +156,8 @@ developer documents use.
 | supply, dispensing step | supply (what the dispensary hands out for a version); the steps: select the version, pick, check the label, supply | 发药；调剂步骤：选定版本、取药、核对标签、发药 | `dispense` op and tool, `Dispensing` |
 | supply discrepancy | a difference between what was supplied and its version ("Differs from the version: …") | 与处方版本不符 | `Dispensing.discrepancies`, `prescriptions[].deviations` |
 | standing task | a colleague's task (what a member of staff does on their own once it falls due: "Ready the treatment couch"); colleagues' tasks | 同事的常规任务；同事的任务 | `case.staffTasks`, `SessionState.staffTasks` (docs/TEAM.md §5.1) |
+| source, quality check (of evidence) | Source: captured by the patient (…); Captured: …; Quality check: passed / failed — … | 来源：患者自行采集（…）；采集时间：…；质量检查：通过 / 未通过——… | `provenance` on results and findings (docs/CASE_AUTHORING.md §5.2) |
+| picture drawn from the record | Picture: drawn by the simulation from the recorded description — not a photograph of the patient | 图片：模拟系统依据记录的描述绘制的示意图——不是患者的照片 | `picture`, `drawPicture`, a tongue capture (docs/STUDIES.md §8); never "photo of the patient" |
 | accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |

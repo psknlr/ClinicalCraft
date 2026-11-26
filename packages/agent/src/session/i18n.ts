@@ -14,6 +14,7 @@ import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
 import { PRESCRIPTIONS_EN, PRESCRIPTIONS_ZH } from "./i18n-prescriptions.js";
+import { EVIDENCE_EN, EVIDENCE_ZH } from "./i18n-evidence.js";
 import { SAFETY_EN, SAFETY_ZH } from "./i18n-safety.js";
 import { IMAGING_EN, IMAGING_ZH } from "./i18n-imaging.js";
 
@@ -502,6 +503,7 @@ const EN = {
   ...COUNT_EN,
   ...STUDIES_EN,
   ...PRESCRIPTIONS_EN,
+  ...EVIDENCE_EN,
   ...SAFETY_EN,
   ...IMAGING_EN,
 } as const;
@@ -956,6 +958,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...COUNT_ZH,
   ...STUDIES_ZH,
   ...PRESCRIPTIONS_ZH,
+  ...EVIDENCE_ZH,
   ...SAFETY_ZH,
   ...IMAGING_ZH,
 };

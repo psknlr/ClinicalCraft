@@ -8,6 +8,7 @@ import { isOrderReady, toldResult, type LabValue } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
+import { drawnPicture, provenanceBlock } from "./picture.js";
 import type { PanelView } from "../panel.js";
 import { atModality, figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
 
@@ -139,6 +140,10 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
       if (!result.available) content.append(h("p", { class: "notice" }, tr("report.notAvailableText")));
       if (result.values.length) content.append(labTable(result.values));
       if (result.note) content.append(h("p", { class: "notice" }, ct(result.note)));
+      // where it comes from and how good it is; a picture drawn from the record, labelled as such
+      const provenance = provenanceBlock(result.provenance);
+      if (provenance) content.append(provenance);
+      if (result.available && result.picture) content.append(drawnPicture(result.picture, `${args.investigationId}@${args.phase}`));
       const figs = result.figures;
       content.append(
         h(

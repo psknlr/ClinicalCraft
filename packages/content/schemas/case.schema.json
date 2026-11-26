@@ -4470,6 +4470,207 @@
                     },
                     "media": {
                       "$ref": "#/definitions/Id"
+                    },
+                    "picture": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "tongue"
+                            },
+                            "appearance": {
+                              "type": "object",
+                              "properties": {
+                                "body": {
+                                  "type": "string",
+                                  "enum": [
+                                    "pale",
+                                    "pale-red",
+                                    "red",
+                                    "crimson",
+                                    "purple",
+                                    "bluish"
+                                  ]
+                                },
+                                "shape": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enlarged",
+                                      "thin",
+                                      "teeth-marked",
+                                      "cracked",
+                                      "prickles",
+                                      "stasis-spots"
+                                    ]
+                                  },
+                                  "default": []
+                                },
+                                "coating": {
+                                  "type": "object",
+                                  "properties": {
+                                    "color": {
+                                      "type": "string",
+                                      "enum": [
+                                        "white",
+                                        "pale-yellow",
+                                        "yellow",
+                                        "brown",
+                                        "grey",
+                                        "black"
+                                      ]
+                                    },
+                                    "thickness": {
+                                      "type": "string",
+                                      "enum": [
+                                        "none",
+                                        "thin",
+                                        "thick"
+                                      ]
+                                    },
+                                    "texture": {
+                                      "type": "string",
+                                      "enum": [
+                                        "moist",
+                                        "dry",
+                                        "slippery",
+                                        "greasy",
+                                        "curdy"
+                                      ],
+                                      "default": "moist"
+                                    },
+                                    "distribution": {
+                                      "type": "string",
+                                      "enum": [
+                                        "full",
+                                        "center",
+                                        "root",
+                                        "patchy"
+                                      ],
+                                      "default": "full"
+                                    }
+                                  },
+                                  "required": [
+                                    "color",
+                                    "thickness"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "sublingual": {
+                                  "type": "string",
+                                  "enum": [
+                                    "normal",
+                                    "engorged"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "body",
+                                "coating"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "capture": {
+                              "type": "object",
+                              "properties": {
+                                "light": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard",
+                                    "daylight",
+                                    "warm",
+                                    "cool",
+                                    "dim"
+                                  ],
+                                  "default": "standard"
+                                },
+                                "colorCard": {
+                                  "type": "boolean",
+                                  "default": true
+                                },
+                                "focus": {
+                                  "type": "string",
+                                  "enum": [
+                                    "sharp",
+                                    "soft"
+                                  ],
+                                  "default": "sharp"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "default": {}
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "appearance"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "direct-observation",
+                            "patient-captured",
+                            "clinician-captured",
+                            "clinician-description",
+                            "device-measurement",
+                            "agent-interpretation",
+                            "published-record"
+                          ]
+                        },
+                        "by": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "capturedAt": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "quality": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "passed",
+                                "failed",
+                                "not-checked"
+                              ]
+                            },
+                            "reasons": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/definitions/LocalizedText"
+                              },
+                              "maxItems": 12,
+                              "default": []
+                            }
+                          },
+                          "required": [
+                            "status"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "basis": {
+                          "type": "string",
+                          "enum": [
+                            "recorded",
+                            "authored",
+                            "simulated"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "source"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [
@@ -4504,6 +4705,207 @@
               },
               "media": {
                 "$ref": "#/definitions/Id"
+              },
+              "picture": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "tongue"
+                      },
+                      "appearance": {
+                        "type": "object",
+                        "properties": {
+                          "body": {
+                            "type": "string",
+                            "enum": [
+                              "pale",
+                              "pale-red",
+                              "red",
+                              "crimson",
+                              "purple",
+                              "bluish"
+                            ]
+                          },
+                          "shape": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "enlarged",
+                                "thin",
+                                "teeth-marked",
+                                "cracked",
+                                "prickles",
+                                "stasis-spots"
+                              ]
+                            },
+                            "default": []
+                          },
+                          "coating": {
+                            "type": "object",
+                            "properties": {
+                              "color": {
+                                "type": "string",
+                                "enum": [
+                                  "white",
+                                  "pale-yellow",
+                                  "yellow",
+                                  "brown",
+                                  "grey",
+                                  "black"
+                                ]
+                              },
+                              "thickness": {
+                                "type": "string",
+                                "enum": [
+                                  "none",
+                                  "thin",
+                                  "thick"
+                                ]
+                              },
+                              "texture": {
+                                "type": "string",
+                                "enum": [
+                                  "moist",
+                                  "dry",
+                                  "slippery",
+                                  "greasy",
+                                  "curdy"
+                                ],
+                                "default": "moist"
+                              },
+                              "distribution": {
+                                "type": "string",
+                                "enum": [
+                                  "full",
+                                  "center",
+                                  "root",
+                                  "patchy"
+                                ],
+                                "default": "full"
+                              }
+                            },
+                            "required": [
+                              "color",
+                              "thickness"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "sublingual": {
+                            "type": "string",
+                            "enum": [
+                              "normal",
+                              "engorged"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "body",
+                          "coating"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "capture": {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "daylight",
+                              "warm",
+                              "cool",
+                              "dim"
+                            ],
+                            "default": "standard"
+                          },
+                          "colorCard": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "focus": {
+                            "type": "string",
+                            "enum": [
+                              "sharp",
+                              "soft"
+                            ],
+                            "default": "sharp"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {}
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "appearance"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "direct-observation",
+                      "patient-captured",
+                      "clinician-captured",
+                      "clinician-description",
+                      "device-measurement",
+                      "agent-interpretation",
+                      "published-record"
+                    ]
+                  },
+                  "by": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "capturedAt": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "quality": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "passed",
+                          "failed",
+                          "not-checked"
+                        ]
+                      },
+                      "reasons": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "maxItems": 12,
+                        "default": []
+                      }
+                    },
+                    "required": [
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "basis": {
+                    "type": "string",
+                    "enum": [
+                      "recorded",
+                      "authored",
+                      "simulated"
+                    ]
+                  }
+                },
+                "required": [
+                  "source"
+                ],
+                "additionalProperties": false
               },
               "source": {
                 "$ref": "#/definitions/LocalizedText"
@@ -4691,6 +5093,207 @@
                           },
                           "note": {
                             "$ref": "#/definitions/LocalizedText"
+                          },
+                          "picture": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "type": "string",
+                                    "const": "tongue"
+                                  },
+                                  "appearance": {
+                                    "type": "object",
+                                    "properties": {
+                                      "body": {
+                                        "type": "string",
+                                        "enum": [
+                                          "pale",
+                                          "pale-red",
+                                          "red",
+                                          "crimson",
+                                          "purple",
+                                          "bluish"
+                                        ]
+                                      },
+                                      "shape": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string",
+                                          "enum": [
+                                            "enlarged",
+                                            "thin",
+                                            "teeth-marked",
+                                            "cracked",
+                                            "prickles",
+                                            "stasis-spots"
+                                          ]
+                                        },
+                                        "default": []
+                                      },
+                                      "coating": {
+                                        "type": "object",
+                                        "properties": {
+                                          "color": {
+                                            "type": "string",
+                                            "enum": [
+                                              "white",
+                                              "pale-yellow",
+                                              "yellow",
+                                              "brown",
+                                              "grey",
+                                              "black"
+                                            ]
+                                          },
+                                          "thickness": {
+                                            "type": "string",
+                                            "enum": [
+                                              "none",
+                                              "thin",
+                                              "thick"
+                                            ]
+                                          },
+                                          "texture": {
+                                            "type": "string",
+                                            "enum": [
+                                              "moist",
+                                              "dry",
+                                              "slippery",
+                                              "greasy",
+                                              "curdy"
+                                            ],
+                                            "default": "moist"
+                                          },
+                                          "distribution": {
+                                            "type": "string",
+                                            "enum": [
+                                              "full",
+                                              "center",
+                                              "root",
+                                              "patchy"
+                                            ],
+                                            "default": "full"
+                                          }
+                                        },
+                                        "required": [
+                                          "color",
+                                          "thickness"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "sublingual": {
+                                        "type": "string",
+                                        "enum": [
+                                          "normal",
+                                          "engorged"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "body",
+                                      "coating"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "capture": {
+                                    "type": "object",
+                                    "properties": {
+                                      "light": {
+                                        "type": "string",
+                                        "enum": [
+                                          "standard",
+                                          "daylight",
+                                          "warm",
+                                          "cool",
+                                          "dim"
+                                        ],
+                                        "default": "standard"
+                                      },
+                                      "colorCard": {
+                                        "type": "boolean",
+                                        "default": true
+                                      },
+                                      "focus": {
+                                        "type": "string",
+                                        "enum": [
+                                          "sharp",
+                                          "soft"
+                                        ],
+                                        "default": "sharp"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "default": {}
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "appearance"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "provenance": {
+                            "type": "object",
+                            "properties": {
+                              "source": {
+                                "type": "string",
+                                "enum": [
+                                  "direct-observation",
+                                  "patient-captured",
+                                  "clinician-captured",
+                                  "clinician-description",
+                                  "device-measurement",
+                                  "agent-interpretation",
+                                  "published-record"
+                                ]
+                              },
+                              "by": {
+                                "$ref": "#/definitions/LocalizedText"
+                              },
+                              "capturedAt": {
+                                "$ref": "#/definitions/LocalizedText"
+                              },
+                              "quality": {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "passed",
+                                      "failed",
+                                      "not-checked"
+                                    ]
+                                  },
+                                  "reasons": {
+                                    "type": "array",
+                                    "items": {
+                                      "$ref": "#/definitions/LocalizedText"
+                                    },
+                                    "maxItems": 12,
+                                    "default": []
+                                  }
+                                },
+                                "required": [
+                                  "status"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "basis": {
+                                "type": "string",
+                                "enum": [
+                                  "recorded",
+                                  "authored",
+                                  "simulated"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "source"
+                            ],
+                            "additionalProperties": false
                           }
                         },
                         "required": [
@@ -4758,6 +5361,207 @@
                         "$ref": "#/definitions/Id"
                       },
                       "default": []
+                    },
+                    "picture": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "tongue"
+                            },
+                            "appearance": {
+                              "type": "object",
+                              "properties": {
+                                "body": {
+                                  "type": "string",
+                                  "enum": [
+                                    "pale",
+                                    "pale-red",
+                                    "red",
+                                    "crimson",
+                                    "purple",
+                                    "bluish"
+                                  ]
+                                },
+                                "shape": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enlarged",
+                                      "thin",
+                                      "teeth-marked",
+                                      "cracked",
+                                      "prickles",
+                                      "stasis-spots"
+                                    ]
+                                  },
+                                  "default": []
+                                },
+                                "coating": {
+                                  "type": "object",
+                                  "properties": {
+                                    "color": {
+                                      "type": "string",
+                                      "enum": [
+                                        "white",
+                                        "pale-yellow",
+                                        "yellow",
+                                        "brown",
+                                        "grey",
+                                        "black"
+                                      ]
+                                    },
+                                    "thickness": {
+                                      "type": "string",
+                                      "enum": [
+                                        "none",
+                                        "thin",
+                                        "thick"
+                                      ]
+                                    },
+                                    "texture": {
+                                      "type": "string",
+                                      "enum": [
+                                        "moist",
+                                        "dry",
+                                        "slippery",
+                                        "greasy",
+                                        "curdy"
+                                      ],
+                                      "default": "moist"
+                                    },
+                                    "distribution": {
+                                      "type": "string",
+                                      "enum": [
+                                        "full",
+                                        "center",
+                                        "root",
+                                        "patchy"
+                                      ],
+                                      "default": "full"
+                                    }
+                                  },
+                                  "required": [
+                                    "color",
+                                    "thickness"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "sublingual": {
+                                  "type": "string",
+                                  "enum": [
+                                    "normal",
+                                    "engorged"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "body",
+                                "coating"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "capture": {
+                              "type": "object",
+                              "properties": {
+                                "light": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard",
+                                    "daylight",
+                                    "warm",
+                                    "cool",
+                                    "dim"
+                                  ],
+                                  "default": "standard"
+                                },
+                                "colorCard": {
+                                  "type": "boolean",
+                                  "default": true
+                                },
+                                "focus": {
+                                  "type": "string",
+                                  "enum": [
+                                    "sharp",
+                                    "soft"
+                                  ],
+                                  "default": "sharp"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "default": {}
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "appearance"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "direct-observation",
+                            "patient-captured",
+                            "clinician-captured",
+                            "clinician-description",
+                            "device-measurement",
+                            "agent-interpretation",
+                            "published-record"
+                          ]
+                        },
+                        "by": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "capturedAt": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "quality": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "passed",
+                                "failed",
+                                "not-checked"
+                              ]
+                            },
+                            "reasons": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/definitions/LocalizedText"
+                              },
+                              "maxItems": 12,
+                              "default": []
+                            }
+                          },
+                          "required": [
+                            "status"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "basis": {
+                          "type": "string",
+                          "enum": [
+                            "recorded",
+                            "authored",
+                            "simulated"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "source"
+                      ],
+                      "additionalProperties": false
                     },
                     "note": {
                       "$ref": "#/definitions/LocalizedText"
@@ -5139,6 +5943,315 @@
                       "kind",
                       "technique",
                       "findings"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "tongue"
+                      },
+                      "appearance": {
+                        "type": "object",
+                        "properties": {
+                          "body": {
+                            "type": "string",
+                            "enum": [
+                              "pale",
+                              "pale-red",
+                              "red",
+                              "crimson",
+                              "purple",
+                              "bluish"
+                            ]
+                          },
+                          "shape": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "enlarged",
+                                "thin",
+                                "teeth-marked",
+                                "cracked",
+                                "prickles",
+                                "stasis-spots"
+                              ]
+                            },
+                            "default": []
+                          },
+                          "coating": {
+                            "type": "object",
+                            "properties": {
+                              "color": {
+                                "type": "string",
+                                "enum": [
+                                  "white",
+                                  "pale-yellow",
+                                  "yellow",
+                                  "brown",
+                                  "grey",
+                                  "black"
+                                ]
+                              },
+                              "thickness": {
+                                "type": "string",
+                                "enum": [
+                                  "none",
+                                  "thin",
+                                  "thick"
+                                ]
+                              },
+                              "texture": {
+                                "type": "string",
+                                "enum": [
+                                  "moist",
+                                  "dry",
+                                  "slippery",
+                                  "greasy",
+                                  "curdy"
+                                ],
+                                "default": "moist"
+                              },
+                              "distribution": {
+                                "type": "string",
+                                "enum": [
+                                  "full",
+                                  "center",
+                                  "root",
+                                  "patchy"
+                                ],
+                                "default": "full"
+                              }
+                            },
+                            "required": [
+                              "color",
+                              "thickness"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "sublingual": {
+                            "type": "string",
+                            "enum": [
+                              "normal",
+                              "engorged"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "body",
+                          "coating"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "changes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "when": {
+                              "$ref": "#/definitions/Condition"
+                            },
+                            "appearance": {
+                              "type": "object",
+                              "properties": {
+                                "body": {
+                                  "type": "string",
+                                  "enum": [
+                                    "pale",
+                                    "pale-red",
+                                    "red",
+                                    "crimson",
+                                    "purple",
+                                    "bluish"
+                                  ]
+                                },
+                                "shape": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "enlarged",
+                                      "thin",
+                                      "teeth-marked",
+                                      "cracked",
+                                      "prickles",
+                                      "stasis-spots"
+                                    ]
+                                  }
+                                },
+                                "coating": {
+                                  "type": "object",
+                                  "properties": {
+                                    "color": {
+                                      "type": "string",
+                                      "enum": [
+                                        "white",
+                                        "pale-yellow",
+                                        "yellow",
+                                        "brown",
+                                        "grey",
+                                        "black"
+                                      ]
+                                    },
+                                    "thickness": {
+                                      "type": "string",
+                                      "enum": [
+                                        "none",
+                                        "thin",
+                                        "thick"
+                                      ]
+                                    },
+                                    "texture": {
+                                      "type": "string",
+                                      "enum": [
+                                        "moist",
+                                        "dry",
+                                        "slippery",
+                                        "greasy",
+                                        "curdy"
+                                      ],
+                                      "default": "moist"
+                                    },
+                                    "distribution": {
+                                      "type": "string",
+                                      "enum": [
+                                        "full",
+                                        "center",
+                                        "root",
+                                        "patchy"
+                                      ],
+                                      "default": "full"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "sublingual": {
+                                  "type": "string",
+                                  "enum": [
+                                    "normal",
+                                    "engorged"
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "when",
+                            "appearance"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "default": []
+                      },
+                      "stains": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "when": {
+                              "$ref": "#/definitions/Condition"
+                            },
+                            "coating": {
+                              "type": "object",
+                              "properties": {
+                                "color": {
+                                  "type": "string",
+                                  "enum": [
+                                    "white",
+                                    "pale-yellow",
+                                    "yellow",
+                                    "brown",
+                                    "grey",
+                                    "black"
+                                  ]
+                                },
+                                "thickness": {
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "thin",
+                                    "thick"
+                                  ]
+                                },
+                                "texture": {
+                                  "type": "string",
+                                  "enum": [
+                                    "moist",
+                                    "dry",
+                                    "slippery",
+                                    "greasy",
+                                    "curdy"
+                                  ],
+                                  "default": "moist"
+                                },
+                                "distribution": {
+                                  "type": "string",
+                                  "enum": [
+                                    "full",
+                                    "center",
+                                    "root",
+                                    "patchy"
+                                  ],
+                                  "default": "full"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "cause": {
+                              "$ref": "#/definitions/LocalizedText"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "when",
+                            "coating",
+                            "cause"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "default": []
+                      },
+                      "capture": {
+                        "type": "object",
+                        "properties": {
+                          "light": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "daylight",
+                              "warm",
+                              "cool",
+                              "dim"
+                            ],
+                            "default": "standard"
+                          },
+                          "colorCard": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "focus": {
+                            "type": "string",
+                            "enum": [
+                              "sharp",
+                              "soft"
+                            ],
+                            "default": "sharp"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "default": {}
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "appearance"
                     ],
                     "additionalProperties": false
                   }

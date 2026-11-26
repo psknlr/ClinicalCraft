@@ -11,6 +11,7 @@ import { t, type StudyProfile } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { getLocale, tr } from "../../i18n/index.js";
 import { h } from "../dom.js";
+import { drawnPicture } from "./picture.js";
 
 /** The new-investigations section of the Tests tab (null: the case offers none). */
 export function studiesSection(app: App, game: Game): HTMLElement | null {
@@ -38,6 +39,11 @@ export function studiesSection(app: App, game: Game): HTMLElement | null {
         { class: "study-instance", dataset: { order: o.id, accession: o.accessions.at(-1) ?? "", stage: o.stage ?? "ordered" } },
         h("div", { class: "small" }, `${o.id} · ${head}`),
         rest.length ? h("details", { class: "study-report" }, h("summary", null, tr("studies.report")), h("pre", { class: "small" }, rest.join("\n"))) : null,
+        // a tongue capture: the picture drawn from what was captured (the same seed as read_study's)
+        ...o.accessions.slice(-1).flatMap((id) => {
+          const a = state.studies?.accessions.find((x) => x.id === id);
+          return a?.picture ? [drawnPicture(a.picture, a.id)] : [];
+        }),
       );
     });
     return h(

@@ -1,6 +1,8 @@
 import { StudyProfileSchema } from "./study.js";
 import { PrescriptionDefinitionSchema } from "./prescription.js";
 import { StaffTaskSchema } from "./staff-task.js";
+import { ProvenanceSchema } from "./evidence.js";
+import { PictureSchema } from "./tongue.js";
 import { z } from "zod";
 import {
   AssetRefSchema,
@@ -344,7 +346,9 @@ export const EXAM_SYSTEMS = [
 export const ExamSystemSchema = z.enum(EXAM_SYSTEMS);
 
 /** An examination finding that holds when the record is a certain way (see `branchBase`); `abnormal` / `media` replace the item's when given. */
-export const ExamBranchSchema = z.object({ ...branchBase, finding: LocalizedTextSchema, abnormal: z.boolean().optional(), media: IdSchema.optional() }).strict();
+export const ExamBranchSchema = z
+  .object({ ...branchBase, finding: LocalizedTextSchema, abnormal: z.boolean().optional(), media: IdSchema.optional(), picture: PictureSchema.optional(), provenance: ProvenanceSchema.optional() })
+  .strict();
 export type ExamBranch = z.infer<typeof ExamBranchSchema>;
 
 export const ExamFindingSchema = z
@@ -369,6 +373,13 @@ export const ExamFindingSchema = z
     phases: z.array(IdSchema).optional(),
     /** Asset id of an illustration/audio (e.g. a heart sound) */
     media: IdSchema.optional(),
+    /**
+     * A picture of what is found, drawn by the engine from its data (`PictureSchema`: a tongue's appearance and how it
+     * was seen) — an illustration of the recorded finding, never a photograph of the patient (docs/CASE_AUTHORING.md §5.2).
+     */
+    picture: PictureSchema.optional(),
+    /** Where the finding comes from, when and how good it is (`ProvenanceSchema`; absent: the examiner's own observation). */
+    provenance: ProvenanceSchema.optional(),
     source: LocalizedTextSchema.optional(),
   })
   .strict();
@@ -406,9 +417,11 @@ export const ResultBranchSchema = z
     values: z.array(LabValueSchema).optional(),
     figures: z.array(IdSchema).optional(),
     note: LocalizedTextSchema.optional(),
+    picture: PictureSchema.optional(),
+    provenance: ProvenanceSchema.optional(),
   })
   .strict()
-  .refine((b) => b.text != null || b.values != null || b.figures != null || b.note != null || b.date != null, "a result branch replaces at least one of date, text, values, figures or note");
+  .refine((b) => b.text != null || b.values != null || b.figures != null || b.note != null || b.date != null || b.picture != null || b.provenance != null, "a result branch replaces at least one of date, text, values, figures, note, picture or provenance");
 export type ResultBranch = z.infer<typeof ResultBranchSchema>;
 
 export const ResultSchema = z
@@ -430,6 +443,14 @@ export const ResultSchema = z
     values: z.array(LabValueSchema).default([]),
     /** Asset ids of figures (original images). */
     figures: z.array(IdSchema).default([]),
+    /**
+     * A picture drawn by the engine from data (`PictureSchema`): what a captured image shows (a tongue photo — its
+     * appearance as captured, and the light and colour card it was taken with). Labelled as drawn from the record,
+     * never presented as the patient's photograph (docs/CASE_AUTHORING.md §5.2).
+     */
+    picture: PictureSchema.optional(),
+    /** Where the result comes from, when it was captured and its quality check (`ProvenanceSchema`). */
+    provenance: ProvenanceSchema.optional(),
     /** Caveat shown in a notice box (V4 `note`). */
     note: LocalizedTextSchema.optional(),
     source: LocalizedTextSchema.optional(),

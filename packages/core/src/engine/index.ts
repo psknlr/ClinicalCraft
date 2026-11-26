@@ -102,6 +102,9 @@ export { ENGINE_VERSION } from "./version.js";
 export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
 export { caseData, datumStatus, type DatumStatus } from "./datum.js";
 export { applyAlarm, openAlarm, type AlarmResult } from "./alarm.js";
+// pictures drawn from data (docs/STUDIES.md §8): a tongue, a PNG of it
+export { base64, crc32, deflate, encodePng } from "./png.js";
+export { apparentTongue, captureQuality, describeCapture, describeTongue, drawPicture, drawTongue, patchTongue, PICTURE_SIZE, type DrawnPicture } from "./tongue.js";
 export { applyStaffTask, dueStaffTasks, evaluateStaffTask, staffTaskDef, staffTaskFacilityIssues, staffTaskRecord, type StaffTaskResult } from "./staff-task.js";
 export { nextEvent, pendingEvents, type PendingEvent } from "./next-event.js";
 export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";

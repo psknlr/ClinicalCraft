@@ -298,6 +298,26 @@ apart from recorded follow-up and from a calibrated model (docs of the pack that
   "activate-cath-lab"}, {"phase": "cath-lab"}]}` on the "only in the cath
   lab" notice. Its ids are checked by `cases validate` like any condition.
 
+### 5.2 Evidence with a source, a time and a quality (`provenance`, `picture`)
+
+A result or an examination finding can say where it comes from — `provenance: {source, by?, capturedAt?, quality?,
+basis?}` — and carry a picture the engine draws from data — `picture: {kind: "tongue", appearance, capture}`
+(docs/STUDIES.md §8). Both are optional on `exam[]`, on every `results.<phase>` and on their `branches` (a branch that
+follows the record replaces them, like any other field).
+
+* `source`: `direct-observation` (what the examiner sees now), `patient-captured` (a kiosk, a home device),
+  `clinician-captured` (the clinic's own station or device), `clinician-description` (a written note),
+  `device-measurement`, `agent-interpretation`, `published-record`. `by` names who or what captured it,
+  `capturedAt` when ("Today 10:12, before the consultation").
+* `quality: {status: passed | failed | not-checked, reasons[]}`: what a check of the capture found — write the
+  reasons as the check states them ("No colour card in the frame."). `basis`: `recorded` (the source record),
+  `authored` (teaching content) or `simulated`.
+* **A picture is data, not an image file.** Write what the capture *shows*: a kiosk photo after coffee under warm light
+  is `appearance` with the stained coating and `capture: {light: "warm", colorCard: false}` — the drawing adds the
+  light's cast. The learner and the agents see it labelled as drawn from the record, never as the patient's photo.
+* Keep the text and the picture saying the same thing: the result's `text` is still what the learner reads first,
+  and the grounding rules apply to it as before.
+
 ## 6. Interventions & physiology (acute cases)
 
 * `clock.mode: "simulated"`, `startTime`, sensible `actionCosts`, optional

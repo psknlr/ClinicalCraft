@@ -9,6 +9,7 @@ import { rt } from "../session/i18n.js";
 import { resolveStudy } from "../session/studies.js";
 import { actorFor, rejectedOutput, strArg, type ToolArgs } from "./clinical-resolve.js";
 import { clockTime, formatResult, investigationName } from "./format.js";
+import { pictureImages } from "./evidence.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
 
 const label = (key: "simulated" | "source" | "unavailable" | "notYet", L: string) => rt(L, `study.label.${key}`);
@@ -192,15 +193,33 @@ const readStudy: ToolDefinition<ToolArgs> = {
       const text = orderId ? orderText(c, s, orderId, L, ctx.facility) : null;
       const o = s.studies?.orders.find((x) => x.id === orderId);
       // an accession reads that accession's report, not the order's latest
-      if (text && o && accession && o.accessions.at(-1) !== accession) return { ok: true, output: accessionText(c, s, accession, L, ctx.facility) ?? text, data: { order: o } };
-      return text && o ? { ok: true, output: text, data: { order: o } } : { ok: false, output: rt(L, "study.read.none", { query: accession || orderId }) };
+      if (text && o && accession && o.accessions.at(-1) !== accession) return withPictures({ ok: true, output: accessionText(c, s, accession, L, ctx.facility) ?? text, data: { order: o } }, s, [accession], L);
+      return text && o ? withPictures({ ok: true, output: text, data: { order: o } }, s, o.accessions.slice(-1), L) : { ok: false, output: rt(L, "study.read.none", { query: accession || orderId }) };
     }
     const query = strArg(args, "code") || strArg(args, "query");
     const p = studyProfile(c, strArg(args, "code")) ?? resolveStudy(c.studies ?? [], query);
     const text = p ? studyText(c, s, p.code, L, ctx.facility) : null;
-    return text ? { ok: true, output: text, data: { studies: s.studies?.orders.filter((o) => o.code === p!.code) ?? [] } } : { ok: false, output: rt(L, "study.read.none", { query }) };
+    const orders = s.studies?.orders.filter((o) => o.code === p?.code) ?? [];
+    return text ? withPictures({ ok: true, output: text, data: { studies: orders } }, s, orders.map((o) => o.accessions.at(-1)).filter((x): x is string => !!x), L) : { ok: false, output: rt(L, "study.read.none", { query }) };
   },
 };
+
+/** At most this many pictures with one reading (the latest captures). */
+const MAX_PICTURES = 3;
+
+/** A reading with the pictures of the accessions it covers that have one (a tongue capture), drawn from their data. */
+function withPictures(out: ToolOutput, s: SessionState, accessions: readonly string[], L: string): ToolOutput {
+  const pictures = accessions
+    .map((id) => s.studies?.accessions.find((a) => a.id === id))
+    .filter((a): a is NonNullable<typeof a> & { picture: NonNullable<NonNullable<typeof a>["picture"]> } => !!a?.picture)
+    .slice(-MAX_PICTURES);
+  if (!pictures.length) return out;
+  return {
+    ...out,
+    output: `${out.output}\n${pictures.length > 1 ? rt(L, "evidence.pictures", { n: pictures.length }) : rt(L, "evidence.picture")}`,
+    images: pictureImages(pictures.map((a) => ({ picture: a.picture, seed: a.id }))),
+  };
+}
 
 /** The released report of one accession (an earlier one of an order), in words. */
 function accessionText(c: CaseDefinition, s: SessionState, accession: string, L: string, facility?: FacilityDefinition | null): string | null {

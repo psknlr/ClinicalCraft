@@ -464,6 +464,15 @@ export interface TurnResult {
   rounds: number;
 }
 
+/** Can this provider's model look at images (`capabilities().vision`)? False when it cannot say. */
+function canSeeImages(provider: LLMProvider): boolean {
+  try {
+    return provider.capabilities().vision === true;
+  } catch {
+    return false;
+  }
+}
+
 /** Maximum consecutive `pause_turn` continuations. */
 const MAX_PAUSE_CONTINUATIONS = 5;
 
@@ -582,6 +591,7 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
     }
     rounds++;
     phase("executing_tools");
+    const vision = canSeeImages(p.provider);
     const executed = await executeToolCalls(
       { host: p.host, agent: role, tools: p.tools, ctx, emit: p.emit, turnId: p.turnId, ...(p.signal ? { signal: p.signal } : {}), ...(p.now ? { now: p.now } : {}) },
       calls,
@@ -591,7 +601,9 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
     const marked = executed.results.map((r, i) => {
       const call = calls[i]!;
       const n = repeats.note(call, executed.outcomes[i]!, ctx.state().seq);
-      return n >= 2 ? { ...r, content: `${r.content}\n${rt(L, "tool.repeatedFailure", { n, tool: call.name })}` } : r;
+      // a picture a tool returned (a drawn tongue) reaches only a model that can look at images; the text says what it is
+      const seen = r.images?.length && !vision ? (({ images: _images, ...rest }) => rest)(r) : r;
+      return n >= 2 ? { ...seen, content: `${seen.content}\n${rt(L, "tool.repeatedFailure", { n, tool: call.name })}` } : seen;
     });
     push({ role: "user", content: marked });
     for (const id of executed.grounded) grounded.add(id);
