@@ -228,7 +228,9 @@ describe("the places in the care team (the place picker without the full case)",
     expect([...INDEX_PLACES]).toEqual([...TEAM_PLACES]);
   });
 
-  it("offers none for every built-in case (none has a team), as core does", () => {
+  it("offers none for every built-in case (none offers a place: the one built-in team, acute-ischemic-stroke's, names no stand-in surgeon), as core does", () => {
+    // the emergency team: a team without a stand-in surgeon offers no place
+    expect(raws.get("acute-ischemic-stroke")?.team, "a built-in case with a team").toBeTruthy();
     for (const [id, raw] of raws) expect(agree(raw, id)).toMatchObject({ seats: [], lineups: [] });
   });
 

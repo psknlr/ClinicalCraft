@@ -53,7 +53,8 @@ describe("bundled case index (C1)", () => {
     expect(index.cards.map((c) => c.id)).toEqual(libraryOrder(index.cards).map((c) => c.id));
     for (const card of index.cards) {
       expect(Object.keys(card).sort()).toEqual([...CASE_INDEX_ENTRY_KEYS, "source"].sort());
-      // no built-in case has a care team: no place in a team is offered, no line-up listed
+      // no built-in case offers a place (the one built-in team, acute-ischemic-stroke's, names no stand-in surgeon): no
+      // place in a team is offered, no line-up listed
       expect([card.seats, card.lineups], card.id).toEqual([[], []]);
       expect(card.source).toBe("bundled");
       expect(index.caseStatus(card.id)).toBe("idle");

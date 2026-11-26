@@ -76,9 +76,8 @@ members share a duty, as a first and a second assistant both `assist`, and when,
 gives the staff member another job than their duties name ("Checks" below; outside an operating room a member who
 circulates, her duties naming no other position, keeps her post's position without one — the ED nurse stays a ward
 nurse in her card, her dress and the team's list, and the circulating nurse's controls her duty gives her work nothing
-there) — else it follows from their
-duties, read by priority, never by their order: `surgeon`, `anaesthesia`, `instruments`, `assist`, `circulate`,
-`count` (so `[count, instruments]` is a scrub nurse; `inform` names no position).
+there) — else it follows from their duties, read by priority, never by their order: `surgeon`, `anaesthesia`,
+`instruments`, `assist`, `circulate`, `count` (so `[count, instruments]` is a scrub nurse; `inform` names no position).
 `assistant-surgeon`, the first assistant's old name, counts as `first-assistant` wherever controls, places or
 sterility are decided (`canonicalPosition`).
 

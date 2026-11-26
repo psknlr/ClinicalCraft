@@ -1,7 +1,8 @@
 /**
  * A place in the care team at the start, in the web (docs/EMBODIED.md §2.1, docs/TEAM.md §1): the page's choices
  * (`?team=`, `?seat=`, `?lineup=`, `__QA__.start`) reach the start; the intro's picker shows nothing new for any built-in
- * case (none has a team) and the places and line-ups of a case that offers them; a saved encounter's own place; a case
+ * case (none offers a place: the one built-in team, acute-ischemic-stroke's, names no stand-in surgeon) and the places and
+ * line-ups of a case that offers them; a saved encounter's own place; a case
  * served without its reference solution (`clinicalcraft serve`) gets its place path fetched beside it, so it offers the
  * same places and a start in a place joins the team exactly as the full case's does — and the learner's body joins the
  * team at the operating table, the first-person view following the world's pose once (a resume does not move it again).
@@ -79,9 +80,11 @@ describe("the start's choices: the page's address, the picker, __QA__.start", ()
 });
 
 describe("the intro's place picker", () => {
-  it("shows nothing new for every built-in case (none has a team), in-world or not", () => {
+  it("shows nothing new for every built-in case (none offers a place: the one built-in team, acute-ischemic-stroke's, names no stand-in surgeon), in-world or not", () => {
     const cards = loadContent().cards;
     expect(cards.length).toBeGreaterThan(0);
+    // the emergency team's case is among them: a team without a stand-in surgeon offers no place
+    expect(cards.map((c) => c.id)).toContain("acute-ischemic-stroke");
     for (const card of cards) {
       expect(offersPlaces(card), card.id).toBe(false);
       for (const embodied of [true, false]) expect(placePicker(card, embodied, { seat: "first-assistant", lineup: "three-surgeons" }), card.id).toBeNull();

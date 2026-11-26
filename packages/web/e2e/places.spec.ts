@@ -1,6 +1,7 @@
 /**
- * A place in the care team in the browser (docs/EMBODIED.md §2.1, docs/TEAM.md §1): no built-in case has a team, so the
- * case card shows neither the line-up nor the place row for any of them and an encounter looks as it always did — no
+ * A place in the care team in the browser (docs/EMBODIED.md §2.1, docs/TEAM.md §1): no built-in case offers a place — the
+ * one built-in team, acute-ischemic-stroke's emergency team, names no stand-in surgeon —, so the case card shows neither
+ * the line-up nor the place row for any of them and an encounter looks as it always did — no
  * place in the badge, no scrub nurse's bar, the hand with its stethoscope, no surgery window. A case with a team — the
  * engine's own lap-chole team fixture, given to the page as a server would (`content.addServerContent`) — offers its
  * places; a start in the first assistant's place — chosen in the picker and started from the case card's own Enter —
