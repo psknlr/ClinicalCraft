@@ -8,7 +8,7 @@ through the core Condition DSL, the world snapshot, the recorded refusals and
 the audits — never the agent's text) and reports Wilson 95 % intervals.
 Node only; run it through `clinicalcraft bench`.
 
-`embodied-v1` has a fixed scope: 41 scenarios over the original ten cases
+`embodied-v1` has a fixed scope: 46 scenarios (44 `dev`, 2 held out) over the original ten cases
 (`acute-appendicitis`, `acute-ischemic-stroke`, `anaphylaxis-garden`,
 `dka-adult`, `new-onset-t2dm`, `pediatric-asthma`,
 `pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno`,
@@ -20,7 +20,7 @@ the v1 benchmark success rate. `grounding-v1` uses the same ten-case cohort
 and retains its frozen test digest (see [scope and freezing](../../docs/GROUNDING.md#3-splits-freezing-and-honesty)).
 
 ```bash
-npm run -s cc -- bench list                                         # 41 scenarios of embodied-v1, by category
+npm run -s cc -- bench list                                         # 46 scenarios of embodied-v1, by category
 npm run -s cc -- bench run --suite embodied-v1 --agent reference    # → bench-results/bench-report.{json,md}
 npm run -s cc -- bench run --agent scripted-llm --seeds 1-5 --traces
 npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN --out bench-demo   # → trace.jsonl + demo.md
@@ -69,8 +69,8 @@ console.log(reportMarkdown(report, "en"));
 ```
 
 Measured results and the committed sample reports:
-[docs/bench/](../../docs/bench/) (`reference` and `scripted-llm`: 123 / 123
-runs each, no accepted spatial or authorisation violation). Tests:
+[docs/bench/](../../docs/bench/) (`reference`: 138 / 138 runs, `scripted-llm`: 132 / 132 — the
+held-out scenarios have no scripted plan —, no accepted spatial or authorisation violation). Tests:
 `npx vitest run packages/bench` (every scenario file validates; every
 predicate kind true and false on a real run; Wilson; each agent kind; a
 broken agent that only claims success scores 0; limits, budget and the

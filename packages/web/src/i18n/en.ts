@@ -584,6 +584,8 @@ const en: Messages = {
   "debrief.critical": "critical",
   "debrief.notScored": "Not scored",
   "debrief.notScoredHint": "The situation this item scores did not arise in this encounter, so it counts neither way.",
+  "debrief.otherPlace": "Not scored in your place",
+  "debrief.otherPlaceHint": "This item is another place's.",
   "debrief.met": "Met",
   "debrief.unmet": "Not met",
   "debrief.judgedMet": "Examiner · met",

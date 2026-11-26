@@ -211,7 +211,7 @@ function teamSpec(): McpToolSpec {
   return {
     name: TEAM_TOOL.name,
     title: annotations.title,
-    description: `${TEAM_TOOL.description} Only in an in-world session of a case with a care team (start_case says so); requires session_id. In a place in the team (start_case seat) the team is paced by this tool, and a call-out waits for your answer (callout) before anything else.`,
+    description: `${TEAM_TOOL.description} Only in an in-world session of a case with a care team (elsewhere every action answers no_team); requires session_id. In a place in the team (start_case seat) the team is paced by this tool, and a call-out waits for your answer (callout) before anything else.`,
     inputSchema: withSessionId(TEAM_TOOL.inputSchema),
     annotations,
   };

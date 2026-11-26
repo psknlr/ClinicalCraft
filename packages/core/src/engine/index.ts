@@ -27,6 +27,7 @@ export {
   memberControls,
   memberPosition,
   normaliseStep,
+  operatingTeam,
   operatorOf,
   passingRequired,
   placeMember,
@@ -136,7 +137,7 @@ export { doseMentions, doseRoute, parseDose, readingDose, readOrder, ROUTE_WORDS
 export { isHighAlert } from "./high-alert.js";
 
 // assessment
-export { assess, countCriticalAlarms, safetyPassed } from "./assessment.js";
+export { assess, countCriticalAlarms, safetyPassed, scoresPlace } from "./assessment.js";
 export { ENGINE_VERSION } from "./version.js";
 
 // new investigations (docs/STUDIES.md)

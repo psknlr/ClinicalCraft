@@ -211,8 +211,9 @@ leaves unsaid differs from one member of staff to the next (skin, hair and its s
 glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
 team is three people, not one person three times. Everyone breathes, blinks, turns their head to
 the learner and moves their jaw when they speak. A name tag floats over each: the title of the position the facility
-gives them (core's `POSITION_TITLES`: "Scrub nurse · Chen Yu" / "洗手护士 · 陈雨"), else their role ("Nurse · Lin
-Xiao"); a name the facility already qualifies in brackets ("Dr Mori (assistant surgeon)") stands alone. Tags and dress
+gives them (core's `POSITION_TITLES`: "Scrub nurse · Chen Yu" / "洗手护士 · 陈雨"; the general hospital's ED nurse,
+a ward nurse by position: "Ward nurse · Lin Xiao"), else their role ("Nurse · Yang Jie" / "护士 · 杨洁", the triage
+nurse); a name the facility already qualifies in brackets ("Dr Mori (assistant surgeon)") stands alone. Tags and dress
 follow the facility's `position` only — the people are built from the facility alone: a case's team that gives someone
 another position for one encounter says so in the field and in the team's words, never on the figure (web
 `world/strings.ts` `staffTag`).

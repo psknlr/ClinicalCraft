@@ -12,6 +12,7 @@ import {
   CONTROL_TITLES,
   effectiveTeam,
   LEARNER_BODY,
+  operatingTeam,
   POSITION_TITLES,
   refOfBody,
   seatsOf,
@@ -28,6 +29,7 @@ import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { AgentEvent } from "./protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
 import { awaitedLine, repliesTo, type ReplyKind } from "./session/team/awaits.js";
+import { SURGEON_NAME } from "./session/team/i18n.js";
 import type { TeamCheckpoint, TeamMessage } from "./session/team/types.js";
 
 /** What the words are read from: the case, the facility (names), the encounter's state and the session's language. */
@@ -85,8 +87,29 @@ export function bodyName(ctx: Pick<TeamTextContext, "facility" | "locale">, body
 /** A position's title as a list starts it ("Operating surgeon", "第一助手"). */
 function positionTitle(locale: string, p: StaffPosition | null): string {
   if (!p) return "—";
-  const words = t(POSITION_TITLES[canonicalPosition(p)], locale);
+  return listTitle(t(POSITION_TITLES[canonicalPosition(p)], locale));
+}
+
+/** Words as a list item starts them ("First assistant: you", "The doctor: you"; Chinese as it is). */
+function listTitle(words: string): string {
   return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+/**
+ * What the team calls the learner while they operate (no place): the case team's name for its clinician in charge when
+ * it gives one ("the doctor" in an emergency team), else the surgeon (术者) — as the team itself says it.
+ */
+function leadWords(c: Pick<CaseDefinition, "team">, locale: string): string {
+  const named = c.team?.members.find((m) => m.staff === "surgeon")?.name;
+  return t(named ?? SURGEON_NAME, locale);
+}
+
+/**
+ * A care team at the bedside (an emergency team; core `operatingTeam` false): its clinician in charge — the learner — goes
+ * by the team's name for them ("the doctor", docs/GLOSSARY.md), never as the operating surgeon.
+ */
+function bedsideTeam(c: Pick<CaseDefinition, "team">): boolean {
+  return !!c.team && !operatingTeam(c);
 }
 
 /**
@@ -94,15 +117,17 @@ function positionTitle(locale: string, p: StaffPosition | null): string {
  * its member's id (what a hand-over's `to` takes) — fixed for the encounter; the line-up; the place's controls; who
  * operates and who stands by; operating, the places the case offers at the start; and the team as it works in this
  * encounter, each member with their position, the learner as "you", a relief colleague, one away (the team scenario's
- * name itself is the facilitator's: never shown).
+ * name itself is the facilitator's: never shown). In a care team at the bedside (an emergency team) the learner is the
+ * clinician in charge by the team's name for them — "Your place: the doctor", "The doctor: you" —, never as operating.
  */
 export function seatLines(ctx: TeamTextContext): string[] {
   const { caseDef: c, state: s, locale: L } = ctx;
   const lines: string[] = [];
   const seat = s.seat;
   const own = seat ? refOfBody(c, s) : undefined;
+  const bedside = bedsideTeam(c);
   if (seat) lines.push(rt(L, "seat.place", { place: t(POSITION_TITLES[seat], L), id: typeof own === "string" ? own : "-" }));
-  else lines.push(rt(L, "seat.surgeon"));
+  else lines.push(bedside ? rt(L, "seat.lead", { name: leadWords(c, L) }) : rt(L, "seat.surgeon"));
   const lineup = s.lineup ? (c.team?.lineups ?? []).find((l) => l.id === s.lineup) : undefined;
   if (lineup) lines.push(rt(L, "seat.lineup", { name: t(lineup.name, L) }));
   if (seat) {
@@ -123,7 +148,7 @@ export function seatLines(ctx: TeamTextContext): string[] {
     const base = offered();
     const more = (team.lineups ?? []).map((l) => ({ id: l.id, places: offered(l.id) })).filter((x) => x.places.length > 0 && x.places.join() !== base.join());
     const parts = [...(base.length ? [joinList(L, base)] : []), ...more.map((x) => rt(L, "seat.offeredLineup", { places: joinList(L, x.places), lineup: x.id }))];
-    lines.push(parts.length ? rt(L, "seat.offered", { places: parts.join(isZh(L) ? "；" : "; ") }) : rt(L, "seat.offeredNone"));
+    lines.push(parts.length ? rt(L, "seat.offered", { places: parts.join(isZh(L) ? "；" : "; ") }) : bedside ? rt(L, "seat.offeredNoneLead", { name: leadWords(c, L) }) : rt(L, "seat.offeredNone"));
   }
   lines.push(rt(L, "seat.team"));
   const scenario = s.teamScenario ? (team.scenarios ?? []).find((x) => x.id === s.teamScenario) : undefined;
@@ -143,7 +168,8 @@ export function seatLines(ctx: TeamTextContext): string[] {
         : relief.has(m.staff)
           ? rt(L, "seat.relief", { name: staffName(ctx, m.staff) })
           : staffName(ctx, m.staff);
-    lines.push(rt(L, "seat.member", { position: positionTitle(L, position), name }));
+    // the clinician in charge of a care team at the bedside: by the team's name for them ("The doctor: you")
+    lines.push(rt(L, "seat.member", { position: operator && bedside ? listTitle(leadWords(c, L)) : positionTitle(L, position), name }));
   }
   for (const id of scenario?.absent ?? []) lines.push(rt(L, "seat.member", { position: positionTitle(L, staffPosition(c, ctx.facility, id)), name: rt(L, "seat.away", { name: staffName(ctx, id) }) }));
   return lines;
@@ -180,7 +206,8 @@ export function teamLines(ctx: TeamTextContext, cp: TeamCheckpoint | null, words
   }
   const seat = ctx.state.seat ?? null;
   const place = seat ? t(POSITION_TITLES[seat], L) : "";
-  const who = cp.surgeon === "learner" ? (seat ? rt(L, "teamText.who.learnerPlace", { place }) : rt(L, "teamText.who.learner")) : seat ? rt(L, "teamText.who.simulatedPlace", { place }) : rt(L, "teamText.who.simulated");
+  // unseated, the learner answers as the team calls them: the surgeon, or the team's name for them ("the doctor")
+  const who = cp.surgeon === "learner" ? (seat ? rt(L, "teamText.who.learnerPlace", { place }) : rt(L, "teamText.who.learner", { name: leadWords(c, L) })) : seat ? rt(L, "teamText.who.simulatedPlace", { place }) : rt(L, "teamText.who.simulated");
   const lines = [rt(L, "teamText.status", { round: cp.state.round, pace: rt(L, `teamText.pace.${cp.autonomy}`), who })];
   const waiting = awaitedLine(cp.state, cp.surgeon);
   let awaited: TeamStatusReport["awaited"] = null;
@@ -255,7 +282,7 @@ export function startOffers(ctx: Pick<TeamTextContext, "caseDef" | "locale">, op
   const lineups = (team.lineups ?? []).map((l) => (isZh(L) ? `${l.id}（${t(l.name, L)}）` : `${l.id} (${t(l.name, L)})`));
   const scenarios = team.scenarios.map((x) => x.id);
   return [
-    places.length ? rt(L, "startOffers.places", { places: places.join(isZh(L) ? "；" : "; ") }) : rt(L, "startOffers.placesNone"),
+    places.length ? rt(L, "startOffers.places", { places: places.join(isZh(L) ? "；" : "; ") }) : bedsideTeam(c) ? rt(L, "startOffers.placesNoneLead", { name: leadWords(c, L) }) : rt(L, "startOffers.placesNone"),
     lineups.length ? rt(L, "startOffers.lineups", { lineups: joinList(L, lineups) }) : rt(L, "startOffers.lineupsNone"),
     !opts.scenarios ? rt(L, "startOffers.scenariosHidden") : scenarios.length ? rt(L, "startOffers.scenarios", { scenarios: joinList(L, scenarios) }) : rt(L, "startOffers.scenariosNone"),
   ];

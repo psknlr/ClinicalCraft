@@ -12,7 +12,7 @@
  * (docs/PROTOCOL.md §3.2) — and a run that did not pass is never shown as passed.
  */
 import { joinedLines, safetySummary, type SafetySummary } from "@clinicalcraft/agent";
-import { availableDecisions, progress, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { availableDecisions, progress, scoresPlace, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
 import { ct, getLocale, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
@@ -167,17 +167,21 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
               r.rubric.map((item) => {
                 const def = c.rubric.find((x) => x.id === item.id);
                 const j = judged.get(item.id);
-                // `scored: false`: its precondition (`scoredWhen`) did not arise — it counts neither way
+                // `scored: false`: another place's item (`seats`), or its precondition (`scoredWhen`) did not arise — it
+                // counts neither way
+                const why = item.scored === false ? notScoredWhy(c, r, item.id) : null;
                 const status =
-                  item.scored === false
-                    ? h("span", { class: "pill pending", title: tr("debrief.notScoredHint") }, tr("debrief.notScored"))
-                    : item.met === true
-                      ? h("span", { class: "pill ok" }, tr("debrief.met"))
-                      : item.met === false
-                        ? h("span", { class: "pill no" }, tr("debrief.unmet"))
-                        : j
-                          ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
-                          : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
+                  why === "place"
+                    ? h("span", { class: "pill pending", dataset: { notScored: "place" }, title: tr("debrief.otherPlaceHint") }, tr("debrief.otherPlace"))
+                    : why === "situation"
+                      ? h("span", { class: "pill pending", title: tr("debrief.notScoredHint") }, tr("debrief.notScored"))
+                      : item.met === true
+                        ? h("span", { class: "pill ok" }, tr("debrief.met"))
+                        : item.met === false
+                          ? h("span", { class: "pill no" }, tr("debrief.unmet"))
+                          : j
+                            ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
+                            : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
                 return h(
                   "tr",
                   { class: item.critical ? "critical" : undefined, dataset: { item: item.id } },
@@ -227,6 +231,18 @@ function debriefTitle(title: string, ended: boolean): string {
   const carries = !!prefix && title.toLowerCase().startsWith(prefix.toLowerCase());
   if (!ended) return carries ? title : tr("debrief.title", { title });
   return tr("debrief.endedTitle", { title: carries ? title.slice(prefix.length).replace(/^[\s·:：-]+/, "") : title });
+}
+
+/**
+ * Why a rubric item the report did not score (`scored: false`) counts neither way: it is another place's — the learner
+ * held a place in the care team and the item does not list it (`seats`, core `scoresPlace`: "Not scored in your place")
+ * — or the situation it scores did not arise (`scoredWhen`). Null for an item the report scored.
+ */
+export function notScoredWhy(c: Pick<CaseDefinition, "rubric">, report: Pick<AssessmentReport, "rubric" | "seat">, itemId: string): "place" | "situation" | null {
+  const item = report.rubric.find((x) => x.id === itemId);
+  if (item?.scored !== false) return null;
+  const def = c.rubric.find((x) => x.id === itemId);
+  return report.seat && def && !scoresPlace(def, { seat: report.seat }) ? "place" : "situation";
 }
 
 /**

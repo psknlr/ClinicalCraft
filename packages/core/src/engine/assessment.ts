@@ -45,8 +45,12 @@ function joinedOf(s: SessionState): JoinRecord | null {
   return s.seat && s.joined ? s.joined : null;
 }
 
-/** Whether a rubric item scores the learner's place: an item without `seats` is the operating surgeon's (no place). */
-function scoresPlace(item: RubricItem, s: SessionState): boolean {
+/**
+ * Whether a rubric item scores the learner's place (docs/TEAM.md §1): an item without `seats` is the operating
+ * surgeon's (no place). An item that does not is reported `scored: false` — another place's, not the learner's (a
+ * front-end says so: "Not scored in your place").
+ */
+export function scoresPlace(item: Pick<RubricItem, "seats">, s: Pick<SessionState, "seat">): boolean {
   return (item.seats ?? ["surgeon"]).includes(s.seat ?? "surgeon");
 }
 

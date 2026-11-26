@@ -6,7 +6,9 @@
  * the stand-in's call-out in the default approval mode: approved, the critical step is done; denied ("Stop"), the
  * stand-in stops, looks and asks what the learner sees, and does nothing until the learner says go on. Operating in the
  * place, a step the place's controls do not cover (dissection) is refused. Attach mode lists the `team` tool and
- * forwards it to the live session. On the agent's theatre fixture: core's lap-chole team in general-hospital's theatre.
+ * forwards it to the live session. On the agent's theatre fixture: core's lap-chole team in general-hospital's theatre;
+ * and on the built-in stroke case's emergency team, the information the ED nurse tells the doctor read back through it
+ * (a run held while the read-back is owed).
  */
 import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -18,6 +20,7 @@ import { loadContent } from "@clinicalcraft/agent/node";
 import { parseCase } from "@clinicalcraft/core";
 import { LAP_CHOLE_SIT } from "../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js";
 import { LAP_CHOLE_SOLUTION, LAP_CHOLE_TEAM } from "../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
+import { STROKE, STROKE_INFORM, untilToldInfo } from "../../agent/src/__fixtures__/stroke-inform.js";
 import { THEATRE, theatreFacility } from "../../world/src/__fixtures__/theatre.js";
 import { runAttachedMcpServer } from "./attach.js";
 import { caseHandle } from "./format.js";
@@ -345,6 +348,36 @@ describe("the team tool in the first assistant's place (default approval mode)",
     const observing = await call(s, "team", { session_id, action: "reply", message: asked.id, kind: "report" });
     expect(observing.structuredContent).toMatchObject({ ok: false, error: "permission_denied" });
     expect(text(observing)).toMatch(/✗ You are observing: the team plays your place\. Call the team tool with action "play" to answer, ask or count yourself\./u);
+    await s.close();
+  });
+});
+
+describe("information the ED nurse tells the doctor, over the team tool (the built-in stroke case; docs/TEAM.md §4.7)", () => {
+  it("status lists it with how to answer; a run waits for the read-back; a reply naming no message reads it back — and only the nurse's confirmation records it", { timeout: T }, async () => {
+    const s = server({ approvalMode: "bypass" });
+    await s.handle({ jsonrpc: "2.0", id: ++rpc, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } } });
+    const r = await call(s, "start_case", { case_id: caseHandle(STROKE), embodied: true, team: STROKE_INFORM });
+    expect(r.isError, text(r)).not.toBe(true);
+    const session_id = r.structuredContent!.session_id as string;
+    const session = s.sessions.get(session_id)!.session;
+    const told = await untilToldInfo(session, session.caseDef);
+    const status = await call(s, "team", { session_id, action: "status" });
+    expect(text(status)).toMatch(/· you answer as the doctor\n/u);
+    expect(text(status)).toContain(`answer: team {action: "reply", message: "${told.id}", kind: "readback"}`);
+    expect(status.structuredContent).toMatchObject({ ok: true, team: { awaited: null, open: [{ id: told.id, from: "Lin Xiao", kind: "report", replies: ["readback"] }] } });
+    // owed: a run does not start — it says what waits
+    const round = session.team()!.state.round;
+    const held = await call(s, "team", { session_id, action: "run" });
+    expect(session.team()!.state.round).toBe(round);
+    expect(text(held)).toContain(`kind: "readback"`);
+    // the reply naming no message reads back the one line that waits
+    const reply = await call(s, "team", { session_id, action: "reply", kind: "readback" });
+    expect(reply.isError, text(reply)).not.toBe(true);
+    expect(session.team()!.state.messages.find((m: TeamMessage) => m.from === "actor:clinician" && m.replyTo === told.id)).toMatchObject({ kind: "readback", about: { info: "anticoagulants" } });
+    expect(session.state.asked).not.toContain("anticoagulants");
+    await call(s, "team", { session_id, action: "run" });
+    expect(session.team()!.state.tasks.find((x) => x.kind === "inform")).toMatchObject({ status: "done", verified: true });
+    expect(session.state.asked).toContain("anticoagulants");
     await s.close();
   });
 });

@@ -91,6 +91,17 @@ export function standInOf(c: CaseDefinition): string | undefined {
   return c.team?.members.find((m) => m.staff === SURGEON)?.standIn;
 }
 
+/**
+ * Whether a case's team is an operating team (手术团队: a member keeps the instruments or the count, or the team keeps a
+ * count) — its clinician in charge the operating surgeon —, or a care team at the bedside (医护团队: an emergency team),
+ * whose clinician in charge goes by the team's own name for them (the surgeon member's `name`: "the doctor").
+ * docs/GLOSSARY.md; false without a team.
+ */
+export function operatingTeam(c: Pick<CaseDefinition, "team">): boolean {
+  const team = c.team;
+  return !!team && (team.members.some((m) => m.duties.includes("instruments") || m.duties.includes("count")) || !!team.count);
+}
+
 /** The members a place is taken from: the base team and the chosen line-up's assistants (never a relief colleague). */
 function placeMembers(c: CaseDefinition, lineup: string | undefined): TeamMember[] {
   const team = c.team;

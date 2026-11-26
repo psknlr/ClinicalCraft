@@ -24,9 +24,10 @@ const REPLY_KINDS: readonly ReplyKind[] = ["readback", "confirm", "decline", "re
 export const TEAM_TOOL = {
   name: "team",
   description:
-    "The care team at the operating table (in-world sessions of a case with a team): status — the team now and what the surgeon waits on you for (a request, " +
-    "its stop after you said Stop, the count), with how to answer; step — one round of the team; run — rounds until the surgeon waits on you, the work in " +
-    "hand has ended, or `rounds`; reply — answer a line said to you (`message`: its id, default the one the surgeon waits on you for; `kind`: readback, " +
+    "The care team — at the operating table, or an emergency team at the bedside (in-world sessions of a case with a team): status — the team now, what the " +
+    "surgeon waits on you for (a request, its stop after you said Stop, the count) and anything else said to you that waits for your answer (information " +
+    "to read back), with how to answer; step — one round of the team; run — rounds until the surgeon waits on you, information told to you waits for " +
+    "your read-back, the work in hand has ended, or `rounds`; reply — answer a line said to you (`message`: its id, default the one that waits; `kind`: readback, " +
     "confirm, decline or report; `text`: your words — a confirmation or a decline needs none; go on after a stop is a confirm); ask — ask a colleague (`to`: a " +
     "staff id, a name or a position such as first assistant or camera holder) for something in the operative field (`field`: {op: traction, release, " +
     "camera, aim, zoom or pass, port?, structure?, direction?, force?, region?, zoom?, instrument?}); need — say what you need (`item`: an equipment type; " +
@@ -37,7 +38,7 @@ export const TEAM_TOOL = {
     type: "object",
     properties: {
       action: { type: "string", enum: [...TEAM_TOOL_ACTIONS] },
-      message: { type: "string", minLength: 1, maxLength: 40, description: "reply: the id of the line you answer (msg-…); default: the one the surgeon waits on you for." },
+      message: { type: "string", minLength: 1, maxLength: 40, description: "reply: the id of the line you answer (msg-…); default: the one the surgeon waits on you for, else the one line said to you that waits." },
       kind: { type: "string", enum: [...REPLY_KINDS], description: "reply: readback, confirm, decline or report." },
       text: { type: "string", maxLength: 400, description: "reply: your own words (a confirmation or a decline needs none)." },
       item: { type: "string", minLength: 1, maxLength: 80, description: "need: the equipment type needed; reply: the instrument a read-back names." },

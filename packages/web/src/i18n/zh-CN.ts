@@ -587,6 +587,8 @@ const zh = {
   "debrief.critical": "关键项",
   "debrief.notScored": "未计分",
   "debrief.notScoredHint": "本次接诊中没有出现该项评分的情形，因此不计入得分。",
+  "debrief.otherPlace": "不计入你担任的岗位",
+  "debrief.otherPlaceHint": "该项属于其他岗位。",
   "debrief.met": "达成",
   "debrief.unmet": "未达成",
   "debrief.judgedMet": "考官判定 · 达成",

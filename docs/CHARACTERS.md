@@ -47,9 +47,12 @@ the operating surgeon's card is the stand-in surgeon's, who operates
 instance's staff override), else the case team's duties, read by priority — `surgeon` → surgeon, `anaesthesia` →
 anaesthetist, `instruments` → scrub nurse, `assist` → first assistant, `circulate` or `count` → circulating nurse, so
 `[count, instruments]` is a scrub nurse; the line-ups' assistants and the scenarios' relief colleagues too —, else the
-facility role's default (`nurse` → ward nurse, `attending` → physician, `lab-tech` → laboratory technician, …). A team
-member whose facility position is not their position in the team is an error of `cases validate`
-(`teamFacilityIssues`), so the card a colleague speaks from and the controls the team gives them never disagree. An
+facility role's default (`nurse` → ward nurse, `attending` → physician, `lab-tech` → laboratory technician, …). In an
+operating room a team member whose facility position is not their position in the team is an error of `cases validate`
+(`teamFacilityIssues`), so the card a colleague speaks from and the controls the team gives them are one job. Outside
+an operating room a member who circulates — her duties naming no other position, no `position` of her own — keeps her
+post's position (docs/TEAM.md §1, "Checks"): the ED nurse of the built-in stroke case speaks from a ward nurse's card,
+dresses and is listed as one, while her duty gives her the circulating nurse's controls, which work nothing there. An
 agent answering as itself, with no staff member named, holds its profile's position (`PROFILE_POSITION`: the nurse is
 a ward nurse, the attending is the educator). The patient, the companion, the examiner and the demonstrating
 clinician are not staff.

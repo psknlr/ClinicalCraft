@@ -76,8 +76,13 @@ and is then paced by the `team` tool: `run` lets it work until the surgeon waits
 on you (it does not start while your answer or your count is owed), `status`
 says what for and how to answer, `reply` answers (without `message`: the line
 the surgeon waits for; several waiting, name one), `ask`, `need`, `count`,
-`play` / `observe`; your own steps are `operate` calls, as your place. In a
-session without a care team every action answers `no_team`. A round that meets
+`play` / `observe`; your own steps are `operate` calls, as your place. Without a
+place the same tool answers what the team says to you — in the built-in stroke
+case's emergency team you are the doctor, and with its team scenario
+(`start_case {"team": …}`) the information the ED nurse tells you waits for your
+read-back (`reply` with `kind: "readback"`; `run` does not start while it is
+owed). In a session without a care team every action answers
+`no_team`. A round that meets
 the stand-in's call-out before a critical step returns with it pending
 (`structuredContent.callout`): `team {"action": "callout", "decision":
 "approve"}` lets it go on, `"deny"` stops the stand-in, which asks what you see

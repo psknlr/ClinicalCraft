@@ -7,7 +7,7 @@
  * core's (`memberBody`, `refOfBody`).
  */
 import { FOLLOW_NEED, haltOf, learnerAwaited, type ActionReceipt, type FieldAsk, type Op, type StandInRequest, type TeamCheckpoint, type TeamMessage, type TeamTask } from "@clinicalcraft/agent";
-import { canonicalPosition, memberBody, POSITION_TITLES, refOfBody, staffPosition, standingBy, standInOf, t, type CaseDefinition, type DirectionName, type FacilityDefinition, type InstrumentId, type Place, type SessionState } from "@clinicalcraft/core";
+import { canonicalPosition, memberBody, operatingTeam, POSITION_TITLES, refOfBody, staffPosition, standingBy, standInOf, t, type CaseDefinition, type DirectionName, type FacilityDefinition, type InstrumentId, type Place, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
 import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
 import type { ApprovalRequest } from "../../app/store.js";
@@ -227,22 +227,26 @@ export interface TeamRow {
  * The team as it works in this encounter (`team-view`'s list under the place): every member of the team's record —
  * base members, the line-up's, the scenario's relief colleagues and those it makes absent — with their positions (core
  * `staffPosition` through `POSITION_TITLES`), the learner's own member as "you" ("First assistant: you"; operating:
- * "Operating surgeon: you"), and, holding a place, the colleague who stands by (core `standingBy`). Nothing is decided
- * here: the members are the team's own (`TeamCheckpoint`), the positions the case's.
+ * "Operating surgeon: you"; in a care team at the bedside — an emergency team, core `operatingTeam` false — by the
+ * team's name for them: "The doctor: you", never as operating), and, holding a place, the colleague who stands by (core
+ * `standingBy`). Nothing is decided here: the members are the team's own (`TeamCheckpoint`), the positions the case's.
  */
 export function teamRows(cp: TeamCheckpoint, c: CaseDefinition, s: Pick<SessionState, "seat" | "lineup" | "teamScenario">, facility: FacilityDefinition | null | undefined, worldName: (id: string) => string | null): TeamRow[] {
   const L = getLocale();
   const by = standingBy(c, s);
+  // a list item's first word ("First assistant: you", "The doctor: you"; Chinese as it is)
+  const first = (words: string): string => words.charAt(0).toUpperCase() + words.slice(1);
   const title = (ref: string): string | null => {
     const p = staffPosition(c, facility, ref);
-    if (!p) return null;
-    const words = t(POSITION_TITLES[canonicalPosition(p)], L);
-    // a list item's first word ("First assistant: you"; Chinese as it is)
-    return words.charAt(0).toUpperCase() + words.slice(1);
+    return p ? first(t(POSITION_TITLES[canonicalPosition(p)], L)) : null;
   };
+  // the clinician in charge of a care team at the bedside: the team's name for them, else the surgeon (术者)
+  const bedside = !!c.team && !operatingTeam(c);
+  const lead = bedside ? c.team?.members.find((m) => m.staff === "surgeon")?.name : undefined;
   return cp.state.members.map((m) => {
     const you = m.id === PRIMARY_ACTOR;
-    const row: TeamRow = { body: m.id, name: you ? tr("team.member.you") : memberName(m.id, s, worldName), position: title(m.staff), you, relief: m.relief, absent: m.absent };
+    const position = bedside && m.staff === "surgeon" ? first(lead ? t(lead, L) : tr("team.surgeon")) : title(m.staff);
+    const row: TeamRow = { body: m.id, name: you ? tr("team.member.you") : memberName(m.id, s, worldName), position, you, relief: m.relief, absent: m.absent };
     if (you && by) row.standingBy = worldName(by) ?? by.replace(/^staff:/u, "");
     return row;
   });

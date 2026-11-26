@@ -43,6 +43,7 @@ import {
   memberControls,
   memberPosition,
   normaliseStep,
+  operatingTeam,
   operatorOf,
   passingRequired,
   placeRefs,
@@ -137,6 +138,17 @@ describe("a member's position", () => {
     expect(staffPosition(c, FACILITY, "nurse-1")).toBe("circulating-nurse");
     expect(staffPosition(c, FACILITY, "porter-1")).toBe("porter");
     expect(staffPosition(c, FACILITY, "nobody")).toBeNull();
+  });
+
+  it("an operating team (手术团队) keeps the instruments or the count; a care team at the bedside (医护团队: an emergency team) neither", () => {
+    expect(operatingTeam(c)).toBe(true);
+    // the scrub nurse's duties alone, or a team count alone, make it an operating team
+    expect(operatingTeam(team((t) => (t.members = t.members.map((m: Json) => (m.staff === "nurse-2" ? { ...m, duties: ["instruments"] } : m)))))).toBe(true);
+    // the built-in stroke case's: the ED nurse coordinating at the bedside and the doctor in charge
+    const bedside = team((t) => (t.members = [{ staff: "nurse-1", duties: ["circulate"] }, { staff: "surgeon", duties: ["surgeon"], name: { en: "the doctor", "zh-CN": "医生" } }]));
+    expect(operatingTeam(bedside)).toBe(false);
+    expect(operatingTeam({ team: { ...bedside.team!, count: { item: "gauze-swab", when: { phase: "consult" }, searchPlaces: [] } } as CaseDefinition["team"] })).toBe(true);
+    expect(operatingTeam(placesCase(MINI, undefined, { team: undefined }))).toBe(false);
   });
 
   it("the team as it is: the line-up's assistants and the scenario's relief join, whoever is absent is not there", () => {

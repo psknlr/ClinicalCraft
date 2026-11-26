@@ -18,7 +18,7 @@
  * other parts redraw, the controls once the choice is made.
  */
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { observeField, procedureFor, type CaseDefinition, type FieldView, type SessionState } from "@clinicalcraft/core";
+import { observeField, operatingTeam, procedureFor, type CaseDefinition, type FieldView, type SessionState } from "@clinicalcraft/core";
 import type { AgentEvent, TeamCheckpoint, TeamMessage, TeamTask } from "@clinicalcraft/agent";
 import type { App } from "../../app/context.js";
 import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
@@ -45,8 +45,8 @@ export function teamPanel(app: App): () => PanelView {
     // what the team calls the learner: the case team's name for them ("the doctor" in an ED team), else the surgeon
     const lead = c.team?.members.find((m) => m.staff === "surgeon")?.name;
     const leadName = lead ? (typeof lead === "string" ? lead : (lead[getLocale()] ?? lead.en ?? "")) : "";
-    // an operating team (instruments, a count) is a 手术团队; any other a 医护团队 (docs/GLOSSARY.md)
-    const theatre = !!c.team?.members.some((m) => m.duties.includes("instruments") || m.duties.includes("count")) || !!c.team?.count;
+    // an operating team (instruments, a count) is a 手术团队; any other a 医护团队 (docs/GLOSSARY.md; core `operatingTeam`)
+    const theatre = operatingTeam(c);
     const worldName = (id: string): string | null => {
       const e = world()?.entity(id);
       return e ? (typeof e.name === "string" ? e.name : (e.name[getLocale()] ?? e.name.en ?? id)) : null;

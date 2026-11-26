@@ -1117,7 +1117,7 @@ spoken by the patient — those come from engine actions.
   with the learner (PROTOCOL §13.7).
 * **bench** — not a front-end for people: `@clinicalcraft/bench` drives
   embodied sessions with a reference, a scripted or a live agent over the
-  41 scenarios of `embodied-v1`, checks outcomes against authoritative
+  46 scenarios of `embodied-v1`, checks outcomes against authoritative
   state and re-checks the clinical acts the engine accepted against the
   spatial policy and the permission ladder (spatial and authorisation
   audits; `clinicalcraft bench`, EMBODIED §13).

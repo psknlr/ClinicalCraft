@@ -645,8 +645,9 @@ room's (`acute-ischemic-stroke`) — (contract: [TEAM.md](TEAM.md)):
   new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
   team as the source reports it and mark an added line-up `provenance: "authored"`.
 * **Rubric items by place** (`rubric[].seats`): an item without `seats` is the operating surgeon's; in another place
-  only the items that list it are scored, and what the team did before the learner joined is reported apart. List a
-  place only for what that place does (the scrub nurse's passing and the count, not the extraction).
+  only the items that list it are scored (the web debrief marks the others "Not scored in your place"), and what the
+  team did before the learner joined is reported apart. List a place only for what that place does (the scrub nurse's
+  passing and the count, not the extraction).
 * **Team scenarios set up conditions, never steps.** A scenario can:
   - post a need (an item for a member, with what the team calls it aloud);
   - put a member on a break (`absent`), with a relief colleague from another room (`relief`) — who takes the place of

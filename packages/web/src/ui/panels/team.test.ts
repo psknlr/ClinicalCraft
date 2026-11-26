@@ -4,10 +4,12 @@
  * observing; Ask, Need and Count as the `team` ops the session takes (the count never typed); the stand-in surgeon's
  * call-out, an approval request it raised for its own body, as a card with "No objection" and "Stop" bound to that
  * request's approval response — any other request asked as always —, a Stop followed by the stand-in's "Stopped — tell
- * me what you see." and the learner's "Go on"; the members' own following of the work never shown as a request.
+ * me what you see." and the learner's "Go on"; the members' own following of the work never shown as a request; the
+ * team as it works, the learner's own row in an emergency team at the bedside the team's name for them ("The doctor").
  */
 import { afterEach, describe, expect, it } from "vitest";
 import type { TeamCheckpoint, TeamMessage } from "@clinicalcraft/agent";
+import type { CaseDefinition, FacilityDefinition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { LAP_CHOLE_TEAM } from "../../../../core/src/engine/procedure/__fixtures__/lap-chole-team.js";
 import { THEATRE, theatreCase } from "../../../../world/src/__fixtures__/theatre.js";
@@ -293,6 +295,28 @@ describe("the team as it works, and what is still the learner's to answer", () =
     const operating = teamRows(plain.session.team()!, plain.session.caseDef, plain.session.state, plain.session.facility, worldName);
     expect(operating.find((r) => r.you)).toMatchObject({ name: "you", position: "Operating surgeon" });
     expect(operating.find((r) => r.you)).not.toHaveProperty("standingBy");
+  });
+
+  it("an emergency team at the bedside (no instruments, no count — the built-in stroke case's): the learner's row is the team's name for them, never the operating surgeon", () => {
+    // as acute-ischemic-stroke's team: the ED nurse coordinating at the bedside, the learner the doctor in charge
+    const c = { ...theatreCase(), team: { room: "ed-resus", phases: ["ed"], members: [{ staff: "ed-nurse", duties: ["circulate"] }, { staff: "surgeon", duties: ["surgeon"], name: { en: "the doctor", "zh-CN": "医生" } }], scenarios: [] } } as unknown as CaseDefinition;
+    const facility = { staff: [{ id: "ed-nurse", role: "nurse", position: "ward-nurse", room: "ed-station", name: { en: "Lin Xiao", "zh-CN": "林晓" } }] } as unknown as FacilityDefinition;
+    const member = (id: string, staff: string, duties: string[]) => ({ id, staff, duties, inbox: [], memory: [], relief: false, absent: false });
+    const cp = { format: "clinicalcraft-team@1", autonomy: "auto", surgeon: "learner", state: { members: [member("staff:ed-nurse", "ed-nurse", ["circulate"]), member(PRIMARY_ACTOR, "surgeon", ["surgeon"])], messages: [], tasks: [] } } as unknown as TeamCheckpoint;
+    const rows = (zh: boolean) => teamRows(cp, c, {}, facility, (id) => (id === "staff:ed-nurse" ? (zh ? "林晓" : "Lin Xiao") : null)).map((r) => [r.position, r.name]);
+    setLocale("en");
+    expect(rows(false)).toEqual([
+      ["Ward nurse", "Lin Xiao"],
+      ["The doctor", "you"],
+    ]);
+    setLocale("zh-CN");
+    expect(rows(true)).toEqual([
+      ["病房护士", "林晓"],
+      ["医生", "你"],
+    ]);
+    // without a name of its own the clinician in charge is the surgeon (术者), never the operating surgeon's position
+    const unnamed = { ...c, team: { ...c.team!, members: c.team!.members.map((m) => ({ staff: m.staff, duties: m.duties })) } } as CaseDefinition;
+    expect(teamRows(cp, unnamed, {}, facility, () => null).find((r) => r.you)?.position).toBe(tr("team.surgeon"));
   });
 
   it("an answer is offered only while the stand-in's request is open: passed from the bar, the old request asks nothing more", async () => {
