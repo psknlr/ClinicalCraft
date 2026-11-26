@@ -976,6 +976,24 @@
                         "pick",
                         "dispense"
                       ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "op": {
+                          "type": "string",
+                          "enum": [
+                            "submit",
+                            "prepare",
+                            "pick",
+                            "dispense"
+                          ]
+                        },
+                        "formulation": {
+                          "$ref": "#/definitions/Id"
+                        }
+                      },
+                      "additionalProperties": false
                     }
                   ]
                 },
