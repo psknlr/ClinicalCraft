@@ -49,6 +49,40 @@ describe("offers: the world's verdict on each operation, for one body", () => {
     expect(t.runtime.offers(STAFF.scrub, DEVICE.stapler).find((o) => o.op === "fire")).not.toHaveProperty("fixable");
   });
 
+  it("a thing the actor does not perceive and believes elsewhere, or knows to be missing: refused where it believes it is, as the action bus refuses it — never by its true place or state (audit P1-8, W1)", async () => {
+    // the ED nurse wheels the cubicle's ECG cart to the patient and connects it while the clinician is in the office
+    const w = makeWorld("stemi-inferior-rv", { facility: "general-hospital" });
+    const cart = "eq:cub2-ecg";
+    const nurse = "staff:ed-nurse";
+    expect((await w.act({ actorId: PRIMARY_ACTOR, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+    expect((await w.act({ actorId: nurse, operation: "approach", targetId: cart })).status).toBe("completed");
+    expect((await w.act({ actorId: nurse, operation: "move_to", targetId: cart, goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
+    for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: nurse, operation: op, targetId: cart })).status, op).toBe("completed");
+    const agrees = async (why: RegExp, fixable: boolean) => {
+      const offers = w.runtime.offers(PRIMARY_ACTOR, cart);
+      expect(offers.length).toBeGreaterThan(0);
+      // nothing offered, as `inspect` offers nothing (what it offers depends on where it really is)
+      expect(offers.filter((o) => o.available).map((o) => o.op)).toEqual(w.runtime.inspect(PRIMARY_ACTOR, cart)!.availableActions);
+      expect(offers.filter((o) => o.available)).toEqual([]);
+      for (const o of offers) {
+        expect(o, o.op).toMatchObject({ available: false, code: "NOT_IN_RANGE" });
+        expect(o.reason, o.op).toMatch(why);
+        // nothing of where it truly is, what it is doing or who is using it
+        expect(o.reason, o.op).not.toMatch(/in use|Lin Xiao|Idle|onnected|bedside/u);
+        // the attempt: refused in the same words, with a way there exactly when `offers` says its steps fix it
+        const tried = await w.act({ actorId: PRIMARY_ACTOR, operation: o.op, targetId: cart });
+        expect({ code: tried.errorCode, message: tried.message }, o.op).toEqual({ code: o.code, message: o.reason });
+        expect(!!tried.hint, o.op).toBe(fixable);
+        expect(!!o.fixable, o.op).toBe(fixable);
+      }
+    };
+    // believed in the cubicle, where it is usually kept: refused there — the walk there is the way
+    await agrees(/you believe it is in ED Cubicle 2/u, true);
+    // looked for there and not found: missing — refused with no way to go
+    expect((await w.act({ actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: cart } })).errorCode).toBe("STALE_DESTINATION");
+    await agrees(/You do not know where Cubicle ECG Cart is now/u, false);
+  });
+
   it("is read-only: no trace span, nothing remembered, the world unchanged", () => {
     const w = theatreWorld();
     const snap = JSON.stringify(w.runtime.snapshot());

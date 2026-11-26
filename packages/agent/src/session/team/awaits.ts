@@ -1,7 +1,9 @@
 /**
  * What the stand-in surgeon waits on the learner for (docs/TEAM.md §4.5): one rule for the scheduler — a `team run` in
  * learner mode stops there (`TeamScheduler.awaitsLearner`) — and for a front-end, which shows it as the learner's to do
- * (the web's team panel). Read from the team's own record (`TeamState`), nothing else: pure.
+ * (the web's team panel); and what else said to the learner waits for their answer (`repliesTo`) — information told to
+ * them among it, which waits for their read-back (§4.7: a text front-end's `team run` stops there too, `readBackOwed`).
+ * Read from the team's own record (`TeamState`), nothing else: pure.
  */
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { SurgeonMode, TeamMessage, TeamState, TeamTask } from "./types.js";
@@ -98,7 +100,9 @@ export function owedByLearner(state: Pick<TeamState, "tasks" | "members" | "mess
  * - a request: `readback` — and, about the field, `decline` (they cannot);
  * - a read-back of the learner's own ask or need: `confirm` or `decline`;
  * - the confirmation of their read-back of a request about the field: theirs to do, then `report`;
- * - an escalation: `report` — understood.
+ * - an escalation: `report` — understood;
+ * - information told to them (a report carrying `about.info`, docs/TEAM.md §4.7): `readback`, as said — only then is it
+ *   recorded in the case (the browser's "Read back").
  * What the stand-in says is about its open request: a request it gave up, or saw done in the field, is over — and its
  * latest line there is the one to answer (a request said again stands for the first).
  */
@@ -120,5 +124,24 @@ export function repliesTo(state: Pick<TeamState, "tasks" | "members" | "messages
     const readBack = state.messages.some((x) => x.thread === m.thread && x.from === PRIMARY_ACTOR && x.kind === "readback");
     return asked && readBack ? ["report"] : [];
   }
-  return m.kind === "escalate" ? ["report"] : [];
+  if (m.kind === "escalate") return ["report"];
+  // information told to the learner (docs/TEAM.md §4.7): read back, as said — only then is it recorded in the case
+  return m.kind === "report" && m.about.info ? ["readback"] : [];
+}
+
+/**
+ * Information told to the learner's own member that still waits for their read-back while they play their part (learner
+ * mode; observing, the simulated surgeon reads it back): the latest report of the fact on an information task told to
+ * them and not yet read back, confirmed or escalated (`accepted`), not answered (docs/TEAM.md §4.7: only their read-back
+ * records it in the case). A text front-end's `team run` stops there and does not start while it is owed (`runHeld`):
+ * a round would only let the colleague's wait run out (escalated `no-readback`). Null: nothing waits for it.
+ */
+export function readBackOwed(state: Pick<TeamState, "tasks" | "messages">, surgeon: SurgeonMode): TeamMessage | null {
+  if (surgeon !== "learner") return null;
+  for (const t of state.tasks) {
+    if (t.kind !== "inform" || t.status !== "accepted") continue;
+    const told = [...state.messages].reverse().find((m) => m.thread === t.thread && m.to === PRIMARY_ACTOR && m.kind === "report" && !!m.about.info);
+    if (told && !answered(state, told)) return told;
+  }
+  return null;
 }

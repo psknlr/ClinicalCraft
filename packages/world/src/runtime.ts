@@ -198,7 +198,14 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       const actor = store.actor(actorId);
       const resolved = actions.resolve(id);
       if (!actor || !resolved) return [];
+      // the walk to where the actor believes the thing is — the action bus's hint on a refusal there (planned once)
+      let wayThere: boolean | undefined;
+      const believedReachable = () => (wayThere ??= !!actions.planAs(actor, { kind: "interact", id: resolved }).plan?.ok);
       return rules.spec(resolved).operations.map((op) => {
+        // the action bus's first check: a movable thing the actor does not perceive and believes elsewhere — or knows to
+        // be missing — is refused where the actor believes it is, never by its true place or state (audit P1-8, W1)
+        const unseen = perception.unperceived(actor, resolved, op);
+        if (unseen) return { op: op.id, available: false, code: "NOT_IN_RANGE" as const, reason: unseen.message, ...(unseen.belief.place && believedReachable() ? { fixable: true as const } : {}) };
         const fail = rules.precheck(resolved, op, actor);
         // a refusal with a way to fix it (the action bus's hint on the attempt): the actor's own steps fix it
         return fail ? { op: op.id, available: false, code: fail.code, reason: fail.message, ...(fail.goal ? { fixable: true as const } : {}) } : { op: op.id, available: true };

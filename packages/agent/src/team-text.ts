@@ -154,12 +154,16 @@ function openLine(ctx: TeamTextContext, cp: TeamCheckpoint, m: TeamMessage): Ope
   return { id: m.id, from: bodyName(ctx, m.from), kind: m.kind, text: t(m.text, ctx.locale), replies: repliesTo(cp.state, cp.surgeon, m) };
 }
 
-/** How to give the replies that fit, first the likeliest ("/team reply msg-3 readback (or decline)"). */
+/**
+ * How to give the replies that fit, first the likeliest ("/team reply msg-3 readback (or decline)"); the confirmation of
+ * the learner's read-back of a request about the field is theirs to do first, then to report ("do it, then report") —
+ * any other line is answered (an escalation: understood).
+ */
 function answerText(locale: string, words: AnswerWords, line: OpenLine): string {
   const [first, ...rest] = line.replies.map((k) => words.reply(line.id, k));
   if (!first) return "";
   const how = rest.length ? rt(locale, "teamText.or", { first, rest: rest.join(", ") }) : first;
-  return rt(locale, line.replies.length === 1 && line.replies[0] === "report" ? "teamText.answerReport" : "teamText.answer", { how });
+  return rt(locale, line.kind === "confirm" && line.replies.length === 1 && line.replies[0] === "report" ? "teamText.answerReport" : "teamText.answer", { how });
 }
 
 /**

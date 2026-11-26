@@ -1273,12 +1273,15 @@ export interface WorldRuntime {
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
   inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] }) | null;
   /**
-   * What the world says now to each operation an entity offers, for this actor (§8.2): the action bus's own `precheck` —
+   * What the world says now to each operation an entity offers, for this actor (§8.2): the action bus's own checks, in
+   * its order — first where the actor believes a movable thing it does not perceive is (believed elsewhere, or known to
+   * be missing: refused there, `NOT_IN_RANGE`, never by its true place or state — audit P1-8, W1), then its `precheck` —
    * role and control, availability, reservation and busy, held by another, record binding, state, preconditions; never
-   * where the actor stands, which a short walk fixes — `available` (= `availableActions`), or the refusal's code and
-   * message, and `fixable` when the refusal carries a way the actor can take (a place to go, then what to do there: the
-   * hint the action bus returns on the attempt — fetch the cart to the patient, wash at the sink, switch the evacuator
-   * on). Read-only: no trace span, nothing remembered (`inspect` also judges where the actor stands and records the
+   * where the actor stands, which a short walk fixes — `available` (= `availableActions` for a thing in view, and none
+   * for one believed elsewhere or missing), or the refusal's code and message, and `fixable` when the refusal carries a
+   * way the actor can take (a place to go, then what to do there: the hint the action bus returns on the attempt —
+   * fetch the cart to the patient, wash at the sink, switch the evacuator on, walk to where the thing is believed to
+   * be). Read-only: no trace span, nothing remembered (`inspect` also judges where the actor stands and records the
    * look). A front-end greys out what is not available and not fixable, and leaves a fixable one to ask (its hint comes
    * back: "Go there"; docs/EMBODIED.md §8.2). Empty for an unknown id.
    */

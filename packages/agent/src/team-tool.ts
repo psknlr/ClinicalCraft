@@ -8,7 +8,7 @@
  */
 import type { AgentEvent, Op } from "./protocol.js";
 import { rt } from "./session/i18n.js";
-import { owedByLearner, type ReplyKind } from "./session/team/awaits.js";
+import { owedByLearner, readBackOwed, type ReplyKind } from "./session/team/awaits.js";
 import type { TeamCheckpoint } from "./session/team/types.js";
 import { defaultReplyTarget, noReplyTarget, saidLines, teamLines, type AnswerWords, type TeamStatusReport, type TeamTextContext } from "./team-text.js";
 import type { ToolDefinition, ToolOutput } from "./tools/types.js";
@@ -103,12 +103,12 @@ export function teamToolCall(raw: unknown, cp: TeamCheckpoint | null, locale: st
 
 /**
  * Whether a `run` waits for the learner instead (agent `owedByLearner`: a line of the stand-in's said to them and not
- * answered, or the count while it is theirs to say): a text front-end's run does not start then — a round would only let
- * the stand-in's wait run on —, it shows what waits. One rule for the `/team` command, MCP's `team` tool and the world
- * bridge's.
+ * answered, or the count while it is theirs to say; `readBackOwed`: information told to them that waits for their
+ * read-back, docs/TEAM.md §4.7): a text front-end's run does not start then — a round would only let the wait for them
+ * run on —, it shows what waits. One rule for the `/team` command, MCP's `team` tool and the world bridge's.
  */
 export function runHeld(op: Pick<TeamOp, "action">, cp: TeamCheckpoint | null): boolean {
-  return op.action === "run" && cp !== null && owedByLearner(cp.state, cp.surgeon);
+  return op.action === "run" && cp !== null && (owedByLearner(cp.state, cp.surgeon) || readBackOwed(cp.state, cp.surgeon) !== null);
 }
 
 /** How the tool tells the learner to answer: as a call of this tool. */

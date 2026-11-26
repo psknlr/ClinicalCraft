@@ -53,7 +53,7 @@ import { scopeActorOf } from "../../tools/scope-actor.js";
 import type { SurgicalCount } from "../count.js";
 import { afterFieldWalk, afterOperate, followStep } from "./assistant.js";
 import { askText } from "./asks.js";
-import { learnerAwaited } from "./awaits.js";
+import { learnerAwaited, readBackOwed } from "./awaits.js";
 import { both, phrase, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterStandIn, type StandInOutcome } from "./operator.js";
 import { planOf } from "./operator-plan.js";
@@ -315,8 +315,9 @@ export class TeamScheduler {
    * Run rounds until the team is idle (no message said, no act done in a round) — `untilIdle`, which also ends after a
    * round in which the stand-in surgeon took a step of the operation: the operation goes on one step at a time, with the
    * team's clock and each act of the learner, never in one burst — or until every need is settled, or `maxRounds`. A run
-   * until settled ends too as soon as the stand-in waits on the learner playing their place (`awaitsLearner`): a run
-   * never plays the learner's part, nor lets the stand-in's wait for them run out. Returns the rounds run.
+   * until settled ends too as soon as the stand-in waits on the learner playing their place (`awaitsLearner`), or
+   * information told to the learner waits for their read-back (`readBackOwed`, §4.7): a run never plays the learner's
+   * part, nor lets a colleague's wait for them run out. Returns the rounds run.
    */
   async run(signal: AbortSignal, opts: { maxRounds?: number; untilIdle?: boolean } = {}): Promise<number> {
     if (!this.active()) return 0;
@@ -328,7 +329,7 @@ export class TeamScheduler {
         n++;
         break;
       }
-      if (opts.untilIdle === false && (this.settled() || this.awaitsLearner())) {
+      if (opts.untilIdle === false && (this.settled() || this.awaitsLearner() || readBackOwed(this.state, this.surgeon) !== null)) {
         n++;
         break;
       }

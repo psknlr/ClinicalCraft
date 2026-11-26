@@ -384,7 +384,8 @@ export type DeviceOpVerdict = ReturnType<WorldRuntime["offers"]>[number];
 
 /**
  * The world's verdict on each operation of a device for the learner's body (`WorldRuntime.offers`: the action bus's own
- * check — role and control, availability, state, preconditions —, never where the learner stands), by operation id.
+ * checks — where the learner believes a device out of sight is, never its true place or state; role and control,
+ * availability, state, preconditions —, never where the learner stands), by operation id.
  * Empty without a world: nothing is greyed out, the world decides on the click.
  */
 export function deviceOpOffers(world: Pick<WorldRuntime, "offers"> | null | undefined, entityId: string): Map<string, DeviceOpVerdict> {
