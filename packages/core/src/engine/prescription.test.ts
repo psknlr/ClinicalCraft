@@ -124,6 +124,11 @@ describe("a prescription's versions", () => {
     expect(s.prescriptions!.refusals[0]!.reason).toContain("allergy history");
     expect(status(s)).toBe("none");
     expect(evaluate(CASE, s, { prescription: { id: "discharge", refused: "submit" } })).toBe(true);
+    // which step, for which formulation
+    expect(evaluate(CASE, s, { prescription: { id: "discharge", refused: { op: "submit", formulation: "loratadine-course" } } })).toBe(true);
+    expect(evaluate(CASE, s, { prescription: { id: "discharge", refused: { formulation: "loratadine-course" } } })).toBe(true);
+    expect(evaluate(CASE, s, { prescription: { id: "discharge", refused: { formulation: "cetirizine-course" } } })).toBe(false);
+    expect(evaluate(CASE, s, { prescription: { id: "discharge", refused: { op: "dispense", formulation: "loratadine-course" } } })).toBe(false);
     expect(evaluate(CASE, s, { prescription: { id: "discharge" } })).toBe(false);
   });
 
@@ -263,8 +268,11 @@ describe("the supply", () => {
     const unreviewed = run([...READY, sign("loratadine-course"), dispense("d1")]);
     expect(unreviewed.prescriptions!.refusals).toMatchObject([{ op: "dispense", version: 1, code: "not-reviewed" }]);
     const queried = run([...READY, sign("cetirizine-course"), review(1), dispense("d1")]);
-    expect(queried.prescriptions!.refusals).toMatchObject([{ op: "dispense", version: 1, code: "queried" }]);
+    expect(queried.prescriptions!.refusals).toMatchObject([{ op: "dispense", version: 1, formulation: "cetirizine-course", code: "queried" }]);
     expect(evaluate(CASE, queried, { prescription: { id: "discharge", refused: "dispense" } })).toBe(true);
+    // a refused attempt on a version names its formulation
+    expect(evaluate(CASE, queried, { prescription: { id: "discharge", refused: { op: "dispense", formulation: "cetirizine-course" } } })).toBe(true);
+    expect(evaluate(CASE, queried, { prescription: { id: "discharge", refused: { op: "dispense", formulation: "loratadine-course" } } })).toBe(false);
     expect(evaluate(CASE, queried, { prescription: { id: "discharge", refused: "submit" } })).toBe(false);
     expect(evaluate(CASE, queried, { prescription: { id: "discharge", dispensed: true } })).toBe(false);
   });
@@ -474,12 +482,14 @@ describe("conditions on the prescription record", () => {
         rxJson((_p, json) => {
           json.rubric.push({ id: "r1", domain: "management", text: L("x", "x"), met: { prescription: { id: "nope" } } });
           json.rubric.push({ id: "r2", domain: "management", text: L("x", "x"), met: { prescription: { id: "discharge", dispensed: "no-such-course" } } });
+          json.rubric.push({ id: "r3", domain: "management", text: L("x", "x"), met: { prescription: { id: "discharge", refused: { op: "submit", formulation: "no-such-course" } } } });
         }),
       ),
     );
     const paths = issues.filter((i) => i.severity === "error").map((i) => i.path);
     expect(paths.some((p) => p.endsWith("met.prescription.id"))).toBe(true);
     expect(paths.some((p) => p.endsWith("met.prescription.dispensed"))).toBe(true);
+    expect(paths.some((p) => p.endsWith("met.prescription.refused"))).toBe(true);
   });
 
   it("a prescription condition in a case without prescriptions can never hold", () => {

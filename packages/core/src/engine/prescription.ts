@@ -191,7 +191,9 @@ export function applyPrescription(c: CaseDefinition, s: SessionState, op: Prescr
   const current = versions.findLast((v) => v.supersededBy == null);
   const version = (n: number) => versions.find((v) => v.n === n);
   const refuse = (what: Omit<PrescriptionRefusal, "prescription" | "by" | "at" | "seq">): PrescriptionResult => {
-    const refusal: PrescriptionRefusal = { prescription: def.id, ...what, by: op.by, at, seq };
+    // an attempt on a version names the version's formulation too (`refused: {formulation}` reads it)
+    const formulation = what.formulation ?? (what.version != null ? version(what.version)?.formulation : undefined);
+    const refusal: PrescriptionRefusal = { prescription: def.id, ...what, ...(formulation != null ? { formulation } : {}), by: op.by, at, seq };
     r.refusals.push(refusal);
     return { ok: true, record: r, changed: true, refused: refusal, ...(what.version != null ? { version: what.version } : {}) };
   };
@@ -425,7 +427,13 @@ export function evaluatePrescription(c: CaseDefinition, s: SessionState, p: Pres
     const acknowledged = versions.some((v) => v.acknowledged != null && v.reviews.some((x) => x.findings.length > 0 && x.seq < v.acknowledged!.seq));
     if (p.acknowledged != null && acknowledged !== p.acknowledged) return false;
     if (p.refused != null) {
-      const held = typeof p.refused === "boolean" ? refusals.length > 0 === p.refused : refusals.some((x) => x.op === p.refused);
+      const want = p.refused;
+      const held =
+        typeof want === "boolean"
+          ? refusals.length > 0 === want
+          : typeof want === "string"
+            ? refusals.some((x) => x.op === want)
+            : refusals.some((x) => (want.op == null || x.op === want.op) && (want.formulation == null || x.formulation === want.formulation));
       if (!held) return false;
     }
     if (p.discrepancy != null) {

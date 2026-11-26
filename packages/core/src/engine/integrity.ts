@@ -791,12 +791,13 @@ function checkPrescriptionRef(c: CaseDefinition, p: PrescriptionPredicate, path:
   const def = p.id != null ? defs.find((d) => d.id === p.id) : undefined;
   if (p.id != null && !def) return [err([...path, "id"], `unknown prescription "${p.id}"`)];
   const issues: Issue[] = [];
-  const formulation = (key: "current" | "signed" | "dispensed", id: string) => {
+  const formulation = (key: "current" | "signed" | "dispensed" | "refused", id: string) => {
     if (!(def ? [def] : defs).some((d) => d.formulations.some((f) => f.id === id))) issues.push(err([...path, key], `unknown formulation "${id}"${def ? ` of prescription "${def.id}"` : ""}`));
   };
   if (p.current != null) formulation("current", p.current);
   if (p.signed != null) formulation("signed", p.signed);
   if (typeof p.dispensed === "string") formulation("dispensed", p.dispensed);
+  if (typeof p.refused === "object" && p.refused.formulation != null) formulation("refused", p.refused.formulation);
   if (p.versions && p.versions.gte != null && p.versions.lte != null && p.versions.gte > p.versions.lte) issues.push(err([...path, "versions"], `empty range (gte ${p.versions.gte} > lte ${p.versions.lte}), so this can never become true`));
   return issues;
 }

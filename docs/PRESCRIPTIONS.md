@@ -211,7 +211,7 @@ case's prescriptions must satisfy them all.
 | `versions {gte?, lte?}` | how many versions were signed |
 | `queried` | a review raised a query (ever — the credit stays) |
 | `acknowledged` | the prescriber read a review that raised one |
-| `refused` | an attempt was refused and recorded (`true`: any; or the step: `submit`, `prepare`, `pick`, `dispense`) |
+| `refused` | an attempt was refused and recorded (`true`: any; or the step: `submit`, `prepare`, `pick`, `dispense`; or `{op?, formulation?}`: an attempt at that step for that formulation — `{"op": "submit", "formulation": "v3"}`, signing version 3's formulation was refused) |
 | `discrepancy` | a supply differed from its version (`true`: any; or the kind: `identity`, `omitted`, `label`, `expired`, `label-unchecked`) |
 | `labelChecked` | the latest supply's label was (not) checked |
 | `supplyRead` | the prescriber has (not) read the record of the latest supply — neither holds before anything is supplied |

@@ -193,6 +193,8 @@ export type CountPredicate = z.infer<typeof CountPredicateSchema>;
 /** A prescription's status (docs/PRESCRIPTIONS.md): its current version's (`none`: nothing signed yet). */
 export const PRESCRIPTION_STATUSES = ["none", "submitted", "queried", "confirmed", "preparing", "dispensed"] as const;
 export const PrescriptionStatusSchema = z.enum(PRESCRIPTION_STATUSES);
+/** The steps of a prescription an attempt can be refused at (a recorded refusal's `op`). */
+export const PRESCRIPTION_REFUSAL_STEPS = ["submit", "prepare", "pick", "dispense"] as const;
 export type PrescriptionStatus = z.infer<typeof PrescriptionStatusSchema>;
 
 /**
@@ -202,7 +204,8 @@ export type PrescriptionStatus = z.infer<typeof PrescriptionStatusSchema>;
  * `signed` / `dispensed`: a version of this formulation was signed / supplied at any time (`dispensed: true`: any
  * formulation); `versions`: how many versions were signed; `queried`: a review raised a query (ever — the credit
  * stays); `acknowledged`: the prescriber read a review that raised one; `refused`: an attempt was refused and recorded
- * (`true`: any; or which step); `discrepancy`: a supply differed from its version (`true`: any; or which kind);
+ * (`true`: any; or which step; or `{op?, formulation?}`: an attempt at that step, for that formulation — "signing the
+ * heat-clearing formula was refused"); `discrepancy`: a supply differed from its version (`true`: any; or which kind);
  * `labelChecked`: the latest supply's label was checked; `supplyRead`: the prescriber has read the record of the latest
  * supply (neither value holds before anything was supplied).
  */
@@ -216,7 +219,13 @@ export const PrescriptionPredicateSchema = z
     versions: z.object({ gte: z.number().int().min(0).optional(), lte: z.number().int().min(0).optional() }).strict().optional(),
     queried: z.boolean().optional(),
     acknowledged: z.boolean().optional(),
-    refused: z.union([z.boolean(), z.enum(["submit", "prepare", "pick", "dispense"])]).optional(),
+    refused: z
+      .union([
+        z.boolean(),
+        z.enum(PRESCRIPTION_REFUSAL_STEPS),
+        z.object({ op: z.enum(PRESCRIPTION_REFUSAL_STEPS).optional(), formulation: IdSchema.optional() }).strict(),
+      ])
+      .optional(),
     discrepancy: z.union([z.boolean(), z.enum(["identity", "omitted", "label", "expired", "label-unchecked"])]).optional(),
     labelChecked: z.boolean().optional(),
     supplyRead: z.boolean().optional(),
