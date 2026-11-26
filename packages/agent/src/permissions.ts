@@ -348,6 +348,7 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   prescription: "prescribe",
   anaesthesia: null,
   "alarm-response": null,
+  "staff-task": null,
   "procedure-supply": null,
 };
 

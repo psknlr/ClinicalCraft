@@ -104,7 +104,7 @@ export function walkthroughEndText(c: CaseDefinition, state: SessionState, misse
           ? [formatRule(step.tool, actionSpecifier(step.action))]
           : // a colleague's work that never came: named as theirs
             step.kind === "await" && !stepAlreadySatisfied(step, state)
-            ? [rt(locale, "rx.await.missed", { who: rt(locale, "rx.notify.title"), what: step.what })]
+            ? [step.action.type === "staff-task" ? rt(locale, "task.await.missed", { what: step.what }) : rt(locale, "rx.await.missed", { who: rt(locale, "rx.notify.title"), what: step.what })]
             : [],
       ),
     ),

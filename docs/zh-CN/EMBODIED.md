@@ -754,6 +754,11 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   `available` 和原因（包括空间原因）。
 * 职员的移动是确定性的路径跟随（不会每帧调用大模型）。
 
+**同事的常规任务**（docs/TEAM.md §5.1）：病例交给某位同事的任务（`case.staffTasks`）到时由其本人用自己的身体完成——把能
+提供某项能力的推车推到患者身边（`fetch_equipment` 委派），或走到能提供某项能力的设备前操作它（其行为中的一项操作，经
+动作总线完成，站位按设备自身的要求）——完成后才记录为已完成。带临床效果的操作或会占用设备的操作永远不是同事的常规任务；
+无人可做、没有设备或到不了，都会记录为该任务受阻，只说一次，每一轮再试。
+
 **调剂设备**（docs/PRESCRIPTIONS.md §5）：药品柜、中药柜或配方颗粒调配机的操作带有指明调剂步骤的临床效果——
 `clinical: {tool: "dispense", select: "item", item: "prepare" | "pick" | "check-label" | "dispense"}`。操作的参数
 （`prescription`、`version`、`line`、`product`、`request_key`）原样传入，发药记录写明所用设备；引擎拒绝的步骤不改变

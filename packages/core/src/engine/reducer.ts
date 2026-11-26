@@ -30,6 +30,7 @@ import { applyPrescription } from "./prescription.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
+import { applyStaffTask } from "./staff-task.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -475,6 +476,16 @@ function onProcedureSupply(ctx: Ctx, a: Action<"procedure-supply">): Outcome {
   return accepted();
 }
 
+/** A step of a standing task of the staff (`engine/staff-task.ts`); a repeated one changes nothing. */
+function onStaffTask(ctx: Ctx, a: Action<"staff-task">): Outcome {
+  const r = applyStaffTask(ctx.c, ctx.s, a.task);
+  if (!r.ok) return rejected(r.code, r.message);
+  if (!r.changed) return { kind: "unchanged" };
+  ctx.s.staffTasks = r.tasks;
+  ctx.events.push({ type: "staff-task.recorded", op: a.task.op, task: a.task.task, by: a.task.by, ...(a.task.op === "blocked" ? { reason: a.task.reason } : {}) });
+  return accepted();
+}
+
 /** A step of a staff member's response to a critical alarm (`engine/alarm.ts`); an unchanged one changes nothing. */
 function onAlarmResponse(ctx: Ctx, a: Action<"alarm-response">): Outcome {
   const r = applyAlarm(ctx.s, a.alarm);
@@ -554,6 +565,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onAnaesthesia(ctx, a);
     case "alarm-response":
       return onAlarmResponse(ctx, a);
+    case "staff-task":
+      return onStaffTask(ctx, a);
     case "procedure-supply":
       return onProcedureSupply(ctx, a);
     case "finish":

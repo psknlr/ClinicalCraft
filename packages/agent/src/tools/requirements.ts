@@ -14,6 +14,8 @@ import {
   formulationOf,
   prescriptionDef,
   prescriptionStatus,
+  staffTaskDef,
+  staffTaskRecord,
   unreadVersion,
   procedureStateOf,
   currentObjective,
@@ -24,6 +26,7 @@ import {
   t,
   type CaseDefinition,
   type ClinicalAction,
+  type FacilityDefinition,
   type Condition,
   type CountPredicate,
   type PrescriptionPredicate,
@@ -119,6 +122,20 @@ function prescriptionNext(c: CaseDefinition, s: SessionState, p: PrescriptionPre
   return def.dispensedBy === "staff" && (status === "submitted" || status === "confirmed" || status === "preparing") ? rt(L, "next.awaitDispensary") : null;
 }
 
+/**
+ * The staff's standing tasks for `case_status` (docs/TEAM.md §5.1): each one taken up so far — who has it, where it
+ * stands, and why it cannot go on when it is blocked. A task not yet due is not listed.
+ */
+export function staffTaskLines(c: CaseDefinition, s: SessionState, L: string, facility?: FacilityDefinition | null): string[] {
+  const taken = (c.staffTasks ?? []).flatMap((task) => {
+    const r = staffTaskRecord(s, task.id);
+    if (!r) return [];
+    const staff = facility?.staff.find((x) => x.id === r.by);
+    return [rt(L, "task.line", { status: rt(L, `task.status.${r.status}` as RuntimeKey), name: t(task.name, L), who: staff ? t(staff.name, L) : r.by, reason: r.status === "blocked" && r.reason ? ` (${r.reason})` : "" })];
+  });
+  return taken.length ? [rt(L, "task.header"), ...taken] : [];
+}
+
 /** The count's lines for `case_status` (docs/TEAM.md §4.3): its status, what is open, escalations, unsafe progression. */
 export function countLines(c: CaseDefinition, s: SessionState, L: string): string[] {
   if (!c.team?.count) return [];
@@ -164,6 +181,10 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   if ("procedure" in cond) return rt(L, "req.procedure", { what: procedureWords(cond.procedure, L) });
   if ("count" in cond) return rt(L, "req.count", { what: countWords(cond.count, L) });
   if ("prescription" in cond) return prescriptionWords(c, cond.prescription, L);
+  if ("staffTask" in cond) {
+    const name = t(staffTaskDef(c, cond.staffTask)?.name ?? cond.staffTask, L);
+    return cond.status && cond.status !== "done" ? rt(L, "req.staffTask.status", { name, status: cond.status }) : rt(L, "req.staffTask", { name });
+  }
   return rt(L, "req.other", { what: Object.keys(cond)[0] ?? "?" });
 }
 
@@ -188,6 +209,8 @@ export function nextAction(c: CaseDefinition, s: SessionState, r: Requirement, L
     return step ? rt(L, "next.operate", { op: step }) : rt(L, "next.observe");
   }
   if ("prescription" in cond) return prescriptionNext(c, s, cond.prescription, L);
+  // a colleague's standing task: nothing of the learner's to do
+  if ("staffTask" in cond) return rt(L, "next.awaitColleague");
   return null;
 }
 

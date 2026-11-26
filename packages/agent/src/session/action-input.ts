@@ -60,6 +60,7 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
     }
     case "anaesthesia":
     case "alarm-response":
+    case "staff-task":
     case "procedure-supply":
       return {};
     default: {
@@ -151,6 +152,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "prescription":
     case "anaesthesia":
     case "alarm-response":
+    case "staff-task":
     case "procedure-supply":
       return { ok: true, action };
     default: {

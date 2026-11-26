@@ -1866,6 +1866,26 @@
         {
           "type": "object",
           "properties": {
+            "staffTask": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "started",
+                "blocked",
+                "done"
+              ]
+            }
+          },
+          "required": [
+            "staffTask"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "prescription": {
               "type": "object",
               "properties": {

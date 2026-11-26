@@ -141,6 +141,8 @@ function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
       return ids.vitals.has(ref.id) ? [] : [warn(ref.path, `vital "${ref.id}" is not part of the physiology baseline`)];
     case "investigation":
       return checkInvestigationRef(c, ids, ref);
+    case "staff-task":
+      return (c.staffTasks ?? []).some((t) => t.id === ref.id) ? [] : missing("staff task");
   }
 }
 
@@ -510,6 +512,8 @@ function checkSolutionAction(c: CaseDefinition, ids: Ids, a: ClinicalAction, pat
       }
       return [];
     }
+    case "staff-task":
+      return (c.staffTasks ?? []).some((t) => t.id === a.task.task) ? [] : unknown("task.task", "staff task", a.task.task);
     default:
       return [];
   }
@@ -717,8 +721,21 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkTeamDefinition(c),
     ...checkStudies(c, ids),
     ...checkPrescriptions(c, ids),
+    ...checkStaffTasks(c, ids),
     ...checkRecordAvailability(c),
   ];
+}
+
+/** The staff's standing tasks (docs/TEAM.md §5.1): unique ids, conditions on the case's own ids, something to do or say. */
+function checkStaffTasks(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [...duplicates(c.staffTasks ?? [], ["staffTasks"], "staff task")];
+  (c.staffTasks ?? []).forEach((task, i) => {
+    issues.push(...checkCondition(c, ids, task.when, ["staffTasks", i, "when"]));
+    if (!task.steps.length && !task.say) issues.push(warn(["staffTasks", i], `staff task "${task.id}" has no step and nothing to say: it changes nothing`));
+    // a task that waits for itself can never fall due
+    if (task.when && conditionRefs(task.when).some((r) => r.kind === "staff-task" && r.id === task.id)) issues.push(err(["staffTasks", i, "when"], `staff task "${task.id}" waits for itself`));
+  });
+  return issues;
 }
 
 /**

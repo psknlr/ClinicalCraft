@@ -16,6 +16,7 @@
  */
 import { SessionStudies } from "./studies.js";
 import { SessionPrescriptions } from "./prescriptions.js";
+import { SessionStaffTasks } from "./staff-tasks.js";
 import { StaffAutonomy } from "./staff-autonomy.js";
 import { syncProcedureSupply } from "./procedure-supply.js";
 import { actionIdOf } from "./action-ids.js";
@@ -113,6 +114,8 @@ export class SessionKernel {
   readonly studies: SessionStudies;
   /** Prescriptions: the dispensary's review and supply of what the prescriber signs (docs/PRESCRIPTIONS.md). */
   readonly prescriptions: SessionPrescriptions;
+  /** The staff's standing tasks, carried out on their own (docs/TEAM.md §5.1). */
+  readonly staffTasks: SessionStaffTasks;
   /** What staff do on their own, round by round (`staff_step`, and after every act). */
   readonly staff: StaffAutonomy;
 
@@ -192,6 +195,7 @@ export class SessionKernel {
     this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
     this.studies = new SessionStudies(this);
     this.prescriptions = new SessionPrescriptions(this);
+    this.staffTasks = new SessionStaffTasks(this);
     this.staff = new StaffAutonomy(this);
     if (opts.reportWriter) this.studies.writer = opts.reportWriter;
     if (opts.reportWriterTimeoutMs != null) this.studies.writerTimeoutMs = opts.reportWriterTimeoutMs;

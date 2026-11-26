@@ -192,6 +192,11 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     the capabilities of the dispensing device (`requires`) and who works it
     (`dispensedBy`). Unknown products, formulations and condition ids are
     integrity errors.
+  * `staffTasks[]` — optional, default `[]`; **standing tasks of the staff**
+    (`schema/staff-task.ts`; contract: docs/TEAM.md §5.1): what a colleague
+    of the facility (`staff`: an id or a role) does on their own once `when`
+    holds — `fetch` a cart that provides a capability to the patient's side,
+    `operate` a device that provides one — and what they say when it is done.
   * `orderMatching.warnings[].unless` — `Condition`, optional; the warning
     no longer applies (is not returned by `orderWarnings`) while it holds on
     the session as the order is placed.
@@ -228,7 +233,8 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`, `procedure`, `prescription` (a predicate on the
+  `elapsed`, `hints`, `procedure`, `staffTask` (a colleague's standing task is
+  done — or `status` `started` / `blocked`), `prescription` (a predicate on the
   prescription record — status, the formulation current / signed / dispensed,
   queried, acknowledged, refused, discrepancy, label checked, supply read:
   docs/PRESCRIPTIONS.md §6). `intervened` takes `valid`: `true` counts only
@@ -342,6 +348,12 @@ toldFinding(c, s, finding): { finding, abnormal, media, branch }
 toldResult(c, s, investigationId, phase): { result, branch } | null   // the recorded branch laid over the result's own fields (no `branches`)
 historyAnswers(item): LocalizedText[]; examFindings(finding)   // every text an item can show (a grounding check knows them all)
 toldKey.history(id) / .exam(id) / .result(investigationId, phase)   // keys of `SessionState.told`
+
+// standing tasks of the staff (staff-task.ts; docs/TEAM.md §5.1)
+applyStaffTask(c, s, op): StaffTaskResult               // pure: taken up (only once due), blocked with its reason, done; a repeat changes nothing
+dueStaffTasks(c, s): StaffTask[]                        // due and not done: taken up already, or `when` holds now (case order)
+staffTaskDef(c, id); staffTaskRecord(s, id); evaluateStaffTask(s, id, status = "done")
+staffTaskFacilityIssues(c, facility, catalogs): Issue[] // the staff, carts and device operations a facility lacks for the case's tasks
 
 // prescriptions (prescription.ts; docs/PRESCRIPTIONS.md)
 applyPrescription(c, s, op): PrescriptionResult         // pure: the new record · `changed: false` (a repeated request) · `refused` (recorded, nothing else changed) · or why the request itself is wrong
@@ -473,6 +485,10 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   **No**: a missing result cannot be read; the UI shows "no record" from
   `resultFor` before ordering). Adds key to `seen`; a result with `branches`
   records the one read (`told["result:<id>@<phase>"]`, `result.read.branch`).
+* `staff-task` — a step of a standing task (`applyStaffTask`; docs/TEAM.md
+  §5.1): `start` (only once its `when` holds), `blocked {reason}` (the same
+  reason again is unchanged), `done`; a done task is not taken up again
+  (`invalid`). Emits `staff-task.recorded`.
 * `prescription` — one op of the prescription record (`applyPrescription`;
   docs/PRESCRIPTIONS.md §4): `submit` (the next version, idempotent by key),
   `review` (the engine computes the findings), `acknowledge`, `prepare`,

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
+import { StaffTaskOpSchema, type StaffTaskOp, type StaffTaskRecord } from "./staff-task.js";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { PrescriptionOpSchema, type PrescriptionOp, type PrescriptionRecord, type PrescriptionRefusal } from "./prescription.js";
@@ -118,6 +119,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("procedure-supply"), supply: z.object({ image: z.boolean(), gas: z.boolean(), source: z.string().max(200).optional() }).strict(), ...base }).strict(),
   /** A step of a staff member's response to a critical alarm (`AlarmResponseOpSchema`; docs/TEAM.md §5). */
   z.object({ type: z.literal("alarm-response"), alarm: AlarmResponseOpSchema, ...base }).strict(),
+  /** A step of a standing task of the staff (`StaffTaskOpSchema`; docs/TEAM.md §5.1): taken up, blocked, done. */
+  z.object({ type: z.literal("staff-task"), task: StaffTaskOpSchema, ...base }).strict(),
   /** The surgical count's record (`CountOpSchema`; cases whose team keeps a count). */
   z.object({ type: z.literal("count"), count: CountOpSchema, ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
@@ -269,6 +272,8 @@ export interface SessionState {
   anaesthesia?: AnaesthesiaResponsibility;
   /** Critical alarms and the responses to them (docs/TEAM.md §5), one episode per alarm. */
   alarms?: AlarmEpisode[];
+  /** The staff's standing tasks taken up so far (docs/TEAM.md §5.1), one record per task. */
+  staffTasks?: StaffTaskRecord[];
   /**
    * What the operation's equipment supplies, recorded apart from the operation (`procedure-supply`): a tower failing
    * before the Time Out is an equipment fault, never the start of the operation. The operation takes it over when it
@@ -347,6 +352,8 @@ export type DomainEvent =
   | { type: "procedure.supply"; image: boolean; gas: boolean; source?: string; deflated?: true }
   /** An alarm response step (`id`: the episode). */
   | { type: "alarm.response"; op: AlarmResponseOp["op"]; id: string; vital: string; by?: string; reason?: string }
+  /** A step of a standing task of the staff: taken up, blocked (with why), done. */
+  | { type: "staff-task.recorded"; op: StaffTaskOp["op"]; task: string; by: string; reason?: string }
   /** Closure while the count was not settled (`CountUnsafe`): recorded for the debrief. */
   | { type: "count.unsafe"; what: "closure"; status: CountStatus; missing: string[]; unexpected: string[] }
   /**

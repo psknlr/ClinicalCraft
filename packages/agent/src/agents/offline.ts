@@ -22,6 +22,8 @@ import {
   openPreparation,
   orderStatus,
   prescriptionDef,
+  staffTaskDef,
+  staffTaskRecord,
   prescriptionVersions,
   reduce,
   resultKey,
@@ -374,6 +376,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "study":
     case "anaesthesia":
     case "alarm-response":
+    case "staff-task":
     case "procedure-supply":
       return null;
     default: {
@@ -435,6 +438,11 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
         ...(op.op === "pick" && op.product ? { product: op.product } : {}),
         ...(op.op === "dispense" ? { request_key: op.key } : {}),
       });
+    }
+    case "staff-task": {
+      // a colleague's standing task: theirs to do — the walkthrough waits until the record shows it
+      const what = t(staffTaskDef(c, action.task.task)?.name ?? action.task.task, locale);
+      return { kind: "await", action, narration: rt(locale, "task.await", { what }), staff: staffTaskDef(c, action.task.task)?.staff ?? action.task.by, what };
     }
     case "start":
     case "hint":
@@ -579,6 +587,11 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
           return never;
         }
       }
+    }
+    case "staff-task": {
+      // by the record: done for a `done` step; taken up at all for the steps before it
+      const status = staffTaskRecord(state, a.task.task)?.status;
+      return a.task.op === "done" ? status === "done" : status !== undefined;
     }
     case "anaesthesia":
     case "alarm-response":

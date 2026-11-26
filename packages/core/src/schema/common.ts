@@ -287,6 +287,7 @@ export type Condition =
   | { count: CountPredicate }
   /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
   | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" }
+  | { staffTask: string; status?: "started" | "blocked" | "done" }
   /** The prescription record (docs/PRESCRIPTIONS.md; `engine/prescription.ts`): every given field must hold. */
   | { prescription: PrescriptionPredicate }
   | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
@@ -320,6 +321,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ count: CountPredicateSchema }).strict(),
     /** A new investigation (docs/STUDIES.md). */
     z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
+    /** A standing task of the staff (docs/TEAM.md §5.1) is in that status now (default: done). */
+    z.object({ staffTask: IdSchema, status: z.enum(["started", "blocked", "done"]).optional() }).strict(),
     /** The prescription record (docs/PRESCRIPTIONS.md). */
     z.object({ prescription: PrescriptionPredicateSchema }).strict(),
     /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */

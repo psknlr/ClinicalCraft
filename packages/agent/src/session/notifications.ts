@@ -252,6 +252,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "action.rejected":
     case "procedure.step":
     case "alarm.response":
+    // a colleague's standing task: they say it themselves when it is done or blocked
+    case "staff-task.recorded":
     case "procedure.supply":
       return [];
     default: {

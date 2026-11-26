@@ -1,5 +1,6 @@
 import { StudyProfileSchema } from "./study.js";
 import { PrescriptionDefinitionSchema } from "./prescription.js";
+import { StaffTaskSchema } from "./staff-task.js";
 import { z } from "zod";
 import {
   AssetRefSchema,
@@ -966,6 +967,11 @@ export const CaseSchema = z
      * reviewed and supplied in an encounter is the record (`SessionState.prescriptions`).
      */
     prescriptions: z.array(PrescriptionDefinitionSchema).default([]),
+    /**
+     * Standing tasks of the facility's staff (docs/TEAM.md §5.1): what a colleague does on their own once it falls
+     * due — equipment brought to the patient, a device worked — recorded as `SessionState.staffTasks`.
+     */
+    staffTasks: z.array(StaffTaskSchema).default([]),
     orderMatching: OrderMatchingSchema.default({}),
     interventions: z.array(InterventionSchema).default([]),
     physiology: PhysiologySchema.optional(),

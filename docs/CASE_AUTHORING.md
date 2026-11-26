@@ -530,6 +530,24 @@ the bedside; a prescription has versions, a dispensary's review and a supply tha
   supplied at a device providing the prescription's `requires` — the facility must have both (`cases validate`
   reports a missing device as a capability gap).
 
+### 6.4 Standing tasks of the staff (`staffTasks`)
+
+What a colleague does on their own once it falls due — the assistant preparing the treatment couch and bringing the
+acupuncture cart once the patient has consented — is a **standing task** (contract: [TEAM.md](TEAM.md) §5.1), not a
+line in a brief.
+
+* **Set up, never treat.** A task's steps bring a cart to the patient (`fetch`) or work a device (`operate` an
+  operation without a clinical effect that does not reserve it). Needling, a drug, a test stay the clinician's.
+* **Make it fall due on the record** (`when`): consent given, a phase reached, a prescription confirmed. A task with no
+  `when` is done as the encounter starts.
+* **Give the kit its capabilities** so the in-world rules place it: a cart that provides `acupuncture`, a lamp that
+  provides `moxibustion` with an `on` operation in its behaviour. `cases validate` checks the case's facility has the
+  staff member, a cart for each `fetch` and a device offering each `operate`.
+* **Credit the learner for what they do with it, not for the colleague's work.** Use `{ "staffTask": id }` to gate
+  what needs the kit there (an objective that the cart is at the couch before needling); keep rubric items on the
+  learner's own acts.
+* **The reference `solution` lists the colleague's `done` step** where it happens; the demonstration waits for it.
+
 ## 7. Learning design
 
 * 4–6 `objectives` (chapters) in logical order with `hint`, `guidance` and
@@ -556,7 +574,8 @@ the bedside; a prescription has versions, a dispensary's review and a supply tha
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
   `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`, `prescription`
-  (the prescription record: §6.3, docs/PRESCRIPTIONS.md §6).
+  (the prescription record: §6.3, docs/PRESCRIPTIONS.md §6), `staffTask`
+  (a colleague's standing task: §6.4).
   `intervened` takes `valid` (`true`: only attempts that were not
   contraindicated when made; `false`: only those that were), `minCount` and
   `phase`: only attempts made while the case was in that phase — so a step

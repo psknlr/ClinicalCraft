@@ -268,6 +268,11 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "relief.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // a colleague's standing task is recorded when they have done it, never entered in their name
+    if (requested.type === "staff-task") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "task.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     if (requested.type === "operate" && requested.actor) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
       return null;

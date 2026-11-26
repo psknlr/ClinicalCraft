@@ -972,6 +972,13 @@ reservation) replaces them — the built-in catalogs declare one for
   reason (spatial included).
 * Staff movement is deterministic path following (no LLM per frame).
 
+**Standing tasks of the staff** (docs/TEAM.md §5.1): a colleague given a task by the case (`case.staffTasks`) does it
+with their own body once it falls due — a cart that provides a capability wheeled to the patient's side (the
+`fetch_equipment` delegation), a device that provides one walked to and worked (one operation of its behaviour, through
+the action bus, where the device's own requirements put them) — and only then is it recorded done. An operation with a
+clinical effect or one that reserves the device is never a colleague's task; nobody, no device or no way there is
+recorded as the task's block, said once, and tried again every round.
+
 **Dispensing devices** (docs/PRESCRIPTIONS.md §5): a medication cabinet, a herb cabinet or a granule dispenser gives
 its operations a clinical effect naming a dispensing step — `clinical: {tool: "dispense", select: "item", item:
 "prepare" | "pick" | "check-label" | "dispense"}`. The operation's parameters (`prescription`, `version`, `line`,

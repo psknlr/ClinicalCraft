@@ -17,6 +17,7 @@ import { evaluateProcedure } from "./procedure/predicates.js";
 import { evaluateCount } from "./count.js";
 import { evaluateStudy } from "./study.js";
 import { evaluatePrescription } from "./prescription.js";
+import { evaluateStaffTask } from "./staff-task.js";
 import { procedureFor } from "./procedure/variant.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
@@ -134,6 +135,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
   if ("study" in cond) return evaluateStudy(s, cond.study, cond.status);
+  if ("staffTask" in cond) return evaluateStaffTask(s, cond.staffTask, cond.status);
   if ("prescription" in cond) return evaluatePrescription(c, s, cond.prescription);
   if ("datum" in cond) {
     const st = datumStatus(c, s, cond.datum);
@@ -160,7 +162,9 @@ export type ConditionRef =
   /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
   | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] }
   /** A `prescription` leaf (its prescription and formulations are checked against the case's by `checkCaseIntegrity`). */
-  | { kind: "prescription"; predicate: PrescriptionPredicate; path: (string | number)[] };
+  | { kind: "prescription"; predicate: PrescriptionPredicate; path: (string | number)[] }
+  /** A `staffTask` leaf: a standing task of the staff (docs/TEAM.md §5.1). */
+  | { kind: "staff-task"; id: string; path: (string | number)[] };
 
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
@@ -188,6 +192,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("vital" in node) out.push({ kind: "vital", id: node.vital, path: [...path, "vital"] });
     else if ("procedure" in node) out.push({ kind: "procedure", predicate: node.procedure, path: [...path, "procedure"] });
     else if ("prescription" in node) out.push({ kind: "prescription", predicate: node.prescription, path: [...path, "prescription"] });
+    else if ("staffTask" in node) out.push({ kind: "staff-task", id: node.staffTask, path: [...path, "staffTask"] });
   };
   visit(cond, base);
   return out;
