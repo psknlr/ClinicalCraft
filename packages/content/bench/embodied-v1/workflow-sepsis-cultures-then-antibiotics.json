@@ -30,6 +30,11 @@
     },
     {
       "clinical": {
+        "flag": "cultures-first"
+      }
+    },
+    {
+      "clinical": {
         "intervened": "abx-ceftriaxone"
       }
     },
