@@ -1610,7 +1610,7 @@ attached the monitor…”）而不调用任何工具——在整个测试集上
 | `workflow-dka-point-of-care` | clinical-workflow | `dka-adult` · zh-CN | 取来血糖仪：床旁血糖与血酮 | 审批：批准 | 两项均已开并已读；床旁有床旁快速检测提供者；无违规（40/3） |
 | `workflow-pe-ctpa` | clinical-workflow | `pulmonary-embolism-postop` · en | 从病房到 CT：把患者送过去，申请并阅读 CTPA | 审批：批准 | `ctpa` 已完成（患者在扫描仪上时采集——经审计，§8.7）并已读；无违规（40/3） |
 | `workflow-pe-ctpa-transport` | clinical-workflow | `pulmonary-embolism-postop` · zh-CN | CTPA 逐个阶段（§8.7）：床旁开单，带着便携监护仪把患者推到 CT（到达即检查）再送回，报告发出后阅读，呼叫肺栓塞救治团队 | 审批：批准；已吸氧并已上监护 | `studyStages` `ctpa`（开单 → 出发 → 到达 → 采集 → 发出 → 阅读 → 处置，依次发生）；`patientTransit` 全程监护、由临床医生或护士负责；已执行 `consult-pert`；患者回到 `ward-1`；无违规（40/3） |
-| `workflow-sepsis-cultures-then-antibiotics` | clinical-workflow | `septic-shock-cap` · zh-CN | 在床旁：置留置针并做血培养，然后给抗生素（G7、G9） | 审批：批准 | 已给 `iv-access`，已开 `blood-cultures`，已给 `abx-ceftriaxone`；无违规（40/3） |
+| `workflow-sepsis-cultures-then-antibiotics` | clinical-workflow | `septic-shock-cap` · zh-CN | 在床旁：置留置针并做血培养，然后给抗生素（G7、G9） | 审批：批准 | 已给 `iv-access`，已在首剂抗菌药物前开 `blood-cultures`（`cultures-first`），已给 `abx-ceftriaxone`；无违规（40/3） |
 | `workflow-sepsis-full-encounter` | clinical-workflow | `septic-shock-cap` · en | 完整病例：从到达一直处理到转诊 ICU（P1-10） | 审批：批准 | 全部 6 个学习目标；病例已结束；无违规（400/10） |
 | `workflow-smzl-lab-cbc` | clinical-workflow | `smzl-lung-adeno` · en | 诊所：在患者身边采样并开全血细胞计数，在检验工作站读结果（G9） | 审批：批准 | 已开并已读 `cbc`；无违规（40/3） |
 | `workflow-stemi-full-encounter` | clinical-workflow | `stemi-inferior-rv` · en | 完整的具身 STEMI 急诊接诊 | 审批：批准 | 5 个目标全部完成；心电图已开并已读；已给监护，且患者最终所在处的监护仪——导管室的——为 `attached`；患者在导管室检查床上；病例已结束；无违规（400/10） |
